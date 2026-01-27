@@ -30,17 +30,8 @@ const AppContext = createContext<AppContextType | undefined>(undefined);
 const STORAGE_KEY = 'vi-som-foraldrar-state';
 const CATEGORIES_STORAGE_KEY = 'vi-som-foraldrar-categories';
 const CARDS_STORAGE_KEY = 'vi-som-foraldrar-cards';
-const CONTENT_VERSION = 6; // Increment this when content.ts changes to force refresh
 
 export function AppProvider({ children }: { children: ReactNode }) {
-  // Check content version and clear cache if outdated
-  const storedVersion = localStorage.getItem('vi-som-foraldrar-version');
-  if (storedVersion !== String(CONTENT_VERSION)) {
-    localStorage.removeItem(CATEGORIES_STORAGE_KEY);
-    localStorage.removeItem(CARDS_STORAGE_KEY);
-    localStorage.setItem('vi-som-foraldrar-version', String(CONTENT_VERSION));
-  }
-
   const [categories, setCategories] = useState<Category[]>(() => {
     const stored = localStorage.getItem(CATEGORIES_STORAGE_KEY);
     if (stored) {
@@ -86,6 +77,10 @@ export function AppProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
   }, [state]);
+
+  useEffect(() => {
+    localStorage.setItem(CATEGORIES_STORAGE_KEY, JSON.stringify(categories));
+  }, [categories]);
 
   useEffect(() => {
     localStorage.setItem(CARDS_STORAGE_KEY, JSON.stringify(cards));
