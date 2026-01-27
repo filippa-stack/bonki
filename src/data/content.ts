@@ -9,7 +9,7 @@ export const categories: Category[] = [
   },
   {
     id: 'parenting-together',
-    title: 'Parenting Together',
+    title: 'Uppfostringsstilar',
     description: 'Navigating the shared journey of raising children',
     cardCount: 3,
   },
