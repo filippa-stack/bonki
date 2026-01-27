@@ -1,6 +1,5 @@
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { categories } from '@/data/content';
 import { useApp } from '@/contexts/AppContext';
 import CategoryCard from '@/components/CategoryCard';
 import ConversationCard from '@/components/ConversationCard';
@@ -8,7 +7,7 @@ import { Bookmark } from 'lucide-react';
 
 export default function Home() {
   const navigate = useNavigate();
-  const { mostRecentConversation, savedConversations } = useApp();
+  const { mostRecentConversation, savedConversations, categories, updateCategory } = useApp();
 
   return (
     <div className="min-h-screen bg-background">
@@ -63,6 +62,8 @@ export default function Home() {
               category={category}
               onClick={() => navigate(`/category/${category.id}`)}
               index={index}
+              onUpdate={updateCategory}
+              editable={true}
             />
           ))}
         </div>
