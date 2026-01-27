@@ -19,6 +19,7 @@ interface AppContextType {
   updateCategory: (id: string, title: string, description: string) => void;
   cards: Card[];
   updateCard: (id: string, title: string, subtitle: string) => void;
+  updateCardSection: (cardId: string, sectionId: string, updates: Partial<{ title: string; content: string; prompts: string[] }>) => void;
   getCardsByCategory: (categoryId: string) => Card[];
   getCardById: (cardId: string) => Card | undefined;
   getCategoryById: (categoryId: string) => Category | undefined;
@@ -102,6 +103,23 @@ export function AppProvider({ children }: { children: ReactNode }) {
     setCards((prev) =>
       prev.map((card) =>
         card.id === id ? { ...card, title, subtitle } : card
+      )
+    );
+  };
+
+  const updateCardSection = (cardId: string, sectionId: string, updates: Partial<{ title: string; content: string; prompts: string[] }>) => {
+    setCards((prev) =>
+      prev.map((card) =>
+        card.id === cardId
+          ? {
+              ...card,
+              sections: card.sections.map((section) =>
+                section.id === sectionId
+                  ? { ...section, ...updates }
+                  : section
+              ),
+            }
+          : card
       )
     );
   };
@@ -254,6 +272,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
         updateCategory,
         cards,
         updateCard,
+        updateCardSection,
         getCardsByCategory,
         getCardById,
         getCategoryById,
