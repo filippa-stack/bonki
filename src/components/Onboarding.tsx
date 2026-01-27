@@ -68,7 +68,7 @@ export default function Onboarding() {
             onClick={isLastSlide ? handleComplete : handleNext}
             className="btn-gentle w-full max-w-xs"
           >
-            {isLastSlide ? 'Begin' : 'Continue'}
+            {isLastSlide ? 'Begin' : 'Fortsätt'}
           </button>
 
           {/* Progress dots */}
