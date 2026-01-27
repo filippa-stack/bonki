@@ -3,7 +3,7 @@ import { Category, Card } from '@/types';
 export const categories: Category[] = [
   {
     id: 'communication',
-    title: 'Communication',
+    title: 'Arbetsfördelning & mentala lasset',
     description: 'Understanding how we speak, listen, and connect with each other',
     cardCount: 3,
   },
