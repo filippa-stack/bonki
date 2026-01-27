@@ -7,7 +7,7 @@ import SectionView from '@/components/SectionView';
 
 const sectionTypeLabels: Record<string, string> = {
   opening: 'Öppnare',
-  reflective: 'Reflection',
+  reflective: 'Tankeväckare',
   scenario: 'Scenario',
   exercise: 'Exercise',
 };
