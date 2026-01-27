@@ -21,7 +21,7 @@ export const categories: Category[] = [
   },
   {
     id: 'daily-life',
-    title: 'Daily Life',
+    title: 'Närhet & Intimitet',
     description: 'The rhythms, routines, and small moments that shape us',
     cardCount: 2,
   },
