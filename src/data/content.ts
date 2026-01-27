@@ -91,6 +91,8 @@ export const cards: Card[] = [
           'När känner du att din insats för dagen verkligen är slut hemma?',
           'Vad önskar du att jag såg i det du gör /precis innan du sätter dig ner/ de sista 20 minutrarna innan dagens slut?',
           'När under dagen känner du att din insats är färdig?',
+          '',
+          '',
         ],
       },
       {
