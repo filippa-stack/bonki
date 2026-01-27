@@ -9,7 +9,7 @@ const sectionTypeLabels: Record<string, string> = {
   opening: 'Öppnare',
   reflective: 'Tankeväckare',
   scenario: 'Scenario',
-  exercise: 'Exercise',
+  exercise: 'Team Work',
 };
 
 export default function CardView() {
