@@ -27,7 +27,7 @@ export const categories: Category[] = [
   },
   {
     id: 'individual-needs',
-    title: 'Individual Needs',
+    title: 'Släkt & kultur',
     description: 'Balancing personal wellbeing within partnership',
     cardCount: 2,
   },
