@@ -5,7 +5,7 @@ import { useApp } from '@/contexts/AppContext';
 const slides = [
   {
     title: 'Välkommen',
-    content: 'Det här är ett utrymme för dig och din partner att reflektera över er relation – som föräldrar, som partner, som individer i ett gemensamt liv.',
+    content: 'Det här är ett utrymme för dig och din partner att reflektera över er relation – som föräldrar, som partners, som individer i ett gemensamt liv.',
   },
   {
     title: 'Grundat i forskning',
