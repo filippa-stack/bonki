@@ -90,7 +90,7 @@ export const cards: Card[] = [
         prompts: [
           'När känner du att din insats för dagen verkligen är slut hemma?',
           'Vad önskar du att jag såg i det du gör /precis innan du sätter dig ner/ de sista 20 minutrarna innan dagens slut?',
-          'How do you know when someone is really paying attention to you?',
+          'När under dagen känner du att din insats är färdig?',
         ],
       },
       {
