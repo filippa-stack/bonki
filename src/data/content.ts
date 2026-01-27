@@ -89,7 +89,7 @@ export const cards: Card[] = [
         content: 'These questions are meant to gently open the conversation. There are no right answers—only your honest experience.',
         prompts: [
           'När känner du att din insats för dagen verkligen är slut hemma?',
-          'What helps you feel present when your partner is speaking?',
+          'Vad önskar du att jag såg i det du gör /precis innan du sätter dig ner/ de sista 20 minutrarna innan dagens slut?',
           'How do you know when someone is really paying attention to you?',
         ],
       },

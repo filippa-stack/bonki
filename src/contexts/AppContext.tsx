@@ -29,7 +29,7 @@ const AppContext = createContext<AppContextType | undefined>(undefined);
 const STORAGE_KEY = 'vi-som-foraldrar-state';
 const CATEGORIES_STORAGE_KEY = 'vi-som-foraldrar-categories';
 const CARDS_STORAGE_KEY = 'vi-som-foraldrar-cards';
-const CONTENT_VERSION = 3; // Increment this when content.ts changes to force refresh
+const CONTENT_VERSION = 4; // Increment this when content.ts changes to force refresh
 
 export function AppProvider({ children }: { children: ReactNode }) {
   // Check content version and clear cache if outdated
