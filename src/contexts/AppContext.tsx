@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { CoupleSpace, ConversationThread, Reflection, AppState, Category } from '@/types';
-import { categories as initialCategories } from '@/data/content';
+import { CoupleSpace, ConversationThread, Reflection, AppState, Category, Card } from '@/types';
+import { categories as initialCategories, cards as initialCards } from '@/data/content';
 
 interface AppContextType {
   state: AppState;
@@ -17,6 +17,11 @@ interface AppContextType {
   mostRecentConversation: ConversationThread | null;
   categories: Category[];
   updateCategory: (id: string, title: string, description: string) => void;
+  cards: Card[];
+  updateCard: (id: string, title: string, subtitle: string) => void;
+  getCardsByCategory: (categoryId: string) => Card[];
+  getCardById: (cardId: string) => Card | undefined;
+  getCategoryById: (categoryId: string) => Category | undefined;
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -31,6 +36,14 @@ export function AppProvider({ children }: { children: ReactNode }) {
       return JSON.parse(stored);
     }
     return initialCategories;
+  });
+
+  const [cards, setCards] = useState<Card[]>(() => {
+    const stored = localStorage.getItem('vi-som-foraldrar-cards');
+    if (stored) {
+      return JSON.parse(stored);
+    }
+    return initialCards;
   });
 
   const [state, setState] = useState<AppState>(() => {
@@ -64,8 +77,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
   }, [state]);
 
   useEffect(() => {
-    localStorage.setItem(CATEGORIES_STORAGE_KEY, JSON.stringify(categories));
-  }, [categories]);
+    localStorage.setItem('vi-som-foraldrar-cards', JSON.stringify(cards));
+  }, [cards]);
 
   const updateCategory = (id: string, title: string, description: string) => {
     setCategories((prev) =>
@@ -73,6 +86,26 @@ export function AppProvider({ children }: { children: ReactNode }) {
         cat.id === id ? { ...cat, title, description } : cat
       )
     );
+  };
+
+  const updateCard = (id: string, title: string, subtitle: string) => {
+    setCards((prev) =>
+      prev.map((card) =>
+        card.id === id ? { ...card, title, subtitle } : card
+      )
+    );
+  };
+
+  const getCardsByCategory = (categoryId: string): Card[] => {
+    return cards.filter((card) => card.categoryId === categoryId);
+  };
+
+  const getCardById = (cardId: string): Card | undefined => {
+    return cards.find((card) => card.id === cardId);
+  };
+
+  const getCategoryById = (categoryId: string): Category | undefined => {
+    return categories.find((cat) => cat.id === categoryId);
   };
 
   const completeOnboarding = () => {
@@ -209,6 +242,11 @@ export function AppProvider({ children }: { children: ReactNode }) {
         mostRecentConversation,
         categories,
         updateCategory,
+        cards,
+        updateCard,
+        getCardsByCategory,
+        getCardById,
+        getCategoryById,
       }}
     >
       {children}
