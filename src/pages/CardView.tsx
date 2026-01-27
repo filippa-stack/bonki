@@ -6,7 +6,7 @@ import Header from '@/components/Header';
 import SectionView from '@/components/SectionView';
 
 const sectionTypeLabels: Record<string, string> = {
-  opening: 'Opening',
+  opening: 'Öppnare',
   reflective: 'Reflection',
   scenario: 'Scenario',
   exercise: 'Exercise',
