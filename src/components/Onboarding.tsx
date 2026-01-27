@@ -4,7 +4,7 @@ import { useApp } from '@/contexts/AppContext';
 
 const slides = [
   {
-    title: 'Welcome',
+    title: 'Välkommen',
     content: 'This is a space for you and your partner to reflect on your relationship—as parents, as partners, as individuals within a shared life.',
   },
   {
