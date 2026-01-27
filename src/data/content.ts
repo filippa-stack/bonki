@@ -31,6 +31,36 @@ export const categories: Category[] = [
     description: 'Balancing personal wellbeing within partnership',
     cardCount: 2,
   },
+  {
+    id: 'category-6',
+    title: '',
+    description: '',
+    cardCount: 0,
+  },
+  {
+    id: 'category-7',
+    title: '',
+    description: '',
+    cardCount: 0,
+  },
+  {
+    id: 'category-8',
+    title: '',
+    description: '',
+    cardCount: 0,
+  },
+  {
+    id: 'category-9',
+    title: '',
+    description: '',
+    cardCount: 0,
+  },
+  {
+    id: 'category-10',
+    title: '',
+    description: '',
+    cardCount: 0,
+  },
 ];
 
 export const cards: Card[] = [
