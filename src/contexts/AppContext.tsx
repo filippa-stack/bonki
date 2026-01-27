@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { CoupleSpace, ConversationThread, Reflection, AppState } from '@/types';
+import { CoupleSpace, ConversationThread, Reflection, AppState, Category } from '@/types';
+import { categories as initialCategories } from '@/data/content';
 
 interface AppContextType {
   state: AppState;
@@ -14,13 +15,24 @@ interface AppContextType {
   addReflection: (reflection: Omit<Reflection, 'id' | 'createdAt' | 'updatedAt'>) => void;
   getReflectionsForSection: (cardId: string, sectionId: string) => Reflection[];
   mostRecentConversation: ConversationThread | null;
+  categories: Category[];
+  updateCategory: (id: string, title: string, description: string) => void;
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
 const STORAGE_KEY = 'vi-som-foraldrar-state';
+const CATEGORIES_STORAGE_KEY = 'vi-som-foraldrar-categories';
 
 export function AppProvider({ children }: { children: ReactNode }) {
+  const [categories, setCategories] = useState<Category[]>(() => {
+    const stored = localStorage.getItem(CATEGORIES_STORAGE_KEY);
+    if (stored) {
+      return JSON.parse(stored);
+    }
+    return initialCategories;
+  });
+
   const [state, setState] = useState<AppState>(() => {
     const stored = localStorage.getItem(STORAGE_KEY);
     if (stored) {
@@ -50,6 +62,18 @@ export function AppProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
   }, [state]);
+
+  useEffect(() => {
+    localStorage.setItem(CATEGORIES_STORAGE_KEY, JSON.stringify(categories));
+  }, [categories]);
+
+  const updateCategory = (id: string, title: string, description: string) => {
+    setCategories((prev) =>
+      prev.map((cat) =>
+        cat.id === id ? { ...cat, title, description } : cat
+      )
+    );
+  };
 
   const completeOnboarding = () => {
     setState((prev) => ({ ...prev, hasCompletedOnboarding: true }));
@@ -183,6 +207,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
         addReflection,
         getReflectionsForSection,
         mostRecentConversation,
+        categories,
+        updateCategory,
       }}
     >
       {children}
