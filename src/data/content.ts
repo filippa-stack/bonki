@@ -85,7 +85,7 @@ export const cards: Card[] = [
       {
         id: 'opening-1',
         type: 'opening',
-        title: 'Opening Questions',
+        title: 'Öppnare',
         content: 'These questions are meant to gently open the conversation. There are no right answers—only your honest experience.',
         prompts: [
           'When was the last time you felt truly listened to by your partner?',
@@ -127,7 +127,7 @@ export const cards: Card[] = [
       {
         id: 'opening-2',
         type: 'opening',
-        title: 'Opening Questions',
+        title: 'Öppnare',
         content: 'Begin wherever feels natural.',
         prompts: [
           'How easy or difficult is it for you to ask for what you need?',
@@ -163,7 +163,7 @@ export const cards: Card[] = [
       {
         id: 'opening-3',
         type: 'opening',
-        title: 'Opening Questions',
+        title: 'Öppnare',
         content: 'Conflict is a natural part of any close relationship.',
         prompts: [
           'How do you typically respond when conflict arises?',
@@ -193,7 +193,7 @@ export const cards: Card[] = [
       {
         id: 'opening-4',
         type: 'opening',
-        title: 'Opening Questions',
+        title: 'Öppnare',
         content: 'Every parent brings their own history and instincts.',
         prompts: [
           'In what ways do your parenting approaches differ?',
@@ -229,7 +229,7 @@ export const cards: Card[] = [
       {
         id: 'opening-5',
         type: 'opening',
-        title: 'Opening Questions',
+        title: 'Öppnare',
         content: 'Parenting young children is often depleting.',
         prompts: [
           'When do you feel most supported by your partner as a parent?',
@@ -259,7 +259,7 @@ export const cards: Card[] = [
       {
         id: 'opening-6',
         type: 'opening',
-        title: 'Opening Questions',
+        title: 'Öppnare',
         content: 'Connection can feel distant when life is full.',
         prompts: [
           'What small moments help you feel connected to your partner?',
@@ -295,7 +295,7 @@ export const cards: Card[] = [
       {
         id: 'opening-7',
         type: 'opening',
-        title: 'Opening Questions',
+        title: 'Öppnare',
         content: 'Household and family work is often unevenly seen.',
         prompts: [
           'How did you divide responsibilities when you first became parents?',
@@ -325,7 +325,7 @@ export const cards: Card[] = [
       {
         id: 'opening-8',
         type: 'opening',
-        title: 'Opening Questions',
+        title: 'Öppnare',
         content: 'Needing space is not a rejection of connection.',
         prompts: [
           'How much alone time do you need to feel like yourself?',
