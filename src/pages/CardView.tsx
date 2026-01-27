@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { getCardById, getCategoryById } from '@/data/content';
 import { useApp } from '@/contexts/AppContext';
 import Header from '@/components/Header';
 import SectionView from '@/components/SectionView';
@@ -16,7 +15,7 @@ const sectionTypeLabels: Record<string, string> = {
 export default function CardView() {
   const { cardId } = useParams<{ cardId: string }>();
   const navigate = useNavigate();
-  const { getConversationForCard, saveConversation } = useApp();
+  const { getConversationForCard, saveConversation, getCardById, getCategoryById, updateCard } = useApp();
 
   const card = cardId ? getCardById(cardId) : undefined;
   const category = card ? getCategoryById(card.categoryId) : undefined;
@@ -52,23 +51,31 @@ export default function CardView() {
 
       {/* Card header */}
       <div className="px-6 pt-8 pb-6 border-b border-divider">
-        <motion.h1
+        <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          className="text-display text-foreground mb-2"
         >
-          {card.title}
-        </motion.h1>
-        {card.subtitle && (
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.1 }}
-            className="text-body text-gentle italic"
-          >
-            {card.subtitle}
-          </motion.p>
-        )}
+          <input
+            type="text"
+            value={card.title}
+            onChange={(e) => updateCard(card.id, e.target.value, card.subtitle || '')}
+            className="text-display text-foreground mb-2 w-full bg-transparent border-none outline-none focus:ring-0 placeholder:text-muted-foreground"
+            placeholder="Card title..."
+          />
+        </motion.div>
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.1 }}
+        >
+          <input
+            type="text"
+            value={card.subtitle || ''}
+            onChange={(e) => updateCard(card.id, card.title, e.target.value)}
+            className="text-body text-gentle italic w-full bg-transparent border-none outline-none focus:ring-0 placeholder:text-muted-foreground"
+            placeholder="Subtitle..."
+          />
+        </motion.div>
       </div>
 
       {/* Section tabs */}
