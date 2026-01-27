@@ -15,7 +15,7 @@ export const categories: Category[] = [
   },
   {
     id: 'emotional-intimacy',
-    title: 'Emotional Intimacy',
+    title: 'Paridentitet vs föräldraidentitet',
     description: 'Deepening connection and understanding between partners',
     cardCount: 3,
   },
