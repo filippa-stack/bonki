@@ -5,23 +5,23 @@ import { useApp } from '@/contexts/AppContext';
 const slides = [
   {
     title: 'Välkommen',
-    content: 'This is a space for you and your partner to reflect on your relationship—as parents, as partners, as individuals within a shared life.',
+    content: 'Det här är ett utrymme för dig och din partner att reflektera över er relation – som föräldrar, som partner, som individer i ett gemensamt liv.',
   },
   {
-    title: 'Grounded in Research',
-    content: 'Every question and exercise here is informed by psychological research on relationships, communication, attachment, and parenting. This tool was created by a licensed psychologist.',
+    title: 'Grundat i forskning',
+    content: 'Varje fråga och övning här bygger på psykologisk forskning om relationer, kommunikation, anknytning och föräldraskap. Det här verktyget är skapat av en legitimerad psykolog.',
   },
   {
-    title: 'No Right Answers',
-    content: 'This is not therapy, coaching, or a test. There are no scores, no progress bars, no goals to achieve. Only honest conversation at your own pace.',
+    title: 'Inga rätta svar',
+    content: 'Det här är inte terapi, coachning eller ett test. Det finns inga poäng, inga framstegsmätare, inga mål att uppnå. Bara ärliga samtal i din egen takt.',
   },
   {
-    title: 'Your Pace, Your Way',
-    content: 'You can pause at any time and return later. Save conversations that matter. Write private reflections or share them with your partner. Nothing here is urgent.',
+    title: 'I din egen takt',
+    content: 'Du kan pausa när som helst och återkomma senare. Spara samtal som betyder något. Skriv privata reflektioner eller dela dem med din partner. Inget här är brådskande.',
   },
   {
-    title: 'A Quiet Room',
-    content: 'Think of this as a quiet room you can enter together—or alone—whenever you need space to think about what matters most.',
+    title: 'Ett stilla rum',
+    content: 'Tänk på det här som ett stilla rum ni kan gå in i tillsammans – eller var för sig – när ni behöver utrymme att tänka på det som betyder mest.',
   },
 ];
 
