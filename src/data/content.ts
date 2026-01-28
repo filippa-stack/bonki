@@ -78,7 +78,7 @@ export const categories: Category[] = [
 export const cards: Card[] = [
   {
     id: 'listening-presence',
-    title: 'Listening & Presence',
+    title: 'När dagen är slut',
     subtitle: 'What does it mean to truly be heard?',
     categoryId: 'communication',
     sections: [
