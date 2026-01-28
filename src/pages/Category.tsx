@@ -97,7 +97,7 @@ function EditableCard({
   }} className="w-full text-left card-reflection group">
       <div className="flex items-start justify-between gap-4">
         <div className="flex-1 space-y-2">
-          <input type="text" value={title} onChange={handleTitleChange} onClick={handleInputClick} className="w-full font-serif text-xl text-foreground bg-transparent border-b border-transparent hover:border-border focus:border-primary focus:outline-none transition-colors placeholder:text-muted-foreground/50" placeholder="N\xE4r dagen \xE4r slut" />
+          <input type="text" value={title} onChange={handleTitleChange} onClick={handleInputClick} className="w-full font-serif text-xl text-foreground bg-transparent border-b border-transparent hover:border-border focus:border-primary focus:outline-none transition-colors placeholder:text-muted-foreground/50" placeholder="Mitt s\xE4tt - Ditt s\xE4tt" />
           <input type="text" value={subtitle} onChange={handleSubtitleChange} onClick={handleInputClick} placeholder="Underrubrik..." className="w-full text-sm text-gentle bg-transparent border-b border-transparent hover:border-border focus:border-primary focus:outline-none transition-colors placeholder:text-muted-foreground/50" />
           <p className="text-xs text-muted-foreground mt-3">
             {card.sections.length} sektioner
