@@ -12,6 +12,7 @@ export interface Card {
   subtitle?: string;
   categoryId: string;
   sections: Section[];
+  color?: string;
 }
 
 export interface Category {
