@@ -1,13 +1,22 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Section, Card } from '@/types';
+import { Section, Card, Prompt } from '@/types';
 import { useApp } from '@/contexts/AppContext';
 import { Bookmark, PenLine, Plus, Trash2 } from 'lucide-react';
+import ColorPicker from '@/components/ColorPicker';
 
 interface SectionViewProps {
   section: Section;
   card: Card;
 }
+
+// Helper to normalize prompts to Prompt objects
+const normalizePrompt = (prompt: string | Prompt): Prompt => {
+  if (typeof prompt === 'string') {
+    return { text: prompt, color: undefined };
+  }
+  return prompt;
+};
 
 export default function SectionView({ section, card }: SectionViewProps) {
   const { addReflection, getReflectionsForSection, saveConversation, updateCardSection } = useApp();
@@ -17,19 +26,29 @@ export default function SectionView({ section, card }: SectionViewProps) {
 
   const existingReflections = getReflectionsForSection(card.id, section.id);
 
+  const normalizedPrompts = (section.prompts || []).map(normalizePrompt);
+
   const handlePromptChange = (index: number, value: string) => {
-    const newPrompts = [...(section.prompts || [])];
-    newPrompts[index] = value;
+    const newPrompts = normalizedPrompts.map((p, i) => 
+      i === index ? { ...p, text: value } : p
+    );
+    updateCardSection(card.id, section.id, { prompts: newPrompts });
+  };
+
+  const handlePromptColorChange = (index: number, color: string) => {
+    const newPrompts = normalizedPrompts.map((p, i) => 
+      i === index ? { ...p, color } : p
+    );
     updateCardSection(card.id, section.id, { prompts: newPrompts });
   };
 
   const handleAddPrompt = () => {
-    const newPrompts = [...(section.prompts || []), ''];
+    const newPrompts: Prompt[] = [...normalizedPrompts, { text: '', color: undefined }];
     updateCardSection(card.id, section.id, { prompts: newPrompts });
   };
 
   const handleRemovePrompt = (index: number) => {
-    const newPrompts = (section.prompts || []).filter((_, i) => i !== index);
+    const newPrompts = normalizedPrompts.filter((_, i) => i !== index);
     updateCardSection(card.id, section.id, { prompts: newPrompts });
   };
 
@@ -110,28 +129,35 @@ export default function SectionView({ section, card }: SectionViewProps) {
       />
 
       {/* Prompts if available */}
-      {section.prompts && (
+      {normalizedPrompts.length > 0 && (
         <div className="space-y-4 mb-6">
-          {section.prompts.map((prompt, index) => (
+          {normalizedPrompts.map((prompt, index) => (
             <motion.div
               key={index}
               initial={{ opacity: 0, x: -10 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: index * 0.1 }}
-              className="p-5 rounded-lg bg-warm border-l-2 border-primary/30 relative group"
+              className="p-5 rounded-lg border-l-2 border-primary/30 relative group"
+              style={{ backgroundColor: prompt.color || 'hsl(var(--surface-warm))' }}
             >
               <textarea
-                value={prompt}
+                value={prompt.text}
                 onChange={(e) => handlePromptChange(index, e.target.value)}
                 className="text-body text-foreground w-full bg-transparent border-none outline-none focus:ring-0 resize-none placeholder:text-muted-foreground min-h-[24px]"
                 placeholder="Skriv en fråga..."
               />
-              <button
-                onClick={() => handleRemovePrompt(index)}
-                className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity p-1 rounded hover:bg-destructive/10 text-muted-foreground hover:text-destructive"
-              >
-                <Trash2 className="w-4 h-4" />
-              </button>
+              <div className="absolute top-2 right-2 flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                <ColorPicker
+                  currentColor={prompt.color}
+                  onColorChange={(color) => handlePromptColorChange(index, color)}
+                />
+                <button
+                  onClick={() => handleRemovePrompt(index)}
+                  className="p-1 rounded hover:bg-destructive/10 text-muted-foreground hover:text-destructive"
+                >
+                  <Trash2 className="w-4 h-4" />
+                </button>
+              </div>
             </motion.div>
           ))}
         </div>
