@@ -56,14 +56,22 @@ export default function CategoryCard({
     >
       <div className="flex items-start justify-between gap-4">
         <div className="flex items-start gap-3 flex-1">
-          {CategoryIcon && (
+          {editable && onIconChange ? (
+            <div className="mt-1" onClick={(e) => e.stopPropagation()}>
+              <IconPicker
+                currentIcon={category.icon}
+                onIconChange={onIconChange}
+                iconColor={category.textColor}
+              />
+            </div>
+          ) : CategoryIcon ? (
             <div className="mt-1">
               <CategoryIcon 
                 className="w-5 h-5" 
                 style={{ color: category.textColor || 'hsl(var(--foreground))' }} 
               />
             </div>
-          )}
+          ) : null}
           <div className="flex-1 space-y-2">
         {editable ? (
             <>
@@ -108,13 +116,6 @@ export default function CategoryCard({
           </div>
         </div>
         <div className="flex items-center gap-1" onClick={(e) => e.stopPropagation()}>
-          {editable && onIconChange && (
-            <IconPicker
-              currentIcon={category.icon}
-              onIconChange={onIconChange}
-              iconColor={category.textColor}
-            />
-          )}
           {editable && onColorChange && (
             <ColorPicker
               currentColor={category.color}
