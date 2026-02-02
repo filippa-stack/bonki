@@ -6,14 +6,14 @@ import ConversationCard from '@/components/ConversationCard';
 
 export default function SavedConversations() {
   const navigate = useNavigate();
-  const { savedConversations } = useApp();
+  const { savedConversations, backgroundColor } = useApp();
 
   const sortedConversations = [...savedConversations].sort(
     (a, b) => b.lastActivityAt.getTime() - a.lastActivityAt.getTime()
   );
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen" style={{ backgroundColor: backgroundColor || 'hsl(var(--background))' }}>
       <Header title="Saved Conversations" showBack backTo="/" />
 
       <div className="px-6 py-8">
