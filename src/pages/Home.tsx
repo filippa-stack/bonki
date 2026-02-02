@@ -3,14 +3,16 @@ import { motion } from 'framer-motion';
 import { useApp } from '@/contexts/AppContext';
 import CategoryCard from '@/components/CategoryCard';
 import ConversationCard from '@/components/ConversationCard';
+import Header from '@/components/Header';
 import { Bookmark } from 'lucide-react';
 
 export default function Home() {
   const navigate = useNavigate();
-  const { mostRecentConversation, savedConversations, categories, updateCategory, updateCategoryColor } = useApp();
+  const { mostRecentConversation, savedConversations, categories, updateCategory, updateCategoryColor, backgroundColor } = useApp();
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen" style={{ backgroundColor: backgroundColor || 'hsl(var(--background))' }}>
+      <Header showBackgroundPicker={true} />
       {/* Header */}
       <div className="px-6 pt-12 pb-8">
         <motion.h1

@@ -16,7 +16,7 @@ const sectionTypeLabels: Record<string, string> = {
 export default function CardView() {
   const { cardId } = useParams<{ cardId: string }>();
   const navigate = useNavigate();
-  const { getConversationForCard, saveConversation, getCardById, getCategoryById, updateCard, updateCardSection } = useApp();
+  const { getConversationForCard, saveConversation, getCardById, getCategoryById, updateCard, updateCardSection, backgroundColor } = useApp();
 
   const card = cardId ? getCardById(cardId) : undefined;
   const category = card ? getCategoryById(card.categoryId) : undefined;
@@ -34,7 +34,7 @@ export default function CardView() {
 
   if (!card) {
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: backgroundColor || 'hsl(var(--background))' }}>
         <p className="text-gentle">Card not found</p>
       </div>
     );
@@ -47,7 +47,7 @@ export default function CardView() {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen" style={{ backgroundColor: backgroundColor || 'hsl(var(--background))' }}>
       <Header
         title={category?.title}
         showBack

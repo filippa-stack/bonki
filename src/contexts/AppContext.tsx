@@ -25,6 +25,8 @@ interface AppContextType {
   getCardsByCategory: (categoryId: string) => Card[];
   getCardById: (cardId: string) => Card | undefined;
   getCategoryById: (categoryId: string) => Category | undefined;
+  backgroundColor: string;
+  setBackgroundColor: (color: string) => void;
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -32,6 +34,7 @@ const AppContext = createContext<AppContextType | undefined>(undefined);
 const STORAGE_KEY = 'vi-som-foraldrar-state';
 const CATEGORIES_STORAGE_KEY = 'vi-som-foraldrar-categories';
 const CARDS_STORAGE_KEY = 'vi-som-foraldrar-cards';
+const BACKGROUND_COLOR_KEY = 'vi-som-foraldrar-background';
 
 export function AppProvider({ children }: { children: ReactNode }) {
   const [categories, setCategories] = useState<Category[]>(() => {
@@ -48,6 +51,11 @@ export function AppProvider({ children }: { children: ReactNode }) {
       return JSON.parse(stored);
     }
     return initialCards;
+  });
+
+  const [backgroundColor, setBackgroundColorState] = useState<string>(() => {
+    const stored = localStorage.getItem(BACKGROUND_COLOR_KEY);
+    return stored || '';
   });
 
   const [state, setState] = useState<AppState>(() => {
@@ -87,6 +95,14 @@ export function AppProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     localStorage.setItem(CARDS_STORAGE_KEY, JSON.stringify(cards));
   }, [cards]);
+
+  useEffect(() => {
+    localStorage.setItem(BACKGROUND_COLOR_KEY, backgroundColor);
+  }, [backgroundColor]);
+
+  const setBackgroundColor = (color: string) => {
+    setBackgroundColorState(color);
+  };
 
   const updateCategory = (id: string, title: string, description: string) => {
     setCategories((prev) =>
@@ -291,6 +307,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
         getCardsByCategory,
         getCardById,
         getCategoryById,
+        backgroundColor,
+        setBackgroundColor,
       }}
     >
       {children}

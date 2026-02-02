@@ -9,21 +9,21 @@ import { ChevronRight } from 'lucide-react';
 export default function Category() {
   const { categoryId } = useParams<{ categoryId: string }>();
   const navigate = useNavigate();
-  const { getCategoryById, getCardsByCategory, updateCard, updateCardColor } = useApp();
+  const { getCategoryById, getCardsByCategory, updateCard, updateCardColor, backgroundColor } = useApp();
   
   const category = categoryId ? getCategoryById(categoryId) : undefined;
   const cards = categoryId ? getCardsByCategory(categoryId) : [];
 
   if (!category) {
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: backgroundColor || 'hsl(var(--background))' }}>
         <p className="text-gentle">Category not found</p>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen" style={{ backgroundColor: backgroundColor || 'hsl(var(--background))' }}>
       <Header showBack backTo="/" />
 
       {/* Category header */}
