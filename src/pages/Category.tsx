@@ -4,15 +4,21 @@ import { motion } from 'framer-motion';
 import { useApp } from '@/contexts/AppContext';
 import Header from '@/components/Header';
 import ColorPicker from '@/components/ColorPicker';
-import { ChevronRight } from 'lucide-react';
+import { ChevronRight, Plus } from 'lucide-react';
 
 export default function Category() {
   const { categoryId } = useParams<{ categoryId: string }>();
   const navigate = useNavigate();
-  const { getCategoryById, getCardsByCategory, updateCard, updateCardColor, updateCardTextColor, backgroundColor } = useApp();
+  const { getCategoryById, getCardsByCategory, updateCard, updateCardColor, updateCardTextColor, addCard, backgroundColor } = useApp();
   
   const category = categoryId ? getCategoryById(categoryId) : undefined;
   const cards = categoryId ? getCardsByCategory(categoryId) : [];
+
+  const handleAddCard = () => {
+    if (!categoryId) return;
+    const newCardId = addCard(categoryId);
+    navigate(`/card/${newCardId}`);
+  };
 
   if (!category) {
     return (
@@ -59,6 +65,18 @@ export default function Category() {
               onTextColorChange={(textColor) => updateCardTextColor(card.id, textColor)}
             />
           ))}
+          
+          {/* Add new card button */}
+          <motion.button
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: cards.length * 0.1 }}
+            onClick={handleAddCard}
+            className="w-full p-4 rounded-xl border-2 border-dashed border-muted-foreground/30 hover:border-primary/50 hover:bg-muted/30 transition-all flex items-center justify-center gap-2 text-muted-foreground hover:text-primary"
+          >
+            <Plus className="w-5 h-5" />
+            <span className="text-sm font-medium">Lägg till underkategori</span>
+          </motion.button>
         </div>
       </div>
     </div>

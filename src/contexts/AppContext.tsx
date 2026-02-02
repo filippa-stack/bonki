@@ -22,6 +22,7 @@ interface AppContextType {
   updateCategoryBorderColor: (id: string, borderColor: string) => void;
   updateCategoryIcon: (id: string, icon: string) => void;
   cards: Card[];
+  addCard: (categoryId: string) => string;
   updateCard: (id: string, title: string, subtitle: string) => void;
   updateCardColor: (id: string, color: string) => void;
   updateCardTextColor: (id: string, textColor: string) => void;
@@ -146,6 +147,56 @@ export function AppProvider({ children }: { children: ReactNode }) {
         cat.id === id ? { ...cat, icon } : cat
       )
     );
+  };
+
+  const addCard = (categoryId: string): string => {
+    const newId = crypto.randomUUID();
+    const newCard: Card = {
+      id: newId,
+      title: 'Ny underkategori',
+      subtitle: 'Lägg till beskrivning...',
+      categoryId,
+      sections: [
+        {
+          id: `${newId}-opening`,
+          type: 'opening',
+          title: 'Öppnare',
+          content: 'Lägg till innehåll...',
+          prompts: ['Lägg till fråga...'],
+        },
+        {
+          id: `${newId}-reflective`,
+          type: 'reflective',
+          title: 'Tankeväckare',
+          content: 'Lägg till innehåll...',
+          prompts: ['Lägg till fråga...'],
+        },
+        {
+          id: `${newId}-scenario`,
+          type: 'scenario',
+          title: 'Scenario',
+          content: 'Lägg till innehåll...',
+          prompts: ['Lägg till fråga...'],
+        },
+        {
+          id: `${newId}-exercise`,
+          type: 'exercise',
+          title: 'Team Work',
+          content: 'Lägg till innehåll...',
+          prompts: ['Lägg till uppgift...'],
+        },
+      ],
+    };
+    setCards((prev) => [...prev, newCard]);
+    
+    // Update category card count
+    setCategories((prev) =>
+      prev.map((cat) =>
+        cat.id === categoryId ? { ...cat, cardCount: cat.cardCount + 1 } : cat
+      )
+    );
+    
+    return newId;
   };
 
   const updateCard = (id: string, title: string, subtitle: string) => {
@@ -340,6 +391,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
         updateCategoryBorderColor,
         updateCategoryIcon,
         cards,
+        addCard,
         updateCard,
         updateCardColor,
         updateCardTextColor,
