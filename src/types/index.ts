@@ -1,9 +1,14 @@
+export interface Prompt {
+  text: string;
+  color?: string;
+}
+
 export interface Section {
   id: string;
   type: 'opening' | 'reflective' | 'scenario' | 'exercise';
   title: string;
   content: string;
-  prompts?: string[];
+  prompts?: (string | Prompt)[];
   color?: string;
 }
 
