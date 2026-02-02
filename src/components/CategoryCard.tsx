@@ -59,37 +59,37 @@ export default function CategoryCard({
         borderColor: category.borderColor || 'hsl(var(--border))'
       }}
     >
-      <div className="flex flex-col gap-3">
-        {/* Top row: icon and color picker */}
-        <div className="flex items-center justify-between">
-          <div onClick={(e) => e.stopPropagation()}>
-            {editable && onIconChange ? (
-              <IconPicker
-                currentIcon={category.icon}
-                onIconChange={onIconChange}
-                iconColor={category.textColor}
-              />
-            ) : CategoryIcon ? (
-              <CategoryIcon 
-                className="w-5 h-5" 
-                style={{ color: category.textColor || 'hsl(var(--foreground))' }} 
-              />
-            ) : null}
-          </div>
-          <div className="flex items-center gap-1" onClick={(e) => e.stopPropagation()}>
-            {editable && onColorChange && (
-              <ColorPicker
-                currentColor={category.color}
-                onColorChange={onColorChange}
-                currentTextColor={category.textColor}
-                onTextColorChange={onTextColorChange}
-                currentBorderColor={category.borderColor}
-                onBorderColorChange={onBorderColorChange}
-                showTextColor
-                showBorderColor
-              />
-            )}
-          </div>
+      <div className="flex flex-col gap-2">
+        {/* Color picker - top right corner */}
+        <div className="flex justify-end -mb-4" onClick={(e) => e.stopPropagation()}>
+          {editable && onColorChange && (
+            <ColorPicker
+              currentColor={category.color}
+              onColorChange={onColorChange}
+              currentTextColor={category.textColor}
+              onTextColorChange={onTextColorChange}
+              currentBorderColor={category.borderColor}
+              onBorderColorChange={onBorderColorChange}
+              showTextColor
+              showBorderColor
+            />
+          )}
+        </div>
+        
+        {/* Icon - centered above text */}
+        <div className="flex justify-center" onClick={(e) => e.stopPropagation()}>
+          {editable && onIconChange ? (
+            <IconPicker
+              currentIcon={category.icon}
+              onIconChange={onIconChange}
+              iconColor={category.textColor}
+            />
+          ) : CategoryIcon ? (
+            <CategoryIcon 
+              className="w-6 h-6" 
+              style={{ color: category.textColor || 'hsl(var(--foreground))' }} 
+            />
+          ) : null}
         </div>
         
         {/* Text content - full width below */}
