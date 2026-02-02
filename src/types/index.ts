@@ -4,6 +4,7 @@ export interface Section {
   title: string;
   content: string;
   prompts?: string[];
+  color?: string;
 }
 
 export interface Card {

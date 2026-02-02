@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useApp } from '@/contexts/AppContext';
 import Header from '@/components/Header';
 import SectionView from '@/components/SectionView';
+import ColorPicker from '@/components/ColorPicker';
 
 const sectionTypeLabels: Record<string, string> = {
   opening: 'Öppnare',
@@ -15,7 +16,7 @@ const sectionTypeLabels: Record<string, string> = {
 export default function CardView() {
   const { cardId } = useParams<{ cardId: string }>();
   const navigate = useNavigate();
-  const { getConversationForCard, saveConversation, getCardById, getCategoryById, updateCard } = useApp();
+  const { getConversationForCard, saveConversation, getCardById, getCategoryById, updateCard, updateCardSection } = useApp();
 
   const card = cardId ? getCardById(cardId) : undefined;
   const category = card ? getCategoryById(card.categoryId) : undefined;
@@ -40,6 +41,10 @@ export default function CardView() {
   }
 
   const activeSection = card.sections.find((s) => s.id === activeSectionId);
+
+  const handleSectionColorChange = (sectionId: string, color: string) => {
+    updateCardSection(card.id, sectionId, { color });
+  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -80,24 +85,33 @@ export default function CardView() {
 
       {/* Section tabs */}
       <div className="px-6 py-4 border-b border-divider overflow-x-auto">
-        <div className="flex gap-2">
+        <div className="flex gap-2 items-center">
           {card.sections.map((section, index) => (
-            <motion.button
-              key={section.id}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.05 }}
-              onClick={() => setActiveSectionId(
-                activeSectionId === section.id ? null : section.id
-              )}
-              className={`px-4 py-2 rounded-full text-sm font-sans whitespace-nowrap transition-all ${
-                activeSectionId === section.id
-                  ? 'bg-primary text-primary-foreground'
-                  : 'bg-secondary text-secondary-foreground hover:bg-muted'
-              }`}
-            >
-              {sectionTypeLabels[section.type] || section.type}
-            </motion.button>
+            <div key={section.id} className="flex items-center gap-1">
+              <motion.button
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.05 }}
+                onClick={() => setActiveSectionId(
+                  activeSectionId === section.id ? null : section.id
+                )}
+                className={`px-4 py-2 rounded-full text-sm font-sans whitespace-nowrap transition-all ${
+                  activeSectionId === section.id
+                    ? 'text-foreground shadow-sm'
+                    : 'text-muted-foreground hover:text-foreground'
+                }`}
+                style={{
+                  backgroundColor: section.color || (activeSectionId === section.id ? 'hsl(var(--primary))' : 'hsl(var(--secondary))'),
+                  color: section.color ? 'hsl(var(--foreground))' : undefined,
+                }}
+              >
+                {sectionTypeLabels[section.type] || section.type}
+              </motion.button>
+              <ColorPicker
+                currentColor={section.color}
+                onColorChange={(color) => handleSectionColorChange(section.id, color)}
+              />
+            </div>
           ))}
         </div>
       </div>
