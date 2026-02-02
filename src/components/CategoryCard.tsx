@@ -51,7 +51,7 @@ export default function CategoryCard({
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4, delay: index * 0.1 }}
       onClick={onClick}
-      className="w-full text-left card-reflection group cursor-pointer"
+      className="w-full text-left card-reflection group cursor-pointer border border-border rounded-xl"
       style={{ backgroundColor: category.color || undefined }}
     >
       <div className="flex items-start justify-between gap-4">
