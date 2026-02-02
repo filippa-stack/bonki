@@ -93,11 +93,48 @@ const CARD_COLORS = [
   { name: 'Burnt Orange', value: 'hsl(30, 50%, 55%)' },
   { name: 'Forest Light', value: 'hsl(160, 25%, 88%)' },
   
-  // Additional soft tones
+  // Pastel Tones - Soft & Harmonious
+  // Pink pastels
   { name: 'Blush', value: 'hsl(350, 60%, 94%)' },
   { name: 'Rose', value: 'hsl(350, 55%, 90%)' },
+  { name: 'Mauve', value: 'hsl(340, 40%, 88%)' },
+  { name: 'Petal', value: 'hsl(355, 50%, 92%)' },
+  
+  // Peach & Coral pastels
   { name: 'Peach', value: 'hsl(25, 70%, 92%)' },
   { name: 'Apricot', value: 'hsl(25, 60%, 88%)' },
+  { name: 'Coral Light', value: 'hsl(15, 65%, 90%)' },
+  { name: 'Salmon', value: 'hsl(10, 55%, 88%)' },
+  
+  // Yellow & Cream pastels
+  { name: 'Butter', value: 'hsl(50, 70%, 92%)' },
+  { name: 'Vanilla', value: 'hsl(45, 60%, 94%)' },
+  { name: 'Champagne', value: 'hsl(40, 50%, 90%)' },
+  { name: 'Honey Cream', value: 'hsl(35, 55%, 91%)' },
+  
+  // Green pastels
+  { name: 'Mint', value: 'hsl(150, 45%, 90%)' },
+  { name: 'Seafoam', value: 'hsl(160, 40%, 88%)' },
+  { name: 'Pistachio', value: 'hsl(140, 35%, 90%)' },
+  { name: 'Eucalyptus', value: 'hsl(155, 30%, 86%)' },
+  
+  // Blue pastels
+  { name: 'Sky', value: 'hsl(200, 60%, 92%)' },
+  { name: 'Baby Blue', value: 'hsl(210, 55%, 90%)' },
+  { name: 'Powder', value: 'hsl(195, 50%, 92%)' },
+  { name: 'Ice', value: 'hsl(190, 45%, 94%)' },
+  
+  // Purple & Lavender pastels
+  { name: 'Lilac', value: 'hsl(270, 45%, 92%)' },
+  { name: 'Wisteria', value: 'hsl(265, 40%, 90%)' },
+  { name: 'Periwinkle', value: 'hsl(240, 50%, 92%)' },
+  { name: 'Thistle', value: 'hsl(280, 35%, 90%)' },
+  
+  // Neutral pastels
+  { name: 'Cloud', value: 'hsl(220, 20%, 95%)' },
+  { name: 'Dove', value: 'hsl(30, 15%, 93%)' },
+  { name: 'Linen', value: 'hsl(40, 25%, 94%)' },
+  { name: 'Pearl', value: 'hsl(0, 0%, 96%)' },
 ];
 
 const TEXT_COLORS = [
