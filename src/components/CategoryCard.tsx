@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Category } from '@/types';
-import { ChevronRight } from 'lucide-react';
 import ColorPicker from '@/components/ColorPicker';
 import IconPicker, { getIconByName } from '@/components/IconPicker';
 
@@ -51,7 +50,8 @@ export default function CategoryCard({
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4, delay: index * 0.1 }}
-      className="w-full text-left card-reflection group"
+      onClick={onClick}
+      className="w-full text-left card-reflection group cursor-pointer"
       style={{ backgroundColor: category.color || undefined }}
     >
       <div className="flex items-start justify-between gap-4">
@@ -107,7 +107,7 @@ export default function CategoryCard({
           </p>
           </div>
         </div>
-        <div className="flex items-center gap-1">
+        <div className="flex items-center gap-1" onClick={(e) => e.stopPropagation()}>
           {editable && onIconChange && (
             <IconPicker
               currentIcon={category.icon}
@@ -124,13 +124,6 @@ export default function CategoryCard({
               showTextColor
             />
           )}
-          <button 
-            onClick={onClick}
-            className="p-2 rounded-full hover:bg-muted transition-colors"
-            aria-label="Öppna kategori"
-          >
-            <ChevronRight className="w-5 h-5 text-muted-foreground group-hover:text-primary transition-colors" />
-          </button>
         </div>
       </div>
     </motion.div>
