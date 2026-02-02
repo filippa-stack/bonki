@@ -32,6 +32,7 @@ export interface Category {
   icon?: string;
   color?: string;
   textColor?: string;
+  borderColor?: string;
 }
 
 export interface Reflection {
