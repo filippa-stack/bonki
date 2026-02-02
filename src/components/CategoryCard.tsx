@@ -10,6 +10,7 @@ interface CategoryCardProps {
   index: number;
   onUpdate?: (id: string, title: string, description: string) => void;
   onColorChange?: (color: string) => void;
+  onTextColorChange?: (textColor: string) => void;
   editable?: boolean;
 }
 
@@ -19,6 +20,7 @@ export default function CategoryCard({
   index, 
   onUpdate,
   onColorChange,
+  onTextColorChange,
   editable = true 
 }: CategoryCardProps) {
   const [title, setTitle] = useState(category.title);
@@ -50,7 +52,7 @@ export default function CategoryCard({
     >
       <div className="flex items-start justify-between gap-4">
         <div className="flex-1 space-y-2">
-          {editable ? (
+        {editable ? (
             <>
               <input
                 type="text"
@@ -58,7 +60,8 @@ export default function CategoryCard({
                 onChange={handleTitleChange}
                 onClick={handleInputClick}
                 placeholder="Kategorititel..."
-                className="w-full text-subheading text-foreground bg-transparent border-b border-transparent hover:border-border focus:border-primary focus:outline-none transition-colors placeholder:text-muted-foreground/50"
+                className="w-full text-subheading bg-transparent border-b border-transparent hover:border-border focus:border-primary focus:outline-none transition-colors placeholder:text-muted-foreground/50"
+                style={{ color: category.textColor || 'hsl(var(--foreground))' }}
               />
               <textarea
                 value={description}
@@ -66,15 +69,22 @@ export default function CategoryCard({
                 onClick={handleInputClick}
                 placeholder="Beskrivning..."
                 rows={2}
-                className="w-full text-body text-gentle text-sm bg-transparent border-b border-transparent hover:border-border focus:border-primary focus:outline-none transition-colors resize-none placeholder:text-muted-foreground/50"
+                className="w-full text-body text-sm bg-transparent border-b border-transparent hover:border-border focus:border-primary focus:outline-none transition-colors resize-none placeholder:text-muted-foreground/50"
+                style={{ color: category.textColor || 'hsl(var(--gentle))' }}
               />
             </>
           ) : (
             <>
-              <h3 className="text-subheading text-foreground mb-2 group-hover:text-primary transition-colors">
+              <h3 
+                className="text-subheading mb-2 group-hover:text-primary transition-colors"
+                style={{ color: category.textColor || 'hsl(var(--foreground))' }}
+              >
                 {category.title}
               </h3>
-              <p className="text-body text-gentle text-sm">
+              <p 
+                className="text-body text-sm"
+                style={{ color: category.textColor || 'hsl(var(--gentle))' }}
+              >
                 {category.description}
               </p>
             </>
@@ -88,6 +98,9 @@ export default function CategoryCard({
             <ColorPicker
               currentColor={category.color}
               onColorChange={onColorChange}
+              currentTextColor={category.textColor}
+              onTextColorChange={onTextColorChange}
+              showTextColor
             />
           )}
           <button 

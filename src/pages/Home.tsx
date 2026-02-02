@@ -8,7 +8,7 @@ import { Bookmark } from 'lucide-react';
 
 export default function Home() {
   const navigate = useNavigate();
-  const { mostRecentConversation, savedConversations, categories, updateCategory, updateCategoryColor, backgroundColor } = useApp();
+  const { mostRecentConversation, savedConversations, categories, updateCategory, updateCategoryColor, updateCategoryTextColor, backgroundColor } = useApp();
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: backgroundColor || 'hsl(var(--background))' }}>
@@ -66,6 +66,7 @@ export default function Home() {
               index={index}
               onUpdate={updateCategory}
               onColorChange={(color) => updateCategoryColor(category.id, color)}
+              onTextColorChange={(textColor) => updateCategoryTextColor(category.id, textColor)}
               editable={true}
             />
           ))}

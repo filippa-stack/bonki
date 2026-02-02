@@ -18,10 +18,12 @@ interface AppContextType {
   categories: Category[];
   updateCategory: (id: string, title: string, description: string) => void;
   updateCategoryColor: (id: string, color: string) => void;
+  updateCategoryTextColor: (id: string, textColor: string) => void;
   cards: Card[];
   updateCard: (id: string, title: string, subtitle: string) => void;
   updateCardColor: (id: string, color: string) => void;
-  updateCardSection: (cardId: string, sectionId: string, updates: Partial<{ title: string; content: string; prompts: any[]; color: string }>) => void;
+  updateCardTextColor: (id: string, textColor: string) => void;
+  updateCardSection: (cardId: string, sectionId: string, updates: Partial<{ title: string; content: string; prompts: any[]; color: string; textColor: string }>) => void;
   getCardsByCategory: (categoryId: string) => Card[];
   getCardById: (cardId: string) => Card | undefined;
   getCategoryById: (categoryId: string) => Category | undefined;
@@ -120,6 +122,14 @@ export function AppProvider({ children }: { children: ReactNode }) {
     );
   };
 
+  const updateCategoryTextColor = (id: string, textColor: string) => {
+    setCategories((prev) =>
+      prev.map((cat) =>
+        cat.id === id ? { ...cat, textColor } : cat
+      )
+    );
+  };
+
   const updateCard = (id: string, title: string, subtitle: string) => {
     setCards((prev) =>
       prev.map((card) =>
@@ -132,6 +142,14 @@ export function AppProvider({ children }: { children: ReactNode }) {
     setCards((prev) =>
       prev.map((card) =>
         card.id === id ? { ...card, color } : card
+      )
+    );
+  };
+
+  const updateCardTextColor = (id: string, textColor: string) => {
+    setCards((prev) =>
+      prev.map((card) =>
+        card.id === id ? { ...card, textColor } : card
       )
     );
   };
@@ -300,9 +318,11 @@ export function AppProvider({ children }: { children: ReactNode }) {
         categories,
         updateCategory,
         updateCategoryColor,
+        updateCategoryTextColor,
         cards,
         updateCard,
         updateCardColor,
+        updateCardTextColor,
         updateCardSection,
         getCardsByCategory,
         getCardById,
