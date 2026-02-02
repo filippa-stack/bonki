@@ -80,23 +80,27 @@ export default function CategoryCard({
           <div className="flex-1 space-y-2">
         {editable ? (
             <>
-              <input
-                type="text"
+              <textarea
                 value={title}
-                onChange={handleTitleChange}
+                onChange={(e) => {
+                  e.stopPropagation();
+                  setTitle(e.target.value);
+                  onUpdate?.(category.id, e.target.value, description);
+                }}
                 onClick={handleInputClick}
                 placeholder="Kategorititel..."
-                className="w-full text-base sm:text-lg font-semibold bg-transparent border-b border-transparent hover:border-border focus:border-primary focus:outline-none transition-colors placeholder:text-muted-foreground/50"
-                style={{ color: category.textColor || 'hsl(var(--foreground))' }}
+                rows={1}
+                className="w-full text-base sm:text-lg font-semibold bg-transparent border-b border-transparent hover:border-border focus:border-primary focus:outline-none transition-colors resize-none placeholder:text-muted-foreground/50 overflow-hidden"
+                style={{ color: category.textColor || 'hsl(var(--foreground))', fieldSizing: 'content' } as React.CSSProperties}
               />
               <textarea
                 value={description}
                 onChange={handleDescriptionChange}
                 onClick={handleInputClick}
                 placeholder="Beskrivning..."
-                rows={2}
-                className="w-full text-sm sm:text-base bg-transparent border-b border-transparent hover:border-border focus:border-primary focus:outline-none transition-colors resize-none placeholder:text-muted-foreground/50"
-                style={{ color: category.textColor || 'hsl(var(--gentle))' }}
+                rows={1}
+                className="w-full text-sm sm:text-base bg-transparent border-b border-transparent hover:border-border focus:border-primary focus:outline-none transition-colors resize-none placeholder:text-muted-foreground/50 overflow-hidden"
+                style={{ color: category.textColor || 'hsl(var(--gentle))', fieldSizing: 'content' } as React.CSSProperties}
               />
             </>
           ) : (
