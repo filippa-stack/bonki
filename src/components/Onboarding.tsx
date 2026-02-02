@@ -27,7 +27,7 @@ const slides = [
 
 export default function Onboarding() {
   const [currentSlide, setCurrentSlide] = useState(0);
-  const { completeOnboarding, initializeCoupleSpace } = useApp();
+  const { completeOnboarding, initializeCoupleSpace, backgroundColor } = useApp();
 
   const handleNext = () => {
     if (currentSlide < slides.length - 1) {
@@ -43,7 +43,10 @@ export default function Onboarding() {
   const isLastSlide = currentSlide === slides.length - 1;
 
   return (
-    <div className="min-h-screen bg-background flex flex-col items-center justify-center px-6 py-12">
+    <div 
+      className="min-h-screen flex flex-col items-center justify-center px-6 py-12"
+      style={{ backgroundColor: backgroundColor || 'hsl(var(--background))' }}
+    >
       <div className="w-full max-w-md">
         <AnimatePresence mode="wait">
           <motion.div
