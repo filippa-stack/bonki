@@ -86,7 +86,7 @@ export default function CategoryCard({
                 onChange={handleTitleChange}
                 onClick={handleInputClick}
                 placeholder="Kategorititel..."
-                className="w-full text-subheading bg-transparent border-b border-transparent hover:border-border focus:border-primary focus:outline-none transition-colors placeholder:text-muted-foreground/50"
+                className="w-full text-base sm:text-lg font-semibold bg-transparent border-b border-transparent hover:border-border focus:border-primary focus:outline-none transition-colors placeholder:text-muted-foreground/50"
                 style={{ color: category.textColor || 'hsl(var(--foreground))' }}
               />
               <textarea
@@ -95,7 +95,7 @@ export default function CategoryCard({
                 onClick={handleInputClick}
                 placeholder="Beskrivning..."
                 rows={2}
-                className="w-full text-body text-sm bg-transparent border-b border-transparent hover:border-border focus:border-primary focus:outline-none transition-colors resize-none placeholder:text-muted-foreground/50"
+                className="w-full text-sm sm:text-base bg-transparent border-b border-transparent hover:border-border focus:border-primary focus:outline-none transition-colors resize-none placeholder:text-muted-foreground/50"
                 style={{ color: category.textColor || 'hsl(var(--gentle))' }}
               />
             </>
