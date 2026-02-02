@@ -2,6 +2,60 @@ import { useState } from 'react';
 import { Palette, Type, Square } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
+// Color Palette Groups for Mental Health & Relationships
+const COLOR_PALETTES = [
+  {
+    name: 'Sage & Sand',
+    description: 'Jordad, lugn, naturlig',
+    colors: [
+      { name: 'Warm Sand BG', value: 'hsl(45, 30%, 96%)' },
+      { name: 'Sage Primary', value: 'hsl(150, 20%, 42%)' },
+      { name: 'Terracotta Accent', value: 'hsl(25, 35%, 55%)' },
+      { name: 'Sage Light', value: 'hsl(150, 25%, 88%)' },
+    ]
+  },
+  {
+    name: 'Dusty Rose & Stone',
+    description: 'Mjuk, omhändertagande, intim',
+    colors: [
+      { name: 'Stone BG', value: 'hsl(20, 20%, 95%)' },
+      { name: 'Dusty Rose Primary', value: 'hsl(350, 25%, 65%)' },
+      { name: 'Steel Blue Accent', value: 'hsl(200, 15%, 50%)' },
+      { name: 'Rose Light', value: 'hsl(350, 30%, 90%)' },
+    ]
+  },
+  {
+    name: 'Ocean Calm',
+    description: 'Klarhet, djup, trygghet',
+    colors: [
+      { name: 'Mist BG', value: 'hsl(200, 25%, 97%)' },
+      { name: 'Teal Primary', value: 'hsl(195, 30%, 45%)' },
+      { name: 'Honey Accent', value: 'hsl(35, 40%, 60%)' },
+      { name: 'Ocean Light', value: 'hsl(195, 35%, 88%)' },
+    ]
+  },
+  {
+    name: 'Lavender Twilight',
+    description: 'Reflektiv, spirituell, lugnande',
+    colors: [
+      { name: 'Lavender BG', value: 'hsl(260, 20%, 97%)' },
+      { name: 'Purple Primary', value: 'hsl(265, 25%, 55%)' },
+      { name: 'Gold Accent', value: 'hsl(45, 40%, 70%)' },
+      { name: 'Lavender Light', value: 'hsl(260, 30%, 90%)' },
+    ]
+  },
+  {
+    name: 'Forest & Cream',
+    description: 'Stabil, organisk, växande',
+    colors: [
+      { name: 'Cream BG', value: 'hsl(60, 20%, 96%)' },
+      { name: 'Forest Primary', value: 'hsl(160, 30%, 35%)' },
+      { name: 'Burnt Orange Accent', value: 'hsl(30, 50%, 55%)' },
+      { name: 'Forest Light', value: 'hsl(160, 25%, 88%)' },
+    ]
+  },
+];
+
 const CARD_COLORS = [
   // Row 1 - Neutrals & Default
   { name: 'Default', value: '' },
@@ -9,41 +63,41 @@ const CARD_COLORS = [
   { name: 'Cool Gray', value: 'hsl(220, 15%, 93%)' },
   { name: 'Warm Gray', value: 'hsl(30, 15%, 91%)' },
   
-  // Row 2 - Pinks & Roses
+  // Sage & Sand Palette
+  { name: 'Warm Sand', value: 'hsl(45, 30%, 96%)' },
+  { name: 'Sage', value: 'hsl(150, 20%, 42%)' },
+  { name: 'Terracotta', value: 'hsl(25, 35%, 55%)' },
+  { name: 'Sage Light', value: 'hsl(150, 25%, 88%)' },
+  
+  // Dusty Rose & Stone Palette
+  { name: 'Stone', value: 'hsl(20, 20%, 95%)' },
+  { name: 'Dusty Rose', value: 'hsl(350, 25%, 65%)' },
+  { name: 'Steel Blue', value: 'hsl(200, 15%, 50%)' },
+  { name: 'Rose Light', value: 'hsl(350, 30%, 90%)' },
+  
+  // Ocean Calm Palette
+  { name: 'Mist', value: 'hsl(200, 25%, 97%)' },
+  { name: 'Teal', value: 'hsl(195, 30%, 45%)' },
+  { name: 'Honey', value: 'hsl(35, 40%, 60%)' },
+  { name: 'Ocean Light', value: 'hsl(195, 35%, 88%)' },
+  
+  // Lavender Twilight Palette
+  { name: 'Lavender BG', value: 'hsl(260, 20%, 97%)' },
+  { name: 'Purple', value: 'hsl(265, 25%, 55%)' },
+  { name: 'Gold', value: 'hsl(45, 40%, 70%)' },
+  { name: 'Lavender Light', value: 'hsl(260, 30%, 90%)' },
+  
+  // Forest & Cream Palette
+  { name: 'Cream', value: 'hsl(60, 20%, 96%)' },
+  { name: 'Forest', value: 'hsl(160, 30%, 35%)' },
+  { name: 'Burnt Orange', value: 'hsl(30, 50%, 55%)' },
+  { name: 'Forest Light', value: 'hsl(160, 25%, 88%)' },
+  
+  // Additional soft tones
   { name: 'Blush', value: 'hsl(350, 60%, 94%)' },
   { name: 'Rose', value: 'hsl(350, 55%, 90%)' },
-  { name: 'Dusty Rose', value: 'hsl(350, 40%, 86%)' },
-  { name: 'Mauve', value: 'hsl(330, 35%, 88%)' },
-  
-  // Row 3 - Peaches & Corals
   { name: 'Peach', value: 'hsl(25, 70%, 92%)' },
   { name: 'Apricot', value: 'hsl(25, 60%, 88%)' },
-  { name: 'Coral', value: 'hsl(15, 55%, 86%)' },
-  { name: 'Terracotta', value: 'hsl(15, 45%, 82%)' },
-  
-  // Row 4 - Yellows & Sands
-  { name: 'Cream', value: 'hsl(45, 50%, 93%)' },
-  { name: 'Sand', value: 'hsl(40, 45%, 89%)' },
-  { name: 'Honey', value: 'hsl(45, 55%, 85%)' },
-  { name: 'Wheat', value: 'hsl(38, 40%, 82%)' },
-  
-  // Row 5 - Greens & Sages
-  { name: 'Mint', value: 'hsl(150, 35%, 92%)' },
-  { name: 'Sage', value: 'hsl(140, 30%, 88%)' },
-  { name: 'Eucalyptus', value: 'hsl(155, 28%, 84%)' },
-  { name: 'Olive', value: 'hsl(80, 25%, 82%)' },
-  
-  // Row 6 - Blues & Skies
-  { name: 'Ice', value: 'hsl(200, 40%, 94%)' },
-  { name: 'Sky', value: 'hsl(200, 50%, 90%)' },
-  { name: 'Powder', value: 'hsl(210, 45%, 86%)' },
-  { name: 'Steel', value: 'hsl(215, 35%, 82%)' },
-  
-  // Row 7 - Purples & Lavenders
-  { name: 'Lilac', value: 'hsl(270, 40%, 94%)' },
-  { name: 'Lavender', value: 'hsl(260, 40%, 90%)' },
-  { name: 'Wisteria', value: 'hsl(265, 35%, 86%)' },
-  { name: 'Plum', value: 'hsl(280, 30%, 84%)' },
 ];
 
 const TEXT_COLORS = [
@@ -246,8 +300,41 @@ export default function ColorPicker({
               </div>
             )}
             
+            {/* Palette Groups - only for background tab */}
+            {activeTab === 'background' && (
+              <div className="mb-4">
+                <p className="text-xs text-muted-foreground mb-2 font-medium">
+                  Färgpaletter för mental hälsa
+                </p>
+                <div className="space-y-3">
+                  {COLOR_PALETTES.map((palette) => (
+                    <div key={palette.name} className="border border-border/50 rounded-lg p-2">
+                      <p className="text-xs font-medium mb-1">{palette.name}</p>
+                      <p className="text-[10px] text-muted-foreground mb-2">{palette.description}</p>
+                      <div className="flex gap-1.5">
+                        {palette.colors.map((color) => (
+                          <button
+                            key={color.name}
+                            onClick={(e) => handleColorSelect(color.value, e)}
+                            className={`w-6 h-6 rounded-full border-2 transition-all hover:scale-110 ${
+                              currentSelected === color.value 
+                                ? 'border-primary ring-2 ring-primary/30' 
+                                : 'border-border/50 hover:border-primary/50'
+                            }`}
+                            style={{ backgroundColor: color.value }}
+                            title={color.name}
+                          />
+                        ))}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                <div className="divider-soft my-3" />
+              </div>
+            )}
+            
             <p className="text-xs text-muted-foreground mb-2">
-              {tabLabel}
+              {activeTab === 'background' ? 'Alla färger' : tabLabel}
             </p>
             <div className="grid grid-cols-4 gap-1.5 mb-3">
               {colors.map((color) => (
