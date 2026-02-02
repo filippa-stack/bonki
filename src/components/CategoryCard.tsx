@@ -2,12 +2,14 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Category } from '@/types';
 import { ChevronRight } from 'lucide-react';
+import ColorPicker from '@/components/ColorPicker';
 
 interface CategoryCardProps {
   category: Category;
   onClick: () => void;
   index: number;
   onUpdate?: (id: string, title: string, description: string) => void;
+  onColorChange?: (color: string) => void;
   editable?: boolean;
 }
 
@@ -16,6 +18,7 @@ export default function CategoryCard({
   onClick, 
   index, 
   onUpdate,
+  onColorChange,
   editable = true 
 }: CategoryCardProps) {
   const [title, setTitle] = useState(category.title);
@@ -43,6 +46,7 @@ export default function CategoryCard({
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4, delay: index * 0.1 }}
       className="w-full text-left card-reflection group"
+      style={{ backgroundColor: category.color || undefined }}
     >
       <div className="flex items-start justify-between gap-4">
         <div className="flex-1 space-y-2">
@@ -79,13 +83,21 @@ export default function CategoryCard({
             {category.cardCount} {category.cardCount === 1 ? 'kort' : 'kort'}
           </p>
         </div>
-        <button 
-          onClick={onClick}
-          className="p-2 rounded-full hover:bg-muted transition-colors"
-          aria-label="Öppna kategori"
-        >
-          <ChevronRight className="w-5 h-5 text-muted-foreground group-hover:text-primary transition-colors" />
-        </button>
+        <div className="flex items-center gap-1">
+          {editable && onColorChange && (
+            <ColorPicker
+              currentColor={category.color}
+              onColorChange={onColorChange}
+            />
+          )}
+          <button 
+            onClick={onClick}
+            className="p-2 rounded-full hover:bg-muted transition-colors"
+            aria-label="Öppna kategori"
+          >
+            <ChevronRight className="w-5 h-5 text-muted-foreground group-hover:text-primary transition-colors" />
+          </button>
+        </div>
       </div>
     </motion.div>
   );

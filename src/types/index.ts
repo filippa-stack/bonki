@@ -21,6 +21,7 @@ export interface Category {
   description: string;
   cardCount: number;
   icon?: string;
+  color?: string;
 }
 
 export interface Reflection {
