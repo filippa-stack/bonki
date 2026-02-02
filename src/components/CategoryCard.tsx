@@ -59,26 +59,42 @@ export default function CategoryCard({
         borderColor: category.borderColor || 'hsl(var(--border))'
       }}
     >
-      <div className="flex items-start justify-between gap-4">
-        <div className="flex items-start gap-3 flex-1">
-          {editable && onIconChange ? (
-            <div className="mt-1" onClick={(e) => e.stopPropagation()}>
+      <div className="flex flex-col gap-3">
+        {/* Top row: icon and color picker */}
+        <div className="flex items-center justify-between">
+          <div onClick={(e) => e.stopPropagation()}>
+            {editable && onIconChange ? (
               <IconPicker
                 currentIcon={category.icon}
                 onIconChange={onIconChange}
                 iconColor={category.textColor}
               />
-            </div>
-          ) : CategoryIcon ? (
-            <div className="mt-1">
+            ) : CategoryIcon ? (
               <CategoryIcon 
                 className="w-5 h-5" 
                 style={{ color: category.textColor || 'hsl(var(--foreground))' }} 
               />
-            </div>
-          ) : null}
-          <div className="flex-1 space-y-2">
-        {editable ? (
+            ) : null}
+          </div>
+          <div className="flex items-center gap-1" onClick={(e) => e.stopPropagation()}>
+            {editable && onColorChange && (
+              <ColorPicker
+                currentColor={category.color}
+                onColorChange={onColorChange}
+                currentTextColor={category.textColor}
+                onTextColorChange={onTextColorChange}
+                currentBorderColor={category.borderColor}
+                onBorderColorChange={onBorderColorChange}
+                showTextColor
+                showBorderColor
+              />
+            )}
+          </div>
+        </div>
+        
+        {/* Text content - full width below */}
+        <div className="w-full space-y-2">
+          {editable ? (
             <>
               <textarea
                 value={title}
@@ -106,37 +122,22 @@ export default function CategoryCard({
           ) : (
             <>
               <h3 
-                className="text-subheading mb-2 group-hover:text-primary transition-colors"
+                className="text-base sm:text-lg md:text-xl font-medium text-center group-hover:text-primary transition-colors"
                 style={{ color: category.textColor || 'hsl(var(--foreground))' }}
               >
                 {category.title}
               </h3>
               <p 
-                className="text-body text-sm"
+                className="text-xs sm:text-sm text-center"
                 style={{ color: category.textColor || 'hsl(var(--gentle))' }}
               >
                 {category.description}
               </p>
             </>
           )}
-          <p className="text-xs text-muted-foreground mt-3">
+          <p className="text-xs text-muted-foreground text-center mt-3">
             {category.cardCount} {category.cardCount === 1 ? 'kort' : 'kort'}
           </p>
-          </div>
-        </div>
-        <div className="flex items-center gap-1" onClick={(e) => e.stopPropagation()}>
-          {editable && onColorChange && (
-            <ColorPicker
-              currentColor={category.color}
-              onColorChange={onColorChange}
-              currentTextColor={category.textColor}
-              onTextColorChange={onTextColorChange}
-              currentBorderColor={category.borderColor}
-              onBorderColorChange={onBorderColorChange}
-              showTextColor
-              showBorderColor
-            />
-          )}
         </div>
       </div>
     </motion.div>
