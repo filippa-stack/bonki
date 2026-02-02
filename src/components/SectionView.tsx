@@ -99,7 +99,13 @@ export default function SectionView({ section, card }: SectionViewProps) {
       <textarea
         value={section.content}
         onChange={(e) => handleContentChange(e.target.value)}
-        className="text-body text-gentle mb-8 leading-relaxed w-full bg-transparent border-none outline-none focus:ring-0 resize-none placeholder:text-muted-foreground min-h-[60px]"
+        ref={(el) => {
+          if (el) {
+            el.style.height = 'auto';
+            el.style.height = el.scrollHeight + 'px';
+          }
+        }}
+        className="text-body text-gentle mb-8 leading-relaxed w-full bg-transparent border-none outline-none focus:ring-0 resize-none placeholder:text-muted-foreground"
         placeholder="Beskrivning..."
       />
 
