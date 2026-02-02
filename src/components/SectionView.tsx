@@ -13,7 +13,7 @@ interface SectionViewProps {
 // Helper to normalize prompts to Prompt objects
 const normalizePrompt = (prompt: string | Prompt): Prompt => {
   if (typeof prompt === 'string') {
-    return { text: prompt, color: undefined };
+    return { text: prompt, color: undefined, textColor: undefined };
   }
   return prompt;
 };
@@ -42,8 +42,15 @@ export default function SectionView({ section, card }: SectionViewProps) {
     updateCardSection(card.id, section.id, { prompts: newPrompts });
   };
 
+  const handlePromptTextColorChange = (index: number, textColor: string) => {
+    const newPrompts = normalizedPrompts.map((p, i) => 
+      i === index ? { ...p, textColor } : p
+    );
+    updateCardSection(card.id, section.id, { prompts: newPrompts });
+  };
+
   const handleAddPrompt = () => {
-    const newPrompts: Prompt[] = [...normalizedPrompts, { text: '', color: undefined }];
+    const newPrompts: Prompt[] = [...normalizedPrompts, { text: '', color: undefined, textColor: undefined }];
     updateCardSection(card.id, section.id, { prompts: newPrompts });
   };
 
@@ -143,13 +150,17 @@ export default function SectionView({ section, card }: SectionViewProps) {
               <textarea
                 value={prompt.text}
                 onChange={(e) => handlePromptChange(index, e.target.value)}
-                className="text-body text-foreground w-full bg-transparent border-none outline-none focus:ring-0 resize-none placeholder:text-muted-foreground min-h-[24px]"
+                className="text-body w-full bg-transparent border-none outline-none focus:ring-0 resize-none placeholder:text-muted-foreground min-h-[24px]"
                 placeholder="Skriv en fråga..."
+                style={{ color: prompt.textColor || 'hsl(var(--foreground))' }}
               />
               <div className="absolute top-2 right-2 flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
                 <ColorPicker
                   currentColor={prompt.color}
                   onColorChange={(color) => handlePromptColorChange(index, color)}
+                  currentTextColor={prompt.textColor}
+                  onTextColorChange={(textColor) => handlePromptTextColorChange(index, textColor)}
+                  showTextColor
                 />
                 <button
                   onClick={() => handleRemovePrompt(index)}

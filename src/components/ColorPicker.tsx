@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Palette } from 'lucide-react';
+import { Palette, Type } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const CARD_COLORS = [
@@ -46,32 +46,78 @@ const CARD_COLORS = [
   { name: 'Plum', value: 'hsl(280, 30%, 84%)' },
 ];
 
+const TEXT_COLORS = [
+  { name: 'Default', value: '' },
+  { name: 'Black', value: 'hsl(0, 0%, 10%)' },
+  { name: 'Dark Gray', value: 'hsl(0, 0%, 25%)' },
+  { name: 'Charcoal', value: 'hsl(0, 0%, 35%)' },
+  { name: 'Medium Gray', value: 'hsl(0, 0%, 50%)' },
+  { name: 'Deep Brown', value: 'hsl(25, 40%, 25%)' },
+  { name: 'Warm Brown', value: 'hsl(25, 35%, 35%)' },
+  { name: 'Sepia', value: 'hsl(30, 30%, 40%)' },
+  { name: 'Navy', value: 'hsl(220, 50%, 25%)' },
+  { name: 'Midnight', value: 'hsl(230, 40%, 30%)' },
+  { name: 'Deep Blue', value: 'hsl(210, 45%, 35%)' },
+  { name: 'Forest', value: 'hsl(150, 40%, 25%)' },
+  { name: 'Deep Teal', value: 'hsl(180, 35%, 30%)' },
+  { name: 'Burgundy', value: 'hsl(350, 45%, 30%)' },
+  { name: 'Wine', value: 'hsl(340, 40%, 35%)' },
+  { name: 'Deep Purple', value: 'hsl(270, 35%, 35%)' },
+];
+
 interface ColorPickerProps {
   currentColor?: string;
   onColorChange: (color: string) => void;
+  currentTextColor?: string;
+  onTextColorChange?: (color: string) => void;
+  showTextColor?: boolean;
 }
 
-export default function ColorPicker({ currentColor, onColorChange }: ColorPickerProps) {
+export default function ColorPicker({ 
+  currentColor, 
+  onColorChange,
+  currentTextColor,
+  onTextColorChange,
+  showTextColor = false
+}: ColorPickerProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState<'background' | 'text'>('background');
   const [customColor, setCustomColor] = useState(currentColor || '');
+  const [customTextColor, setCustomTextColor] = useState(currentTextColor || '');
 
   const handleColorSelect = (color: string, e: React.MouseEvent) => {
     e.stopPropagation();
-    onColorChange(color);
-    setCustomColor(color);
+    if (activeTab === 'background') {
+      onColorChange(color);
+      setCustomColor(color);
+    } else {
+      onTextColorChange?.(color);
+      setCustomTextColor(color);
+    }
     setIsOpen(false);
   };
 
   const handleCustomColorChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
-    setCustomColor(value);
+    if (activeTab === 'background') {
+      setCustomColor(value);
+    } else {
+      setCustomTextColor(value);
+    }
   };
 
   const handleCustomColorApply = (e: React.MouseEvent | React.KeyboardEvent) => {
     e.stopPropagation();
-    if (customColor.trim()) {
-      onColorChange(customColor.trim());
-      setIsOpen(false);
+    if (activeTab === 'background') {
+      if (customColor.trim()) {
+        onColorChange(customColor.trim());
+        setIsOpen(false);
+      }
+    } else {
+      if (customTextColor.trim()) {
+        onTextColorChange?.(customTextColor.trim());
+        setIsOpen(false);
+      }
     }
   };
 
@@ -87,8 +133,13 @@ export default function ColorPicker({ currentColor, onColorChange }: ColorPicker
     setIsOpen(!isOpen);
     if (!isOpen) {
       setCustomColor(currentColor || '');
+      setCustomTextColor(currentTextColor || '');
     }
   };
+
+  const colors = activeTab === 'background' ? CARD_COLORS : TEXT_COLORS;
+  const currentSelected = activeTab === 'background' ? currentColor : currentTextColor;
+  const customValue = activeTab === 'background' ? customColor : customTextColor;
 
   return (
     <div className="relative">
@@ -110,22 +161,52 @@ export default function ColorPicker({ currentColor, onColorChange }: ColorPicker
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: -5 }}
             transition={{ duration: 0.15 }}
-            className="absolute right-0 top-full mt-2 z-50 bg-card border border-border rounded-lg shadow-lg p-3 max-h-80 overflow-y-auto"
+            className="absolute right-0 top-full mt-2 z-50 bg-card border border-border rounded-lg shadow-lg p-3 max-h-80 overflow-y-auto min-w-[200px]"
             onClick={(e) => e.stopPropagation()}
           >
-            <p className="text-xs text-muted-foreground mb-2">Välj färg</p>
+            {/* Tabs */}
+            {showTextColor && (
+              <div className="flex gap-1 mb-3 p-1 bg-muted rounded-lg">
+                <button
+                  onClick={(e) => { e.stopPropagation(); setActiveTab('background'); }}
+                  className={`flex-1 flex items-center justify-center gap-1.5 px-2 py-1.5 rounded text-xs transition-colors ${
+                    activeTab === 'background' 
+                      ? 'bg-background text-foreground shadow-sm' 
+                      : 'text-muted-foreground hover:text-foreground'
+                  }`}
+                >
+                  <Palette className="w-3 h-3" />
+                  Bakgrund
+                </button>
+                <button
+                  onClick={(e) => { e.stopPropagation(); setActiveTab('text'); }}
+                  className={`flex-1 flex items-center justify-center gap-1.5 px-2 py-1.5 rounded text-xs transition-colors ${
+                    activeTab === 'text' 
+                      ? 'bg-background text-foreground shadow-sm' 
+                      : 'text-muted-foreground hover:text-foreground'
+                  }`}
+                >
+                  <Type className="w-3 h-3" />
+                  Text
+                </button>
+              </div>
+            )}
+            
+            <p className="text-xs text-muted-foreground mb-2">
+              {activeTab === 'background' ? 'Välj bakgrundsfärg' : 'Välj textfärg'}
+            </p>
             <div className="grid grid-cols-4 gap-1.5 mb-3">
-              {CARD_COLORS.map((color) => (
+              {colors.map((color) => (
                 <button
                   key={color.name}
                   onClick={(e) => handleColorSelect(color.value, e)}
                   className={`w-6 h-6 rounded-full border-2 transition-all hover:scale-110 ${
-                    currentColor === color.value 
+                    currentSelected === color.value 
                       ? 'border-primary ring-2 ring-primary/30' 
                       : 'border-border/50 hover:border-primary/50'
                   }`}
                   style={{ 
-                    backgroundColor: color.value || 'hsl(var(--card))' 
+                    backgroundColor: color.value || (activeTab === 'background' ? 'hsl(var(--card))' : 'hsl(var(--foreground))') 
                   }}
                   title={color.name}
                 />
@@ -138,17 +219,17 @@ export default function ColorPicker({ currentColor, onColorChange }: ColorPicker
                 <div className="flex-1 relative">
                   <input
                     type="text"
-                    value={customColor}
+                    value={customValue}
                     onChange={handleCustomColorChange}
                     onKeyDown={handleKeyDown}
                     onClick={(e) => e.stopPropagation()}
                     placeholder="#ff5500 eller hsl(30, 80%, 60%)"
                     className="w-full text-xs px-2 py-1.5 pr-8 rounded border border-border bg-background focus:outline-none focus:ring-1 focus:ring-primary"
                   />
-                  {customColor && (
+                  {customValue && (
                     <div 
                       className="absolute right-2 top-1/2 -translate-y-1/2 w-4 h-4 rounded-full border border-border"
-                      style={{ backgroundColor: customColor }}
+                      style={{ backgroundColor: customValue }}
                     />
                   )}
                 </div>
