@@ -90,7 +90,7 @@ export default function CategoryCard({
                 onClick={handleInputClick}
                 placeholder="Kategorititel..."
                 rows={1}
-                className="w-full text-base sm:text-lg font-semibold bg-transparent border-b border-transparent hover:border-border focus:border-primary focus:outline-none transition-colors resize-none placeholder:text-muted-foreground/50 overflow-hidden"
+                className="w-full text-base sm:text-lg font-semibold bg-transparent border-b border-transparent hover:border-border focus:border-primary focus:outline-none transition-colors resize-none placeholder:text-muted-foreground/50 overflow-hidden text-center"
                 style={{ color: category.textColor || 'hsl(var(--foreground))', fieldSizing: 'content' } as React.CSSProperties}
               />
               <textarea
@@ -99,7 +99,7 @@ export default function CategoryCard({
                 onClick={handleInputClick}
                 placeholder="Beskrivning..."
                 rows={1}
-                className="w-full text-sm sm:text-base bg-transparent border-b border-transparent hover:border-border focus:border-primary focus:outline-none transition-colors resize-none placeholder:text-muted-foreground/50 overflow-hidden"
+                className="w-full text-sm sm:text-base bg-transparent border-b border-transparent hover:border-border focus:border-primary focus:outline-none transition-colors resize-none placeholder:text-muted-foreground/50 overflow-hidden text-center"
                 style={{ color: category.textColor || 'hsl(var(--gentle))', fieldSizing: 'content' } as React.CSSProperties}
               />
             </>
