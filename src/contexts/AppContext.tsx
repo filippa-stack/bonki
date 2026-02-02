@@ -19,6 +19,7 @@ interface AppContextType {
   updateCategory: (id: string, title: string, description: string) => void;
   updateCategoryColor: (id: string, color: string) => void;
   updateCategoryTextColor: (id: string, textColor: string) => void;
+  updateCategoryIcon: (id: string, icon: string) => void;
   cards: Card[];
   updateCard: (id: string, title: string, subtitle: string) => void;
   updateCardColor: (id: string, color: string) => void;
@@ -126,6 +127,14 @@ export function AppProvider({ children }: { children: ReactNode }) {
     setCategories((prev) =>
       prev.map((cat) =>
         cat.id === id ? { ...cat, textColor } : cat
+      )
+    );
+  };
+
+  const updateCategoryIcon = (id: string, icon: string) => {
+    setCategories((prev) =>
+      prev.map((cat) =>
+        cat.id === id ? { ...cat, icon } : cat
       )
     );
   };
@@ -319,6 +328,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
         updateCategory,
         updateCategoryColor,
         updateCategoryTextColor,
+        updateCategoryIcon,
         cards,
         updateCard,
         updateCardColor,

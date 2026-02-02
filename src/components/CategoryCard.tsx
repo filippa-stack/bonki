@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { Category } from '@/types';
 import { ChevronRight } from 'lucide-react';
 import ColorPicker from '@/components/ColorPicker';
+import IconPicker, { getIconByName } from '@/components/IconPicker';
 
 interface CategoryCardProps {
   category: Category;
@@ -11,6 +12,7 @@ interface CategoryCardProps {
   onUpdate?: (id: string, title: string, description: string) => void;
   onColorChange?: (color: string) => void;
   onTextColorChange?: (textColor: string) => void;
+  onIconChange?: (icon: string) => void;
   editable?: boolean;
 }
 
@@ -21,10 +23,12 @@ export default function CategoryCard({
   onUpdate,
   onColorChange,
   onTextColorChange,
+  onIconChange,
   editable = true 
 }: CategoryCardProps) {
   const [title, setTitle] = useState(category.title);
   const [description, setDescription] = useState(category.description);
+  const CategoryIcon = category.icon ? getIconByName(category.icon) : null;
 
   const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.stopPropagation();
@@ -51,7 +55,16 @@ export default function CategoryCard({
       style={{ backgroundColor: category.color || undefined }}
     >
       <div className="flex items-start justify-between gap-4">
-        <div className="flex-1 space-y-2">
+        <div className="flex items-start gap-3 flex-1">
+          {CategoryIcon && (
+            <div className="mt-1">
+              <CategoryIcon 
+                className="w-5 h-5" 
+                style={{ color: category.textColor || 'hsl(var(--foreground))' }} 
+              />
+            </div>
+          )}
+          <div className="flex-1 space-y-2">
         {editable ? (
             <>
               <input
@@ -92,8 +105,16 @@ export default function CategoryCard({
           <p className="text-xs text-muted-foreground mt-3">
             {category.cardCount} {category.cardCount === 1 ? 'kort' : 'kort'}
           </p>
+          </div>
         </div>
         <div className="flex items-center gap-1">
+          {editable && onIconChange && (
+            <IconPicker
+              currentIcon={category.icon}
+              onIconChange={onIconChange}
+              iconColor={category.textColor}
+            />
+          )}
           {editable && onColorChange && (
             <ColorPicker
               currentColor={category.color}
