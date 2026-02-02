@@ -1,6 +1,7 @@
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import React, { createContext, useContext, useState, useEffect, ReactNode, useCallback } from 'react';
 import { CoupleSpace, ConversationThread, Reflection, AppState, Category, Card } from '@/types';
 import { categories as initialCategories, cards as initialCards } from '@/data/content';
+import { useSettingsSync } from '@/hooks/useSettingsSync';
 
 interface AppContextType {
   state: AppState;
@@ -104,6 +105,24 @@ export function AppProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     localStorage.setItem(BACKGROUND_COLOR_KEY, backgroundColor);
   }, [backgroundColor]);
+
+  // Sync settings with database
+  const handleSettingsLoaded = useCallback((loadedSettings: Partial<{ backgroundColor: string; categories: Category[]; cards: Card[] }>) => {
+    if (loadedSettings.backgroundColor !== undefined) {
+      setBackgroundColorState(loadedSettings.backgroundColor);
+    }
+    if (loadedSettings.categories) {
+      setCategories(loadedSettings.categories);
+    }
+    if (loadedSettings.cards) {
+      setCards(loadedSettings.cards);
+    }
+  }, []);
+
+  useSettingsSync(
+    { backgroundColor, categories, cards },
+    handleSettingsLoaded
+  );
 
   const setBackgroundColor = (color: string) => {
     setBackgroundColorState(color);
