@@ -1,6 +1,7 @@
 export interface Prompt {
   text: string;
   color?: string;
+  textColor?: string;
 }
 
 export interface Section {
@@ -10,6 +11,7 @@ export interface Section {
   content: string;
   prompts?: (string | Prompt)[];
   color?: string;
+  textColor?: string;
 }
 
 export interface Card {
@@ -19,6 +21,7 @@ export interface Card {
   categoryId: string;
   sections: Section[];
   color?: string;
+  textColor?: string;
 }
 
 export interface Category {
@@ -28,6 +31,7 @@ export interface Category {
   cardCount: number;
   icon?: string;
   color?: string;
+  textColor?: string;
 }
 
 export interface Reflection {
