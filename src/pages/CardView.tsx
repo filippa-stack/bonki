@@ -46,6 +46,10 @@ export default function CardView() {
     updateCardSection(card.id, sectionId, { color });
   };
 
+  const handleSectionTextColorChange = (sectionId: string, textColor: string) => {
+    updateCardSection(card.id, sectionId, { textColor });
+  };
+
   return (
     <div className="min-h-screen" style={{ backgroundColor: backgroundColor || 'hsl(var(--background))' }}>
       <Header
@@ -97,12 +101,12 @@ export default function CardView() {
                 )}
                 className={`px-4 py-2 rounded-full text-sm font-sans whitespace-nowrap transition-all ${
                   activeSectionId === section.id
-                    ? 'text-foreground shadow-sm'
-                    : 'text-muted-foreground hover:text-foreground'
+                    ? 'shadow-sm'
+                    : 'hover:opacity-80'
                 }`}
                 style={{
                   backgroundColor: section.color || (activeSectionId === section.id ? 'hsl(var(--primary))' : 'hsl(var(--secondary))'),
-                  color: section.color ? 'hsl(var(--foreground))' : undefined,
+                  color: section.textColor || 'hsl(var(--foreground))',
                 }}
               >
                 {sectionTypeLabels[section.type] || section.type}
@@ -110,6 +114,9 @@ export default function CardView() {
               <ColorPicker
                 currentColor={section.color}
                 onColorChange={(color) => handleSectionColorChange(section.id, color)}
+                currentTextColor={section.textColor}
+                onTextColorChange={(textColor) => handleSectionTextColorChange(section.id, textColor)}
+                showTextColor
               />
             </div>
           ))}
