@@ -190,6 +190,18 @@ export const cards: Card[] = [
           'Are there recurring patterns in your conflicts? What might they reveal?',
         ],
       },
+      {
+        id: 'scenario-3',
+        type: 'scenario',
+        title: 'Scenario',
+        content: 'Du och din partner har precis haft en hetsig diskussion om något som kändes litet men eskalerade snabbt. Ni har gått åt varsitt håll i lägenheten. Det har gått 20 minuter och tystnaden känns tung.\n\nFundera: Vad behöver du just nu? Vad tror du din partner behöver? Vem brukar ta första steget mot försoning - och hur känns det?',
+      },
+      {
+        id: 'exercise-3',
+        type: 'exercise',
+        title: 'Team Work',
+        content: 'Prova detta tillsammans:\n\nNär ni båda känner er redo efter en konflikt, sitt mitt emot varandra. Börja med att säga: "Det jag behöver från dig efter en konflikt är..." Lyssna utan att svara direkt.\n\nByt sedan och låt den andra dela. Avsluta med att tillsammans formulera ett "återkopplingsord" - ett ord eller en gest som signalerar: jag vill hitta tillbaka till dig.',
+      },
     ],
   },
   {
@@ -226,6 +238,12 @@ export const cards: Card[] = [
         title: 'A Realistic Scenario',
         content: 'Your child is having a meltdown. You believe in letting them feel their feelings; your partner wants to set a boundary and move on. You catch each other\'s eye, aware you\'re approaching this differently—again.\n\nConsider: What might each parent be feeling? What might the child need? Is there a way forward that honors both approaches?',
       },
+      {
+        id: 'exercise-4',
+        type: 'exercise',
+        title: 'Team Work',
+        content: 'Prova detta tillsammans:\n\nVälj en situation där ni ofta har olika syn - läggdags, skärmtid, eller gränssättning. Rita upp en "möteslinje" - vad är icke-förhandlingsbart för var och en? Var finns flexibilitet?\n\nFormulera sedan en gemensam approach för just den situationen som ni båda kan stå bakom.',
+      },
     ],
   },
   {
@@ -255,6 +273,18 @@ export const cards: Card[] = [
           'How do you respond when both of you are exhausted at the same time?',
           'What would it mean to truly share the load?',
         ],
+      },
+      {
+        id: 'scenario-5',
+        type: 'scenario',
+        title: 'Scenario',
+        content: 'Det är söndag eftermiddag. Ni är båda utmattade efter en intensiv vecka. Barnen är krävande och ni märker båda att irritationen ligger nära ytan. Ingen av er har energi att ta tag i nästa sak som behöver göras.\n\nFundera: Hur brukar ni hantera dessa stunder? Vad skulle hända om ni erkände utmattningen högt för varandra istället för att pressa vidare?',
+      },
+      {
+        id: 'exercise-5',
+        type: 'exercise',
+        title: 'Team Work',
+        content: 'Prova detta tillsammans:\n\nSkapa en "nödplan" för dagar när ni båda är tomma. Skriv ner tre saker som är okej att släppa (städning, matlagning, aktiviteter) och tre saker som måste fungera.\n\nKom överens om ett kodsord som betyder: "Jag är på noll - jag behöver att vi aktiverar nödplanen."',
       },
     ],
   },
@@ -292,6 +322,12 @@ export const cards: Card[] = [
         title: 'A Shared Exercise',
         content: 'Choose one evening this week. Put away devices after the children are asleep. Sit together—perhaps with tea or a glass of wine—and simply ask: "What\'s on your mind lately?"\n\nNo agenda. No problem to solve. Just presence.',
       },
+      {
+        id: 'scenario-6',
+        type: 'scenario',
+        title: 'Scenario',
+        content: 'Ni har äntligen fått en kväll för er själva. Barnen sover och ni sitter i soffan. Men istället för att prata sitter ni båda på era telefoner. Efter en stund säger en av er: "Vi borde ju prata eller göra något tillsammans..."\n\nFundera: Varför är det ibland lättare att scrolla än att vara närvarande? Vad skulle ni behöva för att välja varandra i det ögonblicket?',
+      },
     ],
   },
   {
@@ -322,6 +358,18 @@ export const cards: Card[] = [
           'How might your expectations differ from your partner\'s—and why?',
         ],
       },
+      {
+        id: 'scenario-7',
+        type: 'scenario',
+        title: 'Scenario',
+        content: 'Det är fredag kväll och disken står orörd, tvättkorgen svämmar över och ingen har handlat till helgen. Ni tittar båda på varandra med en känsla av "varför måste alltid jag..."\n\nFundera: Vad är det som gör att vissa uppgifter känns tyngre än andra? Handlar det om själva uppgiften eller om något djupare?',
+      },
+      {
+        id: 'exercise-7',
+        type: 'exercise',
+        title: 'Team Work',
+        content: 'Prova detta tillsammans:\n\nGör en lista över alla uppgifter som sker i ert hem under en vecka - synliga och osynliga (planering, emotionellt arbete, minnas saker). Markera vem som gör vad.\n\nDiskutera sedan: Finns det uppgifter som behöver omfördelas? Finns det saker som kan släppas helt?',
+      },
     ],
   },
   {
@@ -351,6 +399,18 @@ export const cards: Card[] = [
           'Do you ever feel guilty for wanting space? Where does that come from?',
           'How can asking for space become an act of care for the relationship?',
         ],
+      },
+      {
+        id: 'scenario-8',
+        type: 'scenario',
+        title: 'Scenario',
+        content: 'Du har äntligen en timme för dig själv medan din partner tar hand om barnen. Men istället för att känna dig avslappnad känner du dig skyldig och orolig över att du "borde" hjälpa till.\n\nFundera: Varifrån kommer den känslan? Vad skulle behöva förändras för att du ska kunna ta emot egen tid utan skuld?',
+      },
+      {
+        id: 'exercise-8',
+        type: 'exercise',
+        title: 'Team Work',
+        content: 'Prova detta tillsammans:\n\nPlanera in "skyddad tid" för var och en under kommande vecka - minst 1-2 timmar där den andra tar fullt ansvar utan frågor eller avbrott.\n\nEfteråt, dela med varandra: Vad gjorde du med tiden? Hur kändes det att ge/ta emot den tiden?',
       },
     ],
   },
