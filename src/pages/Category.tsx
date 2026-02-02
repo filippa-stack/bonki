@@ -9,7 +9,7 @@ import { ChevronRight } from 'lucide-react';
 export default function Category() {
   const { categoryId } = useParams<{ categoryId: string }>();
   const navigate = useNavigate();
-  const { getCategoryById, getCardsByCategory, updateCard, updateCardColor, backgroundColor } = useApp();
+  const { getCategoryById, getCardsByCategory, updateCard, updateCardColor, updateCardTextColor, backgroundColor } = useApp();
   
   const category = categoryId ? getCategoryById(categoryId) : undefined;
   const cards = categoryId ? getCardsByCategory(categoryId) : [];
@@ -56,6 +56,7 @@ export default function Category() {
               onNavigate={() => navigate(`/card/${card.id}`)}
               onUpdate={updateCard}
               onColorChange={(color) => updateCardColor(card.id, color)}
+              onTextColorChange={(textColor) => updateCardTextColor(card.id, textColor)}
             />
           ))}
         </div>
@@ -71,11 +72,13 @@ interface EditableCardProps {
     subtitle?: string;
     sections: any[];
     color?: string;
+    textColor?: string;
   };
   index: number;
   onNavigate: () => void;
   onUpdate: (id: string, title: string, subtitle: string) => void;
   onColorChange: (color: string) => void;
+  onTextColorChange: (textColor: string) => void;
 }
 
 function EditableCard({
@@ -84,6 +87,7 @@ function EditableCard({
   onNavigate,
   onUpdate,
   onColorChange,
+  onTextColorChange,
 }: EditableCardProps) {
   const [title, setTitle] = useState(card.title);
   const [subtitle, setSubtitle] = useState(card.subtitle || '');
@@ -117,8 +121,9 @@ function EditableCard({
             value={title}
             onChange={handleTitleChange}
             onClick={handleInputClick}
-            className="w-full font-serif text-xl text-foreground bg-transparent border-b border-transparent hover:border-border focus:border-primary focus:outline-none transition-colors placeholder:text-muted-foreground/50"
+            className="w-full font-serif text-xl bg-transparent border-b border-transparent hover:border-border focus:border-primary focus:outline-none transition-colors placeholder:text-muted-foreground/50"
             placeholder="Mitt sätt - Ditt sätt"
+            style={{ color: card.textColor || 'hsl(var(--foreground))' }}
           />
           <input
             type="text"
@@ -126,7 +131,8 @@ function EditableCard({
             onChange={handleSubtitleChange}
             onClick={handleInputClick}
             placeholder="Underrubrik..."
-            className="w-full text-sm text-gentle bg-transparent border-b border-transparent hover:border-border focus:border-primary focus:outline-none transition-colors placeholder:text-muted-foreground/50"
+            className="w-full text-sm bg-transparent border-b border-transparent hover:border-border focus:border-primary focus:outline-none transition-colors placeholder:text-muted-foreground/50"
+            style={{ color: card.textColor || 'hsl(var(--gentle))' }}
           />
           <p className="text-xs text-muted-foreground mt-3">
             {card.sections.length} sektioner
@@ -136,6 +142,9 @@ function EditableCard({
           <ColorPicker
             currentColor={card.color}
             onColorChange={onColorChange}
+            currentTextColor={card.textColor}
+            onTextColorChange={onTextColorChange}
+            showTextColor
           />
           <button
             onClick={onNavigate}
