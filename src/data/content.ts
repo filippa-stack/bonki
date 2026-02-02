@@ -154,6 +154,12 @@ export const cards: Card[] = [
         title: 'A Realistic Scenario',
         content: 'You have been feeling overwhelmed and need some time alone to recharge. But you hesitate to say anything because you know your partner is also tired and has been looking forward to spending the evening together.\n\nConsider: What might each person need here? How might this conversation unfold in a way that honors both?',
       },
+      {
+        id: 'exercise-2',
+        type: 'exercise',
+        title: 'Team Work',
+        content: 'Prova detta tillsammans:\n\nSätt er mitt emot varandra. Turas om att avsluta meningen: "Just nu behöver jag..." utan att förklara eller rättfärdiga. Den andra lyssnar utan att svara.\n\nEfter tre rundor var, reflektera: Hur kändes det att uttrycka ett behov rakt av? Hur kändes det att bara lyssna?',
+      },
     ],
   },
   {
