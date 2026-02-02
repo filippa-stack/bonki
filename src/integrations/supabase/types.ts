@@ -14,7 +14,36 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      user_settings: {
+        Row: {
+          background_color: string | null
+          cards: Json | null
+          categories: Json | null
+          created_at: string
+          device_id: string
+          id: string
+          updated_at: string
+        }
+        Insert: {
+          background_color?: string | null
+          cards?: Json | null
+          categories?: Json | null
+          created_at?: string
+          device_id: string
+          id?: string
+          updated_at?: string
+        }
+        Update: {
+          background_color?: string | null
+          cards?: Json | null
+          categories?: Json | null
+          created_at?: string
+          device_id?: string
+          id?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
