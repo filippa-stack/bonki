@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useApp } from '@/contexts/AppContext';
 import ColorPicker from '@/components/ColorPicker';
 import SaveIndicator from '@/components/SaveIndicator';
+import BackupManager from '@/components/BackupManager';
 
 interface HeaderProps {
   title?: string;
@@ -10,6 +11,7 @@ interface HeaderProps {
   backTo?: string;
   showBackgroundPicker?: boolean;
   showSaveIndicator?: boolean;
+  showBackupManager?: boolean;
 }
 
 export default function Header({ 
@@ -17,7 +19,8 @@ export default function Header({
   showBack = false, 
   backTo, 
   showBackgroundPicker = false,
-  showSaveIndicator = true 
+  showSaveIndicator = true,
+  showBackupManager = true
 }: HeaderProps) {
   const navigate = useNavigate();
   const { backgroundColor, setBackgroundColor, saveStatus, lastSavedAt, saveError } = useApp();
@@ -49,7 +52,7 @@ export default function Header({
             </h1>
           )}
         </div>
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-2 sm:gap-4">
           {showSaveIndicator && (
             <SaveIndicator 
               status={saveStatus} 
@@ -57,9 +60,10 @@ export default function Header({
               lastSavedAt={lastSavedAt} 
             />
           )}
+          {showBackupManager && <BackupManager />}
           {showBackgroundPicker && (
             <div className="flex items-center gap-2">
-              <span className="text-xs text-muted-foreground">Bakgrund</span>
+              <span className="text-xs text-muted-foreground hidden sm:inline">Bakgrund</span>
               <ColorPicker
                 currentColor={backgroundColor}
                 onColorChange={setBackgroundColor}

@@ -14,6 +14,36 @@ export type Database = {
   }
   public: {
     Tables: {
+      user_backups: {
+        Row: {
+          background_color: string | null
+          cards: Json | null
+          categories: Json | null
+          created_at: string
+          id: string
+          name: string
+          user_id: string
+        }
+        Insert: {
+          background_color?: string | null
+          cards?: Json | null
+          categories?: Json | null
+          created_at?: string
+          id?: string
+          name: string
+          user_id: string
+        }
+        Update: {
+          background_color?: string | null
+          cards?: Json | null
+          categories?: Json | null
+          created_at?: string
+          id?: string
+          name?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       user_settings: {
         Row: {
           background_color: string | null
