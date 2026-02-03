@@ -34,7 +34,7 @@ export default function Header({
   };
 
   return (
-    <header className="sticky top-0 z-10 bg-background/80 backdrop-blur-sm border-b border-divider">
+    <header className="sticky top-0 z-10 bg-card border-b border-border">
       <div className="flex items-center justify-between h-14 px-4">
         <div className="flex items-center">
           {showBack && (
