@@ -94,47 +94,18 @@ export default function CategoryCard({
         
         {/* Text content - full width below */}
         <div className="w-full space-y-2">
-          {editable ? (
-            <>
-              <textarea
-                value={title}
-                onChange={(e) => {
-                  e.stopPropagation();
-                  setTitle(e.target.value);
-                  onUpdate?.(category.id, e.target.value, description);
-                }}
-                onClick={handleInputClick}
-                placeholder="Kategorititel..."
-                rows={1}
-                className="w-full text-base sm:text-lg md:text-xl font-medium bg-transparent border-b border-transparent hover:border-border focus:border-primary focus:outline-none transition-colors resize-none placeholder:text-muted-foreground/50 text-center break-words whitespace-pre-wrap"
-                style={{ color: category.textColor || 'hsl(var(--foreground))', fieldSizing: 'content', minHeight: 'auto' } as React.CSSProperties}
-              />
-              <textarea
-                value={description}
-                onChange={handleDescriptionChange}
-                onClick={handleInputClick}
-                placeholder="Beskrivning..."
-                rows={1}
-                className="w-full text-xs sm:text-sm bg-transparent border-b border-transparent hover:border-border focus:border-primary focus:outline-none transition-colors resize-none placeholder:text-muted-foreground/50 text-center break-words whitespace-pre-wrap"
-                style={{ color: category.textColor || 'hsl(var(--gentle))', fieldSizing: 'content', minHeight: 'auto' } as React.CSSProperties}
-              />
-            </>
-          ) : (
-            <>
-              <h3 
-                className="text-base sm:text-lg md:text-xl font-medium text-center group-hover:text-primary transition-colors"
-                style={{ color: category.textColor || 'hsl(var(--foreground))' }}
-              >
-                {category.title}
-              </h3>
-              <p 
-                className="text-xs sm:text-sm text-center"
-                style={{ color: category.textColor || 'hsl(var(--gentle))' }}
-              >
-                {category.description}
-              </p>
-            </>
-          )}
+          <h3 
+            className="text-base sm:text-lg md:text-xl font-medium text-center group-hover:text-primary transition-colors"
+            style={{ color: category.textColor || 'hsl(var(--foreground))' }}
+          >
+            {category.title}
+          </h3>
+          <p 
+            className="text-xs sm:text-sm text-center"
+            style={{ color: category.textColor || 'hsl(var(--gentle))' }}
+          >
+            {category.description}
+          </p>
           <p className="text-xs text-muted-foreground text-center mt-3">
             {category.cardCount} {category.cardCount === 1 ? 'kort' : 'kort'}
           </p>
