@@ -110,15 +110,20 @@ export default function SectionView({ section, card }: SectionViewProps) {
       className="py-6"
     >
       {/* Section header */}
-      <div className="flex items-center gap-3 mb-6">
-        <span className="text-2xl text-primary opacity-60">{getSectionIcon()}</span>
-        <input
-          type="text"
-          value={section.title}
-          onChange={(e) => handleTitleChange(e.target.value)}
-          className="text-heading text-foreground bg-transparent border-none outline-none focus:ring-0 w-full placeholder:text-muted-foreground"
-          placeholder="Sektionstitel..."
-        />
+      <div className="mb-6">
+        <div className="flex items-center gap-3">
+          <span className="text-2xl text-primary opacity-60">{getSectionIcon()}</span>
+          <input
+            type="text"
+            value={section.title}
+            onChange={(e) => handleTitleChange(e.target.value)}
+            className="text-heading text-foreground bg-transparent border-none outline-none focus:ring-0 w-full placeholder:text-muted-foreground"
+            placeholder="Sektionstitel..."
+          />
+        </div>
+        {section.type === 'reflective' && (
+          <p className="text-sm text-gentle italic mt-2 ml-9">Förvandlar insikt till gemensam handling.</p>
+        )}
       </div>
 
       {/* Section content */}
