@@ -55,6 +55,19 @@ export default {
         elevated: "hsl(var(--surface-elevated))",
         gentle: "hsl(var(--text-gentle))",
         divider: "hsl(var(--divider))",
+        // Category Identity Colors
+        category: {
+          emotional: "hsl(var(--category-emotional))",
+          fun: "hsl(var(--category-fun))",
+          growth: "hsl(var(--category-growth))",
+          intimacy: "hsl(var(--category-intimacy))",
+          logistics: "hsl(var(--category-logistics))",
+        },
+        // Interactive States
+        state: {
+          active: "hsl(var(--state-active))",
+          inactive: "hsl(var(--state-inactive))",
+        },
       },
       borderRadius: {
         lg: "var(--radius)",
