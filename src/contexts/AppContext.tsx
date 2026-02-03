@@ -25,6 +25,7 @@ interface AppContextType {
   updateCategoryIcon: (id: string, icon: string) => void;
   cards: Card[];
   addCard: (categoryId: string) => string;
+  deleteCard: (cardId: string) => void;
   updateCard: (id: string, title: string, subtitle: string) => void;
   updateCardColor: (id: string, color: string) => void;
   updateCardTextColor: (id: string, textColor: string) => void;
@@ -224,6 +225,21 @@ export function AppProvider({ children }: { children: ReactNode }) {
     return newId;
   };
 
+  const deleteCard = (cardId: string) => {
+    const card = cards.find((c) => c.id === cardId);
+    if (!card) return;
+    
+    // Remove the card
+    setCards((prev) => prev.filter((c) => c.id !== cardId));
+    
+    // Update category card count
+    setCategories((prev) =>
+      prev.map((cat) =>
+        cat.id === card.categoryId ? { ...cat, cardCount: Math.max(0, cat.cardCount - 1) } : cat
+      )
+    );
+  };
+
   const updateCard = (id: string, title: string, subtitle: string) => {
     setCards((prev) =>
       prev.map((card) =>
@@ -417,6 +433,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
         updateCategoryIcon,
         cards,
         addCard,
+        deleteCard,
         updateCard,
         updateCardColor,
         updateCardTextColor,

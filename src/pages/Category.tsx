@@ -4,12 +4,12 @@ import { motion } from 'framer-motion';
 import { useApp } from '@/contexts/AppContext';
 import Header from '@/components/Header';
 import ColorPicker from '@/components/ColorPicker';
-import { ChevronRight, Plus } from 'lucide-react';
+import { ChevronRight, Plus, Trash2 } from 'lucide-react';
 
 export default function Category() {
   const { categoryId } = useParams<{ categoryId: string }>();
   const navigate = useNavigate();
-  const { getCategoryById, getCardsByCategory, updateCard, updateCardColor, updateCardTextColor, addCard, backgroundColor } = useApp();
+  const { getCategoryById, getCardsByCategory, updateCard, updateCardColor, updateCardTextColor, addCard, deleteCard, backgroundColor } = useApp();
   
   const category = categoryId ? getCategoryById(categoryId) : undefined;
   const cards = categoryId ? getCardsByCategory(categoryId) : [];
@@ -18,6 +18,12 @@ export default function Category() {
     if (!categoryId) return;
     const newCardId = addCard(categoryId);
     navigate(`/card/${newCardId}`);
+  };
+
+  const handleDeleteCard = (cardId: string, cardTitle: string) => {
+    if (confirm(`Vill du ta bort "${cardTitle}"?`)) {
+      deleteCard(cardId);
+    }
   };
 
   if (!category) {
@@ -63,6 +69,7 @@ export default function Category() {
               onUpdate={updateCard}
               onColorChange={(color) => updateCardColor(card.id, color)}
               onTextColorChange={(textColor) => updateCardTextColor(card.id, textColor)}
+              onDelete={() => handleDeleteCard(card.id, card.title)}
             />
           ))}
           
@@ -97,6 +104,7 @@ interface EditableCardProps {
   onUpdate: (id: string, title: string, subtitle: string) => void;
   onColorChange: (color: string) => void;
   onTextColorChange: (textColor: string) => void;
+  onDelete: () => void;
 }
 
 function EditableCard({
@@ -106,6 +114,7 @@ function EditableCard({
   onUpdate,
   onColorChange,
   onTextColorChange,
+  onDelete,
 }: EditableCardProps) {
   const [title, setTitle] = useState(card.title);
   const [subtitle, setSubtitle] = useState(card.subtitle || '');
@@ -164,6 +173,14 @@ function EditableCard({
             onTextColorChange={onTextColorChange}
             showTextColor
           />
+          <button
+            onClick={(e) => { e.stopPropagation(); onDelete(); }}
+            className="p-2 rounded-full hover:bg-destructive/20 transition-colors"
+            aria-label="Ta bort kort"
+            title="Ta bort"
+          >
+            <Trash2 className="w-4 h-4 text-muted-foreground hover:text-destructive transition-colors" />
+          </button>
           <button
             onClick={onNavigate}
             className="p-2 rounded-full hover:bg-muted transition-colors"
