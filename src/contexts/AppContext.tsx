@@ -1,8 +1,9 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode, useCallback } from 'react';
 import { CoupleSpace, ConversationThread, Reflection, AppState, Category, Card } from '@/types';
 import { categories as initialCategories, cards as initialCards } from '@/data/content';
-import { useSettingsSync } from '@/hooks/useSettingsSync';
+import { useSettingsSync, SaveStatus } from '@/hooks/useSettingsSync';
 import { useAuth } from '@/contexts/AuthContext';
+
 interface AppContextType {
   state: AppState;
   hasCompletedOnboarding: boolean;
@@ -33,6 +34,9 @@ interface AppContextType {
   getCategoryById: (categoryId: string) => Category | undefined;
   backgroundColor: string;
   setBackgroundColor: (color: string) => void;
+  saveStatus: SaveStatus;
+  lastSavedAt: Date | null;
+  saveError: string | null;
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -120,7 +124,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
     }
   }, []);
 
-  useSettingsSync(
+  const { saveStatus, lastSavedAt, saveError } = useSettingsSync(
     user?.id ?? null,
     { backgroundColor, categories, cards },
     handleSettingsLoaded
@@ -422,6 +426,9 @@ export function AppProvider({ children }: { children: ReactNode }) {
         getCategoryById,
         backgroundColor,
         setBackgroundColor,
+        saveStatus,
+        lastSavedAt,
+        saveError,
       }}
     >
       {children}

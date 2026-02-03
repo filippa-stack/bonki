@@ -1,4 +1,4 @@
-import { useEffect, useRef, useCallback } from 'react';
+import { useEffect, useRef, useCallback, useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import type { Category, Card } from '@/types';
 import type { Json } from '@/integrations/supabase/types';
@@ -15,14 +15,26 @@ interface SettingsData {
   cards: Card[];
 }
 
+export type SaveStatus = 'idle' | 'saving' | 'saved' | 'error';
+
+interface UseSettingsSyncReturn {
+  saveStatus: SaveStatus;
+  lastSavedAt: Date | null;
+  saveError: string | null;
+}
+
 export function useSettingsSync(
   userId: string | null,
   settings: SettingsData,
   onSettingsLoaded: (settings: Partial<SettingsData>) => void
-) {
+): UseSettingsSyncReturn {
   const isInitialized = useRef(false);
   const lastSavedSettings = useRef<string>('');
   const hasMigrated = useRef(false);
+  
+  const [saveStatus, setSaveStatus] = useState<SaveStatus>('idle');
+  const [lastSavedAt, setLastSavedAt] = useState<Date | null>(null);
+  const [saveError, setSaveError] = useState<string | null>(null);
 
   // Migrate data from old device_id records to user account
   const migrateDeviceData = useCallback(async (userId: string) => {
@@ -141,6 +153,9 @@ export function useSettingsSync(
           if (Object.keys(loadedSettings).length > 0) {
             onSettingsLoaded(loadedSettings);
           }
+          
+          // Mark as saved since we just loaded
+          setLastSavedAt(new Date(data.updated_at));
         }
       } catch (err) {
         console.error('Failed to load settings:', err);
@@ -165,6 +180,10 @@ export function useSettingsSync(
     // Don't save if nothing changed
     if (settingsString === lastSavedSettings.current) return;
 
+    // Show saving status immediately
+    setSaveStatus('saving');
+    setSaveError(null);
+
     const timeoutId = setTimeout(async () => {
       try {
         // Check if record exists
@@ -177,6 +196,8 @@ export function useSettingsSync(
         const deviceId = getDeviceId() || crypto.randomUUID();
         // Store device ID for future migrations if needed
         localStorage.setItem(DEVICE_ID_KEY, deviceId);
+
+        let saveSuccessful = false;
 
         if (existing) {
           // Update existing record
@@ -192,8 +213,10 @@ export function useSettingsSync(
 
           if (updateError) {
             console.error('Error updating settings:', updateError);
+            setSaveStatus('error');
+            setSaveError('Kunde inte spara ändringar');
           } else {
-            lastSavedSettings.current = settingsString;
+            saveSuccessful = true;
           }
         } else {
           // Insert new record
@@ -209,15 +232,33 @@ export function useSettingsSync(
 
           if (insertError) {
             console.error('Error inserting settings:', insertError);
+            setSaveStatus('error');
+            setSaveError('Kunde inte spara ändringar');
           } else {
-            lastSavedSettings.current = settingsString;
+            saveSuccessful = true;
           }
+        }
+
+        if (saveSuccessful) {
+          lastSavedSettings.current = settingsString;
+          setSaveStatus('saved');
+          setLastSavedAt(new Date());
+          setSaveError(null);
+          
+          // Reset to idle after 3 seconds
+          setTimeout(() => {
+            setSaveStatus('idle');
+          }, 3000);
         }
       } catch (err) {
         console.error('Failed to save settings:', err);
+        setSaveStatus('error');
+        setSaveError('Kunde inte ansluta till servern');
       }
     }, 1000); // Debounce 1 second
 
     return () => clearTimeout(timeoutId);
   }, [userId, settings.backgroundColor, settings.categories, settings.cards]);
+
+  return { saveStatus, lastSavedAt, saveError };
 }
