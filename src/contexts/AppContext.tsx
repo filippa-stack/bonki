@@ -2,7 +2,7 @@ import React, { createContext, useContext, useState, useEffect, ReactNode, useCa
 import { CoupleSpace, ConversationThread, Reflection, AppState, Category, Card } from '@/types';
 import { categories as initialCategories, cards as initialCards } from '@/data/content';
 import { useSettingsSync } from '@/hooks/useSettingsSync';
-
+import { useAuth } from '@/contexts/AuthContext';
 interface AppContextType {
   state: AppState;
   hasCompletedOnboarding: boolean;
@@ -43,6 +43,7 @@ const CARDS_STORAGE_KEY = 'vi-som-foraldrar-cards';
 const BACKGROUND_COLOR_KEY = 'vi-som-foraldrar-background';
 
 export function AppProvider({ children }: { children: ReactNode }) {
+  const { user } = useAuth();
   const [categories, setCategories] = useState<Category[]>(() => {
     const stored = localStorage.getItem(CATEGORIES_STORAGE_KEY);
     if (stored) {
@@ -120,6 +121,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
   }, []);
 
   useSettingsSync(
+    user?.id ?? null,
     { backgroundColor, categories, cards },
     handleSettingsLoaded
   );
