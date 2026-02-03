@@ -186,57 +186,34 @@ export function useSettingsSync(
 
     const timeoutId = setTimeout(async () => {
       try {
-        // Check if record exists
-        const { data: existing } = await supabase
-          .from('user_settings')
-          .select('id')
-          .eq('user_id', userId)
-          .maybeSingle();
-
         const deviceId = getDeviceId() || crypto.randomUUID();
         // Store device ID for future migrations if needed
         localStorage.setItem(DEVICE_ID_KEY, deviceId);
 
         let saveSuccessful = false;
 
-        if (existing) {
-          // Update existing record
-          const { error: updateError } = await supabase
-            .from('user_settings')
-            .update({
-              background_color: settings.backgroundColor || null,
-              categories: JSON.parse(JSON.stringify(settings.categories)) as Json,
-              cards: JSON.parse(JSON.stringify(settings.cards)) as Json,
-              updated_at: new Date().toISOString(),
-            })
-            .eq('user_id', userId);
+        // Use upsert to handle both insert and update in one operation
+        // This avoids race conditions and unique constraint violations
+        const { error: upsertError } = await supabase
+          .from('user_settings')
+          .upsert({
+            user_id: userId,
+            device_id: deviceId,
+            background_color: settings.backgroundColor || null,
+            categories: JSON.parse(JSON.stringify(settings.categories)) as Json,
+            cards: JSON.parse(JSON.stringify(settings.cards)) as Json,
+            updated_at: new Date().toISOString(),
+          }, {
+            onConflict: 'user_id',
+            ignoreDuplicates: false,
+          });
 
-          if (updateError) {
-            console.error('Error updating settings:', updateError);
-            setSaveStatus('error');
-            setSaveError('Kunde inte spara ändringar');
-          } else {
-            saveSuccessful = true;
-          }
+        if (upsertError) {
+          console.error('Error saving settings:', upsertError);
+          setSaveStatus('error');
+          setSaveError('Kunde inte spara ändringar');
         } else {
-          // Insert new record
-          const { error: insertError } = await supabase
-            .from('user_settings')
-            .insert([{
-              user_id: userId,
-              device_id: deviceId,
-              background_color: settings.backgroundColor || null,
-              categories: JSON.parse(JSON.stringify(settings.categories)) as Json,
-              cards: JSON.parse(JSON.stringify(settings.cards)) as Json,
-            }]);
-
-          if (insertError) {
-            console.error('Error inserting settings:', insertError);
-            setSaveStatus('error');
-            setSaveError('Kunde inte spara ändringar');
-          } else {
-            saveSuccessful = true;
-          }
+          saveSuccessful = true;
         }
 
         if (saveSuccessful) {
