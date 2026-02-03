@@ -124,6 +124,9 @@ export default function SectionView({ section, card }: SectionViewProps) {
         {section.type === 'exercise' && (
           <p className="text-sm text-gentle italic mt-2 ml-9">Förvandlar insikt till gemensam handling.</p>
         )}
+        {section.type === 'scenario' && (
+          <p className="text-sm text-gentle italic mt-2 ml-9">Gör det svåra pratbart genom igenkänning.</p>
+        )}
       </div>
 
       {/* Section content */}
