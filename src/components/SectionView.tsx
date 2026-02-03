@@ -127,6 +127,9 @@ export default function SectionView({ section, card }: SectionViewProps) {
         {section.type === 'scenario' && (
           <p className="text-sm text-gentle italic mt-2 ml-9">Gör det svåra pratbart genom igenkänning.</p>
         )}
+        {section.type === 'reflective' && (
+          <p className="text-sm text-gentle italic mt-2 ml-9">Fördjupar, utmanar och breddar perspektivet.</p>
+        )}
       </div>
 
       {/* Section content */}
