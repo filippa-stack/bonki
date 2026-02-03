@@ -130,6 +130,9 @@ export default function SectionView({ section, card }: SectionViewProps) {
         {section.type === 'reflective' && (
           <p className="text-sm text-gentle italic mt-2 ml-9">Fördjupar, utmanar och breddar perspektivet.</p>
         )}
+        {section.type === 'opening' && (
+          <p className="text-sm text-gentle italic mt-2 ml-9">Sänker tröskeln och sätter samtalet i rörelse.</p>
+        )}
       </div>
 
       {/* Section content */}
