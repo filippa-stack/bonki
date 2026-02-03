@@ -6,57 +6,57 @@
 
 @layer base {
   :root {
-    /* Bonki Day Mode - Light & Airy */
+    /* Bonki Daybreak - Light & Warm Mode */
     
     /* Base Surfaces */
-    --background: 40 27% 95%;
-    --foreground: 270 6% 29%;
+    --background: 43 33% 96%;
+    --foreground: 34 11% 25%;
 
     --card: 0 0% 100%;
-    --card-foreground: 270 6% 29%;
+    --card-foreground: 34 11% 25%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 270 6% 29%;
+    --popover-foreground: 34 11% 25%;
 
-    /* Primary - Muted Terracotta */
-    --primary: 15 65% 67%;
+    /* Primary - Warm Terracotta */
+    --primary: 24 54% 60%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 40 27% 95%;
-    --secondary-foreground: 270 6% 29%;
+    --secondary: 43 33% 96%;
+    --secondary-foreground: 34 11% 25%;
 
-    --muted: 40 12% 91%;
-    --muted-foreground: 275 3% 55%;
+    --muted: 33 18% 92%;
+    --muted-foreground: 28 5% 47%;
 
     /* Accent - Terracotta */
-    --accent: 15 65% 67%;
+    --accent: 24 54% 60%;
     --accent-foreground: 0 0% 100%;
 
     --destructive: 0 60% 50%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 30 18% 87%;
-    --input: 30 18% 87%;
-    --ring: 15 65% 67%;
+    --border: 33 18% 89%;
+    --input: 33 18% 89%;
+    --ring: 24 54% 60%;
 
     --radius: 0.75rem;
 
     /* Custom tokens */
-    --surface-warm: 40 27% 95%;
+    --surface-warm: 43 33% 96%;
     --surface-elevated: 0 0% 100%;
-    --text-gentle: 275 3% 55%;
-    --divider: 30 18% 87%;
+    --text-gentle: 28 5% 47%;
+    --divider: 33 18% 89%;
     
     /* Category Identity Colors (Earthy Pastels) */
-    --category-emotional: 15 65% 67%;
+    --category-emotional: 24 54% 60%;
     --category-fun: 43 75% 66%;
-    --category-growth: 172 35% 64%;
-    --category-intimacy: 286 35% 78%;
-    --category-logistics: 212 100% 82%;
+    --category-growth: 132 17% 59%;
+    --category-intimacy: 356 28% 64%;
+    --category-logistics: 204 45% 72%;
     
     /* Interactive States */
-    --state-active: 15 65% 67%;
-    --state-inactive: 40 12% 81%;
+    --state-active: 24 54% 60%;
+    --state-inactive: 20 3% 60%;
     
     /* Typography */
     --font-serif: 'Cormorant Garamond', Georgia, serif;
@@ -70,8 +70,8 @@
     /* Transitions */
     --transition-calm: 300ms cubic-bezier(0.4, 0, 0.2, 1);
     
-    /* Card shadow */
-    --card-shadow: 0 2px 8px hsl(270 6% 29% / 0.05);
+    /* Card styling - soft border instead of shadow */
+    --card-shadow: none;
   }
 }
 
@@ -135,9 +135,8 @@
   }
 
   .card-reflection {
-    @apply rounded-xl p-6;
+    @apply rounded-xl p-6 border border-border;
     background-color: hsl(var(--card));
-    box-shadow: var(--card-shadow);
     transition: all var(--transition-calm);
   }
 
