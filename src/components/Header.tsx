@@ -2,17 +2,25 @@ import { ArrowLeft } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useApp } from '@/contexts/AppContext';
 import ColorPicker from '@/components/ColorPicker';
+import SaveIndicator from '@/components/SaveIndicator';
 
 interface HeaderProps {
   title?: string;
   showBack?: boolean;
   backTo?: string;
   showBackgroundPicker?: boolean;
+  showSaveIndicator?: boolean;
 }
 
-export default function Header({ title, showBack = false, backTo, showBackgroundPicker = false }: HeaderProps) {
+export default function Header({ 
+  title, 
+  showBack = false, 
+  backTo, 
+  showBackgroundPicker = false,
+  showSaveIndicator = true 
+}: HeaderProps) {
   const navigate = useNavigate();
-  const { backgroundColor, setBackgroundColor } = useApp();
+  const { backgroundColor, setBackgroundColor, saveStatus, lastSavedAt, saveError } = useApp();
 
   const handleBack = () => {
     if (backTo) {
@@ -41,15 +49,24 @@ export default function Header({ title, showBack = false, backTo, showBackground
             </h1>
           )}
         </div>
-        {showBackgroundPicker && (
-          <div className="flex items-center gap-2">
-            <span className="text-xs text-muted-foreground">Bakgrund</span>
-            <ColorPicker
-              currentColor={backgroundColor}
-              onColorChange={setBackgroundColor}
+        <div className="flex items-center gap-4">
+          {showSaveIndicator && (
+            <SaveIndicator 
+              status={saveStatus} 
+              error={saveError} 
+              lastSavedAt={lastSavedAt} 
             />
-          </div>
-        )}
+          )}
+          {showBackgroundPicker && (
+            <div className="flex items-center gap-2">
+              <span className="text-xs text-muted-foreground">Bakgrund</span>
+              <ColorPicker
+                currentColor={backgroundColor}
+                onColorChange={setBackgroundColor}
+              />
+            </div>
+          )}
+        </div>
       </div>
     </header>
   );
