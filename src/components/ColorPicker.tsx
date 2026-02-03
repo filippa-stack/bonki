@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Palette, Type, Square } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import ColorWheel from './ColorWheel';
 
 // Color Palette Groups for Mental Health & Relationships
 const COLOR_PALETTES = [
@@ -198,6 +199,7 @@ export default function ColorPicker({
 }: ColorPickerProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<'background' | 'text' | 'border'>('background');
+  const [pickerMode, setPickerMode] = useState<'wheel' | 'swatches'>('wheel');
   const [customColor, setCustomColor] = useState(currentColor || '');
   const [customTextColor, setCustomTextColor] = useState(currentTextColor || '');
   const [customBorderColor, setCustomBorderColor] = useState(currentBorderColor || '');
@@ -291,10 +293,10 @@ export default function ColorPicker({
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: -5 }}
             transition={{ duration: 0.15 }}
-            className="absolute right-0 top-full mt-2 z-50 bg-card border border-border rounded-lg shadow-lg p-3 max-h-80 overflow-y-auto min-w-[200px]"
+            className="absolute right-0 top-full mt-2 z-50 bg-card border border-border rounded-lg shadow-lg p-3 max-h-[450px] overflow-y-auto min-w-[240px]"
             onClick={(e) => e.stopPropagation()}
           >
-            {/* Tabs */}
+            {/* Color Type Tabs */}
             {(showTextColor || showBorderColor) && (
               <div className="flex gap-1 mb-3 p-1 bg-muted rounded-lg">
                 <button
@@ -336,60 +338,111 @@ export default function ColorPicker({
                 )}
               </div>
             )}
-            
-            {/* Palette Groups - only for background tab */}
-            {activeTab === 'background' && (
-              <div className="mb-4">
-                <p className="text-xs text-muted-foreground mb-2 font-medium">
-                  Färgpaletter för mental hälsa
-                </p>
-                <div className="space-y-3">
-                  {COLOR_PALETTES.map((palette) => (
-                    <div key={palette.name} className="border border-border/50 rounded-lg p-2">
-                      <p className="text-xs font-medium mb-1">{palette.name}</p>
-                      <p className="text-[10px] text-muted-foreground mb-2">{palette.description}</p>
-                      <div className="flex gap-1.5">
-                        {palette.colors.map((color) => (
-                          <button
-                            key={color.name}
-                            onClick={(e) => handleColorSelect(color.value, e)}
-                            className={`w-6 h-6 rounded-full border-2 transition-all hover:scale-110 ${
-                              currentSelected === color.value 
-                                ? 'border-primary ring-2 ring-primary/30' 
-                                : 'border-border/50 hover:border-primary/50'
-                            }`}
-                            style={{ backgroundColor: color.value }}
-                            title={color.name}
-                          />
-                        ))}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-                <div className="divider-soft my-3" />
+
+            {/* Picker Mode Toggle */}
+            <div className="flex gap-1 mb-3 p-1 bg-secondary rounded-lg">
+              <button
+                onClick={(e) => { e.stopPropagation(); setPickerMode('wheel'); }}
+                className={`flex-1 px-2 py-1.5 rounded text-xs transition-colors ${
+                  pickerMode === 'wheel' 
+                    ? 'bg-background text-foreground shadow-sm' 
+                    : 'text-muted-foreground hover:text-foreground'
+                }`}
+              >
+                🎨 Färgcirkel
+              </button>
+              <button
+                onClick={(e) => { e.stopPropagation(); setPickerMode('swatches'); }}
+                className={`flex-1 px-2 py-1.5 rounded text-xs transition-colors ${
+                  pickerMode === 'swatches' 
+                    ? 'bg-background text-foreground shadow-sm' 
+                    : 'text-muted-foreground hover:text-foreground'
+                }`}
+              >
+                🎯 Färgrutor
+              </button>
+            </div>
+
+            {/* Color Wheel Mode */}
+            {pickerMode === 'wheel' && (
+              <div className="mb-3">
+                <ColorWheel
+                  size={180}
+                  currentColor={currentSelected}
+                  onColorChange={(color) => {
+                    if (activeTab === 'background') {
+                      onColorChange(color);
+                      setCustomColor(color);
+                    } else if (activeTab === 'text') {
+                      onTextColorChange?.(color);
+                      setCustomTextColor(color);
+                    } else {
+                      onBorderColorChange?.(color);
+                      setCustomBorderColor(color);
+                    }
+                  }}
+                />
               </div>
             )}
-            
-            <p className="text-xs text-muted-foreground mb-2">
-              {activeTab === 'background' ? 'Alla färger' : tabLabel}
-            </p>
-            <div className="grid grid-cols-4 gap-1.5 mb-3">
-              {colors.map((color) => (
-                <button
-                  key={color.name}
-                  onClick={(e) => handleColorSelect(color.value, e)}
-                  className={`w-6 h-6 rounded-full border-2 transition-all hover:scale-110 ${
-                    currentSelected === color.value 
-                      ? 'border-primary ring-2 ring-primary/30' 
-                      : 'border-border/50 hover:border-primary/50'
-                  }`}
-                  style={{ 
-                    backgroundColor: color.value || (activeTab === 'background' ? 'hsl(var(--card))' : activeTab === 'text' ? 'hsl(var(--foreground))' : 'hsl(var(--border))') 
-                  }}
-                  title={color.name}
-                />
-              ))}
-            </div>
+
+            {/* Swatches Mode */}
+            {pickerMode === 'swatches' && (
+              <>
+                {/* Palette Groups - only for background tab */}
+                {activeTab === 'background' && (
+                  <div className="mb-4">
+                    <p className="text-xs text-muted-foreground mb-2 font-medium">
+                      Färgpaletter för mental hälsa
+                    </p>
+                    <div className="space-y-3">
+                      {COLOR_PALETTES.map((palette) => (
+                        <div key={palette.name} className="border border-border/50 rounded-lg p-2">
+                          <p className="text-xs font-medium mb-1">{palette.name}</p>
+                          <p className="text-[10px] text-muted-foreground mb-2">{palette.description}</p>
+                          <div className="flex gap-1.5">
+                            {palette.colors.map((color) => (
+                              <button
+                                key={color.name}
+                                onClick={(e) => handleColorSelect(color.value, e)}
+                                className={`w-6 h-6 rounded-full border-2 transition-all hover:scale-110 ${
+                                  currentSelected === color.value 
+                                    ? 'border-primary ring-2 ring-primary/30' 
+                                    : 'border-border/50 hover:border-primary/50'
+                                }`}
+                                style={{ backgroundColor: color.value }}
+                                title={color.name}
+                              />
+                            ))}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                    <div className="divider-soft my-3" />
+                  </div>
+                )}
+                
+                <p className="text-xs text-muted-foreground mb-2">
+                  {activeTab === 'background' ? 'Alla färger' : tabLabel}
+                </p>
+                <div className="grid grid-cols-4 gap-1.5 mb-3">
+                  {colors.map((color) => (
+                    <button
+                      key={color.name}
+                      onClick={(e) => handleColorSelect(color.value, e)}
+                      className={`w-6 h-6 rounded-full border-2 transition-all hover:scale-110 ${
+                        currentSelected === color.value 
+                          ? 'border-primary ring-2 ring-primary/30' 
+                          : 'border-border/50 hover:border-primary/50'
+                      }`}
+                      style={{ 
+                        backgroundColor: color.value || (activeTab === 'background' ? 'hsl(var(--card))' : activeTab === 'text' ? 'hsl(var(--foreground))' : 'hsl(var(--border))') 
+                      }}
+                      title={color.name}
+                    />
+                  ))}
+                </div>
+              </>
+            )}
             
             <div className="border-t border-border pt-3">
               <p className="text-xs text-muted-foreground mb-2">Egen färgkod</p>
