@@ -150,6 +150,12 @@ export default function SectionView({ section, card }: SectionViewProps) {
               <textarea
                 value={prompt.text}
                 onChange={(e) => handlePromptChange(index, e.target.value)}
+                ref={(el) => {
+                  if (el) {
+                    el.style.height = 'auto';
+                    el.style.height = el.scrollHeight + 'px';
+                  }
+                }}
                 className="text-body w-full bg-transparent border-none outline-none focus:ring-0 resize-none placeholder:text-muted-foreground min-h-[24px]"
                 placeholder="Skriv en fråga..."
                 style={{ color: prompt.textColor || 'hsl(var(--foreground))' }}
