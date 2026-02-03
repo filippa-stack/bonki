@@ -23,6 +23,7 @@ export type Database = {
           device_id: string
           id: string
           updated_at: string
+          user_id: string | null
         }
         Insert: {
           background_color?: string | null
@@ -32,6 +33,7 @@ export type Database = {
           device_id: string
           id?: string
           updated_at?: string
+          user_id?: string | null
         }
         Update: {
           background_color?: string | null
@@ -41,6 +43,7 @@ export type Database = {
           device_id?: string
           id?: string
           updated_at?: string
+          user_id?: string | null
         }
         Relationships: []
       }
