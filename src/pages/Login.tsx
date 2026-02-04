@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { lovable } from '@/integrations/lovable/index';
 import { Loader2 } from 'lucide-react';
+import bonkiLogo from '@/assets/bonki-logo.png';
 
 export default function Login() {
   const [loading, setLoading] = useState(false);
@@ -35,8 +36,17 @@ export default function Login() {
         transition={{ duration: 0.5 }}
         className="w-full max-w-sm space-y-8 text-center"
       >
+        <motion.img
+          src={bonkiLogo}
+          alt="Bonki"
+          className="h-16 w-auto mx-auto"
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.4 }}
+        />
+        
         <div className="space-y-2">
-          <h1 className="text-display text-foreground">Vi som föräldrar</h1>
+          <h1 className="text-display text-foreground">Välkommen</h1>
           <p className="text-body text-gentle">
             Logga in för att spara dina inställningar
           </p>

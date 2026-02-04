@@ -1,36 +1,106 @@
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { useState } from 'react';
 import { useApp } from '@/contexts/AppContext';
+import { useSiteSettings } from '@/contexts/SiteSettingsContext';
 import CategoryCard from '@/components/CategoryCard';
 import ConversationCard from '@/components/ConversationCard';
 import Header from '@/components/Header';
-import { Bookmark } from 'lucide-react';
+import { Bookmark, Pencil, Check } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import bonkiLogo from '@/assets/bonki-logo.png';
 
 export default function Home() {
   const navigate = useNavigate();
   const { mostRecentConversation, savedConversations, categories, updateCategory, updateCategoryColor, updateCategoryTextColor, updateCategoryBorderColor, updateCategoryIcon, backgroundColor } = useApp();
+  const { settings, updateSettings } = useSiteSettings();
+  const [isEditingHero, setIsEditingHero] = useState(false);
+  const [editTitle, setEditTitle] = useState(settings.heroTitle);
+  const [editSubtitle, setEditSubtitle] = useState(settings.heroSubtitle);
+
+  const handleSaveHero = () => {
+    updateSettings({ heroTitle: editTitle, heroSubtitle: editSubtitle });
+    setIsEditingHero(false);
+  };
+
+  const handleStartEdit = () => {
+    setEditTitle(settings.heroTitle);
+    setEditSubtitle(settings.heroSubtitle);
+    setIsEditingHero(true);
+  };
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: backgroundColor || 'hsl(var(--background))' }}>
       <Header showBackgroundPicker={true} />
-      {/* Header */}
-      <div className="px-6 pt-12 pb-8">
-        <motion.h1
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="text-display text-foreground"
+      {/* Header with Logo */}
+      <div className="px-6 pt-8 pb-8">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.4 }}
+          className="mb-6"
         >
-          Vi som föräldrar
-        </motion.h1>
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.5, delay: 0.1 }}
-          className="text-body text-gentle mt-2"
-        >
-          A space for reflection
-        </motion.p>
+          <img 
+            src={bonkiLogo} 
+            alt="Bonki" 
+            className="h-12 w-auto"
+          />
+        </motion.div>
+        
+        <div className="relative group">
+          {isEditingHero ? (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="space-y-3"
+            >
+              <Input
+                value={editTitle}
+                onChange={(e) => setEditTitle(e.target.value)}
+                className="text-2xl font-serif font-semibold bg-card"
+                placeholder="Rubrik..."
+              />
+              <Input
+                value={editSubtitle}
+                onChange={(e) => setEditSubtitle(e.target.value)}
+                className="text-base bg-card"
+                placeholder="Underrubrik..."
+              />
+              <Button size="sm" onClick={handleSaveHero} className="gap-2">
+                <Check className="w-4 h-4" />
+                Spara
+              </Button>
+            </motion.div>
+          ) : (
+            <>
+              <motion.h1
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
+                className="text-display text-foreground"
+              >
+                {settings.heroTitle}
+              </motion.h1>
+              <motion.p
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.5, delay: 0.1 }}
+                className="text-body text-gentle mt-2"
+              >
+                {settings.heroSubtitle}
+              </motion.p>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={handleStartEdit}
+                className="absolute -right-2 top-0 opacity-0 group-hover:opacity-100 transition-opacity text-muted-foreground hover:text-foreground"
+              >
+                <Pencil className="w-4 h-4" />
+              </Button>
+            </>
+          )}
+        </div>
       </div>
 
       {/* Continue conversation */}
