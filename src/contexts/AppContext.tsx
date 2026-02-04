@@ -29,6 +29,7 @@ interface AppContextType {
   updateCard: (id: string, title: string, subtitle: string) => void;
   updateCardColor: (id: string, color: string) => void;
   updateCardTextColor: (id: string, textColor: string) => void;
+  updateCardBorderColor: (id: string, borderColor: string) => void;
   updateCardSection: (cardId: string, sectionId: string, updates: Partial<{ title: string; content: string; prompts: any[]; color: string; textColor: string }>) => void;
   getCardsByCategory: (categoryId: string) => Card[];
   getCardById: (cardId: string) => Card | undefined;
@@ -264,6 +265,14 @@ export function AppProvider({ children }: { children: ReactNode }) {
     );
   };
 
+  const updateCardBorderColor = (id: string, borderColor: string) => {
+    setCards((prev) =>
+      prev.map((card) =>
+        card.id === id ? { ...card, borderColor } : card
+      )
+    );
+  };
+
   const updateCardSection = (cardId: string, sectionId: string, updates: Partial<{ title: string; content: string; prompts: any[]; color: string }>) => {
     setCards((prev) =>
       prev.map((card) =>
@@ -437,6 +446,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
         updateCard,
         updateCardColor,
         updateCardTextColor,
+        updateCardBorderColor,
         updateCardSection,
         getCardsByCategory,
         getCardById,

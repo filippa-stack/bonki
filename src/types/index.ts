@@ -22,6 +22,7 @@ export interface Card {
   sections: Section[];
   color?: string;
   textColor?: string;
+  borderColor?: string;
 }
 
 export interface Category {

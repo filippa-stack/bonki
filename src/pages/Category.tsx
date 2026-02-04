@@ -9,7 +9,7 @@ import { ChevronRight, Plus, Trash2 } from 'lucide-react';
 export default function Category() {
   const { categoryId } = useParams<{ categoryId: string }>();
   const navigate = useNavigate();
-  const { getCategoryById, getCardsByCategory, updateCard, updateCardColor, updateCardTextColor, addCard, deleteCard, backgroundColor } = useApp();
+  const { getCategoryById, getCardsByCategory, updateCard, updateCardColor, updateCardTextColor, updateCardBorderColor, addCard, deleteCard, backgroundColor } = useApp();
   
   const category = categoryId ? getCategoryById(categoryId) : undefined;
   const cards = categoryId ? getCardsByCategory(categoryId) : [];
@@ -69,6 +69,7 @@ export default function Category() {
               onUpdate={updateCard}
               onColorChange={(color) => updateCardColor(card.id, color)}
               onTextColorChange={(textColor) => updateCardTextColor(card.id, textColor)}
+              onBorderColorChange={(borderColor) => updateCardBorderColor(card.id, borderColor)}
               onDelete={() => handleDeleteCard(card.id, card.title)}
             />
           ))}
@@ -98,12 +99,14 @@ interface EditableCardProps {
     sections: any[];
     color?: string;
     textColor?: string;
+    borderColor?: string;
   };
   index: number;
   onNavigate: () => void;
   onUpdate: (id: string, title: string, subtitle: string) => void;
   onColorChange: (color: string) => void;
   onTextColorChange: (textColor: string) => void;
+  onBorderColorChange: (borderColor: string) => void;
   onDelete: () => void;
 }
 
@@ -114,6 +117,7 @@ function EditableCard({
   onUpdate,
   onColorChange,
   onTextColorChange,
+  onBorderColorChange,
   onDelete,
 }: EditableCardProps) {
   const [title, setTitle] = useState(card.title);
@@ -139,7 +143,11 @@ function EditableCard({
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: index * 0.1 }}
       className="w-full text-left card-reflection group"
-      style={{ backgroundColor: card.color || undefined }}
+      style={{ 
+        backgroundColor: card.color || undefined,
+        borderColor: card.borderColor || undefined,
+        borderWidth: card.borderColor ? '2px' : undefined,
+      }}
     >
       <div className="flex items-start justify-between gap-4">
         <div className="flex-1 space-y-2">
@@ -171,7 +179,10 @@ function EditableCard({
             onColorChange={onColorChange}
             currentTextColor={card.textColor}
             onTextColorChange={onTextColorChange}
+            currentBorderColor={card.borderColor}
+            onBorderColorChange={onBorderColorChange}
             showTextColor
+            showBorderColor
           />
           <button
             onClick={(e) => { e.stopPropagation(); onDelete(); }}
