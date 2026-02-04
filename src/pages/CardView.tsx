@@ -136,11 +136,16 @@ export default function CardView() {
               exit={{ opacity: 0 }}
               className="py-16 text-center space-y-4"
             >
-              <input
-                type="text"
+              <textarea
                 value={card.emptyStateTitle || 'Välj en sektion för att börja'}
                 onChange={(e) => updateCardEmptyState(card.id, e.target.value, card.emptyStateDescription || '')}
-                className="text-gentle mb-2 w-full text-center bg-transparent border-none outline-none focus:ring-0 placeholder:text-muted-foreground"
+                ref={(el) => {
+                  if (el) {
+                    el.style.height = 'auto';
+                    el.style.height = el.scrollHeight + 'px';
+                  }
+                }}
+                className="text-gentle mb-2 w-full text-center bg-transparent border-none outline-none focus:ring-0 resize-none placeholder:text-muted-foreground"
                 placeholder="Rubrik..."
               />
               <textarea
