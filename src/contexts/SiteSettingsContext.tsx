@@ -25,8 +25,8 @@ const defaultSettings: SiteSettings = {
   heroSubtitleColor: '',
   heroTitleFont: 'serif',
   heroSubtitleFont: 'sans',
-  buttonColor: '',
-  buttonTextColor: '',
+  buttonColor: '#FF0000',
+  buttonTextColor: '#FFFFFF',
   loginTitle: 'Vi som föräldrar',
   loginSubtitle: 'Logga in för att spara dina inställningar',
 };
