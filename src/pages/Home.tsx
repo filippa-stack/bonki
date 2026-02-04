@@ -31,6 +31,8 @@ export default function Home() {
   const [editSubtitleColor, setEditSubtitleColor] = useState(settings.heroSubtitleColor);
   const [editTitleFont, setEditTitleFont] = useState(settings.heroTitleFont);
   const [editSubtitleFont, setEditSubtitleFont] = useState(settings.heroSubtitleFont);
+  const [editButtonColor, setEditButtonColor] = useState(settings.buttonColor);
+  const [editButtonTextColor, setEditButtonTextColor] = useState(settings.buttonTextColor);
 
   const handleSaveHero = () => {
     updateSettings({ 
@@ -40,6 +42,8 @@ export default function Home() {
       heroSubtitleColor: editSubtitleColor,
       heroTitleFont: editTitleFont,
       heroSubtitleFont: editSubtitleFont,
+      buttonColor: editButtonColor,
+      buttonTextColor: editButtonTextColor,
     });
     setIsEditingHero(false);
   };
@@ -51,6 +55,8 @@ export default function Home() {
     setEditSubtitleColor(settings.heroSubtitleColor);
     setEditTitleFont(settings.heroTitleFont);
     setEditSubtitleFont(settings.heroSubtitleFont);
+    setEditButtonColor(settings.buttonColor);
+    setEditButtonTextColor(settings.buttonTextColor);
     setIsEditingHero(true);
   };
 
@@ -131,6 +137,25 @@ export default function Home() {
                     currentColor={editSubtitleColor}
                     onColorChange={setEditSubtitleColor}
                   />
+                </div>
+              </div>
+              <div className="space-y-2">
+                <Label className="text-xs text-muted-foreground">Knappfärger</Label>
+                <div className="flex gap-3 items-center">
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs text-muted-foreground">Bakgrund:</span>
+                    <ColorPicker
+                      currentColor={editButtonColor}
+                      onColorChange={setEditButtonColor}
+                    />
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs text-muted-foreground">Text:</span>
+                    <ColorPicker
+                      currentColor={editButtonTextColor}
+                      onColorChange={setEditButtonTextColor}
+                    />
+                  </div>
                 </div>
               </div>
               <Button size="sm" onClick={handleSaveHero} className="gap-2">
