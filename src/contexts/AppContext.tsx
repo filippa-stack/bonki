@@ -27,6 +27,7 @@ interface AppContextType {
   addCard: (categoryId: string) => string;
   deleteCard: (cardId: string) => void;
   updateCard: (id: string, title: string, subtitle: string) => void;
+  updateCardEmptyState: (id: string, emptyStateTitle: string, emptyStateDescription: string) => void;
   updateCardColor: (id: string, color: string) => void;
   updateCardTextColor: (id: string, textColor: string) => void;
   updateCardBorderColor: (id: string, borderColor: string) => void;
@@ -273,6 +274,14 @@ export function AppProvider({ children }: { children: ReactNode }) {
     );
   };
 
+  const updateCardEmptyState = (id: string, emptyStateTitle: string, emptyStateDescription: string) => {
+    setCards((prev) =>
+      prev.map((card) =>
+        card.id === id ? { ...card, emptyStateTitle, emptyStateDescription } : card
+      )
+    );
+  };
+
   const updateCardSection = (cardId: string, sectionId: string, updates: Partial<{ title: string; content: string; prompts: any[]; color: string }>) => {
     setCards((prev) =>
       prev.map((card) =>
@@ -444,6 +453,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
         addCard,
         deleteCard,
         updateCard,
+        updateCardEmptyState,
         updateCardColor,
         updateCardTextColor,
         updateCardBorderColor,

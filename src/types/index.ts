@@ -23,6 +23,8 @@ export interface Card {
   color?: string;
   textColor?: string;
   borderColor?: string;
+  emptyStateTitle?: string;
+  emptyStateDescription?: string;
 }
 
 export interface Category {
