@@ -10,8 +10,15 @@ import { Bookmark, Pencil, Check } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import ColorPicker from '@/components/ColorPicker';
 import bonkiLogo from '@/assets/bonki-logo.png';
+
+const fontOptions = [
+  { value: 'serif', label: 'Serif (Cormorant)', className: 'font-serif' },
+  { value: 'sans', label: 'Sans-serif', className: 'font-sans' },
+  { value: 'mono', label: 'Monospace', className: 'font-mono' },
+];
 
 export default function Home() {
   const navigate = useNavigate();
@@ -22,6 +29,8 @@ export default function Home() {
   const [editSubtitle, setEditSubtitle] = useState(settings.heroSubtitle);
   const [editTitleColor, setEditTitleColor] = useState(settings.heroTitleColor);
   const [editSubtitleColor, setEditSubtitleColor] = useState(settings.heroSubtitleColor);
+  const [editTitleFont, setEditTitleFont] = useState(settings.heroTitleFont);
+  const [editSubtitleFont, setEditSubtitleFont] = useState(settings.heroSubtitleFont);
 
   const handleSaveHero = () => {
     updateSettings({ 
@@ -29,6 +38,8 @@ export default function Home() {
       heroSubtitle: editSubtitle,
       heroTitleColor: editTitleColor,
       heroSubtitleColor: editSubtitleColor,
+      heroTitleFont: editTitleFont,
+      heroSubtitleFont: editSubtitleFont,
     });
     setIsEditingHero(false);
   };
@@ -38,6 +49,8 @@ export default function Home() {
     setEditSubtitle(settings.heroSubtitle);
     setEditTitleColor(settings.heroTitleColor);
     setEditSubtitleColor(settings.heroSubtitleColor);
+    setEditTitleFont(settings.heroTitleFont);
+    setEditSubtitleFont(settings.heroSubtitleFont);
     setIsEditingHero(true);
   };
 
@@ -68,13 +81,25 @@ export default function Home() {
             >
               <div className="space-y-2">
                 <Label className="text-xs text-muted-foreground">Rubrik</Label>
-                <div className="flex gap-2 items-center">
+                <div className="flex gap-2 items-center flex-wrap">
                   <Input
                     value={editTitle}
                     onChange={(e) => setEditTitle(e.target.value)}
-                    className="text-2xl font-serif font-semibold bg-card flex-1"
+                    className="text-xl font-semibold bg-card flex-1 min-w-[150px]"
                     placeholder="Rubrik..."
                   />
+                  <Select value={editTitleFont} onValueChange={setEditTitleFont}>
+                    <SelectTrigger className="w-[140px] bg-card">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {fontOptions.map((font) => (
+                        <SelectItem key={font.value} value={font.value} className={font.className}>
+                          {font.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                   <ColorPicker
                     currentColor={editTitleColor}
                     onColorChange={setEditTitleColor}
@@ -83,13 +108,25 @@ export default function Home() {
               </div>
               <div className="space-y-2">
                 <Label className="text-xs text-muted-foreground">Underrubrik</Label>
-                <div className="flex gap-2 items-center">
+                <div className="flex gap-2 items-center flex-wrap">
                   <Input
                     value={editSubtitle}
                     onChange={(e) => setEditSubtitle(e.target.value)}
-                    className="text-base bg-card flex-1"
+                    className="text-base bg-card flex-1 min-w-[150px]"
                     placeholder="Underrubrik..."
                   />
+                  <Select value={editSubtitleFont} onValueChange={setEditSubtitleFont}>
+                    <SelectTrigger className="w-[140px] bg-card">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {fontOptions.map((font) => (
+                        <SelectItem key={font.value} value={font.value} className={font.className}>
+                          {font.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                   <ColorPicker
                     currentColor={editSubtitleColor}
                     onColorChange={setEditSubtitleColor}
@@ -107,7 +144,7 @@ export default function Home() {
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5 }}
-                className="text-display"
+                className={`text-display font-${settings.heroTitleFont}`}
                 style={{ color: settings.heroTitleColor || 'hsl(var(--foreground))' }}
               >
                 {settings.heroTitle}
@@ -116,7 +153,7 @@ export default function Home() {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.5, delay: 0.1 }}
-                className="text-body mt-2"
+                className={`text-body mt-2 font-${settings.heroSubtitleFont}`}
                 style={{ color: settings.heroSubtitleColor || 'hsl(var(--text-gentle))' }}
               >
                 {settings.heroSubtitle}
