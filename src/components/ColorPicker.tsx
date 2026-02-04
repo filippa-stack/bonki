@@ -6,6 +6,15 @@ import ColorWheel from './ColorWheel';
 // Color Palette Groups for Mental Health & Relationships
 const COLOR_PALETTES = [
   {
+    name: 'Mina färger',
+    description: 'Din egna anpassade palett',
+    colors: [
+      { name: 'Terracotta', value: '#d08f63' },
+      { name: 'Röd', value: '#FF0000' },
+      { name: 'Mint', value: '#d4fffc' },
+    ]
+  },
+  {
     name: 'Sage & Sand',
     description: 'Jordad, lugn, naturlig',
     colors: [
