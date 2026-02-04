@@ -81,6 +81,8 @@ export const cards: Card[] = [
     title: 'När dagen är slut',
     subtitle: 'What does it mean to truly be heard?',
     categoryId: 'communication',
+    emptyStateTitle: 'Välj en sektion för att börja',
+    emptyStateDescription: 'Varje sektion erbjuder ett annorlunda sätt att utforska ämnet.\nDet finns ingen bestämd ordning.',
     sections: [
       {
         id: 'opening-1',
@@ -125,6 +127,8 @@ export const cards: Card[] = [
     title: 'Expressing Needs',
     subtitle: 'Finding words for what we need',
     categoryId: 'communication',
+    emptyStateTitle: 'Välj en sektion för att börja',
+    emptyStateDescription: 'Varje sektion erbjuder ett annorlunda sätt att utforska ämnet.\nDet finns ingen bestämd ordning.',
     sections: [
       {
         id: 'opening-2',
@@ -167,6 +171,8 @@ export const cards: Card[] = [
     title: 'Conflict & Repair',
     subtitle: 'Understanding rupture and reconnection',
     categoryId: 'communication',
+    emptyStateTitle: 'Välj en sektion för att börja',
+    emptyStateDescription: 'Varje sektion erbjuder ett annorlunda sätt att utforska ämnet.\nDet finns ingen bestämd ordning.',
     sections: [
       {
         id: 'opening-3',
@@ -209,6 +215,8 @@ export const cards: Card[] = [
     title: 'Different Styles',
     subtitle: 'When we parent differently',
     categoryId: 'parenting-together',
+    emptyStateTitle: 'Välj en sektion för att börja',
+    emptyStateDescription: 'Varje sektion erbjuder ett annorlunda sätt att utforska ämnet.\nDet finns ingen bestämd ordning.',
     sections: [
       {
         id: 'opening-4',
@@ -251,6 +259,8 @@ export const cards: Card[] = [
     title: 'Exhaustion & Support',
     subtitle: 'Caring for each other while parenting',
     categoryId: 'parenting-together',
+    emptyStateTitle: 'Välj en sektion för att börja',
+    emptyStateDescription: 'Varje sektion erbjuder ett annorlunda sätt att utforska ämnet.\nDet finns ingen bestämd ordning.',
     sections: [
       {
         id: 'opening-5',
@@ -293,6 +303,8 @@ export const cards: Card[] = [
     title: 'Staying Connected',
     subtitle: 'Maintaining closeness through busy seasons',
     categoryId: 'emotional-intimacy',
+    emptyStateTitle: 'Välj en sektion för att börja',
+    emptyStateDescription: 'Varje sektion erbjuder ett annorlunda sätt att utforska ämnet.\nDet finns ingen bestämd ordning.',
     sections: [
       {
         id: 'opening-6',
@@ -335,6 +347,8 @@ export const cards: Card[] = [
     title: 'Division of Labour',
     subtitle: 'The visible and invisible work',
     categoryId: 'daily-life',
+    emptyStateTitle: 'Välj en sektion för att börja',
+    emptyStateDescription: 'Varje sektion erbjuder ett annorlunda sätt att utforska ämnet.\nDet finns ingen bestämd ordning.',
     sections: [
       {
         id: 'opening-7',
@@ -377,6 +391,8 @@ export const cards: Card[] = [
     title: 'Personal Space',
     subtitle: 'The need for solitude within togetherness',
     categoryId: 'individual-needs',
+    emptyStateTitle: 'Välj en sektion för att börja',
+    emptyStateDescription: 'Varje sektion erbjuder ett annorlunda sätt att utforska ämnet.\nDet finns ingen bestämd ordning.',
     sections: [
       {
         id: 'opening-8',
