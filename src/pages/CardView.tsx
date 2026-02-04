@@ -16,7 +16,7 @@ const sectionTypeLabels: Record<string, string> = {
 export default function CardView() {
   const { cardId } = useParams<{ cardId: string }>();
   const navigate = useNavigate();
-  const { getConversationForCard, saveConversation, getCardById, getCategoryById, updateCard, updateCardSection, backgroundColor } = useApp();
+  const { getConversationForCard, saveConversation, getCardById, getCategoryById, updateCard, updateCardSection, updateCardEmptyState, backgroundColor } = useApp();
 
   const card = cardId ? getCardById(cardId) : undefined;
   const category = card ? getCategoryById(card.categoryId) : undefined;
@@ -134,14 +134,27 @@ export default function CardView() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="py-16 text-center"
+              className="py-16 text-center space-y-4"
             >
-              <p className="text-gentle mb-2">Choose a section to begin</p>
-              <p className="text-sm text-muted-foreground">
-                Each section offers a different way to explore this topic.
-                <br />
-                There is no required order.
-              </p>
+              <input
+                type="text"
+                value={card.emptyStateTitle || 'Välj en sektion för att börja'}
+                onChange={(e) => updateCardEmptyState(card.id, e.target.value, card.emptyStateDescription || '')}
+                className="text-gentle mb-2 w-full text-center bg-transparent border-none outline-none focus:ring-0 placeholder:text-muted-foreground"
+                placeholder="Rubrik..."
+              />
+              <textarea
+                value={card.emptyStateDescription || 'Varje sektion erbjuder ett annorlunda sätt att utforska ämnet.\nDet finns ingen bestämd ordning.'}
+                onChange={(e) => updateCardEmptyState(card.id, card.emptyStateTitle || '', e.target.value)}
+                ref={(el) => {
+                  if (el) {
+                    el.style.height = 'auto';
+                    el.style.height = el.scrollHeight + 'px';
+                  }
+                }}
+                className="text-sm text-muted-foreground w-full text-center bg-transparent border-none outline-none focus:ring-0 resize-none placeholder:text-muted-foreground"
+                placeholder="Beskrivning..."
+              />
             </motion.div>
           )}
         </AnimatePresence>
