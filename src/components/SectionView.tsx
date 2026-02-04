@@ -170,7 +170,7 @@ export default function SectionView({ section, card }: SectionViewProps) {
                     el.style.height = el.scrollHeight + 'px';
                   }
                 }}
-                className="text-body w-full bg-transparent border-none outline-none focus:ring-0 resize-none placeholder:text-muted-foreground min-h-[24px]"
+                className="text-body w-full bg-transparent border-none outline-none focus:ring-0 resize-none placeholder:text-muted-foreground min-h-[24px] text-center md:text-left"
                 placeholder="Skriv en fråga..."
                 style={{ color: prompt.textColor || 'hsl(var(--foreground))' }}
               />
