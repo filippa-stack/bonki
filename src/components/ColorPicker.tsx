@@ -13,6 +13,7 @@ const COLOR_PALETTES = [
       { name: 'Röd', value: '#FF0000' },
       { name: 'Mint', value: '#d4fffc' },
       { name: 'Cream', value: '#fffdee' },
+      { name: 'Ivory', value: '#fffef3' },
     ]
   },
   {
