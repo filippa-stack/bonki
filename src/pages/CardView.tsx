@@ -68,7 +68,7 @@ export default function CardView() {
             type="text"
             value={card.title}
             onChange={(e) => updateCard(card.id, e.target.value, card.subtitle || '')}
-            className="text-display text-foreground mb-2 w-full bg-transparent border-none outline-none focus:ring-0 placeholder:text-muted-foreground"
+            className="text-display text-foreground mb-2 w-full bg-transparent border-none outline-none focus:ring-0 placeholder:text-muted-foreground text-center md:text-left"
             placeholder="Card title..."
           />
         </motion.div>
@@ -81,7 +81,7 @@ export default function CardView() {
             type="text"
             value={card.subtitle || ''}
             onChange={(e) => updateCard(card.id, card.title, e.target.value)}
-            className="text-body text-gentle italic w-full bg-transparent border-none outline-none focus:ring-0 placeholder:text-muted-foreground"
+            className="text-body text-gentle italic w-full bg-transparent border-none outline-none focus:ring-0 placeholder:text-muted-foreground text-center md:text-left"
             placeholder="Subtitle..."
           />
         </motion.div>
