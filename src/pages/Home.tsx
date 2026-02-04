@@ -9,6 +9,8 @@ import Header from '@/components/Header';
 import { Bookmark, Pencil, Check } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import ColorPicker from '@/components/ColorPicker';
 import bonkiLogo from '@/assets/bonki-logo.png';
 
 export default function Home() {
@@ -18,15 +20,24 @@ export default function Home() {
   const [isEditingHero, setIsEditingHero] = useState(false);
   const [editTitle, setEditTitle] = useState(settings.heroTitle);
   const [editSubtitle, setEditSubtitle] = useState(settings.heroSubtitle);
+  const [editTitleColor, setEditTitleColor] = useState(settings.heroTitleColor);
+  const [editSubtitleColor, setEditSubtitleColor] = useState(settings.heroSubtitleColor);
 
   const handleSaveHero = () => {
-    updateSettings({ heroTitle: editTitle, heroSubtitle: editSubtitle });
+    updateSettings({ 
+      heroTitle: editTitle, 
+      heroSubtitle: editSubtitle,
+      heroTitleColor: editTitleColor,
+      heroSubtitleColor: editSubtitleColor,
+    });
     setIsEditingHero(false);
   };
 
   const handleStartEdit = () => {
     setEditTitle(settings.heroTitle);
     setEditSubtitle(settings.heroSubtitle);
+    setEditTitleColor(settings.heroTitleColor);
+    setEditSubtitleColor(settings.heroSubtitleColor);
     setIsEditingHero(true);
   };
 
@@ -53,20 +64,38 @@ export default function Home() {
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              className="space-y-3"
+              className="space-y-4"
             >
-              <Input
-                value={editTitle}
-                onChange={(e) => setEditTitle(e.target.value)}
-                className="text-2xl font-serif font-semibold bg-card"
-                placeholder="Rubrik..."
-              />
-              <Input
-                value={editSubtitle}
-                onChange={(e) => setEditSubtitle(e.target.value)}
-                className="text-base bg-card"
-                placeholder="Underrubrik..."
-              />
+              <div className="space-y-2">
+                <Label className="text-xs text-muted-foreground">Rubrik</Label>
+                <div className="flex gap-2 items-center">
+                  <Input
+                    value={editTitle}
+                    onChange={(e) => setEditTitle(e.target.value)}
+                    className="text-2xl font-serif font-semibold bg-card flex-1"
+                    placeholder="Rubrik..."
+                  />
+                  <ColorPicker
+                    currentColor={editTitleColor}
+                    onColorChange={setEditTitleColor}
+                  />
+                </div>
+              </div>
+              <div className="space-y-2">
+                <Label className="text-xs text-muted-foreground">Underrubrik</Label>
+                <div className="flex gap-2 items-center">
+                  <Input
+                    value={editSubtitle}
+                    onChange={(e) => setEditSubtitle(e.target.value)}
+                    className="text-base bg-card flex-1"
+                    placeholder="Underrubrik..."
+                  />
+                  <ColorPicker
+                    currentColor={editSubtitleColor}
+                    onColorChange={setEditSubtitleColor}
+                  />
+                </div>
+              </div>
               <Button size="sm" onClick={handleSaveHero} className="gap-2">
                 <Check className="w-4 h-4" />
                 Spara
@@ -78,7 +107,8 @@ export default function Home() {
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5 }}
-                className="text-display text-foreground"
+                className="text-display"
+                style={{ color: settings.heroTitleColor || 'hsl(var(--foreground))' }}
               >
                 {settings.heroTitle}
               </motion.h1>
@@ -86,7 +116,8 @@ export default function Home() {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.5, delay: 0.1 }}
-                className="text-body text-gentle mt-2"
+                className="text-body mt-2"
+                style={{ color: settings.heroSubtitleColor || 'hsl(var(--text-gentle))' }}
               >
                 {settings.heroSubtitle}
               </motion.p>
