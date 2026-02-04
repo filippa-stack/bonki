@@ -1,9 +1,16 @@
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, LogOut } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useApp } from '@/contexts/AppContext';
+import { useAuth } from '@/contexts/AuthContext';
 import ColorPicker from '@/components/ColorPicker';
 import SaveIndicator from '@/components/SaveIndicator';
 import BackupManager from '@/components/BackupManager';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover';
+import { Button } from '@/components/ui/button';
 
 interface HeaderProps {
   title?: string;
@@ -24,6 +31,7 @@ export default function Header({
 }: HeaderProps) {
   const navigate = useNavigate();
   const { backgroundColor, setBackgroundColor, saveStatus, lastSavedAt, saveError } = useApp();
+  const { signOut } = useAuth();
 
   const handleBack = () => {
     if (backTo) {
@@ -31,6 +39,11 @@ export default function Header({
     } else {
       navigate(-1);
     }
+  };
+
+  const handleSignOut = async () => {
+    await signOut();
+    navigate('/login');
   };
 
   return (
@@ -70,6 +83,23 @@ export default function Header({
               />
             </div>
           )}
+          <Popover>
+            <PopoverTrigger asChild>
+              <Button variant="ghost" size="icon" className="text-muted-foreground hover:text-foreground">
+                <LogOut className="w-4 h-4" />
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-48 p-2" align="end">
+              <Button 
+                variant="ghost" 
+                className="w-full justify-start text-destructive hover:text-destructive hover:bg-destructive/10"
+                onClick={handleSignOut}
+              >
+                <LogOut className="w-4 h-4 mr-2" />
+                Logga ut
+              </Button>
+            </PopoverContent>
+          </Popover>
         </div>
       </div>
     </header>
