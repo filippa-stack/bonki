@@ -2,12 +2,14 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { lovable } from '@/integrations/lovable/index';
+import { useSiteSettings } from '@/contexts/SiteSettingsContext';
 import { Loader2 } from 'lucide-react';
 import bonkiLogo from '@/assets/bonki-logo.png';
 
 export default function Login() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const { settings } = useSiteSettings();
 
   const handleGoogleSignIn = async () => {
     setLoading(true);
@@ -26,6 +28,11 @@ export default function Login() {
     } finally {
       setLoading(false);
     }
+  };
+
+  const buttonStyle = {
+    ...(settings.buttonColor && { backgroundColor: settings.buttonColor, borderColor: settings.buttonColor }),
+    ...(settings.buttonTextColor && { color: settings.buttonTextColor }),
   };
 
   return (
@@ -57,7 +64,8 @@ export default function Login() {
             onClick={handleGoogleSignIn}
             disabled={loading}
             className="w-full h-12 text-base font-medium"
-            variant="outline"
+            variant={settings.buttonColor ? "default" : "outline"}
+            style={buttonStyle}
           >
             {loading ? (
               <Loader2 className="w-5 h-5 mr-2 animate-spin" />

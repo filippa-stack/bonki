@@ -7,6 +7,8 @@ interface SiteSettings {
   heroSubtitleColor: string;
   heroTitleFont: string;
   heroSubtitleFont: string;
+  buttonColor: string;
+  buttonTextColor: string;
   loginTitle: string;
   loginSubtitle: string;
 }
@@ -23,6 +25,8 @@ const defaultSettings: SiteSettings = {
   heroSubtitleColor: '',
   heroTitleFont: 'serif',
   heroSubtitleFont: 'sans',
+  buttonColor: '',
+  buttonTextColor: '',
   loginTitle: 'Vi som föräldrar',
   loginSubtitle: 'Logga in för att spara dina inställningar',
 };
