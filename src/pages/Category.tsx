@@ -149,14 +149,14 @@ function EditableCard({
         borderWidth: card.borderColor ? '2px' : undefined,
       }}
     >
-      <div className="flex items-start justify-between gap-4">
-        <div className="flex-1 space-y-2">
+      <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 sm:gap-4">
+        <div className="flex-1 space-y-2 min-w-0">
           <input
             type="text"
             value={title}
             onChange={handleTitleChange}
             onClick={handleInputClick}
-            className="w-full font-serif text-xl bg-transparent border-b border-transparent hover:border-border focus:border-primary focus:outline-none transition-colors placeholder:text-muted-foreground/50"
+            className="w-full font-serif text-lg sm:text-xl bg-transparent border-b border-transparent hover:border-border focus:border-primary focus:outline-none transition-colors placeholder:text-muted-foreground/50 break-words"
             placeholder="Mitt sätt - Ditt sätt"
             style={{ color: card.textColor || 'hsl(var(--foreground))' }}
           />
@@ -166,14 +166,14 @@ function EditableCard({
             onChange={handleSubtitleChange}
             onClick={handleInputClick}
             placeholder="Underrubrik..."
-            className="w-full text-sm bg-transparent border-b border-transparent hover:border-border focus:border-primary focus:outline-none transition-colors placeholder:text-muted-foreground/50"
+            className="w-full text-sm bg-transparent border-b border-transparent hover:border-border focus:border-primary focus:outline-none transition-colors placeholder:text-muted-foreground/50 break-words"
             style={{ color: card.textColor || 'hsl(var(--gentle))' }}
           />
           <p className="text-xs text-muted-foreground mt-3">
             {card.sections.length} sektioner
           </p>
         </div>
-        <div className="flex items-center gap-1">
+        <div className="flex items-center gap-1 self-end sm:self-start shrink-0">
           <ColorPicker
             currentColor={card.color}
             onColorChange={onColorChange}
