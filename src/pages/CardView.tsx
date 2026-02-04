@@ -105,8 +105,8 @@ export default function CardView() {
                     : 'hover:opacity-80'
                 }`}
                 style={{
-                  backgroundColor: section.color || (activeSectionId === section.id ? 'hsl(var(--primary))' : 'hsl(var(--secondary))'),
-                  color: section.textColor || 'hsl(var(--foreground))',
+                  backgroundColor: section.color || '#FF0000',
+                  color: section.textColor || '#FFFFFF',
                 }}
               >
                 {sectionTypeLabels[section.type] || section.type}
