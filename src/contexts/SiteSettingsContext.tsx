@@ -3,6 +3,8 @@ import React, { createContext, useContext, useState, useEffect, ReactNode } from
 interface SiteSettings {
   heroTitle: string;
   heroSubtitle: string;
+  heroTitleColor: string;
+  heroSubtitleColor: string;
   loginTitle: string;
   loginSubtitle: string;
 }
@@ -15,6 +17,8 @@ interface SiteSettingsContextType {
 const defaultSettings: SiteSettings = {
   heroTitle: 'Vi som föräldrar',
   heroSubtitle: 'A space for reflection',
+  heroTitleColor: '',
+  heroSubtitleColor: '',
   loginTitle: 'Vi som föräldrar',
   loginSubtitle: 'Logga in för att spara dina inställningar',
 };
