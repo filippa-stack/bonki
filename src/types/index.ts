@@ -74,4 +74,13 @@ export interface AppState {
   hasCompletedOnboarding: boolean;
   currentCardId?: string;
   currentSectionId?: string;
+  // Session tracking for guided flow
+  currentSession?: {
+    categoryId: string;
+    cardId: string;
+    currentStepIndex: number; // 0-3 for opening, reflective, scenario, exercise
+    completedSteps: number[]; // indices of completed steps
+    startedAt: Date;
+    lastActivityAt: Date;
+  };
 }

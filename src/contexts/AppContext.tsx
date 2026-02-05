@@ -4,6 +4,8 @@ import { categories as initialCategories, cards as initialCards } from '@/data/c
 import { useSettingsSync, SaveStatus } from '@/hooks/useSettingsSync';
 import { useAuth } from '@/contexts/AuthContext';
 
+const STEP_ORDER = ['opening', 'reflective', 'scenario', 'exercise'] as const;
+
 interface AppContextType {
   state: AppState;
   hasCompletedOnboarding: boolean;
@@ -40,6 +42,14 @@ interface AppContextType {
   saveStatus: SaveStatus;
   lastSavedAt: Date | null;
   saveError: string | null;
+  // Session management for guided flow
+  currentSession: AppState['currentSession'];
+  startSession: (categoryId: string, cardId: string) => void;
+  updateSessionStep: (stepIndex: number) => void;
+  completeSessionStep: (stepIndex: number) => void;
+  endSession: () => void;
+  hasActiveSession: boolean;
+  dismissSession: () => void;
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -90,6 +100,11 @@ export function AppProvider({ children }: { children: ReactNode }) {
           })),
         }));
       }
+      // Convert session dates
+      if (parsed.currentSession) {
+        parsed.currentSession.startedAt = new Date(parsed.currentSession.startedAt);
+        parsed.currentSession.lastActivityAt = new Date(parsed.currentSession.lastActivityAt);
+      }
       return parsed;
     }
     return {
@@ -97,6 +112,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
       hasCompletedOnboarding: false,
     };
   });
+  
+  const [sessionDismissed, setSessionDismissed] = useState(false);
 
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
@@ -428,6 +445,68 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const mostRecentConversation = state.coupleSpace?.conversationThreads
     .sort((a, b) => b.lastActivityAt.getTime() - a.lastActivityAt.getTime())[0] || null;
 
+  // Session management functions
+  const startSession = (categoryId: string, cardId: string) => {
+    const now = new Date();
+    setState((prev) => ({
+      ...prev,
+      currentSession: {
+        categoryId,
+        cardId,
+        currentStepIndex: 0,
+        completedSteps: [],
+        startedAt: now,
+        lastActivityAt: now,
+      },
+    }));
+    setSessionDismissed(false);
+  };
+
+  const updateSessionStep = (stepIndex: number) => {
+    setState((prev) => {
+      if (!prev.currentSession) return prev;
+      return {
+        ...prev,
+        currentSession: {
+          ...prev.currentSession,
+          currentStepIndex: stepIndex,
+          lastActivityAt: new Date(),
+        },
+      };
+    });
+  };
+
+  const completeSessionStep = (stepIndex: number) => {
+    setState((prev) => {
+      if (!prev.currentSession) return prev;
+      const completedSteps = prev.currentSession.completedSteps.includes(stepIndex)
+        ? prev.currentSession.completedSteps
+        : [...prev.currentSession.completedSteps, stepIndex];
+      return {
+        ...prev,
+        currentSession: {
+          ...prev.currentSession,
+          completedSteps,
+          lastActivityAt: new Date(),
+        },
+      };
+    });
+  };
+
+  const endSession = () => {
+    setState((prev) => ({
+      ...prev,
+      currentSession: undefined,
+    }));
+    setSessionDismissed(false);
+  };
+
+  const dismissSession = () => {
+    setSessionDismissed(true);
+  };
+
+  const hasActiveSession = !sessionDismissed && !!state.currentSession;
+
   return (
     <AppContext.Provider
       value={{
@@ -466,6 +545,13 @@ export function AppProvider({ children }: { children: ReactNode }) {
         saveStatus,
         lastSavedAt,
         saveError,
+        currentSession: state.currentSession,
+        startSession,
+        updateSessionStep,
+        completeSessionStep,
+        endSession,
+        hasActiveSession,
+        dismissSession,
       }}
     >
       {children}
