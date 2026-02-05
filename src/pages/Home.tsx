@@ -6,6 +6,7 @@ import { useSiteSettings } from '@/contexts/SiteSettingsContext';
 import CategoryCard from '@/components/CategoryCard';
 import ConversationCard from '@/components/ConversationCard';
 import Header from '@/components/Header';
+import ResumeSessionDialog from '@/components/ResumeSessionDialog';
 import { Bookmark, Pencil, Check } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -13,6 +14,8 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import ColorPicker from '@/components/ColorPicker';
 import bonkiLogo from '@/assets/bonki-logo.png';
+
+const STEP_LABELS = ['Öppnare', 'Tankeväckare', 'Scenario', 'Teamwork'];
 
 const fontOptions = [
   { value: 'serif', label: 'Serif (Cormorant)', className: 'font-serif' },
@@ -22,7 +25,22 @@ const fontOptions = [
 
 export default function Home() {
   const navigate = useNavigate();
-  const { mostRecentConversation, savedConversations, categories, updateCategory, updateCategoryColor, updateCategoryTextColor, updateCategoryBorderColor, updateCategoryIcon, backgroundColor } = useApp();
+  const { 
+    mostRecentConversation, 
+    savedConversations, 
+    categories, 
+    updateCategory, 
+    updateCategoryColor, 
+    updateCategoryTextColor, 
+    updateCategoryBorderColor, 
+    updateCategoryIcon, 
+    backgroundColor,
+    currentSession,
+    hasActiveSession,
+    getCardById,
+    getCategoryById,
+    dismissSession,
+  } = useApp();
   const { settings, updateSettings } = useSiteSettings();
   const [isEditingHero, setIsEditingHero] = useState(false);
   const [editTitle, setEditTitle] = useState(settings.heroTitle);
@@ -33,6 +51,21 @@ export default function Home() {
   const [editSubtitleFont, setEditSubtitleFont] = useState(settings.heroSubtitleFont);
   const [editButtonColor, setEditButtonColor] = useState(settings.buttonColor);
   const [editButtonTextColor, setEditButtonTextColor] = useState(settings.buttonTextColor);
+
+  // Get session details for resume dialog
+  const sessionCard = currentSession ? getCardById(currentSession.cardId) : null;
+  const sessionCategory = currentSession ? getCategoryById(currentSession.categoryId) : null;
+  const sessionStepName = currentSession ? STEP_LABELS[currentSession.currentStepIndex] : '';
+
+  const handleResumeSession = () => {
+    if (currentSession) {
+      navigate(`/card/${currentSession.cardId}`);
+    }
+  };
+
+  const handleDismissSession = () => {
+    dismissSession();
+  };
 
   const handleSaveHero = () => {
     updateSettings({ 
@@ -257,6 +290,16 @@ export default function Home() {
           </button>
         </motion.div>
       )}
+
+      {/* Resume session dialog */}
+      <ResumeSessionDialog
+        isOpen={hasActiveSession && !!sessionCard && !!sessionCategory}
+        categoryName={sessionCategory?.title || ''}
+        cardTitle={sessionCard?.title || ''}
+        stepName={sessionStepName}
+        onResume={handleResumeSession}
+        onBackToCategories={handleDismissSession}
+      />
     </div>
   );
 }
