@@ -6,7 +6,7 @@ import Header from '@/components/Header';
 import SectionView from '@/components/SectionView';
 import StepProgressIndicator from '@/components/StepProgressIndicator';
 import { Button } from '@/components/ui/button';
-import { ArrowRight, Check } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Check } from 'lucide-react';
 
 const sectionTypeLabels: Record<string, string> = {
   opening: 'Öppnare',
@@ -241,12 +241,23 @@ export default function CardView() {
             >
               <SectionView section={currentSection} card={card} />
               
-              {/* CTA Button */}
-              <div className="py-8 border-t border-divider">
+              {/* Navigation Buttons */}
+              <div className="py-8 border-t border-divider flex flex-col sm:flex-row gap-3">
+                {currentStepIndex > 0 && (
+                  <Button
+                    onClick={() => setCurrentStepIndex(currentStepIndex - 1)}
+                    variant="outline"
+                    size="lg"
+                    className="gap-2"
+                  >
+                    <ArrowLeft className="w-4 h-4" />
+                    Tillbaka
+                  </Button>
+                )}
                 <Button
                   onClick={handleNextStep}
                   size="lg"
-                  className="w-full md:w-auto gap-2"
+                  className="gap-2"
                 >
                   {currentStepIndex === STEP_ORDER.length - 1 ? (
                     <>
