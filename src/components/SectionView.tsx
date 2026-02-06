@@ -87,20 +87,6 @@ export default function SectionView({ section, card }: SectionViewProps) {
     setTimeout(() => setIsSaved(false), 2000);
   };
 
-  const getSectionIcon = () => {
-    switch (section.type) {
-      case 'opening':
-        return '○';
-      case 'reflective':
-        return '◐';
-      case 'scenario':
-        return '□';
-      case 'exercise':
-        return '◇';
-      default:
-        return '•';
-    }
-  };
 
   return (
     <motion.div
@@ -111,8 +97,7 @@ export default function SectionView({ section, card }: SectionViewProps) {
     >
       {/* Section header */}
       <div className="mb-6 text-center md:text-left">
-        <div className="flex items-center justify-center md:justify-start gap-3">
-          <span className="text-2xl text-primary opacity-60">{getSectionIcon()}</span>
+        <div className="flex items-center justify-center md:justify-start">
           <input
             type="text"
             value={section.title}
