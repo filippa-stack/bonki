@@ -242,7 +242,7 @@ export default function CardView() {
               <SectionView section={currentSection} card={card} />
               
               {/* Navigation Buttons */}
-              <div className="py-8 border-t border-divider flex flex-col sm:flex-row gap-3">
+              <div className="py-8 border-t border-divider flex flex-col sm:flex-row justify-center md:justify-start gap-3">
                 {currentStepIndex > 0 && (
                   <Button
                     onClick={() => setCurrentStepIndex(currentStepIndex - 1)}

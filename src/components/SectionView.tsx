@@ -110,28 +110,28 @@ export default function SectionView({ section, card }: SectionViewProps) {
       className="py-6"
     >
       {/* Section header */}
-      <div className="mb-6">
-        <div className="flex items-center gap-3">
+      <div className="mb-6 text-center md:text-left">
+        <div className="flex items-center justify-center md:justify-start gap-3">
           <span className="text-2xl text-primary opacity-60">{getSectionIcon()}</span>
           <input
             type="text"
             value={section.title}
             onChange={(e) => handleTitleChange(e.target.value)}
-            className="text-heading text-foreground bg-transparent border-none outline-none focus:ring-0 w-full placeholder:text-muted-foreground"
+            className="text-heading text-foreground bg-transparent border-none outline-none focus:ring-0 w-full placeholder:text-muted-foreground text-center md:text-left"
             placeholder="Sektionstitel..."
           />
         </div>
         {section.type === 'exercise' && (
-          <p className="text-sm text-gentle italic mt-2 ml-9">Förvandlar insikt till gemensam handling.</p>
+          <p className="text-sm text-gentle italic mt-2 md:ml-9">Förvandlar insikt till gemensam handling.</p>
         )}
         {section.type === 'scenario' && (
-          <p className="text-sm text-gentle italic mt-2 ml-9">Gör det svåra pratbart genom igenkänning.</p>
+          <p className="text-sm text-gentle italic mt-2 md:ml-9">Gör det svåra pratbart genom igenkänning.</p>
         )}
         {section.type === 'reflective' && (
-          <p className="text-sm text-gentle italic mt-2 ml-9">Fördjupar, utmanar och breddar perspektivet.</p>
+          <p className="text-sm text-gentle italic mt-2 md:ml-9">Fördjupar, utmanar och breddar perspektivet.</p>
         )}
         {section.type === 'opening' && (
-          <p className="text-sm text-gentle italic mt-2 ml-9">Sänker tröskeln och sätter samtalet i rörelse.</p>
+          <p className="text-sm text-gentle italic mt-2 md:ml-9">Sänker tröskeln och sätter samtalet i rörelse.</p>
         )}
       </div>
 
@@ -145,7 +145,7 @@ export default function SectionView({ section, card }: SectionViewProps) {
             el.style.height = el.scrollHeight + 'px';
           }
         }}
-        className="text-body text-gentle mb-8 leading-relaxed w-full bg-transparent border-none outline-none focus:ring-0 resize-none placeholder:text-muted-foreground"
+        className="text-body text-gentle mb-8 leading-relaxed w-full bg-transparent border-none outline-none focus:ring-0 resize-none placeholder:text-muted-foreground text-center md:text-left"
         placeholder="Beskrivning..."
       />
 
@@ -195,13 +195,15 @@ export default function SectionView({ section, card }: SectionViewProps) {
       )}
 
       {/* Add prompt button */}
-      <button
-        onClick={handleAddPrompt}
-        className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors mb-10"
-      >
-        <Plus className="w-4 h-4" />
-        Lägg till fråga
-      </button>
+      <div className="flex justify-center md:justify-start">
+        <button
+          onClick={handleAddPrompt}
+          className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors mb-10"
+        >
+          <Plus className="w-4 h-4" />
+          Lägg till fråga
+        </button>
+      </div>
 
       {/* Existing reflections */}
       {existingReflections.length > 0 && (
@@ -261,7 +263,7 @@ export default function SectionView({ section, card }: SectionViewProps) {
           </div>
         </motion.div>
       ) : (
-        <div className="flex flex-wrap gap-3">
+        <div className="flex flex-wrap justify-center md:justify-start gap-3">
           <button
             onClick={() => setIsWriting(true)}
             className="btn-soft flex items-center gap-2"
