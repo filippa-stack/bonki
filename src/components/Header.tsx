@@ -51,7 +51,7 @@ export default function Header({
     <header className="sticky top-0 z-10 bg-card border-b border-border">
       <div className="flex items-center justify-between h-14 px-4">
         <div className="flex items-center gap-2">
-          {showBack ? (
+          {showBack && (
             <button
               onClick={handleBack}
               className="p-2 -ml-2 text-muted-foreground hover:text-foreground transition-colors"
@@ -59,14 +59,13 @@ export default function Header({
             >
               <ArrowLeft className="w-5 h-5" />
             </button>
-          ) : (
-            <img 
-              src={bonkiLogo} 
-              alt="Still Us" 
-              className="h-8 w-8 object-contain cursor-pointer"
-              onClick={() => navigate('/')}
-            />
           )}
+          <img 
+            src={bonkiLogo} 
+            alt="Still Us" 
+            className="h-8 w-8 object-contain cursor-pointer"
+            onClick={() => navigate('/')}
+          />
           {title && (
             <h1 className="font-serif text-lg text-foreground truncate">
               {title}
