@@ -251,7 +251,7 @@ export default function Home() {
       {/* Categories */}
       <div className="px-6 pb-6">
         <p className="text-xs text-muted-foreground uppercase tracking-wider mb-4">
-          Choose a category
+          Välj en kategori
         </p>
         <div className="space-y-3">
           {categories.map((category, index) => (
