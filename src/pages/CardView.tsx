@@ -90,7 +90,7 @@ export default function CardView() {
   if (!card) {
     return (
       <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: backgroundColor || 'hsl(var(--background))' }}>
-        <p className="text-gentle">Card not found</p>
+        <p className="text-gentle">Kort hittades inte</p>
       </div>
     );
   }
