@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { useApp } from '@/contexts/AppContext';
 import Header from '@/components/Header';
 import ColorPicker from '@/components/ColorPicker';
-import { ChevronRight, Plus, Trash2 } from 'lucide-react';
+import { Plus, Trash2 } from 'lucide-react';
 
 export default function Category() {
   const { t } = useTranslation();
@@ -169,7 +169,8 @@ function EditableCard({
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: index * 0.1 }}
-      className="w-full text-left card-reflection group"
+      onClick={onNavigate}
+      className="w-full text-left card-reflection group cursor-pointer"
       style={{ 
         backgroundColor: card.color || undefined,
         borderColor: card.borderColor || undefined,
@@ -222,13 +223,6 @@ function EditableCard({
             {t('category.sections_count', { count: card.sections.length })}
           </p>
         </div>
-        <button
-          onClick={onNavigate}
-          className="p-2 rounded-full hover:bg-muted transition-colors mt-1"
-          aria-label="Öppna kort"
-        >
-          <ChevronRight className="w-5 h-5 text-muted-foreground group-hover:text-primary transition-colors" />
-        </button>
       </div>
     </motion.div>
   );
