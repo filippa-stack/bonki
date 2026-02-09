@@ -176,14 +176,36 @@ function EditableCard({
         borderWidth: card.borderColor ? '2px' : undefined,
       }}
     >
-      <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 sm:gap-4">
-        <div className="flex-1 space-y-2 min-w-0">
+      <div className="flex flex-col items-center gap-2">
+        <div className="flex justify-end w-full -mb-2" onClick={(e) => e.stopPropagation()}>
+          <div className="flex items-center gap-1">
+            <ColorPicker
+              currentColor={card.color}
+              onColorChange={onColorChange}
+              currentTextColor={card.textColor}
+              onTextColorChange={onTextColorChange}
+              currentBorderColor={card.borderColor}
+              onBorderColorChange={onBorderColorChange}
+              showTextColor
+              showBorderColor
+            />
+            <button
+              onClick={(e) => { e.stopPropagation(); onDelete(); }}
+              className="p-2 rounded-full hover:bg-destructive/20 transition-colors"
+              aria-label={t('backup.delete_label')}
+              title={t('backup.delete_label')}
+            >
+              <Trash2 className="w-4 h-4 text-muted-foreground hover:text-destructive transition-colors" />
+            </button>
+          </div>
+        </div>
+        <div className="w-full space-y-2">
           <input
             type="text"
             value={title}
             onChange={handleTitleChange}
             onClick={handleInputClick}
-            className="w-full font-serif text-lg sm:text-xl bg-transparent border-b border-transparent hover:border-border focus:border-primary focus:outline-none transition-colors placeholder:text-muted-foreground/50 break-words"
+            className="w-full font-serif text-lg sm:text-xl bg-transparent border-b border-transparent hover:border-border focus:border-primary focus:outline-none transition-colors placeholder:text-muted-foreground/50 text-center"
             placeholder="Mitt sätt - Ditt sätt"
             style={{ color: card.textColor || 'hsl(var(--foreground))' }}
           />
@@ -193,40 +215,20 @@ function EditableCard({
             onChange={handleSubtitleChange}
             onClick={handleInputClick}
             placeholder="Underrubrik..."
-            className="w-full text-sm bg-transparent border-b border-transparent hover:border-border focus:border-primary focus:outline-none transition-colors placeholder:text-muted-foreground/50 break-words"
+            className="w-full text-sm bg-transparent border-b border-transparent hover:border-border focus:border-primary focus:outline-none transition-colors placeholder:text-muted-foreground/50 text-center"
             style={{ color: card.textColor || 'hsl(var(--gentle))' }}
           />
-          <p className="text-xs text-muted-foreground mt-3">
+          <p className="text-xs text-muted-foreground text-center mt-3">
             {t('category.sections_count', { count: card.sections.length })}
           </p>
         </div>
-        <div className="flex items-center gap-1 self-end sm:self-start shrink-0">
-          <ColorPicker
-            currentColor={card.color}
-            onColorChange={onColorChange}
-            currentTextColor={card.textColor}
-            onTextColorChange={onTextColorChange}
-            currentBorderColor={card.borderColor}
-            onBorderColorChange={onBorderColorChange}
-            showTextColor
-            showBorderColor
-          />
-          <button
-            onClick={(e) => { e.stopPropagation(); onDelete(); }}
-            className="p-2 rounded-full hover:bg-destructive/20 transition-colors"
-            aria-label={t('backup.delete_label')}
-            title={t('backup.delete_label')}
-          >
-            <Trash2 className="w-4 h-4 text-muted-foreground hover:text-destructive transition-colors" />
-          </button>
-          <button
-            onClick={onNavigate}
-            className="p-2 rounded-full hover:bg-muted transition-colors"
-            aria-label="Öppna kort"
-          >
-            <ChevronRight className="w-5 h-5 text-muted-foreground group-hover:text-primary transition-colors" />
-          </button>
-        </div>
+        <button
+          onClick={onNavigate}
+          className="p-2 rounded-full hover:bg-muted transition-colors mt-1"
+          aria-label="Öppna kort"
+        >
+          <ChevronRight className="w-5 h-5 text-muted-foreground group-hover:text-primary transition-colors" />
+        </button>
       </div>
     </motion.div>
   );
