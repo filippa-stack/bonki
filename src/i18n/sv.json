@@ -111,5 +111,25 @@
     "in_progress": "Pågår",
     "explored": "Utforskat",
     "return_note": "Ni kan alltid återvända."
+  },
+  "reflections": {
+    "private_notes_title": "Mina anteckningar (privat)",
+    "private_notes_hint": "Privat. För dig. Du kan forma det senare.",
+    "shared_notes_title": "Delat mellan oss",
+    "shared_notes_hint": "Den här versionen är tänkt att delas mellan er.",
+    "create_shared_from_private": "Skapa delad version från mina anteckningar",
+    "save_shared": "Spara delat",
+    "unshare": "Ta bort från delat",
+    "mark_important": "Markera som viktigt",
+    "important_limit_reached": "Ni kan ha max tre viktiga åt gången.",
+    "edit": "Redigera"
+  },
+  "shared": {
+    "title": "Det vi delat",
+    "highlights_title": "Viktigt för oss",
+    "search_placeholder": "Sök i det ni delat",
+    "empty": "Ni har inte delat något ännu.",
+    "empty_hint": "Dela en reflektion från ett samtal för att se den här.",
+    "no_results": "Inga resultat hittades."
   }
 }

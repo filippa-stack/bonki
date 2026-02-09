@@ -80,12 +80,30 @@ export interface JourneyState {
   exploredCardIds: string[];
 }
 
+export interface PrivateNote {
+  text: string;
+  updatedAt: string;
+}
+
+export interface SharedNote {
+  text: string;
+  updatedAt: string;
+  sharedAt: string;
+}
+
+export interface ReflectionsData {
+  private: Record<string, PrivateNote>;
+  shared: Record<string, SharedNote>;
+  highlights: Record<string, boolean>; // max 3
+}
+
 export interface AppState {
   coupleSpace: CoupleSpace | null;
   hasCompletedOnboarding: boolean;
   currentCardId?: string;
   currentSectionId?: string;
   journeyState?: JourneyState;
+  reflectionsData?: ReflectionsData;
   // Session tracking for guided flow
   currentSession?: {
     categoryId: string;

@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useApp } from '@/contexts/AppContext';
 import Header from '@/components/Header';
 import SectionView from '@/components/SectionView';
+import CardReflections from '@/components/CardReflections';
 import StepProgressIndicator from '@/components/StepProgressIndicator';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft, ArrowRight, Check } from 'lucide-react';
@@ -272,6 +273,9 @@ export default function CardView() {
                   )}
                 </Button>
               </div>
+
+              {/* Reflections (private → shared) */}
+              <CardReflections cardId={card.id} />
             </motion.div>
           )}
         </AnimatePresence>
