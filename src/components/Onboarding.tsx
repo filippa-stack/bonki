@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 import { useApp } from '@/contexts/AppContext';
 
 const slides = [
@@ -26,6 +27,7 @@ const slides = [
 ];
 
 export default function Onboarding() {
+  const { t } = useTranslation();
   const [currentSlide, setCurrentSlide] = useState(0);
   const { completeOnboarding, initializeCoupleSpace, backgroundColor } = useApp();
 
@@ -43,7 +45,7 @@ export default function Onboarding() {
   const isLastSlide = currentSlide === slides.length - 1;
 
   return (
-    <div 
+    <div
       className="min-h-screen flex flex-col items-center justify-center px-6 py-12"
       style={{ backgroundColor: backgroundColor || 'hsl(var(--background))' }}
     >
@@ -71,7 +73,7 @@ export default function Onboarding() {
             onClick={isLastSlide ? handleComplete : handleNext}
             className="btn-gentle w-full max-w-xs"
           >
-            {isLastSlide ? 'Begin' : 'Fortsätt'}
+            {isLastSlide ? t('onboarding.begin') : t('onboarding.continue')}
           </button>
 
           {/* Progress dots */}
@@ -85,7 +87,7 @@ export default function Onboarding() {
                     ? 'bg-primary w-6'
                     : 'bg-border hover:bg-muted-foreground/30'
                 }`}
-                aria-label={`Go to slide ${index + 1}`}
+                aria-label={t('onboarding.slide_label', { number: index + 1 })}
               />
             ))}
           </div>
@@ -95,7 +97,7 @@ export default function Onboarding() {
               onClick={handleComplete}
               className="text-sm text-muted-foreground hover:text-foreground transition-colors"
             >
-              Skip introduction
+              {t('onboarding.skip')}
             </button>
           )}
         </div>

@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { useApp } from '@/contexts/AppContext';
@@ -20,6 +21,7 @@ interface Backup {
 }
 
 export default function BackupManager() {
+  const { t } = useTranslation();
   const { user } = useAuth();
   const { categories, cards, backgroundColor } = useApp();
   const [open, setOpen] = useState(false);
@@ -44,10 +46,7 @@ export default function BackupManager() {
       setBackups(data || []);
     } catch (err) {
       console.error('Failed to load backups:', err);
-      toast({
-        title: 'Kunde inte ladda säkerhetskopior',
-        variant: 'destructive',
-      });
+      toast({ title: t('backup.error_load'), variant: 'destructive' });
     } finally {
       setLoading(false);
     }
@@ -64,7 +63,7 @@ export default function BackupManager() {
     setCreating(true);
     try {
       const name = backupName.trim() || `Backup ${new Date().toLocaleString('sv-SE')}`;
-      
+
       const { error } = await supabase
         .from('user_backups')
         .insert({
@@ -77,18 +76,12 @@ export default function BackupManager() {
 
       if (error) throw error;
 
-      toast({
-        title: 'Säkerhetskopia skapad',
-        description: name,
-      });
+      toast({ title: t('backup.created_toast'), description: name });
       setBackupName('');
       loadBackups();
     } catch (err) {
       console.error('Failed to create backup:', err);
-      toast({
-        title: 'Kunde inte skapa säkerhetskopia',
-        variant: 'destructive',
-      });
+      toast({ title: t('backup.error_create'), variant: 'destructive' });
     } finally {
       setCreating(false);
     }
@@ -96,10 +89,8 @@ export default function BackupManager() {
 
   const restoreBackup = async (backup: Backup) => {
     if (!user) return;
-    
-    const confirmed = window.confirm(
-      `Vill du återställa "${backup.name}"? Dina nuvarande inställningar kommer att ersättas.`
-    );
+
+    const confirmed = window.confirm(t('backup.restore_confirm', { name: backup.name }));
     if (!confirmed) return;
 
     setRestoring(backup.id);
@@ -116,29 +107,20 @@ export default function BackupManager() {
 
       if (error) throw error;
 
-      toast({
-        title: 'Återställning klar',
-        description: 'Ladda om sidan för att se ändringarna.',
-      });
-      
-      // Reload the page to apply changes
+      toast({ title: t('backup.restored_toast'), description: t('backup.restored_hint') });
+
       setTimeout(() => {
         window.location.reload();
       }, 1500);
     } catch (err) {
       console.error('Failed to restore backup:', err);
-      toast({
-        title: 'Kunde inte återställa',
-        variant: 'destructive',
-      });
+      toast({ title: t('backup.error_restore'), variant: 'destructive' });
       setRestoring(null);
     }
   };
 
   const deleteBackup = async (backup: Backup) => {
-    const confirmed = window.confirm(
-      `Vill du ta bort "${backup.name}"? Detta kan inte ångras.`
-    );
+    const confirmed = window.confirm(t('backup.delete_confirm', { name: backup.name }));
     if (!confirmed) return;
 
     setDeleting(backup.id);
@@ -150,16 +132,11 @@ export default function BackupManager() {
 
       if (error) throw error;
 
-      toast({
-        title: 'Säkerhetskopia borttagen',
-      });
+      toast({ title: t('backup.deleted_toast') });
       loadBackups();
     } catch (err) {
       console.error('Failed to delete backup:', err);
-      toast({
-        title: 'Kunde inte ta bort',
-        variant: 'destructive',
-      });
+      toast({ title: t('backup.error_delete'), variant: 'destructive' });
     } finally {
       setDeleting(null);
     }
@@ -180,19 +157,18 @@ export default function BackupManager() {
       <DialogTrigger asChild>
         <Button variant="ghost" size="sm" className="gap-1.5">
           <Archive className="w-4 h-4" />
-          <span className="hidden sm:inline text-xs">Backup</span>
+          <span className="hidden sm:inline text-xs">{t('backup.label')}</span>
         </Button>
       </DialogTrigger>
       <DialogContent className="max-w-md">
         <DialogHeader>
-          <DialogTitle>Säkerhetskopior</DialogTitle>
+          <DialogTitle>{t('backup.title')}</DialogTitle>
         </DialogHeader>
-        
+
         <div className="space-y-4">
-          {/* Create new backup */}
           <div className="flex gap-2">
             <Input
-              placeholder="Namn (valfritt)"
+              placeholder={t('backup.name_placeholder')}
               value={backupName}
               onChange={(e) => setBackupName(e.target.value)}
               className="flex-1"
@@ -203,11 +179,10 @@ export default function BackupManager() {
               ) : (
                 <Plus className="w-4 h-4" />
               )}
-              <span className="ml-1">Skapa</span>
+              <span className="ml-1">{t('backup.create')}</span>
             </Button>
           </div>
 
-          {/* Backup list */}
           <div className="space-y-2 max-h-64 overflow-y-auto">
             {loading ? (
               <div className="flex justify-center py-4">
@@ -215,7 +190,7 @@ export default function BackupManager() {
               </div>
             ) : backups.length === 0 ? (
               <p className="text-sm text-muted-foreground text-center py-4">
-                Inga säkerhetskopior än
+                {t('backup.empty')}
               </p>
             ) : (
               backups.map((backup) => (
@@ -236,7 +211,7 @@ export default function BackupManager() {
                       className="h-8 w-8"
                       onClick={() => restoreBackup(backup)}
                       disabled={restoring === backup.id}
-                      title="Återställ"
+                      title={t('backup.restore_label')}
                     >
                       {restoring === backup.id ? (
                         <Loader2 className="w-4 h-4 animate-spin" />
@@ -250,7 +225,7 @@ export default function BackupManager() {
                       className="h-8 w-8 text-destructive hover:text-destructive"
                       onClick={() => deleteBackup(backup)}
                       disabled={deleting === backup.id}
-                      title="Ta bort"
+                      title={t('backup.delete_label')}
                     >
                       {deleting === backup.id ? (
                         <Loader2 className="w-4 h-4 animate-spin" />

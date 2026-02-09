@@ -1,0 +1,109 @@
+{
+  "general": {
+    "continue_cta": "Fortsätt",
+    "choose_another": "Välj ett annat kort",
+    "back_home": "Tillbaka",
+    "pause_for_now": "Pausa för nu"
+  },
+  "login": {
+    "welcome": "Välkommen",
+    "subtitle": "Logga in för att spara dina inställningar",
+    "sign_in_google": "Logga in med Google",
+    "error_generic": "Något gick fel vid inloggningen",
+    "error_start": "Kunde inte starta inloggningen",
+    "cloud_note": "Dina inställningar och anpassningar sparas säkert i molnet",
+    "terms_checkbox": "Jag godkänner <termsLink>Villkor</termsLink> och <privacyLink>Integritetspolicy</privacyLink>",
+    "terms_title": "Villkor",
+    "terms_placeholder": "Villkor kommer snart.",
+    "privacy_title": "Integritetspolicy",
+    "privacy_placeholder": "Integritetspolicy kommer snart.",
+    "terms_required": "Du behöver godkänna villkoren för att fortsätta"
+  },
+  "onboarding": {
+    "begin": "Börja",
+    "continue": "Fortsätt",
+    "skip": "Hoppa över introduktionen",
+    "slide_label": "Gå till sida {{number}}"
+  },
+  "home": {
+    "continue_where_left_off": "Fortsätt där ni slutade",
+    "choose_category": "Välj en kategori",
+    "saved_conversations": "Sparade samtal ({{count}})",
+    "edit_label_title": "Rubrik",
+    "edit_label_subtitle": "Underrubrik",
+    "edit_label_button_colors": "Knappfärger",
+    "edit_label_background": "Bakgrund:",
+    "edit_label_text": "Text:",
+    "save": "Spara"
+  },
+  "header": {
+    "go_back": "Gå tillbaka",
+    "background": "Bakgrund",
+    "sign_out": "Logga ut"
+  },
+  "saved": {
+    "title": "Sparade samtal",
+    "empty": "Inga sparade samtal ännu",
+    "empty_hint": "När ni sparar ett samtal kommer det att visas här."
+  },
+  "resume": {
+    "welcome_back": "Välkommen tillbaka",
+    "paused_description": "Ni pausade mitt i ett samtal. Vill ni fortsätta där ni slutade?",
+    "last_conversation": "Senaste samtalet",
+    "continue_where_left": "Fortsätt där ni slutade",
+    "back_to_categories": "Tillbaka till kategorier"
+  },
+  "save_indicator": {
+    "saving": "Sparar…",
+    "saved": "Sparat",
+    "error_save": "Kunde inte spara",
+    "synced": "Synkad {{time}}"
+  },
+  "backup": {
+    "title": "Säkerhetskopior",
+    "label": "Backup",
+    "name_placeholder": "Namn (valfritt)",
+    "create": "Skapa",
+    "empty": "Inga säkerhetskopior än",
+    "restore_confirm": "Vill du återställa \"{{name}}\"? Dina nuvarande inställningar kommer att ersättas.",
+    "delete_confirm": "Vill du ta bort \"{{name}}\"? Detta kan inte ångras.",
+    "created_toast": "Säkerhetskopia skapad",
+    "restored_toast": "Återställning klar",
+    "restored_hint": "Ladda om sidan för att se ändringarna.",
+    "deleted_toast": "Säkerhetskopia borttagen",
+    "error_load": "Kunde inte ladda säkerhetskopior",
+    "error_create": "Kunde inte skapa säkerhetskopia",
+    "error_restore": "Kunde inte återställa",
+    "error_delete": "Kunde inte ta bort",
+    "restore_label": "Återställ",
+    "delete_label": "Ta bort"
+  },
+  "card_view": {
+    "not_found": "Kort hittades inte",
+    "overview_description": "Det här samtalet består av fyra delar. Ni rör er i er egen takt, men ordningen är viktig för att skapa trygghet och djup.",
+    "start_opening": "Börja med Öppnare",
+    "back": "Tillbaka",
+    "finish_conversation": "Avsluta samtalet",
+    "step_opening": "Öppnare",
+    "step_reflective": "Tankeväckare",
+    "step_scenario": "Scenario",
+    "step_exercise": "Team Work",
+    "step_opening_desc": "Sänker tröskeln och sätter samtalet i rörelse.",
+    "step_reflective_desc": "Fördjupar, utmanar och breddar perspektivet.",
+    "step_scenario_desc": "Gör det svåra pratbart genom igenkänning.",
+    "step_exercise_desc": "Förvandlar insikt till gemensam handling.",
+    "cta_opening": "Gå vidare till Tankeväckare",
+    "cta_reflective": "Fortsätt till Scenario",
+    "cta_scenario": "Vidare till Teamwork",
+    "cta_exercise": "Avsluta samtalet"
+  },
+  "category": {
+    "cards_count": "{{count}} kort"
+  },
+  "category_status": {
+    "not_started": "Inte påbörjat",
+    "in_progress": "Pågår",
+    "explored": "Utforskat",
+    "return_note": "Ni kan alltid återvända."
+  }
+}
