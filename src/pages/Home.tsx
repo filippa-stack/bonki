@@ -9,6 +9,7 @@ import ContinueModule from '@/components/ContinueModule';
 import Header from '@/components/Header';
 import ResumeSessionDialog from '@/components/ResumeSessionDialog';
 import { Bookmark, Pencil, Check, Share2 } from 'lucide-react';
+import RelationshipMemory from '@/components/RelationshipMemory';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -299,6 +300,23 @@ export default function Home() {
           ))}
         </div>
       </div>
+
+      {/* Relationship Memory */}
+      {(() => {
+        const lastCompletedId = journeyState?.lastCompletedCardId;
+        const lastCard = lastCompletedId ? getCardById(lastCompletedId) : null;
+        const lastCategory = lastCard ? getCategoryById(lastCard.categoryId) : null;
+        if (lastCard && lastCategory && journeyState?.updatedAt) {
+          return (
+            <RelationshipMemory
+              cardTitle={lastCard.title}
+              categoryTitle={lastCategory.title}
+              completedAt={journeyState.updatedAt}
+            />
+          );
+        }
+        return null;
+      })()}
 
       {/* Shared summary link */}
       <motion.div
