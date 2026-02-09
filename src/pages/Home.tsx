@@ -8,7 +8,7 @@ import CategoryCard from '@/components/CategoryCard';
 import ContinueModule from '@/components/ContinueModule';
 import Header from '@/components/Header';
 import ResumeSessionDialog from '@/components/ResumeSessionDialog';
-import { Bookmark, Pencil, Check } from 'lucide-react';
+import { Bookmark, Pencil, Check, Share2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -300,13 +300,29 @@ export default function Home() {
         </div>
       </div>
 
+      {/* Shared summary link */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.4 }}
+        className="px-6 py-4"
+      >
+        <button
+          onClick={() => navigate('/shared')}
+          className="flex items-center gap-3 text-muted-foreground hover:text-foreground transition-colors"
+        >
+          <Share2 className="w-4 h-4" />
+          <span className="text-sm">{t('shared.title')}</span>
+        </button>
+      </motion.div>
+
       {/* Saved conversations link */}
       {savedConversations.length > 0 && (
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.5 }}
-          className="px-6 py-8 border-t border-divider"
+          className="px-6 py-4 border-t border-divider"
         >
           <button
             onClick={() => navigate('/saved')}

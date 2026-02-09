@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode, useCallback } from 'react';
-import { CoupleSpace, ConversationThread, Reflection, AppState, Category, Card, JourneyState } from '@/types';
+import { CoupleSpace, ConversationThread, Reflection, AppState, Category, Card, JourneyState, ReflectionsData, PrivateNote, SharedNote } from '@/types';
 import { categories as initialCategories, cards as initialCards } from '@/data/content';
 import { useSettingsSync, SaveStatus } from '@/hooks/useSettingsSync';
 import { useAuth } from '@/contexts/AuthContext';
@@ -55,6 +55,17 @@ interface AppContextType {
   journeyState: JourneyState | undefined;
   getCategoryStatus: (categoryId: string) => 'not_started' | 'in_progress' | 'explored';
   getExploredCardsInCategory: (categoryId: string) => number;
+  // Reflections (private/shared)
+  getPrivateNote: (cardId: string) => PrivateNote | undefined;
+  getSharedNote: (cardId: string) => SharedNote | undefined;
+  savePrivateNote: (cardId: string, text: string) => void;
+  saveSharedNote: (cardId: string, text: string) => void;
+  removeSharedNote: (cardId: string) => void;
+  isHighlighted: (cardId: string) => boolean;
+  toggleHighlight: (cardId: string) => void;
+  highlightCount: number;
+  getAllSharedNotes: () => Record<string, SharedNote>;
+  getHighlightedCards: () => string[];
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -621,6 +632,89 @@ export function AppProvider({ children }: { children: ReactNode }) {
     return categoryCards.filter(c => explored.includes(c.id)).length;
   }, [cards, state.journeyState?.exploredCardIds]);
 
+  // Reflections helpers
+  const getPrivateNote = useCallback((cardId: string): PrivateNote | undefined => {
+    return state.reflectionsData?.private?.[cardId];
+  }, [state.reflectionsData]);
+
+  const getSharedNote = useCallback((cardId: string): SharedNote | undefined => {
+    return state.reflectionsData?.shared?.[cardId];
+  }, [state.reflectionsData]);
+
+  const savePrivateNote = (cardId: string, text: string) => {
+    setState((prev) => ({
+      ...prev,
+      reflectionsData: {
+        private: { ...(prev.reflectionsData?.private || {}), [cardId]: { text, updatedAt: new Date().toISOString() } },
+        shared: prev.reflectionsData?.shared || {},
+        highlights: prev.reflectionsData?.highlights || {},
+      },
+    }));
+  };
+
+  const saveSharedNote = (cardId: string, text: string) => {
+    const now = new Date().toISOString();
+    setState((prev) => ({
+      ...prev,
+      reflectionsData: {
+        private: prev.reflectionsData?.private || {},
+        shared: { ...(prev.reflectionsData?.shared || {}), [cardId]: { text, updatedAt: now, sharedAt: now } },
+        highlights: prev.reflectionsData?.highlights || {},
+      },
+    }));
+  };
+
+  const removeSharedNote = (cardId: string) => {
+    setState((prev) => {
+      const shared = { ...(prev.reflectionsData?.shared || {}) };
+      delete shared[cardId];
+      const highlights = { ...(prev.reflectionsData?.highlights || {}) };
+      delete highlights[cardId];
+      return {
+        ...prev,
+        reflectionsData: {
+          private: prev.reflectionsData?.private || {},
+          shared,
+          highlights,
+        },
+      };
+    });
+  };
+
+  const isHighlighted = useCallback((cardId: string): boolean => {
+    return !!state.reflectionsData?.highlights?.[cardId];
+  }, [state.reflectionsData]);
+
+  const highlightCount = Object.keys(state.reflectionsData?.highlights || {}).length;
+
+  const toggleHighlight = (cardId: string) => {
+    setState((prev) => {
+      const highlights = { ...(prev.reflectionsData?.highlights || {}) };
+      if (highlights[cardId]) {
+        delete highlights[cardId];
+      } else {
+        if (Object.keys(highlights).length >= 3) return prev;
+        highlights[cardId] = true;
+      }
+      return {
+        ...prev,
+        reflectionsData: {
+          private: prev.reflectionsData?.private || {},
+          shared: prev.reflectionsData?.shared || {},
+          highlights,
+        },
+      };
+    });
+  };
+
+  const getAllSharedNotes = useCallback((): Record<string, SharedNote> => {
+    return state.reflectionsData?.shared || {};
+  }, [state.reflectionsData]);
+
+  const getHighlightedCards = useCallback((): string[] => {
+    return Object.keys(state.reflectionsData?.highlights || {});
+  }, [state.reflectionsData]);
+
   return (
     <AppContext.Provider
       value={{
@@ -669,6 +763,16 @@ export function AppProvider({ children }: { children: ReactNode }) {
         journeyState: state.journeyState,
         getCategoryStatus,
         getExploredCardsInCategory,
+        getPrivateNote,
+        getSharedNote,
+        savePrivateNote,
+        saveSharedNote,
+        removeSharedNote,
+        isHighlighted,
+        toggleHighlight,
+        highlightCount,
+        getAllSharedNotes,
+        getHighlightedCards,
       }}
     >
       {children}
