@@ -6,6 +6,7 @@ import Header from '@/components/Header';
 import SectionView from '@/components/SectionView';
 import CardReflections from '@/components/CardReflections';
 import StepProgressIndicator from '@/components/StepProgressIndicator';
+import PauseDialog from '@/components/PauseDialog';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft, ArrowRight, Check } from 'lucide-react';
 
@@ -39,6 +40,7 @@ export default function CardView() {
     updateSessionStep,
     completeSessionStep,
     endSession,
+    pauseSession,
   } = useApp();
 
   const card = cardId ? getCardById(cardId) : undefined;
@@ -243,35 +245,40 @@ export default function CardView() {
               <SectionView section={currentSection} card={card} />
               
               {/* Navigation Buttons */}
-              <div className="py-8 border-t border-divider flex flex-col sm:flex-row justify-center md:justify-start gap-3">
-                {currentStepIndex > 0 && (
+              <div className="py-8 border-t border-divider space-y-4">
+                <div className="flex flex-col sm:flex-row justify-center md:justify-start gap-3">
+                  {currentStepIndex > 0 && (
+                    <Button
+                      onClick={() => setCurrentStepIndex(currentStepIndex - 1)}
+                      variant="outline"
+                      size="lg"
+                      className="gap-2"
+                    >
+                      <ArrowLeft className="w-4 h-4" />
+                      Tillbaka
+                    </Button>
+                  )}
                   <Button
-                    onClick={() => setCurrentStepIndex(currentStepIndex - 1)}
-                    variant="outline"
+                    onClick={handleNextStep}
                     size="lg"
                     className="gap-2"
                   >
-                    <ArrowLeft className="w-4 h-4" />
-                    Tillbaka
+                    {currentStepIndex === STEP_ORDER.length - 1 ? (
+                      <>
+                        <Check className="w-4 h-4" />
+                        Avsluta samtalet
+                      </>
+                    ) : (
+                      <>
+                        {STEP_CTA_LABELS[STEP_ORDER[currentStepIndex]]}
+                        <ArrowRight className="w-4 h-4" />
+                      </>
+                    )}
                   </Button>
-                )}
-                <Button
-                  onClick={handleNextStep}
-                  size="lg"
-                  className="gap-2"
-                >
-                  {currentStepIndex === STEP_ORDER.length - 1 ? (
-                    <>
-                      <Check className="w-4 h-4" />
-                      Avsluta samtalet
-                    </>
-                  ) : (
-                    <>
-                      {STEP_CTA_LABELS[STEP_ORDER[currentStepIndex]]}
-                      <ArrowRight className="w-4 h-4" />
-                    </>
-                  )}
-                </Button>
+                </div>
+                <div className="flex justify-center md:justify-start">
+                  <PauseDialog onConfirm={() => { pauseSession(); navigate('/'); }} />
+                </div>
               </div>
 
               {/* Reflections (private → shared) */}

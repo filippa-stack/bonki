@@ -51,6 +51,7 @@ interface AppContextType {
   endSession: () => void;
   hasActiveSession: boolean;
   dismissSession: () => void;
+  pauseSession: () => void;
   // Journey state
   journeyState: JourneyState | undefined;
   getCategoryStatus: (categoryId: string) => 'not_started' | 'in_progress' | 'explored';
@@ -605,6 +606,36 @@ export function AppProvider({ children }: { children: ReactNode }) {
     setSessionDismissed(true);
   };
 
+  const pauseSession = () => {
+    setState((prev) => {
+      const session = prev.currentSession;
+      if (!session) return prev;
+
+      const currentJourney = prev.journeyState || {
+        currentCategoryId: null,
+        lastOpenedCardId: null,
+        lastCompletedCardId: null,
+        suggestedNextCardId: null,
+        pausedAt: null,
+        updatedAt: new Date().toISOString(),
+        exploredCardIds: [],
+      };
+
+      return {
+        ...prev,
+        currentSession: undefined,
+        journeyState: {
+          ...currentJourney,
+          pausedAt: new Date().toISOString(),
+          lastOpenedCardId: session.cardId,
+          currentCategoryId: session.categoryId,
+          updatedAt: new Date().toISOString(),
+        },
+      };
+    });
+    setSessionDismissed(false);
+  };
+
   const hasActiveSession = !sessionDismissed && !!state.currentSession;
 
   // Category status helpers
@@ -760,6 +791,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
         endSession,
         hasActiveSession,
         dismissSession,
+        pauseSession,
         journeyState: state.journeyState,
         getCategoryStatus,
         getExploredCardsInCategory,

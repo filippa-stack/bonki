@@ -3,7 +3,11 @@
     "continue_cta": "Fortsätt",
     "choose_another": "Välj ett annat kort",
     "back_home": "Tillbaka",
-    "pause_for_now": "Pausa för nu"
+    "pause_for_now": "Pausa för nu",
+    "pause_title": "Pausa samtalet",
+    "pause_closing_text": "Det finns inget att skynda på. Ni har redan gjort det viktigaste — ni tog er tid att prata. Samtalet finns kvar när ni är redo att fortsätta.",
+    "pause_confirm": "Pausa för nu",
+    "pause_cancel": "Fortsätt samtalet"
   },
   "login": {
     "welcome": "Välkommen",
@@ -34,7 +38,10 @@
     "edit_label_button_colors": "Knappfärger",
     "edit_label_background": "Bakgrund:",
     "edit_label_text": "Text:",
-    "save": "Spara"
+    "save": "Spara",
+    "relationship_memory_title": "Senaste minnet",
+    "relationship_memory_explored": "Ni utforskade",
+    "relationship_memory_date": "{{date}}"
   },
   "header": {
     "go_back": "Gå tillbaka",
