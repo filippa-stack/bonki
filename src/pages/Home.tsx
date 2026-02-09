@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useApp } from '@/contexts/AppContext';
 import { useSiteSettings } from '@/contexts/SiteSettingsContext';
 import CategoryCard from '@/components/CategoryCard';
@@ -24,6 +25,7 @@ const fontOptions = [
 ];
 
 export default function Home() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const { 
     mostRecentConversation, 
@@ -119,7 +121,7 @@ export default function Home() {
               className="space-y-4"
             >
               <div className="space-y-2">
-                <Label className="text-xs text-muted-foreground">Rubrik</Label>
+                <Label className="text-xs text-muted-foreground">{t('home.edit_label_title')}</Label>
                 <div className="flex gap-2 items-center flex-wrap">
                   <Input
                     value={editTitle}
@@ -146,7 +148,7 @@ export default function Home() {
                 </div>
               </div>
               <div className="space-y-2">
-                <Label className="text-xs text-muted-foreground">Underrubrik</Label>
+                <Label className="text-xs text-muted-foreground">{t('home.edit_label_subtitle')}</Label>
                 <div className="flex gap-2 items-center flex-wrap">
                   <Input
                     value={editSubtitle}
@@ -173,17 +175,17 @@ export default function Home() {
                 </div>
               </div>
               <div className="space-y-2">
-                <Label className="text-xs text-muted-foreground">Knappfärger</Label>
+                <Label className="text-xs text-muted-foreground">{t('home.edit_label_button_colors')}</Label>
                 <div className="flex gap-3 items-center">
                   <div className="flex items-center gap-2">
-                    <span className="text-xs text-muted-foreground">Bakgrund:</span>
+                    <span className="text-xs text-muted-foreground">{t('home.edit_label_background')}</span>
                     <ColorPicker
                       currentColor={editButtonColor}
                       onColorChange={setEditButtonColor}
                     />
                   </div>
                   <div className="flex items-center gap-2">
-                    <span className="text-xs text-muted-foreground">Text:</span>
+                    <span className="text-xs text-muted-foreground">{t('home.edit_label_text')}</span>
                     <ColorPicker
                       currentColor={editButtonTextColor}
                       onColorChange={setEditButtonTextColor}
@@ -193,7 +195,7 @@ export default function Home() {
               </div>
               <Button size="sm" onClick={handleSaveHero} className="gap-2">
                 <Check className="w-4 h-4" />
-                Spara
+                {t('home.save')}
               </Button>
             </motion.div>
           ) : (
@@ -238,7 +240,7 @@ export default function Home() {
           className="px-6 mb-8"
         >
           <p className="text-xs text-muted-foreground uppercase tracking-wider mb-3">
-            Continue where you left off
+            {t('home.continue_where_left_off')}
           </p>
           <ConversationCard
             conversation={mostRecentConversation}
@@ -251,7 +253,7 @@ export default function Home() {
       {/* Categories */}
       <div className="px-6 pb-6">
         <p className="text-xs text-muted-foreground uppercase tracking-wider mb-4">
-          Välj en kategori
+          {t('home.choose_category')}
         </p>
         <div className="space-y-3">
           {categories.map((category, index) => (
@@ -285,7 +287,7 @@ export default function Home() {
           >
             <Bookmark className="w-4 h-4" />
             <span className="text-sm">
-              Saved conversations ({savedConversations.length})
+              {t('home.saved_conversations', { count: savedConversations.length })}
             </span>
           </button>
         </motion.div>

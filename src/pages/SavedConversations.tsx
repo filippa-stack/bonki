@@ -1,10 +1,12 @@
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 import { useApp } from '@/contexts/AppContext';
 import Header from '@/components/Header';
 import ConversationCard from '@/components/ConversationCard';
 
 export default function SavedConversations() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const { savedConversations, backgroundColor } = useApp();
 
@@ -14,7 +16,7 @@ export default function SavedConversations() {
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: backgroundColor || 'hsl(var(--background))' }}>
-      <Header title="Saved Conversations" showBack backTo="/" />
+      <Header title={t('saved.title')} showBack backTo="/" />
 
       <div className="px-6 py-8">
         {sortedConversations.length === 0 ? (
@@ -23,10 +25,8 @@ export default function SavedConversations() {
             animate={{ opacity: 1 }}
             className="text-center py-16"
           >
-            <p className="text-gentle mb-2">No saved conversations yet</p>
-            <p className="text-sm text-muted-foreground">
-              When you save a conversation for later, it will appear here.
-            </p>
+            <p className="text-gentle mb-2">{t('saved.empty')}</p>
+            <p className="text-sm text-muted-foreground">{t('saved.empty_hint')}</p>
           </motion.div>
         ) : (
           <div className="space-y-3">

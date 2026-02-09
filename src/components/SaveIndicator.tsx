@@ -1,4 +1,5 @@
 import { motion, AnimatePresence } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 import { Cloud, CloudOff, Check, Loader2 } from 'lucide-react';
 import type { SaveStatus } from '@/hooks/useSettingsSync';
 
@@ -9,6 +10,8 @@ interface SaveIndicatorProps {
 }
 
 export default function SaveIndicator({ status, error, lastSavedAt }: SaveIndicatorProps) {
+  const { t } = useTranslation();
+
   const formatTime = (date: Date) => {
     return date.toLocaleTimeString('sv-SE', { hour: '2-digit', minute: '2-digit' });
   };
@@ -24,10 +27,10 @@ export default function SaveIndicator({ status, error, lastSavedAt }: SaveIndica
           className="flex items-center gap-1.5 text-muted-foreground"
         >
           <Loader2 className="w-3.5 h-3.5 animate-spin" />
-          <span className="text-xs">Sparar…</span>
+          <span className="text-xs">{t('save_indicator.saving')}</span>
         </motion.div>
       )}
-      
+
       {status === 'saved' && (
         <motion.div
           key="saved"
@@ -37,10 +40,10 @@ export default function SaveIndicator({ status, error, lastSavedAt }: SaveIndica
           className="flex items-center gap-1.5 text-green-600 dark:text-green-400"
         >
           <Check className="w-3.5 h-3.5" />
-          <span className="text-xs">Sparat</span>
+          <span className="text-xs">{t('save_indicator.saved')}</span>
         </motion.div>
       )}
-      
+
       {status === 'error' && (
         <motion.div
           key="error"
@@ -50,10 +53,10 @@ export default function SaveIndicator({ status, error, lastSavedAt }: SaveIndica
           className="flex items-center gap-1.5 text-destructive"
         >
           <CloudOff className="w-3.5 h-3.5" />
-          <span className="text-xs">{error || 'Kunde inte spara'}</span>
+          <span className="text-xs">{error || t('save_indicator.error_save')}</span>
         </motion.div>
       )}
-      
+
       {status === 'idle' && lastSavedAt && (
         <motion.div
           key="idle"
@@ -63,7 +66,7 @@ export default function SaveIndicator({ status, error, lastSavedAt }: SaveIndica
           className="flex items-center gap-1.5 text-muted-foreground"
         >
           <Cloud className="w-3.5 h-3.5" />
-          <span className="text-xs">Synkad {formatTime(lastSavedAt)}</span>
+          <span className="text-xs">{t('save_indicator.synced', { time: formatTime(lastSavedAt) })}</span>
         </motion.div>
       )}
     </AnimatePresence>

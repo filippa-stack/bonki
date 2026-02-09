@@ -1,5 +1,6 @@
 import { ArrowLeft, LogOut } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { useApp } from '@/contexts/AppContext';
 import { useAuth } from '@/contexts/AuthContext';
 import ColorPicker from '@/components/ColorPicker';
@@ -22,14 +23,15 @@ interface HeaderProps {
   showBackupManager?: boolean;
 }
 
-export default function Header({ 
-  title, 
-  showBack = false, 
-  backTo, 
+export default function Header({
+  title,
+  showBack = false,
+  backTo,
   showBackgroundPicker = false,
   showSaveIndicator = true,
-  showBackupManager = true
+  showBackupManager = true,
 }: HeaderProps) {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const { backgroundColor, setBackgroundColor, saveStatus, lastSavedAt, saveError } = useApp();
   const { signOut } = useAuth();
@@ -55,14 +57,14 @@ export default function Header({
             <button
               onClick={handleBack}
               className="p-2 -ml-2 text-muted-foreground hover:text-foreground transition-colors"
-              aria-label="Go back"
+              aria-label={t('header.go_back')}
             >
               <ArrowLeft className="w-5 h-5" />
             </button>
           )}
-          <img 
-            src={bonkiLogo} 
-            alt="Still Us" 
+          <img
+            src={bonkiLogo}
+            alt="Still Us"
             className="h-8 w-8 object-contain cursor-pointer"
             onClick={() => navigate('/')}
           />
@@ -74,16 +76,16 @@ export default function Header({
         </div>
         <div className="flex items-center gap-2 sm:gap-4">
           {showSaveIndicator && (
-            <SaveIndicator 
-              status={saveStatus} 
-              error={saveError} 
-              lastSavedAt={lastSavedAt} 
+            <SaveIndicator
+              status={saveStatus}
+              error={saveError}
+              lastSavedAt={lastSavedAt}
             />
           )}
           {showBackupManager && <BackupManager />}
           {showBackgroundPicker && (
             <div className="flex items-center gap-2">
-              <span className="text-xs text-muted-foreground hidden sm:inline">Bakgrund</span>
+              <span className="text-xs text-muted-foreground hidden sm:inline">{t('header.background')}</span>
               <ColorPicker
                 currentColor={backgroundColor}
                 onColorChange={setBackgroundColor}
@@ -97,13 +99,13 @@ export default function Header({
               </Button>
             </PopoverTrigger>
             <PopoverContent className="w-48 p-2" align="end">
-              <Button 
-                variant="ghost" 
+              <Button
+                variant="ghost"
                 className="w-full justify-start text-destructive hover:text-destructive hover:bg-destructive/10"
                 onClick={handleSignOut}
               >
                 <LogOut className="w-4 h-4 mr-2" />
-                Logga ut
+                {t('header.sign_out')}
               </Button>
             </PopoverContent>
           </Popover>
