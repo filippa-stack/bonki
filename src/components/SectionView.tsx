@@ -194,7 +194,7 @@ export default function SectionView({ section, card }: SectionViewProps) {
       {existingReflections.length > 0 && (
         <div className="mb-8">
           <p className="text-xs text-muted-foreground uppercase tracking-wider mb-4">
-            Your reflections
+            Dina reflektioner
           </p>
           <div className="space-y-3">
             {existingReflections.map((reflection) => (
@@ -224,7 +224,7 @@ export default function SectionView({ section, card }: SectionViewProps) {
           <textarea
             value={reflectionText}
             onChange={(e) => setReflectionText(e.target.value)}
-            placeholder="Write your thoughts..."
+            placeholder="Skriv dina tankar..."
             className="w-full min-h-[120px] p-4 rounded-lg bg-card border border-input text-foreground placeholder:text-muted-foreground resize-none focus:outline-none focus:ring-2 focus:ring-primary/20 font-sans text-base"
             autoFocus
           />
@@ -234,7 +234,7 @@ export default function SectionView({ section, card }: SectionViewProps) {
               disabled={!reflectionText.trim()}
               className="btn-gentle disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              Save reflection
+              Spara reflektion
             </button>
             <button
               onClick={() => {
@@ -243,7 +243,7 @@ export default function SectionView({ section, card }: SectionViewProps) {
               }}
               className="btn-soft"
             >
-              Cancel
+              Avbryt
             </button>
           </div>
         </motion.div>
@@ -254,14 +254,14 @@ export default function SectionView({ section, card }: SectionViewProps) {
             className="btn-soft flex items-center gap-2"
           >
             <PenLine className="w-4 h-4" />
-            Write a reflection
+            Skriv en reflektion
           </button>
           <button
             onClick={handleSaveForLater}
             className="btn-soft flex items-center gap-2"
           >
             <Bookmark className={`w-4 h-4 ${isSaved ? 'fill-current' : ''}`} />
-            {isSaved ? 'Saved' : 'Save for later'}
+            {isSaved ? 'Sparat' : 'Spara till senare'}
           </button>
         </div>
       )}
