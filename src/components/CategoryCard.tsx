@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 import { Category } from '@/types';
 import ColorPicker from '@/components/ColorPicker';
 import IconPicker, { getIconByName } from '@/components/IconPicker';
@@ -14,6 +15,7 @@ interface CategoryCardProps {
   onBorderColorChange?: (borderColor: string) => void;
   onIconChange?: (icon: string) => void;
   editable?: boolean;
+  status?: 'not_started' | 'in_progress' | 'explored';
 }
 
 export default function CategoryCard({ 
@@ -25,8 +27,10 @@ export default function CategoryCard({
   onTextColorChange,
   onBorderColorChange,
   onIconChange,
-  editable = true 
+  editable = true,
+  status,
 }: CategoryCardProps) {
+  const { t } = useTranslation();
   const [title, setTitle] = useState(category.title);
   const [description, setDescription] = useState(category.description);
   const CategoryIcon = category.icon ? getIconByName(category.icon) : null;
@@ -109,6 +113,11 @@ export default function CategoryCard({
           <p className="text-xs text-muted-foreground text-center mt-3">
             {category.cardCount} {category.cardCount === 1 ? 'kort' : 'kort'}
           </p>
+          {status && (
+            <p className="text-xs text-muted-foreground text-center mt-1 italic">
+              {t(`category_status.${status}`)}
+            </p>
+          )}
         </div>
       </div>
     </motion.div>

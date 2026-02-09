@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { useApp } from '@/contexts/AppContext';
 import { useSiteSettings } from '@/contexts/SiteSettingsContext';
 import CategoryCard from '@/components/CategoryCard';
-import ConversationCard from '@/components/ConversationCard';
+import ContinueModule from '@/components/ContinueModule';
 import Header from '@/components/Header';
 import ResumeSessionDialog from '@/components/ResumeSessionDialog';
 import { Bookmark, Pencil, Check } from 'lucide-react';
@@ -42,6 +42,9 @@ export default function Home() {
     getCardById,
     getCategoryById,
     dismissSession,
+    journeyState,
+    cards,
+    getCategoryStatus,
   } = useApp();
   const { settings, updateSettings } = useSiteSettings();
   const [isEditingHero, setIsEditingHero] = useState(false);
@@ -231,27 +234,50 @@ export default function Home() {
         </div>
       </div>
 
-      {/* Continue conversation */}
-      {mostRecentConversation && (
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4, delay: 0.2 }}
-          className="px-6 mb-8"
-        >
-          <p className="text-xs text-muted-foreground uppercase tracking-wider mb-3">
-            {t('home.continue_where_left_off')}
-          </p>
-          <ConversationCard
-            conversation={mostRecentConversation}
-            onClick={() => navigate(`/card/${mostRecentConversation.cardId}`)}
-            variant="compact"
-          />
-        </motion.div>
-      )}
+      {/* Journey continue module */}
+      {(() => {
+        const suggestedCardId = journeyState?.suggestedNextCardId || journeyState?.lastOpenedCardId;
+        const suggestedCard = suggestedCardId ? getCardById(suggestedCardId) : null;
+        const suggestedCategory = suggestedCard ? getCategoryById(suggestedCard.categoryId) : null;
+        
+        if (suggestedCard && suggestedCategory) {
+          return (
+            <ContinueModule
+              cardTitle={suggestedCard.title}
+              categoryTitle={suggestedCategory.title}
+              onContinue={() => navigate(`/card/${suggestedCard.id}`)}
+              onChooseAnother={() => {
+                const el = document.getElementById('category-section');
+                el?.scrollIntoView({ behavior: 'smooth' });
+              }}
+            />
+          );
+        }
+        
+        // Fallback to most recent conversation
+        if (mostRecentConversation) {
+          const recentCard = getCardById(mostRecentConversation.cardId);
+          const recentCategory = recentCard ? getCategoryById(recentCard.categoryId) : null;
+          if (recentCard && recentCategory) {
+            return (
+              <ContinueModule
+                cardTitle={recentCard.title}
+                categoryTitle={recentCategory.title}
+                onContinue={() => navigate(`/card/${mostRecentConversation.cardId}`)}
+                onChooseAnother={() => {
+                  const el = document.getElementById('category-section');
+                  el?.scrollIntoView({ behavior: 'smooth' });
+                }}
+              />
+            );
+          }
+        }
+        
+        return null;
+      })()}
 
       {/* Categories */}
-      <div className="px-6 pb-6">
+      <div id="category-section" className="px-6 pb-6">
         <p className="text-xs text-muted-foreground uppercase tracking-wider mb-4">
           {t('home.choose_category')}
         </p>
@@ -268,6 +294,7 @@ export default function Home() {
               onBorderColorChange={(borderColor) => updateCategoryBorderColor(category.id, borderColor)}
               onIconChange={(icon) => updateCategoryIcon(category.id, icon)}
               editable={true}
+              status={getCategoryStatus(category.id)}
             />
           ))}
         </div>
