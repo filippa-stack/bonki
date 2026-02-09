@@ -164,6 +164,10 @@ export function useSettingsSync(
             loadedSettings.cards = data.cards as unknown as Card[];
           }
 
+          if ((data as any).site_settings && typeof (data as any).site_settings === 'object') {
+            loadedSettings.siteSettings = (data as any).site_settings as SiteSettings;
+          }
+
           if (Object.keys(loadedSettings).length > 0) {
             onSettingsLoaded(loadedSettings);
           }
@@ -189,6 +193,7 @@ export function useSettingsSync(
       backgroundColor: settings.backgroundColor,
       categories: settings.categories,
       cards: settings.cards,
+      siteSettings: settings.siteSettings,
     });
 
     // Don't save if nothing changed
@@ -212,6 +217,7 @@ export function useSettingsSync(
           background_color: settings.backgroundColor || null,
           categories: JSON.parse(JSON.stringify(settings.categories)) as Json,
           cards: JSON.parse(JSON.stringify(settings.cards)) as Json,
+          site_settings: settings.siteSettings ? JSON.parse(JSON.stringify(settings.siteSettings)) as Json : null,
           updated_at: new Date().toISOString(),
         };
 
@@ -266,7 +272,7 @@ export function useSettingsSync(
     }, 1000); // Debounce 1 second
 
     return () => clearTimeout(timeoutId);
-  }, [userId, settings.backgroundColor, settings.categories, settings.cards]);
+  }, [userId, settings.backgroundColor, settings.categories, settings.cards, settings.siteSettings]);
 
   return { saveStatus, lastSavedAt, saveError };
 }
