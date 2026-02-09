@@ -52,6 +52,7 @@ export type Database = {
           created_at: string
           device_id: string
           id: string
+          site_settings: Json | null
           updated_at: string
           user_id: string | null
         }
@@ -62,6 +63,7 @@ export type Database = {
           created_at?: string
           device_id: string
           id?: string
+          site_settings?: Json | null
           updated_at?: string
           user_id?: string | null
         }
@@ -72,6 +74,7 @@ export type Database = {
           created_at?: string
           device_id?: string
           id?: string
+          site_settings?: Json | null
           updated_at?: string
           user_id?: string | null
         }

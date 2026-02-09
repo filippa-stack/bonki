@@ -3,6 +3,7 @@ import { CoupleSpace, ConversationThread, Reflection, AppState, Category, Card }
 import { categories as initialCategories, cards as initialCards } from '@/data/content';
 import { useSettingsSync, SaveStatus } from '@/hooks/useSettingsSync';
 import { useAuth } from '@/contexts/AuthContext';
+import { useSiteSettings, SiteSettings } from '@/contexts/SiteSettingsContext';
 
 const STEP_ORDER = ['opening', 'reflective', 'scenario', 'exercise'] as const;
 
@@ -131,8 +132,11 @@ export function AppProvider({ children }: { children: ReactNode }) {
     localStorage.setItem(BACKGROUND_COLOR_KEY, backgroundColor);
   }, [backgroundColor]);
 
+  // Get site settings from context
+  const { settings: siteSettings, loadSettings: loadSiteSettings } = useSiteSettings();
+
   // Sync settings with database
-  const handleSettingsLoaded = useCallback((loadedSettings: Partial<{ backgroundColor: string; categories: Category[]; cards: Card[] }>) => {
+  const handleSettingsLoaded = useCallback((loadedSettings: Partial<{ backgroundColor: string; categories: Category[]; cards: Card[]; siteSettings: SiteSettings }>) => {
     if (loadedSettings.backgroundColor !== undefined) {
       setBackgroundColorState(loadedSettings.backgroundColor);
     }
@@ -142,11 +146,14 @@ export function AppProvider({ children }: { children: ReactNode }) {
     if (loadedSettings.cards) {
       setCards(loadedSettings.cards);
     }
-  }, []);
+    if (loadedSettings.siteSettings) {
+      loadSiteSettings(loadedSettings.siteSettings);
+    }
+  }, [loadSiteSettings]);
 
   const { saveStatus, lastSavedAt, saveError } = useSettingsSync(
     user?.id ?? null,
-    { backgroundColor, categories, cards },
+    { backgroundColor, categories, cards, siteSettings },
     handleSettingsLoaded
   );
 

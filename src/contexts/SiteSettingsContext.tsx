@@ -1,6 +1,6 @@
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import React, { createContext, useContext, useState, useEffect, ReactNode, useCallback } from 'react';
 
-interface SiteSettings {
+export interface SiteSettings {
   heroTitle: string;
   heroSubtitle: string;
   heroTitleColor: string;
@@ -16,6 +16,7 @@ interface SiteSettings {
 interface SiteSettingsContextType {
   settings: SiteSettings;
   updateSettings: (updates: Partial<SiteSettings>) => void;
+  loadSettings: (loadedSettings: SiteSettings) => void;
 }
 
 const defaultSettings: SiteSettings = {
@@ -48,12 +49,16 @@ export function SiteSettingsProvider({ children }: { children: ReactNode }) {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(settings));
   }, [settings]);
 
-  const updateSettings = (updates: Partial<SiteSettings>) => {
+  const updateSettings = useCallback((updates: Partial<SiteSettings>) => {
     setSettings((prev) => ({ ...prev, ...updates }));
-  };
+  }, []);
+
+  const loadSettings = useCallback((loadedSettings: SiteSettings) => {
+    setSettings({ ...defaultSettings, ...loadedSettings });
+  }, []);
 
   return (
-    <SiteSettingsContext.Provider value={{ settings, updateSettings }}>
+    <SiteSettingsContext.Provider value={{ settings, updateSettings, loadSettings }}>
       {children}
     </SiteSettingsContext.Provider>
   );
