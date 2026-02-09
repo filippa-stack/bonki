@@ -1,18 +1,22 @@
 import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 import { useApp } from '@/contexts/AppContext';
 import Header from '@/components/Header';
 import ColorPicker from '@/components/ColorPicker';
 import { ChevronRight, Plus, Trash2 } from 'lucide-react';
 
 export default function Category() {
+  const { t } = useTranslation();
   const { categoryId } = useParams<{ categoryId: string }>();
   const navigate = useNavigate();
-  const { getCategoryById, getCardsByCategory, updateCard, updateCardColor, updateCardTextColor, updateCardBorderColor, addCard, deleteCard, backgroundColor } = useApp();
+  const { getCategoryById, getCardsByCategory, updateCard, updateCardColor, updateCardTextColor, updateCardBorderColor, addCard, deleteCard, backgroundColor, getExploredCardsInCategory, getCategoryStatus } = useApp();
   
   const category = categoryId ? getCategoryById(categoryId) : undefined;
   const cards = categoryId ? getCardsByCategory(categoryId) : [];
+  const exploredCount = categoryId ? getExploredCardsInCategory(categoryId) : 0;
+  const status = categoryId ? getCategoryStatus(categoryId) : 'not_started';
 
   const handleAddCard = () => {
     if (!categoryId) return;
@@ -21,7 +25,7 @@ export default function Category() {
   };
 
   const handleDeleteCard = (cardId: string, cardTitle: string) => {
-    if (confirm(`Vill du ta bort "${cardTitle}"?`)) {
+    if (confirm(t('category.delete_confirm', { title: cardTitle }))) {
       deleteCard(cardId);
     }
   };
@@ -29,7 +33,7 @@ export default function Category() {
   if (!category) {
     return (
       <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: backgroundColor || 'hsl(var(--background))' }}>
-        <p className="text-gentle">Category not found</p>
+        <p className="text-gentle">{t('category.not_found')}</p>
       </div>
     );
   }
@@ -55,6 +59,28 @@ export default function Category() {
         >
           {category.description}
         </motion.p>
+
+        {/* Exploration status */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.2 }}
+          className="mt-4"
+        >
+          <p className="text-xs text-muted-foreground">
+            {t('category.explored_count', { explored: exploredCount, total: cards.length })}
+          </p>
+          {status === 'explored' && (
+            <p className="text-xs text-gentle italic mt-1">
+              {t('category.all_explored')}
+            </p>
+          )}
+          {status !== 'explored' && (
+            <p className="text-xs text-gentle italic mt-1">
+              {t('category_status.return_note')}
+            </p>
+          )}
+        </motion.div>
       </div>
 
       {/* Cards */}
@@ -83,7 +109,7 @@ export default function Category() {
             className="w-full p-4 rounded-xl border-2 border-dashed border-muted-foreground/30 hover:border-primary/50 hover:bg-muted/30 transition-all flex items-center justify-center gap-2 text-muted-foreground hover:text-primary"
           >
             <Plus className="w-5 h-5" />
-            <span className="text-sm font-medium">Lägg till underkategori</span>
+            <span className="text-sm font-medium">{t('category.add_card')}</span>
           </motion.button>
         </div>
       </div>
@@ -120,6 +146,7 @@ function EditableCard({
   onBorderColorChange,
   onDelete,
 }: EditableCardProps) {
+  const { t } = useTranslation();
   const [title, setTitle] = useState(card.title);
   const [subtitle, setSubtitle] = useState(card.subtitle || '');
 
@@ -170,7 +197,7 @@ function EditableCard({
             style={{ color: card.textColor || 'hsl(var(--gentle))' }}
           />
           <p className="text-xs text-muted-foreground mt-3">
-            {card.sections.length} sektioner
+            {t('category.sections_count', { count: card.sections.length })}
           </p>
         </div>
         <div className="flex items-center gap-1 self-end sm:self-start shrink-0">
@@ -187,8 +214,8 @@ function EditableCard({
           <button
             onClick={(e) => { e.stopPropagation(); onDelete(); }}
             className="p-2 rounded-full hover:bg-destructive/20 transition-colors"
-            aria-label="Ta bort kort"
-            title="Ta bort"
+            aria-label={t('backup.delete_label')}
+            title={t('backup.delete_label')}
           >
             <Trash2 className="w-4 h-4 text-muted-foreground hover:text-destructive transition-colors" />
           </button>

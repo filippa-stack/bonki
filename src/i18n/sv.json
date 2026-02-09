@@ -98,7 +98,13 @@
     "cta_exercise": "Avsluta samtalet"
   },
   "category": {
-    "cards_count": "{{count}} kort"
+    "cards_count": "{{count}} kort",
+    "not_found": "Kategorin hittades inte",
+    "add_card": "Lägg till underkategori",
+    "sections_count": "{{count}} sektioner",
+    "delete_confirm": "Vill du ta bort \"{{title}}\"?",
+    "explored_count": "{{explored}} av {{total}} utforskade",
+    "all_explored": "Utforskat — men möjligt att återvända till när livet förändras."
   },
   "category_status": {
     "not_started": "Inte påbörjat",

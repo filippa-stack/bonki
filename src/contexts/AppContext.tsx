@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode, useCallback } from 'react';
-import { CoupleSpace, ConversationThread, Reflection, AppState, Category, Card } from '@/types';
+import { CoupleSpace, ConversationThread, Reflection, AppState, Category, Card, JourneyState } from '@/types';
 import { categories as initialCategories, cards as initialCards } from '@/data/content';
 import { useSettingsSync, SaveStatus } from '@/hooks/useSettingsSync';
 import { useAuth } from '@/contexts/AuthContext';
@@ -51,6 +51,10 @@ interface AppContextType {
   endSession: () => void;
   hasActiveSession: boolean;
   dismissSession: () => void;
+  // Journey state
+  journeyState: JourneyState | undefined;
+  getCategoryStatus: (categoryId: string) => 'not_started' | 'in_progress' | 'explored';
+  getExploredCardsInCategory: (categoryId: string) => number;
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -501,11 +505,89 @@ export function AppProvider({ children }: { children: ReactNode }) {
   };
 
   const endSession = () => {
+    setState((prev) => {
+      const session = prev.currentSession;
+      if (!session) return { ...prev, currentSession: undefined };
+
+      // If all 4 steps completed, mark card as explored
+      const allCompleted = session.completedSteps.length >= 4;
+      const currentJourney = prev.journeyState || {
+        currentCategoryId: null,
+        lastOpenedCardId: null,
+        lastCompletedCardId: null,
+        suggestedNextCardId: null,
+        pausedAt: null,
+        updatedAt: new Date().toISOString(),
+        exploredCardIds: [],
+      };
+
+      const exploredCardIds = allCompleted && !currentJourney.exploredCardIds.includes(session.cardId)
+        ? [...currentJourney.exploredCardIds, session.cardId]
+        : currentJourney.exploredCardIds;
+
+      // Compute suggested next card
+      const categoryCards = cards.filter(c => c.categoryId === session.categoryId);
+      const currentIndex = categoryCards.findIndex(c => c.id === session.cardId);
+      let suggestedNextCardId: string | null = null;
+
+      // Find next unexplored card in same category
+      for (let i = 1; i <= categoryCards.length; i++) {
+        const nextCard = categoryCards[(currentIndex + i) % categoryCards.length];
+        if (!exploredCardIds.includes(nextCard.id)) {
+          suggestedNextCardId = nextCard.id;
+          break;
+        }
+      }
+
+      // If all in category explored, try next category
+      if (!suggestedNextCardId) {
+        const catIndex = categories.findIndex(c => c.id === session.categoryId);
+        for (let ci = 1; ci <= categories.length; ci++) {
+          const nextCat = categories[(catIndex + ci) % categories.length];
+          const nextCatCards = cards.filter(c => c.categoryId === nextCat.id);
+          const unexplored = nextCatCards.find(c => !exploredCardIds.includes(c.id));
+          if (unexplored) {
+            suggestedNextCardId = unexplored.id;
+            break;
+          }
+        }
+      }
+
+      return {
+        ...prev,
+        currentSession: undefined,
+        journeyState: {
+          ...currentJourney,
+          lastCompletedCardId: allCompleted ? session.cardId : currentJourney.lastCompletedCardId,
+          suggestedNextCardId,
+          exploredCardIds,
+          updatedAt: new Date().toISOString(),
+        },
+      };
+    });
+    setSessionDismissed(false);
+  };
+
+  // Update journey state when starting a session
+  const startSessionWithJourney = (categoryId: string, cardId: string) => {
+    startSession(categoryId, cardId);
     setState((prev) => ({
       ...prev,
-      currentSession: undefined,
+      journeyState: {
+        ...(prev.journeyState || {
+          currentCategoryId: null,
+          lastOpenedCardId: null,
+          lastCompletedCardId: null,
+          suggestedNextCardId: null,
+          pausedAt: null,
+          updatedAt: new Date().toISOString(),
+          exploredCardIds: [],
+        }),
+        currentCategoryId: categoryId,
+        lastOpenedCardId: cardId,
+        updatedAt: new Date().toISOString(),
+      },
     }));
-    setSessionDismissed(false);
   };
 
   const dismissSession = () => {
@@ -513,6 +595,31 @@ export function AppProvider({ children }: { children: ReactNode }) {
   };
 
   const hasActiveSession = !sessionDismissed && !!state.currentSession;
+
+  // Category status helpers
+  const getCategoryStatus = useCallback((categoryId: string): 'not_started' | 'in_progress' | 'explored' => {
+    const categoryCards = cards.filter(c => c.categoryId === categoryId);
+    if (categoryCards.length === 0) return 'not_started';
+
+    const explored = state.journeyState?.exploredCardIds || [];
+    const exploredInCategory = categoryCards.filter(c => explored.includes(c.id)).length;
+
+    if (exploredInCategory === 0) {
+      // Check if any conversation exists for cards in this category
+      const hasAnyActivity = categoryCards.some(c =>
+        state.coupleSpace?.conversationThreads.some(t => t.cardId === c.id)
+      );
+      return hasAnyActivity ? 'in_progress' : 'not_started';
+    }
+    if (exploredInCategory >= categoryCards.length) return 'explored';
+    return 'in_progress';
+  }, [cards, state.journeyState?.exploredCardIds, state.coupleSpace?.conversationThreads]);
+
+  const getExploredCardsInCategory = useCallback((categoryId: string): number => {
+    const categoryCards = cards.filter(c => c.categoryId === categoryId);
+    const explored = state.journeyState?.exploredCardIds || [];
+    return categoryCards.filter(c => explored.includes(c.id)).length;
+  }, [cards, state.journeyState?.exploredCardIds]);
 
   return (
     <AppContext.Provider
@@ -553,12 +660,15 @@ export function AppProvider({ children }: { children: ReactNode }) {
         lastSavedAt,
         saveError,
         currentSession: state.currentSession,
-        startSession,
+        startSession: startSessionWithJourney,
         updateSessionStep,
         completeSessionStep,
         endSession,
         hasActiveSession,
         dismissSession,
+        journeyState: state.journeyState,
+        getCategoryStatus,
+        getExploredCardsInCategory,
       }}
     >
       {children}

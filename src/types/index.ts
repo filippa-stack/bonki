@@ -69,11 +69,23 @@ export interface CoupleSpace {
   createdAt: Date;
 }
 
+export interface JourneyState {
+  currentCategoryId: string | null;
+  lastOpenedCardId: string | null;
+  lastCompletedCardId: string | null;
+  suggestedNextCardId: string | null;
+  pausedAt: string | null;
+  updatedAt: string;
+  /** Set of card IDs that have been fully explored (all 4 steps completed) */
+  exploredCardIds: string[];
+}
+
 export interface AppState {
   coupleSpace: CoupleSpace | null;
   hasCompletedOnboarding: boolean;
   currentCardId?: string;
   currentSectionId?: string;
+  journeyState?: JourneyState;
   // Session tracking for guided flow
   currentSession?: {
     categoryId: string;
