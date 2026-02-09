@@ -9,10 +9,24 @@ function getDeviceId(): string | null {
   return localStorage.getItem(DEVICE_ID_KEY);
 }
 
+interface SiteSettings {
+  heroTitle: string;
+  heroSubtitle: string;
+  heroTitleColor: string;
+  heroSubtitleColor: string;
+  heroTitleFont: string;
+  heroSubtitleFont: string;
+  buttonColor: string;
+  buttonTextColor: string;
+  loginTitle: string;
+  loginSubtitle: string;
+}
+
 interface SettingsData {
   backgroundColor: string;
   categories: Category[];
   cards: Card[];
+  siteSettings?: SiteSettings;
 }
 
 export type SaveStatus = 'idle' | 'saving' | 'saved' | 'error';
