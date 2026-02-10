@@ -1,7 +1,8 @@
-import { motion } from 'framer-motion';
+import { useState, useCallback } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Section, Card, Prompt } from '@/types';
 import { useApp } from '@/contexts/AppContext';
-import { Plus } from 'lucide-react';
+import { Plus, ChevronDown } from 'lucide-react';
 import PromptItem from '@/components/PromptItem';
 import { usePromptNotes } from '@/hooks/usePromptNotes';
 
@@ -18,6 +19,8 @@ const normalizePrompt = (prompt: string | Prompt): Prompt => {
   return prompt;
 };
 
+const PROGRESSIVE_TYPES = ['opening', 'reflective'];
+
 export default function SectionView({ section, card }: SectionViewProps) {
   const { updateCardSection } = useApp();
 
@@ -32,6 +35,13 @@ export default function SectionView({ section, card }: SectionViewProps) {
   } = usePromptNotes(card.id, section.id);
 
   const normalizedPrompts = (section.prompts || []).map(normalizePrompt);
+
+  const isProgressive = PROGRESSIVE_TYPES.includes(section.type);
+
+  // Progressive reveal state: how many questions are revealed (1-based)
+  const [revealedCount, setRevealedCount] = useState(1);
+  // Which question index is currently expanded (-1 = none)
+  const [expandedIndex, setExpandedIndex] = useState(isProgressive ? 0 : -1);
 
   const handlePromptChange = (index: number, value: string) => {
     const newPrompts = normalizedPrompts.map((p, i) => 
@@ -72,7 +82,23 @@ export default function SectionView({ section, card }: SectionViewProps) {
     updateCardSection(card.id, section.id, { content: value });
   };
 
+  const handleExpandChange = useCallback((index: number, expanded: boolean) => {
+    setExpandedIndex(expanded ? index : -1);
+    // When expanding a question, reveal the next one (collapsed)
+    if (expanded && index + 1 < normalizedPrompts.length) {
+      setRevealedCount(prev => Math.max(prev, index + 2));
+    }
+  }, [normalizedPrompts.length]);
 
+  const handleRevealNext = () => {
+    setRevealedCount(prev => Math.min(prev + 1, normalizedPrompts.length));
+  };
+
+  // Determine which prompts to render
+  const visibleCount = isProgressive
+    ? Math.min(revealedCount, normalizedPrompts.length)
+    : normalizedPrompts.length;
+  const hasMoreToReveal = isProgressive && revealedCount < normalizedPrompts.length;
 
   return (
     <motion.div
@@ -120,31 +146,64 @@ export default function SectionView({ section, card }: SectionViewProps) {
         placeholder="Beskrivning..."
       />
 
-      {/* Prompts if available */}
+      {/* Prompts */}
       {normalizedPrompts.length > 0 && (
         <div className="space-y-3 mb-6">
-          {normalizedPrompts.map((prompt, index) => {
-            const promptId = `prompt-${index}`;
-            return (
-              <PromptItem
-                key={index}
-                prompt={prompt}
-                promptId={promptId}
-                index={index}
-                privateNote={getPrivateNote(promptId)}
-                sharedNote={getSharedNote(promptId)}
-                highlightCount={highlightCount}
-                onPromptChange={handlePromptChange}
-                onPromptColorChange={handlePromptColorChange}
-                onPromptTextColorChange={handlePromptTextColorChange}
-                onRemovePrompt={handleRemovePrompt}
-                onSaveNote={saveNote}
-                onShareNote={shareNote}
-                onUnshareNote={unshareNote}
-                onToggleHighlight={toggleHighlight}
-              />
-            );
-          })}
+          <AnimatePresence mode="sync">
+            {normalizedPrompts.slice(0, visibleCount).map((prompt, index) => {
+              const promptId = `prompt-${index}`;
+              const isFirstRevealed = index === 0;
+              // For progressive: collapsed questions get a label prefix
+              const showLabel = isProgressive && index > 0;
+
+              return (
+                <motion.div
+                  key={index}
+                  initial={isFirstRevealed ? { opacity: 1, y: 0 } : { opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  {showLabel && expandedIndex !== index && (
+                    <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1.5 ml-1">
+                      Fråga {index + 1}
+                    </p>
+                  )}
+                  <PromptItem
+                    prompt={prompt}
+                    promptId={promptId}
+                    index={index}
+                    privateNote={getPrivateNote(promptId)}
+                    sharedNote={getSharedNote(promptId)}
+                    highlightCount={highlightCount}
+                    expanded={isProgressive ? expandedIndex === index : undefined}
+                    onExpandChange={isProgressive ? (exp) => handleExpandChange(index, exp) : undefined}
+                    onPromptChange={handlePromptChange}
+                    onPromptColorChange={handlePromptColorChange}
+                    onPromptTextColorChange={handlePromptTextColorChange}
+                    onRemovePrompt={handleRemovePrompt}
+                    onSaveNote={saveNote}
+                    onShareNote={shareNote}
+                    onUnshareNote={unshareNote}
+                    onToggleHighlight={toggleHighlight}
+                  />
+                </motion.div>
+              );
+            })}
+          </AnimatePresence>
+
+          {/* Subtle reveal affordance */}
+          {hasMoreToReveal && (
+            <motion.button
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.3 }}
+              onClick={handleRevealNext}
+              className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors mx-auto mt-4"
+            >
+              <span>Nästa fråga</span>
+              <ChevronDown className="w-3.5 h-3.5" />
+            </motion.button>
+          )}
         </div>
       )}
 
@@ -158,7 +217,6 @@ export default function SectionView({ section, card }: SectionViewProps) {
           Lägg till fråga
         </button>
       </div>
-
     </motion.div>
   );
 }
