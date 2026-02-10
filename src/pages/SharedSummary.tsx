@@ -155,7 +155,7 @@ export default function SharedSummary() {
   const hasActiveFilter = categoryFilter !== 'all' || searchQuery.length > 0;
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: backgroundColor || 'hsl(var(--background))' }}>
+    <div className="min-h-screen page-bg">
       <Header title={t('shared.title')} showBack backTo="/" />
 
       <div className="px-6 pt-6 pb-8 max-w-2xl mx-auto">

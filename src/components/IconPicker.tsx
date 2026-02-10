@@ -155,7 +155,7 @@ export default function IconPicker({ currentIcon, onIconChange, iconColor }: Ico
           onClick={(e) => e.stopPropagation()}
         >
           {CurrentIcon ? (
-            <CurrentIcon className="h-4 w-4" style={{ color: iconColor || 'currentColor' }} />
+            <CurrentIcon className="h-4 w-4 item-text" style={{ '--item-text': iconColor || undefined } as React.CSSProperties} />
           ) : (
             <Sparkles className="h-4 w-4 text-muted-foreground" />
           )}

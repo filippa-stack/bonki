@@ -72,6 +72,13 @@
     
     /* Card styling - soft border instead of shadow */
     --card-shadow: none;
+
+    /* Dynamic overrides — set via useThemeVars hook at runtime */
+    --page-bg: hsl(var(--background));
+    --hero-title-color: hsl(var(--foreground));
+    --hero-subtitle-color: hsl(var(--text-gentle));
+    --btn-primary-bg: hsl(var(--primary));
+    --btn-primary-text: hsl(var(--primary-foreground));
   }
 }
 
@@ -160,6 +167,49 @@
   .divider-soft {
     @apply h-px w-full;
     background-color: hsl(var(--divider));
+  }
+
+  /* Dynamic page background — driven by useThemeVars */
+  .page-bg {
+    background-color: var(--page-bg);
+  }
+
+  /* Hero typography — driven by useThemeVars */
+  .hero-title-color {
+    color: var(--hero-title-color);
+  }
+
+  .hero-subtitle-color {
+    color: var(--hero-subtitle-color);
+  }
+
+  /* Dynamic button colors — driven by useThemeVars */
+  .btn-themed {
+    background-color: var(--btn-primary-bg);
+    color: var(--btn-primary-text);
+    border-color: var(--btn-primary-bg);
+  }
+
+  /* Per-item scoped dynamic colors (set via CSS vars on element) */
+  .item-colors {
+    background-color: var(--item-bg, hsl(var(--card)));
+    border-color: var(--item-border, hsl(var(--border)));
+  }
+
+  .item-text {
+    color: var(--item-text, hsl(var(--foreground)));
+  }
+
+  .item-text-gentle {
+    color: var(--item-text, hsl(var(--text-gentle)));
+  }
+
+  .prompt-colors {
+    background-color: var(--prompt-bg, hsl(var(--surface-warm)));
+  }
+
+  .prompt-text {
+    color: var(--prompt-text, hsl(var(--foreground)));
   }
 
   .animate-fade-in {

@@ -57,11 +57,11 @@ export default function CategoryCard({
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4, delay: index * 0.1 }}
       onClick={onClick}
-      className="w-full text-left card-reflection group cursor-pointer border rounded-xl"
+      className="w-full text-left card-reflection group cursor-pointer border rounded-xl item-colors"
       style={{ 
-        backgroundColor: category.color || undefined,
-        borderColor: category.borderColor || 'hsl(var(--border))'
-      }}
+        '--item-bg': category.color || undefined,
+        '--item-border': category.borderColor || undefined,
+      } as React.CSSProperties}
     >
       <div className="flex flex-col gap-2">
         {/* Color picker - top right corner */}
@@ -89,9 +89,9 @@ export default function CategoryCard({
               iconColor={category.textColor}
             />
           ) : CategoryIcon ? (
-            <CategoryIcon 
-              className="w-6 h-6" 
-              style={{ color: category.textColor || 'hsl(var(--foreground))' }} 
+             <CategoryIcon 
+              className="w-6 h-6 item-text" 
+              style={{ '--item-text': category.textColor || undefined } as React.CSSProperties} 
             />
           ) : null}
         </div>
@@ -99,14 +99,14 @@ export default function CategoryCard({
         {/* Text content - full width below */}
         <div className="w-full space-y-2">
           <h3 
-            className="text-base sm:text-lg md:text-xl font-medium text-center group-hover:text-primary transition-colors"
-            style={{ color: category.textColor || 'hsl(var(--foreground))' }}
+            className="text-base sm:text-lg md:text-xl font-medium text-center group-hover:text-primary transition-colors item-text"
+            style={{ '--item-text': category.textColor || undefined } as React.CSSProperties}
           >
             {category.title}
           </h3>
           <p 
-            className="text-xs sm:text-sm text-center"
-            style={{ color: category.textColor || 'hsl(var(--gentle))' }}
+            className="text-xs sm:text-sm text-center item-text-gentle"
+            style={{ '--item-text': category.textColor || undefined } as React.CSSProperties}
           >
             {category.description}
           </p>
