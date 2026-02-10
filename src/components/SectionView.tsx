@@ -142,7 +142,7 @@ export default function SectionView({ section, card }: SectionViewProps) {
                   prompt={prompt}
                   promptId={promptId}
                   index={index}
-                  label={isControlled && index > 0 ? `Fråga ${index + 1}` : undefined}
+                  label={isControlled ? `Fråga ${index + 1}` : undefined}
                   privateNote={getPrivateNote(promptId)}
                   sharedNote={getSharedNote(promptId)}
                   highlightCount={highlightCount}
