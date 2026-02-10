@@ -83,6 +83,14 @@ export default function Header({
             />
           )}
           {showBackupManager && <BackupManager />}
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => navigate('/shared')}
+            className="text-muted-foreground hover:text-foreground text-xs gap-1"
+          >
+            ❤️ Vårt utrymme
+          </Button>
           {showBackgroundPicker && (
             <div className="flex items-center gap-2">
               <span className="text-xs text-muted-foreground hidden sm:inline">{t('header.background')}</span>
