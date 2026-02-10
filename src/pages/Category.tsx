@@ -4,8 +4,7 @@ import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { useApp } from '@/contexts/AppContext';
 import Header from '@/components/Header';
-import ColorPicker from '@/components/ColorPicker';
-import { Plus, Trash2 } from 'lucide-react';
+import { Plus } from 'lucide-react';
 
 export default function Category() {
   const { t } = useTranslation();
@@ -140,29 +139,7 @@ function EditableCard({
   card,
   index,
   onNavigate,
-  onUpdate,
-  onColorChange,
-  onTextColorChange,
-  onBorderColorChange,
-  onDelete,
 }: EditableCardProps) {
-  const { t } = useTranslation();
-  const [title, setTitle] = useState(card.title);
-  const [subtitle, setSubtitle] = useState(card.subtitle || '');
-
-  const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setTitle(e.target.value);
-    onUpdate(card.id, e.target.value, subtitle);
-  };
-
-  const handleSubtitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSubtitle(e.target.value);
-    onUpdate(card.id, title, e.target.value);
-  };
-
-  const handleInputClick = (e: React.MouseEvent) => {
-    e.stopPropagation();
-  };
 
   return (
     <motion.div
@@ -177,51 +154,22 @@ function EditableCard({
         borderWidth: card.borderColor ? '2px' : undefined,
       }}
     >
-      <div className="flex flex-col items-center gap-2">
-        <div className="flex justify-end w-full -mb-2" onClick={(e) => e.stopPropagation()}>
-          <div className="flex items-center gap-1">
-            <ColorPicker
-              currentColor={card.color}
-              onColorChange={onColorChange}
-              currentTextColor={card.textColor}
-              onTextColorChange={onTextColorChange}
-              currentBorderColor={card.borderColor}
-              onBorderColorChange={onBorderColorChange}
-              showTextColor
-              showBorderColor
-            />
-            <button
-              onClick={(e) => { e.stopPropagation(); onDelete(); }}
-              className="p-2 rounded-full hover:bg-destructive/20 transition-colors"
-              aria-label={t('backup.delete_label')}
-              title={t('backup.delete_label')}
-            >
-              <Trash2 className="w-4 h-4 text-muted-foreground hover:text-destructive transition-colors" />
-            </button>
-          </div>
-        </div>
+      <div className="flex flex-col items-center gap-2 py-2">
         <div className="w-full space-y-2">
-          <input
-            type="text"
-            value={title}
-            onChange={handleTitleChange}
-            onClick={handleInputClick}
-            className="w-full font-serif text-lg sm:text-xl bg-transparent border-b border-transparent hover:border-border focus:border-primary focus:outline-none transition-colors placeholder:text-muted-foreground/50 text-center"
-            placeholder="Mitt sätt - Ditt sätt"
+          <h3
+            className="w-full font-serif text-lg sm:text-xl text-center"
             style={{ color: card.textColor || 'hsl(var(--foreground))' }}
-          />
-          <input
-            type="text"
-            value={subtitle}
-            onChange={handleSubtitleChange}
-            onClick={handleInputClick}
-            placeholder="Underrubrik..."
-            className="w-full text-sm bg-transparent border-b border-transparent hover:border-border focus:border-primary focus:outline-none transition-colors placeholder:text-muted-foreground/50 text-center"
-            style={{ color: card.textColor || 'hsl(var(--gentle))' }}
-          />
-          <p className="text-xs text-muted-foreground text-center mt-3">
-            {t('category.sections_count', { count: card.sections.length })}
-          </p>
+          >
+            {card.title}
+          </h3>
+          {card.subtitle && (
+            <p
+              className="w-full text-sm text-center"
+              style={{ color: card.textColor || 'hsl(var(--gentle))' }}
+            >
+              {card.subtitle}
+            </p>
+          )}
         </div>
       </div>
     </motion.div>
