@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { useApp } from '@/contexts/AppContext';
 import Header from '@/components/Header';
+import ColorPicker from '@/components/ColorPicker';
 import { Plus } from 'lucide-react';
 
 export default function Category() {
@@ -139,6 +140,9 @@ function EditableCard({
   card,
   index,
   onNavigate,
+  onColorChange,
+  onTextColorChange,
+  onBorderColorChange,
 }: EditableCardProps) {
 
   return (
@@ -155,6 +159,18 @@ function EditableCard({
       }}
     >
       <div className="flex flex-col items-center gap-2 py-2">
+        <div className="flex justify-end w-full -mb-2" onClick={(e) => e.stopPropagation()}>
+          <ColorPicker
+            currentColor={card.color}
+            onColorChange={onColorChange}
+            currentTextColor={card.textColor}
+            onTextColorChange={onTextColorChange}
+            currentBorderColor={card.borderColor}
+            onBorderColorChange={onBorderColorChange}
+            showTextColor
+            showBorderColor
+          />
+        </div>
         <div className="w-full space-y-2">
           <h3
             className="w-full font-serif text-lg sm:text-xl text-center"
