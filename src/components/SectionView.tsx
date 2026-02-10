@@ -41,9 +41,10 @@ export default function SectionView({ section, card }: SectionViewProps) {
   const totalQuestions = normalizedPrompts.length;
 
   // Progressive reveal state: how many questions are rendered (1-based)
-  const [revealedCount, setRevealedCount] = useState(1);
-  // Which question index is currently expanded (-1 = none)
-  const [expandedIndex, setExpandedIndex] = useState(isProgressive ? 0 : -1);
+  // Start with 2 so Q1 expanded + Q2 placeholder are visible on load
+  const [revealedCount, setRevealedCount] = useState(isProgressive ? Math.min(2, totalQuestions) : totalQuestions);
+  // Set of expanded question indices (multiple can be open)
+  const [expandedSet, setExpandedSet] = useState<Set<number>>(() => new Set(isProgressive ? [0] : []));
 
   const handlePromptChange = (index: number, value: string) => {
     const newPrompts = normalizedPrompts.map((p, i) => 
@@ -85,7 +86,15 @@ export default function SectionView({ section, card }: SectionViewProps) {
   };
 
   const handleExpandChange = useCallback((index: number, expanded: boolean) => {
-    setExpandedIndex(expanded ? index : -1);
+    setExpandedSet(prev => {
+      const next = new Set(prev);
+      if (expanded) {
+        next.add(index);
+      } else {
+        next.delete(index);
+      }
+      return next;
+    });
     // When expanding a question, reveal the next placeholder
     if (expanded && index + 1 < normalizedPrompts.length) {
       setRevealedCount(prev => Math.max(prev, index + 2));
@@ -166,7 +175,7 @@ export default function SectionView({ section, card }: SectionViewProps) {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.3 }}
                 >
-                  {showLabel && expandedIndex !== index && (
+                  {showLabel && (
                     <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1.5 ml-1">
                       Fråga {index + 1} (av {totalQuestions})
                     </p>
@@ -178,7 +187,7 @@ export default function SectionView({ section, card }: SectionViewProps) {
                     privateNote={getPrivateNote(promptId)}
                     sharedNote={getSharedNote(promptId)}
                     highlightCount={highlightCount}
-                    expanded={isProgressive ? expandedIndex === index : undefined}
+                    expanded={isProgressive ? expandedSet.has(index) : undefined}
                     onExpandChange={isProgressive ? (exp) => handleExpandChange(index, exp) : undefined}
                     onPromptChange={handlePromptChange}
                     onPromptColorChange={handlePromptColorChange}
