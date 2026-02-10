@@ -120,16 +120,17 @@
     "return_note": "Ni kan alltid återvända."
   },
   "reflections": {
-    "private_notes_title": "Mina anteckningar (privat)",
+    "private_notes_title": "Privat anteckning",
     "private_notes_hint": "Privat. För dig. Du kan forma det senare.",
-    "shared_notes_title": "Delat mellan oss",
+    "shared_notes_title": "Delad reflektion",
     "shared_notes_hint": "Den här versionen är tänkt att delas mellan er.",
-    "create_shared_from_private": "Skapa delad version från mina anteckningar",
+    "create_shared_from_private": "Skapa delad version",
     "save_shared": "Spara delat",
-    "unshare": "Ta bort från delat",
-    "mark_important": "Markera som viktigt",
+    "unshare": "Ta bort delning",
+    "mark_important": "Viktigt för oss",
     "important_limit_reached": "Ni kan ha max tre viktiga åt gången.",
-    "edit": "Redigera"
+    "edit": "Redigera",
+    "prompt_note_placeholder": "Skriv dina tankar här... (sparas automatiskt)"
   },
   "shared": {
     "title": "Det vi delat",
