@@ -57,7 +57,7 @@ export default function PromptItem({
     else setInternalExpanded(next);
   };
   // For controlled accordion items that are collapsed, show only the label
-  const showCollapsedLabel = isControlled && !isExpanded && !!label;
+  const showCollapsedLabel = isControlled && !isExpanded;
   const [privateText, setPrivateText] = useState(privateNote?.content || '');
 
   // Sync incoming note changes
