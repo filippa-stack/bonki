@@ -12,6 +12,7 @@ import CardView from "./pages/CardView";
 import SavedConversations from "./pages/SavedConversations";
 import SharedSummary from "./pages/SharedSummary";
 import Login from "./pages/Login";
+import JoinSpace from "./pages/JoinSpace";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -59,6 +60,7 @@ function AppRoutes() {
   return (
     <Routes>
       <Route path="/login" element={user ? <Navigate to="/" replace /> : <Login />} />
+      <Route path="/join" element={user ? <JoinSpace /> : <Navigate to="/login" replace state={{ returnTo: '/join' + window.location.search }} />} />
       <Route path="/*" element={<ProtectedRoutes />} />
     </Routes>
   );

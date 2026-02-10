@@ -1,1 +1,4 @@
 project_id = "spgknasuinxmvyrlpztx"
+
+[functions.join-couple-space]
+verify_jwt = false

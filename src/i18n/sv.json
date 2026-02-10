@@ -138,5 +138,43 @@
     "empty": "Ni har inte delat något ännu.",
     "empty_hint": "Dela en reflektion från ett samtal för att se den här.",
     "no_results": "Inga resultat hittades."
+  },
+  "invite": {
+    "title": "Bjud in din partner",
+    "description": "Dela länken nedan. Din partner skapar ett konto och ni kopplas ihop automatiskt.",
+    "share_button": "Dela inbjudan",
+    "copy_link": "Kopiera länk",
+    "copied": "Kopierad!",
+    "copy_failed": "Kunde inte kopiera",
+    "or_code": "Eller dela koden:",
+    "your_name_label": "Ditt namn (visas för din partner)",
+    "name_placeholder": "Ditt namn...",
+    "set_name": "Ange ditt namn",
+    "share_message": "Följ med mig i vårt gemensamma utrymme på Still Us. Tryck för att ansluta och starta vår resa: {{link}}"
+  },
+  "join": {
+    "title": "Gå med i Couple Space",
+    "subtitle": "Din partner har bjudit in dig till ett gemensamt utrymme.",
+    "your_name": "Ditt namn (valfritt)",
+    "name_placeholder": "Vad ska din partner kalla dig?",
+    "invite_code": "Inbjudningskod",
+    "connect_button": "Anslut",
+    "use_code_instead": "Har du en kod? Ange den här.",
+    "try_code": "Ange kod istället",
+    "go_home": "Gå till startsidan",
+    "joining": "Ansluter...",
+    "loading": "Laddar...",
+    "success_title": "Ni är anslutna",
+    "success_subtitle": "Ert gemensamma utrymme är redo.",
+    "error_already_member": "Du tillhör redan ett Couple Space.",
+    "error_invalid_invite": "Inbjudningslänken är ogiltig eller har gått ut.",
+    "error_space_full": "Det här Couple Space har redan två medlemmar.",
+    "error_no_session": "Du behöver logga in först.",
+    "error_network": "Något gick fel. Försök igen.",
+    "error_unknown": "Något gick fel. Försök igen."
+  },
+  "couple_space": {
+    "partner_connected": "Din partner är ansluten!",
+    "solo_mode": "Solo-läge"
   }
 }
