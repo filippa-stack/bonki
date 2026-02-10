@@ -9,6 +9,9 @@ export interface SiteSettings {
   heroSubtitleFont: string;
   buttonColor: string;
   buttonTextColor: string;
+  continueModuleBgColor: string;
+  continueModuleTextColor: string;
+  continueModuleBorderColor: string;
   loginTitle: string;
   loginSubtitle: string;
 }
@@ -28,6 +31,9 @@ const defaultSettings: SiteSettings = {
   heroSubtitleFont: 'sans',
   buttonColor: 'hsl(0, 100%, 50%)',
   buttonTextColor: 'hsl(0, 0%, 100%)',
+  continueModuleBgColor: '',
+  continueModuleTextColor: '',
+  continueModuleBorderColor: '',
   loginTitle: 'Vi som föräldrar',
   loginSubtitle: 'Logga in för att spara dina inställningar',
 };
