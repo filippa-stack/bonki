@@ -14,6 +14,124 @@ export type Database = {
   }
   public: {
     Tables: {
+      couple_members: {
+        Row: {
+          couple_space_id: string
+          created_at: string
+          id: string
+          last_seen_at: string | null
+          role: string | null
+          user_id: string
+        }
+        Insert: {
+          couple_space_id: string
+          created_at?: string
+          id?: string
+          last_seen_at?: string | null
+          role?: string | null
+          user_id: string
+        }
+        Update: {
+          couple_space_id?: string
+          created_at?: string
+          id?: string
+          last_seen_at?: string | null
+          role?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "couple_members_couple_space_id_fkey"
+            columns: ["couple_space_id"]
+            isOneToOne: false
+            referencedRelation: "couple_spaces"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      couple_spaces: {
+        Row: {
+          created_at: string
+          id: string
+          invite_code: string
+          invite_token: string
+          partner_a_name: string | null
+          partner_b_name: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          invite_code: string
+          invite_token: string
+          partner_a_name?: string | null
+          partner_b_name?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          invite_code?: string
+          invite_token?: string
+          partner_a_name?: string | null
+          partner_b_name?: string | null
+        }
+        Relationships: []
+      }
+      prompt_notes: {
+        Row: {
+          author_label: string | null
+          card_id: string
+          content: string
+          couple_space_id: string
+          created_at: string
+          id: string
+          is_highlight: boolean
+          prompt_id: string
+          section_id: string
+          shared_at: string | null
+          updated_at: string
+          user_id: string
+          visibility: string
+        }
+        Insert: {
+          author_label?: string | null
+          card_id: string
+          content?: string
+          couple_space_id: string
+          created_at?: string
+          id?: string
+          is_highlight?: boolean
+          prompt_id: string
+          section_id: string
+          shared_at?: string | null
+          updated_at?: string
+          user_id: string
+          visibility?: string
+        }
+        Update: {
+          author_label?: string | null
+          card_id?: string
+          content?: string
+          couple_space_id?: string
+          created_at?: string
+          id?: string
+          is_highlight?: boolean
+          prompt_id?: string
+          section_id?: string
+          shared_at?: string | null
+          updated_at?: string
+          user_id?: string
+          visibility?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "prompt_notes_couple_space_id_fkey"
+            columns: ["couple_space_id"]
+            isOneToOne: false
+            referencedRelation: "couple_spaces"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       user_backups: {
         Row: {
           background_color: string | null
@@ -85,7 +203,11 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      get_user_couple_space_id: { Args: { _user_id: string }; Returns: string }
+      is_couple_member: {
+        Args: { _space_id: string; _user_id: string }
+        Returns: boolean
+      }
     }
     Enums: {
       [_ in never]: never
