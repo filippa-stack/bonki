@@ -158,8 +158,8 @@ function EditableCard({
         borderWidth: card.borderColor ? '2px' : undefined,
       } as React.CSSProperties}
     >
-      <div className="flex flex-col items-center gap-2 py-2">
-        <div className="flex justify-end w-full -mb-2" onClick={(e) => e.stopPropagation()}>
+      <div className="relative flex flex-col items-center justify-center gap-2 py-4">
+        <div className="absolute top-0 right-0" onClick={(e) => e.stopPropagation()}>
           <ColorPicker
             currentColor={card.color}
             onColorChange={onColorChange}

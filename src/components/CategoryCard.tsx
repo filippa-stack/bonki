@@ -63,9 +63,9 @@ export default function CategoryCard({
         '--item-border': category.borderColor || undefined,
       } as React.CSSProperties}
     >
-      <div className="flex flex-col items-center justify-center gap-2">
-        {/* Color picker - top right corner */}
-        <div className="flex justify-end -mb-4" onClick={(e) => e.stopPropagation()}>
+      <div className="relative flex flex-col items-center justify-center gap-2">
+        {/* Color picker - absolute top right */}
+        <div className="absolute top-0 right-0" onClick={(e) => e.stopPropagation()}>
           {editable && onColorChange && (
             <ColorPicker
               currentColor={category.color}
