@@ -46,8 +46,7 @@ export default function Onboarding() {
 
   return (
     <div
-      className="min-h-screen flex flex-col items-center justify-center px-6 py-12"
-      style={{ backgroundColor: backgroundColor || 'hsl(var(--background))' }}
+      className="min-h-screen flex flex-col items-center justify-center px-6 py-12 page-bg"
     >
       <div className="w-full max-w-md">
         <AnimatePresence mode="wait">

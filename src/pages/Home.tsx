@@ -16,6 +16,7 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import ColorPicker from '@/components/ColorPicker';
 import bonkiLogo from '@/assets/bonki-logo.png';
+import { useThemeVars } from '@/hooks/useThemeVars';
 
 const STEP_LABELS = ['Öppnare', 'Tankeväckare', 'Scenario', 'Teamwork'];
 
@@ -28,6 +29,7 @@ const fontOptions = [
 export default function Home() {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  useThemeVars();
   const { 
     mostRecentConversation, 
     savedConversations, 
@@ -100,7 +102,7 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: backgroundColor || 'hsl(var(--background))' }}>
+    <div className="min-h-screen page-bg">
       <Header showBackgroundPicker={true} />
       {/* Header with Logo */}
       <div className="px-6 pt-8 pb-8">
@@ -208,8 +210,7 @@ export default function Home() {
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5 }}
-                className={`text-display font-${settings.heroTitleFont}`}
-                style={{ color: settings.heroTitleColor || 'hsl(var(--foreground))' }}
+                className={`text-display font-${settings.heroTitleFont} hero-title-color`}
               >
                 {settings.heroTitle}
               </motion.h1>
@@ -217,8 +218,7 @@ export default function Home() {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.5, delay: 0.1 }}
-                className={`text-body mt-2 font-${settings.heroSubtitleFont}`}
-                style={{ color: settings.heroSubtitleColor || 'hsl(var(--text-gentle))' }}
+                className={`text-body mt-2 font-${settings.heroSubtitleFont} hero-subtitle-color`}
               >
                 {settings.heroSubtitle}
               </motion.p>

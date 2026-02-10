@@ -92,7 +92,7 @@ export default function CardView() {
 
   if (!card) {
     return (
-      <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: backgroundColor || 'hsl(var(--background))' }}>
+      <div className="min-h-screen flex items-center justify-center page-bg">
         <p className="text-gentle">Kort hittades inte</p>
       </div>
     );
@@ -124,7 +124,7 @@ export default function CardView() {
   // Overview screen
   if (showOverview) {
     return (
-      <div className="min-h-screen" style={{ backgroundColor: backgroundColor || 'hsl(var(--background))' }}>
+      <div className="min-h-screen page-bg">
         <Header
           title={category?.title}
           showBack
@@ -195,7 +195,7 @@ export default function CardView() {
   }
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: backgroundColor || 'hsl(var(--background))' }}>
+    <div className="min-h-screen page-bg">
       <Header
         title={category?.title}
         showBack

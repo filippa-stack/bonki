@@ -75,8 +75,8 @@ export default function PromptItem({
       initial={{ opacity: 0, x: -10 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ delay: index * 0.08 }}
-      className="rounded-lg border-l-2 border-primary/30 overflow-hidden"
-      style={{ backgroundColor: prompt.color || 'hsl(var(--surface-warm))' }}
+      className="rounded-lg border-l-2 border-primary/30 overflow-hidden prompt-colors"
+      style={{ '--prompt-bg': prompt.color || undefined } as React.CSSProperties}
     >
       {/* Collapsed label-only header (for Q2/Q3 when collapsed) */}
       {showCollapsedLabel ? (
@@ -110,9 +110,9 @@ export default function PromptItem({
                     el.style.height = el.scrollHeight + 'px';
                   }
                 }}
-                className="text-body w-full bg-transparent border-none outline-none focus:ring-0 resize-none placeholder:text-muted-foreground min-h-[24px] text-center md:text-left"
+                className="text-body w-full bg-transparent border-none outline-none focus:ring-0 resize-none placeholder:text-muted-foreground min-h-[24px] text-center md:text-left prompt-text"
                 placeholder="Skriv en fråga..."
-                style={{ color: prompt.textColor || 'hsl(var(--foreground))' }}
+                style={{ '--prompt-text': prompt.textColor || undefined } as React.CSSProperties}
               />
             </div>
 

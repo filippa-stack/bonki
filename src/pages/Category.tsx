@@ -32,14 +32,14 @@ export default function Category() {
 
   if (!category) {
     return (
-      <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: backgroundColor || 'hsl(var(--background))' }}>
+      <div className="min-h-screen flex items-center justify-center page-bg">
         <p className="text-gentle">{t('category.not_found')}</p>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: backgroundColor || 'hsl(var(--background))' }}>
+    <div className="min-h-screen page-bg">
       <Header showBack backTo="/" />
 
       {/* Category header */}
@@ -151,12 +151,12 @@ function EditableCard({
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: index * 0.1 }}
       onClick={onNavigate}
-      className="w-full text-left card-reflection group cursor-pointer"
+      className="w-full text-left card-reflection group cursor-pointer item-colors"
       style={{ 
-        backgroundColor: card.color || undefined,
-        borderColor: card.borderColor || undefined,
+        '--item-bg': card.color || undefined,
+        '--item-border': card.borderColor || undefined,
         borderWidth: card.borderColor ? '2px' : undefined,
-      }}
+      } as React.CSSProperties}
     >
       <div className="flex flex-col items-center gap-2 py-2">
         <div className="flex justify-end w-full -mb-2" onClick={(e) => e.stopPropagation()}>
@@ -173,15 +173,15 @@ function EditableCard({
         </div>
         <div className="w-full space-y-2">
           <h3
-            className="w-full font-serif text-lg sm:text-xl text-center"
-            style={{ color: card.textColor || 'hsl(var(--foreground))' }}
+            className="w-full font-serif text-lg sm:text-xl text-center item-text"
+            style={{ '--item-text': card.textColor || undefined } as React.CSSProperties}
           >
             {card.title}
           </h3>
           {card.subtitle && (
             <p
-              className="w-full text-sm text-center"
-              style={{ color: card.textColor || 'hsl(var(--gentle))' }}
+              className="w-full text-sm text-center item-text-gentle"
+              style={{ '--item-text': card.textColor || undefined } as React.CSSProperties}
             >
               {card.subtitle}
             </p>

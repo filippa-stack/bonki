@@ -53,8 +53,7 @@ export default function Login() {
   };
 
   const buttonStyle = {
-    ...(settings.buttonColor && { backgroundColor: settings.buttonColor, borderColor: settings.buttonColor }),
-    ...(settings.buttonTextColor && { color: settings.buttonTextColor }),
+    ...(settings.buttonColor && { '--btn-primary-bg': settings.buttonColor, '--btn-primary-text': settings.buttonTextColor } as React.CSSProperties),
   };
 
   return (
@@ -90,7 +89,7 @@ export default function Login() {
           <Button
             onClick={handleGoogleSignIn}
             disabled={loading}
-            className="w-full h-12 text-base font-medium"
+            className={`w-full h-12 text-base font-medium ${settings.buttonColor ? 'btn-themed' : ''}`}
             variant={settings.buttonColor ? "default" : "outline"}
             style={buttonStyle}
           >
