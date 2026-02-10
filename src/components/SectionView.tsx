@@ -138,16 +138,11 @@ export default function SectionView({ section, card }: SectionViewProps) {
 
             return (
               <div key={index}>
-                {/* Label for Q2+ in accordion sections */}
-                {isControlled && index > 0 && expandedIndex !== index && (
-                  <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1.5 ml-1">
-                    Fråga {index + 1}
-                  </p>
-                )}
                 <PromptItem
                   prompt={prompt}
                   promptId={promptId}
                   index={index}
+                  label={isControlled && index > 0 ? `Fråga ${index + 1}` : undefined}
                   privateNote={getPrivateNote(promptId)}
                   sharedNote={getSharedNote(promptId)}
                   highlightCount={highlightCount}
