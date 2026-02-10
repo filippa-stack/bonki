@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { Section, Card, Prompt } from '@/types';
 import { useApp } from '@/contexts/AppContext';
 import { Plus } from 'lucide-react';
@@ -11,7 +11,6 @@ interface SectionViewProps {
   card: Card;
 }
 
-// Helper to normalize prompts to Prompt objects
 const normalizePrompt = (prompt: string | Prompt): Prompt => {
   if (typeof prompt === 'string') {
     return { text: prompt, color: undefined, textColor: undefined };
@@ -19,7 +18,7 @@ const normalizePrompt = (prompt: string | Prompt): Prompt => {
   return prompt;
 };
 
-const PROGRESSIVE_TYPES = ['opening', 'reflective'];
+const ACCORDION_TYPES = ['opening', 'reflective'];
 
 export default function SectionView({ section, card }: SectionViewProps) {
   const { updateCardSection } = useApp();
@@ -35,33 +34,27 @@ export default function SectionView({ section, card }: SectionViewProps) {
   } = usePromptNotes(card.id, section.id);
 
   const normalizedPrompts = (section.prompts || []).map(normalizePrompt);
+  const isAccordion = ACCORDION_TYPES.includes(section.type);
 
-  const isProgressive = PROGRESSIVE_TYPES.includes(section.type);
-
-  const totalQuestions = normalizedPrompts.length;
-
-  // Progressive reveal state: how many questions are rendered (1-based)
-  // Start with 2 so Q1 expanded + Q2 placeholder are visible on load
-  const [revealedCount, setRevealedCount] = useState(isProgressive ? Math.min(2, totalQuestions) : totalQuestions);
-  // Set of expanded question indices (multiple can be open)
-  const [expandedSet, setExpandedSet] = useState<Set<number>>(() => new Set(isProgressive ? [0] : []));
+  // Single expanded index — Q1 (index 0) open by default for accordion types
+  const [expandedIndex, setExpandedIndex] = useState<number | null>(isAccordion ? 0 : null);
 
   const handlePromptChange = (index: number, value: string) => {
-    const newPrompts = normalizedPrompts.map((p, i) => 
+    const newPrompts = normalizedPrompts.map((p, i) =>
       i === index ? { ...p, text: value } : p
     );
     updateCardSection(card.id, section.id, { prompts: newPrompts });
   };
 
   const handlePromptColorChange = (index: number, color: string) => {
-    const newPrompts = normalizedPrompts.map((p, i) => 
+    const newPrompts = normalizedPrompts.map((p, i) =>
       i === index ? { ...p, color } : p
     );
     updateCardSection(card.id, section.id, { prompts: newPrompts });
   };
 
   const handlePromptTextColorChange = (index: number, textColor: string) => {
-    const newPrompts = normalizedPrompts.map((p, i) => 
+    const newPrompts = normalizedPrompts.map((p, i) =>
       i === index ? { ...p, textColor } : p
     );
     updateCardSection(card.id, section.id, { prompts: newPrompts });
@@ -86,25 +79,9 @@ export default function SectionView({ section, card }: SectionViewProps) {
   };
 
   const handleExpandChange = useCallback((index: number, expanded: boolean) => {
-    setExpandedSet(prev => {
-      const next = new Set(prev);
-      if (expanded) {
-        next.add(index);
-      } else {
-        next.delete(index);
-      }
-      return next;
-    });
-    // When expanding a question, reveal the next placeholder
-    if (expanded && index + 1 < normalizedPrompts.length) {
-      setRevealedCount(prev => Math.max(prev, index + 2));
-    }
-  }, [normalizedPrompts.length]);
-
-  // Determine which prompts to render
-  const visibleCount = isProgressive
-    ? Math.min(revealedCount, totalQuestions)
-    : totalQuestions;
+    // Only one question open at a time
+    setExpandedIndex(expanded ? index : null);
+  }, []);
 
   return (
     <motion.div
@@ -152,56 +129,42 @@ export default function SectionView({ section, card }: SectionViewProps) {
         placeholder="Beskrivning..."
       />
 
-      {/* Bounded context */}
-      {isProgressive && totalQuestions > 1 && (
-        <p className="text-sm text-muted-foreground mb-6 text-center md:text-left">
-          {totalQuestions} frågor i detta avsnitt
-        </p>
-      )}
-
-      {/* Prompts */}
+      {/* All questions rendered — Q1 expanded, rest collapsed */}
       {normalizedPrompts.length > 0 && (
         <div className="space-y-3 mb-6">
-          <AnimatePresence mode="sync">
-            {normalizedPrompts.slice(0, visibleCount).map((prompt, index) => {
-              const promptId = `prompt-${index}`;
-              const isFirstRevealed = index === 0;
-              const showLabel = isProgressive && index > 0;
+          {normalizedPrompts.map((prompt, index) => {
+            const promptId = `prompt-${index}`;
+            const isControlled = isAccordion;
 
-              return (
-                <motion.div
-                  key={index}
-                  initial={isFirstRevealed ? { opacity: 1, y: 0 } : { opacity: 0, y: 12 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.3 }}
-                >
-                  {showLabel && (
-                    <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1.5 ml-1">
-                      Fråga {index + 1} (av {totalQuestions})
-                    </p>
-                  )}
-                  <PromptItem
-                    prompt={prompt}
-                    promptId={promptId}
-                    index={index}
-                    privateNote={getPrivateNote(promptId)}
-                    sharedNote={getSharedNote(promptId)}
-                    highlightCount={highlightCount}
-                    expanded={isProgressive ? expandedSet.has(index) : undefined}
-                    onExpandChange={isProgressive ? (exp) => handleExpandChange(index, exp) : undefined}
-                    onPromptChange={handlePromptChange}
-                    onPromptColorChange={handlePromptColorChange}
-                    onPromptTextColorChange={handlePromptTextColorChange}
-                    onRemovePrompt={handleRemovePrompt}
-                    onSaveNote={saveNote}
-                    onShareNote={shareNote}
-                    onUnshareNote={unshareNote}
-                    onToggleHighlight={toggleHighlight}
-                  />
-                </motion.div>
-              );
-            })}
-          </AnimatePresence>
+            return (
+              <div key={index}>
+                {/* Label for Q2+ in accordion sections */}
+                {isControlled && index > 0 && expandedIndex !== index && (
+                  <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1.5 ml-1">
+                    Fråga {index + 1}
+                  </p>
+                )}
+                <PromptItem
+                  prompt={prompt}
+                  promptId={promptId}
+                  index={index}
+                  privateNote={getPrivateNote(promptId)}
+                  sharedNote={getSharedNote(promptId)}
+                  highlightCount={highlightCount}
+                  expanded={isControlled ? expandedIndex === index : undefined}
+                  onExpandChange={isControlled ? (exp) => handleExpandChange(index, exp) : undefined}
+                  onPromptChange={handlePromptChange}
+                  onPromptColorChange={handlePromptColorChange}
+                  onPromptTextColorChange={handlePromptTextColorChange}
+                  onRemovePrompt={handleRemovePrompt}
+                  onSaveNote={saveNote}
+                  onShareNote={shareNote}
+                  onUnshareNote={unshareNote}
+                  onToggleHighlight={toggleHighlight}
+                />
+              </div>
+            );
+          })}
         </div>
       )}
 
