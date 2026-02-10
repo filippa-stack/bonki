@@ -84,27 +84,37 @@ export function useCoupleSpace(): CoupleSpaceState {
         setUserRole(membership.role);
       } else {
         // Bootstrap: create new couple space
+        // Generate ID client-side to avoid RLS SELECT issue
+        // (SELECT policy requires membership which doesn't exist yet)
+        const spaceId = crypto.randomUUID();
         const invite_code = generateInviteCode();
         const invite_token = generateInviteToken();
 
-        const { data: newSpace, error: createError } = await supabase
+        const { error: createError } = await supabase
           .from('couple_spaces')
-          .insert({ invite_code, invite_token })
-          .select()
-          .single();
+          .insert({ id: spaceId, invite_code, invite_token });
 
         if (createError) throw createError;
 
-        // Create membership
+        // Create membership first so we can read the space back
         const { error: memberError } = await supabase
           .from('couple_members')
           .insert({
-            couple_space_id: newSpace.id,
+            couple_space_id: spaceId,
             user_id: user.id,
             role: 'partner_a',
           });
 
         if (memberError) throw memberError;
+
+        // Now we can read the space (RLS allows it since membership exists)
+        const { data: newSpace, error: readError } = await supabase
+          .from('couple_spaces')
+          .select('*')
+          .eq('id', spaceId)
+          .single();
+
+        if (readError) throw readError;
 
         setSpace(newSpace as CoupleSpaceData);
         setMemberCount(1);
