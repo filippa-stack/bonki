@@ -13,6 +13,8 @@ interface PromptItemProps {
   privateNote?: PromptNote;
   sharedNote?: PromptNote;
   highlightCount: number;
+  expanded?: boolean;
+  onExpandChange?: (expanded: boolean) => void;
   onPromptChange: (index: number, value: string) => void;
   onPromptColorChange: (index: number, color: string) => void;
   onPromptTextColorChange: (index: number, textColor: string) => void;
@@ -30,6 +32,8 @@ export default function PromptItem({
   privateNote,
   sharedNote,
   highlightCount,
+  expanded,
+  onExpandChange,
   onPromptChange,
   onPromptColorChange,
   onPromptTextColorChange,
@@ -40,7 +44,15 @@ export default function PromptItem({
   onToggleHighlight,
 }: PromptItemProps) {
   const { t } = useTranslation();
-  const [isExpanded, setIsExpanded] = useState(false);
+  const [internalExpanded, setInternalExpanded] = useState(false);
+  
+  // Support both controlled and uncontrolled expansion
+  const isExpanded = expanded !== undefined ? expanded : internalExpanded;
+  const toggleExpanded = () => {
+    const next = !isExpanded;
+    if (onExpandChange) onExpandChange(next);
+    else setInternalExpanded(next);
+  };
   const [privateText, setPrivateText] = useState(privateNote?.content || '');
 
   // Sync incoming note changes
@@ -64,7 +76,7 @@ export default function PromptItem({
       {/* Question header - clickable to expand */}
       <div
         className="p-5 cursor-pointer flex items-start gap-3 group relative"
-        onClick={() => setIsExpanded(!isExpanded)}
+        onClick={toggleExpanded}
       >
         <div className="flex-1 min-w-0">
           {/* Editable question text */}
