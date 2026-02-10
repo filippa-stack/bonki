@@ -2,7 +2,7 @@ import { useState, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Section, Card, Prompt } from '@/types';
 import { useApp } from '@/contexts/AppContext';
-import { Plus, ChevronDown } from 'lucide-react';
+import { Plus } from 'lucide-react';
 import PromptItem from '@/components/PromptItem';
 import { usePromptNotes } from '@/hooks/usePromptNotes';
 
@@ -38,7 +38,9 @@ export default function SectionView({ section, card }: SectionViewProps) {
 
   const isProgressive = PROGRESSIVE_TYPES.includes(section.type);
 
-  // Progressive reveal state: how many questions are revealed (1-based)
+  const totalQuestions = normalizedPrompts.length;
+
+  // Progressive reveal state: how many questions are rendered (1-based)
   const [revealedCount, setRevealedCount] = useState(1);
   // Which question index is currently expanded (-1 = none)
   const [expandedIndex, setExpandedIndex] = useState(isProgressive ? 0 : -1);
@@ -84,21 +86,16 @@ export default function SectionView({ section, card }: SectionViewProps) {
 
   const handleExpandChange = useCallback((index: number, expanded: boolean) => {
     setExpandedIndex(expanded ? index : -1);
-    // When expanding a question, reveal the next one (collapsed)
+    // When expanding a question, reveal the next placeholder
     if (expanded && index + 1 < normalizedPrompts.length) {
       setRevealedCount(prev => Math.max(prev, index + 2));
     }
   }, [normalizedPrompts.length]);
 
-  const handleRevealNext = () => {
-    setRevealedCount(prev => Math.min(prev + 1, normalizedPrompts.length));
-  };
-
   // Determine which prompts to render
   const visibleCount = isProgressive
-    ? Math.min(revealedCount, normalizedPrompts.length)
-    : normalizedPrompts.length;
-  const hasMoreToReveal = isProgressive && revealedCount < normalizedPrompts.length;
+    ? Math.min(revealedCount, totalQuestions)
+    : totalQuestions;
 
   return (
     <motion.div
@@ -146,6 +143,13 @@ export default function SectionView({ section, card }: SectionViewProps) {
         placeholder="Beskrivning..."
       />
 
+      {/* Bounded context */}
+      {isProgressive && totalQuestions > 1 && (
+        <p className="text-sm text-muted-foreground mb-6 text-center md:text-left">
+          {totalQuestions} frågor i detta avsnitt
+        </p>
+      )}
+
       {/* Prompts */}
       {normalizedPrompts.length > 0 && (
         <div className="space-y-3 mb-6">
@@ -153,7 +157,6 @@ export default function SectionView({ section, card }: SectionViewProps) {
             {normalizedPrompts.slice(0, visibleCount).map((prompt, index) => {
               const promptId = `prompt-${index}`;
               const isFirstRevealed = index === 0;
-              // For progressive: collapsed questions get a label prefix
               const showLabel = isProgressive && index > 0;
 
               return (
@@ -165,7 +168,7 @@ export default function SectionView({ section, card }: SectionViewProps) {
                 >
                   {showLabel && expandedIndex !== index && (
                     <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1.5 ml-1">
-                      Fråga {index + 1}
+                      Fråga {index + 1} (av {totalQuestions})
                     </p>
                   )}
                   <PromptItem
@@ -190,20 +193,6 @@ export default function SectionView({ section, card }: SectionViewProps) {
               );
             })}
           </AnimatePresence>
-
-          {/* Subtle reveal affordance */}
-          {hasMoreToReveal && (
-            <motion.button
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.3 }}
-              onClick={handleRevealNext}
-              className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors mx-auto mt-4"
-            >
-              <span>Nästa fråga</span>
-              <ChevronDown className="w-3.5 h-3.5" />
-            </motion.button>
-          )}
         </div>
       )}
 
