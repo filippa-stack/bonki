@@ -1,21 +1,25 @@
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo, useEffect, useCallback, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 import { useApp } from '@/contexts/AppContext';
 import { useAuth } from '@/contexts/AuthContext';
 import { useCoupleSpace } from '@/hooks/useCoupleSpace';
 import { supabase } from '@/integrations/supabase/client';
 import Header from '@/components/Header';
-import { Star, Search } from 'lucide-react';
+import SharedTimelineItem from '@/components/SharedTimelineItem';
+import { Star, Search, Filter, X } from 'lucide-react';
 import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
 import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from '@/components/ui/accordion';
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 
-interface SharedNoteRow {
+export interface SharedNoteRow {
   id: string;
   card_id: string;
   section_id: string;
@@ -24,19 +28,25 @@ interface SharedNoteRow {
   is_highlight: boolean;
   author_label: string | null;
   shared_at: string | null;
+  created_at: string;
   updated_at: string;
   user_id: string;
 }
 
+const AUTOSAVE_DELAY = 800;
+
 export default function SharedSummary() {
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const { categories, backgroundColor, getCardById, getCategoryById } = useApp();
   const { user } = useAuth();
   const { space } = useCoupleSpace();
 
   const [searchQuery, setSearchQuery] = useState('');
+  const [categoryFilter, setCategoryFilter] = useState<string>('all');
   const [sharedNotes, setSharedNotes] = useState<SharedNoteRow[]>([]);
   const [loading, setLoading] = useState(true);
+  const pendingSaves = useRef<Map<string, ReturnType<typeof setTimeout>>>(new Map());
 
   // Fetch all shared notes in the couple space
   useEffect(() => {
@@ -52,7 +62,7 @@ export default function SharedSummary() {
         .select('*')
         .eq('couple_space_id', space.id)
         .eq('visibility', 'shared')
-        .order('updated_at', { ascending: false });
+        .order('created_at', { ascending: false });
 
       if (error) {
         console.error('Failed to fetch shared notes:', error);
@@ -65,61 +75,84 @@ export default function SharedSummary() {
     fetchSharedNotes();
   }, [user, space]);
 
-  const highlights = useMemo(() => {
+  // Cleanup pending saves on unmount
+  useEffect(() => {
+    return () => {
+      pendingSaves.current.forEach(timer => clearTimeout(timer));
+    };
+  }, []);
+
+  const handleUpdateNote = useCallback((noteId: string, newContent: string) => {
+    // Update local state immediately
+    setSharedNotes(prev =>
+      prev.map(n => n.id === noteId ? { ...n, content: newContent, updated_at: new Date().toISOString() } : n)
+    );
+
+    // Debounced save to DB
+    const existingTimer = pendingSaves.current.get(noteId);
+    if (existingTimer) clearTimeout(existingTimer);
+
+    pendingSaves.current.set(noteId, setTimeout(async () => {
+      const { error } = await supabase
+        .from('prompt_notes')
+        .update({ content: newContent })
+        .eq('id', noteId);
+      if (error) console.error('Failed to update shared note:', error);
+      pendingSaves.current.delete(noteId);
+    }, AUTOSAVE_DELAY));
+  }, []);
+
+  const handleOpenInContext = useCallback((cardId: string, sectionId: string, promptId: string) => {
+    navigate(`/card/${cardId}?section=${sectionId}&prompt=${promptId}`);
+  }, [navigate]);
+
+  // Enrich notes with card/category info and apply filters
+  const timelineItems = useMemo(() => {
     return sharedNotes
-      .filter(n => n.is_highlight)
-      .map(n => {
-        const card = getCardById(n.card_id);
-        return card ? { ...n, cardTitle: card.title } : null;
+      .map(note => {
+        const card = getCardById(note.card_id);
+        if (!card) return null;
+        const category = getCategoryById(card.categoryId);
+        if (!category) return null;
+
+        // Find prompt text
+        const section = card.sections.find(s => s.id === note.section_id);
+        const promptIndex = parseInt(note.prompt_id.replace('prompt-', ''), 10);
+        const rawPrompt = section?.prompts?.[promptIndex];
+        const promptText = typeof rawPrompt === 'string' ? rawPrompt : rawPrompt?.text || '';
+
+        return {
+          ...note,
+          cardTitle: card.title,
+          categoryTitle: category.title,
+          categoryId: category.id,
+          promptText,
+        };
       })
-      .filter(Boolean) as (SharedNoteRow & { cardTitle: string })[];
-  }, [sharedNotes, getCardById]);
-
-  // Group by category
-  const groupedByCategory = useMemo(() => {
-    const groups: Record<string, {
-      categoryTitle: string;
-      items: (SharedNoteRow & { cardTitle: string; promptText: string })[];
-    }> = {};
-
-    for (const note of sharedNotes) {
-      const card = getCardById(note.card_id);
-      if (!card) continue;
-      const category = getCategoryById(card.categoryId);
-      if (!category) continue;
-
-      // Find prompt text from card data
-      const section = card.sections.find(s => s.id === note.section_id);
-      const promptIndex = parseInt(note.prompt_id.replace('prompt-', ''), 10);
-      const rawPrompt = section?.prompts?.[promptIndex];
-      const promptText = typeof rawPrompt === 'string' ? rawPrompt : rawPrompt?.text || '';
-
-      // Filter by search
-      if (searchQuery) {
-        const q = searchQuery.toLowerCase();
-        if (
-          !note.content.toLowerCase().includes(q) &&
-          !card.title.toLowerCase().includes(q) &&
-          !promptText.toLowerCase().includes(q)
-        ) {
-          continue;
+      .filter(Boolean)
+      .filter(item => {
+        if (!item) return false;
+        // Category filter
+        if (categoryFilter !== 'all' && item.categoryId !== categoryFilter) return false;
+        // Search filter
+        if (searchQuery) {
+          const q = searchQuery.toLowerCase();
+          return (
+            item.content.toLowerCase().includes(q) ||
+            item.cardTitle.toLowerCase().includes(q) ||
+            item.promptText.toLowerCase().includes(q)
+          );
         }
-      }
+        return true;
+      }) as (SharedNoteRow & { cardTitle: string; categoryTitle: string; categoryId: string; promptText: string })[];
+  }, [sharedNotes, searchQuery, categoryFilter, getCardById, getCategoryById]);
 
-      if (!groups[category.id]) {
-        groups[category.id] = { categoryTitle: category.title, items: [] };
-      }
-      groups[category.id].items.push({
-        ...note,
-        cardTitle: card.title,
-        promptText,
-      });
-    }
-
-    return groups;
-  }, [sharedNotes, searchQuery, getCardById, getCategoryById]);
+  const highlights = useMemo(() => {
+    return timelineItems.filter(n => n.is_highlight);
+  }, [timelineItems]);
 
   const hasContent = sharedNotes.length > 0;
+  const hasActiveFilter = categoryFilter !== 'all' || searchQuery.length > 0;
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: backgroundColor || 'hsl(var(--background))' }}>
@@ -142,7 +175,7 @@ export default function SharedSummary() {
         ) : (
           <>
             {/* Highlights */}
-            {highlights.length > 0 && (
+            {highlights.length > 0 && !hasActiveFilter && (
               <motion.div
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -155,10 +188,12 @@ export default function SharedSummary() {
                 <div className="space-y-3">
                   {highlights.map((h) => (
                     <div
-                      key={h.id}
+                      key={`hl-${h.id}`}
                       className="p-4 rounded-lg bg-card border border-primary/20"
                     >
-                      <p className="text-xs text-muted-foreground mb-1">{h.cardTitle}</p>
+                      <p className="text-xs text-muted-foreground mb-1">
+                        {h.categoryTitle} · {h.cardTitle}
+                      </p>
                       <p className="text-body text-foreground whitespace-pre-wrap">{h.content}</p>
                     </div>
                   ))}
@@ -166,58 +201,55 @@ export default function SharedSummary() {
               </motion.div>
             )}
 
-            {/* Search */}
-            <div className="relative mb-6">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-              <Input
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder={t('shared.search_placeholder')}
-                className="pl-10"
-              />
+            {/* Search + Filter row */}
+            <div className="flex gap-2 mb-6">
+              <div className="relative flex-1">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                <Input
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  placeholder={t('shared.search_placeholder')}
+                  className="pl-10"
+                />
+              </div>
+              <Select value={categoryFilter} onValueChange={setCategoryFilter}>
+                <SelectTrigger className="w-[140px]">
+                  <Filter className="w-3 h-3 mr-1" />
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">Alla</SelectItem>
+                  {categories.map(c => (
+                    <SelectItem key={c.id} value={c.id}>{c.title}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              {hasActiveFilter && (
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => { setSearchQuery(''); setCategoryFilter('all'); }}
+                >
+                  <X className="w-4 h-4" />
+                </Button>
+              )}
             </div>
 
-            {/* Accordion by category */}
-            <Accordion type="multiple" className="space-y-2">
-              {categories.map((category) => {
-                const group = groupedByCategory[category.id];
-                if (!group || group.items.length === 0) return null;
-
-                return (
-                  <AccordionItem key={category.id} value={category.id} className="border border-border rounded-lg overflow-hidden">
-                    <AccordionTrigger className="px-4 py-3 hover:no-underline">
-                      <span className="text-sm font-medium text-foreground">
-                        {group.categoryTitle} ({group.items.length})
-                      </span>
-                    </AccordionTrigger>
-                    <AccordionContent className="px-4 pb-4">
-                      <div className="space-y-3">
-                        {group.items.map((item) => (
-                          <div
-                            key={item.id}
-                            className="p-4 rounded-lg bg-card border border-border"
-                          >
-                            <p className="text-xs text-muted-foreground mb-1">{item.cardTitle}</p>
-                            {item.promptText && (
-                              <p className="text-xs text-foreground/60 italic mb-2">{item.promptText}</p>
-                            )}
-                            <p className="text-body text-foreground whitespace-pre-wrap">{item.content}</p>
-                            {item.shared_at && (
-                              <p className="text-xs text-muted-foreground mt-2">
-                                {new Date(item.shared_at).toLocaleDateString()}
-                              </p>
-                            )}
-                          </div>
-                        ))}
-                      </div>
-                    </AccordionContent>
-                  </AccordionItem>
-                );
-              })}
-            </Accordion>
+            {/* Chronological timeline */}
+            <div className="space-y-4">
+              {timelineItems.map((item) => (
+                <SharedTimelineItem
+                  key={item.id}
+                  note={item}
+                  isOwnNote={item.user_id === user?.id}
+                  onUpdate={handleUpdateNote}
+                  onOpenInContext={handleOpenInContext}
+                />
+              ))}
+            </div>
 
             {/* No results */}
-            {searchQuery && Object.keys(groupedByCategory).length === 0 && (
+            {timelineItems.length === 0 && hasActiveFilter && (
               <p className="text-center text-gentle py-8 text-sm">
                 {t('shared.no_results')}
               </p>
