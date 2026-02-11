@@ -33,22 +33,34 @@ export default function CategoryCard({
   const { t } = useTranslation();
   const [title, setTitle] = useState(category.title);
   const [description, setDescription] = useState(category.description);
+  const [isEditingTitle, setIsEditingTitle] = useState(false);
+  const [isEditingDesc, setIsEditingDesc] = useState(false);
   const CategoryIcon = category.icon ? getIconByName(category.icon) : null;
 
-  const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleTitleClick = (e: React.MouseEvent) => {
+    if (!editable) return;
     e.stopPropagation();
-    setTitle(e.target.value);
-    onUpdate?.(category.id, e.target.value, description);
+    setIsEditingTitle(true);
   };
 
-  const handleDescriptionChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    e.stopPropagation();
-    setDescription(e.target.value);
-    onUpdate?.(category.id, title, e.target.value);
+  const handleTitleBlur = () => {
+    setIsEditingTitle(false);
+    if (title !== category.title) {
+      onUpdate?.(category.id, title, description);
+    }
   };
 
-  const handleInputClick = (e: React.MouseEvent) => {
+  const handleDescClick = (e: React.MouseEvent) => {
+    if (!editable) return;
     e.stopPropagation();
+    setIsEditingDesc(true);
+  };
+
+  const handleDescBlur = () => {
+    setIsEditingDesc(false);
+    if (description !== category.description) {
+      onUpdate?.(category.id, title, description);
+    }
   };
 
   return (
@@ -98,18 +110,46 @@ export default function CategoryCard({
         
         {/* Text content - full width below */}
         <div className="w-full space-y-2">
-          <h3 
-            className="text-base sm:text-lg md:text-xl font-medium text-center group-hover:text-primary transition-colors item-text"
-            style={{ '--item-text': category.textColor || undefined } as React.CSSProperties}
-          >
-            {category.title}
-          </h3>
-          <p 
-            className="text-xs sm:text-sm text-center item-text-gentle"
-            style={{ '--item-text': category.textColor || undefined } as React.CSSProperties}
-          >
-            {category.description}
-          </p>
+          {isEditingTitle ? (
+            <input
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              onBlur={handleTitleBlur}
+              onClick={(e) => e.stopPropagation()}
+              onKeyDown={(e) => { if (e.key === 'Enter') handleTitleBlur(); }}
+              autoFocus
+              className="w-full text-base sm:text-lg md:text-xl font-medium text-center bg-transparent border-none outline-none item-text"
+              style={{ '--item-text': category.textColor || undefined } as React.CSSProperties}
+            />
+          ) : (
+            <h3 
+              className="text-base sm:text-lg md:text-xl font-medium text-center group-hover:text-primary transition-colors item-text cursor-text"
+              style={{ '--item-text': category.textColor || undefined } as React.CSSProperties}
+              onClick={handleTitleClick}
+            >
+              {category.title}
+            </h3>
+          )}
+          {isEditingDesc ? (
+            <input
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              onBlur={handleDescBlur}
+              onClick={(e) => e.stopPropagation()}
+              onKeyDown={(e) => { if (e.key === 'Enter') handleDescBlur(); }}
+              autoFocus
+              className="w-full text-xs sm:text-sm text-center bg-transparent border-none outline-none item-text-gentle"
+              style={{ '--item-text': category.textColor || undefined } as React.CSSProperties}
+            />
+          ) : (
+            <p 
+              className="text-xs sm:text-sm text-center item-text-gentle cursor-text"
+              style={{ '--item-text': category.textColor || undefined } as React.CSSProperties}
+              onClick={handleDescClick}
+            >
+              {category.description}
+            </p>
+          )}
           <p className="text-xs text-muted-foreground text-center mt-3">
             {category.cardCount} {category.cardCount === 1 ? 'kort' : 'kort'}
           </p>
