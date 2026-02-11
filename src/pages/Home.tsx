@@ -10,6 +10,7 @@ import Header from '@/components/Header';
 import ResumeSessionDialog from '@/components/ResumeSessionDialog';
 import { Bookmark, Pencil, Check, Share2 } from 'lucide-react';
 import RelationshipMemory from '@/components/RelationshipMemory';
+import RecentSharedReflection from '@/components/RecentSharedReflection';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -344,6 +345,9 @@ export default function Home() {
         }
         return null;
       })()}
+
+      {/* Recent shared reflection preview */}
+      <RecentSharedReflection />
 
       {/* Shared summary link */}
       <motion.div
