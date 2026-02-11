@@ -127,11 +127,14 @@
     "return_note": "Utforska i er egen takt."
   },
   "reflections": {
-    "private_notes_title": "Privat anteckning",
+    "private_notes_title": "Bara för dig",
     "private_notes_hint": "Privat. För dig. Du kan forma det senare.",
-    "shared_notes_title": "Delad reflektion",
+    "private_indicator": "Bara du kan se det här",
+    "shared_notes_title": "Delad med din partner",
     "shared_notes_hint": "Den här versionen är tänkt att delas mellan er.",
-    "create_shared_from_private": "Skapa delad version",
+    "share_when_ready": "Dela med din partner när du känner dig redo",
+    "shared_indicator": "Synlig för er båda",
+    "create_shared_from_private": "Dela med din partner",
     "save_shared": "Spara delat",
     "unshare": "Ta bort delning",
     "mark_important": "Viktigt för oss",
