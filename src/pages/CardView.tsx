@@ -141,47 +141,74 @@ export default function CardView() {
           showBack
           backTo="/"
         />
-        <div className="px-6 pt-12 pb-8">
+        <div className="px-6 pt-16 pb-12">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-center max-w-md mx-auto space-y-6"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.8 }}
+            className="text-center max-w-md mx-auto space-y-8"
           >
-            <Heart className="w-8 h-8 text-primary mx-auto" />
-            <h2 className="text-xl font-serif text-foreground">
-              {card.title}
-            </h2>
-            <p className="text-sm text-muted-foreground leading-relaxed">
-              {t('card_view.completion_message')}
-            </p>
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ delay: 0.3, duration: 0.5 }}
+            >
+              <Heart className="w-6 h-6 text-primary/60 mx-auto mb-4" />
+              <h2 className="text-xl font-serif text-foreground leading-snug">
+                {card.title}
+              </h2>
+            </motion.div>
 
-            <div className="pt-4 space-y-3">
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.6, duration: 0.6 }}
+              className="text-sm text-muted-foreground leading-relaxed max-w-xs mx-auto"
+            >
+              {t('card_view.completion_message')}
+            </motion.p>
+
+            <motion.div
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 1.0, duration: 0.5 }}
+              className="pt-4 space-y-3"
+            >
               {suggestedCard && suggestedCategory && (
-                <Button
-                  onClick={() => navigate(`/card/${suggestedCard.id}`)}
-                  size="lg"
-                  className="w-full gap-2"
-                >
-                  <ArrowRight className="w-4 h-4" />
-                  {t('card_view.completion_next')}
-                </Button>
+                <>
+                  <Button
+                    onClick={() => navigate(`/card/${suggestedCard.id}`)}
+                    variant="outline"
+                    size="lg"
+                    className="w-full gap-2"
+                  >
+                    {t('card_view.completion_next')}
+                    <ArrowRight className="w-4 h-4" />
+                  </Button>
+                  <p className="text-xs text-muted-foreground/70">
+                    {suggestedCategory.title} · {suggestedCard.title}
+                  </p>
+                </>
               )}
               <Button
                 onClick={() => navigate('/')}
-                variant="outline"
+                variant="ghost"
                 size="lg"
-                className="w-full gap-2"
+                className="w-full gap-2 text-muted-foreground"
               >
                 <Home className="w-4 h-4" />
                 {t('card_view.completion_home')}
               </Button>
-            </div>
+            </motion.div>
 
-            {suggestedCard && suggestedCategory && (
-              <p className="text-xs text-muted-foreground">
-                {suggestedCategory.title} · {suggestedCard.title}
-              </p>
-            )}
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 1.4, duration: 0.6 }}
+              className="text-xs text-muted-foreground/50 italic pt-2"
+            >
+              {t('card_view.completion_rest')}
+            </motion.p>
           </motion.div>
         </div>
       </div>
