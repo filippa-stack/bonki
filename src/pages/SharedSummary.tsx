@@ -8,7 +8,7 @@ import { useCoupleSpace } from '@/hooks/useCoupleSpace';
 import { supabase } from '@/integrations/supabase/client';
 import Header from '@/components/Header';
 import SharedTimelineItem from '@/components/SharedTimelineItem';
-import { Star, Search, Filter, X } from 'lucide-react';
+import { Star, Search, Filter, X, Clock } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import {
@@ -147,6 +147,34 @@ export default function SharedSummary() {
       }) as (SharedNoteRow & { cardTitle: string; categoryTitle: string; categoryId: string; promptText: string })[];
   }, [sharedNotes, searchQuery, categoryFilter, getCardById, getCategoryById]);
 
+  // Group timeline items by time period
+  const groupedTimeline = useMemo(() => {
+    const now = new Date();
+    const weekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+    const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
+
+    const groups: { key: string; label: string; items: typeof timelineItems }[] = [];
+
+    const recent = timelineItems.filter(item => {
+      const d = new Date(item.shared_at || item.created_at);
+      return d >= weekAgo;
+    });
+    const thisMonth = timelineItems.filter(item => {
+      const d = new Date(item.shared_at || item.created_at);
+      return d < weekAgo && d >= monthStart;
+    });
+    const older = timelineItems.filter(item => {
+      const d = new Date(item.shared_at || item.created_at);
+      return d < monthStart;
+    });
+
+    if (recent.length > 0) groups.push({ key: 'recent', label: t('shared.period_recent'), items: recent });
+    if (thisMonth.length > 0) groups.push({ key: 'month', label: t('shared.period_this_month'), items: thisMonth });
+    if (older.length > 0) groups.push({ key: 'older', label: t('shared.period_older'), items: older });
+
+    return groups;
+  }, [timelineItems, t]);
+
   const highlights = useMemo(() => {
     return timelineItems.filter(n => n.is_highlight);
   }, [timelineItems]);
@@ -235,18 +263,26 @@ export default function SharedSummary() {
               )}
             </div>
 
-            {/* Chronological timeline */}
-            <div className="space-y-4">
-              {timelineItems.map((item) => (
-                <SharedTimelineItem
-                  key={item.id}
-                  note={item}
-                  isOwnNote={item.user_id === user?.id}
-                  onUpdate={handleUpdateNote}
-                  onOpenInContext={handleOpenInContext}
-                />
-              ))}
-            </div>
+            {/* Grouped timeline */}
+            {groupedTimeline.map((group) => (
+              <div key={group.key} className="mb-6">
+                <p className="text-xs text-muted-foreground uppercase tracking-wider mb-3 flex items-center gap-2">
+                  <Clock className="w-3 h-3" />
+                  {group.label}
+                </p>
+                <div className="space-y-3">
+                  {group.items.map((item) => (
+                    <SharedTimelineItem
+                      key={item.id}
+                      note={item}
+                      isOwnNote={item.user_id === user?.id}
+                      onUpdate={handleUpdateNote}
+                      onOpenInContext={handleOpenInContext}
+                    />
+                  ))}
+                </div>
+              </div>
+            ))}
 
             {/* No results */}
             {timelineItems.length === 0 && hasActiveFilter && (

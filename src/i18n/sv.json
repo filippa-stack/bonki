@@ -140,7 +140,10 @@
     "search_placeholder": "Sök i det ni delat",
     "empty": "Ni har inte delat något ännu.",
     "empty_hint": "Dela en reflektion från ett samtal för att se den här.",
-    "no_results": "Inga resultat hittades."
+    "no_results": "Inga resultat hittades.",
+    "period_recent": "Senaste veckan",
+    "period_this_month": "Denna månad",
+    "period_older": "Tidigare"
   },
   "invite": {
     "title": "Bjud in din partner",
