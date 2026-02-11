@@ -127,8 +127,8 @@
   },
   "category_status": {
     "not_started": "Ännu inte utforskat",
-    "in_progress": "Ni har börjat prata om det här",
-    "explored": "Ni har varit här förut",
+    "in_progress": "Ni har börjat det här samtalet",
+    "explored": "Ni har pratat om det här",
     "return_note": "Utforska i er egen takt."
   },
   "reflections": {
