@@ -107,9 +107,10 @@
     "cta_reflective": "Fortsätt till Scenario",
     "cta_scenario": "Vidare till Teamwork",
     "cta_exercise": "Avsluta samtalet",
-    "completion_message": "Ni har avslutat det här samtalet — tack för att ni tog er tid.",
-    "completion_next": "Fortsätt med nästa samtal",
-    "completion_home": "Tillbaka till start"
+    "completion_message": "Tack för att ni stannade kvar i det här samtalet. Det ni delade med varandra finns kvar — och ni kan alltid återvända.",
+    "completion_next": "Fortsätt utforska tillsammans",
+    "completion_home": "Tillbaka till start",
+    "completion_rest": "Det finns ingen brådska. Ni bestämmer takten."
   },
   "category": {
     "cards_count": "{{count}} kort",
