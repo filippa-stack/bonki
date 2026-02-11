@@ -11,7 +11,7 @@ export default function Category() {
   const { t } = useTranslation();
   const { categoryId } = useParams<{ categoryId: string }>();
   const navigate = useNavigate();
-  const { getCategoryById, getCardsByCategory, updateCard, updateCardColor, updateCardTextColor, updateCardBorderColor, updateCardDescription, addCard, deleteCard, backgroundColor, getExploredCardsInCategory, getCategoryStatus } = useApp();
+  const { getCategoryById, getCardsByCategory, updateCard, updateCardColor, updateCardTextColor, updateCardBorderColor, updateCardDescription, addCard, deleteCard, backgroundColor, getExploredCardsInCategory, getCategoryStatus, journeyState } = useApp();
   
   const category = categoryId ? getCategoryById(categoryId) : undefined;
   const cards = categoryId ? getCardsByCategory(categoryId) : [];
@@ -82,20 +82,24 @@ export default function Category() {
       {/* Cards */}
       <div className="px-6 pb-12">
         <div className="space-y-3">
-          {cards.map((card, index) => (
-            <EditableCard
-              key={card.id}
-              card={card}
-              index={index}
-              onNavigate={() => navigate(`/card/${card.id}`)}
-              onUpdate={updateCard}
-              onColorChange={(color) => updateCardColor(card.id, color)}
-              onTextColorChange={(textColor) => updateCardTextColor(card.id, textColor)}
-              onBorderColorChange={(borderColor) => updateCardBorderColor(card.id, borderColor)}
-              onDescriptionChange={(desc) => updateCardDescription(card.id, desc)}
-              onDelete={() => handleDeleteCard(card.id, card.title)}
-            />
-          ))}
+          {cards.map((card, index) => {
+            const isExplored = journeyState?.exploredCardIds?.includes(card.id) || false;
+            return (
+              <EditableCard
+                key={card.id}
+                card={card}
+                index={index}
+                explored={isExplored}
+                onNavigate={() => navigate(`/card/${card.id}`)}
+                onUpdate={updateCard}
+                onColorChange={(color) => updateCardColor(card.id, color)}
+                onTextColorChange={(textColor) => updateCardTextColor(card.id, textColor)}
+                onBorderColorChange={(borderColor) => updateCardBorderColor(card.id, borderColor)}
+                onDescriptionChange={(desc) => updateCardDescription(card.id, desc)}
+                onDelete={() => handleDeleteCard(card.id, card.title)}
+              />
+            );
+          })}
           
           {/* Add new card button */}
           <motion.button
@@ -126,6 +130,7 @@ interface EditableCardProps {
     borderColor?: string;
   };
   index: number;
+  explored?: boolean;
   onNavigate: () => void;
   onUpdate: (id: string, title: string, subtitle: string) => void;
   onColorChange: (color: string) => void;
@@ -138,6 +143,7 @@ interface EditableCardProps {
 function EditableCard({
   card,
   index,
+  explored,
   onNavigate,
   onUpdate,
   onColorChange,
@@ -146,6 +152,7 @@ function EditableCard({
   onDescriptionChange,
   onDelete,
 }: EditableCardProps) {
+  const { t } = useTranslation();
   const [isEditingTitle, setIsEditingTitle] = useState(false);
   const [titleValue, setTitleValue] = useState(card.title);
   const [isEditingDesc, setIsEditingDesc] = useState(false);
@@ -253,6 +260,11 @@ function EditableCard({
               </p>
             )}
           </div>
+          {explored && (
+            <p className="text-xs text-muted-foreground text-center mt-1 italic">
+              {t('category_status.explored')}
+            </p>
+          )}
         </div>
       </div>
     </motion.div>
