@@ -5,9 +5,10 @@
     "back_home": "Tillbaka",
     "pause_for_now": "Pausa för nu",
     "pause_title": "Pausa samtalet",
-    "pause_closing_text": "Det finns inget att skynda på. Ni har redan gjort det viktigaste — ni tog er tid att prata. Samtalet finns kvar när ni är redo att fortsätta.",
-    "pause_confirm": "Pausa för nu",
-    "pause_cancel": "Fortsätt samtalet"
+    "pause_closing_text": "Det finns inget att skynda på. Ni har redan gjort det viktigaste — ni tog er tid att prata.",
+    "pause_saved_note": "Allt ni har skrivit finns sparat. Ni kan fortsätta precis där ni var, när ni är redo.",
+    "pause_confirm": "Pausa och gå till start",
+    "pause_cancel": "Stanna kvar i samtalet"
   },
   "login": {
     "welcome": "Välkommen",
