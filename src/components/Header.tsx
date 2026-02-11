@@ -84,12 +84,13 @@ export default function Header({
           )}
           {showBackupManager && <BackupManager />}
           <Button
-            variant="ghost"
+            variant="outline"
             size="sm"
             onClick={() => navigate('/shared')}
-            className="text-muted-foreground hover:text-foreground text-xs gap-1"
+            className="text-foreground/80 hover:text-foreground border-border/60 hover:border-border text-xs gap-1.5 font-medium"
           >
-            ❤️ Vårt utrymme
+            <span className="text-sm leading-none">❤️</span>
+            Vårt utrymme
           </Button>
           {showBackgroundPicker && (
             <div className="flex items-center gap-2">
