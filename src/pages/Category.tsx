@@ -143,13 +143,26 @@ function EditableCard({
   card,
   index,
   onNavigate,
+  onUpdate,
   onColorChange,
   onTextColorChange,
   onBorderColorChange,
   onDescriptionChange,
 }: EditableCardProps) {
+  const [isEditingTitle, setIsEditingTitle] = useState(false);
+  const [titleValue, setTitleValue] = useState(card.title);
   const [isEditingDesc, setIsEditingDesc] = useState(false);
   const [descValue, setDescValue] = useState(card.description || '');
+
+  const handleTitleClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setIsEditingTitle(true);
+  };
+
+  const handleTitleBlur = () => {
+    setIsEditingTitle(false);
+    onUpdate(card.id, titleValue, card.subtitle || '');
+  };
 
   const handleDescClick = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -188,12 +201,25 @@ function EditableCard({
           />
         </div>
         <div className="w-full space-y-2">
-          <h3
-            className="w-full font-serif text-lg sm:text-xl text-center item-text"
-            style={{ '--item-text': card.textColor || undefined } as React.CSSProperties}
-          >
-            {card.title}
-          </h3>
+          <div onClick={handleTitleClick}>
+            {isEditingTitle ? (
+              <input
+                value={titleValue}
+                onChange={(e) => setTitleValue(e.target.value)}
+                onBlur={handleTitleBlur}
+                autoFocus
+                className="w-full font-serif text-lg sm:text-xl text-center bg-transparent border-none outline-none item-text"
+                style={{ '--item-text': card.textColor || undefined } as React.CSSProperties}
+              />
+            ) : (
+              <h3
+                className="w-full font-serif text-lg sm:text-xl text-center item-text cursor-text"
+                style={{ '--item-text': card.textColor || undefined } as React.CSSProperties}
+              >
+                {card.title}
+              </h3>
+            )}
+          </div>
           {card.subtitle && (
             <p
               className="w-full text-sm text-center item-text-gentle"
