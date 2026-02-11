@@ -79,9 +79,11 @@ export default function RecentSharedReflection() {
         </p>
         <div className="flex items-center justify-between mt-3">
           <p className="text-xs text-muted-foreground">
-            {category?.title && card?.title
-              ? `${category.title} · ${card.title} · ${dateStr}`
-              : dateStr}
+            {[
+              category?.title && card?.title ? `${category.title} · ${card.title}` : null,
+              note.author_label,
+              dateStr,
+            ].filter(Boolean).join(' · ')}
           </p>
           <Button
             variant="ghost"

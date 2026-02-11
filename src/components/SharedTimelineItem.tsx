@@ -98,9 +98,16 @@ export default function SharedTimelineItem({
     >
       {/* Context label */}
       <div className="flex items-center justify-between mb-2">
-        <p className="text-xs text-muted-foreground">
-          {note.categoryTitle} · {note.cardTitle}
-        </p>
+        <div className="flex items-center gap-1.5">
+          <p className="text-xs text-muted-foreground">
+            {note.categoryTitle} · {note.cardTitle}
+          </p>
+          {note.author_label && (
+            <span className="text-xs text-muted-foreground/60">
+              · {note.author_label}
+            </span>
+          )}
+        </div>
         <div className="flex items-center gap-1">
           {isOwnNote && !editing && (
             <Button
