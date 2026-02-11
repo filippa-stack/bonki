@@ -143,7 +143,10 @@
     "no_results": "Inga resultat hittades.",
     "period_recent": "Senaste veckan",
     "period_this_month": "Denna månad",
-    "period_older": "Tidigare"
+    "period_older": "Tidigare",
+    "add_response": "Skriv en tanke tillbaka",
+    "response_placeholder": "Din tanke om detta...",
+    "partner_response": "Partnerns tanke"
   },
   "invite": {
     "title": "Bjud in din partner",

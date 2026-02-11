@@ -132,6 +132,51 @@ export type Database = {
           },
         ]
       }
+      reflection_responses: {
+        Row: {
+          content: string
+          couple_space_id: string
+          created_at: string
+          id: string
+          reflection_id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          content?: string
+          couple_space_id: string
+          created_at?: string
+          id?: string
+          reflection_id: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          content?: string
+          couple_space_id?: string
+          created_at?: string
+          id?: string
+          reflection_id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "reflection_responses_couple_space_id_fkey"
+            columns: ["couple_space_id"]
+            isOneToOne: false
+            referencedRelation: "couple_spaces"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "reflection_responses_reflection_id_fkey"
+            columns: ["reflection_id"]
+            isOneToOne: false
+            referencedRelation: "prompt_notes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       user_backups: {
         Row: {
           background_color: string | null
