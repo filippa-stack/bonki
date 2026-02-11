@@ -52,6 +52,8 @@ export default function PromptItem({
   const navigate = useNavigate();
   const [internalExpanded, setInternalExpanded] = useState(false);
   const [justShared, setJustShared] = useState(false);
+  const [showSharePreview, setShowSharePreview] = useState(false);
+  const [sharePreviewText, setSharePreviewText] = useState('');
   // Support both controlled and uncontrolled expansion
   const isControlled = expanded !== undefined;
   const isExpanded = isControlled ? expanded : internalExpanded;
@@ -200,12 +202,12 @@ export default function PromptItem({
                     )}
                   </div>
 
-                  {/* Share action */}
-                  {privateNote?.content && !sharedNote && (
+                  {/* Share action / preview */}
+                  {privateNote?.content && !sharedNote && !showSharePreview && (
                     <button
                       onClick={() => {
-                        onShareNote(promptId);
-                        setJustShared(true);
+                        setSharePreviewText(privateNote.content);
+                        setShowSharePreview(true);
                       }}
                       className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
                     >
@@ -218,6 +220,52 @@ export default function PromptItem({
                       {t('reflections.share_when_ready', 'Dela med din partner när du känner dig redo')}
                     </p>
                   )}
+
+                  {/* Pre-share review */}
+                  <AnimatePresence>
+                    {showSharePreview && !sharedNote && (
+                      <motion.div
+                        initial={{ opacity: 0, y: 6 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -4 }}
+                        className="p-4 rounded-lg bg-primary/5 border border-primary/10 space-y-3"
+                      >
+                        <p className="text-xs text-muted-foreground uppercase tracking-wider">
+                          {t('reflections.share_preview_title', 'Granska innan du delar')}
+                        </p>
+                        <p className="text-xs text-muted-foreground/70 italic">
+                          {t('reflections.share_preview_hint', 'Du kan justera texten nedan. Din privata anteckning förblir oförändrad.')}
+                        </p>
+                        <textarea
+                          value={sharePreviewText}
+                          onChange={(e) => setSharePreviewText(e.target.value)}
+                          className="w-full min-h-[60px] p-3 rounded-lg bg-background border border-input resize-none focus:outline-none focus:ring-2 focus:ring-primary/20 font-sans text-sm text-foreground"
+                          autoFocus
+                        />
+                        <div className="flex flex-wrap gap-2">
+                          <button
+                            onClick={() => {
+                              onSaveNote(promptId, sharePreviewText, 'shared');
+                              onShareNote(promptId);
+                              setShowSharePreview(false);
+                              setJustShared(true);
+                            }}
+                            disabled={!sharePreviewText.trim()}
+                            className="flex items-center gap-1.5 text-sm font-medium text-foreground hover:text-primary transition-colors disabled:opacity-40"
+                          >
+                            <Share2 className="w-3.5 h-3.5" />
+                            {t('reflections.share_confirm', 'Dela med din partner')}
+                          </button>
+                          <button
+                            onClick={() => setShowSharePreview(false)}
+                            className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
+                          >
+                            {t('reflections.share_cancel', 'Inte just nu')}
+                          </button>
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
 
                   {/* Post-share confirmation */}
                   {sharedNote && justShared && (
