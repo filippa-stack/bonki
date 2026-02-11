@@ -1,7 +1,7 @@
 {
   "general": {
-    "continue_cta": "Fortsätt",
-    "choose_another": "Välj ett annat kort",
+    "continue_cta": "Fortsätt samtalet",
+    "choose_another": "Utforska något annat",
     "back_home": "Tillbaka",
     "pause_for_now": "Pausa för nu",
     "pause_title": "Pausa samtalet",
@@ -30,8 +30,8 @@
     "slide_label": "Gå till sida {{number}}"
   },
   "home": {
-    "continue_where_left_off": "Fortsätt där ni slutade",
-    "choose_category": "Välj en kategori",
+    "continue_where_left_off": "Ert senaste samtal",
+    "choose_category": "Samtalsområden",
     "saved_conversations": "Sparade samtal ({{count}})",
     "edit_label_title": "Rubrik",
     "edit_label_subtitle": "Underrubrik",
@@ -55,10 +55,10 @@
   },
   "resume": {
     "welcome_back": "Välkommen tillbaka",
-    "paused_description": "Ni pausade mitt i ett samtal. Vill ni fortsätta där ni slutade?",
+    "paused_description": "Ni pausade mitt i ett samtal. Vill ni fortsätta där ni var?",
     "last_conversation": "Senaste samtalet",
-    "continue_where_left": "Fortsätt där ni slutade",
-    "back_to_categories": "Tillbaka till kategorier"
+    "continue_where_left": "Fortsätt samtalet",
+    "back_to_categories": "Tillbaka till samtalsområden"
   },
   "save_indicator": {
     "saving": "Sparar…",
@@ -111,11 +111,11 @@
     "sections_count": "{{count}} sektioner",
     "delete_confirm": "Vill du ta bort \"{{title}}\"?",
     "explored_count": "{{explored}} av {{total}} utforskade",
-    "all_explored": "Utforskat — men möjligt att återvända till när livet förändras."
+    "all_explored": "Ni har utforskat allt här — men samtal förändras med livet."
   },
   "category_status": {
-    "not_started": "Inte påbörjat",
-    "in_progress": "Pågår",
+    "not_started": "Ännu inte utforskat",
+    "in_progress": "Ni har börjat utforska",
     "explored": "Utforskat",
     "return_note": "Ni kan alltid återvända."
   },
