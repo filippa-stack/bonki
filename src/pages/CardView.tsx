@@ -20,11 +20,11 @@ const sectionTypeLabels: Record<string, string> = {
 
 const STEP_ORDER = ['opening', 'reflective', 'scenario', 'exercise'] as const;
 
-const STEP_CTA_LABELS: Record<string, string> = {
-  opening: 'Gå vidare till Tankeväckare',
-  reflective: 'Fortsätt till Scenario',
-  scenario: 'Vidare till Teamwork',
-  exercise: 'Avsluta samtalet',
+const STEP_CTA_KEYS: Record<string, string> = {
+  opening: 'card_view.cta_opening',
+  reflective: 'card_view.cta_reflective',
+  scenario: 'card_view.cta_scenario',
+  exercise: 'card_view.cta_exercise',
 };
 
 export default function CardView() {
@@ -77,6 +77,7 @@ export default function CardView() {
     !(currentSession?.cardId === cardId) && !existingConversation
   );
   const [showCompletion, setShowCompletion] = useState(false);
+  const [transitionMessage, setTransitionMessage] = useState<string | null>(null);
 
   // Start or resume session when entering card
   useEffect(() => {
@@ -107,18 +108,31 @@ export default function CardView() {
 
   const currentSection = card.sections.find(s => s.type === STEP_ORDER[currentStepIndex]);
 
+  const TRANSITION_KEYS: Record<string, string> = {
+    opening: 'card_view.transition_opening',
+    reflective: 'card_view.transition_reflective',
+    scenario: 'card_view.transition_scenario',
+  };
+
   const handleNextStep = () => {
-    // Mark current step as completed
     if (!completedSteps.includes(currentStepIndex)) {
       setCompletedSteps(prev => [...prev, currentStepIndex]);
       completeSessionStep(currentStepIndex);
     }
 
     if (currentStepIndex < STEP_ORDER.length - 1) {
-      // Go to next step
-      setCurrentStepIndex(currentStepIndex + 1);
+      const currentType = STEP_ORDER[currentStepIndex];
+      const msgKey = TRANSITION_KEYS[currentType];
+      if (msgKey) {
+        setTransitionMessage(t(msgKey));
+        setTimeout(() => {
+          setTransitionMessage(null);
+          setCurrentStepIndex(currentStepIndex + 1);
+        }, 1800);
+      } else {
+        setCurrentStepIndex(currentStepIndex + 1);
+      }
     } else {
-      // End session and show completion screen
       endSession();
       setShowCompletion(true);
     }
@@ -325,10 +339,28 @@ export default function CardView() {
         )}
       </div>
 
+      {/* Transition moment */}
+      <AnimatePresence>
+        {transitionMessage && (
+          <motion.div
+            key="transition"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.5 }}
+            className="px-6 py-16 flex items-center justify-center"
+          >
+            <p className="text-sm text-muted-foreground italic text-center max-w-xs leading-relaxed">
+              {transitionMessage}
+            </p>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* Section content */}
       <div className="px-6">
         <AnimatePresence mode="wait">
-          {currentSection && (
+          {currentSection && !transitionMessage && (
             <motion.div
               key={currentSection.id}
               initial={{ opacity: 0, x: 20 }}
@@ -364,7 +396,7 @@ export default function CardView() {
                       </>
                     ) : (
                       <>
-                        {STEP_CTA_LABELS[STEP_ORDER[currentStepIndex]]}
+                        {t(STEP_CTA_KEYS[STEP_ORDER[currentStepIndex]])}
                         <ArrowRight className="w-4 h-4" />
                       </>
                     )}
