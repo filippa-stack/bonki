@@ -132,8 +132,12 @@ export default function CardView() {
 
   if (!card) {
     return (
-      <div className="min-h-screen flex items-center justify-center page-bg">
-        <p className="text-gentle">Kort hittades inte</p>
+      <div className="min-h-screen page-bg animate-fade-in">
+        <div className="h-14 border-b border-border bg-card" />
+        <div className="px-6 pt-12 space-y-4 max-w-md mx-auto text-center">
+          <div className="h-6 w-40 rounded bg-muted/30 animate-pulse mx-auto" />
+          <p className="text-sm text-muted-foreground">{t('card_view.not_found')}</p>
+        </div>
       </div>
     );
   }

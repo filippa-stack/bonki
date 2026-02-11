@@ -25,8 +25,17 @@ function ProtectedRoutes() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-background">
-        <div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin" />
+      <div className="min-h-screen page-bg animate-fade-in">
+        <div className="h-14 border-b border-border bg-card" />
+        <div className="px-6 pt-8 space-y-4">
+          <div className="h-8 w-48 rounded-lg bg-muted/30 animate-pulse" />
+          <div className="h-4 w-64 rounded bg-muted/20 animate-pulse" />
+          <div className="mt-6 space-y-3">
+            <div className="h-20 rounded-xl bg-muted/20 animate-pulse" />
+            <div className="h-20 rounded-xl bg-muted/20 animate-pulse" />
+            <div className="h-20 rounded-xl bg-muted/20 animate-pulse" />
+          </div>
+        </div>
       </div>
     );
   }
@@ -56,8 +65,13 @@ function AppRoutes() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-background">
-        <div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin" />
+      <div className="min-h-screen page-bg animate-fade-in">
+        <div className="flex items-center justify-center pt-32">
+          <div className="space-y-4 text-center">
+            <div className="h-10 w-10 rounded-full bg-muted/30 animate-pulse mx-auto" />
+            <div className="h-3 w-24 rounded bg-muted/20 animate-pulse mx-auto" />
+          </div>
+        </div>
       </div>
     );
   }
