@@ -50,26 +50,29 @@ export default function CardView() {
   const category = card ? getCategoryById(card.categoryId) : undefined;
   const existingConversation = cardId ? getConversationForCard(cardId) : undefined;
 
-  // Determine initial step from session or start fresh
+  // Determine initial step from session or saved conversation
   const getInitialStepIndex = () => {
     if (currentSession?.cardId === cardId) {
       return currentSession.currentStepIndex;
     }
-    // Check if there's an existing conversation to resume
-    if (existingConversation?.lastSectionId && card) {
-      const section = card.sections.find(s => s.id === existingConversation.lastSectionId);
-      if (section) {
-        const stepIndex = STEP_ORDER.indexOf(section.type);
-        if (stepIndex !== -1) return stepIndex;
-      }
+    if (existingConversation && card) {
+      return existingConversation.lastStepIndex ?? 0;
     }
     return 0;
   };
 
+  const getInitialCompletedSteps = () => {
+    if (currentSession?.cardId === cardId) {
+      return currentSession.completedSteps;
+    }
+    if (existingConversation) {
+      return existingConversation.completedSteps ?? [];
+    }
+    return [];
+  };
+
   const [currentStepIndex, setCurrentStepIndex] = useState(getInitialStepIndex);
-  const [completedSteps, setCompletedSteps] = useState<number[]>(
-    currentSession?.cardId === cardId ? currentSession.completedSteps : []
-  );
+  const [completedSteps, setCompletedSteps] = useState<number[]>(getInitialCompletedSteps);
   const [showOverview, setShowOverview] = useState(
     !(currentSession?.cardId === cardId) && !existingConversation
   );
@@ -88,11 +91,11 @@ export default function CardView() {
     if (card && currentStepIndex >= 0) {
       const currentSection = card.sections.find(s => s.type === STEP_ORDER[currentStepIndex]);
       if (currentSection) {
-        saveConversation(card.id, currentSection.id);
+        saveConversation(card.id, currentSection.id, currentStepIndex, completedSteps);
         updateSessionStep(currentStepIndex);
       }
     }
-  }, [currentStepIndex, card]);
+  }, [currentStepIndex, completedSteps, card]);
 
   if (!card) {
     return (
