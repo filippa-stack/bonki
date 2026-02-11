@@ -273,6 +273,33 @@ export default function Home() {
             );
           }
         }
+
+        // No conversations yet — guide to recommended first card
+        const firstCategory = categories[0];
+        const firstCard = firstCategory ? cards.find(c => c.categoryId === firstCategory.id) : null;
+        if (firstCard && firstCategory) {
+          return (
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+              className="px-6 py-6"
+            >
+              <div className="rounded-2xl border border-border bg-card p-6 text-center space-y-4">
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  {t('home.first_conversation_hint')}
+                </p>
+                <Button
+                  size="lg"
+                  className="w-full sm:w-auto gap-2"
+                  onClick={() => navigate(`/card/${firstCard.id}`)}
+                >
+                  {t('home.start_first_conversation')}
+                </Button>
+              </div>
+            </motion.div>
+          );
+        }
         
         return null;
       })()}
