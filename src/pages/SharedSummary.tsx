@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { useApp } from '@/contexts/AppContext';
 import { useAuth } from '@/contexts/AuthContext';
 import { useCoupleSpace } from '@/hooks/useCoupleSpace';
+import { useReflectionResponses } from '@/hooks/useReflectionResponses';
 import { supabase } from '@/integrations/supabase/client';
 import Header from '@/components/Header';
 import SharedTimelineItem from '@/components/SharedTimelineItem';
@@ -74,6 +75,10 @@ export default function SharedSummary() {
 
     fetchSharedNotes();
   }, [user, space]);
+
+  // Reflection responses hook
+  const reflectionIds = useMemo(() => sharedNotes.map(n => n.id), [sharedNotes]);
+  const { saveResponse, getMyResponse, getPartnerResponse } = useReflectionResponses(reflectionIds);
 
   // Cleanup pending saves on unmount
   useEffect(() => {
@@ -276,7 +281,10 @@ export default function SharedSummary() {
                       key={item.id}
                       note={item}
                       isOwnNote={item.user_id === user?.id}
+                      myResponse={getMyResponse(item.id)}
+                      partnerResponse={getPartnerResponse(item.id)}
                       onUpdate={handleUpdateNote}
+                      onSaveResponse={saveResponse}
                       onOpenInContext={handleOpenInContext}
                     />
                   ))}
