@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useApp } from '@/contexts/AppContext';
 import { useCoupleSpace } from '@/hooks/useCoupleSpace';
+import { usePartnerNotifications } from '@/hooks/usePartnerNotifications';
 import Onboarding from '@/components/Onboarding';
 import Home from '@/pages/Home';
 import WelcomePartner from '@/components/WelcomePartner';
@@ -9,6 +10,7 @@ export default function Index() {
   const { hasCompletedOnboarding, savedConversations, getAllSharedNotes, journeyState } = useApp();
   const { userRole } = useCoupleSpace();
   const [welcomeDismissed, setWelcomeDismissed] = useState(false);
+  usePartnerNotifications();
 
   if (!hasCompletedOnboarding) {
     return <Onboarding />;
