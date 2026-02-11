@@ -152,16 +152,20 @@ export default function SharedSummary() {
       }) as (SharedNoteRow & { cardTitle: string; categoryTitle: string; categoryId: string; promptText: string })[];
   }, [sharedNotes, searchQuery, categoryFilter, getCardById, getCategoryById]);
 
-  // Group timeline items by month, then by card within each month
-  const groupedTimeline = useMemo(() => {
+  // Split into recent (last 3) and older, then group older by month+card
+  const { recentItems, olderGrouped } = useMemo(() => {
     type TimelineItem = typeof timelineItems[number];
     type CardGroup = { cardId: string; cardTitle: string; categoryTitle: string; items: TimelineItem[] };
     type MonthGroup = { key: string; label: string; cardGroups: CardGroup[] };
 
-    // Build a map: monthKey -> cardId -> items
+    const RECENT_COUNT = 3;
+    const recent = timelineItems.slice(0, RECENT_COUNT);
+    const older = timelineItems.slice(RECENT_COUNT);
+
+    // Group older items by month then card
     const monthMap = new Map<string, { label: string; cardMap: Map<string, { cardTitle: string; categoryTitle: string; items: TimelineItem[] }> }>();
 
-    for (const item of timelineItems) {
+    for (const item of older) {
       const d = new Date(item.shared_at || item.created_at);
       const monthKey = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
       const monthLabel = d.toLocaleDateString('sv-SE', { year: 'numeric', month: 'long' });
@@ -177,8 +181,7 @@ export default function SharedSummary() {
       month.cardMap.get(item.card_id)!.items.push(item);
     }
 
-    // Convert to sorted array (newest month first)
-    const result: MonthGroup[] = Array.from(monthMap.entries())
+    const grouped: MonthGroup[] = Array.from(monthMap.entries())
       .sort(([a], [b]) => b.localeCompare(a))
       .map(([key, { label, cardMap }]) => ({
         key,
@@ -189,7 +192,7 @@ export default function SharedSummary() {
         })),
       }));
 
-    return result;
+    return { recentItems: recent, olderGrouped: grouped };
   }, [timelineItems]);
 
   const highlights = useMemo(() => {
@@ -301,38 +304,88 @@ export default function SharedSummary() {
               )}
             </div>
 
-            {/* Grouped timeline */}
-            {groupedTimeline.map((group) => (
-              <div key={group.key} className="mb-8">
+            {/* Recent shared moments — prominent */}
+            {recentItems.length > 0 && !hasActiveFilter && (
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="mb-8"
+              >
                 <p className="text-xs text-muted-foreground uppercase tracking-wider mb-4 flex items-center gap-2">
-                  <Clock className="w-3 h-3" />
-                  {group.label}
+                  <Heart className="w-3 h-3" />
+                  {t('shared.recent_title', 'Senaste delade stunderna')}
                 </p>
-                <div className="space-y-5">
-                  {group.cardGroups.map((cardGroup) => (
-                    <div key={cardGroup.cardId}>
-                      <p className="text-xs font-medium text-foreground/70 mb-2">
-                        {cardGroup.categoryTitle} · {cardGroup.cardTitle}
-                      </p>
-                      <div className="space-y-3">
-                        {cardGroup.items.map((item) => (
-                          <SharedTimelineItem
-                            key={item.id}
-                            note={item}
-                            isOwnNote={item.user_id === user?.id}
-                            myResponse={getMyResponse(item.id)}
-                            partnerResponse={getPartnerResponse(item.id)}
-                            onUpdate={handleUpdateNote}
-                            onSaveResponse={saveResponse}
-                            onOpenInContext={handleOpenInContext}
-                          />
-                        ))}
-                      </div>
-                    </div>
+                <div className="space-y-3">
+                  {recentItems.map((item) => (
+                    <SharedTimelineItem
+                      key={item.id}
+                      note={item}
+                      isOwnNote={item.user_id === user?.id}
+                      myResponse={getMyResponse(item.id)}
+                      partnerResponse={getPartnerResponse(item.id)}
+                      onUpdate={handleUpdateNote}
+                      onSaveResponse={saveResponse}
+                      onOpenInContext={handleOpenInContext}
+                    />
                   ))}
                 </div>
+              </motion.div>
+            )}
+
+            {/* When filtering, show all results flat */}
+            {hasActiveFilter && timelineItems.length > 0 && (
+              <div className="space-y-3 mb-8">
+                {timelineItems.map((item) => (
+                  <SharedTimelineItem
+                    key={item.id}
+                    note={item}
+                    isOwnNote={item.user_id === user?.id}
+                    myResponse={getMyResponse(item.id)}
+                    partnerResponse={getPartnerResponse(item.id)}
+                    onUpdate={handleUpdateNote}
+                    onSaveResponse={saveResponse}
+                    onOpenInContext={handleOpenInContext}
+                  />
+                ))}
               </div>
-            ))}
+            )}
+
+            {/* Older reflections — grouped by month, visually secondary */}
+            {olderGrouped.length > 0 && !hasActiveFilter && (
+              <div className="opacity-80">
+                {olderGrouped.map((group) => (
+                  <div key={group.key} className="mb-8">
+                    <p className="text-xs text-muted-foreground/70 uppercase tracking-wider mb-4 flex items-center gap-2">
+                      <Clock className="w-3 h-3" />
+                      {group.label}
+                    </p>
+                    <div className="space-y-5">
+                      {group.cardGroups.map((cardGroup) => (
+                        <div key={cardGroup.cardId}>
+                          <p className="text-xs font-medium text-foreground/60 mb-2">
+                            {cardGroup.categoryTitle} · {cardGroup.cardTitle}
+                          </p>
+                          <div className="space-y-3">
+                            {cardGroup.items.map((item) => (
+                              <SharedTimelineItem
+                                key={item.id}
+                                note={item}
+                                isOwnNote={item.user_id === user?.id}
+                                myResponse={getMyResponse(item.id)}
+                                partnerResponse={getPartnerResponse(item.id)}
+                                onUpdate={handleUpdateNote}
+                                onSaveResponse={saveResponse}
+                                onOpenInContext={handleOpenInContext}
+                              />
+                            ))}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
 
             {/* No results */}
             {timelineItems.length === 0 && hasActiveFilter && (
