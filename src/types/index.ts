@@ -18,6 +18,7 @@ export interface Card {
   id: string;
   title: string;
   subtitle?: string;
+  description?: string;
   categoryId: string;
   sections: Section[];
   color?: string;

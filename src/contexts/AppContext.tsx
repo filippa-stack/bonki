@@ -8,6 +8,7 @@ import { useSiteSettings, SiteSettings } from '@/contexts/SiteSettingsContext';
 const STEP_ORDER = ['opening', 'reflective', 'scenario', 'exercise'] as const;
 
 interface AppContextType {
+  updateCardDescription: (id: string, description: string) => void;
   state: AppState;
   hasCompletedOnboarding: boolean;
   completeOnboarding: () => void;
@@ -286,6 +287,14 @@ export function AppProvider({ children }: { children: ReactNode }) {
     setCards((prev) =>
       prev.map((card) =>
         card.id === id ? { ...card, title, subtitle } : card
+      )
+    );
+  };
+
+  const updateCardDescription = (id: string, description: string) => {
+    setCards((prev) =>
+      prev.map((card) =>
+        card.id === id ? { ...card, description } : card
       )
     );
   };
@@ -771,6 +780,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
         addCard,
         deleteCard,
         updateCard,
+        updateCardDescription,
         updateCardEmptyState,
         updateCardColor,
         updateCardTextColor,
