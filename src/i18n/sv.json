@@ -177,5 +177,11 @@
   "couple_space": {
     "partner_connected": "Din partner är ansluten!",
     "solo_mode": "Solo-läge"
+  },
+  "welcome_partner": {
+    "title": "Välkommen till ert gemensamma rum",
+    "description": "Det här är ett utrymme för samtal och reflektioner — för er, i er egen takt.",
+    "start_first": "Starta ert första samtal",
+    "explore": "Utforska samtalsområden"
   }
 }
