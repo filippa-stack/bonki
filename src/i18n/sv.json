@@ -132,7 +132,10 @@
     "mark_important": "Viktigt för oss",
     "important_limit_reached": "Ni kan ha max tre viktiga åt gången.",
     "edit": "Redigera",
-    "prompt_note_placeholder": "Skriv dina tankar här... (sparas automatiskt)"
+    "prompt_note_placeholder": "Skriv dina tankar här... (sparas automatiskt)",
+    "shared_confirmation": "Er reflektion är nu en del av ert gemensamma utrymme.",
+    "continue_conversation": "Fortsätt samtalet",
+    "go_home": "Tillbaka till start"
   },
   "shared": {
     "title": "Det vi delat",
