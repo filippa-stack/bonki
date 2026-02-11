@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
@@ -8,6 +8,7 @@ import SectionView from '@/components/SectionView';
 import CardReflections from '@/components/CardReflections';
 import StepProgressIndicator from '@/components/StepProgressIndicator';
 import PauseDialog from '@/components/PauseDialog';
+import SyncPrompt from '@/components/SyncPrompt';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft, ArrowRight, Check, Heart, Home } from 'lucide-react';
 
@@ -19,6 +20,7 @@ const sectionTypeLabels: Record<string, string> = {
 };
 
 const STEP_ORDER = ['opening', 'reflective', 'scenario', 'exercise'] as const;
+const STEP_LABELS = ['Öppnare', 'Tankeväckare', 'Scenario', 'Team Work'];
 
 const STEP_CTA_KEYS: Record<string, string> = {
   opening: 'card_view.cta_opening',
@@ -78,6 +80,36 @@ export default function CardView() {
   );
   const [showCompletion, setShowCompletion] = useState(false);
   const [transitionMessage, setTransitionMessage] = useState<string | null>(null);
+
+  // Sync prompt state: detect when partner advanced ahead
+  const [syncOffer, setSyncOffer] = useState<number | null>(null);
+  const localStepRef = useRef(currentStepIndex);
+
+  // Track user's own step changes (user-initiated)
+  useEffect(() => {
+    localStepRef.current = currentStepIndex;
+  }, [currentStepIndex]);
+
+  // Detect when shared session advances beyond user's local position
+  useEffect(() => {
+    if (!currentSession || currentSession.cardId !== cardId) return;
+    const sharedStep = currentSession.currentStepIndex;
+    // Only offer sync if shared position is ahead of where the user is
+    if (sharedStep > localStepRef.current && sharedStep !== currentStepIndex) {
+      setSyncOffer(sharedStep);
+    }
+  }, [currentSession?.currentStepIndex, cardId]);
+
+  const handleSyncJump = () => {
+    if (syncOffer !== null) {
+      setCurrentStepIndex(syncOffer);
+      setSyncOffer(null);
+    }
+  };
+
+  const handleSyncStay = () => {
+    setSyncOffer(null);
+  };
 
   // Start or resume session when entering card
   useEffect(() => {
@@ -318,7 +350,15 @@ export default function CardView() {
         />
       </div>
 
-      {/* Card header - simplified */}
+      {/* Sync prompt when partner is ahead */}
+      {syncOffer !== null && (
+        <SyncPrompt
+          partnerStepIndex={syncOffer}
+          stepLabels={STEP_LABELS}
+          onSync={handleSyncJump}
+          onStay={handleSyncStay}
+        />
+      )}
       <div className="px-6 pt-6 pb-4">
         <motion.h1
           initial={{ opacity: 0, y: 10 }}

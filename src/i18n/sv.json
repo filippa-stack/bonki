@@ -226,5 +226,11 @@
     "partner_shared_hint": "En ny reflektion finns i ert gemensamma utrymme.",
     "partner_continuing": "Din partner har återvänt till samtalet",
     "partner_continuing_hint": "Ni kan fortsätta tillsammans när du är redo."
+  },
+  "sync_prompt": {
+    "message": "Din partner har fortsatt samtalet lite längre. Vill du hoppa dit?",
+    "current_position": "De är vid: {{step}}",
+    "jump": "Gå dit",
+    "stay": "Stanna där jag var"
   }
 }
