@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronDown, Share2, X, Star, Trash2, Heart, ArrowRight, Home } from 'lucide-react';
+import { ChevronDown, Share2, X, Star, Trash2, Heart, ArrowRight, Home, Lock, Users } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Prompt } from '@/types';
@@ -167,7 +167,7 @@ export default function PromptItem({
                   <div>
                     <div className="flex items-center justify-between mb-2">
                       <p className="text-xs text-muted-foreground uppercase tracking-wider">
-                        {t('reflections.private_notes_title', 'Privat anteckning')}
+                        {t('reflections.private_notes_title', 'Bara för dig')}
                       </p>
                       <ColorPicker
                         currentColor={settings.noteBoxBgColor}
@@ -191,6 +191,13 @@ export default function PromptItem({
                         borderColor: settings.noteBoxBorderColor || undefined,
                       }}
                     />
+                    {/* Privacy indicator */}
+                    {!sharedNote && (
+                      <p className="flex items-center gap-1.5 text-xs text-muted-foreground mt-2 italic">
+                        <Lock className="w-3 h-3" />
+                        {t('reflections.private_indicator', 'Bara du kan se det här')}
+                      </p>
+                    )}
                   </div>
 
                   {/* Share action */}
@@ -203,8 +210,13 @@ export default function PromptItem({
                       className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
                     >
                       <Share2 className="w-3.5 h-3.5" />
-                      {t('reflections.create_shared_from_private', 'Skapa delad version')}
+                      {t('reflections.create_shared_from_private', 'Dela med din partner')}
                     </button>
+                  )}
+                  {!privateNote?.content && !sharedNote && (
+                    <p className="text-xs text-muted-foreground/60 italic">
+                      {t('reflections.share_when_ready', 'Dela med din partner när du känner dig redo')}
+                    </p>
                   )}
 
                   {/* Post-share confirmation */}
@@ -240,8 +252,9 @@ export default function PromptItem({
                   {/* Shared note display (after dismissing confirmation) */}
                   {sharedNote && !justShared && (
                     <div className="p-3 rounded-lg bg-primary/5 border border-primary/10">
-                      <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">
-                        {t('reflections.shared_notes_title', 'Delad reflektion')}
+                      <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1 flex items-center gap-1.5">
+                        <Users className="w-3 h-3" />
+                        {t('reflections.shared_notes_title', 'Delad med din partner')}
                       </p>
                       <p className="text-sm text-foreground whitespace-pre-wrap">
                         {sharedNote.content}
