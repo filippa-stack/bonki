@@ -234,5 +234,11 @@
     "current_position": "De är vid: {{step}}",
     "jump": "Gå dit",
     "stay": "Stanna där jag var"
+  },
+  "welcome_back": {
+    "message": "Vad fint att ni är tillbaka. Ert utrymme finns kvar precis som ni lämnade det.",
+    "last_context": "Senast pratade ni om: {{category}} · {{card}}",
+    "continue": "Fortsätt där ni var",
+    "dismiss": "Utforska fritt"
   }
 }
