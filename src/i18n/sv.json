@@ -127,9 +127,9 @@
     "return_note": "Utforska i er egen takt."
   },
   "reflections": {
-    "private_notes_title": "Bara för dig",
+    "private_notes_title": "Din reflektion",
     "private_notes_hint": "Privat. För dig. Du kan forma det senare.",
-    "private_indicator": "Bara du kan se det här",
+    "private_indicator": "Bara du kan se det här tills du väljer att dela",
     "shared_notes_title": "Delad med din partner",
     "shared_notes_hint": "Den här versionen är tänkt att delas mellan er.",
     "share_when_ready": "Dela med din partner när du känner dig redo",
