@@ -73,11 +73,11 @@ export default function CardView() {
     return [];
   };
 
+  const isReturningUser = !!(currentSession?.cardId === cardId || existingConversation);
   const [currentStepIndex, setCurrentStepIndex] = useState(getInitialStepIndex);
   const [completedSteps, setCompletedSteps] = useState<number[]>(getInitialCompletedSteps);
-  const [showOverview, setShowOverview] = useState(
-    !(currentSession?.cardId === cardId) && !existingConversation
-  );
+  const [showOverview, setShowOverview] = useState(!isReturningUser);
+  const [showReentry, setShowReentry] = useState(isReturningUser);
   const [showCompletion, setShowCompletion] = useState(false);
   const [transitionMessage, setTransitionMessage] = useState<string | null>(null);
 
@@ -255,6 +255,66 @@ export default function CardView() {
             >
               {t('card_view.completion_rest')}
             </motion.p>
+          </motion.div>
+        </div>
+      </div>
+    );
+  }
+
+  // Re-entry screen for returning users
+  if (showReentry) {
+    const resumeStepLabel = STEP_LABELS[currentStepIndex] || STEP_LABELS[0];
+    return (
+      <div className="min-h-screen page-bg">
+        <Header
+          title={category?.title}
+          showBack
+          backTo={category ? `/category/${category.id}` : '/'}
+        />
+        <div className="px-6 pt-12 pb-8">
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="text-center max-w-md mx-auto space-y-6"
+          >
+            <h1 className="text-2xl font-serif text-foreground leading-snug">
+              {card.title}
+            </h1>
+            {card.subtitle && (
+              <p className="text-sm text-muted-foreground italic">{card.subtitle}</p>
+            )}
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.2, duration: 0.4 }}
+              className="text-sm text-muted-foreground leading-relaxed max-w-xs mx-auto"
+            >
+              {t('card_view.reentry_message', 'Ni var mitt i det här samtalet. Ni kan fortsätta precis där ni var.')}
+            </motion.p>
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.35, duration: 0.4 }}
+              className="text-xs text-muted-foreground/60"
+            >
+              {resumeStepLabel}
+            </motion.p>
+            <motion.div
+              initial={{ opacity: 0, y: 6 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5, duration: 0.4 }}
+              className="pt-2"
+            >
+              <Button
+                size="lg"
+                className="w-full sm:w-auto gap-2"
+                onClick={() => setShowReentry(false)}
+              >
+                {t('card_view.reentry_continue', 'Fortsätt samtalet')}
+                <ArrowRight className="w-4 h-4" />
+              </Button>
+            </motion.div>
           </motion.div>
         </div>
       </div>

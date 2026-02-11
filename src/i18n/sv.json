@@ -114,7 +114,9 @@
     "completion_message": "Tack för att ni stannade kvar i det här samtalet. Det ni delade med varandra finns kvar — och ni kan alltid återvända.",
     "completion_next": "Fortsätt utforska tillsammans",
     "completion_home": "Tillbaka till start",
-    "completion_rest": "Det finns ingen brådska. Ni bestämmer takten."
+    "completion_rest": "Det finns ingen brådska. Ni bestämmer takten.",
+    "reentry_message": "Ni var mitt i det här samtalet. Ni kan fortsätta precis där ni var.",
+    "reentry_continue": "Fortsätt samtalet"
   },
   "category": {
     "cards_count": "{{count}} kort",
