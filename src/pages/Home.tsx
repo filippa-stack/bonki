@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
-import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { useState, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useApp } from '@/contexts/AppContext';
 import { useSiteSettings } from '@/contexts/SiteSettingsContext';
@@ -12,6 +12,7 @@ import { Bookmark, Pencil, Check, Share2, Settings } from 'lucide-react';
 import NotificationSettings from '@/components/NotificationSettings';
 import RelationshipMemory from '@/components/RelationshipMemory';
 import RecentSharedReflection from '@/components/RecentSharedReflection';
+import WelcomeBackBanner from '@/components/WelcomeBackBanner';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -61,6 +62,23 @@ export default function Home() {
   const [editSubtitleFont, setEditSubtitleFont] = useState(settings.heroSubtitleFont);
   const [editButtonColor, setEditButtonColor] = useState(settings.buttonColor);
   const [editButtonTextColor, setEditButtonTextColor] = useState(settings.buttonTextColor);
+
+  // Welcome-back detection: show banner if 3+ days since last activity
+  const THREE_DAYS_MS = 3 * 24 * 60 * 60 * 1000;
+  const [welcomeBackDismissed, setWelcomeBackDismissed] = useState(false);
+
+  const welcomeBackContext = useMemo(() => {
+    if (welcomeBackDismissed) return null;
+    const lastActivity = journeyState?.updatedAt;
+    if (!lastActivity) return null;
+    const elapsed = Date.now() - new Date(lastActivity).getTime();
+    if (elapsed < THREE_DAYS_MS) return null;
+
+    const lastCardId = journeyState?.lastCompletedCardId || journeyState?.lastOpenedCardId;
+    const lastCard = lastCardId ? getCardById(lastCardId) : null;
+    const lastCategory = lastCard ? getCategoryById(lastCard.categoryId) : null;
+    return { lastCard, lastCategory };
+  }, [journeyState, welcomeBackDismissed, getCardById, getCategoryById]);
 
   // Get session details for resume dialog
   const sessionCard = currentSession ? getCardById(currentSession.cardId) : null;
@@ -236,6 +254,22 @@ export default function Home() {
           )}
         </div>
       </div>
+
+      {/* Welcome back banner for returning users */}
+      <AnimatePresence>
+        {welcomeBackContext && (
+          <WelcomeBackBanner
+            lastCardTitle={welcomeBackContext.lastCard?.title}
+            lastCategoryTitle={welcomeBackContext.lastCategory?.title}
+            onContinue={() => {
+              if (welcomeBackContext.lastCard) {
+                navigate(`/card/${welcomeBackContext.lastCard.id}`);
+              }
+            }}
+            onDismiss={() => setWelcomeBackDismissed(true)}
+          />
+        )}
+      </AnimatePresence>
 
       {/* Journey continue module */}
       {(() => {
