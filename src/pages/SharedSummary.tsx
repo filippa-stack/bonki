@@ -9,7 +9,7 @@ import { useReflectionResponses } from '@/hooks/useReflectionResponses';
 import { supabase } from '@/integrations/supabase/client';
 import Header from '@/components/Header';
 import SharedTimelineItem from '@/components/SharedTimelineItem';
-import { Star, Search, Filter, X, Clock, Heart, MessageCircle } from 'lucide-react';
+import { Star, Search, Filter, X, Clock, Heart, MessageCircle, BookOpen } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import {
@@ -320,6 +320,25 @@ export default function SharedSummary() {
               </p>
             )}
             </>)}
+
+            {/* "Er resa" section — always visible */}
+            {!hasContent && (
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.15 }}
+              >
+                <p className="text-xs text-muted-foreground uppercase tracking-wider mb-3 flex items-center gap-2">
+                  <BookOpen className="w-3 h-3" />
+                  {t('shared.journey_title')}
+                </p>
+                <div className="p-5 rounded-lg border border-border/50 bg-card/30">
+                  <p className="text-sm text-muted-foreground leading-relaxed">
+                    {t('shared.journey_empty')}
+                  </p>
+                </div>
+              </motion.div>
+            )}
           </>
         )}
       </div>
