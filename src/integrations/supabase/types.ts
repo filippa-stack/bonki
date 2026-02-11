@@ -49,6 +49,44 @@ export type Database = {
           },
         ]
       }
+      couple_progress: {
+        Row: {
+          couple_space_id: string
+          created_at: string
+          current_session: Json | null
+          id: string
+          journey_state: Json | null
+          updated_at: string
+          updated_by: string | null
+        }
+        Insert: {
+          couple_space_id: string
+          created_at?: string
+          current_session?: Json | null
+          id?: string
+          journey_state?: Json | null
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Update: {
+          couple_space_id?: string
+          created_at?: string
+          current_session?: Json | null
+          id?: string
+          journey_state?: Json | null
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "couple_progress_couple_space_id_fkey"
+            columns: ["couple_space_id"]
+            isOneToOne: true
+            referencedRelation: "couple_spaces"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       couple_spaces: {
         Row: {
           created_at: string

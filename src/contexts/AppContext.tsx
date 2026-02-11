@@ -1,9 +1,11 @@
-import React, { createContext, useContext, useState, useEffect, ReactNode, useCallback } from 'react';
+import React, { createContext, useContext, useState, useEffect, ReactNode, useCallback, useRef } from 'react';
 import { CoupleSpace, ConversationThread, Reflection, AppState, Category, Card, JourneyState, ReflectionsData, PrivateNote, SharedNote } from '@/types';
 import { categories as initialCategories, cards as initialCards } from '@/data/content';
 import { useSettingsSync, SaveStatus } from '@/hooks/useSettingsSync';
 import { useAuth } from '@/contexts/AuthContext';
 import { useSiteSettings, SiteSettings } from '@/contexts/SiteSettingsContext';
+import { useCoupleSpace } from '@/hooks/useCoupleSpace';
+import { useSharedProgress } from '@/hooks/useSharedProgress';
 
 const STEP_ORDER = ['opening', 'reflective', 'scenario', 'exercise'] as const;
 
@@ -173,6 +175,44 @@ export function AppProvider({ children }: { children: ReactNode }) {
     { backgroundColor, categories, cards, siteSettings },
     handleSettingsLoaded
   );
+
+  // Couple space for shared progress
+  const { space: coupleSpaceDb } = useCoupleSpace();
+  const coupleSpaceId = coupleSpaceDb?.id ?? null;
+
+  // Handle remote progress updates from partner
+  const handleRemoteProgressUpdate = useCallback((data: { currentSession: AppState['currentSession'] | null; journeyState: JourneyState | null }) => {
+    setState((prev) => ({
+      ...prev,
+      currentSession: data.currentSession ?? undefined,
+      journeyState: data.journeyState ?? undefined,
+    }));
+    setSessionDismissed(false);
+  }, []);
+
+  const { initialData: sharedProgressInitial, syncToRemote, ready: sharedProgressReady } = useSharedProgress(
+    user?.id ?? null,
+    coupleSpaceId,
+    handleRemoteProgressUpdate,
+  );
+
+  // Apply initial shared progress once
+  const hasAppliedSharedProgress = useRef(false);
+  useEffect(() => {
+    if (!sharedProgressReady || hasAppliedSharedProgress.current || !sharedProgressInitial) return;
+    hasAppliedSharedProgress.current = true;
+    setState((prev) => ({
+      ...prev,
+      currentSession: sharedProgressInitial.currentSession ?? prev.currentSession,
+      journeyState: sharedProgressInitial.journeyState ?? prev.journeyState,
+    }));
+  }, [sharedProgressReady, sharedProgressInitial]);
+
+  // Sync session & journey changes to remote
+  useEffect(() => {
+    if (!sharedProgressReady || !hasAppliedSharedProgress.current) return;
+    syncToRemote(state.currentSession, state.journeyState);
+  }, [state.currentSession, state.journeyState, sharedProgressReady, syncToRemote]);
 
   const setBackgroundColor = (color: string) => {
     setBackgroundColorState(color);
