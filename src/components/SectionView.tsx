@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Section, Card, Prompt } from '@/types';
 import { useApp } from '@/contexts/AppContext';
@@ -36,9 +36,17 @@ export default function SectionView({ section, card }: SectionViewProps) {
   const normalizedPrompts = (section.prompts || []).map(normalizePrompt);
   const isAccordion = ACCORDION_TYPES.includes(section.type);
 
-  // Auto-expand the last question that has a note, or fall back to Q1
+  // Auto-expand the last question that has a note, or restore from session, or fall back to Q1
+  const storageKey = `expanded-${card.id}-${section.id}`;
+
   const getInitialExpanded = () => {
     if (!isAccordion) return null;
+    // Restore from session if available
+    const stored = sessionStorage.getItem(storageKey);
+    if (stored !== null) {
+      const parsed = parseInt(stored, 10);
+      if (!isNaN(parsed) && parsed >= 0 && parsed < normalizedPrompts.length) return parsed;
+    }
     for (let i = normalizedPrompts.length - 1; i >= 0; i--) {
       const promptId = `prompt-${i}`;
       if (getPrivateNote(promptId)?.content || getSharedNote(promptId)?.content) {
@@ -49,6 +57,13 @@ export default function SectionView({ section, card }: SectionViewProps) {
   };
 
   const [expandedIndex, setExpandedIndex] = useState<number | null>(getInitialExpanded);
+
+  // Persist expanded index
+  useEffect(() => {
+    if (expandedIndex !== null) {
+      sessionStorage.setItem(storageKey, String(expandedIndex));
+    }
+  }, [expandedIndex, storageKey]);
 
   const handlePromptChange = (index: number, value: string) => {
     const newPrompts = normalizedPrompts.map((p, i) =>
