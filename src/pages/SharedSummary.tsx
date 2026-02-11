@@ -9,7 +9,7 @@ import { useReflectionResponses } from '@/hooks/useReflectionResponses';
 import { supabase } from '@/integrations/supabase/client';
 import Header from '@/components/Header';
 import SharedTimelineItem from '@/components/SharedTimelineItem';
-import { Star, Search, Filter, X, Clock } from 'lucide-react';
+import { Star, Search, Filter, X, Clock, Heart, MessageCircle } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import {
@@ -196,17 +196,38 @@ export default function SharedSummary() {
           <div className="text-center py-12">
             <p className="text-gentle text-sm">{t('general.loading', 'Laddar...')}</p>
           </div>
-        ) : !hasContent ? (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="text-center py-12"
-          >
-            <p className="text-gentle">{t('shared.empty')}</p>
-            <p className="text-xs text-muted-foreground mt-2">{t('shared.empty_hint')}</p>
-          </motion.div>
         ) : (
           <>
+            {/* Empty-state placeholder when no shared reflections */}
+            {!hasContent && (
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="mb-8"
+              >
+                <p className="text-xs text-muted-foreground uppercase tracking-wider mb-4 flex items-center gap-2">
+                  <Heart className="w-3 h-3" />
+                  {t('shared.empty_section_title')}
+                </p>
+                <div className="p-6 rounded-lg border border-dashed border-border bg-card/50">
+                  <div className="flex flex-col items-center text-center gap-3">
+                    <MessageCircle className="w-8 h-8 text-muted-foreground/40" />
+                    <p className="text-gentle text-sm">{t('shared.empty')}</p>
+                    <p className="text-xs text-muted-foreground max-w-xs">{t('shared.empty_hint')}</p>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="mt-2"
+                      onClick={() => navigate('/')}
+                    >
+                      {t('shared.empty_cta')}
+                    </Button>
+                  </div>
+                </div>
+              </motion.div>
+            )}
+
+            {hasContent && (<>
             {/* Highlights */}
             {highlights.length > 0 && !hasActiveFilter && (
               <motion.div
@@ -298,6 +319,7 @@ export default function SharedSummary() {
                 {t('shared.no_results')}
               </p>
             )}
+            </>)}
           </>
         )}
       </div>
