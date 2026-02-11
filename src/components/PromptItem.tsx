@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { Prompt } from '@/types';
 import { PromptNote } from '@/hooks/usePromptNotes';
 import ColorPicker from '@/components/ColorPicker';
+import { useSiteSettings } from '@/contexts/SiteSettingsContext';
 
 interface PromptItemProps {
   prompt: Prompt;
@@ -46,6 +47,7 @@ export default function PromptItem({
   onToggleHighlight,
 }: PromptItemProps) {
   const { t } = useTranslation();
+  const { settings, updateSettings } = useSiteSettings();
   const [internalExpanded, setInternalExpanded] = useState(false);
   
   // Support both controlled and uncontrolled expansion
@@ -161,14 +163,31 @@ export default function PromptItem({
 
                   {/* Private note */}
                   <div>
-                    <p className="text-xs text-muted-foreground uppercase tracking-wider mb-2">
-                      {t('reflections.private_notes_title', 'Privat anteckning')}
-                    </p>
+                    <div className="flex items-center justify-between mb-2">
+                      <p className="text-xs text-muted-foreground uppercase tracking-wider">
+                        {t('reflections.private_notes_title', 'Privat anteckning')}
+                      </p>
+                      <ColorPicker
+                        currentColor={settings.noteBoxBgColor}
+                        onColorChange={(color) => updateSettings({ noteBoxBgColor: color })}
+                        currentTextColor={settings.noteBoxTextColor}
+                        onTextColorChange={(textColor) => updateSettings({ noteBoxTextColor: textColor })}
+                        showTextColor
+                        showBorderColor
+                        currentBorderColor={settings.noteBoxBorderColor}
+                        onBorderColorChange={(borderColor) => updateSettings({ noteBoxBorderColor: borderColor })}
+                      />
+                    </div>
                     <textarea
                       value={displayPrivateText}
                       onChange={(e) => handlePrivateChange(e.target.value)}
                       placeholder={t('reflections.prompt_note_placeholder', 'Skriv dina tankar här... (sparas automatiskt)')}
-                      className="w-full min-h-[80px] p-3 rounded-lg bg-background/50 border border-input/50 text-foreground placeholder:text-muted-foreground resize-none focus:outline-none focus:ring-2 focus:ring-primary/20 font-sans text-sm"
+                      className="w-full min-h-[80px] p-3 rounded-lg border resize-none focus:outline-none focus:ring-2 focus:ring-primary/20 font-sans text-sm"
+                      style={{
+                        backgroundColor: settings.noteBoxBgColor || undefined,
+                        color: settings.noteBoxTextColor || undefined,
+                        borderColor: settings.noteBoxBorderColor || undefined,
+                      }}
                     />
                   </div>
 
