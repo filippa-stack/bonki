@@ -2,10 +2,12 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
+import { AnimatePresence } from "framer-motion";
 import { AuthProvider, useAuth } from "@/contexts/AuthContext";
 import { AppProvider } from "@/contexts/AppContext";
 import { SiteSettingsProvider } from "@/contexts/SiteSettingsContext";
+import PageTransition from "@/components/PageTransition";
 import Index from "./pages/Index";
 import Category from "./pages/Category";
 import CardView from "./pages/CardView";
@@ -19,6 +21,7 @@ const queryClient = new QueryClient();
 
 function ProtectedRoutes() {
   const { user, loading } = useAuth();
+  const location = useLocation();
 
   if (loading) {
     return (
@@ -34,14 +37,16 @@ function ProtectedRoutes() {
 
   return (
     <AppProvider>
-      <Routes>
-        <Route path="/" element={<Index />} />
-        <Route path="/category/:categoryId" element={<Category />} />
-        <Route path="/card/:cardId" element={<CardView />} />
-        <Route path="/saved" element={<SavedConversations />} />
-        <Route path="/shared" element={<SharedSummary />} />
-        <Route path="*" element={<NotFound />} />
-      </Routes>
+      <AnimatePresence mode="wait">
+        <Routes location={location} key={location.pathname}>
+          <Route path="/" element={<PageTransition><Index /></PageTransition>} />
+          <Route path="/category/:categoryId" element={<PageTransition><Category /></PageTransition>} />
+          <Route path="/card/:cardId" element={<PageTransition><CardView /></PageTransition>} />
+          <Route path="/saved" element={<PageTransition><SavedConversations /></PageTransition>} />
+          <Route path="/shared" element={<PageTransition><SharedSummary /></PageTransition>} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </AnimatePresence>
     </AppProvider>
   );
 }

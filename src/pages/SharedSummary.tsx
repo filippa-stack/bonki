@@ -208,8 +208,10 @@ export default function SharedSummary() {
 
       <div className="px-6 pt-6 pb-8 max-w-2xl mx-auto">
         {loading ? (
-          <div className="text-center py-12">
-            <p className="text-gentle text-sm">{t('general.loading', 'Laddar...')}</p>
+          <div className="py-8 space-y-4 animate-fade-in">
+            {[1, 2, 3].map(i => (
+              <div key={i} className="h-20 rounded-lg bg-muted/30 animate-pulse" />
+            ))}
           </div>
         ) : (
           <>
