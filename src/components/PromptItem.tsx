@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronDown, Share2, X, Star, Trash2 } from 'lucide-react';
+import { ChevronDown, Share2, X, Star, Trash2, Heart, ArrowRight, Home } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Prompt } from '@/types';
 import { PromptNote } from '@/hooks/usePromptNotes';
@@ -48,8 +49,9 @@ export default function PromptItem({
 }: PromptItemProps) {
   const { t } = useTranslation();
   const { settings, updateSettings } = useSiteSettings();
+  const navigate = useNavigate();
   const [internalExpanded, setInternalExpanded] = useState(false);
-  
+  const [justShared, setJustShared] = useState(false);
   // Support both controlled and uncontrolled expansion
   const isControlled = expanded !== undefined;
   const isExpanded = isControlled ? expanded : internalExpanded;
@@ -194,7 +196,10 @@ export default function PromptItem({
                   {/* Share action */}
                   {privateNote?.content && !sharedNote && (
                     <button
-                      onClick={() => onShareNote(promptId)}
+                      onClick={() => {
+                        onShareNote(promptId);
+                        setJustShared(true);
+                      }}
                       className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
                     >
                       <Share2 className="w-3.5 h-3.5" />
@@ -202,8 +207,38 @@ export default function PromptItem({
                     </button>
                   )}
 
-                  {/* Shared note display */}
-                  {sharedNote && (
+                  {/* Post-share confirmation */}
+                  {sharedNote && justShared && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 6 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="p-4 rounded-lg bg-primary/5 border border-primary/10 space-y-3"
+                    >
+                      <p className="text-sm text-foreground flex items-center gap-2">
+                        <Heart className="w-3.5 h-3.5 text-primary" />
+                        {t('reflections.shared_confirmation')}
+                      </p>
+                      <div className="flex flex-wrap gap-2">
+                        <button
+                          onClick={() => setJustShared(false)}
+                          className="flex items-center gap-1.5 text-sm font-medium text-foreground hover:text-primary transition-colors"
+                        >
+                          <ArrowRight className="w-3.5 h-3.5" />
+                          {t('reflections.continue_conversation')}
+                        </button>
+                        <button
+                          onClick={() => navigate('/')}
+                          className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
+                        >
+                          <Home className="w-3.5 h-3.5" />
+                          {t('reflections.go_home')}
+                        </button>
+                      </div>
+                    </motion.div>
+                  )}
+
+                  {/* Shared note display (after dismissing confirmation) */}
+                  {sharedNote && !justShared && (
                     <div className="p-3 rounded-lg bg-primary/5 border border-primary/10">
                       <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">
                         {t('reflections.shared_notes_title', 'Delad reflektion')}
