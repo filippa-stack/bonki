@@ -12,6 +12,9 @@ export interface SiteSettings {
   continueModuleBgColor: string;
   continueModuleTextColor: string;
   continueModuleBorderColor: string;
+  noteBoxBgColor: string;
+  noteBoxTextColor: string;
+  noteBoxBorderColor: string;
   loginTitle: string;
   loginSubtitle: string;
 }
@@ -34,6 +37,9 @@ const defaultSettings: SiteSettings = {
   continueModuleBgColor: '',
   continueModuleTextColor: '',
   continueModuleBorderColor: '',
+  noteBoxBgColor: '',
+  noteBoxTextColor: '',
+  noteBoxBorderColor: '',
   loginTitle: 'Vi som föräldrar',
   loginSubtitle: 'Logga in för att spara dina inställningar',
 };
