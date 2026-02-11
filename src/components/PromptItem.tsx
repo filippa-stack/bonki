@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronDown, Share2, X, Star, Trash2, Heart, ArrowRight, Home, Lock, Users } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
@@ -65,9 +65,26 @@ export default function PromptItem({
   // For controlled accordion items that are collapsed, show only the label
   const showCollapsedLabel = isControlled && !isExpanded;
   const [privateText, setPrivateText] = useState(privateNote?.content || '');
+  const privateTextareaRef = useRef<HTMLTextAreaElement>(null);
 
-  // Sync incoming note changes
+  // Sync incoming note changes (only when not actively editing)
   const displayPrivateText = privateNote?.content ?? privateText;
+
+  // Scroll textarea into view when focused (prevents keyboard from hiding it)
+  const handleFocus = useCallback((e: React.FocusEvent<HTMLTextAreaElement>) => {
+    // Small delay to let mobile keyboard appear first
+    setTimeout(() => {
+      e.target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }, 300);
+  }, []);
+
+  // Allow easy keyboard dismissal on mobile via Enter on empty line or Done
+  const handleKeyDown = useCallback((e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    // Blur on Escape to dismiss keyboard
+    if (e.key === 'Escape') {
+      e.currentTarget.blur();
+    }
+  }, []);
 
   const handlePrivateChange = (value: string) => {
     setPrivateText(value);
@@ -183,8 +200,11 @@ export default function PromptItem({
                       />
                     </div>
                     <textarea
+                      ref={privateTextareaRef}
                       value={displayPrivateText}
                       onChange={(e) => handlePrivateChange(e.target.value)}
+                      onFocus={handleFocus}
+                      onKeyDown={handleKeyDown}
                       placeholder={t('reflections.prompt_note_placeholder', 'Skriv dina tankar här... (sparas automatiskt)')}
                       className="w-full min-h-[80px] p-3 rounded-lg border resize-none focus:outline-none focus:ring-2 focus:ring-primary/20 font-sans text-sm"
                       style={{
