@@ -306,8 +306,8 @@ export default function Home() {
       })()}
 
       {/* Categories */}
-      <div id="category-section" className="px-6 pb-6">
-        <p className="text-xs text-muted-foreground uppercase tracking-wider mb-4">
+      <div id="category-section" className="px-6 pb-6 mt-2">
+        <p className="text-xs text-muted-foreground/70 uppercase tracking-wider mb-4">
           {t('home.choose_category')}
         </p>
         <div className="space-y-3">

@@ -60,23 +60,19 @@ export default function Category() {
           {category.description}
         </motion.p>
 
-        {/* Exploration status */}
+        {/* Gentle orientation note */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.2 }}
           className="mt-4"
         >
-          <p className="text-xs text-muted-foreground">
-            {t('category.explored_count', { explored: exploredCount, total: cards.length })}
-          </p>
-          {status === 'explored' && (
-            <p className="text-xs text-gentle italic mt-1">
+          {status === 'explored' ? (
+            <p className="text-xs text-gentle italic">
               {t('category.all_explored')}
             </p>
-          )}
-          {status !== 'explored' && (
-            <p className="text-xs text-gentle italic mt-1">
+          ) : (
+            <p className="text-xs text-gentle italic">
               {t('category_status.return_note')}
             </p>
           )}

@@ -150,11 +150,8 @@ export default function CategoryCard({
               {category.description}
             </p>
           )}
-          <p className="text-xs text-muted-foreground text-center mt-3">
-            {category.cardCount} {category.cardCount === 1 ? 'kort' : 'kort'}
-          </p>
-          {status && (
-            <p className="text-xs text-muted-foreground text-center mt-1 italic">
+          {status && status !== 'not_started' && (
+            <p className="text-xs text-muted-foreground text-center mt-3 italic">
               {t(`category_status.${status}`)}
             </p>
           )}
