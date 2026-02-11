@@ -31,7 +31,7 @@
   },
   "home": {
     "continue_where_left_off": "Ert senaste samtal",
-    "choose_category": "Samtalsområden",
+    "choose_category": "Fler samtalsområden",
     "saved_conversations": "Sparade samtal ({{count}})",
     "edit_label_title": "Rubrik",
     "edit_label_subtitle": "Underrubrik",
@@ -118,13 +118,13 @@
     "sections_count": "{{count}} sektioner",
     "delete_confirm": "Vill du ta bort \"{{title}}\"?",
     "explored_count": "{{explored}} av {{total}} utforskade",
-    "all_explored": "Ni har utforskat allt här — men samtal förändras med livet."
+    "all_explored": "Ni har utforskat allt här — men samtal förändras med livet. Välkommen tillbaka."
   },
   "category_status": {
     "not_started": "Ännu inte utforskat",
-    "in_progress": "Ni har börjat utforska",
-    "explored": "Utforskat",
-    "return_note": "Ni kan alltid återvända."
+    "in_progress": "Ni har börjat prata om det här",
+    "explored": "Ni har varit här förut",
+    "return_note": "Utforska i er egen takt."
   },
   "reflections": {
     "private_notes_title": "Privat anteckning",
