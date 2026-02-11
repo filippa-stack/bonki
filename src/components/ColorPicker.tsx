@@ -14,6 +14,7 @@ const COLOR_PALETTES = [
       { name: 'Mint', value: '#d4fffc' },
       { name: 'Cream', value: '#fffdee' },
       { name: 'Ivory', value: '#fffef3' },
+      { name: 'Solgul', value: '#ffde59' },
     ]
   },
   {
