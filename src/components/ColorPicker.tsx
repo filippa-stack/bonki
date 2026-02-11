@@ -400,8 +400,8 @@ export default function ColorPicker({
             {/* Swatches Mode */}
             {pickerMode === 'swatches' && (
               <>
-                {/* Palette Groups - only for background tab */}
-                {activeTab === 'background' && (
+            {/* Palette Groups - for background and border tabs */}
+                {(activeTab === 'background' || activeTab === 'border') && (
                   <div className="mb-4">
                     <p className="text-xs text-muted-foreground mb-2 font-medium">
                       Färgpaletter för mental hälsa
