@@ -36,8 +36,19 @@ export default function SectionView({ section, card }: SectionViewProps) {
   const normalizedPrompts = (section.prompts || []).map(normalizePrompt);
   const isAccordion = ACCORDION_TYPES.includes(section.type);
 
-  // Single expanded index — Q1 (index 0) open by default for accordion types
-  const [expandedIndex, setExpandedIndex] = useState<number | null>(isAccordion ? 0 : null);
+  // Auto-expand the last question that has a note, or fall back to Q1
+  const getInitialExpanded = () => {
+    if (!isAccordion) return null;
+    for (let i = normalizedPrompts.length - 1; i >= 0; i--) {
+      const promptId = `prompt-${i}`;
+      if (getPrivateNote(promptId)?.content || getSharedNote(promptId)?.content) {
+        return i;
+      }
+    }
+    return 0;
+  };
+
+  const [expandedIndex, setExpandedIndex] = useState<number | null>(getInitialExpanded);
 
   const handlePromptChange = (index: number, value: string) => {
     const newPrompts = normalizedPrompts.map((p, i) =>

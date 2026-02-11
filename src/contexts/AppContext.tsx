@@ -15,7 +15,7 @@ interface AppContextType {
   coupleSpace: CoupleSpace | null;
   initializeCoupleSpace: (partnerAName?: string, partnerBName?: string) => void;
   savedConversations: ConversationThread[];
-  saveConversation: (cardId: string, sectionId: string) => void;
+  saveConversation: (cardId: string, sectionId: string, stepIndex?: number, completedSteps?: number[]) => void;
   getConversationForCard: (cardId: string) => ConversationThread | undefined;
   reflections: Reflection[];
   addReflection: (reflection: Omit<Reflection, 'id' | 'createdAt' | 'updatedAt'>) => void;
@@ -376,7 +376,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
     setState((prev) => ({ ...prev, coupleSpace: newSpace }));
   };
 
-  const saveConversation = (cardId: string, sectionId: string) => {
+  const saveConversation = (cardId: string, sectionId: string, stepIndex?: number, completedSteps?: number[]) => {
     if (!state.coupleSpace) return;
 
     const existingIndex = state.coupleSpace.conversationThreads.findIndex(
@@ -384,19 +384,17 @@ export function AppProvider({ children }: { children: ReactNode }) {
     );
 
     const now = new Date();
-    const cardReflections = state.coupleSpace.conversationThreads
-      .find((t) => t.cardId === cardId)?.reflections || [];
+    const existing = existingIndex >= 0 ? state.coupleSpace.conversationThreads[existingIndex] : undefined;
+    const cardReflections = existing?.reflections || [];
 
     const thread: ConversationThread = {
-      id: existingIndex >= 0 
-        ? state.coupleSpace.conversationThreads[existingIndex].id 
-        : crypto.randomUUID(),
+      id: existing?.id || crypto.randomUUID(),
       cardId,
       lastSectionId: sectionId,
+      lastStepIndex: stepIndex ?? existing?.lastStepIndex ?? 0,
+      completedSteps: completedSteps ?? existing?.completedSteps ?? [],
       reflections: cardReflections,
-      savedAt: existingIndex >= 0 
-        ? state.coupleSpace.conversationThreads[existingIndex].savedAt 
-        : now,
+      savedAt: existing?.savedAt || now,
       lastActivityAt: now,
     };
 
@@ -453,6 +451,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
           id: crypto.randomUUID(),
           cardId: reflection.cardId,
           lastSectionId: reflection.sectionId,
+          lastStepIndex: 0,
+          completedSteps: [],
           reflections: [newReflection],
           savedAt: now,
           lastActivityAt: now,

@@ -55,6 +55,8 @@ export interface ConversationThread {
   id: string;
   cardId: string;
   lastSectionId: string;
+  lastStepIndex: number;
+  completedSteps: number[];
   reflections: Reflection[];
   savedAt: Date;
   lastActivityAt: Date;
