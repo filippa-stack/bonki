@@ -215,5 +215,16 @@
     "description": "Det här är ett utrymme för samtal och reflektioner — för er, i er egen takt.",
     "start_first": "Starta ert första samtal",
     "explore": "Utforska samtalsområden"
+  },
+  "notifications": {
+    "settings_title": "Notiser",
+    "pref_shared_reflection": "När din partner delar en reflektion",
+    "pref_shared_reflection_hint": "Få veta när en tanke delats med dig.",
+    "pref_conversation_progress": "När ett samtal fortsätter",
+    "pref_conversation_progress_hint": "Valfritt: se när din partner återupptar ett samtal efter en paus.",
+    "partner_shared": "Din partner delade en tanke med dig",
+    "partner_shared_hint": "En ny reflektion finns i ert gemensamma utrymme.",
+    "partner_continuing": "Din partner har återvänt till samtalet",
+    "partner_continuing_hint": "Ni kan fortsätta tillsammans när du är redo."
   }
 }

@@ -8,7 +8,8 @@ import CategoryCard from '@/components/CategoryCard';
 import ContinueModule from '@/components/ContinueModule';
 import Header from '@/components/Header';
 import ResumeSessionDialog from '@/components/ResumeSessionDialog';
-import { Bookmark, Pencil, Check, Share2 } from 'lucide-react';
+import { Bookmark, Pencil, Check, Share2, Settings } from 'lucide-react';
+import NotificationSettings from '@/components/NotificationSettings';
 import RelationshipMemory from '@/components/RelationshipMemory';
 import RecentSharedReflection from '@/components/RecentSharedReflection';
 import { Button } from '@/components/ui/button';
@@ -384,6 +385,16 @@ export default function Home() {
           </button>
         </motion.div>
       )}
+
+      {/* Notification preferences */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.6 }}
+        className="px-6 py-6 border-t border-divider"
+      >
+        <NotificationSettings />
+      </motion.div>
 
       {/* Resume session dialog */}
       <ResumeSessionDialog
