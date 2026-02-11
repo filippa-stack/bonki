@@ -104,7 +104,10 @@
     "cta_opening": "Gå vidare till Tankeväckare",
     "cta_reflective": "Fortsätt till Scenario",
     "cta_scenario": "Vidare till Teamwork",
-    "cta_exercise": "Avsluta samtalet"
+    "cta_exercise": "Avsluta samtalet",
+    "completion_message": "Ni har avslutat det här samtalet — tack för att ni tog er tid.",
+    "completion_next": "Fortsätt med nästa samtal",
+    "completion_home": "Tillbaka till start"
   },
   "category": {
     "cards_count": "{{count}} kort",

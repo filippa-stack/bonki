@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 import { useApp } from '@/contexts/AppContext';
 import Header from '@/components/Header';
 import SectionView from '@/components/SectionView';
@@ -8,7 +9,7 @@ import CardReflections from '@/components/CardReflections';
 import StepProgressIndicator from '@/components/StepProgressIndicator';
 import PauseDialog from '@/components/PauseDialog';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, ArrowRight, Check } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Check, Heart, Home } from 'lucide-react';
 
 const sectionTypeLabels: Record<string, string> = {
   opening: 'Öppnare',
@@ -29,6 +30,7 @@ const STEP_CTA_LABELS: Record<string, string> = {
 export default function CardView() {
   const { cardId } = useParams<{ cardId: string }>();
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const { 
     getConversationForCard, 
     saveConversation, 
@@ -41,6 +43,7 @@ export default function CardView() {
     completeSessionStep,
     endSession,
     pauseSession,
+    journeyState,
   } = useApp();
 
   const card = cardId ? getCardById(cardId) : undefined;
@@ -70,6 +73,7 @@ export default function CardView() {
   const [showOverview, setShowOverview] = useState(
     !(currentSession?.cardId === cardId) && !existingConversation
   );
+  const [showCompletion, setShowCompletion] = useState(false);
 
   // Start or resume session when entering card
   useEffect(() => {
@@ -111,15 +115,75 @@ export default function CardView() {
       // Go to next step
       setCurrentStepIndex(currentStepIndex + 1);
     } else {
-      // End session and return to category menu
+      // End session and show completion screen
       endSession();
-      navigate('/');
+      setShowCompletion(true);
     }
   };
 
   const handleStartFromOverview = () => {
     setShowOverview(false);
   };
+
+  // Completion screen
+  if (showCompletion) {
+    const suggestedCardId = journeyState?.suggestedNextCardId;
+    const suggestedCard = suggestedCardId ? getCardById(suggestedCardId) : null;
+    const suggestedCategory = suggestedCard ? getCategoryById(suggestedCard.categoryId) : null;
+
+    return (
+      <div className="min-h-screen page-bg">
+        <Header
+          title={category?.title}
+          showBack
+          backTo="/"
+        />
+        <div className="px-6 pt-12 pb-8">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-center max-w-md mx-auto space-y-6"
+          >
+            <Heart className="w-8 h-8 text-primary mx-auto" />
+            <h2 className="text-xl font-serif text-foreground">
+              {card.title}
+            </h2>
+            <p className="text-sm text-muted-foreground leading-relaxed">
+              {t('card_view.completion_message')}
+            </p>
+
+            <div className="pt-4 space-y-3">
+              {suggestedCard && suggestedCategory && (
+                <Button
+                  onClick={() => navigate(`/card/${suggestedCard.id}`)}
+                  size="lg"
+                  className="w-full gap-2"
+                >
+                  <ArrowRight className="w-4 h-4" />
+                  {t('card_view.completion_next')}
+                </Button>
+              )}
+              <Button
+                onClick={() => navigate('/')}
+                variant="outline"
+                size="lg"
+                className="w-full gap-2"
+              >
+                <Home className="w-4 h-4" />
+                {t('card_view.completion_home')}
+              </Button>
+            </div>
+
+            {suggestedCard && suggestedCategory && (
+              <p className="text-xs text-muted-foreground">
+                {suggestedCategory.title} · {suggestedCard.title}
+              </p>
+            )}
+          </motion.div>
+        </div>
+      </div>
+    );
+  }
 
   // Overview screen
   if (showOverview) {
