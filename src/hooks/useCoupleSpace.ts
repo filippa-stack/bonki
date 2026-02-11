@@ -55,13 +55,16 @@ export function useCoupleSpace(): CoupleSpaceState {
 
     try {
       // Check for existing membership
-      const { data: membership, error: memError } = await supabase
+      const { data: memberships, error: memError } = await supabase
         .from('couple_members')
         .select('couple_space_id, role')
         .eq('user_id', user.id)
-        .maybeSingle();
+        .order('created_at', { ascending: true })
+        .limit(1);
 
       if (memError) throw memError;
+
+      const membership = memberships && memberships.length > 0 ? memberships[0] : null;
 
       if (membership) {
         // Fetch the space

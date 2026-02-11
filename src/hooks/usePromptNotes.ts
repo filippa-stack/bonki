@@ -33,7 +33,7 @@ export function usePromptNotes(
   sectionId: string,
 ): UsePromptNotesReturn {
   const { user } = useAuth();
-  const { space } = useCoupleSpace();
+  const { space, userRole, memberCount } = useCoupleSpace();
   const [notes, setNotes] = useState<Map<string, PromptNote>>(new Map());
   const [loading, setLoading] = useState(true);
   const pendingSaves = useRef<Map<string, ReturnType<typeof setTimeout>>>(new Map());
@@ -124,7 +124,7 @@ export function usePromptNotes(
     promptId: string,
     content: string,
     visibility: 'private' | 'shared',
-    extraFields?: { is_highlight?: boolean; shared_at?: string | null },
+    extraFields?: { is_highlight?: boolean; shared_at?: string | null; author_label?: string | null },
   ) => {
     if (!user || !space) return;
 
@@ -188,6 +188,12 @@ export function usePromptNotes(
     const privateNote = notes.get(privateKey);
     if (!privateNote?.content) return;
 
+    // Only show author label when two partners are connected
+    const authorLabel = memberCount >= 2 && space
+      ? (userRole === 'partner_a' ? (space.partner_a_name || 'Partner A')
+         : (space.partner_b_name || 'Partner B'))
+      : null;
+
     const now = new Date().toISOString();
     const sharedKey = `${promptId}:shared`;
 
@@ -199,15 +205,15 @@ export function usePromptNotes(
         content: privateNote.content,
         visibility: 'shared',
         isHighlight: false,
-        authorLabel: null,
+        authorLabel,
         updatedAt: now,
         sharedAt: now,
       });
       return next;
     });
 
-    upsertNote(promptId, privateNote.content, 'shared', { shared_at: now });
-  }, [notes, upsertNote]);
+    upsertNote(promptId, privateNote.content, 'shared', { shared_at: now, author_label: authorLabel });
+  }, [notes, upsertNote, space, userRole, memberCount]);
 
   const unshareNote = useCallback((promptId: string) => {
     if (!user || !space) return;
