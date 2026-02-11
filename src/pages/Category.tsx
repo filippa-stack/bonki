@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { useApp } from '@/contexts/AppContext';
 import Header from '@/components/Header';
 import ColorPicker from '@/components/ColorPicker';
-import { Plus } from 'lucide-react';
+import { Plus, Trash2 } from 'lucide-react';
 
 export default function Category() {
   const { t } = useTranslation();
@@ -148,6 +148,7 @@ function EditableCard({
   onTextColorChange,
   onBorderColorChange,
   onDescriptionChange,
+  onDelete,
 }: EditableCardProps) {
   const [isEditingTitle, setIsEditingTitle] = useState(false);
   const [titleValue, setTitleValue] = useState(card.title);
@@ -188,7 +189,14 @@ function EditableCard({
       } as React.CSSProperties}
     >
       <div className="relative flex flex-col items-center justify-center gap-2 py-4">
-        <div className="absolute top-0 right-0" onClick={(e) => e.stopPropagation()}>
+        <div className="absolute top-0 right-0 flex items-center gap-1" onClick={(e) => e.stopPropagation()}>
+          <button
+            onClick={(e) => { e.stopPropagation(); onDelete(); }}
+            className="p-1 rounded-md text-muted-foreground hover:text-destructive transition-colors opacity-0 group-hover:opacity-100"
+            aria-label="Ta bort"
+          >
+            <Trash2 className="w-4 h-4" />
+          </button>
           <ColorPicker
             currentColor={card.color}
             onColorChange={onColorChange}
