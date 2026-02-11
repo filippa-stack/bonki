@@ -41,7 +41,9 @@
     "save": "Spara",
     "relationship_memory_title": "Senaste minnet",
     "relationship_memory_explored": "Ni utforskade",
-    "relationship_memory_date": "{{date}}"
+    "relationship_memory_date": "{{date}}",
+    "first_conversation_hint": "Ni har inte startat något samtal ännu. Vi föreslår att ni börjar här — det är ett bra sätt att komma igång.",
+    "start_first_conversation": "Starta ert första samtal"
   },
   "header": {
     "go_back": "Gå tillbaka",
