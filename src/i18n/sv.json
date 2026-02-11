@@ -59,11 +59,11 @@
     "empty_hint": "När ni sparar ett samtal kommer det att visas här."
   },
   "resume": {
-    "welcome_back": "Välkommen tillbaka",
-    "paused_description": "Ni pausade mitt i ett samtal. Vill ni fortsätta där ni var?",
-    "last_conversation": "Senaste samtalet",
-    "continue_where_left": "Fortsätt samtalet",
-    "back_to_categories": "Tillbaka till samtalsområden"
+    "welcome_back": "Ni var mitt i något",
+    "paused_description": "Ert samtal finns kvar precis där ni lämnade det.",
+    "last_conversation": "Ert samtal",
+    "continue_where_left": "Fortsätt där ni var",
+    "back_to_categories": "Utforska något annat"
   },
   "save_indicator": {
     "saving": "Sparar…",
