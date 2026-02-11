@@ -11,7 +11,7 @@ export default function Category() {
   const { t } = useTranslation();
   const { categoryId } = useParams<{ categoryId: string }>();
   const navigate = useNavigate();
-  const { getCategoryById, getCardsByCategory, updateCard, updateCardColor, updateCardTextColor, updateCardBorderColor, addCard, deleteCard, backgroundColor, getExploredCardsInCategory, getCategoryStatus } = useApp();
+  const { getCategoryById, getCardsByCategory, updateCard, updateCardColor, updateCardTextColor, updateCardBorderColor, updateCardDescription, addCard, deleteCard, backgroundColor, getExploredCardsInCategory, getCategoryStatus } = useApp();
   
   const category = categoryId ? getCategoryById(categoryId) : undefined;
   const cards = categoryId ? getCardsByCategory(categoryId) : [];
@@ -96,6 +96,7 @@ export default function Category() {
               onColorChange={(color) => updateCardColor(card.id, color)}
               onTextColorChange={(textColor) => updateCardTextColor(card.id, textColor)}
               onBorderColorChange={(borderColor) => updateCardBorderColor(card.id, borderColor)}
+              onDescriptionChange={(desc) => updateCardDescription(card.id, desc)}
               onDelete={() => handleDeleteCard(card.id, card.title)}
             />
           ))}
@@ -122,6 +123,7 @@ interface EditableCardProps {
     id: string;
     title: string;
     subtitle?: string;
+    description?: string;
     sections: any[];
     color?: string;
     textColor?: string;
@@ -133,6 +135,7 @@ interface EditableCardProps {
   onColorChange: (color: string) => void;
   onTextColorChange: (textColor: string) => void;
   onBorderColorChange: (borderColor: string) => void;
+  onDescriptionChange: (description: string) => void;
   onDelete: () => void;
 }
 
@@ -143,7 +146,20 @@ function EditableCard({
   onColorChange,
   onTextColorChange,
   onBorderColorChange,
+  onDescriptionChange,
 }: EditableCardProps) {
+  const [isEditingDesc, setIsEditingDesc] = useState(false);
+  const [descValue, setDescValue] = useState(card.description || '');
+
+  const handleDescClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setIsEditingDesc(true);
+  };
+
+  const handleDescBlur = () => {
+    setIsEditingDesc(false);
+    onDescriptionChange(descValue);
+  };
 
   return (
     <motion.div
@@ -186,6 +202,27 @@ function EditableCard({
               {card.subtitle}
             </p>
           )}
+          {/* Editable description */}
+          <div onClick={handleDescClick}>
+            {isEditingDesc ? (
+              <textarea
+                value={descValue}
+                onChange={(e) => setDescValue(e.target.value)}
+                onBlur={handleDescBlur}
+                autoFocus
+                className="w-full text-xs text-center bg-transparent border-none outline-none resize-none item-text-gentle"
+                style={{ '--item-text': card.textColor || undefined } as React.CSSProperties}
+                rows={2}
+              />
+            ) : (
+              <p
+                className="w-full text-xs text-center item-text-gentle cursor-text opacity-70 hover:opacity-100 transition-opacity"
+                style={{ '--item-text': card.textColor || undefined } as React.CSSProperties}
+              >
+                {card.description || 'Lägg till beskrivning...'}
+              </p>
+            )}
+          </div>
         </div>
       </div>
     </motion.div>
