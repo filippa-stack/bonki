@@ -94,28 +94,33 @@ export default function CardView() {
   const [showCompletion, setShowCompletion] = useState(!isRevisitMode && isReturningUser && (isFullyExplored || allStepsCompleted || initialStep < 0));
   const [transitionMessage, setTransitionMessage] = useState<string | null>(null);
 
-  // Sync prompt state: detect when partner advanced ahead
+  // Catch-up mode state: sequential progression toward partner's position
+  const [catchUpTarget, setCatchUpTarget] = useState<number | null>(null);
   const [syncOffer, setSyncOffer] = useState<number | null>(null);
   const localStepRef = useRef(currentStepIndex);
 
   // Track user's own step changes (user-initiated)
   useEffect(() => {
     localStepRef.current = currentStepIndex;
-  }, [currentStepIndex]);
+    // Auto-end catch-up when user reaches the target
+    if (catchUpTarget !== null && currentStepIndex >= catchUpTarget) {
+      setCatchUpTarget(null);
+    }
+  }, [currentStepIndex, catchUpTarget]);
 
   // Detect when shared session advances beyond user's local position
   useEffect(() => {
     if (!currentSession || currentSession.cardId !== cardId) return;
     const sharedStep = currentSession.currentStepIndex;
-    // Only offer sync if shared position is ahead of where the user is
+    // Only offer catch-up if shared position is ahead of where the user is
     if (sharedStep > localStepRef.current && sharedStep !== currentStepIndex) {
       setSyncOffer(sharedStep);
     }
   }, [currentSession?.currentStepIndex, cardId]);
 
-  const handleSyncJump = () => {
+  const handleCatchUp = () => {
     if (syncOffer !== null) {
-      setCurrentStepIndex(syncOffer);
+      setCatchUpTarget(syncOffer);
       setSyncOffer(null);
     }
   };
@@ -141,10 +146,13 @@ export default function CardView() {
       const currentSection = card.sections.find(s => s.type === STEP_ORDER[currentStepIndex]);
       if (currentSection) {
         saveConversation(card.id, currentSection.id, currentStepIndex, completedSteps);
-        updateSessionStep(currentStepIndex);
+        // Don't push step backward to shared progress during catch-up
+        if (catchUpTarget === null) {
+          updateSessionStep(currentStepIndex);
+        }
       }
     }
-  }, [currentStepIndex, completedSteps, card]);
+  }, [currentStepIndex, completedSteps, card, catchUpTarget]);
 
   if (!card) {
     return (
@@ -464,7 +472,7 @@ export default function CardView() {
         <SyncPrompt
           partnerStepIndex={syncOffer}
           stepLabels={STEP_LABELS}
-          onSync={handleSyncJump}
+          onCatchUp={handleCatchUp}
           onStay={handleSyncStay}
         />
       )}

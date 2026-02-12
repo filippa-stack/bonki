@@ -6,11 +6,11 @@ import { ArrowRight } from 'lucide-react';
 interface SyncPromptProps {
   partnerStepIndex: number;
   stepLabels: string[];
-  onSync: () => void;
+  onCatchUp: () => void;
   onStay: () => void;
 }
 
-export default function SyncPrompt({ partnerStepIndex, stepLabels, onSync, onStay }: SyncPromptProps) {
+export default function SyncPrompt({ partnerStepIndex, stepLabels, onCatchUp, onStay }: SyncPromptProps) {
   const { t } = useTranslation();
   const stepName = stepLabels[partnerStepIndex] || '';
 
@@ -28,8 +28,8 @@ export default function SyncPrompt({ partnerStepIndex, stepLabels, onSync, onSta
         {t('sync_prompt.current_position', { step: stepName })}
       </p>
       <div className="flex flex-col sm:flex-row gap-2">
-        <Button onClick={onSync} size="sm" className="gap-2">
-          {t('sync_prompt.jump')}
+        <Button onClick={onCatchUp} size="sm" className="gap-2">
+          {t('sync_prompt.catch_up')}
           <ArrowRight className="w-3.5 h-3.5" />
         </Button>
         <Button onClick={onStay} variant="ghost" size="sm">

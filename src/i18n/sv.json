@@ -235,9 +235,9 @@
     "partner_continuing_hint": "Ni kan fortsätta tillsammans när du är redo."
   },
   "sync_prompt": {
-    "message": "Din partner har fortsatt samtalet lite längre. Vill du hoppa dit?",
-    "current_position": "De är vid: {{step}}",
-    "jump": "Gå dit",
+    "message": "Ni har kommit vidare i samtalet tillsammans. Det finns några frågor kvar att gå igenom innan ni är i fas.",
+    "current_position": "Nästa steg: {{step}}",
+    "catch_up": "Gå igenom frågorna ni missat",
     "stay": "Stanna där jag var"
   },
   "welcome_back": {
