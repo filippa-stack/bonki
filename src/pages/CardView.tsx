@@ -73,12 +73,14 @@ export default function CardView() {
     return [];
   };
 
+  const isFullyExplored = cardId ? (journeyState?.exploredCardIds?.includes(cardId) ?? false) : false;
   const isReturningUser = !!(currentSession?.cardId === cardId || existingConversation);
   const [currentStepIndex, setCurrentStepIndex] = useState(getInitialStepIndex);
   const [completedSteps, setCompletedSteps] = useState<number[]>(getInitialCompletedSteps);
   const [showOverview, setShowOverview] = useState(!isReturningUser);
-  const [showReentry, setShowReentry] = useState(isReturningUser);
-  const [showCompletion, setShowCompletion] = useState(false);
+  const [showReentry, setShowReentry] = useState(isReturningUser && !isFullyExplored);
+  // If navigating to an already-completed card, go straight to completion
+  const [showCompletion, setShowCompletion] = useState(isReturningUser && isFullyExplored);
   const [transitionMessage, setTransitionMessage] = useState<string | null>(null);
 
   // Sync prompt state: detect when partner advanced ahead

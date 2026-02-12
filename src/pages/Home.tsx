@@ -281,7 +281,9 @@ export default function Home() {
 
       {/* Journey continue module */}
       {(() => {
-        const suggestedCardId = journeyState?.suggestedNextCardId || journeyState?.lastOpenedCardId;
+        const exploredIds = journeyState?.exploredCardIds || [];
+        const suggestedCardId = journeyState?.suggestedNextCardId 
+          || (journeyState?.lastOpenedCardId && !exploredIds.includes(journeyState.lastOpenedCardId) ? journeyState.lastOpenedCardId : null);
         const suggestedCard = suggestedCardId ? getCardById(suggestedCardId) : null;
         const suggestedCategory = suggestedCard ? getCategoryById(suggestedCard.categoryId) : null;
         
