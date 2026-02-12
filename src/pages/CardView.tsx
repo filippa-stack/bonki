@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { useApp } from '@/contexts/AppContext';
@@ -10,7 +10,7 @@ import StepProgressIndicator from '@/components/StepProgressIndicator';
 import PauseDialog from '@/components/PauseDialog';
 import SyncPrompt from '@/components/SyncPrompt';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, ArrowRight, Check, Heart, Home } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Check, Heart, Home, RotateCcw } from 'lucide-react';
 
 const sectionTypeLabels: Record<string, string> = {
   opening: 'Öppnare',
@@ -32,6 +32,8 @@ const STEP_CTA_KEYS: Record<string, string> = {
 export default function CardView() {
   const { cardId } = useParams<{ cardId: string }>();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const isRevisitMode = searchParams.get('revisit') === 'true';
   const { t } = useTranslation();
   const { 
     getConversationForCard, 
@@ -89,12 +91,13 @@ export default function CardView() {
   const initialCompleted = getInitialCompletedSteps();
   const allStepsCompleted = STEP_ORDER.every((_, i) => initialCompleted.includes(i));
   const isReturningUser = !!(currentSession?.cardId === cardId || existingConversation);
-  const [currentStepIndex, setCurrentStepIndex] = useState(getInitialStepIndex);
+  const [currentStepIndex, setCurrentStepIndex] = useState(isRevisitMode ? 0 : getInitialStepIndex);
   const [completedSteps, setCompletedSteps] = useState<number[]>(initialCompleted);
-  const [showOverview, setShowOverview] = useState(!isReturningUser);
-  const [showReentry, setShowReentry] = useState(isReturningUser && !isFullyExplored && !allStepsCompleted);
-  // If navigating to an already-completed card, go straight to completion
-  const [showCompletion, setShowCompletion] = useState(isReturningUser && (isFullyExplored || allStepsCompleted));
+  // Revisit mode: skip all gates, go straight to step view
+  const [showOverview, setShowOverview] = useState(!isRevisitMode && !isReturningUser);
+  const [showReentry, setShowReentry] = useState(!isRevisitMode && isReturningUser && !isFullyExplored && !allStepsCompleted);
+  // If navigating to an already-completed card, go straight to completion (unless revisiting)
+  const [showCompletion, setShowCompletion] = useState(!isRevisitMode && isReturningUser && (isFullyExplored || allStepsCompleted));
   const [transitionMessage, setTransitionMessage] = useState<string | null>(null);
 
   // Sync prompt state: detect when partner advanced ahead
@@ -127,8 +130,9 @@ export default function CardView() {
     setSyncOffer(null);
   };
 
-  // Start or resume session when entering card
+  // Start or resume session when entering card (skip in revisit mode)
   useEffect(() => {
+    if (isRevisitMode) return;
     if (card && category) {
       if (!currentSession || currentSession.cardId !== cardId) {
         startSession(category.id, card.id);
@@ -137,6 +141,7 @@ export default function CardView() {
   }, [cardId]);
 
   useEffect(() => {
+    if (isRevisitMode) return;
     if (card && currentStepIndex >= 0) {
       const currentSection = card.sections.find(s => s.type === STEP_ORDER[currentStepIndex]);
       if (currentSection) {
@@ -167,7 +172,8 @@ export default function CardView() {
   };
 
   const handleNextStep = () => {
-    if (!completedSteps.includes(currentStepIndex)) {
+    // In revisit mode, don't track progress
+    if (!isRevisitMode && !completedSteps.includes(currentStepIndex)) {
       setCompletedSteps(prev => [...prev, currentStepIndex]);
       completeSessionStep(currentStepIndex);
     }
@@ -175,7 +181,7 @@ export default function CardView() {
     if (currentStepIndex < STEP_ORDER.length - 1) {
       const currentType = STEP_ORDER[currentStepIndex];
       const msgKey = TRANSITION_KEYS[currentType];
-      if (msgKey) {
+      if (msgKey && !isRevisitMode) {
         setTransitionMessage(t(msgKey));
         setTimeout(() => {
           setTransitionMessage(null);
@@ -184,6 +190,8 @@ export default function CardView() {
       } else {
         setCurrentStepIndex(currentStepIndex + 1);
       }
+    } else if (isRevisitMode) {
+      navigate(category ? `/category/${category.id}` : '/');
     } else {
       endSession();
       setShowCompletion(true);
@@ -256,6 +264,15 @@ export default function CardView() {
                   </p>
                 </>
               )}
+              <Button
+                onClick={() => navigate(`/card/${card.id}?revisit=true`)}
+                variant="ghost"
+                size="lg"
+                className="w-full gap-2 text-muted-foreground"
+              >
+                <RotateCcw className="w-4 h-4" />
+                {t('card_view.completion_revisit')}
+              </Button>
               <Button
                 onClick={() => navigate('/')}
                 variant="ghost"
