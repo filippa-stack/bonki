@@ -115,6 +115,7 @@
     "completion_next": "Utforska vidare tillsammans",
     "completion_home": "Tillbaka till start",
     "completion_rest": "Inget behöver lösas. Ni har redan gjort det viktigaste.",
+    "completion_revisit": "Återbesök det här samtalet",
     "reentry_message": "Ni var mitt i det här samtalet. Ni kan fortsätta precis där ni var.",
     "reentry_continue": "Fortsätt samtalet"
   },
