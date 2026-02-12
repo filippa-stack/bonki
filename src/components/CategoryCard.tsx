@@ -130,6 +130,15 @@ export default function CategoryCard({
               {category.title}
             </h3>
           )}
+          {/* Emotional entry line */}
+          {category.entryLine && (
+            <p
+              className="text-xs sm:text-sm text-center italic item-text-gentle"
+              style={{ '--item-text': category.textColor || undefined } as React.CSSProperties}
+            >
+              {category.entryLine}
+            </p>
+          )}
           {isEditingDesc ? (
             <input
               value={description}
@@ -138,12 +147,12 @@ export default function CategoryCard({
               onClick={(e) => e.stopPropagation()}
               onKeyDown={(e) => { if (e.key === 'Enter') handleDescBlur(); }}
               autoFocus
-              className="w-full text-xs sm:text-sm text-center bg-transparent border-none outline-none item-text-gentle"
+              className="w-full text-xs text-center bg-transparent border-none outline-none item-text-gentle opacity-60"
               style={{ '--item-text': category.textColor || undefined } as React.CSSProperties}
             />
           ) : (
             <p 
-              className="text-xs sm:text-sm text-center item-text-gentle cursor-text"
+              className="text-xs text-center item-text-gentle cursor-text opacity-60"
               style={{ '--item-text': category.textColor || undefined } as React.CSSProperties}
               onClick={handleDescClick}
             >
