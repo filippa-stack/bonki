@@ -113,6 +113,7 @@
     "transition_scenario": "Nu gör ni något av det ni upptäckt.",
     "completion_message": "Det ni sa till varandra finns kvar. Ni kan alltid återvända hit.",
     "completion_next": "Utforska vidare tillsammans",
+    "completion_propose": "Föreslå nästa samtal",
     "completion_home": "Tillbaka till start",
     "completion_rest": "Inget behöver lösas. Ni har redan gjort det viktigaste.",
     "completion_revisit": "Återbesök det här samtalet",
