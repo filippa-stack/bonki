@@ -51,15 +51,25 @@ export default function Category() {
         <motion.h1
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          className="text-display text-foreground mb-2"
+          className="text-display text-foreground mb-1"
         >
           {category.title}
         </motion.h1>
+        {category.entryLine && (
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.1 }}
+            className="text-sm text-gentle italic mb-3"
+          >
+            {category.entryLine}
+          </motion.p>
+        )}
         <motion.p
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 0.1 }}
-          className="text-body text-gentle"
+          transition={{ delay: 0.15 }}
+          className="text-body text-gentle opacity-60"
         >
           {category.description}
         </motion.p>
@@ -237,7 +247,7 @@ function EditableCard({
           </div>
           {card.subtitle && (
             <p
-              className="w-full text-sm text-center item-text-gentle"
+              className="w-full text-sm text-center italic item-text-gentle"
               style={{ '--item-text': card.textColor || undefined } as React.CSSProperties}
             >
               {card.subtitle}
