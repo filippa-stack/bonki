@@ -11,7 +11,7 @@ import SectionView from '@/components/SectionView';
 import CardReflections from '@/components/CardReflections';
 import StepProgressIndicator from '@/components/StepProgressIndicator';
 import PauseDialog from '@/components/PauseDialog';
-import WaitingForPartner from '@/components/WaitingForPartner';
+import SharedPaceState from '@/components/SharedPaceState';
 import ReviewDrawer from '@/components/ReviewDrawer';
 import { Button } from '@/components/ui/button';
 import { ArrowRight, Home, RotateCcw, BookOpen } from 'lucide-react';
@@ -496,9 +496,9 @@ export default function CardView() {
               {/* Navigation / waiting state */}
               {userCompletedCurrentStep ? (
                 <div className="space-y-2 my-6">
-                  <WaitingForPartner />
+                  <SharedPaceState />
                   <p className="text-xs text-muted-foreground/60 text-center italic">
-                    {t('card_view.waiting_both', 'Vi fortsätter härifrån när båda reflektionerna är inne.')}
+                    {t('card_view.waiting_both', 'Vi fortsätter härifrån när nästa steg är redo.')}
                   </p>
                   {currentStepIndex > 0 && (
                     <div className="flex justify-center pt-2">
