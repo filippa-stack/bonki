@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 
-export default function WaitingForPartner() {
+export default function SharedPaceState() {
   const { t } = useTranslation();
 
   return (
@@ -12,10 +12,10 @@ export default function WaitingForPartner() {
       className="mx-6 my-6 p-6 rounded-2xl border border-border bg-card text-center space-y-3"
     >
       <p className="text-sm text-muted-foreground leading-relaxed max-w-xs mx-auto">
-        {t('waiting_for_partner.message')}
+        {t('shared_pace.message')}
       </p>
       <p className="text-xs text-muted-foreground/60 italic">
-        {t('waiting_for_partner.hint')}
+        {t('shared_pace.hint')}
       </p>
     </motion.div>
   );
