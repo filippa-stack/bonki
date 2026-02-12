@@ -479,13 +479,14 @@ export default function CardView() {
         {transitionMessage && (
           <motion.div
             key="transition"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.7 }}
-            className="px-6 py-20 flex items-center justify-center"
+            initial={{ opacity: 0, y: 6 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -4 }}
+            transition={{ duration: 0.6, ease: "easeOut" }}
+            className="px-6 py-14 flex items-center justify-center"
           >
-            <p className="text-sm text-muted-foreground/80 text-center max-w-xs leading-relaxed font-serif">
+            <span className="sr-only">Övergång till nästa del av samtalet.</span>
+            <p className="text-sm text-muted-foreground/80 text-center max-w-xs leading-relaxed">
               {transitionMessage}
             </p>
           </motion.div>
