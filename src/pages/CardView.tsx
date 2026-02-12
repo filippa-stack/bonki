@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
@@ -31,6 +31,12 @@ const STEP_CTA_KEYS: Record<string, string> = {
   reflective: 'card_view.cta_reflective',
   scenario: 'card_view.cta_scenario',
   exercise: 'card_view.cta_exercise',
+};
+
+const TRANSITION_KEYS: Record<string, string> = {
+  opening: 'card_view.transition_opening',
+  reflective: 'card_view.transition_reflective',
+  scenario: 'card_view.transition_scenario',
 };
 
 export default function CardView() {
@@ -125,12 +131,13 @@ export default function CardView() {
   }, [isFullyExplored, isRevisitMode]);
 
   // ─── Show transition when shared step advances ───
-  const prevSharedStepRef = useState(sharedStepIndex)[0];
+  const prevSharedStepRef = useRef(sharedStepIndex);
   useEffect(() => {
+    const prev = prevSharedStepRef.current;
+    prevSharedStepRef.current = sharedStepIndex;
     if (isRevisitMode || showOverview || showReentry || showCompletion) return;
-    // The shared step advanced — show transition
-    if (sharedStepIndex > 0 && sharedStepIndex > prevSharedStepRef) {
-      const prevType = STEP_ORDER[sharedStepIndex - 1];
+    if (sharedStepIndex > prev) {
+      const prevType = STEP_ORDER[prev];
       const msgKey = TRANSITION_KEYS[prevType];
       if (msgKey) {
         setTransitionMessage(t(msgKey));
@@ -153,11 +160,6 @@ export default function CardView() {
 
   const currentSection = card.sections.find(s => s.type === STEP_ORDER[currentStepIndex]);
 
-  const TRANSITION_KEYS: Record<string, string> = {
-    opening: 'card_view.transition_opening',
-    reflective: 'card_view.transition_reflective',
-    scenario: 'card_view.transition_scenario',
-  };
 
   // ─── Handle "Next" press ───
   const handleNextStep = () => {
