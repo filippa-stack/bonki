@@ -707,8 +707,6 @@ export function AppProvider({ children }: { children: ReactNode }) {
       const session = prev.currentSession;
       if (!session) return { ...prev, currentSession: undefined };
 
-      // Always mark card as explored when endSession is called —
-      // it is only invoked after the final step is completed.
       const currentJourney = prev.journeyState || {
         currentCategoryId: null,
         lastOpenedCardId: null,
@@ -717,7 +715,31 @@ export function AppProvider({ children }: { children: ReactNode }) {
         pausedAt: null,
         updatedAt: new Date().toISOString(),
         exploredCardIds: [],
+        sessionProgress: {},
       };
+
+      // Check per-user completion from sessionProgress
+      const allStepIndices = STEP_ORDER.map((_, i) => i);
+      const cardProgress = currentJourney.sessionProgress?.[session.cardId];
+      const perUser = cardProgress?.perUser || {};
+      const userIds = Object.keys(perUser);
+      const requiredCount = coupleSpaceMemberCount >= 2 ? 2 : 1;
+
+      const isFullyCompleted =
+        userIds.length >= requiredCount &&
+        userIds.every((id) =>
+          allStepIndices.every((step) =>
+            perUser[id]?.completedSteps.includes(step)
+          )
+        );
+
+      // If not fully completed by all required users, just clear session without marking explored
+      if (!isFullyCompleted) {
+        return {
+          ...prev,
+          currentSession: undefined,
+        };
+      }
 
       const exploredCardIds = !currentJourney.exploredCardIds.includes(session.cardId)
         ? [...currentJourney.exploredCardIds, session.cardId]
@@ -728,7 +750,6 @@ export function AppProvider({ children }: { children: ReactNode }) {
       const currentIndex = categoryCards.findIndex(c => c.id === session.cardId);
       let suggestedNextCardId: string | null = null;
 
-      // Find next unexplored card in same category
       for (let i = 1; i <= categoryCards.length; i++) {
         const nextCard = categoryCards[(currentIndex + i) % categoryCards.length];
         if (!exploredCardIds.includes(nextCard.id)) {
@@ -737,7 +758,6 @@ export function AppProvider({ children }: { children: ReactNode }) {
         }
       }
 
-      // If all in category explored, try next category
       if (!suggestedNextCardId) {
         const catIndex = categories.findIndex(c => c.id === session.categoryId);
         for (let ci = 1; ci <= categories.length; ci++) {
