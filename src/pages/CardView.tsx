@@ -151,7 +151,7 @@ export default function CardView() {
       const msgKey = TRANSITION_KEYS[prevType];
       if (msgKey) {
         setTransitionMessage(t(msgKey));
-        setTimeout(() => setTransitionMessage(null), 1800);
+        setTimeout(() => setTransitionMessage(null), 2400);
       }
     }
   }, [sharedStepIndex]);
@@ -482,10 +482,10 @@ export default function CardView() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.5 }}
-            className="px-6 py-16 flex items-center justify-center"
+            transition={{ duration: 0.7 }}
+            className="px-6 py-20 flex items-center justify-center"
           >
-            <p className="text-sm text-muted-foreground italic text-center max-w-xs leading-relaxed">
+            <p className="text-sm text-muted-foreground/80 text-center max-w-xs leading-relaxed font-serif">
               {transitionMessage}
             </p>
           </motion.div>
