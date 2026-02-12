@@ -166,13 +166,9 @@ export default function CardView() {
       const currentSection = card.sections.find(s => s.type === STEP_ORDER[currentStepIndex]);
       if (currentSection) {
         saveConversation(card.id, currentSection.id, currentStepIndex, completedSteps);
-        // Don't push step backward to shared progress during catch-up
-        if (catchUpTarget === null) {
-          updateSessionStep(currentStepIndex);
-        }
       }
     }
-  }, [currentStepIndex, completedSteps, card, catchUpTarget]);
+  }, [currentStepIndex, completedSteps, card]);
 
   if (!card) {
     return (
@@ -205,6 +201,8 @@ export default function CardView() {
     if (!isRevisitMode && !completedSteps.includes(currentStepIndex)) {
       setCompletedSteps(updatedCompleted);
       completeSessionStep(currentStepIndex);
+      // Advance shared session forward by exactly +1 (forward-only)
+      updateSessionStep(currentStepIndex + 1);
     }
 
     // Find the next incomplete step after the current one
