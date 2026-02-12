@@ -64,23 +64,27 @@ export default function CardView() {
   const existingConversation = cardId ? getConversationForCard(cardId) : undefined;
 
   // Determine initial step from session or saved conversation
+  // Uses per-user completions when available (couple mode), falls back to shared completedSteps
   // Returns -1 if all steps are completed (signals "route out")
   const getInitialStepIndex = () => {
     let completed: number[] = [];
 
     if (currentSession?.cardId === cardId) {
-      completed = currentSession.completedSteps;
+      // In couple mode, use this user's own completions to determine resume point
+      const myCompletions = user?.id && currentSession.userCompletions?.[user.id];
+      completed = myCompletions || currentSession.completedSteps;
     } else if (existingConversation && card) {
       completed = existingConversation.completedSteps ?? [];
     }
 
-    // Find the first step NOT in completedSteps
+    // Find the first step NOT in completed
     const nextIncomplete = STEP_ORDER.findIndex((_, i) => !completed.includes(i));
     return nextIncomplete; // -1 if all completed
   };
 
   const getInitialCompletedSteps = () => {
     if (currentSession?.cardId === cardId) {
+      // Return shared completedSteps (mutually confirmed) for progress display
       return currentSession.completedSteps;
     }
     if (existingConversation) {
