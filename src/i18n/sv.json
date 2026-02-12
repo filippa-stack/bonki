@@ -111,10 +111,10 @@
     "transition_opening": "Ni har hittat in. Låt oss fortsätta.",
     "transition_reflective": "Fint. Nu utforskar ni ett scenario tillsammans.",
     "transition_scenario": "Nu gör ni något av det ni upptäckt.",
-    "completion_message": "Tack för att ni stannade kvar i det här samtalet. Det ni delade med varandra finns kvar — och ni kan alltid återvända.",
-    "completion_next": "Fortsätt utforska tillsammans",
+    "completion_message": "Det ni sa till varandra finns kvar. Ni kan alltid återvända hit.",
+    "completion_next": "Utforska vidare tillsammans",
     "completion_home": "Tillbaka till start",
-    "completion_rest": "Det finns ingen brådska. Ni bestämmer takten.",
+    "completion_rest": "Inget behöver lösas. Ni har redan gjort det viktigaste.",
     "reentry_message": "Ni var mitt i det här samtalet. Ni kan fortsätta precis där ni var.",
     "reentry_continue": "Fortsätt samtalet"
   },
