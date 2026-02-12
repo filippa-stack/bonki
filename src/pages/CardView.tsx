@@ -235,6 +235,18 @@ export default function CardView() {
     const suggestedCard = suggestedCardId ? getCardById(suggestedCardId) : null;
     const suggestedCategory = suggestedCard ? getCategoryById(suggestedCard.categoryId) : null;
 
+    // Partner-aware messaging: check if partner has also reached the final step
+    const partnerAlsoCompleted = memberCount >= 2
+      && currentSession === undefined
+      && isFullyExplored;
+    // If we're in a couple and the card is fully explored by both, show "together" copy
+    // Otherwise show "solo pause" copy
+    const completionMessageKey = memberCount >= 2
+      ? (allStepsCompleted && partnerAlsoCompleted
+        ? 'card_view.completion_message_together'
+        : 'card_view.completion_message_solo')
+      : 'card_view.completion_message';
+
     return (
       <div className="min-h-screen page-bg">
         <Header
@@ -266,7 +278,7 @@ export default function CardView() {
               transition={{ delay: 0.6, duration: 0.6 }}
               className="text-sm text-muted-foreground leading-relaxed max-w-xs mx-auto"
             >
-              {t('card_view.completion_message')}
+              {t(completionMessageKey)}
             </motion.p>
 
             <motion.div
@@ -276,57 +288,45 @@ export default function CardView() {
               className="pt-4 space-y-3"
             >
               {suggestedCard && suggestedCategory && memberCount >= 2 ? (
-                <>
-                  <Button
-                    onClick={() => {
-                      proposeCard(suggestedCategory.id, suggestedCard.id);
-                      toast(t('topic_proposal.proposed_toast'));
-                      navigate('/');
-                    }}
-                    variant="outline"
-                    size="lg"
-                    className="w-full gap-2"
-                  >
-                    {t('card_view.completion_propose')}
-                    <ArrowRight className="w-4 h-4" />
-                  </Button>
-                  <p className="text-xs text-muted-foreground/70">
-                    {suggestedCategory.title} · {suggestedCard.title}
-                  </p>
-                </>
+                <Button
+                  onClick={() => {
+                    proposeCard(suggestedCategory.id, suggestedCard.id);
+                    toast(t('topic_proposal.proposed_toast'));
+                    navigate('/');
+                  }}
+                  size="lg"
+                  className="w-full gap-2"
+                >
+                  {t('card_view.completion_next')}
+                  <ArrowRight className="w-4 h-4" />
+                </Button>
               ) : suggestedCard && suggestedCategory ? (
-                <>
-                  <Button
-                    onClick={() => navigate(`/card/${suggestedCard.id}`)}
-                    variant="outline"
-                    size="lg"
-                    className="w-full gap-2"
-                  >
-                    {t('card_view.completion_next')}
-                    <ArrowRight className="w-4 h-4" />
-                  </Button>
-                  <p className="text-xs text-muted-foreground/70">
-                    {suggestedCategory.title} · {suggestedCard.title}
-                  </p>
-                </>
+                <Button
+                  onClick={() => navigate(`/card/${suggestedCard.id}`)}
+                  size="lg"
+                  className="w-full gap-2"
+                >
+                  {t('card_view.completion_next')}
+                  <ArrowRight className="w-4 h-4" />
+                </Button>
               ) : null}
+              <Button
+                onClick={() => navigate('/')}
+                variant="outline"
+                size="lg"
+                className="w-full gap-2"
+              >
+                <Home className="w-4 h-4" />
+                {t('card_view.completion_home')}
+              </Button>
               <Button
                 onClick={() => navigate(`/card/${card.id}?revisit=true`)}
                 variant="ghost"
-                size="lg"
+                size="sm"
                 className="w-full gap-2 text-muted-foreground"
               >
                 <RotateCcw className="w-4 h-4" />
                 {t('card_view.completion_revisit')}
-              </Button>
-              <Button
-                onClick={() => navigate('/')}
-                variant="ghost"
-                size="lg"
-                className="w-full gap-2 text-muted-foreground"
-              >
-                <Home className="w-4 h-4" />
-                {t('card_view.completion_home')}
               </Button>
             </motion.div>
 
@@ -574,7 +574,7 @@ export default function CardView() {
                     {currentStepIndex === STEP_ORDER.length - 1 ? (
                       <>
                         <Check className="w-4 h-4" />
-                        Avsluta samtalet
+                        {t('card_view.finish_conversation')}
                       </>
                     ) : (
                       <>
