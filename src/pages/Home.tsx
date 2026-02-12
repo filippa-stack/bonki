@@ -11,7 +11,7 @@ import ContinueModule from '@/components/ContinueModule';
 import Header from '@/components/Header';
 import ResumeSessionDialog from '@/components/ResumeSessionDialog';
 import InvitePartner from '@/components/InvitePartner';
-import { Bookmark, Pencil, Check, Share2, Settings, CheckCircle2 } from 'lucide-react';
+import { Bookmark, Pencil, Check, Share2, Settings } from 'lucide-react';
 import NotificationSettings from '@/components/NotificationSettings';
 import RelationshipMemory from '@/components/RelationshipMemory';
 import RecentSharedReflection from '@/components/RecentSharedReflection';
@@ -368,16 +368,11 @@ export default function Home() {
               }}
             />
           ) : (
-            <div className="flex items-center gap-3 p-4 rounded-lg bg-card border border-border">
-              <CheckCircle2 className="w-5 h-5 text-primary shrink-0" />
-              <div>
-                <p className="text-sm font-medium text-foreground">
-                  {t('couple_space.partner_connected')}
-                </p>
-                <p className="text-xs text-muted-foreground">
-                  {t('couple_space.connected_hint')}
-                </p>
-              </div>
+            <div className="flex items-center gap-2.5 py-2">
+              <div className="w-1.5 h-1.5 rounded-full bg-primary/60" />
+              <p className="text-xs text-muted-foreground">
+                {t('couple_space.partner_connected')}
+              </p>
             </div>
           )}
         </motion.div>

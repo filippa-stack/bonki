@@ -10,7 +10,7 @@ import { supabase } from '@/integrations/supabase/client';
 import Header from '@/components/Header';
 import SharedTimelineItem from '@/components/SharedTimelineItem';
 import InvitePartner from '@/components/InvitePartner';
-import { Star, Search, Filter, X, Clock, Heart, MessageCircle, BookOpen, CheckCircle2 } from 'lucide-react';
+import { Star, Search, Filter, X, Clock, Heart, MessageCircle, BookOpen } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import {
@@ -229,16 +229,11 @@ export default function SharedSummary() {
                 }}
               />
             ) : (
-              <div className="flex items-center gap-3 p-4 rounded-lg bg-card border border-border">
-                <CheckCircle2 className="w-5 h-5 text-primary shrink-0" />
-                <div>
-                  <p className="text-sm font-medium text-foreground">
-                    {t('couple_space.partner_connected', 'Din partner är ansluten')}
-                  </p>
-                  <p className="text-xs text-muted-foreground">
-                    {t('couple_space.connected_hint', 'Allt ni delar syns för er båda.')}
-                  </p>
-                </div>
+              <div className="flex items-center gap-2.5 py-2">
+                <div className="w-1.5 h-1.5 rounded-full bg-primary/60" />
+                <p className="text-xs text-muted-foreground">
+                  {t('couple_space.partner_connected')}
+                </p>
               </div>
             )}
           </motion.div>

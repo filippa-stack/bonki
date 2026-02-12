@@ -3,7 +3,6 @@ import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import { Share2, Copy, Check, UserPlus } from 'lucide-react';
 import { toast } from 'sonner';
 
@@ -17,6 +16,7 @@ interface InvitePartnerProps {
 export default function InvitePartner({ inviteCode, inviteToken, partnerName, onUpdateName }: InvitePartnerProps) {
   const { t } = useTranslation();
   const [copied, setCopied] = useState(false);
+  const [expanded, setExpanded] = useState(false);
   const [editingName, setEditingName] = useState(false);
   const [nameValue, setNameValue] = useState(partnerName || '');
 
@@ -36,7 +36,6 @@ export default function InvitePartner({ inviteCode, inviteToken, partnerName, on
           url: inviteLink,
         });
       } catch (err) {
-        // User cancelled or share failed — copy instead
         if ((err as Error).name !== 'AbortError') {
           handleCopy();
         }
@@ -62,64 +61,92 @@ export default function InvitePartner({ inviteCode, inviteToken, partnerName, on
     setEditingName(false);
   };
 
+  // Collapsed: minimal prompt to invite
+  if (!expanded) {
+    return (
+      <motion.button
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        onClick={() => setExpanded(true)}
+        className="w-full flex items-center gap-3 py-3 px-4 rounded-xl border border-dashed border-border/60 bg-transparent hover:bg-card/50 transition-colors text-left"
+      >
+        <UserPlus className="w-4 h-4 text-muted-foreground/60 shrink-0" />
+        <p className="text-sm text-muted-foreground">
+          {t('invite.collapsed_hint', 'Bjud in din partner att dela det här utrymmet')}
+        </p>
+      </motion.button>
+    );
+  }
+
+  // Expanded: full invite options
   return (
     <motion.div
-      initial={{ opacity: 0, y: 10 }}
-      animate={{ opacity: 1, y: 0 }}
-      className="p-5 rounded-lg bg-card border border-border space-y-5"
+      initial={{ opacity: 0, height: 0 }}
+      animate={{ opacity: 1, height: 'auto' }}
+      className="rounded-xl border border-border/50 bg-card/50 overflow-hidden"
     >
-      <div className="flex items-center gap-3">
-        <UserPlus className="w-5 h-5 text-primary" />
-        <p className="text-sm font-medium text-foreground">
-          {t('invite.title', 'Bjud in din partner')}
-        </p>
-      </div>
-
-      <p className="text-xs text-gentle">
-        {t('invite.description', 'Dela länken nedan. Din partner skapar ett konto och ni kopplas ihop automatiskt.')}
-      </p>
-
-      {/* Share button (primary) */}
-      <Button onClick={handleShare} className="w-full gap-2">
-        <Share2 className="w-4 h-4" />
-        {t('invite.share_button', 'Dela inbjudan')}
-      </Button>
-
-      {/* Copy link (secondary) */}
-      <Button variant="outline" onClick={handleCopy} className="w-full gap-2">
-        {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
-        {copied ? t('invite.copied', 'Kopierad!') : t('invite.copy_link', 'Kopiera länk')}
-      </Button>
-
-      {/* Invite code */}
-      <div className="text-center space-y-1">
-        <p className="text-xs text-muted-foreground">{t('invite.or_code', 'Eller dela koden:')}</p>
-        <p className="text-lg font-mono tracking-widest text-foreground">{inviteCode}</p>
-      </div>
-
-      {/* Set own name */}
-      <div className="space-y-2 pt-2 border-t border-border">
-        <Label className="text-xs text-muted-foreground">
-          {t('invite.your_name_label', 'Ditt namn (visas för din partner)')}
-        </Label>
-        {editingName ? (
-          <div className="flex gap-2">
-            <Input
-              value={nameValue}
-              onChange={(e) => setNameValue(e.target.value)}
-              placeholder={t('invite.name_placeholder', 'Ditt namn...')}
-              autoFocus
-            />
-            <Button size="sm" onClick={handleSaveName}>{t('home.save', 'Spara')}</Button>
+      <div className="p-4 space-y-4">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <UserPlus className="w-4 h-4 text-muted-foreground/70" />
+            <p className="text-sm text-foreground">
+              {t('invite.title', 'Bjud in din partner')}
+            </p>
           </div>
-        ) : (
           <button
-            onClick={() => setEditingName(true)}
-            className="text-sm text-foreground hover:text-primary transition-colors"
+            onClick={() => setExpanded(false)}
+            className="text-xs text-muted-foreground hover:text-foreground transition-colors"
           >
-            {partnerName || t('invite.set_name', 'Ange ditt namn')}
+            {t('invite.minimize', 'Minimera')}
           </button>
-        )}
+        </div>
+
+        <p className="text-xs text-muted-foreground leading-relaxed">
+          {t('invite.description', 'Dela länken nedan. Din partner skapar ett konto och ni kopplas ihop automatiskt.')}
+        </p>
+
+        {/* Actions row */}
+        <div className="flex gap-2">
+          <Button onClick={handleShare} size="sm" className="flex-1 gap-2">
+            <Share2 className="w-3.5 h-3.5" />
+            {t('invite.share_button', 'Dela inbjudan')}
+          </Button>
+          <Button variant="outline" size="sm" onClick={handleCopy} className="gap-2">
+            {copied ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
+            {copied ? t('invite.copied', 'Kopierad!') : t('invite.copy_link', 'Kopiera')}
+          </Button>
+        </div>
+
+        {/* Invite code — smaller */}
+        <div className="text-center pt-1">
+          <p className="text-xs text-muted-foreground/60">{t('invite.or_code', 'Eller dela koden:')}</p>
+          <p className="text-sm font-mono tracking-widest text-foreground/70 mt-0.5">{inviteCode}</p>
+        </div>
+
+        {/* Set own name — collapsible */}
+        <div className="pt-2 border-t border-border/40">
+          {editingName ? (
+            <div className="flex gap-2">
+              <Input
+                value={nameValue}
+                onChange={(e) => setNameValue(e.target.value)}
+                placeholder={t('invite.name_placeholder', 'Ditt namn...')}
+                autoFocus
+                className="h-8 text-sm"
+              />
+              <Button size="sm" onClick={handleSaveName} className="h-8 px-3 text-xs">
+                {t('home.save', 'Spara')}
+              </Button>
+            </div>
+          ) : (
+            <button
+              onClick={() => setEditingName(true)}
+              className="text-xs text-muted-foreground hover:text-foreground transition-colors"
+            >
+              {partnerName || t('invite.set_name', 'Ange ditt namn (visas för din partner)')}
+            </button>
+          )}
+        </div>
       </div>
     </motion.div>
   );
