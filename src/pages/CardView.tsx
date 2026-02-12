@@ -570,7 +570,7 @@ export default function CardView() {
                         onClick={() => setReviewOpen(true)}
                       >
                         <BookOpen className="w-4 h-4" />
-                        {t('card_view.review_edit', 'Granska & redigera')}
+                        {t('card_view.review_edit', 'Granska & förfina')}
                       </Button>
                     )}
                     <Button
