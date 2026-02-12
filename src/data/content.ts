@@ -52,9 +52,10 @@ export const categories: Category[] = [
   },
   {
     id: 'category-8',
-    title: '',
-    description: '',
-    cardCount: 0,
+    title: 'Kommunikation & stöd',
+    entryLine: 'Hur ni pratar — och hur ni lyssnar.',
+    description: 'Enighet, reparation och att ge varandra utrymme',
+    cardCount: 2,
   },
   {
     id: 'category-9',
@@ -816,6 +817,94 @@ export const cards: Card[] = [
         type: 'exercise',
         title: 'Team Work',
         content: 'Tänk ut hur en vecka kan se ut där båda era sätt får plats — utan att det ena blir norm och det andra undantag.',
+      },
+    ],
+  },
+  {
+    id: 'behind-the-scenes',
+    title: 'Framför och bakom kulisserna',
+    subtitle: 'Enighet, reparation och ansvar',
+    categoryId: 'category-8',
+    sections: [
+      {
+        id: 'opening-17',
+        type: 'opening',
+        title: 'Öppnare',
+        content: 'Att vara på samma sida — vad innebär det egentligen?',
+        prompts: [
+          'När känner du dig mest skyddad av mig som förälder?',
+          'När känns det som att vi inte riktigt är på samma sida?',
+          'Vad behöver du efter en situation där vi agerat olika inför barnet?',
+        ],
+      },
+      {
+        id: 'reflective-17',
+        type: 'reflective',
+        title: 'Tankeväckare',
+        content: 'Utforska skillnaden mellan fasad och äkta enighet.',
+        prompts: [
+          'Hur märks skillnaden mellan att visa enad front — och att känna sig enad bakom kulisserna?',
+          'Vad händer mellan er när oenighet hanteras öppet i efterhand — jämfört med när den aldrig riktigt får utrymme?',
+        ],
+      },
+      {
+        id: 'scenario-17',
+        type: 'scenario',
+        title: 'Scenario',
+        content: 'Efter en jobbig kväll tappar en av er tålamodet inför barnet. Den andra reagerar på det, men ni tar inte diskussionen där och då.',
+        prompts: [
+          'Hur tar ni ansvar för det som hände — både inför varandra och inför barnet?',
+        ],
+      },
+      {
+        id: 'exercise-17',
+        type: 'exercise',
+        title: 'Team Work',
+        content: 'Bestäm hur ni signalerar \u201Cvi tar det sen\u201D, hur ni pratar om det utan att bli motparter, och hur ni visar barnet att vuxna också reparerar konflikter.',
+      },
+    ],
+  },
+  {
+    id: 'thoughtful-space',
+    title: 'Omtänksamt utrymme',
+    subtitle: 'Att ge och ta utrymme utan att skapa avstånd',
+    categoryId: 'category-8',
+    sections: [
+      {
+        id: 'opening-18',
+        type: 'opening',
+        title: 'Öppnare',
+        content: 'Utrymme kan vara kärlek — eller avstånd.',
+        prompts: [
+          'Hur märker du själv att du behöver utrymme innan det blir för mycket?',
+          'Hur vill du att jag tolkar din tystnad?',
+          'När känner du dig trygg i att jag stannar kvar, även utan att lösa något, när vi är i konflikt?',
+        ],
+      },
+      {
+        id: 'reflective-18',
+        type: 'reflective',
+        title: 'Tankeväckare',
+        content: 'Utforska gränsen mellan omsorg och övergivande.',
+        prompts: [
+          'När känns det kärleksfullt att lämna den andre ifred — och när känns det som övergivande?',
+          'När är det omtänksamt att stå kvar — och när blir det påträngande?',
+        ],
+      },
+      {
+        id: 'scenario-18',
+        type: 'scenario',
+        title: 'Scenario',
+        content: 'En drar sig undan för att orka, den andra känner sig övergiven. Båda försöker skydda relationen.',
+        prompts: [
+          'Hur vet ni när utrymme hjälper — och när det börjar skapa avstånd?',
+        ],
+      },
+      {
+        id: 'exercise-18',
+        type: 'exercise',
+        title: 'Team Work',
+        content: 'Kom överens om tydliga tecken för:\n• när jag behöver vara ifred\n• när jag behöver att du stannar\n• när jag inte vet vad jag behöver',
       },
     ],
   },
