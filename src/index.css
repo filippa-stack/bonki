@@ -44,6 +44,7 @@
     /* Custom tokens */
     --surface-warm: 60 100% 97%;      /* #FFFEF3 */
     --surface-elevated: 60 100% 97%;
+    --surface-chrome: 60 100% 99%;    /* #FFFFFC — header/footer */
     --text-gentle: 28 5% 47%;
     --divider: 33 18% 89%;
 
