@@ -66,9 +66,10 @@ export const categories: Category[] = [
   },
   {
     id: 'category-10',
-    title: '',
-    description: '',
-    cardCount: 0,
+    title: 'Uthållighet',
+    entryLine: 'Att fortsätta välja varandra — med öppna ögon.',
+    description: 'När relationen ändrar riktning och valet att stanna blir aktivt',
+    cardCount: 2,
   },
   {
     id: 'category-11',
@@ -994,6 +995,96 @@ export const cards: Card[] = [
         type: 'exercise',
         title: 'Team Work',
         content: 'Bestäm vilka tecken som visar att satsningen tar för mycket plats och hur ni då justerar innan det går ut över relationen.',
+      },
+    ],
+  },
+  {
+    id: 'adrift',
+    title: 'På drift',
+    subtitle: 'När relationen långsamt ändrar riktning',
+    categoryId: 'category-10',
+    sections: [
+      {
+        id: 'opening-21',
+        type: 'opening',
+        title: 'Öppnare',
+        content: 'Ibland märks förändringen inte förrän efteråt.',
+        prompts: [
+          'Vad gör ni mindre av idag än för ett år sedan, 5 år sedan, 10 år sedan?',
+          'När känner du dig ensam trots att ni är tillsammans?',
+          'När kände du dig senast vald av mig, inte bara inkluderad?',
+        ],
+      },
+      {
+        id: 'reflective-21',
+        type: 'reflective',
+        title: 'Tankeväckare',
+        content: 'Utforska vad avstånd egentligen handlar om.',
+        prompts: [
+          'När märker ni att avstånd växer mest: efter en konflikt — eller efter långa perioder av artigt avstånd?',
+          'Hur påverkar ert sätt att hantera avstånd relationens riktning över tid?',
+        ],
+      },
+      {
+        id: 'scenario-21',
+        type: 'scenario',
+        title: 'Scenario',
+        content: 'Ni bråkar sällan. Men ni skrattar inte heller som förr. Närhet skjuts upp till \u201Csen\u201D.',
+        prompts: [
+          'Vilka tecken hos er gör att det känns som en tillfällig paus — och vilka tecken gör att det börjar kännas som ett nytt normalläge?',
+        ],
+      },
+      {
+        id: 'exercise-21',
+        type: 'exercise',
+        title: 'Team Work',
+        content: 'Gör ett litet experiment i en vecka som bryter autopiloten (ett nytt sätt att hälsa, ta i varandra, fråga varandra frågor, vara nära varandra).',
+        prompts: ['Prata sedan: förde det er närmare — eller visade det på ett avstånd mellan er?'],
+      },
+    ],
+  },
+  {
+    id: 'choosing-to-stay',
+    title: 'Att fortsätta välja',
+    subtitle: 'Att aktivt prioritera relationen',
+    categoryId: 'category-10',
+    sections: [
+      {
+        id: 'opening-22',
+        type: 'opening',
+        title: 'Öppnare',
+        content: 'Att stanna är också ett val.',
+        prompts: [
+          'När har du senast känt att du aktivt tog ställning för relationen — inte som reaktion, utan som eget val?',
+          'Vad gör du i relationen idag som är ett val, inte en följd av ansvar eller vana?',
+          'När känns det tydligast för dig att du skulle kunna välja annorlunda men fortsätter att välja oss?',
+        ],
+      },
+      {
+        id: 'reflective-22',
+        type: 'reflective',
+        title: 'Tankeväckare',
+        content: 'Utforska skillnaden mellan att stanna och att välja.',
+        prompts: [
+          'Vad behöver du själv göra, eller ta ställning till, för att välja relationen när inget yttre pressar dig att göra det eller att ingen ställer en direkt fråga till dig?',
+          'Hur märks det i en relation när båda parter vet att de väljer — inte bara fortsätter?',
+        ],
+      },
+      {
+        id: 'scenario-22',
+        type: 'scenario',
+        title: 'Scenario',
+        content: 'Relationen fungerar. Inget är trasigt. Ni samarbetar, delar ansvar och tar er igenom vardagen. Samtidigt finns en tyst insikt om att relationer också är något man kan lämna — även utan konflikt.',
+        prompts: [
+          'Hur påverkar den insikten hur ni möter varandra i det som redan fungerar?',
+        ],
+      },
+      {
+        id: 'exercise-22',
+        type: 'exercise',
+        title: 'Team Work',
+        content: 'Svara var för sig, utan att förklara eller försvara: \u201CVad gör att jag väljer oss just nu?\u201D',
+        prompts: ['Lyssna utan att svara tillbaka.'],
       },
     ],
   },
