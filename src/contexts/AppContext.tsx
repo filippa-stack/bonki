@@ -570,8 +570,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
       const session = prev.currentSession;
       if (!session) return { ...prev, currentSession: undefined };
 
-      // If all 4 steps completed, mark card as explored
-      const allCompleted = session.completedSteps.length >= 4;
+      // Always mark card as explored when endSession is called —
+      // it is only invoked after the final step is completed.
       const currentJourney = prev.journeyState || {
         currentCategoryId: null,
         lastOpenedCardId: null,
@@ -582,7 +582,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
         exploredCardIds: [],
       };
 
-      const exploredCardIds = allCompleted && !currentJourney.exploredCardIds.includes(session.cardId)
+      const exploredCardIds = !currentJourney.exploredCardIds.includes(session.cardId)
         ? [...currentJourney.exploredCardIds, session.cardId]
         : currentJourney.exploredCardIds;
 
@@ -619,7 +619,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
         currentSession: undefined,
         journeyState: {
           ...currentJourney,
-          lastCompletedCardId: allCompleted ? session.cardId : currentJourney.lastCompletedCardId,
+          lastCompletedCardId: session.cardId,
           suggestedNextCardId,
           exploredCardIds,
           updatedAt: new Date().toISOString(),
