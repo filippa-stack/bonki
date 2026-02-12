@@ -349,8 +349,7 @@ export default function CardView() {
             )}
             
             <p className="text-sm text-muted-foreground mb-8 leading-relaxed">
-              Det här samtalet består av fyra delar. Ni rör er i er egen takt, 
-              men ordningen är viktig för att skapa trygghet och djup.
+              Fyra steg som hjälper er att hitta varandra. Gå i er egen takt.
             </p>
             
             {/* Step overview */}
@@ -373,10 +372,10 @@ export default function CardView() {
                         {sectionTypeLabels[stepType]}
                       </p>
                       <p className="text-xs text-muted-foreground mt-0.5">
-                        {stepType === 'opening' && 'Sänker tröskeln och sätter samtalet i rörelse.'}
-                        {stepType === 'reflective' && 'Fördjupar, utmanar och breddar perspektivet.'}
-                        {stepType === 'scenario' && 'Gör det svåra pratbart genom igenkänning.'}
-                        {stepType === 'exercise' && 'Förvandlar insikt till gemensam handling.'}
+                        {stepType === 'opening' && 'Hitta in i samtalet tillsammans.'}
+                        {stepType === 'reflective' && 'Lyssna djupare på varandra.'}
+                        {stepType === 'scenario' && 'Känn igen er i varandras vardag.'}
+                        {stepType === 'exercise' && 'Gör något av det ni upptäckt.'}
                       </p>
                     </div>
                   </motion.div>
