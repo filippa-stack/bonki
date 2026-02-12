@@ -122,7 +122,9 @@ export interface AppState {
     categoryId: string;
     cardId: string;
     currentStepIndex: number; // 0-3 for opening, reflective, scenario, exercise
-    completedSteps: number[]; // indices of completed steps
+    completedSteps: number[]; // indices of completed steps (mutually confirmed)
+    /** Per-user step completions: { [userId]: number[] } */
+    userCompletions?: Record<string, number[]>;
     startedAt: Date;
     lastActivityAt: Date;
   };

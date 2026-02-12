@@ -555,6 +555,10 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const updateSessionStep = (stepIndex: number) => {
     setState((prev) => {
       if (!prev.currentSession) return prev;
+      // Guard: never move shared step backward or skip ahead
+      const currentShared = prev.currentSession.currentStepIndex;
+      if (stepIndex < currentShared) return prev; // never backward
+      if (stepIndex > currentShared + 1) return prev; // never skip
       return {
         ...prev,
         currentSession: {
@@ -567,16 +571,46 @@ export function AppProvider({ children }: { children: ReactNode }) {
   };
 
   const completeSessionStep = (stepIndex: number) => {
+    const uid = user?.id;
     setState((prev) => {
       if (!prev.currentSession) return prev;
-      const completedSteps = prev.currentSession.completedSteps.includes(stepIndex)
-        ? prev.currentSession.completedSteps
-        : [...prev.currentSession.completedSteps, stepIndex];
+
+      // Record this user's completion
+      const prevUserCompletions = prev.currentSession.userCompletions || {};
+      const myCompleted = prevUserCompletions[uid || 'local'] || [];
+      const updatedMyCompleted = myCompleted.includes(stepIndex)
+        ? myCompleted
+        : [...myCompleted, stepIndex];
+
+      const updatedUserCompletions = {
+        ...prevUserCompletions,
+        [uid || 'local']: updatedMyCompleted,
+      };
+
+      // Determine if ALL users have completed this step
+      // For solo users (1 entry), it's immediate
+      // For couples (2 entries), both must have the step
+      const allUserIds = Object.keys(updatedUserCompletions);
+      const isMutuallyCompleted = allUserIds.length < 2
+        || allUserIds.every(id => updatedUserCompletions[id]?.includes(stepIndex));
+
+      const completedSteps = isMutuallyCompleted
+        && !prev.currentSession.completedSteps.includes(stepIndex)
+        ? [...prev.currentSession.completedSteps, stepIndex]
+        : prev.currentSession.completedSteps;
+
+      // Only advance shared step when mutually completed
+      const newStepIndex = isMutuallyCompleted
+        ? prev.currentSession.currentStepIndex
+        : prev.currentSession.currentStepIndex;
+
       return {
         ...prev,
         currentSession: {
           ...prev.currentSession,
           completedSteps,
+          userCompletions: updatedUserCompletions,
+          currentStepIndex: newStepIndex,
           lastActivityAt: new Date(),
         },
       };
