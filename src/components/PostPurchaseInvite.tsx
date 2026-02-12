@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
-import { Heart, ArrowRight } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import InvitePartner from '@/components/InvitePartner';
 import bonkiLogo from '@/assets/bonki-logo.png';
 
@@ -32,7 +32,6 @@ export default function PostPurchaseInvite({
       >
         <div className="text-center space-y-3">
           <img src={bonkiLogo} alt="Still Us" className="h-10 w-auto mx-auto" />
-          <Heart className="w-8 h-8 text-primary mx-auto" />
           <h1 className="text-display text-foreground">
             {t('post_purchase.title', 'Ert utrymme är redo')}
           </h1>
