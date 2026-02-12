@@ -57,7 +57,7 @@ export default function WaitingStepNote({ cardId, sectionId }: WaitingStepNotePr
         className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
       >
         <PenLine className="w-3.5 h-3.5" />
-        Lägg till en tanke
+        Skriv en egen tanke
       </button>
     );
   }
@@ -73,9 +73,10 @@ export default function WaitingStepNote({ cardId, sectionId }: WaitingStepNotePr
           ref={textareaRef}
           value={text}
           onChange={(e) => setText(e.target.value)}
-          placeholder="Skriv en tanke…"
+          placeholder="Skriv något du vill komma ihåg…"
           className="w-full min-h-[64px] p-3 bg-transparent resize-none focus:outline-none text-sm text-foreground placeholder:text-muted-foreground/60"
         />
+        <p className="px-3 pb-1 text-xs text-muted-foreground/65">Du väljer alltid själv vad som delas.</p>
         <div className="flex items-center justify-between gap-2 px-3 pb-3">
           <div>
             <AnimatePresence mode="wait">
@@ -87,7 +88,7 @@ export default function WaitingStepNote({ cardId, sectionId }: WaitingStepNotePr
                   exit={{ opacity: 0 }}
                   className="text-xs text-muted-foreground/60 italic flex items-center gap-1"
                 >
-                  <Lock className="w-3 h-3" /> Sparat privat
+                   <Lock className="w-3 h-3" /> Sparat för dig
                 </motion.span>
               )}
               {justSaved === 'shared' && (
@@ -98,7 +99,7 @@ export default function WaitingStepNote({ cardId, sectionId }: WaitingStepNotePr
                   exit={{ opacity: 0 }}
                   className="text-xs text-muted-foreground/60 italic flex items-center gap-1"
                 >
-                  <Share2 className="w-3 h-3" /> Delat
+                  <Share2 className="w-3 h-3" /> Delat med din partner
                 </motion.span>
               )}
             </AnimatePresence>
@@ -107,16 +108,16 @@ export default function WaitingStepNote({ cardId, sectionId }: WaitingStepNotePr
             <button
               onClick={handleSavePrivate}
               disabled={!text.trim()}
-              className="text-xs font-medium px-3 py-1.5 rounded-lg border border-border text-muted-foreground hover:text-foreground hover:border-foreground/20 transition-colors disabled:opacity-40"
+              className="text-xs font-medium px-3 py-1.5 rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 transition-colors disabled:opacity-40"
             >
-              Spara privat
+              Spara för mig
             </button>
             <button
               onClick={handleShare}
               disabled={!text.trim() && !privateNote?.content}
-              className="text-xs font-medium px-3 py-1.5 rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 transition-colors disabled:opacity-40"
+              className="text-xs font-medium px-3 py-1.5 rounded-lg border border-border text-muted-foreground hover:text-foreground hover:border-foreground/20 transition-colors disabled:opacity-40"
             >
-              Dela med dig
+              Dela med din partner
             </button>
           </div>
         </div>
@@ -125,7 +126,7 @@ export default function WaitingStepNote({ cardId, sectionId }: WaitingStepNotePr
         onClick={() => setOpen(false)}
         className="text-xs text-muted-foreground/50 hover:text-muted-foreground transition-colors"
       >
-        Stäng
+        Stäng rutan
       </button>
     </motion.div>
   );
