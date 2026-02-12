@@ -178,13 +178,15 @@
     "title": "Bjud in din partner",
     "description": "Dela länken nedan. Din partner skapar ett konto och ni kopplas ihop automatiskt.",
     "share_button": "Dela inbjudan",
-    "copy_link": "Kopiera länk",
+    "copy_link": "Kopiera",
     "copied": "Kopierad!",
     "copy_failed": "Kunde inte kopiera",
     "or_code": "Eller dela koden:",
     "your_name_label": "Ditt namn (visas för din partner)",
     "name_placeholder": "Ditt namn...",
-    "set_name": "Ange ditt namn",
+    "set_name": "Ange ditt namn (visas för din partner)",
+    "collapsed_hint": "Bjud in din partner att dela det här utrymmet",
+    "minimize": "Minimera",
     "share_message": "Följ med mig i vårt gemensamma utrymme på Still Us. Tryck för att ansluta och starta vår resa: {{link}}"
   },
   "join": {
