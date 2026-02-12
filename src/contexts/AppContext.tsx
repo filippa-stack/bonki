@@ -520,13 +520,27 @@ export function AppProvider({ children }: { children: ReactNode }) {
   // Session management functions
   const startSession = (categoryId: string, cardId: string) => {
     const now = new Date();
+
+    // Check for existing saved progress for this card
+    const existingThread = state.coupleSpace?.conversationThreads.find(t => t.cardId === cardId);
+    const savedCompleted = existingThread?.completedSteps ?? [];
+
+    // Find next incomplete step (first index 0..3 not in completedSteps)
+    const nextIncomplete = STEP_ORDER.findIndex((_, i) => !savedCompleted.includes(i));
+
+    // If all steps completed, do NOT create an active session — let completion UX handle it
+    if (nextIncomplete === -1 && savedCompleted.length >= STEP_ORDER.length) {
+      setSessionDismissed(false);
+      return;
+    }
+
     setState((prev) => ({
       ...prev,
       currentSession: {
         categoryId,
         cardId,
-        currentStepIndex: 0,
-        completedSteps: [],
+        currentStepIndex: nextIncomplete >= 0 ? nextIncomplete : 0,
+        completedSteps: savedCompleted,
         startedAt: now,
         lastActivityAt: now,
       },

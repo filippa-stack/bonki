@@ -124,9 +124,10 @@ export default function CardView() {
     setSyncOffer(null);
   };
 
-  // Start or resume session when entering card (skip in revisit mode)
+  // Start or resume session when entering card (skip in revisit mode and completed cards)
   useEffect(() => {
     if (isRevisitMode) return;
+    if (allStepsCompleted || isFullyExplored) return; // Don't restart a completed conversation
     if (card && category) {
       if (!currentSession || currentSession.cardId !== cardId) {
         startSession(category.id, card.id);
