@@ -6,58 +6,65 @@
 
 @layer base {
   :root {
-    /* Bonki Daybreak - Light & Warm Mode */
-    
+    /* Bonki Daybreak — Soft Cyan & Terracotta */
+
     /* Base Surfaces */
-    --background: 43 33% 96%;
+    --background: 180 68% 91%;        /* #D6FBFB */
     --foreground: 34 11% 25%;
 
-    --card: 0 0% 100%;
+    --card: 60 100% 97%;              /* #FFFEF3 */
     --card-foreground: 34 11% 25%;
 
-    --popover: 0 0% 100%;
+    --popover: 60 100% 97%;
     --popover-foreground: 34 11% 25%;
 
-    /* Primary - Warm Terracotta */
-    --primary: 24 54% 60%;
+    /* Primary — Terracotta */
+    --primary: 24 54% 60%;            /* #d08f63 */
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 43 33% 96%;
+    --secondary: 60 100% 97%;         /* #FFFEF3 */
     --secondary-foreground: 34 11% 25%;
 
     --muted: 33 18% 92%;
     --muted-foreground: 28 5% 47%;
 
-    /* Accent - Terracotta */
+    /* Accent — Terracotta */
     --accent: 24 54% 60%;
     --accent-foreground: 0 0% 100%;
 
     --destructive: 0 60% 50%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 33 18% 89%;
+    --border: 24 54% 60%;             /* Terracotta border for primary cards */
     --input: 33 18% 89%;
     --ring: 24 54% 60%;
 
     --radius: 0.75rem;
 
     /* Custom tokens */
-    --surface-warm: 43 33% 96%;
-    --surface-elevated: 0 0% 100%;
+    --surface-warm: 60 100% 97%;      /* #FFFEF3 */
+    --surface-elevated: 60 100% 97%;
     --text-gentle: 28 5% 47%;
     --divider: 33 18% 89%;
-    
+
+    /* Card architecture */
+    --card-border-width: 2px;
+    --card-border-color: 24 54% 60%;  /* #d08f63 */
+    --card-sub-border-width: 1px;
+    --card-sub-border-color: 0 0% 100%; /* white */
+    --card-sub-shadow: 0 1px 6px 0 hsl(0 0% 0% / 0.04);
+
     /* Category Identity Colors (Earthy Pastels) */
     --category-emotional: 24 54% 60%;
     --category-fun: 43 75% 66%;
     --category-growth: 132 17% 59%;
     --category-intimacy: 356 28% 64%;
     --category-logistics: 204 45% 72%;
-    
+
     /* Interactive States */
     --state-active: 24 54% 60%;
     --state-inactive: 20 3% 60%;
-    
+
     /* Typography */
     --font-serif: 'Cormorant Garamond', Georgia, serif;
     --font-sans: 'Inter', -apple-system, sans-serif;
@@ -69,8 +76,8 @@
 
     /* Transitions */
     --transition-calm: 300ms cubic-bezier(0.4, 0, 0.2, 1);
-    
-    /* Card styling - soft border instead of shadow */
+
+    /* Card styling */
     --card-shadow: none;
 
     /* Dynamic overrides — set via useThemeVars hook at runtime */
@@ -142,8 +149,17 @@
   }
 
   .card-reflection {
-    @apply rounded-xl p-6 border border-border;
+    @apply rounded-xl p-6;
     background-color: hsl(var(--card));
+    border: var(--card-border-width) solid hsl(var(--card-border-color));
+    transition: all var(--transition-calm);
+  }
+
+  .card-sub {
+    @apply rounded-xl p-6;
+    background-color: hsl(var(--card));
+    border: var(--card-sub-border-width) solid hsl(var(--card-sub-border-color));
+    box-shadow: var(--card-sub-shadow);
     transition: all var(--transition-calm);
   }
 
