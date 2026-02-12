@@ -288,6 +288,7 @@ export default function Home() {
             <ContinueModule
               cardTitle={suggestedCard.title}
               categoryTitle={suggestedCategory.title}
+              lastActiveAt={journeyState?.updatedAt}
               onContinue={() => navigate(`/card/${suggestedCard.id}`)}
               onChooseAnother={() => {
                 const el = document.getElementById('category-section');
@@ -306,6 +307,7 @@ export default function Home() {
               <ContinueModule
                 cardTitle={recentCard.title}
                 categoryTitle={recentCategory.title}
+                lastActiveAt={mostRecentConversation.lastActivityAt instanceof Date ? mostRecentConversation.lastActivityAt.toISOString() : String(mostRecentConversation.lastActivityAt)}
                 onContinue={() => navigate(`/card/${mostRecentConversation.cardId}`)}
                 onChooseAnother={() => {
                   const el = document.getElementById('category-section');

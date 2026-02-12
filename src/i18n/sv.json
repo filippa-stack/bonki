@@ -244,6 +244,13 @@
     "continue": "Fortsätt där ni var",
     "dismiss": "Utforska fritt"
   },
+  "continue": {
+    "cue_just_now": "Ni var precis här.",
+    "cue_today": "Ni pratade om det här tidigare idag.",
+    "cue_yesterday": "Ni började prata om det här igår.",
+    "cue_days_ago": "Ni öppnade det här för några dagar sedan.",
+    "cue_while_ago": "Det har gått ett tag. Ert samtal finns kvar."
+  },
   "purchase": {
     "title": "Ert gemensamma utrymme",
     "subtitle": "Ett köp — för er båda. Ingen prenumeration, inga dolda kostnader.",
