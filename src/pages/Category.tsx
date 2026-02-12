@@ -114,7 +114,7 @@ export default function Category() {
                   if (memberCount >= 2 && categoryId && !isExplored) {
                     proposeCard(categoryId, card.id);
                     toast(t('topic_proposal.proposed_toast'));
-                    navigate(`/card/${card.id}`);
+                    navigate('/');
                   } else {
                     navigate(`/card/${card.id}`);
                   }

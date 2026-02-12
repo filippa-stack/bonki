@@ -1,15 +1,17 @@
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
-import { ArrowRight, X } from 'lucide-react';
+import { ArrowRight, Search } from 'lucide-react';
 
 interface TopicProposalProps {
   cardTitle: string;
   cardSubtitle?: string;
   categoryTitle: string;
   partnerName?: string;
+  isOwnProposal?: boolean;
   onAccept: () => void;
   onDecline: () => void;
+  onSuggestAnother: () => void;
 }
 
 export default function TopicProposal({
@@ -17,8 +19,10 @@ export default function TopicProposal({
   cardSubtitle,
   categoryTitle,
   partnerName,
+  isOwnProposal,
   onAccept,
   onDecline,
+  onSuggestAnother,
 }: TopicProposalProps) {
   const { t } = useTranslation();
   const displayName = partnerName || t('topic_proposal.partner_fallback');
@@ -32,7 +36,9 @@ export default function TopicProposal({
     >
       <div className="rounded-2xl border border-border bg-card p-6 space-y-4">
         <p className="text-sm text-foreground leading-relaxed">
-          {t('topic_proposal.title', { name: displayName })}
+          {isOwnProposal
+            ? t('topic_proposal.your_proposal')
+            : t('topic_proposal.title', { name: displayName })}
         </p>
 
         {/* Card preview */}
@@ -44,16 +50,23 @@ export default function TopicProposal({
           <p className="text-xs text-muted-foreground/60">{categoryTitle}</p>
         </div>
 
-        <div className="flex flex-col sm:flex-row gap-2">
-          <Button onClick={onAccept} size="sm" className="gap-2">
-            {t('topic_proposal.accept')}
-            <ArrowRight className="w-3.5 h-3.5" />
-          </Button>
-          <Button onClick={onDecline} variant="ghost" size="sm" className="gap-2 text-muted-foreground">
-            <X className="w-3.5 h-3.5" />
-            {t('topic_proposal.decline')}
-          </Button>
-        </div>
+        {!isOwnProposal && (
+          <div className="flex flex-col gap-2">
+            <Button onClick={onAccept} size="sm" className="gap-2">
+              {t('topic_proposal.accept')}
+              <ArrowRight className="w-3.5 h-3.5" />
+            </Button>
+            <div className="flex flex-col sm:flex-row gap-2">
+              <Button onClick={onSuggestAnother} variant="outline" size="sm" className="gap-2 text-muted-foreground">
+                <Search className="w-3.5 h-3.5" />
+                {t('topic_proposal.suggest_another')}
+              </Button>
+              <Button onClick={onDecline} variant="ghost" size="sm" className="text-muted-foreground">
+                {t('topic_proposal.decline')}
+              </Button>
+            </div>
+          </div>
+        )}
       </div>
     </motion.div>
   );
