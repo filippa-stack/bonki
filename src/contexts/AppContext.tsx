@@ -625,11 +625,64 @@ export function AppProvider({ children }: { children: ReactNode }) {
           ? [...prev.currentSession.completedSteps, stepIndex]
           : prev.currentSession.completedSteps;
 
-      // Advance shared step only when mutually completed and exactly +1
+      const lastStepIndex = STEP_ORDER.length - 1;
+      const isCardFullyCompleted =
+        isMutuallyCompleted && stepIndex === lastStepIndex;
+
+      // If card is fully completed, end session and mark explored
+      if (isCardFullyCompleted) {
+        const session = prev.currentSession;
+        const currentJourney: JourneyState = {
+          ...(journey as JourneyState),
+          sessionProgress: updatedProgress,
+        };
+
+        const exploredCardIds = !currentJourney.exploredCardIds.includes(session.cardId)
+          ? [...currentJourney.exploredCardIds, session.cardId]
+          : currentJourney.exploredCardIds;
+
+        // Compute suggested next card
+        const categoryCards = cards.filter(c => c.categoryId === session.categoryId);
+        const currentIndex = categoryCards.findIndex(c => c.id === session.cardId);
+        let suggestedNextCardId: string | null = null;
+        for (let i = 1; i <= categoryCards.length; i++) {
+          const nextCard = categoryCards[(currentIndex + i) % categoryCards.length];
+          if (!exploredCardIds.includes(nextCard.id)) {
+            suggestedNextCardId = nextCard.id;
+            break;
+          }
+        }
+        if (!suggestedNextCardId) {
+          const catIndex = categories.findIndex(c => c.id === session.categoryId);
+          for (let ci = 1; ci <= categories.length; ci++) {
+            const nextCat = categories[(catIndex + ci) % categories.length];
+            const nextCatCards = cards.filter(c => c.categoryId === nextCat.id);
+            const unexplored = nextCatCards.find(c => !exploredCardIds.includes(c.id));
+            if (unexplored) {
+              suggestedNextCardId = unexplored.id;
+              break;
+            }
+          }
+        }
+
+        return {
+          ...prev,
+          currentSession: undefined,
+          journeyState: {
+            ...currentJourney,
+            lastCompletedCardId: session.cardId,
+            suggestedNextCardId,
+            exploredCardIds,
+            updatedAt: new Date().toISOString(),
+          },
+        };
+      }
+
+      // Advance shared step only when mutually completed and exactly +1, clamped
       const currentShared = prev.currentSession.currentStepIndex;
       const newStepIndex =
         isMutuallyCompleted && stepIndex === currentShared
-          ? currentShared + 1
+          ? Math.min(currentShared + 1, lastStepIndex)
           : currentShared;
 
       return {
