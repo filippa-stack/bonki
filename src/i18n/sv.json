@@ -8,7 +8,21 @@
     "pause_closing_text": "Det finns inget att skynda på. Ni har redan gjort det viktigaste — ni tog er tid att prata.",
     "pause_saved_note": "Allt ni har skrivit finns sparat. Ni kan fortsätta precis där ni var, när ni är redo.",
     "pause_confirm": "Pausa och gå till start",
-    "pause_cancel": "Stanna kvar i samtalet"
+    "pause_cancel": "Stanna kvar i samtalet",
+    "loading": "Laddar…",
+    "saving": "Sparar…",
+    "saved": "Sparat!",
+    "error_generic": "Något gick fel, försök igen.",
+    "save": "Spara",
+    "edit": "Ändra",
+    "delete": "Ta bort",
+    "cancel": "Avbryt",
+    "done": "Klar",
+    "start": "Börja",
+    "next": "Nästa",
+    "previous": "Föregående",
+    "search": "Sök…",
+    "back": "Tillbaka"
   },
   "login": {
     "welcome": "Välkommen",
@@ -46,12 +60,15 @@
     "first_conversation_hint": "Det här är ert utrymme. Välj ett samtalsområde som känns rätt — det finns ingen brådska.",
     "start_first_conversation": "Börja ert första samtal",
     "recent_shared_title": "Senaste delade tanken",
-    "view_shared_space": "Visa ert utrymme"
+    "view_shared_space": "Visa ert utrymme",
+    "title_placeholder": "Rubrik…",
+    "subtitle_placeholder": "Underrubrik…"
   },
   "header": {
     "go_back": "Gå tillbaka",
     "background": "Bakgrund",
-    "sign_out": "Logga ut"
+    "sign_out": "Logga ut",
+    "shared_space": "Vårt utrymme"
   },
   "saved": {
     "title": "Sparade samtal",
@@ -92,7 +109,8 @@
   },
   "card_view": {
     "not_found": "Kort hittades inte",
-    "overview_description": "Det här samtalet består av fyra delar. Ni rör er i er egen takt, men ordningen är viktig för att skapa trygghet och djup.",
+    "overview_description": "Fyra steg som hjälper er att hitta varandra. Gå i er egen takt.",
+    "overview_start": "Börja med Öppnare",
     "start_opening": "Börja med Öppnare",
     "back": "Tillbaka",
     "finish_conversation": "Avrunda för nu",
@@ -100,10 +118,10 @@
     "step_reflective": "Tankeväckare",
     "step_scenario": "Scenario",
     "step_exercise": "Team Work",
-    "step_opening_desc": "Sänker tröskeln och sätter samtalet i rörelse.",
-    "step_reflective_desc": "Fördjupar, utmanar och breddar perspektivet.",
-    "step_scenario_desc": "Gör det svåra pratbart genom igenkänning.",
-    "step_exercise_desc": "Förvandlar insikt till gemensam handling.",
+    "step_opening_desc": "Hitta in i samtalet tillsammans.",
+    "step_reflective_desc": "Lyssna djupare på varandra.",
+    "step_scenario_desc": "Känn igen er i varandras vardag.",
+    "step_exercise_desc": "Gör något av det ni upptäckt.",
     "cta_opening": "Fortsätt samtalet",
     "cta_reflective": "Fortsätt samtalet",
     "cta_scenario": "Fortsätt samtalet",
@@ -120,7 +138,9 @@
     "completion_rest": "Inget behöver lösas. Ni har redan gjort det viktigaste.",
     "completion_revisit": "Återbesök samtalet",
     "reentry_message": "Ni var mitt i det här samtalet. Ni kan fortsätta precis där ni var.",
-    "reentry_continue": "Fortsätt samtalet"
+    "reentry_continue": "Fortsätt samtalet",
+    "review_edit": "Granska & redigera",
+    "waiting_both": "Vi fortsätter härifrån när båda reflektionerna är inne."
   },
   "category": {
     "cards_count": "{{count}} kort",
@@ -139,7 +159,7 @@
   },
   "reflections": {
     "private_notes_title": "Din reflektion",
-    "private_notes_hint": "Privat. För dig. Du kan forma det senare.",
+    "private_notes_hint": "Skriv dina tankar här…",
     "private_indicator": "Bara du kan se det här tills du väljer att dela",
     "shared_notes_title": "Delad med din partner",
     "shared_notes_hint": "Den här versionen är tänkt att delas mellan er.",
@@ -159,12 +179,13 @@
     "prompt_note_placeholder": "Vad väcker detta hos dig?",
     "shared_confirmation": "Er reflektion är nu en del av ert gemensamma utrymme.",
     "continue_conversation": "Fortsätt samtalet",
-    "go_home": "Tillbaka till start"
+    "go_home": "Tillbaka till start",
+    "no_notes_yet": "Inga anteckningar än"
   },
   "shared": {
     "title": "Det vi delat",
     "highlights_title": "Viktigt för oss",
-    "search_placeholder": "Sök i det ni delat",
+    "search_placeholder": "Sök…",
     "empty": "Det här är ert gemensamma utrymme.",
     "empty_hint": "Allt ni väljer att dela med varandra samlas här — tankar, insikter och ögonblick som blir en del av er gemensamma historia.",
     "empty_cta": "Starta ert första samtal tillsammans",
@@ -176,7 +197,7 @@
     "period_this_month": "Denna månad",
     "period_older": "Tidigare",
     "add_response": "Skriv en tanke tillbaka",
-    "response_placeholder": "Din tanke om detta...",
+    "response_placeholder": "Din tanke om detta…",
     "partner_response": "Partnerns tanke"
   },
   "invite": {
@@ -188,29 +209,29 @@
     "copy_failed": "Kunde inte kopiera",
     "or_code": "Eller dela koden:",
     "your_name_label": "Ditt namn (visas för din partner)",
-    "name_placeholder": "Ditt namn...",
+    "name_placeholder": "Fyll i ditt namn",
     "set_name": "Vad ska din partner kalla dig?",
     "collapsed_hint": "Dela det här utrymmet med din partner",
     "minimize": "Göm",
     "share_message": "Följ med mig i vårt gemensamma utrymme på Still Us. Tryck för att ansluta och starta vår resa: {{link}}"
   },
   "join": {
-    "title": "Gå med i Couple Space",
+    "title": "Gå med",
     "subtitle": "Din partner har bjudit in dig till ett gemensamt utrymme.",
     "your_name": "Ditt namn (valfritt)",
-    "name_placeholder": "Vad ska din partner kalla dig?",
+    "name_placeholder": "Fyll i ditt namn",
     "invite_code": "Inbjudningskod",
     "connect_button": "Anslut",
     "use_code_instead": "Har du en kod? Ange den här.",
     "try_code": "Ange kod istället",
     "go_home": "Gå till startsidan",
-    "joining": "Ansluter...",
-    "loading": "Laddar...",
+    "joining": "Ansluter…",
+    "loading": "Laddar…",
     "success_title": "Ni är anslutna",
     "success_subtitle": "Ert gemensamma utrymme är redo.",
-    "error_already_member": "Du tillhör redan ett Couple Space.",
+    "error_already_member": "Du tillhör redan ett utrymme.",
     "error_invalid_invite": "Inbjudningslänken är ogiltig eller har gått ut.",
-    "error_space_full": "Det här Couple Space har redan två medlemmar.",
+    "error_space_full": "Det här utrymmet har redan två medlemmar.",
     "error_no_session": "Du behöver logga in först.",
     "error_network": "Något gick fel. Försök igen.",
     "error_unknown": "Något gick fel. Försök igen."
@@ -276,7 +297,7 @@
     "benefit_2": "Bjud in din partner utan extra kostnad",
     "benefit_3": "Ert privata utrymme — för alltid",
     "buy_button": "Lås upp för 299 kr",
-    "processing": "Behandlar...",
+    "processing": "Behandlar…",
     "complete": "Klart!",
     "secure_note": "Säker betalning · Engångsköp"
   },
@@ -284,5 +305,9 @@
     "title": "Ert utrymme är redo",
     "subtitle": "Nu kan du dela det här med din partner. Ni har plats för båda — utan extra kostnad.",
     "skip_invite": "Gör det senare"
+  },
+  "review_drawer": {
+    "title": "Granska & redigera",
+    "hint": "Läs tillbaka och redigera era anteckningar. Ingenting här påverkar ert gemensamma steg."
   }
 }

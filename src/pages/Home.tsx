@@ -27,7 +27,7 @@ import bonkiLogo from '@/assets/bonki-logo.png';
 import { useThemeVars } from '@/hooks/useThemeVars';
 import { supabase } from '@/integrations/supabase/client';
 
-const STEP_LABELS = ['Öppnare', 'Tankeväckare', 'Scenario', 'Teamwork'];
+const STEP_LABELS = ['Öppnare', 'Tankeväckare', 'Scenario', 'Team Work'];
 
 const fontOptions = [
   { value: 'serif', label: 'Serif (Cormorant)', className: 'font-serif' },
@@ -164,7 +164,7 @@ export default function Home() {
                     value={editTitle}
                     onChange={(e) => setEditTitle(e.target.value)}
                     className="text-xl font-semibold bg-card flex-1 min-w-[150px]"
-                    placeholder="Rubrik..."
+                    placeholder={t('home.title_placeholder')}
                   />
                   <Select value={editTitleFont} onValueChange={setEditTitleFont}>
                     <SelectTrigger className="w-[140px] bg-card">
@@ -191,7 +191,7 @@ export default function Home() {
                     value={editSubtitle}
                     onChange={(e) => setEditSubtitle(e.target.value)}
                     className="text-base bg-card flex-1 min-w-[150px]"
-                    placeholder="Underrubrik..."
+                    placeholder={t('home.subtitle_placeholder')}
                   />
                   <Select value={editSubtitleFont} onValueChange={setEditSubtitleFont}>
                     <SelectTrigger className="w-[140px] bg-card">
