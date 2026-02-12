@@ -352,7 +352,7 @@ export default function Home() {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.15 }}
-          className="px-6 pb-4"
+          className="px-6 pb-6"
         >
           {memberCount < 2 ? (
             <InvitePartner
@@ -384,11 +384,11 @@ export default function Home() {
       )}
 
       {/* Categories */}
-      <div id="category-section" className="px-6 pb-6 mt-2">
-        <p className="text-xs text-muted-foreground/70 uppercase tracking-wider mb-4">
+      <div id="category-section" className="px-6 pb-8 mt-6">
+        <p className="text-sm text-muted-foreground/60 mb-5 font-serif italic">
           {t('home.choose_category')}
         </p>
-        <div className="space-y-3">
+        <div className="space-y-4">
           {categories.map((category, index) => (
             <CategoryCard
               key={category.id}

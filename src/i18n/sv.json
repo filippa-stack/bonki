@@ -1,7 +1,7 @@
 {
   "general": {
     "continue_cta": "Fortsätt samtalet",
-    "choose_another": "Prata om något annat",
+    "choose_another": "Utforska något annat",
     "back_home": "Tillbaka",
     "pause_for_now": "Pausa för nu",
     "pause_title": "Pausa samtalet",
@@ -32,7 +32,7 @@
   },
   "home": {
     "continue_where_left_off": "Ert senaste samtal",
-    "choose_category": "Vad vill ni prata om?",
+    "choose_category": "Var vill ni börja idag?",
     "saved_conversations": "Sparade samtal ({{count}})",
     "edit_label_title": "Rubrik",
     "edit_label_subtitle": "Underrubrik",
@@ -43,7 +43,7 @@
     "relationship_memory_title": "Senaste minnet",
     "relationship_memory_explored": "Ni utforskade",
     "relationship_memory_date": "{{date}}",
-    "first_conversation_hint": "Ni har inte startat något samtal ännu. Det här kan vara ett bra ställe att börja — i er egen takt.",
+    "first_conversation_hint": "Det här är ert utrymme. Välj ett samtalsområde som känns rätt — det finns ingen brådska.",
     "start_first_conversation": "Börja ert första samtal",
     "recent_shared_title": "Senaste delade tanken",
     "view_shared_space": "Visa ert utrymme"
