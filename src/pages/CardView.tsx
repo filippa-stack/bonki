@@ -100,16 +100,14 @@ export default function CardView() {
   const [transitionMessage, setTransitionMessage] = useState<string | null>(null);
   const [reviewOpen, setReviewOpen] = useState(false);
 
-  // ─── Start or resume session on mount (skip revisit and completed) ───
+  // ─── Guard: if there's an active session for a DIFFERENT card, redirect home ───
+  const hasConflictingSession = !!(currentSession && currentSession.cardId !== cardId);
   useEffect(() => {
     if (isRevisitMode) return;
-    if (allStepsCompleted || isFullyExplored) return;
-    if (card && category) {
-      if (!currentSession || currentSession.cardId !== cardId) {
-        startSession(category.id, card.id);
-      }
+    if (hasConflictingSession) {
+      navigate('/', { replace: true });
     }
-  }, [cardId]);
+  }, [cardId, hasConflictingSession]);
 
   // ─── Save conversation for local resume ───
   useEffect(() => {
@@ -181,6 +179,9 @@ export default function CardView() {
   };
 
   const handleStartFromOverview = () => {
+    if (card && category && !isActiveSession) {
+      startSession(category.id, card.id);
+    }
     setShowOverview(false);
   };
 
