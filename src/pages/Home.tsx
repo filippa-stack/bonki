@@ -381,11 +381,11 @@ export default function Home() {
       )}
 
       {/* Categories */}
-      <div id="category-section" className="px-6 pb-8 mt-6">
-        <p className="text-sm text-muted-foreground/60 mb-5 font-serif italic">
+      <div id="category-section" className="px-6 pb-10 mt-8">
+        <p className="text-sm text-muted-foreground/60 mb-6 font-serif italic">
           {t('home.choose_category')}
         </p>
-        <div className="space-y-4">
+        <div className="space-y-3">
           {categories.map((category, index) => (
             <CategoryCard
               key={category.id}
