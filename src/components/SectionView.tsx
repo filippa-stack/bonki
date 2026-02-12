@@ -128,16 +128,16 @@ export default function SectionView({ section, card }: SectionViewProps) {
           />
         </div>
         {section.type === 'exercise' && (
-          <p className="text-sm text-gentle italic mt-2 md:ml-9">Förvandlar insikt till gemensam handling.</p>
+          <p className="text-sm text-gentle italic mt-2 md:ml-9">Gör något av det ni upptäckt.</p>
         )}
         {section.type === 'scenario' && (
-          <p className="text-sm text-gentle italic mt-2 md:ml-9">Gör det svåra pratbart genom igenkänning.</p>
+          <p className="text-sm text-gentle italic mt-2 md:ml-9">Känn igen er i varandras vardag.</p>
         )}
         {section.type === 'reflective' && (
-          <p className="text-sm text-gentle italic mt-2 md:ml-9">Fördjupar, utmanar och breddar perspektivet.</p>
+          <p className="text-sm text-gentle italic mt-2 md:ml-9">Lyssna djupare på varandra.</p>
         )}
         {section.type === 'opening' && (
-          <p className="text-sm text-gentle italic mt-2 md:ml-9">Sänker tröskeln och sätter samtalet i rörelse.</p>
+          <p className="text-sm text-gentle italic mt-2 md:ml-9">Hitta in i samtalet tillsammans.</p>
         )}
       </div>
 
