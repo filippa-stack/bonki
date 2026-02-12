@@ -59,9 +59,10 @@ export const categories: Category[] = [
   },
   {
     id: 'category-9',
-    title: '',
-    description: '',
-    cardCount: 0,
+    title: 'Värderingar & framtid',
+    entryLine: 'Vad ni står för — och vart ni är på väg.',
+    description: 'Värderingar under press och drömmar som kräver mod',
+    cardCount: 2,
   },
   {
     id: 'category-10',
@@ -905,6 +906,94 @@ export const cards: Card[] = [
         type: 'exercise',
         title: 'Team Work',
         content: 'Kom överens om tydliga tecken för:\n• när jag behöver vara ifred\n• när jag behöver att du stannar\n• när jag inte vet vad jag behöver',
+      },
+    ],
+  },
+  {
+    id: 'our-philosophy',
+    title: 'Vår filosofi',
+    subtitle: 'Värderingar under press',
+    categoryId: 'category-9',
+    sections: [
+      {
+        id: 'opening-19',
+        type: 'opening',
+        title: 'Öppnare',
+        content: 'Värderingar testas i vardagen.',
+        prompts: [
+          'När är det svårast för dig att leva som du lär?',
+          'Vilken värdering kompromissar du oftast bort i vardagen?',
+          'När känner du stolthet över hur ni agerat som föräldrar?',
+        ],
+      },
+      {
+        id: 'reflective-19',
+        type: 'reflective',
+        title: 'Tankeväckare',
+        content: 'Utforska vad ni verkligen prioriterar.',
+        prompts: [
+          'Vilken värdering försvarar ni snabbast — och vilken släpper ni först när det blir jobbigt?',
+          'När blir ert behov av ordning en styrka för barnet — och när riskerar det att bli något barnet bara lyder utan att förstå?',
+        ],
+      },
+      {
+        id: 'scenario-19',
+        type: 'scenario',
+        title: 'Scenario',
+        content: 'Barnet gör upprepade val som går emot era värderingar. Frustrationen växer.',
+        prompts: [
+          'Hur markerar ni ansvar utan att barnet tappar känslan av att ni står på samma sida?',
+        ],
+      },
+      {
+        id: 'exercise-19',
+        type: 'exercise',
+        title: 'Team Work',
+        content: 'Skapa en gemensam värderingsstege: vad ni frågar först, när ni sätter gränser — och när konsekvens blir nödvändig.',
+      },
+    ],
+  },
+  {
+    id: 'when-life-tilts',
+    title: 'När livet lutar',
+    subtitle: 'Att ge varandra utrymme',
+    categoryId: 'category-9',
+    sections: [
+      {
+        id: 'opening-20',
+        type: 'opening',
+        title: 'Öppnare',
+        content: 'Drömmar kräver mod — av er båda.',
+        prompts: [
+          'Vilken dröm i ditt liv kräver mod från oss båda?',
+          'Vad behöver du för att våga satsa utan att relationen känns hotad?',
+          'När upplever du att uppoffring stärker er — och när väcker den oro?',
+        ],
+      },
+      {
+        id: 'reflective-20',
+        type: 'reflective',
+        title: 'Tankeväckare',
+        content: 'Utforska gränsen mellan stöd och obalans.',
+        prompts: [
+          'När känns uppoffring som omtanke — och när börjar det kännas som att ni tappar balans?',
+          'Vilka små tecken hos er visar att \u201Cen period\u201D håller på att bli vardag?',
+        ],
+      },
+      {
+        id: 'scenario-20',
+        type: 'scenario',
+        title: 'Scenario',
+        content: 'En av er vill satsa helhjärtat på något som under en tid tar mycket energi. Den andra stöttar, men oroar sig för balansen.',
+        prompts: [
+          'Vad behöver vara uttalat mellan er innan perioden börjar?',
+        ],
+      },
+      {
+        id: 'exercise-20',
+        type: 'exercise',
+        title: 'Team Work',
+        content: 'Bestäm vilka tecken som visar att satsningen tar för mycket plats och hur ni då justerar innan det går ut över relationen.',
       },
     ],
   },
