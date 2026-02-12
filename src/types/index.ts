@@ -91,6 +91,10 @@ export interface JourneyState {
   exploredCardIds: string[];
   /** Pending topic proposal from a partner */
   topicProposal?: TopicProposal | null;
+  /** Per-user step completion keyed by cardId → userId → completedSteps */
+  sessionProgress?: Record<string, {
+    perUser: Record<string, { completedSteps: number[] }>;
+  }>;
 }
 
 export interface PrivateNote {

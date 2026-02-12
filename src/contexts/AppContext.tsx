@@ -586,47 +586,63 @@ export function AppProvider({ children }: { children: ReactNode }) {
   };
 
   const completeSessionStep = (stepIndex: number) => {
-    const uid = user?.id;
+    const uid = user?.id || 'local';
     setState((prev) => {
       if (!prev.currentSession) return prev;
+      const cardId = prev.currentSession.cardId;
 
-      // Record this user's completion
-      const prevUserCompletions = prev.currentSession.userCompletions || {};
-      const myCompleted = prevUserCompletions[uid || 'local'] || [];
-      const updatedMyCompleted = myCompleted.includes(stepIndex)
-        ? myCompleted
-        : [...myCompleted, stepIndex];
+      // --- Update per-user completion in journeyState.sessionProgress ---
+      const journey = prev.journeyState;
+      if (!journey) return prev;
 
-      const updatedUserCompletions = {
-        ...prevUserCompletions,
-        [uid || 'local']: updatedMyCompleted,
+      const progress = journey.sessionProgress || {};
+      const cardProgress = progress[cardId] || { perUser: {} };
+      const myCompleted = cardProgress.perUser[uid]?.completedSteps || [];
+      if (myCompleted.includes(stepIndex)) return prev; // already recorded
+
+      const updatedMyCompleted = [...myCompleted, stepIndex];
+      const updatedCardProgress = {
+        ...cardProgress,
+        perUser: {
+          ...cardProgress.perUser,
+          [uid]: { completedSteps: updatedMyCompleted },
+        },
       };
+      const updatedProgress = { ...progress, [cardId]: updatedCardProgress };
 
-      // Determine if ALL users have completed this step
-      // For solo users (1 entry), it's immediate
-      // For couples (2 entries), both must have the step
-      const allUserIds = Object.keys(updatedUserCompletions);
-      const isMutuallyCompleted = allUserIds.length < 2
-        || allUserIds.every(id => updatedUserCompletions[id]?.includes(stepIndex));
+      // --- Determine if ALL users have completed this step ---
+      const allUserIds = Object.keys(updatedCardProgress.perUser);
+      const isMutuallyCompleted =
+        allUserIds.length < 2 ||
+        allUserIds.every((id) =>
+          updatedCardProgress.perUser[id]?.completedSteps.includes(stepIndex)
+        );
 
-      const completedSteps = isMutuallyCompleted
-        && !prev.currentSession.completedSteps.includes(stepIndex)
-        ? [...prev.currentSession.completedSteps, stepIndex]
-        : prev.currentSession.completedSteps;
+      // Derive shared completedSteps from mutual completion
+      const completedSteps =
+        isMutuallyCompleted && !prev.currentSession.completedSteps.includes(stepIndex)
+          ? [...prev.currentSession.completedSteps, stepIndex]
+          : prev.currentSession.completedSteps;
 
-      // Only advance shared step when mutually completed
-      const newStepIndex = isMutuallyCompleted
-        ? prev.currentSession.currentStepIndex
-        : prev.currentSession.currentStepIndex;
+      // Advance shared step only when mutually completed and exactly +1
+      const currentShared = prev.currentSession.currentStepIndex;
+      const newStepIndex =
+        isMutuallyCompleted && stepIndex === currentShared
+          ? currentShared + 1
+          : currentShared;
 
       return {
         ...prev,
         currentSession: {
           ...prev.currentSession,
           completedSteps,
-          userCompletions: updatedUserCompletions,
           currentStepIndex: newStepIndex,
           lastActivityAt: new Date(),
+        },
+        journeyState: {
+          ...journey,
+          sessionProgress: updatedProgress,
+          updatedAt: new Date().toISOString(),
         },
       };
     });
