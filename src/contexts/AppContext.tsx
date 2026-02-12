@@ -546,15 +546,13 @@ export function AppProvider({ children }: { children: ReactNode }) {
       // Determine starting step from journeyState.sessionProgress (authoritative)
       const cardProgress = prev.journeyState?.sessionProgress?.[cardId];
       const perUser = cardProgress?.perUser || {};
-      const userIds = Object.keys(perUser);
       const requiredCount = coupleSpaceMemberCount >= 2 ? 2 : 1;
 
-      // Find the first step that is NOT mutually completed
+      // Find the first step that is NOT mutually completed (count-based)
       let startStep = 0;
       for (let i = 0; i < STEP_ORDER.length; i++) {
-        const mutuallyDone =
-          userIds.length >= requiredCount &&
-          userIds.every((id) => perUser[id]?.completedSteps.includes(i));
+        const completedBy = Object.values(perUser).filter(u => u?.completedSteps?.includes(i)).length;
+        const mutuallyDone = completedBy >= requiredCount;
         if (!mutuallyDone) {
           startStep = i;
           break;
@@ -635,14 +633,12 @@ export function AppProvider({ children }: { children: ReactNode }) {
       };
       const updatedProgress = { ...progress, [cardId]: updatedCardProgress };
 
-      // --- Determine if ALL users have completed this step ---
-      const allUserIds = Object.keys(updatedCardProgress.perUser);
+      // --- Determine if enough users have completed this step (count-based) ---
       const requiredCount = coupleSpaceMemberCount >= 2 ? 2 : 1;
-      const isMutuallyCompleted =
-        allUserIds.length >= requiredCount &&
-        allUserIds.every((id) =>
-          updatedCardProgress.perUser[id]?.completedSteps.includes(stepIndex)
-        );
+      const completedBy = Object.values(updatedCardProgress.perUser).filter(
+        u => u?.completedSteps?.includes(stepIndex)
+      ).length;
+      const isMutuallyCompleted = completedBy >= requiredCount;
 
       // NOTE: completedSteps on currentSession is not authoritative — kept empty.
       // All completion logic uses journeyState.sessionProgress only.
@@ -740,20 +736,18 @@ export function AppProvider({ children }: { children: ReactNode }) {
         sessionProgress: {},
       };
 
-      // Check per-user completion from sessionProgress
+      // Check per-user completion from sessionProgress (count-based)
       const allStepIndices = STEP_ORDER.map((_, i) => i);
       const cardProgress = currentJourney.sessionProgress?.[session.cardId];
       const perUser = cardProgress?.perUser || {};
-      const userIds = Object.keys(perUser);
       const requiredCount = coupleSpaceMemberCount >= 2 ? 2 : 1;
 
-      const isFullyCompleted =
-        userIds.length >= requiredCount &&
-        userIds.every((id) =>
-          allStepIndices.every((step) =>
-            perUser[id]?.completedSteps.includes(step)
-          )
-        );
+      const isFullyCompleted = allStepIndices.every((step) => {
+        const completedBy = Object.values(perUser).filter(
+          u => u?.completedSteps?.includes(step)
+        ).length;
+        return completedBy >= requiredCount;
+      });
 
       // If not fully completed by all required users, just clear session without marking explored
       if (!isFullyCompleted) {
