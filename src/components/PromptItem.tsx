@@ -206,7 +206,7 @@ export default function PromptItem({
                       onFocus={handleFocus}
                       onKeyDown={handleKeyDown}
                       placeholder={t('reflections.prompt_note_placeholder', 'Skriv dina tankar här... (sparas automatiskt)')}
-                      className="w-full min-h-[80px] p-3 rounded-lg border resize-none focus:outline-none focus:ring-2 focus:ring-primary/20 font-sans text-sm note-surface"
+                      className="w-full min-h-[80px] p-3 rounded-xl border resize-none focus:outline-none focus:ring-2 focus:ring-primary/10 font-sans text-sm note-surface"
                       style={{
                         backgroundColor: settings.noteBoxBgColor || undefined,
                         color: settings.noteBoxTextColor || undefined,
