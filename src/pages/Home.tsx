@@ -4,10 +4,13 @@ import { useState, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useApp } from '@/contexts/AppContext';
 import { useSiteSettings } from '@/contexts/SiteSettingsContext';
+import { useAuth } from '@/contexts/AuthContext';
+import { useCoupleSpace } from '@/hooks/useCoupleSpace';
 import CategoryCard from '@/components/CategoryCard';
 import ContinueModule from '@/components/ContinueModule';
 import Header from '@/components/Header';
 import ResumeSessionDialog from '@/components/ResumeSessionDialog';
+import InvitePartner from '@/components/InvitePartner';
 import { Bookmark, Pencil, Check, Share2, Settings } from 'lucide-react';
 import NotificationSettings from '@/components/NotificationSettings';
 import RelationshipMemory from '@/components/RelationshipMemory';
@@ -20,6 +23,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import ColorPicker from '@/components/ColorPicker';
 import bonkiLogo from '@/assets/bonki-logo.png';
 import { useThemeVars } from '@/hooks/useThemeVars';
+import { supabase } from '@/integrations/supabase/client';
 
 const STEP_LABELS = ['Öppnare', 'Tankeväckare', 'Scenario', 'Teamwork'];
 
@@ -53,6 +57,8 @@ export default function Home() {
     getCategoryStatus,
   } = useApp();
   const { settings, updateSettings } = useSiteSettings();
+  const { user } = useAuth();
+  const { space, memberCount, userRole } = useCoupleSpace();
   const [isEditingHero, setIsEditingHero] = useState(false);
   const [editTitle, setEditTitle] = useState(settings.heroTitle);
   const [editSubtitle, setEditSubtitle] = useState(settings.heroSubtitle);
@@ -339,6 +345,29 @@ export default function Home() {
         
         return null;
       })()}
+
+      {/* Invite partner when solo */}
+      {space && memberCount < 2 && (
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.15 }}
+          className="px-6 pb-4"
+        >
+          <InvitePartner
+            inviteCode={space.invite_code}
+            inviteToken={space.invite_token}
+            partnerName={userRole === 'partner_b' ? space.partner_b_name : space.partner_a_name}
+            onUpdateName={async (name) => {
+              const role = userRole === 'partner_b' ? 'partner_b_name' : 'partner_a_name';
+              await supabase
+                .from('couple_spaces')
+                .update({ [role]: name })
+                .eq('id', space.id);
+            }}
+          />
+        </motion.div>
+      )}
 
       {/* Categories */}
       <div id="category-section" className="px-6 pb-6 mt-2">

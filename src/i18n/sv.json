@@ -240,5 +240,21 @@
     "last_context": "Senast pratade ni om: {{category}} · {{card}}",
     "continue": "Fortsätt där ni var",
     "dismiss": "Utforska fritt"
+  },
+  "purchase": {
+    "title": "Ert gemensamma utrymme",
+    "subtitle": "Ett köp — för er båda. Ingen prenumeration, inga dolda kostnader.",
+    "benefit_1": "Tillgång till alla samtalsområden och reflektioner",
+    "benefit_2": "Bjud in din partner utan extra kostnad",
+    "benefit_3": "Ert privata utrymme — för alltid",
+    "buy_button": "Lås upp för 299 kr",
+    "processing": "Behandlar...",
+    "complete": "Klart!",
+    "secure_note": "Säker betalning · Engångsköp"
+  },
+  "post_purchase": {
+    "title": "Ert utrymme är redo",
+    "subtitle": "Nu kan du bjuda in din partner. Ni delar allt — utan extra kostnad.",
+    "skip_invite": "Bjud in senare"
   }
 }
