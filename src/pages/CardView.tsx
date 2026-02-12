@@ -518,13 +518,16 @@ export default function CardView() {
                   initial={{ opacity: 0, y: 8 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5 }}
-                  className="my-8 p-6 rounded-2xl border border-border bg-card text-center space-y-4"
+                  className="my-8 p-6 rounded-2xl bg-card/80 border border-border/70 shadow-sm text-center space-y-4"
                 >
-                  <p className="text-xs font-medium text-foreground/80 uppercase tracking-wider">
-                    Sparat.
+                  <p className="text-xs font-medium text-muted-foreground tracking-wide">
+                    Klar för din del
                   </p>
                   <p className="text-sm text-muted-foreground leading-relaxed">
-                    Väntar tills ni båda är redo.
+                    Bra. När ni båda har svarat fortsätter samtalet automatiskt här.
+                  </p>
+                  <p className="text-xs text-muted-foreground/70 leading-relaxed">
+                    Under tiden kan du granska, förfina eller skriva ner något du vill bära med dig.
                   </p>
 
                   <div className="flex flex-col items-center gap-3 pt-1">
@@ -553,7 +556,7 @@ export default function CardView() {
                   </div>
 
                   <p className="text-xs text-muted-foreground/50 italic pt-1">
-                    Det här påverkar inte ert gemensamma tempo.
+                    Det här är bara för dig — och ändrar inte var ni är i samtalet.
                   </p>
                 </motion.div>
               ) : (
