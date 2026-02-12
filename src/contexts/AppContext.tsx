@@ -557,8 +557,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
       if (!prev.currentSession) return prev;
       // Guard: never move shared step backward or skip ahead
       const currentShared = prev.currentSession.currentStepIndex;
-      if (stepIndex < currentShared) return prev; // never backward
-      if (stepIndex > currentShared + 1) return prev; // never skip
+      if (stepIndex !== currentShared + 1) return prev; // only allow exactly +1
       return {
         ...prev,
         currentSession: {
