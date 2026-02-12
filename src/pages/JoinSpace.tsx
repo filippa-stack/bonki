@@ -7,7 +7,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Loader2, Heart, CheckCircle2, AlertCircle } from 'lucide-react';
+import { Loader2, CheckCircle2, AlertCircle } from 'lucide-react';
 import bonkiLogo from '@/assets/bonki-logo.png';
 
 type JoinState = 'loading' | 'name_prompt' | 'joining' | 'success' | 'error';
@@ -141,8 +141,7 @@ export default function JoinSpace() {
       >
         <img src={bonkiLogo} alt="Still Us" className="h-12 w-auto mx-auto" />
         
-        <div className="space-y-2">
-          <Heart className="w-8 h-8 text-primary mx-auto" />
+        <div className="space-y-3">
           <h1 className="text-display text-foreground">
             {t('join.title', 'Gå med i Couple Space')}
           </h1>

@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
-import { Heart, Check, Shield } from 'lucide-react';
+import { Check, Shield } from 'lucide-react';
 import bonkiLogo from '@/assets/bonki-logo.png';
 
 interface PurchaseScreenProps {
@@ -35,7 +35,6 @@ export default function PurchaseScreen({ onPurchaseComplete }: PurchaseScreenPro
         <img src={bonkiLogo} alt="Still Us" className="h-12 w-auto mx-auto" />
 
         <div className="space-y-3">
-          <Heart className="w-10 h-10 text-primary mx-auto" />
           <h1 className="text-display text-foreground">
             {t('purchase.title', 'Ert gemensamma utrymme')}
           </h1>
