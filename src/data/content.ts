@@ -71,18 +71,6 @@ export const categories: Category[] = [
     description: 'När relationen ändrar riktning och valet att stanna blir aktivt',
     cardCount: 2,
   },
-  {
-    id: 'category-11',
-    title: '',
-    description: '',
-    cardCount: 0,
-  },
-  {
-    id: 'category-12',
-    title: '',
-    description: '',
-    cardCount: 0,
-  },
 ];
 
 export const cards: Card[] = [
