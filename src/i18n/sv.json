@@ -251,6 +251,10 @@
     "catch_up": "Gå igenom frågorna ni missat",
     "stay": "Stanna där jag var"
   },
+  "waiting_for_partner": {
+    "message": "Ni gör det här i er egen takt. Samtalet fortsätter när ni båda är redo.",
+    "hint": "Du kan reflektera eller skriva en tanke medan du väntar."
+  },
   "welcome_back": {
     "message": "Vad fint att ni är tillbaka. Ert utrymme finns kvar precis som ni lämnade det.",
     "last_context": "Senast pratade ni om: {{category}} · {{card}}",

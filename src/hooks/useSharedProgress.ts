@@ -152,5 +152,6 @@ function deserializeSession(raw: any): SessionData | null {
     startedAt: new Date(raw.startedAt),
     lastActivityAt: new Date(raw.lastActivityAt),
     completedSteps: raw.completedSteps || [],
+    userCompletions: raw.userCompletions || {},
   };
 }

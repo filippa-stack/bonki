@@ -12,6 +12,7 @@ import CardReflections from '@/components/CardReflections';
 import StepProgressIndicator from '@/components/StepProgressIndicator';
 import PauseDialog from '@/components/PauseDialog';
 import SyncPrompt from '@/components/SyncPrompt';
+import WaitingForPartner from '@/components/WaitingForPartner';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft, ArrowRight, Check, Heart, Home, RotateCcw } from 'lucide-react';
 
@@ -56,6 +57,8 @@ export default function CardView() {
   const { user } = useAuth();
   const { memberCount } = useCoupleSpace();
 
+
+
   const card = cardId ? getCardById(cardId) : undefined;
   const category = card ? getCategoryById(card.categoryId) : undefined;
   const existingConversation = cardId ? getConversationForCard(cardId) : undefined;
@@ -99,6 +102,13 @@ export default function CardView() {
   // If all steps completed or fully explored, go straight to completion (unless revisiting)
   const [showCompletion, setShowCompletion] = useState(!isRevisitMode && isReturningUser && (isFullyExplored || allStepsCompleted || initialStep < 0));
   const [transitionMessage, setTransitionMessage] = useState<string | null>(null);
+
+  // Determine if current user completed this step but shared session hasn't advanced yet
+  const userCompletedCurrentStep = (() => {
+    if (!user?.id || !currentSession || memberCount < 2) return false;
+    const myCompletions = currentSession.userCompletions?.[user.id] || [];
+    return myCompletions.includes(currentStepIndex) && !completedSteps.includes(currentStepIndex);
+  })();
 
   // Catch-up mode state: sequential progression toward partner's position
   const [catchUpTarget, setCatchUpTarget] = useState<number | null>(null);
@@ -552,42 +562,46 @@ export default function CardView() {
             >
               <SectionView section={currentSection} card={card} />
               
-              {/* Navigation Buttons */}
-              <div className="py-8 border-t border-divider space-y-4">
-                <div className="flex flex-col sm:flex-row justify-center md:justify-start gap-3">
-                  {currentStepIndex > 0 && (
+              {/* Waiting state or Navigation Buttons */}
+              {userCompletedCurrentStep ? (
+                <WaitingForPartner />
+              ) : (
+                <div className="py-8 border-t border-divider space-y-4">
+                  <div className="flex flex-col sm:flex-row justify-center md:justify-start gap-3">
+                    {currentStepIndex > 0 && (
+                      <Button
+                        onClick={() => setCurrentStepIndex(currentStepIndex - 1)}
+                        variant="outline"
+                        size="lg"
+                        className="gap-2"
+                      >
+                        <ArrowLeft className="w-4 h-4" />
+                        Tillbaka
+                      </Button>
+                    )}
                     <Button
-                      onClick={() => setCurrentStepIndex(currentStepIndex - 1)}
-                      variant="outline"
+                      onClick={handleNextStep}
                       size="lg"
                       className="gap-2"
                     >
-                      <ArrowLeft className="w-4 h-4" />
-                      Tillbaka
+                      {currentStepIndex === STEP_ORDER.length - 1 ? (
+                        <>
+                          <Check className="w-4 h-4" />
+                          {t('card_view.finish_conversation')}
+                        </>
+                      ) : (
+                        <>
+                          {t(STEP_CTA_KEYS[STEP_ORDER[currentStepIndex]])}
+                          <ArrowRight className="w-4 h-4" />
+                        </>
+                      )}
                     </Button>
-                  )}
-                  <Button
-                    onClick={handleNextStep}
-                    size="lg"
-                    className="gap-2"
-                  >
-                    {currentStepIndex === STEP_ORDER.length - 1 ? (
-                      <>
-                        <Check className="w-4 h-4" />
-                        {t('card_view.finish_conversation')}
-                      </>
-                    ) : (
-                      <>
-                        {t(STEP_CTA_KEYS[STEP_ORDER[currentStepIndex]])}
-                        <ArrowRight className="w-4 h-4" />
-                      </>
-                    )}
-                  </Button>
+                  </div>
+                  <div className="flex justify-center md:justify-start">
+                    <PauseDialog onConfirm={() => { pauseSession(); navigate('/'); }} />
+                  </div>
                 </div>
-                <div className="flex justify-center md:justify-start">
-                  <PauseDialog onConfirm={() => { pauseSession(); navigate('/'); }} />
-                </div>
-              </div>
+              )}
 
               {/* Reflections (private → shared) */}
               <CardReflections cardId={card.id} />
