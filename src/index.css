@@ -55,6 +55,12 @@
     --card-sub-border-color: 0 0% 100%; /* white */
     --card-sub-shadow: 0 1px 6px 0 hsl(0 0% 0% / 0.04);
 
+    /* Note / user-input surfaces */
+    --note-bg: 0 0% 100%;             /* #ffffff */
+    --note-border: 24 54% 60%;        /* #d08f63 at 30% via /0.3 */
+    --note-text: 30 10% 20%;          /* deep charcoal */
+    --note-placeholder: 24 30% 70%;   /* light terracotta */
+
     /* Category Identity Colors (Earthy Pastels) */
     --category-emotional: 24 54% 60%;
     --category-fun: 43 75% 66%;
@@ -227,6 +233,17 @@
 
   .prompt-text {
     color: var(--prompt-text, hsl(var(--foreground)));
+  }
+
+  /* User-generated content surfaces (notes, textareas) */
+  .note-surface {
+    background-color: hsl(var(--note-bg));
+    color: hsl(var(--note-text));
+    border-color: hsl(var(--note-border) / 0.3);
+  }
+
+  .note-surface::placeholder {
+    color: hsl(var(--note-placeholder));
   }
 
   .animate-fade-in {
