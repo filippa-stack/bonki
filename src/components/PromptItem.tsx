@@ -26,6 +26,8 @@ interface PromptItemProps {
   onShareNote: (promptId: string) => void;
   onUnshareNote: (promptId: string) => void;
   onToggleHighlight: (promptId: string) => void;
+  /** When true, auto-expand and focus the note textarea */
+  autoFocusNote?: boolean;
 }
 
 export default function PromptItem({
@@ -46,6 +48,7 @@ export default function PromptItem({
   onShareNote,
   onUnshareNote,
   onToggleHighlight,
+  autoFocusNote,
 }: PromptItemProps) {
   const { t } = useTranslation();
   const { settings, updateSettings } = useSiteSettings();
@@ -66,6 +69,14 @@ export default function PromptItem({
   const showCollapsedLabel = isControlled && !isExpanded;
   const [privateText, setPrivateText] = useState(privateNote?.content || '');
   const privateTextareaRef = useRef<HTMLTextAreaElement>(null);
+
+  // Auto-expand and focus when triggered externally
+  useEffect(() => {
+    if (autoFocusNote) {
+      if (!isControlled) setInternalExpanded(true);
+      setTimeout(() => privateTextareaRef.current?.focus(), 150);
+    }
+  }, [autoFocusNote, isControlled]);
 
   // Sync incoming note changes (only when not actively editing)
   const displayPrivateText = privateNote?.content ?? privateText;

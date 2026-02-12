@@ -1,11 +1,15 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, useImperativeHandle, forwardRef } from 'react';
 import { motion } from 'framer-motion';
 import { Section, Card, Prompt } from '@/types';
 import { useApp } from '@/contexts/AppContext';
 import { Plus } from 'lucide-react';
 import PromptItem from '@/components/PromptItem';
-import StepReflection from '@/components/StepReflection';
 import { usePromptNotes } from '@/hooks/usePromptNotes';
+
+export interface SectionViewHandle {
+  /** Open/focus the note UI for the currently relevant prompt */
+  openNoteForCurrent: () => void;
+}
 
 interface SectionViewProps {
   section: Section;
@@ -21,7 +25,7 @@ const normalizePrompt = (prompt: string | Prompt): Prompt => {
 
 const ACCORDION_TYPES = ['opening', 'reflective'];
 
-export default function SectionView({ section, card }: SectionViewProps) {
+const SectionView = forwardRef<SectionViewHandle, SectionViewProps>(function SectionView({ section, card }, ref) {
   const { updateCardSection } = useApp();
 
   const {
@@ -42,7 +46,6 @@ export default function SectionView({ section, card }: SectionViewProps) {
 
   const getInitialExpanded = () => {
     if (!isAccordion) return null;
-    // Restore from session if available
     const stored = sessionStorage.getItem(storageKey);
     if (stored !== null) {
       const parsed = parseInt(stored, 10);
@@ -65,6 +68,31 @@ export default function SectionView({ section, card }: SectionViewProps) {
       sessionStorage.setItem(storageKey, String(expandedIndex));
     }
   }, [expandedIndex, storageKey]);
+
+  // Imperative API: open note for current prompt
+  useImperativeHandle(ref, () => ({
+    openNoteForCurrent() {
+      if (isAccordion) {
+        // For accordion types: expand the currently expanded prompt (or first)
+        const target = expandedIndex ?? 0;
+        setExpandedIndex(target);
+      } else {
+        // For non-accordion: just ensure prompt-0 is expanded (uncontrolled, so no-op needed)
+        // We'll use a state flag to signal "focus note"
+        setFocusNoteIndex(0);
+      }
+    },
+  }), [isAccordion, expandedIndex]);
+
+  const [focusNoteIndex, setFocusNoteIndex] = useState<number | null>(null);
+
+  // Clear focus signal after it's consumed
+  useEffect(() => {
+    if (focusNoteIndex !== null) {
+      const timer = setTimeout(() => setFocusNoteIndex(null), 500);
+      return () => clearTimeout(timer);
+    }
+  }, [focusNoteIndex]);
 
   const handlePromptChange = (index: number, value: string) => {
     const newPrompts = normalizedPrompts.map((p, i) =>
@@ -106,7 +134,6 @@ export default function SectionView({ section, card }: SectionViewProps) {
   };
 
   const handleExpandChange = useCallback((index: number, expanded: boolean) => {
-    // Only one question open at a time
     setExpandedIndex(expanded ? index : null);
   }, []);
 
@@ -156,7 +183,7 @@ export default function SectionView({ section, card }: SectionViewProps) {
         placeholder="Beskrivning..."
       />
 
-      {/* All questions rendered — Q1 expanded, rest collapsed */}
+      {/* All questions — prompt-level notes are the unified system */}
       {normalizedPrompts.length > 0 && (
         <div className="space-y-3 mb-6">
           {normalizedPrompts.map((prompt, index) => {
@@ -183,6 +210,7 @@ export default function SectionView({ section, card }: SectionViewProps) {
                   onShareNote={shareNote}
                   onUnshareNote={unshareNote}
                   onToggleHighlight={toggleHighlight}
+                  autoFocusNote={focusNoteIndex === index}
                 />
               </div>
             );
@@ -200,13 +228,8 @@ export default function SectionView({ section, card }: SectionViewProps) {
           Lägg till fråga
         </button>
       </div>
-
-      {/* Inline step reflection — compact for opening/reflective, expanded for scenario/exercise */}
-      <StepReflection
-        section={section}
-        card={card}
-        defaultExpanded={section.type === 'scenario' || section.type === 'exercise'}
-      />
     </motion.div>
   );
-}
+});
+
+export default SectionView;
