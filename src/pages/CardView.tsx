@@ -12,8 +12,9 @@ import CardReflections from '@/components/CardReflections';
 import StepProgressIndicator from '@/components/StepProgressIndicator';
 import PauseDialog from '@/components/PauseDialog';
 import WaitingForPartner from '@/components/WaitingForPartner';
+import ReviewDrawer from '@/components/ReviewDrawer';
 import { Button } from '@/components/ui/button';
-import { ArrowRight, Check, Home, RotateCcw } from 'lucide-react';
+import { ArrowRight, Check, Home, RotateCcw, BookOpen } from 'lucide-react';
 
 const sectionTypeLabels: Record<string, string> = {
   opening: 'Öppnare',
@@ -91,6 +92,7 @@ export default function CardView() {
     !isRevisitMode && isReturningUser && (isFullyExplored || allStepsCompleted)
   );
   const [transitionMessage, setTransitionMessage] = useState<string | null>(null);
+  const [reviewOpen, setReviewOpen] = useState(false);
 
   // ─── Start or resume session on mount (skip revisit and completed) ───
   useEffect(() => {
@@ -495,10 +497,34 @@ export default function CardView() {
                   <p className="text-xs text-muted-foreground/60 text-center italic">
                     {t('card_view.waiting_both', 'Vi fortsätter härifrån när båda reflektionerna är inne.')}
                   </p>
+                  {currentStepIndex > 0 && (
+                    <div className="flex justify-center pt-2">
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="gap-2 text-muted-foreground"
+                        onClick={() => setReviewOpen(true)}
+                      >
+                        <BookOpen className="w-4 h-4" />
+                        {t('card_view.review_edit', 'Granska & redigera')}
+                      </Button>
+                    </div>
+                  )}
                 </div>
               ) : (
                 <div className="py-8 border-t border-divider space-y-4">
                   <div className="flex flex-col sm:flex-row justify-center md:justify-start gap-3">
+                    {currentStepIndex > 0 && (
+                      <Button
+                        variant="outline"
+                        size="lg"
+                        className="gap-2"
+                        onClick={() => setReviewOpen(true)}
+                      >
+                        <BookOpen className="w-4 h-4" />
+                        {t('card_view.review_edit', 'Granska & redigera')}
+                      </Button>
+                    )}
                     <Button
                       onClick={handleNextStep}
                       size="lg"
@@ -525,6 +551,9 @@ export default function CardView() {
 
               {/* Reflections (private → shared) */}
               <CardReflections cardId={card.id} />
+
+              {/* Review drawer */}
+              <ReviewDrawer open={reviewOpen} onClose={() => setReviewOpen(false)} card={card} />
             </motion.div>
           )}
         </AnimatePresence>
