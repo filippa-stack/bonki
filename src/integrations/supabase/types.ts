@@ -170,6 +170,39 @@ export type Database = {
           },
         ]
       }
+      redundant_purchases: {
+        Row: {
+          created_at: string
+          id: string
+          merged_into_space_id: string
+          notes: string | null
+          original_space_id: string
+          resolved: boolean
+          resolved_at: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          merged_into_space_id: string
+          notes?: string | null
+          original_space_id: string
+          resolved?: boolean
+          resolved_at?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          merged_into_space_id?: string
+          notes?: string | null
+          original_space_id?: string
+          resolved?: boolean
+          resolved_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       reflection_responses: {
         Row: {
           content: string

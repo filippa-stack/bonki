@@ -45,21 +45,7 @@ Deno.serve(async (req) => {
 
     const { invite_token, invite_code, partner_name } = await req.json();
 
-    // Check if user already belongs to a couple space
-    const { data: existingMembership } = await adminClient
-      .from("couple_members")
-      .select("id, couple_space_id")
-      .eq("user_id", userId)
-      .maybeSingle();
-
-    if (existingMembership) {
-      return new Response(
-        JSON.stringify({ error: "already_member", couple_space_id: existingMembership.couple_space_id }),
-        { status: 409, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-      );
-    }
-
-    // Find couple space by token or code
+    // Find target couple space by token or code
     let query = adminClient.from("couple_spaces").select("*");
     if (invite_token) {
       query = query.eq("invite_token", invite_token);
@@ -72,31 +58,87 @@ Deno.serve(async (req) => {
       );
     }
 
-    const { data: space, error: spaceError } = await query.maybeSingle();
-    if (spaceError || !space) {
+    const { data: targetSpace, error: spaceError } = await query.maybeSingle();
+    if (spaceError || !targetSpace) {
       return new Response(
         JSON.stringify({ error: "invalid_invite" }),
         { status: 404, headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     }
 
-    // Check how many members already
-    const { count } = await adminClient
+    // Check how many members the target space already has
+    const { count: targetMemberCount } = await adminClient
       .from("couple_members")
       .select("id", { count: "exact", head: true })
-      .eq("couple_space_id", space.id);
+      .eq("couple_space_id", targetSpace.id);
 
-    if ((count ?? 0) >= 2) {
+    if ((targetMemberCount ?? 0) >= 2) {
       return new Response(
         JSON.stringify({ error: "space_full" }),
         { status: 409, headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     }
 
-    // Join: create membership
+    // Check if user already belongs to a couple space
+    const { data: existingMembership } = await adminClient
+      .from("couple_members")
+      .select("id, couple_space_id")
+      .eq("user_id", userId)
+      .maybeSingle();
+
+    if (existingMembership) {
+      // User already has a space — this is a merge scenario
+      const originalSpaceId = existingMembership.couple_space_id;
+
+      if (originalSpaceId === targetSpace.id) {
+        // Already in this space
+        return new Response(
+          JSON.stringify({ success: true, couple_space_id: targetSpace.id }),
+          { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        );
+      }
+
+      // Migrate user's reflections from old space to target space
+      await adminClient
+        .from("prompt_notes")
+        .update({ couple_space_id: targetSpace.id })
+        .eq("user_id", userId)
+        .eq("couple_space_id", originalSpaceId);
+
+      await adminClient
+        .from("reflection_responses")
+        .update({ couple_space_id: targetSpace.id })
+        .eq("user_id", userId)
+        .eq("couple_space_id", originalSpaceId);
+
+      // Record the redundant purchase for later refund/credit
+      await adminClient
+        .from("redundant_purchases")
+        .insert({
+          user_id: userId,
+          original_space_id: originalSpaceId,
+          merged_into_space_id: targetSpace.id,
+        });
+
+      // Remove old membership and update to new space
+      await adminClient
+        .from("couple_members")
+        .delete()
+        .eq("id", existingMembership.id);
+
+      // Clean up the now-empty original space (optional: delete progress too)
+      await adminClient
+        .from("couple_progress")
+        .delete()
+        .eq("couple_space_id", originalSpaceId);
+
+      // Don't delete the original space record — keep for audit trail
+    }
+
+    // Join target space as partner_b
     const { error: joinError } = await adminClient
       .from("couple_members")
-      .insert({ couple_space_id: space.id, user_id: userId, role: "partner_b" });
+      .insert({ couple_space_id: targetSpace.id, user_id: userId, role: "partner_b" });
 
     if (joinError) {
       console.error("Join error:", joinError);
@@ -111,11 +153,11 @@ Deno.serve(async (req) => {
       await adminClient
         .from("couple_spaces")
         .update({ partner_b_name: partner_name })
-        .eq("id", space.id);
+        .eq("id", targetSpace.id);
     }
 
     return new Response(
-      JSON.stringify({ success: true, couple_space_id: space.id }),
+      JSON.stringify({ success: true, couple_space_id: targetSpace.id }),
       { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );
   } catch (err) {
