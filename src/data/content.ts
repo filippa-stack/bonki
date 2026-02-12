@@ -38,9 +38,10 @@ export const categories: Category[] = [
   },
   {
     id: 'category-6',
-    title: '',
-    description: '',
-    cardCount: 0,
+    title: 'Pengar & föräldraskap',
+    entryLine: 'Mod, trygghet och gemensamma ramar kring ekonomi.',
+    description: 'Risk, värderingar och ekonomiska beslut som föräldrar',
+    cardCount: 2,
   },
   {
     id: 'category-7',
@@ -635,6 +636,94 @@ export const cards: Card[] = [
         prompts: [
           'Vad vill ni att barnet ska förstå om er genom dem?',
         ],
+      },
+    ],
+  },
+  {
+    id: 'risk-under-responsibility',
+    title: 'Risk under ansvar',
+    subtitle: 'Mod, trygghet och gemensamma ramar',
+    categoryId: 'category-6',
+    sections: [
+      {
+        id: 'opening-13',
+        type: 'opening',
+        title: 'Öppnare',
+        content: 'Ekonomiska beslut berör mer än pengar.',
+        prompts: [
+          'När känns risk som utveckling för dig och när känns den som ett hot?',
+          'Vad behöver du för att känna trygghet när vi tar ekonomiska beslut?',
+          'Vilken sorts mod vill du att barnet ska se hos oss?',
+        ],
+      },
+      {
+        id: 'reflective-13',
+        type: 'reflective',
+        title: 'Tankeväckare',
+        content: 'Utforska gränsen mellan mod och ansvar.',
+        prompts: [
+          'Vad behöver vara på plats för att en risk ska kännas ansvarsfull för er — inte bara modig?',
+          'När upplever du att trygghet byggs mest: när risk undviks eller när den hanteras?',
+        ],
+      },
+      {
+        id: 'scenario-13',
+        type: 'scenario',
+        title: 'Scenario',
+        content: 'En av er vill starta eget eller studera vidare, vilket innebär lägre inkomster under en period.',
+        prompts: [
+          'Hur sätter ni gemensamma ramar för risk och trygghet, och vilka tecken visar att balansen håller på att rubbas?',
+        ],
+      },
+      {
+        id: 'exercise-13',
+        type: 'exercise',
+        title: 'Team Work',
+        content: 'Välj en möjlig framtida satsning (något ni kan tänka er att någon av er vill satsa på någon gång). Prata igenom:\n• Vad skulle vara bästa utfallet?\n• Vad skulle vara det värsta rimliga utfallet?\n• Vilken gräns skulle ni inte vilja passera (tid/pengar/ork)?\n• Vilka två tecken skulle betyda: \u201Cnu behöver vi bromsa\u201D?',
+      },
+    ],
+  },
+  {
+    id: 'worth-spending-on',
+    title: 'Värt att spendera på',
+    subtitle: 'Vad som känns värdefullt att investera i; tid, energi, pengar',
+    categoryId: 'category-6',
+    sections: [
+      {
+        id: 'opening-14',
+        type: 'opening',
+        title: 'Öppnare',
+        content: 'Vad är värt vad — och för vem?',
+        prompts: [
+          'Vad är enligt dig en formande erfarenhet för ett barn?',
+          'Vilken upplevelse tycker du är värd att spara stort till — och varför?',
+          'Vad hade du själv velat få vara med om som barn?',
+        ],
+      },
+      {
+        id: 'reflective-14',
+        type: 'reflective',
+        title: 'Tankeväckare',
+        content: 'Utforska vad som driver era val.',
+        prompts: [
+          'Lär sig barn mest av upplevelser — eller av att se oss anstränga oss för något?',
+          'Vad riskerar vi att signalera som värdefullt utan att vi tycker det?',
+        ],
+      },
+      {
+        id: 'scenario-14',
+        type: 'scenario',
+        title: 'Scenario',
+        content: 'Ni står inför en kostsam satsning och märker att frågan väcker olika bilder av vad som är \u201Cvärt det\u201D. Barnet märker att något stort är på gång.',
+        prompts: [
+          'Hur avgör ni när det är värt det bortom prislappen?',
+        ],
+      },
+      {
+        id: 'exercise-14',
+        type: 'exercise',
+        title: 'Team Work',
+        content: 'Enas om vad som gör satsningen värd pengarna, vad ni är beredda att avstå eller vänta med, och hur barnet får vara delaktigt i vägen dit.',
       },
     ],
   },
