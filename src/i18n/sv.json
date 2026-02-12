@@ -33,7 +33,7 @@
   "home": {
     "continue_where_left_off": "Ert senaste samtal",
     "choose_category": "Var vill ni börja idag?",
-    "saved_conversations": "Sparade samtal ({{count}})",
+    "saved_conversations": "Era samtal ({{count}})",
     "edit_label_title": "Rubrik",
     "edit_label_subtitle": "Underrubrik",
     "edit_label_button_colors": "Knappfärger",
@@ -175,18 +175,18 @@
     "partner_response": "Partnerns tanke"
   },
   "invite": {
-    "title": "Bjud in din partner",
-    "description": "Dela länken nedan. Din partner skapar ett konto och ni kopplas ihop automatiskt.",
-    "share_button": "Dela inbjudan",
-    "copy_link": "Kopiera",
-    "copied": "Kopierad!",
+    "title": "Dela med din partner",
+    "description": "Skicka länken så kopplas ni ihop automatiskt.",
+    "share_button": "Skicka inbjudan",
+    "copy_link": "Kopiera länken",
+    "copied": "Länken är kopierad",
     "copy_failed": "Kunde inte kopiera",
     "or_code": "Eller dela koden:",
     "your_name_label": "Ditt namn (visas för din partner)",
     "name_placeholder": "Ditt namn...",
-    "set_name": "Ange ditt namn (visas för din partner)",
-    "collapsed_hint": "Bjud in din partner att dela det här utrymmet",
-    "minimize": "Minimera",
+    "set_name": "Vad ska din partner kalla dig?",
+    "collapsed_hint": "Dela det här utrymmet med din partner",
+    "minimize": "Göm",
     "share_message": "Följ med mig i vårt gemensamma utrymme på Still Us. Tryck för att ansluta och starta vår resa: {{link}}"
   },
   "join": {
@@ -211,9 +211,9 @@
     "error_unknown": "Något gick fel. Försök igen."
   },
   "couple_space": {
-    "partner_connected": "Din partner är ansluten",
+    "partner_connected": "Ni är här tillsammans",
     "connected_hint": "Allt ni delar syns för er båda.",
-    "solo_mode": "Solo-läge"
+    "solo_mode": "På egen hand"
   },
   "welcome_partner": {
     "title": "Välkommen till ert gemensamma rum",
@@ -264,7 +264,7 @@
   },
   "post_purchase": {
     "title": "Ert utrymme är redo",
-    "subtitle": "Nu kan du bjuda in din partner. Ni delar allt — utan extra kostnad.",
-    "skip_invite": "Bjud in senare"
+    "subtitle": "Nu kan du dela det här med din partner. Ni har plats för båda — utan extra kostnad.",
+    "skip_invite": "Gör det senare"
   }
 }
