@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
-import { X } from 'lucide-react';
+import { X, RotateCcw } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import {
   Drawer,
@@ -10,9 +11,8 @@ import {
   DrawerClose,
 } from '@/components/ui/drawer';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { useApp } from '@/contexts/AppContext';
+import StepReflection from '@/components/StepReflection';
 import type { Card } from '@/types';
-import CardReflections from '@/components/CardReflections';
 
 const STEP_ORDER = ['opening', 'reflective', 'scenario', 'exercise'] as const;
 const STEP_LABELS: Record<string, string> = {
@@ -30,6 +30,7 @@ interface ReviewDrawerProps {
 
 export default function ReviewDrawer({ open, onClose, card }: ReviewDrawerProps) {
   const { t } = useTranslation();
+  const navigate = useNavigate();
 
   return (
     <Drawer open={open} onOpenChange={(o) => !o && onClose()}>
@@ -92,13 +93,32 @@ export default function ReviewDrawer({ open, onClose, card }: ReviewDrawerProps)
                     )}
                   </div>
 
-                  {/* Editable reflections for this step's section */}
+                  {/* Per-step reflection inline */}
                   <div className="pl-9">
-                    <CardReflections cardId={`${card.id}__${section.id}`} />
+                    <StepReflection section={section} card={card} defaultExpanded={false} />
                   </div>
                 </motion.div>
               );
             })}
+
+            {/* Revisit entry */}
+            <div className="border-t border-divider pt-6 space-y-3">
+              <Button
+                variant="ghost"
+                size="sm"
+                className="w-full gap-2 text-muted-foreground"
+                onClick={() => {
+                  onClose();
+                  navigate(`/card/${card.id}?revisit=true`);
+                }}
+              >
+                <RotateCcw className="w-4 h-4" />
+                Återbesök tidigare steg
+              </Button>
+              <p className="text-xs text-muted-foreground/50 italic text-center">
+                Det här påverkar inte ert gemensamma tempo.
+              </p>
+            </div>
           </div>
         </ScrollArea>
       </DrawerContent>

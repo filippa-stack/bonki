@@ -10,8 +10,9 @@ import Header from '@/components/Header';
 import SectionView from '@/components/SectionView';
 import StepProgressIndicator from '@/components/StepProgressIndicator';
 import PauseDialog from '@/components/PauseDialog';
-import SharedPaceState from '@/components/SharedPaceState';
 import ReviewDrawer from '@/components/ReviewDrawer';
+import ConflictingSessionModal from '@/components/ConflictingSessionModal';
+import WaitingStepNote from '@/components/WaitingStepNote';
 import { Button } from '@/components/ui/button';
 import { ArrowRight, Home, RotateCcw, BookOpen } from 'lucide-react';
 
@@ -98,15 +99,18 @@ export default function CardView() {
   );
   const [transitionMessage, setTransitionMessage] = useState<string | null>(null);
   const [reviewOpen, setReviewOpen] = useState(false);
+  const [showConflictModal, setShowConflictModal] = useState(false);
 
-  // ─── Guard: if there's an active session for a DIFFERENT card, redirect home ───
+  // ─── Guard: if there's an active session for a DIFFERENT card, show modal instead of redirect ───
   const hasConflictingSession = !!(currentSession && currentSession.cardId !== cardId);
+  const conflictingCard = hasConflictingSession ? getCardById(currentSession!.cardId) : undefined;
+
   useEffect(() => {
     if (isRevisitMode) return;
     if (hasConflictingSession) {
-      navigate('/', { replace: true });
+      setShowConflictModal(true);
     }
-  }, [cardId, hasConflictingSession]);
+  }, [cardId, hasConflictingSession, isRevisitMode]);
 
   // ─── Save conversation for local resume ───
   useEffect(() => {
@@ -494,25 +498,32 @@ export default function CardView() {
 
               {/* Navigation / waiting state */}
               {userCompletedCurrentStep ? (
-                <div className="space-y-2 my-6">
-                  <SharedPaceState />
-                  <p className="text-xs text-muted-foreground/60 text-center italic">
-                    {t('card_view.waiting_both', 'Vi fortsätter härifrån när nästa steg är redo.')}
+                <motion.div
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5 }}
+                  className="my-8 p-6 rounded-2xl border border-border bg-card text-center space-y-4"
+                >
+                  <p className="text-sm text-muted-foreground leading-relaxed">
+                    Väntar tills ni båda är redo.
                   </p>
-                  {currentStepIndex > 0 && (
-                    <div className="flex justify-center pt-2">
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        className="gap-2 text-muted-foreground"
-                        onClick={() => setReviewOpen(true)}
-                      >
-                        <BookOpen className="w-4 h-4" />
-                        {t('card_view.review_edit', 'Granska & redigera')}
-                      </Button>
-                    </div>
-                  )}
-                </div>
+
+                  <div className="flex flex-col items-center gap-3">
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="gap-2 text-muted-foreground"
+                      onClick={() => setReviewOpen(true)}
+                    >
+                      <BookOpen className="w-4 h-4" />
+                      Granska & förfina
+                    </Button>
+
+                    {currentSection && (
+                      <WaitingStepNote cardId={card.id} sectionId={currentSection.id} />
+                    )}
+                  </div>
+                </motion.div>
               ) : (
                 <div className="py-8 border-t border-divider space-y-4">
                   <div className="flex flex-col sm:flex-row justify-center md:justify-start gap-3">
@@ -550,6 +561,22 @@ export default function CardView() {
           )}
         </AnimatePresence>
       </div>
+
+      {/* Conflicting session modal */}
+      {conflictingCard && (
+        <ConflictingSessionModal
+          open={showConflictModal}
+          onClose={() => setShowConflictModal(false)}
+          currentSessionCardTitle={conflictingCard.title}
+          currentSessionCardId={conflictingCard.id}
+          onSwitchToThisCard={() => {
+            if (card && category) {
+              pauseSession();
+              startSession(category.id, card.id, { force: true });
+            }
+          }}
+        />
+      )}
     </div>
   );
 }

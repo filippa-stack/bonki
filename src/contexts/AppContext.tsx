@@ -48,7 +48,7 @@ interface AppContextType {
   saveError: string | null;
   // Session management for guided flow
   currentSession: AppState['currentSession'];
-  startSession: (categoryId: string, cardId: string) => void;
+  startSession: (categoryId: string, cardId: string, opts?: { force?: boolean }) => void;
   updateSessionStep: (stepIndex: number) => void;
   completeSessionStep: (stepIndex: number) => void;
   endSession: () => void;
