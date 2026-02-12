@@ -788,7 +788,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
 
   // Update journey state when starting a session
   const startSessionWithJourney = (categoryId: string, cardId: string, opts?: { force?: boolean }) => {
-    startSession(categoryId, cardId, { force: opts?.force ?? true });
+    startSession(categoryId, cardId, { force: opts?.force ?? false });
     setState((prev) => ({
       ...prev,
       journeyState: {
@@ -880,7 +880,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
         ? { ...prev.journeyState, topicProposal: null, updatedAt: new Date().toISOString() }
         : prev.journeyState,
     }));
-    startSessionWithJourney(proposal.categoryId, proposal.cardId);
+    startSessionWithJourney(proposal.categoryId, proposal.cardId, { force: true });
   };
 
   const declineProposal = () => {
