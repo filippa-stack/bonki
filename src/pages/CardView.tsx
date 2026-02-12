@@ -221,7 +221,7 @@ export default function CardView() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.8 }}
-            className="text-center max-w-md mx-auto space-y-8"
+            className="text-center max-w-md mx-auto space-y-7"
           >
             <motion.div
               initial={{ scale: 0.9, opacity: 0 }}
@@ -242,6 +242,10 @@ export default function CardView() {
               {t(completionMessageKey)}
             </motion.p>
 
+            <p className="text-xs text-muted-foreground/60 leading-relaxed">
+              Ni behöver inte göra något mer — men här finns några vägar vidare.
+            </p>
+
             <motion.div
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
@@ -258,7 +262,7 @@ export default function CardView() {
                   size="lg"
                   className="w-full gap-2"
                 >
-                  {t('card_view.completion_next')}
+                  {t('card_view.completion_next', 'Föreslå nästa samtal')}
                   <ArrowRight className="w-4 h-4" />
                 </Button>
               ) : suggestedCard && suggestedCategory ? (
@@ -267,7 +271,7 @@ export default function CardView() {
                   size="lg"
                   className="w-full gap-2"
                 >
-                  {t('card_view.completion_next')}
+                  {t('card_view.completion_next', 'Föreslå nästa samtal')}
                   <ArrowRight className="w-4 h-4" />
                 </Button>
               ) : null}
@@ -278,7 +282,7 @@ export default function CardView() {
                 className="w-full gap-2"
               >
                 <Home className="w-4 h-4" />
-                {t('card_view.completion_home')}
+                {t('card_view.completion_home', 'Tillbaka till Hem')}
               </Button>
               <Button
                 onClick={() => navigate(`/card/${card.id}?revisit=true`)}
@@ -287,7 +291,7 @@ export default function CardView() {
                 className="w-full gap-2 text-muted-foreground"
               >
                 <RotateCcw className="w-4 h-4" />
-                {t('card_view.completion_revisit')}
+                {t('card_view.completion_revisit', 'Läs igenom igen')}
               </Button>
             </motion.div>
 
