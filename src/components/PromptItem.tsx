@@ -213,12 +213,19 @@ export default function PromptItem({
                         borderColor: settings.noteBoxBorderColor || undefined,
                       }}
                     />
-                    {/* Privacy indicator */}
+                    {/* Privacy indicator + last updated */}
                     {!sharedNote && (
-                      <p className="flex items-center gap-1.5 text-xs text-muted-foreground mt-2 italic">
-                        <Lock className="w-3 h-3" />
-                        {t('reflections.private_indicator', 'Bara du kan se det här')}
-                      </p>
+                      <div className="flex items-center justify-between mt-2">
+                        <p className="flex items-center gap-1.5 text-xs text-muted-foreground italic">
+                          <Lock className="w-3 h-3" />
+                          {t('reflections.private_indicator', 'Bara du kan se det här')}
+                        </p>
+                        {privateNote?.content && privateNote.updatedAt && (
+                          <p className="text-xs text-muted-foreground/60">
+                            {t('reflections.last_updated', { date: new Date(privateNote.updatedAt).toLocaleDateString('sv-SE', { day: 'numeric', month: 'short' }) })}
+                          </p>
+                        )}
+                      </div>
                     )}
                   </div>
 

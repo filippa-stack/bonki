@@ -183,6 +183,11 @@ export default function SharedTimelineItem({
                 </Button>
               </div>
               <p className="text-sm text-foreground/80 whitespace-pre-wrap">{myResponse!.content}</p>
+              {myResponse!.updated_at && (
+                <p className="text-xs text-muted-foreground/60 mt-1">
+                  {t('reflections.last_updated', { date: new Date(myResponse!.updated_at).toLocaleDateString('sv-SE', { day: 'numeric', month: 'short' }) })}
+                </p>
+              )}
             </div>
           ) : showResponseInput || !hasMyResponse ? (
             <div>
