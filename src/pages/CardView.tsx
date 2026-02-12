@@ -14,7 +14,7 @@ import PauseDialog from '@/components/PauseDialog';
 import WaitingForPartner from '@/components/WaitingForPartner';
 import ReviewDrawer from '@/components/ReviewDrawer';
 import { Button } from '@/components/ui/button';
-import { ArrowRight, Check, Home, RotateCcw, BookOpen } from 'lucide-react';
+import { ArrowRight, Home, RotateCcw, BookOpen } from 'lucide-react';
 
 const sectionTypeLabels: Record<string, string> = {
   opening: 'Öppnare',
@@ -533,17 +533,8 @@ export default function CardView() {
                       size="lg"
                       className="gap-2"
                     >
-                      {currentStepIndex === STEP_ORDER.length - 1 ? (
-                        <>
-                          <Check className="w-4 h-4" />
-                          {t('card_view.finish_conversation')}
-                        </>
-                      ) : (
-                        <>
-                          {t(STEP_CTA_KEYS[STEP_ORDER[currentStepIndex]])}
-                          <ArrowRight className="w-4 h-4" />
-                        </>
-                      )}
+                      {t(STEP_CTA_KEYS[STEP_ORDER[currentStepIndex]])}
+                      <ArrowRight className="w-4 h-4" />
                     </Button>
                   </div>
                   <div className="flex justify-center md:justify-start">
