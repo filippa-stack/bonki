@@ -26,7 +26,7 @@ export default function ContinueModule({
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4, delay: 0.15 }}
-      className="px-6 mb-8"
+      className="px-6 mb-10"
     >
       <div
         className="card-reflection relative"

@@ -69,7 +69,7 @@ export default function CategoryCard({
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4, delay: index * 0.1 }}
       onClick={onClick}
-      className="w-full text-left card-reflection group cursor-pointer border rounded-xl item-colors"
+      className="w-full text-left card-reflection group cursor-pointer border rounded-2xl item-colors py-6 px-5"
       style={{ 
         '--item-bg': category.color || undefined,
         '--item-border': category.borderColor || undefined,
