@@ -285,11 +285,12 @@ export default function Home() {
       {/* Topic proposal from partner */}
       {(() => {
         const proposal = journeyState?.topicProposal;
-        if (!proposal || proposal.proposedByUserId === user?.id) return null;
+        if (!proposal) return null;
         const proposalCard = getCardById(proposal.cardId);
         const proposalCategory = getCategoryById(proposal.categoryId);
         if (!proposalCard || !proposalCategory) return null;
 
+        const isOwn = proposal.proposedByUserId === user?.id;
         const partnerName = space?.partner_a_name || space?.partner_b_name || undefined;
 
         return (
@@ -298,11 +299,16 @@ export default function Home() {
             cardSubtitle={proposalCard.subtitle}
             categoryTitle={proposalCategory.title}
             partnerName={partnerName}
+            isOwnProposal={isOwn}
             onAccept={() => {
               acceptProposal();
               navigate(`/card/${proposal.cardId}`);
             }}
             onDecline={declineProposal}
+            onSuggestAnother={() => {
+              declineProposal();
+              navigate(`/category/${proposal.categoryId}`);
+            }}
           />
         );
       })()}
