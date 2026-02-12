@@ -590,8 +590,16 @@ export function AppProvider({ children }: { children: ReactNode }) {
       const cardId = prev.currentSession.cardId;
 
       // --- Update per-user completion in journeyState.sessionProgress ---
-      const journey = prev.journeyState;
-      if (!journey) return prev;
+      const journey = prev.journeyState || {
+        currentCategoryId: null,
+        lastOpenedCardId: null,
+        lastCompletedCardId: null,
+        suggestedNextCardId: null,
+        pausedAt: null,
+        updatedAt: new Date().toISOString(),
+        exploredCardIds: [],
+        sessionProgress: {},
+      };
 
       const progress = journey.sessionProgress || {};
       const cardProgress = progress[cardId] || { perUser: {} };
