@@ -50,8 +50,8 @@ export default function Header({
   };
 
   return (
-    <header className="sticky top-0 z-10 bg-card border-b border-border">
-      <div className="flex items-center justify-between h-14 px-4">
+    <header className="sticky top-0 z-10 border-b border-primary/20 backdrop-blur-md" style={{ backgroundColor: 'hsl(var(--surface-chrome) / 0.92)' }}>
+      <div className="flex items-center justify-between h-14 px-6">
         <div className="flex items-center gap-2">
           {showBack && (
             <button

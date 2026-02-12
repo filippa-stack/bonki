@@ -53,6 +53,7 @@ export default {
         },
         warm: "hsl(var(--surface-warm))",
         elevated: "hsl(var(--surface-elevated))",
+        chrome: "hsl(var(--surface-chrome))",
         gentle: "hsl(var(--text-gentle))",
         divider: "hsl(var(--divider))",
         // Category Identity Colors

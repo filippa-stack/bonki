@@ -14,6 +14,7 @@ import InvitePartner from '@/components/InvitePartner';
 import { Bookmark, Pencil, Check, Share2, Settings } from 'lucide-react';
 import NotificationSettings from '@/components/NotificationSettings';
 import RelationshipMemory from '@/components/RelationshipMemory';
+import Footer from '@/components/Footer';
 import RecentSharedReflection from '@/components/RecentSharedReflection';
 import WelcomeBackBanner from '@/components/WelcomeBackBanner';
 import { Button } from '@/components/ui/button';
@@ -128,7 +129,8 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen page-bg">
+    <div className="min-h-screen flex flex-col page-bg">
+      <div className="flex-1">
       <Header showBackgroundPicker={true} />
       {/* Header with Logo */}
       <div className="px-6 pt-8 pb-8">
@@ -479,6 +481,8 @@ export default function Home() {
         onResume={handleResumeSession}
         onBackToCategories={handleDismissSession}
       />
+      </div>
+      <Footer />
     </div>
   );
 }
