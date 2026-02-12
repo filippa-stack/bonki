@@ -45,9 +45,10 @@ export const categories: Category[] = [
   },
   {
     id: 'category-7',
-    title: '',
-    description: '',
-    cardCount: 0,
+    title: 'Motståndskraft innan det brister',
+    entryLine: 'Hur ni håller ihop — även när det är svårt.',
+    description: 'Sårbarhet, motgångar och att möta press tillsammans',
+    cardCount: 2,
   },
   {
     id: 'category-8',
@@ -724,6 +725,97 @@ export const cards: Card[] = [
         type: 'exercise',
         title: 'Team Work',
         content: 'Enas om vad som gör satsningen värd pengarna, vad ni är beredda att avstå eller vänta med, och hur barnet får vara delaktigt i vägen dit.',
+      },
+    ],
+  },
+  {
+    id: 'self-esteem-wavering',
+    title: 'När självkänslan svajar',
+    subtitle: 'Sårbarhet och förändrade roller',
+    categoryId: 'category-7',
+    sections: [
+      {
+        id: 'opening-15',
+        type: 'opening',
+        title: 'Öppnare',
+        content: 'Självkänsla påverkar allt — även er.',
+        prompts: [
+          'När lägger du märke till att din självkänsla påverkar hur du tar plats i familjen?',
+          'Vad är svårast för mig att se hos dig när du tvivlar på dig själv?',
+          'Hur förändras samspelet mellan oss när en av oss känner sig mindre viktig?',
+        ],
+      },
+      {
+        id: 'reflective-15',
+        type: 'reflective',
+        title: 'Tankeväckare',
+        content: 'Utforska vad som döljs bakom fasaden.',
+        prompts: [
+          'När märker du att du försöker framstå som stark eller fungerande, i stället för att visa hur du faktiskt har det i relationen?',
+          'Vad hos dig blir svårare att stå upp för när du inte känner dig säker i din roll?',
+        ],
+      },
+      {
+        id: 'scenario-15',
+        type: 'scenario',
+        title: 'Scenario',
+        content: 'En motgång gör att en av er börjar ta mindre plats (förlorat jobbet, misslyckats med ett projekt, gått upp i vikt). Det sägs inte rakt ut, men märks i din ton och ditt initiativ. Barnet anpassar sig.',
+        prompts: [
+          'Hur pratar ni om det som hänt utan att skapa hierarkier eller förstärka tvivel?',
+        ],
+      },
+      {
+        id: 'exercise-15',
+        type: 'exercise',
+        title: 'Team Work',
+        content: 'Enas om vilka ord ni använder — och undviker — inför barnet när någon tvivlar på sig själv. Bestäm också vilka ansvar som tillfälligt kan skifta utan att någon tappar sin roll.',
+        prompts: [
+          'Syftet är att ingen ska tappa värde i familjen för att den tappar fotfästet.',
+        ],
+      },
+    ],
+  },
+  {
+    id: 'facing-adversity',
+    title: 'Att möta motgångar',
+    subtitle: 'Olika sätt att hantera press',
+    categoryId: 'category-7',
+    sections: [
+      {
+        id: 'opening-16',
+        type: 'opening',
+        title: 'Öppnare',
+        content: 'Motgångar visar hur ni fungerar ihop.',
+        prompts: [
+          'Hur brukar du hantera motgång — genom att prata, agera eller dra dig undan?',
+          'Vad känns mest stöttande för dig i svåra perioder?',
+          'Vad gör det svårt för oss att möta motgång på olika sätt?',
+        ],
+      },
+      {
+        id: 'reflective-16',
+        type: 'reflective',
+        title: 'Tankeväckare',
+        content: 'Utforska era olika strategier.',
+        prompts: [
+          'Hur visar sig era olika sätt att hantera motgång innan ni hinner prata om det?',
+          'När hjälper det er att vara nära — och när hjälper det er mer att ta paus var för sig och komma tillbaka till varandra?',
+        ],
+      },
+      {
+        id: 'scenario-16',
+        type: 'scenario',
+        title: 'Scenario',
+        content: 'Ni möter en svår period. En vill planera och agera, den andra behöver pausa och reflektera.',
+        prompts: [
+          'Hur skapar ni utrymme för båda sätten utan att lämna varandra?',
+        ],
+      },
+      {
+        id: 'exercise-16',
+        type: 'exercise',
+        title: 'Team Work',
+        content: 'Tänk ut hur en vecka kan se ut där båda era sätt får plats — utan att det ena blir norm och det andra undantag.',
       },
     ],
   },
