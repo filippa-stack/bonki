@@ -90,7 +90,7 @@ export default function Header({
             className="text-foreground/80 hover:text-foreground border-border/60 hover:border-border text-xs gap-1.5 font-medium"
           >
             <span className="text-sm leading-none">❤️</span>
-            Vårt utrymme
+            {t('header.shared_space')}
           </Button>
           {showBackgroundPicker && (
             <div className="flex items-center gap-2">

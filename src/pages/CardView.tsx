@@ -374,7 +374,7 @@ export default function CardView() {
             )}
 
             <p className="text-sm text-muted-foreground mb-8 leading-relaxed">
-              Fyra steg som hjälper er att hitta varandra. Gå i er egen takt.
+              {t('card_view.overview_description')}
             </p>
 
             {/* Step overview */}
@@ -397,10 +397,10 @@ export default function CardView() {
                         {sectionTypeLabels[stepType]}
                       </p>
                       <p className="text-xs text-muted-foreground mt-0.5">
-                        {stepType === 'opening' && 'Hitta in i samtalet tillsammans.'}
-                        {stepType === 'reflective' && 'Lyssna djupare på varandra.'}
-                        {stepType === 'scenario' && 'Känn igen er i varandras vardag.'}
-                        {stepType === 'exercise' && 'Gör något av det ni upptäckt.'}
+                        {stepType === 'opening' && t('card_view.step_opening_desc')}
+                        {stepType === 'reflective' && t('card_view.step_reflective_desc')}
+                        {stepType === 'scenario' && t('card_view.step_scenario_desc')}
+                        {stepType === 'exercise' && t('card_view.step_exercise_desc')}
                       </p>
                     </div>
                   </motion.div>
@@ -413,7 +413,7 @@ export default function CardView() {
               size="lg"
               className="w-full md:w-auto gap-2"
             >
-              Börja med Öppnare
+              {t('card_view.overview_start')}
               <ArrowRight className="w-4 h-4" />
             </Button>
           </motion.div>
