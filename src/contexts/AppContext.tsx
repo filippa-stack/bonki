@@ -181,7 +181,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
   );
 
   // Couple space for shared progress
-  const { space: coupleSpaceDb } = useCoupleSpace();
+  const { space: coupleSpaceDb, memberCount: coupleSpaceMemberCount } = useCoupleSpace();
   const coupleSpaceId = coupleSpaceDb?.id ?? null;
 
   // Handle remote progress updates from partner
@@ -612,8 +612,9 @@ export function AppProvider({ children }: { children: ReactNode }) {
 
       // --- Determine if ALL users have completed this step ---
       const allUserIds = Object.keys(updatedCardProgress.perUser);
+      const requiredCount = coupleSpaceMemberCount >= 2 ? 2 : 1;
       const isMutuallyCompleted =
-        allUserIds.length < 2 ||
+        allUserIds.length >= requiredCount &&
         allUserIds.every((id) =>
           updatedCardProgress.perUser[id]?.completedSteps.includes(stepIndex)
         );
