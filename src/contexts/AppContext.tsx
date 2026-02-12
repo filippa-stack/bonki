@@ -539,15 +539,30 @@ export function AppProvider({ children }: { children: ReactNode }) {
         return prev;
       }
 
-      // Check for existing saved progress for this card using prev state
-      const existingThread = prev.coupleSpace?.conversationThreads.find(t => t.cardId === cardId);
-      const savedCompleted = existingThread?.completedSteps ?? [];
+      // Determine starting step from journeyState.sessionProgress (authoritative)
+      const cardProgress = prev.journeyState?.sessionProgress?.[cardId];
+      const perUser = cardProgress?.perUser || {};
+      const userIds = Object.keys(perUser);
+      const requiredCount = coupleSpaceMemberCount >= 2 ? 2 : 1;
 
-      // Find next incomplete step (first index 0..3 not in completedSteps)
-      const nextIncomplete = STEP_ORDER.findIndex((_, i) => !savedCompleted.includes(i));
+      // Find the first step that is NOT mutually completed
+      let startStep = 0;
+      for (let i = 0; i < STEP_ORDER.length; i++) {
+        const mutuallyDone =
+          userIds.length >= requiredCount &&
+          userIds.every((id) => perUser[id]?.completedSteps.includes(i));
+        if (!mutuallyDone) {
+          startStep = i;
+          break;
+        }
+        // If all steps are mutually done, startStep stays beyond last
+        if (i === STEP_ORDER.length - 1) {
+          startStep = STEP_ORDER.length; // signals full completion
+        }
+      }
 
-      // If all steps completed, do NOT create an active session — let completion UX handle it
-      if (nextIncomplete === -1 && savedCompleted.length >= STEP_ORDER.length) {
+      // If all steps mutually completed, do NOT create a session
+      if (startStep >= STEP_ORDER.length) {
         return prev;
       }
 
@@ -556,8 +571,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
         currentSession: {
           categoryId,
           cardId,
-          currentStepIndex: nextIncomplete >= 0 ? nextIncomplete : 0,
-          completedSteps: savedCompleted,
+          currentStepIndex: startStep,
+          completedSteps: [],
           startedAt: now,
           lastActivityAt: now,
         },
