@@ -7,14 +7,13 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useCoupleSpace } from '@/hooks/useCoupleSpace';
 import { toast } from 'sonner';
 import Header from '@/components/Header';
-import SectionView from '@/components/SectionView';
+import SectionView, { type SectionViewHandle } from '@/components/SectionView';
 import StepProgressIndicator from '@/components/StepProgressIndicator';
 import PauseDialog from '@/components/PauseDialog';
 import ReviewDrawer from '@/components/ReviewDrawer';
 import ConflictingSessionModal from '@/components/ConflictingSessionModal';
-import WaitingStepNote from '@/components/WaitingStepNote';
 import { Button } from '@/components/ui/button';
-import { ArrowRight, Home, RotateCcw, BookOpen } from 'lucide-react';
+import { ArrowRight, Home, RotateCcw, BookOpen, PenLine } from 'lucide-react';
 
 const sectionTypeLabels: Record<string, string> = {
   opening: 'Öppnare',
@@ -99,6 +98,7 @@ export default function CardView() {
   );
   const [transitionMessage, setTransitionMessage] = useState<string | null>(null);
   const [reviewOpen, setReviewOpen] = useState(false);
+  const sectionViewRef = useRef<SectionViewHandle>(null);
   const [showConflictModal, setShowConflictModal] = useState(false);
 
   // ─── Guard: if there's an active session for a DIFFERENT card, show modal instead of redirect ───
@@ -494,7 +494,7 @@ export default function CardView() {
               exit={{ opacity: 0, x: -20 }}
               transition={{ duration: 0.3 }}
             >
-              <SectionView section={currentSection} card={card} />
+              <SectionView ref={sectionViewRef} section={currentSection} card={card} />
 
               {/* Navigation / waiting state */}
               {userCompletedCurrentStep ? (
@@ -519,9 +519,13 @@ export default function CardView() {
                       Granska & förfina
                     </Button>
 
-                    {currentSection && (
-                      <WaitingStepNote cardId={card.id} sectionId={currentSection.id} />
-                    )}
+                    <button
+                      onClick={() => sectionViewRef.current?.openNoteForCurrent()}
+                      className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
+                    >
+                      <PenLine className="w-3.5 h-3.5" />
+                      Lägg till en tanke
+                    </button>
                   </div>
                 </motion.div>
               ) : (
@@ -552,8 +556,6 @@ export default function CardView() {
                   </div>
                 </div>
               )}
-
-              {/* Per-step reflections are now inline inside SectionView */}
 
               {/* Review drawer */}
               <ReviewDrawer open={reviewOpen} onClose={() => setReviewOpen(false)} card={card} />
