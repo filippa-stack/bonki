@@ -55,25 +55,19 @@ export default function CardView() {
   const existingConversation = cardId ? getConversationForCard(cardId) : undefined;
 
   // Determine initial step from session or saved conversation
-  // Always advance past already-completed steps to prevent reopening finished content
+  // Returns -1 if all steps are completed (signals "route out")
   const getInitialStepIndex = () => {
-    let resumeIndex = 0;
     let completed: number[] = [];
 
     if (currentSession?.cardId === cardId) {
-      resumeIndex = currentSession.currentStepIndex;
       completed = currentSession.completedSteps;
     } else if (existingConversation && card) {
-      resumeIndex = existingConversation.lastStepIndex ?? 0;
       completed = existingConversation.completedSteps ?? [];
     }
 
-    // If the resume step is already completed, advance to the next incomplete step
-    while (completed.includes(resumeIndex) && resumeIndex < STEP_ORDER.length - 1) {
-      resumeIndex++;
-    }
-
-    return resumeIndex;
+    // Find the first step NOT in completedSteps
+    const nextIncomplete = STEP_ORDER.findIndex((_, i) => !completed.includes(i));
+    return nextIncomplete; // -1 if all completed
   };
 
   const getInitialCompletedSteps = () => {
@@ -87,17 +81,17 @@ export default function CardView() {
   };
 
   const isFullyExplored = cardId ? (journeyState?.exploredCardIds?.includes(cardId) ?? false) : false;
-  // Also treat as fully explored if all 4 steps are in the completed list
   const initialCompleted = getInitialCompletedSteps();
   const allStepsCompleted = STEP_ORDER.every((_, i) => initialCompleted.includes(i));
+  const initialStep = getInitialStepIndex(); // -1 if all completed
   const isReturningUser = !!(currentSession?.cardId === cardId || existingConversation);
-  const [currentStepIndex, setCurrentStepIndex] = useState(isRevisitMode ? 0 : getInitialStepIndex);
+  const [currentStepIndex, setCurrentStepIndex] = useState(isRevisitMode ? 0 : Math.max(0, initialStep));
   const [completedSteps, setCompletedSteps] = useState<number[]>(initialCompleted);
   // Revisit mode: skip all gates, go straight to step view
   const [showOverview, setShowOverview] = useState(!isRevisitMode && !isReturningUser);
-  const [showReentry, setShowReentry] = useState(!isRevisitMode && isReturningUser && !isFullyExplored && !allStepsCompleted);
-  // If navigating to an already-completed card, go straight to completion (unless revisiting)
-  const [showCompletion, setShowCompletion] = useState(!isRevisitMode && isReturningUser && (isFullyExplored || allStepsCompleted));
+  const [showReentry, setShowReentry] = useState(!isRevisitMode && isReturningUser && !isFullyExplored && !allStepsCompleted && initialStep >= 0);
+  // If all steps completed or fully explored, go straight to completion (unless revisiting)
+  const [showCompletion, setShowCompletion] = useState(!isRevisitMode && isReturningUser && (isFullyExplored || allStepsCompleted || initialStep < 0));
   const [transitionMessage, setTransitionMessage] = useState<string | null>(null);
 
   // Sync prompt state: detect when partner advanced ahead
@@ -173,22 +167,40 @@ export default function CardView() {
 
   const handleNextStep = () => {
     // In revisit mode, don't track progress
+    const updatedCompleted = isRevisitMode
+      ? completedSteps
+      : completedSteps.includes(currentStepIndex)
+        ? completedSteps
+        : [...completedSteps, currentStepIndex];
+
     if (!isRevisitMode && !completedSteps.includes(currentStepIndex)) {
-      setCompletedSteps(prev => [...prev, currentStepIndex]);
+      setCompletedSteps(updatedCompleted);
       completeSessionStep(currentStepIndex);
     }
 
-    if (currentStepIndex < STEP_ORDER.length - 1) {
+    // Find the next incomplete step after the current one
+    const findNextIncomplete = (afterIndex: number): number => {
+      for (let i = afterIndex + 1; i < STEP_ORDER.length; i++) {
+        if (!updatedCompleted.includes(i)) return i;
+      }
+      return -1; // all remaining steps are completed
+    };
+
+    const nextStep = isRevisitMode
+      ? (currentStepIndex < STEP_ORDER.length - 1 ? currentStepIndex + 1 : -1)
+      : findNextIncomplete(currentStepIndex);
+
+    if (nextStep >= 0) {
       const currentType = STEP_ORDER[currentStepIndex];
       const msgKey = TRANSITION_KEYS[currentType];
       if (msgKey && !isRevisitMode) {
         setTransitionMessage(t(msgKey));
         setTimeout(() => {
           setTransitionMessage(null);
-          setCurrentStepIndex(currentStepIndex + 1);
+          setCurrentStepIndex(nextStep);
         }, 1800);
       } else {
-        setCurrentStepIndex(currentStepIndex + 1);
+        setCurrentStepIndex(nextStep);
       }
     } else if (isRevisitMode) {
       navigate(category ? `/category/${category.id}` : '/');
