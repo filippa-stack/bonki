@@ -234,6 +234,14 @@
     "partner_continuing": "Din partner har återvänt till samtalet",
     "partner_continuing_hint": "Ni kan fortsätta tillsammans när du är redo."
   },
+  "topic_proposal": {
+    "title": "{{name}} vill börja ett nytt samtal",
+    "accept": "Börja samtalet",
+    "decline": "Inte nu",
+    "partner_fallback": "Din partner",
+    "proposed_toast": "Du har föreslagit ett nytt samtal. Din partner ser det nästa gång.",
+    "your_proposal": "Du har föreslagit det här samtalet"
+  },
   "sync_prompt": {
     "message": "Ni har kommit vidare i samtalet tillsammans. Det finns några frågor kvar att gå igenom innan ni är i fas.",
     "current_position": "Nästa steg: {{step}}",

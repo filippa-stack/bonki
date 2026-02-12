@@ -3,15 +3,20 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { useApp } from '@/contexts/AppContext';
+import { useAuth } from '@/contexts/AuthContext';
+import { useCoupleSpace } from '@/hooks/useCoupleSpace';
 import Header from '@/components/Header';
 import ColorPicker from '@/components/ColorPicker';
 import { Plus, Trash2 } from 'lucide-react';
+import { toast } from 'sonner';
 
 export default function Category() {
   const { t } = useTranslation();
   const { categoryId } = useParams<{ categoryId: string }>();
   const navigate = useNavigate();
-  const { getCategoryById, getCardsByCategory, updateCard, updateCardColor, updateCardTextColor, updateCardBorderColor, updateCardDescription, addCard, deleteCard, backgroundColor, getExploredCardsInCategory, getCategoryStatus, journeyState } = useApp();
+  const { getCategoryById, getCardsByCategory, updateCard, updateCardColor, updateCardTextColor, updateCardBorderColor, updateCardDescription, addCard, deleteCard, backgroundColor, getExploredCardsInCategory, getCategoryStatus, journeyState, proposeCard } = useApp();
+  const { user } = useAuth();
+  const { memberCount } = useCoupleSpace();
   
   const category = categoryId ? getCategoryById(categoryId) : undefined;
   const cards = categoryId ? getCardsByCategory(categoryId) : [];
@@ -104,7 +109,16 @@ export default function Category() {
                 card={card}
                 index={index}
                 explored={isExplored}
-                onNavigate={() => navigate(`/card/${card.id}`)}
+                onNavigate={() => {
+                  // If partner connected and card not yet started, propose instead of navigate
+                  if (memberCount >= 2 && categoryId && !isExplored) {
+                    proposeCard(categoryId, card.id);
+                    toast(t('topic_proposal.proposed_toast'));
+                    navigate(`/card/${card.id}`);
+                  } else {
+                    navigate(`/card/${card.id}`);
+                  }
+                }}
                 onUpdate={updateCard}
                 onColorChange={(color) => updateCardColor(card.id, color)}
                 onTextColorChange={(textColor) => updateCardTextColor(card.id, textColor)}
