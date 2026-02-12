@@ -80,7 +80,15 @@ export default function CardView() {
   const isReturningUser = !!(isActiveSession || existingConversation);
 
   // For revisit mode, use local navigation; otherwise follow shared step
-  const [revisitStepIndex, setRevisitStepIndex] = useState(0);
+  const initialRevisitStep = (() => {
+    const stepParam = searchParams.get('step');
+    if (stepParam !== null) {
+      const parsed = parseInt(stepParam, 10);
+      if (!isNaN(parsed) && parsed >= 0 && parsed < STEP_ORDER.length) return parsed;
+    }
+    return 0;
+  })();
+  const [revisitStepIndex, setRevisitStepIndex] = useState(initialRevisitStep);
 
   // The step the user sees
   const currentStepIndex = isRevisitMode ? revisitStepIndex : sharedStepIndex;
@@ -504,11 +512,14 @@ export default function CardView() {
                   transition={{ duration: 0.5 }}
                   className="my-8 p-6 rounded-2xl border border-border bg-card text-center space-y-4"
                 >
+                  <p className="text-xs font-medium text-foreground/80 uppercase tracking-wider">
+                    Sparat.
+                  </p>
                   <p className="text-sm text-muted-foreground leading-relaxed">
                     Väntar tills ni båda är redo.
                   </p>
 
-                  <div className="flex flex-col items-center gap-3">
+                  <div className="flex flex-col items-center gap-3 pt-1">
                     <Button
                       variant="ghost"
                       size="sm"
@@ -527,6 +538,10 @@ export default function CardView() {
                       Lägg till en tanke
                     </button>
                   </div>
+
+                  <p className="text-xs text-muted-foreground/50 italic pt-1">
+                    Det här påverkar inte ert gemensamma tempo.
+                  </p>
                 </motion.div>
               ) : (
                 <div className="py-8 border-t border-divider space-y-4">

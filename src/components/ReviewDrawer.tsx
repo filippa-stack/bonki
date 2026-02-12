@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
-import { X, RotateCcw } from 'lucide-react';
+import { X, RotateCcw, ArrowRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import {
@@ -101,20 +101,28 @@ export default function ReviewDrawer({ open, onClose, card }: ReviewDrawerProps)
               );
             })}
 
-            {/* Revisit entry */}
-            <div className="border-t border-divider pt-6 space-y-3">
-              <Button
-                variant="ghost"
-                size="sm"
-                className="w-full gap-2 text-muted-foreground"
-                onClick={() => {
-                  onClose();
-                  navigate(`/card/${card.id}?revisit=true`);
-                }}
-              >
-                <RotateCcw className="w-4 h-4" />
+            {/* Revisit earlier steps */}
+            <div className="border-t border-divider pt-6 space-y-4">
+              <p className="text-xs text-muted-foreground uppercase tracking-wider">
                 Återbesök tidigare steg
-              </Button>
+              </p>
+              <div className="grid grid-cols-2 gap-2">
+                {STEP_ORDER.map((stepType, idx) => (
+                  <Button
+                    key={stepType}
+                    variant="outline"
+                    size="sm"
+                    className="gap-1.5 text-xs justify-start"
+                    onClick={() => {
+                      onClose();
+                      navigate(`/card/${card.id}?revisit=true&step=${idx}`);
+                    }}
+                  >
+                    <ArrowRight className="w-3 h-3" />
+                    {STEP_LABELS[stepType]}
+                  </Button>
+                ))}
+              </div>
               <p className="text-xs text-muted-foreground/50 italic text-center">
                 Det här påverkar inte ert gemensamma tempo.
               </p>
