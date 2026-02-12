@@ -69,7 +69,7 @@ export default function CategoryCard({
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4, delay: index * 0.1 }}
       onClick={onClick}
-      className="w-full text-left card-reflection group cursor-pointer border rounded-2xl item-colors py-6 px-5"
+      className="w-full text-left card-reflection group cursor-pointer border rounded-2xl item-colors py-5 px-5"
       style={{ 
         '--item-bg': category.color || undefined,
         '--item-border': category.borderColor || undefined,
@@ -109,7 +109,7 @@ export default function CategoryCard({
         </div>
         
         {/* Text content - full width below */}
-        <div className="w-full space-y-2">
+        <div className="w-full space-y-1.5">
           {isEditingTitle ? (
             <input
               value={title}
@@ -118,12 +118,12 @@ export default function CategoryCard({
               onClick={(e) => e.stopPropagation()}
               onKeyDown={(e) => { if (e.key === 'Enter') handleTitleBlur(); }}
               autoFocus
-              className="w-full text-base sm:text-lg md:text-xl font-medium text-center bg-transparent border-none outline-none item-text"
+              className="w-full text-base sm:text-lg font-serif font-medium text-center bg-transparent border-none outline-none item-text leading-snug"
               style={{ '--item-text': category.textColor || undefined } as React.CSSProperties}
             />
           ) : (
             <h3 
-              className="text-base sm:text-lg md:text-xl font-medium text-center group-hover:text-primary transition-colors item-text cursor-text"
+              className="text-base sm:text-lg font-serif font-medium text-center group-hover:text-primary transition-colors item-text cursor-text leading-snug"
               style={{ '--item-text': category.textColor || undefined } as React.CSSProperties}
               onClick={handleTitleClick}
             >
