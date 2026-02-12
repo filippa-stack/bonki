@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
@@ -11,10 +11,9 @@ import SectionView from '@/components/SectionView';
 import CardReflections from '@/components/CardReflections';
 import StepProgressIndicator from '@/components/StepProgressIndicator';
 import PauseDialog from '@/components/PauseDialog';
-import SyncPrompt from '@/components/SyncPrompt';
 import WaitingForPartner from '@/components/WaitingForPartner';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, ArrowRight, Check, Heart, Home, RotateCcw } from 'lucide-react';
+import { ArrowRight, Check, Home, RotateCcw } from 'lucide-react';
 
 const sectionTypeLabels: Record<string, string> = {
   opening: 'Öppnare',
@@ -39,17 +38,14 @@ export default function CardView() {
   const [searchParams] = useSearchParams();
   const isRevisitMode = searchParams.get('revisit') === 'true';
   const { t } = useTranslation();
-  const { 
-    getConversationForCard, 
-    saveConversation, 
-    getCardById, 
-    getCategoryById, 
-    backgroundColor,
+  const {
+    getConversationForCard,
+    saveConversation,
+    getCardById,
+    getCategoryById,
     currentSession,
     startSession,
-    updateSessionStep,
     completeSessionStep,
-    endSession,
     pauseSession,
     journeyState,
     proposeCard,
@@ -57,102 +53,49 @@ export default function CardView() {
   const { user } = useAuth();
   const { memberCount } = useCoupleSpace();
 
-
-
   const card = cardId ? getCardById(cardId) : undefined;
   const category = card ? getCategoryById(card.categoryId) : undefined;
   const existingConversation = cardId ? getConversationForCard(cardId) : undefined;
 
-  // Determine initial step from session or saved conversation
-  // Uses per-user completions when available (couple mode), falls back to shared completedSteps
-  // Returns -1 if all steps are completed (signals "route out")
-  const getInitialStepIndex = () => {
-    let completed: number[] = [];
+  // ─── Derive per-user completedSteps from journeyState.sessionProgress ───
+  const uid = user?.id || 'local';
+  const myCompletedSteps: number[] =
+    (cardId && journeyState?.sessionProgress?.[cardId]?.perUser?.[uid]?.completedSteps) || [];
 
-    if (currentSession?.cardId === cardId) {
-      // In couple mode, use this user's own completions to determine resume point
-      const myCompletions = user?.id && currentSession.userCompletions?.[user.id];
-      completed = myCompletions || currentSession.completedSteps;
-    } else if (existingConversation && card) {
-      completed = existingConversation.completedSteps ?? [];
-    }
+  // ─── Shared step index: driven entirely by currentSession ───
+  const isActiveSession = !!(currentSession && currentSession.cardId === cardId);
+  const sharedStepIndex = isActiveSession ? currentSession!.currentStepIndex : 0;
 
-    // Find the first step NOT in completed
-    const nextIncomplete = STEP_ORDER.findIndex((_, i) => !completed.includes(i));
-    return nextIncomplete; // -1 if all completed
-  };
-
-  const getInitialCompletedSteps = () => {
-    if (currentSession?.cardId === cardId) {
-      // Return shared completedSteps (mutually confirmed) for progress display
-      return currentSession.completedSteps;
-    }
-    if (existingConversation) {
-      return existingConversation.completedSteps ?? [];
-    }
-    return [];
-  };
-
+  // ─── Determine if card is fully explored ───
   const isFullyExplored = cardId ? (journeyState?.exploredCardIds?.includes(cardId) ?? false) : false;
-  const initialCompleted = getInitialCompletedSteps();
-  const allStepsCompleted = STEP_ORDER.every((_, i) => initialCompleted.includes(i));
-  const initialStep = getInitialStepIndex(); // -1 if all completed
-  const isReturningUser = !!(currentSession?.cardId === cardId || existingConversation);
-  const [currentStepIndex, setCurrentStepIndex] = useState(isRevisitMode ? 0 : Math.max(0, initialStep));
-  const [completedSteps, setCompletedSteps] = useState<number[]>(initialCompleted);
-  // Revisit mode: skip all gates, go straight to step view
+  const allStepsCompleted = STEP_ORDER.every((_, i) => myCompletedSteps.includes(i));
+
+  // ─── Determine initial view state ───
+  const isReturningUser = !!(isActiveSession || existingConversation);
+
+  // For revisit mode, use local navigation; otherwise follow shared step
+  const [revisitStepIndex, setRevisitStepIndex] = useState(0);
+
+  // The step the user sees
+  const currentStepIndex = isRevisitMode ? revisitStepIndex : sharedStepIndex;
+
+  // Has the current user already completed the current shared step?
+  const userCompletedCurrentStep = !isRevisitMode && myCompletedSteps.includes(currentStepIndex);
+
+  // View gates
   const [showOverview, setShowOverview] = useState(!isRevisitMode && !isReturningUser);
-  const [showReentry, setShowReentry] = useState(!isRevisitMode && isReturningUser && !isFullyExplored && !allStepsCompleted && initialStep >= 0);
-  // If all steps completed or fully explored, go straight to completion (unless revisiting)
-  const [showCompletion, setShowCompletion] = useState(!isRevisitMode && isReturningUser && (isFullyExplored || allStepsCompleted || initialStep < 0));
+  const [showReentry, setShowReentry] = useState(
+    !isRevisitMode && isReturningUser && !isFullyExplored && !allStepsCompleted
+  );
+  const [showCompletion, setShowCompletion] = useState(
+    !isRevisitMode && isReturningUser && (isFullyExplored || allStepsCompleted)
+  );
   const [transitionMessage, setTransitionMessage] = useState<string | null>(null);
 
-  // Determine if current user completed this step but shared session hasn't advanced yet
-  const userCompletedCurrentStep = (() => {
-    if (!user?.id || !currentSession || memberCount < 2) return false;
-    const myCompletions = currentSession.userCompletions?.[user.id] || [];
-    return myCompletions.includes(currentStepIndex) && !completedSteps.includes(currentStepIndex);
-  })();
-
-  // Catch-up mode state: sequential progression toward partner's position
-  const [catchUpTarget, setCatchUpTarget] = useState<number | null>(null);
-  const [syncOffer, setSyncOffer] = useState<number | null>(null);
-  const localStepRef = useRef(currentStepIndex);
-
-  // Track user's own step changes (user-initiated)
-  useEffect(() => {
-    localStepRef.current = currentStepIndex;
-    // Auto-end catch-up when user reaches the target
-    if (catchUpTarget !== null && currentStepIndex >= catchUpTarget) {
-      setCatchUpTarget(null);
-    }
-  }, [currentStepIndex, catchUpTarget]);
-
-  // Detect when shared session advances beyond user's local position
-  useEffect(() => {
-    if (!currentSession || currentSession.cardId !== cardId) return;
-    const sharedStep = currentSession.currentStepIndex;
-    // Only offer catch-up if shared position is ahead of where the user is
-    if (sharedStep > localStepRef.current && sharedStep !== currentStepIndex) {
-      setSyncOffer(sharedStep);
-    }
-  }, [currentSession?.currentStepIndex, cardId]);
-
-  const handleCatchUp = () => {
-    if (syncOffer !== null) {
-      setCatchUpTarget(syncOffer);
-      setSyncOffer(null);
-    }
-  };
-
-  const handleSyncStay = () => {
-    setSyncOffer(null);
-  };
-
-  // Start or resume session when entering card (skip in revisit mode and completed cards)
+  // ─── Start or resume session on mount (skip revisit and completed) ───
   useEffect(() => {
     if (isRevisitMode) return;
-    if (allStepsCompleted || isFullyExplored) return; // Don't restart a completed conversation
+    if (allStepsCompleted || isFullyExplored) return;
     if (card && category) {
       if (!currentSession || currentSession.cardId !== cardId) {
         startSession(category.id, card.id);
@@ -160,15 +103,39 @@ export default function CardView() {
     }
   }, [cardId]);
 
+  // ─── Save conversation for local resume ───
   useEffect(() => {
     if (isRevisitMode) return;
     if (card && currentStepIndex >= 0) {
       const currentSection = card.sections.find(s => s.type === STEP_ORDER[currentStepIndex]);
       if (currentSection) {
-        saveConversation(card.id, currentSection.id, currentStepIndex, completedSteps);
+        saveConversation(card.id, currentSection.id, currentStepIndex, myCompletedSteps);
       }
     }
-  }, [currentStepIndex, completedSteps, card]);
+  }, [currentStepIndex, myCompletedSteps.length, card]);
+
+  // ─── Show completion when shared session ends and card is fully explored ───
+  useEffect(() => {
+    if (isRevisitMode) return;
+    if (!showCompletion && isFullyExplored) {
+      setShowCompletion(true);
+    }
+  }, [isFullyExplored, isRevisitMode]);
+
+  // ─── Show transition when shared step advances ───
+  const prevSharedStepRef = useState(sharedStepIndex)[0];
+  useEffect(() => {
+    if (isRevisitMode || showOverview || showReentry || showCompletion) return;
+    // The shared step advanced — show transition
+    if (sharedStepIndex > 0 && sharedStepIndex > prevSharedStepRef) {
+      const prevType = STEP_ORDER[sharedStepIndex - 1];
+      const msgKey = TRANSITION_KEYS[prevType];
+      if (msgKey) {
+        setTransitionMessage(t(msgKey));
+        setTimeout(() => setTransitionMessage(null), 1800);
+      }
+    }
+  }, [sharedStepIndex]);
 
   if (!card) {
     return (
@@ -190,71 +157,37 @@ export default function CardView() {
     scenario: 'card_view.transition_scenario',
   };
 
+  // ─── Handle "Next" press ───
   const handleNextStep = () => {
-    // In revisit mode, don't track progress
-    const updatedCompleted = isRevisitMode
-      ? completedSteps
-      : completedSteps.includes(currentStepIndex)
-        ? completedSteps
-        : [...completedSteps, currentStepIndex];
-
-    if (!isRevisitMode && !completedSteps.includes(currentStepIndex)) {
-      setCompletedSteps(updatedCompleted);
-      completeSessionStep(currentStepIndex);
-      // Advance shared session forward by exactly +1 (forward-only)
-      updateSessionStep(currentStepIndex + 1);
-    }
-
-    // Find the next incomplete step after the current one
-    const findNextIncomplete = (afterIndex: number): number => {
-      for (let i = afterIndex + 1; i < STEP_ORDER.length; i++) {
-        if (!updatedCompleted.includes(i)) return i;
-      }
-      return -1; // all remaining steps are completed
-    };
-
-    const nextStep = isRevisitMode
-      ? (currentStepIndex < STEP_ORDER.length - 1 ? currentStepIndex + 1 : -1)
-      : findNextIncomplete(currentStepIndex);
-
-    if (nextStep >= 0) {
-      const currentType = STEP_ORDER[currentStepIndex];
-      const msgKey = TRANSITION_KEYS[currentType];
-      if (msgKey && !isRevisitMode) {
-        setTransitionMessage(t(msgKey));
-        setTimeout(() => {
-          setTransitionMessage(null);
-          setCurrentStepIndex(nextStep);
-        }, 1800);
+    if (isRevisitMode) {
+      // In revisit mode, just navigate linearly
+      if (revisitStepIndex < STEP_ORDER.length - 1) {
+        setRevisitStepIndex(revisitStepIndex + 1);
       } else {
-        setCurrentStepIndex(nextStep);
+        navigate(category ? `/category/${category.id}` : '/');
       }
-    } else if (isRevisitMode) {
-      navigate(category ? `/category/${category.id}` : '/');
-    } else {
-      endSession();
-      setShowCompletion(true);
+      return;
     }
+
+    // Mark the current step as completed for THIS user only
+    if (!myCompletedSteps.includes(currentStepIndex)) {
+      completeSessionStep(currentStepIndex);
+    }
+    // UI stays on the same step — shared step will advance when both complete
   };
 
   const handleStartFromOverview = () => {
     setShowOverview(false);
   };
 
-  // Completion screen
+  // ─── Completion screen ───
   if (showCompletion) {
     const suggestedCardId = journeyState?.suggestedNextCardId;
     const suggestedCard = suggestedCardId ? getCardById(suggestedCardId) : null;
     const suggestedCategory = suggestedCard ? getCategoryById(suggestedCard.categoryId) : null;
 
-    // Partner-aware messaging: check if partner has also reached the final step
-    const partnerAlsoCompleted = memberCount >= 2
-      && currentSession === undefined
-      && isFullyExplored;
-    // If we're in a couple and the card is fully explored by both, show "together" copy
-    // Otherwise show "solo pause" copy
     const completionMessageKey = memberCount >= 2
-      ? (allStepsCompleted && partnerAlsoCompleted
+      ? (isFullyExplored
         ? 'card_view.completion_message_together'
         : 'card_view.completion_message_solo')
       : 'card_view.completion_message';
@@ -278,7 +211,6 @@ export default function CardView() {
               animate={{ scale: 1, opacity: 1 }}
               transition={{ delay: 0.3, duration: 0.5 }}
             >
-              <Heart className="w-6 h-6 text-primary/60 mx-auto mb-4" />
               <h2 className="text-xl font-serif text-foreground leading-snug">
                 {card.title}
               </h2>
@@ -356,7 +288,7 @@ export default function CardView() {
     );
   }
 
-  // Re-entry screen for returning users
+  // ─── Re-entry screen ───
   if (showReentry) {
     const resumeStepLabel = STEP_LABELS[currentStepIndex] || STEP_LABELS[0];
     return (
@@ -416,7 +348,7 @@ export default function CardView() {
     );
   }
 
-  // Overview screen
+  // ─── Overview screen ───
   if (showOverview) {
     return (
       <div className="min-h-screen page-bg">
@@ -425,7 +357,7 @@ export default function CardView() {
           showBack
           backTo={category ? `/category/${category.id}` : '/'}
         />
-        
+
         <div className="px-6 pt-8 pb-6">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -438,11 +370,11 @@ export default function CardView() {
             {card.subtitle && (
               <p className="text-gentle italic mb-8">{card.subtitle}</p>
             )}
-            
+
             <p className="text-sm text-muted-foreground mb-8 leading-relaxed">
               Fyra steg som hjälper er att hitta varandra. Gå i er egen takt.
             </p>
-            
+
             {/* Step overview */}
             <div className="space-y-3 mb-10 text-left">
               {STEP_ORDER.map((stepType, index) => {
@@ -473,7 +405,7 @@ export default function CardView() {
                 );
               })}
             </div>
-            
+
             <Button
               onClick={handleStartFromOverview}
               size="lg"
@@ -488,6 +420,7 @@ export default function CardView() {
     );
   }
 
+  // ─── Active conversation view ───
   return (
     <div className="min-h-screen page-bg">
       <Header
@@ -500,19 +433,10 @@ export default function CardView() {
       <div className="px-4 pt-6 pb-4 border-b border-divider">
         <StepProgressIndicator
           currentStepIndex={currentStepIndex}
-          completedSteps={completedSteps}
+          completedSteps={myCompletedSteps}
         />
       </div>
 
-      {/* Sync prompt when partner is ahead */}
-      {syncOffer !== null && (
-        <SyncPrompt
-          partnerStepIndex={syncOffer}
-          stepLabels={STEP_LABELS}
-          onCatchUp={handleCatchUp}
-          onStay={handleSyncStay}
-        />
-      )}
       <div className="px-6 pt-6 pb-4">
         <motion.h1
           initial={{ opacity: 0, y: 10 }}
@@ -563,24 +487,18 @@ export default function CardView() {
               transition={{ duration: 0.3 }}
             >
               <SectionView section={currentSection} card={card} />
-              
-              {/* Waiting state or Navigation Buttons */}
+
+              {/* Navigation / waiting state */}
               {userCompletedCurrentStep ? (
-                <WaitingForPartner />
+                <div className="space-y-2 my-6">
+                  <WaitingForPartner />
+                  <p className="text-xs text-muted-foreground/60 text-center italic">
+                    {t('card_view.waiting_both', 'Vi fortsätter härifrån när båda reflektionerna är inne.')}
+                  </p>
+                </div>
               ) : (
                 <div className="py-8 border-t border-divider space-y-4">
                   <div className="flex flex-col sm:flex-row justify-center md:justify-start gap-3">
-                    {currentStepIndex > 0 && (
-                      <Button
-                        onClick={() => setCurrentStepIndex(currentStepIndex - 1)}
-                        variant="outline"
-                        size="lg"
-                        className="gap-2"
-                      >
-                        <ArrowLeft className="w-4 h-4" />
-                        Tillbaka
-                      </Button>
-                    )}
                     <Button
                       onClick={handleNextStep}
                       size="lg"
