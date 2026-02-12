@@ -525,46 +525,44 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const startSession = (categoryId: string, cardId: string, { force = false }: { force?: boolean } = {}) => {
     const now = new Date();
 
-    // If we already have an active session for this exact card, just touch lastActivityAt
-    if (state.currentSession?.cardId === cardId) {
-      setState((prev) => ({
+    setState((prev) => {
+      // If we already have an active session for this exact card, just touch lastActivityAt
+      if (prev.currentSession?.cardId === cardId) {
+        return {
+          ...prev,
+          currentSession: { ...prev.currentSession, lastActivityAt: now },
+        };
+      }
+
+      // If there's an active session for a DIFFERENT card, only allow override via explicit action
+      if (prev.currentSession && prev.currentSession.cardId !== cardId && !force) {
+        return prev;
+      }
+
+      // Check for existing saved progress for this card using prev state
+      const existingThread = prev.coupleSpace?.conversationThreads.find(t => t.cardId === cardId);
+      const savedCompleted = existingThread?.completedSteps ?? [];
+
+      // Find next incomplete step (first index 0..3 not in completedSteps)
+      const nextIncomplete = STEP_ORDER.findIndex((_, i) => !savedCompleted.includes(i));
+
+      // If all steps completed, do NOT create an active session — let completion UX handle it
+      if (nextIncomplete === -1 && savedCompleted.length >= STEP_ORDER.length) {
+        return prev;
+      }
+
+      return {
         ...prev,
-        currentSession: prev.currentSession
-          ? { ...prev.currentSession, lastActivityAt: now }
-          : prev.currentSession,
-      }));
-      return;
-    }
-
-    // If there's an active session for a DIFFERENT card, only allow override via explicit action
-    if (state.currentSession && state.currentSession.cardId !== cardId && !force) {
-      return;
-    }
-
-    // Check for existing saved progress for this card
-    const existingThread = state.coupleSpace?.conversationThreads.find(t => t.cardId === cardId);
-    const savedCompleted = existingThread?.completedSteps ?? [];
-
-    // Find next incomplete step (first index 0..3 not in completedSteps)
-    const nextIncomplete = STEP_ORDER.findIndex((_, i) => !savedCompleted.includes(i));
-
-    // If all steps completed, do NOT create an active session — let completion UX handle it
-    if (nextIncomplete === -1 && savedCompleted.length >= STEP_ORDER.length) {
-      setSessionDismissed(false);
-      return;
-    }
-
-    setState((prev) => ({
-      ...prev,
-      currentSession: {
-        categoryId,
-        cardId,
-        currentStepIndex: nextIncomplete >= 0 ? nextIncomplete : 0,
-        completedSteps: savedCompleted,
-        startedAt: now,
-        lastActivityAt: now,
-      },
-    }));
+        currentSession: {
+          categoryId,
+          cardId,
+          currentStepIndex: nextIncomplete >= 0 ? nextIncomplete : 0,
+          completedSteps: savedCompleted,
+          startedAt: now,
+          lastActivityAt: now,
+        },
+      };
+    });
     setSessionDismissed(false);
   };
 
