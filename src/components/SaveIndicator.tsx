@@ -37,7 +37,7 @@ export default function SaveIndicator({ status, error, lastSavedAt }: SaveIndica
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -10 }}
-          className="flex items-center gap-1.5 text-green-600 dark:text-green-400"
+          className="flex items-center gap-1.5 text-primary"
         >
           <Check className="w-3.5 h-3.5" />
           <span className="text-xs">{t('save_indicator.saved')}</span>
