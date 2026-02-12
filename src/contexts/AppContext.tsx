@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode, useCallback, useRef } from 'react';
-import { CoupleSpace, ConversationThread, Reflection, AppState, Category, Card, JourneyState, ReflectionsData, PrivateNote, SharedNote } from '@/types';
+import { CoupleSpace, ConversationThread, Reflection, AppState, Category, Card, JourneyState, ReflectionsData, PrivateNote, SharedNote, TopicProposal } from '@/types';
 import { categories as initialCategories, cards as initialCards } from '@/data/content';
 import { useSettingsSync, SaveStatus } from '@/hooks/useSettingsSync';
 import { useAuth } from '@/contexts/AuthContext';
@@ -59,6 +59,10 @@ interface AppContextType {
   journeyState: JourneyState | undefined;
   getCategoryStatus: (categoryId: string) => 'not_started' | 'in_progress' | 'explored';
   getExploredCardsInCategory: (categoryId: string) => number;
+  // Topic proposal
+  proposeCard: (categoryId: string, cardId: string) => void;
+  acceptProposal: () => void;
+  declineProposal: () => void;
   // Reflections (private/shared)
   getPrivateNote: (cardId: string) => PrivateNote | undefined;
   getSharedNote: (cardId: string) => SharedNote | undefined;
@@ -701,6 +705,54 @@ export function AppProvider({ children }: { children: ReactNode }) {
 
   const hasActiveSession = !sessionDismissed && !!state.currentSession;
 
+  // Topic proposal functions
+  const proposeCard = (categoryId: string, cardId: string) => {
+    if (!user?.id) return;
+    setState((prev) => ({
+      ...prev,
+      journeyState: {
+        ...(prev.journeyState || {
+          currentCategoryId: null,
+          lastOpenedCardId: null,
+          lastCompletedCardId: null,
+          suggestedNextCardId: null,
+          pausedAt: null,
+          updatedAt: new Date().toISOString(),
+          exploredCardIds: [],
+        }),
+        topicProposal: {
+          cardId,
+          categoryId,
+          proposedByUserId: user.id,
+          proposedAt: new Date().toISOString(),
+        },
+        updatedAt: new Date().toISOString(),
+      },
+    }));
+  };
+
+  const acceptProposal = () => {
+    const proposal = state.journeyState?.topicProposal;
+    if (!proposal) return;
+    // Clear proposal and start the session
+    setState((prev) => ({
+      ...prev,
+      journeyState: prev.journeyState
+        ? { ...prev.journeyState, topicProposal: null, updatedAt: new Date().toISOString() }
+        : prev.journeyState,
+    }));
+    startSessionWithJourney(proposal.categoryId, proposal.cardId);
+  };
+
+  const declineProposal = () => {
+    setState((prev) => ({
+      ...prev,
+      journeyState: prev.journeyState
+        ? { ...prev.journeyState, topicProposal: null, updatedAt: new Date().toISOString() }
+        : prev.journeyState,
+    }));
+  };
+
   // Category status helpers
   const getCategoryStatus = useCallback((categoryId: string): 'not_started' | 'in_progress' | 'explored' => {
     const categoryCards = cards.filter(c => c.categoryId === categoryId);
@@ -859,6 +911,9 @@ export function AppProvider({ children }: { children: ReactNode }) {
         journeyState: state.journeyState,
         getCategoryStatus,
         getExploredCardsInCategory,
+        proposeCard,
+        acceptProposal,
+        declineProposal,
         getPrivateNote,
         getSharedNote,
         savePrivateNote,
