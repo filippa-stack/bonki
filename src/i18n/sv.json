@@ -152,6 +152,7 @@
     "mark_important": "Viktigt för oss",
     "important_limit_reached": "Ni kan ha max tre viktiga åt gången.",
     "edit": "Redigera",
+    "last_updated": "Senast uppdaterad: {{date}}",
     "prompt_note_placeholder": "Vad väcker detta hos dig?",
     "shared_confirmation": "Er reflektion är nu en del av ert gemensamma utrymme.",
     "continue_conversation": "Fortsätt samtalet",
