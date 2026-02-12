@@ -53,14 +53,25 @@ export default function CardView() {
   const existingConversation = cardId ? getConversationForCard(cardId) : undefined;
 
   // Determine initial step from session or saved conversation
+  // Always advance past already-completed steps to prevent reopening finished content
   const getInitialStepIndex = () => {
+    let resumeIndex = 0;
+    let completed: number[] = [];
+
     if (currentSession?.cardId === cardId) {
-      return currentSession.currentStepIndex;
+      resumeIndex = currentSession.currentStepIndex;
+      completed = currentSession.completedSteps;
+    } else if (existingConversation && card) {
+      resumeIndex = existingConversation.lastStepIndex ?? 0;
+      completed = existingConversation.completedSteps ?? [];
     }
-    if (existingConversation && card) {
-      return existingConversation.lastStepIndex ?? 0;
+
+    // If the resume step is already completed, advance to the next incomplete step
+    while (completed.includes(resumeIndex) && resumeIndex < STEP_ORDER.length - 1) {
+      resumeIndex++;
     }
-    return 0;
+
+    return resumeIndex;
   };
 
   const getInitialCompletedSteps = () => {
@@ -74,13 +85,16 @@ export default function CardView() {
   };
 
   const isFullyExplored = cardId ? (journeyState?.exploredCardIds?.includes(cardId) ?? false) : false;
+  // Also treat as fully explored if all 4 steps are in the completed list
+  const initialCompleted = getInitialCompletedSteps();
+  const allStepsCompleted = STEP_ORDER.every((_, i) => initialCompleted.includes(i));
   const isReturningUser = !!(currentSession?.cardId === cardId || existingConversation);
   const [currentStepIndex, setCurrentStepIndex] = useState(getInitialStepIndex);
-  const [completedSteps, setCompletedSteps] = useState<number[]>(getInitialCompletedSteps);
+  const [completedSteps, setCompletedSteps] = useState<number[]>(initialCompleted);
   const [showOverview, setShowOverview] = useState(!isReturningUser);
-  const [showReentry, setShowReentry] = useState(isReturningUser && !isFullyExplored);
+  const [showReentry, setShowReentry] = useState(isReturningUser && !isFullyExplored && !allStepsCompleted);
   // If navigating to an already-completed card, go straight to completion
-  const [showCompletion, setShowCompletion] = useState(isReturningUser && isFullyExplored);
+  const [showCompletion, setShowCompletion] = useState(isReturningUser && (isFullyExplored || allStepsCompleted));
   const [transitionMessage, setTransitionMessage] = useState<string | null>(null);
 
   // Sync prompt state: detect when partner advanced ahead
