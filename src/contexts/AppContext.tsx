@@ -522,8 +522,24 @@ export function AppProvider({ children }: { children: ReactNode }) {
     .sort((a, b) => b.lastActivityAt.getTime() - a.lastActivityAt.getTime())[0] || null;
 
   // Session management functions
-  const startSession = (categoryId: string, cardId: string) => {
+  const startSession = (categoryId: string, cardId: string, { force = false }: { force?: boolean } = {}) => {
     const now = new Date();
+
+    // If we already have an active session for this exact card, just touch lastActivityAt
+    if (state.currentSession?.cardId === cardId) {
+      setState((prev) => ({
+        ...prev,
+        currentSession: prev.currentSession
+          ? { ...prev.currentSession, lastActivityAt: now }
+          : prev.currentSession,
+      }));
+      return;
+    }
+
+    // If there's an active session for a DIFFERENT card, only allow override via explicit action
+    if (state.currentSession && state.currentSession.cardId !== cardId && !force) {
+      return;
+    }
 
     // Check for existing saved progress for this card
     const existingThread = state.coupleSpace?.conversationThreads.find(t => t.cardId === cardId);
@@ -681,8 +697,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
   };
 
   // Update journey state when starting a session
-  const startSessionWithJourney = (categoryId: string, cardId: string) => {
-    startSession(categoryId, cardId);
+  const startSessionWithJourney = (categoryId: string, cardId: string, opts?: { force?: boolean }) => {
+    startSession(categoryId, cardId, { force: opts?.force ?? true });
     setState((prev) => ({
       ...prev,
       journeyState: {
