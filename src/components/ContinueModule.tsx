@@ -1,6 +1,8 @@
 import { useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
+import { format } from 'date-fns';
+import { sv } from 'date-fns/locale';
 import { ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useSiteSettings } from '@/contexts/SiteSettingsContext';
@@ -14,17 +16,10 @@ interface ContinueModuleProps {
   lastActiveAt?: string; // ISO date of last activity
 }
 
-function getTimeCue(lastActiveAt: string | undefined, t: (key: string, fallback: string) => string): string | null {
+function getTimeCue(lastActiveAt: string | undefined): string | null {
   if (!lastActiveAt) return null;
-  const elapsed = Date.now() - new Date(lastActiveAt).getTime();
-  const hours = elapsed / (1000 * 60 * 60);
-  const days = Math.floor(hours / 24);
-
-  if (hours < 1) return t('continue.cue_just_now', 'Ni var precis här.');
-  if (hours < 24) return t('continue.cue_today', 'Ni pratade om det här tidigare idag.');
-  if (days === 1) return t('continue.cue_yesterday', 'Ni började prata om det här igår.');
-  if (days < 7) return t('continue.cue_days_ago', 'Ni öppnade det här för några dagar sedan.');
-  return t('continue.cue_while_ago', 'Det har gått ett tag. Ert samtal finns kvar.');
+  const date = new Date(lastActiveAt);
+  return `Senast: ${format(date, 'd MMM', { locale: sv })}`;
 }
 
 export default function ContinueModule({
@@ -37,7 +32,7 @@ export default function ContinueModule({
   const { t } = useTranslation();
   const { settings, updateSettings } = useSiteSettings();
 
-  const timeCue = useMemo(() => getTimeCue(lastActiveAt, t), [lastActiveAt, t]);
+  const timeCue = useMemo(() => getTimeCue(lastActiveAt), [lastActiveAt]);
 
   const textStyle = settings.continueModuleTextColor
     ? { color: settings.continueModuleTextColor }
