@@ -243,14 +243,14 @@ export default function CardView() {
             </motion.p>
 
             <p className="text-xs text-muted-foreground/60 leading-relaxed">
-              Ni behöver inte göra något mer — men här finns några vägar vidare.
+              Ni kan bara landa här en stund. Nästa steg kan ni ta senare.
             </p>
 
             <motion.div
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 1.0, duration: 0.5 }}
-              className="pt-4 space-y-3"
+              className="pt-3 space-y-3"
             >
               {suggestedCard && suggestedCategory && memberCount >= 2 ? (
                 <Button
