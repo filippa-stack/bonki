@@ -310,10 +310,48 @@ export default function Home() {
       {/* Journey continue module */}
       {(() => {
         const exploredIds = journeyState?.exploredCardIds || [];
+        const lastCompletedId = journeyState?.lastCompletedCardId;
         const suggestedCardId = journeyState?.suggestedNextCardId 
           || (journeyState?.lastOpenedCardId && !exploredIds.includes(journeyState.lastOpenedCardId) ? journeyState.lastOpenedCardId : null);
         const suggestedCard = suggestedCardId ? getCardById(suggestedCardId) : null;
         const suggestedCategory = suggestedCard ? getCategoryById(suggestedCard.categoryId) : null;
+
+        // If we just completed a card and the suggested next is NOT the same as last opened
+        // (i.e. it's a new suggestion, not an in-progress card), show completion context
+        const lastCompletedCard = lastCompletedId ? getCardById(lastCompletedId) : null;
+        const lastCompletedCategory = lastCompletedCard ? getCategoryById(lastCompletedCard.categoryId) : null;
+        const isPostCompletion = lastCompletedId && suggestedCardId && lastCompletedId !== suggestedCardId
+          && exploredIds.includes(lastCompletedId);
+
+        // Post-completion: show the completed card context, not the next suggestion directly
+        if (isPostCompletion && lastCompletedCard && lastCompletedCategory) {
+          return (
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+              className="px-6 mb-10"
+            >
+              <div className="rounded-2xl border border-border bg-card p-6 text-center space-y-4">
+                <p className="font-serif text-lg text-foreground">{lastCompletedCard.title}</p>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  {t('card_view.completion_message')}
+                </p>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="text-muted-foreground"
+                  onClick={() => {
+                    const el = document.getElementById('category-section');
+                    el?.scrollIntoView({ behavior: 'smooth' });
+                  }}
+                >
+                  {t('general.choose_another')}
+                </Button>
+              </div>
+            </motion.div>
+          );
+        }
         
         if (suggestedCard && suggestedCategory) {
           return (

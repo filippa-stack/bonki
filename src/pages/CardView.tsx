@@ -3,6 +3,9 @@ import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { useApp } from '@/contexts/AppContext';
+import { useAuth } from '@/contexts/AuthContext';
+import { useCoupleSpace } from '@/hooks/useCoupleSpace';
+import { toast } from 'sonner';
 import Header from '@/components/Header';
 import SectionView from '@/components/SectionView';
 import CardReflections from '@/components/CardReflections';
@@ -48,7 +51,10 @@ export default function CardView() {
     endSession,
     pauseSession,
     journeyState,
+    proposeCard,
   } = useApp();
+  const { user } = useAuth();
+  const { memberCount } = useCoupleSpace();
 
   const card = cardId ? getCardById(cardId) : undefined;
   const category = card ? getCategoryById(card.categoryId) : undefined;
@@ -269,7 +275,26 @@ export default function CardView() {
               transition={{ delay: 1.0, duration: 0.5 }}
               className="pt-4 space-y-3"
             >
-              {suggestedCard && suggestedCategory && (
+              {suggestedCard && suggestedCategory && memberCount >= 2 ? (
+                <>
+                  <Button
+                    onClick={() => {
+                      proposeCard(suggestedCategory.id, suggestedCard.id);
+                      toast(t('topic_proposal.proposed_toast'));
+                      navigate('/');
+                    }}
+                    variant="outline"
+                    size="lg"
+                    className="w-full gap-2"
+                  >
+                    {t('card_view.completion_propose')}
+                    <ArrowRight className="w-4 h-4" />
+                  </Button>
+                  <p className="text-xs text-muted-foreground/70">
+                    {suggestedCategory.title} · {suggestedCard.title}
+                  </p>
+                </>
+              ) : suggestedCard && suggestedCategory ? (
                 <>
                   <Button
                     onClick={() => navigate(`/card/${suggestedCard.id}`)}
@@ -284,7 +309,7 @@ export default function CardView() {
                     {suggestedCategory.title} · {suggestedCard.title}
                   </p>
                 </>
-              )}
+              ) : null}
               <Button
                 onClick={() => navigate(`/card/${card.id}?revisit=true`)}
                 variant="ghost"
