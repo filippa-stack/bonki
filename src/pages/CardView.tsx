@@ -560,27 +560,32 @@ export default function CardView() {
                   </p>
                 </motion.div>
               ) : (
-                <div className="py-8 border-t border-divider space-y-4">
-                  <div className="flex flex-col sm:flex-row justify-center md:justify-start gap-3">
-                    {currentStepIndex > 0 && (
+                <div className="py-8 border-t border-divider space-y-3">
+                  <div className="space-y-2">
+                    <div className="flex flex-col sm:flex-row justify-center md:justify-start gap-3">
+                      {currentStepIndex > 0 && (
+                        <Button
+                          variant="outline"
+                          size="lg"
+                          className="gap-2"
+                          onClick={() => setReviewOpen(true)}
+                        >
+                          <BookOpen className="w-4 h-4" />
+                          {t('card_view.review_edit', 'Se era svar')}
+                        </Button>
+                      )}
                       <Button
-                        variant="outline"
+                        onClick={handleNextStep}
                         size="lg"
                         className="gap-2"
-                        onClick={() => setReviewOpen(true)}
                       >
-                        <BookOpen className="w-4 h-4" />
-                        {t('card_view.review_edit', 'Granska & förfina')}
+                        {t(STEP_CTA_KEYS[STEP_ORDER[currentStepIndex]])}
+                        <ArrowRight className="w-4 h-4" />
                       </Button>
-                    )}
-                    <Button
-                      onClick={handleNextStep}
-                      size="lg"
-                      className="gap-2"
-                    >
-                      {t(STEP_CTA_KEYS[STEP_ORDER[currentStepIndex]])}
-                      <ArrowRight className="w-4 h-4" />
-                    </Button>
+                    </div>
+                    <p className="text-xs text-muted-foreground/70 leading-relaxed text-center md:text-left">
+                      Svara i er egen takt. Ni fortsätter när båda är klara.
+                    </p>
                   </div>
                   <div className="flex justify-center md:justify-start">
                     <PauseDialog onConfirm={() => { pauseSession(); navigate('/'); }} />
