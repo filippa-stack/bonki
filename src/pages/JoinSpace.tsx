@@ -70,9 +70,8 @@ export default function JoinSpace() {
   };
 
   const errorMessages: Record<string, string> = {
-    already_member: t('join.error_already_member', 'Du tillhör redan ett Couple Space.'),
     invalid_invite: t('join.error_invalid_invite', 'Inbjudningslänken är ogiltig eller har gått ut.'),
-    space_full: t('join.error_space_full', 'Det här Couple Space har redan två medlemmar.'),
+    space_full: t('join.error_space_full', 'Det här utrymmet har redan två medlemmar.'),
     no_session: t('join.error_no_session', 'Du behöver logga in först.'),
     network: t('join.error_network', 'Något gick fel. Försök igen.'),
     unknown: t('join.error_unknown', 'Något gick fel. Försök igen.'),
