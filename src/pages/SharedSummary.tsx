@@ -9,7 +9,8 @@ import { useReflectionResponses } from '@/hooks/useReflectionResponses';
 import { supabase } from '@/integrations/supabase/client';
 import Header from '@/components/Header';
 import SharedTimelineItem from '@/components/SharedTimelineItem';
-import { Star, Search, Filter, X, Clock, Heart, MessageCircle, BookOpen } from 'lucide-react';
+import InvitePartner from '@/components/InvitePartner';
+import { Star, Search, Filter, X, Clock, Heart, MessageCircle, BookOpen, CheckCircle2 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import {
@@ -41,7 +42,7 @@ export default function SharedSummary() {
   const navigate = useNavigate();
   const { categories, backgroundColor, getCardById, getCategoryById } = useApp();
   const { user } = useAuth();
-  const { space } = useCoupleSpace();
+  const { space, memberCount, userRole } = useCoupleSpace();
 
   const [searchQuery, setSearchQuery] = useState('');
   const [categoryFilter, setCategoryFilter] = useState<string>('all');
@@ -207,6 +208,41 @@ export default function SharedSummary() {
       <Header title={t('shared.title')} showBack backTo="/" />
 
       <div className="px-6 pt-6 pb-8 max-w-2xl mx-auto">
+        {/* Partner status: invite or connected */}
+        {space && (
+          <motion.div
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="mb-6"
+          >
+            {memberCount < 2 ? (
+              <InvitePartner
+                inviteCode={space.invite_code}
+                inviteToken={space.invite_token}
+                partnerName={userRole === 'partner_b' ? space.partner_b_name : space.partner_a_name}
+                onUpdateName={async (name) => {
+                  const role = userRole === 'partner_b' ? 'partner_b_name' : 'partner_a_name';
+                  await supabase
+                    .from('couple_spaces')
+                    .update({ [role]: name })
+                    .eq('id', space.id);
+                }}
+              />
+            ) : (
+              <div className="flex items-center gap-3 p-4 rounded-lg bg-card border border-border">
+                <CheckCircle2 className="w-5 h-5 text-primary shrink-0" />
+                <div>
+                  <p className="text-sm font-medium text-foreground">
+                    {t('couple_space.partner_connected', 'Din partner är ansluten')}
+                  </p>
+                  <p className="text-xs text-muted-foreground">
+                    {t('couple_space.connected_hint', 'Allt ni delar syns för er båda.')}
+                  </p>
+                </div>
+              </div>
+            )}
+          </motion.div>
+        )}
         {loading ? (
           <div className="py-8 space-y-4 animate-fade-in">
             {[1, 2, 3].map(i => (
