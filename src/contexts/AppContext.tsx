@@ -522,6 +522,10 @@ export function AppProvider({ children }: { children: ReactNode }) {
     .sort((a, b) => b.lastActivityAt.getTime() - a.lastActivityAt.getTime())[0] || null;
 
   // Session management functions
+  // NOTE: currentSession.completedSteps is derived for UI only.
+  // Authoritative completion lives in journeyState.sessionProgress[cardId].perUser[uid].completedSteps.
+  // Do NOT use currentSession.completedSteps or ConversationThread.completedSteps to decide
+  // next step, completion/explored status, or session start position.
   const startSession = (categoryId: string, cardId: string, { force = false }: { force?: boolean } = {}) => {
     const now = new Date();
 
@@ -640,11 +644,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
           updatedCardProgress.perUser[id]?.completedSteps.includes(stepIndex)
         );
 
-      // Derive shared completedSteps from mutual completion
-      const completedSteps =
-        isMutuallyCompleted && !prev.currentSession.completedSteps.includes(stepIndex)
-          ? [...prev.currentSession.completedSteps, stepIndex]
-          : prev.currentSession.completedSteps;
+      // NOTE: completedSteps on currentSession is not authoritative — kept empty.
+      // All completion logic uses journeyState.sessionProgress only.
 
       const lastStepIndex = STEP_ORDER.length - 1;
       const isCardFullyCompleted =
@@ -710,7 +711,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
         ...prev,
         currentSession: {
           ...prev.currentSession,
-          completedSteps,
+          completedSteps: [],
           currentStepIndex: newStepIndex,
           lastActivityAt: new Date(),
         },
