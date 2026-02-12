@@ -4,6 +4,7 @@ import { Section, Card, Prompt } from '@/types';
 import { useApp } from '@/contexts/AppContext';
 import { Plus } from 'lucide-react';
 import PromptItem from '@/components/PromptItem';
+import StepReflection from '@/components/StepReflection';
 import { usePromptNotes } from '@/hooks/usePromptNotes';
 
 interface SectionViewProps {
@@ -193,12 +194,19 @@ export default function SectionView({ section, card }: SectionViewProps) {
       <div className="flex justify-center md:justify-start">
         <button
           onClick={handleAddPrompt}
-          className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors mb-10"
+          className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors mb-6"
         >
           <Plus className="w-4 h-4" />
           Lägg till fråga
         </button>
       </div>
+
+      {/* Inline step reflection — compact for opening/reflective, expanded for scenario/exercise */}
+      <StepReflection
+        section={section}
+        card={card}
+        defaultExpanded={section.type === 'scenario' || section.type === 'exercise'}
+      />
     </motion.div>
   );
 }

@@ -8,7 +8,6 @@ import { useCoupleSpace } from '@/hooks/useCoupleSpace';
 import { toast } from 'sonner';
 import Header from '@/components/Header';
 import SectionView from '@/components/SectionView';
-import CardReflections from '@/components/CardReflections';
 import StepProgressIndicator from '@/components/StepProgressIndicator';
 import PauseDialog from '@/components/PauseDialog';
 import SharedPaceState from '@/components/SharedPaceState';
@@ -543,8 +542,7 @@ export default function CardView() {
                 </div>
               )}
 
-              {/* Reflections (private → shared) */}
-              <CardReflections cardId={card.id} />
+              {/* Per-step reflections are now inline inside SectionView */}
 
               {/* Review drawer */}
               <ReviewDrawer open={reviewOpen} onClose={() => setReviewOpen(false)} card={card} />
