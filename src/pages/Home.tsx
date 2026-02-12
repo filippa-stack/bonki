@@ -11,7 +11,7 @@ import ContinueModule from '@/components/ContinueModule';
 import Header from '@/components/Header';
 import ResumeSessionDialog from '@/components/ResumeSessionDialog';
 import InvitePartner from '@/components/InvitePartner';
-import { Bookmark, Pencil, Check, Share2, Settings } from 'lucide-react';
+import { Bookmark, Pencil, Check, Share2, Settings, CheckCircle2 } from 'lucide-react';
 import NotificationSettings from '@/components/NotificationSettings';
 import RelationshipMemory from '@/components/RelationshipMemory';
 import RecentSharedReflection from '@/components/RecentSharedReflection';
@@ -346,26 +346,40 @@ export default function Home() {
         return null;
       })()}
 
-      {/* Invite partner when solo */}
-      {space && memberCount < 2 && (
+      {/* Partner status */}
+      {space && (
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.15 }}
           className="px-6 pb-4"
         >
-          <InvitePartner
-            inviteCode={space.invite_code}
-            inviteToken={space.invite_token}
-            partnerName={userRole === 'partner_b' ? space.partner_b_name : space.partner_a_name}
-            onUpdateName={async (name) => {
-              const role = userRole === 'partner_b' ? 'partner_b_name' : 'partner_a_name';
-              await supabase
-                .from('couple_spaces')
-                .update({ [role]: name })
-                .eq('id', space.id);
-            }}
-          />
+          {memberCount < 2 ? (
+            <InvitePartner
+              inviteCode={space.invite_code}
+              inviteToken={space.invite_token}
+              partnerName={userRole === 'partner_b' ? space.partner_b_name : space.partner_a_name}
+              onUpdateName={async (name) => {
+                const role = userRole === 'partner_b' ? 'partner_b_name' : 'partner_a_name';
+                await supabase
+                  .from('couple_spaces')
+                  .update({ [role]: name })
+                  .eq('id', space.id);
+              }}
+            />
+          ) : (
+            <div className="flex items-center gap-3 p-4 rounded-lg bg-card border border-border">
+              <CheckCircle2 className="w-5 h-5 text-primary shrink-0" />
+              <div>
+                <p className="text-sm font-medium text-foreground">
+                  {t('couple_space.partner_connected')}
+                </p>
+                <p className="text-xs text-muted-foreground">
+                  {t('couple_space.connected_hint')}
+                </p>
+              </div>
+            </div>
+          )}
         </motion.div>
       )}
 

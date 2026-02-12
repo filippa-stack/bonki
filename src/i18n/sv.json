@@ -209,7 +209,8 @@
     "error_unknown": "Något gick fel. Försök igen."
   },
   "couple_space": {
-    "partner_connected": "Din partner är ansluten!",
+    "partner_connected": "Din partner är ansluten",
+    "connected_hint": "Allt ni delar syns för er båda.",
     "solo_mode": "Solo-läge"
   },
   "welcome_partner": {
