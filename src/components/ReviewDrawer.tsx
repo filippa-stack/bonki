@@ -12,6 +12,7 @@ import {
 } from '@/components/ui/drawer';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import StepReflection from '@/components/StepReflection';
+import CardTakeaways from '@/components/CardTakeaways';
 import type { Card } from '@/types';
 
 const STEP_ORDER = ['opening', 'reflective', 'scenario', 'exercise'] as const;
@@ -100,6 +101,14 @@ export default function ReviewDrawer({ open, onClose, card }: ReviewDrawerProps)
                 </motion.div>
               );
             })}
+
+            {/* Takeaways */}
+            <div className="border-t border-divider pt-6">
+              <CardTakeaways cardId={card.id} compact />
+              <p className="text-xs text-muted-foreground/50 italic text-center mt-3">
+                Det här påverkar inte er takt.
+              </p>
+            </div>
 
             {/* Revisit earlier steps */}
             <div className="border-t border-divider pt-6 space-y-4">

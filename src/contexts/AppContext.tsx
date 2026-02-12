@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode, useCallback, useRef } from 'react';
-import { CoupleSpace, ConversationThread, Reflection, AppState, Category, Card, JourneyState, ReflectionsData, PrivateNote, SharedNote, TopicProposal } from '@/types';
+import { CoupleSpace, ConversationThread, Reflection, AppState, Category, Card, JourneyState, ReflectionsData, PrivateNote, SharedNote, TopicProposal, TakeawayNote, SharedTakeaway } from '@/types';
 import { categories as initialCategories, cards as initialCards } from '@/data/content';
 import { useSettingsSync, SaveStatus } from '@/hooks/useSettingsSync';
 import { useAuth } from '@/contexts/AuthContext';
@@ -74,6 +74,15 @@ interface AppContextType {
   highlightCount: number;
   getAllSharedNotes: () => Record<string, SharedNote>;
   getHighlightedCards: () => string[];
+  // Takeaways
+  getTakeawayPrivate: (cardId: string) => TakeawayNote | undefined;
+  getTakeawayShared: (cardId: string) => SharedTakeaway | undefined;
+  saveTakeawayPrivate: (cardId: string, text: string) => void;
+  saveTakeawayShared: (cardId: string, text: string) => void;
+  removeTakeawayShared: (cardId: string) => void;
+  isTakeawayHighlighted: (cardId: string) => boolean;
+  toggleTakeawayHighlight: (cardId: string) => void;
+  takeawayHighlightCount: number;
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -1016,6 +1025,99 @@ export function AppProvider({ children }: { children: ReactNode }) {
     return Object.keys(state.reflectionsData?.highlights || {});
   }, [state.reflectionsData]);
 
+  // ─── Takeaways ───
+  const takeaways = state.reflectionsData?.takeaways;
+
+  const getTakeawayPrivate = useCallback((cardId: string): TakeawayNote | undefined => {
+    return takeaways?.private?.[cardId];
+  }, [takeaways]);
+
+  const getTakeawayShared = useCallback((cardId: string): SharedTakeaway | undefined => {
+    return takeaways?.shared?.[cardId];
+  }, [takeaways]);
+
+  const saveTakeawayPrivate = (cardId: string, text: string) => {
+    setState((prev) => {
+      const t = prev.reflectionsData?.takeaways || { private: {}, shared: {}, highlights: {} };
+      return {
+        ...prev,
+        reflectionsData: {
+          ...prev.reflectionsData!,
+          private: prev.reflectionsData?.private || {},
+          shared: prev.reflectionsData?.shared || {},
+          highlights: prev.reflectionsData?.highlights || {},
+          takeaways: { ...t, private: { ...t.private, [cardId]: { text, updatedAt: new Date().toISOString() } } },
+        },
+      };
+    });
+  };
+
+  const saveTakeawayShared = (cardId: string, text: string) => {
+    const now = new Date().toISOString();
+    setState((prev) => {
+      const t = prev.reflectionsData?.takeaways || { private: {}, shared: {}, highlights: {} };
+      return {
+        ...prev,
+        reflectionsData: {
+          ...prev.reflectionsData!,
+          private: prev.reflectionsData?.private || {},
+          shared: prev.reflectionsData?.shared || {},
+          highlights: prev.reflectionsData?.highlights || {},
+          takeaways: { ...t, shared: { ...t.shared, [cardId]: { text, updatedAt: now, sharedAt: now } } },
+        },
+      };
+    });
+  };
+
+  const removeTakeawayShared = (cardId: string) => {
+    setState((prev) => {
+      const t = prev.reflectionsData?.takeaways || { private: {}, shared: {}, highlights: {} };
+      const shared = { ...t.shared };
+      delete shared[cardId];
+      const highlights = { ...t.highlights };
+      delete highlights[cardId];
+      return {
+        ...prev,
+        reflectionsData: {
+          ...prev.reflectionsData!,
+          private: prev.reflectionsData?.private || {},
+          shared: prev.reflectionsData?.shared || {},
+          highlights: prev.reflectionsData?.highlights || {},
+          takeaways: { ...t, shared, highlights },
+        },
+      };
+    });
+  };
+
+  const isTakeawayHighlighted = useCallback((cardId: string): boolean => {
+    return !!takeaways?.highlights?.[cardId];
+  }, [takeaways]);
+
+  const takeawayHighlightCount = Object.keys(takeaways?.highlights || {}).length;
+
+  const toggleTakeawayHighlight = (cardId: string) => {
+    setState((prev) => {
+      const t = prev.reflectionsData?.takeaways || { private: {}, shared: {}, highlights: {} };
+      const highlights = { ...t.highlights };
+      if (highlights[cardId]) {
+        delete highlights[cardId];
+      } else {
+        if (Object.keys(highlights).length >= 3) return prev;
+        highlights[cardId] = true;
+      }
+      return {
+        ...prev,
+        reflectionsData: {
+          ...prev.reflectionsData!,
+          private: prev.reflectionsData?.private || {},
+          shared: prev.reflectionsData?.shared || {},
+          highlights: prev.reflectionsData?.highlights || {},
+          takeaways: { ...t, highlights },
+        },
+      };
+    });
+  };
+
   return (
     <AppContext.Provider
       value={{
@@ -1079,6 +1181,14 @@ export function AppProvider({ children }: { children: ReactNode }) {
         highlightCount,
         getAllSharedNotes,
         getHighlightedCards,
+        getTakeawayPrivate,
+        getTakeawayShared,
+        saveTakeawayPrivate,
+        saveTakeawayShared,
+        removeTakeawayShared,
+        isTakeawayHighlighted,
+        toggleTakeawayHighlight,
+        takeawayHighlightCount,
       }}
     >
       {children}

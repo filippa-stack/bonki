@@ -108,10 +108,28 @@ export interface SharedNote {
   sharedAt: string;
 }
 
+export interface TakeawayNote {
+  text: string;
+  updatedAt: string;
+}
+
+export interface SharedTakeaway {
+  text: string;
+  updatedAt: string;
+  sharedAt: string;
+}
+
+export interface TakeawaysData {
+  private: Record<string, TakeawayNote>;
+  shared: Record<string, SharedTakeaway>;
+  highlights: Record<string, boolean>;
+}
+
 export interface ReflectionsData {
   private: Record<string, PrivateNote>;
   shared: Record<string, SharedNote>;
   highlights: Record<string, boolean>; // max 3
+  takeaways?: TakeawaysData;
 }
 
 export interface AppState {

@@ -14,6 +14,7 @@ import ReviewDrawer from '@/components/ReviewDrawer';
 import ConflictingSessionModal from '@/components/ConflictingSessionModal';
 import { Button } from '@/components/ui/button';
 import { ArrowRight, Home, RotateCcw, BookOpen, PenLine } from 'lucide-react';
+import CardTakeaways from '@/components/CardTakeaways';
 
 const sectionTypeLabels: Record<string, string> = {
   opening: 'Öppnare',
@@ -504,6 +505,13 @@ export default function CardView() {
             >
               <SectionView ref={sectionViewRef} section={currentSection} card={card} />
 
+              {/* Takeaways on step 4 (exercise) */}
+              {currentSection.type === 'exercise' && !userCompletedCurrentStep && (
+                <div className="mt-6 border-t border-divider pt-6">
+                  <CardTakeaways cardId={card.id} />
+                </div>
+              )}
+
               {/* Navigation / waiting state */}
               {userCompletedCurrentStep ? (
                 <motion.div
@@ -537,6 +545,11 @@ export default function CardView() {
                       <PenLine className="w-3.5 h-3.5" />
                       Lägg till en tanke
                     </button>
+                  </div>
+
+                  {/* Takeaways accessible during waiting */}
+                  <div className="text-left mt-4">
+                    <CardTakeaways cardId={card.id} />
                   </div>
 
                   <p className="text-xs text-muted-foreground/50 italic pt-1">
