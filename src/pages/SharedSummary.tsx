@@ -241,34 +241,25 @@ export default function SharedSummary() {
           </motion.div>
         )}
 
-        {/* Partner status: invite or connected */}
-        {space && (
+        {/* Partner invite — only when solo */}
+        {space && memberCount < 2 && (
           <motion.div
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
             className="mb-6"
           >
-            {memberCount < 2 ? (
-              <InvitePartner
-                inviteCode={space.invite_code}
-                inviteToken={space.invite_token}
-                partnerName={userRole === 'partner_b' ? space.partner_b_name : space.partner_a_name}
-                onUpdateName={async (name) => {
-                  const role = userRole === 'partner_b' ? 'partner_b_name' : 'partner_a_name';
-                  await supabase
-                    .from('couple_spaces')
-                    .update({ [role]: name })
-                    .eq('id', space.id);
-                }}
-              />
-            ) : (
-              <div className="flex items-center gap-2.5 py-2">
-                <div className="w-1.5 h-1.5 rounded-full bg-primary/60" />
-                <p className="text-xs text-muted-foreground">
-                  {t('couple_space.partner_connected')}
-                </p>
-              </div>
-            )}
+            <InvitePartner
+              inviteCode={space.invite_code}
+              inviteToken={space.invite_token}
+              partnerName={userRole === 'partner_b' ? space.partner_b_name : space.partner_a_name}
+              onUpdateName={async (name) => {
+                const role = userRole === 'partner_b' ? 'partner_b_name' : 'partner_a_name';
+                await supabase
+                  .from('couple_spaces')
+                  .update({ [role]: name })
+                  .eq('id', space.id);
+              }}
+            />
           </motion.div>
         )}
 
