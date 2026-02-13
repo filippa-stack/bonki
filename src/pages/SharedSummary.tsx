@@ -307,11 +307,11 @@ export default function SharedSummary() {
               <motion.div
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="mb-8"
+                className="my-12"
               >
-                <div className="p-6 rounded-lg border border-dashed border-border bg-card/50">
+                <div className="p-5 rounded-xl border border-border/40 bg-card/30">
                   <div className="flex flex-col items-center text-center gap-3">
-                    <MessageCircle className="w-8 h-8 text-muted-foreground/40" />
+                    <MessageCircle className="w-8 h-8 text-muted-foreground/30" />
                     <p className="text-gentle text-sm font-serif">Här växer det ni delar.</p>
                     <p className="text-xs text-muted-foreground">I er egen takt.</p>
                   </div>
