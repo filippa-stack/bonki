@@ -483,13 +483,14 @@ export default function CardView() {
         {transitionMessage && (
           <motion.div
             key="transition"
+            role="status"
+            aria-live="polite"
             initial={{ opacity: 0, y: 6 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -4 }}
             transition={{ duration: 0.6, ease: "easeOut" }}
             className="px-6 py-14 flex items-center justify-center"
           >
-            <span className="sr-only">Övergång till nästa del av samtalet.</span>
             <p className="text-sm text-muted-foreground/80 text-center max-w-xs leading-relaxed">
               {transitionMessage}
             </p>
@@ -527,6 +528,7 @@ export default function CardView() {
                   aria-live="polite"
                   className="my-8 py-6 px-5 rounded-2xl text-center space-y-3"
                 >
+                  <span className="sr-only" role="status" aria-live="polite">Väntar på att båda ska bli klara med detta steg.</span>
                   <p className="text-xs font-medium text-muted-foreground/60 tracking-wide uppercase">
                     En liten paus
                   </p>
