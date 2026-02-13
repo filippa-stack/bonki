@@ -184,7 +184,7 @@
   },
   "shared": {
     "title": "Det vi delat",
-    "highlights_title": "Viktigt för oss",
+    "highlights_title": "Sparade insikter",
     "search_placeholder": "Sök…",
     "empty": "Det här är ert gemensamma utrymme.",
     "empty_hint": "Allt ni väljer att dela med varandra samlas här — tankar, insikter och ögonblick som blir en del av er gemensamma historia.",
@@ -211,7 +211,7 @@
     "your_name_label": "Ditt namn (visas för din partner)",
     "name_placeholder": "Fyll i ditt namn",
     "set_name": "Vad ska din partner kalla dig?",
-    "collapsed_hint": "Dela det här utrymmet med din partner",
+    "collapsed_hint": "Bjud in din partner för att dela era reflektioner",
     "minimize": "Göm",
     "share_message": "Följ med mig i vårt gemensamma utrymme på Still Us. Tryck för att ansluta och starta vår resa: {{link}}"
   },
