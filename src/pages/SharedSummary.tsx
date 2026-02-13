@@ -307,8 +307,8 @@ export default function SharedSummary() {
                 <div className="p-5">
                   <div className="flex flex-col items-center text-center">
                     <MessageCircle className="w-8 h-8 text-muted-foreground/25" />
-                    <p className="text-gentle text-sm font-serif font-medium mt-3">Här samlas det ni delar.</p>
-                    <p className="text-[11px] text-muted-foreground leading-relaxed mt-3">När ni vill.</p>
+                    <p className="text-gentle text-sm font-serif font-medium mt-2">Här samlas det ni delar.</p>
+                    <p className="text-[11px] text-muted-foreground leading-relaxed mt-2">När ni vill.</p>
                   </div>
                 </div>
               </motion.div>
