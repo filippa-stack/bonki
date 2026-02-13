@@ -13,7 +13,7 @@ import PauseDialog from '@/components/PauseDialog';
 import ReviewDrawer from '@/components/ReviewDrawer';
 import ConflictingSessionModal from '@/components/ConflictingSessionModal';
 import { Button } from '@/components/ui/button';
-import { ArrowRight, Home, RotateCcw, BookOpen, PenLine } from 'lucide-react';
+import { ArrowRight, Home, RotateCcw, BookOpen, PenLine, Send } from 'lucide-react';
 import CardTakeaways from '@/components/CardTakeaways';
 
 const sectionTypeLabels: Record<string, string> = {
@@ -619,17 +619,47 @@ export default function CardView() {
                         size="lg"
                         className="gap-2"
                       >
-                        {t(STEP_CTA_KEYS[STEP_ORDER[currentStepIndex]])}
+                        {isRevisitMode && currentStepIndex >= STEP_ORDER.length - 1
+                          ? t('card_view.revisit_done', 'Klar')
+                          : t(STEP_CTA_KEYS[STEP_ORDER[currentStepIndex]])}
                         <ArrowRight className="w-4 h-4" />
                       </Button>
                     </div>
-                    <p className="text-xs text-muted-foreground/70 leading-relaxed text-center md:text-left">
-                      Svara i er egen takt. Ni fortsätter när båda är klara.
-                    </p>
+                    {!isRevisitMode && (
+                      <p className="text-xs text-muted-foreground/70 leading-relaxed text-center md:text-left">
+                        Svara i er egen takt. Ni fortsätter när båda är klara.
+                      </p>
+                    )}
                   </div>
-                  <div className="flex justify-center md:justify-start">
-                    <PauseDialog onConfirm={() => { pauseSession(); navigate('/'); }} />
-                  </div>
+                  {!isRevisitMode && (
+                    <div className="flex justify-center md:justify-start">
+                      <PauseDialog onConfirm={() => { pauseSession(); navigate('/'); }} />
+                    </div>
+                  )}
+
+                  {/* Revisit mode: propose card CTA after final step */}
+                  {isRevisitMode && currentStepIndex >= STEP_ORDER.length - 1 && category && memberCount >= 2 && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 6 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.3, duration: 0.4 }}
+                      className="pt-4 border-t border-border/30"
+                    >
+                      <Button
+                        variant="outline"
+                        size="lg"
+                        className="w-full gap-2 text-muted-foreground hover:text-foreground"
+                        onClick={() => {
+                          proposeCard(category.id, card.id);
+                          toast(t('topic_proposal.proposed_toast'));
+                          navigate('/');
+                        }}
+                      >
+                        <Send className="w-4 h-4" />
+                        Föreslå det här kortet
+                      </Button>
+                    </motion.div>
+                  )}
                 </div>
               )}
 
