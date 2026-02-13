@@ -532,15 +532,23 @@ export default function CardView() {
                   transition={{ duration: 0.5 }}
                   role="status"
                   aria-live="polite"
-                  className="my-8 py-6 px-5 rounded-2xl text-center space-y-3"
+                  className="my-8 py-8 px-5 rounded-2xl bg-card/40 border border-border/30 text-center space-y-4"
                 >
-                  <span className="sr-only" role="status" aria-live="polite">Väntar på att båda ska bli klara med detta steg.</span>
-                  <p className="text-xs font-medium text-muted-foreground/60 tracking-wide uppercase">
-                    En liten paus
+                  <p className="text-sm font-serif text-foreground">
+                    En paus
                   </p>
                   <p className="text-sm text-muted-foreground leading-relaxed max-w-xs mx-auto">
-                    Samtalet fortsätter här när ni båda är klara.
+                    Ni fortsätter här när ni båda är redo.
                   </p>
+                  <p className="text-[13px] text-muted-foreground/60 leading-relaxed max-w-xs mx-auto">
+                    Under tiden kan du läsa igenom eller skriva något du vill bära med dig.
+                  </p>
+
+                  {memberCount >= 2 && (
+                    <p className="text-xs text-muted-foreground/60 text-center">
+                      Samtalet vilar här en stund.
+                    </p>
+                  )}
 
                   <div className="flex items-center justify-center gap-4 pt-2">
                     <Button
@@ -576,10 +584,6 @@ export default function CardView() {
                   <div className="pt-2">
                     <PauseDialog onConfirm={() => { pauseSession(); navigate('/'); }} />
                   </div>
-
-                  <p className="text-[11px] text-muted-foreground/40 italic">
-                    Bara för dig. Du kan dela med din partner när du vill — det ändrar inte var ni är i samtalet.
-                  </p>
                 </motion.div>
               ) : (
                 <div className="py-8 border-t border-divider space-y-3">
