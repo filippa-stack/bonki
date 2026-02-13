@@ -511,9 +511,9 @@ export default function CardView() {
             >
               <SectionView ref={sectionViewRef} section={currentSection} card={card} />
 
-              {/* Takeaways on step 4 (exercise) */}
+              {/* Takeaways on final step (exercise), before completing — card-level reflection */}
               {currentSection.type === 'exercise' && !userCompletedCurrentStep && (
-                <div className="mt-6 border-t border-divider pt-6">
+                <div className="mt-8 border-t border-border/40 pt-6">
                   <CardTakeaways cardId={card.id} />
                 </div>
               )}
