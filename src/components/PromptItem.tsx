@@ -220,7 +220,7 @@ export default function PromptItem({
                       onFocus={handleFocus}
                       onKeyDown={handleKeyDown}
                       placeholder={t('reflections.prompt_note_placeholder', 'Vad väcker detta hos dig?')}
-                      className={`w-full p-3 rounded-xl border resize-none focus:outline-none focus:ring-2 focus:ring-primary/10 font-sans text-sm note-surface ${isDeepSection ? 'min-h-[120px]' : 'min-h-[64px]'}`}
+                      className={`w-full p-3 rounded-xl border resize-none focus:outline-none focus:ring-2 focus:ring-primary/10 font-sans text-sm note-surface ${isDeepSection ? 'min-h-[148px]' : 'min-h-[80px]'}`}
                       style={{
                         backgroundColor: settings.noteBoxBgColor || undefined,
                         color: settings.noteBoxTextColor || undefined,
