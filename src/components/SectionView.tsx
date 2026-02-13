@@ -13,6 +13,7 @@ export interface SectionViewHandle {
 interface SectionViewProps {
   section: Section;
   card: Card;
+  isRevisitMode?: boolean;
 }
 
 const normalizePrompt = (prompt: string | Prompt): Prompt => {
@@ -24,7 +25,7 @@ const normalizePrompt = (prompt: string | Prompt): Prompt => {
 
 const ACCORDION_TYPES = ['opening', 'reflective'];
 
-const SectionView = forwardRef<SectionViewHandle, SectionViewProps>(function SectionView({ section, card }, ref) {
+const SectionView = forwardRef<SectionViewHandle, SectionViewProps>(function SectionView({ section, card, isRevisitMode }, ref) {
   const { updateCardSection } = useApp();
 
   const {
@@ -196,6 +197,7 @@ const SectionView = forwardRef<SectionViewHandle, SectionViewProps>(function Sec
                   onUnshareNote={unshareNote}
                   onToggleHighlight={toggleHighlight}
                   autoFocusNote={focusNoteIndex === index}
+                  disableShare={isRevisitMode}
                 />
               </div>
             );
