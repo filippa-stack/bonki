@@ -49,9 +49,9 @@ export default function ContinueModule({
       className="px-6 mb-10"
     >
       <div
-        className="card-reflection relative py-6 px-5"
+        className="card-reflection relative py-6 px-5 shadow-[0_4px_20px_rgba(0,0,0,0.05)] border border-border/40"
         style={{
-          backgroundColor: settings.continueModuleBgColor || undefined,
+          backgroundColor: settings.continueModuleBgColor || '#ffffff',
           borderColor: settings.continueModuleBorderColor || undefined,
           borderWidth: settings.continueModuleBorderColor ? '2px' : undefined,
           borderStyle: settings.continueModuleBorderColor ? 'solid' : undefined,
