@@ -160,23 +160,23 @@ function EditableCard({
         borderWidth: card.borderColor ? '2px' : undefined,
       } as React.CSSProperties}
     >
-      <div className="flex flex-col items-center justify-center gap-1 py-5">
+      <div className="flex flex-col items-start gap-1 p-6">
         <h3
-          className="w-full font-serif text-lg sm:text-xl text-center item-text"
+          className="w-full font-serif text-lg sm:text-xl text-left item-text"
           style={{ '--item-text': card.textColor || undefined } as React.CSSProperties}
         >
           {card.title}
         </h3>
         {card.subtitle && (
           <p
-            className="w-full text-sm text-center italic item-text-gentle"
+            className="w-full text-sm text-left italic item-text-gentle"
             style={{ '--item-text': card.textColor || undefined } as React.CSSProperties}
           >
             {card.subtitle}
           </p>
         )}
         {explored && (
-          <p className="text-xs text-muted-foreground text-center mt-2 italic">
+          <p className="text-xs text-muted-foreground text-left mt-2 italic">
             {t('category_status.explored')}
           </p>
         )}
