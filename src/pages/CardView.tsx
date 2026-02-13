@@ -91,7 +91,14 @@ export default function CardView() {
   })();
   const [revisitStepIndex, setRevisitStepIndex] = useState(initialRevisitStep);
   const focusNoteParam = searchParams.get('focusNote');
-  const initialFocusNote = focusNoteParam !== null ? parseInt(focusNoteParam, 10) : null;
+  const promptParam = searchParams.get('prompt');
+  const initialFocusNote = (() => {
+    // Support both ?focusNote= (legacy) and ?prompt= (new deep link)
+    const raw = focusNoteParam ?? promptParam;
+    if (raw === null) return null;
+    const parsed = parseInt(raw, 10);
+    return !isNaN(parsed) && parsed >= 0 ? parsed : null;
+  })();
 
   // The step the user sees
   const currentStepIndex = isRevisitMode ? revisitStepIndex : sharedStepIndex;
@@ -525,7 +532,7 @@ export default function CardView() {
               exit={{ opacity: 0, x: -20 }}
               transition={{ duration: 0.3 }}
             >
-              <SectionView ref={sectionViewRef} section={currentSection} card={card} isRevisitMode={isRevisitMode} initialFocusNoteIndex={isRevisitMode ? initialFocusNote : null} />
+              <SectionView ref={sectionViewRef} section={currentSection} card={card} isRevisitMode={isRevisitMode} initialFocusNoteIndex={isRevisitMode ? initialFocusNote : null} focusPromptIndex={isRevisitMode ? initialFocusNote : null} />
 
               {/* Takeaways on final step (exercise), before completing — card-level reflection */}
               {currentSection.type === 'exercise' && !userCompletedCurrentStep && (

@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect, useImperativeHandle, forwardRef } from 'react';
+import { useState, useCallback, useEffect, useImperativeHandle, forwardRef, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { Section, Card, Prompt } from '@/types';
 import { useApp } from '@/contexts/AppContext';
@@ -15,6 +15,7 @@ interface SectionViewProps {
   card: Card;
   isRevisitMode?: boolean;
   initialFocusNoteIndex?: number | null;
+  focusPromptIndex?: number | null;
 }
 
 const normalizePrompt = (prompt: string | Prompt): Prompt => {
@@ -26,7 +27,7 @@ const normalizePrompt = (prompt: string | Prompt): Prompt => {
 
 const ACCORDION_TYPES = ['opening', 'reflective'];
 
-const SectionView = forwardRef<SectionViewHandle, SectionViewProps>(function SectionView({ section, card, isRevisitMode, initialFocusNoteIndex }, ref) {
+const SectionView = forwardRef<SectionViewHandle, SectionViewProps>(function SectionView({ section, card, isRevisitMode, initialFocusNoteIndex, focusPromptIndex }, ref) {
   const { updateCardSection } = useApp();
 
   const {
@@ -82,6 +83,24 @@ const SectionView = forwardRef<SectionViewHandle, SectionViewProps>(function Sec
   }), [isAccordion, expandedIndex]);
 
   const [focusNoteIndex, setFocusNoteIndex] = useState<number | null>(initialFocusNoteIndex ?? null);
+  const promptRefs = useRef<Map<number, HTMLElement>>(new Map());
+
+  // Handle focusPromptIndex deep link: expand + focus + scroll
+  useEffect(() => {
+    if (focusPromptIndex == null) return;
+    if (isAccordion) {
+      setExpandedIndex(focusPromptIndex);
+    }
+    setFocusNoteIndex(focusPromptIndex);
+    // Scroll into view after a short delay for DOM update
+    const timer = setTimeout(() => {
+      const el = promptRefs.current.get(focusPromptIndex);
+      if (el) {
+        el.scrollIntoView({ block: 'center', behavior: 'smooth' });
+      }
+    }, 300);
+    return () => clearTimeout(timer);
+  }, [focusPromptIndex]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Clear focus signal after it's consumed
   useEffect(() => {
@@ -177,7 +196,7 @@ const SectionView = forwardRef<SectionViewHandle, SectionViewProps>(function Sec
             const isControlled = isAccordion;
 
             return (
-              <div key={index}>
+              <div key={index} id={`prompt-anchor-${index}`} ref={(el) => { if (el) promptRefs.current.set(index, el); else promptRefs.current.delete(index); }}>
                 <PromptItem
                   prompt={prompt}
                   promptId={promptId}

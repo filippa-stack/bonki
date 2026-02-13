@@ -110,9 +110,25 @@ export default function SharedSummary() {
     }, AUTOSAVE_DELAY));
   }, []);
 
+  const STEP_ORDER = ['opening', 'reflective', 'scenario', 'exercise'] as const;
+
   const handleOpenInContext = useCallback((cardId: string, sectionId: string, promptId: string) => {
-    navigate(`/card/${cardId}?section=${sectionId}&prompt=${promptId}`);
-  }, [navigate]);
+    const card = getCardById(cardId);
+    if (!card) {
+      navigate(`/card/${cardId}?revisit=true`);
+      return;
+    }
+
+    const section = card.sections.find(s => s.id === sectionId);
+    const stepIndex = section ? STEP_ORDER.indexOf(section.type as typeof STEP_ORDER[number]) : -1;
+    const promptIndex = parseInt(promptId.replace('prompt-', ''), 10);
+
+    if (stepIndex >= 0 && !isNaN(promptIndex) && promptIndex >= 0) {
+      navigate(`/card/${cardId}?revisit=true&step=${stepIndex}&prompt=${promptIndex}`);
+    } else {
+      navigate(`/card/${cardId}?revisit=true`);
+    }
+  }, [navigate, getCardById]);
 
   // Enrich notes with card/category info and apply filters
   const timelineItems = useMemo(() => {
