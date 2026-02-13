@@ -474,6 +474,12 @@ export default function CardView() {
         >
           {card.title}
         </motion.h1>
+        {isRevisitMode && (
+          <div className="mt-2 text-center md:text-left space-y-0.5">
+            <p className="text-xs text-muted-foreground/60 tracking-wide">Förhandskoll</p>
+            <p className="text-xs text-muted-foreground/50">För dig. Du kan föreslå kortet när det passar.</p>
+          </div>
+        )}
         {card.subtitle && (
           <motion.p
             initial={{ opacity: 0 }}
