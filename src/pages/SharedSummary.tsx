@@ -526,8 +526,9 @@ export default function SharedSummary() {
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.15 }}
+                className="mt-8 md:mt-10"
               >
-                <p className="text-xs text-muted-foreground uppercase tracking-wider mb-3 flex items-center gap-2">
+                <p className="text-[11px] text-muted-foreground uppercase tracking-normal font-medium mb-3 flex items-center gap-2">
                   <BookOpen className="w-3 h-3" />
                   {t('shared.journey_title')}
                 </p>
