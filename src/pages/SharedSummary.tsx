@@ -280,7 +280,7 @@ export default function SharedSummary() {
             transition={{ duration: 0.3, delay: 0.1 }}
             className="mb-8"
           >
-            <div className="p-5 rounded-2xl bg-card border border-border/50">
+            <div className="p-4 rounded-2xl bg-card/30 border border-border/30">
               <p className="font-serif text-base text-foreground">Bläddra bland kort</p>
               <p className="text-xs text-muted-foreground mt-1 mb-3">I er egen takt.</p>
               <Button
@@ -510,7 +510,7 @@ export default function SharedSummary() {
                 transition={{ duration: 0.3 }}
                 className="mt-10 mb-8"
               >
-                <div className="p-5 rounded-2xl bg-card border border-border/50">
+                <div className="p-4 rounded-2xl bg-card/30 border border-border/30">
                   <p className="font-serif text-base text-foreground">Bläddra bland kort</p>
                   <p className="text-xs text-muted-foreground mt-1 mb-3">I er egen takt.</p>
                   <Button
