@@ -169,7 +169,7 @@ export default function PromptItem({
 
                   {/* Private note */}
                   <div>
-                    <p className="text-xs text-muted-foreground uppercase tracking-wider mb-2">
+                    <p className="text-xs uppercase tracking-widest text-slate-500 font-bold mb-3">
                       {t('reflections.private_notes_title', 'Din reflektion')}
                     </p>
                     <textarea
@@ -179,22 +179,17 @@ export default function PromptItem({
                       onFocus={handleFocus}
                       onKeyDown={handleKeyDown}
                       placeholder={t('reflections.prompt_note_placeholder', 'Vad väcker detta hos dig?')}
-                      className={`w-full p-3 rounded-xl border resize-none focus:outline-none focus:ring-2 focus:ring-primary/10 font-sans text-sm note-surface ${isDeepSection ? 'min-h-[148px]' : 'min-h-[80px]'}`}
-                      style={{
-                        backgroundColor: settings.noteBoxBgColor || undefined,
-                        color: settings.noteBoxTextColor || undefined,
-                        borderColor: settings.noteBoxBorderColor || undefined,
-                      }}
+                      className={`w-full p-3 rounded-xl bg-white border border-slate-200 resize-none focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary placeholder:text-slate-400 font-sans text-sm text-foreground ${isDeepSection ? 'min-h-[148px]' : 'min-h-[80px]'}`}
                     />
                     {/* Privacy indicator + last updated */}
                     {!sharedNote && (
                       <div className="flex items-center justify-between mt-2">
-                        <p className="flex items-center gap-1.5 text-xs text-muted-foreground italic">
+                        <p className="flex items-center gap-1.5 text-xs text-slate-400 italic">
                           <Lock className="w-3 h-3" />
                           {t('reflections.private_indicator', 'Bara du kan se det här')}
                         </p>
                         {privateNote?.content && privateNote.updatedAt && (
-                          <p className="text-xs text-muted-foreground/60">
+                          <p className="text-xs text-slate-400">
                             {t('reflections.last_updated', { date: new Date(privateNote.updatedAt).toLocaleDateString('sv-SE', { day: 'numeric', month: 'short' }) })}
                           </p>
                         )}
@@ -216,7 +211,7 @@ export default function PromptItem({
                     </button>
                   )}
                   {!disableShare && !privateNote?.content && !sharedNote && (
-                    <p className="flex items-center gap-1.5 text-xs text-muted-foreground/50 italic">
+                    <p className="flex items-center gap-1.5 text-xs text-slate-400 italic">
                       <Lock className="w-3 h-3" />
                       {t('reflections.private_empty_hint', 'Privat — du kan dela senare om du vill')}
                     </p>
