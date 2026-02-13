@@ -274,9 +274,9 @@ export default function SharedSummary() {
             transition={{ duration: 0.3, delay: 0.1 }}
             className="mb-6 md:mb-8"
           >
-            <div className="p-3 rounded-2xl bg-card/15 border border-border/10">
+            <div className="p-4 pb-5 rounded-2xl bg-card/15 border border-border/10">
               <p className="font-serif text-sm font-medium text-foreground">Hitta ett ämne att utforska ihop</p>
-              <p className="text-[11px] text-muted-foreground mt-2.5 mb-5 leading-relaxed">Ni kan börja från början – eller välja det som känns rätt just nu.</p>
+              <p className="text-[11px] text-muted-foreground mt-3 mb-5 leading-relaxed">Ni kan börja från början – eller välja det som känns rätt just nu.</p>
               <Button
                 variant="outline"
                 size="sm"
@@ -506,9 +506,9 @@ export default function SharedSummary() {
                 transition={{ duration: 0.3 }}
                 className="mt-6 md:mt-8 mb-6 md:mb-8"
               >
-                <div className="p-3 rounded-2xl bg-card/15 border border-border/10">
+                <div className="p-4 pb-5 rounded-2xl bg-card/15 border border-border/10">
                   <p className="font-serif text-sm font-medium text-foreground">Hitta ett ämne att utforska ihop</p>
-                  <p className="text-[11px] text-muted-foreground mt-2.5 mb-5 leading-relaxed">Ni kan börja från början – eller välja det som känns rätt just nu.</p>
+                  <p className="text-[11px] text-muted-foreground mt-3 mb-5 leading-relaxed">Ni kan börja från början – eller välja det som känns rätt just nu.</p>
                   <Button
                     variant="outline"
                     size="sm"
