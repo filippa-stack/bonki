@@ -59,42 +59,14 @@ export default function Category() {
         >
           {category.title}
         </motion.h1>
-        {category.entryLine && (
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.1 }}
-            className="text-sm text-slate-700 not-italic mb-3"
-          >
-            {category.entryLine}
-          </motion.p>
-        )}
         <motion.p
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 0.15 }}
-          className="text-xs uppercase tracking-widest text-slate-500 font-bold"
+          transition={{ delay: 0.1 }}
+          className="text-base text-slate-600 mt-3 max-w-md leading-relaxed"
         >
-          {category.description}
+          {category.entryLine ? `${category.entryLine} ${t('category_status.return_note')}` : t('category_status.return_note')}
         </motion.p>
-
-        {/* Gentle orientation note */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.2 }}
-          className="mt-6"
-        >
-          {status === 'explored' ? (
-            <p className="text-sm text-slate-400 not-italic mt-4">
-              {t('category.all_explored')}
-            </p>
-          ) : (
-            <p className="text-sm text-slate-400 not-italic mt-4">
-              {t('category_status.return_note')}
-            </p>
-          )}
-        </motion.div>
       </div>
 
       {/* Cards */}
