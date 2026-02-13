@@ -212,7 +212,7 @@
     "your_name_label": "Ditt namn (visas för din partner)",
     "name_placeholder": "Fyll i ditt namn",
     "set_name": "Vad ska din partner kalla dig?",
-    "collapsed_hint": "Bjud in din partner för att dela era reflektioner",
+    "collapsed_hint": "Bjud in din partner så att ni kan dela det ni skriver.",
     "minimize": "Göm",
     "share_message": "Följ med mig i vårt gemensamma utrymme på Still Us. Tryck för att ansluta och starta vår resa: {{link}}"
   },
