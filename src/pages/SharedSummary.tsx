@@ -272,7 +272,7 @@ export default function SharedSummary() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.3, delay: 0.1 }}
-            className="mb-6"
+            className="mb-9"
           >
             <div className="p-5 rounded-2xl bg-card/15 border border-border/15">
               <p className="font-serif text-sm font-medium text-foreground">Hitta ett ämne att utforska ihop</p>
