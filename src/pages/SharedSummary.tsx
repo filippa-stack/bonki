@@ -413,7 +413,7 @@ export default function SharedSummary() {
                 animate={{ opacity: 1, y: 0 }}
                 className="mb-6"
               >
-                <p className="text-xs text-muted-foreground mb-4 max-w-xs">
+                <p className="text-xs text-muted-foreground mb-4">
                   Här samlas det ni valt att spara i ert utrymme.
                 </p>
                 <p className="text-sm font-serif font-medium text-foreground mb-4">
