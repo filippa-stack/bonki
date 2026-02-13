@@ -137,13 +137,25 @@ export default function SharedTimelineItem({
 
       {/* Content — editable or read-only */}
       {editing ? (
-        <Textarea
-          ref={textareaRef}
-          value={localContent}
-          onChange={(e) => handleChange(e.target.value)}
-          onBlur={handleBlur}
-          className="text-sm min-h-[60px] resize-none"
-        />
+        <div className="space-y-2">
+          <Textarea
+            ref={textareaRef}
+            value={localContent}
+            onChange={(e) => handleChange(e.target.value)}
+            className="text-sm min-h-[60px] resize-none"
+          />
+          <div className="flex items-center justify-between">
+            <p className="text-xs text-muted-foreground/60">Sparas automatiskt.</p>
+            <Button
+              variant="ghost"
+              size="sm"
+              className="text-xs h-7 px-2"
+              onClick={() => setEditing(false)}
+            >
+              Klar
+            </Button>
+          </div>
+        </div>
       ) : (
         <p className="text-body text-foreground whitespace-pre-wrap">{note.content}</p>
       )}
