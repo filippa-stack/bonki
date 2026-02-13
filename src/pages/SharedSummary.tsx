@@ -531,11 +531,11 @@ export default function SharedSummary() {
                 className="mt-8 md:mt-10"
               >
                 <div className="p-5 rounded-lg bg-card/30 text-center">
-                  <p className="text-sm font-serif font-medium text-muted-foreground mb-4 flex items-center justify-center gap-2">
+                  <p className="text-sm font-serif font-medium text-foreground mb-3 flex items-center justify-center gap-2">
                     <BookOpen className="w-2.5 h-2.5 opacity-50" />
                     {t('shared.journey_title')}
                   </p>
-                  <p className="text-xs text-muted-foreground leading-loose font-light whitespace-pre-line">
+                  <p className="text-xs text-muted-foreground leading-relaxed font-light whitespace-pre-line">
                     {t('shared.journey_empty')}
                   </p>
                 </div>
