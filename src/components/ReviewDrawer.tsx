@@ -51,6 +51,13 @@ export default function ReviewDrawer({ open, onClose, card }: ReviewDrawerProps)
   const { user } = useAuth();
   const { space } = useCoupleSpace();
   const [cardNotes, setCardNotes] = useState<CardNote[]>([]);
+  const [noteFilter, setNoteFilter] = useState<'all' | 'private' | 'shared'>('all');
+
+  const filteredNotes = noteFilter === 'all'
+    ? cardNotes
+    : noteFilter === 'shared'
+      ? cardNotes.filter(n => n.hasShared)
+      : cardNotes.filter(n => !n.hasShared);
 
   // Fetch all notes for this card when drawer opens
   useEffect(() => {
@@ -248,33 +255,60 @@ export default function ReviewDrawer({ open, onClose, card }: ReviewDrawerProps)
                   </p>
                 </div>
               ) : (
-                <div className="space-y-2 pb-8">
-                  {cardNotes.map((note, i) => (
+                <div className="space-y-3 pb-8">
+                  {/* Filter chips */}
+                  <div className="flex gap-1.5">
+                    {(['all', 'private', 'shared'] as const).map((f) => {
+                      const label = f === 'all' ? 'Alla' : f === 'private' ? 'Privata' : 'Delade';
+                      const count = f === 'all'
+                        ? cardNotes.length
+                        : f === 'shared'
+                          ? cardNotes.filter(n => n.hasShared).length
+                          : cardNotes.filter(n => !n.hasShared).length;
+                      return (
+                        <button
+                          key={f}
+                          onClick={() => setNoteFilter(f)}
+                          className={`px-3 py-1 rounded-full text-[11px] font-medium transition-colors ${
+                            noteFilter === f
+                              ? 'bg-primary/15 text-primary'
+                              : 'bg-muted/40 text-muted-foreground hover:bg-muted/60'
+                          }`}
+                        >
+                          {label} ({count})
+                        </button>
+                      );
+                    })}
+                  </div>
+
+                  {/* Note items */}
+                  {filteredNotes.map((note, i) => (
                     <motion.button
                       key={`${note.sectionId}-${note.promptId}`}
                       initial={{ opacity: 0, y: 6 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: i * 0.03, duration: 0.2 }}
                       onClick={() => handleNoteClick(note)}
-                      className="w-full text-left p-3 rounded-xl bg-white border border-border/40 hover:border-primary/30 hover:shadow-sm transition-all group"
+                      className={`w-full text-left rounded-xl bg-white border border-border/40 hover:border-primary/30 hover:shadow-sm transition-all group flex overflow-hidden`}
                     >
-                      <div className="flex items-center gap-2 mb-1">
-                        <span className="text-[10px] font-medium text-muted-foreground/70 uppercase tracking-wider">
-                          {STEP_LABELS[note.sectionType]}
-                        </span>
-                        <span className="text-[10px] text-muted-foreground/50">
-                          Fråga {note.promptIndex + 1}
-                        </span>
-                        {note.hasShared && (
-                          <span className="flex items-center gap-0.5 text-[10px] text-primary/70">
-                            <Share2 className="w-2.5 h-2.5" />
-                            Delad
+                      {/* Left accent bar */}
+                      <div className={`w-1 shrink-0 ${note.hasShared ? 'bg-primary/50' : 'bg-muted-foreground/15'}`} />
+                      <div className="p-3 flex-1 min-w-0">
+                        <div className="flex items-center gap-2 mb-1">
+                          <span className="text-[10px] font-medium text-muted-foreground/70 uppercase tracking-wider">
+                            {STEP_LABELS[note.sectionType]}
                           </span>
-                        )}
+                          <span className="text-[10px] text-muted-foreground/50">
+                            Fråga {note.promptIndex + 1}
+                          </span>
+                          <span className={`text-[10px] ${note.hasShared ? 'text-primary/70 font-medium' : 'text-muted-foreground/40'}`}>
+                            {note.hasShared ? 'Delad' : 'Privat'}
+                          </span>
+                        </div>
+                        <p className="text-sm text-foreground/80 leading-relaxed line-clamp-2">
+                          {note.content}
+                        </p>
                       </div>
-                      <p className="text-sm text-foreground/80 leading-relaxed line-clamp-2">
-                        {note.content}
-                      </p>
                     </motion.button>
                   ))}
                 </div>
