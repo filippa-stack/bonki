@@ -241,7 +241,7 @@ export default function Home() {
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5 }}
-                className={`text-display font-${settings.heroTitleFont} !text-[#E63225]`}
+                className={`text-display font-${settings.heroTitleFont} !text-[#FF0000]`}
               >
                 {settings.heroTitle}
               </motion.h1>
