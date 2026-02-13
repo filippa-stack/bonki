@@ -66,7 +66,7 @@ export default function Login() {
       >
         <motion.img
           src={bonkiLogo}
-          alt="Bonki"
+          alt="Still Us"
           className="h-16 w-auto mx-auto"
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}

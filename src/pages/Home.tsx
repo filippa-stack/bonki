@@ -145,7 +145,7 @@ export default function Home() {
         >
           <img 
             src={bonkiLogo} 
-            alt="Bonki" 
+            alt="Still Us" 
             className="h-12 w-auto"
           />
         </motion.div>
