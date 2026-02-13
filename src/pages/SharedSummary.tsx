@@ -232,14 +232,17 @@ export default function SharedSummary() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.4 }}
-            className="mb-6 md:mb-8"
+            className="mb-6"
           >
-            <h2 className="font-serif text-xl text-foreground">Vårt utrymme</h2>
-            <p className="text-sm text-muted-foreground mt-1.5">
+            <h2 className="font-serif text-2xl font-semibold text-foreground mb-4">Vårt utrymme</h2>
+            <p className="text-xs text-muted-foreground font-normal">
               Det ni väljer att dela med varandra hamnar här.
             </p>
           </motion.div>
         )}
+
+        {/* Spacer before first content section */}
+        {!showFind && <div className="mb-6" />}
 
         {/* Partner invite — only when solo */}
         {space && memberCount < 2 && (
