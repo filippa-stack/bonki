@@ -276,10 +276,11 @@ export default function SharedSummary() {
           >
             <div className="p-3 rounded-2xl bg-card/15 border border-border/10">
               <p className="font-serif text-sm font-medium text-foreground">Hitta ett ämne att utforska ihop</p>
-              <p className="text-[11px] text-muted-foreground mt-2.5 mb-4 leading-relaxed">Ni kan börja från början – eller välja det som känns rätt just nu.</p>
+              <p className="text-[11px] text-muted-foreground mt-2.5 mb-5 leading-relaxed">Ni kan börja från början – eller välja det som känns rätt just nu.</p>
               <Button
                 variant="outline"
                 size="sm"
+                className="h-8 text-xs font-normal"
                 onClick={() => navigate('/')}
               >
                 Bläddra bland kort
@@ -507,10 +508,11 @@ export default function SharedSummary() {
               >
                 <div className="p-3 rounded-2xl bg-card/15 border border-border/10">
                   <p className="font-serif text-sm font-medium text-foreground">Hitta ett ämne att utforska ihop</p>
-                  <p className="text-[11px] text-muted-foreground mt-2.5 mb-4 leading-relaxed">Ni kan börja från början – eller välja det som känns rätt just nu.</p>
+                  <p className="text-[11px] text-muted-foreground mt-2.5 mb-5 leading-relaxed">Ni kan börja från början – eller välja det som känns rätt just nu.</p>
                   <Button
                     variant="outline"
                     size="sm"
+                    className="h-8 text-xs font-normal"
                     onClick={() => navigate('/')}
                   >
                     Bläddra bland kort
