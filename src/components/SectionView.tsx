@@ -197,6 +197,7 @@ const SectionView = forwardRef<SectionViewHandle, SectionViewProps>(function Sec
                   promptId={promptId}
                   index={index}
                   label={isControlled ? `Fråga ${index + 1}` : undefined}
+                  sectionType={section.type as 'opening' | 'reflective' | 'scenario' | 'exercise'}
                   privateNote={getPrivateNote(promptId)}
                   sharedNote={getSharedNote(promptId)}
                   highlightCount={highlightCount}
