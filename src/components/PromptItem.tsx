@@ -28,6 +28,8 @@ interface PromptItemProps {
   onToggleHighlight: (promptId: string) => void;
   /** When true, auto-expand and focus the note textarea */
   autoFocusNote?: boolean;
+  /** When true, hide share/unshare UI (revisit mode) */
+  disableShare?: boolean;
 }
 
 export default function PromptItem({
@@ -50,6 +52,7 @@ export default function PromptItem({
   onUnshareNote,
   onToggleHighlight,
   autoFocusNote,
+  disableShare,
 }: PromptItemProps) {
   const { t } = useTranslation();
   const { settings } = useSiteSettings();
@@ -200,7 +203,7 @@ export default function PromptItem({
                   </div>
 
                   {/* Share action / preview */}
-                  {privateNote?.content && !sharedNote && !showSharePreview && (
+                  {!disableShare && privateNote?.content && !sharedNote && !showSharePreview && (
                     <button
                       onClick={() => {
                         setSharePreviewText(privateNote.content);
@@ -212,7 +215,7 @@ export default function PromptItem({
                       {t('reflections.create_shared_from_private', 'Dela om du vill')}
                     </button>
                   )}
-                  {!privateNote?.content && !sharedNote && (
+                  {!disableShare && !privateNote?.content && !sharedNote && (
                     <p className="flex items-center gap-1.5 text-xs text-muted-foreground/50 italic">
                       <Lock className="w-3 h-3" />
                       {t('reflections.private_empty_hint', 'Privat — du kan dela senare om du vill')}
@@ -220,53 +223,55 @@ export default function PromptItem({
                   )}
 
                   {/* Pre-share review */}
-                  <AnimatePresence>
-                    {showSharePreview && !sharedNote && (
-                      <motion.div
-                        initial={{ opacity: 0, y: 6 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -4 }}
-                        className="p-4 rounded-lg bg-primary/5 border border-primary/10 space-y-3"
-                      >
-                        <p className="text-xs text-muted-foreground uppercase tracking-wider">
-                          {t('reflections.share_preview_title', 'Granska innan du delar')}
-                        </p>
-                        <p className="text-xs text-muted-foreground/70 italic">
-                          {t('reflections.share_preview_hint', 'Du kan justera texten. Din privata anteckning påverkas inte.')}
-                        </p>
-                        <textarea
-                          value={sharePreviewText}
-                          onChange={(e) => setSharePreviewText(e.target.value)}
-                          className="w-full min-h-[60px] p-3 rounded-lg bg-background border border-input resize-none focus:outline-none focus:ring-2 focus:ring-primary/20 font-sans text-sm text-foreground"
-                          autoFocus
-                        />
-                        <div className="flex flex-wrap gap-2">
-                          <button
-                            onClick={() => {
-                              onSaveNote(promptId, sharePreviewText, 'shared');
-                              onShareNote(promptId);
-                              setShowSharePreview(false);
-                              setJustShared(true);
-                            }}
-                            disabled={!sharePreviewText.trim()}
-                            className="flex items-center gap-1.5 text-sm font-medium text-foreground hover:text-primary transition-colors disabled:opacity-40"
-                          >
-                            <Share2 className="w-3.5 h-3.5" />
-                            {t('reflections.share_confirm', 'Dela')}
-                          </button>
-                          <button
-                            onClick={() => setShowSharePreview(false)}
-                            className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
-                          >
-                            {t('reflections.share_cancel', 'Inte just nu')}
-                          </button>
-                        </div>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
+                  {!disableShare && (
+                    <AnimatePresence>
+                      {showSharePreview && !sharedNote && (
+                        <motion.div
+                          initial={{ opacity: 0, y: 6 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: -4 }}
+                          className="p-4 rounded-lg bg-primary/5 border border-primary/10 space-y-3"
+                        >
+                          <p className="text-xs text-muted-foreground uppercase tracking-wider">
+                            {t('reflections.share_preview_title', 'Granska innan du delar')}
+                          </p>
+                          <p className="text-xs text-muted-foreground/70 italic">
+                            {t('reflections.share_preview_hint', 'Du kan justera texten. Din privata anteckning påverkas inte.')}
+                          </p>
+                          <textarea
+                            value={sharePreviewText}
+                            onChange={(e) => setSharePreviewText(e.target.value)}
+                            className="w-full min-h-[60px] p-3 rounded-lg bg-background border border-input resize-none focus:outline-none focus:ring-2 focus:ring-primary/20 font-sans text-sm text-foreground"
+                            autoFocus
+                          />
+                          <div className="flex flex-wrap gap-2">
+                            <button
+                              onClick={() => {
+                                onSaveNote(promptId, sharePreviewText, 'shared');
+                                onShareNote(promptId);
+                                setShowSharePreview(false);
+                                setJustShared(true);
+                              }}
+                              disabled={!sharePreviewText.trim()}
+                              className="flex items-center gap-1.5 text-sm font-medium text-foreground hover:text-primary transition-colors disabled:opacity-40"
+                            >
+                              <Share2 className="w-3.5 h-3.5" />
+                              {t('reflections.share_confirm', 'Dela')}
+                            </button>
+                            <button
+                              onClick={() => setShowSharePreview(false)}
+                              className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
+                            >
+                              {t('reflections.share_cancel', 'Inte just nu')}
+                            </button>
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  )}
 
                   {/* Post-share confirmation */}
-                  {sharedNote && justShared && (
+                  {!disableShare && sharedNote && justShared && (
                     <motion.div
                       initial={{ opacity: 0, y: 6 }}
                       animate={{ opacity: 1, y: 0 }}
@@ -296,7 +301,7 @@ export default function PromptItem({
                   )}
 
                   {/* Shared note display (after dismissing confirmation) */}
-                  {sharedNote && !justShared && (
+                  {!disableShare && sharedNote && !justShared && (
                     <div className="p-3 rounded-lg bg-primary/5 border border-primary/10">
                       <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1 flex items-center gap-1.5">
                         <Users className="w-3 h-3" />

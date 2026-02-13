@@ -523,7 +523,7 @@ export default function CardView() {
               exit={{ opacity: 0, x: -20 }}
               transition={{ duration: 0.3 }}
             >
-              <SectionView ref={sectionViewRef} section={currentSection} card={card} />
+              <SectionView ref={sectionViewRef} section={currentSection} card={card} isRevisitMode={isRevisitMode} />
 
               {/* Takeaways on final step (exercise), before completing — card-level reflection */}
               {currentSection.type === 'exercise' && !userCompletedCurrentStep && (
