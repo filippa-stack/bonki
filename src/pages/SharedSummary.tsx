@@ -309,21 +309,18 @@ export default function SharedSummary() {
                 animate={{ opacity: 1, y: 0 }}
                 className="mb-8"
               >
-                <p className="text-sm font-serif font-medium text-foreground mb-4">
-                  {t('shared.empty_section_title')}
-                </p>
                 <div className="p-6 rounded-lg border border-dashed border-border bg-card/50">
                   <div className="flex flex-col items-center text-center gap-3">
                     <MessageCircle className="w-8 h-8 text-muted-foreground/40" />
-                    <p className="text-gentle text-sm">{t('shared.empty')}</p>
-                    <p className="text-xs text-muted-foreground max-w-xs">{t('shared.empty_hint')}</p>
+                    <p className="text-gentle text-sm font-serif">Här växer det ni delar.</p>
+                    <p className="text-xs text-muted-foreground">I er egen takt.</p>
                     <Button
                       variant="outline"
                       size="sm"
                       className="mt-2"
                       onClick={() => navigate('/')}
                     >
-                      {t('shared.empty_cta')}
+                      Bläddra bland kort
                     </Button>
                   </div>
                 </div>
