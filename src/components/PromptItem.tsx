@@ -200,7 +200,7 @@ export default function PromptItem({
                   <div>
                     <div className="flex items-center justify-between mb-2">
                       <p className="text-xs text-muted-foreground uppercase tracking-wider">
-                        {t('reflections.private_notes_title', 'Bara för dig')}
+                        {t('reflections.private_notes_title', 'Din reflektion')}
                       </p>
                       <ColorPicker
                         currentColor={settings.noteBoxBgColor}
@@ -253,13 +253,13 @@ export default function PromptItem({
                       className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
                     >
                       <Share2 className="w-3.5 h-3.5" />
-                      {t('reflections.create_shared_from_private', 'Dela med din partner')}
+                      {t('reflections.create_shared_from_private', 'Dela om du vill')}
                     </button>
                   )}
                   {!privateNote?.content && !sharedNote && (
                     <p className="flex items-center gap-1.5 text-xs text-muted-foreground/50 italic">
                       <Lock className="w-3 h-3" />
-                      {t('reflections.private_indicator', 'Bara du kan se det här tills du väljer att dela')}
+                      {t('reflections.private_empty_hint', 'Privat — du kan dela senare om du vill')}
                     </p>
                   )}
 
@@ -276,7 +276,7 @@ export default function PromptItem({
                           {t('reflections.share_preview_title', 'Granska innan du delar')}
                         </p>
                         <p className="text-xs text-muted-foreground/70 italic">
-                          {t('reflections.share_preview_hint', 'Du kan justera texten nedan. Din privata anteckning förblir oförändrad.')}
+                          {t('reflections.share_preview_hint', 'Du kan justera texten. Din privata anteckning påverkas inte.')}
                         </p>
                         <textarea
                           value={sharePreviewText}
@@ -296,7 +296,7 @@ export default function PromptItem({
                             className="flex items-center gap-1.5 text-sm font-medium text-foreground hover:text-primary transition-colors disabled:opacity-40"
                           >
                             <Share2 className="w-3.5 h-3.5" />
-                            {t('reflections.share_confirm', 'Dela med din partner')}
+                            {t('reflections.share_confirm', 'Dela')}
                           </button>
                           <button
                             onClick={() => setShowSharePreview(false)}
