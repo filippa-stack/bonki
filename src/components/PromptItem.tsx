@@ -1,11 +1,10 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronDown, Share2, X, Star, Trash2, Heart, ArrowRight, Home, Lock, Users } from 'lucide-react';
+import { ChevronDown, Share2, X, Star, Heart, ArrowRight, Home, Lock, Users } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Prompt } from '@/types';
 import { PromptNote } from '@/hooks/usePromptNotes';
-import ColorPicker from '@/components/ColorPicker';
 import { useSiteSettings } from '@/contexts/SiteSettingsContext';
 
 interface PromptItemProps {
@@ -53,7 +52,7 @@ export default function PromptItem({
   autoFocusNote,
 }: PromptItemProps) {
   const { t } = useTranslation();
-  const { settings, updateSettings } = useSiteSettings();
+  const { settings } = useSiteSettings();
   const navigate = useNavigate();
   const [internalExpanded, setInternalExpanded] = useState(false);
   const [justShared, setJustShared] = useState(false);
@@ -134,23 +133,12 @@ export default function PromptItem({
             onClick={toggleExpanded}
           >
             <div className="flex-1 min-w-0">
-              <textarea
-                value={prompt.text}
-                onChange={(e) => {
-                  e.stopPropagation();
-                  onPromptChange(index, e.target.value);
-                }}
-                onClick={(e) => e.stopPropagation()}
-                ref={(el) => {
-                  if (el) {
-                    el.style.height = 'auto';
-                    el.style.height = el.scrollHeight + 'px';
-                  }
-                }}
-                className="text-body w-full bg-transparent border-none outline-none focus:ring-0 resize-none placeholder:text-muted-foreground min-h-[24px] text-center md:text-left prompt-text"
-                placeholder="Skriv en fråga..."
+              <p
+                className="text-body w-full min-h-[24px] text-center md:text-left prompt-text"
                 style={{ '--prompt-text': prompt.textColor || undefined } as React.CSSProperties}
-              />
+              >
+                {prompt.text}
+              </p>
             </div>
 
             <div className="flex items-center gap-1 shrink-0">
@@ -160,26 +148,6 @@ export default function PromptItem({
               <ChevronDown
                 className={`w-4 h-4 text-muted-foreground transition-transform duration-200 ${isExpanded ? 'rotate-180' : ''}`}
               />
-            </div>
-
-            {/* Edit controls on hover */}
-            <div
-              className="absolute top-2 right-10 flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <ColorPicker
-                currentColor={prompt.color}
-                onColorChange={(color) => onPromptColorChange(index, color)}
-                currentTextColor={prompt.textColor}
-                onTextColorChange={(textColor) => onPromptTextColorChange(index, textColor)}
-                showTextColor
-              />
-              <button
-                onClick={() => onRemovePrompt(index)}
-                className="p-1 rounded hover:bg-destructive/10 text-muted-foreground hover:text-destructive"
-              >
-                <Trash2 className="w-4 h-4" />
-              </button>
             </div>
           </div>
 
@@ -198,21 +166,9 @@ export default function PromptItem({
 
                   {/* Private note */}
                   <div>
-                    <div className="flex items-center justify-between mb-2">
-                      <p className="text-xs text-muted-foreground uppercase tracking-wider">
-                        {t('reflections.private_notes_title', 'Din reflektion')}
-                      </p>
-                      <ColorPicker
-                        currentColor={settings.noteBoxBgColor}
-                        onColorChange={(color) => updateSettings({ noteBoxBgColor: color })}
-                        currentTextColor={settings.noteBoxTextColor}
-                        onTextColorChange={(textColor) => updateSettings({ noteBoxTextColor: textColor })}
-                        showTextColor
-                        showBorderColor
-                        currentBorderColor={settings.noteBoxBorderColor}
-                        onBorderColorChange={(borderColor) => updateSettings({ noteBoxBorderColor: borderColor })}
-                      />
-                    </div>
+                    <p className="text-xs text-muted-foreground uppercase tracking-wider mb-2">
+                      {t('reflections.private_notes_title', 'Din reflektion')}
+                    </p>
                     <textarea
                       ref={privateTextareaRef}
                       value={displayPrivateText}
