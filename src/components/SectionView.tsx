@@ -161,29 +161,29 @@ const SectionView = forwardRef<SectionViewHandle, SectionViewProps>(function Sec
       className="py-6"
     >
       {/* Section header */}
-      <div className="mb-6 text-center md:text-left">
-        <div className="flex items-center justify-center md:justify-start">
-          <h2 className="text-heading text-foreground w-full text-center md:text-left">
+      <div className="mb-6 text-left">
+        <div className="flex items-start">
+          <h2 className="text-heading text-foreground w-full text-left">
             {section.title}
           </h2>
         </div>
         {section.type === 'exercise' && (
-          <p className="text-sm text-gentle italic mt-2 md:ml-9">Gör något av det ni upptäckt.</p>
+          <p className="text-sm text-gentle italic mt-2 max-w-2xl">Gör något av det ni upptäckt.</p>
         )}
         {section.type === 'scenario' && (
-          <p className="text-sm text-gentle italic mt-2 md:ml-9">Känn igen er i varandras vardag.</p>
+          <p className="text-sm text-gentle italic mt-2 max-w-2xl">Känn igen er i varandras vardag.</p>
         )}
         {section.type === 'reflective' && (
-          <p className="text-sm text-gentle italic mt-2 md:ml-9">Lyssna djupare på varandra.</p>
+          <p className="text-sm text-gentle italic mt-2 max-w-2xl">Lyssna djupare på varandra.</p>
         )}
         {section.type === 'opening' && (
-          <p className="text-sm text-gentle italic mt-2 md:ml-9">Hitta in i samtalet tillsammans.</p>
+          <p className="text-sm text-gentle italic mt-2 max-w-2xl">Hitta in i samtalet tillsammans.</p>
         )}
       </div>
 
       {/* Section content */}
       {section.content && (
-        <p className="text-body text-gentle mb-8 leading-relaxed w-full text-center md:text-left">
+        <p className="text-body text-gentle mb-8 leading-relaxed w-full text-left max-w-2xl">
           {section.content}
         </p>
       )}
