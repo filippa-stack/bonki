@@ -409,11 +409,11 @@ export default function SharedSummary() {
                 animate={{ opacity: 1, y: 0 }}
                 className="mb-6 md:mb-8"
               >
-                <p className="text-sm font-serif font-medium text-foreground mb-1">
-                  {t('shared.recent_title', 'Senaste som delats')}
+                <p className="text-xs text-muted-foreground mb-4 max-w-xs">
+                  Här samlas det ni valt att spara i ert utrymme.
                 </p>
-                <p className="text-xs text-muted-foreground mb-5 max-w-xs">
-                  Det ni valt att dela med varandra.
+                <p className="text-sm font-serif font-medium text-foreground mb-4">
+                  {t('shared.recent_title', 'Nyligen sparat')}
                 </p>
                 <div className="space-y-3">
                   {recentItems.map((item) => (
@@ -453,6 +453,7 @@ export default function SharedSummary() {
             {/* Older reflections — grouped by month, visually secondary */}
             {olderGrouped.length > 0 && !hasActiveFilter && (
               <div>
+                <p className="text-sm font-serif font-medium text-foreground mb-4">Tidigare</p>
                 {olderGrouped.map((group) => (
                   <div key={group.key} className="mb-6 md:mb-8">
                      <p className="text-xs uppercase tracking-wide text-muted-foreground mb-3">
