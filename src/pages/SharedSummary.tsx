@@ -249,7 +249,7 @@ export default function SharedSummary() {
           <motion.div
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
-            className="mb-6 md:mb-8"
+            className="mb-6"
           >
             <InvitePartner
               inviteCode={space.invite_code}
@@ -272,7 +272,7 @@ export default function SharedSummary() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.3, delay: 0.1 }}
-            className="mb-6 md:mb-8"
+            className="mb-6"
           >
             <div className="p-5 rounded-2xl bg-card/15 border border-border/10">
               <p className="font-serif text-sm font-medium text-foreground">Hitta ett ämne att utforska ihop</p>
@@ -302,7 +302,7 @@ export default function SharedSummary() {
               <motion.div
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="my-6 md:my-8"
+                className="mb-6"
               >
                 <div className="p-5 rounded-xl border border-border/10 bg-card/15">
                   <div className="flex flex-col items-start text-left">
@@ -320,7 +320,7 @@ export default function SharedSummary() {
               <motion.div
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="mb-6 md:mb-8"
+                className="mb-6"
               >
                 <p className="text-sm font-serif font-medium text-foreground mb-3">
                   {t('shared.highlights_title')}
@@ -352,7 +352,7 @@ export default function SharedSummary() {
             )}
 
             {/* Find toggle */}
-            <div className="flex justify-end mb-6 md:mb-8">
+            <div className="flex justify-end mb-6">
               <Button
                 variant="ghost"
                 size="sm"
@@ -372,7 +372,7 @@ export default function SharedSummary() {
 
             {/* Search + Filter row */}
             {showFind && (
-              <div className="flex gap-2 mb-6 md:mb-8">
+              <div className="flex gap-2 mb-6">
                 <div className="relative flex-1">
                   <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                   <Input
@@ -411,7 +411,7 @@ export default function SharedSummary() {
               <motion.div
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="mb-6 md:mb-8"
+                className="mb-6"
               >
                 <p className="text-xs text-muted-foreground mb-4 max-w-xs">
                   Här samlas det ni valt att spara i ert utrymme.
@@ -438,7 +438,7 @@ export default function SharedSummary() {
 
             {/* When filtering, show all results flat */}
             {hasActiveFilter && timelineItems.length > 0 && (
-              <div className="space-y-3 mb-6 md:mb-8">
+              <div className="space-y-3 mb-6">
                 {timelineItems.map((item) => (
                   <SharedTimelineItem
                     key={item.id}
@@ -459,7 +459,7 @@ export default function SharedSummary() {
               <div>
                 <p className="text-sm font-serif font-medium text-foreground mb-4">Tidigare</p>
                 {olderGrouped.map((group) => (
-                  <div key={group.key} className="mb-6 md:mb-8">
+                  <div key={group.key} className="mb-6">
                      <p className="text-xs uppercase tracking-wide text-muted-foreground mb-3">
                       {group.label}
                     </p>
@@ -504,7 +504,7 @@ export default function SharedSummary() {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.3 }}
-                className="mt-6 md:mt-8 mb-6 md:mb-8"
+                className="mt-6 mb-6"
               >
                 <div className="p-5 rounded-2xl bg-card/15 border border-border/10">
                   <p className="font-serif text-sm font-medium text-foreground">Hitta ett ämne att utforska ihop</p>
