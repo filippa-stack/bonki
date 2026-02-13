@@ -272,8 +272,8 @@ export default function SharedSummary() {
           </motion.div>
         )}
 
-        {/* Browse cards module — hidden during filtering */}
-        {!hasActiveFilter && !loading && (
+        {/* Browse cards module — top position only when empty */}
+        {!hasContent && !hasActiveFilter && !loading && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -500,6 +500,28 @@ export default function SharedSummary() {
               <p className="text-center text-gentle py-8 text-sm">
                 {t('shared.no_results')}
               </p>
+            )}
+
+            {/* Browse cards module — bottom position when has content */}
+            {!hasActiveFilter && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.3 }}
+                className="mt-10 mb-8"
+              >
+                <div className="p-5 rounded-2xl bg-card border border-border/50">
+                  <p className="font-serif text-base text-foreground">Bläddra bland kort</p>
+                  <p className="text-xs text-muted-foreground mt-1 mb-3">I er egen takt.</p>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => navigate('/')}
+                  >
+                    Utforska
+                  </Button>
+                </div>
+              </motion.div>
             )}
             </>)}
 
