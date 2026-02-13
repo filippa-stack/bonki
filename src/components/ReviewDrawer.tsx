@@ -97,12 +97,27 @@ export default function ReviewDrawer({ open, onClose, card }: ReviewDrawerProps)
   const { space } = useCoupleSpace();
   const [cardNotes, setCardNotes] = useState<CardNote[]>([]);
   const [noteFilter, setNoteFilter] = useState<'all' | 'private' | 'shared'>('all');
+  const [stepFilter, setStepFilter] = useState<'all' | 'private' | 'shared'>('all');
 
   const filteredNotes = noteFilter === 'all'
     ? cardNotes
     : noteFilter === 'shared'
       ? cardNotes.filter(n => n.hasShared || n.hasPartnerShared)
       : cardNotes.filter(n => !n.hasShared && !n.hasPartnerShared);
+
+  // Per-section note status derived from cardNotes
+  const sectionNoteStatus = useMemo(() => {
+    const status: Record<string, { hasPrivate: boolean; hasShared: boolean; hasPartnerShared: boolean }> = {};
+    for (const note of cardNotes) {
+      if (!status[note.sectionId]) {
+        status[note.sectionId] = { hasPrivate: false, hasShared: false, hasPartnerShared: false };
+      }
+      if (note.hasShared) status[note.sectionId].hasShared = true;
+      else status[note.sectionId].hasPrivate = true;
+      if (note.hasPartnerShared) status[note.sectionId].hasPartnerShared = true;
+    }
+    return status;
+  }, [cardNotes]);
 
   // Fetch all notes for this card when drawer opens
   useEffect(() => {
@@ -217,10 +232,35 @@ export default function ReviewDrawer({ open, onClose, card }: ReviewDrawerProps)
           {/* Overview tab — existing content */}
           <TabsContent value="overview" className="flex-1 overflow-hidden mt-0">
             <ScrollArea className="h-full px-6 py-4" style={{ maxHeight: 'calc(85vh - 160px)' }}>
-              <div className="space-y-8 pb-8">
+              <div className="space-y-6 pb-8">
+                {/* Step filter chips */}
+                <div className="flex gap-1.5">
+                  {(['all', 'private', 'shared'] as const).map((f) => {
+                    const label = f === 'all' ? 'Alla' : f === 'private' ? 'Privat' : 'Delat';
+                    return (
+                      <button
+                        key={f}
+                        onClick={() => setStepFilter(f)}
+                        className={`px-3 py-1 rounded-full text-[11px] font-medium transition-colors ${
+                          stepFilter === f
+                            ? 'bg-primary/15 text-primary'
+                            : 'bg-muted/40 text-muted-foreground hover:bg-muted/60'
+                        }`}
+                      >
+                        {label}
+                      </button>
+                    );
+                  })}
+                </div>
+
                 {STEP_ORDER.map((stepType, index) => {
                   const section = card.sections.find((s) => s.type === stepType);
                   if (!section) return null;
+
+                  // Apply step filter
+                  const status = sectionNoteStatus[section.id];
+                  if (stepFilter === 'private' && !(status?.hasPrivate && !status?.hasShared)) return null;
+                  if (stepFilter === 'shared' && !(status?.hasShared || status?.hasPartnerShared)) return null;
 
                   return (
                     <motion.div
