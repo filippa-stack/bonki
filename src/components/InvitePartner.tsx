@@ -83,7 +83,7 @@ export default function InvitePartner({ inviteCode, inviteToken, partnerName, on
         <Button
           onClick={() => setExpanded(true)}
           size="sm"
-          className="w-full gap-2"
+          className="w-full gap-2 h-8 font-medium"
         >
           Skicka inbjudan
         </Button>
