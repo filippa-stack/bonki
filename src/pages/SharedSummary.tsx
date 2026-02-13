@@ -362,7 +362,7 @@ export default function SharedSummary() {
                 }}
               >
                 {showFind ? <X className="w-3.5 h-3.5" /> : <Search className="w-3.5 h-3.5" />}
-                {showFind ? 'Stäng' : 'Hitta'}
+                {showFind ? 'Stäng' : 'Sök i ert utrymme'}
               </Button>
             </div>
 
@@ -374,7 +374,7 @@ export default function SharedSummary() {
                   <Input
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    placeholder={t('shared.search_placeholder')}
+                    placeholder="Sök på ord eller tema…"
                     className="pl-10"
                   />
                 </div>
