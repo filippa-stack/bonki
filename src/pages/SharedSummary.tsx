@@ -232,7 +232,7 @@ export default function SharedSummary() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.4 }}
-            className="mb-6"
+            className="mb-6 text-center"
           >
             <h2 className="font-serif text-2xl font-semibold text-foreground mb-4">Vårt utrymme</h2>
             <p className="text-xs text-muted-foreground font-normal">
@@ -274,7 +274,7 @@ export default function SharedSummary() {
             transition={{ duration: 0.3, delay: 0.1 }}
             className="mb-9"
           >
-            <div className="px-5 py-[18px] rounded-2xl bg-card/15 border border-border/10">
+            <div className="px-5 py-[18px] rounded-2xl bg-card/15 border border-border/10 text-center">
               <p className="font-serif text-sm font-medium text-foreground">Hitta ett ämne att utforska ihop</p>
               <p className="text-[11px] text-muted-foreground mt-3 mb-5 leading-relaxed">Ni kan börja från början – eller välja det som känns rätt just nu.</p>
               <Button
@@ -322,10 +322,10 @@ export default function SharedSummary() {
                 animate={{ opacity: 1, y: 0 }}
                 className="mb-6"
               >
-                <p className="text-sm font-serif font-medium text-foreground mb-3">
+                <p className="text-sm font-serif font-medium text-foreground mb-3 text-center">
                   {t('shared.highlights_title')}
                 </p>
-                <p className="text-xs text-muted-foreground mb-4">
+                <p className="text-xs text-muted-foreground mb-4 text-center">
                   Det ni valt att lyfta fram.
                 </p>
                 <div className="p-5 rounded-2xl bg-card/50 border border-border/50">
@@ -413,10 +413,10 @@ export default function SharedSummary() {
                 animate={{ opacity: 1, y: 0 }}
                 className="mb-6"
               >
-                <p className="text-xs text-muted-foreground mb-4">
+                <p className="text-xs text-muted-foreground mb-4 text-center">
                   Här samlas det ni valt att spara i ert utrymme.
                 </p>
-                <p className="text-sm font-serif font-medium text-foreground mb-4">
+                <p className="text-sm font-serif font-medium text-foreground mb-4 text-center">
                   {t('shared.recent_title', 'Nyligen sparat')}
                 </p>
                 <div className="space-y-3">
@@ -457,7 +457,7 @@ export default function SharedSummary() {
             {/* Older reflections — grouped by month, visually secondary */}
             {olderGrouped.length > 0 && !hasActiveFilter && (
               <div>
-                <p className="text-sm font-serif font-medium text-foreground mb-4">Tidigare</p>
+                <p className="text-sm font-serif font-medium text-foreground mb-4 text-center">Tidigare</p>
                 {olderGrouped.map((group) => (
                   <div key={group.key} className="mb-6">
                      <p className="text-xs uppercase tracking-wide text-muted-foreground mb-3">
@@ -506,7 +506,7 @@ export default function SharedSummary() {
                 transition={{ duration: 0.3 }}
                 className="mt-6 mb-6"
               >
-                <div className="px-5 py-[18px] rounded-2xl bg-card/15 border border-border/10">
+                <div className="px-5 py-[18px] rounded-2xl bg-card/15 border border-border/10 text-center">
                   <p className="font-serif text-sm font-medium text-foreground">Hitta ett ämne att utforska ihop</p>
                   <p className="text-[11px] text-muted-foreground mt-3 mb-5 leading-relaxed">Ni kan börja från början – eller välja det som känns rätt just nu.</p>
                   <Button
@@ -530,11 +530,11 @@ export default function SharedSummary() {
                 transition={{ delay: 0.15 }}
                 className="mt-8 md:mt-10"
               >
-                <p className="text-[11px] text-muted-foreground uppercase tracking-normal font-medium mb-3 flex items-center gap-2">
+                <p className="text-[11px] text-muted-foreground uppercase tracking-normal font-medium mb-3 flex items-center justify-center gap-2">
                   <BookOpen className="w-3 h-3" />
                   {t('shared.journey_title')}
                 </p>
-                <div className="p-5 rounded-lg bg-card/30">
+                <div className="p-5 rounded-lg bg-card/30 text-center">
                   <p className="text-xs text-muted-foreground leading-loose">
                     {t('shared.journey_empty')}
                   </p>
