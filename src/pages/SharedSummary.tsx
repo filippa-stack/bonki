@@ -46,6 +46,7 @@ export default function SharedSummary() {
 
   const [searchQuery, setSearchQuery] = useState('');
   const [categoryFilter, setCategoryFilter] = useState<string>('all');
+  const [showFind, setShowFind] = useState(false);
   const [sharedNotes, setSharedNotes] = useState<SharedNoteRow[]>([]);
   const [loading, setLoading] = useState(true);
   const pendingSaves = useRef<Map<string, ReturnType<typeof setTimeout>>>(new Map());
@@ -301,39 +302,60 @@ export default function SharedSummary() {
               </motion.div>
             )}
 
-            {/* Search + Filter row */}
-            <div className="flex gap-2 mb-6">
-              <div className="relative flex-1">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                <Input
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder={t('shared.search_placeholder')}
-                  className="pl-10"
-                />
-              </div>
-              <Select value={categoryFilter} onValueChange={setCategoryFilter}>
-                <SelectTrigger className="w-[140px]">
-                  <Filter className="w-3 h-3 mr-1" />
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">Alla</SelectItem>
-                  {categories.map(c => (
-                    <SelectItem key={c.id} value={c.id}>{c.title}</SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-              {hasActiveFilter && (
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={() => { setSearchQuery(''); setCategoryFilter('all'); }}
-                >
-                  <X className="w-4 h-4" />
-                </Button>
-              )}
+            {/* Find toggle */}
+            <div className="flex justify-end mb-4">
+              <Button
+                variant="ghost"
+                size="sm"
+                className="text-xs text-muted-foreground gap-1.5"
+                onClick={() => {
+                  if (showFind) {
+                    setSearchQuery('');
+                    setCategoryFilter('all');
+                  }
+                  setShowFind(!showFind);
+                }}
+              >
+                {showFind ? <X className="w-3.5 h-3.5" /> : <Search className="w-3.5 h-3.5" />}
+                {showFind ? 'Stäng' : 'Hitta'}
+              </Button>
             </div>
+
+            {/* Search + Filter row */}
+            {showFind && (
+              <div className="flex gap-2 mb-6">
+                <div className="relative flex-1">
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                  <Input
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    placeholder={t('shared.search_placeholder')}
+                    className="pl-10"
+                  />
+                </div>
+                <Select value={categoryFilter} onValueChange={setCategoryFilter}>
+                  <SelectTrigger className="w-[140px]">
+                    <Filter className="w-3 h-3 mr-1" />
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">Alla</SelectItem>
+                    {categories.map(c => (
+                      <SelectItem key={c.id} value={c.id}>{c.title}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                {hasActiveFilter && (
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => { setSearchQuery(''); setCategoryFilter('all'); }}
+                  >
+                    <X className="w-4 h-4" />
+                  </Button>
+                )}
+              </div>
+            )}
 
             {/* Recent shared moments — prominent */}
             {recentItems.length > 0 && !hasActiveFilter && (
