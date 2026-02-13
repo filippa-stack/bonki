@@ -273,7 +273,7 @@ export default function SharedSummary() {
           >
             <div className="p-3 rounded-2xl bg-card/15 border border-border/10">
               <p className="font-serif text-base text-foreground">Hitta ett ämne att utforska ihop</p>
-              <p className="text-xs text-muted-foreground mt-1 mb-3">Börja där det känns relevant just nu – ni kan alltid pausa och fortsätta senare.</p>
+              <p className="text-xs text-muted-foreground mt-1 mb-3">Ni kan börja från början – eller välja det som känns rätt just nu.</p>
               <Button
                 variant="outline"
                 size="sm"
@@ -504,7 +504,7 @@ export default function SharedSummary() {
               >
                 <div className="p-3 rounded-2xl bg-card/15 border border-border/10">
                   <p className="font-serif text-base text-foreground">Hitta ett ämne att utforska ihop</p>
-                  <p className="text-xs text-muted-foreground mt-1 mb-3">Börja där det känns relevant just nu – ni kan alltid pausa och fortsätta senare.</p>
+                  <p className="text-xs text-muted-foreground mt-1 mb-3">Ni kan börja från början – eller välja det som känns rätt just nu.</p>
                   <Button
                     variant="outline"
                     size="sm"
