@@ -535,7 +535,7 @@ export default function SharedSummary() {
                   {t('shared.journey_title')}
                 </p>
                 <div className="p-5 rounded-lg bg-card/30 text-center">
-                  <p className="text-xs text-muted-foreground leading-loose">
+                  <p className="text-xs text-muted-foreground leading-loose font-light">
                     {t('shared.journey_empty')}
                   </p>
                 </div>
