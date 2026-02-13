@@ -274,7 +274,7 @@ export default function SharedSummary() {
             transition={{ duration: 0.3, delay: 0.1 }}
             className="mb-6 md:mb-8"
           >
-            <div className="p-4 pb-5 rounded-2xl bg-card/15 border border-border/10">
+            <div className="p-5 rounded-2xl bg-card/15 border border-border/10">
               <p className="font-serif text-sm font-medium text-foreground">Hitta ett ämne att utforska ihop</p>
               <p className="text-[11px] text-muted-foreground mt-3 mb-5 leading-relaxed">Ni kan börja från början – eller välja det som känns rätt just nu.</p>
               <Button
@@ -304,11 +304,11 @@ export default function SharedSummary() {
                 animate={{ opacity: 1, y: 0 }}
                 className="my-6 md:my-8"
               >
-                <div className="p-4 rounded-xl border border-border/10 bg-card/15">
-                  <div className="flex flex-col items-start text-left gap-3">
+                <div className="p-5 rounded-xl border border-border/10 bg-card/15">
+                  <div className="flex flex-col items-start text-left">
                     <MessageCircle className="w-8 h-8 text-muted-foreground/25" />
-                    <p className="text-gentle text-sm font-serif font-medium">Här samlas det ni delar.</p>
-                    <p className="text-[11px] text-muted-foreground leading-relaxed">När ni vill.</p>
+                    <p className="text-gentle text-sm font-serif font-medium mt-3">Här samlas det ni delar.</p>
+                    <p className="text-[11px] text-muted-foreground leading-relaxed mt-3">När ni vill.</p>
                   </div>
                 </div>
               </motion.div>
@@ -506,7 +506,7 @@ export default function SharedSummary() {
                 transition={{ duration: 0.3 }}
                 className="mt-6 md:mt-8 mb-6 md:mb-8"
               >
-                <div className="p-4 pb-5 rounded-2xl bg-card/15 border border-border/10">
+                <div className="p-5 rounded-2xl bg-card/15 border border-border/10">
                   <p className="font-serif text-sm font-medium text-foreground">Hitta ett ämne att utforska ihop</p>
                   <p className="text-[11px] text-muted-foreground mt-3 mb-5 leading-relaxed">Ni kan börja från början – eller välja det som känns rätt just nu.</p>
                   <Button

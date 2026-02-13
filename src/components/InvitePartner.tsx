@@ -67,15 +67,15 @@ export default function InvitePartner({ inviteCode, inviteToken, partnerName, on
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        className="w-full rounded-xl bg-[#FFFEF3] p-5 space-y-3"
+        className="w-full rounded-xl bg-[#FFFEF3] p-5"
       >
         <div className="flex items-start gap-3">
           <UserPlus className="w-5 h-5 text-[#d08f63] shrink-0 mt-0.5" />
-          <div className="space-y-1">
+          <div>
             <p className="text-sm font-medium text-foreground">
               {t('invite.title', 'Bjud in din partner')}
             </p>
-            <p className="text-xs text-muted-foreground leading-relaxed">
+            <p className="text-[11px] text-muted-foreground leading-relaxed mt-3">
               {t('invite.collapsed_hint', 'När ni är två syns era delade reflektioner här. Du väljer alltid vad som delas.')}
             </p>
           </div>
@@ -83,7 +83,7 @@ export default function InvitePartner({ inviteCode, inviteToken, partnerName, on
         <Button
           onClick={() => setExpanded(true)}
           size="sm"
-          className="w-full gap-2 h-8 font-medium"
+          className="w-full gap-2 h-8 font-medium mt-5"
         >
           Skicka inbjudan
         </Button>
