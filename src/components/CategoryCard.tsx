@@ -158,7 +158,7 @@ export default function CategoryCard({
             </p>
           )}
           {status && status !== 'not_started' && (
-            <p className="text-sm text-primary text-center mt-3 font-medium">
+            <p className="text-sm text-muted-foreground text-center mt-3 font-medium not-italic">
               {t(`category_status.${status}`)}
             </p>
           )}
