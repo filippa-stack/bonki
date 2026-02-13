@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
-import { X, ArrowRight, FileText, Share2 } from 'lucide-react';
+import { X, ArrowRight, FileText } from 'lucide-react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import {
@@ -14,6 +14,7 @@ import {
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import StepReflection from '@/components/StepReflection';
+import { usePromptNotes } from '@/hooks/usePromptNotes';
 import CardTakeaways from '@/components/CardTakeaways';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
@@ -38,6 +39,49 @@ interface CardNote {
   hasShared: boolean;
   hasPartnerShared: boolean;
   updatedAt: string;
+}
+
+/** Small component to show note status pills per step (uses hook internally) */
+function StepNoteStatus({ cardId, sectionId }: { cardId: string; sectionId: string }) {
+  const { notes } = usePromptNotes(cardId, sectionId);
+
+  const status = useMemo(() => {
+    let hasMyPrivate = false;
+    let hasMyShared = false;
+    let hasPartnerShared = false;
+    notes.forEach((note, key) => {
+      if (!note.content.trim()) return;
+      if (key.startsWith('partner:')) {
+        hasPartnerShared = true;
+      } else if (note.visibility === 'shared') {
+        hasMyShared = true;
+      } else if (note.visibility === 'private') {
+        hasMyPrivate = true;
+      }
+    });
+    return { hasMyPrivate, hasMyShared, hasPartnerShared };
+  }, [notes]);
+
+  if (!status.hasMyPrivate && !status.hasMyShared && !status.hasPartnerShared) return null;
+
+  return (
+    <div className="flex items-center gap-1 flex-wrap">
+      {status.hasMyShared ? (
+        <span className="px-1.5 py-0.5 rounded-full text-[10px] leading-none bg-primary/10 text-primary/70 font-medium">
+          Delad
+        </span>
+      ) : status.hasMyPrivate ? (
+        <span className="px-1.5 py-0.5 rounded-full text-[10px] leading-none bg-muted/50 text-muted-foreground/50">
+          Privat
+        </span>
+      ) : null}
+      {status.hasPartnerShared && (
+        <span className="px-1.5 py-0.5 rounded-full text-[10px] leading-none bg-muted/40 text-muted-foreground/60">
+          Från den andra
+        </span>
+      )}
+    </div>
+  );
 }
 
 interface ReviewDrawerProps {
@@ -193,6 +237,7 @@ export default function ReviewDrawer({ open, onClose, card }: ReviewDrawerProps)
                         <h3 className="font-serif text-base text-foreground">
                           {STEP_LABELS[stepType]}
                         </h3>
+                        <StepNoteStatus cardId={card.id} sectionId={section.id} />
                       </div>
 
                       <div className="pl-9 space-y-2">
