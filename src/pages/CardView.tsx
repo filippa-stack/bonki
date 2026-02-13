@@ -595,7 +595,16 @@ export default function CardView() {
                     </div>
                   </div>
 
-                  <div className="pt-2">
+                  <div className="pt-3 flex flex-col items-center gap-2">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="gap-1.5"
+                      onClick={() => navigate('/')}
+                    >
+                      <Home className="w-3.5 h-3.5" />
+                      Tillbaka till Hem
+                    </Button>
                     <PauseDialog onConfirm={() => { pauseSession(); navigate('/'); }} />
                   </div>
                 </motion.div>
