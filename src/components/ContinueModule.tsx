@@ -90,7 +90,7 @@ export default function ContinueModule({
           <Button
             onClick={onChooseAnother}
             size="sm"
-            className="bg-[#D08E62] text-white hover:bg-[#C07D52]"
+            className="bg-transparent border-2 border-[#497575] text-[#497575] hover:bg-[#497575]/10"
           >
             {t('general.choose_another')}
           </Button>
