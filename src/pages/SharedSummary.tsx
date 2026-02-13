@@ -276,7 +276,7 @@ export default function SharedSummary() {
           >
             <div className="p-3 rounded-2xl bg-card/15 border border-border/10">
               <p className="font-serif text-sm font-medium text-foreground">Hitta ett ämne att utforska ihop</p>
-              <p className="text-xs text-muted-foreground mt-2.5 mb-3">Ni kan börja från början – eller välja det som känns rätt just nu.</p>
+              <p className="text-[11px] text-muted-foreground mt-2.5 mb-4 leading-relaxed">Ni kan börja från början – eller välja det som känns rätt just nu.</p>
               <Button
                 variant="outline"
                 size="sm"
@@ -307,7 +307,7 @@ export default function SharedSummary() {
                   <div className="flex flex-col items-start text-left gap-3">
                     <MessageCircle className="w-8 h-8 text-muted-foreground/25" />
                     <p className="text-gentle text-sm font-serif font-medium">Här samlas det ni delar.</p>
-                    <p className="text-xs text-muted-foreground">När ni vill.</p>
+                    <p className="text-[11px] text-muted-foreground leading-relaxed">När ni vill.</p>
                   </div>
                 </div>
               </motion.div>
@@ -507,7 +507,7 @@ export default function SharedSummary() {
               >
                 <div className="p-3 rounded-2xl bg-card/15 border border-border/10">
                   <p className="font-serif text-sm font-medium text-foreground">Hitta ett ämne att utforska ihop</p>
-                  <p className="text-xs text-muted-foreground mt-2.5 mb-3">Ni kan börja från början – eller välja det som känns rätt just nu.</p>
+                  <p className="text-[11px] text-muted-foreground mt-2.5 mb-4 leading-relaxed">Ni kan börja från början – eller välja det som känns rätt just nu.</p>
                   <Button
                     variant="outline"
                     size="sm"
