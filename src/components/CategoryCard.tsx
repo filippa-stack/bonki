@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
-import { ArrowRight } from 'lucide-react';
 import { Category } from '@/types';
 import ColorPicker from '@/components/ColorPicker';
 import IconPicker, { getIconByName } from '@/components/IconPicker';
@@ -159,8 +158,7 @@ export default function CategoryCard({
             </p>
           )}
           {status && status !== 'not_started' && (
-            <p className="text-sm text-foreground text-center mt-3 font-semibold not-italic flex items-center justify-center gap-2">
-              <ArrowRight className="w-4 h-4" />
+            <p className="text-sm text-foreground text-center mt-3 font-semibold not-italic">
               {t(`category_status.${status}`)}
             </p>
           )}
