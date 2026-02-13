@@ -83,7 +83,7 @@ export default function InvitePartner({ inviteCode, inviteToken, partnerName, on
         <Button
           onClick={() => setExpanded(true)}
           size="sm"
-          className="w-full gap-2 bg-[#d08f63] hover:bg-[#c07e55] text-white"
+          className="w-full gap-2"
         >
           Bjud in partner
         </Button>
