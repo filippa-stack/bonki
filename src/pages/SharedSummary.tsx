@@ -431,16 +431,16 @@ export default function SharedSummary() {
 
             {/* Older reflections — grouped by month, visually secondary */}
             {olderGrouped.length > 0 && !hasActiveFilter && (
-              <div className="opacity-80">
+              <div>
                 {olderGrouped.map((group) => (
-                  <div key={group.key} className="mb-8">
-                     <p className="text-sm font-serif font-medium text-foreground/70 mb-4">
+                  <div key={group.key} className="mb-6">
+                     <p className="text-xs uppercase tracking-wide text-muted-foreground mb-3">
                       {group.label}
                     </p>
-                    <div className="space-y-5">
+                    <div className="space-y-4">
                       {group.cardGroups.map((cardGroup) => (
                         <div key={cardGroup.cardId}>
-                          <p className="text-xs font-medium text-foreground/60 mb-2">
+                          <p className="text-xs text-muted-foreground/70 mb-2">
                             {cardGroup.categoryTitle} · {cardGroup.cardTitle}
                           </p>
                           <div className="space-y-3">
