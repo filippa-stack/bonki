@@ -275,8 +275,8 @@ export default function SharedSummary() {
             className="mb-6 md:mb-8"
           >
             <div className="p-3 rounded-2xl bg-card/15 border border-border/10">
-              <p className="font-serif text-base text-foreground">Hitta ett ämne att utforska ihop</p>
-              <p className="text-xs text-muted-foreground mt-1 mb-3">Ni kan börja från början – eller välja det som känns rätt just nu.</p>
+              <p className="font-serif text-sm font-medium text-foreground">Hitta ett ämne att utforska ihop</p>
+              <p className="text-xs text-muted-foreground mt-2.5 mb-3">Ni kan börja från början – eller välja det som känns rätt just nu.</p>
               <Button
                 variant="outline"
                 size="sm"
@@ -306,7 +306,7 @@ export default function SharedSummary() {
                 <div className="p-4 rounded-xl border border-border/10 bg-card/15">
                   <div className="flex flex-col items-start text-left gap-3">
                     <MessageCircle className="w-8 h-8 text-muted-foreground/25" />
-                    <p className="text-gentle text-sm font-serif">Här samlas det ni delar.</p>
+                    <p className="text-gentle text-sm font-serif font-medium">Här samlas det ni delar.</p>
                     <p className="text-xs text-muted-foreground">När ni vill.</p>
                   </div>
                 </div>
@@ -321,7 +321,7 @@ export default function SharedSummary() {
                 animate={{ opacity: 1, y: 0 }}
                 className="mb-6 md:mb-8"
               >
-                <p className="text-sm font-serif font-medium text-foreground mb-1">
+                <p className="text-sm font-serif font-medium text-foreground mb-2.5">
                   {t('shared.highlights_title')}
                 </p>
                 <p className="text-xs text-muted-foreground mb-4">
@@ -506,8 +506,8 @@ export default function SharedSummary() {
                 className="mt-6 md:mt-8 mb-6 md:mb-8"
               >
                 <div className="p-3 rounded-2xl bg-card/15 border border-border/10">
-                  <p className="font-serif text-base text-foreground">Hitta ett ämne att utforska ihop</p>
-                  <p className="text-xs text-muted-foreground mt-1 mb-3">Ni kan börja från början – eller välja det som känns rätt just nu.</p>
+                  <p className="font-serif text-sm font-medium text-foreground">Hitta ett ämne att utforska ihop</p>
+                  <p className="text-xs text-muted-foreground mt-2.5 mb-3">Ni kan börja från början – eller välja det som känns rätt just nu.</p>
                   <Button
                     variant="outline"
                     size="sm"
