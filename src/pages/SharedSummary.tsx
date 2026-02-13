@@ -299,30 +299,32 @@ export default function SharedSummary() {
                 animate={{ opacity: 1, y: 0 }}
                 className="mb-10"
               >
-                <p className="text-sm font-serif font-medium text-foreground mb-4">
+                <p className="text-sm font-serif font-medium text-foreground mb-1">
                   {t('shared.highlights_title')}
                 </p>
-                <div className="space-y-3">
-                  {(showAllHighlights ? highlights : highlights.slice(0, 3)).map((h) => (
-                    <div
-                      key={`hl-${h.id}`}
-                      className="p-4 rounded-xl bg-card border border-border/70"
+                <p className="text-xs text-muted-foreground mb-4">
+                  Det ni valt att lyfta fram.
+                </p>
+                <div className="p-5 rounded-2xl bg-card/50 border border-border/50">
+                  <div className="space-y-4">
+                    {(showAllHighlights ? highlights : highlights.slice(0, 3)).map((h) => (
+                      <div key={`hl-${h.id}`}>
+                        <p className="text-xs text-muted-foreground/70 mb-1">
+                          {h.categoryTitle} · {h.cardTitle}
+                        </p>
+                        <p className="text-base text-foreground whitespace-pre-wrap leading-relaxed">{h.content}</p>
+                      </div>
+                    ))}
+                  </div>
+                  {highlights.length > 3 && (
+                    <button
+                      onClick={() => setShowAllHighlights(!showAllHighlights)}
+                      className="mt-4 text-xs text-muted-foreground hover:text-foreground transition-colors"
                     >
-                      <p className="text-xs text-muted-foreground mb-1">
-                        {h.categoryTitle} · {h.cardTitle}
-                      </p>
-                      <p className="text-body text-foreground whitespace-pre-wrap">{h.content}</p>
-                    </div>
-                  ))}
+                      {showAllHighlights ? 'Visa färre' : 'Visa fler'}
+                    </button>
+                  )}
                 </div>
-                {highlights.length > 3 && (
-                  <button
-                    onClick={() => setShowAllHighlights(!showAllHighlights)}
-                    className="mt-3 text-xs text-muted-foreground hover:text-foreground transition-colors"
-                  >
-                    {showAllHighlights ? 'Visa färre' : 'Se fler'}
-                  </button>
-                )}
               </motion.div>
             )}
 
