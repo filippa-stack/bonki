@@ -65,18 +65,18 @@ function StepNoteStatus({ cardId, sectionId }: { cardId: string; sectionId: stri
   if (!status.hasMyPrivate && !status.hasMyShared && !status.hasPartnerShared) return null;
 
   return (
-    <div className="flex items-center gap-1 flex-wrap">
+    <div className="flex items-center gap-1.5">
       {status.hasMyShared ? (
-        <span className="px-1.5 py-0.5 rounded-full text-[10px] leading-none bg-primary/10 text-primary/70 font-medium">
+        <span className="px-2 py-0.5 rounded-full text-xs leading-none border border-border/60 bg-muted/20 text-muted-foreground">
           Delad
         </span>
       ) : status.hasMyPrivate ? (
-        <span className="px-1.5 py-0.5 rounded-full text-[10px] leading-none bg-muted/50 text-muted-foreground/50">
+        <span className="px-2 py-0.5 rounded-full text-xs leading-none border border-border/60 bg-muted/20 text-muted-foreground/60">
           Privat
         </span>
       ) : null}
       {status.hasPartnerShared && (
-        <span className="px-1.5 py-0.5 rounded-full text-[10px] leading-none bg-muted/40 text-muted-foreground/60">
+        <span className="px-2 py-0.5 rounded-full text-xs leading-none border border-border/60 bg-muted/20 text-muted-foreground/60">
           Från den andra
         </span>
       )}
@@ -270,13 +270,15 @@ export default function ReviewDrawer({ open, onClose, card }: ReviewDrawerProps)
                       transition={{ delay: index * 0.05, duration: 0.3 }}
                       className="space-y-3"
                     >
-                      <div className="flex items-center gap-3">
-                        <div className="w-6 h-6 rounded-full bg-muted flex items-center justify-center text-xs font-medium text-muted-foreground shrink-0">
-                          {index + 1}
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-3">
+                          <div className="w-6 h-6 rounded-full bg-muted flex items-center justify-center text-xs font-medium text-muted-foreground shrink-0">
+                            {index + 1}
+                          </div>
+                          <h3 className="font-serif text-base text-foreground">
+                            {STEP_LABELS[stepType]}
+                          </h3>
                         </div>
-                        <h3 className="font-serif text-base text-foreground">
-                          {STEP_LABELS[stepType]}
-                        </h3>
                         <StepNoteStatus cardId={card.id} sectionId={section.id} />
                       </div>
 
