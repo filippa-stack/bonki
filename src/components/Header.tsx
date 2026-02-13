@@ -83,15 +83,13 @@ export default function Header({
             />
           )}
           {showBackupManager && <BackupManager />}
-          <Button
-            variant="outline"
-            size="sm"
+          <button
             onClick={() => navigate('/shared')}
-            className="bg-white border-2 border-primary text-primary hover:bg-primary/10 hover:text-primary text-xs gap-1.5 font-medium"
+            className="flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-primary/15 hover:bg-primary/25 text-primary text-xs font-medium transition-colors"
           >
             <Users className="w-3.5 h-3.5" />
             {t('header.shared_space')}
-          </Button>
+          </button>
           {showBackgroundPicker && (
             <div className="flex items-center gap-2">
               <span className="text-xs text-muted-foreground hidden sm:inline">{t('header.background')}</span>
