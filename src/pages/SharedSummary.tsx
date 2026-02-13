@@ -314,14 +314,6 @@ export default function SharedSummary() {
                     <MessageCircle className="w-8 h-8 text-muted-foreground/40" />
                     <p className="text-gentle text-sm font-serif">Här växer det ni delar.</p>
                     <p className="text-xs text-muted-foreground">I er egen takt.</p>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      className="mt-2"
-                      onClick={() => navigate('/')}
-                    >
-                      Bläddra bland kort
-                    </Button>
                   </div>
                 </div>
               </motion.div>
