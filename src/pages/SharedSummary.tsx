@@ -343,7 +343,7 @@ export default function SharedSummary() {
                 className="mb-8"
               >
                 <p className="text-sm font-serif font-medium text-foreground mb-4">
-                  {t('shared.recent_title', 'Våra samtal')}
+                  {t('shared.recent_title', 'Senaste som delats')}
                 </p>
                 <div className="space-y-3">
                   {recentItems.map((item) => (
