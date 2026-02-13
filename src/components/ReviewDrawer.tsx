@@ -36,6 +36,7 @@ interface CardNote {
   content: string;
   visibility: 'private' | 'shared';
   hasShared: boolean;
+  hasPartnerShared: boolean;
   updatedAt: string;
 }
 
@@ -56,29 +57,41 @@ export default function ReviewDrawer({ open, onClose, card }: ReviewDrawerProps)
   const filteredNotes = noteFilter === 'all'
     ? cardNotes
     : noteFilter === 'shared'
-      ? cardNotes.filter(n => n.hasShared)
-      : cardNotes.filter(n => !n.hasShared);
+      ? cardNotes.filter(n => n.hasShared || n.hasPartnerShared)
+      : cardNotes.filter(n => !n.hasShared && !n.hasPartnerShared);
 
   // Fetch all notes for this card when drawer opens
   useEffect(() => {
     if (!open || !user || !space) return;
 
     const fetchAllNotes = async () => {
-      const { data } = await supabase
+      // Fetch my notes
+      const { data: myData } = await supabase
         .from('prompt_notes')
         .select('*')
         .eq('couple_space_id', space.id)
         .eq('card_id', card.id)
         .eq('user_id', user.id);
 
-      if (!data) return;
+      // Fetch partner's shared notes
+      const { data: partnerData } = await supabase
+        .from('prompt_notes')
+        .select('section_id, prompt_id')
+        .eq('couple_space_id', space.id)
+        .eq('card_id', card.id)
+        .eq('visibility', 'shared')
+        .neq('user_id', user.id);
 
-      // Group by promptId to detect shared status
+      if (!myData) return;
+
       const sharedSet = new Set(
-        data.filter(n => n.visibility === 'shared').map(n => `${n.section_id}:${n.prompt_id}`)
+        myData.filter(n => n.visibility === 'shared').map(n => `${n.section_id}:${n.prompt_id}`)
+      );
+      const partnerSharedSet = new Set(
+        (partnerData || []).map(n => `${n.section_id}:${n.prompt_id}`)
       );
 
-      const notes: CardNote[] = data
+      const notes: CardNote[] = myData
         .filter(n => n.visibility === 'private' && n.content.trim())
         .map(n => {
           const section = card.sections.find(s => s.id === n.section_id);
@@ -90,6 +103,7 @@ export default function ReviewDrawer({ open, onClose, card }: ReviewDrawerProps)
               })
             : -1;
 
+          const key = `${n.section_id}:${n.prompt_id}`;
           return {
             promptId: n.prompt_id,
             sectionId: n.section_id,
@@ -97,11 +111,11 @@ export default function ReviewDrawer({ open, onClose, card }: ReviewDrawerProps)
             promptIndex: promptIndex >= 0 ? promptIndex : 0,
             content: n.content,
             visibility: 'private' as const,
-            hasShared: sharedSet.has(`${n.section_id}:${n.prompt_id}`),
+            hasShared: sharedSet.has(key),
+            hasPartnerShared: partnerSharedSet.has(key),
             updatedAt: n.updated_at,
           };
         })
-        // Sort by step order, then prompt index
         .sort((a, b) => {
           const aStep = STEP_ORDER.indexOf(a.sectionType as any);
           const bStep = STEP_ORDER.indexOf(b.sectionType as any);
@@ -263,8 +277,8 @@ export default function ReviewDrawer({ open, onClose, card }: ReviewDrawerProps)
                       const count = f === 'all'
                         ? cardNotes.length
                         : f === 'shared'
-                          ? cardNotes.filter(n => n.hasShared).length
-                          : cardNotes.filter(n => !n.hasShared).length;
+                          ? cardNotes.filter(n => n.hasShared || n.hasPartnerShared).length
+                          : cardNotes.filter(n => !n.hasShared && !n.hasPartnerShared).length;
                       return (
                         <button
                           key={f}
@@ -292,18 +306,27 @@ export default function ReviewDrawer({ open, onClose, card }: ReviewDrawerProps)
                       className={`w-full text-left rounded-xl bg-white border border-border/40 hover:border-primary/30 hover:shadow-sm transition-all group flex overflow-hidden`}
                     >
                       {/* Left accent bar */}
-                      <div className={`w-1 shrink-0 ${note.hasShared ? 'bg-primary/50' : 'bg-muted-foreground/15'}`} />
+                      <div className={`w-1 shrink-0 ${note.hasShared ? 'bg-primary/50' : note.hasPartnerShared ? 'bg-primary/30' : 'bg-muted-foreground/15'}`} />
                       <div className="p-3 flex-1 min-w-0">
-                        <div className="flex items-center gap-2 mb-1">
+                        <div className="flex items-center flex-wrap gap-1.5 mb-1">
                           <span className="text-[10px] font-medium text-muted-foreground/70 uppercase tracking-wider">
                             {STEP_LABELS[note.sectionType]}
                           </span>
                           <span className="text-[10px] text-muted-foreground/50">
                             Fråga {note.promptIndex + 1}
                           </span>
-                          <span className={`text-[10px] ${note.hasShared ? 'text-primary/70 font-medium' : 'text-muted-foreground/40'}`}>
+                          <span className={`inline-flex items-center px-1.5 py-0.5 rounded-full text-[10px] leading-none ${
+                            note.hasShared
+                              ? 'bg-primary/10 text-primary/80 font-medium'
+                              : 'bg-muted/50 text-muted-foreground/50'
+                          }`}>
                             {note.hasShared ? 'Delad' : 'Privat'}
                           </span>
+                          {note.hasPartnerShared && (
+                            <span className="inline-flex items-center px-1.5 py-0.5 rounded-full text-[10px] leading-none bg-muted/40 text-muted-foreground/60">
+                              Från din partner
+                            </span>
+                          )}
                         </div>
                         <p className="text-sm text-foreground/80 leading-relaxed line-clamp-2">
                           {note.content}
