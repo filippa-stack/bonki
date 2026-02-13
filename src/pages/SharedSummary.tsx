@@ -278,7 +278,7 @@ export default function SharedSummary() {
               <p className="font-serif text-sm font-medium text-foreground">Hitta ett ämne att utforska ihop</p>
               <p className="text-[11px] text-muted-foreground mt-3 mb-5 leading-relaxed">Ni kan börja från början – eller välja det som känns rätt just nu.</p>
               <Button
-                variant="ghost"
+                variant="secondary"
                 size="sm"
                 className="w-full h-8 font-medium"
                 onClick={() => navigate('/')}
@@ -510,7 +510,7 @@ export default function SharedSummary() {
                   <p className="font-serif text-sm font-medium text-foreground">Hitta ett ämne att utforska ihop</p>
                   <p className="text-[11px] text-muted-foreground mt-3 mb-5 leading-relaxed">Ni kan börja från början – eller välja det som känns rätt just nu.</p>
                   <Button
-                    variant="ghost"
+                    variant="secondary"
                     size="sm"
                     className="w-full h-8 font-medium"
                     onClick={() => navigate('/')}
