@@ -76,7 +76,10 @@ export default function InvitePartner({ inviteCode, inviteToken, partnerName, on
               {t('invite.title', 'Bjud in din partner')}
             </p>
             <p className="text-xs text-muted-foreground leading-relaxed">
-              {t('invite.collapsed_hint', 'Bjud in din partner så att ni kan dela det ni skriver.')}
+              {t('invite.collapsed_hint', 'Bjud in din partner så att ert utrymme kan fyllas tillsammans.')}
+            </p>
+            <p className="text-xs text-muted-foreground/70 leading-relaxed">
+              {t('invite.collapsed_supporting', 'Du kan börja här redan nu – och välja vad som delas när ni är två.')}
             </p>
           </div>
         </div>
