@@ -87,7 +87,6 @@ export default function InvitePartner({ inviteCode, inviteToken, partnerName, on
         >
           Skicka inbjudan
         </Button>
-        <p className="text-xs text-muted-foreground/60 text-center">Det tar bara en minut.</p>
       </motion.div>
     );
   }
