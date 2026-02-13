@@ -147,12 +147,12 @@ export default function CategoryCard({
               onClick={(e) => e.stopPropagation()}
               onKeyDown={(e) => { if (e.key === 'Enter') handleDescBlur(); }}
               autoFocus
-              className="w-full text-xs text-center bg-transparent border-none outline-none item-text-gentle opacity-60"
+              className="w-full text-xs text-center bg-transparent border-none outline-none item-text-gentle opacity-80"
               style={{ '--item-text': category.textColor || undefined } as React.CSSProperties}
             />
           ) : (
             <p 
-              className="text-xs text-center item-text-gentle cursor-text opacity-60"
+              className="text-xs text-center item-text-gentle cursor-text opacity-80"
               style={{ '--item-text': category.textColor || undefined } as React.CSSProperties}
               onClick={handleDescClick}
             >
@@ -160,7 +160,7 @@ export default function CategoryCard({
             </p>
           )}
           {status && status !== 'not_started' && (
-            <p className="text-xs text-muted-foreground text-center mt-3 italic">
+            <p className="text-xs text-foreground/70 text-center mt-3 italic">
               {t(`category_status.${status}`)}
             </p>
           )}
