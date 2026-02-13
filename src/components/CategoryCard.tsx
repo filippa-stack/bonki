@@ -133,7 +133,7 @@ export default function CategoryCard({
           {/* Emotional entry line — primary reading text */}
           {category.entryLine && (
             <p
-              className="text-sm text-center italic text-foreground/70 leading-relaxed"
+              className="text-sm text-center not-italic text-foreground/70 leading-relaxed"
             >
               {category.entryLine}
             </p>
