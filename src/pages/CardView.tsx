@@ -513,8 +513,14 @@ export default function CardView() {
 
               {/* Takeaways on final step (exercise), before completing — card-level reflection */}
               {currentSection.type === 'exercise' && !userCompletedCurrentStep && (
-                <div className="mt-8 border-t border-border/40 pt-6">
-                  <CardTakeaways cardId={card.id} />
+                <div className="mt-8 border-t border-border/40 pt-6 space-y-1.5">
+                  <p className="text-xs font-medium text-muted-foreground/70 tracking-wide">Takeaways</p>
+                  <p className="text-[13px] text-muted-foreground/50 leading-relaxed">
+                    För hela samtalet på det här kortet. Skriv vad ni vill minnas, prova eller ta med er vidare.
+                  </p>
+                  <div className="pt-2">
+                    <CardTakeaways cardId={card.id} />
+                  </div>
                 </div>
               )}
 
@@ -557,8 +563,14 @@ export default function CardView() {
                   </div>
 
                   {/* Takeaways accessible during waiting */}
-                  <div className="text-left pt-2">
-                    <CardTakeaways cardId={card.id} compact />
+                  <div className="text-left pt-3 space-y-1.5">
+                    <p className="text-xs font-medium text-muted-foreground/70 tracking-wide">Takeaways</p>
+                    <p className="text-[13px] text-muted-foreground/50 leading-relaxed">
+                      För hela samtalet på det här kortet — skriv ner det ni vill ta med er.
+                    </p>
+                    <div className="pt-1">
+                      <CardTakeaways cardId={card.id} compact />
+                    </div>
                   </div>
 
                   <div className="pt-2">
@@ -566,7 +578,7 @@ export default function CardView() {
                   </div>
 
                   <p className="text-[11px] text-muted-foreground/40 italic">
-                    Det här är bara för dig — det ändrar inte var ni är i samtalet.
+                    Bara för dig. Du kan dela med din partner när du vill — det ändrar inte var ni är i samtalet.
                   </p>
                 </motion.div>
               ) : (
