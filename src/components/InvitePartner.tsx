@@ -76,10 +76,7 @@ export default function InvitePartner({ inviteCode, inviteToken, partnerName, on
               {t('invite.title', 'Bjud in din partner')}
             </p>
             <p className="text-xs text-muted-foreground leading-relaxed">
-              {t('invite.collapsed_hint', 'Bjud in din partner så att ert utrymme kan fyllas tillsammans.')}
-            </p>
-            <p className="text-xs text-muted-foreground/70 leading-relaxed">
-              {t('invite.collapsed_supporting', 'Du kan börja här redan nu – och välja vad som delas när ni är två.')}
+              {t('invite.collapsed_hint', 'När ni är två syns era delade reflektioner här. Du väljer alltid vad som delas.')}
             </p>
           </div>
         </div>
@@ -88,8 +85,9 @@ export default function InvitePartner({ inviteCode, inviteToken, partnerName, on
           size="sm"
           className="w-full gap-2"
         >
-          Bjud in partner
+          Skicka inbjudan
         </Button>
+        <p className="text-xs text-muted-foreground/60 text-center">Det tar bara en minut.</p>
       </motion.div>
     );
   }
