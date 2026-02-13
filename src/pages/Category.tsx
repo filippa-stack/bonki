@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
@@ -6,8 +5,8 @@ import { useApp } from '@/contexts/AppContext';
 import { useAuth } from '@/contexts/AuthContext';
 import { useCoupleSpace } from '@/hooks/useCoupleSpace';
 import Header from '@/components/Header';
-import ColorPicker from '@/components/ColorPicker';
-import { Plus, Trash2 } from 'lucide-react';
+
+import { Plus } from 'lucide-react';
 import { toast } from 'sonner';
 
 export default function Category() {
@@ -173,38 +172,8 @@ function EditableCard({
   index,
   explored,
   onNavigate,
-  onUpdate,
-  onColorChange,
-  onTextColorChange,
-  onBorderColorChange,
-  onDescriptionChange,
-  onDelete,
 }: EditableCardProps) {
   const { t } = useTranslation();
-  const [isEditingTitle, setIsEditingTitle] = useState(false);
-  const [titleValue, setTitleValue] = useState(card.title);
-  const [isEditingDesc, setIsEditingDesc] = useState(false);
-  const [descValue, setDescValue] = useState(card.description || '');
-
-  const handleTitleClick = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    setIsEditingTitle(true);
-  };
-
-  const handleTitleBlur = () => {
-    setIsEditingTitle(false);
-    onUpdate(card.id, titleValue, card.subtitle || '');
-  };
-
-  const handleDescClick = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    setIsEditingDesc(true);
-  };
-
-  const handleDescBlur = () => {
-    setIsEditingDesc(false);
-    onDescriptionChange(descValue);
-  };
 
   return (
     <motion.div
@@ -219,81 +188,26 @@ function EditableCard({
         borderWidth: card.borderColor ? '2px' : undefined,
       } as React.CSSProperties}
     >
-      <div className="relative flex flex-col items-center justify-center gap-2 py-4">
-        <div className="absolute top-0 right-0 flex items-center gap-1" onClick={(e) => e.stopPropagation()}>
-          <button
-            onClick={(e) => { e.stopPropagation(); onDelete(); }}
-            className="p-1 rounded-md text-muted-foreground hover:text-destructive transition-colors opacity-0 group-hover:opacity-100"
-            aria-label="Ta bort"
+      <div className="flex flex-col items-center justify-center gap-1 py-5">
+        <h3
+          className="w-full font-serif text-lg sm:text-xl text-center item-text"
+          style={{ '--item-text': card.textColor || undefined } as React.CSSProperties}
+        >
+          {card.title}
+        </h3>
+        {card.subtitle && (
+          <p
+            className="w-full text-sm text-center italic item-text-gentle"
+            style={{ '--item-text': card.textColor || undefined } as React.CSSProperties}
           >
-            <Trash2 className="w-4 h-4" />
-          </button>
-          <ColorPicker
-            currentColor={card.color}
-            onColorChange={onColorChange}
-            currentTextColor={card.textColor}
-            onTextColorChange={onTextColorChange}
-            currentBorderColor={card.borderColor}
-            onBorderColorChange={onBorderColorChange}
-            showTextColor
-            showBorderColor
-          />
-        </div>
-        <div className="w-full space-y-2">
-          <div onClick={handleTitleClick}>
-            {isEditingTitle ? (
-              <input
-                value={titleValue}
-                onChange={(e) => setTitleValue(e.target.value)}
-                onBlur={handleTitleBlur}
-                autoFocus
-                className="w-full font-serif text-lg sm:text-xl text-center bg-transparent border-none outline-none item-text"
-                style={{ '--item-text': card.textColor || undefined } as React.CSSProperties}
-              />
-            ) : (
-              <h3
-                className="w-full font-serif text-lg sm:text-xl text-center item-text cursor-text"
-                style={{ '--item-text': card.textColor || undefined } as React.CSSProperties}
-              >
-                {card.title}
-              </h3>
-            )}
-          </div>
-          {card.subtitle && (
-            <p
-              className="w-full text-sm text-center italic item-text-gentle"
-              style={{ '--item-text': card.textColor || undefined } as React.CSSProperties}
-            >
-              {card.subtitle}
-            </p>
-          )}
-          {/* Editable description */}
-          <div onClick={handleDescClick}>
-            {isEditingDesc ? (
-              <textarea
-                value={descValue}
-                onChange={(e) => setDescValue(e.target.value)}
-                onBlur={handleDescBlur}
-                autoFocus
-                className="w-full text-xs text-center bg-transparent border-none outline-none resize-none item-text-gentle"
-                style={{ '--item-text': card.textColor || undefined } as React.CSSProperties}
-                rows={2}
-              />
-            ) : (
-              <p
-                className="w-full text-xs text-center item-text-gentle cursor-text opacity-70 hover:opacity-100 transition-opacity"
-                style={{ '--item-text': card.textColor || undefined } as React.CSSProperties}
-              >
-                {card.description || 'Lägg till beskrivning...'}
-              </p>
-            )}
-          </div>
-          {explored && (
-            <p className="text-xs text-muted-foreground text-center mt-1 italic">
-              {t('category_status.explored')}
-            </p>
-          )}
-        </div>
+            {card.subtitle}
+          </p>
+        )}
+        {explored && (
+          <p className="text-xs text-muted-foreground text-center mt-2 italic">
+            {t('category_status.explored')}
+          </p>
+        )}
       </div>
     </motion.div>
   );
