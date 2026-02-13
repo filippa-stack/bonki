@@ -10,7 +10,7 @@ import { supabase } from '@/integrations/supabase/client';
 import Header from '@/components/Header';
 import SharedTimelineItem from '@/components/SharedTimelineItem';
 import InvitePartner from '@/components/InvitePartner';
-import { Star, Search, Filter, X, Clock, MessageCircle, BookOpen } from 'lucide-react';
+import { Search, Filter, X, Clock, MessageCircle, BookOpen } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import {
@@ -253,8 +253,7 @@ export default function SharedSummary() {
                 animate={{ opacity: 1, y: 0 }}
                 className="mb-8"
               >
-                <p className="text-xs text-muted-foreground uppercase tracking-wider mb-4 flex items-center gap-2">
-                  <BookOpen className="w-3 h-3" />
+                <p className="text-sm font-serif font-medium text-foreground mb-4">
                   {t('shared.empty_section_title')}
                 </p>
                 <div className="p-6 rounded-lg border border-dashed border-border bg-card/50">
@@ -283,15 +282,14 @@ export default function SharedSummary() {
                 animate={{ opacity: 1, y: 0 }}
                 className="mb-8"
               >
-                <p className="text-xs text-muted-foreground uppercase tracking-wider mb-4 flex items-center gap-2">
-                  <Star className="w-3 h-3" />
+                <p className="text-sm font-serif font-medium text-foreground mb-4">
                   {t('shared.highlights_title')}
                 </p>
                 <div className="space-y-3">
                   {highlights.map((h) => (
                     <div
                       key={`hl-${h.id}`}
-                      className="p-4 rounded-lg bg-card border border-primary/20"
+                      className="p-4 rounded-xl bg-white border border-[hsl(24,50%,60%,0.2)] shadow-sm"
                     >
                       <p className="text-xs text-muted-foreground mb-1">
                         {h.categoryTitle} · {h.cardTitle}
@@ -344,9 +342,8 @@ export default function SharedSummary() {
                 animate={{ opacity: 1, y: 0 }}
                 className="mb-8"
               >
-                <p className="text-xs text-muted-foreground uppercase tracking-wider mb-4 flex items-center gap-2">
-                  <Clock className="w-3 h-3" />
-                  {t('shared.recent_title', 'Våra senaste samtal')}
+                <p className="text-sm font-serif font-medium text-foreground mb-4">
+                  {t('shared.recent_title', 'Våra samtal')}
                 </p>
                 <div className="space-y-3">
                   {recentItems.map((item) => (
@@ -388,8 +385,7 @@ export default function SharedSummary() {
               <div className="opacity-80">
                 {olderGrouped.map((group) => (
                   <div key={group.key} className="mb-8">
-                    <p className="text-xs text-muted-foreground/70 uppercase tracking-wider mb-4 flex items-center gap-2">
-                      <Clock className="w-3 h-3" />
+                     <p className="text-sm font-serif font-medium text-foreground/70 mb-4">
                       {group.label}
                     </p>
                     <div className="space-y-5">

@@ -64,17 +64,30 @@ export default function InvitePartner({ inviteCode, inviteToken, partnerName, on
   // Collapsed: minimal prompt to invite
   if (!expanded) {
     return (
-      <motion.button
+      <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        onClick={() => setExpanded(true)}
-        className="w-full flex items-center gap-3 py-3 px-4 rounded-xl border border-dashed border-border/60 bg-transparent hover:bg-card/50 transition-colors text-left"
+        className="w-full rounded-xl bg-[#FFFEF3] p-5 space-y-3"
       >
-        <UserPlus className="w-4 h-4 text-muted-foreground/60 shrink-0" />
-        <p className="text-sm text-muted-foreground">
-          {t('invite.collapsed_hint', 'Bjud in din partner att dela det här utrymmet')}
-        </p>
-      </motion.button>
+        <div className="flex items-start gap-3">
+          <UserPlus className="w-5 h-5 text-[#d08f63] shrink-0 mt-0.5" />
+          <div className="space-y-1">
+            <p className="text-sm font-medium text-foreground">
+              {t('invite.title', 'Bjud in din partner')}
+            </p>
+            <p className="text-xs text-muted-foreground leading-relaxed">
+              Bjud in din partner för att dela era reflektioner och bygga ert arkiv tillsammans.
+            </p>
+          </div>
+        </div>
+        <Button
+          onClick={() => setExpanded(true)}
+          size="sm"
+          className="w-full gap-2 bg-[#d08f63] hover:bg-[#c07e55] text-white"
+        >
+          Bjud in partner
+        </Button>
+      </motion.div>
     );
   }
 
@@ -83,7 +96,7 @@ export default function InvitePartner({ inviteCode, inviteToken, partnerName, on
     <motion.div
       initial={{ opacity: 0, height: 0 }}
       animate={{ opacity: 1, height: 'auto' }}
-      className="rounded-xl border border-border/50 bg-card/50 overflow-hidden"
+      className="rounded-xl bg-[#FFFEF3] overflow-hidden"
     >
       <div className="p-4 space-y-4">
         <div className="flex items-center justify-between">
