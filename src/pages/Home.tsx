@@ -141,7 +141,7 @@ export default function Home() {
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.4 }}
-          className="mb-6"
+          className="mb-6 flex justify-center"
         >
           <img 
             src={bonkiLogo} 
@@ -150,7 +150,7 @@ export default function Home() {
           />
         </motion.div>
         
-        <div className="relative group">
+        <div className="relative group text-center">
           {isEditingHero ? (
             <motion.div
               initial={{ opacity: 0 }}
