@@ -322,7 +322,7 @@ export default function SharedSummary() {
                 animate={{ opacity: 1, y: 0 }}
                 className="mb-6 md:mb-8"
               >
-                <p className="text-sm font-serif font-medium text-foreground mb-2.5">
+                <p className="text-sm font-serif font-medium text-foreground mb-3">
                   {t('shared.highlights_title')}
                 </p>
                 <p className="text-xs text-muted-foreground mb-4">
