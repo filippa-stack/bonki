@@ -203,18 +203,26 @@ export default function SharedTimelineItem({
                 </Button>
               )}
               {showResponseInput && (
-                <Textarea
-                  ref={responseRef}
-                  value={responseContent}
-                  onChange={(e) => handleResponseChange(e.target.value)}
-                  onBlur={() => {
-                    if (responseContent.trim().length > 0) {
-                      setShowResponseInput(false);
-                    }
-                  }}
-                  placeholder="Skriv något du vill att den andra ska se…"
-                  className="text-sm min-h-[50px] resize-none mt-1"
-                />
+                <div className="mt-1 space-y-2">
+                  <Textarea
+                    ref={responseRef}
+                    value={responseContent}
+                    onChange={(e) => handleResponseChange(e.target.value)}
+                    placeholder="Skriv något du vill att den andra ska se…"
+                    className="text-sm min-h-[50px] resize-none"
+                  />
+                  <div className="flex items-center justify-between">
+                    <p className="text-xs text-muted-foreground/60">Sparas automatiskt.</p>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="text-xs h-7 px-2"
+                      onClick={() => setShowResponseInput(false)}
+                    >
+                      Klar
+                    </Button>
+                  </div>
+                </div>
               )}
             </div>
           ) : null}
