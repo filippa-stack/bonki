@@ -169,7 +169,7 @@ export default function CardView() {
     return (
       <div className="min-h-screen page-bg animate-fade-in">
         <div className="h-14 border-b border-border bg-card" />
-        <div className="px-6 pt-12 space-y-4 max-w-md mx-auto text-center">
+        <div className="px-6 pt-12 space-y-4 max-w-md mx-auto text-left">
           <div className="h-6 w-40 rounded bg-muted/30 animate-pulse mx-auto" />
           <p className="text-sm text-muted-foreground">{t('card_view.not_found')}</p>
         </div>
@@ -230,7 +230,7 @@ export default function CardView() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.8 }}
-            className="text-center max-w-md mx-auto space-y-7"
+            className="text-left max-w-md mx-auto space-y-7"
           >
             <motion.div
               initial={{ scale: 0.9, opacity: 0 }}
@@ -246,7 +246,7 @@ export default function CardView() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.6, duration: 0.6 }}
-              className="text-sm text-muted-foreground leading-relaxed max-w-xs mx-auto"
+              className="text-sm text-muted-foreground leading-relaxed max-w-2xl"
             >
               {t(completionMessageKey)}
             </motion.p>
@@ -308,7 +308,7 @@ export default function CardView() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 1.4, duration: 0.6 }}
-              className="text-xs text-muted-foreground/50 italic pt-2"
+              className="text-xs text-muted-foreground/50 not-italic pt-2"
             >
               {t('card_view.completion_rest')}
             </motion.p>
@@ -333,19 +333,19 @@ export default function CardView() {
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
-            className="text-center max-w-md mx-auto space-y-6"
+            className="text-left max-w-md mx-auto space-y-6"
           >
             <h1 className="text-2xl font-serif text-foreground leading-snug">
               {card.title}
             </h1>
             {card.subtitle && (
-              <p className="text-sm text-muted-foreground italic">{card.subtitle}</p>
+              <p className="text-sm text-muted-foreground not-italic">{card.subtitle}</p>
             )}
             <motion.p
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.2, duration: 0.4 }}
-              className="text-sm text-muted-foreground leading-relaxed max-w-xs mx-auto"
+              className="text-sm text-muted-foreground leading-relaxed max-w-2xl"
             >
               {t('card_view.reentry_message', 'Ni var mitt i det här samtalet. Ni kan fortsätta precis där ni var.')}
             </motion.p>
@@ -392,13 +392,13 @@ export default function CardView() {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="text-center max-w-md mx-auto"
+            className="text-left max-w-md mx-auto"
           >
             <h1 className="text-2xl md:text-3xl font-serif text-foreground mb-3">
               {card.title}
             </h1>
             {card.subtitle && (
-              <p className="text-gentle italic mb-8">{card.subtitle}</p>
+              <p className="text-gentle not-italic mb-8 max-w-2xl">{card.subtitle}</p>
             )}
 
             <p className="text-sm text-muted-foreground mb-8 leading-relaxed">
@@ -494,7 +494,7 @@ export default function CardView() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.1 }}
-            className="text-sm text-gentle italic mt-1 text-left"
+            className="text-sm text-gentle not-italic mt-1 text-left max-w-2xl"
           >
             {card.subtitle}
           </motion.p>
@@ -555,25 +555,25 @@ export default function CardView() {
                   transition={{ duration: 0.5 }}
                   role="status"
                   aria-live="polite"
-                  className="my-8 py-8 px-5 rounded-2xl bg-card/40 border border-border/30 text-center space-y-4"
+                  className="my-8 py-8 px-5 rounded-2xl bg-card/40 border border-border/30 text-left space-y-4"
                 >
                   <p className="text-sm font-serif text-foreground">
                     En paus
                   </p>
-                  <p className="text-sm text-muted-foreground leading-relaxed max-w-xs mx-auto">
+                  <p className="text-sm text-muted-foreground leading-relaxed max-w-2xl">
                     Ni fortsätter här när ni båda är redo.
                   </p>
-                  <p className="text-[13px] text-muted-foreground/60 leading-relaxed max-w-xs mx-auto">
+                  <p className="text-[13px] text-muted-foreground/60 leading-relaxed max-w-2xl">
                     Under tiden kan du läsa igenom eller skriva något du vill bära med dig.
                   </p>
 
                   {memberCount >= 2 && (
-                    <p className="text-xs text-muted-foreground/60 text-center">
+                    <p className="text-xs text-muted-foreground/60 text-left">
                       Samtalet vilar här en stund.
                     </p>
                   )}
 
-                  <div className="flex items-center justify-center gap-4 pt-2">
+                  <div className="flex items-center justify-start gap-4 pt-2">
                     <Button
                       variant="ghost"
                       size="sm"
@@ -604,7 +604,7 @@ export default function CardView() {
                     </div>
                   </div>
 
-                  <div className="pt-3 flex flex-col items-center gap-2">
+                  <div className="pt-3 flex flex-col items-start gap-2">
                     <Button
                       variant="outline"
                       size="sm"
@@ -620,7 +620,7 @@ export default function CardView() {
               ) : (
                 <div className="py-8 border-t border-divider space-y-3">
                   <div className="space-y-2">
-                    <div className="flex flex-col sm:flex-row justify-center md:justify-start gap-3">
+                    <div className="flex flex-col sm:flex-row justify-start gap-3">
                       {currentStepIndex > 0 && (
                         <Button
                           variant="outline"
@@ -644,13 +644,13 @@ export default function CardView() {
                       </Button>
                     </div>
                     {!isRevisitMode && (
-                      <p className="text-xs text-muted-foreground/70 leading-relaxed text-center md:text-left">
+                      <p className="text-xs text-muted-foreground/70 leading-relaxed text-left">
                         Svara i er egen takt. Ni fortsätter när båda är klara.
                       </p>
                     )}
                   </div>
                   {!isRevisitMode && (
-                    <div className="flex justify-center md:justify-start">
+                    <div className="flex justify-start">
                       <PauseDialog onConfirm={() => { pauseSession(); navigate('/'); }} />
                     </div>
                   )}

@@ -24,7 +24,7 @@ export default function SyncPrompt({ partnerStepIndex, stepLabels, onCatchUp, on
       <p className="text-sm text-foreground leading-relaxed">
         {t('sync_prompt.message')}
       </p>
-      <p className="text-xs text-muted-foreground italic">
+      <p className="text-xs text-muted-foreground not-italic">
         {t('sync_prompt.current_position', { step: stepName })}
       </p>
       <div className="flex flex-col sm:flex-row gap-2">

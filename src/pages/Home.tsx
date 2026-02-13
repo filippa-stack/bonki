@@ -338,7 +338,7 @@ export default function Home() {
               transition={{ delay: 0.2 }}
               className="px-6 mb-10"
             >
-              <div className="rounded-2xl border border-border bg-card p-6 text-center space-y-4">
+                <div className="rounded-2xl border border-border bg-card p-6 text-left space-y-4">
                 <p className="font-serif text-lg text-foreground">{lastCompletedCard.title}</p>
                 <p className="text-sm text-muted-foreground leading-relaxed">
                   {t('card_view.completion_message')}
@@ -405,7 +405,7 @@ export default function Home() {
               transition={{ delay: 0.2 }}
               className="px-6 py-6"
             >
-              <div className="rounded-2xl border border-border bg-card p-6 text-center space-y-4">
+              <div className="rounded-2xl border border-border bg-card p-6 text-left space-y-4">
                 <p className="text-sm text-muted-foreground leading-relaxed">
                   {t('home.first_conversation_hint')}
                 </p>
@@ -458,7 +458,7 @@ export default function Home() {
 
       {/* Categories */}
       <div id="category-section" className="px-6 pb-10 mt-8">
-        <p className="text-sm text-muted-foreground/60 mb-6 font-serif italic">
+        <p className="text-sm text-muted-foreground/60 mb-6 font-serif not-italic">
           {t('home.choose_category')}
         </p>
         <div className="space-y-3">

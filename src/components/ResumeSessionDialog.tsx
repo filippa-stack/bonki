@@ -41,7 +41,7 @@ export default function ResumeSessionDialog({
           className="w-full max-w-md bg-card rounded-2xl shadow-xl border border-border p-8"
           onClick={(e) => e.stopPropagation()}
         >
-          <div className="text-center mb-8">
+          <div className="text-left mb-8">
             <h2 className="text-2xl font-serif text-foreground mb-3">
               {t('resume.welcome_back')}
             </h2>

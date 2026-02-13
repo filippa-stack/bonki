@@ -86,7 +86,7 @@ export default function WaitingStepNote({ cardId, sectionId }: WaitingStepNotePr
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
-                  className="text-xs text-muted-foreground/60 italic flex items-center gap-1"
+                  className="text-xs text-muted-foreground/60 not-italic flex items-center gap-1"
                 >
                    <Lock className="w-3 h-3" /> Sparat för dig
                 </motion.span>
@@ -97,7 +97,7 @@ export default function WaitingStepNote({ cardId, sectionId }: WaitingStepNotePr
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
-                  className="text-xs text-muted-foreground/60 italic flex items-center gap-1"
+                  className="text-xs text-muted-foreground/60 not-italic flex items-center gap-1"
                 >
                   <Share2 className="w-3 h-3" /> Delat med din partner
                 </motion.span>

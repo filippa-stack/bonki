@@ -132,7 +132,7 @@ export default function SharedTimelineItem({
 
       {/* Prompt text (question) */}
       {note.promptText && (
-        <p className="text-xs text-foreground/60 italic mb-2">{note.promptText}</p>
+        <p className="text-xs text-foreground/60 not-italic mb-2">{note.promptText}</p>
       )}
 
       {/* Content — editable or read-only */}
