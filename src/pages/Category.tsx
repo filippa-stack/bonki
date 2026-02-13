@@ -64,7 +64,7 @@ export default function Category() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.1 }}
-            className="text-sm text-gentle italic mb-3"
+            className="text-sm text-foreground/70 mb-3"
           >
             {category.entryLine}
           </motion.p>
@@ -73,7 +73,7 @@ export default function Category() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.15 }}
-          className="text-body text-gentle opacity-60"
+          className="text-xs uppercase tracking-widest text-muted-foreground font-semibold"
         >
           {category.description}
         </motion.p>
@@ -83,14 +83,14 @@ export default function Category() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.2 }}
-          className="mt-4"
+          className="mt-6"
         >
           {status === 'explored' ? (
-            <p className="text-xs text-gentle italic">
+            <p className="text-sm text-muted-foreground">
               {t('category.all_explored')}
             </p>
           ) : (
-            <p className="text-xs text-gentle italic">
+            <p className="text-sm text-muted-foreground">
               {t('category_status.return_note')}
             </p>
           )}

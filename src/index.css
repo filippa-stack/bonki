@@ -89,7 +89,7 @@
 
     /* Dynamic overrides — set via useThemeVars hook at runtime */
     --page-bg: hsl(var(--background));
-    --hero-title-color: hsl(var(--foreground));
+    --hero-title-color: #1e293b;
     --hero-subtitle-color: hsl(var(--text-gentle));
     --btn-primary-bg: hsl(var(--primary));
     --btn-primary-text: hsl(var(--primary-foreground));
