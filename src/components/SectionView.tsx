@@ -72,15 +72,11 @@ const SectionView = forwardRef<SectionViewHandle, SectionViewProps>(function Sec
   // Imperative API: open note for current prompt
   useImperativeHandle(ref, () => ({
     openNoteForCurrent() {
+      const target = isAccordion ? (expandedIndex ?? 0) : 0;
       if (isAccordion) {
-        // For accordion types: expand the currently expanded prompt (or first)
-        const target = expandedIndex ?? 0;
         setExpandedIndex(target);
-      } else {
-        // For non-accordion: just ensure prompt-0 is expanded (uncontrolled, so no-op needed)
-        // We'll use a state flag to signal "focus note"
-        setFocusNoteIndex(0);
       }
+      setFocusNoteIndex(target);
     },
   }), [isAccordion, expandedIndex]);
 
