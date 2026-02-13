@@ -13,6 +13,7 @@ interface PromptItemProps {
   promptId: string;
   index: number;
   label?: string;
+  sectionType?: 'opening' | 'reflective' | 'scenario' | 'exercise';
   privateNote?: PromptNote;
   sharedNote?: PromptNote;
   highlightCount: number;
@@ -35,6 +36,7 @@ export default function PromptItem({
   promptId,
   index,
   label,
+  sectionType,
   privateNote,
   sharedNote,
   highlightCount,
@@ -103,6 +105,7 @@ export default function PromptItem({
   };
 
   const hasNote = !!(privateNote?.content || sharedNote?.content);
+  const isDeepSection = sectionType === 'scenario' || sectionType === 'exercise';
 
   return (
     <motion.div
@@ -216,8 +219,8 @@ export default function PromptItem({
                       onChange={(e) => handlePrivateChange(e.target.value)}
                       onFocus={handleFocus}
                       onKeyDown={handleKeyDown}
-                      placeholder={t('reflections.prompt_note_placeholder', 'Skriv dina tankar här... (sparas automatiskt)')}
-                      className="w-full min-h-[80px] p-3 rounded-xl border resize-none focus:outline-none focus:ring-2 focus:ring-primary/10 font-sans text-sm note-surface"
+                      placeholder={t('reflections.prompt_note_placeholder', 'Vad väcker detta hos dig?')}
+                      className={`w-full p-3 rounded-xl border resize-none focus:outline-none focus:ring-2 focus:ring-primary/10 font-sans text-sm note-surface ${isDeepSection ? 'min-h-[120px]' : 'min-h-[64px]'}`}
                       style={{
                         backgroundColor: settings.noteBoxBgColor || undefined,
                         color: settings.noteBoxTextColor || undefined,
@@ -254,8 +257,9 @@ export default function PromptItem({
                     </button>
                   )}
                   {!privateNote?.content && !sharedNote && (
-                    <p className="text-xs text-muted-foreground/60 italic">
-                      {t('reflections.share_when_ready', 'Dela med din partner när du känner dig redo')}
+                    <p className="flex items-center gap-1.5 text-xs text-muted-foreground/50 italic">
+                      <Lock className="w-3 h-3" />
+                      {t('reflections.private_indicator', 'Bara du kan se det här tills du väljer att dela')}
                     </p>
                   )}
 
