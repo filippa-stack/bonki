@@ -357,7 +357,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
         {
           id: `${newId}-exercise`,
           type: 'exercise',
-          title: 'Team Work',
+          title: 'Teamwork',
           content: 'Lägg till innehåll...',
           prompts: ['Lägg till uppgift...'],
         },

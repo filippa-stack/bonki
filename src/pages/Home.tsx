@@ -27,7 +27,7 @@ import bonkiLogo from '@/assets/bonki-logo.png';
 import { useThemeVars } from '@/hooks/useThemeVars';
 import { supabase } from '@/integrations/supabase/client';
 
-const STEP_LABELS = ['Öppnare', 'Tankeväckare', 'Scenario', 'Team Work'];
+const STEP_LABELS = ['Öppnare', 'Tankeväckare', 'Scenario', 'Teamwork'];
 
 const fontOptions = [
   { value: 'serif', label: 'Serif (Cormorant)', className: 'font-serif' },

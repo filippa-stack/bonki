@@ -20,7 +20,7 @@ const STEP_LABELS: Record<string, string> = {
   opening: 'Öppnare',
   reflective: 'Tankeväckare',
   scenario: 'Scenario',
-  exercise: 'Team Work',
+  exercise: 'Teamwork',
 };
 
 interface ReviewDrawerProps {
