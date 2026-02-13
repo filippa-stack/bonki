@@ -49,6 +49,7 @@ export default function SharedSummary() {
   const [showFind, setShowFind] = useState(false);
   const [sharedNotes, setSharedNotes] = useState<SharedNoteRow[]>([]);
   const [loading, setLoading] = useState(true);
+  const [showAllHighlights, setShowAllHighlights] = useState(false);
   const pendingSaves = useRef<Map<string, ReturnType<typeof setTimeout>>>(new Map());
 
   // Fetch all shared notes in the couple space
@@ -287,7 +288,7 @@ export default function SharedSummary() {
                   {t('shared.highlights_title')}
                 </p>
                 <div className="space-y-3">
-                  {highlights.map((h) => (
+                  {(showAllHighlights ? highlights : highlights.slice(0, 3)).map((h) => (
                     <div
                       key={`hl-${h.id}`}
                       className="p-4 rounded-xl bg-card border border-border/70"
@@ -299,6 +300,14 @@ export default function SharedSummary() {
                     </div>
                   ))}
                 </div>
+                {highlights.length > 3 && (
+                  <button
+                    onClick={() => setShowAllHighlights(!showAllHighlights)}
+                    className="mt-3 text-xs text-muted-foreground hover:text-foreground transition-colors"
+                  >
+                    {showAllHighlights ? 'Visa färre' : 'Se fler'}
+                  </button>
+                )}
               </motion.div>
             )}
 
