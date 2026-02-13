@@ -168,16 +168,16 @@ const SectionView = forwardRef<SectionViewHandle, SectionViewProps>(function Sec
           </h2>
         </div>
         {section.type === 'exercise' && (
-          <p className="text-sm text-gentle italic mt-2 max-w-2xl">Gör något av det ni upptäckt.</p>
+          <p className="text-sm text-gentle not-italic mt-2 max-w-2xl">Gör något av det ni upptäckt.</p>
         )}
         {section.type === 'scenario' && (
-          <p className="text-sm text-gentle italic mt-2 max-w-2xl">Känn igen er i varandras vardag.</p>
+          <p className="text-sm text-gentle not-italic mt-2 max-w-2xl">Känn igen er i varandras vardag.</p>
         )}
         {section.type === 'reflective' && (
-          <p className="text-sm text-gentle italic mt-2 max-w-2xl">Lyssna djupare på varandra.</p>
+          <p className="text-sm text-gentle not-italic mt-2 max-w-2xl">Lyssna djupare på varandra.</p>
         )}
         {section.type === 'opening' && (
-          <p className="text-sm text-gentle italic mt-2 max-w-2xl">Hitta in i samtalet tillsammans.</p>
+          <p className="text-sm text-gentle not-italic mt-2 max-w-2xl">Hitta in i samtalet tillsammans.</p>
         )}
       </div>
 

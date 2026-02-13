@@ -308,7 +308,7 @@ export default function ReviewDrawer({ open, onClose, card }: ReviewDrawerProps)
 
                 <div className="border-t border-divider pt-6">
                   <CardTakeaways cardId={card.id} compact />
-                  <p className="text-xs text-muted-foreground/50 italic text-center mt-3">
+                  <p className="text-xs text-muted-foreground/50 not-italic text-left mt-3">
                     Det här påverkar inte er takt.
                   </p>
                 </div>
@@ -334,7 +334,7 @@ export default function ReviewDrawer({ open, onClose, card }: ReviewDrawerProps)
                       </Button>
                     ))}
                   </div>
-                  <p className="text-xs text-muted-foreground/50 italic text-center">
+                  <p className="text-xs text-muted-foreground/50 not-italic text-left">
                     Det här påverkar inte ert gemensamma tempo.
                   </p>
                 </div>
@@ -346,7 +346,7 @@ export default function ReviewDrawer({ open, onClose, card }: ReviewDrawerProps)
           <TabsContent value="notes" className="flex-1 overflow-hidden mt-0">
             <ScrollArea className="h-full px-6 py-4" style={{ maxHeight: 'calc(85vh - 160px)' }}>
               {cardNotes.length === 0 ? (
-                <div className="text-center py-12 space-y-2">
+                <div className="text-left py-12 space-y-2">
                   <FileText className="w-8 h-8 text-muted-foreground/30 mx-auto" />
                   <p className="text-sm text-muted-foreground">
                     Inga anteckningar än

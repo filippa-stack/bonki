@@ -45,7 +45,7 @@ export default function TopicProposal({
         <div className="rounded-xl bg-muted/30 p-4 space-y-1">
           <p className="font-serif text-lg text-foreground">{cardTitle}</p>
           {cardSubtitle && (
-            <p className="text-xs text-muted-foreground italic">{cardSubtitle}</p>
+            <p className="text-xs text-muted-foreground not-italic">{cardSubtitle}</p>
           )}
           <p className="text-xs text-muted-foreground/60">{categoryTitle}</p>
         </div>

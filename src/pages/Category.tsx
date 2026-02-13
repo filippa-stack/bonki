@@ -38,7 +38,7 @@ export default function Category() {
     return (
       <div className="min-h-screen page-bg animate-fade-in">
         <div className="h-14 border-b border-border bg-card" />
-        <div className="px-6 pt-12 space-y-4 max-w-md mx-auto text-center">
+        <div className="px-6 pt-12 space-y-4 max-w-md mx-auto text-left">
           <div className="h-6 w-40 rounded bg-muted/30 animate-pulse mx-auto" />
           <p className="text-sm text-muted-foreground">{t('category.not_found')}</p>
         </div>
@@ -176,7 +176,7 @@ function EditableCard({
           </p>
         )}
         {explored && (
-          <p className="text-xs text-muted-foreground text-left mt-2 italic">
+          <p className="text-xs text-muted-foreground text-left mt-2 not-italic">
             {t('category_status.explored')}
           </p>
         )}

@@ -89,10 +89,10 @@ export default function StepReflection({ section, card, defaultExpanded = false 
         {/* Status labels */}
         <div className="flex items-center gap-3 mt-1.5 px-1">
           {isSaved && !isShared && (
-            <span className="text-xs text-muted-foreground/60 italic">Sparat privat</span>
+            <span className="text-xs text-muted-foreground/60 not-italic">Sparat privat</span>
           )}
           {isShared && sharedNote?.sharedAt && (
-            <span className="text-xs text-muted-foreground/60 italic">
+            <span className="text-xs text-muted-foreground/60 not-italic">
               Delat {new Date(sharedNote.sharedAt).toLocaleDateString('sv-SE', { day: 'numeric', month: 'short' })}
             </span>
           )}
@@ -133,13 +133,13 @@ export default function StepReflection({ section, card, defaultExpanded = false 
         <div className="flex items-center justify-between gap-2 px-3 pb-3">
           <div className="flex items-center gap-1.5">
             {isSaved && !isShared && (
-              <span className="text-xs text-muted-foreground/60 italic flex items-center gap-1">
+              <span className="text-xs text-muted-foreground/60 not-italic flex items-center gap-1">
                 <Lock className="w-3 h-3" />
                 Sparat privat
               </span>
             )}
             {isShared && sharedNote?.sharedAt && (
-              <span className="text-xs text-muted-foreground/60 italic flex items-center gap-1">
+              <span className="text-xs text-muted-foreground/60 not-italic flex items-center gap-1">
                 <Share2 className="w-3 h-3" />
                 Delat {new Date(sharedNote.sharedAt).toLocaleDateString('sv-SE', { day: 'numeric', month: 'short' })}
               </span>
