@@ -289,7 +289,7 @@ export default function SharedSummary() {
                   {highlights.map((h) => (
                     <div
                       key={`hl-${h.id}`}
-                      className="p-4 rounded-xl bg-white border border-[hsl(24,50%,60%,0.2)] shadow-sm"
+                      className="p-4 rounded-xl bg-card border border-border/70"
                     >
                       <p className="text-xs text-muted-foreground mb-1">
                         {h.categoryTitle} · {h.cardTitle}

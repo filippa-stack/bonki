@@ -94,7 +94,7 @@ export default function SharedTimelineItem({
     <motion.div
       initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
-      className="p-4 rounded-xl bg-white border border-[hsl(24,50%,60%,0.2)] shadow-sm"
+      className="p-4 rounded-xl bg-card border border-border/70"
     >
       {/* Context label */}
       <div className="flex items-center justify-between mb-2">
