@@ -523,45 +523,48 @@ export default function CardView() {
                   initial={{ opacity: 0, y: 8 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5 }}
-                  className="my-8 p-6 rounded-2xl bg-card/80 border border-border/70 shadow-sm text-center space-y-4"
+                  role="status"
+                  aria-live="polite"
+                  className="my-8 py-6 px-5 rounded-2xl text-center space-y-3"
                 >
-                  <p className="text-xs font-medium text-muted-foreground tracking-wide">
-                    Klar för din del
+                  <p className="text-xs font-medium text-muted-foreground/60 tracking-wide uppercase">
+                    En liten paus
                   </p>
-                  <p className="text-sm text-muted-foreground leading-relaxed">
-                    Bra. När ni båda har svarat fortsätter samtalet automatiskt här.
-                  </p>
-                  <p className="text-xs text-muted-foreground/70 leading-relaxed">
-                    Under tiden kan du granska, förfina eller skriva ner något du vill bära med dig.
+                  <p className="text-sm text-muted-foreground leading-relaxed max-w-xs mx-auto">
+                    Samtalet fortsätter här när ni båda är klara.
                   </p>
 
-                  <div className="flex flex-col items-center gap-3 pt-1">
+                  <div className="flex items-center justify-center gap-4 pt-2">
                     <Button
                       variant="ghost"
                       size="sm"
-                      className="gap-2 text-muted-foreground"
+                      className="gap-1.5 text-muted-foreground"
                       onClick={() => setReviewOpen(true)}
                     >
-                      <BookOpen className="w-4 h-4" />
-                      Granska & förfina
+                      <BookOpen className="w-3.5 h-3.5" />
+                      Granska
                     </Button>
 
                     <button
                       onClick={() => sectionViewRef.current?.openNoteForCurrent()}
-                      className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
+                      className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
                     >
                       <PenLine className="w-3.5 h-3.5" />
-                      Lägg till en tanke
+                      Skriv en tanke
                     </button>
                   </div>
 
                   {/* Takeaways accessible during waiting */}
-                  <div className="text-left mt-4">
-                    <CardTakeaways cardId={card.id} />
+                  <div className="text-left pt-2">
+                    <CardTakeaways cardId={card.id} compact />
                   </div>
 
-                  <p className="text-xs text-muted-foreground/50 italic pt-1">
-                    Det här är bara för dig — och ändrar inte var ni är i samtalet.
+                  <div className="pt-2">
+                    <PauseDialog onConfirm={() => { pauseSession(); navigate('/'); }} />
+                  </div>
+
+                  <p className="text-[11px] text-muted-foreground/40 italic">
+                    Det här är bara för dig — det ändrar inte var ni är i samtalet.
                   </p>
                 </motion.div>
               ) : (
