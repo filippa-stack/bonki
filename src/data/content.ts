@@ -1089,3 +1089,4 @@ export function getCardById(cardId: string): Card | undefined {
 export function getCategoryById(categoryId: string): Category | undefined {
   return categories.find((cat) => cat.id === categoryId);
 }
+
