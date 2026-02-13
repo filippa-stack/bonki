@@ -141,7 +141,7 @@ export default function ReviewDrawer({ open, onClose, card }: ReviewDrawerProps)
         <DrawerHeader className="border-b border-divider pb-4">
           <div className="flex items-center justify-between">
             <DrawerTitle className="font-serif text-lg text-foreground">
-              {t('review_drawer.title', 'Granska & redigera')}
+              {t('review_drawer.title', 'Se tillbaka')}
             </DrawerTitle>
             <DrawerClose asChild>
               <Button variant="ghost" size="icon" className="text-muted-foreground">
@@ -150,7 +150,7 @@ export default function ReviewDrawer({ open, onClose, card }: ReviewDrawerProps)
             </DrawerClose>
           </div>
           <p className="text-xs text-muted-foreground mt-1">
-            {t('review_drawer.hint', 'Läs tillbaka och redigera era anteckningar. Ingenting här påverkar ert gemensamma steg.')}
+            {t('review_drawer.hint', 'Se vad ni skrev — och fortsätt när det passar. Det här påverkar inte var ni är i samtalet.')}
           </p>
         </DrawerHeader>
 
@@ -228,7 +228,7 @@ export default function ReviewDrawer({ open, onClose, card }: ReviewDrawerProps)
 
                 <div className="border-t border-divider pt-6 space-y-4">
                   <p className="text-xs text-muted-foreground uppercase tracking-wider">
-                    Återbesök tidigare steg
+                    Gå igenom i din takt
                   </p>
                   <div className="grid grid-cols-2 gap-2">
                     {STEP_ORDER.map((stepType, idx) => (
