@@ -38,7 +38,7 @@ export default function Category() {
     return (
       <div className="min-h-screen page-bg animate-fade-in">
         <div className="h-14 border-b border-border bg-card" />
-        <div className="px-6 pt-12 space-y-4 max-w-md mx-auto text-left">
+        <div className="px-6 pt-12 space-y-4 max-w-md mx-auto text-center">
           <div className="h-6 w-40 rounded bg-muted/30 animate-pulse mx-auto" />
           <p className="text-sm text-muted-foreground">{t('category.not_found')}</p>
         </div>
@@ -153,30 +153,30 @@ function EditableCard({
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: index * 0.1 }}
       onClick={onNavigate}
-      className="w-full text-left card-reflection group cursor-pointer item-colors"
+      className="w-full text-center card-reflection group cursor-pointer item-colors"
       style={{ 
         '--item-bg': card.color || undefined,
         '--item-border': card.borderColor || undefined,
         borderWidth: card.borderColor ? '2px' : undefined,
       } as React.CSSProperties}
     >
-      <div className="flex flex-col items-start gap-1 p-6">
+      <div className="flex flex-col items-center gap-1 p-6">
         <h3
-          className="w-full font-serif text-lg sm:text-xl text-left item-text"
+          className="w-full font-serif text-lg sm:text-xl text-center item-text"
           style={{ '--item-text': card.textColor || undefined } as React.CSSProperties}
         >
           {card.title}
         </h3>
         {card.subtitle && (
           <p
-            className="w-full text-sm text-left italic item-text-gentle"
+            className="w-full text-sm text-center italic item-text-gentle"
             style={{ '--item-text': card.textColor || undefined } as React.CSSProperties}
           >
             {card.subtitle}
           </p>
         )}
         {explored && (
-          <p className="text-xs text-muted-foreground text-left mt-2 not-italic">
+          <p className="text-xs text-muted-foreground text-center mt-2 not-italic">
             {t('category_status.explored')}
           </p>
         )}

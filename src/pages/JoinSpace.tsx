@@ -80,7 +80,7 @@ export default function JoinSpace() {
   if (state === 'loading' || state === 'joining') {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background">
-        <div className="text-left space-y-4">
+        <div className="text-center space-y-4">
           <Loader2 className="w-8 h-8 animate-spin mx-auto text-primary" />
           <p className="text-body text-gentle">
             {state === 'joining' ? t('join.joining', 'Ansluter...') : t('join.loading', 'Laddar...')}
@@ -96,7 +96,7 @@ export default function JoinSpace() {
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
-          className="text-left space-y-6 max-w-sm"
+          className="text-center space-y-6 max-w-sm"
         >
           <CheckCircle2 className="w-16 h-16 text-primary mx-auto" />
           <h1 className="text-display text-foreground">{t('join.success_title', 'Ni är anslutna')}</h1>
@@ -112,7 +112,7 @@ export default function JoinSpace() {
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          className="text-left space-y-6 max-w-sm"
+          className="text-center space-y-6 max-w-sm"
         >
           <AlertCircle className="w-12 h-12 text-destructive mx-auto" />
           <p className="text-body text-foreground">{errorMessages[errorType] || errorMessages.unknown}</p>
@@ -137,7 +137,7 @@ export default function JoinSpace() {
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="w-full max-w-sm space-y-8 text-left"
+        className="w-full max-w-sm space-y-8 text-center"
       >
         <img src={bonkiLogo} alt="Still Us" className="h-12 w-auto mx-auto" />
         
@@ -150,7 +150,7 @@ export default function JoinSpace() {
           </p>
         </div>
 
-        <div className="space-y-4 text-left">
+        <div className="space-y-4 text-center">
           <div className="space-y-2">
             <Label>{t('join.your_name', 'Ditt namn (valfritt)')}</Label>
             <Input

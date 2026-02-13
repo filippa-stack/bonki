@@ -56,7 +56,7 @@ export default function Onboarding() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.4, ease: 'easeOut' }}
-            className="text-left"
+            className="text-center"
           >
             <h1 className="text-display text-foreground mb-8">
               {slides[currentSlide].title}
@@ -67,7 +67,7 @@ export default function Onboarding() {
           </motion.div>
         </AnimatePresence>
 
-        <div className="flex flex-col items-start gap-6">
+        <div className="flex flex-col items-center gap-6">
           <button
             onClick={isLastSlide ? handleComplete : handleNext}
             className="btn-gentle w-full max-w-xs"

@@ -21,7 +21,7 @@ export default function ConversationCard({ conversation, onClick, variant = 'def
     return (
       <button
         onClick={onClick}
-        className="w-full text-left p-4 rounded-lg bg-warm hover:bg-card transition-colors group"
+        className="w-full text-center p-4 rounded-lg bg-warm hover:bg-card transition-colors group"
       >
         <div className="flex items-center justify-between gap-3">
           <div className="flex-1 min-w-0">
@@ -41,9 +41,9 @@ export default function ConversationCard({ conversation, onClick, variant = 'def
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       onClick={onClick}
-      className="w-full text-left card-reflection group"
+      className="w-full text-center card-reflection group"
     >
-      <div className="flex items-start justify-between gap-4">
+      <div className="flex items-center justify-between gap-4">
         <div className="flex-1">
           <h3 className="font-serif text-xl text-foreground mb-1 group-hover:text-primary transition-colors">
             {card.title}

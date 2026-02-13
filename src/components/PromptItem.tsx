@@ -137,7 +137,7 @@ export default function PromptItem({
           >
             <div className="flex-1 min-w-0">
               <p
-                className="text-body w-full min-h-[24px] text-center md:text-left prompt-text"
+                className="text-body w-full min-h-[24px] text-center prompt-text"
                 style={{ '--prompt-text': prompt.textColor || undefined } as React.CSSProperties}
               >
                 {prompt.text}
@@ -169,7 +169,7 @@ export default function PromptItem({
 
                   {/* Private note */}
                   <div>
-                    <p className="text-xs uppercase tracking-widest text-slate-500 font-bold mb-3">
+                    <p className="text-xs uppercase tracking-widest text-slate-500 font-bold mb-3 text-center">
                       {t('reflections.private_notes_title', 'Din reflektion')}
                     </p>
                     <textarea

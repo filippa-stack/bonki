@@ -305,7 +305,7 @@ export default function SharedSummary() {
                 className="mb-6"
               >
                 <div className="p-5 rounded-xl border border-border/10 bg-card/15">
-                  <div className="flex flex-col items-start text-left">
+                  <div className="flex flex-col items-center text-center">
                     <MessageCircle className="w-8 h-8 text-muted-foreground/25" />
                     <p className="text-gentle text-sm font-serif font-medium mt-3">Här samlas det ni delar.</p>
                     <p className="text-[11px] text-muted-foreground leading-relaxed mt-3">När ni vill.</p>
@@ -493,7 +493,7 @@ export default function SharedSummary() {
 
             {/* No results */}
             {timelineItems.length === 0 && hasActiveFilter && (
-              <p className="text-left text-gentle py-8 text-sm">
+              <p className="text-center text-gentle py-8 text-sm">
                 {t('shared.no_results')}
               </p>
             )}
