@@ -154,14 +154,14 @@ export default function SharedTimelineItem({
           {new Date(createdDate).toLocaleDateString('sv-SE')}
         </p>
         {wasEdited && (
-          <span className="text-xs text-muted-foreground/60">· redigerad</span>
+          <span className="text-xs text-muted-foreground/60">· uppdaterad</span>
         )}
       </div>
 
       {/* Partner response (read-only) */}
       {partnerResponse && partnerResponse.content.trim().length > 0 && (
         <div className="mt-3 pt-3 border-t border-border/50">
-          <p className="text-xs text-muted-foreground mb-1">{t('shared.partner_response')}</p>
+          <p className="text-xs text-muted-foreground mb-1">Från den andra</p>
           <p className="text-sm text-foreground/80 whitespace-pre-wrap">{partnerResponse.content}</p>
         </div>
       )}
@@ -172,7 +172,7 @@ export default function SharedTimelineItem({
           {hasMyResponse && !showResponseInput ? (
             <div>
               <div className="flex items-center justify-between mb-1">
-                <p className="text-xs text-muted-foreground">{t('shared.add_response')}</p>
+                <p className="text-xs text-muted-foreground">Dina ord tillbaka</p>
                 <Button
                   variant="ghost"
                   size="icon"
@@ -198,8 +198,8 @@ export default function SharedTimelineItem({
                   className="text-xs text-muted-foreground gap-1 px-0 h-auto py-1"
                   onClick={() => setShowResponseInput(true)}
                 >
-                  <MessageCircle className="w-3 h-3" />
-                  {t('shared.add_response')}
+                   <MessageCircle className="w-3 h-3" />
+                  Svara
                 </Button>
               )}
               {showResponseInput && (
@@ -212,7 +212,7 @@ export default function SharedTimelineItem({
                       setShowResponseInput(false);
                     }
                   }}
-                  placeholder={t('shared.response_placeholder')}
+                  placeholder="Skriv något du vill att den andra ska se…"
                   className="text-sm min-h-[50px] resize-none mt-1"
                 />
               )}
