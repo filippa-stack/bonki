@@ -109,7 +109,7 @@ export default function CategoryCard({
         </div>
         
         {/* Text content - full width below */}
-        <div className="w-full space-y-1.5">
+        <div className="w-full space-y-2.5">
           {isEditingTitle ? (
             <input
               value={title}
@@ -130,15 +130,15 @@ export default function CategoryCard({
               {category.title}
             </h3>
           )}
-          {/* Emotional entry line */}
+          {/* Emotional entry line — primary reading text */}
           {category.entryLine && (
             <p
-              className="text-xs sm:text-sm text-center italic item-text-gentle"
-              style={{ '--item-text': category.textColor || undefined } as React.CSSProperties}
+              className="text-sm text-center italic text-foreground/70 leading-relaxed"
             >
               {category.entryLine}
             </p>
           )}
+          {/* Description — demoted to metadata style */}
           {isEditingDesc ? (
             <input
               value={description}
@@ -147,20 +147,18 @@ export default function CategoryCard({
               onClick={(e) => e.stopPropagation()}
               onKeyDown={(e) => { if (e.key === 'Enter') handleDescBlur(); }}
               autoFocus
-              className="w-full text-xs text-center bg-transparent border-none outline-none item-text-gentle opacity-80"
-              style={{ '--item-text': category.textColor || undefined } as React.CSSProperties}
+              className="w-full text-[10px] text-center bg-transparent border-none outline-none uppercase tracking-widest text-muted-foreground/50 font-semibold mt-1"
             />
           ) : (
             <p 
-              className="text-xs text-center item-text-gentle cursor-text opacity-80"
-              style={{ '--item-text': category.textColor || undefined } as React.CSSProperties}
+              className="text-[10px] text-center uppercase tracking-widest text-muted-foreground/50 font-semibold cursor-text mt-1"
               onClick={handleDescClick}
             >
               {category.description}
             </p>
           )}
           {status && status !== 'not_started' && (
-            <p className="text-xs text-foreground/70 text-center mt-3 italic">
+            <p className="text-sm text-primary text-center mt-3 font-medium">
               {t(`category_status.${status}`)}
             </p>
           )}
