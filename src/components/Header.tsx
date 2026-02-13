@@ -1,4 +1,4 @@
-import { ArrowLeft, LogOut } from 'lucide-react';
+import { ArrowLeft, LogOut, Users } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useApp } from '@/contexts/AppContext';
@@ -89,7 +89,7 @@ export default function Header({
             onClick={() => navigate('/shared')}
             className="text-foreground/80 hover:text-foreground border-border/60 hover:border-border text-xs gap-1.5 font-medium"
           >
-            <span className="text-sm leading-none">❤️</span>
+            <Users className="w-3.5 h-3.5" />
             {t('header.shared_space')}
           </Button>
           {showBackgroundPicker && (
