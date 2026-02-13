@@ -280,7 +280,7 @@ export default function SharedSummary() {
               <Button
                 variant="outline"
                 size="sm"
-                className="h-8 text-xs font-normal"
+                className="font-medium"
                 onClick={() => navigate('/')}
               >
                 Bläddra bland kort
@@ -512,7 +512,7 @@ export default function SharedSummary() {
                   <Button
                     variant="outline"
                     size="sm"
-                    className="h-8 text-xs font-normal"
+                    className="font-medium"
                     onClick={() => navigate('/')}
                   >
                     Bläddra bland kort
