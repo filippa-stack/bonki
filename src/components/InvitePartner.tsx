@@ -67,7 +67,7 @@ export default function InvitePartner({ inviteCode, inviteToken, partnerName, on
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        className="w-full rounded-2xl bg-[#FFFEF3] p-5"
+        className="w-full rounded-2xl bg-card/70 p-5"
       >
         <div className="flex items-start gap-3">
           <UserPlus className="w-5 h-5 text-[#d08f63] shrink-0 mt-0.5" />
@@ -96,7 +96,7 @@ export default function InvitePartner({ inviteCode, inviteToken, partnerName, on
     <motion.div
       initial={{ opacity: 0, height: 0 }}
       animate={{ opacity: 1, height: 'auto' }}
-      className="rounded-xl bg-[#FFFEF3] overflow-hidden"
+      className="rounded-xl bg-card/70 overflow-hidden"
     >
       <div className="p-4 space-y-4">
         <div className="flex items-center justify-between">
