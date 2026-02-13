@@ -207,9 +207,24 @@ export default function SharedSummary() {
 
   return (
     <div className="min-h-screen page-bg">
-      <Header title={t('shared.title')} showBack backTo="/" />
+      <Header showBack backTo="/" />
 
       <div className="px-6 pt-6 pb-8 max-w-2xl mx-auto">
+        {/* Room header — hidden during filtering */}
+        {!showFind && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.4 }}
+            className="mb-8 pt-2"
+          >
+            <h2 className="font-serif text-xl text-foreground">Vårt utrymme</h2>
+            <p className="text-sm text-muted-foreground mt-1.5">
+              Det ni väljer att dela med varandra hamnar här.
+            </p>
+          </motion.div>
+        )}
+
         {/* Partner status: invite or connected */}
         {space && (
           <motion.div
