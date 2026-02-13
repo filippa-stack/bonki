@@ -87,7 +87,7 @@ export default function Header({
             variant="outline"
             size="sm"
             onClick={() => navigate('/shared')}
-            className="text-foreground/80 hover:text-foreground border-border/60 hover:border-border text-xs gap-1.5 font-medium"
+            className="bg-white border-2 border-primary text-primary hover:bg-primary/10 hover:text-primary text-xs gap-1.5 font-medium"
           >
             <Users className="w-3.5 h-3.5" />
             {t('header.shared_space')}
