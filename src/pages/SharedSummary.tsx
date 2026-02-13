@@ -10,7 +10,7 @@ import { supabase } from '@/integrations/supabase/client';
 import Header from '@/components/Header';
 import SharedTimelineItem from '@/components/SharedTimelineItem';
 import InvitePartner from '@/components/InvitePartner';
-import { Star, Search, Filter, X, Clock, Heart, MessageCircle, BookOpen } from 'lucide-react';
+import { Star, Search, Filter, X, Clock, MessageCircle, BookOpen } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import {
@@ -254,7 +254,7 @@ export default function SharedSummary() {
                 className="mb-8"
               >
                 <p className="text-xs text-muted-foreground uppercase tracking-wider mb-4 flex items-center gap-2">
-                  <Heart className="w-3 h-3" />
+                  <BookOpen className="w-3 h-3" />
                   {t('shared.empty_section_title')}
                 </p>
                 <div className="p-6 rounded-lg border border-dashed border-border bg-card/50">
@@ -345,8 +345,8 @@ export default function SharedSummary() {
                 className="mb-8"
               >
                 <p className="text-xs text-muted-foreground uppercase tracking-wider mb-4 flex items-center gap-2">
-                  <Heart className="w-3 h-3" />
-                  {t('shared.recent_title', 'Senaste delade stunderna')}
+                  <Clock className="w-3 h-3" />
+                  {t('shared.recent_title', 'Våra senaste samtal')}
                 </p>
                 <div className="space-y-3">
                   {recentItems.map((item) => (
