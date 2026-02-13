@@ -479,12 +479,12 @@ export default function CardView() {
         <motion.h1
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          className="text-xl md:text-2xl font-serif text-foreground text-center md:text-left"
+          className="text-xl md:text-2xl font-serif text-foreground text-left"
         >
           {card.title}
         </motion.h1>
         {isRevisitMode && (
-          <div className="mt-2 text-center md:text-left space-y-0.5">
+          <div className="mt-2 text-left space-y-0.5">
             <p className="text-xs text-muted-foreground/60 tracking-wide">Förhandskoll</p>
             <p className="text-xs text-muted-foreground/50">För dig. Du kan föreslå kortet när det passar.</p>
           </div>
@@ -494,7 +494,7 @@ export default function CardView() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.1 }}
-            className="text-sm text-gentle italic mt-1 text-center md:text-left"
+            className="text-sm text-gentle italic mt-1 text-left"
           >
             {card.subtitle}
           </motion.p>
