@@ -530,11 +530,11 @@ export default function SharedSummary() {
                 transition={{ delay: 0.15 }}
                 className="mt-8 md:mt-10"
               >
-                <p className="text-[11px] text-muted-foreground uppercase tracking-normal font-medium mb-3 flex items-center justify-center gap-2">
-                  <BookOpen className="w-3 h-3" />
-                  {t('shared.journey_title')}
-                </p>
                 <div className="p-5 rounded-lg bg-card/30 text-center">
+                  <p className="text-[11px] text-muted-foreground uppercase tracking-normal font-medium mb-3 flex items-center justify-center gap-2">
+                    <BookOpen className="w-3 h-3" />
+                    {t('shared.journey_title')}
+                  </p>
                   <p className="text-xs text-muted-foreground leading-loose font-light">
                     {t('shared.journey_empty')}
                   </p>
