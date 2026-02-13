@@ -2,7 +2,6 @@ import { useState, useCallback, useEffect, useImperativeHandle, forwardRef } fro
 import { motion } from 'framer-motion';
 import { Section, Card, Prompt } from '@/types';
 import { useApp } from '@/contexts/AppContext';
-import { Plus } from 'lucide-react';
 import PromptItem from '@/components/PromptItem';
 import { usePromptNotes } from '@/hooks/usePromptNotes';
 
@@ -143,13 +142,9 @@ const SectionView = forwardRef<SectionViewHandle, SectionViewProps>(function Sec
       {/* Section header */}
       <div className="mb-6 text-center md:text-left">
         <div className="flex items-center justify-center md:justify-start">
-          <input
-            type="text"
-            value={section.title}
-            onChange={(e) => handleTitleChange(e.target.value)}
-            className="text-heading text-foreground bg-transparent border-none outline-none focus:ring-0 w-full placeholder:text-muted-foreground text-center md:text-left"
-            placeholder="Sektionstitel..."
-          />
+          <h2 className="text-heading text-foreground w-full text-center md:text-left">
+            {section.title}
+          </h2>
         </div>
         {section.type === 'exercise' && (
           <p className="text-sm text-gentle italic mt-2 md:ml-9">Gör något av det ni upptäckt.</p>
@@ -166,18 +161,11 @@ const SectionView = forwardRef<SectionViewHandle, SectionViewProps>(function Sec
       </div>
 
       {/* Section content */}
-      <textarea
-        value={section.content}
-        onChange={(e) => handleContentChange(e.target.value)}
-        ref={(el) => {
-          if (el) {
-            el.style.height = 'auto';
-            el.style.height = el.scrollHeight + 'px';
-          }
-        }}
-        className="text-body text-gentle mb-8 leading-relaxed w-full bg-transparent border-none outline-none focus:ring-0 resize-none placeholder:text-muted-foreground text-center md:text-left"
-        placeholder="Beskrivning..."
-      />
+      {section.content && (
+        <p className="text-body text-gentle mb-8 leading-relaxed w-full text-center md:text-left">
+          {section.content}
+        </p>
+      )}
 
       {/* All questions — prompt-level notes are the unified system */}
       {normalizedPrompts.length > 0 && (
@@ -215,16 +203,6 @@ const SectionView = forwardRef<SectionViewHandle, SectionViewProps>(function Sec
         </div>
       )}
 
-      {/* Add prompt button */}
-      <div className="flex justify-center md:justify-start">
-        <button
-          onClick={handleAddPrompt}
-          className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors mb-6"
-        >
-          <Plus className="w-4 h-4" />
-          Lägg till fråga
-        </button>
-      </div>
     </motion.div>
   );
 });
