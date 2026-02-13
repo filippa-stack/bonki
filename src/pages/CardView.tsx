@@ -90,6 +90,8 @@ export default function CardView() {
     return 0;
   })();
   const [revisitStepIndex, setRevisitStepIndex] = useState(initialRevisitStep);
+  const focusNoteParam = searchParams.get('focusNote');
+  const initialFocusNote = focusNoteParam !== null ? parseInt(focusNoteParam, 10) : null;
 
   // The step the user sees
   const currentStepIndex = isRevisitMode ? revisitStepIndex : sharedStepIndex;
@@ -523,7 +525,7 @@ export default function CardView() {
               exit={{ opacity: 0, x: -20 }}
               transition={{ duration: 0.3 }}
             >
-              <SectionView ref={sectionViewRef} section={currentSection} card={card} isRevisitMode={isRevisitMode} />
+              <SectionView ref={sectionViewRef} section={currentSection} card={card} isRevisitMode={isRevisitMode} initialFocusNoteIndex={isRevisitMode ? initialFocusNote : null} />
 
               {/* Takeaways on final step (exercise), before completing — card-level reflection */}
               {currentSection.type === 'exercise' && !userCompletedCurrentStep && (

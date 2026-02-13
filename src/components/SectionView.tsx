@@ -14,6 +14,7 @@ interface SectionViewProps {
   section: Section;
   card: Card;
   isRevisitMode?: boolean;
+  initialFocusNoteIndex?: number | null;
 }
 
 const normalizePrompt = (prompt: string | Prompt): Prompt => {
@@ -25,7 +26,7 @@ const normalizePrompt = (prompt: string | Prompt): Prompt => {
 
 const ACCORDION_TYPES = ['opening', 'reflective'];
 
-const SectionView = forwardRef<SectionViewHandle, SectionViewProps>(function SectionView({ section, card, isRevisitMode }, ref) {
+const SectionView = forwardRef<SectionViewHandle, SectionViewProps>(function SectionView({ section, card, isRevisitMode, initialFocusNoteIndex }, ref) {
   const { updateCardSection } = useApp();
 
   const {
@@ -80,7 +81,7 @@ const SectionView = forwardRef<SectionViewHandle, SectionViewProps>(function Sec
     },
   }), [isAccordion, expandedIndex]);
 
-  const [focusNoteIndex, setFocusNoteIndex] = useState<number | null>(null);
+  const [focusNoteIndex, setFocusNoteIndex] = useState<number | null>(initialFocusNoteIndex ?? null);
 
   // Clear focus signal after it's consumed
   useEffect(() => {

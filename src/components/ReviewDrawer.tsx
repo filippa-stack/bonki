@@ -1,7 +1,8 @@
+import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
-import { X, RotateCcw, ArrowRight } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { X, ArrowRight, FileText, Share2 } from 'lucide-react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import {
   Drawer,
@@ -11,8 +12,12 @@ import {
   DrawerClose,
 } from '@/components/ui/drawer';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import StepReflection from '@/components/StepReflection';
 import CardTakeaways from '@/components/CardTakeaways';
+import { supabase } from '@/integrations/supabase/client';
+import { useAuth } from '@/contexts/AuthContext';
+import { useCoupleSpace } from '@/hooks/useCoupleSpace';
 import type { Card } from '@/types';
 
 const STEP_ORDER = ['opening', 'reflective', 'scenario', 'exercise'] as const;
@@ -23,6 +28,17 @@ const STEP_LABELS: Record<string, string> = {
   exercise: 'Teamwork',
 };
 
+interface CardNote {
+  promptId: string;
+  sectionId: string;
+  sectionType: string;
+  promptIndex: number;
+  content: string;
+  visibility: 'private' | 'shared';
+  hasShared: boolean;
+  updatedAt: string;
+}
+
 interface ReviewDrawerProps {
   open: boolean;
   onClose: () => void;
@@ -32,6 +48,71 @@ interface ReviewDrawerProps {
 export default function ReviewDrawer({ open, onClose, card }: ReviewDrawerProps) {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const { user } = useAuth();
+  const { space } = useCoupleSpace();
+  const [cardNotes, setCardNotes] = useState<CardNote[]>([]);
+
+  // Fetch all notes for this card when drawer opens
+  useEffect(() => {
+    if (!open || !user || !space) return;
+
+    const fetchAllNotes = async () => {
+      const { data } = await supabase
+        .from('prompt_notes')
+        .select('*')
+        .eq('couple_space_id', space.id)
+        .eq('card_id', card.id)
+        .eq('user_id', user.id);
+
+      if (!data) return;
+
+      // Group by promptId to detect shared status
+      const sharedSet = new Set(
+        data.filter(n => n.visibility === 'shared').map(n => `${n.section_id}:${n.prompt_id}`)
+      );
+
+      const notes: CardNote[] = data
+        .filter(n => n.visibility === 'private' && n.content.trim())
+        .map(n => {
+          const section = card.sections.find(s => s.id === n.section_id);
+          const sectionType = section?.type || 'opening';
+          const promptIndex = section?.prompts
+            ? section.prompts.findIndex((_, i) => {
+                const pid = `${section.id}-prompt-${i}`;
+                return pid === n.prompt_id;
+              })
+            : -1;
+
+          return {
+            promptId: n.prompt_id,
+            sectionId: n.section_id,
+            sectionType,
+            promptIndex: promptIndex >= 0 ? promptIndex : 0,
+            content: n.content,
+            visibility: 'private' as const,
+            hasShared: sharedSet.has(`${n.section_id}:${n.prompt_id}`),
+            updatedAt: n.updated_at,
+          };
+        })
+        // Sort by step order, then prompt index
+        .sort((a, b) => {
+          const aStep = STEP_ORDER.indexOf(a.sectionType as any);
+          const bStep = STEP_ORDER.indexOf(b.sectionType as any);
+          if (aStep !== bStep) return aStep - bStep;
+          return a.promptIndex - b.promptIndex;
+        });
+
+      setCardNotes(notes);
+    };
+
+    fetchAllNotes();
+  }, [open, user, space, card]);
+
+  const handleNoteClick = (note: CardNote) => {
+    onClose();
+    const stepIndex = STEP_ORDER.indexOf(note.sectionType as any);
+    navigate(`/card/${card.id}?revisit=true&step=${stepIndex}&focusNote=${note.promptIndex}`);
+  };
 
   return (
     <Drawer open={open} onOpenChange={(o) => !o && onClose()}>
@@ -52,92 +133,155 @@ export default function ReviewDrawer({ open, onClose, card }: ReviewDrawerProps)
           </p>
         </DrawerHeader>
 
-        <ScrollArea className="flex-1 overflow-y-auto px-6 py-4" style={{ maxHeight: 'calc(85vh - 100px)' }}>
-          <div className="space-y-8 pb-8">
-            {STEP_ORDER.map((stepType, index) => {
-              const section = card.sections.find((s) => s.type === stepType);
-              if (!section) return null;
+        <Tabs defaultValue="overview" className="flex-1 flex flex-col overflow-hidden">
+          <TabsList className="mx-6 mt-3 mb-0 grid grid-cols-2 w-auto">
+            <TabsTrigger value="overview" className="text-xs">
+              Översikt
+            </TabsTrigger>
+            <TabsTrigger value="notes" className="text-xs gap-1">
+              <FileText className="w-3 h-3" />
+              Mina anteckningar
+              {cardNotes.length > 0 && (
+                <span className="ml-1 text-[10px] bg-primary/15 text-primary rounded-full px-1.5 py-0.5 leading-none">
+                  {cardNotes.length}
+                </span>
+              )}
+            </TabsTrigger>
+          </TabsList>
 
-              return (
-                <motion.div
-                  key={stepType}
-                  initial={{ opacity: 0, y: 8 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.05, duration: 0.3 }}
-                  className="space-y-3"
-                >
-                  {/* Step header */}
-                  <div className="flex items-center gap-3">
-                    <div className="w-6 h-6 rounded-full bg-muted flex items-center justify-center text-xs font-medium text-muted-foreground shrink-0">
-                      {index + 1}
-                    </div>
-                    <h3 className="font-serif text-base text-foreground">
-                      {STEP_LABELS[stepType]}
-                    </h3>
+          {/* Overview tab — existing content */}
+          <TabsContent value="overview" className="flex-1 overflow-hidden mt-0">
+            <ScrollArea className="h-full px-6 py-4" style={{ maxHeight: 'calc(85vh - 160px)' }}>
+              <div className="space-y-8 pb-8">
+                {STEP_ORDER.map((stepType, index) => {
+                  const section = card.sections.find((s) => s.type === stepType);
+                  if (!section) return null;
+
+                  return (
+                    <motion.div
+                      key={stepType}
+                      initial={{ opacity: 0, y: 8 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: index * 0.05, duration: 0.3 }}
+                      className="space-y-3"
+                    >
+                      <div className="flex items-center gap-3">
+                        <div className="w-6 h-6 rounded-full bg-muted flex items-center justify-center text-xs font-medium text-muted-foreground shrink-0">
+                          {index + 1}
+                        </div>
+                        <h3 className="font-serif text-base text-foreground">
+                          {STEP_LABELS[stepType]}
+                        </h3>
+                      </div>
+
+                      <div className="pl-9 space-y-2">
+                        {section.content && (
+                          <p className="text-sm text-muted-foreground leading-relaxed whitespace-pre-wrap">
+                            {section.content}
+                          </p>
+                        )}
+                        {section.prompts && section.prompts.length > 0 && (
+                          <ul className="space-y-1.5">
+                            {section.prompts.map((prompt, pi) => (
+                              <li key={pi} className="text-sm text-foreground/80 leading-relaxed">
+                                {typeof prompt === 'string' ? prompt : prompt.text}
+                              </li>
+                            ))}
+                          </ul>
+                        )}
+                      </div>
+
+                      <div className="pl-9">
+                        <StepReflection section={section} card={card} defaultExpanded={false} />
+                      </div>
+                    </motion.div>
+                  );
+                })}
+
+                <div className="border-t border-divider pt-6">
+                  <CardTakeaways cardId={card.id} compact />
+                  <p className="text-xs text-muted-foreground/50 italic text-center mt-3">
+                    Det här påverkar inte er takt.
+                  </p>
+                </div>
+
+                <div className="border-t border-divider pt-6 space-y-4">
+                  <p className="text-xs text-muted-foreground uppercase tracking-wider">
+                    Återbesök tidigare steg
+                  </p>
+                  <div className="grid grid-cols-2 gap-2">
+                    {STEP_ORDER.map((stepType, idx) => (
+                      <Button
+                        key={stepType}
+                        variant="outline"
+                        size="sm"
+                        className="gap-1.5 text-xs justify-start"
+                        onClick={() => {
+                          onClose();
+                          navigate(`/card/${card.id}?revisit=true&step=${idx}`);
+                        }}
+                      >
+                        <ArrowRight className="w-3 h-3" />
+                        {STEP_LABELS[stepType]}
+                      </Button>
+                    ))}
                   </div>
-
-                  {/* Read-only content */}
-                  <div className="pl-9 space-y-2">
-                    {section.content && (
-                      <p className="text-sm text-muted-foreground leading-relaxed whitespace-pre-wrap">
-                        {section.content}
-                      </p>
-                    )}
-                    {section.prompts && section.prompts.length > 0 && (
-                      <ul className="space-y-1.5">
-                        {section.prompts.map((prompt, pi) => (
-                          <li key={pi} className="text-sm text-foreground/80 leading-relaxed">
-                            {typeof prompt === 'string' ? prompt : prompt.text}
-                          </li>
-                        ))}
-                      </ul>
-                    )}
-                  </div>
-
-                  {/* Per-step reflection inline */}
-                  <div className="pl-9">
-                    <StepReflection section={section} card={card} defaultExpanded={false} />
-                  </div>
-                </motion.div>
-              );
-            })}
-
-            {/* Takeaways */}
-            <div className="border-t border-divider pt-6">
-              <CardTakeaways cardId={card.id} compact />
-              <p className="text-xs text-muted-foreground/50 italic text-center mt-3">
-                Det här påverkar inte er takt.
-              </p>
-            </div>
-
-            {/* Revisit earlier steps */}
-            <div className="border-t border-divider pt-6 space-y-4">
-              <p className="text-xs text-muted-foreground uppercase tracking-wider">
-                Återbesök tidigare steg
-              </p>
-              <div className="grid grid-cols-2 gap-2">
-                {STEP_ORDER.map((stepType, idx) => (
-                  <Button
-                    key={stepType}
-                    variant="outline"
-                    size="sm"
-                    className="gap-1.5 text-xs justify-start"
-                    onClick={() => {
-                      onClose();
-                      navigate(`/card/${card.id}?revisit=true&step=${idx}`);
-                    }}
-                  >
-                    <ArrowRight className="w-3 h-3" />
-                    {STEP_LABELS[stepType]}
-                  </Button>
-                ))}
+                  <p className="text-xs text-muted-foreground/50 italic text-center">
+                    Det här påverkar inte ert gemensamma tempo.
+                  </p>
+                </div>
               </div>
-              <p className="text-xs text-muted-foreground/50 italic text-center">
-                Det här påverkar inte ert gemensamma tempo.
-              </p>
-            </div>
-          </div>
-        </ScrollArea>
+            </ScrollArea>
+          </TabsContent>
+
+          {/* Notes tab */}
+          <TabsContent value="notes" className="flex-1 overflow-hidden mt-0">
+            <ScrollArea className="h-full px-6 py-4" style={{ maxHeight: 'calc(85vh - 160px)' }}>
+              {cardNotes.length === 0 ? (
+                <div className="text-center py-12 space-y-2">
+                  <FileText className="w-8 h-8 text-muted-foreground/30 mx-auto" />
+                  <p className="text-sm text-muted-foreground">
+                    Inga anteckningar än
+                  </p>
+                  <p className="text-xs text-muted-foreground/60">
+                    Dina privata reflektioner visas här
+                  </p>
+                </div>
+              ) : (
+                <div className="space-y-2 pb-8">
+                  {cardNotes.map((note, i) => (
+                    <motion.button
+                      key={`${note.sectionId}-${note.promptId}`}
+                      initial={{ opacity: 0, y: 6 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: i * 0.03, duration: 0.2 }}
+                      onClick={() => handleNoteClick(note)}
+                      className="w-full text-left p-3 rounded-xl bg-white border border-border/40 hover:border-primary/30 hover:shadow-sm transition-all group"
+                    >
+                      <div className="flex items-center gap-2 mb-1">
+                        <span className="text-[10px] font-medium text-muted-foreground/70 uppercase tracking-wider">
+                          {STEP_LABELS[note.sectionType]}
+                        </span>
+                        <span className="text-[10px] text-muted-foreground/50">
+                          Fråga {note.promptIndex + 1}
+                        </span>
+                        {note.hasShared && (
+                          <span className="flex items-center gap-0.5 text-[10px] text-primary/70">
+                            <Share2 className="w-2.5 h-2.5" />
+                            Delad
+                          </span>
+                        )}
+                      </div>
+                      <p className="text-sm text-foreground/80 leading-relaxed line-clamp-2">
+                        {note.content}
+                      </p>
+                    </motion.button>
+                  ))}
+                </div>
+              )}
+            </ScrollArea>
+          </TabsContent>
+        </Tabs>
       </DrawerContent>
     </Drawer>
   );
