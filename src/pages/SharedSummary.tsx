@@ -534,7 +534,7 @@ export default function SharedSummary() {
                   <BookOpen className="w-3 h-3" />
                   {t('shared.journey_title')}
                 </p>
-                <div className="p-5 rounded-lg border border-border/50 bg-card/30">
+                <div className="p-5 rounded-lg bg-card/30">
                   <p className="text-xs text-muted-foreground leading-relaxed">
                     {t('shared.journey_empty')}
                   </p>
