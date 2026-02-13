@@ -304,7 +304,7 @@ export default function SharedSummary() {
                 animate={{ opacity: 1, y: 0 }}
                 className="mb-6"
               >
-                <div className="p-5 rounded-xl bg-card/15">
+                <div className="p-5">
                   <div className="flex flex-col items-center text-center">
                     <MessageCircle className="w-8 h-8 text-muted-foreground/25" />
                     <p className="text-gentle text-sm font-serif font-medium mt-3">Här samlas det ni delar.</p>
