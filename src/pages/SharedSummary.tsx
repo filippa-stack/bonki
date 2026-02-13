@@ -225,14 +225,14 @@ export default function SharedSummary() {
     <div className="min-h-screen page-bg">
       <Header showBack backTo="/" />
 
-      <div className="px-6 pt-6 pb-8 max-w-2xl mx-auto">
+      <div className="px-6 pt-10 pb-12 mx-auto" style={{ maxWidth: 720 }}>
         {/* Room header — hidden during filtering */}
         {!showFind && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.4 }}
-            className="mb-8 pt-2"
+            className="mb-6 md:mb-8"
           >
             <h2 className="font-serif text-xl text-foreground">Vårt utrymme</h2>
             <p className="text-sm text-muted-foreground mt-1.5">
@@ -246,7 +246,7 @@ export default function SharedSummary() {
           <motion.div
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
-            className="mb-6"
+            className="mb-6 md:mb-8"
           >
             <InvitePartner
               inviteCode={space.invite_code}
@@ -269,7 +269,7 @@ export default function SharedSummary() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.3, delay: 0.1 }}
-            className="mb-8"
+            className="mb-6 md:mb-8"
           >
             <div className="p-3 rounded-2xl bg-card/15 border border-border/10">
               <p className="font-serif text-base text-foreground">Bläddra bland kort</p>
@@ -298,7 +298,7 @@ export default function SharedSummary() {
               <motion.div
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="my-12"
+                className="my-6 md:my-8"
               >
                 <div className="p-4 rounded-xl border border-border/10 bg-card/15">
                   <div className="flex flex-col items-start text-left gap-3">
@@ -316,7 +316,7 @@ export default function SharedSummary() {
               <motion.div
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="mb-10"
+                className="mb-6 md:mb-8"
               >
                 <p className="text-sm font-serif font-medium text-foreground mb-1">
                   {t('shared.highlights_title')}
@@ -348,7 +348,7 @@ export default function SharedSummary() {
             )}
 
             {/* Find toggle */}
-            <div className="flex justify-end mb-4">
+            <div className="flex justify-end mb-6 md:mb-8">
               <Button
                 variant="ghost"
                 size="sm"
@@ -368,7 +368,7 @@ export default function SharedSummary() {
 
             {/* Search + Filter row */}
             {showFind && (
-              <div className="flex gap-2 mb-6">
+              <div className="flex gap-2 mb-6 md:mb-8">
                 <div className="relative flex-1">
                   <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                   <Input
@@ -407,7 +407,7 @@ export default function SharedSummary() {
               <motion.div
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="mb-10"
+                className="mb-6 md:mb-8"
               >
                 <p className="text-sm font-serif font-medium text-foreground mb-1">
                   {t('shared.recent_title', 'Senaste som delats')}
@@ -434,7 +434,7 @@ export default function SharedSummary() {
 
             {/* When filtering, show all results flat */}
             {hasActiveFilter && timelineItems.length > 0 && (
-              <div className="space-y-3 mb-8">
+              <div className="space-y-3 mb-6 md:mb-8">
                 {timelineItems.map((item) => (
                   <SharedTimelineItem
                     key={item.id}
@@ -454,7 +454,7 @@ export default function SharedSummary() {
             {olderGrouped.length > 0 && !hasActiveFilter && (
               <div>
                 {olderGrouped.map((group) => (
-                  <div key={group.key} className="mb-6">
+                  <div key={group.key} className="mb-6 md:mb-8">
                      <p className="text-xs uppercase tracking-wide text-muted-foreground mb-3">
                       {group.label}
                     </p>
@@ -499,7 +499,7 @@ export default function SharedSummary() {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.3 }}
-                className="mt-10 mb-8"
+                className="mt-6 md:mt-8 mb-6 md:mb-8"
               >
                 <div className="p-3 rounded-2xl bg-card/15 border border-border/10">
                   <p className="font-serif text-base text-foreground">Bläddra bland kort</p>
