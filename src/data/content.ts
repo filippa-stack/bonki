@@ -116,7 +116,7 @@ export const cards: Card[] = [
       {
         id: 'exercise-1',
         type: 'exercise',
-        title: 'Team Work',
+        title: 'Teamwork',
         content: 'Välj en konkret handling eller mening som markerar att dagen är avslutad för er båda.',
         prompts: [
           'Prova i tre kvällar — och prata sedan om vad det förändrade.',
@@ -163,7 +163,7 @@ export const cards: Card[] = [
       {
         id: 'exercise-2',
         type: 'exercise',
-        title: 'Team Work',
+        title: 'Teamwork',
         content: 'Välj ett område där ni medvetet låter två sätt samexistera.',
         prompts: [
           'Prata om vad ni vill att barnet ska förstå — inte om vem som gör rätt.',
@@ -210,7 +210,7 @@ export const cards: Card[] = [
       {
         id: 'exercise-3',
         type: 'exercise',
-        title: 'Team Work',
+        title: 'Teamwork',
         content: 'Välj en etablerad roll att dela eller byta under en period.',
         prompts: [
           'Prata om vad som känns ovant — utan att rätta varandra.',
@@ -257,7 +257,7 @@ export const cards: Card[] = [
       {
         id: 'exercise-4',
         type: 'exercise',
-        title: 'Team Work',
+        title: 'Teamwork',
         content: 'Bestäm en gemensam formulering ni kan använda i stunden.',
         prompts: [
           'Prata efteråt om vad den skyddade — och vad den inte gjorde.',
@@ -304,7 +304,7 @@ export const cards: Card[] = [
       {
         id: 'exercise-5',
         type: 'exercise',
-        title: 'Team Work',
+        title: 'Teamwork',
         content: 'Nästa gång ni reagerar olika i en liknande situation: hur kan ni visa respekt för det som den andra försöker skydda, utan att ge upp det som är viktigt för dig själv?',
         prompts: [
           'Prata om hur detta skulle kunna märkas i ton, timing eller ordval — inte som en lösning, utan som ett sätt att förstå varandra bättre.',
@@ -351,7 +351,7 @@ export const cards: Card[] = [
       {
         id: 'exercise-6a',
         type: 'exercise',
-        title: 'Team Work',
+        title: 'Teamwork',
         content: 'Bestäm gemensamt två förhållningssätt: vad ni vill undvika att agera på i affekt — och vad som är viktigt att komma ihåg även när ni tycker olika.',
       },
     ],
@@ -395,7 +395,7 @@ export const cards: Card[] = [
       {
         id: 'exercise-7a',
         type: 'exercise',
-        title: 'Team Work',
+        title: 'Teamwork',
         content: 'Välj en mycket liten handling eller aktivitet ni gör tillsammans tre gånger kommande vecka.',
         prompts: [
           'Se det som ett test, inte en lösning.',
@@ -442,7 +442,7 @@ export const cards: Card[] = [
       {
         id: 'exercise-8a',
         type: 'exercise',
-        title: 'Team Work',
+        title: 'Teamwork',
         content: 'Identifiera en sak vardera som ni idag håller tillbaka.',
         prompts: [
           'Prata om vad som skulle krävas för att den skulle få lite mer plats.',
@@ -489,7 +489,7 @@ export const cards: Card[] = [
       {
         id: 'exercise-9',
         type: 'exercise',
-        title: 'Team Work',
+        title: 'Teamwork',
         content: 'Skapa två tydliga signaler: \u201CJag längtar efter närhet\u201D och \u201CJag kan inte just nu, men jag vill dig\u201D.',
         prompts: [
           'Hur kan de se ut så att ingen behöver gissa?',
@@ -536,7 +536,7 @@ export const cards: Card[] = [
       {
         id: 'exercise-10',
         type: 'exercise',
-        title: 'Team Work',
+        title: 'Teamwork',
         content: 'Avsätt tio minuter en gång den här veckan där ni inte pratar om barn eller logistik.',
         prompts: [
           'Om ni inte har något att säga — sitt kvar ändå.',
@@ -583,7 +583,7 @@ export const cards: Card[] = [
       {
         id: 'exercise-11',
         type: 'exercise',
-        title: 'Team Work',
+        title: 'Teamwork',
         content: 'Enas om en neutral mening ni alltid kan säga inför barnet — och ett sätt att ta upp oenighet mellan er i efterhand utan att skuldbelägga.',
       },
     ],
@@ -626,7 +626,7 @@ export const cards: Card[] = [
       {
         id: 'exercise-12',
         type: 'exercise',
-        title: 'Team Work',
+        title: 'Teamwork',
         content: 'Formulera en gemensam berättelse om varför ni valt just era traditioner.',
         prompts: [
           'Vad vill ni att barnet ska förstå om er genom dem?',
@@ -673,7 +673,7 @@ export const cards: Card[] = [
       {
         id: 'exercise-13',
         type: 'exercise',
-        title: 'Team Work',
+        title: 'Teamwork',
         content: 'Välj en möjlig framtida satsning (något ni kan tänka er att någon av er vill satsa på någon gång). Prata igenom:\n• Vad skulle vara bästa utfallet?\n• Vad skulle vara det värsta rimliga utfallet?\n• Vilken gräns skulle ni inte vilja passera (tid/pengar/ork)?\n• Vilka två tecken skulle betyda: \u201Cnu behöver vi bromsa\u201D?',
       },
     ],
@@ -717,7 +717,7 @@ export const cards: Card[] = [
       {
         id: 'exercise-14',
         type: 'exercise',
-        title: 'Team Work',
+        title: 'Teamwork',
         content: 'Enas om vad som gör satsningen värd pengarna, vad ni är beredda att avstå eller vänta med, och hur barnet får vara delaktigt i vägen dit.',
       },
     ],
@@ -761,7 +761,7 @@ export const cards: Card[] = [
       {
         id: 'exercise-15',
         type: 'exercise',
-        title: 'Team Work',
+        title: 'Teamwork',
         content: 'Enas om vilka ord ni använder — och undviker — inför barnet när någon tvivlar på sig själv. Bestäm också vilka ansvar som tillfälligt kan skifta utan att någon tappar sin roll.',
         prompts: [
           'Syftet är att ingen ska tappa värde i familjen för att den tappar fotfästet.',
@@ -808,7 +808,7 @@ export const cards: Card[] = [
       {
         id: 'exercise-16',
         type: 'exercise',
-        title: 'Team Work',
+        title: 'Teamwork',
         content: 'Tänk ut hur en vecka kan se ut där båda era sätt får plats — utan att det ena blir norm och det andra undantag.',
       },
     ],
@@ -852,7 +852,7 @@ export const cards: Card[] = [
       {
         id: 'exercise-17',
         type: 'exercise',
-        title: 'Team Work',
+        title: 'Teamwork',
         content: 'Bestäm hur ni signalerar \u201Cvi tar det sen\u201D, hur ni pratar om det utan att bli motparter, och hur ni visar barnet att vuxna också reparerar konflikter.',
       },
     ],
@@ -896,7 +896,7 @@ export const cards: Card[] = [
       {
         id: 'exercise-18',
         type: 'exercise',
-        title: 'Team Work',
+        title: 'Teamwork',
         content: 'Kom överens om tydliga tecken för:\n• när jag behöver vara ifred\n• när jag behöver att du stannar\n• när jag inte vet vad jag behöver',
       },
     ],
@@ -940,7 +940,7 @@ export const cards: Card[] = [
       {
         id: 'exercise-19',
         type: 'exercise',
-        title: 'Team Work',
+        title: 'Teamwork',
         content: 'Skapa en gemensam värderingsstege: vad ni frågar först, när ni sätter gränser — och när konsekvens blir nödvändig.',
       },
     ],
@@ -984,7 +984,7 @@ export const cards: Card[] = [
       {
         id: 'exercise-20',
         type: 'exercise',
-        title: 'Team Work',
+        title: 'Teamwork',
         content: 'Bestäm vilka tecken som visar att satsningen tar för mycket plats och hur ni då justerar innan det går ut över relationen.',
       },
     ],
@@ -1028,7 +1028,7 @@ export const cards: Card[] = [
       {
         id: 'exercise-21',
         type: 'exercise',
-        title: 'Team Work',
+        title: 'Teamwork',
         content: 'Gör ett litet experiment i en vecka som bryter autopiloten (ett nytt sätt att hälsa, ta i varandra, fråga varandra frågor, vara nära varandra).',
         prompts: ['Prata sedan: förde det er närmare — eller visade det på ett avstånd mellan er?'],
       },
@@ -1073,7 +1073,7 @@ export const cards: Card[] = [
       {
         id: 'exercise-22',
         type: 'exercise',
-        title: 'Team Work',
+        title: 'Teamwork',
         content: 'Svara var för sig, utan att förklara eller försvara: \u201CVad gör att jag väljer oss just nu?\u201D',
         prompts: ['Lyssna utan att svara tillbaka.'],
       },

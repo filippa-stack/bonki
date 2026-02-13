@@ -20,11 +20,11 @@ const sectionTypeLabels: Record<string, string> = {
   opening: 'Öppnare',
   reflective: 'Tankeväckare',
   scenario: 'Scenario',
-  exercise: 'Team Work',
+  exercise: 'Teamwork',
 };
 
 const STEP_ORDER = ['opening', 'reflective', 'scenario', 'exercise'] as const;
-const STEP_LABELS = ['Öppnare', 'Tankeväckare', 'Scenario', 'Team Work'];
+const STEP_LABELS = ['Öppnare', 'Tankeväckare', 'Scenario', 'Teamwork'];
 
 const STEP_CTA_KEYS: Record<string, string> = {
   opening: 'card_view.cta_opening',
