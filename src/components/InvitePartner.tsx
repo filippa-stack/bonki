@@ -67,7 +67,7 @@ export default function InvitePartner({ inviteCode, inviteToken, partnerName, on
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        className="w-full rounded-xl bg-[#FFFEF3] p-5"
+        className="w-full rounded-2xl bg-[#FFFEF3] p-5"
       >
         <div className="flex items-start gap-3">
           <UserPlus className="w-5 h-5 text-[#d08f63] shrink-0 mt-0.5" />
