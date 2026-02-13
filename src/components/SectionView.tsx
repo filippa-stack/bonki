@@ -161,17 +161,17 @@ const SectionView = forwardRef<SectionViewHandle, SectionViewProps>(function Sec
       className="py-6"
     >
       {/* Section header */}
-      <div className="mb-6 text-left">
-        <div className="flex items-start">
-          <h2 className="text-heading text-foreground w-full text-left">
+      <div className="mb-6 text-center">
+        <div className="flex items-center justify-center">
+          <h2 className="text-heading text-foreground w-full text-center">
             {section.title}
           </h2>
         </div>
         {section.type === 'exercise' && (
-          <p className="text-sm text-gentle not-italic mt-2 max-w-2xl">Gör något av det ni upptäckt.</p>
+          <p className="text-sm text-gentle not-italic mt-2 max-w-2xl mx-auto">Gör något av det ni upptäckt.</p>
         )}
         {section.type === 'scenario' && (
-          <p className="text-sm text-gentle not-italic mt-2 max-w-2xl">Känn igen er i varandras vardag.</p>
+          <p className="text-sm text-gentle not-italic mt-2 max-w-2xl mx-auto">Känn igen er i varandras vardag.</p>
         )}
         {section.type === 'reflective' && (
           <p className="text-sm text-gentle not-italic mt-2 max-w-2xl">Lyssna djupare på varandra.</p>
@@ -183,7 +183,7 @@ const SectionView = forwardRef<SectionViewHandle, SectionViewProps>(function Sec
 
       {/* Section content */}
       {section.content && (
-        <p className="text-body text-gentle mb-8 leading-relaxed w-full text-left max-w-2xl">
+        <p className="text-body text-gentle mb-8 leading-relaxed w-full text-center max-w-2xl mx-auto">
           {section.content}
         </p>
       )}
