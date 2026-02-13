@@ -272,7 +272,7 @@ export default function SharedSummary() {
             className="mb-6 md:mb-8"
           >
             <div className="p-3 rounded-2xl bg-card/15 border border-border/10">
-              <p className="font-serif text-base text-foreground">Hitta ett kort att göra tillsammans</p>
+              <p className="font-serif text-base text-foreground">Hitta ett ämne att utforska ihop</p>
               <p className="text-xs text-muted-foreground mt-1 mb-3">Välj en lugn start – ni kan alltid pausa och fortsätta senare.</p>
               <Button
                 variant="outline"
@@ -503,7 +503,7 @@ export default function SharedSummary() {
                 className="mt-6 md:mt-8 mb-6 md:mb-8"
               >
                 <div className="p-3 rounded-2xl bg-card/15 border border-border/10">
-                  <p className="font-serif text-base text-foreground">Hitta ett kort att göra tillsammans</p>
+                  <p className="font-serif text-base text-foreground">Hitta ett ämne att utforska ihop</p>
                   <p className="text-xs text-muted-foreground mt-1 mb-3">Välj en lugn start – ni kan alltid pausa och fortsätta senare.</p>
                   <Button
                     variant="outline"
