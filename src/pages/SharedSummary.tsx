@@ -271,7 +271,7 @@ export default function SharedSummary() {
             transition={{ duration: 0.3, delay: 0.1 }}
             className="mb-8"
           >
-            <div className="p-4 rounded-2xl bg-card/20 border border-border/20">
+            <div className="p-3 rounded-2xl bg-card/15 border border-border/10">
               <p className="font-serif text-base text-foreground">Bläddra bland kort</p>
               <p className="text-xs text-muted-foreground mt-1 mb-3">I er egen takt.</p>
               <Button
@@ -300,9 +300,9 @@ export default function SharedSummary() {
                 animate={{ opacity: 1, y: 0 }}
                 className="my-12"
               >
-                <div className="p-5 rounded-xl border border-border/40 bg-card/30">
+                <div className="p-4 rounded-xl border border-border/10 bg-card/15">
                   <div className="flex flex-col items-center text-center gap-3">
-                    <MessageCircle className="w-8 h-8 text-muted-foreground/30" />
+                    <MessageCircle className="w-8 h-8 text-muted-foreground/25" />
                     <p className="text-gentle text-sm font-serif">Här växer det ni delar.</p>
                     <p className="text-xs text-muted-foreground">I er egen takt.</p>
                   </div>
@@ -501,7 +501,7 @@ export default function SharedSummary() {
                 transition={{ duration: 0.3 }}
                 className="mt-10 mb-8"
               >
-                <div className="p-4 rounded-2xl bg-card/20 border border-border/20">
+                <div className="p-3 rounded-2xl bg-card/15 border border-border/10">
                   <p className="font-serif text-base text-foreground">Bläddra bland kort</p>
                   <p className="text-xs text-muted-foreground mt-1 mb-3">I er egen takt.</p>
                   <Button
