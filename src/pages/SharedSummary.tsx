@@ -249,7 +249,7 @@ export default function SharedSummary() {
           <motion.div
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
-            className="mb-6"
+            className="mb-8"
           >
             <InvitePartner
               inviteCode={space.invite_code}
