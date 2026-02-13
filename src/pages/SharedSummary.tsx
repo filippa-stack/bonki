@@ -281,7 +281,7 @@ export default function SharedSummary() {
               <motion.div
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="mb-8"
+                className="mb-10"
               >
                 <p className="text-sm font-serif font-medium text-foreground mb-4">
                   {t('shared.highlights_title')}
@@ -362,10 +362,13 @@ export default function SharedSummary() {
               <motion.div
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="mb-8"
+                className="mb-10"
               >
-                <p className="text-sm font-serif font-medium text-foreground mb-4">
+                <p className="text-sm font-serif font-medium text-foreground mb-1">
                   {t('shared.recent_title', 'Senaste som delats')}
+                </p>
+                <p className="text-xs text-muted-foreground mb-5 max-w-xs">
+                  Det ni valt att dela med varandra.
                 </p>
                 <div className="space-y-3">
                   {recentItems.map((item) => (
