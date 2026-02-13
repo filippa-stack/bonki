@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode, useCallback, useRef } from 'react';
 import { CoupleSpace, ConversationThread, Reflection, AppState, Category, Card, JourneyState, ReflectionsData, PrivateNote, SharedNote, TopicProposal, TakeawayNote, SharedTakeaway } from '@/types';
-import { categories as initialCategories, cards as initialCards } from '@/data/content';
+import { categories as initialCategories, cards as initialCards, CONTENT_VERSION } from '@/data/content';
 import { useSettingsSync, SaveStatus } from '@/hooks/useSettingsSync';
 import { useAuth } from '@/contexts/AuthContext';
 import { useSiteSettings, SiteSettings } from '@/contexts/SiteSettingsContext';
@@ -91,13 +91,58 @@ const STORAGE_KEY = 'vi-som-foraldrar-state';
 const CATEGORIES_STORAGE_KEY = 'vi-som-foraldrar-categories';
 const CARDS_STORAGE_KEY = 'vi-som-foraldrar-cards';
 const BACKGROUND_COLOR_KEY = 'vi-som-foraldrar-background';
+const CONTENT_VERSION_KEY = 'vi-som-foraldrar-content-version';
+
+/**
+ * Merge new source categories/cards into cached data.
+ * Preserves user customizations (colors, icons, etc.) for existing items,
+ * adds any new items from the source.
+ */
+function mergeCategories(cached: Category[], source: Category[]): Category[] {
+  const map = new Map(cached.map((c) => [c.id, c]));
+  return source.map((s) => {
+    const existing = map.get(s.id);
+    if (existing) {
+      // Keep user customizations, update structural content
+      return {
+        ...s,
+        color: existing.color || s.color,
+        textColor: existing.textColor || s.textColor,
+        borderColor: existing.borderColor || s.borderColor,
+        icon: existing.icon || s.icon,
+      };
+    }
+    return s;
+  });
+}
+
+function mergeCards(cached: Card[], source: Card[]): Card[] {
+  const map = new Map(cached.map((c) => [c.id, c]));
+  return source.map((s) => {
+    const existing = map.get(s.id);
+    if (existing) {
+      return {
+        ...s,
+        color: existing.color || s.color,
+        textColor: existing.textColor || s.textColor,
+        borderColor: existing.borderColor || s.borderColor,
+      };
+    }
+    return s;
+  });
+}
 
 export function AppProvider({ children }: { children: ReactNode }) {
   const { user } = useAuth();
+  const storedVersion = parseInt(localStorage.getItem(CONTENT_VERSION_KEY) || '0', 10);
+  const needsMerge = storedVersion < CONTENT_VERSION;
+
   const [categories, setCategories] = useState<Category[]>(() => {
     const stored = localStorage.getItem(CATEGORIES_STORAGE_KEY);
     if (stored) {
-      return JSON.parse(stored);
+      const cached = JSON.parse(stored);
+      if (needsMerge) return mergeCategories(cached, initialCategories);
+      return cached;
     }
     return initialCategories;
   });
@@ -105,10 +150,19 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const [cards, setCards] = useState<Card[]>(() => {
     const stored = localStorage.getItem(CARDS_STORAGE_KEY);
     if (stored) {
-      return JSON.parse(stored);
+      const cached = JSON.parse(stored);
+      if (needsMerge) return mergeCards(cached, initialCards);
+      return cached;
     }
     return initialCards;
   });
+
+  // Persist content version after merge
+  useEffect(() => {
+    if (needsMerge) {
+      localStorage.setItem(CONTENT_VERSION_KEY, String(CONTENT_VERSION));
+    }
+  }, [needsMerge]);
 
   const [backgroundColor, setBackgroundColorState] = useState<string>(() => {
     const stored = localStorage.getItem(BACKGROUND_COLOR_KEY);
@@ -173,10 +227,10 @@ export function AppProvider({ children }: { children: ReactNode }) {
       setBackgroundColorState(loadedSettings.backgroundColor);
     }
     if (loadedSettings.categories) {
-      setCategories(loadedSettings.categories);
+      setCategories(mergeCategories(loadedSettings.categories, initialCategories));
     }
     if (loadedSettings.cards) {
-      setCards(loadedSettings.cards);
+      setCards(mergeCards(loadedSettings.cards, initialCards));
     }
     if (loadedSettings.siteSettings) {
       loadSiteSettings(loadedSettings.siteSettings);
