@@ -79,11 +79,19 @@ export default function ContinueModule({
         </p>
 
         <div className="flex flex-col sm:flex-row gap-2">
-          <Button onClick={onContinue} className="gap-2" size="sm">
+          <Button
+            onClick={onContinue}
+            className="gap-2 bg-[#497575] text-white hover:bg-[#365757]"
+            size="sm"
+          >
             {t('general.continue_cta')}
             <ArrowRight className="w-4 h-4" />
           </Button>
-          <Button onClick={onChooseAnother} variant="ghost" size="sm" className="text-muted-foreground">
+          <Button
+            onClick={onChooseAnother}
+            size="sm"
+            className="bg-[#BF7C45] text-white hover:bg-[#A66A3B]"
+          >
             {t('general.choose_another')}
           </Button>
         </div>
