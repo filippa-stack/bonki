@@ -98,6 +98,19 @@ Deno.serve(async (req) => {
         );
       }
 
+      // Safety gate: block merge if original space is already paired
+      const { count: originalMemberCount } = await adminClient
+        .from("couple_members")
+        .select("id", { count: "exact", head: true })
+        .eq("couple_space_id", originalSpaceId);
+
+      if ((originalMemberCount ?? 0) >= 2) {
+        return new Response(
+          JSON.stringify({ error: "already_paired" }),
+          { status: 409, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        );
+      }
+
       // Migrate user's reflections from old space to target space
       await adminClient
         .from("prompt_notes")
