@@ -68,8 +68,8 @@ function sortCardIds(ids: string[]): string[] {
 
 function mergeJourneyStates(local: JourneyState | null | undefined, remote: JourneyState | null | undefined): JourneyState | null {
   if (!local && !remote) return null;
-  if (!local) return remote ?? null;
-  if (!remote) return local ?? null;
+  if (!local) return { ...remote!, exploredCardIds: sortCardIds(remote!.exploredCardIds || []) };
+  if (!remote) return { ...local!, exploredCardIds: sortCardIds(local!.exploredCardIds || []) };
 
   // Union exploredCardIds
   const exploredSet = new Set([...(local.exploredCardIds || []), ...(remote.exploredCardIds || [])]);
