@@ -28,17 +28,22 @@ export default function Category() {
 
   const [isProposing, setIsProposing] = useState(false);
 
-  const handlePropose = useCallback((catId: string, cardId: string) => {
+  const handlePropose = useCallback(async (catId: string, cardId: string) => {
     if (proposalSent || isProposing) return;
     setIsProposing(true);
-    const success = proposeCard(catId, cardId);
-    setIsProposing(false);
-    if (success) {
-      setProposalSent(true);
-      if (proposalTimer.current) clearTimeout(proposalTimer.current);
-      proposalTimer.current = setTimeout(() => setProposalSent(false), 2000);
-    } else {
+    try {
+      const success = await proposeCard(catId, cardId);
+      if (success) {
+        setProposalSent(true);
+        if (proposalTimer.current) clearTimeout(proposalTimer.current);
+        proposalTimer.current = setTimeout(() => setProposalSent(false), 2000);
+      } else {
+        toast.error('Kunde inte skicka förslaget. Försök igen.');
+      }
+    } catch {
       toast.error('Kunde inte skicka förslaget. Försök igen.');
+    } finally {
+      setIsProposing(false);
     }
   }, [proposalSent, isProposing, proposeCard]);
 

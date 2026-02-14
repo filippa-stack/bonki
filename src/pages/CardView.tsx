@@ -124,17 +124,22 @@ export default function CardView() {
 
   const [isProposing, setIsProposing] = useState(false);
 
-  const handlePropose = useCallback((catId: string, cardIdToPropose: string) => {
+  const handlePropose = useCallback(async (catId: string, cardIdToPropose: string) => {
     if (proposalSent || isProposing) return;
     setIsProposing(true);
-    const success = proposeCard(catId, cardIdToPropose);
-    setIsProposing(false);
-    if (success) {
-      setProposalSent(true);
-      if (proposalTimer.current) clearTimeout(proposalTimer.current);
-      proposalTimer.current = setTimeout(() => setProposalSent(false), 2000);
-    } else {
+    try {
+      const success = await proposeCard(catId, cardIdToPropose);
+      if (success) {
+        setProposalSent(true);
+        if (proposalTimer.current) clearTimeout(proposalTimer.current);
+        proposalTimer.current = setTimeout(() => setProposalSent(false), 2000);
+      } else {
+        toast.error('Kunde inte skicka förslaget. Försök igen.');
+      }
+    } catch {
       toast.error('Kunde inte skicka förslaget. Försök igen.');
+    } finally {
+      setIsProposing(false);
     }
   }, [proposalSent, isProposing, proposeCard]);
 
@@ -283,7 +288,7 @@ export default function CardView() {
               {suggestedCard && suggestedCategory && memberCount >= 2 ? (
                 <Button
                   onClick={() => handlePropose(suggestedCategory.id, suggestedCard.id)}
-                  disabled={proposalSent}
+                  disabled={proposalSent || isProposing}
                   size="lg"
                   className="w-full gap-2"
                 >
@@ -686,7 +691,7 @@ export default function CardView() {
                         variant="outline"
                         size="lg"
                         className="w-full gap-2 text-muted-foreground hover:text-foreground"
-                        disabled={proposalSent}
+                        disabled={proposalSent || isProposing}
                         onClick={() => handlePropose(category.id, card.id)}
                       >
                         {proposalSent ? (
