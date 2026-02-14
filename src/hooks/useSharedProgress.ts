@@ -30,11 +30,14 @@ export function useSharedProgress(
 
   // Load initial data
   useEffect(() => {
+    setInitialData(null);
+
     if (!userId || !coupleSpaceId) {
       setReady(true);
       return;
     }
 
+    setReady(false);
     let cancelled = false;
 
     async function load() {
