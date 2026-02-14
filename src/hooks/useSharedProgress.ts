@@ -60,6 +60,12 @@ function mergeSessions(local: SessionData | null | undefined, remote: SessionDat
   };
 }
 
+function sortCardIds(ids: string[]): string[] {
+  return [...ids].sort((a, b) =>
+    a.localeCompare(b, undefined, { numeric: true, sensitivity: 'base' })
+  );
+}
+
 function mergeJourneyStates(local: JourneyState | null | undefined, remote: JourneyState | null | undefined): JourneyState | null {
   if (!local && !remote) return null;
   if (!local) return remote ?? null;
@@ -87,7 +93,7 @@ function mergeJourneyStates(local: JourneyState | null | undefined, remote: Jour
   // For scalar fields, take the remote (latest writer) but keep union data
   return {
     ...remote,
-    exploredCardIds: Array.from(exploredSet).sort(),
+    exploredCardIds: sortCardIds(Array.from(exploredSet)),
     sessionProgress: mergedProgress,
   };
 }
