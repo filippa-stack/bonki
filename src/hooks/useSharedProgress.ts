@@ -87,7 +87,7 @@ function mergeJourneyStates(local: JourneyState | null | undefined, remote: Jour
   // For scalar fields, take the remote (latest writer) but keep union data
   return {
     ...remote,
-    exploredCardIds: Array.from(exploredSet),
+    exploredCardIds: Array.from(exploredSet).sort(),
     sessionProgress: mergedProgress,
   };
 }
