@@ -83,6 +83,7 @@ interface AppContextType {
   isTakeawayHighlighted: (cardId: string) => boolean;
   toggleTakeawayHighlight: (cardId: string) => void;
   takeawayHighlightCount: number;
+  refreshCoupleSpace: () => Promise<void>;
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -244,7 +245,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
   );
 
   // Couple space for shared progress
-  const { space: coupleSpaceDb, memberCount: coupleSpaceMemberCount } = useCoupleSpace();
+  const { space: coupleSpaceDb, memberCount: coupleSpaceMemberCount, refreshSpace: refreshCoupleSpace } = useCoupleSpace();
   const coupleSpaceId = coupleSpaceDb?.id ?? null;
 
   // Handle remote progress updates from partner
@@ -1243,6 +1244,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
         isTakeawayHighlighted,
         toggleTakeawayHighlight,
         takeawayHighlightCount,
+        refreshCoupleSpace,
       }}
     >
       {children}

@@ -1,8 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import { useAuth } from '@/contexts/AuthContext';
+import { useApp } from '@/contexts/AppContext';
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -15,6 +16,7 @@ type JoinState = 'loading' | 'name_prompt' | 'joining' | 'success' | 'error';
 export default function JoinSpace() {
   const { t } = useTranslation();
   const { user } = useAuth();
+  const { refreshCoupleSpace } = useApp();
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
 
@@ -57,7 +59,8 @@ export default function JoinSpace() {
       const data = res.data as any;
       if (data?.success) {
         setState('success');
-        setTimeout(() => navigate('/', { replace: true }), 2500);
+        await refreshCoupleSpace();
+        navigate('/', { replace: true });
       } else {
         setState('error');
         setErrorType(data?.error || 'unknown');
