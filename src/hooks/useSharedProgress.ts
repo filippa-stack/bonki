@@ -98,6 +98,30 @@ function mergeJourneyStates(local: JourneyState | null | undefined, remote: Jour
   };
 }
 
+function logSyncError(params: {
+  stage: 'fetchRemote' | 'upsertProgress' | 'thrown';
+  coupleSpaceId: string | null;
+  userId: string | null;
+  cardId?: string | null;
+  error: any;
+  extra?: Record<string, any>;
+}) {
+  const { stage, coupleSpaceId, userId, cardId, error, extra } = params;
+  const code = error?.code ?? error?.status ?? error?.name ?? 'unknown';
+  const message = error?.message ?? String(error);
+  console.error('[SharedProgressSync]', {
+    stage,
+    coupleSpaceId,
+    userId,
+    cardId,
+    code,
+    message,
+    details: error?.details,
+    hint: error?.hint,
+    extra,
+  });
+}
+
 // --- Hook ---
 
 export function useSharedProgress(
