@@ -5,7 +5,7 @@ import { useSettingsSync, SaveStatus } from '@/hooks/useSettingsSync';
 import { useAuth } from '@/contexts/AuthContext';
 import { useSiteSettings, SiteSettings } from '@/contexts/SiteSettingsContext';
 import { useCoupleSpace } from '@/hooks/useCoupleSpace';
-import { useSharedProgress } from '@/hooks/useSharedProgress';
+import { useSharedProgress, SharedSyncStatus } from '@/hooks/useSharedProgress';
 
 const STEP_ORDER = ['opening', 'reflective', 'scenario', 'exercise'] as const;
 
@@ -85,6 +85,9 @@ interface AppContextType {
   takeawayHighlightCount: number;
   refreshCoupleSpace: () => Promise<void>;
   setOverrideCoupleSpaceId: (id: string | null) => void;
+  sharedSyncStatus: SharedSyncStatus;
+  sharedSyncError: string | null;
+  retrySharedSync: () => void;
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -267,7 +270,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
     setSessionDismissed(false);
   }, []);
 
-  const { initialData: sharedProgressInitial, syncToRemote, ready: sharedProgressReady } = useSharedProgress(
+  const { initialData: sharedProgressInitial, syncToRemote, ready: sharedProgressReady, syncStatus: sharedSyncStatus, lastSyncError: sharedSyncError, retrySync: retrySharedSync } = useSharedProgress(
     user?.id ?? null,
     coupleSpaceId,
     handleRemoteProgressUpdate,
@@ -1255,6 +1258,9 @@ export function AppProvider({ children }: { children: ReactNode }) {
         takeawayHighlightCount,
         refreshCoupleSpace,
         setOverrideCoupleSpaceId,
+        sharedSyncStatus,
+        sharedSyncError,
+        retrySharedSync,
       }}
     >
       {children}
