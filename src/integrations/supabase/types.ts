@@ -284,7 +284,7 @@ export type Database = {
           cards: Json | null
           categories: Json | null
           created_at: string
-          device_id: string
+          device_id: string | null
           id: string
           site_settings: Json | null
           updated_at: string
@@ -295,7 +295,7 @@ export type Database = {
           cards?: Json | null
           categories?: Json | null
           created_at?: string
-          device_id: string
+          device_id?: string | null
           id?: string
           site_settings?: Json | null
           updated_at?: string
@@ -306,7 +306,7 @@ export type Database = {
           cards?: Json | null
           categories?: Json | null
           created_at?: string
-          device_id?: string
+          device_id?: string | null
           id?: string
           site_settings?: Json | null
           updated_at?: string
