@@ -99,6 +99,18 @@ export function useCoupleSpace(): CoupleSpaceState {
   // Realtime: update memberCount when couple_members changes
   useEffect(() => {
     if (!space?.id) return;
+    let cancelled = false;
+
+    const fetchCount = async () => {
+      const { count } = await supabase
+        .from('couple_members')
+        .select('id', { count: 'exact', head: true })
+        .eq('couple_space_id', space.id);
+      if (!cancelled) setMemberCount(count ?? 1);
+    };
+
+    // Immediate fetch
+    fetchCount();
 
     const channel = supabase
       .channel(`couple_members_${space.id}`)
@@ -110,17 +122,12 @@ export function useCoupleSpace(): CoupleSpaceState {
           table: 'couple_members',
           filter: `couple_space_id=eq.${space.id}`,
         },
-        async () => {
-          const { count } = await supabase
-            .from('couple_members')
-            .select('id', { count: 'exact', head: true })
-            .eq('couple_space_id', space.id);
-          setMemberCount(count ?? 1);
-        }
+        () => fetchCount()
       )
       .subscribe();
 
     return () => {
+      cancelled = true;
       supabase.removeChannel(channel);
     };
   }, [space?.id]);
