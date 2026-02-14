@@ -99,10 +99,18 @@ Deno.serve(async (req) => {
       }
 
       // Safety gate: block merge if original space is already paired
-      const { count: originalMemberCount } = await adminClient
+      const { count: originalMemberCount, error: countErr } = await adminClient
         .from("couple_members")
         .select("id", { count: "exact", head: true })
         .eq("couple_space_id", originalSpaceId);
+
+      if (countErr) {
+        console.error("Count error:", countErr);
+        return new Response(
+          JSON.stringify({ error: "internal_error" }),
+          { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        );
+      }
 
       if ((originalMemberCount ?? 0) >= 2) {
         return new Response(
