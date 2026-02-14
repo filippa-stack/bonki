@@ -123,21 +123,26 @@ export function useSharedProgress(
           }))
         : null;
 
-      supabase
-        .from('couple_progress')
-        .upsert(
-          {
-            couple_space_id: coupleSpaceId,
-            current_session: sessionJson,
-            journey_state: journey ? JSON.parse(JSON.stringify(journey)) : null,
-            updated_by: userId,
-          },
-          { onConflict: 'couple_space_id' }
-        )
-        .then(({ error }) => {
+      (async () => {
+        try {
+          const { error } = await supabase
+            .from('couple_progress')
+            .upsert(
+              {
+                couple_space_id: coupleSpaceId,
+                current_session: sessionJson,
+                journey_state: journey ? JSON.parse(JSON.stringify(journey)) : null,
+                updated_by: userId,
+              },
+              { onConflict: 'couple_space_id' }
+            );
           if (error) console.error('Error syncing progress:', error);
+        } catch (err) {
+          console.error('Error syncing progress (thrown):', err);
+        } finally {
           isSyncing.current = false;
-        });
+        }
+      })();
     },
     [userId, coupleSpaceId]
   );
