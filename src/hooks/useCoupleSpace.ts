@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 
@@ -15,7 +15,10 @@ interface CoupleSpaceState {
   space: CoupleSpaceData | null;
   loading: boolean;
   error: string | null;
+  /** Raw count — use for logic (step gating, etc.) */
   memberCount: number;
+  /** Debounced count — use for display to avoid flicker */
+  displayMemberCount: number;
   userRole: string | null;
   refreshSpace: () => Promise<void>;
 }
@@ -132,11 +135,26 @@ export function useCoupleSpace(): CoupleSpaceState {
     };
   }, [space?.id]);
 
+  // Debounced display value to prevent UI flicker on rapid realtime updates
+  const [displayMemberCount, setDisplayMemberCount] = useState(memberCount);
+  const displayTimerRef = useRef<ReturnType<typeof setTimeout>>();
+
+  useEffect(() => {
+    if (displayTimerRef.current) clearTimeout(displayTimerRef.current);
+    displayTimerRef.current = setTimeout(() => {
+      setDisplayMemberCount(memberCount);
+    }, 400);
+    return () => {
+      if (displayTimerRef.current) clearTimeout(displayTimerRef.current);
+    };
+  }, [memberCount]);
+
   return {
     space,
     loading,
     error,
     memberCount,
+    displayMemberCount,
     userRole,
     refreshSpace: fetchSpace,
   };

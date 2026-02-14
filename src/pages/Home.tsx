@@ -62,7 +62,7 @@ export default function Home() {
   } = useApp();
   const { settings, updateSettings } = useSiteSettings();
   const { user } = useAuth();
-  const { space, memberCount, userRole } = useCoupleSpace();
+  const { space, displayMemberCount, userRole } = useCoupleSpace();
   const [isEditingHero, setIsEditingHero] = useState(false);
   const [editTitle, setEditTitle] = useState(settings.heroTitle);
   const [editSubtitle, setEditSubtitle] = useState(settings.heroSubtitle);
@@ -432,7 +432,7 @@ export default function Home() {
           transition={{ delay: 0.15 }}
           className="px-6 pb-6"
         >
-          {memberCount < 2 ? (
+          {displayMemberCount < 2 ? (
             <InvitePartner
               inviteCode={space.invite_code}
               inviteToken={space.invite_token}
