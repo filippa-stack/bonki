@@ -42,7 +42,7 @@ export default function SharedSummary() {
   const navigate = useNavigate();
   const { categories, backgroundColor, getCardById, getCategoryById } = useApp();
   const { user } = useAuth();
-  const { space, memberCount, userRole } = useCoupleSpace();
+  const { space, displayMemberCount, userRole } = useCoupleSpace();
 
   const [searchQuery, setSearchQuery] = useState('');
   const [categoryFilter, setCategoryFilter] = useState<string>('all');
@@ -245,7 +245,7 @@ export default function SharedSummary() {
         {!showFind && <div className="mb-6" />}
 
         {/* Partner invite — only when solo */}
-        {space && memberCount < 2 && (
+        {space && displayMemberCount < 2 && (
           <motion.div
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
