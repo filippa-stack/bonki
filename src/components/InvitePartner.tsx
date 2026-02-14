@@ -49,10 +49,10 @@ export default function InvitePartner({ inviteCode, inviteToken, partnerName, on
     try {
       await navigator.clipboard.writeText(inviteLink);
       setCopied(true);
-      toast.success(t('invite.copied', 'Länken kopierades'));
+      toast.success(t('invite.copied', 'Länk kopierad'));
       setTimeout(() => setCopied(false), 2000);
     } catch {
-      toast.error(t('invite.copy_failed', 'Kunde inte kopiera'));
+      toast.error(t('invite.copy_failed', 'Kunde inte kopiera länken'));
     }
   };
 
