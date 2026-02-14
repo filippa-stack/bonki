@@ -105,6 +105,8 @@ export function useSharedProgress(
   const isSyncing = useRef(false);
   const localSessionRef = useRef<SessionData | null>(null);
   const localJourneyRef = useRef<JourneyState | null>(null);
+  const pendingWriteRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const pendingDataRef = useRef<{ session: SessionData | undefined; journey: JourneyState | undefined } | null>(null);
 
   // Load initial data
   useEffect(() => {
@@ -151,7 +153,14 @@ export function useSharedProgress(
     }
 
     load();
-    return () => { cancelled = true; };
+    return () => {
+      cancelled = true;
+      // Clear any pending write on context change
+      if (pendingWriteRef.current) {
+        clearTimeout(pendingWriteRef.current);
+        pendingWriteRef.current = null;
+      }
+    };
   }, [userId, coupleSpaceId]);
 
   // Subscribe to realtime changes
@@ -195,12 +204,63 @@ export function useSharedProgress(
     };
   }, [userId, coupleSpaceId, onRemoteUpdate]);
 
-  // Push local changes to database
+  const SYNC_DEBOUNCE_MS = 900;
+
+  const commitToRemote = useCallback(async () => {
+    const pending = pendingDataRef.current;
+    if (!pending || !userId || !coupleSpaceId) return;
+    if (isSyncing.current) return;
+
+    isSyncing.current = true;
+    const { session, journey } = pending;
+
+    try {
+      // Fetch latest remote to merge
+      const { data: remoteRow } = await supabase
+        .from('couple_progress')
+        .select('current_session, journey_state')
+        .eq('couple_space_id', coupleSpaceId)
+        .maybeSingle();
+
+      const remoteSession = remoteRow ? deserializeSession(remoteRow.current_session) : null;
+      const remoteJourney = remoteRow ? (remoteRow.journey_state as unknown as JourneyState | null) : null;
+
+      const mergedSession = mergeSessions(session, remoteSession);
+      const mergedJourney = mergeJourneyStates(journey, remoteJourney);
+
+      const sessionJson = mergedSession
+        ? JSON.parse(JSON.stringify({
+            ...mergedSession,
+            startedAt: mergedSession.startedAt instanceof Date ? mergedSession.startedAt.toISOString() : mergedSession.startedAt,
+            lastActivityAt: mergedSession.lastActivityAt instanceof Date ? mergedSession.lastActivityAt.toISOString() : mergedSession.lastActivityAt,
+          }))
+        : null;
+
+      const { error } = await supabase
+        .from('couple_progress')
+        .upsert(
+          {
+            couple_space_id: coupleSpaceId,
+            current_session: sessionJson,
+            journey_state: mergedJourney ? JSON.parse(JSON.stringify(mergedJourney)) : null,
+            updated_by: userId,
+          },
+          { onConflict: 'couple_space_id' }
+        );
+      if (error) console.error('Error syncing progress:', error);
+    } catch (err) {
+      console.error('Error syncing progress (thrown):', err);
+    } finally {
+      isSyncing.current = false;
+    }
+  }, [userId, coupleSpaceId]);
+
+  // Push local changes to database (debounced)
   const syncToRemote = useCallback(
     (session: SessionData | undefined, journey: JourneyState | undefined) => {
-      if (!userId || !coupleSpaceId || isSyncing.current) return;
+      if (!userId || !coupleSpaceId) return;
 
-      // Update local refs
+      // Update local refs immediately
       localSessionRef.current = session ?? null;
       localJourneyRef.current = journey ?? null;
 
@@ -208,52 +268,30 @@ export function useSharedProgress(
       if (payload === lastPushed.current) return;
       lastPushed.current = payload;
 
-      isSyncing.current = true;
+      // Store pending data
+      pendingDataRef.current = { session, journey };
 
-      (async () => {
-        try {
-          // Fetch latest remote to merge
-          const { data: remoteRow } = await supabase
-            .from('couple_progress')
-            .select('current_session, journey_state')
-            .eq('couple_space_id', coupleSpaceId)
-            .maybeSingle();
-
-          const remoteSession = remoteRow ? deserializeSession(remoteRow.current_session) : null;
-          const remoteJourney = remoteRow ? (remoteRow.journey_state as unknown as JourneyState | null) : null;
-
-          const mergedSession = mergeSessions(session, remoteSession);
-          const mergedJourney = mergeJourneyStates(journey, remoteJourney);
-
-          const sessionJson = mergedSession
-            ? JSON.parse(JSON.stringify({
-                ...mergedSession,
-                startedAt: mergedSession.startedAt instanceof Date ? mergedSession.startedAt.toISOString() : mergedSession.startedAt,
-                lastActivityAt: mergedSession.lastActivityAt instanceof Date ? mergedSession.lastActivityAt.toISOString() : mergedSession.lastActivityAt,
-              }))
-            : null;
-
-          const { error } = await supabase
-            .from('couple_progress')
-            .upsert(
-              {
-                couple_space_id: coupleSpaceId,
-                current_session: sessionJson,
-                journey_state: mergedJourney ? JSON.parse(JSON.stringify(mergedJourney)) : null,
-                updated_by: userId,
-              },
-              { onConflict: 'couple_space_id' }
-            );
-          if (error) console.error('Error syncing progress:', error);
-        } catch (err) {
-          console.error('Error syncing progress (thrown):', err);
-        } finally {
-          isSyncing.current = false;
-        }
-      })();
+      // Debounce the actual write
+      if (pendingWriteRef.current) {
+        clearTimeout(pendingWriteRef.current);
+      }
+      pendingWriteRef.current = setTimeout(() => {
+        pendingWriteRef.current = null;
+        commitToRemote();
+      }, SYNC_DEBOUNCE_MS);
     },
-    [userId, coupleSpaceId]
+    [userId, coupleSpaceId, commitToRemote]
   );
+
+  // Cleanup pending write on unmount
+  useEffect(() => {
+    return () => {
+      if (pendingWriteRef.current) {
+        clearTimeout(pendingWriteRef.current);
+        pendingWriteRef.current = null;
+      }
+    };
+  }, []);
 
   return { initialData, syncToRemote, ready };
 }
