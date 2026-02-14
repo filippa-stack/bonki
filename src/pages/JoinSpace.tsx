@@ -16,7 +16,7 @@ type JoinState = 'loading' | 'name_prompt' | 'joining' | 'success' | 'error';
 export default function JoinSpace() {
   const { t } = useTranslation();
   const { user } = useAuth();
-  const { refreshCoupleSpace } = useApp();
+  const { refreshCoupleSpace, setOverrideCoupleSpaceId } = useApp();
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
 
@@ -59,6 +59,7 @@ export default function JoinSpace() {
       const data = res.data as any;
       if (data?.success) {
         setState('success');
+        setOverrideCoupleSpaceId(data.couple_space_id);
         await refreshCoupleSpace();
         navigate('/', { replace: true });
       } else {
