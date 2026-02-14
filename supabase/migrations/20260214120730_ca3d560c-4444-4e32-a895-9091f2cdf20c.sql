@@ -1,0 +1,1 @@
+ALTER TABLE public.couple_members ADD CONSTRAINT couple_members_user_id_key UNIQUE (user_id);
