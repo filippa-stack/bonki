@@ -217,11 +217,15 @@ export function useSharedProgress(
 
     try {
       // Fetch latest remote to merge
-      const { data: remoteRow } = await supabase
+      const { data: remoteRow, error: remoteErr } = await supabase
         .from('couple_progress')
         .select('current_session, journey_state')
         .eq('couple_space_id', coupleSpaceId)
         .maybeSingle();
+
+      if (remoteErr) {
+        console.error('Error fetching remote progress for merge:', remoteErr);
+      }
 
       const remoteSession = remoteRow ? deserializeSession(remoteRow.current_session) : null;
       const remoteJourney = remoteRow ? (remoteRow.journey_state as unknown as JourneyState | null) : null;
