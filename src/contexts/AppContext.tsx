@@ -6,6 +6,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useSiteSettings, SiteSettings } from '@/contexts/SiteSettingsContext';
 import { useCoupleSpace } from '@/hooks/useCoupleSpace';
 import { useSharedProgress, SharedSyncStatus } from '@/hooks/useSharedProgress';
+import { supabase } from '@/integrations/supabase/client';
 
 const STEP_ORDER = ['opening', 'reflective', 'scenario', 'exercise'] as const;
 
@@ -60,7 +61,7 @@ interface AppContextType {
   getCategoryStatus: (categoryId: string) => 'not_started' | 'in_progress' | 'explored';
   getExploredCardsInCategory: (categoryId: string) => number;
   // Topic proposal
-  proposeCard: (categoryId: string, cardId: string) => boolean;
+  proposeCard: (categoryId: string, cardId: string) => Promise<boolean>;
   acceptProposal: () => void;
   declineProposal: () => void;
   // Reflections (private/shared)
@@ -959,29 +960,57 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const hasActiveSession = !sessionDismissed && !!state.currentSession;
 
   // Topic proposal functions
-  const proposeCard = (categoryId: string, cardId: string): boolean => {
+  const proposeCard = async (categoryId: string, cardId: string): Promise<boolean> => {
     if (!user?.id) return false;
+
+    const newJourney = {
+      ...(state.journeyState || {
+        currentCategoryId: null,
+        lastOpenedCardId: null,
+        lastCompletedCardId: null,
+        suggestedNextCardId: null,
+        pausedAt: null,
+        updatedAt: new Date().toISOString(),
+        exploredCardIds: [],
+      }),
+      topicProposal: {
+        cardId,
+        categoryId,
+        proposedByUserId: user.id,
+        proposedAt: new Date().toISOString(),
+      },
+      updatedAt: new Date().toISOString(),
+    };
+
+    // Set local state immediately for UI responsiveness
     setState((prev) => ({
       ...prev,
-      journeyState: {
-        ...(prev.journeyState || {
-          currentCategoryId: null,
-          lastOpenedCardId: null,
-          lastCompletedCardId: null,
-          suggestedNextCardId: null,
-          pausedAt: null,
-          updatedAt: new Date().toISOString(),
-          exploredCardIds: [],
-        }),
-        topicProposal: {
-          cardId,
-          categoryId,
-          proposedByUserId: user.id,
-          proposedAt: new Date().toISOString(),
-        },
-        updatedAt: new Date().toISOString(),
-      },
+      journeyState: newJourney,
     }));
+
+    // Confirm the write to backend
+    if (coupleSpaceId) {
+      try {
+        const { error } = await supabase
+          .from('couple_progress')
+          .upsert(
+            {
+              couple_space_id: coupleSpaceId,
+              journey_state: JSON.parse(JSON.stringify(newJourney)),
+              updated_by: user.id,
+            },
+            { onConflict: 'couple_space_id' }
+          );
+        if (error) {
+          console.error('proposeCard: upsert failed', error);
+          return false;
+        }
+      } catch (err) {
+        console.error('proposeCard: network error', err);
+        return false;
+      }
+    }
+
     return true;
   };
 
