@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
@@ -7,7 +7,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Archive, Download, Trash2, Plus, Loader2 } from 'lucide-react';
-import { toast } from '@/hooks/use-toast';
+import { toast } from 'sonner';
 import type { Json } from '@/integrations/supabase/types';
 import type { Category, Card } from '@/types';
 
@@ -31,6 +31,20 @@ export default function BackupManager() {
   const [restoring, setRestoring] = useState<string | null>(null);
   const [deleting, setDeleting] = useState<string | null>(null);
   const [backupName, setBackupName] = useState('');
+  const [statusText, setStatusText] = useState<string | null>(null);
+  const statusTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const showStatus = useCallback((message: string) => {
+    if (statusTimer.current) clearTimeout(statusTimer.current);
+    setStatusText(message);
+    statusTimer.current = setTimeout(() => setStatusText(null), 3000);
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      if (statusTimer.current) clearTimeout(statusTimer.current);
+    };
+  }, []);
 
   const loadBackups = async () => {
     if (!user) return;
@@ -46,7 +60,7 @@ export default function BackupManager() {
       setBackups(data || []);
     } catch (err) {
       console.error('Failed to load backups:', err);
-      toast({ title: t('backup.error_load'), variant: 'destructive' });
+      toast.error(t('backup.error_load'));
     } finally {
       setLoading(false);
     }
@@ -61,6 +75,7 @@ export default function BackupManager() {
   const createBackup = async () => {
     if (!user) return;
     setCreating(true);
+    setStatusText(null);
     try {
       const name = backupName.trim() || `Backup ${new Date().toLocaleString('sv-SE')}`;
 
@@ -76,12 +91,12 @@ export default function BackupManager() {
 
       if (error) throw error;
 
-      toast({ title: t('backup.created_toast'), description: name });
+      showStatus('Backup skapad');
       setBackupName('');
       loadBackups();
     } catch (err) {
       console.error('Failed to create backup:', err);
-      toast({ title: t('backup.error_create'), variant: 'destructive' });
+      toast.error(t('backup.error_create'));
     } finally {
       setCreating(false);
     }
@@ -94,6 +109,7 @@ export default function BackupManager() {
     if (!confirmed) return;
 
     setRestoring(backup.id);
+    setStatusText(null);
     try {
       const { error } = await supabase
         .from('user_settings')
@@ -107,14 +123,14 @@ export default function BackupManager() {
 
       if (error) throw error;
 
-      toast({ title: t('backup.restored_toast'), description: t('backup.restored_hint') });
+      showStatus('Backup återställd');
 
       setTimeout(() => {
         window.location.reload();
       }, 1500);
     } catch (err) {
       console.error('Failed to restore backup:', err);
-      toast({ title: t('backup.error_restore'), variant: 'destructive' });
+      toast.error(t('backup.error_restore'));
       setRestoring(null);
     }
   };
@@ -124,6 +140,7 @@ export default function BackupManager() {
     if (!confirmed) return;
 
     setDeleting(backup.id);
+    setStatusText(null);
     try {
       const { error } = await supabase
         .from('user_backups')
@@ -132,11 +149,11 @@ export default function BackupManager() {
 
       if (error) throw error;
 
-      toast({ title: t('backup.deleted_toast') });
+      showStatus('Backup borttagen');
       loadBackups();
     } catch (err) {
       console.error('Failed to delete backup:', err);
-      toast({ title: t('backup.error_delete'), variant: 'destructive' });
+      toast.error(t('backup.error_delete'));
     } finally {
       setDeleting(null);
     }
@@ -182,6 +199,12 @@ export default function BackupManager() {
               <span className="ml-1">{t('backup.create')}</span>
             </Button>
           </div>
+
+          {statusText && (
+            <p className="text-xs text-center text-muted-foreground animate-in fade-in duration-200">
+              {statusText}
+            </p>
+          )}
 
           <div className="space-y-2 max-h-64 overflow-y-auto">
             {loading ? (
