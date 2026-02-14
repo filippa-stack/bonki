@@ -5,7 +5,8 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 import { AuthProvider, useAuth } from "@/contexts/AuthContext";
-import { AppProvider } from "@/contexts/AppContext";
+import { AppProvider, useApp } from "@/contexts/AppContext";
+import RemoteCardCue from "@/components/RemoteCardCue";
 import { SiteSettingsProvider } from "@/contexts/SiteSettingsContext";
 import PageTransition from "@/components/PageTransition";
 import Index from "./pages/Index";
@@ -46,6 +47,7 @@ function ProtectedRoutes() {
 
   return (
     <AppProvider>
+      <RemoteCardCueGlobal />
       <AnimatePresence mode="wait">
         <Routes location={location} key={location.pathname}>
           <Route path="/" element={<PageTransition><Index /></PageTransition>} />
@@ -58,6 +60,11 @@ function ProtectedRoutes() {
       </AnimatePresence>
     </AppProvider>
   );
+}
+
+function RemoteCardCueGlobal() {
+  const { remoteCardChanged, dismissRemoteCardCue } = useApp();
+  return <RemoteCardCue show={remoteCardChanged} onDone={dismissRemoteCardCue} />;
 }
 
 function AppRoutes() {

@@ -88,6 +88,9 @@ interface AppContextType {
   sharedSyncStatus: SharedSyncStatus;
   sharedSyncError: string | null;
   retrySharedSync: () => void;
+  /** True when a remote update changed the active cardId */
+  remoteCardChanged: boolean;
+  dismissRemoteCardCue: () => void;
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -261,13 +264,32 @@ export function AppProvider({ children }: { children: ReactNode }) {
   }, [coupleSpaceDb?.id, overrideCoupleSpaceId]);
 
   // Handle remote progress updates from partner
+  const [remoteCardChanged, setRemoteCardChanged] = useState(false);
+  const lastRemoteCueCardId = useRef<string | null>(null);
+
   const handleRemoteProgressUpdate = useCallback((data: { currentSession: AppState['currentSession'] | null; journeyState: JourneyState | null }) => {
-    setState((prev) => ({
-      ...prev,
-      currentSession: data.currentSession ?? undefined,
-      journeyState: data.journeyState ?? undefined,
-    }));
+    setState((prev) => {
+      const prevCardId = prev.currentSession?.cardId ?? null;
+      const newCardId = data.currentSession?.cardId ?? null;
+
+      // Trigger cue only when cardId actually changes to a different card, and not the same one we already cued
+      if (newCardId && prevCardId !== newCardId && lastRemoteCueCardId.current !== newCardId) {
+        lastRemoteCueCardId.current = newCardId;
+        // Use setTimeout to avoid setState-during-render
+        setTimeout(() => setRemoteCardChanged(true), 0);
+      }
+
+      return {
+        ...prev,
+        currentSession: data.currentSession ?? undefined,
+        journeyState: data.journeyState ?? undefined,
+      };
+    });
     setSessionDismissed(false);
+  }, []);
+
+  const dismissRemoteCardCue = useCallback(() => {
+    setRemoteCardChanged(false);
   }, []);
 
   const { initialData: sharedProgressInitial, syncToRemote, ready: sharedProgressReady, syncStatus: sharedSyncStatus, lastSyncError: sharedSyncError, retrySync: retrySharedSync } = useSharedProgress(
@@ -1261,6 +1283,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
         sharedSyncStatus,
         sharedSyncError,
         retrySharedSync,
+        remoteCardChanged,
+        dismissRemoteCardCue,
       }}
     >
       {children}
