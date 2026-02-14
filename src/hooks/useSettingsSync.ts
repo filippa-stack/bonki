@@ -107,7 +107,6 @@ export function useSettingsSync(
           .from('user_settings')
           .insert({
             user_id: userId,
-            device_id: deviceId,
             background_color: bestRecord.background_color,
             categories: bestRecord.categories,
             cards: bestRecord.cards,
@@ -205,15 +204,10 @@ export function useSettingsSync(
 
     const timeoutId = setTimeout(async () => {
       try {
-        const deviceId = getDeviceId() || crypto.randomUUID();
-        // Store device ID for future migrations if needed
-        localStorage.setItem(DEVICE_ID_KEY, deviceId);
-
         let saveSuccessful = false;
 
         const payload = {
           user_id: userId,
-          device_id: deviceId,
           background_color: settings.backgroundColor || null,
           categories: JSON.parse(JSON.stringify(settings.categories)) as Json,
           cards: JSON.parse(JSON.stringify(settings.cards)) as Json,
@@ -221,29 +215,13 @@ export function useSettingsSync(
           updated_at: new Date().toISOString(),
         };
 
-        // Use upsert to handle both insert and update in one operation.
-        // If device_id collides (e.g. same browser used with another account),
-        // regenerate device_id and retry once.
-        const doUpsert = async (data: typeof payload) =>
-          supabase
-            .from('user_settings')
-            .upsert(data, {
-              onConflict: 'user_id',
-              ignoreDuplicates: false,
-            });
-
-        let { error: upsertError } = await doUpsert(payload);
-
-        if (
-          upsertError &&
-          (upsertError as any).code === '23505' &&
-          String((upsertError as any).message || '').includes('user_settings_device_id_key')
-        ) {
-          const newDeviceId = crypto.randomUUID();
-          localStorage.setItem(DEVICE_ID_KEY, newDeviceId);
-
-          ({ error: upsertError } = await doUpsert({ ...payload, device_id: newDeviceId }));
-        }
+        // Upsert strictly on user_id — no device_id involved
+        const { error: upsertError } = await supabase
+          .from('user_settings')
+          .upsert(payload, {
+            onConflict: 'user_id',
+            ignoreDuplicates: false,
+          });
 
         if (upsertError) {
           console.error('Error saving settings:', upsertError);
