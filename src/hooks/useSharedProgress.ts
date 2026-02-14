@@ -240,13 +240,23 @@ export function useSharedProgress(
   const commitToRemote = useCallback(async () => {
     const pending = pendingDataRef.current;
     if (!pending || !userId || !coupleSpaceId) return;
-    if (isSyncing.current) return;
+
+    // If already syncing, queue another commit after this one finishes
+    if (isSyncing.current) {
+      needsAnotherCommitRef.current = true;
+      return;
+    }
+
+    // Clear any pending debounce timer before committing
+    if (pendingWriteRef.current) {
+      clearTimeout(pendingWriteRef.current);
+      pendingWriteRef.current = null;
+    }
 
     isSyncing.current = true;
     const { session, journey } = pending;
 
     try {
-      // Fetch latest remote to merge
       const { data: remoteRow, error: remoteErr } = await supabase
         .from('couple_progress')
         .select('current_session, journey_state')
@@ -254,39 +264,75 @@ export function useSharedProgress(
         .maybeSingle();
 
       if (remoteErr) {
-        console.error('Error fetching remote progress for merge:', remoteErr);
+        logSyncError({
+          stage: 'fetchRemote',
+          coupleSpaceId,
+          userId,
+          cardId: session?.cardId ?? null,
+          error: remoteErr,
+        });
       }
 
-      const remoteSession = remoteRow ? deserializeSession(remoteRow.current_session) : null;
-      const remoteJourney = remoteRow ? (remoteRow.journey_state as unknown as JourneyState | null) : null;
+      const remoteSession = remoteRow
+        ? deserializeSession(remoteRow.current_session)
+        : null;
+      const remoteJourney = remoteRow
+        ? (remoteRow.journey_state as unknown as JourneyState | null)
+        : null;
 
       const mergedSession = mergeSessions(session, remoteSession);
       const mergedJourney = mergeJourneyStates(journey, remoteJourney);
 
       const sessionJson = mergedSession
-        ? JSON.parse(JSON.stringify({
-            ...mergedSession,
-            startedAt: mergedSession.startedAt instanceof Date ? mergedSession.startedAt.toISOString() : mergedSession.startedAt,
-            lastActivityAt: mergedSession.lastActivityAt instanceof Date ? mergedSession.lastActivityAt.toISOString() : mergedSession.lastActivityAt,
-          }))
+        ? JSON.parse(
+            JSON.stringify({
+              ...mergedSession,
+              startedAt:
+                mergedSession.startedAt instanceof Date
+                  ? mergedSession.startedAt.toISOString()
+                  : mergedSession.startedAt,
+              lastActivityAt:
+                mergedSession.lastActivityAt instanceof Date
+                  ? mergedSession.lastActivityAt.toISOString()
+                  : mergedSession.lastActivityAt,
+            })
+          )
         : null;
 
-      const { error } = await supabase
+      const { error: upsertErr } = await supabase
         .from('couple_progress')
         .upsert(
           {
             couple_space_id: coupleSpaceId,
             current_session: sessionJson,
-            journey_state: mergedJourney ? JSON.parse(JSON.stringify(mergedJourney)) : null,
+            journey_state: mergedJourney
+              ? JSON.parse(JSON.stringify(mergedJourney))
+              : null,
             updated_by: userId,
           },
           { onConflict: 'couple_space_id' }
         );
-      if (error) console.error('Error syncing progress:', error);
+
+      if (upsertErr) {
+        logSyncError({
+          stage: 'upsertProgress',
+          coupleSpaceId,
+          userId,
+          cardId: mergedSession?.cardId ?? session?.cardId ?? null,
+          error: upsertErr,
+        });
+      }
     } catch (err) {
-      console.error('Error syncing progress (thrown):', err);
+      logSyncError({
+        stage: 'thrown',
+        coupleSpaceId,
+        userId,
+        cardId: pendingDataRef.current?.session?.cardId ?? null,
+        error: err,
+      });
     } finally {
       isSyncing.current = false;
+      // If new changes happened during sync, flush immediately
       if (needsAnotherCommitRef.current) {
         needsAnotherCommitRef.current = false;
         setTimeout(() => commitToRemote(), 0);
