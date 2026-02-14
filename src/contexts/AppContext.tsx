@@ -963,6 +963,10 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const proposeCard = async (categoryId: string, cardId: string): Promise<ProposeResult> => {
     if (!user?.id) return { ok: false, reason: 'not_logged_in' };
 
+    // Snapshot only the fields we're about to change
+    const prevTopicProposal = state.journeyState?.topicProposal ?? null;
+    const prevUpdatedAt = state.journeyState?.updatedAt ?? null;
+
     const newJourney = {
       ...(state.journeyState || {
         currentCategoryId: null,
@@ -982,7 +986,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
       updatedAt: new Date().toISOString(),
     };
 
-    // Set local state immediately for UI responsiveness
+    // Optimistic local update for UI responsiveness
     setState((prev) => ({
       ...prev,
       journeyState: newJourney,
@@ -1003,10 +1007,24 @@ export function AppProvider({ children }: { children: ReactNode }) {
           );
         if (error) {
           console.error('proposeCard: upsert failed', error);
+          // Rollback optimistic update
+          setState((prev) => ({
+            ...prev,
+            journeyState: prev.journeyState
+              ? { ...prev.journeyState, topicProposal: prevTopicProposal as any, updatedAt: prevUpdatedAt ?? prev.journeyState.updatedAt }
+              : prev.journeyState,
+          }));
           return { ok: false, reason: 'write_failed' };
         }
       } catch (err) {
         console.error('proposeCard: network error', err);
+        // Rollback optimistic update
+        setState((prev) => ({
+          ...prev,
+          journeyState: prev.journeyState
+            ? { ...prev.journeyState, topicProposal: prevTopicProposal as any, updatedAt: prevUpdatedAt ?? prev.journeyState.updatedAt }
+            : prev.journeyState,
+        }));
         return { ok: false, reason: 'write_failed' };
       }
     }
