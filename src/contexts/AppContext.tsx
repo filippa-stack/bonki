@@ -84,6 +84,7 @@ interface AppContextType {
   toggleTakeawayHighlight: (cardId: string) => void;
   takeawayHighlightCount: number;
   refreshCoupleSpace: () => Promise<void>;
+  setOverrideCoupleSpaceId: (id: string | null) => void;
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -246,7 +247,15 @@ export function AppProvider({ children }: { children: ReactNode }) {
 
   // Couple space for shared progress
   const { space: coupleSpaceDb, memberCount: coupleSpaceMemberCount, refreshSpace: refreshCoupleSpace } = useCoupleSpace();
-  const coupleSpaceId = coupleSpaceDb?.id ?? null;
+  const [overrideCoupleSpaceId, setOverrideCoupleSpaceId] = useState<string | null>(null);
+  const coupleSpaceId = overrideCoupleSpaceId ?? coupleSpaceDb?.id ?? null;
+
+  // Clear override once useCoupleSpace catches up
+  useEffect(() => {
+    if (coupleSpaceDb?.id && coupleSpaceDb.id === overrideCoupleSpaceId) {
+      setOverrideCoupleSpaceId(null);
+    }
+  }, [coupleSpaceDb?.id, overrideCoupleSpaceId]);
 
   // Handle remote progress updates from partner
   const handleRemoteProgressUpdate = useCallback((data: { currentSession: AppState['currentSession'] | null; journeyState: JourneyState | null }) => {
@@ -1245,6 +1254,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
         toggleTakeawayHighlight,
         takeawayHighlightCount,
         refreshCoupleSpace,
+        setOverrideCoupleSpaceId,
       }}
     >
       {children}
