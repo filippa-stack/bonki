@@ -359,6 +359,10 @@ export function useSharedProgress(
       // If a commit is in-flight, flag for re-commit after it finishes
       if (isSyncing.current) {
         needsAnotherCommitRef.current = true;
+        if (pendingWriteRef.current) {
+          clearTimeout(pendingWriteRef.current);
+          pendingWriteRef.current = null;
+        }
         return;
       }
 
