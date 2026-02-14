@@ -75,20 +75,22 @@ export default function Header({
             </h1>
           )}
         </div>
-        <div className="flex items-center gap-2 sm:gap-4">
+        <div className="flex items-center gap-2 sm:gap-4 min-w-0">
           {showSaveIndicator && (
-            <>
-              <SaveIndicator
-                status={saveStatus}
-                error={saveError}
-                lastSavedAt={lastSavedAt}
-              />
+            <div className="flex items-center gap-2 min-h-[20px]">
+              {sharedSyncStatus !== 'error' && !(sharedSyncStatus === 'syncing') && (
+                <SaveIndicator
+                  status={saveStatus}
+                  error={saveError}
+                  lastSavedAt={lastSavedAt}
+                />
+              )}
               <SyncStatus
                 status={sharedSyncStatus}
                 error={sharedSyncError}
                 onRetry={retrySharedSync}
               />
-            </>
+            </div>
           )}
           {showBackupManager && <BackupManager />}
           <button
