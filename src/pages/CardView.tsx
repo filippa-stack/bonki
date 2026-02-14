@@ -14,7 +14,7 @@ import PauseDialog from '@/components/PauseDialog';
 import ReviewDrawer from '@/components/ReviewDrawer';
 import ConflictingSessionModal from '@/components/ConflictingSessionModal';
 import { Button } from '@/components/ui/button';
-import { ArrowRight, Home, RotateCcw, BookOpen, PenLine, Send, Check } from 'lucide-react';
+import { ArrowRight, Home, RotateCcw, BookOpen, PenLine, Send, Check, Loader2 } from 'lucide-react';
 import CardTakeaways from '@/components/CardTakeaways';
 
 const sectionTypeLabels: Record<string, string> = {
@@ -294,7 +294,9 @@ export default function CardView() {
                   size="lg"
                   className="w-full gap-2"
                 >
-                  {proposalSent ? (
+                  {isProposing ? (
+                    <><Loader2 className="w-4 h-4 animate-spin" /> Skickar…</>
+                  ) : proposalSent ? (
                     <><Check className="w-4 h-4" /> Förslag skickat</>
                   ) : (
                     <>{t('card_view.completion_next', 'Föreslå nästa samtal')} <ArrowRight className="w-4 h-4" /></>
@@ -696,7 +698,9 @@ export default function CardView() {
                         disabled={proposalSent || isProposing}
                         onClick={() => handlePropose(category.id, card.id)}
                       >
-                        {proposalSent ? (
+                        {isProposing ? (
+                          <><Loader2 className="w-3.5 h-3.5 animate-spin" /> Skickar…</>
+                        ) : proposalSent ? (
                           <><Check className="w-3.5 h-3.5" /> Förslag skickat</>
                         ) : (
                           <><Send className="w-4 h-4" /> Föreslå det här kortet</>

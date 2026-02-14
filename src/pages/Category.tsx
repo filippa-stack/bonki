@@ -8,7 +8,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useCoupleSpace } from '@/hooks/useCoupleSpace';
 import Header from '@/components/Header';
 
-import { Plus, Check } from 'lucide-react';
+import { Plus, Check, Loader2 } from 'lucide-react';
 
 export default function Category() {
   const { t } = useTranslation();
@@ -137,10 +137,13 @@ export default function Category() {
             <span className="text-sm font-medium">{t('category.add_card')}</span>
           </motion.button>
 
-          {proposalSent && (
+          {(isProposing || proposalSent) && (
             <p className="text-xs text-muted-foreground text-center flex items-center justify-center gap-1.5 py-2">
-              <Check className="w-3.5 h-3.5" />
-              Förslag skickat
+              {isProposing ? (
+                <><Loader2 className="w-3 h-3 animate-spin" /> Skickar…</>
+              ) : (
+                <><Check className="w-3.5 h-3.5" /> Förslag skickat</>
+              )}
             </p>
           )}
         </div>
