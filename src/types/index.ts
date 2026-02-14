@@ -151,3 +151,8 @@ export interface AppState {
     lastActivityAt: Date;
   };
 }
+
+export type ProposeResult =
+  | { ok: true }
+  | { ok: false; reason: 'not_logged_in' }
+  | { ok: false; reason: 'write_failed' };
