@@ -60,7 +60,11 @@ export default function JoinSpace() {
       if (data?.success) {
         setState('success');
         setOverrideCoupleSpaceId(data.couple_space_id);
-        await refreshCoupleSpace();
+        try {
+          await refreshCoupleSpace();
+        } catch (refreshErr) {
+          console.error('refreshCoupleSpace failed (override still active):', refreshErr);
+        }
         navigate('/', { replace: true });
       } else {
         setState('error');
