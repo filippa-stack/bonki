@@ -128,11 +128,13 @@ export default function CardView() {
     if (proposalSent || isProposing) return;
     setIsProposing(true);
     try {
-      const success = await proposeCard(catId, cardIdToPropose);
-      if (success) {
+      const result = await proposeCard(catId, cardIdToPropose);
+      if (result.ok) {
         setProposalSent(true);
         if (proposalTimer.current) clearTimeout(proposalTimer.current);
         proposalTimer.current = setTimeout(() => setProposalSent(false), 2000);
+      } else if ('reason' in result && result.reason === 'not_logged_in') {
+        toast.error('Du behöver vara inloggad för att skicka förslag.');
       } else {
         toast.error('Kunde inte skicka förslaget. Försök igen.');
       }

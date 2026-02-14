@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode, useCallback, useRef } from 'react';
-import { CoupleSpace, ConversationThread, Reflection, AppState, Category, Card, JourneyState, ReflectionsData, PrivateNote, SharedNote, TopicProposal, TakeawayNote, SharedTakeaway } from '@/types';
+import { CoupleSpace, ConversationThread, Reflection, AppState, Category, Card, JourneyState, ReflectionsData, PrivateNote, SharedNote, TopicProposal, TakeawayNote, SharedTakeaway, ProposeResult } from '@/types';
 import { categories as initialCategories, cards as initialCards, CONTENT_VERSION } from '@/data/content';
 import { useSettingsSync, SaveStatus } from '@/hooks/useSettingsSync';
 import { useAuth } from '@/contexts/AuthContext';
@@ -61,7 +61,7 @@ interface AppContextType {
   getCategoryStatus: (categoryId: string) => 'not_started' | 'in_progress' | 'explored';
   getExploredCardsInCategory: (categoryId: string) => number;
   // Topic proposal
-  proposeCard: (categoryId: string, cardId: string) => Promise<boolean>;
+  proposeCard: (categoryId: string, cardId: string) => Promise<ProposeResult>;
   acceptProposal: () => void;
   declineProposal: () => void;
   // Reflections (private/shared)
@@ -960,8 +960,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const hasActiveSession = !sessionDismissed && !!state.currentSession;
 
   // Topic proposal functions
-  const proposeCard = async (categoryId: string, cardId: string): Promise<boolean> => {
-    if (!user?.id) return false;
+  const proposeCard = async (categoryId: string, cardId: string): Promise<ProposeResult> => {
+    if (!user?.id) return { ok: false, reason: 'not_logged_in' };
 
     const newJourney = {
       ...(state.journeyState || {
@@ -1003,15 +1003,15 @@ export function AppProvider({ children }: { children: ReactNode }) {
           );
         if (error) {
           console.error('proposeCard: upsert failed', error);
-          return false;
+          return { ok: false, reason: 'write_failed' };
         }
       } catch (err) {
         console.error('proposeCard: network error', err);
-        return false;
+        return { ok: false, reason: 'write_failed' };
       }
     }
 
-    return true;
+    return { ok: true };
   };
 
   const acceptProposal = () => {
