@@ -20,24 +20,6 @@ interface CoupleSpaceState {
   refreshSpace: () => Promise<void>;
 }
 
-function generateInviteCode(): string {
-  // 6-char human-friendly code (uppercase, no ambiguous chars)
-  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
-  let code = '';
-  const arr = new Uint8Array(6);
-  crypto.getRandomValues(arr);
-  for (const byte of arr) {
-    code += chars[byte % chars.length];
-  }
-  return code;
-}
-
-function generateInviteToken(): string {
-  const arr = new Uint8Array(32);
-  crypto.getRandomValues(arr);
-  return Array.from(arr, (b) => b.toString(16).padStart(2, '0')).join('');
-}
-
 export function useCoupleSpace(): CoupleSpaceState {
   const { user } = useAuth();
   const [space, setSpace] = useState<CoupleSpaceData | null>(null);
@@ -86,42 +68,21 @@ export function useCoupleSpace(): CoupleSpaceState {
         setMemberCount(count ?? 1);
         setUserRole(membership.role);
       } else {
-        // Bootstrap: create new couple space
-        // Generate ID client-side to avoid RLS SELECT issue
-        // (SELECT policy requires membership which doesn't exist yet)
-        const spaceId = crypto.randomUUID();
-        const invite_code = generateInviteCode();
-        const invite_token = generateInviteToken();
+        // Bootstrap atomically via edge function
+        const { data: sessionData } = await supabase.auth.getSession();
+        const accessToken = sessionData?.session?.access_token;
+        if (!accessToken) throw new Error('No auth session');
 
-        const { error: createError } = await supabase
-          .from('couple_spaces')
-          .insert({ id: spaceId, invite_code, invite_token });
+        const res = await supabase.functions.invoke('create-couple-space', {
+          headers: { Authorization: `Bearer ${accessToken}` },
+        });
 
-        if (createError) throw createError;
+        if (res.error) throw new Error(res.error.message || 'Failed to create couple space');
 
-        // Create membership first so we can read the space back
-        const { error: memberError } = await supabase
-          .from('couple_members')
-          .insert({
-            couple_space_id: spaceId,
-            user_id: user.id,
-            role: 'partner_a',
-          });
-
-        if (memberError) throw memberError;
-
-        // Now we can read the space (RLS allows it since membership exists)
-        const { data: newSpace, error: readError } = await supabase
-          .from('couple_spaces')
-          .select('*')
-          .eq('id', spaceId)
-          .single();
-
-        if (readError) throw readError;
-
-        setSpace(newSpace as CoupleSpaceData);
-        setMemberCount(1);
-        setUserRole('partner_a');
+        const result = res.data as { space: CoupleSpaceData; memberCount: number; role: string };
+        setSpace(result.space);
+        setMemberCount(result.memberCount);
+        setUserRole(result.role);
       }
     } catch (err: any) {
       console.error('CoupleSpace error:', err);
