@@ -9,6 +9,8 @@ interface SharedProgressData {
   journeyState: JourneyState | null;
 }
 
+export type SharedSyncStatus = 'idle' | 'syncing' | 'error';
+
 interface UseSharedProgressReturn {
   /** Load shared progress on mount; returns initial data or null */
   initialData: SharedProgressData | null;
@@ -16,6 +18,12 @@ interface UseSharedProgressReturn {
   syncToRemote: (session: SessionData | undefined, journey: JourneyState | undefined) => void;
   /** Whether initial load is done */
   ready: boolean;
+  /** Current sync status for UI indicators */
+  syncStatus: SharedSyncStatus;
+  /** Last sync error message, if any */
+  lastSyncError: string | null;
+  /** Retry a failed sync */
+  retrySync: () => void;
 }
 
 // --- Merge helpers ---
@@ -131,6 +139,8 @@ export function useSharedProgress(
 ): UseSharedProgressReturn {
   const [initialData, setInitialData] = useState<SharedProgressData | null>(null);
   const [ready, setReady] = useState(false);
+  const [syncStatus, setSyncStatus] = useState<SharedSyncStatus>('idle');
+  const [lastSyncError, setLastSyncError] = useState<string | null>(null);
   const lastPushed = useRef<string>('');
   const isSyncing = useRef(false);
   const localSessionRef = useRef<SessionData | null>(null);
@@ -254,6 +264,7 @@ export function useSharedProgress(
     }
 
     isSyncing.current = true;
+    setSyncStatus('syncing');
     const { session, journey } = pending;
 
     try {
@@ -321,6 +332,11 @@ export function useSharedProgress(
           cardId: mergedSession?.cardId ?? session?.cardId ?? null,
           error: upsertErr,
         });
+        setLastSyncError(upsertErr.message || 'Kunde inte spara');
+        setSyncStatus('error');
+      } else {
+        setLastSyncError(null);
+        setSyncStatus('idle');
       }
     } catch (err) {
       logSyncError({
@@ -330,6 +346,8 @@ export function useSharedProgress(
         cardId: pendingDataRef.current?.session?.cardId ?? null,
         error: err,
       });
+      setLastSyncError(err instanceof Error ? err.message : 'Kunde inte spara');
+      setSyncStatus('error');
     } finally {
       isSyncing.current = false;
       // If new changes happened during sync, flush immediately
@@ -388,7 +406,15 @@ export function useSharedProgress(
     };
   }, []);
 
-  return { initialData, syncToRemote, ready };
+  const retrySync = useCallback(() => {
+    if (pendingDataRef.current && !isSyncing.current) {
+      setLastSyncError(null);
+      setSyncStatus('idle');
+      commitToRemote();
+    }
+  }, [commitToRemote]);
+
+  return { initialData, syncToRemote, ready, syncStatus, lastSyncError, retrySync };
 }
 
 function deserializeSession(raw: any): SessionData | null {

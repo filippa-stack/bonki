@@ -5,6 +5,7 @@ import { useApp } from '@/contexts/AppContext';
 import { useAuth } from '@/contexts/AuthContext';
 import ColorPicker from '@/components/ColorPicker';
 import SaveIndicator from '@/components/SaveIndicator';
+import SyncStatus from '@/components/SyncStatus';
 import BackupManager from '@/components/BackupManager';
 import bonkiLogo from '@/assets/bonki-logo.png';
 import {
@@ -33,7 +34,7 @@ export default function Header({
 }: HeaderProps) {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const { backgroundColor, setBackgroundColor, saveStatus, lastSavedAt, saveError } = useApp();
+  const { backgroundColor, setBackgroundColor, saveStatus, lastSavedAt, saveError, sharedSyncStatus, sharedSyncError, retrySharedSync } = useApp();
   const { signOut } = useAuth();
 
   const handleBack = () => {
@@ -76,11 +77,18 @@ export default function Header({
         </div>
         <div className="flex items-center gap-2 sm:gap-4">
           {showSaveIndicator && (
-            <SaveIndicator
-              status={saveStatus}
-              error={saveError}
-              lastSavedAt={lastSavedAt}
-            />
+            <>
+              <SaveIndicator
+                status={saveStatus}
+                error={saveError}
+                lastSavedAt={lastSavedAt}
+              />
+              <SyncStatus
+                status={sharedSyncStatus}
+                error={sharedSyncError}
+                onRetry={retrySharedSync}
+              />
+            </>
           )}
           {showBackupManager && <BackupManager />}
           <button
