@@ -959,13 +959,16 @@ export function AppProvider({ children }: { children: ReactNode }) {
 
   const hasActiveSession = !sessionDismissed && !!state.currentSession;
 
-  // Topic proposal functions
+  // Topic proposal – snapshot refs (survive across async boundaries)
+  const prevTopicProposalRef = useRef<JourneyState['topicProposal'] | null>(null);
+  const prevUpdatedAtRef = useRef<string | null>(null);
+
   const proposeCard = async (categoryId: string, cardId: string): Promise<ProposeResult> => {
     if (!user?.id) return { ok: false, reason: 'not_logged_in' };
 
-    // Snapshot only the fields we're about to change
-    const prevTopicProposal = state.journeyState?.topicProposal ?? null;
-    const prevUpdatedAt = state.journeyState?.updatedAt ?? null;
+    // Snapshot via refs so rollback reads are never stale
+    prevTopicProposalRef.current = state.journeyState?.topicProposal ?? null;
+    prevUpdatedAtRef.current = state.journeyState?.updatedAt ?? null;
 
     const newJourney = {
       ...(state.journeyState || {
@@ -992,41 +995,47 @@ export function AppProvider({ children }: { children: ReactNode }) {
       journeyState: newJourney,
     }));
 
-    // Confirm the write to backend
-    if (coupleSpaceId) {
-      try {
-        const { error } = await supabase
-          .from('couple_progress')
-          .upsert(
-            {
-              couple_space_id: coupleSpaceId,
-              journey_state: JSON.parse(JSON.stringify(newJourney)),
-              updated_by: user.id,
-            },
-            { onConflict: 'couple_space_id' }
-          );
-        if (error) {
-          console.error('proposeCard: upsert failed', error);
-          // Rollback optimistic update
-          setState((prev) => ({
-            ...prev,
-            journeyState: prev.journeyState
-              ? { ...prev.journeyState, topicProposal: prevTopicProposal as any, updatedAt: prevUpdatedAt ?? prev.journeyState.updatedAt }
-              : prev.journeyState,
-          }));
-          return { ok: false, reason: 'write_failed' };
-        }
-      } catch (err) {
-        console.error('proposeCard: network error', err);
-        // Rollback optimistic update
+    // Guard: no couple space → rollback
+    if (!coupleSpaceId) {
+      setState((prev) => ({
+        ...prev,
+        journeyState: prev.journeyState
+          ? { ...prev.journeyState, topicProposal: prevTopicProposalRef.current as any, updatedAt: prevUpdatedAtRef.current ?? prev.journeyState.updatedAt }
+          : prev.journeyState,
+      }));
+      return { ok: false, reason: 'write_failed' };
+    }
+
+    try {
+      const { error } = await supabase
+        .from('couple_progress')
+        .upsert(
+          {
+            couple_space_id: coupleSpaceId,
+            journey_state: JSON.parse(JSON.stringify(newJourney)),
+            updated_by: user.id,
+          },
+          { onConflict: 'couple_space_id' }
+        );
+      if (error) {
+        console.warn('[proposeCard] upsert failed', { code: error.code, message: error.message });
         setState((prev) => ({
           ...prev,
           journeyState: prev.journeyState
-            ? { ...prev.journeyState, topicProposal: prevTopicProposal as any, updatedAt: prevUpdatedAt ?? prev.journeyState.updatedAt }
+            ? { ...prev.journeyState, topicProposal: prevTopicProposalRef.current as any, updatedAt: prevUpdatedAtRef.current ?? prev.journeyState.updatedAt }
             : prev.journeyState,
         }));
         return { ok: false, reason: 'write_failed' };
       }
+    } catch (err) {
+      console.warn('[proposeCard] network error', err instanceof Error ? err.message : err);
+      setState((prev) => ({
+        ...prev,
+        journeyState: prev.journeyState
+          ? { ...prev.journeyState, topicProposal: prevTopicProposalRef.current as any, updatedAt: prevUpdatedAtRef.current ?? prev.journeyState.updatedAt }
+          : prev.journeyState,
+      }));
+      return { ok: false, reason: 'write_failed' };
     }
 
     return { ok: true };
