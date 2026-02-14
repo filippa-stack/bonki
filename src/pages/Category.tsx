@@ -26,12 +26,12 @@ export default function Category() {
   const proposalTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const handlePropose = useCallback((catId: string, cardId: string) => {
-    if (proposalSent) return; // prevent rapid stacking
+    if (proposalSent) return;
     proposeCard(catId, cardId);
     setProposalSent(true);
     if (proposalTimer.current) clearTimeout(proposalTimer.current);
-    proposalTimer.current = setTimeout(() => navigate('/'), 1200);
-  }, [proposalSent, proposeCard, navigate]);
+    proposalTimer.current = setTimeout(() => setProposalSent(false), 2000);
+  }, [proposalSent, proposeCard]);
 
   const handleAddCard = () => {
     if (!categoryId) return;

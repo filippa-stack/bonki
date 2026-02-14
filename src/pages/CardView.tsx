@@ -126,8 +126,8 @@ export default function CardView() {
     proposeCard(catId, cardIdToPropose);
     setProposalSent(true);
     if (proposalTimer.current) clearTimeout(proposalTimer.current);
-    proposalTimer.current = setTimeout(() => navigate('/'), 1200);
-  }, [proposalSent, proposeCard, navigate]);
+    proposalTimer.current = setTimeout(() => setProposalSent(false), 2000);
+  }, [proposalSent, proposeCard]);
 
   // ─── Guard: if there's an active session for a DIFFERENT card, show modal instead of redirect ───
   const hasConflictingSession = !!(currentSession && currentSession.cardId !== cardId);
