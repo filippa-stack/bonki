@@ -233,14 +233,9 @@ export function useSettingsSync(
 
         if (saveSuccessful) {
           lastSavedSettings.current = settingsString;
-          setSaveStatus('saved');
+          setSaveStatus('idle');
           setLastSavedAt(new Date());
           setSaveError(null);
-          
-          // Reset to idle after 3 seconds
-          setTimeout(() => {
-            setSaveStatus('idle');
-          }, 3000);
         }
       } catch (err) {
         console.error('Failed to save settings:', err);
