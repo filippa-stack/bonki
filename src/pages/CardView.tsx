@@ -1,11 +1,11 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { useApp } from '@/contexts/AppContext';
 import { useAuth } from '@/contexts/AuthContext';
 import { useCoupleSpace } from '@/hooks/useCoupleSpace';
-import { toast } from 'sonner';
+
 import Header from '@/components/Header';
 import SectionView, { type SectionViewHandle } from '@/components/SectionView';
 import StepProgressIndicator from '@/components/StepProgressIndicator';
@@ -13,7 +13,7 @@ import PauseDialog from '@/components/PauseDialog';
 import ReviewDrawer from '@/components/ReviewDrawer';
 import ConflictingSessionModal from '@/components/ConflictingSessionModal';
 import { Button } from '@/components/ui/button';
-import { ArrowRight, Home, RotateCcw, BookOpen, PenLine, Send } from 'lucide-react';
+import { ArrowRight, Home, RotateCcw, BookOpen, PenLine, Send, Check } from 'lucide-react';
 import CardTakeaways from '@/components/CardTakeaways';
 
 const sectionTypeLabels: Record<string, string> = {
@@ -118,6 +118,16 @@ export default function CardView() {
   const [reviewOpen, setReviewOpen] = useState(false);
   const sectionViewRef = useRef<SectionViewHandle>(null);
   const [showConflictModal, setShowConflictModal] = useState(false);
+  const [proposalSent, setProposalSent] = useState(false);
+  const proposalTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const handlePropose = useCallback((catId: string, cardIdToPropose: string) => {
+    if (proposalSent) return;
+    proposeCard(catId, cardIdToPropose);
+    setProposalSent(true);
+    if (proposalTimer.current) clearTimeout(proposalTimer.current);
+    proposalTimer.current = setTimeout(() => navigate('/'), 1200);
+  }, [proposalSent, proposeCard, navigate]);
 
   // ─── Guard: if there's an active session for a DIFFERENT card, show modal instead of redirect ───
   const hasConflictingSession = !!(currentSession && currentSession.cardId !== cardId);
@@ -263,16 +273,16 @@ export default function CardView() {
             >
               {suggestedCard && suggestedCategory && memberCount >= 2 ? (
                 <Button
-                  onClick={() => {
-                    proposeCard(suggestedCategory.id, suggestedCard.id);
-                    toast(t('topic_proposal.proposed_toast'));
-                    navigate('/');
-                  }}
+                  onClick={() => handlePropose(suggestedCategory.id, suggestedCard.id)}
+                  disabled={proposalSent}
                   size="lg"
                   className="w-full gap-2"
                 >
-                  {t('card_view.completion_next', 'Föreslå nästa samtal')}
-                  <ArrowRight className="w-4 h-4" />
+                  {proposalSent ? (
+                    <><Check className="w-4 h-4" /> Förslag skickat</>
+                  ) : (
+                    <>{t('card_view.completion_next', 'Föreslå nästa samtal')} <ArrowRight className="w-4 h-4" /></>
+                  )}
                 </Button>
               ) : suggestedCard && suggestedCategory ? (
                 <Button
@@ -667,14 +677,14 @@ export default function CardView() {
                         variant="outline"
                         size="lg"
                         className="w-full gap-2 text-muted-foreground hover:text-foreground"
-                        onClick={() => {
-                          proposeCard(category.id, card.id);
-                          toast(t('topic_proposal.proposed_toast'));
-                          navigate('/');
-                        }}
+                        disabled={proposalSent}
+                        onClick={() => handlePropose(category.id, card.id)}
                       >
-                        <Send className="w-4 h-4" />
-                        Föreslå det här kortet
+                        {proposalSent ? (
+                          <><Check className="w-3.5 h-3.5" /> Förslag skickat</>
+                        ) : (
+                          <><Send className="w-4 h-4" /> Föreslå det här kortet</>
+                        )}
                       </Button>
                     </motion.div>
                   )}
