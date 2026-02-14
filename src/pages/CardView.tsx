@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { useApp } from '@/contexts/AppContext';
 import { useAuth } from '@/contexts/AuthContext';
 import { useCoupleSpace } from '@/hooks/useCoupleSpace';
+import { toast } from 'sonner';
 
 import Header from '@/components/Header';
 import SectionView, { type SectionViewHandle } from '@/components/SectionView';
@@ -121,13 +122,21 @@ export default function CardView() {
   const [proposalSent, setProposalSent] = useState(false);
   const proposalTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
+  const [isProposing, setIsProposing] = useState(false);
+
   const handlePropose = useCallback((catId: string, cardIdToPropose: string) => {
-    if (proposalSent) return;
-    proposeCard(catId, cardIdToPropose);
-    setProposalSent(true);
-    if (proposalTimer.current) clearTimeout(proposalTimer.current);
-    proposalTimer.current = setTimeout(() => setProposalSent(false), 2000);
-  }, [proposalSent, proposeCard]);
+    if (proposalSent || isProposing) return;
+    setIsProposing(true);
+    const success = proposeCard(catId, cardIdToPropose);
+    setIsProposing(false);
+    if (success) {
+      setProposalSent(true);
+      if (proposalTimer.current) clearTimeout(proposalTimer.current);
+      proposalTimer.current = setTimeout(() => setProposalSent(false), 2000);
+    } else {
+      toast.error('Kunde inte skicka förslaget. Försök igen.');
+    }
+  }, [proposalSent, isProposing, proposeCard]);
 
   // ─── Guard: if there's an active session for a DIFFERENT card, show modal instead of redirect ───
   const hasConflictingSession = !!(currentSession && currentSession.cardId !== cardId);

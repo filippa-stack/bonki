@@ -60,7 +60,7 @@ interface AppContextType {
   getCategoryStatus: (categoryId: string) => 'not_started' | 'in_progress' | 'explored';
   getExploredCardsInCategory: (categoryId: string) => number;
   // Topic proposal
-  proposeCard: (categoryId: string, cardId: string) => void;
+  proposeCard: (categoryId: string, cardId: string) => boolean;
   acceptProposal: () => void;
   declineProposal: () => void;
   // Reflections (private/shared)
@@ -959,8 +959,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const hasActiveSession = !sessionDismissed && !!state.currentSession;
 
   // Topic proposal functions
-  const proposeCard = (categoryId: string, cardId: string) => {
-    if (!user?.id) return;
+  const proposeCard = (categoryId: string, cardId: string): boolean => {
+    if (!user?.id) return false;
     setState((prev) => ({
       ...prev,
       journeyState: {
@@ -982,6 +982,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
         updatedAt: new Date().toISOString(),
       },
     }));
+    return true;
   };
 
   const acceptProposal = () => {

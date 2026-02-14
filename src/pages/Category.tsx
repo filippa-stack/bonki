@@ -1,4 +1,5 @@
 import { useState, useRef, useCallback } from 'react';
+import { toast } from 'sonner';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
@@ -25,13 +26,21 @@ export default function Category() {
   const [proposalSent, setProposalSent] = useState(false);
   const proposalTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
+  const [isProposing, setIsProposing] = useState(false);
+
   const handlePropose = useCallback((catId: string, cardId: string) => {
-    if (proposalSent) return;
-    proposeCard(catId, cardId);
-    setProposalSent(true);
-    if (proposalTimer.current) clearTimeout(proposalTimer.current);
-    proposalTimer.current = setTimeout(() => setProposalSent(false), 2000);
-  }, [proposalSent, proposeCard]);
+    if (proposalSent || isProposing) return;
+    setIsProposing(true);
+    const success = proposeCard(catId, cardId);
+    setIsProposing(false);
+    if (success) {
+      setProposalSent(true);
+      if (proposalTimer.current) clearTimeout(proposalTimer.current);
+      proposalTimer.current = setTimeout(() => setProposalSent(false), 2000);
+    } else {
+      toast.error('Kunde inte skicka förslaget. Försök igen.');
+    }
+  }, [proposalSent, isProposing, proposeCard]);
 
   const handleAddCard = () => {
     if (!categoryId) return;
