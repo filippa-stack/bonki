@@ -40,7 +40,7 @@ export default function SyncStatus({ status, error, onRetry }: SyncStatusProps) 
           className="flex items-center gap-1.5 text-muted-foreground"
         >
           <Loader2 className="w-3 h-3 animate-spin" />
-          <span className="text-[11px]">Synkar…</span>
+          <span className="text-[11px]">Uppdaterar…</span>
         </motion.div>
       )}
 
