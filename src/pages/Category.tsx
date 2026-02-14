@@ -1,3 +1,4 @@
+import { useState, useRef, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
@@ -6,8 +7,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useCoupleSpace } from '@/hooks/useCoupleSpace';
 import Header from '@/components/Header';
 
-import { Plus } from 'lucide-react';
-import { toast } from 'sonner';
+import { Plus, Check } from 'lucide-react';
 
 export default function Category() {
   const { t } = useTranslation();
@@ -21,6 +21,17 @@ export default function Category() {
   const cards = categoryId ? getCardsByCategory(categoryId) : [];
   const exploredCount = categoryId ? getExploredCardsInCategory(categoryId) : 0;
   const status = categoryId ? getCategoryStatus(categoryId) : 'not_started';
+
+  const [proposalSent, setProposalSent] = useState(false);
+  const proposalTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const handlePropose = useCallback((catId: string, cardId: string) => {
+    if (proposalSent) return; // prevent rapid stacking
+    proposeCard(catId, cardId);
+    setProposalSent(true);
+    if (proposalTimer.current) clearTimeout(proposalTimer.current);
+    proposalTimer.current = setTimeout(() => navigate('/'), 1200);
+  }, [proposalSent, proposeCard, navigate]);
 
   const handleAddCard = () => {
     if (!categoryId) return;
@@ -83,9 +94,7 @@ export default function Category() {
                 onNavigate={() => {
                   // If partner connected and card not yet started, propose instead of navigate
                   if (memberCount >= 2 && categoryId && !isExplored) {
-                    proposeCard(categoryId, card.id);
-                    toast(t('topic_proposal.proposed_toast'));
-                    navigate('/');
+                    handlePropose(categoryId, card.id);
                   } else {
                     navigate(`/card/${card.id}`);
                   }
@@ -111,6 +120,13 @@ export default function Category() {
             <Plus className="w-5 h-5" />
             <span className="text-sm font-medium">{t('category.add_card')}</span>
           </motion.button>
+
+          {proposalSent && (
+            <p className="text-xs text-muted-foreground text-center flex items-center justify-center gap-1.5 py-2">
+              <Check className="w-3.5 h-3.5" />
+              Förslag skickat
+            </p>
+          )}
         </div>
       </div>
     </div>
