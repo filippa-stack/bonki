@@ -1,10 +1,12 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { useCoupleSpace } from '@/hooks/useCoupleSpace';
 import { useNotificationPreferences } from '@/hooks/useNotificationPreferences';
 import { toast } from 'sonner';
+
+const DEDUPE_WINDOW_MS = 10_000;
 
 /**
  * Listens for partner activity and shows calm in-app notifications.
@@ -18,6 +20,19 @@ export function usePartnerNotifications() {
   const { t } = useTranslation();
   const prefsRef = useRef(prefs);
   prefsRef.current = prefs;
+
+  // Dedupe: track last shown timestamp per event type
+  const lastShownRef = useRef<Record<string, number>>({});
+
+  const showDedupedToast = useCallback((key: string, message: string, description: string) => {
+    const now = Date.now();
+    const lastShown = lastShownRef.current[key] || 0;
+    if (now - lastShown < DEDUPE_WINDOW_MS) return;
+    lastShownRef.current[key] = now;
+
+    toast.dismiss();
+    toast(message, { description, duration: 2500 });
+  }, []);
 
   // Listen for partner's shared reflections
   useEffect(() => {
@@ -41,10 +56,11 @@ export function usePartnerNotifications() {
           if (row.visibility !== 'shared') return;
           if (!prefsRef.current.notifySharedReflection) return;
 
-          toast(t('notifications.partner_shared'), {
-            description: t('notifications.partner_shared_hint'),
-            duration: 5000,
-          });
+          showDedupedToast(
+            'partner_shared',
+            t('notifications.partner_shared'),
+            t('notifications.partner_shared_hint'),
+          );
         }
       )
       .subscribe();
@@ -52,7 +68,7 @@ export function usePartnerNotifications() {
     return () => {
       supabase.removeChannel(channel);
     };
-  }, [user, space, t]);
+  }, [user, space, t, showDedupedToast]);
 
   // Listen for partner's conversation progress (after pause)
   useEffect(() => {
@@ -77,10 +93,11 @@ export function usePartnerNotifications() {
           // Only notify if there's an active session (partner started/resumed)
           if (!row.current_session) return;
 
-          toast(t('notifications.partner_continuing'), {
-            description: t('notifications.partner_continuing_hint'),
-            duration: 5000,
-          });
+          showDedupedToast(
+            'partner_continuing',
+            t('notifications.partner_continuing'),
+            t('notifications.partner_continuing_hint'),
+          );
         }
       )
       .subscribe();
@@ -88,5 +105,5 @@ export function usePartnerNotifications() {
     return () => {
       supabase.removeChannel(channel);
     };
-  }, [user, space, t]);
+  }, [user, space, t, showDedupedToast]);
 }
