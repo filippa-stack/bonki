@@ -107,6 +107,7 @@ export function useSharedProgress(
   const localJourneyRef = useRef<JourneyState | null>(null);
   const pendingWriteRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const pendingDataRef = useRef<{ session: SessionData | undefined; journey: JourneyState | undefined } | null>(null);
+  const needsAnotherCommitRef = useRef(false);
 
   // Load initial data
   useEffect(() => {
@@ -252,6 +253,10 @@ export function useSharedProgress(
       console.error('Error syncing progress (thrown):', err);
     } finally {
       isSyncing.current = false;
+      if (needsAnotherCommitRef.current) {
+        needsAnotherCommitRef.current = false;
+        setTimeout(() => commitToRemote(), 0);
+      }
     }
   }, [userId, coupleSpaceId]);
 
@@ -270,6 +275,12 @@ export function useSharedProgress(
 
       // Store pending data
       pendingDataRef.current = { session, journey };
+
+      // If a commit is in-flight, flag for re-commit after it finishes
+      if (isSyncing.current) {
+        needsAnotherCommitRef.current = true;
+        return;
+      }
 
       // Debounce the actual write
       if (pendingWriteRef.current) {
