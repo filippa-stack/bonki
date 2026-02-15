@@ -6,9 +6,9 @@ export default function SharedPaceState() {
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 8 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5 }}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.15 }}
       className="mx-6 my-6 p-6 rounded-2xl border border-border bg-card text-left space-y-3"
     >
       <p className="text-sm text-muted-foreground leading-relaxed max-w-2xl">

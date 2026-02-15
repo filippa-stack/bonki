@@ -275,9 +275,9 @@ export default function ReviewDrawer({ open, onClose, card, activeStepIndex = 0,
                   return (
                     <motion.div
                       key={stepType}
-                      initial={{ opacity: 0, y: 8 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: index * 0.05, duration: 0.3 }}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ delay: index * 0.03, duration: 0.15 }}
                       className="space-y-3"
                     >
                       <div className="flex items-center justify-between">

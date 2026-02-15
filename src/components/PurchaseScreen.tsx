@@ -30,9 +30,9 @@ export default function PurchaseScreen({ onPurchaseComplete }: PurchaseScreenPro
   return (
     <div className="min-h-screen page-bg flex items-center justify-center px-6">
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.15 }}
         className="w-full max-w-sm space-y-8 text-center"
       >
         <img src={bonkiLogo} alt="Still Us" className="h-12 w-auto mx-auto" />
@@ -49,7 +49,7 @@ export default function PurchaseScreen({ onPurchaseComplete }: PurchaseScreenPro
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 0.3 }}
+          transition={{ duration: 0.15, delay: 0.05 }}
           className="rounded-2xl border border-border bg-card p-6 space-y-4 text-left"
         >
           <div className="flex items-start gap-3">
@@ -75,7 +75,7 @@ export default function PurchaseScreen({ onPurchaseComplete }: PurchaseScreenPro
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 0.5 }}
+          transition={{ duration: 0.15, delay: 0.08 }}
           className="space-y-3"
         >
           <Button

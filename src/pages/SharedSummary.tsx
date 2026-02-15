@@ -236,7 +236,7 @@ export default function SharedSummary() {
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
+            transition={{ duration: 0.15 }}
             className="mb-5"
           >
             <h2 className="font-serif text-2xl font-semibold text-foreground">Vårt utrymme</h2>
@@ -248,7 +248,7 @@ export default function SharedSummary() {
           <motion.p
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 0.6, delay: 0.1, ease: [0.25, 0.1, 0.25, 1] }}
+            transition={{ duration: 0.15, delay: 0.05 }}
             className="text-xs text-muted-foreground/50 mb-20"
           >
             Här samlas det ni bygger tillsammans.
@@ -385,7 +385,7 @@ export default function SharedSummary() {
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 0.4, delay: 0.15 }}
+            transition={{ duration: 0.15 }}
             className="mb-16 space-y-10"
           >
             <button
@@ -415,7 +415,7 @@ export default function SharedSummary() {
                 <motion.div
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
-                  transition={{ delay: 0.1, duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
+                  transition={{ delay: 0.05, duration: 0.15 }}
                   className="mb-20"
                 >
                   <p className="text-[10px] text-muted-foreground/40 uppercase tracking-[0.2em] mb-10">
@@ -447,7 +447,7 @@ export default function SharedSummary() {
                 <motion.div
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
-                  transition={{ delay: 0.15, duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
+                  transition={{ delay: 0.08, duration: 0.15 }}
                   className="mb-20"
                 >
                   <div className="h-px bg-border/20 mb-12 mx-auto" style={{ maxWidth: 120 }} />
@@ -534,7 +534,7 @@ export default function SharedSummary() {
                 <motion.div
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
-                  transition={{ delay: 0.2, duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
+                  transition={{ delay: 0.1, duration: 0.15 }}
                   className="mb-20 text-left"
                 >
                   <div className="h-px bg-border/20 mb-12 mx-auto" style={{ maxWidth: 120 }} />
@@ -634,7 +634,7 @@ export default function SharedSummary() {
                 <motion.div
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
-                  transition={{ duration: 0.3 }}
+                  transition={{ duration: 0.15 }}
                   className="mt-8 mb-6"
                 >
                   <button
