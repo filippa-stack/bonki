@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
@@ -10,6 +11,7 @@ interface PurchaseScreenProps {
 }
 
 export default function PurchaseScreen({ onPurchaseComplete }: PurchaseScreenProps) {
+  const navigate = useNavigate();
   const { t } = useTranslation();
   const [processing, setProcessing] = useState(false);
   const [completed, setCompleted] = useState(false);
@@ -39,7 +41,7 @@ export default function PurchaseScreen({ onPurchaseComplete }: PurchaseScreenPro
             {t('purchase.title', 'Ert gemensamma utrymme')}
           </h1>
           <p className="text-body text-muted-foreground leading-relaxed">
-            {t('purchase.subtitle', 'Ett engångsköp låser upp ert gemensamma utrymme för två personer. Din partner betalar inte.')}
+            {t('purchase.subtitle', 'Ett engångsköp låser upp ert gemensamma utrymme för två. Din partner betalar inte.')}
           </p>
         </div>
 
@@ -96,8 +98,18 @@ export default function PurchaseScreen({ onPurchaseComplete }: PurchaseScreenPro
             <Shield className="w-3 h-3" />
             <span>{t('purchase.secure_note', 'Säker betalning · Engångsköp')}</span>
           </div>
+
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => navigate('/join')}
+            className="text-muted-foreground hover:text-foreground"
+          >
+            Jag har redan blivit inbjuden
+          </Button>
+
           <p className="text-xs text-muted-foreground/60 leading-relaxed">
-            Om din partner redan har bjudit in dig, behöver du inte köpa igen — anslut med deras länk eller kod.
+            Har du redan blivit inbjuden? Då behöver du inte köpa igen — anslut med länken eller koden.
           </p>
         </motion.div>
       </motion.div>
