@@ -68,11 +68,11 @@ export default function CategoryCard({
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.4, delay: index * 0.1 }}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.15 }}
       onClick={onClick}
-      className={`w-full text-left card-reflection group cursor-pointer border rounded-2xl py-5 px-5 transition-all${isCompleted ? ' bg-slate-50 border-slate-200' : ' item-colors'}${highlighted ? ' ring-2 ring-primary/40 shadow-md shadow-primary/10' : ''}`}
+      className={`w-full text-left card-reflection group cursor-pointer border rounded-2xl py-5 px-5 transition-all${isCompleted ? ' bg-slate-50/60 border-slate-200/50' : ' item-colors'}${highlighted ? ' ring-1 ring-primary/20' : ''}`}
       style={isCompleted ? {
         borderWidth: '1px',
         borderStyle: 'solid',
@@ -103,7 +103,7 @@ export default function CategoryCard({
         {/* Completed checkmark */}
         {isCompleted && (
           <div className="flex justify-center mb-1">
-            <CheckCircle2 className="w-5 h-5 text-[#497575]" />
+            <CheckCircle2 className="w-4 h-4 text-muted-foreground/30" />
           </div>
         )}
 
