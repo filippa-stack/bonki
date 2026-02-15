@@ -23,7 +23,7 @@ interface AttachPartnerProps {
 }
 
 type AttachState = 'idle' | 'joining' | 'success' | 'error';
-type InviteStep = 'default' | 'message' | 'sent';
+type InviteStep = 'default' | 'message';
 
 function extractTokenFromLink(input: string): string | null {
   try {
@@ -71,7 +71,10 @@ export default function AttachPartner({
 
   const handleSendInvite = async () => {
     await handleCopy();
-    setInviteStep('sent');
+    toast('Inbjudan skickad.', { duration: 2500 });
+    setInviteStep('default');
+    setInviteMessage('');
+    setExpanded(false);
   };
 
   const handleJoin = useCallback(async () => {
@@ -169,32 +172,7 @@ export default function AttachPartner({
             className="overflow-hidden"
           >
             <div className="px-4 pb-5 space-y-5">
-              {inviteStep === 'sent' ? (
-                /* ─── Confirmation ─── */
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ duration: 0.3 }}
-                  className="text-center space-y-4 py-2"
-                >
-                  <h3 className="font-serif text-lg text-foreground">Inbjudan skickad.</h3>
-                  <p className="text-sm text-muted-foreground leading-relaxed">
-                    Det här är början på något ni gör tillsammans.
-                  </p>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="mt-2"
-                    onClick={() => {
-                      setInviteStep('default');
-                      setInviteMessage('');
-                      setExpanded(false);
-                    }}
-                  >
-                    Tillbaka
-                  </Button>
-                </motion.div>
-              ) : inviteStep === 'message' ? (
+              {inviteStep === 'message' ? (
                 /* ─── Optional message before sending ─── */
                 <motion.div
                   initial={{ opacity: 0 }}
@@ -226,7 +204,9 @@ export default function AttachPartner({
                       onClick={async () => {
                         setInviteMessage('');
                         await handleCopy();
-                        setInviteStep('sent');
+                        toast('Inbjudan skickad.', { duration: 2500 });
+                        setInviteStep('default');
+                        setExpanded(false);
                       }}
                     >
                       Hoppa över
