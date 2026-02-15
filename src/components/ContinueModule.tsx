@@ -14,6 +14,7 @@ interface ContinueModuleProps {
   onContinue: () => void;
   onChooseAnother?: () => void;
   lastActiveAt?: string; // ISO date of last activity
+  isCatchingUp?: boolean; // True when user is behind partner
 }
 
 function getTimeCue(lastActiveAt: string | undefined): string | null {
@@ -28,6 +29,7 @@ export default function ContinueModule({
   onContinue,
   onChooseAnother,
   lastActiveAt,
+  isCatchingUp = false,
 }: ContinueModuleProps) {
   const { t } = useTranslation();
   const { settings, updateSettings } = useSiteSettings();
@@ -84,7 +86,7 @@ export default function ContinueModule({
             className="gap-2 bg-[#497575] text-white hover:bg-[#365757]"
             size="sm"
           >
-            {t('general.continue_cta')}
+            {isCatchingUp ? t('general.catch_up_cta', 'Kom ikapp') : t('general.continue_cta')}
             <ArrowRight className="w-4 h-4" />
           </Button>
           {onChooseAnother && (
