@@ -57,7 +57,7 @@ export default function Category() {
                 key={card.id}
                 card={card}
                 index={index}
-                explored={isExplored}
+                finished={isExplored}
                 isPrimary={index === 0 && !isExplored}
                 onNavigate={() => navigate(`/card/${card.id}`)}
               />
@@ -79,14 +79,12 @@ interface CardEntryProps {
     borderColor?: string;
   };
   index: number;
-  explored?: boolean;
+  finished?: boolean;
   isPrimary?: boolean;
   onNavigate: () => void;
 }
 
-function CardEntry({ card, index, explored, isPrimary, onNavigate }: CardEntryProps) {
-  const { t } = useTranslation();
-
+function CardEntry({ card, index, finished, isPrimary, onNavigate }: CardEntryProps) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -101,10 +99,12 @@ function CardEntry({ card, index, explored, isPrimary, onNavigate }: CardEntryPr
           onNavigate();
         }
       }}
-      className={`w-full text-center card-reflection group item-colors transition-all cursor-pointer ${
-        isPrimary
-          ? 'ring-1 ring-primary/30 hover:ring-primary/50 hover:bg-card/90'
-          : 'hover:bg-card/90'
+      className={`relative w-full text-center card-reflection group item-colors transition-all cursor-pointer ${
+        finished
+          ? 'opacity-85 bg-card/60 hover:bg-card/70'
+          : isPrimary
+            ? 'ring-1 ring-primary/30 hover:ring-primary/50 hover:bg-card/90'
+            : 'hover:bg-card/90'
       }`}
       style={{
         '--item-bg': card.color || undefined,
@@ -125,11 +125,6 @@ function CardEntry({ card, index, explored, isPrimary, onNavigate }: CardEntryPr
             style={{ '--item-text': card.textColor || undefined } as React.CSSProperties}
           >
             {card.subtitle}
-          </p>
-        )}
-        {explored && (
-          <p className="text-xs text-muted-foreground text-center mt-2 not-italic">
-            {t('category_status.explored')}
           </p>
         )}
       </div>
