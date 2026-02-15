@@ -52,7 +52,7 @@ export default function Category() {
           {cards.map((card, index) => {
             const isFinished = journeyState?.exploredCardIds?.includes(card.id) || false;
             const hasProgress = !!journeyState?.sessionProgress?.[card.id];
-            const isBegun = !isFinished && hasProgress;
+            const isInProgress = !isFinished && hasProgress;
 
             return (
               <CardEntry
@@ -60,8 +60,7 @@ export default function Category() {
                 card={card}
                 index={index}
                 finished={isFinished}
-                begun={isBegun}
-                isPrimary={index === 0 && !isFinished}
+                inProgress={isInProgress}
                 onNavigate={() => navigate(`/card/${card.id}`)}
               />
             );
@@ -83,12 +82,11 @@ interface CardEntryProps {
   };
   index: number;
   finished?: boolean;
-  begun?: boolean;
-  isPrimary?: boolean;
+  inProgress?: boolean;
   onNavigate: () => void;
 }
 
-function CardEntry({ card, index, finished, begun, isPrimary, onNavigate }: CardEntryProps) {
+function CardEntry({ card, index, finished, inProgress, onNavigate }: CardEntryProps) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -103,20 +101,18 @@ function CardEntry({ card, index, finished, begun, isPrimary, onNavigate }: Card
           onNavigate();
         }
       }}
-      className={`relative w-full text-center card-reflection group item-colors transition-all cursor-pointer ${
-        finished
-          ? 'opacity-75 hover:opacity-85'
-          : begun
-            ? ''
-            : isPrimary
-              ? 'ring-1 ring-primary/30 hover:ring-primary/50'
-              : ''
-      }`}
+      className="relative w-full text-center card-reflection group item-colors transition-all cursor-pointer"
       style={{
         '--item-bg': card.color || undefined,
-        '--item-border': finished ? 'hsl(var(--border))' : card.borderColor || undefined,
+        '--item-border': card.borderColor || undefined,
         borderWidth: '2px',
-        borderStyle: begun ? 'dashed' : 'solid',
+        borderStyle: 'solid',
+        filter: finished
+          ? 'saturate(0.92) brightness(1.03)'
+          : inProgress
+            ? 'saturate(1.02) brightness(0.99)'
+            : 'none',
+        opacity: finished ? 0.88 : 1,
       } as React.CSSProperties}
     >
       <div className="flex flex-col items-center gap-1 p-6">
