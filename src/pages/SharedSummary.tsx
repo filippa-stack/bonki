@@ -406,22 +406,7 @@ export default function SharedSummary() {
           </div>
         ) : (
           <>
-            {/* Empty state — single calm message */}
-            {!hasContent && (
-              <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="mb-6"
-              >
-                <div className="py-6">
-                  <div className="flex flex-col items-center text-center">
-                    <MessageCircle className="w-8 h-8 text-muted-foreground/25" />
-                    <p className="text-gentle text-sm font-serif font-medium mt-2">Här samlas det ni delar.</p>
-                    <p className="text-[11px] text-muted-foreground leading-relaxed mt-2">När ni vill.</p>
-                  </div>
-                </div>
-              </motion.div>
-            )}
+            {/* Empty state reassurance removed — title subtext covers it */}
 
             {hasContent && (<>
             {/* Highlights */}
