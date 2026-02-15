@@ -18,6 +18,7 @@ import ProposalSheet from '@/components/ProposalSheet';
 import { Button } from '@/components/ui/button';
 import { ArrowRight, Home, RotateCcw, BookOpen, PenLine, Send, Check, Loader2 } from 'lucide-react';
 import CardTakeaways from '@/components/CardTakeaways';
+import StageTransitionChoice from '@/components/StageTransitionChoice';
 import { useProposals } from '@/hooks/useProposals';
 
 const sectionTypeLabels: Record<string, string> = {
@@ -122,6 +123,7 @@ export default function CardView() {
     !isRevisitMode && isReturningUser && (isFullyExplored || allStepsCompleted)
   );
   const [transitionMessage, setTransitionMessage] = useState<string | null>(null);
+  const [showStageChoice, setShowStageChoice] = useState(false);
   const [reviewOpen, setReviewOpen] = useState(false);
   const sectionViewRef = useRef<SectionViewHandle>(null);
   const [showConflictModal, setShowConflictModal] = useState(false);
@@ -162,19 +164,15 @@ export default function CardView() {
     }
   }, [isFullyExplored, isRevisitMode]);
 
-  // ─── Show transition when effective step advances (shared or catch-up) ───
+  // ─── Show stage choice when effective step advances (shared or catch-up) ───
   const prevEffectiveStepRef = useRef(effectiveSharedStep);
   useEffect(() => {
     const prev = prevEffectiveStepRef.current;
     prevEffectiveStepRef.current = effectiveSharedStep;
     if (isRevisitMode || showOverview || showReentry || showCompletion) return;
-    if (effectiveSharedStep > prev) {
-      const prevType = STEP_ORDER[prev];
-      const msgKey = TRANSITION_KEYS[prevType];
-      if (msgKey) {
-        setTransitionMessage(t(msgKey));
-        setTimeout(() => setTransitionMessage(null), 2400);
-      }
+    // Show choice screen after steps 0-2 (not after the last step)
+    if (effectiveSharedStep > prev && prev < STEP_ORDER.length - 1) {
+      setShowStageChoice(true);
     }
   }, [effectiveSharedStep]);
 
@@ -578,30 +576,23 @@ export default function CardView() {
         )}
       </div>
 
-      {/* Transition moment */}
+      {/* Stage transition choice */}
       <AnimatePresence>
-        {transitionMessage && (
-          <motion.div
-            key="transition"
-            role="status"
-            aria-live="polite"
-            initial={{ opacity: 0, y: 6 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -4 }}
-            transition={{ duration: 0.6, ease: "easeOut" }}
-            className="px-6 py-14 flex items-center justify-center"
-          >
-            <p className="text-sm text-muted-foreground/80 text-center max-w-xs leading-relaxed">
-              {transitionMessage}
-            </p>
-          </motion.div>
+        {showStageChoice && (
+          <StageTransitionChoice
+            onContinue={() => setShowStageChoice(false)}
+            onStop={() => {
+              pauseSession();
+              navigate('/');
+            }}
+          />
         )}
       </AnimatePresence>
 
       {/* Section content */}
       <div className="px-6">
         <AnimatePresence mode="wait">
-          {currentSection && !transitionMessage && (
+          {currentSection && !showStageChoice && (
             <motion.div
               key={currentSection.id}
               initial={{ opacity: 0, x: 20 }}
