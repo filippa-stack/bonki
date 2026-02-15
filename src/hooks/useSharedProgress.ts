@@ -97,11 +97,20 @@ function mergeJourneyStates(local: JourneyState | null | undefined, remote: Jour
     }
   }
 
+  // Merge cardVisitDates — keep latest per card
+  const mergedVisitDates: Record<string, string> = { ...(local.cardVisitDates || {}) };
+  for (const [cardId, date] of Object.entries(remote.cardVisitDates || {})) {
+    if (!mergedVisitDates[cardId] || date > mergedVisitDates[cardId]) {
+      mergedVisitDates[cardId] = date;
+    }
+  }
+
   // For scalar fields, take the remote (latest writer) but keep union data
   return {
     ...remote,
     exploredCardIds: sortCardIds(Array.from(exploredSet)),
     sessionProgress: mergedProgress,
+    cardVisitDates: mergedVisitDates,
   };
 }
 
