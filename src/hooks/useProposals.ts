@@ -76,6 +76,17 @@ export function useProposals() {
   ): Promise<{ ok: boolean }> => {
     if (!user || !space) return { ok: false };
 
+    // Auto-save any existing pending proposals to prevent stacking
+    const existingPending = proposals.filter(
+      p => p.status === 'pending' && p.couple_space_id === space.id
+    );
+    for (const p of existingPending) {
+      await supabase
+        .from('topic_proposals')
+        .update({ status: 'saved_for_later' } as any)
+        .eq('id', p.id);
+    }
+
     const { error } = await supabase
       .from('topic_proposals')
       .insert({
@@ -94,7 +105,7 @@ export function useProposals() {
 
     await fetchProposals();
     return { ok: true };
-  }, [user, space, fetchProposals]);
+  }, [user, space, proposals, fetchProposals]);
 
   const updateProposalStatus = useCallback(async (
     proposalId: string,
