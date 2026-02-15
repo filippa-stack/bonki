@@ -242,7 +242,7 @@ export default function SharedSummary() {
           >
             <h2 className="font-serif text-2xl font-semibold text-foreground mb-4">Vårt utrymme</h2>
             <p className="text-xs text-muted-foreground font-normal">
-              Det ni väljer att dela med varandra hamnar här.
+              Ert gemensamma rum för det ni väljer att dela.
             </p>
           </motion.div>
         )}
