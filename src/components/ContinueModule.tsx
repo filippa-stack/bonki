@@ -51,7 +51,7 @@ export default function ContinueModule({
       className="px-6 mb-10"
     >
       <div
-        className="card-reflection relative py-6 px-5 shadow-[0_4px_20px_rgba(0,0,0,0.05)] border border-border/40"
+        className="card-reflection relative py-6 px-5 border border-border/30"
         style={{
           backgroundColor: settings.continueModuleBgColor || '#ffffff',
           borderColor: settings.continueModuleBorderColor || undefined,
@@ -92,8 +92,9 @@ export default function ContinueModule({
           {onChooseAnother && (
             <Button
               onClick={onChooseAnother}
+              variant="ghost"
               size="sm"
-              className="bg-transparent border-2 border-[#497575] text-[#497575] hover:bg-[#497575]/10"
+              className="text-muted-foreground"
             >
               {t('general.choose_another')}
             </Button>
