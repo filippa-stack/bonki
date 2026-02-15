@@ -126,38 +126,6 @@ export default function CardView() {
 
   const { sendProposal } = useProposals();
 
-  const [isProposing, setIsProposing] = useState(false);
-
-  const handlePropose = useCallback(async (catId: string, cardIdToPropose: string) => {
-    if (proposalSent || isProposing) return;
-    setShowProposalSheet(true);
-  }, [proposalSent, isProposing]);
-
-  const handleSendProposal = useCallback(async (message?: string) => {
-    if (!category || !card) return;
-    const suggestedCardId = journeyState?.suggestedNextCardId;
-    const suggestedCard = suggestedCardId ? getCardById(suggestedCardId) : null;
-    const suggestedCategory = suggestedCard ? getCategoryById(suggestedCard.categoryId) : null;
-    
-    const targetCardId = suggestedCard?.id || card.id;
-    const targetCategoryId = suggestedCategory?.id || category.id;
-    
-    setIsProposing(true);
-    try {
-      const result = await sendProposal(targetCardId, targetCategoryId, message);
-      if (result.ok) {
-        setProposalSent(true);
-        if (proposalTimer.current) clearTimeout(proposalTimer.current);
-        proposalTimer.current = setTimeout(() => setProposalSent(false), 2000);
-      } else {
-        toast.error('Kunde inte skicka förslaget. Försök igen.');
-      }
-    } catch {
-      toast.error('Kunde inte skicka förslaget. Försök igen.');
-    } finally {
-      setIsProposing(false);
-    }
-  }, [card, category, journeyState, getCardById, getCategoryById, sendProposal]);
 
   // ─── Guard: if there's an active session for a DIFFERENT card, show modal instead of redirect ───
   const hasConflictingSession = !!(currentSession && currentSession.cardId !== cardId);
