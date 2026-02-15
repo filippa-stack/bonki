@@ -548,36 +548,27 @@ export default function SharedSummary() {
               </div>
             )}
 
-            {/* Older reflections — grouped by month, visually secondary */}
+            {/* Older reflections — grouped by month only, flat list */}
             {olderGrouped.length > 0 && !hasActiveFilter && (
               <div>
                 <p className="text-sm font-serif font-medium text-foreground mb-4 text-center">Tidigare</p>
                 {olderGrouped.map((group) => (
                   <div key={group.key} className="mb-6">
-                     <p className="text-xs uppercase tracking-wide text-muted-foreground mb-3">
+                    <p className="text-xs uppercase tracking-wide text-muted-foreground mb-3">
                       {group.label}
                     </p>
-                    <div className="space-y-4">
-                      {group.cardGroups.map((cardGroup) => (
-                        <div key={cardGroup.cardId}>
-                          <p className="text-xs text-muted-foreground/70 mb-2">
-                            {cardGroup.categoryTitle} · {cardGroup.cardTitle}
-                          </p>
-                          <div className="space-y-3">
-                            {cardGroup.items.map((item) => (
-                              <SharedTimelineItem
-                                key={item.id}
-                                note={item}
-                                isOwnNote={item.user_id === user?.id}
-                                myResponse={getMyResponse(item.id)}
-                                partnerResponse={getPartnerResponse(item.id)}
-                                onUpdate={handleUpdateNote}
-                                onSaveResponse={saveResponse}
-                                onOpenInContext={handleOpenInContext}
-                              />
-                            ))}
-                          </div>
-                        </div>
+                    <div className="space-y-3">
+                      {group.cardGroups.flatMap((cardGroup) => cardGroup.items).map((item) => (
+                        <SharedTimelineItem
+                          key={item.id}
+                          note={item}
+                          isOwnNote={item.user_id === user?.id}
+                          myResponse={getMyResponse(item.id)}
+                          partnerResponse={getPartnerResponse(item.id)}
+                          onUpdate={handleUpdateNote}
+                          onSaveResponse={saveResponse}
+                          onOpenInContext={handleOpenInContext}
+                        />
                       ))}
                     </div>
                   </div>
