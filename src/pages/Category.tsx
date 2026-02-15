@@ -8,7 +8,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useCoupleSpace } from '@/hooks/useCoupleSpace';
 import Header from '@/components/Header';
 
-import { Plus, Check, Loader2 } from 'lucide-react';
+import { Check, Loader2, Lock } from 'lucide-react';
 
 export default function Category() {
   const { t } = useTranslation();
@@ -101,14 +101,26 @@ export default function Category() {
         <div className="space-y-3">
           {cards.map((card, index) => {
             const isExplored = journeyState?.exploredCardIds?.includes(card.id) || false;
+
+            // Unlock logic: card 0 always unlocked; others require previous card explored
+            // or an active session on this card or any progress recorded
+            const previousCard = index > 0 ? cards[index - 1] : null;
+            const previousExplored = previousCard
+              ? journeyState?.exploredCardIds?.includes(previousCard.id) || false
+              : true;
+            const hasProgress = !!(journeyState?.sessionProgress?.[card.id]);
+            const isUnlocked = index === 0 || previousExplored || hasProgress || isExplored;
+
             return (
               <EditableCard
                 key={card.id}
                 card={card}
                 index={index}
                 explored={isExplored}
+                locked={!isUnlocked}
+                isPrimary={index === 0 && !isExplored}
                 onNavigate={() => {
-                  // If partner connected and card not yet started, propose instead of navigate
+                  if (!isUnlocked) return;
                   if (memberCount >= 2 && categoryId && !isExplored) {
                     handlePropose(categoryId, card.id);
                   } else {
@@ -124,18 +136,6 @@ export default function Category() {
               />
             );
           })}
-          
-          {/* Add new card button */}
-          <motion.button
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: cards.length * 0.1 }}
-            onClick={handleAddCard}
-            className="w-full p-4 rounded-xl border-2 border-dashed border-muted-foreground/30 hover:border-primary/50 hover:bg-muted/30 transition-all flex items-center justify-center gap-2 text-muted-foreground hover:text-primary"
-          >
-            <Plus className="w-5 h-5" />
-            <span className="text-sm font-medium">{t('category.add_card')}</span>
-          </motion.button>
 
           {(isProposing || proposalSent) && (
             <p className="text-xs text-muted-foreground text-center flex items-center justify-center gap-1.5 py-2">
@@ -165,6 +165,8 @@ interface EditableCardProps {
   };
   index: number;
   explored?: boolean;
+  locked?: boolean;
+  isPrimary?: boolean;
   onNavigate: () => void;
   onUpdate: (id: string, title: string, subtitle: string) => void;
   onColorChange: (color: string) => void;
@@ -178,6 +180,8 @@ function EditableCard({
   card,
   index,
   explored,
+  locked,
+  isPrimary,
   onNavigate,
 }: EditableCardProps) {
   const { t } = useTranslation();
@@ -187,8 +191,17 @@ function EditableCard({
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: index * 0.1 }}
-      onClick={onNavigate}
-      className="w-full text-center card-reflection group cursor-pointer item-colors"
+      onClick={locked ? undefined : onNavigate}
+      role={locked ? undefined : 'button'}
+      tabIndex={locked ? undefined : 0}
+      onKeyDown={locked ? undefined : (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onNavigate(); } }}
+      className={`w-full text-center card-reflection group item-colors transition-all ${
+        locked
+          ? 'opacity-50 cursor-default'
+          : isPrimary
+            ? 'cursor-pointer ring-1 ring-primary/30 hover:ring-primary/50 hover:bg-card/90'
+            : 'cursor-pointer hover:bg-card/90'
+      }`}
       style={{ 
         '--item-bg': card.color || undefined,
         '--item-border': card.borderColor || undefined,
@@ -213,6 +226,12 @@ function EditableCard({
         {explored && (
           <p className="text-xs text-muted-foreground text-center mt-2 not-italic">
             {t('category_status.explored')}
+          </p>
+        )}
+        {locked && (
+          <p className="text-xs text-muted-foreground/60 text-center mt-2 not-italic flex items-center gap-1">
+            <Lock className="w-3 h-3" />
+            {t('category.locked_hint', 'Låses upp efter föregående')}
           </p>
         )}
       </div>
