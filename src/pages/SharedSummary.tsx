@@ -229,15 +229,15 @@ export default function SharedSummary() {
     <div className="min-h-screen page-bg">
       <Header showBack backTo="/" />
 
-      <div className="px-6 pt-16 pb-20 mx-auto text-center" style={{ maxWidth: 600 }}>
+      <div className="px-6 pt-20 pb-24 mx-auto text-center" style={{ maxWidth: 540 }}>
 
         {/* ─── 1. Header ─── */}
         {!showFind && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 0.5 }}
-            className="mb-4"
+            transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
+            className="mb-5"
           >
             <h2 className="font-serif text-2xl font-semibold text-foreground">Vårt utrymme</h2>
           </motion.div>
@@ -248,8 +248,8 @@ export default function SharedSummary() {
           <motion.p
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-            className="text-xs text-muted-foreground/70 mb-16"
+            transition={{ duration: 0.6, delay: 0.1, ease: [0.25, 0.1, 0.25, 1] }}
+            className="text-xs text-muted-foreground/50 mb-20"
           >
             Här samlas det ni bygger tillsammans.
           </motion.p>
@@ -410,22 +410,22 @@ export default function SharedSummary() {
           <>
             {hasContent && (<>
 
-              {/* ─── 3. Era Takeaways (highlights) ─── */}
+               {/* ─── 3. Era Takeaways (highlights) ─── */}
               {highlights.length > 0 && !hasActiveFilter && (
                 <motion.div
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
-                  transition={{ delay: 0.1 }}
-                  className="mb-16"
+                  transition={{ delay: 0.1, duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
+                  className="mb-20"
                 >
-                  <p className="text-xs text-muted-foreground/50 uppercase tracking-widest mb-8">
+                  <p className="text-[10px] text-muted-foreground/40 uppercase tracking-[0.2em] mb-10">
                     Era Takeaways
                   </p>
-                  <div className="space-y-10">
+                  <div className="space-y-8">
                     {(showAllHighlights ? highlights : highlights.slice(0, 3)).map((h) => (
                       <div key={`hl-${h.id}`}>
-                        <p className="text-[15px] font-serif leading-relaxed text-foreground/90 whitespace-pre-wrap">{h.content}</p>
-                        <p className="text-[10px] text-muted-foreground/35 mt-3">
+                        <p className="text-[15px] font-serif leading-[1.8] text-foreground/80 whitespace-pre-wrap">{h.content}</p>
+                        <p className="text-[10px] text-muted-foreground/30 mt-2">
                           {h.cardTitle}
                         </p>
                       </div>
@@ -434,7 +434,7 @@ export default function SharedSummary() {
                   {highlights.length > 3 && (
                     <button
                       onClick={() => setShowAllHighlights(!showAllHighlights)}
-                      className="mt-8 text-xs text-muted-foreground/40 hover:text-muted-foreground transition-colors"
+                      className="mt-10 text-[11px] text-muted-foreground/35 hover:text-muted-foreground/50 transition-colors"
                     >
                       {showAllHighlights ? 'Visa färre' : `Visa alla ${highlights.length}`}
                     </button>
@@ -447,26 +447,27 @@ export default function SharedSummary() {
                 <motion.div
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
-                  transition={{ delay: 0.15 }}
-                  className="mb-16"
+                  transition={{ delay: 0.15, duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
+                  className="mb-20"
                 >
-                  <p className="text-xs text-muted-foreground/50 uppercase tracking-widest mb-6">
+                  <div className="h-px bg-border/20 mb-12 mx-auto" style={{ maxWidth: 120 }} />
+                  <p className="text-[10px] text-muted-foreground/40 uppercase tracking-[0.2em] mb-8">
                     Er resa
                   </p>
                   <div className="flex items-center justify-center gap-3">
-                    <div className="flex gap-1.5">
+                    <div className="flex gap-2">
                       {Array.from({ length: totalCards }).map((_, i) => (
                         <div
                           key={i}
-                          className={`w-2 h-2 rounded-full transition-colors ${
+                          className={`w-1.5 h-1.5 rounded-full transition-colors ${
                             i < exploredCount
-                              ? 'bg-foreground/30'
-                              : 'bg-muted/30'
+                              ? 'bg-foreground/20'
+                              : 'bg-muted/20'
                           }`}
                         />
                       ))}
                     </div>
-                    <span className="text-[10px] text-muted-foreground/40">
+                    <span className="text-[10px] text-muted-foreground/30">
                       {exploredCount} av {totalCards}
                     </span>
                   </div>
@@ -533,9 +534,10 @@ export default function SharedSummary() {
                 <motion.div
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
-                  transition={{ delay: 0.2 }}
-                  className="mb-14 text-left"
+                  transition={{ delay: 0.2, duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
+                  className="mb-20 text-left"
                 >
+                  <div className="h-px bg-border/20 mb-12 mx-auto" style={{ maxWidth: 120 }} />
                   {(() => {
                     const newest = recentItems[0];
                     const sharedDate = new Date(newest.shared_at || newest.created_at);
@@ -553,7 +555,7 @@ export default function SharedSummary() {
                       </p>
                     ) : null;
                   })()}
-                  <p className="text-xs text-muted-foreground/50 uppercase tracking-widest mb-6 text-center">
+                  <p className="text-[10px] text-muted-foreground/40 uppercase tracking-[0.2em] mb-8 text-center">
                     Nyligen delat
                   </p>
                   <div className="space-y-1">
@@ -593,8 +595,9 @@ export default function SharedSummary() {
 
               {/* ─── Older reflections ─── */}
               {olderGrouped.length > 0 && !hasActiveFilter && (
-                <div className="mb-14 text-left">
-                  <p className="text-xs text-muted-foreground/50 uppercase tracking-widest mb-6 text-center">Tidigare</p>
+                <div className="mb-20 text-left">
+                  <div className="h-px bg-border/20 mb-12 mx-auto" style={{ maxWidth: 120 }} />
+                  <p className="text-[10px] text-muted-foreground/40 uppercase tracking-[0.2em] mb-8 text-center">Tidigare</p>
                   {olderGrouped.map((group) => (
                     <div key={group.key} className="mb-8">
                       <p className="text-[10px] text-muted-foreground/30 uppercase tracking-wide mb-4 text-center">
