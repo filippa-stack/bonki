@@ -45,6 +45,7 @@ export default function PostPurchaseInvite({
           inviteToken={inviteToken}
           partnerName={partnerName}
           onUpdateName={onUpdateName}
+          onInviteSent={() => onContinue()}
         />
 
         <div className="text-center">

@@ -11,15 +11,17 @@ interface InvitePartnerProps {
   inviteToken: string;
   partnerName: string | null;
   onUpdateName: (name: string) => void;
+  onInviteSent?: () => void;
 }
 
-export default function InvitePartner({ inviteCode, inviteToken, partnerName, onUpdateName }: InvitePartnerProps) {
+export default function InvitePartner({ inviteCode, inviteToken, partnerName, onUpdateName, onInviteSent }: InvitePartnerProps) {
   const { t } = useTranslation();
   const [copied, setCopied] = useState(false);
   const [codeCopied, setCodeCopied] = useState(false);
   const [expanded, setExpanded] = useState(false);
   const [editingName, setEditingName] = useState(false);
   const [nameValue, setNameValue] = useState(partnerName || '');
+  const [inviteSent, setInviteSent] = useState(false);
 
   const inviteLink = `${window.location.origin}/join?token=${inviteToken}`;
   const shareMessage = t(
@@ -36,6 +38,8 @@ export default function InvitePartner({ inviteCode, inviteToken, partnerName, on
           text: shareMessage,
           url: inviteLink,
         });
+        setInviteSent(true);
+        onInviteSent?.();
       } catch (err) {
         if ((err as Error).name !== 'AbortError') {
           handleCopy();
@@ -50,8 +54,10 @@ export default function InvitePartner({ inviteCode, inviteToken, partnerName, on
     try {
       await navigator.clipboard.writeText(inviteLink);
       setCopied(true);
+      setInviteSent(true);
       toast.success(t('invite.copied', 'Länk kopierad'));
       setTimeout(() => setCopied(false), 2000);
+      onInviteSent?.();
     } catch {
       toast.error(t('invite.copy_failed', 'Kunde inte kopiera länken'));
     }
@@ -127,19 +133,24 @@ export default function InvitePartner({ inviteCode, inviteToken, partnerName, on
         </div>
 
         <p className="text-xs text-muted-foreground leading-relaxed">
-          Dela länken. Din partner ansluter när det passar. Har din partner redan ett konto? Be dem öppna Still Us och koppla ihop med koden nedan.
+          Dela länken. Din partner ansluter när det passar. Har din partner redan ett konto? Be dem koppla ihop med koden nedan.
         </p>
 
         {/* Actions row */}
-        <div className="flex gap-2">
+        <div className="flex gap-2 flex-col gap-y-1">
+          <div className="flex gap-2">
           <Button onClick={handleShare} size="sm" className="flex-1 gap-2">
             <Share2 className="w-3.5 h-3.5" />
             {t('invite.share_button', 'Dela inbjudan')}
           </Button>
           <Button variant="outline" size="sm" onClick={handleCopy} className="gap-2">
             {copied ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
-            {copied ? t('invite.copied', 'Kopierad!') : t('invite.copy_link', 'Kopiera')}
+          {copied ? t('invite.copied', 'Kopierad!') : t('invite.copy_link', 'Kopiera')}
           </Button>
+          </div>
+          {inviteSent && (
+            <p className="text-[11px] text-muted-foreground/60 text-center">Inbjudan skickad.</p>
+          )}
         </div>
 
         {/* Invite code — smaller */}
