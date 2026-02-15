@@ -248,6 +248,50 @@ export type Database = {
           },
         ]
       }
+      topic_proposals: {
+        Row: {
+          card_id: string
+          category_id: string
+          couple_space_id: string
+          created_at: string
+          id: string
+          message: string | null
+          proposed_by: string
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          card_id: string
+          category_id: string
+          couple_space_id: string
+          created_at?: string
+          id?: string
+          message?: string | null
+          proposed_by: string
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          card_id?: string
+          category_id?: string
+          couple_space_id?: string
+          created_at?: string
+          id?: string
+          message?: string | null
+          proposed_by?: string
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "topic_proposals_couple_space_id_fkey"
+            columns: ["couple_space_id"]
+            isOneToOne: false
+            referencedRelation: "couple_spaces"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       user_backups: {
         Row: {
           background_color: string | null

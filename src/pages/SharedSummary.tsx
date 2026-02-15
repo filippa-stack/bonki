@@ -6,10 +6,12 @@ import { useApp } from '@/contexts/AppContext';
 import { useAuth } from '@/contexts/AuthContext';
 import { useCoupleSpace } from '@/hooks/useCoupleSpace';
 import { useReflectionResponses } from '@/hooks/useReflectionResponses';
+import { useProposals } from '@/hooks/useProposals';
 import { supabase } from '@/integrations/supabase/client';
 import Header from '@/components/Header';
 import SharedTimelineItem from '@/components/SharedTimelineItem';
 import AttachPartner from '@/components/AttachPartner';
+import IncomingProposal from '@/components/IncomingProposal';
 import { Search, Filter, X, Clock, MessageCircle, BookOpen } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -40,9 +42,10 @@ const AUTOSAVE_DELAY = 800;
 export default function SharedSummary() {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const { categories, backgroundColor, getCardById, getCategoryById } = useApp();
+  const { categories, backgroundColor, getCardById, getCategoryById, startSession } = useApp();
   const { user } = useAuth();
   const { space, displayMemberCount, userRole } = useCoupleSpace();
+  const { incomingProposals, savedProposals, updateProposalStatus } = useProposals();
 
   const [searchQuery, setSearchQuery] = useState('');
   const [categoryFilter, setCategoryFilter] = useState<string>('all');
@@ -265,6 +268,90 @@ export default function SharedSummary() {
               memberCount={displayMemberCount}
               onJoinedSpace={() => window.location.reload()}
             />
+          </motion.div>
+        )}
+
+        {/* Incoming proposals — "Föreslaget till er" */}
+        {incomingProposals.length > 0 && (
+          <motion.div
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="mb-8"
+          >
+            <p className="text-sm font-serif font-medium text-foreground mb-4 text-center">
+              Föreslaget till er
+            </p>
+            <div className="space-y-3">
+              {incomingProposals.map((proposal) => {
+                const proposalCard = getCardById(proposal.card_id);
+                const proposalCategory = getCategoryById(proposal.category_id);
+                if (!proposalCard || !proposalCategory) return null;
+
+                const proposerName = space?.partner_a_name || space?.partner_b_name || undefined;
+
+                return (
+                  <IncomingProposal
+                    key={proposal.id}
+                    proposal={proposal}
+                    cardTitle={proposalCard.title}
+                    categoryTitle={proposalCategory.title}
+                    proposerName={proposerName}
+                    onAccept={() => {
+                      updateProposalStatus(proposal.id, 'accepted');
+                      startSession(proposal.category_id, proposal.card_id);
+                      navigate(`/card/${proposal.card_id}`);
+                    }}
+                    onSaveForLater={() => {
+                      updateProposalStatus(proposal.id, 'saved_for_later');
+                    }}
+                  />
+                );
+              })}
+            </div>
+          </motion.div>
+        )}
+
+        {/* Saved proposals */}
+        {savedProposals.length > 0 && !incomingProposals.length && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="mb-6"
+          >
+            <p className="text-xs text-muted-foreground/50 tracking-wide mb-3 text-center">
+              Sparade förslag
+            </p>
+            <div className="space-y-2">
+              {savedProposals.map((proposal) => {
+                const proposalCard = getCardById(proposal.card_id);
+                const proposalCategory = getCategoryById(proposal.category_id);
+                if (!proposalCard || !proposalCategory) return null;
+
+                return (
+                  <div
+                    key={proposal.id}
+                    className="rounded-xl border border-border/30 bg-card/50 p-4 flex items-center justify-between"
+                  >
+                    <div>
+                      <p className="font-serif text-sm text-foreground">{proposalCard.title}</p>
+                      <p className="text-xs text-muted-foreground/60">{proposalCategory.title}</p>
+                    </div>
+                    <Button
+                      size="sm"
+                      variant="ghost"
+                      className="text-muted-foreground text-xs"
+                      onClick={() => {
+                        updateProposalStatus(proposal.id, 'accepted');
+                        startSession(proposal.category_id, proposal.card_id);
+                        navigate(`/card/${proposal.card_id}`);
+                      }}
+                    >
+                      Starta
+                    </Button>
+                  </div>
+                );
+              })}
+            </div>
           </motion.div>
         )}
 

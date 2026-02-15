@@ -27,6 +27,7 @@ import bonkiLogo from '@/assets/bonki-logo.png';
 import { useThemeVars } from '@/hooks/useThemeVars';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
+import { useProposals } from '@/hooks/useProposals';
 
 const STEP_LABELS = ['Öppnare', 'Tankeväckare', 'Scenario', 'Teamwork'];
 
@@ -65,6 +66,7 @@ export default function Home() {
   const { settings, updateSettings } = useSiteSettings();
   const { user } = useAuth();
   const { space, displayMemberCount, userRole } = useCoupleSpace();
+  const { sendProposal: sendDbProposal } = useProposals();
   const [isEditingHero, setIsEditingHero] = useState(false);
   const [editTitle, setEditTitle] = useState(settings.heroTitle);
   const [editSubtitle, setEditSubtitle] = useState(settings.heroSubtitle);
@@ -165,11 +167,13 @@ export default function Home() {
     if (!proposalCandidate) return;
     setIsSendingProposal(true);
     try {
-      const result = await proposeCard(proposalCandidate.categoryId, proposalCandidate.cardId);
+      const result = await sendDbProposal(proposalCandidate.cardId, proposalCandidate.categoryId);
       if (result.ok) {
         setProposalCandidate(null);
         setIsProposalMode(false);
         toast.success('Förslag skickat');
+      } else {
+        toast.error('Kunde inte skicka förslaget. Försök igen.');
       }
     } finally {
       setIsSendingProposal(false);
