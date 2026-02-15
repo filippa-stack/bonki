@@ -376,6 +376,7 @@ export default function Home() {
               onAccept={async () => {
                 await updateProposalStatus(latest.id, 'accepted');
                 startSession(latest.category_id, latest.card_id, { force: true, fromBeginning: true });
+                toast('Samtalet startade', { duration: 2000 });
                 navigate(`/card/${latest.card_id}`);
               }}
               onSaveForLater={() => updateProposalStatus(latest.id, 'saved_for_later')}

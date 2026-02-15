@@ -357,6 +357,11 @@ export default function CardView() {
   // ─── Re-entry screen ───
   if (showReentry) {
     const resumeStepLabel = STEP_LABELS[currentStepIndex] || STEP_LABELS[0];
+
+    // Determine rejoin state
+    const isWaitingForPartner = userCompletedCurrentStep && !isCatchingUp;
+    const isBothReady = !userCompletedCurrentStep && !isCatchingUp;
+
     return (
       <div className="min-h-screen page-bg">
         <Header
@@ -383,7 +388,11 @@ export default function CardView() {
               transition={{ delay: 0.2, duration: 0.4 }}
               className="text-sm text-muted-foreground leading-relaxed max-w-2xl"
             >
-              Ni var mitt i ett samtal. Här kan ni fortsätta där ni slutade.
+              {isCatchingUp
+                ? 'Din partner har kommit lite längre. Här kan du ta igen det i din egen takt.'
+                : isWaitingForPartner
+                  ? 'Du är redo. Väntar på din partner.'
+                  : 'Ni var mitt i ett samtal. Här kan ni fortsätta där ni slutade.'}
             </motion.p>
             <motion.p
               initial={{ opacity: 0 }}
@@ -404,7 +413,9 @@ export default function CardView() {
                 className="w-full gap-2"
                 onClick={() => setShowReentry(false)}
               >
-                {t('card_view.reentry_continue', 'Fortsätt samtalet')}
+                {isCatchingUp
+                  ? t('general.catch_up_cta', 'Kom ikapp')
+                  : t('card_view.reentry_continue', 'Fortsätt samtalet')}
                 <ArrowRight className="w-4 h-4" />
               </Button>
               <Button
@@ -610,17 +621,11 @@ export default function CardView() {
                   className="my-8 py-8 px-5 rounded-2xl bg-card/40 border border-border/30 text-center space-y-4"
                 >
                   <p className="text-sm font-serif text-foreground">
-                    En paus
+                    Du är klar.
                   </p>
                   <p className="text-sm text-muted-foreground leading-relaxed max-w-2xl">
-                    Ni fortsätter här när ni båda har svarat klart. Under tiden kan du landa, läsa igenom eller skriva ner något för dig själv.
+                    Ni fortsätter när båda är klara.
                   </p>
-
-                  {memberCount >= 2 && (
-                    <p className="text-xs text-muted-foreground/60 text-center">
-                      Samtalet vilar här en stund.
-                    </p>
-                  )}
 
                   <div className="flex items-center justify-center gap-4 pt-2">
                     <Button
