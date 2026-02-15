@@ -24,9 +24,9 @@ export default function JoinSpace() {
   const inviteToken = searchParams.get('token');
   const [inviteCode, setInviteCode] = useState(searchParams.get('code') || '');
   const [partnerName, setPartnerName] = useState('');
-  const [state, setState] = useState<JoinState>(inviteToken || inviteCode ? 'name_prompt' : 'name_prompt');
+  const [state, setState] = useState<JoinState>('name_prompt');
   const [errorType, setErrorType] = useState<string>('');
-  const [showCodeInput, setShowCodeInput] = useState(!inviteToken);
+  const [showCodeInput] = useState(true);
 
   // Persist invite params to localStorage immediately so they survive OAuth redirects
   useEffect(() => {
@@ -105,7 +105,7 @@ export default function JoinSpace() {
         <div className="text-center space-y-4">
           <Loader2 className="w-8 h-8 animate-spin mx-auto text-primary" />
           <p className="text-body text-gentle">
-            {state === 'joining' ? t('join.joining', 'Ansluter...') : t('join.loading', 'Laddar...')}
+            {state === 'joining' ? t('join.joining', 'Kopplar ihop er…') : t('join.loading', 'Laddar...')}
           </p>
         </div>
       </div>
@@ -139,12 +139,10 @@ export default function JoinSpace() {
           <AlertCircle className="w-12 h-12 text-destructive mx-auto" />
           <p className="text-body text-foreground">{errorMessages[errorType] || errorMessages.unknown}</p>
           <div className="space-y-3">
-            {errorType === 'invalid_invite' && (
-              <Button variant="outline" onClick={() => { setState('name_prompt'); setShowCodeInput(true); }}>
-                {t('join.try_code', 'Ange kod istället')}
-              </Button>
-            )}
-            <Button variant="outline" onClick={() => navigate('/', { replace: true })}>
+            <Button onClick={() => setState('name_prompt')} className="w-full">
+              {t('general.start', 'Försök igen')}
+            </Button>
+            <Button variant="outline" onClick={() => navigate('/', { replace: true })} className="w-full">
               {t('join.go_home', 'Gå till startsidan')}
             </Button>
           </div>
@@ -165,10 +163,10 @@ export default function JoinSpace() {
         
         <div className="space-y-3">
           <h1 className="text-display text-foreground">
-            {t('join.title', 'Gå med i Couple Space')}
+            {t('join.title', 'Anslut till din partner')}
           </h1>
           <p className="text-body text-gentle">
-            {t('join.subtitle', 'Din partner har bjudit in dig till ett gemensamt utrymme.')}
+            {t('join.subtitle', 'Ange koden eller öppna länken du fick. Du behöver inte köpa igen.')}
           </p>
         </div>
 
@@ -204,14 +202,6 @@ export default function JoinSpace() {
           {t('join.connect_button', 'Anslut')}
         </Button>
 
-        {!showCodeInput && (
-          <button
-            onClick={() => setShowCodeInput(true)}
-            className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-          >
-            {t('join.use_code_instead', 'Har du en kod? Ange den här.')}
-          </button>
-        )}
       </motion.div>
     </div>
   );

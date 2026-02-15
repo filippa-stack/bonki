@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -71,13 +72,16 @@ function JoinRedirectGuard() {
   const { user, loading } = useAuth();
   const location = useLocation();
 
-  // Store invite params to localStorage before any redirect
   const searchParams = new URLSearchParams(location.search);
   const token = searchParams.get('token');
   const code = searchParams.get('code');
-  if (token || code) {
-    storePendingInvite(token, code);
-  }
+
+  // Store invite params in useEffect to avoid side-effects during render
+  useEffect(() => {
+    if (token || code) {
+      storePendingInvite(token, code);
+    }
+  }, [token, code]);
 
   if (loading) return null;
 
