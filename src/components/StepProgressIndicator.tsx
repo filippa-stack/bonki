@@ -1,10 +1,10 @@
 import { cn } from '@/lib/utils';
 
 const STEPS = [
-  { id: 'opening', label: 'Öppnare', hint: 'Börja här.' },
-  { id: 'reflective', label: 'Tankeväckare', hint: 'Gå lite djupare.' },
-  { id: 'scenario', label: 'Scenario', hint: 'Utforska en situation.' },
-  { id: 'exercise', label: 'Teamwork', hint: 'Vad gör ni av det här?' },
+  { id: 'opening', label: 'Början', hint: 'Börja här.' },
+  { id: 'reflective', label: 'Fördjupning', hint: 'Gå lite djupare.' },
+  { id: 'scenario', label: 'I verkligheten', hint: 'Utforska en situation.' },
+  { id: 'exercise', label: 'Tillsammans', hint: 'Vad gör ni av det här?' },
 ];
 
 interface StepProgressIndicatorProps {

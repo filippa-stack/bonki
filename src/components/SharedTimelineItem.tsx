@@ -23,10 +23,10 @@ interface SharedTimelineItemProps {
 }
 
 const STEP_LABELS: Record<string, string> = {
-  opening: 'Öppnare',
-  reflective: 'Tankeväckare',
-  scenario: 'Scenario',
-  exercise: 'Teamwork',
+  opening: 'Början',
+  reflective: 'Fördjupning',
+  scenario: 'I verkligheten',
+  exercise: 'Tillsammans',
 };
 
 function getStepLabel(sectionId: string): string | null {

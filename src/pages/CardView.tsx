@@ -22,14 +22,14 @@ import CardTakeaways from '@/components/CardTakeaways';
 import { useProposals } from '@/hooks/useProposals';
 
 const sectionTypeLabels: Record<string, string> = {
-  opening: 'Öppnare',
-  reflective: 'Tankeväckare',
-  scenario: 'Scenario',
-  exercise: 'Teamwork',
+  opening: 'Början',
+  reflective: 'Fördjupning',
+  scenario: 'I verkligheten',
+  exercise: 'Tillsammans',
 };
 
 const STEP_ORDER = ['opening', 'reflective', 'scenario', 'exercise'] as const;
-const STEP_LABELS = ['Öppnare', 'Tankeväckare', 'Scenario', 'Teamwork'];
+const STEP_LABELS = ['Början', 'Fördjupning', 'I verkligheten', 'Tillsammans'];
 
 const STEP_CTA_KEYS: Record<string, string> = {
   opening: 'card_view.cta_opening',
