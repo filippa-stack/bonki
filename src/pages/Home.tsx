@@ -26,6 +26,7 @@ import ColorPicker from '@/components/ColorPicker';
 import bonkiLogo from '@/assets/bonki-logo.png';
 import { useThemeVars } from '@/hooks/useThemeVars';
 import { supabase } from '@/integrations/supabase/client';
+import { toast } from 'sonner';
 
 const STEP_LABELS = ['Öppnare', 'Tankeväckare', 'Scenario', 'Teamwork'];
 
@@ -59,6 +60,7 @@ export default function Home() {
     getCategoryStatus,
     acceptProposal,
     declineProposal,
+    proposeCard,
   } = useApp();
   const { settings, updateSettings } = useSiteSettings();
   const { user } = useAuth();
@@ -72,6 +74,12 @@ export default function Home() {
   const [editSubtitleFont, setEditSubtitleFont] = useState(settings.heroSubtitleFont);
   const [editButtonColor, setEditButtonColor] = useState(settings.buttonColor);
   const [editButtonTextColor, setEditButtonTextColor] = useState(settings.buttonTextColor);
+
+  // Proposal mode state
+  const [isProposalMode, setIsProposalMode] = useState(false);
+  const [proposalFilter, setProposalFilter] = useState<'unexplored' | 'started' | 'all'>('unexplored');
+  const [proposalCandidate, setProposalCandidate] = useState<null | { cardId: string; categoryId: string }>(null);
+  const [isSendingProposal, setIsSendingProposal] = useState(false);
 
   // Welcome-back detection: show banner if 3+ days since last activity
   const THREE_DAYS_MS = 3 * 24 * 60 * 60 * 1000;
@@ -89,6 +97,20 @@ export default function Home() {
     const lastCategory = lastCard ? getCategoryById(lastCard.categoryId) : null;
     return { lastCard, lastCategory };
   }, [journeyState, welcomeBackDismissed, getCardById, getCategoryById]);
+
+  // Computed helpers for proposal mode & highlighted category
+  const exploredIds = journeyState?.exploredCardIds || [];
+  const sessionProgress = journeyState?.sessionProgress || {};
+
+  const suggestedContext = useMemo(() => {
+    const suggestedCardId = journeyState?.suggestedNextCardId
+      || (journeyState?.lastOpenedCardId && !exploredIds.includes(journeyState.lastOpenedCardId) ? journeyState.lastOpenedCardId : null);
+    const suggestedCard = suggestedCardId ? getCardById(suggestedCardId) : null;
+    const suggestedCategory = suggestedCard ? getCategoryById(suggestedCard.categoryId) : null;
+    return { suggestedCardId, suggestedCard, suggestedCategory };
+  }, [journeyState, exploredIds, getCardById, getCategoryById]);
+
+  const highlightedCategoryId = currentSession?.categoryId || suggestedContext.suggestedCategory?.id || null;
 
   // Get session details for resume dialog
   const sessionCard = currentSession ? getCardById(currentSession.cardId) : null;
@@ -130,6 +152,51 @@ export default function Home() {
     setEditButtonTextColor(settings.buttonTextColor);
     setIsEditingHero(true);
   };
+
+  const handleEnterProposalMode = () => {
+    setIsProposalMode(true);
+    setProposalFilter('unexplored');
+    setTimeout(() => {
+      document.getElementById('proposal-mode')?.scrollIntoView({ behavior: 'smooth' });
+    }, 100);
+  };
+
+  const handleSendProposal = async () => {
+    if (!proposalCandidate) return;
+    setIsSendingProposal(true);
+    try {
+      const result = await proposeCard(proposalCandidate.categoryId, proposalCandidate.cardId);
+      if (result.ok) {
+        setProposalCandidate(null);
+        setIsProposalMode(false);
+        toast.success('Förslag skickat');
+      }
+    } finally {
+      setIsSendingProposal(false);
+    }
+  };
+
+  // Build proposal candidates grouped by category
+  const proposalGroups = useMemo(() => {
+    if (!isProposalMode) return [];
+    return categories
+      .map((cat) => {
+        const catCards = cards
+          .filter((c) => c.categoryId === cat.id)
+          .filter((card) => {
+            const finished = exploredIds.includes(card.id);
+            const started = !!sessionProgress[card.id] && !finished;
+            if (proposalFilter === 'unexplored') return !finished;
+            if (proposalFilter === 'started') return started;
+            return true; // 'all'
+          });
+        return { category: cat, cards: catCards };
+      })
+      .filter((g) => g.cards.length > 0);
+  }, [isProposalMode, categories, cards, exploredIds, sessionProgress, proposalFilter]);
+
+  const candidateCard = proposalCandidate ? getCardById(proposalCandidate.cardId) : null;
+  const candidateCategory = proposalCandidate ? getCategoryById(proposalCandidate.categoryId) : null;
 
   return (
     <div className="min-h-screen flex flex-col page-bg">
@@ -307,7 +374,7 @@ export default function Home() {
             onDecline={declineProposal}
             onSuggestAnother={() => {
               declineProposal();
-              navigate(`/category/${proposal.categoryId}`);
+              handleEnterProposalMode();
             }}
           />
         );
@@ -315,21 +382,13 @@ export default function Home() {
 
       {/* Journey continue module */}
       {(() => {
-        const exploredIds = journeyState?.exploredCardIds || [];
         const lastCompletedId = journeyState?.lastCompletedCardId;
-        const suggestedCardId = journeyState?.suggestedNextCardId 
-          || (journeyState?.lastOpenedCardId && !exploredIds.includes(journeyState.lastOpenedCardId) ? journeyState.lastOpenedCardId : null);
-        const suggestedCard = suggestedCardId ? getCardById(suggestedCardId) : null;
-        const suggestedCategory = suggestedCard ? getCategoryById(suggestedCard.categoryId) : null;
-
-        // If we just completed a card and the suggested next is NOT the same as last opened
-        // (i.e. it's a new suggestion, not an in-progress card), show completion context
         const lastCompletedCard = lastCompletedId ? getCardById(lastCompletedId) : null;
         const lastCompletedCategory = lastCompletedCard ? getCategoryById(lastCompletedCard.categoryId) : null;
-        const isPostCompletion = lastCompletedId && suggestedCardId && lastCompletedId !== suggestedCardId
+        const isPostCompletion = lastCompletedId && suggestedContext.suggestedCardId && lastCompletedId !== suggestedContext.suggestedCardId
           && exploredIds.includes(lastCompletedId);
 
-        // Post-completion: show the completed card context, not the next suggestion directly
+        // Post-completion: show the completed card context
         if (isPostCompletion && lastCompletedCard && lastCompletedCategory) {
           return (
             <motion.div
@@ -343,34 +402,56 @@ export default function Home() {
                 <p className="text-sm text-muted-foreground leading-relaxed">
                   {t('card_view.completion_message')}
                 </p>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="text-muted-foreground"
-                  onClick={() => {
-                    const el = document.getElementById('category-section');
-                    el?.scrollIntoView({ behavior: 'smooth' });
-                  }}
-                >
-                  {t('general.choose_another')}
-                </Button>
+                <div className="flex flex-col items-center gap-2">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="text-muted-foreground"
+                    onClick={() => {
+                      const el = document.getElementById('category-section');
+                      el?.scrollIntoView({ behavior: 'smooth' });
+                    }}
+                  >
+                    {t('general.choose_another')}
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="text-muted-foreground hover:text-foreground"
+                    onClick={handleEnterProposalMode}
+                  >
+                    Föreslå annat samtal
+                  </Button>
+                </div>
               </div>
             </motion.div>
           );
         }
         
-        if (suggestedCard && suggestedCategory) {
+        if (suggestedContext.suggestedCard && suggestedContext.suggestedCategory) {
           return (
-            <ContinueModule
-              cardTitle={suggestedCard.title}
-              categoryTitle={suggestedCategory.title}
-              lastActiveAt={journeyState?.updatedAt}
-              onContinue={() => navigate(`/card/${suggestedCard.id}`)}
-              onChooseAnother={() => {
-                const el = document.getElementById('category-section');
-                el?.scrollIntoView({ behavior: 'smooth' });
-              }}
-            />
+            <div className="space-y-2">
+              <ContinueModule
+                cardTitle={suggestedContext.suggestedCard.title}
+                categoryTitle={suggestedContext.suggestedCategory.title}
+                lastActiveAt={journeyState?.updatedAt}
+                onContinue={() => navigate(`/card/${suggestedContext.suggestedCard!.id}`)}
+                onChooseAnother={() => {
+                  const el = document.getElementById('category-section');
+                  el?.scrollIntoView({ behavior: 'smooth' });
+                }}
+              />
+              <div className="px-6 flex justify-center">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="text-muted-foreground hover:text-foreground"
+                  onClick={handleEnterProposalMode}
+                >
+                  Föreslå annat samtal
+                </Button>
+              </div>
+            </div>
           );
         }
         
@@ -380,16 +461,28 @@ export default function Home() {
           const recentCategory = recentCard ? getCategoryById(recentCard.categoryId) : null;
           if (recentCard && recentCategory) {
             return (
-              <ContinueModule
-                cardTitle={recentCard.title}
-                categoryTitle={recentCategory.title}
-                lastActiveAt={mostRecentConversation.lastActivityAt instanceof Date ? mostRecentConversation.lastActivityAt.toISOString() : String(mostRecentConversation.lastActivityAt)}
-                onContinue={() => navigate(`/card/${mostRecentConversation.cardId}`)}
-                onChooseAnother={() => {
-                  const el = document.getElementById('category-section');
-                  el?.scrollIntoView({ behavior: 'smooth' });
-                }}
-              />
+              <div className="space-y-2">
+                <ContinueModule
+                  cardTitle={recentCard.title}
+                  categoryTitle={recentCategory.title}
+                  lastActiveAt={mostRecentConversation.lastActivityAt instanceof Date ? mostRecentConversation.lastActivityAt.toISOString() : String(mostRecentConversation.lastActivityAt)}
+                  onContinue={() => navigate(`/card/${mostRecentConversation.cardId}`)}
+                  onChooseAnother={() => {
+                    const el = document.getElementById('category-section');
+                    el?.scrollIntoView({ behavior: 'smooth' });
+                  }}
+                />
+                <div className="px-6 flex justify-center">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="text-muted-foreground hover:text-foreground"
+                    onClick={handleEnterProposalMode}
+                  >
+                    Föreslå annat samtal
+                  </Button>
+                </div>
+              </div>
             );
           }
         }
@@ -449,39 +542,158 @@ export default function Home() {
         </motion.div>
       )}
 
-      {/* Categories */}
-      <div id="category-section" className="px-6 pb-10 mt-8">
-        <p className="text-sm text-muted-foreground/60 mb-6 font-serif not-italic">
-          {t('home.choose_category')}
-        </p>
-        <div className="space-y-3">
-          {categories.map((category, index) => {
-            const status = getCategoryStatus(category.id);
-            const wrapperClasses = status === 'explored'
-              ? 'opacity-70 hover:opacity-80 ring-1 ring-border/20 rounded-2xl'
-              : status === 'in_progress'
-                ? 'opacity-95 hover:opacity-100 ring-1 ring-border/40 rounded-2xl'
-                : '';
+      {/* Proposal Mode */}
+      <AnimatePresence>
+        {isProposalMode && (
+          <motion.div
+            id="proposal-mode"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            className="px-6 pb-8"
+          >
+            {/* Mode header */}
+            <div className="flex items-center justify-between mb-6">
+              <Button
+                variant="ghost"
+                size="sm"
+                className="text-muted-foreground hover:text-foreground"
+                onClick={() => { setIsProposalMode(false); setProposalCandidate(null); }}
+              >
+                Avbryt
+              </Button>
+              <span className="text-sm font-serif text-muted-foreground">Föreslå ett samtal</span>
+              <div className="w-16" /> {/* spacer for centering */}
+            </div>
 
-            return (
-              <div key={category.id} className={`transition-all ${wrapperClasses}`}>
-                <CategoryCard
-                  category={category}
-                  onClick={() => navigate(`/category/${category.id}`)}
-                  index={index}
-                  onUpdate={updateCategory}
-                  onColorChange={(color) => updateCategoryColor(category.id, color)}
-                  onTextColorChange={(textColor) => updateCategoryTextColor(category.id, textColor)}
-                  onBorderColorChange={(borderColor) => updateCategoryBorderColor(category.id, borderColor)}
-                  onIconChange={(icon) => updateCategoryIcon(category.id, icon)}
-                  editable={true}
-                  status={status}
-                />
+            {/* Filter tabs */}
+            <div className="flex gap-2 mb-6">
+              {([
+                { key: 'unexplored' as const, label: 'Ej utforskade' },
+                { key: 'started' as const, label: 'Påbörjade' },
+                { key: 'all' as const, label: 'Alla' },
+              ]).map((tab) => (
+                <Button
+                  key={tab.key}
+                  variant={proposalFilter === tab.key ? 'default' : 'outline'}
+                  size="sm"
+                  onClick={() => setProposalFilter(tab.key)}
+                  className="flex-1"
+                >
+                  {tab.label}
+                </Button>
+              ))}
+            </div>
+
+            {/* Candidate list grouped by category */}
+            <div className="space-y-6">
+              {proposalGroups.map((group) => (
+                <div key={group.category.id}>
+                  <p className="text-xs tracking-wide text-muted-foreground/60 uppercase mb-3">
+                    {group.category.title}
+                  </p>
+                  <div className="space-y-2">
+                    {group.cards.map((card) => (
+                      <motion.button
+                        key={card.id}
+                        whileTap={{ scale: 0.98 }}
+                        onClick={() => setProposalCandidate({ cardId: card.id, categoryId: card.categoryId })}
+                        className={`w-full text-left rounded-2xl border p-5 transition-colors ${
+                          proposalCandidate?.cardId === card.id
+                            ? 'border-primary/40 bg-primary/5'
+                            : 'border-border bg-card hover:bg-accent/30'
+                        }`}
+                      >
+                        <p className="font-serif text-foreground">{card.title}</p>
+                        {card.subtitle && (
+                          <p className="text-sm text-muted-foreground mt-1">{card.subtitle}</p>
+                        )}
+                      </motion.button>
+                    ))}
+                  </div>
+                </div>
+              ))}
+              {proposalGroups.length === 0 && (
+                <p className="text-sm text-muted-foreground text-center py-8">
+                  Inga samtal matchar filtret.
+                </p>
+              )}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Proposal confirmation sheet */}
+      <AnimatePresence>
+        {proposalCandidate && candidateCard && candidateCategory && (
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 40 }}
+            className="fixed inset-x-0 bottom-0 z-50 p-4"
+          >
+            <div className="rounded-2xl border border-border bg-card p-6 shadow-lg max-w-md mx-auto space-y-4">
+              <p className="font-serif text-foreground text-center">Föreslå detta samtal?</p>
+              <div className="text-center">
+                <p className="text-sm text-foreground">{candidateCard.title}</p>
+                <p className="text-xs text-muted-foreground mt-1">{candidateCategory.title}</p>
               </div>
-            );
-          })}
+              <div className="flex gap-3">
+                <Button
+                  variant="outline"
+                  className="flex-1"
+                  onClick={() => setProposalCandidate(null)}
+                >
+                  Avbryt
+                </Button>
+                <Button
+                  className="flex-1"
+                  onClick={handleSendProposal}
+                  disabled={isSendingProposal}
+                >
+                  {isSendingProposal ? 'Skickar...' : 'Skicka förslag'}
+                </Button>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Categories */}
+      {!isProposalMode && (
+        <div id="category-section" className="px-6 pb-10 mt-8">
+          <p className="text-sm text-muted-foreground/60 mb-6 font-serif not-italic">
+            {t('home.choose_category')}
+          </p>
+          <div className="space-y-3">
+            {categories.map((category, index) => {
+              const isHighlighted = category.id === highlightedCategoryId;
+
+              return (
+                <div
+                  key={category.id}
+                  className={`transition-all ${
+                    isHighlighted ? 'rounded-2xl ring-1 ring-primary/25 p-0.5' : ''
+                  }`}
+                >
+                  <CategoryCard
+                    category={category}
+                    onClick={() => navigate(`/category/${category.id}`)}
+                    index={index}
+                    onUpdate={updateCategory}
+                    onColorChange={(color) => updateCategoryColor(category.id, color)}
+                    onTextColorChange={(textColor) => updateCategoryTextColor(category.id, textColor)}
+                    onBorderColorChange={(borderColor) => updateCategoryBorderColor(category.id, borderColor)}
+                    onIconChange={(icon) => updateCategoryIcon(category.id, icon)}
+                    editable={true}
+                    status={getCategoryStatus(category.id)}
+                  />
+                </div>
+              );
+            })}
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Relationship Memory */}
       {(() => {
