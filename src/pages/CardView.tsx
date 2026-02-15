@@ -18,7 +18,7 @@ import ProposalSheet from '@/components/ProposalSheet';
 import { Button } from '@/components/ui/button';
 import { ArrowRight, Home, RotateCcw, BookOpen, PenLine, Send, Check, Loader2 } from 'lucide-react';
 import CardTakeaways from '@/components/CardTakeaways';
-import StageTransitionChoice from '@/components/StageTransitionChoice';
+
 import { useProposals } from '@/hooks/useProposals';
 
 const sectionTypeLabels: Record<string, string> = {
@@ -123,7 +123,7 @@ export default function CardView() {
     !isRevisitMode && isReturningUser && (isFullyExplored || allStepsCompleted)
   );
   const [transitionMessage, setTransitionMessage] = useState<string | null>(null);
-  const [showStageChoice, setShowStageChoice] = useState(false);
+  
   const [showDecompression, setShowDecompression] = useState(false);
   const [decompressionButtonVisible, setDecompressionButtonVisible] = useState(false);
   const decompressionTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -182,13 +182,7 @@ export default function CardView() {
   // ─── Show stage choice when effective step advances (shared or catch-up) ───
   const prevEffectiveStepRef = useRef(effectiveSharedStep);
   useEffect(() => {
-    const prev = prevEffectiveStepRef.current;
     prevEffectiveStepRef.current = effectiveSharedStep;
-    if (isRevisitMode || showOverview || showReentry || showCompletion) return;
-    // Show choice screen after steps 0-2 (not after the last step)
-    if (effectiveSharedStep > prev && prev < STEP_ORDER.length - 1) {
-      setShowStageChoice(true);
-    }
   }, [effectiveSharedStep]);
 
   if (!card) {
@@ -654,23 +648,11 @@ export default function CardView() {
         )}
       </div>
 
-      {/* Stage transition choice */}
-      <AnimatePresence>
-        {showStageChoice && (
-          <StageTransitionChoice
-            onContinue={() => setShowStageChoice(false)}
-            onStop={() => {
-              pauseSession();
-              navigate('/');
-            }}
-          />
-        )}
-      </AnimatePresence>
 
       {/* Section content */}
       <div className="px-6">
         <AnimatePresence mode="wait">
-          {currentSection && !showStageChoice && (
+          {currentSection && (
             <motion.div
               key={currentSection.id}
               initial={{ opacity: 0, x: 20 }}
