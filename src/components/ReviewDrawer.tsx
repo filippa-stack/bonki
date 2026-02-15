@@ -100,28 +100,8 @@ export default function ReviewDrawer({ open, onClose, card, activeStepIndex = 0,
   const [cardNotes, setCardNotes] = useState<CardNote[]>([]);
   const [noteFilter, setNoteFilter] = useState<'all' | 'private' | 'shared'>('all');
   const [stepFilter, setStepFilter] = useState<'all' | 'private' | 'shared'>('all');
-  const activeStepRef = useRef<HTMLDivElement>(null);
+  // No auto-scroll ref needed anymore
 
-  // Auto-scroll to active step when drawer opens
-  useEffect(() => {
-    if (!open || activeStepIndex <= 0) return;
-    // Wait for drawer open animation + content render
-    const timer = setTimeout(() => {
-      const el = activeStepRef.current;
-      if (!el) return;
-      // Try multiple scroll strategies
-      const viewport = el.closest('[data-radix-scroll-area-viewport]') as HTMLElement | null;
-      if (viewport) {
-        const viewportRect = viewport.getBoundingClientRect();
-        const elRect = el.getBoundingClientRect();
-        const scrollOffset = elRect.top - viewportRect.top + viewport.scrollTop - 16;
-        viewport.scrollTo({ top: scrollOffset, behavior: 'smooth' });
-      }
-      // Fallback
-      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }, 800);
-    return () => clearTimeout(timer);
-  }, [open, activeStepIndex]);
 
   const filteredNotes = noteFilter === 'all'
     ? cardNotes
@@ -311,7 +291,6 @@ export default function ReviewDrawer({ open, onClose, card, activeStepIndex = 0,
                   return (
                     <motion.div
                       key={stepType}
-                      ref={index === activeStepIndex ? activeStepRef : undefined}
                       initial={{ opacity: 0, y: 8 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: index * 0.05, duration: 0.3 }}
