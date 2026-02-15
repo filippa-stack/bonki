@@ -44,7 +44,7 @@ const AUTOSAVE_DELAY = 800;
 export default function SharedSummary() {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const { categories, backgroundColor, getCardById, getCategoryById, startSession, journeyState, cards } = useApp();
+  const { categories, backgroundColor, getCardById, getCategoryById, startSession, journeyState, cards, getTakeawayShared } = useApp();
   const { user } = useAuth();
   const { space, displayMemberCount, userRole } = useCoupleSpace();
   const { incomingProposals, savedProposals, updateProposalStatus } = useProposals();
@@ -57,6 +57,30 @@ export default function SharedSummary() {
   const [showAllHighlights, setShowAllHighlights] = useState(false);
   const [showSavedProposals, setShowSavedProposals] = useState(false);
   const pendingSaves = useRef<Map<string, ReturnType<typeof setTimeout>>>(new Map());
+
+  // Surface a random previous takeaway — once per session
+  const surfacedTakeaway = useMemo(() => {
+    const dismissed = sessionStorage.getItem('shared-takeaway-surfaced');
+    if (dismissed) return null;
+    const exploredIds = journeyState?.exploredCardIds || [];
+    const withTakeaway = exploredIds
+      .map(id => {
+        const note = getTakeawayShared(id);
+        return note?.text ? { cardId: id, text: note.text } : null;
+      })
+      .filter(Boolean) as { cardId: string; text: string }[];
+    if (withTakeaway.length === 0) return null;
+    // Pick one deterministically per day so it doesn't change on re-render
+    const dayIndex = Math.floor(Date.now() / (1000 * 60 * 60 * 24));
+    return withTakeaway[dayIndex % withTakeaway.length];
+  }, [journeyState?.exploredCardIds, getTakeawayShared]);
+
+  // Mark as shown on mount
+  useEffect(() => {
+    if (surfacedTakeaway) {
+      sessionStorage.setItem('shared-takeaway-surfaced', '1');
+    }
+  }, [surfacedTakeaway]);
 
   // Fetch all shared notes in the couple space
   useEffect(() => {
@@ -253,6 +277,15 @@ export default function SharedSummary() {
           >
             Här samlas det ni bygger tillsammans.
           </motion.p>
+        )}
+        {/* ─── Surfaced takeaway ─── */}
+        {!showFind && surfacedTakeaway && (
+          <div className="mb-16 text-center">
+            <p className="text-[11px] text-muted-foreground/40 mb-3">För en tid sedan skrev ni:</p>
+            <p className="text-sm font-serif text-foreground/70 leading-relaxed max-w-sm mx-auto">
+              {surfacedTakeaway.text}
+            </p>
+          </div>
         )}
 
         {/* Partner invite — only when solo */}
