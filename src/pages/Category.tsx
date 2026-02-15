@@ -1,5 +1,6 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { CheckCircle2 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useApp } from '@/contexts/AppContext';
 import Header from '@/components/Header';
@@ -9,6 +10,7 @@ export default function Category() {
   const { categoryId } = useParams<{ categoryId: string }>();
   const navigate = useNavigate();
   const { getCategoryById, getCardsByCategory, journeyState, currentSession, getCardById } = useApp();
+  const exploredIds = journeyState?.exploredCardIds || [];
 
   const category = categoryId ? getCategoryById(categoryId) : undefined;
   const cards = categoryId ? getCardsByCategory(categoryId) : [];
@@ -65,6 +67,7 @@ export default function Category() {
               card={card}
               index={index}
               highlighted={card.id === highlightedCardId}
+              isCompleted={exploredIds.includes(card.id)}
               onNavigate={() => navigate(`/card/${card.id}`)}
             />
           ))}
@@ -85,10 +88,11 @@ interface CardEntryProps {
   };
   index: number;
   highlighted?: boolean;
+  isCompleted?: boolean;
   onNavigate: () => void;
 }
 
-function CardEntry({ card, index, highlighted, onNavigate }: CardEntryProps) {
+function CardEntry({ card, index, highlighted, isCompleted = false, onNavigate }: CardEntryProps) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 16 }}
@@ -103,23 +107,26 @@ function CardEntry({ card, index, highlighted, onNavigate }: CardEntryProps) {
           onNavigate();
         }
       }}
-      className={`relative w-full text-center card-sub group item-colors transition-all cursor-pointer overflow-hidden rounded-2xl${highlighted ? ' ring-2 ring-primary/40 shadow-md shadow-primary/10' : ''}`}
+      className={`relative w-full text-center card-sub group transition-all cursor-pointer overflow-hidden rounded-2xl${isCompleted ? ' bg-slate-50 border-slate-200' : ' item-colors'}${highlighted ? ' ring-2 ring-primary/40 shadow-md shadow-primary/10' : ''}`}
       style={{
         borderWidth: '2px',
         borderStyle: 'solid',
       }}
     >
       <div className="flex flex-col items-center gap-1.5 py-8 px-7">
+        {isCompleted && (
+          <CheckCircle2 className="w-5 h-5 text-[#497575] mb-1" />
+        )}
         <h3
-          className="w-full font-serif text-lg sm:text-xl text-center item-text leading-snug"
-          style={{ '--item-text': card.textColor || undefined } as React.CSSProperties}
+          className={`w-full font-serif text-lg sm:text-xl text-center leading-snug ${isCompleted ? 'text-slate-400' : 'item-text'}`}
+          style={isCompleted ? undefined : { '--item-text': card.textColor || undefined } as React.CSSProperties}
         >
           {card.title}
         </h3>
         {card.subtitle && (
           <p
-            className="w-full text-sm text-center italic item-text-gentle mt-0.5"
-            style={{ '--item-text': card.textColor || undefined } as React.CSSProperties}
+            className={`w-full text-sm text-center italic mt-0.5 ${isCompleted ? 'text-slate-300' : 'item-text-gentle'}`}
+            style={isCompleted ? undefined : { '--item-text': card.textColor || undefined } as React.CSSProperties}
           >
             {card.subtitle}
           </p>

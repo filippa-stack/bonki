@@ -60,6 +60,7 @@ export default function Home() {
     journeyState,
     cards,
     startSession,
+    getCategoryStatus,
   } = useApp();
   const { settings, updateSettings } = useSiteSettings();
   const { user } = useAuth();
@@ -667,6 +668,7 @@ export default function Home() {
           </p>
           <div className="space-y-4">
             {categories.map((category, index) => {
+              const catStatus = getCategoryStatus(category.id);
               return (
                 <CategoryCard
                   key={category.id}
@@ -680,6 +682,7 @@ export default function Home() {
                   onIconChange={(icon) => updateCategoryIcon(category.id, icon)}
                   editable={false}
                   highlighted={!isProposalMode && category.id === highlightedCategoryId}
+                  isCompleted={catStatus === 'explored'}
                 />
               );
             })}
