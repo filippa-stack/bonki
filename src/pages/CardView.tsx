@@ -11,12 +11,12 @@ import { toast } from 'sonner';
 import Header from '@/components/Header';
 import SectionView, { type SectionViewHandle } from '@/components/SectionView';
 import StepProgressIndicator from '@/components/StepProgressIndicator';
-import PauseDialog from '@/components/PauseDialog';
+
 import ReviewDrawer from '@/components/ReviewDrawer';
 import ConflictingSessionModal from '@/components/ConflictingSessionModal';
 import ProposalSheet from '@/components/ProposalSheet';
 import { Button } from '@/components/ui/button';
-import { ArrowRight, Home, RotateCcw, BookOpen, PenLine, Send, Check, Loader2 } from 'lucide-react';
+import { ArrowRight, Home, RotateCcw, BookOpen, Check } from 'lucide-react';
 import CardTakeaways from '@/components/CardTakeaways';
 
 import { useProposals } from '@/hooks/useProposals';
@@ -567,59 +567,14 @@ export default function CardView() {
                   transition={{ duration: 0.5 }}
                   role="status"
                   aria-live="polite"
-                  className="my-8 py-8 px-5 rounded-2xl bg-card/40 border border-border/30 text-center space-y-4"
+                  className="my-8 py-8 px-5 text-center space-y-2"
                 >
                   <p className="text-sm font-serif text-foreground">
                     Du är klar.
                   </p>
-                  <p className="text-sm text-muted-foreground leading-relaxed max-w-2xl">
+                  <p className="text-sm text-muted-foreground leading-relaxed">
                     Ni fortsätter när båda är klara.
                   </p>
-
-                  <div className="flex items-center justify-center gap-4 pt-2">
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      className="gap-1.5 text-muted-foreground"
-                      onClick={() => setReviewOpen(true)}
-                    >
-                      <BookOpen className="w-3.5 h-3.5" />
-                      Granska
-                    </Button>
-
-                    <button
-                      onClick={() => sectionViewRef.current?.openNoteForCurrent()}
-                      className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
-                    >
-                      <PenLine className="w-3.5 h-3.5" />
-                      Skriv en tanke
-                    </button>
-
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      className="gap-1.5 text-muted-foreground"
-                      onClick={() => navigate('/saved')}
-                    >
-                      <PenLine className="w-3.5 h-3.5" />
-                      Mina anteckningar
-                    </Button>
-                  </div>
-
-                  {/* Takeaways removed — now on completion screen */}
-
-                  <div className="pt-3 flex flex-col items-center gap-2">
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      className="gap-1.5"
-                      onClick={() => navigate('/')}
-                    >
-                      <Home className="w-3.5 h-3.5" />
-                      Tillbaka till Hem
-                    </Button>
-                    <PauseDialog onConfirm={() => { pauseSession(); navigate('/'); }} />
-                  </div>
                 </motion.div>
               ) : (
                 <div className="pt-6 pb-6 space-y-4">
@@ -634,8 +589,8 @@ export default function CardView() {
                     <ArrowRight className="w-4 h-4" />
                   </Button>
 
-                  <div className="flex items-center justify-center gap-4">
-                    {(currentStepIndex > 0 || isRevisitMode) && (
+                  {(currentStepIndex > 0 || isRevisitMode) && (
+                    <div className="flex justify-center">
                       <button
                         onClick={() => setReviewOpen(true)}
                         className="flex items-center gap-1.5 text-[12px] text-muted-foreground/50 hover:text-muted-foreground/70 transition-colors"
@@ -643,11 +598,8 @@ export default function CardView() {
                         <BookOpen className="w-3.5 h-3.5" />
                         {t('card_view.review_edit', 'Se era svar')}
                       </button>
-                    )}
-                    {!isRevisitMode && (
-                      <PauseDialog onConfirm={() => { pauseSession(); navigate('/'); }} />
-                    )}
-                  </div>
+                    </div>
+                  )}
 
                   {!isRevisitMode && (
                     <p className="text-[11px] text-muted-foreground/40 leading-relaxed text-center">
