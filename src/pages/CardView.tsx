@@ -38,11 +38,6 @@ const STEP_CTA_KEYS: Record<string, string> = {
   exercise: 'card_view.cta_exercise',
 };
 
-const TRANSITION_KEYS: Record<string, string> = {
-  opening: 'card_view.transition_opening',
-  reflective: 'card_view.transition_reflective',
-  scenario: 'card_view.transition_scenario',
-};
 
 export default function CardView() {
   const { cardId } = useParams<{ cardId: string }>();
@@ -122,7 +117,7 @@ export default function CardView() {
   const [showCompletion, setShowCompletion] = useState(
     !isRevisitMode && isReturningUser && (isFullyExplored || allStepsCompleted)
   );
-  const [transitionMessage, setTransitionMessage] = useState<string | null>(null);
+  
   
   const [reviewOpen, setReviewOpen] = useState(false);
   const sectionViewRef = useRef<SectionViewHandle>(null);
@@ -628,62 +623,36 @@ export default function CardView() {
                 </motion.div>
               ) : (
                 <div className="pt-6 pb-6 space-y-4">
-                  <div className="space-y-3">
-                    <div className="flex flex-col sm:flex-row justify-start gap-3">
-                      {(currentStepIndex > 0 || isRevisitMode) && (
-                        <Button
-                          variant="outline"
-                          size="lg"
-                          className="gap-2"
-                          onClick={() => setReviewOpen(true)}
-                        >
-                          <BookOpen className="w-4 h-4" />
-                          {t('card_view.review_edit', 'Se era svar')}
-                        </Button>
-                      )}
-                      <Button
-                        onClick={handleNextStep}
-                        size="lg"
-                        className="gap-2 h-14 font-normal w-full rounded-2xl"
+                  <Button
+                    onClick={handleNextStep}
+                    size="lg"
+                    className="gap-2 h-14 font-normal w-full rounded-2xl"
+                  >
+                    {isRevisitMode
+                      ? (currentStepIndex >= STEP_ORDER.length - 1 ? 'Klar' : 'Nästa')
+                      : t(STEP_CTA_KEYS[STEP_ORDER[currentStepIndex]])}
+                    <ArrowRight className="w-4 h-4" />
+                  </Button>
+
+                  <div className="flex items-center justify-center gap-4">
+                    {(currentStepIndex > 0 || isRevisitMode) && (
+                      <button
+                        onClick={() => setReviewOpen(true)}
+                        className="flex items-center gap-1.5 text-[12px] text-muted-foreground/50 hover:text-muted-foreground/70 transition-colors"
                       >
-                        {isRevisitMode
-                          ? (currentStepIndex >= STEP_ORDER.length - 1 ? 'Klar' : 'Nästa')
-                          : t(STEP_CTA_KEYS[STEP_ORDER[currentStepIndex]])}
-                        <ArrowRight className="w-4 h-4" />
-                      </Button>
-                    </div>
+                        <BookOpen className="w-3.5 h-3.5" />
+                        {t('card_view.review_edit', 'Se era svar')}
+                      </button>
+                    )}
+                    {!isRevisitMode && (
+                      <PauseDialog onConfirm={() => { pauseSession(); navigate('/'); }} />
+                    )}
+                  </div>
+
                   {!isRevisitMode && (
-                    <p className="text-[11px] text-muted-foreground/40 leading-relaxed text-center mt-2">
+                    <p className="text-[11px] text-muted-foreground/40 leading-relaxed text-center">
                       Svara i er egen takt. Ni fortsätter när båda är klara.
                     </p>
-                  )}
-                  </div>
-                  {!isRevisitMode && (
-                    <div className="flex justify-center pt-2">
-                      <PauseDialog onConfirm={() => { pauseSession(); navigate('/'); }} />
-                    </div>
-                  )}
-
-                   {/* Revisit mode: no proposal actions */}
-
-                  {/* Post-step: subtle proposal CTA after completing a step (non-revisit) */}
-                  {!isRevisitMode && userCompletedCurrentStep && category && memberCount >= 2 && (
-                    <motion.div
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      transition={{ delay: 0.8, duration: 0.5 }}
-                      className="pt-2"
-                    >
-                      <button
-                        disabled={proposalSent}
-                        onClick={() => setShowProposalSheet(true)}
-                        className="w-full text-center text-[12px] text-muted-foreground/50 hover:text-muted-foreground/70 transition-colors py-2"
-                      >
-                        {proposalSent
-                          ? 'Förslag skickat'
-                          : 'Vill du föreslå detta till din partner?'}
-                      </button>
-                    </motion.div>
                   )}
                 </div>
               )}
