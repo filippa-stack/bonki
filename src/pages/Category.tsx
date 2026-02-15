@@ -38,10 +38,11 @@ export default function Category() {
     <div className="min-h-screen page-bg">
       <Header showBack backTo="/" />
 
-      <div className="px-6 pt-8 pb-6">
+      <div className="px-6 pt-12 pb-10">
         <motion.h1
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
           className="text-display text-foreground mb-1"
         >
           {category.title}
@@ -49,15 +50,15 @@ export default function Category() {
         <motion.p
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 0.1 }}
-          className="text-base text-muted-foreground mt-3 max-w-md leading-relaxed"
+          transition={{ delay: 0.15, duration: 0.5 }}
+          className="text-base text-muted-foreground mt-4 max-w-md leading-relaxed"
         >
           {category.entryLine ? `${category.entryLine} ${t('category_status.return_note')}` : t('category_status.return_note')}
         </motion.p>
       </div>
 
-      <div className="px-6 pb-12">
-        <div className="space-y-3">
+      <div className="px-6 pb-16">
+        <div className="space-y-4">
           {cards.map((card, index) => (
             <CardEntry
               key={card.id}
@@ -90,9 +91,9 @@ interface CardEntryProps {
 function CardEntry({ card, index, highlighted, onNavigate }: CardEntryProps) {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
+      initial={{ opacity: 0, y: 16 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: index * 0.1 }}
+      transition={{ delay: 0.1 + index * 0.08, duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
       onClick={onNavigate}
       role="button"
       tabIndex={0}
@@ -110,16 +111,16 @@ function CardEntry({ card, index, highlighted, onNavigate }: CardEntryProps) {
         borderStyle: 'solid',
       } as React.CSSProperties}
     >
-      <div className="flex flex-col items-center gap-1 p-6">
+      <div className="flex flex-col items-center gap-1.5 py-8 px-7">
         <h3
-          className="w-full font-serif text-lg sm:text-xl text-center item-text"
+          className="w-full font-serif text-lg sm:text-xl text-center item-text leading-snug"
           style={{ '--item-text': card.textColor || undefined } as React.CSSProperties}
         >
           {card.title}
         </h3>
         {card.subtitle && (
           <p
-            className="w-full text-sm text-center italic item-text-gentle"
+            className="w-full text-sm text-center italic item-text-gentle mt-0.5"
             style={{ '--item-text': card.textColor || undefined } as React.CSSProperties}
           >
             {card.subtitle}
