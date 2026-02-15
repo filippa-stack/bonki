@@ -439,42 +439,46 @@ export default function CardView() {
             {/* Step overview */}
             <div className="space-y-3 mb-10 text-center">
               {STEP_ORDER.map((stepType, index) => {
-                const section = card.sections.find(s => s.type === stepType);
+                const isFirst = index === 0;
                 return (
                   <motion.div
                     key={stepType}
                     initial={{ opacity: 0, x: -10 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.1 + index * 0.1 }}
-                    className="flex items-center gap-4 p-4 rounded-xl bg-card border border-border"
+                    onClick={isFirst ? handleStartFromOverview : undefined}
+                    role={isFirst ? 'button' : undefined}
+                    tabIndex={isFirst ? 0 : undefined}
+                    onKeyDown={isFirst ? (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleStartFromOverview(); } } : undefined}
+                    className={`flex items-center gap-4 p-4 rounded-xl border ${
+                      isFirst
+                        ? 'bg-primary border-primary cursor-pointer hover:bg-primary/90 transition-colors'
+                        : 'bg-card border-border'
+                    }`}
                   >
-                    <div className="w-8 h-8 rounded-full bg-muted flex items-center justify-center text-sm font-medium text-muted-foreground shrink-0">
+                    <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium shrink-0 ${
+                      isFirst
+                        ? 'bg-primary-foreground/20 text-primary-foreground'
+                        : 'bg-muted text-muted-foreground'
+                    }`}>
                       {index + 1}
                     </div>
-                    <div>
-                      <p className="font-medium text-foreground">
+                    <div className="flex-1 text-left">
+                      <p className={`font-medium ${isFirst ? 'text-primary-foreground' : 'text-foreground'}`}>
                         {sectionTypeLabels[stepType]}
                       </p>
-                      <p className="text-xs text-muted-foreground mt-0.5">
+                      <p className={`text-xs mt-0.5 ${isFirst ? 'text-primary-foreground/70' : 'text-muted-foreground'}`}>
                         {stepType === 'opening' && t('card_view.step_opening_desc')}
                         {stepType === 'reflective' && t('card_view.step_reflective_desc')}
                         {stepType === 'scenario' && t('card_view.step_scenario_desc')}
                         {stepType === 'exercise' && t('card_view.step_exercise_desc')}
                       </p>
                     </div>
+                    {isFirst && <ArrowRight className="w-4 h-4 text-primary-foreground shrink-0" />}
                   </motion.div>
                 );
               })}
             </div>
-
-            <Button
-              onClick={handleStartFromOverview}
-              size="lg"
-              className="w-full md:w-auto gap-2"
-            >
-              {t('card_view.overview_start')}
-              <ArrowRight className="w-4 h-4" />
-            </Button>
             {memberCount >= 2 && (
               <Button
                 variant="outline"
