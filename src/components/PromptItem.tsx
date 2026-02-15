@@ -61,7 +61,7 @@ export default function PromptItem({
   const isPaired = memberCount >= 2;
   const shareDisabled = disableShare || !isPaired;
   const navigate = useNavigate();
-  const [internalExpanded, setInternalExpanded] = useState(false);
+  const [internalExpanded, setInternalExpanded] = useState(sectionType === 'scenario' || sectionType === 'exercise');
   const [justShared, setJustShared] = useState(false);
   const [showSharePreview, setShowSharePreview] = useState(false);
   const [sharePreviewText, setSharePreviewText] = useState('');
