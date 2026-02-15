@@ -33,9 +33,9 @@ export default function SaveIndicator({ status, error }: SaveIndicatorProps) {
       {status === 'saving' && showSaving && (
         <motion.div
           key="saving"
-          initial={{ opacity: 0, y: -10 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -10 }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
           className="flex items-center gap-1.5 text-muted-foreground"
         >
           <Loader2 className="w-3.5 h-3.5 animate-spin" />
@@ -46,9 +46,9 @@ export default function SaveIndicator({ status, error }: SaveIndicatorProps) {
       {status === 'error' && (
         <motion.div
           key="error"
-          initial={{ opacity: 0, y: -10 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -10 }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
           className="flex items-center gap-1.5 text-destructive"
         >
           <CloudOff className="w-3.5 h-3.5" />
