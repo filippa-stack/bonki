@@ -650,27 +650,19 @@ export default function Home() {
           <div className="space-y-3">
             {categories.map((category, index) => {
               return (
-                <div
+                <CategoryCard
                   key={category.id}
-                  className={
-                    !isProposalMode && category.id === highlightedCategoryId
-                      ? 'rounded-2xl bg-card/60 shadow-sm transition-all'
-                      : ''
-                  }
-                >
-                  <CategoryCard
-                    category={category}
-                    onClick={() => navigate(`/category/${category.id}`)}
-                    index={index}
-                    onUpdate={updateCategory}
-                    onColorChange={(color) => updateCategoryColor(category.id, color)}
-                    onTextColorChange={(textColor) => updateCategoryTextColor(category.id, textColor)}
-                    onBorderColorChange={(borderColor) => updateCategoryBorderColor(category.id, borderColor)}
-                    onIconChange={(icon) => updateCategoryIcon(category.id, icon)}
-                    editable={true}
-                    highlighted={!isProposalMode && category.id === highlightedCategoryId}
-                  />
-                </div>
+                  category={category}
+                  onClick={() => navigate(`/category/${category.id}`)}
+                  index={index}
+                  onUpdate={updateCategory}
+                  onColorChange={(color) => updateCategoryColor(category.id, color)}
+                  onTextColorChange={(textColor) => updateCategoryTextColor(category.id, textColor)}
+                  onBorderColorChange={(borderColor) => updateCategoryBorderColor(category.id, borderColor)}
+                  onIconChange={(icon) => updateCategoryIcon(category.id, icon)}
+                  editable={true}
+                  highlighted={!isProposalMode && category.id === highlightedCategoryId}
+                />
               );
             })}
           </div>
