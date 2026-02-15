@@ -19,6 +19,7 @@ import Footer from '@/components/Footer';
 import RecentSharedReflection from '@/components/RecentSharedReflection';
 import IncomingProposal from '@/components/IncomingProposal';
 import WelcomeBackBanner from '@/components/WelcomeBackBanner';
+import ReturnOverlay from '@/components/ReturnOverlay';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -84,20 +85,36 @@ export default function Home() {
 
   // Welcome-back detection: show banner if 3+ days since last activity
   const THREE_DAYS_MS = 3 * 24 * 60 * 60 * 1000;
+  const SEVEN_DAYS_MS = 7 * 24 * 60 * 60 * 1000;
   const [welcomeBackDismissed, setWelcomeBackDismissed] = useState(false);
+  const [returnOverlayDismissed, setReturnOverlayDismissed] = useState(false);
+
+  const lastActivityElapsed = useMemo(() => {
+    const lastActivity = journeyState?.updatedAt;
+    if (!lastActivity) return 0;
+    return Date.now() - new Date(lastActivity).getTime();
+  }, [journeyState]);
+
+  // 7+ day overlay: only if there's a session to resume
+  const showReturnOverlay = useMemo(() => {
+    if (returnOverlayDismissed) return false;
+    if (lastActivityElapsed < SEVEN_DAYS_MS) return false;
+    // Need an active session or a last card to resume
+    return !!(currentSession || journeyState?.lastCompletedCardId || journeyState?.lastOpenedCardId);
+  }, [returnOverlayDismissed, lastActivityElapsed, currentSession, journeyState]);
+
+  const returnResumeCardId = currentSession?.cardId || journeyState?.lastOpenedCardId || journeyState?.lastCompletedCardId || null;
 
   const welcomeBackContext = useMemo(() => {
     if (welcomeBackDismissed) return null;
-    const lastActivity = journeyState?.updatedAt;
-    if (!lastActivity) return null;
-    const elapsed = Date.now() - new Date(lastActivity).getTime();
-    if (elapsed < THREE_DAYS_MS) return null;
+    if (showReturnOverlay) return null; // overlay takes priority
+    if (lastActivityElapsed < THREE_DAYS_MS) return null;
 
     const lastCardId = journeyState?.lastCompletedCardId || journeyState?.lastOpenedCardId;
     const lastCard = lastCardId ? getCardById(lastCardId) : null;
     const lastCategory = lastCard ? getCategoryById(lastCard.categoryId) : null;
     return { lastCard, lastCategory };
-  }, [journeyState, welcomeBackDismissed, getCardById, getCategoryById]);
+  }, [journeyState, welcomeBackDismissed, showReturnOverlay, lastActivityElapsed, getCardById, getCategoryById]);
 
   // Computed helpers for proposal mode & highlighted category
   const exploredIds = journeyState?.exploredCardIds || [];
@@ -208,6 +225,23 @@ export default function Home() {
 
   return (
     <div className="min-h-screen flex flex-col page-bg">
+      {/* 7+ day return overlay */}
+      <AnimatePresence>
+        {showReturnOverlay && (
+          <ReturnOverlay
+            onResume={() => {
+              setReturnOverlayDismissed(true);
+              if (returnResumeCardId) navigate(`/card/${returnResumeCardId}`);
+            }}
+            onStartNew={() => {
+              setReturnOverlayDismissed(true);
+            }}
+            onBrowse={() => {
+              setReturnOverlayDismissed(true);
+            }}
+          />
+        )}
+      </AnimatePresence>
       <div className="flex-1">
       <Header showBackgroundPicker={true} />
       {/* Header with Logo */}
