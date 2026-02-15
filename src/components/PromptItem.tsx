@@ -122,7 +122,7 @@ export default function PromptItem({
       initial={{ opacity: 0, x: -10 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ delay: index * 0.08, duration: 0.4, ease: 'easeOut' }}
-      className={`rounded-2xl border border-border/40 overflow-hidden prompt-colors ${showCollapsedLabel ? 'shadow-none' : 'shadow-[0_2px_12px_-4px_rgba(0,0,0,0.06)]'}`}
+      className={`rounded-2xl overflow-hidden prompt-colors card-interaction ${showCollapsedLabel ? 'shadow-none' : ''}`}
       style={{ '--prompt-bg': prompt.color || undefined } as React.CSSProperties}
     >
       {/* Collapsed label-only header (for Q2/Q3 when collapsed) */}

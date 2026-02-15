@@ -56,6 +56,10 @@ export default {
         chrome: "hsl(var(--surface-chrome))",
         gentle: "hsl(var(--text-gentle))",
         divider: "hsl(var(--divider))",
+        // Card hierarchy
+        "card-l1": "hsl(var(--card-l1-bg))",
+        "card-l2": "hsl(var(--card-l2-bg))",
+        "card-l3": "hsl(var(--card-l3-bg))",
         // Category Identity Colors
         category: {
           emotional: "hsl(var(--category-emotional))",

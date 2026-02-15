@@ -103,11 +103,11 @@ function CardEntry({ card, index, highlighted, onNavigate }: CardEntryProps) {
           onNavigate();
         }
       }}
-      className={`relative w-full text-center card-reflection group item-colors transition-all cursor-pointer overflow-hidden${highlighted ? ' ring-2 ring-primary/40 shadow-md shadow-primary/10' : ''}`}
+      className={`relative w-full text-center card-sub group item-colors transition-all cursor-pointer overflow-hidden rounded-2xl${highlighted ? ' ring-2 ring-primary/40 shadow-md shadow-primary/10' : ''}`}
       style={{
         '--item-bg': card.color || undefined,
         '--item-border': card.borderColor || undefined,
-        borderWidth: highlighted ? '2.5px' : '2px',
+        borderWidth: highlighted ? '2.5px' : undefined,
         borderStyle: 'solid',
       } as React.CSSProperties}
     >

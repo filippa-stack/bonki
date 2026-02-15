@@ -48,7 +48,22 @@
     --text-gentle: 28 5% 47%;
     --divider: 33 18% 89%;
 
-    /* Card architecture */
+    /* Card hierarchy — 3 levels */
+    --card-l1-bg: 60 100% 97%;        /* #FFFEF3 — Main category cards */
+    --card-l1-border: 24 54% 60%;     /* Terracotta tan */
+    --card-l1-border-width: 2px;
+
+    --card-l2-bg: 0 0% 100%;          /* #FFFFFF — Sub-category cards */
+    --card-l2-border: 214 20% 92%;    /* Soft slate-100 */
+    --card-l2-border-width: 1px;
+    --card-l2-shadow: 0 1px 4px 0 hsl(0 0% 0% / 0.03);
+
+    --card-l3-bg: 210 40% 98%;        /* #F8FAFC — Interaction/question cards */
+    --card-l3-border: 214 20% 92%;    /* Soft slate-100 */
+    --card-l3-border-width: 1px;
+    --card-l3-shadow: 0 4px 16px -4px hsl(0 0% 0% / 0.08), 0 1px 4px -1px hsl(0 0% 0% / 0.04);
+
+    /* Legacy card architecture (kept for backward compat) */
     --card-border-width: 2px;
     --card-border-color: 24 54% 60%;  /* #d08f63 */
     --card-sub-border-width: 1px;
@@ -157,16 +172,24 @@
 
   .card-reflection {
     @apply rounded-xl p-6;
-    background-color: hsl(var(--card));
-    border: var(--card-border-width) solid hsl(var(--card-border-color));
+    background-color: hsl(var(--card-l1-bg));
+    border: var(--card-l1-border-width) solid hsl(var(--card-l1-border));
     transition: all var(--transition-calm);
   }
 
   .card-sub {
     @apply rounded-xl p-6;
-    background-color: hsl(var(--card));
-    border: var(--card-sub-border-width) solid hsl(var(--card-sub-border-color));
-    box-shadow: var(--card-sub-shadow);
+    background-color: hsl(var(--card-l2-bg));
+    border: var(--card-l2-border-width) solid hsl(var(--card-l2-border));
+    box-shadow: var(--card-l2-shadow);
+    transition: all var(--transition-calm);
+  }
+
+  .card-interaction {
+    @apply rounded-2xl;
+    background-color: hsl(var(--card-l3-bg));
+    border: var(--card-l3-border-width) solid hsl(var(--card-l3-border));
+    box-shadow: var(--card-l3-shadow);
     transition: all var(--transition-calm);
   }
 
@@ -215,8 +238,13 @@
 
   /* Per-item scoped dynamic colors (set via CSS vars on element) */
   .item-colors {
-    background-color: var(--item-bg, hsl(var(--card)));
-    border-color: var(--item-border, hsl(var(--border)));
+    background-color: var(--item-bg, hsl(var(--card-l1-bg)));
+    border-color: var(--item-border, hsl(var(--card-l1-border)));
+  }
+
+  .card-sub.item-colors {
+    background-color: var(--item-bg, hsl(var(--card-l2-bg)));
+    border-color: var(--item-border, hsl(var(--card-l2-border)));
   }
 
   .item-text {
@@ -228,7 +256,7 @@
   }
 
   .prompt-colors {
-    background-color: var(--prompt-bg, hsl(var(--surface-warm)));
+    background-color: var(--prompt-bg, hsl(var(--card-l3-bg)));
   }
 
   .prompt-text {
