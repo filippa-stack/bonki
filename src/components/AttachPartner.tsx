@@ -5,6 +5,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { toast } from 'sonner';
 import { Link2, KeyRound, Copy, Check, Loader2, ChevronDown, ChevronUp } from 'lucide-react';
@@ -22,6 +23,7 @@ interface AttachPartnerProps {
 }
 
 type AttachState = 'idle' | 'joining' | 'success' | 'error';
+type InviteStep = 'default' | 'message' | 'sent';
 
 function extractTokenFromLink(input: string): string | null {
   try {
@@ -48,18 +50,28 @@ export default function AttachPartner({
   const [joinState, setJoinState] = useState<AttachState>('idle');
   const [joinError, setJoinError] = useState('');
   const [attempts, setAttempts] = useState(0);
+  const [inviteStep, setInviteStep] = useState<InviteStep>('default');
+  const [inviteMessage, setInviteMessage] = useState('');
 
   const inviteLink = `${window.location.origin}/join?token=${inviteToken}`;
 
   const handleCopy = async () => {
     try {
-      await navigator.clipboard.writeText(inviteLink);
+      const textToCopy = inviteMessage.trim()
+        ? `${inviteMessage.trim()}\n\n${inviteLink}`
+        : inviteLink;
+      await navigator.clipboard.writeText(textToCopy);
       setCopied(true);
       toast.success(t('invite.copied', 'Länk kopierad'));
       setTimeout(() => setCopied(false), 2000);
     } catch {
       toast.error(t('invite.copy_failed', 'Kunde inte kopiera'));
     }
+  };
+
+  const handleSendInvite = async () => {
+    await handleCopy();
+    setInviteStep('sent');
   };
 
   const handleJoin = useCallback(async () => {
@@ -157,6 +169,73 @@ export default function AttachPartner({
             className="overflow-hidden"
           >
             <div className="px-4 pb-5 space-y-5">
+              {inviteStep === 'sent' ? (
+                /* ─── Confirmation ─── */
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.3 }}
+                  className="text-center space-y-4 py-2"
+                >
+                  <h3 className="font-serif text-lg text-foreground">Inbjudan skickad.</h3>
+                  <p className="text-sm text-muted-foreground leading-relaxed">
+                    Det här är början på något ni gör tillsammans.
+                  </p>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="mt-2"
+                    onClick={() => {
+                      setInviteStep('default');
+                      setInviteMessage('');
+                      setExpanded(false);
+                    }}
+                  >
+                    Tillbaka
+                  </Button>
+                </motion.div>
+              ) : inviteStep === 'message' ? (
+                /* ─── Optional message before sending ─── */
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.3 }}
+                  className="space-y-4"
+                >
+                  <h3 className="font-serif text-base text-foreground text-center">
+                    Varför vill du göra det här tillsammans?
+                  </h3>
+                  <Textarea
+                    value={inviteMessage}
+                    onChange={(e) => setInviteMessage(e.target.value)}
+                    placeholder="Jag vill att vi…"
+                    className="text-sm min-h-[80px] resize-none"
+                  />
+                  <div className="space-y-2">
+                    <Button
+                      size="sm"
+                      className="w-full"
+                      onClick={handleSendInvite}
+                    >
+                      Skicka inbjudan
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="w-full text-muted-foreground"
+                      onClick={async () => {
+                        setInviteMessage('');
+                        await handleCopy();
+                        setInviteStep('sent');
+                      }}
+                    >
+                      Hoppa över
+                    </Button>
+                  </div>
+                </motion.div>
+              ) : (
+                /* ─── Default: share / join ─── */
+                <>
               {/* OPTION 1: Share your code */}
               <div className="space-y-2">
                 <p className="text-xs font-medium text-foreground/80">
@@ -173,7 +252,7 @@ export default function AttachPartner({
                     variant="outline"
                     size="sm"
                     className="shrink-0"
-                    onClick={handleCopy}
+                    onClick={() => setInviteStep('message')}
                   >
                     {copied ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
                   </Button>
@@ -221,6 +300,8 @@ export default function AttachPartner({
                   <p className="text-[11px] text-destructive">{joinError}</p>
                 )}
               </div>
+                </>
+              )}
             </div>
           </motion.div>
         )}
