@@ -24,12 +24,12 @@ import { useProposals } from '@/hooks/useProposals';
 const sectionTypeLabels: Record<string, string> = {
   opening: 'Början',
   reflective: 'Fördjupning',
-  scenario: 'I verkligheten',
+  scenario: 'I vardagen',
   exercise: 'Tillsammans',
 };
 
 const STEP_ORDER = ['opening', 'reflective', 'scenario', 'exercise'] as const;
-const STEP_LABELS = ['Början', 'Fördjupning', 'I verkligheten', 'Tillsammans'];
+const STEP_LABELS = ['Början', 'Fördjupning', 'I vardagen', 'Tillsammans'];
 
 const STEP_CTA_KEYS: Record<string, string> = {
   opening: 'card_view.cta_opening',

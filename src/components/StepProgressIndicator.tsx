@@ -3,7 +3,7 @@ import { cn } from '@/lib/utils';
 const STEPS = [
   { id: 'opening', label: 'Början', hint: 'Börja här.' },
   { id: 'reflective', label: 'Fördjupning', hint: 'Gå lite djupare.' },
-  { id: 'scenario', label: 'I verkligheten', hint: 'Utforska en situation.' },
+  { id: 'scenario', label: 'I vardagen', hint: 'Utforska en situation.' },
   { id: 'exercise', label: 'Tillsammans', hint: 'Vad gör ni av det här?' },
 ];
 

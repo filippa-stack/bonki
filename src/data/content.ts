@@ -107,7 +107,7 @@ export const cards: Card[] = [
       {
         id: 'scenario-1',
         type: 'scenario',
-        title: 'I verkligheten',
+        title: 'I vardagen',
         content: 'Efter läggning gör ni olika saker. En fortsätter "lite till", den andra sätter sig. Ingen säger något, men båda drar egna slutsatser.',
         prompts: [
           'Vilka små tecken uppstår mellan er när dagen är slut för den ena, men inte för den andra?',
@@ -154,7 +154,7 @@ export const cards: Card[] = [
       {
         id: 'scenario-2',
         type: 'scenario',
-        title: 'I verkligheten',
+        title: 'I vardagen',
         content: 'Ni gör samma saker, men på olika sätt. Barnet börjar navigera mellan er.',
         prompts: [
           'Hur påverkas ert samspel när olikheterna blir synliga i vardagen?',
@@ -201,7 +201,7 @@ export const cards: Card[] = [
       {
         id: 'scenario-3',
         type: 'scenario',
-        title: 'I verkligheten',
+        title: 'I vardagen',
         content: 'En uppgift har blivit "din". Den andra kliver undan. Med tiden blir skillnaden självklar.',
         prompts: [
           'Hur påverkas relationen när roller inte längre ifrågasätts?',
@@ -248,7 +248,7 @@ export const cards: Card[] = [
       {
         id: 'scenario-4',
         type: 'scenario',
-        title: 'I verkligheten',
+        title: 'I vardagen',
         content: 'En vardagssituation väcker starka reaktioner. Den ena reagerar på händelsen, den andra på känslan som väcks.',
         prompts: [
           'Hur pratar ni om det som hände utan att avgöra vems reaktion som var rimligast?',
@@ -295,7 +295,7 @@ export const cards: Card[] = [
       {
         id: 'scenario-5',
         type: 'scenario',
-        title: 'I verkligheten',
+        title: 'I vardagen',
         content: 'Barnet beter sig respektlöst. En markerar direkt mot barnet. Den andra reagerar mer på hur gränsen sätts: ton, ordval eller situation.',
         prompts: [
           'När ni reagerar olika i stunden, vad är det som var och en av er försöker skydda just då?',
@@ -342,7 +342,7 @@ export const cards: Card[] = [
       {
         id: 'scenario-6a',
         type: 'scenario',
-        title: 'I verkligheten',
+        title: 'I vardagen',
         content: 'Ett beteende väcker olika impulser. Den ena vill agera direkt, den andra vill avvakta.',
         prompts: [
           'Hur påverkas samspelet när ni inte delar åsikt om timing?',
@@ -386,7 +386,7 @@ export const cards: Card[] = [
       {
         id: 'scenario-7a',
         type: 'scenario',
-        title: 'I verkligheten',
+        title: 'I vardagen',
         content: 'Allt fungerar. Men något som tidigare var självklart har blivit tyst.',
         prompts: [
           'Vilka tidiga tecken lägger ni märke till som kan tyda på att ert \u201Cvi\u201D håller på att krympa?',
@@ -433,7 +433,7 @@ export const cards: Card[] = [
       {
         id: 'scenario-8a',
         type: 'scenario',
-        title: 'I verkligheten',
+        title: 'I vardagen',
         content: 'En av er håller tillbaka behov för att vardagen ska fungera.',
         prompts: [
           'Hur skiljer ni mellan anpassning som val och anpassning som förlust?',
@@ -480,7 +480,7 @@ export const cards: Card[] = [
       {
         id: 'scenario-9',
         type: 'scenario',
-        title: 'I verkligheten',
+        title: 'I vardagen',
         content: 'Trötthet och längtan krockar. Den ena vill vara nära, den andra orkar inte. Trots goda intentioner smyger sig både press och tolkningar in.',
         prompts: [
           'Hur skiljer ni mellan att säga nej till fysisk närhet och ja till relationen?',
@@ -527,7 +527,7 @@ export const cards: Card[] = [
       {
         id: 'scenario-10',
         type: 'scenario',
-        title: 'I verkligheten',
+        title: 'I vardagen',
         content: 'Ni löser vardagen smidigt. Allt fungerar. Men samtalen handlar nästan bara om tider, ansvar och barn. Ingen längtar — men ingen klagar heller.',
         prompts: [
           'Hur länge kan en relation leva på funktion innan något viktigt tystnar i oss?',
@@ -574,7 +574,7 @@ export const cards: Card[] = [
       {
         id: 'scenario-11',
         type: 'scenario',
-        title: 'I verkligheten',
+        title: 'I vardagen',
         content: 'En släkting ifrågasätter er inför barnet. Det som sårar mest är inte orden, utan att ni inte är helt synkade i stunden.',
         prompts: [
           'Hur kan ni återta både er auktoritet och er samhörighet?',
@@ -617,7 +617,7 @@ export const cards: Card[] = [
       {
         id: 'scenario-12',
         type: 'scenario',
-        title: 'I verkligheten',
+        title: 'I vardagen',
         content: 'När ni skapar något nytt blir det tydligt vad ni väljer bort. Barnet frågar varför vissa saker finns kvar och andra inte.',
         prompts: [
           'Hur berättar ni historien om er familj utan att någon känner sig raderad?',
@@ -664,7 +664,7 @@ export const cards: Card[] = [
       {
         id: 'scenario-13',
         type: 'scenario',
-        title: 'I verkligheten',
+        title: 'I vardagen',
         content: 'En av er vill starta eget eller studera vidare, vilket innebär lägre inkomster under en period.',
         prompts: [
           'Hur sätter ni gemensamma ramar för risk och trygghet, och vilka tecken visar att balansen håller på att rubbas?',
@@ -708,7 +708,7 @@ export const cards: Card[] = [
       {
         id: 'scenario-14',
         type: 'scenario',
-        title: 'I verkligheten',
+        title: 'I vardagen',
         content: 'Ni står inför en kostsam satsning och märker att frågan väcker olika bilder av vad som är \u201Cvärt det\u201D. Barnet märker att något stort är på gång.',
         prompts: [
           'Hur avgör ni när det är värt det bortom prislappen?',
@@ -752,7 +752,7 @@ export const cards: Card[] = [
       {
         id: 'scenario-15',
         type: 'scenario',
-        title: 'I verkligheten',
+        title: 'I vardagen',
         content: 'En motgång gör att en av er börjar ta mindre plats (förlorat jobbet, misslyckats med ett projekt, gått upp i vikt). Det sägs inte rakt ut, men märks i din ton och ditt initiativ. Barnet anpassar sig.',
         prompts: [
           'Hur pratar ni om det som hänt utan att skapa hierarkier eller förstärka tvivel?',
@@ -799,7 +799,7 @@ export const cards: Card[] = [
       {
         id: 'scenario-16',
         type: 'scenario',
-        title: 'I verkligheten',
+        title: 'I vardagen',
         content: 'Ni möter en svår period. En vill planera och agera, den andra behöver pausa och reflektera.',
         prompts: [
           'Hur skapar ni utrymme för båda sätten utan att lämna varandra?',
@@ -843,7 +843,7 @@ export const cards: Card[] = [
       {
         id: 'scenario-17',
         type: 'scenario',
-        title: 'I verkligheten',
+        title: 'I vardagen',
         content: 'Efter en jobbig kväll tappar en av er tålamodet inför barnet. Den andra reagerar på det, men ni tar inte diskussionen där och då.',
         prompts: [
           'Hur tar ni ansvar för det som hände — både inför varandra och inför barnet?',
@@ -887,7 +887,7 @@ export const cards: Card[] = [
       {
         id: 'scenario-18',
         type: 'scenario',
-        title: 'I verkligheten',
+        title: 'I vardagen',
         content: 'En drar sig undan för att orka, den andra känner sig övergiven. Båda försöker skydda relationen.',
         prompts: [
           'Hur vet ni när utrymme hjälper — och när det börjar skapa avstånd?',
@@ -931,7 +931,7 @@ export const cards: Card[] = [
       {
         id: 'scenario-19',
         type: 'scenario',
-        title: 'I verkligheten',
+        title: 'I vardagen',
         content: 'Barnet gör upprepade val som går emot era värderingar. Frustrationen växer.',
         prompts: [
           'Hur markerar ni ansvar utan att barnet tappar känslan av att ni står på samma sida?',
@@ -975,7 +975,7 @@ export const cards: Card[] = [
       {
         id: 'scenario-20',
         type: 'scenario',
-        title: 'I verkligheten',
+        title: 'I vardagen',
         content: 'En av er vill satsa helhjärtat på något som under en tid tar mycket energi. Den andra stöttar, men oroar sig för balansen.',
         prompts: [
           'Vad behöver vara uttalat mellan er innan perioden börjar?',
@@ -1019,7 +1019,7 @@ export const cards: Card[] = [
       {
         id: 'scenario-21',
         type: 'scenario',
-        title: 'I verkligheten',
+        title: 'I vardagen',
         content: 'Ni bråkar sällan. Men ni skrattar inte heller som förr. Närhet skjuts upp till \u201Csen\u201D.',
         prompts: [
           'Vilka tecken hos er gör att det känns som en tillfällig paus — och vilka tecken gör att det börjar kännas som ett nytt normalläge?',
@@ -1064,7 +1064,7 @@ export const cards: Card[] = [
       {
         id: 'scenario-22',
         type: 'scenario',
-        title: 'I verkligheten',
+        title: 'I vardagen',
         content: 'Relationen fungerar. Inget är trasigt. Ni samarbetar, delar ansvar och tar er igenom vardagen. Samtidigt finns en tyst insikt om att relationer också är något man kan lämna — även utan konflikt.',
         prompts: [
           'Hur påverkar den insikten hur ni möter varandra i det som redan fungerar?',
