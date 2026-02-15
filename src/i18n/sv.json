@@ -310,5 +310,13 @@
   "review_drawer": {
     "title": "Granska & redigera",
     "hint": "Läs tillbaka och redigera era anteckningar. Ingenting här påverkar ert gemensamma steg."
+  },
+  "attach": {
+    "collapsed_hint": "Koppla ihop er med din partner",
+    "share_title": "Dela din kod",
+    "share_hint": "Be din partner ladda ner appen och ange den här koden.",
+    "join_title": "Har din partner en kod?",
+    "join_placeholder": "Kod eller länk",
+    "already_connected": "Ni är redan kopplade"
   }
 }
