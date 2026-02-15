@@ -63,8 +63,9 @@ export default function CategoryCard({
     }
   };
 
-  const isFinished = status === 'explored';
-  const isBegun = status === 'in_progress';
+  const s = status as string;
+  const isFinished = s === 'explored' || s === 'completed' || s === 'done';
+  const isBegun = !isFinished && (s === 'in_progress' || s === 'started' || s === 'active');
 
   return (
     <motion.div
@@ -77,8 +78,13 @@ export default function CategoryCard({
         '--item-bg': category.color || undefined,
         '--item-border': category.borderColor || undefined,
         borderWidth: '2px',
-        borderStyle: isBegun ? 'dashed' : 'solid',
-        ...(isFinished ? { borderColor: 'rgba(150, 140, 125, 0.35)' } : {}),
+        borderStyle: 'solid',
+        filter: isFinished
+          ? 'saturate(0.92) brightness(1.03)'
+          : isBegun
+            ? 'saturate(1.02) brightness(0.99)'
+            : 'none',
+        opacity: isFinished ? 0.88 : 1,
       } as React.CSSProperties}
     >
       <div className="relative flex flex-col items-center justify-center gap-2">
