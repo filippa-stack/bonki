@@ -128,13 +128,13 @@ export default function PromptItem({
       {/* Collapsed label-only header (for Q2/Q3 when collapsed) */}
       {showCollapsedLabel ? (
         <div
-          className="px-6 py-3 cursor-pointer flex items-center justify-between"
+          className="px-6 py-3 cursor-pointer flex items-center justify-between bg-[hsl(45_50%_94%)] border border-[hsl(36_30%_82%)] rounded-2xl shadow-sm"
           onClick={toggleExpanded}
         >
-          <p className="text-xs text-muted-foreground/50 tracking-wide font-normal">
+          <p className="text-xs text-primary tracking-wide font-medium">
             {label}
           </p>
-          <ChevronDown className="w-3.5 h-3.5 text-muted-foreground/30" />
+          <ChevronDown className="w-3.5 h-3.5 text-primary/60" />
         </div>
       ) : (
         <>
