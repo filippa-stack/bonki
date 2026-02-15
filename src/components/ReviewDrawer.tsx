@@ -89,9 +89,10 @@ interface ReviewDrawerProps {
   onClose: () => void;
   card: Card;
   activeStepIndex?: number;
+  completedSteps?: number[];
 }
 
-export default function ReviewDrawer({ open, onClose, card, activeStepIndex = 0 }: ReviewDrawerProps) {
+export default function ReviewDrawer({ open, onClose, card, activeStepIndex = 0, completedSteps = [] }: ReviewDrawerProps) {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { user } = useAuth();
@@ -297,6 +298,9 @@ export default function ReviewDrawer({ open, onClose, card, activeStepIndex = 0 
                     || (stepFilter === 'private' && status?.hasPrivate)
                     || (stepFilter === 'shared' && (status?.hasShared || status?.hasPartnerShared));
 
+                  // Step is unlocked if user has completed it OR it's their current step
+                  const isUnlocked = completedSteps.includes(index) || index <= Math.max(...completedSteps, -1) + 1;
+
                   return (
                     <motion.div
                       key={stepType}
@@ -308,36 +312,45 @@ export default function ReviewDrawer({ open, onClose, card, activeStepIndex = 0 
                     >
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-3">
-                          <div className="w-6 h-6 rounded-full bg-muted flex items-center justify-center text-xs font-medium text-muted-foreground shrink-0">
+                          <div className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-medium shrink-0 ${
+                            isUnlocked ? 'bg-muted text-muted-foreground' : 'bg-muted/50 text-muted-foreground/40'
+                          }`}>
                             {index + 1}
                           </div>
-                          <h3 className="font-serif text-base text-foreground">
+                          <h3 className={`font-serif text-base ${isUnlocked ? 'text-foreground' : 'text-muted-foreground/50'}`}>
                             {STEP_LABELS[stepType]}
                           </h3>
                         </div>
-                        {showNoteStatus && <StepNoteStatus cardId={card.id} sectionId={section.id} />}
+                        {isUnlocked && showNoteStatus && <StepNoteStatus cardId={card.id} sectionId={section.id} />}
                       </div>
 
-                      <div className="pl-9 space-y-2">
-                        {section.content && (
-                          <p className="text-sm text-muted-foreground leading-relaxed whitespace-pre-wrap">
-                            {section.content}
-                          </p>
-                        )}
-                        {section.prompts && section.prompts.length > 0 && (
-                          <ul className="space-y-1.5">
-                            {section.prompts.map((prompt, pi) => (
-                              <li key={pi} className="text-sm text-foreground/80 leading-relaxed">
-                                {typeof prompt === 'string' ? prompt : prompt.text}
-                              </li>
-                            ))}
-                          </ul>
-                        )}
-                      </div>
-
-                      <div className="pl-9">
-                        <StepReflection section={section} card={card} defaultExpanded={false} />
-                      </div>
+                      {isUnlocked ? (
+                        <>
+                          <div className="pl-9 space-y-2">
+                            {section.content && (
+                              <p className="text-sm text-muted-foreground leading-relaxed whitespace-pre-wrap">
+                                {section.content}
+                              </p>
+                            )}
+                            {section.prompts && section.prompts.length > 0 && (
+                              <ul className="space-y-1.5">
+                                {section.prompts.map((prompt, pi) => (
+                                  <li key={pi} className="text-sm text-foreground/80 leading-relaxed">
+                                    {typeof prompt === 'string' ? prompt : prompt.text}
+                                  </li>
+                                ))}
+                              </ul>
+                            )}
+                          </div>
+                          <div className="pl-9">
+                            <StepReflection section={section} card={card} defaultExpanded={false} />
+                          </div>
+                        </>
+                      ) : (
+                        <p className="pl-9 text-sm text-muted-foreground/50 italic">
+                          Inte öppnad än.
+                        </p>
+                      )}
                     </motion.div>
                   );
                 })}
