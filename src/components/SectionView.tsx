@@ -152,14 +152,6 @@ const SectionView = forwardRef<SectionViewHandle, SectionViewProps>(function Sec
     setExpandedIndex(expanded ? index : null);
   }, []);
 
-  // Section intro text mapping
-  const sectionIntroText: Record<string, string> = {
-    opening: 'Hitta in i samtalet tillsammans.',
-    reflective: 'Lyssna djupare på varandra.',
-    scenario: 'Känn igen er i varandras vardag.',
-    exercise: 'Gör något av det ni upptäckt.',
-  };
-
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -167,12 +159,6 @@ const SectionView = forwardRef<SectionViewHandle, SectionViewProps>(function Sec
       transition={{ duration: 0.4 }}
       className="py-8"
     >
-      {/* Section intro — soft, not a heading */}
-      {sectionIntroText[section.type] && (
-        <p className="text-[12px] text-muted-foreground/50 text-center leading-relaxed mb-6 max-w-xs mx-auto">
-          {sectionIntroText[section.type]}
-        </p>
-      )}
 
       {/* Section content */}
       {section.content && (

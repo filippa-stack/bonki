@@ -95,10 +95,22 @@ export default function PromptItem({
     }
   }, []);
 
+  // Autosave status
+  const [saveStatus, setSaveStatus] = useState<'idle' | 'saved'>('idle');
+  const saveTimerRef = useRef<ReturnType<typeof setTimeout>>();
+
   const handlePrivateChange = (value: string) => {
     setPrivateText(value);
     onSaveNote(promptId, value, 'private');
+    setSaveStatus('idle');
+    clearTimeout(saveTimerRef.current);
+    saveTimerRef.current = setTimeout(() => {
+      setSaveStatus('saved');
+      setTimeout(() => setSaveStatus('idle'), 2500);
+    }, 800);
   };
+
+  useEffect(() => () => clearTimeout(saveTimerRef.current), []);
 
   const hasNote = !!(privateNote?.content || sharedNote?.content);
   const isDeepSection = sectionType === 'scenario' || sectionType === 'exercise';
@@ -172,13 +184,19 @@ export default function PromptItem({
                       onChange={(e) => handlePrivateChange(e.target.value)}
                       onFocus={handleFocus}
                       onKeyDown={handleKeyDown}
-                      placeholder={t('reflections.prompt_note_placeholder', 'Vad väcker detta hos dig?')}
+                      placeholder={t('reflections.prompt_note_placeholder', 'Skriv ned dina tankar. Du väljer själv om du vill dela med din partner, nu eller senare. Annars sparas dina svar här enbart för dig')}
                       className={`w-full px-5 py-5 rounded-2xl bg-background border border-border/30 resize-none focus:outline-none focus:border-primary/20 focus:ring-0 placeholder:text-muted-foreground/25 font-sans text-sm text-foreground leading-relaxed transition-colors duration-300 ${isDeepSection ? 'min-h-[180px]' : 'min-h-[120px]'}`}
                     />
+                    {/* Autosave status */}
+                    {saveStatus === 'saved' && displayPrivateText && (
+                      <p className="text-[11px] text-muted-foreground/35 text-right mt-2">
+                        Sparad
+                      </p>
+                    )}
                     {/* Privacy indicator */}
                     {!sharedNote && (
                       <div className="flex items-center justify-between mt-3">
-                        <p className="flex items-center gap-1.5 text-[11px] text-muted-foreground/40 italic">
+                        <p className="flex items-center gap-1.5 text-[11px] text-muted-foreground/35 italic">
                           <Lock className="w-3 h-3" />
                           Bara du kan se detta.
                         </p>
