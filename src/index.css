@@ -35,11 +35,11 @@
     --destructive: 0 60% 50%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 24 54% 60%;             /* Terracotta border for primary cards */
-    --input: 33 18% 89%;
+    --border: 24 40% 75%;             /* Softened terracotta border */
+    --input: 33 14% 91%;
     --ring: 24 54% 60%;
 
-    --radius: 0.75rem;
+    --radius: 0.875rem;
 
     /* Custom tokens */
     --surface-warm: 60 100% 97%;      /* #FFFEF3 */
@@ -56,19 +56,19 @@
     --card-l2-bg: 0 0% 100%;          /* #FFFFFF — Sub-category cards */
     --card-l2-border: 24 54% 60%;     /* #D08E62 — Warm Terracotta (unified) */
     --card-l2-border-width: 1px;
-    --card-l2-shadow: 0 1px 4px 0 hsl(0 0% 0% / 0.03);
+    --card-l2-shadow: 0 1px 3px 0 hsl(0 0% 0% / 0.02);
 
     --card-l3-bg: 210 40% 98%;        /* #F8FAFC — Interaction/question cards */
     --card-l3-border: 214 20% 92%;    /* Soft slate-100 */
     --card-l3-border-width: 1px;
-    --card-l3-shadow: 0 4px 16px -4px hsl(0 0% 0% / 0.08), 0 1px 4px -1px hsl(0 0% 0% / 0.04);
+    --card-l3-shadow: 0 2px 8px -4px hsl(0 0% 0% / 0.05), 0 1px 3px -1px hsl(0 0% 0% / 0.02);
 
     /* Legacy card architecture (kept for backward compat) */
     --card-border-width: 2px;
     --card-border-color: 24 54% 60%;  /* #d08f63 */
     --card-sub-border-width: 1px;
     --card-sub-border-color: 0 0% 100%; /* white */
-    --card-sub-shadow: 0 1px 6px 0 hsl(0 0% 0% / 0.04);
+    --card-sub-shadow: 0 1px 4px 0 hsl(0 0% 0% / 0.02);
 
     /* Note / user-input surfaces */
     --note-bg: 0 0% 100%;             /* #ffffff */
