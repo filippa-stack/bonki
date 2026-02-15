@@ -241,17 +241,17 @@ export default function CardView() {
           showBack
           backTo="/"
         />
-        <div className="px-6 pt-16 pb-12">
+        <div className="px-6 pt-20 pb-16">
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 0.8 }}
-            className="text-center max-w-md mx-auto space-y-7"
+            transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
+            className="text-center max-w-md mx-auto space-y-8"
           >
             <motion.div
-              initial={{ scale: 0.9, opacity: 0 }}
+              initial={{ scale: 0.92, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
-              transition={{ delay: 0.3, duration: 0.5 }}
+              transition={{ delay: 0.3, duration: 0.5, ease: [0.25, 0.1, 0.25, 1] }}
             >
               <h2 className="text-xl font-serif text-foreground leading-snug">
                 {card.title}
@@ -274,8 +274,8 @@ export default function CardView() {
             <motion.div
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 1.0, duration: 0.5 }}
-              className="pt-3 space-y-3"
+              transition={{ delay: 1.0, duration: 0.5, ease: [0.25, 0.1, 0.25, 1] }}
+              className="pt-4 space-y-3"
             >
               {suggestedCard && suggestedCategory && memberCount >= 2 ? (
                 <Button
@@ -324,7 +324,7 @@ export default function CardView() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 1.4, duration: 0.6 }}
-              className="text-xs text-muted-foreground/50 not-italic pt-2"
+              className="text-xs text-muted-foreground/50 not-italic pt-4"
             >
               {t('card_view.completion_rest')}
             </motion.p>
@@ -369,12 +369,12 @@ export default function CardView() {
           showBack
           backTo={category ? `/category/${category.id}` : '/'}
         />
-        <div className="px-6 pt-12 pb-8">
+        <div className="px-6 pt-14 pb-10">
           <motion.div
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="text-center max-w-md mx-auto space-y-6"
+            transition={{ duration: 0.5, ease: [0.25, 0.1, 0.25, 1] }}
+            className="text-center max-w-md mx-auto space-y-7"
           >
             <h1 className="text-2xl font-serif text-foreground leading-snug">
               {card.title}
@@ -443,25 +443,26 @@ export default function CardView() {
           backTo={category ? `/category/${category.id}` : '/'}
         />
 
-        <div className="px-6 pt-8 pb-6">
+        <div className="px-6 pt-12 pb-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
             className="text-center max-w-md mx-auto"
           >
-            <h1 className="text-2xl md:text-3xl font-serif text-foreground mb-3">
+            <h1 className="text-2xl md:text-3xl font-serif text-foreground mb-4">
               {card.title}
             </h1>
             {card.subtitle && (
-              <p className="text-gentle not-italic mb-8 max-w-2xl mx-auto">{card.subtitle}</p>
+              <p className="text-gentle not-italic mb-10 max-w-2xl mx-auto">{card.subtitle}</p>
             )}
 
-            <p className="text-sm text-muted-foreground mb-8 leading-relaxed">
+            <p className="text-sm text-muted-foreground mb-10 leading-relaxed">
               {t('card_view.overview_description')}
             </p>
 
             {/* Step overview */}
-            <div className="space-y-3 mb-10 text-center">
+            <div className="space-y-4 mb-12 text-center">
               {STEP_ORDER.map((stepType, index) => {
                 const isFirst = index === 0;
                 return (
@@ -469,12 +470,12 @@ export default function CardView() {
                     key={stepType}
                     initial={{ opacity: 0, x: -10 }}
                     animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.1 + index * 0.1 }}
+                    transition={{ delay: 0.15 + index * 0.08, duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
                     onClick={isFirst ? handleStartFromOverview : undefined}
                     role={isFirst ? 'button' : undefined}
                     tabIndex={isFirst ? 0 : undefined}
                     onKeyDown={isFirst ? (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleStartFromOverview(); } } : undefined}
-                    className={`flex items-center gap-4 p-4 rounded-xl border ${
+                    className={`flex items-center gap-4 p-5 rounded-xl border ${
                       isFirst
                         ? 'bg-primary border-primary cursor-pointer hover:bg-primary/90 transition-colors'
                         : 'bg-card border-border'
@@ -538,16 +539,17 @@ export default function CardView() {
         </div>
       )}
 
-      <div className="px-6 pt-10 pb-3">
+      <div className="px-6 pt-12 pb-4">
         <motion.h1
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
           className="text-xl md:text-2xl font-serif text-foreground text-center leading-snug"
         >
           {card.title}
         </motion.h1>
         {isRevisitMode && (
-          <div className="mt-3 text-center space-y-0.5">
+          <div className="mt-4 text-center space-y-0.5">
             <p className="text-[11px] text-muted-foreground/50 tracking-wide">Förhandskoll</p>
           </div>
         )}
@@ -555,8 +557,8 @@ export default function CardView() {
           <motion.p
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 0.1 }}
-            className="text-sm text-gentle not-italic mt-2 text-center max-w-2xl mx-auto"
+            transition={{ delay: 0.15, duration: 0.5 }}
+            className="text-sm text-gentle not-italic mt-3 text-center max-w-2xl mx-auto"
           >
             {card.subtitle}
           </motion.p>
