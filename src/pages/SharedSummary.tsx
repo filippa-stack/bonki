@@ -422,26 +422,24 @@ export default function SharedSummary() {
                 <p className="text-xs text-muted-foreground mb-4 text-center">
                   Det ni valt att lyfta fram.
                 </p>
-                <div className="p-5 rounded-2xl bg-card/50 border border-border/50">
-                  <div className="space-y-4">
-                    {(showAllHighlights ? highlights : highlights.slice(0, 3)).map((h) => (
-                      <div key={`hl-${h.id}`}>
-                        <p className="text-xs text-muted-foreground/70 mb-1">
-                          {h.categoryTitle} · {h.cardTitle}
-                        </p>
-                        <p className="text-base text-foreground whitespace-pre-wrap leading-relaxed">{h.content}</p>
-                      </div>
-                    ))}
-                  </div>
-                  {highlights.length > 3 && (
-                    <button
-                      onClick={() => setShowAllHighlights(!showAllHighlights)}
-                      className="mt-4 text-xs text-muted-foreground hover:text-foreground transition-colors"
-                    >
-                      {showAllHighlights ? 'Visa färre' : 'Visa fler'}
-                    </button>
-                  )}
+                <div className="space-y-8">
+                  {(showAllHighlights ? highlights : highlights.slice(0, 3)).map((h) => (
+                    <div key={`hl-${h.id}`} className="text-center">
+                      <p className="text-[16px] font-serif leading-relaxed text-foreground whitespace-pre-wrap">{h.content}</p>
+                      <p className="text-[11px] text-muted-foreground/50 mt-3">
+                        {h.cardTitle}
+                      </p>
+                    </div>
+                  ))}
                 </div>
+                {highlights.length > 3 && (
+                  <button
+                    onClick={() => setShowAllHighlights(!showAllHighlights)}
+                    className="mt-6 text-xs text-muted-foreground hover:text-foreground transition-colors block mx-auto"
+                  >
+                    {showAllHighlights ? 'Visa färre' : 'Visa fler'}
+                  </button>
+                )}
               </motion.div>
             )}
 
