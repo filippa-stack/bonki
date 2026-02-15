@@ -49,7 +49,7 @@ interface AppContextType {
   saveError: string | null;
   // Session management for guided flow
   currentSession: AppState['currentSession'];
-  startSession: (categoryId: string, cardId: string, opts?: { force?: boolean }) => void;
+  startSession: (categoryId: string, cardId: string, opts?: { force?: boolean; fromBeginning?: boolean }) => void;
   updateSessionStep: (stepIndex: number) => void;
   completeSessionStep: (stepIndex: number) => void;
   endSession: () => void;
@@ -621,7 +621,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
   // Authoritative completion lives in journeyState.sessionProgress[cardId].perUser[uid].completedSteps.
   // Do NOT use currentSession.completedSteps or ConversationThread.completedSteps to decide
   // next step, completion/explored status, or session start position.
-  const startSession = (categoryId: string, cardId: string, { force = false }: { force?: boolean } = {}) => {
+  const startSession = (categoryId: string, cardId: string, { force = false, fromBeginning = false }: { force?: boolean; fromBeginning?: boolean } = {}) => {
     const now = new Date();
 
     setState((prev) => {
@@ -645,16 +645,18 @@ export function AppProvider({ children }: { children: ReactNode }) {
 
       // Find the first step that is NOT mutually completed (count-based)
       let startStep = 0;
-      for (let i = 0; i < STEP_ORDER.length; i++) {
-        const completedBy = Object.values(perUser).filter(u => u?.completedSteps?.includes(i)).length;
-        const mutuallyDone = completedBy >= requiredCount;
-        if (!mutuallyDone) {
-          startStep = i;
-          break;
-        }
-        // If all steps are mutually done, startStep stays beyond last
-        if (i === STEP_ORDER.length - 1) {
-          startStep = STEP_ORDER.length; // signals full completion
+      if (!fromBeginning) {
+        for (let i = 0; i < STEP_ORDER.length; i++) {
+          const completedBy = Object.values(perUser).filter(u => u?.completedSteps?.includes(i)).length;
+          const mutuallyDone = completedBy >= requiredCount;
+          if (!mutuallyDone) {
+            startStep = i;
+            break;
+          }
+          // If all steps are mutually done, startStep stays beyond last
+          if (i === STEP_ORDER.length - 1) {
+            startStep = STEP_ORDER.length; // signals full completion
+          }
         }
       }
 
@@ -898,8 +900,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
   };
 
   // Update journey state when starting a session
-  const startSessionWithJourney = (categoryId: string, cardId: string, opts?: { force?: boolean }) => {
-    startSession(categoryId, cardId, { force: opts?.force ?? false });
+  const startSessionWithJourney = (categoryId: string, cardId: string, opts?: { force?: boolean; fromBeginning?: boolean }) => {
+    startSession(categoryId, cardId, { force: opts?.force ?? false, fromBeginning: opts?.fromBeginning ?? false });
     setState((prev) => ({
       ...prev,
       journeyState: {

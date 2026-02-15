@@ -369,7 +369,7 @@ export default function Home() {
               proposerName={partnerName}
               onAccept={async () => {
                 await updateProposalStatus(latest.id, 'accepted');
-                startSession(latest.category_id, latest.card_id, { force: true });
+                startSession(latest.category_id, latest.card_id, { force: true, fromBeginning: true });
                 navigate(`/card/${latest.card_id}`);
               }}
               onSaveForLater={() => updateProposalStatus(latest.id, 'saved_for_later')}
