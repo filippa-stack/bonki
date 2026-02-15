@@ -298,7 +298,7 @@ export default function SharedSummary() {
                     proposerName={proposerName}
                     onAccept={() => {
                       updateProposalStatus(proposal.id, 'accepted');
-                      startSession(proposal.category_id, proposal.card_id);
+                      startSession(proposal.category_id, proposal.card_id, { force: true, fromBeginning: true });
                       navigate(`/card/${proposal.card_id}`);
                     }}
                     onSaveForLater={() => {
@@ -342,7 +342,7 @@ export default function SharedSummary() {
                       className="text-muted-foreground text-xs"
                       onClick={() => {
                         updateProposalStatus(proposal.id, 'accepted');
-                        startSession(proposal.category_id, proposal.card_id);
+                        startSession(proposal.category_id, proposal.card_id, { force: true, fromBeginning: true });
                         navigate(`/card/${proposal.card_id}`);
                       }}
                     >

@@ -565,7 +565,6 @@ export default function CardView() {
         {isRevisitMode && (
           <div className="mt-3 text-center space-y-0.5">
             <p className="text-[11px] text-muted-foreground/50 tracking-wide">Förhandskoll</p>
-            <p className="text-[11px] text-muted-foreground/40">För dig. Du kan föreslå kortet när det passar.</p>
           </div>
         )}
         {card.subtitle && (
@@ -742,25 +741,7 @@ export default function CardView() {
                     </div>
                   )}
 
-                  {/* Revisit mode: propose card CTA after final step — opens sheet */}
-                  {isRevisitMode && currentStepIndex >= STEP_ORDER.length - 1 && category && memberCount >= 2 && (
-                    <motion.div
-                      initial={{ opacity: 0, y: 6 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 0.3, duration: 0.4 }}
-                      className="pt-4"
-                    >
-                      <button
-                        disabled={proposalSent}
-                        onClick={() => setShowProposalSheet(true)}
-                        className="w-full text-center text-sm text-muted-foreground/60 hover:text-muted-foreground transition-colors py-2"
-                      >
-                        {proposalSent
-                          ? 'Förslag skickat'
-                          : 'Vill du föreslå detta till din partner?'}
-                      </button>
-                    </motion.div>
-                  )}
+                   {/* Revisit mode: no proposal actions */}
 
                   {/* Post-step: subtle proposal CTA after completing a step (non-revisit) */}
                   {!isRevisitMode && userCompletedCurrentStep && category && memberCount >= 2 && (
