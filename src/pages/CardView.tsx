@@ -514,7 +514,7 @@ export default function CardView() {
 
       {/* Progress indicator — hidden in revisit/preview mode */}
       {!isRevisitMode && (
-        <div className="px-4 pt-6 pb-4 border-b border-divider">
+        <div className="px-4 pt-6 pb-3 border-b border-border/30">
           <StepProgressIndicator
             currentStepIndex={currentStepIndex}
             completedSteps={myCompletedSteps}
@@ -522,18 +522,18 @@ export default function CardView() {
         </div>
       )}
 
-      <div className="px-6 pt-6 pb-4">
+      <div className="px-6 pt-8 pb-2">
         <motion.h1
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          className="text-xl md:text-2xl font-serif text-foreground text-center"
+          className="text-xl md:text-2xl font-serif text-foreground text-center leading-snug"
         >
           {card.title}
         </motion.h1>
         {isRevisitMode && (
-          <div className="mt-2 text-center space-y-0.5">
-            <p className="text-xs text-muted-foreground/60 tracking-wide">Förhandskoll</p>
-            <p className="text-xs text-muted-foreground/50">För dig. Du kan föreslå kortet när det passar.</p>
+          <div className="mt-3 text-center space-y-0.5">
+            <p className="text-[11px] text-muted-foreground/50 tracking-wide">Förhandskoll</p>
+            <p className="text-[11px] text-muted-foreground/40">För dig. Du kan föreslå kortet när det passar.</p>
           </div>
         )}
         {card.subtitle && (
@@ -541,7 +541,7 @@ export default function CardView() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.1 }}
-            className="text-sm text-gentle not-italic mt-1 text-center max-w-2xl mx-auto"
+            className="text-sm text-gentle not-italic mt-2 text-center max-w-2xl mx-auto"
           >
             {card.subtitle}
           </motion.p>
@@ -672,7 +672,7 @@ export default function CardView() {
                   </div>
                 </motion.div>
               ) : (
-                <div className="py-8 border-t border-divider space-y-3">
+                <div className="pt-10 pb-4 border-t border-border/20 space-y-3">
                   <div className="space-y-2">
                     <div className="flex flex-col sm:flex-row justify-start gap-3">
                       {currentStepIndex > 0 && !isRevisitMode && (
