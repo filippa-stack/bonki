@@ -16,7 +16,7 @@ import NotificationSettings from '@/components/NotificationSettings';
 import RelationshipMemory from '@/components/RelationshipMemory';
 import Footer from '@/components/Footer';
 import RecentSharedReflection from '@/components/RecentSharedReflection';
-
+import IncomingProposal from '@/components/IncomingProposal';
 import WelcomeBackBanner from '@/components/WelcomeBackBanner';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -58,12 +58,12 @@ export default function Home() {
     dismissSession,
     journeyState,
     cards,
-    
+    startSession,
   } = useApp();
   const { settings, updateSettings } = useSiteSettings();
   const { user } = useAuth();
   const { space, displayMemberCount, userRole } = useCoupleSpace();
-  const { sendProposal: sendDbProposal } = useProposals();
+  const { incomingProposals, sendProposal: sendDbProposal, updateProposalStatus } = useProposals();
   const [isEditingHero, setIsEditingHero] = useState(false);
   const [editTitle, setEditTitle] = useState(settings.heroTitle);
   const [editSubtitle, setEditSubtitle] = useState(settings.heroSubtitle);
@@ -350,6 +350,33 @@ export default function Home() {
         )}
       </AnimatePresence>
 
+      {/* Incoming proposal from partner (DB-based) */}
+      {(() => {
+        if (incomingProposals.length === 0) return null;
+        const latest = incomingProposals[0];
+        const proposalCard = getCardById(latest.card_id);
+        const proposalCategory = getCategoryById(latest.category_id);
+        if (!proposalCard || !proposalCategory) return null;
+
+        const partnerName = space?.partner_a_name || space?.partner_b_name || undefined;
+
+        return (
+          <div className="px-6 mb-6">
+            <IncomingProposal
+              proposal={latest}
+              cardTitle={proposalCard.title}
+              categoryTitle={proposalCategory.title}
+              proposerName={partnerName}
+              onAccept={async () => {
+                await updateProposalStatus(latest.id, 'accepted');
+                startSession(latest.category_id, latest.card_id, { force: true });
+                navigate(`/card/${latest.card_id}`);
+              }}
+              onSaveForLater={() => updateProposalStatus(latest.id, 'saved_for_later')}
+            />
+          </div>
+        );
+      })()}
 
       {/* Journey continue module */}
       {(() => {
