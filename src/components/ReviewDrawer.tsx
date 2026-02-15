@@ -151,13 +151,13 @@ export default function ReviewDrawer({ open, onClose, card }: ReviewDrawerProps)
       );
 
       const notes: CardNote[] = myData
-        .filter(n => n.visibility === 'private' && n.content.trim())
+        .filter(n => n.content.trim())
         .map(n => {
           const section = card.sections.find(s => s.id === n.section_id);
           const sectionType = section?.type || 'opening';
           const promptIndex = section?.prompts
             ? section.prompts.findIndex((_, i) => {
-                const pid = `${section.id}-prompt-${i}`;
+                const pid = `prompt-${i}`;
                 return pid === n.prompt_id;
               })
             : -1;
@@ -169,12 +169,23 @@ export default function ReviewDrawer({ open, onClose, card }: ReviewDrawerProps)
             sectionType,
             promptIndex: promptIndex >= 0 ? promptIndex : 0,
             content: n.content,
-            visibility: 'private' as const,
+            visibility: n.visibility as 'private' | 'shared',
             hasShared: sharedSet.has(key),
             hasPartnerShared: partnerSharedSet.has(key),
             updatedAt: n.updated_at,
           };
         })
+        // Deduplicate: if both private+shared exist for same prompt, keep shared
+        .reduce<CardNote[]>((acc, note) => {
+          const existing = acc.findIndex(n => n.sectionId === note.sectionId && n.promptId === note.promptId);
+          if (existing >= 0) {
+            // Keep the shared one, or the most recently updated
+            if (note.visibility === 'shared') acc[existing] = note;
+          } else {
+            acc.push(note);
+          }
+          return acc;
+        }, [])
         .sort((a, b) => {
           const aStep = STEP_ORDER.indexOf(a.sectionType as any);
           const bStep = STEP_ORDER.indexOf(b.sectionType as any);
