@@ -472,14 +472,16 @@ export default function CardView() {
               {t('card_view.overview_start')}
               <ArrowRight className="w-4 h-4" />
             </Button>
-            <Button
-              variant="outline"
-              size="lg"
-              className="w-full md:w-auto gap-2 mt-3"
-              onClick={() => navigate(`/card/${card.id}?revisit=true`)}
-            >
-              Förhandskolla själv
-            </Button>
+            {memberCount >= 2 && (
+              <Button
+                variant="outline"
+                size="lg"
+                className="w-full md:w-auto gap-2 mt-3"
+                onClick={() => navigate(`/card/${card.id}?revisit=true`)}
+              >
+                Förhandskolla själv
+              </Button>
+            )}
           </motion.div>
         </div>
       </div>
