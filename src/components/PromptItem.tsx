@@ -1,11 +1,12 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronDown, Share2, X, Star, Heart, ArrowRight, Home, Lock, Users } from 'lucide-react';
+import { ChevronDown, Share2, X, Star, Heart, ArrowRight, Home, Lock, Users, Link2 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Prompt } from '@/types';
 import { PromptNote } from '@/hooks/usePromptNotes';
 import { useSiteSettings } from '@/contexts/SiteSettingsContext';
+import { useCoupleSpace } from '@/hooks/useCoupleSpace';
 
 interface PromptItemProps {
   prompt: Prompt;
@@ -56,6 +57,10 @@ export default function PromptItem({
 }: PromptItemProps) {
   const { t } = useTranslation();
   const { settings } = useSiteSettings();
+  const { memberCount } = useCoupleSpace();
+  const isPaired = memberCount >= 2;
+  // Share is disabled if explicitly set OR if user is solo (not paired)
+  const shareDisabled = disableShare || !isPaired;
   const navigate = useNavigate();
   const [internalExpanded, setInternalExpanded] = useState(false);
   const [justShared, setJustShared] = useState(false);
@@ -184,12 +189,14 @@ export default function PromptItem({
                     {/* Privacy indicator + last updated */}
                     {!sharedNote && (
                       <div className="flex items-center justify-between mt-2">
-                        <p className="flex items-center gap-1.5 text-xs text-slate-400 italic">
+                        <p className="flex items-center gap-1.5 text-xs text-muted-foreground/60 italic">
                           <Lock className="w-3 h-3" />
-                          {t('reflections.private_indicator', 'Bara du kan se det här')}
+                          {isPaired
+                            ? t('reflections.private_indicator', 'Bara du kan se det här')
+                            : t('reflections.solo_private_indicator', 'Din privata anteckning')}
                         </p>
                         {privateNote?.content && privateNote.updatedAt && (
-                          <p className="text-xs text-slate-400">
+                          <p className="text-xs text-muted-foreground/60">
                             {t('reflections.last_updated', { date: new Date(privateNote.updatedAt).toLocaleDateString('sv-SE', { day: 'numeric', month: 'short' }) })}
                           </p>
                         )}
@@ -198,7 +205,7 @@ export default function PromptItem({
                   </div>
 
                   {/* Share action / preview */}
-                  {!disableShare && privateNote?.content && !sharedNote && !showSharePreview && (
+                  {!shareDisabled && privateNote?.content && !sharedNote && !showSharePreview && (
                     <button
                       onClick={() => {
                         setSharePreviewText(privateNote.content);
@@ -210,15 +217,22 @@ export default function PromptItem({
                       {t('reflections.create_shared_from_private', 'Dela om du vill')}
                     </button>
                   )}
-                  {!disableShare && !privateNote?.content && !sharedNote && (
-                    <p className="flex items-center gap-1.5 text-xs text-slate-400 italic">
+                  {!shareDisabled && !privateNote?.content && !sharedNote && (
+                    <p className="flex items-center gap-1.5 text-xs text-muted-foreground/60 italic">
                       <Lock className="w-3 h-3" />
                       {t('reflections.private_empty_hint', 'Privat — du kan dela senare om du vill')}
                     </p>
                   )}
+                  {/* Solo hint: show disabled share with tooltip */}
+                  {!disableShare && !isPaired && privateNote?.content && !sharedNote && (
+                    <p className="flex items-center gap-1.5 text-xs text-muted-foreground/50 italic">
+                      <Link2 className="w-3 h-3" />
+                      {t('reflections.solo_share_hint', 'Koppla ihop er för att dela')}
+                    </p>
+                  )}
 
                   {/* Pre-share review */}
-                  {!disableShare && (
+                  {!shareDisabled && (
                     <AnimatePresence>
                       {showSharePreview && !sharedNote && (
                         <motion.div
@@ -266,7 +280,7 @@ export default function PromptItem({
                   )}
 
                   {/* Post-share confirmation */}
-                  {!disableShare && sharedNote && justShared && (
+                  {!shareDisabled && sharedNote && justShared && (
                     <motion.div
                       initial={{ opacity: 0, y: 6 }}
                       animate={{ opacity: 1, y: 0 }}
@@ -296,7 +310,7 @@ export default function PromptItem({
                   )}
 
                   {/* Shared note display (after dismissing confirmation) */}
-                  {!disableShare && sharedNote && !justShared && (
+                  {!shareDisabled && sharedNote && !justShared && (
                     <div className="p-3 rounded-lg bg-primary/5 border border-primary/10">
                       <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1 flex items-center gap-1.5">
                         <Users className="w-3 h-3" />

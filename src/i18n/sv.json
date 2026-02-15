@@ -160,7 +160,9 @@
   "reflections": {
     "private_notes_title": "Din reflektion",
     "private_notes_hint": "Skriv dina tankar här…",
-    "private_indicator": "Bara du kan se det här tills du väljer att dela",
+    "private_indicator": "Bara du kan se det här",
+    "solo_private_indicator": "Din privata anteckning",
+    "solo_share_hint": "Koppla ihop er för att dela",
     "shared_notes_title": "Delad med din partner",
     "shared_notes_hint": "Den här versionen är tänkt att delas mellan er.",
     "share_when_ready": "Du kan dela med din partner när det känns rätt",
