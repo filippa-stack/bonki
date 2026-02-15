@@ -1,7 +1,7 @@
 {
   "general": {
     "continue_cta": "Fortsätt samtalet",
-    "choose_another": "Utforska något annat",
+    "choose_another": "Fortsätt samtalet",
     "back_home": "Tillbaka",
     "pause_for_now": "Pausa för nu",
     "pause_title": "Pausa samtalet",
@@ -80,7 +80,7 @@
     "paused_description": "Ert samtal finns kvar precis där ni lämnade det.",
     "last_conversation": "Ert samtal",
     "continue_where_left": "Fortsätt där ni var",
-    "back_to_categories": "Utforska något annat"
+    "back_to_categories": "Fortsätt samtalet"
   },
   "save_indicator": {
     "saving": "Sparar…",
