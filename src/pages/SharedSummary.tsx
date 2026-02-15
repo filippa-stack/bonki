@@ -1,4 +1,5 @@
 import { useState, useMemo, useEffect, useCallback, useRef } from 'react';
+import { toast } from 'sonner';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
@@ -299,6 +300,7 @@ export default function SharedSummary() {
                     onAccept={() => {
                       updateProposalStatus(proposal.id, 'accepted');
                       startSession(proposal.category_id, proposal.card_id, { force: true, fromBeginning: true });
+                      toast('Samtalet startade', { duration: 2000 });
                       navigate(`/card/${proposal.card_id}`);
                     }}
                     onSaveForLater={() => {
@@ -343,6 +345,7 @@ export default function SharedSummary() {
                       onClick={() => {
                         updateProposalStatus(proposal.id, 'accepted');
                         startSession(proposal.category_id, proposal.card_id, { force: true, fromBeginning: true });
+                        toast('Samtalet startade', { duration: 2000 });
                         navigate(`/card/${proposal.card_id}`);
                       }}
                     >
