@@ -211,7 +211,10 @@ export default function CardView() {
     if (isRevisitMode) {
       // In revisit mode, just navigate linearly
       if (revisitStepIndex < STEP_ORDER.length - 1) {
-        setRevisitStepIndex(revisitStepIndex + 1);
+        const next = revisitStepIndex + 1;
+        setRevisitStepIndex(next);
+        const promptParam_ = initialFocusNote !== null ? `&prompt=${initialFocusNote}` : '';
+        navigate(`/card/${card.id}?revisit=true&step=${next}${promptParam_}`, { replace: true });
       } else {
         navigate(category ? `/category/${category.id}` : '/');
       }
@@ -477,7 +480,7 @@ export default function CardView() {
                 variant="outline"
                 size="lg"
                 className="w-full md:w-auto gap-2 mt-3"
-                onClick={() => navigate(`/card/${card.id}?revisit=true`)}
+                onClick={() => navigate(`/card/${card.id}?revisit=true&step=0`)}
               >
                 Förhandskolla själv
               </Button>
@@ -497,13 +500,15 @@ export default function CardView() {
         backTo={category ? `/category/${category.id}` : '/'}
       />
 
-      {/* Progress indicator */}
-      <div className="px-4 pt-6 pb-4 border-b border-divider">
-        <StepProgressIndicator
-          currentStepIndex={currentStepIndex}
-          completedSteps={myCompletedSteps}
-        />
-      </div>
+      {/* Progress indicator — hidden in revisit/preview mode */}
+      {!isRevisitMode && (
+        <div className="px-4 pt-6 pb-4 border-b border-divider">
+          <StepProgressIndicator
+            currentStepIndex={currentStepIndex}
+            completedSteps={myCompletedSteps}
+          />
+        </div>
+      )}
 
       <div className="px-6 pt-6 pb-4">
         <motion.h1
@@ -651,7 +656,7 @@ export default function CardView() {
                 <div className="py-8 border-t border-divider space-y-3">
                   <div className="space-y-2">
                     <div className="flex flex-col sm:flex-row justify-start gap-3">
-                      {currentStepIndex > 0 && (
+                      {currentStepIndex > 0 && !isRevisitMode && (
                         <Button
                           variant="outline"
                           size="lg"
@@ -667,8 +672,8 @@ export default function CardView() {
                         size="lg"
                         className="gap-2"
                       >
-                        {isRevisitMode && currentStepIndex >= STEP_ORDER.length - 1
-                          ? t('card_view.revisit_done', 'Klar')
+                        {isRevisitMode
+                          ? (currentStepIndex >= STEP_ORDER.length - 1 ? 'Klar' : 'Nästa')
                           : t(STEP_CTA_KEYS[STEP_ORDER[currentStepIndex]])}
                         <ArrowRight className="w-4 h-4" />
                       </Button>
