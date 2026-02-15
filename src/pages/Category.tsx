@@ -68,7 +68,10 @@ export default function Category() {
                 explored={isExplored}
                 locked={!isUnlocked}
                 isPrimary={index === 0 && !isExplored}
-                onNavigate={() => navigate(`/card/${card.id}`)}
+                onNavigate={() => {
+                  if (!isUnlocked) return;
+                  navigate(`/card/${card.id}`);
+                }}
               />
             );
           })}
