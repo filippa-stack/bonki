@@ -25,7 +25,7 @@ interface SharedTimelineItemProps {
 const STEP_LABELS: Record<string, string> = {
   opening: 'Början',
   reflective: 'Fördjupning',
-  scenario: 'I verkligheten',
+  scenario: 'I vardagen',
   exercise: 'Tillsammans',
 };
 
