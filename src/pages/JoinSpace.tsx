@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
@@ -10,6 +10,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Loader2, CheckCircle2, AlertCircle } from 'lucide-react';
 import bonkiLogo from '@/assets/bonki-logo.png';
+import { storePendingInvite, clearPendingInvite } from '@/hooks/usePendingInvite';
 
 type JoinState = 'loading' | 'name_prompt' | 'joining' | 'success' | 'error';
 
@@ -27,9 +28,21 @@ export default function JoinSpace() {
   const [errorType, setErrorType] = useState<string>('');
   const [showCodeInput, setShowCodeInput] = useState(!inviteToken);
 
+  // Persist invite params to localStorage immediately so they survive OAuth redirects
+  useEffect(() => {
+    if (inviteToken || inviteCode) {
+      storePendingInvite(inviteToken, inviteCode);
+    }
+  }, [inviteToken, inviteCode]);
+
   const handleJoin = async () => {
     if (!user) return;
     setState('joining');
+
+    // Also store partner name before calling
+    if (partnerName.trim()) {
+      storePendingInvite(null, null, partnerName.trim());
+    }
 
     try {
       const { data: session } = await supabase.auth.getSession();
@@ -58,6 +71,7 @@ export default function JoinSpace() {
 
       const data = res.data as any;
       if (data?.success) {
+        clearPendingInvite();
         setState('success');
         setOverrideCoupleSpaceId(data.couple_space_id);
         try {
