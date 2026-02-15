@@ -596,10 +596,7 @@ export default function CardView() {
                     En paus
                   </p>
                   <p className="text-sm text-muted-foreground leading-relaxed max-w-2xl">
-                    Ni fortsätter här när ni båda är redo.
-                  </p>
-                  <p className="text-[13px] text-muted-foreground/60 leading-relaxed max-w-2xl">
-                    Under tiden kan du läsa igenom eller skriva något du vill bära med dig.
+                    Ni fortsätter här när ni båda har svarat klart. Under tiden kan du landa, läsa igenom eller skriva ner något för dig själv.
                   </p>
 
                   {memberCount >= 2 && (
@@ -626,6 +623,16 @@ export default function CardView() {
                       <PenLine className="w-3.5 h-3.5" />
                       Skriv en tanke
                     </button>
+
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="gap-1.5 text-muted-foreground"
+                      onClick={() => navigate('/saved')}
+                    >
+                      <PenLine className="w-3.5 h-3.5" />
+                      Mina anteckningar
+                    </Button>
                   </div>
 
                   {/* Takeaways accessible during waiting */}
