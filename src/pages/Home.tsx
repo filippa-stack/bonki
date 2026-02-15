@@ -57,7 +57,7 @@ export default function Home() {
     dismissSession,
     journeyState,
     cards,
-    getCategoryStatus,
+    
     acceptProposal,
     declineProposal,
     proposeCard,
@@ -657,14 +657,14 @@ export default function Home() {
           </p>
           <div className="space-y-3">
             {categories.map((category, index) => {
-              const isHighlighted = category.id === highlightedCategoryId;
-
               return (
                 <div
                   key={category.id}
-                  className={`transition-all ${
-                    isHighlighted ? 'rounded-2xl ring-1 ring-primary/25 p-0.5' : ''
-                  }`}
+                  className={
+                    !isProposalMode && category.id === highlightedCategoryId
+                      ? 'rounded-2xl ring-1 ring-primary/30 bg-card/40 p-0.5 transition-all'
+                      : ''
+                  }
                 >
                   <CategoryCard
                     category={category}
@@ -676,7 +676,6 @@ export default function Home() {
                     onBorderColorChange={(borderColor) => updateCategoryBorderColor(category.id, borderColor)}
                     onIconChange={(icon) => updateCategoryIcon(category.id, icon)}
                     editable={true}
-                    status={getCategoryStatus(category.id)}
                   />
                 </div>
               );
