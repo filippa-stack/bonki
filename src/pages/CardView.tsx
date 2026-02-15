@@ -238,102 +238,78 @@ export default function CardView() {
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
-            className="text-center max-w-md mx-auto space-y-8"
+            transition={{ duration: 0.6 }}
+            className="text-center max-w-md mx-auto space-y-3"
           >
-            <motion.div
-              initial={{ scale: 0.92, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ delay: 0.3, duration: 0.5, ease: [0.25, 0.1, 0.25, 1] }}
-            >
-              <h2 className="text-xl font-serif text-foreground leading-snug">
-                {card.title}
-              </h2>
-            </motion.div>
-
-            <motion.p
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.6, duration: 0.6 }}
-              className="text-sm text-muted-foreground leading-relaxed max-w-2xl"
-            >
-              {t(completionMessageKey)}
-            </motion.p>
-
-            <p className="text-xs text-muted-foreground/60 leading-relaxed">
-              Ni kan bara landa här en stund. Nästa steg kan ni ta senare.
+            <h2 className="text-xl font-serif text-foreground">
+              Ta en stund.
+            </h2>
+            <p className="text-sm text-muted-foreground leading-relaxed">
+              Det ni just delade förtjänar att landa.
             </p>
-
-            <motion.div
-              initial={{ opacity: 0, y: 8 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 1.0, duration: 0.5, ease: [0.25, 0.1, 0.25, 1] }}
-              className="pt-4 space-y-3"
-            >
-              {suggestedCard && suggestedCategory && memberCount >= 2 ? (
-                <Button
-                  onClick={() => setShowProposalSheet(true)}
-                  disabled={proposalSent}
-                  size="lg"
-                  className="w-full gap-2"
-                >
-                  {proposalSent ? (
-                    <><Check className="w-4 h-4" /> Förslag skickat</>
-                  ) : (
-                    <>{t('card_view.completion_next', 'Föreslå nästa samtal')} <ArrowRight className="w-4 h-4" /></>
-                  )}
-                </Button>
-              ) : suggestedCard && suggestedCategory ? (
-                <Button
-                  onClick={() => navigate(`/card/${suggestedCard.id}`)}
-                  size="lg"
-                  className="w-full gap-2"
-                >
-                  {t('card_view.completion_next', 'Föreslå nästa samtal')}
-                  <ArrowRight className="w-4 h-4" />
-                </Button>
-              ) : null}
-              <Button
-                onClick={() => navigate('/')}
-                variant="outline"
-                size="lg"
-                className="w-full gap-2"
-              >
-                <Home className="w-4 h-4" />
-                {t('card_view.completion_home', 'Tillbaka till Hem')}
-              </Button>
-              <Button
-                onClick={() => navigate(`/card/${card.id}?revisit=true`)}
-                variant="ghost"
-                size="sm"
-                className="w-full gap-2 text-muted-foreground"
-              >
-                <RotateCcw className="w-4 h-4" />
-                {t('card_view.completion_revisit', 'Läs igenom igen')}
-              </Button>
-            </motion.div>
-
-            <motion.p
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 1.4, duration: 0.6 }}
-              className="text-xs text-muted-foreground/50 not-italic pt-4"
-            >
-              {t('card_view.completion_rest')}
-            </motion.p>
           </motion.div>
 
           {/* Takeaways — card-level closing ritual */}
           <motion.div
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 1.8, duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.3, duration: 0.5 }}
             className="max-w-md mx-auto mt-12 space-y-3"
           >
             <p className="text-sm text-muted-foreground text-center leading-relaxed">
               Vill ni sammanfatta något att ta med er?
             </p>
             <CardTakeaways cardId={card.id} />
+          </motion.div>
+
+          {/* Navigation actions */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.5, duration: 0.5 }}
+            className="max-w-md mx-auto mt-12 space-y-3 text-center"
+          >
+            {suggestedCard && suggestedCategory && memberCount >= 2 ? (
+              <Button
+                onClick={() => setShowProposalSheet(true)}
+                disabled={proposalSent}
+                size="lg"
+                className="w-full gap-2"
+              >
+                {proposalSent ? (
+                  <><Check className="w-4 h-4" /> Förslag skickat</>
+                ) : (
+                  <>{t('card_view.completion_next', 'Föreslå nästa samtal')} <ArrowRight className="w-4 h-4" /></>
+                )}
+              </Button>
+            ) : suggestedCard && suggestedCategory ? (
+              <Button
+                onClick={() => navigate(`/card/${suggestedCard.id}`)}
+                size="lg"
+                className="w-full gap-2"
+              >
+                {t('card_view.completion_next', 'Föreslå nästa samtal')}
+                <ArrowRight className="w-4 h-4" />
+              </Button>
+            ) : null}
+            <Button
+              onClick={() => navigate('/')}
+              variant="outline"
+              size="lg"
+              className="w-full gap-2"
+            >
+              <Home className="w-4 h-4" />
+              {t('card_view.completion_home', 'Tillbaka till Hem')}
+            </Button>
+            <Button
+              onClick={() => navigate(`/card/${card.id}?revisit=true`)}
+              variant="ghost"
+              size="sm"
+              className="w-full gap-2 text-muted-foreground"
+            >
+              <RotateCcw className="w-4 h-4" />
+              {t('card_view.completion_revisit', 'Läs igenom igen')}
+            </Button>
           </motion.div>
         </div>
 
