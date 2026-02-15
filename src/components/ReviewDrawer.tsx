@@ -289,16 +289,16 @@ export default function ReviewDrawer({ open, onClose, card, activeStepIndex = 0,
 
                       {isUnlocked ? (
                         <>
-                          <div className="pl-9 space-y-2">
+                          <div className="pl-9 space-y-3">
                             {section.content && (
-                              <p className="text-sm text-muted-foreground leading-relaxed whitespace-pre-wrap">
+                              <p className="text-xs text-muted-foreground/70 leading-relaxed whitespace-pre-wrap mb-1">
                                 {section.content}
                               </p>
                             )}
                             {section.prompts && section.prompts.length > 0 && (
-                              <ul className="space-y-1.5">
+                              <ul className="space-y-2.5">
                                 {section.prompts.map((prompt, pi) => (
-                                  <li key={pi} className="text-sm text-foreground/80 leading-relaxed">
+                                  <li key={pi} className="text-sm font-medium text-foreground/85 leading-relaxed">
                                     {typeof prompt === 'string' ? prompt : prompt.text}
                                   </li>
                                 ))}
