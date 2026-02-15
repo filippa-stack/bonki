@@ -120,13 +120,13 @@ export default function PromptItem({
       initial={{ opacity: 0, x: -10 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ delay: index * 0.08, duration: 0.4, ease: 'easeOut' }}
-      className="rounded-2xl border border-border/40 overflow-hidden prompt-colors shadow-[0_2px_12px_-4px_rgba(0,0,0,0.06)]"
+      className={`rounded-2xl border border-border/40 overflow-hidden prompt-colors ${showCollapsedLabel ? 'shadow-none' : 'shadow-[0_2px_12px_-4px_rgba(0,0,0,0.06)]'}`}
       style={{ '--prompt-bg': prompt.color || undefined } as React.CSSProperties}
     >
       {/* Collapsed label-only header (for Q2/Q3 when collapsed) */}
       {showCollapsedLabel ? (
         <div
-          className="px-6 py-3.5 cursor-pointer flex items-center justify-between"
+          className="px-6 py-3 cursor-pointer flex items-center justify-between"
           onClick={toggleExpanded}
         >
           <p className="text-xs text-muted-foreground/50 tracking-wide font-normal">
@@ -171,7 +171,6 @@ export default function PromptItem({
                 className="overflow-hidden"
               >
                 <div className="px-7 pb-8 space-y-6">
-                  <div className="border-t border-border/10" />
 
                   {/* Private note */}
                   <div className="pt-3">
