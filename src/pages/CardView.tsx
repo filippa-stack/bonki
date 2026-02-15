@@ -458,7 +458,7 @@ export default function CardView() {
                   >
                     <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium shrink-0 ${
                       isFirst
-                        ? 'bg-primary-foreground/20 text-primary-foreground'
+                        ? 'bg-primary-foreground text-primary font-semibold'
                         : 'bg-muted text-muted-foreground'
                     }`}>
                       {index + 1}
