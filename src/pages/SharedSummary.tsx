@@ -536,6 +536,23 @@ export default function SharedSummary() {
                   transition={{ delay: 0.2 }}
                   className="mb-14 text-left"
                 >
+                  {(() => {
+                    const newest = recentItems[0];
+                    const sharedDate = new Date(newest.shared_at || newest.created_at);
+                    const ageMs = Date.now() - sharedDate.getTime();
+                    const ONE_HOUR = 60 * 60 * 1000;
+                    const ONE_DAY = 24 * ONE_HOUR;
+                    const contextLabel = ageMs > ONE_DAY
+                      ? 'Skrevs för en tid sedan.'
+                      : ageMs > ONE_HOUR
+                        ? 'Skrevs tidigare idag.'
+                        : null;
+                    return contextLabel ? (
+                      <p className="text-[11px] text-muted-foreground/40 text-center mb-8">
+                        {contextLabel}
+                      </p>
+                    ) : null;
+                  })()}
                   <p className="text-xs text-muted-foreground/50 uppercase tracking-widest mb-6 text-center">
                     Nyligen delat
                   </p>
