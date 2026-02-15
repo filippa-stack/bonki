@@ -361,12 +361,12 @@ export default function CardView() {
         </div>
       )}
 
-      <div className="px-6 pt-12 pb-4">
+      <div className="px-6 pt-16 pb-8">
         <motion.h1
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.15 }}
-          className="text-xl md:text-2xl font-serif text-foreground text-center leading-snug"
+          className="text-xl md:text-2xl font-serif text-foreground text-center leading-relaxed"
         >
           {card.title}
         </motion.h1>
@@ -380,7 +380,7 @@ export default function CardView() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.03, duration: 0.15 }}
-            className="text-sm text-gentle not-italic mt-3 text-center max-w-2xl mx-auto"
+            className="text-sm text-gentle not-italic mt-5 text-center max-w-2xl mx-auto leading-relaxed"
           >
             {card.subtitle}
           </motion.p>
@@ -412,7 +412,7 @@ export default function CardView() {
                   transition={{ duration: 0.15 }}
                   role="status"
                   aria-live="polite"
-                  className="my-8 py-8 px-5 text-center space-y-2"
+                  className="my-10 py-10 px-5 text-center space-y-3"
                 >
                   <p className="text-sm font-serif text-foreground">
                     Du är klar.
@@ -422,7 +422,7 @@ export default function CardView() {
                   </p>
                 </motion.div>
               ) : (
-                <div className="pt-6 pb-6 space-y-4">
+                <div className="pt-10 pb-8 space-y-5">
                   <Button
                     onClick={handleNextStep}
                     size="lg"

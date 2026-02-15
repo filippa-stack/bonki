@@ -157,12 +157,12 @@ const SectionView = forwardRef<SectionViewHandle, SectionViewProps>(function Sec
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.15 }}
-      className="py-8"
+      className="py-12"
     >
 
       {/* All questions */}
       {normalizedPrompts.length > 0 && (
-        <div className="space-y-5 mb-10">
+        <div className="space-y-8 mb-12">
           {normalizedPrompts.map((prompt, index) => {
             const promptId = `prompt-${index}`;
             const isControlled = isAccordion;

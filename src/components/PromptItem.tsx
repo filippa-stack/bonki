@@ -88,7 +88,7 @@ export default function PromptItem({
   const handleFocus = useCallback((e: React.FocusEvent<HTMLTextAreaElement>) => {
     setTimeout(() => {
       e.target.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }, 300);
+    }, 150);
   }, []);
 
   const handleKeyDown = useCallback((e: React.KeyboardEvent<HTMLTextAreaElement>) => {
@@ -119,9 +119,9 @@ export default function PromptItem({
 
   return (
     <motion.div
-      initial={{ opacity: 0, x: -10 }}
-      animate={{ opacity: 1, x: 0 }}
-      transition={{ delay: index * 0.08, duration: 0.4, ease: 'easeOut' }}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ delay: index * 0.03, duration: 0.15 }}
       className={`rounded-2xl overflow-hidden prompt-colors card-interaction ${showCollapsedLabel ? 'shadow-none' : ''}`}
       style={{ '--prompt-bg': prompt.color || undefined } as React.CSSProperties}
     >
@@ -140,20 +140,20 @@ export default function PromptItem({
         <>
           {/* Question header */}
           <div
-            className="px-7 py-8 cursor-pointer flex items-start gap-3 group relative"
+            className="px-7 py-10 cursor-pointer flex items-start gap-3 group relative"
             onClick={toggleExpanded}
           >
             <div className="flex-1 min-w-0">
               {preamble && (
                 <p
-                  className="text-[18px] leading-[1.7] text-center font-serif mb-4 prompt-text"
+                  className="text-[18px] leading-[1.8] text-center font-serif mb-6 prompt-text"
                   style={{ '--prompt-text': prompt.textColor || undefined } as React.CSSProperties}
                 >
                   {preamble}
                 </p>
               )}
               <p
-                className="text-[18px] leading-[1.7] w-full min-h-[24px] text-center prompt-text font-serif"
+                className="text-[18px] leading-[1.8] w-full min-h-[24px] text-center prompt-text font-serif"
                 style={{ '--prompt-text': prompt.textColor || undefined } as React.CSSProperties}
               >
                 {prompt.text}
@@ -177,14 +177,14 @@ export default function PromptItem({
                 initial={{ height: 0, opacity: 0 }}
                 animate={{ height: 'auto', opacity: 1 }}
                 exit={{ height: 0, opacity: 0 }}
-                transition={{ duration: 0.35, ease: [0.25, 0.1, 0.25, 1] }}
+                transition={{ duration: 0.15 }}
                 className="overflow-hidden"
               >
-                <div className="px-7 pb-10 space-y-6">
+                <div className="px-7 pb-12 space-y-8">
 
                   {/* Private note */}
                   <div className="pt-4">
-                    <p className="text-[11px] tracking-normal text-muted-foreground/40 font-normal mb-6 text-center">
+                    <p className="text-[11px] tracking-normal text-muted-foreground/40 font-normal mb-8 text-center">
                       Din reflektion
                     </p>
                     <textarea
@@ -203,7 +203,7 @@ export default function PromptItem({
                           initial={{ opacity: 0 }}
                           animate={{ opacity: 1 }}
                           exit={{ opacity: 0 }}
-                          transition={{ duration: 0.4 }}
+                          transition={{ duration: 0.15 }}
                           className="text-[11px] text-muted-foreground/30 text-right mt-2"
                         >
                           Sparad
