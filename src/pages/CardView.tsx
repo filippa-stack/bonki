@@ -690,7 +690,7 @@ export default function CardView() {
                       <Button
                         onClick={handleNextStep}
                         size="lg"
-                        className="gap-2 h-13 font-normal w-full"
+                        className="gap-2 h-14 font-normal w-full rounded-2xl"
                       >
                         {isRevisitMode
                           ? (currentStepIndex >= STEP_ORDER.length - 1 ? 'Klar' : 'Nästa')
@@ -699,13 +699,13 @@ export default function CardView() {
                       </Button>
                     </div>
                     {!isRevisitMode && (
-                      <p className="text-[11px] text-muted-foreground/50 leading-relaxed text-center mt-1">
+                      <p className="text-[11px] text-muted-foreground/40 leading-relaxed text-center mt-2">
                         Svara i er egen takt. Ni fortsätter när båda är klara.
                       </p>
                     )}
                   </div>
                   {!isRevisitMode && (
-                    <div className="flex justify-center">
+                    <div className="flex justify-center pt-2">
                       <PauseDialog onConfirm={() => { pauseSession(); navigate('/'); }} />
                     </div>
                   )}
