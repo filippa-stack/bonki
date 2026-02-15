@@ -36,7 +36,7 @@ export default function PostPurchaseInvite({
             {t('post_purchase.title', 'Ert utrymme är redo')}
           </h1>
           <p className="text-body text-muted-foreground leading-relaxed">
-            {t('post_purchase.subtitle', 'Nu kan du bjuda in din partner. Ni delar allt — utan extra kostnad.')}
+            {t('post_purchase.subtitle', 'Nu kan du bjuda in din partner. Ni väljer själva vad som delas.')}
           </p>
         </div>
 
