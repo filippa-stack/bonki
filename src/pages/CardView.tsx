@@ -699,7 +699,7 @@ export default function CardView() {
                       </Button>
                     </div>
                     {!isRevisitMode && (
-                      <p className="text-xs text-muted-foreground/70 leading-relaxed text-center">
+                      <p className="text-[11px] text-muted-foreground/50 leading-relaxed text-center mt-1">
                         Svara i er egen takt. Ni fortsätter när båda är klara.
                       </p>
                     )}
