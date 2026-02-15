@@ -9,7 +9,7 @@ import { useReflectionResponses } from '@/hooks/useReflectionResponses';
 import { supabase } from '@/integrations/supabase/client';
 import Header from '@/components/Header';
 import SharedTimelineItem from '@/components/SharedTimelineItem';
-import InvitePartner from '@/components/InvitePartner';
+import AttachPartner from '@/components/AttachPartner';
 import { Search, Filter, X, Clock, MessageCircle, BookOpen } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -245,13 +245,13 @@ export default function SharedSummary() {
         {!showFind && <div className="mb-6" />}
 
         {/* Partner invite — only when solo */}
-        {space && displayMemberCount < 2 && userRole !== 'partner_b' && (
+        {space && (
           <motion.div
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
             className="mb-8"
           >
-            <InvitePartner
+            <AttachPartner
               inviteCode={space.invite_code}
               inviteToken={space.invite_token}
               partnerName={userRole === 'partner_b' ? space.partner_b_name : space.partner_a_name}
@@ -262,6 +262,8 @@ export default function SharedSummary() {
                   .update({ [role]: name })
                   .eq('id', space.id);
               }}
+              memberCount={displayMemberCount}
+              onJoinedSpace={() => window.location.reload()}
             />
           </motion.div>
         )}

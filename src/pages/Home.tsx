@@ -10,7 +10,7 @@ import CategoryCard from '@/components/CategoryCard';
 import ContinueModule from '@/components/ContinueModule';
 import Header from '@/components/Header';
 import ResumeSessionDialog from '@/components/ResumeSessionDialog';
-import InvitePartner from '@/components/InvitePartner';
+import AttachPartner from '@/components/AttachPartner';
 import { Bookmark, Pencil, Check, Share2, Settings } from 'lucide-react';
 import NotificationSettings from '@/components/NotificationSettings';
 import RelationshipMemory from '@/components/RelationshipMemory';
@@ -432,27 +432,20 @@ export default function Home() {
           transition={{ delay: 0.15 }}
           className="px-6 pb-6"
         >
-          {displayMemberCount < 2 && userRole !== 'partner_b' ? (
-            <InvitePartner
-              inviteCode={space.invite_code}
-              inviteToken={space.invite_token}
-              partnerName={userRole === 'partner_b' ? space.partner_b_name : space.partner_a_name}
-              onUpdateName={async (name) => {
-                const role = userRole === 'partner_b' ? 'partner_b_name' : 'partner_a_name';
-                await supabase
-                  .from('couple_spaces')
-                  .update({ [role]: name })
-                  .eq('id', space.id);
-              }}
-            />
-          ) : (
-            <div className="flex items-center gap-2.5 py-2">
-              <div className="w-1.5 h-1.5 rounded-full bg-primary/60" />
-              <p className="text-xs text-muted-foreground">
-                {t('couple_space.partner_connected')}
-              </p>
-            </div>
-          )}
+          <AttachPartner
+            inviteCode={space.invite_code}
+            inviteToken={space.invite_token}
+            partnerName={userRole === 'partner_b' ? space.partner_b_name : space.partner_a_name}
+            onUpdateName={async (name) => {
+              const role = userRole === 'partner_b' ? 'partner_b_name' : 'partner_a_name';
+              await supabase
+                .from('couple_spaces')
+                .update({ [role]: name })
+                .eq('id', space.id);
+            }}
+            memberCount={displayMemberCount}
+            onJoinedSpace={() => window.location.reload()}
+          />
         </motion.div>
       )}
 
