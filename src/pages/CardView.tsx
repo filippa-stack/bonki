@@ -659,14 +659,8 @@ export default function CardView() {
                   )}
                   </div>
                   {!isRevisitMode && (
-                    <div className="flex flex-col items-center gap-3 pt-2">
+                    <div className="flex justify-center pt-2">
                       <PauseDialog onConfirm={() => { pauseSession(); navigate('/'); }} />
-                      <button
-                        onClick={() => { pauseSession(); navigate('/'); }}
-                        className="text-[11px] text-muted-foreground/30 hover:text-muted-foreground/50 transition-colors"
-                      >
-                        Vi stannar här.
-                      </button>
                     </div>
                   )}
 
