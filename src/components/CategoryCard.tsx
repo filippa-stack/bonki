@@ -63,14 +63,8 @@ export default function CategoryCard({
     }
   };
 
-  const isCompleted = status === 'explored';
+  const isFinished = status === 'explored';
   const isBegun = status === 'in_progress';
-
-  const tonalClasses = isCompleted
-    ? 'opacity-75 hover:opacity-85 ring-1 ring-border/20'
-    : isBegun
-      ? 'opacity-95 hover:opacity-100 ring-1 ring-border/40'
-      : '';
 
   return (
     <motion.div
@@ -78,10 +72,13 @@ export default function CategoryCard({
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4, delay: index * 0.1 }}
       onClick={onClick}
-      className={`w-full text-left card-reflection group cursor-pointer border rounded-2xl item-colors py-5 px-5 transition-all ${tonalClasses}`}
+      className="w-full text-left card-reflection group cursor-pointer border rounded-2xl item-colors py-5 px-5 transition-all"
       style={{ 
         '--item-bg': category.color || undefined,
         '--item-border': category.borderColor || undefined,
+        borderWidth: '2px',
+        borderStyle: isBegun ? 'dashed' : 'solid',
+        ...(isFinished ? { borderColor: 'rgba(150, 140, 125, 0.35)' } : {}),
       } as React.CSSProperties}
     >
       <div className="relative flex flex-col items-center justify-center gap-2">
