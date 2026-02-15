@@ -75,6 +75,16 @@ export default function CardView() {
   const isActiveSession = !!(currentSession && currentSession.cardId === cardId);
   const sharedStepIndex = isActiveSession ? currentSession!.currentStepIndex : 0;
 
+  // ─── Catch-up: if user is behind the shared step, show their first uncompleted step ───
+  const myFirstUncompletedStep = (() => {
+    for (let i = 0; i < STEP_ORDER.length; i++) {
+      if (!myCompletedSteps.includes(i)) return i;
+    }
+    return STEP_ORDER.length; // all done
+  })();
+  const effectiveSharedStep = Math.min(sharedStepIndex, myFirstUncompletedStep);
+  const isCatchingUp = isActiveSession && myFirstUncompletedStep < sharedStepIndex;
+
   // ─── Determine if card is fully explored ───
   const isFullyExplored = cardId ? (journeyState?.exploredCardIds?.includes(cardId) ?? false) : false;
   const allStepsCompleted = STEP_ORDER.every((_, i) => myCompletedSteps.includes(i));
@@ -103,7 +113,7 @@ export default function CardView() {
   })();
 
   // The step the user sees
-  const currentStepIndex = isRevisitMode ? revisitStepIndex : sharedStepIndex;
+  const currentStepIndex = isRevisitMode ? revisitStepIndex : effectiveSharedStep;
 
   // Has the current user already completed the current shared step?
   const userCompletedCurrentStep = !isRevisitMode && myCompletedSteps.includes(currentStepIndex);
@@ -157,13 +167,13 @@ export default function CardView() {
     }
   }, [isFullyExplored, isRevisitMode]);
 
-  // ─── Show transition when shared step advances ───
-  const prevSharedStepRef = useRef(sharedStepIndex);
+  // ─── Show transition when effective step advances (shared or catch-up) ───
+  const prevEffectiveStepRef = useRef(effectiveSharedStep);
   useEffect(() => {
-    const prev = prevSharedStepRef.current;
-    prevSharedStepRef.current = sharedStepIndex;
+    const prev = prevEffectiveStepRef.current;
+    prevEffectiveStepRef.current = effectiveSharedStep;
     if (isRevisitMode || showOverview || showReentry || showCompletion) return;
-    if (sharedStepIndex > prev) {
+    if (effectiveSharedStep > prev) {
       const prevType = STEP_ORDER[prev];
       const msgKey = TRANSITION_KEYS[prevType];
       if (msgKey) {
@@ -171,7 +181,7 @@ export default function CardView() {
         setTimeout(() => setTransitionMessage(null), 2400);
       }
     }
-  }, [sharedStepIndex]);
+  }, [effectiveSharedStep]);
 
   if (!card) {
     return (
