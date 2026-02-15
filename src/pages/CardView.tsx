@@ -771,15 +771,21 @@ export default function CardView() {
                         <ArrowRight className="w-4 h-4" />
                       </Button>
                     </div>
-                    {!isRevisitMode && (
-                      <p className="text-[11px] text-muted-foreground/40 leading-relaxed text-center mt-2">
-                        Svara i er egen takt. Ni fortsätter när båda är klara.
-                      </p>
-                    )}
+                  {!isRevisitMode && (
+                    <p className="text-[11px] text-muted-foreground/40 leading-relaxed text-center mt-2">
+                      Svara i er egen takt. Ni fortsätter när båda är klara.
+                    </p>
+                  )}
                   </div>
                   {!isRevisitMode && (
-                    <div className="flex justify-center pt-2">
+                    <div className="flex flex-col items-center gap-3 pt-2">
                       <PauseDialog onConfirm={() => { pauseSession(); navigate('/'); }} />
+                      <button
+                        onClick={() => { pauseSession(); navigate('/'); }}
+                        className="text-[11px] text-muted-foreground/30 hover:text-muted-foreground/50 transition-colors"
+                      >
+                        Vi stannar här.
+                      </button>
                     </div>
                   )}
 
