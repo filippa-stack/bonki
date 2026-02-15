@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
@@ -18,6 +19,10 @@ export default function Login() {
   const [termsAccepted, setTermsAccepted] = useState(false);
   const [termsError, setTermsError] = useState(false);
   const { settings } = useSiteSettings();
+  const location = useLocation();
+
+  // Determine where to redirect after OAuth — if we came from /join, include the returnTo path
+  const returnTo = (location.state as any)?.returnTo;
 
   const handleGoogleSignIn = async () => {
     if (!termsAccepted) {
@@ -36,8 +41,13 @@ export default function Login() {
     }));
 
     try {
+      // If there's a returnTo (e.g. /join?token=XYZ), redirect back there after OAuth
+      const redirectUri = returnTo
+        ? `${window.location.origin}${returnTo}`
+        : window.location.origin;
+
       const { error } = await lovable.auth.signInWithOAuth('google', {
-        redirect_uri: window.location.origin,
+        redirect_uri: redirectUri,
       });
 
       if (error) {

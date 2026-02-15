@@ -16,6 +16,7 @@ import SharedSummary from "./pages/SharedSummary";
 import Login from "./pages/Login";
 import JoinSpace from "./pages/JoinSpace";
 import NotFound from "./pages/NotFound";
+import { storePendingInvite } from "@/hooks/usePendingInvite";
 
 const queryClient = new QueryClient();
 
@@ -66,6 +67,27 @@ function RemoteCardCueGlobal() {
   return <RemoteCardCue show={remoteCardChanged} onDone={dismissRemoteCardCue} />;
 }
 
+function JoinRedirectGuard() {
+  const { user, loading } = useAuth();
+  const location = useLocation();
+
+  // Store invite params to localStorage before any redirect
+  const searchParams = new URLSearchParams(location.search);
+  const token = searchParams.get('token');
+  const code = searchParams.get('code');
+  if (token || code) {
+    storePendingInvite(token, code);
+  }
+
+  if (loading) return null;
+
+  if (!user) {
+    return <Navigate to="/login" replace state={{ returnTo: '/join' + location.search }} />;
+  }
+
+  return <JoinSpace />;
+}
+
 function AppRoutes() {
   const { user, loading } = useAuth();
 
@@ -85,7 +107,7 @@ function AppRoutes() {
   return (
     <Routes>
       <Route path="/login" element={user ? <Navigate to="/" replace /> : <Login />} />
-      <Route path="/join" element={user ? <JoinSpace /> : <Navigate to="/login" replace state={{ returnTo: '/join' + window.location.search }} />} />
+      <Route path="/join" element={<JoinRedirectGuard />} />
       <Route path="/*" element={<ProtectedRoutes />} />
     </Routes>
   );

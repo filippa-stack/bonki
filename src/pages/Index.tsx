@@ -4,19 +4,27 @@ import { useCoupleSpace } from '@/hooks/useCoupleSpace';
 import { usePartnerNotifications } from '@/hooks/usePartnerNotifications';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
+import { usePendingInviteClaim, hasPendingInvite } from '@/hooks/usePendingInvite';
 import Onboarding from '@/components/Onboarding';
 import Home from '@/pages/Home';
 import WelcomePartner from '@/components/WelcomePartner';
 import PurchaseScreen from '@/components/PurchaseScreen';
 import PostPurchaseInvite from '@/components/PostPurchaseInvite';
+import { Loader2, AlertCircle } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { useTranslation } from 'react-i18next';
 
 const PURCHASE_KEY = 'still-us-purchased';
 
 export default function Index() {
+  const { t } = useTranslation();
   const { hasCompletedOnboarding, savedConversations, getAllSharedNotes, journeyState } = useApp();
   const { userRole, space, memberCount } = useCoupleSpace();
   const { user } = useAuth();
   const [welcomeDismissed, setWelcomeDismissed] = useState(false);
+
+  // Pending invite claim — auto-claims after OAuth redirect
+  const { status: claimStatus, errorType: claimError, retry: retryClaim } = usePendingInviteClaim();
 
   // Purchase state (mock — stored in localStorage)
   const [hasPurchased, setHasPurchased] = useState(() => {
@@ -41,12 +49,41 @@ export default function Index() {
       .eq('id', space.id);
   };
 
+  // Show claiming state while invite is being processed
+  if (claimStatus === 'claiming' || (hasPendingInvite() && claimStatus === 'idle')) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-background">
+        <div className="text-center space-y-4">
+          <Loader2 className="w-8 h-8 animate-spin mx-auto text-primary" />
+          <p className="text-body text-gentle">Kopplar ihop er…</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Show error with retry if claim failed — never fall through to paywall
+  if (claimStatus === 'error') {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-background px-6">
+        <div className="text-center space-y-6 max-w-sm">
+          <AlertCircle className="w-12 h-12 text-destructive mx-auto" />
+          <p className="text-body text-foreground">
+            {t('join.error_network', 'Något gick fel. Försök igen.')}
+          </p>
+          <Button onClick={retryClaim} className="w-full">
+            {t('general.start', 'Försök igen')}
+          </Button>
+        </div>
+      </div>
+    );
+  }
+
   if (!hasCompletedOnboarding) {
     return <Onboarding />;
   }
 
-  // Purchase gate (skip for partner_b who joined via invite — they're already covered)
-  if (!hasPurchased && userRole !== 'partner_b') {
+  // Purchase gate — skip for partner_b (joined via invite) AND skip if claim just succeeded
+  if (!hasPurchased && userRole !== 'partner_b' && claimStatus !== 'success') {
     return <PurchaseScreen onPurchaseComplete={handlePurchaseComplete} />;
   }
 
