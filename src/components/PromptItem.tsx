@@ -106,7 +106,7 @@ export default function PromptItem({
     clearTimeout(saveTimerRef.current);
     saveTimerRef.current = setTimeout(() => {
       setSaveStatus('saved');
-      setTimeout(() => setSaveStatus('idle'), 2500);
+      setTimeout(() => setSaveStatus('idle'), 1500);
     }, 800);
   };
 
@@ -170,11 +170,11 @@ export default function PromptItem({
                 transition={{ duration: 0.35, ease: [0.25, 0.1, 0.25, 1] }}
                 className="overflow-hidden"
               >
-                <div className="px-7 pb-8 space-y-6">
+                <div className="px-7 pb-10 space-y-6">
 
                   {/* Private note */}
-                  <div className="pt-3">
-                    <p className="text-[11px] tracking-normal text-muted-foreground/40 font-normal mb-5 text-center">
+                  <div className="pt-4">
+                    <p className="text-[11px] tracking-normal text-muted-foreground/40 font-normal mb-6 text-center">
                       Din reflektion
                     </p>
                     <textarea
@@ -184,14 +184,22 @@ export default function PromptItem({
                       onFocus={handleFocus}
                       onKeyDown={handleKeyDown}
                       placeholder={t('reflections.prompt_note_placeholder', 'Skriv ned dina tankar. Du väljer själv om du vill dela med din partner, nu eller senare. Annars sparas dina svar här enbart för dig')}
-                      className={`w-full px-5 py-5 rounded-2xl bg-background border border-border/30 resize-none focus:outline-none focus:border-primary/20 focus:ring-0 placeholder:text-muted-foreground/25 font-sans text-sm text-foreground leading-relaxed transition-colors duration-300 ${isDeepSection ? 'min-h-[180px]' : 'min-h-[120px]'}`}
+                      className={`w-full px-5 py-5 rounded-2xl bg-background border border-border/20 resize-none focus:outline-none focus:border-primary/20 focus:ring-0 placeholder:text-muted-foreground/25 font-sans text-sm text-foreground leading-relaxed transition-colors duration-300 ${isDeepSection ? 'min-h-[200px]' : 'min-h-[140px]'}`}
                     />
                     {/* Autosave status */}
-                    {saveStatus === 'saved' && displayPrivateText && (
-                      <p className="text-[11px] text-muted-foreground/35 text-right mt-2">
-                        Sparad
-                      </p>
-                    )}
+                    <AnimatePresence>
+                      {saveStatus === 'saved' && displayPrivateText && (
+                        <motion.p
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          exit={{ opacity: 0 }}
+                          transition={{ duration: 0.4 }}
+                          className="text-[11px] text-muted-foreground/30 text-right mt-2"
+                        >
+                          Sparad
+                        </motion.p>
+                      )}
+                    </AnimatePresence>
                     {/* Privacy indicator */}
                     {!sharedNote && (
                       <div className="flex items-center justify-between mt-3">
