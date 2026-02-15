@@ -54,8 +54,8 @@
     --card-l1-border-width: 2px;
 
     --card-l2-bg: 0 0% 100%;          /* #FFFFFF — Sub-category cards */
-    --card-l2-border: 180 14% 57%;    /* #B8CACA — Pastel Slate Teal */
-    --card-l2-border-width: 1.5px;
+    --card-l2-border: 24 54% 60%;     /* #D08E62 — Warm Terracotta (unified) */
+    --card-l2-border-width: 2px;
     --card-l2-shadow: 0 1px 4px 0 hsl(0 0% 0% / 0.03);
 
     --card-l3-bg: 210 40% 98%;        /* #F8FAFC — Interaction/question cards */
