@@ -25,7 +25,7 @@ export default function StageTransitionChoice({ onContinue, onStop }: StageTrans
           size="lg"
           className="w-full gap-2"
         >
-          Ja, gå vidare
+          Vidare
           <ArrowRight className="w-4 h-4" />
         </Button>
         <Button
@@ -35,7 +35,7 @@ export default function StageTransitionChoice({ onContinue, onStop }: StageTrans
           className="w-full gap-2"
         >
           <Home className="w-4 h-4" />
-          Vi stannar här för idag
+          Stanna här
         </Button>
       </div>
     </motion.div>
