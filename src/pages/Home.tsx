@@ -210,17 +210,17 @@ export default function Home() {
       <div className="flex-1">
       <Header showBackgroundPicker={true} />
       {/* Header with Logo */}
-      <div className="px-6 pt-8 pb-8">
+      <div className="px-6 pt-14 pb-12">
         <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
+          initial={{ opacity: 0, scale: 0.92 }}
           animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.4 }}
-          className="mb-6 flex justify-center"
+          transition={{ duration: 0.5, ease: [0.25, 0.1, 0.25, 1] }}
+          className="mb-8 flex justify-center"
         >
           <img 
             src={bonkiLogo} 
             alt="Still Us" 
-            className="h-12 w-auto"
+            className="h-14 w-auto"
           />
         </motion.div>
         
@@ -314,7 +314,7 @@ export default function Home() {
               <motion.h1
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5 }}
+                transition={{ duration: 0.6, delay: 0.15 }}
                 className={`text-display font-${settings.heroTitleFont} text-foreground`}
               >
                 {settings.heroTitle}
@@ -322,8 +322,8 @@ export default function Home() {
               <motion.p
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                transition={{ duration: 0.5, delay: 0.1 }}
-                className={`text-body mt-2 font-${settings.heroSubtitleFont} hero-subtitle-color`}
+                transition={{ duration: 0.5, delay: 0.3 }}
+                className={`text-body mt-3 font-${settings.heroSubtitleFont} hero-subtitle-color`}
               >
                 {settings.heroSubtitle}
               </motion.p>
@@ -661,11 +661,11 @@ export default function Home() {
 
       {/* Categories */}
       {!isProposalMode && (
-        <div id="category-section" className="px-6 pb-10 mt-8">
-          <p className="text-sm text-muted-foreground/60 mb-6 font-serif not-italic">
+        <div id="category-section" className="px-6 pb-12 mt-10">
+          <p className="text-sm text-muted-foreground/60 mb-8 font-serif not-italic">
             {t('home.choose_category')}
           </p>
-          <div className="space-y-3">
+          <div className="space-y-4">
             {categories.map((category, index) => {
               return (
                 <CategoryCard
@@ -707,47 +707,39 @@ export default function Home() {
       {/* Recent shared reflection preview */}
       <RecentSharedReflection />
 
-      {/* Shared summary link */}
+      {/* Navigation links — grouped */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.4 }}
-        className="px-6 py-4"
+        className="px-6 pt-8 pb-6 mt-4 space-y-1"
       >
         <button
           onClick={() => navigate('/shared')}
-          className="flex items-center gap-3 text-muted-foreground hover:text-foreground transition-colors"
+          className="w-full flex items-center gap-3 py-3 text-muted-foreground hover:text-foreground transition-colors"
         >
           <Share2 className="w-4 h-4" />
           <span className="text-sm">{t('shared.title')}</span>
         </button>
-      </motion.div>
 
-      {/* Saved conversations link */}
-      {savedConversations.length > 0 && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.5 }}
-          className="px-6 py-4 border-t border-divider"
-        >
+        {savedConversations.length > 0 && (
           <button
             onClick={() => navigate('/saved')}
-            className="flex items-center gap-3 text-muted-foreground hover:text-foreground transition-colors"
+            className="w-full flex items-center gap-3 py-3 text-muted-foreground hover:text-foreground transition-colors"
           >
             <Bookmark className="w-4 h-4" />
             <span className="text-sm">
               {t('home.saved_conversations', { count: savedConversations.length })}
             </span>
           </button>
-        </motion.div>
-      )}
+        )}
+      </motion.div>
 
       {/* Notification preferences */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 0.6 }}
+        transition={{ delay: 0.5 }}
         className="px-6 py-6 border-t border-divider"
       >
         <NotificationSettings />
