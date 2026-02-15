@@ -103,7 +103,11 @@ function CardEntry({ card, index, highlighted, onNavigate }: CardEntryProps) {
           onNavigate();
         }
       }}
-      className={`relative w-full text-center card-sub group transition-all cursor-pointer overflow-hidden rounded-2xl bg-white border-2 border-[#B8CACA]${highlighted ? ' ring-2 ring-primary/40 shadow-md shadow-primary/10' : ''}`}
+      className={`relative w-full text-center card-sub group item-colors transition-all cursor-pointer overflow-hidden rounded-2xl${highlighted ? ' ring-2 ring-primary/40 shadow-md shadow-primary/10' : ''}`}
+      style={{
+        borderWidth: '2px',
+        borderStyle: 'solid',
+      }}
     >
       <div className="flex flex-col items-center gap-1.5 py-8 px-7">
         <h3
