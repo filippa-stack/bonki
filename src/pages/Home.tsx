@@ -455,21 +455,31 @@ export default function Home() {
           {t('home.choose_category')}
         </p>
         <div className="space-y-3">
-          {categories.map((category, index) => (
-            <CategoryCard
-              key={category.id}
-              category={category}
-              onClick={() => navigate(`/category/${category.id}`)}
-              index={index}
-              onUpdate={updateCategory}
-              onColorChange={(color) => updateCategoryColor(category.id, color)}
-              onTextColorChange={(textColor) => updateCategoryTextColor(category.id, textColor)}
-              onBorderColorChange={(borderColor) => updateCategoryBorderColor(category.id, borderColor)}
-              onIconChange={(icon) => updateCategoryIcon(category.id, icon)}
-              editable={true}
-              status={getCategoryStatus(category.id)}
-            />
-          ))}
+          {categories.map((category, index) => {
+            const status = getCategoryStatus(category.id);
+            const wrapperClasses = status === 'explored'
+              ? 'opacity-70 hover:opacity-80 ring-1 ring-border/20 rounded-2xl'
+              : status === 'in_progress'
+                ? 'opacity-95 hover:opacity-100 ring-1 ring-border/40 rounded-2xl'
+                : '';
+
+            return (
+              <div key={category.id} className={`transition-all ${wrapperClasses}`}>
+                <CategoryCard
+                  category={category}
+                  onClick={() => navigate(`/category/${category.id}`)}
+                  index={index}
+                  onUpdate={updateCategory}
+                  onColorChange={(color) => updateCategoryColor(category.id, color)}
+                  onTextColorChange={(textColor) => updateCategoryTextColor(category.id, textColor)}
+                  onBorderColorChange={(borderColor) => updateCategoryBorderColor(category.id, borderColor)}
+                  onIconChange={(icon) => updateCategoryIcon(category.id, icon)}
+                  editable={true}
+                  status={status}
+                />
+              </div>
+            );
+          })}
         </div>
       </div>
 
