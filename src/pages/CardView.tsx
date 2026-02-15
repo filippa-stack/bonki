@@ -761,7 +761,7 @@ export default function CardView() {
         />
       )}
 
-      {/* Proposal Sheet — accessible from both step completion and revisit */}
+      {/* Proposal Sheet — only triggered from non-revisit step completion or card completion */}
       {card && category && (
         <ProposalSheet
           open={showProposalSheet}
