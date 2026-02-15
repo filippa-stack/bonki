@@ -27,9 +27,7 @@ interface PromptItemProps {
   onShareNote: (promptId: string) => void;
   onUnshareNote: (promptId: string) => void;
   onToggleHighlight: (promptId: string) => void;
-  /** When true, auto-expand and focus the note textarea */
   autoFocusNote?: boolean;
-  /** When true, hide share/unshare UI (revisit mode) */
   disableShare?: boolean;
 }
 
@@ -59,14 +57,12 @@ export default function PromptItem({
   const { settings } = useSiteSettings();
   const { memberCount } = useCoupleSpace();
   const isPaired = memberCount >= 2;
-  // Share is disabled if explicitly set OR if user is solo (not paired)
   const shareDisabled = disableShare || !isPaired;
   const navigate = useNavigate();
   const [internalExpanded, setInternalExpanded] = useState(false);
   const [justShared, setJustShared] = useState(false);
   const [showSharePreview, setShowSharePreview] = useState(false);
   const [sharePreviewText, setSharePreviewText] = useState('');
-  // Support both controlled and uncontrolled expansion
   const isControlled = expanded !== undefined;
   const isExpanded = isControlled ? expanded : internalExpanded;
   const toggleExpanded = () => {
@@ -74,12 +70,10 @@ export default function PromptItem({
     if (onExpandChange) onExpandChange(next);
     else setInternalExpanded(next);
   };
-  // For controlled accordion items that are collapsed, show only the label
   const showCollapsedLabel = isControlled && !isExpanded;
   const [privateText, setPrivateText] = useState(privateNote?.content || '');
   const privateTextareaRef = useRef<HTMLTextAreaElement>(null);
 
-  // Auto-expand and focus when triggered externally
   useEffect(() => {
     if (autoFocusNote) {
       if (!isControlled) setInternalExpanded(true);
@@ -87,20 +81,15 @@ export default function PromptItem({
     }
   }, [autoFocusNote, isControlled]);
 
-  // Sync incoming note changes (only when not actively editing)
   const displayPrivateText = privateNote?.content ?? privateText;
 
-  // Scroll textarea into view when focused (prevents keyboard from hiding it)
   const handleFocus = useCallback((e: React.FocusEvent<HTMLTextAreaElement>) => {
-    // Small delay to let mobile keyboard appear first
     setTimeout(() => {
       e.target.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }, 300);
   }, []);
 
-  // Allow easy keyboard dismissal on mobile via Enter on empty line or Done
   const handleKeyDown = useCallback((e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    // Blur on Escape to dismiss keyboard
     if (e.key === 'Escape') {
       e.currentTarget.blur();
     }
@@ -119,30 +108,30 @@ export default function PromptItem({
       initial={{ opacity: 0, x: -10 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ delay: index * 0.08 }}
-      className="rounded-lg border-l-2 border-primary/30 overflow-hidden prompt-colors"
+      className="rounded-xl border border-border/60 overflow-hidden prompt-colors shadow-sm"
       style={{ '--prompt-bg': prompt.color || undefined } as React.CSSProperties}
     >
       {/* Collapsed label-only header (for Q2/Q3 when collapsed) */}
       {showCollapsedLabel ? (
         <div
-          className="p-5 cursor-pointer flex items-center justify-between"
+          className="px-6 py-4 cursor-pointer flex items-center justify-between"
           onClick={toggleExpanded}
         >
-          <p className="text-xs text-muted-foreground uppercase tracking-wider">
+          <p className="text-xs text-muted-foreground/70 tracking-wide font-medium">
             {label}
           </p>
-          <ChevronDown className="w-4 h-4 text-muted-foreground" />
+          <ChevronDown className="w-4 h-4 text-muted-foreground/50" />
         </div>
       ) : (
         <>
-          {/* Question header - clickable to expand/collapse */}
+          {/* Question header */}
           <div
-            className="p-5 cursor-pointer flex items-start gap-3 group relative"
+            className="px-6 py-6 cursor-pointer flex items-start gap-3 group relative"
             onClick={toggleExpanded}
           >
             <div className="flex-1 min-w-0">
               <p
-                className="text-body w-full min-h-[24px] text-center prompt-text"
+                className="text-[17px] leading-[1.6] w-full min-h-[24px] text-center prompt-text font-serif"
                 style={{ '--prompt-text': prompt.textColor || undefined } as React.CSSProperties}
               >
                 {prompt.text}
@@ -151,10 +140,10 @@ export default function PromptItem({
 
             <div className="flex items-center gap-1 shrink-0">
               {hasNote && (
-                <div className="w-2 h-2 rounded-full bg-primary/50" />
+                <div className="w-2 h-2 rounded-full bg-primary/40" />
               )}
               <ChevronDown
-                className={`w-4 h-4 text-muted-foreground transition-transform duration-200 ${isExpanded ? 'rotate-180' : ''}`}
+                className={`w-4 h-4 text-muted-foreground/40 transition-transform duration-200 ${isExpanded ? 'rotate-180' : ''}`}
               />
             </div>
           </div>
@@ -169,13 +158,13 @@ export default function PromptItem({
                 transition={{ duration: 0.2 }}
                 className="overflow-hidden"
               >
-                <div className="px-5 pb-5 space-y-4">
-                  <div className="border-t border-primary/10" />
+                <div className="px-6 pb-6 space-y-5">
+                  <div className="border-t border-border/20" />
 
                   {/* Private note */}
-                  <div>
-                    <p className="text-xs uppercase tracking-widest text-slate-500 font-bold mb-3 text-center">
-                      {t('reflections.private_notes_title', 'Din reflektion')}
+                  <div className="pt-1">
+                    <p className="text-[11px] tracking-wide text-muted-foreground/50 font-medium mb-4 text-center">
+                      Din reflektion
                     </p>
                     <textarea
                       ref={privateTextareaRef}
@@ -184,19 +173,17 @@ export default function PromptItem({
                       onFocus={handleFocus}
                       onKeyDown={handleKeyDown}
                       placeholder={t('reflections.prompt_note_placeholder', 'Vad väcker detta hos dig?')}
-                      className={`w-full p-3 rounded-xl bg-white border border-slate-200 resize-none focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary placeholder:text-slate-400 font-sans text-sm text-foreground ${isDeepSection ? 'min-h-[148px]' : 'min-h-[80px]'}`}
+                      className={`w-full px-4 py-4 rounded-xl bg-background border border-border/40 resize-none focus:outline-none focus:border-primary/30 focus:ring-0 placeholder:text-muted-foreground/30 font-sans text-sm text-foreground leading-relaxed ${isDeepSection ? 'min-h-[160px]' : 'min-h-[100px]'}`}
                     />
-                    {/* Privacy indicator + last updated */}
+                    {/* Privacy indicator */}
                     {!sharedNote && (
-                      <div className="flex items-center justify-between mt-2">
-                        <p className="flex items-center gap-1.5 text-xs text-muted-foreground/60 italic">
+                      <div className="flex items-center justify-between mt-3">
+                        <p className="flex items-center gap-1.5 text-[11px] text-muted-foreground/40 italic">
                           <Lock className="w-3 h-3" />
-                          {isPaired
-                            ? t('reflections.private_indicator', 'Bara du kan se det här')
-                            : t('reflections.solo_private_indicator', 'Din privata anteckning')}
+                          Bara du kan se detta.
                         </p>
                         {privateNote?.content && privateNote.updatedAt && (
-                          <p className="text-xs text-muted-foreground/60">
+                          <p className="text-[11px] text-muted-foreground/40">
                             {t('reflections.last_updated', { date: new Date(privateNote.updatedAt).toLocaleDateString('sv-SE', { day: 'numeric', month: 'short' }) })}
                           </p>
                         )}
@@ -218,14 +205,13 @@ export default function PromptItem({
                     </button>
                   )}
                   {!shareDisabled && !privateNote?.content && !sharedNote && (
-                    <p className="flex items-center gap-1.5 text-xs text-muted-foreground/60 italic">
+                    <p className="flex items-center gap-1.5 text-[11px] text-muted-foreground/40 italic">
                       <Lock className="w-3 h-3" />
                       {t('reflections.private_empty_hint', 'Privat — du kan dela senare om du vill')}
                     </p>
                   )}
-                  {/* Solo hint: show disabled share with tooltip */}
                   {!disableShare && !isPaired && privateNote?.content && !sharedNote && (
-                    <p className="flex items-center gap-1.5 text-xs text-muted-foreground/50 italic">
+                    <p className="flex items-center gap-1.5 text-[11px] text-muted-foreground/40 italic">
                       <Link2 className="w-3 h-3" />
                       {t('reflections.solo_share_hint', 'Koppla ihop er för att dela')}
                     </p>
@@ -239,18 +225,18 @@ export default function PromptItem({
                           initial={{ opacity: 0, y: 6 }}
                           animate={{ opacity: 1, y: 0 }}
                           exit={{ opacity: 0, y: -4 }}
-                          className="p-4 rounded-lg bg-primary/5 border border-primary/10 space-y-3"
+                          className="p-4 rounded-xl bg-primary/5 border border-primary/10 space-y-3"
                         >
-                          <p className="text-xs text-muted-foreground uppercase tracking-wider">
+                          <p className="text-[11px] text-muted-foreground/60 tracking-wide">
                             {t('reflections.share_preview_title', 'Granska innan du delar')}
                           </p>
-                          <p className="text-xs text-muted-foreground/70 italic">
+                          <p className="text-[11px] text-muted-foreground/50 italic">
                             {t('reflections.share_preview_hint', 'Du kan justera texten. Din privata anteckning påverkas inte.')}
                           </p>
                           <textarea
                             value={sharePreviewText}
                             onChange={(e) => setSharePreviewText(e.target.value)}
-                            className="w-full min-h-[60px] p-3 rounded-lg bg-background border border-input resize-none focus:outline-none focus:ring-2 focus:ring-primary/20 font-sans text-sm text-foreground"
+                            className="w-full min-h-[60px] px-4 py-3 rounded-xl bg-background border border-border/40 resize-none focus:outline-none focus:ring-0 focus:border-primary/30 font-sans text-sm text-foreground"
                             autoFocus
                           />
                           <div className="flex flex-wrap gap-2">
@@ -284,7 +270,7 @@ export default function PromptItem({
                     <motion.div
                       initial={{ opacity: 0, y: 6 }}
                       animate={{ opacity: 1, y: 0 }}
-                      className="p-4 rounded-lg bg-primary/5 border border-primary/10 space-y-3"
+                      className="p-4 rounded-xl bg-primary/5 border border-primary/10 space-y-3"
                     >
                       <p className="text-sm text-foreground flex items-center gap-2">
                         <Heart className="w-3.5 h-3.5 text-primary" />
@@ -309,10 +295,10 @@ export default function PromptItem({
                     </motion.div>
                   )}
 
-                  {/* Shared note display (after dismissing confirmation) */}
+                  {/* Shared note display */}
                   {!shareDisabled && sharedNote && !justShared && (
-                    <div className="p-3 rounded-lg bg-primary/5 border border-primary/10">
-                      <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1 flex items-center gap-1.5">
+                    <div className="p-4 rounded-xl bg-primary/5 border border-primary/10">
+                      <p className="text-[11px] text-muted-foreground/60 tracking-wide mb-1.5 flex items-center gap-1.5">
                         <Users className="w-3 h-3" />
                         {t('reflections.shared_notes_title', 'Delad med din partner')}
                       </p>
@@ -322,7 +308,7 @@ export default function PromptItem({
                       <div className="flex gap-2 mt-2">
                         <button
                           onClick={() => onUnshareNote(promptId)}
-                          className="flex items-center gap-1 text-xs text-muted-foreground hover:text-destructive transition-colors"
+                          className="flex items-center gap-1 text-[11px] text-muted-foreground hover:text-destructive transition-colors"
                         >
                           <X className="w-3 h-3" />
                           {t('reflections.unshare', 'Ta bort delning')}
@@ -330,7 +316,7 @@ export default function PromptItem({
                         <button
                           onClick={() => onToggleHighlight(promptId)}
                           disabled={!sharedNote.isHighlight && highlightCount >= 3}
-                          className="flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground transition-colors disabled:opacity-40"
+                          className="flex items-center gap-1 text-[11px] text-muted-foreground hover:text-foreground transition-colors disabled:opacity-40"
                         >
                           <Star className={`w-3 h-3 ${sharedNote.isHighlight ? 'fill-current text-primary' : ''}`} />
                           {t('reflections.mark_important', 'Viktigt för oss')}

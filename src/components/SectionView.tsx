@@ -92,7 +92,6 @@ const SectionView = forwardRef<SectionViewHandle, SectionViewProps>(function Sec
       setExpandedIndex(focusPromptIndex);
     }
     setFocusNoteIndex(focusPromptIndex);
-    // Scroll into view after a short delay for DOM update
     const timer = setTimeout(() => {
       const el = promptRefs.current.get(focusPromptIndex);
       if (el) {
@@ -153,44 +152,38 @@ const SectionView = forwardRef<SectionViewHandle, SectionViewProps>(function Sec
     setExpandedIndex(expanded ? index : null);
   }, []);
 
+  // Section intro text mapping
+  const sectionIntroText: Record<string, string> = {
+    opening: 'Hitta in i samtalet tillsammans.',
+    reflective: 'Lyssna djupare på varandra.',
+    scenario: 'Känn igen er i varandras vardag.',
+    exercise: 'Gör något av det ni upptäckt.',
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.4 }}
-      className="py-6"
+      className="py-8"
     >
-      {/* Section header */}
-      <div className="mb-6 text-center">
-        <div className="flex items-center justify-center">
-          <h2 className="text-heading text-foreground w-full text-center">
-            {section.title}
-          </h2>
-        </div>
-        {section.type === 'exercise' && (
-          <p className="text-sm text-gentle not-italic mt-2 max-w-2xl mx-auto">Gör något av det ni upptäckt.</p>
-        )}
-        {section.type === 'scenario' && (
-          <p className="text-sm text-gentle not-italic mt-2 max-w-2xl mx-auto">Känn igen er i varandras vardag.</p>
-        )}
-        {section.type === 'reflective' && (
-          <p className="text-sm text-gentle not-italic mt-2 max-w-2xl">Lyssna djupare på varandra.</p>
-        )}
-        {section.type === 'opening' && (
-          <p className="text-sm text-gentle not-italic mt-2 max-w-2xl">Hitta in i samtalet tillsammans.</p>
-        )}
-      </div>
+      {/* Section intro — soft, not a heading */}
+      {sectionIntroText[section.type] && (
+        <p className="text-[13px] text-muted-foreground/70 text-center leading-relaxed mb-8 max-w-sm mx-auto">
+          {sectionIntroText[section.type]}
+        </p>
+      )}
 
       {/* Section content */}
       {section.content && (
-        <p className="text-body text-gentle mb-8 leading-relaxed w-full text-center max-w-2xl mx-auto">
+        <p className="text-body text-gentle mb-10 leading-relaxed w-full text-center max-w-2xl mx-auto">
           {section.content}
         </p>
       )}
 
-      {/* All questions — prompt-level notes are the unified system */}
+      {/* All questions */}
       {normalizedPrompts.length > 0 && (
-        <div className="space-y-3 mb-6">
+        <div className="space-y-4 mb-8">
           {normalizedPrompts.map((prompt, index) => {
             const promptId = `prompt-${index}`;
             const isControlled = isAccordion;
