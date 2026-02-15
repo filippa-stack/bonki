@@ -237,7 +237,7 @@ export default function SharedSummary() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.15 }}
-            className="mb-5"
+            className="mb-8"
           >
             <h2 className="font-serif text-2xl font-semibold text-foreground">Vårt utrymme</h2>
           </motion.div>
@@ -249,7 +249,7 @@ export default function SharedSummary() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.15, delay: 0.05 }}
-            className="text-xs text-muted-foreground/50 mb-20"
+            className="text-xs text-muted-foreground/50 mb-24 leading-relaxed"
           >
             Här samlas det ni bygger tillsammans.
           </motion.p>
@@ -416,15 +416,15 @@ export default function SharedSummary() {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.05, duration: 0.15 }}
-                  className="mb-20"
+                  className="mb-24"
                 >
-                  <p className="text-[10px] text-muted-foreground/40 uppercase tracking-[0.2em] mb-10">
+                  <p className="text-[10px] text-muted-foreground/40 uppercase tracking-[0.2em] mb-12">
                     Era Takeaways
                   </p>
-                  <div className="space-y-8">
+                  <div className="space-y-10">
                     {(showAllHighlights ? highlights : highlights.slice(0, 3)).map((h) => (
                       <div key={`hl-${h.id}`}>
-                        <p className="text-[15px] font-serif leading-[1.8] text-foreground/80 whitespace-pre-wrap">{h.content}</p>
+                        <p className="text-[15px] font-serif leading-[1.9] text-foreground/80 whitespace-pre-wrap">{h.content}</p>
                         <p className="text-[10px] text-muted-foreground/30 mt-2">
                           {h.cardTitle}
                         </p>
@@ -448,10 +448,10 @@ export default function SharedSummary() {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.08, duration: 0.15 }}
-                  className="mb-20"
+                  className="mb-24"
                 >
-                  <div className="h-px bg-border/20 mb-12 mx-auto" style={{ maxWidth: 120 }} />
-                  <p className="text-[10px] text-muted-foreground/40 uppercase tracking-[0.2em] mb-8">
+                  <div className="h-px bg-border/20 mb-14 mx-auto" style={{ maxWidth: 120 }} />
+                  <p className="text-[10px] text-muted-foreground/40 uppercase tracking-[0.2em] mb-10">
                     Er resa
                   </p>
                   <div className="flex items-center justify-center gap-3">
@@ -535,7 +535,7 @@ export default function SharedSummary() {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.1, duration: 0.15 }}
-                  className="mb-20 text-left"
+                  className="mb-24 text-left"
                 >
                   <div className="h-px bg-border/20 mb-12 mx-auto" style={{ maxWidth: 120 }} />
                   {(() => {
