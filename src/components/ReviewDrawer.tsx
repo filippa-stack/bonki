@@ -99,7 +99,7 @@ export default function ReviewDrawer({ open, onClose, card, activeStepIndex = 0,
   const { space } = useCoupleSpace();
   const [cardNotes, setCardNotes] = useState<CardNote[]>([]);
   const [noteFilter, setNoteFilter] = useState<'all' | 'private' | 'shared'>('all');
-  const [stepFilter, setStepFilter] = useState<'all' | 'private' | 'shared'>('all');
+  
   // No auto-scroll ref needed anymore
 
 
@@ -248,35 +248,12 @@ export default function ReviewDrawer({ open, onClose, card, activeStepIndex = 0,
           <TabsContent value="overview" className="flex-1 overflow-hidden mt-0">
             <ScrollArea className="h-full px-6 py-4" style={{ maxHeight: 'calc(85vh - 160px)' }}>
               <div className="space-y-6 pb-8">
-                {/* Step filter chips */}
-                <div className="flex gap-1.5">
-                  {(['all', 'private', 'shared'] as const).map((f) => {
-                    const label = f === 'all' ? 'Alla' : f === 'private' ? 'Privat' : 'Delat';
-                    return (
-                      <button
-                        key={f}
-                        onClick={() => setStepFilter(f)}
-                        className={`px-3 py-1 rounded-full text-[11px] font-medium transition-colors ${
-                          stepFilter === f
-                            ? 'bg-primary/15 text-primary'
-                            : 'bg-muted/40 text-muted-foreground hover:bg-muted/60'
-                        }`}
-                      >
-                        {label}
-                      </button>
-                    );
-                  })}
-                </div>
-
                 {STEP_ORDER.map((stepType, index) => {
                   const section = card.sections.find((s) => s.type === stepType);
                   if (!section) return null;
 
-                  // Filters only affect note indicators, not step visibility
                   const status = sectionNoteStatus[section.id];
-                  const showNoteStatus = stepFilter === 'all'
-                    || (stepFilter === 'private' && status?.hasPrivate)
-                    || (stepFilter === 'shared' && (status?.hasShared || status?.hasPartnerShared));
+                  const hasAnyNotes = status?.hasPrivate || status?.hasShared || status?.hasPartnerShared;
 
                   // Unlock: completed steps + the first uncompleted step (current frontier) + actively viewed step
                   const maxCompleted = completedSteps.length > 0 ? Math.max(...completedSteps) : -1;
@@ -307,7 +284,7 @@ export default function ReviewDrawer({ open, onClose, card, activeStepIndex = 0,
                             {STEP_LABELS[stepType]}
                           </h3>
                         </div>
-                        {isUnlocked && showNoteStatus && <StepNoteStatus cardId={card.id} sectionId={section.id} />}
+                        {isUnlocked && hasAnyNotes && <StepNoteStatus cardId={card.id} sectionId={section.id} />}
                       </div>
 
                       {isUnlocked ? (
