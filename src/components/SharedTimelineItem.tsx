@@ -101,6 +101,16 @@ export default function SharedTimelineItem({
   const hasMyResponse = myResponse && myResponse.content.trim().length > 0;
   const stepLabel = getStepLabel(note.section_id);
 
+  // Contextual time label
+  const ageMs = Date.now() - new Date(createdDate).getTime();
+  const isOlderThan24h = ageMs > 24 * 60 * 60 * 1000;
+  const isOlderThan1h = ageMs > 60 * 60 * 1000;
+  const timeLabel = isOlderThan24h
+    ? 'Skrevs för en tid sedan.'
+    : isOlderThan1h
+      ? 'Skrevs tidigare idag.'
+      : null;
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 8 }}
@@ -123,6 +133,16 @@ export default function SharedTimelineItem({
       {/* Prompt text (question) — subtle context */}
       {note.promptText && (
         <p className="text-xs text-foreground/50 italic mb-2 leading-relaxed">{note.promptText}</p>
+      )}
+
+      {/* Contextual time label */}
+      {timeLabel && (
+        <div className="mb-2 space-y-1">
+          {isOlderThan24h && (
+            <p className="text-[11px] text-muted-foreground/40">Läs i lugn och närvaro.</p>
+          )}
+          <p className="text-[11px] text-muted-foreground/50">{timeLabel}</p>
+        </div>
       )}
 
       {/* Reflection content — primary element */}
