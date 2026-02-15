@@ -676,8 +676,8 @@ export default function Home() {
               </div>
               <div className="flex gap-3">
                 <Button
-                  variant="outline"
-                  className="flex-1"
+                  variant="ghost"
+                  className="flex-1 text-muted-foreground"
                   onClick={() => setProposalCandidate(null)}
                 >
                   Avbryt
