@@ -124,9 +124,6 @@ export default function CardView() {
   );
   const [transitionMessage, setTransitionMessage] = useState<string | null>(null);
   
-  const [showDecompression, setShowDecompression] = useState(false);
-  const [decompressionButtonVisible, setDecompressionButtonVisible] = useState(false);
-  const decompressionTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [reviewOpen, setReviewOpen] = useState(false);
   const sectionViewRef = useRef<SectionViewHandle>(null);
   const [showConflictModal, setShowConflictModal] = useState(false);
@@ -159,25 +156,13 @@ export default function CardView() {
     }
   }, [currentStepIndex, myCompletedSteps.length, card]);
 
-  // ─── Show decompression then completion when card is fully explored ───
+  // ─── Show completion directly when card is fully explored ───
   useEffect(() => {
     if (isRevisitMode) return;
-    if (!showCompletion && !showDecompression && isFullyExplored) {
-      // Show decompression screen first
-      setShowDecompression(true);
-      setDecompressionButtonVisible(false);
-      decompressionTimerRef.current = setTimeout(() => {
-        setDecompressionButtonVisible(true);
-      }, 4000);
+    if (!showCompletion && isFullyExplored) {
+      setShowCompletion(true);
     }
   }, [isFullyExplored, isRevisitMode]);
-
-  // Cleanup decompression timer
-  useEffect(() => {
-    return () => {
-      if (decompressionTimerRef.current) clearTimeout(decompressionTimerRef.current);
-    };
-  }, []);
 
   // ─── Show stage choice when effective step advances (shared or catch-up) ───
   const prevEffectiveStepRef = useRef(effectiveSharedStep);
@@ -229,68 +214,6 @@ export default function CardView() {
     setShowOverview(false);
   };
 
-  // ─── Decompression screen ───
-  if (showDecompression) {
-    return (
-      <div className="min-h-screen page-bg">
-        <Header
-          title={category?.title}
-          showBack
-          backTo="/"
-        />
-        <div className="px-6 pt-24 pb-16">
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.6 }}
-            className="text-center max-w-sm mx-auto space-y-6"
-          >
-            <h2 className="text-xl font-serif text-foreground">
-              Ta en stund.
-            </h2>
-            <p className="text-sm text-muted-foreground leading-relaxed">
-              Det ni just delade förtjänar att landa.
-            </p>
-            <div className="pt-6">
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: decompressionButtonVisible ? 1 : 0 }}
-                transition={{ duration: 0.5 }}
-              >
-                <Button
-                  size="lg"
-                  className="w-full"
-                  onClick={() => {
-                    setShowDecompression(false);
-                    setShowCompletion(true);
-                    if (decompressionTimerRef.current) {
-                      clearTimeout(decompressionTimerRef.current);
-                    }
-                  }}
-                >
-                  Fortsätt
-                </Button>
-              </motion.div>
-              {/* Invisible tap target so user can skip immediately */}
-              {!decompressionButtonVisible && (
-                <button
-                  className="w-full h-12 opacity-0"
-                  aria-label="Fortsätt"
-                  onClick={() => {
-                    setShowDecompression(false);
-                    setShowCompletion(true);
-                    if (decompressionTimerRef.current) {
-                      clearTimeout(decompressionTimerRef.current);
-                    }
-                  }}
-                />
-              )}
-            </div>
-          </motion.div>
-        </div>
-      </div>
-    );
-  }
 
   // ─── Completion screen ───
   if (showCompletion) {
