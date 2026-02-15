@@ -81,10 +81,10 @@ export default function Onboarding() {
               <button
                 key={index}
                 onClick={() => setCurrentSlide(index)}
-                className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                className={`w-1.5 h-1.5 rounded-full transition-all duration-150 ${
                   index === currentSlide
-                    ? 'bg-primary w-6'
-                    : 'bg-border hover:bg-muted-foreground/30'
+                    ? 'bg-primary/40 w-4'
+                    : 'bg-border/40 hover:bg-muted-foreground/20'
                 }`}
                 aria-label={t('onboarding.slide_label', { number: index + 1 })}
               />

@@ -26,10 +26,10 @@ export default function StepProgressIndicator({
           <div key={step.id} className="flex items-center gap-3">
             <span
               className={cn(
-                'text-xs transition-all duration-300',
+                'text-[10px] tracking-wide transition-all duration-150',
                 isCurrent
-                  ? 'text-foreground/70 font-medium'
-                  : 'text-muted-foreground/30'
+                  ? 'text-foreground/50 font-medium'
+                  : 'text-muted-foreground/25'
               )}
             >
               {step.label}
@@ -37,7 +37,7 @@ export default function StepProgressIndicator({
 
             {/* Soft separator dot */}
             {index < STEPS.length - 1 && (
-              <span className="text-muted-foreground/20 text-[8px]">·</span>
+              <span className="text-muted-foreground/15 text-[6px]">·</span>
             )}
           </div>
         );
