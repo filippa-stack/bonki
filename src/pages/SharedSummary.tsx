@@ -14,7 +14,7 @@ import Header from '@/components/Header';
 import SharedTimelineItem from '@/components/SharedTimelineItem';
 import AttachPartner from '@/components/AttachPartner';
 import IncomingProposal from '@/components/IncomingProposal';
-import { Search, Filter, X, Clock, MessageCircle, BookOpen, ChevronDown } from 'lucide-react';
+import { Search, Filter, X, ChevronDown } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import {
@@ -44,7 +44,7 @@ const AUTOSAVE_DELAY = 800;
 export default function SharedSummary() {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const { categories, backgroundColor, getCardById, getCategoryById, startSession } = useApp();
+  const { categories, backgroundColor, getCardById, getCategoryById, startSession, journeyState, cards } = useApp();
   const { user } = useAuth();
   const { space, displayMemberCount, userRole } = useCoupleSpace();
   const { incomingProposals, savedProposals, updateProposalStatus } = useProposals();
@@ -97,12 +97,10 @@ export default function SharedSummary() {
   }, []);
 
   const handleUpdateNote = useCallback((noteId: string, newContent: string) => {
-    // Update local state immediately
     setSharedNotes(prev =>
       prev.map(n => n.id === noteId ? { ...n, content: newContent, updated_at: new Date().toISOString() } : n)
     );
 
-    // Debounced save to DB
     const existingTimer = pendingSaves.current.get(noteId);
     if (existingTimer) clearTimeout(existingTimer);
 
@@ -145,7 +143,6 @@ export default function SharedSummary() {
         const category = getCategoryById(card.categoryId);
         if (!category) return null;
 
-        // Find prompt text
         const section = card.sections.find(s => s.id === note.section_id);
         const promptIndex = parseInt(note.prompt_id.replace('prompt-', ''), 10);
         const rawPrompt = section?.prompts?.[promptIndex];
@@ -162,9 +159,7 @@ export default function SharedSummary() {
       .filter(Boolean)
       .filter(item => {
         if (!item) return false;
-        // Category filter
         if (categoryFilter !== 'all' && item.categoryId !== categoryFilter) return false;
-        // Search filter
         if (searchQuery) {
           const q = searchQuery.toLowerCase();
           return (
@@ -177,7 +172,6 @@ export default function SharedSummary() {
       }) as (SharedNoteRow & { cardTitle: string; categoryTitle: string; categoryId: string; promptText: string })[];
   }, [sharedNotes, searchQuery, categoryFilter, getCardById, getCategoryById]);
 
-  // Split into recent (last 3) and older, then group older by month+card
   const { recentItems, olderGrouped } = useMemo(() => {
     type TimelineItem = typeof timelineItems[number];
     type CardGroup = { cardId: string; cardTitle: string; categoryTitle: string; items: TimelineItem[] };
@@ -187,7 +181,6 @@ export default function SharedSummary() {
     const recent = timelineItems.slice(0, RECENT_COUNT);
     const older = timelineItems.slice(RECENT_COUNT);
 
-    // Group older items by month then card
     const monthMap = new Map<string, { label: string; cardMap: Map<string, { cardTitle: string; categoryTitle: string; items: TimelineItem[] }> }>();
 
     for (const item of older) {
@@ -227,35 +220,47 @@ export default function SharedSummary() {
   const hasContent = sharedNotes.length > 0;
   const hasActiveFilter = categoryFilter !== 'all' || searchQuery.length > 0;
 
+  // Journey progress data
+  const exploredIds = journeyState?.exploredCardIds || [];
+  const totalCards = cards.length;
+  const exploredCount = exploredIds.length;
+
   return (
     <div className="min-h-screen page-bg">
       <Header showBack backTo="/" />
 
-      <div className="px-6 pt-10 pb-12 mx-auto" style={{ maxWidth: 720 }}>
-        {/* Room header — hidden during filtering */}
+      <div className="px-6 pt-16 pb-20 mx-auto text-center" style={{ maxWidth: 600 }}>
+
+        {/* ─── 1. Header ─── */}
         {!showFind && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 0.4 }}
-            className="mb-6 text-center"
+            transition={{ duration: 0.5 }}
+            className="mb-4"
           >
-            <h2 className="font-serif text-2xl font-semibold text-foreground mb-4">Vårt utrymme</h2>
-            <p className="text-xs text-muted-foreground font-normal">
-              Här samlas det ni delar under samtalen.
-            </p>
+            <h2 className="font-serif text-2xl font-semibold text-foreground">Vårt utrymme</h2>
           </motion.div>
         )}
 
-        {/* Spacer before first content section */}
-        {!showFind && <div className="mb-6" />}
+        {/* ─── 2. Subtext ─── */}
+        {!showFind && (
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+            className="text-xs text-muted-foreground/70 mb-16"
+          >
+            Här samlas det ni bygger tillsammans.
+          </motion.p>
+        )}
 
         {/* Partner invite — only when solo */}
         {space && (
           <motion.div
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
-            className="mb-8"
+            className="mb-12 text-left"
           >
             <AttachPartner
               inviteCode={space.invite_code}
@@ -274,17 +279,17 @@ export default function SharedSummary() {
           </motion.div>
         )}
 
-        {/* Incoming proposals — "Föreslaget till er" */}
+        {/* Incoming proposals */}
         {incomingProposals.length > 0 && (
           <motion.div
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
-            className="mb-8"
+            className="mb-12"
           >
-            <p className="text-sm font-serif font-medium text-foreground mb-4 text-center">
+            <p className="text-sm font-serif text-foreground/70 mb-5">
               Föreslaget till er
             </p>
-            <div className="space-y-3">
+            <div className="space-y-3 text-left">
               {incomingProposals.map((proposal) => {
                 const proposalCard = getCardById(proposal.card_id);
                 const proposalCategory = getCategoryById(proposal.category_id);
@@ -315,16 +320,16 @@ export default function SharedSummary() {
           </motion.div>
         )}
 
-        {/* Saved proposals — collapsed behind toggle */}
+        {/* Saved proposals — collapsed */}
         {savedProposals.length > 0 && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="mb-6"
+            className="mb-10"
           >
             <button
               onClick={() => setShowSavedProposals(!showSavedProposals)}
-              className="w-full flex items-center justify-center gap-1.5 text-xs text-muted-foreground/60 hover:text-muted-foreground transition-colors py-2"
+              className="inline-flex items-center gap-1.5 text-xs text-muted-foreground/50 hover:text-muted-foreground transition-colors py-2"
             >
               <span>Visa sparade förslag ({savedProposals.length})</span>
               <ChevronDown className={`w-3 h-3 transition-transform ${showSavedProposals ? 'rotate-180' : ''}`} />
@@ -337,7 +342,7 @@ export default function SharedSummary() {
                   exit={{ opacity: 0, height: 0 }}
                   className="overflow-hidden"
                 >
-                  <div className="space-y-2 pt-2">
+                  <div className="space-y-2 pt-2 text-left">
                     {savedProposals.map((proposal) => {
                       const proposalCard = getCardById(proposal.card_id);
                       const proposalCategory = getCategoryById(proposal.category_id);
@@ -346,11 +351,11 @@ export default function SharedSummary() {
                       return (
                         <div
                           key={proposal.id}
-                          className="rounded-xl border border-border/30 bg-card/50 p-4 flex items-center justify-between"
+                          className="py-3 flex items-center justify-between"
                         >
                           <div>
                             <p className="font-serif text-sm text-foreground">{proposalCard.title}</p>
-                            <p className="text-xs text-muted-foreground/60">{proposalCategory.title}</p>
+                            <p className="text-xs text-muted-foreground/50">{proposalCategory.title}</p>
                           </div>
                           <Button
                             size="sm"
@@ -375,144 +380,186 @@ export default function SharedSummary() {
           </motion.div>
         )}
 
-        {/* Browse cards module — top position only when empty */}
+        {/* ─── Empty state ─── */}
         {!hasContent && !hasActiveFilter && !loading && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 0.3, delay: 0.1 }}
-            className="mb-9"
+            transition={{ duration: 0.4, delay: 0.15 }}
+            className="mb-16 space-y-10"
           >
-            <div className="px-5 py-[18px] rounded-2xl bg-card/15 border border-border/10 text-center">
-              <p className="font-serif text-sm font-medium text-foreground">Hitta ett ämne att utforska ihop</p>
-              <p className="text-[11px] text-muted-foreground mt-3 mb-5 leading-relaxed">Ni kan börja från början – eller välja det som känns rätt just nu.</p>
-              <Button
-                variant="secondary"
-                size="sm"
-                className="w-full h-8 font-medium"
-                onClick={() => navigate('/')}
-              >
-                Bläddra bland kort
-              </Button>
-            </div>
-            <p className="text-xs text-muted-foreground text-center mt-8">
+            <button
+              onClick={() => navigate('/')}
+              className="text-sm text-muted-foreground/60 hover:text-muted-foreground transition-colors"
+            >
+              Bläddra bland kort →
+            </button>
+            <p className="text-xs text-muted-foreground/40">
               När ni delar en reflektion till en fråga visas den här.
             </p>
           </motion.div>
         )}
 
         {loading ? (
-          <div className="py-8 space-y-4 animate-fade-in">
+          <div className="py-12 space-y-6 animate-fade-in">
             {[1, 2, 3].map(i => (
-              <div key={i} className="h-20 rounded-lg bg-muted/30 animate-pulse" />
+              <div key={i} className="h-4 w-3/4 mx-auto rounded bg-muted/20 animate-pulse" />
             ))}
           </div>
         ) : (
           <>
-            {/* Empty state reassurance removed — title subtext covers it */}
-
             {hasContent && (<>
-            {/* Highlights */}
-            {highlights.length > 0 && !hasActiveFilter && (
-              <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="mb-6"
-              >
-                <p className="text-sm font-serif font-medium text-foreground mb-3 text-center">
-                  {t('shared.highlights_title')}
-                </p>
-                <p className="text-xs text-muted-foreground mb-4 text-center">
-                  Det ni valt att lyfta fram.
-                </p>
-                <div className="space-y-8">
-                  {(showAllHighlights ? highlights : highlights.slice(0, 3)).map((h) => (
-                    <div key={`hl-${h.id}`} className="text-center">
-                      <p className="text-[16px] font-serif leading-relaxed text-foreground whitespace-pre-wrap">{h.content}</p>
-                      <p className="text-[11px] text-muted-foreground/50 mt-3">
-                        {h.cardTitle}
-                      </p>
-                    </div>
-                  ))}
-                </div>
-                {highlights.length > 3 && (
-                  <button
-                    onClick={() => setShowAllHighlights(!showAllHighlights)}
-                    className="mt-6 text-xs text-muted-foreground hover:text-foreground transition-colors block mx-auto"
-                  >
-                    {showAllHighlights ? 'Visa färre' : 'Visa fler'}
-                  </button>
-                )}
-              </motion.div>
-            )}
 
-            {/* Find toggle */}
-            <div className="flex justify-end mb-6">
-              <Button
-                variant="ghost"
-                size="sm"
-                className="text-xs text-muted-foreground gap-1.5"
-                onClick={() => {
-                  if (showFind) {
-                    setSearchQuery('');
-                    setCategoryFilter('all');
-                  }
-                  setShowFind(!showFind);
-                }}
-              >
-                {showFind ? <X className="w-3.5 h-3.5" /> : <Search className="w-3.5 h-3.5" />}
-                {showFind ? 'Stäng' : 'Sök i ert utrymme'}
-              </Button>
-            </div>
-
-            {/* Search + Filter row */}
-            {showFind && (
-              <div className="flex gap-2 mb-6">
-                <div className="relative flex-1">
-                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                  <Input
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    placeholder="Sök på ord eller tema…"
-                    className="pl-10"
-                  />
-                </div>
-                <Select value={categoryFilter} onValueChange={setCategoryFilter}>
-                  <SelectTrigger className="w-[140px]">
-                    <Filter className="w-3 h-3 mr-1" />
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">Alla</SelectItem>
-                    {categories.map(c => (
-                      <SelectItem key={c.id} value={c.id}>{c.title}</SelectItem>
+              {/* ─── 3. Era Takeaways (highlights) ─── */}
+              {highlights.length > 0 && !hasActiveFilter && (
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.1 }}
+                  className="mb-16"
+                >
+                  <p className="text-xs text-muted-foreground/50 uppercase tracking-widest mb-8">
+                    Era Takeaways
+                  </p>
+                  <div className="space-y-10">
+                    {(showAllHighlights ? highlights : highlights.slice(0, 3)).map((h) => (
+                      <div key={`hl-${h.id}`}>
+                        <p className="text-[15px] font-serif leading-relaxed text-foreground/90 whitespace-pre-wrap">{h.content}</p>
+                        <p className="text-[10px] text-muted-foreground/35 mt-3">
+                          {h.cardTitle}
+                        </p>
+                      </div>
                     ))}
-                  </SelectContent>
-                </Select>
-                {hasActiveFilter && (
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={() => { setSearchQuery(''); setCategoryFilter('all'); }}
-                  >
-                    <X className="w-4 h-4" />
-                  </Button>
-                )}
-              </div>
-            )}
+                  </div>
+                  {highlights.length > 3 && (
+                    <button
+                      onClick={() => setShowAllHighlights(!showAllHighlights)}
+                      className="mt-8 text-xs text-muted-foreground/40 hover:text-muted-foreground transition-colors"
+                    >
+                      {showAllHighlights ? 'Visa färre' : `Visa alla ${highlights.length}`}
+                    </button>
+                  )}
+                </motion.div>
+              )}
 
-            {/* Recent shared moments — prominent */}
-            {recentItems.length > 0 && !hasActiveFilter && (
-              <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="mb-6"
-              >
-                <p className="text-sm font-serif font-medium text-foreground mb-4 text-center">
-                  {t('shared.recent_title', 'Nyligen sparat')}
-                </p>
-                <div className="space-y-3">
-                  {recentItems.map((item) => (
+              {/* ─── 4. Er resa — minimal progress ─── */}
+              {!hasActiveFilter && (
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.15 }}
+                  className="mb-16"
+                >
+                  <p className="text-xs text-muted-foreground/50 uppercase tracking-widest mb-6">
+                    Er resa
+                  </p>
+                  <div className="flex items-center justify-center gap-3">
+                    <div className="flex gap-1.5">
+                      {Array.from({ length: totalCards }).map((_, i) => (
+                        <div
+                          key={i}
+                          className={`w-2 h-2 rounded-full transition-colors ${
+                            i < exploredCount
+                              ? 'bg-foreground/30'
+                              : 'bg-muted/30'
+                          }`}
+                        />
+                      ))}
+                    </div>
+                    <span className="text-[10px] text-muted-foreground/40">
+                      {exploredCount} av {totalCards}
+                    </span>
+                  </div>
+                </motion.div>
+              )}
+
+              {/* ─── Search toggle ─── */}
+              <div className="flex justify-center mb-10">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="text-xs text-muted-foreground/50 gap-1.5"
+                  onClick={() => {
+                    if (showFind) {
+                      setSearchQuery('');
+                      setCategoryFilter('all');
+                    }
+                    setShowFind(!showFind);
+                  }}
+                >
+                  {showFind ? <X className="w-3.5 h-3.5" /> : <Search className="w-3.5 h-3.5" />}
+                  {showFind ? 'Stäng' : 'Sök'}
+                </Button>
+              </div>
+
+              {/* Search + Filter row */}
+              {showFind && (
+                <div className="flex gap-2 mb-10 text-left">
+                  <div className="relative flex-1">
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground/40" />
+                    <Input
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      placeholder="Sök på ord eller tema…"
+                      className="pl-10 border-border/20"
+                    />
+                  </div>
+                  <Select value={categoryFilter} onValueChange={setCategoryFilter}>
+                    <SelectTrigger className="w-[140px] border-border/20">
+                      <Filter className="w-3 h-3 mr-1 opacity-40" />
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">Alla</SelectItem>
+                      {categories.map(c => (
+                        <SelectItem key={c.id} value={c.id}>{c.title}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  {hasActiveFilter && (
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={() => { setSearchQuery(''); setCategoryFilter('all'); }}
+                    >
+                      <X className="w-4 h-4" />
+                    </Button>
+                  )}
+                </div>
+              )}
+
+              {/* ─── Recent reflections ─── */}
+              {recentItems.length > 0 && !hasActiveFilter && (
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.2 }}
+                  className="mb-14 text-left"
+                >
+                  <p className="text-xs text-muted-foreground/50 uppercase tracking-widest mb-6 text-center">
+                    Nyligen delat
+                  </p>
+                  <div className="space-y-1">
+                    {recentItems.map((item) => (
+                      <SharedTimelineItem
+                        key={item.id}
+                        note={item}
+                        isOwnNote={item.user_id === user?.id}
+                        myResponse={getMyResponse(item.id)}
+                        partnerResponse={getPartnerResponse(item.id)}
+                        onUpdate={handleUpdateNote}
+                        onSaveResponse={saveResponse}
+                        onOpenInContext={handleOpenInContext}
+                      />
+                    ))}
+                  </div>
+                </motion.div>
+              )}
+
+              {/* Filtered results */}
+              {hasActiveFilter && timelineItems.length > 0 && (
+                <div className="space-y-1 mb-10 text-left">
+                  {timelineItems.map((item) => (
                     <SharedTimelineItem
                       key={item.id}
                       note={item}
@@ -525,87 +572,60 @@ export default function SharedSummary() {
                     />
                   ))}
                 </div>
-              </motion.div>
-            )}
+              )}
 
-            {/* When filtering, show all results flat */}
-            {hasActiveFilter && timelineItems.length > 0 && (
-              <div className="space-y-3 mb-6">
-                {timelineItems.map((item) => (
-                  <SharedTimelineItem
-                    key={item.id}
-                    note={item}
-                    isOwnNote={item.user_id === user?.id}
-                    myResponse={getMyResponse(item.id)}
-                    partnerResponse={getPartnerResponse(item.id)}
-                    onUpdate={handleUpdateNote}
-                    onSaveResponse={saveResponse}
-                    onOpenInContext={handleOpenInContext}
-                  />
-                ))}
-              </div>
-            )}
-
-            {/* Older reflections — grouped by month only, flat list */}
-            {olderGrouped.length > 0 && !hasActiveFilter && (
-              <div>
-                <p className="text-sm font-serif font-medium text-foreground mb-4 text-center">Tidigare</p>
-                {olderGrouped.map((group) => (
-                  <div key={group.key} className="mb-6">
-                    <p className="text-xs uppercase tracking-wide text-muted-foreground mb-3">
-                      {group.label}
-                    </p>
-                    <div className="space-y-3">
-                      {group.cardGroups.flatMap((cardGroup) => cardGroup.items).map((item) => (
-                        <SharedTimelineItem
-                          key={item.id}
-                          note={item}
-                          isOwnNote={item.user_id === user?.id}
-                          myResponse={getMyResponse(item.id)}
-                          partnerResponse={getPartnerResponse(item.id)}
-                          onUpdate={handleUpdateNote}
-                          onSaveResponse={saveResponse}
-                          onOpenInContext={handleOpenInContext}
-                        />
-                      ))}
+              {/* ─── Older reflections ─── */}
+              {olderGrouped.length > 0 && !hasActiveFilter && (
+                <div className="mb-14 text-left">
+                  <p className="text-xs text-muted-foreground/50 uppercase tracking-widest mb-6 text-center">Tidigare</p>
+                  {olderGrouped.map((group) => (
+                    <div key={group.key} className="mb-8">
+                      <p className="text-[10px] text-muted-foreground/30 uppercase tracking-wide mb-4 text-center">
+                        {group.label}
+                      </p>
+                      <div className="space-y-1">
+                        {group.cardGroups.flatMap((cardGroup) => cardGroup.items).map((item) => (
+                          <SharedTimelineItem
+                            key={item.id}
+                            note={item}
+                            isOwnNote={item.user_id === user?.id}
+                            myResponse={getMyResponse(item.id)}
+                            partnerResponse={getPartnerResponse(item.id)}
+                            onUpdate={handleUpdateNote}
+                            onSaveResponse={saveResponse}
+                            onOpenInContext={handleOpenInContext}
+                          />
+                        ))}
+                      </div>
                     </div>
-                  </div>
-                ))}
-              </div>
-            )}
-
-            {/* No results */}
-            {timelineItems.length === 0 && hasActiveFilter && (
-              <p className="text-center text-gentle py-8 text-sm">
-                {t('shared.no_results')}
-              </p>
-            )}
-
-            {/* Browse cards module — bottom position when has content */}
-            {!hasActiveFilter && (
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.3 }}
-                className="mt-6 mb-6"
-              >
-                <div className="px-5 py-[18px] rounded-2xl bg-card/15 border border-border/10 text-center">
-                  <p className="font-serif text-sm font-medium text-foreground">Hitta ett ämne att utforska ihop</p>
-                  <p className="text-[11px] text-muted-foreground mt-3 mb-5 leading-relaxed">Ni kan börja från början – eller välja det som känns rätt just nu.</p>
-                  <Button
-                    variant="secondary"
-                    size="sm"
-                    className="w-full h-8 font-medium"
-                    onClick={() => navigate('/')}
-                  >
-                    Bläddra bland kort
-                  </Button>
+                  ))}
                 </div>
-              </motion.div>
-            )}
-            </>)}
+              )}
 
-            {/* "Er resa" removed from empty state to reduce competing blocks */}
+              {/* No results */}
+              {timelineItems.length === 0 && hasActiveFilter && (
+                <p className="text-muted-foreground/40 py-12 text-sm">
+                  {t('shared.no_results')}
+                </p>
+              )}
+
+              {/* Browse — bottom, subtle */}
+              {!hasActiveFilter && (
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.3 }}
+                  className="mt-8 mb-6"
+                >
+                  <button
+                    onClick={() => navigate('/')}
+                    className="text-xs text-muted-foreground/40 hover:text-muted-foreground transition-colors"
+                  >
+                    Bläddra bland kort →
+                  </button>
+                </motion.div>
+              )}
+            </>)}
           </>
         )}
       </div>
