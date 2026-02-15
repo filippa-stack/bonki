@@ -87,6 +87,8 @@ export interface JourneyState {
   }>;
   /** ISO timestamps of last visit per cardId */
   cardVisitDates?: Record<string, string>;
+  /** Last 2 session initiator user IDs (most recent last) */
+  lastInitiators?: string[];
 }
 
 export interface PrivateNote {

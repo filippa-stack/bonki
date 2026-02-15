@@ -118,6 +118,25 @@ export default function CardView() {
   
   
   const [reviewOpen, setReviewOpen] = useState(false);
+
+  // Initiator nudge: show once if same partner started last 2 sessions and current user is the other
+  const [initiatorNudgeDismissed, setInitiatorNudgeDismissed] = useState(false);
+  const showInitiatorNudge = (() => {
+    if (initiatorNudgeDismissed || isRevisitMode) return false;
+    const inits = journeyState?.lastInitiators;
+    if (!inits || inits.length < 2) return false;
+    const [prev, last] = inits;
+    return prev === last && last !== uid;
+  })();
+
+  // Auto-dismiss after first render
+  useEffect(() => {
+    if (showInitiatorNudge) {
+      const timer = setTimeout(() => setInitiatorNudgeDismissed(true), 8000);
+      return () => clearTimeout(timer);
+    }
+  }, [showInitiatorNudge]);
+
   const sectionViewRef = useRef<SectionViewHandle>(null);
   const [showConflictModal, setShowConflictModal] = useState(false);
   const [proposalSent, setProposalSent] = useState(false);
@@ -370,6 +389,9 @@ export default function CardView() {
         >
           {card.title}
         </motion.h1>
+        {!isRevisitMode && showInitiatorNudge && (
+          <p className="text-[11px] text-muted-foreground/40 text-center mt-2">Den här gången kan du börja.</p>
+        )}
         {isRevisitMode && (
           <div className="mt-4 text-center space-y-0.5">
             <p className="text-[11px] text-muted-foreground/50 tracking-wide">Förhandskoll</p>

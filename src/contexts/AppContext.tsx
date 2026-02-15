@@ -895,6 +895,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
     startSession(categoryId, cardId, { force: opts?.force ?? false, fromBeginning: opts?.fromBeginning ?? false });
     setState((prev) => {
       const now = new Date().toISOString();
+      const uid = user?.id || 'local';
       const prevJourney = prev.journeyState || {
         currentCategoryId: null,
         lastOpenedCardId: null,
@@ -904,6 +905,9 @@ export function AppProvider({ children }: { children: ReactNode }) {
         updatedAt: now,
         exploredCardIds: [],
       };
+      // Track last 2 initiators
+      const prevInitiators = prevJourney.lastInitiators || [];
+      const updatedInitiators = [...prevInitiators, uid].slice(-2);
       return {
         ...prev,
         journeyState: {
@@ -915,6 +919,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
             ...(prevJourney.cardVisitDates || {}),
             [cardId]: now,
           },
+          lastInitiators: updatedInitiators,
         },
       };
     });
