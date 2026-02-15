@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { JOIN_INTENT_KEY } from '@/pages/Index';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
@@ -102,7 +103,7 @@ export default function PurchaseScreen({ onPurchaseComplete }: PurchaseScreenPro
           <Button
             variant="ghost"
             size="sm"
-            onClick={() => navigate('/join')}
+            onClick={() => { localStorage.setItem(JOIN_INTENT_KEY, 'true'); navigate('/join'); }}
             className="text-muted-foreground hover:text-foreground"
           >
             Jag har redan blivit inbjuden

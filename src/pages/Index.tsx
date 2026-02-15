@@ -15,7 +15,7 @@ import { Button } from '@/components/ui/button';
 import { useTranslation } from 'react-i18next';
 
 const PURCHASE_KEY = 'still-us-purchased';
-
+export const JOIN_INTENT_KEY = 'still-us-join-intent';
 export default function Index() {
   const { t } = useTranslation();
   const { hasCompletedOnboarding, savedConversations, getAllSharedNotes, journeyState } = useApp();
@@ -36,6 +36,7 @@ export default function Index() {
 
   const handlePurchaseComplete = () => {
     localStorage.setItem(PURCHASE_KEY, 'true');
+    localStorage.removeItem(JOIN_INTENT_KEY);
     setHasPurchased(true);
     setShowPostPurchaseInvite(true);
   };
@@ -86,8 +87,10 @@ export default function Index() {
   // - user is partner_b (joined via invite)
   // - pending invite claim just succeeded
   // - user already has a couple_space membership (memberCount >= 1 means they're in couple_members)
+  // - user has declared join intent (they'll attach via code/link instead of paying)
   const isAlreadyMember = memberCount >= 1;
-  if (!hasPurchased && userRole !== 'partner_b' && claimStatus !== 'success' && !isAlreadyMember) {
+  const hasJoinIntent = localStorage.getItem(JOIN_INTENT_KEY) === 'true';
+  if (!hasPurchased && userRole !== 'partner_b' && claimStatus !== 'success' && !isAlreadyMember && !hasJoinIntent) {
     return <PurchaseScreen onPurchaseComplete={handlePurchaseComplete} />;
   }
 
