@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useApp } from '@/contexts/AppContext';
 import { useCoupleSpace } from '@/hooks/useCoupleSpace';
 import { usePartnerNotifications } from '@/hooks/usePartnerNotifications';
@@ -16,7 +17,9 @@ import { useTranslation } from 'react-i18next';
 
 const PURCHASE_KEY = 'still-us-purchased';
 export const JOIN_INTENT_KEY = 'still-us-join-intent';
+
 export default function Index() {
+  const navigate = useNavigate();
   const { t } = useTranslation();
   const { hasCompletedOnboarding, savedConversations, getAllSharedNotes, journeyState } = useApp();
   const { userRole, space, memberCount } = useCoupleSpace();
@@ -83,14 +86,41 @@ export default function Index() {
     return <Onboarding />;
   }
 
-  // Purchase gate — skip if:
-  // - user is partner_b (joined via invite)
-  // - pending invite claim just succeeded
-  // - user already has a couple_space membership (memberCount >= 1 means they're in couple_members)
-  // - user has declared join intent (they'll attach via code/link instead of paying)
+  // ─── Paywall gate ───
   const isAlreadyMember = memberCount >= 1;
   const hasJoinIntent = localStorage.getItem(JOIN_INTENT_KEY) === 'true';
-  if (!hasPurchased && userRole !== 'partner_b' && claimStatus !== 'success' && !isAlreadyMember && !hasJoinIntent) {
+  const shouldBypassPaywall = isAlreadyMember || userRole === 'partner_b' || claimStatus === 'success' || hasPendingInvite() || hasJoinIntent;
+
+  // Join-intent screen: user said "I have an invite" — route them to attach
+  if (hasJoinIntent && !hasPurchased && !isAlreadyMember) {
+    return (
+      <div className="min-h-screen page-bg flex items-center justify-center px-6">
+        <div className="w-full max-w-sm text-center space-y-6">
+          <h1 className="text-display text-foreground">Anslut till din partner</h1>
+          <p className="text-body text-muted-foreground leading-relaxed">
+            Ange koden eller öppna länken du fick. Du behöver inte köpa igen.
+          </p>
+          <Button onClick={() => navigate('/join')} className="w-full h-12 text-base font-medium">
+            Gå till anslutning
+          </Button>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => {
+              localStorage.removeItem(JOIN_INTENT_KEY);
+              window.location.reload();
+            }}
+            className="text-muted-foreground hover:text-foreground"
+          >
+            Jag har ingen kod
+          </Button>
+        </div>
+      </div>
+    );
+  }
+
+  // Show paywall only if not purchased AND no bypass reason
+  if (!hasPurchased && !shouldBypassPaywall) {
     return <PurchaseScreen onPurchaseComplete={handlePurchaseComplete} />;
   }
 
