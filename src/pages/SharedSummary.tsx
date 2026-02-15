@@ -245,7 +245,7 @@ export default function SharedSummary() {
         {!showFind && <div className="mb-6" />}
 
         {/* Partner invite — only when solo */}
-        {space && displayMemberCount < 2 && (
+        {space && displayMemberCount < 2 && userRole !== 'partner_b' && (
           <motion.div
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}

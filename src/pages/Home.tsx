@@ -432,7 +432,7 @@ export default function Home() {
           transition={{ delay: 0.15 }}
           className="px-6 pb-6"
         >
-          {displayMemberCount < 2 ? (
+          {displayMemberCount < 2 && userRole !== 'partner_b' ? (
             <InvitePartner
               inviteCode={space.invite_code}
               inviteToken={space.invite_token}
