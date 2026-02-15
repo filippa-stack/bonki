@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useRef, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import { X, ArrowRight, FileText } from 'lucide-react';
@@ -88,9 +88,10 @@ interface ReviewDrawerProps {
   open: boolean;
   onClose: () => void;
   card: Card;
+  activeStepIndex?: number;
 }
 
-export default function ReviewDrawer({ open, onClose, card }: ReviewDrawerProps) {
+export default function ReviewDrawer({ open, onClose, card, activeStepIndex = 0 }: ReviewDrawerProps) {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { user } = useAuth();
@@ -98,6 +99,17 @@ export default function ReviewDrawer({ open, onClose, card }: ReviewDrawerProps)
   const [cardNotes, setCardNotes] = useState<CardNote[]>([]);
   const [noteFilter, setNoteFilter] = useState<'all' | 'private' | 'shared'>('all');
   const [stepFilter, setStepFilter] = useState<'all' | 'private' | 'shared'>('all');
+  const activeStepRef = useRef<HTMLDivElement>(null);
+
+  // Auto-scroll to active step when drawer opens
+  useEffect(() => {
+    if (open && activeStepIndex > 0 && activeStepRef.current) {
+      const timer = setTimeout(() => {
+        activeStepRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 350);
+      return () => clearTimeout(timer);
+    }
+  }, [open, activeStepIndex]);
 
   const filteredNotes = noteFilter === 'all'
     ? cardNotes
@@ -276,6 +288,7 @@ export default function ReviewDrawer({ open, onClose, card }: ReviewDrawerProps)
                   return (
                     <motion.div
                       key={stepType}
+                      ref={index === activeStepIndex ? activeStepRef : undefined}
                       initial={{ opacity: 0, y: 8 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: index * 0.05, duration: 0.3 }}

@@ -739,7 +739,7 @@ export default function CardView() {
               )}
 
               {/* Review drawer */}
-              <ReviewDrawer open={reviewOpen} onClose={() => setReviewOpen(false)} card={card} />
+              <ReviewDrawer open={reviewOpen} onClose={() => setReviewOpen(false)} card={card} activeStepIndex={currentStepIndex} />
             </motion.div>
           )}
         </AnimatePresence>
