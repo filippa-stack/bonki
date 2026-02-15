@@ -23,10 +23,10 @@ import type { Card } from '@/types';
 
 const STEP_ORDER = ['opening', 'reflective', 'scenario', 'exercise'] as const;
 const STEP_LABELS: Record<string, string> = {
-  opening: 'Öppnare',
-  reflective: 'Tankeväckare',
-  scenario: 'Scenario',
-  exercise: 'Teamwork',
+  opening: 'Början',
+  reflective: 'Fördjupning',
+  scenario: 'I verkligheten',
+  exercise: 'Tillsammans',
 };
 
 interface CardNote {
@@ -312,7 +312,7 @@ export default function ReviewDrawer({ open, onClose, card, activeStepIndex = 0,
                                 ))}
                               </div>
                             ) : (
-                              /* Öppnare/Tankeväckare: subtext + question list */
+                              /* Början/Fördjupning: subtext + question list */
                               <div className="space-y-3">
                                 {section.content && (
                                   <p className="text-xs text-muted-foreground/70 leading-relaxed whitespace-pre-wrap mb-1">

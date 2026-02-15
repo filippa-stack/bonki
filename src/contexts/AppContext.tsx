@@ -368,14 +368,14 @@ export function AppProvider({ children }: { children: ReactNode }) {
         {
           id: `${newId}-opening`,
           type: 'opening',
-          title: 'Öppnare',
+          title: 'Början',
           content: 'Lägg till innehåll...',
           prompts: ['Lägg till fråga...'],
         },
         {
           id: `${newId}-reflective`,
           type: 'reflective',
-          title: 'Tankeväckare',
+          title: 'Fördjupning',
           content: 'Lägg till innehåll...',
           prompts: ['Lägg till fråga...'],
         },
@@ -389,7 +389,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
         {
           id: `${newId}-exercise`,
           type: 'exercise',
-          title: 'Teamwork',
+          title: 'Tillsammans',
           content: 'Lägg till innehåll...',
           prompts: ['Lägg till uppgift...'],
         },
