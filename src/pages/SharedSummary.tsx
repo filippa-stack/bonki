@@ -1,4 +1,5 @@
 import { useState, useMemo, useEffect, useCallback, useRef } from 'react';
+import { AnimatePresence } from 'framer-motion';
 import { toast } from 'sonner';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
@@ -13,7 +14,7 @@ import Header from '@/components/Header';
 import SharedTimelineItem from '@/components/SharedTimelineItem';
 import AttachPartner from '@/components/AttachPartner';
 import IncomingProposal from '@/components/IncomingProposal';
-import { Search, Filter, X, Clock, MessageCircle, BookOpen } from 'lucide-react';
+import { Search, Filter, X, Clock, MessageCircle, BookOpen, ChevronDown } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import {
@@ -54,6 +55,7 @@ export default function SharedSummary() {
   const [sharedNotes, setSharedNotes] = useState<SharedNoteRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [showAllHighlights, setShowAllHighlights] = useState(false);
+  const [showSavedProposals, setShowSavedProposals] = useState(false);
   const pendingSaves = useRef<Map<string, ReturnType<typeof setTimeout>>>(new Map());
 
   // Fetch all shared notes in the couple space
@@ -313,48 +315,63 @@ export default function SharedSummary() {
           </motion.div>
         )}
 
-        {/* Saved proposals */}
-        {savedProposals.length > 0 && !incomingProposals.length && (
+        {/* Saved proposals — collapsed behind toggle */}
+        {savedProposals.length > 0 && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             className="mb-6"
           >
-            <p className="text-xs text-muted-foreground/50 tracking-wide mb-3 text-center">
-              Sparade förslag
-            </p>
-            <div className="space-y-2">
-              {savedProposals.map((proposal) => {
-                const proposalCard = getCardById(proposal.card_id);
-                const proposalCategory = getCategoryById(proposal.category_id);
-                if (!proposalCard || !proposalCategory) return null;
+            <button
+              onClick={() => setShowSavedProposals(!showSavedProposals)}
+              className="w-full flex items-center justify-center gap-1.5 text-xs text-muted-foreground/60 hover:text-muted-foreground transition-colors py-2"
+            >
+              <span>Visa sparade förslag ({savedProposals.length})</span>
+              <ChevronDown className={`w-3 h-3 transition-transform ${showSavedProposals ? 'rotate-180' : ''}`} />
+            </button>
+            <AnimatePresence>
+              {showSavedProposals && (
+                <motion.div
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: 'auto' }}
+                  exit={{ opacity: 0, height: 0 }}
+                  className="overflow-hidden"
+                >
+                  <div className="space-y-2 pt-2">
+                    {savedProposals.map((proposal) => {
+                      const proposalCard = getCardById(proposal.card_id);
+                      const proposalCategory = getCategoryById(proposal.category_id);
+                      if (!proposalCard || !proposalCategory) return null;
 
-                return (
-                  <div
-                    key={proposal.id}
-                    className="rounded-xl border border-border/30 bg-card/50 p-4 flex items-center justify-between"
-                  >
-                    <div>
-                      <p className="font-serif text-sm text-foreground">{proposalCard.title}</p>
-                      <p className="text-xs text-muted-foreground/60">{proposalCategory.title}</p>
-                    </div>
-                    <Button
-                      size="sm"
-                      variant="ghost"
-                      className="text-muted-foreground text-xs"
-                      onClick={() => {
-                        updateProposalStatus(proposal.id, 'accepted');
-                        startSession(proposal.category_id, proposal.card_id, { force: true, fromBeginning: true });
-                        toast('Samtalet startade', { duration: 2000 });
-                        navigate(`/card/${proposal.card_id}`);
-                      }}
-                    >
-                      Starta
-                    </Button>
+                      return (
+                        <div
+                          key={proposal.id}
+                          className="rounded-xl border border-border/30 bg-card/50 p-4 flex items-center justify-between"
+                        >
+                          <div>
+                            <p className="font-serif text-sm text-foreground">{proposalCard.title}</p>
+                            <p className="text-xs text-muted-foreground/60">{proposalCategory.title}</p>
+                          </div>
+                          <Button
+                            size="sm"
+                            variant="ghost"
+                            className="text-muted-foreground text-xs"
+                            onClick={() => {
+                              updateProposalStatus(proposal.id, 'accepted');
+                              startSession(proposal.category_id, proposal.card_id, { force: true, fromBeginning: true });
+                              toast('Samtalet startade', { duration: 2000 });
+                              navigate(`/card/${proposal.card_id}`);
+                            }}
+                          >
+                            Starta
+                          </Button>
+                        </div>
+                      );
+                    })}
                   </div>
-                );
-              })}
-            </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </motion.div>
         )}
 
@@ -389,14 +406,14 @@ export default function SharedSummary() {
           </div>
         ) : (
           <>
-            {/* Empty-state placeholder when no shared reflections */}
+            {/* Empty state — single calm message */}
             {!hasContent && (
               <motion.div
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 className="mb-6"
               >
-                <div className="p-5">
+                <div className="py-6">
                   <div className="flex flex-col items-center text-center">
                     <MessageCircle className="w-8 h-8 text-muted-foreground/25" />
                     <p className="text-gentle text-sm font-serif font-medium mt-2">Här samlas det ni delar.</p>
@@ -614,25 +631,7 @@ export default function SharedSummary() {
             )}
             </>)}
 
-            {/* "Er resa" section — always visible */}
-            {!hasContent && (
-              <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.15 }}
-                className="mt-8 md:mt-10"
-              >
-                <div className="p-5 rounded-lg bg-card/30 text-center">
-                  <p className="text-sm font-serif font-medium text-foreground mb-3 flex items-center justify-center gap-2">
-                    <BookOpen className="w-2.5 h-2.5 opacity-50" />
-                    {t('shared.journey_title')}
-                  </p>
-                  <p className="text-xs text-muted-foreground leading-relaxed font-light whitespace-pre-line">
-                    {t('shared.journey_empty')}
-                  </p>
-                </div>
-              </motion.div>
-            )}
+            {/* "Er resa" removed from empty state to reduce competing blocks */}
           </>
         )}
       </div>
