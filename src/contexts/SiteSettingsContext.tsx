@@ -26,8 +26,8 @@ interface SiteSettingsContextType {
 }
 
 const defaultSettings: SiteSettings = {
-  heroTitle: 'Vi som föräldrar',
-  heroSubtitle: 'A space for reflection',
+  heroTitle: 'Still Us',
+  heroSubtitle: 'Ert utrymme för samtal',
   heroTitleColor: '',
   heroSubtitleColor: '',
   heroTitleFont: 'serif',
@@ -40,7 +40,7 @@ const defaultSettings: SiteSettings = {
   noteBoxBgColor: '',
   noteBoxTextColor: '',
   noteBoxBorderColor: '',
-  loginTitle: 'Vi som föräldrar',
+  loginTitle: 'Still Us',
   loginSubtitle: 'Logga in för att spara dina inställningar',
 };
 
