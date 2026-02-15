@@ -296,20 +296,39 @@ export default function ReviewDrawer({ open, onClose, card, activeStepIndex = 0,
 
                       {isUnlocked ? (
                         <>
-                          <div className="pl-9 space-y-3">
-                            {section.content && (
-                              <p className="text-xs text-muted-foreground/70 leading-relaxed whitespace-pre-wrap mb-1">
-                                {section.content}
-                              </p>
-                            )}
-                            {section.prompts && section.prompts.length > 0 && (
-                              <ul className="space-y-2.5">
-                                {section.prompts.map((prompt, pi) => (
-                                  <li key={pi} className="text-sm font-medium text-foreground/85 leading-relaxed">
+                          <div className="pl-9">
+                            {(stepType === 'scenario' || stepType === 'exercise') ? (
+                              /* Scenario/Teamwork: unified block — content flows into prompts */
+                              <div className="space-y-2">
+                                {section.content && (
+                                  <p className="text-sm text-muted-foreground/80 leading-relaxed whitespace-pre-wrap">
+                                    {section.content}
+                                  </p>
+                                )}
+                                {section.prompts && section.prompts.length > 0 && section.prompts.map((prompt, pi) => (
+                                  <p key={pi} className="text-sm font-medium text-foreground/85 leading-relaxed">
                                     {typeof prompt === 'string' ? prompt : prompt.text}
-                                  </li>
+                                  </p>
                                 ))}
-                              </ul>
+                              </div>
+                            ) : (
+                              /* Öppnare/Tankeväckare: subtext + question list */
+                              <div className="space-y-3">
+                                {section.content && (
+                                  <p className="text-xs text-muted-foreground/70 leading-relaxed whitespace-pre-wrap mb-1">
+                                    {section.content}
+                                  </p>
+                                )}
+                                {section.prompts && section.prompts.length > 0 && (
+                                  <ul className="space-y-2.5">
+                                    {section.prompts.map((prompt, pi) => (
+                                      <li key={pi} className="text-sm font-medium text-foreground/85 leading-relaxed">
+                                        {typeof prompt === 'string' ? prompt : prompt.text}
+                                      </li>
+                                    ))}
+                                  </ul>
+                                )}
+                              </div>
                             )}
                           </div>
                           <div className="pl-9">
