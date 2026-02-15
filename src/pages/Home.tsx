@@ -414,14 +414,6 @@ export default function Home() {
                   >
                     {t('general.choose_another')}
                   </Button>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="text-muted-foreground hover:text-foreground"
-                    onClick={handleEnterProposalMode}
-                  >
-                    Föreslå annat samtal
-                  </Button>
                 </div>
               </div>
             </motion.div>
@@ -441,16 +433,6 @@ export default function Home() {
                   el?.scrollIntoView({ behavior: 'smooth' });
                 }}
               />
-              <div className="px-6 flex justify-center">
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="text-muted-foreground hover:text-foreground"
-                  onClick={handleEnterProposalMode}
-                >
-                  Föreslå annat samtal
-                </Button>
-              </div>
             </div>
           );
         }
@@ -472,16 +454,6 @@ export default function Home() {
                     el?.scrollIntoView({ behavior: 'smooth' });
                   }}
                 />
-                <div className="px-6 flex justify-center">
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="text-muted-foreground hover:text-foreground"
-                    onClick={handleEnterProposalMode}
-                  >
-                    Föreslå annat samtal
-                  </Button>
-                </div>
               </div>
             );
           }
@@ -517,8 +489,26 @@ export default function Home() {
         return null;
       })()}
 
-      {/* Partner status */}
-      {space && (
+      {/* Proposal entry — only when connected */}
+      {displayMemberCount >= 2 && !isProposalMode && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="px-6 mb-4 flex justify-center"
+        >
+          <Button
+            variant="ghost"
+            size="sm"
+            className="text-muted-foreground hover:text-foreground"
+            onClick={handleEnterProposalMode}
+          >
+            Föreslå annat samtal
+          </Button>
+        </motion.div>
+      )}
+
+      {/* Partner status — only before connection */}
+      {space && displayMemberCount < 2 && (
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
