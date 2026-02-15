@@ -38,6 +38,7 @@ interface CardNote {
   visibility: 'private' | 'shared';
   hasShared: boolean;
   hasPartnerShared: boolean;
+  isPartnerNote: boolean;
   updatedAt: string;
 }
 
@@ -98,16 +99,18 @@ export default function ReviewDrawer({ open, onClose, card, activeStepIndex = 0,
   const { user } = useAuth();
   const { space } = useCoupleSpace();
   const [cardNotes, setCardNotes] = useState<CardNote[]>([]);
-  const [noteFilter, setNoteFilter] = useState<'all' | 'private' | 'shared'>('all');
+  const [noteFilter, setNoteFilter] = useState<'all' | 'my_private' | 'my_shared' | 'partner'>('all');
   
   // No auto-scroll ref needed anymore
 
 
   const filteredNotes = noteFilter === 'all'
     ? cardNotes
-    : noteFilter === 'shared'
-      ? cardNotes.filter(n => n.visibility === 'shared' || n.hasShared || n.hasPartnerShared)
-      : cardNotes.filter(n => n.visibility === 'private' && !n.hasShared);
+    : noteFilter === 'my_private'
+      ? cardNotes.filter(n => !n.isPartnerNote && n.visibility === 'private')
+      : noteFilter === 'my_shared'
+        ? cardNotes.filter(n => !n.isPartnerNote && n.visibility === 'shared')
+        : cardNotes.filter(n => n.isPartnerNote);
 
   // Per-section note status derived from cardNotes
   const sectionNoteStatus = useMemo(() => {
@@ -136,68 +139,72 @@ export default function ReviewDrawer({ open, onClose, card, activeStepIndex = 0,
         .eq('card_id', card.id)
         .eq('user_id', user.id);
 
-      // Fetch partner's shared notes
+      // Fetch partner's shared notes (with content)
       const { data: partnerData } = await supabase
         .from('prompt_notes')
-        .select('section_id, prompt_id')
+        .select('*')
         .eq('couple_space_id', space.id)
         .eq('card_id', card.id)
         .eq('visibility', 'shared')
         .neq('user_id', user.id);
 
-      if (!myData) return;
+      if (!myData && !partnerData) return;
 
       const sharedSet = new Set(
-        myData.filter(n => n.visibility === 'shared').map(n => `${n.section_id}:${n.prompt_id}`)
+        (myData || []).filter(n => n.visibility === 'shared').map(n => `${n.section_id}:${n.prompt_id}`)
       );
       const partnerSharedSet = new Set(
         (partnerData || []).map(n => `${n.section_id}:${n.prompt_id}`)
       );
 
-      const notes: CardNote[] = myData
-        .filter(n => n.content.trim())
-        .map(n => {
-          const section = card.sections.find(s => s.id === n.section_id);
-          const sectionType = section?.type || 'opening';
-          const promptIndex = section?.prompts
-            ? section.prompts.findIndex((_, i) => {
-                const pid = `prompt-${i}`;
-                return pid === n.prompt_id;
-              })
-            : -1;
+      const mapNote = (n: any, isPartner: boolean): CardNote => {
+        const section = card.sections.find(s => s.id === n.section_id);
+        const sectionType = section?.type || 'opening';
+        const promptIndex = section?.prompts
+          ? section.prompts.findIndex((_, i) => `prompt-${i}` === n.prompt_id)
+          : -1;
+        const key = `${n.section_id}:${n.prompt_id}`;
+        return {
+          promptId: n.prompt_id,
+          sectionId: n.section_id,
+          sectionType,
+          promptIndex: promptIndex >= 0 ? promptIndex : 0,
+          content: n.content,
+          visibility: n.visibility as 'private' | 'shared',
+          hasShared: sharedSet.has(key),
+          hasPartnerShared: partnerSharedSet.has(key),
+          isPartnerNote: isPartner,
+          updatedAt: n.updated_at,
+        };
+      };
 
-          const key = `${n.section_id}:${n.prompt_id}`;
-          return {
-            promptId: n.prompt_id,
-            sectionId: n.section_id,
-            sectionType,
-            promptIndex: promptIndex >= 0 ? promptIndex : 0,
-            content: n.content,
-            visibility: n.visibility as 'private' | 'shared',
-            hasShared: sharedSet.has(key),
-            hasPartnerShared: partnerSharedSet.has(key),
-            updatedAt: n.updated_at,
-          };
-        })
+      const myNotes = (myData || [])
+        .filter(n => n.content.trim())
+        .map(n => mapNote(n, false))
         // Deduplicate: if both private+shared exist for same prompt, keep shared
         .reduce<CardNote[]>((acc, note) => {
           const existing = acc.findIndex(n => n.sectionId === note.sectionId && n.promptId === note.promptId);
           if (existing >= 0) {
-            // Keep the shared one, or the most recently updated
             if (note.visibility === 'shared') acc[existing] = note;
           } else {
             acc.push(note);
           }
           return acc;
-        }, [])
-        .sort((a, b) => {
-          const aStep = STEP_ORDER.indexOf(a.sectionType as any);
-          const bStep = STEP_ORDER.indexOf(b.sectionType as any);
-          if (aStep !== bStep) return aStep - bStep;
-          return a.promptIndex - b.promptIndex;
-        });
+        }, []);
 
-      setCardNotes(notes);
+      const partnerNotes = (partnerData || [])
+        .filter(n => n.content.trim())
+        .map(n => mapNote(n, true));
+
+      const allNotes = [...myNotes, ...partnerNotes].sort((a, b) => {
+        const aStep = STEP_ORDER.indexOf(a.sectionType as any);
+        const bStep = STEP_ORDER.indexOf(b.sectionType as any);
+        if (aStep !== bStep) return aStep - bStep;
+        if (a.isPartnerNote !== b.isPartnerNote) return a.isPartnerNote ? 1 : -1;
+        return a.promptIndex - b.promptIndex;
+      });
+
+      setCardNotes(allNotes);
     };
 
     fetchAllNotes();
@@ -364,26 +371,32 @@ export default function ReviewDrawer({ open, onClose, card, activeStepIndex = 0,
                     Inga anteckningar än
                   </p>
                   <p className="text-xs text-muted-foreground/60">
-                    Dina privata reflektioner visas här
+                    Era reflektioner visas här
                   </p>
                 </div>
               ) : (
                 <div className="space-y-3 pb-8">
                   {/* Filter chips */}
-                  <div className="flex gap-1.5">
-                    {(['all', 'private', 'shared'] as const).map((f) => {
-                      const label = f === 'all' ? 'Alla' : f === 'private' ? 'Privata' : 'Delade';
-                      const count = f === 'all'
+                  <div className="flex gap-1.5 flex-wrap">
+                    {([
+                      { key: 'all', label: 'Alla' },
+                      { key: 'my_private', label: 'Mina privata' },
+                      { key: 'my_shared', label: 'Mina delade' },
+                      { key: 'partner', label: 'Från min partner' },
+                    ] as const).map(({ key, label }) => {
+                      const count = key === 'all'
                         ? cardNotes.length
-                        : f === 'shared'
-                          ? cardNotes.filter(n => n.hasShared || n.hasPartnerShared).length
-                          : cardNotes.filter(n => !n.hasShared && !n.hasPartnerShared).length;
+                        : key === 'my_private'
+                          ? cardNotes.filter(n => !n.isPartnerNote && n.visibility === 'private').length
+                          : key === 'my_shared'
+                            ? cardNotes.filter(n => !n.isPartnerNote && n.visibility === 'shared').length
+                            : cardNotes.filter(n => n.isPartnerNote).length;
                       return (
                         <button
-                          key={f}
-                          onClick={() => setNoteFilter(f)}
+                          key={key}
+                          onClick={() => setNoteFilter(key)}
                           className={`px-3 py-1 rounded-full text-[11px] font-medium transition-colors ${
-                            noteFilter === f
+                            noteFilter === key
                               ? 'bg-primary/15 text-primary'
                               : 'bg-muted/40 text-muted-foreground hover:bg-muted/60'
                           }`}
@@ -396,16 +409,22 @@ export default function ReviewDrawer({ open, onClose, card, activeStepIndex = 0,
 
                   {/* Note items */}
                   {filteredNotes.map((note, i) => (
-                    <motion.button
-                      key={`${note.sectionId}-${note.promptId}`}
+                    <motion.div
+                      key={`${note.sectionId}-${note.promptId}-${note.isPartnerNote ? 'p' : 'm'}`}
                       initial={{ opacity: 0, y: 6 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: i * 0.03, duration: 0.2 }}
-                      onClick={() => handleNoteClick(note)}
-                      className={`w-full text-left rounded-xl bg-white border border-border/40 hover:border-primary/30 hover:shadow-sm transition-all group flex overflow-hidden`}
+                      onClick={() => !note.isPartnerNote && handleNoteClick(note)}
+                      className={`w-full text-left rounded-xl border border-border/40 transition-all flex overflow-hidden ${
+                        note.isPartnerNote
+                          ? 'bg-muted/20 cursor-default'
+                          : 'bg-white hover:border-primary/30 hover:shadow-sm cursor-pointer'
+                      }`}
                     >
                       {/* Left accent bar */}
-                      <div className={`w-1 shrink-0 ${note.hasShared ? 'bg-primary/50' : note.hasPartnerShared ? 'bg-primary/30' : 'bg-muted-foreground/15'}`} />
+                      <div className={`w-1 shrink-0 ${
+                        note.isPartnerNote ? 'bg-primary/25' : note.visibility === 'shared' ? 'bg-primary/50' : 'bg-muted-foreground/15'
+                      }`} />
                       <div className="p-3 flex-1 min-w-0">
                         <div className="flex items-center flex-wrap gap-1.5 mb-1">
                           <span className="text-[10px] font-medium text-muted-foreground/70 uppercase tracking-wider">
@@ -414,16 +433,17 @@ export default function ReviewDrawer({ open, onClose, card, activeStepIndex = 0,
                           <span className="text-[10px] text-muted-foreground/50">
                             Fråga {note.promptIndex + 1}
                           </span>
-                          <span className={`inline-flex items-center px-1.5 py-0.5 rounded-full text-[10px] leading-none ${
-                            note.hasShared
-                              ? 'bg-primary/10 text-primary/80 font-medium'
-                              : 'bg-muted/50 text-muted-foreground/50'
-                          }`}>
-                            {note.hasShared ? 'Delad' : 'Privat'}
-                          </span>
-                          {note.hasPartnerShared && (
-                            <span className="inline-flex items-center px-1.5 py-0.5 rounded-full text-[10px] leading-none bg-muted/40 text-muted-foreground/60">
+                          {note.isPartnerNote ? (
+                            <span className="inline-flex items-center px-1.5 py-0.5 rounded-full text-[10px] leading-none bg-primary/10 text-primary/70 font-medium">
                               Från din partner
+                            </span>
+                          ) : (
+                            <span className={`inline-flex items-center px-1.5 py-0.5 rounded-full text-[10px] leading-none ${
+                              note.visibility === 'shared'
+                                ? 'bg-primary/10 text-primary/80 font-medium'
+                                : 'bg-muted/50 text-muted-foreground/50'
+                            }`}>
+                              {note.visibility === 'shared' ? 'Delad' : 'Privat'}
                             </span>
                           )}
                         </div>
@@ -431,7 +451,7 @@ export default function ReviewDrawer({ open, onClose, card, activeStepIndex = 0,
                           {note.content}
                         </p>
                       </div>
-                    </motion.button>
+                    </motion.div>
                   ))}
                 </div>
               )}
