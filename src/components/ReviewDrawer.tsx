@@ -114,8 +114,8 @@ export default function ReviewDrawer({ open, onClose, card, activeStepIndex = 0 
   const filteredNotes = noteFilter === 'all'
     ? cardNotes
     : noteFilter === 'shared'
-      ? cardNotes.filter(n => n.hasShared || n.hasPartnerShared)
-      : cardNotes.filter(n => !n.hasShared && !n.hasPartnerShared);
+      ? cardNotes.filter(n => n.visibility === 'shared' || n.hasShared || n.hasPartnerShared)
+      : cardNotes.filter(n => n.visibility === 'private' && !n.hasShared);
 
   // Per-section note status derived from cardNotes
   const sectionNoteStatus = useMemo(() => {
@@ -124,8 +124,8 @@ export default function ReviewDrawer({ open, onClose, card, activeStepIndex = 0 
       if (!status[note.sectionId]) {
         status[note.sectionId] = { hasPrivate: false, hasShared: false, hasPartnerShared: false };
       }
-      if (note.hasShared) status[note.sectionId].hasShared = true;
-      else status[note.sectionId].hasPrivate = true;
+      if (note.visibility === 'shared' || note.hasShared) status[note.sectionId].hasShared = true;
+      if (note.visibility === 'private' && !note.hasShared) status[note.sectionId].hasPrivate = true;
       if (note.hasPartnerShared) status[note.sectionId].hasPartnerShared = true;
     }
     return status;
