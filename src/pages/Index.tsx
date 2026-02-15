@@ -82,8 +82,12 @@ export default function Index() {
     return <Onboarding />;
   }
 
-  // Purchase gate — skip for partner_b (joined via invite) AND skip if claim just succeeded
-  if (!hasPurchased && userRole !== 'partner_b' && claimStatus !== 'success') {
+  // Purchase gate — skip if:
+  // - user is partner_b (joined via invite)
+  // - pending invite claim just succeeded
+  // - user already has a couple_space membership (memberCount >= 1 means they're in couple_members)
+  const isAlreadyMember = memberCount >= 1;
+  if (!hasPurchased && userRole !== 'partner_b' && claimStatus !== 'success' && !isAlreadyMember) {
     return <PurchaseScreen onPurchaseComplete={handlePurchaseComplete} />;
   }
 
