@@ -246,7 +246,7 @@ export default function ReviewDrawer({ open, onClose, card, activeStepIndex = 0,
 
           {/* Overview tab — existing content */}
           <TabsContent value="overview" className="flex-1 overflow-hidden mt-0">
-            <ScrollArea className="h-full px-6 py-4" style={{ maxHeight: 'calc(85vh - 160px)' }}>
+            <ScrollArea className="px-6 py-4" style={{ height: 'calc(85vh - 180px)' }}>
               <div className="space-y-6 pb-8">
                 {STEP_ORDER.map((stepType, index) => {
                   const section = card.sections.find((s) => s.type === stepType);
@@ -356,7 +356,7 @@ export default function ReviewDrawer({ open, onClose, card, activeStepIndex = 0,
 
           {/* Notes tab */}
           <TabsContent value="notes" className="flex-1 overflow-hidden mt-0">
-            <ScrollArea className="h-full px-6 py-4" style={{ maxHeight: 'calc(85vh - 160px)' }}>
+            <ScrollArea className="px-6 py-4" style={{ height: 'calc(85vh - 180px)' }}>
               {cardNotes.length === 0 ? (
                 <div className="text-center py-12 space-y-2">
                   <FileText className="w-8 h-8 text-muted-foreground/30 mx-auto" />
