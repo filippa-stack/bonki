@@ -329,6 +329,19 @@ export default function CardView() {
               {t('card_view.completion_rest')}
             </motion.p>
           </motion.div>
+
+          {/* Takeaways — card-level closing ritual */}
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1.8, duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
+            className="max-w-md mx-auto mt-12 space-y-3"
+          >
+            <p className="text-sm text-muted-foreground text-center leading-relaxed">
+              Vill ni sammanfatta något att ta med er?
+            </p>
+            <CardTakeaways cardId={card.id} />
+          </motion.div>
         </div>
 
         {/* Proposal Sheet */}
@@ -598,18 +611,7 @@ export default function CardView() {
             >
               <SectionView ref={sectionViewRef} section={currentSection} card={card} isRevisitMode={isRevisitMode} initialFocusNoteIndex={isRevisitMode ? initialFocusNote : null} focusPromptIndex={isRevisitMode ? initialFocusNote : null} />
 
-              {/* Takeaways on final step (exercise), before completing — card-level reflection */}
-              {currentSection.type === 'exercise' && !userCompletedCurrentStep && (
-                <div className="mt-8 border-t border-border/40 pt-6 space-y-1.5">
-                  <p className="text-xs font-medium text-muted-foreground/70 tracking-wide">Takeaways</p>
-                  <p className="text-[13px] text-muted-foreground/50 leading-relaxed">
-                    För hela samtalet på det här kortet. Skriv vad ni vill minnas, prova eller ta med er vidare.
-                  </p>
-                  <div className="pt-2">
-                    <CardTakeaways cardId={card.id} />
-                  </div>
-                </div>
-              )}
+              {/* Takeaways removed from exercise step — now rendered on completion screen */}
 
               {/* Navigation / waiting state */}
               {userCompletedCurrentStep ? (
@@ -659,16 +661,7 @@ export default function CardView() {
                     </Button>
                   </div>
 
-                  {/* Takeaways accessible during waiting */}
-                  <div className="text-center pt-3 space-y-1.5">
-                    <p className="text-xs font-medium text-muted-foreground/70 tracking-wide">Takeaways</p>
-                    <p className="text-[13px] text-muted-foreground/50 leading-relaxed">
-                      För hela samtalet på det här kortet — skriv ner det ni vill ta med er.
-                    </p>
-                    <div className="pt-1">
-                      <CardTakeaways cardId={card.id} compact />
-                    </div>
-                  </div>
+                  {/* Takeaways removed — now on completion screen */}
 
                   <div className="pt-3 flex flex-col items-center gap-2">
                     <Button
