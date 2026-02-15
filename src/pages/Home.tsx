@@ -510,9 +510,9 @@ export default function Home() {
         if (firstCard && firstCategory) {
           return (
             <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.15 }}
               className="px-6 py-6"
             >
               <div className="rounded-2xl border border-border bg-card p-6 text-center space-y-4">
@@ -520,8 +520,8 @@ export default function Home() {
                   {t('home.first_conversation_hint')}
                 </p>
                 <Button
-                  size="lg"
-                  className="w-full sm:w-auto gap-2"
+                  size="sm"
+                  className="gap-2"
                   onClick={() => navigate(`/card/${firstCard.id}`)}
                 >
                   {t('home.start_first_conversation')}
@@ -554,10 +554,10 @@ export default function Home() {
 
       {/* Partner status — only before connection */}
       {space && displayMemberCount < 2 && (
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.15 }}
+         <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.15 }}
           className="px-6 pb-6"
         >
           <AttachPartner
@@ -580,11 +580,11 @@ export default function Home() {
       {/* Proposal Mode */}
       <AnimatePresence>
         {isProposalMode && (
-          <motion.div
+           <motion.div
             id="proposal-mode"
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
             className="px-6 pb-8"
           >
             {/* Mode header */}
@@ -661,13 +661,14 @@ export default function Home() {
       {/* Proposal confirmation sheet */}
       <AnimatePresence>
         {proposalCandidate && candidateCard && candidateCategory && (
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 40 }}
+           <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.15 }}
             className="fixed inset-x-0 bottom-0 z-50 p-4"
           >
-            <div className="rounded-2xl border border-border bg-card p-6 shadow-lg max-w-md mx-auto space-y-4">
+            <div className="rounded-2xl border border-border bg-card p-6 max-w-md mx-auto space-y-4">
               <p className="font-serif text-foreground text-center">Föreslå detta samtal?</p>
               <div className="text-center">
                 <p className="text-sm text-foreground">{candidateCard.title}</p>
@@ -748,7 +749,7 @@ export default function Home() {
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 0.4 }}
+        transition={{ duration: 0.15 }}
         className="px-6 pt-8 pb-6 mt-4 space-y-1"
       >
         <button
@@ -776,7 +777,7 @@ export default function Home() {
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 0.5 }}
+        transition={{ duration: 0.15 }}
         className="px-6 py-6 border-t border-divider"
       >
         <NotificationSettings />
