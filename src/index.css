@@ -10,23 +10,23 @@
 
     /* Base Surfaces */
     --background: 180 68% 91%;        /* #D6FBFB */
-    --foreground: 34 11% 25%;
+    --foreground: 30 8% 32%;
 
     --card: 60 100% 97%;              /* #FFFEF3 */
-    --card-foreground: 34 11% 25%;
+    --card-foreground: 30 8% 32%;
 
     --popover: 60 100% 97%;
-    --popover-foreground: 34 11% 25%;
+    --popover-foreground: 30 8% 32%;
 
     /* Primary — Terracotta */
     --primary: 180 23% 37%;             /* #497575 */
     --primary-foreground: 0 0% 100%;
 
     --secondary: 60 100% 97%;         /* #FFFEF3 */
-    --secondary-foreground: 34 11% 25%;
+    --secondary-foreground: 30 8% 32%;
 
     --muted: 33 18% 92%;
-    --muted-foreground: 28 5% 47%;
+    --muted-foreground: 28 5% 52%;
 
     /* Accent — Terracotta */
     --accent: 24 54% 60%;
@@ -45,7 +45,7 @@
     --surface-warm: 60 100% 97%;      /* #FFFEF3 */
     --surface-elevated: 60 100% 97%;
     --surface-chrome: 60 100% 99%;    /* #FFFFFC — header/footer */
-    --text-gentle: 28 5% 47%;
+    --text-gentle: 28 5% 52%;
     --divider: 33 18% 89%;
 
     /* Card hierarchy — 3 levels */
@@ -73,7 +73,7 @@
     /* Note / user-input surfaces */
     --note-bg: 0 0% 100%;             /* #ffffff */
     --note-border: 24 54% 60%;        /* #d08f63 at 30% via /0.3 */
-    --note-text: 30 10% 20%;          /* deep charcoal */
+    --note-text: 30 8% 28%;          /* softened charcoal */
     --note-placeholder: 24 30% 70%;   /* light terracotta */
 
     /* Category Identity Colors (Earthy Pastels) */
