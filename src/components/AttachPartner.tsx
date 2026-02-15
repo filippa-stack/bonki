@@ -181,7 +181,7 @@ export default function AttachPartner({
                   className="space-y-4"
                 >
                   <h3 className="font-serif text-base text-foreground text-center">
-                    Varför vill du göra det här tillsammans?
+                    Vill du skriva något personligt?
                   </h3>
                   <Textarea
                     value={inviteMessage}
