@@ -654,7 +654,7 @@ export default function Home() {
                   key={category.id}
                   className={
                     !isProposalMode && category.id === highlightedCategoryId
-                      ? 'rounded-2xl ring-1 ring-primary/30 bg-card/40 p-0.5 transition-all'
+                      ? 'rounded-2xl bg-card/60 shadow-sm transition-all'
                       : ''
                   }
                 >
