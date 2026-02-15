@@ -121,11 +121,7 @@ export default function Category() {
                 isPrimary={index === 0 && !isExplored}
                 onNavigate={() => {
                   if (!isUnlocked) return;
-                  if (memberCount >= 2 && categoryId && !isExplored) {
-                    handlePropose(categoryId, card.id);
-                  } else {
-                    navigate(`/card/${card.id}`);
-                  }
+                  navigate(`/card/${card.id}`);
                 }}
                 onUpdate={updateCard}
                 onColorChange={(color) => updateCardColor(card.id, color)}
