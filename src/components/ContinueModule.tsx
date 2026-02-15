@@ -12,7 +12,7 @@ interface ContinueModuleProps {
   cardTitle: string;
   categoryTitle: string;
   onContinue: () => void;
-  onChooseAnother: () => void;
+  onChooseAnother?: () => void;
   lastActiveAt?: string; // ISO date of last activity
 }
 
@@ -87,13 +87,15 @@ export default function ContinueModule({
             {t('general.continue_cta')}
             <ArrowRight className="w-4 h-4" />
           </Button>
-          <Button
-            onClick={onChooseAnother}
-            size="sm"
-            className="bg-transparent border-2 border-[#497575] text-[#497575] hover:bg-[#497575]/10"
-          >
-            {t('general.choose_another')}
-          </Button>
+          {onChooseAnother && (
+            <Button
+              onClick={onChooseAnother}
+              size="sm"
+              className="bg-transparent border-2 border-[#497575] text-[#497575] hover:bg-[#497575]/10"
+            >
+              {t('general.choose_another')}
+            </Button>
+          )}
         </div>
       </div>
     </motion.div>
