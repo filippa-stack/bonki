@@ -1,8 +1,9 @@
 import { useState, useCallback, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
-import { Lock, Share2, ChevronDown, Users } from 'lucide-react';
+import { Lock, Share2, ChevronDown, Users, Link2 } from 'lucide-react';
 import { usePromptNotes } from '@/hooks/usePromptNotes';
+import { useCoupleSpace } from '@/hooks/useCoupleSpace';
 import { Section, Card } from '@/types';
 
 interface StepReflectionProps {
@@ -16,6 +17,8 @@ const STEP_PROMPT_ID = 'step-note';
 
 export default function StepReflection({ section, card, defaultExpanded = false }: StepReflectionProps) {
   const { t } = useTranslation();
+  const { memberCount } = useCoupleSpace();
+  const isPaired = memberCount >= 2;
   const {
     saveNote,
     shareNote,
@@ -135,7 +138,7 @@ export default function StepReflection({ section, card, defaultExpanded = false 
             {isSaved && !isShared && (
               <span className="text-xs text-muted-foreground/60 not-italic flex items-center gap-1">
                 <Lock className="w-3 h-3" />
-                Sparat privat
+                {isPaired ? 'Sparat privat' : 'Din privata anteckning'}
               </span>
             )}
             {isShared && sharedNote?.sharedAt && (
@@ -147,7 +150,7 @@ export default function StepReflection({ section, card, defaultExpanded = false 
           </div>
 
           <div className="flex items-center gap-2">
-            {!isShared && (
+            {!isShared && isPaired && (
               <>
                 <button
                   onClick={() => saveNote(STEP_PROMPT_ID, text, 'private')}
@@ -164,6 +167,12 @@ export default function StepReflection({ section, card, defaultExpanded = false 
                   Dela
                 </button>
               </>
+            )}
+            {!isShared && !isPaired && (
+              <span className="text-xs text-muted-foreground/50 italic flex items-center gap-1">
+                <Link2 className="w-3 h-3" />
+                Koppla ihop er för att dela
+              </span>
             )}
           </div>
         </div>
