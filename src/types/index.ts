@@ -85,6 +85,8 @@ export interface JourneyState {
   sessionProgress?: Record<string, {
     perUser: Record<string, { completedSteps: number[] }>;
   }>;
+  /** ISO timestamps of last visit per cardId */
+  cardVisitDates?: Record<string, string>;
 }
 
 export interface PrivateNote {

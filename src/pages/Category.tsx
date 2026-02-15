@@ -11,6 +11,7 @@ export default function Category() {
   const navigate = useNavigate();
   const { getCategoryById, getCardsByCategory, journeyState, currentSession, getCardById } = useApp();
   const exploredIds = journeyState?.exploredCardIds || [];
+  const cardVisitDates = journeyState?.cardVisitDates || {};
 
   const category = categoryId ? getCategoryById(categoryId) : undefined;
   const cards = categoryId ? getCardsByCategory(categoryId) : [];
@@ -68,6 +69,7 @@ export default function Category() {
               index={index}
               highlighted={card.id === highlightedCardId}
               isCompleted={exploredIds.includes(card.id)}
+              lastVisitedAt={cardVisitDates[card.id] || null}
               onNavigate={() => navigate(`/card/${card.id}`)}
             />
           ))}
@@ -89,10 +91,21 @@ interface CardEntryProps {
   index: number;
   highlighted?: boolean;
   isCompleted?: boolean;
+  lastVisitedAt?: string | null;
   onNavigate: () => void;
 }
 
-function CardEntry({ card, index, highlighted, isCompleted = false, onNavigate }: CardEntryProps) {
+function getVisitMemoryLabel(lastVisitedAt: string | null | undefined): string | null {
+  if (!lastVisitedAt) return null;
+  const elapsed = Date.now() - new Date(lastVisitedAt).getTime();
+  const days = elapsed / (1000 * 60 * 60 * 24);
+  if (days < 7) return 'Ni var här nyligen.';
+  if (days <= 30) return 'Ni var här för en tid sedan.';
+  return 'Det var ett tag sedan ni var här.';
+}
+
+function CardEntry({ card, index, highlighted, isCompleted = false, lastVisitedAt, onNavigate }: CardEntryProps) {
+  const visitLabel = getVisitMemoryLabel(lastVisitedAt);
   return (
     <motion.div
       initial={{ opacity: 0, y: 16 }}
@@ -130,6 +143,9 @@ function CardEntry({ card, index, highlighted, isCompleted = false, onNavigate }
           >
             {card.subtitle}
           </p>
+        )}
+        {visitLabel && (
+          <p className="text-[11px] text-muted-foreground/40 text-center mt-1.5">{visitLabel}</p>
         )}
       </div>
     </motion.div>

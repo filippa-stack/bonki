@@ -893,23 +893,31 @@ export function AppProvider({ children }: { children: ReactNode }) {
   // Update journey state when starting a session
   const startSessionWithJourney = (categoryId: string, cardId: string, opts?: { force?: boolean; fromBeginning?: boolean }) => {
     startSession(categoryId, cardId, { force: opts?.force ?? false, fromBeginning: opts?.fromBeginning ?? false });
-    setState((prev) => ({
-      ...prev,
-      journeyState: {
-        ...(prev.journeyState || {
-          currentCategoryId: null,
-          lastOpenedCardId: null,
-          lastCompletedCardId: null,
-          suggestedNextCardId: null,
-          pausedAt: null,
-          updatedAt: new Date().toISOString(),
-          exploredCardIds: [],
-        }),
-        currentCategoryId: categoryId,
-        lastOpenedCardId: cardId,
-        updatedAt: new Date().toISOString(),
-      },
-    }));
+    setState((prev) => {
+      const now = new Date().toISOString();
+      const prevJourney = prev.journeyState || {
+        currentCategoryId: null,
+        lastOpenedCardId: null,
+        lastCompletedCardId: null,
+        suggestedNextCardId: null,
+        pausedAt: null,
+        updatedAt: now,
+        exploredCardIds: [],
+      };
+      return {
+        ...prev,
+        journeyState: {
+          ...prevJourney,
+          currentCategoryId: categoryId,
+          lastOpenedCardId: cardId,
+          updatedAt: now,
+          cardVisitDates: {
+            ...(prevJourney.cardVisitDates || {}),
+            [cardId]: now,
+          },
+        },
+      };
+    });
   };
 
   const dismissSession = () => {
