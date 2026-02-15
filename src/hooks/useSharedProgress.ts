@@ -61,7 +61,6 @@ function mergeSessions(local: SessionData | null | undefined, remote: SessionDat
     categoryId: remote.categoryId,
     cardId: remote.cardId,
     currentStepIndex: Math.max(local.currentStepIndex, remote.currentStepIndex),
-    completedSteps: mergeNumberArrays(local.completedSteps, remote.completedSteps),
     userCompletions: mergeUserCompletions(local.userCompletions, remote.userCompletions),
     startedAt: localStart < remoteStart ? localStart : remoteStart,
     lastActivityAt: localActivity > remoteActivity ? localActivity : remoteActivity,
@@ -423,7 +422,6 @@ function deserializeSession(raw: any): SessionData | null {
     ...raw,
     startedAt: new Date(raw.startedAt),
     lastActivityAt: new Date(raw.lastActivityAt),
-    completedSteps: raw.completedSteps || [],
     userCompletions: raw.userCompletions || {},
   };
 }

@@ -144,7 +144,7 @@ export default function CardView() {
     if (card && currentStepIndex >= 0) {
       const currentSection = card.sections.find(s => s.type === STEP_ORDER[currentStepIndex]);
       if (currentSection) {
-        saveConversation(card.id, currentSection.id, currentStepIndex, myCompletedSteps);
+        saveConversation(card.id, currentSection.id, currentStepIndex);
       }
     }
   }, [currentStepIndex, myCompletedSteps.length, card]);

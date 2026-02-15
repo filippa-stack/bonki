@@ -18,7 +18,7 @@ interface AppContextType {
   coupleSpace: CoupleSpace | null;
   initializeCoupleSpace: (partnerAName?: string, partnerBName?: string) => void;
   savedConversations: ConversationThread[];
-  saveConversation: (cardId: string, sectionId: string, stepIndex?: number, completedSteps?: number[]) => void;
+  saveConversation: (cardId: string, sectionId: string, stepIndex?: number) => void;
   getConversationForCard: (cardId: string) => ConversationThread | undefined;
   reflections: Reflection[];
   addReflection: (reflection: Omit<Reflection, 'id' | 'createdAt' | 'updatedAt'>) => void;
@@ -515,7 +515,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
     setState((prev) => ({ ...prev, coupleSpace: newSpace }));
   };
 
-  const saveConversation = (cardId: string, sectionId: string, stepIndex?: number, completedSteps?: number[]) => {
+  const saveConversation = (cardId: string, sectionId: string, stepIndex?: number) => {
     if (!state.coupleSpace) return;
 
     const existingIndex = state.coupleSpace.conversationThreads.findIndex(
@@ -531,7 +531,6 @@ export function AppProvider({ children }: { children: ReactNode }) {
       cardId,
       lastSectionId: sectionId,
       lastStepIndex: stepIndex ?? existing?.lastStepIndex ?? 0,
-      completedSteps: completedSteps ?? existing?.completedSteps ?? [],
       reflections: cardReflections,
       savedAt: existing?.savedAt || now,
       lastActivityAt: now,
@@ -591,7 +590,6 @@ export function AppProvider({ children }: { children: ReactNode }) {
           cardId: reflection.cardId,
           lastSectionId: reflection.sectionId,
           lastStepIndex: 0,
-          completedSteps: [],
           reflections: [newReflection],
           savedAt: now,
           lastActivityAt: now,
@@ -616,11 +614,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const mostRecentConversation = state.coupleSpace?.conversationThreads
     .sort((a, b) => b.lastActivityAt.getTime() - a.lastActivityAt.getTime())[0] || null;
 
-  // Session management functions
-  // NOTE: currentSession.completedSteps is derived for UI only.
+
   // Authoritative completion lives in journeyState.sessionProgress[cardId].perUser[uid].completedSteps.
-  // Do NOT use currentSession.completedSteps or ConversationThread.completedSteps to decide
-  // next step, completion/explored status, or session start position.
   const startSession = (categoryId: string, cardId: string, { force = false, fromBeginning = false }: { force?: boolean; fromBeginning?: boolean } = {}) => {
     const now = new Date();
 
@@ -671,7 +666,6 @@ export function AppProvider({ children }: { children: ReactNode }) {
           categoryId,
           cardId,
           currentStepIndex: startStep,
-          completedSteps: [],
           startedAt: now,
           lastActivityAt: now,
         },
@@ -737,8 +731,6 @@ export function AppProvider({ children }: { children: ReactNode }) {
       ).length;
       const isMutuallyCompleted = completedBy >= requiredCount;
 
-      // NOTE: completedSteps on currentSession is not authoritative — kept empty.
-      // All completion logic uses journeyState.sessionProgress only.
 
       const lastStepIndex = STEP_ORDER.length - 1;
       const isCardFullyCompleted =
@@ -804,7 +796,6 @@ export function AppProvider({ children }: { children: ReactNode }) {
         ...prev,
         currentSession: {
           ...prev.currentSession,
-          completedSteps: [],
           currentStepIndex: newStepIndex,
           lastActivityAt: new Date(),
         },
