@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
-import { ExternalLink, Pencil, MessageCircle } from 'lucide-react';
+import { ExternalLink, Pencil, MessageCircle, Star } from 'lucide-react';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 import type { SharedNoteRow } from '@/pages/SharedSummary';
@@ -20,6 +20,20 @@ interface SharedTimelineItemProps {
   onUpdate: (noteId: string, content: string) => void;
   onSaveResponse: (reflectionId: string, content: string) => void;
   onOpenInContext: (cardId: string, sectionId: string, promptId: string) => void;
+}
+
+const STEP_LABELS: Record<string, string> = {
+  opening: 'Öppnare',
+  reflective: 'Tankeväckare',
+  scenario: 'Scenario',
+  exercise: 'Teamwork',
+};
+
+function getStepLabel(sectionId: string): string | null {
+  for (const [key, label] of Object.entries(STEP_LABELS)) {
+    if (sectionId.includes(key)) return label;
+  }
+  return null;
 }
 
 export default function SharedTimelineItem({
@@ -75,10 +89,6 @@ export default function SharedTimelineItem({
     onUpdate(note.id, value);
   };
 
-  const handleBlur = () => {
-    setEditing(false);
-  };
-
   const handleResponseChange = (value: string) => {
     setResponseContent(value);
     onSaveResponse(note.id, value);
@@ -89,53 +99,33 @@ export default function SharedTimelineItem({
     new Date(note.updated_at).getTime() - new Date(note.created_at).getTime() > 2000;
 
   const hasMyResponse = myResponse && myResponse.content.trim().length > 0;
+  const stepLabel = getStepLabel(note.section_id);
 
   return (
     <motion.div
       initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
-      className="p-4 rounded-xl bg-card border border-border/70"
+      className="py-5 border-b border-border/20 last:border-b-0"
     >
-      {/* Context label */}
-      <div className="flex items-center justify-between mb-2">
-        <div className="flex items-center gap-1.5">
-          <p className="text-xs text-muted-foreground">
-            {note.categoryTitle} · {note.cardTitle}
-          </p>
-          {note.author_label && (
-            <span className="text-xs text-muted-foreground/60">
-              · {note.author_label}
-            </span>
-          )}
-        </div>
-        <div className="flex items-center gap-1">
-          {isOwnNote && !editing && (
-            <Button
-              variant="ghost"
-              size="icon"
-              className="h-6 w-6"
-              onClick={() => setEditing(true)}
-            >
-              <Pencil className="w-3 h-3" />
-            </Button>
-          )}
-          <Button
-            variant="ghost"
-            size="icon"
-            className="h-6 w-6"
-            onClick={() => onOpenInContext(note.card_id, note.section_id, note.prompt_id)}
-          >
-            <ExternalLink className="w-3 h-3" />
-          </Button>
-        </div>
+      {/* Metadata — card title, step, date */}
+      <div className="mb-2 space-y-0.5">
+        <p className="text-[11px] text-muted-foreground/60">
+          {note.cardTitle}
+          {stepLabel && <span> · {stepLabel}</span>}
+        </p>
+        <p className="text-[10px] text-muted-foreground/40">
+          {new Date(createdDate).toLocaleDateString('sv-SE', { day: 'numeric', month: 'long' })}
+          {wasEdited && ' · uppdaterad'}
+          {!isOwnNote && note.author_label && ` · ${note.author_label}`}
+        </p>
       </div>
 
-      {/* Prompt text (question) */}
+      {/* Prompt text (question) — subtle context */}
       {note.promptText && (
-        <p className="text-xs text-foreground/60 not-italic mb-2">{note.promptText}</p>
+        <p className="text-xs text-foreground/50 italic mb-2 leading-relaxed">{note.promptText}</p>
       )}
 
-      {/* Content — editable or read-only */}
+      {/* Reflection content — primary element */}
       {editing ? (
         <div className="space-y-2">
           <Textarea
@@ -157,85 +147,81 @@ export default function SharedTimelineItem({
           </div>
         </div>
       ) : (
-        <p className="text-body text-foreground whitespace-pre-wrap">{note.content}</p>
+        <p className="text-[15px] leading-relaxed text-foreground whitespace-pre-wrap font-serif">{note.content}</p>
       )}
 
-      {/* Date + edited indicator */}
-      <div className="flex items-center gap-2 mt-2">
-        <p className="text-xs text-muted-foreground">
-          {new Date(createdDate).toLocaleDateString('sv-SE')}
-        </p>
-        {wasEdited && (
-          <span className="text-xs text-muted-foreground/60">· uppdaterad</span>
-        )}
-      </div>
-
-      {/* Partner response (read-only) */}
+      {/* Partner response — inline, soft */}
       {partnerResponse && partnerResponse.content.trim().length > 0 && (
-        <div className="mt-3 pt-3 border-t border-border/50">
-          <p className="text-xs text-muted-foreground mb-1">Från den andra</p>
-          <p className="text-sm text-foreground/80 whitespace-pre-wrap">{partnerResponse.content}</p>
+        <div className="mt-3 pl-4 border-l-2 border-border/30">
+          <p className="text-sm text-foreground/70 whitespace-pre-wrap leading-relaxed">{partnerResponse.content}</p>
         </div>
       )}
 
+      {/* Controls — small icon row below content */}
+      <div className="flex items-center gap-3 mt-3">
+        {isOwnNote && !editing && (
+          <button
+            onClick={() => setEditing(true)}
+            className="text-muted-foreground/40 hover:text-muted-foreground transition-colors"
+          >
+            <Pencil className="w-3 h-3" />
+          </button>
+        )}
+        {!isOwnNote && !hasMyResponse && !showResponseInput && (
+          <button
+            onClick={() => setShowResponseInput(true)}
+            className="text-muted-foreground/40 hover:text-muted-foreground transition-colors"
+          >
+            <MessageCircle className="w-3 h-3" />
+          </button>
+        )}
+        <button
+          onClick={() => onOpenInContext(note.card_id, note.section_id, note.prompt_id)}
+          className="text-muted-foreground/40 hover:text-muted-foreground transition-colors"
+        >
+          <ExternalLink className="w-3 h-3" />
+        </button>
+        {note.is_highlight && (
+          <Star className="w-3 h-3 text-primary fill-primary/30" />
+        )}
+      </div>
+
       {/* My response — show/edit */}
-      {!isOwnNote && (
-        <div className="mt-3 pt-3 border-t border-border/50">
+      {!isOwnNote && (hasMyResponse || showResponseInput) && (
+        <div className="mt-3 pl-4 border-l-2 border-border/30">
           {hasMyResponse && !showResponseInput ? (
             <div>
               <div className="flex items-center justify-between mb-1">
-                <p className="text-xs text-muted-foreground">Dina ord tillbaka</p>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="h-6 w-6"
+                <p className="text-[10px] text-muted-foreground/50">Dina ord</p>
+                <button
                   onClick={() => setShowResponseInput(true)}
+                  className="text-muted-foreground/40 hover:text-muted-foreground transition-colors"
                 >
                   <Pencil className="w-3 h-3" />
-                </Button>
+                </button>
               </div>
-              <p className="text-sm text-foreground/80 whitespace-pre-wrap">{myResponse!.content}</p>
-              {myResponse!.updated_at && (
-                <p className="text-xs text-muted-foreground/60 mt-1">
-                  {t('reflections.last_updated', { date: new Date(myResponse!.updated_at).toLocaleDateString('sv-SE', { day: 'numeric', month: 'short' }) })}
-                </p>
-              )}
+              <p className="text-sm text-foreground/70 whitespace-pre-wrap leading-relaxed">{myResponse!.content}</p>
             </div>
-          ) : showResponseInput || !hasMyResponse ? (
-            <div>
-              {!showResponseInput && (
+          ) : showResponseInput ? (
+            <div className="space-y-2">
+              <Textarea
+                ref={responseRef}
+                value={responseContent}
+                onChange={(e) => handleResponseChange(e.target.value)}
+                placeholder="Skriv något du vill att den andra ska se…"
+                className="text-sm min-h-[50px] resize-none"
+              />
+              <div className="flex items-center justify-between">
+                <p className="text-xs text-muted-foreground/60">Sparas automatiskt.</p>
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="text-xs text-muted-foreground gap-1 px-0 h-auto py-1"
-                  onClick={() => setShowResponseInput(true)}
+                  className="text-xs h-7 px-2"
+                  onClick={() => setShowResponseInput(false)}
                 >
-                   <MessageCircle className="w-3 h-3" />
-                  Svara
+                  Klar
                 </Button>
-              )}
-              {showResponseInput && (
-                <div className="mt-1 space-y-2">
-                  <Textarea
-                    ref={responseRef}
-                    value={responseContent}
-                    onChange={(e) => handleResponseChange(e.target.value)}
-                    placeholder="Skriv något du vill att den andra ska se…"
-                    className="text-sm min-h-[50px] resize-none"
-                  />
-                  <div className="flex items-center justify-between">
-                    <p className="text-xs text-muted-foreground/60">Sparas automatiskt.</p>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      className="text-xs h-7 px-2"
-                      onClick={() => setShowResponseInput(false)}
-                    >
-                      Klar
-                    </Button>
-                  </div>
-                </div>
-              )}
+              </div>
             </div>
           ) : null}
         </div>
