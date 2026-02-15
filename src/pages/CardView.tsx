@@ -13,9 +13,11 @@ import StepProgressIndicator from '@/components/StepProgressIndicator';
 import PauseDialog from '@/components/PauseDialog';
 import ReviewDrawer from '@/components/ReviewDrawer';
 import ConflictingSessionModal from '@/components/ConflictingSessionModal';
+import ProposalSheet from '@/components/ProposalSheet';
 import { Button } from '@/components/ui/button';
 import { ArrowRight, Home, RotateCcw, BookOpen, PenLine, Send, Check, Loader2 } from 'lucide-react';
 import CardTakeaways from '@/components/CardTakeaways';
+import { useProposals } from '@/hooks/useProposals';
 
 const sectionTypeLabels: Record<string, string> = {
   opening: 'Öppnare',
@@ -121,20 +123,33 @@ export default function CardView() {
   const [showConflictModal, setShowConflictModal] = useState(false);
   const [proposalSent, setProposalSent] = useState(false);
   const proposalTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const [showProposalSheet, setShowProposalSheet] = useState(false);
+
+  const { sendProposal } = useProposals();
 
   const [isProposing, setIsProposing] = useState(false);
 
   const handlePropose = useCallback(async (catId: string, cardIdToPropose: string) => {
     if (proposalSent || isProposing) return;
+    setShowProposalSheet(true);
+  }, [proposalSent, isProposing]);
+
+  const handleSendProposal = useCallback(async (message?: string) => {
+    if (!category || !card) return;
+    const suggestedCardId = journeyState?.suggestedNextCardId;
+    const suggestedCard = suggestedCardId ? getCardById(suggestedCardId) : null;
+    const suggestedCategory = suggestedCard ? getCategoryById(suggestedCard.categoryId) : null;
+    
+    const targetCardId = suggestedCard?.id || card.id;
+    const targetCategoryId = suggestedCategory?.id || category.id;
+    
     setIsProposing(true);
     try {
-      const result = await proposeCard(catId, cardIdToPropose);
+      const result = await sendProposal(targetCardId, targetCategoryId, message);
       if (result.ok) {
         setProposalSent(true);
         if (proposalTimer.current) clearTimeout(proposalTimer.current);
         proposalTimer.current = setTimeout(() => setProposalSent(false), 2000);
-      } else if ('reason' in result && result.reason === 'not_logged_in') {
-        toast.error('Du behöver vara inloggad för att skicka förslag.');
       } else {
         toast.error('Kunde inte skicka förslaget. Försök igen.');
       }
@@ -143,7 +158,7 @@ export default function CardView() {
     } finally {
       setIsProposing(false);
     }
-  }, [proposalSent, isProposing, proposeCard]);
+  }, [card, category, journeyState, getCardById, getCategoryById, sendProposal]);
 
   // ─── Guard: if there's an active session for a DIFFERENT card, show modal instead of redirect ───
   const hasConflictingSession = !!(currentSession && currentSession.cardId !== cardId);
@@ -292,14 +307,12 @@ export default function CardView() {
             >
               {suggestedCard && suggestedCategory && memberCount >= 2 ? (
                 <Button
-                  onClick={() => handlePropose(suggestedCategory.id, suggestedCard.id)}
-                  disabled={proposalSent || isProposing}
+                  onClick={() => setShowProposalSheet(true)}
+                  disabled={proposalSent}
                   size="lg"
                   className="w-full gap-2"
                 >
-                  {isProposing ? (
-                    <><Loader2 className="w-4 h-4 animate-spin" /> Skickar…</>
-                  ) : proposalSent ? (
+                  {proposalSent ? (
                     <><Check className="w-4 h-4" /> Förslag skickat</>
                   ) : (
                     <>{t('card_view.completion_next', 'Föreslå nästa samtal')} <ArrowRight className="w-4 h-4" /></>
@@ -345,6 +358,26 @@ export default function CardView() {
             </motion.p>
           </motion.div>
         </div>
+
+        {/* Proposal Sheet */}
+        {suggestedCard && suggestedCategory && (
+          <ProposalSheet
+            open={showProposalSheet}
+            onClose={() => setShowProposalSheet(false)}
+            cardTitle={suggestedCard.title}
+            categoryTitle={suggestedCategory.title}
+            onSend={async (msg) => {
+              const result = await sendProposal(suggestedCard.id, suggestedCategory.id, msg);
+              if (result.ok) {
+                setProposalSent(true);
+                if (proposalTimer.current) clearTimeout(proposalTimer.current);
+                proposalTimer.current = setTimeout(() => setProposalSent(false), 2000);
+              } else {
+                toast.error('Kunde inte skicka förslaget. Försök igen.');
+              }
+            }}
+          />
+        )}
       </div>
     );
   }
@@ -710,29 +743,43 @@ export default function CardView() {
                     </div>
                   )}
 
-                  {/* Revisit mode: propose card CTA after final step */}
+                  {/* Revisit mode: propose card CTA after final step — opens sheet */}
                   {isRevisitMode && currentStepIndex >= STEP_ORDER.length - 1 && category && memberCount >= 2 && (
                     <motion.div
                       initial={{ opacity: 0, y: 6 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: 0.3, duration: 0.4 }}
-                      className="pt-4 border-t border-border/30"
+                      className="pt-4"
                     >
-                      <Button
-                        variant="outline"
-                        size="lg"
-                        className="w-full gap-2 text-muted-foreground hover:text-foreground"
-                        disabled={proposalSent || isProposing}
-                        onClick={() => handlePropose(category.id, card.id)}
+                      <button
+                        disabled={proposalSent}
+                        onClick={() => setShowProposalSheet(true)}
+                        className="w-full text-center text-sm text-muted-foreground/60 hover:text-muted-foreground transition-colors py-2"
                       >
-                        {isProposing ? (
-                          <><Loader2 className="w-3.5 h-3.5 animate-spin" /> Skickar…</>
-                        ) : proposalSent ? (
-                          <><Check className="w-3.5 h-3.5" /> Förslag skickat</>
-                        ) : (
-                          <><Send className="w-4 h-4" /> Föreslå det här kortet</>
-                        )}
-                      </Button>
+                        {proposalSent
+                          ? 'Förslag skickat'
+                          : 'Vill du föreslå detta till din partner?'}
+                      </button>
+                    </motion.div>
+                  )}
+
+                  {/* Post-step: subtle proposal CTA after completing a step (non-revisit) */}
+                  {!isRevisitMode && userCompletedCurrentStep && category && memberCount >= 2 && (
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ delay: 0.8, duration: 0.5 }}
+                      className="pt-2"
+                    >
+                      <button
+                        disabled={proposalSent}
+                        onClick={() => setShowProposalSheet(true)}
+                        className="w-full text-center text-[12px] text-muted-foreground/50 hover:text-muted-foreground/70 transition-colors py-2"
+                      >
+                        {proposalSent
+                          ? 'Förslag skickat'
+                          : 'Vill du föreslå detta till din partner?'}
+                      </button>
                     </motion.div>
                   )}
                 </div>
@@ -756,6 +803,27 @@ export default function CardView() {
             if (card && category) {
               pauseSession();
               startSession(category.id, card.id, { force: true });
+            }
+          }}
+        />
+      )}
+
+      {/* Proposal Sheet — accessible from both step completion and revisit */}
+      {card && category && (
+        <ProposalSheet
+          open={showProposalSheet}
+          onClose={() => setShowProposalSheet(false)}
+          cardTitle={card.title}
+          categoryTitle={category.title}
+          onSend={async (msg) => {
+            const result = await sendProposal(card.id, category.id, msg);
+            if (result.ok) {
+              setProposalSent(true);
+              setShowProposalSheet(false);
+              if (proposalTimer.current) clearTimeout(proposalTimer.current);
+              proposalTimer.current = setTimeout(() => setProposalSent(false), 2000);
+            } else {
+              toast.error('Kunde inte skicka förslaget. Försök igen.');
             }
           }}
         />
