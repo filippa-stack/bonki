@@ -16,6 +16,7 @@ interface InvitePartnerProps {
 export default function InvitePartner({ inviteCode, inviteToken, partnerName, onUpdateName }: InvitePartnerProps) {
   const { t } = useTranslation();
   const [copied, setCopied] = useState(false);
+  const [codeCopied, setCodeCopied] = useState(false);
   const [expanded, setExpanded] = useState(false);
   const [editingName, setEditingName] = useState(false);
   const [nameValue, setNameValue] = useState(partnerName || '');
@@ -53,6 +54,17 @@ export default function InvitePartner({ inviteCode, inviteToken, partnerName, on
       setTimeout(() => setCopied(false), 2000);
     } catch {
       toast.error(t('invite.copy_failed', 'Kunde inte kopiera länken'));
+    }
+  };
+
+  const handleCopyCode = async () => {
+    try {
+      await navigator.clipboard.writeText(inviteCode.toUpperCase());
+      setCodeCopied(true);
+      toast.success('Kod kopierad');
+      setTimeout(() => setCodeCopied(false), 2000);
+    } catch {
+      toast.error('Kunde inte kopiera koden');
     }
   };
 
@@ -115,7 +127,7 @@ export default function InvitePartner({ inviteCode, inviteToken, partnerName, on
         </div>
 
         <p className="text-xs text-muted-foreground leading-relaxed">
-          {t('invite.description', 'Dela länken nedan. Din partner skapar ett konto och ni kopplas ihop automatiskt.')}
+          Dela länken. Din partner ansluter när det passar. Har din partner redan ett konto? Be dem öppna Still Us och koppla ihop med koden nedan.
         </p>
 
         {/* Actions row */}
@@ -133,7 +145,12 @@ export default function InvitePartner({ inviteCode, inviteToken, partnerName, on
         {/* Invite code — smaller */}
         <div className="text-center pt-1">
           <p className="text-xs text-muted-foreground/60">{t('invite.or_code', 'Eller dela koden:')}</p>
-          <p className="text-sm font-mono tracking-widest text-foreground/70 mt-0.5">{inviteCode}</p>
+          <button
+            onClick={handleCopyCode}
+            className="text-sm font-mono tracking-widest text-foreground/70 mt-0.5 cursor-pointer hover:text-foreground transition-colors"
+          >
+            {codeCopied ? '✓ Kopierad' : inviteCode}
+          </button>
         </div>
 
         {/* Set own name — collapsible */}
