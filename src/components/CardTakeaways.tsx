@@ -83,31 +83,20 @@ export default function CardTakeaways({ cardId, compact = false }: CardTakeaways
   };
 
   return (
-    <div className={`space-y-4 ${compact ? '' : 'pt-2'}`}>
-      {/* Header */}
-      <div>
-        <h4 className="font-serif text-sm font-medium text-foreground">
-          Det vi tar med oss
-        </h4>
-        {!compact && (
-          <p className="text-xs text-muted-foreground mt-0.5">
-            Något ni vill minnas, prova eller göra annorlunda framöver?
-          </p>
-        )}
-      </div>
-
+    <div className={`space-y-3 ${compact ? '' : 'pt-2'}`}>
       {/* Private textarea */}
       <div className="space-y-1.5">
+        <div className="h-px bg-border/30 mb-4" />
         <Textarea
           value={privateText}
           onChange={(e) => handlePrivateChange(e.target.value)}
-          placeholder="Skriv något ni vill bära med er…"
-          className="min-h-[72px] text-sm resize-none bg-background border-border focus:border-primary/30"
-          rows={compact ? 2 : 3}
+          placeholder="Skriv något ni vill bära med er."
+          className="min-h-[56px] text-sm resize-none bg-transparent border-none shadow-none focus-visible:ring-0 px-0 placeholder:text-muted-foreground/40"
+          rows={compact ? 2 : 2}
         />
         <div className="flex items-center justify-between">
-          <span className="text-[10px] text-muted-foreground/60">
-            {saveStatus === 'saving' && 'Sparar…'}
+          <span className="text-[10px] text-muted-foreground/40">
+            {saveStatus === 'saving' ? 'Sparar…' : saveStatus === 'saved' ? 'Sparad' : '\u00A0'}
           </span>
           {privateText.trim() && !sharedNote && !showSharePreview && (
             <Button
