@@ -39,7 +39,7 @@ export default function PurchaseScreen({ onPurchaseComplete }: PurchaseScreenPro
             {t('purchase.title', 'Ert gemensamma utrymme')}
           </h1>
           <p className="text-body text-muted-foreground leading-relaxed">
-            {t('purchase.subtitle', 'Ett köp — för er båda. Ingen prenumeration, inga dolda kostnader.')}
+            {t('purchase.subtitle', 'Ett engångsköp låser upp ert gemensamma utrymme för två personer. Din partner betalar inte.')}
           </p>
         </div>
 
@@ -96,6 +96,9 @@ export default function PurchaseScreen({ onPurchaseComplete }: PurchaseScreenPro
             <Shield className="w-3 h-3" />
             <span>{t('purchase.secure_note', 'Säker betalning · Engångsköp')}</span>
           </div>
+          <p className="text-xs text-muted-foreground/60 leading-relaxed">
+            Om din partner redan har bjudit in dig, behöver du inte köpa igen — anslut med deras länk eller kod.
+          </p>
         </motion.div>
       </motion.div>
     </div>
