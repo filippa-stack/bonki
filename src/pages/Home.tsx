@@ -425,12 +425,19 @@ export default function Home() {
         }
         
         if (suggestedContext.suggestedCard && suggestedContext.suggestedCategory) {
+          const suggestedCardId = suggestedContext.suggestedCard.id;
+          const suggestedMySteps: number[] = user?.id && suggestedCardId && journeyState?.sessionProgress?.[suggestedCardId]?.perUser?.[user.id]?.completedSteps || [];
+          const suggestedSharedStep = currentSession?.cardId === suggestedCardId ? currentSession.currentStepIndex : 0;
+          const suggestedHasSession = !!(currentSession?.cardId === suggestedCardId);
+          const { isCatchingUp: suggestedCatchingUp } = getCatchUpState(suggestedMySteps, suggestedSharedStep, suggestedHasSession);
+
           return (
             <div className="space-y-2">
               <ContinueModule
                 cardTitle={suggestedContext.suggestedCard.title}
                 categoryTitle={suggestedContext.suggestedCategory.title}
                 lastActiveAt={journeyState?.updatedAt}
+                isCatchingUp={suggestedCatchingUp}
                 onContinue={() => navigate(`/card/${suggestedContext.suggestedCard!.id}`)}
               />
             </div>
@@ -442,12 +449,18 @@ export default function Home() {
           const recentCard = getCardById(mostRecentConversation.cardId);
           const recentCategory = recentCard ? getCategoryById(recentCard.categoryId) : null;
           if (recentCard && recentCategory) {
+            const recentMySteps: number[] = user?.id && mostRecentConversation.cardId && journeyState?.sessionProgress?.[mostRecentConversation.cardId]?.perUser?.[user.id]?.completedSteps || [];
+            const recentSharedStep = currentSession?.cardId === mostRecentConversation.cardId ? currentSession.currentStepIndex : 0;
+            const recentHasSession = !!(currentSession?.cardId === mostRecentConversation.cardId);
+            const { isCatchingUp: recentCatchingUp } = getCatchUpState(recentMySteps, recentSharedStep, recentHasSession);
+
             return (
               <div className="space-y-2">
                 <ContinueModule
                   cardTitle={recentCard.title}
                   categoryTitle={recentCategory.title}
                   lastActiveAt={mostRecentConversation.lastActivityAt instanceof Date ? mostRecentConversation.lastActivityAt.toISOString() : String(mostRecentConversation.lastActivityAt)}
+                  isCatchingUp={recentCatchingUp}
                   onContinue={() => navigate(`/card/${mostRecentConversation.cardId}`)}
                 />
               </div>
