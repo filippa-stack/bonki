@@ -507,9 +507,6 @@ export default function SharedSummary() {
                 animate={{ opacity: 1, y: 0 }}
                 className="mb-6"
               >
-                <p className="text-xs text-muted-foreground mb-4 text-center">
-                  Här samlas det ni valt att spara i ert utrymme.
-                </p>
                 <p className="text-sm font-serif font-medium text-foreground mb-4 text-center">
                   {t('shared.recent_title', 'Nyligen sparat')}
                 </p>
