@@ -63,13 +63,22 @@ export default function CategoryCard({
     }
   };
 
+  const isCompleted = status === 'explored';
+  const isBegun = status === 'in_progress';
+
+  const tonalClasses = isCompleted
+    ? 'opacity-75 hover:opacity-85 ring-1 ring-border/20'
+    : isBegun
+      ? 'opacity-95 hover:opacity-100 ring-1 ring-border/40'
+      : '';
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4, delay: index * 0.1 }}
       onClick={onClick}
-      className="w-full text-left card-reflection group cursor-pointer border rounded-2xl item-colors py-5 px-5"
+      className={`w-full text-left card-reflection group cursor-pointer border rounded-2xl item-colors py-5 px-5 transition-all ${tonalClasses}`}
       style={{ 
         '--item-bg': category.color || undefined,
         '--item-border': category.borderColor || undefined,
@@ -155,11 +164,6 @@ export default function CategoryCard({
               onClick={handleDescClick}
             >
               {category.description}
-            </p>
-          )}
-          {status && status !== 'not_started' && (
-            <p className="text-sm text-foreground text-center mt-3 font-semibold not-italic">
-              {t(`category_status.${status}`)}
             </p>
           )}
         </div>
