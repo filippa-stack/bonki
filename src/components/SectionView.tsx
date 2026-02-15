@@ -160,13 +160,6 @@ const SectionView = forwardRef<SectionViewHandle, SectionViewProps>(function Sec
       className="py-8"
     >
 
-      {/* Section content */}
-      {section.content && (
-        <p className="text-body text-gentle mb-10 leading-relaxed w-full text-center max-w-2xl mx-auto">
-          {section.content}
-        </p>
-      )}
-
       {/* All questions */}
       {normalizedPrompts.length > 0 && (
         <div className="space-y-5 mb-10">
