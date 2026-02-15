@@ -82,9 +82,29 @@ export function usePromptNotes(
     fetchNotes();
   }, [user, space, cardId, sectionId]);
 
-  // Also fetch shared notes from partner
+  // Also fetch shared notes from partner + subscribe to realtime changes
   useEffect(() => {
     if (!user || !space) return;
+
+    const applyPartnerNotes = (data: any[]) => {
+      setNotes(prev => {
+        const next = new Map(prev);
+        for (const row of data) {
+          const key = `partner:${row.prompt_id}:shared`;
+          next.set(key, {
+            id: row.id,
+            promptId: row.prompt_id,
+            content: row.content,
+            visibility: 'shared',
+            isHighlight: row.is_highlight,
+            authorLabel: row.author_label,
+            updatedAt: row.updated_at,
+            sharedAt: row.shared_at,
+          });
+        }
+        return next;
+      });
+    };
 
     const fetchPartnerShared = async () => {
       const { data } = await supabase
@@ -96,28 +116,50 @@ export function usePromptNotes(
         .eq('visibility', 'shared')
         .neq('user_id', user.id);
 
-      if (data) {
-        setNotes(prev => {
-          const next = new Map(prev);
-          for (const row of data) {
-            const key = `partner:${row.prompt_id}:shared`;
-            next.set(key, {
-              id: row.id,
-              promptId: row.prompt_id,
-              content: row.content,
-              visibility: 'shared',
-              isHighlight: row.is_highlight,
-              authorLabel: row.author_label,
-              updatedAt: row.updated_at,
-              sharedAt: row.shared_at,
-            });
-          }
-          return next;
-        });
-      }
+      if (data) applyPartnerNotes(data);
     };
 
     fetchPartnerShared();
+
+    // Realtime: listen for partner sharing/updating/deleting notes on this card+section
+    const channel = supabase
+      .channel(`partner_notes_${space.id}_${cardId}_${sectionId}`)
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'prompt_notes',
+          filter: `couple_space_id=eq.${space.id}`,
+        },
+        (payload) => {
+          const row = payload.new as any;
+          const oldRow = payload.old as any;
+
+          // Only react to partner's shared notes for this card+section
+          if (payload.eventType === 'DELETE') {
+            if (oldRow && oldRow.user_id !== user.id && oldRow.card_id === cardId && oldRow.section_id === sectionId && oldRow.visibility === 'shared') {
+              setNotes(prev => {
+                const next = new Map(prev);
+                next.delete(`partner:${oldRow.prompt_id}:shared`);
+                return next;
+              });
+            }
+            return;
+          }
+
+          if (!row || row.user_id === user.id) return;
+          if (row.card_id !== cardId || row.section_id !== sectionId) return;
+          if (row.visibility !== 'shared') return;
+
+          applyPartnerNotes([row]);
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
   }, [user, space, cardId, sectionId]);
 
   const upsertNote = useCallback(async (
