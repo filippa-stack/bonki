@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo, useRef, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
-import { X, ArrowRight, FileText } from 'lucide-react';
+import { X, ArrowRight, FileText, Lock } from 'lucide-react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import {
@@ -298,8 +298,15 @@ export default function ReviewDrawer({ open, onClose, card, activeStepIndex = 0,
                     || (stepFilter === 'private' && status?.hasPrivate)
                     || (stepFilter === 'shared' && (status?.hasShared || status?.hasPartnerShared));
 
-                  // Step is unlocked if user has completed it OR it's their current step
-                  const isUnlocked = completedSteps.includes(index) || index <= Math.max(...completedSteps, -1) + 1;
+                  // Unlock: completed steps + the first uncompleted step (current frontier) + actively viewed step
+                  const maxCompleted = completedSteps.length > 0 ? Math.max(...completedSteps) : -1;
+                  const myFirstUncompleted = (() => {
+                    for (let i = 0; i < 4; i++) {
+                      if (!completedSteps.includes(i)) return i;
+                    }
+                    return 4;
+                  })();
+                  const isUnlocked = index <= myFirstUncompleted || index <= activeStepIndex;
 
                   return (
                     <motion.div
