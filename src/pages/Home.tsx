@@ -668,6 +668,7 @@ export default function Home() {
                     onBorderColorChange={(borderColor) => updateCategoryBorderColor(category.id, borderColor)}
                     onIconChange={(icon) => updateCategoryIcon(category.id, icon)}
                     editable={true}
+                    highlighted={!isProposalMode && category.id === highlightedCategoryId}
                   />
                 </div>
               );

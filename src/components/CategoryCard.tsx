@@ -15,6 +15,7 @@ interface CategoryCardProps {
   onBorderColorChange?: (borderColor: string) => void;
   onIconChange?: (icon: string) => void;
   editable?: boolean;
+  highlighted?: boolean;
 }
 
 export default function CategoryCard({ 
@@ -27,6 +28,7 @@ export default function CategoryCard({
   onBorderColorChange,
   onIconChange,
   editable = true,
+  highlighted = false,
 }: CategoryCardProps) {
   const { t } = useTranslation();
   const [title, setTitle] = useState(category.title);
@@ -75,6 +77,18 @@ export default function CategoryCard({
         borderStyle: 'solid',
       } as React.CSSProperties}
     >
+      {highlighted && (
+        <div
+          className="w-full rounded-t-2xl -mt-5 -mx-5 mb-3"
+          style={{
+            height: '10px',
+            width: 'calc(100% + 2.5rem)',
+            background: 'rgba(44, 94, 96, 0.18)',
+            borderTopLeftRadius: 'inherit',
+            borderTopRightRadius: 'inherit',
+          }}
+        />
+      )}
       <div className="relative flex flex-col items-center justify-center gap-2">
         {/* Color picker - absolute top right */}
         <div className="absolute top-0 right-0" onClick={(e) => e.stopPropagation()}>
