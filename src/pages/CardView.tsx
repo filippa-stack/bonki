@@ -378,7 +378,7 @@ export default function CardView() {
               transition={{ delay: 0.2, duration: 0.4 }}
               className="text-sm text-muted-foreground leading-relaxed max-w-2xl"
             >
-              {t('card_view.reentry_message', 'Ni var mitt i det här samtalet. Ni kan fortsätta precis där ni var.')}
+              Ni var mitt i ett samtal. Här kan ni fortsätta där ni slutade.
             </motion.p>
             <motion.p
               initial={{ opacity: 0 }}
@@ -386,21 +386,29 @@ export default function CardView() {
               transition={{ delay: 0.35, duration: 0.4 }}
               className="text-xs text-muted-foreground/60"
             >
-              {resumeStepLabel}
+              Steg {currentStepIndex + 1} av 4 · {resumeStepLabel}
             </motion.p>
             <motion.div
               initial={{ opacity: 0, y: 6 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.5, duration: 0.4 }}
-              className="pt-2"
+              className="pt-2 space-y-3"
             >
               <Button
                 size="lg"
-                className="w-full sm:w-auto gap-2"
+                className="w-full gap-2"
                 onClick={() => setShowReentry(false)}
               >
                 {t('card_view.reentry_continue', 'Fortsätt samtalet')}
                 <ArrowRight className="w-4 h-4" />
+              </Button>
+              <Button
+                variant="ghost"
+                size="lg"
+                className="w-full text-muted-foreground"
+                onClick={() => navigate('/')}
+              >
+                Lämna för nu
               </Button>
             </motion.div>
           </motion.div>
