@@ -395,6 +395,9 @@ export default function SharedSummary() {
                 Bläddra bland kort
               </Button>
             </div>
+            <p className="text-xs text-muted-foreground text-center mt-8">
+              När ni delar en reflektion under ett steg visas den här.
+            </p>
           </motion.div>
         )}
 
