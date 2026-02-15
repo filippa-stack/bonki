@@ -109,15 +109,15 @@ export default {
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
-        "fade-in": "fade-in 0.5s ease-out forwards",
-        "slide-up": "slide-up 0.6s ease-out forwards",
-        "slide-in-right": "slide-in-right 0.4s ease-out forwards",
+        "fade-in": "fade-in 0.15s ease-out forwards",
+        "slide-up": "slide-up 0.15s ease-out forwards",
+        "slide-in-right": "slide-in-right 0.15s ease-out forwards",
       },
       transitionTimingFunction: {
         'calm': 'cubic-bezier(0.4, 0, 0.2, 1)',
       },
       transitionDuration: {
-        'calm': '300ms',
+        'calm': '150ms',
       },
     },
   },

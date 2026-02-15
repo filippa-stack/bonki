@@ -34,10 +34,10 @@ export default function ResumeSessionDialog({
         onClick={onBackToCategories}
       >
         <motion.div
-          initial={{ opacity: 0, scale: 0.95, y: 20 }}
-          animate={{ opacity: 1, scale: 1, y: 0 }}
-          exit={{ opacity: 0, scale: 0.95, y: 20 }}
-          transition={{ duration: 0.3 }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.15 }}
           className="w-full max-w-md bg-card rounded-2xl shadow-xl border border-border p-8"
           onClick={(e) => e.stopPropagation()}
         >

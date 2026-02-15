@@ -247,9 +247,9 @@ export default function Home() {
       {/* Header with Logo */}
       <div className="px-6 pt-14 pb-12">
         <motion.div
-          initial={{ opacity: 0, scale: 0.92 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.5, ease: [0.25, 0.1, 0.25, 1] }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.15 }}
           className="mb-8 flex justify-center"
         >
           <img 
@@ -347,9 +347,9 @@ export default function Home() {
           ) : (
             <>
               <motion.h1
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.15 }}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.15 }}
                 className={`text-display font-${settings.heroTitleFont} hero-title-color`}
               >
                 {settings.heroTitle}
@@ -357,7 +357,7 @@ export default function Home() {
               <motion.p
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                transition={{ duration: 0.5, delay: 0.3 }}
+                transition={{ duration: 0.15, delay: 0.05 }}
                 className={`text-body mt-3 font-${settings.heroSubtitleFont} hero-subtitle-color`}
               >
                 {settings.heroSubtitle}
@@ -432,9 +432,9 @@ export default function Home() {
         if (isPostCompletion && lastCompletedCard && lastCompletedCategory) {
           return (
             <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.15 }}
               className="px-6 mb-10"
             >
                 <div className="rounded-2xl border border-border bg-card p-6 text-center space-y-4">

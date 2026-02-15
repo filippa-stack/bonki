@@ -14,7 +14,7 @@ export default function ReturnOverlay({ onResume, onStartNew, onBrowse }: Return
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      transition={{ duration: 0.3 }}
+      transition={{ duration: 0.15 }}
       className="fixed inset-0 z-50 flex items-center justify-center bg-background/95 px-6"
     >
       <div className="text-center max-w-sm space-y-6">

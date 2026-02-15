@@ -177,7 +177,7 @@ export default function AttachPartner({
                 <motion.div
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
-                  transition={{ duration: 0.3 }}
+                  transition={{ duration: 0.15 }}
                   className="space-y-4"
                 >
                   <h3 className="font-serif text-base text-foreground text-center">

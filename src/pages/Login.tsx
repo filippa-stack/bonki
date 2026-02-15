@@ -69,33 +69,33 @@ export default function Login() {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-background px-6">
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.15 }}
         className="w-full max-w-xs space-y-10 text-center"
       >
         <motion.img
           src={bonkiLogo}
           alt="Still Us"
           className="h-20 w-auto mx-auto"
-          initial={{ opacity: 0, scale: 0.92 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.5, delay: 0.1 }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.15, delay: 0.03 }}
         />
 
         <motion.h1
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 0.25, duration: 0.5 }}
+          transition={{ delay: 0.06, duration: 0.15 }}
           className="text-display text-foreground"
         >
           {t('login.welcome')}
         </motion.h1>
 
         <motion.div
-          initial={{ opacity: 0, y: 8 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4, duration: 0.5 }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.09, duration: 0.15 }}
           className="space-y-5"
         >
           <Button
