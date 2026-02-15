@@ -169,7 +169,7 @@ const SectionView = forwardRef<SectionViewHandle, SectionViewProps>(function Sec
     >
       {/* Section intro — soft, not a heading */}
       {sectionIntroText[section.type] && (
-        <p className="text-[13px] text-muted-foreground/70 text-center leading-relaxed mb-8 max-w-sm mx-auto">
+        <p className="text-[12px] text-muted-foreground/50 text-center leading-relaxed mb-6 max-w-xs mx-auto">
           {sectionIntroText[section.type]}
         </p>
       )}
@@ -183,7 +183,7 @@ const SectionView = forwardRef<SectionViewHandle, SectionViewProps>(function Sec
 
       {/* All questions */}
       {normalizedPrompts.length > 0 && (
-        <div className="space-y-4 mb-8">
+        <div className="space-y-5 mb-10">
           {normalizedPrompts.map((prompt, index) => {
             const promptId = `prompt-${index}`;
             const isControlled = isAccordion;
