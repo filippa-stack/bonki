@@ -1,16 +1,14 @@
-import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { useApp } from '@/contexts/AppContext';
 import Header from '@/components/Header';
-import { Lock } from 'lucide-react';
 
 export default function Category() {
   const { t } = useTranslation();
   const { categoryId } = useParams<{ categoryId: string }>();
   const navigate = useNavigate();
-  const { getCategoryById, getCardsByCategory, getExploredCardsInCategory, getCategoryStatus, journeyState } = useApp();
+  const { getCategoryById, getCardsByCategory, journeyState } = useApp();
 
   const category = categoryId ? getCategoryById(categoryId) : undefined;
   const cards = categoryId ? getCardsByCategory(categoryId) : [];
@@ -53,12 +51,6 @@ export default function Category() {
         <div className="space-y-3">
           {cards.map((card, index) => {
             const isExplored = journeyState?.exploredCardIds?.includes(card.id) || false;
-            const previousCard = index > 0 ? cards[index - 1] : null;
-            const previousExplored = previousCard
-              ? journeyState?.exploredCardIds?.includes(previousCard.id) || false
-              : true;
-            const hasProgress = !!(journeyState?.sessionProgress?.[card.id]);
-            const isUnlocked = index === 0 || previousExplored || hasProgress || isExplored;
 
             return (
               <CardEntry
@@ -66,12 +58,8 @@ export default function Category() {
                 card={card}
                 index={index}
                 explored={isExplored}
-                locked={!isUnlocked}
                 isPrimary={index === 0 && !isExplored}
-                onNavigate={() => {
-                  if (!isUnlocked) return;
-                  navigate(`/card/${card.id}`);
-                }}
+                onNavigate={() => navigate(`/card/${card.id}`)}
               />
             );
           })}
@@ -92,40 +80,31 @@ interface CardEntryProps {
   };
   index: number;
   explored?: boolean;
-  locked?: boolean;
   isPrimary?: boolean;
   onNavigate: () => void;
 }
 
-function CardEntry({ card, index, explored, locked, isPrimary, onNavigate }: CardEntryProps) {
+function CardEntry({ card, index, explored, isPrimary, onNavigate }: CardEntryProps) {
   const { t } = useTranslation();
-  const [showLockedHint, setShowLockedHint] = useState(false);
-
-  const handleLockedTap = () => {
-    setShowLockedHint(true);
-    setTimeout(() => setShowLockedHint(false), 2500);
-  };
 
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: index * 0.1 }}
-      onClick={locked ? handleLockedTap : onNavigate}
+      onClick={onNavigate}
       role="button"
       tabIndex={0}
       onKeyDown={(e) => {
         if (e.key === 'Enter' || e.key === ' ') {
           e.preventDefault();
-          locked ? handleLockedTap() : onNavigate();
+          onNavigate();
         }
       }}
-      className={`w-full text-center card-reflection group item-colors transition-all ${
-        locked
-          ? 'opacity-50 cursor-default'
-          : isPrimary
-            ? 'cursor-pointer ring-1 ring-primary/30 hover:ring-primary/50 hover:bg-card/90'
-            : 'cursor-pointer hover:bg-card/90'
+      className={`w-full text-center card-reflection group item-colors transition-all cursor-pointer ${
+        isPrimary
+          ? 'ring-1 ring-primary/30 hover:ring-primary/50 hover:bg-card/90'
+          : 'hover:bg-card/90'
       }`}
       style={{
         '--item-bg': card.color || undefined,
@@ -151,24 +130,6 @@ function CardEntry({ card, index, explored, locked, isPrimary, onNavigate }: Car
         {explored && (
           <p className="text-xs text-muted-foreground text-center mt-2 not-italic">
             {t('category_status.explored')}
-          </p>
-        )}
-        <AnimatePresence>
-          {locked && showLockedHint && (
-            <motion.p
-              initial={{ opacity: 0, y: -4 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0 }}
-              className="text-xs text-muted-foreground text-center mt-2 not-italic flex items-center gap-1"
-            >
-              <Lock className="w-3 h-3" />
-              {t('category.locked_hint', 'Låses upp efter föregående')}
-            </motion.p>
-          )}
-        </AnimatePresence>
-        {locked && !showLockedHint && (
-          <p className="text-xs text-muted-foreground/40 text-center mt-2 not-italic flex items-center gap-1">
-            <Lock className="w-3 h-3" />
           </p>
         )}
       </div>
