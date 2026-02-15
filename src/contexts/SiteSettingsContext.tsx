@@ -26,21 +26,21 @@ interface SiteSettingsContextType {
 }
 
 const defaultSettings: SiteSettings = {
-  heroTitle: 'Still Us',
-  heroSubtitle: 'Ert utrymme för samtal',
-  heroTitleColor: '',
+  heroTitle: 'STILL US - So we stay us',
+  heroSubtitle: 'Förbli ett vi medan vi uppfostrar dem',
+  heroTitleColor: '#FF0000',
   heroSubtitleColor: '',
   heroTitleFont: 'serif',
   heroSubtitleFont: 'sans',
-  buttonColor: 'hsl(0, 100%, 50%)',
-  buttonTextColor: 'hsl(0, 0%, 100%)',
-  continueModuleBgColor: '',
+  buttonColor: '#FF0000',
+  buttonTextColor: '#FFFFFF',
+  continueModuleBgColor: '#fffdee',
   continueModuleTextColor: '',
-  continueModuleBorderColor: '',
+  continueModuleBorderColor: '#ffffff',
   noteBoxBgColor: '',
   noteBoxTextColor: '',
   noteBoxBorderColor: '',
-  loginTitle: 'Still Us',
+  loginTitle: 'Vi som föräldrar',
   loginSubtitle: 'Logga in för att spara dina inställningar',
 };
 
