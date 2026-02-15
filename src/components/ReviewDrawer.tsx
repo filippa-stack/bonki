@@ -280,10 +280,11 @@ export default function ReviewDrawer({ open, onClose, card, activeStepIndex = 0 
                   const section = card.sections.find((s) => s.type === stepType);
                   if (!section) return null;
 
-                  // Apply step filter
+                  // Filters only affect note indicators, not step visibility
                   const status = sectionNoteStatus[section.id];
-                  if (stepFilter === 'private' && !(status?.hasPrivate && !status?.hasShared)) return null;
-                  if (stepFilter === 'shared' && !(status?.hasShared || status?.hasPartnerShared)) return null;
+                  const showNoteStatus = stepFilter === 'all'
+                    || (stepFilter === 'private' && status?.hasPrivate)
+                    || (stepFilter === 'shared' && (status?.hasShared || status?.hasPartnerShared));
 
                   return (
                     <motion.div
@@ -303,7 +304,7 @@ export default function ReviewDrawer({ open, onClose, card, activeStepIndex = 0 
                             {STEP_LABELS[stepType]}
                           </h3>
                         </div>
-                        <StepNoteStatus cardId={card.id} sectionId={section.id} />
+                        {showNoteStatus && <StepNoteStatus cardId={card.id} sectionId={section.id} />}
                       </div>
 
                       <div className="pl-9 space-y-2">
