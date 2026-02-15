@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
+import { getCatchUpState } from '@/lib/catchUpState';
 import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
@@ -75,15 +76,9 @@ export default function CardView() {
   const isActiveSession = !!(currentSession && currentSession.cardId === cardId);
   const sharedStepIndex = isActiveSession ? currentSession!.currentStepIndex : 0;
 
-  // ─── Catch-up: if user is behind the shared step, show their first uncompleted step ───
-  const myFirstUncompletedStep = (() => {
-    for (let i = 0; i < STEP_ORDER.length; i++) {
-      if (!myCompletedSteps.includes(i)) return i;
-    }
-    return STEP_ORDER.length; // all done
-  })();
-  const effectiveSharedStep = Math.min(sharedStepIndex, myFirstUncompletedStep);
-  const isCatchingUp = isActiveSession && myFirstUncompletedStep < sharedStepIndex;
+  // ─── Catch-up: unified helper ensures consistent rules everywhere ───
+  const { myFirstUncompletedStep, effectiveStep: effectiveSharedStep, isCatchingUp } =
+    getCatchUpState(myCompletedSteps, sharedStepIndex, isActiveSession);
 
   // ─── Determine if card is fully explored ───
   const isFullyExplored = cardId ? (journeyState?.exploredCardIds?.includes(cardId) ?? false) : false;

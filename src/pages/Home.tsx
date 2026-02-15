@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router-dom';
+import { getCatchUpState } from '@/lib/catchUpState';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useState, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -116,14 +117,8 @@ export default function Home() {
   const sessionCategory = currentSession ? getCategoryById(currentSession.categoryId) : null;
   const sessionStepName = (() => {
     if (!currentSession) return '';
-    // Show user's effective step (catch-up aware)
     const mySteps: number[] = user?.id && currentSession.cardId && journeyState?.sessionProgress?.[currentSession.cardId]?.perUser?.[user.id]?.completedSteps || [];
-    let firstUncompleted = 0;
-    for (let i = 0; i < STEP_LABELS.length; i++) {
-      if (!mySteps.includes(i)) { firstUncompleted = i; break; }
-      if (i === STEP_LABELS.length - 1) firstUncompleted = STEP_LABELS.length;
-    }
-    const effectiveStep = Math.min(currentSession.currentStepIndex, firstUncompleted);
+    const { effectiveStep } = getCatchUpState(mySteps, currentSession.currentStepIndex, true);
     return STEP_LABELS[effectiveStep] || '';
   })();
 
