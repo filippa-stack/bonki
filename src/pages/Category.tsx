@@ -8,10 +8,19 @@ export default function Category() {
   const { t } = useTranslation();
   const { categoryId } = useParams<{ categoryId: string }>();
   const navigate = useNavigate();
-  const { getCategoryById, getCardsByCategory, journeyState } = useApp();
+  const { getCategoryById, getCardsByCategory, journeyState, currentSession, getCardById } = useApp();
 
   const category = categoryId ? getCategoryById(categoryId) : undefined;
   const cards = categoryId ? getCardsByCategory(categoryId) : [];
+
+  // Compute single highlighted card
+  const sessionCardIdForThisCategory =
+    currentSession?.categoryId === categoryId ? currentSession.cardId : null;
+  const suggestedId = journeyState?.suggestedNextCardId || null;
+  const suggestedCard = suggestedId ? getCardById(suggestedId) : null;
+  const suggestedCardIdForThisCategory =
+    suggestedCard && suggestedCard.categoryId === categoryId ? suggestedCard.id : null;
+  const highlightedCardId = sessionCardIdForThisCategory || suggestedCardIdForThisCategory || null;
 
   if (!category) {
     return (
@@ -49,22 +58,15 @@ export default function Category() {
 
       <div className="px-6 pb-12">
         <div className="space-y-3">
-          {cards.map((card, index) => {
-            const isFinished = journeyState?.exploredCardIds?.includes(card.id) || false;
-            const hasProgress = !!journeyState?.sessionProgress?.[card.id];
-            const isInProgress = !isFinished && hasProgress;
-
-            return (
-              <CardEntry
-                key={card.id}
-                card={card}
-                index={index}
-                finished={isFinished}
-                inProgress={isInProgress}
-                onNavigate={() => navigate(`/card/${card.id}`)}
-              />
-            );
-          })}
+          {cards.map((card, index) => (
+            <CardEntry
+              key={card.id}
+              card={card}
+              index={index}
+              highlighted={card.id === highlightedCardId}
+              onNavigate={() => navigate(`/card/${card.id}`)}
+            />
+          ))}
         </div>
       </div>
     </div>
@@ -81,12 +83,11 @@ interface CardEntryProps {
     borderColor?: string;
   };
   index: number;
-  finished?: boolean;
-  inProgress?: boolean;
+  highlighted?: boolean;
   onNavigate: () => void;
 }
 
-function CardEntry({ card, index, finished, inProgress, onNavigate }: CardEntryProps) {
+function CardEntry({ card, index, highlighted, onNavigate }: CardEntryProps) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -101,20 +102,25 @@ function CardEntry({ card, index, finished, inProgress, onNavigate }: CardEntryP
           onNavigate();
         }
       }}
-      className="relative w-full text-center card-reflection group item-colors transition-all cursor-pointer"
+      className="relative w-full text-center card-reflection group item-colors transition-all cursor-pointer overflow-hidden"
       style={{
         '--item-bg': card.color || undefined,
         '--item-border': card.borderColor || undefined,
         borderWidth: '2px',
         borderStyle: 'solid',
-        filter: finished
-          ? 'saturate(0.92) brightness(1.03)'
-          : inProgress
-            ? 'saturate(1.02) brightness(0.99)'
-            : 'none',
-        opacity: finished ? 0.88 : 1,
       } as React.CSSProperties}
     >
+      {highlighted && (
+        <div
+          className="w-full"
+          style={{
+            height: '10px',
+            background: 'rgba(44, 94, 96, 0.16)',
+            borderTopLeftRadius: 'inherit',
+            borderTopRightRadius: 'inherit',
+          }}
+        />
+      )}
       <div className="flex flex-col items-center gap-1 p-6">
         <h3
           className="w-full font-serif text-lg sm:text-xl text-center item-text"
