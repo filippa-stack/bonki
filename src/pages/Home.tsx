@@ -114,7 +114,18 @@ export default function Home() {
   // Get session details for resume dialog
   const sessionCard = currentSession ? getCardById(currentSession.cardId) : null;
   const sessionCategory = currentSession ? getCategoryById(currentSession.categoryId) : null;
-  const sessionStepName = currentSession ? STEP_LABELS[currentSession.currentStepIndex] : '';
+  const sessionStepName = (() => {
+    if (!currentSession) return '';
+    // Show user's effective step (catch-up aware)
+    const mySteps: number[] = user?.id && currentSession.cardId && journeyState?.sessionProgress?.[currentSession.cardId]?.perUser?.[user.id]?.completedSteps || [];
+    let firstUncompleted = 0;
+    for (let i = 0; i < STEP_LABELS.length; i++) {
+      if (!mySteps.includes(i)) { firstUncompleted = i; break; }
+      if (i === STEP_LABELS.length - 1) firstUncompleted = STEP_LABELS.length;
+    }
+    const effectiveStep = Math.min(currentSession.currentStepIndex, firstUncompleted);
+    return STEP_LABELS[effectiveStep] || '';
+  })();
 
   const handleResumeSession = () => {
     if (currentSession) {
