@@ -150,25 +150,24 @@ export default function StepReflection({ section, card, defaultExpanded = false 
           </div>
 
           <div className="flex items-center gap-2">
-            {!isShared && isPaired && (
+            {isPaired ? (
               <>
                 <button
                   onClick={() => saveNote(STEP_PROMPT_ID, text, 'private')}
                   disabled={!text.trim()}
                   className="text-xs font-medium px-3 py-1.5 rounded-lg border border-border text-muted-foreground hover:text-foreground hover:border-foreground/20 transition-colors disabled:opacity-40"
                 >
-                  Spara privat
+                  {isShared ? 'Uppdatera' : 'Spara privat'}
                 </button>
                 <button
                   onClick={handleShare}
                   disabled={!text.trim() && !privateNote?.content}
                   className="text-xs font-medium px-3 py-1.5 rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 transition-colors disabled:opacity-40"
                 >
-                  Dela
+                  {isShared ? 'Dela igen' : 'Dela'}
                 </button>
               </>
-            )}
-            {!isShared && !isPaired && (
+            ) : (
               <span className="text-xs text-muted-foreground/50 italic flex items-center gap-1">
                 <Link2 className="w-3 h-3" />
                 Koppla ihop er för att dela
