@@ -16,7 +16,7 @@ import NotificationSettings from '@/components/NotificationSettings';
 import RelationshipMemory from '@/components/RelationshipMemory';
 import Footer from '@/components/Footer';
 import RecentSharedReflection from '@/components/RecentSharedReflection';
-import TopicProposal from '@/components/TopicProposal';
+
 import WelcomeBackBanner from '@/components/WelcomeBackBanner';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -59,9 +59,6 @@ export default function Home() {
     journeyState,
     cards,
     
-    acceptProposal,
-    declineProposal,
-    proposeCard,
   } = useApp();
   const { settings, updateSettings } = useSiteSettings();
   const { user } = useAuth();
@@ -353,36 +350,6 @@ export default function Home() {
         )}
       </AnimatePresence>
 
-      {/* Topic proposal from partner */}
-      {(() => {
-        const proposal = journeyState?.topicProposal;
-        if (!proposal) return null;
-        const proposalCard = getCardById(proposal.cardId);
-        const proposalCategory = getCategoryById(proposal.categoryId);
-        if (!proposalCard || !proposalCategory) return null;
-
-        const isOwn = proposal.proposedByUserId === user?.id;
-        const partnerName = space?.partner_a_name || space?.partner_b_name || undefined;
-
-        return (
-          <TopicProposal
-            cardTitle={proposalCard.title}
-            cardSubtitle={proposalCard.subtitle}
-            categoryTitle={proposalCategory.title}
-            partnerName={partnerName}
-            isOwnProposal={isOwn}
-            onAccept={() => {
-              acceptProposal();
-              navigate(`/card/${proposal.cardId}`);
-            }}
-            onDecline={declineProposal}
-            onSuggestAnother={() => {
-              declineProposal();
-              handleEnterProposalMode();
-            }}
-          />
-        );
-      })()}
 
       {/* Journey continue module */}
       {(() => {
