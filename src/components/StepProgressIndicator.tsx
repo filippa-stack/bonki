@@ -28,8 +28,8 @@ export default function StepProgressIndicator({
               className={cn(
                 'text-[10px] tracking-wide transition-all duration-150',
                 isCurrent
-                  ? 'text-foreground/50 font-medium'
-                  : 'text-muted-foreground/25'
+                  ? 'text-muted-foreground/40 font-normal'
+                  : 'text-muted-foreground/20'
               )}
             >
               {step.label}
