@@ -79,11 +79,11 @@ export default function CategoryCard({
     >
       {highlighted && (
         <div
-          className="w-full rounded-t-2xl -mt-5 -mx-5 mb-3"
+          className="w-full -mt-5 -mx-5 mb-3"
           style={{
             height: '10px',
             width: 'calc(100% + 2.5rem)',
-            background: 'rgba(44, 94, 96, 0.18)',
+            background: 'rgba(44, 94, 96, 0.16)',
             borderTopLeftRadius: 'inherit',
             borderTopRightRadius: 'inherit',
           }}
