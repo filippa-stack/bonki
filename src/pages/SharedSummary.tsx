@@ -396,7 +396,7 @@ export default function SharedSummary() {
               </Button>
             </div>
             <p className="text-xs text-muted-foreground text-center mt-8">
-              När ni delar en reflektion under ett steg visas den här.
+              När ni delar en reflektion till en fråga visas den här.
             </p>
           </motion.div>
         )}
