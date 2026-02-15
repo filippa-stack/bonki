@@ -73,13 +73,6 @@ export interface CoupleSpace {
   createdAt: Date;
 }
 
-export interface TopicProposal {
-  cardId: string;
-  categoryId: string;
-  proposedByUserId: string;
-  proposedAt: string;
-}
-
 export interface JourneyState {
   currentCategoryId: string | null;
   lastOpenedCardId: string | null;
@@ -89,8 +82,6 @@ export interface JourneyState {
   updatedAt: string;
   /** Set of card IDs that have been fully explored (all 4 steps completed) */
   exploredCardIds: string[];
-  /** Pending topic proposal from a partner */
-  topicProposal?: TopicProposal | null;
   /** Per-user step completion keyed by cardId → userId → completedSteps */
   sessionProgress?: Record<string, {
     perUser: Record<string, { completedSteps: number[] }>;
@@ -152,7 +143,3 @@ export interface AppState {
   };
 }
 
-export type ProposeResult =
-  | { ok: true }
-  | { ok: false; reason: 'not_logged_in' }
-  | { ok: false; reason: 'write_failed' };

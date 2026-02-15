@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode, useCallback, useRef } from 'react';
-import { CoupleSpace, ConversationThread, Reflection, AppState, Category, Card, JourneyState, ReflectionsData, PrivateNote, SharedNote, TopicProposal, TakeawayNote, SharedTakeaway, ProposeResult } from '@/types';
+import { CoupleSpace, ConversationThread, Reflection, AppState, Category, Card, JourneyState, ReflectionsData, PrivateNote, SharedNote, TakeawayNote, SharedTakeaway } from '@/types';
 import { categories as initialCategories, cards as initialCards, CONTENT_VERSION } from '@/data/content';
 import { useSettingsSync, SaveStatus } from '@/hooks/useSettingsSync';
 import { useAuth } from '@/contexts/AuthContext';
@@ -60,10 +60,6 @@ interface AppContextType {
   journeyState: JourneyState | undefined;
   getCategoryStatus: (categoryId: string) => 'not_started' | 'in_progress' | 'explored';
   getExploredCardsInCategory: (categoryId: string) => number;
-  // Topic proposal
-  proposeCard: (categoryId: string, cardId: string) => Promise<ProposeResult>;
-  acceptProposal: () => void;
-  declineProposal: () => void;
   // Reflections (private/shared)
   getPrivateNote: (cardId: string) => PrivateNote | undefined;
   getSharedNote: (cardId: string) => SharedNote | undefined;
@@ -959,109 +955,6 @@ export function AppProvider({ children }: { children: ReactNode }) {
 
   const hasActiveSession = !sessionDismissed && !!state.currentSession;
 
-  // Topic proposal – snapshot refs (survive across async boundaries)
-  const prevTopicProposalRef = useRef<JourneyState['topicProposal'] | null>(null);
-  const prevUpdatedAtRef = useRef<string | null>(null);
-
-  const proposeCard = async (categoryId: string, cardId: string): Promise<ProposeResult> => {
-    if (!user?.id) return { ok: false, reason: 'not_logged_in' };
-
-    // Snapshot via refs so rollback reads are never stale
-    prevTopicProposalRef.current = state.journeyState?.topicProposal ?? null;
-    prevUpdatedAtRef.current = state.journeyState?.updatedAt ?? null;
-
-    const newJourney = {
-      ...(state.journeyState || {
-        currentCategoryId: null,
-        lastOpenedCardId: null,
-        lastCompletedCardId: null,
-        suggestedNextCardId: null,
-        pausedAt: null,
-        updatedAt: new Date().toISOString(),
-        exploredCardIds: [],
-      }),
-      topicProposal: {
-        cardId,
-        categoryId,
-        proposedByUserId: user.id,
-        proposedAt: new Date().toISOString(),
-      },
-      updatedAt: new Date().toISOString(),
-    };
-
-    // Optimistic local update for UI responsiveness
-    setState((prev) => ({
-      ...prev,
-      journeyState: newJourney,
-    }));
-
-    // Guard: no couple space → rollback
-    if (!coupleSpaceId) {
-      setState((prev) => ({
-        ...prev,
-        journeyState: prev.journeyState
-          ? { ...prev.journeyState, topicProposal: prevTopicProposalRef.current as any, updatedAt: prevUpdatedAtRef.current ?? prev.journeyState.updatedAt }
-          : prev.journeyState,
-      }));
-      return { ok: false, reason: 'write_failed' };
-    }
-
-    try {
-      const { error } = await supabase
-        .from('couple_progress')
-        .upsert(
-          {
-            couple_space_id: coupleSpaceId,
-            journey_state: JSON.parse(JSON.stringify(newJourney)),
-            updated_by: user.id,
-          },
-          { onConflict: 'couple_space_id' }
-        );
-      if (error) {
-        console.warn('[proposeCard] upsert failed', { code: error.code, message: error.message });
-        setState((prev) => ({
-          ...prev,
-          journeyState: prev.journeyState
-            ? { ...prev.journeyState, topicProposal: prevTopicProposalRef.current as any, updatedAt: prevUpdatedAtRef.current ?? prev.journeyState.updatedAt }
-            : prev.journeyState,
-        }));
-        return { ok: false, reason: 'write_failed' };
-      }
-    } catch (err) {
-      console.warn('[proposeCard] network error', err instanceof Error ? err.message : err);
-      setState((prev) => ({
-        ...prev,
-        journeyState: prev.journeyState
-          ? { ...prev.journeyState, topicProposal: prevTopicProposalRef.current as any, updatedAt: prevUpdatedAtRef.current ?? prev.journeyState.updatedAt }
-          : prev.journeyState,
-      }));
-      return { ok: false, reason: 'write_failed' };
-    }
-
-    return { ok: true };
-  };
-
-  const acceptProposal = () => {
-    const proposal = state.journeyState?.topicProposal;
-    if (!proposal) return;
-    // Clear proposal and start the session
-    setState((prev) => ({
-      ...prev,
-      journeyState: prev.journeyState
-        ? { ...prev.journeyState, topicProposal: null, updatedAt: new Date().toISOString() }
-        : prev.journeyState,
-    }));
-    startSessionWithJourney(proposal.categoryId, proposal.cardId, { force: true });
-  };
-
-  const declineProposal = () => {
-    setState((prev) => ({
-      ...prev,
-      journeyState: prev.journeyState
-        ? { ...prev.journeyState, topicProposal: null, updatedAt: new Date().toISOString() }
-        : prev.journeyState,
-    }));
-  };
 
   // Category status helpers
   const getCategoryStatus = useCallback((categoryId: string): 'not_started' | 'in_progress' | 'explored' => {
@@ -1314,9 +1207,6 @@ export function AppProvider({ children }: { children: ReactNode }) {
         journeyState: state.journeyState,
         getCategoryStatus,
         getExploredCardsInCategory,
-        proposeCard,
-        acceptProposal,
-        declineProposal,
         getPrivateNote,
         getSharedNote,
         savePrivateNote,

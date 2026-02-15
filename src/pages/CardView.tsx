@@ -58,7 +58,6 @@ export default function CardView() {
     completeSessionStep,
     pauseSession,
     journeyState,
-    proposeCard,
   } = useApp();
   const { user } = useAuth();
   const { memberCount } = useCoupleSpace();
