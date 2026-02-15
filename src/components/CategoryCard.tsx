@@ -69,26 +69,14 @@ export default function CategoryCard({
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4, delay: index * 0.1 }}
       onClick={onClick}
-      className="w-full text-left card-reflection group cursor-pointer border rounded-2xl item-colors py-5 px-5 transition-all"
+      className={`w-full text-left card-reflection group cursor-pointer border rounded-2xl item-colors py-5 px-5 transition-all${highlighted ? ' ring-2 ring-primary/40 shadow-md shadow-primary/10' : ''}`}
       style={{ 
         '--item-bg': category.color || undefined,
         '--item-border': category.borderColor || undefined,
-        borderWidth: '2px',
+        borderWidth: highlighted ? '2.5px' : '2px',
         borderStyle: 'solid',
       } as React.CSSProperties}
     >
-      {highlighted && (
-        <div
-          className="w-full -mt-5 -mx-5 mb-3"
-          style={{
-            height: '10px',
-            width: 'calc(100% + 2.5rem)',
-            background: 'rgba(44, 94, 96, 0.16)',
-            borderTopLeftRadius: 'inherit',
-            borderTopRightRadius: 'inherit',
-          }}
-        />
-      )}
       <div className="relative flex flex-col items-center justify-center gap-2">
         {/* Color picker - absolute top right */}
         <div className="absolute top-0 right-0" onClick={(e) => e.stopPropagation()}>
