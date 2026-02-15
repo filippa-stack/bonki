@@ -143,7 +143,7 @@ export default function JoinSpace() {
               {t('general.start', 'Försök igen')}
             </Button>
             <Button variant="outline" onClick={() => navigate('/', { replace: true })} className="w-full">
-              {t('join.go_home', 'Gå till startsidan')}
+              {t('join.go_home', 'Hem')}
             </Button>
           </div>
         </motion.div>

@@ -55,7 +55,7 @@ export default function IncomingProposal({
           size="sm"
           className="gap-2"
         >
-          Starta samtalet
+          Öppna
           <ArrowRight className="w-3.5 h-3.5" />
         </Button>
         <Button
@@ -65,7 +65,7 @@ export default function IncomingProposal({
           className="text-muted-foreground gap-2"
         >
           <Clock className="w-3.5 h-3.5" />
-          Spara till senare
+          Senare
         </Button>
       </div>
     </motion.div>

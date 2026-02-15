@@ -106,7 +106,7 @@ export default function CardTakeaways({ cardId, compact = false }: CardTakeaways
               onClick={handleOpenSharePreview}
             >
               <Share2 className="w-3 h-3" />
-              Dela med din partner
+              Dela
             </Button>
           )}
         </div>

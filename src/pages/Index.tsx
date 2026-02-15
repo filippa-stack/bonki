@@ -101,7 +101,7 @@ export default function Index() {
             Ange koden eller öppna länken du fick. Du behöver inte köpa igen.
           </p>
           <Button onClick={() => navigate('/join')} className="w-full h-12 text-base font-medium">
-            Gå till anslutning
+            Anslut
           </Button>
           <Button
             variant="ghost"

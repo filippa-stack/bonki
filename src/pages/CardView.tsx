@@ -300,7 +300,7 @@ export default function CardView() {
               className="w-full gap-2"
             >
               <Home className="w-4 h-4" />
-              {t('card_view.completion_home', 'Tillbaka till Hem')}
+              {t('card_view.completion_home', 'Hem')}
             </Button>
             <Button
               onClick={() => navigate(`/card/${card.id}?revisit=true`)}
@@ -309,7 +309,7 @@ export default function CardView() {
               className="w-full gap-2 text-muted-foreground"
             >
               <RotateCcw className="w-4 h-4" />
-              {t('card_view.completion_revisit', 'Läs igenom igen')}
+              {t('card_view.completion_revisit', 'Läs igen')}
             </Button>
           </motion.div>
         </div>

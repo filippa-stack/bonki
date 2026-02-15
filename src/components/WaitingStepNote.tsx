@@ -57,7 +57,7 @@ export default function WaitingStepNote({ cardId, sectionId }: WaitingStepNotePr
         className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
       >
         <PenLine className="w-3.5 h-3.5" />
-        Skriv en egen tanke
+        Egen tanke
       </button>
     );
   }
@@ -110,14 +110,14 @@ export default function WaitingStepNote({ cardId, sectionId }: WaitingStepNotePr
               disabled={!text.trim()}
               className="text-xs font-medium px-3 py-1.5 rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 transition-colors disabled:opacity-40"
             >
-              Spara för mig
+              Spara
             </button>
             <button
               onClick={handleShare}
               disabled={!text.trim() && !privateNote?.content}
               className="text-xs font-medium px-3 py-1.5 rounded-lg border border-border text-muted-foreground hover:text-foreground hover:border-foreground/20 transition-colors disabled:opacity-40"
             >
-              Dela med din partner
+              Dela
             </button>
           </div>
         </div>
@@ -126,7 +126,7 @@ export default function WaitingStepNote({ cardId, sectionId }: WaitingStepNotePr
         onClick={() => setOpen(false)}
         className="text-xs text-muted-foreground/50 hover:text-muted-foreground transition-colors"
       >
-        Stäng rutan
+        Stäng
       </button>
     </motion.div>
   );
