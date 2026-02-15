@@ -14,6 +14,7 @@ interface PromptItemProps {
   index: number;
   label?: string;
   sectionType?: 'opening' | 'reflective' | 'scenario' | 'exercise';
+  preamble?: string;
   privateNote?: PromptNote;
   sharedNote?: PromptNote;
   highlightCount: number;
@@ -37,6 +38,7 @@ export default function PromptItem({
   index,
   label,
   sectionType,
+  preamble,
   privateNote,
   sharedNote,
   highlightCount,
@@ -142,6 +144,14 @@ export default function PromptItem({
             onClick={toggleExpanded}
           >
             <div className="flex-1 min-w-0">
+              {preamble && (
+                <p
+                  className="text-[18px] leading-[1.7] text-center font-serif mb-4 prompt-text"
+                  style={{ '--prompt-text': prompt.textColor || undefined } as React.CSSProperties}
+                >
+                  {preamble}
+                </p>
+              )}
               <p
                 className="text-[18px] leading-[1.7] w-full min-h-[24px] text-center prompt-text font-serif"
                 style={{ '--prompt-text': prompt.textColor || undefined } as React.CSSProperties}

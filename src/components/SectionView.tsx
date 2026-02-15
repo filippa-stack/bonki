@@ -169,12 +169,13 @@ const SectionView = forwardRef<SectionViewHandle, SectionViewProps>(function Sec
 
             return (
               <div key={index} id={`prompt-anchor-${index}`} ref={(el) => { if (el) promptRefs.current.set(index, el); else promptRefs.current.delete(index); }}>
-                <PromptItem
+              <PromptItem
                   prompt={prompt}
                   promptId={promptId}
                   index={index}
                   label={isControlled ? `Fråga ${index + 1}` : undefined}
                   sectionType={section.type as 'opening' | 'reflective' | 'scenario' | 'exercise'}
+                  preamble={index === 0 && (section.type === 'scenario' || section.type === 'exercise') ? section.content : undefined}
                   privateNote={getPrivateNote(promptId)}
                   sharedNote={getSharedNote(promptId)}
                   highlightCount={highlightCount}
