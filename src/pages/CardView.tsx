@@ -110,10 +110,8 @@ export default function CardView() {
   const userCompletedCurrentStep = !isRevisitMode && myCompletedSteps.includes(currentStepIndex);
 
   // View gates
-  const [showOverview, setShowOverview] = useState(!isRevisitMode && !isReturningUser);
-  const [showReentry, setShowReentry] = useState(
-    !isRevisitMode && isReturningUser && !isFullyExplored && !allStepsCompleted
-  );
+  const [showOverview] = useState(false);
+  const [showReentry] = useState(false);
   const [showCompletion, setShowCompletion] = useState(
     !isRevisitMode && isReturningUser && (isFullyExplored || allStepsCompleted)
   );
@@ -165,6 +163,15 @@ export default function CardView() {
     prevEffectiveStepRef.current = effectiveSharedStep;
   }, [effectiveSharedStep]);
 
+  // Auto-start session when entering a new card (no overview gate)
+  const hasAutoStarted = useRef(false);
+  useEffect(() => {
+    if (!hasAutoStarted.current && !isActiveSession && !isRevisitMode && !showCompletion && card && category) {
+      hasAutoStarted.current = true;
+      startSession(category.id, card.id);
+    }
+  }, [isActiveSession, isRevisitMode, showCompletion, card, category, startSession]);
+
   if (!card) {
     return (
       <div className="min-h-screen page-bg animate-fade-in">
@@ -206,7 +213,6 @@ export default function CardView() {
     if (card && category && !isActiveSession) {
       startSession(category.id, card.id);
     }
-    setShowOverview(false);
   };
 
 
@@ -233,7 +239,7 @@ export default function CardView() {
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 0.6 }}
+            transition={{ duration: 0.15 }}
             className="text-center max-w-md mx-auto space-y-3"
           >
             <h2 className="text-xl font-serif text-foreground">
@@ -248,7 +254,7 @@ export default function CardView() {
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 0.3, duration: 0.5 }}
+            transition={{ delay: 0.05, duration: 0.15 }}
             className="max-w-md mx-auto mt-12 space-y-3"
           >
             <p className="text-sm text-muted-foreground text-center leading-relaxed">
@@ -261,7 +267,7 @@ export default function CardView() {
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 0.5, duration: 0.5 }}
+            transition={{ delay: 0.08, duration: 0.15 }}
             className="max-w-md mx-auto mt-12 space-y-3 text-center"
           >
             {suggestedCard && suggestedCategory && memberCount >= 2 ? (
@@ -331,171 +337,10 @@ export default function CardView() {
     );
   }
 
-  // ─── Re-entry screen ───
-  if (showReentry) {
-    const resumeStepLabel = STEP_LABELS[currentStepIndex] || STEP_LABELS[0];
+  // ─── Re-entry: removed — go directly to conversation ───
 
-    // Determine rejoin state
-    const isWaitingForPartner = userCompletedCurrentStep && !isCatchingUp;
-    const isBothReady = !userCompletedCurrentStep && !isCatchingUp;
 
-    return (
-      <div className="min-h-screen page-bg">
-        <Header
-          title={category?.title}
-          showBack
-          backTo={category ? `/category/${category.id}` : '/'}
-        />
-        <div className="px-6 pt-14 pb-10">
-          <motion.div
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, ease: [0.25, 0.1, 0.25, 1] }}
-            className="text-center max-w-md mx-auto space-y-7"
-          >
-            <h1 className="text-2xl font-serif text-foreground leading-snug">
-              {card.title}
-            </h1>
-            {card.subtitle && (
-              <p className="text-sm text-muted-foreground not-italic">{card.subtitle}</p>
-            )}
-            <motion.p
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.2, duration: 0.4 }}
-              className="text-sm text-muted-foreground leading-relaxed max-w-2xl"
-            >
-              {isCatchingUp
-                ? 'Din partner har kommit lite längre. Här kan du ta igen det i din egen takt.'
-                : isWaitingForPartner
-                  ? 'Du är redo. Väntar på din partner.'
-                  : 'Ni var mitt i ett samtal. Här kan ni fortsätta där ni slutade.'}
-            </motion.p>
-            <motion.p
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.35, duration: 0.4 }}
-              className="text-xs text-muted-foreground/60"
-            >
-              Steg {currentStepIndex + 1} av 4 · {resumeStepLabel}
-            </motion.p>
-            <motion.div
-              initial={{ opacity: 0, y: 6 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.5, duration: 0.4 }}
-              className="pt-2 space-y-3"
-            >
-              <Button
-                size="lg"
-                className="w-full gap-2"
-                onClick={() => setShowReentry(false)}
-              >
-                {isCatchingUp
-                  ? t('general.catch_up_cta', 'Kom ikapp')
-                  : t('card_view.reentry_continue', 'Fortsätt samtalet')}
-                <ArrowRight className="w-4 h-4" />
-              </Button>
-              <Button
-                variant="ghost"
-                size="lg"
-                className="w-full text-muted-foreground"
-                onClick={() => navigate('/')}
-              >
-                Lämna för nu
-              </Button>
-            </motion.div>
-          </motion.div>
-        </div>
-      </div>
-    );
-  }
-
-  // ─── Overview screen ───
-  if (showOverview) {
-    return (
-      <div className="min-h-screen page-bg">
-        <Header
-          title={category?.title}
-          showBack
-          backTo={category ? `/category/${category.id}` : '/'}
-        />
-
-        <div className="px-6 pt-12 pb-8">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
-            className="text-center max-w-md mx-auto"
-          >
-            <h1 className="text-2xl md:text-3xl font-serif text-foreground mb-4">
-              {card.title}
-            </h1>
-            {card.subtitle && (
-              <p className="text-gentle not-italic mb-10 max-w-2xl mx-auto">{card.subtitle}</p>
-            )}
-
-            <p className="text-sm text-muted-foreground mb-10 leading-relaxed">
-              {t('card_view.overview_description')}
-            </p>
-
-            {/* Step overview */}
-            <div className="space-y-4 mb-12 text-center">
-              {STEP_ORDER.map((stepType, index) => {
-                const isFirst = index === 0;
-                return (
-                  <motion.div
-                    key={stepType}
-                    initial={{ opacity: 0, x: -10 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.15 + index * 0.08, duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
-                    onClick={isFirst ? handleStartFromOverview : undefined}
-                    role={isFirst ? 'button' : undefined}
-                    tabIndex={isFirst ? 0 : undefined}
-                    onKeyDown={isFirst ? (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleStartFromOverview(); } } : undefined}
-                    className={`flex items-center gap-4 p-5 rounded-xl border ${
-                      isFirst
-                        ? 'bg-primary border-primary cursor-pointer hover:bg-primary/90 transition-colors'
-                        : 'bg-card border-border'
-                    }`}
-                  >
-                    <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium shrink-0 ${
-                      isFirst
-                        ? 'bg-primary-foreground text-primary font-semibold'
-                        : 'bg-muted text-muted-foreground'
-                    }`}>
-                      {index + 1}
-                    </div>
-                    <div className="flex-1 text-left">
-                      <p className={`font-medium ${isFirst ? 'text-primary-foreground' : 'text-foreground'}`}>
-                        {sectionTypeLabels[stepType]}
-                      </p>
-                      <p className={`text-xs mt-0.5 ${isFirst ? 'text-primary-foreground/70' : 'text-muted-foreground'}`}>
-                        {stepType === 'opening' && t('card_view.step_opening_desc')}
-                        {stepType === 'reflective' && t('card_view.step_reflective_desc')}
-                        {stepType === 'scenario' && t('card_view.step_scenario_desc')}
-                        {stepType === 'exercise' && t('card_view.step_exercise_desc')}
-                      </p>
-                    </div>
-                    {isFirst && <ArrowRight className="w-4 h-4 text-primary-foreground shrink-0" />}
-                  </motion.div>
-                );
-              })}
-            </div>
-            {memberCount >= 2 && (
-              <Button
-                variant="outline"
-                size="lg"
-                className="w-full md:w-auto gap-2 mt-3"
-                onClick={() => navigate(`/card/${card.id}?revisit=true&step=0`)}
-              >
-                Förhandskolla själv
-              </Button>
-            )}
-          </motion.div>
-        </div>
-      </div>
-    );
-  }
+  // ─── Active conversation view ───
 
   // ─── Active conversation view ───
   return (
@@ -518,9 +363,9 @@ export default function CardView() {
 
       <div className="px-6 pt-12 pb-4">
         <motion.h1
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.15 }}
           className="text-xl md:text-2xl font-serif text-foreground text-center leading-snug"
         >
           {card.title}
@@ -534,7 +379,7 @@ export default function CardView() {
           <motion.p
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 0.15, duration: 0.5 }}
+            transition={{ delay: 0.03, duration: 0.15 }}
             className="text-sm text-gentle not-italic mt-3 text-center max-w-2xl mx-auto"
           >
             {card.subtitle}
@@ -549,10 +394,10 @@ export default function CardView() {
           {currentSection && (
             <motion.div
               key={currentSection.id}
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -20 }}
-              transition={{ duration: 0.3 }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.15 }}
             >
               <SectionView ref={sectionViewRef} section={currentSection} card={card} isRevisitMode={isRevisitMode} initialFocusNoteIndex={isRevisitMode ? initialFocusNote : null} focusPromptIndex={isRevisitMode ? initialFocusNote : null} />
 
@@ -562,9 +407,9 @@ export default function CardView() {
               {userCompletedCurrentStep ? (
 
                 <motion.div
-                  initial={{ opacity: 0, y: 8 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5 }}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.15 }}
                   role="status"
                   aria-live="polite"
                   className="my-8 py-8 px-5 text-center space-y-2"
