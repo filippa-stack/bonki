@@ -50,15 +50,18 @@ export default function Category() {
       <div className="px-6 pb-12">
         <div className="space-y-3">
           {cards.map((card, index) => {
-            const isExplored = journeyState?.exploredCardIds?.includes(card.id) || false;
+            const isFinished = journeyState?.exploredCardIds?.includes(card.id) || false;
+            const hasProgress = !!journeyState?.sessionProgress?.[card.id];
+            const isBegun = !isFinished && hasProgress;
 
             return (
               <CardEntry
                 key={card.id}
                 card={card}
                 index={index}
-                finished={isExplored}
-                isPrimary={index === 0 && !isExplored}
+                finished={isFinished}
+                begun={isBegun}
+                isPrimary={index === 0 && !isFinished}
                 onNavigate={() => navigate(`/card/${card.id}`)}
               />
             );
@@ -80,11 +83,12 @@ interface CardEntryProps {
   };
   index: number;
   finished?: boolean;
+  begun?: boolean;
   isPrimary?: boolean;
   onNavigate: () => void;
 }
 
-function CardEntry({ card, index, finished, isPrimary, onNavigate }: CardEntryProps) {
+function CardEntry({ card, index, finished, begun, isPrimary, onNavigate }: CardEntryProps) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -102,9 +106,11 @@ function CardEntry({ card, index, finished, isPrimary, onNavigate }: CardEntryPr
       className={`relative w-full text-center card-reflection group item-colors transition-all cursor-pointer ${
         finished
           ? 'opacity-85 bg-card/60 hover:bg-card/70'
-          : isPrimary
-            ? 'ring-1 ring-primary/30 hover:ring-primary/50 hover:bg-card/90'
-            : 'hover:bg-card/90'
+          : begun
+            ? 'bg-card/80 hover:bg-card/90 ring-1 ring-border/40'
+            : isPrimary
+              ? 'ring-1 ring-primary/30 hover:ring-primary/50 hover:bg-card/90'
+              : 'hover:bg-card/90'
       }`}
       style={{
         '--item-bg': card.color || undefined,
