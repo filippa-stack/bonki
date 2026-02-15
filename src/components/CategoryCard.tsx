@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
+import { CheckCircle2 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Category } from '@/types';
 import ColorPicker from '@/components/ColorPicker';
@@ -16,6 +17,7 @@ interface CategoryCardProps {
   onIconChange?: (icon: string) => void;
   editable?: boolean;
   highlighted?: boolean;
+  isCompleted?: boolean;
 }
 
 export default function CategoryCard({ 
@@ -29,6 +31,7 @@ export default function CategoryCard({
   onIconChange,
   editable = true,
   highlighted = false,
+  isCompleted = false,
 }: CategoryCardProps) {
   const { t } = useTranslation();
   const [title, setTitle] = useState(category.title);
@@ -69,8 +72,11 @@ export default function CategoryCard({
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4, delay: index * 0.1 }}
       onClick={onClick}
-      className={`w-full text-left card-reflection group cursor-pointer border rounded-2xl item-colors py-5 px-5 transition-all${highlighted ? ' ring-2 ring-primary/40 shadow-md shadow-primary/10' : ''}`}
-      style={{ 
+      className={`w-full text-left card-reflection group cursor-pointer border rounded-2xl py-5 px-5 transition-all${isCompleted ? ' bg-slate-50 border-slate-200' : ' item-colors'}${highlighted ? ' ring-2 ring-primary/40 shadow-md shadow-primary/10' : ''}`}
+      style={isCompleted ? {
+        borderWidth: '2px',
+        borderStyle: 'solid',
+      } : { 
         '--item-bg': category.color || undefined,
         '--item-border': category.borderColor || undefined,
         borderWidth: highlighted ? '2.5px' : '2px',
@@ -94,21 +100,30 @@ export default function CategoryCard({
           )}
         </div>
         
+        {/* Completed checkmark */}
+        {isCompleted && (
+          <div className="flex justify-center mb-1">
+            <CheckCircle2 className="w-5 h-5 text-[#497575]" />
+          </div>
+        )}
+
         {/* Icon - centered above text */}
-        <div className="flex justify-center" onClick={(e) => e.stopPropagation()}>
-          {editable && onIconChange ? (
-            <IconPicker
-              currentIcon={category.icon}
-              onIconChange={onIconChange}
-              iconColor={category.textColor}
-            />
-          ) : CategoryIcon ? (
-             <CategoryIcon 
-              className="w-6 h-6 item-text" 
-              style={{ '--item-text': category.textColor || undefined } as React.CSSProperties} 
-            />
-          ) : null}
-        </div>
+        {!isCompleted && (
+          <div className="flex justify-center" onClick={(e) => e.stopPropagation()}>
+            {editable && onIconChange ? (
+              <IconPicker
+                currentIcon={category.icon}
+                onIconChange={onIconChange}
+                iconColor={category.textColor}
+              />
+            ) : CategoryIcon ? (
+               <CategoryIcon 
+                className="w-6 h-6 item-text" 
+                style={{ '--item-text': category.textColor || undefined } as React.CSSProperties} 
+              />
+            ) : null}
+          </div>
+        )}
         
         {/* Text content - full width below */}
         <div className="w-full space-y-2.5">
@@ -125,8 +140,8 @@ export default function CategoryCard({
             />
           ) : (
             <h3 
-              className="text-base sm:text-lg font-serif font-medium text-center group-hover:text-primary transition-colors item-text cursor-text leading-snug"
-              style={{ '--item-text': category.textColor || undefined } as React.CSSProperties}
+              className={`text-base sm:text-lg font-serif font-medium text-center group-hover:text-primary transition-colors cursor-text leading-snug ${isCompleted ? 'text-slate-400' : 'item-text'}`}
+              style={isCompleted ? undefined : { '--item-text': category.textColor || undefined } as React.CSSProperties}
               onClick={handleTitleClick}
             >
               {category.title}
@@ -135,7 +150,7 @@ export default function CategoryCard({
           {/* Emotional entry line — primary reading text */}
           {category.entryLine && (
             <p
-              className="text-sm text-center not-italic text-foreground/70 leading-relaxed"
+              className={`text-sm text-center not-italic leading-relaxed ${isCompleted ? 'text-slate-300' : 'text-foreground/70'}`}
             >
               {category.entryLine}
             </p>
@@ -153,7 +168,7 @@ export default function CategoryCard({
             />
           ) : (
             <p 
-              className="text-[10px] text-center uppercase tracking-widest text-muted-foreground/50 font-semibold cursor-text mt-1"
+              className={`text-[10px] text-center uppercase tracking-widest font-semibold cursor-text mt-1 ${isCompleted ? 'text-slate-300' : 'text-muted-foreground/50'}`}
               onClick={handleDescClick}
             >
               {category.description}
