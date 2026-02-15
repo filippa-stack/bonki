@@ -1,65 +1,19 @@
-import { useState, useRef, useCallback } from 'react';
-import { toast } from 'sonner';
+import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { useApp } from '@/contexts/AppContext';
-import { useAuth } from '@/contexts/AuthContext';
-import { useCoupleSpace } from '@/hooks/useCoupleSpace';
 import Header from '@/components/Header';
-
-import { Check, Loader2, Lock } from 'lucide-react';
+import { Lock } from 'lucide-react';
 
 export default function Category() {
   const { t } = useTranslation();
   const { categoryId } = useParams<{ categoryId: string }>();
   const navigate = useNavigate();
-  const { getCategoryById, getCardsByCategory, updateCard, updateCardColor, updateCardTextColor, updateCardBorderColor, updateCardDescription, addCard, deleteCard, backgroundColor, getExploredCardsInCategory, getCategoryStatus, journeyState, proposeCard } = useApp();
-  const { user } = useAuth();
-  const { memberCount } = useCoupleSpace();
-  
+  const { getCategoryById, getCardsByCategory, getExploredCardsInCategory, getCategoryStatus, journeyState } = useApp();
+
   const category = categoryId ? getCategoryById(categoryId) : undefined;
   const cards = categoryId ? getCardsByCategory(categoryId) : [];
-  const exploredCount = categoryId ? getExploredCardsInCategory(categoryId) : 0;
-  const status = categoryId ? getCategoryStatus(categoryId) : 'not_started';
-
-  const [proposalSent, setProposalSent] = useState(false);
-  const proposalTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
-
-  const [isProposing, setIsProposing] = useState(false);
-
-  const handlePropose = useCallback(async (catId: string, cardId: string) => {
-    if (proposalSent || isProposing) return;
-    setIsProposing(true);
-    try {
-      const result = await proposeCard(catId, cardId);
-      if (result.ok) {
-        setProposalSent(true);
-        if (proposalTimer.current) clearTimeout(proposalTimer.current);
-        proposalTimer.current = setTimeout(() => setProposalSent(false), 2000);
-      } else if ('reason' in result && result.reason === 'not_logged_in') {
-        toast.error('Du behöver vara inloggad för att skicka förslag.');
-      } else {
-        toast.error('Kunde inte skicka förslaget. Försök igen.');
-      }
-    } catch {
-      toast.error('Kunde inte skicka förslaget. Försök igen.');
-    } finally {
-      setIsProposing(false);
-    }
-  }, [proposalSent, isProposing, proposeCard]);
-
-  const handleAddCard = () => {
-    if (!categoryId) return;
-    const newCardId = addCard(categoryId);
-    navigate(`/card/${newCardId}`);
-  };
-
-  const handleDeleteCard = (cardId: string, cardTitle: string) => {
-    if (confirm(t('category.delete_confirm', { title: cardTitle }))) {
-      deleteCard(cardId);
-    }
-  };
 
   if (!category) {
     return (
@@ -77,7 +31,6 @@ export default function Category() {
     <div className="min-h-screen page-bg">
       <Header showBack backTo="/" />
 
-      {/* Category header */}
       <div className="px-6 pt-8 pb-6">
         <motion.h1
           initial={{ opacity: 0, y: 10 }}
@@ -90,20 +43,16 @@ export default function Category() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.1 }}
-          className="text-base text-slate-600 mt-3 max-w-md leading-relaxed"
+          className="text-base text-muted-foreground mt-3 max-w-md leading-relaxed"
         >
           {category.entryLine ? `${category.entryLine} ${t('category_status.return_note')}` : t('category_status.return_note')}
         </motion.p>
       </div>
 
-      {/* Cards */}
       <div className="px-6 pb-12">
         <div className="space-y-3">
           {cards.map((card, index) => {
             const isExplored = journeyState?.exploredCardIds?.includes(card.id) || false;
-
-            // Unlock logic: card 0 always unlocked; others require previous card explored
-            // or an active session on this card or any progress recorded
             const previousCard = index > 0 ? cards[index - 1] : null;
             const previousExplored = previousCard
               ? journeyState?.exploredCardIds?.includes(previousCard.id) || false
@@ -112,49 +61,28 @@ export default function Category() {
             const isUnlocked = index === 0 || previousExplored || hasProgress || isExplored;
 
             return (
-              <EditableCard
+              <CardEntry
                 key={card.id}
                 card={card}
                 index={index}
                 explored={isExplored}
                 locked={!isUnlocked}
                 isPrimary={index === 0 && !isExplored}
-                onNavigate={() => {
-                  if (!isUnlocked) return;
-                  navigate(`/card/${card.id}`);
-                }}
-                onUpdate={updateCard}
-                onColorChange={(color) => updateCardColor(card.id, color)}
-                onTextColorChange={(textColor) => updateCardTextColor(card.id, textColor)}
-                onBorderColorChange={(borderColor) => updateCardBorderColor(card.id, borderColor)}
-                onDescriptionChange={(desc) => updateCardDescription(card.id, desc)}
-                onDelete={() => handleDeleteCard(card.id, card.title)}
+                onNavigate={() => navigate(`/card/${card.id}`)}
               />
             );
           })}
-
-          {(isProposing || proposalSent) && (
-            <p className="text-xs text-muted-foreground text-center flex items-center justify-center gap-1.5 py-2">
-              {isProposing ? (
-                <><Loader2 className="w-3 h-3 animate-spin" /> Skickar…</>
-              ) : (
-                <><Check className="w-3.5 h-3.5" /> Förslag skickat</>
-              )}
-            </p>
-          )}
         </div>
       </div>
     </div>
   );
 }
 
-interface EditableCardProps {
+interface CardEntryProps {
   card: {
     id: string;
     title: string;
     subtitle?: string;
-    description?: string;
-    sections: any[];
     color?: string;
     textColor?: string;
     borderColor?: string;
@@ -164,33 +92,31 @@ interface EditableCardProps {
   locked?: boolean;
   isPrimary?: boolean;
   onNavigate: () => void;
-  onUpdate: (id: string, title: string, subtitle: string) => void;
-  onColorChange: (color: string) => void;
-  onTextColorChange: (textColor: string) => void;
-  onBorderColorChange: (borderColor: string) => void;
-  onDescriptionChange: (description: string) => void;
-  onDelete: () => void;
 }
 
-function EditableCard({
-  card,
-  index,
-  explored,
-  locked,
-  isPrimary,
-  onNavigate,
-}: EditableCardProps) {
+function CardEntry({ card, index, explored, locked, isPrimary, onNavigate }: CardEntryProps) {
   const { t } = useTranslation();
+  const [showLockedHint, setShowLockedHint] = useState(false);
+
+  const handleLockedTap = () => {
+    setShowLockedHint(true);
+    setTimeout(() => setShowLockedHint(false), 2500);
+  };
 
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: index * 0.1 }}
-      onClick={locked ? undefined : onNavigate}
-      role={locked ? undefined : 'button'}
-      tabIndex={locked ? undefined : 0}
-      onKeyDown={locked ? undefined : (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onNavigate(); } }}
+      onClick={locked ? handleLockedTap : onNavigate}
+      role="button"
+      tabIndex={0}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          locked ? handleLockedTap() : onNavigate();
+        }
+      }}
       className={`w-full text-center card-reflection group item-colors transition-all ${
         locked
           ? 'opacity-50 cursor-default'
@@ -198,7 +124,7 @@ function EditableCard({
             ? 'cursor-pointer ring-1 ring-primary/30 hover:ring-primary/50 hover:bg-card/90'
             : 'cursor-pointer hover:bg-card/90'
       }`}
-      style={{ 
+      style={{
         '--item-bg': card.color || undefined,
         '--item-border': card.borderColor || undefined,
         borderWidth: card.borderColor ? '2px' : undefined,
@@ -224,10 +150,22 @@ function EditableCard({
             {t('category_status.explored')}
           </p>
         )}
-        {locked && (
-          <p className="text-xs text-muted-foreground/60 text-center mt-2 not-italic flex items-center gap-1">
+        <AnimatePresence>
+          {locked && showLockedHint && (
+            <motion.p
+              initial={{ opacity: 0, y: -4 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0 }}
+              className="text-xs text-muted-foreground text-center mt-2 not-italic flex items-center gap-1"
+            >
+              <Lock className="w-3 h-3" />
+              {t('category.locked_hint', 'Låses upp efter föregående')}
+            </motion.p>
+          )}
+        </AnimatePresence>
+        {locked && !showLockedHint && (
+          <p className="text-xs text-muted-foreground/40 text-center mt-2 not-italic flex items-center gap-1">
             <Lock className="w-3 h-3" />
-            {t('category.locked_hint', 'Låses upp efter föregående')}
           </p>
         )}
       </div>
