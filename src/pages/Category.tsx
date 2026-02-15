@@ -102,25 +102,14 @@ function CardEntry({ card, index, highlighted, onNavigate }: CardEntryProps) {
           onNavigate();
         }
       }}
-      className="relative w-full text-center card-reflection group item-colors transition-all cursor-pointer overflow-hidden"
+      className={`relative w-full text-center card-reflection group item-colors transition-all cursor-pointer overflow-hidden${highlighted ? ' ring-1 ring-primary/25 shadow-sm bg-card/90' : ''}`}
       style={{
         '--item-bg': card.color || undefined,
         '--item-border': card.borderColor || undefined,
-        borderWidth: '2px',
+        borderWidth: highlighted ? '2.5px' : '2px',
         borderStyle: 'solid',
       } as React.CSSProperties}
     >
-      {highlighted && (
-        <div
-          className="w-full"
-          style={{
-            height: '10px',
-            background: 'rgba(44, 94, 96, 0.16)',
-            borderTopLeftRadius: 'inherit',
-            borderTopRightRadius: 'inherit',
-          }}
-        />
-      )}
       <div className="flex flex-col items-center gap-1 p-6">
         <h3
           className="w-full font-serif text-lg sm:text-xl text-center item-text"
