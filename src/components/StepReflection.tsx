@@ -68,7 +68,7 @@ export default function StepReflection({ section, card, defaultExpanded = false 
     if (!expanded) setExpanded(true);
     setTimeout(() => {
       textareaRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }, 300);
+    }, 150);
   }, [expanded]);
 
   const isSaved = !!privateNote?.content;
@@ -117,8 +117,8 @@ export default function StepReflection({ section, card, defaultExpanded = false 
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 4 }}
-      animate={{ opacity: 1, y: 0 }}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
       className="mt-6 mb-2 space-y-3"
     >
       {/* Input area */}
