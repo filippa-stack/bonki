@@ -109,7 +109,7 @@ function CardEntry({ card, index, highlighted, isCompleted = false, onNavigate }
       }}
       className={`relative w-full text-center card-sub group transition-all cursor-pointer overflow-hidden rounded-2xl${isCompleted ? ' bg-slate-50 border-slate-200' : ' item-colors'}${highlighted ? ' ring-2 ring-primary/40 shadow-md shadow-primary/10' : ''}`}
       style={{
-        borderWidth: '2px',
+        borderWidth: '1px',
         borderStyle: 'solid',
       }}
     >

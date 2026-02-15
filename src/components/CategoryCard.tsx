@@ -74,12 +74,12 @@ export default function CategoryCard({
       onClick={onClick}
       className={`w-full text-left card-reflection group cursor-pointer border rounded-2xl py-5 px-5 transition-all${isCompleted ? ' bg-slate-50 border-slate-200' : ' item-colors'}${highlighted ? ' ring-2 ring-primary/40 shadow-md shadow-primary/10' : ''}`}
       style={isCompleted ? {
-        borderWidth: '2px',
+        borderWidth: '1px',
         borderStyle: 'solid',
       } : { 
         '--item-bg': category.color || undefined,
         '--item-border': category.borderColor || undefined,
-        borderWidth: highlighted ? '2.5px' : '2px',
+        borderWidth: highlighted ? '1.5px' : '1px',
         borderStyle: 'solid',
       } as React.CSSProperties}
     >
