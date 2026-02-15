@@ -105,17 +105,18 @@ function CardEntry({ card, index, finished, begun, isPrimary, onNavigate }: Card
       }}
       className={`relative w-full text-center card-reflection group item-colors transition-all cursor-pointer ${
         finished
-          ? 'opacity-70 hover:opacity-80 ring-1 ring-border/20'
+          ? 'opacity-75 hover:opacity-85'
           : begun
-            ? 'opacity-95 hover:opacity-100 ring-1 ring-border/40'
+            ? ''
             : isPrimary
               ? 'ring-1 ring-primary/30 hover:ring-primary/50'
               : ''
       }`}
       style={{
         '--item-bg': card.color || undefined,
-        '--item-border': card.borderColor || undefined,
-        borderWidth: card.borderColor ? '2px' : undefined,
+        '--item-border': finished ? 'hsl(var(--border))' : card.borderColor || undefined,
+        borderWidth: '2px',
+        borderStyle: begun ? 'dashed' : 'solid',
       } as React.CSSProperties}
     >
       <div className="flex flex-col items-center gap-1 p-6">
