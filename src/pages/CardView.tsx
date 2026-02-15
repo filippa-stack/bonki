@@ -240,7 +240,7 @@ export default function CardView() {
               Ta en stund.
             </h2>
             <p className="text-sm text-muted-foreground leading-relaxed">
-              Det ni just delade förtjänar att landa.
+              Det ni just delade får landa här.
             </p>
           </motion.div>
 
