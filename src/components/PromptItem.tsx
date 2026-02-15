@@ -107,31 +107,31 @@ export default function PromptItem({
     <motion.div
       initial={{ opacity: 0, x: -10 }}
       animate={{ opacity: 1, x: 0 }}
-      transition={{ delay: index * 0.08 }}
-      className="rounded-xl border border-border/60 overflow-hidden prompt-colors shadow-sm"
+      transition={{ delay: index * 0.08, duration: 0.4, ease: 'easeOut' }}
+      className="rounded-2xl border border-border/40 overflow-hidden prompt-colors shadow-[0_2px_12px_-4px_rgba(0,0,0,0.06)]"
       style={{ '--prompt-bg': prompt.color || undefined } as React.CSSProperties}
     >
       {/* Collapsed label-only header (for Q2/Q3 when collapsed) */}
       {showCollapsedLabel ? (
         <div
-          className="px-6 py-4 cursor-pointer flex items-center justify-between"
+          className="px-6 py-3.5 cursor-pointer flex items-center justify-between"
           onClick={toggleExpanded}
         >
-          <p className="text-xs text-muted-foreground/70 tracking-wide font-medium">
+          <p className="text-xs text-muted-foreground/50 tracking-wide font-normal">
             {label}
           </p>
-          <ChevronDown className="w-4 h-4 text-muted-foreground/50" />
+          <ChevronDown className="w-3.5 h-3.5 text-muted-foreground/30" />
         </div>
       ) : (
         <>
           {/* Question header */}
           <div
-            className="px-6 py-6 cursor-pointer flex items-start gap-3 group relative"
+            className="px-7 py-8 cursor-pointer flex items-start gap-3 group relative"
             onClick={toggleExpanded}
           >
             <div className="flex-1 min-w-0">
               <p
-                className="text-[17px] leading-[1.6] w-full min-h-[24px] text-center prompt-text font-serif"
+                className="text-[18px] leading-[1.7] w-full min-h-[24px] text-center prompt-text font-serif"
                 style={{ '--prompt-text': prompt.textColor || undefined } as React.CSSProperties}
               >
                 {prompt.text}
@@ -140,10 +140,10 @@ export default function PromptItem({
 
             <div className="flex items-center gap-1 shrink-0">
               {hasNote && (
-                <div className="w-2 h-2 rounded-full bg-primary/40" />
+                <div className="w-1.5 h-1.5 rounded-full bg-primary/30" />
               )}
               <ChevronDown
-                className={`w-4 h-4 text-muted-foreground/40 transition-transform duration-200 ${isExpanded ? 'rotate-180' : ''}`}
+                className={`w-3.5 h-3.5 text-muted-foreground/30 transition-transform duration-300 ${isExpanded ? 'rotate-180' : ''}`}
               />
             </div>
           </div>
@@ -155,15 +155,15 @@ export default function PromptItem({
                 initial={{ height: 0, opacity: 0 }}
                 animate={{ height: 'auto', opacity: 1 }}
                 exit={{ height: 0, opacity: 0 }}
-                transition={{ duration: 0.2 }}
+                transition={{ duration: 0.35, ease: [0.25, 0.1, 0.25, 1] }}
                 className="overflow-hidden"
               >
-                <div className="px-6 pb-6 space-y-5">
-                  <div className="border-t border-border/20" />
+                <div className="px-7 pb-8 space-y-6">
+                  <div className="border-t border-border/10" />
 
                   {/* Private note */}
-                  <div className="pt-1">
-                    <p className="text-[11px] tracking-wide text-muted-foreground/50 font-medium mb-4 text-center">
+                  <div className="pt-3">
+                    <p className="text-[11px] tracking-normal text-muted-foreground/40 font-normal mb-5 text-center">
                       Din reflektion
                     </p>
                     <textarea
@@ -173,7 +173,7 @@ export default function PromptItem({
                       onFocus={handleFocus}
                       onKeyDown={handleKeyDown}
                       placeholder={t('reflections.prompt_note_placeholder', 'Vad väcker detta hos dig?')}
-                      className={`w-full px-4 py-4 rounded-xl bg-background border border-border/40 resize-none focus:outline-none focus:border-primary/30 focus:ring-0 placeholder:text-muted-foreground/30 font-sans text-sm text-foreground leading-relaxed ${isDeepSection ? 'min-h-[160px]' : 'min-h-[100px]'}`}
+                      className={`w-full px-5 py-5 rounded-2xl bg-background border border-border/30 resize-none focus:outline-none focus:border-primary/20 focus:ring-0 placeholder:text-muted-foreground/25 font-sans text-sm text-foreground leading-relaxed transition-colors duration-300 ${isDeepSection ? 'min-h-[180px]' : 'min-h-[120px]'}`}
                     />
                     {/* Privacy indicator */}
                     {!sharedNote && (

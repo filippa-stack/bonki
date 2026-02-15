@@ -514,7 +514,7 @@ export default function CardView() {
 
       {/* Progress indicator — hidden in revisit/preview mode */}
       {!isRevisitMode && (
-        <div className="px-4 pt-6 pb-3 border-b border-border/30">
+        <div className="px-4 pt-6 pb-4 border-b border-border/15">
           <StepProgressIndicator
             currentStepIndex={currentStepIndex}
             completedSteps={myCompletedSteps}
@@ -522,7 +522,7 @@ export default function CardView() {
         </div>
       )}
 
-      <div className="px-6 pt-8 pb-2">
+      <div className="px-6 pt-10 pb-3">
         <motion.h1
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
@@ -596,6 +596,7 @@ export default function CardView() {
 
               {/* Navigation / waiting state */}
               {userCompletedCurrentStep ? (
+
                 <motion.div
                   initial={{ opacity: 0, y: 8 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -672,8 +673,8 @@ export default function CardView() {
                   </div>
                 </motion.div>
               ) : (
-                <div className="pt-10 pb-4 border-t border-border/20 space-y-3">
-                  <div className="space-y-2">
+                <div className="pt-12 pb-6 border-t border-border/10 space-y-4">
+                  <div className="space-y-3">
                     <div className="flex flex-col sm:flex-row justify-start gap-3">
                       {currentStepIndex > 0 && !isRevisitMode && (
                         <Button
@@ -689,7 +690,7 @@ export default function CardView() {
                       <Button
                         onClick={handleNextStep}
                         size="lg"
-                        className="gap-2"
+                        className="gap-2 h-12 font-normal"
                       >
                         {isRevisitMode
                           ? (currentStepIndex >= STEP_ORDER.length - 1 ? 'Klar' : 'Nästa')
