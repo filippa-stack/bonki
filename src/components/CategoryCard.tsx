@@ -15,7 +15,6 @@ interface CategoryCardProps {
   onBorderColorChange?: (borderColor: string) => void;
   onIconChange?: (icon: string) => void;
   editable?: boolean;
-  status?: 'not_started' | 'in_progress' | 'explored';
 }
 
 export default function CategoryCard({ 
@@ -28,7 +27,6 @@ export default function CategoryCard({
   onBorderColorChange,
   onIconChange,
   editable = true,
-  status,
 }: CategoryCardProps) {
   const { t } = useTranslation();
   const [title, setTitle] = useState(category.title);
@@ -63,10 +61,6 @@ export default function CategoryCard({
     }
   };
 
-  const s = status as string;
-  const isFinished = s === 'explored' || s === 'completed' || s === 'done';
-  const isBegun = !isFinished && (s === 'in_progress' || s === 'started' || s === 'active');
-
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -79,12 +73,6 @@ export default function CategoryCard({
         '--item-border': category.borderColor || undefined,
         borderWidth: '2px',
         borderStyle: 'solid',
-        filter: isFinished
-          ? 'saturate(0.92) brightness(1.03)'
-          : isBegun
-            ? 'saturate(1.02) brightness(0.99)'
-            : 'none',
-        opacity: isFinished ? 0.88 : 1,
       } as React.CSSProperties}
     >
       <div className="relative flex flex-col items-center justify-center gap-2">
