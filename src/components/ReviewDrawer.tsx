@@ -103,12 +103,23 @@ export default function ReviewDrawer({ open, onClose, card, activeStepIndex = 0 
 
   // Auto-scroll to active step when drawer opens
   useEffect(() => {
-    if (open && activeStepIndex > 0 && activeStepRef.current) {
-      const timer = setTimeout(() => {
-        activeStepRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }, 350);
-      return () => clearTimeout(timer);
-    }
+    if (!open || activeStepIndex <= 0) return;
+    // Wait for drawer open animation + content render
+    const timer = setTimeout(() => {
+      const el = activeStepRef.current;
+      if (!el) return;
+      // Try multiple scroll strategies
+      const viewport = el.closest('[data-radix-scroll-area-viewport]') as HTMLElement | null;
+      if (viewport) {
+        const viewportRect = viewport.getBoundingClientRect();
+        const elRect = el.getBoundingClientRect();
+        const scrollOffset = elRect.top - viewportRect.top + viewport.scrollTop - 16;
+        viewport.scrollTo({ top: scrollOffset, behavior: 'smooth' });
+      }
+      // Fallback
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 800);
+    return () => clearTimeout(timer);
   }, [open, activeStepIndex]);
 
   const filteredNotes = noteFilter === 'all'

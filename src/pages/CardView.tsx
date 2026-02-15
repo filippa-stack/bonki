@@ -680,7 +680,7 @@ export default function CardView() {
                 <div className="pt-6 pb-6 space-y-4">
                   <div className="space-y-3">
                     <div className="flex flex-col sm:flex-row justify-start gap-3">
-                      {currentStepIndex > 0 && !isRevisitMode && (
+                      {(currentStepIndex > 0 || isRevisitMode) && (
                         <Button
                           variant="outline"
                           size="lg"
