@@ -428,10 +428,6 @@ export default function Home() {
                 categoryTitle={suggestedContext.suggestedCategory.title}
                 lastActiveAt={journeyState?.updatedAt}
                 onContinue={() => navigate(`/card/${suggestedContext.suggestedCard!.id}`)}
-                onChooseAnother={() => {
-                  const el = document.getElementById('category-section');
-                  el?.scrollIntoView({ behavior: 'smooth' });
-                }}
               />
             </div>
           );
@@ -449,10 +445,6 @@ export default function Home() {
                   categoryTitle={recentCategory.title}
                   lastActiveAt={mostRecentConversation.lastActivityAt instanceof Date ? mostRecentConversation.lastActivityAt.toISOString() : String(mostRecentConversation.lastActivityAt)}
                   onContinue={() => navigate(`/card/${mostRecentConversation.cardId}`)}
-                  onChooseAnother={() => {
-                    const el = document.getElementById('category-section');
-                    el?.scrollIntoView({ behavior: 'smooth' });
-                  }}
                 />
               </div>
             );
