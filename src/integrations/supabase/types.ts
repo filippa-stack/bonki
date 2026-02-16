@@ -14,6 +14,77 @@ export type Database = {
   }
   public: {
     Tables: {
+      card_sessions: {
+        Row: {
+          card_id: string
+          completed_at: string | null
+          couple_space_id: string
+          id: string
+          started_at: string
+        }
+        Insert: {
+          card_id: string
+          completed_at?: string | null
+          couple_space_id: string
+          id?: string
+          started_at?: string
+        }
+        Update: {
+          card_id?: string
+          completed_at?: string | null
+          couple_space_id?: string
+          id?: string
+          started_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "card_sessions_couple_space_id_fkey"
+            columns: ["couple_space_id"]
+            isOneToOne: false
+            referencedRelation: "couple_spaces"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "card_sessions_couple_space_id_fkey"
+            columns: ["couple_space_id"]
+            isOneToOne: false
+            referencedRelation: "couple_spaces_safe"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      card_takeaways: {
+        Row: {
+          id: string
+          locked: boolean
+          session_id: string
+          text: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          locked?: boolean
+          session_id: string
+          text?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          locked?: boolean
+          session_id?: string
+          text?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "card_takeaways_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "card_sessions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       couple_journey_meta: {
         Row: {
           couple_space_id: string
@@ -351,6 +422,44 @@ export type Database = {
           },
         ]
       }
+      step_reflections: {
+        Row: {
+          id: string
+          session_id: string
+          state: Database["public"]["Enums"]["reflection_state"]
+          step_index: number
+          text: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          session_id: string
+          state?: Database["public"]["Enums"]["reflection_state"]
+          step_index: number
+          text?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          id?: string
+          session_id?: string
+          state?: Database["public"]["Enums"]["reflection_state"]
+          step_index?: number
+          text?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "step_reflections_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "card_sessions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       system_events: {
         Row: {
           couple_space_id: string
@@ -558,7 +667,7 @@ export type Database = {
       }
     }
     Enums: {
-      [_ in never]: never
+      reflection_state: "draft" | "ready" | "revealed" | "locked"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -685,6 +794,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      reflection_state: ["draft", "ready", "revealed", "locked"],
+    },
   },
 } as const
