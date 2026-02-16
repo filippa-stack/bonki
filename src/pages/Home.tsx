@@ -292,17 +292,17 @@ export default function Home() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.15 }}
-              className={`text-display font-${settings.heroTitleFont} hero-title-color`}
+              className="text-display font-serif hero-title-color"
             >
-              {settings.heroTitle}
+              STILL US — So we stay us
             </motion.h1>
             <motion.p
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.15, delay: 0.05 }}
-              className={`text-body mt-3 font-${settings.heroSubtitleFont} hero-subtitle-color`}
+              className="text-body mt-3 font-sans hero-subtitle-color"
             >
-              {settings.heroSubtitle}
+              Förbli ett vi medan vi uppfostrar dem
             </motion.p>
         </div>
       </div>
@@ -459,22 +459,7 @@ export default function Home() {
         return null;
       })()}
 
-      {/* Explore together — paired users can propose a new topic */}
-      {displayMemberCount >= 2 && !isProposalMode && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          className="px-6 mb-8"
-        >
-          <button
-            onClick={handleEnterProposalMode}
-            className="w-full rounded-2xl border border-border/60 bg-card/40 px-5 py-5 text-center transition-colors hover:bg-card/70 active:bg-card/80"
-          >
-            <p className="font-serif text-base text-foreground">Utforska något nytt</p>
-            <p className="text-xs text-muted-foreground/60 mt-1">Bläddra bland ämnen och föreslå ett samtal</p>
-          </button>
-        </motion.div>
-      )}
+      {/* Explore together — integrated into categories for paired users */}
 
       {/* One-time hint: explain proposal system when first paired */}
       {displayMemberCount >= 2 && !isProposalMode && (() => {
@@ -656,8 +641,8 @@ export default function Home() {
         )}
       </AnimatePresence>
 
-      {/* Categories */}
-      {!isProposalMode && (
+      {/* Categories — solo users see all; paired users browse via proposal mode */}
+      {!isProposalMode && isSoloMode && (
         <div id="category-section" className="px-6 pb-12 mt-10">
           <p className="text-sm text-muted-foreground/60 mb-8 font-serif not-italic">
             {t('home.choose_category')}
@@ -671,13 +656,37 @@ export default function Home() {
                   category={category}
                   onClick={() => navigate(`/category/${category.id}`)}
                   index={index}
-                  highlighted={!isProposalMode && category.id === highlightedCategoryId}
+                  highlighted={category.id === highlightedCategoryId}
                   isCompleted={catStatus === 'explored'}
                 />
               );
             })}
           </div>
         </div>
+      )}
+
+      {/* Paired users: gentle entry into proposal mode */}
+      {!isProposalMode && !isSoloMode && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.15 }}
+          className="px-6 pb-12 mt-10"
+        >
+          <div className="text-center space-y-6">
+            <p className="text-sm text-muted-foreground/60 font-serif">
+              Vad vill ni prata om?
+            </p>
+            <Button
+              variant="outline"
+              size="lg"
+              onClick={handleEnterProposalMode}
+              className="rounded-full px-8 border-border/60 text-foreground hover:bg-card/70 font-serif text-base"
+            >
+              Välj samtalsämne
+            </Button>
+          </div>
+        </motion.div>
       )}
 
       {/* Relationship Memory */}
