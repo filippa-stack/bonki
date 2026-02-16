@@ -44,10 +44,10 @@ const AUTOSAVE_DELAY = 800;
 export default function SharedSummary() {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const { categories, backgroundColor, getCardById, getCategoryById, startSession, journeyState, cards, getTakeawayShared, currentSession } = useApp();
+  const { categories, backgroundColor, getCardById, getCategoryById, journeyState, cards, getTakeawayShared, currentSession } = useApp();
   const { user } = useAuth();
   const { space, displayMemberCount, userRole, fetchInviteInfo } = useCoupleSpace();
-  const { proposals, incomingProposals, ownPendingProposals, savedProposals, updateProposalStatus } = useProposals();
+  const { proposals, incomingProposals, ownPendingProposals, savedProposals, updateProposalStatus, activateSession } = useProposals();
 
   // Accepted proposals — exclude any that match the current active session
   const acceptedProposals = useMemo(() =>
@@ -367,9 +367,13 @@ export default function SharedSummary() {
                         proposerName={proposerName}
                         onAccept={async () => {
                           await updateProposalStatus(proposal.id, 'accepted');
-                          startSession(proposal.category_id, proposal.card_id, { force: true, fromBeginning: true });
-                          toast('Samtalet startade', { duration: 2000 });
-                          navigate(`/card/${proposal.card_id}`);
+                          const result = await activateSession(proposal.id);
+                          if (result.success) {
+                            toast('Samtalet startade', { duration: 2000 });
+                            navigate(`/card/${proposal.card_id}`);
+                          } else {
+                            toast.error('Kunde inte starta samtalet');
+                          }
                         }}
                         onSaveForLater={async () => {
                           await updateProposalStatus(proposal.id, 'saved_for_later');
@@ -407,9 +411,13 @@ export default function SharedSummary() {
                             <Button
                               size="sm"
                               className="shrink-0 text-xs"
-                              onClick={() => {
-                                startSession(proposal.category_id, proposal.card_id, { force: true, fromBeginning: true });
-                                navigate(`/card/${proposal.card_id}`);
+                              onClick={async () => {
+                                const result = await activateSession(proposal.id);
+                                if (result.success) {
+                                  navigate(`/card/${proposal.card_id}`);
+                                } else {
+                                  toast.error('Kunde inte starta samtalet');
+                                }
                               }}
                             >
                               Öppna samtalet
@@ -503,9 +511,13 @@ export default function SharedSummary() {
                                 className="text-muted-foreground text-xs"
                                 onClick={async () => {
                                   await updateProposalStatus(proposal.id, 'accepted');
-                                  startSession(proposal.category_id, proposal.card_id, { force: true, fromBeginning: true });
-                                  toast('Samtalet startade', { duration: 2000 });
-                                  navigate(`/card/${proposal.card_id}`);
+                                  const result = await activateSession(proposal.id);
+                                  if (result.success) {
+                                    toast('Samtalet startade', { duration: 2000 });
+                                    navigate(`/card/${proposal.card_id}`);
+                                  } else {
+                                    toast.error('Kunde inte starta samtalet');
+                                  }
                                 }}
                               >
                                 Starta samtalet

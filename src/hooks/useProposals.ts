@@ -10,7 +10,11 @@ export interface Proposal {
   category_id: string;
   proposed_by: string;
   message: string | null;
-  status: 'pending' | 'accepted' | 'saved_for_later';
+  status: 'pending' | 'accepted' | 'declined' | 'saved_for_later';
+  accepted_by: string | null;
+  declined_by: string | null;
+  responded_at: string | null;
+  expires_at: string | null;
   created_at: string;
   updated_at: string;
 }
@@ -104,12 +108,24 @@ export function useProposals() {
 
   const updateProposalStatus = useCallback(async (
     proposalId: string,
-    status: 'accepted' | 'saved_for_later'
+    status: 'accepted' | 'declined' | 'saved_for_later'
   ) => {
+    if (!user) return;
+
+    const updatePayload: Record<string, any> = { status };
+
+    if (status === 'accepted') {
+      updatePayload.accepted_by = user.id;
+      updatePayload.responded_at = new Date().toISOString();
+    } else if (status === 'declined') {
+      updatePayload.declined_by = user.id;
+      updatePayload.responded_at = new Date().toISOString();
+    }
+
     // Race-safe: if proposal is already not pending, just proceed silently
     const { error } = await supabase
       .from('topic_proposals')
-      .update({ status } as any)
+      .update(updatePayload as any)
       .eq('id', proposalId);
 
     if (error) {
@@ -117,7 +133,24 @@ export function useProposals() {
     }
 
     await fetchProposals();
-  }, [fetchProposals]);
+  }, [user, fetchProposals]);
+
+  /** Activate a session from an accepted proposal via the secure edge function. */
+  const activateSession = useCallback(async (
+    proposalId: string
+  ): Promise<{ success: boolean; session?: any }> => {
+    const res = await supabase.functions.invoke('activate-session', {
+      body: { proposal_id: proposalId },
+    });
+
+    if (res.error) {
+      console.error('Failed to activate session:', res.error);
+      return { success: false };
+    }
+
+    const data = res.data as any;
+    return { success: !!data?.success, session: data?.session };
+  }, []);
 
   // Get pending proposals from partner (not own)
   const incomingProposals = proposals.filter(
@@ -142,6 +175,7 @@ export function useProposals() {
     loading,
     sendProposal,
     updateProposalStatus,
+    activateSession,
     refetch: fetchProposals,
   };
 }

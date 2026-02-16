@@ -308,35 +308,47 @@ export type Database = {
       }
       topic_proposals: {
         Row: {
+          accepted_by: string | null
           card_id: string
           category_id: string
           couple_space_id: string
           created_at: string
+          declined_by: string | null
+          expires_at: string | null
           id: string
           message: string | null
           proposed_by: string
+          responded_at: string | null
           status: string
           updated_at: string
         }
         Insert: {
+          accepted_by?: string | null
           card_id: string
           category_id: string
           couple_space_id: string
           created_at?: string
+          declined_by?: string | null
+          expires_at?: string | null
           id?: string
           message?: string | null
           proposed_by: string
+          responded_at?: string | null
           status?: string
           updated_at?: string
         }
         Update: {
+          accepted_by?: string | null
           card_id?: string
           category_id?: string
           couple_space_id?: string
           created_at?: string
+          declined_by?: string | null
+          expires_at?: string | null
           id?: string
           message?: string | null
           proposed_by?: string
+          responded_at?: string | null
           status?: string
           updated_at?: string
         }
