@@ -1,17 +1,13 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.93.3";
-
-const corsHeaders = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers":
-    "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
-};
+import { handleCors, getCorsHeaders } from "../_shared/cors.ts";
 
 const STEP_COUNT = 4;
 
 Deno.serve(async (req) => {
-  if (req.method === "OPTIONS") {
-    return new Response(null, { headers: corsHeaders });
-  }
+  const corsResponse = handleCors(req);
+  if (corsResponse) return corsResponse;
+
+  const corsHeaders = getCorsHeaders(req);
 
   const json = (body: unknown, status = 200) =>
     new Response(JSON.stringify(body), {
@@ -20,7 +16,6 @@ Deno.serve(async (req) => {
     });
 
   try {
-    // 1. Authenticate
     const authHeader = req.headers.get("Authorization");
     if (!authHeader?.startsWith("Bearer ")) {
       return json({ error: "unauthorized" }, 401);
@@ -40,7 +35,6 @@ Deno.serve(async (req) => {
     }
     const userId = claimsData.claims.sub as string;
 
-    // 2. Parse input
     const { card_id, step_index } = await req.json();
     if (typeof card_id !== "string" || typeof step_index !== "number") {
       return json({ error: "invalid_input" }, 400);
@@ -49,13 +43,11 @@ Deno.serve(async (req) => {
       return json({ error: "invalid_step_index" }, 400);
     }
 
-    // 3. Service role
     const admin = createClient(
       Deno.env.get("SUPABASE_URL")!,
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!
     );
 
-    // 4. Get user's couple space
     const { data: spaceId, error: spaceErr } = await admin.rpc(
       "get_user_couple_space_id",
       { _user_id: userId }
@@ -64,7 +56,6 @@ Deno.serve(async (req) => {
       return json({ error: "no_couple_space" }, 403);
     }
 
-    // 5. Get couple members
     const { data: members } = await admin
       .from("couple_members")
       .select("user_id")
@@ -76,7 +67,6 @@ Deno.serve(async (req) => {
 
     const requiredCount = members.length >= 2 ? 2 : 1;
 
-    // 6. Get current progress (with row lock via select-for-update pattern)
     const { data: progress, error: progressErr } = await admin
       .from("couple_progress")
       .select("*")
@@ -92,7 +82,6 @@ Deno.serve(async (req) => {
       return json({ error: "no_active_session" }, 409);
     }
 
-    // 7. Validate session state
     if (session.cardId !== card_id) {
       return json({ error: "card_mismatch" }, 409);
     }
@@ -101,31 +90,26 @@ Deno.serve(async (req) => {
       return json({ error: "step_mismatch", expected: session.currentStepIndex }, 409);
     }
 
-    // 8. Update userCompletions
     const userCompletions = session.userCompletions || {};
     const myCompleted: number[] = userCompletions[userId] || [];
 
     if (myCompleted.includes(step_index)) {
-      // Already completed — idempotent success
       return json({ success: true, already_completed: true, session });
     }
 
     const updatedMyCompleted = [...myCompleted, step_index].sort();
     userCompletions[userId] = updatedMyCompleted;
 
-    // 9. Check if all required users completed this step
     const completedByCount = Object.values(userCompletions).filter(
       (steps: any) => Array.isArray(steps) && steps.includes(step_index)
     ).length;
     const isMutuallyCompleted = completedByCount >= requiredCount;
 
-    // 10. Advance step if mutually completed
     let newStepIndex = session.currentStepIndex;
     let sessionEnded = false;
 
     if (isMutuallyCompleted) {
       if (step_index === STEP_COUNT - 1) {
-        // Card fully completed — end session
         sessionEnded = true;
       } else {
         newStepIndex = step_index + 1;
@@ -134,7 +118,6 @@ Deno.serve(async (req) => {
 
     const now = new Date().toISOString();
 
-    // 11. Update journey_state with per-user completion
     const journeyState = (progress.journey_state as any) || {
       currentCategoryId: null,
       lastOpenedCardId: null,
@@ -154,7 +137,6 @@ Deno.serve(async (req) => {
     journeyState.updatedAt = now;
 
     if (sessionEnded) {
-      // Mark card as explored
       const exploredCardIds = journeyState.exploredCardIds || [];
       if (!exploredCardIds.includes(card_id)) {
         exploredCardIds.push(card_id);
@@ -163,7 +145,6 @@ Deno.serve(async (req) => {
       journeyState.lastCompletedCardId = card_id;
     }
 
-    // 12. Build updated session (or null if ended)
     const updatedSession = sessionEnded
       ? null
       : {
@@ -173,7 +154,6 @@ Deno.serve(async (req) => {
           lastActivityAt: now,
         };
 
-    // 13. Write back
     const { error: updateErr } = await admin
       .from("couple_progress")
       .update({

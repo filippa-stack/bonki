@@ -1,10 +1,5 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
-
-const corsHeaders = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers":
-    "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
-};
+import { handleCors, getCorsHeaders } from "../_shared/cors.ts";
 
 function generateInviteCode(): string {
   const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
@@ -24,12 +19,12 @@ function generateInviteToken(): string {
 }
 
 Deno.serve(async (req) => {
-  if (req.method === "OPTIONS") {
-    return new Response(null, { headers: corsHeaders });
-  }
+  const corsResponse = handleCors(req);
+  if (corsResponse) return corsResponse;
+
+  const corsHeaders = getCorsHeaders(req);
 
   try {
-    // Authenticate user
     const authHeader = req.headers.get("Authorization");
     if (!authHeader?.startsWith("Bearer ")) {
       return new Response(JSON.stringify({ error: "unauthorized" }), {
@@ -55,13 +50,11 @@ Deno.serve(async (req) => {
 
     const userId = claimsData.claims.sub as string;
 
-    // Use service role for atomic operations
     const adminClient = createClient(
       Deno.env.get("SUPABASE_URL")!,
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!
     );
 
-    // Check if user already has an ACTIVE membership (left_at IS NULL)
     const { data: existing, error: existErr } = await adminClient
       .from("couple_members")
       .select("couple_space_id")
@@ -78,7 +71,6 @@ Deno.serve(async (req) => {
     }
 
     if (existing) {
-      // Already has an active space — return it (without sensitive invite fields)
       const { data: spaceData, error: spaceErr } = await adminClient
         .from("couple_spaces")
         .select("id, partner_a_name, partner_b_name, created_at")
@@ -105,7 +97,6 @@ Deno.serve(async (req) => {
       );
     }
 
-    // Create space + membership atomically via service role
     const spaceId = crypto.randomUUID();
     const inviteCode = generateInviteCode();
     const inviteToken = generateInviteToken();
@@ -128,7 +119,6 @@ Deno.serve(async (req) => {
 
     if (memberInsertErr) {
       console.error("Member insert error:", memberInsertErr);
-      // Cleanup orphan space
       await adminClient.from("couple_spaces").delete().eq("id", spaceId);
       return new Response(JSON.stringify({ error: "membership_creation_failed" }), {
         status: 500,
@@ -136,7 +126,6 @@ Deno.serve(async (req) => {
       });
     }
 
-    // Initialize couple_progress
     await adminClient
       .from("couple_progress")
       .upsert({
@@ -146,7 +135,6 @@ Deno.serve(async (req) => {
         updated_by: userId,
       }, { onConflict: "couple_space_id" });
 
-    // Emit system event
     await adminClient
       .from("system_events")
       .insert({
@@ -155,7 +143,6 @@ Deno.serve(async (req) => {
         payload: { created_by: userId },
       });
 
-    // Read back the created space (without sensitive invite fields)
     const { data: newSpace, error: readErr } = await adminClient
       .from("couple_spaces")
       .select("id, partner_a_name, partner_b_name, created_at")
