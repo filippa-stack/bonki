@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { getCatchUpState } from '@/lib/catchUpState';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useApp } from '@/contexts/AppContext';
 import { useSiteSettings } from '@/contexts/SiteSettingsContext';
@@ -85,6 +85,7 @@ export default function Home() {
   // Welcome-back detection: show banner if 3+ days since last activity
   const THREE_DAYS_MS = 3 * 24 * 60 * 60 * 1000;
   const SEVEN_DAYS_MS = 7 * 24 * 60 * 60 * 1000;
+  const FOURTEEN_DAYS_MS = 14 * 24 * 60 * 60 * 1000;
   const [welcomeBackDismissed, setWelcomeBackDismissed] = useState(false);
 
   // Persist return-overlay dismissal so it doesn't reappear for 7 days
@@ -197,6 +198,7 @@ export default function Home() {
   const handleResumeSession = () => {
     if (currentSession) {
       markResumeDismissed();
+      markNavigated();
       navigate(`/card/${currentSession.cardId}`);
     }
   };
@@ -206,14 +208,21 @@ export default function Home() {
     dismissSession();
   };
 
+  // Track whether user has already navigated away during this browser session
+  const [hasNavigatedThisVisit] = useState(() => sessionStorage.getItem('home_navigated') === '1');
+  const markNavigated = () => sessionStorage.setItem('home_navigated', '1');
+
   // Single derived variable: at most ONE resume surface at a time
   type ResumeSurface = 'returnOverlay' | 'resumeDialog' | 'continueModule' | 'none';
   const resumeSurface: ResumeSurface = useMemo(() => {
     if (showReturnOverlay) return 'returnOverlay';
     if (hasActiveSession && !!sessionCard && !!sessionCategory && !resumeDismissed && isMidCard && !isSoloMode) return 'resumeDialog';
+    // ContinueModule: suppress if too long inactive or user already navigated this visit
+    if (lastActivityElapsed >= FOURTEEN_DAYS_MS) return 'none';
+    if (hasNavigatedThisVisit) return 'none';
     if (currentSession || journeyState?.lastCompletedCardId || journeyState?.suggestedNextCardId) return 'continueModule';
     return 'none';
-  }, [showReturnOverlay, hasActiveSession, sessionCard, sessionCategory, resumeDismissed, isMidCard, isSoloMode, currentSession, journeyState]);
+  }, [showReturnOverlay, hasActiveSession, sessionCard, sessionCategory, resumeDismissed, isMidCard, isSoloMode, currentSession, journeyState, lastActivityElapsed]);
 
   const handleSaveHero = () => {
     updateSettings({ 
@@ -296,7 +305,7 @@ export default function Home() {
           <ReturnOverlay
             onResume={() => {
               dismissReturnOverlay();
-              if (returnResumeCardId) navigate(`/card/${returnResumeCardId}`);
+              if (returnResumeCardId) { markNavigated(); navigate(`/card/${returnResumeCardId}`); }
             }}
             onStartNew={() => {
               dismissReturnOverlay();
@@ -532,7 +541,7 @@ export default function Home() {
                 categoryTitle={suggestedContext.suggestedCategory.title}
                 lastActiveAt={journeyState?.updatedAt}
                 isCatchingUp={suggestedCatchingUp}
-                onContinue={() => navigate(`/card/${suggestedContext.suggestedCard!.id}`)}
+                onContinue={() => { markNavigated(); navigate(`/card/${suggestedContext.suggestedCard!.id}`); }}
               />
             </div>
           );
@@ -555,7 +564,7 @@ export default function Home() {
                   categoryTitle={recentCategory.title}
                   lastActiveAt={mostRecentConversation.lastActivityAt instanceof Date ? mostRecentConversation.lastActivityAt.toISOString() : String(mostRecentConversation.lastActivityAt)}
                   isCatchingUp={recentCatchingUp}
-                  onContinue={() => navigate(`/card/${mostRecentConversation.cardId}`)}
+                  onContinue={() => { markNavigated(); navigate(`/card/${mostRecentConversation.cardId}`); }}
                 />
               </div>
             );
