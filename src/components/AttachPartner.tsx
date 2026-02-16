@@ -86,8 +86,29 @@ export default function AttachPartner({
   };
 
   const handleSendInvite = async () => {
-    await handleCopy();
-    toast('Inbjudan skickad.', { duration: 2500 });
+    if (!inviteInfo) return;
+    const textToShare = inviteMessage.trim()
+      ? `${inviteMessage.trim()}\n\n${inviteLink}`
+      : inviteLink;
+
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: 'Still Us',
+          text: textToShare,
+        });
+        toast.success('Inbjudan delad!', { duration: 2500 });
+      } catch (err) {
+        if ((err as Error).name !== 'AbortError') {
+          // Fallback to copy
+          await navigator.clipboard.writeText(textToShare);
+          toast.success('Länk kopierad');
+        }
+      }
+    } else {
+      await navigator.clipboard.writeText(textToShare);
+      toast.success('Länk kopierad');
+    }
     setInviteStep('default');
     setInviteMessage('');
     setExpanded(false);
@@ -215,13 +236,24 @@ export default function AttachPartner({
                       className="w-full text-muted-foreground"
                       onClick={async () => {
                         setInviteMessage('');
-                        await handleCopy();
-                        toast('Inbjudan skickad.', { duration: 2500 });
+                        if (navigator.share) {
+                          try {
+                            await navigator.share({ title: 'Still Us', text: inviteLink });
+                          } catch (err) {
+                            if ((err as Error).name !== 'AbortError') {
+                              await navigator.clipboard.writeText(inviteLink);
+                              toast.success('Länk kopierad');
+                            }
+                          }
+                        } else {
+                          await navigator.clipboard.writeText(inviteLink);
+                          toast.success('Länk kopierad');
+                        }
                         setInviteStep('default');
                         setExpanded(false);
                       }}
                     >
-                      Hoppa över
+                      Dela utan meddelande
                     </Button>
                   </div>
                 </motion.div>
