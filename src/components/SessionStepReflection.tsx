@@ -1,7 +1,9 @@
 import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Lock, Eye, Check } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { Lock, Check } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Separator } from '@/components/ui/separator';
+import { useCoupleSpace } from '@/hooks/useCoupleSpace';
 import { useSessionReflections, type ReflectionState } from '@/hooks/useSessionReflections';
 
 interface SessionStepReflectionProps {
@@ -28,6 +30,10 @@ export default function SessionStepReflection({
     markReady,
     lockStep,
   } = useSessionReflections(cardId, stepIndex);
+
+  const { space, userRole } = useCoupleSpace();
+  const myName = userRole === 'partner_a' ? (space?.partner_a_name || 'Du') : (space?.partner_b_name || 'Du');
+  const partnerName = userRole === 'partner_a' ? (space?.partner_b_name || 'Din partner') : (space?.partner_a_name || 'Din partner');
 
   const [localText, setLocalText] = useState('');
 
@@ -60,21 +66,19 @@ export default function SessionStepReflection({
   // ─── LOCKED: immutable view ───
   if (state === 'locked') {
     return (
-      <div className="mt-6 mb-2 space-y-4">
-        <ReflectionCard
-          label="Din reflektion"
-          text={myReflection?.text || ''}
-          icon={<Lock className="w-3 h-3" />}
-          locked
-        />
+      <div className="mt-8 mb-2 space-y-5">
+        <p className="text-xs text-muted-foreground/50 text-center tracking-wide">
+          Så här reflekterade ni
+        </p>
+
         {partnerReflection && (
-          <ReflectionCard
-            label="Din partners reflektion"
-            text={partnerReflection.text}
-            icon={<Lock className="w-3 h-3" />}
-            locked
-          />
+          <ReflectionBlock name={partnerName} text={partnerReflection.text} locked />
         )}
+
+        <Separator className="opacity-30" />
+
+        <ReflectionBlock name={myName} text={myReflection?.text || ''} locked />
+
         <p className="text-xs text-muted-foreground/40 text-center">
           Det här steget är låst.
         </p>
@@ -85,31 +89,34 @@ export default function SessionStepReflection({
   // ─── REVEALED: both visible, own editable ───
   if (state === 'revealed') {
     return (
-      <div className="mt-6 mb-2 space-y-4">
-        <div className="rounded-xl border border-border/50 bg-card overflow-hidden">
-          <div className="flex items-center gap-1.5 px-3 pt-3">
-            <Eye className="w-3 h-3 text-muted-foreground/60" />
-            <span className="text-xs text-muted-foreground/60">Din reflektion</span>
-          </div>
-          <textarea
-            value={displayText}
-            onChange={(e) => handleChange(e.target.value)}
-            className="w-full min-h-[72px] p-3 bg-transparent resize-none focus:outline-none focus:ring-0 text-sm text-foreground placeholder:text-muted-foreground/60"
-          />
-        </div>
+      <div className="mt-8 mb-2 space-y-5">
+        <p className="text-xs text-muted-foreground/50 text-center tracking-wide">
+          Så här reflekterade ni
+        </p>
 
+        {/* Partner reflection first — read-only */}
         {partnerReflection && (
-          <ReflectionCard
-            label="Din partners reflektion"
-            text={partnerReflection.text}
-            icon={<Eye className="w-3 h-3" />}
-          />
+          <ReflectionBlock name={partnerName} text={partnerReflection.text} />
         )}
+
+        <Separator className="opacity-30" />
+
+        {/* User reflection — editable */}
+        <div className="space-y-1">
+          <p className="text-xs text-muted-foreground/60 px-1">{myName}</p>
+          <div className="rounded-xl border border-border/50 bg-card overflow-hidden">
+            <textarea
+              value={displayText}
+              onChange={(e) => handleChange(e.target.value)}
+              className="w-full min-h-[72px] p-3 bg-transparent resize-none focus:outline-none focus:ring-0 text-sm text-foreground placeholder:text-muted-foreground/60"
+            />
+          </div>
+        </div>
 
         <Button
           onClick={handleLock}
           size="lg"
-          className="w-full h-14 rounded-2xl gap-2 font-normal"
+          className="w-full h-14 rounded-2xl gap-2 font-normal mt-4"
         >
           Gå vidare tillsammans
         </Button>
@@ -167,27 +174,24 @@ export default function SessionStepReflection({
   );
 }
 
-// ─── Read-only reflection card ───
-function ReflectionCard({
-  label,
+// ─── Read-only reflection block ───
+function ReflectionBlock({
+  name,
   text,
-  icon,
   locked = false,
 }: {
-  label: string;
+  name: string;
   text: string;
-  icon: React.ReactNode;
   locked?: boolean;
 }) {
   return (
-    <div className={`rounded-xl border ${locked ? 'border-border/30 bg-muted/10' : 'border-border/50 bg-card/80'} overflow-hidden`}>
-      <div className="flex items-center gap-1.5 px-3 pt-3">
-        <span className="text-muted-foreground/60">{icon}</span>
-        <span className="text-xs text-muted-foreground/60">{label}</span>
+    <div className="space-y-1">
+      <p className="text-xs text-muted-foreground/60 px-1">{name}</p>
+      <div className={`rounded-xl border ${locked ? 'border-border/30 bg-muted/10' : 'border-border/50 bg-card/80'} overflow-hidden`}>
+        <p className="p-3 text-sm text-foreground whitespace-pre-wrap">
+          {text}
+        </p>
       </div>
-      <p className="p-3 text-sm text-foreground whitespace-pre-wrap">
-        {text}
-      </p>
     </div>
   );
 }
