@@ -17,7 +17,7 @@ import NotificationSettings from '@/components/NotificationSettings';
 import RelationshipMemory from '@/components/RelationshipMemory';
 import Footer from '@/components/Footer';
 import RecentSharedReflection from '@/components/RecentSharedReflection';
-import WelcomeBackBanner from '@/components/WelcomeBackBanner';
+
 import ReturnOverlay from '@/components/ReturnOverlay';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -82,11 +82,8 @@ export default function Home() {
   const [proposalCandidate, setProposalCandidate] = useState<null | { cardId: string; categoryId: string }>(null);
   const [isSendingProposal, setIsSendingProposal] = useState(false);
 
-  // Welcome-back detection: show banner if 3+ days since last activity
-  const THREE_DAYS_MS = 3 * 24 * 60 * 60 * 1000;
   const SEVEN_DAYS_MS = 7 * 24 * 60 * 60 * 1000;
   const FOURTEEN_DAYS_MS = 14 * 24 * 60 * 60 * 1000;
-  const [welcomeBackDismissed, setWelcomeBackDismissed] = useState(false);
 
   // Persist return-overlay dismissal so it doesn't reappear for 7 days
   const RETURN_OVERLAY_KEY = 'return_overlay_dismissed';
@@ -129,16 +126,6 @@ export default function Home() {
 
   const returnResumeCardId = currentSession?.cardId || journeyState?.lastOpenedCardId || journeyState?.lastCompletedCardId || null;
 
-  const welcomeBackContext = useMemo(() => {
-    if (welcomeBackDismissed) return null;
-    if (showReturnOverlay) return null; // overlay takes priority
-    if (lastActivityElapsed < THREE_DAYS_MS) return null;
-
-    const lastCardId = journeyState?.lastCompletedCardId || journeyState?.lastOpenedCardId;
-    const lastCard = lastCardId ? getCardById(lastCardId) : null;
-    const lastCategory = lastCard ? getCategoryById(lastCard.categoryId) : null;
-    return { lastCard, lastCategory };
-  }, [journeyState, welcomeBackDismissed, showReturnOverlay, lastActivityElapsed, getCardById, getCategoryById]);
 
   // Computed helpers for proposal mode & highlighted category
   const exploredIds = journeyState?.exploredCardIds || [];
@@ -449,21 +436,6 @@ export default function Home() {
         </div>
       </div>
 
-      {/* Welcome back banner for returning users */}
-      <AnimatePresence>
-        {welcomeBackContext && (
-          <WelcomeBackBanner
-            lastCardTitle={welcomeBackContext.lastCard?.title}
-            lastCategoryTitle={welcomeBackContext.lastCategory?.title}
-            onContinue={() => {
-              if (welcomeBackContext.lastCard) {
-                navigate(`/card/${welcomeBackContext.lastCard.id}`);
-              }
-            }}
-            onDismiss={() => setWelcomeBackDismissed(true)}
-          />
-        )}
-      </AnimatePresence>
 
       {/* Compact proposal indicator */}
       {incomingProposals.length > 0 && (
