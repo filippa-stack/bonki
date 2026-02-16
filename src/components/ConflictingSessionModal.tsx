@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { ArrowRight, RefreshCw, X } from 'lucide-react';
+import { ArrowRight, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -15,7 +15,7 @@ interface ConflictingSessionModalProps {
   onClose: () => void;
   currentSessionCardTitle: string;
   currentSessionCardId: string;
-  onSwitchToThisCard: () => void;
+  onSwitchToThisCard?: () => void; // kept for API compat but no longer shown
 }
 
 export default function ConflictingSessionModal({
@@ -51,22 +51,10 @@ export default function ConflictingSessionModal({
               onClose();
               navigate(`/card/${currentSessionCardId}`);
             }}
-            variant="outline"
             className="w-full gap-2 justify-start"
           >
             <ArrowRight className="w-4 h-4" />
-            Fortsätt det pågående samtalet
-          </Button>
-
-          <Button
-            onClick={() => {
-              onSwitchToThisCard();
-              onClose();
-            }}
-            className="w-full gap-2 justify-start"
-          >
-            <RefreshCw className="w-4 h-4" />
-            Byt till det här samtalet
+            Gå till pågående samtalet
           </Button>
 
           <Button
@@ -75,7 +63,7 @@ export default function ConflictingSessionModal({
             className="w-full gap-2 justify-start text-muted-foreground"
           >
             <X className="w-4 h-4" />
-            Fortsätt bläddra
+            Avbryt
           </Button>
         </div>
       </DialogContent>
