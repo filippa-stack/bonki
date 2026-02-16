@@ -319,7 +319,7 @@ export default function SharedSummary() {
             className="mb-14"
           >
             {/* Active session — always visible */}
-            {currentSession && (() => {
+            {currentSession && displayMemberCount >= 2 && (() => {
               const sessionCard = getCardById(currentSession.cardId);
               const sessionCategory = getCategoryById(currentSession.categoryId);
               if (!sessionCard || !sessionCategory) return null;
