@@ -94,13 +94,15 @@ export default function Header({
             </div>
           )}
           {showBackupManager && <BackupManager />}
-          <button
-            onClick={() => navigate('/shared')}
-            className="flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-primary/15 hover:bg-primary/25 text-primary text-xs font-medium transition-colors"
-          >
-            <Users className="w-3.5 h-3.5" />
-            {t('header.shared_space')}
-          </button>
+          {!currentSession && (
+            <button
+              onClick={() => navigate('/shared')}
+              className="flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-primary/15 hover:bg-primary/25 text-primary text-xs font-medium transition-colors"
+            >
+              <Users className="w-3.5 h-3.5" />
+              {t('header.shared_space')}
+            </button>
+          )}
           {showBackgroundPicker && (
             <div className="flex items-center gap-2">
               <span className="text-xs text-muted-foreground hidden sm:inline">{t('header.background')}</span>

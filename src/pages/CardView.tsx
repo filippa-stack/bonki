@@ -15,10 +15,8 @@ import StepProgressIndicator from '@/components/StepProgressIndicator';
 import SessionStepReflection from '@/components/SessionStepReflection';
 
 import ReviewDrawer from '@/components/ReviewDrawer';
-// ConflictingSessionModal removed — ActiveSessionGuard prevents mismatched navigation
-import ProposalSheet from '@/components/ProposalSheet';
 import { Button } from '@/components/ui/button';
-import { ArrowRight, Home, RotateCcw, BookOpen, Check, Send } from 'lucide-react';
+import { ArrowRight, Home, RotateCcw, BookOpen, Check } from 'lucide-react';
 import SessionTakeaway from '@/components/SessionTakeaway';
 import CompletedSessionView from '@/components/CompletedSessionView';
 
@@ -364,44 +362,16 @@ export default function CardView() {
               Till Hem
             </Button>
             <div className="pt-4 text-center">
-              {suggestedCard && suggestedCategory ? (
-                <button
-                  onClick={() => memberCount >= 2 ? setShowProposalSheet(true) : navigate(`/card/${suggestedCard.id}`)}
-                  disabled={proposalSent}
-                  className="text-xs text-muted-foreground/50 hover:text-muted-foreground transition-colors disabled:opacity-40"
-                >
-                  {proposalSent ? 'Förslag skickat' : 'Föreslå nästa samtal'}
-                </button>
-              ) : (
-                <button
-                  onClick={() => navigate(`/card/${card.id}?revisit=true`)}
-                  className="text-xs text-muted-foreground/50 hover:text-muted-foreground transition-colors"
-                >
-                  Läs igen
-                </button>
-              )}
+              <button
+                onClick={() => navigate(`/card/${card.id}?revisit=true`)}
+                className="text-xs text-muted-foreground/50 hover:text-muted-foreground transition-colors"
+              >
+                Läs igen
+              </button>
             </div>
           </motion.div>
         </div>
 
-        {suggestedCard && suggestedCategory && (
-          <ProposalSheet
-            open={showProposalSheet}
-            onClose={() => setShowProposalSheet(false)}
-            cardTitle={suggestedCard.title}
-            categoryTitle={suggestedCategory.title}
-            onSend={async (msg) => {
-              const result = await sendProposal(suggestedCard.id, suggestedCategory.id, msg);
-              if (result.ok) {
-                setProposalSent(true);
-                if (proposalTimer.current) clearTimeout(proposalTimer.current);
-                proposalTimer.current = setTimeout(() => setProposalSent(false), 2000);
-              } else {
-                toast.error('Kunde inte skicka förslaget. Försök igen.');
-              }
-            }}
-          />
-        )}
       </div>
     );
   }
@@ -458,43 +428,9 @@ export default function CardView() {
           </motion.p>
         )}
 
-        {/* Propose banner — non-blocking, only when paired */}
-        {showProposeBanner && isPaired && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.3 }}
-            className="mt-6 rounded-xl border border-border bg-card/60 px-5 py-4 text-center space-y-3"
-          >
-            <p className="text-sm text-muted-foreground leading-relaxed">
-              Vill ni utforska det här tillsammans? Föreslå det för din partner.
-            </p>
-            <Button
-              size="sm"
-              onClick={() => setShowProposalSheet(true)}
-              className="gap-2"
-            >
-              <Send className="w-3.5 h-3.5" />
-              Föreslå det här samtalet
-            </Button>
-          </motion.div>
-        )}
-        {/* Pending proposal banner */}
-        {!canStartSharedSession && !isActiveSession && isPaired && hasPendingProposalForCard && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.3 }}
-            className="mt-6 rounded-xl border border-border bg-card/60 px-5 py-4 text-center space-y-1"
-          >
-            <p className="text-sm font-serif text-foreground">
-              Förslag skickat
-            </p>
-            <p className="text-xs text-muted-foreground">
-              Ni börjar när ni båda är redo.
-            </p>
-          </motion.div>
-        )}
+        {/* Propose banner & pending proposal banner removed during hardening —
+             proposal creation is only allowed from the Home IDLE proposal mode surface.
+             No new-intention triggers inside an active card view. */}
       </div>
 
 
@@ -572,28 +508,7 @@ export default function CardView() {
       </div>
 
       {/* ConflictingSessionModal removed — ActiveSessionGuard handles this */}
-
-      {/* Proposal Sheet — only triggered from non-revisit step completion or card completion */}
-      {card && category && (
-        <ProposalSheet
-          open={showProposalSheet}
-          onClose={() => setShowProposalSheet(false)}
-          cardTitle={card.title}
-          categoryTitle={category.title}
-          onSend={async (msg) => {
-            const result = await sendProposal(card.id, category.id, msg);
-            if (result.ok) {
-              setProposalSent(true);
-              setShowProposalSheet(false);
-              toast('Förslag skickat.', { duration: 3000 });
-              if (proposalTimer.current) clearTimeout(proposalTimer.current);
-              proposalTimer.current = setTimeout(() => setProposalSent(false), 2000);
-            } else {
-              toast.error('Kunde inte skicka förslaget. Försök igen.');
-            }
-          }}
-        />
-      )}
+      {/* ProposalSheet removed from CardView — proposals only via Home IDLE mode */}
     </div>
   );
 }
