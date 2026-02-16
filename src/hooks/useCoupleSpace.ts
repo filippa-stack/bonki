@@ -80,12 +80,14 @@ export function useCoupleSpace(): CoupleSpaceState {
         setMemberCount(count ?? 1);
         prevMemberCountRef.current = count ?? 1;
         setUserRole(membership.role);
+      } else {
+        // No active membership — auto-create a new space
         // Don't auto-create if there's a pending invite — let the claim finish first
         if (hasPendingInvite()) {
           setLoading(false);
           return;
         }
-        // Bootstrap atomically via edge function
+
         const { data: sessionData } = await supabase.auth.getSession();
         const accessToken = sessionData?.session?.access_token;
         if (!accessToken) throw new Error('No auth session');
