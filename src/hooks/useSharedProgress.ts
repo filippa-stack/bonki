@@ -277,30 +277,26 @@ export function useSharedProgress(
       const mergedJourney = mergeJourneyStates(journey, remoteJourney);
 
       // Only write journey_state — current_session is managed by edge functions
-      const upsertPayload: Record<string, any> = {
-        couple_space_id: coupleSpaceId,
-        journey_state: mergedJourney
-          ? JSON.parse(JSON.stringify(mergedJourney))
-          : null,
-        updated_by: userId,
-      };
-
-      const { error: upsertErr } = await supabase
+      // Use UPDATE only — the row is always created by the create-couple-space edge function
+      const { error: updateErr } = await supabase
         .from('couple_progress')
-        .upsert(
-          upsertPayload as any,
-          { onConflict: 'couple_space_id' }
-        );
+        .update({
+          journey_state: mergedJourney
+            ? JSON.parse(JSON.stringify(mergedJourney))
+            : null,
+          updated_by: userId,
+        } as any)
+        .eq('couple_space_id', coupleSpaceId);
 
-      if (upsertErr) {
+      if (updateErr) {
         logSyncError({
           stage: 'upsertProgress',
           coupleSpaceId,
           userId,
           cardId: session?.cardId ?? null,
-          error: upsertErr,
+          error: updateErr,
         });
-        setLastSyncError(upsertErr.message || 'Kunde inte spara');
+        setLastSyncError(updateErr.message || 'Kunde inte spara');
         setSyncStatus('error');
       } else {
         setLastSyncError(null);
