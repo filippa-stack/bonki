@@ -70,7 +70,7 @@ export default function Header({
             onClick={() => navigate('/')}
           />
           {title && (
-            <h1 className="font-serif text-lg text-foreground truncate">
+            <h1 className="font-serif text-lg text-slate-800 truncate">
               {title}
             </h1>
           )}
