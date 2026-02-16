@@ -275,49 +275,37 @@ export default function Home() {
 
         // ── Below here: paired only (displayMemberCount >= 2) ──
 
-        // ── IDLE/ACTIVE variation: incoming proposal replaces primary CTA ──
+        // ── IDLE variation: incoming proposal REPLACES Home intent ──
+        // Full-screen decision ritual — no background navigation until resolved.
         const visibleProposals = effectiveProposals.filter(p => !dismissedProposalIds.has(p.id));
-        if (visibleProposals.length > 0) {
+        if (visibleProposals.length > 0 && !effectiveSession) {
           const proposal = visibleProposals[0];
           const proposalCard = getCardById(proposal.card_id) || (devState ? { title: DEV_MOCK.mockCard.title, subtitle: DEV_MOCK.mockCard.subtitle } as any : null);
-          const proposalCategory = getCategoryById(proposal.category_id) || (devState ? { title: DEV_MOCK.mockCategory.title } as any : null);
           const isAccepting = acceptingProposalId === proposal.id;
           return (
             <motion.div
-              key={`proposal-${proposal.id}`}
+              key={`proposal-ritual-${proposal.id}`}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.15 }}
-              className="px-6 mb-10"
+              className="fixed inset-0 z-50 flex flex-col items-center justify-center p-8 bg-background"
             >
-              <div className="rounded-2xl border border-border bg-card p-6 space-y-4">
-                <div className="text-center space-y-1">
-                  <p className="font-serif text-foreground">
-                    Vill ni börja det här samtalet?
+              <div className="w-full max-w-sm space-y-10 text-center">
+                <div className="space-y-3">
+                  <p className="text-sm text-muted-foreground/60 uppercase tracking-wide">
+                    Förslag från din partner
                   </p>
-                  {proposalCard && (
-                    <p className="text-sm text-foreground/80 font-serif">{proposalCard.title}</p>
-                  )}
-                  {proposalCategory && (
-                    <p className="text-xs text-muted-foreground">{proposalCategory.title}</p>
-                  )}
+                  <h1 className="text-2xl font-serif text-foreground leading-snug">
+                    {proposalCard?.title || 'Samtal'}
+                  </h1>
                   {proposal.message && (
-                    <p className="text-xs text-muted-foreground italic mt-2">"{proposal.message}"</p>
+                    <p className="text-sm text-muted-foreground italic">"{proposal.message}"</p>
                   )}
                 </div>
-                <div className="flex gap-3">
+                <div className="space-y-3">
                   <Button
-                    variant="ghost"
-                    className="flex-1 text-muted-foreground"
-                    disabled={isAccepting}
-                    onClick={() => {
-                      setDismissedProposalIds(prev => new Set([...prev, proposal.id]));
-                    }}
-                  >
-                    Inte nu
-                  </Button>
-                  <Button
-                    className="flex-1"
+                    size="lg"
+                    className="w-full h-14 rounded-2xl gap-2 font-normal"
                     disabled={isAccepting}
                     onClick={devState ? undefined : async () => {
                       setAcceptingProposalId(proposal.id);
@@ -331,7 +319,19 @@ export default function Home() {
                       }
                     }}
                   >
-                    {isAccepting ? 'Startar...' : 'Börja nu'}
+                    {isAccepting ? 'Startar...' : 'Acceptera'}
+                    {!isAccepting && <ArrowRight className="w-4 h-4" />}
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="lg"
+                    className="w-full h-12 text-muted-foreground hover:text-foreground font-normal"
+                    disabled={isAccepting}
+                    onClick={() => {
+                      setDismissedProposalIds(prev => new Set([...prev, proposal.id]));
+                    }}
+                  >
+                    Avvakta
                   </Button>
                 </div>
               </div>
