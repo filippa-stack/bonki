@@ -26,7 +26,7 @@ export default function JoinSpace() {
   const [partnerName, setPartnerName] = useState('');
   const [state, setState] = useState<JoinState>('name_prompt');
   const [errorType, setErrorType] = useState<string>('');
-  const [showCodeInput] = useState(true);
+  const hasToken = !!inviteToken;
 
   // Persist invite params to localStorage immediately so they survive OAuth redirects
   useEffect(() => {
@@ -204,7 +204,7 @@ export default function JoinSpace() {
             />
           </div>
 
-          {showCodeInput && (
+          {!hasToken && (
             <div className="space-y-2">
               <Label>{t('join.invite_code', 'Inbjudningskod')}</Label>
               <Input
