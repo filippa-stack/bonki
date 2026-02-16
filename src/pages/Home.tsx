@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
-import { getCatchUpState } from '@/lib/catchUpState';
+// getCatchUpState no longer needed on Home — ACTIVE state uses session data directly
 import { motion, AnimatePresence } from 'framer-motion';
-import { useState, useMemo, useEffect, useRef } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useApp } from '@/contexts/AppContext';
 import { useSiteSettings } from '@/contexts/SiteSettingsContext';
@@ -10,8 +10,8 @@ import { useCoupleSpace } from '@/hooks/useCoupleSpace';
 import CategoryCard from '@/components/CategoryCard';
 
 import Header from '@/components/Header';
-import ResumeSessionDialog from '@/components/ResumeSessionDialog';
-import AttachPartner from '@/components/AttachPartner';
+// ResumeSessionDialog removed — ACTIVE macro state handles resume via single CTA
+// AttachPartner import removed — not used in simplified macro state view
 import SoloInviteSection from '@/components/SoloInviteSection';
 import { ArrowRight, Bookmark, Share2 } from 'lucide-react';
 import NotificationSettings from '@/components/NotificationSettings';
@@ -44,7 +44,7 @@ export default function Home() {
     hasActiveSession,
     getCardById,
     getCategoryById,
-    dismissSession,
+    // dismissSession removed — no competing resume surfaces
     journeyState,
     cards,
     startSession,
@@ -125,59 +125,8 @@ export default function Home() {
 
   const highlightedCategoryId = currentSession?.categoryId || suggestedContext.suggestedCategory?.id || null;
 
-  // Get session details for resume dialog
-  const sessionCard = currentSession ? getCardById(currentSession.cardId) : null;
-  const sessionCategory = currentSession ? getCategoryById(currentSession.categoryId) : null;
-  const sessionCatchUp = (() => {
-    if (!currentSession || !user?.id) return null;
-    const mySteps: number[] = journeyState?.sessionProgress?.[currentSession.cardId]?.perUser?.[user.id]?.completedSteps || [];
-    return getCatchUpState(mySteps, currentSession.currentStepIndex, true);
-  })();
-  const sessionStepName = sessionCatchUp ? (STEP_LABELS[sessionCatchUp.effectiveStep] || '') : '';
-
-  // Only show ResumeSessionDialog when user is truly mid-step (not at a boundary / waiting)
-  const isMidCard = (() => {
-    if (!sessionCatchUp) return false;
-    const { effectiveStep, myFirstUncompletedStep } = sessionCatchUp;
-    // All steps done → not mid-card
-    if (effectiveStep >= 4) return false;
-    // User completed the current shared step (waiting for partner or at boundary) → not mid-card
-    if (myFirstUncompletedStep > (currentSession?.currentStepIndex ?? 0)) return false;
-    // Otherwise user is genuinely mid-step
-    return true;
-  })();
-
-  // Dismiss-once logic: keyed by cardId + stepIndex so it resets when session changes
-  const resumeSessionKey = currentSession
-    ? `resume_dismissed_${currentSession.cardId}_${currentSession.currentStepIndex}`
-    : null;
-  const [resumeDismissed, setResumeDismissed] = useState(() => {
-    if (!resumeSessionKey) return false;
-    return localStorage.getItem(resumeSessionKey) === '1';
-  });
-  // Reset dismissed state when the session key changes
-  useEffect(() => {
-    if (!resumeSessionKey) { setResumeDismissed(false); return; }
-    setResumeDismissed(localStorage.getItem(resumeSessionKey) === '1');
-  }, [resumeSessionKey]);
-
-  const markResumeDismissed = () => {
-    if (resumeSessionKey) localStorage.setItem(resumeSessionKey, '1');
-    setResumeDismissed(true);
-  };
-
-  const handleResumeSession = () => {
-    if (currentSession) {
-      markResumeDismissed();
-      markNavigated();
-      navigate(`/card/${currentSession.cardId}`);
-    }
-  };
-
-  const handleDismissSession = () => {
-    markResumeDismissed();
-    dismissSession();
-  };
+  // Resume variation is now only the return overlay (ResumeSessionDialog removed)
+  // ACTIVE state's single CTA replaces all mid-session resume surfaces.
 
   // Track whether user has already navigated away during this browser session
   const [hasNavigatedThisVisit] = useState(() => sessionStorage.getItem('home_navigated') === '1');
@@ -193,14 +142,14 @@ export default function Home() {
   type MacroState = 'idle' | 'active';
   const macroState: MacroState = hasActiveSession ? 'active' : 'idle';
 
-  // UI variations within macro states (overlays/dialogs — not separate modes)
-  type ResumeVariation = 'returnOverlay' | 'resumeDialog' | 'none';
+  // UI variation: return overlay is the only overlay surface now
+  // ACTIVE state's single CTA handles all resume — no competing dialogs.
+  type ResumeVariation = 'returnOverlay' | 'none';
   const resumeVariation: ResumeVariation = useMemo(() => {
     if (isSoloMode) return 'none';
     if (showReturnOverlay) return 'returnOverlay';
-    if (macroState === 'active' && !!sessionCard && !!sessionCategory && !resumeDismissed && isMidCard) return 'resumeDialog';
     return 'none';
-  }, [isSoloMode, showReturnOverlay, macroState, sessionCard, sessionCategory, resumeDismissed, isMidCard]);
+  }, [isSoloMode, showReturnOverlay]);
 
   const handleEnterProposalMode = () => {
     setIsProposalMode(true);
@@ -390,10 +339,13 @@ export default function Home() {
           );
         }
 
-        // ── MACRO STATE: ACTIVE — "Fortsätt samtalet" ──
+        // ── MACRO STATE: ACTIVE — singular focus ──
         if (effectiveSession) {
           const activeCard = getCardById(effectiveSession.cardId) || (devState ? { title: DEV_MOCK.mockCard.title, categoryId: DEV_MOCK.mockCategory.id } as any : null);
           const activeCategory = activeCard ? (getCategoryById(activeCard.categoryId) || (devState ? { title: DEV_MOCK.mockCategory.title } as any : null)) : null;
+          // Step indicator (subtle)
+          const stepLabel = STEP_LABELS[effectiveSession.currentStepIndex] || '';
+          const stepProgress = `${Math.min(effectiveSession.currentStepIndex + 1, 4)} / 4`;
           if (activeCard && activeCategory) {
             return (
               <motion.div
@@ -404,8 +356,11 @@ export default function Home() {
               >
                 <p className="text-xs text-muted-foreground/50 uppercase tracking-wide mb-4 text-center">Pågående samtal</p>
                 <div className="text-center space-y-2 mb-6">
-                  <p className="font-serif text-foreground">{activeCard.title}</p>
+                  <p className="font-serif text-lg text-foreground">{activeCard.title}</p>
                   <p className="text-xs text-muted-foreground">{activeCategory.title}</p>
+                  {stepLabel && (
+                    <p className="text-xs text-muted-foreground/40">{stepLabel} · {stepProgress}</p>
+                  )}
                 </div>
                 <Button
                   onClick={devState ? undefined : () => { markNavigated(); navigate(`/card/${effectiveSession.cardId}`); }}
@@ -420,7 +375,7 @@ export default function Home() {
           }
         }
 
-        // ── MACRO STATE: IDLE — "Starta ett samtal" ──
+        // ── MACRO STATE: IDLE — single question: "What are we doing now?" ──
         return (
           <motion.div
             initial={{ opacity: 0 }}
@@ -434,7 +389,7 @@ export default function Home() {
                 onClick={handleEnterProposalMode}
                 className="w-full h-14 rounded-2xl gap-2 font-normal"
               >
-                Starta ett samtal
+                Välj samtalsämne
                 <ArrowRight className="w-4 h-4" />
               </Button>
             </div>
@@ -442,11 +397,11 @@ export default function Home() {
         );
       })()}
 
-      {/* ═══ BELOW FOLD — demoted secondary content ═══ */}
+      {/* ═══ BELOW FOLD — secondary content (IDLE only, hidden when ACTIVE) ═══ */}
 
-      {/* Proposal mode (opened by primary CTA for paired users) */}
+      {/* Proposal mode (opened by primary CTA for paired IDLE users) */}
       <AnimatePresence>
-        {isProposalMode && !isSoloMode && (
+        {isProposalMode && !isSoloMode && !hasActiveSession && (
            <motion.div
             id="proposal-mode"
             initial={{ opacity: 0 }}
@@ -641,15 +596,7 @@ export default function Home() {
         <NotificationSettings />
       </motion.div>
 
-      {/* Resume session dialog */}
-      <ResumeSessionDialog
-        isOpen={resumeVariation === 'resumeDialog'}
-        categoryName={sessionCategory?.title || ''}
-        cardTitle={sessionCard?.title || ''}
-        stepName={sessionStepName}
-        onResume={handleResumeSession}
-        onBackToCategories={handleDismissSession}
-      />
+      {/* ResumeSessionDialog removed — ACTIVE state's single CTA handles resume */}
       </div>
       <Footer />
     </div>
