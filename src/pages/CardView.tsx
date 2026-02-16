@@ -509,13 +509,10 @@ export default function CardView() {
                   {!bothCompleted && (
                     <>
                       <p className="text-sm font-serif text-foreground">
-                        Du är klar.
+                        Väntar på din partner
                       </p>
                       <p className="text-sm text-muted-foreground leading-relaxed">
-                        Ni fortsätter när båda är klara.
-                      </p>
-                      <p className="text-xs text-muted-foreground/40 pt-4">
-                        Du kan utforska annat under tiden — samtalet finns kvar.
+                        Du är klar med det här steget. Ni fortsätter när båda svarat.
                       </p>
                     </>
                   )}
@@ -534,9 +531,7 @@ export default function CardView() {
 
                   {/* Shared pace dots */}
                   <div className="flex justify-center gap-2 pt-1">
-                    {/* User dot — always filled */}
                     <span className="block w-2 h-2 rounded-full bg-foreground/20 transition-all duration-300" />
-                    {/* Partner dot — fills when partner completes */}
                     <span
                       className={`block w-2 h-2 rounded-full transition-all duration-300 ease-out ${
                         partnerCompletedCurrentStep
@@ -561,19 +556,32 @@ export default function CardView() {
                     )}
                   </AnimatePresence>
 
-                  {/* CTA — always present, gains emphasis when both complete */}
-                  <div className="pt-4">
-                    <Button
-                      onClick={handleNextStep}
-                      size="lg"
-                      className={`gap-2 h-14 font-normal w-full rounded-2xl transition-opacity duration-300 ${
-                        bothCompleted ? 'opacity-100' : 'opacity-40 pointer-events-none'
-                      }`}
-                      disabled={!bothCompleted}
-                    >
-                      {bothCompleted ? 'Gå vidare tillsammans' : t(STEP_CTA_KEYS[STEP_ORDER[currentStepIndex]])}
-                      <ArrowRight className="w-4 h-4" />
-                    </Button>
+                  {/* CTAs */}
+                  <div className="pt-4 space-y-3">
+                    {bothCompleted ? (
+                      <Button
+                        onClick={handleNextStep}
+                        size="lg"
+                        className="gap-2 h-14 font-normal w-full rounded-2xl"
+                      >
+                        Gå vidare tillsammans
+                        <ArrowRight className="w-4 h-4" />
+                      </Button>
+                    ) : (
+                      <>
+                        <Button
+                          onClick={() => navigate('/')}
+                          size="lg"
+                          className="gap-2 h-14 font-normal w-full rounded-2xl"
+                        >
+                          <Home className="w-4 h-4" />
+                          Utforska under tiden
+                        </Button>
+                        <p className="text-xs text-muted-foreground/40">
+                          Samtalet finns kvar — ni fortsätter där ni slutade.
+                        </p>
+                      </>
+                    )}
                   </div>
                 </motion.div>
               ) : (
