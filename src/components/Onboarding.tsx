@@ -21,8 +21,8 @@ const slides = [
     content: 'Du kan pausa när som helst och återkomma senare. Spara samtal som betyder något. Skriv privata reflektioner eller dela dem med din partner. Inget här är brådskande.',
   },
   {
-    title: 'Ett stilla rum',
-    content: 'Tänk på det här som ett stilla rum ni kan gå in i tillsammans – eller var för sig – när ni behöver utrymme att tänka på det som betyder mest.',
+    title: 'Tillsammans',
+    content: 'Bjud in din partner så kan ni välja samtalsämne tillsammans. Ni föreslår ett ämne, den andra accepterar, och sedan utforskar ni det i er egen takt. Appen fungerar bäst som ett gemensamt verktyg.',
   },
 ];
 

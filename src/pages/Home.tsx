@@ -410,15 +410,27 @@ export default function Home() {
             >
               <div className="rounded-2xl border border-border bg-card p-6 text-center space-y-4">
                 <p className="text-sm text-muted-foreground leading-relaxed">
-                  {t('home.first_conversation_hint')}
+                  {isSoloMode
+                    ? t('home.first_conversation_hint')
+                    : t('home.first_conversation_hint_paired', 'Ni har inte startat något samtal ännu. Föreslå ett ämne så börjar ni tillsammans.')}
                 </p>
-                <Button
-                  size="sm"
-                  className="gap-2"
-                  onClick={() => navigate(`/card/${firstCard.id}`)}
-                >
-                  {t('home.start_first_conversation')}
-                </Button>
+                {isSoloMode ? (
+                  <Button
+                    size="sm"
+                    className="gap-2"
+                    onClick={() => navigate(`/card/${firstCard.id}`)}
+                  >
+                    {t('home.start_first_conversation')}
+                  </Button>
+                ) : (
+                  <Button
+                    size="sm"
+                    className="gap-2"
+                    onClick={handleEnterProposalMode}
+                  >
+                    Föreslå ert första samtal
+                  </Button>
+                )}
               </div>
             </motion.div>
           );
@@ -442,6 +454,44 @@ export default function Home() {
           >
             Föreslå annat samtal
           </Button>
+        </motion.div>
+      )}
+
+      {/* One-time hint: explain proposal system when first paired */}
+      {displayMemberCount >= 2 && !isProposalMode && (() => {
+        const PROPOSAL_HINT_KEY = 'still-us-proposal-hint-shown';
+        const alreadyShown = localStorage.getItem(PROPOSAL_HINT_KEY) === 'true';
+        if (alreadyShown) return null;
+        // Mark as shown after render
+        setTimeout(() => localStorage.setItem(PROPOSAL_HINT_KEY, 'true'), 0);
+        return (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.3, delay: 0.2 }}
+            className="px-6 mb-6"
+          >
+            <div className="rounded-2xl border border-primary/20 bg-card/60 px-5 py-4 text-center space-y-1">
+              <p className="text-sm text-foreground font-serif">Så fungerar det</p>
+              <p className="text-xs text-muted-foreground leading-relaxed">
+                Ni väljer samtalsämne tillsammans. En av er föreslår ett kort, den andra accepterar — sedan börjar ni.
+              </p>
+            </div>
+          </motion.div>
+        );
+      })()}
+
+      {/* Solo-user hint: app works best together */}
+      {space && displayMemberCount < 2 && !isProposalMode && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.15 }}
+          className="px-6 mb-4"
+        >
+          <p className="text-xs text-muted-foreground text-center leading-relaxed">
+            Appen är gjord för er båda. Bjud in din partner för att få ut det mesta av era samtal.
+          </p>
         </motion.div>
       )}
 

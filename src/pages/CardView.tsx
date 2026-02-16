@@ -158,15 +158,18 @@ export default function CardView() {
 
   // ─── Proposal gate: when paired, new cards need mutual agreement ───
   const isPaired = memberCount >= 2;
-  const hasExistingProgress = !!(cardId && journeyState?.sessionProgress?.[cardId]);
+  // Check if BOTH partners have progress (not just one solo user)
+  const cardProgress = cardId ? journeyState?.sessionProgress?.[cardId] : null;
+  const perUserEntries = cardProgress?.perUser ? Object.keys(cardProgress.perUser) : [];
+  const hasMutualProgress = isPaired ? perUserEntries.length >= 2 : !!cardProgress;
   const hasAcceptedProposal = !!(cardId && proposals.some(
     p => p.card_id === cardId && p.status === 'accepted'
   ));
   const hasPendingProposalForCard = !!(cardId && proposals.some(
     p => p.card_id === cardId && p.status === 'pending'
   ));
-  // Allow session if: solo, has existing progress, has accepted proposal, or revisit
-  const canStartSharedSession = !isPaired || hasExistingProgress || hasAcceptedProposal || isRevisitMode;
+  // Allow session if: solo, both have progress, has accepted proposal, or revisit
+  const canStartSharedSession = !isPaired || hasMutualProgress || hasAcceptedProposal || isRevisitMode;
   const [autoProposalSent, setAutoProposalSent] = useState(false);
   // ─── Guard: if there's an active session for a DIFFERENT card, show modal instead of redirect ───
   const hasConflictingSession = !!(currentSession && currentSession.cardId !== cardId);

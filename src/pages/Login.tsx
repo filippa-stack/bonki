@@ -162,7 +162,7 @@ export default function Login() {
             <button
               type="button"
               onClick={() => setShowCodeInput(true)}
-              className="text-sm text-muted-foreground hover:text-foreground transition-colors underline underline-offset-2"
+              className="inline-flex items-center gap-1.5 text-sm text-primary/80 hover:text-primary transition-colors font-medium"
             >
               {t('login.have_invite_code', 'Jag har en inbjudningskod')}
             </button>
