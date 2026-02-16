@@ -61,11 +61,12 @@ Deno.serve(async (req) => {
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!
     );
 
-    // Check if user already has a membership
+    // Check if user already has an ACTIVE membership (left_at IS NULL)
     const { data: existing, error: existErr } = await adminClient
       .from("couple_members")
       .select("couple_space_id")
       .eq("user_id", userId)
+      .is("left_at", null)
       .maybeSingle();
 
     if (existErr) {
@@ -77,7 +78,7 @@ Deno.serve(async (req) => {
     }
 
     if (existing) {
-      // Already has a space — return it (without sensitive invite fields)
+      // Already has an active space — return it (without sensitive invite fields)
       const { data: spaceData, error: spaceErr } = await adminClient
         .from("couple_spaces")
         .select("id, partner_a_name, partner_b_name, created_at")
@@ -95,7 +96,8 @@ Deno.serve(async (req) => {
       const { count } = await adminClient
         .from("couple_members")
         .select("id", { count: "exact", head: true })
-        .eq("couple_space_id", existing.couple_space_id);
+        .eq("couple_space_id", existing.couple_space_id)
+        .is("left_at", null);
 
       return new Response(
         JSON.stringify({ space: spaceData, memberCount: count ?? 1, role: "partner_a" }),
@@ -133,6 +135,25 @@ Deno.serve(async (req) => {
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
+
+    // Initialize couple_progress
+    await adminClient
+      .from("couple_progress")
+      .upsert({
+        couple_space_id: spaceId,
+        current_session: null,
+        journey_state: null,
+        updated_by: userId,
+      }, { onConflict: "couple_space_id" });
+
+    // Emit system event
+    await adminClient
+      .from("system_events")
+      .insert({
+        couple_space_id: spaceId,
+        type: "couple_created",
+        payload: { created_by: userId },
+      });
 
     // Read back the created space (without sensitive invite fields)
     const { data: newSpace, error: readErr } = await adminClient
