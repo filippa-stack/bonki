@@ -206,6 +206,15 @@ export default function Home() {
     dismissSession();
   };
 
+  // Single derived variable: at most ONE resume surface at a time
+  type ResumeSurface = 'returnOverlay' | 'resumeDialog' | 'continueModule' | 'none';
+  const resumeSurface: ResumeSurface = useMemo(() => {
+    if (showReturnOverlay) return 'returnOverlay';
+    if (hasActiveSession && !!sessionCard && !!sessionCategory && !resumeDismissed && isMidCard && !isSoloMode) return 'resumeDialog';
+    if (currentSession || journeyState?.lastCompletedCardId || journeyState?.suggestedNextCardId) return 'continueModule';
+    return 'none';
+  }, [showReturnOverlay, hasActiveSession, sessionCard, sessionCategory, resumeDismissed, isMidCard, isSoloMode, currentSession, journeyState]);
+
   const handleSaveHero = () => {
     updateSettings({ 
       heroTitle: editTitle, 
@@ -283,7 +292,7 @@ export default function Home() {
     <div className="min-h-screen flex flex-col page-bg">
       {/* 7+ day return overlay */}
       <AnimatePresence>
-        {showReturnOverlay && (
+        {resumeSurface === 'returnOverlay' && (
           <ReturnOverlay
             onResume={() => {
               dismissReturnOverlay();
@@ -469,8 +478,8 @@ export default function Home() {
         </motion.div>
       )}
 
-      {/* Journey continue module — hidden when higher-priority resume prompts are active */}
-      {!showReturnOverlay && !(hasActiveSession && isMidCard && !!sessionCard && !!sessionCategory && !resumeDismissed) && (() => {
+      {/* Journey continue module — only when it wins priority */}
+      {resumeSurface === 'continueModule' && (() => {
         const lastCompletedId = journeyState?.lastCompletedCardId;
         const lastCompletedCard = lastCompletedId ? getCardById(lastCompletedId) : null;
         const lastCompletedCategory = lastCompletedCard ? getCategoryById(lastCompletedCard.categoryId) : null;
@@ -833,7 +842,7 @@ export default function Home() {
 
       {/* Resume session dialog */}
       <ResumeSessionDialog
-        isOpen={hasActiveSession && !!sessionCard && !!sessionCategory && !showReturnOverlay && !resumeDismissed && isMidCard && !isSoloMode}
+        isOpen={resumeSurface === 'resumeDialog'}
         categoryName={sessionCategory?.title || ''}
         cardTitle={sessionCard?.title || ''}
         stepName={sessionStepName}
