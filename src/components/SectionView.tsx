@@ -40,7 +40,7 @@ const SectionView = forwardRef<SectionViewHandle, SectionViewProps>(function Sec
     getPrivateNote,
     getSharedNote,
     highlightCount,
-  } = usePromptNotes(card.id, section.id);
+  } = usePromptNotes(card.id, section.id, disableShare);
 
   const normalizedPrompts = (section.prompts || []).map(normalizePrompt);
   const isAccordion = ACCORDION_TYPES.includes(section.type);
@@ -179,7 +179,7 @@ const SectionView = forwardRef<SectionViewHandle, SectionViewProps>(function Sec
                   sectionType={section.type as 'opening' | 'reflective' | 'scenario' | 'exercise'}
                   preamble={index === 0 && (section.type === 'scenario' || section.type === 'exercise') ? section.content : undefined}
                   privateNote={getPrivateNote(promptId)}
-                  sharedNote={getSharedNote(promptId)}
+                  sharedNote={disableShare ? undefined : getSharedNote(promptId)}
                   highlightCount={highlightCount}
                   expanded={isControlled ? expandedIndex === index : undefined}
                   onExpandChange={isControlled ? (exp) => handleExpandChange(index, exp) : undefined}
