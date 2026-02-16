@@ -86,14 +86,14 @@ export function useProposals() {
     );
     if (existingForCard) return { ok: true }; // Already proposed
 
-    // Invalidate any other pending proposals from this user in this space
+    // Withdraw any other pending proposals from this user in this space
     const otherPending = proposals.filter(
       p => p.status === 'pending' && p.proposed_by === user.id && p.couple_space_id === space.id
     );
     for (const old of otherPending) {
       await supabase
         .from('topic_proposals')
-        .update({ status: 'declined', declined_by: user.id, responded_at: new Date().toISOString() } as any)
+        .update({ status: 'withdrawn' } as any)
         .eq('id', old.id);
     }
 
