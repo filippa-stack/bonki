@@ -1,7 +1,6 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronDown, Share2, Send, X, Star, Heart, ArrowRight, Home, Lock, Users, Link2, CheckCircle2 } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { ChevronDown, Send, X, Star, Heart, Lock, Users, Link2, CheckCircle2 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Prompt } from '@/types';
 import { PromptNote } from '@/hooks/usePromptNotes';
@@ -62,11 +61,8 @@ export default function PromptItem({
   const { memberCount } = useCoupleSpace();
   const isPaired = memberCount >= 2;
   const shareDisabled = disableShare || !isPaired;
-  const navigate = useNavigate();
   const [internalExpanded, setInternalExpanded] = useState(sectionType === 'scenario' || sectionType === 'exercise');
   const [justShared, setJustShared] = useState(false);
-  const [showSharePreview, setShowSharePreview] = useState(false);
-  const [sharePreviewText, setSharePreviewText] = useState('');
   const isControlled = expanded !== undefined;
   const isExpanded = isControlled ? expanded : internalExpanded;
   const toggleExpanded = () => {
@@ -233,107 +229,43 @@ export default function PromptItem({
                     )}
                   </div>
 
-                  {/* Share action / preview */}
-                  {!shareDisabled && privateNote?.content && !sharedNote && !showSharePreview && (
-                    <button
-                      onClick={() => {
-                        setSharePreviewText(privateNote.content);
-                        setShowSharePreview(true);
-                      }}
-                      className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
-                    >
-                      <Send className="w-3.5 h-3.5" />
-                      {t('reflections.create_shared_from_private', 'Dela med din partner')}
-                    </button>
-                  )}
-                  {!shareDisabled && !privateNote?.content && !sharedNote && (
-                    <p className="flex items-center gap-1.5 text-[11px] text-muted-foreground/40 italic">
-                      <Lock className="w-3 h-3" />
-                      {t('reflections.private_empty_hint', 'Dina anteckningar är privata tills du väljer att dela')}
-                    </p>
+                  {/* Share action — 1-step direct share */}
+                  {!shareDisabled && privateNote?.content && !sharedNote && (
+                    <div className="flex justify-end">
+                      <button
+                        onClick={() => {
+                          onSaveNote(promptId, privateNote.content, 'shared');
+                          onShareNote(promptId);
+                          setJustShared(true);
+                        }}
+                        className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-primary/10 text-sm font-medium text-primary hover:bg-primary/20 transition-colors"
+                      >
+                        <Send className="w-3.5 h-3.5" />
+                        {t('reflections.create_shared_from_private', 'Dela med din partner')}
+                      </button>
+                    </div>
                   )}
                   {!disableShare && !isPaired && privateNote?.content && !sharedNote && (
-                    <p className="flex items-center gap-1.5 text-[11px] text-muted-foreground/40 italic">
-                      <Link2 className="w-3 h-3" />
-                      {t('reflections.solo_share_hint', 'Koppla ihop er för att dela')}
-                    </p>
+                    <div className="flex justify-end">
+                      <span className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-muted text-[11px] text-muted-foreground/50">
+                        <Link2 className="w-3 h-3" />
+                        {t('reflections.solo_share_hint', 'Koppla ihop er för att dela')}
+                      </span>
+                    </div>
                   )}
 
-                  {/* Pre-share review */}
-                  {!shareDisabled && (
-                    <AnimatePresence>
-                      {showSharePreview && !sharedNote && (
-                        <motion.div
-                          initial={{ opacity: 0, y: 6 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          exit={{ opacity: 0, y: -4 }}
-                          className="p-4 rounded-xl bg-primary/5 border border-primary/10 space-y-3"
-                        >
-                          <p className="text-[11px] text-muted-foreground/60 tracking-wide">
-                            {t('reflections.share_preview_title', 'Granska innan du delar')}
-                          </p>
-                          <p className="text-[11px] text-muted-foreground/50 italic">
-                            {t('reflections.share_preview_hint', 'Du kan justera texten. Din privata anteckning påverkas inte.')}
-                          </p>
-                          <textarea
-                            value={sharePreviewText}
-                            onChange={(e) => setSharePreviewText(e.target.value)}
-                            className="w-full min-h-[60px] px-4 py-3 rounded-xl bg-white border border-slate-200 resize-none focus:outline-none focus:ring-0 focus:border-[#497575] font-sans text-sm text-foreground"
-                            autoFocus
-                          />
-                          <div className="flex flex-wrap gap-2">
-                            <button
-                              onClick={() => {
-                                onSaveNote(promptId, sharePreviewText, 'shared');
-                                onShareNote(promptId);
-                                setShowSharePreview(false);
-                                setJustShared(true);
-                              }}
-                              disabled={!sharePreviewText.trim()}
-                              className="flex items-center gap-1.5 text-sm font-medium text-foreground hover:text-primary transition-colors disabled:opacity-40"
-                            >
-                              <Send className="w-3.5 h-3.5" />
-                              {t('reflections.share_confirm', 'Dela')}
-                            </button>
-                            <button
-                              onClick={() => setShowSharePreview(false)}
-                              className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
-                            >
-                              {t('reflections.share_cancel', 'Inte just nu')}
-                            </button>
-                          </div>
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-                  )}
-
-                  {/* Post-share confirmation */}
+                  {/* Post-share confirmation — minimal */}
                   {!shareDisabled && sharedNote && justShared && (
                     <motion.div
-                      initial={{ opacity: 0, y: 6 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      className="p-4 rounded-xl bg-primary/5 border border-primary/10 space-y-3"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ duration: 0.15 }}
+                      className="flex justify-end"
                     >
-                      <p className="text-sm text-foreground flex items-center gap-2">
-                        <Heart className="w-3.5 h-3.5 text-primary" />
+                      <p className="text-[11px] text-primary flex items-center gap-1.5">
+                        <Heart className="w-3 h-3" />
                         {t('reflections.shared_confirmation')}
                       </p>
-                      <div className="flex flex-wrap gap-2">
-                        <button
-                          onClick={() => setJustShared(false)}
-                          className="flex items-center gap-1.5 text-sm font-medium text-foreground hover:text-primary transition-colors"
-                        >
-                          <ArrowRight className="w-3.5 h-3.5" />
-                          {t('reflections.continue_conversation')}
-                        </button>
-                        <button
-                          onClick={() => navigate('/')}
-                          className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
-                        >
-                          <Home className="w-3.5 h-3.5" />
-                          {t('reflections.go_home')}
-                        </button>
-                      </div>
                     </motion.div>
                   )}
 
