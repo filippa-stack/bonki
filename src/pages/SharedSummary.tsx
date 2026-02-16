@@ -271,7 +271,7 @@ export default function SharedSummary() {
           transition={{ duration: 0.15 }}
           className="mb-10 text-center"
         >
-          <h1 className="font-serif text-2xl font-semibold text-foreground tracking-tight">Vårt utrymme</h1>
+          <h1 className="font-serif text-2xl font-semibold text-foreground tracking-tight">Här möts vi</h1>
         </motion.div>
 
         {/* Partner invite — only when solo */}
@@ -314,18 +314,18 @@ export default function SharedSummary() {
             const sessionCategory = getCategoryById(currentSession.categoryId);
             if (!sessionCard || !sessionCategory) return null;
             return (
-              <button
-                onClick={() => navigate(`/card/${currentSession.cardId}`)}
-                className="w-full rounded-2xl bg-primary px-6 py-5 text-left transition-colors hover:bg-primary/90"
-              >
-                <p className="text-[11px] text-primary-foreground/60 mb-1">Pågående samtal</p>
-                <p className="font-serif text-base text-primary-foreground">{sessionCard.title}</p>
-                <p className="text-[11px] text-primary-foreground/50 mt-1">{sessionCategory.title}</p>
-                <div className="flex items-center gap-1.5 mt-3 text-primary-foreground/70">
-                  <span className="text-xs">Återgå till samtalet</span>
-                  <ArrowRight className="w-3 h-3" />
-                </div>
-              </button>
+               <button
+                 onClick={() => navigate(`/card/${currentSession.cardId}`)}
+                 className="w-full rounded-2xl bg-primary px-6 py-6 text-left transition-all hover:bg-primary/90 active:scale-[0.98] shadow-md"
+               >
+                 <p className="text-[11px] text-primary-foreground/60 mb-1.5">Pågående samtal</p>
+                 <p className="font-serif text-lg text-primary-foreground">{sessionCard.title}</p>
+                 <p className="text-[11px] text-primary-foreground/50 mt-1">{sessionCategory.title}</p>
+                 <div className="flex items-center gap-2 mt-4 text-primary-foreground">
+                   <span className="text-sm font-medium">Återgå till samtalet</span>
+                   <ArrowRight className="w-4 h-4" />
+                 </div>
+               </button>
             );
           })()}
 
@@ -389,23 +389,23 @@ export default function SharedSummary() {
                           <p className="font-serif text-sm text-foreground">{proposalCard.title}</p>
                           <p className="text-[11px] text-muted-foreground/60 mt-0.5">{proposalCategory.title}</p>
                         </div>
-                        {!currentSession && (
-                          <Button
-                            size="sm"
-                            className="shrink-0 text-xs gap-1.5"
-                            onClick={async () => {
-                              const result = await activateSession(proposal.id);
-                              if (result.success) {
-                                navigate(`/card/${proposal.card_id}`);
-                              } else {
-                                toast.error('Kunde inte starta samtalet');
-                              }
-                            }}
-                          >
-                            Öppna
-                            <ArrowRight className="w-3 h-3" />
-                          </Button>
-                        )}
+                         {!currentSession && (
+                           <Button
+                             size="default"
+                             className="shrink-0 text-sm gap-2 shadow-sm active:scale-[0.97] transition-all"
+                             onClick={async () => {
+                               const result = await activateSession(proposal.id);
+                               if (result.success) {
+                                 navigate(`/card/${proposal.card_id}`);
+                               } else {
+                                 toast.error('Kunde inte starta samtalet');
+                               }
+                             }}
+                           >
+                             Börja
+                             <ArrowRight className="w-4 h-4" />
+                           </Button>
+                         )}
                       </div>
                       {currentSession && (
                         <p className="text-[11px] text-muted-foreground/40 mt-2">
@@ -507,21 +507,21 @@ export default function SharedSummary() {
             </div>
           )}
 
-          {/* No active session, no proposals — CTA to propose */}
-          {!currentSession && incomingProposals.length === 0 && acceptedProposals.length === 0 && displayMemberCount >= 2 && (
-            <div className="rounded-2xl border border-border/20 bg-card/40 p-6 text-center">
-              <p className="font-serif text-base text-foreground mb-1">Redo för nästa samtal?</p>
-              <p className="text-xs text-muted-foreground/60 mb-4">Välj ett samtal att utforska tillsammans.</p>
-              <Button
-                size="sm"
-                className="gap-2"
-                onClick={() => navigate('/')}
-              >
-                <MessageCircle className="w-3.5 h-3.5" />
-                Föreslå ett samtal
-              </Button>
-            </div>
-          )}
+           {/* No active session, no proposals — CTA to propose */}
+           {!currentSession && incomingProposals.length === 0 && acceptedProposals.length === 0 && displayMemberCount >= 2 && (
+             <div className="rounded-2xl border border-primary/15 bg-primary/5 p-8 text-center">
+               <p className="font-serif text-lg text-foreground mb-1.5">Redo att mötas?</p>
+               <p className="text-sm text-muted-foreground/70 mb-5">Välj ett samtal att utforska tillsammans.</p>
+               <Button
+                 size="lg"
+                 className="gap-2.5 px-8 shadow-sm active:scale-[0.97] transition-all"
+                 onClick={() => navigate('/')}
+               >
+                 <MessageCircle className="w-4 h-4" />
+                 Föreslå ett samtal
+               </Button>
+             </div>
+           )}
         </motion.div>
 
         {/* ─── Surfaced takeaway ─── */}
