@@ -70,16 +70,26 @@ export default function AttachPartner({
 
   const inviteLink = inviteInfo ? `${window.location.origin}/join?token=${inviteInfo.invite_token}` : '';
 
-  const handleCopy = async () => {
+  const handleCopyCode = async () => {
+    if (!inviteInfo) return;
+    try {
+      await navigator.clipboard.writeText(inviteInfo.invite_code.toUpperCase());
+      setCopied(true);
+      toast.success('Kod kopierad');
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      toast.error('Kunde inte kopiera');
+    }
+  };
+
+  const handleCopyLink = async () => {
     if (!inviteInfo) return;
     try {
       const textToCopy = inviteMessage.trim()
         ? `${inviteMessage.trim()}\n\n${inviteLink}`
         : inviteLink;
       await navigator.clipboard.writeText(textToCopy);
-      setCopied(true);
       toast.success(t('invite.copied', 'Länk kopierad'));
-      setTimeout(() => setCopied(false), 2000);
     } catch {
       toast.error(t('invite.copy_failed', 'Kunde inte kopiera'));
     }
@@ -276,7 +286,7 @@ export default function AttachPartner({
                     variant="outline"
                     size="sm"
                     className="shrink-0"
-                    onClick={handleCopy}
+                    onClick={handleCopyCode}
                     disabled={!inviteInfo}
                   >
                     {copied ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
