@@ -492,7 +492,7 @@ export default function CardView() {
                 >
                   {bothCompleted ? (
                     <div className="space-y-6">
-                      <p className="text-sm text-muted-foreground">
+                      <p className="font-serif text-foreground text-center">
                         Nu är ni klara.
                       </p>
                       <Button
@@ -505,24 +505,20 @@ export default function CardView() {
                       </Button>
                     </div>
                   ) : (
-                    <div className="space-y-4">
-                      {/* Shared pace dots */}
-                      <div className="flex justify-center gap-2">
-                        <span className="block w-2 h-2 rounded-full bg-foreground/20 transition-all duration-300" />
-                        <span className="block w-2 h-2 rounded-full border border-foreground/15 transition-all duration-300 ease-out" />
-                      </div>
-
-                      {/* Breathing line */}
-                      <div className="flex justify-center">
-                        <div
-                          className="w-16 h-px bg-foreground/[0.08]"
-                          style={{ animation: 'breathe 5s ease-in-out infinite' }}
-                        />
-                      </div>
-
-                      <p className="text-sm text-muted-foreground/60 leading-relaxed">
-                        Samtalet vilar här en stund — ni fortsätter när båda har reflekterat.
+                    <div className="space-y-6">
+                      <p className="text-sm text-muted-foreground/70 leading-relaxed">
+                        Samtalet väntar på din partner.
                       </p>
+                      <p className="text-xs text-muted-foreground/40">
+                        Ni fortsätter när hen har reflekterat.
+                      </p>
+
+                      <button
+                        onClick={() => navigate('/')}
+                        className="text-xs text-muted-foreground/40 hover:text-muted-foreground/60 transition-colors mx-auto block"
+                      >
+                        Gå tillbaka till hem
+                      </button>
                     </div>
                   )}
                 </motion.div>
