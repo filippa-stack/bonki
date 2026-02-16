@@ -101,6 +101,9 @@ export default function SessionStepReflection({
   if (state === 'revealed') {
     return (
       <div className="mt-8 mb-2 space-y-5">
+        <p className="text-xs text-muted-foreground/40 text-center">
+          Nu kan ni läsa varandras reflektioner.
+        </p>
         <p className="text-xs text-muted-foreground/50 text-center tracking-wide">
           Så här reflekterade ni
         </p>
