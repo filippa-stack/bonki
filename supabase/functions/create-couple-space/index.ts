@@ -126,14 +126,21 @@ Deno.serve(async (req) => {
       });
     }
 
+    // Insert initial progress row; ON CONFLICT DO NOTHING ensures idempotency
     await adminClient
       .from("couple_progress")
-      .upsert({
+      .insert({
         couple_space_id: spaceId,
         current_session: null,
         journey_state: null,
         updated_by: userId,
-      }, { onConflict: "couple_space_id" });
+      } as any)
+      .then(({ error }) => {
+        // Ignore unique violation (row already exists)
+        if (error && error.code !== '23505') {
+          console.error("Progress insert error:", error);
+        }
+      });
 
     await adminClient
       .from("system_events")
