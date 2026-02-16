@@ -86,7 +86,29 @@ export default function Home() {
   const THREE_DAYS_MS = 3 * 24 * 60 * 60 * 1000;
   const SEVEN_DAYS_MS = 7 * 24 * 60 * 60 * 1000;
   const [welcomeBackDismissed, setWelcomeBackDismissed] = useState(false);
-  const [returnOverlayDismissed, setReturnOverlayDismissed] = useState(false);
+
+  // Persist return-overlay dismissal so it doesn't reappear for 7 days
+  const RETURN_OVERLAY_KEY = 'return_overlay_dismissed';
+  const [returnOverlayDismissed, setReturnOverlayDismissed] = useState(() => {
+    try {
+      const stored = localStorage.getItem(RETURN_OVERLAY_KEY);
+      if (!stored) return false;
+      const { timestamp, sessionKey } = JSON.parse(stored);
+      const sevenDaysAgo = Date.now() - 7 * 24 * 60 * 60 * 1000;
+      // Expired → allow again
+      if (timestamp < sevenDaysAgo) return false;
+      // New session started since dismissal → allow again
+      const currentKey = currentSession?.cardId || journeyState?.lastOpenedCardId || '';
+      if (sessionKey && currentKey && sessionKey !== currentKey) return false;
+      return true;
+    } catch { return false; }
+  });
+
+  const dismissReturnOverlay = () => {
+    const currentKey = currentSession?.cardId || journeyState?.lastOpenedCardId || '';
+    localStorage.setItem(RETURN_OVERLAY_KEY, JSON.stringify({ timestamp: Date.now(), sessionKey: currentKey }));
+    setReturnOverlayDismissed(true);
+  };
 
   const lastActivityElapsed = useMemo(() => {
     const lastActivity = journeyState?.updatedAt;
@@ -262,14 +284,14 @@ export default function Home() {
         {showReturnOverlay && (
           <ReturnOverlay
             onResume={() => {
-              setReturnOverlayDismissed(true);
+              dismissReturnOverlay();
               if (returnResumeCardId) navigate(`/card/${returnResumeCardId}`);
             }}
             onStartNew={() => {
-              setReturnOverlayDismissed(true);
+              dismissReturnOverlay();
             }}
             onBrowse={() => {
-              setReturnOverlayDismissed(true);
+              dismissReturnOverlay();
             }}
           />
         )}
