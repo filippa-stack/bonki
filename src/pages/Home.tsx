@@ -197,10 +197,12 @@ export default function Home() {
   const resumeSurface: ResumeSurface = useMemo(() => {
     if (showReturnOverlay) return 'returnOverlay';
     if (hasActiveSession && !!sessionCard && !!sessionCategory && !resumeDismissed && isMidCard && !isSoloMode) return 'resumeDialog';
-    // ContinueModule: suppress if too long inactive or user already navigated this visit
+    // ContinueModule: suppress if too long inactive
     if (lastActivityElapsed >= FOURTEEN_DAYS_MS) return 'none';
+    // Always show ContinueModule for active sessions (even if user already navigated this visit)
+    if (currentSession) return 'continueModule';
     if (hasNavigatedThisVisit) return 'none';
-    if (currentSession || journeyState?.lastCompletedCardId || journeyState?.suggestedNextCardId) return 'continueModule';
+    if (journeyState?.lastCompletedCardId || journeyState?.suggestedNextCardId) return 'continueModule';
     return 'none';
   }, [showReturnOverlay, hasActiveSession, sessionCard, sessionCategory, resumeDismissed, isMidCard, isSoloMode, currentSession, journeyState, lastActivityElapsed]);
 
