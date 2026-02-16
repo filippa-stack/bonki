@@ -171,6 +171,8 @@ export default function CardView() {
   // Allow session if: solo, both have progress, has accepted proposal, or revisit
   const canStartSharedSession = !isPaired || hasMutualProgress || hasAcceptedProposal || isRevisitMode;
   const [autoProposalSent, setAutoProposalSent] = useState(false);
+  // Show a visible gate when paired and session can't start yet
+  const showProposalGate = isPaired && !canStartSharedSession && !isRevisitMode && !showCompletion;
   // ─── Guard: if there's an active session for a DIFFERENT card, show modal instead of redirect ───
   const hasConflictingSession = !!(currentSession && currentSession.cardId !== cardId);
   const conflictingCard = hasConflictingSession ? getCardById(currentSession!.cardId) : undefined;
@@ -214,18 +216,89 @@ export default function CardView() {
       if (canStartSharedSession) {
         hasAutoStarted.current = true;
         startSession(category.id, card.id);
-      } else if (isPaired && !hasPendingProposalForCard && !autoProposalSent) {
-        // Auto-send proposal for this card
-        hasAutoStarted.current = true;
-        setAutoProposalSent(true);
-        sendProposal(card.id, category.id).then((result) => {
-          if (result.ok) {
-            toast(t('topic_proposal.proposed_toast', 'Du har föreslagit ett samtal. Din partner ser det nästa gång hen öppnar appen.'), { duration: 4000 });
-          }
-        });
       }
+      // When paired and can't start: do NOT auto-send. Show proposal gate UI instead.
     }
-  }, [isActiveSession, isRevisitMode, showCompletion, card, category, startSession, canStartSharedSession, isPaired, hasPendingProposalForCard, autoProposalSent, sendProposal, t]);
+  }, [isActiveSession, isRevisitMode, showCompletion, card, category, startSession, canStartSharedSession]);
+
+  // ─── Proposal gate screen: paired user must propose before entering ───
+  if (showProposalGate && card && category) {
+    return (
+      <div className="min-h-screen page-bg">
+        <Header
+          title={category.title}
+          showBack
+          backTo={category ? `/category/${category.id}` : '/'}
+        />
+        <div className="px-6 pt-20 pb-16">
+          <motion.div
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="text-center max-w-md mx-auto space-y-4"
+          >
+            <h2 className="text-xl font-serif text-foreground">{card.title}</h2>
+            {card.subtitle && (
+              <p className="text-sm text-muted-foreground leading-relaxed">{card.subtitle}</p>
+            )}
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.15, duration: 0.4 }}
+            className="max-w-md mx-auto mt-10 space-y-4 text-center"
+          >
+            {hasPendingProposalForCard ? (
+              <div className="rounded-2xl border border-border bg-card/50 px-5 py-6 space-y-2">
+                <p className="text-sm text-foreground font-serif">Förslag skickat</p>
+                <p className="text-xs text-muted-foreground leading-relaxed">
+                  Väntar på att din partner ska svara. De ser förslaget nästa gång de öppnar appen.
+                </p>
+              </div>
+            ) : (
+              <div className="rounded-2xl border border-border bg-card/50 px-5 py-6 space-y-4">
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  Ni väljer samtalsämne tillsammans. Skicka ett förslag till din partner.
+                </p>
+                <Button
+                  onClick={() => setShowProposalSheet(true)}
+                  className="gap-2"
+                >
+                  Skicka förslag
+                </Button>
+              </div>
+            )}
+
+            <Button
+              variant="ghost"
+              size="sm"
+              className="text-muted-foreground"
+              onClick={() => navigate(category ? `/category/${category.id}` : '/')}
+            >
+              Tillbaka
+            </Button>
+          </motion.div>
+        </div>
+
+        <ProposalSheet
+          open={showProposalSheet}
+          onClose={() => setShowProposalSheet(false)}
+          cardTitle={card.title}
+          categoryTitle={category.title}
+          onSend={async (msg) => {
+            const result = await sendProposal(card.id, category.id, msg);
+            if (result.ok) {
+              setAutoProposalSent(true);
+              toast(t('topic_proposal.proposed_toast', 'Förslag skickat! Din partner ser det nästa gång hen öppnar appen.'), { duration: 4000 });
+            } else {
+              toast.error('Kunde inte skicka förslaget. Försök igen.');
+            }
+          }}
+        />
+      </div>
+    );
+  }
 
   if (!card) {
     return (

@@ -3,6 +3,8 @@ import { motion } from 'framer-motion';
 import { CheckCircle2 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useApp } from '@/contexts/AppContext';
+import { useAuth } from '@/contexts/AuthContext';
+import { useCoupleSpace } from '@/hooks/useCoupleSpace';
 import Header from '@/components/Header';
 
 export default function Category() {
@@ -10,8 +12,12 @@ export default function Category() {
   const { categoryId } = useParams<{ categoryId: string }>();
   const navigate = useNavigate();
   const { getCategoryById, getCardsByCategory, journeyState, currentSession, getCardById } = useApp();
+  const { user } = useAuth();
+  const { memberCount } = useCoupleSpace();
   const exploredIds = journeyState?.exploredCardIds || [];
   const cardVisitDates = journeyState?.cardVisitDates || {};
+  const sessionProgress = journeyState?.sessionProgress || {};
+  const isPaired = memberCount >= 2;
 
   const category = categoryId ? getCategoryById(categoryId) : undefined;
   const cards = categoryId ? getCardsByCategory(categoryId) : [];
@@ -68,7 +74,14 @@ export default function Category() {
               card={card}
               index={index}
               highlighted={card.id === highlightedCardId}
-              isCompleted={index === 0 || exploredIds.includes(card.id)} /* TODO: remove index===0 mock */
+              isCompleted={(() => {
+                const inExplored = exploredIds.includes(card.id);
+                if (!isPaired) return index === 0 || inExplored;
+                // When paired, require both partners to have progress
+                const perUser = sessionProgress[card.id]?.perUser;
+                const hasMutualProgress = perUser ? Object.keys(perUser).length >= 2 : false;
+                return inExplored && hasMutualProgress;
+              })()}
               lastVisitedAt={cardVisitDates[card.id] || null}
               onNavigate={() => navigate(`/card/${card.id}`)}
             />
