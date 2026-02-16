@@ -8,6 +8,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useCoupleSpace } from '@/hooks/useCoupleSpace';
 import { useReflectionResponses } from '@/hooks/useReflectionResponses';
 import { supabase } from '@/integrations/supabase/client';
+import { useDevState } from '@/hooks/useDevState';
 import Header from '@/components/Header';
 import SharedTimelineItem from '@/components/SharedTimelineItem';
 import ReflectionMemoryCard from '@/components/ReflectionMemoryCard';
@@ -181,7 +182,11 @@ export default function SharedSummary() {
     return timelineItems.filter(n => n.is_highlight);
   }, [timelineItems]);
 
-  const hasContent = sharedNotes.length > 0;
+  const devState = useDevState();
+  const hasContent = devState === 'archiveEmpty' ? false
+    : devState === 'archiveWithHistory' ? true
+    : sharedNotes.length > 0;
+  const effectiveLoading = devState ? false : loading;
   const hasActiveFilter = categoryFilter !== 'all' || searchQuery.length > 0;
 
   const exploredIds = journeyState?.exploredCardIds || [];
@@ -214,7 +219,7 @@ export default function SharedSummary() {
         </motion.div>
 
         {/* ─── Empty state ─── */}
-        {!hasContent && !hasActiveFilter && !loading && (
+        {!hasContent && !hasActiveFilter && !effectiveLoading && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -229,7 +234,7 @@ export default function SharedSummary() {
           </motion.div>
         )}
 
-        {loading ? (
+        {effectiveLoading ? (
           <div className="py-12 space-y-6 animate-fade-in">
             {[1, 2, 3].map(i => (
               <div key={i} className="h-4 w-3/4 mx-auto rounded bg-muted/20 animate-pulse" />

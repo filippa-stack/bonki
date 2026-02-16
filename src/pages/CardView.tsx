@@ -20,6 +20,7 @@ import { ArrowRight, Home, RotateCcw, BookOpen, Check, Send } from 'lucide-react
 import CardTakeaways from '@/components/CardTakeaways';
 
 import { useProposals, Proposal } from '@/hooks/useProposals';
+import { useDevState } from '@/hooks/useDevState';
 
 const sectionTypeLabels: Record<string, string> = {
   opening: 'Början',
@@ -58,6 +59,7 @@ export default function CardView() {
   } = useApp();
   const { user } = useAuth();
   const { memberCount } = useCoupleSpace();
+  const devState = useDevState();
 
   const card = cardId ? getCardById(cardId) : undefined;
   const category = card ? getCategoryById(card.categoryId) : undefined;
@@ -124,8 +126,12 @@ export default function CardView() {
   const [showOverview] = useState(false);
   const [showReentry] = useState(false);
   const [showCompletion, setShowCompletion] = useState(
+    devState === 'completed' ? true :
     !isRevisitMode && isReturningUser && (isFullyExplored || allStepsCompleted)
   );
+
+  // Dev state: force waiting view
+  const devWaiting = devState === 'waiting';
   
   
   const [reviewOpen, setReviewOpen] = useState(false);
@@ -480,7 +486,7 @@ export default function CardView() {
               {/* Takeaways removed from exercise step — now rendered on completion screen */}
 
               {/* Waiting / advance state — inline below the step content */}
-              {userCompletedCurrentStep ? (
+              {(userCompletedCurrentStep || devWaiting) ? (
 
                 <motion.div
                   initial={{ opacity: 0 }}
