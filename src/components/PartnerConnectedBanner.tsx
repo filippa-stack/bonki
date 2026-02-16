@@ -1,10 +1,7 @@
 import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth } from '@/contexts/AuthContext';
 import { useCoupleSpace } from '@/hooks/useCoupleSpace';
 import { supabase } from '@/integrations/supabase/client';
-import { Button } from '@/components/ui/button';
-import { Heart } from 'lucide-react';
 
 const SEEN_KEY = 'partner_connected_seen';
 
@@ -60,40 +57,20 @@ export default function PartnerConnectedBanner() {
     };
   }, [user, space]);
 
-  const dismiss = () => {
-    if (space) localStorage.setItem(SEEN_KEY, space.id);
-    setVisible(false);
-  };
+  // Auto-dismiss after first render
+  useEffect(() => {
+    if (visible && space) {
+      localStorage.setItem(SEEN_KEY, space.id);
+      const timer = setTimeout(() => setVisible(false), 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [visible, space]);
+
+  if (!visible) return null;
 
   return (
-    <AnimatePresence>
-      {visible && (
-        <motion.div
-          initial={{ opacity: 0, y: -12 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -12 }}
-          transition={{ duration: 0.35, ease: 'easeOut' }}
-          className="px-6 mb-6"
-        >
-          <div className="rounded-2xl border border-accent/30 bg-card p-6 text-center space-y-4">
-            <div className="flex justify-center">
-              <Heart className="h-6 w-6 text-accent" />
-            </div>
-            <h2 className="font-serif text-lg text-foreground">
-              Din partner har anslutit 🎉
-            </h2>
-            <p className="text-sm text-muted-foreground leading-relaxed max-w-xs mx-auto">
-              Nu kan ni dela reflektioner med varandra. Inget delas utan att du själv väljer att dela.
-            </p>
-            <Button
-              onClick={dismiss}
-              size="sm"
-            >
-              Okej
-            </Button>
-          </div>
-        </motion.div>
-      )}
-    </AnimatePresence>
+    <p className="text-xs text-muted-foreground/50 text-center pt-2 pb-4">
+      🤍 Ni är nu ihopkopplade.
+    </p>
   );
 }
