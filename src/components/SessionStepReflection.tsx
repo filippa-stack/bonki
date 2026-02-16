@@ -1,10 +1,12 @@
-import { useState } from 'react';
-import { motion } from 'framer-motion';
-import { Lock, Check } from 'lucide-react';
+import { useState, useEffect, useRef } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Lock, Check, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { useCoupleSpace } from '@/hooks/useCoupleSpace';
 import { useSessionReflections, type ReflectionState } from '@/hooks/useSessionReflections';
+
+const COUCH_HINT_KEY = 'couch_hint_dismissed_session';
 
 interface SessionStepReflectionProps {
   cardId: string;
@@ -34,6 +36,15 @@ export default function SessionStepReflection({
   const { space, userRole } = useCoupleSpace();
   const myName = userRole === 'partner_a' ? (space?.partner_a_name || 'Du') : (space?.partner_b_name || 'Du');
   const partnerName = userRole === 'partner_a' ? (space?.partner_b_name || 'Din partner') : (space?.partner_a_name || 'Din partner');
+
+  // Couch hint: show once per session (keyed by cardId)
+  const [couchHintVisible, setCouchHintVisible] = useState(() => {
+    return sessionStorage.getItem(COUCH_HINT_KEY) !== cardId;
+  });
+  const dismissCouchHint = () => {
+    sessionStorage.setItem(COUCH_HINT_KEY, cardId);
+    setCouchHintVisible(false);
+  };
 
   const [localText, setLocalText] = useState('');
 
@@ -147,6 +158,30 @@ export default function SessionStepReflection({
   // ─── DRAFT: writing state ───
   return (
     <div className="mt-6 mb-2 space-y-3">
+      {/* Couch hint — once per session, dismissible */}
+      <AnimatePresence>
+        {couchHintVisible && stepIndex === 0 && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.2 }}
+            className="flex items-start gap-2 rounded-xl bg-muted/30 px-4 py-3"
+          >
+            <p className="text-xs text-muted-foreground/60 leading-relaxed flex-1">
+              Sitter ni tillsammans? Turas om att skriva – ni ser varandras reflektioner när båda är klara.
+            </p>
+            <button
+              onClick={dismissCouchHint}
+              className="shrink-0 p-0.5 text-muted-foreground/40 hover:text-muted-foreground transition-colors"
+              aria-label="Stäng"
+            >
+              <X className="w-3.5 h-3.5" />
+            </button>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       <div className="rounded-xl border border-border/50 bg-card overflow-hidden">
         <textarea
           value={displayText}
