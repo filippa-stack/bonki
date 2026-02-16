@@ -1,7 +1,9 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { hasPendingInvite } from '@/hooks/usePendingInvite';
+import { toast } from 'sonner';
 
 interface CoupleSpaceData {
   id: string;
@@ -31,11 +33,13 @@ interface CoupleSpaceState {
 
 export function useCoupleSpace(): CoupleSpaceState {
   const { user } = useAuth();
+  const { t } = useTranslation();
   const [space, setSpace] = useState<CoupleSpaceData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [memberCount, setMemberCount] = useState(0);
   const [userRole, setUserRole] = useState<string | null>(null);
+  const prevMemberCountRef = useRef<number>(0);
 
   const fetchSpace = useCallback(async () => {
     if (!user) {
@@ -74,6 +78,7 @@ export function useCoupleSpace(): CoupleSpaceState {
 
         setSpace(spaceData as unknown as CoupleSpaceData);
         setMemberCount(count ?? 1);
+        prevMemberCountRef.current = count ?? 1;
         setUserRole(membership.role);
         // Don't auto-create if there's a pending invite — let the claim finish first
         if (hasPendingInvite()) {
@@ -131,7 +136,19 @@ export function useCoupleSpace(): CoupleSpaceState {
         .from('couple_members')
         .select('id', { count: 'exact', head: true })
         .eq('couple_space_id', space.id);
-      if (!cancelled) setMemberCount(count ?? 1);
+      if (!cancelled) {
+        const newCount = count ?? 1;
+        const prev = prevMemberCountRef.current;
+        // Celebrate when partner joins (1→2)
+        if (prev === 1 && newCount === 2) {
+          toast(t('couple_space.partner_just_joined', 'Din partner har anslutit! 🎉'), {
+            description: t('couple_space.partner_just_joined_hint', 'Ni är nu kopplade och kan börja er resa tillsammans.'),
+            duration: 5000,
+          });
+        }
+        prevMemberCountRef.current = newCount;
+        setMemberCount(newCount);
+      }
     };
 
     // Immediate fetch
