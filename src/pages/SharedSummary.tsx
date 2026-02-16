@@ -44,15 +44,15 @@ const AUTOSAVE_DELAY = 800;
 export default function SharedSummary() {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const { categories, backgroundColor, getCardById, getCategoryById, startSession, journeyState, cards, getTakeawayShared } = useApp();
+  const { categories, backgroundColor, getCardById, getCategoryById, startSession, journeyState, cards, getTakeawayShared, currentSession } = useApp();
   const { user } = useAuth();
   const { space, displayMemberCount, userRole, fetchInviteInfo } = useCoupleSpace();
   const { proposals, incomingProposals, ownPendingProposals, savedProposals, updateProposalStatus } = useProposals();
 
-  // Accepted proposals that haven't been opened yet (show until user navigates)
+  // Accepted proposals — exclude any that match the current active session
   const acceptedProposals = useMemo(() =>
-    proposals.filter(p => p.status === 'accepted'),
-    [proposals]
+    proposals.filter(p => p.status === 'accepted' && p.card_id !== currentSession?.cardId),
+    [proposals, currentSession?.cardId]
   );
 
   const [searchQuery, setSearchQuery] = useState('');
@@ -311,13 +311,36 @@ export default function SharedSummary() {
         )}
 
         {/* ─── Proposals section ─── */}
-        {(incomingProposals.length > 0 || acceptedProposals.length > 0 || ownPendingProposals.length > 0 || savedProposals.length > 0 || displayMemberCount >= 2) && (
+        {(currentSession || incomingProposals.length > 0 || acceptedProposals.length > 0 || ownPendingProposals.length > 0 || savedProposals.length > 0 || displayMemberCount >= 2) && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.15 }}
             className="mb-14"
           >
+            {/* Active session — always visible */}
+            {currentSession && (() => {
+              const sessionCard = getCardById(currentSession.cardId);
+              const sessionCategory = getCategoryById(currentSession.categoryId);
+              if (!sessionCard || !sessionCategory) return null;
+              return (
+                <div className="mb-6">
+                  <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-4 text-center">
+                    Pågående samtal
+                  </p>
+                  <div className="text-left">
+                    <button
+                      onClick={() => navigate(`/card/${currentSession.cardId}`)}
+                      className="w-full rounded-xl border border-primary/20 bg-card/40 px-5 py-4 text-left transition-colors hover:bg-card/60"
+                    >
+                      <p className="font-serif text-sm text-foreground">{sessionCard.title}</p>
+                      <p className="text-[11px] text-muted-foreground/60 mt-0.5">{sessionCategory.title}</p>
+                    </button>
+                  </div>
+                </div>
+              );
+            })()}
+
             {/* Incoming proposals */}
             {incomingProposals.length > 0 && (
               <div className="mb-6">
