@@ -331,10 +331,10 @@ export default function SharedSummary() {
                   <div className="text-left">
                     <button
                       onClick={() => navigate(`/card/${currentSession.cardId}`)}
-                      className="w-full rounded-xl border border-primary/20 bg-card/40 px-5 py-4 text-left transition-colors hover:bg-card/60"
+                      className="w-full rounded-xl bg-primary px-5 py-4 text-left transition-colors hover:bg-primary/90"
                     >
-                      <p className="font-serif text-sm text-foreground">{sessionCard.title}</p>
-                      <p className="text-[11px] text-muted-foreground/60 mt-0.5">{sessionCategory.title}</p>
+                      <p className="font-serif text-sm text-primary-foreground">{sessionCard.title}</p>
+                      <p className="text-[11px] text-primary-foreground/60 mt-0.5">{sessionCategory.title}</p>
                     </button>
                   </div>
                 </div>
