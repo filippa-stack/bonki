@@ -329,22 +329,24 @@ export default function CardView() {
             >
               Till Hem
             </Button>
-            <div className="flex justify-center gap-6 pt-2">
-              {suggestedCard && suggestedCategory && (
+            {/* Single visually reduced secondary — prefer "Föreslå" when available, else "Läs igen" */}
+            <div className="pt-4 text-center">
+              {suggestedCard && suggestedCategory ? (
                 <button
                   onClick={() => memberCount >= 2 ? setShowProposalSheet(true) : navigate(`/card/${suggestedCard.id}`)}
                   disabled={proposalSent}
-                  className="text-xs text-muted-foreground hover:text-foreground transition-colors disabled:opacity-50"
+                  className="text-xs text-muted-foreground/50 hover:text-muted-foreground transition-colors disabled:opacity-40"
                 >
                   {proposalSent ? 'Förslag skickat' : 'Föreslå nästa samtal'}
                 </button>
+              ) : (
+                <button
+                  onClick={() => navigate(`/card/${card.id}?revisit=true`)}
+                  className="text-xs text-muted-foreground/50 hover:text-muted-foreground transition-colors"
+                >
+                  Läs igen
+                </button>
               )}
-              <button
-                onClick={() => navigate(`/card/${card.id}?revisit=true`)}
-                className="text-xs text-muted-foreground hover:text-foreground transition-colors"
-              >
-                Läs igen
-              </button>
             </div>
           </motion.div>
         </div>
