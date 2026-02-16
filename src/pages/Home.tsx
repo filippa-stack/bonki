@@ -220,7 +220,7 @@ export default function Home() {
       <div className="flex-1">
       <Header showBackgroundPicker={false} showBackupManager={false} />
       {/* Header with Logo — compact when active session */}
-      {!isSoloMode && !hasActiveSession && (
+      {isSoloMode && (
         <div className="px-6 pt-14 pb-12">
           <motion.div
             initial={{ opacity: 0 }}
