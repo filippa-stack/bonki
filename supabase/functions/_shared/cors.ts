@@ -1,6 +1,7 @@
 const ALLOWED_ORIGINS = [
   "https://couple-dialogue-space.lovable.app",
   "https://id-preview--1604837d-627c-4368-a714-aa6b770c1b8c.lovable.app",
+  "https://1604837d-627c-4368-a714-aa6b770c1b8c.lovableproject.com",
   "http://localhost:5173",
   "http://localhost:3000",
   "http://localhost:8080",

@@ -72,11 +72,12 @@ export default function LeaveCoupleSpace() {
     }
   };
 
-  const handleCreateNew = async () => {
+  const handleCreateNew = () => {
     setShowCompletion(false);
-    await refreshSpace();
+    // Navigate home first, then reload to trigger fresh space creation
     navigate('/', { replace: true });
-    window.location.reload();
+    // Small delay to ensure navigation completes before reload
+    setTimeout(() => window.location.reload(), 100);
   };
 
   return (
