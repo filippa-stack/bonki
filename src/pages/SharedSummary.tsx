@@ -337,14 +337,15 @@ export default function SharedSummary() {
                     cardTitle={proposalCard.title}
                     categoryTitle={proposalCategory.title}
                     proposerName={proposerName}
-                    onAccept={() => {
-                      updateProposalStatus(proposal.id, 'accepted');
+                    onAccept={async () => {
+                      // Race-safe: update status first, proceed regardless
+                      await updateProposalStatus(proposal.id, 'accepted');
                       startSession(proposal.category_id, proposal.card_id, { force: true, fromBeginning: true });
                       toast('Samtalet startade', { duration: 2000 });
                       navigate(`/card/${proposal.card_id}`);
                     }}
-                    onSaveForLater={() => {
-                      updateProposalStatus(proposal.id, 'saved_for_later');
+                    onSaveForLater={async () => {
+                      await updateProposalStatus(proposal.id, 'saved_for_later');
                     }}
                   />
                 );
@@ -394,14 +395,14 @@ export default function SharedSummary() {
                             size="sm"
                             variant="ghost"
                             className="text-muted-foreground text-xs"
-                            onClick={() => {
-                              updateProposalStatus(proposal.id, 'accepted');
+                            onClick={async () => {
+                              await updateProposalStatus(proposal.id, 'accepted');
                               startSession(proposal.category_id, proposal.card_id, { force: true, fromBeginning: true });
                               toast('Samtalet startade', { duration: 2000 });
                               navigate(`/card/${proposal.card_id}`);
                             }}
                           >
-                            Starta
+                            Starta samtalet
                           </Button>
                         </div>
                       );

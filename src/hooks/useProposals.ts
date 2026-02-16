@@ -111,14 +111,14 @@ export function useProposals() {
     proposalId: string,
     status: 'accepted' | 'saved_for_later'
   ) => {
+    // Race-safe: if proposal is already not pending, just proceed silently
     const { error } = await supabase
       .from('topic_proposals')
       .update({ status } as any)
       .eq('id', proposalId);
 
     if (error) {
-      console.error('Failed to update proposal:', error);
-      return;
+      console.warn('Failed to update proposal (may already be handled):', error);
     }
 
     await fetchProposals();
