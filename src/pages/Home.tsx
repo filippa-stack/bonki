@@ -577,22 +577,22 @@ export default function Home() {
         )}
       </AnimatePresence>
 
-      {/* Categories — solo users can browse below fold */}
+      {/* Categories — solo: demoted preview with label */}
       {!isProposalMode && isSoloMode && (
         <div id="category-section" className="px-6 pb-12 mt-4">
-          <p className="text-sm text-muted-foreground/60 mb-8 font-serif not-italic">
-            {t('home.choose_category')}
+          <p className="text-xs text-muted-foreground/40 uppercase tracking-wide mb-4">
+            Förhandstitt — samtalen öppnas när ni är två
           </p>
-          <div className="space-y-4">
+          <div className="space-y-4 opacity-50 pointer-events-none">
             {categories.map((category, index) => {
               const catStatus = getCategoryStatus(category.id);
               return (
                 <CategoryCard
                   key={category.id}
                   category={category}
-                  onClick={() => navigate(`/category/${category.id}`)}
+                  onClick={() => {}}
                   index={index}
-                  highlighted={category.id === highlightedCategoryId}
+                  highlighted={false}
                   isCompleted={catStatus === 'explored'}
                 />
               );
