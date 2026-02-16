@@ -495,70 +495,22 @@ export default function CardView() {
 
               {/* Takeaways removed from exercise step — now rendered on completion screen */}
 
-              {/* Navigation / waiting state */}
+              {/* Waiting / advance state — inline below the step content */}
               {userCompletedCurrentStep ? (
 
                 <motion.div
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
-                  transition={{ duration: 0.15 }}
+                  transition={{ duration: 0.15, delay: 0.1 }}
                   role="status"
                   aria-live="polite"
-                  className="my-10 py-10 px-5 text-center space-y-5"
+                  className="mt-12 mb-8 text-center"
                 >
-                  {!bothCompleted && (
-                    <>
-                      <p className="text-sm font-serif text-foreground">
-                        Väntar på din partner
-                      </p>
-                      <p className="text-sm text-muted-foreground leading-relaxed">
-                        Du är klar med det här steget. Ni fortsätter när båda svarat.
-                      </p>
-                    </>
-                  )}
-
-                  {/* Breathing line — fades out when both complete */}
-                  <motion.div
-                    className="flex justify-center pt-2"
-                    animate={{ opacity: bothCompleted ? 0 : 1 }}
-                    transition={{ duration: 0.3, ease: 'easeOut' }}
-                  >
-                    <div
-                      className="w-16 h-px bg-foreground/[0.08]"
-                      style={bothCompleted ? undefined : { animation: 'breathe 5s ease-in-out infinite' }}
-                    />
-                  </motion.div>
-
-                  {/* Shared pace dots */}
-                  <div className="flex justify-center gap-2 pt-1">
-                    <span className="block w-2 h-2 rounded-full bg-foreground/20 transition-all duration-300" />
-                    <span
-                      className={`block w-2 h-2 rounded-full transition-all duration-300 ease-out ${
-                        partnerCompletedCurrentStep
-                          ? 'bg-foreground/20'
-                          : 'border border-foreground/15'
-                      }`}
-                    />
-                  </div>
-
-                  {/* Both complete confirmation */}
-                  <AnimatePresence>
-                    {bothCompleted && (
-                      <motion.p
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        transition={{ duration: 0.25, ease: 'easeOut' }}
-                        className="text-sm text-muted-foreground"
-                      >
+                  {bothCompleted ? (
+                    <div className="space-y-6">
+                      <p className="text-sm text-muted-foreground">
                         Nu är ni klara.
-                      </motion.p>
-                    )}
-                  </AnimatePresence>
-
-                  {/* CTAs */}
-                  <div className="pt-4 space-y-3">
-                    {bothCompleted ? (
+                      </p>
                       <Button
                         onClick={handleNextStep}
                         size="lg"
@@ -567,22 +519,28 @@ export default function CardView() {
                         Gå vidare tillsammans
                         <ArrowRight className="w-4 h-4" />
                       </Button>
-                    ) : (
-                      <>
-                        <Button
-                          onClick={() => navigate('/')}
-                          size="lg"
-                          className="gap-2 h-14 font-normal w-full rounded-2xl"
-                        >
-                          <Home className="w-4 h-4" />
-                          Utforska under tiden
-                        </Button>
-                        <p className="text-xs text-muted-foreground/40">
-                          Samtalet finns kvar — ni fortsätter där ni slutade.
-                        </p>
-                      </>
-                    )}
-                  </div>
+                    </div>
+                  ) : (
+                    <div className="space-y-4">
+                      {/* Shared pace dots */}
+                      <div className="flex justify-center gap-2">
+                        <span className="block w-2 h-2 rounded-full bg-foreground/20 transition-all duration-300" />
+                        <span className="block w-2 h-2 rounded-full border border-foreground/15 transition-all duration-300 ease-out" />
+                      </div>
+
+                      {/* Breathing line */}
+                      <div className="flex justify-center">
+                        <div
+                          className="w-16 h-px bg-foreground/[0.08]"
+                          style={{ animation: 'breathe 5s ease-in-out infinite' }}
+                        />
+                      </div>
+
+                      <p className="text-sm text-muted-foreground/60 leading-relaxed">
+                        Samtalet vilar här en stund — ni fortsätter när båda har reflekterat.
+                      </p>
+                    </div>
+                  )}
                 </motion.div>
               ) : (
                 <div className="pt-10 pb-8 space-y-5">
