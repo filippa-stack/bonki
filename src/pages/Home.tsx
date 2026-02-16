@@ -183,16 +183,14 @@ export default function Home() {
   const markNavigated = () => sessionStorage.setItem('home_navigated', '1');
 
   // Single derived variable: at most ONE resume surface at a time
-  type ResumeSurface = 'returnOverlay' | 'resumeDialog' | 'continueModule' | 'none';
+  // Depends ONLY on isPaired + hasActiveSession (database state)
+  type ResumeSurface = 'returnOverlay' | 'resumeDialog' | 'none';
   const resumeSurface: ResumeSurface = useMemo(() => {
+    if (isSoloMode) return 'none';
     if (showReturnOverlay) return 'returnOverlay';
-    if (hasActiveSession && !!sessionCard && !!sessionCategory && !resumeDismissed && isMidCard && !isSoloMode) return 'resumeDialog';
-    // ContinueModule: suppress if too long inactive
-    if (lastActivityElapsed >= FOURTEEN_DAYS_MS) return 'none';
-    // Show ContinueModule for active sessions or journey progress (always, even after navigating)
-    if (currentSession || journeyState?.lastCompletedCardId || journeyState?.suggestedNextCardId) return 'continueModule';
+    if (hasActiveSession && !!sessionCard && !!sessionCategory && !resumeDismissed && isMidCard) return 'resumeDialog';
     return 'none';
-  }, [showReturnOverlay, hasActiveSession, sessionCard, sessionCategory, resumeDismissed, isMidCard, isSoloMode, currentSession, journeyState, lastActivityElapsed]);
+  }, [isSoloMode, showReturnOverlay, hasActiveSession, sessionCard, sessionCategory, resumeDismissed, isMidCard]);
 
   const handleEnterProposalMode = () => {
     setIsProposalMode(true);
