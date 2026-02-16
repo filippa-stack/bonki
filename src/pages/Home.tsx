@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { getCatchUpState } from '@/lib/catchUpState';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useApp } from '@/contexts/AppContext';
 import { useSiteSettings } from '@/contexts/SiteSettingsContext';
@@ -139,13 +139,34 @@ export default function Home() {
     return STEP_LABELS[effectiveStep] || '';
   })();
 
+  // Dismiss-once logic: keyed by cardId + stepIndex so it resets when session changes
+  const resumeSessionKey = currentSession
+    ? `resume_dismissed_${currentSession.cardId}_${currentSession.currentStepIndex}`
+    : null;
+  const [resumeDismissed, setResumeDismissed] = useState(() => {
+    if (!resumeSessionKey) return false;
+    return localStorage.getItem(resumeSessionKey) === '1';
+  });
+  // Reset dismissed state when the session key changes
+  useEffect(() => {
+    if (!resumeSessionKey) { setResumeDismissed(false); return; }
+    setResumeDismissed(localStorage.getItem(resumeSessionKey) === '1');
+  }, [resumeSessionKey]);
+
+  const markResumeDismissed = () => {
+    if (resumeSessionKey) localStorage.setItem(resumeSessionKey, '1');
+    setResumeDismissed(true);
+  };
+
   const handleResumeSession = () => {
     if (currentSession) {
+      markResumeDismissed();
       navigate(`/card/${currentSession.cardId}`);
     }
   };
 
   const handleDismissSession = () => {
+    markResumeDismissed();
     dismissSession();
   };
 
@@ -776,7 +797,7 @@ export default function Home() {
 
       {/* Resume session dialog */}
       <ResumeSessionDialog
-        isOpen={hasActiveSession && !!sessionCard && !!sessionCategory && !showReturnOverlay}
+        isOpen={hasActiveSession && !!sessionCard && !!sessionCategory && !showReturnOverlay && !resumeDismissed}
         categoryName={sessionCategory?.title || ''}
         cardTitle={sessionCard?.title || ''}
         stepName={sessionStepName}
