@@ -17,7 +17,7 @@ import { ArrowRight, Bookmark, Share2 } from 'lucide-react';
 import NotificationSettings from '@/components/NotificationSettings';
 import RelationshipMemory from '@/components/RelationshipMemory';
 import Footer from '@/components/Footer';
-import RecentSharedReflection from '@/components/RecentSharedReflection';
+// RecentSharedReflection removed from connected Home — archive remains intact
 import PartnerConnectedBanner from '@/components/PartnerConnectedBanner';
 
 import ReturnOverlay from '@/components/ReturnOverlay';
@@ -393,7 +393,7 @@ export default function Home() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="px-6 pb-8"
+            className="fixed inset-0 z-50 bg-background overflow-y-auto px-6 pt-6 pb-8"
           >
             <div className="flex items-center justify-between mb-6">
               <Button
