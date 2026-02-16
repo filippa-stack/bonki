@@ -20,6 +20,7 @@ import ProposalSheet from '@/components/ProposalSheet';
 import { Button } from '@/components/ui/button';
 import { ArrowRight, Home, RotateCcw, BookOpen, Check, Send } from 'lucide-react';
 import SessionTakeaway from '@/components/SessionTakeaway';
+import CompletedSessionView from '@/components/CompletedSessionView';
 
 import { useProposals, Proposal } from '@/hooks/useProposals';
 import { useDevState } from '@/hooks/useDevState';
@@ -286,17 +287,32 @@ export default function CardView() {
   };
 
 
-  // ─── Completion screen ───
+  // ─── History view: returning to a fully-explored card with no active session ───
+  const isHistoryView = showCompletion && !activeSessionId;
+
+  if (isHistoryView && card && cardId) {
+    return (
+      <CompletedSessionView
+        cardId={cardId}
+        cardTitle={card.title}
+        categoryId={category?.id}
+        categoryTitle={category?.title}
+        onExploreAgain={() => {
+          if (card && category && space) {
+            // Create a new card_session — does NOT overwrite previous
+            startSession(category.id, card.id);
+            setShowCompletion(false);
+          }
+        }}
+      />
+    );
+  }
+
+  // ─── Completion screen (just finished — active session still open) ───
   if (showCompletion) {
     const suggestedCardId = journeyState?.suggestedNextCardId;
     const suggestedCard = suggestedCardId ? getCardById(suggestedCardId) : null;
     const suggestedCategory = suggestedCard ? getCategoryById(suggestedCard.categoryId) : null;
-
-    const completionMessageKey = memberCount >= 2
-      ? (isFullyExplored
-        ? 'card_view.completion_message_together'
-        : 'card_view.completion_message_solo')
-      : 'card_view.completion_message';
 
     return (
       <div className="min-h-screen page-bg">
@@ -347,7 +363,6 @@ export default function CardView() {
             >
               Till Hem
             </Button>
-            {/* Single visually reduced secondary — prefer "Föreslå" when available, else "Läs igen" */}
             <div className="pt-4 text-center">
               {suggestedCard && suggestedCategory ? (
                 <button
@@ -369,7 +384,6 @@ export default function CardView() {
           </motion.div>
         </div>
 
-        {/* Proposal Sheet */}
         {suggestedCard && suggestedCategory && (
           <ProposalSheet
             open={showProposalSheet}
