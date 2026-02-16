@@ -221,12 +221,12 @@ export default function Home() {
       <Header showBackgroundPicker={false} showBackupManager={false} />
       {/* Header with Logo — compact when active session */}
       {!isSoloMode && (
-        <div className={`px-6 ${hasActiveSession ? 'pt-10 pb-6' : 'pt-14 pb-12'}`}>
+        <div className={`px-6 ${hasActiveSession ? 'pt-2 pb-2' : 'pt-14 pb-12'}`}>
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.15 }}
-            className={`flex justify-center ${hasActiveSession ? 'mb-4' : 'mb-8'}`}
+            className={`flex justify-center ${hasActiveSession ? 'mb-0' : 'mb-8'}`}
           >
             <img 
               src={bonkiLogo} 
