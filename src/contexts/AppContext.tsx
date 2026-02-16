@@ -644,6 +644,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
 
   // Authoritative completion lives in journeyState.sessionProgress[cardId].perUser[uid].completedSteps.
   const startSession = (categoryId: string, cardId: string, { force = false, fromBeginning = false }: { force?: boolean; fromBeginning?: boolean } = {}) => {
+    // Solo gate: no shared sessions when unpaired
+    if (coupleSpaceMemberCount < 2) return;
     const now = new Date();
 
     setState((prev) => {
@@ -719,6 +721,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
   };
 
   const completeSessionStep = (stepIndex: number) => {
+    // Solo gate: no step completions when unpaired
+    if (coupleSpaceMemberCount < 2) return;
     const uid = user?.id || 'local';
 
     // Optimistic local update: mark step as completed for this user

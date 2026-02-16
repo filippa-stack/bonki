@@ -214,6 +214,8 @@ export default function CardView() {
   // Auto-start session when entering a new card (gated by proposal acceptance when paired)
   const hasAutoStarted = useRef(false);
   useEffect(() => {
+    // Solo gate: never auto-start sessions when unpaired
+    if (!isPaired) return;
     if (!hasAutoStarted.current && !isActiveSession && !isRevisitMode && !showCompletion && card && category) {
       // Don't auto-start if there's a conflicting session — let user decide via CTA
       if (hasConflictingSession) return;
@@ -222,7 +224,7 @@ export default function CardView() {
         startSession(category.id, card.id);
       }
     }
-  }, [isActiveSession, isRevisitMode, showCompletion, card, category, startSession, canStartSharedSession, hasConflictingSession]);
+  }, [isPaired, isActiveSession, isRevisitMode, showCompletion, card, category, startSession, canStartSharedSession, hasConflictingSession]);
 
   // Proposal gate removed — users can browse freely. Propose banner shown inline instead.
 
@@ -256,6 +258,8 @@ export default function CardView() {
       return;
     }
 
+    // Solo gate: no step completion when unpaired
+    if (!isPaired) return;
     // Mark the current step as completed for THIS user only
     if (!myCompletedSteps.includes(currentStepIndex)) {
       completeSessionStep(currentStepIndex);
@@ -264,6 +268,7 @@ export default function CardView() {
   };
 
   const handleStartFromOverview = () => {
+    if (!isPaired) return; // Solo gate
     if (hasConflictingSession) {
       setShowConflictModal(true);
       return;
@@ -486,7 +491,7 @@ export default function CardView() {
               {/* Takeaways removed from exercise step — now rendered on completion screen */}
 
               {/* Waiting / advance state — inline below the step content */}
-              {(userCompletedCurrentStep || devWaiting) ? (
+              {isPaired && (userCompletedCurrentStep || devWaiting) ? (
 
                 <motion.div
                   initial={{ opacity: 0 }}

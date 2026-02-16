@@ -21,7 +21,8 @@ export interface Proposal {
 
 export function useProposals() {
   const { user } = useAuth();
-  const { space } = useCoupleSpace();
+  const { space, memberCount } = useCoupleSpace();
+  const isPaired = memberCount >= 2;
   const [proposals, setProposals] = useState<Proposal[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -78,7 +79,7 @@ export function useProposals() {
     categoryId: string,
     message?: string
   ): Promise<{ ok: boolean }> => {
-    if (!user || !space) return { ok: false };
+    if (!user || !space || !isPaired) return { ok: false };
 
     // Check if there's already a pending proposal for this exact card (avoid duplicates)
     const existingForCard = proposals.find(
@@ -115,13 +116,13 @@ export function useProposals() {
 
     await fetchProposals();
     return { ok: true };
-  }, [user, space, proposals, fetchProposals]);
+  }, [user, space, isPaired, proposals, fetchProposals]);
 
   const updateProposalStatus = useCallback(async (
     proposalId: string,
     status: 'accepted' | 'declined' | 'saved_for_later'
   ) => {
-    if (!user) return;
+    if (!user || !isPaired) return;
 
     const updatePayload: Record<string, any> = { status };
 
@@ -150,6 +151,7 @@ export function useProposals() {
   const activateSession = useCallback(async (
     proposalId: string
   ): Promise<{ success: boolean; session?: any }> => {
+    if (!isPaired) return { success: false };
     const res = await supabase.functions.invoke('activate-session', {
       body: { proposal_id: proposalId },
     });
