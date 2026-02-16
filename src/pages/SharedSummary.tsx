@@ -304,7 +304,7 @@ export default function SharedSummary() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.15 }}
-          className="mb-10"
+          className="mb-12"
         >
           <SectionLabel>Er resa just nu</SectionLabel>
 
@@ -530,9 +530,9 @@ export default function SharedSummary() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.15, delay: 0.05 }}
-            className="mb-10 text-center"
+            className="mb-12 text-center"
           >
-            <div className="px-6 py-8 rounded-2xl border border-border/15 bg-card/30">
+            <div className="px-6 py-8 rounded-2xl border border-border/20 bg-card/50">
               <p className="text-[11px] text-muted-foreground/50 uppercase tracking-[0.12em] mb-4">Att minnas</p>
               <p className="text-[15px] font-serif text-foreground/75 leading-[1.9] max-w-sm mx-auto italic">
                 "{surfacedTakeaway.text}"
@@ -576,15 +576,15 @@ export default function SharedSummary() {
               {/* ═══════════════════════════════════════════
                   SECTION 2: "Nyligen delat" — Memory cards
                   ═══════════════════════════════════════════ */}
-              {recentItems.length > 0 && !hasActiveFilter && (
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.05, duration: 0.15 }}
-                  className="mb-12"
-                >
-                  <SectionLabel>Nyligen delat</SectionLabel>
-                  <div className="space-y-3">
+               {recentItems.length > 0 && !hasActiveFilter && (
+                 <motion.div
+                   initial={{ opacity: 0 }}
+                   animate={{ opacity: 1 }}
+                   transition={{ delay: 0.05, duration: 0.15 }}
+                   className="mb-12 rounded-2xl border border-border/15 bg-card/40 p-5"
+                 >
+                   <SectionLabel>Nyligen delat</SectionLabel>
+                   <div className="space-y-3 -mx-5 -mb-5 px-5 pb-5">
                     {recentItems.map((item) => {
                       const myResp = getMyResponse(item.id);
                       const partnerResp = getPartnerResponse(item.id);
@@ -610,45 +610,45 @@ export default function SharedSummary() {
               {/* ═══════════════════════════════════════════
                   SECTION 2.5: Highlights (takeaways)
                   ═══════════════════════════════════════════ */}
-              {highlights.length > 0 && !hasActiveFilter && (
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.08, duration: 0.15 }}
-                  className="mb-12"
-                >
-                  <SectionLabel>Era Takeaways</SectionLabel>
-                  <div className="space-y-6">
-                    {(showAllHighlights ? highlights : highlights.slice(0, 3)).map((h) => (
-                      <div key={`hl-${h.id}`} className="text-center">
-                        <p className="text-[15px] font-serif leading-[1.9] text-foreground/80 whitespace-pre-wrap">{h.content}</p>
-                        <p className="text-[11px] text-muted-foreground/50 mt-2">{h.cardTitle}</p>
-                      </div>
-                    ))}
-                  </div>
-                  {highlights.length > 3 && (
-                    <button
-                      onClick={() => setShowAllHighlights(!showAllHighlights)}
-                      className="mt-6 text-xs text-muted-foreground hover:text-foreground transition-colors block mx-auto"
-                    >
-                      {showAllHighlights ? 'Visa färre' : `Visa alla ${highlights.length}`}
-                    </button>
-                  )}
+               {highlights.length > 0 && !hasActiveFilter && (
+                 <motion.div
+                   initial={{ opacity: 0 }}
+                   animate={{ opacity: 1 }}
+                   transition={{ delay: 0.08, duration: 0.15 }}
+                   className="mb-12 rounded-2xl border border-border/15 bg-card/40 p-5"
+                 >
+                   <SectionLabel>Era Takeaways</SectionLabel>
+                   <div className="space-y-5">
+                     {(showAllHighlights ? highlights : highlights.slice(0, 3)).map((h) => (
+                       <div key={`hl-${h.id}`} className="text-center">
+                         <p className="text-[15px] font-serif leading-[1.9] text-foreground/80 whitespace-pre-wrap">{h.content}</p>
+                         <p className="text-[11px] text-muted-foreground/50 mt-2">{h.cardTitle}</p>
+                       </div>
+                     ))}
+                   </div>
+                   {highlights.length > 3 && (
+                     <button
+                       onClick={() => setShowAllHighlights(!showAllHighlights)}
+                       className="mt-5 text-xs text-muted-foreground hover:text-foreground transition-colors block mx-auto"
+                     >
+                       {showAllHighlights ? 'Visa färre' : `Visa alla ${highlights.length}`}
+                     </button>
+                   )}
                 </motion.div>
               )}
 
               {/* ═══════════════════════════════════════════
                   SECTION 3: "Er resa tillsammans" — Progress
                   ═══════════════════════════════════════════ */}
-              {!hasActiveFilter && (
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.1, duration: 0.15 }}
-                  className="mb-12"
-                >
-                  <SectionLabel>Er resa tillsammans</SectionLabel>
-                  <div className="rounded-2xl border border-border/20 bg-card/40 p-5 space-y-4">
+               {!hasActiveFilter && (
+                 <motion.div
+                   initial={{ opacity: 0 }}
+                   animate={{ opacity: 1 }}
+                   transition={{ delay: 0.1, duration: 0.15 }}
+                   className="mb-12 rounded-2xl border border-border/15 bg-card/40 p-5"
+                 >
+                   <SectionLabel>Er resa tillsammans</SectionLabel>
+                   <div className="space-y-4">
                     <p className="text-xs text-muted-foreground/70 text-center">
                       {exploredCount === 0
                         ? 'Ni har inte börjat ännu.'
@@ -683,9 +683,9 @@ export default function SharedSummary() {
               {/* ═══════════════════════════════════════════
                   SECTION 4: "Er historia" — Archive timeline
                   ═══════════════════════════════════════════ */}
-              {(olderGrouped.length > 0 || hasActiveFilter) && (
-                <div className="mb-10">
-                  <SectionLabel>Er historia</SectionLabel>
+               {(olderGrouped.length > 0 || hasActiveFilter) && (
+                 <div className="mb-12">
+                   <SectionLabel>Er historia</SectionLabel>
 
                   {/* Search — inline, not disruptive */}
                   <div className="flex items-center justify-center mb-6">
@@ -835,7 +835,7 @@ export default function SharedSummary() {
 
 function SectionLabel({ children }: { children: React.ReactNode }) {
   return (
-    <p className="text-xs font-medium text-foreground/50 uppercase tracking-[0.15em] mb-5 text-center">
+    <p className="text-sm font-semibold text-foreground/70 uppercase tracking-[0.12em] mb-6 text-center">
       {children}
     </p>
   );
