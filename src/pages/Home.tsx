@@ -116,13 +116,15 @@ export default function Home() {
     return Date.now() - new Date(lastActivity).getTime();
   }, [journeyState]);
 
-  // 7+ day overlay: only if there's a session to resume
+  const isSoloMode = displayMemberCount < 2;
+
+  // 7+ day overlay: only if there's a session to resume AND partner is connected
   const showReturnOverlay = useMemo(() => {
+    if (isSoloMode) return false;
     if (returnOverlayDismissed) return false;
     if (lastActivityElapsed < SEVEN_DAYS_MS) return false;
-    // Need an active session or a last card to resume
     return !!(currentSession || journeyState?.lastCompletedCardId || journeyState?.lastOpenedCardId);
-  }, [returnOverlayDismissed, lastActivityElapsed, currentSession, journeyState]);
+  }, [isSoloMode, returnOverlayDismissed, lastActivityElapsed, currentSession, journeyState]);
 
   const returnResumeCardId = currentSession?.cardId || journeyState?.lastOpenedCardId || journeyState?.lastCompletedCardId || null;
 
@@ -831,7 +833,7 @@ export default function Home() {
 
       {/* Resume session dialog */}
       <ResumeSessionDialog
-        isOpen={hasActiveSession && !!sessionCard && !!sessionCategory && !showReturnOverlay && !resumeDismissed && isMidCard}
+        isOpen={hasActiveSession && !!sessionCard && !!sessionCategory && !showReturnOverlay && !resumeDismissed && isMidCard && !isSoloMode}
         categoryName={sessionCategory?.title || ''}
         cardTitle={sessionCard?.title || ''}
         stepName={sessionStepName}
