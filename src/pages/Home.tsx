@@ -338,12 +338,12 @@ export default function Home() {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.15 }}
-                className="px-6 pt-[24px] pb-[24px] mb-10"
+                className="px-6 pt-[12px] mb-10"
               >
-                <p className="text-xs text-muted-foreground/30 uppercase tracking-wide mb-4 text-center">Pågående samtal</p>
-                <div className="text-center space-y-2 mb-6">
-                  <p className="font-serif text-lg text-foreground">{activeCard.title}</p>
-                  <p className="text-xs text-muted-foreground">{activeCategory.title}</p>
+                <p className="text-xs text-muted-foreground/30 uppercase tracking-wide mb-[6px] text-center">Pågående samtal</p>
+                <div className="text-center mb-[16px]">
+                  <p className="font-serif text-lg text-foreground mb-[6px]">{activeCard.title}</p>
+                  <p className="text-xs text-muted-foreground mb-[6px]">{activeCategory.title}</p>
                   {stepLabel && (
                     <p className="text-xs text-muted-foreground/40">{stepLabel} · {stepProgress}</p>
                   )}
