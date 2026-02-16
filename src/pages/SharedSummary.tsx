@@ -265,7 +265,7 @@ export default function SharedSummary() {
           >
             <h1 className="font-serif text-2xl font-semibold text-foreground tracking-tight">Vårt utrymme</h1>
             <p className="text-sm text-muted-foreground mt-2 leading-relaxed">
-              Här samlas det ni bygger tillsammans.
+              Era delade tankar och samtal, samlade på ett ställe.
             </p>
           </motion.div>
         )}
