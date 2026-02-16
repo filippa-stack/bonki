@@ -448,7 +448,7 @@ export default function CardView() {
               {/* Partner-ahead awareness — no urgency, just clarity */}
               {isPaired && !isRevisitMode && partnerCompletedCurrentStep && !userCompletedCurrentStep && !devWaiting && (
                 <p className="text-xs text-muted-foreground/50 text-center mb-6">
-                  Din partner har redan reflekterat över detta steg.
+                  Din partner har redan markerat detta steg som klart.
                 </p>
               )}
 
