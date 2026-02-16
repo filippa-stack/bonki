@@ -1,15 +1,11 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.93.3";
-
-const corsHeaders = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers":
-    "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
-};
+import { handleCors, getCorsHeaders } from "../_shared/cors.ts";
 
 Deno.serve(async (req) => {
-  if (req.method === "OPTIONS") {
-    return new Response(null, { headers: corsHeaders });
-  }
+  const corsResponse = handleCors(req);
+  if (corsResponse) return corsResponse;
+
+  const corsHeaders = getCorsHeaders(req);
 
   try {
     const authHeader = req.headers.get("Authorization");
@@ -50,7 +46,6 @@ Deno.serve(async (req) => {
       });
     }
 
-    // Verify user is an active member
     const { data: membership, error: memError } = await adminClient
       .from("couple_members")
       .select("id")
@@ -66,7 +61,6 @@ Deno.serve(async (req) => {
       });
     }
 
-    // 1) Soft-leave: set left_at
     const { error: leaveError } = await adminClient
       .from("couple_members")
       .update({
@@ -84,7 +78,6 @@ Deno.serve(async (req) => {
       });
     }
 
-    // 2) Emit system event
     await adminClient
       .from("system_events")
       .insert({
@@ -93,14 +86,12 @@ Deno.serve(async (req) => {
         payload: { user_id: userId },
       });
 
-    // 3) Check remaining active members
     const { count: activeCount } = await adminClient
       .from("couple_members")
       .select("id", { count: "exact", head: true })
       .eq("couple_space_id", couple_space_id)
       .is("left_at", null);
 
-    // If no active members or only one left, clear the active session
     if ((activeCount ?? 0) <= 1) {
       await adminClient
         .from("couple_progress")

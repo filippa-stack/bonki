@@ -1,18 +1,13 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.93.3";
-
-const corsHeaders = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers":
-    "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
-};
+import { handleCors, getCorsHeaders } from "../_shared/cors.ts";
 
 Deno.serve(async (req) => {
-  if (req.method === "OPTIONS") {
-    return new Response(null, { headers: corsHeaders });
-  }
+  const corsResponse = handleCors(req);
+  if (corsResponse) return corsResponse;
+
+  const corsHeaders = getCorsHeaders(req);
 
   try {
-    // Authenticate caller
     const authHeader = req.headers.get("Authorization");
     if (!authHeader?.startsWith("Bearer ")) {
       return new Response(JSON.stringify({ error: "Unauthorized" }), {
@@ -37,7 +32,6 @@ Deno.serve(async (req) => {
     }
     const userId = claimsData.claims.sub as string;
 
-    // Use service role for cross-user reads
     const adminClient = createClient(
       Deno.env.get("SUPABASE_URL")!,
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!
@@ -45,7 +39,6 @@ Deno.serve(async (req) => {
 
     const { invite_token, invite_code, partner_name } = await req.json();
 
-    // Find target couple space by token or code
     let query = adminClient.from("couple_spaces").select("*");
     if (invite_token) {
       query = query.eq("invite_token", invite_token);
@@ -66,7 +59,6 @@ Deno.serve(async (req) => {
       );
     }
 
-    // Check how many members the target space already has
     const { count: targetMemberCount } = await adminClient
       .from("couple_members")
       .select("id", { count: "exact", head: true })
@@ -79,7 +71,6 @@ Deno.serve(async (req) => {
       );
     }
 
-    // Check if user already belongs to a couple space
     const { data: existingMembership } = await adminClient
       .from("couple_members")
       .select("id, couple_space_id")
@@ -87,18 +78,15 @@ Deno.serve(async (req) => {
       .maybeSingle();
 
     if (existingMembership) {
-      // User already has a space — this is a merge scenario
       const originalSpaceId = existingMembership.couple_space_id;
 
       if (originalSpaceId === targetSpace.id) {
-        // Already in this space
         return new Response(
           JSON.stringify({ success: true, couple_space_id: targetSpace.id }),
           { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
         );
       }
 
-      // Safety gate: block merge if original space is already paired
       const { count: originalMemberCount, error: countErr } = await adminClient
         .from("couple_members")
         .select("id", { count: "exact", head: true })
@@ -119,7 +107,6 @@ Deno.serve(async (req) => {
         );
       }
 
-      // Migrate user's reflections from old space to target space
       await adminClient
         .from("prompt_notes")
         .update({ couple_space_id: targetSpace.id })
@@ -132,7 +119,6 @@ Deno.serve(async (req) => {
         .eq("user_id", userId)
         .eq("couple_space_id", originalSpaceId);
 
-      // Record the redundant purchase for later refund/credit
       await adminClient
         .from("redundant_purchases")
         .insert({
@@ -141,22 +127,17 @@ Deno.serve(async (req) => {
           merged_into_space_id: targetSpace.id,
         });
 
-      // Remove old membership and update to new space
       await adminClient
         .from("couple_members")
         .delete()
         .eq("id", existingMembership.id);
 
-      // Clean up the now-empty original space (optional: delete progress too)
       await adminClient
         .from("couple_progress")
         .delete()
         .eq("couple_space_id", originalSpaceId);
-
-      // Don't delete the original space record — keep for audit trail
     }
 
-    // Join target space as partner_b
     const { error: joinError } = await adminClient
       .from("couple_members")
       .insert({ couple_space_id: targetSpace.id, user_id: userId, role: "partner_b" });
@@ -169,7 +150,6 @@ Deno.serve(async (req) => {
       );
     }
 
-    // Update partner_b_name if provided
     if (partner_name) {
       await adminClient
         .from("couple_spaces")
@@ -177,7 +157,6 @@ Deno.serve(async (req) => {
         .eq("id", targetSpace.id);
     }
 
-    // Emit system event for partner joined
     await adminClient
       .from("system_events")
       .insert({
