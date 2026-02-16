@@ -556,26 +556,7 @@ export default function SharedSummary() {
                 </motion.div>
               )}
 
-              {/* ─── Search toggle ─── */}
-              <div className="flex justify-center mb-8">
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="text-xs text-muted-foreground gap-1.5"
-                  onClick={() => {
-                    if (showFind) {
-                      setSearchQuery('');
-                      setCategoryFilter('all');
-                    }
-                    setShowFind(!showFind);
-                  }}
-                >
-                  {showFind ? <X className="w-3.5 h-3.5" /> : <Search className="w-3.5 h-3.5" />}
-                  {showFind ? 'Stäng' : 'Sök'}
-                </Button>
-              </div>
-
-              {/* Search + Filter row */}
+              {/* Search + Filter — shown when active */}
               {showFind && (
                 <div className="flex gap-2 mb-10 text-left">
                   <div className="relative flex-1">
@@ -585,6 +566,7 @@ export default function SharedSummary() {
                       onChange={(e) => setSearchQuery(e.target.value)}
                       placeholder="Sök på ord eller tema…"
                       className="pl-10 border-border/30"
+                      autoFocus
                     />
                   </div>
                   <Select value={categoryFilter} onValueChange={setCategoryFilter}>
@@ -667,7 +649,6 @@ export default function SharedSummary() {
 
                   {olderGrouped.map((group, groupIdx) => (
                     <div key={group.key} className="mb-12">
-                      {/* Month marker */}
                       <div className="flex items-center gap-3 mb-6">
                         <div className="h-px flex-1 bg-border/20" />
                         <span className="text-[11px] font-medium text-muted-foreground/60 uppercase tracking-[0.15em] whitespace-nowrap">
@@ -676,10 +657,8 @@ export default function SharedSummary() {
                         <div className="h-px flex-1 bg-border/20" />
                       </div>
 
-                      {/* Card groups within month */}
                       {group.cardGroups.map((cardGroup) => (
                         <div key={cardGroup.cardId} className="mb-8 last:mb-0">
-                          {/* Card title as journey waypoint */}
                           <div className="relative pl-8 mb-1">
                             <div className="absolute left-0 top-0 bottom-0 w-px bg-border/20" />
                             <div className="absolute left-[-4px] top-1 w-[9px] h-[9px] rounded-full bg-primary/20 border-2 border-primary/30" />
@@ -687,7 +666,6 @@ export default function SharedSummary() {
                             <p className="text-[10px] text-muted-foreground/40 mt-0.5">{cardGroup.categoryTitle}</p>
                           </div>
 
-                          {/* Reflections within this card */}
                           <div className="space-y-0">
                             {cardGroup.items.map((item) => (
                               <SharedTimelineItem
@@ -717,22 +695,37 @@ export default function SharedSummary() {
                 </p>
               )}
 
-              {/* Browse — bottom */}
-              {!hasActiveFilter && (
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ duration: 0.15 }}
-                  className="mt-8 mb-6 text-center"
-                >
+              {/* Bottom — browse + search toggle */}
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.15 }}
+                className="mt-8 mb-6 text-center space-y-2"
+              >
+                {!hasActiveFilter && (
                   <button
                     onClick={() => navigate('/')}
-                    className="text-xs text-muted-foreground hover:text-foreground transition-colors"
+                    className="text-xs text-muted-foreground hover:text-foreground transition-colors block mx-auto"
                   >
                     Bläddra bland kort →
                   </button>
-                </motion.div>
-              )}
+                )}
+                <button
+                  onClick={() => {
+                    if (showFind) {
+                      setSearchQuery('');
+                      setCategoryFilter('all');
+                    }
+                    setShowFind(!showFind);
+                    if (!showFind) {
+                      window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }
+                  }}
+                  className="text-[11px] text-muted-foreground/40 hover:text-muted-foreground transition-colors block mx-auto"
+                >
+                  {showFind ? 'Stäng sök' : 'Hitta'}
+                </button>
+              </motion.div>
             </>)}
           </>
         )}
