@@ -83,7 +83,11 @@ function JoinRedirectGuard() {
     }
   }, [token, code]);
 
-  if (loading) return null;
+  if (loading) return (
+    <div className="min-h-screen flex items-center justify-center bg-background">
+      <div className="h-8 w-8 rounded-full bg-muted/30 animate-pulse" />
+    </div>
+  );
 
   if (!user) {
     return <Navigate to="/login" replace state={{ returnTo: '/join' + location.search }} />;
