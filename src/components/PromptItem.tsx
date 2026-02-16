@@ -128,7 +128,7 @@ export default function PromptItem({
       {/* Collapsed label-only header (for Q2/Q3 when collapsed) */}
       {showCollapsedLabel ? (
         <div
-          className="px-6 py-3 cursor-pointer flex items-center justify-between bg-card border border-[hsl(36_30%_82%)] rounded-2xl shadow-sm"
+          className="px-6 py-3 cursor-pointer flex items-center justify-between bg-card/50 border border-[hsl(36_30%_82%)] rounded-2xl shadow-sm"
           onClick={toggleExpanded}
         >
           <p className="text-xs text-primary tracking-wide font-medium">
