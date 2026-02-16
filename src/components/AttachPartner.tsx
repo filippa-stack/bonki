@@ -244,12 +244,21 @@ export default function AttachPartner({
                     variant="outline"
                     size="sm"
                     className="shrink-0"
-                    onClick={() => setInviteStep('message')}
+                    onClick={handleCopy}
                     disabled={!inviteInfo}
                   >
                     {copied ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
                   </Button>
                 </div>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="w-full text-xs text-muted-foreground"
+                  onClick={() => setInviteStep('message')}
+                  disabled={!inviteInfo}
+                >
+                  Lägg till ett personligt meddelande
+                </Button>
               </div>
 
               <div className="flex items-center gap-3">
