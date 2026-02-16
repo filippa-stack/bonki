@@ -412,8 +412,8 @@ export default function Home() {
         </motion.div>
       )}
 
-      {/* Journey continue module */}
-      {(() => {
+      {/* Journey continue module — hidden when higher-priority resume prompts are active */}
+      {!showReturnOverlay && !(hasActiveSession && !!sessionCard && !!sessionCategory) && (() => {
         const lastCompletedId = journeyState?.lastCompletedCardId;
         const lastCompletedCard = lastCompletedId ? getCardById(lastCompletedId) : null;
         const lastCompletedCategory = lastCompletedCard ? getCategoryById(lastCompletedCard.categoryId) : null;
@@ -776,7 +776,7 @@ export default function Home() {
 
       {/* Resume session dialog */}
       <ResumeSessionDialog
-        isOpen={hasActiveSession && !!sessionCard && !!sessionCategory}
+        isOpen={hasActiveSession && !!sessionCard && !!sessionCategory && !showReturnOverlay}
         categoryName={sessionCategory?.title || ''}
         cardTitle={sessionCard?.title || ''}
         stepName={sessionStepName}
