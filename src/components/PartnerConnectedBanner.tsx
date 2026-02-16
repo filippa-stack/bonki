@@ -75,21 +75,19 @@ export default function PartnerConnectedBanner() {
           transition={{ duration: 0.35, ease: 'easeOut' }}
           className="px-6 mb-6"
         >
-          <div className="rounded-2xl border border-accent/30 bg-card p-6 text-center space-y-3">
+          <div className="rounded-2xl border border-accent/30 bg-card p-6 text-center space-y-4">
             <div className="flex justify-center">
               <Heart className="h-6 w-6 text-accent" />
             </div>
             <h2 className="font-serif text-lg text-foreground">
-              Ni är nu två i ert utrymme
+              Din partner har anslutit 🎉
             </h2>
             <p className="text-sm text-muted-foreground leading-relaxed max-w-xs mx-auto">
-              Från och med nu kan ni dela reflektioner och starta samtal tillsammans.
+              Nu kan ni dela reflektioner med varandra. Inget delas utan att du själv väljer att dela.
             </p>
             <Button
-              variant="ghost"
-              size="sm"
-              className="text-muted-foreground hover:text-foreground"
               onClick={dismiss}
+              size="sm"
             >
               Okej
             </Button>

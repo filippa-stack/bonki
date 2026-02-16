@@ -139,13 +139,7 @@ export function useCoupleSpace(): CoupleSpaceState {
       if (!cancelled) {
         const newCount = count ?? 1;
         const prev = prevMemberCountRef.current;
-        // Celebrate when partner joins (1→2)
-        if (prev === 1 && newCount === 2) {
-          toast(t('couple_space.partner_just_joined', 'Din partner har anslutit! 🎉'), {
-            description: t('couple_space.partner_just_joined_hint', 'Ni är nu kopplade och kan börja er resa tillsammans.'),
-            duration: 5000,
-          });
-        }
+        // Partner join is handled by PartnerConnectedBanner (persistent checkpoint)
         prevMemberCountRef.current = newCount;
         setMemberCount(newCount);
       }
