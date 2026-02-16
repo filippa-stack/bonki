@@ -54,6 +54,7 @@ export function useCoupleSpace(): CoupleSpaceState {
         .from('couple_members')
         .select('couple_space_id, role')
         .eq('user_id', user.id)
+        .is('left_at', null)
         .order('created_at', { ascending: true })
         .limit(1);
 
@@ -74,7 +75,8 @@ export function useCoupleSpace(): CoupleSpaceState {
         const { count } = await supabase
           .from('couple_members')
           .select('id', { count: 'exact', head: true })
-          .eq('couple_space_id', membership.couple_space_id);
+          .eq('couple_space_id', membership.couple_space_id)
+          .is('left_at', null);
 
         setSpace(spaceData as unknown as CoupleSpaceData);
         setMemberCount(count ?? 1);
@@ -137,7 +139,8 @@ export function useCoupleSpace(): CoupleSpaceState {
       const { count } = await supabase
         .from('couple_members')
         .select('id', { count: 'exact', head: true })
-        .eq('couple_space_id', space.id);
+        .eq('couple_space_id', space.id)
+        .is('left_at', null);
       if (!cancelled) {
         const newCount = count ?? 1;
         const prev = prevMemberCountRef.current;
