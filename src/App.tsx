@@ -93,7 +93,11 @@ function JoinRedirectGuard() {
     return <Navigate to="/login" replace state={{ returnTo: '/join' + location.search }} />;
   }
 
-  return <JoinSpace />;
+  return (
+    <AppProvider>
+      <JoinSpace />
+    </AppProvider>
+  );
 }
 
 function AppRoutes() {
