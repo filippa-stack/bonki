@@ -332,7 +332,10 @@ export default function SharedSummary() {
                     const proposalCategory = getCategoryById(proposal.category_id);
                     if (!proposalCard || !proposalCategory) return null;
 
-                    const proposerName = space?.partner_a_name || space?.partner_b_name || undefined;
+                    // Show the OTHER partner's name (the one who proposed)
+                    const proposerName = userRole === 'partner_a'
+                      ? space?.partner_b_name || undefined
+                      : space?.partner_a_name || undefined;
 
                     return (
                       <IncomingProposal
