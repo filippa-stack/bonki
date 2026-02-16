@@ -23,6 +23,8 @@ interface AttachPartnerProps {
   onJoinedSpace?: () => void;
   /** Current member count — hide entirely if already paired */
   memberCount: number;
+  /** Start expanded (e.g. when used as primary CTA) */
+  defaultExpanded?: boolean;
 }
 
 type AttachState = 'idle' | 'joining' | 'success' | 'error';
@@ -43,10 +45,11 @@ export default function AttachPartner({
   onUpdateName,
   onJoinedSpace,
   memberCount,
+  defaultExpanded = false,
 }: AttachPartnerProps) {
   const { t } = useTranslation();
   const { user } = useAuth();
-  const [expanded, setExpanded] = useState(false);
+  const [expanded, setExpanded] = useState(defaultExpanded);
   const [copied, setCopied] = useState(false);
   const [joinInput, setJoinInput] = useState('');
   const [joinState, setJoinState] = useState<AttachState>('idle');
@@ -182,24 +185,26 @@ export default function AttachPartner({
   if (memberCount >= 2) return null;
 
   return (
-    <div className="rounded-2xl border border-dashed border-primary/20 bg-card/50">
-      {/* Collapsed summary */}
-      <button
-        onClick={() => setExpanded(!expanded)}
-        className="w-full flex items-center justify-between p-4 text-left"
-      >
-        <div className="flex items-center gap-2.5">
-          <Link2 className="w-4 h-4 text-primary/60" />
-          <span className="text-xs text-muted-foreground">
-            {t('attach.collapsed_hint', 'Koppla ihop er med din partner')}
-          </span>
-        </div>
-        {expanded ? (
-          <ChevronUp className="w-4 h-4 text-muted-foreground" />
-        ) : (
-          <ChevronDown className="w-4 h-4 text-muted-foreground" />
-        )}
-      </button>
+    <div className={defaultExpanded ? '' : 'rounded-2xl border border-dashed border-primary/20 bg-card/50'}>
+      {/* Collapsed summary — hidden when defaultExpanded */}
+      {!defaultExpanded && (
+        <button
+          onClick={() => setExpanded(!expanded)}
+          className="w-full flex items-center justify-between p-4 text-left"
+        >
+          <div className="flex items-center gap-2.5">
+            <Link2 className="w-4 h-4 text-primary/60" />
+            <span className="text-xs text-muted-foreground">
+              {t('attach.collapsed_hint', 'Koppla ihop er med din partner')}
+            </span>
+          </div>
+          {expanded ? (
+            <ChevronUp className="w-4 h-4 text-muted-foreground" />
+          ) : (
+            <ChevronDown className="w-4 h-4 text-muted-foreground" />
+          )}
+        </button>
+      )}
 
       <AnimatePresence>
         {expanded && (

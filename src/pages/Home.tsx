@@ -410,7 +410,7 @@ export default function Home() {
           }
         }
 
-        // State 3: No partner → "Bjud in din partner"
+        // State 3: No partner → explanation + "Bjud in din partner"
         if (effectiveSoloMode && space) {
           return (
             <motion.div
@@ -419,21 +419,26 @@ export default function Home() {
               transition={{ duration: 0.15 }}
               className="px-6 mb-10"
             >
-              <div className="space-y-6">
-                <AttachPartner
-                  fetchInviteInfo={fetchInviteInfo}
-                  partnerName={userRole === 'partner_b' ? space.partner_b_name : space.partner_a_name}
-                  onUpdateName={async (name) => {
-                    const role = userRole === 'partner_b' ? 'partner_b_name' : 'partner_a_name';
-                    await supabase
-                      .from('couple_spaces')
-                      .update({ [role]: name })
-                      .eq('id', space.id);
-                  }}
-                  memberCount={displayMemberCount}
-                  onJoinedSpace={() => window.location.reload()}
-                />
+              <div className="text-center space-y-3 mb-8">
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  Still Us är gjort för er två.<br />
+                  Börja med att bjuda in din partner.
+                </p>
               </div>
+              <AttachPartner
+                fetchInviteInfo={fetchInviteInfo}
+                partnerName={userRole === 'partner_b' ? space.partner_b_name : space.partner_a_name}
+                onUpdateName={async (name) => {
+                  const role = userRole === 'partner_b' ? 'partner_b_name' : 'partner_a_name';
+                  await supabase
+                    .from('couple_spaces')
+                    .update({ [role]: name })
+                    .eq('id', space.id);
+                }}
+                memberCount={displayMemberCount}
+                onJoinedSpace={() => window.location.reload()}
+                defaultExpanded
+              />
             </motion.div>
           );
         }
