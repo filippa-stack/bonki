@@ -20,6 +20,9 @@ export type Database = {
           created_at: string
           id: string
           last_seen_at: string | null
+          left_at: string | null
+          left_by: string | null
+          left_reason: string | null
           role: string | null
           user_id: string
         }
@@ -28,6 +31,9 @@ export type Database = {
           created_at?: string
           id?: string
           last_seen_at?: string | null
+          left_at?: string | null
+          left_by?: string | null
+          left_reason?: string | null
           role?: string | null
           user_id: string
         }
@@ -36,6 +42,9 @@ export type Database = {
           created_at?: string
           id?: string
           last_seen_at?: string | null
+          left_at?: string | null
+          left_by?: string | null
+          left_reason?: string | null
           role?: string | null
           user_id?: string
         }
