@@ -299,10 +299,27 @@ export default function Home() {
           : devState ? []
           : incomingProposals;
 
-        // State 1: Incoming proposal replaces primary CTA
+        // ── HIGHEST PRIORITY GATE: Solo mode ──
+        // displayMemberCount < 2 overrides ALL resume/session/proposal logic
+        if (effectiveSoloMode) {
+          if (space) {
+            return (
+              <SoloInviteSection
+                fetchInviteInfo={fetchInviteInfo}
+                onJoinedSpace={() => window.location.reload()}
+              />
+            );
+          }
+          // No space yet — show nothing (edge case during initialization)
+          return null;
+        }
+
+        // ── Below here: paired only (displayMemberCount >= 2) ──
+
+        // Incoming proposal replaces primary CTA
         const visibleProposals = effectiveProposals.filter(p => !dismissedProposalIds.has(p.id));
         if (visibleProposals.length > 0) {
-          const proposal = visibleProposals[0]; // Show first pending
+          const proposal = visibleProposals[0];
           const proposalCard = getCardById(proposal.card_id) || (devState ? { title: DEV_MOCK.mockCard.title, subtitle: DEV_MOCK.mockCard.subtitle } as any : null);
           const proposalCategory = getCategoryById(proposal.category_id) || (devState ? { title: DEV_MOCK.mockCategory.title } as any : null);
           const isAccepting = acceptingProposalId === proposal.id;
@@ -363,7 +380,7 @@ export default function Home() {
           );
         }
 
-        // State 2: Active session → "Fortsätt samtalet"
+        // Active session → "Fortsätt samtalet"
         if (effectiveSession) {
           const activeCard = getCardById(effectiveSession.cardId) || (devState ? { title: DEV_MOCK.mockCard.title, categoryId: DEV_MOCK.mockCategory.id } as any : null);
           const activeCategory = activeCard ? (getCategoryById(activeCard.categoryId) || (devState ? { title: DEV_MOCK.mockCategory.title } as any : null)) : null;
@@ -393,17 +410,7 @@ export default function Home() {
           }
         }
 
-        // State 3: No partner → invite as ritual step
-        if (effectiveSoloMode && space) {
-          return (
-            <SoloInviteSection
-              fetchInviteInfo={fetchInviteInfo}
-              onJoinedSpace={() => window.location.reload()}
-            />
-          );
-        }
-
-        // State 4: Paired, no session → "Starta ett samtal"
+        // Paired, no session → "Starta ett samtal"
         return (
           <motion.div
             initial={{ opacity: 0 }}
@@ -429,7 +436,7 @@ export default function Home() {
 
       {/* Proposal mode (opened by primary CTA for paired users) */}
       <AnimatePresence>
-        {isProposalMode && (
+        {isProposalMode && !isSoloMode && (
            <motion.div
             id="proposal-mode"
             initial={{ opacity: 0 }}
