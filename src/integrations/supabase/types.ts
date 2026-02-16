@@ -14,6 +14,42 @@ export type Database = {
   }
   public: {
     Tables: {
+      couple_journey_meta: {
+        Row: {
+          couple_space_id: string
+          journey_state: Json
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          couple_space_id: string
+          journey_state?: Json
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          couple_space_id?: string
+          journey_state?: Json
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "couple_journey_meta_couple_space_id_fkey"
+            columns: ["couple_space_id"]
+            isOneToOne: false
+            referencedRelation: "couple_spaces"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "couple_journey_meta_couple_space_id_fkey"
+            columns: ["couple_space_id"]
+            isOneToOne: false
+            referencedRelation: "couple_spaces_safe"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       couple_members: {
         Row: {
           couple_space_id: string
