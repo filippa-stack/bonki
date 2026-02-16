@@ -52,6 +52,18 @@ export function usePendingInviteClaim() {
     if (!token && !code) return false;
     if (!user) return false;
 
+    // If user already belongs to a space, the pending invite is stale — clear it
+    try {
+      const { data: existingSpaceId } = await supabase.rpc('get_user_couple_space_id', { _user_id: user.id });
+      if (existingSpaceId) {
+        clearPendingInvite();
+        setStatus('idle');
+        return false;
+      }
+    } catch {
+      // If RPC fails, proceed with claim attempt
+    }
+
     setStatus('claiming');
     setErrorType('');
 
@@ -64,9 +76,30 @@ export function usePendingInviteClaim() {
       const res = await supabase.functions.invoke('join-couple-space', { body });
 
       if (res.error) {
-        const parsed = typeof res.error === 'string' ? { error: res.error } : res.error;
+        // Try to extract error code from the edge function response
+        let errorCode = 'unknown';
+        try {
+          const ctx = (res.error as any)?.context;
+          if (ctx?.body) {
+            const parsed = JSON.parse(new TextDecoder().decode(ctx.body));
+            errorCode = parsed?.error || 'unknown';
+          } else if (typeof (res.error as any)?.message === 'string') {
+            try {
+              const parsed = JSON.parse((res.error as any).message);
+              errorCode = parsed?.error || 'unknown';
+            } catch { /* not JSON */ }
+          }
+        } catch { /* parsing failed */ }
+
+        // already_paired means user is already connected — treat as success
+        if (errorCode === 'already_paired') {
+          clearPendingInvite();
+          setStatus('idle');
+          return false;
+        }
+
         setStatus('error');
-        setErrorType((parsed as any)?.error || 'unknown');
+        setErrorType(errorCode);
         return false;
       }
 
