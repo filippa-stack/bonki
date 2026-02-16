@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
+import { hasPendingInvite } from '@/hooks/usePendingInvite';
 
 interface CoupleSpaceData {
   id: string;
@@ -74,7 +75,11 @@ export function useCoupleSpace(): CoupleSpaceState {
         setSpace(spaceData as unknown as CoupleSpaceData);
         setMemberCount(count ?? 1);
         setUserRole(membership.role);
-      } else {
+        // Don't auto-create if there's a pending invite — let the claim finish first
+        if (hasPendingInvite()) {
+          setLoading(false);
+          return;
+        }
         // Bootstrap atomically via edge function
         const { data: sessionData } = await supabase.auth.getSession();
         const accessToken = sessionData?.session?.access_token;

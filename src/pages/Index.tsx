@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useApp } from '@/contexts/AppContext';
 import { useCoupleSpace } from '@/hooks/useCoupleSpace';
@@ -22,12 +22,19 @@ export default function Index() {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const { hasCompletedOnboarding, savedConversations, getAllSharedNotes, journeyState } = useApp();
-  const { userRole, space, memberCount, fetchInviteInfo } = useCoupleSpace();
+  const { userRole, space, memberCount, fetchInviteInfo, refreshSpace } = useCoupleSpace();
   const { user } = useAuth();
   const [welcomeDismissed, setWelcomeDismissed] = useState(false);
 
   // Pending invite claim — auto-claims after OAuth redirect
   const { status: claimStatus, errorType: claimError, retry: retryClaim } = usePendingInviteClaim();
+
+  // After claim succeeds, refresh couple space so memberCount/role are correct
+  useEffect(() => {
+    if (claimStatus === 'success') {
+      refreshSpace();
+    }
+  }, [claimStatus, refreshSpace]);
 
   // Purchase state (mock — stored in localStorage)
   const [hasPurchased, setHasPurchased] = useState(() => {
