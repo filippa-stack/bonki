@@ -234,7 +234,6 @@ export default function PromptItem({
                     <div className="flex justify-end">
                       <button
                         onClick={() => {
-                          onSaveNote(promptId, privateNote.content, 'shared');
                           onShareNote(promptId);
                           setJustShared(true);
                         }}
