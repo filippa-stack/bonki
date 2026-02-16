@@ -62,10 +62,34 @@ export default function JoinSpace() {
         body,
       });
 
+      // Parse error from edge function response
       if (res.error) {
-        const parsed = typeof res.error === 'string' ? { error: res.error } : res.error;
+        // supabase-js wraps non-2xx responses; try to extract the JSON body
+        let errorCode = 'unknown';
+        try {
+          const ctx = (res.error as any)?.context;
+          if (ctx?.body) {
+            const parsed = JSON.parse(new TextDecoder().decode(ctx.body));
+            errorCode = parsed?.error || 'unknown';
+          } else if (typeof (res.error as any)?.message === 'string') {
+            try {
+              const parsed = JSON.parse((res.error as any).message);
+              errorCode = parsed?.error || 'unknown';
+            } catch { /* not JSON */ }
+          }
+        } catch { /* parsing failed */ }
+
+        // Treat "already_paired" as success — they're already connected
+        if (errorCode === 'already_paired') {
+          clearPendingInvite();
+          setState('success');
+          try { await refreshCoupleSpace(); } catch {}
+          navigate('/', { replace: true });
+          return;
+        }
+
         setState('error');
-        setErrorType((parsed as any)?.error || 'unknown');
+        setErrorType(errorCode);
         return;
       }
 
