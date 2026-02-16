@@ -183,15 +183,24 @@ export default function Home() {
   const [hasNavigatedThisVisit] = useState(() => sessionStorage.getItem('home_navigated') === '1');
   const markNavigated = () => sessionStorage.setItem('home_navigated', '1');
 
-  // Single derived variable: at most ONE resume surface at a time
-  // Depends ONLY on isPaired + hasActiveSession (database state)
-  type ResumeSurface = 'returnOverlay' | 'resumeDialog' | 'none';
-  const resumeSurface: ResumeSurface = useMemo(() => {
+  // ═══ 3 MACRO STATES (paired only) ═══
+  // IDLE:        paired, no active session
+  // ACTIVE:      currentSession != null
+  // INTEGRATION: transient post-completion (handled in CardView)
+  //
+  // Proposals, resume dialogs, return overlays are internal UI variations
+  // within IDLE or ACTIVE — never separate modes.
+  type MacroState = 'idle' | 'active';
+  const macroState: MacroState = hasActiveSession ? 'active' : 'idle';
+
+  // UI variations within macro states (overlays/dialogs — not separate modes)
+  type ResumeVariation = 'returnOverlay' | 'resumeDialog' | 'none';
+  const resumeVariation: ResumeVariation = useMemo(() => {
     if (isSoloMode) return 'none';
     if (showReturnOverlay) return 'returnOverlay';
-    if (hasActiveSession && !!sessionCard && !!sessionCategory && !resumeDismissed && isMidCard) return 'resumeDialog';
+    if (macroState === 'active' && !!sessionCard && !!sessionCategory && !resumeDismissed && isMidCard) return 'resumeDialog';
     return 'none';
-  }, [isSoloMode, showReturnOverlay, hasActiveSession, sessionCard, sessionCategory, resumeDismissed, isMidCard]);
+  }, [isSoloMode, showReturnOverlay, macroState, sessionCard, sessionCategory, resumeDismissed, isMidCard]);
 
   const handleEnterProposalMode = () => {
     setIsProposalMode(true);
@@ -244,7 +253,7 @@ export default function Home() {
     <div className="min-h-screen flex flex-col page-bg">
       {/* 7+ day return overlay */}
       <AnimatePresence>
-        {resumeSurface === 'returnOverlay' && (
+        {resumeVariation === 'returnOverlay' && (
           <ReturnOverlay
             onResume={() => {
               dismissReturnOverlay();
@@ -284,7 +293,8 @@ export default function Home() {
       <PartnerConnectedBanner />
 
       {/* ═══ PRIMARY ACTION ZONE ═══
-           Exactly ONE dominant CTA based on state.
+           3 macro states: SOLO → IDLE → ACTIVE
+           Proposals & resume are UI variations within IDLE/ACTIVE, not separate modes.
            devState overrides rendering only — no DB/edge calls.
       */}
       {(() => {
@@ -316,7 +326,7 @@ export default function Home() {
 
         // ── Below here: paired only (displayMemberCount >= 2) ──
 
-        // Incoming proposal replaces primary CTA
+        // ── IDLE/ACTIVE variation: incoming proposal replaces primary CTA ──
         const visibleProposals = effectiveProposals.filter(p => !dismissedProposalIds.has(p.id));
         if (visibleProposals.length > 0) {
           const proposal = visibleProposals[0];
@@ -380,7 +390,7 @@ export default function Home() {
           );
         }
 
-        // Active session → "Fortsätt samtalet"
+        // ── MACRO STATE: ACTIVE — "Fortsätt samtalet" ──
         if (effectiveSession) {
           const activeCard = getCardById(effectiveSession.cardId) || (devState ? { title: DEV_MOCK.mockCard.title, categoryId: DEV_MOCK.mockCategory.id } as any : null);
           const activeCategory = activeCard ? (getCategoryById(activeCard.categoryId) || (devState ? { title: DEV_MOCK.mockCategory.title } as any : null)) : null;
@@ -410,7 +420,7 @@ export default function Home() {
           }
         }
 
-        // Paired, no session → "Starta ett samtal"
+        // ── MACRO STATE: IDLE — "Starta ett samtal" ──
         return (
           <motion.div
             initial={{ opacity: 0 }}
@@ -633,7 +643,7 @@ export default function Home() {
 
       {/* Resume session dialog */}
       <ResumeSessionDialog
-        isOpen={resumeSurface === 'resumeDialog'}
+        isOpen={resumeVariation === 'resumeDialog'}
         categoryName={sessionCategory?.title || ''}
         cardTitle={sessionCard?.title || ''}
         stepName={sessionStepName}
