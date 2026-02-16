@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronDown, Share2, X, Star, Heart, ArrowRight, Home, Lock, Users, Link2, CheckCircle2 } from 'lucide-react';
+import { ChevronDown, Share2, Send, X, Star, Heart, ArrowRight, Home, Lock, Users, Link2, CheckCircle2 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Prompt } from '@/types';
@@ -220,9 +220,9 @@ export default function PromptItem({
                     {/* Privacy indicator */}
                     {!sharedNote && (
                       <div className="flex items-center justify-between mt-3">
-                        <p className="flex items-center gap-1.5 text-[11px] text-muted-foreground/35 italic">
+                      <p className="flex items-center gap-1.5 text-[11px] text-muted-foreground/35 italic">
                           <Lock className="w-3 h-3" />
-                          Bara du kan se detta.
+                          Dina anteckningar är privata tills du väljer att dela.
                         </p>
                         {privateNote?.content && privateNote.updatedAt && (
                           <p className="text-[11px] text-muted-foreground/40">
@@ -242,14 +242,14 @@ export default function PromptItem({
                       }}
                       className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
                     >
-                      <Share2 className="w-3.5 h-3.5" />
-                      {t('reflections.create_shared_from_private', 'Dela om du vill')}
+                      <Send className="w-3.5 h-3.5" />
+                      {t('reflections.create_shared_from_private', 'Dela med din partner')}
                     </button>
                   )}
                   {!shareDisabled && !privateNote?.content && !sharedNote && (
                     <p className="flex items-center gap-1.5 text-[11px] text-muted-foreground/40 italic">
                       <Lock className="w-3 h-3" />
-                      {t('reflections.private_empty_hint', 'Privat — du kan dela senare om du vill')}
+                      {t('reflections.private_empty_hint', 'Dina anteckningar är privata tills du väljer att dela')}
                     </p>
                   )}
                   {!disableShare && !isPaired && privateNote?.content && !sharedNote && (
@@ -292,7 +292,7 @@ export default function PromptItem({
                               disabled={!sharePreviewText.trim()}
                               className="flex items-center gap-1.5 text-sm font-medium text-foreground hover:text-primary transition-colors disabled:opacity-40"
                             >
-                              <Share2 className="w-3.5 h-3.5" />
+                              <Send className="w-3.5 h-3.5" />
                               {t('reflections.share_confirm', 'Dela')}
                             </button>
                             <button
