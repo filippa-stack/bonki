@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Copy, Check, Share2, Loader2, KeyRound } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -22,6 +22,7 @@ export default function SoloInviteSection({ fetchInviteInfo, onJoinedSpace }: So
   const [inviteInfo, setInviteInfo] = useState<InviteInfo | null>(null);
   const [loadingInvite, setLoadingInvite] = useState(true);
   const [copied, setCopied] = useState(false);
+  const [fallbackOpen, setFallbackOpen] = useState(false);
   const [joinInput, setJoinInput] = useState('');
   const [joinState, setJoinState] = useState<'idle' | 'joining' | 'success' | 'error'>('idle');
   const [joinError, setJoinError] = useState('');
@@ -113,11 +114,11 @@ export default function SoloInviteSection({ fetchInviteInfo, onJoinedSpace }: So
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.15 }}
-      className="px-6 mb-10"
+      className="px-6 pt-14 mb-10"
     >
-      {/* Hero text */}
-      <div className="text-center mb-8">
-        <h2 className="font-serif text-xl text-foreground mb-2">Nu börjar ni.</h2>
+      {/* Hero text — no logo, no slogan */}
+      <div className="text-center mb-10">
+        <h2 className="font-serif text-xl text-foreground mb-3">Nu börjar ni.</h2>
         <p className="text-sm text-muted-foreground leading-relaxed">
           Bjud in din partner så skapar ni ert gemensamma rum.
         </p>
@@ -140,58 +141,79 @@ export default function SoloInviteSection({ fetchInviteInfo, onJoinedSpace }: So
         )}
       </Button>
 
-      {/* Secondary: Invite code */}
-      {!loadingInvite && inviteInfo && (
-        <div className="text-center mb-8">
-          <p className="text-xs text-muted-foreground mb-2">Eller dela din kod:</p>
-          <div className="flex items-center justify-center gap-2">
-            <span className="font-mono text-sm tracking-widest text-foreground bg-muted/30 rounded-lg px-4 py-2">
-              {inviteInfo.invite_code.toUpperCase()}
-            </span>
-            <button
-              onClick={handleCopyCode}
-              className="text-muted-foreground hover:text-foreground transition-colors p-1"
-            >
-              {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
-            </button>
-          </div>
-        </div>
-      )}
-
-      {/* Tertiary: Join with partner's code */}
-      <div className="space-y-2">
-        <p className="text-xs text-muted-foreground">Har din partner en kod?</p>
-        <div className="flex items-center gap-2">
-          <Input
-            value={joinInput}
-            onChange={(e) => {
-              setJoinInput(e.target.value);
-              if (joinState === 'error') setJoinState('idle');
-            }}
-            placeholder="Kod eller länk"
-            className="text-sm"
-            disabled={joinState === 'joining' || joinState === 'success'}
-          />
-          <Button
-            size="sm"
-            variant="outline"
-            onClick={handleJoin}
-            disabled={!joinInput.trim() || joinState === 'joining' || joinState === 'success'}
-            className="shrink-0"
-          >
-            {joinState === 'joining' ? (
-              <Loader2 className="w-3.5 h-3.5 animate-spin" />
-            ) : joinState === 'success' ? (
-              <Check className="w-3.5 h-3.5" />
-            ) : (
-              <KeyRound className="w-3.5 h-3.5" />
-            )}
-          </Button>
-        </div>
-        {joinState === 'error' && joinError && (
-          <p className="text-[11px] text-destructive">{joinError}</p>
-        )}
+      {/* Collapsible fallback — code + join */}
+      <div className="text-center">
+        <button
+          onClick={() => setFallbackOpen(!fallbackOpen)}
+          className="text-xs text-muted-foreground/70 hover:text-muted-foreground transition-colors"
+        >
+          Har din partner redan en kod?
+        </button>
       </div>
+
+      <AnimatePresence>
+        {fallbackOpen && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: 'auto', opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="overflow-hidden"
+          >
+            <div className="pt-5 space-y-5">
+              {/* Join input */}
+              <div className="space-y-2">
+                <div className="flex items-center gap-2">
+                  <Input
+                    value={joinInput}
+                    onChange={(e) => {
+                      setJoinInput(e.target.value);
+                      if (joinState === 'error') setJoinState('idle');
+                    }}
+                    placeholder="Kod eller länk"
+                    className="text-sm"
+                    disabled={joinState === 'joining' || joinState === 'success'}
+                  />
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={handleJoin}
+                    disabled={!joinInput.trim() || joinState === 'joining' || joinState === 'success'}
+                    className="shrink-0"
+                  >
+                    {joinState === 'joining' ? (
+                      <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                    ) : joinState === 'success' ? (
+                      <Check className="w-3.5 h-3.5" />
+                    ) : (
+                      <KeyRound className="w-3.5 h-3.5" />
+                    )}
+                  </Button>
+                </div>
+                {joinState === 'error' && joinError && (
+                  <p className="text-[11px] text-destructive">{joinError}</p>
+                )}
+              </div>
+
+              {/* Own invite code */}
+              {!loadingInvite && inviteInfo && (
+                <div className="flex items-center justify-center gap-2">
+                  <span className="text-xs text-muted-foreground/60">Din kod:</span>
+                  <span className="font-mono text-xs tracking-widest text-muted-foreground">
+                    {inviteInfo.invite_code.toUpperCase()}
+                  </span>
+                  <button
+                    onClick={handleCopyCode}
+                    className="text-muted-foreground/50 hover:text-muted-foreground transition-colors"
+                  >
+                    {copied ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
+                  </button>
+                </div>
+              )}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </motion.div>
   );
 }
