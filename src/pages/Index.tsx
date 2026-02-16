@@ -22,7 +22,7 @@ export default function Index() {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const { hasCompletedOnboarding, savedConversations, getAllSharedNotes, journeyState } = useApp();
-  const { userRole, space, memberCount } = useCoupleSpace();
+  const { userRole, space, memberCount, fetchInviteInfo } = useCoupleSpace();
   const { user } = useAuth();
   const [welcomeDismissed, setWelcomeDismissed] = useState(false);
 
@@ -129,8 +129,7 @@ export default function Index() {
     const partnerName = userRole === 'partner_b' ? space.partner_b_name : space.partner_a_name;
     return (
       <PostPurchaseInvite
-        inviteCode={space.invite_code}
-        inviteToken={space.invite_token}
+        fetchInviteInfo={fetchInviteInfo}
         partnerName={partnerName}
         onUpdateName={handleUpdateName}
         onContinue={() => setShowPostPurchaseInvite(false)}

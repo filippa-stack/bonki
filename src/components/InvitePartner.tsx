@@ -1,20 +1,24 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Share2, Copy, Check, UserPlus } from 'lucide-react';
+import { Share2, Copy, Check, UserPlus, Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
 
+interface InviteInfo {
+  invite_code: string;
+  invite_token: string;
+}
+
 interface InvitePartnerProps {
-  inviteCode: string;
-  inviteToken: string;
+  fetchInviteInfo: () => Promise<InviteInfo | null>;
   partnerName: string | null;
   onUpdateName: (name: string) => void;
   onInviteSent?: () => void;
 }
 
-export default function InvitePartner({ inviteCode, inviteToken, partnerName, onUpdateName, onInviteSent }: InvitePartnerProps) {
+export default function InvitePartner({ fetchInviteInfo, partnerName, onUpdateName, onInviteSent }: InvitePartnerProps) {
   const { t } = useTranslation();
   const [copied, setCopied] = useState(false);
   const [codeCopied, setCodeCopied] = useState(false);
@@ -22,8 +26,21 @@ export default function InvitePartner({ inviteCode, inviteToken, partnerName, on
   const [editingName, setEditingName] = useState(false);
   const [nameValue, setNameValue] = useState(partnerName || '');
   const [inviteSent, setInviteSent] = useState(false);
+  const [inviteInfo, setInviteInfo] = useState<InviteInfo | null>(null);
+  const [loadingInvite, setLoadingInvite] = useState(false);
 
-  const inviteLink = `${window.location.origin}/join?token=${inviteToken}`;
+  // Lazy-load invite info when expanded
+  useEffect(() => {
+    if (expanded && !inviteInfo && !loadingInvite) {
+      setLoadingInvite(true);
+      fetchInviteInfo().then((info) => {
+        setInviteInfo(info);
+        setLoadingInvite(false);
+      });
+    }
+  }, [expanded, inviteInfo, loadingInvite, fetchInviteInfo]);
+
+  const inviteLink = inviteInfo ? `${window.location.origin}/join?token=${inviteInfo.invite_token}` : '';
   const shareMessage = t(
     'invite.share_message',
     'Följ med mig i vårt gemensamma utrymme på Still Us. Tryck för att ansluta och starta vår resa: {{link}}',
@@ -31,6 +48,7 @@ export default function InvitePartner({ inviteCode, inviteToken, partnerName, on
   );
 
   const handleShare = async () => {
+    if (!inviteInfo) return;
     if (navigator.share) {
       try {
         await navigator.share({
@@ -51,6 +69,7 @@ export default function InvitePartner({ inviteCode, inviteToken, partnerName, on
   };
 
   const handleCopy = async () => {
+    if (!inviteInfo) return;
     try {
       await navigator.clipboard.writeText(inviteLink);
       setCopied(true);
@@ -64,8 +83,9 @@ export default function InvitePartner({ inviteCode, inviteToken, partnerName, on
   };
 
   const handleCopyCode = async () => {
+    if (!inviteInfo) return;
     try {
-      await navigator.clipboard.writeText(inviteCode.toUpperCase());
+      await navigator.clipboard.writeText(inviteInfo.invite_code.toUpperCase());
       setCodeCopied(true);
       toast.success('Kod kopierad');
       setTimeout(() => setCodeCopied(false), 2000);
@@ -132,37 +152,46 @@ export default function InvitePartner({ inviteCode, inviteToken, partnerName, on
           </button>
         </div>
 
-        <p className="text-xs text-muted-foreground leading-relaxed">
-          Dela länken. Din partner ansluter när det passar. Har din partner redan ett konto? Be dem koppla ihop med koden nedan.
-        </p>
-
-        {/* Actions row */}
-        <div className="flex gap-2 flex-col gap-y-1">
-          <div className="flex gap-2">
-          <Button onClick={handleShare} size="sm" className="flex-1 gap-2">
-            <Share2 className="w-3.5 h-3.5" />
-            {t('invite.share_button', 'Dela inbjudan')}
-          </Button>
-          <Button variant="outline" size="sm" onClick={handleCopy} className="gap-2">
-            {copied ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
-          {copied ? t('invite.copied', 'Kopierad!') : t('invite.copy_link', 'Kopiera')}
-          </Button>
+        {loadingInvite ? (
+          <div className="flex justify-center py-4">
+            <Loader2 className="w-4 h-4 animate-spin text-muted-foreground" />
           </div>
-          {inviteSent && (
-            <p className="text-[11px] text-muted-foreground/60 text-center">Inbjudan skickad.</p>
-          )}
-        </div>
+        ) : (
+          <>
+            <p className="text-xs text-muted-foreground leading-relaxed">
+              Dela länken. Din partner ansluter när det passar. Har din partner redan ett konto? Be dem koppla ihop med koden nedan.
+            </p>
 
-        {/* Invite code — smaller */}
-        <div className="text-center pt-1">
-          <p className="text-xs text-muted-foreground/60">{t('invite.or_code', 'Eller dela koden:')}</p>
-          <button
-            onClick={handleCopyCode}
-            className="text-sm font-mono tracking-widest text-foreground/70 mt-0.5 cursor-pointer hover:text-foreground transition-colors"
-          >
-            {codeCopied ? '✓ Kopierad' : inviteCode}
-          </button>
-        </div>
+            {/* Actions row */}
+            <div className="flex gap-2 flex-col gap-y-1">
+              <div className="flex gap-2">
+              <Button onClick={handleShare} size="sm" className="flex-1 gap-2" disabled={!inviteInfo}>
+                <Share2 className="w-3.5 h-3.5" />
+                {t('invite.share_button', 'Dela inbjudan')}
+              </Button>
+              <Button variant="outline" size="sm" onClick={handleCopy} className="gap-2" disabled={!inviteInfo}>
+                {copied ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
+              {copied ? t('invite.copied', 'Kopierad!') : t('invite.copy_link', 'Kopiera')}
+              </Button>
+              </div>
+              {inviteSent && (
+                <p className="text-[11px] text-muted-foreground/60 text-center">Inbjudan skickad.</p>
+              )}
+            </div>
+
+            {/* Invite code — smaller */}
+            <div className="text-center pt-1">
+              <p className="text-xs text-muted-foreground/60">{t('invite.or_code', 'Eller dela koden:')}</p>
+              <button
+                onClick={handleCopyCode}
+                className="text-sm font-mono tracking-widest text-foreground/70 mt-0.5 cursor-pointer hover:text-foreground transition-colors"
+                disabled={!inviteInfo}
+              >
+                {codeCopied ? '✓ Kopierad' : inviteInfo?.invite_code ?? '...'}
+              </button>
+            </div>
+          </>
+        )}
 
         {/* Set own name — collapsible */}
         <div className="pt-2 border-t border-border/40">

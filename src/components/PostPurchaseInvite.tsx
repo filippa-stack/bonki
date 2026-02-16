@@ -5,17 +5,20 @@ import { ArrowRight } from 'lucide-react';
 import InvitePartner from '@/components/InvitePartner';
 import bonkiLogo from '@/assets/bonki-logo.png';
 
+interface InviteInfo {
+  invite_code: string;
+  invite_token: string;
+}
+
 interface PostPurchaseInviteProps {
-  inviteCode: string;
-  inviteToken: string;
+  fetchInviteInfo: () => Promise<InviteInfo | null>;
   partnerName: string | null;
   onUpdateName: (name: string) => void;
   onContinue: () => void;
 }
 
 export default function PostPurchaseInvite({
-  inviteCode,
-  inviteToken,
+  fetchInviteInfo,
   partnerName,
   onUpdateName,
   onContinue,
@@ -41,8 +44,7 @@ export default function PostPurchaseInvite({
         </div>
 
         <InvitePartner
-          inviteCode={inviteCode}
-          inviteToken={inviteToken}
+          fetchInviteInfo={fetchInviteInfo}
           partnerName={partnerName}
           onUpdateName={onUpdateName}
           onInviteSent={() => onContinue()}
