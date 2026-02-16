@@ -299,7 +299,7 @@ export default function AttachPartner({
                     if (!inviteInfo) return;
                     if (navigator.share) {
                       try {
-                        await navigator.share({ title: 'Still Us', text: inviteLink });
+                        await navigator.share({ title: 'Still Us', text: inviteLink, url: inviteLink });
                         return;
                       } catch (err) {
                         if ((err as Error).name === 'AbortError') return;
