@@ -35,17 +35,9 @@ export default function WelcomePartner({ onDismiss }: WelcomePartnerProps) {
           <Button
             size="lg"
             className="w-full"
-            onClick={() => navigate('/card/listening-presence')}
-          >
-            {t('welcome_partner.start_first')}
-          </Button>
-          <Button
-            variant="ghost"
-            size="lg"
-            className="w-full text-muted-foreground"
             onClick={onDismiss}
           >
-            {t('welcome_partner.explore')}
+            {t('welcome_partner.start_first', 'Utforska tillsammans')}
           </Button>
         </div>
       </motion.div>
