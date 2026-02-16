@@ -68,7 +68,7 @@ export default function WaitingStepNote({ cardId, sectionId }: WaitingStepNotePr
       animate={{ opacity: 1, y: 0 }}
       className="w-full max-w-md mx-auto space-y-3"
     >
-      <div className="rounded-xl border border-slate-200 bg-white overflow-hidden">
+      <div className="rounded-xl border border-border bg-card overflow-hidden">
         <textarea
           ref={textareaRef}
           value={text}
