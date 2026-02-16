@@ -118,9 +118,9 @@ export default function SoloInviteSection({ fetchInviteInfo, onJoinedSpace }: So
     >
       {/* Hero text — no logo, no slogan */}
       <div className="text-center mb-10">
-        <h2 className="font-serif text-xl text-foreground mb-3">Välkommen.</h2>
-        <p className="text-sm text-muted-foreground leading-relaxed whitespace-pre-line">
-          {"Still Us är skapat för er två.\nBjud in din partner för att börja."}
+        <h2 className="font-serif text-xl text-foreground mb-3">Nu börjar ni.</h2>
+        <p className="text-sm text-muted-foreground leading-relaxed">
+          Bjud in din partner så skapar ni ert gemensamma rum.
         </p>
       </div>
 
