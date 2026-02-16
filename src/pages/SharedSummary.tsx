@@ -556,43 +556,6 @@ export default function SharedSummary() {
                 </motion.div>
               )}
 
-              {/* Search + Filter — shown when active */}
-              {showFind && (
-                <div className="flex gap-2 mb-10 text-left">
-                  <div className="relative flex-1">
-                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground/40" />
-                    <Input
-                      value={searchQuery}
-                      onChange={(e) => setSearchQuery(e.target.value)}
-                      placeholder="Sök på ord eller tema…"
-                      className="pl-10 border-border/30"
-                      autoFocus
-                    />
-                  </div>
-                  <Select value={categoryFilter} onValueChange={setCategoryFilter}>
-                    <SelectTrigger className="w-[140px] border-border/30">
-                      <Filter className="w-3 h-3 mr-1 opacity-50" />
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="all">Alla</SelectItem>
-                      {categories.map(c => (
-                        <SelectItem key={c.id} value={c.id}>{c.title}</SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  {hasActiveFilter && (
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      onClick={() => { setSearchQuery(''); setCategoryFilter('all'); }}
-                    >
-                      <X className="w-4 h-4" />
-                    </Button>
-                  )}
-                </div>
-              )}
-
               {/* ─── Recent reflections ─── */}
               {recentItems.length > 0 && !hasActiveFilter && (
                 <motion.div
@@ -620,34 +583,96 @@ export default function SharedSummary() {
                 </motion.div>
               )}
 
-              {/* Filtered results */}
-              {hasActiveFilter && timelineItems.length > 0 && (
-                <div className="space-y-1 mb-10 text-left">
-                  {timelineItems.map((item) => (
-                    <SharedTimelineItem
-                      key={item.id}
-                      note={item}
-                      isOwnNote={item.user_id === user?.id}
-                      myResponse={getMyResponse(item.id)}
-                      partnerResponse={getPartnerResponse(item.id)}
-                      onUpdate={handleUpdateNote}
-                      onSaveResponse={saveResponse}
-                      onOpenInContext={handleOpenInContext}
-                    />
-                  ))}
-                </div>
-              )}
-
-              {/* ─── Journey timeline — older reflections ─── */}
-              {olderGrouped.length > 0 && !hasActiveFilter && (
+              {/* ─── Archive: Journey timeline + Search ─── */}
+              {(olderGrouped.length > 0 || hasActiveFilter) && (
                 <div className="mb-16">
                   <SectionDivider />
                   <SectionHeader>Er gemensamma tidslinje</SectionHeader>
-                  <p className="text-[11px] text-muted-foreground/40 text-center mb-10 leading-relaxed">
-                    Tankar ni delat med varandra, ordnade efter tid.
-                  </p>
+                  {!hasActiveFilter && (
+                    <p className="text-[11px] text-muted-foreground/40 text-center mb-8 leading-relaxed">
+                      Tankar ni delat med varandra, ordnade efter tid.
+                    </p>
+                  )}
 
-                  {olderGrouped.map((group, groupIdx) => (
+                  {/* Search integrated into the archive */}
+                  <div className="flex items-center justify-center mb-8">
+                    {!showFind ? (
+                      <button
+                        onClick={() => setShowFind(true)}
+                        className="inline-flex items-center gap-1.5 text-[11px] text-muted-foreground/40 hover:text-muted-foreground transition-colors"
+                      >
+                        <Search className="w-3 h-3" />
+                        <span>Hitta</span>
+                      </button>
+                    ) : (
+                      <div className="w-full space-y-3">
+                        <div className="flex gap-2">
+                          <div className="relative flex-1">
+                            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-muted-foreground/30" />
+                            <Input
+                              value={searchQuery}
+                              onChange={(e) => setSearchQuery(e.target.value)}
+                              placeholder="Sök på ord eller tema…"
+                              className="pl-9 text-sm border-border/20 bg-transparent h-9"
+                              autoFocus
+                            />
+                          </div>
+                          <Select value={categoryFilter} onValueChange={setCategoryFilter}>
+                            <SelectTrigger className="w-[120px] border-border/20 bg-transparent h-9 text-xs">
+                              <Filter className="w-3 h-3 mr-1 opacity-40" />
+                              <SelectValue />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="all">Alla</SelectItem>
+                              {categories.map(c => (
+                                <SelectItem key={c.id} value={c.id}>{c.title}</SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                        </div>
+                        <div className="flex justify-center">
+                          <button
+                            onClick={() => {
+                              setShowFind(false);
+                              setSearchQuery('');
+                              setCategoryFilter('all');
+                            }}
+                            className="text-[11px] text-muted-foreground/40 hover:text-muted-foreground transition-colors"
+                          >
+                            Stäng
+                          </button>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Filtered results */}
+                  {hasActiveFilter && timelineItems.length > 0 && (
+                    <div className="space-y-1 text-left">
+                      {timelineItems.map((item) => (
+                        <SharedTimelineItem
+                          key={item.id}
+                          note={item}
+                          isOwnNote={item.user_id === user?.id}
+                          myResponse={getMyResponse(item.id)}
+                          partnerResponse={getPartnerResponse(item.id)}
+                          onUpdate={handleUpdateNote}
+                          onSaveResponse={saveResponse}
+                          onOpenInContext={handleOpenInContext}
+                        />
+                      ))}
+                    </div>
+                  )}
+
+                  {/* No results */}
+                  {timelineItems.length === 0 && hasActiveFilter && (
+                    <p className="text-muted-foreground/50 py-8 text-sm text-center">
+                      {t('shared.no_results')}
+                    </p>
+                  )}
+
+                  {/* Chronological archive */}
+                  {!hasActiveFilter && olderGrouped.map((group) => (
                     <div key={group.key} className="mb-12">
                       <div className="flex items-center gap-3 mb-6">
                         <div className="h-px flex-1 bg-border/20" />
@@ -688,42 +713,18 @@ export default function SharedSummary() {
                 </div>
               )}
 
-              {/* No results */}
-              {timelineItems.length === 0 && hasActiveFilter && (
-                <p className="text-muted-foreground py-12 text-sm text-center">
-                  {t('shared.no_results')}
-                </p>
-              )}
-
-              {/* Bottom — browse + search toggle */}
+              {/* Browse — bottom */}
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.15 }}
-                className="mt-8 mb-6 text-center space-y-2"
+                className="mt-4 mb-6 text-center"
               >
-                {!hasActiveFilter && (
-                  <button
-                    onClick={() => navigate('/')}
-                    className="text-xs text-muted-foreground hover:text-foreground transition-colors block mx-auto"
-                  >
-                    Bläddra bland kort →
-                  </button>
-                )}
                 <button
-                  onClick={() => {
-                    if (showFind) {
-                      setSearchQuery('');
-                      setCategoryFilter('all');
-                    }
-                    setShowFind(!showFind);
-                    if (!showFind) {
-                      window.scrollTo({ top: 0, behavior: 'smooth' });
-                    }
-                  }}
-                  className="text-[11px] text-muted-foreground/40 hover:text-muted-foreground transition-colors block mx-auto"
+                  onClick={() => navigate('/')}
+                  className="text-xs text-muted-foreground hover:text-foreground transition-colors"
                 >
-                  {showFind ? 'Stäng sök' : 'Hitta'}
+                  Bläddra bland kort →
                 </button>
               </motion.div>
             </>)}
