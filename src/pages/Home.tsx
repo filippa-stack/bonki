@@ -12,7 +12,7 @@ import ContinueModule from '@/components/ContinueModule';
 import Header from '@/components/Header';
 import ResumeSessionDialog from '@/components/ResumeSessionDialog';
 import AttachPartner from '@/components/AttachPartner';
-import { Bookmark, Pencil, Check, Share2, Settings, ArrowRight } from 'lucide-react';
+import { Bookmark, Pencil, Check, Share2, Settings } from 'lucide-react';
 import NotificationSettings from '@/components/NotificationSettings';
 import RelationshipMemory from '@/components/RelationshipMemory';
 import Footer from '@/components/Footer';
@@ -65,7 +65,7 @@ export default function Home() {
   const { settings, updateSettings } = useSiteSettings();
   const { user } = useAuth();
   const { space, displayMemberCount, userRole } = useCoupleSpace();
-  const { incomingProposals, sendProposal: sendDbProposal, updateProposalStatus } = useProposals();
+  const { sendProposal: sendDbProposal } = useProposals();
   const [isEditingHero, setIsEditingHero] = useState(false);
   const [editTitle, setEditTitle] = useState(settings.heroTitle);
   const [editSubtitle, setEditSubtitle] = useState(settings.heroSubtitle);
@@ -390,32 +390,6 @@ export default function Home() {
         )}
       </AnimatePresence>
 
-      {/* Compact incoming proposal indicator — links to Vårt utrymme */}
-      {(() => {
-        if (incomingProposals.length === 0) return null;
-        const latest = incomingProposals[0];
-        const proposalCard = getCardById(latest.card_id);
-        if (!proposalCard) return null;
-
-        return (
-          <motion.div
-            initial={{ opacity: 0, y: 4 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="px-6 mb-6"
-          >
-            <button
-              onClick={() => navigate('/shared')}
-              className="w-full flex items-center justify-between rounded-2xl border border-border bg-card/60 px-5 py-4 text-left transition-colors hover:bg-card/80"
-            >
-              <div className="space-y-0.5">
-                <p className="text-xs text-muted-foreground/60">Din partner föreslog</p>
-                <p className="font-serif text-sm text-foreground">{proposalCard.title}</p>
-              </div>
-              <ArrowRight className="w-4 h-4 text-muted-foreground/40 flex-shrink-0" />
-            </button>
-          </motion.div>
-        );
-      })()}
 
       {/* Journey continue module */}
       {(() => {
