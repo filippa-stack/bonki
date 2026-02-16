@@ -17,6 +17,7 @@ import NotificationSettings from '@/components/NotificationSettings';
 import RelationshipMemory from '@/components/RelationshipMemory';
 import Footer from '@/components/Footer';
 import RecentSharedReflection from '@/components/RecentSharedReflection';
+import PartnerConnectedBanner from '@/components/PartnerConnectedBanner';
 
 import ReturnOverlay from '@/components/ReturnOverlay';
 import { Button } from '@/components/ui/button';
@@ -306,6 +307,9 @@ export default function Home() {
         </div>
       </div>
 
+
+      {/* Partner connected banner */}
+      <PartnerConnectedBanner />
 
       {/* Compact proposal indicator */}
       {incomingProposals.length > 0 && (

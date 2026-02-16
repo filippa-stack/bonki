@@ -177,6 +177,15 @@ Deno.serve(async (req) => {
         .eq("id", targetSpace.id);
     }
 
+    // Emit system event for partner joined
+    await adminClient
+      .from("system_events")
+      .insert({
+        couple_space_id: targetSpace.id,
+        type: "partner_joined",
+        payload: { partner_user_id: userId },
+      });
+
     return new Response(
       JSON.stringify({ success: true, couple_space_id: targetSpace.id }),
       { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
