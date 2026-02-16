@@ -262,22 +262,22 @@ export default function Home() {
       <div className="flex-1">
       <Header showBackgroundPicker={false} showBackupManager={false} />
       {/* Header with Logo — compact when active session */}
-      <div className={`px-6 ${hasActiveSession && !isSoloMode ? 'pt-10 pb-6' : 'pt-14 pb-12'}`}>
+      <div className={`px-6 ${hasActiveSession && !isSoloMode ? 'pt-10 pb-6' : isSoloMode ? 'pt-10 pb-6' : 'pt-14 pb-12'}`}>
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.15 }}
-          className={`flex justify-center ${hasActiveSession && !isSoloMode ? 'mb-4' : 'mb-8'}`}
+          className={`flex justify-center ${hasActiveSession && !isSoloMode ? 'mb-4' : isSoloMode ? 'mb-4' : 'mb-8'}`}
         >
           <img 
             src={bonkiLogo} 
             alt="Still Us" 
-            className={hasActiveSession && !isSoloMode ? 'h-10 w-auto' : 'h-14 w-auto'}
+            className={hasActiveSession && !isSoloMode || isSoloMode ? 'h-10 w-auto' : 'h-14 w-auto'}
           />
         </motion.div>
         
-        {/* Hide large headline when session is active */}
-        {!(hasActiveSession && !isSoloMode) && (
+        {/* Hide large headline in solo mode and active session */}
+        {!isSoloMode && !(hasActiveSession) && (
           <div className="text-center">
               <motion.h1
                 initial={{ opacity: 0 }}
