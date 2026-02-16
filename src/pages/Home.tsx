@@ -220,22 +220,8 @@ export default function Home() {
       <div className="flex-1">
       <Header showBackgroundPicker={false} showBackupManager={false} />
       {/* Header with Logo — compact when active session */}
-      {isSoloMode && (
-        <div className="px-6 pt-14 pb-12">
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.15 }}
-            className="flex justify-center mb-8"
-          >
-            <img 
-              src={bonkiLogo} 
-              alt="Still Us" 
-              className="h-14 w-auto"
-            />
-          </motion.div>
-        </div>
-      )}
+
+
 
 
       {/* Partner connected banner */}
