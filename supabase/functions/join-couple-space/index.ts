@@ -62,7 +62,8 @@ Deno.serve(async (req) => {
     const { count: targetMemberCount } = await adminClient
       .from("couple_members")
       .select("id", { count: "exact", head: true })
-      .eq("couple_space_id", targetSpace.id);
+      .eq("couple_space_id", targetSpace.id)
+      .is("left_at", null);
 
     if ((targetMemberCount ?? 0) >= 2) {
       return new Response(
@@ -75,6 +76,7 @@ Deno.serve(async (req) => {
       .from("couple_members")
       .select("id, couple_space_id")
       .eq("user_id", userId)
+      .is("left_at", null)
       .maybeSingle();
 
     if (existingMembership) {
@@ -90,7 +92,8 @@ Deno.serve(async (req) => {
       const { count: originalMemberCount, error: countErr } = await adminClient
         .from("couple_members")
         .select("id", { count: "exact", head: true })
-        .eq("couple_space_id", originalSpaceId);
+        .eq("couple_space_id", originalSpaceId)
+        .is("left_at", null);
 
       if (countErr) {
         console.error("Count error:", countErr);
