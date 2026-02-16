@@ -95,14 +95,15 @@ export default function Login() {
           transition={{ duration: 0.15, delay: 0.03 }}
         />
 
-        <motion.h1
+        <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.06, duration: 0.15 }}
-          className="text-display font-serif hero-title-color"
+          className="space-y-1"
         >
-          STILL US — So we stay us
-        </motion.h1>
+          <h1 className="text-display font-serif hero-title-color">STILL US</h1>
+          <p className="text-sm text-muted-foreground tracking-wide">So we stay us</p>
+        </motion.div>
 
         <motion.div
           initial={{ opacity: 0 }}
