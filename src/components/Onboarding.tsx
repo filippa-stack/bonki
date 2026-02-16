@@ -5,24 +5,16 @@ import { useApp } from '@/contexts/AppContext';
 
 const slides = [
   {
-    title: 'Välkommen',
-    content: 'Det här är ett utrymme för dig och din partner att reflektera över er relation – som föräldrar, som partners, som individer i ett gemensamt liv.',
+    title: 'Ett gemensamt rum.',
+    content: 'Still Us är skapat för er två –\nför att fördjupa det som bär er relation.',
   },
   {
-    title: 'Grundat i forskning',
-    content: 'Varje fråga och övning här bygger på psykologisk forskning om relationer, kommunikation, anknytning och föräldraskap. Det här verktyget är skapat av en legitimerad psykolog.',
+    title: 'Omsorgsfullt utvecklat.',
+    content: 'Varje samtal bygger på psykologisk forskning om relationer, kommunikation och anknytning.\n\nFormulerat för att skapa klarhet, närhet och förståelse.',
   },
   {
-    title: 'Inga rätta svar',
-    content: 'Det här är inte terapi, coachning eller ett test. Det finns inga poäng, inga framstegsmätare, inga mål att uppnå. Bara ärliga samtal i din egen takt.',
-  },
-  {
-    title: 'I din egen takt',
-    content: 'Du kan pausa när som helst och återkomma senare. Spara samtal som betyder något. Skriv privata reflektioner eller dela dem med din partner. Inget här är brådskande.',
-  },
-  {
-    title: 'Tillsammans',
-    content: 'Bjud in din partner så kan ni välja samtalsämne tillsammans. Ni föreslår ett ämne, den andra accepterar, och sedan utforskar ni det i er egen takt. Appen fungerar bäst som ett gemensamt verktyg.',
+    title: 'Det börjar med er.',
+    content: 'En av er föreslår ett samtal.\nDen andra accepterar.\nSedan utforskar ni tillsammans.',
   },
 ];
 
@@ -61,7 +53,7 @@ export default function Onboarding() {
             <h1 className="text-display text-foreground mb-8">
               {slides[currentSlide].title}
             </h1>
-            <p className="text-body text-gentle leading-relaxed mb-12">
+            <p className="text-body text-gentle leading-relaxed mb-12 whitespace-pre-line">
               {slides[currentSlide].content}
             </p>
           </motion.div>
@@ -72,7 +64,7 @@ export default function Onboarding() {
             onClick={isLastSlide ? handleComplete : handleNext}
             className="btn-gentle w-full max-w-xs"
           >
-            {isLastSlide ? t('onboarding.begin') : t('onboarding.continue')}
+            {isLastSlide ? 'Börja' : 'Fortsätt'}
           </button>
 
           {/* Progress dots */}
