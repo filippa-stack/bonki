@@ -120,18 +120,19 @@ export default function SessionStepReflection({
   // ─── READY: waiting for partner ───
   if (state === 'ready') {
     return (
-      <div className="mt-6 mb-2 space-y-4">
-        <ReflectionCard
-          label="Din reflektion"
-          text={myReflection?.text || ''}
-          icon={<Check className="w-3 h-3" />}
-        />
-        <p className="text-sm text-muted-foreground/70 text-center leading-relaxed">
+      <div className="mt-12 mb-8 text-center space-y-6">
+        <p className="text-sm text-muted-foreground/70 leading-relaxed">
           Samtalet väntar på din partner.
         </p>
-        <p className="text-xs text-muted-foreground/40 text-center">
+        <p className="text-xs text-muted-foreground/40">
           Ni fortsätter när hen har reflekterat.
         </p>
+        <button
+          onClick={() => window.location.assign('/')}
+          className="text-xs text-muted-foreground/40 hover:text-muted-foreground/60 transition-colors mx-auto block"
+        >
+          Gå tillbaka till hem
+        </button>
       </div>
     );
   }
