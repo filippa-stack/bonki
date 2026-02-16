@@ -8,7 +8,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { toast } from 'sonner';
-import { Link2, KeyRound, Copy, Check, Loader2, ChevronDown, ChevronUp } from 'lucide-react';
+import { Link2, KeyRound, Copy, Check, Loader2, ChevronDown, ChevronUp, Share2 } from 'lucide-react';
 
 interface InviteInfo {
   invite_code: string;
@@ -283,14 +283,35 @@ export default function AttachPartner({
                   </Button>
                 </div>
                 <Button
-                  variant="ghost"
                   size="sm"
-                  className="w-full text-xs text-muted-foreground"
+                  className="w-full gap-2"
+                  onClick={async () => {
+                    if (!inviteInfo) return;
+                    if (navigator.share) {
+                      try {
+                        await navigator.share({ title: 'Still Us', text: inviteLink });
+                        return;
+                      } catch (err) {
+                        if ((err as Error).name === 'AbortError') return;
+                      }
+                    }
+                    await navigator.clipboard.writeText(inviteLink);
+                    setCopied(true);
+                    toast.success('Länk kopierad');
+                    setTimeout(() => setCopied(false), 2000);
+                  }}
+                  disabled={!inviteInfo}
+                >
+                  <Share2 className="w-3.5 h-3.5" />
+                  Dela länk
+                </Button>
+                <button
+                  className="w-full text-xs text-muted-foreground hover:text-foreground transition-colors py-1"
                   onClick={() => setInviteStep('message')}
                   disabled={!inviteInfo}
                 >
                   Lägg till ett personligt meddelande
-                </Button>
+                </button>
               </div>
 
               <div className="flex items-center gap-3">
