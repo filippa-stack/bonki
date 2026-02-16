@@ -434,7 +434,7 @@ export default function CardView() {
                   transition={{ duration: 0.15 }}
                   role="status"
                   aria-live="polite"
-                  className="my-10 py-10 px-5 text-center space-y-3"
+                  className="my-10 py-10 px-5 text-center space-y-5"
                 >
                   <p className="text-sm font-serif text-foreground">
                     Du är klar.
@@ -442,6 +442,22 @@ export default function CardView() {
                   <p className="text-sm text-muted-foreground leading-relaxed">
                     Ni fortsätter när båda är klara.
                   </p>
+
+                  {/* Breathing line */}
+                  <div className="flex justify-center pt-2">
+                    <div
+                      className="w-16 h-px bg-foreground/[0.08]"
+                      style={{ animation: 'breathe 4.5s ease-in-out infinite' }}
+                    />
+                  </div>
+
+                  {/* Shared pace dots */}
+                  <div className="flex justify-center gap-2 pt-1">
+                    {/* User dot — filled */}
+                    <span className="block w-2 h-2 rounded-full bg-foreground/20" />
+                    {/* Partner dot — outlined */}
+                    <span className="block w-2 h-2 rounded-full border border-foreground/15" />
+                  </div>
                 </motion.div>
               ) : (
                 <div className="pt-10 pb-8 space-y-5">
@@ -468,11 +484,6 @@ export default function CardView() {
                     </div>
                   )}
 
-                  {!isRevisitMode && (
-                    <p className="text-[11px] text-muted-foreground/40 leading-relaxed text-center">
-                      Svara i er egen takt. Ni fortsätter när båda är klara.
-                    </p>
-                  )}
                 </div>
               )}
 
