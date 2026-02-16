@@ -60,10 +60,10 @@ export default function ContinueModule({
         }}
       >
 
-        <p className="font-serif text-lg mb-1" style={textStyle}>
+        <p className="font-serif text-lg" style={textStyle}>
           {cardTitle}
         </p>
-        <p className="text-xs mb-5" style={mutedTextStyle}>
+        <p className="text-xs mb-3" style={mutedTextStyle}>
           {categoryTitle}{timeCue ? ` · ${timeCue}` : ''}
         </p>
 
