@@ -7,6 +7,7 @@ import ColorPicker from '@/components/ColorPicker';
 import SaveIndicator from '@/components/SaveIndicator';
 import SyncStatus from '@/components/SyncStatus';
 import BackupManager from '@/components/BackupManager';
+import LeaveCoupleSpace from '@/components/LeaveCoupleSpace';
 import bonkiLogo from '@/assets/bonki-logo.png';
 import {
   Popover,
@@ -115,7 +116,8 @@ export default function Header({
                 <LogOut className="w-4 h-4" />
               </Button>
             </PopoverTrigger>
-            <PopoverContent className="w-48 p-2" align="end">
+            <PopoverContent className="w-52 p-2 space-y-1" align="end">
+              <LeaveCoupleSpace />
               <Button
                 variant="ghost"
                 className="w-full justify-start text-destructive hover:text-destructive hover:bg-destructive/10"

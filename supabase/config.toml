@@ -11,3 +11,6 @@ verify_jwt = false
 
 [functions.update-step-completion]
 verify_jwt = false
+
+[functions.leave-couple-space]
+verify_jwt = false
