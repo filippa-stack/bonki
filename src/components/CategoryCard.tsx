@@ -72,14 +72,20 @@ export default function CategoryCard({
       animate={{ opacity: 1 }}
       transition={{ duration: 0.15 }}
       onClick={onClick}
-      className={`w-full text-left card-reflection group cursor-pointer border rounded-2xl py-5 px-5 transition-all${isCompleted ? ' bg-slate-50/60 border-slate-200/50' : ' item-colors'}${highlighted ? ' ring-1 ring-primary/20' : ''}`}
+      className={[
+        'w-full text-left card-reflection group cursor-pointer rounded-2xl py-5 px-5 transition-all',
+        isCompleted ? 'bg-slate-50/60 border-slate-200/50' : 'item-colors',
+        highlighted
+          ? 'border-2 border-primary shadow-md'
+          : 'border border-slate-200/60',
+        !highlighted && !isCompleted ? 'opacity-70 hover:opacity-100' : '',
+      ].filter(Boolean).join(' ')}
       style={isCompleted ? {
-        borderWidth: '1px',
+        borderWidth: highlighted ? '2px' : '1px',
         borderStyle: 'solid',
       } : { 
         '--item-bg': category.color || undefined,
-        '--item-border': category.borderColor || undefined,
-        borderWidth: highlighted ? '1.5px' : '1px',
+        '--item-border': highlighted ? undefined : (category.borderColor || undefined),
         borderStyle: 'solid',
       } as React.CSSProperties}
     >
@@ -140,8 +146,8 @@ export default function CategoryCard({
             />
           ) : (
             <h3 
-              className={`text-base sm:text-lg font-serif font-medium text-center group-hover:text-primary transition-colors cursor-text leading-snug ${isCompleted ? 'text-slate-400' : 'item-text'}`}
-              style={isCompleted ? undefined : { '--item-text': category.textColor || undefined } as React.CSSProperties}
+              className={`text-base sm:text-lg font-serif font-medium text-center group-hover:text-primary transition-colors cursor-text leading-snug ${isCompleted ? 'text-slate-400' : highlighted ? 'text-slate-800' : 'text-slate-500 item-text'}`}
+              style={isCompleted || highlighted ? undefined : { '--item-text': category.textColor || undefined } as React.CSSProperties}
               onClick={handleTitleClick}
             >
               {category.title}
