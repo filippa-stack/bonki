@@ -447,7 +447,7 @@ export default function CardView() {
                   <div className="flex justify-center pt-2">
                     <div
                       className="w-16 h-px bg-foreground/[0.08]"
-                      style={{ animation: 'breathe 4.5s ease-in-out infinite' }}
+                      style={{ animation: 'breathe 5s ease-in-out infinite' }}
                     />
                   </div>
 
