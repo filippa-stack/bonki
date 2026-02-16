@@ -140,10 +140,10 @@ export default function SessionStepReflection({
     return (
       <div className="mt-12 mb-8 text-center space-y-6">
         <p className="text-sm text-muted-foreground/70 leading-relaxed">
-          Samtalet väntar på din partner.
+          Väntar på att ni båda trycker klart.
         </p>
         <p className="text-xs text-muted-foreground/40">
-          Ni fortsätter när hen har reflekterat.
+          När ni båda har markerat steget som klart visas era reflektioner.
         </p>
         <button
           onClick={() => window.location.assign('/')}
