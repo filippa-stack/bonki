@@ -268,7 +268,7 @@ export default function PromptItem({
                     </motion.div>
                   )}
 
-                  {/* Shared note display */}
+                  {/* Shared note display — hidden when sharing is disabled (active session) */}
                   {!shareDisabled && sharedNote && !justShared && (
                     <div className="p-4 rounded-xl bg-primary/5 border border-primary/10">
                       <p className="text-[11px] text-muted-foreground/60 tracking-wide mb-1.5 flex items-center gap-1.5">
