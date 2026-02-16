@@ -103,13 +103,18 @@ Deno.serve(async (req) => {
         );
       }
 
-      if ((originalMemberCount ?? 0) >= 2) {
-        return new Response(
-          JSON.stringify({ error: "already_paired" }),
-          { status: 409, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-        );
-      }
+      // Archive old membership instead of blocking
+      // This allows users to switch partners even if the old space is full
+      await adminClient
+        .from("couple_members")
+        .update({
+          left_at: new Date().toISOString(),
+          left_reason: "partner_switch",
+          left_by: userId,
+        })
+        .eq("id", existingMembership.id);
 
+      // Migrate data from old space to new space
       await adminClient
         .from("prompt_notes")
         .update({ couple_space_id: targetSpace.id })
@@ -129,11 +134,6 @@ Deno.serve(async (req) => {
           original_space_id: originalSpaceId,
           merged_into_space_id: targetSpace.id,
         });
-
-      await adminClient
-        .from("couple_members")
-        .delete()
-        .eq("id", existingMembership.id);
 
       await adminClient
         .from("couple_progress")
