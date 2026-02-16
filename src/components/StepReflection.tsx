@@ -122,14 +122,14 @@ export default function StepReflection({ section, card, defaultExpanded = false 
       className="mt-6 mb-2 space-y-3"
     >
       {/* Input area */}
-      <div className="rounded-xl border border-border/60 bg-card/50 overflow-hidden">
+      <div className="rounded-xl border border-slate-200 bg-white overflow-hidden">
         <textarea
           ref={textareaRef}
           value={text}
           onChange={(e) => handleChange(e.target.value)}
           onFocus={handleFocus}
           placeholder="Skriv en tanke…"
-          className="w-full min-h-[72px] p-3 bg-transparent resize-none focus:outline-none text-sm text-foreground placeholder:text-muted-foreground/60"
+          className="w-full min-h-[72px] p-3 bg-transparent resize-none focus:outline-none focus:ring-0 text-sm text-foreground placeholder:text-muted-foreground/60"
         />
 
         {/* Actions bar */}

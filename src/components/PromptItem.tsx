@@ -200,7 +200,7 @@ export default function PromptItem({
                       onFocus={handleFocus}
                       onKeyDown={handleKeyDown}
                       placeholder={t('reflections.prompt_note_placeholder', 'Skriv ned dina tankar. Du väljer själv om du vill dela med din partner, nu eller senare. Annars sparas dina svar här enbart för dig')}
-                      className="w-full px-5 py-5 rounded-2xl bg-background border border-border/20 resize-none focus:outline-none focus:border-primary/20 focus:ring-0 placeholder:text-muted-foreground/25 font-sans text-sm text-foreground leading-relaxed transition-colors duration-300 min-h-[140px]"
+                      className="w-full px-5 py-5 rounded-2xl bg-white border border-slate-200 resize-none focus:outline-none focus:border-[#497575] focus:ring-0 placeholder:text-muted-foreground/25 font-sans text-sm text-foreground leading-relaxed transition-colors duration-300 min-h-[140px]"
                     />
                     {/* Autosave status */}
                     <AnimatePresence>
@@ -277,7 +277,7 @@ export default function PromptItem({
                           <textarea
                             value={sharePreviewText}
                             onChange={(e) => setSharePreviewText(e.target.value)}
-                            className="w-full min-h-[60px] px-4 py-3 rounded-xl bg-background border border-border/40 resize-none focus:outline-none focus:ring-0 focus:border-primary/30 font-sans text-sm text-foreground"
+                            className="w-full min-h-[60px] px-4 py-3 rounded-xl bg-white border border-slate-200 resize-none focus:outline-none focus:ring-0 focus:border-[#497575] font-sans text-sm text-foreground"
                             autoFocus
                           />
                           <div className="flex flex-wrap gap-2">

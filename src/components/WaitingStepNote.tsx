@@ -68,13 +68,13 @@ export default function WaitingStepNote({ cardId, sectionId }: WaitingStepNotePr
       animate={{ opacity: 1, y: 0 }}
       className="w-full max-w-md mx-auto space-y-3"
     >
-      <div className="rounded-xl border border-border/60 bg-card/50 overflow-hidden">
+      <div className="rounded-xl border border-slate-200 bg-white overflow-hidden">
         <textarea
           ref={textareaRef}
           value={text}
           onChange={(e) => setText(e.target.value)}
           placeholder="Skriv något du vill komma ihåg…"
-          className="w-full min-h-[64px] p-3 bg-transparent resize-none focus:outline-none text-sm text-foreground placeholder:text-muted-foreground/60"
+          className="w-full min-h-[64px] p-3 bg-transparent resize-none focus:outline-none focus:ring-0 text-sm text-foreground placeholder:text-muted-foreground/60"
         />
         <p className="px-3 pb-1 text-xs text-muted-foreground/65">Du väljer alltid själv vad som delas.</p>
         <div className="flex items-center justify-between gap-2 px-3 pb-3">

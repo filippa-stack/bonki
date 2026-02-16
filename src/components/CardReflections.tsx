@@ -75,7 +75,7 @@ export default function CardReflections({ cardId }: CardReflectionsProps) {
               value={privateText}
               onChange={(e) => setPrivateText(e.target.value)}
               placeholder={t('reflections.private_notes_hint')}
-              className="w-full min-h-[100px] p-4 rounded-lg bg-card border border-input text-foreground placeholder:text-muted-foreground resize-none focus:outline-none focus:ring-2 focus:ring-primary/20 font-sans text-base"
+              className="w-full min-h-[100px] p-4 rounded-lg bg-white border border-slate-200 text-foreground placeholder:text-muted-foreground resize-none focus:outline-none focus:ring-0 focus:border-[#497575] font-sans text-base"
               autoFocus={isEditingPrivate}
             />
             <div className="flex gap-3 mt-3">
@@ -132,7 +132,7 @@ export default function CardReflections({ cardId }: CardReflectionsProps) {
                 <textarea
                   value={sharedText}
                   onChange={(e) => setSharedText(e.target.value)}
-                  className="w-full min-h-[100px] p-4 rounded-lg bg-card border border-input text-foreground placeholder:text-muted-foreground resize-none focus:outline-none focus:ring-2 focus:ring-primary/20 font-sans text-base"
+                  className="w-full min-h-[100px] p-4 rounded-lg bg-white border border-slate-200 text-foreground placeholder:text-muted-foreground resize-none focus:outline-none focus:ring-0 focus:border-[#497575] font-sans text-base"
                   autoFocus
                 />
                 <div className="flex gap-3 mt-3">
