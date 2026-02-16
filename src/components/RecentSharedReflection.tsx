@@ -61,9 +61,9 @@ export default function RecentSharedReflection() {
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 10 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: 0.25 }}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.15, delay: 0.15 }}
       className="px-6 mb-6"
     >
       <p className="text-xs text-muted-foreground uppercase tracking-wider mb-3 flex items-center gap-2">
