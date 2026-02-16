@@ -727,8 +727,8 @@ export default function Home() {
         return null;
       })()}
 
-      {/* Recent shared reflection preview — hidden during active session */}
-      {!currentSession && <RecentSharedReflection />}
+      {/* Recent shared reflection preview */}
+      <RecentSharedReflection />
 
       {/* Navigation links — grouped */}
       <motion.div
@@ -737,15 +737,13 @@ export default function Home() {
         transition={{ duration: 0.15 }}
         className="px-6 pt-8 pb-6 mt-4 space-y-1"
       >
-        {!currentSession && (
-          <button
-            onClick={() => navigate('/shared')}
-            className="w-full flex items-center gap-3 py-3 text-muted-foreground hover:text-foreground transition-colors"
-          >
-            <Share2 className="w-4 h-4" />
-            <span className="text-sm">{t('shared.title')}</span>
-          </button>
-        )}
+        <button
+          onClick={() => navigate('/shared')}
+          className="w-full flex items-center gap-3 py-3 text-muted-foreground hover:text-foreground transition-colors"
+        >
+          <Share2 className="w-4 h-4" />
+          <span className="text-sm">{t('shared.title')}</span>
+        </button>
 
         {savedConversations.length > 0 && (
           <button
