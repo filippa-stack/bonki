@@ -558,33 +558,35 @@ export default function Home() {
       {/* Recent shared reflection preview */}
       <RecentSharedReflection />
 
-      {/* Navigation links — grouped */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.15 }}
-        className="px-6 pt-8 pb-6 mt-4 space-y-1"
-      >
-        <button
-          onClick={() => navigate('/shared')}
-          className="w-full flex items-center gap-3 py-3 text-muted-foreground hover:text-foreground transition-colors"
+      {/* Navigation links — hidden during active session to prevent intention hijacking */}
+      {!hasActiveSession && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.15 }}
+          className="px-6 pt-8 pb-6 mt-4 space-y-1"
         >
-          <Share2 className="w-4 h-4" />
-          <span className="text-sm">{t('shared.title')}</span>
-        </button>
-
-        {savedConversations.length > 0 && (
           <button
-            onClick={() => navigate('/saved')}
+            onClick={() => navigate('/shared')}
             className="w-full flex items-center gap-3 py-3 text-muted-foreground hover:text-foreground transition-colors"
           >
-            <Bookmark className="w-4 h-4" />
-            <span className="text-sm">
-              {t('home.saved_conversations', { count: savedConversations.length })}
-            </span>
+            <Share2 className="w-4 h-4" />
+            <span className="text-sm">{t('shared.title')}</span>
           </button>
-        )}
-      </motion.div>
+
+          {savedConversations.length > 0 && (
+            <button
+              onClick={() => navigate('/saved')}
+              className="w-full flex items-center gap-3 py-3 text-muted-foreground hover:text-foreground transition-colors"
+            >
+              <Bookmark className="w-4 h-4" />
+              <span className="text-sm">
+                {t('home.saved_conversations', { count: savedConversations.length })}
+              </span>
+            </button>
+          )}
+        </motion.div>
+      )}
 
       {/* Notification preferences */}
       <motion.div
