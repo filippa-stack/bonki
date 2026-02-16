@@ -276,27 +276,7 @@ export default function Home() {
           />
         </motion.div>
         
-        {/* Hide large headline in solo mode and active session */}
-        {!isSoloMode && !(hasActiveSession) && (
-          <div className="text-center">
-              <motion.h1
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.15 }}
-                className="text-display font-serif hero-title-color"
-              >
-                STILL US — So we stay us
-              </motion.h1>
-              <motion.p
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.15, delay: 0.05 }}
-                className="text-body mt-3 font-sans hero-subtitle-color"
-              >
-                Förbli ett vi medan vi uppfostrar dem
-              </motion.p>
-          </div>
-        )}
+        {/* Brand headline removed — lives on Login screen only */}
       </div>
 
 

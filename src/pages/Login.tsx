@@ -99,9 +99,9 @@ export default function Login() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.06, duration: 0.15 }}
-          className="text-display text-foreground"
+          className="text-display font-serif hero-title-color"
         >
-          {t('login.welcome')}
+          STILL US — So we stay us
         </motion.h1>
 
         <motion.div
