@@ -12,6 +12,7 @@ import CategoryCard from '@/components/CategoryCard';
 import Header from '@/components/Header';
 import ResumeSessionDialog from '@/components/ResumeSessionDialog';
 import AttachPartner from '@/components/AttachPartner';
+import SoloInviteSection from '@/components/SoloInviteSection';
 import { ArrowRight, Bookmark, Share2 } from 'lucide-react';
 import NotificationSettings from '@/components/NotificationSettings';
 import RelationshipMemory from '@/components/RelationshipMemory';
@@ -412,36 +413,13 @@ export default function Home() {
           }
         }
 
-        // State 3: No partner → explanation + "Bjud in din partner"
+        // State 3: No partner → invite as ritual step
         if (effectiveSoloMode && space) {
           return (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.15 }}
-              className="px-6 mb-10"
-            >
-              <div className="text-center space-y-3 mb-8">
-                <p className="text-sm text-muted-foreground leading-relaxed">
-                  Still Us är gjort för er två.<br />
-                  Börja med att bjuda in din partner.
-                </p>
-              </div>
-              <AttachPartner
-                fetchInviteInfo={fetchInviteInfo}
-                partnerName={userRole === 'partner_b' ? space.partner_b_name : space.partner_a_name}
-                onUpdateName={async (name) => {
-                  const role = userRole === 'partner_b' ? 'partner_b_name' : 'partner_a_name';
-                  await supabase
-                    .from('couple_spaces')
-                    .update({ [role]: name })
-                    .eq('id', space.id);
-                }}
-                memberCount={displayMemberCount}
-                onJoinedSpace={() => window.location.reload()}
-                defaultExpanded
-              />
-            </motion.div>
+            <SoloInviteSection
+              fetchInviteInfo={fetchInviteInfo}
+              onJoinedSpace={() => window.location.reload()}
+            />
           );
         }
 
