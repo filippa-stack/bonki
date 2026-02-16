@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { getCatchUpState } from '@/lib/catchUpState';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useApp } from '@/contexts/AppContext';
 import { useSiteSettings } from '@/contexts/SiteSettingsContext';
@@ -51,6 +51,22 @@ export default function Home() {
   const { user } = useAuth();
   const { space, displayMemberCount, userRole, fetchInviteInfo } = useCoupleSpace();
   const { incomingProposals, sendProposal: sendDbProposal } = useProposals();
+  const prevIncomingCountRef = useRef(incomingProposals.length);
+
+  // Toast when a new incoming proposal arrives
+  useEffect(() => {
+    if (incomingProposals.length > prevIncomingCountRef.current) {
+      toast('Ni har fått ett nytt samtalsförslag', {
+        description: 'Öppna Vårt utrymme för att se det',
+        duration: 4000,
+        action: {
+          label: 'Visa',
+          onClick: () => navigate('/shared'),
+        },
+      });
+    }
+    prevIncomingCountRef.current = incomingProposals.length;
+  }, [incomingProposals.length, navigate]);
 
   // Proposal mode state
   const [isProposalMode, setIsProposalMode] = useState(false);
