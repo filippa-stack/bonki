@@ -541,8 +541,7 @@ export default function Home() {
         return null;
       })()}
 
-      {/* Recent shared reflection preview */}
-      <RecentSharedReflection />
+
 
       {/* Navigation links — hidden during active session to prevent intention hijacking */}
       {!hasActiveSession && (
