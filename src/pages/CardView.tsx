@@ -402,7 +402,7 @@ export default function CardView() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.03, duration: 0.15 }}
-            className="text-sm text-slate-600 not-italic mt-5 text-center max-w-2xl mx-auto leading-relaxed"
+            className="text-sm text-slate-700 not-italic mt-5 text-center max-w-2xl mx-auto leading-relaxed"
           >
             {card.subtitle}
           </motion.p>
