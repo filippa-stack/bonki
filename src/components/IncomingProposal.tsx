@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowRight, Clock } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -8,8 +9,8 @@ interface IncomingProposalProps {
   cardTitle: string;
   categoryTitle: string;
   proposerName?: string;
-  onAccept: () => void;
-  onSaveForLater: () => void;
+  onAccept: () => void | Promise<void>;
+  onSaveForLater: () => void | Promise<void>;
 }
 
 export default function IncomingProposal({
@@ -21,6 +22,19 @@ export default function IncomingProposal({
   onSaveForLater,
 }: IncomingProposalProps) {
   const displayName = proposerName || 'Din partner';
+  const [acting, setActing] = useState(false);
+
+  const handleAccept = async () => {
+    if (acting) return;
+    setActing(true);
+    try { await onAccept(); } catch { setActing(false); }
+  };
+
+  const handleSave = async () => {
+    if (acting) return;
+    setActing(true);
+    try { await onSaveForLater(); } catch { setActing(false); }
+  };
 
   return (
     <motion.div
@@ -48,24 +62,26 @@ export default function IncomingProposal({
         </div>
       )}
 
-      {/* Actions — no decline, no rejection */}
+      {/* Actions — premium labels, no decline */}
       <div className="flex flex-col gap-2 pt-1">
         <Button
-          onClick={onAccept}
+          onClick={handleAccept}
+          disabled={acting}
           size="sm"
           className="gap-2"
         >
-          Öppna
+          Starta samtalet
           <ArrowRight className="w-3.5 h-3.5" />
         </Button>
         <Button
-          onClick={onSaveForLater}
+          onClick={handleSave}
+          disabled={acting}
           variant="ghost"
           size="sm"
           className="text-muted-foreground gap-2"
         >
           <Clock className="w-3.5 h-3.5" />
-          Senare
+          Spara till senare
         </Button>
       </div>
     </motion.div>
