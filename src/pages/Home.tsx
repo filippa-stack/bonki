@@ -50,8 +50,48 @@ export default function Home() {
   const { settings } = useSiteSettings();
   const { user } = useAuth();
   const { space, displayMemberCount, userRole, fetchInviteInfo } = useCoupleSpace();
-  const { incomingProposals, sendProposal: sendDbProposal } = useProposals();
+  const { incomingProposals, proposals, sendProposal: sendDbProposal } = useProposals();
   const prevIncomingCountRef = useRef(incomingProposals.length);
+  const prevOwnPendingIdsRef = useRef<Set<string>>(new Set());
+
+  // Track own pending proposal IDs to detect acceptance
+  const ownPendingIds = useMemo(() => {
+    return new Set(
+      proposals
+        .filter(p => p.status === 'pending' && p.proposed_by === user?.id)
+        .map(p => p.id)
+    );
+  }, [proposals, user?.id]);
+
+  // Detect when own pending proposal gets accepted → start session & notify
+  useEffect(() => {
+    if (prevOwnPendingIdsRef.current.size === 0) {
+      prevOwnPendingIdsRef.current = ownPendingIds;
+      return;
+    }
+
+    // Find proposals that were pending before but are no longer pending
+    for (const prevId of prevOwnPendingIdsRef.current) {
+      if (!ownPendingIds.has(prevId)) {
+        // Check if it became 'accepted'
+        const proposal = proposals.find(p => p.id === prevId && p.status === 'accepted');
+        if (proposal) {
+          // Start session for the proposer too
+          startSession(proposal.category_id, proposal.card_id, { force: true, fromBeginning: true });
+          toast('Din partner accepterade förslaget!', {
+            description: 'Samtalet är redo att börja',
+            duration: 5000,
+            action: {
+              label: 'Öppna',
+              onClick: () => navigate(`/card/${proposal.card_id}`),
+            },
+          });
+        }
+      }
+    }
+
+    prevOwnPendingIdsRef.current = ownPendingIds;
+  }, [ownPendingIds, proposals, startSession, navigate]);
 
   // Toast when a new incoming proposal arrives
   useEffect(() => {
