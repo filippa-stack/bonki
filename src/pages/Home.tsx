@@ -8,11 +8,11 @@ import { useSiteSettings } from '@/contexts/SiteSettingsContext';
 import { useAuth } from '@/contexts/AuthContext';
 import { useCoupleSpace } from '@/hooks/useCoupleSpace';
 import CategoryCard from '@/components/CategoryCard';
-import ContinueModule from '@/components/ContinueModule';
+
 import Header from '@/components/Header';
 import ResumeSessionDialog from '@/components/ResumeSessionDialog';
 import AttachPartner from '@/components/AttachPartner';
-import { Bookmark, Share2 } from 'lucide-react';
+import { ArrowRight, Bookmark, Share2 } from 'lucide-react';
 import NotificationSettings from '@/components/NotificationSettings';
 import RelationshipMemory from '@/components/RelationshipMemory';
 import Footer from '@/components/Footer';
@@ -300,21 +300,28 @@ export default function Home() {
       {/* Partner connected banner */}
       <PartnerConnectedBanner />
 
-      {/* Inline proposal decision cards */}
-      {incomingProposals
-        .filter(p => !dismissedProposalIds.has(p.id))
-        .map(proposal => {
+      {/* ═══ PRIMARY ACTION ZONE ═══
+           Exactly ONE dominant CTA based on state:
+           1. Incoming proposal → inline decision card
+           2. Active session → "Fortsätt samtalet"
+           3. No partner → "Bjud in din partner"
+           4. Paired, no session → "Starta ett samtal"
+      */}
+      {(() => {
+        // State 1: Incoming proposal replaces primary CTA
+        const visibleProposals = incomingProposals.filter(p => !dismissedProposalIds.has(p.id));
+        if (visibleProposals.length > 0) {
+          const proposal = visibleProposals[0]; // Show first pending
           const proposalCard = getCardById(proposal.card_id);
           const proposalCategory = getCategoryById(proposal.category_id);
           const isAccepting = acceptingProposalId === proposal.id;
           return (
             <motion.div
-              key={proposal.id}
-              initial={{ opacity: 0, y: 8 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -8 }}
-              transition={{ duration: 0.2 }}
-              className="px-6 mb-6"
+              key={`proposal-${proposal.id}`}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.15 }}
+              className="px-6 mb-10"
             >
               <div className="rounded-2xl border border-border bg-card p-6 space-y-4">
                 <div className="text-center space-y-1">
@@ -363,39 +370,39 @@ export default function Home() {
               </div>
             </motion.div>
           );
-        })}
+        }
 
-      {/* Journey continue module — only when it wins priority */}
-      {resumeSurface === 'continueModule' && (() => {
-        // Priority 1: Active shared session — always show ContinueModule for it
+        // State 2: Active session → "Fortsätt samtalet"
         if (currentSession) {
           const activeCard = getCardById(currentSession.cardId);
           const activeCategory = activeCard ? getCategoryById(activeCard.categoryId) : null;
           if (activeCard && activeCategory) {
-            const activeMySteps: number[] = user?.id && journeyState?.sessionProgress?.[currentSession.cardId]?.perUser?.[user.id]?.completedSteps || [];
-            const { isCatchingUp: activeCatchingUp } = getCatchUpState(activeMySteps, currentSession.currentStepIndex, true);
             return (
-              <div className="space-y-2">
-                <ContinueModule
-                  cardTitle={activeCard.title}
-                  categoryTitle={activeCategory.title}
-                  lastActiveAt={journeyState?.updatedAt}
-                  isCatchingUp={activeCatchingUp}
-                  onContinue={() => { markNavigated(); navigate(`/card/${currentSession.cardId}`); }}
-                />
-              </div>
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.15 }}
+                className="px-6 mb-10"
+              >
+                <div className="text-center space-y-2 mb-6">
+                  <p className="font-serif text-foreground">{activeCard.title}</p>
+                  <p className="text-xs text-muted-foreground">{activeCategory.title}</p>
+                </div>
+                <Button
+                  onClick={() => { markNavigated(); navigate(`/card/${currentSession.cardId}`); }}
+                  size="lg"
+                  className="w-full h-14 rounded-2xl gap-2 font-normal"
+                >
+                  Fortsätt samtalet
+                  <ArrowRight className="w-4 h-4" />
+                </Button>
+              </motion.div>
             );
           }
         }
 
-        const lastCompletedId = journeyState?.lastCompletedCardId;
-        const lastCompletedCard = lastCompletedId ? getCardById(lastCompletedId) : null;
-        const lastCompletedCategory = lastCompletedCard ? getCategoryById(lastCompletedCard.categoryId) : null;
-        const isPostCompletion = lastCompletedId && suggestedContext.suggestedCardId && lastCompletedId !== suggestedContext.suggestedCardId
-          && exploredIds.includes(lastCompletedId);
-
-        // Post-completion: show the completed card context
-        if (isPostCompletion && lastCompletedCard && lastCompletedCategory) {
+        // State 3: No partner → "Bjud in din partner"
+        if (isSoloMode && space) {
           return (
             <motion.div
               initial={{ opacity: 0 }}
@@ -403,180 +410,50 @@ export default function Home() {
               transition={{ duration: 0.15 }}
               className="px-6 mb-10"
             >
-                <div className="rounded-2xl border border-border bg-card p-6 text-center space-y-4">
-                <p className="font-serif text-lg text-foreground">{lastCompletedCard.title}</p>
-                <p className="text-sm text-muted-foreground leading-relaxed">
-                  {t('card_view.completion_message')}
-                </p>
-                <div className="flex flex-col items-center gap-2">
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="text-muted-foreground"
-                    onClick={() => {
-                      const el = document.getElementById('category-section');
-                      el?.scrollIntoView({ behavior: 'smooth' });
-                    }}
-                  >
-                    {t('general.choose_another')}
-                  </Button>
-                </div>
-              </div>
-            </motion.div>
-          );
-        }
-        
-        if (suggestedContext.suggestedCard && suggestedContext.suggestedCategory) {
-          const suggestedCardId = suggestedContext.suggestedCard.id;
-          const suggestedMySteps: number[] = user?.id && suggestedCardId && journeyState?.sessionProgress?.[suggestedCardId]?.perUser?.[user.id]?.completedSteps || [];
-          const suggestedSharedStep = currentSession?.cardId === suggestedCardId ? currentSession.currentStepIndex : 0;
-          const suggestedHasSession = !!(currentSession?.cardId === suggestedCardId);
-          const { isCatchingUp: suggestedCatchingUp } = getCatchUpState(suggestedMySteps, suggestedSharedStep, suggestedHasSession);
-
-          return (
-            <div className="space-y-2">
-              <ContinueModule
-                cardTitle={suggestedContext.suggestedCard.title}
-                categoryTitle={suggestedContext.suggestedCategory.title}
-                lastActiveAt={journeyState?.updatedAt}
-                isCatchingUp={suggestedCatchingUp}
-                onContinue={() => { markNavigated(); navigate(`/card/${suggestedContext.suggestedCard!.id}`); }}
-              />
-            </div>
-          );
-        }
-        
-        // Fallback to most recent conversation
-        if (mostRecentConversation) {
-          const recentCard = getCardById(mostRecentConversation.cardId);
-          const recentCategory = recentCard ? getCategoryById(recentCard.categoryId) : null;
-          if (recentCard && recentCategory) {
-            const recentMySteps: number[] = user?.id && mostRecentConversation.cardId && journeyState?.sessionProgress?.[mostRecentConversation.cardId]?.perUser?.[user.id]?.completedSteps || [];
-            const recentSharedStep = currentSession?.cardId === mostRecentConversation.cardId ? currentSession.currentStepIndex : 0;
-            const recentHasSession = !!(currentSession?.cardId === mostRecentConversation.cardId);
-            const { isCatchingUp: recentCatchingUp } = getCatchUpState(recentMySteps, recentSharedStep, recentHasSession);
-
-            return (
-              <div className="space-y-2">
-                <ContinueModule
-                  cardTitle={recentCard.title}
-                  categoryTitle={recentCategory.title}
-                  lastActiveAt={mostRecentConversation.lastActivityAt instanceof Date ? mostRecentConversation.lastActivityAt.toISOString() : String(mostRecentConversation.lastActivityAt)}
-                  isCatchingUp={recentCatchingUp}
-                  onContinue={() => { markNavigated(); navigate(`/card/${mostRecentConversation.cardId}`); }}
+              <div className="space-y-6">
+                <AttachPartner
+                  fetchInviteInfo={fetchInviteInfo}
+                  partnerName={userRole === 'partner_b' ? space.partner_b_name : space.partner_a_name}
+                  onUpdateName={async (name) => {
+                    const role = userRole === 'partner_b' ? 'partner_b_name' : 'partner_a_name';
+                    await supabase
+                      .from('couple_spaces')
+                      .update({ [role]: name })
+                      .eq('id', space.id);
+                  }}
+                  memberCount={displayMemberCount}
+                  onJoinedSpace={() => window.location.reload()}
                 />
               </div>
-            );
-          }
-        }
-
-        // No conversations yet — guide to recommended first card
-        const firstCategory = categories[0];
-        const firstCard = firstCategory ? cards.find(c => c.categoryId === firstCategory.id) : null;
-        if (firstCard && firstCategory) {
-          return (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.15 }}
-              className="px-6 py-6"
-            >
-              <div className="rounded-2xl border border-border bg-card p-6 text-center space-y-4">
-                <p className="text-sm text-muted-foreground leading-relaxed">
-                  {isSoloMode
-                    ? t('home.first_conversation_hint')
-                    : t('home.first_conversation_hint_paired', 'Ni har inte startat något samtal ännu. Föreslå ett ämne så börjar ni tillsammans.')}
-                </p>
-                {isSoloMode ? (
-                  <Button
-                    size="sm"
-                    className="gap-2"
-                    onClick={() => navigate(`/card/${firstCard.id}`)}
-                  >
-                    {t('home.start_first_conversation')}
-                  </Button>
-                ) : (
-                  <Button
-                    size="sm"
-                    className="gap-2"
-                    onClick={handleEnterProposalMode}
-                  >
-                    Föreslå ert första samtal
-                  </Button>
-                )}
-              </div>
             </motion.div>
           );
         }
-        
-        return null;
-      })()}
 
-      {/* Explore together — integrated into categories for paired users */}
-
-      {/* One-time hint: explain proposal system when first paired */}
-      {displayMemberCount >= 2 && !isProposalMode && (() => {
-        const PROPOSAL_HINT_KEY = 'still-us-proposal-hint-shown';
-        const alreadyShown = localStorage.getItem(PROPOSAL_HINT_KEY) === 'true';
-        if (alreadyShown) return null;
-        // Mark as shown after render
-        setTimeout(() => localStorage.setItem(PROPOSAL_HINT_KEY, 'true'), 0);
+        // State 4: Paired, no session → "Starta ett samtal"
         return (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 0.3, delay: 0.2 }}
-            className="px-6 mb-6"
+            transition={{ duration: 0.15 }}
+            className="px-6 mb-10"
           >
-            <div className="rounded-2xl border border-primary/20 bg-card/60 px-5 py-4 text-center space-y-1">
-              <p className="text-sm text-foreground font-serif">Så fungerar det</p>
-              <p className="text-xs text-muted-foreground leading-relaxed">
-                Ni väljer samtalsämne tillsammans. En av er föreslår ett kort, den andra accepterar — sedan börjar ni.
-              </p>
+            <div className="text-center">
+              <Button
+                size="lg"
+                onClick={handleEnterProposalMode}
+                className="w-full h-14 rounded-2xl gap-2 font-normal"
+              >
+                Starta ett samtal
+                <ArrowRight className="w-4 h-4" />
+              </Button>
             </div>
           </motion.div>
         );
       })()}
 
-      {/* Solo-user hint: app works best together */}
-      {space && displayMemberCount < 2 && !isProposalMode && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.15 }}
-          className="px-6 mb-4"
-        >
-          <p className="text-xs text-muted-foreground text-center leading-relaxed">
-            Appen är gjord för er båda. Bjud in din partner för att få ut det mesta av era samtal.
-          </p>
-        </motion.div>
-      )}
+      {/* ═══ BELOW FOLD — demoted secondary content ═══ */}
 
-      {/* Partner status — only before connection */}
-      {space && displayMemberCount < 2 && (
-         <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.15 }}
-          className="px-6 pb-6"
-        >
-          <AttachPartner
-            fetchInviteInfo={fetchInviteInfo}
-            partnerName={userRole === 'partner_b' ? space.partner_b_name : space.partner_a_name}
-            onUpdateName={async (name) => {
-              const role = userRole === 'partner_b' ? 'partner_b_name' : 'partner_a_name';
-              await supabase
-                .from('couple_spaces')
-                .update({ [role]: name })
-                .eq('id', space.id);
-            }}
-            memberCount={displayMemberCount}
-            onJoinedSpace={() => window.location.reload()}
-          />
-        </motion.div>
-      )}
-
-      {/* Proposal Mode */}
+      {/* Proposal mode (opened by primary CTA for paired users) */}
       <AnimatePresence>
         {isProposalMode && (
            <motion.div
@@ -586,7 +463,6 @@ export default function Home() {
             exit={{ opacity: 0 }}
             className="px-6 pb-8"
           >
-            {/* Mode header */}
             <div className="flex items-center justify-between mb-6">
               <Button
                 variant="ghost"
@@ -597,10 +473,9 @@ export default function Home() {
                 Avbryt
               </Button>
               <span className="text-sm font-serif text-muted-foreground">Föreslå ett samtal</span>
-              <div className="w-16" /> {/* spacer for centering */}
+              <div className="w-16" />
             </div>
 
-            {/* Filter tabs */}
             <div className="flex gap-2 mb-6">
               {([
                 { key: 'unexplored' as const, label: 'Ej utforskade' },
@@ -619,7 +494,6 @@ export default function Home() {
               ))}
             </div>
 
-            {/* Candidate list grouped by category */}
             <div className="space-y-6">
               {proposalGroups.map((group) => (
                 <div key={group.category.id}>
@@ -694,9 +568,9 @@ export default function Home() {
         )}
       </AnimatePresence>
 
-      {/* Categories — solo users see all; paired users browse via proposal mode */}
+      {/* Categories — solo users can browse below fold */}
       {!isProposalMode && isSoloMode && (
-        <div id="category-section" className="px-6 pb-12 mt-10">
+        <div id="category-section" className="px-6 pb-12 mt-4">
           <p className="text-sm text-muted-foreground/60 mb-8 font-serif not-italic">
             {t('home.choose_category')}
           </p>
@@ -716,30 +590,6 @@ export default function Home() {
             })}
           </div>
         </div>
-      )}
-
-      {/* Paired users: gentle entry into proposal mode */}
-      {!isProposalMode && !isSoloMode && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.15 }}
-          className="px-6 pb-12 mt-10"
-        >
-          <div className="text-center space-y-6">
-            <p className="text-sm text-muted-foreground/60 font-serif">
-              Vad vill ni prata om?
-            </p>
-            <Button
-              variant="outline"
-              size="lg"
-              onClick={handleEnterProposalMode}
-              className="rounded-full px-8 border-border/60 text-foreground hover:bg-card/70 font-serif text-base"
-            >
-              Välj samtalsämne
-            </Button>
-          </div>
-        </motion.div>
       )}
 
       {/* Relationship Memory */}
