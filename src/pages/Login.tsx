@@ -1,8 +1,10 @@
 import { useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import { lovable } from '@/integrations/lovable/index';
 import { useSiteSettings } from '@/contexts/SiteSettingsContext';
 import { Loader2 } from 'lucide-react';
@@ -10,6 +12,7 @@ import bonkiLogo from '@/assets/bonki-logo.png';
 import TermsConsent from '@/components/TermsConsent';
 import { TERMS_VERSION, PRIVACY_VERSION } from '@/lib/legal';
 import { supabase } from '@/integrations/supabase/client';
+import { storePendingInvite } from '@/hooks/usePendingInvite';
 import type { Json } from '@/integrations/supabase/types';
 
 export default function Login() {
@@ -20,6 +23,10 @@ export default function Login() {
   const [termsError, setTermsError] = useState(false);
   const { settings } = useSiteSettings();
   const location = useLocation();
+
+  // Invite code input
+  const [showCodeInput, setShowCodeInput] = useState(false);
+  const [inviteCode, setInviteCode] = useState('');
 
   // Determine where to redirect after OAuth — if we came from /join, include the returnTo path
   const returnTo = (location.state as any)?.returnTo;
@@ -32,6 +39,11 @@ export default function Login() {
     setTermsError(false);
     setLoading(true);
     setError(null);
+
+    // If user entered an invite code, store it so it auto-claims after login
+    if (inviteCode.trim()) {
+      storePendingInvite(null, inviteCode.trim());
+    }
 
     // Store consent timestamp before redirect
     const consentTimestamp = new Date().toISOString();
@@ -98,6 +110,27 @@ export default function Login() {
           transition={{ delay: 0.09, duration: 0.15 }}
           className="space-y-5"
         >
+          {/* Invite code section */}
+          <AnimatePresence>
+            {showCodeInput && (
+              <motion.div
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: 'auto' }}
+                exit={{ opacity: 0, height: 0 }}
+                className="space-y-2 overflow-hidden"
+              >
+                <Label className="text-sm text-muted-foreground">{t('join.invite_code', 'Inbjudningskod')}</Label>
+                <Input
+                  value={inviteCode}
+                  onChange={(e) => setInviteCode(e.target.value.toUpperCase())}
+                  placeholder="ABC123"
+                  maxLength={6}
+                  className="text-center tracking-widest text-lg font-mono"
+                />
+              </motion.div>
+            )}
+          </AnimatePresence>
+
           <Button
             onClick={handleGoogleSignIn}
             disabled={loading}
@@ -124,6 +157,16 @@ export default function Login() {
               <p className="text-xs text-destructive mt-2">{t('login.terms_required')}</p>
             )}
           </div>
+
+          {!showCodeInput && (
+            <button
+              type="button"
+              onClick={() => setShowCodeInput(true)}
+              className="text-sm text-muted-foreground hover:text-foreground transition-colors underline underline-offset-2"
+            >
+              {t('login.have_invite_code', 'Jag har en inbjudningskod')}
+            </button>
+          )}
 
           {error && (
             <p className="text-sm text-destructive">{error}</p>
