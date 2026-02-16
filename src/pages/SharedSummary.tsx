@@ -244,6 +244,8 @@ export default function SharedSummary() {
 
   const hasContent = sharedNotes.length > 0;
   const hasActiveFilter = categoryFilter !== 'all' || searchQuery.length > 0;
+  // During an active session, hide shared notes surfaces to enforce single conversation surface
+  const hideSharedNotes = !!currentSession;
 
   const exploredIds = journeyState?.exploredCardIds || [];
   const totalCards = cards.length;
@@ -525,7 +527,7 @@ export default function SharedSummary() {
         </motion.div>
 
         {/* ─── Surfaced takeaway ─── */}
-        {surfacedTakeaway && !hasActiveFilter && (
+        {surfacedTakeaway && !hasActiveFilter && !hideSharedNotes && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -542,7 +544,7 @@ export default function SharedSummary() {
         )}
 
         {/* ─── Empty state ─── */}
-        {!hasContent && !hasActiveFilter && !loading && (
+        {!hasContent && !hasActiveFilter && !loading && !hideSharedNotes && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -563,6 +565,22 @@ export default function SharedSummary() {
           </motion.div>
         )}
 
+        {/* Active session notice — shared notes hidden */}
+        {hideSharedNotes && !loading && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.15 }}
+            className="mb-10 text-center"
+          >
+            <div className="py-8 rounded-2xl border border-border/15 bg-card/40">
+              <p className="text-sm text-muted-foreground/70 leading-relaxed">
+                Era delade reflektioner visas här efter att samtalet är klart.
+              </p>
+            </div>
+          </motion.div>
+        )}
+
         {loading ? (
           <div className="py-12 space-y-6 animate-fade-in">
             {[1, 2, 3].map(i => (
@@ -571,7 +589,7 @@ export default function SharedSummary() {
           </div>
         ) : (
           <>
-            {hasContent && (<>
+            {hasContent && !hideSharedNotes && (<>
 
               {/* ═══════════════════════════════════════════
                   SECTION 2: "Nyligen delat" — Memory cards
