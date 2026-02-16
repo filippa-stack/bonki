@@ -109,6 +109,17 @@ export default function CardView() {
   // Has the current user already completed the current shared step?
   const userCompletedCurrentStep = !isRevisitMode && myCompletedSteps.includes(currentStepIndex);
 
+  // Has the partner completed the current shared step?
+  const partnerCompletedCurrentStep = (() => {
+    if (isRevisitMode || !cardId) return false;
+    const perUser = journeyState?.sessionProgress?.[cardId]?.perUser;
+    if (!perUser) return false;
+    return Object.entries(perUser).some(
+      ([id, data]) => id !== uid && data.completedSteps?.includes(currentStepIndex)
+    );
+  })();
+  const bothCompleted = userCompletedCurrentStep && partnerCompletedCurrentStep;
+
   // View gates
   const [showOverview] = useState(false);
   const [showReentry] = useState(false);
@@ -436,27 +447,71 @@ export default function CardView() {
                   aria-live="polite"
                   className="my-10 py-10 px-5 text-center space-y-5"
                 >
-                  <p className="text-sm font-serif text-foreground">
-                    Du är klar.
-                  </p>
-                  <p className="text-sm text-muted-foreground leading-relaxed">
-                    Ni fortsätter när båda är klara.
-                  </p>
+                  {!bothCompleted && (
+                    <>
+                      <p className="text-sm font-serif text-foreground">
+                        Du är klar.
+                      </p>
+                      <p className="text-sm text-muted-foreground leading-relaxed">
+                        Ni fortsätter när båda är klara.
+                      </p>
+                    </>
+                  )}
 
-                  {/* Breathing line */}
-                  <div className="flex justify-center pt-2">
+                  {/* Breathing line — fades out when both complete */}
+                  <motion.div
+                    className="flex justify-center pt-2"
+                    animate={{ opacity: bothCompleted ? 0 : 1 }}
+                    transition={{ duration: 0.3, ease: 'easeOut' }}
+                  >
                     <div
                       className="w-16 h-px bg-foreground/[0.08]"
-                      style={{ animation: 'breathe 5s ease-in-out infinite' }}
+                      style={bothCompleted ? undefined : { animation: 'breathe 5s ease-in-out infinite' }}
                     />
-                  </div>
+                  </motion.div>
 
                   {/* Shared pace dots */}
                   <div className="flex justify-center gap-2 pt-1">
-                    {/* User dot — filled */}
-                    <span className="block w-2 h-2 rounded-full bg-foreground/20" />
-                    {/* Partner dot — outlined */}
-                    <span className="block w-2 h-2 rounded-full border border-foreground/15" />
+                    {/* User dot — always filled */}
+                    <span className="block w-2 h-2 rounded-full bg-foreground/20 transition-all duration-300" />
+                    {/* Partner dot — fills when partner completes */}
+                    <span
+                      className={`block w-2 h-2 rounded-full transition-all duration-300 ease-out ${
+                        partnerCompletedCurrentStep
+                          ? 'bg-foreground/20'
+                          : 'border border-foreground/15'
+                      }`}
+                    />
+                  </div>
+
+                  {/* Both complete confirmation */}
+                  <AnimatePresence>
+                    {bothCompleted && (
+                      <motion.p
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.25, ease: 'easeOut' }}
+                        className="text-sm text-muted-foreground"
+                      >
+                        Nu är ni klara.
+                      </motion.p>
+                    )}
+                  </AnimatePresence>
+
+                  {/* CTA — always present, gains emphasis when both complete */}
+                  <div className="pt-4">
+                    <Button
+                      onClick={handleNextStep}
+                      size="lg"
+                      className={`gap-2 h-14 font-normal w-full rounded-2xl transition-opacity duration-300 ${
+                        bothCompleted ? 'opacity-100' : 'opacity-40 pointer-events-none'
+                      }`}
+                      disabled={!bothCompleted}
+                    >
+                      {bothCompleted ? 'Gå vidare tillsammans' : t(STEP_CTA_KEYS[STEP_ORDER[currentStepIndex]])}
+                      <ArrowRight className="w-4 h-4" />
+                    </Button>
                   </div>
                 </motion.div>
               ) : (
@@ -483,7 +538,6 @@ export default function CardView() {
                       </button>
                     </div>
                   )}
-
                 </div>
               )}
 
