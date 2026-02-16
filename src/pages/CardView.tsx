@@ -11,6 +11,7 @@ import { toast } from 'sonner';
 import Header from '@/components/Header';
 import SectionView, { type SectionViewHandle } from '@/components/SectionView';
 import StepProgressIndicator from '@/components/StepProgressIndicator';
+import SessionStepReflection from '@/components/SessionStepReflection';
 
 import ReviewDrawer from '@/components/ReviewDrawer';
 // ConflictingSessionModal removed — ActiveSessionGuard prevents mismatched navigation
@@ -486,52 +487,26 @@ export default function CardView() {
 
               <SectionView ref={sectionViewRef} section={currentSection} card={card} isRevisitMode={isRevisitMode} initialFocusNoteIndex={isRevisitMode ? initialFocusNote : null} focusPromptIndex={isRevisitMode ? initialFocusNote : null} disableShare={!!currentSession || (!canStartSharedSession && !isActiveSession)} />
 
-              {/* Takeaways removed from exercise step — now rendered on completion screen */}
+              {/* Session-driven reflection for paired users */}
+              {isPaired && !isRevisitMode && cardId && (
+                <SessionStepReflection
+                  cardId={cardId}
+                  stepIndex={currentStepIndex}
+                  onReady={() => {
+                    if (!myCompletedSteps.includes(currentStepIndex)) {
+                      completeSessionStep(currentStepIndex);
+                    }
+                  }}
+                  onLocked={() => {
+                    if (currentStepIndex >= STEP_ORDER.length - 1) {
+                      setShowCompletion(true);
+                    }
+                  }}
+                />
+              )}
 
-              {/* Waiting / advance state — inline below the step content */}
-              {isPaired && (userCompletedCurrentStep || devWaiting) ? (
-
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ duration: 0.15, delay: 0.1 }}
-                  role="status"
-                  aria-live="polite"
-                  className="mt-12 mb-8 text-center"
-                >
-                  {bothCompleted ? (
-                    <div className="space-y-6">
-                      <p className="font-serif text-foreground text-center">
-                        Nu är ni klara.
-                      </p>
-                      <Button
-                        onClick={handleNextStep}
-                        size="lg"
-                        className="gap-2 h-14 font-normal w-full rounded-2xl"
-                      >
-                        Gå vidare tillsammans
-                        <ArrowRight className="w-4 h-4" />
-                      </Button>
-                    </div>
-                  ) : (
-                    <div className="space-y-6">
-                      <p className="text-sm text-muted-foreground/70 leading-relaxed">
-                        Samtalet väntar på din partner.
-                      </p>
-                      <p className="text-xs text-muted-foreground/40">
-                        Ni fortsätter när hen har reflekterat.
-                      </p>
-
-                      <button
-                        onClick={() => navigate('/')}
-                        className="text-xs text-muted-foreground/40 hover:text-muted-foreground/60 transition-colors mx-auto block"
-                      >
-                        Gå tillbaka till hem
-                      </button>
-                    </div>
-                  )}
-                </motion.div>
-              ) : (
+              {/* Solo / revisit: keep legacy step CTA */}
+              {(!isPaired || isRevisitMode) && (
                 <div className="pt-10 pb-8 space-y-5">
                   <Button
                     onClick={handleNextStep}

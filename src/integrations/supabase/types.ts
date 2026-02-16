@@ -665,6 +665,10 @@ export type Database = {
         Args: { _space_id: string; _user_id: string }
         Returns: boolean
       }
+      lock_step_reflections: {
+        Args: { _session_id: string; _step_index: number }
+        Returns: undefined
+      }
     }
     Enums: {
       reflection_state: "draft" | "ready" | "revealed" | "locked"
