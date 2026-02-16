@@ -227,19 +227,20 @@ export function useSharedProgress(
           filter: `couple_space_id=eq.${coupleSpaceId}`,
         },
         (payload) => {
-          // Ignore changes we just pushed
           const row = payload.new as any;
-          if (!row || row.updated_by === userId) return;
+          if (!row) return;
 
           const remoteSession = deserializeSession(row.current_session);
           const remoteJourney = row.journey_state as unknown as JourneyState | null;
 
+          // current_session: server is authoritative (edge functions only)
+          // journey_state: merge local + remote (client writes journey metadata)
           const merged: SharedProgressData = {
-            currentSession: mergeSessions(localSessionRef.current, remoteSession),
+            currentSession: remoteSession,
             journeyState: mergeJourneyStates(localJourneyRef.current, remoteJourney),
           };
 
-          // Update local refs with merged result
+          // Update local refs with result
           localSessionRef.current = merged.currentSession ?? null;
           localJourneyRef.current = merged.journeyState ?? null;
 
@@ -278,7 +279,7 @@ export function useSharedProgress(
     try {
       const { data: remoteRow, error: remoteErr } = await supabase
         .from('couple_progress')
-        .select('current_session, journey_state')
+        .select('journey_state')
         .eq('couple_space_id', coupleSpaceId)
         .maybeSingle();
 
@@ -292,43 +293,25 @@ export function useSharedProgress(
         });
       }
 
-      const remoteSession = remoteRow
-        ? deserializeSession(remoteRow.current_session)
-        : null;
       const remoteJourney = remoteRow
         ? (remoteRow.journey_state as unknown as JourneyState | null)
         : null;
 
-      const mergedSession = mergeSessions(session, remoteSession);
       const mergedJourney = mergeJourneyStates(journey, remoteJourney);
 
-      const sessionJson = mergedSession
-        ? JSON.parse(
-            JSON.stringify({
-              ...mergedSession,
-              startedAt:
-                mergedSession.startedAt instanceof Date
-                  ? mergedSession.startedAt.toISOString()
-                  : mergedSession.startedAt,
-              lastActivityAt:
-                mergedSession.lastActivityAt instanceof Date
-                  ? mergedSession.lastActivityAt.toISOString()
-                  : mergedSession.lastActivityAt,
-            })
-          )
-        : null;
+      // Only write journey_state — current_session is managed by edge functions
+      const upsertPayload: Record<string, any> = {
+        couple_space_id: coupleSpaceId,
+        journey_state: mergedJourney
+          ? JSON.parse(JSON.stringify(mergedJourney))
+          : null,
+        updated_by: userId,
+      };
 
       const { error: upsertErr } = await supabase
         .from('couple_progress')
         .upsert(
-          {
-            couple_space_id: coupleSpaceId,
-            current_session: sessionJson,
-            journey_state: mergedJourney
-              ? JSON.parse(JSON.stringify(mergedJourney))
-              : null,
-            updated_by: userId,
-          },
+          upsertPayload as any,
           { onConflict: 'couple_space_id' }
         );
 
@@ -337,7 +320,7 @@ export function useSharedProgress(
           stage: 'upsertProgress',
           coupleSpaceId,
           userId,
-          cardId: mergedSession?.cardId ?? session?.cardId ?? null,
+          cardId: session?.cardId ?? null,
           error: upsertErr,
         });
         setLastSyncError(upsertErr.message || 'Kunde inte spara');

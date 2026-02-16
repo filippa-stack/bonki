@@ -307,11 +307,11 @@ export function AppProvider({ children }: { children: ReactNode }) {
     }));
   }, [sharedProgressReady, sharedProgressInitial]);
 
-  // Sync session & journey changes to remote
+  // Sync journey state changes to remote (current_session is managed by edge functions)
   useEffect(() => {
     if (!sharedProgressReady || !hasAppliedSharedProgress.current) return;
-    syncToRemote(state.currentSession, state.journeyState);
-  }, [state.currentSession, state.journeyState, sharedProgressReady, syncToRemote]);
+    syncToRemote(undefined, state.journeyState);
+  }, [state.journeyState, sharedProgressReady, syncToRemote]);
 
   const setBackgroundColor = (color: string) => {
     setBackgroundColorState(color);
@@ -693,11 +693,12 @@ export function AppProvider({ children }: { children: ReactNode }) {
 
   const completeSessionStep = (stepIndex: number) => {
     const uid = user?.id || 'local';
+
+    // Optimistic local update: mark step as completed for this user
     setState((prev) => {
       if (!prev.currentSession) return prev;
       const cardId = prev.currentSession.cardId;
 
-      // --- Update per-user completion in journeyState.sessionProgress ---
       const journey = prev.journeyState || {
         currentCategoryId: null,
         lastOpenedCardId: null,
@@ -712,7 +713,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
       const progress = journey.sessionProgress || {};
       const cardProgress = progress[cardId] || { perUser: {} };
       const myCompleted = cardProgress.perUser[uid]?.completedSteps || [];
-      if (myCompleted.includes(stepIndex)) return prev; // already recorded
+      if (myCompleted.includes(stepIndex)) return prev;
 
       const updatedMyCompleted = [...myCompleted, stepIndex];
       const updatedCardProgress = {
@@ -724,81 +725,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
       };
       const updatedProgress = { ...progress, [cardId]: updatedCardProgress };
 
-      // --- Determine if enough users have completed this step (count-based) ---
-      const requiredCount = coupleSpaceMemberCount >= 2 ? 2 : 1;
-      const completedBy = Object.values(updatedCardProgress.perUser).filter(
-        u => u?.completedSteps?.includes(stepIndex)
-      ).length;
-      const isMutuallyCompleted = completedBy >= requiredCount;
-
-
-      const lastStepIndex = STEP_ORDER.length - 1;
-      const isCardFullyCompleted =
-        isMutuallyCompleted && stepIndex === lastStepIndex;
-
-      // If card is fully completed, end session and mark explored
-      if (isCardFullyCompleted) {
-        const session = prev.currentSession;
-        const currentJourney: JourneyState = {
-          ...(journey as JourneyState),
-          sessionProgress: updatedProgress,
-        };
-
-        const exploredCardIds = !currentJourney.exploredCardIds.includes(session.cardId)
-          ? [...currentJourney.exploredCardIds, session.cardId]
-          : currentJourney.exploredCardIds;
-
-        // Compute suggested next card
-        const categoryCards = cards.filter(c => c.categoryId === session.categoryId);
-        const currentIndex = categoryCards.findIndex(c => c.id === session.cardId);
-        let suggestedNextCardId: string | null = null;
-        for (let i = 1; i <= categoryCards.length; i++) {
-          const nextCard = categoryCards[(currentIndex + i) % categoryCards.length];
-          if (!exploredCardIds.includes(nextCard.id)) {
-            suggestedNextCardId = nextCard.id;
-            break;
-          }
-        }
-        if (!suggestedNextCardId) {
-          const catIndex = categories.findIndex(c => c.id === session.categoryId);
-          for (let ci = 1; ci <= categories.length; ci++) {
-            const nextCat = categories[(catIndex + ci) % categories.length];
-            const nextCatCards = cards.filter(c => c.categoryId === nextCat.id);
-            const unexplored = nextCatCards.find(c => !exploredCardIds.includes(c.id));
-            if (unexplored) {
-              suggestedNextCardId = unexplored.id;
-              break;
-            }
-          }
-        }
-
-        return {
-          ...prev,
-          currentSession: undefined,
-          journeyState: {
-            ...currentJourney,
-            lastCompletedCardId: session.cardId,
-            suggestedNextCardId,
-            exploredCardIds,
-            updatedAt: new Date().toISOString(),
-          },
-        };
-      }
-
-      // Advance shared step only when mutually completed and exactly +1, clamped
-      const currentShared = prev.currentSession.currentStepIndex;
-      const newStepIndex =
-        isMutuallyCompleted && stepIndex === currentShared
-          ? Math.min(currentShared + 1, lastStepIndex)
-          : currentShared;
-
       return {
         ...prev,
-        currentSession: {
-          ...prev.currentSession,
-          currentStepIndex: newStepIndex,
-          lastActivityAt: new Date(),
-        },
         journeyState: {
           ...journey,
           sessionProgress: updatedProgress,
@@ -806,6 +734,41 @@ export function AppProvider({ children }: { children: ReactNode }) {
         },
       };
     });
+
+    // Call edge function for authoritative server-side update
+    const cardId = state.currentSession?.cardId;
+    if (cardId && uid !== 'local') {
+      supabase.functions
+        .invoke('update-step-completion', {
+          body: { card_id: cardId, step_index: stepIndex },
+        })
+        .then((res) => {
+          if (res.error) {
+            console.error('Step completion failed:', res.error);
+            return;
+          }
+          const data = res.data as any;
+          if (data?.success) {
+            // Apply server-authoritative state
+            setState((prev) => {
+              const serverSession = data.session
+                ? {
+                    ...data.session,
+                    startedAt: new Date(data.session.startedAt),
+                    lastActivityAt: new Date(data.session.lastActivityAt),
+                  }
+                : undefined;
+              const serverJourney = data.journey_state as JourneyState | null;
+
+              return {
+                ...prev,
+                currentSession: serverSession,
+                journeyState: serverJourney ?? prev.journeyState,
+              };
+            });
+          }
+        });
+    }
   };
 
   const endSession = () => {

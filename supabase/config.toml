@@ -8,3 +8,6 @@ verify_jwt = false
 
 [functions.activate-session]
 verify_jwt = false
+
+[functions.update-step-completion]
+verify_jwt = false
