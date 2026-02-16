@@ -13,7 +13,7 @@ import SectionView, { type SectionViewHandle } from '@/components/SectionView';
 import StepProgressIndicator from '@/components/StepProgressIndicator';
 
 import ReviewDrawer from '@/components/ReviewDrawer';
-import ConflictingSessionModal from '@/components/ConflictingSessionModal';
+// ConflictingSessionModal removed — ActiveSessionGuard prevents mismatched navigation
 import ProposalSheet from '@/components/ProposalSheet';
 import { Button } from '@/components/ui/button';
 import { ArrowRight, Home, RotateCcw, BookOpen, Check, Send } from 'lucide-react';
@@ -155,7 +155,7 @@ export default function CardView() {
   }, [showInitiatorNudge]);
 
   const sectionViewRef = useRef<SectionViewHandle>(null);
-  const [showConflictModal, setShowConflictModal] = useState(false);
+  // ConflictingSessionModal removed — route guard handles this
   const [proposalSent, setProposalSent] = useState(false);
   const proposalTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [showProposalSheet, setShowProposalSheet] = useState(false);
@@ -179,12 +179,7 @@ export default function CardView() {
   const [autoProposalSent, setAutoProposalSent] = useState(false);
   // Non-blocking: show a propose banner instead of blocking the user
   const showProposeBanner = isPaired && !canStartSharedSession && !isActiveSession && !isRevisitMode && !showCompletion && !hasPendingProposalForCard;
-  // ─── Guard: if there's an active session for a DIFFERENT card, show modal instead of redirect ───
-  const hasConflictingSession = !!(currentSession && currentSession.cardId !== cardId);
-  const conflictingCard = hasConflictingSession ? getCardById(currentSession!.cardId) : undefined;
-
-  // Conflict modal only shown on explicit user action (e.g. tapping step CTA),
-  // never auto-triggered on mount — navigation must be user-intent driven.
+  // Conflicting session logic removed — ActiveSessionGuard redirects before this renders
 
   // ─── Save conversation for local resume ───
   useEffect(() => {
@@ -217,14 +212,12 @@ export default function CardView() {
     // Solo gate: never auto-start sessions when unpaired
     if (!isPaired) return;
     if (!hasAutoStarted.current && !isActiveSession && !isRevisitMode && !showCompletion && card && category) {
-      // Don't auto-start if there's a conflicting session — let user decide via CTA
-      if (hasConflictingSession) return;
       if (canStartSharedSession) {
         hasAutoStarted.current = true;
         startSession(category.id, card.id);
       }
     }
-  }, [isPaired, isActiveSession, isRevisitMode, showCompletion, card, category, startSession, canStartSharedSession, hasConflictingSession]);
+  }, [isPaired, isActiveSession, isRevisitMode, showCompletion, card, category, startSession, canStartSharedSession]);
 
   // Proposal gate removed — users can browse freely. Propose banner shown inline instead.
 
@@ -269,10 +262,6 @@ export default function CardView() {
 
   const handleStartFromOverview = () => {
     if (!isPaired) return; // Solo gate
-    if (hasConflictingSession) {
-      setShowConflictModal(true);
-      return;
-    }
     if (card && category && !isActiveSession) {
       startSession(category.id, card.id);
     }
@@ -571,21 +560,7 @@ export default function CardView() {
         </AnimatePresence>
       </div>
 
-      {/* Conflicting session modal */}
-      {conflictingCard && (
-        <ConflictingSessionModal
-          open={showConflictModal}
-          onClose={() => setShowConflictModal(false)}
-          currentSessionCardTitle={conflictingCard.title}
-          currentSessionCardId={conflictingCard.id}
-          onSwitchToThisCard={() => {
-            if (card && category) {
-              pauseSession();
-              startSession(category.id, card.id, { force: true });
-            }
-          }}
-        />
-      )}
+      {/* ConflictingSessionModal removed — ActiveSessionGuard handles this */}
 
       {/* Proposal Sheet — only triggered from non-revisit step completion or card completion */}
       {card && category && (

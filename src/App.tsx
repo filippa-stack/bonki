@@ -7,6 +7,7 @@ import { AnimatePresence } from "framer-motion";
 import { AuthProvider, useAuth } from "@/contexts/AuthContext";
 import { AppProvider, useApp } from "@/contexts/AppContext";
 import RemoteCardCue from "@/components/RemoteCardCue";
+import ActiveSessionGuard from "@/components/ActiveSessionGuard";
 import ProposalAcceptanceWatcher from "@/components/ProposalAcceptanceWatcher";
 import { SiteSettingsProvider } from "@/contexts/SiteSettingsContext";
 import PageTransition from "@/components/PageTransition";
@@ -51,16 +52,18 @@ function ProtectedRoutes() {
     <AppProvider>
       <RemoteCardCueGlobal />
       <ProposalAcceptanceWatcher />
-      <AnimatePresence mode="wait">
-        <Routes location={location} key={location.pathname}>
-          <Route path="/" element={<PageTransition><Index /></PageTransition>} />
-          <Route path="/category/:categoryId" element={<PageTransition><Category /></PageTransition>} />
-          <Route path="/card/:cardId" element={<PageTransition><CardView /></PageTransition>} />
-          <Route path="/saved" element={<PageTransition><SavedConversations /></PageTransition>} />
-          <Route path="/shared" element={<PageTransition><SharedSummary /></PageTransition>} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </AnimatePresence>
+      <ActiveSessionGuard>
+        <AnimatePresence mode="wait">
+          <Routes location={location} key={location.pathname}>
+            <Route path="/" element={<PageTransition><Index /></PageTransition>} />
+            <Route path="/category/:categoryId" element={<PageTransition><Category /></PageTransition>} />
+            <Route path="/card/:cardId" element={<PageTransition><CardView /></PageTransition>} />
+            <Route path="/saved" element={<PageTransition><SavedConversations /></PageTransition>} />
+            <Route path="/shared" element={<PageTransition><SharedSummary /></PageTransition>} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </AnimatePresence>
+      </ActiveSessionGuard>
     </AppProvider>
   );
 }
