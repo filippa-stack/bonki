@@ -315,54 +315,37 @@ export default function CardView() {
             <CardTakeaways cardId={card.id} />
           </motion.div>
 
-          {/* Navigation actions */}
+          {/* Navigation actions — single primary CTA */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.08, duration: 0.15 }}
-            className="max-w-md mx-auto mt-12 space-y-3 text-center"
+            className="max-w-md mx-auto mt-12 space-y-6 text-center"
           >
-            {suggestedCard && suggestedCategory && memberCount >= 2 ? (
-              <Button
-                onClick={() => setShowProposalSheet(true)}
-                disabled={proposalSent}
-                size="lg"
-                className="w-full gap-2"
-              >
-                {proposalSent ? (
-                  <><Check className="w-4 h-4" /> Förslag skickat</>
-                ) : (
-                  <>{t('card_view.completion_next', 'Föreslå nästa samtal')} <ArrowRight className="w-4 h-4" /></>
-                )}
-              </Button>
-            ) : suggestedCard && suggestedCategory ? (
-              <Button
-                onClick={() => navigate(`/card/${suggestedCard.id}`)}
-                size="lg"
-                className="w-full gap-2"
-              >
-                {t('card_view.completion_next', 'Föreslå nästa samtal')}
-                <ArrowRight className="w-4 h-4" />
-              </Button>
-            ) : null}
             <Button
               onClick={() => navigate('/')}
-              variant="outline"
               size="lg"
-              className="w-full gap-2"
+              className="w-full h-14 rounded-2xl gap-2 font-normal"
             >
-              <Home className="w-4 h-4" />
-              {t('card_view.completion_home', 'Hem')}
+              Till Hem
             </Button>
-            <Button
-              onClick={() => navigate(`/card/${card.id}?revisit=true`)}
-              variant="ghost"
-              size="sm"
-              className="w-full gap-2 text-muted-foreground"
-            >
-              <RotateCcw className="w-4 h-4" />
-              {t('card_view.completion_revisit', 'Läs igen')}
-            </Button>
+            <div className="flex justify-center gap-6 pt-2">
+              {suggestedCard && suggestedCategory && (
+                <button
+                  onClick={() => memberCount >= 2 ? setShowProposalSheet(true) : navigate(`/card/${suggestedCard.id}`)}
+                  disabled={proposalSent}
+                  className="text-xs text-muted-foreground hover:text-foreground transition-colors disabled:opacity-50"
+                >
+                  {proposalSent ? 'Förslag skickat' : 'Föreslå nästa samtal'}
+                </button>
+              )}
+              <button
+                onClick={() => navigate(`/card/${card.id}?revisit=true`)}
+                className="text-xs text-muted-foreground hover:text-foreground transition-colors"
+              >
+                Läs igen
+              </button>
+            </div>
           </motion.div>
         </div>
 
