@@ -13,7 +13,7 @@ import Header from '@/components/Header';
 // ResumeSessionDialog removed — ACTIVE macro state handles resume via single CTA
 // AttachPartner import removed — not used in simplified macro state view
 import SoloInviteSection from '@/components/SoloInviteSection';
-import { ArrowRight, Bookmark, Share2 } from 'lucide-react';
+import { ArrowRight, Bookmark, Share2, ChevronDown } from 'lucide-react';
 import NotificationSettings from '@/components/NotificationSettings';
 import RelationshipMemory from '@/components/RelationshipMemory';
 import Footer from '@/components/Footer';
@@ -30,6 +30,27 @@ import { useProposals } from '@/hooks/useProposals';
 import { useDevState, DEV_MOCK } from '@/hooks/useDevState';
 
 const STEP_LABELS = ['Öppnare', 'Tankeväckare', 'Scenario', 'Teamwork'];
+
+/** Collapsed "Notiser" row for connected Home — expands inline on tap */
+function NotiserSection() {
+  const [open, setOpen] = useState(false);
+  return (
+    <div className="px-6 border-t border-divider">
+      <button
+        onClick={() => setOpen(!open)}
+        className="w-full flex items-center justify-between py-4 text-sm text-muted-foreground hover:text-foreground transition-colors"
+      >
+        <span>Notiser</span>
+        <ChevronDown className={`w-4 h-4 transition-transform ${open ? 'rotate-180' : ''}`} />
+      </button>
+      {open && (
+        <div className="pb-4">
+          <NotificationSettings />
+        </div>
+      )}
+    </div>
+  );
+}
 
 export default function Home() {
   const { t } = useTranslation();
@@ -524,8 +545,8 @@ export default function Home() {
         </div>
       )}
 
-      {/* Relationship Memory */}
-      {(() => {
+      {/* Relationship Memory — solo only */}
+      {isSoloMode && (() => {
         const lastCompletedId = journeyState?.lastCompletedCardId;
         const lastCard = lastCompletedId ? getCardById(lastCompletedId) : null;
         const lastCategory = lastCard ? getCategoryById(lastCard.categoryId) : null;
@@ -541,10 +562,8 @@ export default function Home() {
         return null;
       })()}
 
-
-
-      {/* Navigation links — hidden during active session to prevent intention hijacking */}
-      {!hasActiveSession && (
+      {/* Navigation links — solo only, hidden during active session */}
+      {isSoloMode && !hasActiveSession && (
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -573,15 +592,19 @@ export default function Home() {
         </motion.div>
       )}
 
-      {/* Notification preferences */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.15 }}
-        className="px-6 py-6 border-t border-divider"
-      >
-        <NotificationSettings />
-      </motion.div>
+      {/* Notification preferences — connected: collapsed "Notiser" row; solo: inline */}
+      {isSoloMode ? (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.15 }}
+          className="px-6 py-6 border-t border-divider"
+        >
+          <NotificationSettings />
+        </motion.div>
+      ) : (
+        <NotiserSection />
+      )}
 
       {/* ResumeSessionDialog removed — ACTIVE state's single CTA handles resume */}
       </div>
