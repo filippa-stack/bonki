@@ -439,21 +439,20 @@ export default function Home() {
         return null;
       })()}
 
-      {/* Proposal entry — only when connected */}
+      {/* Explore together — paired users can propose a new topic */}
       {displayMemberCount >= 2 && !isProposalMode && (
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          className="px-6 mb-4 flex justify-center"
+          className="px-6 mb-8"
         >
-          <Button
-            variant="ghost"
-            size="sm"
-            className="text-muted-foreground hover:text-foreground"
+          <button
             onClick={handleEnterProposalMode}
+            className="w-full rounded-2xl border border-border/60 bg-card/40 px-5 py-5 text-center transition-colors hover:bg-card/70 active:bg-card/80"
           >
-            Föreslå annat samtal
-          </Button>
+            <p className="font-serif text-base text-foreground">Utforska något nytt</p>
+            <p className="text-xs text-muted-foreground/60 mt-1">Bläddra bland ämnen och föreslå ett samtal</p>
+          </button>
         </motion.div>
       )}
 
