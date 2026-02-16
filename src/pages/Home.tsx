@@ -468,7 +468,7 @@ export default function Home() {
       )}
 
       {/* Journey continue module — hidden when higher-priority resume prompts are active */}
-      {!showReturnOverlay && !(hasActiveSession && isMidCard && !!sessionCard && !!sessionCategory) && (() => {
+      {!showReturnOverlay && !(hasActiveSession && isMidCard && !!sessionCard && !!sessionCategory && !resumeDismissed) && (() => {
         const lastCompletedId = journeyState?.lastCompletedCardId;
         const lastCompletedCard = lastCompletedId ? getCardById(lastCompletedId) : null;
         const lastCompletedCategory = lastCompletedCard ? getCategoryById(lastCompletedCard.categoryId) : null;
