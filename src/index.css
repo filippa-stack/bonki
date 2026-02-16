@@ -179,7 +179,7 @@
 
   .card-sub {
     @apply rounded-xl p-6;
-    background-color: hsl(var(--card) / 0.5);
+    background-color: hsl(var(--card));
     border: var(--card-l2-border-width) solid hsl(var(--card-l2-border));
     box-shadow: var(--card-l2-shadow);
     transition: all var(--transition-calm);
@@ -187,7 +187,7 @@
 
   .card-interaction {
     @apply rounded-2xl;
-    background-color: hsl(var(--card) / 0.5);
+    background-color: hsl(var(--card));
     border: var(--card-l3-border-width) solid hsl(var(--card-l3-border));
     box-shadow: var(--card-l3-shadow);
     transition: all var(--transition-calm);
@@ -243,7 +243,7 @@
   }
 
   .card-sub.item-colors {
-    background-color: var(--item-bg, hsl(var(--card) / 0.5));
+    background-color: var(--item-bg, hsl(var(--card)));
     border-color: var(--item-border, hsl(var(--card-l2-border)));
   }
 
@@ -256,7 +256,7 @@
   }
 
   .prompt-colors {
-    background-color: var(--prompt-bg, hsl(var(--card) / 0.5));
+    background-color: var(--prompt-bg, hsl(var(--card)));
   }
 
   .prompt-text {
