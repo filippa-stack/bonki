@@ -514,6 +514,9 @@ export default function CardView() {
                       <p className="text-sm text-muted-foreground leading-relaxed">
                         Ni fortsätter när båda är klara.
                       </p>
+                      <p className="text-xs text-muted-foreground/40 pt-4">
+                        Du kan utforska annat under tiden — samtalet finns kvar.
+                      </p>
                     </>
                   )}
 
