@@ -586,7 +586,7 @@ export default function Home() {
       {!isProposalMode && isSoloMode && (
         <div id="category-section" className="px-6 pb-12 mt-4">
           <p className="text-xs text-muted-foreground/40 uppercase tracking-wide mb-4">
-            Förhandstitt — samtalen öppnas när ni är två
+            Tillgängligt när ni är två
           </p>
           <div className="space-y-4 opacity-50 pointer-events-none">
             {categories.map((category, index) => {
