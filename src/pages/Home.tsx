@@ -262,39 +262,42 @@ export default function Home() {
       </AnimatePresence>
       <div className="flex-1">
       <Header showBackgroundPicker={false} showBackupManager={false} />
-      {/* Header with Logo */}
-      <div className="px-6 pt-14 pb-12">
+      {/* Header with Logo — compact when active session */}
+      <div className={`px-6 ${hasActiveSession && !isSoloMode ? 'pt-10 pb-6' : 'pt-14 pb-12'}`}>
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.15 }}
-          className="mb-8 flex justify-center"
+          className={`flex justify-center ${hasActiveSession && !isSoloMode ? 'mb-4' : 'mb-8'}`}
         >
           <img 
             src={bonkiLogo} 
             alt="Still Us" 
-            className="h-14 w-auto"
+            className={hasActiveSession && !isSoloMode ? 'h-10 w-auto' : 'h-14 w-auto'}
           />
         </motion.div>
         
-        <div className="text-center">
-            <motion.h1
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.15 }}
-              className="text-display font-serif hero-title-color"
-            >
-              STILL US — So we stay us
-            </motion.h1>
-            <motion.p
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.15, delay: 0.05 }}
-              className="text-body mt-3 font-sans hero-subtitle-color"
-            >
-              Förbli ett vi medan vi uppfostrar dem
-            </motion.p>
-        </div>
+        {/* Hide large headline when session is active */}
+        {!(hasActiveSession && !isSoloMode) && (
+          <div className="text-center">
+              <motion.h1
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.15 }}
+                className="text-display font-serif hero-title-color"
+              >
+                STILL US — So we stay us
+              </motion.h1>
+              <motion.p
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.15, delay: 0.05 }}
+                className="text-body mt-3 font-sans hero-subtitle-color"
+              >
+                Förbli ett vi medan vi uppfostrar dem
+              </motion.p>
+          </div>
+        )}
       </div>
 
 
@@ -393,6 +396,7 @@ export default function Home() {
                 transition={{ duration: 0.15 }}
                 className="px-6 mb-10"
               >
+                <p className="text-xs text-muted-foreground/50 uppercase tracking-wide mb-4">Pågående samtal</p>
                 <div className="text-center space-y-2 mb-6">
                   <p className="font-serif text-foreground">{activeCard.title}</p>
                   <p className="text-xs text-muted-foreground">{activeCategory.title}</p>
