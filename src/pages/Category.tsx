@@ -68,7 +68,7 @@ export default function Category() {
               card={card}
               index={index}
               highlighted={card.id === highlightedCardId}
-              isCompleted={exploredIds.includes(card.id)}
+              isCompleted={index === 0 || exploredIds.includes(card.id)} /* TODO: remove index===0 mock */
               lastVisitedAt={cardVisitDates[card.id] || null}
               onNavigate={() => navigate(`/card/${card.id}`)}
             />
@@ -120,7 +120,7 @@ function CardEntry({ card, index, highlighted, isCompleted = false, lastVisitedA
           onNavigate();
         }
       }}
-      className={`relative w-full text-center card-sub group transition-all cursor-pointer overflow-hidden rounded-2xl${isCompleted ? ' bg-slate-50 border-slate-200' : ' item-colors'}${highlighted ? ' ring-2 ring-primary/40 shadow-md shadow-primary/10' : ''}`}
+      className={`relative w-full text-center card-sub group transition-all cursor-pointer overflow-hidden rounded-2xl${isCompleted ? '' : ' item-colors'}${highlighted ? ' ring-2 ring-primary/40 shadow-md shadow-primary/10' : ''}`}
       style={{
         borderWidth: '1px',
         borderStyle: 'solid',
