@@ -7,11 +7,12 @@ import { Button } from '@/components/ui/button';
 interface WaitingStepNoteProps {
   cardId: string;
   sectionId: string;
+  disableShare?: boolean;
 }
 
 const STEP_PROMPT_ID = 'step-note';
 
-export default function WaitingStepNote({ cardId, sectionId }: WaitingStepNoteProps) {
+export default function WaitingStepNote({ cardId, sectionId, disableShare }: WaitingStepNoteProps) {
   const { saveNote, shareNote, getPrivateNote, getSharedNote } = usePromptNotes(cardId, sectionId);
 
   const [open, setOpen] = useState(false);
@@ -112,13 +113,15 @@ export default function WaitingStepNote({ cardId, sectionId }: WaitingStepNotePr
             >
               Spara
             </button>
-            <button
-              onClick={handleShare}
-              disabled={!text.trim() && !privateNote?.content}
-              className="text-xs font-medium px-3 py-1.5 rounded-lg border border-border text-muted-foreground hover:text-foreground hover:border-foreground/20 transition-colors disabled:opacity-40"
-            >
-              Dela
-            </button>
+            {!disableShare && (
+              <button
+                onClick={handleShare}
+                disabled={!text.trim() && !privateNote?.content}
+                className="text-xs font-medium px-3 py-1.5 rounded-lg border border-border text-muted-foreground hover:text-foreground hover:border-foreground/20 transition-colors disabled:opacity-40"
+              >
+                Dela
+              </button>
+            )}
           </div>
         </div>
       </div>

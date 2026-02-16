@@ -727,8 +727,8 @@ export default function Home() {
         return null;
       })()}
 
-      {/* Recent shared reflection preview */}
-      <RecentSharedReflection />
+      {/* Recent shared reflection preview — hidden during active session */}
+      {!currentSession && <RecentSharedReflection />}
 
       {/* Navigation links — grouped */}
       <motion.div
