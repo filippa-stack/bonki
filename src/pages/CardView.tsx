@@ -177,12 +177,8 @@ export default function CardView() {
   const hasConflictingSession = !!(currentSession && currentSession.cardId !== cardId);
   const conflictingCard = hasConflictingSession ? getCardById(currentSession!.cardId) : undefined;
 
-  useEffect(() => {
-    if (isRevisitMode) return;
-    if (hasConflictingSession) {
-      setShowConflictModal(true);
-    }
-  }, [cardId, hasConflictingSession, isRevisitMode]);
+  // Conflict modal only shown on explicit user action (e.g. tapping step CTA),
+  // never auto-triggered on mount — navigation must be user-intent driven.
 
   // ─── Save conversation for local resume ───
   useEffect(() => {
@@ -213,13 +209,14 @@ export default function CardView() {
   const hasAutoStarted = useRef(false);
   useEffect(() => {
     if (!hasAutoStarted.current && !isActiveSession && !isRevisitMode && !showCompletion && card && category) {
+      // Don't auto-start if there's a conflicting session — let user decide via CTA
+      if (hasConflictingSession) return;
       if (canStartSharedSession) {
         hasAutoStarted.current = true;
         startSession(category.id, card.id);
       }
-      // When paired and can't start: do NOT auto-send. Show proposal gate UI instead.
     }
-  }, [isActiveSession, isRevisitMode, showCompletion, card, category, startSession, canStartSharedSession]);
+  }, [isActiveSession, isRevisitMode, showCompletion, card, category, startSession, canStartSharedSession, hasConflictingSession]);
 
   // Proposal gate removed — users can browse freely. Propose banner shown inline instead.
 
@@ -261,6 +258,10 @@ export default function CardView() {
   };
 
   const handleStartFromOverview = () => {
+    if (hasConflictingSession) {
+      setShowConflictModal(true);
+      return;
+    }
     if (card && category && !isActiveSession) {
       startSession(category.id, card.id);
     }
