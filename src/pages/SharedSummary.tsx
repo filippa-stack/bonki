@@ -14,7 +14,7 @@ import Header from '@/components/Header';
 import SharedTimelineItem from '@/components/SharedTimelineItem';
 import AttachPartner from '@/components/AttachPartner';
 import IncomingProposal from '@/components/IncomingProposal';
-import { Search, Filter, X, ChevronDown } from 'lucide-react';
+import { Search, Filter, X, ChevronDown, MessageCircle } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import {
@@ -70,12 +70,10 @@ export default function SharedSummary() {
       })
       .filter(Boolean) as { cardId: string; text: string }[];
     if (withTakeaway.length === 0) return null;
-    // Pick one deterministically per day so it doesn't change on re-render
     const dayIndex = Math.floor(Date.now() / (1000 * 60 * 60 * 24));
     return withTakeaway[dayIndex % withTakeaway.length];
   }, [journeyState?.exploredCardIds, getTakeawayShared]);
 
-  // Mark as shown on mount
   useEffect(() => {
     if (surfacedTakeaway) {
       sessionStorage.setItem('shared-takeaway-surfaced', '1');
@@ -109,11 +107,9 @@ export default function SharedSummary() {
     fetchSharedNotes();
   }, [user, space]);
 
-  // Reflection responses hook
   const reflectionIds = useMemo(() => sharedNotes.map(n => n.id), [sharedNotes]);
   const { saveResponse, getMyResponse, getPartnerResponse } = useReflectionResponses(reflectionIds);
 
-  // Cleanup pending saves on unmount
   useEffect(() => {
     return () => {
       pendingSaves.current.forEach(timer => clearTimeout(timer));
@@ -158,7 +154,6 @@ export default function SharedSummary() {
     }
   }, [navigate, getCardById]);
 
-  // Enrich notes with card/category info and apply filters
   const timelineItems = useMemo(() => {
     return sharedNotes
       .map(note => {
@@ -244,7 +239,6 @@ export default function SharedSummary() {
   const hasContent = sharedNotes.length > 0;
   const hasActiveFilter = categoryFilter !== 'all' || searchQuery.length > 0;
 
-  // Journey progress data
   const exploredIds = journeyState?.exploredCardIds || [];
   const totalCards = cards.length;
   const exploredCount = exploredIds.length;
@@ -253,47 +247,54 @@ export default function SharedSummary() {
     <div className="min-h-screen page-bg">
       <Header showBack backTo="/" />
 
-      <div className="px-6 pt-20 pb-24 mx-auto text-center" style={{ maxWidth: 540 }}>
+      <div className="px-6 pt-20 pb-24 mx-auto" style={{ maxWidth: 540 }}>
 
-        {/* ─── 1. Header ─── */}
+        {/* ─── Header ─── */}
         {!showFind && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.15 }}
-            className="mb-8"
+            className="mb-4 text-center"
           >
             <h2 className="font-serif text-2xl font-semibold text-foreground">Vårt utrymme</h2>
           </motion.div>
         )}
 
-        {/* ─── 2. Subtext ─── */}
         {!showFind && (
           <motion.p
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.15, delay: 0.05 }}
-            className="text-xs text-muted-foreground/50 mb-24 leading-relaxed"
+            className="text-sm text-muted-foreground mb-12 leading-relaxed text-center"
           >
             Här samlas det ni bygger tillsammans.
           </motion.p>
         )}
+
         {/* ─── Surfaced takeaway ─── */}
         {!showFind && surfacedTakeaway && (
-          <div className="mb-16 text-center">
-            <p className="text-[11px] text-muted-foreground/40 mb-3">För en tid sedan skrev ni:</p>
-            <p className="text-sm font-serif text-foreground/70 leading-relaxed max-w-sm mx-auto">
-              {surfacedTakeaway.text}
-            </p>
-          </div>
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.15, delay: 0.08 }}
+            className="mb-14 text-center"
+          >
+            <div className="rounded-2xl bg-card/60 border border-border/30 px-6 py-8">
+              <p className="text-xs text-muted-foreground mb-4">För en tid sedan skrev ni:</p>
+              <p className="text-base font-serif text-foreground/80 leading-relaxed max-w-sm mx-auto italic">
+                "{surfacedTakeaway.text}"
+              </p>
+            </div>
+          </motion.div>
         )}
 
         {/* Partner invite — only when solo */}
         {space && (
           <motion.div
-            initial={{ opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="mb-12 text-left"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="mb-10 text-left"
           >
             <AttachPartner
               fetchInviteInfo={fetchInviteInfo}
@@ -311,105 +312,121 @@ export default function SharedSummary() {
           </motion.div>
         )}
 
-        {/* Incoming proposals */}
-        {incomingProposals.length > 0 && (
-          <motion.div
-            initial={{ opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="mb-12"
-          >
-            <p className="text-sm font-serif text-foreground/70 mb-5">
-              Föreslaget till er
-            </p>
-            <div className="space-y-3 text-left">
-              {incomingProposals.map((proposal) => {
-                const proposalCard = getCardById(proposal.card_id);
-                const proposalCategory = getCategoryById(proposal.category_id);
-                if (!proposalCard || !proposalCategory) return null;
-
-                const proposerName = space?.partner_a_name || space?.partner_b_name || undefined;
-
-                return (
-                  <IncomingProposal
-                    key={proposal.id}
-                    proposal={proposal}
-                    cardTitle={proposalCard.title}
-                    categoryTitle={proposalCategory.title}
-                    proposerName={proposerName}
-                    onAccept={async () => {
-                      // Race-safe: update status first, proceed regardless
-                      await updateProposalStatus(proposal.id, 'accepted');
-                      startSession(proposal.category_id, proposal.card_id, { force: true, fromBeginning: true });
-                      toast('Samtalet startade', { duration: 2000 });
-                      navigate(`/card/${proposal.card_id}`);
-                    }}
-                    onSaveForLater={async () => {
-                      await updateProposalStatus(proposal.id, 'saved_for_later');
-                    }}
-                  />
-                );
-              })}
-            </div>
-          </motion.div>
-        )}
-
-        {/* Saved proposals — collapsed */}
-        {savedProposals.length > 0 && (
+        {/* ─── Proposals section ─── */}
+        {(incomingProposals.length > 0 || savedProposals.length > 0 || displayMemberCount >= 2) && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="mb-10"
+            transition={{ duration: 0.15 }}
+            className="mb-14"
           >
-            <button
-              onClick={() => setShowSavedProposals(!showSavedProposals)}
-              className="inline-flex items-center gap-1.5 text-xs text-muted-foreground/50 hover:text-muted-foreground transition-colors py-2"
-            >
-              <span>Visa sparade förslag ({savedProposals.length})</span>
-              <ChevronDown className={`w-3 h-3 transition-transform ${showSavedProposals ? 'rotate-180' : ''}`} />
-            </button>
-            <AnimatePresence>
-              {showSavedProposals && (
-                <motion.div
-                  initial={{ opacity: 0, height: 0 }}
-                  animate={{ opacity: 1, height: 'auto' }}
-                  exit={{ opacity: 0, height: 0 }}
-                  className="overflow-hidden"
-                >
-                  <div className="space-y-2 pt-2 text-left">
-                    {savedProposals.map((proposal) => {
-                      const proposalCard = getCardById(proposal.card_id);
-                      const proposalCategory = getCategoryById(proposal.category_id);
-                      if (!proposalCard || !proposalCategory) return null;
+            {/* Incoming proposals */}
+            {incomingProposals.length > 0 && (
+              <div className="mb-6">
+                <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-4 text-center">
+                  Föreslaget till er
+                </p>
+                <div className="space-y-3 text-left">
+                  {incomingProposals.map((proposal) => {
+                    const proposalCard = getCardById(proposal.card_id);
+                    const proposalCategory = getCategoryById(proposal.category_id);
+                    if (!proposalCard || !proposalCategory) return null;
 
-                      return (
-                        <div
-                          key={proposal.id}
-                          className="py-3 flex items-center justify-between"
-                        >
-                          <div>
-                            <p className="font-serif text-sm text-foreground">{proposalCard.title}</p>
-                            <p className="text-xs text-muted-foreground/50">{proposalCategory.title}</p>
-                          </div>
-                          <Button
-                            size="sm"
-                            variant="ghost"
-                            className="text-muted-foreground text-xs"
-                            onClick={async () => {
-                              await updateProposalStatus(proposal.id, 'accepted');
-                              startSession(proposal.category_id, proposal.card_id, { force: true, fromBeginning: true });
-                              toast('Samtalet startade', { duration: 2000 });
-                              navigate(`/card/${proposal.card_id}`);
-                            }}
-                          >
-                            Starta samtalet
-                          </Button>
-                        </div>
-                      );
-                    })}
-                  </div>
-                </motion.div>
-              )}
-            </AnimatePresence>
+                    const proposerName = space?.partner_a_name || space?.partner_b_name || undefined;
+
+                    return (
+                      <IncomingProposal
+                        key={proposal.id}
+                        proposal={proposal}
+                        cardTitle={proposalCard.title}
+                        categoryTitle={proposalCategory.title}
+                        proposerName={proposerName}
+                        onAccept={async () => {
+                          await updateProposalStatus(proposal.id, 'accepted');
+                          startSession(proposal.category_id, proposal.card_id, { force: true, fromBeginning: true });
+                          toast('Samtalet startade', { duration: 2000 });
+                          navigate(`/card/${proposal.card_id}`);
+                        }}
+                        onSaveForLater={async () => {
+                          await updateProposalStatus(proposal.id, 'saved_for_later');
+                        }}
+                      />
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+
+            {/* Saved proposals — collapsed */}
+            {savedProposals.length > 0 && (
+              <div className="mb-6">
+                <button
+                  onClick={() => setShowSavedProposals(!showSavedProposals)}
+                  className="inline-flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors py-2"
+                >
+                  <span>Sparade förslag ({savedProposals.length})</span>
+                  <ChevronDown className={`w-3 h-3 transition-transform ${showSavedProposals ? 'rotate-180' : ''}`} />
+                </button>
+                <AnimatePresence>
+                  {showSavedProposals && (
+                    <motion.div
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: 'auto' }}
+                      exit={{ opacity: 0, height: 0 }}
+                      className="overflow-hidden"
+                    >
+                      <div className="space-y-2 pt-2 text-left">
+                        {savedProposals.map((proposal) => {
+                          const proposalCard = getCardById(proposal.card_id);
+                          const proposalCategory = getCategoryById(proposal.category_id);
+                          if (!proposalCard || !proposalCategory) return null;
+
+                          return (
+                            <div
+                              key={proposal.id}
+                              className="py-3 flex items-center justify-between"
+                            >
+                              <div>
+                                <p className="font-serif text-sm text-foreground">{proposalCard.title}</p>
+                                <p className="text-xs text-muted-foreground">{proposalCategory.title}</p>
+                              </div>
+                              <Button
+                                size="sm"
+                                variant="ghost"
+                                className="text-muted-foreground text-xs"
+                                onClick={async () => {
+                                  await updateProposalStatus(proposal.id, 'accepted');
+                                  startSession(proposal.category_id, proposal.card_id, { force: true, fromBeginning: true });
+                                  toast('Samtalet startade', { duration: 2000 });
+                                  navigate(`/card/${proposal.card_id}`);
+                                }}
+                              >
+                                Starta samtalet
+                              </Button>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            )}
+
+            {/* Propose button — always visible when paired */}
+            {displayMemberCount >= 2 && (
+              <div className="text-center">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="text-sm gap-2 rounded-xl border-border/40 text-muted-foreground hover:text-foreground"
+                  onClick={() => navigate('/')}
+                >
+                  <MessageCircle className="w-4 h-4" />
+                  Föreslå ett samtal
+                </Button>
+              </div>
+            )}
           </motion.div>
         )}
 
@@ -419,17 +436,19 @@ export default function SharedSummary() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.15 }}
-            className="mb-16 space-y-10"
+            className="mb-16 text-center space-y-6"
           >
-            <button
-              onClick={() => navigate('/')}
-              className="text-sm text-muted-foreground/60 hover:text-muted-foreground transition-colors"
-            >
-              Bläddra bland kort →
-            </button>
-            <p className="text-xs text-muted-foreground/40">
-              När ni delar en reflektion till en fråga visas den här.
-            </p>
+            <div className="rounded-2xl bg-card/40 border border-border/20 px-6 py-10">
+              <p className="text-sm text-muted-foreground mb-4">
+                När ni delar en reflektion till en fråga visas den här.
+              </p>
+              <button
+                onClick={() => navigate('/')}
+                className="text-sm text-primary hover:text-primary/80 transition-colors font-medium"
+              >
+                Bläddra bland kort →
+              </button>
+            </div>
           </motion.div>
         )}
 
@@ -443,22 +462,21 @@ export default function SharedSummary() {
           <>
             {hasContent && (<>
 
-               {/* ─── 3. Era Takeaways (highlights) ─── */}
+              {/* ─── Era Takeaways (highlights) ─── */}
               {highlights.length > 0 && !hasActiveFilter && (
                 <motion.div
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.05, duration: 0.15 }}
-                  className="mb-24"
+                  className="mb-16"
                 >
-                  <p className="text-[10px] text-muted-foreground/40 uppercase tracking-[0.2em] mb-12">
-                    Era Takeaways
-                  </p>
-                  <div className="space-y-10">
+                  <SectionDivider />
+                  <SectionHeader>Era Takeaways</SectionHeader>
+                  <div className="space-y-8">
                     {(showAllHighlights ? highlights : highlights.slice(0, 3)).map((h) => (
-                      <div key={`hl-${h.id}`}>
+                      <div key={`hl-${h.id}`} className="text-center">
                         <p className="text-[15px] font-serif leading-[1.9] text-foreground/80 whitespace-pre-wrap">{h.content}</p>
-                        <p className="text-[10px] text-muted-foreground/30 mt-2">
+                        <p className="text-xs text-muted-foreground mt-2">
                           {h.cardTitle}
                         </p>
                       </div>
@@ -467,7 +485,7 @@ export default function SharedSummary() {
                   {highlights.length > 3 && (
                     <button
                       onClick={() => setShowAllHighlights(!showAllHighlights)}
-                      className="mt-10 text-[11px] text-muted-foreground/35 hover:text-muted-foreground/50 transition-colors"
+                      className="mt-8 text-xs text-muted-foreground hover:text-foreground transition-colors block mx-auto"
                     >
                       {showAllHighlights ? 'Visa färre' : `Visa alla ${highlights.length}`}
                     </button>
@@ -475,32 +493,30 @@ export default function SharedSummary() {
                 </motion.div>
               )}
 
-              {/* ─── 4. Er resa — minimal progress ─── */}
+              {/* ─── Er resa — progress ─── */}
               {!hasActiveFilter && (
                 <motion.div
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.08, duration: 0.15 }}
-                  className="mb-24"
+                  className="mb-16"
                 >
-                  <div className="h-px bg-border/20 mb-14 mx-auto" style={{ maxWidth: 120 }} />
-                  <p className="text-[10px] text-muted-foreground/40 uppercase tracking-[0.2em] mb-10">
-                    Er resa
-                  </p>
+                  <SectionDivider />
+                  <SectionHeader>Er resa</SectionHeader>
                   <div className="flex items-center justify-center gap-3">
-                    <div className="flex gap-2">
+                    <div className="flex gap-1.5">
                       {Array.from({ length: totalCards }).map((_, i) => (
                         <div
                           key={i}
-                          className={`w-1.5 h-1.5 rounded-full transition-colors ${
+                          className={`w-2 h-2 rounded-full transition-colors ${
                             i < exploredCount
-                              ? 'bg-foreground/20'
-                              : 'bg-muted/20'
+                              ? 'bg-primary/40'
+                              : 'bg-border/30'
                           }`}
                         />
                       ))}
                     </div>
-                    <span className="text-[10px] text-muted-foreground/30">
+                    <span className="text-xs text-muted-foreground">
                       {exploredCount} av {totalCards}
                     </span>
                   </div>
@@ -508,11 +524,11 @@ export default function SharedSummary() {
               )}
 
               {/* ─── Search toggle ─── */}
-              <div className="flex justify-center mb-10">
+              <div className="flex justify-center mb-8">
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="text-xs text-muted-foreground/50 gap-1.5"
+                  className="text-xs text-muted-foreground gap-1.5"
                   onClick={() => {
                     if (showFind) {
                       setSearchQuery('');
@@ -535,12 +551,12 @@ export default function SharedSummary() {
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
                       placeholder="Sök på ord eller tema…"
-                      className="pl-10 border-border/20"
+                      className="pl-10 border-border/30"
                     />
                   </div>
                   <Select value={categoryFilter} onValueChange={setCategoryFilter}>
-                    <SelectTrigger className="w-[140px] border-border/20">
-                      <Filter className="w-3 h-3 mr-1 opacity-40" />
+                    <SelectTrigger className="w-[140px] border-border/30">
+                      <Filter className="w-3 h-3 mr-1 opacity-50" />
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
@@ -568,9 +584,9 @@ export default function SharedSummary() {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.1, duration: 0.15 }}
-                  className="mb-24 text-left"
+                  className="mb-16 text-left"
                 >
-                  <div className="h-px bg-border/20 mb-12 mx-auto" style={{ maxWidth: 120 }} />
+                  <SectionDivider />
                   {(() => {
                     const newest = recentItems[0];
                     const sharedDate = new Date(newest.shared_at || newest.created_at);
@@ -583,14 +599,12 @@ export default function SharedSummary() {
                         ? 'Skrevs tidigare idag.'
                         : null;
                     return contextLabel ? (
-                      <p className="text-[11px] text-muted-foreground/40 text-center mb-8">
+                      <p className="text-xs text-muted-foreground text-center mb-6">
                         {contextLabel}
                       </p>
                     ) : null;
                   })()}
-                  <p className="text-[10px] text-muted-foreground/40 uppercase tracking-[0.2em] mb-8 text-center">
-                    Nyligen delat
-                  </p>
+                  <SectionHeader>Nyligen delat</SectionHeader>
                   <div className="space-y-1">
                     {recentItems.map((item) => (
                       <SharedTimelineItem
@@ -628,12 +642,12 @@ export default function SharedSummary() {
 
               {/* ─── Older reflections ─── */}
               {olderGrouped.length > 0 && !hasActiveFilter && (
-                <div className="mb-20 text-left">
-                  <div className="h-px bg-border/20 mb-12 mx-auto" style={{ maxWidth: 120 }} />
-                  <p className="text-[10px] text-muted-foreground/40 uppercase tracking-[0.2em] mb-8 text-center">Tidigare</p>
+                <div className="mb-16 text-left">
+                  <SectionDivider />
+                  <SectionHeader>Tidigare</SectionHeader>
                   {olderGrouped.map((group) => (
                     <div key={group.key} className="mb-8">
-                      <p className="text-[10px] text-muted-foreground/30 uppercase tracking-wide mb-4 text-center">
+                      <p className="text-xs text-muted-foreground uppercase tracking-wide mb-4 text-center">
                         {group.label}
                       </p>
                       <div className="space-y-1">
@@ -657,22 +671,22 @@ export default function SharedSummary() {
 
               {/* No results */}
               {timelineItems.length === 0 && hasActiveFilter && (
-                <p className="text-muted-foreground/40 py-12 text-sm">
+                <p className="text-muted-foreground py-12 text-sm text-center">
                   {t('shared.no_results')}
                 </p>
               )}
 
-              {/* Browse — bottom, subtle */}
+              {/* Browse — bottom */}
               {!hasActiveFilter && (
                 <motion.div
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ duration: 0.15 }}
-                  className="mt-8 mb-6"
+                  className="mt-8 mb-6 text-center"
                 >
                   <button
                     onClick={() => navigate('/')}
-                    className="text-xs text-muted-foreground/40 hover:text-muted-foreground transition-colors"
+                    className="text-xs text-muted-foreground hover:text-foreground transition-colors"
                   >
                     Bläddra bland kort →
                   </button>
@@ -683,5 +697,19 @@ export default function SharedSummary() {
         )}
       </div>
     </div>
+  );
+}
+
+/* ─── Shared sub-components ─── */
+
+function SectionDivider() {
+  return <div className="h-px bg-border/30 mb-10 mx-auto" style={{ maxWidth: 80 }} />;
+}
+
+function SectionHeader({ children }: { children: React.ReactNode }) {
+  return (
+    <p className="text-xs font-medium text-muted-foreground uppercase tracking-[0.15em] mb-8 text-center">
+      {children}
+    </p>
   );
 }
