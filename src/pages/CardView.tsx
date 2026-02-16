@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { useApp } from '@/contexts/AppContext';
 import { useAuth } from '@/contexts/AuthContext';
 import { useCoupleSpace } from '@/hooks/useCoupleSpace';
+import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 
 import Header from '@/components/Header';
@@ -18,7 +19,7 @@ import ReviewDrawer from '@/components/ReviewDrawer';
 import ProposalSheet from '@/components/ProposalSheet';
 import { Button } from '@/components/ui/button';
 import { ArrowRight, Home, RotateCcw, BookOpen, Check, Send } from 'lucide-react';
-import CardTakeaways from '@/components/CardTakeaways';
+import SessionTakeaway from '@/components/SessionTakeaway';
 
 import { useProposals, Proposal } from '@/hooks/useProposals';
 import { useDevState } from '@/hooks/useDevState';
@@ -59,8 +60,24 @@ export default function CardView() {
     journeyState,
   } = useApp();
   const { user } = useAuth();
-  const { memberCount } = useCoupleSpace();
+  const { memberCount, space } = useCoupleSpace();
   const devState = useDevState();
+
+  // Active card_session ID for takeaways on the completion screen
+  const [activeSessionId, setActiveSessionId] = useState<string | null>(null);
+  useEffect(() => {
+    if (!space || !cardId) return;
+    supabase
+      .from('card_sessions')
+      .select('id')
+      .eq('couple_space_id', space.id)
+      .eq('card_id', cardId)
+      .is('completed_at', null)
+      .order('started_at', { ascending: false })
+      .limit(1)
+      .single()
+      .then(({ data }) => { if (data) setActiveSessionId(data.id); });
+  }, [space, cardId]);
 
   const card = cardId ? getCardById(cardId) : undefined;
   const category = card ? getCategoryById(card.categoryId) : undefined;
@@ -311,9 +328,9 @@ export default function CardView() {
             className="max-w-md mx-auto mt-12 space-y-3"
           >
             <p className="text-sm text-muted-foreground text-center leading-relaxed">
-              Vill ni sammanfatta något att ta med er?
+              Vill ni formulera något att ta med er?
             </p>
-            <CardTakeaways cardId={card.id} />
+            <SessionTakeaway sessionId={activeSessionId} />
           </motion.div>
 
           {/* Navigation actions — single primary CTA */}
