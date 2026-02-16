@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { getCatchUpState } from '@/lib/catchUpState';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useState, useMemo, useEffect, useRef } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useApp } from '@/contexts/AppContext';
 import { useSiteSettings } from '@/contexts/SiteSettingsContext';
@@ -12,7 +12,7 @@ import ContinueModule from '@/components/ContinueModule';
 import Header from '@/components/Header';
 import ResumeSessionDialog from '@/components/ResumeSessionDialog';
 import AttachPartner from '@/components/AttachPartner';
-import { Bookmark, Pencil, Check, Share2, Settings } from 'lucide-react';
+import { Bookmark, Share2 } from 'lucide-react';
 import NotificationSettings from '@/components/NotificationSettings';
 import RelationshipMemory from '@/components/RelationshipMemory';
 import Footer from '@/components/Footer';
@@ -20,10 +20,6 @@ import RecentSharedReflection from '@/components/RecentSharedReflection';
 
 import ReturnOverlay from '@/components/ReturnOverlay';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import ColorPicker from '@/components/ColorPicker';
 import bonkiLogo from '@/assets/bonki-logo.png';
 import { useThemeVars } from '@/hooks/useThemeVars';
 import { supabase } from '@/integrations/supabase/client';
@@ -31,12 +27,6 @@ import { toast } from 'sonner';
 import { useProposals } from '@/hooks/useProposals';
 
 const STEP_LABELS = ['Öppnare', 'Tankeväckare', 'Scenario', 'Teamwork'];
-
-const fontOptions = [
-  { value: 'serif', label: 'Serif (Cormorant)', className: 'font-serif' },
-  { value: 'sans', label: 'Sans-serif', className: 'font-sans' },
-  { value: 'mono', label: 'Monospace', className: 'font-mono' },
-];
 
 export default function Home() {
   const { t } = useTranslation();
@@ -46,11 +36,6 @@ export default function Home() {
     mostRecentConversation, 
     savedConversations, 
     categories, 
-    updateCategory, 
-    updateCategoryColor, 
-    updateCategoryTextColor, 
-    updateCategoryBorderColor, 
-    updateCategoryIcon, 
     backgroundColor,
     currentSession,
     hasActiveSession,
@@ -62,19 +47,10 @@ export default function Home() {
     startSession,
     getCategoryStatus,
   } = useApp();
-  const { settings, updateSettings } = useSiteSettings();
+  const { settings } = useSiteSettings();
   const { user } = useAuth();
   const { space, displayMemberCount, userRole, fetchInviteInfo } = useCoupleSpace();
   const { incomingProposals, sendProposal: sendDbProposal } = useProposals();
-  const [isEditingHero, setIsEditingHero] = useState(false);
-  const [editTitle, setEditTitle] = useState(settings.heroTitle);
-  const [editSubtitle, setEditSubtitle] = useState(settings.heroSubtitle);
-  const [editTitleColor, setEditTitleColor] = useState(settings.heroTitleColor);
-  const [editSubtitleColor, setEditSubtitleColor] = useState(settings.heroSubtitleColor);
-  const [editTitleFont, setEditTitleFont] = useState(settings.heroTitleFont);
-  const [editSubtitleFont, setEditSubtitleFont] = useState(settings.heroSubtitleFont);
-  const [editButtonColor, setEditButtonColor] = useState(settings.buttonColor);
-  const [editButtonTextColor, setEditButtonTextColor] = useState(settings.buttonTextColor);
 
   // Proposal mode state
   const [isProposalMode, setIsProposalMode] = useState(false);
@@ -211,32 +187,6 @@ export default function Home() {
     return 'none';
   }, [showReturnOverlay, hasActiveSession, sessionCard, sessionCategory, resumeDismissed, isMidCard, isSoloMode, currentSession, journeyState, lastActivityElapsed]);
 
-  const handleSaveHero = () => {
-    updateSettings({ 
-      heroTitle: editTitle, 
-      heroSubtitle: editSubtitle,
-      heroTitleColor: editTitleColor,
-      heroSubtitleColor: editSubtitleColor,
-      heroTitleFont: editTitleFont,
-      heroSubtitleFont: editSubtitleFont,
-      buttonColor: editButtonColor,
-      buttonTextColor: editButtonTextColor,
-    });
-    setIsEditingHero(false);
-  };
-
-  const handleStartEdit = () => {
-    setEditTitle(settings.heroTitle);
-    setEditSubtitle(settings.heroSubtitle);
-    setEditTitleColor(settings.heroTitleColor);
-    setEditSubtitleColor(settings.heroSubtitleColor);
-    setEditTitleFont(settings.heroTitleFont);
-    setEditSubtitleFont(settings.heroSubtitleFont);
-    setEditButtonColor(settings.buttonColor);
-    setEditButtonTextColor(settings.buttonTextColor);
-    setIsEditingHero(true);
-  };
-
   const handleEnterProposalMode = () => {
     setIsProposalMode(true);
     setProposalFilter('unexplored');
@@ -304,7 +254,7 @@ export default function Home() {
         )}
       </AnimatePresence>
       <div className="flex-1">
-      <Header showBackgroundPicker={true} />
+      <Header showBackgroundPicker={false} showBackupManager={false} />
       {/* Header with Logo */}
       <div className="px-6 pt-14 pb-12">
         <motion.div
@@ -320,119 +270,23 @@ export default function Home() {
           />
         </motion.div>
         
-        <div className="relative group text-center">
-          {isEditingHero ? (
-            <motion.div
+        <div className="text-center">
+            <motion.h1
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              className="space-y-4"
+              transition={{ duration: 0.15 }}
+              className={`text-display font-${settings.heroTitleFont} hero-title-color`}
             >
-              <div className="space-y-2">
-                <Label className="text-xs text-muted-foreground">{t('home.edit_label_title')}</Label>
-                <div className="flex gap-2 items-center flex-wrap">
-                  <Input
-                    value={editTitle}
-                    onChange={(e) => setEditTitle(e.target.value)}
-                    className="text-xl font-semibold bg-card flex-1 min-w-[150px]"
-                    placeholder={t('home.title_placeholder')}
-                  />
-                  <Select value={editTitleFont} onValueChange={setEditTitleFont}>
-                    <SelectTrigger className="w-[140px] bg-card">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {fontOptions.map((font) => (
-                        <SelectItem key={font.value} value={font.value} className={font.className}>
-                          {font.label}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  <ColorPicker
-                    currentColor={editTitleColor}
-                    onColorChange={setEditTitleColor}
-                  />
-                </div>
-              </div>
-              <div className="space-y-2">
-                <Label className="text-xs text-muted-foreground">{t('home.edit_label_subtitle')}</Label>
-                <div className="flex gap-2 items-center flex-wrap">
-                  <Input
-                    value={editSubtitle}
-                    onChange={(e) => setEditSubtitle(e.target.value)}
-                    className="text-base bg-card flex-1 min-w-[150px]"
-                    placeholder={t('home.subtitle_placeholder')}
-                  />
-                  <Select value={editSubtitleFont} onValueChange={setEditSubtitleFont}>
-                    <SelectTrigger className="w-[140px] bg-card">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {fontOptions.map((font) => (
-                        <SelectItem key={font.value} value={font.value} className={font.className}>
-                          {font.label}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  <ColorPicker
-                    currentColor={editSubtitleColor}
-                    onColorChange={setEditSubtitleColor}
-                  />
-                </div>
-              </div>
-              <div className="space-y-2">
-                <Label className="text-xs text-muted-foreground">{t('home.edit_label_button_colors')}</Label>
-                <div className="flex gap-3 items-center">
-                  <div className="flex items-center gap-2">
-                    <span className="text-xs text-muted-foreground">{t('home.edit_label_background')}</span>
-                    <ColorPicker
-                      currentColor={editButtonColor}
-                      onColorChange={setEditButtonColor}
-                    />
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span className="text-xs text-muted-foreground">{t('home.edit_label_text')}</span>
-                    <ColorPicker
-                      currentColor={editButtonTextColor}
-                      onColorChange={setEditButtonTextColor}
-                    />
-                  </div>
-                </div>
-              </div>
-              <Button size="sm" onClick={handleSaveHero} className="gap-2">
-                <Check className="w-4 h-4" />
-                {t('home.save')}
-              </Button>
-            </motion.div>
-          ) : (
-            <>
-              <motion.h1
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.15 }}
-                className={`text-display font-${settings.heroTitleFont} hero-title-color`}
-              >
-                {settings.heroTitle}
-              </motion.h1>
-              <motion.p
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.15, delay: 0.05 }}
-                className={`text-body mt-3 font-${settings.heroSubtitleFont} hero-subtitle-color`}
-              >
-                {settings.heroSubtitle}
-              </motion.p>
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={handleStartEdit}
-                className="absolute -right-2 top-0 opacity-0 group-hover:opacity-100 transition-opacity text-muted-foreground hover:text-foreground"
-              >
-                <Pencil className="w-4 h-4" />
-              </Button>
-            </>
-          )}
+              {settings.heroTitle}
+            </motion.h1>
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.15, delay: 0.05 }}
+              className={`text-body mt-3 font-${settings.heroSubtitleFont} hero-subtitle-color`}
+            >
+              {settings.heroSubtitle}
+            </motion.p>
         </div>
       </div>
 
@@ -748,12 +602,6 @@ export default function Home() {
                   category={category}
                   onClick={() => navigate(`/category/${category.id}`)}
                   index={index}
-                  onUpdate={updateCategory}
-                  onColorChange={(color) => updateCategoryColor(category.id, color)}
-                  onTextColorChange={(textColor) => updateCategoryTextColor(category.id, textColor)}
-                  onBorderColorChange={(borderColor) => updateCategoryBorderColor(category.id, borderColor)}
-                  onIconChange={(icon) => updateCategoryIcon(category.id, icon)}
-                  editable={false}
                   highlighted={!isProposalMode && category.id === highlightedCategoryId}
                   isCompleted={catStatus === 'explored'}
                 />

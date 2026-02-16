@@ -6,7 +6,6 @@ import { sv } from 'date-fns/locale';
 import { ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useSiteSettings } from '@/contexts/SiteSettingsContext';
-import ColorPicker from '@/components/ColorPicker';
 
 interface ContinueModuleProps {
   cardTitle: string;
@@ -32,7 +31,7 @@ export default function ContinueModule({
   isCatchingUp = false,
 }: ContinueModuleProps) {
   const { t } = useTranslation();
-  const { settings, updateSettings } = useSiteSettings();
+  const { settings } = useSiteSettings();
 
   const timeCue = useMemo(() => getTimeCue(lastActiveAt), [lastActiveAt]);
 
@@ -60,18 +59,6 @@ export default function ContinueModule({
           color: settings.continueModuleTextColor || undefined,
         }}
       >
-        <div className="absolute top-2 right-2" onClick={(e) => e.stopPropagation()}>
-          <ColorPicker
-            currentColor={settings.continueModuleBgColor}
-            onColorChange={(c) => updateSettings({ continueModuleBgColor: c })}
-            currentTextColor={settings.continueModuleTextColor}
-            onTextColorChange={(c) => updateSettings({ continueModuleTextColor: c })}
-            currentBorderColor={settings.continueModuleBorderColor}
-            onBorderColorChange={(c) => updateSettings({ continueModuleBorderColor: c })}
-            showTextColor
-            showBorderColor
-          />
-        </div>
 
         <p className="font-serif text-lg mb-1" style={textStyle}>
           {cardTitle}
