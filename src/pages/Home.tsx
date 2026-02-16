@@ -220,18 +220,18 @@ export default function Home() {
       <div className="flex-1">
       <Header showBackgroundPicker={false} showBackupManager={false} />
       {/* Header with Logo — compact when active session */}
-      {!isSoloMode && (
-        <div className={`px-6 ${hasActiveSession ? 'pt-2 pb-2' : 'pt-14 pb-12'}`}>
+      {!isSoloMode && !hasActiveSession && (
+        <div className="px-6 pt-14 pb-12">
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.15 }}
-            className={`flex justify-center ${hasActiveSession ? 'mb-0' : 'mb-8'}`}
+            className="flex justify-center mb-8"
           >
             <img 
               src={bonkiLogo} 
               alt="Still Us" 
-              className={hasActiveSession ? 'h-10 w-auto' : 'h-14 w-auto'}
+              className="h-14 w-auto"
             />
           </motion.div>
         </div>
@@ -352,9 +352,9 @@ export default function Home() {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.15 }}
-                className="px-6 mb-10"
+                className="px-6 pt-[24px] pb-[24px] mb-10"
               >
-                <p className="text-xs text-muted-foreground/50 uppercase tracking-wide mb-4 text-center">Pågående samtal</p>
+                <p className="text-xs text-muted-foreground/30 uppercase tracking-wide mb-4 text-center">Pågående samtal</p>
                 <div className="text-center space-y-2 mb-6">
                   <p className="font-serif text-lg text-foreground">{activeCard.title}</p>
                   <p className="text-xs text-muted-foreground">{activeCategory.title}</p>
