@@ -51,23 +51,12 @@ export default function Home() {
   const { settings } = useSiteSettings();
   const { user } = useAuth();
   const { space, displayMemberCount, userRole, fetchInviteInfo } = useCoupleSpace();
-  const { incomingProposals, sendProposal: sendDbProposal } = useProposals();
-  const prevIncomingCountRef = useRef(incomingProposals.length);
+  const { incomingProposals, sendProposal: sendDbProposal, updateProposalStatus, activateSession } = useProposals();
+  
 
-  // Toast when a new incoming proposal arrives
-  useEffect(() => {
-    if (incomingProposals.length > prevIncomingCountRef.current) {
-      toast('Ni har fått ett nytt samtalsförslag', {
-        description: 'Öppna Vårt utrymme för att se det',
-        duration: 4000,
-        action: {
-          label: 'Visa',
-          onClick: () => navigate('/shared'),
-        },
-      });
-    }
-    prevIncomingCountRef.current = incomingProposals.length;
-  }, [incomingProposals.length, navigate]);
+  // Track dismissed proposals so they don't reappear in the same session
+  const [dismissedProposalIds, setDismissedProposalIds] = useState<Set<string>>(new Set());
+  const [acceptingProposalId, setAcceptingProposalId] = useState<string | null>(null);
 
   // Proposal mode state
   const [isProposalMode, setIsProposalMode] = useState(false);
@@ -311,27 +300,70 @@ export default function Home() {
       {/* Partner connected banner */}
       <PartnerConnectedBanner />
 
-      {/* Compact proposal indicator */}
-      {incomingProposals.length > 0 && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.15 }}
-          className="px-6 mb-6"
-        >
-          <div className="rounded-2xl border border-border bg-card/50 px-5 py-4 flex items-center justify-between">
-            <p className="text-sm text-muted-foreground">Ni har ett föreslaget samtal</p>
-            <Button
-              variant="ghost"
-              size="sm"
-              className="text-muted-foreground hover:text-foreground text-xs"
-              onClick={() => navigate('/shared')}
+      {/* Inline proposal decision cards */}
+      {incomingProposals
+        .filter(p => !dismissedProposalIds.has(p.id))
+        .map(proposal => {
+          const proposalCard = getCardById(proposal.card_id);
+          const proposalCategory = getCategoryById(proposal.category_id);
+          const isAccepting = acceptingProposalId === proposal.id;
+          return (
+            <motion.div
+              key={proposal.id}
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -8 }}
+              transition={{ duration: 0.2 }}
+              className="px-6 mb-6"
             >
-              Öppna i Vårt utrymme
-            </Button>
-          </div>
-        </motion.div>
-      )}
+              <div className="rounded-2xl border border-border bg-card p-6 space-y-4">
+                <div className="text-center space-y-1">
+                  <p className="font-serif text-foreground">
+                    Vill ni börja det här samtalet?
+                  </p>
+                  {proposalCard && (
+                    <p className="text-sm text-foreground/80 font-serif">{proposalCard.title}</p>
+                  )}
+                  {proposalCategory && (
+                    <p className="text-xs text-muted-foreground">{proposalCategory.title}</p>
+                  )}
+                  {proposal.message && (
+                    <p className="text-xs text-muted-foreground italic mt-2">"{proposal.message}"</p>
+                  )}
+                </div>
+                <div className="flex gap-3">
+                  <Button
+                    variant="ghost"
+                    className="flex-1 text-muted-foreground"
+                    disabled={isAccepting}
+                    onClick={() => {
+                      setDismissedProposalIds(prev => new Set([...prev, proposal.id]));
+                    }}
+                  >
+                    Inte nu
+                  </Button>
+                  <Button
+                    className="flex-1"
+                    disabled={isAccepting}
+                    onClick={async () => {
+                      setAcceptingProposalId(proposal.id);
+                      await updateProposalStatus(proposal.id, 'accepted');
+                      const result = await activateSession(proposal.id);
+                      setAcceptingProposalId(null);
+                      if (result.success) {
+                        navigate(`/card/${proposal.card_id}`);
+                      } else {
+                        toast.error('Kunde inte starta samtalet. Försök igen.');
+                      }
+                    }}
+                  >
+                    {isAccepting ? 'Startar...' : 'Börja nu'}
+                  </Button>
+                </div>
+              </div>
+            </motion.div>
+          );
+        })}
 
       {/* Journey continue module — only when it wins priority */}
       {resumeSurface === 'continueModule' && (() => {
