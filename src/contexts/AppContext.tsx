@@ -276,6 +276,33 @@ export function AppProvider({ children }: { children: ReactNode }) {
         setTimeout(() => setRemoteCardChanged(true), 0);
       }
 
+      // When a server session arrives, check if we have locally completed steps
+      // that the server doesn't know about yet — retry them
+      const serverSession = data.currentSession as any;
+      if (serverSession?.userCompletions && serverSession.cardId && user?.id) {
+        const uid = user.id;
+        const serverCompleted: number[] = serverSession.userCompletions[uid] || [];
+        const localCardProgress = prev.journeyState?.sessionProgress?.[serverSession.cardId];
+        const localCompleted: number[] = localCardProgress?.perUser?.[uid]?.completedSteps || [];
+        const missing = localCompleted.filter(s => !serverCompleted.includes(s));
+        if (missing.length > 0) {
+          const stepToRetry = Math.min(...missing);
+          if (stepToRetry === serverSession.currentStepIndex) {
+            setTimeout(() => {
+              supabase.functions
+                .invoke('update-step-completion', {
+                  body: { card_id: serverSession.cardId, step_index: stepToRetry },
+                })
+                .then((res) => {
+                  if (res.error) {
+                    console.error('[retry] Step completion failed:', res.error);
+                  }
+                });
+            }, 500);
+          }
+        }
+      }
+
       return {
         ...prev,
         currentSession: data.currentSession ?? undefined,
@@ -283,7 +310,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
       };
     });
     setSessionDismissed(false);
-  }, []);
+  }, [user?.id]);
 
   const dismissRemoteCardCue = useCallback(() => {
     setRemoteCardChanged(false);
@@ -736,8 +763,10 @@ export function AppProvider({ children }: { children: ReactNode }) {
     });
 
     // Call edge function for authoritative server-side update
+    // Only call if the server session exists (indicated by userCompletions from server)
     const cardId = state.currentSession?.cardId;
-    if (cardId && uid !== 'local') {
+    const hasServerSession = !!(state.currentSession as any)?.userCompletions;
+    if (cardId && uid !== 'local' && hasServerSession) {
       supabase.functions
         .invoke('update-step-completion', {
           body: { card_id: cardId, step_index: stepIndex },
@@ -768,6 +797,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
             });
           }
         });
+    } else if (cardId && uid !== 'local' && !hasServerSession) {
+      console.warn('[completeSessionStep] Skipped edge call: no server session yet for card', cardId);
     }
   };
 

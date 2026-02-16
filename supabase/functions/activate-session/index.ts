@@ -74,6 +74,28 @@ Deno.serve(async (req) => {
       return json({ error: "partner_not_joined" }, 409);
     }
 
+    // Check for existing session — don't overwrite if it's for the same card
+    const { data: existingProgress } = await admin
+      .from("couple_progress")
+      .select("current_session")
+      .eq("couple_space_id", proposal.couple_space_id)
+      .maybeSingle();
+
+    const existingSession = existingProgress?.current_session as any;
+    if (
+      existingSession &&
+      typeof existingSession === "object" &&
+      existingSession.cardId === proposal.card_id
+    ) {
+      // Session already exists for this card — return it without overwriting
+      return json({
+        success: true,
+        already_active: true,
+        couple_space_id: proposal.couple_space_id,
+        session: existingSession,
+      });
+    }
+
     const userCompletions: Record<string, number[]> = {};
     for (const m of membership) {
       userCompletions[m.user_id] = [];
