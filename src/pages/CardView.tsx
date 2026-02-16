@@ -19,7 +19,7 @@ import { Button } from '@/components/ui/button';
 import { ArrowRight, Home, RotateCcw, BookOpen, Check } from 'lucide-react';
 import CardTakeaways from '@/components/CardTakeaways';
 
-import { useProposals } from '@/hooks/useProposals';
+import { useProposals, Proposal } from '@/hooks/useProposals';
 
 const sectionTypeLabels: Record<string, string> = {
   opening: 'Början',
@@ -154,9 +154,20 @@ export default function CardView() {
   const proposalTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [showProposalSheet, setShowProposalSheet] = useState(false);
 
-  const { sendProposal } = useProposals();
+  const { sendProposal, proposals } = useProposals();
 
-
+  // ─── Proposal gate: when paired, new cards need mutual agreement ───
+  const isPaired = memberCount >= 2;
+  const hasExistingProgress = !!(cardId && journeyState?.sessionProgress?.[cardId]);
+  const hasAcceptedProposal = !!(cardId && proposals.some(
+    p => p.card_id === cardId && p.status === 'accepted'
+  ));
+  const hasPendingProposalForCard = !!(cardId && proposals.some(
+    p => p.card_id === cardId && p.status === 'pending'
+  ));
+  // Allow session if: solo, has existing progress, has accepted proposal, or revisit
+  const canStartSharedSession = !isPaired || hasExistingProgress || hasAcceptedProposal || isRevisitMode;
+  const [autoProposalSent, setAutoProposalSent] = useState(false);
   // ─── Guard: if there's an active session for a DIFFERENT card, show modal instead of redirect ───
   const hasConflictingSession = !!(currentSession && currentSession.cardId !== cardId);
   const conflictingCard = hasConflictingSession ? getCardById(currentSession!.cardId) : undefined;
@@ -193,14 +204,25 @@ export default function CardView() {
     prevEffectiveStepRef.current = effectiveSharedStep;
   }, [effectiveSharedStep]);
 
-  // Auto-start session when entering a new card (no overview gate)
+  // Auto-start session when entering a new card (gated by proposal acceptance when paired)
   const hasAutoStarted = useRef(false);
   useEffect(() => {
     if (!hasAutoStarted.current && !isActiveSession && !isRevisitMode && !showCompletion && card && category) {
-      hasAutoStarted.current = true;
-      startSession(category.id, card.id);
+      if (canStartSharedSession) {
+        hasAutoStarted.current = true;
+        startSession(category.id, card.id);
+      } else if (isPaired && !hasPendingProposalForCard && !autoProposalSent) {
+        // Auto-send proposal for this card
+        hasAutoStarted.current = true;
+        setAutoProposalSent(true);
+        sendProposal(card.id, category.id).then((result) => {
+          if (result.ok) {
+            toast(t('topic_proposal.proposed_toast', 'Du har föreslagit ett samtal. Din partner ser det nästa gång hen öppnar appen.'), { duration: 4000 });
+          }
+        });
+      }
     }
-  }, [isActiveSession, isRevisitMode, showCompletion, card, category, startSession]);
+  }, [isActiveSession, isRevisitMode, showCompletion, card, category, startSession, canStartSharedSession, isPaired, hasPendingProposalForCard, autoProposalSent, sendProposal, t]);
 
   if (!card) {
     return (
@@ -417,6 +439,23 @@ export default function CardView() {
           >
             {card.subtitle}
           </motion.p>
+        )}
+
+        {/* Proposal pending banner — browsing allowed, shared session not yet started */}
+        {!canStartSharedSession && isPaired && (autoProposalSent || hasPendingProposalForCard) && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.3 }}
+            className="mt-6 rounded-xl border border-border bg-card/60 px-5 py-4 text-center space-y-1"
+          >
+            <p className="text-sm font-serif text-foreground">
+              {t('topic_proposal.your_proposal', 'Du har föreslagit det här samtalet. Det börjar när ni båda är redo.')}
+            </p>
+            <p className="text-xs text-muted-foreground">
+              Du kan läsa igenom frågorna under tiden.
+            </p>
+          </motion.div>
         )}
       </div>
 

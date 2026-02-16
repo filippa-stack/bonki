@@ -242,7 +242,9 @@
   "couple_space": {
     "partner_connected": "Ni är här tillsammans",
     "connected_hint": "Allt ni delar syns för er båda.",
-    "solo_mode": "På egen hand"
+    "solo_mode": "På egen hand",
+    "partner_just_joined": "Din partner har anslutit! 🎉",
+    "partner_just_joined_hint": "Ni är nu kopplade och kan börja er resa tillsammans."
   },
   "welcome_partner": {
     "title": "Välkommen till ert gemensamma rum",
