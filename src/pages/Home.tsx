@@ -199,10 +199,8 @@ export default function Home() {
     if (hasActiveSession && !!sessionCard && !!sessionCategory && !resumeDismissed && isMidCard && !isSoloMode) return 'resumeDialog';
     // ContinueModule: suppress if too long inactive
     if (lastActivityElapsed >= FOURTEEN_DAYS_MS) return 'none';
-    // Always show ContinueModule for active sessions (even if user already navigated this visit)
-    if (currentSession) return 'continueModule';
-    if (hasNavigatedThisVisit) return 'none';
-    if (journeyState?.lastCompletedCardId || journeyState?.suggestedNextCardId) return 'continueModule';
+    // Show ContinueModule for active sessions or journey progress (always, even after navigating)
+    if (currentSession || journeyState?.lastCompletedCardId || journeyState?.suggestedNextCardId) return 'continueModule';
     return 'none';
   }, [showReturnOverlay, hasActiveSession, sessionCard, sessionCategory, resumeDismissed, isMidCard, isSoloMode, currentSession, journeyState, lastActivityElapsed]);
 
