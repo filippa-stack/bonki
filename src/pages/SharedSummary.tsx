@@ -381,11 +381,11 @@ export default function SharedSummary() {
               </div>
             )}
 
-            {/* Accepted proposals — ready to start */}
+            {/* Accepted proposals — ready to start (or queued if session active) */}
             {acceptedProposals.length > 0 && (
               <div className="mb-6">
                 <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-4 text-center">
-                  Redo att börja
+                  {currentSession ? 'Nästa samtal' : 'Redo att börja'}
                 </p>
                 <div className="space-y-3 text-left">
                   {acceptedProposals.map((proposal) => {
@@ -396,24 +396,31 @@ export default function SharedSummary() {
                     return (
                       <div
                         key={proposal.id}
-                        className="rounded-xl border border-primary/20 bg-card/40 px-5 py-4"
+                        className="rounded-xl border border-border/30 bg-card/40 px-5 py-4"
                       >
                         <div className="flex items-start justify-between gap-3">
                           <div>
                             <p className="font-serif text-sm text-foreground">{proposalCard.title}</p>
                             <p className="text-[11px] text-muted-foreground/60 mt-0.5">{proposalCategory.title}</p>
                           </div>
-                          <Button
-                            size="sm"
-                            className="shrink-0 text-xs"
-                            onClick={() => {
-                              startSession(proposal.category_id, proposal.card_id, { force: true, fromBeginning: true });
-                              navigate(`/card/${proposal.card_id}`);
-                            }}
-                          >
-                            Öppna samtalet
-                          </Button>
+                          {!currentSession && (
+                            <Button
+                              size="sm"
+                              className="shrink-0 text-xs"
+                              onClick={() => {
+                                startSession(proposal.category_id, proposal.card_id, { force: true, fromBeginning: true });
+                                navigate(`/card/${proposal.card_id}`);
+                              }}
+                            >
+                              Öppna samtalet
+                            </Button>
+                          )}
                         </div>
+                        {currentSession && (
+                          <p className="text-[11px] text-muted-foreground/40 mt-2">
+                            Avsluta ert pågående samtal först
+                          </p>
+                        )}
                       </div>
                     );
                   })}
