@@ -26,6 +26,7 @@ import { useThemeVars } from '@/hooks/useThemeVars';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { useProposals } from '@/hooks/useProposals';
+import { useDevState, DEV_MOCK } from '@/hooks/useDevState';
 
 const STEP_LABELS = ['Öppnare', 'Tankeväckare', 'Scenario', 'Teamwork'];
 
@@ -52,7 +53,7 @@ export default function Home() {
   const { user } = useAuth();
   const { space, displayMemberCount, userRole, fetchInviteInfo } = useCoupleSpace();
   const { incomingProposals, sendProposal: sendDbProposal, updateProposalStatus, activateSession } = useProposals();
-  
+  const devState = useDevState();
 
   // Track dismissed proposals so they don't reappear in the same session
   const [dismissedProposalIds, setDismissedProposalIds] = useState<Set<string>>(new Set());
@@ -301,19 +302,27 @@ export default function Home() {
       <PartnerConnectedBanner />
 
       {/* ═══ PRIMARY ACTION ZONE ═══
-           Exactly ONE dominant CTA based on state:
-           1. Incoming proposal → inline decision card
-           2. Active session → "Fortsätt samtalet"
-           3. No partner → "Bjud in din partner"
-           4. Paired, no session → "Starta ett samtal"
+           Exactly ONE dominant CTA based on state.
+           devState overrides rendering only — no DB/edge calls.
       */}
       {(() => {
+        // Compute effective state variables, with dev overrides
+        const effectiveSoloMode = devState === 'solo' ? true
+          : devState === 'pairedIdle' || devState === 'pairedActive' || devState === 'proposalIncoming' ? false
+          : isSoloMode;
+        const effectiveSession = devState === 'pairedActive' ? DEV_MOCK.mockSession
+          : devState === 'solo' || devState === 'pairedIdle' || devState === 'proposalIncoming' ? null
+          : currentSession;
+        const effectiveProposals = devState === 'proposalIncoming' ? [DEV_MOCK.mockProposal]
+          : devState ? []
+          : incomingProposals;
+
         // State 1: Incoming proposal replaces primary CTA
-        const visibleProposals = incomingProposals.filter(p => !dismissedProposalIds.has(p.id));
+        const visibleProposals = effectiveProposals.filter(p => !dismissedProposalIds.has(p.id));
         if (visibleProposals.length > 0) {
           const proposal = visibleProposals[0]; // Show first pending
-          const proposalCard = getCardById(proposal.card_id);
-          const proposalCategory = getCategoryById(proposal.category_id);
+          const proposalCard = getCardById(proposal.card_id) || (devState ? { title: DEV_MOCK.mockCard.title, subtitle: DEV_MOCK.mockCard.subtitle } as any : null);
+          const proposalCategory = getCategoryById(proposal.category_id) || (devState ? { title: DEV_MOCK.mockCategory.title } as any : null);
           const isAccepting = acceptingProposalId === proposal.id;
           return (
             <motion.div
@@ -352,7 +361,7 @@ export default function Home() {
                   <Button
                     className="flex-1"
                     disabled={isAccepting}
-                    onClick={async () => {
+                    onClick={devState ? undefined : async () => {
                       setAcceptingProposalId(proposal.id);
                       await updateProposalStatus(proposal.id, 'accepted');
                       const result = await activateSession(proposal.id);
@@ -373,9 +382,9 @@ export default function Home() {
         }
 
         // State 2: Active session → "Fortsätt samtalet"
-        if (currentSession) {
-          const activeCard = getCardById(currentSession.cardId);
-          const activeCategory = activeCard ? getCategoryById(activeCard.categoryId) : null;
+        if (effectiveSession) {
+          const activeCard = getCardById(effectiveSession.cardId) || (devState ? { title: DEV_MOCK.mockCard.title, categoryId: DEV_MOCK.mockCategory.id } as any : null);
+          const activeCategory = activeCard ? (getCategoryById(activeCard.categoryId) || (devState ? { title: DEV_MOCK.mockCategory.title } as any : null)) : null;
           if (activeCard && activeCategory) {
             return (
               <motion.div
@@ -389,7 +398,7 @@ export default function Home() {
                   <p className="text-xs text-muted-foreground">{activeCategory.title}</p>
                 </div>
                 <Button
-                  onClick={() => { markNavigated(); navigate(`/card/${currentSession.cardId}`); }}
+                  onClick={devState ? undefined : () => { markNavigated(); navigate(`/card/${effectiveSession.cardId}`); }}
                   size="lg"
                   className="w-full h-14 rounded-2xl gap-2 font-normal"
                 >
@@ -402,7 +411,7 @@ export default function Home() {
         }
 
         // State 3: No partner → "Bjud in din partner"
-        if (isSoloMode && space) {
+        if (effectiveSoloMode && space) {
           return (
             <motion.div
               initial={{ opacity: 0 }}
