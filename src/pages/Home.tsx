@@ -337,6 +337,27 @@ export default function Home() {
 
       {/* Journey continue module — only when it wins priority */}
       {resumeSurface === 'continueModule' && (() => {
+        // Priority 1: Active shared session — always show ContinueModule for it
+        if (currentSession) {
+          const activeCard = getCardById(currentSession.cardId);
+          const activeCategory = activeCard ? getCategoryById(activeCard.categoryId) : null;
+          if (activeCard && activeCategory) {
+            const activeMySteps: number[] = user?.id && journeyState?.sessionProgress?.[currentSession.cardId]?.perUser?.[user.id]?.completedSteps || [];
+            const { isCatchingUp: activeCatchingUp } = getCatchUpState(activeMySteps, currentSession.currentStepIndex, true);
+            return (
+              <div className="space-y-2">
+                <ContinueModule
+                  cardTitle={activeCard.title}
+                  categoryTitle={activeCategory.title}
+                  lastActiveAt={journeyState?.updatedAt}
+                  isCatchingUp={activeCatchingUp}
+                  onContinue={() => { markNavigated(); navigate(`/card/${currentSession.cardId}`); }}
+                />
+              </div>
+            );
+          }
+        }
+
         const lastCompletedId = journeyState?.lastCompletedCardId;
         const lastCompletedCard = lastCompletedId ? getCardById(lastCompletedId) : null;
         const lastCompletedCategory = lastCompletedCard ? getCategoryById(lastCompletedCard.categoryId) : null;
