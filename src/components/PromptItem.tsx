@@ -210,9 +210,10 @@ export default function PromptItem({
                           animate={{ opacity: 1 }}
                           exit={{ opacity: 0 }}
                           transition={{ duration: 0.15 }}
-                          className="text-[11px] text-muted-foreground/30 text-right mt-2"
+                          className="text-[11px] text-muted-foreground/40 text-right mt-2 flex items-center justify-end gap-1"
                         >
-                          Sparad
+                          <Lock className="w-2.5 h-2.5" />
+                          Sparad privat
                         </motion.p>
                       )}
                     </AnimatePresence>
