@@ -44,29 +44,6 @@ function mergeUserCompletions(
   return result;
 }
 
-function mergeSessions(local: SessionData | null | undefined, remote: SessionData | null | undefined): SessionData | null {
-  if (!local && !remote) return null;
-  if (!local) return remote ?? null;
-  if (!remote) return local ?? null;
-
-  // Different card sessions — remote wins (partner started something new)
-  if (local.cardId !== remote.cardId) return remote;
-
-  const localStart = local.startedAt instanceof Date ? local.startedAt : new Date(local.startedAt);
-  const remoteStart = remote.startedAt instanceof Date ? remote.startedAt : new Date(remote.startedAt);
-  const localActivity = local.lastActivityAt instanceof Date ? local.lastActivityAt : new Date(local.lastActivityAt);
-  const remoteActivity = remote.lastActivityAt instanceof Date ? remote.lastActivityAt : new Date(remote.lastActivityAt);
-
-  return {
-    categoryId: remote.categoryId,
-    cardId: remote.cardId,
-    currentStepIndex: Math.max(local.currentStepIndex, remote.currentStepIndex),
-    userCompletions: mergeUserCompletions(local.userCompletions, remote.userCompletions),
-    startedAt: localStart < remoteStart ? localStart : remoteStart,
-    lastActivityAt: localActivity > remoteActivity ? localActivity : remoteActivity,
-  };
-}
-
 function sortCardIds(ids: string[]): string[] {
   return [...ids].sort((a, b) =>
     a.localeCompare(b, undefined, { numeric: true, sensitivity: 'base' })
