@@ -65,7 +65,7 @@ export default function Home() {
   const { settings, updateSettings } = useSiteSettings();
   const { user } = useAuth();
   const { space, displayMemberCount, userRole } = useCoupleSpace();
-  const { sendProposal: sendDbProposal } = useProposals();
+  const { incomingProposals, sendProposal: sendDbProposal } = useProposals();
   const [isEditingHero, setIsEditingHero] = useState(false);
   const [editTitle, setEditTitle] = useState(settings.heroTitle);
   const [editSubtitle, setEditSubtitle] = useState(settings.heroSubtitle);
@@ -390,6 +390,27 @@ export default function Home() {
         )}
       </AnimatePresence>
 
+      {/* Compact proposal indicator */}
+      {incomingProposals.length > 0 && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.15 }}
+          className="px-6 mb-6"
+        >
+          <div className="rounded-2xl border border-border bg-card/50 px-5 py-4 flex items-center justify-between">
+            <p className="text-sm text-muted-foreground">Ni har ett föreslaget samtal</p>
+            <Button
+              variant="ghost"
+              size="sm"
+              className="text-muted-foreground hover:text-foreground text-xs"
+              onClick={() => navigate('/shared')}
+            >
+              Öppna i Vårt utrymme
+            </Button>
+          </div>
+        </motion.div>
+      )}
 
       {/* Journey continue module */}
       {(() => {
