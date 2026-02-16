@@ -1,6 +1,4 @@
 import { useEffect, useMemo, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { toast } from 'sonner';
 import { useAuth } from '@/contexts/AuthContext';
 import { useProposals } from '@/hooks/useProposals';
 
@@ -12,7 +10,7 @@ import { useProposals } from '@/hooks/useProposals';
 export default function ProposalAcceptanceWatcher() {
   const { user } = useAuth();
   const { proposals, activateSession } = useProposals();
-  const navigate = useNavigate();
+  
 
   const ownPendingIds = useMemo(() => {
     return new Set(
@@ -37,25 +35,15 @@ export default function ProposalAcceptanceWatcher() {
       if (!ownPendingIds.has(prevId)) {
         const proposal = proposals.find(p => p.id === prevId && p.status === 'accepted');
         if (proposal) {
-          // Activate session via the secure edge function
-          activateSession(proposal.id).then((result) => {
-            if (result.success) {
-              toast('Din partner accepterade förslaget!', {
-                description: 'Samtalet är redo att börja',
-                duration: 5000,
-                action: {
-                  label: 'Öppna',
-                  onClick: () => navigate(`/card/${proposal.card_id}`),
-                },
-              });
-            }
-          });
+          // Activate session silently — the proposer already navigates
+          // from their own UI context. No toast to avoid competing surfaces.
+          activateSession(proposal.id);
         }
       }
     }
 
     prevOwnPendingIdsRef.current = ownPendingIds;
-  }, [ownPendingIds, proposals, activateSession, navigate]);
+  }, [ownPendingIds, proposals, activateSession]);
 
   return null;
 }
