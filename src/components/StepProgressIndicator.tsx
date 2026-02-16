@@ -29,14 +29,14 @@ export default function StepProgressIndicator({
                 className={cn(
                   'text-[10px] tracking-wide transition-all duration-150',
                   isCurrent
-                    ? 'text-muted-foreground/40 font-normal'
-                    : 'text-muted-foreground/20'
+                    ? 'text-slate-800 font-normal'
+                    : 'text-slate-500 hover:text-slate-800'
                 )}
               >
                 {step.label}
               </span>
               {isCurrent && (
-                <span className="text-[8px] text-muted-foreground/25 mt-0.5 leading-tight">
+                <span className="text-[8px] text-slate-500 mt-0.5 leading-tight">
                   {step.hint}
                 </span>
               )}
@@ -44,7 +44,7 @@ export default function StepProgressIndicator({
 
             {/* Soft separator dot */}
             {index < STEPS.length - 1 && (
-              <span className="text-muted-foreground/15 text-[6px]">·</span>
+              <span className="text-slate-400 text-[6px]">·</span>
             )}
           </div>
         );
