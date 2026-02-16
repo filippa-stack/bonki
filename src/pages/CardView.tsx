@@ -440,8 +440,8 @@ export default function CardView() {
           </motion.p>
         )}
 
-        {/* Propose banner — non-blocking, lets user browse freely */}
-        {showProposeBanner && (
+        {/* Propose banner — non-blocking, only when paired */}
+        {showProposeBanner && isPaired && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
