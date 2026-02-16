@@ -69,7 +69,7 @@ export default function PartnerConnectedBanner() {
   if (!visible) return null;
 
   return (
-    <p className="text-xs text-muted-foreground/50 text-center pt-2 pb-4">
+    <p className="text-[13px] text-muted-foreground/50 text-center mt-[12px] mb-[16px]">
       🤍 Ni är nu ihopkopplade.
     </p>
   );

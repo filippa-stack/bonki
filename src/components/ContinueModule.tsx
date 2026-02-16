@@ -60,14 +60,14 @@ export default function ContinueModule({
         }}
       >
 
-        <p className="font-serif text-lg" style={textStyle}>
+        <p className="font-serif text-lg mb-[8px]" style={textStyle}>
           {cardTitle}
         </p>
-        <p className="text-xs mb-3" style={mutedTextStyle}>
+        <p className="text-xs mb-[6px]" style={mutedTextStyle}>
           {categoryTitle}{timeCue ? ` · ${timeCue}` : ''}
         </p>
 
-        <div className="flex flex-col sm:flex-row gap-2">
+        <div className="flex flex-col sm:flex-row gap-2 mt-[12px]">
           <Button
             onClick={onContinue}
             className="gap-2 bg-[#497575] text-white hover:bg-[#365757]"

@@ -64,7 +64,7 @@ export default function RecentSharedReflection() {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.15, delay: 0.15 }}
-      className="px-6 mb-6"
+      className="px-6 mb-6 mt-[16px]"
     >
       <p className="text-xs text-muted-foreground uppercase tracking-wider mb-3 flex items-center gap-2">
         <Heart className="w-3 h-3" />
@@ -74,11 +74,11 @@ export default function RecentSharedReflection() {
         className="p-3 rounded-xl border border-border bg-card cursor-pointer hover:border-primary/20 transition-colors"
         onClick={() => navigate('/shared')}
       >
-        <p className="text-xs text-foreground/80 whitespace-pre-wrap leading-relaxed">
+        <p className="text-[13px] text-foreground/80 whitespace-pre-wrap leading-relaxed">
           {truncatedContent}
         </p>
         <div className="flex items-center justify-between mt-2">
-          <p className="text-[11px] text-muted-foreground/60">
+          <p className="text-[10px] text-muted-foreground/60">
             {[
               category?.title && card?.title ? `${category.title} · ${card.title}` : null,
               note.author_label,
