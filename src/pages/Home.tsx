@@ -64,7 +64,7 @@ export default function Home() {
   } = useApp();
   const { settings, updateSettings } = useSiteSettings();
   const { user } = useAuth();
-  const { space, displayMemberCount, userRole } = useCoupleSpace();
+  const { space, displayMemberCount, userRole, fetchInviteInfo } = useCoupleSpace();
   const { incomingProposals, sendProposal: sendDbProposal } = useProposals();
   const [isEditingHero, setIsEditingHero] = useState(false);
   const [editTitle, setEditTitle] = useState(settings.heroTitle);
@@ -553,8 +553,7 @@ export default function Home() {
           className="px-6 pb-6"
         >
           <AttachPartner
-            inviteCode={space.invite_code}
-            inviteToken={space.invite_token}
+            fetchInviteInfo={fetchInviteInfo}
             partnerName={userRole === 'partner_b' ? space.partner_b_name : space.partner_a_name}
             onUpdateName={async (name) => {
               const role = userRole === 'partner_b' ? 'partner_b_name' : 'partner_a_name';

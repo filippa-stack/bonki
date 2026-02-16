@@ -47,6 +47,13 @@ export type Database = {
             referencedRelation: "couple_spaces"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "couple_members_couple_space_id_fkey"
+            columns: ["couple_space_id"]
+            isOneToOne: false
+            referencedRelation: "couple_spaces_safe"
+            referencedColumns: ["id"]
+          },
         ]
       }
       couple_progress: {
@@ -83,6 +90,13 @@ export type Database = {
             columns: ["couple_space_id"]
             isOneToOne: true
             referencedRelation: "couple_spaces"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "couple_progress_couple_space_id_fkey"
+            columns: ["couple_space_id"]
+            isOneToOne: true
+            referencedRelation: "couple_spaces_safe"
             referencedColumns: ["id"]
           },
         ]
@@ -168,6 +182,13 @@ export type Database = {
             referencedRelation: "couple_spaces"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "prompt_notes_couple_space_id_fkey"
+            columns: ["couple_space_id"]
+            isOneToOne: false
+            referencedRelation: "couple_spaces_safe"
+            referencedColumns: ["id"]
+          },
         ]
       }
       redundant_purchases: {
@@ -240,6 +261,13 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
+            foreignKeyName: "reflection_responses_couple_space_id_fkey"
+            columns: ["couple_space_id"]
+            isOneToOne: false
+            referencedRelation: "couple_spaces_safe"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "reflection_responses_reflection_id_fkey"
             columns: ["reflection_id"]
             isOneToOne: false
@@ -288,6 +316,13 @@ export type Database = {
             columns: ["couple_space_id"]
             isOneToOne: false
             referencedRelation: "couple_spaces"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "topic_proposals_couple_space_id_fkey"
+            columns: ["couple_space_id"]
+            isOneToOne: false
+            referencedRelation: "couple_spaces_safe"
             referencedColumns: ["id"]
           },
         ]
@@ -360,9 +395,36 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      couple_spaces_safe: {
+        Row: {
+          created_at: string | null
+          id: string | null
+          partner_a_name: string | null
+          partner_b_name: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string | null
+          partner_a_name?: string | null
+          partner_b_name?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string | null
+          partner_a_name?: string | null
+          partner_b_name?: string | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
+      get_own_invite_info: {
+        Args: never
+        Returns: {
+          invite_code: string
+          invite_token: string
+        }[]
+      }
       get_user_couple_space_id: { Args: { _user_id: string }; Returns: string }
       is_couple_member: {
         Args: { _space_id: string; _user_id: string }

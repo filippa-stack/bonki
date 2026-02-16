@@ -46,7 +46,7 @@ export default function SharedSummary() {
   const navigate = useNavigate();
   const { categories, backgroundColor, getCardById, getCategoryById, startSession, journeyState, cards, getTakeawayShared } = useApp();
   const { user } = useAuth();
-  const { space, displayMemberCount, userRole } = useCoupleSpace();
+  const { space, displayMemberCount, userRole, fetchInviteInfo } = useCoupleSpace();
   const { incomingProposals, savedProposals, updateProposalStatus } = useProposals();
 
   const [searchQuery, setSearchQuery] = useState('');
@@ -296,8 +296,7 @@ export default function SharedSummary() {
             className="mb-12 text-left"
           >
             <AttachPartner
-              inviteCode={space.invite_code}
-              inviteToken={space.invite_token}
+              fetchInviteInfo={fetchInviteInfo}
               partnerName={userRole === 'partner_b' ? space.partner_b_name : space.partner_a_name}
               onUpdateName={async (name) => {
                 const role = userRole === 'partner_b' ? 'partner_b_name' : 'partner_a_name';

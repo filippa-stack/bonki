@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'framer-motion';
 import { supabase } from '@/integrations/supabase/client';
@@ -10,10 +10,13 @@ import { Label } from '@/components/ui/label';
 import { toast } from 'sonner';
 import { Link2, KeyRound, Copy, Check, Loader2, ChevronDown, ChevronUp } from 'lucide-react';
 
+interface InviteInfo {
+  invite_code: string;
+  invite_token: string;
+}
+
 interface AttachPartnerProps {
-  /** Current user's space invite code (to share) */
-  inviteCode: string;
-  inviteToken: string;
+  fetchInviteInfo: () => Promise<InviteInfo | null>;
   partnerName: string | null;
   onUpdateName: (name: string) => void;
   /** Called after successfully joining another space */
@@ -35,8 +38,7 @@ function extractTokenFromLink(input: string): string | null {
 }
 
 export default function AttachPartner({
-  inviteCode,
-  inviteToken,
+  fetchInviteInfo,
   partnerName,
   onUpdateName,
   onJoinedSpace,
@@ -52,10 +54,24 @@ export default function AttachPartner({
   const [attempts, setAttempts] = useState(0);
   const [inviteStep, setInviteStep] = useState<InviteStep>('default');
   const [inviteMessage, setInviteMessage] = useState('');
+  const [inviteInfo, setInviteInfo] = useState<InviteInfo | null>(null);
+  const [loadingInvite, setLoadingInvite] = useState(false);
 
-  const inviteLink = `${window.location.origin}/join?token=${inviteToken}`;
+  // Lazy-load invite info when expanded
+  useEffect(() => {
+    if (expanded && !inviteInfo && !loadingInvite) {
+      setLoadingInvite(true);
+      fetchInviteInfo().then((info) => {
+        setInviteInfo(info);
+        setLoadingInvite(false);
+      });
+    }
+  }, [expanded, inviteInfo, loadingInvite, fetchInviteInfo]);
+
+  const inviteLink = inviteInfo ? `${window.location.origin}/join?token=${inviteInfo.invite_token}` : '';
 
   const handleCopy = async () => {
+    if (!inviteInfo) return;
     try {
       const textToCopy = inviteMessage.trim()
         ? `${inviteMessage.trim()}\n\n${inviteLink}`
@@ -92,40 +108,32 @@ export default function AttachPartner({
     setAttempts((a) => a + 1);
 
     try {
+      const { data: sessionData } = await supabase.auth.getSession();
+      const accessToken = sessionData?.session?.access_token;
+      if (!accessToken) throw new Error('No auth session');
+
       const trimmed = joinInput.trim();
       const body: Record<string, string> = {};
 
-      // Detect if input is a link (contains token=) or a short code
       const extractedToken = extractTokenFromLink(trimmed);
       if (extractedToken) {
         body.invite_token = extractedToken;
       } else if (trimmed.startsWith('http')) {
         // URL without token param — invalid
         setJoinState('error');
-        setJoinError(t('join.error_invalid_invite', 'Inbjudningslänken är ogiltig.'));
+        setJoinError(t('attach.join_error_invalid', 'Ogiltigt format'));
         return;
       } else {
         // Treat as invite code
         body.invite_code = trimmed.toUpperCase();
       }
 
-      const res = await supabase.functions.invoke('join-couple-space', { body });
+      const res = await supabase.functions.invoke('join-couple-space', {
+        headers: { Authorization: `Bearer ${accessToken}` },
+        body,
+      });
 
-      if (res.error) {
-        const parsed = typeof res.error === 'string' ? { error: res.error } : res.error;
-        setJoinState('error');
-        setJoinError(
-          (parsed as any)?.error === 'space_full'
-            ? t('join.error_space_full', 'Det utrymmet har redan två medlemmar.')
-            : (parsed as any)?.error === 'invalid_invite'
-              ? t('join.error_invalid_invite', 'Ogiltig kod eller länk.')
-              : t('join.error_network', 'Något gick fel. Försök igen.')
-        );
-        return;
-      }
-
-      const data = res.data as any;
-      if (data?.success) {
+      if (res.data?.success) {
         setJoinState('success');
         toast.success(t('join.success_title', 'Ni är anslutna'));
         onJoinedSpace?.();
@@ -172,7 +180,11 @@ export default function AttachPartner({
             className="overflow-hidden"
           >
             <div className="px-4 pb-5 space-y-5">
-              {inviteStep === 'message' ? (
+              {loadingInvite ? (
+                <div className="flex justify-center py-4">
+                  <Loader2 className="w-4 h-4 animate-spin text-muted-foreground" />
+                </div>
+              ) : inviteStep === 'message' ? (
                 /* ─── Optional message before sending ─── */
                 <motion.div
                   initial={{ opacity: 0 }}
@@ -226,13 +238,14 @@ export default function AttachPartner({
                 </p>
                 <div className="flex items-center gap-2">
                   <div className="flex-1 bg-muted/30 rounded-lg px-3 py-2 text-center font-mono text-sm tracking-widest text-foreground">
-                    {inviteCode}
+                    {inviteInfo?.invite_code ?? '...'}
                   </div>
                   <Button
                     variant="outline"
                     size="sm"
                     className="shrink-0"
                     onClick={() => setInviteStep('message')}
+                    disabled={!inviteInfo}
                   >
                     {copied ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
                   </Button>

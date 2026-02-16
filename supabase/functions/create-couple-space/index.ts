@@ -77,10 +77,10 @@ Deno.serve(async (req) => {
     }
 
     if (existing) {
-      // Already has a space — return it
+      // Already has a space — return it (without sensitive invite fields)
       const { data: spaceData, error: spaceErr } = await adminClient
         .from("couple_spaces")
-        .select("*")
+        .select("id, partner_a_name, partner_b_name, created_at")
         .eq("id", existing.couple_space_id)
         .single();
 
@@ -134,10 +134,10 @@ Deno.serve(async (req) => {
       });
     }
 
-    // Read back the created space
+    // Read back the created space (without sensitive invite fields)
     const { data: newSpace, error: readErr } = await adminClient
       .from("couple_spaces")
-      .select("*")
+      .select("id, partner_a_name, partner_b_name, created_at")
       .eq("id", spaceId)
       .single();
 

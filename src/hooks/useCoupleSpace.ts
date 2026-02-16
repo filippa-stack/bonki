@@ -4,11 +4,14 @@ import { supabase } from '@/integrations/supabase/client';
 
 interface CoupleSpaceData {
   id: string;
-  invite_code: string;
-  invite_token: string;
   partner_a_name: string | null;
   partner_b_name: string | null;
   created_at: string;
+}
+
+interface InviteInfo {
+  invite_code: string;
+  invite_token: string;
 }
 
 interface CoupleSpaceState {
@@ -21,6 +24,8 @@ interface CoupleSpaceState {
   displayMemberCount: number;
   userRole: string | null;
   refreshSpace: () => Promise<void>;
+  /** Fetch invite info on demand — never stored in space object */
+  fetchInviteInfo: () => Promise<InviteInfo | null>;
 }
 
 export function useCoupleSpace(): CoupleSpaceState {
@@ -52,9 +57,8 @@ export function useCoupleSpace(): CoupleSpaceState {
       const membership = memberships && memberships.length > 0 ? memberships[0] : null;
 
       if (membership) {
-        // Fetch the space
         const { data: spaceData, error: spaceError } = await supabase
-          .from('couple_spaces')
+          .from('couple_spaces_safe' as any)
           .select('*')
           .eq('id', membership.couple_space_id)
           .maybeSingle();
@@ -67,7 +71,7 @@ export function useCoupleSpace(): CoupleSpaceState {
           .select('id', { count: 'exact', head: true })
           .eq('couple_space_id', membership.couple_space_id);
 
-        setSpace(spaceData as CoupleSpaceData);
+        setSpace(spaceData as unknown as CoupleSpaceData);
         setMemberCount(count ?? 1);
         setUserRole(membership.role);
       } else {
@@ -94,6 +98,19 @@ export function useCoupleSpace(): CoupleSpaceState {
       setLoading(false);
     }
   }, [user]);
+
+  /** Fetch invite info on demand via secure RPC — never cached in state */
+  const fetchInviteInfo = useCallback(async (): Promise<InviteInfo | null> => {
+    try {
+      const { data, error } = await supabase.rpc('get_own_invite_info' as any);
+      if (error) throw error;
+      const rows = data as unknown as InviteInfo[];
+      return rows && rows.length > 0 ? rows[0] : null;
+    } catch (err) {
+      console.error('Failed to fetch invite info:', err);
+      return null;
+    }
+  }, []);
 
   useEffect(() => {
     fetchSpace();
@@ -157,5 +174,6 @@ export function useCoupleSpace(): CoupleSpaceState {
     displayMemberCount,
     userRole,
     refreshSpace: fetchSpace,
+    fetchInviteInfo,
   };
 }
