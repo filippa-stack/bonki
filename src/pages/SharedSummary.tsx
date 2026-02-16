@@ -47,7 +47,7 @@ export default function SharedSummary() {
   const { categories, backgroundColor, getCardById, getCategoryById, startSession, journeyState, cards, getTakeawayShared } = useApp();
   const { user } = useAuth();
   const { space, displayMemberCount, userRole, fetchInviteInfo } = useCoupleSpace();
-  const { incomingProposals, savedProposals, updateProposalStatus } = useProposals();
+  const { incomingProposals, ownPendingProposals, savedProposals, updateProposalStatus } = useProposals();
 
   const [searchQuery, setSearchQuery] = useState('');
   const [categoryFilter, setCategoryFilter] = useState<string>('all');
@@ -313,7 +313,7 @@ export default function SharedSummary() {
         )}
 
         {/* ─── Proposals section ─── */}
-        {(incomingProposals.length > 0 || savedProposals.length > 0 || displayMemberCount >= 2) && (
+        {(incomingProposals.length > 0 || ownPendingProposals.length > 0 || savedProposals.length > 0 || displayMemberCount >= 2) && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -351,6 +351,42 @@ export default function SharedSummary() {
                           await updateProposalStatus(proposal.id, 'saved_for_later');
                         }}
                       />
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+
+            {/* Own pending proposals — waiting for partner */}
+            {ownPendingProposals.length > 0 && (
+              <div className="mb-6">
+                <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-4 text-center">
+                  Väntar på svar
+                </p>
+                <div className="space-y-2 text-left">
+                  {ownPendingProposals.map((proposal) => {
+                    const proposalCard = getCardById(proposal.card_id);
+                    const proposalCategory = getCategoryById(proposal.category_id);
+                    if (!proposalCard || !proposalCategory) return null;
+
+                    return (
+                      <div
+                        key={proposal.id}
+                        className="rounded-xl border border-border/30 bg-card/40 px-5 py-4"
+                      >
+                        <div className="flex items-start justify-between gap-3">
+                          <div>
+                            <p className="font-serif text-sm text-foreground">{proposalCard.title}</p>
+                            <p className="text-[11px] text-muted-foreground/60 mt-0.5">{proposalCategory.title}</p>
+                          </div>
+                          <span className="shrink-0 inline-flex items-center px-2 py-0.5 rounded-full text-[10px] bg-muted/50 text-muted-foreground">
+                            Föreslagen
+                          </span>
+                        </div>
+                        {proposal.message && (
+                          <p className="text-xs text-muted-foreground/50 italic mt-2 leading-relaxed">"{proposal.message}"</p>
+                        )}
+                      </div>
                     );
                   })}
                 </div>
