@@ -396,7 +396,7 @@ export default function Home() {
                 transition={{ duration: 0.15 }}
                 className="px-6 mb-10"
               >
-                <p className="text-xs text-muted-foreground/50 uppercase tracking-wide mb-4">Pågående samtal</p>
+                <p className="text-xs text-muted-foreground/50 uppercase tracking-wide mb-4 text-center">Pågående samtal</p>
                 <div className="text-center space-y-2 mb-6">
                   <p className="font-serif text-foreground">{activeCard.title}</p>
                   <p className="text-xs text-muted-foreground">{activeCategory.title}</p>
@@ -589,7 +589,7 @@ export default function Home() {
       {/* Categories — solo: demoted preview with label */}
       {!isProposalMode && isSoloMode && (
         <div id="category-section" className="px-6 pb-12 mt-4">
-          <p className="text-xs text-muted-foreground/40 uppercase tracking-wide mb-4">
+          <p className="text-xs text-muted-foreground/40 uppercase tracking-wide mb-4 text-center">
             Tillgängligt när ni är två
           </p>
           <div className="space-y-4 opacity-50 pointer-events-none">
