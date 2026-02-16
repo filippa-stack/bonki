@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronDown, Share2, X, Star, Heart, ArrowRight, Home, Lock, Users, Link2 } from 'lucide-react';
+import { ChevronDown, Share2, X, Star, Heart, ArrowRight, Home, Lock, Users, Link2, CheckCircle2 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Prompt } from '@/types';
@@ -30,6 +30,7 @@ interface PromptItemProps {
   onToggleHighlight: (promptId: string) => void;
   autoFocusNote?: boolean;
   disableShare?: boolean;
+  isCompleted?: boolean;
 }
 
 export default function PromptItem({
@@ -54,6 +55,7 @@ export default function PromptItem({
   onToggleHighlight,
   autoFocusNote,
   disableShare,
+  isCompleted = false,
 }: PromptItemProps) {
   const { t } = useTranslation();
   const { settings } = useSiteSettings();
@@ -131,10 +133,14 @@ export default function PromptItem({
           className="px-6 py-3 cursor-pointer flex items-center justify-between bg-card/50 border border-[hsl(36_30%_82%)] rounded-2xl shadow-sm"
           onClick={toggleExpanded}
         >
-          <p className="text-xs text-primary tracking-wide font-medium">
+          <p className={`text-xs tracking-wide font-medium ${isCompleted ? 'text-slate-400' : 'text-primary'}`}>
             {label}
           </p>
-          <ChevronDown className="w-3.5 h-3.5 text-primary/60" />
+          {isCompleted ? (
+            <CheckCircle2 className="w-3.5 h-3.5 text-[#497575]" />
+          ) : (
+            <ChevronDown className="w-3.5 h-3.5 text-primary/60" />
+          )}
         </div>
       ) : (
         <>
