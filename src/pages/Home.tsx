@@ -132,11 +132,23 @@ export default function Home() {
   // Get session details for resume dialog
   const sessionCard = currentSession ? getCardById(currentSession.cardId) : null;
   const sessionCategory = currentSession ? getCategoryById(currentSession.categoryId) : null;
-  const sessionStepName = (() => {
-    if (!currentSession) return '';
-    const mySteps: number[] = user?.id && currentSession.cardId && journeyState?.sessionProgress?.[currentSession.cardId]?.perUser?.[user.id]?.completedSteps || [];
-    const { effectiveStep } = getCatchUpState(mySteps, currentSession.currentStepIndex, true);
-    return STEP_LABELS[effectiveStep] || '';
+  const sessionCatchUp = (() => {
+    if (!currentSession || !user?.id) return null;
+    const mySteps: number[] = journeyState?.sessionProgress?.[currentSession.cardId]?.perUser?.[user.id]?.completedSteps || [];
+    return getCatchUpState(mySteps, currentSession.currentStepIndex, true);
+  })();
+  const sessionStepName = sessionCatchUp ? (STEP_LABELS[sessionCatchUp.effectiveStep] || '') : '';
+
+  // Only show ResumeSessionDialog when user is truly mid-step (not at a boundary / waiting)
+  const isMidCard = (() => {
+    if (!sessionCatchUp) return false;
+    const { effectiveStep, myFirstUncompletedStep } = sessionCatchUp;
+    // All steps done → not mid-card
+    if (effectiveStep >= 4) return false;
+    // User completed the current shared step (waiting for partner or at boundary) → not mid-card
+    if (myFirstUncompletedStep > (currentSession?.currentStepIndex ?? 0)) return false;
+    // Otherwise user is genuinely mid-step
+    return true;
   })();
 
   // Dismiss-once logic: keyed by cardId + stepIndex so it resets when session changes
@@ -434,7 +446,7 @@ export default function Home() {
       )}
 
       {/* Journey continue module — hidden when higher-priority resume prompts are active */}
-      {!showReturnOverlay && !(hasActiveSession && !!sessionCard && !!sessionCategory) && (() => {
+      {!showReturnOverlay && !(hasActiveSession && isMidCard && !!sessionCard && !!sessionCategory) && (() => {
         const lastCompletedId = journeyState?.lastCompletedCardId;
         const lastCompletedCard = lastCompletedId ? getCardById(lastCompletedId) : null;
         const lastCompletedCategory = lastCompletedCard ? getCategoryById(lastCompletedCard.categoryId) : null;
@@ -797,7 +809,7 @@ export default function Home() {
 
       {/* Resume session dialog */}
       <ResumeSessionDialog
-        isOpen={hasActiveSession && !!sessionCard && !!sessionCategory && !showReturnOverlay && !resumeDismissed}
+        isOpen={hasActiveSession && !!sessionCard && !!sessionCategory && !showReturnOverlay && !resumeDismissed && isMidCard}
         categoryName={sessionCategory?.title || ''}
         cardTitle={sessionCard?.title || ''}
         stepName={sessionStepName}
