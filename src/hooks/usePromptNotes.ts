@@ -31,6 +31,8 @@ const AUTOSAVE_DELAY = 800; // ms
 export function usePromptNotes(
   cardId: string,
   sectionId: string,
+  /** When true, skip fetching partner shared notes entirely (active session context) */
+  skipShared = false,
 ): UsePromptNotesReturn {
   const { user } = useAuth();
   const { space, userRole, memberCount } = useCoupleSpace();
@@ -83,8 +85,9 @@ export function usePromptNotes(
   }, [user, space, cardId, sectionId]);
 
   // Also fetch shared notes from partner + subscribe to realtime changes
+  // Skip entirely during active session context to prevent cross-surface data leakage
   useEffect(() => {
-    if (!user || !space) return;
+    if (!user || !space || skipShared) return;
 
     const applyPartnerNotes = (data: any[]) => {
       setNotes(prev => {
@@ -160,7 +163,7 @@ export function usePromptNotes(
     return () => {
       supabase.removeChannel(channel);
     };
-  }, [user, space, cardId, sectionId]);
+  }, [user, space, cardId, sectionId, skipShared]);
 
   const upsertNote = useCallback(async (
     promptId: string,
