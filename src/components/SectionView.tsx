@@ -16,6 +16,8 @@ interface SectionViewProps {
   isRevisitMode?: boolean;
   initialFocusNoteIndex?: number | null;
   focusPromptIndex?: number | null;
+  /** When true, sharing notes with partner is disabled (no mutual agreement yet) */
+  disableShare?: boolean;
 }
 
 const normalizePrompt = (prompt: string | Prompt): Prompt => {
@@ -27,7 +29,7 @@ const normalizePrompt = (prompt: string | Prompt): Prompt => {
 
 const ACCORDION_TYPES = ['opening', 'reflective'];
 
-const SectionView = forwardRef<SectionViewHandle, SectionViewProps>(function SectionView({ section, card, isRevisitMode, initialFocusNoteIndex, focusPromptIndex }, ref) {
+const SectionView = forwardRef<SectionViewHandle, SectionViewProps>(function SectionView({ section, card, isRevisitMode, initialFocusNoteIndex, focusPromptIndex, disableShare }, ref) {
   const { updateCardSection } = useApp();
 
   const {
@@ -190,7 +192,7 @@ const SectionView = forwardRef<SectionViewHandle, SectionViewProps>(function Sec
                   onUnshareNote={unshareNote}
                   onToggleHighlight={toggleHighlight}
                   autoFocusNote={focusNoteIndex === index}
-                  disableShare={isRevisitMode}
+                  disableShare={isRevisitMode || disableShare}
                   isCompleted={index === 0} /* TODO: remove mock — temporary for design review */
                 />
               </div>

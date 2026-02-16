@@ -16,7 +16,7 @@ import ReviewDrawer from '@/components/ReviewDrawer';
 import ConflictingSessionModal from '@/components/ConflictingSessionModal';
 import ProposalSheet from '@/components/ProposalSheet';
 import { Button } from '@/components/ui/button';
-import { ArrowRight, Home, RotateCcw, BookOpen, Check } from 'lucide-react';
+import { ArrowRight, Home, RotateCcw, BookOpen, Check, Send } from 'lucide-react';
 import CardTakeaways from '@/components/CardTakeaways';
 
 import { useProposals, Proposal } from '@/hooks/useProposals';
@@ -171,8 +171,8 @@ export default function CardView() {
   // Allow session if: solo, both have progress, has accepted proposal, or revisit
   const canStartSharedSession = !isPaired || hasMutualProgress || hasAcceptedProposal || isRevisitMode;
   const [autoProposalSent, setAutoProposalSent] = useState(false);
-  // Show a visible gate when paired and session can't start yet
-  const showProposalGate = isPaired && !canStartSharedSession && !isRevisitMode && !showCompletion;
+  // Non-blocking: show a propose banner instead of blocking the user
+  const showProposeBanner = isPaired && !canStartSharedSession && !isRevisitMode && !showCompletion && !hasPendingProposalForCard;
   // ─── Guard: if there's an active session for a DIFFERENT card, show modal instead of redirect ───
   const hasConflictingSession = !!(currentSession && currentSession.cardId !== cardId);
   const conflictingCard = hasConflictingSession ? getCardById(currentSession!.cardId) : undefined;
@@ -221,84 +221,7 @@ export default function CardView() {
     }
   }, [isActiveSession, isRevisitMode, showCompletion, card, category, startSession, canStartSharedSession]);
 
-  // ─── Proposal gate screen: paired user must propose before entering ───
-  if (showProposalGate && card && category) {
-    return (
-      <div className="min-h-screen page-bg">
-        <Header
-          title={category.title}
-          showBack
-          backTo={category ? `/category/${category.id}` : '/'}
-        />
-        <div className="px-6 pt-20 pb-16">
-          <motion.div
-            initial={{ opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="text-center max-w-md mx-auto space-y-4"
-          >
-            <h2 className="text-xl font-serif text-foreground">{card.title}</h2>
-            {card.subtitle && (
-              <p className="text-sm text-muted-foreground leading-relaxed">{card.subtitle}</p>
-            )}
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.15, duration: 0.4 }}
-            className="max-w-md mx-auto mt-10 space-y-4 text-center"
-          >
-            {hasPendingProposalForCard ? (
-              <div className="rounded-2xl border border-border bg-card/50 px-5 py-6 space-y-2">
-                <p className="text-sm text-foreground font-serif">Förslag skickat</p>
-                <p className="text-xs text-muted-foreground leading-relaxed">
-                  Väntar på att din partner ska svara. De ser förslaget nästa gång de öppnar appen.
-                </p>
-              </div>
-            ) : (
-              <div className="rounded-2xl border border-border bg-card/50 px-5 py-6 space-y-4">
-                <p className="text-sm text-muted-foreground leading-relaxed">
-                  Ni väljer samtalsämne tillsammans. Skicka ett förslag till din partner.
-                </p>
-                <Button
-                  onClick={() => setShowProposalSheet(true)}
-                  className="gap-2"
-                >
-                  Skicka förslag
-                </Button>
-              </div>
-            )}
-
-            <Button
-              variant="ghost"
-              size="sm"
-              className="text-muted-foreground"
-              onClick={() => navigate(category ? `/category/${category.id}` : '/')}
-            >
-              Tillbaka
-            </Button>
-          </motion.div>
-        </div>
-
-        <ProposalSheet
-          open={showProposalSheet}
-          onClose={() => setShowProposalSheet(false)}
-          cardTitle={card.title}
-          categoryTitle={category.title}
-          onSend={async (msg) => {
-            const result = await sendProposal(card.id, category.id, msg);
-            if (result.ok) {
-              setAutoProposalSent(true);
-              toast(t('topic_proposal.proposed_toast', 'Förslag skickat! Din partner ser det nästa gång hen öppnar appen.'), { duration: 4000 });
-            } else {
-              toast.error('Kunde inte skicka förslaget. Försök igen.');
-            }
-          }}
-        />
-      </div>
-    );
-  }
+  // Proposal gate removed — users can browse freely. Propose banner shown inline instead.
 
   if (!card) {
     return (
@@ -517,8 +440,29 @@ export default function CardView() {
           </motion.p>
         )}
 
-        {/* Proposal pending banner — browsing allowed, shared session not yet started */}
-        {!canStartSharedSession && isPaired && (autoProposalSent || hasPendingProposalForCard) && (
+        {/* Propose banner — non-blocking, lets user browse freely */}
+        {showProposeBanner && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.3 }}
+            className="mt-6 rounded-xl border border-border bg-card/60 px-5 py-4 text-center space-y-3"
+          >
+            <p className="text-sm text-muted-foreground leading-relaxed">
+              Vill ni utforska det här tillsammans? Föreslå det för din partner.
+            </p>
+            <Button
+              size="sm"
+              onClick={() => setShowProposalSheet(true)}
+              className="gap-2"
+            >
+              <Send className="w-3.5 h-3.5" />
+              Föreslå det här samtalet
+            </Button>
+          </motion.div>
+        )}
+        {/* Pending proposal banner */}
+        {!canStartSharedSession && isPaired && hasPendingProposalForCard && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -526,10 +470,10 @@ export default function CardView() {
             className="mt-6 rounded-xl border border-border bg-card/60 px-5 py-4 text-center space-y-1"
           >
             <p className="text-sm font-serif text-foreground">
-              {t('topic_proposal.your_proposal', 'Du har föreslagit det här samtalet. Det börjar när ni båda är redo.')}
+              Förslag skickat
             </p>
             <p className="text-xs text-muted-foreground">
-              Du kan läsa igenom frågorna under tiden.
+              Din partner ser det nästa gång hen öppnar appen. Du kan läsa igenom frågorna under tiden.
             </p>
           </motion.div>
         )}
@@ -547,7 +491,7 @@ export default function CardView() {
               exit={{ opacity: 0 }}
               transition={{ duration: 0.15 }}
             >
-              <SectionView ref={sectionViewRef} section={currentSection} card={card} isRevisitMode={isRevisitMode} initialFocusNoteIndex={isRevisitMode ? initialFocusNote : null} focusPromptIndex={isRevisitMode ? initialFocusNote : null} />
+              <SectionView ref={sectionViewRef} section={currentSection} card={card} isRevisitMode={isRevisitMode} initialFocusNoteIndex={isRevisitMode ? initialFocusNote : null} focusPromptIndex={isRevisitMode ? initialFocusNote : null} disableShare={!canStartSharedSession} />
 
               {/* Takeaways removed from exercise step — now rendered on completion screen */}
 
@@ -691,6 +635,7 @@ export default function CardView() {
             if (result.ok) {
               setProposalSent(true);
               setShowProposalSheet(false);
+              toast(t('topic_proposal.proposed_toast', 'Förslag skickat! Din partner ser det nästa gång hen öppnar appen.'), { duration: 4000 });
               if (proposalTimer.current) clearTimeout(proposalTimer.current);
               proposalTimer.current = setTimeout(() => setProposalSent(false), 2000);
             } else {
