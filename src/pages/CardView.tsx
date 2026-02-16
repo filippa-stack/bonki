@@ -457,7 +457,7 @@ export default function CardView() {
               Förslag skickat
             </p>
             <p className="text-xs text-muted-foreground">
-              Din partner ser det nästa gång hen öppnar appen. Du kan läsa igenom frågorna under tiden.
+              Ni börjar när ni båda är redo.
             </p>
           </motion.div>
         )}
@@ -588,7 +588,7 @@ export default function CardView() {
             if (result.ok) {
               setProposalSent(true);
               setShowProposalSheet(false);
-              toast(t('topic_proposal.proposed_toast', 'Förslag skickat! Din partner ser det nästa gång hen öppnar appen.'), { duration: 4000 });
+              toast('Förslag skickat.', { duration: 3000 });
               if (proposalTimer.current) clearTimeout(proposalTimer.current);
               proposalTimer.current = setTimeout(() => setProposalSent(false), 2000);
             } else {

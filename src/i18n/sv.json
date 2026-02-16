@@ -58,7 +58,7 @@
     "relationship_memory_explored": "Ni utforskade",
     "relationship_memory_date": "{{date}}",
     "first_conversation_hint": "Det här är ert utrymme. Välj ett samtalsområde som känns rätt — det finns ingen brådska.",
-    "start_first_conversation": "Börja ert första samtal",
+    "start_first_conversation": "Starta ett samtal",
     "recent_shared_title": "Senaste delade tanken",
     "view_shared_space": "Visa ert utrymme",
     "title_placeholder": "Rubrik…",
@@ -269,7 +269,7 @@
     "decline": "Inte just nu",
     "suggest_another": "Föreslå ett annat ämne",
     "partner_fallback": "Din partner",
-    "proposed_toast": "Du har föreslagit ett samtal. Din partner ser det nästa gång hen öppnar appen.",
+    "proposed_toast": "Förslag skickat.",
     "your_proposal": "Du har föreslagit det här samtalet. Det börjar när ni båda är redo."
   },
   "sync_prompt": {
