@@ -417,7 +417,7 @@ export default function CardView() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.15 }}
-          className="text-xl md:text-2xl font-serif text-slate-800 text-center leading-relaxed"
+          className="text-xl md:text-2xl font-serif text-foreground text-center leading-relaxed"
         >
           {card.title}
         </motion.h1>
@@ -434,7 +434,7 @@ export default function CardView() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.03, duration: 0.15 }}
-            className="text-sm text-slate-700 not-italic mt-5 text-center max-w-2xl mx-auto leading-relaxed"
+            className="text-sm text-muted-foreground not-italic mt-5 text-center max-w-2xl mx-auto leading-relaxed"
           >
             {card.subtitle}
           </motion.p>

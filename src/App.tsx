@@ -7,6 +7,7 @@ import { AnimatePresence } from "framer-motion";
 import { AuthProvider, useAuth } from "@/contexts/AuthContext";
 import { AppProvider, useApp } from "@/contexts/AppContext";
 import RemoteCardCue from "@/components/RemoteCardCue";
+import ProposalAcceptanceWatcher from "@/components/ProposalAcceptanceWatcher";
 import { SiteSettingsProvider } from "@/contexts/SiteSettingsContext";
 import PageTransition from "@/components/PageTransition";
 import Index from "./pages/Index";
@@ -49,6 +50,7 @@ function ProtectedRoutes() {
   return (
     <AppProvider>
       <RemoteCardCueGlobal />
+      <ProposalAcceptanceWatcher />
       <AnimatePresence mode="wait">
         <Routes location={location} key={location.pathname}>
           <Route path="/" element={<PageTransition><Index /></PageTransition>} />
