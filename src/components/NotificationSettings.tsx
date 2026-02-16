@@ -13,7 +13,7 @@ export default function NotificationSettings() {
     <div>
       <button
         onClick={() => setOpen(!open)}
-        className="flex items-center justify-between w-full gap-2 text-muted-foreground cursor-pointer"
+        className="flex items-center justify-between w-full gap-2 text-muted-foreground cursor-pointer h-[48px]"
       >
         <div className="flex items-center gap-2">
           <Bell className="w-4 h-4" />
