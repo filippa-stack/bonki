@@ -111,14 +111,14 @@ export default function SharedTimelineItem({
         className={`py-5 ${!isJourney ? 'border-b border-border/20 last:border-b-0' : ''}`}
       >
         {/* Metadata */}
-        <div className="mb-2 space-y-0.5">
+        <div className="mb-3 space-y-0.5">
           {!isJourney && (
-            <p className="text-[11px] text-muted-foreground/60">
+            <p className="text-[11px] text-muted-foreground/50">
               {note.cardTitle}
-              {stepLabel && <span> · {stepLabel}</span>}
+              {stepLabel && <span className="text-muted-foreground/35"> · {stepLabel}</span>}
             </p>
           )}
-          <p className="text-[10px] text-muted-foreground/40">
+          <p className="text-[10px] text-muted-foreground/35">
             {dateLabel}
             {stepLabel && isJourney && <span> · {stepLabel}</span>}
             {wasEdited && ' · uppdaterad'}

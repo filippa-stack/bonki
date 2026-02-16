@@ -255,21 +255,13 @@ export default function SharedSummary() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.15 }}
-            className="mb-4 text-center"
+            className="mb-14 text-center"
           >
-            <h2 className="font-serif text-2xl font-semibold text-foreground">Vårt utrymme</h2>
+            <h1 className="font-serif text-2xl font-semibold text-foreground tracking-tight">Vårt utrymme</h1>
+            <p className="text-sm text-muted-foreground mt-2 leading-relaxed">
+              Här samlas det ni bygger tillsammans.
+            </p>
           </motion.div>
-        )}
-
-        {!showFind && (
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.15, delay: 0.05 }}
-            className="text-sm text-muted-foreground mb-12 leading-relaxed text-center"
-          >
-            Här samlas det ni bygger tillsammans.
-          </motion.p>
         )}
 
         {/* ─── Surfaced takeaway ─── */}
@@ -277,12 +269,12 @@ export default function SharedSummary() {
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 0.15, delay: 0.08 }}
-            className="mb-14 text-center"
+            transition={{ duration: 0.15, delay: 0.05 }}
+            className="mb-16 text-center"
           >
-            <div className="rounded-2xl bg-card/60 border border-border/30 px-6 py-8">
-              <p className="text-xs text-muted-foreground mb-4">För en tid sedan skrev ni:</p>
-              <p className="text-base font-serif text-foreground/80 leading-relaxed max-w-sm mx-auto italic">
+            <div className="px-8 py-10">
+              <p className="text-[11px] text-muted-foreground/50 uppercase tracking-[0.12em] mb-5">Att minnas</p>
+              <p className="text-[15px] font-serif text-foreground/75 leading-[1.9] max-w-sm mx-auto italic">
                 "{surfacedTakeaway.text}"
               </p>
             </div>
@@ -454,14 +446,14 @@ export default function SharedSummary() {
 
             {/* Propose button — always visible when paired */}
             {displayMemberCount >= 2 && (
-              <div className="text-center">
+              <div className="text-center mt-2">
                 <Button
-                  variant="outline"
+                  variant="ghost"
                   size="sm"
-                  className="text-sm gap-2 rounded-xl border-border/40 text-muted-foreground hover:text-foreground"
+                  className="text-xs gap-2 text-muted-foreground/70 hover:text-foreground"
                   onClick={() => navigate('/')}
                 >
-                  <MessageCircle className="w-4 h-4" />
+                  <MessageCircle className="w-3.5 h-3.5" />
                   Föreslå ett samtal
                 </Button>
               </div>
@@ -475,15 +467,15 @@ export default function SharedSummary() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.15 }}
-            className="mb-16 text-center space-y-6"
+            className="mb-16 text-center"
           >
-            <div className="rounded-2xl bg-card/40 border border-border/20 px-6 py-10">
-              <p className="text-sm text-muted-foreground mb-4">
-                När ni delar en reflektion till en fråga visas den här.
+            <div className="py-12">
+              <p className="text-sm text-muted-foreground/60 leading-relaxed mb-6">
+                När ni delar en reflektion visas den här.
               </p>
               <button
                 onClick={() => navigate('/')}
-                className="text-sm text-primary hover:text-primary/80 transition-colors font-medium"
+                className="text-xs text-muted-foreground hover:text-foreground transition-colors"
               >
                 Bläddra bland kort →
               </button>
@@ -542,21 +534,21 @@ export default function SharedSummary() {
                 >
                   <SectionDivider />
                   <SectionHeader>Er resa</SectionHeader>
-                  <p className="text-xs text-muted-foreground/50 text-center mb-6">
+                  <p className="text-[11px] text-muted-foreground/40 text-center mb-8">
                     {exploredCount === 0
                       ? 'Ni har inte utforskat något ännu.'
                       : exploredCount === 1
                         ? 'Första steget är taget.'
                         : `${exploredCount} samtal tillsammans.`}
                   </p>
-                  <div className="flex items-center justify-center gap-1">
+                  <div className="flex items-center justify-center gap-[3px]">
                     {Array.from({ length: totalCards }).map((_, i) => (
                       <div
                         key={i}
-                        className={`h-1.5 rounded-full transition-all duration-500 ${
+                        className={`h-1 rounded-full transition-all duration-700 ease-out ${
                           i < exploredCount
-                            ? 'w-4 bg-primary/35'
-                            : 'w-1.5 bg-border/25'
+                            ? 'w-3.5 bg-primary/30'
+                            : 'w-1 bg-border/20'
                         }`}
                       />
                     ))}
@@ -628,23 +620,6 @@ export default function SharedSummary() {
                   className="mb-16 text-left"
                 >
                   <SectionDivider />
-                  {(() => {
-                    const newest = recentItems[0];
-                    const sharedDate = new Date(newest.shared_at || newest.created_at);
-                    const ageMs = Date.now() - sharedDate.getTime();
-                    const ONE_HOUR = 60 * 60 * 1000;
-                    const ONE_DAY = 24 * ONE_HOUR;
-                    const contextLabel = ageMs > ONE_DAY
-                      ? 'Skrevs för en tid sedan.'
-                      : ageMs > ONE_HOUR
-                        ? 'Skrevs tidigare idag.'
-                        : null;
-                    return contextLabel ? (
-                      <p className="text-xs text-muted-foreground text-center mb-6">
-                        {contextLabel}
-                      </p>
-                    ) : null;
-                  })()}
                   <SectionHeader>Nyligen delat</SectionHeader>
                   <div className="space-y-1">
                     {recentItems.map((item) => (
@@ -686,7 +661,7 @@ export default function SharedSummary() {
                 <div className="mb-16">
                   <SectionDivider />
                   <SectionHeader>Er gemensamma tidslinje</SectionHeader>
-                  <p className="text-xs text-muted-foreground/50 text-center mb-10 leading-relaxed">
+                  <p className="text-[11px] text-muted-foreground/40 text-center mb-10 leading-relaxed">
                     Tankar ni delat med varandra, ordnade efter tid.
                   </p>
 
@@ -769,12 +744,12 @@ export default function SharedSummary() {
 /* ─── Shared sub-components ─── */
 
 function SectionDivider() {
-  return <div className="h-px bg-border/30 mb-10 mx-auto" style={{ maxWidth: 80 }} />;
+  return <div className="h-px bg-border/15 mb-12 mx-auto" style={{ maxWidth: 60 }} />;
 }
 
 function SectionHeader({ children }: { children: React.ReactNode }) {
   return (
-    <p className="text-xs font-medium text-muted-foreground uppercase tracking-[0.15em] mb-8 text-center">
+    <p className="text-[10px] font-medium text-muted-foreground/60 uppercase tracking-[0.2em] mb-8 text-center">
       {children}
     </p>
   );
