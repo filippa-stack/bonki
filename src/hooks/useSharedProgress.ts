@@ -12,17 +12,11 @@ interface SharedProgressData {
 export type SharedSyncStatus = 'idle' | 'syncing' | 'error';
 
 interface UseSharedProgressReturn {
-  /** Load shared progress on mount; returns initial data or null */
   initialData: SharedProgressData | null;
-  /** Push local state changes to the shared table */
   syncToRemote: (session: SessionData | undefined, journey: JourneyState | undefined) => void;
-  /** Whether initial load is done */
   ready: boolean;
-  /** Current sync status for UI indicators */
   syncStatus: SharedSyncStatus;
-  /** Last sync error message, if any */
   lastSyncError: string | null;
-  /** Retry a failed sync */
   retrySync: () => void;
 }
 
@@ -33,32 +27,22 @@ function mergeNumberArrays(a: number[] | undefined, b: number[] | undefined): nu
   return Array.from(set).sort((x, y) => x - y);
 }
 
-function mergeUserCompletions(
-  a: Record<string, number[]> | undefined,
-  b: Record<string, number[]> | undefined,
-): Record<string, number[]> {
-  const result: Record<string, number[]> = { ...(a || {}) };
-  for (const [uid, steps] of Object.entries(b || {})) {
-    result[uid] = mergeNumberArrays(result[uid], steps);
-  }
-  return result;
-}
-
 function sortCardIds(ids: string[]): string[] {
   return [...ids].sort((a, b) =>
     a.localeCompare(b, undefined, { numeric: true, sensitivity: 'base' })
   );
 }
 
-function mergeJourneyStates(local: JourneyState | null | undefined, remote: JourneyState | null | undefined): JourneyState | null {
+function mergeJourneyStates(
+  local: JourneyState | null | undefined,
+  remote: JourneyState | null | undefined,
+): JourneyState | null {
   if (!local && !remote) return null;
   if (!local) return { ...remote!, exploredCardIds: sortCardIds(remote!.exploredCardIds || []) };
   if (!remote) return { ...local!, exploredCardIds: sortCardIds(local!.exploredCardIds || []) };
 
-  // Union exploredCardIds
   const exploredSet = new Set([...(local.exploredCardIds || []), ...(remote.exploredCardIds || [])]);
 
-  // Merge sessionProgress
   const mergedProgress: JourneyState['sessionProgress'] = { ...(local.sessionProgress || {}) };
   for (const [cardId, data] of Object.entries(remote.sessionProgress || {})) {
     if (!mergedProgress[cardId]) {
@@ -74,7 +58,6 @@ function mergeJourneyStates(local: JourneyState | null | undefined, remote: Jour
     }
   }
 
-  // Merge cardVisitDates — keep latest per card
   const mergedVisitDates: Record<string, string> = { ...(local.cardVisitDates || {}) };
   for (const [cardId, date] of Object.entries(remote.cardVisitDates || {})) {
     if (!mergedVisitDates[cardId] || date > mergedVisitDates[cardId]) {
@@ -82,7 +65,6 @@ function mergeJourneyStates(local: JourneyState | null | undefined, remote: Jour
     }
   }
 
-  // For scalar fields, take the remote (latest writer) but keep union data
   return {
     ...remote,
     exploredCardIds: sortCardIds(Array.from(exploredSet)),
@@ -92,7 +74,7 @@ function mergeJourneyStates(local: JourneyState | null | undefined, remote: Jour
 }
 
 function logSyncError(params: {
-  stage: 'fetchRemote' | 'upsertProgress' | 'thrown';
+  stage: 'fetchRemote' | 'upsertJourneyMeta' | 'thrown';
   coupleSpaceId: string | null;
   userId: string | null;
   cardId?: string | null;
@@ -103,15 +85,8 @@ function logSyncError(params: {
   const code = error?.code ?? error?.status ?? error?.name ?? 'unknown';
   const message = error?.message ?? String(error);
   console.error('[SharedProgressSync]', {
-    stage,
-    coupleSpaceId,
-    userId,
-    cardId,
-    code,
-    message,
-    details: error?.details,
-    hint: error?.hint,
-    extra,
+    stage, coupleSpaceId, userId, cardId, code, message,
+    details: error?.details, hint: error?.hint, extra,
   });
 }
 
@@ -128,13 +103,12 @@ export function useSharedProgress(
   const [lastSyncError, setLastSyncError] = useState<string | null>(null);
   const lastPushed = useRef<string>('');
   const isSyncing = useRef(false);
-  const localSessionRef = useRef<SessionData | null>(null);
   const localJourneyRef = useRef<JourneyState | null>(null);
   const pendingWriteRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const pendingDataRef = useRef<{ session: SessionData | undefined; journey: JourneyState | undefined } | null>(null);
+  const pendingDataRef = useRef<{ journey: JourneyState | undefined } | null>(null);
   const needsAnotherCommitRef = useRef(false);
 
-  // Load initial data
+  // Load initial data: session from couple_progress, journey from couple_journey_meta
   useEffect(() => {
     setInitialData(null);
 
@@ -148,29 +122,36 @@ export function useSharedProgress(
 
     async function load() {
       try {
-        const { data, error } = await supabase
-          .from('couple_progress')
-          .select('*')
-          .eq('couple_space_id', coupleSpaceId!)
-          .maybeSingle();
+        // Fetch session (server-authoritative) and own journey meta in parallel
+        const [progressRes, metaRes] = await Promise.all([
+          supabase
+            .from('couple_progress')
+            .select('current_session')
+            .eq('couple_space_id', coupleSpaceId!)
+            .maybeSingle(),
+          supabase
+            .from('couple_journey_meta' as any)
+            .select('journey_state')
+            .eq('couple_space_id', coupleSpaceId!)
+            .eq('user_id', userId!)
+            .maybeSingle(),
+        ]);
 
         if (cancelled) return;
 
-        if (error) {
-          console.error('Error loading shared progress:', error);
-          setReady(true);
-          return;
+        if (progressRes.error) {
+          console.error('Error loading couple_progress:', progressRes.error);
+        }
+        if (metaRes.error) {
+          console.error('Error loading couple_journey_meta:', metaRes.error);
         }
 
-        if (data) {
-          const parsed: SharedProgressData = {
-            currentSession: deserializeSession(data.current_session),
-            journeyState: data.journey_state as unknown as JourneyState | null,
-          };
-          localSessionRef.current = parsed.currentSession ?? null;
-          localJourneyRef.current = parsed.journeyState ?? null;
-          setInitialData(parsed);
-        }
+        const parsed: SharedProgressData = {
+          currentSession: deserializeSession(progressRes.data?.current_session ?? null),
+          journeyState: (metaRes.data as any)?.journey_state as JourneyState | null ?? null,
+        };
+        localJourneyRef.current = parsed.journeyState;
+        setInitialData(parsed);
       } catch (err) {
         console.error('Failed to load shared progress:', err);
       } finally {
@@ -181,7 +162,6 @@ export function useSharedProgress(
     load();
     return () => {
       cancelled = true;
-      // Clear any pending write on context change
       if (pendingWriteRef.current) {
         clearTimeout(pendingWriteRef.current);
         pendingWriteRef.current = null;
@@ -189,12 +169,13 @@ export function useSharedProgress(
     };
   }, [userId, coupleSpaceId]);
 
-  // Subscribe to realtime changes
+  // Subscribe to realtime: couple_progress for session, couple_journey_meta for partner journey
   useEffect(() => {
     if (!userId || !coupleSpaceId) return;
 
     const channel = supabase
-      .channel(`couple_progress_${coupleSpaceId}`)
+      .channel(`shared_progress_${coupleSpaceId}`)
+      // Server-authoritative session changes
       .on(
         'postgres_changes',
         {
@@ -206,22 +187,32 @@ export function useSharedProgress(
         (payload) => {
           const row = payload.new as any;
           if (!row) return;
-
           const remoteSession = deserializeSession(row.current_session);
-          const remoteJourney = row.journey_state as unknown as JourneyState | null;
-
-          // current_session: server is authoritative (edge functions only)
-          // journey_state: merge local + remote (client writes journey metadata)
-          const merged: SharedProgressData = {
+          onRemoteUpdate({
             currentSession: remoteSession,
-            journeyState: mergeJourneyStates(localJourneyRef.current, remoteJourney),
-          };
-
-          // Update local refs with result
-          localSessionRef.current = merged.currentSession ?? null;
-          localJourneyRef.current = merged.journeyState ?? null;
-
-          onRemoteUpdate(merged);
+            journeyState: localJourneyRef.current,
+          });
+        }
+      )
+      // Partner's journey meta changes (merge with own)
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'couple_journey_meta',
+          filter: `couple_space_id=eq.${coupleSpaceId}`,
+        },
+        (payload) => {
+          const row = payload.new as any;
+          if (!row || row.user_id === userId) return; // Skip own writes
+          const remoteJourney = row.journey_state as JourneyState | null;
+          const merged = mergeJourneyStates(localJourneyRef.current, remoteJourney);
+          localJourneyRef.current = merged;
+          onRemoteUpdate({
+            currentSession: null, // session unchanged, consumer merges
+            journeyState: merged,
+          });
         }
       )
       .subscribe();
@@ -237,13 +228,11 @@ export function useSharedProgress(
     const pending = pendingDataRef.current;
     if (!pending || !userId || !coupleSpaceId) return;
 
-    // If already syncing, queue another commit after this one finishes
     if (isSyncing.current) {
       needsAnotherCommitRef.current = true;
       return;
     }
 
-    // Clear any pending debounce timer before committing
     if (pendingWriteRef.current) {
       clearTimeout(pendingWriteRef.current);
       pendingWriteRef.current = null;
@@ -251,13 +240,15 @@ export function useSharedProgress(
 
     isSyncing.current = true;
     setSyncStatus('syncing');
-    const { session, journey } = pending;
+    const { journey } = pending;
 
     try {
+      // Read remote journey meta for merge
       const { data: remoteRow, error: remoteErr } = await supabase
-        .from('couple_progress')
+        .from('couple_journey_meta' as any)
         .select('journey_state')
         .eq('couple_space_id', coupleSpaceId)
+        .eq('user_id', userId)
         .maybeSingle();
 
       if (remoteErr) {
@@ -265,38 +256,39 @@ export function useSharedProgress(
           stage: 'fetchRemote',
           coupleSpaceId,
           userId,
-          cardId: session?.cardId ?? null,
           error: remoteErr,
         });
       }
 
       const remoteJourney = remoteRow
-        ? (remoteRow.journey_state as unknown as JourneyState | null)
+        ? ((remoteRow as any).journey_state as JourneyState | null)
         : null;
 
       const mergedJourney = mergeJourneyStates(journey, remoteJourney);
+      const journeyPayload = mergedJourney
+        ? JSON.parse(JSON.stringify(mergedJourney))
+        : {};
 
-      // Only write journey_state — current_session is managed by edge functions
-      // Use UPDATE only — the row is always created by the create-couple-space edge function
-      const { error: updateErr } = await supabase
-        .from('couple_progress')
-        .update({
-          journey_state: mergedJourney
-            ? JSON.parse(JSON.stringify(mergedJourney))
-            : null,
-          updated_by: userId,
-        } as any)
-        .eq('couple_space_id', coupleSpaceId);
+      // Upsert into couple_journey_meta (user owns their own row)
+      const { error: writeErr } = await supabase
+        .from('couple_journey_meta' as any)
+        .upsert(
+          {
+            couple_space_id: coupleSpaceId,
+            user_id: userId,
+            journey_state: journeyPayload,
+          } as any,
+          { onConflict: 'couple_space_id,user_id' }
+        );
 
-      if (updateErr) {
+      if (writeErr) {
         logSyncError({
-          stage: 'upsertProgress',
+          stage: 'upsertJourneyMeta',
           coupleSpaceId,
           userId,
-          cardId: session?.cardId ?? null,
-          error: updateErr,
+          error: writeErr,
         });
-        setLastSyncError(updateErr.message || 'Kunde inte spara');
+        setLastSyncError(writeErr.message || 'Kunde inte spara');
         setSyncStatus('error');
       } else {
         setLastSyncError(null);
@@ -307,14 +299,12 @@ export function useSharedProgress(
         stage: 'thrown',
         coupleSpaceId,
         userId,
-        cardId: pendingDataRef.current?.session?.cardId ?? null,
         error: err,
       });
       setLastSyncError(err instanceof Error ? err.message : 'Kunde inte spara');
       setSyncStatus('error');
     } finally {
       isSyncing.current = false;
-      // If new changes happened during sync, flush immediately
       if (needsAnotherCommitRef.current) {
         needsAnotherCommitRef.current = false;
         setTimeout(() => commitToRemote(), 0);
@@ -322,23 +312,20 @@ export function useSharedProgress(
     }
   }, [userId, coupleSpaceId]);
 
-  // Push local changes to database (debounced)
+  // syncToRemote now only writes journey_state to couple_journey_meta
+  // session param is kept in signature for API compatibility but not written
   const syncToRemote = useCallback(
-    (session: SessionData | undefined, journey: JourneyState | undefined) => {
+    (_session: SessionData | undefined, journey: JourneyState | undefined) => {
       if (!userId || !coupleSpaceId) return;
 
-      // Update local refs immediately
-      localSessionRef.current = session ?? null;
       localJourneyRef.current = journey ?? null;
 
-      const payload = JSON.stringify({ session, journey });
+      const payload = JSON.stringify({ journey });
       if (payload === lastPushed.current) return;
       lastPushed.current = payload;
 
-      // Store pending data
-      pendingDataRef.current = { session, journey };
+      pendingDataRef.current = { journey };
 
-      // If a commit is in-flight, flag for re-commit after it finishes
       if (isSyncing.current) {
         needsAnotherCommitRef.current = true;
         if (pendingWriteRef.current) {
@@ -348,7 +335,6 @@ export function useSharedProgress(
         return;
       }
 
-      // Debounce the actual write
       if (pendingWriteRef.current) {
         clearTimeout(pendingWriteRef.current);
       }
@@ -360,7 +346,6 @@ export function useSharedProgress(
     [userId, coupleSpaceId, commitToRemote]
   );
 
-  // Cleanup pending write on unmount
   useEffect(() => {
     return () => {
       if (pendingWriteRef.current) {
