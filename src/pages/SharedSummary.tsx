@@ -493,7 +493,7 @@ export default function SharedSummary() {
                 </motion.div>
               )}
 
-              {/* ─── Er resa — progress ─── */}
+              {/* ─── Er resa — journey progress visualization ─── */}
               {!hasActiveFilter && (
                 <motion.div
                   initial={{ opacity: 0 }}
@@ -503,22 +503,24 @@ export default function SharedSummary() {
                 >
                   <SectionDivider />
                   <SectionHeader>Er resa</SectionHeader>
-                  <div className="flex items-center justify-center gap-3">
-                    <div className="flex gap-1.5">
-                      {Array.from({ length: totalCards }).map((_, i) => (
-                        <div
-                          key={i}
-                          className={`w-2 h-2 rounded-full transition-colors ${
-                            i < exploredCount
-                              ? 'bg-primary/40'
-                              : 'bg-border/30'
-                          }`}
-                        />
-                      ))}
-                    </div>
-                    <span className="text-xs text-muted-foreground">
-                      {exploredCount} av {totalCards}
-                    </span>
+                  <p className="text-xs text-muted-foreground/50 text-center mb-6">
+                    {exploredCount === 0
+                      ? 'Ni har inte utforskat något ännu.'
+                      : exploredCount === 1
+                        ? 'Första steget är taget.'
+                        : `${exploredCount} samtal tillsammans.`}
+                  </p>
+                  <div className="flex items-center justify-center gap-1">
+                    {Array.from({ length: totalCards }).map((_, i) => (
+                      <div
+                        key={i}
+                        className={`h-1.5 rounded-full transition-all duration-500 ${
+                          i < exploredCount
+                            ? 'w-4 bg-primary/35'
+                            : 'w-1.5 bg-border/25'
+                        }`}
+                      />
+                    ))}
                   </div>
                 </motion.div>
               )}
@@ -640,30 +642,55 @@ export default function SharedSummary() {
                 </div>
               )}
 
-              {/* ─── Older reflections ─── */}
+              {/* ─── Journey timeline — older reflections ─── */}
               {olderGrouped.length > 0 && !hasActiveFilter && (
-                <div className="mb-16 text-left">
+                <div className="mb-16">
                   <SectionDivider />
-                  <SectionHeader>Tidigare</SectionHeader>
-                  {olderGrouped.map((group) => (
-                    <div key={group.key} className="mb-8">
-                      <p className="text-xs text-muted-foreground uppercase tracking-wide mb-4 text-center">
-                        {group.label}
-                      </p>
-                      <div className="space-y-1">
-                        {group.cardGroups.flatMap((cardGroup) => cardGroup.items).map((item) => (
-                          <SharedTimelineItem
-                            key={item.id}
-                            note={item}
-                            isOwnNote={item.user_id === user?.id}
-                            myResponse={getMyResponse(item.id)}
-                            partnerResponse={getPartnerResponse(item.id)}
-                            onUpdate={handleUpdateNote}
-                            onSaveResponse={saveResponse}
-                            onOpenInContext={handleOpenInContext}
-                          />
-                        ))}
+                  <SectionHeader>Er gemensamma tidslinje</SectionHeader>
+                  <p className="text-xs text-muted-foreground/50 text-center mb-10 leading-relaxed">
+                    Tankar ni delat med varandra, ordnade efter tid.
+                  </p>
+
+                  {olderGrouped.map((group, groupIdx) => (
+                    <div key={group.key} className="mb-12">
+                      {/* Month marker */}
+                      <div className="flex items-center gap-3 mb-6">
+                        <div className="h-px flex-1 bg-border/20" />
+                        <span className="text-[11px] font-medium text-muted-foreground/60 uppercase tracking-[0.15em] whitespace-nowrap">
+                          {group.label}
+                        </span>
+                        <div className="h-px flex-1 bg-border/20" />
                       </div>
+
+                      {/* Card groups within month */}
+                      {group.cardGroups.map((cardGroup) => (
+                        <div key={cardGroup.cardId} className="mb-8 last:mb-0">
+                          {/* Card title as journey waypoint */}
+                          <div className="relative pl-8 mb-1">
+                            <div className="absolute left-0 top-0 bottom-0 w-px bg-border/20" />
+                            <div className="absolute left-[-4px] top-1 w-[9px] h-[9px] rounded-full bg-primary/20 border-2 border-primary/30" />
+                            <p className="font-serif text-sm text-foreground/70 pt-0.5">{cardGroup.cardTitle}</p>
+                            <p className="text-[10px] text-muted-foreground/40 mt-0.5">{cardGroup.categoryTitle}</p>
+                          </div>
+
+                          {/* Reflections within this card */}
+                          <div className="space-y-0">
+                            {cardGroup.items.map((item) => (
+                              <SharedTimelineItem
+                                key={item.id}
+                                note={item}
+                                isOwnNote={item.user_id === user?.id}
+                                myResponse={getMyResponse(item.id)}
+                                partnerResponse={getPartnerResponse(item.id)}
+                                onUpdate={handleUpdateNote}
+                                onSaveResponse={saveResponse}
+                                onOpenInContext={handleOpenInContext}
+                                variant="journey"
+                              />
+                            ))}
+                          </div>
+                        </div>
+                      ))}
                     </div>
                   ))}
                 </div>
