@@ -292,29 +292,42 @@ export default function AttachPartner({
                     {copied ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
                   </Button>
                 </div>
-                <Button
-                  size="sm"
-                  className="w-full gap-2"
-                  onClick={async () => {
-                    if (!inviteInfo) return;
-                    if (navigator.share) {
-                      try {
-                        await navigator.share({ title: 'Still Us', text: inviteLink, url: inviteLink });
-                        return;
-                      } catch (err) {
-                        if ((err as Error).name === 'AbortError') return;
+                <div className="flex gap-2">
+                  <Button
+                    size="sm"
+                    className="flex-1 gap-2"
+                    onClick={async () => {
+                      if (!inviteInfo) return;
+                      if (navigator.share) {
+                        try {
+                          await navigator.share({ title: 'Still Us', text: inviteLink, url: inviteLink });
+                          return;
+                        } catch (err) {
+                          if ((err as Error).name === 'AbortError') return;
+                        }
                       }
-                    }
-                    await navigator.clipboard.writeText(inviteLink);
-                    setCopied(true);
-                    toast.success('Länk kopierad');
-                    setTimeout(() => setCopied(false), 2000);
-                  }}
-                  disabled={!inviteInfo}
-                >
-                  <Share2 className="w-3.5 h-3.5" />
-                  Dela länk
-                </Button>
+                      await navigator.clipboard.writeText(inviteLink);
+                      toast.success('Länk kopierad');
+                    }}
+                    disabled={!inviteInfo}
+                  >
+                    <Share2 className="w-3.5 h-3.5" />
+                    Dela länk
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="gap-2"
+                    onClick={async () => {
+                      if (!inviteInfo) return;
+                      await navigator.clipboard.writeText(inviteLink);
+                      toast.success('Länk kopierad');
+                    }}
+                    disabled={!inviteInfo}
+                  >
+                    <Copy className="w-3.5 h-3.5" />
+                  </Button>
+                </div>
                 <button
                   className="w-full text-xs text-muted-foreground hover:text-foreground transition-colors py-1"
                   onClick={() => setInviteStep('message')}
