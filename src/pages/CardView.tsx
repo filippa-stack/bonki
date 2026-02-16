@@ -172,7 +172,7 @@ export default function CardView() {
   const canStartSharedSession = !isPaired || hasMutualProgress || hasAcceptedProposal || isRevisitMode;
   const [autoProposalSent, setAutoProposalSent] = useState(false);
   // Non-blocking: show a propose banner instead of blocking the user
-  const showProposeBanner = isPaired && !canStartSharedSession && !isRevisitMode && !showCompletion && !hasPendingProposalForCard;
+  const showProposeBanner = isPaired && !canStartSharedSession && !isActiveSession && !isRevisitMode && !showCompletion && !hasPendingProposalForCard;
   // ─── Guard: if there's an active session for a DIFFERENT card, show modal instead of redirect ───
   const hasConflictingSession = !!(currentSession && currentSession.cardId !== cardId);
   const conflictingCard = hasConflictingSession ? getCardById(currentSession!.cardId) : undefined;
@@ -462,7 +462,7 @@ export default function CardView() {
           </motion.div>
         )}
         {/* Pending proposal banner */}
-        {!canStartSharedSession && isPaired && hasPendingProposalForCard && (
+        {!canStartSharedSession && !isActiveSession && isPaired && hasPendingProposalForCard && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -491,7 +491,7 @@ export default function CardView() {
               exit={{ opacity: 0 }}
               transition={{ duration: 0.15 }}
             >
-              <SectionView ref={sectionViewRef} section={currentSection} card={card} isRevisitMode={isRevisitMode} initialFocusNoteIndex={isRevisitMode ? initialFocusNote : null} focusPromptIndex={isRevisitMode ? initialFocusNote : null} disableShare={!canStartSharedSession} />
+              <SectionView ref={sectionViewRef} section={currentSection} card={card} isRevisitMode={isRevisitMode} initialFocusNoteIndex={isRevisitMode ? initialFocusNote : null} focusPromptIndex={isRevisitMode ? initialFocusNote : null} disableShare={!canStartSharedSession && !isActiveSession} />
 
               {/* Takeaways removed from exercise step — now rendered on completion screen */}
 
