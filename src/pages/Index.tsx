@@ -15,8 +15,22 @@ import { Loader2, AlertCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useTranslation } from 'react-i18next';
 
-const PURCHASE_KEY = 'still-us-purchased';
+const PURCHASE_KEY_LEGACY = 'still-us-purchased';
+const PURCHASE_KEY_PREFIX = 'still-us-purchased-';
 export const JOIN_INTENT_KEY = 'still-us-join-intent';
+
+/** Check if a given space is paid — scoped to space ID with legacy fallback */
+function isSpacePaid(spaceId: string | null | undefined): boolean {
+  if (spaceId && localStorage.getItem(`${PURCHASE_KEY_PREFIX}${spaceId}`) === 'true') return true;
+  // Legacy fallback: old global key (pre-space-scoped)
+  return localStorage.getItem(PURCHASE_KEY_LEGACY) === 'true';
+}
+
+function markSpacePaid(spaceId: string | null | undefined) {
+  if (spaceId) localStorage.setItem(`${PURCHASE_KEY_PREFIX}${spaceId}`, 'true');
+  // Also write legacy key for backward compat
+  localStorage.setItem(PURCHASE_KEY_LEGACY, 'true');
+}
 
 export default function Index() {
   const navigate = useNavigate();
@@ -37,15 +51,20 @@ export default function Index() {
   }, [claimStatus, refreshSpace]);
 
   // Purchase state (mock — stored in localStorage)
-  const [hasPurchased, setHasPurchased] = useState(() => {
-    return localStorage.getItem(PURCHASE_KEY) === 'true';
-  });
+  const [hasPurchased, setHasPurchased] = useState(() => isSpacePaid(space?.id));
   const [showPostPurchaseInvite, setShowPostPurchaseInvite] = useState(false);
+
+  // Re-evaluate purchase state when space loads (space may be null initially)
+  useEffect(() => {
+    if (space?.id && !hasPurchased && isSpacePaid(space.id)) {
+      setHasPurchased(true);
+    }
+  }, [space?.id, hasPurchased]);
 
   usePartnerNotifications();
 
   const handlePurchaseComplete = () => {
-    localStorage.setItem(PURCHASE_KEY, 'true');
+    markSpacePaid(space?.id);
     localStorage.removeItem(JOIN_INTENT_KEY);
     setHasPurchased(true);
     setShowPostPurchaseInvite(true);
@@ -93,13 +112,15 @@ export default function Index() {
     return <Onboarding />;
   }
 
-  // ─── Paywall gate ───
-  const isAlreadyMember = memberCount >= 1;
+  // ─── Paywall gate (space-level entitlement) ───
   const hasJoinIntent = localStorage.getItem(JOIN_INTENT_KEY) === 'true';
-  const shouldBypassPaywall = isAlreadyMember || userRole === 'partner_b' || claimStatus === 'success' || hasPendingInvite() || hasJoinIntent;
+  // Space is entitled if: any member purchased for this space, user was invited (partner_b),
+  // or both members are present (someone must have paid to invite).
+  const spaceIsEntitled = hasPurchased || memberCount >= 2 || userRole === 'partner_b';
+  const shouldBypassPaywall = spaceIsEntitled || claimStatus === 'success' || hasPendingInvite() || hasJoinIntent;
 
   // Join-intent screen: user said "I have an invite" — route them to attach
-  if (hasJoinIntent && !hasPurchased && !isAlreadyMember) {
+  if (hasJoinIntent && !spaceIsEntitled) {
     return (
       <div className="min-h-screen page-bg flex items-center justify-center px-6">
         <div className="w-full max-w-sm text-center space-y-6">
