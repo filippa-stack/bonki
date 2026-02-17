@@ -270,7 +270,7 @@ export default function Home() {
         )}
       </AnimatePresence>
       <div className="flex-1">
-      <Header showBackgroundPicker={false} showBackupManager={false} />
+      <Header showBackgroundPicker={false} showBackupManager={false} showSaveIndicator={mode === 'active'} />
       {/* Header with Logo — compact when active session */}
 
 
