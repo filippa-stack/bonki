@@ -30,6 +30,7 @@ import { toast } from 'sonner';
 import { useProposals } from '@/hooks/useProposals';
 import { DEV_MOCK } from '@/hooks/useDevState';
 import { useDevState } from '@/contexts/DevStateContext';
+import { useNormalizedSessionState } from '@/hooks/useNormalizedSessionState';
 
 const STEP_LABELS = ['Öppnare', 'Tankeväckare', 'Scenario', 'Teamwork'];
 
@@ -79,6 +80,7 @@ export default function Home() {
   const { space, displayMemberCount, userRole, fetchInviteInfo } = useCoupleSpace();
   const { incomingProposals, sendProposal: sendDbProposal, updateProposalStatus, activateSession } = useProposals();
   const devState = useDevState();
+  const normalizedSession = useNormalizedSessionState();
 
   // Track dismissed proposals so they don't reappear in the same session
   const [dismissedProposalIds, setDismissedProposalIds] = useState<Set<string>>(new Set());
@@ -104,14 +106,14 @@ export default function Home() {
       // Expired → allow again
       if (timestamp < sevenDaysAgo) return false;
       // New session started since dismissal → allow again
-      const currentKey = currentSession?.cardId || journeyState?.lastOpenedCardId || '';
+      const currentKey = normalizedSession.cardId || journeyState?.lastOpenedCardId || '';
       if (sessionKey && currentKey && sessionKey !== currentKey) return false;
       return true;
     } catch { return false; }
   });
 
   const dismissReturnOverlay = () => {
-    const currentKey = currentSession?.cardId || journeyState?.lastOpenedCardId || '';
+    const currentKey = normalizedSession.cardId || journeyState?.lastOpenedCardId || '';
     localStorage.setItem(RETURN_OVERLAY_KEY, JSON.stringify({ timestamp: Date.now(), sessionKey: currentKey }));
     setReturnOverlayDismissed(true);
   };
@@ -129,10 +131,10 @@ export default function Home() {
     if (isSoloMode) return false;
     if (returnOverlayDismissed) return false;
     if (lastActivityElapsed < SEVEN_DAYS_MS) return false;
-    return !!(currentSession || journeyState?.lastCompletedCardId || journeyState?.lastOpenedCardId);
-  }, [isSoloMode, returnOverlayDismissed, lastActivityElapsed, currentSession, journeyState]);
+    return !!(normalizedSession.appMode || journeyState?.lastCompletedCardId || journeyState?.lastOpenedCardId);
+  }, [isSoloMode, returnOverlayDismissed, lastActivityElapsed, normalizedSession.appMode, journeyState]);
 
-  const returnResumeCardId = currentSession?.cardId || journeyState?.lastOpenedCardId || journeyState?.lastCompletedCardId || null;
+  const returnResumeCardId = normalizedSession.cardId || journeyState?.lastOpenedCardId || journeyState?.lastCompletedCardId || null;
 
 
   // Computed helpers for proposal mode & highlighted category
@@ -147,7 +149,7 @@ export default function Home() {
     return { suggestedCardId, suggestedCard, suggestedCategory };
   }, [journeyState, exploredIds, getCardById, getCategoryById]);
 
-  const highlightedCategoryId = currentSession?.categoryId || suggestedContext.suggestedCategory?.id || null;
+  const highlightedCategoryId = normalizedSession.categoryId || suggestedContext.suggestedCategory?.id || null;
 
   // Resume variation is now only the return overlay (ResumeSessionDialog removed)
   // ACTIVE state's single CTA replaces all mid-session resume surfaces.
@@ -164,7 +166,7 @@ export default function Home() {
   // Proposals, resume dialogs, return overlays are internal UI variations
   // within IDLE or ACTIVE — never separate modes.
   type MacroState = 'idle' | 'active';
-  const macroState: MacroState = hasActiveSession ? 'active' : 'idle';
+  const macroState: MacroState = normalizedSession.appMode ? 'active' : 'idle';
 
   // UI variation: return overlay is the only overlay surface now
   // ACTIVE state's single CTA handles all resume — no competing dialogs.
@@ -271,9 +273,14 @@ export default function Home() {
         const effectiveSoloMode = devState === 'solo' ? true
           : devState === 'browse' || devState === 'pairedIdle' || devState === 'pairedActive' || devState === 'proposalIncoming' ? false
           : isSoloMode;
+        // Normalized session state — reads from couple_sessions table, not JSON
         const effectiveSession = devState === 'pairedActive' ? DEV_MOCK.mockSession
           : devState === 'solo' || devState === 'pairedIdle' || devState === 'proposalIncoming' ? null
-          : currentSession;
+          : normalizedSession.appMode ? {
+              cardId: normalizedSession.cardId,
+              categoryId: normalizedSession.categoryId,
+              currentStepIndex: normalizedSession.currentStepIndex,
+            } : null;
         const effectiveProposals = devState === 'proposalIncoming' ? [DEV_MOCK.mockProposal]
           : devState ? []
           : incomingProposals;
@@ -429,7 +436,7 @@ export default function Home() {
 
       {/* Proposal mode (opened by primary CTA for paired IDLE users) */}
       <AnimatePresence>
-        {isProposalMode && !isSoloMode && !hasActiveSession && (
+        {isProposalMode && !isSoloMode && !normalizedSession.appMode && (
            <motion.div
             id="proposal-mode"
             initial={{ opacity: 0 }}
@@ -590,7 +597,7 @@ export default function Home() {
       })()}
 
       {/* Navigation links — solo only, hidden during active session */}
-      {isSoloMode && !hasActiveSession && (
+      {isSoloMode && !normalizedSession.appMode && (
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
