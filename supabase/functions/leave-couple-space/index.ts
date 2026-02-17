@@ -87,25 +87,17 @@ Deno.serve(async (req) => {
         payload: { user_id: userId },
       });
 
-    const { count: activeCount } = await adminClient
-      .from("couple_members")
-      .select("id", { count: "exact", head: true })
+    // Always cancel active sessions when a member leaves
+    await adminClient
+      .from("couple_sessions")
+      .update({ status: "cancelled", ended_at: new Date().toISOString() })
       .eq("couple_space_id", couple_space_id)
-      .is("left_at", null);
+      .eq("status", "active");
 
-    if ((activeCount ?? 0) <= 1) {
-      await adminClient
-        .from("couple_progress")
-        .update({ current_session: null, updated_by: userId })
-        .eq("couple_space_id", couple_space_id);
-
-      // Cancel any active normalized sessions for this space
-      await adminClient
-        .from("couple_sessions")
-        .update({ status: "cancelled", ended_at: new Date().toISOString() } as any)
-        .eq("couple_space_id", couple_space_id)
-        .eq("status", "active");
-    }
+    await adminClient
+      .from("couple_progress")
+      .update({ current_session: null, updated_by: userId })
+      .eq("couple_space_id", couple_space_id);
 
     return new Response(
       JSON.stringify({ success: true }),

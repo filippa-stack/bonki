@@ -85,27 +85,17 @@ Deno.serve(async (req) => {
         return json({ error: "leave_failed" }, 500);
       }
 
-      // Clear active session in old space if sole remaining member
-      const { count: activeCount } = await admin
-        .from("couple_members")
-        .select("id", { count: "exact", head: true })
+      // Always cancel active sessions when a member leaves
+      await admin
+        .from("couple_sessions")
+        .update({ status: "cancelled", ended_at: new Date().toISOString() })
         .eq("couple_space_id", currentMembership.couple_space_id)
-        .is("left_at", null)
         .eq("status", "active");
 
-      if ((activeCount ?? 0) <= 1) {
-        await admin
-          .from("couple_progress")
-          .update({ current_session: null, updated_by: userId })
-          .eq("couple_space_id", currentMembership.couple_space_id);
-
-        // Cancel any active normalized sessions for this space
-        await admin
-          .from("couple_sessions")
-          .update({ status: "cancelled", ended_at: new Date().toISOString() } as any)
-          .eq("couple_space_id", currentMembership.couple_space_id)
-          .eq("status", "active");
-      }
+      await admin
+        .from("couple_progress")
+        .update({ current_session: null, updated_by: userId })
+        .eq("couple_space_id", currentMembership.couple_space_id);
 
       await admin.from("system_events").insert({
         couple_space_id: currentMembership.couple_space_id,
