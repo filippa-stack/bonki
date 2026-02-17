@@ -116,7 +116,7 @@ export default function Index() {
   const hasJoinIntent = localStorage.getItem(JOIN_INTENT_KEY) === 'true';
   // Space is entitled if: any member purchased for this space, user was invited (partner_b),
   // or both members are present (someone must have paid to invite).
-  const spaceIsEntitled = hasPurchased || memberCount >= 2 || userRole === 'partner_b';
+  const spaceIsEntitled = hasPurchased || userRole === 'partner_b';
   const shouldBypassPaywall = spaceIsEntitled || claimStatus === 'success' || hasPendingInvite() || hasJoinIntent;
 
   // Join-intent screen: user said "I have an invite" — route them to attach
