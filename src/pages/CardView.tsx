@@ -4,7 +4,6 @@
 // All session state must come from normalized tables.
 
 import { useState, useEffect, useRef, useCallback } from 'react';
-import { getCatchUpState } from '@/lib/catchUpState';
 import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
@@ -58,93 +57,57 @@ export default function CardView() {
     saveConversation,
     getCardById,
     getCategoryById,
-    currentSession,
-    startSession,
-    completeSessionStep,
-    pauseSession,
-    journeyState,
+    // NOTE: currentSession, startSession, completeSessionStep, pauseSession
+    // are REMOVED — all session authority comes from normalizedSession.
   } = useApp();
   const { user } = useAuth();
   const { memberCount, space } = useCoupleSpaceContext();
   const devState = useDevState();
 
-  // Normalized session state (dual-read, not yet authoritative)
+  // ─── Normalized session state — the ONLY session authority ───
   const normalizedSession = useNormalizedSessionContext();
+
+  // Derive active session state from normalized context
+  const isActiveSession = !!(normalizedSession.sessionId && normalizedSession.cardId === cardId);
+  const currentStepIndexFromSession = normalizedSession.currentStepIndex;
 
   // Active session ID for takeaways on the completion screen
   const [activeSessionId, setActiveSessionId] = useState<string | null>(
     devState ? 'dev-session' : null
   );
+
+  // Track session ID from normalized context
+  useEffect(() => {
+    if (isActiveSession && normalizedSession.sessionId) {
+      setActiveSessionId(normalizedSession.sessionId);
+    }
+  }, [isActiveSession, normalizedSession.sessionId]);
+
   // Whether the card has a completed session in couple_sessions (normalized)
   const [hasCompletedNormalizedSession, setHasCompletedNormalizedSession] = useState(false);
   useEffect(() => {
     if (devState) return;
     if (!space || !cardId) return;
 
-    // Query normalized couple_sessions for active (for takeaway) and completed (for revisit)
-    Promise.all([
-      supabase
-        .from('couple_sessions')
-        .select('id')
-        .eq('couple_space_id', space.id)
-        .eq('card_id', cardId)
-        .eq('status', 'active')
-        .limit(1)
-        .single(),
-      supabase
-        .from('couple_sessions')
-        .select('id')
-        .eq('couple_space_id', space.id)
-        .eq('card_id', cardId)
-        .eq('status', 'completed')
-        .limit(1)
-        .single(),
-    ]).then(([activeRes, completedRes]) => {
-      if (activeRes.data) setActiveSessionId(activeRes.data.id);
-      // Fall back to legacy card_sessions if no normalized active session
-      if (!activeRes.data) {
-        supabase
-          .from('card_sessions')
-          .select('id')
-          .eq('couple_space_id', space.id)
-          .eq('card_id', cardId)
-          .is('completed_at', null)
-          .order('started_at', { ascending: false })
-          .limit(1)
-          .single()
-          .then(({ data }) => { if (data) setActiveSessionId(data.id); });
-      }
-      setHasCompletedNormalizedSession(!!completedRes.data);
-    });
+    supabase
+      .from('couple_sessions')
+      .select('id')
+      .eq('couple_space_id', space.id)
+      .eq('card_id', cardId)
+      .eq('status', 'completed')
+      .limit(1)
+      .single()
+      .then(({ data }) => {
+        setHasCompletedNormalizedSession(!!data);
+      });
   }, [space, cardId, devState]);
 
   const card = cardId ? getCardById(cardId) : undefined;
   const category = card ? getCategoryById(card.categoryId) : undefined;
   const existingConversation = cardId ? getConversationForCard(cardId) : undefined;
 
-  // ─── Derive per-user completedSteps from journeyState.sessionProgress ───
-  const uid = user?.id || 'local';
-  const myCompletedSteps: number[] =
-    (cardId && journeyState?.sessionProgress?.[cardId]?.perUser?.[uid]?.completedSteps) || [];
-
-  // ─── Shared step index: driven entirely by currentSession ───
-  const isActiveSession = !!(currentSession && currentSession.cardId === cardId);
-  const sharedStepIndex = isActiveSession ? currentSession!.currentStepIndex : 0;
-
-  // ─── Catch-up: unified helper ensures consistent rules everywhere ───
-  const { myFirstUncompletedStep, effectiveStep: effectiveSharedStep, isCatchingUp } =
-    getCatchUpState(myCompletedSteps, sharedStepIndex, isActiveSession);
-
-  // ─── Determine if card is fully explored ───
-  const isFullyExplored = cardId
-    ? (hasCompletedNormalizedSession || (journeyState?.exploredCardIds?.includes(cardId) ?? false))
-    : false;
-  const allStepsCompleted = STEP_ORDER.every((_, i) => myCompletedSteps.includes(i));
-
-  // ─── Determine initial view state ───
-  const isReturningUser = !!(isActiveSession || existingConversation);
-
-  // For revisit mode, use local navigation; otherwise follow shared step
+  // ─── Step index: driven entirely by normalized session ───
+  // For revisit mode, use local navigation; otherwise follow normalized step
   const initialRevisitStep = (() => {
     const stepParam = searchParams.get('step');
     if (stepParam !== null) {
@@ -157,7 +120,6 @@ export default function CardView() {
   const focusNoteParam = searchParams.get('focusNote');
   const promptParam = searchParams.get('prompt');
   const initialFocusNote = (() => {
-    // Support both ?focusNote= (legacy) and ?prompt= (new deep link)
     const raw = focusNoteParam ?? promptParam;
     if (raw === null) return null;
     const parsed = parseInt(raw, 10);
@@ -165,80 +127,37 @@ export default function CardView() {
   })();
 
   // The step the user sees
-  const currentStepIndex = isRevisitMode ? revisitStepIndex : effectiveSharedStep;
+  const currentStepIndex = isRevisitMode ? revisitStepIndex : currentStepIndexFromSession;
 
-  // Has the current user already completed the current shared step?
-  const userCompletedCurrentStep = !isRevisitMode && myCompletedSteps.includes(currentStepIndex);
+  // Waiting state from normalized session
+  const userCompletedCurrentStep = !isRevisitMode && normalizedSession.waiting;
 
-  // Has the partner completed the current shared step?
-  const partnerCompletedCurrentStep = (() => {
-    if (isRevisitMode || !cardId) return false;
-    const perUser = journeyState?.sessionProgress?.[cardId]?.perUser;
-    if (!perUser) return false;
-    return Object.entries(perUser).some(
-      ([id, data]) => id !== uid && data.completedSteps?.includes(currentStepIndex)
-    );
-  })();
-  const bothCompleted = userCompletedCurrentStep && partnerCompletedCurrentStep;
+  // ─── Determine if card is fully explored ───
+  const isFullyExplored = hasCompletedNormalizedSession;
+
+  // ─── Determine initial view state ───
+  const isReturningUser = !!(isActiveSession || existingConversation);
 
   // View gates
-  const [showOverview] = useState(false);
-  const [showReentry] = useState(false);
   const [showCompletion, setShowCompletion] = useState(
     devState === 'completed' ? true :
-    !isRevisitMode && isReturningUser && (isFullyExplored || allStepsCompleted)
+    !isRevisitMode && isReturningUser && isFullyExplored
   );
 
   // Dev state: force waiting view
   const devWaiting = devState === 'waiting';
   
-  
   const [reviewOpen, setReviewOpen] = useState(false);
 
-  // Initiator nudge: show once if same partner started last 2 sessions and current user is the other
-  const [initiatorNudgeDismissed, setInitiatorNudgeDismissed] = useState(false);
-  const showInitiatorNudge = (() => {
-    if (initiatorNudgeDismissed || isRevisitMode) return false;
-    const inits = journeyState?.lastInitiators;
-    if (!inits || inits.length < 2) return false;
-    const [prev, last] = inits;
-    return prev === last && last !== uid;
-  })();
-
-  // Auto-dismiss after first render
-  useEffect(() => {
-    if (showInitiatorNudge) {
-      const timer = setTimeout(() => setInitiatorNudgeDismissed(true), 8000);
-      return () => clearTimeout(timer);
-    }
-  }, [showInitiatorNudge]);
-
   const sectionViewRef = useRef<SectionViewHandle>(null);
-  // ConflictingSessionModal removed — route guard handles this
-  const [proposalSent, setProposalSent] = useState(false);
-  const proposalTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const [showProposalSheet, setShowProposalSheet] = useState(false);
 
-  const { sendProposal, proposals } = useProposalsContext();
+  const { proposals } = useProposalsContext();
 
-  // ─── Proposal gate: when paired, new cards need mutual agreement ───
+  // ─── Proposal gate ───
   const isPaired = memberCount >= 2;
-  // Check if BOTH partners have progress (not just one solo user)
-  const cardProgress = cardId ? journeyState?.sessionProgress?.[cardId] : null;
-  const perUserEntries = cardProgress?.perUser ? Object.keys(cardProgress.perUser) : [];
-  const hasMutualProgress = isPaired ? perUserEntries.length >= 2 : !!cardProgress;
   const hasAcceptedProposal = !!(cardId && proposals.some(
     p => p.card_id === cardId && p.status === 'accepted'
   ));
-  const hasPendingProposalForCard = !!(cardId && proposals.some(
-    p => p.card_id === cardId && p.status === 'pending'
-  ));
-  // Allow session if: solo, both have progress, has accepted proposal, or revisit
-  const canStartSharedSession = !isPaired || hasMutualProgress || hasAcceptedProposal || isRevisitMode;
-  const [autoProposalSent, setAutoProposalSent] = useState(false);
-  // Non-blocking: show a propose banner instead of blocking the user
-  const showProposeBanner = isPaired && !canStartSharedSession && !isActiveSession && !isRevisitMode && !showCompletion && !hasPendingProposalForCard;
-  // Conflicting session logic removed — ActiveSessionGuard redirects before this renders
 
   // ─── Save conversation for local resume ───
   useEffect(() => {
@@ -249,36 +168,55 @@ export default function CardView() {
         saveConversation(card.id, currentSection.id, currentStepIndex);
       }
     }
-  }, [currentStepIndex, myCompletedSteps.length, card]);
+  }, [currentStepIndex, card, isRevisitMode, saveConversation]);
 
-  // ─── Show completion directly when card is fully explored ───
+  // ─── Show completion when normalized session ends ───
   useEffect(() => {
     if (isRevisitMode) return;
+    // If session was active but now null/completed, show completion
     if (!showCompletion && isFullyExplored) {
       setShowCompletion(true);
     }
-  }, [isFullyExplored, isRevisitMode]);
+  }, [isFullyExplored, isRevisitMode, showCompletion]);
 
-  // ─── Show stage choice when effective step advances (shared or catch-up) ───
-  const prevEffectiveStepRef = useRef(effectiveSharedStep);
+  // ─── Auto-show completion when session status becomes completed ───
   useEffect(() => {
-    prevEffectiveStepRef.current = effectiveSharedStep;
-  }, [effectiveSharedStep]);
-
-  // Auto-start session when entering a new card (gated by proposal acceptance when paired)
-  const hasAutoStarted = useRef(false);
-  useEffect(() => {
-    // Solo gate: never auto-start sessions when unpaired
-    if (!isPaired) return;
-    if (!hasAutoStarted.current && !isActiveSession && !isRevisitMode && !showCompletion && card && category) {
-      if (canStartSharedSession) {
-        hasAutoStarted.current = true;
-        startSession(category.id, card.id);
-      }
+    if (isRevisitMode) return;
+    // activeSessionId was set, but normalized session shows no active session → completed
+    if (activeSessionId && !normalizedSession.sessionId && !normalizedSession.loading && !showCompletion) {
+      setShowCompletion(true);
     }
-  }, [isPaired, isActiveSession, isRevisitMode, showCompletion, card, category, startSession, canStartSharedSession]);
+  }, [activeSessionId, normalizedSession.sessionId, normalizedSession.loading, isRevisitMode, showCompletion]);
 
-  // Proposal gate removed — users can browse freely. Propose banner shown inline instead.
+  // ─── Handle step completion via RPC ───
+  const handleCompleteStep = useCallback(async () => {
+    if (!normalizedSession.sessionId || isRevisitMode) return;
+
+    const { data, error } = await supabase.rpc('complete_couple_session_step', {
+      p_session_id: normalizedSession.sessionId,
+      p_step_index: currentStepIndex,
+    });
+
+    if (error) {
+      console.error('Step completion error:', error);
+      toast.error('Kunde inte markera steget som klart');
+      return;
+    }
+
+    const result = Array.isArray(data) ? data[0] : data;
+    if (result?.partner_left) {
+      toast.error('Din partner har lämnat utrymmet');
+      navigate('/');
+      return;
+    }
+
+    if (result?.is_session_complete) {
+      setShowCompletion(true);
+    }
+
+    // Refetch normalized state to pick up changes
+    await normalizedSession.refetch();
+  }, [normalizedSession, currentStepIndex, isRevisitMode, navigate]);
 
   if (!card) {
     return (
@@ -294,11 +232,9 @@ export default function CardView() {
 
   const currentSection = card.sections.find(s => s.type === STEP_ORDER[currentStepIndex]);
 
-
   // ─── Handle "Next" press ───
   const handleNextStep = () => {
     if (isRevisitMode) {
-      // In revisit mode, just navigate linearly
       if (revisitStepIndex < STEP_ORDER.length - 1) {
         const next = revisitStepIndex + 1;
         setRevisitStepIndex(next);
@@ -312,20 +248,10 @@ export default function CardView() {
 
     // Solo gate: no step completion when unpaired
     if (!isPaired) return;
-    // Mark the current step as completed for THIS user only
-    if (!myCompletedSteps.includes(currentStepIndex)) {
-      completeSessionStep(currentStepIndex);
-    }
-    // UI stays on the same step — shared step will advance when both complete
-  };
 
-  const handleStartFromOverview = () => {
-    if (!isPaired) return; // Solo gate
-    if (card && category && !isActiveSession) {
-      startSession(category.id, card.id);
-    }
+    // Complete step via normalized RPC
+    handleCompleteStep();
   };
-
 
   // ─── History view: returning to a fully-explored card with no active session ───
   const isHistoryView = showCompletion && !activeSessionId;
@@ -338,11 +264,9 @@ export default function CardView() {
         categoryId={category?.id}
         categoryTitle={category?.title}
         onExploreAgain={() => {
-          if (card && category && space) {
-            // Create a new card_session — does NOT overwrite previous
-            startSession(category.id, card.id);
-            setShowCompletion(false);
-          }
+          // In normalized model, new sessions are only started via proposal flow
+          // Navigate to home where user can propose a new session
+          navigate('/');
         }}
       />
     );
@@ -350,10 +274,6 @@ export default function CardView() {
 
   // ─── Completion screen (just finished — active session still open) ───
   if (showCompletion) {
-    const suggestedCardId = journeyState?.suggestedNextCardId;
-    const suggestedCard = suggestedCardId ? getCardById(suggestedCardId) : null;
-    const suggestedCategory = suggestedCard ? getCategoryById(suggestedCard.categoryId) : null;
-
     return (
       <div className="min-h-screen page-bg">
         <Header
@@ -418,11 +338,6 @@ export default function CardView() {
     );
   }
 
-  // ─── Re-entry: removed — go directly to conversation ───
-
-
-  // ─── Active conversation view ───
-
   // ─── Active conversation view ───
   return (
     <div className="min-h-screen page-bg">
@@ -437,7 +352,7 @@ export default function CardView() {
         <div className="px-4 pt-6 pb-4 border-b border-border/15">
           <StepProgressIndicator
             currentStepIndex={currentStepIndex}
-            completedSteps={myCompletedSteps}
+            completedSteps={[]} // Normalized model tracks completions server-side
           />
         </div>
       )}
@@ -451,9 +366,6 @@ export default function CardView() {
         >
           {card.title}
         </motion.h1>
-        {!isRevisitMode && showInitiatorNudge && (
-          <p className="text-[11px] text-muted-foreground/40 text-center mt-2">Den här gången kan du börja.</p>
-        )}
         {isRevisitMode && (
           <div className="mt-4 text-center space-y-0.5">
             <p className="text-[11px] text-muted-foreground/50 tracking-wide">Förhandskoll</p>
@@ -470,9 +382,7 @@ export default function CardView() {
           </motion.p>
         )}
 
-        {/* Propose banner & pending proposal banner removed during hardening —
-             proposal creation is only allowed from the Home IDLE proposal mode surface.
-             No new-intention triggers inside an active card view. */}
+        {/* Proposal creation is only allowed from the Home IDLE proposal mode surface. */}
       </div>
 
 
@@ -487,14 +397,14 @@ export default function CardView() {
               exit={{ opacity: 0 }}
               transition={{ duration: 0.15 }}
             >
-              {/* Partner-ahead awareness — no urgency, just clarity */}
-              {isPaired && !isRevisitMode && partnerCompletedCurrentStep && !userCompletedCurrentStep && !devWaiting && (
+              {/* Waiting state — partner hasn't completed this step yet */}
+              {isPaired && !isRevisitMode && userCompletedCurrentStep && !devWaiting && (
                 <p className="text-xs text-muted-foreground/50 text-center mb-6">
-                  Din partner har redan markerat detta steg som klart.
+                  Väntar på att din partner ska markera steget som klart.
                 </p>
               )}
 
-              <SectionView ref={sectionViewRef} section={currentSection} card={card} isRevisitMode={isRevisitMode} initialFocusNoteIndex={isRevisitMode ? initialFocusNote : null} focusPromptIndex={isRevisitMode ? initialFocusNote : null} disableShare={!!currentSession || (!canStartSharedSession && !isActiveSession)} />
+              <SectionView ref={sectionViewRef} section={currentSection} card={card} isRevisitMode={isRevisitMode} initialFocusNoteIndex={isRevisitMode ? initialFocusNote : null} focusPromptIndex={isRevisitMode ? initialFocusNote : null} disableShare={isActiveSession} />
 
               {/* Session-driven reflection for paired users */}
               {isPaired && !isRevisitMode && cardId && (
@@ -502,9 +412,7 @@ export default function CardView() {
                   cardId={cardId}
                   stepIndex={currentStepIndex}
                   onReady={() => {
-                    if (!myCompletedSteps.includes(currentStepIndex)) {
-                      completeSessionStep(currentStepIndex);
-                    }
+                    handleCompleteStep();
                   }}
                   onLocked={() => {
                     if (currentStepIndex >= STEP_ORDER.length - 1) {
@@ -550,14 +458,11 @@ export default function CardView() {
               )}
 
               {/* Review drawer */}
-              <ReviewDrawer open={reviewOpen} onClose={() => setReviewOpen(false)} card={card} activeStepIndex={currentStepIndex} completedSteps={myCompletedSteps} />
+              <ReviewDrawer open={reviewOpen} onClose={() => setReviewOpen(false)} card={card} activeStepIndex={currentStepIndex} completedSteps={[]} />
             </motion.div>
           )}
         </AnimatePresence>
       </div>
-
-      {/* ConflictingSessionModal removed — ActiveSessionGuard handles this */}
-      {/* ProposalSheet removed from CardView — proposals only via Home IDLE mode */}
     </div>
   );
 }
