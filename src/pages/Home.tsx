@@ -299,7 +299,7 @@ export default function Home() {
       {mode === 'solo' && space && (
         <SoloInviteSection
           fetchInviteInfo={fetchInviteInfo}
-          onJoinedSpace={() => window.location.reload()}
+          onJoinedSpace={() => { /* no-op — realtime providers handle state update */ }}
           hadPartnerBefore={hadPartnerBefore}
         />
       )}
