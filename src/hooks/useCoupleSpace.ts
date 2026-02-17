@@ -132,6 +132,7 @@ export function useCoupleSpace(): CoupleSpaceState {
   }, [fetchSpace]);
 
   // Realtime: update memberCount when couple_members changes
+  // No immediate fetch — fetchSpace already set the initial count.
   useEffect(() => {
     if (!space?.id) return;
     let cancelled = false;
@@ -144,15 +145,10 @@ export function useCoupleSpace(): CoupleSpaceState {
         .is('left_at', null);
       if (!cancelled) {
         const newCount = count ?? 1;
-        const prev = prevMemberCountRef.current;
-        // Partner join is handled by PartnerConnectedBanner (persistent checkpoint)
         prevMemberCountRef.current = newCount;
         setMemberCount(newCount);
       }
     };
-
-    // Immediate fetch
-    fetchCount();
 
     const channel = supabase
       .channel(`couple_members_${space.id}`)

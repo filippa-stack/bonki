@@ -159,14 +159,8 @@ export function useProposals() {
     // 0. Verify caller is active member of the proposal's space
     if (!space?.id) return { success: false, errorMessage: 'no_active_space' };
 
-    const { count: activeMemberCount } = await supabase
-      .from('couple_members')
-      .select('id', { count: 'exact', head: true })
-      .eq('couple_space_id', space.id)
-      .is('left_at', null)
-      .eq('status', 'active');
-
-    if (!activeMemberCount || activeMemberCount < 2) {
+    // Use memberCount from context instead of extra network request
+    if (memberCount < 2) {
       return { success: false, errorMessage: 'Detta utrymme är inte längre aktivt.' };
     }
 
@@ -216,7 +210,7 @@ export function useProposals() {
     }
 
     return { success: true, session: data?.session };
-  }, [space]);
+  }, [space, memberCount]);
 
   // Get pending proposals from partner (not own)
   const incomingProposals = proposals.filter(
