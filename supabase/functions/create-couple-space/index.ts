@@ -131,7 +131,6 @@ Deno.serve(async (req) => {
       .from("couple_progress")
       .insert({
         couple_space_id: spaceId,
-        current_session: null,
         journey_state: null,
         updated_by: userId,
       } as any)

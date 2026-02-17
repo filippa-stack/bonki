@@ -92,10 +92,6 @@ Deno.serve(async (req) => {
         .eq("couple_space_id", currentMembership.couple_space_id)
         .eq("status", "active");
 
-      await admin
-        .from("couple_progress")
-        .update({ current_session: null, updated_by: userId })
-        .eq("couple_space_id", currentMembership.couple_space_id);
 
       await admin.from("system_events").insert({
         couple_space_id: currentMembership.couple_space_id,
@@ -135,7 +131,6 @@ Deno.serve(async (req) => {
       .from("couple_progress")
       .insert({
         couple_space_id: newSpaceId,
-        current_session: null,
         journey_state: null,
         updated_by: userId,
       } as any)

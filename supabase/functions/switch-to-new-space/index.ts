@@ -93,11 +93,6 @@ Deno.serve(async (req) => {
         })
         .eq("id", membership.couple_space_id);
 
-      // Clear shared session state so remaining partner isn't stuck
-      await admin
-        .from("couple_progress")
-        .update({ current_session: null, updated_by: userId })
-        .eq("couple_space_id", membership.couple_space_id);
 
       // Always cancel active sessions when a member leaves
       await admin
@@ -161,7 +156,6 @@ Deno.serve(async (req) => {
       .from("couple_progress")
       .insert({
         couple_space_id: newSpaceId,
-        current_session: null,
         journey_state: null,
         updated_by: userId,
       } as any);

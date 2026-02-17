@@ -94,11 +94,6 @@ Deno.serve(async (req) => {
       .eq("couple_space_id", couple_space_id)
       .eq("status", "active");
 
-    await adminClient
-      .from("couple_progress")
-      .update({ current_session: null, updated_by: userId })
-      .eq("couple_space_id", couple_space_id);
-
     return new Response(
       JSON.stringify({ success: true }),
       { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
