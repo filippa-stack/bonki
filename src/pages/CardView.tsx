@@ -372,7 +372,7 @@ export default function CardView() {
               Ta en stund.
             </h2>
             <p className="text-sm text-muted-foreground leading-relaxed">
-              Det ni just delade får landa här.
+              Det ni just delade får landa. Här kan ni skriva en gemensam sammanfattning om ni vill.
             </p>
           </motion.div>
 
