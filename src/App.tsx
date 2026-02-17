@@ -9,6 +9,7 @@ import { AppProvider, useApp } from "@/contexts/AppContext";
 import { DevStateProvider } from "@/contexts/DevStateContext";
 import RemoteCardCue from "@/components/RemoteCardCue";
 import ActiveSessionGuard from "@/components/ActiveSessionGuard";
+import DevModeBadge from "@/components/DevModeBadge";
 import ProposalAcceptanceWatcher from "@/components/ProposalAcceptanceWatcher";
 import { SiteSettingsProvider } from "@/contexts/SiteSettingsContext";
 import PageTransition from "@/components/PageTransition";
@@ -139,6 +140,7 @@ const App = () => (
           <Sonner />
           <BrowserRouter>
             <DevStateProvider>
+              <DevModeBadge />
               <AppRoutes />
             </DevStateProvider>
           </BrowserRouter>
