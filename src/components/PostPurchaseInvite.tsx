@@ -36,10 +36,10 @@ export default function PostPurchaseInvite({
         <div className="text-center space-y-3">
           <img src={bonkiLogo} alt="Still Us" className="h-10 w-auto mx-auto" />
           <h1 className="text-display text-foreground">
-            {t('post_purchase.title', 'Ert utrymme är redo')}
+            {t('post_purchase.title', 'Klart.')}
           </h1>
           <p className="text-body text-muted-foreground leading-relaxed">
-            {t('post_purchase.subtitle', 'Nu kan du bjuda in din partner. Ni väljer själva vad som delas.')}
+            {t('post_purchase.subtitle', 'Bjud in din partner så får hen tillgång utan att betala.')}
           </p>
         </div>
 
@@ -56,7 +56,7 @@ export default function PostPurchaseInvite({
             onClick={onContinue}
             className="text-muted-foreground hover:text-foreground gap-2"
           >
-            {t('post_purchase.skip_invite', 'Bjud in senare')}
+            {t('post_purchase.skip_invite', 'Gör senare')}
             <ArrowRight className="w-4 h-4" />
           </Button>
         </div>
