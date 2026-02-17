@@ -68,6 +68,7 @@ function ProtectedRoutes() {
             <Route path="/card/:cardId" element={<PageTransition><CardView /></PageTransition>} />
             <Route path="/saved" element={<PageTransition><SavedConversations /></PageTransition>} />
             <Route path="/shared" element={<PageTransition><SharedSummary /></PageTransition>} />
+            <Route path="/join" element={<JoinRedirectGuard />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </AnimatePresence>
@@ -85,7 +86,6 @@ function RemoteCardCueGlobal() {
 }
 
 function JoinRedirectGuard() {
-  const { user, loading } = useAuth();
   const location = useLocation();
 
   const searchParams = new URLSearchParams(location.search);
@@ -99,27 +99,7 @@ function JoinRedirectGuard() {
     }
   }, [token, code]);
 
-  if (loading) return (
-    <div className="min-h-screen flex items-center justify-center bg-background">
-      <div className="h-8 w-8 rounded-full bg-muted/30 animate-pulse" />
-    </div>
-  );
-
-  if (!user) {
-    return <Navigate to="/login" replace state={{ returnTo: '/join' + location.search }} />;
-  }
-
-  return (
-    <CoupleSpaceProvider>
-      <NormalizedSessionProvider>
-        <ProposalsProvider>
-          <AppProvider>
-            <JoinSpace />
-          </AppProvider>
-        </ProposalsProvider>
-      </NormalizedSessionProvider>
-    </CoupleSpaceProvider>
-  );
+  return <JoinSpace />;
 }
 
 function AppRoutes() {
@@ -141,7 +121,6 @@ function AppRoutes() {
   return (
     <Routes>
       <Route path="/login" element={user ? <Navigate to="/" replace /> : <Login />} />
-      <Route path="/join" element={<JoinRedirectGuard />} />
       <Route path="/*" element={<ProtectedRoutes />} />
     </Routes>
   );
