@@ -1,3 +1,12 @@
+/**
+ * MANUAL CONFIDENCE CHECK — TWO DEVICES
+ *
+ * 1) Device A (partner_a) proposes → Device B (partner_b) accepts → Device A sees Home switch to active without refresh.
+ * 2) Device A completes step 1 → Device B sees waiting/progress update.
+ * 3) Device B taps "Inte nu" on incoming proposal → saved_for_later persists; "SPARAT FÖRSLAG" visible (realtime or after refresh).
+ * 4) Device B taps "Ta bort" → it disappears with no console warnings.
+ */
+
 // SESSION MODEL LOCK:
 // Do NOT use couple_progress.current_session.
 // The JSON session model is deprecated.
