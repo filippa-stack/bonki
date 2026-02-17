@@ -28,7 +28,7 @@ import bonkiLogo from '@/assets/bonki-logo.png';
 import { useThemeVars } from '@/hooks/useThemeVars';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
-import { useProposals } from '@/hooks/useProposals';
+import { useProposalsContext } from '@/contexts/ProposalsContext';
 import { DEV_MOCK } from '@/hooks/useDevState';
 import { useDevState } from '@/contexts/DevStateContext';
 import { useAppMode } from '@/hooks/useAppMode';
@@ -78,7 +78,7 @@ export default function Home() {
   const { settings } = useSiteSettings();
   const { user } = useAuth();
   const { space, displayMemberCount, userRole, fetchInviteInfo } = useCoupleSpaceContext();
-  const { incomingProposals: _rawProposals, sendProposal: sendDbProposal, updateProposalStatus, activateSession } = useProposals();
+  const { incomingProposals: _rawProposals, sendProposal: sendDbProposal, updateProposalStatus, activateSession } = useProposalsContext();
   const devState = useDevState();
   const appModeState = useAppMode();
   const { mode, activeSession, normalizedSession } = appModeState;
