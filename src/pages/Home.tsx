@@ -117,6 +117,8 @@ export default function Home() {
   const { mode, activeSession, normalizedSession } = appModeState;
 
   const [acceptingProposalId, setAcceptingProposalId] = useState<string | null>(null);
+  const [snoozeUntil, setSnoozeUntil] = useState(0);
+  const isSnoozed = Date.now() < snoozeUntil;
 
   // Proposal mode state
   const [isProposalMode, setIsProposalMode] = useState(false);
@@ -302,7 +304,7 @@ export default function Home() {
         />
       )}
 
-      {mode === 'proposal' && (() => {
+      {mode === 'proposal' && !isSnoozed && (() => {
         const proposal = appModeState.incomingProposals[0];
         if (!proposal) return null;
         const proposalCard = getCardById(proposal.card_id) || (devState ? { title: DEV_MOCK.mockCard.title, subtitle: DEV_MOCK.mockCard.subtitle } as any : null);
@@ -354,7 +356,7 @@ export default function Home() {
                   size="lg"
                   className="w-full h-12 text-muted-foreground hover:text-foreground font-normal"
                   disabled={isAccepting}
-                  onClick={() => navigate('/')}
+                  onClick={() => setSnoozeUntil(Date.now() + 15 * 60 * 1000)}
                 >
                   Inte nu
                 </Button>
