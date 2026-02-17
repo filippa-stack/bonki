@@ -159,7 +159,7 @@ export default function SessionStepReflection({
         <textarea
           value={displayText}
           onChange={(e) => handleChange(e.target.value)}
-          placeholder="Skriv en tanke…"
+          placeholder="Skriv något ni vill säga."
           className="w-full min-h-[72px] p-3 bg-transparent resize-none focus:outline-none focus:ring-0 text-sm text-foreground placeholder:text-muted-foreground/60"
         />
         <div className="flex items-center justify-between px-3 pb-3">
