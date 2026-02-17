@@ -175,20 +175,16 @@ export function useProposals() {
       body: { proposal_id: proposalId },
     });
 
-    if (res.error) {
-      console.error('[DIAG] activate-session edge fn error:', {
-        message: res.error.message,
-        name: res.error.name,
-        context: res.error.context,
-        full: res.error,
-      });
-      return { success: false, errorMessage: `Edge fn: ${res.error.message}` };
-    }
-
     const data = res.data as any;
-    if (!data?.success) {
-      console.error('[DIAG] activate-session returned non-success:', data);
-      return { success: false, errorMessage: `Edge fn data: ${JSON.stringify(data)}` };
+
+    if (res.error || !data?.success) {
+      // Extract structured error from edge function response
+      const edgeErr = data?.error;
+      const errMsg = edgeErr?.message || res.error?.message || 'unknown error';
+      const errCode = edgeErr?.code || '';
+      const errDetails = edgeErr?.details || '';
+      console.error('[DIAG] activate-session error:', { errMsg, errCode, errDetails, raw: data, fetchError: res.error });
+      return { success: false, errorMessage: `${errMsg}${errCode ? ` (${errCode})` : ''}${errDetails ? ` — ${errDetails}` : ''}` };
     }
 
     // 2. Dual-write: normalized session via RPC
