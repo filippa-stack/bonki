@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useCoupleSpace } from '@/hooks/useCoupleSpace';
 import { supabase } from '@/integrations/supabase/client';
@@ -9,12 +9,25 @@ const SEEN_KEY = 'partner_left_seen';
 
 interface Props {
   onInvite: () => void;
+  /** Called when partner_left_space is detected — clears session/journey in AppContext */
+  onPartnerLeft: () => void;
 }
 
-export default function PartnerLeftBanner({ onInvite }: Props) {
+export default function PartnerLeftBanner({ onInvite, onPartnerLeft }: Props) {
   const { user } = useAuth();
-  const { space } = useCoupleSpace();
+  const { space, refreshSpace } = useCoupleSpace();
   const [visible, setVisible] = useState(false);
+  const [hasTriggeredClear, setHasTriggeredClear] = useState(false);
+
+  const handleDetected = useCallback(() => {
+    setVisible(true);
+    if (!hasTriggeredClear) {
+      setHasTriggeredClear(true);
+      onPartnerLeft();
+      // Refresh space to update memberCount → triggers solo mode
+      refreshSpace();
+    }
+  }, [hasTriggeredClear, onPartnerLeft, refreshSpace]);
 
   useEffect(() => {
     if (!user || !space) return;
@@ -31,7 +44,7 @@ export default function PartnerLeftBanner({ onInvite }: Props) {
         .limit(1);
 
       if (data && (data as any[]).length > 0) {
-        setVisible(true);
+        handleDetected();
       }
     };
 
@@ -49,7 +62,7 @@ export default function PartnerLeftBanner({ onInvite }: Props) {
         },
         (payload: any) => {
           if (payload.new?.type === 'partner_left_space') {
-            setVisible(true);
+            handleDetected();
           }
         }
       )
@@ -58,7 +71,7 @@ export default function PartnerLeftBanner({ onInvite }: Props) {
     return () => {
       supabase.removeChannel(channel);
     };
-  }, [user, space]);
+  }, [user, space, handleDetected]);
 
   const dismiss = () => {
     if (space) localStorage.setItem(SEEN_KEY, space.id);
@@ -77,7 +90,7 @@ export default function PartnerLeftBanner({ onInvite }: Props) {
         Det här utrymmet är nu bara ditt.
       </p>
       <p className="text-sm text-muted-foreground leading-relaxed">
-        Din partner har lämnat det här utrymmet. Du kan bjuda in någon ny när du vill.
+        Din partner har lämnat det här utrymmet. Du kan fortsätta själv eller bjuda in någon ny.
       </p>
       <div className="flex gap-3 pt-1">
         <Button
