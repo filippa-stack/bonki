@@ -10,6 +10,7 @@ interface CoupleSpaceData {
   partner_a_name: string | null;
   partner_b_name: string | null;
   created_at: string;
+  paid_at: string | null;
 }
 
 interface InviteInfo {
