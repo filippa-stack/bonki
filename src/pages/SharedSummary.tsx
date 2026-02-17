@@ -12,8 +12,9 @@ import { useDevState } from '@/contexts/DevStateContext';
 import Header from '@/components/Header';
 import SharedTimelineItem from '@/components/SharedTimelineItem';
 import ReflectionMemoryCard from '@/components/ReflectionMemoryCard';
-import { Search, Filter, ChevronDown } from 'lucide-react';
+import { Search, Filter, ChevronDown, Share2, Loader2 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
 import {
   Select,
   SelectContent,
@@ -21,6 +22,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { toast } from 'sonner';
 
 export interface SharedNoteRow {
   id: string;
@@ -41,7 +43,25 @@ export default function SharedSummary() {
   const navigate = useNavigate();
   const { categories, getCardById, getCategoryById, journeyState, cards } = useApp();
   const { user } = useAuth();
-  const { space } = useCoupleSpaceContext();
+  const { space, displayMemberCount, fetchInviteInfo } = useCoupleSpaceContext();
+  const [inviteLoading, setInviteLoading] = useState(false);
+  const isSolo = displayMemberCount < 2;
+
+  const handleShareInvite = async () => {
+    setInviteLoading(true);
+    try {
+      const info = await fetchInviteInfo();
+      if (!info) { toast.error('Kunde inte hämta inbjudan'); return; }
+      const link = `${window.location.origin}/join?token=${info.invite_token}`;
+      if (navigator.share) {
+        try { await navigator.share({ title: 'Still Us', text: link }); return; } catch (e) { if ((e as Error).name === 'AbortError') return; }
+      }
+      await navigator.clipboard.writeText(link);
+      toast.success('Länk kopierad');
+    } finally {
+      setInviteLoading(false);
+    }
+  };
 
   const [searchQuery, setSearchQuery] = useState('');
   const [categoryFilter, setCategoryFilter] = useState<string>('all');
@@ -207,19 +227,50 @@ export default function SharedSummary() {
 
       <div className="px-6 pt-20 pb-24 mx-auto" style={{ maxWidth: 540 }}>
 
-        {/* ─── Header ─── */}
+        {/* ─── Title ─── */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.15 }}
           className="mb-10 text-center"
         >
-          <h1 className="font-serif text-2xl font-semibold text-foreground tracking-tight">Er historia</h1>
-          <p className="text-sm text-muted-foreground/60 mt-2">Avslutade samtal och delade reflektioner</p>
+          <h1 className="font-serif text-2xl font-semibold text-foreground tracking-tight">Vårt utrymme</h1>
+          {!isSolo && (
+            <p className="text-sm text-muted-foreground/60 mt-2">Avslutade samtal och delade reflektioner</p>
+          )}
         </motion.div>
 
-        {/* ─── Empty state ─── */}
-        {!hasContent && !hasActiveFilter && !effectiveLoading && (
+        {/* ─── Solo empty state ─── */}
+        {isSolo && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.15 }}
+            className="text-center mb-10"
+          >
+            <p className="text-sm text-muted-foreground leading-relaxed mb-8">
+              Här samlas det ni gör tillsammans. Bjud in din partner när du vill — då blir rummet ert på riktigt.
+            </p>
+            <Button
+              size="lg"
+              onClick={handleShareInvite}
+              disabled={inviteLoading}
+              className="w-full h-14 rounded-2xl gap-2 font-normal"
+            >
+              {inviteLoading ? (
+                <Loader2 className="w-4 h-4 animate-spin" />
+              ) : (
+                <>
+                  <Share2 className="w-4 h-4" />
+                  Dela länk
+                </>
+              )}
+            </Button>
+          </motion.div>
+        )}
+
+        {/* ─── Empty state (paired, no content yet) ─── */}
+        {!isSolo && !hasContent && !hasActiveFilter && !effectiveLoading && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -242,7 +293,7 @@ export default function SharedSummary() {
           </div>
         ) : (
           <>
-            {hasContent && (<>
+            {!isSolo && hasContent && (<>
 
               {/* ═══════════════════════════════════════════
                   SECTION 1: "Nyligen delat" — Memory cards
