@@ -1,0 +1,1 @@
+ALTER TABLE public.couple_progress DROP COLUMN current_session;
