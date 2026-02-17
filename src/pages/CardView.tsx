@@ -63,8 +63,11 @@ export default function CardView() {
   const devState = useDevState();
 
   // Active card_session ID for takeaways on the completion screen
-  const [activeSessionId, setActiveSessionId] = useState<string | null>(null);
+  const [activeSessionId, setActiveSessionId] = useState<string | null>(
+    devState ? 'dev-session' : null
+  );
   useEffect(() => {
+    if (devState) return; // Skip DB query in dev mode
     if (!space || !cardId) return;
     supabase
       .from('card_sessions')
@@ -76,7 +79,7 @@ export default function CardView() {
       .limit(1)
       .single()
       .then(({ data }) => { if (data) setActiveSessionId(data.id); });
-  }, [space, cardId]);
+  }, [space, cardId, devState]);
 
   const card = cardId ? getCardById(cardId) : undefined;
   const category = card ? getCategoryById(card.categoryId) : undefined;
