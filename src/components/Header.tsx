@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useApp } from '@/contexts/AppContext';
 import { useAuth } from '@/contexts/AuthContext';
+import { useNormalizedSessionContext } from '@/contexts/NormalizedSessionContext';
 import { toast } from 'sonner';
 import ColorPicker from '@/components/ColorPicker';
 import {
@@ -48,7 +49,9 @@ export default function Header({
 }: HeaderProps) {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const { backgroundColor, setBackgroundColor, saveStatus, lastSavedAt, saveError, sharedSyncStatus, sharedSyncError, retrySharedSync, currentSession, switchToNewSpace } = useApp();
+  const { backgroundColor, setBackgroundColor, saveStatus, lastSavedAt, saveError, sharedSyncStatus, sharedSyncError, retrySharedSync, switchToNewSpace } = useApp();
+  const normalizedSession = useNormalizedSessionContext();
+  const hasActiveSession = !normalizedSession.loading && !!normalizedSession.sessionId;
   const { signOut } = useAuth();
 
   const handleSignOut = async () => {
@@ -90,7 +93,7 @@ export default function Header({
             </div>
           )}
           {showBackupManager && <BackupManager />}
-          {!currentSession && (
+          {!hasActiveSession && (
             <SharedSpaceLink />
           )}
           {showBackgroundPicker && (
