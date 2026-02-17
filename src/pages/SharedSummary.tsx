@@ -8,7 +8,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useCoupleSpace } from '@/hooks/useCoupleSpace';
 import { useReflectionResponses } from '@/hooks/useReflectionResponses';
 import { supabase } from '@/integrations/supabase/client';
-import { useDevState } from '@/hooks/useDevState';
+import { useDevState } from '@/contexts/DevStateContext';
 import Header from '@/components/Header';
 import SharedTimelineItem from '@/components/SharedTimelineItem';
 import ReflectionMemoryCard from '@/components/ReflectionMemoryCard';

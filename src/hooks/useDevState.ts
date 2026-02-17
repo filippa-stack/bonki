@@ -1,16 +1,14 @@
 /**
- * Dev-only UI state override via ?devState= query parameter.
+ * Dev-only UI state types and mock data.
  * 
- * Overrides RENDERING state only — no DB writes, no edge function calls.
- * Used for screenshot capture and visual QA.
+ * The devState value is read once at app root and exposed via DevStateContext.
+ * Import useDevState from '@/contexts/DevStateContext' to read it.
  *
  * Supported values:
  *   solo | pairedIdle | pairedActive | proposalIncoming
  *   waiting | completed | archiveEmpty | archiveWithHistory
  *   browse  — unlocks all categories & cards for content review
  */
-
-import { useSearchParams } from 'react-router-dom';
 
 export type DevState =
   | 'solo'
@@ -23,35 +21,6 @@ export type DevState =
   | 'archiveWithHistory'
   | 'browse'
   | null;
-
-const VALID_STATES: DevState[] = [
-  'solo',
-  'pairedIdle',
-  'pairedActive',
-  'proposalIncoming',
-  'waiting',
-  'completed',
-  'archiveEmpty',
-  'archiveWithHistory',
-  'browse',
-];
-
-export function useDevState(): DevState {
-  const [params] = useSearchParams();
-
-  // Allow devState in preview builds too (safe: read-only UI override, no DB writes)
-  if (import.meta.env.PROD && !window.location.hostname.includes('preview')) return null;
-
-  const raw = params.get('devState');
-  if (!raw) return null;
-
-  if (VALID_STATES.includes(raw as DevState)) {
-    return raw as DevState;
-  }
-
-  console.warn(`[useDevState] Unknown devState: "${raw}". Valid: ${VALID_STATES.join(', ')}`);
-  return null;
-}
 
 /** Mock data used by dev state overrides */
 export const DEV_MOCK = {

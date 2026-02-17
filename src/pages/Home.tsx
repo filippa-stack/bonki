@@ -27,7 +27,8 @@ import { useThemeVars } from '@/hooks/useThemeVars';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { useProposals } from '@/hooks/useProposals';
-import { useDevState, DEV_MOCK } from '@/hooks/useDevState';
+import { DEV_MOCK } from '@/hooks/useDevState';
+import { useDevState } from '@/contexts/DevStateContext';
 
 const STEP_LABELS = ['Öppnare', 'Tankeväckare', 'Scenario', 'Teamwork'];
 
