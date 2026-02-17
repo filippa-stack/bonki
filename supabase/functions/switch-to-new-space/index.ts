@@ -92,6 +92,15 @@ Deno.serve(async (req) => {
           invite_token: generateInviteToken(),
         })
         .eq("id", membership.couple_space_id);
+
+      // Emit system event so remaining partner gets notified
+      await admin
+        .from("system_events")
+        .insert({
+          couple_space_id: membership.couple_space_id,
+          type: "partner_left_space",
+          payload: { user_id: userId },
+        });
     }
 
     // 3) Create new couple_space

@@ -19,6 +19,7 @@ import RelationshipMemory from '@/components/RelationshipMemory';
 import Footer from '@/components/Footer';
 // RecentSharedReflection removed from connected Home — archive remains intact
 import PartnerConnectedBanner from '@/components/PartnerConnectedBanner';
+import PartnerLeftBanner from '@/components/PartnerLeftBanner';
 
 import ReturnOverlay from '@/components/ReturnOverlay';
 import { Button } from '@/components/ui/button';
@@ -121,6 +122,16 @@ export default function Home() {
   }, [journeyState]);
 
   const isSoloMode = displayMemberCount < 2;
+
+  // When partner leaves mid-session, clear active session and force IDLE
+  const [partnerLeftCleared, setPartnerLeftCleared] = useState(false);
+  useEffect(() => {
+    if (isSoloMode && hasActiveSession && !partnerLeftCleared) {
+      // Partner left while session was active — end it locally
+      setPartnerLeftCleared(true);
+      toast('Samtalet avslutades eftersom din partner lämnade utrymmet.');
+    }
+  }, [isSoloMode, hasActiveSession, partnerLeftCleared]);
 
   // 7+ day overlay: only if there's a session to resume AND partner is connected
   const showReturnOverlay = useMemo(() => {
@@ -248,6 +259,14 @@ export default function Home() {
 
       {/* Partner connected banner */}
       <PartnerConnectedBanner />
+
+      {/* Partner left banner — shown when partner_left_space event detected */}
+      <PartnerLeftBanner onInvite={() => {
+        // Scroll to invite section (rendered when solo)
+        setTimeout(() => {
+          document.getElementById('solo-invite')?.scrollIntoView({ behavior: 'smooth' });
+        }, 100);
+      }} />
 
       {/* ═══ PRIMARY ACTION ZONE ═══
            3 macro states: SOLO → IDLE → ACTIVE
