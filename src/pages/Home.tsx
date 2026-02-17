@@ -197,6 +197,13 @@ export default function Home() {
 
   const returnResumeCardId = activeSession?.cardId || journeyState?.lastOpenedCardId || journeyState?.lastCompletedCardId || null;
 
+  // Clear proposal picker state when an incoming proposal arrives
+  useEffect(() => {
+    if (mode === 'proposal') {
+      setIsProposalMode(false);
+      setProposalCandidate(null);
+    }
+  }, [mode]);
 
   // Computed helpers for proposal mode & highlighted category
   const exploredIds = journeyState?.exploredCardIds || [];
@@ -551,7 +558,7 @@ export default function Home() {
 
       {/* Proposal confirmation sheet */}
       <AnimatePresence>
-        {proposalCandidate && candidateCard && candidateCategory && (
+        {mode === 'idle' && proposalCandidate && candidateCard && candidateCategory && (
            <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
