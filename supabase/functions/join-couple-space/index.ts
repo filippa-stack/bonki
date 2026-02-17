@@ -63,7 +63,8 @@ Deno.serve(async (req) => {
       .from("couple_members")
       .select("id", { count: "exact", head: true })
       .eq("couple_space_id", targetSpace.id)
-      .is("left_at", null);
+      .is("left_at", null)
+      .eq("status", "active");
 
     if ((targetMemberCount ?? 0) >= 2) {
       return new Response(
@@ -77,6 +78,7 @@ Deno.serve(async (req) => {
       .select("id, couple_space_id")
       .eq("user_id", userId)
       .is("left_at", null)
+      .eq("status", "active")
       .maybeSingle();
 
     if (existingMembership) {
@@ -108,6 +110,7 @@ Deno.serve(async (req) => {
       await adminClient
         .from("couple_members")
         .update({
+          status: "left",
           left_at: new Date().toISOString(),
           left_reason: "partner_switch",
           left_by: userId,
@@ -143,7 +146,7 @@ Deno.serve(async (req) => {
 
     const { error: joinError } = await adminClient
       .from("couple_members")
-      .insert({ couple_space_id: targetSpace.id, user_id: userId, role: "partner_b" });
+      .insert({ couple_space_id: targetSpace.id, user_id: userId, role: "partner_b", status: "active" });
 
     if (joinError) {
       console.error("Join error:", joinError);
