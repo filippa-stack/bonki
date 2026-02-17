@@ -39,7 +39,8 @@ const VALID_STATES: DevState[] = [
 export function useDevState(): DevState {
   const [params] = useSearchParams();
 
-  if (!import.meta.env.DEV) return null;
+  // Allow devState in preview builds too (safe: read-only UI override, no DB writes)
+  if (import.meta.env.PROD && !window.location.hostname.includes('preview')) return null;
 
   const raw = params.get('devState');
   if (!raw) return null;
