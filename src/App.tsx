@@ -14,6 +14,7 @@ import ProposalAcceptanceWatcher from "@/components/ProposalAcceptanceWatcher";
 import { SiteSettingsProvider } from "@/contexts/SiteSettingsContext";
 import { CoupleSpaceProvider } from "@/contexts/CoupleSpaceContext";
 import { NormalizedSessionProvider } from "@/contexts/NormalizedSessionContext";
+import { ProposalsProvider } from "@/contexts/ProposalsContext";
 import PageTransition from "@/components/PageTransition";
 import Index from "./pages/Index";
 import Category from "./pages/Category";
@@ -55,6 +56,7 @@ function ProtectedRoutes() {
   return (
     <CoupleSpaceProvider>
     <NormalizedSessionProvider>
+    <ProposalsProvider>
     <AppProvider>
       <RemoteCardCueGlobal />
       <ProposalAcceptanceWatcher />
@@ -71,6 +73,7 @@ function ProtectedRoutes() {
         </AnimatePresence>
       </ActiveSessionGuard>
     </AppProvider>
+    </ProposalsProvider>
     </NormalizedSessionProvider>
     </CoupleSpaceProvider>
   );
@@ -109,9 +112,11 @@ function JoinRedirectGuard() {
   return (
     <CoupleSpaceProvider>
       <NormalizedSessionProvider>
-        <AppProvider>
-          <JoinSpace />
-        </AppProvider>
+        <ProposalsProvider>
+          <AppProvider>
+            <JoinSpace />
+          </AppProvider>
+        </ProposalsProvider>
       </NormalizedSessionProvider>
     </CoupleSpaceProvider>
   );

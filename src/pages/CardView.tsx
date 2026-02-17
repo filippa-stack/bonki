@@ -25,7 +25,7 @@ import { ArrowRight, Home, RotateCcw, BookOpen, Check } from 'lucide-react';
 import SessionTakeaway from '@/components/SessionTakeaway';
 import CompletedSessionView from '@/components/CompletedSessionView';
 
-import { useProposals, Proposal } from '@/hooks/useProposals';
+import { useProposalsContext, type Proposal } from '@/contexts/ProposalsContext';
 import { useDevState } from '@/contexts/DevStateContext';
 import { useNormalizedSessionContext } from '@/contexts/NormalizedSessionContext';
 
@@ -219,7 +219,7 @@ export default function CardView() {
   const proposalTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [showProposalSheet, setShowProposalSheet] = useState(false);
 
-  const { sendProposal, proposals } = useProposals();
+  const { sendProposal, proposals } = useProposalsContext();
 
   // ─── Proposal gate: when paired, new cards need mutual agreement ───
   const isPaired = memberCount >= 2;
