@@ -6,7 +6,7 @@ import { Bell, ChevronDown } from 'lucide-react';
 
 export default function NotificationSettings() {
   const { t } = useTranslation();
-  const { prefs, updatePref } = useNotificationPreferences();
+  const { prefs, loading, updatePref } = useNotificationPreferences();
   const [open, setOpen] = useState(false);
 
   return (
@@ -36,6 +36,7 @@ export default function NotificationSettings() {
               </p>
             </div>
             <Switch
+              disabled={loading}
               checked={prefs.notifySharedReflection}
               onCheckedChange={(checked) => updatePref('notifySharedReflection', checked)}
             />
@@ -51,6 +52,7 @@ export default function NotificationSettings() {
               </p>
             </div>
             <Switch
+              disabled={loading}
               checked={prefs.notifyConversationProgress}
               onCheckedChange={(checked) => updatePref('notifyConversationProgress', checked)}
             />
