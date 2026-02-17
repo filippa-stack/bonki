@@ -21,9 +21,11 @@ Deno.serve(async (req) => {
     });
 
   try {
+    console.log("APPROVE_EDGE_START");
+
     const authHeader = req.headers.get("Authorization");
     if (!authHeader?.startsWith("Bearer ")) {
-      return json({ error: "unauthorized" }, 401);
+      return json({ error: { message: "unauthorized", code: "AUTH_MISSING" } }, 401);
     }
 
     const userClient = createClient(
@@ -36,14 +38,20 @@ Deno.serve(async (req) => {
     const { data: claimsData, error: claimsError } =
       await userClient.auth.getClaims(token);
     if (claimsError || !claimsData?.claims) {
-      return json({ error: "unauthorized" }, 401);
+      return json({ error: { message: "unauthorized", code: "AUTH_CLAIMS" } }, 401);
     }
     const userId = claimsData.claims.sub as string;
 
-    const { proposal_id } = await req.json();
-    if (!proposal_id || typeof proposal_id !== "string") {
-      return json({ error: "missing_proposal_id" }, 400);
+    let bodyJson: any;
+    try { bodyJson = await req.json(); } catch {
+      return json({ error: { message: "invalid_json_body", code: "BODY_PARSE" } }, 400);
     }
+    const { proposal_id } = bodyJson;
+    if (!proposal_id || typeof proposal_id !== "string") {
+      return json({ error: { message: "missing_proposal_id", code: "VALIDATION" } }, 400);
+    }
+
+    console.log("APPROVE_EDGE_PARAMS", { proposal_id, userId });
 
     const admin = createClient(
       Deno.env.get("SUPABASE_URL")!,
@@ -57,30 +65,35 @@ Deno.serve(async (req) => {
       .single();
 
     if (propErr || !proposal) {
-      return json({ error: "proposal_not_found" }, 404);
+      console.error("PROPOSAL_FETCH_FAIL", propErr);
+      return json({ error: { message: "proposal_not_found", code: "NOT_FOUND", details: propErr?.message } }, 404);
     }
 
+    console.log("APPROVE_EDGE_PROPOSAL", { couple_space_id: proposal.couple_space_id, status: proposal.status, card_id: proposal.card_id });
+
     if (proposal.status !== "accepted") {
-      return json({ error: "proposal_not_accepted" }, 409);
+      return json({ error: { message: "proposal_not_accepted", code: "STATUS_CONFLICT", details: `status=${proposal.status}` } }, 409);
     }
 
     if (proposal.expires_at && new Date(proposal.expires_at) < new Date()) {
-      return json({ error: "proposal_expired" }, 410);
+      return json({ error: { message: "proposal_expired", code: "EXPIRED" } }, 410);
     }
 
-    const { data: membership } = await admin
+    const { data: membership, error: memErr } = await admin
       .from("couple_members")
       .select("user_id")
       .eq("couple_space_id", proposal.couple_space_id)
       .is("left_at", null)
       .eq("status", "active");
 
+    console.log("APPROVE_EDGE_MEMBERS", { count: membership?.length, memberIds: membership?.map((m: any) => m.user_id), memErr });
+
     if (!membership || !membership.some((m: any) => m.user_id === userId)) {
-      return json({ error: "not_a_member" }, 403);
+      return json({ error: { message: "not_a_member", code: "FORBIDDEN", details: `userId=${userId}` } }, 403);
     }
 
     if (membership.length < 2) {
-      return json({ error: "partner_not_joined" }, 409);
+      return json({ error: { message: "partner_not_joined", code: "MEMBER_COUNT", details: `active_members=${membership.length}` } }, 409);
     }
 
     // Check for existing active session in couple_sessions
@@ -107,6 +120,8 @@ Deno.serve(async (req) => {
     }
 
     // Create normalized session via RPC
+    console.log("CALLING_RPC activate_couple_session", { couple_space_id: proposal.couple_space_id, category_id: proposal.category_id, card_id: proposal.card_id, step_count: STEP_COUNT });
+
     const { data: sessionId, error: rpcErr } = await admin.rpc(
       "activate_couple_session",
       {
@@ -118,9 +133,11 @@ Deno.serve(async (req) => {
     );
 
     if (rpcErr) {
-      console.error("activate_couple_session RPC error:", rpcErr);
-      return json({ error: "session_activation_failed" }, 500);
+      console.error("RPC_FAIL activate_couple_session", { message: rpcErr.message, code: rpcErr.code, details: rpcErr.details, hint: rpcErr.hint });
+      return json({ error: { message: rpcErr.message || "session_activation_failed", code: rpcErr.code || "RPC_ERROR", details: rpcErr.details || rpcErr.hint } }, 500);
     }
+
+    console.log("RPC_SUCCESS", { sessionId });
 
     const now = new Date().toISOString();
 
@@ -140,8 +157,8 @@ Deno.serve(async (req) => {
         lastActivityAt: now,
       },
     });
-  } catch (err) {
-    console.error("Unexpected error:", err);
-    return json({ error: "internal_error" }, 500);
+  } catch (err: any) {
+    console.error("APPROVE_EDGE_UNCAUGHT", err);
+    return json({ error: { message: err?.message || "internal_error", code: "UNCAUGHT" } }, 500);
   }
 });
