@@ -20,7 +20,7 @@ export default function PurchaseScreen({ onPurchaseComplete }: PurchaseScreenPro
   const [completed, setCompleted] = useState(false);
 
   // Edge-case guard: space is already paid
-  if (isSpacePaid(space?.id)) {
+  if (isSpacePaid(space?.id, (space as any)?.paid_at)) {
     return (
       <div className="min-h-screen page-bg flex items-center justify-center px-6">
         <motion.div

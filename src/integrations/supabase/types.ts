@@ -369,6 +369,7 @@ export type Database = {
           id: string
           invite_code: string
           invite_token: string
+          paid_at: string | null
           partner_a_name: string | null
           partner_b_name: string | null
         }
@@ -377,6 +378,7 @@ export type Database = {
           id?: string
           invite_code: string
           invite_token: string
+          paid_at?: string | null
           partner_a_name?: string | null
           partner_b_name?: string | null
         }
@@ -385,6 +387,7 @@ export type Database = {
           id?: string
           invite_code?: string
           invite_token?: string
+          paid_at?: string | null
           partner_a_name?: string | null
           partner_b_name?: string | null
         }
@@ -829,18 +832,21 @@ export type Database = {
         Row: {
           created_at: string | null
           id: string | null
+          paid_at: string | null
           partner_a_name: string | null
           partner_b_name: string | null
         }
         Insert: {
           created_at?: string | null
           id?: string | null
+          paid_at?: string | null
           partner_a_name?: string | null
           partner_b_name?: string | null
         }
         Update: {
           created_at?: string | null
           id?: string | null
+          paid_at?: string | null
           partner_a_name?: string | null
           partner_b_name?: string | null
         }
