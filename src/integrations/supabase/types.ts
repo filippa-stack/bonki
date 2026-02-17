@@ -907,6 +907,7 @@ export type Database = {
         is_waiting: boolean | null
         is_step_complete: boolean | null
         is_session_complete: boolean | null
+        partner_left: boolean | null
       }
     }
   }
