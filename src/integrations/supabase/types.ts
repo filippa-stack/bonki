@@ -860,6 +860,16 @@ export type Database = {
         }
         Returns: string
       }
+      complete_couple_session_step: {
+        Args: { p_session_id: string; p_step_index: number }
+        Returns: Database["public"]["CompositeTypes"]["step_completion_result"]
+        SetofOptions: {
+          from: "*"
+          to: "step_completion_result"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
       get_current_couple_space_id: { Args: never; Returns: string }
       get_own_invite_info: {
         Args: never
@@ -882,7 +892,11 @@ export type Database = {
       reflection_state: "draft" | "ready" | "revealed" | "locked"
     }
     CompositeTypes: {
-      [_ in never]: never
+      step_completion_result: {
+        is_waiting: boolean | null
+        is_step_complete: boolean | null
+        is_session_complete: boolean | null
+      }
     }
   }
 }
