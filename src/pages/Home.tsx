@@ -116,8 +116,6 @@ export default function Home() {
   const appModeState = useAppMode();
   const { mode, activeSession, normalizedSession } = appModeState;
 
-  // Track dismissed proposals so they don't reappear in the same session
-  const [dismissedProposalIds, setDismissedProposalIds] = useState<Set<string>>(new Set());
   const [acceptingProposalId, setAcceptingProposalId] = useState<string | null>(null);
 
   // Proposal mode state
@@ -305,9 +303,8 @@ export default function Home() {
       )}
 
       {mode === 'proposal' && (() => {
-        const visibleProposals = appModeState.incomingProposals.filter(p => !dismissedProposalIds.has(p.id));
-        if (visibleProposals.length === 0) return null;
-        const proposal = visibleProposals[0];
+        const proposal = appModeState.incomingProposals[0];
+        if (!proposal) return null;
         const proposalCard = getCardById(proposal.card_id) || (devState ? { title: DEV_MOCK.mockCard.title, subtitle: DEV_MOCK.mockCard.subtitle } as any : null);
         const isAccepting = acceptingProposalId === proposal.id;
         return (
@@ -357,9 +354,7 @@ export default function Home() {
                   size="lg"
                   className="w-full h-12 text-muted-foreground hover:text-foreground font-normal"
                   disabled={isAccepting}
-                  onClick={() => {
-                    setDismissedProposalIds(prev => new Set([...prev, proposal.id]));
-                  }}
+                  onClick={() => navigate('/')}
                 >
                   Inte nu
                 </Button>
