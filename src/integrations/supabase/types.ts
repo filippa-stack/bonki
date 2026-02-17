@@ -860,6 +860,10 @@ export type Database = {
         }
         Returns: string
       }
+      assert_one_active_session_per_space: {
+        Args: { p_couple_space_id: string }
+        Returns: undefined
+      }
       complete_couple_session_step: {
         Args: { p_session_id: string; p_step_index: number }
         Returns: Database["public"]["CompositeTypes"]["step_completion_result"]
