@@ -56,7 +56,7 @@ export function useCoupleSpace(): CoupleSpaceState {
         .select('couple_space_id, role')
         .eq('user_id', user.id)
         .is('left_at', null)
-        .order('created_at', { ascending: true })
+        .order('created_at', { ascending: false })
         .limit(1);
 
       if (memError) throw memError;
