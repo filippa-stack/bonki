@@ -230,6 +230,47 @@ export default function CardView() {
     );
   }
 
+  // ─── CARD ENTRY GUARD ───
+  // If paired, not revisit, not completed, and no matching active session → block
+  const needsSessionGuard =
+    isPaired &&
+    !isRevisitMode &&
+    !showCompletion &&
+    !isFullyExplored &&
+    !normalizedSession.loading &&
+    !isActiveSession;
+
+  if (needsSessionGuard) {
+    return (
+      <div className="min-h-screen page-bg">
+        <Header title={category?.title} showBack backTo="/" />
+        <div className="px-6 pt-24 pb-16 max-w-md mx-auto text-center space-y-6">
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.15 }}
+            className="space-y-3"
+          >
+            <h2 className="text-xl font-serif text-foreground">
+              Inget aktivt samtal
+            </h2>
+            <p className="text-sm text-muted-foreground leading-relaxed">
+              Ni behöver föreslå och acceptera detta samtal innan ni kan börja.
+            </p>
+          </motion.div>
+          <Button
+            onClick={() => navigate('/')}
+            size="lg"
+            className="w-full h-14 rounded-2xl gap-2 font-normal"
+          >
+            <Home className="w-4 h-4" />
+            Tillbaka till Hem
+          </Button>
+        </div>
+      </div>
+    );
+  }
+
   const currentSection = card.sections.find(s => s.type === STEP_ORDER[currentStepIndex]);
 
   // ─── Handle "Next" press ───
