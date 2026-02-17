@@ -28,6 +28,7 @@ export function usePartnerNotifications() {
 
   // Dedupe: track last shown timestamp per event type
   const lastShownRef = useRef<Record<string, number>>({});
+  const lastToastIdRef = useRef<string | number | undefined>(undefined);
 
   const showDedupedToast = useCallback((key: string, message: string, description: string) => {
     const now = Date.now();
@@ -35,8 +36,12 @@ export function usePartnerNotifications() {
     if (now - lastShown < DEDUPE_WINDOW_MS) return;
     lastShownRef.current[key] = now;
 
-    toast.dismiss();
-    toast(message, { description, duration: 2500 });
+    // Dismiss only our own previous notification toast
+    if (lastToastIdRef.current !== undefined) {
+      toast.dismiss(lastToastIdRef.current);
+    }
+    const id = toast(message, { description, duration: 2500 });
+    lastToastIdRef.current = id;
   }, []);
 
   // Listen for partner's shared reflections
