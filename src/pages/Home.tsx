@@ -78,7 +78,7 @@ export default function Home() {
   const { settings } = useSiteSettings();
   const { user } = useAuth();
   const { space, displayMemberCount, userRole, fetchInviteInfo } = useCoupleSpaceContext();
-  const { incomingProposals: _rawProposals, sendProposal: sendDbProposal, updateProposalStatus, activateSession } = useProposalsContext();
+  const { incomingProposals: _rawProposals, ownPendingProposals, sendProposal: sendDbProposal, updateProposalStatus, activateSession } = useProposalsContext();
   const devState = useDevState();
   const appModeState = useAppMode();
   const { mode, activeSession, normalizedSession } = appModeState;
@@ -366,25 +366,47 @@ export default function Home() {
         );
       })()}
 
-      {mode === 'idle' && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.15 }}
-          className="px-6 mb-10"
-        >
-          <div className="text-center">
-            <Button
-              size="lg"
-              onClick={handleEnterProposalMode}
-              className="w-full h-14 rounded-2xl gap-2 font-normal"
-            >
-              Välj samtalsämne
-              <ArrowRight className="w-4 h-4" />
-            </Button>
-          </div>
-        </motion.div>
-      )}
+      {mode === 'idle' && (() => {
+        const outgoingPendingProposal = ownPendingProposals[0] ?? null;
+        const outgoingCard = outgoingPendingProposal ? getCardById(outgoingPendingProposal.card_id) : null;
+        return (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.15 }}
+            className="px-6 mb-10"
+          >
+            {outgoingPendingProposal && (
+              <div className="rounded-2xl border border-border bg-card p-5 mb-4 text-center space-y-2">
+                <p className="text-xs text-muted-foreground/60 uppercase tracking-wide">Förslag skickat</p>
+                <p className="font-serif text-base text-foreground">{outgoingCard?.title ?? 'Samtal'}</p>
+                <p className="text-sm text-muted-foreground">Väntar på att din partner svarar.</p>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="mt-1 text-muted-foreground hover:text-foreground font-normal"
+                  onClick={() => {
+                    setProposalCandidate({ cardId: outgoingPendingProposal.card_id, categoryId: outgoingPendingProposal.category_id });
+                    handleEnterProposalMode();
+                  }}
+                >
+                  Ändra förslag
+                </Button>
+              </div>
+            )}
+            <div className="text-center">
+              <Button
+                size="lg"
+                onClick={handleEnterProposalMode}
+                className="w-full h-14 rounded-2xl gap-2 font-normal"
+              >
+                Välj samtalsämne
+                <ArrowRight className="w-4 h-4" />
+              </Button>
+            </div>
+          </motion.div>
+        );
+      })()}
 
       {/* ═══ BELOW FOLD — secondary content (IDLE only, hidden when ACTIVE) ═══ */}
 
