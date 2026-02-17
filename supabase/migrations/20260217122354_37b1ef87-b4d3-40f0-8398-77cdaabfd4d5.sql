@@ -1,0 +1,1 @@
+CREATE INDEX IF NOT EXISTS idx_completions_session_step ON public.couple_session_completions(session_id, step_index);
