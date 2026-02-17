@@ -200,11 +200,16 @@ export function useCoupleSpace(): CoupleSpaceState {
 
       if (res.error) throw new Error(res.error.message || 'Failed to create new space');
 
-      const result = res.data as { space: CoupleSpaceData; memberCount: number; role: string };
-      setSpace(result.space);
-      setMemberCount(result.memberCount);
-      setUserRole(result.role);
-      return { ok: true, spaceId: result.space.id };
+      const result = res.data as { ok: boolean; new_space_id: string };
+      if (!result.ok) throw new Error('Unexpected response');
+
+      // Reset local state — fetchSpace will pick up the new space
+      setSpace(null);
+      setMemberCount(1);
+      setUserRole('partner_a');
+      // Trigger a refresh to load the new space data
+      await fetchSpace();
+      return { ok: true, spaceId: result.new_space_id };
     } catch (err: any) {
       console.error('switchToNewSpace error:', err);
       return { ok: false };
