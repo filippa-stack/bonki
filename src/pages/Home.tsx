@@ -370,7 +370,15 @@ export default function Home() {
                   )}
                 </div>
                 <Button
-                  onClick={devState ? undefined : () => { markNavigated(); navigate(`/card/${effectiveSession.cardId}`); }}
+                  onClick={() => {
+                    const targetCardId = effectiveSession.cardId;
+                    if (!targetCardId) {
+                      toast.error('Kunde inte navigera — saknar kort-ID.');
+                      return;
+                    }
+                    if (!devState) markNavigated();
+                    navigate(`/card/${targetCardId}`);
+                  }}
                   size="lg"
                   className="w-full h-14 rounded-2xl gap-2 font-normal"
                 >
