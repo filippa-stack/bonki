@@ -304,7 +304,9 @@ export default function Home() {
                     if (result.success) {
                       navigate(`/card/${proposal.card_id}`);
                     } else {
-                      toast.error('Kunde inte starta samtalet. Försök igen.');
+                      const errMsg = (result as any).errorMessage || 'Unknown error';
+                      console.error('[DIAG] Activation failed in Home:', errMsg);
+                      toast.error(`[DIAG] ${errMsg}`);
                     }
                   }}
                 >
