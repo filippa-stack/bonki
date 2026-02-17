@@ -514,6 +514,13 @@ export default function CardView() {
                 />
               )}
 
+              {/* Final-step hint — only on exercise (step 3) for paired users */}
+              {isPaired && !isRevisitMode && currentStepIndex === 3 && (
+                <p className="text-xs text-muted-foreground/40 text-center mt-4">
+                  När ni båda är klara kan ni formulera något gemensamt.
+                </p>
+              )}
+
               {/* Solo / revisit: keep legacy step CTA */}
               {(!isPaired || isRevisitMode) && (
                 <div className="pt-10 pb-8 space-y-5">
