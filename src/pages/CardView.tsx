@@ -535,7 +535,7 @@ export default function CardView() {
                         className="flex items-center gap-1.5 text-[12px] text-muted-foreground/50 hover:text-muted-foreground/70 transition-colors"
                       >
                         <BookOpen className="w-3.5 h-3.5" />
-                        {t('card_view.review_edit', 'Se era svar')}
+                        Se sammanfattning
                       </button>
                     </div>
                   )}
