@@ -1,11 +1,8 @@
 import { useEffect, useRef, useCallback, useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
-import type { JourneyState, AppState } from '@/types';
-
-type SessionData = AppState['currentSession'];
+import type { JourneyState } from '@/types';
 
 interface SharedProgressData {
-  currentSession: SessionData | null;
   journeyState: JourneyState | null;
 }
 
@@ -13,7 +10,7 @@ export type SharedSyncStatus = 'idle' | 'syncing' | 'error';
 
 interface UseSharedProgressReturn {
   initialData: SharedProgressData | null;
-  syncToRemote: (session: SessionData | undefined, journey: JourneyState | undefined) => void;
+  syncToRemote: (journey: JourneyState | undefined) => void;
   ready: boolean;
   syncStatus: SharedSyncStatus;
   lastSyncError: string | null;
@@ -108,7 +105,7 @@ export function useSharedProgress(
   const pendingDataRef = useRef<{ journey: JourneyState | undefined } | null>(null);
   const needsAnotherCommitRef = useRef(false);
 
-  // Load initial data: session from couple_progress, journey from couple_journey_meta
+  // Load initial data: journey from couple_journey_meta only (no more current_session from couple_progress)
   useEffect(() => {
     setInitialData(null);
 
@@ -122,33 +119,21 @@ export function useSharedProgress(
 
     async function load() {
       try {
-        // Fetch session (server-authoritative) and own journey meta in parallel
-        const [progressRes, metaRes] = await Promise.all([
-          supabase
-            .from('couple_progress')
-            .select('current_session')
-            .eq('couple_space_id', coupleSpaceId!)
-            .maybeSingle(),
-          supabase
-            .from('couple_journey_meta' as any)
-            .select('journey_state')
-            .eq('couple_space_id', coupleSpaceId!)
-            .eq('user_id', userId!)
-            .maybeSingle(),
-        ]);
+        const { data: metaRes, error: metaErr } = await supabase
+          .from('couple_journey_meta' as any)
+          .select('journey_state')
+          .eq('couple_space_id', coupleSpaceId!)
+          .eq('user_id', userId!)
+          .maybeSingle();
 
         if (cancelled) return;
 
-        if (progressRes.error) {
-          console.error('Error loading couple_progress:', progressRes.error);
-        }
-        if (metaRes.error) {
-          console.error('Error loading couple_journey_meta:', metaRes.error);
+        if (metaErr) {
+          console.error('Error loading couple_journey_meta:', metaErr);
         }
 
         const parsed: SharedProgressData = {
-          currentSession: deserializeSession(progressRes.data?.current_session ?? null),
-          journeyState: (metaRes.data as any)?.journey_state as JourneyState | null ?? null,
+          journeyState: (metaRes as any)?.journey_state as JourneyState | null ?? null,
         };
         localJourneyRef.current = parsed.journeyState;
         setInitialData(parsed);
@@ -169,32 +154,13 @@ export function useSharedProgress(
     };
   }, [userId, coupleSpaceId]);
 
-  // Subscribe to realtime: couple_progress for session, couple_journey_meta for partner journey
+  // Subscribe to realtime: couple_journey_meta for partner journey changes only
+  // Session state is now driven by useNormalizedSessionState (couple_sessions)
   useEffect(() => {
     if (!userId || !coupleSpaceId) return;
 
     const channel = supabase
       .channel(`shared_progress_${coupleSpaceId}`)
-      // Server-authoritative session changes
-      .on(
-        'postgres_changes',
-        {
-          event: '*',
-          schema: 'public',
-          table: 'couple_progress',
-          filter: `couple_space_id=eq.${coupleSpaceId}`,
-        },
-        (payload) => {
-          const row = payload.new as any;
-          if (!row) return;
-          const remoteSession = deserializeSession(row.current_session);
-          onRemoteUpdate({
-            currentSession: remoteSession,
-            journeyState: localJourneyRef.current,
-          });
-        }
-      )
-      // Partner's journey meta changes (merge with own)
       .on(
         'postgres_changes',
         {
@@ -210,7 +176,6 @@ export function useSharedProgress(
           const merged = mergeJourneyStates(localJourneyRef.current, remoteJourney);
           localJourneyRef.current = merged;
           onRemoteUpdate({
-            currentSession: null, // session unchanged, consumer merges
             journeyState: merged,
           });
         }
@@ -269,7 +234,6 @@ export function useSharedProgress(
         ? JSON.parse(JSON.stringify(mergedJourney))
         : {};
 
-      // Upsert into couple_journey_meta (user owns their own row)
       const { error: writeErr } = await supabase
         .from('couple_journey_meta' as any)
         .upsert(
@@ -312,10 +276,8 @@ export function useSharedProgress(
     }
   }, [userId, coupleSpaceId]);
 
-  // syncToRemote now only writes journey_state to couple_journey_meta
-  // session param is kept in signature for API compatibility but not written
   const syncToRemote = useCallback(
-    (_session: SessionData | undefined, journey: JourneyState | undefined) => {
+    (journey: JourneyState | undefined) => {
       if (!userId || !coupleSpaceId) return;
 
       localJourneyRef.current = journey ?? null;
@@ -364,14 +326,4 @@ export function useSharedProgress(
   }, [commitToRemote]);
 
   return { initialData, syncToRemote, ready, syncStatus, lastSyncError, retrySync };
-}
-
-function deserializeSession(raw: any): SessionData | null {
-  if (!raw || typeof raw !== 'object') return null;
-  return {
-    ...raw,
-    startedAt: new Date(raw.startedAt),
-    lastActivityAt: new Date(raw.lastActivityAt),
-    userCompletions: raw.userCompletions || {},
-  };
 }

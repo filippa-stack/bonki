@@ -70,7 +70,7 @@ export function usePartnerNotifications() {
     };
   }, [user, space, t, showDedupedToast]);
 
-  // Listen for partner's conversation progress (after pause)
+  // Listen for partner's conversation progress via couple_sessions
   useEffect(() => {
     if (!user || !space) return;
 
@@ -79,19 +79,18 @@ export function usePartnerNotifications() {
       .on(
         'postgres_changes',
         {
-          event: 'UPDATE',
+          event: '*',
           schema: 'public',
-          table: 'couple_progress',
+          table: 'couple_sessions',
           filter: `couple_space_id=eq.${space.id}`,
         },
         (payload) => {
           const row = payload.new as any;
           if (!row) return;
-          if (row.updated_by === user.id) return;
+          // Only notify for active sessions started by partner
+          if (row.created_by === user.id) return;
+          if (row.status !== 'active') return;
           if (!prefsRef.current.notifyConversationProgress) return;
-
-          // Only notify if there's an active session (partner started/resumed)
-          if (!row.current_session) return;
 
           showDedupedToast(
             'partner_continuing',

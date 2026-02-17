@@ -1,6 +1,8 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.93.3";
 import { handleCors, getCorsHeaders } from "../_shared/cors.ts";
 
+const STEP_COUNT = 4;
+
 Deno.serve(async (req) => {
   const corsResponse = handleCors(req);
   if (corsResponse) return corsResponse;
@@ -64,7 +66,9 @@ Deno.serve(async (req) => {
     const { data: membership } = await admin
       .from("couple_members")
       .select("user_id")
-      .eq("couple_space_id", proposal.couple_space_id);
+      .eq("couple_space_id", proposal.couple_space_id)
+      .is("left_at", null)
+      .eq("status", "active");
 
     if (!membership || !membership.some((m: any) => m.user_id === userId)) {
       return json({ error: "not_a_member" }, 403);
@@ -74,58 +78,46 @@ Deno.serve(async (req) => {
       return json({ error: "partner_not_joined" }, 409);
     }
 
-    // Check for existing session — don't overwrite if it's for the same card
-    const { data: existingProgress } = await admin
-      .from("couple_progress")
-      .select("current_session")
+    // Check for existing active session in couple_sessions
+    const { data: existingSession } = await admin
+      .from("couple_sessions")
+      .select("id, card_id, category_id")
       .eq("couple_space_id", proposal.couple_space_id)
+      .eq("status", "active")
+      .limit(1)
       .maybeSingle();
 
-    const existingSession = existingProgress?.current_session as any;
-    if (
-      existingSession &&
-      typeof existingSession === "object" &&
-      existingSession.cardId === proposal.card_id
-    ) {
-      // Session already exists for this card — return it without overwriting
+    if (existingSession && existingSession.card_id === proposal.card_id) {
+      // Session already exists for this card — return it
       return json({
         success: true,
         already_active: true,
         couple_space_id: proposal.couple_space_id,
-        session: existingSession,
+        session: {
+          cardId: existingSession.card_id,
+          categoryId: existingSession.category_id,
+          currentStepIndex: 0,
+        },
       });
     }
 
-    const userCompletions: Record<string, number[]> = {};
-    for (const m of membership) {
-      userCompletions[m.user_id] = [];
+    // Create normalized session via RPC
+    const { data: sessionId, error: rpcErr } = await admin.rpc(
+      "activate_couple_session",
+      {
+        p_couple_space_id: proposal.couple_space_id,
+        p_category_id: proposal.category_id,
+        p_card_id: proposal.card_id,
+        p_step_count: STEP_COUNT,
+      }
+    );
+
+    if (rpcErr) {
+      console.error("activate_couple_session RPC error:", rpcErr);
+      return json({ error: "session_activation_failed" }, 500);
     }
 
     const now = new Date().toISOString();
-    const sessionPayload = {
-      cardId: proposal.card_id,
-      categoryId: proposal.category_id,
-      currentStepIndex: 0,
-      userCompletions,
-      startedAt: now,
-      lastActivityAt: now,
-    };
-
-    const { error: upsertErr } = await admin
-      .from("couple_progress")
-      .upsert(
-        {
-          couple_space_id: proposal.couple_space_id,
-          current_session: sessionPayload,
-          updated_by: userId,
-        },
-        { onConflict: "couple_space_id" }
-      );
-
-    if (upsertErr) {
-      console.error("Upsert error:", upsertErr);
-      return json({ error: "session_activation_failed" }, 500);
-    }
 
     await admin
       .from("topic_proposals")
@@ -135,7 +127,13 @@ Deno.serve(async (req) => {
     return json({
       success: true,
       couple_space_id: proposal.couple_space_id,
-      session: sessionPayload,
+      session: {
+        cardId: proposal.card_id,
+        categoryId: proposal.category_id,
+        currentStepIndex: 0,
+        startedAt: now,
+        lastActivityAt: now,
+      },
     });
   } catch (err) {
     console.error("Unexpected error:", err);
