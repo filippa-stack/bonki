@@ -33,8 +33,10 @@ export function useNormalizedSessionState(): NormalizedSessionState {
   const [loading, setLoading] = useState(true);
   const mountedRef = useRef(true);
 
+  const userId = user?.id;
+
   const fetch = useCallback(async () => {
-    if (!user) {
+    if (!userId) {
       setState({ appMode: null, sessionId: null, cardId: null, categoryId: null, currentStepIndex: 0, waiting: false });
       setLoading(false);
       return;
@@ -59,7 +61,7 @@ export function useNormalizedSessionState(): NormalizedSessionState {
       });
     }
     setLoading(false);
-  }, [user]);
+  }, [userId]);
 
   useEffect(() => {
     mountedRef.current = true;

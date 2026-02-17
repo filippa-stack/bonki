@@ -28,8 +28,11 @@ export function useProposals() {
   const [proposals, setProposals] = useState<Proposal[]>([]);
   const [loading, setLoading] = useState(true);
 
+  const userId = user?.id;
+  const spaceId = space?.id;
+
   const fetchProposals = useCallback(async () => {
-    if (!user || !space || devState) {
+    if (!userId || !spaceId || devState) {
       setProposals([]);
       setLoading(false);
       return;
@@ -38,14 +41,14 @@ export function useProposals() {
     const { data, error } = await supabase
       .from('topic_proposals')
       .select('*')
-      .eq('couple_space_id', space.id)
+      .eq('couple_space_id', spaceId)
       .order('created_at', { ascending: false });
 
     if (!error && data) {
       setProposals(data as unknown as Proposal[]);
     }
     setLoading(false);
-  }, [user, space, devState]);
+  }, [userId, spaceId, devState]);
 
   useEffect(() => {
     fetchProposals();
@@ -53,7 +56,7 @@ export function useProposals() {
 
   // Realtime subscription
   useEffect(() => {
-    if (!space || devState) return;
+    if (!spaceId || devState) return;
 
     const channel = supabase
       .channel('proposals-realtime')
@@ -63,7 +66,7 @@ export function useProposals() {
           event: '*',
           schema: 'public',
           table: 'topic_proposals',
-          filter: `couple_space_id=eq.${space.id}`,
+          filter: `couple_space_id=eq.${spaceId}`,
         },
         () => {
           fetchProposals();
@@ -74,7 +77,7 @@ export function useProposals() {
     return () => {
       supabase.removeChannel(channel);
     };
-  }, [space, fetchProposals]);
+  }, [spaceId, fetchProposals]);
 
   const sendProposal = useCallback(async (
     cardId: string,
