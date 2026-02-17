@@ -98,6 +98,13 @@ Deno.serve(async (req) => {
         .from("couple_progress")
         .update({ current_session: null, updated_by: userId })
         .eq("couple_space_id", couple_space_id);
+
+      // Cancel any active normalized sessions for this space
+      await adminClient
+        .from("couple_sessions")
+        .update({ status: "cancelled", ended_at: new Date().toISOString() } as any)
+        .eq("couple_space_id", couple_space_id)
+        .eq("status", "active");
     }
 
     return new Response(
