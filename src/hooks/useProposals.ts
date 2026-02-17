@@ -153,33 +153,58 @@ export function useProposals() {
    *  Also writes to the normalized couple_sessions tables. */
   const activateSession = useCallback(async (
     proposalId: string
-  ): Promise<{ success: boolean; session?: any }> => {
-    if (!isPaired || devState) return { success: false };
+  ): Promise<{ success: boolean; session?: any; errorMessage?: string }> => {
+    if (!isPaired || devState) return { success: false, errorMessage: 'not paired or devState active' };
 
-    // 1. Legacy JSON session via edge function (still authoritative for UI)
+    // 1. Edge function call
     const res = await supabase.functions.invoke('activate-session', {
       body: { proposal_id: proposalId },
     });
 
     if (res.error) {
-      console.error('Failed to activate session:', res.error);
-      return { success: false };
+      console.error('[DIAG] activate-session edge fn error:', {
+        message: res.error.message,
+        name: res.error.name,
+        context: res.error.context,
+        full: res.error,
+      });
+      return { success: false, errorMessage: `Edge fn: ${res.error.message}` };
     }
 
     const data = res.data as any;
-    if (!data?.success) return { success: false };
+    if (!data?.success) {
+      console.error('[DIAG] activate-session returned non-success:', data);
+      return { success: false, errorMessage: `Edge fn data: ${JSON.stringify(data)}` };
+    }
 
-    // 2. Dual-write: also create normalized session (fire-and-forget, non-blocking)
+    // 2. Dual-write: normalized session via RPC
     if (space?.id && data.session?.cardId) {
       const STEP_COUNT = 4;
-      supabase.rpc('activate_couple_session', {
+      const rpcParams = {
         p_couple_space_id: space.id,
         p_category_id: data.session.categoryId ?? null,
         p_card_id: data.session.cardId,
         p_step_count: STEP_COUNT,
-      }).then(({ error: normErr }) => {
-        if (normErr) console.warn('Normalized session dual-write failed (non-fatal):', normErr);
-      });
+      };
+      console.log('[DIAG] activate_couple_session RPC params:', rpcParams);
+
+      try {
+        const { data: rpcData, error: normErr } = await supabase.rpc('activate_couple_session', rpcParams);
+        if (normErr) {
+          console.error('[DIAG] activate_couple_session RPC error:', {
+            message: normErr.message,
+            code: normErr.code,
+            details: normErr.details,
+            hint: normErr.hint,
+            full: normErr,
+          });
+          return { success: false, errorMessage: `RPC: ${normErr.message} (code: ${normErr.code}, details: ${normErr.details}, hint: ${normErr.hint})` };
+        }
+        console.log('[DIAG] activate_couple_session RPC success, sessionId:', rpcData);
+      } catch (err: any) {
+        console.error('[DIAG] activate_couple_session RPC threw:', err);
+        return { success: false, errorMessage: `RPC threw: ${err?.message || String(err)}` };
+      }
     }
 
     return { success: true, session: data?.session };
