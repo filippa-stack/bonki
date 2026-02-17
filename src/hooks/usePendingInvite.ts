@@ -52,17 +52,9 @@ export function usePendingInviteClaim() {
     if (!token && !code) return false;
     if (!user) return false;
 
-    // If user already belongs to a space, the pending invite is stale — clear it
-    try {
-      const { data: existingSpaceId } = await supabase.rpc('get_user_couple_space_id', { _user_id: user.id });
-      if (existingSpaceId) {
-        clearPendingInvite();
-        setStatus('idle');
-        return false;
-      }
-    } catch {
-      // If RPC fails, proceed with claim attempt
-    }
+    // Note: even if user already has a space (auto-created), we still proceed
+    // with the join — the edge function handles archiving the old membership
+    // and switching to the invited partner's space.
 
     setStatus('claiming');
     setErrorType('');
