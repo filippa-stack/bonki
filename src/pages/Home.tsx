@@ -89,6 +89,33 @@ function LockedCategoriesDisclosure({ categories, getCategoryStatus }: {
   );
 }
 
+/** One-time "Du är nu ansluten" banner for User B after join */
+function JustJoinedBanner() {
+  const [visible, setVisible] = useState(() => {
+    if (localStorage.getItem('still-us-just-joined') === 'true') {
+      localStorage.removeItem('still-us-just-joined');
+      return true;
+    }
+    return false;
+  });
+
+  if (!visible) return null;
+
+  return (
+    <div className="flex items-center justify-center gap-2 mt-[12px] mb-[16px] px-6">
+      <p className="text-[13px] text-muted-foreground/50 text-center">
+        🤍 Du är nu ansluten.
+      </p>
+      <button
+        onClick={() => setVisible(false)}
+        className="text-muted-foreground/40 hover:text-muted-foreground transition-colors"
+      >
+        <X className="w-3.5 h-3.5" />
+      </button>
+    </div>
+  );
+}
+
 export default function Home() {
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -170,32 +197,6 @@ export default function Home() {
 
   const returnResumeCardId = activeSession?.cardId || journeyState?.lastOpenedCardId || journeyState?.lastCompletedCardId || null;
 
-/** One-time "Du är nu ansluten" banner for User B after join */
-function JustJoinedBanner() {
-  const [visible, setVisible] = useState(() => {
-    if (localStorage.getItem('still-us-just-joined') === 'true') {
-      localStorage.removeItem('still-us-just-joined');
-      return true;
-    }
-    return false;
-  });
-
-  if (!visible) return null;
-
-  return (
-    <div className="flex items-center justify-center gap-2 mt-[12px] mb-[16px] px-6">
-      <p className="text-[13px] text-muted-foreground/50 text-center">
-        🤍 Du är nu ansluten.
-      </p>
-      <button
-        onClick={() => setVisible(false)}
-        className="text-muted-foreground/40 hover:text-muted-foreground transition-colors"
-      >
-        <X className="w-3.5 h-3.5" />
-      </button>
-    </div>
-  );
-}
 
   // Computed helpers for proposal mode & highlighted category
   const exploredIds = journeyState?.exploredCardIds || [];
