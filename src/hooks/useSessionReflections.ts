@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useCoupleSpace } from '@/hooks/useCoupleSpace';
 import { supabase } from '@/integrations/supabase/client';
+import { useDevState } from '@/contexts/DevStateContext';
 
 export type ReflectionState = 'draft' | 'ready' | 'revealed' | 'locked';
 
@@ -49,6 +50,7 @@ export function useSessionReflections(
 ): UseSessionReflectionsReturn {
   const { user } = useAuth();
   const { space } = useCoupleSpace();
+  const devState = useDevState();
   const [sessionId, setSessionId] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [myReflection, setMyReflection] = useState<StepReflection | null>(null);
@@ -59,7 +61,7 @@ export function useSessionReflections(
 
   // ─── 1. Find or create card_session ───
   useEffect(() => {
-    if (!user || !space || !cardId) {
+    if (!user || !space || !cardId || devState) {
       setLoading(false);
       return;
     }
@@ -191,6 +193,7 @@ export function useSessionReflections(
     setMyReflection(prev => prev ? { ...prev, text } : null);
 
     if (pendingSave.current) clearTimeout(pendingSave.current);
+    if (devState) return; // In-memory only in dev mode
     pendingSave.current = setTimeout(async () => {
       if (!user || !sessionIdRef.current) return;
 
@@ -213,42 +216,43 @@ export function useSessionReflections(
 
   // ─── 5. Mark ready: draft → ready ───
   const markReady = useCallback(async () => {
-    if (!user || !sessionIdRef.current) return;
+    if (!user) return;
 
-    // Ensure the row exists with current text, then set to ready
-    const { error } = await supabase
-      .from('step_reflections')
-      .upsert(
-        {
-          session_id: sessionIdRef.current,
-          step_index: stepIndex,
-          user_id: user.id,
-          text: localText,
-          state: 'ready' as any,
-        },
-        { onConflict: 'session_id,step_index,user_id' }
-      );
+    if (!devState && sessionIdRef.current) {
+      const { error } = await supabase
+        .from('step_reflections')
+        .upsert(
+          {
+            session_id: sessionIdRef.current,
+            step_index: stepIndex,
+            user_id: user.id,
+            text: localText,
+            state: 'ready' as any,
+          },
+          { onConflict: 'session_id,step_index,user_id' }
+        );
 
-    if (error) {
-      console.error('Failed to mark reflection as ready:', error);
-      return;
+      if (error) {
+        console.error('Failed to mark reflection as ready:', error);
+        return;
+      }
     }
 
     // Optimistic update (trigger may upgrade to 'revealed')
     setMyReflection(prev => prev ? { ...prev, state: 'ready', text: localText } : {
       id: '',
-      sessionId: sessionIdRef.current!,
+      sessionId: sessionIdRef.current || 'dev-session',
       stepIndex,
       userId: user.id,
       text: localText,
       state: 'ready',
       updatedAt: new Date().toISOString(),
     });
-  }, [user, stepIndex, localText]);
+  }, [user, stepIndex, localText, devState]);
 
   // ─── 6. Lock step: revealed → locked ───
   const lockStep = useCallback(async () => {
-    if (!sessionIdRef.current) return;
+    if (!sessionIdRef.current || devState) return;
 
     const { error } = await supabase.rpc('lock_step_reflections', {
       _session_id: sessionIdRef.current,
@@ -258,7 +262,7 @@ export function useSessionReflections(
     if (error) {
       console.error('Failed to lock step:', error);
     }
-  }, [stepIndex]);
+  }, [stepIndex, devState]);
 
   // Cleanup
   useEffect(() => {

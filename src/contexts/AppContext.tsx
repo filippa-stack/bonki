@@ -7,6 +7,7 @@ import { useSiteSettings, SiteSettings } from '@/contexts/SiteSettingsContext';
 import { useCoupleSpace } from '@/hooks/useCoupleSpace';
 import { useSharedProgress, SharedSyncStatus } from '@/hooks/useSharedProgress';
 import { supabase } from '@/integrations/supabase/client';
+import { useDevState } from '@/contexts/DevStateContext';
 
 const STEP_ORDER = ['opening', 'reflective', 'scenario', 'exercise'] as const;
 
@@ -139,6 +140,7 @@ function mergeCards(cached: Card[], source: Card[]): Card[] {
 
 export function AppProvider({ children }: { children: ReactNode }) {
   const { user } = useAuth();
+  const devState = useDevState();
   const storedVersion = parseInt(localStorage.getItem(CONTENT_VERSION_KEY) || '0', 10);
   const needsMerge = storedVersion < CONTENT_VERSION;
 
@@ -285,7 +287,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
         const localCardProgress = prev.journeyState?.sessionProgress?.[serverSession.cardId];
         const localCompleted: number[] = localCardProgress?.perUser?.[uid]?.completedSteps || [];
         const missing = localCompleted.filter(s => !serverCompleted.includes(s));
-        if (missing.length > 0) {
+        if (missing.length > 0 && !devState) {
           const stepToRetry = Math.min(...missing);
           if (stepToRetry === serverSession.currentStepIndex) {
             setTimeout(() => {
@@ -310,7 +312,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
       };
     });
     setSessionDismissed(false);
-  }, [user?.id]);
+  }, [user?.id, devState]);
 
   const dismissRemoteCardCue = useCallback(() => {
     setRemoteCardChanged(false);
@@ -336,9 +338,9 @@ export function AppProvider({ children }: { children: ReactNode }) {
 
   // Sync journey state changes to remote (current_session is managed by edge functions)
   useEffect(() => {
-    if (!sharedProgressReady || !hasAppliedSharedProgress.current) return;
+    if (!sharedProgressReady || !hasAppliedSharedProgress.current || devState) return;
     syncToRemote(undefined, state.journeyState);
-  }, [state.journeyState, sharedProgressReady, syncToRemote]);
+  }, [state.journeyState, sharedProgressReady, syncToRemote, devState]);
 
   const setBackgroundColor = (color: string) => {
     setBackgroundColorState(color);
@@ -770,7 +772,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
     // Only call if the server session exists (indicated by userCompletions from server)
     const cardId = state.currentSession?.cardId;
     const hasServerSession = !!(state.currentSession as any)?.userCompletions;
-    if (cardId && uid !== 'local' && hasServerSession) {
+    if (cardId && uid !== 'local' && hasServerSession && !devState) {
       supabase.functions
         .invoke('update-step-completion', {
           body: { card_id: cardId, step_index: stepIndex },

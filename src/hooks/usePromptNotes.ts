@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useCoupleSpace } from '@/hooks/useCoupleSpace';
 import { supabase } from '@/integrations/supabase/client';
+import { useDevState } from '@/contexts/DevStateContext';
 
 export interface PromptNote {
   id: string;
@@ -36,13 +37,14 @@ export function usePromptNotes(
 ): UsePromptNotesReturn {
   const { user } = useAuth();
   const { space, userRole, memberCount } = useCoupleSpace();
+  const devState = useDevState();
   const [notes, setNotes] = useState<Map<string, PromptNote>>(new Map());
   const [loading, setLoading] = useState(true);
   const pendingSaves = useRef<Map<string, ReturnType<typeof setTimeout>>>(new Map());
 
   // Fetch existing notes for this card+section
   useEffect(() => {
-    if (!user || !space) {
+    if (!user || !space || devState) {
       setLoading(false);
       return;
     }
@@ -82,12 +84,12 @@ export function usePromptNotes(
     };
 
     fetchNotes();
-  }, [user, space, cardId, sectionId]);
+  }, [user, space, cardId, sectionId, devState]);
 
   // Also fetch shared notes from partner + subscribe to realtime changes
   // Skip entirely during active session context to prevent cross-surface data leakage
   useEffect(() => {
-    if (!user || !space || skipShared) return;
+    if (!user || !space || skipShared || devState) return;
 
     const applyPartnerNotes = (data: any[]) => {
       setNotes(prev => {
@@ -163,7 +165,7 @@ export function usePromptNotes(
     return () => {
       supabase.removeChannel(channel);
     };
-  }, [user, space, cardId, sectionId, skipShared]);
+  }, [user, space, cardId, sectionId, skipShared, devState]);
 
   const upsertNote = useCallback(async (
     promptId: string,
@@ -171,7 +173,7 @@ export function usePromptNotes(
     visibility: 'private' | 'shared',
     extraFields?: { is_highlight?: boolean; shared_at?: string | null; author_label?: string | null },
   ) => {
-    if (!user || !space) return;
+    if (!user || !space || devState) return;
 
     const { error } = await supabase
       .from('prompt_notes')
@@ -192,7 +194,7 @@ export function usePromptNotes(
     if (error) {
       console.error('Failed to save prompt note:', error);
     }
-  }, [user, space, cardId, sectionId]);
+  }, [user, space, cardId, sectionId, devState]);
 
   const saveNote = useCallback((
     promptId: string,
@@ -270,18 +272,20 @@ export function usePromptNotes(
       return next;
     });
 
-    supabase
-      .from('prompt_notes')
-      .delete()
-      .eq('couple_space_id', space.id)
-      .eq('user_id', user.id)
-      .eq('card_id', cardId)
-      .eq('section_id', sectionId)
-      .eq('prompt_id', promptId)
-      .eq('visibility', 'shared')
-      .then(({ error }) => {
-        if (error) console.error('Failed to delete shared note:', error);
-      });
+    if (!devState) {
+      supabase
+        .from('prompt_notes')
+        .delete()
+        .eq('couple_space_id', space.id)
+        .eq('user_id', user.id)
+        .eq('card_id', cardId)
+        .eq('section_id', sectionId)
+        .eq('prompt_id', promptId)
+        .eq('visibility', 'shared')
+        .then(({ error }) => {
+          if (error) console.error('Failed to delete shared note:', error);
+        });
+    }
   }, [user, space, cardId, sectionId]);
 
   const toggleHighlight = useCallback((promptId: string) => {
@@ -297,18 +301,20 @@ export function usePromptNotes(
       return next;
     });
 
-    supabase
-      .from('prompt_notes')
-      .update({ is_highlight: newVal })
-      .eq('couple_space_id', space.id)
-      .eq('user_id', user.id)
-      .eq('card_id', cardId)
-      .eq('section_id', sectionId)
-      .eq('prompt_id', promptId)
-      .eq('visibility', 'shared')
-      .then(({ error }) => {
-        if (error) console.error('Failed to toggle highlight:', error);
-      });
+    if (!devState) {
+      supabase
+        .from('prompt_notes')
+        .update({ is_highlight: newVal })
+        .eq('couple_space_id', space.id)
+        .eq('user_id', user.id)
+        .eq('card_id', cardId)
+        .eq('section_id', sectionId)
+        .eq('prompt_id', promptId)
+        .eq('visibility', 'shared')
+        .then(({ error }) => {
+          if (error) console.error('Failed to toggle highlight:', error);
+        });
+    }
   }, [notes, user, space, cardId, sectionId]);
 
   const getPrivateNote = useCallback((promptId: string) => {
