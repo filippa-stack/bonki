@@ -56,6 +56,39 @@ function NotiserSection() {
   );
 }
 
+/** Collapsed disclosure for locked categories in solo mode */
+function LockedCategoriesDisclosure({ categories, getCategoryStatus }: {
+  categories: Array<{ id: string; title: string; description: string; cardCount: number; [k: string]: any }>;
+  getCategoryStatus: (id: string) => string;
+}) {
+  const [open, setOpen] = useState(false);
+  return (
+    <div>
+      <button
+        onClick={() => setOpen(!open)}
+        className="w-full flex items-center justify-center gap-2 py-3 text-xs text-muted-foreground/50 hover:text-muted-foreground transition-colors"
+      >
+        <span className="uppercase tracking-wide">Tillgängligt när ni är två</span>
+        <ChevronDown className={`w-3.5 h-3.5 transition-transform ${open ? 'rotate-180' : ''}`} />
+      </button>
+      {open && (
+        <div className="space-y-4 mt-2 opacity-50 pointer-events-none">
+          {categories.map((category, index) => (
+            <CategoryCard
+              key={category.id}
+              category={category}
+              onClick={() => {}}
+              index={index}
+              highlighted={false}
+              isCompleted={getCategoryStatus(category.id) === 'explored'}
+            />
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
 export default function Home() {
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -532,33 +565,36 @@ export default function Home() {
         )}
       </AnimatePresence>
 
-      {/* Categories — solo: locked preview; browse: fully unlocked */}
+      {/* Categories — solo: locked in disclosure; browse: fully unlocked */}
       {!isProposalMode && (isSoloMode || devState === 'browse') && (
         <div id="category-section" className="px-6 pb-12 mt-4">
           {devState === 'browse' ? (
-            <p className="text-xs text-primary/60 uppercase tracking-wide mb-4 text-center">
-              🔓 Browse mode — alla kort upplåsta
-            </p>
+            <>
+              <p className="text-xs text-primary/60 uppercase tracking-wide mb-4 text-center">
+                🔓 Browse mode — alla kort upplåsta
+              </p>
+              <div className="space-y-4">
+                {categories.map((category, index) => {
+                  const catStatus = getCategoryStatus(category.id);
+                  return (
+                    <CategoryCard
+                      key={category.id}
+                      category={category}
+                      onClick={() => navigate(`/category/${category.id}`)}
+                      index={index}
+                      highlighted={false}
+                      isCompleted={catStatus === 'explored'}
+                    />
+                  );
+                })}
+              </div>
+            </>
           ) : (
-            <p className="text-xs text-muted-foreground/40 uppercase tracking-wide mb-4 text-center">
-              Tillgängligt när ni är två
-            </p>
+            <LockedCategoriesDisclosure
+              categories={categories}
+              getCategoryStatus={getCategoryStatus}
+            />
           )}
-          <div className={`space-y-4 ${devState === 'browse' ? '' : 'opacity-50 pointer-events-none'}`}>
-            {categories.map((category, index) => {
-              const catStatus = getCategoryStatus(category.id);
-              return (
-                <CategoryCard
-                  key={category.id}
-                  category={category}
-                  onClick={devState === 'browse' ? () => navigate(`/category/${category.id}`) : () => {}}
-                  index={index}
-                  highlighted={false}
-                  isCompleted={catStatus === 'explored'}
-                />
-              );
-            })}
-          </div>
         </div>
       )}
 

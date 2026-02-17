@@ -120,12 +120,12 @@ export default function SoloInviteSection({ fetchInviteInfo, onJoinedSpace, hadP
       {/* Hero text */}
       <div className="text-center mb-10">
         <h2 className="font-serif text-xl text-foreground mb-3">
-          {hadPartnerBefore ? 'Du är ensam här just nu.' : 'Bjud in din partner'}
+          {hadPartnerBefore ? 'Du är ensam här just nu.' : 'Börja här.'}
         </h2>
         <p className="text-sm text-muted-foreground leading-relaxed">
           {hadPartnerBefore
             ? 'Din partner är inte längre ansluten till ert rum.'
-            : 'Dela en länk så skapar ni ert gemensamma rum.'}
+            : 'Bjud in din partner när du vill. Då skapar ni ert gemensamma rum och kan börja samtalen tillsammans.'}
         </p>
       </div>
 
