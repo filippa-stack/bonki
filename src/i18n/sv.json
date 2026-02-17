@@ -178,7 +178,7 @@
     "important_limit_reached": "Ni kan ha max tre viktiga åt gången.",
     "edit": "Redigera",
     "last_updated": "Senast uppdaterad: {{date}}",
-    "prompt_note_placeholder": "Vad väcker detta hos dig?",
+    "prompt_note_placeholder": "Det du skriver här är bara för dig.",
     "shared_confirmation": "Er reflektion är nu en del av ert gemensamma utrymme.",
     "continue_conversation": "Fortsätt samtalet",
     "go_home": "Tillbaka till start",

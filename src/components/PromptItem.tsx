@@ -195,7 +195,7 @@ export default function PromptItem({
                       onChange={(e) => handlePrivateChange(e.target.value)}
                       onFocus={handleFocus}
                       onKeyDown={handleKeyDown}
-                      placeholder={t('reflections.prompt_note_placeholder', 'Skriv ned dina tankar. Du väljer själv om du vill dela med din partner, nu eller senare. Annars sparas dina svar här enbart för dig')}
+                      placeholder={t('reflections.prompt_note_placeholder', 'Det du skriver här är bara för dig.')}
                       className="w-full px-5 py-5 rounded-2xl bg-white border border-slate-200 resize-none focus:outline-none focus:border-[#497575] focus:ring-0 placeholder:text-muted-foreground/25 font-sans text-sm text-foreground leading-relaxed transition-colors duration-300 min-h-[140px]"
                     />
                     {/* Autosave status */}
