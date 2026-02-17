@@ -314,7 +314,7 @@ export default function Home() {
                     size="lg"
                     className="w-full h-14 rounded-2xl gap-2 font-normal"
                     disabled={isAccepting}
-                    onClick={devState ? undefined : async () => {
+                    onClick={devState ? () => navigate(`/card/${DEV_MOCK.mockCard.id}`) : async () => {
                       setAcceptingProposalId(proposal.id);
                       await updateProposalStatus(proposal.id, 'accepted');
                       const result = await activateSession(proposal.id);
