@@ -14,3 +14,6 @@ verify_jwt = false
 
 [functions.leave-couple-space]
 verify_jwt = false
+
+[functions.leave-and-create-new-space]
+verify_jwt = false
