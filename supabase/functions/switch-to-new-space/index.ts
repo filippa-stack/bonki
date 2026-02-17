@@ -87,12 +87,14 @@ Deno.serve(async (req) => {
 
     // 3) Create new couple_space
     const newSpaceId = crypto.randomUUID();
+    const inviteCode = generateInviteCode();
+    const inviteToken = generateInviteToken();
     const { error: spaceErr } = await admin
       .from("couple_spaces")
       .insert({
         id: newSpaceId,
-        invite_code: generateInviteCode(),
-        invite_token: generateInviteToken(),
+        invite_code: inviteCode,
+        invite_token: inviteToken,
       });
 
     if (spaceErr) {
@@ -127,7 +129,7 @@ Deno.serve(async (req) => {
       } as any);
 
     // 5) Return new space id
-    return json({ ok: true, new_space_id: newSpaceId });
+    return json({ ok: true, new_space_id: newSpaceId, invite_code: inviteCode, invite_token: inviteToken });
   } catch (err) {
     console.error("Unexpected error:", err);
     return json({ error: "internal_error" }, 500);
