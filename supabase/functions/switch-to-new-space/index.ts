@@ -99,10 +99,10 @@ Deno.serve(async (req) => {
         .update({ current_session: null, updated_by: userId })
         .eq("couple_space_id", membership.couple_space_id);
 
-      // Cancel any active normalized sessions for this space
+      // Always cancel active sessions when a member leaves
       await admin
         .from("couple_sessions")
-        .update({ status: "cancelled", ended_at: new Date().toISOString() } as any)
+        .update({ status: "cancelled", ended_at: new Date().toISOString() })
         .eq("couple_space_id", membership.couple_space_id)
         .eq("status", "active");
 
