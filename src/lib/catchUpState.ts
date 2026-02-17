@@ -1,3 +1,8 @@
+// SESSION MODEL LOCK:
+// Do NOT use couple_progress.current_session.
+// The JSON session model is deprecated.
+// All session state must come from normalized tables.
+
 /**
  * Shared catch-up state computation.
  * Ensures consistent behavior across CardView, Home, and any other entry point.

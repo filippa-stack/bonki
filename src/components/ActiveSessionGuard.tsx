@@ -1,3 +1,8 @@
+// SESSION MODEL LOCK:
+// Do NOT use couple_progress.current_session.
+// The JSON session model is deprecated.
+// All session state must come from normalized tables.
+
 import { Navigate, useLocation } from 'react-router-dom';
 import { useDevState } from '@/contexts/DevStateContext';
 import { useNormalizedSessionState } from '@/hooks/useNormalizedSessionState';

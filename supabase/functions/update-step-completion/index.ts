@@ -1,3 +1,8 @@
+// SESSION MODEL LOCK:
+// Do NOT use couple_progress.current_session.
+// The JSON session model is deprecated.
+// All session state must come from normalized tables.
+
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.93.3";
 import { handleCors, getCorsHeaders } from "../_shared/cors.ts";
 

@@ -1,3 +1,8 @@
+// SESSION MODEL LOCK:
+// Do NOT use couple_progress.current_session.
+// The JSON session model is deprecated.
+// All session state must come from normalized tables.
+
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { getCatchUpState } from '@/lib/catchUpState';
 import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
