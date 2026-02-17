@@ -194,7 +194,7 @@ export function useCoupleSpace(): CoupleSpaceState {
       const accessToken = sessionData?.session?.access_token;
       if (!accessToken) throw new Error('No auth session');
 
-      const res = await supabase.functions.invoke('leave-and-create-new-space', {
+      const res = await supabase.functions.invoke('switch-to-new-space', {
         headers: { Authorization: `Bearer ${accessToken}` },
       });
 
