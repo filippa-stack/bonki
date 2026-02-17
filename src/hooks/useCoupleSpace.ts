@@ -42,8 +42,10 @@ export function useCoupleSpace(): CoupleSpaceState {
   const [userRole, setUserRole] = useState<string | null>(null);
   const prevMemberCountRef = useRef<number>(0);
 
+  const userId = user?.id;
+
   const fetchSpace = useCallback(async () => {
-    if (!user) {
+    if (!userId) {
       setSpace(null);
       setLoading(false);
       return;
@@ -54,7 +56,7 @@ export function useCoupleSpace(): CoupleSpaceState {
       const { data: memberships, error: memError } = await supabase
         .from('couple_members')
         .select('couple_space_id, role')
-        .eq('user_id', user.id)
+        .eq('user_id', userId)
         .is('left_at', null)
         .order('created_at', { ascending: false })
         .limit(1);
@@ -112,7 +114,7 @@ export function useCoupleSpace(): CoupleSpaceState {
     } finally {
       setLoading(false);
     }
-  }, [user]);
+  }, [userId]);
 
   /** Fetch invite info on demand via secure RPC — never cached in state */
   const fetchInviteInfo = useCallback(async (): Promise<InviteInfo | null> => {
