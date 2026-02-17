@@ -47,6 +47,9 @@ export default function SessionTakeaway({ sessionId }: SessionTakeawayProps) {
       <span className="text-[10px] text-muted-foreground/40">
         {saveStatus === 'saving' ? 'Sparar…' : saveStatus === 'saved' ? 'Sparad' : '\u00A0'}
       </span>
+      <p className="text-xs text-muted-foreground/40 text-center">
+        När ni lämnar sidan låses texten.
+      </p>
     </div>
   );
 }
