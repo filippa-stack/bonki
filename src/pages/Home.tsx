@@ -256,7 +256,7 @@ export default function Home() {
       {(() => {
         // Compute effective state variables, with dev overrides
         const effectiveSoloMode = devState === 'solo' ? true
-          : devState === 'pairedIdle' || devState === 'pairedActive' || devState === 'proposalIncoming' ? false
+          : devState === 'browse' || devState === 'pairedIdle' || devState === 'pairedActive' || devState === 'proposalIncoming' ? false
           : isSoloMode;
         const effectiveSession = devState === 'pairedActive' ? DEV_MOCK.mockSession
           : devState === 'solo' || devState === 'pairedIdle' || devState === 'proposalIncoming' ? null
@@ -521,20 +521,26 @@ export default function Home() {
         )}
       </AnimatePresence>
 
-      {/* Categories — solo: demoted preview with label */}
-      {!isProposalMode && isSoloMode && (
+      {/* Categories — solo: locked preview; browse: fully unlocked */}
+      {!isProposalMode && (isSoloMode || devState === 'browse') && (
         <div id="category-section" className="px-6 pb-12 mt-4">
-          <p className="text-xs text-muted-foreground/40 uppercase tracking-wide mb-4 text-center">
-            Tillgängligt när ni är två
-          </p>
-          <div className="space-y-4 opacity-50 pointer-events-none">
+          {devState === 'browse' ? (
+            <p className="text-xs text-primary/60 uppercase tracking-wide mb-4 text-center">
+              🔓 Browse mode — alla kort upplåsta
+            </p>
+          ) : (
+            <p className="text-xs text-muted-foreground/40 uppercase tracking-wide mb-4 text-center">
+              Tillgängligt när ni är två
+            </p>
+          )}
+          <div className={`space-y-4 ${devState === 'browse' ? '' : 'opacity-50 pointer-events-none'}`}>
             {categories.map((category, index) => {
               const catStatus = getCategoryStatus(category.id);
               return (
                 <CategoryCard
                   key={category.id}
                   category={category}
-                  onClick={() => {}}
+                  onClick={devState === 'browse' ? () => navigate(`/category/${category.id}`) : () => {}}
                   index={index}
                   highlighted={false}
                   isCompleted={catStatus === 'explored'}

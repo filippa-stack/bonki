@@ -7,6 +7,7 @@
  * Supported values:
  *   solo | pairedIdle | pairedActive | proposalIncoming
  *   waiting | completed | archiveEmpty | archiveWithHistory
+ *   browse  — unlocks all categories & cards for content review
  */
 
 import { useSearchParams } from 'react-router-dom';
@@ -20,6 +21,7 @@ export type DevState =
   | 'completed'
   | 'archiveEmpty'
   | 'archiveWithHistory'
+  | 'browse'
   | null;
 
 const VALID_STATES: DevState[] = [
@@ -31,6 +33,7 @@ const VALID_STATES: DevState[] = [
   'completed',
   'archiveEmpty',
   'archiveWithHistory',
+  'browse',
 ];
 
 export function useDevState(): DevState {
