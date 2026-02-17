@@ -149,11 +149,14 @@ export function useProposals() {
     await fetchProposals();
   }, [user, fetchProposals]);
 
-  /** Activate a session from an accepted proposal via the secure edge function. */
+  /** Activate a session from an accepted proposal via the secure edge function.
+   *  Also writes to the normalized couple_sessions tables. */
   const activateSession = useCallback(async (
     proposalId: string
   ): Promise<{ success: boolean; session?: any }> => {
     if (!isPaired || devState) return { success: false };
+
+    // 1. Legacy JSON session via edge function (still authoritative for UI)
     const res = await supabase.functions.invoke('activate-session', {
       body: { proposal_id: proposalId },
     });
@@ -164,8 +167,23 @@ export function useProposals() {
     }
 
     const data = res.data as any;
-    return { success: !!data?.success, session: data?.session };
-  }, []);
+    if (!data?.success) return { success: false };
+
+    // 2. Dual-write: also create normalized session (fire-and-forget, non-blocking)
+    if (space?.id && data.session?.cardId) {
+      const STEP_COUNT = 4;
+      supabase.rpc('activate_couple_session', {
+        p_couple_space_id: space.id,
+        p_category_id: data.session.categoryId ?? null,
+        p_card_id: data.session.cardId,
+        p_step_count: STEP_COUNT,
+      }).then(({ error: normErr }) => {
+        if (normErr) console.warn('Normalized session dual-write failed (non-fatal):', normErr);
+      });
+    }
+
+    return { success: true, session: data?.session };
+  }, [space]);
 
   // Get pending proposals from partner (not own)
   const incomingProposals = proposals.filter(
