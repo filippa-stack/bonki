@@ -139,12 +139,14 @@ export default function SessionStepReflection({
         <p className="text-xs text-muted-foreground/40">
           När ni båda har markerat steget som klart visas era reflektioner.
         </p>
-        <button
+        <Button
+          variant="ghost"
+          size="lg"
+          className="w-full h-12 text-muted-foreground hover:text-foreground font-normal"
           onClick={() => window.location.assign('/')}
-          className="text-xs text-muted-foreground/40 hover:text-muted-foreground/60 transition-colors mx-auto block"
         >
-          Gå tillbaka till hem
-        </button>
+          Tillbaka till hem
+        </Button>
       </div>
     );
   }
