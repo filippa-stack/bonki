@@ -23,8 +23,12 @@ export default function ActiveSessionGuard({ children }: { children: React.React
   // In dev mode, never redirect — allow free navigation
   if (devState) return <>{children}</>;
 
-  // While loading normalized state, allow navigation (avoids flash redirects)
-  if (loading) return <>{children}</>;
+  // While loading normalized state, show neutral loader to prevent brief free navigation
+  if (loading) return (
+    <div className="min-h-screen flex items-center justify-center bg-background">
+      <div className="h-6 w-6 rounded-full bg-muted animate-pulse" />
+    </div>
+  );
 
   // No active session → allow everything
   if (!appMode || !cardId) return <>{children}</>;
