@@ -1,4 +1,4 @@
-import { ArrowLeft, LogOut, Users } from 'lucide-react';
+import { ArrowLeft, LogOut, Settings, Users } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useApp } from '@/contexts/AppContext';
@@ -115,7 +115,7 @@ export default function Header({
           <Popover>
             <PopoverTrigger asChild>
               <Button variant="ghost" size="icon" className="text-muted-foreground hover:text-foreground">
-                <LogOut className="w-4 h-4" />
+                <Settings className="w-4 h-4" />
               </Button>
             </PopoverTrigger>
             <PopoverContent className="w-52 p-2 space-y-1" align="end">
