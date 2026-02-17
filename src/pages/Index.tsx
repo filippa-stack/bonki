@@ -147,7 +147,7 @@ export default function Index() {
             size="sm"
             onClick={() => {
               localStorage.removeItem(JOIN_INTENT_KEY);
-              window.location.reload();
+              navigate('/');
             }}
             className="text-muted-foreground hover:text-foreground"
           >
