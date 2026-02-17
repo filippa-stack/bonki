@@ -29,8 +29,7 @@ interface CoupleSpaceState {
   refreshSpace: () => Promise<void>;
   /** Fetch invite info on demand — never stored in space object */
   fetchInviteInfo: () => Promise<InviteInfo | null>;
-  /** Switch to a fresh couple space (stub — not yet implemented) */
-  switchToNewSpace: () => Promise<void>;
+  switchToNewSpace: () => Promise<{ ok: boolean; spaceId?: string }>;
 }
 
 export function useCoupleSpace(): CoupleSpaceState {
@@ -189,9 +188,27 @@ export function useCoupleSpace(): CoupleSpaceState {
     };
   }, [memberCount]);
 
-  const switchToNewSpace = useCallback(async () => {
-    console.warn('switchToNewSpace not implemented');
-    return;
+  const switchToNewSpace = useCallback(async (): Promise<{ ok: boolean; spaceId?: string }> => {
+    try {
+      const { data: sessionData } = await supabase.auth.getSession();
+      const accessToken = sessionData?.session?.access_token;
+      if (!accessToken) throw new Error('No auth session');
+
+      const res = await supabase.functions.invoke('leave-and-create-new-space', {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      });
+
+      if (res.error) throw new Error(res.error.message || 'Failed to create new space');
+
+      const result = res.data as { space: CoupleSpaceData; memberCount: number; role: string };
+      setSpace(result.space);
+      setMemberCount(result.memberCount);
+      setUserRole(result.role);
+      return { ok: true, spaceId: result.space.id };
+    } catch (err: any) {
+      console.error('switchToNewSpace error:', err);
+      return { ok: false };
+    }
   }, []);
 
   return {

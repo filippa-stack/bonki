@@ -83,7 +83,7 @@ interface AppContextType {
   toggleTakeawayHighlight: (cardId: string) => void;
   takeawayHighlightCount: number;
   refreshCoupleSpace: () => Promise<void>;
-  switchToNewSpace: () => Promise<void>;
+  switchToNewSpace: () => Promise<{ ok: boolean; spaceId?: string }>;
   setOverrideCoupleSpaceId: (id: string | null) => void;
   sharedSyncStatus: SharedSyncStatus;
   sharedSyncError: string | null;
