@@ -136,7 +136,7 @@ export function useCoupleSpace(): CoupleSpaceState {
   // Realtime: update memberCount when couple_members changes
   // No immediate fetch — fetchSpace already set the initial count.
   useEffect(() => {
-    if (!space?.id) return;
+    if (!userId || !space?.id) return;
     let cancelled = false;
 
     const fetchCount = async () => {
@@ -170,7 +170,7 @@ export function useCoupleSpace(): CoupleSpaceState {
       cancelled = true;
       supabase.removeChannel(channel);
     };
-  }, [space?.id]);
+  }, [userId, space?.id]);
 
   // Debounced display value to prevent UI flicker on rapid realtime updates
   const [displayMemberCount, setDisplayMemberCount] = useState(memberCount);
