@@ -1,3 +1,5 @@
+// SESSION MODEL LOCK: Uses couple_takeaways (normalized), NOT card_takeaways.
+
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useCoupleSpaceContext as useCoupleSpace } from '@/contexts/CoupleSpaceContext';
@@ -16,7 +18,7 @@ const AUTOSAVE_DELAY = 800;
 
 /**
  * Manages a single shared takeaway per couple_session (normalized).
- * Auto-saves on change, locks locally when leaving the integration screen.
+ * Reads/writes couple_takeaways. Auto-saves on change, locks on unmount.
  */
 export function useCardTakeaway(sessionId: string | null): UseCardTakeawayReturn {
   const { user } = useAuth();
@@ -28,7 +30,6 @@ export function useCardTakeaway(sessionId: string | null): UseCardTakeawayReturn
   const [takeawayId, setTakeawayId] = useState<string | null>(null);
   const pendingSave = useRef<ReturnType<typeof setTimeout> | null>(null);
   const savedIndicatorTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
-  // Keep latest text in ref for lock-on-unmount
   const latestTextRef = useRef(text);
   latestTextRef.current = text;
 
@@ -59,6 +60,8 @@ export function useCardTakeaway(sessionId: string | null): UseCardTakeawayReturn
       if (data && !error) {
         setTakeawayId(data.id);
         setTextState(data.content);
+        // If row exists from a previous visit, it's already locked
+        setLocked(true);
       }
       setLoading(false);
     };
@@ -67,41 +70,7 @@ export function useCardTakeaway(sessionId: string | null): UseCardTakeawayReturn
     return () => { cancelled = true; };
   }, [sessionId, userId, spaceId]);
 
-  // Persist helper — upserts to couple_takeaways
-  const persist = useCallback(async (value: string) => {
-    if (!sessionId || !userId || !spaceId) return;
-
-    if (takeawayId) {
-      // couple_takeaways has no UPDATE RLS, so delete + re-insert
-      // Actually, let's just insert a new row if needed — but the table
-      // doesn't allow UPDATE. We'll use the existing row approach:
-      // Since there's no UPDATE policy, we persist by inserting once
-      // and relying on the lock mechanism. For autosave we need to
-      // work around this — insert on first save, then we can't update.
-      // 
-      // Workaround: delete old + insert new (DELETE also not allowed).
-      // 
-      // Given the constraints (no UPDATE, no DELETE on couple_takeaways),
-      // we insert once on lock/final save. During typing, keep local only.
-      return;
-    }
-
-    const { data } = await supabase
-      .from('couple_takeaways')
-      .insert({
-        session_id: sessionId,
-        couple_space_id: spaceId,
-        content: value,
-        created_by: userId,
-      } as any)
-      .select('id')
-      .single();
-
-    if (data) setTakeawayId(data.id);
-  }, [sessionId, userId, spaceId, takeawayId]);
-
-  // Autosave text — local state + debounced indicator
-  // Since couple_takeaways has no UPDATE RLS, we only persist on lock.
+  // Autosave text with debounce
   const setText = useCallback((value: string) => {
     if (locked) return;
     setTextState(value);
@@ -110,15 +79,35 @@ export function useCardTakeaway(sessionId: string | null): UseCardTakeawayReturn
     if (pendingSave.current) clearTimeout(pendingSave.current);
     if (savedIndicatorTimer.current) clearTimeout(savedIndicatorTimer.current);
 
-    pendingSave.current = setTimeout(() => {
+    pendingSave.current = setTimeout(async () => {
+      if (!sessionId || !userId || !spaceId) return;
+
+      if (takeawayId) {
+        await supabase
+          .from('couple_takeaways')
+          .update({ content: value } as any)
+          .eq('id', takeawayId);
+      } else if (value.trim()) {
+        const { data } = await supabase
+          .from('couple_takeaways')
+          .insert({
+            session_id: sessionId,
+            couple_space_id: spaceId,
+            content: value,
+            created_by: userId,
+          } as any)
+          .select('id')
+          .single();
+        if (data) setTakeawayId(data.id);
+      }
+
       setSaveStatus('saved');
       savedIndicatorTimer.current = setTimeout(() => setSaveStatus('idle'), 1500);
     }, AUTOSAVE_DELAY);
-  }, [locked]);
+  }, [sessionId, userId, spaceId, takeawayId, locked]);
 
-  // Lock takeaway — persist final text to couple_takeaways
+  // Lock takeaway — final persist + set locked
   const lockTakeaway = useCallback(async () => {
-    // Cancel any pending save timer
     if (pendingSave.current) {
       clearTimeout(pendingSave.current);
       pendingSave.current = null;
@@ -126,36 +115,31 @@ export function useCardTakeaway(sessionId: string | null): UseCardTakeawayReturn
 
     const finalText = latestTextRef.current;
 
-    if (!finalText.trim()) {
+    if (!finalText.trim() || !sessionId || !userId || !spaceId) {
       setLocked(true);
       return;
     }
 
-    if (!sessionId || !userId || !spaceId) {
-      setLocked(true);
-      return;
-    }
-
-    // If already persisted, we're done (no UPDATE available)
     if (takeawayId) {
-      setLocked(true);
-      return;
+      await supabase
+        .from('couple_takeaways')
+        .update({ content: finalText } as any)
+        .eq('id', takeawayId);
+    } else {
+      await supabase
+        .from('couple_takeaways')
+        .insert({
+          session_id: sessionId,
+          couple_space_id: spaceId,
+          content: finalText,
+          created_by: userId,
+        } as any);
     }
-
-    // Insert the takeaway
-    await supabase
-      .from('couple_takeaways')
-      .insert({
-        session_id: sessionId,
-        couple_space_id: spaceId,
-        content: finalText,
-        created_by: userId,
-      } as any);
 
     setLocked(true);
   }, [sessionId, userId, spaceId, takeawayId]);
 
-  // Cleanup
+  // Cleanup timers
   useEffect(() => {
     return () => {
       if (pendingSave.current) clearTimeout(pendingSave.current);
