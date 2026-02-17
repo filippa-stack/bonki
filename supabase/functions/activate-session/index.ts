@@ -21,7 +21,7 @@ Deno.serve(async (req) => {
     });
 
   try {
-    console.log("APPROVE_EDGE_START");
+    console.log("ACTIVATE_SESSION_HANDLER_START");
 
     const authHeader = req.headers.get("Authorization");
     if (!authHeader?.startsWith("Bearer ")) {
@@ -34,14 +34,22 @@ Deno.serve(async (req) => {
       { global: { headers: { Authorization: authHeader } } }
     );
 
-    const token = authHeader.replace("Bearer ", "");
-    const { data: claimsData, error: claimsError } =
-      await userClient.auth.getClaims(token);
-    if (claimsError || !claimsData?.claims) {
-      return json({ error: { message: "unauthorized", code: "AUTH_CLAIMS" } }, 401);
+    // Auth: get user id
+    let userId: string;
+    try {
+      const token = authHeader.replace("Bearer ", "");
+      const { data: { user }, error: userErr } = await userClient.auth.getUser(token);
+      if (userErr || !user) {
+        console.error("AUTH_GET_USER_FAIL", userErr);
+        return json({ error: { message: "unauthorized", code: "AUTH_USER", details: userErr?.message } }, 401);
+      }
+      userId = user.id;
+    } catch (authErr: any) {
+      console.error("AUTH_EXCEPTION", authErr);
+      return json({ error: { message: String(authErr?.message ?? authErr), code: "AUTH_EXCEPTION", stack: String(authErr?.stack ?? "") } }, 401);
     }
-    const userId = claimsData.claims.sub as string;
 
+    // Parse body
     let bodyJson: any;
     try { bodyJson = await req.json(); } catch {
       return json({ error: { message: "invalid_json_body", code: "BODY_PARSE" } }, 400);
@@ -51,13 +59,14 @@ Deno.serve(async (req) => {
       return json({ error: { message: "missing_proposal_id", code: "VALIDATION" } }, 400);
     }
 
-    console.log("APPROVE_EDGE_PARAMS", { proposal_id, userId });
+    console.log("ACTIVATE_SESSION_INPUTS", { proposal_id, userId });
 
     const admin = createClient(
       Deno.env.get("SUPABASE_URL")!,
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!
     );
 
+    // Fetch proposal
     const { data: proposal, error: propErr } = await admin
       .from("topic_proposals")
       .select("*")
@@ -69,7 +78,14 @@ Deno.serve(async (req) => {
       return json({ error: { message: "proposal_not_found", code: "NOT_FOUND", details: propErr?.message } }, 404);
     }
 
-    console.log("APPROVE_EDGE_PROPOSAL", { couple_space_id: proposal.couple_space_id, status: proposal.status, card_id: proposal.card_id });
+    console.log("ACTIVATE_SESSION_PROPOSAL", {
+      couple_space_id: proposal.couple_space_id,
+      card_id: proposal.card_id,
+      category_id: proposal.category_id,
+      status: proposal.status,
+      step_count: STEP_COUNT,
+      userId,
+    });
 
     if (proposal.status !== "accepted") {
       return json({ error: { message: "proposal_not_accepted", code: "STATUS_CONFLICT", details: `status=${proposal.status}` } }, 409);
@@ -79,6 +95,7 @@ Deno.serve(async (req) => {
       return json({ error: { message: "proposal_expired", code: "EXPIRED" } }, 410);
     }
 
+    // Membership check
     const { data: membership, error: memErr } = await admin
       .from("couple_members")
       .select("user_id")
@@ -86,7 +103,12 @@ Deno.serve(async (req) => {
       .is("left_at", null)
       .eq("status", "active");
 
-    console.log("APPROVE_EDGE_MEMBERS", { count: membership?.length, memberIds: membership?.map((m: any) => m.user_id), memErr });
+    if (memErr) {
+      console.error("MEMBERSHIP_QUERY_FAIL", memErr);
+      return json({ error: { message: memErr.message, code: memErr.code, details: memErr.details } }, 500);
+    }
+
+    console.log("ACTIVATE_SESSION_MEMBERS", { count: membership?.length, memberIds: membership?.map((m: any) => m.user_id) });
 
     if (!membership || !membership.some((m: any) => m.user_id === userId)) {
       return json({ error: { message: "not_a_member", code: "FORBIDDEN", details: `userId=${userId}` } }, 403);
@@ -96,8 +118,8 @@ Deno.serve(async (req) => {
       return json({ error: { message: "partner_not_joined", code: "MEMBER_COUNT", details: `active_members=${membership.length}` } }, 409);
     }
 
-    // Check for existing active session in couple_sessions
-    const { data: existingSession } = await admin
+    // Existing active session check
+    const { data: existingSession, error: existErr } = await admin
       .from("couple_sessions")
       .select("id, card_id, category_id")
       .eq("couple_space_id", proposal.couple_space_id)
@@ -105,8 +127,12 @@ Deno.serve(async (req) => {
       .limit(1)
       .maybeSingle();
 
+    if (existErr) {
+      console.error("EXISTING_SESSION_QUERY_FAIL", existErr);
+      return json({ error: { message: existErr.message, code: existErr.code, details: existErr.details } }, 500);
+    }
+
     if (existingSession && existingSession.card_id === proposal.card_id) {
-      // Session already exists for this card — return it
       return json({
         success: true,
         already_active: true,
@@ -119,8 +145,13 @@ Deno.serve(async (req) => {
       });
     }
 
-    // Create normalized session via RPC
-    console.log("CALLING_RPC activate_couple_session", { couple_space_id: proposal.couple_space_id, category_id: proposal.category_id, card_id: proposal.card_id, step_count: STEP_COUNT });
+    // RPC call
+    console.log("CALLING_RPC activate_couple_session", {
+      couple_space_id: proposal.couple_space_id,
+      category_id: proposal.category_id,
+      card_id: proposal.card_id,
+      step_count: STEP_COUNT,
+    });
 
     const { data: sessionId, error: rpcErr } = await admin.rpc(
       "activate_couple_session",
@@ -133,18 +164,23 @@ Deno.serve(async (req) => {
     );
 
     if (rpcErr) {
-      console.error("RPC_FAIL activate_couple_session", { message: rpcErr.message, code: rpcErr.code, details: rpcErr.details, hint: rpcErr.hint });
-      return json({ error: { message: rpcErr.message || "session_activation_failed", code: rpcErr.code || "RPC_ERROR", details: rpcErr.details || rpcErr.hint } }, 500);
+      console.error("RPC_ERROR activate_couple_session", { message: rpcErr.message, code: rpcErr.code, details: rpcErr.details, hint: rpcErr.hint });
+      return json({ error: { message: rpcErr.message || "session_activation_failed", code: rpcErr.code || "RPC_ERROR", details: rpcErr.details || rpcErr.hint } }, 400);
     }
 
     console.log("RPC_SUCCESS", { sessionId });
 
     const now = new Date().toISOString();
 
-    await admin
+    const { error: updateErr } = await admin
       .from("topic_proposals")
       .update({ updated_at: now })
       .eq("id", proposal_id);
+
+    if (updateErr) {
+      console.error("PROPOSAL_UPDATE_FAIL", updateErr);
+      // Non-fatal, continue
+    }
 
     return json({
       success: true,
@@ -158,7 +194,7 @@ Deno.serve(async (req) => {
       },
     });
   } catch (err: any) {
-    console.error("APPROVE_EDGE_UNCAUGHT", err);
-    return json({ error: { message: err?.message || "internal_error", code: "UNCAUGHT" } }, 500);
+    console.error("ACTIVATE_SESSION_ERROR", err);
+    return json({ error: { message: String(err?.message ?? err), stack: String(err?.stack ?? ""), cause: String(err?.cause ?? "") } }, 500);
   }
 });
