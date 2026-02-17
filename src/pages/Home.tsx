@@ -384,7 +384,7 @@ export default function Home() {
                 >
                   Inte nu
                 </Button>
-                <p className="text-xs text-muted-foreground/50 mt-1">Du kan ta upp det senare.</p>
+                {!isAccepting && <p className="text-xs text-muted-foreground/50 mt-1">Du kan välja det senare från startsidan.</p>}
               </div>
             </div>
           </motion.div>
