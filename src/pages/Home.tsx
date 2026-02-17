@@ -98,13 +98,10 @@ export default function Home() {
     savedConversations, 
     categories, 
     backgroundColor,
-    currentSession,
-    hasActiveSession,
     getCardById,
     getCategoryById,
     journeyState,
     cards,
-    startSession,
     getCategoryStatus,
     clearForPartnerLeave,
   } = useApp();
