@@ -10,7 +10,7 @@ import { useTranslation } from 'react-i18next';
 import { useApp } from '@/contexts/AppContext';
 import { useSiteSettings } from '@/contexts/SiteSettingsContext';
 import { useAuth } from '@/contexts/AuthContext';
-import { useCoupleSpace } from '@/hooks/useCoupleSpace';
+import { useCoupleSpaceContext } from '@/contexts/CoupleSpaceContext';
 import CategoryCard from '@/components/CategoryCard';
 
 import Header from '@/components/Header';
@@ -77,7 +77,7 @@ export default function Home() {
   } = useApp();
   const { settings } = useSiteSettings();
   const { user } = useAuth();
-  const { space, displayMemberCount, userRole, fetchInviteInfo } = useCoupleSpace();
+  const { space, displayMemberCount, userRole, fetchInviteInfo } = useCoupleSpaceContext();
   const { incomingProposals: _rawProposals, sendProposal: sendDbProposal, updateProposalStatus, activateSession } = useProposals();
   const devState = useDevState();
   const appModeState = useAppMode();

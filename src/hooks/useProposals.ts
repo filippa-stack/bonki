@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
-import { useCoupleSpace } from '@/hooks/useCoupleSpace';
+import { useCoupleSpaceContext } from '@/contexts/CoupleSpaceContext';
 import { useDevState } from '@/contexts/DevStateContext';
 
 export interface Proposal {
@@ -22,7 +22,7 @@ export interface Proposal {
 
 export function useProposals() {
   const { user } = useAuth();
-  const { space, memberCount } = useCoupleSpace();
+  const { space, memberCount } = useCoupleSpaceContext();
   const devState = useDevState();
   const isPaired = memberCount >= 2;
   const [proposals, setProposals] = useState<Proposal[]>([]);

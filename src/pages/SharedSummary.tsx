@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { useApp } from '@/contexts/AppContext';
 import { useAuth } from '@/contexts/AuthContext';
-import { useCoupleSpace } from '@/hooks/useCoupleSpace';
+import { useCoupleSpaceContext } from '@/contexts/CoupleSpaceContext';
 import { useReflectionResponses } from '@/hooks/useReflectionResponses';
 import { supabase } from '@/integrations/supabase/client';
 import { useDevState } from '@/contexts/DevStateContext';
@@ -41,7 +41,7 @@ export default function SharedSummary() {
   const navigate = useNavigate();
   const { categories, getCardById, getCategoryById, journeyState, cards } = useApp();
   const { user } = useAuth();
-  const { space } = useCoupleSpace();
+  const { space } = useCoupleSpaceContext();
 
   const [searchQuery, setSearchQuery] = useState('');
   const [categoryFilter, setCategoryFilter] = useState<string>('all');

@@ -10,7 +10,7 @@ import { categories as initialCategories, cards as initialCards, CONTENT_VERSION
 import { useSettingsSync, SaveStatus } from '@/hooks/useSettingsSync';
 import { useAuth } from '@/contexts/AuthContext';
 import { useSiteSettings, SiteSettings } from '@/contexts/SiteSettingsContext';
-import { useCoupleSpace } from '@/hooks/useCoupleSpace';
+import { useCoupleSpaceContext } from '@/contexts/CoupleSpaceContext';
 import { useSharedProgress, SharedSyncStatus } from '@/hooks/useSharedProgress';
 import { supabase } from '@/integrations/supabase/client';
 import { useDevState } from '@/contexts/DevStateContext';
@@ -261,7 +261,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
   );
 
   // Couple space for shared progress
-  const { space: coupleSpaceDb, memberCount: coupleSpaceMemberCount, refreshSpace: refreshCoupleSpace, switchToNewSpace } = useCoupleSpace();
+  const { space: coupleSpaceDb, memberCount: coupleSpaceMemberCount, refreshSpace: refreshCoupleSpace, switchToNewSpace } = useCoupleSpaceContext();
   const [overrideCoupleSpaceId, setOverrideCoupleSpaceId] = useState<string | null>(null);
   const coupleSpaceId = overrideCoupleSpaceId ?? coupleSpaceDb?.id ?? null;
 
