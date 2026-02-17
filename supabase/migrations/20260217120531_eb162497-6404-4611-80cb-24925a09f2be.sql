@@ -1,0 +1,1 @@
+COMMENT ON COLUMN public.couple_progress.current_session IS 'DEPRECATED – no longer read or written. Retained temporarily for safety. Safe to DROP after confirming no rollback needed.';
