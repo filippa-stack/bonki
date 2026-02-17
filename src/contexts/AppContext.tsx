@@ -270,53 +270,15 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const [remoteCardChanged, setRemoteCardChanged] = useState(false);
   const lastRemoteCueCardId = useRef<string | null>(null);
 
-  const handleRemoteProgressUpdate = useCallback((data: { currentSession: AppState['currentSession'] | null; journeyState: JourneyState | null }) => {
+  const handleRemoteProgressUpdate = useCallback((data: { journeyState: JourneyState | null }) => {
     setState((prev) => {
-      const prevCardId = prev.currentSession?.cardId ?? null;
-      const newCardId = data.currentSession?.cardId ?? null;
-
-      // Trigger cue only when cardId actually changes to a different card, and not the same one we already cued
-      if (newCardId && prevCardId !== newCardId && lastRemoteCueCardId.current !== newCardId) {
-        lastRemoteCueCardId.current = newCardId;
-        // Use setTimeout to avoid setState-during-render
-        setTimeout(() => setRemoteCardChanged(true), 0);
-      }
-
-      // When a server session arrives, check if we have locally completed steps
-      // that the server doesn't know about yet — retry them
-      const serverSession = data.currentSession as any;
-      if (serverSession?.userCompletions && serverSession.cardId && user?.id) {
-        const uid = user.id;
-        const serverCompleted: number[] = serverSession.userCompletions[uid] || [];
-        const localCardProgress = prev.journeyState?.sessionProgress?.[serverSession.cardId];
-        const localCompleted: number[] = localCardProgress?.perUser?.[uid]?.completedSteps || [];
-        const missing = localCompleted.filter(s => !serverCompleted.includes(s));
-        if (missing.length > 0 && !devState) {
-          const stepToRetry = Math.min(...missing);
-          if (stepToRetry === serverSession.currentStepIndex) {
-            setTimeout(() => {
-              supabase.functions
-                .invoke('update-step-completion', {
-                  body: { card_id: serverSession.cardId, step_index: stepToRetry },
-                })
-                .then((res) => {
-                  if (res.error) {
-                    console.error('[retry] Step completion failed:', res.error);
-                  }
-                });
-            }, 500);
-          }
-        }
-      }
-
       return {
         ...prev,
-        currentSession: data.currentSession ?? undefined,
-        journeyState: data.journeyState ?? undefined,
+        journeyState: data.journeyState ?? prev.journeyState,
       };
     });
     setSessionDismissed(false);
-  }, [user?.id, devState]);
+  }, []);
 
   const dismissRemoteCardCue = useCallback(() => {
     setRemoteCardChanged(false);
@@ -336,15 +298,14 @@ export function AppProvider({ children }: { children: ReactNode }) {
     hasAppliedSharedProgress.current = true;
     setState((prev) => ({
       ...prev,
-      currentSession: sharedProgressInitial.currentSession ?? prev.currentSession,
       journeyState: sharedProgressInitial.journeyState ?? prev.journeyState,
     }));
   }, [sharedProgressReady, sharedProgressInitial, devState]);
 
-  // Sync journey state changes to remote (current_session is managed by edge functions)
+  // Sync journey state changes to remote
   useEffect(() => {
     if (!sharedProgressReady || !hasAppliedSharedProgress.current || devState) return;
-    syncToRemote(undefined, state.journeyState);
+    syncToRemote(state.journeyState);
   }, [state.journeyState, sharedProgressReady, syncToRemote, devState]);
 
   const setBackgroundColor = (color: string) => {
@@ -775,11 +736,9 @@ export function AppProvider({ children }: { children: ReactNode }) {
       };
     });
 
-    // Call edge function for authoritative server-side update
-    // Only call if the server session exists (indicated by userCompletions from server)
+    // Call edge function which now uses couple_sessions (normalized)
     const cardId = state.currentSession?.cardId;
-    const hasServerSession = !!(state.currentSession as any)?.userCompletions;
-    if (cardId && uid !== 'local' && hasServerSession && !devState) {
+    if (cardId && uid !== 'local' && !devState) {
       supabase.functions
         .invoke('update-step-completion', {
           body: { card_id: cardId, step_index: stepIndex },
@@ -787,56 +746,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
         .then((res) => {
           if (res.error) {
             console.error('Step completion failed:', res.error);
-            return;
-          }
-          const data = res.data as any;
-          if (data?.success) {
-            // Apply server-authoritative state
-            setState((prev) => {
-              const serverSession = data.session
-                ? {
-                    ...data.session,
-                    startedAt: new Date(data.session.startedAt),
-                    lastActivityAt: new Date(data.session.lastActivityAt),
-                  }
-                : undefined;
-              const serverJourney = data.journey_state as JourneyState | null;
-
-              return {
-                ...prev,
-                currentSession: serverSession,
-                journeyState: serverJourney ?? prev.journeyState,
-              };
-            });
           }
         });
-    } else if (cardId && uid !== 'local' && !hasServerSession) {
-      console.warn('[completeSessionStep] Skipped edge call: no server session yet for card', cardId);
-    }
-
-    // Dual-write: also complete in normalized tables (non-blocking)
-    if (uid !== 'local' && !devState) {
-      // Find normalized session id from couple_sessions
-      const spaceId = coupleSpaceId;
-      if (spaceId) {
-        supabase
-          .from('couple_sessions')
-          .select('id')
-          .eq('couple_space_id', spaceId)
-          .eq('status', 'active')
-          .limit(1)
-          .single()
-          .then(({ data: sessionRow }) => {
-            if (sessionRow?.id) {
-              supabase.rpc('complete_couple_session_step', {
-                p_session_id: sessionRow.id,
-                p_step_index: stepIndex,
-              }).then(({ error: normErr }) => {
-                if (normErr) console.warn('Normalized step completion dual-write failed (non-fatal):', normErr);
-              });
-            }
-          });
-      }
     }
   };
 

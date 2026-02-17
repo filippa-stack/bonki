@@ -56,125 +56,82 @@ Deno.serve(async (req) => {
       return json({ error: "no_couple_space" }, 403);
     }
 
-    const { data: members } = await admin
-      .from("couple_members")
-      .select("user_id")
-      .eq("couple_space_id", spaceId);
-
-    if (!members || !members.some((m: any) => m.user_id === userId)) {
-      return json({ error: "not_a_member" }, 403);
-    }
-
-    const requiredCount = members.length >= 2 ? 2 : 1;
-
-    const { data: progress, error: progressErr } = await admin
-      .from("couple_progress")
-      .select("*")
+    // Find active session in couple_sessions
+    const { data: activeSession, error: sessionErr } = await admin
+      .from("couple_sessions")
+      .select("id, card_id")
       .eq("couple_space_id", spaceId)
-      .single();
+      .eq("status", "active")
+      .limit(1)
+      .maybeSingle();
 
-    if (progressErr || !progress) {
-      return json({ error: "no_progress_found" }, 404);
-    }
-
-    const session = progress.current_session as any;
-    if (!session || typeof session !== "object") {
+    if (sessionErr || !activeSession) {
       return json({ error: "no_active_session" }, 409);
     }
 
-    if (session.cardId !== card_id) {
+    if (activeSession.card_id !== card_id) {
       return json({ error: "card_mismatch" }, 409);
     }
 
-    if (step_index !== session.currentStepIndex) {
-      return json({ error: "step_mismatch", expected: session.currentStepIndex }, 409);
-    }
-
-    const userCompletions = session.userCompletions || {};
-    const myCompleted: number[] = userCompletions[userId] || [];
-
-    if (myCompleted.includes(step_index)) {
-      return json({ success: true, already_completed: true, session });
-    }
-
-    const updatedMyCompleted = [...myCompleted, step_index].sort();
-    userCompletions[userId] = updatedMyCompleted;
-
-    const completedByCount = Object.values(userCompletions).filter(
-      (steps: any) => Array.isArray(steps) && steps.includes(step_index)
-    ).length;
-    const isMutuallyCompleted = completedByCount >= requiredCount;
-
-    let newStepIndex = session.currentStepIndex;
-    let sessionEnded = false;
-
-    if (isMutuallyCompleted) {
-      if (step_index === STEP_COUNT - 1) {
-        sessionEnded = true;
-      } else {
-        newStepIndex = step_index + 1;
+    // Complete the step via RPC
+    const { data: result, error: rpcErr } = await admin.rpc(
+      "complete_couple_session_step",
+      {
+        p_session_id: activeSession.id,
+        p_step_index: step_index,
       }
+    );
+
+    if (rpcErr) {
+      console.error("complete_couple_session_step error:", rpcErr);
+      return json({ error: "completion_failed" }, 500);
     }
 
-    const now = new Date().toISOString();
+    const stepResult = result as any;
 
-    const journeyState = (progress.journey_state as any) || {
-      currentCategoryId: null,
-      lastOpenedCardId: null,
-      lastCompletedCardId: null,
-      suggestedNextCardId: null,
-      pausedAt: null,
-      updatedAt: now,
-      exploredCardIds: [],
-      sessionProgress: {},
-    };
+    // Update journey_state in couple_progress for exploredCardIds tracking
+    if (stepResult?.is_session_complete) {
+      const now = new Date().toISOString();
+      const { data: progress } = await admin
+        .from("couple_progress")
+        .select("journey_state")
+        .eq("couple_space_id", spaceId)
+        .single();
 
-    const sessionProgress = journeyState.sessionProgress || {};
-    const cardProgress = sessionProgress[card_id] || { perUser: {} };
-    cardProgress.perUser[userId] = { completedSteps: updatedMyCompleted };
-    sessionProgress[card_id] = cardProgress;
-    journeyState.sessionProgress = sessionProgress;
-    journeyState.updatedAt = now;
+      const journeyState = (progress?.journey_state as any) || {
+        currentCategoryId: null,
+        lastOpenedCardId: null,
+        lastCompletedCardId: null,
+        suggestedNextCardId: null,
+        pausedAt: null,
+        updatedAt: now,
+        exploredCardIds: [],
+        sessionProgress: {},
+      };
 
-    if (sessionEnded) {
       const exploredCardIds = journeyState.exploredCardIds || [];
       if (!exploredCardIds.includes(card_id)) {
         exploredCardIds.push(card_id);
       }
       journeyState.exploredCardIds = exploredCardIds;
       journeyState.lastCompletedCardId = card_id;
-    }
+      journeyState.updatedAt = now;
 
-    const updatedSession = sessionEnded
-      ? null
-      : {
-          ...session,
-          currentStepIndex: newStepIndex,
-          userCompletions,
-          lastActivityAt: now,
-        };
-
-    const { error: updateErr } = await admin
-      .from("couple_progress")
-      .update({
-        current_session: updatedSession,
-        journey_state: journeyState,
-        updated_by: userId,
-        updated_at: now,
-      })
-      .eq("couple_space_id", spaceId);
-
-    if (updateErr) {
-      console.error("Update error:", updateErr);
-      return json({ error: "update_failed" }, 500);
+      await admin
+        .from("couple_progress")
+        .update({
+          journey_state: journeyState,
+          updated_by: userId,
+          updated_at: now,
+        })
+        .eq("couple_space_id", spaceId);
     }
 
     return json({
       success: true,
-      session: updatedSession,
-      journey_state: journeyState,
-      step_advanced: isMutuallyCompleted,
-      session_ended: sessionEnded,
+      step_advanced: stepResult?.is_step_complete ?? false,
+      session_ended: stepResult?.is_session_complete ?? false,
+      is_waiting: stepResult?.is_waiting ?? false,
     });
   } catch (err) {
     console.error("Unexpected error:", err);
