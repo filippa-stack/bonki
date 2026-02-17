@@ -17,3 +17,6 @@ verify_jwt = false
 
 [functions.leave-and-create-new-space]
 verify_jwt = false
+
+[functions.send-notification-email]
+verify_jwt = false

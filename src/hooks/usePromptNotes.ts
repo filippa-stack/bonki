@@ -3,6 +3,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useCoupleSpaceContext as useCoupleSpace } from '@/contexts/CoupleSpaceContext';
 import { supabase } from '@/integrations/supabase/client';
 import { useDevState } from '@/contexts/DevStateContext';
+import { notifyPartnerByEmail } from '@/lib/notifyPartnerByEmail';
 
 export interface PromptNote {
   id: string;
@@ -259,7 +260,40 @@ export function usePromptNotes(
       return next;
     });
 
-    upsertNote(promptId, privateNote.content, 'shared', { shared_at: now, author_label: authorLabel });
+    upsertNote(promptId, privateNote.content, 'shared', { shared_at: now, author_label: authorLabel }).then(async () => {
+      // Fire-and-forget: notify partner by email
+      if (!space) return;
+      const { data: members } = await supabase
+        .from('couple_members')
+        .select('user_id')
+        .eq('couple_space_id', space.id)
+        .is('left_at', null)
+        .eq('status', 'active')
+        .neq('user_id', user!.id)
+        .limit(1);
+
+      const partnerUserId = members?.[0]?.user_id;
+      if (partnerUserId) {
+        // Find the note_id we just upserted
+        const { data: noteRow } = await supabase
+          .from('prompt_notes')
+          .select('id')
+          .eq('couple_space_id', space.id)
+          .eq('user_id', user!.id)
+          .eq('card_id', cardId)
+          .eq('section_id', sectionId)
+          .eq('prompt_id', promptId)
+          .eq('visibility', 'shared')
+          .limit(1);
+
+        notifyPartnerByEmail({
+          type: 'shared_reflection',
+          couple_space_id: space.id,
+          receiver_user_id: partnerUserId,
+          note_id: noteRow?.[0]?.id,
+        });
+      }
+    });
   }, [notes, upsertNote, space, userRole, memberCount]);
 
   const unshareNote = useCallback((promptId: string) => {
