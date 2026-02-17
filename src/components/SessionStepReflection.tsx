@@ -174,8 +174,11 @@ export default function SessionStepReflection({
         size="lg"
         className="w-full h-14 rounded-2xl gap-2 font-normal"
       >
-        Klar med detta steg
+        Markera klar →
       </Button>
+      <p className="text-xs text-muted-foreground/50 text-center">
+        Ni går vidare när båda är klara.
+      </p>
     </div>
   );
 }
