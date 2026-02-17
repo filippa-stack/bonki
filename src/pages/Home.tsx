@@ -135,12 +135,13 @@ export default function Home() {
   const { settings } = useSiteSettings();
   const { user } = useAuth();
   const { space, displayMemberCount, userRole, fetchInviteInfo } = useCoupleSpaceContext();
-  const { incomingProposals: _rawProposals, ownPendingProposals, sendProposal: sendDbProposal, updateProposalStatus, activateSession } = useProposalsContext();
+  const { incomingProposals: _rawProposals, ownPendingProposals, savedProposals, sendProposal: sendDbProposal, updateProposalStatus, activateSession } = useProposalsContext();
   const devState = useDevState();
   const appModeState = useAppMode();
   const { mode, activeSession, normalizedSession } = appModeState;
 
   const [acceptingProposalId, setAcceptingProposalId] = useState<string | null>(null);
+  const [viewingSavedProposalId, setViewingSavedProposalId] = useState<string | null>(null);
 
   // Proposal mode state
   const [isProposalMode, setIsProposalMode] = useState(false);
@@ -437,6 +438,9 @@ export default function Home() {
       {mode === 'idle' && (() => {
         const outgoingPendingProposal = ownPendingProposals[0] ?? null;
         const outgoingCard = outgoingPendingProposal ? getCardById(outgoingPendingProposal.card_id) : null;
+        const savedFromPartner = savedProposals.filter(p => p.proposed_by !== user?.id);
+        const savedProposal = savedFromPartner[0] ?? null;
+        const savedCard = savedProposal ? getCardById(savedProposal.card_id) : null;
         return (
           <motion.div
             initial={{ opacity: 0 }}
@@ -460,6 +464,29 @@ export default function Home() {
                 >
                   Ändra förslag
                 </Button>
+              </div>
+            )}
+            {savedProposal && savedCard && (
+              <div className="rounded-2xl border border-border bg-card p-5 mb-4 text-center space-y-2">
+                <p className="text-xs text-muted-foreground/60 uppercase tracking-wide">Sparat förslag</p>
+                <p className="font-serif text-base text-foreground">{savedCard.title}</p>
+                <div className="flex items-center justify-center gap-3 mt-2">
+                  <Button
+                    size="sm"
+                    className="font-normal"
+                    onClick={() => setViewingSavedProposalId(savedProposal.id)}
+                  >
+                    Öppna
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="text-muted-foreground hover:text-foreground font-normal"
+                    onClick={() => updateProposalStatus(savedProposal.id, 'declined')}
+                  >
+                    Ta bort
+                  </Button>
+                </div>
               </div>
             )}
             <div className="text-center">
@@ -591,6 +618,71 @@ export default function Home() {
             </div>
           </motion.div>
         )}
+      </AnimatePresence>
+
+      {/* Saved proposal overlay (re-opens IncomingProposal-style UI) */}
+      <AnimatePresence>
+        {viewingSavedProposalId && (() => {
+          const sp = savedProposals.find(p => p.id === viewingSavedProposalId);
+          if (!sp) return null;
+          const spCard = getCardById(sp.card_id);
+          const isAccepting = acceptingProposalId === sp.id;
+          return (
+            <motion.div
+              key={`saved-proposal-${sp.id}`}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.15 }}
+              className="fixed inset-0 z-50 flex flex-col items-center justify-center p-8 bg-background"
+            >
+              <div className="w-full max-w-sm space-y-10 text-center">
+                <div className="space-y-3">
+                  <p className="text-sm text-muted-foreground/60 uppercase tracking-wide">
+                    Sparat förslag
+                  </p>
+                  <h1 className="text-2xl font-serif text-foreground leading-snug">
+                    {spCard?.title || 'Samtal'}
+                  </h1>
+                  {sp.message && (
+                    <p className="text-sm text-muted-foreground italic">"{sp.message}"</p>
+                  )}
+                </div>
+                <div className="space-y-3">
+                  <Button
+                    size="lg"
+                    className="w-full h-14 rounded-2xl gap-2 font-normal"
+                    disabled={isAccepting}
+                    onClick={async () => {
+                      setAcceptingProposalId(sp.id);
+                      await updateProposalStatus(sp.id, 'accepted');
+                      const result = await activateSession(sp.id);
+                      setAcceptingProposalId(null);
+                      setViewingSavedProposalId(null);
+                      if (result.success) {
+                        navigate(`/card/${sp.card_id}`);
+                      } else {
+                        toast.error('Kunde inte starta samtalet.');
+                      }
+                    }}
+                  >
+                    {isAccepting ? 'Startar...' : 'Acceptera'}
+                    {!isAccepting && <ArrowRight className="w-4 h-4" />}
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="lg"
+                    className="w-full h-12 text-muted-foreground hover:text-foreground font-normal"
+                    disabled={isAccepting}
+                    onClick={() => setViewingSavedProposalId(null)}
+                  >
+                    Stäng
+                  </Button>
+                </div>
+              </div>
+            </motion.div>
+          );
+        })()}
       </AnimatePresence>
 
       {/* Categories — solo: locked in disclosure; browse: fully unlocked */}
