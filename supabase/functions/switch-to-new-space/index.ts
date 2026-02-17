@@ -93,6 +93,19 @@ Deno.serve(async (req) => {
         })
         .eq("id", membership.couple_space_id);
 
+      // Clear shared session state so remaining partner isn't stuck
+      await admin
+        .from("couple_progress")
+        .update({ current_session: null, updated_by: userId })
+        .eq("couple_space_id", membership.couple_space_id);
+
+      // Cancel all pending proposals for this space
+      await admin
+        .from("topic_proposals")
+        .update({ status: "cancelled" } as any)
+        .eq("couple_space_id", membership.couple_space_id)
+        .eq("status", "pending");
+
       // Emit system event so remaining partner gets notified
       await admin
         .from("system_events")

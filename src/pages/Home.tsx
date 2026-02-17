@@ -72,6 +72,7 @@ export default function Home() {
     cards,
     startSession,
     getCategoryStatus,
+    clearForPartnerLeave,
   } = useApp();
   const { settings } = useSiteSettings();
   const { user } = useAuth();
@@ -122,16 +123,6 @@ export default function Home() {
   }, [journeyState]);
 
   const isSoloMode = displayMemberCount < 2;
-
-  // When partner leaves mid-session, clear active session and force IDLE
-  const [partnerLeftCleared, setPartnerLeftCleared] = useState(false);
-  useEffect(() => {
-    if (isSoloMode && hasActiveSession && !partnerLeftCleared) {
-      // Partner left while session was active — end it locally
-      setPartnerLeftCleared(true);
-      toast('Samtalet avslutades eftersom din partner lämnade utrymmet.');
-    }
-  }, [isSoloMode, hasActiveSession, partnerLeftCleared]);
 
   // 7+ day overlay: only if there's a session to resume AND partner is connected
   const showReturnOverlay = useMemo(() => {
@@ -261,12 +252,14 @@ export default function Home() {
       <PartnerConnectedBanner />
 
       {/* Partner left banner — shown when partner_left_space event detected */}
-      <PartnerLeftBanner onInvite={() => {
-        // Scroll to invite section (rendered when solo)
-        setTimeout(() => {
-          document.getElementById('solo-invite')?.scrollIntoView({ behavior: 'smooth' });
-        }, 100);
-      }} />
+      <PartnerLeftBanner
+        onPartnerLeft={clearForPartnerLeave}
+        onInvite={() => {
+          setTimeout(() => {
+            document.getElementById('solo-invite')?.scrollIntoView({ behavior: 'smooth' });
+          }, 100);
+        }}
+      />
 
       {/* ═══ PRIMARY ACTION ZONE ═══
            3 macro states: SOLO → IDLE → ACTIVE

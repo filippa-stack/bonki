@@ -91,6 +91,8 @@ interface AppContextType {
   /** True when a remote update changed the active cardId */
   remoteCardChanged: boolean;
   dismissRemoteCardCue: () => void;
+  /** Clear session & journey when partner leaves the space */
+  clearForPartnerLeave: () => void;
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -934,6 +936,19 @@ export function AppProvider({ children }: { children: ReactNode }) {
     setSessionDismissed(true);
   };
 
+  /** Called when partner_left_space event is received — clean slate for solo */
+  const clearForPartnerLeave = useCallback(() => {
+    setState((prev) => ({
+      ...prev,
+      currentSession: undefined,
+      // Keep journeyState (archive history) but clear transient fields
+      journeyState: prev.journeyState
+        ? { ...prev.journeyState, pausedAt: null, updatedAt: new Date().toISOString() }
+        : undefined,
+    }));
+    setSessionDismissed(false);
+  }, []);
+
   const pauseSession = () => {
     setState((prev) => {
       const session = prev.currentSession;
@@ -1262,6 +1277,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
         retrySharedSync,
         remoteCardChanged,
         dismissRemoteCardCue,
+        clearForPartnerLeave,
       }}
     >
       {children}
