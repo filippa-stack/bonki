@@ -870,6 +870,17 @@ export type Database = {
           isSetofReturn: false
         }
       }
+      get_active_session_state: {
+        Args: never
+        Returns: {
+          card_id: string
+          category_id: string
+          current_step_index: number
+          mode: string
+          session_id: string
+          step_completions: Json
+        }[]
+      }
       get_current_couple_space_id: { Args: never; Returns: string }
       get_own_invite_info: {
         Args: never
