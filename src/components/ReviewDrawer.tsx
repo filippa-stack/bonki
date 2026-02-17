@@ -18,7 +18,7 @@ import { usePromptNotes } from '@/hooks/usePromptNotes';
 import CardTakeaways from '@/components/CardTakeaways';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
-import { useCoupleSpace } from '@/hooks/useCoupleSpace';
+import { useCoupleSpaceContext as useCoupleSpace } from '@/contexts/CoupleSpaceContext';
 import type { Card } from '@/types';
 
 const STEP_ORDER = ['opening', 'reflective', 'scenario', 'exercise'] as const;

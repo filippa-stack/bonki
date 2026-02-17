@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
-import { useCoupleSpace } from '@/hooks/useCoupleSpace';
+import { useCoupleSpaceContext as useCoupleSpace } from '@/contexts/CoupleSpaceContext';
 import { supabase } from '@/integrations/supabase/client';
 
 const SEEN_KEY = 'partner_connected_seen';

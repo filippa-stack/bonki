@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Lock, Check } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
-import { useCoupleSpace } from '@/hooks/useCoupleSpace';
+import { useCoupleSpaceContext as useCoupleSpace } from '@/contexts/CoupleSpaceContext';
 import { useSessionReflections, type ReflectionState } from '@/hooks/useSessionReflections';
 
 

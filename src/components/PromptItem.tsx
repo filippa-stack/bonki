@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { Prompt } from '@/types';
 import { PromptNote } from '@/hooks/usePromptNotes';
 import { useSiteSettings } from '@/contexts/SiteSettingsContext';
-import { useCoupleSpace } from '@/hooks/useCoupleSpace';
+import { useCoupleSpaceContext as useCoupleSpace } from '@/contexts/CoupleSpaceContext';
 
 interface PromptItemProps {
   prompt: Prompt;

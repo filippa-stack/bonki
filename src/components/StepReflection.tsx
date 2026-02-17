@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { Lock, Share2, ChevronDown, Users, Link2 } from 'lucide-react';
 import { usePromptNotes } from '@/hooks/usePromptNotes';
-import { useCoupleSpace } from '@/hooks/useCoupleSpace';
+import { useCoupleSpaceContext as useCoupleSpace } from '@/contexts/CoupleSpaceContext';
 import { Section, Card } from '@/types';
 
 interface StepReflectionProps {
