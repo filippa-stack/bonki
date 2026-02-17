@@ -1239,7 +1239,23 @@ export function AppProvider({ children }: { children: ReactNode }) {
         toggleTakeawayHighlight,
         takeawayHighlightCount,
         refreshCoupleSpace,
-        switchToNewSpace,
+        switchToNewSpace: async () => {
+          const result = await switchToNewSpace();
+          if (result.ok && result.spaceId) {
+            // Clear session & journey state for fresh home
+            setState((prev) => ({
+              ...prev,
+              currentSession: undefined,
+              journeyState: undefined,
+            }));
+            setSessionDismissed(false);
+            // Override space ID immediately so queries use the new space
+            setOverrideCoupleSpaceId(result.spaceId);
+            // Allow shared progress to re-apply from the new space
+            hasAppliedSharedProgress.current = false;
+          }
+          return result;
+        },
         setOverrideCoupleSpaceId,
         sharedSyncStatus,
         sharedSyncError,
