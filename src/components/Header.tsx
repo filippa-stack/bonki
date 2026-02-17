@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useApp } from '@/contexts/AppContext';
 import { useAuth } from '@/contexts/AuthContext';
+import { toast } from 'sonner';
 import ColorPicker from '@/components/ColorPicker';
 import {
   AlertDialog,
@@ -151,7 +152,15 @@ export default function Header({
                   </AlertDialogHeader>
                   <AlertDialogFooter>
                     <AlertDialogCancel>Avbryt</AlertDialogCancel>
-                    <AlertDialogAction onClick={() => switchToNewSpace()}>
+                    <AlertDialogAction onClick={async () => {
+                      const result = await switchToNewSpace();
+                      if (result.ok) {
+                        toast.success('Nytt utrymme skapat.');
+                        navigate('/');
+                      } else {
+                        toast.error('Kunde inte skapa nytt utrymme.');
+                      }
+                    }}>
                       Skapa nytt utrymme
                     </AlertDialogAction>
                   </AlertDialogFooter>
