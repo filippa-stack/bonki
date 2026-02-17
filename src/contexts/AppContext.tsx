@@ -8,6 +8,7 @@ import { useCoupleSpace } from '@/hooks/useCoupleSpace';
 import { useSharedProgress, SharedSyncStatus } from '@/hooks/useSharedProgress';
 import { supabase } from '@/integrations/supabase/client';
 import { useDevState } from '@/contexts/DevStateContext';
+import { DEV_MOCK } from '@/hooks/useDevState';
 
 const STEP_ORDER = ['opening', 'reflective', 'scenario', 'exercise'] as const;
 
@@ -327,6 +328,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
   // Apply initial shared progress once
   const hasAppliedSharedProgress = useRef(false);
   useEffect(() => {
+    if (devState) return; // Don't apply shared progress in dev mode
     if (!sharedProgressReady || hasAppliedSharedProgress.current || !sharedProgressInitial) return;
     hasAppliedSharedProgress.current = true;
     setState((prev) => ({
@@ -334,7 +336,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
       currentSession: sharedProgressInitial.currentSession ?? prev.currentSession,
       journeyState: sharedProgressInitial.journeyState ?? prev.journeyState,
     }));
-  }, [sharedProgressReady, sharedProgressInitial]);
+  }, [sharedProgressReady, sharedProgressInitial, devState]);
 
   // Sync journey state changes to remote (current_session is managed by edge functions)
   useEffect(() => {
@@ -646,6 +648,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
 
   // Authoritative completion lives in journeyState.sessionProgress[cardId].perUser[uid].completedSteps.
   const startSession = (categoryId: string, cardId: string, { force = false, fromBeginning = false }: { force?: boolean; fromBeginning?: boolean } = {}) => {
+    // DevState gate: mock session already provided, no DB writes
+    if (devState) return;
     // Solo gate: no shared sessions when unpaired
     if (coupleSpaceMemberCount < 2) return;
     const now = new Date();
@@ -1202,7 +1206,9 @@ export function AppProvider({ children }: { children: ReactNode }) {
         saveStatus,
         lastSavedAt,
         saveError,
-        currentSession: state.currentSession,
+        currentSession: (devState === 'pairedActive' || devState === 'waiting' || devState === 'completed')
+          ? { categoryId: DEV_MOCK.mockCategory.id, cardId: DEV_MOCK.mockCard.id, currentStepIndex: DEV_MOCK.mockSession.currentStepIndex, startedAt: new Date(DEV_MOCK.mockSession.startedAt), lastActivityAt: new Date() }
+          : state.currentSession,
         startSession: startSessionWithJourney,
         updateSessionStep,
         completeSessionStep,
