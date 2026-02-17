@@ -354,7 +354,7 @@ export default function Home() {
                 >
                   Inte nu
                 </Button>
-                <p className="text-xs text-muted-foreground/50 mt-1">Du kan spara det och ta upp senare.</p>
+                <p className="text-xs text-muted-foreground/50 mt-1">Du kan ta upp det senare.</p>
               </div>
             </div>
           </motion.div>
