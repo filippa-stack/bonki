@@ -15,9 +15,10 @@ interface InviteInfo {
 interface SoloInviteSectionProps {
   fetchInviteInfo: () => Promise<InviteInfo | null>;
   onJoinedSpace?: () => void;
+  hadPartnerBefore?: boolean;
 }
 
-export default function SoloInviteSection({ fetchInviteInfo, onJoinedSpace }: SoloInviteSectionProps) {
+export default function SoloInviteSection({ fetchInviteInfo, onJoinedSpace, hadPartnerBefore = false }: SoloInviteSectionProps) {
   const { user } = useAuth();
   const [inviteInfo, setInviteInfo] = useState<InviteInfo | null>(null);
   const [loadingInvite, setLoadingInvite] = useState(true);
@@ -116,11 +117,15 @@ export default function SoloInviteSection({ fetchInviteInfo, onJoinedSpace }: So
       transition={{ duration: 0.15 }}
       className="px-6 pt-8 mb-10"
     >
-      {/* Hero text — no logo, no slogan */}
+      {/* Hero text */}
       <div className="text-center mb-10">
-        <h2 className="font-serif text-xl text-foreground mb-3">Nu börjar ni.</h2>
+        <h2 className="font-serif text-xl text-foreground mb-3">
+          {hadPartnerBefore ? 'Du är ensam här just nu.' : 'Bjud in din partner'}
+        </h2>
         <p className="text-sm text-muted-foreground leading-relaxed">
-          Bjud in din partner så skapar ni ert gemensamma rum.
+          {hadPartnerBefore
+            ? 'Din partner är inte längre ansluten till ert rum.'
+            : 'Dela en länk så skapar ni ert gemensamma rum.'}
         </p>
       </div>
 

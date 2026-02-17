@@ -5,7 +5,7 @@
 
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useApp } from '@/contexts/AppContext';
 import { useSiteSettings } from '@/contexts/SiteSettingsContext';
@@ -126,6 +126,11 @@ export default function Home() {
   }, [journeyState]);
 
   const isSoloMode = appModeState.isSolo;
+
+  // Track if partner was ever connected during this app session
+  const hadPartnerBeforeRef = useRef(false);
+  if (displayMemberCount >= 2) hadPartnerBeforeRef.current = true;
+  const hadPartnerBefore = hadPartnerBeforeRef.current && isSoloMode;
 
   // 7+ day overlay: only if there's a session to resume AND partner is connected
   const showReturnOverlay = useMemo(() => {
@@ -262,6 +267,7 @@ export default function Home() {
         <SoloInviteSection
           fetchInviteInfo={fetchInviteInfo}
           onJoinedSpace={() => window.location.reload()}
+          hadPartnerBefore={hadPartnerBefore}
         />
       )}
 
