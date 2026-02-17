@@ -114,8 +114,6 @@ export default function Home() {
   const { mode, activeSession, normalizedSession } = appModeState;
 
   const [acceptingProposalId, setAcceptingProposalId] = useState<string | null>(null);
-  const [snoozeUntil, setSnoozeUntil] = useState(0);
-  const isSnoozed = Date.now() < snoozeUntil;
 
   // Proposal mode state
   const [isProposalMode, setIsProposalMode] = useState(false);
@@ -301,7 +299,7 @@ export default function Home() {
         />
       )}
 
-      {mode === 'proposal' && !isSnoozed && (() => {
+      {mode === 'proposal' && (() => {
         const proposal = appModeState.incomingProposals[0];
         if (!proposal) return null;
         const proposalCard = getCardById(proposal.card_id) || (devState ? { title: DEV_MOCK.mockCard.title, subtitle: DEV_MOCK.mockCard.subtitle } as any : null);
@@ -353,11 +351,11 @@ export default function Home() {
                   size="lg"
                   className="w-full h-12 text-muted-foreground hover:text-foreground font-normal"
                   disabled={isAccepting}
-                  onClick={() => setSnoozeUntil(Date.now() + 15 * 60 * 1000)}
+                  onClick={() => updateProposalStatus(proposal.id, 'saved_for_later')}
                 >
                   Inte nu
                 </Button>
-                <p className="text-xs text-muted-foreground/50 mt-1">Förslaget ligger kvar tills du svarar.</p>
+                <p className="text-xs text-muted-foreground/50 mt-1">Du kan ta upp det senare från Hem.</p>
               </div>
             </div>
           </motion.div>
