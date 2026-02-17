@@ -179,7 +179,6 @@ export type Database = {
         Row: {
           couple_space_id: string
           created_at: string
-          current_session: Json | null
           id: string
           journey_state: Json | null
           updated_at: string
@@ -188,7 +187,6 @@ export type Database = {
         Insert: {
           couple_space_id: string
           created_at?: string
-          current_session?: Json | null
           id?: string
           journey_state?: Json | null
           updated_at?: string
@@ -197,7 +195,6 @@ export type Database = {
         Update: {
           couple_space_id?: string
           created_at?: string
-          current_session?: Json | null
           id?: string
           journey_state?: Json | null
           updated_at?: string
