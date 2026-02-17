@@ -21,7 +21,7 @@ import SessionTakeaway from '@/components/SessionTakeaway';
 import CompletedSessionView from '@/components/CompletedSessionView';
 
 import { useProposals, Proposal } from '@/hooks/useProposals';
-import { useDevState } from '@/hooks/useDevState';
+import { useDevState } from '@/contexts/DevStateContext';
 
 const sectionTypeLabels: Record<string, string> = {
   opening: 'Början',

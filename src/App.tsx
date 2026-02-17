@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-route
 import { AnimatePresence } from "framer-motion";
 import { AuthProvider, useAuth } from "@/contexts/AuthContext";
 import { AppProvider, useApp } from "@/contexts/AppContext";
+import { DevStateProvider } from "@/contexts/DevStateContext";
 import RemoteCardCue from "@/components/RemoteCardCue";
 import ActiveSessionGuard from "@/components/ActiveSessionGuard";
 import ProposalAcceptanceWatcher from "@/components/ProposalAcceptanceWatcher";
@@ -137,7 +138,9 @@ const App = () => (
         <TooltipProvider>
           <Sonner />
           <BrowserRouter>
-            <AppRoutes />
+            <DevStateProvider>
+              <AppRoutes />
+            </DevStateProvider>
           </BrowserRouter>
         </TooltipProvider>
       </AuthProvider>
