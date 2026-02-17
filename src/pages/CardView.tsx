@@ -27,7 +27,7 @@ import CompletedSessionView from '@/components/CompletedSessionView';
 
 import { useProposals, Proposal } from '@/hooks/useProposals';
 import { useDevState } from '@/contexts/DevStateContext';
-import { useNormalizedSessionState } from '@/hooks/useNormalizedSessionState';
+import { useNormalizedSessionContext } from '@/contexts/NormalizedSessionContext';
 
 const sectionTypeLabels: Record<string, string> = {
   opening: 'Början',
@@ -69,7 +69,7 @@ export default function CardView() {
   const devState = useDevState();
 
   // Normalized session state (dual-read, not yet authoritative)
-  const normalizedSession = useNormalizedSessionState();
+  const normalizedSession = useNormalizedSessionContext();
 
   // Active session ID for takeaways on the completion screen
   const [activeSessionId, setActiveSessionId] = useState<string | null>(

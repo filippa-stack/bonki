@@ -17,7 +17,8 @@
  */
 
 import { useMemo } from 'react';
-import { useNormalizedSessionState, type NormalizedSessionState } from '@/hooks/useNormalizedSessionState';
+import { useNormalizedSessionContext } from '@/contexts/NormalizedSessionContext';
+import type { NormalizedSessionState } from '@/hooks/useNormalizedSessionState';
 import { useCoupleSpaceContext } from '@/contexts/CoupleSpaceContext';
 import { useProposals } from '@/hooks/useProposals';
 import { useDevState } from '@/contexts/DevStateContext';
@@ -66,7 +67,7 @@ export interface AppModeState {
 
 export function useAppMode(): AppModeState {
   const devState = useDevState();
-  const normalizedSession = useNormalizedSessionState();
+  const normalizedSession = useNormalizedSessionContext();
   const { space, displayMemberCount } = useCoupleSpaceContext();
   const { incomingProposals } = useProposals();
 
