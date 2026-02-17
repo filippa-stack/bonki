@@ -863,13 +863,12 @@ export type Database = {
       }
       complete_couple_session_step: {
         Args: { p_session_id: string; p_step_index: number }
-        Returns: Database["public"]["CompositeTypes"]["step_completion_result"]
-        SetofOptions: {
-          from: "*"
-          to: "step_completion_result"
-          isOneToOne: true
-          isSetofReturn: false
-        }
+        Returns: {
+          is_session_complete: boolean
+          is_step_complete: boolean
+          is_waiting: boolean
+          partner_left: boolean
+        }[]
       }
       get_active_session_state: {
         Args: never
@@ -904,12 +903,7 @@ export type Database = {
       reflection_state: "draft" | "ready" | "revealed" | "locked"
     }
     CompositeTypes: {
-      step_completion_result: {
-        is_waiting: boolean | null
-        is_step_complete: boolean | null
-        is_session_complete: boolean | null
-        partner_left: boolean | null
-      }
+      [_ in never]: never
     }
   }
 }
