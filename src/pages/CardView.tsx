@@ -66,23 +66,51 @@ export default function CardView() {
   // Normalized session state (dual-read, not yet authoritative)
   const normalizedSession = useNormalizedSessionState();
 
-  // Active card_session ID for takeaways on the completion screen
+  // Active session ID for takeaways on the completion screen
   const [activeSessionId, setActiveSessionId] = useState<string | null>(
     devState ? 'dev-session' : null
   );
+  // Whether the card has a completed session in couple_sessions (normalized)
+  const [hasCompletedNormalizedSession, setHasCompletedNormalizedSession] = useState(false);
   useEffect(() => {
-    if (devState) return; // Skip DB query in dev mode
+    if (devState) return;
     if (!space || !cardId) return;
-    supabase
-      .from('card_sessions')
-      .select('id')
-      .eq('couple_space_id', space.id)
-      .eq('card_id', cardId)
-      .is('completed_at', null)
-      .order('started_at', { ascending: false })
-      .limit(1)
-      .single()
-      .then(({ data }) => { if (data) setActiveSessionId(data.id); });
+
+    // Query normalized couple_sessions for active (for takeaway) and completed (for revisit)
+    Promise.all([
+      supabase
+        .from('couple_sessions')
+        .select('id')
+        .eq('couple_space_id', space.id)
+        .eq('card_id', cardId)
+        .eq('status', 'active')
+        .limit(1)
+        .single(),
+      supabase
+        .from('couple_sessions')
+        .select('id')
+        .eq('couple_space_id', space.id)
+        .eq('card_id', cardId)
+        .eq('status', 'completed')
+        .limit(1)
+        .single(),
+    ]).then(([activeRes, completedRes]) => {
+      if (activeRes.data) setActiveSessionId(activeRes.data.id);
+      // Fall back to legacy card_sessions if no normalized active session
+      if (!activeRes.data) {
+        supabase
+          .from('card_sessions')
+          .select('id')
+          .eq('couple_space_id', space.id)
+          .eq('card_id', cardId)
+          .is('completed_at', null)
+          .order('started_at', { ascending: false })
+          .limit(1)
+          .single()
+          .then(({ data }) => { if (data) setActiveSessionId(data.id); });
+      }
+      setHasCompletedNormalizedSession(!!completedRes.data);
+    });
   }, [space, cardId, devState]);
 
   const card = cardId ? getCardById(cardId) : undefined;
@@ -103,7 +131,9 @@ export default function CardView() {
     getCatchUpState(myCompletedSteps, sharedStepIndex, isActiveSession);
 
   // ─── Determine if card is fully explored ───
-  const isFullyExplored = cardId ? (journeyState?.exploredCardIds?.includes(cardId) ?? false) : false;
+  const isFullyExplored = cardId
+    ? (hasCompletedNormalizedSession || (journeyState?.exploredCardIds?.includes(cardId) ?? false))
+    : false;
   const allStepsCompleted = STEP_ORDER.every((_, i) => myCompletedSteps.includes(i));
 
   // ─── Determine initial view state ───
