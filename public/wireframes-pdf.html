@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Still Us — UX Flöde & Wireframes PDF</title>
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Inter', system-ui, sans-serif; background: #fafafa; color: #1a1a1a; padding: 40px 24px; max-width: 860px; margin: 0 auto; }
+  h1 { font-size: 26px; font-weight: 700; margin-bottom: 4px; }
+  .subtitle { font-size: 13px; color: #888; margin-bottom: 24px; }
+  .actions { display: flex; gap: 12px; margin-bottom: 32px; }
+  .btn { display: inline-flex; align-items: center; gap: 8px; background: #5f8f7e; color: #fff; padding: 12px 24px; border-radius: 12px; font-size: 14px; border: none; cursor: pointer; font-family: inherit; }
+  .btn:hover { background: #4a7a6a; }
+  .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+  .status { font-size: 13px; color: #666; margin-bottom: 24px; min-height: 20px; }
+
+  .page { margin-bottom: 48px; page-break-inside: avoid; }
+  .page h2 { font-size: 20px; font-weight: 600; margin-bottom: 16px; border-bottom: 2px solid #5f8f7e; padding-bottom: 8px; }
+  .page h3 { font-size: 16px; font-weight: 600; margin: 24px 0 4px; }
+  .route { font-size: 12px; color: #999; margin-bottom: 12px; font-family: monospace; }
+  .annotations { font-size: 12px; color: #555; line-height: 1.7; margin-top: 10px; padding-left: 18px; }
+  .annotations li { margin-bottom: 2px; }
+
+  .frame { border: 1px solid #ddd; border-radius: 12px; padding: 24px; background: #fff; font-size: 13px; line-height: 1.8; color: #333; }
+  .frame .header-bar { display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; border-bottom: 1px solid #eee; margin: -24px -24px 16px -24px; border-radius: 12px 12px 0 0; background: #f8f8f8; font-size: 12px; color: #666; }
+  .frame .b { display: inline-block; background: #5f8f7e; color: #fff; padding: 10px 20px; border-radius: 12px; text-align: center; font-size: 13px; margin: 4px 0; }
+  .frame .bo { display: inline-block; border: 1px solid #ccc; color: #555; padding: 10px 20px; border-radius: 20px; text-align: center; font-size: 13px; margin: 4px 0; }
+  .frame .bg { display: inline-block; color: #999; padding: 8px 16px; text-align: center; font-size: 12px; margin: 4px 0; }
+  .frame .m { color: #999; font-size: 12px; }
+  .frame .sf { font-family: Georgia, serif; }
+  .frame .c { text-align: center; }
+  .frame .sp { height: 20px; }
+  .frame .dv { border-top: 1px solid #eee; margin: 16px 0; }
+  .frame .cd { border: 1px solid #e5e5e5; border-radius: 12px; padding: 16px; margin: 8px 0; background: #fafafa; }
+  .frame .dots { display: flex; gap: 6px; justify-content: center; }
+  .frame .dot { width: 6px; height: 6px; border-radius: 50%; background: #ccc; }
+  .frame .dot.active { width: 16px; border-radius: 4px; background: #5f8f7e55; }
+  .frame .pb { display: flex; gap: 4px; align-items: center; }
+  .frame .ps { flex: 1; height: 3px; background: #e5e5e5; border-radius: 2px; }
+  .frame .ps.done { background: #5f8f7e; }
+  .frame .ps.cur { background: #5f8f7e88; }
+  .frame .breathing { width: 64px; height: 1px; background: #1a1a1a11; margin: 8px auto; }
+  .frame .pd { display: flex; gap: 8px; justify-content: center; }
+  .frame .pdt { width: 8px; height: 8px; border-radius: 50%; }
+  .frame .pdt.f { background: #1a1a1a33; }
+  .frame .pdt.o { border: 1px solid #1a1a1a22; }
+
+  .mermaid-container { background: #fff; border: 1px solid #ddd; border-radius: 12px; padding: 24px; margin-bottom: 16px; overflow-x: auto; }
+  .flow-legend { font-size: 12px; color: #666; margin-top: 8px; }
+  .flow-legend span { display: inline-block; width: 12px; height: 12px; border-radius: 3px; margin-right: 4px; vertical-align: middle; }
+</style>
+</head>
+<body>
+
+<h1>Still Us — UX Flöde & Wireframes</h1>
+<p class="subtitle">Komplett designdokumentation · Februari 2026</p>
+<div class="actions">
+  <button class="btn" id="dlBtn" onclick="generatePDF()">📄 Ladda ner som PDF</button>
+</div>
+<div class="status" id="status"></div>
+
+<div id="content">
+
+<!-- PAGE 1: FLOW CHART -->
+<div class="page" id="flowPage">
+  <h2>UX-flödesschema</h2>
+  <div class="mermaid-container">
+    <div class="mermaid">
+graph TD
+    START([App Load]) --> AUTH{Autentiserad?}
+    AUTH -->|Nej| LOGIN[Inloggning]
+    LOGIN -->|OK| CLAIM
+    AUTH -->|Ja| CLAIM
+
+    CLAIM{Väntande inbjudan?}
+    CLAIM -->|Ja| CLAIMING[Kopplar ihop er…]
+    CLAIMING --> OB
+    CLAIM -->|Nej| OB
+
+    OB{Onboarding klar?}
+    OB -->|Nej| ONBOARD[Onboarding 5 slides]
+    ONBOARD --> PAY
+    OB -->|Ja| PAY
+
+    PAY{Betalning / bypass?}
+    PAY -->|Köp| PURCHASE[PurchaseScreen]
+    PURCHASE --> HOME
+    PAY -->|Bypass| HOME
+
+    HOME{App-läge}
+    HOME -->|solo| SOLO[Solo Home]
+    HOME -->|idle| IDLE[Idle Home]
+    HOME -->|proposal| PROP[Inkommande förslag]
+    HOME -->|active| ACTIVE[Aktiv session]
+
+    SOLO -->|Bjud in| IDLE
+    IDLE -->|Välj ämne| PROPOSE[Föreslå samtal]
+    PROPOSE --> WAITING_P[Partner svarar]
+
+    PROP -->|Acceptera| CARD[/card/:id]
+    ACTIVE -->|Fortsätt| CARD
+
+    CARD -->|Vi går vidare| STEP{Steg klart}
+    STEP -->|Väntar partner| WAIT[Väntläge]
+    STEP -->|Båda klara| NEXT[Nästa steg]
+    STEP -->|Alla klara| DONE[Avslutad]
+    WAIT -->|Partner klar| NEXT
+    NEXT --> CARD
+
+    DONE -->|Föreslå nästa| PROPOSE
+    DONE -->|Hem| HOME
+
+    style LOGIN fill:#f5f5f5,stroke:#ccc
+    style SOLO fill:#fef3c7,stroke:#f59e0b
+    style IDLE fill:#d1fae5,stroke:#10b981
+    style PROP fill:#ede9fe,stroke:#8b5cf6
+    style ACTIVE fill:#dbeafe,stroke:#3b82f6
+    style CARD fill:#dbeafe,stroke:#3b82f6
+    style WAIT fill:#fef9c3,stroke:#eab308
+    style DONE fill:#d1fae5,stroke:#10b981
+    </div>
+  </div>
+  <div class="flow-legend">
+    <span style="background:#fef3c7;border:1px solid #f59e0b;"></span> Solo &nbsp;
+    <span style="background:#d1fae5;border:1px solid #10b981;"></span> Idle / Klar &nbsp;
+    <span style="background:#ede9fe;border:1px solid #8b5cf6;"></span> Förslag &nbsp;
+    <span style="background:#dbeafe;border:1px solid #3b82f6;"></span> Aktiv session &nbsp;
+    <span style="background:#fef9c3;border:1px solid #eab308;"></span> Väntar
+  </div>
+</div>
+
+<!-- WIREFRAME 1 -->
+<div class="page">
+  <h3>1. Onboarding</h3>
+  <div class="route">/ → Onboarding (hasCompletedOnboarding = false)</div>
+  <div class="frame">
+    <div class="sp"></div>
+    <div class="c sf" style="font-size: 22px; font-weight: 600;">Välkommen</div>
+    <div class="sp"></div>
+    <div class="c m" style="max-width: 320px; margin: 0 auto; line-height: 1.7;">Det här är ett utrymme för dig och din partner att reflektera över er relation.</div>
+    <div class="sp"></div>
+    <div class="c"><div class="b" style="width: 80%; max-width: 280px;">Fortsätt</div></div>
+    <div class="sp" style="height:12px;"></div>
+    <div class="dots"><div class="dot active"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+    <div class="sp" style="height:12px;"></div>
+    <div class="c m">Hoppa över introduktionen</div>
+    <div class="sp"></div>
+  </div>
+  <ul class="annotations"><li>5 slides, swipe/tap</li><li>Dots tappable</li><li>"Hoppa över" → completeOnboarding()</li></ul>
+</div>
+
+<!-- WIREFRAME 2 -->
+<div class="page">
+  <h3>2. Solo Before Partner</h3>
+  <div class="route">/ → Home (memberCount &lt; 2)</div>
+  <div class="frame">
+    <div class="header-bar"><span>🟢 logo</span><span>save · sync · Vårt utrymme · ⏻</span></div>
+    <div class="c" style="padding:20px 0 8px;">
+      <div style="width:56px;height:56px;background:#e5e5e5;border-radius:12px;margin:0 auto 12px;"></div>
+      <div class="sf" style="font-size:20px;font-weight:600;">STILL US</div>
+      <div class="m" style="margin-top:6px;">Förbli ett vi medan vi uppfostrar dem</div>
+    </div>
+    <div class="dv"></div>
+    <div class="cd c"><div class="m">Ni har inte startat något samtal ännu.</div><div style="margin-top:8px;"><span class="b" style="font-size:12px;padding:8px 16px;">Börja ert första samtal</span></div></div>
+    <div class="c m" style="margin:12px 0;">Bjud in din partner för att få ut det mesta.</div>
+    <div class="cd"><div class="m" style="font-size:11px;">AttachPartner · Invite code / share link</div></div>
+    <div class="dv"></div>
+    <div class="cd">Kategori 1</div><div class="cd">Kategori 2</div><div class="cd">Kategori 3</div>
+    <div class="dv"></div>
+    <div class="m">🔗 Er historia · 🔖 Sparade samtal</div>
+  </div>
+  <ul class="annotations"><li>Full category list visible</li><li>AttachPartner widget shown</li></ul>
+</div>
+
+<!-- WIREFRAME 3 -->
+<div class="page">
+  <h3>3. Idle — Partner Connected</h3>
+  <div class="route">/ → Home (memberCount ≥ 2, no session)</div>
+  <div class="frame">
+    <div class="header-bar"><span>🟢 logo</span><span>save · sync · Vårt utrymme · ⏻</span></div>
+    <div class="c" style="padding:20px 0 8px;">
+      <div style="width:56px;height:56px;background:#e5e5e5;border-radius:12px;margin:0 auto 12px;"></div>
+      <div class="sf" style="font-size:20px;font-weight:600;">STILL US</div>
+    </div>
+    <div class="dv"></div>
+    <div class="cd c"><div class="sf" style="font-size:13px;">Så fungerar det</div><div class="m" style="margin-top:4px;">Ni väljer samtalsämne tillsammans.</div></div>
+    <div class="sp"></div>
+    <div class="c"><div class="m sf">Vad vill ni prata om?</div><div style="margin-top:12px;"><span class="bo" style="padding:12px 32px;font-family:Georgia,serif;">Välj samtalsämne</span></div></div>
+    <div class="sp"></div>
+    <div class="dv"></div>
+    <div class="m">RelationshipMemory · RecentSharedReflection</div>
+    <div class="dv"></div>
+    <div class="m">🔗 Er historia · Footer</div>
+  </div>
+  <ul class="annotations"><li>Category list hidden (paired mode)</li><li>Single CTA replaces category grid</li></ul>
+</div>
+
+<!-- WIREFRAME 4 -->
+<div class="page">
+  <h3>4. Proposal Pending (Incoming)</h3>
+  <div class="route">/ → Home (incomingProposals.length &gt; 0)</div>
+  <div class="frame">
+    <div class="header-bar"><span>🟢 logo</span><span>save · sync · Vårt utrymme · ⏻</span></div>
+    <div class="c" style="padding:20px 0 8px;">
+      <div style="width:56px;height:56px;background:#e5e5e5;border-radius:12px;margin:0 auto 12px;"></div>
+      <div class="sf" style="font-size:20px;">STILL US</div>
+    </div>
+    <div class="dv"></div>
+    <div class="cd" style="display:flex;justify-content:space-between;align-items:center;">
+      <span class="m">Ni har ett föreslaget samtal</span>
+      <span class="bg">Öppna i Vårt utrymme</span>
+    </div>
+    <div class="sp"></div>
+    <div class="c m">... idle layout continues ...</div>
+  </div>
+  <ul class="annotations"><li>Banner between hero and content</li><li>Toast: "Ni har fått ett nytt samtalsförslag"</li></ul>
+</div>
+
+<!-- WIREFRAME 5 -->
+<div class="page">
+  <h3>5. Active Session Step</h3>
+  <div class="route">/card/:id (isActiveSession = true)</div>
+  <div class="frame">
+    <div class="header-bar"><span>← 🟢 Category title</span><span>save · sync · ⏻</span></div>
+    <div style="padding:8px 0;">
+      <div class="pb"><div class="ps done"></div><div class="ps cur"></div><div class="ps"></div><div class="ps"></div></div>
+      <div class="m c" style="margin-top:4px;font-size:10px;">Början · <b>Fördjupning</b> · I vardagen · Tillsammans</div>
+    </div>
+    <div class="sp"></div>
+    <div class="c sf" style="font-size:18px;">Card Title</div>
+    <div class="c m" style="margin-top:6px;font-style:italic;">Card subtitle</div>
+    <div class="dv"></div>
+    <div class="cd">
+      <div style="margin-top:8px;">Prompt 1: "Question text..."</div>
+      <div style="margin-top:4px;padding:8px;background:#f5f5f5;border-radius:8px;font-size:12px;color:#999;">Private note field</div>
+      <div style="margin-top:8px;">Prompt 2: "Question text..."</div>
+      <div style="margin-top:4px;padding:8px;background:#f5f5f5;border-radius:8px;font-size:12px;color:#999;">Private note field</div>
+    </div>
+    <div class="sp"></div>
+    <div class="c"><div class="b" style="width:100%;">Vi går vidare →</div></div>
+    <div class="sp" style="height:8px;"></div>
+    <div class="c m" style="font-size:11px;">📖 Se era svar</div>
+  </div>
+  <ul class="annotations"><li>Shared notes suppressed (skipShared=true)</li><li>CTA text varies per step type</li></ul>
+</div>
+
+<!-- WIREFRAME 6 -->
+<div class="page">
+  <h3>6. Waiting State</h3>
+  <div class="route">/card/:id (user done, partner pending)</div>
+  <div class="frame">
+    <div class="header-bar"><span>← 🟢 Category</span><span>save · sync · ⏻</span></div>
+    <div style="padding:8px 0;">
+      <div class="pb"><div class="ps done"></div><div class="ps done"></div><div class="ps"></div><div class="ps"></div></div>
+    </div>
+    <div class="sp"></div>
+    <div class="c sf" style="font-size:18px;">Card Title</div>
+    <div class="dv"></div>
+    <div class="cd m c" style="font-size:11px;">Completed step content</div>
+    <div class="sp"></div>
+    <div class="pd"><div class="pdt f"></div><div class="pdt o"></div></div>
+    <div class="sp" style="height:8px;"></div>
+    <div class="breathing"></div>
+    <div class="sp" style="height:8px;"></div>
+    <div class="c m" style="line-height:1.7;">Samtalet vilar här en stund —<br>ni fortsätter när båda har reflekterat.</div>
+    <div class="sp"></div>
+    <div class="dv"></div>
+    <div class="c"><div class="b" style="width:100%;">Gå vidare tillsammans →</div></div>
+  </div>
+  <ul class="annotations"><li>● = du (klar), ○ = partner (väntar)</li><li>Breathing animation: 5s ease-in-out infinite</li></ul>
+</div>
+
+<!-- WIREFRAME 7 -->
+<div class="page">
+  <h3>7. Completed Session</h3>
+  <div class="route">/card/:id (isFullyExplored = true)</div>
+  <div class="frame">
+    <div class="header-bar"><span>← back to /</span><span>🟢 logo</span></div>
+    <div class="sp"></div>
+    <div class="c sf" style="font-size:20px;">Ta en stund.</div>
+    <div class="c m" style="margin-top:8px;">Det ni just delade får landa här.</div>
+    <div class="sp"></div>
+    <div class="c m">Vill ni sammanfatta något att ta med er?</div>
+    <div class="cd"><div class="m" style="font-size:11px;">CardTakeaways — text input</div></div>
+    <div class="sp"></div>
+    <div class="c"><div class="b" style="width:100%;">Föreslå nästa samtal →</div></div>
+    <div class="sp" style="height:6px;"></div>
+    <div class="c"><div class="bo" style="width:100%;">🏠 Hem</div></div>
+    <div class="sp" style="height:6px;"></div>
+    <div class="c"><span class="bg">↺ Läs igen</span></div>
+  </div>
+  <ul class="annotations"><li>Paired: "Föreslå nästa" → ProposalSheet</li><li>Solo: navigates directly to suggested card</li></ul>
+</div>
+
+<!-- WIREFRAME 8 -->
+<div class="page">
+  <h3>8. Vårt Utrymme (Archive)</h3>
+  <div class="route">/shared (read-only)</div>
+  <div class="frame">
+    <div class="header-bar"><span>← 🟢 logo</span><span>save · sync · ⏻</span></div>
+    <div class="sp"></div>
+    <div class="sf" style="font-size:22px;font-weight:600;">Er historia</div>
+    <div class="m" style="margin-top:4px;">Avslutade samtal och delade reflektioner</div>
+    <div class="sp"></div>
+    <div class="cd c"><div class="m">Här samlas era avslutade samtal.</div></div>
+    <div class="dv"></div>
+    <div class="cd"><div class="sf" style="font-size:13px;">Highlights</div><div class="m" style="font-style:italic;">"Highlighted reflection..."</div></div>
+    <div class="cd"><div class="sf" style="font-size:13px;">Er resa tillsammans</div><div class="m">Category progress bars</div></div>
+    <div class="dv"></div>
+    <div class="m" style="font-size:11px;text-transform:uppercase;letter-spacing:1px;">Februari 2026</div>
+    <div class="cd" style="margin-left:12px;border-left:2px solid #e5e5e5;padding-left:16px;">
+      <div style="font-size:13px;">● Card Title</div>
+      <div class="m" style="font-size:10px;">Category · Timeline item</div>
+    </div>
+  </div>
+  <ul class="annotations"><li>Completely read-only</li><li>Timeline grouped by month → card → notes</li></ul>
+</div>
+
+</div><!-- /content -->
+
+<script>
+mermaid.initialize({ startOnLoad: true, theme: 'default', securityLevel: 'loose' });
+
+async function generatePDF() {
+  const btn = document.getElementById('dlBtn');
+  const status = document.getElementById('status');
+  btn.disabled = true;
+
+  const { jsPDF } = window.jspdf;
+  const pages = document.querySelectorAll('.page');
+  const pdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
+  const pageW = 210;
+  const margin = 12;
+  const usableW = pageW - margin * 2;
+
+  for (let i = 0; i < pages.length; i++) {
+    status.textContent = `Renderar sida ${i + 1}/${pages.length}…`;
+    if (i > 0) pdf.addPage();
+
+    const canvas = await html2canvas(pages[i], {
+      backgroundColor: '#ffffff',
+      scale: 2,
+      useCORS: true,
+      logging: false,
+      windowWidth: 860,
+    });
+
+    const imgData = canvas.toDataURL('image/png');
+    const ratio = canvas.height / canvas.width;
+    const imgW = usableW;
+    const imgH = imgW * ratio;
+
+    pdf.addImage(imgData, 'PNG', margin, margin, imgW, imgH);
+  }
+
+  status.textContent = '✅ Klar!';
+  pdf.save('still-us-ux-flow-wireframes.pdf');
+  btn.disabled = false;
+}
+</script>
+</body>
+</html>
