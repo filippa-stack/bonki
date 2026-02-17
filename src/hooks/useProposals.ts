@@ -181,10 +181,8 @@ export function useProposals() {
       // Extract structured error from edge function response
       const edgeErr = data?.error;
       const errMsg = edgeErr?.message || res.error?.message || 'unknown error';
-      const errCode = edgeErr?.code || '';
-      const errDetails = edgeErr?.details || '';
-      console.error('[DIAG] activate-session error:', { errMsg, errCode, errDetails, raw: data, fetchError: res.error });
-      return { success: false, errorMessage: `${errMsg}${errCode ? ` (${errCode})` : ''}${errDetails ? ` — ${errDetails}` : ''}` };
+      console.error('[DIAG] activate-session error:', { edgeErr, raw: data, fetchError: res.error });
+      return { success: false, errorMessage: errMsg };
     }
 
     // 2. Dual-write: normalized session via RPC

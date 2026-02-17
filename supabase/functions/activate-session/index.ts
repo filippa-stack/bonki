@@ -164,8 +164,8 @@ Deno.serve(async (req) => {
     );
 
     if (rpcErr) {
-      console.error("RPC_ERROR activate_couple_session", { message: rpcErr.message, code: rpcErr.code, details: rpcErr.details, hint: rpcErr.hint });
-      return json({ error: { message: rpcErr.message || "session_activation_failed", code: rpcErr.code || "RPC_ERROR", details: rpcErr.details || rpcErr.hint } }, 400);
+      console.error("ACTIVATE_RPC_ERROR", rpcErr);
+      return json({ error: rpcErr }, 400);
     }
 
     console.log("RPC_SUCCESS", { sessionId });
