@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { X } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useCoupleSpaceContext as useCoupleSpace } from '@/contexts/CoupleSpaceContext';
 import { supabase } from '@/integrations/supabase/client';
@@ -57,20 +58,26 @@ export default function PartnerConnectedBanner() {
     };
   }, [user, space]);
 
-  // Auto-dismiss after first render
+  // Mark as seen on first show so it doesn't reappear
   useEffect(() => {
     if (visible && space) {
       localStorage.setItem(SEEN_KEY, space.id);
-      const timer = setTimeout(() => setVisible(false), 5000);
-      return () => clearTimeout(timer);
     }
   }, [visible, space]);
 
   if (!visible) return null;
 
   return (
-    <p className="text-[13px] text-muted-foreground/50 text-center mt-[12px] mb-[16px]">
-      🤍 Ni är nu ihopkopplade.
-    </p>
+    <div className="flex items-center justify-center gap-2 mt-[12px] mb-[16px] px-6">
+      <p className="text-[13px] text-muted-foreground/50 text-center">
+        🤍 Ni är nu ihopkopplade.
+      </p>
+      <button
+        onClick={() => setVisible(false)}
+        className="text-muted-foreground/40 hover:text-muted-foreground transition-colors"
+      >
+        <X className="w-3.5 h-3.5" />
+      </button>
+    </div>
   );
 }
