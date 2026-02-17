@@ -813,6 +813,31 @@ export function AppProvider({ children }: { children: ReactNode }) {
     } else if (cardId && uid !== 'local' && !hasServerSession) {
       console.warn('[completeSessionStep] Skipped edge call: no server session yet for card', cardId);
     }
+
+    // Dual-write: also complete in normalized tables (non-blocking)
+    if (uid !== 'local' && !devState) {
+      // Find normalized session id from couple_sessions
+      const spaceId = coupleSpaceId;
+      if (spaceId) {
+        supabase
+          .from('couple_sessions')
+          .select('id')
+          .eq('couple_space_id', spaceId)
+          .eq('status', 'active')
+          .limit(1)
+          .single()
+          .then(({ data: sessionRow }) => {
+            if (sessionRow?.id) {
+              supabase.rpc('complete_couple_session_step', {
+                p_session_id: sessionRow.id,
+                p_step_index: stepIndex,
+              }).then(({ error: normErr }) => {
+                if (normErr) console.warn('Normalized step completion dual-write failed (non-fatal):', normErr);
+              });
+            }
+          });
+      }
+    }
   };
 
   const endSession = () => {
