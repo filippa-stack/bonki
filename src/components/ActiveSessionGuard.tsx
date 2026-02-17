@@ -41,6 +41,10 @@ export default function ActiveSessionGuard({ children }: { children: React.React
     return <>{children}</>;
   }
 
-  // Everything else redirects to the active session card
+  // DOUBLE-GUARD (intentional): This redirect is the second layer of "sacred session" enforcement.
+  // The first layer is in Header.tsx, which hides navigation entry points (e.g. SharedSpaceLink)
+  // during an active session. Both layers exist deliberately — Header prevents casual discovery,
+  // while this guard catches direct URL manipulation, browser back/forward, and deep links.
+  // Redundancy is intentional for a calm, escape-proof UX.
   return <Navigate to={activeCardPath} replace />;
 }

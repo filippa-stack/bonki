@@ -93,6 +93,10 @@ export default function Header({
             </div>
           )}
           {showBackupManager && <BackupManager />}
+          {/* DOUBLE-GUARD (intentional): Hiding this link during an active session is the first layer
+              of "sacred session" enforcement. The second layer is ActiveSessionGuard, which redirects
+              disallowed routes. Both exist deliberately — this prevents casual discovery of navigation
+              escape routes, while the guard catches direct URLs and browser back/forward. */}
           {!hasActiveSession && (
             <SharedSpaceLink />
           )}
