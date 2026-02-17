@@ -56,10 +56,10 @@ export function useProposals() {
 
   // Realtime subscription
   useEffect(() => {
-    if (!spaceId || devState) return;
+    if (!userId || !spaceId || devState) return;
 
     const channel = supabase
-      .channel('proposals-realtime')
+      .channel(`proposals-realtime-${spaceId}`)
       .on(
         'postgres_changes',
         {
@@ -77,7 +77,7 @@ export function useProposals() {
     return () => {
       supabase.removeChannel(channel);
     };
-  }, [spaceId, fetchProposals]);
+  }, [userId, spaceId, fetchProposals]);
 
   const sendProposal = useCallback(async (
     cardId: string,
