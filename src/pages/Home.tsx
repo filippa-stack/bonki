@@ -1,5 +1,9 @@
+// SESSION MODEL LOCK:
+// Do NOT use couple_progress.current_session.
+// The JSON session model is deprecated.
+// All session state must come from normalized tables.
+
 import { useNavigate } from 'react-router-dom';
-// getCatchUpState no longer needed on Home — ACTIVE state uses session data directly
 import { motion, AnimatePresence } from 'framer-motion';
 import { useState, useMemo, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -10,14 +14,11 @@ import { useCoupleSpace } from '@/hooks/useCoupleSpace';
 import CategoryCard from '@/components/CategoryCard';
 
 import Header from '@/components/Header';
-// ResumeSessionDialog removed — ACTIVE macro state handles resume via single CTA
-// AttachPartner import removed — not used in simplified macro state view
 import SoloInviteSection from '@/components/SoloInviteSection';
 import { ArrowRight, Bookmark, Share2, ChevronDown } from 'lucide-react';
 import NotificationSettings from '@/components/NotificationSettings';
 import RelationshipMemory from '@/components/RelationshipMemory';
 import Footer from '@/components/Footer';
-// RecentSharedReflection removed from connected Home — archive remains intact
 import PartnerConnectedBanner from '@/components/PartnerConnectedBanner';
 import PartnerLeftBanner from '@/components/PartnerLeftBanner';
 
@@ -30,7 +31,7 @@ import { toast } from 'sonner';
 import { useProposals } from '@/hooks/useProposals';
 import { DEV_MOCK } from '@/hooks/useDevState';
 import { useDevState } from '@/contexts/DevStateContext';
-import { useNormalizedSessionState } from '@/hooks/useNormalizedSessionState';
+import { useAppMode } from '@/hooks/useAppMode';
 
 const STEP_LABELS = ['Öppnare', 'Tankeväckare', 'Scenario', 'Teamwork'];
 
@@ -68,7 +69,6 @@ export default function Home() {
     hasActiveSession,
     getCardById,
     getCategoryById,
-    // dismissSession removed — no competing resume surfaces
     journeyState,
     cards,
     startSession,
@@ -78,9 +78,10 @@ export default function Home() {
   const { settings } = useSiteSettings();
   const { user } = useAuth();
   const { space, displayMemberCount, userRole, fetchInviteInfo } = useCoupleSpace();
-  const { incomingProposals, sendProposal: sendDbProposal, updateProposalStatus, activateSession } = useProposals();
+  const { incomingProposals: _rawProposals, sendProposal: sendDbProposal, updateProposalStatus, activateSession } = useProposals();
   const devState = useDevState();
-  const normalizedSession = useNormalizedSessionState();
+  const appModeState = useAppMode();
+  const { mode, activeSession, normalizedSession } = appModeState;
 
   // Track dismissed proposals so they don't reappear in the same session
   const [dismissedProposalIds, setDismissedProposalIds] = useState<Set<string>>(new Set());
@@ -124,17 +125,17 @@ export default function Home() {
     return Date.now() - new Date(lastActivity).getTime();
   }, [journeyState]);
 
-  const isSoloMode = displayMemberCount < 2;
+  const isSoloMode = appModeState.isSolo;
 
   // 7+ day overlay: only if there's a session to resume AND partner is connected
   const showReturnOverlay = useMemo(() => {
     if (isSoloMode) return false;
     if (returnOverlayDismissed) return false;
     if (lastActivityElapsed < SEVEN_DAYS_MS) return false;
-    return !!(normalizedSession.appMode || journeyState?.lastCompletedCardId || journeyState?.lastOpenedCardId);
-  }, [isSoloMode, returnOverlayDismissed, lastActivityElapsed, normalizedSession.appMode, journeyState]);
+    return !!(mode === 'active' || journeyState?.lastCompletedCardId || journeyState?.lastOpenedCardId);
+  }, [isSoloMode, returnOverlayDismissed, lastActivityElapsed, mode, journeyState]);
 
-  const returnResumeCardId = normalizedSession.cardId || journeyState?.lastOpenedCardId || journeyState?.lastCompletedCardId || null;
+  const returnResumeCardId = activeSession?.cardId || journeyState?.lastOpenedCardId || journeyState?.lastCompletedCardId || null;
 
 
   // Computed helpers for proposal mode & highlighted category
@@ -149,24 +150,11 @@ export default function Home() {
     return { suggestedCardId, suggestedCard, suggestedCategory };
   }, [journeyState, exploredIds, getCardById, getCategoryById]);
 
-  const highlightedCategoryId = normalizedSession.categoryId || suggestedContext.suggestedCategory?.id || null;
-
-  // Resume variation is now only the return overlay (ResumeSessionDialog removed)
-  // ACTIVE state's single CTA replaces all mid-session resume surfaces.
+  const highlightedCategoryId = activeSession?.categoryId || suggestedContext.suggestedCategory?.id || null;
 
   // Track whether user has already navigated away during this browser session
   const [hasNavigatedThisVisit] = useState(() => sessionStorage.getItem('home_navigated') === '1');
   const markNavigated = () => sessionStorage.setItem('home_navigated', '1');
-
-  // ═══ 3 MACRO STATES (paired only) ═══
-  // IDLE:        paired, no active session
-  // ACTIVE:      currentSession != null
-  // INTEGRATION: transient post-completion (handled in CardView)
-  //
-  // Proposals, resume dialogs, return overlays are internal UI variations
-  // within IDLE or ACTIVE — never separate modes.
-  type MacroState = 'idle' | 'active';
-  const macroState: MacroState = normalizedSession.appMode ? 'active' : 'idle';
 
   // UI variation: return overlay is the only overlay surface now
   // ACTIVE state's single CTA handles all resume — no competing dialogs.
@@ -263,180 +251,144 @@ export default function Home() {
         }}
       />
 
-      {/* ═══ PRIMARY ACTION ZONE ═══
-           3 macro states: SOLO → IDLE → ACTIVE
-           Proposals & resume are UI variations within IDLE/ACTIVE, not separate modes.
-           devState overrides rendering only — no DB/edge calls.
-      */}
-      {(() => {
-        // Compute effective state variables, with dev overrides
-        const effectiveSoloMode = devState === 'solo' ? true
-          : devState === 'browse' || devState === 'pairedIdle' || devState === 'pairedActive' || devState === 'proposalIncoming' ? false
-          : isSoloMode;
-        // Normalized session state — reads from couple_sessions table, not JSON
-        const effectiveSession = devState === 'pairedActive' ? DEV_MOCK.mockSession
-          : devState === 'solo' || devState === 'pairedIdle' || devState === 'proposalIncoming' ? null
-          : normalizedSession.appMode ? {
-              cardId: normalizedSession.cardId,
-              categoryId: normalizedSession.categoryId,
-              currentStepIndex: normalizedSession.currentStepIndex,
-            } : null;
-        const effectiveProposals = devState === 'proposalIncoming' ? [DEV_MOCK.mockProposal]
-          : devState ? []
-          : incomingProposals;
+      {/* ═══ PRIMARY ACTION ZONE — driven by centralized useAppMode() ═══ */}
+      {mode === 'loading' && (
+        <div className="px-6 pt-8 pb-10">
+          <div className="h-14 rounded-2xl bg-muted/20 animate-pulse" />
+        </div>
+      )}
 
-        // ── HIGHEST PRIORITY GATE: Solo mode ──
-        // displayMemberCount < 2 overrides ALL resume/session/proposal logic
-        if (effectiveSoloMode) {
-          if (space) {
-            return (
-              <SoloInviteSection
-                fetchInviteInfo={fetchInviteInfo}
-                onJoinedSpace={() => window.location.reload()}
-              />
-            );
-          }
-          // No space yet — show nothing (edge case during initialization)
-          return null;
-        }
+      {mode === 'solo' && space && (
+        <SoloInviteSection
+          fetchInviteInfo={fetchInviteInfo}
+          onJoinedSpace={() => window.location.reload()}
+        />
+      )}
 
-        // ── Below here: paired only (displayMemberCount >= 2) ──
-
-        // ── IDLE variation: incoming proposal REPLACES Home intent ──
-        // Full-screen decision ritual — no background navigation until resolved.
-        const visibleProposals = effectiveProposals.filter(p => !dismissedProposalIds.has(p.id));
-        if (visibleProposals.length > 0 && !effectiveSession) {
-          const proposal = visibleProposals[0];
-          const proposalCard = getCardById(proposal.card_id) || (devState ? { title: DEV_MOCK.mockCard.title, subtitle: DEV_MOCK.mockCard.subtitle } as any : null);
-          const isAccepting = acceptingProposalId === proposal.id;
-          return (
-            <motion.div
-              key={`proposal-ritual-${proposal.id}`}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.15 }}
-              className="fixed inset-0 z-50 flex flex-col items-center justify-center p-8 bg-background"
-            >
-              <div className="w-full max-w-sm space-y-10 text-center">
-                <div className="space-y-3">
-                  <p className="text-sm text-muted-foreground/60 uppercase tracking-wide">
-                    Förslag från din partner
-                  </p>
-                  <h1 className="text-2xl font-serif text-foreground leading-snug">
-                    {proposalCard?.title || 'Samtal'}
-                  </h1>
-                  {proposal.message && (
-                    <p className="text-sm text-muted-foreground italic">"{proposal.message}"</p>
-                  )}
-                </div>
-                <div className="space-y-3">
-                  <Button
-                    size="lg"
-                    className="w-full h-14 rounded-2xl gap-2 font-normal"
-                    disabled={isAccepting}
-                    onClick={devState ? () => navigate(`/card/${DEV_MOCK.mockCard.id}`) : async () => {
-                      setAcceptingProposalId(proposal.id);
-                      await updateProposalStatus(proposal.id, 'accepted');
-                      const result = await activateSession(proposal.id);
-                      setAcceptingProposalId(null);
-                      if (result.success) {
-                        navigate(`/card/${proposal.card_id}`);
-                      } else {
-                        toast.error('Kunde inte starta samtalet. Försök igen.');
-                      }
-                    }}
-                  >
-                    {isAccepting ? 'Startar...' : 'Acceptera'}
-                    {!isAccepting && <ArrowRight className="w-4 h-4" />}
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    size="lg"
-                    className="w-full h-12 text-muted-foreground hover:text-foreground font-normal"
-                    disabled={isAccepting}
-                    onClick={() => {
-                      setDismissedProposalIds(prev => new Set([...prev, proposal.id]));
-                    }}
-                  >
-                    Avvakta
-                  </Button>
-                </div>
-              </div>
-            </motion.div>
-          );
-        }
-
-        // ── MACRO STATE: ACTIVE — singular focus ──
-        if (effectiveSession) {
-          const activeCard = getCardById(effectiveSession.cardId) || (devState ? { title: DEV_MOCK.mockCard.title, categoryId: DEV_MOCK.mockCategory.id } as any : null);
-          const activeCategory = activeCard ? (getCategoryById(activeCard.categoryId) || (devState ? { title: DEV_MOCK.mockCategory.title } as any : null)) : null;
-          // Step indicator (subtle)
-          const stepLabel = STEP_LABELS[effectiveSession.currentStepIndex] || '';
-          const stepProgress = `${Math.min(effectiveSession.currentStepIndex + 1, 4)} / 4`;
-          if (activeCard && activeCategory) {
-            return (
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.15 }}
-                className="px-6 pt-[12px] mb-10"
-              >
-                <p className="text-xs text-muted-foreground/30 uppercase tracking-wide mb-[6px] text-center">Pågående samtal</p>
-                <div className="text-center mb-[16px]">
-                  <p className="font-serif text-lg text-foreground mb-[6px]">{activeCard.title}</p>
-                  <p className="text-xs text-muted-foreground mb-[6px]">{activeCategory.title}</p>
-                  {stepLabel && (
-                    <p className="text-xs text-muted-foreground/40">{stepLabel} · {stepProgress}</p>
-                  )}
-                </div>
-                <Button
-                  onClick={() => {
-                    const targetCardId = effectiveSession.cardId;
-                    if (!targetCardId) {
-                      toast.error('Kunde inte navigera — saknar kort-ID.');
-                      return;
-                    }
-                    if (!devState) markNavigated();
-                    navigate(`/card/${targetCardId}`);
-                  }}
-                  size="lg"
-                  className="w-full h-14 rounded-2xl gap-2 font-normal"
-                >
-                  Fortsätt samtalet
-                  <ArrowRight className="w-4 h-4" />
-                </Button>
-              </motion.div>
-            );
-          }
-        }
-
-        // ── MACRO STATE: IDLE — single question: "What are we doing now?" ──
+      {mode === 'proposal' && (() => {
+        const visibleProposals = appModeState.incomingProposals.filter(p => !dismissedProposalIds.has(p.id));
+        if (visibleProposals.length === 0) return null;
+        const proposal = visibleProposals[0];
+        const proposalCard = getCardById(proposal.card_id) || (devState ? { title: DEV_MOCK.mockCard.title, subtitle: DEV_MOCK.mockCard.subtitle } as any : null);
+        const isAccepting = acceptingProposalId === proposal.id;
         return (
           <motion.div
+            key={`proposal-ritual-${proposal.id}`}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.15 }}
-            className="px-6 mb-10"
+            className="fixed inset-0 z-50 flex flex-col items-center justify-center p-8 bg-background"
           >
-            <div className="text-center">
-              <Button
-                size="lg"
-                onClick={handleEnterProposalMode}
-                className="w-full h-14 rounded-2xl gap-2 font-normal"
-              >
-                Välj samtalsämne
-                <ArrowRight className="w-4 h-4" />
-              </Button>
+            <div className="w-full max-w-sm space-y-10 text-center">
+              <div className="space-y-3">
+                <p className="text-sm text-muted-foreground/60 uppercase tracking-wide">
+                  Förslag från din partner
+                </p>
+                <h1 className="text-2xl font-serif text-foreground leading-snug">
+                  {proposalCard?.title || 'Samtal'}
+                </h1>
+                {proposal.message && (
+                  <p className="text-sm text-muted-foreground italic">"{proposal.message}"</p>
+                )}
+              </div>
+              <div className="space-y-3">
+                <Button
+                  size="lg"
+                  className="w-full h-14 rounded-2xl gap-2 font-normal"
+                  disabled={isAccepting}
+                  onClick={devState ? () => navigate(`/card/${DEV_MOCK.mockCard.id}`) : async () => {
+                    setAcceptingProposalId(proposal.id);
+                    await updateProposalStatus(proposal.id, 'accepted');
+                    const result = await activateSession(proposal.id);
+                    setAcceptingProposalId(null);
+                    if (result.success) {
+                      navigate(`/card/${proposal.card_id}`);
+                    } else {
+                      toast.error('Kunde inte starta samtalet. Försök igen.');
+                    }
+                  }}
+                >
+                  {isAccepting ? 'Startar...' : 'Acceptera'}
+                  {!isAccepting && <ArrowRight className="w-4 h-4" />}
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="lg"
+                  className="w-full h-12 text-muted-foreground hover:text-foreground font-normal"
+                  disabled={isAccepting}
+                  onClick={() => {
+                    setDismissedProposalIds(prev => new Set([...prev, proposal.id]));
+                  }}
+                >
+                  Avvakta
+                </Button>
+              </div>
             </div>
           </motion.div>
         );
       })()}
 
+      {mode === 'active' && activeSession && (() => {
+        const activeCard = getCardById(activeSession.cardId) || (devState ? { title: DEV_MOCK.mockCard.title, categoryId: DEV_MOCK.mockCategory.id } as any : null);
+        const activeCategory = activeCard ? (getCategoryById(activeCard.categoryId) || (devState ? { title: DEV_MOCK.mockCategory.title } as any : null)) : null;
+        const stepLabel = STEP_LABELS[activeSession.currentStepIndex] || '';
+        const stepProgress = `${Math.min(activeSession.currentStepIndex + 1, 4)} / 4`;
+        if (!activeCard || !activeCategory) return null;
+        return (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.15 }}
+            className="px-6 pt-[12px] mb-10"
+          >
+            <p className="text-xs text-muted-foreground/30 uppercase tracking-wide mb-[6px] text-center">Pågående samtal</p>
+            <div className="text-center mb-[16px]">
+              <p className="font-serif text-lg text-foreground mb-[6px]">{activeCard.title}</p>
+              <p className="text-xs text-muted-foreground mb-[6px]">{activeCategory.title}</p>
+              {stepLabel && (
+                <p className="text-xs text-muted-foreground/40">{stepLabel} · {stepProgress}</p>
+              )}
+            </div>
+            <Button
+              onClick={() => {
+                if (!devState) markNavigated();
+                navigate(`/card/${activeSession.cardId}`);
+              }}
+              size="lg"
+              className="w-full h-14 rounded-2xl gap-2 font-normal"
+            >
+              Fortsätt samtalet
+              <ArrowRight className="w-4 h-4" />
+            </Button>
+          </motion.div>
+        );
+      })()}
+
+      {mode === 'idle' && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.15 }}
+          className="px-6 mb-10"
+        >
+          <div className="text-center">
+            <Button
+              size="lg"
+              onClick={handleEnterProposalMode}
+              className="w-full h-14 rounded-2xl gap-2 font-normal"
+            >
+              Välj samtalsämne
+              <ArrowRight className="w-4 h-4" />
+            </Button>
+          </div>
+        </motion.div>
+      )}
+
       {/* ═══ BELOW FOLD — secondary content (IDLE only, hidden when ACTIVE) ═══ */}
 
       {/* Proposal mode (opened by primary CTA for paired IDLE users) */}
       <AnimatePresence>
-        {isProposalMode && !isSoloMode && !normalizedSession.appMode && (
+        {isProposalMode && !isSoloMode && mode === 'idle' && (
            <motion.div
             id="proposal-mode"
             initial={{ opacity: 0 }}
@@ -597,7 +549,7 @@ export default function Home() {
       })()}
 
       {/* Navigation links — solo only, hidden during active session */}
-      {isSoloMode && !normalizedSession.appMode && (
+      {isSoloMode && mode !== 'active' && (
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
