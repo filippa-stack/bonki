@@ -20,7 +20,7 @@ const PURCHASE_KEY_PREFIX = 'still-us-purchased-';
 export const JOIN_INTENT_KEY = 'still-us-join-intent';
 
 /** Check if a given space is paid — scoped to space ID with legacy fallback */
-function isSpacePaid(spaceId: string | null | undefined): boolean {
+export function isSpacePaid(spaceId: string | null | undefined): boolean {
   if (spaceId && localStorage.getItem(`${PURCHASE_KEY_PREFIX}${spaceId}`) === 'true') return true;
   // Legacy fallback: old global key (pre-space-scoped)
   return localStorage.getItem(PURCHASE_KEY_LEGACY) === 'true';

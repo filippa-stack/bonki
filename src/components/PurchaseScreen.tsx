@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { JOIN_INTENT_KEY } from '@/pages/Index';
+import { JOIN_INTENT_KEY, isSpacePaid } from '@/pages/Index';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Check, Shield } from 'lucide-react';
 import bonkiLogo from '@/assets/bonki-logo.png';
+import { useCoupleSpaceContext } from '@/contexts/CoupleSpaceContext';
 
 interface PurchaseScreenProps {
   onPurchaseComplete: () => void;
@@ -14,8 +15,28 @@ interface PurchaseScreenProps {
 export default function PurchaseScreen({ onPurchaseComplete }: PurchaseScreenProps) {
   const navigate = useNavigate();
   const { t } = useTranslation();
+  const { space } = useCoupleSpaceContext();
   const [processing, setProcessing] = useState(false);
   const [completed, setCompleted] = useState(false);
+
+  // Edge-case guard: space is already paid
+  if (isSpacePaid(space?.id)) {
+    return (
+      <div className="min-h-screen page-bg flex items-center justify-center px-6">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="w-full max-w-sm text-center space-y-6"
+        >
+          <img src={bonkiLogo} alt="Still Us" className="h-10 w-auto mx-auto" />
+          <h1 className="text-display text-foreground">Det här utrymmet är redan aktiverat.</h1>
+          <Button onClick={onPurchaseComplete} className="w-full h-12 text-base font-medium">
+            Fortsätt
+          </Button>
+        </motion.div>
+      </div>
+    );
+  }
 
   const handlePurchase = async () => {
     setProcessing(true);
