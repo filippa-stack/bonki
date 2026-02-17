@@ -83,6 +83,7 @@ export default function JoinSpace() {
         if (errorCode === 'already_paired') {
           clearPendingInvite();
           setState('success');
+          localStorage.setItem('still-us-just-joined', 'true');
           try { await refreshCoupleSpace(); } catch {}
           navigate('/', { replace: true });
           return;
@@ -98,6 +99,8 @@ export default function JoinSpace() {
         clearPendingInvite();
         setState('success');
         setOverrideCoupleSpaceId(data.couple_space_id);
+        // Flag for one-time "Du är nu ansluten" banner on Home
+        localStorage.setItem('still-us-just-joined', 'true');
         try {
           await refreshCoupleSpace();
         } catch (refreshErr) {

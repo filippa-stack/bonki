@@ -98,6 +98,7 @@ export function usePendingInviteClaim() {
       const data = res.data as any;
       if (data?.success) {
         clearPendingInvite();
+        localStorage.setItem('still-us-just-joined', 'true');
         setStatus('success');
         return true;
       } else {
