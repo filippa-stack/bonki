@@ -1,3 +1,9 @@
+// SESSION MODEL LOCK:
+// Do NOT use couple_progress.current_session.
+// The JSON session model is deprecated.
+// All session state must come from normalized tables:
+// couple_sessions, couple_session_steps, couple_session_completions, couple_takeaways.
+
 import React, { createContext, useContext, useState, useEffect, ReactNode, useCallback, useRef } from 'react';
 import { CoupleSpace, ConversationThread, Reflection, AppState, Category, Card, JourneyState, ReflectionsData, PrivateNote, SharedNote, TakeawayNote, SharedTakeaway } from '@/types';
 import { categories as initialCategories, cards as initialCards, CONTENT_VERSION } from '@/data/content';

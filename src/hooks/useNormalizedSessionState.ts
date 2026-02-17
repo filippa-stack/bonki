@@ -1,3 +1,8 @@
+// SESSION MODEL LOCK:
+// Do NOT use couple_progress.current_session.
+// The JSON session model is deprecated.
+// All session state must come from normalized tables.
+
 import { useEffect, useState, useCallback, useRef } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
