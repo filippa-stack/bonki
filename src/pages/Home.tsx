@@ -322,8 +322,9 @@ export default function Home() {
                     setDismissedProposalIds(prev => new Set([...prev, proposal.id]));
                   }}
                 >
-                  Avvakta
+                  Inte nu
                 </Button>
+                <p className="text-xs text-muted-foreground/50 mt-1">Förslaget ligger kvar tills du svarar.</p>
               </div>
             </div>
           </motion.div>
