@@ -299,9 +299,8 @@ export default function Home() {
         />
       )}
 
-      {mode === 'proposal' && (() => {
+      {mode === 'proposal' && appModeState.incomingProposals[0] && (() => {
         const proposal = appModeState.incomingProposals[0];
-        if (!proposal) return null;
         const proposalCard = getCardById(proposal.card_id) || (devState ? { title: DEV_MOCK.mockCard.title, subtitle: DEV_MOCK.mockCard.subtitle } as any : null);
         const isAccepting = acceptingProposalId === proposal.id;
         return (
