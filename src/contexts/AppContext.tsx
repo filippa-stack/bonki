@@ -83,6 +83,7 @@ interface AppContextType {
   toggleTakeawayHighlight: (cardId: string) => void;
   takeawayHighlightCount: number;
   refreshCoupleSpace: () => Promise<void>;
+  switchToNewSpace: () => Promise<void>;
   setOverrideCoupleSpaceId: (id: string | null) => void;
   sharedSyncStatus: SharedSyncStatus;
   sharedSyncError: string | null;
@@ -252,7 +253,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
   );
 
   // Couple space for shared progress
-  const { space: coupleSpaceDb, memberCount: coupleSpaceMemberCount, refreshSpace: refreshCoupleSpace } = useCoupleSpace();
+  const { space: coupleSpaceDb, memberCount: coupleSpaceMemberCount, refreshSpace: refreshCoupleSpace, switchToNewSpace } = useCoupleSpace();
   const [overrideCoupleSpaceId, setOverrideCoupleSpaceId] = useState<string | null>(null);
   const coupleSpaceId = overrideCoupleSpaceId ?? coupleSpaceDb?.id ?? null;
 
@@ -1238,6 +1239,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
         toggleTakeawayHighlight,
         takeawayHighlightCount,
         refreshCoupleSpace,
+        switchToNewSpace,
         setOverrideCoupleSpaceId,
         sharedSyncStatus,
         sharedSyncError,
