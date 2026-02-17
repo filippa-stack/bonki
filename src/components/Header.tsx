@@ -1,4 +1,4 @@
-import { ArrowLeft, LogOut, Plus, Settings, Users } from 'lucide-react';
+import { LogOut, Plus, Settings, Users } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useApp } from '@/contexts/AppContext';
@@ -50,14 +50,6 @@ export default function Header({
   const { backgroundColor, setBackgroundColor, saveStatus, lastSavedAt, saveError, sharedSyncStatus, sharedSyncError, retrySharedSync, currentSession, switchToNewSpace } = useApp();
   const { signOut } = useAuth();
 
-  const handleBack = () => {
-    if (backTo) {
-      navigate(backTo);
-    } else {
-      navigate(-1);
-    }
-  };
-
   const handleSignOut = async () => {
     await signOut();
     navigate('/login');
@@ -67,15 +59,12 @@ export default function Header({
     <header className="sticky top-0 z-10 border-b border-primary/20 backdrop-blur-md" style={{ backgroundColor: 'hsl(var(--surface-chrome) / 0.92)' }}>
       <div className="flex items-center justify-between h-14 px-6">
         <div className="flex items-center gap-2">
-          {showBack && (
-            <button
-              onClick={handleBack}
-              className="p-2 -ml-2 text-muted-foreground hover:text-foreground transition-colors"
-              aria-label={t('header.go_back')}
-            >
-              <ArrowLeft className="w-5 h-5" />
-            </button>
-          )}
+          <img
+            src={bonkiLogo}
+            alt="Still Us"
+            className="h-8 w-8 object-contain cursor-pointer"
+            onClick={() => navigate('/')}
+          />
           <img
             src={bonkiLogo}
             alt="Still Us"
@@ -83,7 +72,7 @@ export default function Header({
             onClick={() => navigate('/')}
           />
           {title && (
-            <h1 className="font-serif text-lg text-slate-800 truncate">
+            <h1 className="font-serif text-lg text-foreground truncate">
               {title}
             </h1>
           )}
