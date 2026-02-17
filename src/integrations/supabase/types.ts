@@ -851,6 +851,7 @@ export type Database = {
       }
     }
     Functions: {
+      get_current_couple_space_id: { Args: never; Returns: string }
       get_own_invite_info: {
         Args: never
         Returns: {
