@@ -23,6 +23,7 @@ import PartnerConnectedBanner from '@/components/PartnerConnectedBanner';
 import PartnerLeftBanner from '@/components/PartnerLeftBanner';
 
 import ReturnOverlay from '@/components/ReturnOverlay';
+import ConfidenceCheckPanel from '@/components/ConfidenceCheckPanel';
 import { Button } from '@/components/ui/button';
 import bonkiLogo from '@/assets/bonki-logo.png';
 import { useThemeVars } from '@/hooks/useThemeVars';
@@ -301,6 +302,7 @@ export default function Home() {
       </AnimatePresence>
       <div className="flex-1">
       <Header showBackgroundPicker={false} showBackupManager={false} showSaveIndicator={mode === 'active'} />
+      <ConfidenceCheckPanel />
       {/* Header with Logo — compact when active session */}
 
 
