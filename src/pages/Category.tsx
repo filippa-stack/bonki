@@ -4,7 +4,7 @@ import { CheckCircle2 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useApp } from '@/contexts/AppContext';
 import { useAuth } from '@/contexts/AuthContext';
-import { useCoupleSpace } from '@/hooks/useCoupleSpace';
+import { useCoupleSpaceContext } from '@/contexts/CoupleSpaceContext';
 import Header from '@/components/Header';
 
 export default function Category() {
@@ -13,7 +13,7 @@ export default function Category() {
   const navigate = useNavigate();
   const { getCategoryById, getCardsByCategory, journeyState, currentSession, getCardById } = useApp();
   const { user } = useAuth();
-  const { memberCount } = useCoupleSpace();
+  const { memberCount } = useCoupleSpaceContext();
   const exploredIds = journeyState?.exploredCardIds || [];
   const cardVisitDates = journeyState?.cardVisitDates || {};
   const sessionProgress = journeyState?.sessionProgress || {};

@@ -10,7 +10,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { useApp } from '@/contexts/AppContext';
 import { useAuth } from '@/contexts/AuthContext';
-import { useCoupleSpace } from '@/hooks/useCoupleSpace';
+import { useCoupleSpaceContext } from '@/contexts/CoupleSpaceContext';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 
@@ -65,7 +65,7 @@ export default function CardView() {
     journeyState,
   } = useApp();
   const { user } = useAuth();
-  const { memberCount, space } = useCoupleSpace();
+  const { memberCount, space } = useCoupleSpaceContext();
   const devState = useDevState();
 
   // Normalized session state (dual-read, not yet authoritative)
