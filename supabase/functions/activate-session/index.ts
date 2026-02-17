@@ -25,7 +25,8 @@ Deno.serve(async (req) => {
 
     const authHeader = req.headers.get("Authorization");
     if (!authHeader?.startsWith("Bearer ")) {
-      return json({ error: { message: "unauthorized", code: "AUTH_MISSING" } }, 401);
+      console.error("ACTIVATE_SESSION_FAIL", { step: "auth_header", message: "unauthorized" });
+      return json({ error: { step: "auth_header", message: "unauthorized", code: "AUTH_MISSING" } }, 401);
     }
 
     const userClient = createClient(
@@ -40,23 +41,25 @@ Deno.serve(async (req) => {
       const token = authHeader.replace("Bearer ", "");
       const { data: { user }, error: userErr } = await userClient.auth.getUser(token);
       if (userErr || !user) {
-        console.error("AUTH_GET_USER_FAIL", userErr);
-        return json({ error: { message: "unauthorized", code: "AUTH_USER", details: userErr?.message } }, 401);
+        console.error("ACTIVATE_SESSION_FAIL", { step: "auth_get_user", message: userErr?.message, code: userErr?.code });
+        return json({ error: { step: "auth_get_user", message: "unauthorized", code: "AUTH_USER", details: userErr?.message } }, 401);
       }
       userId = user.id;
     } catch (authErr: any) {
-      console.error("AUTH_EXCEPTION", authErr);
-      return json({ error: { message: String(authErr?.message ?? authErr), code: "AUTH_EXCEPTION", stack: String(authErr?.stack ?? "") } }, 401);
+      console.error("ACTIVATE_SESSION_FAIL", { step: "auth_exception", message: String(authErr?.message ?? authErr) });
+      return json({ error: { step: "auth_exception", message: String(authErr?.message ?? authErr), code: "AUTH_EXCEPTION" } }, 401);
     }
 
     // Parse body
     let bodyJson: any;
     try { bodyJson = await req.json(); } catch {
-      return json({ error: { message: "invalid_json_body", code: "BODY_PARSE" } }, 400);
+      console.error("ACTIVATE_SESSION_FAIL", { step: "body_parse", message: "invalid_json_body" });
+      return json({ error: { step: "body_parse", message: "invalid_json_body", code: "BODY_PARSE" } }, 400);
     }
     const { proposal_id } = bodyJson;
     if (!proposal_id || typeof proposal_id !== "string") {
-      return json({ error: { message: "missing_proposal_id", code: "VALIDATION" } }, 400);
+      console.error("ACTIVATE_SESSION_FAIL", { step: "validation", message: "missing_proposal_id" });
+      return json({ error: { step: "validation", message: "missing_proposal_id", code: "VALIDATION" } }, 400);
     }
 
     console.log("ACTIVATE_SESSION_INPUTS", { proposal_id, userId });
@@ -74,8 +77,8 @@ Deno.serve(async (req) => {
       .single();
 
     if (propErr || !proposal) {
-      console.error("PROPOSAL_FETCH_FAIL", propErr);
-      return json({ error: { message: "proposal_not_found", code: "NOT_FOUND", details: propErr?.message } }, 404);
+      console.error("ACTIVATE_SESSION_FAIL", { step: "proposal_fetch", message: propErr?.message, code: propErr?.code, details: propErr?.details, hint: propErr?.hint });
+      return json({ error: { step: "proposal_fetch", message: propErr?.message || "proposal_not_found", code: propErr?.code || "NOT_FOUND", details: propErr?.details, hint: propErr?.hint } }, 404);
     }
 
     console.log("ACTIVATE_SESSION_PROPOSAL", {
@@ -88,11 +91,13 @@ Deno.serve(async (req) => {
     });
 
     if (proposal.status !== "accepted") {
-      return json({ error: { message: "proposal_not_accepted", code: "STATUS_CONFLICT", details: `status=${proposal.status}` } }, 409);
+      console.error("ACTIVATE_SESSION_FAIL", { step: "proposal_status", message: "proposal_not_accepted", details: `status=${proposal.status}` });
+      return json({ error: { step: "proposal_status", message: "proposal_not_accepted", code: "STATUS_CONFLICT", details: `status=${proposal.status}` } }, 409);
     }
 
     if (proposal.expires_at && new Date(proposal.expires_at) < new Date()) {
-      return json({ error: { message: "proposal_expired", code: "EXPIRED" } }, 410);
+      console.error("ACTIVATE_SESSION_FAIL", { step: "proposal_expiry", message: "proposal_expired" });
+      return json({ error: { step: "proposal_expiry", message: "proposal_expired", code: "EXPIRED" } }, 410);
     }
 
     // Membership check
@@ -104,18 +109,20 @@ Deno.serve(async (req) => {
       .eq("status", "active");
 
     if (memErr) {
-      console.error("MEMBERSHIP_QUERY_FAIL", memErr);
-      return json({ error: { message: memErr.message, code: memErr.code, details: memErr.details } }, 500);
+      console.error("ACTIVATE_SESSION_FAIL", { step: "membership_query", message: memErr.message, code: memErr.code, details: memErr.details, hint: memErr.hint });
+      return json({ error: { step: "membership_query", message: memErr.message, code: memErr.code, details: memErr.details, hint: memErr.hint } }, 500);
     }
 
     console.log("ACTIVATE_SESSION_MEMBERS", { count: membership?.length, memberIds: membership?.map((m: any) => m.user_id) });
 
     if (!membership || !membership.some((m: any) => m.user_id === userId)) {
-      return json({ error: { message: "not_a_member", code: "FORBIDDEN", details: `userId=${userId}` } }, 403);
+      console.error("ACTIVATE_SESSION_FAIL", { step: "membership_check", message: "not_a_member", details: `userId=${userId}` });
+      return json({ error: { step: "membership_check", message: "not_a_member", code: "FORBIDDEN", details: `userId=${userId}` } }, 403);
     }
 
     if (membership.length < 2) {
-      return json({ error: { message: "partner_not_joined", code: "MEMBER_COUNT", details: `active_members=${membership.length}` } }, 409);
+      console.error("ACTIVATE_SESSION_FAIL", { step: "member_count", message: "partner_not_joined", details: `active_members=${membership.length}` });
+      return json({ error: { step: "member_count", message: "partner_not_joined", code: "MEMBER_COUNT", details: `active_members=${membership.length}` } }, 409);
     }
 
     // Existing active session check
@@ -128,8 +135,8 @@ Deno.serve(async (req) => {
       .maybeSingle();
 
     if (existErr) {
-      console.error("EXISTING_SESSION_QUERY_FAIL", existErr);
-      return json({ error: { message: existErr.message, code: existErr.code, details: existErr.details } }, 500);
+      console.error("ACTIVATE_SESSION_FAIL", { step: "existing_session_query", message: existErr.message, code: existErr.code, details: existErr.details, hint: existErr.hint });
+      return json({ error: { step: "existing_session_query", message: existErr.message, code: existErr.code, details: existErr.details, hint: existErr.hint } }, 500);
     }
 
     if (existingSession && existingSession.card_id === proposal.card_id) {
@@ -164,8 +171,8 @@ Deno.serve(async (req) => {
     );
 
     if (rpcErr) {
-      console.error("ACTIVATE_RPC_ERROR", rpcErr);
-      return json({ error: rpcErr }, 400);
+      console.error("ACTIVATE_SESSION_FAIL", { step: "rpc_activate_couple_session", message: rpcErr.message, code: rpcErr.code, details: rpcErr.details, hint: rpcErr.hint });
+      return json({ error: { step: "rpc_activate_couple_session", message: rpcErr.message, code: rpcErr.code, details: rpcErr.details, hint: rpcErr.hint } }, 400);
     }
 
     console.log("RPC_SUCCESS", { sessionId });
