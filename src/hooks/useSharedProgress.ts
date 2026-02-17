@@ -105,7 +105,7 @@ export function useSharedProgress(
   const pendingDataRef = useRef<{ journey: JourneyState | undefined } | null>(null);
   const needsAnotherCommitRef = useRef(false);
 
-  // Load initial data: journey from couple_journey_meta only (no more current_session from couple_progress)
+  // Load initial data: journey from couple_journey_meta only
   useEffect(() => {
     setInitialData(null);
 
