@@ -64,6 +64,7 @@ Deno.serve(async (req) => {
     const { error: leaveError } = await adminClient
       .from("couple_members")
       .update({
+        status: "left",
         left_at: new Date().toISOString(),
         left_by: userId,
         left_reason: reason || null,
