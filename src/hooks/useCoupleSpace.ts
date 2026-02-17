@@ -29,6 +29,8 @@ interface CoupleSpaceState {
   refreshSpace: () => Promise<void>;
   /** Fetch invite info on demand — never stored in space object */
   fetchInviteInfo: () => Promise<InviteInfo | null>;
+  /** Switch to a fresh couple space (stub — not yet implemented) */
+  switchToNewSpace: () => Promise<void>;
 }
 
 export function useCoupleSpace(): CoupleSpaceState {
@@ -187,6 +189,11 @@ export function useCoupleSpace(): CoupleSpaceState {
     };
   }, [memberCount]);
 
+  const switchToNewSpace = useCallback(async () => {
+    console.warn('switchToNewSpace not implemented');
+    return;
+  }, []);
+
   return {
     space,
     loading,
@@ -196,5 +203,6 @@ export function useCoupleSpace(): CoupleSpaceState {
     userRole,
     refreshSpace: fetchSpace,
     fetchInviteInfo,
+    switchToNewSpace,
   };
 }

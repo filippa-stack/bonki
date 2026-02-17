@@ -46,7 +46,7 @@ export default function Header({
 }: HeaderProps) {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const { backgroundColor, setBackgroundColor, saveStatus, lastSavedAt, saveError, sharedSyncStatus, sharedSyncError, retrySharedSync, currentSession } = useApp();
+  const { backgroundColor, setBackgroundColor, saveStatus, lastSavedAt, saveError, sharedSyncStatus, sharedSyncError, retrySharedSync, currentSession, switchToNewSpace } = useApp();
   const { signOut } = useAuth();
 
   const handleBack = () => {
@@ -151,7 +151,7 @@ export default function Header({
                   </AlertDialogHeader>
                   <AlertDialogFooter>
                     <AlertDialogCancel>Avbryt</AlertDialogCancel>
-                    <AlertDialogAction onClick={() => { /* TODO: backend logic */ }}>
+                    <AlertDialogAction onClick={() => switchToNewSpace()}>
                       Skapa nytt utrymme
                     </AlertDialogAction>
                   </AlertDialogFooter>
