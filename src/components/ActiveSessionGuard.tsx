@@ -5,7 +5,7 @@
 
 import { Navigate, useLocation } from 'react-router-dom';
 import { useDevState } from '@/contexts/DevStateContext';
-import { useNormalizedSessionState } from '@/hooks/useNormalizedSessionState';
+import { useNormalizedSessionContext } from '@/contexts/NormalizedSessionContext';
 
 /**
  * Route guard: when an active session exists, only the active card route
@@ -16,7 +16,7 @@ import { useNormalizedSessionState } from '@/hooks/useNormalizedSessionState';
  * In devState, redirects are disabled so all routes remain navigable.
  */
 export default function ActiveSessionGuard({ children }: { children: React.ReactNode }) {
-  const { appMode, cardId, loading } = useNormalizedSessionState();
+  const { appMode, cardId, loading } = useNormalizedSessionContext();
   const location = useLocation();
   const devState = useDevState();
 
