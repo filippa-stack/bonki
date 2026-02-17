@@ -220,6 +220,152 @@ export type Database = {
           },
         ]
       }
+      couple_session_completions: {
+        Row: {
+          completed_at: string
+          couple_space_id: string
+          created_at: string
+          session_id: string
+          step_index: number
+          user_id: string
+        }
+        Insert: {
+          completed_at?: string
+          couple_space_id: string
+          created_at?: string
+          session_id: string
+          step_index: number
+          user_id: string
+        }
+        Update: {
+          completed_at?: string
+          couple_space_id?: string
+          created_at?: string
+          session_id?: string
+          step_index?: number
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "couple_session_completions_couple_space_id_fkey"
+            columns: ["couple_space_id"]
+            isOneToOne: false
+            referencedRelation: "couple_spaces"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "couple_session_completions_couple_space_id_fkey"
+            columns: ["couple_space_id"]
+            isOneToOne: false
+            referencedRelation: "couple_spaces_safe"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "couple_session_completions_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "couple_sessions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      couple_session_steps: {
+        Row: {
+          couple_space_id: string
+          created_at: string
+          session_id: string
+          step_index: number
+        }
+        Insert: {
+          couple_space_id: string
+          created_at?: string
+          session_id: string
+          step_index: number
+        }
+        Update: {
+          couple_space_id?: string
+          created_at?: string
+          session_id?: string
+          step_index?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "couple_session_steps_couple_space_id_fkey"
+            columns: ["couple_space_id"]
+            isOneToOne: false
+            referencedRelation: "couple_spaces"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "couple_session_steps_couple_space_id_fkey"
+            columns: ["couple_space_id"]
+            isOneToOne: false
+            referencedRelation: "couple_spaces_safe"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "couple_session_steps_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "couple_sessions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      couple_sessions: {
+        Row: {
+          card_id: string | null
+          category_id: string | null
+          couple_space_id: string
+          created_at: string
+          created_by: string
+          ended_at: string | null
+          id: string
+          last_activity_at: string
+          started_at: string
+          status: string
+        }
+        Insert: {
+          card_id?: string | null
+          category_id?: string | null
+          couple_space_id: string
+          created_at?: string
+          created_by: string
+          ended_at?: string | null
+          id?: string
+          last_activity_at?: string
+          started_at?: string
+          status: string
+        }
+        Update: {
+          card_id?: string | null
+          category_id?: string | null
+          couple_space_id?: string
+          created_at?: string
+          created_by?: string
+          ended_at?: string | null
+          id?: string
+          last_activity_at?: string
+          started_at?: string
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "couple_sessions_couple_space_id_fkey"
+            columns: ["couple_space_id"]
+            isOneToOne: false
+            referencedRelation: "couple_spaces"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "couple_sessions_couple_space_id_fkey"
+            columns: ["couple_space_id"]
+            isOneToOne: false
+            referencedRelation: "couple_spaces_safe"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       couple_spaces: {
         Row: {
           created_at: string
@@ -246,6 +392,55 @@ export type Database = {
           partner_b_name?: string | null
         }
         Relationships: []
+      }
+      couple_takeaways: {
+        Row: {
+          content: string
+          couple_space_id: string
+          created_at: string
+          created_by: string
+          id: string
+          session_id: string
+        }
+        Insert: {
+          content: string
+          couple_space_id: string
+          created_at?: string
+          created_by: string
+          id?: string
+          session_id: string
+        }
+        Update: {
+          content?: string
+          couple_space_id?: string
+          created_at?: string
+          created_by?: string
+          id?: string
+          session_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "couple_takeaways_couple_space_id_fkey"
+            columns: ["couple_space_id"]
+            isOneToOne: false
+            referencedRelation: "couple_spaces"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "couple_takeaways_couple_space_id_fkey"
+            columns: ["couple_space_id"]
+            isOneToOne: false
+            referencedRelation: "couple_spaces_safe"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "couple_takeaways_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "couple_sessions"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       notification_preferences: {
         Row: {
