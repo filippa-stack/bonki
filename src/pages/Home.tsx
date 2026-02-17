@@ -15,7 +15,7 @@ import CategoryCard from '@/components/CategoryCard';
 
 import Header from '@/components/Header';
 import SoloInviteSection from '@/components/SoloInviteSection';
-import { ArrowRight, Bookmark, Share2, ChevronDown } from 'lucide-react';
+import { ArrowRight, Bookmark, Share2, ChevronDown, X } from 'lucide-react';
 import NotificationSettings from '@/components/NotificationSettings';
 import RelationshipMemory from '@/components/RelationshipMemory';
 import Footer from '@/components/Footer';
@@ -170,6 +170,32 @@ export default function Home() {
 
   const returnResumeCardId = activeSession?.cardId || journeyState?.lastOpenedCardId || journeyState?.lastCompletedCardId || null;
 
+/** One-time "Du är nu ansluten" banner for User B after join */
+function JustJoinedBanner() {
+  const [visible, setVisible] = useState(() => {
+    if (localStorage.getItem('still-us-just-joined') === 'true') {
+      localStorage.removeItem('still-us-just-joined');
+      return true;
+    }
+    return false;
+  });
+
+  if (!visible) return null;
+
+  return (
+    <div className="flex items-center justify-center gap-2 mt-[12px] mb-[16px] px-6">
+      <p className="text-[13px] text-muted-foreground/50 text-center">
+        🤍 Du är nu ansluten.
+      </p>
+      <button
+        onClick={() => setVisible(false)}
+        className="text-muted-foreground/40 hover:text-muted-foreground transition-colors"
+      >
+        <X className="w-3.5 h-3.5" />
+      </button>
+    </div>
+  );
+}
 
   // Computed helpers for proposal mode & highlighted category
   const exploredIds = journeyState?.exploredCardIds || [];
@@ -271,8 +297,11 @@ export default function Home() {
 
 
 
-      {/* Partner connected banner */}
+      {/* Partner connected banner (for partner_a seeing partner_b join) */}
       <PartnerConnectedBanner />
+
+      {/* Just-joined banner (for partner_b after completing join flow) */}
+      <JustJoinedBanner />
 
       {/* Partner left banner — shown when partner_left_space event detected */}
       <PartnerLeftBanner
