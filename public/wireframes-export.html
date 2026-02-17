@@ -41,16 +41,12 @@
   .frame .progress-step.done { background: #5f8f7e; }
   .frame .progress-step.current { background: #5f8f7e88; }
   .frame .breathing { width: 64px; height: 1px; background: #1a1a1a11; margin: 8px auto; }
-  .frame .pace-dots { display: flex; gap: 8px; justify-content: center; }
-  .frame .pace-dot { width: 8px; height: 8px; border-radius: 50%; }
-  .frame .pace-dot.filled { background: #1a1a1a33; }
-  .frame .pace-dot.outline { border: 1px solid #1a1a1a22; }
 </style>
 </head>
 <body>
 
 <h1>Still Us — Exportera Wireframes</h1>
-<p class="subtitle">Klicka för att ladda ner alla 8 wireframes som separata PNG-bilder i en ZIP-fil.</p>
+<p class="subtitle">Klicka för att ladda ner alla 9 wireframes som separata PNG-bilder i en ZIP-fil.</p>
 
 <div class="actions">
   <button class="btn" id="downloadBtn" onclick="exportAll()">📦 Ladda ner ZIP med alla PNG:er</button>
@@ -80,90 +76,109 @@
   </div>
 </div>
 
-<!-- 2. SOLO BEFORE PARTNER -->
-<div class="wireframe" data-name="02-solo-before-partner">
-  <h2>2. Solo Before Partner</h2>
-  <div class="route">/ → Home (displayMemberCount &lt; 2)</div>
+<!-- 2. SOLO — FIRST TIME -->
+<div class="wireframe" data-name="02-solo-first-time">
+  <h2>2. Solo — First Time</h2>
+  <div class="route">/ → Home (mode === 'solo', hadPartnerBefore = false)</div>
   <div class="frame">
-    <div class="header-bar"><span>🟢 logo</span><span>save · sync · backup · Vårt utrymme · ⏻</span></div>
-    <div class="center" style="padding: 20px 0 8px;">
-      <div style="width: 56px; height: 56px; background: #e5e5e5; border-radius: 12px; margin: 0 auto 12px;"></div>
-      <div class="serif" style="font-size: 20px; font-weight: 600;">STILL US — So we stay us</div>
-      <div class="muted" style="margin-top: 6px;">Förbli ett vi medan vi uppfostrar dem</div>
+    <div class="header-bar"><span>🟢 logo</span><span>⚙</span></div>
+    <div class="spacer"></div>
+    <div class="center serif" style="font-size: 20px; font-weight: 600;">Börja här.</div>
+    <div class="spacer" style="height: 8px;"></div>
+    <div class="center muted" style="max-width: 320px; margin: 0 auto; line-height: 1.7;">
+      Bjud in din partner när du vill. Då skapar ni ert gemensamma rum och kan börja samtalen tillsammans.
     </div>
+    <div class="spacer"></div>
+    <div class="center"><div class="btn-ui" style="width: 100%;">🔗 Dela länk</div></div>
+    <div class="spacer" style="height: 8px;"></div>
+    <div class="center muted" style="font-size: 11px;">Har din partner redan en kod? ▾</div>
+    <div class="spacer"></div>
     <div class="divider"></div>
-    <div class="card center">
-      <div class="muted">Ni har inte startat något samtal ännu.</div>
-      <div style="margin-top: 8px;"><span class="btn-ui" style="font-size: 12px; padding: 8px 16px;">Börja ert första samtal</span></div>
-    </div>
-    <div class="center muted" style="margin: 12px 0;">Appen är gjord för er båda. Bjud in din partner.</div>
-    <div class="card"><div class="muted" style="font-size: 11px;">AttachPartner widget</div><div style="margin-top: 4px;">Invite code / share link / name input</div></div>
-    <div class="divider"></div>
-    <div class="muted" style="font-size: 11px; margin-bottom: 6px;">Kategorier (full list, solo mode)</div>
-    <div class="card">Kategori 1</div><div class="card">Kategori 2</div><div class="card">Kategori 3</div>
-    <div class="divider"></div>
-    <div class="muted">🔗 Er historia · 🔖 Sparade samtal</div>
-    <div class="divider"></div>
-    <div class="muted">NotificationSettings · Footer</div>
+    <div class="center muted" style="font-size: 11px;">▸ Tillgängligt när ni är två (collapsed)</div>
+    <div class="spacer"></div>
   </div>
 </div>
 
-<!-- 3. IDLE — PARTNER CONNECTED -->
-<div class="wireframe" data-name="03-idle-partner-connected">
-  <h2>3. Idle — Partner Connected</h2>
-  <div class="route">/ → Home (displayMemberCount ≥ 2, no session)</div>
+<!-- 3. SOLO — PARTNER DISCONNECTED -->
+<div class="wireframe" data-name="03-solo-partner-left">
+  <h2>3. Solo — Partner Disconnected</h2>
+  <div class="route">/ → Home (mode === 'solo', hadPartnerBefore = true)</div>
   <div class="frame">
-    <div class="header-bar"><span>🟢 logo</span><span>save · sync · backup · Vårt utrymme · ⏻</span></div>
-    <div class="center" style="padding: 20px 0 8px;">
-      <div style="width: 56px; height: 56px; background: #e5e5e5; border-radius: 12px; margin: 0 auto 12px;"></div>
-      <div class="serif" style="font-size: 20px; font-weight: 600;">STILL US — So we stay us</div>
-    </div>
-    <div class="divider"></div>
-    <div class="card center">
-      <div class="serif" style="font-size: 13px;">Så fungerar det</div>
-      <div class="muted" style="margin-top: 4px;">Ni väljer samtalsämne tillsammans. En av er föreslår ett kort, den andra accepterar.</div>
+    <div class="header-bar"><span>🟢 logo</span><span>⚙</span></div>
+    <div class="spacer"></div>
+    <div class="center serif" style="font-size: 20px; font-weight: 600;">Du är ensam här just nu.</div>
+    <div class="spacer" style="height: 8px;"></div>
+    <div class="center muted" style="max-width: 320px; margin: 0 auto; line-height: 1.7;">
+      Din partner är inte längre ansluten till ert rum.
     </div>
     <div class="spacer"></div>
-    <div class="center">
-      <div class="muted serif">Vad vill ni prata om?</div>
-      <div style="margin-top: 12px;"><span class="btn-outline" style="padding: 12px 32px; font-family: Georgia, serif;">Välj samtalsämne</span></div>
-    </div>
+    <div class="center"><div class="btn-ui" style="width: 100%;">🔗 Dela länk</div></div>
+    <div class="spacer"></div>
+  </div>
+</div>
+
+<!-- 4. IDLE — PARTNER CONNECTED -->
+<div class="wireframe" data-name="04-idle-partner-connected">
+  <h2>4. Idle — Partner Connected</h2>
+  <div class="route">/ → Home (mode === 'idle', no outgoing proposal)</div>
+  <div class="frame">
+    <div class="header-bar"><span>🟢 logo</span><span>⚙</span></div>
+    <div class="center muted" style="padding: 12px 0 4px;">🤍 Ni är nu ihopkopplade. <span style="color: #ccc;">✕</span></div>
+    <div class="spacer"></div>
+    <div class="center"><div class="btn-ui" style="width: 100%;">Välj samtalsämne →</div></div>
     <div class="spacer"></div>
     <div class="divider"></div>
     <div class="muted">RelationshipMemory · RecentSharedReflection</div>
     <div class="divider"></div>
     <div class="muted">🔗 Er historia</div>
     <div class="divider"></div>
-    <div class="muted">NotificationSettings · Footer</div>
+    <div class="muted">▸ Notiser (collapsed)</div>
   </div>
 </div>
 
-<!-- 4. PROPOSAL PENDING -->
-<div class="wireframe" data-name="04-proposal-pending">
-  <h2>4. Proposal Pending (Incoming)</h2>
-  <div class="route">/ → Home (incomingProposals.length &gt; 0)</div>
+<!-- 4b. IDLE — OUTGOING PROPOSAL PENDING -->
+<div class="wireframe" data-name="04b-idle-outgoing-proposal">
+  <h2>4b. Idle — Outgoing Proposal Pending</h2>
+  <div class="route">/ → Home (mode === 'idle', ownPendingProposals[0] exists)</div>
   <div class="frame">
-    <div class="header-bar"><span>🟢 logo</span><span>save · sync · backup · Vårt utrymme · ⏻</span></div>
-    <div class="center" style="padding: 20px 0 8px;">
-      <div style="width: 56px; height: 56px; background: #e5e5e5; border-radius: 12px; margin: 0 auto 12px;"></div>
-      <div class="serif" style="font-size: 20px;">STILL US — So we stay us</div>
-    </div>
-    <div class="divider"></div>
-    <div class="card" style="display: flex; justify-content: space-between; align-items: center;">
-      <span class="muted">Ni har ett föreslaget samtal</span>
-      <span class="btn-ghost">Öppna i Vårt utrymme</span>
+    <div class="header-bar"><span>🟢 logo</span><span>⚙</span></div>
+    <div class="spacer"></div>
+    <div class="card center">
+      <div class="muted" style="text-transform: uppercase; letter-spacing: 1px; font-size: 10px;">Förslag skickat</div>
+      <div class="serif" style="margin-top: 6px;">Att lyssna på riktigt</div>
+      <div class="muted" style="margin-top: 4px;">Väntar på att din partner svarar.</div>
+      <div class="btn-ghost" style="margin-top: 6px;">Ändra förslag</div>
     </div>
     <div class="spacer"></div>
-    <div class="center muted">... rest of idle layout below ...</div>
+    <div class="center"><div class="btn-ui" style="width: 100%;">Välj samtalsämne →</div></div>
+    <div class="spacer"></div>
   </div>
 </div>
 
-<!-- 5. ACTIVE SESSION STEP -->
-<div class="wireframe" data-name="05-active-session-step">
-  <h2>5. Active Session Step</h2>
-  <div class="route">/card/:id (isActiveSession = true)</div>
+<!-- 5. PROPOSAL INCOMING -->
+<div class="wireframe" data-name="05-proposal-incoming">
+  <h2>5. Proposal Incoming (Overlay)</h2>
+  <div class="route">/ → Home (mode === 'proposal', full-screen overlay)</div>
+  <div class="frame" style="background: #fefefe;">
+    <div class="spacer" style="height: 40px;"></div>
+    <div class="center muted" style="text-transform: uppercase; letter-spacing: 1px; font-size: 11px;">Förslag från din partner</div>
+    <div class="spacer" style="height: 12px;"></div>
+    <div class="center serif" style="font-size: 22px;">Att lyssna på riktigt</div>
+    <div class="spacer" style="height: 40px;"></div>
+    <div class="center"><div class="btn-ui" style="width: 100%;">Acceptera →</div></div>
+    <div class="spacer" style="height: 8px;"></div>
+    <div class="center"><div class="btn-ghost" style="width: 100%;">Inte nu</div></div>
+    <div class="center muted" style="font-size: 11px; margin-top: 4px;">Du kan spara det och ta upp senare.</div>
+    <div class="spacer" style="height: 40px;"></div>
+  </div>
+</div>
+
+<!-- 6. ACTIVE SESSION STEP -->
+<div class="wireframe" data-name="06-active-session-step">
+  <h2>6. Active Session Step</h2>
+  <div class="route">/card/:id (isActiveSession = true, draft state)</div>
   <div class="frame">
-    <div class="header-bar"><span>← 🟢 logo Category title</span><span>save · sync · ⏻</span></div>
+    <div class="header-bar"><span>🟢 logo · Category title</span><span>⚙</span></div>
     <div style="padding: 8px 0;">
       <div class="progress-bar">
         <div class="progress-step done"></div><div class="progress-step current"></div><div class="progress-step"></div><div class="progress-step"></div>
@@ -178,48 +193,48 @@
       <div class="muted" style="font-size: 11px;">SectionView — prompts + private notes</div>
       <div style="margin-top: 8px;">Prompt 1: "Question text..."</div>
       <div style="margin-top: 4px; padding: 8px; background: #f5f5f5; border-radius: 8px; font-size: 12px; color: #999;">Private note field</div>
-      <div style="margin-top: 8px;">Prompt 2: "Question text..."</div>
-      <div style="margin-top: 4px; padding: 8px; background: #f5f5f5; border-radius: 8px; font-size: 12px; color: #999;">Private note field</div>
     </div>
     <div class="spacer"></div>
-    <div class="center"><div class="btn-ui" style="width: 100%;">Vi går vidare →</div></div>
+    <div class="card">
+      <div class="muted" style="font-size: 11px;">SessionStepReflection — draft</div>
+      <div style="margin-top: 4px; padding: 8px; background: #f5f5f5; border-radius: 8px; font-size: 12px; color: #999;">🔒 Bara du kan se det här</div>
+    </div>
+    <div class="spacer"></div>
+    <div class="center"><div class="btn-ui" style="width: 100%;">Markera klar →</div></div>
+    <div class="center muted" style="font-size: 11px; margin-top: 4px;">Ni går vidare när båda är klara.</div>
     <div class="spacer" style="height: 8px;"></div>
-    <div class="center muted" style="font-size: 11px;">📖 Se era svar</div>
+    <div class="center muted" style="font-size: 11px;">📖 Se sammanfattning</div>
   </div>
 </div>
 
-<!-- 6. WAITING STATE -->
-<div class="wireframe" data-name="06-waiting-state">
-  <h2>6. Waiting State</h2>
-  <div class="route">/card/:id (userCompleted = true, partnerCompleted = false)</div>
+<!-- 7. WAITING STATE -->
+<div class="wireframe" data-name="07-waiting-state">
+  <h2>7. Waiting State</h2>
+  <div class="route">/card/:id (state === 'ready', waiting for partner)</div>
   <div class="frame">
-    <div class="header-bar"><span>← 🟢 logo Category title</span><span>save · sync · ⏻</span></div>
+    <div class="header-bar"><span>🟢 logo · Category title</span><span>⚙</span></div>
     <div style="padding: 8px 0;">
       <div class="progress-bar">
         <div class="progress-step done"></div><div class="progress-step done"></div><div class="progress-step"></div><div class="progress-step"></div>
       </div>
     </div>
-    <div class="spacer"></div>
-    <div class="center serif" style="font-size: 18px;">Card Title</div>
-    <div class="divider"></div>
-    <div class="card muted center" style="font-size: 11px;">SectionView (completed step content)</div>
-    <div class="spacer"></div>
-    <div class="pace-dots"><div class="pace-dot filled"></div><div class="pace-dot outline"></div></div>
+    <div class="spacer" style="height: 32px;"></div>
+    <div class="center muted" style="line-height: 1.7;">
+      Väntar på att ni båda trycker klart.
+    </div>
     <div class="spacer" style="height: 8px;"></div>
-    <div class="breathing"></div>
-    <div class="spacer" style="height: 8px;"></div>
-    <div class="center muted" style="line-height: 1.7;">Samtalet vilar här en stund —<br>ni fortsätter när båda har reflekterat.</div>
+    <div class="center muted" style="font-size: 11px; line-height: 1.6;">
+      När ni båda har markerat steget som klart visas era reflektioner.
+    </div>
+    <div class="spacer" style="height: 24px;"></div>
+    <div class="center"><div class="btn-ghost" style="width: 100%; border: 1px solid #e5e5e5; border-radius: 12px; padding: 10px;">Tillbaka till hem</div></div>
     <div class="spacer"></div>
-    <div class="divider"></div>
-    <div class="center muted" style="font-size: 11px;">── When both complete ──</div>
-    <div class="spacer" style="height: 8px;"></div>
-    <div class="center"><div class="btn-ui" style="width: 100%;">Gå vidare tillsammans →</div></div>
   </div>
 </div>
 
-<!-- 7. COMPLETED SESSION -->
-<div class="wireframe" data-name="07-completed-session">
-  <h2>7. Completed Session</h2>
+<!-- 8. COMPLETED SESSION -->
+<div class="wireframe" data-name="08-completed-session">
+  <h2>8. Completed Session</h2>
   <div class="route">/card/:id (isFullyExplored = true)</div>
   <div class="frame">
     <div class="header-bar"><span>← back to /</span><span>🟢 logo</span></div>
@@ -238,12 +253,12 @@
   </div>
 </div>
 
-<!-- 8. VÅRT UTRYMME -->
-<div class="wireframe" data-name="08-vart-utrymme-archive">
-  <h2>8. Vårt Utrymme (Archive)</h2>
+<!-- 9. VÅRT UTRYMME (ARCHIVE) -->
+<div class="wireframe" data-name="09-vart-utrymme-archive">
+  <h2>9. Vårt Utrymme (Archive)</h2>
   <div class="route">/shared (read-only)</div>
   <div class="frame">
-    <div class="header-bar"><span>← 🟢 logo</span><span>save · sync · backup · ⏻</span></div>
+    <div class="header-bar"><span>🟢 logo</span><span>⚙</span></div>
     <div class="spacer"></div>
     <div class="serif" style="font-size: 22px; font-weight: 600;">Er historia</div>
     <div class="muted" style="margin-top: 4px;">Avslutade samtal och delade reflektioner</div>
