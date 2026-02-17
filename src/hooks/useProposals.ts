@@ -3,6 +3,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { useCoupleSpaceContext } from '@/contexts/CoupleSpaceContext';
 import { useDevState } from '@/contexts/DevStateContext';
+import { notifyPartnerByEmail } from '@/lib/notifyPartnerByEmail';
 
 export interface Proposal {
   id: string;
@@ -120,6 +121,39 @@ export function useProposals() {
     }
 
     await fetchProposals();
+
+    // Fire-and-forget: notify partner by email
+    // Find partner's user_id from couple_members
+    const { data: members } = await supabase
+      .from('couple_members')
+      .select('user_id')
+      .eq('couple_space_id', space.id)
+      .is('left_at', null)
+      .eq('status', 'active')
+      .neq('user_id', user.id)
+      .limit(1);
+
+    const partnerUserId = members?.[0]?.user_id;
+    if (partnerUserId) {
+      // Get the proposal ID we just created
+      const { data: latestProposal } = await supabase
+        .from('topic_proposals')
+        .select('id')
+        .eq('couple_space_id', space.id)
+        .eq('card_id', cardId)
+        .eq('proposed_by', user.id)
+        .eq('status', 'pending')
+        .order('created_at', { ascending: false })
+        .limit(1);
+
+      notifyPartnerByEmail({
+        type: 'proposal',
+        couple_space_id: space.id,
+        receiver_user_id: partnerUserId,
+        proposal_id: latestProposal?.[0]?.id,
+      });
+    }
+
     return { ok: true };
   }, [user, space, isPaired, proposals, fetchProposals]);
 
