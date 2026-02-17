@@ -6,6 +6,7 @@
 import { useEffect, useState, useCallback, useRef } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
+import { useCoupleSpaceContext } from '@/contexts/CoupleSpaceContext';
 
 export type AppMode = 'SESSION_ACTIVE' | 'SESSION_WAITING' | null;
 
@@ -22,6 +23,7 @@ export interface NormalizedSessionState {
 
 export function useNormalizedSessionState(): NormalizedSessionState {
   const { user } = useAuth();
+  const { space } = useCoupleSpaceContext();
   const [state, setState] = useState<Omit<NormalizedSessionState, 'loading' | 'refetch'>>({
     appMode: null,
     sessionId: null,
@@ -32,10 +34,12 @@ export function useNormalizedSessionState(): NormalizedSessionState {
   });
   const [loading, setLoading] = useState(true);
   const mountedRef = useRef(true);
+  const debounceRef = useRef<ReturnType<typeof setTimeout>>();
 
   const userId = user?.id;
+  const spaceId = space?.id;
 
-  const fetch = useCallback(async () => {
+  const fetchState = useCallback(async () => {
     if (!userId) {
       setState({ appMode: null, sessionId: null, cardId: null, categoryId: null, currentStepIndex: 0, waiting: false });
       setLoading(false);
@@ -63,11 +67,54 @@ export function useNormalizedSessionState(): NormalizedSessionState {
     setLoading(false);
   }, [userId]);
 
+  // Initial fetch
   useEffect(() => {
     mountedRef.current = true;
-    fetch();
+    fetchState();
     return () => { mountedRef.current = false; };
-  }, [fetch]);
+  }, [fetchState]);
 
-  return { ...state, loading, refetch: fetch };
+  // Debounced refetch helper — coalesces bursts into a single RPC call
+  const debouncedRefetch = useCallback(() => {
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+    debounceRef.current = setTimeout(() => {
+      if (mountedRef.current) fetchState();
+    }, 300);
+  }, [fetchState]);
+
+  // Realtime subscriptions scoped to active couple_space_id
+  useEffect(() => {
+    if (!userId || !spaceId) return;
+
+    const channel = supabase
+      .channel(`norm-session-rt-${spaceId}`)
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'couple_sessions',
+          filter: `couple_space_id=eq.${spaceId}`,
+        },
+        () => debouncedRefetch()
+      )
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'couple_session_completions',
+          filter: `couple_space_id=eq.${spaceId}`,
+        },
+        () => debouncedRefetch()
+      )
+      .subscribe();
+
+    return () => {
+      if (debounceRef.current) clearTimeout(debounceRef.current);
+      supabase.removeChannel(channel);
+    };
+  }, [userId, spaceId, debouncedRefetch]);
+
+  return { ...state, loading, refetch: fetchState };
 }
