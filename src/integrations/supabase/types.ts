@@ -131,6 +131,7 @@ export type Database = {
           left_by: string | null
           left_reason: string | null
           role: string | null
+          status: string
           user_id: string
         }
         Insert: {
@@ -142,6 +143,7 @@ export type Database = {
           left_by?: string | null
           left_reason?: string | null
           role?: string | null
+          status?: string
           user_id: string
         }
         Update: {
@@ -153,6 +155,7 @@ export type Database = {
           left_by?: string | null
           left_reason?: string | null
           role?: string | null
+          status?: string
           user_id?: string
         }
         Relationships: [
