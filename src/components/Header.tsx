@@ -65,12 +65,6 @@ export default function Header({
             className="h-8 w-8 object-contain cursor-pointer"
             onClick={() => navigate('/')}
           />
-          <img
-            src={bonkiLogo}
-            alt="Still Us"
-            className="h-8 w-8 object-contain cursor-pointer"
-            onClick={() => navigate('/')}
-          />
           {title && (
             <h1 className="font-serif text-lg text-foreground truncate">
               {title}
