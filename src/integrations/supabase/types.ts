@@ -851,6 +851,15 @@ export type Database = {
       }
     }
     Functions: {
+      activate_couple_session: {
+        Args: {
+          p_card_id: string
+          p_category_id: string
+          p_couple_space_id: string
+          p_step_count: number
+        }
+        Returns: string
+      }
       get_current_couple_space_id: { Args: never; Returns: string }
       get_own_invite_info: {
         Args: never
