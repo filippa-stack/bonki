@@ -156,6 +156,20 @@ export function useProposals() {
   ): Promise<{ success: boolean; session?: any; errorMessage?: string }> => {
     if (!isPaired || devState) return { success: false, errorMessage: 'not paired or devState active' };
 
+    // 0. Verify caller is active member of the proposal's space
+    if (!space?.id) return { success: false, errorMessage: 'no_active_space' };
+
+    const { count: activeMemberCount } = await supabase
+      .from('couple_members')
+      .select('id', { count: 'exact', head: true })
+      .eq('couple_space_id', space.id)
+      .is('left_at', null)
+      .eq('status', 'active');
+
+    if (!activeMemberCount || activeMemberCount < 2) {
+      return { success: false, errorMessage: 'Detta utrymme är inte längre aktivt.' };
+    }
+
     // 1. Edge function call
     const res = await supabase.functions.invoke('activate-session', {
       body: { proposal_id: proposalId },

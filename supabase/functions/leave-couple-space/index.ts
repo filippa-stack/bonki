@@ -94,6 +94,13 @@ Deno.serve(async (req) => {
       .eq("couple_space_id", couple_space_id)
       .eq("status", "active");
 
+    // Withdraw all pending proposals for this space
+    await adminClient
+      .from("topic_proposals")
+      .update({ status: "withdrawn", updated_at: new Date().toISOString() })
+      .eq("couple_space_id", couple_space_id)
+      .eq("status", "pending");
+
     return new Response(
       JSON.stringify({ success: true }),
       { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
