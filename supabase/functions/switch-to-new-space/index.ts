@@ -83,6 +83,15 @@ Deno.serve(async (req) => {
         console.error("Leave error:", leaveErr);
         return json({ error: "leave_failed" }, 500);
       }
+
+      // Invalidate old space's invite tokens so old links can't be used
+      await admin
+        .from("couple_spaces")
+        .update({
+          invite_code: generateInviteCode(),
+          invite_token: generateInviteToken(),
+        })
+        .eq("id", membership.couple_space_id);
     }
 
     // 3) Create new couple_space
