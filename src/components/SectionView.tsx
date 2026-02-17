@@ -193,7 +193,7 @@ const SectionView = forwardRef<SectionViewHandle, SectionViewProps>(function Sec
                   onToggleHighlight={toggleHighlight}
                   autoFocusNote={focusNoteIndex === index}
                   disableShare={isRevisitMode || disableShare}
-                  isCompleted={index === 0} /* TODO: remove mock — temporary for design review */
+                  isCompleted={!!(getPrivateNote(promptId)?.content || (!disableShare && getSharedNote(promptId)?.content))}
                 />
               </div>
             );
