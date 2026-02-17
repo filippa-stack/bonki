@@ -99,7 +99,8 @@ export default function Login() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.06, duration: 0.15 }}
-          className="text-display font-serif hero-title-color"
+          className="text-display font-serif"
+          style={{ color: '#B5342B' }}
         >
           STILL US
           <br />
