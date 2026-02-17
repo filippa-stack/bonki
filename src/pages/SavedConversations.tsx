@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { useApp } from '@/contexts/AppContext';
 import Header from '@/components/Header';
 import ConversationCard from '@/components/ConversationCard';
+import { Button } from '@/components/ui/button';
 
 export default function SavedConversations() {
   const { t } = useTranslation();
@@ -25,8 +26,13 @@ export default function SavedConversations() {
             animate={{ opacity: 1 }}
             className="text-center py-16"
           >
-            <p className="text-gentle mb-2">{t('saved.empty')}</p>
-            <p className="text-sm text-muted-foreground">{t('saved.empty_hint')}</p>
+            <h2 className="font-serif text-xl text-foreground mb-3">Sparade samtal</h2>
+            <p className="text-sm text-muted-foreground leading-relaxed mb-8">
+              När ni sparar ett samtal dyker det upp här. Det kan vara något ni vill återvända till.
+            </p>
+            <Button variant="ghost" onClick={() => navigate('/')} className="text-sm">
+              Till hem
+            </Button>
           </motion.div>
         ) : (
           <div className="space-y-3">
