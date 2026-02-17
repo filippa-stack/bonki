@@ -134,7 +134,7 @@ export default function Header({
                       const result = await switchToNewSpace();
                       if (result.ok) {
                         toast.success('Nytt utrymme skapat.');
-                        navigate('/home');
+                        navigate('/');
                       } else {
                         toast.error('Kunde inte skapa nytt utrymme.');
                       }
