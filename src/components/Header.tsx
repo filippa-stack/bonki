@@ -1,9 +1,20 @@
-import { ArrowLeft, LogOut, Settings, Users } from 'lucide-react';
+import { ArrowLeft, LogOut, Plus, Settings, Users } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useApp } from '@/contexts/AppContext';
 import { useAuth } from '@/contexts/AuthContext';
 import ColorPicker from '@/components/ColorPicker';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '@/components/ui/alert-dialog';
 import SaveIndicator from '@/components/SaveIndicator';
 import SyncStatus from '@/components/SyncStatus';
 import BackupManager from '@/components/BackupManager';
@@ -118,8 +129,34 @@ export default function Header({
                 <Settings className="w-4 h-4" />
               </Button>
             </PopoverTrigger>
-            <PopoverContent className="w-52 p-2 space-y-1" align="end">
+            <PopoverContent className="w-56 p-2 space-y-1" align="end">
               <LeaveCoupleSpace />
+              <AlertDialog>
+                <AlertDialogTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="w-full justify-start text-xs gap-1.5"
+                  >
+                    <Plus className="w-3.5 h-3.5" />
+                    Skapa nytt utrymme
+                  </Button>
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle className="font-serif">Skapa ett nytt utrymme?</AlertDialogTitle>
+                    <AlertDialogDescription>
+                      Du får ett nytt gemensamt utrymme. Er tidigare historik följer inte med.
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel>Avbryt</AlertDialogCancel>
+                    <AlertDialogAction onClick={() => { /* TODO: backend logic */ }}>
+                      Skapa nytt utrymme
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
               <Button
                 variant="ghost"
                 className="w-full justify-start text-destructive hover:text-destructive hover:bg-destructive/10"
