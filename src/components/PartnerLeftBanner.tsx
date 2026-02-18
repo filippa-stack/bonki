@@ -27,11 +27,12 @@ export default function PartnerLeftBanner({ onPartnerLeft, onInvite }: Props) {
   const navigate = useNavigate();
   const [visible, setVisible] = useState(false);
   const [triggered, setTriggered] = useState(false);
+  const [eventType, setEventType] = useState<string>('partner_left_space');
 
-  const handleDetected = useCallback(async (eventId?: string) => {
+  const handleDetected = useCallback(async (eventId?: string, detectedType?: string) => {
     if (triggered) return;
     setTriggered(true);
-
+    if (detectedType) setEventType(detectedType);
     // Write localStorage gate so the banner won't reappear for this space
     if (space) {
       localStorage.setItem(gateKey(space.id), eventId || '1');
@@ -79,7 +80,7 @@ export default function PartnerLeftBanner({ onPartnerLeft, onInvite }: Props) {
       });
 
       if (partnerEvent) {
-        handleDetected(partnerEvent.id);
+        handleDetected(partnerEvent.id, partnerEvent.type);
       }
     };
 
@@ -103,7 +104,7 @@ export default function PartnerLeftBanner({ onPartnerLeft, onInvite }: Props) {
           if (actorId === user.id) return;
 
           if ((PARTNER_LEFT_TYPES as readonly string[]).includes(type)) {
-            handleDetected(payload.new?.id);
+            handleDetected(payload.new?.id, type);
           }
         }
       )
@@ -116,6 +117,8 @@ export default function PartnerLeftBanner({ onPartnerLeft, onInvite }: Props) {
 
   if (!visible) return null;
 
+  const isSwitched = eventType === 'partner_switched';
+
   return (
     <motion.div
       initial={{ opacity: 0, y: -8 }}
@@ -124,10 +127,12 @@ export default function PartnerLeftBanner({ onPartnerLeft, onInvite }: Props) {
       className="mx-6 mt-4 mb-2 rounded-2xl border border-border bg-card p-5 space-y-3"
     >
       <p className="font-serif text-foreground text-base">
-        Utrymmet är inte längre gemensamt
+        {isSwitched ? 'Kopplingen avslutades.' : 'Det här utrymmet är nu bara ditt.'}
       </p>
       <p className="text-sm text-muted-foreground leading-relaxed">
-        Din partner har avslutat er koppling. Du kan fortsätta här själv eller bjuda in någon igen när det känns rätt.
+        {isSwitched
+          ? 'Din partner har bytt utrymme. Du kan fortsätta här själv eller bjuda in någon ny.'
+          : 'Din partner har lämnat. Du kan fortsätta själv eller bjuda in någon ny.'}
       </p>
       <div className="flex gap-3 pt-1">
         <Button
