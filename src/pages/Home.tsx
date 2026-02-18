@@ -451,9 +451,12 @@ export default function Home() {
                         if (result.success) {
                           navigate(`/card/${proposal.card_id}`);
                         } else {
-                          const errMsg = (result as any).errorMessage || 'Unknown error';
-                          console.error('[DIAG] Activation failed in Home:', errMsg);
-                          toast.error(`[DIAG] ${errMsg}`);
+                          if (import.meta.env.DEV) {
+                            console.error('[edge] Activation failed:', (result as any).errorMessage);
+                          }
+                          toast.error('Det gick inte att slutföra just nu. Försök igen.', {
+                            description: 'Något gick fel',
+                          });
                         }
                       }}
                     >
