@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { BEAT_2, EASE } from '@/lib/motion';
 
 interface WelcomeBackBannerProps {
   lastCardTitle?: string;
@@ -21,10 +22,10 @@ export default function WelcomeBackBanner({
 
   return (
     <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      transition={{ duration: 0.15 }}
+      initial={{ opacity: 0, y: -8 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -8 }}
+      transition={{ duration: BEAT_2, ease: EASE }}
       className="mx-6 mb-6 p-5 rounded-2xl border border-border bg-card"
     >
       <p className="text-sm text-foreground leading-relaxed">
