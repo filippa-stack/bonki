@@ -453,9 +453,12 @@ export default function CardView() {
                   cardId={cardId}
                   stepIndex={currentStepIndex}
                   onReady={() => {
-                    handleCompleteStep();
+                    // onReady only signals that this user's step_reflections row
+                    // has transitioned to 'ready'. Session progression happens in onLocked.
                   }}
-                  onLocked={() => {
+                  onLocked={async () => {
+                    // Session advances only after both reflections are locked.
+                    await handleCompleteStep();
                     if (currentStepIndex >= STEP_ORDER.length - 1) {
                       setShowCompletion(true);
                     }
