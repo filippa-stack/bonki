@@ -187,11 +187,10 @@ export default function RelationSettings({
               <AlertDialogContent>
                 <AlertDialogHeader>
                   <AlertDialogTitle className="font-serif text-lg">
-                    Skapa ett nytt utrymme?
+                    Skapa ett nytt utrymme med samma partner?
                   </AlertDialogTitle>
-                  <AlertDialogDescription className="text-sm text-muted-foreground leading-relaxed space-y-2 pt-1">
-                    <span className="block">Starta ett nytt kapitel med samma partner.</span>
-                    <span className="block">Historiken i det här utrymmet blir kvar här och följer inte med.</span>
+                  <AlertDialogDescription className="text-sm text-muted-foreground leading-relaxed pt-1">
+                    Ni får ett nytt tomt utrymme att fortsätta i. Det ni gjort här ligger kvar i det här utrymmet.
                   </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter className="mt-2">
@@ -243,9 +242,8 @@ export default function RelationSettings({
                   <AlertDialogTitle className="font-serif text-lg">
                     Byt partner?
                   </AlertDialogTitle>
-                  <AlertDialogDescription className="text-sm text-muted-foreground leading-relaxed space-y-2 pt-1">
-                    <span className="block">Avsluta kopplingen till din nuvarande partner och skapa ett nytt tomt utrymme.</span>
-                    <span className="block">Du kan bjuda in någon ny senare.</span>
+                  <AlertDialogDescription className="text-sm text-muted-foreground leading-relaxed pt-1">
+                    Kopplingen till din nuvarande partner avslutas. Det här utrymmet blir kvar som historik för dig, men ni fortsätter inte här tillsammans.
                   </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter className="mt-2">
