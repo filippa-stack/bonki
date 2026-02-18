@@ -160,93 +160,95 @@ export default function CompletedSessionView({
       <Header title={categoryTitle} showBack backTo="/" />
 
       <div className="px-6 pt-20 pb-10">
-        {/* Session label */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.15 }}
-          className="text-center max-w-md mx-auto space-y-2"
-        >
-          <p className="text-[11px] text-muted-foreground/50 tracking-wide uppercase">
-            Session från {formatSessionDate(session.startedAt)}
-          </p>
-          <h2 className="text-xl font-serif text-foreground">{cardTitle}</h2>
-        </motion.div>
-
-        {/* Locked reflections */}
-        {stepGroups.length > 0 && (
+        <div className="max-w-md mx-auto space-y-8 pb-10">
+          {/* Session label / Completion header */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 0.05, duration: 0.15 }}
-            className="max-w-md mx-auto mt-12 space-y-8"
+            transition={{ duration: 0.15 }}
+            className="text-center space-y-2"
           >
-            {stepGroups.map((group, idx) => (
-              <div key={idx} className="space-y-4">
-                <p className="text-xs text-muted-foreground/40 tracking-wide">{group.label}</p>
+            <p className="text-[11px] text-muted-foreground/50 tracking-wide uppercase">
+              Session från {formatSessionDate(session.startedAt)}
+            </p>
+            <h2 className="text-xl font-serif text-foreground">{cardTitle}</h2>
+          </motion.div>
 
-                {/* Partner first */}
-                {group.partnerRef && group.partnerRef.text.trim() && (
-                  <div className="space-y-1">
-                    <p className="text-xs text-muted-foreground/60 px-1">{partnerName}</p>
-                    <div className="rounded-xl border border-border/30 bg-muted/10 overflow-hidden">
-                      <p className="p-3 text-sm text-foreground whitespace-pre-wrap">{group.partnerRef.text}</p>
+          {/* Locked reflections */}
+          {stepGroups.length > 0 && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.05, duration: 0.15 }}
+              className="space-y-8"
+            >
+              {stepGroups.map((group, idx) => (
+                <div key={idx} className="space-y-4">
+                  <p className="text-xs text-muted-foreground/40 tracking-wide">{group.label}</p>
+
+                  {/* Partner first */}
+                  {group.partnerRef && group.partnerRef.text.trim() && (
+                    <div className="space-y-1">
+                      <p className="text-xs text-muted-foreground/60 px-1">{partnerName}</p>
+                      <div className="rounded-[20px] border border-border/30 bg-muted/10 overflow-hidden">
+                        <p className="p-6 text-sm text-foreground whitespace-pre-wrap">{group.partnerRef.text}</p>
+                      </div>
                     </div>
-                  </div>
-                )}
+                  )}
 
-                {/* User second */}
-                {group.myRef && group.myRef.text.trim() && (
-                  <div className="space-y-1">
-                    <p className="text-xs text-muted-foreground/60 px-1">{myName}</p>
-                    <div className="rounded-xl border border-border/30 bg-muted/10 overflow-hidden">
-                      <p className="p-3 text-sm text-foreground whitespace-pre-wrap">{group.myRef.text}</p>
+                  {/* User second */}
+                  {group.myRef && group.myRef.text.trim() && (
+                    <div className="space-y-1">
+                      <p className="text-xs text-muted-foreground/60 px-1">{myName}</p>
+                      <div className="rounded-[20px] border border-border/30 bg-muted/10 overflow-hidden">
+                        <p className="p-6 text-sm text-foreground whitespace-pre-wrap">{group.myRef.text}</p>
+                      </div>
                     </div>
-                  </div>
-                )}
+                  )}
 
-                {idx < stepGroups.length - 1 && <Separator className="opacity-20" />}
+                  {idx < stepGroups.length - 1 && <Separator className="opacity-20" />}
+                </div>
+              ))}
+            </motion.div>
+          )}
+
+          {/* Locked takeaway */}
+          {session.takeawayText && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.08, duration: 0.15 }}
+              className="space-y-2"
+            >
+              <p className="text-xs text-muted-foreground/40 tracking-wide">Det ni tog med er</p>
+              <div className="rounded-[20px] border border-border/30 bg-muted/10 overflow-hidden">
+                <p className="p-6 text-sm text-foreground whitespace-pre-wrap">{session.takeawayText}</p>
               </div>
-            ))}
-          </motion.div>
-        )}
+            </motion.div>
+          )}
 
-        {/* Locked takeaway */}
-        {session.takeawayText && (
+          {/* CTA */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 0.08, duration: 0.15 }}
-            className="max-w-md mx-auto mt-10 space-y-2"
+            transition={{ delay: 0.1, duration: 0.15 }}
+            className="space-y-4 text-center"
           >
-            <p className="text-xs text-muted-foreground/40 tracking-wide">Det ni tog med er</p>
-            <div className="rounded-xl border border-border/30 bg-muted/10 overflow-hidden">
-              <p className="p-3 text-sm text-foreground whitespace-pre-wrap">{session.takeawayText}</p>
-            </div>
+            <Button
+              onClick={onExploreAgain}
+              size="lg"
+              className="w-full h-14 rounded-2xl gap-2 font-normal"
+            >
+              Utforska igen
+            </Button>
+            <button
+              onClick={() => navigate('/')}
+              className="text-xs text-muted-foreground/50 hover:text-muted-foreground transition-colors"
+            >
+              Till Hem
+            </button>
           </motion.div>
-        )}
-
-        {/* CTA */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.1, duration: 0.15 }}
-          className="max-w-md mx-auto mt-12 space-y-4 text-center"
-        >
-          <Button
-            onClick={onExploreAgain}
-            size="lg"
-            className="w-full h-14 rounded-2xl gap-2 font-normal"
-          >
-            Utforska igen
-          </Button>
-          <button
-            onClick={() => navigate('/')}
-            className="text-xs text-muted-foreground/50 hover:text-muted-foreground transition-colors"
-          >
-            Till Hem
-          </button>
-        </motion.div>
+        </div>
       </div>
     </div>
   );
