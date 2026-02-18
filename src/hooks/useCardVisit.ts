@@ -23,13 +23,14 @@ export function useCardVisit() {
     const now = new Date().toISOString();
 
     // Upsert with GREATEST semantics so last_visited_at never decreases.
-    // The unique constraint on (couple_space_id, user_id, card_id) triggers the ON CONFLICT path.
-    await supabase.rpc('upsert_card_visit' as never, {
+    // Handled by upsert_card_visit SECURITY DEFINER function.
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    await (supabase.rpc as any)('upsert_card_visit', {
       p_couple_space_id: space.id,
       p_user_id: user.id,
       p_card_id: cardId,
       p_visited_at: now,
-    } as never);
+    });
   }, [user?.id, space?.id]);
 
   return { recordVisit };

@@ -943,6 +943,15 @@ export type Database = {
         Args: { _session_id: string; _step_index: number }
         Returns: undefined
       }
+      upsert_card_visit: {
+        Args: {
+          p_card_id: string
+          p_couple_space_id: string
+          p_user_id: string
+          p_visited_at?: string
+        }
+        Returns: undefined
+      }
     }
     Enums: {
       reflection_state: "draft" | "ready" | "revealed" | "locked"
