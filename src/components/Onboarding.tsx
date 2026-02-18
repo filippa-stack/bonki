@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { useApp } from '@/contexts/AppContext';
+import { BEAT_1, BEAT_2, BEAT_3, EASE } from '@/lib/motion';
 
 const slides = [
   {
@@ -45,19 +46,39 @@ export default function Onboarding() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.15 }}
+            transition={{ duration: BEAT_3, ease: EASE }}
             className="text-center"
           >
-            <h1 className="text-display text-foreground">
+            {/* Headline */}
+            <motion.h1
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: BEAT_3, ease: EASE }}
+              className="text-display text-foreground"
+            >
               {slides[currentSlide].title}
-            </h1>
-            <p className="text-body text-gentle leading-relaxed mt-8 whitespace-pre-line">
+            </motion.h1>
+
+            {/* Body — BEAT_1 after headline */}
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: BEAT_1, duration: BEAT_3, ease: EASE }}
+              className="text-body text-gentle leading-relaxed mt-8 whitespace-pre-line"
+            >
               {slides[currentSlide].content}
-            </p>
+            </motion.p>
           </motion.div>
         </AnimatePresence>
 
-        <div className="mt-12 flex flex-col items-center gap-6">
+        {/* CTA — BEAT_2 after body */}
+        <motion.div
+          key={`cta-${currentSlide}`}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: BEAT_2, duration: BEAT_3, ease: EASE }}
+          className="mt-12 flex flex-col items-center gap-6"
+        >
           <button
             onClick={isLastSlide ? handleComplete : handleNext}
             className="btn-gentle w-full max-w-xs"
@@ -92,8 +113,9 @@ export default function Onboarding() {
               </button>
             )}
           </div>
-        </div>
+        </motion.div>
       </div>
     </div>
   );
 }
+
