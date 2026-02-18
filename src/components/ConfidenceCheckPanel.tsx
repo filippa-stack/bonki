@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useDevState } from '@/contexts/DevStateContext';
 import { useAppMode } from '@/hooks/useAppMode';
+import { useNormalizedSessionContext } from '@/contexts/NormalizedSessionContext';
 import { useCoupleSpaceContext } from '@/contexts/CoupleSpaceContext';
 import { useProposalsContext } from '@/contexts/ProposalsContext';
 import { ChevronDown } from 'lucide-react';
@@ -32,6 +33,7 @@ export default function ConfidenceCheckPanel() {
 
 function PanelContent() {
   const appMode = useAppMode();
+  const ns = useNormalizedSessionContext();
   const { userRole, memberCount, displayMemberCount } = useCoupleSpaceContext();
   const { proposals, refetch: refetchProposals } = useProposalsContext();
 
@@ -41,8 +43,6 @@ function PanelContent() {
     accepted: proposals.filter(p => p.status === 'accepted').length,
     declined: proposals.filter(p => p.status === 'declined').length,
   };
-
-  const ns = appMode.normalizedSession;
 
   return (
     <div className="px-4 pb-3 space-y-2 text-[11px] leading-relaxed">

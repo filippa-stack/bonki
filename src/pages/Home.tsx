@@ -42,6 +42,7 @@ import { useProposalsContext } from '@/contexts/ProposalsContext';
 import { DEV_MOCK } from '@/hooks/useDevState';
 import { useDevState } from '@/contexts/DevStateContext';
 import { useAppMode } from '@/hooks/useAppMode';
+import { useNormalizedSessionContext } from '@/contexts/NormalizedSessionContext';
 
 const STEP_LABELS = ['Öppnare', 'Tankeväckare', 'Scenario', 'Teamwork'];
 
@@ -148,7 +149,8 @@ export default function Home() {
   const { incomingProposals: _rawProposals, ownPendingProposals, savedProposals, sendProposal: sendDbProposal, updateProposalStatus, activateSession } = useProposalsContext();
   const devState = useDevState();
   const appModeState = useAppMode();
-  const { mode, normalizedSession } = appModeState;
+  const normalizedSession = useNormalizedSessionContext();
+  const { mode } = appModeState;
 
   const [acceptingProposalId, setAcceptingProposalId] = useState<string | null>(null);
   const [viewingSavedProposalId, setViewingSavedProposalId] = useState<string | null>(null);
