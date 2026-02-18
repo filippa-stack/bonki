@@ -19,17 +19,27 @@
 export type SharedSyncStatus = 'idle' | 'syncing' | 'error';
 
 interface SharedProgressData {
+  /** @deprecated Shared progress JSON is removed. Always null. */
   journeyState: null;
 }
 
 interface UseSharedProgressReturn {
   initialData: SharedProgressData | null;
-  syncToRemote: (journey: unknown) => void;
+  /** @deprecated No-op. Shared JSON sync is removed. */
+  syncToRemote: (journey?: never) => void;
   ready: boolean;
   syncStatus: SharedSyncStatus;
   lastSyncError: string | null;
+  /** @deprecated No-op. */
   retrySync: () => void;
 }
+
+const warnDeprecatedSync = () => {
+  if (import.meta.env?.DEV) {
+    // eslint-disable-next-line no-console
+    console.warn('[useSharedProgress] Deprecated sync invoked (no-op). Remove call-site usage.');
+  }
+};
 
 export function useSharedProgress(
   _userId: string | null,
@@ -38,10 +48,10 @@ export function useSharedProgress(
 ): UseSharedProgressReturn {
   return {
     initialData: null,
-    syncToRemote: () => { /* no-op: writes to couple_journey_meta are deprecated */ },
+    syncToRemote: () => warnDeprecatedSync(),
     ready: true,
     syncStatus: 'idle',
     lastSyncError: null,
-    retrySync: () => { /* no-op */ },
+    retrySync: () => {},
   };
 }
