@@ -127,15 +127,14 @@ export default function Header({
                       className="w-full justify-start text-xs gap-1.5"
                     >
                       <Plus className="w-3.5 h-3.5" />
-                      Skapa nytt utrymme
+                      Nytt kapitel
                     </Button>
                   </AlertDialogTrigger>
                   <AlertDialogContent>
                     <AlertDialogHeader>
-                      <AlertDialogTitle className="font-serif text-lg">Skapa ett nytt utrymme?</AlertDialogTitle>
-                      <AlertDialogDescription className="text-sm text-muted-foreground leading-relaxed space-y-2 pt-1">
-                        <span className="block">Det här skapar ett nytt tomt utrymme.</span>
-                        <span className="block">Historiken i ert nuvarande utrymme finns kvar, men ni fortsätter i ett nytt.</span>
+                      <AlertDialogTitle className="font-serif text-lg">Nytt kapitel?</AlertDialogTitle>
+                      <AlertDialogDescription className="text-sm text-muted-foreground leading-relaxed pt-1">
+                        Skapar ett nytt tomt utrymme med samma partner.
                       </AlertDialogDescription>
                     </AlertDialogHeader>
                     <AlertDialogFooter className="mt-2">
@@ -149,7 +148,7 @@ export default function Header({
                           toast.error('Kunde inte skapa nytt utrymme.');
                         }
                       }}>
-                        Skapa nytt utrymme
+                        Nytt kapitel
                       </AlertDialogAction>
                     </AlertDialogFooter>
                   </AlertDialogContent>
