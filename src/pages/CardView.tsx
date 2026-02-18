@@ -342,23 +342,36 @@ export default function CardView() {
   //  MODE: 'live' | 'revisit' — active conversation surface
   // ─────────────────────────────────────────────────────────────
   const currentSection = card.sections.find(s => s.type === STEP_ORDER[currentStepIndex]);
+  const EASE = [0.4, 0.0, 0.2, 1] as const;
+  const isLive = cardViewMode === 'live';
 
   return (
-    <div className="min-h-screen page-bg">
+    // Step 1 — screen-level fade: 0→1, 180ms (live only; revisit uses existing timing)
+    <motion.div
+      className="min-h-screen page-bg"
+      initial={isLive ? { opacity: 0 } : false}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.18, ease: EASE }}
+    >
       <Header
         title={category?.title}
         showBack
         backTo={category ? `/category/${category.id}` : '/'}
       />
 
-      {/* Progress indicator — live mode only */}
+      {/* Step 2 — Step label: 0→1, 120ms (live only) */}
       {cardViewMode === 'live' && (
-        <div className="px-6 pt-6 pb-4 border-b border-border/15">
+        <motion.div
+          className="px-6 pt-6 pb-4 border-b border-border/15"
+          initial={isLive ? { opacity: 0 } : false}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.12, ease: EASE }}
+        >
           <StepProgressIndicator
             currentStepIndex={currentStepIndex}
             completedSteps={[]}
           />
-        </div>
+        </motion.div>
       )}
 
       <div className="px-6 pt-16 pb-10">
@@ -398,32 +411,43 @@ export default function CardView() {
               exit={{ opacity: 0 }}
               transition={{ duration: 0.15 }}
             >
-              <SectionView
-                ref={sectionViewRef}
-                section={currentSection}
-                card={card}
-                isRevisitMode={cardViewMode === 'revisit'}
-                initialFocusNoteIndex={cardViewMode === 'revisit' ? initialFocusNote : null}
-                focusPromptIndex={cardViewMode === 'revisit' ? initialFocusNote : null}
-                disableShare={isActiveSession}
-              />
+              {/* Step 3 — Prompt: delay 40ms, 0→1, 120ms (live only) */}
+              <motion.div
+                initial={isLive ? { opacity: 0 } : false}
+                animate={{ opacity: 1 }}
+                transition={{ delay: isLive ? 0.04 : 0, duration: isLive ? 0.12 : 0.15, ease: EASE }}
+              >
+                <SectionView
+                  ref={sectionViewRef}
+                  section={currentSection}
+                  card={card}
+                  isRevisitMode={cardViewMode === 'revisit'}
+                  initialFocusNoteIndex={cardViewMode === 'revisit' ? initialFocusNote : null}
+                  focusPromptIndex={cardViewMode === 'revisit' ? initialFocusNote : null}
+                  disableShare={isActiveSession}
+                />
+              </motion.div>
 
               {/* ── MODE: live — paired session reflection ── */}
               {cardViewMode === 'live' && isPaired && cardId && (
                 <>
-                  <SessionStepReflection
-                    sessionId={normalizedSession.sessionId}
-                    stepIndex={currentStepIndex}
-                    // onReady is intentionally NOT wired here.
-                    // Normalized session progression (complete_couple_session_step + refetch)
-                    // is triggered ONLY after lockStep() via onLocked.
-                    onLocked={async () => {
-                      await handleCompleteStep();
-                      if (currentStepIndex >= STEP_ORDER.length - 1) {
-                        setShowCompletion(true);
-                      }
-                    }}
-                  />
+                  {/* Step 4 — Reflection box: delay 80ms, 0→1, 160ms */}
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.08, duration: 0.16, ease: EASE }}
+                  >
+                    <SessionStepReflection
+                      sessionId={normalizedSession.sessionId}
+                      stepIndex={currentStepIndex}
+                      onLocked={async () => {
+                        await handleCompleteStep();
+                        if (currentStepIndex >= STEP_ORDER.length - 1) {
+                          setShowCompletion(true);
+                        }
+                      }}
+                    />
+                  </motion.div>
                   {currentStepIndex === 3 && (
                     <p className="text-xs text-muted-foreground/40 text-center mt-4">
                       När ni båda är klara kan ni formulera något gemensamt.
@@ -434,7 +458,13 @@ export default function CardView() {
 
               {/* ── MODE: revisit or solo — step CTA ── */}
               {(cardViewMode === 'revisit' || !isPaired) && (
-                <div className="pt-10 pb-8 space-y-5">
+                // Step 5 — CTA: delay 80ms after reflection (160ms), 0→1, 140ms
+                <motion.div
+                  className="pt-10 pb-8 space-y-5"
+                  initial={isLive ? { opacity: 0 } : false}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: isLive ? 0.24 : 0, duration: isLive ? 0.14 : 0.15, ease: EASE }}
+                >
                   <Button
                     onClick={() => handleRevisitNext(card)}
                     size="lg"
@@ -457,7 +487,7 @@ export default function CardView() {
                       </button>
                     </div>
                   )}
-                </div>
+                </motion.div>
               )}
 
               <ReviewDrawer
@@ -469,6 +499,6 @@ export default function CardView() {
           )}
         </AnimatePresence>
       </div>
-    </div>
+    </motion.div>
   );
 }
