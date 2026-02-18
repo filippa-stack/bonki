@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useApp } from '@/contexts/AppContext';
 import { useCoupleSpaceContext } from '@/contexts/CoupleSpaceContext';
@@ -7,11 +7,8 @@ import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { usePendingInviteClaim, hasPendingInvite } from '@/hooks/usePendingInvite';
 import Onboarding from '@/components/Onboarding';
-import { useSpaceSnapshot } from '@/hooks/useSpaceSnapshot';
 import Home from '@/pages/Home';
-import WelcomePartner from '@/components/WelcomePartner';
 import PurchaseScreen from '@/components/PurchaseScreen';
-import PostPurchaseInvite from '@/components/PostPurchaseInvite';
 import { Loader2, AlertCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useTranslation } from 'react-i18next';
@@ -42,18 +39,12 @@ function markSpacePaid(spaceId: string | null | undefined) {
   localStorage.setItem(PURCHASE_KEY_LEGACY, 'true');
 }
 
-/** localStorage key for welcome dismissal — scoped to spaceId so it survives refresh */
-function welcomeDismissalKey(spaceId: string) {
-  return `welcome_dismissed_${spaceId}`;
-}
-
 export default function Index() {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const { hasCompletedOnboarding } = useApp();
-  const { userRole, space, memberCount, fetchInviteInfo, refreshSpace } = useCoupleSpaceContext();
+  const { userRole, space, memberCount, refreshSpace } = useCoupleSpaceContext();
   const { user } = useAuth();
-  const { snapshot } = useSpaceSnapshot(user?.id ?? null, space?.id ?? null);
 
   // Pending invite claim — auto-claims after OAuth redirect
   const { status: claimStatus, errorType: claimError, retry: retryClaim } = usePendingInviteClaim();
@@ -67,7 +58,6 @@ export default function Index() {
 
   // Purchase state — DB (space.paid_at) is source of truth, localStorage fallback
   const [hasPurchased, setHasPurchased] = useState(() => isSpacePaid(space?.id, space?.paid_at));
-  const [showPostPurchaseInvite, setShowPostPurchaseInvite] = useState(false);
 
   // Re-evaluate when space loads from DB
   useEffect(() => {
@@ -82,16 +72,7 @@ export default function Index() {
     markSpacePaid(space?.id);
     localStorage.removeItem(JOIN_INTENT_KEY);
     setHasPurchased(true);
-    setShowPostPurchaseInvite(true);
-  };
-
-  const handleUpdateName = async (name: string) => {
-    if (!space || !user) return;
-    const role = userRole === 'partner_b' ? 'partner_b_name' : 'partner_a_name';
-    await supabase
-      .from('couple_spaces')
-      .update({ [role]: name })
-      .eq('id', space.id);
+    // Fall through to Home — invite/welcome handled there
   };
 
   // Show claiming state while invite is being processed
@@ -129,8 +110,6 @@ export default function Index() {
 
   // ─── Paywall gate (space-level entitlement) ───
   const hasJoinIntent = localStorage.getItem(JOIN_INTENT_KEY) === 'true';
-  // Space is entitled if: any member purchased for this space, user was invited (partner_b),
-  // or both members are present (someone must have paid to invite).
   const spaceIsEntitled = hasPurchased || userRole === 'partner_b';
   const shouldBypassPaywall = spaceIsEntitled || claimStatus === 'success' || hasPendingInvite() || hasJoinIntent;
 
@@ -167,41 +146,6 @@ export default function Index() {
     return <PurchaseScreen onPurchaseComplete={handlePurchaseComplete} />;
   }
 
-  // Post-purchase invite flow
-  if (showPostPurchaseInvite && space && memberCount < 2) {
-    const partnerName = userRole === 'partner_b' ? space.partner_b_name : space.partner_a_name;
-    return (
-      <PostPurchaseInvite
-        fetchInviteInfo={fetchInviteInfo}
-        partnerName={partnerName}
-        onUpdateName={handleUpdateName}
-        onContinue={() => setShowPostPurchaseInvite(false)}
-      />
-    );
-  }
-
-  // ─── Welcome screen for partner_b ───
-  // Paired state = snapshot.space.memberCount >= 2 (single authority).
-  // Dismissal is localStorage-keyed by spaceId so it survives refresh.
-  const snapshotMemberCount = snapshot?.space.memberCount ?? memberCount;
-  const isPaired = snapshotMemberCount >= 2;
-
-  if (userRole === 'partner_b' && space?.id) {
-    const dismissKey = welcomeDismissalKey(space.id);
-    const isWelcomeDismissed = localStorage.getItem(dismissKey) === 'true';
-    if (!isPaired && !isWelcomeDismissed) {
-      // Partner B is alone — show welcome until paired or dismissed
-      return (
-        <WelcomePartner
-          onDismiss={() => {
-            localStorage.setItem(dismissKey, 'true');
-            // Force re-render by navigating to same route
-            navigate('/', { replace: true });
-          }}
-        />
-      );
-    }
-  }
-
+  // All invite/welcome decisions are made in Home
   return <Home />;
 }
