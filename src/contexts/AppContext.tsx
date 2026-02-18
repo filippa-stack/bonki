@@ -11,7 +11,7 @@ import { useSettingsSync, SaveStatus } from '@/hooks/useSettingsSync';
 import { useAuth } from '@/contexts/AuthContext';
 import { useSiteSettings, SiteSettings } from '@/contexts/SiteSettingsContext';
 import { useCoupleSpaceContext } from '@/contexts/CoupleSpaceContext';
-import { useSharedProgress, SharedSyncStatus } from '@/hooks/useSharedProgress';
+import { useSharedProgress } from '@/hooks/useSharedProgress';
 import { supabase } from '@/integrations/supabase/client';
 import { useDevState } from '@/contexts/DevStateContext';
 import { DEV_MOCK } from '@/hooks/useDevState';
@@ -91,9 +91,6 @@ interface AppContextType {
   refreshCoupleSpace: () => Promise<void>;
   switchToNewSpace: () => Promise<{ ok: boolean; spaceId?: string }>;
   setOverrideCoupleSpaceId: (id: string | null) => void;
-  sharedSyncStatus: SharedSyncStatus;
-  sharedSyncError: string | null;
-  retrySharedSync: () => void;
   /** True when a remote update changed the active cardId */
   remoteCardChanged: boolean;
   dismissRemoteCardCue: () => void;
@@ -290,11 +287,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
     setRemoteCardChanged(false);
   }, []);
 
-  const { initialData: sharedProgressInitial, syncToRemote, ready: sharedProgressReady, syncStatus: sharedSyncStatus, lastSyncError: sharedSyncError, retrySync: retrySharedSync } = useSharedProgress(
-    user?.id ?? null,
-    coupleSpaceId,
-    handleRemoteProgressUpdate,
-  );
+  // DEPRECATED stub — no writes, no subscriptions. Return values are ignored.
+  useSharedProgress(user?.id ?? null, coupleSpaceId, handleRemoteProgressUpdate);
 
   // DEPRECATED: shared journey meta no longer applied or synced.
   // Session progress is derived exclusively from normalized tables
@@ -1201,9 +1195,6 @@ export function AppProvider({ children }: { children: ReactNode }) {
           return result;
         },
         setOverrideCoupleSpaceId,
-        sharedSyncStatus,
-        sharedSyncError,
-        retrySharedSync,
         remoteCardChanged,
         dismissRemoteCardCue,
         clearForPartnerLeave,
