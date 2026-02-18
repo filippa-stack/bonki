@@ -126,8 +126,13 @@ export default function SoloInviteSection({ fetchInviteInfo, onJoinedSpace, hadP
         <p className="text-sm text-muted-foreground leading-relaxed">
           {hadPartnerBefore
             ? 'Din partner är inte längre ansluten till ert rum.'
-            : 'Bjud in din partner när du vill. Då skapar ni ert gemensamma rum och kan börja samtalen tillsammans.'}
+            : 'Still Us blir levande när ni är två.'}
         </p>
+        {!hadPartnerBefore && (
+          <p className="text-xs text-muted-foreground/60 mt-2">
+            Bjud in din partner för att börja.
+          </p>
+        )}
       </div>
 
       {/* Primary CTA: Dela länk */}

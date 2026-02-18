@@ -269,7 +269,11 @@ export default function SessionStepReflection({
         </div>
       </div>
 
-      <div className="mt-8">
+      <p className="text-xs text-muted-foreground/50 text-center mt-5 mb-2">
+        Era svar visas när ni båda har delat.
+      </p>
+
+      <div className="mt-4">
         <Button
           onClick={handleMarkReady}
           disabled={!displayText.trim()}
