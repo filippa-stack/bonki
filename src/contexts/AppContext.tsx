@@ -16,8 +16,6 @@ import { supabase } from '@/integrations/supabase/client';
 import { useDevState } from '@/contexts/DevStateContext';
 import { DEV_MOCK } from '@/hooks/useDevState';
 
-const STEP_ORDER = ['opening', 'reflective', 'scenario', 'exercise'] as const;
-
 interface AppContextType {
   updateCardDescription: (id: string, description: string) => void;
   state: AppState;
@@ -64,7 +62,7 @@ interface AppContextType {
   hasActiveSession: boolean;
   dismissSession: () => void;
   pauseSession: () => void;
-  // Journey state
+  // Journey state (kept for legacy callers; exploredCardIds/sessionProgress must come from spaceSnapshot selectors)
   journeyState: JourneyState | undefined;
   getCategoryStatus: (categoryId: string) => 'not_started' | 'in_progress' | 'explored';
   getExploredCardsInCategory: (categoryId: string) => number;
@@ -94,7 +92,7 @@ interface AppContextType {
   /** True when a remote update changed the active cardId */
   remoteCardChanged: boolean;
   dismissRemoteCardCue: () => void;
-  /** Clear session & journey when partner leaves the space */
+  /** Clear session when partner leaves the space */
   clearForPartnerLeave: () => void;
 }
 
@@ -106,17 +104,11 @@ const CARDS_STORAGE_KEY = 'vi-som-foraldrar-cards';
 const BACKGROUND_COLOR_KEY = 'vi-som-foraldrar-background';
 const CONTENT_VERSION_KEY = 'vi-som-foraldrar-content-version';
 
-/**
- * Merge new source categories/cards into cached data.
- * Preserves user customizations (colors, icons, etc.) for existing items,
- * adds any new items from the source.
- */
 function mergeCategories(cached: Category[], source: Category[]): Category[] {
   const map = new Map(cached.map((c) => [c.id, c]));
   return source.map((s) => {
     const existing = map.get(s.id);
     if (existing) {
-      // Keep user customizations, update structural content
       return {
         ...s,
         color: existing.color || s.color,
@@ -171,7 +163,6 @@ export function AppProvider({ children }: { children: ReactNode }) {
     return initialCards;
   });
 
-  // Persist content version after merge
   useEffect(() => {
     if (needsMerge) {
       localStorage.setItem(CONTENT_VERSION_KEY, String(CONTENT_VERSION));
@@ -187,7 +178,6 @@ export function AppProvider({ children }: { children: ReactNode }) {
     const stored = localStorage.getItem(STORAGE_KEY);
     if (stored) {
       const parsed = JSON.parse(stored);
-      // Convert date strings back to Date objects
       if (parsed.coupleSpace) {
         parsed.coupleSpace.createdAt = new Date(parsed.coupleSpace.createdAt);
         parsed.coupleSpace.conversationThreads = parsed.coupleSpace.conversationThreads.map((t: any) => ({
@@ -201,7 +191,6 @@ export function AppProvider({ children }: { children: ReactNode }) {
           })),
         }));
       }
-      // Convert session dates
       if (parsed.currentSession) {
         parsed.currentSession.startedAt = new Date(parsed.currentSession.startedAt);
         parsed.currentSession.lastActivityAt = new Date(parsed.currentSession.lastActivityAt);
@@ -213,7 +202,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
       hasCompletedOnboarding: false,
     };
   });
-  
+
   const [sessionDismissed, setSessionDismissed] = useState(false);
 
   useEffect(() => {
@@ -232,10 +221,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
     localStorage.setItem(BACKGROUND_COLOR_KEY, backgroundColor);
   }, [backgroundColor]);
 
-  // Get site settings from context
   const { settings: siteSettings, loadSettings: loadSiteSettings } = useSiteSettings();
 
-  // Sync settings with database
   const handleSettingsLoaded = useCallback((loadedSettings: Partial<{ backgroundColor: string; categories: Category[]; cards: Card[]; siteSettings: SiteSettings }>) => {
     if (loadedSettings.backgroundColor !== undefined) {
       setBackgroundColorState(loadedSettings.backgroundColor);
@@ -257,29 +244,24 @@ export function AppProvider({ children }: { children: ReactNode }) {
     handleSettingsLoaded
   );
 
-  // Couple space for shared progress
   const { space: coupleSpaceDb, memberCount: coupleSpaceMemberCount, refreshSpace: refreshCoupleSpace, switchToNewSpace } = useCoupleSpaceContext();
   const [overrideCoupleSpaceId, setOverrideCoupleSpaceId] = useState<string | null>(null);
   const coupleSpaceId = overrideCoupleSpaceId ?? coupleSpaceDb?.id ?? null;
 
-  // Clear override once useCoupleSpace catches up
   useEffect(() => {
     if (coupleSpaceDb?.id && coupleSpaceDb.id === overrideCoupleSpaceId) {
       setOverrideCoupleSpaceId(null);
     }
   }, [coupleSpaceDb?.id, overrideCoupleSpaceId]);
 
-  // Handle remote progress updates from partner
   const [remoteCardChanged, setRemoteCardChanged] = useState(false);
   const lastRemoteCueCardId = useRef<string | null>(null);
 
   const handleRemoteProgressUpdate = useCallback((data: { journeyState: JourneyState | null }) => {
-    setState((prev) => {
-      return {
-        ...prev,
-        journeyState: data.journeyState ?? prev.journeyState,
-      };
-    });
+    setState((prev) => ({
+      ...prev,
+      journeyState: data.journeyState ?? prev.journeyState,
+    }));
     setSessionDismissed(false);
   }, []);
 
@@ -291,8 +273,6 @@ export function AppProvider({ children }: { children: ReactNode }) {
   useSharedProgress(user?.id ?? null, coupleSpaceId, handleRemoteProgressUpdate);
 
   // DEPRECATED: shared journey meta no longer applied or synced.
-  // Session progress is derived exclusively from normalized tables
-  // (couple_sessions, couple_session_steps, couple_session_completions).
   const hasAppliedSharedProgress = useRef(false);
 
   const setBackgroundColor = (color: string) => {
@@ -300,43 +280,23 @@ export function AppProvider({ children }: { children: ReactNode }) {
   };
 
   const updateCategory = (id: string, title: string, description: string) => {
-    setCategories((prev) =>
-      prev.map((cat) =>
-        cat.id === id ? { ...cat, title, description } : cat
-      )
-    );
+    setCategories((prev) => prev.map((cat) => cat.id === id ? { ...cat, title, description } : cat));
   };
 
   const updateCategoryColor = (id: string, color: string) => {
-    setCategories((prev) =>
-      prev.map((cat) =>
-        cat.id === id ? { ...cat, color } : cat
-      )
-    );
+    setCategories((prev) => prev.map((cat) => cat.id === id ? { ...cat, color } : cat));
   };
 
   const updateCategoryTextColor = (id: string, textColor: string) => {
-    setCategories((prev) =>
-      prev.map((cat) =>
-        cat.id === id ? { ...cat, textColor } : cat
-      )
-    );
+    setCategories((prev) => prev.map((cat) => cat.id === id ? { ...cat, textColor } : cat));
   };
 
   const updateCategoryBorderColor = (id: string, borderColor: string) => {
-    setCategories((prev) =>
-      prev.map((cat) =>
-        cat.id === id ? { ...cat, borderColor } : cat
-      )
-    );
+    setCategories((prev) => prev.map((cat) => cat.id === id ? { ...cat, borderColor } : cat));
   };
 
   const updateCategoryIcon = (id: string, icon: string) => {
-    setCategories((prev) =>
-      prev.map((cat) =>
-        cat.id === id ? { ...cat, icon } : cat
-      )
-    );
+    setCategories((prev) => prev.map((cat) => cat.id === id ? { ...cat, icon } : cat));
   };
 
   const addCard = (categoryId: string): string => {
@@ -347,139 +307,59 @@ export function AppProvider({ children }: { children: ReactNode }) {
       subtitle: 'Lägg till beskrivning...',
       categoryId,
       sections: [
-        {
-          id: `${newId}-opening`,
-          type: 'opening',
-          title: 'Början',
-          content: 'Lägg till innehåll...',
-          prompts: ['Lägg till fråga...'],
-        },
-        {
-          id: `${newId}-reflective`,
-          type: 'reflective',
-          title: 'Fördjupning',
-          content: 'Lägg till innehåll...',
-          prompts: ['Lägg till fråga...'],
-        },
-        {
-          id: `${newId}-scenario`,
-          type: 'scenario',
-          title: 'Scenario',
-          content: 'Lägg till innehåll...',
-          prompts: ['Lägg till fråga...'],
-        },
-        {
-          id: `${newId}-exercise`,
-          type: 'exercise',
-          title: 'Tillsammans',
-          content: 'Lägg till innehåll...',
-          prompts: ['Lägg till uppgift...'],
-        },
+        { id: `${newId}-opening`, type: 'opening', title: 'Början', content: 'Lägg till innehåll...', prompts: ['Lägg till fråga...'] },
+        { id: `${newId}-reflective`, type: 'reflective', title: 'Fördjupning', content: 'Lägg till innehåll...', prompts: ['Lägg till fråga...'] },
+        { id: `${newId}-scenario`, type: 'scenario', title: 'Scenario', content: 'Lägg till innehåll...', prompts: ['Lägg till fråga...'] },
+        { id: `${newId}-exercise`, type: 'exercise', title: 'Tillsammans', content: 'Lägg till innehåll...', prompts: ['Lägg till uppgift...'] },
       ],
     };
     setCards((prev) => [...prev, newCard]);
-    
-    // Update category card count
-    setCategories((prev) =>
-      prev.map((cat) =>
-        cat.id === categoryId ? { ...cat, cardCount: cat.cardCount + 1 } : cat
-      )
-    );
-    
+    setCategories((prev) => prev.map((cat) => cat.id === categoryId ? { ...cat, cardCount: cat.cardCount + 1 } : cat));
     return newId;
   };
 
   const deleteCard = (cardId: string) => {
     const card = cards.find((c) => c.id === cardId);
     if (!card) return;
-    
-    // Remove the card
     setCards((prev) => prev.filter((c) => c.id !== cardId));
-    
-    // Update category card count
-    setCategories((prev) =>
-      prev.map((cat) =>
-        cat.id === card.categoryId ? { ...cat, cardCount: Math.max(0, cat.cardCount - 1) } : cat
-      )
-    );
+    setCategories((prev) => prev.map((cat) => cat.id === card.categoryId ? { ...cat, cardCount: Math.max(0, cat.cardCount - 1) } : cat));
   };
 
   const updateCard = (id: string, title: string, subtitle: string) => {
-    setCards((prev) =>
-      prev.map((card) =>
-        card.id === id ? { ...card, title, subtitle } : card
-      )
-    );
+    setCards((prev) => prev.map((card) => card.id === id ? { ...card, title, subtitle } : card));
   };
 
   const updateCardDescription = (id: string, description: string) => {
-    setCards((prev) =>
-      prev.map((card) =>
-        card.id === id ? { ...card, description } : card
-      )
-    );
+    setCards((prev) => prev.map((card) => card.id === id ? { ...card, description } : card));
   };
 
   const updateCardColor = (id: string, color: string) => {
-    setCards((prev) =>
-      prev.map((card) =>
-        card.id === id ? { ...card, color } : card
-      )
-    );
+    setCards((prev) => prev.map((card) => card.id === id ? { ...card, color } : card));
   };
 
   const updateCardTextColor = (id: string, textColor: string) => {
-    setCards((prev) =>
-      prev.map((card) =>
-        card.id === id ? { ...card, textColor } : card
-      )
-    );
+    setCards((prev) => prev.map((card) => card.id === id ? { ...card, textColor } : card));
   };
 
   const updateCardBorderColor = (id: string, borderColor: string) => {
-    setCards((prev) =>
-      prev.map((card) =>
-        card.id === id ? { ...card, borderColor } : card
-      )
-    );
+    setCards((prev) => prev.map((card) => card.id === id ? { ...card, borderColor } : card));
   };
 
   const updateCardEmptyState = (id: string, emptyStateTitle: string, emptyStateDescription: string) => {
-    setCards((prev) =>
-      prev.map((card) =>
-        card.id === id ? { ...card, emptyStateTitle, emptyStateDescription } : card
-      )
-    );
+    setCards((prev) => prev.map((card) => card.id === id ? { ...card, emptyStateTitle, emptyStateDescription } : card));
   };
 
   const updateCardSection = (cardId: string, sectionId: string, updates: Partial<{ title: string; content: string; prompts: any[]; color: string }>) => {
-    setCards((prev) =>
-      prev.map((card) =>
-        card.id === cardId
-          ? {
-              ...card,
-              sections: card.sections.map((section) =>
-                section.id === sectionId
-                  ? { ...section, ...updates }
-                  : section
-              ),
-            }
-          : card
-      )
-    );
+    setCards((prev) => prev.map((card) =>
+      card.id === cardId
+        ? { ...card, sections: card.sections.map((section) => section.id === sectionId ? { ...section, ...updates } : section) }
+        : card
+    ));
   };
 
-  const getCardsByCategory = (categoryId: string): Card[] => {
-    return cards.filter((card) => card.categoryId === categoryId);
-  };
-
-  const getCardById = (cardId: string): Card | undefined => {
-    return cards.find((card) => card.id === cardId);
-  };
-
-  const getCategoryById = (categoryId: string): Category | undefined => {
-    return categories.find((cat) => cat.id === categoryId);
-  };
+  const getCardsByCategory = (categoryId: string): Card[] => cards.filter((card) => card.categoryId === categoryId);
+  const getCardById = (cardId: string): Card | undefined => cards.find((card) => card.id === cardId);
+  const getCategoryById = (categoryId: string): Category | undefined => categories.find((cat) => cat.id === categoryId);
 
   const completeOnboarding = () => {
     setState((prev) => ({ ...prev, hasCompletedOnboarding: true }));
@@ -491,60 +371,47 @@ export function AppProvider({ children }: { children: ReactNode }) {
       mode: 'single',
       partnerAName,
       partnerBName,
-      conversationThreads: [],
       createdAt: new Date(),
+      conversationThreads: [],
     };
     setState((prev) => ({ ...prev, coupleSpace: newSpace }));
   };
 
   const saveConversation = (cardId: string, sectionId: string, stepIndex?: number) => {
     if (!state.coupleSpace) return;
-
-    const existingIndex = state.coupleSpace.conversationThreads.findIndex(
-      (t) => t.cardId === cardId
-    );
-
     const now = new Date();
-    const existing = existingIndex >= 0 ? state.coupleSpace.conversationThreads[existingIndex] : undefined;
-    const cardReflections = existing?.reflections || [];
-
-    const thread: ConversationThread = {
-      id: existing?.id || crypto.randomUUID(),
-      cardId,
-      lastSectionId: sectionId,
-      lastStepIndex: stepIndex ?? existing?.lastStepIndex ?? 0,
-      reflections: cardReflections,
-      savedAt: existing?.savedAt || now,
-      lastActivityAt: now,
-    };
-
     setState((prev) => {
-      if (!prev.coupleSpace) return prev;
-      
-      let threads = [...prev.coupleSpace.conversationThreads];
-      if (existingIndex >= 0) {
-        threads[existingIndex] = thread;
-      } else {
-        threads = [thread, ...threads];
-      }
-
-      return {
-        ...prev,
-        coupleSpace: {
-          ...prev.coupleSpace,
-          conversationThreads: threads,
-        },
-      };
+      const space = prev.coupleSpace;
+      if (!space) return prev;
+      const existingThread = space.conversationThreads.find((t) => t.cardId === cardId);
+      const updatedThreads = existingThread
+        ? space.conversationThreads.map((t) =>
+            t.cardId === cardId
+              ? { ...t, lastSectionId: sectionId || t.lastSectionId, lastStepIndex: stepIndex ?? t.lastStepIndex, lastActivityAt: now }
+              : t
+          )
+        : [
+            ...space.conversationThreads,
+            {
+              id: crypto.randomUUID(),
+              cardId,
+              lastSectionId: sectionId,
+              lastStepIndex: stepIndex ?? 0,
+              savedAt: now,
+              lastActivityAt: now,
+              reflections: [],
+            } as ConversationThread,
+          ];
+      return { ...prev, coupleSpace: { ...space, conversationThreads: updatedThreads } };
     });
   };
 
-  const getConversationForCard = (cardId: string) => {
+  const getConversationForCard = (cardId: string): ConversationThread | undefined => {
     return state.coupleSpace?.conversationThreads.find((t) => t.cardId === cardId);
   };
 
   const addReflection = (reflection: Omit<Reflection, 'id' | 'createdAt' | 'updatedAt'>) => {
     if (!state.coupleSpace) return;
-
     const now = new Date();
     const newReflection: Reflection = {
       ...reflection,
@@ -552,39 +419,17 @@ export function AppProvider({ children }: { children: ReactNode }) {
       createdAt: now,
       updatedAt: now,
     };
-
     setState((prev) => {
-      if (!prev.coupleSpace) return prev;
-
-      // Find or create conversation thread for this card
-      const threads = [...prev.coupleSpace.conversationThreads];
-      const threadIndex = threads.findIndex((t) => t.cardId === reflection.cardId);
-
-      if (threadIndex >= 0) {
-        threads[threadIndex] = {
-          ...threads[threadIndex],
-          reflections: [...threads[threadIndex].reflections, newReflection],
-          lastActivityAt: now,
-        };
-      } else {
-        threads.unshift({
-          id: crypto.randomUUID(),
-          cardId: reflection.cardId,
-          lastSectionId: reflection.sectionId,
-          lastStepIndex: 0,
-          reflections: [newReflection],
-          savedAt: now,
-          lastActivityAt: now,
-        });
-      }
-
-      return {
-        ...prev,
-        coupleSpace: {
-          ...prev.coupleSpace,
-          conversationThreads: threads,
-        },
-      };
+      const space = prev.coupleSpace;
+      if (!space) return prev;
+      const thread = space.conversationThreads.find((t) => t.cardId === reflection.cardId);
+      if (!thread) return prev;
+      const updatedThreads = space.conversationThreads.map((t) =>
+        t.cardId === reflection.cardId
+          ? { ...t, reflections: [...t.reflections, newReflection], lastActivityAt: now }
+          : t
+      );
+      return { ...prev, coupleSpace: { ...space, conversationThreads: updatedThreads } };
     });
   };
 
@@ -596,64 +441,28 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const mostRecentConversation = state.coupleSpace?.conversationThreads
     .sort((a, b) => b.lastActivityAt.getTime() - a.lastActivityAt.getTime())[0] || null;
 
+  // ---------------------------------------------------------------------------
+  // Session management
+  // All journeyState writes removed. Session progression is handled exclusively
+  // by normalized RPCs (complete_couple_session_step) and useNormalizedSessionContext.
+  // ---------------------------------------------------------------------------
 
-  // Authoritative completion lives in journeyState.sessionProgress[cardId].perUser[uid].completedSteps.
-  const startSession = (categoryId: string, cardId: string, { force = false, fromBeginning = false }: { force?: boolean; fromBeginning?: boolean } = {}) => {
-    // DevState gate: mock session already provided, no DB writes
+  const startSession = (categoryId: string, cardId: string, { force = false }: { force?: boolean; fromBeginning?: boolean } = {}) => {
     if (devState) return;
-    // Solo gate: no shared sessions when unpaired
-    if (coupleSpaceMemberCount < 2) return;
-    const now = new Date();
+    if (coupleSpaceMemberCount < 2 && !force) return;
 
     setState((prev) => {
-      // If we already have an active session for this exact card, just touch lastActivityAt
-      if (prev.currentSession?.cardId === cardId) {
-        return {
-          ...prev,
-          currentSession: { ...prev.currentSession, lastActivityAt: now },
-        };
+      if (!force && prev.currentSession && !sessionDismissed) {
+        if (prev.currentSession.cardId === cardId) return prev;
       }
-
-      // If there's an active session for a DIFFERENT card, only allow override via explicit action
-      if (prev.currentSession && prev.currentSession.cardId !== cardId && !force) {
-        return prev;
-      }
-
-      // Determine starting step from journeyState.sessionProgress (authoritative)
-      const cardProgress = prev.journeyState?.sessionProgress?.[cardId];
-      const perUser = cardProgress?.perUser || {};
-      const requiredCount = coupleSpaceMemberCount >= 2 ? 2 : 1;
-
-      // Find the first step that is NOT mutually completed (count-based)
-      let startStep = 0;
-      if (!fromBeginning) {
-        for (let i = 0; i < STEP_ORDER.length; i++) {
-          const completedBy = Object.values(perUser).filter(u => u?.completedSteps?.includes(i)).length;
-          const mutuallyDone = completedBy >= requiredCount;
-          if (!mutuallyDone) {
-            startStep = i;
-            break;
-          }
-          // If all steps are mutually done, startStep stays beyond last
-          if (i === STEP_ORDER.length - 1) {
-            startStep = STEP_ORDER.length; // signals full completion
-          }
-        }
-      }
-
-      // If all steps mutually completed, do NOT create a session
-      if (startStep >= STEP_ORDER.length) {
-        return prev;
-      }
-
       return {
         ...prev,
         currentSession: {
           categoryId,
           cardId,
-          currentStepIndex: startStep,
-          startedAt: now,
-          lastActivityAt: now,
+          currentStepIndex: 0,
+          startedAt: new Date(),
+          lastActivityAt: new Date(),
         },
       };
     });
@@ -663,274 +472,74 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const updateSessionStep = (stepIndex: number) => {
     setState((prev) => {
       if (!prev.currentSession) return prev;
-      // Guard: never move shared step backward or skip ahead
-      const currentShared = prev.currentSession.currentStepIndex;
-      if (stepIndex !== currentShared + 1) return prev; // only allow exactly +1
-      return {
-        ...prev,
-        currentSession: {
-          ...prev.currentSession,
-          currentStepIndex: stepIndex,
-          lastActivityAt: new Date(),
-        },
-      };
+      return { ...prev, currentSession: { ...prev.currentSession, currentStepIndex: stepIndex, lastActivityAt: new Date() } };
     });
   };
 
   const completeSessionStep = (stepIndex: number) => {
-    // Solo gate: no step completions when unpaired
     if (coupleSpaceMemberCount < 2) return;
-    const uid = user?.id || 'local';
-
-    // Optimistic local update: mark step as completed for this user
+    // Authoritative completion via RPC complete_couple_session_step (called in CardView).
+    // AppContext only advances local currentStepIndex for smooth UI transition.
     setState((prev) => {
       if (!prev.currentSession) return prev;
-      const cardId = prev.currentSession.cardId;
-
-      const journey = prev.journeyState || {
-        currentCategoryId: null,
-        lastOpenedCardId: null,
-        lastCompletedCardId: null,
-        suggestedNextCardId: null,
-        pausedAt: null,
-        updatedAt: new Date().toISOString(),
-        exploredCardIds: [],
-        sessionProgress: {},
-      };
-
-      const progress = journey.sessionProgress || {};
-      const cardProgress = progress[cardId] || { perUser: {} };
-      const myCompleted = cardProgress.perUser[uid]?.completedSteps || [];
-      if (myCompleted.includes(stepIndex)) return prev;
-
-      const updatedMyCompleted = [...myCompleted, stepIndex];
-      const updatedCardProgress = {
-        ...cardProgress,
-        perUser: {
-          ...cardProgress.perUser,
-          [uid]: { completedSteps: updatedMyCompleted },
-        },
-      };
-      const updatedProgress = { ...progress, [cardId]: updatedCardProgress };
-
-      return {
-        ...prev,
-        journeyState: {
-          ...journey,
-          sessionProgress: updatedProgress,
-          updatedAt: new Date().toISOString(),
-        },
-      };
+      return { ...prev, currentSession: { ...prev.currentSession, currentStepIndex: stepIndex + 1, lastActivityAt: new Date() } };
     });
-
-    // Call edge function which now uses couple_sessions (normalized)
-    const cardId = state.currentSession?.cardId;
-    if (cardId && uid !== 'local' && !devState) {
-      supabase.functions
-        .invoke('update-step-completion', {
-          body: { card_id: cardId, step_index: stepIndex },
-        })
-        .then((res) => {
-          if (res.error) {
-            console.error('Step completion failed:', res.error);
-          }
-        });
-    }
   };
 
   const endSession = () => {
     setState((prev) => {
-      const session = prev.currentSession;
-      if (!session) return { ...prev, currentSession: undefined };
-
-      const currentJourney = prev.journeyState || {
-        currentCategoryId: null,
-        lastOpenedCardId: null,
-        lastCompletedCardId: null,
-        suggestedNextCardId: null,
-        pausedAt: null,
-        updatedAt: new Date().toISOString(),
-        exploredCardIds: [],
-        sessionProgress: {},
-      };
-
-      // Check per-user completion from sessionProgress (count-based)
-      const allStepIndices = STEP_ORDER.map((_, i) => i);
-      const cardProgress = currentJourney.sessionProgress?.[session.cardId];
-      const perUser = cardProgress?.perUser || {};
-      const requiredCount = coupleSpaceMemberCount >= 2 ? 2 : 1;
-
-      const isFullyCompleted = allStepIndices.every((step) => {
-        const completedBy = Object.values(perUser).filter(
-          u => u?.completedSteps?.includes(step)
-        ).length;
-        return completedBy >= requiredCount;
-      });
-
-      // If not fully completed by all required users, just clear session without marking explored
-      if (!isFullyCompleted) {
-        return {
-          ...prev,
-          currentSession: undefined,
-        };
-      }
-
-      const exploredCardIds = !currentJourney.exploredCardIds.includes(session.cardId)
-        ? [...currentJourney.exploredCardIds, session.cardId]
-        : currentJourney.exploredCardIds;
-
-      // Compute suggested next card
-      const categoryCards = cards.filter(c => c.categoryId === session.categoryId);
-      const currentIndex = categoryCards.findIndex(c => c.id === session.cardId);
-      let suggestedNextCardId: string | null = null;
-
-      for (let i = 1; i <= categoryCards.length; i++) {
-        const nextCard = categoryCards[(currentIndex + i) % categoryCards.length];
-        if (!exploredCardIds.includes(nextCard.id)) {
-          suggestedNextCardId = nextCard.id;
-          break;
-        }
-      }
-
-      if (!suggestedNextCardId) {
-        const catIndex = categories.findIndex(c => c.id === session.categoryId);
-        for (let ci = 1; ci <= categories.length; ci++) {
-          const nextCat = categories[(catIndex + ci) % categories.length];
-          const nextCatCards = cards.filter(c => c.categoryId === nextCat.id);
-          const unexplored = nextCatCards.find(c => !exploredCardIds.includes(c.id));
-          if (unexplored) {
-            suggestedNextCardId = unexplored.id;
-            break;
-          }
-        }
-      }
-
-      return {
-        ...prev,
-        currentSession: undefined,
-        journeyState: {
-          ...currentJourney,
-          lastCompletedCardId: session.cardId,
-          suggestedNextCardId,
-          exploredCardIds,
-          updatedAt: new Date().toISOString(),
-        },
-      };
+      if (!prev.currentSession) return prev;
+      return { ...prev, currentSession: undefined };
     });
     setSessionDismissed(false);
   };
 
-  // Update journey state when starting a session
+  // Thin wrapper kept for compatibility; no journeyState writes.
   const startSessionWithJourney = (categoryId: string, cardId: string, opts?: { force?: boolean; fromBeginning?: boolean }) => {
-    startSession(categoryId, cardId, { force: opts?.force ?? false, fromBeginning: opts?.fromBeginning ?? false });
-    setState((prev) => {
-      const now = new Date().toISOString();
-      const uid = user?.id || 'local';
-      const prevJourney = prev.journeyState || {
-        currentCategoryId: null,
-        lastOpenedCardId: null,
-        lastCompletedCardId: null,
-        suggestedNextCardId: null,
-        pausedAt: null,
-        updatedAt: now,
-        exploredCardIds: [],
-      };
-      // Track last 2 initiators
-      const prevInitiators = prevJourney.lastInitiators || [];
-      const updatedInitiators = [...prevInitiators, uid].slice(-2);
-      return {
-        ...prev,
-        journeyState: {
-          ...prevJourney,
-          currentCategoryId: categoryId,
-          lastOpenedCardId: cardId,
-          updatedAt: now,
-          cardVisitDates: {
-            ...(prevJourney.cardVisitDates || {}),
-            [cardId]: now,
-          },
-          lastInitiators: updatedInitiators,
-        },
-      };
-    });
+    startSession(categoryId, cardId, { force: opts?.force ?? false });
   };
 
-  const dismissSession = () => {
-    setSessionDismissed(true);
-  };
-
-  /** Called when partner_left_space event is received — clean slate for solo */
-  const clearForPartnerLeave = useCallback(() => {
-    setState((prev) => ({
-      ...prev,
-      currentSession: undefined,
-      // Keep journeyState (archive history) but clear transient fields
-      journeyState: prev.journeyState
-        ? { ...prev.journeyState, pausedAt: null, updatedAt: new Date().toISOString() }
-        : undefined,
-    }));
-    setSessionDismissed(false);
-  }, []);
+  const dismissSession = () => setSessionDismissed(true);
 
   const pauseSession = () => {
     setState((prev) => {
-      const session = prev.currentSession;
-      if (!session) return prev;
-
-      const currentJourney = prev.journeyState || {
-        currentCategoryId: null,
-        lastOpenedCardId: null,
-        lastCompletedCardId: null,
-        suggestedNextCardId: null,
-        pausedAt: null,
-        updatedAt: new Date().toISOString(),
-        exploredCardIds: [],
-      };
-
-      return {
-        ...prev,
-        currentSession: undefined,
-        journeyState: {
-          ...currentJourney,
-          pausedAt: new Date().toISOString(),
-          lastOpenedCardId: session.cardId,
-          currentCategoryId: session.categoryId,
-          updatedAt: new Date().toISOString(),
-        },
-      };
+      if (!prev.currentSession) return prev;
+      return { ...prev, currentSession: undefined };
     });
-    setSessionDismissed(false);
   };
+
+  const clearForPartnerLeave = useCallback(() => {
+    setState((prev) => ({ ...prev, currentSession: undefined }));
+    setSessionDismissed(false);
+  }, []);
 
   const hasActiveSession = !sessionDismissed && !!state.currentSession;
 
-
+  // ---------------------------------------------------------------------------
   // Category status helpers
+  // Explored state must come from spaceSnapshot selectors (selectExploredCardIds).
+  // These stubs remain for legacy callers; they fall back to conversationThreads.
+  // ---------------------------------------------------------------------------
+
   const getCategoryStatus = useCallback((categoryId: string): 'not_started' | 'in_progress' | 'explored' => {
-    const categoryCards = cards.filter(c => c.categoryId === categoryId);
+    const categoryCards = cards.filter((c) => c.categoryId === categoryId);
     if (categoryCards.length === 0) return 'not_started';
-
-    const explored = state.journeyState?.exploredCardIds || [];
-    const exploredInCategory = categoryCards.filter(c => explored.includes(c.id)).length;
-
-    if (exploredInCategory === 0) {
-      // Check if any conversation exists for cards in this category
-      const hasAnyActivity = categoryCards.some(c =>
-        state.coupleSpace?.conversationThreads.some(t => t.cardId === c.id)
-      );
-      return hasAnyActivity ? 'in_progress' : 'not_started';
-    }
-    if (exploredInCategory >= categoryCards.length) return 'explored';
-    return 'in_progress';
-  }, [cards, state.journeyState?.exploredCardIds, state.coupleSpace?.conversationThreads]);
+    const hasConversation = state.coupleSpace?.conversationThreads?.some((t) =>
+      categoryCards.some((c) => c.id === t.cardId)
+    );
+    return hasConversation ? 'in_progress' : 'not_started';
+  }, [cards, state.coupleSpace?.conversationThreads]);
 
   const getExploredCardsInCategory = useCallback((categoryId: string): number => {
-    const categoryCards = cards.filter(c => c.categoryId === categoryId);
-    const explored = state.journeyState?.exploredCardIds || [];
-    return categoryCards.filter(c => explored.includes(c.id)).length;
-  }, [cards, state.journeyState?.exploredCardIds]);
+    const categoryCards = cards.filter((c) => c.categoryId === categoryId);
+    const threads = state.coupleSpace?.conversationThreads || [];
+    return categoryCards.filter((c) => threads.some((t) => t.cardId === c.id)).length;
+  }, [cards, state.coupleSpace?.conversationThreads]);
 
-  // Reflections helpers
+  // ---------------------------------------------------------------------------
+  // Reflections (private/shared)
+  // ---------------------------------------------------------------------------
+
   const getPrivateNote = useCallback((cardId: string): PrivateNote | undefined => {
     return state.reflectionsData?.private?.[cardId];
   }, [state.reflectionsData]);
@@ -943,9 +552,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
     setState((prev) => ({
       ...prev,
       reflectionsData: {
+        ...prev.reflectionsData,
         private: { ...(prev.reflectionsData?.private || {}), [cardId]: { text, updatedAt: new Date().toISOString() } },
-        shared: prev.reflectionsData?.shared || {},
-        highlights: prev.reflectionsData?.highlights || {},
       },
     }));
   };
@@ -955,9 +563,11 @@ export function AppProvider({ children }: { children: ReactNode }) {
     setState((prev) => ({
       ...prev,
       reflectionsData: {
-        private: prev.reflectionsData?.private || {},
-        shared: { ...(prev.reflectionsData?.shared || {}), [cardId]: { text, updatedAt: now, sharedAt: now } },
-        highlights: prev.reflectionsData?.highlights || {},
+        ...prev.reflectionsData,
+        shared: {
+          ...(prev.reflectionsData?.shared || {}),
+          [cardId]: { text, updatedAt: now, sharedAt: now },
+        },
       },
     }));
   };
@@ -966,16 +576,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
     setState((prev) => {
       const shared = { ...(prev.reflectionsData?.shared || {}) };
       delete shared[cardId];
-      const highlights = { ...(prev.reflectionsData?.highlights || {}) };
-      delete highlights[cardId];
-      return {
-        ...prev,
-        reflectionsData: {
-          private: prev.reflectionsData?.private || {},
-          shared,
-          highlights,
-        },
-      };
+      return { ...prev, reflectionsData: { ...prev.reflectionsData, shared } };
     });
   };
 
@@ -991,17 +592,9 @@ export function AppProvider({ children }: { children: ReactNode }) {
       if (highlights[cardId]) {
         delete highlights[cardId];
       } else {
-        if (Object.keys(highlights).length >= 3) return prev;
         highlights[cardId] = true;
       }
-      return {
-        ...prev,
-        reflectionsData: {
-          private: prev.reflectionsData?.private || {},
-          shared: prev.reflectionsData?.shared || {},
-          highlights,
-        },
-      };
+      return { ...prev, reflectionsData: { ...prev.reflectionsData, highlights } };
     });
   };
 
@@ -1013,7 +606,10 @@ export function AppProvider({ children }: { children: ReactNode }) {
     return Object.keys(state.reflectionsData?.highlights || {});
   }, [state.reflectionsData]);
 
-  // ─── Takeaways ───
+  // ---------------------------------------------------------------------------
+  // Takeaways
+  // ---------------------------------------------------------------------------
+
   const takeaways = state.reflectionsData?.takeaways;
 
   const getTakeawayPrivate = useCallback((cardId: string): TakeawayNote | undefined => {
@@ -1030,10 +626,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
       return {
         ...prev,
         reflectionsData: {
-          ...prev.reflectionsData!,
-          private: prev.reflectionsData?.private || {},
-          shared: prev.reflectionsData?.shared || {},
-          highlights: prev.reflectionsData?.highlights || {},
+          ...prev.reflectionsData,
           takeaways: { ...t, private: { ...t.private, [cardId]: { text, updatedAt: new Date().toISOString() } } },
         },
       };
@@ -1047,10 +640,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
       return {
         ...prev,
         reflectionsData: {
-          ...prev.reflectionsData!,
-          private: prev.reflectionsData?.private || {},
-          shared: prev.reflectionsData?.shared || {},
-          highlights: prev.reflectionsData?.highlights || {},
+          ...prev.reflectionsData,
           takeaways: { ...t, shared: { ...t.shared, [cardId]: { text, updatedAt: now, sharedAt: now } } },
         },
       };
@@ -1062,18 +652,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
       const t = prev.reflectionsData?.takeaways || { private: {}, shared: {}, highlights: {} };
       const shared = { ...t.shared };
       delete shared[cardId];
-      const highlights = { ...t.highlights };
-      delete highlights[cardId];
-      return {
-        ...prev,
-        reflectionsData: {
-          ...prev.reflectionsData!,
-          private: prev.reflectionsData?.private || {},
-          shared: prev.reflectionsData?.shared || {},
-          highlights: prev.reflectionsData?.highlights || {},
-          takeaways: { ...t, shared, highlights },
-        },
-      };
+      return { ...prev, reflectionsData: { ...prev.reflectionsData, takeaways: { ...t, shared } } };
     });
   };
 
@@ -1090,19 +669,9 @@ export function AppProvider({ children }: { children: ReactNode }) {
       if (highlights[cardId]) {
         delete highlights[cardId];
       } else {
-        if (Object.keys(highlights).length >= 3) return prev;
         highlights[cardId] = true;
       }
-      return {
-        ...prev,
-        reflectionsData: {
-          ...prev.reflectionsData!,
-          private: prev.reflectionsData?.private || {},
-          shared: prev.reflectionsData?.shared || {},
-          highlights: prev.reflectionsData?.highlights || {},
-          takeaways: { ...t, highlights },
-        },
-      };
+      return { ...prev, reflectionsData: { ...prev.reflectionsData, takeaways: { ...t, highlights } } };
     });
   };
 
@@ -1131,12 +700,12 @@ export function AppProvider({ children }: { children: ReactNode }) {
         addCard,
         deleteCard,
         updateCard,
-        updateCardDescription,
         updateCardEmptyState,
         updateCardColor,
         updateCardTextColor,
         updateCardBorderColor,
         updateCardSection,
+        updateCardDescription,
         getCardsByCategory,
         getCardById,
         getCategoryById,
@@ -1145,7 +714,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
         saveStatus,
         lastSavedAt,
         saveError,
-        currentSession: (devState === 'pairedActive' || devState === 'waiting' || devState === 'completed')
+        currentSession: devState
           ? { categoryId: DEV_MOCK.mockCategory.id, cardId: DEV_MOCK.mockCard.id, currentStepIndex: DEV_MOCK.mockSession.currentStepIndex, startedAt: new Date(DEV_MOCK.mockSession.startedAt), lastActivityAt: new Date() }
           : state.currentSession,
         startSession: startSessionWithJourney,
@@ -1177,23 +746,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
         toggleTakeawayHighlight,
         takeawayHighlightCount,
         refreshCoupleSpace,
-        switchToNewSpace: async () => {
-          const result = await switchToNewSpace();
-          if (result.ok && result.spaceId) {
-            // Clear session & journey state for fresh home
-            setState((prev) => ({
-              ...prev,
-              currentSession: undefined,
-              journeyState: undefined,
-            }));
-            setSessionDismissed(false);
-            // Override space ID immediately so queries use the new space
-            setOverrideCoupleSpaceId(result.spaceId);
-            // Allow shared progress to re-apply from the new space
-            hasAppliedSharedProgress.current = false;
-          }
-          return result;
-        },
+        switchToNewSpace,
         setOverrideCoupleSpaceId,
         remoteCardChanged,
         dismissRemoteCardCue,
@@ -1205,7 +758,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
   );
 }
 
-export function useApp() {
+export function useApp(): AppContextType {
   const context = useContext(AppContext);
   if (context === undefined) {
     throw new Error('useApp must be used within an AppProvider');
