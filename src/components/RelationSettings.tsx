@@ -101,11 +101,12 @@ export default function RelationSettings({
               <AlertDialogContent>
                 <AlertDialogHeader>
                   <AlertDialogTitle className="font-serif text-lg">
-                    Vill du verkligen avsluta kopplingen?
+                    Avsluta kopplingen?
                   </AlertDialogTitle>
                   <AlertDialogDescription className="text-sm text-muted-foreground leading-relaxed space-y-2 pt-1">
                     <span className="block">Du lämnar ert gemensamma utrymme.</span>
-                    <span className="block">Din partner får behålla historiken där. Ni kommer inte längre dela nya samtal.</span>
+                    <span className="block">Din partner behåller historiken där.</span>
+                    <span className="block">Du får skapa eller ansluta till ett nytt utrymme efteråt.</span>
                   </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter className="mt-2">
