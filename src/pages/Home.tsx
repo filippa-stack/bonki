@@ -811,18 +811,19 @@ export default function Home() {
               const { data: sessionData } = await supabase.auth.getSession();
               const accessToken = sessionData?.session?.access_token;
               if (!accessToken) return;
-              const res = await supabase.functions.invoke('leave-couple-space', {
+              // leave-and-create-new-space: leaves old space AND provisions a fresh
+              // solo space for the actor, so they can invite again immediately.
+              const res = await supabase.functions.invoke('leave-and-create-new-space', {
                 headers: { Authorization: `Bearer ${accessToken}` },
-                body: { couple_space_id: space.id, reason: 'user_left' },
+                body: {},
               });
               if (res.error) {
                 toast.error('Något gick fel. Försök igen.');
                 return;
               }
-              localStorage.removeItem('vi-som-foraldrar-state');
-              toast.success('Du har lämnat utrymmet.');
+              clearForPartnerLeave();
+              toast.success('Kopplingen till din partner är avslutad.');
               navigate('/', { replace: true });
-              setTimeout(() => window.location.reload(), 100);
             } catch {
               toast.error('Något gick fel. Försök igen.');
             }
