@@ -9,6 +9,7 @@ interface CategoryCardProps {
   index: number;
   highlighted?: boolean;
   isCompleted?: boolean;
+  isFeatured?: boolean;
 }
 
 export default function CategoryCard({ 
@@ -17,6 +18,7 @@ export default function CategoryCard({
   index, 
   highlighted = false,
   isCompleted = false,
+  isFeatured = false,
 }: CategoryCardProps) {
   const CategoryIcon = category.icon ? getIconByName(category.icon) : null;
 
@@ -27,7 +29,8 @@ export default function CategoryCard({
       transition={{ duration: 0.15 }}
       onClick={onClick}
       className={[
-        'w-full text-left card-reflection group cursor-pointer rounded-[20px] p-6 transition-all shadow-[0_1px_4px_0_hsl(0_0%_0%/0.04)]',
+        'w-full text-left card-reflection group cursor-pointer rounded-[20px] transition-all',
+        isFeatured ? 'p-7 shadow-[0_4px_16px_0_hsl(0_0%_0%/0.08)]' : 'p-6 shadow-[0_1px_4px_0_hsl(0_0%_0%/0.04)]',
         isCompleted ? 'bg-slate-50/60 border-slate-200/50' : 'item-colors',
         highlighted
           ? 'border-2 border-primary'
