@@ -62,8 +62,8 @@ export default function RelationSettings({
                     Skapa ett nytt gemensamt utrymme?
                   </AlertDialogTitle>
                   <AlertDialogDescription className="text-sm text-muted-foreground leading-relaxed space-y-2 pt-1">
-                    <span className="block">Ni får ett nytt utrymme att börja i tillsammans.</span>
-                    <span className="block">Tidigare samtal finns kvar i ert nuvarande utrymme.</span>
+                    <span className="block">Ni får en ny tom plats att börja på.</span>
+                    <span className="block">Er tidigare samtalshistorik finns kvar i ert nuvarande utrymme men följer inte med.</span>
                   </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter className="mt-2">
