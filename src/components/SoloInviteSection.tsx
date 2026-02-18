@@ -115,6 +115,7 @@ export default function SoloInviteSection({ fetchInviteInfo, onJoinedSpace, hadP
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.15 }}
+      id="solo-invite"
       className="px-6 pt-8 mb-10"
     >
       {/* Hero text */}
