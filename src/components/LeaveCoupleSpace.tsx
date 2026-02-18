@@ -62,15 +62,16 @@ export default function LeaveCoupleSpace() {
           className="text-destructive/60 hover:text-destructive hover:bg-destructive/5 text-xs gap-1.5"
         >
           <LogOut className="w-3.5 h-3.5" />
-          Byt partner
+          Avsluta koppling till partner
         </Button>
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle className="font-serif text-lg">Vill du verkligen byta partner?</AlertDialogTitle>
+          <AlertDialogTitle className="font-serif text-lg">Avsluta kopplingen?</AlertDialogTitle>
           <AlertDialogDescription className="text-sm text-muted-foreground leading-relaxed space-y-2 pt-1">
-            <span className="block">Detta kopplar bort dig från ert gemensamma utrymme.</span>
-            <span className="block">Er historik ligger kvar, men ni kommer inte längre dela nya samtal.</span>
+            <span className="block">Du lämnar ert gemensamma utrymme.</span>
+            <span className="block">Din partner behåller historiken där.</span>
+            <span className="block">Du får skapa eller ansluta till ett nytt utrymme efteråt.</span>
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter className="mt-2">
@@ -80,7 +81,7 @@ export default function LeaveCoupleSpace() {
             disabled={loading}
             className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
           >
-            {loading ? 'Kopplar bort…' : 'Byt partner'}
+            {loading ? 'Avslutar…' : 'Avsluta koppling'}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
