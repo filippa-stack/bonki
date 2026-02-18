@@ -100,6 +100,7 @@ export default function Header({
           {!hasActiveSession && (
             <SharedSpaceLink />
           )}
+
           {showBackgroundPicker && (
             <div className="flex items-center gap-2">
               <span className="text-xs text-muted-foreground hidden sm:inline">{t('header.background')}</span>
@@ -125,34 +126,42 @@ export default function Header({
                       variant="ghost"
                       size="sm"
                       className="w-full justify-start text-xs gap-1.5"
+                      disabled={hasActiveSession}
                     >
                       <Plus className="w-3.5 h-3.5" />
                       Nytt kapitel
                     </Button>
                   </AlertDialogTrigger>
-                  <AlertDialogContent>
-                    <AlertDialogHeader>
-                      <AlertDialogTitle className="font-serif text-lg">Nytt kapitel?</AlertDialogTitle>
-                      <AlertDialogDescription className="text-sm text-muted-foreground leading-relaxed pt-1">
-                        Skapar ett nytt tomt utrymme med samma partner.
-                      </AlertDialogDescription>
-                    </AlertDialogHeader>
-                    <AlertDialogFooter className="mt-2">
-                      <AlertDialogCancel>Avbryt</AlertDialogCancel>
-                      <AlertDialogAction onClick={async () => {
-                        const result = await switchToNewSpace();
-                        if (result.ok) {
-                          toast.success('Nytt utrymme skapat.');
-                          navigate('/');
-                        } else {
-                          toast.error('Kunde inte skapa nytt utrymme.');
-                        }
-                      }}>
-                        Nytt kapitel
-                      </AlertDialogAction>
-                    </AlertDialogFooter>
-                  </AlertDialogContent>
+                  {!hasActiveSession && (
+                    <AlertDialogContent>
+                      <AlertDialogHeader>
+                        <AlertDialogTitle className="font-serif text-lg">Nytt kapitel?</AlertDialogTitle>
+                        <AlertDialogDescription className="text-sm text-muted-foreground leading-relaxed pt-1">
+                          Skapar ett nytt tomt utrymme med samma partner.
+                        </AlertDialogDescription>
+                      </AlertDialogHeader>
+                      <AlertDialogFooter className="mt-2">
+                        <AlertDialogCancel>Avbryt</AlertDialogCancel>
+                        <AlertDialogAction onClick={async () => {
+                          const result = await switchToNewSpace();
+                          if (result.ok) {
+                            toast.success('Nytt utrymme skapat.');
+                            navigate('/');
+                          } else {
+                            toast.error('Kunde inte skapa nytt utrymme.');
+                          }
+                        }}>
+                          Nytt kapitel
+                        </AlertDialogAction>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  )}
                 </AlertDialog>
+                {hasActiveSession && (
+                  <p className="text-[11px] text-muted-foreground/50 px-2 pb-1 leading-snug">
+                    Ni är mitt i ett samtal. Avsluta det först.
+                  </p>
+                )}
               </div>
 
               {/* ── SECTION 2: Account ── */}
