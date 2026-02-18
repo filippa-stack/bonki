@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Plus, Unlink } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
@@ -52,11 +52,38 @@ export default function RelationSettings({
   const { session } = useAuth();
   const [open, setOpen] = useState(false);
 
+  // Leave confirmation dialog (controlled so we can keep it open during countdown)
+  const [leaveDialogOpen, setLeaveDialogOpen] = useState(false);
+  const [countdown, setCountdown] = useState<number | null>(null);
+  const countdownRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
   // Re-auth OTP dialog state
   const [reauthOpen, setReauthOpen] = useState(false);
   const [otp, setOtp] = useState('');
   const [reauthLoading, setReauthLoading] = useState(false);
   const [reauthSent, setReauthSent] = useState(false);
+
+  // Countdown effect — fires leave logic when it reaches 0
+  useEffect(() => {
+    if (countdown === null) return;
+    if (countdown === 0) {
+      setLeaveDialogOpen(false);
+      handleLeaveConfirm();
+      return;
+    }
+    countdownRef.current = setInterval(() => {
+      setCountdown((c) => (c !== null && c > 0 ? c - 1 : c));
+    }, 1000);
+    return () => { if (countdownRef.current) clearInterval(countdownRef.current); };
+  }, [countdown]);
+
+  const startCountdown = () => setCountdown(3);
+
+  const cancelCountdown = () => {
+    if (countdownRef.current) clearInterval(countdownRef.current);
+    setCountdown(null);
+    setLeaveDialogOpen(false);
+  };
 
   // Called when user confirms in the first AlertDialog
   const handleLeaveConfirm = async () => {
@@ -164,12 +191,16 @@ export default function RelationSettings({
                 Du lämnar ert gemensamma utrymme. Din partner får behålla historiken där.
               </p>
             </div>
-            <AlertDialog>
+            <AlertDialog open={leaveDialogOpen} onOpenChange={(v) => {
+              if (!v) cancelCountdown();
+              setLeaveDialogOpen(v);
+            }}>
               <AlertDialogTrigger asChild>
                 <Button
                   variant="ghost"
                   size="sm"
                   className="gap-1.5 text-destructive/70 hover:text-destructive hover:bg-destructive/5 border border-destructive/20 hover:border-destructive/40"
+                  onClick={() => setLeaveDialogOpen(true)}
                 >
                   <Unlink className="w-3.5 h-3.5" />
                   Avsluta koppling
@@ -187,13 +218,19 @@ export default function RelationSettings({
                   </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter className="mt-2">
-                  <AlertDialogCancel>Avbryt</AlertDialogCancel>
-                  <AlertDialogAction
-                    onClick={handleLeaveConfirm}
-                    className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                  <AlertDialogCancel onClick={cancelCountdown}>Avbryt</AlertDialogCancel>
+                  <Button
+                    variant="destructive"
+                    disabled={countdown !== null && countdown > 0}
+                    onClick={() => {
+                      if (countdown === null) startCountdown();
+                    }}
+                    className="min-w-[180px]"
                   >
-                    Avsluta koppling
-                  </AlertDialogAction>
+                    {countdown !== null && countdown > 0
+                      ? `Avslutar om ${countdown}…`
+                      : 'Avsluta koppling'}
+                  </Button>
                 </AlertDialogFooter>
               </AlertDialogContent>
             </AlertDialog>
