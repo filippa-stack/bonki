@@ -181,6 +181,33 @@ export function useCoupleSpace(): CoupleSpaceState {
     };
   }, [userId, space?.id, fetchSpace]);
 
+  // Realtime: re-fetch whenever the couple_spaces row itself changes
+  // (e.g. partner_b_name written, paid_at updated, or any other field).
+  // This is the primary correctness mechanism for User A seeing partner join —
+  // the couple_members subscription above is kept as a complementary signal.
+  useEffect(() => {
+    if (!userId || !space?.id) return;
+    const spaceId = space.id;
+
+    const channel = supabase
+      .channel(`couple_spaces_${spaceId}`)
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'couple_spaces',
+          filter: `id=eq.${spaceId}`,
+        },
+        () => fetchSpace()
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [userId, space?.id, fetchSpace]);
+
   // Debounced display value to prevent UI flicker on rapid realtime updates
   const [displayMemberCount, setDisplayMemberCount] = useState(memberCount);
   const displayTimerRef = useRef<ReturnType<typeof setTimeout>>();
