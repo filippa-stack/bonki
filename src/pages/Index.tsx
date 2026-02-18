@@ -7,6 +7,8 @@ import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { usePendingInviteClaim, hasPendingInvite } from '@/hooks/usePendingInvite';
 import Onboarding from '@/components/Onboarding';
+import { useSpaceSnapshot } from '@/hooks/useSpaceSnapshot';
+import { selectExploredCardIds } from '@/selectors/spaceSnapshotSelectors';
 import Home from '@/pages/Home';
 import WelcomePartner from '@/components/WelcomePartner';
 import PurchaseScreen from '@/components/PurchaseScreen';
@@ -46,9 +48,10 @@ function markSpacePaid(spaceId: string | null | undefined) {
 export default function Index() {
   const navigate = useNavigate();
   const { t } = useTranslation();
-  const { hasCompletedOnboarding, savedConversations, getAllSharedNotes, journeyState } = useApp();
+  const { hasCompletedOnboarding, savedConversations, getAllSharedNotes } = useApp();
   const { userRole, space, memberCount, fetchInviteInfo, refreshSpace } = useCoupleSpaceContext();
   const { user } = useAuth();
+  const { snapshot } = useSpaceSnapshot(user?.id ?? null, space?.id ?? null);
   const [welcomeDismissed, setWelcomeDismissed] = useState(false);
 
   // Pending invite claim — auto-claims after OAuth redirect
@@ -181,7 +184,7 @@ export default function Index() {
   const hasActivity =
     savedConversations.length > 0 ||
     Object.keys(sharedNotes).length > 0 ||
-    (journeyState?.exploredCardIds && journeyState.exploredCardIds.length > 0);
+    selectExploredCardIds(snapshot).length > 0;
 
   if (userRole === 'partner_b' && !hasActivity && !welcomeDismissed) {
     return <WelcomePartner onDismiss={() => setWelcomeDismissed(true)} />;
