@@ -78,6 +78,11 @@ export default {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
+        // Semantic tokens
+        card:   "var(--radius-card)",    // 20px
+        button: "var(--radius-button)",  // 16px
+        pill:   "var(--radius-pill)",    // 14px
+        toast:  "var(--radius-toast)",   // 18px
       },
       spacing: {
         'gentle': '1.5rem',
