@@ -555,6 +555,69 @@
 
 </div>
 
+<!-- ═══ CATEGORY VIEW ═══ -->
+<div class="section-title">Kategorivy — ämneslistning</div>
+<div class="wireframe-grid">
+
+  <div class="wireframe" data-name="10b-category-paired">
+    <h2>Kategorivy — paired (med featurat ämne)</h2>
+    <div class="route">/category/:id (paired, isRecommendedCategory = true)</div>
+    <div class="frame">
+      <div class="header-bar"><span>← Hem</span><span></span></div>
+      <div style="padding:8px 0 14px;">
+        <div class="serif" style="font-size:15px;font-weight:600;">Paridentitet vs föräldraidentitet</div>
+        <div class="muted" style="margin-top:4px;line-height:1.6;">Vem är ni för varandra, bortom föräldraskapet?</div>
+      </div>
+      <!-- Recommended topic: mt-2 + stronger shadow + py-9 (silent, no label) -->
+      <div style="margin-top:8px;">
+        <div class="card" style="box-shadow:0 4px 16px 0 rgba(0,0,0,0.08);padding:16px 14px;">
+          <div class="serif center" style="font-size:12px;">Vårt minsta "vi"</div>
+          <div class="muted center" style="margin-top:3px;font-style:italic;">Det minsta ni kan göra för att hålla ihop</div>
+        </div>
+      </div>
+      <!-- Normal topics -->
+      <div class="card">
+        <div class="serif center" style="font-size:12px;">Identitetsskiftet</div>
+        <div class="muted center" style="margin-top:3px;font-style:italic;">Anpassning som förändrar vem ni får vara</div>
+      </div>
+      <div class="card">
+        <div class="serif center" style="font-size:12px;">Det osynliga arbetet</div>
+        <div class="muted center" style="margin-top:3px;font-style:italic;">Vad ni bär utan att det syns</div>
+      </div>
+      <div class="spacer"></div>
+      <div class="info-note center">Rekommenderat ämne: +mt-2 · starkare skugga · py-9 — ingen etikett</div>
+    </div>
+  </div>
+
+  <div class="wireframe" data-name="10c-category-browse">
+    <h2>Kategorivy — browse (alla upplåsta)</h2>
+    <div class="route">/category/:id (?devState=browse)</div>
+    <div class="frame">
+      <div class="header-bar"><span>← Hem</span><span></span></div>
+      <div style="padding:8px 0 14px;">
+        <div class="serif" style="font-size:15px;font-weight:600;">Paridentitet vs föräldraidentitet</div>
+        <div class="muted" style="margin-top:4px;line-height:1.6;">Vem är ni för varandra, bortom föräldraskapet?</div>
+      </div>
+      <!-- All topics equal weight (browse mode — no recommendation) -->
+      <div class="card">
+        <div class="serif center" style="font-size:12px;">Vårt minsta "vi"</div>
+        <div class="muted center" style="margin-top:3px;font-style:italic;">Det minsta ni kan göra för att hålla ihop</div>
+      </div>
+      <div class="card">
+        <div class="serif center" style="font-size:12px;">Identitetsskiftet</div>
+        <div class="muted center" style="margin-top:3px;font-style:italic;">Anpassning som förändrar vem ni får vara</div>
+      </div>
+      <div class="card">
+        <div class="serif center" style="font-size:12px;">Det osynliga arbetet</div>
+        <div class="muted center" style="margin-top:3px;font-style:italic;">Vad ni bär utan att det syns</div>
+      </div>
+      <div class="spacer"></div>
+      <div class="info-note center">Browse-läge: alla kort likvärdiga, ingen featured-styling</div>
+    </div>
+  </div>
+
+</div>
+
 <!-- ═══ JOIN / INVITE ═══ -->
 <div class="section-title">Anslutning & inbjudan</div>
 <div class="wireframe-grid">
