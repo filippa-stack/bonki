@@ -490,8 +490,6 @@ export default function CardView() {
                 open={reviewOpen}
                 onClose={() => setReviewOpen(false)}
                 card={card}
-                activeStepIndex={currentStepIndex}
-                completedSteps={[]}
               />
             </motion.div>
           )}
