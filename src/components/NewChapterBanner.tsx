@@ -10,7 +10,14 @@ import { BEAT_2, EASE } from '@/lib/motion';
 const gateKey = (spaceId: string, eventId: string) =>
   `new_space_created_seen_${spaceId}_${eventId}`;
 
-export default function NewChapterBanner() {
+interface Props {
+  /** Called when a new_space_created event is detected (banner becomes active) */
+  onActive?: () => void;
+  /** Called when the banner is dismissed */
+  onDismiss?: () => void;
+}
+
+export default function NewChapterBanner({ onActive, onDismiss }: Props) {
   const { user } = useAuth();
   const { space } = useCoupleSpace();
   const navigate = useNavigate();
@@ -28,7 +35,8 @@ export default function NewChapterBanner() {
     setTriggered(true);
     localStorage.setItem(gateKey(space.id, eventId), '1');
     setVisible(true);
-  }, [user, space, triggered]);
+    onActive?.();
+  }, [user, space, triggered, onActive]);
 
   useEffect(() => {
     if (!user || !space) return;
@@ -101,7 +109,7 @@ export default function NewChapterBanner() {
                 variant="ghost"
                 size="sm"
                 className="flex-1 text-muted-foreground"
-                onClick={() => setVisible(false)}
+                onClick={() => { setVisible(false); onDismiss?.(); }}
               >
                 Stäng
               </Button>
@@ -110,6 +118,7 @@ export default function NewChapterBanner() {
                 className="flex-1"
                 onClick={() => {
                   setVisible(false);
+                  onDismiss?.();
                   navigate('/', { replace: true });
                 }}
               >

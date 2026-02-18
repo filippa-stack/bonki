@@ -216,14 +216,31 @@ export default function Home() {
   // ─── Partner-left detection (drives banner priority slot 1) ──────────────
   const [partnerLeftActive, setPartnerLeftActive] = useState(false);
 
-  // ─── Derived prompt priority (single active prompt at a time) ────────────
-  // 1) PartnerLeftBanner  — when !isPaired and partner-left event fired
-  // 2) PartnerConnectedBanner — when isPaired and not yet seen
-  // 3) SoloInviteSection — when !isPaired and not dismissed
-  // 4) Everything else (WelcomeBackBanner lives in its own zone, unaffected)
-  //
-  // PartnerConnectedBanner manages its own seen-key internally (space-scoped).
-  // We pass isPaired to suppress it when not relevant.
+  // ─── Banner priority queue ────────────────────────────────────────────────
+  // Read one-shot seen flags from localStorage for priority computation.
+  const partnerConnectedSeenKey = space?.id ? `partner_connected_seen_${space.id}` : null;
+  const [partnerConnectedSeen, setPartnerConnectedSeen] = useState(() =>
+    partnerConnectedSeenKey ? localStorage.getItem(partnerConnectedSeenKey) === 'true' : true
+  );
+  // JustJoined is consumed on first read (partner_b only, one-shot).
+  const [justJoinedPending] = useState(() =>
+    localStorage.getItem('still-us-just-joined') === 'true'
+  );
+  // NewChapter is managed internally by NewChapterBanner; expose via state lifted up.
+  const [newChapterActive, setNewChapterActive] = useState(false);
+
+  type BannerSlot = 'partnerLeft' | 'partnerConnected' | 'justJoined' | 'newChapter' | null;
+
+  function computeBannerToShow(): BannerSlot {
+    if (partnerLeftActive) return 'partnerLeft';
+    if (isPaired && !partnerConnectedSeen) return 'partnerConnected';
+    if (justJoinedPending) return 'justJoined';
+    if (newChapterActive) return 'newChapter';
+    return null;
+  }
+
+  const activeBanner = computeBannerToShow();
+
   const showSoloInvite = !isPaired && !inviteDismissed && !partnerLeftActive;
 
   const { incomingProposals: _rawProposals, ownPendingProposals, savedProposals, sendProposal: sendDbProposal, updateProposalStatus, activateSession } = useProposalsContext();
@@ -413,12 +430,11 @@ export default function Home() {
 
 
 
-      {/* ── Banner stack — single active prompt at a time ── */}
-      {/* Priority: PartnerLeft(1) > PartnerConnected(2) > SoloInvite(3) */}
+      {/* ── Banner queue — at most ONE banner rendered at a time ── */}
+      {/* Priority: partnerLeft(1) > partnerConnected(2) > justJoined(3) > newChapter(4) */}
       <div className="mt-6 mb-8">
 
-        {/* Slot 1: PartnerLeftBanner — only when not paired */}
-        {!isPaired && (
+        {activeBanner === 'partnerLeft' && (
           <PartnerLeftBanner
             onPartnerLeft={() => {
               clearForPartnerLeave();
@@ -432,13 +448,20 @@ export default function Home() {
           />
         )}
 
-        {/* Slot 2: PartnerConnectedBanner — only when paired */}
-        {isPaired && <PartnerConnectedBanner />}
+        {activeBanner === 'partnerConnected' && (
+          <PartnerConnectedBanner
+            spaceId={space?.id}
+            onSeen={() => setPartnerConnectedSeen(true)}
+          />
+        )}
 
-        {/* Just-joined banner (partner_b only, one-shot from localStorage) */}
-        <JustJoinedBanner />
+        {activeBanner === 'justJoined' && <JustJoinedBanner />}
 
-        {/* Slot 3: SoloInviteSection — only when !isPaired, not dismissed, and PartnerLeft not active */}
+        {activeBanner === 'newChapter' && (
+          <NewChapterBanner onActive={() => setNewChapterActive(true)} onDismiss={() => setNewChapterActive(false)} />
+        )}
+
+        {/* SoloInviteSection — not a banner, renders below queue */}
         {showSoloInvite && space && (
           <div id="solo-invite" className="relative">
             <button
@@ -455,9 +478,6 @@ export default function Home() {
             />
           </div>
         )}
-
-        {/* New chapter banner — shown when new_space_created event detected */}
-        <NewChapterBanner />
       </div>
 
 
