@@ -148,7 +148,7 @@ export default function Home() {
   const { incomingProposals: _rawProposals, ownPendingProposals, savedProposals, sendProposal: sendDbProposal, updateProposalStatus, activateSession } = useProposalsContext();
   const devState = useDevState();
   const appModeState = useAppMode();
-  const { mode, activeSession, normalizedSession } = appModeState;
+  const { mode, normalizedSession } = appModeState;
 
   const [acceptingProposalId, setAcceptingProposalId] = useState<string | null>(null);
   const [viewingSavedProposalId, setViewingSavedProposalId] = useState<string | null>(null);
@@ -206,7 +206,7 @@ export default function Home() {
     return !!(mode === 'active' || journeyState?.lastCompletedCardId || journeyState?.lastOpenedCardId);
   }, [isSoloMode, returnOverlayDismissed, lastActivityElapsed, mode, journeyState]);
 
-  const returnResumeCardId = activeSession?.cardId || journeyState?.lastOpenedCardId || journeyState?.lastCompletedCardId || null;
+  const returnResumeCardId = normalizedSession.cardId || journeyState?.lastOpenedCardId || journeyState?.lastCompletedCardId || null;
 
   // Clear proposal picker state when an incoming proposal arrives
   useEffect(() => {
@@ -228,7 +228,7 @@ export default function Home() {
     return { suggestedCardId, suggestedCard, suggestedCategory };
   }, [journeyState, exploredIds, getCardById, getCategoryById]);
 
-  const highlightedCategoryId = activeSession?.categoryId || suggestedContext.suggestedCategory?.id || null;
+  const highlightedCategoryId = normalizedSession.categoryId || suggestedContext.suggestedCategory?.id || null;
 
   // Track whether user has already navigated away during this browser session
   const [hasNavigatedThisVisit] = useState(() => sessionStorage.getItem('home_navigated') === '1');
@@ -410,11 +410,11 @@ export default function Home() {
         );
       })()}
 
-      {mode === 'active' && activeSession && (() => {
-        const activeCard = getCardById(activeSession.cardId) || (devState ? { title: DEV_MOCK.mockCard.title, categoryId: DEV_MOCK.mockCategory.id } as any : null);
+      {mode === 'active' && normalizedSession.cardId && (() => {
+        const activeCard = getCardById(normalizedSession.cardId!) || (devState ? { title: DEV_MOCK.mockCard.title, categoryId: DEV_MOCK.mockCategory.id } as any : null);
         const activeCategory = activeCard ? (getCategoryById(activeCard.categoryId) || (devState ? { title: DEV_MOCK.mockCategory.title } as any : null)) : null;
-        const stepLabel = STEP_LABELS[activeSession.currentStepIndex] || '';
-        const stepProgress = `${Math.min(activeSession.currentStepIndex + 1, 4)} / 4`;
+        const stepLabel = STEP_LABELS[normalizedSession.currentStepIndex] || '';
+        const stepProgress = `${Math.min(normalizedSession.currentStepIndex + 1, 4)} / 4`;
         if (!activeCard || !activeCategory) return null;
         return (
           <motion.div
@@ -434,7 +434,7 @@ export default function Home() {
             <Button
               onClick={() => {
                 if (!devState) markNavigated();
-                navigate(`/card/${activeSession.cardId}`);
+                navigate(`/card/${normalizedSession.cardId}`);
               }}
               size="lg"
               className="w-full h-14 rounded-2xl gap-2 font-normal"
