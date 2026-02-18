@@ -8,7 +8,6 @@ import { supabase } from '@/integrations/supabase/client';
 import { usePendingInviteClaim, hasPendingInvite } from '@/hooks/usePendingInvite';
 import Onboarding from '@/components/Onboarding';
 import { useSpaceSnapshot } from '@/hooks/useSpaceSnapshot';
-import { selectExploredCardIds } from '@/selectors/spaceSnapshotSelectors';
 import Home from '@/pages/Home';
 import WelcomePartner from '@/components/WelcomePartner';
 import PurchaseScreen from '@/components/PurchaseScreen';
@@ -23,9 +22,7 @@ export const JOIN_INTENT_KEY = 'still-us-join-intent';
 
 /** Check if a given space is paid — DB field wins, localStorage as fallback */
 export function isSpacePaid(spaceId: string | null | undefined, paidAt?: string | null): boolean {
-  // DB source of truth
   if (paidAt) return true;
-  // localStorage fallback during migration
   if (spaceId && localStorage.getItem(`${PURCHASE_KEY_PREFIX}${spaceId}`) === 'true') return true;
   return localStorage.getItem(PURCHASE_KEY_LEGACY) === 'true';
 }
@@ -45,14 +42,18 @@ function markSpacePaid(spaceId: string | null | undefined) {
   localStorage.setItem(PURCHASE_KEY_LEGACY, 'true');
 }
 
+/** localStorage key for welcome dismissal — scoped to spaceId so it survives refresh */
+function welcomeDismissalKey(spaceId: string) {
+  return `welcome_dismissed_${spaceId}`;
+}
+
 export default function Index() {
   const navigate = useNavigate();
   const { t } = useTranslation();
-  const { hasCompletedOnboarding, savedConversations, getAllSharedNotes } = useApp();
+  const { hasCompletedOnboarding } = useApp();
   const { userRole, space, memberCount, fetchInviteInfo, refreshSpace } = useCoupleSpaceContext();
   const { user } = useAuth();
   const { snapshot } = useSpaceSnapshot(user?.id ?? null, space?.id ?? null);
-  const [welcomeDismissed, setWelcomeDismissed] = useState(false);
 
   // Pending invite claim — auto-claims after OAuth redirect
   const { status: claimStatus, errorType: claimError, retry: retryClaim } = usePendingInviteClaim();
@@ -179,15 +180,27 @@ export default function Index() {
     );
   }
 
-  // Show welcome screen for partner_b when the space is empty
-  const sharedNotes = getAllSharedNotes();
-  const hasActivity =
-    savedConversations.length > 0 ||
-    Object.keys(sharedNotes).length > 0 ||
-    selectExploredCardIds(snapshot).length > 0;
+  // ─── Welcome screen for partner_b ───
+  // Paired state = snapshot.space.memberCount >= 2 (single authority).
+  // Dismissal is localStorage-keyed by spaceId so it survives refresh.
+  const snapshotMemberCount = snapshot?.space.memberCount ?? memberCount;
+  const isPaired = snapshotMemberCount >= 2;
 
-  if (userRole === 'partner_b' && !hasActivity && !welcomeDismissed) {
-    return <WelcomePartner onDismiss={() => setWelcomeDismissed(true)} />;
+  if (userRole === 'partner_b' && space?.id) {
+    const dismissKey = welcomeDismissalKey(space.id);
+    const isWelcomeDismissed = localStorage.getItem(dismissKey) === 'true';
+    if (!isPaired && !isWelcomeDismissed) {
+      // Partner B is alone — show welcome until paired or dismissed
+      return (
+        <WelcomePartner
+          onDismiss={() => {
+            localStorage.setItem(dismissKey, 'true');
+            // Force re-render by navigating to same route
+            navigate('/', { replace: true });
+          }}
+        />
+      );
+    }
   }
 
   return <Home />;

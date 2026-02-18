@@ -187,6 +187,31 @@ export default function Home() {
   const { user } = useAuth();
   const { space, displayMemberCount, userRole, fetchInviteInfo } = useCoupleSpaceContext();
   const { snapshot } = useSpaceSnapshot(user?.id ?? null, space?.id ?? null);
+
+  // ─── Invite dismissal (localStorage-keyed by spaceId) ───────────────────
+  // Paired state is authoritative from snapshot.space.memberCount.
+  // Dismiss key persists across refreshes but is cleared once the space pairs.
+  const snapshotMemberCount = snapshot?.space.memberCount ?? displayMemberCount;
+  const isPaired = snapshotMemberCount >= 2;
+
+  const inviteDismissKey = space?.id ? `invite_dismissed_${space.id}` : null;
+  const [inviteDismissed, setInviteDismissed] = useState(() => {
+    if (!inviteDismissKey) return false;
+    return localStorage.getItem(inviteDismissKey) === 'true';
+  });
+
+  // Clear dismiss flag as soon as space pairs — invite must never show again
+  useEffect(() => {
+    if (isPaired && inviteDismissKey) {
+      localStorage.removeItem(inviteDismissKey);
+      setInviteDismissed(false);
+    }
+  }, [isPaired, inviteDismissKey]);
+
+  const handleDismissInvite = () => {
+    if (inviteDismissKey) localStorage.setItem(inviteDismissKey, 'true');
+    setInviteDismissed(true);
+  };
   const { incomingProposals: _rawProposals, ownPendingProposals, savedProposals, sendProposal: sendDbProposal, updateProposalStatus, activateSession } = useProposalsContext();
   const devState = useDevState();
   const appModeState = useAppMode();
@@ -403,12 +428,21 @@ export default function Home() {
         </div>
       )}
 
-      {mode === 'solo' && space && (
-        <SoloInviteSection
-          fetchInviteInfo={fetchInviteInfo}
-          onJoinedSpace={() => { /* no-op — realtime providers handle state update */ }}
-          hadPartnerBefore={hadPartnerBefore}
-        />
+      {mode === 'solo' && space && !isPaired && !inviteDismissed && (
+        <div className="relative">
+          <button
+            onClick={handleDismissInvite}
+            aria-label="Stäng inbjudan"
+            className="absolute top-3 right-6 z-10 text-muted-foreground/40 hover:text-muted-foreground transition-colors"
+          >
+            <X className="w-4 h-4" />
+          </button>
+          <SoloInviteSection
+            fetchInviteInfo={fetchInviteInfo}
+            onJoinedSpace={() => { /* no-op — realtime providers handle state update */ }}
+            hadPartnerBefore={hadPartnerBefore}
+          />
+        </div>
       )}
 
       <AnimatePresence>
