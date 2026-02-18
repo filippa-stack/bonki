@@ -1,5 +1,4 @@
-import { useState } from 'react';
-import { LogOut, Plus, Settings, Users, User, ChevronRight, Heart } from 'lucide-react';
+import { LogOut, Plus, Settings, Users, User } from 'lucide-react';
 import { useCoupleSpaceContext } from '@/contexts/CoupleSpaceContext';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -116,87 +115,72 @@ export default function Header({
                 <Settings className="w-4 h-4" />
               </Button>
             </PopoverTrigger>
-            <PopoverContent className="w-56 p-2 space-y-1" align="end">
-              <AlertDialog>
-                <AlertDialogTrigger asChild>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="w-full justify-start text-xs gap-1.5"
-                  >
-                    <Plus className="w-3.5 h-3.5" />
-                    Skapa nytt utrymme
-                  </Button>
-                </AlertDialogTrigger>
-                <AlertDialogContent>
-                  <AlertDialogHeader>
-                    <AlertDialogTitle className="font-serif text-lg">Skapa ett nytt gemensamt utrymme?</AlertDialogTitle>
-                    <AlertDialogDescription className="text-sm text-muted-foreground leading-relaxed space-y-2 pt-1">
-                      <span className="block">Ni får ett nytt utrymme att börja i tillsammans.</span>
-                      <span className="block">Tidigare samtal finns kvar i ert nuvarande utrymme.</span>
-                    </AlertDialogDescription>
-                  </AlertDialogHeader>
-                  <AlertDialogFooter className="mt-2">
-                    <AlertDialogCancel>Avbryt</AlertDialogCancel>
-                    <AlertDialogAction onClick={async () => {
-                      const result = await switchToNewSpace();
-                      if (result.ok) {
-                        toast.success('Nytt utrymme skapat.');
-                        navigate('/');
-                      } else {
-                        toast.error('Kunde inte skapa nytt utrymme.');
-                      }
-                    }}>
+            <PopoverContent className="w-56 p-2" align="end">
+
+              {/* ── SECTION 1: Space actions ── */}
+              <div className="space-y-0.5">
+                <AlertDialog>
+                  <AlertDialogTrigger asChild>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="w-full justify-start text-xs gap-1.5"
+                    >
+                      <Plus className="w-3.5 h-3.5" />
                       Skapa nytt utrymme
-                    </AlertDialogAction>
-                  </AlertDialogFooter>
-                </AlertDialogContent>
-              </AlertDialog>
+                    </Button>
+                  </AlertDialogTrigger>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle className="font-serif text-lg">Skapa ett nytt gemensamt utrymme?</AlertDialogTitle>
+                      <AlertDialogDescription className="text-sm text-muted-foreground leading-relaxed space-y-2 pt-1">
+                        <span className="block">Ni får ett nytt utrymme att börja i tillsammans.</span>
+                        <span className="block">Tidigare samtal finns kvar i ert nuvarande utrymme.</span>
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter className="mt-2">
+                      <AlertDialogCancel>Avbryt</AlertDialogCancel>
+                      <AlertDialogAction onClick={async () => {
+                        const result = await switchToNewSpace();
+                        if (result.ok) {
+                          toast.success('Nytt utrymme skapat.');
+                          navigate('/');
+                        } else {
+                          toast.error('Kunde inte skapa nytt utrymme.');
+                        }
+                      }}>
+                        Skapa nytt utrymme
+                      </AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
+              </div>
 
-              <RelationSubMenu />
+              {/* ── SECTION 2: Relation ── */}
+              <div className="border-t border-border/30 mt-2 pt-2">
+                <p className="px-2 pb-1 text-[10px] font-medium tracking-widest uppercase text-muted-foreground/40">
+                  Relation
+                </p>
+                <LeaveCoupleSpace />
+              </div>
 
-              <div className="border-t border-border/40 my-1" />
+              {/* ── SECTION 3: Account ── */}
+              <div className="border-t border-border/30 mt-2 pt-2">
+                <Button
+                  variant="ghost"
+                  className="w-full justify-start text-destructive hover:text-destructive hover:bg-destructive/10"
+                  onClick={handleSignOut}
+                >
+                  <LogOut className="w-4 h-4 mr-2" />
+                  {t('header.sign_out')}
+                </Button>
+              </div>
 
-              <Button
-                variant="ghost"
-                className="w-full justify-start text-destructive hover:text-destructive hover:bg-destructive/10"
-                onClick={handleSignOut}
-              >
-                <LogOut className="w-4 h-4 mr-2" />
-                {t('header.sign_out')}
-              </Button>
             </PopoverContent>
           </Popover>
         </div>
       </div>
     </header>
-  );
-}
-
-function RelationSubMenu() {
-  const [open, setOpen] = useState(false);
-
-  return (
-    <div>
-      <Button
-        variant="ghost"
-        size="sm"
-        className="w-full justify-between text-xs gap-1.5"
-        onClick={() => setOpen(v => !v)}
-      >
-        <span className="flex items-center gap-1.5">
-          <Heart className="w-3.5 h-3.5" />
-          Relation
-        </span>
-        <ChevronRight className={`w-3 h-3 text-muted-foreground transition-transform ${open ? 'rotate-90' : ''}`} />
-      </Button>
-
-      {open && (
-        <div className="ml-4 mt-1 border-l border-border/30 pl-3 space-y-1">
-          <LeaveCoupleSpace />
-        </div>
-      )}
-    </div>
   );
 }
 
