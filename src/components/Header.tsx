@@ -132,10 +132,10 @@ export default function Header({
                   </AlertDialogTrigger>
                   <AlertDialogContent>
                     <AlertDialogHeader>
-                      <AlertDialogTitle className="font-serif text-lg">Skapa ett nytt gemensamt utrymme?</AlertDialogTitle>
+                      <AlertDialogTitle className="font-serif text-lg">Skapa ett nytt utrymme?</AlertDialogTitle>
                       <AlertDialogDescription className="text-sm text-muted-foreground leading-relaxed space-y-2 pt-1">
-                        <span className="block">Ni får ett nytt utrymme att börja i tillsammans.</span>
-                        <span className="block">Tidigare samtal finns kvar i ert nuvarande utrymme.</span>
+                        <span className="block">Det här skapar ett nytt tomt utrymme.</span>
+                        <span className="block">Historiken i ert nuvarande utrymme finns kvar, men ni fortsätter i ett nytt.</span>
                       </AlertDialogDescription>
                     </AlertDialogHeader>
                     <AlertDialogFooter className="mt-2">

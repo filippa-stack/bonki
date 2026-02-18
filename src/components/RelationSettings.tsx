@@ -3,7 +3,6 @@ import { Plus, Unlink } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   AlertDialog,
-  AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
   AlertDialogDescription,
@@ -40,8 +39,37 @@ function getSessionAgeMs(accessToken: string | undefined): number {
   }
 }
 
+/** 3-second countdown hook. Returns [countdown | null, start, cancel]. */
+function useCountdown(onZero: () => void): [number | null, () => void, () => void] {
+  const [countdown, setCountdown] = useState<number | null>(null);
+  const ref = useRef<ReturnType<typeof setInterval> | null>(null);
+  const onZeroRef = useRef(onZero);
+  onZeroRef.current = onZero;
+
+  useEffect(() => {
+    if (countdown === null) return;
+    if (countdown === 0) {
+      onZeroRef.current();
+      setCountdown(null);
+      return;
+    }
+    ref.current = setInterval(() => {
+      setCountdown((c) => (c !== null && c > 0 ? c - 1 : c));
+    }, 1000);
+    return () => { if (ref.current) clearInterval(ref.current); };
+  }, [countdown]);
+
+  const start = () => setCountdown(3);
+  const cancel = () => {
+    if (ref.current) clearInterval(ref.current);
+    setCountdown(null);
+  };
+
+  return [countdown, start, cancel];
+}
+
 interface RelationSettingsProps {
-  onCreateNewSpace?: () => void;
+  onCreateNewSpace?: () => Promise<void> | void;
   onLeavePartner?: () => Promise<void>;
 }
 
@@ -52,56 +80,43 @@ export default function RelationSettings({
   const { session } = useAuth();
   const [open, setOpen] = useState(false);
 
-  // Leave confirmation dialog (controlled so we can keep it open during countdown)
-  const [leaveDialogOpen, setLeaveDialogOpen] = useState(false);
-  const [countdown, setCountdown] = useState<number | null>(null);
-  const countdownRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  // ── "Skapa nytt utrymme" dialog state + 3s countdown ──
+  const [newSpaceOpen, setNewSpaceOpen] = useState(false);
+  const [newSpaceLoading, setNewSpaceLoading] = useState(false);
+  const [newSpaceCountdown, startNewSpaceCountdown, cancelNewSpaceCountdown] = useCountdown(
+    async () => {
+      setNewSpaceOpen(false);
+      setNewSpaceLoading(true);
+      try { await onCreateNewSpace?.(); } finally { setNewSpaceLoading(false); }
+    }
+  );
 
-  // Re-auth OTP dialog state
+  // ── "Byt partner" dialog state + 3s countdown ──
+  const [leaveDialogOpen, setLeaveDialogOpen] = useState(false);
+  const [leaveCountdown, startLeaveCountdown, cancelLeaveCountdown] = useCountdown(
+    async () => {
+      setLeaveDialogOpen(false);
+      await triggerLeave();
+    }
+  );
+
+  // Re-auth OTP dialog
   const [reauthOpen, setReauthOpen] = useState(false);
   const [otp, setOtp] = useState('');
   const [reauthLoading, setReauthLoading] = useState(false);
   const [reauthSent, setReauthSent] = useState(false);
 
-  // Countdown effect — fires leave logic when it reaches 0
-  useEffect(() => {
-    if (countdown === null) return;
-    if (countdown === 0) {
-      setLeaveDialogOpen(false);
-      handleLeaveConfirm();
-      return;
-    }
-    countdownRef.current = setInterval(() => {
-      setCountdown((c) => (c !== null && c > 0 ? c - 1 : c));
-    }, 1000);
-    return () => { if (countdownRef.current) clearInterval(countdownRef.current); };
-  }, [countdown]);
-
-  const startCountdown = () => setCountdown(3);
-
-  const cancelCountdown = () => {
-    if (countdownRef.current) clearInterval(countdownRef.current);
-    setCountdown(null);
-    setLeaveDialogOpen(false);
-  };
-
-  // Called when user confirms in the first AlertDialog
-  const handleLeaveConfirm = async () => {
+  const triggerLeave = async () => {
     const ageMs = getSessionAgeMs(session?.access_token);
-
     if (ageMs <= REAUTH_WINDOW_MS) {
-      // Session is fresh — execute directly
       await onLeavePartner?.();
       return;
     }
-
-    // Session is stale — trigger re-auth OTP
     const { error } = await supabase.auth.reauthenticate();
     if (error) {
       toast.error('Kunde inte skicka verifieringskod. Försök igen.');
       return;
     }
-
     setReauthSent(true);
     setOtp('');
     setReauthOpen(true);
@@ -116,12 +131,10 @@ export default function RelationSettings({
         token: otp.trim(),
         type: 'reauthentication' as any,
       });
-
       if (error) {
         toast.error('Fel kod. Kontrollera din e-post och försök igen.');
         return;
       }
-
       setReauthOpen(false);
       await onLeavePartner?.();
     } finally {
@@ -145,17 +158,28 @@ export default function RelationSettings({
       {open && (
         <div className="px-6 pb-6 space-y-6">
 
-          {/* ── Secondary action: Create new space ── */}
+          {/* ── "Skapa nytt utrymme" ── */}
           <div className="space-y-3">
             <div>
               <p className="text-sm text-foreground font-medium">Skapa nytt gemensamt utrymme</p>
               <p className="text-xs text-muted-foreground mt-1 leading-relaxed">
-                Ni får en ny tom plats att börja på. Er tidigare historik finns kvar i det gamla utrymmet.
+                Det här skapar ett nytt tomt utrymme. Historiken i ert nuvarande utrymme finns kvar, men ni fortsätter i ett nytt.
               </p>
             </div>
-            <AlertDialog>
+
+            {/* Controlled AlertDialog so we can lock it open during countdown */}
+            <AlertDialog open={newSpaceOpen} onOpenChange={(v) => {
+              if (!v) { cancelNewSpaceCountdown(); }
+              setNewSpaceOpen(v);
+            }}>
               <AlertDialogTrigger asChild>
-                <Button variant="outline" size="sm" className="gap-1.5">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="gap-1.5"
+                  disabled={newSpaceLoading}
+                  onClick={() => setNewSpaceOpen(true)}
+                >
                   <Plus className="w-3.5 h-3.5" />
                   Skapa nytt utrymme
                 </Button>
@@ -163,18 +187,25 @@ export default function RelationSettings({
               <AlertDialogContent>
                 <AlertDialogHeader>
                   <AlertDialogTitle className="font-serif text-lg">
-                    Skapa ett nytt gemensamt utrymme?
+                    Skapa ett nytt utrymme?
                   </AlertDialogTitle>
                   <AlertDialogDescription className="text-sm text-muted-foreground leading-relaxed space-y-2 pt-1">
-                    <span className="block">Ni får en ny tom plats att börja på.</span>
-                    <span className="block">Er tidigare samtalshistorik finns kvar i ert nuvarande utrymme men följer inte med.</span>
+                    <span className="block">Det här skapar ett nytt tomt utrymme.</span>
+                    <span className="block">Historiken i ert nuvarande utrymme finns kvar, men ni fortsätter i ett nytt.</span>
                   </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter className="mt-2">
-                  <AlertDialogCancel>Avbryt</AlertDialogCancel>
-                  <AlertDialogAction onClick={onCreateNewSpace}>
-                    Skapa nytt utrymme
-                  </AlertDialogAction>
+                  <AlertDialogCancel onClick={cancelNewSpaceCountdown}>Avbryt</AlertDialogCancel>
+                  <Button
+                    variant="default"
+                    disabled={newSpaceCountdown !== null && newSpaceCountdown > 0}
+                    onClick={() => { if (newSpaceCountdown === null) startNewSpaceCountdown(); }}
+                    className="min-w-[200px]"
+                  >
+                    {newSpaceCountdown !== null && newSpaceCountdown > 0
+                      ? `Skapa nytt utrymme (${newSpaceCountdown})`
+                      : 'Skapa nytt utrymme'}
+                  </Button>
                 </AlertDialogFooter>
               </AlertDialogContent>
             </AlertDialog>
@@ -183,16 +214,17 @@ export default function RelationSettings({
           {/* ── Divider ── */}
           <div className="border-t border-border/40" />
 
-          {/* ── Destructive action: Leave partner ── */}
+          {/* ── "Byt partner" — destructive, deep-settings only ── */}
           <div className="space-y-3">
             <div>
-              <p className="text-sm text-destructive/80 font-medium">Avsluta koppling till partner</p>
+              <p className="text-sm text-destructive/80 font-medium">Byt partner</p>
               <p className="text-xs text-muted-foreground mt-1 leading-relaxed">
-                Du lämnar ert gemensamma utrymme. Din partner får behålla historiken där.
+                Detta avslutar kopplingen till din nuvarande partner. Ni kommer inte längre dela samma utrymme.
               </p>
             </div>
+
             <AlertDialog open={leaveDialogOpen} onOpenChange={(v) => {
-              if (!v) cancelCountdown();
+              if (!v) cancelLeaveCountdown();
               setLeaveDialogOpen(v);
             }}>
               <AlertDialogTrigger asChild>
@@ -203,33 +235,31 @@ export default function RelationSettings({
                   onClick={() => setLeaveDialogOpen(true)}
                 >
                   <Unlink className="w-3.5 h-3.5" />
-                  Avsluta koppling
+                  Byt partner
                 </Button>
               </AlertDialogTrigger>
               <AlertDialogContent>
                 <AlertDialogHeader>
                   <AlertDialogTitle className="font-serif text-lg">
-                    Avsluta kopplingen?
+                    Byt partner?
                   </AlertDialogTitle>
                   <AlertDialogDescription className="text-sm text-muted-foreground leading-relaxed space-y-2 pt-1">
-                    <span className="block">Du lämnar ert gemensamma utrymme.</span>
-                    <span className="block">Din partner behåller historiken där.</span>
-                    <span className="block">Du får skapa eller ansluta till ett nytt utrymme efteråt.</span>
+                    <span className="block">Detta avslutar kopplingen till din nuvarande partner.</span>
+                    <span className="block">Ni kommer inte längre dela samma utrymme.</span>
+                    <span className="block">Du kan bjuda in någon ny senare.</span>
                   </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter className="mt-2">
-                  <AlertDialogCancel onClick={cancelCountdown}>Avbryt</AlertDialogCancel>
+                  <AlertDialogCancel onClick={cancelLeaveCountdown}>Avbryt</AlertDialogCancel>
                   <Button
                     variant="destructive"
-                    disabled={countdown !== null && countdown > 0}
-                    onClick={() => {
-                      if (countdown === null) startCountdown();
-                    }}
-                    className="min-w-[180px]"
+                    disabled={leaveCountdown !== null && leaveCountdown > 0}
+                    onClick={() => { if (leaveCountdown === null) startLeaveCountdown(); }}
+                    className="min-w-[160px]"
                   >
-                    {countdown !== null && countdown > 0
-                      ? `Avslutar om ${countdown}…`
-                      : 'Avsluta koppling'}
+                    {leaveCountdown !== null && leaveCountdown > 0
+                      ? `Byt partner (${leaveCountdown})`
+                      : 'Byt partner'}
                   </Button>
                 </AlertDialogFooter>
               </AlertDialogContent>
@@ -243,11 +273,11 @@ export default function RelationSettings({
       <Dialog open={reauthOpen} onOpenChange={(v) => { if (!reauthLoading) setReauthOpen(v); }}>
         <DialogContent className="max-w-sm">
           <DialogHeader>
-            <DialogTitle className="font-serif text-lg">Bekräfta din identitet</DialogTitle>
+            <DialogTitle className="font-serif text-lg">Bekräfta att det är du</DialogTitle>
             <DialogDescription className="text-sm text-muted-foreground leading-relaxed pt-1">
               {reauthSent
                 ? 'Vi har skickat en engångskod till din e-postadress. Ange koden nedan för att fortsätta.'
-                : 'Anger engångskod för att bekräfta åtgärden.'}
+                : 'För att byta partner behöver du bekräfta ditt konto.'}
             </DialogDescription>
           </DialogHeader>
 
@@ -279,7 +309,7 @@ export default function RelationSettings({
               disabled={otp.length < 6 || reauthLoading}
               onClick={handleOtpVerify}
             >
-              {reauthLoading ? 'Verifierar…' : 'Bekräfta och avsluta'}
+              {reauthLoading ? 'Verifierar…' : 'Bekräfta och byt partner'}
             </Button>
           </DialogFooter>
         </DialogContent>
