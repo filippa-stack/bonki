@@ -8,7 +8,6 @@ import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { useApp } from '@/contexts/AppContext';
-import { useAuth } from '@/contexts/AuthContext';
 import { useCoupleSpaceContext } from '@/contexts/CoupleSpaceContext';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
@@ -31,26 +30,45 @@ import { useNormalizedSessionContext } from '@/contexts/NormalizedSessionContext
 // ─────────────────────────────────────────────────────────────
 // Card view mode — the single source of truth for which surface mounts.
 //
-//   'live'    → active paired session, SessionStepReflection visible
-//   'revisit' → read-only walkthrough via ?revisit=true query param
-//   'history' → session is completed, CompletedSessionView mounts
+//   'live'       → active paired session, SessionStepReflection visible
+//   'revisit'    → read-only walkthrough via ?revisit=true query param
+//   'history'    → session is completed, CompletedSessionView mounts
+//   'completion' → session just finished, takeaway screen
+//   'guard'      → paired but no active session, entry blocked
 // ─────────────────────────────────────────────────────────────
-type CardViewMode = 'live' | 'revisit' | 'history';
+type CardViewMode = 'live' | 'revisit' | 'history' | 'completion' | 'guard';
 
 function resolveCardViewMode({
-  hasActiveSession,
   isRevisitMode,
+  hasActiveSession,
   hasCompletedSessionForCard,
+  showCompletion,
+  isPaired,
+  sessionLoading,
 }: {
-  hasActiveSession: boolean;
   isRevisitMode: boolean;
+  hasActiveSession: boolean;
   hasCompletedSessionForCard: boolean;
+  showCompletion: boolean;
+  isPaired: boolean;
+  sessionLoading: boolean;
 }): CardViewMode {
+  // Revisit always wins — explicit user intent
   if (isRevisitMode) return 'revisit';
-  if (hasCompletedSessionForCard) return 'history';
+
+  // Takeaway screen: session just finished, show closing ritual before history
+  if (showCompletion) return 'completion';
+
+  // Active session takes precedence over completed-session archive
   if (hasActiveSession) return 'live';
-  // Fallback: no active session and not completed — still render live shell
-  // (entry guard below will block access if paired without a session)
+
+  // Completed archive
+  if (hasCompletedSessionForCard) return 'history';
+
+  // Paired but no session and not loading — entry blocked
+  if (isPaired && !sessionLoading) return 'guard';
+
+  // Solo or still loading — render live shell (solo CTA visible)
   return 'live';
 }
 
@@ -84,7 +102,6 @@ export default function CardView() {
   const normalizedSession = useNormalizedSessionContext();
 
   const isActiveSession = !!(normalizedSession.sessionId && normalizedSession.cardId === cardId);
-  const currentStepIndexFromSession = normalizedSession.currentStepIndex;
 
   // Retained so the takeaway screen has a session ID after the session closes
   const [activeSessionId, setActiveSessionId] = useState<string | null>(
@@ -112,31 +129,10 @@ export default function CardView() {
       .then(({ data }) => setHasCompletedNormalizedSession(!!data));
   }, [space, cardId, devState]);
 
-  // showCompletion gates the "just-finished" takeaway screen
-  // (session is still technically open but all steps are done)
+  // showCompletion: session just finished — takeaway ritual before archive
   const [showCompletion, setShowCompletion] = useState(
     devState === 'completed' ? true : false
   );
-
-  // ─── Resolve the mode ───
-  // history takes precedence over live only when showCompletion is not
-  // active (showCompletion = mid-session closing ritual, not archived history)
-  const cardViewMode: CardViewMode = showCompletion
-    ? 'live' // keep live shell open so takeaway screen renders
-    : resolveCardViewMode({
-        hasActiveSession: isActiveSession,
-        isRevisitMode,
-        hasCompletedSessionForCard: hasCompletedNormalizedSession,
-      });
-
-  // ─── Auto-transition to history ───
-  useEffect(() => {
-    if (isRevisitMode) return;
-    if (!showCompletion && hasCompletedNormalizedSession) {
-      // Card already fully explored on mount or after refetch — go to history
-      if (!isActiveSession) setHasCompletedNormalizedSession(true); // already set, harmless
-    }
-  }, [hasCompletedNormalizedSession, isActiveSession, isRevisitMode, showCompletion]);
 
   // ─── Auto-show completion when session disappears post-lock ───
   useEffect(() => {
@@ -145,6 +141,18 @@ export default function CardView() {
       setShowCompletion(true);
     }
   }, [activeSessionId, normalizedSession.sessionId, normalizedSession.loading, isRevisitMode, showCompletion]);
+
+  const isPaired = memberCount >= 2;
+
+  // ─── Single resolver — the only gate for which surface mounts ───
+  const cardViewMode: CardViewMode = resolveCardViewMode({
+    isRevisitMode,
+    hasActiveSession: isActiveSession,
+    hasCompletedSessionForCard: hasCompletedNormalizedSession,
+    showCompletion,
+    isPaired,
+    sessionLoading: normalizedSession.loading,
+  });
 
   // ─── Step index ───
   const initialRevisitStep = (() => {
@@ -165,13 +173,13 @@ export default function CardView() {
     return !isNaN(parsed) && parsed >= 0 ? parsed : null;
   })();
 
-  const currentStepIndex = cardViewMode === 'revisit' ? revisitStepIndex : currentStepIndexFromSession;
+  const currentStepIndex =
+    cardViewMode === 'revisit' ? revisitStepIndex : normalizedSession.currentStepIndex;
 
   // ─── Misc ───
   const [reviewOpen, setReviewOpen] = useState(false);
   const sectionViewRef = useRef<SectionViewHandle>(null);
   const { proposals } = useProposalsContext();
-  const isPaired = memberCount >= 2;
 
   const existingConversation = cardId ? getConversationForCard(cardId) : undefined;
 
@@ -261,16 +269,10 @@ export default function CardView() {
     );
   }
 
-  // ─── Entry guard (live + paired + no active session) ───
-  const needsSessionGuard =
-    cardViewMode === 'live' &&
-    isPaired &&
-    !showCompletion &&
-    !hasCompletedNormalizedSession &&
-    !normalizedSession.loading &&
-    !isActiveSession;
-
-  if (needsSessionGuard) {
+  // ─────────────────────────────────────────────────────────────
+  //  MODE: 'guard' — paired but no active session
+  // ─────────────────────────────────────────────────────────────
+  if (cardViewMode === 'guard') {
     return (
       <div className="min-h-screen page-bg">
         <Header title={category?.title} showBack backTo="/" />
@@ -300,9 +302,9 @@ export default function CardView() {
   }
 
   // ─────────────────────────────────────────────────────────────
-  //  MODE: 'live' — completion/takeaway screen (session just finished)
+  //  MODE: 'completion' — session just finished, takeaway ritual
   // ─────────────────────────────────────────────────────────────
-  if (showCompletion) {
+  if (cardViewMode === 'completion') {
     return (
       <div className="min-h-screen page-bg">
         <Header title={category?.title} showBack backTo="/" />
