@@ -4,13 +4,14 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Still Us — Screen Wireframes</title>
-<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { font-family: 'Inter', system-ui, sans-serif; background: #fafafa; color: #1a1a1a; padding: 40px 24px; max-width: 900px; margin: 0 auto; }
+  body { font-family: 'Inter', system-ui, sans-serif; background: #fafafa; color: #1a1a1a; padding: 40px 24px; max-width: 960px; margin: 0 auto; }
   h1 { font-size: 28px; font-weight: 600; margin-bottom: 8px; }
-  .subtitle { font-size: 14px; color: #888; margin-bottom: 48px; }
-  .wireframe { margin-bottom: 56px; page-break-inside: avoid; }
+  .subtitle { font-size: 14px; color: #888; margin-bottom: 16px; }
+  .toc { font-size: 13px; color: #555; margin-bottom: 48px; line-height: 2; }
+  .toc a { color: #5f8f7e; text-decoration: none; }
+  .wireframe { margin-bottom: 64px; page-break-inside: avoid; }
   .wireframe h2 { font-size: 18px; font-weight: 600; margin-bottom: 4px; }
   .wireframe .route { font-size: 13px; color: #999; margin-bottom: 16px; font-family: monospace; }
   .wireframe .annotations { font-size: 13px; color: #555; line-height: 1.7; margin-top: 12px; }
@@ -18,15 +19,19 @@
   .frame { border: 1px solid #ddd; border-radius: 12px; padding: 24px; background: #fff; font-size: 13px; line-height: 1.8; color: #333; }
   .frame .row { display: flex; align-items: center; gap: 8px; }
   .frame .header-bar { display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; border-bottom: 1px solid #eee; margin: -24px -24px 16px -24px; border-radius: 12px 12px 0 0; background: #f8f8f8; font-size: 12px; color: #666; }
-  .frame .btn { display: inline-block; background: #5f8f7e; color: #fff; padding: 10px 20px; border-radius: 12px; text-align: center; font-size: 13px; margin: 4px 0; }
+  .frame .btn { display: inline-block; background: #5f8f7e; color: #fff; padding: 10px 20px; border-radius: 12px; text-align: center; font-size: 13px; margin: 4px 0; width: 100%; }
   .frame .btn-outline { display: inline-block; border: 1px solid #ccc; color: #555; padding: 10px 20px; border-radius: 20px; text-align: center; font-size: 13px; margin: 4px 0; }
   .frame .btn-ghost { display: inline-block; color: #999; padding: 8px 16px; text-align: center; font-size: 12px; margin: 4px 0; }
+  .frame .btn-destructive { display: inline-block; background: #e05252; color: #fff; padding: 10px 20px; border-radius: 12px; text-align: center; font-size: 13px; margin: 4px 0; }
   .frame .muted { color: #999; font-size: 12px; }
   .frame .serif { font-family: Georgia, serif; }
   .frame .center { text-align: center; }
   .frame .spacer { height: 20px; }
+  .frame .spacer-sm { height: 10px; }
   .frame .divider { border-top: 1px solid #eee; margin: 16px 0; }
   .frame .card { border: 1px solid #e5e5e5; border-radius: 12px; padding: 16px; margin: 8px 0; background: #fafafa; }
+  .frame .banner { border: 1px solid #e0e8e5; border-radius: 12px; padding: 14px 16px; margin: 8px 0; background: #f5faf8; }
+  .frame .banner-warn { border: 1px solid #e5e0d0; border-radius: 12px; padding: 14px 16px; margin: 8px 0; background: #fdf8f0; }
   .frame .dots { display: flex; gap: 6px; justify-content: center; }
   .frame .dot { width: 6px; height: 6px; border-radius: 50%; background: #ccc; }
   .frame .dot.active { width: 16px; border-radius: 4px; background: #5f8f7e55; }
@@ -34,345 +39,727 @@
   .frame .progress-step { flex: 1; height: 3px; background: #e5e5e5; border-radius: 2px; }
   .frame .progress-step.done { background: #5f8f7e; }
   .frame .progress-step.current { background: #5f8f7e88; }
-  .frame .breathing { width: 64px; height: 1px; background: #1a1a1a11; margin: 8px auto; }
-  .frame .pace-dots { display: flex; gap: 8px; justify-content: center; }
-  .frame .pace-dot { width: 8px; height: 8px; border-radius: 50%; }
-  .frame .pace-dot.filled { background: #1a1a1a33; }
-  .frame .pace-dot.outline { border: 1px solid #1a1a1a22; }
+  .frame .badge { display: inline-block; font-size: 10px; background: #e0e8e5; color: #5f8f7e; border-radius: 20px; padding: 2px 8px; font-weight: 600; letter-spacing: 0.5px; }
+  .frame .badge-warn { display: inline-block; font-size: 10px; background: #fde8d8; color: #c06030; border-radius: 20px; padding: 2px 8px; font-weight: 600; }
+  .frame .tag { display: inline-block; font-size: 11px; color: #888; border: 1px solid #e5e5e5; border-radius: 6px; padding: 2px 6px; margin: 2px; }
+  .new-badge { display: inline-block; font-size: 10px; background: #5f8f7e; color: white; border-radius: 20px; padding: 1px 7px; margin-left: 6px; vertical-align: middle; }
   @media print { .wireframe { page-break-inside: avoid; } body { padding: 20px; } }
+  .section-header { font-size: 22px; font-weight: 700; color: #1a1a1a; border-bottom: 2px solid #5f8f7e; padding-bottom: 8px; margin: 48px 0 32px; }
 </style>
 </head>
 <body>
 
 <h1>Still Us — Screen Wireframes</h1>
-<p class="subtitle">8 state-based UI variations · Generated from codebase · February 2026</p>
+<p class="subtitle">18 state-based UI variations · Updated February 2026 · Includes Sacred Session Guard, NewChapterBanner, system_events</p>
+
+<div class="toc">
+  <strong>Innehåll:</strong><br>
+  <a href="#onboarding">1. Onboarding</a> · 
+  <a href="#paywall">2. Paywall</a> · 
+  <a href="#solo">3. Solo (inbjudan)</a> · 
+  <a href="#join">4. Anslut (partner B)</a> · 
+  <a href="#paired-idle">5. Kopplat — vilande</a> · 
+  <a href="#proposal-incoming">6. Inkommande förslag</a> · 
+  <a href="#waiting">7. Väntar på partner</a> · 
+  <a href="#active-session">8. Aktiv session (CardView)</a> · 
+  <a href="#session-reflection">9. Stegreflexion</a> · 
+  <a href="#session-complete">10. Session klar</a> · 
+  <a href="#shared-space">11. Vårt utrymme</a> · 
+  <a href="#header-settings">12. Header — inställningar</a> · 
+  <a href="#relation-settings">13. Relationsinställningar</a> · 
+  <a href="#new-chapter-banner">14. Nytt kapitel-banner</a> · 
+  <a href="#partner-left">15. Partner lämnade</a> · 
+  <a href="#return-overlay">16. Återkomst-overlay</a> · 
+  <a href="#archive">17. Arkiv / Sparade</a> · 
+  <a href="#join-intent">18. Join-intent guard</a>
+</div>
+
+<!-- ════════════════════════════════════════════ -->
+<div class="section-header">ONBOARDING & KÖP</div>
 
 <!-- 1. ONBOARDING -->
-<div class="wireframe">
+<div id="onboarding" class="wireframe">
   <h2>1. Onboarding</h2>
   <div class="route">/ → &lt;Onboarding /&gt; (hasCompletedOnboarding = false)</div>
   <div class="frame">
     <div class="spacer"></div>
     <div class="spacer"></div>
-    <div class="center serif" style="font-size: 22px; font-weight: 600;">Välkommen</div>
+    <div class="center serif" style="font-size: 22px; font-weight: 600;">Ett gemensamt rum.</div>
     <div class="spacer"></div>
     <div class="center muted" style="max-width: 320px; margin: 0 auto; line-height: 1.7;">
-      Det här är ett utrymme för dig och din partner att reflektera över er relation – som föräldrar, som partners, som individer i ett gemensamt liv.
+      Still Us är skapat för er två –<br>för att fördjupa det som bär er relation.
     </div>
     <div class="spacer"></div>
-    <div class="center"><div class="btn" style="width: 80%; max-width: 280px;">Fortsätt</div></div>
-    <div class="spacer" style="height: 12px;"></div>
-    <div class="dots">
-      <div class="dot active"></div>
-      <div class="dot"></div>
-      <div class="dot"></div>
-      <div class="dot"></div>
-      <div class="dot"></div>
-    </div>
-    <div class="spacer" style="height: 12px;"></div>
-    <div class="center muted">Hoppa över introduktionen</div>
+    <div class="spacer"></div>
+    <div class="btn center">Fortsätt</div>
+    <div class="spacer-sm"></div>
+    <div class="dots center"><span class="dot active"></span><span class="dot"></span><span class="dot"></span></div>
+    <div class="spacer-sm"></div>
+    <div class="center btn-ghost">Hoppa över</div>
     <div class="spacer"></div>
   </div>
   <ul class="annotations">
-    <li>5 slides total, swipe or tap to advance</li>
-    <li>Dots are tappable for direct navigation</li>
-    <li>"Hoppa över" skips to completeOnboarding()</li>
+    <li>3 slides: "Ett gemensamt rum." → "Omsorgsfullt utvecklat." → "Det börjar med er."</li>
+    <li>Sista sliden: knapp byts till "Börja" → triggar completeOnboarding() + initializeCoupleSpace()</li>
+    <li>Hoppa över tillgänglig på slide 1 och 2 — döljs på sista</li>
+    <li>AnimatePresence fade 150ms mellan slides</li>
   </ul>
 </div>
 
-<!-- 2. SOLO BEFORE PARTNER -->
-<div class="wireframe">
-  <h2>2. Solo Before Partner</h2>
-  <div class="route">/ → &lt;Home /&gt; (displayMemberCount &lt; 2)</div>
+<!-- 2. PAYWALL -->
+<div id="paywall" class="wireframe">
+  <h2>2. Paywall — Engångsköp</h2>
+  <div class="route">/ → &lt;PurchaseScreen /&gt; (hasPurchased=false, !shouldBypassPaywall)</div>
   <div class="frame">
-    <div class="header-bar">
-      <span>🟢 logo</span>
-      <span>save · sync · backup · <b>Vårt utrymme</b> · ⏻</span>
-    </div>
-    <div class="center" style="padding: 20px 0 8px;">
-      <div style="width: 56px; height: 56px; background: #e5e5e5; border-radius: 12px; margin: 0 auto 12px;"></div>
-      <div class="serif" style="font-size: 20px; font-weight: 600;">STILL US — So we stay us</div>
-      <div class="muted" style="margin-top: 6px;">Förbli ett vi medan vi uppfostrar dem</div>
-    </div>
-    <div class="divider"></div>
-    <div class="card center">
-      <div class="muted">Ni har inte startat något samtal ännu.</div>
-      <div style="margin-top: 8px;"><span class="btn" style="font-size: 12px; padding: 8px 16px;">Börja ert första samtal</span></div>
-    </div>
-    <div class="center muted" style="margin: 12px 0;">Appen är gjord för er båda. Bjud in din partner för att få ut det mesta av era samtal.</div>
+    <div class="center spacer"></div>
+    <div class="center muted">[Bonki-logotyp]</div>
+    <div class="spacer"></div>
+    <div class="center serif" style="font-size: 20px;">Ert gemensamma utrymme</div>
+    <div class="spacer-sm"></div>
+    <div class="center muted">Ett engångsköp låser upp ert gemensamma utrymme för två. Din partner betalar inte.</div>
+    <div class="spacer"></div>
     <div class="card">
-      <div class="muted" style="font-size: 11px;">AttachPartner widget</div>
-      <div style="margin-top: 4px;">Invite code / share link / name input</div>
+      ✓ Tillgång till alla samtalsområden och reflektioner<br>
+      ✓ Bjud in din partner utan extra kostnad<br>
+      ✓ Ert privata utrymme — för alltid
     </div>
-    <div class="divider"></div>
-    <div class="muted" style="font-size: 11px; margin-bottom: 6px;">Kategorier (full list, solo mode)</div>
-    <div class="card">Kategori 1</div>
-    <div class="card">Kategori 2</div>
-    <div class="card">Kategori 3</div>
-    <div class="divider"></div>
-    <div class="muted">🔗 Er historia · 🔖 Sparade samtal</div>
-    <div class="divider"></div>
-    <div class="muted">NotificationSettings · Footer</div>
+    <div class="spacer"></div>
+    <div class="btn">Lås upp för 299 kr</div>
+    <div class="spacer-sm"></div>
+    <div class="center muted">🔒 Säker betalning · Engångsköp</div>
+    <div class="spacer-sm"></div>
+    <div class="center btn-ghost">Jag har redan blivit inbjuden</div>
+    <div class="spacer-sm"></div>
+    <div class="center muted" style="font-size: 11px;">Har du redan blivit inbjuden? Då behöver du inte köpa igen — anslut med länken eller koden.</div>
   </div>
   <ul class="annotations">
-    <li>Category list visible (full grid) — solo users browse freely</li>
-    <li>AttachPartner shown with invite code + share button</li>
-    <li>"Vårt utrymme" pill visible in header (no active session)</li>
+    <li>Bypass-villkor: partner_b (inbjuden), claimStatus=success, hasPendingInvite(), hasJoinIntent</li>
+    <li>DB (couple_spaces.paid_at) är sanningskälla; localStorage är fallback</li>
+    <li>Mock-köp: 1.5s behandling → 1.2s "Klart!" → onPurchaseComplete()</li>
+    <li>PostPurchaseInvite visas direkt efter om memberCount &lt; 2</li>
   </ul>
 </div>
 
-<!-- 3. IDLE — PARTNER CONNECTED -->
-<div class="wireframe">
-  <h2>3. Idle — Partner Connected</h2>
-  <div class="route">/ → &lt;Home /&gt; (displayMemberCount ≥ 2, no session)</div>
+<!-- ════════════════════════════════════════════ -->
+<div class="section-header">PARNING & SOLO</div>
+
+<!-- 3. SOLO -->
+<div id="solo" class="wireframe">
+  <h2>3. Home — Solo-läge (inbjudan)</h2>
+  <div class="route">/ · mode='solo' · displayMemberCount &lt; 2</div>
   <div class="frame">
     <div class="header-bar">
-      <span>🟢 logo</span>
-      <span>save · sync · backup · <b>Vårt utrymme</b> · ⏻</span>
-    </div>
-    <div class="center" style="padding: 20px 0 8px;">
-      <div style="width: 56px; height: 56px; background: #e5e5e5; border-radius: 12px; margin: 0 auto 12px;"></div>
-      <div class="serif" style="font-size: 20px; font-weight: 600;">STILL US — So we stay us</div>
-      <div class="muted" style="margin-top: 6px;">Förbli ett vi medan vi uppfostrar dem</div>
-    </div>
-    <div class="divider"></div>
-    <div class="card center">
-      <div class="muted">One-time hint (shown once):</div>
-      <div class="serif" style="font-size: 13px; margin-top: 4px;">Så fungerar det</div>
-      <div class="muted" style="margin-top: 4px;">Ni väljer samtalsämne tillsammans. En av er föreslår ett kort, den andra accepterar — sedan börjar ni.</div>
+      <span>[Logotyp]</span>
+      <span class="row"><span class="btn-ghost" style="font-size:11px;">👤 Ditt utrymme</span> ⚙️</span>
     </div>
     <div class="spacer"></div>
-    <div class="center">
-      <div class="muted serif">Vad vill ni prata om?</div>
-      <div style="margin-top: 12px;">
-        <span class="btn-outline" style="padding: 12px 32px; font-family: Georgia, serif;">Välj samtalsämne</span>
+    <div class="card">
+      <div class="serif" style="font-size:16px; margin-bottom:8px;">Bjud in din partner</div>
+      <div class="muted">När ni är två syns era delade reflektioner här. Du väljer alltid vad som delas.</div>
+      <div class="spacer-sm"></div>
+      <div class="btn">Skicka inbjudan</div>
+    </div>
+    <div class="spacer"></div>
+    <div class="muted center" style="font-size:11px; letter-spacing: 1px; text-transform:uppercase;">TILLGÄNGLIGT NÄR NI ÄR TVÅ</div>
+    <div class="spacer-sm"></div>
+    <div class="card" style="opacity:0.35; pointer-events:none;">
+      <div class="serif">Kategori (låst)</div>
+      <div class="muted">Samtalskort listas här</div>
+    </div>
+    <div class="spacer"></div>
+  </div>
+  <ul class="annotations">
+    <li>SoloInviteSection visar InvitePartner (collapsed → expanded)</li>
+    <li>Låsta kategorier visas i LockedCategoriesDisclosure (expandbar)</li>
+    <li>Invite-info laddas lazy via fetchInviteInfo() RPC → visas endast när expanded</li>
+    <li>Partner A kan ange sitt namn (visas för partner B)</li>
+    <li>Inbjudan: delningslänk + 6-siffrig kod som alternativ</li>
+  </ul>
+</div>
+
+<!-- 4. JOIN (Partner B) -->
+<div id="join" class="wireframe">
+  <h2>4. Anslut — Partner B (JoinSpace)</h2>
+  <div class="route">/join?token=... eller /join?code=... → &lt;JoinSpace /&gt;</div>
+  <div class="frame">
+    <div class="spacer"></div>
+    <div class="center muted">[Bonki-logotyp]</div>
+    <div class="spacer"></div>
+    <div class="center serif" style="font-size:20px;">Anslut till din partner</div>
+    <div class="center muted">Ange koden eller öppna länken du fick. Du behöver inte köpa igen.</div>
+    <div class="spacer"></div>
+    <div class="card">
+      <div class="muted">Ditt namn (valfritt)</div>
+      <div style="border:1px solid #ddd; border-radius:8px; padding:8px; margin:4px 0; color:#999;">Vad ska din partner kalla dig?</div>
+      <div class="spacer-sm"></div>
+      <div class="muted">Inbjudningskod (om ingen länk)</div>
+      <div style="border:1px solid #ddd; border-radius:8px; padding:8px; margin:4px 0; text-align:center; font-family:monospace; letter-spacing:4px; color:#999;">ABC123</div>
+    </div>
+    <div class="spacer"></div>
+    <div class="btn">Anslut</div>
+    <div class="spacer"></div>
+  </div>
+  <ul class="annotations">
+    <li>Token från URL → auto-claim via join-couple-space edge function</li>
+    <li>Om ej inloggad → storePendingInvite() → OAuth → Index.tsx hämtar och gör claim</li>
+    <li>already_paired behandlas som success (idempotent)</li>
+    <li>JustJoinedBanner ("🤍 Du är nu ansluten.") visas en gång på Home efter join</li>
+    <li>Felkoder: invalid_invite, space_full, no_session, network</li>
+  </ul>
+</div>
+
+<!-- ════════════════════════════════════════════ -->
+<div class="section-header">HEMVY — KOPPLADE PAR</div>
+
+<!-- 5. PAIRED IDLE -->
+<div id="paired-idle" class="wireframe">
+  <h2>5. Home — Kopplat par, vilande</h2>
+  <div class="route">/ · mode='idle' · displayMemberCount=2 · ingen aktiv session</div>
+  <div class="frame">
+    <div class="header-bar">
+      <span>[Logotyp]</span>
+      <span class="row"><span style="font-size:11px; color:#5f8f7e;">👥 Vårt utrymme</span> ⚙️</span>
+    </div>
+    <div class="spacer"></div>
+    <div class="card">
+      <div class="muted" style="font-size:11px; text-transform:uppercase; letter-spacing:1px;">FÖRESLÅ ETT SAMTAL</div>
+      <div class="spacer-sm"></div>
+      <div class="serif" style="font-size:17px;">Välj ett kort att utforska</div>
+      <div class="spacer-sm"></div>
+      <div class="btn">Föreslå ett samtal →</div>
+    </div>
+    <div class="spacer"></div>
+    <div class="muted" style="font-size:11px; text-transform:uppercase; letter-spacing:1px; padding-left:4px;">SAMTALSOMRÅDEN</div>
+    <div class="spacer-sm"></div>
+    <div class="card">Arbetsfördelning &amp; mentala lasset <span class="badge">3 kort</span></div>
+    <div class="card">Uppfostringsstilar <span class="badge">3 kort</span></div>
+    <div class="card">Paridentitet vs föräldraidentitet <span class="badge">2 kort</span></div>
+    <div class="muted center" style="font-size:11px;">+ 7 fler kategorier…</div>
+    <div class="divider"></div>
+    <div class="card">
+      <div class="muted">Notiser</div>
+      <div class="muted" style="font-size:11px;">Kollapsad sektion — expandar inline</div>
+    </div>
+    <div class="card">
+      <div class="muted">Relation &amp; utrymme</div>
+      <div class="muted" style="font-size:11px;">Kollapsad sektion — expandar inline</div>
+    </div>
+  </div>
+  <ul class="annotations">
+    <li>Kategorikort: klick → /category/:id</li>
+    <li>Föreslå-CTA → isProposalMode=true → filtrerbar kortlista direkt på Home</li>
+    <li>Sparade förslag visas om ownPendingProposals/savedProposals finns</li>
+    <li>Notiser och Relation-sektioner expandar inline (ChevronDown-toggle)</li>
+  </ul>
+</div>
+
+<!-- 6. PROPOSAL INCOMING -->
+<div id="proposal-incoming" class="wireframe">
+  <h2>6. Inkommande förslag (fullscreen overlay)</h2>
+  <div class="route">/ · mode='proposal' · incomingProposals.length > 0</div>
+  <div class="frame">
+    <div style="min-height:400px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:32px;">
+      <div class="center">
+        <div class="muted" style="font-size:11px; text-transform:uppercase; letter-spacing:1px;">Förslag från din partner</div>
+        <div class="spacer-sm"></div>
+        <div class="serif" style="font-size:22px;">Arbetsfördelning</div>
+        <div class="spacer-sm"></div>
+        <div class="muted" style="font-size:13px; font-style:italic;">"Tänkte vi kunde prata om det här."</div>
+      </div>
+      <div style="width:100%; max-width:320px;">
+        <div class="btn">Acceptera →</div>
+        <div class="spacer-sm"></div>
+        <div class="btn-ghost center">Inte nu</div>
+        <div class="center muted" style="font-size:11px; margin-top:4px;">Du kan välja det senare från startsidan.</div>
       </div>
     </div>
-    <div class="spacer"></div>
-    <div class="muted center" style="font-size: 11px;">── No category list (hidden for paired) ──</div>
-    <div class="divider"></div>
-    <div class="muted">RelationshipMemory (if last completed card)</div>
-    <div class="muted">RecentSharedReflection</div>
-    <div class="divider"></div>
-    <div class="muted">🔗 Er historia</div>
-    <div class="divider"></div>
-    <div class="muted">NotificationSettings · Footer</div>
   </div>
   <ul class="annotations">
-    <li>Category list replaced by single "Välj samtalsämne" CTA</li>
-    <li>AttachPartner widget gone (partner connected)</li>
-    <li>Proposal hint tooltip shows once, then persists in localStorage</li>
+    <li>Täcker hela skärmen (fixed inset-0 z-50) — fokuserat val</li>
+    <li>Acceptera → updateProposalStatus('accepted') → activateSession() → navigate('/card/:id')</li>
+    <li>Inte nu → updateProposalStatus('saved_for_later') → sparas synligt på Home</li>
+    <li>Förfaller efter 48h (expires_at i DB)</li>
   </ul>
 </div>
 
-<!-- 4. PROPOSAL PENDING -->
-<div class="wireframe">
-  <h2>4. Proposal Pending (Incoming)</h2>
-  <div class="route">/ → &lt;Home /&gt; (incomingProposals.length &gt; 0)</div>
+<!-- 7. WAITING -->
+<div id="waiting" class="wireframe">
+  <h2>7. Home — Väntar på partner (SESSION_WAITING)</h2>
+  <div class="route">/ · mode='active' · appMode='SESSION_WAITING'</div>
   <div class="frame">
     <div class="header-bar">
-      <span>🟢 logo</span>
-      <span>save · sync · backup · <b>Vårt utrymme</b> · ⏻</span>
-    </div>
-    <div class="center" style="padding: 20px 0 8px;">
-      <div style="width: 56px; height: 56px; background: #e5e5e5; border-radius: 12px; margin: 0 auto 12px;"></div>
-      <div class="serif" style="font-size: 20px;">STILL US — So we stay us</div>
-    </div>
-    <div class="divider"></div>
-    <div class="card" style="display: flex; justify-content: space-between; align-items: center;">
-      <span class="muted">Ni har ett föreslaget samtal</span>
-      <span class="btn-ghost">Öppna i Vårt utrymme</span>
+      <span>[Logotyp]</span>
+      <span class="row"><span class="badge">Sparar…</span> ⚙️</span>
     </div>
     <div class="spacer"></div>
-    <div class="center muted">... rest of idle layout below ...</div>
-  </div>
-  <ul class="annotations">
-    <li>Banner inserted between hero and main content</li>
-    <li>"Öppna i Vårt utrymme" navigates to /shared</li>
-    <li>Toast also fires: "Ni har fått ett nytt samtalsförslag"</li>
-  </ul>
-</div>
-
-<!-- 5. ACTIVE SESSION STEP -->
-<div class="wireframe">
-  <h2>5. Active Session Step</h2>
-  <div class="route">/card/:id (isActiveSession = true, step in progress)</div>
-  <div class="frame">
-    <div class="header-bar">
-      <span>← &nbsp; 🟢 logo &nbsp; <i>Category title</i></span>
-      <span>save · sync · backup · ⏻</span>
-    </div>
-    <div style="padding: 8px 0;">
-      <div class="progress-bar">
-        <div class="progress-step done"></div>
-        <div class="progress-step current"></div>
-        <div class="progress-step"></div>
-        <div class="progress-step"></div>
+    <div class="card">
+      <div class="muted" style="font-size:11px; text-transform:uppercase; letter-spacing:1px;">PÅGÅENDE SAMTAL</div>
+      <div class="spacer-sm"></div>
+      <div class="serif" style="font-size:16px;">Arbetsfördelning</div>
+      <div class="muted">Steg 2 / 4</div>
+      <div class="spacer-sm"></div>
+      <div class="banner">
+        ⏳ Väntar på din partner…<br>
+        <span class="muted" style="font-size:11px;">Du har markerat steget. Din partner har inte gjort det än.</span>
       </div>
-      <div class="muted center" style="margin-top: 4px; font-size: 10px;">Början · <b>Fördjupning</b> · I vardagen · Tillsammans</div>
+      <div class="spacer-sm"></div>
+      <div class="btn">Öppna kortet →</div>
     </div>
-    <div class="spacer"></div>
-    <div class="center serif" style="font-size: 18px;">Card Title</div>
-    <div class="center muted" style="margin-top: 6px; font-style: italic;">Card subtitle</div>
-    <div class="divider"></div>
-    <div class="card">
-      <div class="muted" style="font-size: 11px;">SectionView — prompts + private notes</div>
-      <div style="margin-top: 8px;">Prompt 1: "Question text..."</div>
-      <div style="margin-top: 4px; padding: 8px; background: #f5f5f5; border-radius: 8px; font-size: 12px; color: #999;">Private note field (no shared notes — skipShared=true)</div>
-      <div style="margin-top: 8px;">Prompt 2: "Question text..."</div>
-      <div style="margin-top: 4px; padding: 8px; background: #f5f5f5; border-radius: 8px; font-size: 12px; color: #999;">Private note field</div>
-    </div>
-    <div class="spacer"></div>
-    <div class="center"><div class="btn" style="width: 100%;">Vi går vidare →</div></div>
-    <div class="spacer" style="height: 8px;"></div>
-    <div class="center muted" style="font-size: 11px;">📖 Se era svar</div>
   </div>
   <ul class="annotations">
-    <li>"Vårt utrymme" pill hidden from header (active session gate)</li>
-    <li>Shared notes suppressed (skipShared=true in usePromptNotes)</li>
-    <li>CTA text varies by step type (cta_opening, cta_reflective, etc.)</li>
-    <li>"Se era svar" opens ReviewDrawer overlay</li>
+    <li>appMode='SESSION_WAITING' = aktuell användare klart med steget, partner inte</li>
+    <li>Realtime: couple_session_completions INSERT → debounced refetch (300ms)</li>
+    <li>Header: "Vårt utrymme"-länk GÖMD under aktiv session (Sacred Session, Layer 1)</li>
+    <li>ActiveSessionGuard: redirectar till /card/:id vid otillåtna rutter (Layer 2)</li>
   </ul>
 </div>
 
-<!-- 6. WAITING STATE -->
-<div class="wireframe">
-  <h2>6. Waiting State</h2>
-  <div class="route">/card/:id (userCompletedCurrentStep = true, partnerCompletedCurrentStep = false)</div>
+<!-- ════════════════════════════════════════════ -->
+<div class="section-header">AKTIV SESSION</div>
+
+<!-- 8. ACTIVE SESSION (CARDVIEW) -->
+<div id="active-session" class="wireframe">
+  <h2>8. Aktiv Session — CardView</h2>
+  <div class="route">/card/:cardId · appMode='SESSION_ACTIVE'</div>
   <div class="frame">
     <div class="header-bar">
-      <span>← &nbsp; 🟢 logo &nbsp; <i>Category title</i></span>
-      <span>save · sync · ⏻</span>
+      <span>[Logotyp] Arbetsfördelning</span>
+      <span class="row"><span class="badge">Sparar…</span> ⚙️</span>
     </div>
-    <div style="padding: 8px 0;">
-      <div class="progress-bar">
-        <div class="progress-step done"></div>
-        <div class="progress-step done"></div>
-        <div class="progress-step"></div>
-        <div class="progress-step"></div>
+    <div class="spacer"></div>
+    <div class="progress-bar">
+      <span class="progress-step done"></span>
+      <span class="progress-step current"></span>
+      <span class="progress-step"></span>
+      <span class="progress-step"></span>
+    </div>
+    <div class="muted center" style="margin-top:4px;">Steg 2 / 4 — Tankeväckare</div>
+    <div class="spacer"></div>
+    <div class="card">
+      <div class="muted" style="font-size:11px;">TANKEVÄCKARE</div>
+      <div class="spacer-sm"></div>
+      <div class="serif" style="font-size:16px; line-height:1.5;">Hur fördelar ni det mentala lasset hemma idag?</div>
+      <div class="spacer"></div>
+      <div class="muted" style="font-size:11px;">Frågor att fundera på:</div>
+      <div class="tag">Vem planerar?</div>
+      <div class="tag">Vem kommer ihåg?</div>
+      <div class="tag">Vem oroar sig?</div>
+    </div>
+    <div class="spacer"></div>
+    <div class="card">
+      <div class="muted" style="font-size:11px;">DIN REFLEKTION</div>
+      <div style="border:1px solid #ddd; border-radius:8px; padding:10px; min-height:80px; margin-top:6px; color:#999;">Skriv din reflektion…</div>
+      <div class="spacer-sm"></div>
+      <div class="btn">Markera som klar →</div>
+    </div>
+    <div class="spacer"></div>
+  </div>
+  <ul class="annotations">
+    <li>Reflexionsstate: draft → ready (user klar) → revealed (båda klara) → locked (steg avslutat)</li>
+    <li>complete_couple_session_step() RPC server-side → returnerar is_waiting/is_step_complete/is_session_complete</li>
+    <li>Realtime: couple_sessions + couple_session_completions → debounced 300ms refetch</li>
+    <li>StepProgressIndicator visar visuellt per-steg-status</li>
+    <li>ActiveSessionGuard: BARA / och /card/:activeId tillåts</li>
+  </ul>
+</div>
+
+<!-- 9. STEP REFLECTION -->
+<div id="session-reflection" class="wireframe">
+  <h2>9. Stegreflexion — Revealed State</h2>
+  <div class="route">/card/:cardId · båda partners markerat klart → state='revealed'</div>
+  <div class="frame">
+    <div class="spacer"></div>
+    <div class="serif center" style="font-size:18px;">Era reflektioner</div>
+    <div class="muted center">Steg 2 — Tankeväckare</div>
+    <div class="spacer"></div>
+    <div class="card">
+      <div class="muted" style="font-size:11px;">DU</div>
+      <div class="spacer-sm"></div>
+      <div>"Jag märker att jag ofta är den som…"</div>
+    </div>
+    <div class="card">
+      <div class="muted" style="font-size:11px;">DIN PARTNER</div>
+      <div class="spacer-sm"></div>
+      <div>"Jag hade inte tänkt på det så, men…"</div>
+    </div>
+    <div class="spacer"></div>
+    <div class="btn">Gå vidare →</div>
+    <div class="spacer"></div>
+  </div>
+  <ul class="annotations">
+    <li>check_and_reveal_reflections() DB-trigger: när båda är 'ready' → sätts till 'revealed'</li>
+    <li>lock_step_reflections() RPC: när user trycker "Gå vidare" → state='locked'</li>
+    <li>Reflektioner kan INTE delas förrän state=revealed (integritetsskydd)</li>
+    <li>SessionStepReflection + StepReflection komponenter hanterar detta</li>
+  </ul>
+</div>
+
+<!-- 10. SESSION COMPLETE -->
+<div id="session-complete" class="wireframe">
+  <h2>10. Session klar — CompletedSessionView</h2>
+  <div class="route">/card/:cardId · couple_sessions.status='completed'</div>
+  <div class="frame">
+    <div class="spacer"></div>
+    <div class="center serif" style="font-size:20px;">Ni utforskade det här tillsammans.</div>
+    <div class="spacer-sm"></div>
+    <div class="center muted">Arbetsfördelning &amp; mentala lasset</div>
+    <div class="spacer"></div>
+    <div class="card">
+      <div class="muted" style="font-size:11px;">ER GEMENSAMMA TAKEAWAY</div>
+      <div style="border:1px solid #ddd; border-radius:8px; padding:10px; min-height:60px; margin-top:6px; color:#999;">Vad tar ni med er från det här samtalet?</div>
+    </div>
+    <div class="spacer-sm"></div>
+    <div class="card">
+      <div class="muted" style="font-size:11px;">LÅSTA REFLEKTIONER (alla steg)</div>
+      <div class="spacer-sm"></div>
+      <div class="muted">Steg 1 · Steg 2 · Steg 3 · Steg 4</div>
+    </div>
+    <div class="spacer"></div>
+    <div class="btn">Tillbaka till hem</div>
+    <div class="spacer"></div>
+  </div>
+  <ul class="annotations">
+    <li>Takeaway sparas i couple_takeaways (couple_space_id, session_id, content)</li>
+    <li>CardView resolver: aktiv session → live-session; avslutad → CompletedSessionView; revisit-param → historik</li>
+    <li>Kort markeras som 'explorerat' i journeyState.exploredCardIds</li>
+  </ul>
+</div>
+
+<!-- ════════════════════════════════════════════ -->
+<div class="section-header">INSTÄLLNINGAR & RELATION</div>
+
+<!-- 11. SHARED SPACE -->
+<div id="shared-space" class="wireframe">
+  <h2>11. Vårt utrymme (/shared)</h2>
+  <div class="route">/shared · &lt;SharedSummary /&gt; · GÖMD under aktiv session</div>
+  <div class="frame">
+    <div class="header-bar">
+      <span>← [Logotyp]</span>
+      <span>Vårt utrymme</span>
+    </div>
+    <div class="spacer"></div>
+    <div class="card">
+      <div class="muted" style="font-size:11px;">DELADE REFLEKTIONER</div>
+      <div class="spacer-sm"></div>
+      <div>"Vi märkte att vi ofta…" <span class="badge">delad</span></div>
+      <div class="muted" style="font-size:11px;">Arbetsfördelning · 2 dagar sedan</div>
+    </div>
+    <div class="card">
+      <div class="muted" style="font-size:11px;">HIGHLIGHTS</div>
+      <div class="muted">Max 3 markerade reflektioner</div>
+    </div>
+    <div class="card">
+      <div class="muted" style="font-size:11px;">RELATIONSMINNE</div>
+      <div class="muted">Gemensamma insikter och utforskade kort</div>
+    </div>
+  </div>
+  <ul class="annotations">
+    <li>Länken "Vårt utrymme" i header DÖLJS när hasActiveSession (Sacred Session, Layer 1)</li>
+    <li>ActiveSessionGuard REDIRECTAR hit om man försöker navigera via URL (Layer 2)</li>
+    <li>SharedSummary, RelationshipMemory, RecentSharedReflection</li>
+  </ul>
+</div>
+
+<!-- 12. HEADER SETTINGS -->
+<div id="header-settings" class="wireframe">
+  <h2>12. Header — Inställningspopover <span class="new-badge">UPPDATERAD</span></h2>
+  <div class="route">Sticky header · Popover via &lt;Settings&gt;-ikon</div>
+  <div class="frame">
+    <div class="header-bar">
+      <span>[Logotyp]</span>
+      <span class="row">
+        <span style="font-size:11px; color:#5f8f7e;">👥 Vårt utrymme</span>
+        ⚙️ [öppnad]
+      </span>
+    </div>
+    <div class="spacer-sm"></div>
+    <div class="card" style="margin: 0 0 0 auto; max-width: 200px;">
+      <div style="font-size:12px; color:#555; padding: 4px 0; border-bottom:1px solid #eee;">
+        ＋ Nytt kapitel <span style="color:#bbb;">[disabled under aktiv session]</span>
       </div>
+      <div style="font-size:11px; color:#bbb; margin: 4px 0 8px;">Ni är mitt i ett samtal. Avsluta det först.</div>
+      <div style="font-size:12px; color:#e05252; margin-top:4px;">↪ Logga ut</div>
     </div>
     <div class="spacer"></div>
-    <div class="center serif" style="font-size: 18px;">Card Title</div>
-    <div class="divider"></div>
-    <div class="card muted center" style="font-size: 11px;">SectionView (completed step content)</div>
-    <div class="spacer"></div>
-    <div class="spacer"></div>
-    <div class="pace-dots">
-      <div class="pace-dot filled"></div>
-      <div class="pace-dot outline"></div>
+    <div class="banner-warn">
+      <div class="muted" style="font-size:11px; font-weight:600;">SACRED SESSION — LAYER 1</div>
+      <div class="muted" style="font-size:11px;">"Nytt kapitel"-knappen är disabled + helper-text visas under den. Ingen konfirmationsdialog öppnas.</div>
     </div>
-    <div class="spacer" style="height: 8px;"></div>
-    <div class="breathing"></div>
-    <div class="spacer" style="height: 8px;"></div>
-    <div class="center muted" style="line-height: 1.7;">
-      Samtalet vilar här en stund —<br>ni fortsätter när båda har reflekterat.
-    </div>
-    <div class="spacer"></div>
-    <div class="divider"></div>
-    <div class="center muted" style="font-size: 11px;">── When both complete ──</div>
-    <div class="spacer" style="height: 8px;"></div>
-    <div class="center muted">Nu är ni klara.</div>
-    <div class="center" style="margin-top: 8px;"><div class="btn" style="width: 100%;">Gå vidare tillsammans →</div></div>
   </div>
   <ul class="annotations">
-    <li>Filled dot = current user (done), outline dot = partner (pending)</li>
-    <li>Breathing line: 5s ease-in-out infinite opacity animation</li>
-    <li>When partner completes: outline dot fills, line fades, CTA appears</li>
-    <li>No navigation away except header back/logo (session preserved)</li>
+    <li>hasActiveSession = !normalizedSession.loading && !!normalizedSession.sessionId</li>
+    <li>Disabled men synlig — knappen försvinner inte</li>
+    <li>Helper-text: "Ni är mitt i ett samtal. Avsluta det först."</li>
+    <li>AlertDialog öppnas INTE när disabled (villkorsstyrd rendering av AlertDialogContent)</li>
+    <li>"Nytt kapitel" triggar switch-to-new-space edge function om ej disabled</li>
   </ul>
 </div>
 
-<!-- 7. COMPLETED SESSION -->
-<div class="wireframe">
-  <h2>7. Completed Session</h2>
-  <div class="route">/card/:id (isFullyExplored = true OR allStepsCompleted = true)</div>
+<!-- 13. RELATION SETTINGS -->
+<div id="relation-settings" class="wireframe">
+  <h2>13. Relationsinställningar <span class="new-badge">UPPDATERAD</span></h2>
+  <div class="route">Home → kollapsad sektion "Relation &amp; utrymme"</div>
   <div class="frame">
-    <div class="header-bar">
-      <span>← back to /</span>
-      <span>🟢 logo</span>
+    <div class="divider"></div>
+    <div class="row" style="justify-content:space-between; padding: 12px 0;">
+      <span>Relation &amp; utrymme</span>
+      <span>∨</span>
     </div>
-    <div class="spacer"></div>
-    <div class="spacer"></div>
-    <div class="center serif" style="font-size: 20px;">Ta en stund.</div>
-    <div class="center muted" style="margin-top: 8px;">Det ni just delade får landa här.</div>
-    <div class="spacer"></div>
-    <div class="spacer"></div>
-    <div class="center muted">Vill ni sammanfatta något att ta med er?</div>
     <div class="card">
-      <div class="muted" style="font-size: 11px;">CardTakeaways — text input for couple</div>
+      <div style="font-weight:600; font-size:13px;">Skapa nytt utrymme</div>
+      <div class="muted">Starta ett nytt kapitel med samma partner. Historiken i det här utrymmet blir kvar.</div>
+      <div class="spacer-sm"></div>
+      <div class="btn-outline" style="opacity:0.5; cursor:not-allowed;">＋ Skapa nytt utrymme [disabled]</div>
+      <div class="muted" style="font-size:11px; margin-top:4px; color:#bbb;">Ni är mitt i ett samtal. Avsluta det först.</div>
     </div>
-    <div class="spacer"></div>
-    <div class="spacer"></div>
-    <div class="center"><div class="btn" style="width: 100%;">Föreslå nästa samtal →</div></div>
-    <div class="spacer" style="height: 6px;"></div>
-    <div class="center"><div class="btn-outline" style="width: 100%;">🏠 Hem</div></div>
-    <div class="spacer" style="height: 6px;"></div>
-    <div class="center"><span class="btn-ghost">↺ Läs igen</span></div>
+    <div class="divider"></div>
+    <div class="center muted" style="font-size:10px; letter-spacing:2px; text-transform:uppercase;">AVANCERAT</div>
+    <div class="divider"></div>
+    <div class="card">
+      <div style="font-weight:600; font-size:13px; color:#c05050;">Byt partner</div>
+      <div class="muted">Avsluta kopplingen till din nuvarande partner och skapa ett nytt tomt utrymme.</div>
+      <div class="spacer-sm"></div>
+      <div class="btn-destructive" style="display:inline-block; font-size:12px; padding:8px 16px;">↗ Byt partner</div>
+    </div>
+    <div class="spacer-sm"></div>
+    <div class="banner-warn">
+      <div class="muted" style="font-size:11px; font-weight:600;">BYT PARTNER — SÄKERHETSFLÖDE</div>
+      <div class="muted" style="font-size:11px;">Bekräftelsedialog → 3s countdown → Reauth-check → OTP via e-post → leave-couple-space edge function</div>
+    </div>
   </div>
   <ul class="annotations">
-    <li>Paired: "Föreslå nästa samtal" opens ProposalSheet</li>
-    <li>Solo: button navigates directly to suggested card</li>
-    <li>"Läs igen" → /card/:id?revisit=true (read-only mode)</li>
-    <li>CardTakeaways persists to database</li>
+    <li>hasActiveSession checks: appMode === 'SESSION_ACTIVE' || appMode === 'SESSION_WAITING' && !!cardId</li>
+    <li>Nytt kapitel: 3s countdown i dialog → switch-to-new-space edge function → system_events INSERT</li>
+    <li>Byt partner: JWT-ålderskontroll (5min window) → reauth OTP om äldre session</li>
+    <li>leave-couple-space: markerar member.left_at, loggar partner_left_space system event</li>
   </ul>
 </div>
 
-<!-- 8. VÅRT UTRYMME -->
-<div class="wireframe">
-  <h2>8. Vårt Utrymme (Archive)</h2>
-  <div class="route">/shared (read-only, no active session entry point)</div>
+<!-- ════════════════════════════════════════════ -->
+<div class="section-header">SIGNALER & BANNERS</div>
+
+<!-- 14. NEW CHAPTER BANNER -->
+<div id="new-chapter-banner" class="wireframe">
+  <h2>14. Nytt kapitel-banner <span class="new-badge">NY</span></h2>
+  <div class="route">Home · system_events INSERT · type='new_space_created' · receiver-only</div>
   <div class="frame">
     <div class="header-bar">
-      <span>← &nbsp; 🟢 logo</span>
-      <span>save · sync · backup · ⏻</span>
+      <span>[Logotyp]</span>
+      <span>👥 Vårt utrymme ⚙️</span>
     </div>
     <div class="spacer"></div>
-    <div class="serif" style="font-size: 22px; font-weight: 600;">Er historia</div>
-    <div class="muted" style="margin-top: 4px;">Avslutade samtal och delade reflektioner</div>
-    <div class="spacer"></div>
-    <div class="card center">
-      <div class="muted" style="font-size: 11px;">── Empty state ──</div>
-      <div class="muted" style="margin-top: 4px;">Här samlas era avslutade samtal och delade reflektioner.</div>
-    </div>
-    <div class="divider"></div>
-    <div class="card">
-      <div class="muted" style="font-size: 11px;">── With data ──</div>
-      <div class="spacer" style="height: 8px;"></div>
-      <div class="serif" style="font-size: 13px;">Highlights</div>
-      <div class="muted" style="margin-top: 4px; font-style: italic;">"Highlighted reflection text..."</div>
-      <div class="muted" style="margin-top: 2px; font-size: 10px;">Card title</div>
-      <div class="btn-ghost" style="font-size: 11px;">Visa alla N</div>
-    </div>
-    <div class="card">
-      <div class="serif" style="font-size: 13px;">Er resa tillsammans</div>
-      <div class="muted" style="margin-top: 4px;">Category progress bars (N/M per category)</div>
-      <div class="muted" style="font-size: 10px;">or: "Ni har inte börjat ännu."</div>
-    </div>
-    <div class="card">
+    <div class="banner">
+      <div class="serif" style="font-size:15px; margin-bottom:6px;">Ett nytt kapitel startades.</div>
+      <div class="muted">Din partner skapade ett nytt utrymme. Ni fortsätter där.</div>
+      <div class="spacer-sm"></div>
       <div class="row">
-        <span class="muted" style="font-size: 11px;">🔍 Hitta</span>
-        <span class="muted" style="font-size: 10px;">(search + category filter)</span>
+        <div class="btn-ghost" style="flex:1; text-align:center; border:1px solid #ddd; border-radius:8px;">Stäng</div>
+        <div class="btn" style="flex:1; text-align:center; margin:0; font-size:12px;">Gå till hem</div>
       </div>
     </div>
-    <div class="divider"></div>
-    <div class="muted" style="font-size: 11px; text-transform: uppercase; letter-spacing: 1px;">Februari 2026</div>
-    <div class="card" style="margin-left: 12px; border-left: 2px solid #e5e5e5; padding-left: 16px;">
-      <div style="font-size: 13px;">● Card Title</div>
-      <div class="muted" style="font-size: 10px;">Category</div>
-      <div style="margin-top: 8px;">
-        <div class="muted">SharedTimelineItem (read-only)</div>
-        <div class="muted" style="font-size: 11px; margin-top: 2px;">Prompt text · note content · partner response</div>
+    <div class="spacer"></div>
+    <div class="card" style="opacity:0.4;">
+      <div class="serif">Gamla kategorier (tonade)</div>
+      <div class="muted">Det gamla utrymmet är inte längre aktivt</div>
+    </div>
+  </div>
+  <ul class="annotations">
+    <li>Triggas av: system_events INSERT med type='new_space_created' i gamla couple_space_id</li>
+    <li>Receiver-guard: ignorerar om payload.actor_user_id === current user.id</li>
+    <li>One-time localStorage gate: new_space_created_seen_${spaceId}_${eventId}</li>
+    <li>Check on mount: senaste 5 events (om app öppnas efter att event hänt)</li>
+    <li>Realtime subscription: postgres_changes INSERT på system_events</li>
+    <li>Ingen auto-navigering — användaren styr</li>
+    <li>"Gå till hem": navigate('/', { replace: true })</li>
+  </ul>
+</div>
+
+<!-- 15. PARTNER LEFT -->
+<div id="partner-left" class="wireframe">
+  <h2>15. Partner lämnade — PartnerLeftBanner</h2>
+  <div class="route">Home · system_events INSERT · type='partner_left_space'</div>
+  <div class="frame">
+    <div class="header-bar">
+      <span>[Logotyp]</span>
+      <span>👤 Ditt utrymme ⚙️</span>
+    </div>
+    <div class="spacer"></div>
+    <div class="banner-warn">
+      <div class="serif" style="font-size:15px; margin-bottom:6px;">Din partner har lämnat.</div>
+      <div class="muted">Dina reflektioner och historik finns kvar. Du kan bjuda in en ny partner när du är redo.</div>
+      <div class="spacer-sm"></div>
+      <div class="btn" style="font-size:12px;">Bjud in partner</div>
+      <div class="center btn-ghost">Stäng</div>
+    </div>
+    <div class="spacer"></div>
+    <div class="card">
+      <div class="serif">Bjud in din partner</div>
+      <div class="muted">SoloInviteSection visas igen</div>
+    </div>
+  </div>
+  <ul class="annotations">
+    <li>PartnerConnectedBanner: type='partner_joined' (partner A ser partner B ansluta)</li>
+    <li>PartnerLeftBanner: type='partner_left_space' — triggar clearForPartnerLeave()</li>
+    <li>Both: realtime subscribe + check on mount (senaste 5 events)</li>
+    <li>One-time gate via localStorage per event id</li>
+  </ul>
+</div>
+
+<!-- 16. RETURN OVERLAY -->
+<div id="return-overlay" class="wireframe">
+  <h2>16. Återkomst-overlay (7+ dagar)</h2>
+  <div class="route">Home · lastActivityElapsed > 7 dagar · !isSoloMode · !returnOverlayDismissed</div>
+  <div class="frame">
+    <div style="min-height:350px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:24px; text-align:center;">
+      <div class="serif" style="font-size:22px;">Välkommen tillbaka.</div>
+      <div class="muted" style="max-width:280px;">Det var ett tag sedan. Vill ni fortsätta där ni slutade?</div>
+      <div style="width:100%; max-width:300px;">
+        <div class="btn">Fortsätt där ni slutade</div>
+        <div class="spacer-sm"></div>
+        <div class="btn-ghost">Starta nytt</div>
+        <div class="btn-ghost">Utforska fritt</div>
       </div>
     </div>
   </div>
   <ul class="annotations">
-    <li>Completely read-only — no edit, reply, or write actions</li>
-    <li>Unreachable during active session (header + nav links gated)</li>
-    <li>Timeline grouped by month → card → individual notes</li>
-    <li>Search supports text query + category filter</li>
+    <li>Visas som AnimatePresence-overlay ovanpå Home — INTE modal</li>
+    <li>Dismissal sparas i localStorage med timestamp + sessionKey (7 dagars TTL)</li>
+    <li>Ny session sedan dismissal: overlay tillåts igen (sessionKey-kontroll)</li>
   </ul>
 </div>
+
+<!-- ════════════════════════════════════════════ -->
+<div class="section-header">HISTORIK & ÖVRIGT</div>
+
+<!-- 17. ARCHIVE -->
+<div id="archive" class="wireframe">
+  <h2>17. Arkiv — Sparade samtal (/saved)</h2>
+  <div class="route">/saved · &lt;SavedConversations /&gt; · GÖMD under aktiv session</div>
+  <div class="frame">
+    <div class="header-bar">
+      <span>← [Logotyp]</span>
+      <span>Sparade</span>
+    </div>
+    <div class="spacer"></div>
+    <div class="card">
+      <div class="muted" style="font-size:11px;">Arbetsfördelning &amp; mentala lasset</div>
+      <div class="serif">Kort 1</div>
+      <div class="muted" style="font-size:11px;">Senast aktiv: 3 feb 2026</div>
+    </div>
+    <div class="card">
+      <div class="muted" style="font-size:11px;">Uppfostringsstilar</div>
+      <div class="serif">Kort 2</div>
+      <div class="muted" style="font-size:11px;">Senast aktiv: 28 jan 2026</div>
+    </div>
+    <div class="spacer"></div>
+    <div class="muted center" style="font-size:11px;">Konversationstrådar per kort (sparade automatiskt)</div>
+  </div>
+  <ul class="annotations">
+    <li>Åtkomst blockerad under aktiv session (ActiveSessionGuard redirect)</li>
+    <li>Historikvy i CardView: /card/:id?revisit=true → CompletedSessionView för gamla sessioner</li>
+  </ul>
+</div>
+
+<!-- 18. JOIN INTENT -->
+<div id="join-intent" class="wireframe">
+  <h2>18. Join-intent Guard</h2>
+  <div class="route">/ · hasJoinIntent=true · !spaceIsEntitled</div>
+  <div class="frame">
+    <div style="min-height:300px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:24px; text-align:center; padding: 24px;">
+      <div class="serif" style="font-size:22px;">Anslut till din partner</div>
+      <div class="muted" style="max-width:280px;">Ange koden eller öppna länken du fick. Du behöver inte köpa igen.</div>
+      <div style="width:100%; max-width:300px;">
+        <div class="btn">Anslut</div>
+        <div class="spacer-sm"></div>
+        <div class="btn-ghost">Jag har ingen kod</div>
+      </div>
+    </div>
+  </div>
+  <ul class="annotations">
+    <li>JOIN_INTENT_KEY = 'still-us-join-intent' sätts när user klickar "Jag har redan blivit inbjuden" på paywall</li>
+    <li>Går tillbaka till paywall om "Jag har ingen kod" (rensar localStorage)</li>
+    <li>Anslut → /join → JoinSpace flöde</li>
+  </ul>
+</div>
+
+<div class="section-header" style="margin-top:64px; border-color:#999; color:#999;">APPENDIX — Systemöversikt</div>
+
+<div class="wireframe">
+  <h2>Provider-stack (nerifrån och upp)</h2>
+  <div class="frame">
+    <div class="card" style="font-family:monospace; font-size:12px; line-height:2.2;">
+      QueryClientProvider<br>
+      &nbsp;&nbsp;SiteSettingsProvider<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;AuthProvider<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TooltipProvider<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;BrowserRouter<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DevStateProvider<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DevModeBadge<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;AppRoutes<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Protected] CoupleSpaceProvider<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;NormalizedSessionProvider<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ProposalsProvider<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;AppProvider<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ActiveSessionGuard<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Routes
+    </div>
+  </div>
+  <ul class="annotations">
+    <li>CoupleSpaceProvider: realtime couple_members → memberCount, space, userRole</li>
+    <li>NormalizedSessionProvider: get_active_session_state RPC + realtime couple_sessions + completions</li>
+    <li>ProposalsProvider: topic_proposals med status pending/saved_for_later/accepted</li>
+    <li>AppProvider: content (categories/cards), journeyState, reflections, settings sync</li>
+  </ul>
+</div>
+
+<div class="wireframe">
+  <h2>Sacred Session — Dubbelt skydd</h2>
+  <div class="frame">
+    <div class="banner-warn">
+      <div style="font-weight:600; margin-bottom:8px;">LAYER 1 — Header (UI Prevention)</div>
+      <div class="muted">"Nytt kapitel"-knapp disabled + helper text<br>"Vårt utrymme"-länk gömd<br>Condition: !!normalizedSession.sessionId</div>
+    </div>
+    <div class="spacer-sm"></div>
+    <div class="banner-warn">
+      <div style="font-weight:600; margin-bottom:8px;">LAYER 2 — ActiveSessionGuard (Route Enforcement)</div>
+      <div class="muted">Redirect till /card/:activeId på alla rutter utom / och /card/:activeId<br>Condition: appMode &amp;&amp; cardId (från NormalizedSessionContext)</div>
+    </div>
+    <div class="spacer-sm"></div>
+    <div class="banner-warn">
+      <div style="font-weight:600; margin-bottom:8px;">LAYER 3 — RelationSettings (Feature Lock)</div>
+      <div class="muted">"Skapa nytt utrymme"-knapp disabled + helper text<br>Condition: appMode === 'SESSION_ACTIVE' || 'SESSION_WAITING' &amp;&amp; !!cardId</div>
+    </div>
+  </div>
+</div>
+
+<div class="wireframe">
+  <h2>Notifikationssystem</h2>
+  <div class="frame">
+    <div class="card">
+      <div class="muted" style="font-size:11px; font-weight:600;">IN-APP (usePartnerNotifications)</div>
+      <div class="muted">prompt_notes INSERT (shared) → toast "Din partner delade en tanke"</div>
+      <div class="muted">couple_sessions INSERT (active, partner) → toast om notifyConversationProgress=true</div>
+      <div class="muted">Dedupliciering: 10s window, ID-baserad dismiss</div>
+    </div>
+    <div class="card">
+      <div class="muted" style="font-size:11px; font-weight:600;">REALTIME BANNERS (system_events)</div>
+      <div class="muted">partner_joined → PartnerConnectedBanner</div>
+      <div class="muted">partner_left_space → PartnerLeftBanner</div>
+      <div class="muted">new_space_created → NewChapterBanner ← NY</div>
+      <div class="muted">Alla: check on mount + realtime subscribe + localStorage one-time gate</div>
+    </div>
+    <div class="card">
+      <div class="muted" style="font-size:11px; font-weight:600;">E-POST (send-notification-email edge function)</div>
+      <div class="muted">Kräver: notify_email_proposal=true i notification_preferences</div>
+      <div class="muted">Händelser: nytt förslag, delad reflektion</div>
+      <div class="muted">Dedupliciering: 10min via system_events</div>
+    </div>
+  </div>
+</div>
+
+<p style="margin-top:48px; font-size:12px; color:#bbb; text-align:center;">
+  Still Us Wireframes · Uppdaterad februari 2026 · 18 tillstånd · Sacred Session v3 · NewChapterBanner · system_events logging
+</p>
 
 </body>
 </html>
