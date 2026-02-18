@@ -428,7 +428,7 @@ export default function Home() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.15 }}
-            className="px-6 pt-3 mb-10"
+            className="px-6 pt-12 mb-12"
           >
             <p className="text-xs text-muted-foreground/30 uppercase tracking-wide mb-2 text-center">Pågående samtal</p>
             <div className="text-center mb-4">
@@ -759,7 +759,7 @@ export default function Home() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.15 }}
-          className="px-6 pt-8 pb-6 mt-4 space-y-2"
+          className="px-6 pt-8 pb-6 mt-8 space-y-2"
         >
           <button
             onClick={() => navigate('/shared')}
@@ -789,7 +789,7 @@ export default function Home() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.15 }}
-          className="px-6 py-6 border-t border-divider"
+          className="px-6 py-6 border-t border-divider mt-8"
         >
           <NotificationSettings />
         </motion.div>
