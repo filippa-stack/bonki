@@ -12,18 +12,95 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
 import { ChevronDown } from 'lucide-react';
+import { supabase } from '@/integrations/supabase/client';
+import { useAuth } from '@/contexts/AuthContext';
+import { toast } from 'sonner';
+
+const REAUTH_WINDOW_MS = 5 * 60 * 1000; // 5 minutes
+
+/** Returns the age of the current JWT in ms, or Infinity if unavailable. */
+function getSessionAgeMs(accessToken: string | undefined): number {
+  if (!accessToken) return Infinity;
+  try {
+    const payload = JSON.parse(atob(accessToken.split('.')[1]));
+    const iatMs = (payload.iat as number) * 1000;
+    return Date.now() - iatMs;
+  } catch {
+    return Infinity;
+  }
+}
 
 interface RelationSettingsProps {
   onCreateNewSpace?: () => void;
-  onLeavePartner?: () => void;
+  onLeavePartner?: () => Promise<void>;
 }
 
 export default function RelationSettings({
   onCreateNewSpace,
   onLeavePartner,
 }: RelationSettingsProps) {
+  const { session } = useAuth();
   const [open, setOpen] = useState(false);
+
+  // Re-auth OTP dialog state
+  const [reauthOpen, setReauthOpen] = useState(false);
+  const [otp, setOtp] = useState('');
+  const [reauthLoading, setReauthLoading] = useState(false);
+  const [reauthSent, setReauthSent] = useState(false);
+
+  // Called when user confirms in the first AlertDialog
+  const handleLeaveConfirm = async () => {
+    const ageMs = getSessionAgeMs(session?.access_token);
+
+    if (ageMs <= REAUTH_WINDOW_MS) {
+      // Session is fresh — execute directly
+      await onLeavePartner?.();
+      return;
+    }
+
+    // Session is stale — trigger re-auth OTP
+    const { error } = await supabase.auth.reauthenticate();
+    if (error) {
+      toast.error('Kunde inte skicka verifieringskod. Försök igen.');
+      return;
+    }
+
+    setReauthSent(true);
+    setOtp('');
+    setReauthOpen(true);
+  };
+
+  const handleOtpVerify = async () => {
+    if (!session?.user?.email) return;
+    setReauthLoading(true);
+    try {
+      const { error } = await supabase.auth.verifyOtp({
+        email: session.user.email,
+        token: otp.trim(),
+        type: 'reauthentication' as any,
+      });
+
+      if (error) {
+        toast.error('Fel kod. Kontrollera din e-post och försök igen.');
+        return;
+      }
+
+      setReauthOpen(false);
+      await onLeavePartner?.();
+    } finally {
+      setReauthLoading(false);
+    }
+  };
 
   return (
     <div className="border-t border-divider">
@@ -112,7 +189,7 @@ export default function RelationSettings({
                 <AlertDialogFooter className="mt-2">
                   <AlertDialogCancel>Avbryt</AlertDialogCancel>
                   <AlertDialogAction
-                    onClick={onLeavePartner}
+                    onClick={handleLeaveConfirm}
                     className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
                   >
                     Avsluta koppling
@@ -124,6 +201,52 @@ export default function RelationSettings({
 
         </div>
       )}
+
+      {/* ── Re-auth OTP dialog ── */}
+      <Dialog open={reauthOpen} onOpenChange={(v) => { if (!reauthLoading) setReauthOpen(v); }}>
+        <DialogContent className="max-w-sm">
+          <DialogHeader>
+            <DialogTitle className="font-serif text-lg">Bekräfta din identitet</DialogTitle>
+            <DialogDescription className="text-sm text-muted-foreground leading-relaxed pt-1">
+              {reauthSent
+                ? 'Vi har skickat en engångskod till din e-postadress. Ange koden nedan för att fortsätta.'
+                : 'Anger engångskod för att bekräfta åtgärden.'}
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="py-2">
+            <Input
+              type="text"
+              inputMode="numeric"
+              maxLength={6}
+              placeholder="6-siffrig kod"
+              value={otp}
+              onChange={(e) => setOtp(e.target.value.replace(/\D/g, '').slice(0, 6))}
+              className="text-center tracking-widest text-lg"
+              autoFocus
+            />
+          </div>
+
+          <DialogFooter className="gap-2">
+            <Button
+              variant="ghost"
+              size="sm"
+              disabled={reauthLoading}
+              onClick={() => setReauthOpen(false)}
+            >
+              Avbryt
+            </Button>
+            <Button
+              variant="destructive"
+              size="sm"
+              disabled={otp.length < 6 || reauthLoading}
+              onClick={handleOtpVerify}
+            >
+              {reauthLoading ? 'Verifierar…' : 'Bekräfta och avsluta'}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
