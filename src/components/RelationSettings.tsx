@@ -210,8 +210,14 @@ export default function RelationSettings({
             </AlertDialog>
           </div>
 
-          {/* ── Divider ── */}
-          <div className="border-t border-border/40" />
+          {/* ── AVANCERAT divider ── */}
+          <div className="flex items-center gap-3 pt-1">
+            <div className="flex-1 border-t border-border/30" />
+            <span className="text-[10px] tracking-widest text-muted-foreground/40 uppercase font-medium">
+              Avancerat
+            </span>
+            <div className="flex-1 border-t border-border/30" />
+          </div>
 
           {/* ── "Byt partner" — destructive, deep-settings only ── */}
           <div className="space-y-3">
