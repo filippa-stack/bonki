@@ -118,11 +118,6 @@ export default function Category() {
       </div>
 
       <div className="px-6 pb-10">
-        {isRecommendedCategory && (
-          <p className="text-xs text-muted-foreground/50 mb-5">
-            En naturlig start i detta kapitel.
-          </p>
-        )}
         <div className="space-y-6">
           {cards.map((card, index) => (
             <CardEntry
@@ -198,11 +193,6 @@ function CardEntry({ card, index, highlighted, isRecommended = false, isComplete
       }}
     >
       <div className="flex flex-col items-center gap-1.5 py-8 px-7">
-        {isRecommended && (
-          <span className="inline-block text-xs text-muted-foreground/70 bg-muted px-2.5 py-0.5 rounded-full mb-1">
-            Föreslagen start
-          </span>
-        )}
         {isCompleted && (
           <CheckCircle2 className="w-5 h-5 text-[#497575] mb-1" />
         )}
