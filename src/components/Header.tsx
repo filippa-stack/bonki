@@ -19,7 +19,7 @@ import {
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
 import SaveIndicator from '@/components/SaveIndicator';
-import SyncStatus from '@/components/SyncStatus';
+
 import BackupManager from '@/components/BackupManager';
 
 import bonkiLogo from '@/assets/bonki-logo.png';
@@ -49,7 +49,7 @@ export default function Header({
 }: HeaderProps) {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const { backgroundColor, setBackgroundColor, saveStatus, lastSavedAt, saveError, sharedSyncStatus, sharedSyncError, retrySharedSync, switchToNewSpace } = useApp();
+  const { backgroundColor, setBackgroundColor, saveStatus, lastSavedAt, saveError, switchToNewSpace } = useApp();
   const normalizedSession = useNormalizedSessionContext();
   const hasActiveSession = !normalizedSession.loading && !!normalizedSession.sessionId;
   const { signOut } = useAuth();
@@ -78,17 +78,10 @@ export default function Header({
         <div className="flex items-center gap-2 sm:gap-4 min-w-0">
           {showSaveIndicator && (
             <div className="flex items-center gap-2 min-h-[20px]">
-              {sharedSyncStatus !== 'error' && !(sharedSyncStatus === 'syncing') && (
-                <SaveIndicator
-                  status={saveStatus}
-                  error={saveError}
-                  lastSavedAt={lastSavedAt}
-                />
-              )}
-              <SyncStatus
-                status={sharedSyncStatus}
-                error={sharedSyncError}
-                onRetry={retrySharedSync}
+              <SaveIndicator
+                status={saveStatus}
+                error={saveError}
+                lastSavedAt={lastSavedAt}
               />
             </div>
           )}
