@@ -62,6 +62,8 @@ import Footer from '@/components/Footer';
 import PartnerConnectedBanner from '@/components/PartnerConnectedBanner';
 import PartnerLeftBanner from '@/components/PartnerLeftBanner';
 import NewChapterBanner from '@/components/NewChapterBanner';
+import { usePartnerLeftDetector } from '@/hooks/usePartnerLeftDetector';
+import { useNewChapterDetector } from '@/hooks/useNewChapterDetector';
 
 import ReturnOverlay from '@/components/ReturnOverlay';
 import ConfidenceCheckPanel from '@/components/ConfidenceCheckPanel';
@@ -214,10 +216,11 @@ export default function Home() {
   };
 
   // ─── Partner-left detection (drives banner priority slot 1) ──────────────
-  const [partnerLeftActive, setPartnerLeftActive] = useState(false);
+  // ─── Always-running event detectors (never conditional) ──────────────────
+  const partnerLeft = usePartnerLeftDetector(space?.id ?? null, user?.id ?? null);
+  const newChapter = useNewChapterDetector(space?.id ?? null, user?.id ?? null);
 
   // ─── Banner priority queue ────────────────────────────────────────────────
-  // Read one-shot seen flags from localStorage for priority computation.
   const partnerConnectedSeenKey = space?.id ? `partner_connected_seen_${space.id}` : null;
   const [partnerConnectedSeen, setPartnerConnectedSeen] = useState(() =>
     partnerConnectedSeenKey ? localStorage.getItem(partnerConnectedSeenKey) === 'true' : true
@@ -226,22 +229,20 @@ export default function Home() {
   const [justJoinedPending] = useState(() =>
     localStorage.getItem('still-us-just-joined') === 'true'
   );
-  // NewChapter is managed internally by NewChapterBanner; expose via state lifted up.
-  const [newChapterActive, setNewChapterActive] = useState(false);
 
   type BannerSlot = 'partnerLeft' | 'partnerConnected' | 'justJoined' | 'newChapter' | null;
 
   function computeBannerToShow(): BannerSlot {
-    if (partnerLeftActive) return 'partnerLeft';
+    if (partnerLeft.shouldShow) return 'partnerLeft';
     if (isPaired && !partnerConnectedSeen) return 'partnerConnected';
     if (justJoinedPending) return 'justJoined';
-    if (newChapterActive) return 'newChapter';
+    if (newChapter.shouldShow) return 'newChapter';
     return null;
   }
 
   const activeBanner = computeBannerToShow();
 
-  const showSoloInvite = !isPaired && !inviteDismissed && !partnerLeftActive;
+  const showSoloInvite = !isPaired && !inviteDismissed && !partnerLeft.shouldShow;
 
   const { incomingProposals: _rawProposals, ownPendingProposals, savedProposals, sendProposal: sendDbProposal, updateProposalStatus, activateSession } = useProposalsContext();
   const devState = useDevState();
@@ -436,10 +437,9 @@ export default function Home() {
 
         {activeBanner === 'partnerLeft' && (
           <PartnerLeftBanner
-            onPartnerLeft={() => {
-              clearForPartnerLeave();
-              setPartnerLeftActive(true);
-            }}
+            visible
+            eventType={partnerLeft.eventType}
+            onDismiss={() => { partnerLeft.markSeen(); clearForPartnerLeave(); }}
             onInvite={() => {
               setTimeout(() => {
                 document.getElementById('solo-invite')?.scrollIntoView({ behavior: 'smooth' });
@@ -458,7 +458,10 @@ export default function Home() {
         {activeBanner === 'justJoined' && <JustJoinedBanner />}
 
         {activeBanner === 'newChapter' && (
-          <NewChapterBanner onActive={() => setNewChapterActive(true)} onDismiss={() => setNewChapterActive(false)} />
+          <NewChapterBanner
+            visible
+            onDismiss={() => newChapter.markSeen()}
+          />
         )}
 
         {/* SoloInviteSection — not a banner, renders below queue */}
