@@ -4,6 +4,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { hasPendingInvite } from '@/hooks/usePendingInvite';
 import { toast } from 'sonner';
+import { invokeEdgeFunction } from '@/lib/invokeEdgeFunction';
 
 interface CoupleSpaceData {
   id: string;
@@ -98,8 +99,9 @@ export function useCoupleSpace(): CoupleSpaceState {
         const accessToken = sessionData?.session?.access_token;
         if (!accessToken) throw new Error('No auth session');
 
-        const res = await supabase.functions.invoke('create-couple-space', {
+        const res = await invokeEdgeFunction('create-couple-space', {
           headers: { Authorization: `Bearer ${accessToken}` },
+          context: { userId },
         });
 
         if (res.error) throw new Error(res.error.message || 'Failed to create couple space');
@@ -199,8 +201,9 @@ export function useCoupleSpace(): CoupleSpaceState {
       const accessToken = sessionData?.session?.access_token;
       if (!accessToken) throw new Error('No auth session');
 
-      const res = await supabase.functions.invoke('switch-to-new-space', {
+      const res = await invokeEdgeFunction('switch-to-new-space', {
         headers: { Authorization: `Bearer ${accessToken}` },
+        context: { userId },
       });
 
       if (res.error) throw new Error(res.error.message || 'Failed to create new space');

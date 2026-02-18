@@ -4,6 +4,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useCoupleSpaceContext } from '@/contexts/CoupleSpaceContext';
 import { useDevState } from '@/contexts/DevStateContext';
 import { notifyPartnerByEmail } from '@/lib/notifyPartnerByEmail';
+import { invokeEdgeFunction } from '@/lib/invokeEdgeFunction';
 
 export interface Proposal {
   id: string;
@@ -211,8 +212,9 @@ export function useProposals() {
     }
 
     // 1. Edge function call
-    const res = await supabase.functions.invoke('activate-session', {
+    const res = await invokeEdgeFunction('activate-session', {
       body: { proposal_id: proposalId },
+      context: { userId: user?.id, spaceId: space?.id },
     });
 
     const data = res.data as any;
@@ -221,7 +223,6 @@ export function useProposals() {
       // Extract structured error from edge function response
       const edgeErr = data?.error;
       const errMsg = edgeErr?.message || res.error?.message || 'unknown error';
-      console.error('[DIAG] activate-session error:', { edgeErr, raw: data, fetchError: res.error });
       return { success: false, errorMessage: errMsg };
     }
 
