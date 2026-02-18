@@ -119,25 +119,29 @@ export default function Category() {
 
       <div className="px-6 pb-10">
         <div className="space-y-6">
-          {cards.map((card, index) => (
-            <CardEntry
-              key={card.id}
-              card={card}
-              index={index}
-              highlighted={card.id === highlightedCardId}
-              isRecommended={card.id === recommendedTopicId}
-              isCompleted={(() => {
-                const inExplored = exploredIds.includes(card.id);
-                if (!isPaired) return index === 0 || inExplored;
-                // When paired, require both partners to have progress
-                const perUser = sessionProgress[card.id]?.perUser;
-                const hasMutualProgress = perUser ? Object.keys(perUser).length >= 2 : false;
-                return inExplored && hasMutualProgress;
-              })()}
-              lastVisitedAt={cardVisitDates[card.id] || null}
-              onNavigate={() => navigate(`/card/${card.id}`)}
-            />
-          ))}
+          {cards.map((card, index) => {
+            const isRecommended = card.id === recommendedTopicId;
+            return (
+              <div key={card.id} className={isRecommended ? 'mt-2' : undefined}>
+                <CardEntry
+                  card={card}
+                  index={index}
+                  highlighted={card.id === highlightedCardId}
+                  isRecommended={isRecommended}
+                  isCompleted={(() => {
+                    const inExplored = exploredIds.includes(card.id);
+                    if (!isPaired) return index === 0 || inExplored;
+                    // When paired, require both partners to have progress
+                    const perUser = sessionProgress[card.id]?.perUser;
+                    const hasMutualProgress = perUser ? Object.keys(perUser).length >= 2 : false;
+                    return inExplored && hasMutualProgress;
+                  })()}
+                  lastVisitedAt={cardVisitDates[card.id] || null}
+                  onNavigate={() => navigate(`/card/${card.id}`)}
+                />
+              </div>
+            );
+          })}
         </div>
       </div>
     </div>
@@ -186,13 +190,13 @@ function CardEntry({ card, index, highlighted, isRecommended = false, isComplete
           onNavigate();
         }
       }}
-      className={`relative w-full text-center card-sub group transition-all cursor-pointer overflow-hidden rounded-[20px] shadow-[0_1px_4px_0_hsl(0_0%_0%/0.04)]${isCompleted ? '' : ' item-colors'}${highlighted ? ' ring-2 ring-primary/40' : ''}`}
+      className={`relative w-full text-center card-sub group transition-all cursor-pointer overflow-hidden rounded-[20px] ${isRecommended ? 'shadow-[0_4px_16px_0_hsl(0_0%_0%/0.08)]' : 'shadow-[0_1px_4px_0_hsl(0_0%_0%/0.04)]'}${isCompleted ? '' : ' item-colors'}${highlighted ? ' ring-2 ring-primary/40' : ''}`}
       style={{
         borderWidth: '1px',
         borderStyle: 'solid',
       }}
     >
-      <div className="flex flex-col items-center gap-1.5 py-8 px-7">
+      <div className={`flex flex-col items-center gap-1.5 px-7 ${isRecommended ? 'py-9' : 'py-8'}`}>
         {isCompleted && (
           <CheckCircle2 className="w-5 h-5 text-[#497575] mb-1" />
         )}

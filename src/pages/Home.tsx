@@ -778,15 +778,18 @@ export default function Home() {
               <div className="space-y-6">
                 {categories.map((category, index) => {
                   const catStatus = getCategoryStatus(category.id);
+                  const isFeatured = category.id === recommendedCategoryId;
                   return (
-                    <CategoryCard
-                      key={category.id}
-                      category={category}
-                      onClick={() => navigate(`/category/${category.id}`)}
-                      index={index}
-                      highlighted={false}
-                      isCompleted={catStatus === 'explored'}
-                    />
+                    <div key={category.id} className={isFeatured ? 'mt-2' : undefined}>
+                      <CategoryCard
+                        category={category}
+                        onClick={() => navigate(`/category/${category.id}`)}
+                        index={index}
+                        highlighted={false}
+                        isCompleted={catStatus === 'explored'}
+                        isFeatured={isFeatured}
+                      />
+                    </div>
                   );
                 })}
               </div>
