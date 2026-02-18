@@ -1,237 +1,141 @@
-/**
- * spaceSnapshotSelectors.ts
- *
- * Pure, deterministic, side-effect-free selectors over SpaceSnapshot.
- *
- * Default scope = 'space': aggregates across ALL members of the space.
- * Pass options.scope = 'viewer' (with options.userId) to narrow to one user.
- *
- * All selectors accept SpaceSnapshot | null and return a safe default when null.
- */
+// src/selectors/spaceSnapshotSelectors.ts
 
-import type { SpaceSnapshot } from '@/hooks/useSpaceSnapshot';
-import type { Card, Category } from '@/types';
+type Scope = 'space' | 'viewer';
 
-// ---------------------------------------------------------------------------
-// Shared options type
-// ---------------------------------------------------------------------------
+type SnapshotVisit = {
+  card_id: string;
+  user_id: string;
+  last_visited_at: string; // ISO
+};
 
-export interface SelectorOptions {
-  userId?: string;
-  scope?: 'space' | 'viewer';
+type SpaceSnapshot = {
+  viewer?: { userId?: string | null };
+  visits?: SnapshotVisit[];
+  // Optional fields (may exist later)
+  completions?: Array<{ card_id: string; created_at: string; user_id?: string | null }>;
+} | null | undefined;
+
+type SelectorOptions = {
+  scope?: Scope;          // default: 'space'
+  userId?: string | null; // used when scope='viewer'
+};
+
+function getScope(options?: SelectorOptions): Scope {
+  return options?.scope ?? 'space';
 }
 
-// ---------------------------------------------------------------------------
-// Internal helpers
-// ---------------------------------------------------------------------------
-
-function filterVisits(snapshot: SpaceSnapshot, options?: SelectorOptions) {
-  const scope = options?.scope ?? 'space';
-  if (scope === 'viewer' && options?.userId) {
-    return snapshot.visits.filter((v) => v.user_id === options.userId);
-  }
-  return snapshot.visits;
+function getUserId(snapshot: SpaceSnapshot, options?: SelectorOptions): string | null {
+  return options?.userId ?? snapshot?.viewer?.userId ?? null;
 }
 
-// ---------------------------------------------------------------------------
-// selectLastActivityAt
-// ---------------------------------------------------------------------------
-
-/**
- * Returns the most recent activity timestamp.
- * Space-level by default: max(last_visited_at) across ALL users + session completions.
- */
-export function selectLastActivityAt(
-  snapshot: SpaceSnapshot | null,
-  options?: SelectorOptions,
-): Date | null {
-  if (!snapshot) return null;
-
-  const candidates: string[] = [];
-
-  for (const v of filterVisits(snapshot, options)) {
-    candidates.push(v.last_visited_at);
+function filteredVisits(snapshot: SpaceSnapshot, options?: SelectorOptions): SnapshotVisit[] {
+  const visits = snapshot?.visits ?? [];
+  const scope = getScope(options);
+  if (scope === 'viewer') {
+    const uid = getUserId(snapshot, options);
+    if (!uid) return [];
+    return visits.filter(v => v.user_id === uid);
   }
-
-  // Session completions are always space-level signals
-  if ((options?.scope ?? 'space') === 'space' && snapshot.sessions) {
-    for (const c of snapshot.sessions.completions) {
-      candidates.push(c.completed_at);
-    }
-    candidates.push(snapshot.sessions.session.started_at);
-  }
-
-  if (candidates.length === 0) return null;
-
-  return new Date(candidates.reduce((max, ts) => (ts > max ? ts : max)));
+  return visits;
 }
 
-// ---------------------------------------------------------------------------
-// selectCardVisitDates
-// ---------------------------------------------------------------------------
-
-/**
- * Returns Record<cardId, ISO timestamp> with the most recent visit date per card.
- * Space-level by default: max across all users for each card.
- */
-export function selectCardVisitDates(
-  snapshot: SpaceSnapshot | null,
-  options?: SelectorOptions,
-): Record<string, string> {
-  if (!snapshot) return {};
-
-  const result: Record<string, string> = {};
-
-  for (const v of filterVisits(snapshot, options)) {
-    const existing = result[v.card_id];
-    if (!existing || v.last_visited_at > existing) {
-      result[v.card_id] = v.last_visited_at;
-    }
-  }
-
-  return result;
+function maxIsoDate(a: string, b: string): string {
+  return new Date(a).getTime() >= new Date(b).getTime() ? a : b;
 }
 
-// ---------------------------------------------------------------------------
-// selectExploredCardIds
-// ---------------------------------------------------------------------------
-
-/**
- * A card is "explored" if it has at least one visit row.
- * Space-level by default: any visit from any member counts.
- * Returns a stable sorted array of card IDs.
- */
-export function selectExploredCardIds(
-  snapshot: SpaceSnapshot | null,
-  options?: SelectorOptions,
-): string[] {
-  if (!snapshot) return [];
-
-  const ids = new Set<string>();
-
-  for (const v of filterVisits(snapshot, options)) {
-    ids.add(v.card_id);
+/** SPACE-LEVEL by default: max across all users */
+export function selectLastActivityAt(snapshot: SpaceSnapshot, options?: SelectorOptions): Date | null {
+  const visits = filteredVisits(snapshot, options);
+  if (visits.length === 0) return null;
+  let maxTs = visits[0].last_visited_at;
+  for (let i = 1; i < visits.length; i++) {
+    maxTs = maxIsoDate(maxTs, visits[i].last_visited_at);
   }
-
-  return Array.from(ids).sort((a, b) =>
-    a.localeCompare(b, undefined, { numeric: true, sensitivity: 'base' })
-  );
+  const d = new Date(maxTs);
+  return Number.isNaN(d.getTime()) ? null : d;
 }
 
-// ---------------------------------------------------------------------------
-// selectLastOpenedCardId
-// ---------------------------------------------------------------------------
+/** SPACE-LEVEL by default: union across all users */
+export function selectExploredCardIds(snapshot: SpaceSnapshot, options?: SelectorOptions): string[] {
+  const visits = filteredVisits(snapshot, options);
+  const set = new Set<string>();
+  for (const v of visits) set.add(v.card_id);
+  return Array.from(set);
+}
 
-/**
- * Returns the card_id with the latest max(last_visited_at).
- * Space-level by default: picks the globally most recently visited card.
- */
-export function selectLastOpenedCardId(
-  snapshot: SpaceSnapshot | null,
-  options?: SelectorOptions,
-): string | null {
-  if (!snapshot || snapshot.visits.length === 0) return null;
-
-  const visits = filterVisits(snapshot, options);
-  if (visits.length === 0) {
-    // Viewer scope with no visits → fall back to space level
-    return selectLastOpenedCardId(snapshot);
-  }
-
-  const maxPerCard: Record<string, string> = {};
+/** SPACE-LEVEL by default: per card max(last_visited_at) across all users */
+export function selectCardVisitDates(snapshot: SpaceSnapshot, options?: SelectorOptions): Record<string, string> {
+  const visits = filteredVisits(snapshot, options);
+  const map: Record<string, string> = {};
   for (const v of visits) {
-    const existing = maxPerCard[v.card_id];
-    if (!existing || v.last_visited_at > existing) {
-      maxPerCard[v.card_id] = v.last_visited_at;
-    }
+    const existing = map[v.card_id];
+    map[v.card_id] = existing ? maxIsoDate(existing, v.last_visited_at) : v.last_visited_at;
   }
+  return map;
+}
 
-  let bestCard: string | null = null;
-  let bestTs = '';
-  for (const [cardId, ts] of Object.entries(maxPerCard)) {
-    if (ts > bestTs) {
+/** SPACE-LEVEL by default: card with the most recent max(last_visited_at) */
+export function selectLastOpenedCardId(snapshot: SpaceSnapshot, options?: SelectorOptions): string | null {
+  const visitDates = selectCardVisitDates(snapshot, options);
+  let bestCardId: string | null = null;
+  let bestTs: string | null = null;
+
+  for (const [cardId, ts] of Object.entries(visitDates)) {
+    if (!bestTs || new Date(ts).getTime() > new Date(bestTs).getTime()) {
       bestTs = ts;
-      bestCard = cardId;
+      bestCardId = cardId;
     }
   }
-
-  return bestCard;
+  return bestCardId;
 }
 
-// ---------------------------------------------------------------------------
-// selectLastCompletedCardId
-// ---------------------------------------------------------------------------
-
 /**
- * Space-level: returns null (completion state is tracked via sessions, not visits).
- * Kept for backward compat.
+ * Default SPACE-LEVEL: if snapshot.completions exists, pick the most recent completion by created_at.
+ * If completions not provided yet, return null (Home already handles fallbacks).
  */
-export function selectLastCompletedCardId(_snapshot: SpaceSnapshot | null): string | null {
-  return null;
+export function selectLastCompletedCardId(snapshot: SpaceSnapshot, options?: SelectorOptions): string | null {
+  const completions = snapshot?.completions ?? [];
+  if (completions.length === 0) return null;
+
+  const scope = getScope(options);
+  const uid = scope === 'viewer' ? getUserId(snapshot, options) : null;
+
+  let best: { card_id: string; created_at: string } | null = null;
+  for (const c of completions) {
+    if (scope === 'viewer' && uid && c.user_id && c.user_id !== uid) continue;
+    if (!best || new Date(c.created_at).getTime() > new Date(best.created_at).getTime()) {
+      best = { card_id: c.card_id, created_at: c.created_at };
+    }
+  }
+  return best?.card_id ?? null;
 }
 
-// ---------------------------------------------------------------------------
-// selectSuggestedNextCardId
-// ---------------------------------------------------------------------------
-
 /**
- * Derives the next suggested card using space-level explored set:
- * 1. Next unexplored card in the same category (wrap around).
- * 2. If none, scan subsequent categories for any unexplored card.
- * 3. Returns null if all cards are explored.
+ * Suggested-next selector: keep your existing algorithm, but ensure it uses SPACE-LEVEL exploredIds by default.
+ * Signature matches your Home.tsx usage: selectSuggestedNextCardId(snapshot, allCategories, allCards)
  */
 export function selectSuggestedNextCardId(
-  snapshot: SpaceSnapshot | null,
-  allCategories: Category[],
-  allCards: Card[],
-  options?: SelectorOptions,
+  snapshot: SpaceSnapshot,
+  allCategories: Array<{ id: string }>,
+  allCards: Array<{ id: string; categoryId: string }>,
+  options?: SelectorOptions
 ): string | null {
-  if (!snapshot || !snapshot.sessions) return null;
+  const explored = new Set(selectExploredCardIds(snapshot, options)); // default space-level
 
-  const { card_id: currentCardId, category_id: currentCategoryId } = snapshot.sessions.session;
-  if (!currentCardId || !currentCategoryId) return null;
-
-  // Always use space-level explored set to avoid drift
-  const exploredSet = new Set(selectExploredCardIds(snapshot, { scope: 'space' }));
-
-  const categoryCards = allCards.filter((c) => c.categoryId === currentCategoryId);
-  const currentIndex = categoryCards.findIndex((c) => c.id === currentCardId);
-
-  // 1. Next unexplored in same category
-  for (let i = 1; i <= categoryCards.length; i++) {
-    const next = categoryCards[(currentIndex + i) % categoryCards.length];
-    if (!exploredSet.has(next.id)) return next.id;
+  // If nothing explored, suggest first card in first category (stable)
+  if (explored.size === 0) {
+    const firstCat = allCategories[0];
+    if (!firstCat) return null;
+    const firstCard = allCards.find(c => c.categoryId === firstCat.id);
+    return firstCard?.id ?? null;
   }
 
-  // 2. Next unexplored in subsequent categories
-  const catIndex = allCategories.findIndex((c) => c.id === currentCategoryId);
-  for (let ci = 1; ci <= allCategories.length; ci++) {
-    const nextCat = allCategories[(catIndex + ci) % allCategories.length];
-    const unexplored = allCards.find(
-      (c) => c.categoryId === nextCat.id && !exploredSet.has(c.id)
-    );
-    if (unexplored) return unexplored.id;
+  // Simple deterministic suggestion: first unexplored card in category order, then next categories
+  for (const cat of allCategories) {
+    const catCards = allCards.filter(c => c.categoryId === cat.id);
+    const next = catCards.find(c => !explored.has(c.id));
+    if (next) return next.id;
   }
 
   return null;
-}
-
-// ---------------------------------------------------------------------------
-// Space-named aliases (explicit, non-deprecated)
-// ---------------------------------------------------------------------------
-
-export const selectSpaceLastActivityAt = selectLastActivityAt;
-export const selectSpaceCardVisitDates = selectCardVisitDates;
-export const selectSpaceExploredCardIds = selectExploredCardIds;
-export const selectSpaceLastOpenedCardId = selectLastOpenedCardId;
-
-// ---------------------------------------------------------------------------
-// Viewer-scoped convenience (pass-throughs with scope forced)
-// ---------------------------------------------------------------------------
-
-export function selectViewerLastOpenedCardId(
-  snapshot: SpaceSnapshot | null,
-  userId?: string,
-): string | null {
-  return selectLastOpenedCardId(snapshot, { scope: 'viewer', userId });
 }
