@@ -40,7 +40,7 @@ export default function IncomingProposal({
     <motion.div
       initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5 }}
+      transition={{ duration: 0.2, ease: [0.4, 0.0, 0.2, 1] }}
       className="rounded-2xl border border-border bg-card p-6 space-y-4"
     >
       <p className="text-xs text-muted-foreground/60 tracking-wide">
