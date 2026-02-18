@@ -296,23 +296,10 @@ export function AppProvider({ children }: { children: ReactNode }) {
     handleRemoteProgressUpdate,
   );
 
-  // Apply initial shared progress once
+  // DEPRECATED: shared journey meta no longer applied or synced.
+  // Session progress is derived exclusively from normalized tables
+  // (couple_sessions, couple_session_steps, couple_session_completions).
   const hasAppliedSharedProgress = useRef(false);
-  useEffect(() => {
-    if (devState) return; // Don't apply shared progress in dev mode
-    if (!sharedProgressReady || hasAppliedSharedProgress.current || !sharedProgressInitial) return;
-    hasAppliedSharedProgress.current = true;
-    setState((prev) => ({
-      ...prev,
-      journeyState: sharedProgressInitial.journeyState ?? prev.journeyState,
-    }));
-  }, [sharedProgressReady, sharedProgressInitial, devState]);
-
-  // Sync journey state changes to remote
-  useEffect(() => {
-    if (!sharedProgressReady || !hasAppliedSharedProgress.current || devState) return;
-    syncToRemote(state.journeyState);
-  }, [state.journeyState, sharedProgressReady, syncToRemote, devState]);
 
   const setBackgroundColor = (color: string) => {
     setBackgroundColorState(color);
