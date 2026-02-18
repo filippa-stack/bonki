@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import { BEAT_2 } from '@/lib/motion';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { Heart, ArrowRight } from 'lucide-react';
@@ -63,7 +64,7 @@ export default function RecentSharedReflection() {
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      transition={{ duration: 0.15, delay: 0.15 }}
+      transition={{ duration: 0.15, delay: BEAT_2 }}
       className="px-6 mb-6 mt-[16px]"
     >
       <p className="text-xs text-muted-foreground uppercase tracking-wider mb-3 flex items-center gap-2">

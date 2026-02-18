@@ -26,6 +26,7 @@ import CompletedSessionView from '@/components/CompletedSessionView';
 import { useProposalsContext } from '@/contexts/ProposalsContext';
 import { useDevState } from '@/contexts/DevStateContext';
 import { useNormalizedSessionContext } from '@/contexts/NormalizedSessionContext';
+import { BEAT_1, BEAT_2, BEAT_3, EASE } from '@/lib/motion';
 
 // ─────────────────────────────────────────────────────────────
 // Card view mode — the single source of truth for which surface mounts.
@@ -302,7 +303,7 @@ export default function CardView() {
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 0.05, duration: 0.15 }}
+            transition={{ delay: BEAT_1, duration: 0.15 }}
             className="max-w-md mx-auto mt-12 space-y-3"
           >
             <p className="text-sm text-muted-foreground text-center leading-relaxed">
@@ -314,7 +315,7 @@ export default function CardView() {
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 0.08, duration: 0.15 }}
+            transition={{ delay: BEAT_2, duration: 0.15 }}
             className="max-w-md mx-auto mt-12 space-y-6 text-center"
           >
             <Button
@@ -342,7 +343,6 @@ export default function CardView() {
   //  MODE: 'live' | 'revisit' — active conversation surface
   // ─────────────────────────────────────────────────────────────
   const currentSection = card.sections.find(s => s.type === STEP_ORDER[currentStepIndex]);
-  const EASE = [0.4, 0.0, 0.2, 1] as const;
   const isLive = cardViewMode === 'live';
 
   return (
@@ -392,7 +392,7 @@ export default function CardView() {
           <motion.p
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 0.03, duration: 0.15 }}
+            transition={{ delay: BEAT_1, duration: 0.15 }}
             className="text-sm text-muted-foreground not-italic mt-5 text-center max-w-2xl mx-auto leading-relaxed"
           >
             {card.subtitle}
@@ -415,7 +415,7 @@ export default function CardView() {
               <motion.div
                 initial={isLive ? { opacity: 0 } : false}
                 animate={{ opacity: 1 }}
-                transition={{ delay: isLive ? 0.04 : 0, duration: isLive ? 0.12 : 0.15, ease: EASE }}
+                transition={{ delay: isLive ? BEAT_1 : 0, duration: isLive ? 0.12 : 0.15, ease: EASE }}
               >
                 <SectionView
                   ref={sectionViewRef}
@@ -435,7 +435,7 @@ export default function CardView() {
                   <motion.div
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
-                    transition={{ delay: 0.08, duration: 0.16, ease: EASE }}
+                    transition={{ delay: BEAT_2, duration: 0.16, ease: EASE }}
                   >
                     <SessionStepReflection
                       sessionId={normalizedSession.sessionId}
@@ -463,7 +463,7 @@ export default function CardView() {
                   className="pt-10 pb-8 space-y-5"
                   initial={isLive ? { opacity: 0 } : false}
                   animate={{ opacity: 1 }}
-                  transition={{ delay: isLive ? 0.24 : 0, duration: isLive ? 0.14 : 0.15, ease: EASE }}
+                  transition={{ delay: isLive ? BEAT_2 + BEAT_2 : 0, duration: isLive ? 0.14 : 0.15, ease: EASE }}
                 >
                   <Button
                     onClick={() => handleRevisitNext(card)}

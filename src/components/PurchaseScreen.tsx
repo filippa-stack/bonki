@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { JOIN_INTENT_KEY, isSpacePaid } from '@/pages/Index';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
+import { BEAT_1, BEAT_2 } from '@/lib/motion';
 import { Button } from '@/components/ui/button';
 import { Check, Shield } from 'lucide-react';
 import bonkiLogo from '@/assets/bonki-logo.png';
@@ -70,7 +71,7 @@ export default function PurchaseScreen({ onPurchaseComplete }: PurchaseScreenPro
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 0.15, delay: 0.05 }}
+          transition={{ duration: 0.15, delay: BEAT_1 }}
           className="rounded-2xl border border-border bg-card p-6 space-y-4 text-left"
         >
           <div className="flex items-start gap-3">
@@ -96,7 +97,7 @@ export default function PurchaseScreen({ onPurchaseComplete }: PurchaseScreenPro
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 0.15, delay: 0.08 }}
+          transition={{ duration: 0.15, delay: BEAT_2 }}
           className="space-y-3"
         >
           <Button

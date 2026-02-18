@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { BEAT_1 } from '@/lib/motion';
 import { ChevronDown, Send, X, Star, Heart, Lock, Users, Link2, CheckCircle2 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Prompt } from '@/types';
@@ -119,7 +120,7 @@ export default function PromptItem({
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      transition={{ delay: index * 0.03, duration: 0.15 }}
+      transition={{ delay: index * BEAT_1, duration: 0.15 }}
       className={`rounded-2xl overflow-hidden prompt-colors card-interaction ${showCollapsedLabel ? 'shadow-none' : ''}`}
       style={{ '--prompt-bg': prompt.color || undefined } as React.CSSProperties}
     >
