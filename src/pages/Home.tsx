@@ -805,7 +805,28 @@ export default function Home() {
               toast.error('Kunde inte skapa nytt utrymme.');
             }
           }}
-          onLeavePartner={undefined}
+          onLeavePartner={async () => {
+            if (!space?.id) return;
+            try {
+              const { data: sessionData } = await supabase.auth.getSession();
+              const accessToken = sessionData?.session?.access_token;
+              if (!accessToken) return;
+              const res = await supabase.functions.invoke('leave-couple-space', {
+                headers: { Authorization: `Bearer ${accessToken}` },
+                body: { couple_space_id: space.id, reason: 'user_left' },
+              });
+              if (res.error) {
+                toast.error('Något gick fel. Försök igen.');
+                return;
+              }
+              localStorage.removeItem('vi-som-foraldrar-state');
+              toast.success('Du har lämnat utrymmet.');
+              navigate('/', { replace: true });
+              setTimeout(() => window.location.reload(), 100);
+            } catch {
+              toast.error('Något gick fel. Försök igen.');
+            }
+          }}
         />
       )}
 
