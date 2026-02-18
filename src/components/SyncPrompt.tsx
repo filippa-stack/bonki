@@ -18,7 +18,7 @@ export default function SyncPrompt({ partnerStepIndex, stepLabels, onCatchUp, on
     <motion.div
       initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5 }}
+      transition={{ duration: 0.2, ease: [0.4, 0.0, 0.2, 1] }}
       className="mx-6 my-4 p-5 rounded-2xl border border-border bg-card space-y-4"
     >
       <p className="text-sm text-foreground leading-relaxed">
