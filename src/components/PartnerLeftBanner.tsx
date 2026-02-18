@@ -6,7 +6,7 @@ import { useNormalizedSessionContext } from '@/contexts/NormalizedSessionContext
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import { motion, AnimatePresence } from 'framer-motion';
-import { EASE } from '@/lib/motion';
+import { BEAT_2, EASE } from '@/lib/motion';
 
 // All event types that signal a partner disconnection — emitted by edge functions.
 const PARTNER_LEFT_TYPES = ['partner_left_space', 'member_left', 'partner_removed', 'partner_switched'] as const;
@@ -121,14 +121,10 @@ export default function PartnerLeftBanner({ onPartnerLeft, onInvite }: Props) {
     <AnimatePresence>
       {visible && (
         <motion.div
-          initial={{ opacity: 0, y: -12, height: 0 }}
+          initial={{ opacity: 0, y: -8, height: 0 }}
           animate={{ opacity: 1, y: 0, height: 'auto' }}
-          exit={{ opacity: 0, height: 0 }}
-          transition={{
-            opacity: { duration: 0.14, ease: EASE },
-            y: { duration: 0.14, ease: EASE },
-            height: { duration: 0.16, ease: EASE },
-          }}
+          exit={{ opacity: 0, y: -8, height: 0 }}
+          transition={{ duration: BEAT_2, ease: EASE }}
           className="overflow-hidden mx-6"
         >
           <div className="rounded-[20px] border border-border bg-card p-6 space-y-3 shadow-[0_1px_4px_0_hsl(0_0%_0%/0.04)]">

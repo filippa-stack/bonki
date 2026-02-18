@@ -5,7 +5,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useCoupleSpaceContext as useCoupleSpace } from '@/contexts/CoupleSpaceContext';
 import { supabase } from '@/integrations/supabase/client';
 
-import { EASE } from '@/lib/motion';
+import { BEAT_2, EASE } from '@/lib/motion';
 
 const SEEN_KEY = 'partner_connected_seen';
 
@@ -68,14 +68,10 @@ export default function PartnerConnectedBanner() {
     <AnimatePresence>
       {visible && (
         <motion.div
-          initial={{ opacity: 0, y: -12, height: 0 }}
+          initial={{ opacity: 0, y: -8, height: 0 }}
           animate={{ opacity: 1, y: 0, height: 'auto' }}
-          exit={{ opacity: 0, height: 0 }}
-          transition={{
-            opacity: { duration: 0.14, ease: EASE },
-            y: { duration: 0.14, ease: EASE },
-            height: { duration: 0.16, ease: EASE },
-          }}
+          exit={{ opacity: 0, y: -8, height: 0 }}
+          transition={{ duration: BEAT_2, ease: EASE }}
           className="overflow-hidden"
         >
           <div className="flex items-center justify-center gap-2 mt-[12px] mb-[16px] px-6">
