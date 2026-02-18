@@ -12,13 +12,12 @@
  *   - useProposals (incoming proposals)
  *   - useDevState (dev overrides)
  *
- * Outputs a single, non-contradictory AppModeState that Home and other
- * consumers can switch on without re-deriving conditions.
+ * Returns only the macro classification. Session details must be read
+ * directly from useNormalizedSessionContext by consumers.
  */
 
 import { useMemo } from 'react';
 import { useNormalizedSessionContext } from '@/contexts/NormalizedSessionContext';
-import type { NormalizedSessionState } from '@/hooks/useNormalizedSessionState';
 import { useCoupleSpaceContext } from '@/contexts/CoupleSpaceContext';
 import { useProposalsContext } from '@/contexts/ProposalsContext';
 import { useDevState } from '@/contexts/DevStateContext';
@@ -43,16 +42,12 @@ export interface ProposalInfo {
 export interface AppModeState {
   mode: MacroMode;
   loading: boolean;
+  isSolo: boolean;
+  hasSpace: boolean;
   /** Non-null when mode === 'proposal' */
   topProposal: ProposalInfo | null;
   /** All incoming proposals (unfiltered by dismissals — consumer handles that) */
   incomingProposals: ProposalInfo[];
-  /** Raw normalized session state for advanced consumers */
-  normalizedSession: NormalizedSessionState;
-  /** Whether user is solo (displayMemberCount < 2) */
-  isSolo: boolean;
-  /** Whether a couple space exists */
-  hasSpace: boolean;
 }
 
 export function useAppMode(): AppModeState {
@@ -68,7 +63,6 @@ export function useAppMode(): AppModeState {
     // ── Dev overrides ──
     if (devState) {
       const base = {
-        normalizedSession,
         incomingProposals: [] as ProposalInfo[],
         topProposal: null,
         hasSpace: true,
@@ -102,7 +96,6 @@ export function useAppMode(): AppModeState {
         loading: true,
         topProposal: null,
         incomingProposals: [],
-        normalizedSession,
         isSolo,
         hasSpace,
       };
@@ -115,7 +108,6 @@ export function useAppMode(): AppModeState {
         loading: false,
         topProposal: null,
         incomingProposals: [],
-        normalizedSession,
         isSolo: true,
         hasSpace,
       };
@@ -128,7 +120,6 @@ export function useAppMode(): AppModeState {
         loading: false,
         topProposal: null,
         incomingProposals,
-        normalizedSession,
         isSolo: false,
         hasSpace,
       };
@@ -141,7 +132,6 @@ export function useAppMode(): AppModeState {
         loading: false,
         topProposal: incomingProposals[0],
         incomingProposals,
-        normalizedSession,
         isSolo: false,
         hasSpace,
       };
@@ -153,7 +143,6 @@ export function useAppMode(): AppModeState {
       loading: false,
       topProposal: null,
       incomingProposals: [],
-      normalizedSession,
       isSolo: false,
       hasSpace,
     };
