@@ -27,6 +27,21 @@ const RECOMMENDED_CATEGORY_ORDER = [
   "category-10",          // Uthållighet
 ];
 
+// Recommended card order per category (by card position/index) — unused for now, for future UI highlighting.
+// Keys use slug-style names that map to RECOMMENDED_CATEGORY_ORDER intent.
+const RECOMMENDED_TOPIC_ORDER: Record<string, number[]> = {
+  "paridentitet-vs-foraldraidentitet": [7, 8],
+  "arbetsfordelning-mentalt-ansvar":   [1, 3, 2],
+  "kommunikation-stod":                [17, 18],
+  "motstandskraft-innan-det-brister":  [16, 15],
+  "uppfostringsstilar":                [4, 6, 5],
+  "slakt-kultur":                      [11, 12],
+  "varderingar-framtid":               [19, 20],
+  "pengar-foraldraskap":               [14, 13],
+  "narhet-intimitet":                  [10, 9],
+  "uthallighet":                       [21, 22],
+};
+
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useState, useMemo, useEffect, useRef } from 'react';
