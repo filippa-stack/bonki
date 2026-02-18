@@ -1,91 +1,19 @@
-import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '@/contexts/AuthContext';
-import { useCoupleSpaceContext as useCoupleSpace } from '@/contexts/CoupleSpaceContext';
-import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import { motion, AnimatePresence } from 'framer-motion';
 import { BEAT_2, EASE } from '@/lib/motion';
 
-const gateKey = (spaceId: string, eventId: string) =>
-  `new_space_created_seen_${spaceId}_${eventId}`;
-
 interface Props {
-  /** Called when a new_space_created event is detected (banner becomes active) */
-  onActive?: () => void;
-  /** Called when the banner is dismissed */
-  onDismiss?: () => void;
+  visible: boolean;
+  onDismiss: () => void;
 }
 
-export default function NewChapterBanner({ onActive, onDismiss }: Props) {
-  const { user } = useAuth();
-  const { space } = useCoupleSpace();
+/**
+ * Presentational-only component — no async effects.
+ * Detection is handled by useNewChapterDetector in Home.
+ */
+export default function NewChapterBanner({ visible, onDismiss }: Props) {
   const navigate = useNavigate();
-  const [visible, setVisible] = useState(false);
-  const [triggered, setTriggered] = useState(false);
-
-  const handleDetected = useCallback((eventId: string, actorUserId: string) => {
-    if (!user || !space) return;
-    // Receiver-only: ignore if current user is the actor
-    if (actorUserId === user.id) return;
-    // One-time gate per event id
-    if (localStorage.getItem(gateKey(space.id, eventId))) return;
-    if (triggered) return;
-
-    setTriggered(true);
-    localStorage.setItem(gateKey(space.id, eventId), '1');
-    setVisible(true);
-    onActive?.();
-  }, [user, space, triggered, onActive]);
-
-  useEffect(() => {
-    if (!user || !space) return;
-
-    // Check for existing event on mount (e.g. app reopen)
-    const checkExisting = async () => {
-      const { data } = await supabase
-        .from('system_events')
-        .select('id, payload')
-        .eq('couple_space_id', space.id)
-        .eq('type', 'new_space_created')
-        .order('created_at', { ascending: false })
-        .limit(5);
-
-      if (!data || data.length === 0) return;
-
-      for (const row of data) {
-        const payload = row.payload as Record<string, unknown> | null;
-        const actorId = (payload?.actor_user_id ?? '') as string;
-        if (actorId && !localStorage.getItem(gateKey(space.id, row.id))) {
-          handleDetected(row.id, actorId);
-          return;
-        }
-      }
-    };
-
-    checkExisting();
-
-    // Realtime subscription
-    const channel = supabase
-      .channel(`new-chapter-${space.id}`)
-      .on(
-        'postgres_changes',
-        {
-          event: 'INSERT',
-          schema: 'public',
-          table: 'system_events',
-          filter: `couple_space_id=eq.${space.id}`,
-        },
-        (payload: any) => {
-          if (payload.new?.type !== 'new_space_created') return;
-          const actorId = (payload.new?.payload?.actor_user_id ?? '') as string;
-          handleDetected(payload.new.id, actorId);
-        }
-      )
-      .subscribe();
-
-    return () => { supabase.removeChannel(channel); };
-  }, [user, space, handleDetected]);
 
   return (
     <AnimatePresence>
@@ -109,7 +37,7 @@ export default function NewChapterBanner({ onActive, onDismiss }: Props) {
                 variant="ghost"
                 size="sm"
                 className="flex-1 text-muted-foreground"
-                onClick={() => { setVisible(false); onDismiss?.(); }}
+                onClick={onDismiss}
               >
                 Stäng
               </Button>
@@ -117,8 +45,7 @@ export default function NewChapterBanner({ onActive, onDismiss }: Props) {
                 size="sm"
                 className="flex-1"
                 onClick={() => {
-                  setVisible(false);
-                  onDismiss?.();
+                  onDismiss();
                   navigate('/', { replace: true });
                 }}
               >
