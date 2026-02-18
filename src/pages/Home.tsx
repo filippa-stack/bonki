@@ -75,6 +75,15 @@ import { DEV_MOCK } from '@/hooks/useDevState';
 import { useDevState } from '@/contexts/DevStateContext';
 import { useAppMode } from '@/hooks/useAppMode';
 import { useNormalizedSessionContext } from '@/contexts/NormalizedSessionContext';
+import { useSpaceSnapshot } from '@/hooks/useSpaceSnapshot';
+import {
+  selectLastActivityAt,
+  selectExploredCardIds,
+  selectLastOpenedCardId,
+  selectLastCompletedCardId,
+  selectSuggestedNextCardId,
+} from '@/selectors/spaceSnapshotSelectors';
+import { categories as allCategories, cards as allCards } from '@/data/content';
 
 const STEP_LABELS = ['Öppnare', 'Tankeväckare', 'Scenario', 'Teamwork'];
 
@@ -169,7 +178,6 @@ export default function Home() {
     categories, 
     getCardById,
     getCategoryById,
-    journeyState,
     cards,
     getCategoryStatus,
     clearForPartnerLeave,
@@ -178,6 +186,7 @@ export default function Home() {
   const { settings } = useSiteSettings();
   const { user } = useAuth();
   const { space, displayMemberCount, userRole, fetchInviteInfo } = useCoupleSpaceContext();
+  const { snapshot } = useSpaceSnapshot(user?.id ?? null, space?.id ?? null);
   const { incomingProposals: _rawProposals, ownPendingProposals, savedProposals, sendProposal: sendDbProposal, updateProposalStatus, activateSession } = useProposalsContext();
   const devState = useDevState();
   const appModeState = useAppMode();
@@ -196,6 +205,13 @@ export default function Home() {
   const SEVEN_DAYS_MS = 7 * 24 * 60 * 60 * 1000;
   const FOURTEEN_DAYS_MS = 14 * 24 * 60 * 60 * 1000;
 
+  // Snapshot-derived values (replace journeyState reads)
+  const snapshotLastActivityAt = selectLastActivityAt(snapshot);
+  const exploredIds = selectExploredCardIds(snapshot);
+  const snapshotLastOpenedCardId = selectLastOpenedCardId(snapshot);
+  const snapshotLastCompletedCardId = selectLastCompletedCardId(snapshot);
+  const snapshotSuggestedNextCardId = selectSuggestedNextCardId(snapshot, allCategories, allCards);
+
   // Persist return-overlay dismissal so it doesn't reappear for 7 days
   const RETURN_OVERLAY_KEY = 'return_overlay_dismissed';
   const [returnOverlayDismissed, setReturnOverlayDismissed] = useState(() => {
@@ -207,23 +223,22 @@ export default function Home() {
       // Expired → allow again
       if (timestamp < sevenDaysAgo) return false;
       // New session started since dismissal → allow again
-      const currentKey = normalizedSession.cardId || journeyState?.lastOpenedCardId || '';
+      const currentKey = normalizedSession.cardId || snapshotLastOpenedCardId || '';
       if (sessionKey && currentKey && sessionKey !== currentKey) return false;
       return true;
     } catch { return false; }
   });
 
   const dismissReturnOverlay = () => {
-    const currentKey = normalizedSession.cardId || journeyState?.lastOpenedCardId || '';
+    const currentKey = normalizedSession.cardId || snapshotLastOpenedCardId || '';
     localStorage.setItem(RETURN_OVERLAY_KEY, JSON.stringify({ timestamp: Date.now(), sessionKey: currentKey }));
     setReturnOverlayDismissed(true);
   };
 
   const lastActivityElapsed = useMemo(() => {
-    const lastActivity = journeyState?.updatedAt;
-    if (!lastActivity) return 0;
-    return Date.now() - new Date(lastActivity).getTime();
-  }, [journeyState]);
+    if (!snapshotLastActivityAt) return 0;
+    return Date.now() - snapshotLastActivityAt.getTime();
+  }, [snapshotLastActivityAt]);
 
   const isSoloMode = appModeState.isSolo;
 
@@ -237,10 +252,10 @@ export default function Home() {
     if (isSoloMode) return false;
     if (returnOverlayDismissed) return false;
     if (lastActivityElapsed < SEVEN_DAYS_MS) return false;
-    return !!(mode === 'active' || journeyState?.lastCompletedCardId || journeyState?.lastOpenedCardId);
-  }, [isSoloMode, returnOverlayDismissed, lastActivityElapsed, mode, journeyState]);
+    return !!(mode === 'active' || snapshotLastCompletedCardId || snapshotLastOpenedCardId);
+  }, [isSoloMode, returnOverlayDismissed, lastActivityElapsed, mode, snapshotLastCompletedCardId, snapshotLastOpenedCardId]);
 
-  const returnResumeCardId = normalizedSession.cardId || journeyState?.lastOpenedCardId || journeyState?.lastCompletedCardId || null;
+  const returnResumeCardId = normalizedSession.cardId || snapshotLastOpenedCardId || snapshotLastCompletedCardId || null;
 
   // Clear proposal picker state when an incoming proposal arrives
   useEffect(() => {
@@ -250,17 +265,13 @@ export default function Home() {
     }
   }, [mode]);
 
-  // Computed helpers for proposal mode & highlighted category
-  const exploredIds = journeyState?.exploredCardIds || [];
-  const sessionProgress = journeyState?.sessionProgress || {};
-
   const suggestedContext = useMemo(() => {
-    const suggestedCardId = journeyState?.suggestedNextCardId
-      || (journeyState?.lastOpenedCardId && !exploredIds.includes(journeyState.lastOpenedCardId) ? journeyState.lastOpenedCardId : null);
+    const suggestedCardId = snapshotSuggestedNextCardId
+      || (snapshotLastOpenedCardId && !exploredIds.includes(snapshotLastOpenedCardId) ? snapshotLastOpenedCardId : null);
     const suggestedCard = suggestedCardId ? getCardById(suggestedCardId) : null;
     const suggestedCategory = suggestedCard ? getCategoryById(suggestedCard.categoryId) : null;
     return { suggestedCardId, suggestedCard, suggestedCategory };
-  }, [journeyState, exploredIds, getCardById, getCategoryById]);
+  }, [snapshotSuggestedNextCardId, snapshotLastOpenedCardId, exploredIds, getCardById, getCategoryById]);
 
   const highlightedCategoryId = normalizedSession.categoryId || suggestedContext.suggestedCategory?.id || null;
 
@@ -319,19 +330,19 @@ export default function Home() {
     if (!isProposalMode) return [];
     return categories
       .map((cat) => {
-        const catCards = cards
-          .filter((c) => c.categoryId === cat.id)
-          .filter((card) => {
-            const finished = exploredIds.includes(card.id);
-            const started = !!sessionProgress[card.id] && !finished;
-            if (proposalFilter === 'unexplored') return !finished;
-            if (proposalFilter === 'started') return started;
-            return true; // 'all'
-          });
-        return { category: cat, cards: catCards };
+        const catCards = cards.filter((c) => c.categoryId === cat.id);
+        const filtered = catCards.filter((card) => {
+          const finished = exploredIds.includes(card.id);
+          const hasVisit = snapshot?.visits.some((v) => v.card_id === card.id) ?? false;
+          const started = hasVisit && !finished;
+          if (proposalFilter === 'unexplored') return !finished;
+          if (proposalFilter === 'started') return started;
+          return true;
+        });
+        return { category: cat, cards: filtered };
       })
       .filter((g) => g.cards.length > 0);
-  }, [isProposalMode, categories, cards, exploredIds, sessionProgress, proposalFilter]);
+  }, [isProposalMode, categories, cards, exploredIds, snapshot, proposalFilter]);
 
   const candidateCard = proposalCandidate ? getCardById(proposalCandidate.cardId) : null;
   const candidateCategory = proposalCandidate ? getCategoryById(proposalCandidate.categoryId) : null;
@@ -810,15 +821,16 @@ export default function Home() {
 
       {/* Relationship Memory — solo only */}
       {isSoloMode && (() => {
-        const lastCompletedId = journeyState?.lastCompletedCardId;
+        const lastCompletedId = snapshotLastCompletedCardId;
         const lastCard = lastCompletedId ? getCardById(lastCompletedId) : null;
         const lastCategory = lastCard ? getCategoryById(lastCard.categoryId) : null;
-        if (lastCard && lastCategory && journeyState?.updatedAt) {
+        const lastActivity = snapshotLastActivityAt;
+        if (lastCard && lastCategory && lastActivity) {
           return (
             <RelationshipMemory
               cardTitle={lastCard.title}
               categoryTitle={lastCategory.title}
-              completedAt={journeyState.updatedAt}
+              completedAt={lastActivity.toISOString()}
             />
           );
         }
