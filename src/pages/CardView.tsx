@@ -441,6 +441,7 @@ export default function CardView() {
               {cardViewMode === 'live' && isPaired && cardId && (
                 <>
                   <SessionStepReflection
+                    sessionId={normalizedSession.sessionId}
                     cardId={cardId}
                     stepIndex={currentStepIndex}
                     onLocked={async () => {
