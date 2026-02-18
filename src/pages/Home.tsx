@@ -358,67 +358,83 @@ export default function Home() {
         />
       )}
 
-      {mode === 'proposal' && appModeState.incomingProposals[0] && (() => {
-        const proposal = appModeState.incomingProposals[0];
-        const proposalCard = getCardById(proposal.card_id) || (devState ? { title: DEV_MOCK.mockCard.title, subtitle: DEV_MOCK.mockCard.subtitle } as any : null);
-        const isAccepting = acceptingProposalId === proposal.id;
-        return (
-          <motion.div
-            key={`proposal-ritual-${proposal.id}`}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.15 }}
-            className="fixed inset-0 z-50 flex flex-col items-center justify-center p-8 bg-background"
-          >
-            <div className="w-full max-w-sm space-y-10 text-center">
-              <div className="space-y-3">
-                <p className="text-sm text-muted-foreground/60 uppercase tracking-wide">
-                  Förslag från din partner
-                </p>
-                <h1 className="text-2xl font-serif text-foreground leading-snug">
-                  {proposalCard?.title || 'Samtal'}
-                </h1>
-                {proposal.message && (
-                  <p className="text-sm text-muted-foreground italic">"{proposal.message}"</p>
-                )}
-              </div>
-              <div className="space-y-3">
-                <Button
-                  size="lg"
-                  className="w-full h-14 rounded-2xl gap-2 font-normal"
-                  disabled={isAccepting}
-                  onClick={devState ? () => navigate(`/card/${DEV_MOCK.mockCard.id}`) : async () => {
-                    setAcceptingProposalId(proposal.id);
-                    await updateProposalStatus(proposal.id, 'accepted');
-                    const result = await activateSession(proposal.id);
-                    setAcceptingProposalId(null);
-                    if (result.success) {
-                      navigate(`/card/${proposal.card_id}`);
-                    } else {
-                      const errMsg = (result as any).errorMessage || 'Unknown error';
-                      console.error('[DIAG] Activation failed in Home:', errMsg);
-                      toast.error(`[DIAG] ${errMsg}`);
-                    }
-                  }}
-                >
-                  {isAccepting ? 'Startar...' : 'Acceptera'}
-                  {!isAccepting && <ArrowRight className="w-4 h-4" />}
-                </Button>
-                <Button
-                  variant="ghost"
-                  size="lg"
-                  className="w-full h-12 text-muted-foreground hover:text-foreground font-normal"
-                  disabled={isAccepting}
-                  onClick={() => updateProposalStatus(proposal.id, 'saved_for_later')}
-                >
-                  Inte nu
-                </Button>
-                {!isAccepting && <p className="text-xs text-muted-foreground/50 mt-1">Du kan välja det senare från startsidan.</p>}
-              </div>
-            </div>
-          </motion.div>
-        );
-      })()}
+      <AnimatePresence>
+        {mode === 'proposal' && appModeState.incomingProposals[0] && (() => {
+          const proposal = appModeState.incomingProposals[0];
+          const proposalCard = getCardById(proposal.card_id) || (devState ? { title: DEV_MOCK.mockCard.title, subtitle: DEV_MOCK.mockCard.subtitle } as any : null);
+          const isAccepting = acceptingProposalId === proposal.id;
+          return (
+            <>
+              {/* Backdrop — fades out over 180ms */}
+              <motion.div
+                key={`proposal-backdrop-${proposal.id}`}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.18, ease: [0.4, 0.0, 0.2, 1] }}
+                className="fixed inset-0 z-40 bg-background"
+              />
+
+              {/* Modal — slides up 8px and fades on exit */}
+              <motion.div
+                key={`proposal-modal-${proposal.id}`}
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 8 }}
+                transition={{ duration: 0.18, ease: [0.4, 0.0, 0.2, 1] }}
+                className="fixed inset-0 z-50 flex flex-col items-center justify-center p-8"
+              >
+                <div className="w-full max-w-sm space-y-10 text-center">
+                  <div className="space-y-3">
+                    <p className="text-sm text-muted-foreground/60 uppercase tracking-wide">
+                      Förslag från din partner
+                    </p>
+                    <h1 className="text-2xl font-serif text-foreground leading-snug">
+                      {proposalCard?.title || 'Samtal'}
+                    </h1>
+                    {proposal.message && (
+                      <p className="text-sm text-muted-foreground italic">"{proposal.message}"</p>
+                    )}
+                  </div>
+                  <div className="space-y-3">
+                    <Button
+                      size="lg"
+                      className="w-full h-14 rounded-2xl gap-2 font-normal"
+                      disabled={isAccepting}
+                      onClick={devState ? () => navigate(`/card/${DEV_MOCK.mockCard.id}`) : async () => {
+                        setAcceptingProposalId(proposal.id);
+                        await updateProposalStatus(proposal.id, 'accepted');
+                        const result = await activateSession(proposal.id);
+                        setAcceptingProposalId(null);
+                        if (result.success) {
+                          navigate(`/card/${proposal.card_id}`);
+                        } else {
+                          const errMsg = (result as any).errorMessage || 'Unknown error';
+                          console.error('[DIAG] Activation failed in Home:', errMsg);
+                          toast.error(`[DIAG] ${errMsg}`);
+                        }
+                      }}
+                    >
+                      {isAccepting ? 'Startar...' : 'Acceptera'}
+                      {!isAccepting && <ArrowRight className="w-4 h-4" />}
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="lg"
+                      className="w-full h-12 text-muted-foreground hover:text-foreground font-normal"
+                      disabled={isAccepting}
+                      onClick={() => updateProposalStatus(proposal.id, 'saved_for_later')}
+                    >
+                      Inte nu
+                    </Button>
+                    {!isAccepting && <p className="text-xs text-muted-foreground/50 mt-1">Du kan välja det senare från startsidan.</p>}
+                  </div>
+                </div>
+              </motion.div>
+            </>
+          );
+        })()}
+      </AnimatePresence>
 
       {mode === 'active' && normalizedSession.cardId && (() => {
         const activeCard = getCardById(normalizedSession.cardId!) || (devState ? { title: DEV_MOCK.mockCard.title, categoryId: DEV_MOCK.mockCategory.id } as any : null);
