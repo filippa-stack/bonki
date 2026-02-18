@@ -653,7 +653,7 @@ export type Database = {
             foreignKeyName: "step_reflections_session_id_fkey"
             columns: ["session_id"]
             isOneToOne: false
-            referencedRelation: "card_sessions"
+            referencedRelation: "couple_sessions"
             referencedColumns: ["id"]
           },
         ]
