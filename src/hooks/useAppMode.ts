@@ -32,14 +32,6 @@ export type MacroMode =
   | 'active'         // Paired, active session (SESSION_ACTIVE or SESSION_WAITING)
   | 'partner_left';  // Was paired but partner left (memberCount dropped to 1 mid-session)
 
-export interface ActiveSessionInfo {
-  sessionId: string;
-  cardId: string;
-  categoryId: string;
-  currentStepIndex: number;
-  waiting: boolean;
-}
-
 export interface ProposalInfo {
   id: string;
   card_id: string;
@@ -51,8 +43,6 @@ export interface ProposalInfo {
 export interface AppModeState {
   mode: MacroMode;
   loading: boolean;
-  /** Non-null when mode === 'active' */
-  activeSession: ActiveSessionInfo | null;
   /** Non-null when mode === 'proposal' */
   topProposal: ProposalInfo | null;
   /** All incoming proposals (unfiltered by dismissals — consumer handles that) */
@@ -81,7 +71,6 @@ export function useAppMode(): AppModeState {
         normalizedSession,
         incomingProposals: [] as ProposalInfo[],
         topProposal: null,
-        activeSession: null,
         hasSpace: true,
       };
 
@@ -89,19 +78,7 @@ export function useAppMode(): AppModeState {
         return { ...base, mode: 'solo', loading: false, isSolo: true };
       }
       if (devState === 'pairedActive') {
-        return {
-          ...base,
-          mode: 'active',
-          loading: false,
-          isSolo: false,
-          activeSession: {
-            sessionId: 'dev-session',
-            cardId: DEV_MOCK.mockSession.cardId,
-            categoryId: DEV_MOCK.mockSession.categoryId,
-            currentStepIndex: DEV_MOCK.mockSession.currentStepIndex,
-            waiting: false,
-          },
-        };
+        return { ...base, mode: 'active', loading: false, isSolo: false };
       }
       if (devState === 'proposalIncoming') {
         const mockProposal = DEV_MOCK.mockProposal as ProposalInfo;
@@ -123,7 +100,6 @@ export function useAppMode(): AppModeState {
       return {
         mode: 'loading',
         loading: true,
-        activeSession: null,
         topProposal: null,
         incomingProposals: [],
         normalizedSession,
@@ -137,7 +113,6 @@ export function useAppMode(): AppModeState {
       return {
         mode: 'solo',
         loading: false,
-        activeSession: null,
         topProposal: null,
         incomingProposals: [],
         normalizedSession,
@@ -151,13 +126,6 @@ export function useAppMode(): AppModeState {
       return {
         mode: 'active',
         loading: false,
-        activeSession: {
-          sessionId: normalizedSession.sessionId,
-          cardId: normalizedSession.cardId,
-          categoryId: normalizedSession.categoryId || '',
-          currentStepIndex: normalizedSession.currentStepIndex,
-          waiting: normalizedSession.waiting,
-        },
         topProposal: null,
         incomingProposals,
         normalizedSession,
@@ -171,7 +139,6 @@ export function useAppMode(): AppModeState {
       return {
         mode: 'proposal',
         loading: false,
-        activeSession: null,
         topProposal: incomingProposals[0],
         incomingProposals,
         normalizedSession,
@@ -184,7 +151,6 @@ export function useAppMode(): AppModeState {
     return {
       mode: 'idle',
       loading: false,
-      activeSession: null,
       topProposal: null,
       incomingProposals: [],
       normalizedSession,
