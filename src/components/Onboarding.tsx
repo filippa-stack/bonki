@@ -37,9 +37,7 @@ export default function Onboarding() {
   const isLastSlide = currentSlide === slides.length - 1;
 
   return (
-    <div
-      className="min-h-screen flex flex-col items-center justify-center px-6 py-12 page-bg"
-    >
+    <div className="min-h-screen flex flex-col items-center justify-center px-6 py-12 page-bg">
       <div className="w-full max-w-md">
         <AnimatePresence mode="wait">
           <motion.div
@@ -50,16 +48,16 @@ export default function Onboarding() {
             transition={{ duration: 0.15 }}
             className="text-center"
           >
-            <h1 className="text-display text-foreground mb-8">
+            <h1 className="text-display text-foreground">
               {slides[currentSlide].title}
             </h1>
-            <p className="text-body text-gentle leading-relaxed mb-12 whitespace-pre-line">
+            <p className="text-body text-gentle leading-relaxed mt-8 whitespace-pre-line">
               {slides[currentSlide].content}
             </p>
           </motion.div>
         </AnimatePresence>
 
-        <div className="flex flex-col items-center gap-6">
+        <div className="mt-12 flex flex-col items-center gap-6">
           <button
             onClick={isLastSlide ? handleComplete : handleNext}
             className="btn-gentle w-full max-w-xs"
@@ -83,14 +81,17 @@ export default function Onboarding() {
             ))}
           </div>
 
-          {!isLastSlide && (
-            <button
-              onClick={handleComplete}
-              className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-            >
-              {t('onboarding.skip')}
-            </button>
-          )}
+          {/* "Hoppa över" — fixed height to prevent layout shift on last slide */}
+          <div className="h-6 flex items-center">
+            {!isLastSlide && (
+              <button
+                onClick={handleComplete}
+                className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+              >
+                {t('onboarding.skip')}
+              </button>
+            )}
+          </div>
         </div>
       </div>
     </div>
