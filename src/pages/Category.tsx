@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { CheckCircle2 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useApp } from '@/contexts/AppContext';
+import { useNormalizedSessionContext } from '@/contexts/NormalizedSessionContext';
 import { useAuth } from '@/contexts/AuthContext';
 import { useCoupleSpaceContext } from '@/contexts/CoupleSpaceContext';
 import Header from '@/components/Header';
@@ -11,9 +12,10 @@ export default function Category() {
   const { t } = useTranslation();
   const { categoryId } = useParams<{ categoryId: string }>();
   const navigate = useNavigate();
-  const { getCategoryById, getCardsByCategory, journeyState, currentSession, getCardById } = useApp();
+  const { getCategoryById, getCardsByCategory, journeyState, getCardById } = useApp();
   const { user } = useAuth();
   const { memberCount } = useCoupleSpaceContext();
+  const normalizedSession = useNormalizedSessionContext();
   const exploredIds = journeyState?.exploredCardIds || [];
   const cardVisitDates = journeyState?.cardVisitDates || {};
   const sessionProgress = journeyState?.sessionProgress || {};
@@ -22,9 +24,11 @@ export default function Category() {
   const category = categoryId ? getCategoryById(categoryId) : undefined;
   const cards = categoryId ? getCardsByCategory(categoryId) : [];
 
-  // Compute single highlighted card
+  // Highlight the active card using normalized session — the single source of truth.
   const sessionCardIdForThisCategory =
-    currentSession?.categoryId === categoryId ? currentSession.cardId : null;
+    normalizedSession.sessionId && normalizedSession.cardId && cards.some(c => c.id === normalizedSession.cardId)
+      ? normalizedSession.cardId
+      : null;
   const suggestedId = journeyState?.suggestedNextCardId || null;
   const suggestedCard = suggestedId ? getCardById(suggestedId) : null;
   const suggestedCardIdForThisCategory =
