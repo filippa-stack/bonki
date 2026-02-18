@@ -67,7 +67,7 @@
 <body>
 
 <h1>Still Us — Wireframes</h1>
-<p class="subtitle">Exportera alla skärmar som separata PNG-bilder i en ZIP-fil (2× skala). Uppdaterad februari 2026 — inkl. radius-system, spacingtoken, bannerstack, reveal/waiting layout, browse-läge (CategoryCard-grid), mb-8 gap på rekommenderad kategori.</p>
+<p class="subtitle">Exportera alla skärmar som separata PNG-bilder i en ZIP-fil (2× skala). Uppdaterad februari 2026 — inkl. radius-system, spacingtoken, bannerstack, reveal/waiting layout, Category Discovery som primär yta i paired idle, sekundär "Välj samtalsämne" CTA.</p>
 
 <div class="actions">
   <button class="btn-dl" id="downloadBtn" onclick="exportAll()">📦 Ladda ner ZIP med alla PNG:er</button>
@@ -180,23 +180,68 @@
 <div class="wireframe-grid">
 
   <div class="wireframe" data-name="06-idle-connected">
-    <h2>Idle — Partner kopplad</h2>
-    <div class="route">/ (paired, inga aktiva förslag)</div>
+    <h2>Idle — Partner kopplad (Category Discovery)</h2>
+    <div class="route">/ (paired, mode = idle, !isProposalMode)</div>
     <div class="frame">
       <div class="header-bar"><span>logo</span><span>⚙</span></div>
-      <div style="margin-top:24px;">
-        <div class="card" style="background:#fffbf0;border-color:#f0e0c0;border-radius:14px;padding:8px 11px;font-size:10px;color:#a07040;margin-bottom:8px;">🤍 Ni är nu ihopkopplade. ✕</div>
+      <!-- Banner: PartnerConnected (dismissable) — alltid monterad för detektering -->
+      <div style="margin-top:16px;margin-bottom:12px;">
+        <div class="card" style="background:#fffbf0;border-color:#f0e0c0;border-radius:14px;padding:8px 11px;font-size:10px;color:#a07040;">🤍 Ni är nu ihopkopplade. ✕</div>
       </div>
-      <div style="margin-bottom:32px;"></div>
-      <div class="btn-ui">Välj samtalsämne →</div>
-      <div class="spacer"></div>
-      <div class="divider"></div>
-      <div class="muted">RelationshipMemory · RecentSharedReflection</div>
-      <div class="divider"></div>
-      <div class="muted">🔗 Er historia</div>
-      <div class="divider"></div>
-      <div class="muted" style="margin-top:32px;">▸ Notiser (mt-8, collapsed)</div>
-      <div style="height:40px;"></div>
+      <!-- Category Discovery — primär yta ovan fold (space-y-6) -->
+      <!-- Rekommenderad kategori: mt-4 extra spacing + shadow-elevation (isFeatured), ingen label -->
+      <div style="margin-top:16px;margin-bottom:-4px;">
+        <div class="card" style="box-shadow:0 6px 24px -4px rgba(0,0,0,0.07),0 1px 4px 0 rgba(0,0,0,0.04);padding:14px;">
+          <div class="serif center" style="font-size:12px;">Kategori A — Rekommenderad ★</div>
+          <div class="muted center" style="margin-top:3px;font-style:italic;">Entryline för kategori A</div>
+          <div class="muted center" style="margin-top:2px;font-size:9px;text-transform:uppercase;letter-spacing:1px;">Kategori A</div>
+        </div>
+      </div>
+      <div style="margin-top:24px;">
+        <div class="card">
+          <div class="serif center" style="font-size:12px;">Kategori B</div>
+          <div class="muted center" style="margin-top:3px;font-style:italic;">Entryline för kategori B</div>
+          <div class="muted center" style="margin-top:2px;font-size:9px;text-transform:uppercase;letter-spacing:1px;">Kategori B</div>
+        </div>
+      </div>
+      <!-- Sekundär CTA — under kategorilistan -->
+      <div style="margin-top:40px;margin-bottom:48px;">
+        <div class="btn-outline">Välj samtalsämne →</div>
+      </div>
+      <div class="info-note center">★ Rekommenderad: isFeatured = true (elevation + mt-4) — ingen etikett · Sekundär CTA öppnar proposal-picker</div>
+    </div>
+  </div>
+
+  <div class="wireframe" data-name="06b-idle-status-cards">
+    <h2>Idle — Statuskortet ovan kategorilist</h2>
+    <div class="route">/ (paired, mode = idle, outgoingPendingProposal || savedProposal)</div>
+    <div class="frame">
+      <div class="header-bar"><span>logo</span><span>⚙</span></div>
+      <!-- Statuskort: "Förslag skickat" visas ovan kategorilistan -->
+      <div style="margin-top:16px;">
+        <div class="card center" style="margin-bottom:16px;">
+          <div class="tag">Förslag skickat</div>
+          <div class="badge-realtime" style="margin:4px 0;">● Realtime</div>
+          <div class="serif" style="margin-top:4px;font-size:12px;">Kortets titel</div>
+          <div class="muted" style="margin-top:3px;">Väntar på att din partner svarar.</div>
+          <div class="btn-ghost">Ändra förslag</div>
+        </div>
+      </div>
+      <!-- Kategorier fortfarande synliga under statuskortet -->
+      <div>
+        <div class="card">
+          <div class="serif center" style="font-size:12px;color:#aaa;">Kategori A (opacity-70)</div>
+          <div class="muted center" style="margin-top:2px;font-size:9px;">Entryline...</div>
+        </div>
+        <div class="card" style="margin-top:8px;">
+          <div class="serif center" style="font-size:12px;color:#aaa;">Kategori B (opacity-70)</div>
+          <div class="muted center" style="margin-top:2px;font-size:9px;">Entryline...</div>
+        </div>
+      </div>
+      <div style="margin-top:32px;margin-bottom:32px;">
+        <div class="btn-outline">Välj samtalsämne →</div>
+      </div>
+      <div class="info-note center">Statuskort + kategorilist visas samtidigt — ingen döljer den andre</div>
     </div>
   </div>
 
