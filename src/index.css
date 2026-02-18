@@ -41,6 +41,12 @@
 
     --radius: 0.875rem;
 
+    /* ── Semantic radius tokens ── */
+    --radius-card:   1.25rem;   /* 20px — content cards, reflection blocks */
+    --radius-button: 1rem;      /* 16px — primary/secondary buttons         */
+    --radius-pill:   0.875rem;  /* 14px — badges, chips, pills               */
+    --radius-toast:  1.125rem;  /* 18px — toast notifications               */
+
     /* Custom tokens */
     --surface-warm: 60 100% 97%;      /* #FFFEF3 */
     --surface-elevated: 60 100% 97%;
@@ -171,14 +177,16 @@
   }
 
   .card-reflection {
-    @apply rounded-xl p-6;
+    @apply p-6;
+    border-radius: var(--radius-card);
     background-color: hsl(var(--card-l1-bg));
     border: var(--card-l1-border-width) solid hsl(var(--card-l1-border));
     transition: all var(--transition-calm);
   }
 
   .card-sub {
-    @apply rounded-xl p-6;
+    @apply p-6;
+    border-radius: var(--radius-card);
     background-color: hsl(var(--card) / 0.5);
     border: var(--card-l2-border-width) solid hsl(var(--card-l2-border));
     box-shadow: var(--card-l2-shadow);
@@ -186,7 +194,7 @@
   }
 
   .card-interaction {
-    @apply rounded-2xl;
+    border-radius: var(--radius-card);
     background-color: hsl(var(--card) / 0.5);
     border: var(--card-l3-border-width) solid hsl(var(--card-l3-border));
     box-shadow: var(--card-l3-shadow);
@@ -194,7 +202,8 @@
   }
 
   .btn-gentle {
-    @apply px-6 py-3 rounded-lg font-sans text-sm font-medium transition-all;
+    @apply px-6 py-3 font-sans text-sm font-medium transition-all;
+    border-radius: var(--radius-button);
     background-color: hsl(var(--primary));
     color: hsl(var(--primary-foreground));
   }
@@ -205,7 +214,8 @@
   }
 
   .btn-soft {
-    @apply px-6 py-3 rounded-lg font-sans text-sm font-medium transition-all;
+    @apply px-6 py-3 font-sans text-sm font-medium transition-all;
+    border-radius: var(--radius-button);
     background-color: hsl(var(--secondary));
     color: hsl(var(--secondary-foreground));
   }
