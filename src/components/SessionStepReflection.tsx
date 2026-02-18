@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { useCoupleSpaceContext as useCoupleSpace } from '@/contexts/CoupleSpaceContext';
 import { useSessionReflections, type ReflectionState } from '@/hooks/useSessionReflections';
-import { BEAT_1, BEAT_2, EASE } from '@/lib/motion';
+import { BEAT_1, BEAT_2, BEAT_3, EASE } from '@/lib/motion';
 
 
 
@@ -57,9 +57,9 @@ export default function SessionStepReflection({
 
   useEffect(() => {
     if (prevState === 'ready' && (state === 'revealed' || state === 'locked')) {
-      // Phase A: fade out waiting (120ms), Phase B: pause 80ms, Phase C+: reveal
+      // Phase A: fade out waiting (BEAT_3), Phase B: pause BEAT_1, Phase C+: reveal
       setWaitingVisible(false);
-      const timer = setTimeout(() => setRevealVisible(true), 200); // 120 + 80
+      const timer = setTimeout(() => setRevealVisible(true), (BEAT_3 + BEAT_1) * 1000); // 240ms
       return () => clearTimeout(timer);
     }
     if (state === 'ready') {
@@ -111,7 +111,7 @@ export default function SessionStepReflection({
           <motion.div
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.18, ease: EASE }}
+            transition={{ duration: BEAT_2, ease: EASE }}
           >
             <ReflectionBlock name={partnerName} text={partnerReflection.text} locked />
           </motion.div>
@@ -122,7 +122,7 @@ export default function SessionStepReflection({
         <motion.div
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.06, duration: 0.18, ease: EASE }}
+          transition={{ delay: BEAT_1, duration: BEAT_2, ease: EASE }}
         >
           <ReflectionBlock name={myName} text={myReflection?.text || ''} locked />
         </motion.div>
@@ -146,7 +146,7 @@ export default function SessionStepReflection({
               key="waiting"
               initial={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              transition={{ duration: 0.12, ease: EASE }}
+              transition={{ duration: BEAT_3, ease: EASE }}
             className="min-h-[60vh] flex flex-col justify-center text-center"
             >
               <div className="space-y-6" style={{ animation: 'waiting-breathe 6.5s cubic-bezier(0.4, 0.0, 0.2, 1) infinite' }}>
@@ -174,7 +174,7 @@ export default function SessionStepReflection({
                   <motion.div
                     initial={{ opacity: 0, y: 12 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.18, ease: EASE }}
+                    transition={{ duration: BEAT_2, ease: EASE }}
                   >
                     <ReflectionBlock name={partnerName} text={partnerReflection.text} />
                   </motion.div>
@@ -182,11 +182,11 @@ export default function SessionStepReflection({
 
                 <Separator className="opacity-30" />
 
-                {/* Phase E — My reflection (60ms stagger after partner) */}
+                {/* Phase E — My reflection (BEAT_1 stagger after partner) */}
                 <motion.div
                   initial={{ opacity: 0, y: 12 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.06, duration: 0.18, ease: EASE }}
+                  transition={{ delay: BEAT_1, duration: BEAT_2, ease: EASE }}
                 >
                   <div className="space-y-1">
                     <p className="text-xs text-muted-foreground/60 px-1">{myName}</p>
@@ -226,7 +226,7 @@ export default function SessionStepReflection({
             key="waiting"
             initial={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.12, ease: EASE }}
+            transition={{ duration: BEAT_3, ease: EASE }}
             className="min-h-[60vh] flex flex-col justify-center text-center"
           >
             <div className="space-y-6" style={{ animation: 'waiting-breathe 6.5s cubic-bezier(0.4, 0.0, 0.2, 1) infinite' }}>
