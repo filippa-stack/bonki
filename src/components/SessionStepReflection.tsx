@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Lock, Check } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
@@ -25,6 +26,8 @@ interface SessionStepReflectionProps {
   onLocked?: () => void | Promise<void>;
 }
 
+const EASE = [0.4, 0.0, 0.2, 1] as const;
+
 export default function SessionStepReflection({
   sessionId = null,
   stepIndex,
@@ -45,8 +48,30 @@ export default function SessionStepReflection({
   const myName = userRole === 'partner_a' ? (space?.partner_a_name || 'Du') : (space?.partner_b_name || 'Du');
   const partnerName = userRole === 'partner_a' ? (space?.partner_b_name || 'Din partner') : (space?.partner_a_name || 'Din partner');
 
-
   const [localText, setLocalText] = useState('');
+
+  // Track previous state to detect ready→revealed transition
+  const [prevState, setPrevState] = useState(state);
+  const [waitingVisible, setWaitingVisible] = useState(state === 'ready');
+  const [revealVisible, setRevealVisible] = useState(state === 'revealed' || state === 'locked');
+
+  useEffect(() => {
+    if (prevState === 'ready' && (state === 'revealed' || state === 'locked')) {
+      // Phase A: fade out waiting (120ms), Phase B: pause 80ms, Phase C+: reveal
+      setWaitingVisible(false);
+      const timer = setTimeout(() => setRevealVisible(true), 200); // 120 + 80
+      return () => clearTimeout(timer);
+    }
+    if (state === 'ready') {
+      setWaitingVisible(true);
+      setRevealVisible(false);
+    }
+    if ((state === 'revealed' || state === 'locked') && prevState !== 'ready') {
+      setRevealVisible(true);
+      setWaitingVisible(false);
+    }
+    setPrevState(state);
+  }, [state]);
 
   // Sync local text from hook
   const displayText = myReflection?.text ?? localText;
@@ -74,7 +99,7 @@ export default function SessionStepReflection({
     );
   }
 
-  // ─── LOCKED: immutable view ───
+  // ─── LOCKED: immutable view (same reveal sequence) ───
   if (state === 'locked') {
     return (
       <div className="mt-8 mb-2 space-y-5">
@@ -83,12 +108,24 @@ export default function SessionStepReflection({
         </p>
 
         {partnerReflection && (
-          <ReflectionBlock name={partnerName} text={partnerReflection.text} locked />
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.18, ease: EASE }}
+          >
+            <ReflectionBlock name={partnerName} text={partnerReflection.text} locked />
+          </motion.div>
         )}
 
         <Separator className="opacity-30" />
 
-        <ReflectionBlock name={myName} text={myReflection?.text || ''} locked />
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.06, duration: 0.18, ease: EASE }}
+        >
+          <ReflectionBlock name={myName} text={myReflection?.text || ''} locked />
+        </motion.div>
 
         <p className="text-xs text-muted-foreground/40 text-center">
           Det här steget är låst.
@@ -98,46 +135,84 @@ export default function SessionStepReflection({
   }
 
   // ─── REVEALED: both visible, own editable ───
+  // Uses animated sequence: waiting fade-out (120ms) → pause (80ms) → reflections stagger in
   if (state === 'revealed') {
     return (
       <div className="mt-8 mb-2">
-        <p className="text-xs text-muted-foreground/40 text-center">
-          Nu kan ni läsa varandras reflektioner.
-        </p>
-        <p className="text-xs text-muted-foreground/50 text-center tracking-wide mt-1">
-          Så här reflekterade ni
-        </p>
+        <AnimatePresence mode="wait">
+          {!revealVisible ? (
+            // Phase A: waiting state fades out
+            <motion.div
+              key="waiting"
+              initial={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.12, ease: EASE }}
+              className="min-h-[60vh] flex flex-col justify-center text-center"
+            >
+              <div className="space-y-6">
+                <p className="text-sm text-muted-foreground/70 leading-relaxed">
+                  Väntar på att ni båda trycker klart.
+                </p>
+                <p className="text-xs text-muted-foreground/40">
+                  När ni båda har markerat steget som klart visas era reflektioner.
+                </p>
+              </div>
+            </motion.div>
+          ) : (
+            // Phase C–E: reflections stagger in
+            <motion.div key="revealed">
+              <p className="text-xs text-muted-foreground/40 text-center">
+                Nu kan ni läsa varandras reflektioner.
+              </p>
+              <p className="text-xs text-muted-foreground/50 text-center tracking-wide mt-1">
+                Så här reflekterade ni
+              </p>
 
-        <div className="mt-8 space-y-6">
-          {/* Partner reflection first — read-only */}
-          {partnerReflection && (
-            <ReflectionBlock name={partnerName} text={partnerReflection.text} />
+              <div className="mt-8 space-y-6">
+                {/* Phase C — Partner reflection first */}
+                {partnerReflection && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 12 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.18, ease: EASE }}
+                  >
+                    <ReflectionBlock name={partnerName} text={partnerReflection.text} />
+                  </motion.div>
+                )}
+
+                <Separator className="opacity-30" />
+
+                {/* Phase E — My reflection (60ms stagger after partner) */}
+                <motion.div
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.06, duration: 0.18, ease: EASE }}
+                >
+                  <div className="space-y-1">
+                    <p className="text-xs text-muted-foreground/60 px-1">{myName}</p>
+                    <div className="rounded-[20px] border border-border/50 bg-card overflow-hidden p-6">
+                      <textarea
+                        value={displayText}
+                        onChange={(e) => handleChange(e.target.value)}
+                        className="w-full min-h-[120px] bg-transparent resize-none focus:outline-none focus:ring-0 text-sm text-foreground placeholder:text-muted-foreground/60"
+                      />
+                    </div>
+                  </div>
+                </motion.div>
+              </div>
+
+              <div className="mt-10">
+                <Button
+                  onClick={handleLock}
+                  size="lg"
+                  className="w-full h-14 rounded-2xl gap-2 font-normal"
+                >
+                  Gå vidare tillsammans
+                </Button>
+              </div>
+            </motion.div>
           )}
-
-          <Separator className="opacity-30" />
-
-          {/* User reflection — editable */}
-          <div className="space-y-1">
-            <p className="text-xs text-muted-foreground/60 px-1">{myName}</p>
-            <div className="rounded-[20px] border border-border/50 bg-card overflow-hidden p-6">
-              <textarea
-                value={displayText}
-                onChange={(e) => handleChange(e.target.value)}
-                className="w-full min-h-[120px] bg-transparent resize-none focus:outline-none focus:ring-0 text-sm text-foreground placeholder:text-muted-foreground/60"
-              />
-            </div>
-          </div>
-        </div>
-
-        <div className="mt-10">
-          <Button
-            onClick={handleLock}
-            size="lg"
-            className="w-full h-14 rounded-2xl gap-2 font-normal"
-          >
-            Gå vidare tillsammans
-          </Button>
-        </div>
+        </AnimatePresence>
       </div>
     );
   }
@@ -145,26 +220,36 @@ export default function SessionStepReflection({
   // ─── READY: waiting for partner ───
   if (state === 'ready') {
     return (
-      <div className="min-h-[60vh] flex flex-col justify-center text-center">
-        <div className="space-y-6">
-          <p className="text-sm text-muted-foreground/70 leading-relaxed">
-            Väntar på att ni båda trycker klart.
-          </p>
-          <p className="text-xs text-muted-foreground/40">
-            När ni båda har markerat steget som klart visas era reflektioner.
-          </p>
-          <div className="mt-10">
-            <Button
-              variant="ghost"
-              size="lg"
-              className="w-full text-muted-foreground hover:text-foreground font-normal"
-              onClick={() => window.location.assign('/')}
-            >
-              Tillbaka till hem
-            </Button>
-          </div>
-        </div>
-      </div>
+      <AnimatePresence>
+        {waitingVisible && (
+          <motion.div
+            key="waiting"
+            initial={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.12, ease: EASE }}
+            className="min-h-[60vh] flex flex-col justify-center text-center"
+          >
+            <div className="space-y-6">
+              <p className="text-sm text-muted-foreground/70 leading-relaxed">
+                Väntar på att ni båda trycker klart.
+              </p>
+              <p className="text-xs text-muted-foreground/40">
+                När ni båda har markerat steget som klart visas era reflektioner.
+              </p>
+              <div className="mt-10">
+                <Button
+                  variant="ghost"
+                  size="lg"
+                  className="w-full text-muted-foreground hover:text-foreground font-normal"
+                  onClick={() => window.location.assign('/')}
+                >
+                  Tillbaka till hem
+                </Button>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     );
   }
 
