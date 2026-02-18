@@ -444,6 +444,9 @@ export default function CardView() {
                     sessionId={normalizedSession.sessionId}
                     cardId={cardId}
                     stepIndex={currentStepIndex}
+                    // onReady is intentionally NOT wired here.
+                    // Normalized session progression (complete_couple_session_step + refetch)
+                    // is triggered ONLY after lockStep() via onLocked.
                     onLocked={async () => {
                       await handleCompleteStep();
                       if (currentStepIndex >= STEP_ORDER.length - 1) {
