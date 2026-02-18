@@ -5,8 +5,9 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useCoupleSpaceContext as useCoupleSpace } from '@/contexts/CoupleSpaceContext';
 import { supabase } from '@/integrations/supabase/client';
 
+import { EASE } from '@/lib/motion';
+
 const SEEN_KEY = 'partner_connected_seen';
-const EASE = [0.4, 0.0, 0.2, 1] as const;
 
 export default function PartnerConnectedBanner() {
   const { user } = useAuth();

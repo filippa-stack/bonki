@@ -6,6 +6,7 @@ import { useNormalizedSessionContext } from '@/contexts/NormalizedSessionContext
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import { motion, AnimatePresence } from 'framer-motion';
+import { EASE } from '@/lib/motion';
 
 // All event types that signal a partner disconnection — emitted by edge functions.
 const PARTNER_LEFT_TYPES = ['partner_left_space', 'member_left', 'partner_removed', 'partner_switched'] as const;
@@ -115,7 +116,6 @@ export default function PartnerLeftBanner({ onPartnerLeft, onInvite }: Props) {
 
   const dismiss = () => setVisible(false);
   const isSwitched = eventType === 'partner_switched';
-  const EASE = [0.4, 0.0, 0.2, 1] as const;
 
   return (
     <AnimatePresence>

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
+import { BEAT_1, BEAT_2 } from '@/lib/motion';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -92,13 +93,13 @@ export default function Login() {
           className="h-20 w-auto mx-auto"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 0.15, delay: 0.03 }}
+          transition={{ duration: 0.15, delay: BEAT_1 }}
         />
 
         <motion.h1
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 0.06, duration: 0.15 }}
+          transition={{ delay: BEAT_1, duration: 0.15 }}
           className="text-display font-serif"
           style={{ color: '#FF0000' }}
         >
@@ -110,7 +111,7 @@ export default function Login() {
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 0.09, duration: 0.15 }}
+          transition={{ delay: BEAT_2, duration: 0.15 }}
           className="space-y-5"
         >
           {/* Invite code section */}

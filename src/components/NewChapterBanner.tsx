@@ -5,6 +5,7 @@ import { useCoupleSpaceContext as useCoupleSpace } from '@/contexts/CoupleSpaceC
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import { motion, AnimatePresence } from 'framer-motion';
+import { EASE } from '@/lib/motion';
 
 const gateKey = (spaceId: string, eventId: string) =>
   `new_space_created_seen_${spaceId}_${eventId}`;
@@ -77,8 +78,6 @@ export default function NewChapterBanner() {
 
     return () => { supabase.removeChannel(channel); };
   }, [user, space, handleDetected]);
-
-  const EASE = [0.4, 0.0, 0.2, 1] as const;
 
   return (
     <AnimatePresence>

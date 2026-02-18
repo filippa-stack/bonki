@@ -2,6 +2,7 @@ import { useState, useMemo, useEffect } from 'react';
 import { AnimatePresence } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
+import { BEAT_1, BEAT_2, BEAT_3 } from '@/lib/motion';
 import { useNavigate } from 'react-router-dom';
 import { useApp } from '@/contexts/AppContext';
 import { useAuth } from '@/contexts/AuthContext';
@@ -303,7 +304,7 @@ export default function SharedSummary() {
                  <motion.div
                    initial={{ opacity: 0 }}
                    animate={{ opacity: 1 }}
-                   transition={{ delay: 0.05, duration: 0.15 }}
+                   transition={{ delay: BEAT_1, duration: 0.15 }}
                    className="mb-12 rounded-2xl border border-border/15 bg-card/40 p-5"
                  >
                    <SectionLabel>Nyligen delat</SectionLabel>
@@ -336,7 +337,7 @@ export default function SharedSummary() {
                  <motion.div
                    initial={{ opacity: 0 }}
                    animate={{ opacity: 1 }}
-                   transition={{ delay: 0.08, duration: 0.15 }}
+                   transition={{ delay: BEAT_2, duration: 0.15 }}
                    className="mb-12 rounded-2xl border border-border/15 bg-card/40 p-5"
                  >
                    <SectionLabel>Era Takeaways</SectionLabel>
@@ -366,7 +367,7 @@ export default function SharedSummary() {
                  <motion.div
                    initial={{ opacity: 0 }}
                    animate={{ opacity: 1 }}
-                   transition={{ delay: 0.1, duration: 0.15 }}
+                   transition={{ delay: BEAT_3, duration: 0.15 }}
                    className="mb-12 rounded-2xl border border-border/15 bg-card/40 p-5"
                  >
                    <SectionLabel>Er resa tillsammans</SectionLabel>

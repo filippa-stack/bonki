@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { BEAT_1 } from '@/lib/motion';
 import { useTranslation } from 'react-i18next';
 import { useApp } from '@/contexts/AppContext';
 import Header from '@/components/Header';
@@ -41,7 +42,7 @@ export default function SavedConversations() {
                 key={conversation.id}
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.05 }}
+                transition={{ delay: index * BEAT_1 }}
               >
                 <ConversationCard
                   conversation={conversation}

@@ -16,6 +16,7 @@ import type { Card } from '@/types';
 
 const EASE_OUT = [0.4, 0.0, 0.2, 1] as const;
 const EASE_IN  = [0.4, 0.0, 1.0, 1] as const;
+import { BEAT_1 } from '@/lib/motion';
 
 const STEP_ORDER = ['opening', 'reflective', 'scenario', 'exercise'] as const;
 const STEP_LABELS: Record<string, string> = {
@@ -286,7 +287,7 @@ export default function ReviewDrawer({ open, onClose, card }: ReviewDrawerProps)
                       key={stepType}
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
-                      transition={{ delay: index * 0.03, duration: 0.15 }}
+                      transition={{ delay: index * BEAT_1, duration: 0.15 }}
                       className="space-y-3"
                     >
                       <div className="flex items-center justify-between">
@@ -441,7 +442,7 @@ export default function ReviewDrawer({ open, onClose, card }: ReviewDrawerProps)
                       key={`${note.sectionId}-${note.promptId}-${note.isPartnerNote ? 'p' : 'm'}`}
                       initial={{ opacity: 0, y: 6 }}
                       animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: i * 0.03, duration: 0.2 }}
+                      transition={{ delay: i * BEAT_1, duration: 0.18 }}
                       onClick={() => !note.isPartnerNote && handleNoteClick(note)}
                       className={`w-full text-left rounded-xl border border-border/40 transition-all flex overflow-hidden ${
                         note.isPartnerNote

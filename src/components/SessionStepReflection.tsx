@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { useCoupleSpaceContext as useCoupleSpace } from '@/contexts/CoupleSpaceContext';
 import { useSessionReflections, type ReflectionState } from '@/hooks/useSessionReflections';
+import { BEAT_1, BEAT_2, EASE } from '@/lib/motion';
 
 
 
@@ -26,7 +27,6 @@ interface SessionStepReflectionProps {
   onLocked?: () => void | Promise<void>;
 }
 
-const EASE = [0.4, 0.0, 0.2, 1] as const;
 
 export default function SessionStepReflection({
   sessionId = null,

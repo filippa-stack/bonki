@@ -12,9 +12,9 @@ import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { useCoupleSpaceContext as useCoupleSpace } from '@/contexts/CoupleSpaceContext';
 import Header from '@/components/Header';
+import { BEAT_2, BEAT_3, EASE } from '@/lib/motion';
 
 const STEP_LABELS = ['Början', 'Fördjupning', 'I vardagen', 'Tillsammans'];
-const EASE = [0.4, 0.0, 0.2, 1] as const;
 
 interface CompletedSessionViewProps {
   cardId: string;
@@ -156,7 +156,7 @@ export default function CompletedSessionView({
     return { label, partnerRef, myRef };
   }).filter(g => g.partnerRef || g.myRef);
 
-const EASE = [0.4, 0.0, 0.2, 1] as const;
+
 
   return (
     <div className="min-h-screen page-bg">
@@ -235,7 +235,7 @@ const EASE = [0.4, 0.0, 0.2, 1] as const;
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 0.36, duration: 0.18, ease: EASE }}
+            transition={{ delay: BEAT_3 * 2, duration: BEAT_3, ease: EASE }}
             className="space-y-4 text-center"
           >
             <Button

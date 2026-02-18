@@ -1,5 +1,6 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { BEAT_1, EASE } from '@/lib/motion';
 import { CheckCircle2 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useApp } from '@/contexts/AppContext';
@@ -63,7 +64,7 @@ export default function Category() {
         <motion.p
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 0.1, duration: 0.2, ease: [0.4, 0.0, 0.2, 1] }}
+          transition={{ delay: BEAT_1, duration: 0.2, ease: EASE }}
           className="text-base text-muted-foreground mt-4 max-w-md leading-relaxed"
         >
           {category.entryLine ? `${category.entryLine} ${t('category_status.return_note')}` : t('category_status.return_note')}
