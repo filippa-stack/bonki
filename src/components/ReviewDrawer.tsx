@@ -89,11 +89,9 @@ interface ReviewDrawerProps {
   open: boolean;
   onClose: () => void;
   card: Card;
-  activeStepIndex?: number;
-  completedSteps?: number[];
 }
 
-export default function ReviewDrawer({ open, onClose, card, activeStepIndex = 0, completedSteps = [] }: ReviewDrawerProps) {
+export default function ReviewDrawer({ open, onClose, card }: ReviewDrawerProps) {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { user } = useAuth();
@@ -262,15 +260,9 @@ export default function ReviewDrawer({ open, onClose, card, activeStepIndex = 0,
                   const status = sectionNoteStatus[section.id];
                   const hasAnyNotes = status?.hasPrivate || status?.hasShared || status?.hasPartnerShared;
 
-                  // Unlock: completed steps + the first uncompleted step (current frontier) + actively viewed step
-                  const maxCompleted = completedSteps.length > 0 ? Math.max(...completedSteps) : -1;
-                  const myFirstUncompleted = (() => {
-                    for (let i = 0; i < 4; i++) {
-                      if (!completedSteps.includes(i)) return i;
-                    }
-                    return 4;
-                  })();
-                  const isUnlocked = index <= myFirstUncompleted || index <= activeStepIndex;
+                  // A step is unlocked for reading if it has any notes (my or partner's),
+                  // or it is the first step (always visible). This is purely prompt_notes-derived.
+                  const isUnlocked = index === 0 || !!hasAnyNotes;
 
                   return (
                     <motion.div
