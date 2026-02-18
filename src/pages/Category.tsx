@@ -111,7 +111,7 @@ export default function Category() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: BEAT_1, duration: 0.2, ease: EASE }}
-          className="text-base text-muted-foreground mt-4 max-w-md leading-relaxed"
+          className={`text-base text-muted-foreground mt-4 max-w-md leading-relaxed${isRecommendedCategory ? ' mb-8' : ''}`}
         >
           {category.entryLine ? `${category.entryLine} ${t('category_status.return_note')}` : t('category_status.return_note')}
         </motion.p>
