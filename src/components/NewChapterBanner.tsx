@@ -1,23 +1,107 @@
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '@/contexts/AuthContext';
+import { useCoupleSpaceContext as useCoupleSpace } from '@/contexts/CoupleSpaceContext';
+import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import { motion, AnimatePresence } from 'framer-motion';
 import { BEAT_2, EASE } from '@/lib/motion';
 
-interface Props {
-  visible: boolean;
-  onDismiss: () => void;
+const gateKey = (spaceId: string, eventId: string) =>
+  `new_space_created_seen_${spaceId}_${eventId}`;
+
+interface PendingEvent {
+  eventId: string;
+  actorUserId: string;
 }
 
-/**
- * Presentational-only component — no async effects.
- * Detection is handled by useNewChapterDetector in Home.
- */
-export default function NewChapterBanner({ visible, onDismiss }: Props) {
+interface Props {
+  /** Controls visual display — when false the component is mounted but invisible. */
+  active?: boolean;
+  /** Called when pendingEvent becomes set (true) or cleared (false). */
+  onPendingChange?: (isPending: boolean) => void;
+}
+
+export default function NewChapterBanner({ active = true, onPendingChange }: Props) {
+  const { user } = useAuth();
+  const { space } = useCoupleSpace();
   const navigate = useNavigate();
+  const [pendingEvent, setPendingEvent] = useState<PendingEvent | null>(null);
+  const detectedRef = useRef(false);
+
+  const handleDetected = useCallback((eventId: string, actorUserId: string) => {
+    if (!user || !space) return;
+    // Receiver-only: ignore if current user is the actor
+    if (actorUserId === user.id) return;
+    // Skip if already seen
+    if (localStorage.getItem(gateKey(space.id, eventId))) return;
+    // Only fire once per mount
+    if (detectedRef.current) return;
+
+    detectedRef.current = true;
+    // Do NOT write localStorage here — only on dismiss/CTA
+    setPendingEvent({ eventId, actorUserId });
+    onPendingChange?.(true);
+  }, [user, space, onPendingChange]);
+
+  useEffect(() => {
+    if (!user || !space) return;
+
+    const checkExisting = async () => {
+      const { data } = await supabase
+        .from('system_events')
+        .select('id, payload')
+        .eq('couple_space_id', space.id)
+        .eq('type', 'new_space_created')
+        .order('created_at', { ascending: false })
+        .limit(5);
+
+      if (!data || data.length === 0) return;
+
+      for (const row of data) {
+        const payload = row.payload as Record<string, unknown> | null;
+        const actorId = (payload?.actor_user_id ?? '') as string;
+        if (actorId && !localStorage.getItem(gateKey(space.id, row.id))) {
+          handleDetected(row.id, actorId);
+          return;
+        }
+      }
+    };
+
+    checkExisting();
+
+    const channel = supabase
+      .channel(`new-chapter-${space.id}`)
+      .on(
+        'postgres_changes',
+        {
+          event: 'INSERT',
+          schema: 'public',
+          table: 'system_events',
+          filter: `couple_space_id=eq.${space.id}`,
+        },
+        (payload: any) => {
+          if (payload.new?.type !== 'new_space_created') return;
+          const actorId = (payload.new?.payload?.actor_user_id ?? '') as string;
+          handleDetected(payload.new.id, actorId);
+        }
+      )
+      .subscribe();
+
+    return () => { supabase.removeChannel(channel); };
+  }, [user, space, handleDetected]);
+
+  const dismiss = () => {
+    if (pendingEvent && space) {
+      localStorage.setItem(gateKey(space.id, pendingEvent.eventId), '1');
+    }
+    setPendingEvent(null);
+    onPendingChange?.(false);
+  };
 
   return (
     <AnimatePresence>
-      {visible && (
+      {active && pendingEvent !== null && (
         <motion.div
           initial={{ opacity: 0, y: -8, height: 0 }}
           animate={{ opacity: 1, y: 0, height: 'auto' }}
@@ -37,7 +121,7 @@ export default function NewChapterBanner({ visible, onDismiss }: Props) {
                 variant="ghost"
                 size="sm"
                 className="flex-1 text-muted-foreground"
-                onClick={onDismiss}
+                onClick={dismiss}
               >
                 Stäng
               </Button>
@@ -45,7 +129,7 @@ export default function NewChapterBanner({ visible, onDismiss }: Props) {
                 size="sm"
                 className="flex-1"
                 onClick={() => {
-                  onDismiss();
+                  dismiss();
                   navigate('/', { replace: true });
                 }}
               >
