@@ -9,6 +9,7 @@ import { usePendingInviteClaim, hasPendingInvite } from '@/hooks/usePendingInvit
 import Onboarding from '@/components/Onboarding';
 import Home from '@/pages/Home';
 import PurchaseScreen from '@/components/PurchaseScreen';
+import WelcomePartner from '@/components/WelcomePartner';
 import { Loader2, AlertCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useTranslation } from 'react-i18next';
@@ -144,6 +145,24 @@ export default function Index() {
   // Show paywall only if not purchased AND no bypass reason
   if (!hasPurchased && !shouldBypassPaywall) {
     return <PurchaseScreen onPurchaseComplete={handlePurchaseComplete} />;
+  }
+
+  // ─── WelcomePartner gate (space-scoped, partner_b only) ─────────────────
+  // Key is scoped to spaceId so it never bleeds across spaces.
+  const welcomeKey = space?.id ? `welcome_dismissed_${space.id}` : null;
+  const welcomeDismissed = welcomeKey ? localStorage.getItem(welcomeKey) === '1' : false;
+  // hasActivity: if the space was created recently enough that partner_b hasn't done anything yet.
+  // We use paid_at as a proxy — if the space has been used (paid), partner_b may have joined
+  // a live space; the localStorage gate is the primary guard anyway.
+  const hasActivity = false; // conservative: always show once; localStorage prevents repeat
+  if (userRole === 'partner_b' && !hasActivity && !welcomeDismissed) {
+    return (
+      <WelcomePartner
+        onDismiss={() => {
+          if (welcomeKey) localStorage.setItem(welcomeKey, '1');
+        }}
+      />
+    );
   }
 
   // All invite/welcome decisions are made in Home
