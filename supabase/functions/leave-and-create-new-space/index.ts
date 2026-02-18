@@ -92,7 +92,28 @@ Deno.serve(async (req) => {
         .eq("couple_space_id", currentMembership.couple_space_id)
         .eq("status", "active");
 
+      // Find the remaining partner (receiver of the event)
+      const { data: remainingMember } = await admin
+        .from("couple_members")
+        .select("user_id")
+        .eq("couple_space_id", currentMembership.couple_space_id)
+        .neq("user_id", userId)
+        .is("left_at", null)
+        .eq("status", "active")
+        .maybeSingle();
 
+      // Emit partner_switched — consumed by PartnerLeftBanner on the receiver's side
+      await admin.from("system_events").insert({
+        couple_space_id: currentMembership.couple_space_id,
+        type: "partner_switched",
+        payload: {
+          actor_user_id: userId,
+          user_id: remainingMember?.user_id ?? null,
+          reason: "switch_partner",
+        },
+      });
+
+      // Also emit legacy member_left for backward compatibility
       await admin.from("system_events").insert({
         couple_space_id: currentMembership.couple_space_id,
         type: "member_left",

@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button';
 import { motion } from 'framer-motion';
 
 // All event types that signal a partner disconnection — emitted by edge functions.
-const PARTNER_LEFT_TYPES = ['partner_left_space', 'member_left', 'partner_removed'] as const;
+const PARTNER_LEFT_TYPES = ['partner_left_space', 'member_left', 'partner_removed', 'partner_switched'] as const;
 
 // Gate key format: "still-us-partner-removed-<spaceId>"
 const gateKey = (spaceId: string) => `partner_left_seen_${spaceId}`;
