@@ -64,13 +64,22 @@ export default function PartnerLeftBanner({ onPartnerLeft, onInvite }: Props) {
     const checkExisting = async () => {
       const { data } = await supabase
         .from('system_events')
-        .select('id, type')
+        .select('id, type, payload')
         .eq('couple_space_id', space.id)
         .in('type', PARTNER_LEFT_TYPES)
-        .limit(1);
+        .limit(10);
 
-      if (data && data.length > 0) {
-        handleDetected(data[0].id);
+      if (!data || data.length === 0) return;
+
+      // Only trigger for events NOT initiated by the current user
+      const partnerEvent = data.find((row) => {
+        const payload = row.payload as Record<string, unknown> | null;
+        const actorId = payload?.user_id ?? payload?.actor_user_id;
+        return actorId !== user.id;
+      });
+
+      if (partnerEvent) {
+        handleDetected(partnerEvent.id);
       }
     };
 
