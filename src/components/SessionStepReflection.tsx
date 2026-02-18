@@ -116,24 +116,26 @@ export default function SessionStepReflection({
         <Separator className="opacity-30" />
 
         {/* User reflection — editable */}
-        <div className="space-y-1">
+        <div className="space-y-1 mt-8">
           <p className="text-xs text-muted-foreground/60 px-1">{myName}</p>
-          <div className="rounded-xl border border-border/50 bg-card overflow-hidden">
+          <div className="rounded-[20px] border border-border/50 bg-card overflow-hidden p-6">
             <textarea
               value={displayText}
               onChange={(e) => handleChange(e.target.value)}
-              className="w-full min-h-[72px] p-3 bg-transparent resize-none focus:outline-none focus:ring-0 text-sm text-foreground placeholder:text-muted-foreground/60"
+              className="w-full min-h-[120px] bg-transparent resize-none focus:outline-none focus:ring-0 text-sm text-foreground placeholder:text-muted-foreground/60"
             />
           </div>
         </div>
 
-        <Button
-          onClick={handleLock}
-          size="lg"
-          className="w-full h-14 rounded-2xl gap-2 font-normal mt-4"
-        >
-          Gå vidare tillsammans
-        </Button>
+        <div className="mt-8">
+          <Button
+            onClick={handleLock}
+            size="lg"
+            className="w-full h-14 rounded-2xl gap-2 font-normal"
+          >
+            Gå vidare tillsammans
+          </Button>
+        </div>
       </div>
     );
   }
@@ -162,16 +164,16 @@ export default function SessionStepReflection({
 
   // ─── DRAFT: writing state ───
   return (
-    <div className="mt-6 mb-2 space-y-3">
+    <div className="mt-8 mb-2 space-y-3">
 
-      <div className="rounded-xl border border-border/50 bg-card overflow-hidden">
+      <div className="rounded-[20px] border border-border/50 bg-card overflow-hidden p-6">
         <textarea
           value={displayText}
           onChange={(e) => handleChange(e.target.value)}
           placeholder="Skriv något ni vill säga."
-          className="w-full min-h-[72px] p-3 bg-transparent resize-none focus:outline-none focus:ring-0 text-sm text-foreground placeholder:text-muted-foreground/60"
+          className="w-full min-h-[120px] bg-transparent resize-none focus:outline-none focus:ring-0 text-sm text-foreground placeholder:text-muted-foreground/60"
         />
-        <div className="flex items-center justify-between px-3 pb-3">
+        <div className="flex items-center justify-between pt-3">
           <span className="text-xs text-muted-foreground/50 flex items-center gap-1">
             <Lock className="w-3 h-3" />
             Bara du kan se det här
@@ -179,17 +181,19 @@ export default function SessionStepReflection({
         </div>
       </div>
 
-      <Button
-        onClick={handleMarkReady}
-        disabled={!displayText.trim()}
-        size="lg"
-        className="w-full h-14 rounded-2xl gap-2 font-normal"
-      >
-        Markera klar →
-      </Button>
-      <p className="text-xs text-muted-foreground/50 text-center">
-        Ni går vidare när båda är klara.
-      </p>
+      <div className="mt-8">
+        <Button
+          onClick={handleMarkReady}
+          disabled={!displayText.trim()}
+          size="lg"
+          className="w-full h-14 rounded-2xl gap-2 font-normal"
+        >
+          Markera klar →
+        </Button>
+        <p className="text-xs text-muted-foreground/50 text-center mt-3">
+          Ni går vidare när båda är klara.
+        </p>
+      </div>
     </div>
   );
 }
@@ -207,8 +211,8 @@ function ReflectionBlock({
   return (
     <div className="space-y-1">
       <p className="text-xs text-muted-foreground/60 px-1">{name}</p>
-      <div className={`rounded-xl border ${locked ? 'border-border/30 bg-muted/10' : 'border-border/50 bg-card/80'} overflow-hidden`}>
-        <p className="p-3 text-sm text-foreground whitespace-pre-wrap">
+      <div className={`rounded-[20px] border ${locked ? 'border-border/30 bg-muted/10' : 'border-border/50 bg-card/80'} overflow-hidden shadow-[0_1px_4px_0_hsl(0_0%_0%/0.04)]`}>
+        <p className="p-6 text-sm text-foreground whitespace-pre-wrap">
           {text}
         </p>
       </div>
