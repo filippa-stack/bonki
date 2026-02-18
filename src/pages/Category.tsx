@@ -7,6 +7,13 @@ import { useApp } from '@/contexts/AppContext';
 import { useNormalizedSessionContext } from '@/contexts/NormalizedSessionContext';
 import { useAuth } from '@/contexts/AuthContext';
 import { useCoupleSpaceContext } from '@/contexts/CoupleSpaceContext';
+import { useSpaceSnapshot } from '@/hooks/useSpaceSnapshot';
+import {
+  selectExploredCardIds,
+  selectCardVisitDates,
+  selectSuggestedNextCardId,
+} from '@/selectors/spaceSnapshotSelectors';
+import { categories as allCategories, cards as allCards } from '@/data/content';
 import Header from '@/components/Header';
 
 // UI guidance constants — no effect on rendering order or logic.
@@ -41,13 +48,14 @@ export default function Category() {
   const { t } = useTranslation();
   const { categoryId } = useParams<{ categoryId: string }>();
   const navigate = useNavigate();
-  const { getCategoryById, getCardsByCategory, journeyState, getCardById } = useApp();
+  const { getCategoryById, getCardsByCategory, getCardById } = useApp();
   const { user } = useAuth();
-  const { memberCount } = useCoupleSpaceContext();
+  const { space, memberCount } = useCoupleSpaceContext();
   const normalizedSession = useNormalizedSessionContext();
-  const exploredIds = journeyState?.exploredCardIds || [];
-  const cardVisitDates = journeyState?.cardVisitDates || {};
-  const sessionProgress = journeyState?.sessionProgress || {};
+  const { snapshot } = useSpaceSnapshot(user?.id ?? null, space?.id ?? null);
+
+  const exploredIds = selectExploredCardIds(snapshot);
+  const cardVisitDates = selectCardVisitDates(snapshot);
   const isPaired = memberCount >= 2;
 
   const category = categoryId ? getCategoryById(categoryId) : undefined;
@@ -58,7 +66,7 @@ export default function Category() {
     normalizedSession.sessionId && normalizedSession.cardId && cards.some(c => c.id === normalizedSession.cardId)
       ? normalizedSession.cardId
       : null;
-  const suggestedId = journeyState?.suggestedNextCardId || null;
+  const suggestedId = selectSuggestedNextCardId(snapshot, allCategories, allCards);
   const suggestedCard = suggestedId ? getCardById(suggestedId) : null;
   const suggestedCardIdForThisCategory =
     suggestedCard && suggestedCard.categoryId === categoryId ? suggestedCard.id : null;
@@ -137,10 +145,11 @@ export default function Category() {
                   isCompleted={(() => {
                     const inExplored = exploredIds.includes(card.id);
                     if (!isPaired) return index === 0 || inExplored;
-                    // When paired, require both partners to have progress
-                    const perUser = sessionProgress[card.id]?.perUser;
-                    const hasMutualProgress = perUser ? Object.keys(perUser).length >= 2 : false;
-                    return inExplored && hasMutualProgress;
+                    // When paired, require both partners to have visited the card
+                    const distinctVisitors = new Set(
+                      snapshot?.visits.filter((v) => v.card_id === card.id).map((v) => v.user_id) ?? []
+                    );
+                    return inExplored && distinctVisitors.size >= 2;
                   })()}
                   lastVisitedAt={cardVisitDates[card.id] || null}
                   onNavigate={() => navigate(`/card/${card.id}`)}
