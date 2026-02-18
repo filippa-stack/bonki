@@ -87,6 +87,14 @@ Deno.serve(async (req) => {
         payload: { user_id: userId },
       });
 
+    await adminClient
+      .from("system_events")
+      .insert({
+        couple_space_id,
+        type: "partner_removed",
+        payload: { actor_user_id: userId },
+      });
+
     // Always cancel active sessions when a member leaves
     await adminClient
       .from("couple_sessions")
