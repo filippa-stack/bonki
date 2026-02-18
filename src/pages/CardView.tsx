@@ -353,7 +353,7 @@ export default function CardView() {
 
       {/* Progress indicator — live mode only */}
       {cardViewMode === 'live' && (
-        <div className="px-4 pt-6 pb-4 border-b border-border/15">
+        <div className="px-6 pt-6 pb-4 border-b border-border/15">
           <StepProgressIndicator
             currentStepIndex={currentStepIndex}
             completedSteps={[]}
@@ -361,7 +361,7 @@ export default function CardView() {
         </div>
       )}
 
-      <div className="px-6 pt-16 pb-8">
+      <div className="px-6 pt-16 pb-10">
         <motion.h1
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}

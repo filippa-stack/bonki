@@ -19,7 +19,7 @@ export default function SavedConversations() {
     <div className="min-h-screen page-bg">
       <Header title={t('saved.title')} showBack backTo="/" />
 
-      <div className="px-6 py-8">
+      <div className="px-6 pt-8 pb-10">
         {sortedConversations.length === 0 ? (
           <motion.div
             initial={{ opacity: 0 }}

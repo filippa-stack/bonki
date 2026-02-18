@@ -115,7 +115,7 @@ function JustJoinedBanner() {
   if (!visible) return null;
 
   return (
-    <div className="flex items-center justify-center gap-2 mt-[12px] mb-[16px] px-6">
+    <div className="flex items-center justify-center gap-2 mt-3 mb-4 px-6">
       <p className="text-[13px] text-muted-foreground/50 text-center">
         🤍 Du är nu ansluten.
       </p>
@@ -428,12 +428,12 @@ export default function Home() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.15 }}
-            className="px-6 pt-[12px] mb-10"
+            className="px-6 pt-3 mb-10"
           >
-            <p className="text-xs text-muted-foreground/30 uppercase tracking-wide mb-[6px] text-center">Pågående samtal</p>
-            <div className="text-center mb-[16px]">
-              <p className="font-serif text-lg text-foreground mb-[6px]">{activeCard.title}</p>
-              <p className="text-xs text-muted-foreground mb-[6px]">{activeCategory.title}</p>
+            <p className="text-xs text-muted-foreground/30 uppercase tracking-wide mb-2 text-center">Pågående samtal</p>
+            <div className="text-center mb-4">
+              <p className="font-serif text-lg text-foreground mb-1.5">{activeCard.title}</p>
+              <p className="text-xs text-muted-foreground mb-1.5">{activeCategory.title}</p>
               {stepLabel && (
                 <p className="text-xs text-muted-foreground/40">{stepLabel} · {stepProgress}</p>
               )}
@@ -759,7 +759,7 @@ export default function Home() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.15 }}
-          className="px-6 pt-8 pb-6 mt-4 space-y-1"
+          className="px-6 pt-8 pb-6 mt-4 space-y-2"
         >
           <button
             onClick={() => navigate('/shared')}

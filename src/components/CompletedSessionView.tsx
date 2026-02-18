@@ -121,7 +121,7 @@ export default function CompletedSessionView({
     return (
       <div className="min-h-screen page-bg">
         <Header title={categoryTitle} showBack backTo="/" />
-        <div className="px-6 pt-20">
+        <div className="px-6 pt-20 pb-10">
           <div className="max-w-md mx-auto space-y-4">
             <div className="h-6 w-48 rounded bg-muted/30 animate-pulse mx-auto" />
             <div className="h-24 rounded-xl bg-muted/20 animate-pulse" />
@@ -137,7 +137,7 @@ export default function CompletedSessionView({
     return (
       <div className="min-h-screen page-bg">
         <Header title={categoryTitle} showBack backTo="/" />
-        <div className="px-6 pt-20 text-center max-w-md mx-auto space-y-6">
+        <div className="px-6 pt-20 pb-10 text-center max-w-md mx-auto space-y-6">
           <p className="text-sm text-muted-foreground">Ingen tidigare session hittades.</p>
           <Button onClick={onExploreAgain} size="lg" className="w-full h-14 rounded-2xl font-normal">
             Utforska igen
@@ -159,7 +159,7 @@ export default function CompletedSessionView({
     <div className="min-h-screen page-bg">
       <Header title={categoryTitle} showBack backTo="/" />
 
-      <div className="px-6 pt-20 pb-16">
+      <div className="px-6 pt-20 pb-10">
         {/* Session label */}
         <motion.div
           initial={{ opacity: 0 }}

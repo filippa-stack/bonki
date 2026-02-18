@@ -225,7 +225,7 @@ export default function SharedSummary() {
     <div className="min-h-screen page-bg">
       <Header showBack backTo="/" />
 
-      <div className="px-6 pt-20 pb-24 mx-auto" style={{ maxWidth: 540 }}>
+      <div className="px-6 pt-20 pb-10 mx-auto" style={{ maxWidth: 540 }}>
 
         {/* ─── Title ─── */}
         <motion.div
