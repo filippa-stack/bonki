@@ -21,7 +21,7 @@ import {
 import SaveIndicator from '@/components/SaveIndicator';
 import SyncStatus from '@/components/SyncStatus';
 import BackupManager from '@/components/BackupManager';
-import LeaveCoupleSpace from '@/components/LeaveCoupleSpace';
+
 import bonkiLogo from '@/assets/bonki-logo.png';
 import {
   Popover,
@@ -156,15 +156,7 @@ export default function Header({
                 </AlertDialog>
               </div>
 
-              {/* ── SECTION 2: Relation ── */}
-              <div className="border-t border-border/30 mt-2 pt-2">
-                <p className="px-2 pb-1 text-[10px] font-medium tracking-widest uppercase text-muted-foreground/40">
-                  Relation
-                </p>
-                <LeaveCoupleSpace />
-              </div>
-
-              {/* ── SECTION 3: Account ── */}
+              {/* ── SECTION 2: Account ── */}
               <div className="border-t border-border/30 mt-2 pt-2">
                 <Button
                   variant="ghost"
