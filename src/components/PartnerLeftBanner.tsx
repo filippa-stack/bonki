@@ -5,7 +5,7 @@ import { useCoupleSpaceContext as useCoupleSpace } from '@/contexts/CoupleSpaceC
 import { useNormalizedSessionContext } from '@/contexts/NormalizedSessionContext';
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 
 // All event types that signal a partner disconnection — emitted by edge functions.
 const PARTNER_LEFT_TYPES = ['partner_left_space', 'member_left', 'partner_removed', 'partner_switched'] as const;
@@ -114,46 +114,55 @@ export default function PartnerLeftBanner({ onPartnerLeft, onInvite }: Props) {
   }, [user, space, handleDetected]);
 
   const dismiss = () => setVisible(false);
-
-  if (!visible) return null;
-
   const isSwitched = eventType === 'partner_switched';
+  const EASE = [0.4, 0.0, 0.2, 1] as const;
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: -8 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0 }}
-      className="mx-6 rounded-[20px] border border-border bg-card p-6 space-y-3 shadow-[0_1px_4px_0_hsl(0_0%_0%/0.04)]"
-    >
-      <p className="font-serif text-foreground text-base">
-        {isSwitched ? 'Kopplingen avslutades.' : 'Det här utrymmet är nu bara ditt.'}
-      </p>
-      <p className="text-sm text-muted-foreground leading-relaxed">
-        {isSwitched
-          ? 'Din partner har bytt utrymme. Du kan fortsätta här själv eller bjuda in någon ny.'
-          : 'Din partner har lämnat. Du kan fortsätta själv eller bjuda in någon ny.'}
-      </p>
-      <div className="flex gap-3 pt-1">
-        <Button
-          variant="ghost"
-          size="sm"
-          className="flex-1 text-muted-foreground"
-          onClick={dismiss}
-        >
-          Stäng
-        </Button>
-        <Button
-          size="sm"
-          className="flex-1"
-          onClick={() => {
-            dismiss();
-            onInvite();
+    <AnimatePresence>
+      {visible && (
+        <motion.div
+          initial={{ opacity: 0, y: -12, height: 0 }}
+          animate={{ opacity: 1, y: 0, height: 'auto' }}
+          exit={{ opacity: 0, height: 0 }}
+          transition={{
+            opacity: { duration: 0.14, ease: EASE },
+            y: { duration: 0.14, ease: EASE },
+            height: { duration: 0.16, ease: EASE },
           }}
+          className="overflow-hidden mx-6"
         >
-          Bjud in partner
-        </Button>
-      </div>
-    </motion.div>
+          <div className="rounded-[20px] border border-border bg-card p-6 space-y-3 shadow-[0_1px_4px_0_hsl(0_0%_0%/0.04)]">
+            <p className="font-serif text-foreground text-base">
+              {isSwitched ? 'Kopplingen avslutades.' : 'Det här utrymmet är nu bara ditt.'}
+            </p>
+            <p className="text-sm text-muted-foreground leading-relaxed">
+              {isSwitched
+                ? 'Din partner har bytt utrymme. Du kan fortsätta här själv eller bjuda in någon ny.'
+                : 'Din partner har lämnat. Du kan fortsätta själv eller bjuda in någon ny.'}
+            </p>
+            <div className="flex gap-3 pt-1">
+              <Button
+                variant="ghost"
+                size="sm"
+                className="flex-1 text-muted-foreground"
+                onClick={dismiss}
+              >
+                Stäng
+              </Button>
+              <Button
+                size="sm"
+                className="flex-1"
+                onClick={() => {
+                  dismiss();
+                  onInvite();
+                }}
+              >
+                Bjud in partner
+              </Button>
+            </div>
+          </div>
+        </motion.div>
+      )}
+    </AnimatePresence>
   );
 }

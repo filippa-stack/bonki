@@ -4,7 +4,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useCoupleSpaceContext as useCoupleSpace } from '@/contexts/CoupleSpaceContext';
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const gateKey = (spaceId: string, eventId: string) =>
   `new_space_created_seen_${spaceId}_${eventId}`;
@@ -78,41 +78,52 @@ export default function NewChapterBanner() {
     return () => { supabase.removeChannel(channel); };
   }, [user, space, handleDetected]);
 
-  if (!visible) return null;
+  const EASE = [0.4, 0.0, 0.2, 1] as const;
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: -8 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0 }}
-      className="mx-6 rounded-[20px] border border-border bg-card p-6 space-y-3 shadow-[0_1px_4px_0_hsl(0_0%_0%/0.04)]"
-    >
-      <p className="font-serif text-foreground text-base">
-        Ett nytt kapitel startades.
-      </p>
-      <p className="text-sm text-muted-foreground leading-relaxed">
-        Din partner skapade ett nytt utrymme. Ni fortsätter där.
-      </p>
-      <div className="flex gap-3 pt-1">
-        <Button
-          variant="ghost"
-          size="sm"
-          className="flex-1 text-muted-foreground"
-          onClick={() => setVisible(false)}
-        >
-          Stäng
-        </Button>
-        <Button
-          size="sm"
-          className="flex-1"
-          onClick={() => {
-            setVisible(false);
-            navigate('/', { replace: true });
+    <AnimatePresence>
+      {visible && (
+        <motion.div
+          initial={{ opacity: 0, y: -12, height: 0 }}
+          animate={{ opacity: 1, y: 0, height: 'auto' }}
+          exit={{ opacity: 0, height: 0 }}
+          transition={{
+            opacity: { duration: 0.14, ease: EASE },
+            y: { duration: 0.14, ease: EASE },
+            height: { duration: 0.16, ease: EASE },
           }}
+          className="overflow-hidden mx-6"
         >
-          Gå till hem
-        </Button>
-      </div>
-    </motion.div>
+          <div className="rounded-[20px] border border-border bg-card p-6 space-y-3 shadow-[0_1px_4px_0_hsl(0_0%_0%/0.04)]">
+            <p className="font-serif text-foreground text-base">
+              Ett nytt kapitel startades.
+            </p>
+            <p className="text-sm text-muted-foreground leading-relaxed">
+              Din partner skapade ett nytt utrymme. Ni fortsätter där.
+            </p>
+            <div className="flex gap-3 pt-1">
+              <Button
+                variant="ghost"
+                size="sm"
+                className="flex-1 text-muted-foreground"
+                onClick={() => setVisible(false)}
+              >
+                Stäng
+              </Button>
+              <Button
+                size="sm"
+                className="flex-1"
+                onClick={() => {
+                  setVisible(false);
+                  navigate('/', { replace: true });
+                }}
+              >
+                Gå till hem
+              </Button>
+            </div>
+          </div>
+        </motion.div>
+      )}
+    </AnimatePresence>
   );
 }
