@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { useCoupleSpaceContext } from '@/contexts/CoupleSpaceContext';
@@ -32,6 +32,9 @@ export function useProposals() {
   const userId = user?.id;
   const spaceId = space?.id;
 
+  // Stable ref so the realtime callback never needs to close over fetchProposals identity
+  const fetchRef = useRef<() => Promise<void>>();
+
   const fetchProposals = useCallback(async () => {
     if (!userId || !spaceId || devState) {
       setProposals([]);
@@ -51,11 +54,17 @@ export function useProposals() {
     setLoading(false);
   }, [userId, spaceId, devState]);
 
+  // Keep ref in sync so realtime handler always calls the latest version
+  useEffect(() => {
+    fetchRef.current = fetchProposals;
+  }, [fetchProposals]);
+
+  // Initial fetch on mount / when identity changes
   useEffect(() => {
     fetchProposals();
   }, [fetchProposals]);
 
-  // Realtime subscription
+  // Realtime subscription — scoped to spaceId, no dependency on fetchProposals
   useEffect(() => {
     if (!userId || !spaceId || devState) return;
 
@@ -70,7 +79,7 @@ export function useProposals() {
           filter: `couple_space_id=eq.${spaceId}`,
         },
         () => {
-          fetchProposals();
+          fetchRef.current?.();
         }
       )
       .subscribe();
@@ -78,7 +87,7 @@ export function useProposals() {
     return () => {
       supabase.removeChannel(channel);
     };
-  }, [userId, spaceId, fetchProposals]);
+  }, [userId, spaceId, devState]);
 
   const sendProposal = useCallback(async (
     cardId: string,
