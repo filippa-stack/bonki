@@ -62,8 +62,8 @@ export default function CompletedSessionView({
     let cancelled = false;
 
     const fetchSession = async () => {
-      // Try normalized couple_sessions first
-      const { data: coupleSessionRow } = await supabase
+      // All sessions are normalized — query couple_sessions exclusively.
+      const { data: sessionRow } = await supabase
         .from('couple_sessions')
         .select('id, started_at')
         .eq('couple_space_id', space.id)
@@ -73,54 +73,25 @@ export default function CompletedSessionView({
         .limit(1)
         .single();
 
-      // Fall back to legacy card_sessions if no normalized session found
-      const sessionRow = coupleSessionRow ?? (await supabase
-        .from('card_sessions')
-        .select('id, started_at')
-        .eq('couple_space_id', space.id)
-        .eq('card_id', cardId)
-        .not('completed_at', 'is', null)
-        .order('started_at', { ascending: false })
-        .limit(1)
-        .single()).data;
-
       if (cancelled || !sessionRow) { setLoading(false); return; }
 
-      const isNormalized = !!coupleSessionRow;
-
-      // Fetch reflections (always from step_reflections via card_sessions)
-      // and takeaway from the appropriate table
+      // step_reflections.session_id now references couple_sessions.id
+      // couple_takeaways.session_id also references couple_sessions.id
       const [reflRes, takeawayRes] = await Promise.all([
-        // Reflections are still keyed to card_sessions; for normalized sessions
-        // we try the same session_id in step_reflections (works if card_session
-        // was created in dual-write alongside couple_session)
         supabase
           .from('step_reflections')
           .select('step_index, user_id, text')
-          .eq('session_id', isNormalized ? sessionRow.id : sessionRow.id)
+          .eq('session_id', sessionRow.id)
           .eq('state', 'locked'),
-        // Takeaway: prefer couple_takeaways for normalized sessions
-        isNormalized
-          ? supabase
-              .from('couple_takeaways')
-              .select('content')
-              .eq('session_id', sessionRow.id)
-              .limit(1)
-              .single()
-          : supabase
-              .from('card_takeaways')
-              .select('text')
-              .eq('session_id', sessionRow.id)
-              .eq('locked', true)
-              .limit(1)
-              .single(),
+        supabase
+          .from('couple_takeaways')
+          .select('content')
+          .eq('session_id', sessionRow.id)
+          .limit(1)
+          .single(),
       ]);
 
       if (cancelled) return;
-
-      const takeawayText = isNormalized
-        ? (takeawayRes.data as any)?.content?.trim() || null
-        : (takeawayRes.data as any)?.text?.trim() || null;
 
       setSession({
         id: sessionRow.id,
@@ -130,7 +101,7 @@ export default function CompletedSessionView({
           userId: r.user_id,
           text: r.text,
         })),
-        takeawayText,
+        takeawayText: (takeawayRes.data as any)?.content?.trim() || null,
       });
       setLoading(false);
     };
