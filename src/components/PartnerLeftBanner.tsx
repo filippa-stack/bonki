@@ -1,57 +1,84 @@
 import { useState, useEffect, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { useCoupleSpaceContext as useCoupleSpace } from '@/contexts/CoupleSpaceContext';
+import { useNormalizedSessionContext } from '@/contexts/NormalizedSessionContext';
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import { motion } from 'framer-motion';
 
-const SEEN_KEY = 'partner_left_seen';
+// All event types that signal a partner disconnection — emitted by edge functions.
+const PARTNER_LEFT_TYPES = ['partner_left_space', 'member_left', 'partner_removed'] as const;
+
+// Gate key format: "still-us-partner-removed-<spaceId>"
+const gateKey = (spaceId: string) => `still-us-partner-removed-${spaceId}`;
 
 interface Props {
-  onInvite: () => void;
-  /** Called when partner_left_space is detected — clears session/journey in AppContext */
+  /** Called once on detection — should call clearForPartnerLeave() in AppContext */
   onPartnerLeft: () => void;
+  /** Scrolls to SoloInviteSection */
+  onInvite: () => void;
 }
 
-export default function PartnerLeftBanner({ onInvite, onPartnerLeft }: Props) {
+export default function PartnerLeftBanner({ onPartnerLeft, onInvite }: Props) {
   const { user } = useAuth();
   const { space, refreshSpace } = useCoupleSpace();
+  const normalizedSession = useNormalizedSessionContext();
+  const navigate = useNavigate();
   const [visible, setVisible] = useState(false);
-  const [hasTriggeredClear, setHasTriggeredClear] = useState(false);
+  const [triggered, setTriggered] = useState(false);
 
-  const handleDetected = useCallback(() => {
-    setVisible(true);
-    if (!hasTriggeredClear) {
-      setHasTriggeredClear(true);
-      onPartnerLeft();
-      // Refresh space to update memberCount → triggers solo mode
-      refreshSpace();
+  const handleDetected = useCallback(async (eventId?: string) => {
+    if (triggered) return;
+    setTriggered(true);
+
+    // Write localStorage gate so the banner won't reappear for this space
+    if (space) {
+      localStorage.setItem(gateKey(space.id), eventId || '1');
     }
-  }, [hasTriggeredClear, onPartnerLeft, refreshSpace]);
+
+    // 1. Clear journey/session data in AppContext
+    onPartnerLeft();
+
+    // 2. Refresh couple space → memberCount drops → solo mode
+    await refreshSpace();
+
+    // 3. Refresh normalized session → clears active session snapshot
+    //    so ActiveSessionGuard stops redirecting to the card route.
+    await normalizedSession.refetch();
+
+    // 4. Navigate home — exits any active card view
+    navigate('/');
+
+    // 5. Show calm banner
+    setVisible(true);
+  }, [triggered, space, onPartnerLeft, refreshSpace, normalizedSession, navigate]);
 
   useEffect(() => {
     if (!user || !space) return;
 
-    const seen = localStorage.getItem(SEEN_KEY);
-    if (seen === space.id) return;
+    // Don't re-show if already acknowledged for this space
+    if (localStorage.getItem(gateKey(space.id))) return;
 
+    // Check if an event already exists (e.g. app reopen after partner left)
     const checkExisting = async () => {
       const { data } = await supabase
         .from('system_events')
-        .select('id')
+        .select('id, type')
         .eq('couple_space_id', space.id)
-        .eq('type', 'partner_left_space')
+        .in('type', PARTNER_LEFT_TYPES)
         .limit(1);
 
-      if (data && (data as any[]).length > 0) {
-        handleDetected();
+      if (data && data.length > 0) {
+        handleDetected(data[0].id);
       }
     };
 
     checkExisting();
 
+    // Realtime subscription for live detection
     const channel = supabase
-      .channel(`partner_left_${space.id}`)
+      .channel(`partner-left-${space.id}`)
       .on(
         'postgres_changes',
         {
@@ -61,22 +88,22 @@ export default function PartnerLeftBanner({ onInvite, onPartnerLeft }: Props) {
           filter: `couple_space_id=eq.${space.id}`,
         },
         (payload: any) => {
-          if (payload.new?.type === 'partner_left_space') {
-            handleDetected();
+          const type: string = payload.new?.type || '';
+          // Only react to events triggered by the partner (not ourselves)
+          const actorId = payload.new?.payload?.user_id || payload.new?.payload?.actor_user_id;
+          if (actorId === user.id) return;
+
+          if ((PARTNER_LEFT_TYPES as readonly string[]).includes(type)) {
+            handleDetected(payload.new?.id);
           }
         }
       )
       .subscribe();
 
-    return () => {
-      supabase.removeChannel(channel);
-    };
+    return () => { supabase.removeChannel(channel); };
   }, [user, space, handleDetected]);
 
-  const dismiss = () => {
-    if (space) localStorage.setItem(SEEN_KEY, space.id);
-    setVisible(false);
-  };
+  const dismiss = () => setVisible(false);
 
   if (!visible) return null;
 
@@ -84,13 +111,14 @@ export default function PartnerLeftBanner({ onInvite, onPartnerLeft }: Props) {
     <motion.div
       initial={{ opacity: 0, y: -8 }}
       animate={{ opacity: 1, y: 0 }}
-      className="mx-6 mt-4 mb-2 rounded-2xl border border-border bg-card p-5 text-center space-y-3"
+      exit={{ opacity: 0 }}
+      className="mx-6 mt-4 mb-2 rounded-2xl border border-border bg-card p-5 space-y-3"
     >
       <p className="font-serif text-foreground text-base">
-        Det här utrymmet är nu bara ditt.
+        Utrymmet är inte längre gemensamt
       </p>
       <p className="text-sm text-muted-foreground leading-relaxed">
-        Din partner har lämnat det här utrymmet. Du kan fortsätta själv eller bjuda in någon ny.
+        Din partner har avslutat er koppling. Du kan fortsätta här själv eller bjuda in någon igen när det känns rätt.
       </p>
       <div className="flex gap-3 pt-1">
         <Button
@@ -99,7 +127,7 @@ export default function PartnerLeftBanner({ onInvite, onPartnerLeft }: Props) {
           className="flex-1 text-muted-foreground"
           onClick={dismiss}
         >
-          OK
+          Stäng
         </Button>
         <Button
           size="sm"
@@ -109,7 +137,7 @@ export default function PartnerLeftBanner({ onInvite, onPartnerLeft }: Props) {
             onInvite();
           }}
         >
-          Bjud in
+          Bjud in partner
         </Button>
       </div>
     </motion.div>
