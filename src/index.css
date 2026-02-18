@@ -335,3 +335,8 @@
   0%, 100% { opacity: 0.08; }
   50% { opacity: 0.28; }
 }
+
+@keyframes waiting-breathe {
+  0%, 100% { opacity: 0.96; }
+  50% { opacity: 1; }
+}
