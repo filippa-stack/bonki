@@ -1,8 +1,10 @@
 import { useState, useCallback, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
+import { useCoupleSpaceContext } from '@/contexts/CoupleSpaceContext';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -48,7 +50,9 @@ export default function AttachPartner({
   defaultExpanded = false,
 }: AttachPartnerProps) {
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const { user } = useAuth();
+  const { refreshSpace } = useCoupleSpaceContext();
   const [expanded, setExpanded] = useState(defaultExpanded);
   const [copied, setCopied] = useState(false);
   const [joinInput, setJoinInput] = useState('');
@@ -169,8 +173,12 @@ export default function AttachPartner({
 
       if (res.data?.success) {
         setJoinState('success');
-        toast.success(t('join.success_title', 'Ni är anslutna'));
+        setJoinInput('');
+        setExpanded(false);
         onJoinedSpace?.();
+        await refreshSpace();
+        navigate('/', { replace: true });
+        toast.success(t('join.success_title', 'Ni är anslutna'));
       } else {
         setJoinState('error');
         setJoinError(t('join.error_network', 'Något gick fel. Försök igen.'));
@@ -179,7 +187,7 @@ export default function AttachPartner({
       setJoinState('error');
       setJoinError(t('join.error_network', 'Något gick fel. Försök igen.'));
     }
-  }, [user, joinInput, attempts, t, onJoinedSpace]);
+  }, [user, joinInput, attempts, t, onJoinedSpace, refreshSpace, navigate]);
 
   // Don't render if already paired
   if (memberCount >= 2) return null;
