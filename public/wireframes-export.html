@@ -9,50 +9,59 @@
 <script src="https://cdn.jsdelivr.net/npm/file-saver@2.0.5/dist/FileSaver.min.js"></script>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { font-family: 'Inter', system-ui, sans-serif; background: #fafafa; color: #1a1a1a; padding: 40px 24px; max-width: 960px; margin: 0 auto; }
+  body { font-family: 'Inter', system-ui, sans-serif; background: #fafafa; color: #1a1a1a; padding: 40px 24px; max-width: 1060px; margin: 0 auto; }
   h1 { font-size: 24px; font-weight: 600; margin-bottom: 6px; }
   .subtitle { font-size: 14px; color: #888; margin-bottom: 24px; }
   .actions { display: flex; gap: 12px; margin-bottom: 40px; flex-wrap: wrap; }
-  .btn { display: inline-flex; align-items: center; gap: 8px; background: #CC0000; color: #fff; padding: 12px 24px; border-radius: 12px; font-size: 14px; border: none; cursor: pointer; font-family: inherit; font-weight: 500; }
-  .btn:hover { background: #aa0000; }
-  .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+  .btn-dl { display: inline-flex; align-items: center; gap: 8px; background: #CC0000; color: #fff; padding: 12px 24px; border-radius: 12px; font-size: 14px; border: none; cursor: pointer; font-family: inherit; font-weight: 500; }
+  .btn-dl:hover { background: #aa0000; }
+  .btn-dl:disabled { opacity: 0.5; cursor: not-allowed; }
   .progress { font-size: 13px; color: #666; margin-bottom: 24px; min-height: 20px; }
 
-  .section-title { font-size: 11px; text-transform: uppercase; letter-spacing: 2px; color: #bbb; margin: 40px 0 20px; padding-bottom: 8px; border-bottom: 1px solid #eee; }
+  .section-title { font-size: 11px; text-transform: uppercase; letter-spacing: 2px; color: #bbb; margin: 48px 0 20px; padding-bottom: 8px; border-bottom: 1px solid #eee; }
 
   .wireframe-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 32px; margin-bottom: 56px; }
   .wireframe { page-break-inside: avoid; }
-  .wireframe h2 { font-size: 14px; font-weight: 600; margin-bottom: 3px; }
-  .wireframe .route { font-size: 11px; color: #bbb; margin-bottom: 12px; font-family: monospace; }
-  .frame { border: 1px solid #ddd; border-radius: 16px; padding: 20px; background: #fff; font-size: 12px; line-height: 1.8; color: #333; min-height: 360px; }
-  .frame .row { display: flex; align-items: center; gap: 8px; }
-  .frame .header-bar { display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; border-bottom: 1px solid #eee; margin: -20px -20px 14px -20px; border-radius: 16px 16px 0 0; background: #f8f8f8; font-size: 11px; color: #666; }
-  .frame .btn-ui { display: inline-block; background: #CC0000; color: #fff; padding: 10px 20px; border-radius: 14px; text-align: center; font-size: 12px; margin: 4px 0; font-weight: 500; }
-  .frame .btn-outline { display: inline-block; border: 1px solid #ccc; color: #555; padding: 10px 20px; border-radius: 20px; text-align: center; font-size: 12px; margin: 4px 0; }
-  .frame .btn-ghost { display: inline-block; color: #999; padding: 8px 16px; text-align: center; font-size: 11px; margin: 4px 0; }
-  .frame .muted { color: #999; font-size: 11px; }
+  .wireframe h2 { font-size: 13px; font-weight: 600; margin-bottom: 2px; }
+  .wireframe .route { font-size: 10px; color: #bbb; margin-bottom: 10px; font-family: monospace; }
+
+  /* Frame base */
+  .frame { border: 1px solid #ddd; border-radius: 16px; padding: 18px; background: #fff; font-size: 11px; line-height: 1.75; color: #333; min-height: 340px; }
+  .frame .header-bar { display: flex; justify-content: space-between; align-items: center; padding: 7px 11px; border-bottom: 1px solid #eee; margin: -18px -18px 13px -18px; border-radius: 16px 16px 0 0; background: #f8f8f8; font-size: 10px; color: #666; }
+  .frame .btn-ui { display: block; background: #CC0000; color: #fff; padding: 9px 18px; border-radius: 14px; text-align: center; font-size: 11px; margin: 4px 0; font-weight: 500; }
+  .frame .btn-outline { display: block; border: 1px solid #ccc; color: #555; padding: 9px 18px; border-radius: 20px; text-align: center; font-size: 11px; margin: 4px 0; }
+  .frame .btn-ghost { display: block; color: #aaa; padding: 7px 14px; text-align: center; font-size: 10px; margin: 4px 0; }
+  .frame .muted { color: #999; font-size: 10px; }
   .frame .serif { font-family: Georgia, serif; }
   .frame .center { text-align: center; }
-  .frame .spacer { height: 16px; }
-  .frame .divider { border-top: 1px solid #eee; margin: 12px 0; }
-  .frame .card { border: 1px solid #e5e5e5; border-radius: 12px; padding: 14px; margin: 8px 0; background: #fafafa; }
-  .frame .dots { display: flex; gap: 6px; justify-content: center; }
-  .frame .dot { width: 6px; height: 6px; border-radius: 50%; background: #ddd; }
-  .frame .dot.active { width: 16px; border-radius: 4px; background: #CC000055; }
-  .frame .progress-bar { display: flex; gap: 4px; align-items: center; }
-  .frame .progress-step { flex: 1; height: 3px; background: #e5e5e5; border-radius: 2px; }
+  .frame .spacer { height: 14px; }
+  .frame .divider { border-top: 1px solid #f0f0f0; margin: 10px 0; }
+  .frame .card { border: 1px solid #e8e8e8; border-radius: 10px; padding: 11px; margin: 6px 0; background: #fafafa; }
+  .frame .dots { display: flex; gap: 5px; justify-content: center; }
+  .frame .dot { width: 5px; height: 5px; border-radius: 50%; background: #ddd; }
+  .frame .dot.active { width: 14px; border-radius: 3px; background: #CC000055; }
+  .frame .progress-bar { display: flex; gap: 3px; align-items: center; }
+  .frame .progress-step { flex: 1; height: 2px; background: #e5e5e5; border-radius: 2px; }
   .frame .progress-step.done { background: #CC0000; }
-  .frame .progress-step.current { background: #CC000066; }
-  .frame .tag { display: inline-block; font-size: 9px; text-transform: uppercase; letter-spacing: 1px; color: #999; background: #f0f0f0; border-radius: 6px; padding: 2px 6px; }
+  .frame .progress-step.current { background: #CC000055; }
+  .frame .tag { display: inline-block; font-size: 8px; text-transform: uppercase; letter-spacing: 1px; color: #999; background: #f0f0f0; border-radius: 5px; padding: 2px 5px; }
+  .frame .badge-realtime { display: inline-block; font-size: 8px; background: #e8f5e9; color: #388e3c; border-radius: 5px; padding: 2px 6px; letter-spacing: 0.5px; }
+  .frame .badge-readonly { display: inline-block; font-size: 8px; background: #f3f4f6; color: #6b7280; border-radius: 5px; padding: 2px 6px; letter-spacing: 0.5px; }
+  .frame .info-note { font-size: 9px; color: #aaa; font-style: italic; margin-top: 3px; }
+  .frame .pace-dots { display: flex; gap: 7px; justify-content: center; }
+  .frame .pace-dot { width: 7px; height: 7px; border-radius: 50%; }
+  .frame .pace-dot.filled { background: #1a1a1a33; }
+  .frame .pace-dot.outline { border: 1px solid #1a1a1a22; }
+  .frame .breathing { width: 56px; height: 1px; background: #1a1a1a11; margin: 6px auto; }
 </style>
 </head>
 <body>
 
 <h1>Still Us — Wireframes</h1>
-<p class="subtitle">Exportera alla skärmar som separata PNG-bilder i en ZIP-fil (2× skala).</p>
+<p class="subtitle">Exportera alla skärmar som separata PNG-bilder i en ZIP-fil (2× skala). Uppdaterad februari 2026.</p>
 
 <div class="actions">
-  <button class="btn" id="downloadBtn" onclick="exportAll()">📦 Ladda ner ZIP med alla PNG:er</button>
+  <button class="btn-dl" id="downloadBtn" onclick="exportAll()">📦 Ladda ner ZIP med alla PNG:er</button>
 </div>
 <div class="progress" id="status"></div>
 
@@ -64,13 +73,13 @@
     <h2>Login</h2>
     <div class="route">/login</div>
     <div class="frame">
-      <div class="spacer" style="height:32px"></div>
-      <div class="center serif" style="font-size:22px;font-weight:700;color:#CC0000;">STILL US<br/><span style="font-size:14px;font-weight:400;">So we stay us</span></div>
+      <div class="spacer" style="height:28px"></div>
+      <div class="center serif" style="font-size:20px;font-weight:700;color:#CC0000;">STILL US<br/><span style="font-size:12px;font-weight:400;color:#999;">So we stay us</span></div>
       <div class="spacer"></div>
-      <div style="background:#f5f5f5;border-radius:10px;padding:10px 12px;font-size:11px;color:#bbb;margin-bottom:8px;">E-post</div>
-      <div class="center"><div class="btn-ui" style="width:100%">Logga in med e-post</div></div>
+      <div style="background:#f5f5f5;border-radius:9px;padding:9px 11px;font-size:10px;color:#bbb;margin-bottom:7px;">E-post</div>
+      <div class="btn-ui">Logga in med e-post</div>
       <div class="divider"></div>
-      <div class="center"><div class="btn-outline" style="width:100%">Skapa konto</div></div>
+      <div class="btn-outline">Skapa konto</div>
       <div class="spacer"></div>
     </div>
   </div>
@@ -79,17 +88,15 @@
     <h2>Onboarding</h2>
     <div class="route">/ → (hasCompletedOnboarding = false)</div>
     <div class="frame">
-      <div class="spacer" style="height:32px"></div>
-      <div class="center serif" style="font-size:20px;font-weight:600;">Välkommen</div>
-      <div class="spacer" style="height:8px"></div>
-      <div class="center muted" style="max-width:240px;margin:0 auto;line-height:1.7;">Det här är ett utrymme för dig och din partner att reflektera — som föräldrar, partners, individer.</div>
+      <div class="spacer" style="height:28px"></div>
+      <div class="center serif" style="font-size:18px;font-weight:600;">Välkommen</div>
+      <div class="spacer" style="height:6px"></div>
+      <div class="center muted" style="max-width:220px;margin:0 auto;line-height:1.7;">Det här är ett utrymme för dig och din partner att reflektera — som föräldrar, partners, individer.</div>
       <div class="spacer"></div>
-      <div class="center"><div class="btn-ui" style="width:80%;max-width:240px;">Fortsätt</div></div>
-      <div class="spacer" style="height:10px"></div>
-      <div class="dots">
-        <div class="dot active"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
-      </div>
-      <div class="spacer" style="height:10px"></div>
+      <div class="btn-ui" style="width:80%;margin:0 auto;">Fortsätt</div>
+      <div class="spacer" style="height:8px"></div>
+      <div class="dots"><div class="dot active"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+      <div class="spacer" style="height:8px"></div>
       <div class="center muted">Hoppa över introduktionen</div>
       <div class="spacer"></div>
     </div>
@@ -107,16 +114,16 @@
     <div class="frame">
       <div class="header-bar"><span>logo</span><span>⚙</span></div>
       <div class="spacer"></div>
-      <div class="center serif" style="font-size:18px;font-weight:600;">Börja här.</div>
-      <div class="spacer" style="height:6px"></div>
-      <div class="center muted" style="max-width:220px;margin:0 auto;">Bjud in din partner när du vill. Då skapar ni ert gemensamma rum.</div>
+      <div class="center serif" style="font-size:16px;font-weight:600;">Börja här.</div>
+      <div class="spacer" style="height:5px"></div>
+      <div class="center muted" style="max-width:200px;margin:0 auto;">Bjud in din partner när du vill. Då skapar ni ert gemensamma rum.</div>
       <div class="spacer"></div>
-      <div class="center"><div class="btn-ui" style="width:100%;">🔗 Dela länk</div></div>
-      <div class="spacer" style="height:6px"></div>
-      <div class="center muted" style="font-size:10px;">Har din partner redan en kod? ▾</div>
+      <div class="btn-ui">🔗 Dela länk</div>
+      <div class="spacer" style="height:5px"></div>
+      <div class="center muted">Har din partner redan en kod? ▾</div>
       <div class="spacer"></div>
       <div class="divider"></div>
-      <div class="center muted" style="font-size:10px;">▸ Tillgängligt när ni är två (collapsed)</div>
+      <div class="center muted">▸ Tillgängligt när ni är två (collapsed)</div>
       <div class="spacer"></div>
     </div>
   </div>
@@ -127,23 +134,23 @@
     <div class="frame">
       <div class="header-bar"><span>logo</span><span>⚙</span></div>
       <div class="spacer"></div>
-      <div class="center serif" style="font-size:18px;font-weight:600;">Du är ensam här just nu.</div>
-      <div class="spacer" style="height:6px"></div>
-      <div class="center muted" style="max-width:220px;margin:0 auto;">Din partner är inte längre ansluten till ert rum.</div>
+      <div class="center serif" style="font-size:16px;font-weight:600;">Du är ensam här just nu.</div>
+      <div class="spacer" style="height:5px"></div>
+      <div class="center muted" style="max-width:200px;margin:0 auto;">Din partner är inte längre ansluten till ert rum.</div>
       <div class="spacer"></div>
-      <div class="center"><div class="btn-ui" style="width:100%;">🔗 Dela länk</div></div>
+      <div class="btn-ui">🔗 Dela länk</div>
       <div class="spacer"></div>
     </div>
   </div>
 
   <div class="wireframe" data-name="04-idle-connected">
     <h2>Idle — Partner kopplad</h2>
-    <div class="route">/ (mode = idle, inget förslag)</div>
+    <div class="route">/ (paired, inga aktiva förslag)</div>
     <div class="frame">
       <div class="header-bar"><span>logo</span><span>⚙</span></div>
-      <div class="center muted" style="padding:10px 0 4px;font-size:10px;">🤍 Ni är nu ihopkopplade. ✕</div>
+      <div class="center muted" style="padding:8px 0 3px;font-size:9px;">🤍 Ni är nu ihopkopplade. ✕</div>
       <div class="spacer"></div>
-      <div class="center"><div class="btn-ui" style="width:100%;">Välj samtalsämne →</div></div>
+      <div class="btn-ui">Välj samtalsämne →</div>
       <div class="spacer"></div>
       <div class="divider"></div>
       <div class="muted">RelationshipMemory · RecentSharedReflection</div>
@@ -156,81 +163,66 @@
 
   <div class="wireframe" data-name="04b-idle-outgoing-proposal">
     <h2>Idle — Skickat förslag</h2>
-    <div class="route">/ (mode = idle, ownPendingProposals[0])</div>
+    <div class="route">/ (ownPendingProposals[0], realtime-sub aktiv)</div>
     <div class="frame">
       <div class="header-bar"><span>logo</span><span>⚙</span></div>
       <div class="spacer"></div>
       <div class="card center">
         <div class="tag">Förslag skickat</div>
-        <div class="serif" style="margin-top:6px;font-size:13px;">Att lyssna på riktigt</div>
-        <div class="muted" style="margin-top:4px;">Väntar på att din partner svarar.</div>
-        <div class="btn-ghost" style="margin-top:6px;">Ändra förslag</div>
+        <div class="badge-realtime" style="margin:4px 0;">● Realtime</div>
+        <div class="serif" style="margin-top:4px;font-size:12px;">Att lyssna på riktigt</div>
+        <div class="muted" style="margin-top:3px;">Väntar på att din partner svarar.</div>
+        <div class="btn-ghost">Ändra förslag</div>
       </div>
       <div class="spacer"></div>
-      <div class="center"><div class="btn-outline" style="width:100%;">Välj samtalsämne →</div></div>
+      <div class="btn-outline">Välj samtalsämne →</div>
       <div class="spacer"></div>
+      <div class="info-note center">Ingen polling — status uppdateras via realtime-prenumeration</div>
     </div>
   </div>
 
-  <div class="wireframe" data-name="04c-idle-saved-proposal">
-    <h2>Idle — Sparat förslag</h2>
-    <div class="route">/ (savedProposals[0], inget aktivt)</div>
-    <div class="frame">
-      <div class="header-bar"><span>logo</span><span>⚙</span></div>
-      <div class="spacer"></div>
-      <div class="card" style="border-left:3px solid #CC000044;">
-        <div class="tag">Sparat förslag</div>
-        <div class="serif" style="margin-top:6px;font-size:13px;">Att lyssna på riktigt</div>
-        <div class="muted" style="margin-top:4px;">Sparat av din partner. Vill ni prata om det?</div>
-        <div style="display:flex;gap:8px;margin-top:8px;">
-          <div class="btn-ui" style="font-size:10px;padding:6px 12px;">Starta</div>
-          <div class="btn-ghost" style="font-size:10px;">Ta bort</div>
-        </div>
-      </div>
-      <div class="spacer"></div>
-      <div class="center"><div class="btn-ui" style="width:100%;">Välj samtalsämne →</div></div>
-    </div>
-  </div>
-
-  <div class="wireframe" data-name="04d-active-session-home">
+  <div class="wireframe" data-name="04c-active-session-home">
     <h2>Active — Pågående samtal</h2>
-    <div class="route">/ (mode = active)</div>
+    <div class="route">/ (normalizedSession.sessionId aktiv)</div>
     <div class="frame">
       <div class="header-bar"><span>logo</span><span>💾</span></div>
       <div class="spacer"></div>
       <div class="card" style="border-left:3px solid #CC0000;">
         <div class="tag">Pågående · Steg 2/4</div>
-        <div class="serif" style="margin-top:6px;font-size:13px;">Att lyssna på riktigt</div>
+        <div class="serif" style="margin-top:5px;font-size:12px;">Att lyssna på riktigt</div>
         <div class="muted" style="margin-top:2px;">Kategori A</div>
-        <div style="margin-top:8px;">
+        <div style="margin-top:7px;">
           <div class="progress-bar"><div class="progress-step done"></div><div class="progress-step current"></div><div class="progress-step"></div><div class="progress-step"></div></div>
         </div>
-        <div class="btn-ui" style="width:100%;margin-top:10px;font-size:11px;">Fortsätt samtalet →</div>
+        <div class="btn-ui" style="margin-top:9px;font-size:10px;">Fortsätt samtalet →</div>
       </div>
       <div class="spacer"></div>
+      <div class="info-note center">Step index från normalizedSession.currentStepIndex (enda auktoritet)</div>
     </div>
   </div>
 
 </div>
 
-<!-- ═══ PROPOSALS ═══ -->
-<div class="section-title">Förslag — inkommande</div>
+<!-- ═══ PROPOSALS (REALTIME) ═══ -->
+<div class="section-title">Förslag — realtime (ingen polling)</div>
 <div class="wireframe-grid">
 
   <div class="wireframe" data-name="05-proposal-incoming">
     <h2>Inkommande förslag (overlay)</h2>
-    <div class="route">/ (mode = proposal, full-screen)</div>
+    <div class="route">/ (incomingProposals[0], realtime-händelse)</div>
     <div class="frame" style="background:#fefefe;">
-      <div class="spacer" style="height:36px"></div>
-      <div class="center muted" style="text-transform:uppercase;letter-spacing:1px;font-size:10px;">Förslag från din partner</div>
-      <div class="spacer" style="height:10px"></div>
-      <div class="center serif" style="font-size:20px;">Att lyssna på riktigt</div>
-      <div class="spacer" style="height:36px"></div>
-      <div class="center"><div class="btn-ui" style="width:100%;">Acceptera →</div></div>
+      <div class="spacer" style="height:32px"></div>
+      <div class="center muted" style="text-transform:uppercase;letter-spacing:1px;font-size:9px;">Förslag från din partner</div>
       <div class="spacer" style="height:8px"></div>
-      <div class="center"><div class="btn-ghost" style="width:100%;">Inte nu</div></div>
-      <div class="center muted" style="font-size:10px;margin-top:4px;">Du kan ta upp det senare.</div>
-      <div class="spacer" style="height:36px"></div>
+      <div class="center serif" style="font-size:18px;">Att lyssna på riktigt</div>
+      <div class="badge-realtime" style="display:block;text-align:center;margin:6px 0;">● Realtime-prenumeration (topic_proposals)</div>
+      <div class="spacer" style="height:28px"></div>
+      <div class="btn-ui">Acceptera →</div>
+      <div class="spacer" style="height:6px"></div>
+      <div class="btn-ghost">Inte nu</div>
+      <div class="center muted" style="margin-top:3px;">Du kan ta upp det senare.</div>
+      <div class="spacer" style="height:28px"></div>
+      <div class="info-note center">Scoped till couple_space_id — ingen setInterval</div>
     </div>
   </div>
 
@@ -239,79 +231,112 @@
     <div class="route">/ (isProposalMode = true, inline)</div>
     <div class="frame">
       <div class="header-bar"><span>logo</span><span>⚙</span></div>
-      <div class="spacer" style="height:6px"></div>
-      <div style="display:flex;gap:6px;margin-bottom:10px;">
-        <div style="background:#CC000022;color:#CC0000;font-size:10px;padding:4px 8px;border-radius:8px;">Ej utforskade</div>
-        <div style="background:#f0f0f0;color:#999;font-size:10px;padding:4px 8px;border-radius:8px;">Påbörjade</div>
-        <div style="background:#f0f0f0;color:#999;font-size:10px;padding:4px 8px;border-radius:8px;">Alla</div>
+      <div class="spacer" style="height:5px"></div>
+      <div style="display:flex;gap:5px;margin-bottom:8px;">
+        <div style="background:#CC000018;color:#CC0000;font-size:9px;padding:3px 7px;border-radius:7px;">Ej utforskade</div>
+        <div style="background:#f0f0f0;color:#999;font-size:9px;padding:3px 7px;border-radius:7px;">Påbörjade</div>
+        <div style="background:#f0f0f0;color:#999;font-size:9px;padding:3px 7px;border-radius:7px;">Alla</div>
       </div>
-      <div class="muted" style="font-size:10px;margin-bottom:4px;text-transform:uppercase;letter-spacing:1px;">Kategori A</div>
+      <div class="muted" style="font-size:9px;margin-bottom:3px;text-transform:uppercase;letter-spacing:1px;">Kategori A</div>
       <div class="card" style="border:1px solid #CC0000;">
-        <div style="font-size:12px;">Att lyssna på riktigt ✓</div>
+        <div style="font-size:11px;">Att lyssna på riktigt ✓</div>
       </div>
       <div class="card">
-        <div style="font-size:12px;">Samtal om gränser</div>
+        <div style="font-size:11px;">Samtal om gränser</div>
       </div>
-      <div class="spacer" style="height:6px"></div>
-      <div class="center"><div class="btn-ui" style="width:100%;">Skicka förslag →</div></div>
+      <div class="spacer" style="height:5px"></div>
+      <div class="btn-ui">Skicka förslag →</div>
     </div>
   </div>
 
 </div>
 
 <!-- ═══ CARD / SESSION ═══ -->
-<div class="section-title">Samtalskort — session</div>
+<div class="section-title">Samtalskort — session (normalizedSession som enda auktoritet)</div>
 <div class="wireframe-grid">
 
   <div class="wireframe" data-name="06-active-session-step">
     <h2>Aktivt sessionssteg</h2>
-    <div class="route">/card/:id (draft-state)</div>
+    <div class="route">/card/:id (cardViewMode = live, draft-state)</div>
     <div class="frame">
-      <div class="header-bar"><span>logo · Kategori A</span><span>⚙</span></div>
-      <div style="padding:6px 0;">
+      <div class="header-bar"><span>← Kategori A</span><span>⚙</span></div>
+      <div style="padding:5px 0;">
         <div class="progress-bar">
           <div class="progress-step done"></div><div class="progress-step current"></div><div class="progress-step"></div><div class="progress-step"></div>
         </div>
-        <div class="muted center" style="margin-top:3px;font-size:9px;">Öppnare · <b>Tankeväckare</b> · Scenario · Teamwork</div>
+        <div class="muted center" style="margin-top:3px;font-size:8px;">Början · <b>Fördjupning</b> · I vardagen · Tillsammans</div>
       </div>
-      <div class="spacer" style="height:6px"></div>
-      <div class="center serif" style="font-size:16px;">Att lyssna på riktigt</div>
-      <div class="center muted" style="margin-top:4px;font-style:italic;">Subtitle</div>
+      <div class="spacer" style="height:5px"></div>
+      <div class="center serif" style="font-size:15px;">Att lyssna på riktigt</div>
+      <div class="center muted" style="margin-top:3px;font-style:italic;">Subtitle</div>
       <div class="divider"></div>
       <div class="card">
-        <div class="muted" style="font-size:10px;">Prompt + privat anteckning</div>
-        <div style="margin-top:6px;font-size:11px;">"Frågetext..."</div>
-        <div style="margin-top:4px;padding:6px;background:#f5f5f5;border-radius:6px;font-size:10px;color:#bbb;">Det du skriver är bara för dig.</div>
+        <div class="muted">Prompt + privat anteckning</div>
+        <div style="margin-top:5px;font-size:10px;">"Frågetext..."</div>
+        <div style="margin-top:3px;padding:5px;background:#f5f5f5;border-radius:6px;font-size:9px;color:#bbb;">Det du skriver är bara för dig.</div>
       </div>
       <div class="card">
-        <div class="muted" style="font-size:10px;">Steg-reflektion (draft)</div>
-        <div style="margin-top:4px;padding:6px;background:#f5f5f5;border-radius:6px;font-size:10px;color:#bbb;">Skriv något ni vill säga. 🔒</div>
+        <div class="muted">SessionStepReflection (draft)</div>
+        <div style="margin-top:3px;padding:5px;background:#f5f5f5;border-radius:6px;font-size:9px;color:#bbb;">Skriv något ni vill säga. 🔒</div>
       </div>
-      <div class="spacer" style="height:6px"></div>
-      <div class="center"><div class="btn-ui" style="width:100%;">Markera klar →</div></div>
-      <div class="center muted" style="font-size:10px;margin-top:4px;">Ni går vidare när båda är klara.</div>
+      <div class="spacer" style="height:5px"></div>
+      <div class="btn-ui">Markera klar →</div>
+      <div class="center muted" style="margin-top:3px;">Ni går vidare när båda är klara.</div>
+      <div class="spacer" style="height:4px"></div>
+      <div class="info-note center">Step index = normalizedSession.currentStepIndex (ej effectiveStep)</div>
+    </div>
+  </div>
+
+  <div class="wireframe" data-name="06b-catchup-info">
+    <h2>Catch-up — informationsläge</h2>
+    <div class="route">/card/:id (isCatchingUp = true, enbart informationellt)</div>
+    <div class="frame">
+      <div class="header-bar"><span>← Kategori A</span><span>⚙</span></div>
+      <div style="padding:5px 0;">
+        <div class="progress-bar">
+          <div class="progress-step done"></div><div class="progress-step current"></div><div class="progress-step"></div><div class="progress-step"></div>
+        </div>
+        <div class="muted center" style="margin-top:3px;font-size:8px;">Början · <b>Fördjupning</b> · I vardagen · Tillsammans</div>
+      </div>
+      <div class="spacer" style="height:5px"></div>
+      <div class="center serif" style="font-size:15px;">Att lyssna på riktigt</div>
+      <div class="divider"></div>
+      <div class="card" style="border-left:2px solid #CC000033;">
+        <div class="muted" style="font-size:9px;">ℹ️ Din partner är lite före i samtalet.</div>
+        <div class="muted" style="font-size:8px;margin-top:2px;">myFirstUncompletedStep: 1 · sharedStepIndex: 1</div>
+      </div>
+      <div class="card">
+        <div class="muted">Aktuellt steg-innehåll (steg 1)</div>
+        <div style="margin-top:3px;padding:5px;background:#f5f5f5;border-radius:6px;font-size:9px;color:#bbb;">Skriv något ni vill säga.</div>
+      </div>
+      <div class="btn-ui">Markera klar →</div>
+      <div class="spacer" style="height:4px"></div>
+      <div class="info-note center">isCatchingUp är enbart info — monterat steg styrs ej av effectiveStep</div>
     </div>
   </div>
 
   <div class="wireframe" data-name="07-waiting-state">
     <h2>Väntläge</h2>
-    <div class="route">/card/:id (state = ready, väntar på partner)</div>
+    <div class="route">/card/:id (normalizedSession.waiting = true)</div>
     <div class="frame">
-      <div class="header-bar"><span>logo · Kategori A</span><span>⚙</span></div>
-      <div style="padding:6px 0;">
+      <div class="header-bar"><span>← Kategori A</span><span>⚙</span></div>
+      <div style="padding:5px 0;">
         <div class="progress-bar">
           <div class="progress-step done"></div><div class="progress-step done"></div><div class="progress-step"></div><div class="progress-step"></div>
         </div>
       </div>
-      <div class="spacer" style="height:28px"></div>
-      <div class="center serif" style="font-size:16px;">Klart från din sida.</div>
-      <div class="spacer" style="height:6px"></div>
+      <div class="spacer" style="height:22px"></div>
+      <div class="center serif" style="font-size:15px;">Klart från din sida.</div>
+      <div class="spacer" style="height:5px"></div>
       <div class="center muted" style="line-height:1.7;">Väntar på att din partner också markerar klart.</div>
-      <div class="spacer" style="height:8px"></div>
-      <div class="center muted" style="font-size:10px;line-height:1.6;">När båda är klara visas era reflektioner.</div>
-      <div class="spacer" style="height:20px"></div>
-      <div class="center"><div class="btn-outline" style="width:100%;">Tillbaka till hem</div></div>
+      <div class="spacer" style="height:6px"></div>
+      <div class="center muted" style="font-size:9px;line-height:1.6;">När båda är klara visas era reflektioner.</div>
+      <div class="spacer" style="height:16px"></div>
+      <div class="pace-dots"><div class="pace-dot filled"></div><div class="pace-dot outline"></div></div>
+      <div class="spacer" style="height:6px"></div>
+      <div class="breathing"></div>
       <div class="spacer"></div>
+      <div class="btn-outline">Tillbaka till hem</div>
     </div>
   </div>
 
@@ -319,46 +344,103 @@
     <h2>Avslöjade reflektioner</h2>
     <div class="route">/card/:id (state = revealed)</div>
     <div class="frame">
-      <div class="header-bar"><span>logo · Kategori A</span><span>⚙</span></div>
-      <div style="padding:6px 0;">
+      <div class="header-bar"><span>← Kategori A</span><span>⚙</span></div>
+      <div style="padding:5px 0;">
         <div class="progress-bar">
           <div class="progress-step done"></div><div class="progress-step done"></div><div class="progress-step"></div><div class="progress-step"></div>
         </div>
       </div>
-      <div class="spacer" style="height:6px"></div>
+      <div class="spacer" style="height:5px"></div>
       <div class="card" style="border-left:3px solid #CC000044;">
         <div class="tag">Du</div>
-        <div style="font-size:11px;margin-top:4px;">"Min reflektion..."</div>
+        <div style="font-size:10px;margin-top:3px;">"Min reflektion..."</div>
       </div>
       <div class="card" style="border-left:3px solid #88888833;">
         <div class="tag">Din partner</div>
-        <div style="font-size:11px;margin-top:4px;">"Partnerns reflektion..."</div>
+        <div style="font-size:10px;margin-top:3px;">"Partnerns reflektion..."</div>
       </div>
-      <div class="spacer" style="height:6px"></div>
-      <div class="center"><div class="btn-ui" style="width:100%;">Nästa steg →</div></div>
+      <div class="spacer" style="height:5px"></div>
+      <div class="btn-ui">Nästa steg →</div>
     </div>
   </div>
 
   <div class="wireframe" data-name="08-completed-session">
     <h2>Avslutat samtal</h2>
-    <div class="route">/card/:id (isFullyExplored = true)</div>
+    <div class="route">/card/:id (showCompletion = true)</div>
     <div class="frame">
       <div class="header-bar"><span>← tillbaka</span><span>logo</span></div>
       <div class="spacer"></div>
-      <div class="center serif" style="font-size:18px;">Ta en stund.</div>
-      <div class="center muted" style="margin-top:6px;">Det ni just delade får landa.</div>
+      <div class="center serif" style="font-size:16px;">Ta en stund.</div>
+      <div class="center muted" style="margin-top:5px;">Det ni just delade får landa.</div>
       <div class="spacer"></div>
-      <div class="center muted" style="font-size:11px;">Vill ni formulera något att ta med er?</div>
+      <div class="center muted">Vill ni formulera något att ta med er?</div>
       <div class="card">
-        <div class="muted" style="font-size:10px;">SessionTakeaway — gemensam text</div>
-        <div class="muted" style="font-size:10px;margin-top:4px;">Låses när ni lämnar sidan.</div>
+        <div class="muted">SessionTakeaway — gemensam text</div>
+        <div class="muted" style="margin-top:3px;">Låses när ni lämnar sidan.</div>
       </div>
       <div class="spacer"></div>
-      <div class="center"><div class="btn-ui" style="width:100%;">Föreslå nästa samtal →</div></div>
-      <div class="spacer" style="height:6px"></div>
-      <div class="center"><div class="btn-outline" style="width:100%;">🏠 Hem</div></div>
-      <div class="spacer" style="height:6px"></div>
-      <div class="center"><span class="btn-ghost">↺ Läs igen</span></div>
+      <div class="btn-ui">Föreslå nästa samtal →</div>
+      <div class="spacer" style="height:5px"></div>
+      <div class="btn-outline">🏠 Hem</div>
+      <div class="spacer" style="height:5px"></div>
+      <div class="btn-ghost">↺ Läs igen</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══ REVIEW DRAWER ═══ -->
+<div class="section-title">ReviewDrawer — läsläge (prompt_notes only, ingen session)</div>
+<div class="wireframe-grid">
+
+  <div class="wireframe" data-name="08b-review-drawer">
+    <h2>ReviewDrawer (öppen)</h2>
+    <div class="route">/card/:id → ReviewDrawer overlay (read-only)</div>
+    <div class="frame">
+      <div class="header-bar"><span>Se era anteckningar</span><span>✕</span></div>
+      <div class="spacer" style="height:5px"></div>
+      <div class="badge-readonly" style="display:block;margin-bottom:6px;">prompt_notes only — ingen step_reflections-data</div>
+      <div class="card">
+        <div style="font-size:10px;font-weight:500;">Steg 1 — Början</div>
+        <div class="muted" style="margin-top:3px;">🔓 Alltid upplåst (index 0)</div>
+        <div style="margin-top:4px;font-size:9px;color:#aaa;">"Din privata anteckning..."</div>
+        <div style="margin-top:2px;font-size:9px;color:#CC000077;">"Delad anteckning..."</div>
+      </div>
+      <div class="card">
+        <div style="font-size:10px;font-weight:500;">Steg 2 — Fördjupning</div>
+        <div class="muted" style="margin-top:3px;">🔓 Upplåst (hasAnyNotes = true)</div>
+        <div style="margin-top:4px;font-size:9px;color:#aaa;">"Din privata anteckning..."</div>
+      </div>
+      <div class="card" style="opacity:0.45;">
+        <div style="font-size:10px;font-weight:500;">Steg 3 — I vardagen</div>
+        <div class="muted" style="margin-top:3px;">🔒 Låst (inga anteckningar)</div>
+      </div>
+      <div class="spacer" style="height:5px"></div>
+      <div class="info-note">SessionStepReflection monteras INTE. Inga session-mutations triggras härifrån.</div>
+      <div class="info-note">Djup-länk till kortvy via ?revisit=true → cardViewMode = revisit</div>
+    </div>
+  </div>
+
+  <div class="wireframe" data-name="08c-revisit-mode">
+    <h2>Kortvy — Revisit-läge</h2>
+    <div class="route">/card/:id?revisit=true (cardViewMode = revisit)</div>
+    <div class="frame">
+      <div class="header-bar"><span>← Kategori A</span><span></span></div>
+      <div class="spacer" style="height:5px"></div>
+      <div class="center serif" style="font-size:15px;">Att lyssna på riktigt</div>
+      <div class="center muted" style="margin-top:2px;font-size:9px;text-transform:uppercase;letter-spacing:1px;">Förhandskoll</div>
+      <div class="divider"></div>
+      <div class="card">
+        <div class="muted">SectionView (read-only)</div>
+        <div style="margin-top:5px;font-size:10px;">"Frågetext..."</div>
+        <div style="margin-top:3px;padding:5px;background:#f5f5f5;border-radius:6px;font-size:9px;color:#bbb;">Anteckningar (visas om de finns)</div>
+      </div>
+      <div class="spacer" style="height:5px"></div>
+      <div class="btn-ui">Nästa →</div>
+      <div class="spacer" style="height:5px"></div>
+      <div class="badge-readonly" style="display:block;text-align:center;">Inget sessionssteg monterat — inga mutations</div>
+      <div class="spacer" style="height:5px"></div>
+      <div class="info-note center">SessionStepReflection syns ej i revisit-läge</div>
     </div>
   </div>
 
@@ -374,12 +456,12 @@
     <div class="frame">
       <div class="header-bar"><span>logo</span><span>⚙</span></div>
       <div class="spacer"></div>
-      <div class="serif" style="font-size:20px;font-weight:600;">Er historia</div>
-      <div class="muted" style="margin-top:4px;">Avslutade samtal och delade reflektioner</div>
+      <div class="serif" style="font-size:17px;font-weight:600;">Er historia</div>
+      <div class="muted" style="margin-top:3px;">Avslutade samtal och delade reflektioner</div>
       <div class="spacer"></div>
       <div class="card center">
         <div class="muted">── Empty state ──</div>
-        <div class="muted" style="margin-top:4px;">Här samlas era avslutade samtal.</div>
+        <div class="muted" style="margin-top:3px;">Här samlas era avslutade samtal.</div>
       </div>
     </div>
   </div>
@@ -389,23 +471,23 @@
     <div class="route">/shared (har historik)</div>
     <div class="frame">
       <div class="header-bar"><span>logo</span><span>⚙</span></div>
-      <div class="spacer" style="height:6px"></div>
-      <div class="serif" style="font-size:18px;font-weight:600;">Er historia</div>
-      <div class="spacer" style="height:6px"></div>
+      <div class="spacer" style="height:5px"></div>
+      <div class="serif" style="font-size:15px;font-weight:600;">Er historia</div>
+      <div class="spacer" style="height:5px"></div>
       <div class="card">
-        <div class="serif" style="font-size:12px;">Highlights</div>
-        <div class="muted" style="margin-top:4px;font-style:italic;">"Markerad reflektion..."</div>
-        <div class="btn-ghost" style="font-size:10px;">Visa alla N</div>
+        <div class="serif" style="font-size:11px;">Highlights</div>
+        <div class="muted" style="margin-top:3px;font-style:italic;">"Markerad reflektion..."</div>
+        <div class="btn-ghost">Visa alla N</div>
       </div>
       <div class="card">
-        <div class="serif" style="font-size:12px;">Er resa</div>
-        <div class="muted" style="margin-top:4px;">Kategori-framsteg (N/M per kategori)</div>
+        <div class="serif" style="font-size:11px;">Er resa</div>
+        <div class="muted" style="margin-top:3px;">Kategori-framsteg (N/M per kategori)</div>
       </div>
       <div class="divider"></div>
-      <div class="muted" style="font-size:10px;text-transform:uppercase;letter-spacing:1px;">Februari 2026</div>
-      <div class="card" style="margin-left:10px;border-left:2px solid #e5e5e5;padding-left:14px;">
-        <div style="font-size:12px;">● Kortets titel</div>
-        <div class="muted" style="font-size:10px;">Kategori · datum</div>
+      <div class="muted" style="font-size:9px;text-transform:uppercase;letter-spacing:1px;">Februari 2026</div>
+      <div class="card" style="margin-left:9px;border-left:2px solid #e5e5e5;padding-left:12px;">
+        <div style="font-size:11px;">● Kortets titel</div>
+        <div class="muted" style="font-size:9px;">Kategori · datum</div>
       </div>
     </div>
   </div>
@@ -416,16 +498,16 @@
     <div class="frame">
       <div class="header-bar"><span>logo</span><span>⚙</span></div>
       <div class="spacer"></div>
-      <div class="serif" style="font-size:18px;font-weight:600;">Sparade samtal</div>
-      <div class="spacer" style="height:6px"></div>
+      <div class="serif" style="font-size:15px;font-weight:600;">Sparade samtal</div>
+      <div class="spacer" style="height:5px"></div>
       <div class="card">
-        <div style="font-size:12px;font-weight:500;">Att lyssna på riktigt</div>
-        <div class="muted" style="font-size:10px;margin-top:2px;">Kategori A · 12 feb 2026</div>
-        <div class="muted" style="font-size:10px;margin-top:4px;">"Sista reflektionen..."</div>
+        <div style="font-size:11px;font-weight:500;">Att lyssna på riktigt</div>
+        <div class="muted" style="margin-top:2px;">Kategori A · 12 feb 2026</div>
+        <div class="muted" style="margin-top:3px;">"Sista reflektionen..."</div>
       </div>
       <div class="card">
-        <div style="font-size:12px;font-weight:500;">Samtal om gränser</div>
-        <div class="muted" style="font-size:10px;margin-top:2px;">Kategori B · 5 feb 2026</div>
+        <div style="font-size:11px;font-weight:500;">Samtal om gränser</div>
+        <div class="muted" style="margin-top:2px;">Kategori B · 5 feb 2026</div>
       </div>
     </div>
   </div>
@@ -440,14 +522,14 @@
     <h2>Gå med i rum</h2>
     <div class="route">/join?token=…</div>
     <div class="frame">
-      <div class="spacer" style="height:32px"></div>
-      <div class="center serif" style="font-size:20px;font-weight:600;">Du är inbjuden.</div>
-      <div class="spacer" style="height:8px"></div>
+      <div class="spacer" style="height:28px"></div>
+      <div class="center serif" style="font-size:18px;font-weight:600;">Du är inbjuden.</div>
+      <div class="spacer" style="height:6px"></div>
       <div class="center muted">Din partner vill att ni skapar ett gemensamt rum.</div>
       <div class="spacer"></div>
-      <div class="center"><div class="btn-ui" style="width:100%;">Gå med →</div></div>
-      <div class="spacer" style="height:6px"></div>
-      <div class="center"><div class="btn-ghost">Avvisa</div></div>
+      <div class="btn-ui">Gå med →</div>
+      <div class="spacer" style="height:5px"></div>
+      <div class="btn-ghost">Avvisa</div>
       <div class="spacer"></div>
     </div>
   </div>
@@ -456,14 +538,14 @@
     <h2>Välkommen, partner B</h2>
     <div class="route">/ (nyss ansluten, inga samtal)</div>
     <div class="frame">
-      <div class="spacer" style="height:24px"></div>
-      <div class="center serif" style="font-size:20px;font-weight:600;">Välkommen till ert gemensamma rum.</div>
-      <div class="spacer" style="height:8px"></div>
+      <div class="spacer" style="height:22px"></div>
+      <div class="center serif" style="font-size:17px;font-weight:600;">Välkommen till ert gemensamma rum.</div>
+      <div class="spacer" style="height:6px"></div>
       <div class="center muted">Det här är ett utrymme för samtal och reflektioner — för er, i er egen takt.</div>
       <div class="spacer"></div>
-      <div class="center"><div class="btn-ui" style="width:100%;">Starta ert första samtal</div></div>
-      <div class="spacer" style="height:6px"></div>
-      <div class="center"><div class="btn-ghost">Utforska samtalsområden</div></div>
+      <div class="btn-ui">Starta ert första samtal</div>
+      <div class="spacer" style="height:5px"></div>
+      <div class="btn-ghost">Utforska samtalsområden</div>
       <div class="spacer"></div>
     </div>
   </div>
