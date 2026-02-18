@@ -781,7 +781,7 @@ export default function Home() {
                 return (
                   <div
                     key={category.id}
-                    className={isFeatured ? 'mt-6' : undefined}
+                    className={isFeatured ? 'mt-4' : undefined}
                     style={nextIsNormal ? { marginBottom: '-8px' } : undefined}
                   >
                     <CategoryCard
