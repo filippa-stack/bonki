@@ -67,7 +67,7 @@
 <body>
 
 <h1>Still Us — Wireframes</h1>
-<p class="subtitle">Exportera alla skärmar som separata PNG-bilder i en ZIP-fil (2× skala). Uppdaterad februari 2026 — inkl. radius-system, spacingtoken, bannerstack, reveal/waiting layout.</p>
+<p class="subtitle">Exportera alla skärmar som separata PNG-bilder i en ZIP-fil (2× skala). Uppdaterad februari 2026 — inkl. radius-system, spacingtoken, bannerstack, reveal/waiting layout, browse-läge (CategoryCard-grid), mb-8 gap på rekommenderad kategori.</p>
 
 <div class="actions">
   <button class="btn-dl" id="downloadBtn" onclick="exportAll()">📦 Ladda ner ZIP med alla PNG:er</button>
@@ -560,23 +560,25 @@
 <div class="wireframe-grid">
 
   <div class="wireframe" data-name="10b-category-paired">
-    <h2>Kategorivy — paired (med featurat ämne)</h2>
-    <div class="route">/category/:id (paired, isRecommendedCategory = true)</div>
+    <h2>Kategorivy — paired (isRecommendedCategory = true)</h2>
+    <div class="route">/category/:id (paired, rekommenderad kategori)</div>
     <div class="frame">
       <div class="header-bar"><span>← Hem</span><span></span></div>
-      <div style="padding:8px 0 14px;">
+      <!-- pt-8 title block -->
+      <div style="padding:8px 0 0;">
         <div class="serif" style="font-size:15px;font-weight:600;">Paridentitet vs föräldraidentitet</div>
-        <div class="muted" style="margin-top:4px;line-height:1.6;">Vem är ni för varandra, bortom föräldraskapet?</div>
+        <!-- mt-4 description + mb-8 (32px) gap before topic list — new spacing change -->
+        <div class="muted" style="margin-top:4px;margin-bottom:32px;line-height:1.6;">Vem är ni för varandra, bortom föräldraskapet? Ni kan alltid återvända hit.</div>
       </div>
-      <!-- Recommended topic: mt-2 + stronger shadow + py-9 (silent, no label) -->
-      <div style="margin-top:8px;">
-        <div class="card" style="box-shadow:0 4px 16px 0 rgba(0,0,0,0.08);padding:16px 14px;">
+      <!-- Recommended topic: mt-6 + stronger shadow (featured) -->
+      <div style="margin-top:24px;">
+        <div class="card" style="box-shadow:0 6px 24px -4px rgba(0,0,0,0.07),0 1px 4px 0 rgba(0,0,0,0.04);padding:32px 28px;">
           <div class="serif center" style="font-size:12px;">Vårt minsta "vi"</div>
           <div class="muted center" style="margin-top:3px;font-style:italic;">Det minsta ni kan göra för att hålla ihop</div>
         </div>
       </div>
-      <!-- Normal topics -->
-      <div class="card">
+      <!-- Normal topics: standard shadow -->
+      <div class="card" style="margin-top:16px;">
         <div class="serif center" style="font-size:12px;">Identitetsskiftet</div>
         <div class="muted center" style="margin-top:3px;font-style:italic;">Anpassning som förändrar vem ni får vara</div>
       </div>
@@ -585,34 +587,69 @@
         <div class="muted center" style="margin-top:3px;font-style:italic;">Vad ni bär utan att det syns</div>
       </div>
       <div class="spacer"></div>
-      <div class="info-note center">Rekommenderat ämne: +mt-2 · starkare skugga · py-9 — ingen etikett</div>
+      <div class="info-note center">mb-8 (32px) gap after description · featurat ämne: mt-6 + starkare skugga · ingen etikett</div>
     </div>
   </div>
 
-  <div class="wireframe" data-name="10c-category-browse">
-    <h2>Kategorivy — browse (alla upplåsta)</h2>
+  <div class="wireframe" data-name="10c-home-browse">
+    <h2>Hem — browse-läge (devState=browse)</h2>
+    <div class="route">/ (?devState=browse) — samma CategoryCard-layout som paired idle</div>
+    <div class="frame">
+      <div class="header-bar"><span>logo</span><span>⚙ · DEV</span></div>
+      <!-- mt-4 section padding, space-y-6 between cards -->
+      <div style="margin-top:16px;">
+        <!-- Featured category: mt-6 above + -8px margin below next -->
+        <div style="margin-top:24px;margin-bottom:-8px;">
+          <div class="card" style="box-shadow:0 4px 20px -4px rgba(0,0,0,0.10);padding:14px 12px;">
+            <div class="serif" style="font-size:12px;font-weight:600;">Känslomässig intimitet</div>
+            <div class="muted" style="margin-top:2px;font-size:9px;">Rekommenderad · featured shadow</div>
+          </div>
+        </div>
+        <div class="card" style="padding:14px 12px;">
+          <div class="serif" style="font-size:12px;font-weight:600;">Kommunikation</div>
+          <div class="muted" style="margin-top:2px;font-size:9px;">Normal</div>
+        </div>
+        <div class="card" style="padding:14px 12px;">
+          <div class="serif" style="font-size:12px;font-weight:600;">Stöd &amp; omsorg</div>
+          <div class="muted" style="margin-top:2px;font-size:9px;">Normal</div>
+        </div>
+        <div class="card" style="padding:14px 12px;">
+          <div class="serif" style="font-size:12px;font-weight:600;">Föräldraskap</div>
+          <div class="muted" style="margin-top:2px;font-size:9px;">Normal</div>
+        </div>
+        <div class="muted center" style="font-size:9px;margin-top:8px;">… (alla 10 kategorier)</div>
+      </div>
+      <div class="spacer" style="height:5px;"></div>
+      <div class="info-note center">Browse: samma CategoryCard-komponenter och spacing som paired idle. Ingen "Browse mode"-label. Alla kategorier navigerbara.</div>
+    </div>
+  </div>
+
+  <div class="wireframe" data-name="10d-category-browse">
+    <h2>Kategorivy — browse (alla ämnen)</h2>
     <div class="route">/category/:id (?devState=browse)</div>
     <div class="frame">
       <div class="header-bar"><span>← Hem</span><span></span></div>
-      <div style="padding:8px 0 14px;">
+      <!-- Same layout as paired — isRecommendedCategory still applies -->
+      <div style="padding:8px 0 0;">
         <div class="serif" style="font-size:15px;font-weight:600;">Paridentitet vs föräldraidentitet</div>
-        <div class="muted" style="margin-top:4px;line-height:1.6;">Vem är ni för varandra, bortom föräldraskapet?</div>
+        <!-- mb-8 gap before topics (isRecommendedCategory=true) -->
+        <div class="muted" style="margin-top:4px;margin-bottom:32px;line-height:1.6;">Vem är ni för varandra, bortom föräldraskapet? Ni kan alltid återvända hit.</div>
       </div>
-      <!-- All topics equal weight (browse mode — no recommendation) -->
-      <div class="card">
-        <div class="serif center" style="font-size:12px;">Vårt minsta "vi"</div>
-        <div class="muted center" style="margin-top:3px;font-style:italic;">Det minsta ni kan göra för att hålla ihop</div>
+      <!-- Recommended topic: mt-6 + featured shadow (same as paired) -->
+      <div style="margin-top:24px;">
+        <div class="card" style="box-shadow:0 6px 24px -4px rgba(0,0,0,0.07);padding:32px 28px;">
+          <div class="serif center" style="font-size:12px;">Vårt minsta "vi"</div>
+          <div class="muted center" style="margin-top:3px;font-style:italic;">Det minsta ni kan göra för att hålla ihop</div>
+        </div>
       </div>
-      <div class="card">
+      <div class="card" style="margin-top:16px;">
         <div class="serif center" style="font-size:12px;">Identitetsskiftet</div>
-        <div class="muted center" style="margin-top:3px;font-style:italic;">Anpassning som förändrar vem ni får vara</div>
       </div>
       <div class="card">
         <div class="serif center" style="font-size:12px;">Det osynliga arbetet</div>
-        <div class="muted center" style="margin-top:3px;font-style:italic;">Vad ni bär utan att det syns</div>
       </div>
       <div class="spacer"></div>
-      <div class="info-note center">Browse-läge: alla kort likvärdiga, ingen featured-styling</div>
+      <div class="info-note center">Browse: identisk layout med paired — samma spacing, featured-styling kvar. Ingen "browse mode"-label i UI.</div>
     </div>
   </div>
 
