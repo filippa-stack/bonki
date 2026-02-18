@@ -275,12 +275,13 @@ export default function SharedSummary() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.15 }}
-            className="mb-10 text-center"
+            className="min-h-[60vh] flex flex-col justify-center text-center"
           >
-            <div className="py-10">
+            <div className="space-y-6">
               <p className="text-sm text-muted-foreground/60 leading-relaxed">
                 Här samlas era avslutade samtal och delade reflektioner.
               </p>
+              <div className="mt-8" />
             </div>
           </motion.div>
         )}
@@ -493,29 +494,31 @@ export default function SharedSummary() {
                         <div className="h-px flex-1 bg-border/15" />
                       </div>
 
-                      {group.cardGroups.map((cardGroup) => (
-                        <div key={cardGroup.cardId} className="mb-6 last:mb-0">
-                          <div className="relative pl-8 mb-1">
-                            <div className="absolute left-0 top-0 bottom-0 w-px bg-border/15" />
-                            <div className="absolute left-[-4px] top-1 w-[9px] h-[9px] rounded-full bg-primary/20 border-2 border-primary/30" />
-                            <p className="font-serif text-sm text-foreground/60 pt-0.5">{cardGroup.cardTitle}</p>
-                            <p className="text-[10px] text-muted-foreground/40 mt-0.5">{cardGroup.categoryTitle}</p>
-                          </div>
+                      <div className="space-y-6">
+                        {group.cardGroups.map((cardGroup) => (
+                          <div key={cardGroup.cardId} className="rounded-[20px] border border-border/15 bg-card/40 p-6">
+                            <div className="relative pl-8 mb-3">
+                              <div className="absolute left-0 top-0 bottom-0 w-px bg-border/15" />
+                              <div className="absolute left-[-4px] top-1 w-[9px] h-[9px] rounded-full bg-primary/20 border-2 border-primary/30" />
+                              <p className="font-serif text-sm text-foreground/60 pt-0.5">{cardGroup.cardTitle}</p>
+                              <p className="text-[10px] text-muted-foreground/40 mt-0.5">{cardGroup.categoryTitle}</p>
+                            </div>
 
-                          <div className="space-y-0">
-                            {cardGroup.items.map((item) => (
-                              <SharedTimelineItem
-                                key={item.id}
-                                note={item}
-                                isOwnNote={item.user_id === user?.id}
-                                partnerResponseContent={getPartnerResponse(item.id)?.content}
-                                onOpenInContext={handleOpenInContext}
-                                variant="journey"
-                              />
-                            ))}
+                            <div className="space-y-0">
+                              {cardGroup.items.map((item) => (
+                                <SharedTimelineItem
+                                  key={item.id}
+                                  note={item}
+                                  isOwnNote={item.user_id === user?.id}
+                                  partnerResponseContent={getPartnerResponse(item.id)?.content}
+                                  onOpenInContext={handleOpenInContext}
+                                  variant="journey"
+                                />
+                              ))}
+                            </div>
                           </div>
-                        </div>
-                      ))}
+                        ))}
+                      </div>
                     </div>
                   ))}
                 </div>
