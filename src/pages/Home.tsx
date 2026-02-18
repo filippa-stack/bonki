@@ -188,12 +188,12 @@ export default function Home() {
   const { space, displayMemberCount, userRole, fetchInviteInfo } = useCoupleSpaceContext();
   const { snapshot } = useSpaceSnapshot(user?.id ?? null, space?.id ?? null);
 
-  // ─── Invite dismissal (localStorage-keyed by spaceId) ───────────────────
-  // Paired state is authoritative from snapshot.space.memberCount.
-  // Dismiss key persists across refreshes but is cleared once the space pairs.
+  // ─── Single authority: isPaired ─────────────────────────────────────────
+  // All invite/welcome/banner decisions derive from this one boolean.
   const snapshotMemberCount = snapshot?.space.memberCount ?? displayMemberCount;
   const isPaired = snapshotMemberCount >= 2;
 
+  // ─── Invite dismissal (localStorage-keyed by spaceId) ───────────────────
   const inviteDismissKey = space?.id ? `invite_dismissed_${space.id}` : null;
   const [inviteDismissed, setInviteDismissed] = useState(() => {
     if (!inviteDismissKey) return false;
@@ -212,6 +212,20 @@ export default function Home() {
     if (inviteDismissKey) localStorage.setItem(inviteDismissKey, 'true');
     setInviteDismissed(true);
   };
+
+  // ─── Partner-left detection (drives banner priority slot 1) ──────────────
+  const [partnerLeftActive, setPartnerLeftActive] = useState(false);
+
+  // ─── Derived prompt priority (single active prompt at a time) ────────────
+  // 1) PartnerLeftBanner  — when !isPaired and partner-left event fired
+  // 2) PartnerConnectedBanner — when isPaired and not yet seen
+  // 3) SoloInviteSection — when !isPaired and not dismissed
+  // 4) Everything else (WelcomeBackBanner lives in its own zone, unaffected)
+  //
+  // PartnerConnectedBanner manages its own seen-key internally (space-scoped).
+  // We pass isPaired to suppress it when not relevant.
+  const showSoloInvite = !isPaired && !inviteDismissed && !partnerLeftActive;
+
   const { incomingProposals: _rawProposals, ownPendingProposals, savedProposals, sendProposal: sendDbProposal, updateProposalStatus, activateSession } = useProposalsContext();
   const devState = useDevState();
   const appModeState = useAppMode();
@@ -399,27 +413,53 @@ export default function Home() {
 
 
 
-      {/* ── Banner stack ── */}
-      <div className="mt-6 space-y-4 mb-8">
-        {/* Partner connected banner (for partner_a seeing partner_b join) */}
-        <PartnerConnectedBanner />
+      {/* ── Banner stack — single active prompt at a time ── */}
+      {/* Priority: PartnerLeft(1) > PartnerConnected(2) > SoloInvite(3) */}
+      <div className="mt-6 mb-8">
 
-        {/* Just-joined banner (for partner_b after completing join flow) */}
+        {/* Slot 1: PartnerLeftBanner — only when not paired */}
+        {!isPaired && (
+          <PartnerLeftBanner
+            onPartnerLeft={() => {
+              clearForPartnerLeave();
+              setPartnerLeftActive(true);
+            }}
+            onInvite={() => {
+              setTimeout(() => {
+                document.getElementById('solo-invite')?.scrollIntoView({ behavior: 'smooth' });
+              }, 100);
+            }}
+          />
+        )}
+
+        {/* Slot 2: PartnerConnectedBanner — only when paired */}
+        {isPaired && <PartnerConnectedBanner />}
+
+        {/* Just-joined banner (partner_b only, one-shot from localStorage) */}
         <JustJoinedBanner />
 
-        {/* Partner left banner — shown when partner_left_space event detected */}
-        <PartnerLeftBanner
-          onPartnerLeft={clearForPartnerLeave}
-          onInvite={() => {
-            setTimeout(() => {
-              document.getElementById('solo-invite')?.scrollIntoView({ behavior: 'smooth' });
-            }, 100);
-          }}
-        />
+        {/* Slot 3: SoloInviteSection — only when !isPaired, not dismissed, and PartnerLeft not active */}
+        {showSoloInvite && space && (
+          <div id="solo-invite" className="relative">
+            <button
+              onClick={handleDismissInvite}
+              aria-label="Stäng inbjudan"
+              className="absolute top-3 right-6 z-10 text-muted-foreground/40 hover:text-muted-foreground transition-colors"
+            >
+              <X className="w-4 h-4" />
+            </button>
+            <SoloInviteSection
+              fetchInviteInfo={fetchInviteInfo}
+              onJoinedSpace={() => { /* no-op — realtime providers handle state update */ }}
+              hadPartnerBefore={hadPartnerBefore}
+            />
+          </div>
+        )}
 
-        {/* New chapter banner — shown when partner started a new chapter (new_space_created event) */}
+        {/* New chapter banner — shown when new_space_created event detected */}
         <NewChapterBanner />
       </div>
+
 
       {/* ═══ PRIMARY ACTION ZONE — driven by centralized useAppMode() ═══ */}
       {mode === 'loading' && (
@@ -428,22 +468,6 @@ export default function Home() {
         </div>
       )}
 
-      {mode === 'solo' && space && !isPaired && !inviteDismissed && (
-        <div className="relative">
-          <button
-            onClick={handleDismissInvite}
-            aria-label="Stäng inbjudan"
-            className="absolute top-3 right-6 z-10 text-muted-foreground/40 hover:text-muted-foreground transition-colors"
-          >
-            <X className="w-4 h-4" />
-          </button>
-          <SoloInviteSection
-            fetchInviteInfo={fetchInviteInfo}
-            onJoinedSpace={() => { /* no-op — realtime providers handle state update */ }}
-            hadPartnerBefore={hadPartnerBefore}
-          />
-        </div>
-      )}
 
       <AnimatePresence>
         {mode === 'proposal' && appModeState.incomingProposals[0] && (() => {
