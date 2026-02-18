@@ -11,7 +11,7 @@ import { motion } from 'framer-motion';
 const PARTNER_LEFT_TYPES = ['partner_left_space', 'member_left', 'partner_removed'] as const;
 
 // Gate key format: "still-us-partner-removed-<spaceId>"
-const gateKey = (spaceId: string) => `still-us-partner-removed-${spaceId}`;
+const gateKey = (spaceId: string) => `partner_left_seen_${spaceId}`;
 
 interface Props {
   /** Called once on detection — should call clearForPartnerLeave() in AppContext */
@@ -48,7 +48,7 @@ export default function PartnerLeftBanner({ onPartnerLeft, onInvite }: Props) {
     await normalizedSession.refetch();
 
     // 4. Navigate home — exits any active card view
-    navigate('/');
+    navigate('/', { replace: true });
 
     // 5. Show calm banner
     setVisible(true);
