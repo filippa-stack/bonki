@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { ArrowRight, Clock } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Proposal } from '@/hooks/useProposals';
+import { BEAT_1, BEAT_2, BEAT_3, EASE } from '@/lib/motion';
 
 interface IncomingProposalProps {
   proposal: Proposal;
@@ -40,30 +41,48 @@ export default function IncomingProposal({
     <motion.div
       initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.2, ease: [0.4, 0.0, 0.2, 1] }}
+      exit={{ opacity: 0, y: 8 }}
+      transition={{ duration: BEAT_3, ease: EASE }}
       className="rounded-2xl border border-border bg-card p-6 space-y-4"
     >
-      <p className="text-xs text-muted-foreground/60 tracking-wide">
+      {/* Title — entrance baseline */}
+      <motion.p
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: BEAT_3, ease: EASE }}
+        className="text-xs text-muted-foreground/60 tracking-wide"
+      >
         Föreslaget av {displayName}
-      </p>
+      </motion.p>
 
-      {/* Card preview */}
-      <div className="rounded-xl bg-muted/30 p-4 space-y-1">
-        <p className="font-serif text-base text-foreground">{cardTitle}</p>
-        <p className="text-xs text-muted-foreground/60">{categoryTitle}</p>
-      </div>
-
-      {/* Optional message */}
-      {proposal.message && (
-        <div className="rounded-xl bg-muted/20 px-4 py-3">
-          <p className="text-sm text-foreground/80 italic leading-relaxed">
-            "{proposal.message}"
-          </p>
+      {/* Description / Card preview — BEAT_1 after title */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: BEAT_1, duration: BEAT_3, ease: EASE }}
+        className="space-y-3"
+      >
+        <div className="rounded-xl bg-muted/30 p-4 space-y-1">
+          <p className="font-serif text-base text-foreground">{cardTitle}</p>
+          <p className="text-xs text-muted-foreground/60">{categoryTitle}</p>
         </div>
-      )}
 
-      {/* Actions — premium labels, no decline */}
-      <div className="flex flex-col gap-2 pt-1">
+        {proposal.message && (
+          <div className="rounded-xl bg-muted/20 px-4 py-3">
+            <p className="text-sm text-foreground/80 italic leading-relaxed">
+              "{proposal.message}"
+            </p>
+          </div>
+        )}
+      </motion.div>
+
+      {/* Actions — BEAT_2 after description */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: BEAT_2, duration: BEAT_3, ease: EASE }}
+        className="flex flex-col gap-2 pt-1"
+      >
         <Button
           onClick={handleAccept}
           disabled={acting}
@@ -83,7 +102,7 @@ export default function IncomingProposal({
           <Clock className="w-3.5 h-3.5" />
           Spara till senare
         </Button>
-      </div>
+      </motion.div>
     </motion.div>
   );
 }
