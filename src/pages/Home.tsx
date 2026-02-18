@@ -604,6 +604,7 @@ export default function Home() {
         );
       })()}
 
+      {/* ═══ PAIRED IDLE — status cards (above categories) ═══ */}
       {mode === 'idle' && !isSoloMode && !isProposalMode && (() => {
         const outgoingPendingProposal = ownPendingProposals[0] ?? null;
         const outgoingCard = outgoingPendingProposal ? getCardById(outgoingPendingProposal.card_id) : null;
@@ -611,12 +612,13 @@ export default function Home() {
         const savedProposal = savedFromPartner[0] ?? null;
         const savedCard = savedProposal ? getCardById(savedProposal.card_id) : null;
         const hasStatusCards = !!(outgoingPendingProposal || (savedProposal && savedCard));
+        if (!hasStatusCards) return null;
         return (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.15 }}
-            className={`px-6 ${hasStatusCards ? 'mb-4' : 'mb-0'}`}
+            className="px-6 mb-4"
           >
             {outgoingPendingProposal && (
               <div className="rounded-2xl border border-border bg-card p-5 mb-4 text-center space-y-2">
@@ -663,7 +665,56 @@ export default function Home() {
         );
       })()}
 
-      {/* ═══ BELOW FOLD — secondary content (IDLE only, hidden when ACTIVE) ═══ */}
+      {/* ═══ PAIRED IDLE — Category Discovery (primary surface, above fold) ═══ */}
+      {!isProposalMode && !isSoloMode && mode === 'idle' && devState !== 'browse' && (
+        <motion.div
+          id="category-section"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.15 }}
+          className="px-6 mt-4"
+        >
+          <div className="space-y-6">
+            {categories.map((category, index) => {
+              const catStatus = getCategoryStatus(category.id);
+              const isFeatured = category.id === recommendedCategoryId;
+              const nextCategory = categories[index + 1];
+              const nextIsNormal = isFeatured && nextCategory;
+              return (
+                <div
+                  key={category.id}
+                  className={isFeatured ? 'mt-4' : undefined}
+                  style={nextIsNormal ? { marginBottom: '-8px' } : undefined}
+                >
+                  <CategoryCard
+                    category={category}
+                    onClick={() => navigate(`/category/${category.id}`)}
+                    index={index}
+                    highlighted={category.id === highlightedCategoryId}
+                    isCompleted={catStatus === 'explored'}
+                    isFeatured={isFeatured}
+                  />
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Secondary CTA — propose a topic, below category discovery */}
+          <div className="text-center mt-10 mb-12">
+            <Button
+              variant="outline"
+              size="lg"
+              onClick={handleEnterProposalMode}
+              className="w-full h-14 rounded-2xl gap-2 font-normal"
+            >
+              Välj samtalsämne
+              <ArrowRight className="w-4 h-4" />
+            </Button>
+          </div>
+        </motion.div>
+      )}
+
+      {/* ═══ BELOW FOLD — secondary content (overlays, IDLE only) ═══ */}
 
       {/* Proposal mode (opened by primary CTA for paired IDLE users) */}
       <AnimatePresence>
@@ -845,54 +896,6 @@ export default function Home() {
         })()}
       </AnimatePresence>
 
-      {/* Categories — paired idle: full discovery above fold */}
-      {!isProposalMode && !isSoloMode && mode === 'idle' && devState !== 'browse' && (
-        <motion.div
-          id="category-section"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.15 }}
-          className="px-6 mt-4"
-        >
-          <div className="space-y-6">
-            {categories.map((category, index) => {
-              const catStatus = getCategoryStatus(category.id);
-              const isFeatured = category.id === recommendedCategoryId;
-              const nextCategory = categories[index + 1];
-              const nextIsNormal = isFeatured && nextCategory;
-              return (
-                <div
-                  key={category.id}
-                  className={isFeatured ? 'mt-4' : undefined}
-                  style={nextIsNormal ? { marginBottom: '-8px' } : undefined}
-                >
-                  <CategoryCard
-                    category={category}
-                    onClick={() => navigate(`/category/${category.id}`)}
-                    index={index}
-                    highlighted={category.id === highlightedCategoryId}
-                    isCompleted={catStatus === 'explored'}
-                    isFeatured={isFeatured}
-                  />
-                </div>
-              );
-            })}
-          </div>
-
-          {/* Secondary CTA — propose a topic, below category discovery */}
-          <div className="text-center mt-10 mb-12">
-            <Button
-              variant="outline"
-              size="lg"
-              onClick={handleEnterProposalMode}
-              className="w-full h-14 rounded-2xl gap-2 font-normal"
-            >
-              Välj samtalsämne
-              <ArrowRight className="w-4 h-4" />
-            </Button>
-          </div>
-        </motion.div>
-      )}
 
       {/* Categories — solo: locked disclosure; browse: fully unlocked */}
       {!isProposalMode && (isSoloMode || devState === 'browse') && (
