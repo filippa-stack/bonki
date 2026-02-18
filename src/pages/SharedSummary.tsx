@@ -237,7 +237,7 @@ export default function SharedSummary() {
         >
           <h1 className="font-serif text-2xl font-semibold text-foreground tracking-tight">Vårt utrymme</h1>
           {!isSolo && (
-            <p className="text-sm text-muted-foreground/60 mt-2">Avslutade samtal och delade reflektioner</p>
+            <p className="text-sm text-muted-foreground/60 mt-2">En överblick över det ni redan har utforskat.</p>
           )}
         </motion.div>
 

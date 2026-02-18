@@ -527,6 +527,9 @@ export default function Home() {
               </div>
             )}
             <div className="text-center">
+              {!outgoingPendingProposal && (
+                <p className="text-xs text-muted-foreground/50 mb-4">Vill ni börja här?</p>
+              )}
               <Button
                 size="lg"
                 onClick={handleEnterProposalMode}

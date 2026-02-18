@@ -176,6 +176,7 @@ export default function CompletedSessionView({
               Session från {formatSessionDate(session.startedAt)}
             </p>
             <h2 className="text-xl font-serif text-foreground">Samtalet är sparat.</h2>
+            <p className="text-sm text-muted-foreground/60">Ni kan fortsätta när ni vill.</p>
           </motion.div>
 
           {/* Locked reflections: delay BEAT_2, opacity 0→1, translateY 12→0, BEAT_3 */}
@@ -244,7 +245,7 @@ export default function CompletedSessionView({
               size="lg"
               className="w-full h-14 rounded-2xl gap-2 font-normal"
             >
-              Utforska igen
+              Tillbaka till översikten
             </Button>
             <button
               onClick={() => navigate('/')}
