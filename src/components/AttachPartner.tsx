@@ -8,7 +8,7 @@ import { useCoupleSpaceContext } from '@/contexts/CoupleSpaceContext';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { Label } from '@/components/ui/label';
+
 import { toast } from 'sonner';
 import { Link2, KeyRound, Copy, Check, Loader2, ChevronDown, ChevronUp, Share2 } from 'lucide-react';
 
@@ -19,8 +19,6 @@ interface InviteInfo {
 
 interface AttachPartnerProps {
   fetchInviteInfo: () => Promise<InviteInfo | null>;
-  partnerName: string | null;
-  onUpdateName: (name: string) => void;
   /** Called after successfully joining another space */
   onJoinedSpace?: () => void;
   /** Current member count — hide entirely if already paired */
@@ -43,8 +41,6 @@ function extractTokenFromLink(input: string): string | null {
 
 export default function AttachPartner({
   fetchInviteInfo,
-  partnerName,
-  onUpdateName,
   onJoinedSpace,
   memberCount,
   defaultExpanded = false,
