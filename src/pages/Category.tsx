@@ -9,6 +9,34 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useCoupleSpaceContext } from '@/contexts/CoupleSpaceContext';
 import Header from '@/components/Header';
 
+// UI guidance constants — no effect on rendering order or logic.
+const RECOMMENDED_CATEGORY_ORDER = [
+  "emotional-intimacy",
+  "communication",
+  "category-8",
+  "category-7",
+  "parenting-together",
+  "individual-needs",
+  "category-9",
+  "category-6",
+  "daily-life",
+  "category-10",
+];
+
+// Maps category id → ordered card ids (first unexplored gets the marker).
+const RECOMMENDED_TOPIC_ORDER: Record<string, string[]> = {
+  "emotional-intimacy":  ["smallest-we", "identity-shift"],
+  "communication":       ["listening-presence", "conflict-repair", "expressing-needs"],
+  "category-8":          ["behind-the-scenes", "thoughtful-space"],
+  "category-7":          ["facing-adversity", "self-esteem-wavering"],
+  "parenting-together":  ["different-parenting-styles", "parenting-boundaries", "parenting-exhaustion"],
+  "individual-needs":    ["family-voices", "our-traditions"],
+  "category-9":          ["our-philosophy", "when-life-tilts"],
+  "category-6":          ["worth-spending-on", "risk-under-responsibility"],
+  "daily-life":          ["family-ab", "love-languages"],
+  "category-10":         ["adrift", "choosing-to-stay"],
+};
+
 export default function Category() {
   const { t } = useTranslation();
   const { categoryId } = useParams<{ categoryId: string }>();
@@ -35,6 +63,24 @@ export default function Category() {
   const suggestedCardIdForThisCategory =
     suggestedCard && suggestedCard.categoryId === categoryId ? suggestedCard.id : null;
   const highlightedCardId = sessionCardIdForThisCategory || suggestedCardIdForThisCategory || null;
+
+  // Recommendation: first category in RECOMMENDED_CATEGORY_ORDER with unexplored cards.
+  const recommendedCategoryId = (() => {
+    for (const catId of RECOMMENDED_CATEGORY_ORDER) {
+      const orderedIds = RECOMMENDED_TOPIC_ORDER[catId] || [];
+      const hasUnexplored = orderedIds.some((id) => !exploredIds.includes(id));
+      if (hasUnexplored) return catId;
+    }
+    return RECOMMENDED_CATEGORY_ORDER[0];
+  })();
+
+  const isRecommendedCategory = categoryId === recommendedCategoryId;
+
+  // First unexplored card in the recommended order for this category.
+  const recommendedTopicId = isRecommendedCategory
+    ? (RECOMMENDED_TOPIC_ORDER[categoryId!] || []).find((id) => !exploredIds.includes(id))
+      ?? (RECOMMENDED_TOPIC_ORDER[categoryId!]?.[0] ?? null)
+    : null;
 
   if (!category) {
     return (
@@ -72,6 +118,11 @@ export default function Category() {
       </div>
 
       <div className="px-6 pb-10">
+        {isRecommendedCategory && (
+          <p className="text-xs text-muted-foreground/50 mb-5">
+            En naturlig start i detta kapitel.
+          </p>
+        )}
         <div className="space-y-6">
           {cards.map((card, index) => (
             <CardEntry
@@ -79,6 +130,7 @@ export default function Category() {
               card={card}
               index={index}
               highlighted={card.id === highlightedCardId}
+              isRecommended={card.id === recommendedTopicId}
               isCompleted={(() => {
                 const inExplored = exploredIds.includes(card.id);
                 if (!isPaired) return index === 0 || inExplored;
@@ -108,6 +160,7 @@ interface CardEntryProps {
   };
   index: number;
   highlighted?: boolean;
+  isRecommended?: boolean;
   isCompleted?: boolean;
   lastVisitedAt?: string | null;
   onNavigate: () => void;
@@ -122,7 +175,7 @@ function getVisitMemoryLabel(lastVisitedAt: string | null | undefined): string |
   return 'Det var ett tag sedan ni var här.';
 }
 
-function CardEntry({ card, index, highlighted, isCompleted = false, lastVisitedAt, onNavigate }: CardEntryProps) {
+function CardEntry({ card, index, highlighted, isRecommended = false, isCompleted = false, lastVisitedAt, onNavigate }: CardEntryProps) {
   const visitLabel = getVisitMemoryLabel(lastVisitedAt);
   return (
     <motion.div
@@ -145,6 +198,11 @@ function CardEntry({ card, index, highlighted, isCompleted = false, lastVisitedA
       }}
     >
       <div className="flex flex-col items-center gap-1.5 py-8 px-7">
+        {isRecommended && (
+          <span className="inline-block text-xs text-muted-foreground/70 bg-muted px-2.5 py-0.5 rounded-full mb-1">
+            Föreslagen start
+          </span>
+        )}
         {isCompleted && (
           <CheckCircle2 className="w-5 h-5 text-[#497575] mb-1" />
         )}
