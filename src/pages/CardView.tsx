@@ -259,7 +259,7 @@ export default function CardView() {
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 0.15 }}
+            transition={{ duration: BEAT_3, ease: EASE }}
             className="space-y-3"
           >
             <h2 className="text-xl font-serif text-foreground">Inget aktivt samtal</h2>
@@ -291,7 +291,7 @@ export default function CardView() {
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 0.15 }}
+            transition={{ duration: BEAT_3, ease: EASE }}
             className="text-center max-w-md mx-auto space-y-3"
           >
             <h2 className="text-xl font-serif text-foreground">Ta en stund.</h2>
@@ -303,7 +303,7 @@ export default function CardView() {
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: BEAT_1, duration: 0.15 }}
+            transition={{ delay: BEAT_1, duration: BEAT_3, ease: EASE }}
             className="max-w-md mx-auto mt-12 space-y-3"
           >
             <p className="text-sm text-muted-foreground text-center leading-relaxed">
@@ -315,7 +315,7 @@ export default function CardView() {
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: BEAT_2, duration: 0.15 }}
+            transition={{ delay: BEAT_2, duration: BEAT_3, ease: EASE }}
             className="max-w-md mx-auto mt-12 space-y-6 text-center"
           >
             <Button
@@ -346,12 +346,12 @@ export default function CardView() {
   const isLive = cardViewMode === 'live';
 
   return (
-    // Step 1 — screen-level fade: 0→1, 180ms (live only; revisit uses existing timing)
+    // Step 1 — screen-level fade: 0→1, BEAT_3 (live only; revisit uses existing timing)
     <motion.div
       className="min-h-screen page-bg"
       initial={isLive ? { opacity: 0 } : false}
       animate={{ opacity: 1 }}
-      transition={{ duration: 0.18, ease: EASE }}
+      transition={{ duration: BEAT_3, ease: EASE }}
     >
       <Header
         title={category?.title}
@@ -359,13 +359,13 @@ export default function CardView() {
         backTo={category ? `/category/${category.id}` : '/'}
       />
 
-      {/* Step 2 — Step label: 0→1, 120ms (live only) */}
+      {/* Step 2 — Step label: delay BEAT_1, duration BEAT_3 (live only) */}
       {cardViewMode === 'live' && (
         <motion.div
           className="px-6 pt-6 pb-4 border-b border-border/15"
           initial={isLive ? { opacity: 0 } : false}
           animate={{ opacity: 1 }}
-          transition={{ duration: 0.12, ease: EASE }}
+          transition={{ delay: isLive ? BEAT_1 : 0, duration: BEAT_3, ease: EASE }}
         >
           <StepProgressIndicator
             currentStepIndex={currentStepIndex}
@@ -378,7 +378,7 @@ export default function CardView() {
         <motion.h1
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 0.15 }}
+          transition={{ duration: BEAT_3, ease: EASE }}
           className="text-xl md:text-2xl font-serif text-foreground text-center leading-relaxed"
         >
           {card.title}
@@ -392,7 +392,7 @@ export default function CardView() {
           <motion.p
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: BEAT_1, duration: 0.15 }}
+            transition={{ delay: BEAT_1, duration: BEAT_3, ease: EASE }}
             className="text-sm text-muted-foreground not-italic mt-5 text-center max-w-2xl mx-auto leading-relaxed"
           >
             {card.subtitle}
@@ -409,13 +409,13 @@ export default function CardView() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              transition={{ duration: 0.15 }}
+              transition={{ duration: BEAT_3, ease: EASE }}
             >
-              {/* Step 3 — Prompt: delay 40ms, 0→1, 120ms (live only) */}
+              {/* Step 3 — Prompt: delay BEAT_1, duration BEAT_3 (live only) */}
               <motion.div
                 initial={isLive ? { opacity: 0 } : false}
                 animate={{ opacity: 1 }}
-                transition={{ delay: isLive ? BEAT_1 : 0, duration: isLive ? 0.12 : 0.15, ease: EASE }}
+                transition={{ delay: isLive ? BEAT_1 : 0, duration: BEAT_3, ease: EASE }}
               >
                 <SectionView
                   ref={sectionViewRef}
@@ -431,11 +431,11 @@ export default function CardView() {
               {/* ── MODE: live — paired session reflection ── */}
               {cardViewMode === 'live' && isPaired && cardId && (
                 <>
-                  {/* Step 4 — Reflection box: delay 80ms, 0→1, 160ms */}
+                  {/* Step 4 — Reflection box: delay BEAT_2, duration BEAT_3 */}
                   <motion.div
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
-                    transition={{ delay: BEAT_2, duration: 0.16, ease: EASE }}
+                    transition={{ delay: BEAT_2, duration: BEAT_3, ease: EASE }}
                   >
                     <SessionStepReflection
                       sessionId={normalizedSession.sessionId}
@@ -458,12 +458,12 @@ export default function CardView() {
 
               {/* ── MODE: revisit or solo — step CTA ── */}
               {(cardViewMode === 'revisit' || !isPaired) && (
-                // Step 5 — CTA: delay 80ms after reflection (160ms), 0→1, 140ms
+                // Step 5 — CTA: delay BEAT_2 after reflection
                 <motion.div
                   className="pt-10 pb-8 space-y-5"
                   initial={isLive ? { opacity: 0 } : false}
                   animate={{ opacity: 1 }}
-                  transition={{ delay: isLive ? BEAT_2 + BEAT_2 : 0, duration: isLive ? 0.14 : 0.15, ease: EASE }}
+                  transition={{ delay: isLive ? BEAT_2 + BEAT_2 : 0, duration: BEAT_3, ease: EASE }}
                 >
                   <Button
                     onClick={() => handleRevisitNext(card)}
