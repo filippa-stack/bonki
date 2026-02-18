@@ -5,7 +5,7 @@
 // couple_sessions, couple_session_steps, couple_session_completions, couple_takeaways.
 
 import React, { createContext, useContext, useState, useEffect, ReactNode, useCallback, useRef } from 'react';
-import { CoupleSpace, ConversationThread, Reflection, AppState, Category, Card, JourneyState, ReflectionsData, PrivateNote, SharedNote, TakeawayNote, SharedTakeaway } from '@/types';
+import { CoupleSpace, ConversationThread, Reflection, AppState, Category, Card, ReflectionsData, PrivateNote, SharedNote, TakeawayNote, SharedTakeaway } from '@/types';
 import { categories as initialCategories, cards as initialCards, CONTENT_VERSION } from '@/data/content';
 import { useSettingsSync, SaveStatus } from '@/hooks/useSettingsSync';
 import { useAuth } from '@/contexts/AuthContext';
@@ -62,8 +62,7 @@ interface AppContextType {
   hasActiveSession: boolean;
   dismissSession: () => void;
   pauseSession: () => void;
-  // Journey state (kept for legacy callers; exploredCardIds/sessionProgress must come from spaceSnapshot selectors)
-  journeyState: JourneyState | undefined;
+  // Journey state selectors are now in spaceSnapshot selectors (selectExploredCardIds, etc.)
   getCategoryStatus: (categoryId: string) => 'not_started' | 'in_progress' | 'explored';
   getExploredCardsInCategory: (categoryId: string) => number;
   // Reflections (private/shared)
@@ -257,11 +256,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const [remoteCardChanged, setRemoteCardChanged] = useState(false);
   const lastRemoteCueCardId = useRef<string | null>(null);
 
-  const handleRemoteProgressUpdate = useCallback((data: { journeyState: JourneyState | null }) => {
-    setState((prev) => ({
-      ...prev,
-      journeyState: data.journeyState ?? prev.journeyState,
-    }));
+  const handleRemoteProgressUpdate = useCallback((_data: unknown) => {
+    // journeyState is fully removed. This callback is a no-op stub for useSharedProgress compatibility.
     setSessionDismissed(false);
   }, []);
 
@@ -724,7 +720,6 @@ export function AppProvider({ children }: { children: ReactNode }) {
         hasActiveSession,
         dismissSession,
         pauseSession,
-        journeyState: state.journeyState,
         getCategoryStatus,
         getExploredCardsInCategory,
         getPrivateNote,
