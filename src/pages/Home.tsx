@@ -321,24 +321,27 @@ export default function Home() {
 
 
 
-      {/* Partner connected banner (for partner_a seeing partner_b join) */}
-      <PartnerConnectedBanner />
+      {/* ── Banner stack ── */}
+      <div className="mt-6 space-y-4 mb-8">
+        {/* Partner connected banner (for partner_a seeing partner_b join) */}
+        <PartnerConnectedBanner />
 
-      {/* Just-joined banner (for partner_b after completing join flow) */}
-      <JustJoinedBanner />
+        {/* Just-joined banner (for partner_b after completing join flow) */}
+        <JustJoinedBanner />
 
-      {/* Partner left banner — shown when partner_left_space event detected */}
-      <PartnerLeftBanner
-        onPartnerLeft={clearForPartnerLeave}
-        onInvite={() => {
-          setTimeout(() => {
-            document.getElementById('solo-invite')?.scrollIntoView({ behavior: 'smooth' });
-          }, 100);
-        }}
-      />
+        {/* Partner left banner — shown when partner_left_space event detected */}
+        <PartnerLeftBanner
+          onPartnerLeft={clearForPartnerLeave}
+          onInvite={() => {
+            setTimeout(() => {
+              document.getElementById('solo-invite')?.scrollIntoView({ behavior: 'smooth' });
+            }, 100);
+          }}
+        />
 
-      {/* New chapter banner — shown when partner started a new chapter (new_space_created event) */}
-      <NewChapterBanner />
+        {/* New chapter banner — shown when partner started a new chapter (new_space_created event) */}
+        <NewChapterBanner />
+      </div>
 
       {/* ═══ PRIMARY ACTION ZONE — driven by centralized useAppMode() ═══ */}
       {mode === 'loading' && (
