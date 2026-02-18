@@ -166,10 +166,8 @@ export default function CardView() {
   })();
 
   const currentStepIndex = cardViewMode === 'revisit' ? revisitStepIndex : currentStepIndexFromSession;
-  const userCompletedCurrentStep = cardViewMode === 'live' && normalizedSession.waiting;
 
   // ─── Misc ───
-  const devWaiting = devState === 'waiting';
   const [reviewOpen, setReviewOpen] = useState(false);
   const sectionViewRef = useRef<SectionViewHandle>(null);
   const { proposals } = useProposalsContext();
@@ -420,13 +418,6 @@ export default function CardView() {
               exit={{ opacity: 0 }}
               transition={{ duration: 0.15 }}
             >
-              {/* Waiting indicator — live mode only */}
-              {cardViewMode === 'live' && isPaired && userCompletedCurrentStep && !devWaiting && (
-                <p className="text-xs text-muted-foreground/50 text-center mb-6">
-                  Väntar på att din partner ska markera steget som klart.
-                </p>
-              )}
-
               <SectionView
                 ref={sectionViewRef}
                 section={currentSection}
