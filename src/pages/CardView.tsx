@@ -388,7 +388,7 @@ export default function CardView() {
       </div>
 
       {/* Section content */}
-      <div className="px-6">
+      <div className="px-6 pb-10">
         <AnimatePresence mode="wait">
           {currentSection && (
             <motion.div

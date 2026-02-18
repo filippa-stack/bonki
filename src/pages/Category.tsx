@@ -51,7 +51,7 @@ export default function Category() {
     <div className="min-h-screen page-bg">
       <Header showBack backTo="/" />
 
-      <div className="px-6 pt-8 pb-8">
+      <div className="px-6 pt-8 pb-10">
         <motion.h1
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}

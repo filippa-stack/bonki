@@ -762,7 +762,7 @@ export default function Home() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.15 }}
-          className="px-6 pt-8 pb-6 mt-8 space-y-2"
+          className="px-6 pt-8 pb-10 mt-8 space-y-2"
         >
           <button
             onClick={() => navigate('/shared')}
