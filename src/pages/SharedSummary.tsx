@@ -278,11 +278,13 @@ export default function SharedSummary() {
             transition={{ duration: 0.15 }}
             className="min-h-[60vh] flex flex-col justify-center text-center"
           >
-            <div className="space-y-6">
-              <p className="text-sm text-muted-foreground/60 leading-relaxed">
-                Här samlas era avslutade samtal och delade reflektioner.
+            <div className="space-y-3">
+              <p className="text-sm text-muted-foreground/70 leading-relaxed">
+                Här samlas era samtal.
               </p>
-              <div className="mt-8" />
+              <p className="text-xs text-muted-foreground/50">
+                Det ni delar tillsammans sparas här.
+              </p>
             </div>
           </motion.div>
         )}
