@@ -13,17 +13,18 @@
 // All session state must come from normalized tables.
 
 // Recommended category order for future UI highlighting — does not affect rendering.
+// IDs must match content.ts category ids exactly.
 const RECOMMENDED_CATEGORY_ORDER = [
-  "paridentitet-vs-foraldraidentitet",
-  "arbetsfordelning-mentalt-ansvar",
-  "kommunikation-stod",
-  "motstandskraft-innan-det-brister",
-  "uppfostringsstilar",
-  "slakt-kultur",
-  "varderingar-framtid",
-  "pengar-foraldraskap",
-  "narhet-intimitet",
-  "uthallighet",
+  "emotional-intimacy",   // Paridentitet vs föräldraidentitet
+  "communication",        // Arbetsfördelning & mentala lasset
+  "category-8",           // Kommunikation & stöd
+  "category-7",           // Motståndskraft innan det brister
+  "parenting-together",   // Uppfostringsstilar
+  "individual-needs",     // Släkt & kultur
+  "category-9",           // Värderingar & framtid
+  "category-6",           // Pengar & föräldraskap
+  "daily-life",           // Närhet & Intimitet
+  "category-10",          // Uthållighet
 ];
 
 import { useNavigate } from 'react-router-dom';
