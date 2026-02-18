@@ -51,7 +51,7 @@ export default function Category() {
     <div className="min-h-screen page-bg">
       <Header showBack backTo="/" />
 
-      <div className="px-6 pt-12 pb-10">
+      <div className="px-6 pt-8 pb-8">
         <motion.h1
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
@@ -70,7 +70,7 @@ export default function Category() {
         </motion.p>
       </div>
 
-      <div className="px-6 pb-16">
+      <div className="px-6 pb-10">
         <div className="space-y-4">
           {cards.map((card, index) => (
             <CardEntry
