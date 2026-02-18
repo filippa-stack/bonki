@@ -26,6 +26,7 @@ import Header from '@/components/Header';
 import SoloInviteSection from '@/components/SoloInviteSection';
 import { ArrowRight, Bookmark, Share2, ChevronDown, X } from 'lucide-react';
 import NotificationSettings from '@/components/NotificationSettings';
+import RelationSettings from '@/components/RelationSettings';
 import RelationshipMemory from '@/components/RelationshipMemory';
 import Footer from '@/components/Footer';
 import PartnerConnectedBanner from '@/components/PartnerConnectedBanner';
@@ -135,13 +136,13 @@ export default function Home() {
     mostRecentConversation, 
     savedConversations, 
     categories, 
-    backgroundColor,
     getCardById,
     getCategoryById,
     journeyState,
     cards,
     getCategoryStatus,
     clearForPartnerLeave,
+    switchToNewSpace,
   } = useApp();
   const { settings } = useSiteSettings();
   const { user } = useAuth();
@@ -790,6 +791,22 @@ export default function Home() {
         </motion.div>
       ) : (
         <NotiserSection />
+      )}
+
+      {/* Relation & space settings — only shown when paired */}
+      {!isSoloMode && (
+        <RelationSettings
+          onCreateNewSpace={async () => {
+            const result = await switchToNewSpace();
+            if (result.ok) {
+              toast.success('Nytt utrymme skapat.');
+              navigate('/');
+            } else {
+              toast.error('Kunde inte skapa nytt utrymme.');
+            }
+          }}
+          onLeavePartner={undefined}
+        />
       )}
 
       {/* ResumeSessionDialog removed — ACTIVE state's single CTA handles resume */}
