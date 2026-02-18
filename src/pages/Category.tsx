@@ -118,11 +118,17 @@ export default function Category() {
       </div>
 
       <div className="px-6 pb-10">
-        <div className="space-y-6">
+      <div className="space-y-6">
           {cards.map((card, index) => {
             const isRecommended = card.id === recommendedTopicId;
+            const nextCard = cards[index + 1];
+            const nextIsNormal = isRecommended && nextCard;
             return (
-              <div key={card.id} className={isRecommended ? 'mt-2' : undefined}>
+              <div
+                key={card.id}
+                className={isRecommended ? 'mt-6' : undefined}
+                style={nextIsNormal ? { marginBottom: '-8px' } : undefined}
+              >
                 <CardEntry
                   card={card}
                   index={index}
@@ -190,13 +196,13 @@ function CardEntry({ card, index, highlighted, isRecommended = false, isComplete
           onNavigate();
         }
       }}
-      className={`relative w-full text-center card-sub group transition-all cursor-pointer overflow-hidden rounded-[20px] ${isRecommended ? 'shadow-[0_4px_16px_0_hsl(0_0%_0%/0.08)]' : 'shadow-[0_1px_4px_0_hsl(0_0%_0%/0.04)]'}${isCompleted ? '' : ' item-colors'}${highlighted ? ' ring-2 ring-primary/40' : ''}`}
+      className={`relative w-full text-center card-sub group transition-all cursor-pointer overflow-hidden rounded-[20px] ${isRecommended ? 'shadow-[0_6px_24px_-4px_hsl(0_0%_0%/0.07),0_1px_4px_0_hsl(0_0%_0%/0.04)]' : 'shadow-[0_1px_4px_0_hsl(0_0%_0%/0.04)]'}${isCompleted ? '' : ' item-colors'}${highlighted ? ' ring-2 ring-primary/40' : ''}`}
       style={{
         borderWidth: '1px',
         borderStyle: 'solid',
       }}
     >
-      <div className={`flex flex-col items-center gap-1.5 px-7 ${isRecommended ? 'py-9' : 'py-8'}`}>
+      <div className="flex flex-col items-center gap-1.5 px-7 py-8">
         {isCompleted && (
           <CheckCircle2 className="w-5 h-5 text-[#497575] mb-1" />
         )}
