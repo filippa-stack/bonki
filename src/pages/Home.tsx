@@ -142,7 +142,7 @@ function LockedCategoriesDisclosure({ categories, getCategoryStatus }: {
 }
 
 /** One-time "Du är nu ansluten" banner for User B after join */
-function JustJoinedBanner() {
+function JustJoinedBanner({ active = true }: { active?: boolean }) {
   const [visible, setVisible] = useState(() => {
     if (localStorage.getItem('still-us-just-joined') === 'true') {
       localStorage.removeItem('still-us-just-joined');
@@ -151,7 +151,7 @@ function JustJoinedBanner() {
     return false;
   });
 
-  if (!visible) return null;
+  if (!visible || !active) return null;
 
   return (
     <div className="flex items-center justify-center gap-2 mt-3 mb-4 px-6">
@@ -444,14 +444,15 @@ export default function Home() {
           }}
         />
 
-        {activeBanner === 'partnerConnected' && (
-          <PartnerConnectedBanner
-            spaceId={space?.id}
-            onSeen={() => setPartnerConnectedSeen(true)}
-          />
-        )}
+        {/* Always mounted — detects events even when not visually active */}
+        <PartnerConnectedBanner
+          spaceId={space?.id}
+          active={activeBanner === 'partnerConnected'}
+          onSeen={() => setPartnerConnectedSeen(true)}
+        />
 
-        {activeBanner === 'justJoined' && <JustJoinedBanner />}
+        {/* Always mounted — one-shot flag read on first render */}
+        <JustJoinedBanner active={activeBanner === 'justJoined'} />
 
         {/* Always mounted — detects events even when not visually active */}
         <NewChapterBanner
