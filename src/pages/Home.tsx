@@ -604,18 +604,19 @@ export default function Home() {
         );
       })()}
 
-      {mode === 'idle' && (() => {
+      {mode === 'idle' && !isSoloMode && !isProposalMode && (() => {
         const outgoingPendingProposal = ownPendingProposals[0] ?? null;
         const outgoingCard = outgoingPendingProposal ? getCardById(outgoingPendingProposal.card_id) : null;
         const savedFromPartner = savedProposals.filter(p => p.proposed_by !== user?.id);
         const savedProposal = savedFromPartner[0] ?? null;
         const savedCard = savedProposal ? getCardById(savedProposal.card_id) : null;
+        const hasStatusCards = !!(outgoingPendingProposal || (savedProposal && savedCard));
         return (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.15 }}
-            className="px-6 mb-10"
+            className={`px-6 ${hasStatusCards ? 'mb-4' : 'mb-0'}`}
           >
             {outgoingPendingProposal && (
               <div className="rounded-2xl border border-border bg-card p-5 mb-4 text-center space-y-2">
@@ -658,19 +659,6 @@ export default function Home() {
                 </div>
               </div>
             )}
-            <div className="text-center">
-              {!outgoingPendingProposal && (
-                <p className="text-xs text-muted-foreground/50 mb-4">Vill ni börja här?</p>
-              )}
-              <Button
-                size="lg"
-                onClick={handleEnterProposalMode}
-                className="w-full h-14 rounded-2xl gap-2 font-normal"
-              >
-                Välj samtalsämne
-                <ArrowRight className="w-4 h-4" />
-              </Button>
-            </div>
           </motion.div>
         );
       })()}
@@ -864,7 +852,7 @@ export default function Home() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.15 }}
-          className="px-6 pb-12 mt-4"
+          className="px-6 mt-4"
         >
           <div className="space-y-6">
             {categories.map((category, index) => {
@@ -889,6 +877,19 @@ export default function Home() {
                 </div>
               );
             })}
+          </div>
+
+          {/* Secondary CTA — propose a topic, below category discovery */}
+          <div className="text-center mt-10 mb-12">
+            <Button
+              variant="outline"
+              size="lg"
+              onClick={handleEnterProposalMode}
+              className="w-full h-14 rounded-2xl gap-2 font-normal"
+            >
+              Välj samtalsämne
+              <ArrowRight className="w-4 h-4" />
+            </Button>
           </div>
         </motion.div>
       )}
