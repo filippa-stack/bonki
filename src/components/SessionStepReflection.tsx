@@ -10,10 +10,18 @@ import { useSessionReflections, type ReflectionState } from '@/hooks/useSessionR
 interface SessionStepReflectionProps {
   cardId: string;
   stepIndex: number;
-  /** Called when this user marks their reflection as ready */
+  /**
+   * Fires after markReady() resolves.
+   * Signals only that this user's step_reflections row is now 'ready'.
+   * Must NOT trigger session progression — that belongs to onLocked.
+   */
   onReady?: () => void;
-  /** Called when either user locks the step */
-  onLocked?: () => void;
+  /**
+   * Fires after lockStep() resolves.
+   * This is the sole entry point for complete_couple_session_step
+   * and any step-index advancement in the parent.
+   */
+  onLocked?: () => void | Promise<void>;
 }
 
 export default function SessionStepReflection({
