@@ -147,9 +147,9 @@ export default function SessionStepReflection({
               initial={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.12, ease: EASE }}
-              className="min-h-[60vh] flex flex-col justify-center text-center"
+            className="min-h-[60vh] flex flex-col justify-center text-center"
             >
-              <div className="space-y-6">
+              <div className="space-y-6" style={{ animation: 'waiting-breathe 6.5s cubic-bezier(0.4, 0.0, 0.2, 1) infinite' }}>
                 <p className="text-sm text-muted-foreground/70 leading-relaxed">
                   Väntar på att ni båda trycker klart.
                 </p>
@@ -229,7 +229,7 @@ export default function SessionStepReflection({
             transition={{ duration: 0.12, ease: EASE }}
             className="min-h-[60vh] flex flex-col justify-center text-center"
           >
-            <div className="space-y-6">
+            <div className="space-y-6" style={{ animation: 'waiting-breathe 6.5s cubic-bezier(0.4, 0.0, 0.2, 1) infinite' }}>
               <p className="text-sm text-muted-foreground/70 leading-relaxed">
                 Väntar på att ni båda trycker klart.
               </p>
