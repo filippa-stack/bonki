@@ -25,6 +25,12 @@ interface UseSessionReflectionsReturn {
   partnerReflection: StepReflection | null;
   /** Current state of the user's reflection */
   state: ReflectionState;
+  /**
+   * True when this user has pressed "Klar" (state === 'ready') but the
+   * partner has not yet reached ready/revealed/locked for this step.
+   * Derived at runtime — never persisted.
+   */
+  isWaitingForPartner: boolean;
   /** Update draft text (autosaved) */
   setText: (text: string) => void;
   /** Transition draft → ready */
@@ -282,12 +288,18 @@ export function useSessionReflections(
 
   const state: ReflectionState = myReflection?.state || 'draft';
 
+  const PARTNER_ACTIVE_STATES: ReflectionState[] = ['ready', 'revealed', 'locked'];
+  const isWaitingForPartner =
+    state === 'ready' &&
+    (!partnerReflection || !PARTNER_ACTIVE_STATES.includes(partnerReflection.state));
+
   return {
     sessionId,
     loading,
     myReflection,
     partnerReflection,
     state,
+    isWaitingForPartner,
     setText,
     markReady,
     lockStep,
