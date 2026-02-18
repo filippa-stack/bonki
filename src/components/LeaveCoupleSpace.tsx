@@ -67,18 +67,20 @@ export default function LeaveCoupleSpace() {
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle className="font-serif">Byt partner?</AlertDialogTitle>
-          <AlertDialogDescription>
-            Du får ett nytt gemensamt utrymme. Er tidigare historik blir kvar men följer inte med.
+          <AlertDialogTitle className="font-serif text-lg">Vill du verkligen byta partner?</AlertDialogTitle>
+          <AlertDialogDescription className="text-sm text-muted-foreground leading-relaxed space-y-2 pt-1">
+            <span className="block">Detta kopplar bort dig från ert gemensamma utrymme.</span>
+            <span className="block">Er historik ligger kvar, men ni kommer inte längre dela nya samtal.</span>
           </AlertDialogDescription>
         </AlertDialogHeader>
-        <AlertDialogFooter>
+        <AlertDialogFooter className="mt-2">
           <AlertDialogCancel>Avbryt</AlertDialogCancel>
           <AlertDialogAction
             onClick={handleSwitchPartner}
             disabled={loading}
+            className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
           >
-            {loading ? 'Skapar…' : 'Skapa nytt utrymme'}
+            {loading ? 'Kopplar bort…' : 'Byt partner'}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
