@@ -771,29 +771,30 @@ export default function Home() {
       {!isProposalMode && (isSoloMode || devState === 'browse') && (
         <div id="category-section" className="px-6 pb-12 mt-4">
           {devState === 'browse' ? (
-            <>
-              <p className="text-xs text-primary/60 uppercase tracking-wide mb-4 text-center">
-                🔓 Browse mode — alla kort upplåsta
-              </p>
-              <div className="space-y-6">
-                {categories.map((category, index) => {
-                  const catStatus = getCategoryStatus(category.id);
-                  const isFeatured = category.id === recommendedCategoryId;
-                  return (
-                    <div key={category.id} className={isFeatured ? 'mt-2' : undefined}>
-                      <CategoryCard
-                        category={category}
-                        onClick={() => navigate(`/category/${category.id}`)}
-                        index={index}
-                        highlighted={false}
-                        isCompleted={catStatus === 'explored'}
-                        isFeatured={isFeatured}
-                      />
-                    </div>
-                  );
-                })}
-              </div>
-            </>
+            <div className="space-y-6">
+              {categories.map((category, index) => {
+                const catStatus = getCategoryStatus(category.id);
+                const isFeatured = category.id === recommendedCategoryId;
+                const nextCategory = categories[index + 1];
+                const nextIsNormal = isFeatured && nextCategory;
+                return (
+                  <div
+                    key={category.id}
+                    className={isFeatured ? 'mt-6' : undefined}
+                    style={nextIsNormal ? { marginBottom: '-8px' } : undefined}
+                  >
+                    <CategoryCard
+                      category={category}
+                      onClick={() => navigate(`/category/${category.id}`)}
+                      index={index}
+                      highlighted={category.id === highlightedCategoryId}
+                      isCompleted={catStatus === 'explored'}
+                      isFeatured={isFeatured}
+                    />
+                  </div>
+                );
+              })}
+            </div>
           ) : (
             <LockedCategoriesDisclosure
               categories={categories}
