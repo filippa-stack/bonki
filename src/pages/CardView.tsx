@@ -56,11 +56,12 @@ function resolveCardViewMode({
   // Revisit always wins — explicit user intent
   if (isRevisitMode) return 'revisit';
 
+  // Active session takes absolute precedence — prevents a completed row from
+  // shadowing a live session, regardless of showCompletion or history state.
+  if (hasActiveSession) return 'live';
+
   // Takeaway screen: session just finished, show closing ritual before history
   if (showCompletion) return 'completion';
-
-  // Active session takes precedence over completed-session archive
-  if (hasActiveSession) return 'live';
 
   // Completed archive
   if (hasCompletedSessionForCard) return 'history';
