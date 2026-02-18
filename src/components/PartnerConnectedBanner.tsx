@@ -7,7 +7,7 @@ import { supabase } from '@/integrations/supabase/client';
 
 import { BEAT_2, EASE } from '@/lib/motion';
 
-const SEEN_KEY = 'partner_connected_seen';
+const getSeenKey = (spaceId: string) => `partner_connected_seen_${spaceId}`;
 
 export default function PartnerConnectedBanner() {
   const { user } = useAuth();
@@ -20,8 +20,8 @@ export default function PartnerConnectedBanner() {
     // Only show for the inviter (partner_a). The joiner (partner_b) sees JustJoinedBanner.
     if (userRole !== 'partner_a') return;
 
-    const seen = localStorage.getItem(SEEN_KEY);
-    if (seen === space.id) return;
+    const seen = localStorage.getItem(getSeenKey(space.id));
+    if (seen === 'true') return;
 
     const checkExisting = async () => {
       const { data } = await supabase
@@ -68,7 +68,7 @@ export default function PartnerConnectedBanner() {
 
   useEffect(() => {
     if (visible && space) {
-      localStorage.setItem(SEEN_KEY, space.id);
+      localStorage.setItem(getSeenKey(space.id), 'true');
     }
   }, [visible, space]);
 
