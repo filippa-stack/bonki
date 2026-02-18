@@ -1,4 +1,5 @@
-import { LogOut, Plus, Settings, Users, User } from 'lucide-react';
+import { useState } from 'react';
+import { LogOut, Plus, Settings, Users, User, ChevronRight, Heart } from 'lucide-react';
 import { useCoupleSpaceContext } from '@/contexts/CoupleSpaceContext';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -116,7 +117,6 @@ export default function Header({
               </Button>
             </PopoverTrigger>
             <PopoverContent className="w-56 p-2 space-y-1" align="end">
-              <LeaveCoupleSpace />
               <AlertDialog>
                 <AlertDialogTrigger asChild>
                   <Button
@@ -151,6 +151,11 @@ export default function Header({
                   </AlertDialogFooter>
                 </AlertDialogContent>
               </AlertDialog>
+
+              <RelationSubMenu />
+
+              <div className="border-t border-border/40 my-1" />
+
               <Button
                 variant="ghost"
                 className="w-full justify-start text-destructive hover:text-destructive hover:bg-destructive/10"
@@ -164,6 +169,33 @@ export default function Header({
         </div>
       </div>
     </header>
+  );
+}
+
+function RelationSubMenu() {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <div>
+      <Button
+        variant="ghost"
+        size="sm"
+        className="w-full justify-between text-xs gap-1.5"
+        onClick={() => setOpen(v => !v)}
+      >
+        <span className="flex items-center gap-1.5">
+          <Heart className="w-3.5 h-3.5" />
+          Relation
+        </span>
+        <ChevronRight className={`w-3 h-3 text-muted-foreground transition-transform ${open ? 'rotate-90' : ''}`} />
+      </Button>
+
+      {open && (
+        <div className="ml-4 mt-1 border-l border-border/30 pl-3 space-y-1">
+          <LeaveCoupleSpace />
+        </div>
+      )}
+    </div>
   );
 }
 
