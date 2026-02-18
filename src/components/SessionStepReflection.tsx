@@ -100,34 +100,36 @@ export default function SessionStepReflection({
   // ─── REVEALED: both visible, own editable ───
   if (state === 'revealed') {
     return (
-      <div className="mt-8 mb-2 space-y-5">
+      <div className="mt-8 mb-2">
         <p className="text-xs text-muted-foreground/40 text-center">
           Nu kan ni läsa varandras reflektioner.
         </p>
-        <p className="text-xs text-muted-foreground/50 text-center tracking-wide">
+        <p className="text-xs text-muted-foreground/50 text-center tracking-wide mt-1">
           Så här reflekterade ni
         </p>
 
-        {/* Partner reflection first — read-only */}
-        {partnerReflection && (
-          <ReflectionBlock name={partnerName} text={partnerReflection.text} />
-        )}
+        <div className="mt-8 space-y-6">
+          {/* Partner reflection first — read-only */}
+          {partnerReflection && (
+            <ReflectionBlock name={partnerName} text={partnerReflection.text} />
+          )}
 
-        <Separator className="opacity-30" />
+          <Separator className="opacity-30" />
 
-        {/* User reflection — editable */}
-        <div className="space-y-1 mt-8">
-          <p className="text-xs text-muted-foreground/60 px-1">{myName}</p>
-          <div className="rounded-[20px] border border-border/50 bg-card overflow-hidden p-6">
-            <textarea
-              value={displayText}
-              onChange={(e) => handleChange(e.target.value)}
-              className="w-full min-h-[120px] bg-transparent resize-none focus:outline-none focus:ring-0 text-sm text-foreground placeholder:text-muted-foreground/60"
-            />
+          {/* User reflection — editable */}
+          <div className="space-y-1">
+            <p className="text-xs text-muted-foreground/60 px-1">{myName}</p>
+            <div className="rounded-[20px] border border-border/50 bg-card overflow-hidden p-6">
+              <textarea
+                value={displayText}
+                onChange={(e) => handleChange(e.target.value)}
+                className="w-full min-h-[120px] bg-transparent resize-none focus:outline-none focus:ring-0 text-sm text-foreground placeholder:text-muted-foreground/60"
+              />
+            </div>
           </div>
         </div>
 
-        <div className="mt-8">
+        <div className="mt-10">
           <Button
             onClick={handleLock}
             size="lg"
