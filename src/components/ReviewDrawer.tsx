@@ -1,16 +1,9 @@
 import { useState, useEffect, useMemo, useRef, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { X, ArrowRight, FileText, Lock } from 'lucide-react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import {
-  Drawer,
-  DrawerContent,
-  DrawerHeader,
-  DrawerTitle,
-  DrawerClose,
-} from '@/components/ui/drawer';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import StepReflection from '@/components/StepReflection';
@@ -20,6 +13,9 @@ import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { useCoupleSpaceContext as useCoupleSpace } from '@/contexts/CoupleSpaceContext';
 import type { Card } from '@/types';
+
+const EASE_OUT = [0.4, 0.0, 0.2, 1] as const;
+const EASE_IN  = [0.4, 0.0, 1.0, 1] as const;
 
 const STEP_ORDER = ['opening', 'reflective', 'scenario', 'exercise'] as const;
 const STEP_LABELS: Record<string, string> = {
@@ -215,23 +211,44 @@ export default function ReviewDrawer({ open, onClose, card }: ReviewDrawerProps)
   };
 
   return (
-    <Drawer open={open} onOpenChange={(o) => !o && onClose()}>
-      <DrawerContent className="max-h-[85vh]">
-        <DrawerHeader className="border-b border-divider pb-4">
-          <div className="flex items-center justify-between">
-            <DrawerTitle className="font-serif text-lg text-foreground">
-              {t('review_drawer.title', 'Se tillbaka')}
-            </DrawerTitle>
-            <DrawerClose asChild>
-              <Button variant="ghost" size="icon" className="text-muted-foreground">
-                <X className="w-4 h-4" />
-              </Button>
-            </DrawerClose>
-          </div>
-          <p className="text-xs text-muted-foreground mt-1">
-            {t('review_drawer.hint', 'Se vad ni skrev — och fortsätt när det passar. Det här påverkar inte var ni är i samtalet.')}
-          </p>
-        </DrawerHeader>
+    <AnimatePresence>
+      {open && (
+        <>
+          {/* Backdrop */}
+          <motion.div
+            key="backdrop"
+            className="fixed inset-0 z-50 bg-black/60"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.18, ease: 'easeOut' }}
+            onClick={onClose}
+          />
+
+          {/* Drawer panel */}
+          <motion.div
+            key="drawer"
+            className="fixed inset-x-0 bottom-0 z-50 flex flex-col rounded-t-[10px] border bg-background max-h-[85vh]"
+            initial={{ y: '100%' }}
+            animate={{ y: 0, transition: { duration: 0.26, ease: EASE_OUT } }}
+            exit={{ y: '100%', transition: { duration: 0.20, ease: EASE_IN } }}
+          >
+            <div className="mx-auto mt-4 h-2 w-[100px] rounded-full bg-muted shrink-0" />
+
+            {/* Header */}
+            <div className="grid gap-1.5 p-4 text-left border-b border-divider pb-4 shrink-0">
+              <div className="flex items-center justify-between">
+                <h2 className="font-serif text-lg text-foreground">
+                  {t('review_drawer.title', 'Se tillbaka')}
+                </h2>
+                <Button variant="ghost" size="icon" className="text-muted-foreground" onClick={onClose}>
+                  <X className="w-4 h-4" />
+                </Button>
+              </div>
+              <p className="text-xs text-muted-foreground mt-1">
+                {t('review_drawer.hint', 'Se vad ni skrev — och fortsätt när det passar. Det här påverkar inte var ni är i samtalet.')}
+              </p>
+            </div>
 
         <Tabs defaultValue="overview" className="flex-1 flex flex-col overflow-hidden">
           <TabsList className="mx-6 mt-3 mb-0 grid grid-cols-2 w-auto">
@@ -469,7 +486,9 @@ export default function ReviewDrawer({ open, onClose, card }: ReviewDrawerProps)
             </ScrollArea>
           </TabsContent>
         </Tabs>
-      </DrawerContent>
-    </Drawer>
+          </motion.div>
+        </>
+      )}
+    </AnimatePresence>
   );
 }
