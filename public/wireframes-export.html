@@ -570,15 +570,15 @@
         <!-- mt-4 description + mb-8 (32px) gap before topic list — new spacing change -->
         <div class="muted" style="margin-top:4px;margin-bottom:32px;line-height:1.6;">Vem är ni för varandra, bortom föräldraskapet? Ni kan alltid återvända hit.</div>
       </div>
-      <!-- Recommended topic: mt-6 + stronger shadow (featured) -->
-      <div style="margin-top:24px;">
-        <div class="card" style="box-shadow:0 6px 24px -4px rgba(0,0,0,0.07),0 1px 4px 0 rgba(0,0,0,0.04);padding:32px 28px;">
+      <!-- Recommended topic: mt-4 (+16px on top of space-y-6 = 40px total) · p-6 same as normal · one shadow step up · no border/outline · -8px pull below -->
+      <div style="margin-top:16px;margin-bottom:-8px;">
+        <div class="card" style="box-shadow:0 6px 24px -4px rgba(0,0,0,0.07),0 1px 4px 0 rgba(0,0,0,0.04);padding:14px;">
           <div class="serif center" style="font-size:12px;">Vårt minsta "vi"</div>
           <div class="muted center" style="margin-top:3px;font-style:italic;">Det minsta ni kan göra för att hålla ihop</div>
         </div>
       </div>
-      <!-- Normal topics: standard shadow -->
-      <div class="card" style="margin-top:16px;">
+      <!-- Normal topics: standard shadow · p-6 (same padding) -->
+      <div class="card" style="margin-top:24px;">
         <div class="serif center" style="font-size:12px;">Identitetsskiftet</div>
         <div class="muted center" style="margin-top:3px;font-style:italic;">Anpassning som förändrar vem ni får vara</div>
       </div>
@@ -587,7 +587,7 @@
         <div class="muted center" style="margin-top:3px;font-style:italic;">Vad ni bär utan att det syns</div>
       </div>
       <div class="spacer"></div>
-      <div class="info-note center">mb-8 (32px) gap after description · featurat ämne: mt-6 + starkare skugga · ingen etikett</div>
+      <div class="info-note center">Featured: mt-4 (+16px gap) · p-6 identical to normal · shadow-[0_6px_24px_-4px/0.07] · -8px pull below · no border</div>
     </div>
   </div>
 
@@ -598,11 +598,11 @@
       <div class="header-bar"><span>logo</span><span>⚙ · DEV</span></div>
       <!-- mt-4 section padding, space-y-6 between cards -->
       <div style="margin-top:16px;">
-        <!-- Featured category: mt-6 above + -8px margin below next -->
-        <div style="margin-top:24px;margin-bottom:-8px;">
-          <div class="card" style="box-shadow:0 4px 20px -4px rgba(0,0,0,0.10);padding:14px 12px;">
+        <!-- Browse: NO featured styling — all cards equal, same p-6 padding, same shadow -->
+        <div style="margin-top:0;margin-bottom:0;">
+          <div class="card" style="padding:14px 12px;">
             <div class="serif" style="font-size:12px;font-weight:600;">Känslomässig intimitet</div>
-            <div class="muted" style="margin-top:2px;font-size:9px;">Rekommenderad · featured shadow</div>
+            <div class="muted" style="margin-top:2px;font-size:9px;">Alla kort likvärdiga — ingen featured-styling</div>
           </div>
         </div>
         <div class="card" style="padding:14px 12px;">
