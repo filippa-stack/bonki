@@ -180,15 +180,15 @@ export default function JoinSpace() {
 
   // name_prompt state
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background px-6">
+    <div className="min-h-screen flex items-center justify-center bg-background px-6 pb-10">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="w-full max-w-sm space-y-8 text-center"
+        className="w-full max-w-sm text-center"
       >
         <img src={bonkiLogo} alt="Still Us" className="h-12 w-auto mx-auto" />
-        
-        <div className="space-y-3">
+
+        <div className="space-y-3 mt-8">
           <h1 className="text-display text-foreground">
             {t('join.title', 'Anslut till din partner')}
           </h1>
@@ -197,7 +197,7 @@ export default function JoinSpace() {
           </p>
         </div>
 
-        <div className="space-y-4 text-center">
+        <div className="mt-10 space-y-4 text-center">
           <div className="space-y-2">
             <Label>{t('join.your_name', 'Ditt namn (valfritt)')}</Label>
             <Input
@@ -221,13 +221,16 @@ export default function JoinSpace() {
           )}
         </div>
 
-        <Button
-          onClick={handleJoin}
-          className="w-full h-12 text-base font-medium"
-          disabled={!inviteToken && !inviteCode.trim()}
-        >
-          {t('join.connect_button', 'Anslut')}
-        </Button>
+        <div className="mt-8">
+          <Button
+            onClick={handleJoin}
+            size="lg"
+            className="w-full h-14 rounded-2xl font-normal"
+            disabled={!inviteToken && !inviteCode.trim()}
+          >
+            {t('join.connect_button', 'Anslut')}
+          </Button>
+        </div>
 
       </motion.div>
     </div>
