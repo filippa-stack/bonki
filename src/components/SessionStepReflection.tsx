@@ -143,21 +143,25 @@ export default function SessionStepReflection({
   // ─── READY: waiting for partner ───
   if (state === 'ready') {
     return (
-      <div className="mt-12 mb-8 text-center space-y-6">
-        <p className="text-sm text-muted-foreground/70 leading-relaxed">
-          Väntar på att ni båda trycker klart.
-        </p>
-        <p className="text-xs text-muted-foreground/40">
-          När ni båda har markerat steget som klart visas era reflektioner.
-        </p>
-        <Button
-          variant="ghost"
-          size="lg"
-          className="w-full h-12 text-muted-foreground hover:text-foreground font-normal"
-          onClick={() => window.location.assign('/')}
-        >
-          Tillbaka till hem
-        </Button>
+      <div className="min-h-[60vh] flex flex-col justify-center text-center">
+        <div className="space-y-6">
+          <p className="text-sm text-muted-foreground/70 leading-relaxed">
+            Väntar på att ni båda trycker klart.
+          </p>
+          <p className="text-xs text-muted-foreground/40">
+            När ni båda har markerat steget som klart visas era reflektioner.
+          </p>
+          <div className="mt-10">
+            <Button
+              variant="ghost"
+              size="lg"
+              className="w-full text-muted-foreground hover:text-foreground font-normal"
+              onClick={() => window.location.assign('/')}
+            >
+              Tillbaka till hem
+            </Button>
+          </div>
+        </div>
       </div>
     );
   }
