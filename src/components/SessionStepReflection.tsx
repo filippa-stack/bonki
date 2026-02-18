@@ -151,21 +151,18 @@ export default function SessionStepReflection({
             >
               <div className="space-y-6" style={{ animation: 'waiting-breathe 6.5s cubic-bezier(0.4, 0.0, 0.2, 1) infinite' }}>
                 <p className="text-sm text-muted-foreground/70 leading-relaxed">
-                  Väntar på att ni båda trycker klart.
+                  Väntar på din partner.
                 </p>
                 <p className="text-xs text-muted-foreground/40">
-                  När ni båda har markerat steget som klart visas era reflektioner.
+                  När ni båda har delat, öppnas svaren.
                 </p>
               </div>
             </motion.div>
           ) : (
             // Phase C–E: reflections stagger in
             <motion.div key="revealed">
-              <p className="text-xs text-muted-foreground/40 text-center">
-                Nu kan ni läsa varandras reflektioner.
-              </p>
-              <p className="text-xs text-muted-foreground/50 text-center tracking-wide mt-1">
-                Så här reflekterade ni
+              <p className="text-xs text-muted-foreground/50 text-center">
+                Nu ser ni varandras svar.
               </p>
 
               <div className="mt-8 space-y-6">
@@ -231,10 +228,10 @@ export default function SessionStepReflection({
           >
             <div className="space-y-6" style={{ animation: 'waiting-breathe 6.5s cubic-bezier(0.4, 0.0, 0.2, 1) infinite' }}>
               <p className="text-sm text-muted-foreground/70 leading-relaxed">
-                Väntar på att ni båda trycker klart.
+                Väntar på din partner.
               </p>
               <p className="text-xs text-muted-foreground/40">
-                När ni båda har markerat steget som klart visas era reflektioner.
+                När ni båda har delat, öppnas svaren.
               </p>
               <div className="mt-10">
                 <Button
@@ -279,7 +276,7 @@ export default function SessionStepReflection({
           size="lg"
           className="w-full h-14 rounded-2xl gap-2 font-normal"
         >
-          Markera klar →
+          {stepIndex >= 3 ? 'Avsluta samtalet' : 'Fortsätt till nästa steg'}
         </Button>
         <p className="text-xs text-muted-foreground/50 text-center mt-3">
           Ni går vidare när båda är klara.

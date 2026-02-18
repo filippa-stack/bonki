@@ -165,7 +165,7 @@ export default function CompletedSessionView({
       <div className="px-6 pt-20 pb-10">
         <div className="max-w-md mx-auto space-y-8 pb-10">
 
-          {/* Completion header: opacity 0→1, translateY 8→0, BEAT_3 */}
+          {/* Completion header */}
           <motion.div
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
@@ -175,7 +175,7 @@ export default function CompletedSessionView({
             <p className="text-[11px] text-muted-foreground/50 tracking-wide uppercase">
               Session från {formatSessionDate(session.startedAt)}
             </p>
-            <h2 className="text-xl font-serif text-foreground">{cardTitle}</h2>
+            <h2 className="text-xl font-serif text-foreground">Samtalet är sparat.</h2>
           </motion.div>
 
           {/* Locked reflections: delay BEAT_2, opacity 0→1, translateY 12→0, BEAT_3 */}
@@ -231,13 +231,14 @@ export default function CompletedSessionView({
             </motion.div>
           )}
 
-          {/* Drawer trigger / CTA: delay BEAT_1, opacity 0→1, BEAT_3 */}
+          {/* Drawer trigger / CTA */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: BEAT_1, duration: BEAT_3, ease: EASE }}
             className="space-y-4 text-center"
           >
+            <p className="text-xs text-muted-foreground/50">Ni kan alltid komma tillbaka.</p>
             <Button
               onClick={onExploreAgain}
               size="lg"

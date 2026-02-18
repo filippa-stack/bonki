@@ -7,7 +7,7 @@ import { BEAT_1, BEAT_2, BEAT_3, EASE } from '@/lib/motion';
 const slides = [
   {
     title: 'Ett gemensamt rum.',
-    content: 'Still Us är skapat för er två –\nför att fördjupa det som bär er relation.',
+    content: 'För samtal ni vill hålla levande.\n\nStill Us är skapat för er två –\nför att fördjupa det som bär er relation.',
   },
   {
     title: 'Omsorgsfullt utvecklat.',
