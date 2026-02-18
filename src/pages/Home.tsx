@@ -264,6 +264,18 @@ export default function Home() {
 
   const highlightedCategoryId = normalizedSession.categoryId || suggestedContext.suggestedCategory?.id || null;
 
+  // Recommended category pill: first category in order that has at least one unexplored card.
+  // Falls back to first item in list if no signal available.
+  const recommendedCategoryId = useMemo(() => {
+    for (const catId of RECOMMENDED_CATEGORY_ORDER) {
+      const catCards = cards.filter((c) => c.categoryId === catId);
+      if (catCards.length === 0) continue;
+      const allExplored = catCards.every((c) => exploredIds.includes(c.id));
+      if (!allExplored) return catId;
+    }
+    return RECOMMENDED_CATEGORY_ORDER[0];
+  }, [cards, exploredIds]);
+
   // Track whether user has already navigated away during this browser session
   const [hasNavigatedThisVisit] = useState(() => sessionStorage.getItem('home_navigated') === '1');
   const markNavigated = () => sessionStorage.setItem('home_navigated', '1');
@@ -619,6 +631,11 @@ export default function Home() {
             <div className="space-y-6">
               {proposalGroups.map((group) => (
                 <div key={group.category.id}>
+                  {group.category.id === recommendedCategoryId && (
+                    <span className="inline-block text-xs text-muted-foreground/70 bg-muted px-2.5 py-0.5 rounded-full mb-2">
+                      Rekommenderat just nu
+                    </span>
+                  )}
                   <p className="text-xs tracking-wide text-muted-foreground/60 uppercase mb-3">
                     {group.category.title}
                   </p>
