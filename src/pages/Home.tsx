@@ -774,7 +774,8 @@ export default function Home() {
             <div className="space-y-6">
               {categories.map((category, index) => {
                 const catStatus = getCategoryStatus(category.id);
-                const isFeatured = category.id === recommendedCategoryId;
+                // In browse mode all cards are visually equal — no featured styling.
+                const isFeatured = devState !== 'browse' && category.id === recommendedCategoryId;
                 const nextCategory = categories[index + 1];
                 const nextIsNormal = isFeatured && nextCategory;
                 return (
