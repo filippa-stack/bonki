@@ -31,6 +31,7 @@ import RelationshipMemory from '@/components/RelationshipMemory';
 import Footer from '@/components/Footer';
 import PartnerConnectedBanner from '@/components/PartnerConnectedBanner';
 import PartnerLeftBanner from '@/components/PartnerLeftBanner';
+import NewChapterBanner from '@/components/NewChapterBanner';
 
 import ReturnOverlay from '@/components/ReturnOverlay';
 import ConfidenceCheckPanel from '@/components/ConfidenceCheckPanel';
@@ -335,6 +336,9 @@ export default function Home() {
           }, 100);
         }}
       />
+
+      {/* New chapter banner — shown when partner started a new chapter (new_space_created event) */}
+      <NewChapterBanner />
 
       {/* ═══ PRIMARY ACTION ZONE — driven by centralized useAppMode() ═══ */}
       {mode === 'loading' && (
