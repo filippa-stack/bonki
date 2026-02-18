@@ -148,8 +148,14 @@ export function useCoupleSpace(): CoupleSpaceState {
         .is('left_at', null);
       if (!cancelled) {
         const newCount = count ?? 1;
+        const prevCount = prevMemberCountRef.current;
         prevMemberCountRef.current = newCount;
         setMemberCount(newCount);
+        // When a partner joins (1→2), immediately refresh the full space
+        // so both users see identical state without waiting for a debounce.
+        if (prevCount < 2 && newCount >= 2) {
+          fetchSpace();
+        }
       }
     };
 
@@ -171,7 +177,7 @@ export function useCoupleSpace(): CoupleSpaceState {
       cancelled = true;
       supabase.removeChannel(channel);
     };
-  }, [userId, space?.id]);
+  }, [userId, space?.id, fetchSpace]);
 
   // Debounced display value to prevent UI flicker on rapid realtime updates
   const [displayMemberCount, setDisplayMemberCount] = useState(memberCount);

@@ -23,7 +23,7 @@ export interface NormalizedSessionState {
 
 export function useNormalizedSessionState(): NormalizedSessionState {
   const { user } = useAuth();
-  const { space } = useCoupleSpaceContext();
+  const { space, memberCount } = useCoupleSpaceContext();
   const [state, setState] = useState<Omit<NormalizedSessionState, 'loading' | 'refetch'>>({
     appMode: null,
     sessionId: null,
@@ -73,6 +73,16 @@ export function useNormalizedSessionState(): NormalizedSessionState {
     fetchState();
     return () => { mountedRef.current = false; };
   }, [fetchState]);
+
+  // Re-fetch when memberCount transitions to 2 (partner just joined)
+  // so session state reflects the correct member count immediately.
+  const prevMemberCountRef = useRef(memberCount);
+  useEffect(() => {
+    if (prevMemberCountRef.current < 2 && memberCount >= 2) {
+      fetchState();
+    }
+    prevMemberCountRef.current = memberCount;
+  }, [memberCount, fetchState]);
 
   // Debounced refetch helper — coalesces bursts into a single RPC call
   const debouncedRefetch = useCallback(() => {

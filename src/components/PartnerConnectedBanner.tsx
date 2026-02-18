@@ -11,11 +11,14 @@ const SEEN_KEY = 'partner_connected_seen';
 
 export default function PartnerConnectedBanner() {
   const { user } = useAuth();
-  const { space } = useCoupleSpace();
+  const { space, userRole } = useCoupleSpace();
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
     if (!user || !space) return;
+
+    // Only show for the inviter (partner_a). The joiner (partner_b) sees JustJoinedBanner.
+    if (userRole !== 'partner_a') return;
 
     const seen = localStorage.getItem(SEEN_KEY);
     if (seen === space.id) return;
@@ -23,12 +26,15 @@ export default function PartnerConnectedBanner() {
     const checkExisting = async () => {
       const { data } = await supabase
         .from('system_events' as any)
-        .select('id')
+        .select('id, payload')
         .eq('couple_space_id', space.id)
         .eq('type', 'partner_joined')
         .limit(1);
 
       if (data && (data as any[]).length > 0) {
+        // Ensure it wasn't triggered by the current user themselves
+        const event = (data as any[])[0];
+        if (event.payload?.joining_user_id === user.id) return;
         setVisible(true);
       }
     };
@@ -36,7 +42,7 @@ export default function PartnerConnectedBanner() {
     checkExisting();
 
     const channel = supabase
-      .channel(`system_events_${space.id}`)
+      .channel(`system_events_partner_${space.id}`)
       .on(
         'postgres_changes',
         {
@@ -47,6 +53,8 @@ export default function PartnerConnectedBanner() {
         },
         (payload: any) => {
           if (payload.new?.type === 'partner_joined') {
+            // Skip if current user is the one who joined
+            if (payload.new?.payload?.joining_user_id === user.id) return;
             setVisible(true);
           }
         }
@@ -56,7 +64,7 @@ export default function PartnerConnectedBanner() {
     return () => {
       supabase.removeChannel(channel);
     };
-  }, [user, space]);
+  }, [user, space, userRole]);
 
   useEffect(() => {
     if (visible && space) {
@@ -90,4 +98,3 @@ export default function PartnerConnectedBanner() {
     </AnimatePresence>
   );
 }
-
