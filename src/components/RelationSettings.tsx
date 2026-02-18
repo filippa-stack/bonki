@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { Plus, Unlink } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { useNormalizedSessionContext } from '@/contexts/NormalizedSessionContext';
 import {
   AlertDialog,
   AlertDialogCancel,
@@ -79,6 +80,8 @@ export default function RelationSettings({
 }: RelationSettingsProps) {
   const { session } = useAuth();
   const [open, setOpen] = useState(false);
+  const { appMode, cardId } = useNormalizedSessionContext();
+  const hasActiveSession = (appMode === 'SESSION_ACTIVE' || appMode === 'SESSION_WAITING') && !!cardId;
 
   // ── "Skapa nytt utrymme" dialog state + 3s countdown ──
   const [newSpaceOpen, setNewSpaceOpen] = useState(false);
@@ -177,8 +180,8 @@ export default function RelationSettings({
                   variant="outline"
                   size="sm"
                   className="gap-1.5"
-                  disabled={newSpaceLoading}
-                  onClick={() => setNewSpaceOpen(true)}
+                  disabled={newSpaceLoading || hasActiveSession}
+                  onClick={() => { if (!hasActiveSession) setNewSpaceOpen(true); }}
                 >
                   <Plus className="w-3.5 h-3.5" />
                   Skapa nytt utrymme
@@ -208,6 +211,11 @@ export default function RelationSettings({
                 </AlertDialogFooter>
               </AlertDialogContent>
             </AlertDialog>
+            {hasActiveSession && (
+              <p className="text-[11px] text-muted-foreground/50 leading-snug">
+                Ni är mitt i ett samtal. Avsluta det först.
+              </p>
+            )}
           </div>
 
           {/* ── AVANCERAT divider ── */}
