@@ -12,6 +12,20 @@
 // The JSON session model is deprecated.
 // All session state must come from normalized tables.
 
+// Recommended category order for future UI highlighting — does not affect rendering.
+const RECOMMENDED_CATEGORY_ORDER = [
+  "paridentitet-vs-foraldraidentitet",
+  "arbetsfordelning-mentalt-ansvar",
+  "kommunikation-stod",
+  "motstandskraft-innan-det-brister",
+  "uppfostringsstilar",
+  "slakt-kultur",
+  "varderingar-framtid",
+  "pengar-foraldraskap",
+  "narhet-intimitet",
+  "uthallighet",
+];
+
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useState, useMemo, useEffect, useRef } from 'react';
