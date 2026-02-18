@@ -6,6 +6,10 @@
 /**
  * Shared catch-up state computation.
  * Ensures consistent behavior across CardView, Home, and any other entry point.
+ *
+ * NOTE: effectiveStep has been removed. CardView must use
+ * normalizedSession.currentStepIndex as the only authoritative step index.
+ * isCatchingUp is informational only — it must not drive which step mounts.
  */
 
 const STEP_COUNT = 4;
@@ -13,11 +17,9 @@ const STEP_COUNT = 4;
 export interface CatchUpState {
   /** The first step index this user hasn't completed yet (0-based, or STEP_COUNT if all done). */
   myFirstUncompletedStep: number;
-  /** The shared session's current step index. */
+  /** The shared session's current step index (from normalizedSession.currentStepIndex). */
   sharedStepIndex: number;
-  /** The step the user should actually see (min of shared and their own progress). */
-  effectiveStep: number;
-  /** True when the user is behind the shared step and needs to catch up. */
+  /** True when the user is behind the shared step. Informational only. */
   isCatchingUp: boolean;
 }
 
@@ -41,11 +43,7 @@ export function getCatchUpState(
     }
   }
 
-  const effectiveStep = hasActiveSession
-    ? Math.min(sharedStepIndex, myFirstUncompletedStep)
-    : 0;
-
   const isCatchingUp = hasActiveSession && myFirstUncompletedStep < sharedStepIndex;
 
-  return { myFirstUncompletedStep, sharedStepIndex, effectiveStep, isCatchingUp };
+  return { myFirstUncompletedStep, sharedStepIndex, isCatchingUp };
 }
