@@ -711,7 +711,7 @@ export default function Home() {
               <p className="text-xs text-primary/60 uppercase tracking-wide mb-4 text-center">
                 🔓 Browse mode — alla kort upplåsta
               </p>
-              <div className="space-y-4">
+              <div className="space-y-6">
                 {categories.map((category, index) => {
                   const catStatus = getCategoryStatus(category.id);
                   return (

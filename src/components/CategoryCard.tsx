@@ -27,10 +27,10 @@ export default function CategoryCard({
       transition={{ duration: 0.15 }}
       onClick={onClick}
       className={[
-        'w-full text-left card-reflection group cursor-pointer rounded-2xl py-5 px-5 transition-all',
+        'w-full text-left card-reflection group cursor-pointer rounded-[20px] p-6 transition-all shadow-[0_1px_4px_0_hsl(0_0%_0%/0.04)]',
         isCompleted ? 'bg-slate-50/60 border-slate-200/50' : 'item-colors',
         highlighted
-          ? 'border-2 border-primary shadow-md'
+          ? 'border-2 border-primary'
           : 'border border-slate-200/60',
         !highlighted && !isCompleted ? 'opacity-70 hover:opacity-100' : '',
       ].filter(Boolean).join(' ')}
