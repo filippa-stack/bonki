@@ -857,7 +857,43 @@ export default function Home() {
         })()}
       </AnimatePresence>
 
-      {/* Categories — solo: locked in disclosure; browse: fully unlocked */}
+      {/* Categories — paired idle: full discovery above fold */}
+      {!isProposalMode && !isSoloMode && mode === 'idle' && devState !== 'browse' && (
+        <motion.div
+          id="category-section"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.15 }}
+          className="px-6 pb-12 mt-4"
+        >
+          <div className="space-y-6">
+            {categories.map((category, index) => {
+              const catStatus = getCategoryStatus(category.id);
+              const isFeatured = category.id === recommendedCategoryId;
+              const nextCategory = categories[index + 1];
+              const nextIsNormal = isFeatured && nextCategory;
+              return (
+                <div
+                  key={category.id}
+                  className={isFeatured ? 'mt-4' : undefined}
+                  style={nextIsNormal ? { marginBottom: '-8px' } : undefined}
+                >
+                  <CategoryCard
+                    category={category}
+                    onClick={() => navigate(`/category/${category.id}`)}
+                    index={index}
+                    highlighted={category.id === highlightedCategoryId}
+                    isCompleted={catStatus === 'explored'}
+                    isFeatured={isFeatured}
+                  />
+                </div>
+              );
+            })}
+          </div>
+        </motion.div>
+      )}
+
+      {/* Categories — solo: locked disclosure; browse: fully unlocked */}
       {!isProposalMode && (isSoloMode || devState === 'browse') && (
         <div id="category-section" className="px-6 pb-12 mt-4">
           {devState === 'browse' ? (
@@ -865,22 +901,15 @@ export default function Home() {
               {categories.map((category, index) => {
                 const catStatus = getCategoryStatus(category.id);
                 // In browse mode all cards are visually equal — no featured styling.
-                const isFeatured = devState !== 'browse' && mode === 'idle' && category.id === recommendedCategoryId;
-                const nextCategory = categories[index + 1];
-                const nextIsNormal = isFeatured && nextCategory;
                 return (
-                  <div
-                    key={category.id}
-                    className={isFeatured ? 'mt-4' : undefined}
-                    style={nextIsNormal ? { marginBottom: '-8px' } : undefined}
-                  >
+                  <div key={category.id}>
                     <CategoryCard
                       category={category}
                       onClick={() => navigate(`/category/${category.id}`)}
                       index={index}
                       highlighted={category.id === highlightedCategoryId}
                       isCompleted={catStatus === 'explored'}
-                      isFeatured={isFeatured}
+                      isFeatured={false}
                     />
                   </div>
                 );
