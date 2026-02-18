@@ -71,7 +71,7 @@ export default function Category() {
       </div>
 
       <div className="px-6 pb-10">
-        <div className="space-y-4">
+        <div className="space-y-6">
           {cards.map((card, index) => (
             <CardEntry
               key={card.id}
@@ -137,7 +137,7 @@ function CardEntry({ card, index, highlighted, isCompleted = false, lastVisitedA
           onNavigate();
         }
       }}
-      className={`relative w-full text-center card-sub group transition-all cursor-pointer overflow-hidden rounded-2xl${isCompleted ? '' : ' item-colors'}${highlighted ? ' ring-2 ring-primary/40 shadow-md shadow-primary/10' : ''}`}
+      className={`relative w-full text-center card-sub group transition-all cursor-pointer overflow-hidden rounded-[20px] shadow-[0_1px_4px_0_hsl(0_0%_0%/0.04)]${isCompleted ? '' : ' item-colors'}${highlighted ? ' ring-2 ring-primary/40' : ''}`}
       style={{
         borderWidth: '1px',
         borderStyle: 'solid',
