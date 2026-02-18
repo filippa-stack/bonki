@@ -413,7 +413,6 @@ export default function CardView() {
                 <>
                   <SessionStepReflection
                     sessionId={normalizedSession.sessionId}
-                    cardId={cardId}
                     stepIndex={currentStepIndex}
                     // onReady is intentionally NOT wired here.
                     // Normalized session progression (complete_couple_session_step + refetch)

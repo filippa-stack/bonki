@@ -1,6 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
-import { useCoupleSpaceContext as useCoupleSpace } from '@/contexts/CoupleSpaceContext';
 import { supabase } from '@/integrations/supabase/client';
 import { useDevState } from '@/contexts/DevStateContext';
 
@@ -28,7 +27,6 @@ interface UseSessionReflectionsReturn {
   /**
    * True when this user has pressed "Klar" (state === 'ready') but the
    * partner has not yet reached ready/revealed/locked for this step.
-   * Derived at runtime — never persisted.
    */
   isWaitingForPartner: boolean;
   /** Update draft text (autosaved) */
@@ -43,91 +41,45 @@ const AUTOSAVE_DELAY = 800;
 
 /**
  * Manages session-based reflections with strict state transitions.
- * 
+ * session_id must be a couple_sessions.id (normalized model only).
+ *
  * State machine: draft → ready → revealed → locked
- * - draft: user is writing, text autosaved
- * - ready: user pressed "Klar", invisible to partner
- * - revealed: both users ready, both reflections visible
- * - locked: immutable, step permanently closed
  */
 export function useSessionReflections(
   normalizedSessionId: string | null,
-  cardId: string | undefined,
   stepIndex: number,
 ): UseSessionReflectionsReturn {
   const { user } = useAuth();
-  const { space } = useCoupleSpace();
   const devState = useDevState();
-  const [sessionId, setSessionId] = useState<string | null>(normalizedSessionId);
+  const sessionId = normalizedSessionId;
+  const sessionIdRef = useRef<string | null>(normalizedSessionId);
+
   const [loading, setLoading] = useState(true);
   const [myReflection, setMyReflection] = useState<StepReflection | null>(null);
   const [partnerReflection, setPartnerReflection] = useState<StepReflection | null>(null);
   const [localText, setLocalText] = useState('');
   const pendingSave = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const sessionIdRef = useRef<string | null>(normalizedSessionId);
 
-  // ─── 1. Sync normalized sessionId when provided ───
-  // When a normalized sessionId is passed (live session), use it directly.
-  // Only fall back to card_sessions lookup when sessionId is null (revisit/history).
+  // Keep ref in sync so callbacks always see the latest sessionId
   useEffect(() => {
-    if (normalizedSessionId) {
-      setSessionId(normalizedSessionId);
-      sessionIdRef.current = normalizedSessionId;
-      // Loading will be cleared after reflections are fetched (effect 2)
-      return;
-    }
+    sessionIdRef.current = normalizedSessionId;
+  }, [normalizedSessionId]);
 
-    // ─── Fallback: card_sessions lookup (revisit / history only) ───
-    if (!user || !space || !cardId || devState) {
-      setLoading(false);
-      return;
-    }
-
-    let cancelled = false;
-
-    const initSession = async () => {
-      setLoading(true);
-
-      const { data: existing } = await supabase
-        .from('card_sessions')
-        .select('id')
-        .eq('couple_space_id', space.id)
-        .eq('card_id', cardId)
-        .is('completed_at', null)
-        .order('started_at', { ascending: false })
-        .limit(1)
-        .single();
-
-      if (cancelled) return;
-
-      if (existing) {
-        setSessionId(existing.id);
-        sessionIdRef.current = existing.id;
-      } else {
-        const { data: created, error } = await supabase
-          .from('card_sessions')
-          .insert({ couple_space_id: space.id, card_id: cardId })
-          .select('id')
-          .single();
-
-        if (cancelled) return;
-        if (error) {
-          console.error('Failed to create card_session:', error);
-          setLoading(false);
-          return;
-        }
-        setSessionId(created.id);
-        sessionIdRef.current = created.id;
-      }
-    };
-
-    initSession();
-    return () => { cancelled = true; };
-  }, [normalizedSessionId, user, space, cardId, devState]);
+  // ─── 1. Reset state when session or step changes ───
+  useEffect(() => {
+    setMyReflection(null);
+    setPartnerReflection(null);
+    setLocalText('');
+    setLoading(true);
+  }, [normalizedSessionId, stepIndex]);
 
   // ─── 2. Fetch reflections for current step ───
   useEffect(() => {
     if (!sessionId || !user) {
+      setLoading(false);
+      return;
+    }
+    if (devState) {
       setLoading(false);
       return;
     }
@@ -162,11 +114,11 @@ export function useSessionReflections(
 
     fetchReflections();
     return () => { cancelled = true; };
-  }, [sessionId, stepIndex, user]);
+  }, [sessionId, stepIndex, user, devState]);
 
   // ─── 3. Realtime subscription for state changes ───
   useEffect(() => {
-    if (!sessionId) return;
+    if (!sessionId || devState) return;
 
     const channel = supabase
       .channel(`step_reflections_${sessionId}_${stepIndex}`)
@@ -198,17 +150,16 @@ export function useSessionReflections(
       .subscribe();
 
     return () => { supabase.removeChannel(channel); };
-  }, [sessionId, stepIndex, user]);
+  }, [sessionId, stepIndex, user, devState]);
 
   // ─── 4. Autosave draft text ───
   const setText = useCallback((text: string) => {
     setLocalText(text);
-
-    // Optimistic local update
     setMyReflection(prev => prev ? { ...prev, text } : null);
 
     if (pendingSave.current) clearTimeout(pendingSave.current);
-    if (devState) return; // In-memory only in dev mode
+    if (devState) return;
+
     pendingSave.current = setTimeout(async () => {
       if (!user || !sessionIdRef.current) return;
 
@@ -227,7 +178,7 @@ export function useSessionReflections(
 
       if (error) console.error('Failed to save reflection:', error);
     }, AUTOSAVE_DELAY);
-  }, [user, stepIndex]);
+  }, [user, stepIndex, devState]);
 
   // ─── 5. Mark ready: draft → ready ───
   const markReady = useCallback(async () => {
@@ -253,7 +204,6 @@ export function useSessionReflections(
       }
     }
 
-    // Optimistic update (trigger may upgrade to 'revealed')
     setMyReflection(prev => prev ? { ...prev, state: 'ready', text: localText } : {
       id: '',
       sessionId: sessionIdRef.current || 'dev-session',
@@ -279,7 +229,7 @@ export function useSessionReflections(
     }
   }, [stepIndex, devState]);
 
-  // Cleanup
+  // Cleanup pending autosave on unmount
   useEffect(() => {
     return () => {
       if (pendingSave.current) clearTimeout(pendingSave.current);
