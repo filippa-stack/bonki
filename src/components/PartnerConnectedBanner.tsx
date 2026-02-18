@@ -12,11 +12,13 @@ const getSeenKey = (spaceId: string) => `partner_connected_seen_${spaceId}`;
 interface Props {
   /** Space id used for the seen-key — passed from Home to avoid re-reading context */
   spaceId?: string;
+  /** Controls visual display — when false the component is mounted but invisible. */
+  active?: boolean;
   /** Called once when this banner becomes visible, so Home can mark it seen in priority queue */
   onSeen?: () => void;
 }
 
-export default function PartnerConnectedBanner({ spaceId, onSeen }: Props) {
+export default function PartnerConnectedBanner({ spaceId, active = true, onSeen }: Props) {
   const { user } = useAuth();
   const { space, userRole } = useCoupleSpace();
   const [visible, setVisible] = useState(false);
@@ -24,6 +26,7 @@ export default function PartnerConnectedBanner({ spaceId, onSeen }: Props) {
   // Use prop spaceId if provided, else fall back to context space.id
   const resolvedSpaceId = spaceId ?? space?.id;
 
+  // Detection: set visible=true (but do NOT write localStorage until dismissed)
   const markVisible = () => {
     setVisible(true);
     onSeen?.();
@@ -47,7 +50,6 @@ export default function PartnerConnectedBanner({ spaceId, onSeen }: Props) {
         .limit(1);
 
       if (data && (data as any[]).length > 0) {
-        // Ensure it wasn't triggered by the current user themselves
         const event = (data as any[])[0];
         if (event.payload?.joining_user_id === user.id) return;
         markVisible();
@@ -68,7 +70,6 @@ export default function PartnerConnectedBanner({ spaceId, onSeen }: Props) {
         },
         (payload: any) => {
           if (payload.new?.type === 'partner_joined') {
-            // Skip if current user is the one who joined
             if (payload.new?.payload?.joining_user_id === user.id) return;
             markVisible();
           }
@@ -81,15 +82,17 @@ export default function PartnerConnectedBanner({ spaceId, onSeen }: Props) {
     };
   }, [user, resolvedSpaceId, userRole]);
 
-  useEffect(() => {
-    if (visible && resolvedSpaceId) {
+  const dismiss = () => {
+    // Write localStorage gate only on explicit dismiss
+    if (resolvedSpaceId) {
       localStorage.setItem(getSeenKey(resolvedSpaceId), 'true');
     }
-  }, [visible, resolvedSpaceId]);
+    setVisible(false);
+  };
 
   return (
     <AnimatePresence>
-      {visible && (
+      {visible && active && (
         <motion.div
           initial={{ opacity: 0, y: -8, height: 0 }}
           animate={{ opacity: 1, y: 0, height: 'auto' }}
@@ -102,7 +105,7 @@ export default function PartnerConnectedBanner({ spaceId, onSeen }: Props) {
               🤍 Ni är nu ihopkopplade.
             </p>
             <button
-              onClick={() => setVisible(false)}
+              onClick={dismiss}
               className="text-muted-foreground/40 hover:text-muted-foreground transition-colors"
             >
               <X className="w-3.5 h-3.5" />
