@@ -42,34 +42,14 @@ function resolveCardViewMode({
   isRevisitMode,
   hasActiveSession,
   hasCompletedSessionForCard,
-  showCompletion,
-  isPaired,
-  sessionLoading,
 }: {
   isRevisitMode: boolean;
   hasActiveSession: boolean;
   hasCompletedSessionForCard: boolean;
-  showCompletion: boolean;
-  isPaired: boolean;
-  sessionLoading: boolean;
 }): CardViewMode {
-  // Revisit always wins — explicit user intent
   if (isRevisitMode) return 'revisit';
-
-  // Active session takes absolute precedence — prevents a completed row from
-  // shadowing a live session, regardless of showCompletion or history state.
   if (hasActiveSession) return 'live';
-
-  // Takeaway screen: session just finished, show closing ritual before history
-  if (showCompletion) return 'completion';
-
-  // Completed archive
   if (hasCompletedSessionForCard) return 'history';
-
-  // Paired but no session and not loading — entry blocked
-  if (isPaired && !sessionLoading) return 'guard';
-
-  // Solo or still loading — render live shell (solo CTA visible)
   return 'live';
 }
 
@@ -150,9 +130,6 @@ export default function CardView() {
     isRevisitMode,
     hasActiveSession: isActiveSession,
     hasCompletedSessionForCard: hasCompletedNormalizedSession,
-    showCompletion,
-    isPaired,
-    sessionLoading: normalizedSession.loading,
   });
 
   // ─── Step index ───
