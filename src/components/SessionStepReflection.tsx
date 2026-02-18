@@ -8,7 +8,10 @@ import { useSessionReflections, type ReflectionState } from '@/hooks/useSessionR
 
 
 interface SessionStepReflectionProps {
-  cardId: string;
+  /** Normalized session ID from NormalizedSessionProvider (live sessions). */
+  sessionId?: string | null;
+  /** Card ID — used only as fallback for revisit/history when sessionId is null. */
+  cardId?: string;
   stepIndex: number;
   /**
    * Fires after markReady() resolves.
@@ -25,6 +28,7 @@ interface SessionStepReflectionProps {
 }
 
 export default function SessionStepReflection({
+  sessionId = null,
   cardId,
   stepIndex,
   onReady,
@@ -38,7 +42,7 @@ export default function SessionStepReflection({
     setText,
     markReady,
     lockStep,
-  } = useSessionReflections(cardId, stepIndex);
+  } = useSessionReflections(sessionId, cardId, stepIndex);
 
   const { space, userRole } = useCoupleSpace();
   const myName = userRole === 'partner_a' ? (space?.partner_a_name || 'Du') : (space?.partner_b_name || 'Du');

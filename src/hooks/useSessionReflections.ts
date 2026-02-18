@@ -45,22 +45,33 @@ const AUTOSAVE_DELAY = 800;
  * - locked: immutable, step permanently closed
  */
 export function useSessionReflections(
+  normalizedSessionId: string | null,
   cardId: string | undefined,
   stepIndex: number,
 ): UseSessionReflectionsReturn {
   const { user } = useAuth();
   const { space } = useCoupleSpace();
   const devState = useDevState();
-  const [sessionId, setSessionId] = useState<string | null>(null);
+  const [sessionId, setSessionId] = useState<string | null>(normalizedSessionId);
   const [loading, setLoading] = useState(true);
   const [myReflection, setMyReflection] = useState<StepReflection | null>(null);
   const [partnerReflection, setPartnerReflection] = useState<StepReflection | null>(null);
   const [localText, setLocalText] = useState('');
   const pendingSave = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const sessionIdRef = useRef<string | null>(null);
+  const sessionIdRef = useRef<string | null>(normalizedSessionId);
 
-  // ─── 1. Find or create card_session ───
+  // ─── 1. Sync normalized sessionId when provided ───
+  // When a normalized sessionId is passed (live session), use it directly.
+  // Only fall back to card_sessions lookup when sessionId is null (revisit/history).
   useEffect(() => {
+    if (normalizedSessionId) {
+      setSessionId(normalizedSessionId);
+      sessionIdRef.current = normalizedSessionId;
+      // Loading will be cleared after reflections are fetched (effect 2)
+      return;
+    }
+
+    // ─── Fallback: card_sessions lookup (revisit / history only) ───
     if (!user || !space || !cardId || devState) {
       setLoading(false);
       return;
@@ -71,7 +82,6 @@ export function useSessionReflections(
     const initSession = async () => {
       setLoading(true);
 
-      // Find latest uncompleted session for this card
       const { data: existing } = await supabase
         .from('card_sessions')
         .select('id')
@@ -88,7 +98,6 @@ export function useSessionReflections(
         setSessionId(existing.id);
         sessionIdRef.current = existing.id;
       } else {
-        // Create a new session
         const { data: created, error } = await supabase
           .from('card_sessions')
           .insert({ couple_space_id: space.id, card_id: cardId })
@@ -108,7 +117,7 @@ export function useSessionReflections(
 
     initSession();
     return () => { cancelled = true; };
-  }, [user, space, cardId]);
+  }, [normalizedSessionId, user, space, cardId, devState]);
 
   // ─── 2. Fetch reflections for current step ───
   useEffect(() => {
