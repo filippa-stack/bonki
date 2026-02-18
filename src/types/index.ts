@@ -72,24 +72,8 @@ export interface CoupleSpace {
   createdAt: Date;
 }
 
-export interface JourneyState {
-  currentCategoryId: string | null;
-  lastOpenedCardId: string | null;
-  lastCompletedCardId: string | null;
-  suggestedNextCardId: string | null;
-  pausedAt: string | null;
-  updatedAt: string;
-  /** Set of card IDs that have been fully explored (all 4 steps completed) */
-  exploredCardIds: string[];
-  /** Per-user step completion keyed by cardId → userId → completedSteps */
-  sessionProgress?: Record<string, {
-    perUser: Record<string, { completedSteps: number[] }>;
-  }>;
-  /** ISO timestamps of last visit per cardId */
-  cardVisitDates?: Record<string, string>;
-  /** Last 2 session initiator user IDs (most recent last) */
-  lastInitiators?: string[];
-}
+/** @deprecated JourneyState is fully removed. Use spaceSnapshot selectors instead. */
+// export interface JourneyState { ... }
 
 export interface PrivateNote {
   text: string;
@@ -131,7 +115,6 @@ export interface AppState {
   hasCompletedOnboarding: boolean;
   currentCardId?: string;
   currentSectionId?: string;
-  journeyState?: JourneyState;
   reflectionsData?: ReflectionsData;
   // Session tracking for guided flow
   currentSession?: {

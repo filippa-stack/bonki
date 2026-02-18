@@ -6,6 +6,8 @@ import { BEAT_1, BEAT_2, BEAT_3 } from '@/lib/motion';
 import { useNavigate } from 'react-router-dom';
 import { useApp } from '@/contexts/AppContext';
 import { useAuth } from '@/contexts/AuthContext';
+import { useSpaceSnapshot } from '@/hooks/useSpaceSnapshot';
+import { selectExploredCardIds } from '@/selectors/spaceSnapshotSelectors';
 import { useCoupleSpaceContext } from '@/contexts/CoupleSpaceContext';
 import { useReflectionResponses } from '@/hooks/useReflectionResponses';
 import { supabase } from '@/integrations/supabase/client';
@@ -42,11 +44,12 @@ export interface SharedNoteRow {
 export default function SharedSummary() {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const { categories, getCardById, getCategoryById, journeyState, cards } = useApp();
+  const { categories, getCardById, getCategoryById, cards } = useApp();
   const { user } = useAuth();
   const { space, displayMemberCount, fetchInviteInfo } = useCoupleSpaceContext();
   const [inviteLoading, setInviteLoading] = useState(false);
   const isSolo = displayMemberCount < 2;
+  const { snapshot } = useSpaceSnapshot(user?.id ?? null, space?.id ?? null);
 
   const handleShareInvite = async () => {
     setInviteLoading(true);
@@ -210,7 +213,7 @@ export default function SharedSummary() {
   const effectiveLoading = devState ? false : loading;
   const hasActiveFilter = categoryFilter !== 'all' || searchQuery.length > 0;
 
-  const exploredIds = journeyState?.exploredCardIds || [];
+  const exploredIds = selectExploredCardIds(snapshot);
   const exploredCount = exploredIds.length;
 
   // Journey progress per category
