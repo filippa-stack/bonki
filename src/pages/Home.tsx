@@ -631,11 +631,6 @@ export default function Home() {
             <div className="space-y-6">
               {proposalGroups.map((group) => (
                 <div key={group.category.id}>
-                  {group.category.id === recommendedCategoryId && (
-                    <span className="inline-block text-xs text-muted-foreground/70 bg-muted px-2.5 py-0.5 rounded-full mb-2">
-                      Rekommenderat just nu
-                    </span>
-                  )}
                   <p className="text-xs tracking-wide text-muted-foreground/60 uppercase mb-3">
                     {group.category.title}
                   </p>
