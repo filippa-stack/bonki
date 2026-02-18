@@ -161,9 +161,9 @@ export default function RelationSettings({
           {/* ── "Skapa nytt utrymme" ── */}
           <div className="space-y-3">
             <div>
-              <p className="text-sm text-foreground font-medium">Skapa nytt gemensamt utrymme</p>
+              <p className="text-sm text-foreground font-medium">Skapa nytt utrymme</p>
               <p className="text-xs text-muted-foreground mt-1 leading-relaxed">
-                Det här skapar ett nytt tomt utrymme. Historiken i ert nuvarande utrymme finns kvar, men ni fortsätter i ett nytt.
+                Starta ett nytt kapitel med samma partner. Historiken i det här utrymmet blir kvar här och följer inte med.
               </p>
             </div>
 
@@ -190,8 +190,8 @@ export default function RelationSettings({
                     Skapa ett nytt utrymme?
                   </AlertDialogTitle>
                   <AlertDialogDescription className="text-sm text-muted-foreground leading-relaxed space-y-2 pt-1">
-                    <span className="block">Det här skapar ett nytt tomt utrymme.</span>
-                    <span className="block">Historiken i ert nuvarande utrymme finns kvar, men ni fortsätter i ett nytt.</span>
+                    <span className="block">Starta ett nytt kapitel med samma partner.</span>
+                    <span className="block">Historiken i det här utrymmet blir kvar här och följer inte med.</span>
                   </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter className="mt-2">
@@ -219,7 +219,7 @@ export default function RelationSettings({
             <div>
               <p className="text-sm text-destructive/80 font-medium">Byt partner</p>
               <p className="text-xs text-muted-foreground mt-1 leading-relaxed">
-                Detta avslutar kopplingen till din nuvarande partner. Ni kommer inte längre dela samma utrymme.
+                Avsluta kopplingen till din nuvarande partner och skapa ett nytt tomt utrymme.
               </p>
             </div>
 
@@ -244,8 +244,7 @@ export default function RelationSettings({
                     Byt partner?
                   </AlertDialogTitle>
                   <AlertDialogDescription className="text-sm text-muted-foreground leading-relaxed space-y-2 pt-1">
-                    <span className="block">Detta avslutar kopplingen till din nuvarande partner.</span>
-                    <span className="block">Ni kommer inte längre dela samma utrymme.</span>
+                    <span className="block">Avsluta kopplingen till din nuvarande partner och skapa ett nytt tomt utrymme.</span>
                     <span className="block">Du kan bjuda in någon ny senare.</span>
                   </AlertDialogDescription>
                 </AlertDialogHeader>
