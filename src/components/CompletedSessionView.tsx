@@ -12,7 +12,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { useCoupleSpaceContext as useCoupleSpace } from '@/contexts/CoupleSpaceContext';
 import Header from '@/components/Header';
-import { BEAT_2, BEAT_3, EASE } from '@/lib/motion';
+import { BEAT_1, BEAT_2, BEAT_3, EASE } from '@/lib/motion';
 
 const STEP_LABELS = ['Början', 'Fördjupning', 'I vardagen', 'Tillsammans'];
 
@@ -165,11 +165,11 @@ export default function CompletedSessionView({
       <div className="px-6 pt-20 pb-10">
         <div className="max-w-md mx-auto space-y-8 pb-10">
 
-          {/* Step 2 — Completion header: opacity 0→1, translateY 8→0, 200ms */}
+          {/* Completion header: opacity 0→1, translateY 8→0, BEAT_3 */}
           <motion.div
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.2, ease: EASE }}
+            transition={{ duration: BEAT_3, ease: EASE }}
             className="text-center space-y-2"
           >
             <p className="text-[11px] text-muted-foreground/50 tracking-wide uppercase">
@@ -178,12 +178,12 @@ export default function CompletedSessionView({
             <h2 className="text-xl font-serif text-foreground">{cardTitle}</h2>
           </motion.div>
 
-          {/* Step 3 — Locked reflections: delay 120ms, opacity 0→1, translateY 12→0, 180ms */}
+          {/* Locked reflections: delay BEAT_2, opacity 0→1, translateY 12→0, BEAT_3 */}
           {stepGroups.length > 0 && (
             <motion.div
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.12, duration: 0.18, ease: EASE }}
+              transition={{ delay: BEAT_2, duration: BEAT_3, ease: EASE }}
               className="space-y-8"
             >
               {stepGroups.map((group, idx) => (
@@ -216,12 +216,12 @@ export default function CompletedSessionView({
             </motion.div>
           )}
 
-          {/* Step 3 — Takeaway block: delay 120ms, opacity 0→1, translateY 12→0, 180ms */}
+          {/* Takeaway block: delay BEAT_2, opacity 0→1, translateY 12→0, BEAT_3 */}
           {session.takeawayText && (
             <motion.div
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.12, duration: 0.18, ease: EASE }}
+              transition={{ delay: BEAT_2, duration: BEAT_3, ease: EASE }}
               className="space-y-2"
             >
               <p className="text-xs text-muted-foreground/40 tracking-wide">Det ni tog med er</p>
@@ -231,11 +231,11 @@ export default function CompletedSessionView({
             </motion.div>
           )}
 
-          {/* Step 4 — Drawer trigger / CTA: delay 60ms after takeaway (180ms), opacity 0→1, no translate */}
+          {/* Drawer trigger / CTA: delay BEAT_1, opacity 0→1, BEAT_3 */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: BEAT_3 * 2, duration: BEAT_3, ease: EASE }}
+            transition={{ delay: BEAT_1, duration: BEAT_3, ease: EASE }}
             className="space-y-4 text-center"
           >
             <Button
