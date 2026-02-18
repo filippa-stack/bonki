@@ -85,7 +85,7 @@ export default function NewChapterBanner() {
       initial={{ opacity: 0, y: -8 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0 }}
-      className="mx-6 mt-4 mb-2 rounded-[20px] border border-border bg-card p-6 space-y-3 shadow-[0_1px_4px_0_hsl(0_0%_0%/0.04)]"
+      className="mx-6 rounded-[20px] border border-border bg-card p-6 space-y-3 shadow-[0_1px_4px_0_hsl(0_0%_0%/0.04)]"
     >
       <p className="font-serif text-foreground text-base">
         Ett nytt kapitel startades.
