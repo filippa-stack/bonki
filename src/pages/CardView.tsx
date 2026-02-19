@@ -210,6 +210,16 @@ export default function CardView() {
       return;
     }
 
+    // DevState: advance locally without RPC (no real session exists)
+    if (devState) {
+      if (displayIndex >= STEP_ORDER.length - 1) {
+        setShowCompletion(true);
+      } else {
+        setLocalStepIndex(displayIndex + 1);
+      }
+      return;
+    }
+
     if (!normalizedSession.sessionId) return;
 
     const { data, error } = await supabase.rpc('complete_couple_session_step', {
@@ -232,7 +242,7 @@ export default function CardView() {
 
     // Refetch → server increments → useEffect resets localStepIndex → re-render
     await normalizedSession.refetch();
-  }, [normalizedSession, localStepIndex, serverStepIndex, cardViewMode]);
+  }, [normalizedSession, localStepIndex, serverStepIndex, cardViewMode, devState]);
 
   // ─── Revisit "Next" handler ───
   const handleRevisitNext = (card: ReturnType<typeof getCardById>) => {
