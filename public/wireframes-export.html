@@ -48,10 +48,6 @@
   .frame .badge-realtime { display: inline-block; font-size: 8px; background: #e8f5e9; color: #388e3c; border-radius: 14px; padding: 2px 6px; letter-spacing: 0.5px; }
   .frame .badge-readonly { display: inline-block; font-size: 8px; background: #f3f4f6; color: #6b7280; border-radius: 14px; padding: 2px 6px; letter-spacing: 0.5px; }
   .frame .info-note { font-size: 9px; color: #aaa; font-style: italic; margin-top: 3px; }
-  .frame .pace-dots { display: flex; gap: 7px; justify-content: center; }
-  .frame .pace-dot { width: 7px; height: 7px; border-radius: 50%; }
-  .frame .pace-dot.filled { background: #1a1a1a33; }
-  .frame .pace-dot.outline { border: 1px solid #1a1a1a22; }
   .frame .breathing { width: 56px; height: 1px; background: #1a1a1a11; margin: 6px auto; }
   /* Spacing tokens (matching app) */
   .mt-10 { margin-top: 40px; }
@@ -66,8 +62,8 @@
 </head>
 <body>
 
-<h1>Still Us — Wireframes</h1>
-<p class="subtitle">Exportera alla skärmar som separata PNG-bilder i en ZIP-fil (2× skala). Uppdaterad februari 2026 — inkl. radius-system, spacingtoken, bannerstack, reveal/waiting layout, Category Discovery som primär yta i paired idle, sekundär "Välj samtalsämne" CTA.</p>
+<h1>Still Us — Wireframes (Volume 1)</h1>
+<p class="subtitle">Exportera alla skärmar som separata PNG-bilder i en ZIP-fil (2× skala). Uppdaterad februari 2026 — Volume 1: enkel-användare, inga förslag eller partneridentitet. Mode: loading | active | idle.</p>
 
 <div class="actions">
   <button class="btn-dl" id="downloadBtn" onclick="exportAll()">📦 Ladda ner ZIP med alla PNG:er</button>
@@ -100,7 +96,7 @@
       <div class="spacer" style="height:28px"></div>
       <div class="center serif" style="font-size:18px;font-weight:600;">Välkommen</div>
       <div class="spacer" style="height:32px"></div>
-      <div class="center muted" style="max-width:220px;margin:0 auto;line-height:1.7;">Det här är ett utrymme för dig och din partner att reflektera — som föräldrar, partners, individer.</div>
+      <div class="center muted" style="max-width:220px;margin:0 auto;line-height:1.7;">Det här är ett utrymme för dig att reflektera — i din egen takt.</div>
       <div class="spacer" style="height:48px"></div>
       <div class="btn-ui" style="width:80%;margin:0 auto;">Fortsätt</div>
       <div class="spacer" style="height:8px"></div>
@@ -111,224 +107,129 @@
     </div>
   </div>
 
-</div>
-
-<!-- ═══ 2. SOLO — BJUD IN PARTNER ═══ -->
-<div class="section-title">2. Solo — bjud in partner</div>
-<div class="wireframe-grid">
-
-  <div class="wireframe" data-name="03-solo-first-time">
-    <h2>Solo — Första gången</h2>
-    <div class="route">/ (mode = solo, ej haft partner)</div>
+  <div class="wireframe" data-name="03-purchase">
+    <h2>Köpskärm</h2>
+    <div class="route">/ → (hasPurchased = false)</div>
     <div class="frame">
-      <div class="header-bar"><span>logo</span><span>⚙</span></div>
-      <div class="spacer"></div>
-      <div class="center serif" style="font-size:16px;font-weight:600;">Börja här.</div>
-      <div class="spacer" style="height:5px"></div>
-      <div class="center muted" style="max-width:200px;margin:0 auto;">Bjud in din partner när du vill. Då skapar ni ert gemensamma rum.</div>
-      <div class="spacer"></div>
-      <div class="btn-ui">🔗 Dela länk</div>
-      <div class="spacer" style="height:5px"></div>
-      <div class="center muted">Har din partner redan en kod? ▾</div>
-      <div class="spacer"></div>
-      <div class="divider"></div>
-      <div class="center muted">▸ Tillgängligt när ni är två (collapsed)</div>
-      <div class="spacer"></div>
-    </div>
-  </div>
-
-  <div class="wireframe" data-name="04-join-space">
-    <h2>Gå med i rum</h2>
-    <div class="route">/join?token=… (name_prompt state)</div>
-    <div class="frame">
-      <div class="center" style="padding-top:28px;">
-        <div class="serif" style="font-size:18px;font-weight:600;">Anslut till din partner</div>
-        <div class="muted" style="margin-top:6px;max-width:200px;margin-left:auto;margin-right:auto;">Ange koden eller öppna länken du fick.</div>
-      </div>
-      <div style="margin-top:40px;">
-        <div style="background:#f5f5f5;border-radius:9px;padding:8px 11px;font-size:10px;color:#bbb;margin-bottom:8px;">Ditt namn (valfritt)</div>
-        <div style="background:#f5f5f5;border-radius:9px;padding:8px 11px;font-size:12px;color:#bbb;text-align:center;letter-spacing:4px;font-family:monospace;">ABC123</div>
-      </div>
-      <div style="margin-top:32px;">
-        <div class="btn-ui">Anslut</div>
-      </div>
-      <div style="height:40px;"></div>
-    </div>
-  </div>
-
-  <div class="wireframe" data-name="05-welcome-partner">
-    <h2>Välkommen, partner B</h2>
-    <div class="route">/ (nyss ansluten, inga samtal)</div>
-    <div class="frame">
-      <div class="spacer" style="height:22px"></div>
-      <div class="center serif" style="font-size:17px;font-weight:600;">Välkommen till ert gemensamma rum.</div>
+      <div class="spacer" style="height:20px"></div>
+      <div class="center serif" style="font-size:18px;font-weight:600;">Lås upp Still Us</div>
       <div class="spacer" style="height:6px"></div>
-      <div class="center muted">Det här är ett utrymme för samtal och reflektioner — för er, i er egen takt.</div>
-      <div style="margin-top:40px;">
-        <div class="btn-ui">Starta ert första samtal</div>
+      <div class="center muted" style="max-width:200px;margin:0 auto;line-height:1.7;">Engångskostnad. Inga prenumerationer.</div>
+      <div class="spacer" style="height:28px"></div>
+      <div class="card" style="margin-bottom:8px;">
+        <div style="font-size:10px;">✓ Alla samtalsämnen</div>
+        <div style="font-size:10px;margin-top:3px;">✓ Spara reflektioner</div>
+        <div style="font-size:10px;margin-top:3px;">✓ Er gemensamma historia</div>
       </div>
-      <div class="spacer" style="height:5px"></div>
-      <div class="btn-ghost">Utforska samtalsområden</div>
-      <div style="height:40px;"></div>
+      <div class="spacer" style="height:8px"></div>
+      <div class="btn-ui">Köp för 149 kr</div>
+      <div class="spacer" style="height:4px"></div>
+      <div class="btn-ghost">Återställ köp</div>
+      <div class="spacer" style="height:20px"></div>
     </div>
   </div>
 
 </div>
 
-<!-- ═══ 3. HEM — KOPPLAT PAR (IDLE) ═══ -->
-<div class="section-title">3. Hem — kopplat par (idle)</div>
+<!-- ═══ 2. HEM — IDLE ═══ -->
+<div class="section-title">2. Hem — idle (mode = idle)</div>
 <div class="wireframe-grid">
 
-  <div class="wireframe" data-name="06-idle-connected">
-    <h2>Idle — Partner kopplad (Category Discovery)</h2>
-    <div class="route">/ (paired, mode = idle, !isProposalMode)</div>
+  <div class="wireframe" data-name="04-home-idle">
+    <h2>Hem — Idle (Category Discovery)</h2>
+    <div class="route">/ (mode = idle)</div>
     <div class="frame">
       <div class="header-bar"><span>logo</span><span>⚙</span></div>
-      <!-- Banner: PartnerConnected (dismissable) — alltid monterad för detektering -->
-      <div style="margin-top:16px;margin-bottom:12px;">
-        <div class="card" style="background:#fffbf0;border-color:#f0e0c0;border-radius:14px;padding:8px 11px;font-size:10px;color:#a07040;">🤍 Ni är nu ihopkopplade. ✕</div>
+      <!-- Primary CTA — ovan kategorilistan -->
+      <div style="margin-top:24px;margin-bottom:20px;">
+        <div class="btn-ui">Starta nästa samtal →</div>
       </div>
-      <!-- Category Discovery — primär yta ovan fold (space-y-6) -->
+      <!-- Category Discovery — synlig ovan fold -->
       <!-- Rekommenderad kategori: mt-4 extra spacing + shadow-elevation (isFeatured), ingen label -->
-      <div style="margin-top:16px;margin-bottom:-4px;">
+      <div style="margin-top:8px;margin-bottom:-4px;">
         <div class="card" style="box-shadow:0 6px 24px -4px rgba(0,0,0,0.07),0 1px 4px 0 rgba(0,0,0,0.04);padding:14px;">
           <div class="serif center" style="font-size:12px;">Kategori A — Rekommenderad ★</div>
           <div class="muted center" style="margin-top:3px;font-style:italic;">Entryline för kategori A</div>
-          <div class="muted center" style="margin-top:2px;font-size:9px;text-transform:uppercase;letter-spacing:1px;">Kategori A</div>
         </div>
       </div>
       <div style="margin-top:24px;">
         <div class="card">
           <div class="serif center" style="font-size:12px;">Kategori B</div>
           <div class="muted center" style="margin-top:3px;font-style:italic;">Entryline för kategori B</div>
-          <div class="muted center" style="margin-top:2px;font-size:9px;text-transform:uppercase;letter-spacing:1px;">Kategori B</div>
         </div>
       </div>
-      <!-- Sekundär CTA — under kategorilistan -->
-      <div style="margin-top:40px;margin-bottom:48px;">
-        <div class="btn-outline">Välj samtalsämne →</div>
-      </div>
-      <div class="info-note center">★ Rekommenderad: isFeatured = true (elevation + mt-4) — ingen etikett · Sekundär CTA öppnar proposal-picker</div>
-    </div>
-  </div>
-
-  <div class="wireframe" data-name="06b-idle-status-cards">
-    <h2>Idle — Statuskortet ovan kategorilist</h2>
-    <div class="route">/ (paired, mode = idle, outgoingPendingProposal || savedProposal)</div>
-    <div class="frame">
-      <div class="header-bar"><span>logo</span><span>⚙</span></div>
-      <!-- Statuskort: "Förslag skickat" visas ovan kategorilistan -->
-      <div style="margin-top:16px;">
-        <div class="card center" style="margin-bottom:16px;">
-          <div class="tag">Förslag skickat</div>
-          <div class="badge-realtime" style="margin:4px 0;">● Realtime</div>
-          <div class="serif" style="margin-top:4px;font-size:12px;">Kortets titel</div>
-          <div class="muted" style="margin-top:3px;">Väntar på att din partner svarar.</div>
-          <div class="btn-ghost">Ändra förslag</div>
-        </div>
-      </div>
-      <!-- Kategorier fortfarande synliga under statuskortet -->
-      <div>
+      <div style="margin-top:8px;">
         <div class="card">
-          <div class="serif center" style="font-size:12px;color:#aaa;">Kategori A (opacity-70)</div>
-          <div class="muted center" style="margin-top:2px;font-size:9px;">Entryline...</div>
-        </div>
-        <div class="card" style="margin-top:8px;">
-          <div class="serif center" style="font-size:12px;color:#aaa;">Kategori B (opacity-70)</div>
-          <div class="muted center" style="margin-top:2px;font-size:9px;">Entryline...</div>
+          <div class="serif center" style="font-size:12px;">Kategori C</div>
+          <div class="muted center" style="margin-top:3px;font-style:italic;">Entryline för kategori C</div>
         </div>
       </div>
-      <div style="margin-top:32px;margin-bottom:32px;">
-        <div class="btn-outline">Välj samtalsämne →</div>
+      <div class="spacer" style="height:24px"></div>
+      <div class="info-note center">★ Rekommenderad: isFeatured = true (elevation + mt-4) — ingen etikett · CTA → selectSuggestedNextCardId</div>
+    </div>
+  </div>
+
+  <div class="wireframe" data-name="05-home-idle-all-categories">
+    <h2>Hem — Idle (alla kategorier)</h2>
+    <div class="route">/ (mode = idle, scroll)</div>
+    <div class="frame">
+      <div class="header-bar"><span>logo</span><span>⚙</span></div>
+      <div style="margin-top:24px;margin-bottom:16px;">
+        <div class="btn-ui">Starta nästa samtal →</div>
       </div>
-      <div class="info-note center">Statuskort + kategorilist visas samtidigt — ingen döljer den andre</div>
+      <div class="card"><div class="serif center" style="font-size:11px;color:#aaa;">Kategori A (utforskad ✓)</div></div>
+      <div class="card" style="box-shadow:0 4px 16px -4px rgba(0,0,0,0.06);"><div class="serif center" style="font-size:11px;">Kategori B ★</div></div>
+      <div class="card"><div class="serif center" style="font-size:11px;">Kategori C</div></div>
+      <div class="card"><div class="serif center" style="font-size:11px;">Kategori D</div></div>
+      <div class="divider" style="margin-top:24px;"></div>
+      <!-- Navigation links -->
+      <div style="margin-top:10px;">
+        <div class="muted" style="padding:6px 0;display:flex;gap:6px;align-items:center;">⬡ <span>Vår historia</span></div>
+        <div class="muted" style="padding:6px 0;display:flex;gap:6px;align-items:center;">🔖 <span>Sparade samtal (3)</span></div>
+      </div>
+      <div class="info-note center" style="margin-top:8px;">Kategorier alltid synliga i idle — inga banners, inga proposals</div>
     </div>
   </div>
 
 </div>
 
-<!-- ═══ 4. FÖRSLAG — VÄLJA & SKICKA ═══ -->
-<div class="section-title">4. Förslag — välja &amp; skicka (realtime)</div>
+<!-- ═══ 3. HEM — AKTIV SESSION ═══ -->
+<div class="section-title">3. Hem — aktiv session (mode = active)</div>
 <div class="wireframe-grid">
 
-  <div class="wireframe" data-name="07-proposal-mode-picker">
-    <h2>Förslags-picker</h2>
-    <div class="route">/ (isProposalMode = true, inline)</div>
+  <div class="wireframe" data-name="06-home-active">
+    <h2>Hem — Aktiv session</h2>
+    <div class="route">/ (normalizedSession.cardId finns)</div>
     <div class="frame">
-      <div class="header-bar"><span>logo</span><span>⚙</span></div>
-      <div class="spacer" style="height:5px"></div>
-      <div style="display:flex;gap:5px;margin-bottom:8px;">
-        <div style="background:#CC000018;color:#CC0000;font-size:9px;padding:3px 7px;border-radius:7px;">Ej utforskade</div>
-        <div style="background:#f0f0f0;color:#999;font-size:9px;padding:3px 7px;border-radius:7px;">Påbörjade</div>
-        <div style="background:#f0f0f0;color:#999;font-size:9px;padding:3px 7px;border-radius:7px;">Alla</div>
+      <div class="header-bar"><span>logo</span><span>💾</span></div>
+      <!-- Active session block -->
+      <div style="margin-top:48px;margin-bottom:48px;">
+        <div class="center muted" style="text-transform:uppercase;letter-spacing:1px;font-size:8px;margin-bottom:8px;">Pågående samtal</div>
+        <div class="center serif" style="font-size:15px;margin-bottom:4px;">Att lyssna på riktigt</div>
+        <div class="center muted" style="margin-bottom:4px;">Kategori A</div>
+        <div class="center muted" style="font-size:9px;opacity:0.6;margin-bottom:16px;">Tankeväckare · 2 / 4</div>
+        <div class="btn-ui">Fortsätt samtalet →</div>
       </div>
-      <div class="muted" style="font-size:9px;margin-bottom:3px;text-transform:uppercase;letter-spacing:1px;">Kategori A</div>
-      <div class="card" style="border:1px solid #CC0000;">
-        <div style="font-size:11px;">Att lyssna på riktigt ✓</div>
-      </div>
-      <div class="card">
-        <div style="font-size:11px;">Samtal om gränser</div>
-      </div>
-      <div class="spacer" style="height:5px"></div>
-      <div class="btn-ui">Skicka förslag →</div>
-    </div>
-  </div>
-
-  <div class="wireframe" data-name="08-idle-outgoing-proposal">
-    <h2>Idle — Skickat förslag</h2>
-    <div class="route">/ (ownPendingProposals[0], realtime-sub aktiv)</div>
-    <div class="frame">
-      <div class="header-bar"><span>logo</span><span>⚙</span></div>
-      <div class="spacer"></div>
-      <div class="card center">
-        <div class="tag">Förslag skickat</div>
-        <div class="badge-realtime" style="margin:4px 0;">● Realtime</div>
-        <div class="serif" style="margin-top:4px;font-size:12px;">Att lyssna på riktigt</div>
-        <div class="muted" style="margin-top:3px;">Väntar på att din partner svarar.</div>
-        <div class="btn-ghost">Ändra förslag</div>
-      </div>
-      <div class="spacer"></div>
-      <div class="btn-outline">Välj samtalsämne →</div>
-      <div class="spacer"></div>
-      <div class="info-note center">Ingen polling — status uppdateras via realtime-prenumeration</div>
-    </div>
-  </div>
-
-  <div class="wireframe" data-name="09-proposal-incoming">
-    <h2>Inkommande förslag (overlay)</h2>
-    <div class="route">/ (incomingProposals[0], realtime-händelse)</div>
-    <div class="frame" style="background:#fefefe;">
-      <div class="spacer" style="height:32px"></div>
-      <div class="center muted" style="text-transform:uppercase;letter-spacing:1px;font-size:9px;">Förslag från din partner</div>
-      <div class="spacer" style="height:8px"></div>
-      <div class="center serif" style="font-size:18px;">Att lyssna på riktigt</div>
-      <div class="badge-realtime" style="display:block;text-align:center;margin:6px 0;">● Realtime-prenumeration (topic_proposals)</div>
-      <div class="spacer" style="height:28px"></div>
-      <div class="btn-ui">Acceptera →</div>
-      <div class="spacer" style="height:6px"></div>
-      <div class="btn-ghost">Inte nu</div>
-      <div class="center muted" style="margin-top:3px;">Du kan ta upp det senare.</div>
-      <div class="spacer" style="height:28px"></div>
-      <div class="info-note center">Scoped till couple_space_id — ingen setInterval</div>
+      <div class="info-note center">mode = active när normalizedSession.sessionId + cardId finns · SaveIndicator visas i header</div>
     </div>
   </div>
 
 </div>
 
-<!-- ═══ 5. KATEGORI & ÄMNESVAL ═══ -->
-<div class="section-title">5. Kategori &amp; ämnesval</div>
+<!-- ═══ 4. KATEGORI & ÄMNESVAL ═══ -->
+<div class="section-title">4. Kategori &amp; ämnesval</div>
 <div class="wireframe-grid">
 
-  <div class="wireframe" data-name="10-category-paired">
-    <h2>Kategorivy — paired (isRecommendedCategory = true)</h2>
-    <div class="route">/category/:id (paired, rekommenderad kategori)</div>
+  <div class="wireframe" data-name="07-category-view">
+    <h2>Kategorivy</h2>
+    <div class="route">/category/:id</div>
     <div class="frame">
       <div class="header-bar"><span>← Hem</span><span></span></div>
       <div style="padding:8px 0 0;">
         <div class="serif" style="font-size:15px;font-weight:600;">Paridentitet vs föräldraidentitet</div>
         <div class="muted" style="margin-top:4px;margin-bottom:32px;line-height:1.6;">Vem är ni för varandra, bortom föräldraskapet? Ni kan alltid återvända hit.</div>
       </div>
-      <!-- Featured: mt-4 (+16px) · p-6 same as normal · one shadow step up · -8px pull below · no border -->
+      <!-- Featured card: mt-4 (+16px) · shadow step up · no border -->
       <div style="margin-top:16px;margin-bottom:-8px;">
         <div class="card" style="box-shadow:0 6px 24px -4px rgba(0,0,0,0.07),0 1px 4px 0 rgba(0,0,0,0.04);padding:14px;">
           <div class="serif center" style="font-size:12px;">Vårt minsta "vi"</div>
@@ -344,37 +245,17 @@
         <div class="muted center" style="margin-top:3px;font-style:italic;">Vad ni bär utan att det syns</div>
       </div>
       <div class="spacer"></div>
-      <div class="info-note center">Featured: mt-4 (+16px gap) · p-6 identical to normal · shadow-[0_6px_24px_-4px/0.07] · -8px pull below · no border</div>
+      <div class="info-note center">Featured: mt-4 (+16px gap) · shadow-[0_6px_24px_-4px/0.07] · -8px pull below</div>
     </div>
   </div>
 
 </div>
 
-<!-- ═══ 6. AKTIVT SAMTAL — SESSION ═══ -->
-<div class="section-title">6. Aktivt samtal — session (normalizedSession som enda auktoritet)</div>
+<!-- ═══ 5. AKTIVT SAMTAL — SESSION ═══ -->
+<div class="section-title">5. Aktivt samtal — session (normalizedSession som enda auktoritet)</div>
 <div class="wireframe-grid">
 
-  <div class="wireframe" data-name="11-active-session-home">
-    <h2>Active — Pågående samtal (hem)</h2>
-    <div class="route">/ (normalizedSession.sessionId aktiv)</div>
-    <div class="frame">
-      <div class="header-bar"><span>logo</span><span>💾</span></div>
-      <div class="spacer"></div>
-      <div class="card" style="border-left:3px solid #CC0000;">
-        <div class="tag">Pågående · Steg 2/4</div>
-        <div class="serif" style="margin-top:5px;font-size:12px;">Att lyssna på riktigt</div>
-        <div class="muted" style="margin-top:2px;">Kategori A</div>
-        <div style="margin-top:7px;">
-          <div class="progress-bar"><div class="progress-step done"></div><div class="progress-step current"></div><div class="progress-step"></div><div class="progress-step"></div></div>
-        </div>
-        <div class="btn-ui" style="margin-top:9px;font-size:10px;">Fortsätt samtalet →</div>
-      </div>
-      <div class="spacer"></div>
-      <div class="info-note center">Step index från normalizedSession.currentStepIndex (enda auktoritet)</div>
-    </div>
-  </div>
-
-  <div class="wireframe" data-name="12-active-session-step">
+  <div class="wireframe" data-name="08-active-session-step">
     <h2>Aktivt sessionssteg</h2>
     <div class="route">/card/:id (cardViewMode = live, draft-state)</div>
     <div class="frame">
@@ -383,7 +264,7 @@
         <div class="progress-bar">
           <div class="progress-step done"></div><div class="progress-step current"></div><div class="progress-step"></div><div class="progress-step"></div>
         </div>
-        <div class="muted center" style="margin-top:3px;font-size:8px;">Början · <b>Fördjupning</b> · I vardagen · Tillsammans</div>
+        <div class="muted center" style="margin-top:3px;font-size:8px;">Öppnare · <b>Tankeväckare</b> · Scenario · Teamwork</div>
       </div>
       <div class="spacer" style="height:5px"></div>
       <div class="center serif" style="font-size:15px;">Att lyssna på riktigt</div>
@@ -400,41 +281,12 @@
       </div>
       <div class="spacer" style="height:5px"></div>
       <div class="btn-ui">Markera klar →</div>
-      <div class="center muted" style="margin-top:3px;">Ni går vidare när båda är klara.</div>
       <div class="spacer" style="height:4px"></div>
-      <div class="info-note center">Step index = normalizedSession.currentStepIndex (ej effectiveStep)</div>
+      <div class="info-note center">Step index = normalizedSession.currentStepIndex (enda auktoritet)</div>
     </div>
   </div>
 
-  <div class="wireframe" data-name="13-catchup-info">
-    <h2>Catch-up — informationsläge</h2>
-    <div class="route">/card/:id (isCatchingUp = true, enbart informationellt)</div>
-    <div class="frame">
-      <div class="header-bar"><span>← Kategori A</span><span>⚙</span></div>
-      <div style="padding:5px 0;">
-        <div class="progress-bar">
-          <div class="progress-step done"></div><div class="progress-step current"></div><div class="progress-step"></div><div class="progress-step"></div>
-        </div>
-        <div class="muted center" style="margin-top:3px;font-size:8px;">Början · <b>Fördjupning</b> · I vardagen · Tillsammans</div>
-      </div>
-      <div class="spacer" style="height:5px"></div>
-      <div class="center serif" style="font-size:15px;">Att lyssna på riktigt</div>
-      <div class="divider"></div>
-      <div class="card" style="border-left:2px solid #CC000033;">
-        <div class="muted" style="font-size:9px;">ℹ️ Din partner är lite före i samtalet.</div>
-        <div class="muted" style="font-size:8px;margin-top:2px;">myFirstUncompletedStep: 1 · sharedStepIndex: 1</div>
-      </div>
-      <div class="card">
-        <div class="muted">Aktuellt steg-innehåll (steg 1)</div>
-        <div style="margin-top:3px;padding:5px;background:#f5f5f5;border-radius:6px;font-size:9px;color:#bbb;">Skriv något ni vill säga.</div>
-      </div>
-      <div class="btn-ui">Markera klar →</div>
-      <div class="spacer" style="height:4px"></div>
-      <div class="info-note center">isCatchingUp är enbart info — monterat steg styrs ej av effectiveStep</div>
-    </div>
-  </div>
-
-  <div class="wireframe" data-name="14-waiting-state">
+  <div class="wireframe" data-name="09-waiting-state">
     <h2>Väntläge</h2>
     <div class="route">/card/:id (state = ready, isWaitingForPartner)</div>
     <div class="frame">
@@ -453,7 +305,7 @@
     </div>
   </div>
 
-  <div class="wireframe" data-name="15-revealed-reflections">
+  <div class="wireframe" data-name="10-revealed-reflections">
     <h2>Avslöjade reflektioner</h2>
     <div class="route">/card/:id (state = revealed)</div>
     <div class="frame">
@@ -477,13 +329,41 @@
     </div>
   </div>
 
+  <div class="wireframe" data-name="11-catchup-info">
+    <h2>Catch-up — informationsläge</h2>
+    <div class="route">/card/:id (isCatchingUp = true, enbart informationellt)</div>
+    <div class="frame">
+      <div class="header-bar"><span>← Kategori A</span><span>⚙</span></div>
+      <div style="padding:5px 0;">
+        <div class="progress-bar">
+          <div class="progress-step done"></div><div class="progress-step current"></div><div class="progress-step"></div><div class="progress-step"></div>
+        </div>
+        <div class="muted center" style="margin-top:3px;font-size:8px;">Öppnare · <b>Tankeväckare</b> · Scenario · Teamwork</div>
+      </div>
+      <div class="spacer" style="height:5px"></div>
+      <div class="center serif" style="font-size:15px;">Att lyssna på riktigt</div>
+      <div class="divider"></div>
+      <div class="card" style="border-left:2px solid #CC000033;">
+        <div class="muted" style="font-size:9px;">ℹ️ Din partner är lite före i samtalet.</div>
+        <div class="muted" style="font-size:8px;margin-top:2px;">myFirstUncompletedStep: 1 · sharedStepIndex: 1</div>
+      </div>
+      <div class="card">
+        <div class="muted">Aktuellt steg-innehåll (steg 1)</div>
+        <div style="margin-top:3px;padding:5px;background:#f5f5f5;border-radius:6px;font-size:9px;color:#bbb;">Skriv något ni vill säga.</div>
+      </div>
+      <div class="btn-ui">Markera klar →</div>
+      <div class="spacer" style="height:4px"></div>
+      <div class="info-note center">isCatchingUp är enbart info — monterat steg styrs ej av effectiveStep</div>
+    </div>
+  </div>
+
 </div>
 
-<!-- ═══ 7. AVSLUTAT SAMTAL ═══ -->
-<div class="section-title">7. Avslutat samtal</div>
+<!-- ═══ 6. AVSLUTAT SAMTAL ═══ -->
+<div class="section-title">6. Avslutat samtal</div>
 <div class="wireframe-grid">
 
-  <div class="wireframe" data-name="16-completed-session">
+  <div class="wireframe" data-name="12-completed-session">
     <h2>Avslutat samtal (CompletedSessionView)</h2>
     <div class="route">/card/:id (showCompletion = true → CompletedSessionView)</div>
     <div class="frame">
@@ -494,7 +374,7 @@
           <div class="serif" style="font-size:16px;margin-top:4px;">Att lyssna på riktigt</div>
         </div>
         <div class="card">
-          <div class="muted" style="font-size:9px;margin-bottom:5px;">Början</div>
+          <div class="muted" style="font-size:9px;margin-bottom:5px;">Öppnare</div>
           <div style="margin-bottom:4px;"><span class="tag">Partner</span> <span style="font-size:9px;color:#aaa;">"..."</span></div>
           <div><span class="tag">Du</span> <span style="font-size:9px;color:#aaa;">"..."</span></div>
         </div>
@@ -512,11 +392,11 @@
 
 </div>
 
-<!-- ═══ 8. ÅTERBESÖK & ANTECKNINGAR ═══ -->
-<div class="section-title">8. Återbesök &amp; anteckningar</div>
+<!-- ═══ 7. ÅTERBESÖK & ANTECKNINGAR ═══ -->
+<div class="section-title">7. Återbesök &amp; anteckningar</div>
 <div class="wireframe-grid">
 
-  <div class="wireframe" data-name="17-review-drawer">
+  <div class="wireframe" data-name="13-review-drawer">
     <h2>ReviewDrawer (öppen)</h2>
     <div class="route">/card/:id → ReviewDrawer overlay (read-only)</div>
     <div class="frame">
@@ -524,18 +404,18 @@
       <div class="spacer" style="height:5px"></div>
       <div class="badge-readonly" style="display:block;margin-bottom:6px;">prompt_notes only — ingen step_reflections-data</div>
       <div class="card">
-        <div style="font-size:10px;font-weight:500;">Steg 1 — Början</div>
+        <div style="font-size:10px;font-weight:500;">Steg 1 — Öppnare</div>
         <div class="muted" style="margin-top:3px;">🔓 Alltid upplåst (index 0)</div>
         <div style="margin-top:4px;font-size:9px;color:#aaa;">"Din privata anteckning..."</div>
         <div style="margin-top:2px;font-size:9px;color:#CC000077;">"Delad anteckning..."</div>
       </div>
       <div class="card">
-        <div style="font-size:10px;font-weight:500;">Steg 2 — Fördjupning</div>
+        <div style="font-size:10px;font-weight:500;">Steg 2 — Tankeväckare</div>
         <div class="muted" style="margin-top:3px;">🔓 Upplåst (hasAnyNotes = true)</div>
         <div style="margin-top:4px;font-size:9px;color:#aaa;">"Din privata anteckning..."</div>
       </div>
       <div class="card" style="opacity:0.45;">
-        <div style="font-size:10px;font-weight:500;">Steg 3 — I vardagen</div>
+        <div style="font-size:10px;font-weight:500;">Steg 3 — Scenario</div>
         <div class="muted" style="margin-top:3px;">🔒 Låst (inga anteckningar)</div>
       </div>
       <div class="spacer" style="height:5px"></div>
@@ -544,7 +424,7 @@
     </div>
   </div>
 
-  <div class="wireframe" data-name="18-revisit-mode">
+  <div class="wireframe" data-name="14-revisit-mode">
     <h2>Kortvy — Revisit-läge</h2>
     <div class="route">/card/:id?revisit=true (cardViewMode = revisit)</div>
     <div class="frame">
@@ -569,17 +449,17 @@
 
 </div>
 
-<!-- ═══ 9. ARKIV & HISTORIK ═══ -->
-<div class="section-title">9. Arkiv &amp; historik</div>
+<!-- ═══ 8. ARKIV & HISTORIK ═══ -->
+<div class="section-title">8. Arkiv &amp; historik</div>
 <div class="wireframe-grid">
 
-  <div class="wireframe" data-name="19-shared-summary-empty">
-    <h2>Er historia — tom</h2>
-    <div class="route">/shared (paired, inga avslutade samtal)</div>
+  <div class="wireframe" data-name="15-shared-summary-empty">
+    <h2>Vår historia — tom</h2>
+    <div class="route">/shared (inga avslutade samtal)</div>
     <div class="frame">
       <div class="header-bar"><span>← Tillbaka</span><span></span></div>
       <div class="center" style="margin-bottom:32px;">
-        <div class="serif" style="font-size:17px;font-weight:600;">Vårt utrymme</div>
+        <div class="serif" style="font-size:17px;font-weight:600;">Vår historia</div>
         <div class="muted" style="margin-top:3px;">Avslutade samtal och delade reflektioner</div>
       </div>
       <div style="min-height:200px;display:flex;flex-direction:column;justify-content:center;text-align:center;">
@@ -592,13 +472,13 @@
     </div>
   </div>
 
-  <div class="wireframe" data-name="20-shared-summary-history">
-    <h2>Er historia — med innehåll</h2>
+  <div class="wireframe" data-name="16-shared-summary-history">
+    <h2>Vår historia — med innehåll</h2>
     <div class="route">/shared (har historik)</div>
     <div class="frame">
       <div class="header-bar"><span>← Tillbaka</span><span></span></div>
       <div class="center" style="margin-bottom:10px;">
-        <div class="serif" style="font-size:17px;font-weight:600;">Vårt utrymme</div>
+        <div class="serif" style="font-size:17px;font-weight:600;">Vår historia</div>
       </div>
       <div class="card">
         <div class="serif" style="font-size:11px;">Nyligen delat</div>
@@ -622,7 +502,7 @@
     </div>
   </div>
 
-  <div class="wireframe" data-name="21-saved-conversations">
+  <div class="wireframe" data-name="17-saved-conversations">
     <h2>Sparade samtal</h2>
     <div class="route">/saved</div>
     <div class="frame">
@@ -639,27 +519,6 @@
         <div class="muted" style="margin-top:2px;">Kategori B · 5 feb 2026</div>
       </div>
       <div style="height:40px;"></div>
-    </div>
-  </div>
-
-</div>
-
-<!-- ═══ 10. LÄMNA — PARTNER BORTA ═══ -->
-<div class="section-title">10. Lämna — partner borta</div>
-<div class="wireframe-grid">
-
-  <div class="wireframe" data-name="22-solo-partner-left">
-    <h2>Solo — Partner lämnade</h2>
-    <div class="route">/ (mode = solo, haft partner)</div>
-    <div class="frame">
-      <div class="header-bar"><span>logo</span><span>⚙</span></div>
-      <div class="spacer"></div>
-      <div class="center serif" style="font-size:16px;font-weight:600;">Du är ensam här just nu.</div>
-      <div class="spacer" style="height:5px"></div>
-      <div class="center muted" style="max-width:200px;margin:0 auto;">Din partner är inte längre ansluten till ert rum.</div>
-      <div class="spacer"></div>
-      <div class="btn-ui">🔗 Dela länk</div>
-      <div class="spacer"></div>
     </div>
   </div>
 
