@@ -11,6 +11,7 @@ import { useApp } from '@/contexts/AppContext';
 import { useCoupleSpaceContext } from '@/contexts/CoupleSpaceContext';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
+import { toastErrorOnce } from '@/lib/toastOnce';
 
 import Header from '@/components/Header';
 import SectionView, { type SectionViewHandle } from '@/components/SectionView';
@@ -192,13 +193,13 @@ export default function CardView() {
 
     if (error) {
       console.error('Step completion error:', error);
-      toast.error('Kunde inte markera steget som klart');
+      toastErrorOnce('step_complete_fail', 'Kunde inte markera steget som klart');
       return;
     }
 
     const result = Array.isArray(data) ? data[0] : data;
     if (result?.partner_left) {
-      toast.error('Din partner har lämnat utrymmet');
+      toastErrorOnce('partner_left', 'Din partner har lämnat utrymmet');
       navigate('/');
       return;
     }
