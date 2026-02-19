@@ -303,7 +303,6 @@ export default function Home() {
                           style={{
                             backgroundColor: 'var(--color-surface)',
                             border: 'var(--border-card)',
-                            borderTop: '2px solid var(--color-accent)',
                           }}
                         >
                           <h3
