@@ -38,6 +38,7 @@ interface HeaderProps {
   showBackgroundPicker?: boolean;
   showSaveIndicator?: boolean;
   showBackupManager?: boolean;
+  variant?: 'default' | 'immersive';
 }
 
 export default function Header({
@@ -47,6 +48,7 @@ export default function Header({
   showBackgroundPicker = false,
   showSaveIndicator = true,
   showBackupManager = true,
+  variant = 'default',
 }: HeaderProps) {
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -61,18 +63,25 @@ export default function Header({
     navigate('/login');
   };
 
+  const isImmersive = variant === 'immersive';
+
   return (
-    <header className="sticky top-0 z-10 border-b border-primary/20 backdrop-blur-md" style={{ backgroundColor: 'hsl(var(--surface-chrome) / 0.92)' }}>
-      <div className="flex items-center justify-between h-14 px-6">
+    <header
+      className={`sticky top-0 z-10 backdrop-blur-md ${isImmersive ? '' : 'border-b border-primary/20'}`}
+      style={{
+        backgroundColor: isImmersive ? 'var(--color-cta)' : 'hsl(var(--surface-chrome) / 0.92)',
+      }}
+    >
+      <div className="flex items-center justify-between px-6" style={{ height: isImmersive ? 'auto' : '3.5rem', paddingTop: isImmersive ? '1rem' : undefined, paddingBottom: isImmersive ? '2rem' : undefined }}>
         <div className="flex items-center gap-2">
           <img
             src={bonkiLogo}
             alt="Still Us"
-            className="h-8 w-8 object-contain cursor-pointer"
+            className={`h-8 w-8 object-contain cursor-pointer ${isImmersive ? 'brightness-0 invert' : ''}`}
             onClick={() => navigate('/')}
           />
           {title && (
-            <h1 className="font-serif text-lg text-foreground truncate">
+            <h1 className={`font-serif text-lg truncate ${isImmersive ? 'text-white' : 'text-foreground'}`}>
               {title}
             </h1>
           )}
@@ -107,7 +116,7 @@ export default function Header({
           )}
           <Popover>
             <PopoverTrigger asChild>
-              <Button variant="ghost" size="icon" className="text-muted-foreground hover:text-foreground">
+              <Button variant="ghost" size="icon" className={isImmersive ? 'text-white/70 hover:text-white hover:bg-white/10' : 'text-muted-foreground hover:text-foreground'}>
                 <Settings className="w-4 h-4" />
               </Button>
             </PopoverTrigger>
