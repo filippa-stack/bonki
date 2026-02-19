@@ -55,11 +55,11 @@ export default function StepProgressIndicator({
               isCurrent && 'font-semibold',
             )}
             style={{
-              color: isCurrent
-                ? 'var(--color-accent)'
-                : 'var(--color-secondary)',
-              opacity: isCurrent ? 1 : isCompleted ? 0.7 : 0.4,
+              color: 'var(--color-ink)',
+              opacity: isCurrent ? 1 : 0.6,
               textDecoration: isCompleted && !isCurrent ? 'line-through' : 'none',
+              borderBottom: isCurrent ? '2px solid var(--color-accent)' : '2px solid transparent',
+              paddingBottom: '2px',
             }}
           >
             {step.label}
