@@ -5,13 +5,11 @@ import { useAuth } from '@/contexts/AuthContext';
 export interface NotificationPreferences {
   notifySharedReflection: boolean;
   notifyConversationProgress: boolean;
-  notifyEmailProposal: boolean;
 }
 
 const defaults: NotificationPreferences = {
   notifySharedReflection: true,
   notifyConversationProgress: false,
-  notifyEmailProposal: true,
 };
 
 const LEGACY_KEY = 'stillus-notification-prefs';
@@ -20,7 +18,6 @@ function mapRowToPrefs(row: any): NotificationPreferences {
   return {
     notifySharedReflection: row.notify_shared_reflection ?? defaults.notifySharedReflection,
     notifyConversationProgress: row.notify_conversation_progress ?? defaults.notifyConversationProgress,
-    notifyEmailProposal: row.notify_email_proposal ?? defaults.notifyEmailProposal,
   };
 }
 
@@ -30,7 +27,6 @@ export function useNotificationPreferences() {
   const [loading, setLoading] = useState(true);
   const initialized = useRef(false);
 
-  // Load from DB (ensure row exists)
   useEffect(() => {
     if (!user) {
       setPrefs(defaults);
@@ -44,7 +40,6 @@ export function useNotificationPreferences() {
     const load = async () => {
       setLoading(true);
 
-      // Check for legacy localStorage prefs to migrate
       let legacyPrefs: Partial<NotificationPreferences> | null = null;
       try {
         const raw = localStorage.getItem(LEGACY_KEY);
@@ -65,7 +60,6 @@ export function useNotificationPreferences() {
       if (data && !error) {
         setPrefs(mapRowToPrefs(data));
       } else {
-        // Insert default row (merge legacy if present)
         const merged = { ...defaults, ...legacyPrefs };
         const { data: inserted } = await supabase
           .from('notification_preferences')
@@ -73,7 +67,7 @@ export function useNotificationPreferences() {
             user_id: user.id,
             notify_shared_reflection: merged.notifySharedReflection,
             notify_conversation_progress: merged.notifyConversationProgress,
-            notify_email_proposal: merged.notifyEmailProposal,
+            notify_email_proposal: false,
           })
           .select('*')
           .single();
@@ -99,11 +93,9 @@ export function useNotificationPreferences() {
 
     setPrefs(prev => ({ ...prev, [key]: value }));
 
-    // Map camelCase key to snake_case column
     const colMap: Record<keyof NotificationPreferences, string> = {
       notifySharedReflection: 'notify_shared_reflection',
       notifyConversationProgress: 'notify_conversation_progress',
-      notifyEmailProposal: 'notify_email_proposal',
     };
 
     supabase
