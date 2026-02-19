@@ -298,7 +298,7 @@ export default function CardView() {
     return (
       <div className="min-h-screen page-bg">
         <Header title={category?.title} showBack backTo="/" />
-        <div className="px-6 pt-24 pb-16 max-w-md mx-auto text-center space-y-6">
+        <div className="px-6 pt-title-above pb-16 max-w-md mx-auto text-center space-y-8">
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -313,7 +313,7 @@ export default function CardView() {
           <Button
             onClick={() => navigate('/')}
             size="lg"
-            className="w-full h-14 rounded-2xl gap-2 font-normal"
+            className="w-full h-14 rounded-card gap-2 font-normal"
           >
             <Home className="w-4 h-4" />
             Tillbaka till Hem
@@ -330,7 +330,7 @@ export default function CardView() {
     return (
       <div className="min-h-screen page-bg">
         <Header title={category?.title} showBack backTo="/" />
-        <div className="px-6 pt-20 pb-16">
+        <div className="px-6 pt-title-above pb-16">
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -347,7 +347,7 @@ export default function CardView() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: BEAT_1, duration: BEAT_3, ease: EASE }}
-            className="max-w-md mx-auto mt-12 space-y-3"
+            className="max-w-md mx-auto mt-16 space-y-2"
           >
             <p className="text-sm text-muted-foreground text-center leading-relaxed">
               Vill ni formulera något att ta med er?
@@ -359,12 +359,12 @@ export default function CardView() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: BEAT_2, duration: BEAT_3, ease: EASE }}
-            className="max-w-md mx-auto mt-12 space-y-6 text-center"
+            className="max-w-md mx-auto mt-16 space-y-8 text-center"
           >
             <Button
               onClick={() => navigate('/')}
               size="lg"
-              className="w-full h-14 rounded-2xl gap-2 font-normal"
+              className="w-full h-14 rounded-card gap-2 font-normal"
             >
               Till Hem
             </Button>
@@ -425,7 +425,7 @@ export default function CardView() {
         </motion.div>
       )}
 
-      <div className="px-6 pt-16 pb-10">
+      <div className="px-6 pt-title-above pb-8">
         <motion.h1
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -445,7 +445,7 @@ export default function CardView() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: BEAT_1, duration: BEAT_3, ease: EASE }}
-            className="text-sm not-italic mt-5 text-center max-w-2xl mx-auto leading-relaxed"
+            className="text-sm not-italic mt-4 text-center max-w-2xl mx-auto leading-relaxed"
             style={{ color: 'var(--color-text-secondary)' }}
           >
             {card.subtitle}
@@ -454,7 +454,7 @@ export default function CardView() {
       </div>
 
       {/* Section content — centered, max 520px for readability */}
-      <div className="px-6 pb-10">
+      <div className="px-6 pb-8">
         <div className="max-w-[520px] mx-auto">
         <AnimatePresence mode="wait">
           {currentSection && (
@@ -506,7 +506,7 @@ export default function CardView() {
               {/* ── MODE: revisit — step CTA ── */}
               {cardViewMode === 'revisit' && (
                 <motion.div
-                  className="pt-10 pb-8 space-y-5"
+                  className="pt-8 pb-8 space-y-4"
                   initial={isLive ? { opacity: 0 } : false}
                   animate={{ opacity: 1 }}
                   transition={{ delay: isLive ? BEAT_2 + BEAT_2 : 0, duration: BEAT_3, ease: EASE }}

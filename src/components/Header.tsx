@@ -72,7 +72,7 @@ export default function Header({
         backgroundColor: isImmersive ? 'var(--color-cta)' : 'hsl(var(--surface-chrome) / 0.92)',
       }}
     >
-      <div className="flex items-center justify-between px-6" style={{ height: isImmersive ? 'auto' : '3.5rem', paddingTop: isImmersive ? '1rem' : undefined, paddingBottom: isImmersive ? '2rem' : undefined }}>
+      <div className="flex items-center justify-between px-6" style={{ height: isImmersive ? 'auto' : '3.5rem', paddingTop: isImmersive ? '16px' : undefined, paddingBottom: isImmersive ? '32px' : undefined }}>
         <div className="flex items-center gap-2">
           <img
             src={bonkiLogo}

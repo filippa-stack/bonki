@@ -37,13 +37,13 @@
     --input: 30 14% 82%;
     --ring: 150 32% 18%;
 
-    --radius: 0.875rem;
+    --radius: 1.25rem;
 
     /* ── Semantic radius tokens ── */
-    --radius-card:   1rem;
-    --radius-button: 0.75rem;
-    --radius-pill:   0.5rem;
-    --radius-toast:  0.75rem;
+    --radius-card:   1.25rem;   /* 20px */
+    --radius-button: 0.875rem;  /* 14px */
+    --radius-pill:   0.875rem;  /* 14px */
+    --radius-toast:  1.25rem;   /* 20px */
 
     /* ── Standard shadow ── */
     --shadow-card: none;
@@ -100,10 +100,11 @@
     --font-serif: 'Cormorant Garamond', Georgia, serif;
     --font-sans: 'Inter', -apple-system, sans-serif;
 
-    /* Spacing rhythm */
-    --space-gentle: 1.5rem;
-    --space-breath: 2.5rem;
-    --space-section: 4rem;
+    /* Spacing rhythm (8px grid) */
+    --space-gentle: 1.5rem;   /* 24px */
+    --space-breath: 2.5rem;   /* 40px */
+    --space-section: 2rem;    /* 32px */
+    --space-title-above: 4rem; /* 64px */
 
     /* Transitions */
     --transition-calm: 150ms cubic-bezier(0.4, 0, 0.2, 1);

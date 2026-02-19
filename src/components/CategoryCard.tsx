@@ -25,7 +25,7 @@ export default function CategoryCard({
       className="w-full text-left cursor-pointer rounded-card p-6 transition-opacity hover:opacity-80"
       style={{ backgroundColor: 'var(--color-surface)', border: 'var(--border-card)' }}
     >
-      <div className="flex flex-col gap-1.5">
+      <div className="flex flex-col gap-2">
         <div className="flex items-center justify-between">
           <h3
             className="font-serif text-base font-medium leading-snug"
