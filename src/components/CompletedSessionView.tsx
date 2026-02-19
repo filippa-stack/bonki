@@ -47,16 +47,12 @@ export default function CompletedSessionView({
 }: CompletedSessionViewProps) {
   const navigate = useNavigate();
   const { user } = useAuth();
-  const { space, userRole } = useCoupleSpace();
+  const { space } = useCoupleSpace();
   const [session, setSession] = useState<SessionData | null>(null);
   const [loading, setLoading] = useState(true);
 
-  const myName = userRole === 'partner_a'
-    ? (space?.partner_a_name || 'Du')
-    : (space?.partner_b_name || 'Du');
-  const partnerName = userRole === 'partner_a'
-    ? (space?.partner_b_name || 'Din partner')
-    : (space?.partner_a_name || 'Din partner');
+  const myName = 'Du';
+  const partnerName = 'Din partner';
 
   useEffect(() => {
     if (!space || !cardId) { setLoading(false); return; }

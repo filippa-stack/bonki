@@ -17,8 +17,7 @@ const STEP_PROMPT_ID = 'step-note';
 
 export default function StepReflection({ section, card, defaultExpanded = false }: StepReflectionProps) {
   const { t } = useTranslation();
-  const { memberCount } = useCoupleSpace();
-  const isPaired = memberCount >= 2;
+  // Volume 1: single-writer model — sharing always available to self
   const {
     saveNote,
     shareNote,
@@ -138,7 +137,7 @@ export default function StepReflection({ section, card, defaultExpanded = false 
             {isSaved && !isShared && (
               <span className="text-xs text-muted-foreground/60 not-italic flex items-center gap-1">
                 <Lock className="w-3 h-3" />
-                {isPaired ? 'Sparat privat' : 'Din privata anteckning'}
+                Din privata anteckning
               </span>
             )}
             {isShared && sharedNote?.sharedAt && (
@@ -150,29 +149,22 @@ export default function StepReflection({ section, card, defaultExpanded = false 
           </div>
 
           <div className="flex items-center gap-2">
-            {isPaired ? (
-              <>
-                <button
-                  onClick={() => saveNote(STEP_PROMPT_ID, text, 'private')}
-                  disabled={!text.trim()}
-                  className="text-xs font-medium px-3 py-1.5 rounded-lg border border-border text-muted-foreground hover:text-foreground hover:border-foreground/20 transition-colors disabled:opacity-40"
-                >
-                  {isShared ? 'Uppdatera' : 'Spara privat'}
-                </button>
-                <button
-                  onClick={handleShare}
-                  disabled={!text.trim() && !privateNote?.content}
-                  className="text-xs font-medium px-3 py-1.5 rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 transition-colors disabled:opacity-40"
-                >
-                  {isShared ? 'Dela igen' : 'Dela'}
-                </button>
-              </>
-            ) : (
-              <span className="text-xs text-muted-foreground/50 italic flex items-center gap-1">
-                <Link2 className="w-3 h-3" />
-                Koppla ihop er för att dela
-              </span>
-            )}
+            <>
+              <button
+                onClick={() => saveNote(STEP_PROMPT_ID, text, 'private')}
+                disabled={!text.trim()}
+                className="text-xs font-medium px-3 py-1.5 rounded-lg border border-border text-muted-foreground hover:text-foreground hover:border-foreground/20 transition-colors disabled:opacity-40"
+              >
+                {isShared ? 'Uppdatera' : 'Spara privat'}
+              </button>
+              <button
+                onClick={handleShare}
+                disabled={!text.trim() && !privateNote?.content}
+                className="text-xs font-medium px-3 py-1.5 rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 transition-colors disabled:opacity-40"
+              >
+                {isShared ? 'Dela igen' : 'Dela'}
+              </button>
+            </>
           </div>
         </div>
       </div>

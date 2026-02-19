@@ -1,9 +1,6 @@
-import { useState, useEffect, useCallback, useRef } from 'react';
-import { useTranslation } from 'react-i18next';
+import { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
-import { hasPendingInvite } from '@/hooks/usePendingInvite';
-import { toast } from 'sonner';
 import { invokeEdgeFunction } from '@/lib/invokeEdgeFunction';
 
 interface CoupleSpaceData {
@@ -14,35 +11,19 @@ interface CoupleSpaceData {
   paid_at: string | null;
 }
 
-interface InviteInfo {
-  invite_code: string;
-  invite_token: string;
-}
-
 interface CoupleSpaceState {
   space: CoupleSpaceData | null;
   loading: boolean;
   error: string | null;
-  /** Raw count — use for logic (step gating, etc.) */
-  memberCount: number;
-  /** Debounced count — use for display to avoid flicker */
-  displayMemberCount: number;
-  userRole: string | null;
   refreshSpace: () => Promise<void>;
-  /** Fetch invite info on demand — never stored in space object */
-  fetchInviteInfo: () => Promise<InviteInfo | null>;
   switchToNewSpace: () => Promise<{ ok: boolean; spaceId?: string }>;
 }
 
 export function useCoupleSpace(): CoupleSpaceState {
   const { user } = useAuth();
-  const { t } = useTranslation();
   const [space, setSpace] = useState<CoupleSpaceData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [memberCount, setMemberCount] = useState(0);
-  const [userRole, setUserRole] = useState<string | null>(null);
-  const prevMemberCountRef = useRef<number>(0);
 
   const userId = user?.id;
 
@@ -54,10 +35,10 @@ export function useCoupleSpace(): CoupleSpaceState {
     }
 
     try {
-      // Check for existing membership
+      // Check for existing membership via couple_members
       const { data: memberships, error: memError } = await supabase
         .from('couple_members')
-        .select('couple_space_id, role')
+        .select('couple_space_id')
         .eq('user_id', userId)
         .is('left_at', null)
         .order('created_at', { ascending: false })
@@ -75,26 +56,9 @@ export function useCoupleSpace(): CoupleSpaceState {
           .maybeSingle();
 
         if (spaceError) throw spaceError;
-
-        // Count members
-        const { count } = await supabase
-          .from('couple_members')
-          .select('id', { count: 'exact', head: true })
-          .eq('couple_space_id', membership.couple_space_id)
-          .is('left_at', null);
-
         setSpace(spaceData as unknown as CoupleSpaceData);
-        setMemberCount(count ?? 1);
-        prevMemberCountRef.current = count ?? 1;
-        setUserRole(membership.role);
       } else {
         // No active membership — auto-create a new space
-        // Don't auto-create if there's a pending invite — let the claim finish first
-        if (hasPendingInvite()) {
-          setLoading(false);
-          return;
-        }
-
         const { data: sessionData } = await supabase.auth.getSession();
         const accessToken = sessionData?.session?.access_token;
         if (!accessToken) throw new Error('No auth session');
@@ -106,10 +70,8 @@ export function useCoupleSpace(): CoupleSpaceState {
 
         if (res.error) throw new Error(res.error.message || 'Failed to create couple space');
 
-        const result = res.data as { space: CoupleSpaceData; memberCount: number; role: string };
+        const result = res.data as { space: CoupleSpaceData };
         setSpace(result.space);
-        setMemberCount(result.memberCount);
-        setUserRole(result.role);
       }
     } catch (err: any) {
       console.error('CoupleSpace error:', err);
@@ -119,72 +81,11 @@ export function useCoupleSpace(): CoupleSpaceState {
     }
   }, [userId]);
 
-  /** Fetch invite info on demand via secure RPC — never cached in state */
-  const fetchInviteInfo = useCallback(async (): Promise<InviteInfo | null> => {
-    try {
-      const { data, error } = await supabase.rpc('get_own_invite_info' as any);
-      if (error) throw error;
-      const rows = data as unknown as InviteInfo[];
-      return rows && rows.length > 0 ? rows[0] : null;
-    } catch (err) {
-      console.error('Failed to fetch invite info:', err);
-      return null;
-    }
-  }, []);
-
   useEffect(() => {
     fetchSpace();
   }, [fetchSpace]);
 
-  // Realtime: update memberCount when couple_members changes
-  // No immediate fetch — fetchSpace already set the initial count.
-  useEffect(() => {
-    if (!userId || !space?.id) return;
-    let cancelled = false;
-
-    const fetchCount = async () => {
-      const { count } = await supabase
-        .from('couple_members')
-        .select('id', { count: 'exact', head: true })
-        .eq('couple_space_id', space.id)
-        .is('left_at', null);
-      if (!cancelled) {
-        const newCount = count ?? 1;
-        const prevCount = prevMemberCountRef.current;
-        prevMemberCountRef.current = newCount;
-        setMemberCount(newCount);
-        // When a partner joins (1→2), immediately refresh the full space
-        // so both users see identical state without waiting for a debounce.
-        if (prevCount < 2 && newCount >= 2) {
-          fetchSpace();
-        }
-      }
-    };
-
-    const channel = supabase
-      .channel(`couple_members_${space.id}`)
-      .on(
-        'postgres_changes',
-        {
-          event: '*',
-          schema: 'public',
-          table: 'couple_members',
-          filter: `couple_space_id=eq.${space.id}`,
-        },
-        () => fetchCount()
-      )
-      .subscribe();
-
-    return () => {
-      cancelled = true;
-      supabase.removeChannel(channel);
-    };
-  }, [userId, space?.id, fetchSpace]);
-
-  // Realtime: re-fetch whenever the couple_spaces row itself changes
-  // (e.g. partner_b_name written, paid_at updated, or any other field).
-  // This is the primary correctness mechanism for User A seeing partner join —
-  // the couple_members subscription above is kept as a complementary signal.
+  // Realtime: re-fetch when the couple_spaces row changes
   useEffect(() => {
     if (!userId || !space?.id) return;
     const spaceId = space.id;
@@ -208,58 +109,50 @@ export function useCoupleSpace(): CoupleSpaceState {
     };
   }, [userId, space?.id, fetchSpace]);
 
-  // Debounced display value to prevent UI flicker on rapid realtime updates
-  const [displayMemberCount, setDisplayMemberCount] = useState(memberCount);
-  const displayTimerRef = useRef<ReturnType<typeof setTimeout>>();
-
-  useEffect(() => {
-    if (displayTimerRef.current) clearTimeout(displayTimerRef.current);
-    displayTimerRef.current = setTimeout(() => {
-      setDisplayMemberCount(memberCount);
-    }, 400);
-    return () => {
-      if (displayTimerRef.current) clearTimeout(displayTimerRef.current);
-    };
-  }, [memberCount]);
-
   const switchToNewSpace = useCallback(async (): Promise<{ ok: boolean; spaceId?: string }> => {
     try {
       const { data: sessionData } = await supabase.auth.getSession();
       const accessToken = sessionData?.session?.access_token;
       if (!accessToken) throw new Error('No auth session');
 
-      const res = await invokeEdgeFunction('switch-to-new-space', {
+      // Leave current membership and create a fresh space via create-couple-space
+      if (space?.id) {
+        // Soft-leave current membership
+        await supabase
+          .from('couple_members')
+          .update({
+            status: 'left',
+            left_at: new Date().toISOString(),
+            left_by: userId,
+            left_reason: 'new_space',
+          })
+          .eq('user_id', userId!)
+          .eq('couple_space_id', space.id)
+          .is('left_at', null);
+      }
+
+      // Create fresh space
+      const res = await invokeEdgeFunction('create-couple-space', {
         headers: { Authorization: `Bearer ${accessToken}` },
         context: { userId },
       });
 
-      if (res.error) throw new Error(res.error.message || 'Failed to create new space');
+      if (res.error) throw new Error(res.error.message || 'Failed to create space');
 
-      const result = res.data as { ok: boolean; new_space_id: string };
-      if (!result.ok) throw new Error('Unexpected response');
-
-      // Reset local state — fetchSpace will pick up the new space
-      setSpace(null);
-      setMemberCount(1);
-      setUserRole('partner_a');
-      // Trigger a refresh to load the new space data
-      await fetchSpace();
-      return { ok: true, spaceId: result.new_space_id };
+      const result = res.data as { space: CoupleSpaceData };
+      setSpace(result.space);
+      return { ok: true, spaceId: result.space.id };
     } catch (err: any) {
       console.error('switchToNewSpace error:', err);
       return { ok: false };
     }
-  }, []);
+  }, [space?.id, userId]);
 
   return {
     space,
     loading,
     error,
-    memberCount,
-    displayMemberCount,
-    userRole,
     refreshSpace: fetchSpace,
-    fetchInviteInfo,
     switchToNewSpace,
   };
 }

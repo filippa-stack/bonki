@@ -59,9 +59,7 @@ export default function PromptItem({
 }: PromptItemProps) {
   const { t } = useTranslation();
   const { settings } = useSiteSettings();
-  const { memberCount } = useCoupleSpace();
-  const isPaired = memberCount >= 2;
-  const shareDisabled = disableShare || !isPaired;
+  const shareDisabled = disableShare;
   const [internalExpanded, setInternalExpanded] = useState(sectionType === 'scenario' || sectionType === 'exercise');
   const [justShared, setJustShared] = useState(false);
   const isControlled = expanded !== undefined;
@@ -243,14 +241,6 @@ export default function PromptItem({
                         <Send className="w-3.5 h-3.5" />
                         {t('reflections.create_shared_from_private', 'Dela med din partner')}
                       </button>
-                    </div>
-                  )}
-                  {!disableShare && !isPaired && privateNote?.content && !sharedNote && (
-                    <div className="flex justify-end">
-                      <span className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-muted text-[11px] text-muted-foreground/50">
-                        <Link2 className="w-3 h-3" />
-                        {t('reflections.solo_share_hint', 'Koppla ihop er för att dela')}
-                      </span>
                     </div>
                   )}
 
