@@ -9,18 +9,7 @@ import { useSpaceSnapshot } from '@/hooks/useSpaceSnapshot';
 import { selectExploredCardIds } from '@/selectors/spaceSnapshotSelectors';
 import Header from '@/components/Header';
 
-const RECOMMENDED_CATEGORY_ORDER = [
-  "emotional-intimacy",
-  "communication",
-  "category-8",
-  "category-7",
-  "parenting-together",
-  "individual-needs",
-  "category-9",
-  "category-6",
-  "daily-life",
-  "category-10",
-];
+import { RECOMMENDED_CATEGORY_ORDER } from '@/lib/recommendedOrder';
 
 export default function Categories() {
   const { t } = useTranslation();
@@ -33,7 +22,7 @@ export default function Categories() {
 
   // Sort categories by recommended order; unlisted ones go at the end
   const sortedCategories = useMemo(() => {
-    const orderMap = new Map(RECOMMENDED_CATEGORY_ORDER.map((id, i) => [id, i]));
+    const orderMap = new Map<string, number>(RECOMMENDED_CATEGORY_ORDER.map((id, i) => [id, i]));
     return [...categories].sort((a, b) => {
       const ai = orderMap.get(a.id) ?? 999;
       const bi = orderMap.get(b.id) ?? 999;

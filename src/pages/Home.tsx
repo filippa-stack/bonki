@@ -1,16 +1,4 @@
-// Recommended category order for silent curation — first unexplored wins.
-const RECOMMENDED_CATEGORY_ORDER = [
-  "emotional-intimacy",
-  "communication",
-  "category-8",
-  "category-7",
-  "parenting-together",
-  "individual-needs",
-  "category-9",
-  "category-6",
-  "daily-life",
-  "category-10",
-];
+import { RECOMMENDED_CATEGORY_ORDER } from '@/lib/recommendedOrder';
 
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
