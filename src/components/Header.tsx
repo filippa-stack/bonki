@@ -1,4 +1,5 @@
 import { LogOut, Plus, Settings, Users, User } from 'lucide-react';
+import { useTogetherMode } from '@/hooks/useTogetherMode';
 import { useCoupleSpaceContext } from '@/contexts/CoupleSpaceContext';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -50,6 +51,7 @@ export default function Header({
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { backgroundColor, setBackgroundColor, saveStatus, lastSavedAt, saveError, switchToNewSpace } = useApp();
+  const { togetherMode, setTogetherMode } = useTogetherMode();
   const normalizedSession = useNormalizedSessionContext();
   const hasActiveSession = !normalizedSession.loading && !!normalizedSession.sessionId;
   const { signOut } = useAuth();
@@ -155,6 +157,29 @@ export default function Header({
                     Ni är mitt i ett samtal. Avsluta det först.
                   </p>
                 )}
+              </div>
+
+              {/* ── SECTION 1b: Samtalsläge ── */}
+              <div className="border-t border-border/30 mt-2 pt-2 px-2 pb-1">
+                <p className="text-[10px] text-muted-foreground/60 uppercase tracking-wider mb-1.5">Samtalsläge</p>
+                <div className="flex gap-1">
+                  <Button
+                    variant={togetherMode === 'together' ? 'default' : 'ghost'}
+                    size="sm"
+                    className="flex-1 text-xs h-7"
+                    onClick={() => setTogetherMode('together')}
+                  >
+                    Tillsammans
+                  </Button>
+                  <Button
+                    variant={togetherMode === 'solo' ? 'default' : 'ghost'}
+                    size="sm"
+                    className="flex-1 text-xs h-7"
+                    onClick={() => setTogetherMode('solo')}
+                  >
+                    Själv
+                  </Button>
+                </div>
               </div>
 
               {/* ── SECTION 2: Account ── */}
