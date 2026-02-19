@@ -9,33 +9,33 @@
     /* ── Calm neutral palette ── */
 
     /* Tailwind base tokens (HSL without hsl()) */
-    --background: 36 22% 95%;          /* #F6F2EB */
-    --foreground: 0 0% 12%;            /* #1F1F1F */
+    --background: 30 16% 93%;            /* #F3EFEA */
+    --foreground: 30 3% 10%;              /* #1C1B1A */
 
-    --card: 0 0% 100%;                 /* #FFFFFF */
-    --card-foreground: 0 0% 12%;
+    --card: 30 14% 88%;                   /* #E7E1DA */
+    --card-foreground: 30 3% 10%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 12%;
+    --popover-foreground: 30 3% 10%;
 
-    --primary: 0 0% 17%;               /* #2B2B2B */
+    --primary: 150 32% 18%;               /* #1F3D2B */
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 36 15% 91%;           /* warm off-white */
-    --secondary-foreground: 0 0% 12%;
+    --secondary: 30 10% 88%;
+    --secondary-foreground: 30 3% 10%;
 
-    --muted: 36 12% 90%;
-    --muted-foreground: 30 5% 43%;     /* #6E6A64 */
+    --muted: 30 10% 86%;
+    --muted-foreground: 25 4% 40%;        /* #6B6763 */
 
-    --accent: 36 12% 90%;
-    --accent-foreground: 0 0% 12%;
+    --accent: 30 10% 86%;
+    --accent-foreground: 30 3% 10%;
 
-    --destructive: 0 60% 50%;
+    --destructive: 355 86% 30%;           /* #C1121F mapped */
     --destructive-foreground: 0 0% 100%;
 
-    --border: 36 18% 86%;              /* #E8E3DB */
-    --input: 36 18% 86%;
-    --ring: 0 0% 17%;
+    --border: 30 14% 82%;
+    --input: 30 14% 82%;
+    --ring: 150 32% 18%;
 
     --radius: 0.875rem;
 
@@ -111,20 +111,27 @@
     --card-shadow: var(--shadow-card);
 
     /* ── Semantic color tokens ── */
-    --color-bg-base: #F6F2EB;
-    --color-surface-primary: #FFFFFF;
-    --color-surface-secondary: #ECE6DC;
-    --color-text-primary: #1F1F1F;
-    --color-text-secondary: #6E6A64;
-    --color-button-primary: #2B2B2B;
+    --color-bg: #F3EFEA;
+    --color-bg-base: #F3EFEA;
+    --color-surface: #E7E1DA;
+    --color-surface-primary: #E7E1DA;
+    --color-surface-secondary: #E7E1DA;
+    --color-cta: #1F3D2B;
+    --color-ink: #1C1B1A;
+    --color-secondary: #6B6763;
+    --color-accent: #C1121F;
+    --color-accent-soft: #6D4C6D;
+    --color-text-primary: #1C1B1A;
+    --color-text-secondary: #6B6763;
+    --color-button-primary: #1F3D2B;
     --color-button-text: #FFFFFF;
-    --color-divider: #E8E3DB;
+    --color-divider: #D6D0C8;
 
     /* Dynamic overrides — set via useThemeVars hook at runtime */
-    --page-bg: var(--color-bg-base);
-    --hero-title-color: #1F1F1F;
-    --hero-subtitle-color: #6E6A64;
-    --btn-primary-bg: #2B2B2B;
+    --page-bg: var(--color-bg);
+    --hero-title-color: var(--color-ink);
+    --hero-subtitle-color: var(--color-secondary);
+    --btn-primary-bg: var(--color-cta);
     --btn-primary-text: #FFFFFF;
   }
 }
@@ -142,8 +149,8 @@
   body {
     @apply bg-background text-foreground font-sans;
     font-family: var(--font-sans);
-    background-color: var(--color-bg-base);
-    color: var(--color-text-primary);
+    background-color: var(--color-bg);
+    color: var(--color-ink);
     line-height: 1.6;
     letter-spacing: -0.01em;
   }
