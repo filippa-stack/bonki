@@ -6,95 +6,93 @@
 
 @layer base {
   :root {
-    /* Bonki Daybreak — Soft Cyan & Terracotta */
+    /* ── Calm neutral palette ── */
 
-    /* Base Surfaces */
-    --background: 180 68% 91%;        /* #D6FBFB */
-    --foreground: 30 8% 32%;
+    /* Tailwind base tokens (HSL without hsl()) */
+    --background: 36 20% 94%;          /* #F4F1EC */
+    --foreground: 0 0% 12%;            /* #1F1F1F */
 
-    --card: 60 100% 97%;              /* #FFFEF3 */
-    --card-foreground: 30 8% 32%;
+    --card: 0 0% 100%;                 /* #FFFFFF */
+    --card-foreground: 0 0% 12%;
 
-    --popover: 60 100% 97%;
-    --popover-foreground: 30 8% 32%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 12%;
 
-    /* Primary — Terracotta */
-    --primary: 180 23% 37%;             /* #497575 */
+    --primary: 0 0% 17%;               /* #2B2B2B */
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 60 100% 97%;         /* #FFFEF3 */
-    --secondary-foreground: 30 8% 32%;
+    --secondary: 36 15% 91%;           /* warm off-white */
+    --secondary-foreground: 0 0% 12%;
 
-    --muted: 33 18% 92%;
-    --muted-foreground: 28 5% 52%;
+    --muted: 36 12% 90%;
+    --muted-foreground: 30 5% 43%;     /* #6E6A64 */
 
-    /* Accent — Terracotta */
-    --accent: 24 54% 60%;
-    --accent-foreground: 0 0% 100%;
+    --accent: 36 12% 90%;
+    --accent-foreground: 0 0% 12%;
 
     --destructive: 0 60% 50%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 24 40% 75%;             /* Softened terracotta border */
-    --input: 33 14% 91%;
-    --ring: 24 54% 60%;
+    --border: 36 18% 86%;              /* #E8E3DB */
+    --input: 36 18% 86%;
+    --ring: 0 0% 17%;
 
     --radius: 0.875rem;
 
     /* ── Semantic radius tokens ── */
-    --radius-card:   0.75rem;   /* 12px — all cards, content blocks */
-    --radius-button: 0.75rem;   /* 12px — primary/secondary buttons */
-    --radius-pill:   0.5rem;    /* 8px  — badges, chips, pills      */
-    --radius-toast:  0.75rem;   /* 12px — toast notifications       */
+    --radius-card:   0.75rem;
+    --radius-button: 0.75rem;
+    --radius-pill:   0.5rem;
+    --radius-toast:  0.75rem;
 
-    /* ── Standard shadow — single subtle elevation ── */
-    --shadow-card: 0px 4px 16px rgba(0,0,0,0.04);
+    /* ── Standard shadow ── */
+    --shadow-card: 0px 2px 12px rgba(0,0,0,0.05);
 
     /* Custom tokens */
-    --surface-warm: 60 100% 97%;      /* #FFFEF3 */
-    --surface-elevated: 60 100% 97%;
-    --surface-chrome: 60 100% 99%;    /* #FFFFFC — header/footer */
-    --text-gentle: 28 5% 52%;
-    --divider: 33 18% 89%;
+    --surface-warm: 0 0% 100%;
+    --surface-elevated: 0 0% 100%;
+    --surface-chrome: 0 0% 100%;
+    --text-gentle: 30 5% 43%;
+    --divider: 36 18% 86%;
 
-    /* Card hierarchy — 3 levels */
-    --card-l1-bg: 60 100% 97%;        /* #FFFEF3 — Main category cards */
-    --card-l1-border: 24 54% 60%;     /* Terracotta tan */
+    /* Card hierarchy */
+    --card-l1-bg: 0 0% 100%;
+    --card-l1-border: 36 18% 86%;
     --card-l1-border-width: 1px;
 
-    --card-l2-bg: 0 0% 100%;          /* #FFFFFF — Sub-category cards */
-    --card-l2-border: 0 0% 100%;     /* #FFFFFF — Clean white border */
+    --card-l2-bg: 0 0% 100%;
+    --card-l2-border: 0 0% 100%;
     --card-l2-border-width: 1px;
     --card-l2-shadow: 0 1px 3px 0 hsl(0 0% 0% / 0.02);
 
-    --card-l3-bg: 210 40% 98%;        /* #F8FAFC — Interaction/question cards */
-    --card-l3-border: 214 20% 92%;    /* Soft slate-100 */
+    --card-l3-bg: 36 20% 97%;
+    --card-l3-border: 36 18% 90%;
     --card-l3-border-width: 1px;
-    --card-l3-shadow: 0 2px 8px -4px hsl(0 0% 0% / 0.05), 0 1px 3px -1px hsl(0 0% 0% / 0.02);
+    --card-l3-shadow: 0 2px 8px -4px hsl(0 0% 0% / 0.05);
 
-    /* Legacy card architecture (kept for backward compat) */
-    --card-border-width: 2px;
-    --card-border-color: 24 54% 60%;  /* #d08f63 */
+    /* Legacy compat */
+    --card-border-width: 1px;
+    --card-border-color: 36 18% 86%;
     --card-sub-border-width: 1px;
-    --card-sub-border-color: 0 0% 100%; /* white */
+    --card-sub-border-color: 0 0% 100%;
     --card-sub-shadow: 0 1px 4px 0 hsl(0 0% 0% / 0.02);
 
-    /* Note / user-input surfaces */
-    --note-bg: 0 0% 100%;             /* #ffffff */
-    --note-border: 24 54% 60%;        /* #d08f63 at 30% via /0.3 */
-    --note-text: 30 8% 28%;          /* softened charcoal */
-    --note-placeholder: 24 30% 70%;   /* light terracotta */
+    /* Note surfaces */
+    --note-bg: 0 0% 100%;
+    --note-border: 36 18% 80%;
+    --note-text: 0 0% 12%;
+    --note-placeholder: 30 5% 65%;
 
-    /* Category Identity Colors (Earthy Pastels) */
-    --category-emotional: 24 54% 60%;
-    --category-fun: 43 75% 66%;
-    --category-growth: 132 17% 59%;
-    --category-intimacy: 356 28% 64%;
-    --category-logistics: 204 45% 72%;
+    /* Category colors — neutral, no teal */
+    --category-emotional: 30 15% 70%;
+    --category-fun: 36 20% 75%;
+    --category-growth: 30 10% 65%;
+    --category-intimacy: 20 12% 68%;
+    --category-logistics: 30 8% 72%;
 
-    /* Interactive States */
-    --state-active: 24 54% 60%;
-    --state-inactive: 20 3% 60%;
+    /* Interactive states */
+    --state-active: 0 0% 17%;
+    --state-inactive: 0 0% 60%;
 
     /* Typography */
     --font-serif: 'Cormorant Garamond', Georgia, serif;
@@ -111,21 +109,22 @@
     /* Card styling */
     --card-shadow: var(--shadow-card);
 
-    /* ── Premium restrained color system ── */
-    --color-bg-base: #F7F6F3;
+    /* ── Semantic color tokens ── */
+    --color-bg-base: #F4F1EC;
     --color-surface-primary: #FFFFFF;
-    --color-surface-secondary: #EFEDE8;
-    --color-text-primary: #1C1C1C;
-    --color-text-secondary: #6B6B6B;
-    --color-button-primary: #2E2E2E;
+    --color-surface-secondary: #EDE9E3;
+    --color-text-primary: #1F1F1F;
+    --color-text-secondary: #6E6A64;
+    --color-button-primary: #2B2B2B;
     --color-button-text: #FFFFFF;
+    --color-divider: #E8E3DB;
 
     /* Dynamic overrides — set via useThemeVars hook at runtime */
-    --page-bg: hsl(var(--background));
-    --hero-title-color: #1e293b;
-    --hero-subtitle-color: hsl(var(--text-gentle));
-    --btn-primary-bg: hsl(var(--primary));
-    --btn-primary-text: hsl(var(--primary-foreground));
+    --page-bg: var(--color-bg-base);
+    --hero-title-color: #1F1F1F;
+    --hero-subtitle-color: #6E6A64;
+    --btn-primary-bg: #2B2B2B;
+    --btn-primary-text: #FFFFFF;
   }
 }
 
