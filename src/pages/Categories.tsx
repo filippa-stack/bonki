@@ -64,7 +64,7 @@ export default function Categories() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: Math.min(0.08 + index * 0.05, 0.3), duration: 0.2, ease: [0.4, 0.0, 0.2, 1] }}
-              className={index > 0 ? 'mt-[48px]' : ''}
+              className={isGuided ? (index > 0 ? 'mt-[64px] mb-[-8px]' : 'mb-[-8px]') : (index > 0 ? 'mt-[48px]' : '')}
             >
               {isGuided && (
                 <p
