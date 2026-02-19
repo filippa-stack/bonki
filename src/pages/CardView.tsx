@@ -46,12 +46,15 @@ function resolveCardViewMode({
   isRevisitMode,
   hasActiveSession,
   hasCompletedSessionForCard,
+  showCompletion,
 }: {
   isRevisitMode: boolean;
   hasActiveSession: boolean;
   hasCompletedSessionForCard: boolean;
+  showCompletion: boolean;
 }): CardViewMode {
   if (isRevisitMode) return 'revisit';
+  if (showCompletion) return 'completion';
   if (hasActiveSession) return 'live';
   if (hasCompletedSessionForCard) return 'history';
   return 'live';
@@ -137,11 +140,45 @@ export default function CardView() {
 
   // Volume 1: single-writer model, reflection surface always active
 
+  // ─── Auto-activate session when entering a card in live mode ───
+  const activatingRef = useRef(false);
+  useEffect(() => {
+    if (devState || isRevisitMode || showCompletion) return;
+    if (normalizedSession.loading || isActiveSession) return;
+    if (activatingRef.current) return;
+    if (!space?.id || !cardId) return;
+    // Don't activate if there's already a completed session for this card
+    if (hasCompletedNormalizedSession) return;
+
+    const card = getCardById(cardId);
+    if (!card) return;
+
+    activatingRef.current = true;
+
+    (async () => {
+      const { error } = await supabase.rpc('activate_couple_session', {
+        p_couple_space_id: space.id,
+        p_category_id: card.categoryId,
+        p_card_id: cardId,
+        p_step_count: STEP_ORDER.length,
+      });
+      if (error) {
+        console.error('Session activation failed:', error);
+        toastErrorOnce('activate_session_fail', 'Kunde inte starta samtalet');
+      } else {
+        await normalizedSession.refetch();
+      }
+      activatingRef.current = false;
+    })();
+  }, [devState, isRevisitMode, showCompletion, normalizedSession.loading, isActiveSession, space?.id, cardId, hasCompletedNormalizedSession, getCardById]);
+  
+
   // ─── Single resolver — the only gate for which surface mounts ───
   const cardViewMode: CardViewMode = resolveCardViewMode({
     isRevisitMode,
     hasActiveSession: isActiveSession,
     hasCompletedSessionForCard: hasCompletedNormalizedSession,
+    showCompletion,
   });
 
   // ─── Step index ───
