@@ -21,30 +21,20 @@ export default function StepProgressIndicator({
     <div className={cn('flex items-center justify-center gap-3', className)}>
       {STEPS.map((step, index) => {
         const isCurrent = index === currentStepIndex;
-
         return (
           <div key={step.id} className="flex items-center gap-3">
-            <div className="flex flex-col items-center">
-              <span
-                className={cn(
-                  'text-[10px] tracking-wide transition-all duration-150',
-                  isCurrent
-                    ? 'text-slate-800 font-normal'
-                    : 'text-slate-500 hover:text-slate-800'
-                )}
-              >
-                {step.label}
-              </span>
-              {isCurrent && (
-                <span className="text-[8px] text-slate-500 mt-0.5 leading-tight">
-                  {step.hint}
-                </span>
-              )}
-            </div>
-
-            {/* Soft separator dot */}
+            <span
+              className="text-[10px] tracking-wide transition-all duration-150"
+              style={{
+                color: isCurrent ? 'var(--color-text-primary)' : 'var(--color-text-secondary)',
+                opacity: isCurrent ? 1 : 0.45,
+                fontWeight: isCurrent ? 500 : 400,
+              }}
+            >
+              {step.label}
+            </span>
             {index < STEPS.length - 1 && (
-              <span className="text-slate-400 text-[6px]">·</span>
+              <span style={{ color: 'var(--color-text-secondary)', opacity: 0.25, fontSize: '6px' }}>·</span>
             )}
           </div>
         );

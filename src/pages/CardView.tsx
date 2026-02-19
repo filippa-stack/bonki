@@ -355,9 +355,9 @@ export default function CardView() {
   const isLive = cardViewMode === 'live';
 
   return (
-    // Step 1 — screen-level fade: 0→1, BEAT_3 (live only; revisit uses existing timing)
     <motion.div
-      className="min-h-screen page-bg"
+      className="min-h-screen"
+      style={{ backgroundColor: 'var(--color-bg-base)' }}
       initial={isLive ? { opacity: 0 } : false}
       animate={{ opacity: 1 }}
       transition={{ duration: BEAT_3, ease: EASE }}
@@ -368,10 +368,10 @@ export default function CardView() {
         backTo={category ? `/category/${category.id}` : '/'}
       />
 
-      {/* Step 2 — Step label: delay BEAT_1, duration BEAT_3 (live only) */}
+      {/* Step progress — neutral text only */}
       {cardViewMode === 'live' && (
         <motion.div
-          className="px-6 pt-6 pb-4 border-b border-border/15"
+          className="px-6 pt-6 pb-4 border-b border-black/5"
           initial={isLive ? { opacity: 0 } : false}
           animate={{ opacity: 1 }}
           transition={{ delay: isLive ? BEAT_1 : 0, duration: BEAT_3, ease: EASE }}
@@ -381,7 +381,7 @@ export default function CardView() {
             completedSteps={[]}
           />
           {currentSection && STEP_RITUAL_HINTS[currentSection.type] && (
-            <p className="mt-2 text-center text-[11px] text-muted-foreground/40 tracking-wide">
+            <p className="mt-2 text-center text-[11px] tracking-wide" style={{ color: 'var(--color-text-secondary)', opacity: 0.5 }}>
               {isTogether
                 ? STEP_RITUAL_HINTS[currentSection.type].together
                 : STEP_RITUAL_HINTS[currentSection.type].solo}
@@ -395,13 +395,14 @@ export default function CardView() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: BEAT_3, ease: EASE }}
-          className="text-xl md:text-2xl font-serif text-foreground text-center leading-relaxed"
+          className="text-xl md:text-2xl font-serif text-center leading-relaxed"
+          style={{ color: 'var(--color-text-primary)' }}
         >
           {card.title}
         </motion.h1>
         {cardViewMode === 'revisit' && (
-          <div className="mt-4 text-center space-y-0.5">
-            <p className="text-[11px] text-muted-foreground/50 tracking-wide">Förhandskoll</p>
+          <div className="mt-4 text-center">
+            <p className="text-[11px] tracking-wide" style={{ color: 'var(--color-text-secondary)', opacity: 0.5 }}>Förhandskoll</p>
           </div>
         )}
         {card.subtitle && (
@@ -409,7 +410,8 @@ export default function CardView() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: BEAT_1, duration: BEAT_3, ease: EASE }}
-            className="text-sm text-muted-foreground not-italic mt-5 text-center max-w-2xl mx-auto leading-relaxed"
+            className="text-sm not-italic mt-5 text-center max-w-2xl mx-auto leading-relaxed"
+            style={{ color: 'var(--color-text-secondary)' }}
           >
             {card.subtitle}
           </motion.p>
@@ -466,29 +468,30 @@ export default function CardView() {
 
               {/* ── MODE: revisit — step CTA ── */}
               {cardViewMode === 'revisit' && (
-                // Step 5 — CTA: delay BEAT_2 after reflection
                 <motion.div
                   className="pt-10 pb-8 space-y-5"
                   initial={isLive ? { opacity: 0 } : false}
                   animate={{ opacity: 1 }}
                   transition={{ delay: isLive ? BEAT_2 + BEAT_2 : 0, duration: BEAT_3, ease: EASE }}
                 >
-                  <Button
+                  <button
                     onClick={() => handleRevisitNext(card)}
-                    size="lg"
-                    className="gap-2 h-14 font-normal w-full rounded-2xl"
+                    className="w-full h-14 rounded-[16px] flex items-center justify-center gap-2 text-sm font-medium transition-opacity hover:opacity-90"
+                    style={{
+                      backgroundColor: 'var(--color-button-primary)',
+                      color: 'var(--color-button-text)',
+                    }}
                   >
-                    {cardViewMode === 'revisit'
-                      ? (currentStepIndex >= STEP_ORDER.length - 1 ? 'Klar' : 'Nästa')
-                      : t(STEP_CTA_KEYS[STEP_ORDER[currentStepIndex]])}
+                    {currentStepIndex >= STEP_ORDER.length - 1 ? 'Klar' : 'Nästa'}
                     <ArrowRight className="w-4 h-4" />
-                  </Button>
+                  </button>
 
                   {(currentStepIndex > 0 || cardViewMode === 'revisit') && (
                     <div className="flex justify-center">
                       <button
                         onClick={() => setReviewOpen(true)}
-                        className="flex items-center gap-1.5 text-[12px] text-muted-foreground/50 hover:text-muted-foreground/70 transition-colors"
+                        className="flex items-center gap-1.5 text-[12px] transition-colors"
+                        style={{ color: 'var(--color-text-secondary)', opacity: 0.5 }}
                       >
                         <BookOpen className="w-3.5 h-3.5" />
                         Se sammanfattning
