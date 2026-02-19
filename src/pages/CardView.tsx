@@ -400,12 +400,13 @@ export default function CardView() {
         title={category?.title}
         showBack
         backTo={category ? `/category/${category.id}` : '/'}
+        variant="immersive"
       />
 
       {/* Step progress — neutral text only */}
       {cardViewMode === 'live' && (
         <motion.div
-          className="px-6 pt-6 pb-4 border-b border-black/5"
+          className="px-6 pt-6 pb-4"
           initial={isLive ? { opacity: 0 } : false}
           animate={{ opacity: 1 }}
           transition={{ delay: isLive ? BEAT_1 : 0, duration: BEAT_3, ease: EASE }}
