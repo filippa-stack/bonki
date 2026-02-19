@@ -3,10 +3,16 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { useDevState } from '@/contexts/DevStateContext';
 import { ChevronUp, ChevronDown } from 'lucide-react';
 
+// Only render in non-production builds
+const IS_DEV_BUILD =
+  import.meta.env.DEV ||
+  (typeof window !== 'undefined' && window.location.hostname.includes('preview'));
+
 const DEV_STATES = [
   { value: 'solo', label: 'Solo' },
   { value: 'pairedIdle', label: 'Paired Idle' },
   { value: 'pairedActive', label: 'Paired Active' },
+  { value: 'proposalIncoming', label: 'Proposal Incoming' },
   { value: 'waiting', label: 'Waiting' },
   { value: 'completed', label: 'Completed' },
   { value: 'archiveEmpty', label: 'Archive Empty' },
@@ -15,21 +21,22 @@ const DEV_STATES = [
 ];
 
 const PAGES = [
-  { path: '/', label: 'Home' },
-  { path: '/category/emotional-intimacy', label: 'Category: Emotional Intimacy' },
-  { path: '/category/communication', label: 'Category: Communication' },
-  { path: '/category/category-8', label: 'Category: category-8' },
-  { path: '/category/category-7', label: 'Category: category-7' },
-  { path: '/category/parenting-together', label: 'Category: Parenting' },
-  { path: '/category/individual-needs', label: 'Category: Individual Needs' },
-  { path: '/category/category-9', label: 'Category: category-9' },
-  { path: '/category/category-6', label: 'Category: category-6' },
-  { path: '/category/daily-life', label: 'Category: Daily Life' },
-  { path: '/category/category-10', label: 'Category: category-10' },
-  { path: '/card/smallest-we', label: 'Card: smallest-we' },
-  { path: '/card/listening-presence', label: 'Card: listening-presence' },
-  { path: '/saved', label: 'Saved Conversations' },
-  { path: '/shared', label: 'Shared Summary' },
+  { path: '/', label: '🏠 Home' },
+  { path: '/login', label: '🔐 Login' },
+  { path: '/saved', label: '💾 Saved Conversations' },
+  { path: '/shared', label: '🤝 Shared Summary' },
+  { path: '/category/emotional-intimacy', label: '📂 Emotional Intimacy' },
+  { path: '/category/communication', label: '📂 Communication' },
+  { path: '/category/daily-life', label: '📂 Daily Life' },
+  { path: '/category/parenting-together', label: '📂 Parenting Together' },
+  { path: '/category/individual-needs', label: '📂 Individual Needs' },
+  { path: '/category/category-6', label: '📂 Category 6' },
+  { path: '/category/category-7', label: '📂 Category 7' },
+  { path: '/category/category-8', label: '📂 Category 8' },
+  { path: '/category/category-9', label: '📂 Category 9' },
+  { path: '/category/category-10', label: '📂 Category 10' },
+  { path: '/card/smallest-we', label: '🃏 Card: smallest-we' },
+  { path: '/card/listening-presence', label: '🃏 Card: listening-presence' },
 ];
 
 export default function DevModeBadge() {
@@ -38,9 +45,9 @@ export default function DevModeBadge() {
   const location = useLocation();
   const [open, setOpen] = useState(false);
 
-  if (!devState) return null;
+  if (!IS_DEV_BUILD) return null;
 
-  const currentDevState = devState;
+  const currentDevState = devState ?? 'solo';
 
   function navigateTo(path: string) {
     navigate(`${path}${path.includes('?') ? '&' : '?'}devState=${currentDevState}`);
