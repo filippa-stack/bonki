@@ -67,9 +67,9 @@ export default function Header({
 
   return (
     <header
-      className={`sticky top-0 z-10 backdrop-blur-md ${isImmersive ? '' : 'border-b border-primary/20'}`}
+      className={`sticky top-0 z-10 backdrop-blur-md ${isImmersive ? '' : 'border-b border-black/[0.04]'}`}
       style={{
-        backgroundColor: isImmersive ? 'var(--color-cta)' : 'hsl(var(--surface-chrome) / 0.92)',
+        backgroundColor: isImmersive ? 'var(--color-cta)' : 'hsl(var(--surface-chrome) / 0.85)',
       }}
     >
       <div className="flex items-center justify-between px-6" style={{ height: isImmersive ? 'auto' : '3.5rem', paddingTop: isImmersive ? '16px' : undefined, paddingBottom: isImmersive ? '32px' : undefined }}>
@@ -77,7 +77,7 @@ export default function Header({
           <img
             src={bonkiLogo}
             alt="Still Us"
-            className={`h-8 w-8 object-contain cursor-pointer ${isImmersive ? 'brightness-0 invert' : ''}`}
+            className={`h-7 w-7 object-contain cursor-pointer opacity-75 ${isImmersive ? 'brightness-0 invert' : ''}`}
             onClick={() => navigate('/')}
           />
           {title && (
@@ -116,7 +116,7 @@ export default function Header({
           )}
           <Popover>
             <PopoverTrigger asChild>
-              <Button variant="ghost" size="icon" className={isImmersive ? 'text-white/70 hover:text-white hover:bg-white/10' : 'text-muted-foreground hover:text-foreground'}>
+              <Button variant="ghost" size="icon" className={isImmersive ? 'text-white/70 hover:text-white hover:bg-white/10' : 'text-muted-foreground/60 hover:text-muted-foreground'}>
                 <Settings className="w-4 h-4" />
               </Button>
             </PopoverTrigger>
