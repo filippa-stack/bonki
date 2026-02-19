@@ -37,7 +37,7 @@ export function usePromptNotes(
   skipShared = false,
 ): UsePromptNotesReturn {
   const { user } = useAuth();
-  const { space, userRole, memberCount } = useCoupleSpace();
+  const { space } = useCoupleSpace();
   const devState = useDevState();
   const [notes, setNotes] = useState<Map<string, PromptNote>>(new Map());
   const [loading, setLoading] = useState(true);
@@ -236,11 +236,7 @@ export function usePromptNotes(
     const privateNote = notes.get(privateKey);
     if (!privateNote?.content) return;
 
-    // Only show author label when two partners are connected
-    const authorLabel = memberCount >= 2 && space
-      ? (userRole === 'partner_a' ? (space.partner_a_name || 'Partner A')
-         : (space.partner_b_name || 'Partner B'))
-      : null;
+    const authorLabel = null; // Volume 1: no author attribution
 
     const now = new Date().toISOString();
     const sharedKey = `${promptId}:shared`;
@@ -260,36 +256,8 @@ export function usePromptNotes(
       return next;
     });
 
-    upsertNote(promptId, privateNote.content, 'shared', { shared_at: now, author_label: authorLabel }).then(async () => {
-      // Fire-and-forget: notify partner by email
-      if (!space) return;
-      const { data: members } = await supabase
-        .from('couple_members')
-        .select('user_id')
-        .eq('couple_space_id', space.id)
-        .is('left_at', null)
-        .eq('status', 'active')
-        .neq('user_id', user!.id)
-        .limit(1);
-
-      const partnerUserId = members?.[0]?.user_id;
-      if (partnerUserId) {
-        // Find the note_id we just upserted
-        const { data: noteRow } = await supabase
-          .from('prompt_notes')
-          .select('id')
-          .eq('couple_space_id', space.id)
-          .eq('user_id', user!.id)
-          .eq('card_id', cardId)
-          .eq('section_id', sectionId)
-          .eq('prompt_id', promptId)
-          .eq('visibility', 'shared')
-          .limit(1);
-
-        // email notification removed (proposals feature deleted)
-      }
-    });
-  }, [notes, upsertNote, space, userRole, memberCount]);
+    upsertNote(promptId, privateNote.content, 'shared', { shared_at: now, author_label: authorLabel });
+  }, [notes, upsertNote, space]);
 
   const unshareNote = useCallback((promptId: string) => {
     if (!user || !space) return;

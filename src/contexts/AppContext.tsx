@@ -243,7 +243,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
     handleSettingsLoaded
   );
 
-  const { space: coupleSpaceDb, memberCount: coupleSpaceMemberCount, refreshSpace: refreshCoupleSpace, switchToNewSpace } = useCoupleSpaceContext();
+  const { space: coupleSpaceDb, refreshSpace: refreshCoupleSpace, switchToNewSpace } = useCoupleSpaceContext();
   const [overrideCoupleSpaceId, setOverrideCoupleSpaceId] = useState<string | null>(null);
   const coupleSpaceId = overrideCoupleSpaceId ?? coupleSpaceDb?.id ?? null;
 
@@ -445,7 +445,6 @@ export function AppProvider({ children }: { children: ReactNode }) {
 
   const startSession = (categoryId: string, cardId: string, { force = false }: { force?: boolean; fromBeginning?: boolean } = {}) => {
     if (devState) return;
-    if (coupleSpaceMemberCount < 2 && !force) return;
 
     setState((prev) => {
       if (!force && prev.currentSession && !sessionDismissed) {
@@ -473,7 +472,6 @@ export function AppProvider({ children }: { children: ReactNode }) {
   };
 
   const completeSessionStep = (stepIndex: number) => {
-    if (coupleSpaceMemberCount < 2) return;
     // Authoritative completion via RPC complete_couple_session_step (called in CardView).
     // AppContext only advances local currentStepIndex for smooth UI transition.
     setState((prev) => {

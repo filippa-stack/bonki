@@ -205,17 +205,14 @@ export default function Header({
 function SharedSpaceLink() {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const { displayMemberCount } = useCoupleSpaceContext();
-  const isSolo = displayMemberCount < 2;
-  const Icon = isSolo ? User : Users;
 
   return (
     <button
       onClick={() => navigate('/shared')}
       className="flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-primary/15 hover:bg-primary/25 text-primary text-xs font-medium transition-colors"
     >
-      <Icon className="w-3.5 h-3.5" />
-      {isSolo ? 'Ditt utrymme' : t('header.shared_space')}
+      <User className="w-3.5 h-3.5" />
+      {t('header.shared_space')}
     </button>
   );
 }

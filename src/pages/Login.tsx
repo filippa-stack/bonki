@@ -1,19 +1,14 @@
 import { useState } from 'react';
-import { useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { BEAT_1, BEAT_2 } from '@/lib/motion';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import { lovable } from '@/integrations/lovable/index';
 import { useSiteSettings } from '@/contexts/SiteSettingsContext';
 import { Loader2 } from 'lucide-react';
 import bonkiLogo from '@/assets/bonki-logo.png';
 import TermsConsent from '@/components/TermsConsent';
 import { TERMS_VERSION, PRIVACY_VERSION } from '@/lib/legal';
-import { supabase } from '@/integrations/supabase/client';
-import { storePendingInvite } from '@/hooks/usePendingInvite';
 import type { Json } from '@/integrations/supabase/types';
 
 export default function Login() {
@@ -23,14 +18,6 @@ export default function Login() {
   const [termsAccepted, setTermsAccepted] = useState(false);
   const [termsError, setTermsError] = useState(false);
   const { settings } = useSiteSettings();
-  const location = useLocation();
-
-  // Invite code input
-  const [showCodeInput, setShowCodeInput] = useState(false);
-  const [inviteCode, setInviteCode] = useState('');
-
-  // Determine where to redirect after OAuth — if we came from /join, include the returnTo path
-  const returnTo = (location.state as any)?.returnTo;
 
   const handleGoogleSignIn = async () => {
     if (!termsAccepted) {
@@ -41,12 +28,6 @@ export default function Login() {
     setLoading(true);
     setError(null);
 
-    // If user entered an invite code, store it so it auto-claims after login
-    if (inviteCode.trim()) {
-      storePendingInvite(null, inviteCode.trim());
-    }
-
-    // Store consent timestamp before redirect
     const consentTimestamp = new Date().toISOString();
     localStorage.setItem('pending-legal-consent', JSON.stringify({
       terms: { acceptedAt: consentTimestamp, version: TERMS_VERSION },
@@ -54,13 +35,8 @@ export default function Login() {
     }));
 
     try {
-      // If there's a returnTo (e.g. /join?token=XYZ), redirect back there after OAuth
-      const redirectUri = returnTo
-        ? `${window.location.origin}${returnTo}`
-        : window.location.origin;
-
       const { error } = await lovable.auth.signInWithOAuth('google', {
-        redirect_uri: redirectUri,
+        redirect_uri: window.location.origin,
       });
 
       if (error) {
@@ -114,27 +90,6 @@ export default function Login() {
           transition={{ delay: BEAT_2, duration: 0.15 }}
           className="space-y-5"
         >
-          {/* Invite code section */}
-          <AnimatePresence>
-            {showCodeInput && (
-              <motion.div
-                initial={{ opacity: 0, height: 0 }}
-                animate={{ opacity: 1, height: 'auto' }}
-                exit={{ opacity: 0, height: 0 }}
-                className="space-y-2 overflow-hidden"
-              >
-                <Label className="text-sm text-muted-foreground">{t('join.invite_code', 'Inbjudningskod')}</Label>
-                <Input
-                  value={inviteCode}
-                  onChange={(e) => setInviteCode(e.target.value.toUpperCase())}
-                  placeholder="ABC123"
-                  maxLength={6}
-                  className="text-center tracking-widest text-lg font-mono"
-                />
-              </motion.div>
-            )}
-          </AnimatePresence>
-
           <Button
             onClick={handleGoogleSignIn}
             disabled={loading}
@@ -161,16 +116,6 @@ export default function Login() {
               <p className="text-xs text-destructive mt-2">{t('login.terms_required')}</p>
             )}
           </div>
-
-          {!showCodeInput && (
-            <button
-              type="button"
-              onClick={() => setShowCodeInput(true)}
-              className="inline-flex items-center gap-1.5 text-sm text-primary/80 hover:text-primary transition-colors font-medium"
-            >
-              {t('login.have_invite_code', 'Jag har en inbjudningskod')}
-            </button>
-          )}
 
           {error && (
             <p className="text-sm text-destructive">{error}</p>

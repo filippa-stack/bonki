@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -20,9 +19,7 @@ import CardView from "./pages/CardView";
 import SavedConversations from "./pages/SavedConversations";
 import SharedSummary from "./pages/SharedSummary";
 import Login from "./pages/Login";
-import JoinSpace from "./pages/JoinSpace";
 import NotFound from "./pages/NotFound";
-import { storePendingInvite } from "@/hooks/usePendingInvite";
 
 const queryClient = new QueryClient();
 
@@ -64,7 +61,6 @@ function ProtectedRoutes() {
             <Route path="/card/:cardId" element={<PageTransition><CardView /></PageTransition>} />
             <Route path="/saved" element={<PageTransition><SavedConversations /></PageTransition>} />
             <Route path="/shared" element={<PageTransition><SharedSummary /></PageTransition>} />
-            <Route path="/join" element={<JoinRedirectGuard />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </AnimatePresence>
@@ -78,23 +74,6 @@ function ProtectedRoutes() {
 function RemoteCardCueGlobal() {
   const { remoteCardChanged, dismissRemoteCardCue } = useApp();
   return <RemoteCardCue show={remoteCardChanged} onDone={dismissRemoteCardCue} />;
-}
-
-function JoinRedirectGuard() {
-  const location = useLocation();
-
-  const searchParams = new URLSearchParams(location.search);
-  const token = searchParams.get('token');
-  const code = searchParams.get('code');
-
-  // Store invite params in useEffect to avoid side-effects during render
-  useEffect(() => {
-    if (token || code) {
-      storePendingInvite(token, code);
-    }
-  }, [token, code]);
-
-  return <JoinSpace />;
 }
 
 function AppRoutes() {

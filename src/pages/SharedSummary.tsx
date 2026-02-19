@@ -47,26 +47,8 @@ export default function SharedSummary() {
   const navigate = useNavigate();
   const { categories, getCardById, getCategoryById, cards } = useApp();
   const { user } = useAuth();
-  const { space, displayMemberCount, fetchInviteInfo } = useCoupleSpaceContext();
-  const [inviteLoading, setInviteLoading] = useState(false);
-  const isSolo = displayMemberCount < 2;
+  const { space } = useCoupleSpaceContext();
   const { snapshot } = useSpaceSnapshot(user?.id ?? null, space?.id ?? null);
-
-  const handleShareInvite = async () => {
-    setInviteLoading(true);
-    try {
-      const info = await fetchInviteInfo();
-      if (!info) { toastErrorOnce('copy_link_fail', 'Kunde inte hämta inbjudan'); return; }
-      const link = `${window.location.origin}/join?token=${info.invite_token}`;
-      if (navigator.share) {
-        try { await navigator.share({ title: 'Still Us', text: link }); return; } catch (e) { if ((e as Error).name === 'AbortError') return; }
-      }
-      await navigator.clipboard.writeText(link);
-      toastSuccessOnce('copy_link', 'Länk kopierad');
-    } finally {
-      setInviteLoading(false);
-    }
-  };
 
   const [searchQuery, setSearchQuery] = useState('');
   const [categoryFilter, setCategoryFilter] = useState<string>('all');
@@ -240,42 +222,11 @@ export default function SharedSummary() {
           className="mb-10 text-center"
         >
           <h1 className="font-serif text-2xl font-semibold text-foreground tracking-tight">Vårt utrymme</h1>
-          {!isSolo && (
-            <p className="text-sm text-muted-foreground/60 mt-2">En överblick över det ni redan har utforskat.</p>
-          )}
+          <p className="text-sm text-muted-foreground/60 mt-2">En överblick över det du redan har utforskat.</p>
         </motion.div>
 
-        {/* ─── Solo empty state ─── */}
-        {isSolo && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.15 }}
-            className="text-center mb-10"
-          >
-            <p className="text-sm text-muted-foreground leading-relaxed mb-8">
-              Här samlas det ni gör tillsammans. Bjud in din partner när du vill — då blir rummet ert på riktigt.
-            </p>
-            <Button
-              size="lg"
-              onClick={handleShareInvite}
-              disabled={inviteLoading}
-              className="w-full h-14 rounded-2xl gap-2 font-normal"
-            >
-              {inviteLoading ? (
-                <Loader2 className="w-4 h-4 animate-spin" />
-              ) : (
-                <>
-                  <Share2 className="w-4 h-4" />
-                  Dela länk
-                </>
-              )}
-            </Button>
-          </motion.div>
-        )}
-
-        {/* ─── Empty state (paired, no content yet) ─── */}
-        {!isSolo && !hasContent && !hasActiveFilter && !effectiveLoading && (
+        {/* ─── Empty state ─── */}
+        {!hasContent && !hasActiveFilter && !effectiveLoading && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -284,10 +235,10 @@ export default function SharedSummary() {
           >
             <div className="space-y-3">
               <p className="text-sm text-muted-foreground/70 leading-relaxed">
-                Här samlas era samtal.
+                Här samlas dina samtal.
               </p>
               <p className="text-xs text-muted-foreground/50">
-                Det ni delar tillsammans sparas här.
+                Det du delar sparas här.
               </p>
             </div>
           </motion.div>
@@ -301,7 +252,7 @@ export default function SharedSummary() {
           </div>
         ) : (
           <>
-            {!isSolo && hasContent && (<>
+            {hasContent && (<>
 
               {/* ═══════════════════════════════════════════
                   SECTION 1: "Nyligen delat" — Memory cards
