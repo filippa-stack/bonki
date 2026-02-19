@@ -111,6 +111,12 @@ export default function CardView() {
 
   // ─── Completed session check ───
   const [hasCompletedNormalizedSession, setHasCompletedNormalizedSession] = useState(false);
+
+  // showCompletion: session just finished — takeaway ritual before archive
+  const [showCompletion, setShowCompletion] = useState(
+    devState === 'completed' ? true : false
+  );
+
   useEffect(() => {
     if (devState) return;
     if (!space || !cardId) return;
@@ -121,14 +127,9 @@ export default function CardView() {
       .eq('card_id', cardId)
       .eq('status', 'completed')
       .limit(1)
-      .single()
+      .maybeSingle()
       .then(({ data }) => setHasCompletedNormalizedSession(!!data));
-  }, [space, cardId, devState]);
-
-  // showCompletion: session just finished — takeaway ritual before archive
-  const [showCompletion, setShowCompletion] = useState(
-    devState === 'completed' ? true : false
-  );
+  }, [space, cardId, devState, showCompletion]);
 
   // ─── Auto-show completion when session disappears post-lock ───
   useEffect(() => {
@@ -149,6 +150,8 @@ export default function CardView() {
     if (!space?.id || !cardId) return;
     // Don't activate if there's already a completed session for this card
     if (hasCompletedNormalizedSession) return;
+    // Don't activate if there's already any active session (for a different card)
+    if (normalizedSession.sessionId) return;
 
     const card = getCardById(cardId);
     if (!card) return;
@@ -170,7 +173,8 @@ export default function CardView() {
       }
       activatingRef.current = false;
     })();
-  }, [devState, isRevisitMode, showCompletion, normalizedSession.loading, isActiveSession, space?.id, cardId, hasCompletedNormalizedSession, getCardById]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [devState, isRevisitMode, showCompletion, normalizedSession.loading, isActiveSession, normalizedSession.sessionId, space?.id, cardId, hasCompletedNormalizedSession]);
   
 
   // ─── Single resolver — the only gate for which surface mounts ───
