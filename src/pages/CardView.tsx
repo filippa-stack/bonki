@@ -438,7 +438,7 @@ export default function CardView() {
       {/* Step progress — neutral text only */}
       {cardViewMode === 'live' && (
         <motion.div
-          className="px-6 pt-10 pb-2"
+          className="px-6 pt-12 pb-2"
           initial={isLive ? { opacity: 0 } : false}
           animate={{ opacity: 1 }}
           transition={{ delay: isLive ? BEAT_1 : 0, duration: BEAT_3, ease: EASE }}
