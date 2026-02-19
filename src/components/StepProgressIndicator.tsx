@@ -44,26 +44,23 @@ export default function StepProgressIndicator({
   return (
     <div className={cn('flex items-center justify-center gap-2', className)}>
       {STAGE_STEPS.map((step, index) => {
-        const isCurrent  = index === currentStepIndex;
+        const isCurrent = index === currentStepIndex;
         const isCompleted = completedSteps.includes(index) || index < currentStepIndex;
 
         return (
           <span
             key={step.stage_key}
             className={cn(
-              'text-[11px] tracking-wide select-none transition-colors duration-200',
-              isCurrent && 'font-semibold',
+              'h-1 flex-1 max-w-[40px] rounded-full transition-colors duration-200',
             )}
             style={{
-              color: 'var(--color-ink)',
-              opacity: isCurrent ? 1 : 0.6,
-              textDecoration: isCompleted && !isCurrent ? 'line-through' : 'none',
-              borderBottom: isCurrent ? '2px solid var(--color-ink)' : '2px solid transparent',
-              paddingBottom: '2px',
+              backgroundColor: isCurrent
+                ? 'var(--color-ink)'
+                : isCompleted
+                  ? 'hsl(var(--muted-foreground) / 0.3)'
+                  : 'hsl(var(--border))',
             }}
-          >
-            {step.label}
-          </span>
+          />
         );
       })}
     </div>
