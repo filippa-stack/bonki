@@ -21,8 +21,8 @@ export default function ConversationCard({ conversation, onClick, variant = 'def
     return (
       <button
         onClick={onClick}
-        className="w-full text-left p-5 rounded-card transition-opacity hover:opacity-80"
-        style={{ backgroundColor: 'var(--color-surface-primary)', boxShadow: 'var(--shadow-card)' }}
+        className="w-full text-left p-6 rounded-card transition-opacity hover:opacity-80"
+        style={{ backgroundColor: 'var(--color-surface)', border: 'var(--border-card)' }}
       >
         <div className="flex items-center justify-between gap-3">
           <div className="flex-1 min-w-0">
@@ -42,8 +42,8 @@ export default function ConversationCard({ conversation, onClick, variant = 'def
       initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
       onClick={onClick}
-      className="w-full text-left px-7 py-7 rounded-card transition-opacity hover:opacity-80"
-      style={{ backgroundColor: 'var(--color-surface-primary)', boxShadow: 'var(--shadow-card)' }}
+      className="w-full text-left px-6 py-6 rounded-card transition-opacity hover:opacity-80"
+      style={{ backgroundColor: 'var(--color-surface)', border: 'var(--border-card)' }}
     >
       <div className="flex items-start justify-between gap-4">
         <div className="flex-1 min-w-0">

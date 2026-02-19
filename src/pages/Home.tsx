@@ -302,8 +302,8 @@ export default function Home() {
                         </p>
                         <div
                           onClick={() => { markNavigated(); navigate(`/category/${recCat.id}`); }}
-                          className="cursor-pointer rounded-card p-8 transition-opacity hover:opacity-90"
-                          style={{ backgroundColor: 'var(--color-surface-secondary)', boxShadow: 'var(--shadow-card-featured)' }}
+                          className="cursor-pointer rounded-card p-6 transition-opacity hover:opacity-90"
+                          style={{ backgroundColor: 'var(--color-surface)', border: 'var(--border-card)' }}
                         >
                           <h3
                             className="font-serif text-base font-medium leading-snug mb-1"
