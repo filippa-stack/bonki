@@ -46,8 +46,9 @@
     --radius-toast:  0.75rem;
 
     /* ── Standard shadow ── */
-    --shadow-card: 0px 6px 18px rgba(0,0,0,0.04);
-    --shadow-card-featured: 0px 10px 28px rgba(0,0,0,0.08);
+    --shadow-card: none;
+    --shadow-card-featured: none;
+    --border-card: 1px solid rgba(0,0,0,0.04);
 
     /* Custom tokens */
     --surface-warm: 0 0% 100%;
