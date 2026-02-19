@@ -49,7 +49,7 @@ export default function Category() {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.28, ease: [0.4, 0.0, 0.2, 1] }}
-          className="font-serif text-3xl font-semibold leading-tight"
+          className="text-display"
           style={{ color: 'var(--color-text-primary)' }}
         >
           {category.title}
@@ -59,7 +59,7 @@ export default function Category() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: BEAT_1, duration: 0.2, ease: EASE }}
-            className="text-base leading-relaxed mt-2 max-w-md"
+            className="text-body mt-2 max-w-md"
             style={{ color: 'var(--color-text-secondary)' }}
           >
             {category.entryLine}
@@ -130,7 +130,7 @@ function CardEntry({ card, index, isCompleted = false, lastVisitedAt, onNavigate
           />
         )}
         <h3
-          className="font-serif text-lg sm:text-xl text-center leading-snug"
+          className="text-subheading text-center"
           style={{ color: isCompleted ? 'var(--color-text-secondary)' : 'var(--color-text-primary)' }}
         >
           {card.title}

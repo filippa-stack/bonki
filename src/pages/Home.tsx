@@ -241,7 +241,7 @@ export default function Home() {
 
                 {/* Card title — dominant */}
                 <h2
-                  className="font-serif text-3xl font-medium leading-tight mb-8"
+                  className="text-display mb-8"
                   style={{ color: 'var(--color-text-primary)' }}
                 >
                   {activeCard.title}
@@ -306,7 +306,7 @@ export default function Home() {
                           }}
                         >
                           <h3
-                            className="font-serif text-base font-medium leading-snug mb-1"
+                            className="text-heading mb-1"
                             style={{ color: 'var(--color-text-primary)' }}
                           >
                             {recCat.title}

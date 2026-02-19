@@ -173,8 +173,8 @@ export default function CompletedSessionView({
             <p className="text-[11px] text-muted-foreground/50 tracking-wide uppercase">
               Session från {formatSessionDate(session.startedAt)}
             </p>
-            <h2 className="text-xl font-serif text-foreground">Samtalet är sparat.</h2>
-            <p className="text-sm text-muted-foreground/60">Ni kan fortsätta när ni vill.</p>
+            <h2 className="text-heading text-foreground">Samtalet är sparat.</h2>
+            <p className="text-meta text-muted-foreground/60">Ni kan fortsätta när ni vill.</p>
           </motion.div>
 
           {/* Locked reflections: delay BEAT_2, opacity 0→1, translateY 12→0, BEAT_3 */}
