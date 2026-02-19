@@ -344,7 +344,12 @@ export default function CardView() {
   // ─────────────────────────────────────────────────────────────
   if (cardViewMode === 'completion') {
     return (
-      <div className="min-h-screen page-bg">
+      <motion.div
+        className="min-h-screen page-bg"
+        initial={{ opacity: 0, scale: 1.02 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.28, ease: [0, 0, 0.2, 1] }}
+      >
         <Header title={category?.title} showBack backTo="/" />
         <div className="px-6 pt-title-above pb-16">
           <motion.div
@@ -394,7 +399,7 @@ export default function CardView() {
             </div>
           </motion.div>
         </div>
-      </div>
+      </motion.div>
     );
   }
 
@@ -408,9 +413,9 @@ export default function CardView() {
     <motion.div
       className="min-h-screen"
       style={{ backgroundColor: 'var(--color-bg-base)' }}
-      initial={isLive ? { opacity: 0 } : false}
-      animate={{ opacity: 1 }}
-      transition={{ duration: BEAT_3, ease: EASE }}
+      initial={isLive ? { opacity: 0, scale: 0.97 } : false}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ duration: 0.28, ease: [0, 0, 0.2, 1] }}
     >
       <StageInterstitial visible={showInterstitial} />
       <Header
@@ -483,10 +488,10 @@ export default function CardView() {
           {currentSection && (
             <motion.div
               key={currentSection.id}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0 }}
-              transition={{ duration: BEAT_3, ease: EASE }}
+              transition={{ duration: 0.2, ease: [0, 0, 0.2, 1] }}
             >
               {/* Step 3 — Prompt: delay BEAT_1, duration BEAT_3 (live only) */}
               <motion.div
