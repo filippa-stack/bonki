@@ -26,6 +26,7 @@ import CompletedSessionView from '@/components/CompletedSessionView';
 import { useProposalsContext } from '@/contexts/ProposalsContext';
 import { useDevState } from '@/contexts/DevStateContext';
 import { useNormalizedSessionContext } from '@/contexts/NormalizedSessionContext';
+import { useTogetherMode } from '@/hooks/useTogetherMode';
 import { BEAT_1, BEAT_2, BEAT_3, EASE } from '@/lib/motion';
 
 // ─────────────────────────────────────────────────────────────
@@ -56,6 +57,13 @@ function resolveCardViewMode({
 
 const STEP_ORDER = ['opening', 'reflective', 'scenario', 'exercise'] as const;
 
+const STEP_RITUAL_HINTS: Record<string, { together: string; solo: string }> = {
+  opening:    { together: 'Börja mjukt. Inga rätt eller fel.',        solo: 'Börja mjukt. Inget rätt eller fel.' },
+  reflective: { together: 'Lyssna färdigt innan ni svarar.',          solo: 'Ta tid på dig innan du svarar.' },
+  scenario:   { together: 'Välj ett perspektiv — inte en skyldig.',   solo: 'Välj ett perspektiv — inte en skyldig.' },
+  exercise:   { together: 'Gör en liten sak ni faktiskt kan hålla.',  solo: 'Gör en liten sak du faktiskt kan hålla.' },
+};
+
 const STEP_CTA_KEYS: Record<string, string> = {
   opening: 'card_view.cta_opening',
   reflective: 'card_view.cta_reflective',
@@ -82,6 +90,7 @@ export default function CardView() {
 
   // ─── Normalized session state — the ONLY session authority ───
   const normalizedSession = useNormalizedSessionContext();
+  const { isTogether } = useTogetherMode();
 
   const isActiveSession = !!(normalizedSession.sessionId && normalizedSession.cardId === cardId);
 
@@ -371,6 +380,13 @@ export default function CardView() {
             currentStepIndex={currentStepIndex}
             completedSteps={[]}
           />
+          {currentSection && STEP_RITUAL_HINTS[currentSection.type] && (
+            <p className="mt-2 text-center text-[11px] text-muted-foreground/40 tracking-wide">
+              {isTogether
+                ? STEP_RITUAL_HINTS[currentSection.type].together
+                : STEP_RITUAL_HINTS[currentSection.type].solo}
+            </p>
+          )}
         </motion.div>
       )}
 
