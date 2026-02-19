@@ -50,7 +50,7 @@ export default function Categories() {
           className="text-[22px] font-medium mb-[72px]"
           style={{ color: 'var(--color-text-secondary)' }}
         >
-          Välj samtalsområde
+          Var vill ni börja?
         </h1>
         {sortedCategories.map((category, index) => {
           const catCards = cards.filter((c) => c.categoryId === category.id);
