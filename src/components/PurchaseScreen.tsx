@@ -1,6 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { JOIN_INTENT_KEY, isSpacePaid } from '@/pages/Index';
+import { isSpacePaid } from '@/pages/Index';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import { BEAT_1, BEAT_2 } from '@/lib/motion';
@@ -14,7 +13,6 @@ interface PurchaseScreenProps {
 }
 
 export default function PurchaseScreen({ onPurchaseComplete }: PurchaseScreenProps) {
-  const navigate = useNavigate();
   const { t } = useTranslation();
   const { space } = useCoupleSpaceContext();
   const [processing, setProcessing] = useState(false);
@@ -117,23 +115,6 @@ export default function PurchaseScreen({ onPurchaseComplete }: PurchaseScreenPro
             )}
           </Button>
 
-          <div className="flex items-center justify-center gap-2 text-xs text-muted-foreground">
-            <Shield className="w-3 h-3" />
-            <span>{t('purchase.secure_note', 'Säker betalning · Engångsköp')}</span>
-          </div>
-
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => { localStorage.setItem(JOIN_INTENT_KEY, 'true'); navigate('/join'); }}
-            className="text-muted-foreground hover:text-foreground"
-          >
-            Jag har redan blivit inbjuden
-          </Button>
-
-          <p className="text-xs text-muted-foreground/60 leading-relaxed">
-            Har du redan blivit inbjuden? Då behöver du inte köpa igen — anslut med länken eller koden.
-          </p>
         </motion.div>
       </motion.div>
     </div>
