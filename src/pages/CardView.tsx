@@ -450,7 +450,7 @@ export default function CardView() {
       {/* Step progress — neutral text only */}
       {cardViewMode === 'live' && (
         <motion.div
-          className="px-6 pt-6 pb-4"
+          className="px-6 pt-10 pb-2"
           initial={isLive ? { opacity: 0 } : false}
           animate={{ opacity: 1 }}
           transition={{ delay: isLive ? BEAT_1 : 0, duration: BEAT_3, ease: EASE }}
@@ -460,7 +460,7 @@ export default function CardView() {
             completedSteps={Array.from({ length: serverStepIndex }, (_, i) => i)}
           />
           {currentSection && STEP_RITUAL_HINTS[currentSection.type] && (
-            <p className="mt-2 text-center text-[11px] tracking-wide" style={{ color: 'var(--color-text-secondary)', opacity: 0.5 }}>
+            <p className="mt-4 text-center text-[11px] tracking-wide" style={{ color: 'var(--color-text-secondary)', opacity: 0.4 }}>
               {isTogether
                 ? STEP_RITUAL_HINTS[currentSection.type].together
                 : STEP_RITUAL_HINTS[currentSection.type].solo}
