@@ -32,7 +32,7 @@ export default function ReflectionMemoryCard({
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       onClick={onClick}
-      className="w-full text-left rounded-[20px] border border-border/30 bg-card/60 p-6 hover:border-primary/20 transition-colors shadow-[0_1px_4px_0_hsl(0_0%_0%/0.04)]"
+      className="w-full text-left rounded-card border border-border/20 p-6 hover:border-primary/20 transition-colors"
     >
       <p className="text-[11px] text-muted-foreground/50 mb-3">
         {categoryTitle} · {dateLabel}

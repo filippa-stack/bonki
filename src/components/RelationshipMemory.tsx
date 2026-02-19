@@ -23,7 +23,7 @@ export default function RelationshipMemory({ cardTitle, categoryTitle, completed
       transition={{ duration: 0.15 }}
       className="px-6 mb-6"
     >
-      <div className="rounded-card border border-border bg-card/50 p-6">
+      <div className="rounded-card border border-border/20 p-6">
         <div className="flex items-center gap-2 mb-2">
           <Heart className="w-4 h-4 text-muted-foreground" />
           <p className="text-xs text-muted-foreground uppercase tracking-wider">

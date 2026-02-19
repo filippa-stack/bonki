@@ -39,7 +39,7 @@ export default function PromptItem({ prompt, index, sectionType, preamble }: Pro
       animate={{ opacity: 1 }}
       transition={{ delay: index * BEAT_1, duration: 0.15 }}
       className="rounded-card overflow-hidden"
-      style={{ backgroundColor: 'var(--color-surface-primary)', boxShadow: 'var(--shadow-card)' }}
+      style={{ backgroundColor: 'transparent' }}
     >
       <div className="px-8 py-8">
         {preamble && (

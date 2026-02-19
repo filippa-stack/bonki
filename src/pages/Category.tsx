@@ -120,7 +120,7 @@ function CardEntry({ card, index, isCompleted = false, lastVisitedAt, onNavigate
         if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onNavigate(); }
       }}
       className="w-full cursor-pointer rounded-card px-8 py-8 transition-opacity hover:opacity-80"
-      style={{ backgroundColor: 'var(--color-surface-primary)', boxShadow: 'var(--shadow-card)' }}
+      style={{ backgroundColor: 'var(--color-surface-primary)' }}
     >
       <div className="flex flex-col items-center gap-1.5">
         {isCompleted && (

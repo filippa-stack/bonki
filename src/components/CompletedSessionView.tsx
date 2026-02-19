@@ -197,7 +197,7 @@ export default function CompletedSessionView({
                           ? group.partnerRef.speakerLabel
                           : partnerName}
                       </p>
-                      <div className="rounded-card border border-border/30 bg-muted/10 overflow-hidden">
+                      <div className="rounded-card border border-border/20 overflow-hidden">
                         <p className="p-6 text-sm text-foreground whitespace-pre-wrap">{group.partnerRef.text}</p>
                       </div>
                     </div>
@@ -211,7 +211,7 @@ export default function CompletedSessionView({
                           ? group.myRef.speakerLabel
                           : myName}
                       </p>
-                      <div className="rounded-card border border-border/30 bg-muted/10 overflow-hidden">
+                      <div className="rounded-card border border-border/20 overflow-hidden">
                         <p className="p-6 text-sm text-foreground whitespace-pre-wrap">{group.myRef.text}</p>
                       </div>
                     </div>
@@ -232,7 +232,7 @@ export default function CompletedSessionView({
               className="space-y-2"
             >
               <p className="text-xs text-muted-foreground/40 tracking-wide">Det ni tog med er</p>
-              <div className="rounded-card border border-border/30 bg-muted/10 overflow-hidden">
+              <div className="rounded-card border border-border/20 overflow-hidden">
                 <p className="p-6 text-sm text-foreground whitespace-pre-wrap">{session.takeawayText}</p>
               </div>
             </motion.div>
