@@ -28,6 +28,7 @@ interface LockedReflection {
   stepIndex: number;
   userId: string;
   text: string;
+  speakerLabel: string | null;
 }
 
 interface SessionData {
@@ -81,7 +82,7 @@ export default function CompletedSessionView({
       const [reflRes, takeawayRes] = await Promise.all([
         supabase
           .from('step_reflections')
-          .select('step_index, user_id, text')
+          .select('step_index, user_id, text, speaker_label')
           .eq('session_id', sessionRow.id)
           .eq('state', 'locked'),
         supabase
@@ -101,6 +102,7 @@ export default function CompletedSessionView({
           stepIndex: r.step_index,
           userId: r.user_id,
           text: r.text,
+          speakerLabel: (r as any).speaker_label ?? null,
         })),
         takeawayText: (takeawayRes.data as any)?.content?.trim() || null,
       });
@@ -194,7 +196,11 @@ export default function CompletedSessionView({
                   {/* Partner first */}
                   {group.partnerRef && group.partnerRef.text.trim() && (
                     <div className="space-y-1">
-                      <p className="text-xs text-muted-foreground/60 px-1">{partnerName}</p>
+                      <p className="text-xs text-muted-foreground/60 px-1">
+                        {group.partnerRef.speakerLabel && /^[AB]$/.test(group.partnerRef.speakerLabel)
+                          ? group.partnerRef.speakerLabel
+                          : partnerName}
+                      </p>
                       <div className="rounded-[20px] border border-border/30 bg-muted/10 overflow-hidden">
                         <p className="p-6 text-sm text-foreground whitespace-pre-wrap">{group.partnerRef.text}</p>
                       </div>
@@ -204,7 +210,11 @@ export default function CompletedSessionView({
                   {/* User second */}
                   {group.myRef && group.myRef.text.trim() && (
                     <div className="space-y-1">
-                      <p className="text-xs text-muted-foreground/60 px-1">{myName}</p>
+                      <p className="text-xs text-muted-foreground/60 px-1">
+                        {group.myRef.speakerLabel && /^[AB]$/.test(group.myRef.speakerLabel)
+                          ? group.myRef.speakerLabel
+                          : myName}
+                      </p>
                       <div className="rounded-[20px] border border-border/30 bg-muted/10 overflow-hidden">
                         <p className="p-6 text-sm text-foreground whitespace-pre-wrap">{group.myRef.text}</p>
                       </div>
