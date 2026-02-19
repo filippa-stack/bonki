@@ -13,7 +13,6 @@ export interface StepReflection {
   text: string;
   state: ReflectionState;
   updatedAt: string;
-  speakerLabel: string | null;
 }
 
 interface UseSessionReflectionsReturn {
@@ -21,30 +20,25 @@ interface UseSessionReflectionsReturn {
   loading: boolean;
   /** Current user's reflection for the active step */
   myReflection: StepReflection | null;
-  /** Partner's reflection (only visible when revealed or locked) */
-  partnerReflection: StepReflection | null;
   /** Current state of the user's reflection */
   state: ReflectionState;
-  /**
-   * True when this user has pressed "Klar" (state === 'ready') but the
-   * partner has not yet reached ready/revealed/locked for this step.
-   */
-  isWaitingForPartner: boolean;
   /** Update draft text (autosaved) */
   setText: (text: string) => void;
-  /** Transition draft → ready */
-  markReady: (speakerLabel?: string) => Promise<void>;
-  /** Transition revealed → locked (both users) */
-  lockStep: () => Promise<void>;
+  /**
+   * Transition draft → ready.
+   * In the single-writer model this is the terminal action for a step.
+   */
+  markReady: () => Promise<void>;
 }
 
 const AUTOSAVE_DELAY = 800;
 
 /**
- * Manages session-based reflections with strict state transitions.
- * session_id must be a couple_sessions.id (normalized model only).
+ * Single-writer reflection hook.
+ * One reflection row per (session_id, step_index, user_id).
+ * No A/B protocol, no partner gating, no reveal state.
  *
- * State machine: draft → ready → revealed → locked
+ * State machine: draft → ready  (terminal for this step)
  */
 export function useSessionReflections(
   normalizedSessionId: string | null,
@@ -57,7 +51,6 @@ export function useSessionReflections(
 
   const [loading, setLoading] = useState(true);
   const [myReflection, setMyReflection] = useState<StepReflection | null>(null);
-  const [partnerReflection, setPartnerReflection] = useState<StepReflection | null>(null);
   const [localText, setLocalText] = useState('');
   const pendingSave = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -69,12 +62,11 @@ export function useSessionReflections(
   // ─── 1. Reset state when session or step changes ───
   useEffect(() => {
     setMyReflection(null);
-    setPartnerReflection(null);
     setLocalText('');
     setLoading(true);
   }, [normalizedSessionId, stepIndex]);
 
-  // ─── 2. Fetch reflections for current step ───
+  // ─── 2. Fetch reflection for current step ───
   useEffect(() => {
     if (!sessionId || !user) {
       setLoading(false);
@@ -87,42 +79,39 @@ export function useSessionReflections(
 
     let cancelled = false;
 
-    const fetchReflections = async () => {
+    const fetchReflection = async () => {
       const { data, error } = await supabase
         .from('step_reflections')
         .select('*')
         .eq('session_id', sessionId)
-        .eq('step_index', stepIndex);
+        .eq('step_index', stepIndex)
+        .eq('user_id', user.id)
+        .maybeSingle();
 
       if (cancelled) return;
       if (error) {
-        console.error('Failed to fetch step_reflections:', error);
+        console.error('Failed to fetch step_reflection:', error);
         setLoading(false);
         return;
       }
 
-      for (const row of data || []) {
-        const reflection = mapRow(row);
-        if (row.user_id === user.id) {
-          setMyReflection(reflection);
-          setLocalText(reflection.text);
-        } else {
-          setPartnerReflection(reflection);
-        }
+      if (data) {
+        setMyReflection(mapRow(data));
+        setLocalText(data.text);
       }
       setLoading(false);
     };
 
-    fetchReflections();
+    fetchReflection();
     return () => { cancelled = true; };
   }, [sessionId, stepIndex, user, devState]);
 
-  // ─── 3. Realtime subscription for state changes ───
+  // ─── 3. Realtime subscription ───
   useEffect(() => {
-    if (!sessionId || devState) return;
+    if (!sessionId || !user || devState) return;
 
     const channel = supabase
-      .channel(`step_reflections_${sessionId}_${stepIndex}`)
+      .channel(`step_reflections_${sessionId}_${stepIndex}_${user.id}`)
       .on(
         'postgres_changes',
         {
@@ -135,16 +124,12 @@ export function useSessionReflections(
           if (payload.eventType === 'DELETE') return;
           const row = payload.new as any;
           if (row.step_index !== stepIndex) return;
+          if (row.user_id !== user.id) return;
 
           const reflection = mapRow(row);
-          if (row.user_id === user?.id) {
-            setMyReflection(reflection);
-            // Don't overwrite local text during draft to avoid cursor jumps
-            if (reflection.state !== 'draft') {
-              setLocalText(reflection.text);
-            }
-          } else {
-            setPartnerReflection(reflection);
+          setMyReflection(reflection);
+          if (reflection.state !== 'draft') {
+            setLocalText(reflection.text);
           }
         }
       )
@@ -181,8 +166,8 @@ export function useSessionReflections(
     }, AUTOSAVE_DELAY);
   }, [user, stepIndex, devState]);
 
-  // ─── 5. Mark ready: draft → ready ───
-  const markReady = useCallback(async (speakerLabel?: string) => {
+  // ─── 5. Mark ready: draft → ready (terminal action) ───
+  const markReady = useCallback(async () => {
     if (!user) return;
 
     if (!devState && sessionIdRef.current) {
@@ -195,7 +180,6 @@ export function useSessionReflections(
             user_id: user.id,
             text: localText,
             state: 'ready' as any,
-            ...(speakerLabel !== undefined ? { speaker_label: speakerLabel } : {}),
           },
           { onConflict: 'session_id,step_index,user_id' }
         );
@@ -206,31 +190,20 @@ export function useSessionReflections(
       }
     }
 
-    setMyReflection(prev => prev ? { ...prev, state: 'ready', text: localText, speakerLabel: speakerLabel ?? prev.speakerLabel } : {
-      id: '',
-      sessionId: sessionIdRef.current || 'dev-session',
-      stepIndex,
-      userId: user.id,
-      text: localText,
-      state: 'ready',
-      updatedAt: new Date().toISOString(),
-      speakerLabel: speakerLabel ?? null,
-    });
+    setMyReflection(prev =>
+      prev
+        ? { ...prev, state: 'ready', text: localText }
+        : {
+            id: '',
+            sessionId: sessionIdRef.current || 'dev-session',
+            stepIndex,
+            userId: user.id,
+            text: localText,
+            state: 'ready',
+            updatedAt: new Date().toISOString(),
+          }
+    );
   }, [user, stepIndex, localText, devState]);
-
-  // ─── 6. Lock step: revealed → locked ───
-  const lockStep = useCallback(async () => {
-    if (!sessionIdRef.current || devState) return;
-
-    const { error } = await supabase.rpc('lock_step_reflections', {
-      _session_id: sessionIdRef.current,
-      _step_index: stepIndex,
-    });
-
-    if (error) {
-      console.error('Failed to lock step:', error);
-    }
-  }, [stepIndex, devState]);
 
   // Cleanup pending autosave on unmount
   useEffect(() => {
@@ -241,21 +214,13 @@ export function useSessionReflections(
 
   const state: ReflectionState = myReflection?.state || 'draft';
 
-  const PARTNER_ACTIVE_STATES: ReflectionState[] = ['ready', 'revealed', 'locked'];
-  const isWaitingForPartner =
-    state === 'ready' &&
-    (!partnerReflection || !PARTNER_ACTIVE_STATES.includes(partnerReflection.state));
-
   return {
     sessionId,
     loading,
     myReflection,
-    partnerReflection,
     state,
-    isWaitingForPartner,
     setText,
     markReady,
-    lockStep,
   };
 }
 
@@ -268,6 +233,5 @@ function mapRow(row: any): StepReflection {
     text: row.text,
     state: row.state as ReflectionState,
     updatedAt: row.updated_at,
-    speakerLabel: row.speaker_label ?? null,
   };
 }

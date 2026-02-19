@@ -459,17 +459,9 @@ export default function CardView() {
                       stepIndex={currentStepIndex}
                       onLocked={async () => {
                         await handleCompleteStep();
-                        if (currentStepIndex >= STEP_ORDER.length - 1) {
-                          setShowCompletion(true);
-                        }
                       }}
                     />
                   </motion.div>
-                  {currentStepIndex === 3 && (
-                    <p className="text-xs text-muted-foreground/40 text-center mt-4">
-                      När ni båda är klara kan ni formulera något gemensamt.
-                    </p>
-                  )}
                 </>
               )}
 
