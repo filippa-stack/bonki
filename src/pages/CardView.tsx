@@ -476,7 +476,7 @@ export default function CardView() {
                 >
                   <button
                     onClick={() => handleRevisitNext(card)}
-                    className="w-full h-14 rounded-[16px] flex items-center justify-center gap-2 text-sm font-medium transition-opacity hover:opacity-90"
+                    className="w-full h-14 rounded-button flex items-center justify-center gap-2 text-sm font-medium transition-opacity hover:opacity-90"
                     style={{
                       backgroundColor: 'var(--color-button-primary)',
                       color: 'var(--color-button-text)',

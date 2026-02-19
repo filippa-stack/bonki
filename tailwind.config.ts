@@ -87,15 +87,18 @@ export default {
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
         // Semantic tokens
-        card:   "var(--radius-card)",    // 20px
-        button: "var(--radius-button)",  // 16px
-        pill:   "var(--radius-pill)",    // 14px
-        toast:  "var(--radius-toast)",   // 18px
+        card:   "var(--radius-card)",    // 12px
+        button: "var(--radius-button)",  // 12px
+        pill:   "var(--radius-pill)",    // 8px
+        toast:  "var(--radius-toast)",   // 12px
+      },
+      boxShadow: {
+        card: "var(--shadow-card)",
       },
       spacing: {
-        'gentle': '1.5rem',
-        'breath': '2.5rem',
-        'section': '4rem',
+        'gentle': '1.5rem',    // 24px
+        'breath': '2.5rem',    // 40px
+        'section': '2rem',     // 32px
       },
       keyframes: {
         "accordion-down": {
