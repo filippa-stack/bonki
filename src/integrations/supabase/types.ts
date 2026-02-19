@@ -440,6 +440,7 @@ export type Database = {
           created_by: string
           id: string
           session_id: string
+          speaker_label: string | null
         }
         Insert: {
           content: string
@@ -448,6 +449,7 @@ export type Database = {
           created_by: string
           id?: string
           session_id: string
+          speaker_label?: string | null
         }
         Update: {
           content?: string
@@ -456,6 +458,7 @@ export type Database = {
           created_by?: string
           id?: string
           session_id?: string
+          speaker_label?: string | null
         }
         Relationships: [
           {
@@ -663,6 +666,7 @@ export type Database = {
         Row: {
           id: string
           session_id: string
+          speaker_label: string | null
           state: Database["public"]["Enums"]["reflection_state"]
           step_index: number
           text: string
@@ -672,6 +676,7 @@ export type Database = {
         Insert: {
           id?: string
           session_id: string
+          speaker_label?: string | null
           state?: Database["public"]["Enums"]["reflection_state"]
           step_index: number
           text?: string
@@ -681,6 +686,7 @@ export type Database = {
         Update: {
           id?: string
           session_id?: string
+          speaker_label?: string | null
           state?: Database["public"]["Enums"]["reflection_state"]
           step_index?: number
           text?: string
