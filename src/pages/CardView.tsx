@@ -182,6 +182,8 @@ export default function CardView() {
   }, [currentStepIndex, cardId, cardViewMode, getCardById, saveConversation]);
 
   // ─── Handle step completion via RPC ───
+  // Sequence: RPC → refetch (drives current_step_index forward) → re-render.
+  // No partner checks. No dual-completion gating.
   const handleCompleteStep = useCallback(async () => {
     if (!normalizedSession.sessionId || cardViewMode !== 'live') return;
 
@@ -197,18 +199,16 @@ export default function CardView() {
     }
 
     const result = Array.isArray(data) ? data[0] : data;
-    if (result?.partner_left) {
-      toastErrorOnce('partner_left', 'Din partner har lämnat utrymmet');
-      navigate('/');
+
+    // Session finished — show takeaway screen
+    if (result?.is_session_complete) {
+      setShowCompletion(true);
       return;
     }
 
-    if (result?.is_session_complete) {
-      setShowCompletion(true);
-    }
-
+    // Refetch drives current_step_index increment → re-render with next step
     await normalizedSession.refetch();
-  }, [normalizedSession, currentStepIndex, cardViewMode, navigate]);
+  }, [normalizedSession, currentStepIndex, cardViewMode]);
 
   // ─── Revisit "Next" handler ───
   const handleRevisitNext = (card: ReturnType<typeof getCardById>) => {
