@@ -39,6 +39,7 @@ interface HeaderProps {
   showSaveIndicator?: boolean;
   showBackupManager?: boolean;
   variant?: 'default' | 'immersive';
+  onImmersiveBack?: () => void;
 }
 
 export default function Header({
@@ -49,6 +50,7 @@ export default function Header({
   showSaveIndicator = true,
   showBackupManager = true,
   variant = 'default',
+  onImmersiveBack,
 }: HeaderProps) {
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -74,13 +76,24 @@ export default function Header({
       }}
     >
       <div className="flex items-center justify-between px-6" style={{ height: isImmersive ? '2.75rem' : '3.5rem' }}>
-        <div className="flex items-center gap-2">
-          <img
-            src={bonkiLogo}
-            alt="Still Us"
-            className={`h-7 w-7 object-contain cursor-pointer opacity-75 ${isImmersive ? 'brightness-0 invert' : ''}`}
-            onClick={() => navigate('/')}
-          />
+        <div className="flex items-center gap-3">
+          {isImmersive && onImmersiveBack && (
+            <button
+              onClick={onImmersiveBack}
+              className="text-[14px] transition-opacity hover:opacity-70"
+              style={{ color: 'hsl(0 0% 100% / 0.6)' }}
+            >
+              Tillbaka
+            </button>
+          )}
+          {!(isImmersive && onImmersiveBack) && (
+            <img
+              src={bonkiLogo}
+              alt="Still Us"
+              className={`h-7 w-7 object-contain cursor-pointer opacity-75 ${isImmersive ? 'brightness-0 invert' : ''}`}
+              onClick={() => navigate('/')}
+            />
+          )}
           {title && (
             <h1 className={`font-serif text-lg truncate ${isImmersive ? 'text-white' : 'text-foreground'}`}>
               {title}
