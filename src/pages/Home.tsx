@@ -234,53 +234,60 @@ export default function Home() {
           );
         })()}
 
-        {/* ═══ IDLE — Category Discovery + single "Starta" CTA ═══ */}
+        {/* ═══ IDLE — Recommended + Category Grid ═══ */}
         {mode === 'idle' && (
           <motion.div
             id="category-section"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.15 }}
-            className="px-6 mt-6"
+            className="px-6 mt-8"
           >
-            {/* Primary CTA — above categories when recommended card is known */}
-            {recommendedCardId && (
-              <div className="mb-8">
-              <Button
-                  size="lg"
-                  className="w-full h-14 rounded-2xl gap-2 font-normal"
-                  onClick={() => { markNavigated(); navigate(`/card/${recommendedCardId}`); }}
-                >
-                  {isTogether ? 'Starta nästa samtal' : 'Starta nästa övning'}
-                  <ArrowRight className="w-4 h-4" />
-                </Button>
-              </div>
-            )}
-
-            {/* Category list */}
-            <div className="space-y-6 pb-12">
-              {categories.map((category, index) => {
-                const catStatus = getCategoryStatus(category.id);
-                const isFeatured = devState !== 'browse' && category.id === recommendedCategoryId;
-                const nextCategory = categories[index + 1];
-                const nextIsNormal = isFeatured && nextCategory;
-                return (
+            {/* Recommended section */}
+            {(() => {
+              const recCat = recommendedCategoryId ? getCategoryById(recommendedCategoryId) : null;
+              if (!recCat) return null;
+              return (
+                <div className="mb-8">
+                  <p className="text-xs uppercase tracking-widest font-medium mb-4"
+                     style={{ color: 'var(--color-text-secondary)' }}>
+                    Rekommenderat nästa steg
+                  </p>
                   <div
-                    key={category.id}
-                    className={isFeatured ? 'mt-4' : undefined}
-                    style={nextIsNormal ? { marginBottom: '-8px' } : undefined}
+                    onClick={() => { markNavigated(); navigate(`/category/${recCat.id}`); }}
+                    className="cursor-pointer rounded-[20px] p-8 transition-opacity hover:opacity-90"
+                    style={{ backgroundColor: 'var(--color-surface-secondary)' }}
                   >
-                    <CategoryCard
-                      category={category}
-                      onClick={() => navigate(`/category/${category.id}`)}
-                      index={index}
-                      highlighted={category.id === highlightedCategoryId}
-                      isCompleted={catStatus === 'explored'}
-                      isFeatured={isFeatured}
-                    />
+                    <h2
+                      className="font-serif text-2xl font-medium leading-snug mb-2"
+                      style={{ color: 'var(--color-text-primary)' }}
+                    >
+                      {recCat.title}
+                    </h2>
+                    {recCat.entryLine && (
+                      <p className="text-sm leading-relaxed"
+                         style={{ color: 'var(--color-text-secondary)' }}>
+                        {recCat.entryLine}
+                      </p>
+                    )}
                   </div>
-                );
-              })}
+                </div>
+              );
+            })()}
+
+            {/* Full category grid — uniform, no highlights */}
+            <div className="space-y-3 pb-12">
+              {categories.map((category, index) => (
+                <CategoryCard
+                  key={category.id}
+                  category={category}
+                  onClick={() => navigate(`/category/${category.id}`)}
+                  index={index}
+                  highlighted={false}
+                  isCompleted={getCategoryStatus(category.id) === 'explored'}
+                  isFeatured={false}
+                />
+              ))}
             </div>
           </motion.div>
         )}
