@@ -69,10 +69,11 @@ export default function Header({
     <header
       className={`sticky top-0 z-10 backdrop-blur-md ${isImmersive ? '' : 'border-b border-black/[0.04]'}`}
       style={{
-        backgroundColor: isImmersive ? 'var(--color-cta)' : 'hsl(var(--surface-chrome) / 0.85)',
+        backgroundColor: isImmersive ? 'hsl(152 28% 16%)' : 'hsl(var(--surface-chrome) / 0.85)',
+        boxShadow: isImmersive ? '0 1px 4px 0 hsl(0 0% 0% / 0.08)' : undefined,
       }}
     >
-      <div className="flex items-center justify-between px-6" style={{ height: isImmersive ? 'auto' : '3.5rem', paddingTop: isImmersive ? '16px' : undefined, paddingBottom: isImmersive ? '32px' : undefined }}>
+      <div className="flex items-center justify-between px-6" style={{ height: isImmersive ? '2.75rem' : '3.5rem' }}>
         <div className="flex items-center gap-2">
           <img
             src={bonkiLogo}
