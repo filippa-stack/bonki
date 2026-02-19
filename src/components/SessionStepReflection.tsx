@@ -1,82 +1,36 @@
-import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Lock } from 'lucide-react';
+import { useState } from 'react';
+import { motion } from 'framer-motion';
+import { Lock, CheckCircle2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Separator } from '@/components/ui/separator';
-import { useCoupleSpaceContext as useCoupleSpace } from '@/contexts/CoupleSpaceContext';
-import { useSessionReflections, type ReflectionState } from '@/hooks/useSessionReflections';
-import SpeakerToggle, { useSpeaker } from '@/components/SpeakerToggle';
-import { BEAT_1, BEAT_2, BEAT_3, EASE } from '@/lib/motion';
-
+import { useSessionReflections } from '@/hooks/useSessionReflections';
+import { BEAT_2, BEAT_3, EASE } from '@/lib/motion';
 
 interface SessionStepReflectionProps {
   /** Normalized session ID from NormalizedSessionProvider (couple_sessions.id). */
   sessionId?: string | null;
   stepIndex: number;
   /**
-   * Fires after markReady() resolves.
-   * Signals only that this user's step_reflections row is now 'ready'.
-   * Must NOT trigger session progression — that belongs to onLocked.
-   */
-  onReady?: () => void;
-  /**
-   * Fires after lockStep() resolves.
-   * This is the sole entry point for complete_couple_session_step
-   * and any step-index advancement in the parent.
+   * Fires after markReady() resolves and the RPC step-completion call succeeds.
+   * This is the sole entry point for complete_couple_session_step and
+   * any step-index advancement in the parent.
    */
   onLocked?: () => void | Promise<void>;
 }
 
-
 export default function SessionStepReflection({
   sessionId = null,
   stepIndex,
-  onReady,
   onLocked,
 }: SessionStepReflectionProps) {
   const {
     loading,
     myReflection,
-    partnerReflection,
     state,
     setText,
     markReady,
-    lockStep,
   } = useSessionReflections(sessionId, stepIndex);
 
-  const { speaker, setSpeaker } = useSpeaker();
-
-  const { space, userRole } = useCoupleSpace();
-  const myName = myReflection?.speakerLabel
-    ?? (userRole === 'partner_a' ? (space?.partner_a_name || 'Du') : (space?.partner_b_name || 'Du'));
-  const partnerName = partnerReflection?.speakerLabel
-    ?? (userRole === 'partner_a' ? (space?.partner_b_name || 'Din partner') : (space?.partner_a_name || 'Din partner'));
-
-
   const [localText, setLocalText] = useState('');
-
-  // Track previous state to detect ready→revealed transition
-  const [prevState, setPrevState] = useState(state);
-  const [waitingVisible, setWaitingVisible] = useState(state === 'ready');
-  const [revealVisible, setRevealVisible] = useState(state === 'revealed' || state === 'locked');
-
-  useEffect(() => {
-    if (prevState === 'ready' && (state === 'revealed' || state === 'locked')) {
-      // Phase A: fade out waiting (BEAT_3), Phase B: pause BEAT_1, Phase C+: reveal
-      setWaitingVisible(false);
-      const timer = setTimeout(() => setRevealVisible(true), (BEAT_3 + BEAT_1) * 1000); // 240ms
-      return () => clearTimeout(timer);
-    }
-    if (state === 'ready') {
-      setWaitingVisible(true);
-      setRevealVisible(false);
-    }
-    if ((state === 'revealed' || state === 'locked') && prevState !== 'ready') {
-      setRevealVisible(true);
-      setWaitingVisible(false);
-    }
-    setPrevState(state);
-  }, [state]);
 
   // Sync local text from hook
   const displayText = myReflection?.text ?? localText;
@@ -87,13 +41,10 @@ export default function SessionStepReflection({
   };
 
   const handleMarkReady = async () => {
-    await markReady(speaker);
-    onReady?.();
-  };
-
-  const handleLock = async () => {
-    await lockStep();
-    onLocked?.();
+    await markReady();
+    // In the single-writer model, ready = done for this step.
+    // Call onLocked immediately — parent handles complete_couple_session_step.
+    await onLocked?.();
   };
 
   if (loading) {
@@ -104,180 +55,45 @@ export default function SessionStepReflection({
     );
   }
 
-  // ─── LOCKED: immutable view (same reveal sequence) ───
-  if (state === 'locked') {
+  // ─── READY (already submitted) ───
+  if (state === 'ready' || state === 'revealed' || state === 'locked') {
     return (
-      <div className="mt-8 mb-2 space-y-5">
-        <p className="text-xs text-muted-foreground/50 text-center tracking-wide">
-          Så här reflekterade ni
-        </p>
-
-        {partnerReflection && (
-          <motion.div
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: BEAT_2, ease: EASE }}
-          >
-            <ReflectionBlock name={partnerName} text={partnerReflection.text} locked />
-          </motion.div>
-        )}
-
-        <Separator className="opacity-30" />
-
-        <motion.div
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: BEAT_1, duration: BEAT_2, ease: EASE }}
-        >
-          <ReflectionBlock name={myName} text={myReflection?.text || ''} locked />
-        </motion.div>
-
-        <p className="text-xs text-muted-foreground/40 text-center">
-          Det här steget är låst.
-        </p>
-      </div>
-    );
-  }
-
-  // ─── REVEALED: both visible, own editable ───
-  // Uses animated sequence: waiting fade-out (120ms) → pause (80ms) → reflections stagger in
-  if (state === 'revealed') {
-    return (
-      <div className="mt-8 mb-2">
-        <AnimatePresence mode="wait">
-          {!revealVisible ? (
-            // Phase A: waiting state fades out
-            <motion.div
-              key="waiting"
-              initial={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: BEAT_3, ease: EASE }}
-            className="min-h-[60vh] flex flex-col justify-center text-center"
-            >
-              <div className="space-y-6" style={{ animation: 'waiting-breathe 6.5s cubic-bezier(0.4, 0.0, 0.2, 1) infinite' }}>
-                <p className="text-sm text-muted-foreground/70 leading-relaxed">
-                  Väntar på din partner.
-                </p>
-                <p className="text-xs text-muted-foreground/40">
-                  När ni båda har delat, öppnas svaren.
-                </p>
-              </div>
-            </motion.div>
-          ) : (
-            // Phase C–E: reflections stagger in
-            <motion.div key="revealed">
-              <p className="text-xs text-muted-foreground/50 text-center">
-                Nu ser ni varandras svar.
-              </p>
-
-              <div className="mt-8 space-y-6">
-                {/* Phase C — Partner reflection first */}
-                {partnerReflection && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 12 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: BEAT_2, ease: EASE }}
-                  >
-                    <ReflectionBlock name={partnerName} text={partnerReflection.text} />
-                  </motion.div>
-                )}
-
-                <Separator className="opacity-30" />
-
-                {/* Phase E — My reflection (BEAT_1 stagger after partner) */}
-                <motion.div
-                  initial={{ opacity: 0, y: 12 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: BEAT_1, duration: BEAT_2, ease: EASE }}
-                >
-                  <div className="space-y-1">
-                    <p className="text-xs text-muted-foreground/60 px-1">{myName}</p>
-                    <div className="rounded-[20px] border border-border/50 bg-card overflow-hidden p-6">
-                      <textarea
-                        value={displayText}
-                        onChange={(e) => handleChange(e.target.value)}
-                        className="w-full min-h-[120px] bg-transparent resize-none focus:outline-none focus:ring-0 text-sm text-foreground placeholder:text-muted-foreground/60"
-                      />
-                    </div>
-                  </div>
-                </motion.div>
-              </div>
-
-              <div className="mt-10">
-                <Button
-                  onClick={handleLock}
-                  size="lg"
-                  className="w-full h-14 rounded-2xl gap-2 font-normal"
-                >
-                  Gå vidare tillsammans
-                </Button>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </div>
-    );
-  }
-
-  // ─── READY: waiting for partner ───
-  if (state === 'ready') {
-    return (
-      <AnimatePresence>
-        {waitingVisible && (
-          <motion.div
-            key="waiting"
-            initial={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: BEAT_3, ease: EASE }}
-            className="min-h-[60vh] flex flex-col justify-center text-center"
-          >
-            <div className="space-y-6" style={{ animation: 'waiting-breathe 6.5s cubic-bezier(0.4, 0.0, 0.2, 1) infinite' }}>
-              <p className="text-sm text-muted-foreground/70 leading-relaxed">
-                Väntar på din partner.
-              </p>
-              <p className="text-xs text-muted-foreground/40">
-                När ni båda har delat, öppnas svaren.
-              </p>
-              <div className="mt-10">
-                <Button
-                  variant="ghost"
-                  size="lg"
-                  className="w-full text-muted-foreground hover:text-foreground font-normal"
-                  onClick={() => window.location.assign('/')}
-                >
-                  Tillbaka till hem
-                </Button>
-              </div>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      <motion.div
+        className="mt-8 mb-2 space-y-4"
+        initial={{ opacity: 0, y: 8 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: BEAT_2, ease: EASE }}
+      >
+        <div className="rounded-[20px] border border-border/30 bg-muted/10 overflow-hidden p-6">
+          <p className="text-sm text-foreground whitespace-pre-wrap leading-relaxed">
+            {myReflection?.text || displayText}
+          </p>
+        </div>
+        <div className="flex items-center justify-center gap-2 text-xs text-muted-foreground/50">
+          <CheckCircle2 className="w-3.5 h-3.5" />
+          Sparat
+        </div>
+      </motion.div>
     );
   }
 
   // ─── DRAFT: writing state ───
   return (
     <div className="mt-8 mb-2 space-y-3">
-
       <div className="rounded-[20px] border border-border/50 bg-card overflow-hidden p-6">
         <textarea
           value={displayText}
           onChange={(e) => handleChange(e.target.value)}
-          placeholder="Skriv något ni vill säga."
+          placeholder="Skriv din reflektion."
           className="w-full min-h-[120px] bg-transparent resize-none focus:outline-none focus:ring-0 text-sm text-foreground placeholder:text-muted-foreground/60"
         />
-        <div className="flex items-center justify-between pt-3">
+        <div className="flex items-center pt-3">
           <span className="text-xs text-muted-foreground/50 flex items-center gap-1">
             <Lock className="w-3 h-3" />
             Bara du kan se det här
           </span>
-          <SpeakerToggle speaker={speaker} onChange={setSpeaker} />
         </div>
       </div>
-
-      <p className="text-xs text-muted-foreground/50 text-center mt-5 mb-2">
-        Era svar visas när ni båda har delat.
-      </p>
 
       <div className="mt-4">
         <Button
@@ -288,31 +104,6 @@ export default function SessionStepReflection({
         >
           {stepIndex >= 3 ? 'Avsluta samtalet' : 'Fortsätt till nästa steg'}
         </Button>
-        <p className="text-xs text-muted-foreground/50 text-center mt-3">
-          Ni går vidare när båda är klara.
-        </p>
-      </div>
-    </div>
-  );
-}
-
-// ─── Read-only reflection block ───
-function ReflectionBlock({
-  name,
-  text,
-  locked = false,
-}: {
-  name: string;
-  text: string;
-  locked?: boolean;
-}) {
-  return (
-    <div className="space-y-1">
-      <p className="text-xs text-muted-foreground/60 px-1">{name}</p>
-      <div className={`rounded-[20px] border ${locked ? 'border-border/30 bg-muted/10' : 'border-border/50 bg-card/80'} overflow-hidden shadow-[0_1px_4px_0_hsl(0_0%_0%/0.04)]`}>
-        <p className="p-6 text-sm text-foreground whitespace-pre-wrap">
-          {text}
-        </p>
       </div>
     </div>
   );
