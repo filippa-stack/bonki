@@ -22,7 +22,7 @@ export default function CategoryCard({
       animate={{ opacity: 1 }}
       transition={{ duration: 0.15 }}
       onClick={onClick}
-      className="w-full text-left cursor-pointer rounded-card p-6 transition-opacity hover:opacity-80"
+      className="w-full text-left cursor-pointer rounded-card p-5 transition-opacity hover:opacity-80"
       style={{ backgroundColor: 'var(--color-surface-primary)', boxShadow: 'var(--shadow-card)' }}
     >
       <div className="flex flex-col gap-1.5">

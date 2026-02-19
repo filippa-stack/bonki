@@ -51,7 +51,7 @@ export default function PromptItem({ prompt, index, sectionType, preamble }: Pro
           </p>
         )}
         <p
-          className="text-[18px] leading-[1.8] w-full text-center font-serif"
+          className="text-[18px] leading-[2] w-full text-center font-serif"
           style={{ color: 'var(--color-text-primary)' }}
         >
           {prompt.text}

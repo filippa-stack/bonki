@@ -190,7 +190,12 @@ export default function Home() {
 
       <div className="flex-1">
         <Header showBackgroundPicker={false} showBackupManager={false} showSaveIndicator={false} />
-        {mode !== 'active' && <ConfidenceCheckPanel />}
+        {/* Confidence Check — dev-only chip, right-aligned, subtle */}
+        {mode !== 'active' && (
+          <div className="flex justify-end px-6 pt-3">
+            <ConfidenceCheckPanel />
+          </div>
+        )}
 
         {/* Loading skeleton */}
         {mode === 'loading' && (
@@ -288,14 +293,15 @@ export default function Home() {
               const recCat = recommendedCategoryId ? getCategoryById(recommendedCategoryId) : null;
               if (!recCat) return null;
               return (
+                /* 40px below header label, 32px above grid */
                 <div className="mb-8">
-                  <p className="text-xs uppercase tracking-widest font-medium mb-4"
+                  <p className="text-xs uppercase tracking-widest font-medium mb-10"
                      style={{ color: 'var(--color-text-secondary)' }}>
                     Rekommenderat nästa steg
                   </p>
                   <div
                     onClick={() => { markNavigated(); navigate(`/category/${recCat.id}`); }}
-                    className="cursor-pointer rounded-card p-8 transition-opacity hover:opacity-90"
+                    className="cursor-pointer rounded-card p-9 transition-opacity hover:opacity-90 mb-8"
                     style={{ backgroundColor: 'var(--color-surface-secondary)' }}
                   >
                     <h2
@@ -315,9 +321,11 @@ export default function Home() {
               );
             })()}
 
-            {/* Full category grid — uniform, no highlights */}
+            {/* Full category grid — recommended excluded to avoid duplication */}
             <div className="space-y-3 pb-12">
-              {categories.map((category, index) => (
+              {categories
+                .filter((cat) => cat.id !== recommendedCategoryId)
+                .map((category, index) => (
                 <CategoryCard
                   key={category.id}
                   category={category}

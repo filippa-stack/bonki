@@ -442,8 +442,9 @@ export default function CardView() {
         )}
       </div>
 
-      {/* Section content */}
+      {/* Section content — centered, max 520px for readability */}
       <div className="px-6 pb-10">
+        <div className="max-w-[520px] mx-auto">
         <AnimatePresence mode="wait">
           {currentSection && (
             <motion.div
@@ -534,6 +535,7 @@ export default function CardView() {
             </motion.div>
           )}
         </AnimatePresence>
+        </div>
       </div>
     </motion.div>
   );
