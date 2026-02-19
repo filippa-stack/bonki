@@ -9,10 +9,10 @@
     /* ── Calm neutral palette ── */
 
     /* Tailwind base tokens (HSL without hsl()) */
-    --background: 30 16% 93%;            /* #F3EFEA */
+    --background: 34 27% 96%;            /* #F8F5F1 */
     --foreground: 30 3% 10%;              /* #1C1B1A */
 
-    --card: 30 14% 88%;                   /* #E7E1DA */
+    --card: 28 16% 84%;                   /* #E3DCD4 */
     --card-foreground: 30 3% 10%;
 
     --popover: 0 0% 100%;
@@ -112,11 +112,11 @@
     --card-shadow: var(--shadow-card);
 
     /* ── Semantic color tokens ── */
-    --color-bg: #F3EFEA;
-    --color-bg-base: #F3EFEA;
-    --color-surface: #E7E1DA;
-    --color-surface-primary: #E7E1DA;
-    --color-surface-secondary: #E7E1DA;
+    --color-bg: #F8F5F1;
+    --color-bg-base: #F8F5F1;
+    --color-surface: #E3DCD4;
+    --color-surface-primary: #E3DCD4;
+    --color-surface-secondary: #E3DCD4;
     --color-cta: #1F3D2B;
     --color-ink: #1C1B1A;
     --color-secondary: #6B6763;
