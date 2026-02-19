@@ -119,22 +119,23 @@ export default function PromptItem({
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ delay: index * BEAT_1, duration: 0.15 }}
-      className={`rounded-2xl overflow-hidden prompt-colors card-interaction ${showCollapsedLabel ? 'shadow-none' : ''}`}
-      style={{ '--prompt-bg': prompt.color || undefined } as React.CSSProperties}
+      className="rounded-[20px] overflow-hidden"
+      style={{ backgroundColor: 'var(--color-surface-primary)' }}
     >
-      {/* Collapsed label-only header (for Q2/Q3 when collapsed) */}
+      {/* Collapsed label-only header */}
       {showCollapsedLabel ? (
         <div
-          className="px-6 py-3 cursor-pointer flex items-center justify-between bg-card/50 border border-[hsl(36_30%_82%)] rounded-2xl shadow-sm"
+          className="px-6 py-3 cursor-pointer flex items-center justify-between rounded-[20px]"
+          style={{ backgroundColor: 'var(--color-surface-primary)' }}
           onClick={toggleExpanded}
         >
-          <p className={`text-xs tracking-wide font-medium ${isCompleted ? 'text-slate-400' : 'text-primary'}`}>
+          <p className="text-xs tracking-wide font-medium" style={{ color: isCompleted ? 'var(--color-text-secondary)' : 'var(--color-text-primary)', opacity: isCompleted ? 0.5 : 1 }}>
             {label}
           </p>
           {isCompleted ? (
-            <CheckCircle2 className="w-3.5 h-3.5 text-[#497575]" />
+            <CheckCircle2 className="w-3.5 h-3.5" style={{ color: 'var(--color-text-secondary)', opacity: 0.4 }} />
           ) : (
-            <ChevronDown className="w-3.5 h-3.5 text-primary/60" />
+            <ChevronDown className="w-3.5 h-3.5" style={{ color: 'var(--color-text-secondary)', opacity: 0.4 }} />
           )}
         </div>
       ) : (
@@ -146,27 +147,22 @@ export default function PromptItem({
           >
             <div className="flex-1 min-w-0">
               {preamble && (
-                <p
-                  className="text-[18px] leading-[1.8] text-center font-serif mb-6 prompt-text"
-                  style={{ '--prompt-text': prompt.textColor || undefined } as React.CSSProperties}
-                >
+                <p className="text-[18px] leading-[1.8] text-center font-serif mb-6" style={{ color: 'var(--color-text-primary)' }}>
                   {preamble}
                 </p>
               )}
-              <p
-                className="text-[18px] leading-[1.8] w-full min-h-[24px] text-center prompt-text font-serif"
-                style={{ '--prompt-text': prompt.textColor || undefined } as React.CSSProperties}
-              >
+              <p className="text-[18px] leading-[1.8] w-full min-h-[24px] text-center font-serif" style={{ color: 'var(--color-text-primary)' }}>
                 {prompt.text}
               </p>
             </div>
 
             <div className="flex items-center gap-1 shrink-0">
               {hasNote && (
-                <div className="w-1.5 h-1.5 rounded-full bg-primary/30" />
+                <div className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: 'var(--color-text-secondary)', opacity: 0.3 }} />
               )}
               <ChevronDown
-                className={`w-3.5 h-3.5 text-muted-foreground/30 transition-transform duration-300 ${isExpanded ? 'rotate-180' : ''}`}
+                className={`w-3.5 h-3.5 transition-transform duration-300 ${isExpanded ? 'rotate-180' : ''}`}
+                style={{ color: 'var(--color-text-secondary)', opacity: 0.3 }}
               />
             </div>
           </div>
@@ -185,7 +181,7 @@ export default function PromptItem({
 
                   {/* Private note */}
                   <div className="pt-4">
-                    <p className="text-[11px] tracking-normal text-muted-foreground/40 font-normal mb-8 text-center">
+                    <p className="text-[11px] tracking-normal font-normal mb-8 text-center" style={{ color: 'var(--color-text-secondary)', opacity: 0.5 }}>
                       Din reflektion
                     </p>
                     <textarea
@@ -195,7 +191,19 @@ export default function PromptItem({
                       onFocus={handleFocus}
                       onKeyDown={handleKeyDown}
                       placeholder={t('reflections.prompt_note_placeholder', 'Det du skriver här är bara för dig.')}
-                      className="w-full px-5 py-5 rounded-2xl bg-white border border-slate-200 resize-none focus:outline-none focus:border-[#497575] focus:ring-0 placeholder:text-muted-foreground/25 font-sans text-sm text-foreground leading-relaxed transition-colors duration-300 min-h-[140px]"
+                      className="w-full px-5 py-5 rounded-2xl resize-none focus:outline-none focus:ring-0 placeholder:text-muted-foreground/25 font-sans text-sm leading-relaxed min-h-[140px] transition-colors duration-200"
+                      style={{
+                        backgroundColor: 'var(--color-surface-primary)',
+                        border: '1px solid #E3E1DC',
+                        color: 'var(--color-text-primary)',
+                      }}
+                      onFocusCapture={(e) => {
+                        e.currentTarget.style.borderColor = '#CFCBC4';
+                        handleFocus(e as unknown as React.FocusEvent<HTMLTextAreaElement>);
+                      }}
+                      onBlurCapture={(e) => {
+                        e.currentTarget.style.borderColor = '#E3E1DC';
+                      }}
                     />
                     {/* Autosave status */}
                     <AnimatePresence>
@@ -205,22 +213,23 @@ export default function PromptItem({
                           animate={{ opacity: 1 }}
                           exit={{ opacity: 0 }}
                           transition={{ duration: 0.15 }}
-                          className="text-[11px] text-muted-foreground/40 text-right mt-2 flex items-center justify-end gap-1"
+                          className="text-[11px] text-right mt-2 flex items-center justify-end gap-1"
+                          style={{ color: 'var(--color-text-secondary)', opacity: 0.4 }}
                         >
                           <Lock className="w-2.5 h-2.5" />
-                          Sparad privat
+                          Sparad
                         </motion.p>
                       )}
                     </AnimatePresence>
-                    {/* Privacy indicator */}
+                    {/* Privacy note */}
                     {!sharedNote && (
                       <div className="flex items-center justify-between mt-3">
-                      <p className="flex items-center gap-1.5 text-[11px] text-muted-foreground/35 italic">
+                        <p className="flex items-center gap-1.5 text-[11px] italic" style={{ color: 'var(--color-text-secondary)', opacity: 0.35 }}>
                           <Lock className="w-3 h-3" />
-                          Dina anteckningar är privata tills du väljer att dela.
+                          Privat
                         </p>
                         {privateNote?.content && privateNote.updatedAt && (
-                          <p className="text-[11px] text-muted-foreground/40">
+                          <p className="text-[11px]" style={{ color: 'var(--color-text-secondary)', opacity: 0.4 }}>
                             {t('reflections.last_updated', { date: new Date(privateNote.updatedAt).toLocaleDateString('sv-SE', { day: 'numeric', month: 'short' }) })}
                           </p>
                         )}
@@ -228,7 +237,7 @@ export default function PromptItem({
                     )}
                   </div>
 
-                  {/* Share action — 1-step direct share */}
+                  {/* Share action */}
                   {!shareDisabled && privateNote?.content && !sharedNote && (
                     <div className="flex justify-end">
                       <button
@@ -236,7 +245,8 @@ export default function PromptItem({
                           onShareNote(promptId);
                           setJustShared(true);
                         }}
-                        className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-primary/10 text-sm font-medium text-primary hover:bg-primary/20 transition-colors"
+                        className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-medium transition-opacity hover:opacity-70"
+                        style={{ backgroundColor: '#F0EFEC', color: 'var(--color-text-primary)' }}
                       >
                         <Send className="w-3.5 h-3.5" />
                         {t('reflections.create_shared_from_private', 'Dela med din partner')}
@@ -244,7 +254,7 @@ export default function PromptItem({
                     </div>
                   )}
 
-                  {/* Post-share confirmation — minimal */}
+                  {/* Post-share confirmation */}
                   {!shareDisabled && sharedNote && justShared && (
                     <motion.div
                       initial={{ opacity: 0 }}
@@ -252,27 +262,27 @@ export default function PromptItem({
                       transition={{ duration: 0.15 }}
                       className="flex justify-end"
                     >
-                      <p className="text-[11px] text-primary flex items-center gap-1.5">
-                        <Heart className="w-3 h-3" />
+                      <p className="text-[11px] flex items-center gap-1.5" style={{ color: 'var(--color-text-secondary)' }}>
                         {t('reflections.shared_confirmation')}
                       </p>
                     </motion.div>
                   )}
 
-                  {/* Shared note display — hidden when sharing is disabled (active session) */}
+                  {/* Shared note display */}
                   {!shareDisabled && sharedNote && !justShared && (
-                    <div className="p-4 rounded-xl bg-primary/5 border border-primary/10">
-                      <p className="text-[11px] text-muted-foreground/60 tracking-wide mb-1.5 flex items-center gap-1.5">
+                    <div className="p-4 rounded-xl" style={{ backgroundColor: '#F0EFEC', border: '1px solid #E3E1DC' }}>
+                      <p className="text-[11px] tracking-wide mb-1.5 flex items-center gap-1.5" style={{ color: 'var(--color-text-secondary)', opacity: 0.6 }}>
                         <Users className="w-3 h-3" />
                         {t('reflections.shared_notes_title', 'Delad med din partner')}
                       </p>
-                      <p className="text-sm text-foreground whitespace-pre-wrap">
+                      <p className="text-sm whitespace-pre-wrap" style={{ color: 'var(--color-text-primary)' }}>
                         {sharedNote.content}
                       </p>
                       <div className="flex gap-2 mt-2">
                         <button
                           onClick={() => onUnshareNote(promptId)}
-                          className="flex items-center gap-1 text-[11px] text-muted-foreground hover:text-destructive transition-colors"
+                          className="flex items-center gap-1 text-[11px] transition-colors hover:opacity-70"
+                          style={{ color: 'var(--color-text-secondary)' }}
                         >
                           <X className="w-3 h-3" />
                           {t('reflections.unshare', 'Ta bort delning')}
@@ -280,9 +290,10 @@ export default function PromptItem({
                         <button
                           onClick={() => onToggleHighlight(promptId)}
                           disabled={!sharedNote.isHighlight && highlightCount >= 3}
-                          className="flex items-center gap-1 text-[11px] text-muted-foreground hover:text-foreground transition-colors disabled:opacity-40"
+                          className="flex items-center gap-1 text-[11px] transition-colors disabled:opacity-40 hover:opacity-70"
+                          style={{ color: 'var(--color-text-secondary)' }}
                         >
-                          <Star className={`w-3 h-3 ${sharedNote.isHighlight ? 'fill-current text-primary' : ''}`} />
+                          <Star className={`w-3 h-3 ${sharedNote.isHighlight ? 'fill-current' : ''}`} />
                           {t('reflections.mark_important', 'Viktigt för oss')}
                         </button>
                       </div>
