@@ -47,8 +47,8 @@ export default function Categories() {
 
       <div className="px-6 pt-[64px] pb-[80px]">
         <h1
-          className="text-[24px] font-medium mb-[40px]"
-          style={{ color: 'var(--color-text-primary)' }}
+          className="text-[22px] font-medium mb-[48px]"
+          style={{ color: 'var(--color-text-secondary)' }}
         >
           Välj samtalsområde
         </h1>
