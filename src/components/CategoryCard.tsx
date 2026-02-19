@@ -28,7 +28,7 @@ export default function CategoryCard({
       <div className="flex flex-col gap-2">
         <div className="flex items-center justify-between">
           <h3
-            className="font-serif text-base font-medium leading-snug"
+            className="text-heading"
             style={{ color: isCompleted ? 'var(--color-text-secondary)' : 'var(--color-text-primary)' }}
           >
             {category.title}
@@ -39,7 +39,7 @@ export default function CategoryCard({
         </div>
         {category.entryLine && (
           <p
-            className="text-sm leading-relaxed"
+            className="text-meta leading-relaxed"
             style={{ color: 'var(--color-text-secondary)' }}
           >
             {category.entryLine}

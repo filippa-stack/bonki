@@ -166,24 +166,41 @@
 }
 
 @layer components {
+  /* ── Type scale (locked) ── */
+  /* Hero Title:    34px / Medium */
+  /* Section Title: 24px / Medium */
+  /* Card Question: 22px / Medium */
+  /* Body Text:     16px / Regular */
+  /* Meta Text:     14px / Regular */
+
   .text-display {
     font-family: var(--font-serif);
-    @apply text-3xl font-medium tracking-tight;
+    font-size: 34px;
+    @apply font-medium tracking-tight leading-tight;
   }
 
   .text-heading {
     font-family: var(--font-serif);
-    @apply text-2xl font-medium;
+    font-size: 24px;
+    @apply font-medium leading-snug;
   }
 
   .text-subheading {
     font-family: var(--font-serif);
-    @apply text-xl font-normal;
+    font-size: 22px;
+    @apply font-medium leading-snug;
   }
 
   .text-body {
     font-family: var(--font-sans);
-    @apply text-base font-light leading-relaxed;
+    font-size: 16px;
+    @apply font-normal leading-relaxed;
+  }
+
+  .text-meta {
+    font-family: var(--font-sans);
+    font-size: 14px;
+    @apply font-normal;
   }
 
   .text-gentle {

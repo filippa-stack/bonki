@@ -44,14 +44,14 @@ export default function PromptItem({ prompt, index, sectionType, preamble }: Pro
       <div className="px-8 py-8">
         {preamble && (
           <p
-            className="text-[18px] leading-[1.8] text-center font-serif mb-8"
-            style={{ color: 'var(--color-text-primary)' }}
+            className="text-body text-center font-serif mb-8"
+            style={{ color: 'var(--color-text-secondary)' }}
           >
             {preamble}
           </p>
         )}
         <p
-          className="text-[18px] leading-[2] w-full text-center font-serif"
+          className="text-subheading w-full text-center"
           style={{ color: 'var(--color-text-primary)' }}
         >
           {prompt.text}
