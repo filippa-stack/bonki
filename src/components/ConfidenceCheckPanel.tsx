@@ -2,13 +2,11 @@ import { useState } from 'react';
 import { useDevState } from '@/contexts/DevStateContext';
 import { useAppMode } from '@/hooks/useAppMode';
 import { useNormalizedSessionContext } from '@/contexts/NormalizedSessionContext';
-import { useCoupleSpaceContext } from '@/contexts/CoupleSpaceContext';
-import { useProposalsContext } from '@/contexts/ProposalsContext';
 import { ChevronDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 /**
- * Dev-only collapsible panel showing key state for manual two-device testing.
+ * Dev-only collapsible panel showing key state for manual testing.
  * Only renders when devState is truthy.
  */
 export default function ConfidenceCheckPanel() {
@@ -34,21 +32,9 @@ export default function ConfidenceCheckPanel() {
 function PanelContent() {
   const appMode = useAppMode();
   const ns = useNormalizedSessionContext();
-  const { userRole, memberCount, displayMemberCount } = useCoupleSpaceContext();
-  const { proposals, refetch: refetchProposals } = useProposalsContext();
-
-  const counts = {
-    pending: proposals.filter(p => p.status === 'pending').length,
-    saved_for_later: proposals.filter(p => p.status === 'saved_for_later').length,
-    accepted: proposals.filter(p => p.status === 'accepted').length,
-    declined: proposals.filter(p => p.status === 'declined').length,
-  };
 
   return (
     <div className="px-4 pb-3 space-y-2 text-[11px] leading-relaxed">
-      <Row label="role" value={userRole ?? '–'} />
-      <Row label="members" value={`${memberCount} / display ${displayMemberCount}`} />
-      <div className="border-t border-primary/10 pt-1.5 mt-1.5" />
       <Row label="macroMode" value={appMode.mode} />
       <Row label="appMode" value={ns.appMode ?? 'null'} />
       <Row label="sessionId" value={ns.sessionId ?? '–'} />
@@ -56,14 +42,9 @@ function PanelContent() {
       <Row label="step" value={String(ns.currentStepIndex)} />
       <Row label="waiting" value={String(ns.waiting)} />
       <Row label="loading" value={String(ns.loading)} />
-      <div className="border-t border-primary/10 pt-1.5 mt-1.5" />
-      <Row label="proposals" value={`P:${counts.pending} S:${counts.saved_for_later} A:${counts.accepted} D:${counts.declined}`} />
       <div className="flex gap-2 pt-1">
         <Button variant="outline" size="sm" className="h-6 text-[10px] px-2" onClick={() => ns.refetch()}>
           Refetch session
-        </Button>
-        <Button variant="outline" size="sm" className="h-6 text-[10px] px-2" onClick={() => refetchProposals()}>
-          Refetch proposals
         </Button>
       </div>
     </div>
@@ -78,3 +59,4 @@ function Row({ label, value }: { label: string; value: string }) {
     </div>
   );
 }
+

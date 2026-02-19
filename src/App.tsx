@@ -10,11 +10,9 @@ import { DevStateProvider } from "@/contexts/DevStateContext";
 import RemoteCardCue from "@/components/RemoteCardCue";
 import ActiveSessionGuard from "@/components/ActiveSessionGuard";
 import DevModeBadge from "@/components/DevModeBadge";
-import ProposalAcceptanceWatcher from "@/components/ProposalAcceptanceWatcher";
 import { SiteSettingsProvider } from "@/contexts/SiteSettingsContext";
 import { CoupleSpaceProvider } from "@/contexts/CoupleSpaceContext";
 import { NormalizedSessionProvider } from "@/contexts/NormalizedSessionContext";
-import { ProposalsProvider } from "@/contexts/ProposalsContext";
 import PageTransition from "@/components/PageTransition";
 import Index from "./pages/Index";
 import Category from "./pages/Category";
@@ -56,10 +54,8 @@ function ProtectedRoutes() {
   return (
     <CoupleSpaceProvider>
     <NormalizedSessionProvider>
-    <ProposalsProvider>
     <AppProvider>
       <RemoteCardCueGlobal />
-      <ProposalAcceptanceWatcher />
       <ActiveSessionGuard>
         <AnimatePresence mode="wait">
           <Routes location={location} key={location.pathname}>
@@ -74,7 +70,6 @@ function ProtectedRoutes() {
         </AnimatePresence>
       </ActiveSessionGuard>
     </AppProvider>
-    </ProposalsProvider>
     </NormalizedSessionProvider>
     </CoupleSpaceProvider>
   );

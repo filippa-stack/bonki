@@ -24,7 +24,6 @@ import { ArrowRight, Home, BookOpen } from 'lucide-react';
 import SessionTakeaway from '@/components/SessionTakeaway';
 import CompletedSessionView from '@/components/CompletedSessionView';
 
-import { useProposalsContext } from '@/contexts/ProposalsContext';
 import { useDevState } from '@/contexts/DevStateContext';
 import { useNormalizedSessionContext } from '@/contexts/NormalizedSessionContext';
 import { useTogetherMode } from '@/hooks/useTogetherMode';
@@ -86,7 +85,7 @@ export default function CardView() {
     // NOTE: currentSession, startSession, completeSessionStep, pauseSession
     // are REMOVED — all session authority comes from normalizedSession.
   } = useApp();
-  const { memberCount, space } = useCoupleSpaceContext();
+  const { space } = useCoupleSpaceContext();
   const devState = useDevState();
 
   // ─── Normalized session state — the ONLY session authority ───
@@ -134,7 +133,7 @@ export default function CardView() {
     }
   }, [activeSessionId, normalizedSession.sessionId, normalizedSession.loading, isRevisitMode, showCompletion]);
 
-  const isPaired = memberCount >= 2;
+  // Volume 1: single-writer model, reflection surface always active
 
   // ─── Single resolver — the only gate for which surface mounts ───
   const cardViewMode: CardViewMode = resolveCardViewMode({
@@ -168,7 +167,7 @@ export default function CardView() {
   // ─── Misc ───
   const [reviewOpen, setReviewOpen] = useState(false);
   const sectionViewRef = useRef<SectionViewHandle>(null);
-  const { proposals } = useProposalsContext();
+  
 
   const existingConversation = cardId ? getConversationForCard(cardId) : undefined;
 
@@ -445,8 +444,8 @@ export default function CardView() {
                 />
               </motion.div>
 
-              {/* ── MODE: live — paired session reflection ── */}
-              {cardViewMode === 'live' && isPaired && cardId && (
+              {/* ── MODE: live — session reflection (single writer) ── */}
+              {cardViewMode === 'live' && cardId && (
                 <>
                   {/* Step 4 — Reflection box: delay BEAT_2, duration BEAT_3 */}
                   <motion.div
@@ -465,8 +464,8 @@ export default function CardView() {
                 </>
               )}
 
-              {/* ── MODE: revisit or solo — step CTA ── */}
-              {(cardViewMode === 'revisit' || !isPaired) && (
+              {/* ── MODE: revisit — step CTA ── */}
+              {cardViewMode === 'revisit' && (
                 // Step 5 — CTA: delay BEAT_2 after reflection
                 <motion.div
                   className="pt-10 pb-8 space-y-5"
