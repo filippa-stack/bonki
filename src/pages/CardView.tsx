@@ -152,6 +152,18 @@ export default function CardView() {
     return 0;
   })();
   const [revisitStepIndex, setRevisitStepIndex] = useState(initialRevisitStep);
+
+  // ─── Local display step (live mode) ───
+  // Null = follow normalizedSession.currentStepIndex (server authority).
+  // Set to a number to display a previous step without touching the server.
+  const [localStepIndex, setLocalStepIndex] = useState<number | null>(null);
+
+  // Reset local override whenever the server advances (e.g. after refetch)
+  const serverStepIndex = normalizedSession.currentStepIndex;
+  useEffect(() => {
+    setLocalStepIndex(null);
+  }, [serverStepIndex]);
+
   const focusNoteParam = searchParams.get('focusNote');
   const promptParam = searchParams.get('prompt');
   const initialFocusNote = (() => {
@@ -162,7 +174,9 @@ export default function CardView() {
   })();
 
   const currentStepIndex =
-    cardViewMode === 'revisit' ? revisitStepIndex : normalizedSession.currentStepIndex;
+    cardViewMode === 'revisit'
+      ? revisitStepIndex
+      : (localStepIndex ?? serverStepIndex);
 
   // ─── Misc ───
   const [reviewOpen, setReviewOpen] = useState(false);
@@ -181,15 +195,26 @@ export default function CardView() {
     }
   }, [currentStepIndex, cardId, cardViewMode, getCardById, saveConversation]);
 
-  // ─── Handle step completion via RPC ───
-  // Sequence: RPC → refetch (drives current_step_index forward) → re-render.
-  // No partner checks. No dual-completion gating.
+  // ─── Handle step completion / advance ───
+  // If the user is viewing a previous step (local < server), just advance locally.
+  // If at the real frontier, call the RPC then clear the local override (refetch drives it).
   const handleCompleteStep = useCallback(async () => {
-    if (!normalizedSession.sessionId || cardViewMode !== 'live') return;
+    if (cardViewMode !== 'live') return;
+
+    const displayIndex = localStepIndex ?? serverStepIndex;
+    const atFrontier = displayIndex >= serverStepIndex;
+
+    // Navigating forward through an already-completed step — no RPC needed
+    if (!atFrontier) {
+      setLocalStepIndex(displayIndex + 1);
+      return;
+    }
+
+    if (!normalizedSession.sessionId) return;
 
     const { data, error } = await supabase.rpc('complete_couple_session_step', {
       p_session_id: normalizedSession.sessionId,
-      p_step_index: currentStepIndex,
+      p_step_index: displayIndex,
     });
 
     if (error) {
@@ -200,15 +225,14 @@ export default function CardView() {
 
     const result = Array.isArray(data) ? data[0] : data;
 
-    // Session finished — show takeaway screen
     if (result?.is_session_complete) {
       setShowCompletion(true);
       return;
     }
 
-    // Refetch drives current_step_index increment → re-render with next step
+    // Refetch → server increments → useEffect resets localStepIndex → re-render
     await normalizedSession.refetch();
-  }, [normalizedSession, currentStepIndex, cardViewMode]);
+  }, [normalizedSession, localStepIndex, serverStepIndex, cardViewMode]);
 
   // ─── Revisit "Next" handler ───
   const handleRevisitNext = (card: ReturnType<typeof getCardById>) => {
@@ -458,9 +482,10 @@ export default function CardView() {
                     <SessionStepReflection
                       sessionId={normalizedSession.sessionId}
                       stepIndex={currentStepIndex}
-                      onLocked={async () => {
-                        await handleCompleteStep();
-                      }}
+                      onLocked={async () => { await handleCompleteStep(); }}
+                      onBack={currentStepIndex > 0
+                        ? () => setLocalStepIndex(currentStepIndex - 1)
+                        : undefined}
                     />
                   </motion.div>
                 </>
