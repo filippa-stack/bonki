@@ -1,21 +1,21 @@
 import { useState } from 'react';
-import { motion } from 'framer-motion';
 import { Lock } from 'lucide-react';
-import { Button } from '@/components/ui/button';
 import { useSessionReflections } from '@/hooks/useSessionReflections';
-import { BEAT_2, BEAT_3, EASE } from '@/lib/motion';
 
 interface SessionStepReflectionProps {
   sessionId?: string | null;
   stepIndex: number;
   /** Called after reflection is persisted — parent calls complete_couple_session_step */
   onLocked?: () => void | Promise<void>;
+  /** Called to go back one step — only shown when stepIndex > 0 */
+  onBack?: () => void;
 }
 
 export default function SessionStepReflection({
   sessionId = null,
   stepIndex,
   onLocked,
+  onBack,
 }: SessionStepReflectionProps) {
   const { loading, myReflection, setText, markReady } =
     useSessionReflections(sessionId, stepIndex);
@@ -77,7 +77,7 @@ export default function SessionStepReflection({
         </div>
       </div>
 
-      <div className="mt-4">
+      <div className="mt-4 space-y-3">
         <button
           onClick={handleAdvance}
           disabled={submitting}
@@ -93,6 +93,16 @@ export default function SessionStepReflection({
             ? 'Avsluta samtalet'
             : 'Fortsätt till nästa steg'}
         </button>
+
+        {onBack && stepIndex > 0 && (
+          <button
+            onClick={onBack}
+            className="w-full h-11 rounded-button flex items-center justify-center text-sm transition-opacity hover:opacity-70"
+            style={{ color: 'var(--color-text-secondary)', opacity: 0.6 }}
+          >
+            Tillbaka
+          </button>
+        )}
       </div>
     </div>
   );
