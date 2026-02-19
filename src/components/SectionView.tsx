@@ -24,12 +24,19 @@ const normalizePrompt = (prompt: string | Prompt): Prompt => {
 };
 
 /**
- * Renders all prompts for the current step — flat, no accordion, no expand state.
- * CardView is responsible for passing only the section that matches current_step_index.
+ * Renders a single prompt for the current step.
+ * One question per step — no stacking, no scroll.
+ * CardView passes only the section matching current_step_index.
  */
 const SectionView = forwardRef<SectionViewHandle, SectionViewProps>(
-  function SectionView({ section, card }, ref) {
+  function SectionView({ section }, ref) {
     const normalizedPrompts = (section.prompts || []).map(normalizePrompt);
+
+    // One prompt per step: always show the first prompt in the section.
+    // Preamble (scenario/exercise context) is shown above if present.
+    const prompt = normalizedPrompts[0];
+
+    if (!prompt) return null;
 
     return (
       <motion.div
@@ -38,36 +45,28 @@ const SectionView = forwardRef<SectionViewHandle, SectionViewProps>(
         transition={{ duration: 0.15 }}
         className="py-12"
       >
-        {normalizedPrompts.length > 0 && (
-          <div className="space-y-8 mb-12">
-            {normalizedPrompts.map((prompt, index) => (
-              <PromptItem
-                key={index}
-                prompt={prompt}
-                promptId={`prompt-${index}`}
-                index={index}
-                sectionType={section.type as 'opening' | 'reflective' | 'scenario' | 'exercise'}
-                preamble={
-                  index === 0 &&
-                  (section.type === 'scenario' || section.type === 'exercise')
-                    ? section.content
-                    : undefined
-                }
-                highlightCount={0}
-                privateNote={undefined}
-                sharedNote={undefined}
-                onPromptChange={() => {}}
-                onPromptColorChange={() => {}}
-                onPromptTextColorChange={() => {}}
-                onRemovePrompt={() => {}}
-                onSaveNote={() => {}}
-                onShareNote={() => {}}
-                onUnshareNote={() => {}}
-                onToggleHighlight={() => {}}
-              />
-            ))}
-          </div>
-        )}
+        <PromptItem
+          prompt={prompt}
+          promptId="prompt-0"
+          index={0}
+          sectionType={section.type as 'opening' | 'reflective' | 'scenario' | 'exercise'}
+          preamble={
+            (section.type === 'scenario' || section.type === 'exercise')
+              ? section.content
+              : undefined
+          }
+          highlightCount={0}
+          privateNote={undefined}
+          sharedNote={undefined}
+          onPromptChange={() => {}}
+          onPromptColorChange={() => {}}
+          onPromptTextColorChange={() => {}}
+          onRemovePrompt={() => {}}
+          onSaveNote={() => {}}
+          onShareNote={() => {}}
+          onUnshareNote={() => {}}
+          onToggleHighlight={() => {}}
+        />
       </motion.div>
     );
   }
