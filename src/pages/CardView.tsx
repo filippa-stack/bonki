@@ -402,7 +402,7 @@ export default function CardView() {
         >
           <StepProgressIndicator
             currentStepIndex={currentStepIndex}
-            completedSteps={[]}
+            completedSteps={Array.from({ length: serverStepIndex }, (_, i) => i)}
           />
           {currentSection && STEP_RITUAL_HINTS[currentSection.type] && (
             <p className="mt-2 text-center text-[11px] tracking-wide" style={{ color: 'var(--color-text-secondary)', opacity: 0.5 }}>
