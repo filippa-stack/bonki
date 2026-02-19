@@ -84,8 +84,8 @@ export default function Categories() {
                 style={isGuided ? { paddingBottom: '36px' } : undefined}
               >
                 <h3
-                  className="text-[20px] font-medium leading-snug"
-                  style={{ color: allExplored ? 'var(--color-text-secondary)' : 'var(--color-text-primary)' }}
+                  className={`text-[20px] leading-snug ${isGuided ? 'font-semibold' : 'font-medium'}`}
+                  style={{ color: allExplored ? 'var(--color-text-secondary)' : isGuided ? '#151413' : 'var(--color-text-primary)' }}
                 >
                   {category.title}
                 </h3>
