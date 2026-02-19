@@ -215,8 +215,8 @@ export default function Home() {
             >
               {/* Resume card */}
               <div
-                className="rounded-[20px] p-8 mb-8"
-                style={{ backgroundColor: 'var(--color-surface-secondary)' }}
+                className="rounded-card p-8 mb-8"
+                style={{ backgroundColor: 'var(--color-surface-secondary)', boxShadow: 'var(--shadow-card)' }}
               >
                 {/* Label */}
                 <p
@@ -260,7 +260,7 @@ export default function Home() {
                 {/* Primary action */}
                 <button
                   onClick={() => { markNavigated(); navigate(`/card/${normalizedSession.cardId}`); }}
-                  className="w-full h-14 rounded-[16px] flex items-center justify-center gap-2 text-sm font-medium transition-opacity hover:opacity-90"
+                  className="w-full h-14 rounded-button flex items-center justify-center gap-2 text-sm font-medium transition-opacity hover:opacity-90"
                   style={{
                     backgroundColor: 'var(--color-button-primary)',
                     color: 'var(--color-button-text)',
@@ -295,7 +295,7 @@ export default function Home() {
                   </p>
                   <div
                     onClick={() => { markNavigated(); navigate(`/category/${recCat.id}`); }}
-                    className="cursor-pointer rounded-[20px] p-8 transition-opacity hover:opacity-90"
+                    className="cursor-pointer rounded-card p-8 transition-opacity hover:opacity-90"
                     style={{ backgroundColor: 'var(--color-surface-secondary)' }}
                   >
                     <h2

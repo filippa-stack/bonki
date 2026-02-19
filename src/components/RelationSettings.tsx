@@ -185,7 +185,7 @@ export default function RelationSettings({ onCreateNewSpace, onLeavePartner }: R
                   <button
                     disabled={newSpaceCountdown !== null && newSpaceCountdown > 0}
                     onClick={() => { if (newSpaceCountdown === null) startNewSpaceCountdown(); }}
-                    className="px-4 py-2 rounded-[14px] text-sm font-medium transition-opacity hover:opacity-90 disabled:opacity-50"
+                    className="px-4 py-2 rounded-button text-sm font-medium transition-opacity hover:opacity-90 disabled:opacity-50"
                     style={{ backgroundColor: 'var(--color-button-primary)', color: 'var(--color-button-text)' }}
                   >
                     {newSpaceCountdown !== null && newSpaceCountdown > 0
@@ -244,7 +244,7 @@ export default function RelationSettings({ onCreateNewSpace, onLeavePartner }: R
                   <button
                     disabled={leaveCountdown !== null && leaveCountdown > 0}
                     onClick={() => { if (leaveCountdown === null) startLeaveCountdown(); }}
-                    className="px-4 py-2 rounded-[14px] text-sm font-medium transition-opacity hover:opacity-70 disabled:opacity-40"
+                    className="px-4 py-2 rounded-button text-sm font-medium transition-opacity hover:opacity-70 disabled:opacity-40"
                     style={{ color: '#8B3A3A' }}
                   >
                     {leaveCountdown !== null && leaveCountdown > 0

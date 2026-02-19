@@ -119,13 +119,13 @@ export default function PromptItem({
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ delay: index * BEAT_1, duration: 0.15 }}
-      className="rounded-[20px] overflow-hidden"
-      style={{ backgroundColor: 'var(--color-surface-primary)' }}
+      className="rounded-card overflow-hidden"
+      style={{ backgroundColor: 'var(--color-surface-primary)', boxShadow: 'var(--shadow-card)' }}
     >
       {/* Collapsed label-only header */}
       {showCollapsedLabel ? (
         <div
-          className="px-6 py-3 cursor-pointer flex items-center justify-between rounded-[20px]"
+          className="px-6 py-3 cursor-pointer flex items-center justify-between rounded-card"
           style={{ backgroundColor: 'var(--color-surface-primary)' }}
           onClick={toggleExpanded}
         >
@@ -191,7 +191,7 @@ export default function PromptItem({
                       onFocus={handleFocus}
                       onKeyDown={handleKeyDown}
                       placeholder={t('reflections.prompt_note_placeholder', 'Det du skriver här är bara för dig.')}
-                      className="w-full px-5 py-5 rounded-2xl resize-none focus:outline-none focus:ring-0 placeholder:text-muted-foreground/25 font-sans text-sm leading-relaxed min-h-[140px] transition-colors duration-200"
+                      className="w-full px-5 py-5 rounded-card resize-none focus:outline-none focus:ring-0 placeholder:text-muted-foreground/25 font-sans text-sm leading-relaxed min-h-[140px] transition-colors duration-200"
                       style={{
                         backgroundColor: 'var(--color-surface-primary)',
                         border: '1px solid #E3E1DC',

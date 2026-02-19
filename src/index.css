@@ -42,10 +42,13 @@
     --radius: 0.875rem;
 
     /* ── Semantic radius tokens ── */
-    --radius-card:   1.25rem;   /* 20px — content cards, reflection blocks */
-    --radius-button: 1rem;      /* 16px — primary/secondary buttons         */
-    --radius-pill:   0.875rem;  /* 14px — badges, chips, pills               */
-    --radius-toast:  1.125rem;  /* 18px — toast notifications               */
+    --radius-card:   0.75rem;   /* 12px — all cards, content blocks */
+    --radius-button: 0.75rem;   /* 12px — primary/secondary buttons */
+    --radius-pill:   0.5rem;    /* 8px  — badges, chips, pills      */
+    --radius-toast:  0.75rem;   /* 12px — toast notifications       */
+
+    /* ── Standard shadow — single subtle elevation ── */
+    --shadow-card: 0px 4px 16px rgba(0,0,0,0.04);
 
     /* Custom tokens */
     --surface-warm: 60 100% 97%;      /* #FFFEF3 */
@@ -106,7 +109,7 @@
     --transition-calm: 150ms cubic-bezier(0.4, 0, 0.2, 1);
 
     /* Card styling */
-    --card-shadow: none;
+    --card-shadow: var(--shadow-card);
 
     /* ── Premium restrained color system ── */
     --color-bg-base: #F7F6F3;
