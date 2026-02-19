@@ -60,8 +60,8 @@ export default function SessionStepReflection({
     /* 48px above reflection, 32px between reflection and button */
     <div className="mt-12 mb-2">
       <div
-        className="rounded-card overflow-hidden p-6"
-        style={{ border: '1px solid #D6D1C9', backgroundColor: '#EDE8E2' }}
+        className="rounded-card overflow-hidden"
+        style={{ border: '1px solid #CFC7BE', backgroundColor: '#EEE8E1', padding: '2rem' }}
       >
         <textarea
           value={displayText}
