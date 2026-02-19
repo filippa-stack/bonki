@@ -29,10 +29,23 @@ interface PromptItemProps {
 }
 
 /**
+ * Depth gravity — subtle typographic shifts per layer.
+ * No layout changes, only weight/tone/rhythm.
+ */
+const DEPTH_GRAVITY: Record<string, React.CSSProperties> = {
+  opening:    { fontWeight: 500, color: 'var(--color-text-primary)', lineHeight: 1.55 },
+  reflective: { fontWeight: 500, color: 'hsl(30, 3%, 8%)',          lineHeight: 1.55 },
+  scenario:   { fontWeight: 500, color: 'hsl(30, 3%, 6%)',          lineHeight: 1.45 },
+  exercise:   { fontWeight: 600, color: 'hsl(30, 3%, 4%)',          lineHeight: 1.45 },
+};
+
+/**
  * Renders a single prompt card — flat, read-only question text.
  * No accordion, no inline reflection input (SessionStepReflection owns that).
  */
 export default function PromptItem({ prompt, index, sectionType, preamble }: PromptItemProps) {
+  const gravity = DEPTH_GRAVITY[sectionType || 'opening'] || DEPTH_GRAVITY.opening;
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -52,7 +65,7 @@ export default function PromptItem({ prompt, index, sectionType, preamble }: Pro
         )}
         <p
           className="text-subheading w-full text-center"
-          style={{ color: 'var(--color-text-primary)' }}
+          style={gravity}
         >
           {prompt.text}
         </p>
