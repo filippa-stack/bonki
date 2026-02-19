@@ -69,7 +69,7 @@ export default function CompletedSessionView({
         .eq('status', 'completed')
         .order('started_at', { ascending: false })
         .limit(1)
-        .single();
+        .maybeSingle();
 
       if (cancelled || !sessionRow) { setLoading(false); return; }
 
@@ -86,7 +86,7 @@ export default function CompletedSessionView({
           .select('content')
           .eq('session_id', sessionRow.id)
           .limit(1)
-          .single(),
+          .maybeSingle(),
       ]);
 
       if (cancelled) return;
