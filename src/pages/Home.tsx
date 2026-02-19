@@ -297,13 +297,14 @@ export default function Home() {
                   <>
                     {recCat && (
                       <div>
-                        <p className="text-[11px] mb-2" style={{ color: 'var(--color-text-secondary)', opacity: 0.6 }}>
-                          Rekommenderat
-                        </p>
                         <div
                           onClick={() => { markNavigated(); navigate(`/category/${recCat.id}`); }}
                           className="cursor-pointer rounded-card p-6 transition-opacity hover:opacity-90"
-                          style={{ backgroundColor: 'var(--color-surface)', border: 'var(--border-card)' }}
+                          style={{
+                            backgroundColor: 'var(--color-surface)',
+                            border: 'var(--border-card)',
+                            borderTop: '2px solid var(--color-accent)',
+                          }}
                         >
                           <h3
                             className="font-serif text-base font-medium leading-snug mb-1"
