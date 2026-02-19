@@ -36,6 +36,7 @@ import { toast } from 'sonner';
 import { useDevState } from '@/contexts/DevStateContext';
 import { useAppMode } from '@/hooks/useAppMode';
 import { useNormalizedSessionContext } from '@/contexts/NormalizedSessionContext';
+import { useTogetherMode } from '@/hooks/useTogetherMode';
 import { useSpaceSnapshot } from '@/hooks/useSpaceSnapshot';
 import {
   selectLastActivityAt,
@@ -90,6 +91,7 @@ export default function Home() {
   const appModeState = useAppMode();
   const normalizedSession = useNormalizedSessionContext();
   const { mode } = appModeState;
+  const { isTogether } = useTogetherMode();
 
   // Snapshot-derived values
   const snapshotLastActivityAt = selectLastActivityAt(snapshot);
@@ -243,12 +245,12 @@ export default function Home() {
             {/* Primary CTA — above categories when recommended card is known */}
             {recommendedCardId && (
               <div className="mb-8">
-                <Button
+              <Button
                   size="lg"
                   className="w-full h-14 rounded-2xl gap-2 font-normal"
                   onClick={() => { markNavigated(); navigate(`/card/${recommendedCardId}`); }}
                 >
-                  Starta nästa samtal
+                  {isTogether ? 'Starta nästa samtal' : 'Starta nästa övning'}
                   <ArrowRight className="w-4 h-4" />
                 </Button>
               </div>

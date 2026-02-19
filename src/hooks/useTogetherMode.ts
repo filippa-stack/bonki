@@ -15,7 +15,7 @@ export function useTogetherMode() {
     _setTogetherMode(value);
   }, []);
 
-  return { togetherMode, setTogetherMode };
+  return { togetherMode, setTogetherMode, isTogether: togetherMode === 'together' };
 }
 
 /** True when the account is in "together" mode (the default). */
