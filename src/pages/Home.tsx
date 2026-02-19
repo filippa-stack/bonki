@@ -29,7 +29,6 @@ import RelationshipMemory from '@/components/RelationshipMemory';
 import Footer from '@/components/Footer';
 import ReturnOverlay from '@/components/ReturnOverlay';
 import ConfidenceCheckPanel from '@/components/ConfidenceCheckPanel';
-import { Button } from '@/components/ui/button';
 import { useThemeVars } from '@/hooks/useThemeVars';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
@@ -48,7 +47,7 @@ import {
 } from '@/selectors/spaceSnapshotSelectors';
 import { categories as allCategories, cards as allCards } from '@/data/content';
 
-const STEP_LABELS = ['Öppnare', 'Tankeväckare', 'Scenario', 'Teamwork'];
+
 
 /** Collapsed "Notiser" row — expands inline on tap */
 function NotiserSection() {
@@ -175,9 +174,9 @@ export default function Home() {
 
   return (
     <div className="min-h-screen flex flex-col page-bg">
-      {/* 7+ day return overlay */}
+      {/* 7+ day return overlay — only in idle */}
       <AnimatePresence>
-        {showReturnOverlay && (
+        {showReturnOverlay && mode !== 'active' && (
           <ReturnOverlay
             onResume={() => {
               dismissReturnOverlay();
@@ -190,46 +189,87 @@ export default function Home() {
       </AnimatePresence>
 
       <div className="flex-1">
-        <Header showBackgroundPicker={false} showBackupManager={false} showSaveIndicator={mode === 'active'} />
-        <ConfidenceCheckPanel />
+        <Header showBackgroundPicker={false} showBackupManager={false} showSaveIndicator={false} />
+        {mode !== 'active' && <ConfidenceCheckPanel />}
 
-        {/* ═══ PRIMARY ACTION ZONE ═══ */}
+        {/* Loading skeleton */}
         {mode === 'loading' && (
           <div className="px-6 pt-8 pb-10">
             <div className="h-14 rounded-2xl bg-muted/20 animate-pulse" />
           </div>
         )}
 
-        {/* Active session block */}
+        {/* ═══ ACTIVE — single dominant resume surface ═══ */}
         {mode === 'active' && normalizedSession.cardId && (() => {
           const activeCard = getCardById(normalizedSession.cardId!);
           const activeCategory = activeCard ? getCategoryById(activeCard.categoryId) : null;
-          const stepLabel = STEP_LABELS[normalizedSession.currentStepIndex] || '';
-          const stepProgress = `${Math.min(normalizedSession.currentStepIndex + 1, 4)} / 4`;
+          const totalSteps = 4;
+          const completedSteps = Math.min(normalizedSession.currentStepIndex, totalSteps);
           if (!activeCard || !activeCategory) return null;
           return (
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ duration: 0.15 }}
-              className="px-6 pt-12 mb-12"
+              transition={{ duration: 0.2 }}
+              className="px-6 pt-12 pb-16 flex flex-col"
             >
-              <p className="text-xs text-muted-foreground/30 uppercase tracking-wide mb-2 text-center">Pågående samtal</p>
-              <div className="text-center mb-4">
-                <p className="font-serif text-lg text-foreground mb-1.5">{activeCard.title}</p>
-                <p className="text-xs text-muted-foreground mb-1.5">{activeCategory.title}</p>
-                {stepLabel && (
-                  <p className="text-xs text-muted-foreground/40">{stepLabel} · {stepProgress}</p>
-                )}
-              </div>
-              <Button
-                onClick={() => { markNavigated(); navigate(`/card/${normalizedSession.cardId}`); }}
-                size="lg"
-                className="w-full h-14 rounded-2xl gap-2 font-normal"
+              {/* Resume card */}
+              <div
+                className="rounded-[20px] p-8 mb-8"
+                style={{ backgroundColor: 'var(--color-surface-secondary)' }}
               >
-                Fortsätt samtalet
-                <ArrowRight className="w-4 h-4" />
-              </Button>
+                {/* Label */}
+                <p
+                  className="text-xs uppercase tracking-widest font-medium mb-6"
+                  style={{ color: 'var(--color-text-secondary)' }}
+                >
+                  Pågående samtal
+                </p>
+
+                {/* Category */}
+                <p
+                  className="text-sm mb-1"
+                  style={{ color: 'var(--color-text-secondary)' }}
+                >
+                  {activeCategory.title}
+                </p>
+
+                {/* Card title — dominant */}
+                <h2
+                  className="font-serif text-3xl font-medium leading-tight mb-8"
+                  style={{ color: 'var(--color-text-primary)' }}
+                >
+                  {activeCard.title}
+                </h2>
+
+                {/* Neutral grey progress — dots only */}
+                <div className="flex items-center gap-2 mb-8">
+                  {Array.from({ length: totalSteps }).map((_, i) => (
+                    <div
+                      key={i}
+                      className="h-1 flex-1 rounded-full"
+                      style={{
+                        backgroundColor: i < completedSteps
+                          ? '#9CA3AF'
+                          : '#E5E7EB',
+                      }}
+                    />
+                  ))}
+                </div>
+
+                {/* Primary action */}
+                <button
+                  onClick={() => { markNavigated(); navigate(`/card/${normalizedSession.cardId}`); }}
+                  className="w-full h-14 rounded-[16px] flex items-center justify-center gap-2 text-sm font-medium transition-opacity hover:opacity-90"
+                  style={{
+                    backgroundColor: 'var(--color-button-primary)',
+                    color: 'var(--color-button-text)',
+                  }}
+                >
+                  Fortsätt samtalet
+                  <ArrowRight className="w-4 h-4" />
+                </button>
+              </div>
             </motion.div>
           );
         })()}
