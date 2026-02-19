@@ -23,19 +23,19 @@ export default function SessionTakeaway({ sessionId }: SessionTakeawayProps) {
   }, []);
 
   if (loading) {
-    return <div className="h-14 rounded-xl bg-muted/20 animate-pulse" />;
+    return <div className="h-14 rounded-card bg-muted/20 animate-pulse" />;
   }
 
   if (locked) {
     return text.trim() ? (
-      <div className="rounded-[20px] border border-border/30 bg-muted/10 overflow-hidden shadow-[0_1px_4px_0_hsl(0_0%_0%/0.04)]">
+      <div className="rounded-card border border-border/30 bg-muted/10 overflow-hidden shadow-[0_1px_4px_0_hsl(0_0%_0%/0.04)]">
         <p className="p-6 text-sm text-foreground whitespace-pre-wrap">{text}</p>
       </div>
     ) : null;
   }
 
   return (
-    <div className="space-y-1.5">
+    <div className="space-y-2">
       <div className="h-px bg-border/30 mb-4" />
       <Textarea
         value={text}

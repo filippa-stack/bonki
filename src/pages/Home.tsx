@@ -199,8 +199,8 @@ export default function Home() {
 
         {/* Loading skeleton */}
         {mode === 'loading' && (
-          <div className="px-6 pt-8 pb-10">
-            <div className="h-14 rounded-2xl bg-muted/20 animate-pulse" />
+          <div className="px-6 pt-8 pb-8">
+            <div className="h-14 rounded-card bg-muted/20 animate-pulse" />
           </div>
         )}
 
@@ -216,7 +216,7 @@ export default function Home() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.2 }}
-              className="px-6 pt-12 pb-16 flex flex-col"
+              className="px-6 pt-title-above pb-16 flex flex-col"
             >
               {/* Resume card */}
               <div
@@ -286,10 +286,10 @@ export default function Home() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.15 }}
-            className="px-6 mt-12"
+            className="px-6 mt-title-above"
           >
             {/* Category list — recommended first, then the rest */}
-            <div className="flex flex-col gap-6 pb-12">
+            <div className="flex flex-col gap-4 pb-16">
               {(() => {
                 const recCat = recommendedCategoryId ? getCategoryById(recommendedCategoryId) : null;
                 const rest = categories.filter((c) => c.id !== recommendedCategoryId);
@@ -362,7 +362,7 @@ export default function Home() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.15 }}
-            className="px-6 pt-8 pb-10 mt-4 space-y-2"
+            className="px-6 pt-8 pb-8 mt-4 space-y-2"
           >
             <button
               onClick={() => navigate('/shared')}

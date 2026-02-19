@@ -44,7 +44,7 @@ export default function Category() {
     <div className="min-h-screen" style={{ backgroundColor: 'var(--color-bg-base)' }}>
       <Header showBack backTo="/" />
 
-      <div className="px-6 pt-8 pb-4">
+      <div className="px-6 pt-title-above pb-4">
         <motion.h1
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
@@ -59,7 +59,7 @@ export default function Category() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: BEAT_1, duration: 0.2, ease: EASE }}
-            className="text-base leading-relaxed mt-3 max-w-md"
+            className="text-base leading-relaxed mt-2 max-w-md"
             style={{ color: 'var(--color-text-secondary)' }}
           >
             {category.entryLine}
@@ -67,8 +67,8 @@ export default function Category() {
         )}
       </div>
 
-      <div className="px-6 pb-12">
-        <div className="space-y-6 mt-6">
+      <div className="px-6 pb-16">
+        <div className="space-y-4 mt-8">
           {cards.map((card, index) => (
             <CardEntry
               key={card.id}
@@ -119,7 +119,7 @@ function CardEntry({ card, index, isCompleted = false, lastVisitedAt, onNavigate
       onKeyDown={(e) => {
         if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onNavigate(); }
       }}
-      className="w-full cursor-pointer rounded-card px-7 py-8 transition-opacity hover:opacity-80"
+      className="w-full cursor-pointer rounded-card px-8 py-8 transition-opacity hover:opacity-80"
       style={{ backgroundColor: 'var(--color-surface-primary)', boxShadow: 'var(--shadow-card)' }}
     >
       <div className="flex flex-col items-center gap-1.5">

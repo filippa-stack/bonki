@@ -51,9 +51,9 @@ export default function ConversationCard({ conversation, onClick, variant = 'def
             {card.title}
           </h3>
           {card.subtitle && (
-            <p className="text-sm mb-3 leading-relaxed" style={{ color: 'var(--color-text-secondary)' }}>{card.subtitle}</p>
+            <p className="text-sm mb-2 leading-relaxed" style={{ color: 'var(--color-text-secondary)' }}>{card.subtitle}</p>
           )}
-          <div className="flex items-center gap-2 flex-wrap">
+            <div className="flex items-center gap-2 flex-wrap">
             <p className="text-xs" style={{ color: 'var(--color-text-secondary)', opacity: 0.6 }}>{timeAgo}</p>
             {isCompleted && (
               <span

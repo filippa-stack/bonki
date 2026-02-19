@@ -120,11 +120,11 @@ export default function CompletedSessionView({
     return (
       <div className="min-h-screen page-bg">
         <Header title={categoryTitle} showBack backTo="/" />
-        <div className="px-6 pt-20 pb-10">
+        <div className="px-6 pt-title-above pb-8">
           <div className="max-w-md mx-auto space-y-4">
             <div className="h-6 w-48 rounded bg-muted/30 animate-pulse mx-auto" />
-            <div className="h-24 rounded-xl bg-muted/20 animate-pulse" />
-            <div className="h-24 rounded-xl bg-muted/20 animate-pulse" />
+            <div className="h-24 rounded-card bg-muted/20 animate-pulse" />
+            <div className="h-24 rounded-card bg-muted/20 animate-pulse" />
           </div>
         </div>
       </div>
@@ -136,9 +136,9 @@ export default function CompletedSessionView({
     return (
       <div className="min-h-screen page-bg">
         <Header title={categoryTitle} showBack backTo="/" />
-        <div className="px-6 pt-20 pb-10 text-center max-w-md mx-auto space-y-6">
+        <div className="px-6 pt-title-above pb-8 text-center max-w-md mx-auto space-y-8">
           <p className="text-sm text-muted-foreground">Ingen tidigare session hittades.</p>
-          <Button onClick={onExploreAgain} size="lg" className="w-full h-14 rounded-2xl font-normal">
+          <Button onClick={onExploreAgain} size="lg" className="w-full h-14 rounded-card font-normal">
             Utforska igen
           </Button>
         </div>
@@ -160,8 +160,8 @@ export default function CompletedSessionView({
     <div className="min-h-screen page-bg">
       <Header title={categoryTitle} showBack backTo="/" />
 
-      <div className="px-6 pt-20 pb-10">
-        <div className="max-w-md mx-auto space-y-8 pb-10">
+      <div className="px-6 pt-title-above pb-8">
+        <div className="max-w-md mx-auto space-y-8 pb-8">
 
           {/* Completion header */}
           <motion.div
@@ -197,7 +197,7 @@ export default function CompletedSessionView({
                           ? group.partnerRef.speakerLabel
                           : partnerName}
                       </p>
-                      <div className="rounded-[20px] border border-border/30 bg-muted/10 overflow-hidden">
+                      <div className="rounded-card border border-border/30 bg-muted/10 overflow-hidden">
                         <p className="p-6 text-sm text-foreground whitespace-pre-wrap">{group.partnerRef.text}</p>
                       </div>
                     </div>
@@ -211,7 +211,7 @@ export default function CompletedSessionView({
                           ? group.myRef.speakerLabel
                           : myName}
                       </p>
-                      <div className="rounded-[20px] border border-border/30 bg-muted/10 overflow-hidden">
+                      <div className="rounded-card border border-border/30 bg-muted/10 overflow-hidden">
                         <p className="p-6 text-sm text-foreground whitespace-pre-wrap">{group.myRef.text}</p>
                       </div>
                     </div>
@@ -232,7 +232,7 @@ export default function CompletedSessionView({
               className="space-y-2"
             >
               <p className="text-xs text-muted-foreground/40 tracking-wide">Det ni tog med er</p>
-              <div className="rounded-[20px] border border-border/30 bg-muted/10 overflow-hidden">
+              <div className="rounded-card border border-border/30 bg-muted/10 overflow-hidden">
                 <p className="p-6 text-sm text-foreground whitespace-pre-wrap">{session.takeawayText}</p>
               </div>
             </motion.div>
@@ -249,7 +249,7 @@ export default function CompletedSessionView({
             <Button
               onClick={onExploreAgain}
               size="lg"
-              className="w-full h-14 rounded-2xl gap-2 font-normal"
+              className="w-full h-14 rounded-card gap-2 font-normal"
             >
               Tillbaka till översikten
             </Button>

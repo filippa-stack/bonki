@@ -41,10 +41,10 @@ export default function PromptItem({ prompt, index, sectionType, preamble }: Pro
       className="rounded-card overflow-hidden"
       style={{ backgroundColor: 'var(--color-surface-primary)', boxShadow: 'var(--shadow-card)' }}
     >
-      <div className="px-7 py-10">
+      <div className="px-8 py-8">
         {preamble && (
           <p
-            className="text-[18px] leading-[1.8] text-center font-serif mb-6"
+            className="text-[18px] leading-[1.8] text-center font-serif mb-8"
             style={{ color: 'var(--color-text-primary)' }}
           >
             {preamble}
