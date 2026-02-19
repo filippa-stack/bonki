@@ -64,6 +64,7 @@ export default function Categories() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: Math.min(0.08 + index * 0.05, 0.3), duration: 0.2, ease: [0.4, 0.0, 0.2, 1] }}
+              className={index > 0 ? 'mt-[48px]' : ''}
             >
               {isGuided && (
                 <p
@@ -80,8 +81,7 @@ export default function Categories() {
                 onKeyDown={(e) => {
                   if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); navigate(`/category/${category.id}`); }
                 }}
-                className={`w-full cursor-pointer py-[20px] transition-opacity hover:opacity-70${isGuided ? ' pt-0' : ''}`}
-                style={isGuided ? { paddingBottom: '36px' } : undefined}
+                className="w-full cursor-pointer transition-opacity hover:opacity-70"
               >
                 <h3
                   className={`text-[20px] leading-snug ${isGuided ? 'font-semibold' : 'font-medium'}`}
@@ -98,9 +98,6 @@ export default function Categories() {
                   </p>
                 )}
               </div>
-              {!isLast && (
-                <div className="h-px" style={{ backgroundColor: '#9CA3AF', opacity: 0.04 }} />
-              )}
             </motion.div>
           );
         })}
