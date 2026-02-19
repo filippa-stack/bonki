@@ -103,7 +103,7 @@ function CardEntry({ card, index, isCompleted = false, onNavigate, isLast = fals
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ delay: Math.min(0.08 + index * 0.05, 0.24), duration: 0.2, ease: [0.4, 0.0, 0.2, 1] }}
-      className={index > 0 ? 'mt-[48px]' : ''}
+      className={index === 0 ? 'mt-[16px]' : 'mt-[48px]'}
     >
       <div
         onClick={onNavigate}
@@ -116,7 +116,7 @@ function CardEntry({ card, index, isCompleted = false, onNavigate, isLast = fals
       >
         <h3
           className="text-subheading"
-          style={{ color: isCompleted ? 'var(--color-text-secondary)' : 'var(--color-text-primary)' }}
+          style={{ color: isCompleted ? 'var(--color-text-secondary)' : index === 0 ? '#151413' : 'var(--color-text-primary)' }}
         >
           {card.title}
         </h3>
