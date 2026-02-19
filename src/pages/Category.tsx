@@ -1,7 +1,7 @@
+import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { BEAT_1, EASE } from '@/lib/motion';
-import { CheckCircle2 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useApp } from '@/contexts/AppContext';
 import { useAuth } from '@/contexts/AuthContext';
@@ -107,19 +107,30 @@ interface CardEntryProps {
 }
 
 function CardEntry({ card, index, isCompleted = false, onNavigate, isLast = false }: CardEntryProps) {
+  const [tapped, setTapped] = useState(false);
+
+  const handleTap = () => {
+    setTapped(true);
+    setTimeout(() => onNavigate(), 180);
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ delay: Math.min(0.08 + index * 0.05, 0.24), duration: 0.2, ease: [0.4, 0.0, 0.2, 1] }}
+      animate={{ opacity: tapped ? 0.6 : 1, scale: tapped ? 1.02 : 1 }}
+      transition={tapped
+        ? { duration: 0.18, ease: [0.4, 0.0, 0.2, 1] }
+        : { delay: Math.min(0.08 + index * 0.05, 0.24), duration: 0.2, ease: [0.4, 0.0, 0.2, 1] }
+      }
       className={index === 0 ? 'mt-[16px]' : 'mt-[48px]'}
+      style={{ transformOrigin: 'center left' }}
     >
       <div
-        onClick={onNavigate}
+        onClick={handleTap}
         role="button"
         tabIndex={0}
         onKeyDown={(e) => {
-          if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onNavigate(); }
+          if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleTap(); }
         }}
         className="w-full cursor-pointer transition-opacity hover:opacity-70"
       >
