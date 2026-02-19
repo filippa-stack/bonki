@@ -57,7 +57,8 @@ export default function SessionStepReflection({
   }
 
   return (
-    <div className="mt-8 mb-2 space-y-3">
+    /* 48px above reflection, 32px between reflection and button */
+    <div className="mt-12 mb-2">
       <div
         className="rounded-card overflow-hidden p-6"
         style={{ border: '1px solid #E3E1DC', backgroundColor: 'var(--color-surface-primary)' }}
@@ -77,14 +78,15 @@ export default function SessionStepReflection({
         </div>
       </div>
 
-      <div className="mt-4 space-y-3">
+      <div className="mt-8 space-y-3">
         <button
           onClick={handleAdvance}
           disabled={submitting}
-          className="w-full h-14 rounded-button flex items-center justify-center text-sm font-medium transition-opacity disabled:opacity-50 hover:opacity-90"
+          className="w-full h-12 flex items-center justify-center text-sm font-medium transition-opacity disabled:opacity-50 hover:opacity-90 px-8"
           style={{
             backgroundColor: 'var(--color-button-primary)',
             color: 'var(--color-button-text)',
+            borderRadius: '14px',
           }}
         >
           {submitting
@@ -97,7 +99,7 @@ export default function SessionStepReflection({
         {onBack && stepIndex > 0 && (
           <button
             onClick={onBack}
-            className="w-full h-11 rounded-button flex items-center justify-center text-sm transition-opacity hover:opacity-70"
+            className="w-full h-10 flex items-center justify-center text-sm transition-opacity hover:opacity-70"
             style={{ color: 'var(--color-text-secondary)', opacity: 0.6 }}
           >
             Tillbaka

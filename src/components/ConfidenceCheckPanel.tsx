@@ -16,15 +16,19 @@ export default function ConfidenceCheckPanel() {
   if (!devState) return null;
 
   return (
-    <div className="mx-6 mt-2 rounded-xl border border-primary/20 bg-muted/30 text-xs font-mono">
+    <div className="relative inline-block rounded-full border border-muted/60 bg-muted/20 text-xs font-mono">
       <button
         onClick={() => setOpen(!open)}
-        className="w-full flex items-center justify-between px-4 py-2 text-muted-foreground hover:text-foreground transition-colors"
+        className="flex items-center gap-1.5 px-3 py-1 text-muted-foreground/60 hover:text-muted-foreground transition-colors"
       >
-        <span className="font-semibold tracking-wide">Confidence Check</span>
-        <ChevronDown className={`w-3.5 h-3.5 transition-transform ${open ? 'rotate-180' : ''}`} />
+        <span className="tracking-wide text-[10px]">dev</span>
+        <ChevronDown className={`w-2.5 h-2.5 transition-transform ${open ? 'rotate-180' : ''}`} />
       </button>
-      {open && <PanelContent />}
+      {open && (
+        <div className="absolute right-6 mt-1 z-50 rounded-xl border border-muted/60 bg-card shadow-lg text-xs font-mono min-w-[220px]">
+          <PanelContent />
+        </div>
+      )}
     </div>
   );
 }
