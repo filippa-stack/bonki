@@ -3,7 +3,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useCoupleSpaceContext as useCoupleSpace } from '@/contexts/CoupleSpaceContext';
 import { supabase } from '@/integrations/supabase/client';
 import { useDevState } from '@/contexts/DevStateContext';
-import { notifyPartnerByEmail } from '@/lib/notifyPartnerByEmail';
+
 
 export interface PromptNote {
   id: string;
@@ -286,12 +286,7 @@ export function usePromptNotes(
           .eq('visibility', 'shared')
           .limit(1);
 
-        notifyPartnerByEmail({
-          type: 'shared_reflection',
-          couple_space_id: space.id,
-          receiver_user_id: partnerUserId,
-          note_id: noteRow?.[0]?.id,
-        });
+        // email notification removed (proposals feature deleted)
       }
     });
   }, [notes, upsertNote, space, userRole, memberCount]);

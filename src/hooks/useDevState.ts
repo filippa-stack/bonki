@@ -5,16 +5,14 @@
  * Import useDevState from '@/contexts/DevStateContext' to read it.
  *
  * Supported values:
- *   solo | pairedIdle | pairedActive | proposalIncoming
- *   waiting | completed | archiveEmpty | archiveWithHistory
- *   browse  — unlocks all categories & cards for content review
+ *   solo | pairedIdle | pairedActive | waiting | completed
+ *   archiveEmpty | archiveWithHistory | browse
  */
 
 export type DevState =
   | 'solo'
   | 'pairedIdle'
   | 'pairedActive'
-  | 'proposalIncoming'
   | 'waiting'
   | 'completed'
   | 'archiveEmpty'
@@ -24,21 +22,6 @@ export type DevState =
 
 /** Mock data used by dev state overrides */
 export const DEV_MOCK = {
-  mockProposal: {
-    id: 'dev-proposal-1',
-    couple_space_id: 'dev-space',
-    card_id: 'dev-card',
-    category_id: 'dev-category',
-    proposed_by: 'dev-partner',
-    message: null,
-    status: 'pending' as const,
-    accepted_by: null,
-    declined_by: null,
-    responded_at: null,
-    expires_at: null,
-    created_at: new Date().toISOString(),
-    updated_at: new Date().toISOString(),
-  },
   mockSession: {
     cardId: 'dev-card',
     categoryId: 'dev-category',

@@ -3,8 +3,6 @@
  *
  * Mode derives solely from normalized session state:
  *   loading → active → idle
- *
- * No partner/proposal/memberCount logic.
  */
 
 import { useMemo } from 'react';
@@ -16,13 +14,7 @@ export type MacroMode = 'loading' | 'active' | 'idle';
 export interface AppModeState {
   mode: MacroMode;
   loading: boolean;
-  /** Kept for compatibility — always false in V1 */
-  isSolo: boolean;
   hasSpace: boolean;
-  /** Kept for compatibility — always null in V1 */
-  topProposal: null;
-  /** Kept for compatibility — always empty in V1 */
-  incomingProposals: [];
 }
 
 export function useAppMode(): AppModeState {
@@ -30,26 +22,21 @@ export function useAppMode(): AppModeState {
   const normalizedSession = useNormalizedSessionContext();
 
   return useMemo<AppModeState>(() => {
-    // Dev overrides
     if (devState) {
       if (devState === 'pairedActive') {
-        return { mode: 'active', loading: false, isSolo: false, hasSpace: true, topProposal: null, incomingProposals: [] };
+        return { mode: 'active', loading: false, hasSpace: true };
       }
-      // pairedIdle, browse, solo, etc.
-      return { mode: 'idle', loading: false, isSolo: false, hasSpace: true, topProposal: null, incomingProposals: [] };
+      return { mode: 'idle', loading: false, hasSpace: true };
     }
 
-    // Loading gate
     if (normalizedSession.loading) {
-      return { mode: 'loading', loading: true, isSolo: false, hasSpace: true, topProposal: null, incomingProposals: [] };
+      return { mode: 'loading', loading: true, hasSpace: true };
     }
 
-    // Active session
     if (normalizedSession.sessionId && normalizedSession.cardId) {
-      return { mode: 'active', loading: false, isSolo: false, hasSpace: true, topProposal: null, incomingProposals: [] };
+      return { mode: 'active', loading: false, hasSpace: true };
     }
 
-    // Idle
-    return { mode: 'idle', loading: false, isSolo: false, hasSpace: true, topProposal: null, incomingProposals: [] };
+    return { mode: 'idle', loading: false, hasSpace: true };
   }, [devState, normalizedSession]);
 }

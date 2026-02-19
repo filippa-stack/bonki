@@ -7,7 +7,6 @@ const DEV_STATES = [
   { value: 'solo', label: 'Solo' },
   { value: 'pairedIdle', label: 'Paired Idle' },
   { value: 'pairedActive', label: 'Paired Active' },
-  { value: 'proposalIncoming', label: 'Proposal Incoming' },
   { value: 'waiting', label: 'Waiting' },
   { value: 'completed', label: 'Completed' },
   { value: 'archiveEmpty', label: 'Archive Empty' },
@@ -56,10 +55,8 @@ export default function DevModeBadge() {
 
   return (
     <div className="fixed bottom-3 left-3 z-[9999] select-none">
-      {/* Dropdown panel */}
       {open && (
         <div className="mb-2 w-64 rounded-xl overflow-hidden bg-black/80 backdrop-blur-md text-white/90 shadow-2xl border border-white/10 text-[11px] font-mono">
-          {/* Dev states */}
           <div className="px-3 py-2 text-white/40 uppercase tracking-widest text-[9px]">Dev State</div>
           {DEV_STATES.map((s) => (
             <button
@@ -84,7 +81,6 @@ export default function DevModeBadge() {
         </div>
       )}
 
-      {/* Badge trigger */}
       <button
         onClick={() => setOpen((v) => !v)}
         className="pointer-events-auto flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-mono tracking-wider bg-black/60 text-white/80 backdrop-blur-sm hover:bg-black/80 transition-colors"
