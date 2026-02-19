@@ -99,7 +99,7 @@ export default function Categories() {
                 )}
               </div>
               {!isLast && (
-                <div className="h-px" style={{ backgroundColor: 'var(--color-ink)', opacity: 0.06 }} />
+                <div className="h-px" style={{ backgroundColor: '#9CA3AF', opacity: 0.04 }} />
               )}
             </motion.div>
           );
