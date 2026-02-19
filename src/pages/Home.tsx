@@ -288,54 +288,51 @@ export default function Home() {
             transition={{ duration: 0.15 }}
             className="px-6 mt-8"
           >
-            {/* Recommended section */}
-            {(() => {
-              const recCat = recommendedCategoryId ? getCategoryById(recommendedCategoryId) : null;
-              if (!recCat) return null;
-              return (
-                /* 40px below header label, 32px above grid */
-                <div className="mb-8">
-                  <p className="text-xs uppercase tracking-widest font-medium mb-10"
-                     style={{ color: 'var(--color-text-secondary)' }}>
-                    Rekommenderat nästa steg
-                  </p>
-                  <div
-                    onClick={() => { markNavigated(); navigate(`/category/${recCat.id}`); }}
-                    className="cursor-pointer rounded-card p-9 transition-opacity hover:opacity-90 mb-8"
-                    style={{ backgroundColor: 'var(--color-surface-secondary)' }}
-                  >
-                    <h2
-                      className="font-serif text-2xl font-medium leading-snug mb-2"
-                      style={{ color: 'var(--color-text-primary)' }}
-                    >
-                      {recCat.title}
-                    </h2>
-                    {recCat.entryLine && (
-                      <p className="text-sm leading-relaxed"
-                         style={{ color: 'var(--color-text-secondary)' }}>
-                        {recCat.entryLine}
-                      </p>
-                    )}
-                  </div>
-                </div>
-              );
-            })()}
-
-            {/* Full category grid — recommended excluded to avoid duplication */}
+            {/* Category list — recommended first, then the rest */}
             <div className="space-y-3 pb-12">
-              {categories
-                .filter((cat) => cat.id !== recommendedCategoryId)
-                .map((category, index) => (
-                <CategoryCard
-                  key={category.id}
-                  category={category}
-                  onClick={() => navigate(`/category/${category.id}`)}
-                  index={index}
-                  highlighted={false}
-                  isCompleted={getCategoryStatus(category.id) === 'explored'}
-                  isFeatured={false}
-                />
-              ))}
+              {(() => {
+                const recCat = recommendedCategoryId ? getCategoryById(recommendedCategoryId) : null;
+                const rest = categories.filter((c) => c.id !== recommendedCategoryId);
+                return (
+                  <>
+                    {recCat && (
+                      <div>
+                        <p className="text-[11px] mb-2" style={{ color: 'var(--color-text-secondary)', opacity: 0.6 }}>
+                          Rekommenderat
+                        </p>
+                        <div
+                          onClick={() => { markNavigated(); navigate(`/category/${recCat.id}`); }}
+                          className="cursor-pointer rounded-card p-7 transition-opacity hover:opacity-90"
+                          style={{ backgroundColor: 'var(--color-surface-secondary)', boxShadow: 'var(--shadow-card)' }}
+                        >
+                          <h3
+                            className="font-serif text-base font-medium leading-snug mb-1"
+                            style={{ color: 'var(--color-text-primary)' }}
+                          >
+                            {recCat.title}
+                          </h3>
+                          {recCat.entryLine && (
+                            <p className="text-sm leading-relaxed" style={{ color: 'var(--color-text-secondary)' }}>
+                              {recCat.entryLine}
+                            </p>
+                          )}
+                        </div>
+                      </div>
+                    )}
+                    {rest.map((category, index) => (
+                      <CategoryCard
+                        key={category.id}
+                        category={category}
+                        onClick={() => navigate(`/category/${category.id}`)}
+                        index={index}
+                        highlighted={false}
+                        isCompleted={getCategoryStatus(category.id) === 'explored'}
+                        isFeatured={false}
+                      />
+                    ))}
+                  </>
+                );
+              })()}
             </div>
           </motion.div>
         )}
