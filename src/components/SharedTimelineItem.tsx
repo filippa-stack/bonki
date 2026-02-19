@@ -79,7 +79,12 @@ export default function SharedTimelineItem({
         )}
 
         {/* Reflection content — read-only */}
-        <p className="text-[15px] leading-relaxed text-foreground whitespace-pre-wrap font-serif">{note.content}</p>
+        <p className="text-[15px] leading-relaxed text-foreground whitespace-pre-wrap font-serif">
+          {note.author_label && /^[AB]$/.test(note.author_label) && (
+            <span className="font-mono text-[11px] text-muted-foreground/40 mr-1.5 select-none">{note.author_label}:</span>
+          )}
+          {note.content}
+        </p>
 
         {/* Partner response — read-only */}
         {partnerResponseContent && partnerResponseContent.trim().length > 0 && (

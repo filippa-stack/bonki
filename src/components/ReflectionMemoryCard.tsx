@@ -39,6 +39,9 @@ export default function ReflectionMemoryCard({
       </p>
 
       <p className="font-serif text-[15px] text-foreground leading-[1.8] whitespace-pre-wrap">
+        {authorLabel && /^[AB]$/.test(authorLabel) && (
+          <span className="font-mono text-[11px] text-muted-foreground/40 mr-1.5 select-none">{authorLabel}:</span>
+        )}
         "{truncated}"
       </p>
 
