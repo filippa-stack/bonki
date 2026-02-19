@@ -1,22 +1,20 @@
-import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { BEAT_1 } from '@/lib/motion';
-import { ChevronDown, CheckCircle2 } from 'lucide-react';
 import { Prompt } from '@/types';
-import { PromptNote } from '@/hooks/usePromptNotes';
 
 interface PromptItemProps {
   prompt: Prompt;
   promptId: string;
   index: number;
-  label?: string;
   sectionType?: 'opening' | 'reflective' | 'scenario' | 'exercise';
   preamble?: string;
-  privateNote?: PromptNote;
-  sharedNote?: PromptNote;
   highlightCount: number;
+  // Kept for interface compat — not rendered
+  label?: string;
   expanded?: boolean;
   onExpandChange?: (expanded: boolean) => void;
+  privateNote?: unknown;
+  sharedNote?: unknown;
   onPromptChange: (index: number, value: string) => void;
   onPromptColorChange: (index: number, color: string) => void;
   onPromptTextColorChange: (index: number, textColor: string) => void;
@@ -30,40 +28,11 @@ interface PromptItemProps {
   isCompleted?: boolean;
 }
 
-export default function PromptItem({
-  prompt,
-  promptId,
-  index,
-  label,
-  sectionType,
-  preamble,
-  privateNote,
-  sharedNote,
-  highlightCount,
-  expanded,
-  onExpandChange,
-  onPromptChange,
-  onPromptColorChange,
-  onPromptTextColorChange,
-  onRemovePrompt,
-  onSaveNote,
-  onShareNote,
-  onUnshareNote,
-  onToggleHighlight,
-  autoFocusNote,
-  disableShare,
-  isCompleted = false,
-}: PromptItemProps) {
-  const [internalExpanded, setInternalExpanded] = useState(sectionType === 'scenario' || sectionType === 'exercise');
-  const isControlled = expanded !== undefined;
-  const isExpanded = isControlled ? expanded : internalExpanded;
-  const toggleExpanded = () => {
-    const next = !isExpanded;
-    if (onExpandChange) onExpandChange(next);
-    else setInternalExpanded(next);
-  };
-  const showCollapsedLabel = isControlled && !isExpanded;
-
+/**
+ * Renders a single prompt card — flat, read-only question text.
+ * No accordion, no inline reflection input (SessionStepReflection owns that).
+ */
+export default function PromptItem({ prompt, index, sectionType, preamble }: PromptItemProps) {
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -72,35 +41,22 @@ export default function PromptItem({
       className="rounded-card overflow-hidden"
       style={{ backgroundColor: 'var(--color-surface-primary)', boxShadow: 'var(--shadow-card)' }}
     >
-      {/* Collapsed label row (accordion mode only) */}
-      {showCollapsedLabel ? (
-        <div
-          className="px-6 py-3 cursor-pointer flex items-center justify-between rounded-card"
-          style={{ backgroundColor: 'var(--color-surface-primary)' }}
-          onClick={toggleExpanded}
+      <div className="px-7 py-10">
+        {preamble && (
+          <p
+            className="text-[18px] leading-[1.8] text-center font-serif mb-6"
+            style={{ color: 'var(--color-text-primary)' }}
+          >
+            {preamble}
+          </p>
+        )}
+        <p
+          className="text-[18px] leading-[1.8] w-full text-center font-serif"
+          style={{ color: 'var(--color-text-primary)' }}
         >
-          <p className="text-xs tracking-wide font-medium" style={{ color: isCompleted ? 'var(--color-text-secondary)' : 'var(--color-text-primary)', opacity: isCompleted ? 0.5 : 1 }}>
-            {label}
-          </p>
-          {isCompleted ? (
-            <CheckCircle2 className="w-3.5 h-3.5" style={{ color: 'var(--color-text-secondary)', opacity: 0.4 }} />
-          ) : (
-            <ChevronDown className="w-3.5 h-3.5" style={{ color: 'var(--color-text-secondary)', opacity: 0.4 }} />
-          )}
-        </div>
-      ) : (
-        /* Question body — prompt text only, no expandable sub-area */
-        <div className="px-7 py-10">
-          {preamble && (
-            <p className="text-[18px] leading-[1.8] text-center font-serif mb-6" style={{ color: 'var(--color-text-primary)' }}>
-              {preamble}
-            </p>
-          )}
-          <p className="text-[18px] leading-[1.8] w-full min-h-[24px] text-center font-serif" style={{ color: 'var(--color-text-primary)' }}>
-            {prompt.text}
-          </p>
-        </div>
-      )}
+          {prompt.text}
+        </p>
+      </div>
     </motion.div>
   );
 }
