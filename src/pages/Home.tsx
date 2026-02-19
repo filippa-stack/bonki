@@ -255,13 +255,7 @@ export default function Home() {
               <button
                 onClick={() => {
                   markNavigated();
-                  if (recommendedCardId) {
-                    const card = getCardById(recommendedCardId);
-                    if (card) navigate(`/category/${card.categoryId}`);
-                    else navigate(`/card/${recommendedCardId}`);
-                  } else if (categories[0]) {
-                    navigate(`/category/${categories[0].id}`);
-                  }
+                  navigate('/categories');
                 }}
                 className="w-full h-14 rounded-button flex items-center justify-center text-sm font-medium transition-opacity hover:opacity-90"
                 style={{
