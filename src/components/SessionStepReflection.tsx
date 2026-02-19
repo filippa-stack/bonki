@@ -92,7 +92,7 @@ export default function SessionStepReflection({
             ? 'Sparar…'
             : stepIndex >= 3
             ? 'Avsluta samtalet'
-            : 'Fortsätt till nästa steg'}
+            : 'Fortsätt'}
         </button>
 
         {onBack && stepIndex > 0 && (
