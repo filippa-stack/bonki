@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Still Us — Wireframes + Arkitekturkarta</title>
+<title>Still Us — Wireframes</title>
 <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/file-saver@2.0.5/dist/FileSaver.min.js"></script>
@@ -37,513 +37,34 @@
   .frame .spacer { height: 14px; }
   .frame .divider { border-top: 1px solid #f0f0f0; margin: 10px 0; }
   .frame .card { border: 1px solid #e8e8e8; border-radius: 20px; padding: 14px; margin: 6px 0; background: #fafafa; }
-  .frame .dots { display: flex; gap: 5px; justify-content: center; }
-  .frame .dot { width: 5px; height: 5px; border-radius: 50%; background: #ddd; }
-  .frame .dot.active { width: 14px; border-radius: 3px; background: #CC000055; }
   .frame .progress-bar { display: flex; gap: 3px; align-items: center; }
   .frame .progress-step { flex: 1; height: 2px; background: #e5e5e5; border-radius: 2px; }
   .frame .progress-step.done { background: #CC0000; }
   .frame .progress-step.current { background: #CC000055; }
   .frame .tag { display: inline-block; font-size: 8px; text-transform: uppercase; letter-spacing: 1px; color: #999; background: #f0f0f0; border-radius: 14px; padding: 2px 7px; }
-  .frame .badge-realtime { display: inline-block; font-size: 8px; background: #e8f5e9; color: #388e3c; border-radius: 14px; padding: 2px 6px; letter-spacing: 0.5px; }
-  .frame .badge-readonly { display: inline-block; font-size: 8px; background: #f3f4f6; color: #6b7280; border-radius: 14px; padding: 2px 6px; letter-spacing: 0.5px; }
-  .frame .badge-v1 { display: inline-block; font-size: 8px; background: #fff3cd; color: #856404; border-radius: 14px; padding: 2px 6px; letter-spacing: 0.5px; }
   .frame .info-note { font-size: 9px; color: #aaa; font-style: italic; margin-top: 3px; }
-  .frame .breathing { width: 56px; height: 1px; background: #1a1a1a11; margin: 6px auto; }
+  .frame .cat-row { border: 1px solid #e8e8e8; border-radius: 14px; padding: 12px 14px; margin: 5px 0; background: #fff; display: flex; justify-content: space-between; align-items: center; }
+  .frame .cat-title { font-family: Georgia, serif; font-size: 12px; }
+  .frame .cat-arrow { color: #ccc; font-size: 11px; }
   .mt-10 { margin-top: 40px; }
   .mt-8  { margin-top: 32px; }
   .mt-12 { margin-top: 48px; }
-  .pb-10 { padding-bottom: 40px; }
   .space-y-8 > * + * { margin-top: 32px; }
-  .space-y-6 > * + * { margin-top: 24px; }
-  .radius-legend { font-size: 9px; color: #bbb; border-top: 1px solid #f0f0f0; margin-top: 8px; padding-top: 6px; }
-
-  /* ── ARCHITECTURE MAPS ── */
-  .map-section { margin-bottom: 64px; }
-  .map-box { background: #fff; border: 1px solid #e0e0e0; border-radius: 16px; padding: 28px 32px; }
-  .map-box h3 { font-size: 15px; font-weight: 700; margin-bottom: 20px; color: #111; }
-  .arch-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px; }
-  .arch-node { background: #f7f7f7; border: 1px solid #e5e5e5; border-radius: 12px; padding: 14px 16px; }
-  .arch-node .node-title { font-size: 12px; font-weight: 600; margin-bottom: 4px; }
-  .arch-node .node-sub  { font-size: 10px; color: #888; line-height: 1.6; }
-  .arch-node.red   { border-left: 3px solid #CC0000; }
-  .arch-node.green { border-left: 3px solid #388e3c; }
-  .arch-node.blue  { border-left: 3px solid #1565c0; }
-  .arch-node.amber { border-left: 3px solid #f57c00; }
-  .arch-node.gray  { border-left: 3px solid #9e9e9e; }
-  .arch-node.purple{ border-left: 3px solid #7b1fa2; }
-  .flow-row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-bottom: 10px; }
-  .flow-pill { display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; border-radius: 20px; font-size: 11px; font-weight: 500; border: 1px solid #e0e0e0; background: #fff; }
-  .flow-pill.red    { background: #fff5f5; border-color: #CC000033; color: #CC0000; }
-  .flow-pill.green  { background: #f1f8e9; border-color: #388e3c33; color: #388e3c; }
-  .flow-pill.blue   { background: #e3f2fd; border-color: #1565c033; color: #1565c0; }
-  .flow-pill.amber  { background: #fff8e1; border-color: #f57c0033; color: #f57c00; }
-  .flow-pill.gray   { background: #f5f5f5; border-color: #9e9e9e33; color: #555; }
-  .flow-pill.purple { background: #f3e5f5; border-color: #7b1fa233; color: #7b1fa2; }
-  .flow-arrow { font-size: 13px; color: #ccc; }
-  .toast-table { width: 100%; border-collapse: collapse; font-size: 11px; }
-  .toast-table th { text-align: left; padding: 8px 12px; background: #f5f5f5; font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: #888; font-weight: 600; }
-  .toast-table td { padding: 9px 12px; border-top: 1px solid #f0f0f0; vertical-align: top; line-height: 1.6; }
-  .toast-table tr:hover td { background: #fafafa; }
-  .key-chip { font-family: monospace; font-size: 9px; background: #f0f0f0; border-radius: 4px; padding: 2px 5px; color: #555; }
-  .nav-table { width: 100%; border-collapse: collapse; font-size: 11px; }
-  .nav-table th { text-align: left; padding: 8px 12px; background: #f5f5f5; font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: #888; font-weight: 600; }
-  .nav-table td { padding: 9px 12px; border-top: 1px solid #f0f0f0; vertical-align: top; line-height: 1.6; }
-  .route-chip { font-family: monospace; font-size: 10px; background: #1a1a1a0a; border-radius: 4px; padding: 2px 6px; color: #333; }
-  .guard-chip { font-size: 9px; background: #fff3cd; border-radius: 4px; padding: 2px 6px; color: #856404; }
-  .legend-row { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 12px; }
-  .legend-dot { display: inline-flex; align-items: center; gap: 5px; font-size: 10px; color: #666; }
-  .legend-dot span { display: inline-block; width: 10px; height: 10px; border-radius: 50%; }
 </style>
 </head>
 <body>
 
-<h1>Still Us — Wireframes + Arkitekturkarta</h1>
-<p class="subtitle">Volume 1 · Single Writer Model · Single Account · Februari 2026</p>
+<h1>Still Us — Wireframes</h1>
+<p class="subtitle">Volume 1 · Single User Model · Februari 2026</p>
 
 <div class="actions">
   <button class="btn-dl" id="downloadBtn" onclick="exportAll()">📦 Ladda ner wireframes som ZIP</button>
 </div>
 <div class="progress" id="status"></div>
 
-<!-- ══════════════════════════════════════════════════════════════
-     SECTION 0 — ARKITEKTURKARTA
-     ══════════════════════════════════════════════════════════════ -->
-<div class="section-title">0. Arkitekturkarta — komplett systemöversikt</div>
-
-<div class="map-section">
-  <div class="map-box">
-    <h3>0A · Provider-stack (React Context, innerst → ytterst)</h3>
-    <div class="arch-grid">
-      <div class="arch-node gray">
-        <div class="node-title">QueryClientProvider</div>
-        <div class="node-sub">TanStack Query · global cache · outermost</div>
-      </div>
-      <div class="arch-node gray">
-        <div class="node-title">SiteSettingsProvider</div>
-        <div class="node-sub">Läser user_settings (cards, categories, bakgrundsfärg)</div>
-      </div>
-      <div class="arch-node gray">
-        <div class="node-title">AuthProvider</div>
-        <div class="node-sub">Supabase Auth · useAuth() · user, loading</div>
-      </div>
-      <div class="arch-node gray">
-        <div class="node-title">DevStateProvider</div>
-        <div class="node-sub">?devState= param · dev-only override</div>
-      </div>
-      <div class="arch-node green">
-        <div class="node-title">CoupleSpaceProvider</div>
-        <div class="node-sub">useCoupleSpace() · space, memberCount · realtime</div>
-      </div>
-      <div class="arch-node green">
-        <div class="node-title">NormalizedSessionProvider</div>
-        <div class="node-sub">useNormalizedSessionState() · get_active_session_state RPC · realtime</div>
-      </div>
-      <div class="arch-node green">
-        <div class="node-title">ProposalsProvider</div>
-        <div class="node-sub">useProposals() · topic_proposals · (Vol 1: inaktiv)</div>
-      </div>
-      <div class="arch-node blue">
-        <div class="node-title">AppProvider</div>
-        <div class="node-sub">savedConversations, categories, cards, settings · innermost</div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="map-section">
-  <div class="map-box">
-    <h3>0B · Sessionsauktoritet — Single Writer Model (Volume 1)</h3>
-    <div style="background:#fff8e1;border:1px solid #f57c0033;border-radius:10px;padding:14px;margin-bottom:18px;font-size:11px;color:#6d4c00;line-height:1.8;">
-      <b>Laglås:</b> All sessionslogik och -auktoritet lever i servern.<br>
-      Frontenden läser passivt och driver aldrig tillstånd lokalt.<br>
-      <b>Förbjudet:</b> couple_progress.current_session · journeyState · lokal sessionsflagga · A/B-protokoll
-    </div>
-    <div class="arch-grid">
-      <div class="arch-node red">
-        <div class="node-title">activate_couple_session (RPC)</div>
-        <div class="node-sub">Startar ny session. Returnerar session_id. Anropas av Edge Function via proposal.</div>
-      </div>
-      <div class="arch-node red">
-        <div class="node-title">complete_couple_session_step (RPC)</div>
-        <div class="node-sub">Markerar ett steg klart. Returnerar {is_step_complete, is_session_complete, partner_left}.</div>
-      </div>
-      <div class="arch-node red">
-        <div class="node-title">get_active_session_state (RPC)</div>
-        <div class="node-sub">Hämtar {mode, session_id, card_id, category_id, current_step_index, step_completions}.</div>
-      </div>
-      <div class="arch-node red">
-        <div class="node-title">lock_step_reflections (RPC)</div>
-        <div class="node-sub">Låser alla reflektioner för session_id + step_index. Inga speaker-filter.</div>
-      </div>
-      <div class="arch-node amber">
-        <div class="node-title">step_reflections (tabell)</div>
-        <div class="node-sub">Unik per (session_id, step_index, user_id). State: draft → ready. Ingen speaker_label i logiken.</div>
-      </div>
-      <div class="arch-node amber">
-        <div class="node-title">couple_sessions (tabell)</div>
-        <div class="node-sub">Auktoritativ sessionstabell. Status: active | completed. Realtime-prenumererad.</div>
-      </div>
-      <div class="arch-node amber">
-        <div class="node-title">couple_session_completions (tabell)</div>
-        <div class="node-sub">Per-user stegslutföranden. Realtime-prenumererad.</div>
-      </div>
-      <div class="arch-node amber">
-        <div class="node-title">couple_takeaways (tabell)</div>
-        <div class="node-sub">Gemensam sammanfattning per session. Autosparad debounced 800ms. Låst vid session-exit.</div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="map-section">
-  <div class="map-box">
-    <h3>0C · Dataflöde — Reflection save path</h3>
-    <div class="flow-row">
-      <span class="flow-pill gray">Användaren skriver</span>
-      <span class="flow-arrow">→</span>
-      <span class="flow-pill blue">setText()</span>
-      <span class="flow-arrow">→</span>
-      <span class="flow-pill amber">debounce 800ms</span>
-      <span class="flow-arrow">→</span>
-      <span class="flow-pill green">upsert step_reflections state:'draft'</span>
-    </div>
-    <div class="flow-row">
-      <span class="flow-pill gray">Trycker "Fortsätt"</span>
-      <span class="flow-arrow">→</span>
-      <span class="flow-pill blue">markReady()</span>
-      <span class="flow-arrow">→</span>
-      <span class="flow-pill green">upsert state:'ready'</span>
-      <span class="flow-arrow">→</span>
-      <span class="flow-pill red">complete_couple_session_step RPC</span>
-      <span class="flow-arrow">→</span>
-      <span class="flow-pill green">normalizedSession.refetch()</span>
-    </div>
-    <div class="flow-row">
-      <span class="flow-pill gray">Session klar</span>
-      <span class="flow-arrow">→</span>
-      <span class="flow-pill amber">is_session_complete = true</span>
-      <span class="flow-arrow">→</span>
-      <span class="flow-pill blue">setShowCompletion(true)</span>
-      <span class="flow-arrow">→</span>
-      <span class="flow-pill purple">CompletionMode monteras</span>
-    </div>
-    <div style="margin-top:12px;font-size:10px;color:#aaa;font-style:italic;">
-      onConflict: 'session_id,step_index,user_id' — garanterar exakt en rad per steg per användare.
-    </div>
-  </div>
-</div>
-
-<div class="map-section">
-  <div class="map-box">
-    <h3>0D · CardView-lägesresolvern</h3>
-    <div class="arch-grid">
-      <div class="arch-node green">
-        <div class="node-title">live</div>
-        <div class="node-sub">normalizedSession.sessionId finns + cardId matchar. SessionStepReflection monterat.</div>
-      </div>
-      <div class="arch-node blue">
-        <div class="node-title">revisit</div>
-        <div class="node-sub">?revisit=true query param. Read-only. Ingen session-mutation.</div>
-      </div>
-      <div class="arch-node amber">
-        <div class="node-title">history</div>
-        <div class="node-sub">Avslutad session finns för kortet. CompletedSessionView monteras.</div>
-      </div>
-      <div class="arch-node purple">
-        <div class="node-title">completion</div>
-        <div class="node-sub">Session precis avslutad (showCompletion = true). Takeaway-ritual.</div>
-      </div>
-      <div class="arch-node gray">
-        <div class="node-title">guard</div>
-        <div class="node-sub">Paired men ingen aktiv session. Blockerar — visas ej i Vol 1.</div>
-      </div>
-    </div>
-    <div style="margin-top:14px;font-size:10px;color:#aaa;">
-      Resolver: isRevisitMode → hasActiveSession → hasCompletedSessionForCard → 'live' (default)
-    </div>
-  </div>
-</div>
-
-<div class="map-section">
-  <div class="map-box">
-    <h3>0E · Edge Functions</h3>
-    <div class="arch-grid">
-      <div class="arch-node red">
-        <div class="node-title">activate-session</div>
-        <div class="node-sub">Anropar activate_couple_session RPC. Returnerar session_id.</div>
-      </div>
-      <div class="arch-node red">
-        <div class="node-title">create-couple-space</div>
-        <div class="node-sub">Skapar nytt par-utrymme. Genererar invite_code + invite_token.</div>
-      </div>
-      <div class="arch-node red">
-        <div class="node-title">join-couple-space</div>
-        <div class="node-sub">Validerar token/code. Lägger till user i couple_members.</div>
-      </div>
-      <div class="arch-node red">
-        <div class="node-title">leave-and-create-new-space</div>
-        <div class="node-sub">Lämnar utrymme + skapar nytt för användaren.</div>
-      </div>
-      <div class="arch-node red">
-        <div class="node-title">switch-to-new-space</div>
-        <div class="node-sub">Byter till nytt utrymme utan partner.</div>
-      </div>
-      <div class="arch-node red">
-        <div class="node-title">send-notification-email</div>
-        <div class="node-sub">Skickar e-post vid proposal. 10-min deduplicering via system_events.</div>
-      </div>
-      <div class="arch-node red">
-        <div class="node-title">update-step-completion</div>
-        <div class="node-sub">Hjälpfunktion för stegslutföranden.</div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- ══════════════════════════════════════════════════════════════
-     SECTION 0F — TOASTS/NOTIFICATIONS MAP
-     ══════════════════════════════════════════════════════════════ -->
-<div class="section-title">0F · Toast & notifikationskarta</div>
-
-<div class="map-section">
-  <div class="map-box">
-    <h3>Alla toasts i appen — deduplicerade via toastOnce (3s window)</h3>
-    <div class="legend-row">
-      <span class="legend-dot"><span style="background:#CC0000"></span>toast.error</span>
-      <span class="legend-dot"><span style="background:#388e3c"></span>toast.success</span>
-      <span class="legend-dot"><span style="background:#1565c0"></span>toast (neutral)</span>
-      <span class="legend-dot"><span style="background:#f57c00"></span>via usePartnerNotifications</span>
-    </div>
-    <table class="toast-table">
-      <thead>
-        <tr>
-          <th>Nyckel</th>
-          <th>Meddelande</th>
-          <th>Typ</th>
-          <th>Fil</th>
-          <th>Trigger</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><span class="key-chip">new_space</span></td>
-          <td>Nytt utrymme skapat.</td>
-          <td style="color:#388e3c">success</td>
-          <td>Home.tsx</td>
-          <td>RelationSettings → switchToNewSpace ok</td>
-        </tr>
-        <tr>
-          <td><span class="key-chip">new_space_fail</span></td>
-          <td>Kunde inte skapa nytt utrymme.</td>
-          <td style="color:#CC0000">error</td>
-          <td>Home.tsx</td>
-          <td>switchToNewSpace returnerar error</td>
-        </tr>
-        <tr>
-          <td><span class="key-chip">leave_partner</span></td>
-          <td>Kopplingen till din partner är avslutad.</td>
-          <td style="color:#388e3c">success</td>
-          <td>Home.tsx</td>
-          <td>leave-and-create-new-space Edge Function ok</td>
-        </tr>
-        <tr>
-          <td><span class="key-chip">leave_partner_fail</span></td>
-          <td>Något gick fel. Försök igen.</td>
-          <td style="color:#CC0000">error</td>
-          <td>Home.tsx</td>
-          <td>Edge Function throw</td>
-        </tr>
-        <tr>
-          <td><span class="key-chip">step_complete_fail</span></td>
-          <td>Kunde inte markera steget som klart</td>
-          <td style="color:#CC0000">error</td>
-          <td>CardView.tsx</td>
-          <td>complete_couple_session_step RPC error</td>
-        </tr>
-        <tr>
-          <td><span class="key-chip">partner_left</span></td>
-          <td>Din partner har lämnat utrymmet</td>
-          <td style="color:#CC0000">error</td>
-          <td>CardView.tsx</td>
-          <td>RPC returnerar partner_left = true</td>
-        </tr>
-        <tr>
-          <td><span class="key-chip">copy_link</span></td>
-          <td>Länk kopierad</td>
-          <td style="color:#388e3c">success</td>
-          <td>SharedSummary.tsx</td>
-          <td>Klick på "Dela länk"-knapp</td>
-        </tr>
-        <tr>
-          <td><span class="key-chip">partner_shared</span></td>
-          <td>t('notifications.partner_shared')</td>
-          <td style="color:#f57c00">neutral</td>
-          <td>usePartnerNotifications.ts</td>
-          <td>Realtime INSERT på prompt_notes (partner, shared)</td>
-        </tr>
-        <tr>
-          <td><span class="key-chip">partner_continuing</span></td>
-          <td>t('notifications.partner_continuing')</td>
-          <td style="color:#f57c00">neutral</td>
-          <td>usePartnerNotifications.ts</td>
-          <td>Realtime UPDATE på couple_sessions (partner, active)</td>
-        </tr>
-        <tr>
-          <td><span class="key-chip">—</span></td>
-          <td>(interna toasts i PromptItem, InvitePartner etc)</td>
-          <td style="color:#1565c0">varies</td>
-          <td>SoloInviteSection, InvitePartner</td>
-          <td>Kopiera invite-länk — rekommenderas migreras till copy_link-nyckeln</td>
-        </tr>
-      </tbody>
-    </table>
-    <div style="margin-top:12px;font-size:10px;color:#aaa;font-style:italic;">
-      Position: bottom-center, offset bottom 64px, mx-6 bredd. Dismiss via ID-baserad avvisning för realtime-events.
-    </div>
-  </div>
-</div>
-
-<!-- ══════════════════════════════════════════════════════════════
-     SECTION 0G — NAVIGATIONSKARTA
-     ══════════════════════════════════════════════════════════════ -->
-<div class="section-title">0G · Navigationskarta — komplett</div>
-
-<div class="map-section">
-  <div class="map-box">
-    <h3>Alla rutter + ingångar</h3>
-    <table class="nav-table">
-      <thead>
-        <tr>
-          <th>Rutt</th>
-          <th>Komponent</th>
-          <th>Ingångar</th>
-          <th>Utgångar / navigate()</th>
-          <th>Guard / Villkor</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><span class="route-chip">/login</span></td>
-          <td>Login.tsx</td>
-          <td>Direkt URL · redirect från ProtectedRoutes</td>
-          <td>navigate('/') efter auth</td>
-          <td><span class="guard-chip">user → redirect /</span></td>
-        </tr>
-        <tr>
-          <td><span class="route-chip">/</span></td>
-          <td>Index.tsx → Onboarding | PurchaseScreen | Home</td>
-          <td>Post-login · Logo-klick · navigate('/') i kod</td>
-          <td>Internt: Home | Onboarding | PurchaseScreen</td>
-          <td><span class="guard-chip">auth required</span> Onboarding → Köp → Home (linjär)</td>
-        </tr>
-        <tr>
-          <td><span class="route-chip">/category/:categoryId</span></td>
-          <td>Category.tsx</td>
-          <td>CategoryCard klick i Home</td>
-          <td>navigate('/card/:id') · ← Hem (Header)</td>
-          <td><span class="guard-chip">auth required</span></td>
-        </tr>
-        <tr>
-          <td><span class="route-chip">/card/:cardId</span></td>
-          <td>CardView.tsx</td>
-          <td>CategoryCard klick · "Fortsätt samtalet" · "Starta nästa"</td>
-          <td>navigate('/') · navigate('/category/:id') · navigate('?revisit=true')</td>
-          <td><span class="guard-chip">auth required</span> · ActiveSessionGuard</td>
-        </tr>
-        <tr>
-          <td><span class="route-chip">/card/:cardId?revisit=true</span></td>
-          <td>CardView.tsx (mode=revisit)</td>
-          <td>"Läs igen" i Completion · djuplänk från ReviewDrawer</td>
-          <td>navigate('/category/:id') eller navigate('/')</td>
-          <td>Read-only, inga mutations</td>
-        </tr>
-        <tr>
-          <td><span class="route-chip">/card/:cardId?step=N</span></td>
-          <td>CardView.tsx (revisit, steg N)</td>
-          <td>Djuplänk från SharedSummary / ReviewDrawer</td>
-          <td>Stegar via revisitStepIndex</td>
-          <td>step param: 0–3 giltiga</td>
-        </tr>
-        <tr>
-          <td><span class="route-chip">/shared</span></td>
-          <td>SharedSummary.tsx</td>
-          <td>"Vår historia"-länk i Home (Share2-ikon)</td>
-          <td>navigate('/card/:id?revisit=true&amp;step=N') · ← (Header)</td>
-          <td><span class="guard-chip">auth required</span></td>
-        </tr>
-        <tr>
-          <td><span class="route-chip">/saved</span></td>
-          <td>SavedConversations.tsx</td>
-          <td>"Sparade samtal"-länk i Home (Bookmark-ikon, visas om count > 0)</td>
-          <td>← (Header)</td>
-          <td><span class="guard-chip">auth required</span></td>
-        </tr>
-        <tr>
-          <td><span class="route-chip">/join?token=&amp;code=</span></td>
-          <td>JoinSpace.tsx (via JoinRedirectGuard)</td>
-          <td>Inbjudningslänk från e-post / delning</td>
-          <td>navigate('/') efter join</td>
-          <td>storePendingInvite() om ej inloggad → redirect /login</td>
-        </tr>
-        <tr>
-          <td><span class="route-chip">*</span></td>
-          <td>NotFound.tsx</td>
-          <td>Okänd URL</td>
-          <td>navigate('/')</td>
-          <td>—</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-</div>
-
-<div class="map-section">
-  <div class="map-box">
-    <h3>ActiveSessionGuard — navigeringsskydd</h3>
-    <div class="flow-row">
-      <span class="flow-pill gray">loading = true</span>
-      <span class="flow-arrow">→</span>
-      <span class="flow-pill amber">Pulse loader (ingen flicker)</span>
-    </div>
-    <div class="flow-row">
-      <span class="flow-pill gray">mode = active + user navigerar bort</span>
-      <span class="flow-arrow">→</span>
-      <span class="flow-pill red">Blockeras — redirect till /card/:activeCardId</span>
-    </div>
-    <div class="flow-row">
-      <span class="flow-pill gray">mode = idle/null</span>
-      <span class="flow-arrow">→</span>
-      <span class="flow-pill green">Fri navigation</span>
-    </div>
-    <div style="margin-top:10px;font-size:10px;color:#aaa;">
-      Logotypen i Header leder alltid till /. "Vårt utrymme"-länk → /shared. Ingen automatisk redirect vid partner-events.
-    </div>
-  </div>
-</div>
-
-<div class="map-section">
-  <div class="map-box">
-    <h3>devState query params (dev-only)</h3>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;font-size:11px;">
-      <div><span class="key-chip">?devState=solo</span> — Solo-läge, ingen partner</div>
-      <div><span class="key-chip">?devState=pairedIdle</span> — Kopplat par, idle</div>
-      <div><span class="key-chip">?devState=pairedActive</span> — Aktiv session</div>
-      <div><span class="key-chip">?devState=proposalIncoming</span> — Inkommande förslag</div>
-      <div><span class="key-chip">?devState=waiting</span> — Väntar på partner</div>
-      <div><span class="key-chip">?devState=completed</span> — Avslutad session</div>
-      <div><span class="key-chip">?devState=archiveEmpty</span> — Tomt arkiv</div>
-      <div><span class="key-chip">?devState=archiveWithHistory</span> — Arkiv med historik</div>
-      <div><span class="key-chip">?devState=browse</span> — Alla kategorier upplåsta</div>
-    </div>
-  </div>
-</div>
-
-<!-- ══════════════════════════════════════════════════════════════
-     WIREFRAME SCREENS
-     ══════════════════════════════════════════════════════════════ -->
-
-<!-- ═══ 1. INLOGGNING & ONBOARDING ═══ -->
+<!-- ═══════════════════════════════════════════════════════════
+     1. INLOGGNING & ONBOARDING
+     ═══════════════════════════════════════════════════════════ -->
 <div class="section-title">1. Inloggning &amp; onboarding</div>
 <div class="wireframe-grid">
 
@@ -551,14 +72,16 @@
     <h2>Login</h2>
     <div class="route">/login</div>
     <div class="frame">
-      <div class="spacer" style="height:28px"></div>
+      <div class="spacer" style="height:32px"></div>
       <div class="center serif" style="font-size:20px;font-weight:700;color:#CC0000;">STILL US<br/><span style="font-size:12px;font-weight:400;color:#999;">So we stay us</span></div>
-      <div class="spacer"></div>
-      <div style="background:#f5f5f5;border-radius:9px;padding:9px 11px;font-size:10px;color:#bbb;margin-bottom:7px;">E-post</div>
-      <div class="btn-ui">Logga in med e-post</div>
+      <div class="spacer" style="height:24px"></div>
+      <div style="background:#f5f5f5;border-radius:9px;padding:9px 11px;font-size:10px;color:#bbb;margin-bottom:8px;">E-post</div>
+      <div style="background:#f5f5f5;border-radius:9px;padding:9px 11px;font-size:10px;color:#bbb;margin-bottom:12px;">Lösenord</div>
+      <div class="btn-ui">Logga in</div>
       <div class="divider"></div>
       <div class="btn-outline">Skapa konto</div>
-      <div class="spacer"></div>
+      <div class="spacer" style="height:16px"></div>
+      <div class="muted center">Återställ lösenord</div>
     </div>
   </div>
 
@@ -566,16 +89,14 @@
     <h2>Onboarding</h2>
     <div class="route">/ → (hasCompletedOnboarding = false)</div>
     <div class="frame">
-      <div class="spacer" style="height:28px"></div>
-      <div class="center serif" style="font-size:18px;font-weight:600;">Välkommen</div>
       <div class="spacer" style="height:32px"></div>
-      <div class="center muted" style="max-width:220px;margin:0 auto;line-height:1.7;">Det här är ett utrymme för dig att reflektera — i din egen takt.</div>
-      <div class="spacer" style="height:48px"></div>
-      <div class="btn-ui" style="width:80%;margin:0 auto;">Fortsätt</div>
-      <div class="spacer" style="height:8px"></div>
-      <div class="dots"><div class="dot active"></div><div class="dot"></div><div class="dot"></div></div>
-      <div style="height:24px;display:flex;align-items:center;justify-content:center;margin-top:8px;" class="center muted">Hoppa över</div>
+      <div class="center serif" style="font-size:18px;font-weight:600;">Välkommen</div>
+      <div class="spacer" style="height:24px"></div>
+      <div class="center muted" style="max-width:220px;margin:0 auto;line-height:1.8;">Det här är ett utrymme för dig att reflektera — i din egen takt, med de frågor som faktiskt spelar roll.</div>
       <div class="spacer" style="height:40px"></div>
+      <div class="btn-ui" style="width:80%;margin:0 auto;">Kom igång</div>
+      <div class="spacer" style="height:12px"></div>
+      <div class="muted center">Hoppa över</div>
     </div>
   </div>
 
@@ -587,264 +108,244 @@
       <div class="center serif" style="font-size:18px;font-weight:600;">Lås upp Still Us</div>
       <div class="spacer" style="height:6px"></div>
       <div class="center muted" style="max-width:200px;margin:0 auto;line-height:1.7;">Engångskostnad. Inga prenumerationer.</div>
-      <div class="spacer" style="height:28px"></div>
-      <div class="card" style="margin-bottom:8px;">
+      <div class="spacer" style="height:24px"></div>
+      <div class="card" style="margin-bottom:10px;">
         <div style="font-size:10px;">✓ Alla samtalsämnen</div>
-        <div style="font-size:10px;margin-top:3px;">✓ Spara reflektioner</div>
-        <div style="font-size:10px;margin-top:3px;">✓ Er gemensamma historia</div>
+        <div style="font-size:10px;margin-top:4px;">✓ Spara reflektioner</div>
+        <div style="font-size:10px;margin-top:4px;">✓ Din samtalhistorik</div>
       </div>
-      <div class="spacer" style="height:8px"></div>
       <div class="btn-ui">Köp för 149 kr</div>
       <div class="spacer" style="height:4px"></div>
       <div class="btn-ghost">Återställ köp</div>
-      <div class="spacer" style="height:20px"></div>
     </div>
   </div>
 
 </div>
 
-<!-- ═══ 2. HEM — IDLE ═══ -->
-<div class="section-title">2. Hem — idle (mode = idle)</div>
+<!-- ═══════════════════════════════════════════════════════════
+     2. HEM — IDLE (ingen aktiv session)
+     ═══════════════════════════════════════════════════════════ -->
+<div class="section-title">2. Hem — idle (spaceSnapshot.sessions = null)</div>
 <div class="wireframe-grid">
 
   <div class="wireframe" data-name="04-home-idle">
-    <h2>Hem — Idle (Category Discovery)</h2>
-    <div class="route">/ (mode = idle)</div>
+    <h2>Hem — Idle</h2>
+    <div class="route">/ (sessions = null)</div>
     <div class="frame">
-      <div class="header-bar"><span>logo</span><span>⚙</span></div>
-      <div style="margin-top:24px;margin-bottom:20px;">
-        <div class="btn-ui">Starta nästa samtal →</div>
+      <div class="header-bar"><span style="color:#CC0000;font-weight:700;font-size:11px;">STILL US</span><span>⚙</span></div>
+      <div style="margin-top:20px;margin-bottom:6px;" class="muted" style="font-size:9px;text-transform:uppercase;letter-spacing:1px;">Kategorier</div>
+      <div class="cat-row">
+        <span class="cat-title">Paridentitet</span>
+        <span class="cat-arrow">›</span>
       </div>
-      <div style="margin-top:8px;margin-bottom:-4px;">
-        <div class="card" style="box-shadow:0 6px 24px -4px rgba(0,0,0,0.07),0 1px 4px 0 rgba(0,0,0,0.04);padding:14px;">
-          <div class="serif center" style="font-size:12px;">Kategori A — Rekommenderad ★</div>
-          <div class="muted center" style="margin-top:3px;font-style:italic;">Entryline för kategori A</div>
-        </div>
+      <div class="cat-row">
+        <span class="cat-title">Vardagens ankare</span>
+        <span class="cat-arrow">›</span>
       </div>
-      <div style="margin-top:24px;">
-        <div class="card">
-          <div class="serif center" style="font-size:12px;">Kategori B</div>
-          <div class="muted center" style="margin-top:3px;font-style:italic;">Entryline</div>
-        </div>
+      <div class="cat-row">
+        <span class="cat-title">Svåra samtal</span>
+        <span class="cat-arrow">›</span>
       </div>
-      <div style="margin-top:8px;">
-        <div class="card">
-          <div class="serif center" style="font-size:12px;">Kategori C</div>
-          <div class="muted center" style="margin-top:3px;font-style:italic;">Entryline</div>
-        </div>
+      <div class="cat-row">
+        <span class="cat-title">Drömmar &amp; riktning</span>
+        <span class="cat-arrow">›</span>
       </div>
-      <div class="spacer" style="height:24px"></div>
-      <div class="info-note center">★ isFeatured = true (elevation + mt-4) · CTA → selectSuggestedNextCardId</div>
-    </div>
-  </div>
-
-  <div class="wireframe" data-name="05-home-idle-all-categories">
-    <h2>Hem — Idle (alla kategorier + nav)</h2>
-    <div class="route">/ (mode = idle, scroll)</div>
-    <div class="frame">
-      <div class="header-bar"><span>logo</span><span>⚙</span></div>
-      <div style="margin-top:24px;margin-bottom:16px;">
-        <div class="btn-ui">Starta nästa samtal →</div>
+      <div class="cat-row">
+        <span class="cat-title">Intimitet</span>
+        <span class="cat-arrow">›</span>
       </div>
-      <div class="card"><div class="serif center" style="font-size:11px;color:#aaa;">Kategori A (utforskad ✓)</div></div>
-      <div class="card" style="box-shadow:0 4px 16px -4px rgba(0,0,0,0.06);"><div class="serif center" style="font-size:11px;">Kategori B ★</div></div>
-      <div class="card"><div class="serif center" style="font-size:11px;">Kategori C</div></div>
-      <div class="divider" style="margin-top:16px;"></div>
-      <div style="margin-top:10px;">
-        <div class="muted" style="padding:6px 0;display:flex;gap:6px;align-items:center;">⬡ <span>Vår historia (/shared)</span></div>
-        <div class="muted" style="padding:6px 0;display:flex;gap:6px;align-items:center;">🔖 <span>Sparade samtal (3) (/saved)</span></div>
-      </div>
-      <div class="divider"></div>
-      <div class="muted" style="padding:6px 0;">▸ Notiser (kollapsad sektion)</div>
-      <div class="muted" style="padding:6px 0;">⚙ Inställningar / Utrymme</div>
-      <div class="info-note center" style="margin-top:8px;">Inga banners, inga proposals i Vol 1</div>
-    </div>
-  </div>
-
-  <div class="wireframe" data-name="05b-home-return-overlay">
-    <h2>Hem — ReturnOverlay (7+ dagar)</h2>
-    <div class="route">/ (lastActivity &gt; 7 dagar sedan)</div>
-    <div class="frame">
-      <div class="header-bar"><span>logo</span><span>⚙</span></div>
-      <div style="position:relative;min-height:280px;">
-        <div style="position:absolute;inset:0;background:#ffffffcc;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:20px;text-align:center;">
-          <div class="serif" style="font-size:15px;">Välkommen tillbaka</div>
-          <div class="muted" style="max-width:200px;line-height:1.7;">Det har gått ett tag. Vill ni fortsätta där ni slutade?</div>
-          <div class="btn-ui" style="width:100%;">Fortsätt samtalet</div>
-          <div class="btn-ghost">Starta nytt</div>
-          <div class="btn-ghost">Utforska kategorier</div>
-        </div>
-      </div>
-      <div class="info-note center">Visas om lastActivityElapsed &gt; 7 dagar. Dismissas i localStorage.</div>
+      <div class="spacer" style="height:8px"></div>
+      <div class="info-note center">Enbart kategorilista. Ingen CTA. Inga banners.</div>
     </div>
   </div>
 
 </div>
 
-<!-- ═══ 3. HEM — AKTIV SESSION ═══ -->
-<div class="section-title">3. Hem — aktiv session (mode = active)</div>
+<!-- ═══════════════════════════════════════════════════════════
+     3. HEM — AKTIV SESSION
+     ═══════════════════════════════════════════════════════════ -->
+<div class="section-title">3. Hem — aktiv session (spaceSnapshot.sessions ≠ null)</div>
 <div class="wireframe-grid">
 
-  <div class="wireframe" data-name="06-home-active">
+  <div class="wireframe" data-name="05-home-active">
     <h2>Hem — Aktiv session</h2>
-    <div class="route">/ (normalizedSession.cardId finns)</div>
+    <div class="route">/ (sessions ≠ null)</div>
     <div class="frame">
-      <div class="header-bar"><span>logo</span><span>💾</span></div>
-      <div style="margin-top:48px;margin-bottom:48px;">
-        <div class="center muted" style="text-transform:uppercase;letter-spacing:1px;font-size:8px;margin-bottom:8px;">Pågående samtal</div>
-        <div class="center serif" style="font-size:15px;margin-bottom:4px;">Att lyssna på riktigt</div>
-        <div class="center muted" style="margin-bottom:4px;">Kategori A</div>
-        <div class="center muted" style="font-size:9px;opacity:0.6;margin-bottom:16px;">Tankeväckare · 2 / 4</div>
-        <div class="btn-ui">Fortsätt samtalet →</div>
+      <div class="header-bar"><span style="color:#CC0000;font-weight:700;font-size:11px;">STILL US</span><span>⚙</span></div>
+      <div style="margin-top:24px;"></div>
+      <div class="card" style="box-shadow:0 6px 24px -4px rgba(0,0,0,0.08);padding:18px;">
+        <div class="tag">Vardagens ankare</div>
+        <div class="serif" style="font-size:14px;font-weight:600;margin-top:8px;">Att lyssna på riktigt</div>
+        <div class="spacer" style="height:10px"></div>
+        <div class="progress-bar">
+          <div class="progress-step done"></div>
+          <div class="progress-step done"></div>
+          <div class="progress-step current"></div>
+          <div class="progress-step"></div>
+        </div>
+        <div class="muted" style="margin-top:4px;">Steg 2 av 4</div>
+        <div class="spacer" style="height:14px"></div>
+        <div class="btn-ui">Fortsätt →</div>
       </div>
-      <div class="info-note center">mode = active · SaveIndicator i header · Inga kategorikort synliga</div>
+      <div class="spacer" style="height:8px"></div>
+      <div class="info-note center">Kategorilistan döljs. Enbart resume block.</div>
     </div>
   </div>
 
 </div>
 
-<!-- ═══ 4. KATEGORI & ÄMNESVAL ═══ -->
-<div class="section-title">4. Kategori &amp; ämnesval</div>
+<!-- ═══════════════════════════════════════════════════════════
+     4. KATEGORIVY
+     ═══════════════════════════════════════════════════════════ -->
+<div class="section-title">4. Kategorivy</div>
 <div class="wireframe-grid">
 
-  <div class="wireframe" data-name="07-category-view">
+  <div class="wireframe" data-name="06-category-view">
     <h2>Kategorivy</h2>
     <div class="route">/category/:id</div>
     <div class="frame">
       <div class="header-bar"><span>← Hem</span><span></span></div>
-      <div style="padding:8px 0 0;">
-        <div class="serif" style="font-size:15px;font-weight:600;">Paridentitet vs föräldraidentitet</div>
-        <div class="muted" style="margin-top:4px;margin-bottom:32px;line-height:1.6;">Vem är ni för varandra, bortom föräldraskapet?</div>
+      <div style="padding:12px 0 4px;">
+        <div class="serif" style="font-size:15px;font-weight:600;">Vardagens ankare</div>
+        <div class="muted" style="margin-top:4px;margin-bottom:20px;line-height:1.6;">Håll fast vid varandra mitt i det vanliga.</div>
       </div>
-      <div style="margin-top:16px;margin-bottom:-8px;">
-        <div class="card" style="box-shadow:0 6px 24px -4px rgba(0,0,0,0.07);padding:14px;">
-          <div class="serif center" style="font-size:12px;">Vårt minsta "vi" ★</div>
-          <div class="muted center" style="margin-top:3px;font-style:italic;">Det minsta ni kan göra för att hålla ihop</div>
-        </div>
+      <div class="card" style="box-shadow:0 6px 24px -4px rgba(0,0,0,0.07);padding:14px;">
+        <div class="serif" style="font-size:12px;">Att lyssna på riktigt</div>
+        <div class="muted" style="margin-top:3px;font-style:italic;">Det minsta ni kan göra för att hålla ihop</div>
       </div>
-      <div class="card" style="margin-top:24px;">
-        <div class="serif center" style="font-size:12px;">Identitetsskiftet</div>
+      <div class="card" style="margin-top:8px;">
+        <div class="serif" style="font-size:12px;">Kvällarnas kvalitet</div>
+        <div class="muted" style="margin-top:3px;">Vad laddar er batterier?</div>
       </div>
       <div class="card">
-        <div class="serif center" style="font-size:12px;">Det osynliga arbetet</div>
+        <div class="serif" style="font-size:12px;">Ritualerna som håller</div>
       </div>
       <div class="spacer"></div>
-      <div class="info-note center">Featured: mt-4 + shadow-elevation · Klick → /card/:id</div>
+      <div class="info-note center">Klick på kort → /card/:id</div>
     </div>
   </div>
 
 </div>
 
-<!-- ═══ 5. AKTIVT SAMTAL — Single Writer Model ═══ -->
-<div class="section-title">5. Aktivt samtal — Single Writer Model (Volume 1)</div>
+<!-- ═══════════════════════════════════════════════════════════
+     5. AKTIVT SAMTAL
+     ═══════════════════════════════════════════════════════════ -->
+<div class="section-title">5. Aktivt samtal — Single Writer Model</div>
 <div class="wireframe-grid">
 
-  <div class="wireframe" data-name="08-active-session-step">
-    <h2>Aktivt steg — draft (skrivläge)</h2>
-    <div class="route">/card/:id (cardViewMode = live, state = draft)</div>
+  <div class="wireframe" data-name="07-active-session-step1">
+    <h2>Aktivt steg — draft</h2>
+    <div class="route">/card/:id (state = draft, stepIndex = 0)</div>
     <div class="frame">
-      <div class="header-bar"><span>← Kategori A</span><span>⚙</span></div>
-      <div style="padding:5px 0;">
+      <div class="header-bar"><span>← Kategori</span><span></span></div>
+      <div style="padding:6px 0;">
         <div class="progress-bar">
-          <div class="progress-step done"></div><div class="progress-step current"></div><div class="progress-step"></div><div class="progress-step"></div>
+          <div class="progress-step current"></div>
+          <div class="progress-step"></div>
+          <div class="progress-step"></div>
+          <div class="progress-step"></div>
+        </div>
+        <div class="muted center" style="margin-top:3px;font-size:8px;"><b>Öppnare</b> · Tankeväckare · Scenario · Teamwork</div>
+      </div>
+      <div class="spacer" style="height:8px"></div>
+      <div class="center serif" style="font-size:15px;">Att lyssna på riktigt</div>
+      <div class="divider"></div>
+      <div class="card">
+        <div class="muted">Frågetext</div>
+        <div style="margin-top:5px;font-size:10px;">"Frågetext för det här steget..."</div>
+        <div style="margin-top:4px;padding:5px;background:#f5f5f5;border-radius:6px;font-size:9px;color:#bbb;">Privata anteckningar (valfritt)</div>
+      </div>
+      <div class="card">
+        <div class="muted">Din reflektion</div>
+        <div style="margin-top:4px;padding:5px;background:#f5f5f5;border-radius:6px;font-size:9px;color:#bbb;">Skriv din reflektion. Bara du ser det här.</div>
+      </div>
+      <div class="btn-ui" style="margin-top:8px;">Fortsätt →</div>
+    </div>
+  </div>
+
+  <div class="wireframe" data-name="08-active-session-step2">
+    <h2>Aktivt steg — steg 2</h2>
+    <div class="route">/card/:id (stepIndex = 1)</div>
+    <div class="frame">
+      <div class="header-bar"><span>← Kategori</span><span></span></div>
+      <div style="padding:6px 0;">
+        <div class="progress-bar">
+          <div class="progress-step done"></div>
+          <div class="progress-step current"></div>
+          <div class="progress-step"></div>
+          <div class="progress-step"></div>
         </div>
         <div class="muted center" style="margin-top:3px;font-size:8px;">Öppnare · <b>Tankeväckare</b> · Scenario · Teamwork</div>
-        <div class="muted center" style="margin-top:3px;font-size:8px;opacity:0.5;font-style:italic;">Lyssna färdigt innan du svarar.</div>
       </div>
-      <div class="spacer" style="height:5px"></div>
+      <div class="spacer" style="height:8px"></div>
       <div class="center serif" style="font-size:15px;">Att lyssna på riktigt</div>
-      <div class="center muted" style="margin-top:3px;font-style:italic;">Subtitle</div>
       <div class="divider"></div>
       <div class="card">
-        <div class="muted">SectionView + privata anteckningar</div>
-        <div style="margin-top:5px;font-size:10px;">"Frågetext..."</div>
-        <div style="margin-top:3px;padding:5px;background:#f5f5f5;border-radius:6px;font-size:9px;color:#bbb;">Det du skriver är bara för dig.</div>
+        <div style="margin-top:4px;padding:5px;background:#f5f5f5;border-radius:6px;font-size:9px;color:#bbb;">Skriv din reflektion.</div>
       </div>
-      <div class="card">
-        <div class="muted">SessionStepReflection (draft)</div>
-        <div style="margin-top:3px;padding:5px;background:#f5f5f5;border-radius:6px;font-size:9px;color:#bbb;">Skriv din reflektion. 🔒 Bara du kan se det här.</div>
-      </div>
-      <div class="btn-ui" style="margin-top:8px;">Fortsätt till nästa steg →</div>
-      <div class="badge-v1" style="display:block;margin-top:6px;text-align:center;">Vol 1: en röst, ingen väntan</div>
+      <div class="btn-ui" style="margin-top:8px;">Fortsätt →</div>
+      <div class="info-note center">Progressions­indikatorn uppdateras från completions-arrayen</div>
     </div>
   </div>
 
-  <div class="wireframe" data-name="09-active-session-ready">
-    <h2>Aktivt steg — ready (sparat)</h2>
-    <div class="route">/card/:id (state = ready → nästa steg triggas direkt)</div>
+  <div class="wireframe" data-name="09-active-session-last-step">
+    <h2>Aktivt steg — sista (Teamwork)</h2>
+    <div class="route">/card/:id (stepIndex = 3)</div>
     <div class="frame">
-      <div class="header-bar"><span>← Kategori A</span><span>⚙</span></div>
-      <div style="padding:5px 0;"><div class="progress-bar"><div class="progress-step done"></div><div class="progress-step done"></div><div class="progress-step current"></div><div class="progress-step"></div></div></div>
-      <div class="spacer"></div>
+      <div class="header-bar"><span>← Kategori</span><span></span></div>
+      <div style="padding:6px 0;">
+        <div class="progress-bar">
+          <div class="progress-step done"></div>
+          <div class="progress-step done"></div>
+          <div class="progress-step done"></div>
+          <div class="progress-step current"></div>
+        </div>
+        <div class="muted center" style="margin-top:3px;font-size:8px;">Öppnare · Tankeväckare · Scenario · <b>Teamwork</b></div>
+      </div>
+      <div class="spacer" style="height:8px"></div>
       <div class="center serif" style="font-size:15px;">Att lyssna på riktigt</div>
       <div class="divider"></div>
       <div class="card">
-        <div class="muted">SessionStepReflection (ready)</div>
-        <div style="margin-top:5px;font-size:10px;color:#555;">"Min reflektion..." (read-only)</div>
-        <div style="margin-top:6px;display:flex;align-items:center;gap:4px;color:#aaa;font-size:9px;">✓ Sparat</div>
-      </div>
-      <div style="margin-top:40px;" class="info-note center">
-        State = ready = terminal. complete_couple_session_step RPC anropas omedelbart.<br>
-        Ingen väntan. Inget A/B-protokoll. Ingen reveal-gating.
-      </div>
-    </div>
-  </div>
-
-  <div class="wireframe" data-name="10-active-session-last-step">
-    <h2>Aktivt steg — sista (exercise)</h2>
-    <div class="route">/card/:id (stepIndex = 3, state = draft)</div>
-    <div class="frame">
-      <div class="header-bar"><span>← Kategori A</span><span>⚙</span></div>
-      <div style="padding:5px 0;"><div class="progress-bar"><div class="progress-step done"></div><div class="progress-step done"></div><div class="progress-step done"></div><div class="progress-step current"></div></div>
-      <div class="muted center" style="margin-top:3px;font-size:8px;">Öppnare · Tankeväckare · Scenario · <b>Teamwork</b></div>
-      <div class="muted center" style="margin-top:3px;font-size:8px;opacity:0.5;font-style:italic;">Gör en liten sak du faktiskt kan hålla.</div>
-      </div>
-      <div class="spacer"></div>
-      <div class="center serif" style="font-size:15px;">Att lyssna på riktigt</div>
-      <div class="divider"></div>
-      <div class="card">
-        <div class="muted">SectionView + exercise-innehåll</div>
-      </div>
-      <div class="card">
-        <div style="margin-top:3px;padding:5px;background:#f5f5f5;border-radius:6px;font-size:9px;color:#bbb;">Skriv din reflektion.</div>
+        <div style="margin-top:4px;padding:5px;background:#f5f5f5;border-radius:6px;font-size:9px;color:#bbb;">Skriv din reflektion.</div>
       </div>
       <div class="btn-ui" style="margin-top:8px;">Avsluta samtalet →</div>
-      <div class="info-note center">stepIndex ≥ 3 → CTA = "Avsluta samtalet" · → Completion mode</div>
+      <div class="info-note center">stepIndex = 3 → CTA = "Avsluta samtalet" → Completion</div>
     </div>
   </div>
 
 </div>
 
-<!-- ═══ 6. COMPLETION & AVSLUTAT SAMTAL ═══ -->
+<!-- ═══════════════════════════════════════════════════════════
+     6. COMPLETION & TAKEAWAY
+     ═══════════════════════════════════════════════════════════ -->
 <div class="section-title">6. Avslutat samtal &amp; takeaway</div>
 <div class="wireframe-grid">
 
-  <div class="wireframe" data-name="11-completion-ritual">
-    <h2>Completion — takeaway-ritual</h2>
-    <div class="route">/card/:id (cardViewMode = completion, showCompletion = true)</div>
+  <div class="wireframe" data-name="10-completion">
+    <h2>Completion — takeaway</h2>
+    <div class="route">/card/:id (mode = completion)</div>
     <div class="frame">
       <div class="header-bar"><span>← Kategori</span><span></span></div>
-      <div class="spacer" style="height:48px"></div>
+      <div class="spacer" style="height:40px"></div>
       <div class="center serif" style="font-size:18px;">Ta en stund.</div>
-      <div class="center muted" style="margin-top:6px;max-width:220px;margin-left:auto;margin-right:auto;line-height:1.7;">Det du just delade får landa. Skriv en sammanfattning om du vill.</div>
-      <div class="spacer" style="height:24px"></div>
+      <div class="center muted" style="margin-top:6px;max-width:220px;margin-left:auto;margin-right:auto;line-height:1.8;">Det du just reflekterade kring får landa. Skriv en sammanfattning om du vill.</div>
+      <div class="spacer" style="height:20px"></div>
       <div class="card">
-        <div class="muted">SessionTakeaway — autosparad (800ms debounce)</div>
-        <div style="margin-top:3px;padding:5px;background:#f5f5f5;border-radius:6px;font-size:9px;color:#bbb;">Vad tar du med dig?</div>
+        <div class="muted">Vad tar du med dig?</div>
+        <div style="margin-top:4px;padding:5px;background:#f5f5f5;border-radius:6px;font-size:9px;color:#bbb;">Autosparat (800ms debounce)</div>
       </div>
-      <div class="spacer" style="height:24px"></div>
+      <div class="spacer" style="height:20px"></div>
       <div class="btn-ui">Till Hem</div>
-      <div class="btn-ghost">Läs igen (?revisit=true)</div>
-      <div class="info-note center">Trigger: is_session_complete = true OR activeSessionId + sessionId = null</div>
+      <div class="btn-ghost">Läs igen</div>
     </div>
   </div>
 
-  <div class="wireframe" data-name="12-completed-session-view">
+  <div class="wireframe" data-name="11-history-view">
     <h2>Historikvy (CompletedSessionView)</h2>
-    <div class="route">/card/:id (cardViewMode = history)</div>
+    <div class="route">/card/:id (mode = history)</div>
     <div class="frame">
       <div class="header-bar"><span>← Kategori</span><span></span></div>
-      <div class="space-y-8" style="padding-bottom:40px;">
+      <div class="space-y-8" style="padding-bottom:32px;margin-top:12px;">
         <div class="center">
           <div class="muted" style="font-size:9px;text-transform:uppercase;letter-spacing:1px;">Session — Februari 2026</div>
           <div class="serif" style="font-size:16px;margin-top:4px;">Att lyssna på riktigt</div>
@@ -855,7 +356,7 @@
         </div>
         <div class="card">
           <div class="muted" style="font-size:9px;margin-bottom:5px;">Det du tog med dig</div>
-          <div style="font-size:10px;color:#555;">"Gemensam sammanfattning..."</div>
+          <div style="font-size:10px;color:#555;">"Sammanfattning..."</div>
         </div>
         <div>
           <div class="btn-ui">Utforska igen</div>
@@ -867,122 +368,119 @@
 
 </div>
 
-<!-- ═══ 7. ÅTERBESÖK & ANTECKNINGAR ═══ -->
+<!-- ═══════════════════════════════════════════════════════════
+     7. ÅTERBESÖK & ANTECKNINGAR
+     ═══════════════════════════════════════════════════════════ -->
 <div class="section-title">7. Återbesök &amp; anteckningar</div>
 <div class="wireframe-grid">
+
+  <div class="wireframe" data-name="12-revisit-mode">
+    <h2>Kortvy — Revisit-läge</h2>
+    <div class="route">/card/:id?revisit=true</div>
+    <div class="frame">
+      <div class="header-bar"><span>← Kategori</span><span></span></div>
+      <div class="spacer" style="height:6px"></div>
+      <div class="center serif" style="font-size:15px;">Att lyssna på riktigt</div>
+      <div class="center muted" style="margin-top:2px;font-size:9px;text-transform:uppercase;letter-spacing:1px;">Förhandskoll</div>
+      <div class="divider"></div>
+      <div class="card">
+        <div class="muted">Frågetext (read-only)</div>
+        <div style="margin-top:5px;font-size:10px;">"Frågetext..."</div>
+        <div style="margin-top:4px;padding:5px;background:#f5f5f5;border-radius:6px;font-size:9px;color:#bbb;">Anteckningar om de finns</div>
+      </div>
+      <div class="spacer" style="height:6px"></div>
+      <div class="btn-outline">Nästa →</div>
+      <div class="info-note center">Inga session-mutations. Reflektionsrutan visas ej.</div>
+    </div>
+  </div>
 
   <div class="wireframe" data-name="13-review-drawer">
     <h2>ReviewDrawer (öppen)</h2>
     <div class="route">/card/:id → ReviewDrawer overlay</div>
     <div class="frame">
-      <div class="header-bar"><span>Se dina anteckningar</span><span>✕</span></div>
-      <div class="spacer" style="height:5px"></div>
-      <div class="badge-readonly" style="display:block;margin-bottom:6px;">prompt_notes — read-only, inga session-mutations</div>
+      <div class="header-bar"><span>Dina anteckningar</span><span>✕</span></div>
+      <div class="spacer" style="height:6px"></div>
       <div class="card">
         <div style="font-size:10px;font-weight:500;">Steg 1 — Öppnare</div>
-        <div class="muted" style="margin-top:3px;">🔓 Alltid upplåst (index 0)</div>
+        <div class="muted" style="margin-top:3px;">🔓 Alltid upplåst</div>
         <div style="margin-top:4px;font-size:9px;color:#aaa;">"Din privata anteckning..."</div>
       </div>
       <div class="card">
         <div style="font-size:10px;font-weight:500;">Steg 2 — Tankeväckare</div>
-        <div class="muted" style="margin-top:3px;">🔓 Upplåst (hasAnyNotes = true)</div>
+        <div class="muted" style="margin-top:3px;">🔓 Upplåst</div>
       </div>
-      <div class="card" style="opacity:0.45;">
+      <div class="card" style="opacity:0.4;">
         <div style="font-size:10px;font-weight:500;">Steg 3 — Scenario</div>
-        <div class="muted" style="margin-top:3px;">🔒 Låst (inga anteckningar)</div>
+        <div class="muted" style="margin-top:3px;">🔒 Inga anteckningar</div>
       </div>
       <div class="spacer" style="height:5px"></div>
-      <div class="info-note">Djuplänk → ?revisit=true&amp;step=N&amp;prompt=K</div>
-    </div>
-  </div>
-
-  <div class="wireframe" data-name="14-revisit-mode">
-    <h2>Kortvy — Revisit-läge</h2>
-    <div class="route">/card/:id?revisit=true (cardViewMode = revisit)</div>
-    <div class="frame">
-      <div class="header-bar"><span>← Kategori A</span><span></span></div>
-      <div class="spacer" style="height:5px"></div>
-      <div class="center serif" style="font-size:15px;">Att lyssna på riktigt</div>
-      <div class="center muted" style="margin-top:2px;font-size:9px;text-transform:uppercase;letter-spacing:1px;">Förhandskoll</div>
-      <div class="divider"></div>
-      <div class="card">
-        <div class="muted">SectionView (read-only)</div>
-        <div style="margin-top:5px;font-size:10px;">"Frågetext..."</div>
-        <div style="margin-top:3px;padding:5px;background:#f5f5f5;border-radius:6px;font-size:9px;color:#bbb;">Anteckningar (om de finns)</div>
-      </div>
-      <div class="spacer" style="height:5px"></div>
-      <div class="btn-ui">Nästa →</div>
-      <div class="badge-readonly" style="display:block;text-align:center;margin-top:6px;">Inga session-mutations</div>
-      <div class="info-note center">SessionStepReflection syns ej i revisit-läge</div>
+      <div class="info-note">Djuplänk → ?revisit=true&amp;step=N</div>
     </div>
   </div>
 
 </div>
 
-<!-- ═══ 8. ARKIV & HISTORIK ═══ -->
+<!-- ═══════════════════════════════════════════════════════════
+     8. ARKIV & HISTORIK
+     ═══════════════════════════════════════════════════════════ -->
 <div class="section-title">8. Arkiv &amp; historik</div>
 <div class="wireframe-grid">
 
-  <div class="wireframe" data-name="15-shared-summary-empty">
+  <div class="wireframe" data-name="14-shared-summary-empty">
     <h2>Vår historia — tom</h2>
     <div class="route">/shared (inga avslutade samtal)</div>
     <div class="frame">
       <div class="header-bar"><span>← Tillbaka</span><span></span></div>
-      <div class="center" style="margin-bottom:32px;">
+      <div class="center" style="margin:24px 0 16px;">
         <div class="serif" style="font-size:17px;font-weight:600;">Vår historia</div>
-        <div class="muted" style="margin-top:3px;">Avslutade samtal och reflektioner</div>
+        <div class="muted" style="margin-top:4px;">Avslutade samtal och reflektioner</div>
       </div>
-      <div style="min-height:200px;display:flex;flex-direction:column;justify-content:center;text-align:center;">
-        <div class="muted" style="line-height:1.7;">Här samlas dina avslutade samtal och delade reflektioner.</div>
+      <div style="min-height:180px;display:flex;flex-direction:column;justify-content:center;text-align:center;">
+        <div class="muted" style="line-height:1.8;">Här samlas dina avslutade samtal.</div>
       </div>
     </div>
   </div>
 
-  <div class="wireframe" data-name="16-shared-summary-history">
+  <div class="wireframe" data-name="15-shared-summary-history">
     <h2>Vår historia — med innehåll</h2>
     <div class="route">/shared (har historik)</div>
     <div class="frame">
       <div class="header-bar"><span>← Tillbaka</span><span>🔗</span></div>
-      <div class="center" style="margin-bottom:10px;">
+      <div class="center" style="margin:16px 0 10px;">
         <div class="serif" style="font-size:17px;font-weight:600;">Vår historia</div>
       </div>
       <div class="card">
-        <div class="serif" style="font-size:11px;">Nyligen delat</div>
-        <div class="muted" style="margin-top:3px;font-style:italic;">"Delad reflektion..."</div>
+        <div class="serif" style="font-size:11px;">Takeaway</div>
+        <div class="muted" style="margin-top:3px;font-style:italic;">"Gemensam sammanfattning..."</div>
       </div>
-      <div class="card">
-        <div class="serif" style="font-size:11px;">Takeaways</div>
-        <div class="muted" style="margin-top:3px;font-style:italic;">"Sammanfattning..."</div>
-      </div>
-      <div class="card">
-        <div class="serif" style="font-size:11px;">Er resa</div>
-        <div class="muted" style="margin-top:3px;">Kategori-framsteg (N/M)</div>
-      </div>
-      <div class="divider"></div>
-      <div class="muted" style="font-size:9px;text-transform:uppercase;letter-spacing:1px;">Tidslinje — Februari 2026</div>
+      <div class="divider" style="margin-top:12px;"></div>
+      <div class="muted" style="font-size:9px;text-transform:uppercase;letter-spacing:1px;">Tidslinje</div>
       <div class="card" style="margin-top:8px;">
-        <div style="font-size:11px;">● Kortets titel</div>
-        <div class="muted" style="font-size:9px;margin-top:2px;">Kategori · datum</div>
+        <div style="font-size:11px;">● Att lyssna på riktigt</div>
+        <div class="muted" style="font-size:9px;margin-top:2px;">Vardagens ankare · 12 feb 2026</div>
       </div>
-      <div class="info-note center">🔗 → toastSuccessOnce('copy_link', 'Länk kopierad')</div>
+      <div class="card">
+        <div style="font-size:11px;">● Kvällarnas kvalitet</div>
+        <div class="muted" style="font-size:9px;margin-top:2px;">Vardagens ankare · 5 feb 2026</div>
+      </div>
     </div>
   </div>
 
-  <div class="wireframe" data-name="17-saved-conversations">
+  <div class="wireframe" data-name="16-saved-conversations">
     <h2>Sparade samtal</h2>
     <div class="route">/saved</div>
     <div class="frame">
       <div class="header-bar"><span>← Tillbaka</span><span></span></div>
-      <div class="spacer"></div>
+      <div class="spacer" style="height:8px"></div>
       <div class="serif" style="font-size:15px;font-weight:600;">Sparade samtal</div>
       <div class="card" style="margin-top:14px;">
         <div style="font-size:11px;font-weight:500;">Att lyssna på riktigt</div>
-        <div class="muted" style="margin-top:2px;">Kategori A · 12 feb 2026</div>
-        <div class="muted" style="margin-top:3px;">"Sista reflektionen..."</div>
+        <div class="muted" style="margin-top:2px;">Vardagens ankare · 12 feb 2026</div>
+        <div class="muted" style="margin-top:3px;font-style:italic;">"Sista reflektionen..."</div>
       </div>
       <div class="card">
-        <div style="font-size:11px;font-weight:500;">Samtal om gränser</div>
-        <div class="muted" style="margin-top:2px;">Kategori B · 5 feb 2026</div>
+        <div style="font-size:11px;font-weight:500;">Kvällarnas kvalitet</div>
+        <div class="muted" style="margin-top:2px;">Vardagens ankare · 5 feb 2026</div>
       </div>
     </div>
   </div>
@@ -995,7 +493,6 @@ async function exportAll() {
   const status = document.getElementById('status');
   btn.disabled = true;
 
-  // Only export .wireframe elements (not map-box elements)
   const wireframes = document.querySelectorAll('.wireframe[data-name]');
   const zip = new JSZip();
   const folder = zip.folder('still-us-wireframes');
