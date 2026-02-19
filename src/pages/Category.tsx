@@ -50,13 +50,12 @@ export default function Category() {
   const navigate = useNavigate();
   const { getCategoryById, getCardsByCategory, getCardById } = useApp();
   const { user } = useAuth();
-  const { space, memberCount } = useCoupleSpaceContext();
+  const { space } = useCoupleSpaceContext();
   const normalizedSession = useNormalizedSessionContext();
   const { snapshot } = useSpaceSnapshot(user?.id ?? null, space?.id ?? null);
 
   const exploredIds = selectExploredCardIds(snapshot);
   const cardVisitDates = selectCardVisitDates(snapshot);
-  const isPaired = memberCount >= 2;
 
   const category = categoryId ? getCategoryById(categoryId) : undefined;
   const cards = categoryId ? getCardsByCategory(categoryId) : [];
@@ -142,15 +141,7 @@ export default function Category() {
                   index={index}
                   highlighted={card.id === highlightedCardId}
                   isRecommended={isRecommended}
-                  isCompleted={(() => {
-                    const inExplored = exploredIds.includes(card.id);
-                    if (!isPaired) return index === 0 || inExplored;
-                    // When paired, require both partners to have visited the card
-                    const distinctVisitors = new Set(
-                      snapshot?.visits.filter((v) => v.card_id === card.id).map((v) => v.user_id) ?? []
-                    );
-                    return inExplored && distinctVisitors.size >= 2;
-                  })()}
+                  isCompleted={exploredIds.includes(card.id)}
                   lastVisitedAt={cardVisitDates[card.id] || null}
                   onNavigate={() => navigate(`/card/${card.id}`)}
                 />
