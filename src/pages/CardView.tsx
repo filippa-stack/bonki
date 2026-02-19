@@ -18,6 +18,7 @@ import SectionView, { type SectionViewHandle } from '@/components/SectionView';
 import StepProgressIndicator from '@/components/StepProgressIndicator';
 import SessionStepReflection from '@/components/SessionStepReflection';
 import DepthSpine from '@/components/DepthSpine';
+import StageInterstitial from '@/components/StageInterstitial';
 
 import ReviewDrawer from '@/components/ReviewDrawer';
 import { Button } from '@/components/ui/button';
@@ -179,7 +180,21 @@ export default function CardView() {
       ? revisitStepIndex
       : (localStepIndex ?? serverStepIndex);
 
-  // ─── Misc ───
+  // ─── Stage interstitial (micro-moment between depth layers) ───
+  const [showInterstitial, setShowInterstitial] = useState(false);
+  const prevStepRef = useRef(currentStepIndex);
+
+  useEffect(() => {
+    if (cardViewMode !== 'live') return;
+    if (prevStepRef.current !== currentStepIndex && currentStepIndex > 0) {
+      setShowInterstitial(true);
+      const timer = setTimeout(() => setShowInterstitial(false), 700);
+      prevStepRef.current = currentStepIndex;
+      return () => clearTimeout(timer);
+    }
+    prevStepRef.current = currentStepIndex;
+  }, [currentStepIndex, cardViewMode]);
+
   const [reviewOpen, setReviewOpen] = useState(false);
   const sectionViewRef = useRef<SectionViewHandle>(null);
   
@@ -397,6 +412,7 @@ export default function CardView() {
       animate={{ opacity: 1 }}
       transition={{ duration: BEAT_3, ease: EASE }}
     >
+      <StageInterstitial visible={showInterstitial} />
       <Header
         title={category?.title}
         showBack
