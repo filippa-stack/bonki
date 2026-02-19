@@ -286,7 +286,7 @@ export default function Home() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.15 }}
-            className="px-6 mt-10"
+            className="px-6 mt-12"
           >
             {/* Category list — recommended first, then the rest */}
             <div className="flex flex-col gap-6 pb-12">
@@ -303,7 +303,7 @@ export default function Home() {
                         <div
                           onClick={() => { markNavigated(); navigate(`/category/${recCat.id}`); }}
                           className="cursor-pointer rounded-card p-8 transition-opacity hover:opacity-90"
-                          style={{ backgroundColor: 'var(--color-surface-primary)', boxShadow: 'var(--shadow-card-featured)' }}
+                          style={{ backgroundColor: 'var(--color-surface-secondary)', boxShadow: 'var(--shadow-card-featured)' }}
                         >
                           <h3
                             className="font-serif text-base font-medium leading-snug mb-1"
