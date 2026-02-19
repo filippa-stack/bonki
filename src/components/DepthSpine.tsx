@@ -19,11 +19,11 @@ export default function DepthSpine({ totalSteps, currentStepIndex }: DepthSpineP
             key={i}
             className="rounded-full"
             style={{
-              width: 8,
-              height: 8,
+              width: isCurrent ? 9 : 8,
+              height: isCurrent ? 9 : 8,
               backgroundColor: 'var(--color-ink)',
               opacity: isCurrent ? 0.35 : isCompleted ? 0.15 : 0.06,
-              transition: 'opacity 150ms ease',
+              transition: 'opacity 150ms ease, width 200ms ease-out, height 200ms ease-out',
             }}
           />
         );
