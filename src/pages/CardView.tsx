@@ -17,6 +17,7 @@ import Header from '@/components/Header';
 import SectionView, { type SectionViewHandle } from '@/components/SectionView';
 import StepProgressIndicator from '@/components/StepProgressIndicator';
 import SessionStepReflection from '@/components/SessionStepReflection';
+import DepthSpine from '@/components/DepthSpine';
 
 import ReviewDrawer from '@/components/ReviewDrawer';
 import { Button } from '@/components/ui/button';
@@ -454,7 +455,13 @@ export default function CardView() {
       </div>
 
       {/* Section content — centered, max 520px for readability */}
-      <div className="px-6 pb-8">
+      <div className="px-6 pb-8 relative">
+        {/* Depth spine — right edge, only during live session */}
+        {cardViewMode === 'live' && (
+          <div className="absolute right-4 top-8">
+            <DepthSpine totalSteps={4} currentStepIndex={currentStepIndex} />
+          </div>
+        )}
         <div className="max-w-[520px] mx-auto">
         <AnimatePresence mode="wait">
           {currentSection && (
