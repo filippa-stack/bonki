@@ -63,7 +63,7 @@ function resolveCardViewMode({
 const STEP_ORDER = ['opening', 'reflective', 'scenario', 'exercise'] as const;
 
 const STEP_RITUAL_HINTS: Record<string, { together: string; solo: string }> = {
-  opening:    { together: 'Börja mjukt. Inga rätt eller fel.',        solo: 'Börja mjukt. Inget rätt eller fel.' },
+  opening:    { together: 'Det finns inget rätt svar här. Bara ert.',  solo: 'Det finns inget rätt svar här. Bara ditt.' },
   reflective: { together: 'Lyssna färdigt innan ni svarar.',          solo: 'Ta tid på dig innan du svarar.' },
   scenario:   { together: 'Välj ett perspektiv — inte en skyldig.',   solo: 'Välj ett perspektiv — inte en skyldig.' },
   exercise:   { together: 'Gör en liten sak ni faktiskt kan hålla.',  solo: 'Gör en liten sak du faktiskt kan hålla.' },
