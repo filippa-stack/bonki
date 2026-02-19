@@ -9,7 +9,7 @@
     /* ── Calm neutral palette ── */
 
     /* Tailwind base tokens (HSL without hsl()) */
-    --background: 36 20% 96%;          /* #F7F4EF */
+    --background: 36 22% 95%;          /* #F6F2EB */
     --foreground: 0 0% 12%;            /* #1F1F1F */
 
     --card: 0 0% 100%;                 /* #FFFFFF */
@@ -47,7 +47,7 @@
 
     /* ── Standard shadow ── */
     --shadow-card: 0px 6px 18px rgba(0,0,0,0.04);
-    --shadow-card-featured: 0px 8px 22px rgba(0,0,0,0.06);
+    --shadow-card-featured: 0px 10px 28px rgba(0,0,0,0.08);
 
     /* Custom tokens */
     --surface-warm: 0 0% 100%;
@@ -111,9 +111,9 @@
     --card-shadow: var(--shadow-card);
 
     /* ── Semantic color tokens ── */
-    --color-bg-base: #F7F4EF;
+    --color-bg-base: #F6F2EB;
     --color-surface-primary: #FFFFFF;
-    --color-surface-secondary: #EDE9E3;
+    --color-surface-secondary: #ECE6DC;
     --color-text-primary: #1F1F1F;
     --color-text-secondary: #6E6A64;
     --color-button-primary: #2B2B2B;
