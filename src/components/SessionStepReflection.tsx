@@ -61,14 +61,14 @@ export default function SessionStepReflection({
     <div className="mt-12 mb-2">
       <div
         className="rounded-card overflow-hidden p-6"
-        style={{ border: 'var(--border-card)', backgroundColor: 'var(--color-surface)' }}
+        style={{ border: '1px solid #D6D1C9', backgroundColor: '#EDE8E2' }}
       >
         <textarea
           value={displayText}
           onChange={(e) => handleChange(e.target.value)}
           placeholder="Skriv din reflektion — valfritt."
-          className="w-full min-h-[120px] bg-transparent resize-none focus:outline-none focus:ring-0 text-sm leading-relaxed placeholder:text-muted-foreground/40"
-          style={{ color: 'var(--color-text-primary)' }}
+          className="w-full min-h-[120px] bg-transparent resize-none focus:outline-none focus:ring-0 text-sm leading-relaxed placeholder:[color:#8C8681]"
+          style={{ color: 'var(--color-ink)' }}
         />
         <div className="flex items-center pt-3">
           <span className="text-xs flex items-center gap-1" style={{ color: 'var(--color-text-secondary)', opacity: 0.4 }}>
