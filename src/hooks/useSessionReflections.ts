@@ -13,6 +13,7 @@ export interface StepReflection {
   text: string;
   state: ReflectionState;
   updatedAt: string;
+  speakerLabel: string | null;
 }
 
 interface UseSessionReflectionsReturn {
@@ -32,7 +33,7 @@ interface UseSessionReflectionsReturn {
   /** Update draft text (autosaved) */
   setText: (text: string) => void;
   /** Transition draft → ready */
-  markReady: () => Promise<void>;
+  markReady: (speakerLabel?: string) => Promise<void>;
   /** Transition revealed → locked (both users) */
   lockStep: () => Promise<void>;
 }
@@ -181,7 +182,7 @@ export function useSessionReflections(
   }, [user, stepIndex, devState]);
 
   // ─── 5. Mark ready: draft → ready ───
-  const markReady = useCallback(async () => {
+  const markReady = useCallback(async (speakerLabel?: string) => {
     if (!user) return;
 
     if (!devState && sessionIdRef.current) {
@@ -194,6 +195,7 @@ export function useSessionReflections(
             user_id: user.id,
             text: localText,
             state: 'ready' as any,
+            ...(speakerLabel !== undefined ? { speaker_label: speakerLabel } : {}),
           },
           { onConflict: 'session_id,step_index,user_id' }
         );
@@ -204,7 +206,7 @@ export function useSessionReflections(
       }
     }
 
-    setMyReflection(prev => prev ? { ...prev, state: 'ready', text: localText } : {
+    setMyReflection(prev => prev ? { ...prev, state: 'ready', text: localText, speakerLabel: speakerLabel ?? prev.speakerLabel } : {
       id: '',
       sessionId: sessionIdRef.current || 'dev-session',
       stepIndex,
@@ -212,6 +214,7 @@ export function useSessionReflections(
       text: localText,
       state: 'ready',
       updatedAt: new Date().toISOString(),
+      speakerLabel: speakerLabel ?? null,
     });
   }, [user, stepIndex, localText, devState]);
 
@@ -265,5 +268,6 @@ function mapRow(row: any): StepReflection {
     text: row.text,
     state: row.state as ReflectionState,
     updatedAt: row.updated_at,
+    speakerLabel: row.speaker_label ?? null,
   };
 }

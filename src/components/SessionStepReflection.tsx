@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Lock, Check } from 'lucide-react';
+import { Lock } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { useCoupleSpaceContext as useCoupleSpace } from '@/contexts/CoupleSpaceContext';
 import { useSessionReflections, type ReflectionState } from '@/hooks/useSessionReflections';
+import SpeakerToggle, { useSpeaker } from '@/components/SpeakerToggle';
 import { BEAT_1, BEAT_2, BEAT_3, EASE } from '@/lib/motion';
-
 
 
 interface SessionStepReflectionProps {
@@ -44,9 +44,14 @@ export default function SessionStepReflection({
     lockStep,
   } = useSessionReflections(sessionId, stepIndex);
 
+  const { speaker, setSpeaker } = useSpeaker();
+
   const { space, userRole } = useCoupleSpace();
-  const myName = userRole === 'partner_a' ? (space?.partner_a_name || 'Du') : (space?.partner_b_name || 'Du');
-  const partnerName = userRole === 'partner_a' ? (space?.partner_b_name || 'Din partner') : (space?.partner_a_name || 'Din partner');
+  const myName = myReflection?.speakerLabel
+    ?? (userRole === 'partner_a' ? (space?.partner_a_name || 'Du') : (space?.partner_b_name || 'Du'));
+  const partnerName = partnerReflection?.speakerLabel
+    ?? (userRole === 'partner_a' ? (space?.partner_b_name || 'Din partner') : (space?.partner_a_name || 'Din partner'));
+
 
   const [localText, setLocalText] = useState('');
 
@@ -82,7 +87,7 @@ export default function SessionStepReflection({
   };
 
   const handleMarkReady = async () => {
-    await markReady();
+    await markReady(speaker);
     onReady?.();
   };
 
@@ -266,6 +271,7 @@ export default function SessionStepReflection({
             <Lock className="w-3 h-3" />
             Bara du kan se det här
           </span>
+          <SpeakerToggle speaker={speaker} onChange={setSpeaker} />
         </div>
       </div>
 
