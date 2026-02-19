@@ -473,7 +473,7 @@ export default function CardView() {
         showBack
         backTo={exitBackTo}
         variant="immersive"
-        onImmersiveBack={isLive ? handleSessionExit : undefined}
+        onImmersiveBack={undefined}
       />
 
       {/* Step progress — neutral text only */}
@@ -574,9 +574,13 @@ export default function CardView() {
                       sessionId={normalizedSession.sessionId}
                       stepIndex={currentStepIndex}
                       onLocked={async () => { await handleCompleteStep(); }}
-                      onBack={currentStepIndex > 0
-                        ? () => setLocalStepIndex(currentStepIndex - 1)
-                        : undefined}
+                      onBack={() => {
+                        if (currentStepIndex > 0) {
+                          setLocalStepIndex(currentStepIndex - 1);
+                        } else {
+                          navigate('/');
+                        }
+                      }}
                     />
                   </motion.div>
                 </>

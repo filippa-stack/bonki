@@ -95,7 +95,7 @@ export default function SessionStepReflection({
             : 'Fortsätt'}
         </button>
 
-        {onBack && stepIndex > 0 && (
+        {onBack && (
           <button
             onClick={onBack}
             className="w-full h-10 flex items-center justify-center text-sm transition-opacity hover:opacity-70"
