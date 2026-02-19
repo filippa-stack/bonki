@@ -69,14 +69,14 @@ export default function Category() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: BEAT_1 + 0.1, duration: 0.2, ease: EASE }}
-          className="text-[16px] mt-[16px]"
-          style={{ color: 'var(--color-text-secondary)' }}
+          className="text-[16px] mt-[32px]"
+          style={{ color: 'var(--color-text-secondary)', opacity: 0.7 }}
         >
           Utforska i er takt.
         </motion.p>
       </div>
 
-      <div className="px-6 pt-[80px] pb-[80px]">
+      <div className="px-6 pt-[32px] pb-[80px]">
         {cards.map((card, index) => (
           <CardEntry
             key={card.id}
