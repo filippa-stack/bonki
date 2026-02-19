@@ -1,6 +1,4 @@
 import { useState, useEffect, useRef } from 'react';
-import { Plus, Unlink } from 'lucide-react';
-import { Button } from '@/components/ui/button';
 import { useNormalizedSessionContext } from '@/contexts/NormalizedSessionContext';
 import {
   AlertDialog,
@@ -26,9 +24,8 @@ import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { toast } from 'sonner';
 
-const REAUTH_WINDOW_MS = 5 * 60 * 1000; // 5 minutes
+const REAUTH_WINDOW_MS = 5 * 60 * 1000;
 
-/** Returns the age of the current JWT in ms, or Infinity if unavailable. */
 function getSessionAgeMs(accessToken: string | undefined): number {
   if (!accessToken) return Infinity;
   try {
@@ -40,7 +37,6 @@ function getSessionAgeMs(accessToken: string | undefined): number {
   }
 }
 
-/** 3-second countdown hook. Returns [countdown | null, start, cancel]. */
 function useCountdown(onZero: () => void): [number | null, () => void, () => void] {
   const [countdown, setCountdown] = useState<number | null>(null);
   const ref = useRef<ReturnType<typeof setInterval> | null>(null);
@@ -74,16 +70,12 @@ interface RelationSettingsProps {
   onLeavePartner?: () => Promise<void>;
 }
 
-export default function RelationSettings({
-  onCreateNewSpace,
-  onLeavePartner,
-}: RelationSettingsProps) {
+export default function RelationSettings({ onCreateNewSpace, onLeavePartner }: RelationSettingsProps) {
   const { session } = useAuth();
   const [open, setOpen] = useState(false);
   const { appMode, cardId } = useNormalizedSessionContext();
   const hasActiveSession = (appMode === 'SESSION_ACTIVE' || appMode === 'SESSION_WAITING') && !!cardId;
 
-  // ── "Skapa nytt utrymme" dialog state + 3s countdown ──
   const [newSpaceOpen, setNewSpaceOpen] = useState(false);
   const [newSpaceLoading, setNewSpaceLoading] = useState(false);
   const [newSpaceCountdown, startNewSpaceCountdown, cancelNewSpaceCountdown] = useCountdown(
@@ -94,7 +86,6 @@ export default function RelationSettings({
     }
   );
 
-  // ── "Byt partner" dialog state + 3s countdown ──
   const [leaveDialogOpen, setLeaveDialogOpen] = useState(false);
   const [leaveCountdown, startLeaveCountdown, cancelLeaveCountdown] = useCountdown(
     async () => {
@@ -103,7 +94,6 @@ export default function RelationSettings({
     }
   );
 
-  // Re-auth OTP dialog
   const [reauthOpen, setReauthOpen] = useState(false);
   const [otp, setOtp] = useState('');
   const [reauthLoading, setReauthLoading] = useState(false);
@@ -146,146 +136,134 @@ export default function RelationSettings({
   };
 
   return (
-    <div className="border-t border-divider">
-      {/* Collapsed toggle row */}
+    <div className="border-t" style={{ borderColor: '#ECEAE5' }}>
+      {/* Collapsed toggle */}
       <button
         onClick={() => setOpen(!open)}
-        className="w-full flex items-center justify-between px-6 py-4 text-sm text-muted-foreground hover:text-foreground transition-colors"
+        className="w-full flex items-center justify-between px-6 py-4 text-sm transition-opacity hover:opacity-70"
+        style={{ color: 'var(--color-text-secondary)' }}
       >
         <span>Relation &amp; utrymme</span>
-        <ChevronDown
-          className={`w-4 h-4 transition-transform duration-200 ${open ? 'rotate-180' : ''}`}
-        />
+        <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${open ? 'rotate-180' : ''}`} />
       </button>
 
       {open && (
-        <div className="px-6 pb-6 space-y-6">
+        <div className="px-6 pb-8 space-y-8">
 
-          {/* ── "Skapa nytt utrymme" ── */}
+          {/* Skapa nytt utrymme */}
           <div className="space-y-3">
-            <div>
-              <p className="text-sm text-foreground font-medium">Skapa nytt utrymme</p>
-              <p className="text-xs text-muted-foreground mt-1 leading-relaxed">
-                Starta ett nytt kapitel med samma partner. Historiken i det här utrymmet blir kvar här och följer inte med.
-              </p>
-            </div>
+            <p className="text-sm font-medium" style={{ color: 'var(--color-text-primary)' }}>Skapa nytt utrymme</p>
+            <p className="text-xs leading-relaxed" style={{ color: 'var(--color-text-secondary)' }}>
+              Starta ett nytt kapitel med samma partner. Historiken i det här utrymmet blir kvar här och följer inte med.
+            </p>
 
-            {/* Controlled AlertDialog so we can lock it open during countdown */}
             <AlertDialog open={newSpaceOpen} onOpenChange={(v) => {
-              if (!v) { cancelNewSpaceCountdown(); }
+              if (!v) cancelNewSpaceCountdown();
               setNewSpaceOpen(v);
             }}>
               <AlertDialogTrigger asChild>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="gap-1.5"
+                <button
                   disabled={newSpaceLoading || hasActiveSession}
                   onClick={() => { if (!hasActiveSession) setNewSpaceOpen(true); }}
+                  className="text-sm underline underline-offset-4 transition-opacity hover:opacity-70 disabled:opacity-30"
+                  style={{ color: 'var(--color-text-primary)' }}
                 >
-                  <Plus className="w-3.5 h-3.5" />
                   Skapa nytt utrymme
-                </Button>
+                </button>
               </AlertDialogTrigger>
               <AlertDialogContent>
                 <AlertDialogHeader>
                   <AlertDialogTitle className="font-serif text-lg">
                     Skapa ett nytt utrymme med samma partner?
                   </AlertDialogTitle>
-                  <AlertDialogDescription className="text-sm text-muted-foreground leading-relaxed pt-1">
+                  <AlertDialogDescription className="text-sm leading-relaxed pt-1" style={{ color: 'var(--color-text-secondary)' }}>
                     Ni får ett nytt tomt utrymme att fortsätta i. Det ni gjort här ligger kvar i det här utrymmet.
                   </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter className="mt-2">
                   <AlertDialogCancel onClick={cancelNewSpaceCountdown}>Avbryt</AlertDialogCancel>
-                  <Button
-                    variant="default"
+                  <button
                     disabled={newSpaceCountdown !== null && newSpaceCountdown > 0}
                     onClick={() => { if (newSpaceCountdown === null) startNewSpaceCountdown(); }}
-                    className="min-w-[200px]"
+                    className="px-4 py-2 rounded-[14px] text-sm font-medium transition-opacity hover:opacity-90 disabled:opacity-50"
+                    style={{ backgroundColor: 'var(--color-button-primary)', color: 'var(--color-button-text)' }}
                   >
                     {newSpaceCountdown !== null && newSpaceCountdown > 0
                       ? `Skapa nytt utrymme (${newSpaceCountdown})`
                       : 'Skapa nytt utrymme'}
-                  </Button>
+                  </button>
                 </AlertDialogFooter>
               </AlertDialogContent>
             </AlertDialog>
+
             {hasActiveSession && (
-              <p className="text-[11px] text-muted-foreground/50 leading-snug">
+              <p className="text-[11px] leading-snug" style={{ color: 'var(--color-text-secondary)', opacity: 0.5 }}>
                 Ni är mitt i ett samtal. Avsluta det först.
               </p>
             )}
           </div>
 
-          {/* ── AVANCERAT divider ── */}
-          <div className="flex items-center gap-3 pt-1">
-            <div className="flex-1 border-t border-border/30" />
-            <span className="text-[10px] tracking-widest text-muted-foreground/40 uppercase font-medium">
+          {/* Avancerat divider — extremely subtle */}
+          <div className="flex items-center gap-3">
+            <div className="flex-1 border-t" style={{ borderColor: '#ECEAE5' }} />
+            <span className="text-[10px] tracking-widest uppercase" style={{ color: 'var(--color-text-secondary)', opacity: 0.4 }}>
               Avancerat
             </span>
-            <div className="flex-1 border-t border-border/30" />
+            <div className="flex-1 border-t" style={{ borderColor: '#ECEAE5' }} />
           </div>
 
-          {/* ── "Byt partner" — destructive, deep-settings only ── */}
+          {/* Byt partner — destructive, text-only */}
           <div className="space-y-3">
-            <div>
-              <p className="text-sm text-destructive/80 font-medium">Byt partner</p>
-              <p className="text-xs text-muted-foreground mt-1 leading-relaxed">
-                Avsluta kopplingen till din nuvarande partner och skapa ett nytt tomt utrymme.
-              </p>
-            </div>
+            <p className="text-sm font-medium" style={{ color: 'var(--color-text-primary)' }}>Byt partner</p>
+            <p className="text-xs leading-relaxed" style={{ color: 'var(--color-text-secondary)' }}>
+              Avsluta kopplingen till din nuvarande partner och skapa ett nytt tomt utrymme.
+            </p>
 
             <AlertDialog open={leaveDialogOpen} onOpenChange={(v) => {
               if (!v) cancelLeaveCountdown();
               setLeaveDialogOpen(v);
             }}>
               <AlertDialogTrigger asChild>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="gap-1.5 text-destructive/70 hover:text-destructive hover:bg-destructive/5 border border-destructive/20 hover:border-destructive/40"
+                <button
                   onClick={() => setLeaveDialogOpen(true)}
+                  className="text-sm underline underline-offset-4 transition-opacity hover:opacity-70"
+                  style={{ color: '#8B3A3A' }}
                 >
-                  <Unlink className="w-3.5 h-3.5" />
                   Byt partner
-                </Button>
+                </button>
               </AlertDialogTrigger>
               <AlertDialogContent>
                 <AlertDialogHeader>
-                  <AlertDialogTitle className="font-serif text-lg">
-                    Byt partner?
-                  </AlertDialogTitle>
-                  <AlertDialogDescription className="text-sm text-muted-foreground leading-relaxed pt-1">
+                  <AlertDialogTitle className="font-serif text-lg">Byt partner?</AlertDialogTitle>
+                  <AlertDialogDescription className="text-sm leading-relaxed pt-1" style={{ color: 'var(--color-text-secondary)' }}>
                     Kopplingen till din nuvarande partner avslutas. Det här utrymmet blir kvar som historik för dig, men ni fortsätter inte här tillsammans.
                   </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter className="mt-2">
                   <AlertDialogCancel onClick={cancelLeaveCountdown}>Avbryt</AlertDialogCancel>
-                  <Button
-                    variant="destructive"
+                  <button
                     disabled={leaveCountdown !== null && leaveCountdown > 0}
                     onClick={() => { if (leaveCountdown === null) startLeaveCountdown(); }}
-                    className="min-w-[160px]"
+                    className="px-4 py-2 rounded-[14px] text-sm font-medium transition-opacity hover:opacity-70 disabled:opacity-40"
+                    style={{ color: '#8B3A3A' }}
                   >
                     {leaveCountdown !== null && leaveCountdown > 0
                       ? `Byt partner (${leaveCountdown})`
                       : 'Byt partner'}
-                  </Button>
+                  </button>
                 </AlertDialogFooter>
               </AlertDialogContent>
             </AlertDialog>
           </div>
-
         </div>
       )}
 
-      {/* ── Re-auth OTP dialog ── */}
+      {/* Re-auth OTP dialog */}
       <Dialog open={reauthOpen} onOpenChange={(v) => { if (!reauthLoading) setReauthOpen(v); }}>
         <DialogContent className="max-w-sm">
           <DialogHeader>
             <DialogTitle className="font-serif text-lg">Bekräfta att det är du</DialogTitle>
-            <DialogDescription className="text-sm text-muted-foreground leading-relaxed pt-1">
+            <DialogDescription className="text-sm leading-relaxed pt-1" style={{ color: 'var(--color-text-secondary)' }}>
               {reauthSent
                 ? 'Vi har skickat en engångskod till din e-postadress. Ange koden nedan för att fortsätta.'
                 : 'För att byta partner behöver du bekräfta ditt konto.'}
@@ -306,22 +284,22 @@ export default function RelationSettings({
           </div>
 
           <DialogFooter className="gap-2">
-            <Button
-              variant="ghost"
-              size="sm"
+            <button
               disabled={reauthLoading}
               onClick={() => setReauthOpen(false)}
+              className="text-sm transition-opacity hover:opacity-70"
+              style={{ color: 'var(--color-text-secondary)' }}
             >
               Avbryt
-            </Button>
-            <Button
-              variant="destructive"
-              size="sm"
+            </button>
+            <button
               disabled={otp.length < 6 || reauthLoading}
               onClick={handleOtpVerify}
+              className="text-sm font-medium transition-opacity hover:opacity-70 disabled:opacity-40"
+              style={{ color: '#8B3A3A' }}
             >
               {reauthLoading ? 'Verifierar…' : 'Bekräfta och byt partner'}
-            </Button>
+            </button>
           </DialogFooter>
         </DialogContent>
       </Dialog>

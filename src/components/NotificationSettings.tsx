@@ -1,8 +1,7 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNotificationPreferences } from '@/hooks/useNotificationPreferences';
-import { Switch } from '@/components/ui/switch';
-import { Bell, ChevronDown } from 'lucide-react';
+import { ChevronDown } from 'lucide-react';
 
 export default function NotificationSettings() {
   const { t } = useTranslation();
@@ -13,49 +12,54 @@ export default function NotificationSettings() {
     <div>
       <button
         onClick={() => setOpen(!open)}
-        className="flex items-center justify-between w-full gap-2 text-muted-foreground cursor-pointer h-[48px]"
+        className="flex items-center justify-between w-full gap-2 cursor-pointer h-[48px]"
+        style={{ color: 'var(--color-text-secondary)' }}
       >
-        <div className="flex items-center gap-2">
-          <Bell className="w-4 h-4" />
-          <p className="text-xs uppercase tracking-wider">Notiser</p>
-        </div>
+        <p className="text-xs uppercase tracking-wider">Notiser</p>
         <ChevronDown
           className={`w-3.5 h-3.5 transition-transform duration-200 ${open ? 'rotate-180' : ''}`}
         />
       </button>
 
       {open && (
-        <div className="space-y-3 mt-4">
+        <div className="space-y-5 mt-2 pb-2">
           <label className="flex items-center justify-between gap-4 cursor-pointer">
             <div>
-              <p className="text-sm text-foreground">
+              <p className="text-sm" style={{ color: 'var(--color-text-primary)' }}>
                 {t('notifications.pref_shared_reflection')}
               </p>
-              <p className="text-xs text-muted-foreground mt-0.5">
+              <p className="text-xs mt-0.5" style={{ color: 'var(--color-text-secondary)' }}>
                 {t('notifications.pref_shared_reflection_hint')}
               </p>
             </div>
-            <Switch
+            {/* Minimal text toggle */}
+            <button
               disabled={loading}
-              checked={prefs.notifySharedReflection}
-              onCheckedChange={(checked) => updatePref('notifySharedReflection', checked)}
-            />
+              onClick={() => updatePref('notifySharedReflection', !prefs.notifySharedReflection)}
+              className="text-xs font-medium transition-opacity hover:opacity-70 shrink-0"
+              style={{ color: prefs.notifySharedReflection ? 'var(--color-text-primary)' : 'var(--color-text-secondary)', opacity: prefs.notifySharedReflection ? 1 : 0.5 }}
+            >
+              {prefs.notifySharedReflection ? 'På' : 'Av'}
+            </button>
           </label>
 
           <label className="flex items-center justify-between gap-4 cursor-pointer">
             <div>
-              <p className="text-sm text-foreground">
+              <p className="text-sm" style={{ color: 'var(--color-text-primary)' }}>
                 {t('notifications.pref_conversation_progress')}
               </p>
-              <p className="text-xs text-muted-foreground mt-0.5">
+              <p className="text-xs mt-0.5" style={{ color: 'var(--color-text-secondary)' }}>
                 {t('notifications.pref_conversation_progress_hint')}
               </p>
             </div>
-            <Switch
+            <button
               disabled={loading}
-              checked={prefs.notifyConversationProgress}
-              onCheckedChange={(checked) => updatePref('notifyConversationProgress', checked)}
-            />
+              onClick={() => updatePref('notifyConversationProgress', !prefs.notifyConversationProgress)}
+              className="text-xs font-medium transition-opacity hover:opacity-70 shrink-0"
+              style={{ color: prefs.notifyConversationProgress ? 'var(--color-text-primary)' : 'var(--color-text-secondary)', opacity: prefs.notifyConversationProgress ? 1 : 0.5 }}
+            >
+              {prefs.notifyConversationProgress ? 'På' : 'Av'}
+            </button>
           </label>
         </div>
       )}
