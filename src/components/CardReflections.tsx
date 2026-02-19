@@ -75,7 +75,7 @@ export default function CardReflections({ cardId }: CardReflectionsProps) {
               value={privateText}
               onChange={(e) => setPrivateText(e.target.value)}
               placeholder={t('reflections.private_notes_hint')}
-              className="w-full min-h-[100px] p-4 rounded-lg bg-white border border-slate-200 text-foreground placeholder:text-muted-foreground resize-none focus:outline-none focus:ring-0 focus:border-[#497575] font-sans text-base"
+              className="w-full min-h-[100px] p-4 rounded-card bg-transparent border border-border/20 text-foreground placeholder:text-muted-foreground resize-none focus:outline-none focus:ring-0 focus:border-primary/30 font-sans text-base"
               autoFocus={isEditingPrivate}
             />
             <div className="flex gap-3 mt-3">
@@ -103,7 +103,7 @@ export default function CardReflections({ cardId }: CardReflectionsProps) {
           </motion.div>
         ) : (
           <div
-            className="p-4 rounded-lg bg-card border border-border cursor-pointer hover:border-primary/30 transition-colors"
+            className="p-4 rounded-card border border-border/20 cursor-pointer hover:border-primary/30 transition-colors"
             onClick={() => setIsEditingPrivate(true)}
           >
             <p className="text-body text-foreground whitespace-pre-wrap">
@@ -132,7 +132,7 @@ export default function CardReflections({ cardId }: CardReflectionsProps) {
                 <textarea
                   value={sharedText}
                   onChange={(e) => setSharedText(e.target.value)}
-                  className="w-full min-h-[100px] p-4 rounded-lg bg-white border border-slate-200 text-foreground placeholder:text-muted-foreground resize-none focus:outline-none focus:ring-0 focus:border-[#497575] font-sans text-base"
+                  className="w-full min-h-[100px] p-4 rounded-card bg-transparent border border-border/20 text-foreground placeholder:text-muted-foreground resize-none focus:outline-none focus:ring-0 focus:border-primary/30 font-sans text-base"
                   autoFocus
                 />
                 <div className="flex gap-3 mt-3">
@@ -152,7 +152,7 @@ export default function CardReflections({ cardId }: CardReflectionsProps) {
                 </div>
               </motion.div>
             ) : (
-              <div className="p-4 rounded-lg bg-card border border-border">
+              <div className="p-4 rounded-card border border-border/20">
                 <p className="text-body text-foreground whitespace-pre-wrap">
                   {sharedNote.text}
                 </p>

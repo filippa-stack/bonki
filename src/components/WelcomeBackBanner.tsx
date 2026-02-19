@@ -26,7 +26,7 @@ export default function WelcomeBackBanner({
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -8 }}
       transition={{ duration: BEAT_2, ease: EASE }}
-      className="mx-6 mb-6 p-5 rounded-2xl border border-border bg-card"
+      className="mx-6 mb-6 p-6 rounded-card border border-border/20"
     >
       <p className="text-sm text-foreground leading-relaxed">
         {t('welcome_back.message')}

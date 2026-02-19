@@ -28,7 +28,7 @@ export default function SessionTakeaway({ sessionId }: SessionTakeawayProps) {
 
   if (locked) {
     return text.trim() ? (
-      <div className="rounded-card border border-border/30 bg-muted/10 overflow-hidden shadow-[0_1px_4px_0_hsl(0_0%_0%/0.04)]">
+      <div className="rounded-card border border-border/20 overflow-hidden">
         <p className="p-6 text-sm text-foreground whitespace-pre-wrap">{text}</p>
       </div>
     ) : null;

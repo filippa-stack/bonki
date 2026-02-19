@@ -221,7 +221,7 @@ export default function Home() {
               {/* Resume card */}
               <div
                 className="rounded-card p-8 mb-8"
-                style={{ backgroundColor: 'var(--color-surface-secondary)', boxShadow: 'var(--shadow-card)' }}
+                style={{ backgroundColor: 'var(--color-surface-secondary)' }}
               >
                 {/* Label */}
                 <p
