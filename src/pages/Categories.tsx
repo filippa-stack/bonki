@@ -68,7 +68,7 @@ export default function Categories() {
               {isGuided && (
                 <p
                   className="text-[14px] mb-[8px]"
-                  style={{ color: 'var(--color-text-secondary)' }}
+                  style={{ color: 'var(--color-text-secondary)', opacity: 0.7 }}
                 >
                   En bra plats att börja
                 </p>
@@ -80,7 +80,8 @@ export default function Categories() {
                 onKeyDown={(e) => {
                   if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); navigate(`/category/${category.id}`); }
                 }}
-                className="w-full cursor-pointer py-[20px] transition-opacity hover:opacity-70"
+                className={`w-full cursor-pointer py-[20px] transition-opacity hover:opacity-70${isGuided ? ' pt-0' : ''}`}
+                style={isGuided ? { paddingBottom: '36px' } : undefined}
               >
                 <h3
                   className="text-[20px] font-medium leading-snug"
