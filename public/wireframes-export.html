@@ -26,8 +26,9 @@
   .wireframe .route { font-size: 10px; color: #bbb; margin-bottom: 10px; font-family: monospace; }
 
   /* Frame base */
-  .frame { border: 1px solid #ddd; border-radius: 20px; padding: 18px; background: #fff; font-size: 11px; line-height: 1.75; color: #333; min-height: 340px; }
+  .frame { border: 1px solid #ddd; border-radius: 20px; padding: 18px; background: #F8F5F1; font-size: 11px; line-height: 1.75; color: #333; min-height: 340px; }
   .frame .header-bar { display: flex; justify-content: space-between; align-items: center; padding: 7px 11px; border-bottom: 1px solid #eee; margin: -18px -18px 13px -18px; border-radius: 20px 20px 0 0; background: #f8f8f8; font-size: 10px; color: #666; }
+  .frame .header-bar.immersive { background: #1F3D2B; color: #fff; border-bottom: none; padding: 10px 11px 18px; }
   .frame .btn-ui { display: block; background: #CC0000; color: #fff; padding: 11px 18px; border-radius: 16px; text-align: center; font-size: 11px; margin: 4px 0; font-weight: 500; }
   .frame .btn-outline { display: block; border: 1px solid #ccc; color: #555; padding: 11px 18px; border-radius: 16px; text-align: center; font-size: 11px; margin: 4px 0; }
   .frame .btn-ghost { display: block; color: #aaa; padding: 7px 14px; text-align: center; font-size: 10px; margin: 4px 0; }
@@ -36,14 +37,15 @@
   .frame .center { text-align: center; }
   .frame .spacer { height: 14px; }
   .frame .divider { border-top: 1px solid #f0f0f0; margin: 10px 0; }
-  .frame .card { border: 1px solid #e8e8e8; border-radius: 20px; padding: 14px; margin: 6px 0; background: #fafafa; }
+  .frame .card { border: 1px solid #e8e8e8; border-radius: 20px; padding: 14px; margin: 6px 0; background: #E3DCD4; }
   .frame .progress-bar { display: flex; gap: 3px; align-items: center; }
   .frame .progress-step { flex: 1; height: 2px; background: #e5e5e5; border-radius: 2px; }
   .frame .progress-step.done { background: #CC0000; }
   .frame .progress-step.current { background: #CC000055; }
   .frame .tag { display: inline-block; font-size: 8px; text-transform: uppercase; letter-spacing: 1px; color: #999; background: #f0f0f0; border-radius: 14px; padding: 2px 7px; }
   .frame .info-note { font-size: 9px; color: #aaa; font-style: italic; margin-top: 3px; }
-  .frame .cat-row { border: 1px solid #e8e8e8; border-radius: 14px; padding: 12px 14px; margin: 5px 0; background: #fff; display: flex; justify-content: space-between; align-items: center; }
+  .frame .cat-row { border: 1px solid #e8e8e8; border-radius: 14px; padding: 12px 14px; margin: 5px 0; background: #E3DCD4; display: flex; justify-content: space-between; align-items: center; }
+  .frame .cat-row.recommended { border-top: 2px solid #C1121F; }
   .frame .cat-title { font-family: Georgia, serif; font-size: 12px; }
   .frame .cat-arrow { color: #ccc; font-size: 11px; }
   .mt-10 { margin-top: 40px; }
@@ -527,7 +529,7 @@
     <div class="frame">
       <div class="header-bar"><span style="color:#CC0000;font-weight:700;font-size:11px;">STILL US</span><span>⚙</span></div>
       <div style="margin-top:20px;margin-bottom:6px;" class="muted" style="font-size:9px;text-transform:uppercase;letter-spacing:1px;">Kategorier</div>
-      <div class="cat-row">
+      <div class="cat-row recommended">
         <span class="cat-title">Paridentitet</span>
         <span class="cat-arrow">›</span>
       </div>
@@ -548,7 +550,7 @@
         <span class="cat-arrow">›</span>
       </div>
       <div class="spacer" style="height:8px"></div>
-      <div class="info-note center">Enbart kategorilista. Ingen CTA. Inga banners.</div>
+      <div class="info-note center">Rekommenderat kort: röd 2px topplinje, ingen badge. Ingen CTA. Inga banners.</div>
     </div>
   </div>
 
@@ -630,15 +632,9 @@
     <h2>Aktivt steg — draft</h2>
     <div class="route">/card/:id (state = draft, stepIndex = 0)</div>
     <div class="frame">
-      <div class="header-bar"><span>← Kategori</span><span></span></div>
+      <div class="header-bar immersive"><span>← Kategori</span><span style="color:#fff9;">⚙</span></div>
       <div style="padding:6px 0;">
-        <div class="progress-bar">
-          <div class="progress-step current"></div>
-          <div class="progress-step"></div>
-          <div class="progress-step"></div>
-          <div class="progress-step"></div>
-        </div>
-        <div class="muted center" style="margin-top:3px;font-size:8px;"><b>Öppnare</b> · Tankeväckare · Scenario · Teamwork</div>
+        <div class="muted center" style="margin-top:3px;font-size:8px;"><span style="border-bottom:2px solid #C1121F;padding-bottom:2px;color:#1C1B1A;font-weight:600;">Öppnare</span> &nbsp; <span style="opacity:0.6;color:#1C1B1A;">Tankeväckare</span> &nbsp; <span style="opacity:0.6;color:#1C1B1A;">Scenario</span> &nbsp; <span style="opacity:0.6;color:#1C1B1A;">Teamwork</span></div>
       </div>
       <div class="spacer" style="height:8px"></div>
       <div class="center serif" style="font-size:15px;">Att lyssna på riktigt</div>
@@ -648,9 +644,10 @@
         <div style="margin-top:5px;font-size:10px;">"Frågetext för det här steget..."</div>
         <div style="margin-top:4px;padding:5px;background:#f5f5f5;border-radius:6px;font-size:9px;color:#bbb;">Privata anteckningar (valfritt)</div>
       </div>
-      <div class="card">
+      <div style="border:1px solid #CFC7BE;border-radius:14px;padding:18px;margin:6px 0;background:#EEE8E1;">
         <div class="muted">Din reflektion</div>
-        <div style="margin-top:4px;padding:5px;background:#f5f5f5;border-radius:6px;font-size:9px;color:#bbb;">Skriv din reflektion. Bara du ser det här.</div>
+        <div style="margin-top:4px;font-size:9px;color:#8C8681;">Skriv din reflektion — valfritt.</div>
+        <div style="margin-top:6px;font-size:8px;color:#aaa;">🔒 Bara du kan se det här</div>
       </div>
       <div class="btn-ui" style="margin-top:8px;">Fortsätt →</div>
     </div>
@@ -660,24 +657,18 @@
     <h2>Aktivt steg — steg 2</h2>
     <div class="route">/card/:id (stepIndex = 1)</div>
     <div class="frame">
-      <div class="header-bar"><span>← Kategori</span><span></span></div>
+      <div class="header-bar immersive"><span>← Kategori</span><span style="color:#fff9;">⚙</span></div>
       <div style="padding:6px 0;">
-        <div class="progress-bar">
-          <div class="progress-step done"></div>
-          <div class="progress-step current"></div>
-          <div class="progress-step"></div>
-          <div class="progress-step"></div>
-        </div>
-        <div class="muted center" style="margin-top:3px;font-size:8px;">Öppnare · <b>Tankeväckare</b> · Scenario · Teamwork</div>
+        <div class="muted center" style="margin-top:3px;font-size:8px;"><span style="text-decoration:line-through;opacity:0.6;color:#1C1B1A;">Öppnare</span> &nbsp; <span style="border-bottom:2px solid #C1121F;padding-bottom:2px;color:#1C1B1A;font-weight:600;">Tankeväckare</span> &nbsp; <span style="opacity:0.6;color:#1C1B1A;">Scenario</span> &nbsp; <span style="opacity:0.6;color:#1C1B1A;">Teamwork</span></div>
       </div>
       <div class="spacer" style="height:8px"></div>
       <div class="center serif" style="font-size:15px;">Att lyssna på riktigt</div>
       <div class="divider"></div>
-      <div class="card">
-        <div style="margin-top:4px;padding:5px;background:#f5f5f5;border-radius:6px;font-size:9px;color:#bbb;">Skriv din reflektion.</div>
+      <div style="border:1px solid #CFC7BE;border-radius:14px;padding:18px;margin:6px 0;background:#EEE8E1;">
+        <div style="font-size:9px;color:#8C8681;">Skriv din reflektion.</div>
       </div>
       <div class="btn-ui" style="margin-top:8px;">Fortsätt →</div>
-      <div class="info-note center">Progressions­indikatorn uppdateras från completions-arrayen</div>
+      <div class="info-note center">Stegindikatorn: aktiv = röd underline, genomförda = line-through 60% opacity</div>
     </div>
   </div>
 
@@ -685,21 +676,15 @@
     <h2>Aktivt steg — sista (Teamwork)</h2>
     <div class="route">/card/:id (stepIndex = 3)</div>
     <div class="frame">
-      <div class="header-bar"><span>← Kategori</span><span></span></div>
+      <div class="header-bar immersive"><span>← Kategori</span><span style="color:#fff9;">⚙</span></div>
       <div style="padding:6px 0;">
-        <div class="progress-bar">
-          <div class="progress-step done"></div>
-          <div class="progress-step done"></div>
-          <div class="progress-step done"></div>
-          <div class="progress-step current"></div>
-        </div>
-        <div class="muted center" style="margin-top:3px;font-size:8px;">Öppnare · Tankeväckare · Scenario · <b>Teamwork</b></div>
+        <div class="muted center" style="margin-top:3px;font-size:8px;"><span style="text-decoration:line-through;opacity:0.6;color:#1C1B1A;">Öppnare</span> &nbsp; <span style="text-decoration:line-through;opacity:0.6;color:#1C1B1A;">Tankeväckare</span> &nbsp; <span style="text-decoration:line-through;opacity:0.6;color:#1C1B1A;">Scenario</span> &nbsp; <span style="border-bottom:2px solid #C1121F;padding-bottom:2px;color:#1C1B1A;font-weight:600;">Teamwork</span></div>
       </div>
       <div class="spacer" style="height:8px"></div>
       <div class="center serif" style="font-size:15px;">Att lyssna på riktigt</div>
       <div class="divider"></div>
-      <div class="card">
-        <div style="margin-top:4px;padding:5px;background:#f5f5f5;border-radius:6px;font-size:9px;color:#bbb;">Skriv din reflektion.</div>
+      <div style="border:1px solid #CFC7BE;border-radius:14px;padding:18px;margin:6px 0;background:#EEE8E1;">
+        <div style="font-size:9px;color:#8C8681;">Skriv din reflektion.</div>
       </div>
       <div class="btn-ui" style="margin-top:8px;">Avsluta samtalet →</div>
       <div class="info-note center">stepIndex = 3 → CTA = "Avsluta samtalet" → Completion</div>
@@ -737,7 +722,7 @@
     <h2>Historikvy (CompletedSessionView)</h2>
     <div class="route">/card/:id (mode = history)</div>
     <div class="frame">
-      <div class="header-bar"><span>← Kategori</span><span></span></div>
+      <div class="header-bar immersive"><span>← Kategori</span><span style="color:#fff9;">⚙</span></div>
       <div class="space-y-8" style="padding-bottom:32px;margin-top:12px;">
         <div class="center">
           <div class="muted" style="font-size:9px;text-transform:uppercase;letter-spacing:1px;">Session — Februari 2026</div>
