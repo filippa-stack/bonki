@@ -207,37 +207,28 @@ export default function Home() {
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ duration: 0.2 }}
+              transition={{ duration: 0.3 }}
               className="px-6 pt-[120px] pb-[80px] flex flex-col items-center justify-center"
             >
-              <div className="w-full max-w-sm text-center space-y-8">
-                {/* Category — subtle context */}
-                <p
-                  className="text-meta tracking-wide"
-                  style={{ color: 'var(--color-text-secondary)' }}
-                >
-                  {activeCategory.title}
-                </p>
-
-                {/* Card title — dominant */}
-                <h2
-                  className="text-display"
+              <div className="w-full max-w-sm text-center">
+                {/* Ritual headline */}
+                <h1
+                  className="text-heading mb-[40px]"
                   style={{ color: 'var(--color-text-primary)' }}
                 >
-                  {activeCard.title}
-                </h2>
+                  Ett samtal i taget.
+                </h1>
 
                 {/* Primary action */}
                 <button
                   onClick={() => { markNavigated(); navigate(`/card/${normalizedSession.cardId}`); }}
-                  className="w-full h-14 rounded-button flex items-center justify-center gap-2 text-sm font-medium transition-opacity hover:opacity-90"
+                  className="w-full h-14 rounded-button flex items-center justify-center text-sm font-medium transition-opacity hover:opacity-90"
                   style={{
                     backgroundColor: 'var(--color-button-primary)',
                     color: 'var(--color-button-text)',
                   }}
                 >
                   Fortsätt samtalet
-                  <ArrowRight className="w-4 h-4" />
                 </button>
               </div>
             </motion.div>
@@ -249,10 +240,18 @@ export default function Home() {
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 0.2 }}
+            transition={{ duration: 0.3 }}
             className="px-6 pt-[120px] pb-[80px] flex flex-col items-center justify-center"
           >
-            <div className="w-full max-w-sm text-center space-y-16">
+            <div className="w-full max-w-sm text-center">
+              {/* Ritual headline */}
+              <h1
+                className="text-heading mb-[40px]"
+                style={{ color: 'var(--color-text-primary)' }}
+              >
+                Ett samtal i taget.
+              </h1>
+
               <button
                 onClick={() => {
                   markNavigated();
@@ -264,20 +263,19 @@ export default function Home() {
                     navigate(`/category/${categories[0].id}`);
                   }
                 }}
-                className="w-full h-14 rounded-button flex items-center justify-center gap-2 text-sm font-medium transition-opacity hover:opacity-90"
+                className="w-full h-14 rounded-button flex items-center justify-center text-sm font-medium transition-opacity hover:opacity-90"
                 style={{
                   backgroundColor: 'var(--color-button-primary)',
                   color: 'var(--color-button-text)',
                 }}
               >
-                Starta ett samtal
-                <ArrowRight className="w-4 h-4" />
+                Starta samtal
               </button>
 
               {/* Subtle archive link */}
               <button
                 onClick={() => navigate('/saved')}
-                className="text-meta transition-colors hover:text-foreground"
+                className="mt-[40px] text-meta transition-colors hover:text-foreground"
                 style={{ color: 'var(--color-text-secondary)', opacity: 0.5 }}
               >
                 Arkiv
