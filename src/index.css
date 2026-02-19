@@ -9,7 +9,7 @@
     /* ── Calm neutral palette ── */
 
     /* Tailwind base tokens (HSL without hsl()) */
-    --background: 36 20% 94%;          /* #F4F1EC */
+    --background: 36 20% 96%;          /* #F7F4EF */
     --foreground: 0 0% 12%;            /* #1F1F1F */
 
     --card: 0 0% 100%;                 /* #FFFFFF */
@@ -40,13 +40,14 @@
     --radius: 0.875rem;
 
     /* ── Semantic radius tokens ── */
-    --radius-card:   0.75rem;
+    --radius-card:   1rem;
     --radius-button: 0.75rem;
     --radius-pill:   0.5rem;
     --radius-toast:  0.75rem;
 
     /* ── Standard shadow ── */
-    --shadow-card: 0px 2px 12px rgba(0,0,0,0.05);
+    --shadow-card: 0px 6px 18px rgba(0,0,0,0.04);
+    --shadow-card-featured: 0px 8px 22px rgba(0,0,0,0.06);
 
     /* Custom tokens */
     --surface-warm: 0 0% 100%;
@@ -110,7 +111,7 @@
     --card-shadow: var(--shadow-card);
 
     /* ── Semantic color tokens ── */
-    --color-bg-base: #F4F1EC;
+    --color-bg-base: #F7F4EF;
     --color-surface-primary: #FFFFFF;
     --color-surface-secondary: #EDE9E3;
     --color-text-primary: #1F1F1F;

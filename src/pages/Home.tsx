@@ -286,10 +286,10 @@ export default function Home() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.15 }}
-            className="px-6 mt-8"
+            className="px-6 mt-10"
           >
             {/* Category list — recommended first, then the rest */}
-            <div className="space-y-3 pb-12">
+            <div className="flex flex-col gap-6 pb-12">
               {(() => {
                 const recCat = recommendedCategoryId ? getCategoryById(recommendedCategoryId) : null;
                 const rest = categories.filter((c) => c.id !== recommendedCategoryId);
@@ -302,8 +302,8 @@ export default function Home() {
                         </p>
                         <div
                           onClick={() => { markNavigated(); navigate(`/category/${recCat.id}`); }}
-                          className="cursor-pointer rounded-card p-7 transition-opacity hover:opacity-90"
-                          style={{ backgroundColor: 'var(--color-surface-secondary)', boxShadow: 'var(--shadow-card)' }}
+                          className="cursor-pointer rounded-card p-8 transition-opacity hover:opacity-90"
+                          style={{ backgroundColor: 'var(--color-surface-primary)', boxShadow: 'var(--shadow-card-featured)' }}
                         >
                           <h3
                             className="font-serif text-base font-medium leading-snug mb-1"
