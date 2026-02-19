@@ -50,6 +50,39 @@
   .mt-8  { margin-top: 32px; }
   .mt-12 { margin-top: 48px; }
   .space-y-8 > * + * { margin-top: 32px; }
+
+  /* ── ARCHITECTURE MAPS ── */
+  .map-section { margin-bottom: 48px; }
+  .map-box { background: #fff; border: 1px solid #e0e0e0; border-radius: 16px; padding: 28px 32px; }
+  .map-box h3 { font-size: 15px; font-weight: 700; margin-bottom: 20px; color: #111; }
+  .arch-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px; }
+  .arch-node { background: #f7f7f7; border: 1px solid #e5e5e5; border-radius: 12px; padding: 14px 16px; }
+  .arch-node .node-title { font-size: 12px; font-weight: 600; margin-bottom: 4px; }
+  .arch-node .node-sub { font-size: 10px; color: #888; line-height: 1.6; }
+  .arch-node.red    { border-left: 3px solid #CC0000; }
+  .arch-node.green  { border-left: 3px solid #388e3c; }
+  .arch-node.blue   { border-left: 3px solid #1565c0; }
+  .arch-node.amber  { border-left: 3px solid #f57c00; }
+  .arch-node.gray   { border-left: 3px solid #9e9e9e; }
+  .arch-node.purple { border-left: 3px solid #7b1fa2; }
+  .flow-row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-bottom: 10px; }
+  .flow-pill { display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; border-radius: 20px; font-size: 11px; font-weight: 500; border: 1px solid #e0e0e0; background: #fff; }
+  .flow-pill.red    { background: #fff5f5; border-color: #CC000033; color: #CC0000; }
+  .flow-pill.green  { background: #f1f8e9; border-color: #388e3c33; color: #388e3c; }
+  .flow-pill.blue   { background: #e3f2fd; border-color: #1565c033; color: #1565c0; }
+  .flow-pill.amber  { background: #fff8e1; border-color: #f57c0033; color: #f57c00; }
+  .flow-pill.gray   { background: #f5f5f5; border-color: #9e9e9e33; color: #555; }
+  .flow-pill.purple { background: #f3e5f5; border-color: #7b1fa233; color: #7b1fa2; }
+  .flow-arrow { font-size: 13px; color: #ccc; }
+  .toast-table { width: 100%; border-collapse: collapse; font-size: 11px; }
+  .toast-table th { text-align: left; padding: 8px 12px; background: #f5f5f5; font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: #888; font-weight: 600; }
+  .toast-table td { padding: 9px 12px; border-top: 1px solid #f0f0f0; vertical-align: top; line-height: 1.6; }
+  .key-chip { font-family: monospace; font-size: 9px; background: #f0f0f0; border-radius: 4px; padding: 2px 5px; color: #555; }
+  .nav-table { width: 100%; border-collapse: collapse; font-size: 11px; }
+  .nav-table th { text-align: left; padding: 8px 12px; background: #f5f5f5; font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: #888; font-weight: 600; }
+  .nav-table td { padding: 9px 12px; border-top: 1px solid #f0f0f0; vertical-align: top; line-height: 1.6; }
+  .route-chip { font-family: monospace; font-size: 10px; background: #1a1a1a0a; border-radius: 4px; padding: 2px 6px; color: #333; }
+  .guard-chip { font-size: 9px; background: #fff3cd; border-radius: 4px; padding: 2px 6px; color: #856404; }
 </style>
 </head>
 <body>
@@ -61,6 +94,366 @@
   <button class="btn-dl" id="downloadBtn" onclick="exportAll()">📦 Ladda ner wireframes som ZIP</button>
 </div>
 <div class="progress" id="status"></div>
+
+<!-- ══════════════════════════════════════════════════════════
+     0A — PROVIDER-STACK
+     ══════════════════════════════════════════════════════════ -->
+<div class="section-title">0A · Provider-stack (React Context, ytterst → innerst)</div>
+<div class="map-section">
+  <div class="map-box">
+    <h3>Aktiva providers i appens träd</h3>
+    <div class="arch-grid">
+      <div class="arch-node gray">
+        <div class="node-title">QueryClientProvider</div>
+        <div class="node-sub">TanStack Query · global cache · yttersta lagret</div>
+      </div>
+      <div class="arch-node gray">
+        <div class="node-title">SiteSettingsProvider</div>
+        <div class="node-sub">Läser user_settings (cards, categories, bakgrundsfärg) · sparas debounced via useSettingsSync</div>
+      </div>
+      <div class="arch-node gray">
+        <div class="node-title">AuthProvider</div>
+        <div class="node-sub">Supabase Auth · exponerar useAuth() → { user, loading }</div>
+      </div>
+      <div class="arch-node gray">
+        <div class="node-title">DevStateProvider</div>
+        <div class="node-sub">?devState= query param · dev-only override av makro-mode</div>
+      </div>
+      <div class="arch-node green">
+        <div class="node-title">CoupleSpaceProvider</div>
+        <div class="node-sub">useCoupleSpace() · hämtar space + memberCount · realtime på couple_spaces · auto-skapar utrymme om ingen membership finns</div>
+      </div>
+      <div class="arch-node green">
+        <div class="node-title">NormalizedSessionProvider</div>
+        <div class="node-sub">useNormalizedSessionState() · anropar get_active_session_state RPC · realtime på couple_sessions + couple_session_completions</div>
+      </div>
+      <div class="arch-node blue">
+        <div class="node-title">AppProvider</div>
+        <div class="node-sub">categories, cards, backgroundColor, savedConversations · innersta lagret · useSharedProgress är stub (no-op)</div>
+      </div>
+    </div>
+    <div style="margin-top:14px;font-size:10px;color:#aaa;font-style:italic;">
+      ProposalsProvider borttagen. usePartnerNotifications körs i Index men är passiv (inga toasts i Vol 1). Inget partnerlogik, ingen A/B-gating.
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     0B — SESSIONSAUKTORITET
+     ══════════════════════════════════════════════════════════ -->
+<div class="section-title">0B · Sessionsauktoritet — Single Writer Model</div>
+<div class="map-section">
+  <div class="map-box">
+    <h3>Dataflöde: Sessionsstart → Stegframsteg → Avslut</h3>
+    <div style="background:#fff8e1;border:1px solid #f57c0033;border-radius:10px;padding:14px;margin-bottom:18px;font-size:11px;color:#6d4c00;line-height:1.8;">
+      <b>Laglås:</b> All sessionslogik lever server-side.<br>
+      Frontend läser passivt via NormalizedSessionContext. Ingen lokal sessionsflagga.<br>
+      <b>Förbjudet:</b> <code>couple_progress.current_session</code> · <code>journeyState</code> · lokal manipulation · A/B-protokoll
+    </div>
+    <div class="arch-grid">
+      <div class="arch-node red">
+        <div class="node-title">activate-session (Edge Function)</div>
+        <div class="node-sub">Anropas vid samtalstart. Anropar activate_couple_session RPC. Returnerar session_id + steg.</div>
+      </div>
+      <div class="arch-node red">
+        <div class="node-title">activate_couple_session (RPC)</div>
+        <div class="node-sub">Skapar couple_sessions-rad + N couple_session_steps. Säkrar exakt en aktiv session per space.</div>
+      </div>
+      <div class="arch-node red">
+        <div class="node-title">complete_couple_session_step (RPC)</div>
+        <div class="node-sub">Markerar steg klart. Returnerar { is_step_complete, is_session_complete }. Ingen partner_left i Vol 1.</div>
+      </div>
+      <div class="arch-node red">
+        <div class="node-title">get_active_session_state (RPC)</div>
+        <div class="node-sub">Returnerar { mode, session_id, card_id, category_id, current_step_index, step_completions }. Anropas av NormalizedSessionProvider.</div>
+      </div>
+      <div class="arch-node red">
+        <div class="node-title">lock_step_reflections (RPC)</div>
+        <div class="node-sub">Låser step_reflections för session_id + step_index. Inga speaker-filter. Kallas vid stegövergång.</div>
+      </div>
+      <div class="arch-node amber">
+        <div class="node-title">couple_sessions (tabell)</div>
+        <div class="node-sub">Auktoritativ. Status: active | completed. Realtime-prenumererad av NormalizedSessionProvider.</div>
+      </div>
+      <div class="arch-node amber">
+        <div class="node-title">couple_session_completions (tabell)</div>
+        <div class="node-sub">En rad per steg när komplett. Realtime-prenumererad. Används av spaceSnapshot för progress.</div>
+      </div>
+      <div class="arch-node amber">
+        <div class="node-title">step_reflections (tabell)</div>
+        <div class="node-sub">Unik per (session_id, step_index, user_id). State: draft → ready. Autosparas debounced 800ms.</div>
+      </div>
+      <div class="arch-node amber">
+        <div class="node-title">couple_takeaways (tabell)</div>
+        <div class="node-sub">Gemensam sammanfattning per session. Autosparad 800ms. Låst vid session-exit.</div>
+      </div>
+    </div>
+    <div style="margin-top:16px;">
+      <div class="flow-row">
+        <span class="flow-pill gray">Starta samtal</span>
+        <span class="flow-arrow">→</span>
+        <span class="flow-pill red">activate-session Edge Fn</span>
+        <span class="flow-arrow">→</span>
+        <span class="flow-pill red">activate_couple_session RPC</span>
+        <span class="flow-arrow">→</span>
+        <span class="flow-pill green">NormalizedSession refetch</span>
+      </div>
+      <div class="flow-row">
+        <span class="flow-pill gray">Trycker "Fortsätt"</span>
+        <span class="flow-arrow">→</span>
+        <span class="flow-pill green">upsert step_reflections state:'ready'</span>
+        <span class="flow-arrow">→</span>
+        <span class="flow-pill red">complete_couple_session_step RPC</span>
+        <span class="flow-arrow">→</span>
+        <span class="flow-pill green">refetch → nästa steg</span>
+      </div>
+      <div class="flow-row">
+        <span class="flow-pill gray">Sista steget klart</span>
+        <span class="flow-arrow">→</span>
+        <span class="flow-pill amber">is_session_complete = true</span>
+        <span class="flow-arrow">→</span>
+        <span class="flow-pill blue">Completion-mode monteras</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     0C — MACRO-MODE (useAppMode)
+     ══════════════════════════════════════════════════════════ -->
+<div class="section-title">0C · Makro-mode (useAppMode)</div>
+<div class="map-section">
+  <div class="map-box">
+    <h3>Tre möjliga makro-tillstånd</h3>
+    <div class="arch-grid">
+      <div class="arch-node gray">
+        <div class="node-title">loading</div>
+        <div class="node-sub">normalizedSession.loading = true. UI visar pulse-loader. Ingen data renderas.</div>
+      </div>
+      <div class="arch-node green">
+        <div class="node-title">idle</div>
+        <div class="node-sub">sessionId = null. Hem visar kategorilista. Inga banners. Inga proposals.</div>
+      </div>
+      <div class="arch-node red">
+        <div class="node-title">active</div>
+        <div class="node-sub">sessionId + cardId finns. Hem visar resume-block. Kategorilistan döljs. ActiveSessionGuard blockerar navigering bort.</div>
+      </div>
+    </div>
+    <div style="margin-top:10px;font-size:10px;color:#aaa;">
+      devState=pairedActive → mode: active. Alla andra devState → mode: idle. Ingen 'waiting'-mode i Vol 1.
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     0D — CARDVIEW-LÄGESRESOLVER
+     ══════════════════════════════════════════════════════════ -->
+<div class="section-title">0D · CardView-lägesresolver</div>
+<div class="map-section">
+  <div class="map-box">
+    <h3>Fyra cardViewMode — en resolver avgör vilket som monteras</h3>
+    <div class="arch-grid">
+      <div class="arch-node red">
+        <div class="node-title">live</div>
+        <div class="node-sub">normalizedSession.sessionId finns + cardId matchar. SessionStepReflection monterat. Mutations aktiva.</div>
+      </div>
+      <div class="arch-node blue">
+        <div class="node-title">revisit</div>
+        <div class="node-sub">?revisit=true i URL. Read-only. Inga session-mutations. SectionView utan reflektionsruta.</div>
+      </div>
+      <div class="arch-node amber">
+        <div class="node-title">history</div>
+        <div class="node-sub">Avslutad session finns för kortet. CompletedSessionView monteras med reflektioner + takeaway.</div>
+      </div>
+      <div class="arch-node purple">
+        <div class="node-title">completion</div>
+        <div class="node-sub">Session precis avslutad (is_session_complete = true). Takeaway-ritual monteras. Autospar debounced.</div>
+      </div>
+    </div>
+    <div style="margin-top:12px;font-size:10px;color:#aaa;">
+      Resolver-ordning: isRevisitMode → hasActiveMatchingSession → hasCompletedSessionForCard → 'live' (default)
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     0E — TOAST & NOTIFIKATIONSKARTA
+     ══════════════════════════════════════════════════════════ -->
+<div class="section-title">0E · Toast &amp; notifikationskarta</div>
+<div class="map-section">
+  <div class="map-box">
+    <h3>Alla toasts i appen — deduplicerade via toastOnce (3s window)</h3>
+    <div style="display:flex;gap:16px;margin-bottom:12px;flex-wrap:wrap;font-size:10px;color:#666;">
+      <span><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#CC0000;margin-right:4px;"></span>toast.error</span>
+      <span><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#388e3c;margin-right:4px;"></span>toast.success</span>
+      <span><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#1565c0;margin-right:4px;"></span>toast (neutral)</span>
+    </div>
+    <table class="toast-table">
+      <thead>
+        <tr>
+          <th>Nyckel</th><th>Meddelande</th><th>Typ</th><th>Fil</th><th>Trigger</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="key-chip">step_complete_fail</span></td>
+          <td>Kunde inte markera steget som klart</td>
+          <td style="color:#CC0000">error</td>
+          <td>CardView.tsx</td>
+          <td>complete_couple_session_step RPC returnerar error</td>
+        </tr>
+        <tr>
+          <td><span class="key-chip">copy_link</span></td>
+          <td>Länk kopierad</td>
+          <td style="color:#388e3c">success</td>
+          <td>SharedSummary.tsx</td>
+          <td>Klick på "Dela länk"</td>
+        </tr>
+        <tr>
+          <td><span class="key-chip">activate_fail</span></td>
+          <td>Kunde inte starta samtal</td>
+          <td style="color:#CC0000">error</td>
+          <td>CardView.tsx / Category.tsx</td>
+          <td>activate-session Edge Function returnerar error</td>
+        </tr>
+        <tr>
+          <td><span class="key-chip">reflection_save_fail</span></td>
+          <td>Kunde inte spara reflektion</td>
+          <td style="color:#CC0000">error</td>
+          <td>SessionStepReflection.tsx</td>
+          <td>upsert step_reflections returnerar error</td>
+        </tr>
+      </tbody>
+    </table>
+    <div style="margin-top:12px;font-size:10px;color:#aaa;font-style:italic;">
+      Position: bottom-center · offset bottom 64px · mx-6 bredd. Partner-toasts (partner_left, partner_shared, partner_continuing) borttagna i Vol 1.
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     0F — NAVIGATIONSKARTA
+     ══════════════════════════════════════════════════════════ -->
+<div class="section-title">0F · Navigationskarta — komplett</div>
+<div class="map-section">
+  <div class="map-box">
+    <h3>Alla rutter + ingångar + navigate()-anrop</h3>
+    <table class="nav-table">
+      <thead>
+        <tr>
+          <th>Rutt</th><th>Komponent</th><th>Ingångar</th><th>navigate() / utgångar</th><th>Guard / Villkor</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="route-chip">/login</span></td>
+          <td>Login.tsx</td>
+          <td>Direkt URL · redirect från ProtectedRoutes</td>
+          <td>navigate('/') efter auth</td>
+          <td><span class="guard-chip">user → redirect /</span></td>
+        </tr>
+        <tr>
+          <td><span class="route-chip">/</span></td>
+          <td>Index.tsx → Onboarding | PurchaseScreen | Home</td>
+          <td>Post-login · Logotypklick i Header · navigate('/')</td>
+          <td>Internt: Onboarding → Köp → Home (linjär, inga grenar)</td>
+          <td><span class="guard-chip">auth required</span></td>
+        </tr>
+        <tr>
+          <td><span class="route-chip">/category/:categoryId</span></td>
+          <td>Category.tsx</td>
+          <td>Klick på kategorikort i Home</td>
+          <td>navigate('/card/:id') · ← Hem (Header)</td>
+          <td><span class="guard-chip">auth required</span></td>
+        </tr>
+        <tr>
+          <td><span class="route-chip">/card/:cardId</span></td>
+          <td>CardView.tsx</td>
+          <td>Klick på kort i Category · "Fortsätt" i Home resume-block</td>
+          <td>navigate('/') · navigate('/category/:id') · navigate('?revisit=true')</td>
+          <td><span class="guard-chip">auth required</span> · ActiveSessionGuard</td>
+        </tr>
+        <tr>
+          <td><span class="route-chip">/card/:cardId?revisit=true</span></td>
+          <td>CardView.tsx (mode=revisit)</td>
+          <td>"Läs igen" i Completion · djuplänk från ReviewDrawer</td>
+          <td>navigate('/category/:id') eller navigate('/')</td>
+          <td>Read-only · inga mutations</td>
+        </tr>
+        <tr>
+          <td><span class="route-chip">/card/:cardId?step=N</span></td>
+          <td>CardView.tsx (revisit, steg N)</td>
+          <td>Djuplänk från SharedSummary / ReviewDrawer</td>
+          <td>Stegar via revisitStepIndex · ?step=0–3 giltiga</td>
+          <td>Read-only</td>
+        </tr>
+        <tr>
+          <td><span class="route-chip">/shared</span></td>
+          <td>SharedSummary.tsx</td>
+          <td>Header-ikon (Share2) i Home</td>
+          <td>navigate('/card/:id?revisit=true&amp;step=N') · ← (Header)</td>
+          <td><span class="guard-chip">auth required</span></td>
+        </tr>
+        <tr>
+          <td><span class="route-chip">/saved</span></td>
+          <td>SavedConversations.tsx</td>
+          <td>Bookmark-ikon i Home (visas om count &gt; 0)</td>
+          <td>← (Header)</td>
+          <td><span class="guard-chip">auth required</span></td>
+        </tr>
+        <tr>
+          <td><span class="route-chip">*</span></td>
+          <td>NotFound.tsx</td>
+          <td>Okänd URL</td>
+          <td>navigate('/')</td>
+          <td>—</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="map-section">
+  <div class="map-box">
+    <h3>ActiveSessionGuard — navigeringsskydd</h3>
+    <div class="flow-row">
+      <span class="flow-pill gray">loading = true</span>
+      <span class="flow-arrow">→</span>
+      <span class="flow-pill amber">Pulse loader (förhindrar flicker)</span>
+    </div>
+    <div class="flow-row">
+      <span class="flow-pill gray">mode = active + navigering bort från /card/:activeCardId</span>
+      <span class="flow-arrow">→</span>
+      <span class="flow-pill red">Blockeras — redirect till /card/:activeCardId</span>
+    </div>
+    <div class="flow-row">
+      <span class="flow-pill gray">mode = idle</span>
+      <span class="flow-arrow">→</span>
+      <span class="flow-pill green">Fri navigation</span>
+    </div>
+    <div style="margin-top:10px;font-size:10px;color:#aaa;">
+      Logotypen i Header leder alltid till /. Inga automatiska redirects vid session-events.
+    </div>
+  </div>
+</div>
+
+<div class="map-section">
+  <div class="map-box">
+    <h3>devState query params (dev-only override)</h3>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;font-size:11px;">
+      <div><span class="key-chip">?devState=pairedActive</span> → mode: active</div>
+      <div><span class="key-chip">?devState=completed</span> → mode: idle</div>
+      <div><span class="key-chip">?devState=solo</span> → mode: idle</div>
+      <div><span class="key-chip">?devState=pairedIdle</span> → mode: idle</div>
+      <div><span class="key-chip">?devState=archiveEmpty</span> → mode: idle</div>
+      <div><span class="key-chip">?devState=archiveWithHistory</span> → mode: idle</div>
+      <div><span class="key-chip">?devState=browse</span> → mode: idle (alla kort upplåsta)</div>
+    </div>
+    <div style="margin-top:10px;font-size:10px;color:#aaa;font-style:italic;">
+      proposalIncoming + waiting är borttagna. DevModeBadge visas i hörnet under dev.
+    </div>
+  </div>
+</div>
 
 <!-- ═══════════════════════════════════════════════════════════
      1. INLOGGNING & ONBOARDING
