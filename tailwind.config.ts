@@ -56,6 +56,14 @@ export default {
         chrome: "hsl(var(--surface-chrome))",
         gentle: "hsl(var(--text-gentle))",
         divider: "hsl(var(--divider))",
+        // Premium restrained color system
+        "bg-base": "var(--color-bg-base)",
+        "surface-primary": "var(--color-surface-primary)",
+        "surface-secondary": "var(--color-surface-secondary)",
+        "text-primary": "var(--color-text-primary)",
+        "text-secondary": "var(--color-text-secondary)",
+        "btn-primary": "var(--color-button-primary)",
+        "btn-primary-text": "var(--color-button-text)",
         // Card hierarchy
         "card-l1": "hsl(var(--card-l1-bg))",
         "card-l2": "hsl(var(--card-l2-bg))",

@@ -108,6 +108,15 @@
     /* Card styling */
     --card-shadow: none;
 
+    /* ── Premium restrained color system ── */
+    --color-bg-base: #F7F6F3;
+    --color-surface-primary: #FFFFFF;
+    --color-surface-secondary: #EFEDE8;
+    --color-text-primary: #1C1C1C;
+    --color-text-secondary: #6B6B6B;
+    --color-button-primary: #2E2E2E;
+    --color-button-text: #FFFFFF;
+
     /* Dynamic overrides — set via useThemeVars hook at runtime */
     --page-bg: hsl(var(--background));
     --hero-title-color: #1e293b;
@@ -130,6 +139,8 @@
   body {
     @apply bg-background text-foreground font-sans;
     font-family: var(--font-sans);
+    background-color: var(--color-bg-base);
+    color: var(--color-text-primary);
     line-height: 1.6;
     letter-spacing: -0.01em;
   }
