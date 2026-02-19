@@ -432,20 +432,8 @@ export default function CardView() {
         showBack
         backTo={exitBackTo}
         variant="immersive"
+        onImmersiveBack={isLive ? handleSessionExit : undefined}
       />
-
-      {/* Subtle exit button */}
-      {isLive && (
-        <div className="px-6 pt-2">
-          <button
-            onClick={handleSessionExit}
-            className="text-[14px] transition-opacity hover:opacity-70"
-            style={{ color: 'var(--color-text-secondary)' }}
-          >
-            Tillbaka
-          </button>
-        </div>
-      )}
 
       {/* Step progress — neutral text only */}
       {cardViewMode === 'live' && (
