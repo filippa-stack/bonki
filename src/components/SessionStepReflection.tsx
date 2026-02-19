@@ -78,13 +78,13 @@ export default function SessionStepReflection({
         </div>
       </div>
 
-      <div className="mt-8 space-y-2">
+      <div className="mt-14 space-y-2">
         <button
           onClick={handleAdvance}
           disabled={submitting}
-          className="w-full h-12 flex items-center justify-center text-sm font-medium transition-opacity disabled:opacity-50 hover:opacity-90 px-8 rounded-button"
+          className="w-full h-10 flex items-center justify-center text-sm font-medium transition-opacity disabled:opacity-50 hover:opacity-90 px-8 rounded-button"
           style={{
-            backgroundColor: 'var(--color-button-primary)',
+            backgroundColor: 'hsl(152 28% 16%)',
             color: 'var(--color-button-text)',
           }}
         >
