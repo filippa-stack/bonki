@@ -103,6 +103,7 @@ function CardEntry({ card, index, isCompleted = false, onNavigate, isLast = fals
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ delay: Math.min(0.08 + index * 0.05, 0.24), duration: 0.2, ease: [0.4, 0.0, 0.2, 1] }}
+      className={index > 0 ? 'mt-[48px]' : ''}
     >
       <div
         onClick={onNavigate}
@@ -111,7 +112,7 @@ function CardEntry({ card, index, isCompleted = false, onNavigate, isLast = fals
         onKeyDown={(e) => {
           if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onNavigate(); }
         }}
-        className="w-full cursor-pointer py-[20px] transition-opacity hover:opacity-70"
+        className="w-full cursor-pointer transition-opacity hover:opacity-70"
       >
         <h3
           className="text-subheading"
@@ -128,9 +129,6 @@ function CardEntry({ card, index, isCompleted = false, onNavigate, isLast = fals
           </p>
         )}
       </div>
-      {!isLast && (
-        <div className="h-px" style={{ backgroundColor: 'var(--color-ink)', opacity: 0.06 }} />
-      )}
     </motion.div>
   );
 }
