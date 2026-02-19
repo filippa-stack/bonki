@@ -196,6 +196,7 @@ export default function CardView() {
   }, [currentStepIndex, cardViewMode]);
 
   const [reviewOpen, setReviewOpen] = useState(false);
+  const [isExiting, setIsExiting] = useState(false);
   const sectionViewRef = useRef<SectionViewHandle>(null);
   
 
@@ -409,21 +410,42 @@ export default function CardView() {
   const currentSection = card.sections.find(s => s.type === STEP_ORDER[currentStepIndex]);
   const isLive = cardViewMode === 'live';
 
+  const exitBackTo = category ? `/category/${category.id}` : '/';
+
+  const handleSessionExit = () => {
+    if (isExiting) return;
+    setIsExiting(true);
+    setTimeout(() => navigate(exitBackTo), 300);
+  };
+
   return (
     <motion.div
       className="min-h-screen"
       style={{ backgroundColor: 'var(--color-bg-base)' }}
       initial={isLive ? { opacity: 0, scale: 0.97 } : false}
-      animate={{ opacity: 1, scale: 1 }}
-      transition={{ duration: 0.28, ease: [0, 0, 0.2, 1] }}
+      animate={isExiting ? { opacity: 0, scale: 0.97 } : { opacity: 1, scale: 1 }}
+      transition={{ duration: isExiting ? 0.3 : 0.28, ease: [0.4, 0.0, 0.2, 1] }}
     >
       <StageInterstitial visible={showInterstitial} />
       <Header
         title={category?.title}
         showBack
-        backTo={category ? `/category/${category.id}` : '/'}
+        backTo={exitBackTo}
         variant="immersive"
       />
+
+      {/* Subtle exit button */}
+      {isLive && (
+        <div className="px-6 pt-2">
+          <button
+            onClick={handleSessionExit}
+            className="text-[14px] transition-opacity hover:opacity-70"
+            style={{ color: 'var(--color-text-secondary)' }}
+          >
+            Tillbaka
+          </button>
+        </div>
+      )}
 
       {/* Step progress — neutral text only */}
       {cardViewMode === 'live' && (
