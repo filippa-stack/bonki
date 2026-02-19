@@ -45,7 +45,13 @@ export default function Categories() {
     <div className="min-h-screen" style={{ backgroundColor: 'var(--color-bg-base)' }}>
       <Header showBack backTo="/" />
 
-      <div className="px-6 pt-[80px] pb-[80px]">
+      <div className="px-6 pt-[64px] pb-[80px]">
+        <h1
+          className="text-[24px] font-medium mb-[40px]"
+          style={{ color: 'var(--color-text-primary)' }}
+        >
+          Välj samtalsområde
+        </h1>
         {sortedCategories.map((category, index) => {
           const catCards = cards.filter((c) => c.categoryId === category.id);
           const allExplored = catCards.length > 0 && catCards.every((c) => exploredIds.includes(c.id));
