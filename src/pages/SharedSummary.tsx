@@ -26,6 +26,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { toast } from 'sonner';
+import { toastSuccessOnce, toastErrorOnce } from '@/lib/toastOnce';
 
 export interface SharedNoteRow {
   id: string;
@@ -55,13 +56,13 @@ export default function SharedSummary() {
     setInviteLoading(true);
     try {
       const info = await fetchInviteInfo();
-      if (!info) { toast.error('Kunde inte hämta inbjudan'); return; }
+      if (!info) { toastErrorOnce('copy_link_fail', 'Kunde inte hämta inbjudan'); return; }
       const link = `${window.location.origin}/join?token=${info.invite_token}`;
       if (navigator.share) {
         try { await navigator.share({ title: 'Still Us', text: link }); return; } catch (e) { if ((e as Error).name === 'AbortError') return; }
       }
       await navigator.clipboard.writeText(link);
-      toast.success('Länk kopierad');
+      toastSuccessOnce('copy_link', 'Länk kopierad');
     } finally {
       setInviteLoading(false);
     }

@@ -33,6 +33,7 @@ import { Button } from '@/components/ui/button';
 import { useThemeVars } from '@/hooks/useThemeVars';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
+import { toastSuccessOnce, toastErrorOnce } from '@/lib/toastOnce';
 import { useDevState } from '@/contexts/DevStateContext';
 import { useAppMode } from '@/hooks/useAppMode';
 import { useNormalizedSessionContext } from '@/contexts/NormalizedSessionContext';
@@ -340,10 +341,10 @@ export default function Home() {
           onCreateNewSpace={async () => {
             const result = await switchToNewSpace();
             if (result.ok) {
-              toast.success('Nytt utrymme skapat.');
+              toastSuccessOnce('new_space', 'Nytt utrymme skapat.');
               navigate('/');
             } else {
-              toast.error('Kunde inte skapa nytt utrymme.');
+              toastErrorOnce('new_space_fail', 'Kunde inte skapa nytt utrymme.');
             }
           }}
           onLeavePartner={async () => {
@@ -356,10 +357,10 @@ export default function Home() {
                 headers: { Authorization: `Bearer ${accessToken}` },
                 body: {},
               });
-              toast.success('Kopplingen till din partner är avslutad.');
+              toastSuccessOnce('leave_partner', 'Kopplingen till din partner är avslutad.');
               navigate('/', { replace: true });
             } catch {
-              toast.error('Något gick fel. Försök igen.');
+              toastErrorOnce('leave_partner_fail', 'Något gick fel. Försök igen.');
             }
           }}
         />
