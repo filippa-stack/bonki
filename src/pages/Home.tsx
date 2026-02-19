@@ -190,50 +190,30 @@ export default function Home() {
 
       <div className="flex-1">
         <Header showBackgroundPicker={false} showBackupManager={false} showSaveIndicator={false} />
-        {/* Confidence Check — dev-only chip, right-aligned, subtle */}
-        {mode !== 'active' && (
-          <div className="flex justify-end px-6 pt-3">
-            <ConfidenceCheckPanel />
-          </div>
-        )}
 
         {/* Loading skeleton */}
         {mode === 'loading' && (
-          <div className="px-6 pt-8 pb-8">
+          <div className="px-6 pt-[120px] pb-[80px]">
             <div className="h-14 rounded-card bg-muted/20 animate-pulse" />
           </div>
         )}
 
-        {/* ═══ ACTIVE — single dominant resume surface ═══ */}
+        {/* ═══ ACTIVE — single centered session module ═══ */}
         {mode === 'active' && normalizedSession.cardId && (() => {
           const activeCard = getCardById(normalizedSession.cardId!);
           const activeCategory = activeCard ? getCategoryById(activeCard.categoryId) : null;
-          const totalSteps = 4;
-          const completedSteps = Math.min(normalizedSession.currentStepIndex, totalSteps);
           if (!activeCard || !activeCategory) return null;
           return (
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.2 }}
-              className="px-6 pt-title-above pb-16 flex flex-col"
+              className="px-6 pt-[120px] pb-[80px] flex flex-col items-center justify-center"
             >
-              {/* Resume card */}
-              <div
-                className="rounded-card p-8 mb-8"
-                style={{ backgroundColor: 'var(--color-surface-secondary)' }}
-              >
-                {/* Label */}
+              <div className="w-full max-w-sm text-center space-y-8">
+                {/* Category — subtle context */}
                 <p
-                  className="text-xs uppercase tracking-widest font-medium mb-6"
-                  style={{ color: 'var(--color-text-secondary)' }}
-                >
-                  Pågående samtal
-                </p>
-
-                {/* Category */}
-                <p
-                  className="text-sm mb-1"
+                  className="text-meta tracking-wide"
                   style={{ color: 'var(--color-text-secondary)' }}
                 >
                   {activeCategory.title}
@@ -241,26 +221,11 @@ export default function Home() {
 
                 {/* Card title — dominant */}
                 <h2
-                  className="text-display mb-8"
+                  className="text-display"
                   style={{ color: 'var(--color-text-primary)' }}
                 >
                   {activeCard.title}
                 </h2>
-
-                {/* Neutral grey progress — dots only */}
-                <div className="flex items-center gap-2 mb-8">
-                  {Array.from({ length: totalSteps }).map((_, i) => (
-                    <div
-                      key={i}
-                      className="h-1 flex-1 rounded-full"
-                      style={{
-                        backgroundColor: i < completedSteps
-                          ? '#9CA3AF'
-                          : '#E5E7EB',
-                      }}
-                    />
-                  ))}
-                </div>
 
                 {/* Primary action */}
                 <button
@@ -279,143 +244,47 @@ export default function Home() {
           );
         })()}
 
-        {/* ═══ IDLE — Recommended + Category Grid ═══ */}
+        {/* ═══ IDLE — quiet single CTA ═══ */}
         {mode === 'idle' && (
           <motion.div
-            id="category-section"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 0.15 }}
-            className="px-6 mt-title-above"
+            transition={{ duration: 0.2 }}
+            className="px-6 pt-[120px] pb-[80px] flex flex-col items-center justify-center"
           >
-            {/* Category list — recommended first, then the rest */}
-            <div className="flex flex-col gap-4 pb-16">
-              {(() => {
-                const recCat = recommendedCategoryId ? getCategoryById(recommendedCategoryId) : null;
-                const rest = categories.filter((c) => c.id !== recommendedCategoryId);
-                return (
-                  <>
-                    {recCat && (
-                      <div>
-                        <div
-                          onClick={() => { markNavigated(); navigate(`/category/${recCat.id}`); }}
-                          className="cursor-pointer rounded-card p-6 transition-opacity hover:opacity-90"
-                          style={{
-                            backgroundColor: 'var(--color-surface)',
-                            border: 'var(--border-card)',
-                          }}
-                        >
-                          <h3
-                            className="text-heading mb-1"
-                            style={{ color: 'var(--color-text-primary)' }}
-                          >
-                            {recCat.title}
-                          </h3>
-                          {recCat.entryLine && (
-                            <p className="text-sm leading-relaxed" style={{ color: 'var(--color-text-secondary)' }}>
-                              {recCat.entryLine}
-                            </p>
-                          )}
-                        </div>
-                      </div>
-                    )}
-                    {rest.map((category, index) => (
-                      <CategoryCard
-                        key={category.id}
-                        category={category}
-                        onClick={() => navigate(`/category/${category.id}`)}
-                        index={index}
-                        highlighted={false}
-                        isCompleted={getCategoryStatus(category.id) === 'explored'}
-                        isFeatured={false}
-                      />
-                    ))}
-                  </>
-                );
-              })()}
+            <div className="w-full max-w-sm text-center space-y-16">
+              <button
+                onClick={() => {
+                  markNavigated();
+                  if (recommendedCardId) {
+                    const card = getCardById(recommendedCardId);
+                    if (card) navigate(`/category/${card.categoryId}`);
+                    else navigate(`/card/${recommendedCardId}`);
+                  } else if (categories[0]) {
+                    navigate(`/category/${categories[0].id}`);
+                  }
+                }}
+                className="w-full h-14 rounded-button flex items-center justify-center gap-2 text-sm font-medium transition-opacity hover:opacity-90"
+                style={{
+                  backgroundColor: 'var(--color-button-primary)',
+                  color: 'var(--color-button-text)',
+                }}
+              >
+                Starta ett samtal
+                <ArrowRight className="w-4 h-4" />
+              </button>
+
+              {/* Subtle archive link */}
+              <button
+                onClick={() => navigate('/saved')}
+                className="text-meta transition-colors hover:text-foreground"
+                style={{ color: 'var(--color-text-secondary)', opacity: 0.5 }}
+              >
+                Arkiv
+              </button>
             </div>
           </motion.div>
         )}
-
-        {/* Relationship Memory — last completed card */}
-        {(() => {
-          const lastCompletedId = snapshotLastCompletedCardId;
-          const lastCard = lastCompletedId ? getCardById(lastCompletedId) : null;
-          const lastCategory = lastCard ? getCategoryById(lastCard.categoryId) : null;
-          const lastActivity = snapshotLastActivityAt;
-          if (lastCard && lastCategory && lastActivity) {
-            return (
-              <RelationshipMemory
-                cardTitle={lastCard.title}
-                categoryTitle={lastCategory.title}
-                completedAt={lastActivity.toISOString()}
-              />
-            );
-          }
-          return null;
-        })()}
-
-        {/* Navigation links */}
-        {mode !== 'active' && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.15 }}
-            className="px-6 pt-8 pb-8 mt-4 space-y-2"
-          >
-            <button
-              onClick={() => navigate('/shared')}
-              className="w-full flex items-center gap-3 py-3 text-muted-foreground hover:text-foreground transition-colors"
-            >
-              <Share2 className="w-4 h-4" />
-              <span className="text-sm">{t('shared.title')}</span>
-            </button>
-
-            {savedConversations.length > 0 && (
-              <button
-                onClick={() => navigate('/saved')}
-                className="w-full flex items-center gap-3 py-3 text-muted-foreground hover:text-foreground transition-colors"
-              >
-                <Bookmark className="w-4 h-4" />
-                <span className="text-sm">
-                  {t('home.saved_conversations', { count: savedConversations.length })}
-                </span>
-              </button>
-            )}
-          </motion.div>
-        )}
-
-        {/* Notification preferences */}
-        <NotiserSection />
-
-        {/* Relation & space settings */}
-        <RelationSettings
-          onCreateNewSpace={async () => {
-            const result = await switchToNewSpace();
-            if (result.ok) {
-              toastSuccessOnce('new_space', 'Nytt utrymme skapat.');
-              navigate('/');
-            } else {
-              toastErrorOnce('new_space_fail', 'Kunde inte skapa nytt utrymme.');
-            }
-          }}
-          onLeavePartner={async () => {
-            if (!space?.id) return;
-            try {
-              const { data: sessionData } = await supabase.auth.getSession();
-              const accessToken = sessionData?.session?.access_token;
-              if (!accessToken) return;
-              await supabase.functions.invoke('leave-and-create-new-space', {
-                headers: { Authorization: `Bearer ${accessToken}` },
-                body: {},
-              });
-              toastSuccessOnce('leave_partner', 'Kopplingen till din partner är avslutad.');
-              navigate('/', { replace: true });
-            } catch {
-              toastErrorOnce('leave_partner_fail', 'Något gick fel. Försök igen.');
-            }
-          }}
-        />
       </div>
       <Footer />
     </div>
