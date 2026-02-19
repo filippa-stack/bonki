@@ -80,10 +80,10 @@
     --card-sub-shadow: 0 1px 4px 0 hsl(0 0% 0% / 0.02);
 
     /* Note surfaces */
-    --note-bg: 0 0% 100%;
-    --note-border: 36 18% 80%;
-    --note-text: 0 0% 12%;
-    --note-placeholder: 30 5% 65%;
+    --note-bg: #EDE8E2;
+    --note-border: #D6D1C9;
+    --note-text: 30 3% 10%;
+    --note-placeholder: #8C8681;
 
     /* Category colors — neutral, no teal */
     --category-emotional: 30 15% 70%;
