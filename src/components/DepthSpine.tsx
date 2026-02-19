@@ -22,7 +22,7 @@ export default function DepthSpine({ totalSteps, currentStepIndex }: DepthSpineP
               width: 8,
               height: 8,
               backgroundColor: 'var(--color-ink)',
-              opacity: isCurrent ? 0.5 : isCompleted ? 0.2 : 0.08,
+              opacity: isCurrent ? 0.35 : isCompleted ? 0.15 : 0.06,
               transition: 'opacity 150ms ease',
             }}
           />
