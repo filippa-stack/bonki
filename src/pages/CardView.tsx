@@ -513,9 +513,21 @@ export default function CardView() {
     <motion.div
       className="min-h-screen"
       style={{ backgroundColor: 'var(--color-bg-base)' }}
-      initial={isLive && !suppressEntryAnim ? { opacity: 0, scale: 0.97 } : false}
+      initial={
+        suppressEntryAnim
+          ? { opacity: 0 }
+          : isLive
+            ? { opacity: 0, scale: 0.97 }
+            : false
+      }
       animate={isExiting ? { opacity: 0, scale: 0.97 } : { opacity: 1, scale: 1 }}
-      transition={{ duration: isExiting ? 0.3 : 0.28, ease: [0.4, 0.0, 0.2, 1] }}
+      transition={
+        isExiting
+          ? { duration: 0.3, ease: [0.4, 0.0, 0.2, 1] }
+          : suppressEntryAnim
+            ? { duration: 0.12, ease: [0.4, 0.0, 0.2, 1] }
+            : { duration: 0.28, ease: [0.4, 0.0, 0.2, 1] }
+      }
     >
       <StageInterstitial visible={showInterstitial} />
       <Header
