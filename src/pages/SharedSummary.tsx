@@ -331,7 +331,7 @@ export default function SharedSummary() {
                    <SectionLabel>Er resa tillsammans</SectionLabel>
                    <p className="text-[12px] text-foreground/60 text-center mb-8">Så här har ni rört er hittills.</p>
                    <div className="space-y-4">
-                    <p className="text-xs text-muted-foreground/50 text-center">
+                    <p className="text-xs text-muted-foreground/50 text-center mb-[10px]">
                       {exploredCount === 0
                         ? 'Ni har inte börjat ännu.'
                         : `${exploredCount} samtal tillsammans.`}
