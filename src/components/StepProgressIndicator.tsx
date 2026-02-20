@@ -55,10 +55,10 @@ export default function StepProgressIndicator({
             )}
             style={{
               backgroundColor: isCurrent
-                ? 'hsl(var(--foreground) / 0.5)'
+                ? 'hsl(var(--foreground) / 0.25)'
                 : isCompleted
-                  ? 'hsl(var(--foreground) / 0.15)'
-                  : 'hsl(var(--foreground) / 0.07)',
+                  ? 'hsl(var(--foreground) / 0.10)'
+                  : 'hsl(var(--foreground) / 0.04)',
             }}
           />
         );
