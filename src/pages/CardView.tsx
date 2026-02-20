@@ -419,17 +419,15 @@ export default function CardView() {
         <Header title={category?.title} showBack backTo="/" />
         <div className="px-6 pt-title-above pb-16">
 
-          {/* Heading — exhale moment */}
+          {/* Heading — grounded, intentional */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: BEAT_3, ease: EASE }}
-            className="text-center max-w-md mx-auto space-y-4"
+            className="text-center max-w-md mx-auto"
+            style={{ paddingTop: 24 }}
           >
-            <h2 className="text-display text-foreground">Ta en stund.</h2>
-            <p className="text-body text-muted-foreground leading-relaxed">
-              Det ni just delade får landa. Här kan ni skriva en gemensam sammanfattning om ni vill.
-            </p>
+            <h2 className="text-display text-foreground">Det ni just gjorde betyder något.</h2>
           </motion.div>
 
           {/* Takeaway input */}
@@ -437,28 +435,27 @@ export default function CardView() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: BEAT_1, duration: BEAT_3, ease: EASE }}
-            className="max-w-md mx-auto mt-16 space-y-3"
+            className="max-w-md mx-auto mt-10 space-y-3"
           >
             <p className="text-body text-muted-foreground/70 text-center leading-relaxed">
-              Vill ni formulera något att ta med er?
+              Vad vill ni bära med er?
             </p>
             <SessionTakeaway sessionId={activeSessionId} />
           </motion.div>
 
-          {/* CTA — large breathing room before asking user to leave */}
+          {/* CTA — exhale pause before exit */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: BEAT_3, duration: BEAT_3, ease: EASE }}
-            className="max-w-md mx-auto mt-24 space-y-6 text-center"
+            className="max-w-md mx-auto mt-16 text-center"
           >
-            <p className="text-xs text-muted-foreground/40">Ni kan alltid komma tillbaka.</p>
             <Button
               onClick={() => navigate(postCompletionDestination)}
               size="lg"
               className="w-full h-14 rounded-card font-normal"
             >
-              Tillbaka till översikten
+              Tillbaka
             </Button>
           </motion.div>
 
