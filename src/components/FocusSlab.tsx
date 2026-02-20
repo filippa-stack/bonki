@@ -65,12 +65,12 @@ export default function FocusSlab() {
       className="cursor-pointer"
       style={{
         borderRadius: '24px',
-        padding: '32px 28px',
-        minHeight: '140px',
-        maxHeight: '148px',
+        padding: '28px 28px 24px',
+        minHeight: '148px',
+        maxHeight: '160px',
         display: 'flex',
         flexDirection: 'column',
-        justifyContent: 'space-between',
+        justifyContent: 'flex-start',
         background: 'hsl(var(--muted) / 0.38)',
         boxShadow: '0 6px 20px hsl(var(--foreground) / 0.08)',
         transition: 'transform 120ms ease-out, box-shadow 120ms ease-out',
@@ -108,7 +108,7 @@ export default function FocusSlab() {
       </h2>
 
       {/* Button — subdued, doesn't compete with slab */}
-      <div className="mt-auto pt-3">
+      <div className="mt-auto pt-5">
         <span
           className="inline-flex items-center px-4 text-[12px] font-medium"
           style={{
