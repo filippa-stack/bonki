@@ -65,9 +65,9 @@ export default function SessionStepReflection({
       <div
         className="overflow-hidden"
         style={{
-          border: '0.5px solid hsl(var(--border) / 0.15)',
+          border: '0.5px solid hsl(var(--border) / 0.06)',
           borderRadius: '24px',
-          backgroundColor: 'transparent',
+          backgroundColor: 'hsl(30 10% 95% / 0.45)',
           padding: '32px 36px',
         }}
       >
