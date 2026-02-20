@@ -96,7 +96,7 @@ export default function DevModeBadge() {
         onClick={() => setOpen((v) => !v)}
         className="pointer-events-auto flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-mono tracking-wider bg-black/60 text-white/80 backdrop-blur-sm hover:bg-black/80 transition-colors"
       >
-        DEV MODE · {devState}
+        DEV TOOLS{devState ? ` · ${devState}` : ''}
         {open ? <ChevronDown className="w-3 h-3" /> : <ChevronUp className="w-3 h-3" />}
       </button>
     </div>
