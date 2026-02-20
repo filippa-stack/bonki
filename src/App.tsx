@@ -21,6 +21,8 @@ import SavedConversations from "./pages/SavedConversations";
 import SharedSummary from "./pages/SharedSummary";
 import Login from "./pages/Login";
 import NotFound from "./pages/NotFound";
+import ScreenshotExport from "./pages/ScreenshotExport";
+import { useCaptureController } from "@/hooks/useCaptureController";
 
 const queryClient = new QueryClient();
 
@@ -80,6 +82,8 @@ function RemoteCardCueGlobal() {
 
 function AppRoutes() {
   const { user, loading } = useAuth();
+  // Runs during capture loop — detects __sc_step and auto-advances
+  useCaptureController();
 
   if (loading) {
     return (
@@ -97,6 +101,7 @@ function AppRoutes() {
   return (
     <Routes>
       <Route path="/login" element={user ? <Navigate to="/" replace /> : <Login />} />
+      <Route path="/screenshot-export" element={<ScreenshotExport />} />
       <Route path="/*" element={<ProtectedRoutes />} />
     </Routes>
   );
