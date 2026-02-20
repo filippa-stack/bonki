@@ -44,12 +44,12 @@ export default function Category() {
     <div className="min-h-screen" style={{ backgroundColor: 'var(--color-bg-base)' }}>
       <Header showBack backTo="/" />
 
-      <div className="px-6 pt-title-above pb-4">
+      <div className="px-6 pt-title-above pb-0">
         <motion.h1
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.28, ease: [0.4, 0.0, 0.2, 1] }}
-          className="text-display"
+          className="font-serif text-[32px] font-semibold leading-[1.2]"
           style={{ color: 'var(--color-text-primary)' }}
         >
           {category.title}
@@ -59,15 +59,15 @@ export default function Category() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: BEAT_1, duration: 0.2, ease: EASE }}
-            className="text-body mt-[14px] max-w-md"
-            style={{ color: 'var(--color-text-secondary)', opacity: 0.6 }}
+            className="text-body mt-[10px] max-w-md"
+            style={{ color: 'var(--color-text-secondary)', opacity: 0.45 }}
           >
             {category.entryLine}
           </motion.p>
         )}
       </div>
 
-      <div className="px-6 pt-[32px] pb-[80px]">
+      <div className="px-6 pt-[24px] pb-[80px]">
         {cards.map((card, index) => (
           <CardEntry
             key={card.id}
