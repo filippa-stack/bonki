@@ -124,8 +124,8 @@ function CardEntry({ card, index, isCompleted = false, onNavigate }: CardEntryPr
           </h3>
           {card.subtitle && (
             <p
-              className="text-[13px] mt-0.5 leading-relaxed"
-              style={{ color: 'var(--color-text-secondary)', opacity: 0.4 }}
+              className="text-[12px] mt-px leading-relaxed"
+              style={{ color: 'var(--color-text-secondary)', opacity: 0.32 }}
             >
               {card.subtitle}
             </p>
