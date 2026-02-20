@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation, useSearchParams } from 'react-router-dom';
 import { useDevState } from '@/contexts/DevStateContext';
 import { ChevronUp, ChevronDown } from 'lucide-react';
 
@@ -45,9 +45,11 @@ export default function DevModeBadge() {
   const devState = useDevState();
   const navigate = useNavigate();
   const location = useLocation();
+  const [searchParams] = useSearchParams();
   const [open, setOpen] = useState(false);
 
-  if (!IS_DEV_BUILD) return null;
+  // Hide during screenshot capture
+  if (!IS_DEV_BUILD || searchParams.has('__sc_step')) return null;
 
   const currentDevState = devState ?? 'solo';
 
