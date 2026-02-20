@@ -96,8 +96,12 @@ export default function Categories() {
                   onKeyDown={(e) => {
                     if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); navigate(`/category/${category.id}`); }
                   }}
-                  className="w-full cursor-pointer min-h-[44px] flex flex-col justify-center rounded-sm px-2 transition-[background-color,padding-left] duration-[120ms] ease-out hover:bg-black/[0.03] hover:pl-[14px] active:bg-black/[0.05] active:duration-[80ms]"
+                  className="relative w-full cursor-pointer min-h-[44px] flex flex-col justify-center rounded-sm px-2 transition-[background-color,padding-left] duration-[120ms] ease-out hover:bg-black/[0.03] hover:pl-[14px] active:bg-black/[0.05] active:duration-[80ms]"
                 >
+                  <span
+                    className="absolute right-2 top-1/2 -translate-y-1/2 w-3 h-px"
+                    style={{ backgroundColor: 'var(--color-text-primary)', opacity: 0.4 }}
+                  />
                   <div className="flex items-baseline gap-3">
                     <h3
                       className={`text-[20px] leading-snug flex-1 ${isGuided ? 'font-semibold' : 'font-medium'}`}
