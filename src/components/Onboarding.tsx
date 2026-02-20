@@ -84,7 +84,7 @@ export default function Onboarding() {
         >
           <button
             onClick={isLastSlide ? handleComplete : handleNext}
-            className="btn-gentle w-full max-w-xs"
+            className="cta-primary"
           >
             {slides[currentSlide].cta}
           </button>

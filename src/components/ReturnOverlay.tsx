@@ -21,15 +21,14 @@ export default function ReturnOverlay({ onResume, onStartNew, onBrowse }: Return
         <h2 className="text-xl font-serif text-foreground">
           Vill ni ta upp tråden igen?
         </h2>
-        <div className="space-y-3 pt-2">
-          <Button size="lg" className="w-full gap-2" onClick={onResume}>
-            Fortsätt där vi var
-            <ArrowRight className="w-4 h-4" />
-          </Button>
-          <Button variant="outline" size="lg" className="w-full" onClick={onStartNew}>
-            Börja något nytt
-          </Button>
-        </div>
+          <div className="flex flex-col items-center space-y-3 pt-2">
+            <button className="cta-primary" onClick={onResume}>
+              Fortsätt där vi var
+            </button>
+            <button className="cta-primary" style={{ backgroundColor: 'transparent', color: 'var(--color-text-primary)', border: '1px solid hsl(var(--border))' }} onClick={onStartNew}>
+              Börja något nytt
+            </button>
+          </div>
         <button
           onClick={onBrowse}
           className="text-xs text-muted-foreground hover:text-foreground transition-colors"

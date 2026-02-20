@@ -29,9 +29,9 @@ export default function PurchaseScreen({ onPurchaseComplete }: PurchaseScreenPro
         >
           <img src={bonkiLogo} alt="Still Us" className="h-10 w-auto mx-auto" />
           <h1 className="text-display text-foreground">Det här utrymmet är redan aktiverat.</h1>
-          <Button onClick={onPurchaseComplete} className="w-full h-12 text-base font-medium">
+          <button onClick={onPurchaseComplete} className="cta-primary">
             Fortsätt
-          </Button>
+          </button>
         </motion.div>
       </div>
     );
@@ -98,14 +98,14 @@ export default function PurchaseScreen({ onPurchaseComplete }: PurchaseScreenPro
           transition={{ duration: 0.15, delay: BEAT_2 }}
           className="space-y-3"
         >
-          <Button
+          <button
             onClick={handlePurchase}
             disabled={processing || completed}
-            className="w-full h-12 text-base font-medium gap-2"
+            className="cta-primary gap-2"
           >
             {completed ? (
               <>
-                <Check className="w-5 h-5" />
+                <Check className="w-4 h-4" />
                 {t('purchase.complete', 'Klart!')}
               </>
             ) : processing ? (
@@ -113,7 +113,7 @@ export default function PurchaseScreen({ onPurchaseComplete }: PurchaseScreenPro
             ) : (
               t('purchase.buy_button', 'Lås upp för 299 kr')
             )}
-          </Button>
+          </button>
 
         </motion.div>
       </motion.div>
