@@ -77,7 +77,7 @@ export default function Header({
         boxShadow: 'none',
       }}
     >
-      <div className="relative flex items-center justify-between px-6" style={{ height: isImmersive ? '2.5rem' : '3.75rem' }}>
+      <div className="relative flex items-center justify-between px-6" style={{ height: isImmersive ? '2.125rem' : '3.75rem' }}>
         {/* ── Left: Logo ── */}
         <div className="flex items-center gap-3 flex-1 min-w-0">
           {isImmersive && onImmersiveBack && (
@@ -107,7 +107,7 @@ export default function Header({
 
         {/* ── Center: Session title (immersive only) ── */}
         {isImmersive && title && (
-          <h1 className="font-serif text-lg font-medium truncate text-white absolute left-1/2 -translate-x-1/2 max-w-[50%] text-center pointer-events-none">
+          <h1 className="font-serif text-base font-medium truncate text-white absolute left-1/2 -translate-x-1/2 max-w-[50%] text-center pointer-events-none">
             {title}
           </h1>
         )}
@@ -142,12 +142,17 @@ export default function Header({
           {isImmersive && onLeaveSession && (
             <button
               onClick={onLeaveSession}
-              className="text-[12px] font-sans whitespace-nowrap shrink-0 mr-2 transition-opacity hover:opacity-100"
+              className="text-[11px] font-sans whitespace-nowrap shrink-0 mr-2 no-underline hover:underline underline-offset-4"
               style={{
                 color: 'hsl(0 0% 100%)',
-                opacity: 0.6,
+                opacity: 0.55,
                 fontWeight: 400,
+                textDecorationColor: 'hsl(0 0% 100% / 0.3)',
+                textDecorationThickness: '1px',
+                transition: 'opacity 150ms ease',
               }}
+              onMouseEnter={(e) => { e.currentTarget.style.opacity = '0.85'; }}
+              onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.55'; }}
             >
               Lämna samtalet
             </button>
