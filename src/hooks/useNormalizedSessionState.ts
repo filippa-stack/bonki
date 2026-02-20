@@ -3,7 +3,7 @@
 // The JSON session model is deprecated.
 // All session state must come from normalized tables.
 
-import { useEffect, useState, useCallback, useRef } from 'react';
+import { useEffect, useState, useCallback, useRef, useMemo } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { useCoupleSpaceContext } from '@/contexts/CoupleSpaceContext';
@@ -116,5 +116,8 @@ export function useNormalizedSessionState(): NormalizedSessionState {
     };
   }, [userId, spaceId, debouncedRefetch]);
 
-  return { ...state, loading, refetch: fetchState };
+  return useMemo(
+    () => ({ ...state, loading, refetch: fetchState }),
+    [state, loading, fetchState]
+  );
 }
