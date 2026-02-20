@@ -40,6 +40,7 @@ interface HeaderProps {
   showBackupManager?: boolean;
   variant?: 'default' | 'immersive';
   onImmersiveBack?: () => void;
+  onLeaveSession?: () => void;
 }
 
 export default function Header({
@@ -51,6 +52,7 @@ export default function Header({
   showBackupManager = true,
   variant = 'default',
   onImmersiveBack,
+  onLeaveSession,
 }: HeaderProps) {
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -75,7 +77,8 @@ export default function Header({
         boxShadow: 'none',
       }}
     >
-      <div className="flex items-center justify-between px-6" style={{ height: isImmersive ? '2.5rem' : '3.75rem' }}>
+      <div className="relative flex items-center justify-between px-6" style={{ height: isImmersive ? '2.5rem' : '3.75rem' }}>
+        {/* ── Left: Logo ── */}
         <div className="flex items-center gap-3 flex-1 min-w-0">
           {isImmersive && onImmersiveBack && (
             <button
@@ -94,13 +97,22 @@ export default function Header({
               onClick={() => navigate('/', { replace: false })}
             />
           )}
-          {title && (
-            <h1 className={`font-serif text-lg font-medium truncate ${isImmersive ? 'text-white' : 'text-foreground'}`}>
+          {/* Show title inline for default mode */}
+          {!isImmersive && title && (
+            <h1 className="font-serif text-lg font-medium truncate text-foreground">
               {title}
             </h1>
           )}
         </div>
 
+        {/* ── Center: Session title (immersive only) ── */}
+        {isImmersive && title && (
+          <h1 className="font-serif text-lg font-medium truncate text-white absolute left-1/2 -translate-x-1/2 max-w-[50%] text-center pointer-events-none">
+            {title}
+          </h1>
+        )}
+
+        {/* ── Right ── */}
         <div className="flex items-center gap-2 sm:gap-4 min-w-0 flex-1 justify-end">
           {showSaveIndicator && (
             <div className="flex items-center gap-2 min-h-[20px]">
@@ -122,7 +134,25 @@ export default function Header({
               />
             </div>
           )}
-          <SharedSpaceLink isImmersive={isImmersive} />
+
+          {/* Hide shared space link in immersive/session mode */}
+          {!isImmersive && <SharedSpaceLink isImmersive={false} />}
+
+          {/* Leave session button (immersive only) */}
+          {isImmersive && onLeaveSession && (
+            <button
+              onClick={onLeaveSession}
+              className="text-[12px] font-sans whitespace-nowrap shrink-0 mr-2 transition-opacity hover:opacity-100"
+              style={{
+                color: 'hsl(0 0% 100%)',
+                opacity: 0.6,
+                fontWeight: 400,
+              }}
+            >
+              Lämna samtalet
+            </button>
+          )}
+
           <Popover>
             <PopoverTrigger asChild>
               <Button variant="ghost" size="icon" className={isImmersive ? 'text-white/70 hover:text-white hover:bg-white/10' : 'text-muted-foreground/60 hover:text-muted-foreground'}>
