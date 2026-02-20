@@ -249,15 +249,23 @@ export default function CompletedSessionView({
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: BEAT_3, duration: BEAT_3, ease: EASE }}
-            className="mt-16 space-y-4 text-center"
+            className="mt-12 text-center"
           >
-            <p className="text-xs text-muted-foreground/40">Ni kan alltid komma tillbaka.</p>
+          <div className="space-y-5">
             <button
-              onClick={onExploreAgain}
+              onClick={() => navigate('/shared')}
               className="cta-primary"
             >
-              Tillbaka till översikten
+              Till vårt utrymme
             </button>
+            <button
+              onClick={() => navigate('/categories')}
+              className="block w-full text-sm transition-opacity hover:opacity-70"
+              style={{ color: 'var(--color-text-secondary)', opacity: 0.55 }}
+            >
+              Utforska fler ämnen
+            </button>
+          </div>
           </motion.div>
 
         </div>
