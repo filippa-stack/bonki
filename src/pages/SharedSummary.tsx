@@ -325,9 +325,9 @@ export default function SharedSummary() {
                    initial={{ opacity: 0 }}
                    animate={{ opacity: 1 }}
                    transition={{ delay: BEAT_3, duration: 0.15 }}
-                   className="mb-16 mt-16"
+                   className="mb-16 mt-[88px]"
                  >
-                   <div className="border-t border-foreground/[0.08] mb-8" />
+
                    <SectionLabel>Er resa tillsammans</SectionLabel>
                    <p className="text-[12px] text-foreground/60 text-center mb-8">Så här har ni rört er hittills.</p>
                    <div className="space-y-4">
