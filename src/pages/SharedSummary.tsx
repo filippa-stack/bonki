@@ -233,9 +233,9 @@ export default function SharedSummary() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.15 }}
-            className="pt-16 text-center"
+            className="pt-8 pb-24 text-center"
           >
-            <p className="text-[17px] font-medium text-foreground/70 leading-relaxed mt-12">
+            <p className="text-[17px] font-medium text-foreground/70 leading-relaxed mt-6">
               Här växer det ni delar.
             </p>
             <p className="text-sm leading-relaxed text-muted-foreground/57 mt-7">
