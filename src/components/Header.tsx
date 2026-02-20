@@ -74,7 +74,7 @@ export default function Header({
       className={`sticky top-0 z-10 ${isImmersive ? '' : 'backdrop-blur-md border-b border-black/[0.04]'}`}
       style={{
         backgroundColor: isImmersive ? 'var(--session-header-bg)' : 'hsl(var(--surface-chrome) / 0.85)',
-        filter: isImmersive ? 'saturate(0.98)' : undefined,
+        filter: isImmersive ? 'saturate(0.85) brightness(0.95)' : undefined,
         boxShadow: 'none',
       }}
     >
@@ -118,7 +118,7 @@ export default function Header({
 
         {/* ── Center: Session title (immersive only) ── */}
         {isImmersive && title && (
-          <h1 className="font-serif text-[14.5px] font-medium truncate text-white absolute left-1/2 -translate-x-1/2 max-w-[50%] text-center pointer-events-none">
+          <h1 className="font-serif text-[13px] font-normal truncate text-white/70 absolute left-1/2 -translate-x-1/2 max-w-[50%] text-center pointer-events-none">
             {title}
           </h1>
         )}
