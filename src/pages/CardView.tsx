@@ -552,18 +552,18 @@ export default function CardView() {
     return (
       <motion.div
         className="min-h-screen page-bg"
-        initial={{ opacity: 0, scale: 1.02 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.28, ease: [0, 0, 0.2, 1] }}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.32, ease: [0.4, 0, 0.2, 1] }}
       >
         <Header title={category?.title} showBack backTo="/" />
         <div className="px-6 pt-title-above pb-16">
 
           {/* Heading — grounded, intentional */}
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: BEAT_3, ease: EASE }}
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.32, ease: [0.4, 0, 0.2, 1] }}
             className="text-center max-w-md mx-auto"
             style={{ paddingTop: 24 }}
           >
@@ -587,7 +587,7 @@ export default function CardView() {
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: BEAT_3, duration: BEAT_3, ease: EASE }}
+            transition={{ delay: 0.12, duration: 0.32, ease: [0.4, 0, 0.2, 1] }}
             className="max-w-md mx-auto mt-16 flex flex-col items-center"
           >
             <button
