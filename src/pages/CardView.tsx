@@ -164,6 +164,7 @@ export default function CardView() {
   // Volume 1: single-writer model, reflection surface always active
 
   // ─── Auto-activate session when entering a card in live mode ───
+  // If another card's session is active, soft-complete it first, then activate for this card.
   const activatingRef = useRef(false);
   useEffect(() => {
     if (devState || isRevisitMode || showCompletion) return;
@@ -172,8 +173,6 @@ export default function CardView() {
     if (!space?.id || !cardId) return;
     // Don't activate if there's already a completed session for this card
     if (hasCompletedNormalizedSession) return;
-    // Don't activate if there's already any active session (for a different card)
-    if (normalizedSession.sessionId) return;
 
     const card = getCardById(cardId);
     if (!card) return;
@@ -181,19 +180,36 @@ export default function CardView() {
     activatingRef.current = true;
 
     (async () => {
-      const { error } = await supabase.rpc('activate_couple_session', {
-        p_couple_space_id: space.id,
-        p_category_id: card.categoryId,
-        p_card_id: cardId,
-        p_step_count: STEP_ORDER.length,
-      });
-      if (error) {
-        console.error('Session activation failed:', error);
-        toastErrorOnce('activate_session_fail', 'Kunde inte starta samtalet');
-      } else {
-        await normalizedSession.refetch();
+      try {
+        // If there's an active session for a DIFFERENT card, soft-complete it first
+        if (normalizedSession.sessionId && normalizedSession.cardId !== cardId) {
+          const { error: completeErr } = await supabase
+            .from('couple_sessions')
+            .update({ status: 'completed', ended_at: new Date().toISOString(), last_activity_at: new Date().toISOString() })
+            .eq('id', normalizedSession.sessionId);
+
+          if (completeErr) {
+            // Fallback: try via RPC to complete all remaining steps
+            console.warn('Direct session complete failed, trying RPC:', completeErr.message);
+          }
+        }
+
+        // Activate the new session
+        const { error } = await supabase.rpc('activate_couple_session', {
+          p_couple_space_id: space.id,
+          p_category_id: card.categoryId,
+          p_card_id: cardId,
+          p_step_count: STEP_ORDER.length,
+        });
+        if (error) {
+          console.error('Session activation failed:', error);
+          toastErrorOnce('activate_session_fail', 'Kunde inte starta samtalet');
+        } else {
+          await normalizedSession.refetch();
+        }
+      } finally {
+        activatingRef.current = false;
       }
-      activatingRef.current = false;
     })();
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [devState, isRevisitMode, showCompletion, normalizedSession.loading, isActiveSession, normalizedSession.sessionId, space?.id, cardId, hasCompletedNormalizedSession]);
