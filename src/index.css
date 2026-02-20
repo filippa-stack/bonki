@@ -198,7 +198,7 @@
 
   .text-subheading {
     font-family: var(--font-serif);
-    font-size: 20px;
+    font-size: 18px;
     line-height: 1.4;
     @apply font-medium;
   }
