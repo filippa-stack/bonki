@@ -229,7 +229,7 @@ export default function Home() {
                         }}
                         className="cursor-pointer"
                         style={{
-                          minHeight: '64px',
+                          height: '64px',
                           borderRadius: '16px',
                           padding: '0 24px',
                           display: 'flex',
@@ -249,7 +249,7 @@ export default function Home() {
                           e.currentTarget.style.transform = '';
                         }}
                       >
-                        <div className="flex-1 min-w-0 py-3">
+                        <div className="flex-1 min-w-0">
                           <h3
                             className="text-[13px] font-normal"
                             style={{
