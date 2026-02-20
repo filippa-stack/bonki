@@ -123,7 +123,7 @@ function CardEntry({ card, index, isCompleted = false, onNavigate, isLast = fals
         ? { duration: 0.18, ease: [0.4, 0.0, 0.2, 1] }
         : { delay: Math.min(0.08 + index * 0.05, 0.24), duration: 0.2, ease: [0.4, 0.0, 0.2, 1] }
       }
-      className={index === 0 ? 'mt-[28px]' : 'mt-[48px]'}
+      className={index === 0 ? 'mt-[38px]' : 'mt-[58px]'}
       style={{ transformOrigin: 'center left' }}
     >
       <div
