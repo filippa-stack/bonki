@@ -802,25 +802,36 @@
     <h2>Historikvy (CompletedSessionView)</h2>
     <div class="route">/card/:id (mode = history)</div>
     <div class="frame">
-      <div class="header-bar immersive"><span>← Kategori</span><span style="color:#fff9;">⚙</span></div>
-      <div class="space-y-8" style="padding-bottom:32px;margin-top:12px;">
-        <div class="center">
-          <div class="muted" style="font-size:9px;text-transform:uppercase;letter-spacing:1px;">Session — Februari 2026</div>
-          <div class="serif" style="font-size:16px;margin-top:4px;">Att lyssna på riktigt</div>
+      <div class="header-bar"><span>← Kategori</span><span></span></div>
+      <div class="space-y-8" style="padding-bottom:32px;margin-top:18px;">
+        <!-- Heading: title first, quiet date below — no prefix -->
+        <div class="center space-y-3">
+          <div class="serif" style="font-size:16px;">Samtalet är sparat.</div>
+          <div class="muted" style="font-size:9px;">Ni kan fortsätta när ni vill.</div>
+          <div style="font-size:8px;color:#ccc;letter-spacing:0.5px;">Februari 2026</div>
         </div>
-        <div class="card">
-          <div class="muted" style="font-size:9px;margin-bottom:5px;">Steg 1 — Öppnare</div>
-          <div style="font-size:9px;color:#aaa;">"Min reflektion..."</div>
+        <!-- Reflections: no step labels, soft fill not border -->
+        <div style="space-y:16px;">
+          <div style="margin-bottom:12px;">
+            <div style="font-size:8px;color:#bbb;margin-bottom:4px;padding:0 4px;">Du</div>
+            <div style="background:#F0EDE9;border-radius:16px;padding:12px 14px;font-size:9px;color:#666;">"Min reflektion om det första steget..."</div>
+          </div>
+          <div>
+            <div style="font-size:8px;color:#bbb;margin-bottom:4px;padding:0 4px;">Du</div>
+            <div style="background:#F0EDE9;border-radius:16px;padding:12px 14px;font-size:9px;color:#666;">"Min reflektion om nästa steg..."</div>
+          </div>
         </div>
-        <div class="card">
-          <div class="muted" style="font-size:9px;margin-bottom:5px;">Det du tog med dig</div>
-          <div style="font-size:10px;color:#555;">"Sammanfattning..."</div>
-        </div>
+        <!-- Takeaway block -->
         <div>
-          <div class="btn-ui">Utforska igen</div>
-          <div class="btn-ghost">Till Hem</div>
+          <div style="font-size:8px;color:#ccc;letter-spacing:0.5px;margin-bottom:4px;">Det ni tog med er</div>
+          <div style="background:#F0EDE9;border-radius:16px;padding:12px 14px;font-size:9px;color:#555;">"Gemensam sammanfattning..."</div>
+        </div>
+        <!-- CTA — large breathing room, single exit -->
+        <div style="margin-top:24px;">
+          <div class="btn-ui">Tillbaka till översikten</div>
         </div>
       </div>
+      <div class="info-note">Inga steg-etiketter. Reflektionskort: bg-muted/10, ingen border. Datum utan prefix (t.ex. "Februari 2026").</div>
     </div>
   </div>
 
