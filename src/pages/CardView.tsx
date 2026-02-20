@@ -345,6 +345,8 @@ export default function CardView() {
   // ─── Handle step completion / advance ───
   // If the user is viewing a previous step (local < server), just advance locally.
   // If at the real frontier, call the RPC then clear the local override (refetch drives it).
+  const pendingRetryRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
   const handleCompleteStep = useCallback(async () => {
     if (cardViewMode !== 'live') return;
 
@@ -385,32 +387,55 @@ export default function CardView() {
       });
     }
 
-    const { data, error } = await supabase.rpc('complete_couple_session_step', rpcParams);
+    // Always advance UI immediately
+    const isLastStep = displayIndex >= STEP_ORDER.length - 1;
 
-    if (error) {
-      if (isDevToolsEnabled()) {
-        console.error('[step-complete] FULL ERROR:', JSON.stringify(error, null, 2));
-        console.error('[step-complete] error fields:', {
-          message: error.message,
-          code: error.code,
-          details: error.details,
-          hint: error.hint,
-        });
+    const attemptRpc = async (attempt: number): Promise<boolean> => {
+      const { data, error } = await supabase.rpc('complete_couple_session_step', rpcParams);
+      if (error) {
+        if (isDevToolsEnabled()) {
+          console.error(`[step-complete] attempt ${attempt} FULL ERROR:`, JSON.stringify(error, null, 2));
+        }
+        return false;
       }
-      console.error('Step completion error:', error);
-      toastErrorOnce('step_complete_fail', 'Kunde inte markera steget som klart');
+      const result = Array.isArray(data) ? data[0] : data;
+      if (result?.is_session_complete) {
+        setShowCompletion(true);
+      }
+      return true;
+    };
+
+    // First attempt — if it succeeds, refetch and we're done
+    const ok = await attemptRpc(1);
+    if (ok) {
+      if (!isLastStep) setLocalStepIndex(displayIndex + 1);
+      await normalizedSession.refetch();
       return;
     }
 
-    const result = Array.isArray(data) ? data[0] : data;
-
-    if (result?.is_session_complete) {
+    // RPC failed — advance UI anyway, show subtle toast, queue retries
+    if (isLastStep) {
       setShowCompletion(true);
-      return;
+    } else {
+      setLocalStepIndex(displayIndex + 1);
     }
+    toastOnce('step_retry', () =>
+      toast('Vi sparar så fort vi kan. Fortsätt bara.', { duration: 2500 })
+    );
 
-    // Refetch → server increments → useEffect resets localStepIndex → re-render
-    await normalizedSession.refetch();
+    // Background retries (max 2)
+    const retryInBackground = (remaining: number) => {
+      if (remaining <= 0) return;
+      pendingRetryRef.current = setTimeout(async () => {
+        const retryOk = await attemptRpc(3 - remaining + 1);
+        if (retryOk) {
+          normalizedSession.refetch();
+        } else if (remaining > 1) {
+          retryInBackground(remaining - 1);
+        }
+      }, 1500);
+    };
+    retryInBackground(2);
   }, [normalizedSession, localStepIndex, serverStepIndex, cardViewMode, devState]);
 
   // ─── Revisit "Next" handler ───
