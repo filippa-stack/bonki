@@ -711,65 +711,84 @@
 <div class="wireframe-grid">
 
   <div class="wireframe" data-name="07-active-session-step1">
-    <h2>Aktivt steg — draft</h2>
-    <div class="route">/card/:id (state = draft, stepIndex = 0)</div>
+    <h2>Steg 1 — Öppnare</h2>
+    <div class="route">/card/:id (live, stepIndex = 0)</div>
     <div class="frame">
-      <div class="header-bar immersive"><span>← Kategori</span><span style="color:#fff9;">⚙</span></div>
-      <div style="padding:6px 0;">
-        <div class="muted center" style="margin-top:3px;font-size:8px;"><span style="border-bottom:2px solid #C1121F;padding-bottom:2px;color:#1C1B1A;font-weight:600;">Öppnare</span> &nbsp; <span style="opacity:0.6;color:#1C1B1A;">Tankeväckare</span> &nbsp; <span style="opacity:0.6;color:#1C1B1A;">Scenario</span> &nbsp; <span style="opacity:0.6;color:#1C1B1A;">Teamwork</span></div>
+      <div class="header-bar immersive"><span>← Kategori</span><span style="color:#fff9;font-size:9px;"></span></div>
+      <!-- Progress: 4 horizontal pill bars, current = dark ink, done = muted, pending = border -->
+      <div style="display:flex;gap:6px;padding:14px 0 4px;">
+        <div style="flex:1;height:4px;border-radius:4px;background:#1C1B1A;"></div>
+        <div style="flex:1;height:4px;border-radius:4px;background:#e0ddd9;"></div>
+        <div style="flex:1;height:4px;border-radius:4px;background:#e0ddd9;"></div>
+        <div style="flex:1;height:4px;border-radius:4px;background:#e0ddd9;"></div>
       </div>
-      <div class="spacer" style="height:8px"></div>
-      <div class="center serif" style="font-size:15px;">Att lyssna på riktigt</div>
+      <!-- Ritual hint: small centered text below progress -->
+      <div class="center" style="font-size:8px;color:#aaa;margin-bottom:8px;letter-spacing:0.4px;">Det finns inget rätt svar här. Bara ert.</div>
+      <!-- Card title: serif, centered -->
+      <div class="center serif" style="font-size:15px;line-height:1.8;margin-bottom:10px;">Att lyssna på riktigt</div>
       <div class="divider"></div>
-      <div class="card">
-        <div class="muted">Frågetext</div>
-        <div style="margin-top:5px;font-size:10px;">"Frågetext för det här steget..."</div>
-        <div style="margin-top:4px;padding:5px;background:#f5f5f5;border-radius:6px;font-size:9px;color:#bbb;">Privata anteckningar (valfritt)</div>
+      <!-- Section content: prompt text -->
+      <div style="font-size:10px;line-height:1.8;margin:10px 0;">"Berätta om ett tillfälle när du kände dig riktigt lyssnad på..."</div>
+      <!-- Reflection box: bordered card, transparent bg, textarea min-h 120px -->
+      <div style="border:1px solid #DDD8D2;border-radius:16px;padding:14px;margin:10px 0;">
+        <div style="min-height:60px;font-size:9px;color:#bbb;">Skriv din reflektion — valfritt.</div>
+        <div style="font-size:8px;color:#bbb;display:flex;align-items:center;gap:3px;margin-top:4px;">🔒 Bara du kan se det här</div>
       </div>
-      <div style="border:1px solid #CFC7BE;border-radius:14px;padding:18px;margin:6px 0;background:#EEE8E1;">
-        <div class="muted">Din reflektion</div>
-        <div style="margin-top:4px;font-size:9px;color:#8C8681;">Skriv din reflektion — valfritt.</div>
-        <div style="margin-top:6px;font-size:8px;color:#aaa;">🔒 Bara du kan se det här</div>
-      </div>
-      <div class="btn-ui" style="margin-top:8px;">Fortsätt →</div>
+      <!-- CTA: dark green, not brand red -->
+      <div style="background:#1F3D2B;color:#fff;padding:9px 14px;border-radius:14px;text-align:center;font-size:11px;font-weight:500;margin-top:6px;">Fortsätt</div>
+      <div class="info-note center">Stegindikatorn: 4 horisontella piller. Aktiv = mörk. Klara = dämpad. Kommande = border.</div>
     </div>
   </div>
 
   <div class="wireframe" data-name="08-active-session-step2">
-    <h2>Aktivt steg — steg 2</h2>
-    <div class="route">/card/:id (stepIndex = 1)</div>
+    <h2>Steg 2 — Tankeväckare</h2>
+    <div class="route">/card/:id (live, stepIndex = 1)</div>
     <div class="frame">
-      <div class="header-bar immersive"><span>← Kategori</span><span style="color:#fff9;">⚙</span></div>
-      <div style="padding:6px 0;">
-        <div class="muted center" style="margin-top:3px;font-size:8px;"><span style="text-decoration:line-through;opacity:0.6;color:#1C1B1A;">Öppnare</span> &nbsp; <span style="border-bottom:2px solid #C1121F;padding-bottom:2px;color:#1C1B1A;font-weight:600;">Tankeväckare</span> &nbsp; <span style="opacity:0.6;color:#1C1B1A;">Scenario</span> &nbsp; <span style="opacity:0.6;color:#1C1B1A;">Teamwork</span></div>
+      <div class="header-bar immersive"><span>← Kategori</span><span style="color:#fff9;font-size:9px;"></span></div>
+      <!-- Progress: steg 1 klar (dämpad), steg 2 aktiv (mörk) -->
+      <div style="display:flex;gap:6px;padding:14px 0 4px;">
+        <div style="flex:1;height:4px;border-radius:4px;background:rgba(28,27,26,0.3);"></div>
+        <div style="flex:1;height:4px;border-radius:4px;background:#1C1B1A;"></div>
+        <div style="flex:1;height:4px;border-radius:4px;background:#e0ddd9;"></div>
+        <div style="flex:1;height:4px;border-radius:4px;background:#e0ddd9;"></div>
       </div>
-      <div class="spacer" style="height:8px"></div>
-      <div class="center serif" style="font-size:15px;">Att lyssna på riktigt</div>
+      <div class="center" style="font-size:8px;color:#aaa;margin-bottom:8px;letter-spacing:0.4px;">Lyssna färdigt innan ni svarar.</div>
+      <div class="center serif" style="font-size:15px;line-height:1.8;margin-bottom:10px;">Att lyssna på riktigt</div>
       <div class="divider"></div>
-      <div style="border:1px solid #CFC7BE;border-radius:14px;padding:18px;margin:6px 0;background:#EEE8E1;">
-        <div style="font-size:9px;color:#8C8681;">Skriv din reflektion.</div>
+      <div style="font-size:10px;line-height:1.8;margin:10px 0;">"Vad händer i dig när du inte känner dig hörd?"</div>
+      <div style="border:1px solid #DDD8D2;border-radius:16px;padding:14px;margin:10px 0;">
+        <div style="min-height:60px;font-size:9px;color:#bbb;">Skriv din reflektion — valfritt.</div>
+        <div style="font-size:8px;color:#bbb;display:flex;align-items:center;gap:3px;margin-top:4px;">🔒 Bara du kan se det här</div>
       </div>
-      <div class="btn-ui" style="margin-top:8px;">Fortsätt →</div>
-      <div class="info-note center">Stegindikatorn: aktiv = röd underline, genomförda = line-through 60% opacity</div>
+      <div style="background:#1F3D2B;color:#fff;padding:9px 14px;border-radius:14px;text-align:center;font-size:11px;font-weight:500;margin-top:6px;">Fortsätt</div>
+      <div class="btn-ghost" style="margin-top:4px;color:#aaa;">Tillbaka</div>
     </div>
   </div>
 
   <div class="wireframe" data-name="09-active-session-last-step">
-    <h2>Aktivt steg — sista (Teamwork)</h2>
-    <div class="route">/card/:id (stepIndex = 3)</div>
+    <h2>Steg 4 — Teamwork (sista)</h2>
+    <div class="route">/card/:id (live, stepIndex = 3)</div>
     <div class="frame">
-      <div class="header-bar immersive"><span>← Kategori</span><span style="color:#fff9;">⚙</span></div>
-      <div style="padding:6px 0;">
-        <div class="muted center" style="margin-top:3px;font-size:8px;"><span style="text-decoration:line-through;opacity:0.6;color:#1C1B1A;">Öppnare</span> &nbsp; <span style="text-decoration:line-through;opacity:0.6;color:#1C1B1A;">Tankeväckare</span> &nbsp; <span style="text-decoration:line-through;opacity:0.6;color:#1C1B1A;">Scenario</span> &nbsp; <span style="border-bottom:2px solid #C1121F;padding-bottom:2px;color:#1C1B1A;font-weight:600;">Teamwork</span></div>
+      <div class="header-bar immersive"><span>← Kategori</span><span style="color:#fff9;font-size:9px;"></span></div>
+      <!-- Alla 3 klara (dämpad), sista aktiv (mörk) -->
+      <div style="display:flex;gap:6px;padding:14px 0 4px;">
+        <div style="flex:1;height:4px;border-radius:4px;background:rgba(28,27,26,0.3);"></div>
+        <div style="flex:1;height:4px;border-radius:4px;background:rgba(28,27,26,0.3);"></div>
+        <div style="flex:1;height:4px;border-radius:4px;background:rgba(28,27,26,0.3);"></div>
+        <div style="flex:1;height:4px;border-radius:4px;background:#1C1B1A;"></div>
       </div>
-      <div class="spacer" style="height:8px"></div>
-      <div class="center serif" style="font-size:15px;">Att lyssna på riktigt</div>
+      <div class="center" style="font-size:8px;color:#aaa;margin-bottom:8px;letter-spacing:0.4px;">Gör en liten sak ni faktiskt kan hålla.</div>
+      <div class="center serif" style="font-size:15px;line-height:1.8;margin-bottom:10px;">Att lyssna på riktigt</div>
       <div class="divider"></div>
-      <div style="border:1px solid #CFC7BE;border-radius:14px;padding:18px;margin:6px 0;background:#EEE8E1;">
-        <div style="font-size:9px;color:#8C8681;">Skriv din reflektion.</div>
+      <div style="font-size:10px;line-height:1.8;margin:10px 0;">"Vad kan ni göra den här veckan för att öva på att lyssna bättre?"</div>
+      <div style="border:1px solid #DDD8D2;border-radius:16px;padding:14px;margin:10px 0;">
+        <div style="min-height:60px;font-size:9px;color:#bbb;">Skriv din reflektion — valfritt.</div>
+        <div style="font-size:8px;color:#bbb;display:flex;align-items:center;gap:3px;margin-top:4px;">🔒 Bara du kan se det här</div>
       </div>
-      <div class="btn-ui" style="margin-top:8px;">Avsluta samtalet →</div>
-      <div class="info-note center">stepIndex = 3 → CTA = "Avsluta samtalet" → Completion</div>
+      <!-- Sista steget: CTA = "Avsluta samtalet" -->
+      <div style="background:#1F3D2B;color:#fff;padding:9px 14px;border-radius:14px;text-align:center;font-size:11px;font-weight:500;margin-top:6px;">Avsluta samtalet</div>
+      <div class="btn-ghost" style="margin-top:4px;color:#aaa;">Tillbaka</div>
+      <div class="info-note center">isLastStep = true → "Avsluta samtalet" → completion-mode</div>
     </div>
   </div>
 
@@ -782,19 +801,25 @@
 <div class="wireframe-grid">
 
   <div class="wireframe" data-name="10-completion">
-    <h2>Completion — takeaway</h2>
+    <h2>Completion — takeaway-ritual</h2>
     <div class="route">/card/:id (mode = completion)</div>
     <div class="frame">
       <div class="header-bar"><span>← Kategori</span><span></span></div>
-      <div class="spacer" style="height:64px"></div>
-      <div class="center serif" style="font-size:18px;">Det ni just gjorde betyder något.</div>
-      <div class="spacer" style="height:30px"></div>
+      <!-- +24px padding above headline for gravity -->
+      <div class="spacer" style="height:48px"></div>
+      <div class="center serif" style="font-size:17px;line-height:1.7;">Det ni just gjorde betyder något.</div>
+      <!-- -8px below headline: closer body -->
+      <div class="spacer" style="height:32px"></div>
+      <!-- Prompt label: same font size, no extra styling -->
       <div class="center muted" style="margin-bottom:10px;font-size:10px;">Vad vill ni bära med er?</div>
-      <div class="card">
-        <div style="margin-top:4px;padding:5px;background:#f5f5f5;border-radius:6px;font-size:9px;color:#bbb;">Autosparat (800ms debounce)</div>
+      <!-- Takeaway: same card style as reflection box, min-h 80px -->
+      <div style="border:1px solid #DDD8D2;border-radius:16px;padding:14px;">
+        <div style="min-height:50px;font-size:9px;color:#bbb;">Autosparat (800ms debounce)</div>
       </div>
+      <!-- mt-16 exhale before CTA -->
       <div class="spacer" style="height:40px"></div>
       <div class="btn-ui">Tillbaka</div>
+      <div class="info-note center">Ingen datum ovan headline. Ingen "Session från"-text. En enda CTA.</div>
     </div>
   </div>
 
@@ -805,33 +830,32 @@
       <div class="header-bar"><span>← Kategori</span><span></span></div>
       <div class="space-y-8" style="padding-bottom:32px;margin-top:18px;">
         <!-- Heading: title first, quiet date below — no prefix -->
-        <div class="center space-y-3">
+        <div class="center" style="margin-bottom:16px;">
           <div class="serif" style="font-size:16px;">Samtalet är sparat.</div>
-          <div class="muted" style="font-size:9px;">Ni kan fortsätta när ni vill.</div>
-          <div style="font-size:8px;color:#ccc;letter-spacing:0.5px;">Februari 2026</div>
+          <div class="muted" style="font-size:9px;margin-top:4px;">Ni kan fortsätta när ni vill.</div>
+          <div style="font-size:8px;color:#ccc;letter-spacing:0.5px;margin-top:3px;">Februari 2026</div>
         </div>
-        <!-- Reflections: no step labels, soft fill not border -->
-        <div style="space-y:16px;">
-          <div style="margin-bottom:12px;">
-            <div style="font-size:8px;color:#bbb;margin-bottom:4px;padding:0 4px;">Du</div>
-            <div style="background:#F0EDE9;border-radius:16px;padding:12px 14px;font-size:9px;color:#666;">"Min reflektion om det första steget..."</div>
-          </div>
-          <div>
-            <div style="font-size:8px;color:#bbb;margin-bottom:4px;padding:0 4px;">Du</div>
-            <div style="background:#F0EDE9;border-radius:16px;padding:12px 14px;font-size:9px;color:#666;">"Min reflektion om nästa steg..."</div>
-          </div>
+        <!-- Reflections: NO step labels, soft bg-muted/10 fill, no border -->
+        <div style="margin-bottom:12px;">
+          <div style="font-size:8px;color:#bbb;margin-bottom:4px;padding:0 4px;">Du</div>
+          <div style="background:#F0EDE9;border-radius:16px;padding:12px 14px;font-size:9px;color:#666;">"Min reflektion om det första steget..."</div>
+        </div>
+        <div style="border-top:1px solid rgba(0,0,0,0.06);margin:10px 0;"></div>
+        <div style="margin-bottom:12px;">
+          <div style="font-size:8px;color:#bbb;margin-bottom:4px;padding:0 4px;">Du</div>
+          <div style="background:#F0EDE9;border-radius:16px;padding:12px 14px;font-size:9px;color:#666;">"Min reflektion om nästa steg..."</div>
         </div>
         <!-- Takeaway block -->
         <div>
           <div style="font-size:8px;color:#ccc;letter-spacing:0.5px;margin-bottom:4px;">Det ni tog med er</div>
           <div style="background:#F0EDE9;border-radius:16px;padding:12px 14px;font-size:9px;color:#555;">"Gemensam sammanfattning..."</div>
         </div>
-        <!-- CTA — large breathing room, single exit -->
+        <!-- CTA: mt-16, single exit, "Tillbaka till översikten" -->
         <div style="margin-top:24px;">
           <div class="btn-ui">Tillbaka till översikten</div>
         </div>
       </div>
-      <div class="info-note">Inga steg-etiketter. Reflektionskort: bg-muted/10, ingen border. Datum utan prefix (t.ex. "Februari 2026").</div>
+      <div class="info-note">Inga steg-etiketter. Reflektioner: bg-muted/10, ingen border. Datum utan prefix. Separator (opacity-20) mellan steggrupper.</div>
     </div>
   </div>
 
