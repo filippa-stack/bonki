@@ -31,7 +31,14 @@ const normalizePrompt = (prompt: string | Prompt): Prompt => {
  */
 const SectionView = forwardRef<SectionViewHandle, SectionViewProps>(
   function SectionView({ section, promptIndex = 0 }, ref) {
-    const normalizedPrompts = (section.prompts || []).map(normalizePrompt);
+    // If section has no prompts but has content, treat content as the prompt
+    // (this is the case for exercise/teamwork stages).
+    const rawPrompts = section.prompts && section.prompts.length > 0
+      ? section.prompts
+      : section.content
+        ? [section.content]
+        : [];
+    const normalizedPrompts = rawPrompts.map(normalizePrompt);
 
     // Display the specific prompt at promptIndex.
     // Falls back to index 0 if out of range.
