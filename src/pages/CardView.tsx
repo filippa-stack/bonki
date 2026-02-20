@@ -11,7 +11,7 @@ import { useApp } from '@/contexts/AppContext';
 import { useCoupleSpaceContext } from '@/contexts/CoupleSpaceContext';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
-import { toastErrorOnce } from '@/lib/toastOnce';
+import { toastOnce, toastErrorOnce } from '@/lib/toastOnce';
 
 import Header from '@/components/Header';
 import SectionView, { type SectionViewHandle } from '@/components/SectionView';
@@ -208,7 +208,7 @@ export default function CardView() {
           if (isDevToolsEnabled()) console.log('[switch] navigated to', `/card/${cardId}`, didSwitch ? '(switched)' : '(fresh)');
           await normalizedSession.refetch();
           if (didSwitch) {
-            toast('Bytte samtal. Det förra är sparat i Vårt utrymme.', { duration: 2500 });
+            toastOnce('switch_card', () => toast('Bytte samtal. Det förra är sparat i Vårt utrymme.', { duration: 2500 }));
           }
         }
       } finally {
