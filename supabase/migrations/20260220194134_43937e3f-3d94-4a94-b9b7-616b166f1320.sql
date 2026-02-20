@@ -1,0 +1,2 @@
+ALTER TABLE public.couple_sessions DROP CONSTRAINT couple_sessions_status_check;
+ALTER TABLE public.couple_sessions ADD CONSTRAINT couple_sessions_status_check CHECK (status = ANY (ARRAY['active'::text, 'completed'::text, 'cancelled'::text, 'abandoned'::text]));
