@@ -65,10 +65,10 @@ export default function SessionStepReflection({
       <div
         className="overflow-hidden"
         style={{
-          border: '0.5px solid hsl(var(--border) / 0.3)',
-          borderRadius: '20px',
+          border: '0.5px solid hsl(var(--border) / 0.15)',
+          borderRadius: '24px',
           backgroundColor: 'transparent',
-          padding: '28px 32px',
+          padding: '32px 36px',
         }}
       >
         <textarea
