@@ -607,11 +607,11 @@ export default function CardView() {
         <AnimatePresence mode="wait">
           {currentSection && (
             <motion.div
-              key={`${currentSection.id}-${cardViewMode === 'live' ? localPromptIndex : 0}`}
-              initial={{ opacity: 0, y: 8 }}
+              key={currentSection.id}
+              initial={{ opacity: 0, y: 6 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.2, ease: [0, 0, 0.2, 1] }}
+              exit={{ opacity: 0, y: 0, transition: { duration: 0.18, ease: [0.4, 0, 1, 1] } }}
+              transition={{ duration: 0.22, ease: [0.4, 0, 0.2, 1] }}
             >
               {/* Step 3 — Prompt: delay BEAT_1, duration BEAT_3 (live only) */}
               <motion.div

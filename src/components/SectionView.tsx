@@ -1,5 +1,4 @@
 import { forwardRef } from 'react';
-import { motion } from 'framer-motion';
 import { Section, Card, Prompt } from '@/types';
 import PromptItem from '@/components/PromptItem';
 
@@ -41,12 +40,7 @@ const SectionView = forwardRef<SectionViewHandle, SectionViewProps>(
     if (!prompt) return null;
 
     return (
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.15 }}
-        className="py-12"
-      >
+      <div className="py-12">
         <PromptItem
           prompt={prompt}
           promptId={`prompt-${promptIndex}`}
@@ -69,7 +63,7 @@ const SectionView = forwardRef<SectionViewHandle, SectionViewProps>(
           onUnshareNote={() => {}}
           onToggleHighlight={() => {}}
         />
-      </motion.div>
+      </div>
     );
   }
 );
