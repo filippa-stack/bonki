@@ -140,8 +140,7 @@ export default function CompletedSessionView({
           <p className="text-sm text-muted-foreground">Ingen tidigare session hittades.</p>
           <button
             onClick={onExploreAgain}
-            className="w-full h-[54px] rounded-card font-normal text-sm transition-opacity hover:opacity-90"
-            style={{ backgroundColor: 'hsl(150 27% 18%)', color: '#fff' }}
+            className="cta-primary"
           >
             Utforska igen
           </button>
@@ -253,10 +252,9 @@ export default function CompletedSessionView({
             className="mt-16 space-y-4 text-center"
           >
             <p className="text-xs text-muted-foreground/40">Ni kan alltid komma tillbaka.</p>
-          <button
+            <button
               onClick={onExploreAgain}
-              className="w-full h-[54px] rounded-card font-normal text-sm transition-opacity hover:opacity-90 active:scale-[0.98]"
-              style={{ backgroundColor: 'hsl(150 27% 18%)', color: '#fff' }}
+              className="cta-primary"
             >
               Tillbaka till översikten
             </button>

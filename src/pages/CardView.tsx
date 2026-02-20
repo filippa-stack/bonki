@@ -411,14 +411,13 @@ export default function CardView() {
               Ni behöver föreslå och acceptera detta samtal innan ni kan börja.
             </p>
           </motion.div>
-          <Button
+          <button
             onClick={() => navigate('/')}
-            size="lg"
-            className="w-full h-14 rounded-card gap-2 font-normal"
+            className="cta-primary gap-2"
           >
             <Home className="w-4 h-4" />
             Tillbaka till Hem
-          </Button>
+          </button>
         </div>
       </div>
     );
@@ -471,13 +470,7 @@ export default function CardView() {
           >
             <button
               onClick={() => navigate(category ? `/category/${category.id}` : '/categories')}
-              className="h-12 px-8 rounded-button text-sm font-medium transition-opacity hover:opacity-90"
-              style={{
-                maxWidth: '240px',
-                width: '100%',
-                backgroundColor: 'var(--color-button-primary)',
-                color: 'var(--color-button-text)',
-              }}
+              className="cta-primary"
             >
               Fortsätt utforska
             </button>
@@ -687,11 +680,7 @@ export default function CardView() {
                 >
                   <button
                     onClick={() => handleRevisitNext(card)}
-                    className="w-full h-14 rounded-button flex items-center justify-center gap-2 text-sm font-medium transition-opacity hover:opacity-90"
-                    style={{
-                      backgroundColor: 'var(--color-button-primary)',
-                      color: 'var(--color-button-text)',
-                    }}
+                    className="cta-primary gap-2"
                   >
                     {currentStepIndex >= STEP_ORDER.length - 1 ? 'Klar' : 'Nästa'}
                     <ArrowRight className="w-4 h-4" />
