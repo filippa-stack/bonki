@@ -62,7 +62,7 @@ export default function FocusSlab() {
       role="button"
       tabIndex={0}
       onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleTap(); } }}
-      className="cursor-pointer transition-transform active:scale-[0.985]"
+      className="cursor-pointer"
       style={{
         borderRadius: '24px',
         padding: '24px',
@@ -73,6 +73,22 @@ export default function FocusSlab() {
         justifyContent: 'space-between',
         background: 'linear-gradient(180deg, hsl(var(--muted) / 0.22) 0%, hsl(var(--muted) / 0.32) 100%)',
         boxShadow: '0 2px 8px hsl(var(--foreground) / 0.04), 0 1px 2px hsl(var(--foreground) / 0.03)',
+        transition: 'transform 120ms ease-out, box-shadow 120ms ease-out',
+      }}
+      onPointerDown={(e) => {
+        const el = e.currentTarget;
+        el.style.transform = 'scale(0.98)';
+        el.style.boxShadow = '0 1px 4px hsl(var(--foreground) / 0.02), 0 0px 1px hsl(var(--foreground) / 0.02)';
+      }}
+      onPointerUp={(e) => {
+        const el = e.currentTarget;
+        el.style.transform = '';
+        el.style.boxShadow = '';
+      }}
+      onPointerLeave={(e) => {
+        const el = e.currentTarget;
+        el.style.transform = '';
+        el.style.boxShadow = '';
       }}
     >
       {/* Top micro-label */}
