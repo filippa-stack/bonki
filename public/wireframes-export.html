@@ -805,39 +805,41 @@
   <div class="wireframe" data-name="07-active-session-step1">
     <h2>Steg 1 — Öppnare</h2>
     <div class="route">/card/:id (live, stepIndex = 0)</div>
-    <div class="frame">
-      <div class="header-bar immersive"><span>← Kategori</span><span style="color:#fff9;font-size:9px;"></span></div>
-      <!-- Progress: 4 horizontal pill bars, current = dark ink, done = muted, pending = border -->
+    <div class="frame" style="background:#F8F5F1;">
+      <div class="header-bar immersive"><span>← Kategori</span><span style="color:#fff9;font-size:9px;">Lämna samtalet</span></div>
+      <!-- Progress: 4 horizontal pill bars, current = dark ink, pending = border -->
       <div style="display:flex;gap:6px;padding:14px 0 4px;">
         <div style="flex:1;height:4px;border-radius:4px;background:#1C1B1A;"></div>
         <div style="flex:1;height:4px;border-radius:4px;background:#e0ddd9;"></div>
         <div style="flex:1;height:4px;border-radius:4px;background:#e0ddd9;"></div>
         <div style="flex:1;height:4px;border-radius:4px;background:#e0ddd9;"></div>
       </div>
-      <!-- Ritual hint: small centered text below progress -->
+      <!-- Ritual hint -->
       <div class="center" style="font-size:8px;color:#aaa;margin-bottom:8px;letter-spacing:0.4px;">Det finns inget rätt svar här. Bara ert.</div>
-      <!-- Card title: serif, centered -->
-      <div class="center serif" style="font-size:15px;line-height:1.8;margin-bottom:10px;">Att lyssna på riktigt</div>
-      <div class="divider"></div>
-      <!-- Section content: prompt text -->
-      <div style="font-size:10px;line-height:1.8;margin:10px 0;">"Berätta om ett tillfälle när du kände dig riktigt lyssnad på..."</div>
-      <!-- Reflection box: bordered card, transparent bg, textarea min-h 120px -->
+      <!-- Card title + subtitle: centered -->
+      <div class="center serif" style="font-size:15px;line-height:1.8;margin-bottom:2px;">När dagen är slut</div>
+      <div class="center muted" style="font-size:11px;margin-bottom:24px;">Ansvar för hem och hushåll, återhämtning</div>
+      <!-- Large question: emotional core, centered serif -->
+      <div class="center serif" style="font-size:17px;line-height:1.6;margin-bottom:40px;">När under dagen känner du att du kan släppa ansvaret?</div>
+      <!-- Reflection box: bordered card, transparent bg -->
       <div style="border:1px solid #DDD8D2;border-radius:16px;padding:14px;margin:10px 0;">
         <div style="min-height:60px;font-size:9px;color:#bbb;">Skriv din reflektion — valfritt.</div>
         <div style="font-size:8px;color:#bbb;display:flex;align-items:center;gap:3px;margin-top:4px;">🔒 Bara du kan se det här</div>
       </div>
-      <!-- CTA: dark green, not brand red — non-blocking -->
+      <!-- Autosave note -->
+      <div style="font-size:8px;color:#bbb;margin-bottom:10px;">Det du skriver sparas automatiskt i Vårt utrymme.</div>
+      <!-- CTA: dark green, non-blocking -->
       <div style="background:#1F3D2B;color:#fff;padding:9px 14px;border-radius:14px;text-align:center;font-size:11px;font-weight:500;margin-top:6px;">Fortsätt</div>
-      <div class="info-note center">Non-blocking: UI avancerar lokalt. RPC körs i bakgrund. Vid fel: micro-toast + max 2 retries. Stegindikatorn: 4 piller (aktiv = mörk, klara = dämpad).</div>
+      <div class="info-note center">Non-blocking: UI avancerar lokalt. RPC i bakgrund. Vid fel: micro-toast + max 2 retries.</div>
     </div>
   </div>
 
   <div class="wireframe" data-name="08-active-session-step2">
     <h2>Steg 2 — Tankeväckare</h2>
     <div class="route">/card/:id (live, stepIndex = 1)</div>
-    <div class="frame">
-      <div class="header-bar immersive"><span>← Kategori</span><span style="color:#fff9;font-size:9px;"></span></div>
-      <!-- Progress: steg 1 klar (dämpad), steg 2 aktiv (mörk) -->
+    <div class="frame" style="background:#F8F5F1;">
+      <div class="header-bar immersive"><span>← Kategori</span><span style="color:#fff9;font-size:9px;">Lämna samtalet</span></div>
+      <!-- Progress: steg 1 klar (30% opacity), steg 2 aktiv (mörk) -->
       <div style="display:flex;gap:6px;padding:14px 0 4px;">
         <div style="flex:1;height:4px;border-radius:4px;background:rgba(28,27,26,0.3);"></div>
         <div style="flex:1;height:4px;border-radius:4px;background:#1C1B1A;"></div>
@@ -845,24 +847,24 @@
         <div style="flex:1;height:4px;border-radius:4px;background:#e0ddd9;"></div>
       </div>
       <div class="center" style="font-size:8px;color:#aaa;margin-bottom:8px;letter-spacing:0.4px;">Lyssna färdigt innan ni svarar.</div>
-      <div class="center serif" style="font-size:15px;line-height:1.8;margin-bottom:10px;">Att lyssna på riktigt</div>
-      <div class="divider"></div>
-      <div style="font-size:10px;line-height:1.8;margin:10px 0;">"Vad händer i dig när du inte känner dig hörd?"</div>
+      <div class="center serif" style="font-size:15px;line-height:1.8;margin-bottom:2px;">När dagen är slut</div>
+      <div class="center muted" style="font-size:11px;margin-bottom:24px;">Ansvar för hem och hushåll, återhämtning</div>
+      <div class="center serif" style="font-size:17px;line-height:1.6;margin-bottom:40px;">Vad händer i dig när du inte känner dig hörd?</div>
       <div style="border:1px solid #DDD8D2;border-radius:16px;padding:14px;margin:10px 0;">
         <div style="min-height:60px;font-size:9px;color:#bbb;">Skriv din reflektion — valfritt.</div>
         <div style="font-size:8px;color:#bbb;display:flex;align-items:center;gap:3px;margin-top:4px;">🔒 Bara du kan se det här</div>
       </div>
+      <div style="font-size:8px;color:#bbb;margin-bottom:10px;">Det du skriver sparas automatiskt i Vårt utrymme.</div>
       <div style="background:#1F3D2B;color:#fff;padding:9px 14px;border-radius:14px;text-align:center;font-size:11px;font-weight:500;margin-top:6px;">Fortsätt</div>
-      <div class="btn-ghost" style="margin-top:4px;color:#aaa;">Tillbaka</div>
     </div>
   </div>
 
   <div class="wireframe" data-name="09-active-session-last-step">
     <h2>Steg 4 — Teamwork (sista)</h2>
     <div class="route">/card/:id (live, stepIndex = 3)</div>
-    <div class="frame">
-      <div class="header-bar immersive"><span>← Kategori</span><span style="color:#fff9;font-size:9px;"></span></div>
-      <!-- Alla 3 klara (dämpad), sista aktiv (mörk) -->
+    <div class="frame" style="background:#F8F5F1;">
+      <div class="header-bar immersive"><span>← Kategori</span><span style="color:#fff9;font-size:9px;">Lämna samtalet</span></div>
+      <!-- Alla 3 klara (30%), sista aktiv (mörk) -->
       <div style="display:flex;gap:6px;padding:14px 0 4px;">
         <div style="flex:1;height:4px;border-radius:4px;background:rgba(28,27,26,0.3);"></div>
         <div style="flex:1;height:4px;border-radius:4px;background:rgba(28,27,26,0.3);"></div>
@@ -870,16 +872,16 @@
         <div style="flex:1;height:4px;border-radius:4px;background:#1C1B1A;"></div>
       </div>
       <div class="center" style="font-size:8px;color:#aaa;margin-bottom:8px;letter-spacing:0.4px;">Gör en liten sak ni faktiskt kan hålla.</div>
-      <div class="center serif" style="font-size:15px;line-height:1.8;margin-bottom:10px;">Att lyssna på riktigt</div>
-      <div class="divider"></div>
-      <div style="font-size:10px;line-height:1.8;margin:10px 0;">"Vad kan ni göra den här veckan för att öva på att lyssna bättre?"</div>
+      <div class="center serif" style="font-size:15px;line-height:1.8;margin-bottom:2px;">När dagen är slut</div>
+      <div class="center muted" style="font-size:11px;margin-bottom:24px;">Ansvar för hem och hushåll, återhämtning</div>
+      <div class="center serif" style="font-size:17px;line-height:1.6;margin-bottom:40px;">Vad kan ni göra den här veckan för att öva på att släppa ansvaret?</div>
       <div style="border:1px solid #DDD8D2;border-radius:16px;padding:14px;margin:10px 0;">
         <div style="min-height:60px;font-size:9px;color:#bbb;">Skriv din reflektion — valfritt.</div>
         <div style="font-size:8px;color:#bbb;display:flex;align-items:center;gap:3px;margin-top:4px;">🔒 Bara du kan se det här</div>
       </div>
+      <div style="font-size:8px;color:#bbb;margin-bottom:10px;">Det du skriver sparas automatiskt i Vårt utrymme.</div>
       <!-- Sista steget: CTA = "Avsluta samtalet" -->
       <div style="background:#1F3D2B;color:#fff;padding:9px 14px;border-radius:14px;text-align:center;font-size:11px;font-weight:500;margin-top:6px;">Avsluta samtalet</div>
-      <div class="btn-ghost" style="margin-top:4px;color:#aaa;">Tillbaka</div>
       <div class="info-note center">isLastStep = true → "Avsluta samtalet" → completion-mode</div>
     </div>
   </div>

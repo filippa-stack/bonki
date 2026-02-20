@@ -222,30 +222,35 @@ graph TD
 
 <!-- WIREFRAME 5 -->
 <div class="page">
-  <h3>5. Active Session Step</h3>
-  <div class="route">/card/:id (isActiveSession = true)</div>
-  <div class="frame">
-    <div class="header-bar"><span>← 🟢 Category title</span><span>save · sync · ⏻</span></div>
-    <div style="padding:8px 0;">
-      <div class="pb"><div class="ps done"></div><div class="ps cur"></div><div class="ps"></div><div class="ps"></div></div>
-      <div class="m c" style="margin-top:4px;font-size:10px;">Början · <b>Fördjupning</b> · I vardagen · Tillsammans</div>
+  <h3>5. Active Session Step (Journal-style)</h3>
+  <div class="route">/card/:id · mode=live · immersive header</div>
+  <div class="frame" style="background:#F8F5F1;">
+    <!-- Immersive dark green header -->
+    <div class="header-bar" style="background:#1C3A2D;color:#fff;border-bottom:none;padding:10px 12px 16px;"><span>← Kategori</span><span style="opacity:0.5;font-size:10px;">Lämna samtalet</span></div>
+    <!-- 4 pill progress bars -->
+    <div style="display:flex;gap:5px;padding:12px 0 4px;">
+      <div style="flex:1;height:3px;border-radius:3px;background:rgba(28,27,26,0.3);"></div>
+      <div style="flex:1;height:3px;border-radius:3px;background:#1C1B1A;"></div>
+      <div style="flex:1;height:3px;border-radius:3px;background:#e0ddd9;"></div>
+      <div style="flex:1;height:3px;border-radius:3px;background:#e0ddd9;"></div>
     </div>
-    <div class="sp"></div>
-    <div class="c sf" style="font-size:18px;">Card Title</div>
-    <div class="c m" style="margin-top:6px;font-style:italic;">Card subtitle</div>
-    <div class="dv"></div>
-    <div class="cd">
-      <div style="margin-top:8px;">Prompt 1: "Question text..."</div>
-      <div style="margin-top:4px;padding:8px;background:#f5f5f5;border-radius:8px;font-size:12px;color:#999;">Private note field</div>
-      <div style="margin-top:8px;">Prompt 2: "Question text..."</div>
-      <div style="margin-top:4px;padding:8px;background:#f5f5f5;border-radius:8px;font-size:12px;color:#999;">Private note field</div>
+    <!-- Ritual hint -->
+    <div class="c m" style="font-size:10px;margin:6px 0 16px;">Det finns inget rätt svar här. Bara ert.</div>
+    <!-- Card title + subtitle -->
+    <div class="c sf" style="font-size:18px;">När dagen är slut</div>
+    <div class="c m" style="font-size:13px;margin:4px 0 32px;">Ansvar för hem och hushåll, återhämtning</div>
+    <!-- Large question: emotional core -->
+    <div class="c sf" style="font-size:20px;line-height:1.6;margin-bottom:48px;">När under dagen känner du att du kan släppa ansvaret?</div>
+    <!-- Reflection box -->
+    <div style="border:1px solid #DDD8D2;border-radius:16px;padding:14px;margin-bottom:8px;">
+      <div style="min-height:60px;font-size:11px;color:#bbb;">Skriv din reflektion — valfritt.</div>
+      <div style="font-size:9px;color:#ccc;margin-top:6px;">🔒 Bara du kan se det här</div>
     </div>
-    <div class="sp"></div>
-    <div class="c"><div class="b" style="width:100%;">Vi går vidare →</div></div>
-    <div class="sp" style="height:8px;"></div>
-    <div class="c m" style="font-size:11px;">📖 Se era svar</div>
+    <div class="m" style="font-size:10px;margin-bottom:16px;">Det du skriver sparas automatiskt i Vårt utrymme.</div>
+    <!-- CTA -->
+    <div class="c"><div style="background:#1E3D2F;color:#fff;padding:11px 18px;border-radius:14px;text-align:center;font-size:12px;font-weight:500;width:100%;">Fortsätt</div></div>
   </div>
-  <ul class="annotations"><li>Shared notes suppressed (skipShared=true)</li><li>CTA text varies per step type</li></ul>
+  <ul class="annotations"><li>Journal-style: frågan = emotionell kärna (stor serif)</li><li>Non-blocking progression: UI avancerar lokalt, RPC i bakgrund</li><li>Self-healing guard vid saknad session</li></ul>
 </div>
 
 <!-- WIREFRAME 6 -->
