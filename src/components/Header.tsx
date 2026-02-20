@@ -1,4 +1,4 @@
-import { LogOut, Plus, Settings, Users, User } from 'lucide-react';
+import { LogOut, Plus, Settings, Users } from 'lucide-react';
 import { useTogetherMode } from '@/hooks/useTogetherMode';
 import { useCoupleSpaceContext } from '@/contexts/CoupleSpaceContext';
 import { useNavigate } from 'react-router-dom';
@@ -76,7 +76,7 @@ export default function Header({
       }}
     >
       <div className="flex items-center justify-between px-6" style={{ height: isImmersive ? '2.25rem' : '3.5rem' }}>
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3 flex-1 min-w-0">
           {isImmersive && onImmersiveBack && (
             <button
               onClick={onImmersiveBack}
@@ -100,7 +100,10 @@ export default function Header({
             </h1>
           )}
         </div>
-        <div className="flex items-center gap-2 sm:gap-4 min-w-0">
+
+        {/* Centered navigation anchor — always visible */}
+        <SharedSpaceLink isImmersive={isImmersive} />
+        <div className="flex items-center gap-2 sm:gap-4 min-w-0 flex-1 justify-end">
           {showSaveIndicator && (
             <div className="flex items-center gap-2 min-h-[20px]">
               <SaveIndicator
@@ -111,13 +114,6 @@ export default function Header({
             </div>
           )}
           {showBackupManager && <BackupManager />}
-          {/* DOUBLE-GUARD (intentional): Hiding this link during an active session is the first layer
-              of "sacred session" enforcement. The second layer is ActiveSessionGuard, which redirects
-              disallowed routes. Both exist deliberately — this prevents casual discovery of navigation
-              escape routes, while the guard catches direct URLs and browser back/forward. */}
-          {!hasActiveSession && (
-            <SharedSpaceLink />
-          )}
 
           {showBackgroundPicker && (
             <div className="flex items-center gap-2">
@@ -225,16 +221,21 @@ export default function Header({
   );
 }
 
-function SharedSpaceLink() {
+function SharedSpaceLink({ isImmersive }: { isImmersive: boolean }) {
   const { t } = useTranslation();
   const navigate = useNavigate();
 
   return (
     <button
       onClick={() => navigate('/shared')}
-      className="flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-primary/15 hover:bg-primary/25 text-primary text-xs font-medium transition-colors"
+      className="text-[13px] font-sans font-medium transition-opacity"
+      style={{
+        color: isImmersive ? 'hsl(0 0% 100%)' : 'var(--color-text-primary)',
+        opacity: isImmersive ? 0.6 : 0.75,
+      }}
+      onMouseEnter={(e) => { e.currentTarget.style.opacity = isImmersive ? '0.8' : '0.95'; }}
+      onMouseLeave={(e) => { e.currentTarget.style.opacity = isImmersive ? '0.6' : '0.75'; }}
     >
-      <User className="w-3.5 h-3.5" />
       {t('header.shared_space')}
     </button>
   );
