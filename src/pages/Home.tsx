@@ -224,7 +224,7 @@ export default function Home() {
                       {isFirstTime && (
                         <p
                           className="text-[10px] uppercase tracking-[0.08em] font-light mb-2 pl-1"
-                          style={{ color: 'var(--color-text-secondary)', opacity: 0.5 }}
+                          style={{ color: 'var(--color-text-secondary)', opacity: 0.4 }}
                         >
                           Börja här
                         </p>
