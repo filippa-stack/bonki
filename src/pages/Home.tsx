@@ -201,7 +201,12 @@ export default function Home() {
         {mode !== 'loading' && (
           <>
             {/* ZONE A — Identity */}
-            <div className="pt-8 px-6 text-center">
+            <motion.div
+              className="pt-8 px-6 text-center"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.2, ease: [0.4, 0, 0.2, 1] }}
+            >
               <h1
                 className="font-serif font-semibold"
                 style={{ fontSize: '28px', color: 'var(--color-text-primary)', lineHeight: 1.2 }}
@@ -214,7 +219,7 @@ export default function Home() {
               >
                 Här börjar era samtal.
               </p>
-            </div>
+            </motion.div>
 
             {/* 48px spacing after Zone A */}
             <div style={{ height: '48px' }} />
@@ -242,9 +247,9 @@ export default function Home() {
                   return (
                     <motion.div
                       key={category.id}
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      transition={{ delay: Math.min(0.08 + index * 0.05, 0.3), duration: 0.2, ease: [0.4, 0.0, 0.2, 1] }}
+                      initial={{ opacity: 0, y: 8 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.2 + index * 0.03, duration: 0.22, ease: [0.4, 0, 0.2, 1] }}
                     >
                       <div
                         onClick={() => { markNavigated(); navigate(`/category/${category.id}`); }}
