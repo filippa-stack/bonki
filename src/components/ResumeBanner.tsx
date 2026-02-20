@@ -27,12 +27,14 @@ export default function ResumeBanner({ cardId }: ResumeBannerProps) {
       }}
     >
       <div className="flex items-start justify-between">
-        <p
-          className="text-xs mb-3"
-          style={{ color: 'var(--color-text-secondary)' }}
-        >
-          Ni har ett pågående samtal.
-        </p>
+        <div className="mb-3">
+          <p className="text-xs" style={{ color: 'var(--color-text-secondary)' }}>
+            Ert samtal väntar.
+          </p>
+          <p className="text-xs mt-0.5" style={{ color: 'var(--color-text-secondary)', opacity: 0.6, fontSize: '12px' }}>
+            Där ni senast slutade.
+          </p>
+        </div>
         <button
           onClick={handleDismiss}
           className="text-xs leading-none ml-3 mt-0.5 transition-opacity hover:opacity-100"
