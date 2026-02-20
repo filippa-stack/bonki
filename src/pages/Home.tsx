@@ -231,14 +231,14 @@ export default function Home() {
                         }}
                         className="cursor-pointer"
                         style={{
-                          minHeight: isFirstTime ? '72px' : '64px',
-                          borderRadius: '12px',
-                          padding: isFirstTime ? '12px 24px' : '0 24px',
+                          minHeight: isFirstTime ? '56px' : '48px',
+                          borderRadius: '10px',
+                          padding: isFirstTime ? '10px 20px' : '0 20px',
                           display: 'flex',
                           alignItems: isFirstTime ? 'flex-start' : 'center',
                           flexDirection: isFirstTime ? 'column' : 'row',
                           justifyContent: isFirstTime ? 'center' : 'space-between',
-                          gap: isFirstTime ? '2px' : '12px',
+                          gap: isFirstTime ? '1px' : '8px',
                           background: 'hsl(var(--muted) / 0.12)',
                           transition: 'transform 120ms ease-out',
                         }}
