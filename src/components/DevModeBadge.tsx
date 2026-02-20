@@ -51,7 +51,11 @@ export default function DevModeBadge() {
   const currentDevState = devState ?? 'solo';
 
   function navigateTo(path: string) {
-    navigate(`${path}${path.includes('?') ? '&' : '?'}devState=${currentDevState}`);
+    if (path.includes('devState=')) {
+      navigate(path);
+    } else {
+      navigate(`${path}${path.includes('?') ? '&' : '?'}devState=${currentDevState}`);
+    }
     setOpen(false);
   }
 
