@@ -669,7 +669,7 @@ export default function CardView() {
             completedSteps={Array.from({ length: serverStepIndex }, (_, i) => i)}
           />
           {currentSection && STEP_RITUAL_HINTS[currentSection.type] && (
-            <p className="mt-4 text-center text-[11px] tracking-wide" style={{ color: 'var(--color-text-secondary)', opacity: 0.4 }}>
+            <p className="mt-6 text-center text-[9px] tracking-wider" style={{ color: 'var(--color-text-secondary)', opacity: 0.25 }}>
               {isTogether
                 ? STEP_RITUAL_HINTS[currentSection.type].together
                 : STEP_RITUAL_HINTS[currentSection.type].solo}
