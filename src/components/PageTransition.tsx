@@ -2,6 +2,7 @@ import { motion } from 'framer-motion';
 import { ReactNode, useLayoutEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 
+
 interface PageTransitionProps {
   children: ReactNode;
   className?: string;
@@ -35,7 +36,10 @@ export default function PageTransition({ children, className }: PageTransitionPr
       animate="animate"
       exit="exit"
       variants={variants}
-      transition={{ duration: isCardRoute ? 0.3 : 0.15, ease: [0.4, 0.0, 0.2, 1] }}
+      transition={{
+        duration: isCardRoute ? 0.18 : 0.15,
+        ease: [0.4, 0.0, 0.2, 1],
+      }}
       className={className}
     >
       {children}
