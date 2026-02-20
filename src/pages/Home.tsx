@@ -10,7 +10,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useCoupleSpaceContext } from '@/contexts/CoupleSpaceContext';
 import CategoryCard from '@/components/CategoryCard';
 import Header from '@/components/Header';
-import { ArrowRight, Bookmark, Share2, ChevronDown } from 'lucide-react';
+import { ArrowRight, Bookmark, Share2, ChevronDown, ChevronRight } from 'lucide-react';
 import NotificationSettings from '@/components/NotificationSettings';
 import RelationSettings from '@/components/RelationSettings';
 import RelationshipMemory from '@/components/RelationshipMemory';
@@ -188,66 +188,65 @@ export default function Home() {
             </div>
 
             {/* Categories listing — always visible */}
-            <div className={`px-6 pb-[80px] ${effectiveCardId ? 'pt-0' : 'pt-[64px]'}`}>
+            <div className="px-6 pb-[80px] pt-4">
+              <div className="flex flex-col gap-4">
+                {sortedCategories.map((category, index) => {
+                  const catCards = cards.filter((c) => c.categoryId === category.id);
+                  const allExplored = catCards.length > 0 && catCards.every((c) => exploredIds.includes(c.id));
 
-              {sortedCategories.map((category, index) => {
-                const catCards = cards.filter((c) => c.categoryId === category.id);
-                const allExplored = catCards.length > 0 && catCards.every((c) => exploredIds.includes(c.id));
-                const isGuided = category.id === guidedCategoryId;
-                const prevIsGuided = index > 0 && sortedCategories[index - 1]?.id === guidedCategoryId;
-
-                return (
-                  <motion.div
-                    key={category.id}
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: Math.min(0.08 + index * 0.05, 0.3), duration: 0.2, ease: [0.4, 0.0, 0.2, 1] }}
-                    className={isGuided ? (index > 0 ? 'mt-[82px]' : '') : (index > 0 ? (prevIsGuided ? 'mt-[58px]' : 'mt-[49px]') : '')}
-                  >
-                    {isGuided && (
-                      <p
-                        className="text-[14px] font-medium mb-[5px]"
-                        style={{ color: 'var(--color-text-secondary)', opacity: 0.7 }}
-                      >
-                        Rekommenderad start
-                      </p>
-                    )}
-                    <div
-                      onClick={() => { markNavigated(); navigate(`/category/${category.id}`); }}
-                      role="button"
-                      tabIndex={0}
-                      aria-label={category.title}
-                      onKeyDown={(e) => {
-                        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); navigate(`/category/${category.id}`); }
-                      }}
-                      className="row-bloom row-lift group relative w-full cursor-pointer min-h-[56px] flex flex-col justify-center rounded-sm py-[13px] px-2 hover:bg-black/[0.03] hover:pl-[14px] focus-visible:bg-black/[0.03] focus-visible:pl-[14px] focus-visible:outline-none active:pl-[14px] active:transition-none"
+                  return (
+                    <motion.div
+                      key={category.id}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ delay: Math.min(0.08 + index * 0.05, 0.3), duration: 0.2, ease: [0.4, 0.0, 0.2, 1] }}
                     >
-                      <span
-                        className="absolute right-2 top-1/2 -translate-y-1/2 w-3 h-px"
-                        style={{ backgroundColor: 'var(--color-text-primary)', opacity: 0.4 }}
-                      />
-                      <div className="flex items-baseline gap-3">
-                        <h3
-                          className={`text-[20px] leading-snug flex-1 ${isGuided ? 'font-[550]' : 'font-medium'}`}
-                          style={{ color: allExplored ? 'var(--color-text-secondary)' : isGuided ? '#151413' : 'var(--color-text-primary)' }}
-                        >
-                          {category.title}
-                        </h3>
-                        <CompletionMarker completed={allExplored} />
+                      <div
+                        onClick={() => { markNavigated(); navigate(`/category/${category.id}`); }}
+                        role="button"
+                        tabIndex={0}
+                        aria-label={category.title}
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); navigate(`/category/${category.id}`); }
+                        }}
+                        className="cursor-pointer transition-transform active:scale-[0.985] hover:brightness-[0.97]"
+                        style={{
+                          minHeight: '80px',
+                          borderRadius: '16px',
+                          padding: '16px 18px',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'space-between',
+                          gap: '12px',
+                          background: 'hsl(var(--muted) / 0.18)',
+                          transition: 'filter 150ms ease, transform 80ms ease',
+                        }}
+                      >
+                        <div className="flex-1 min-w-0">
+                          <h3
+                            className="font-serif text-[18px] leading-snug font-medium"
+                            style={{ color: allExplored ? 'var(--color-text-secondary)' : 'var(--color-text-primary)' }}
+                          >
+                            {category.title}
+                          </h3>
+                          {category.entryLine && (
+                            <p
+                              className="text-[13px] mt-1 truncate"
+                              style={{ color: 'var(--color-text-secondary)', opacity: 0.7 }}
+                            >
+                              {category.entryLine}
+                            </p>
+                          )}
+                        </div>
+                        <ChevronRight
+                          className="w-4 h-4 shrink-0"
+                          style={{ color: 'var(--color-text-secondary)', opacity: 0.4 }}
+                        />
                       </div>
-                      {category.entryLine && (
-                        <p
-                          className="text-body mt-1"
-                          style={{ color: 'var(--color-text-secondary)' }}
-                        >
-                          {category.entryLine}
-                        </p>
-                      )}
-                    </div>
-                  </motion.div>
-                );
-              })}
-
+                    </motion.div>
+                  );
+                })}
+              </div>
             </div>
           </>
         )}
