@@ -256,14 +256,6 @@ export default function Home() {
                           >
                             {category.title}
                           </h3>
-                          {category.entryLine && (
-                            <p
-                              className="text-[12px] mt-0.5 truncate"
-                              style={{ color: 'var(--color-text-secondary)', opacity: 0.5 }}
-                            >
-                              {category.entryLine}
-                            </p>
-                          )}
                         </div>
                         <ChevronRight
                           className="w-4 h-4 shrink-0"
