@@ -65,14 +65,14 @@ export default function FocusSlab() {
       className="cursor-pointer"
       style={{
         borderRadius: '24px',
-        padding: '28px 24px',
-        minHeight: '136px',
-        maxHeight: '140px',
+        padding: '32px 28px',
+        minHeight: '140px',
+        maxHeight: '148px',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'space-between',
-        background: 'linear-gradient(180deg, hsl(var(--muted) / 0.32) 0%, hsl(var(--muted) / 0.45) 100%)',
-        boxShadow: '0 4px 16px hsl(var(--foreground) / 0.06), 0 1px 3px hsl(var(--foreground) / 0.04)',
+        background: 'hsl(var(--muted) / 0.38)',
+        boxShadow: '0 6px 20px hsl(var(--foreground) / 0.08)',
         transition: 'transform 120ms ease-out, box-shadow 120ms ease-out',
       }}
       onPointerDown={(e) => {
