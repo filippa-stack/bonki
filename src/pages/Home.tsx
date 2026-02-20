@@ -193,7 +193,7 @@ export default function Home() {
 
         {/* Loading skeleton */}
         {mode === 'loading' && (
-          <div className="px-6 pt-[120px] pb-[80px]">
+          <div className="px-6 pt-8 pb-16">
             <div className="h-14 rounded-card bg-muted/20 animate-pulse" />
           </div>
         )}
@@ -201,7 +201,7 @@ export default function Home() {
         {mode !== 'loading' && (
           <>
             {/* ZONE A — Identity */}
-            <div className="pt-[80px] px-6 text-center">
+            <div className="pt-8 px-6 text-center">
               <h1
                 className="font-serif font-semibold"
                 style={{ fontSize: '28px', color: 'var(--color-text-primary)', lineHeight: 1.2 }}
