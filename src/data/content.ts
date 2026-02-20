@@ -379,7 +379,7 @@ export const cards: Card[] = [
         title: 'Fördjupning',
         content: 'Stanna upp och känn efter.',
         prompts: [
-          'När lägger du märke till att vårt \u201Cvi\u201D får mindre plats i vardagen, trots att ingen av er har valt bort det?',
+          'När lägger du märke till att ert \u201Cvi\u201D får mindre plats i vardagen, trots att ingen av er har valt bort det?',
           'Vad händer i dig när utrymmet för oss minskar — blir du tystare, mer effektiv, mer irriterad, mer ensam?',
         ],
       },
