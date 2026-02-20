@@ -260,12 +260,21 @@ export default function Home() {
                         }}
                         onPointerDown={(e) => {
                           e.currentTarget.style.transform = 'scale(0.98)';
+                          e.currentTarget.style.boxShadow = '0 2px 8px hsl(var(--foreground) / 0.08)';
+                          const chevron = e.currentTarget.querySelector('[data-chevron]') as HTMLElement;
+                          if (chevron) chevron.style.transform = 'translateX(2px)';
                         }}
                         onPointerUp={(e) => {
                           e.currentTarget.style.transform = '';
+                          e.currentTarget.style.boxShadow = '';
+                          const chevron = e.currentTarget.querySelector('[data-chevron]') as HTMLElement;
+                          if (chevron) chevron.style.transform = '';
                         }}
                         onPointerLeave={(e) => {
                           e.currentTarget.style.transform = '';
+                          e.currentTarget.style.boxShadow = '';
+                          const chevron = e.currentTarget.querySelector('[data-chevron]') as HTMLElement;
+                          if (chevron) chevron.style.transform = '';
                         }}
                       >
                         <div className="flex items-center justify-between gap-3 w-full">
@@ -289,8 +298,9 @@ export default function Home() {
                               <CompletionMarker completed />
                             )}
                             <ChevronRight
+                              data-chevron
                               className="w-4 h-4"
-                              style={{ color: 'var(--color-text-secondary)', opacity: 0.4 }}
+                              style={{ color: 'var(--color-text-secondary)', opacity: 0.5, transition: 'transform 120ms ease-out' }}
                             />
                           </div>
                         </div>
