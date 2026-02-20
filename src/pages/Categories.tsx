@@ -79,10 +79,11 @@ export default function Categories() {
                   onClick={() => navigate(`/category/${category.id}`)}
                   role="button"
                   tabIndex={0}
+                  aria-label={category.title}
                   onKeyDown={(e) => {
                     if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); navigate(`/category/${category.id}`); }
                   }}
-                  className="w-full cursor-pointer transition-opacity hover:opacity-70"
+                  className="w-full cursor-pointer transition-opacity hover:opacity-70 min-h-[44px] flex flex-col justify-center"
                 >
                   <div className="flex items-baseline gap-3">
                     <h3
@@ -93,15 +94,15 @@ export default function Categories() {
                     </h3>
                     <CompletionMarker completed={allExplored} />
                   </div>
-                {category.entryLine && (
-                  <p
-                    className="text-body mt-1"
-                    style={{ color: 'var(--color-text-secondary)' }}
-                  >
-                    {category.entryLine}
-                  </p>
-                )}
-              </div>
+                  {category.entryLine && (
+                    <p
+                      className="text-body mt-1"
+                      style={{ color: 'var(--color-text-secondary)' }}
+                    >
+                      {category.entryLine}
+                    </p>
+                  )}
+                </div>
             </motion.div>
           );
         })}

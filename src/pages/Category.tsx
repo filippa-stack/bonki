@@ -130,10 +130,11 @@ function CardEntry({ card, index, isCompleted = false, onNavigate, isLast = fals
         onClick={handleTap}
         role="button"
         tabIndex={0}
+        aria-label={card.title}
         onKeyDown={(e) => {
           if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleTap(); }
         }}
-        className="w-full cursor-pointer transition-opacity hover:opacity-70"
+        className="w-full cursor-pointer transition-opacity hover:opacity-70 min-h-[44px] flex flex-col justify-center"
       >
         <div className="flex items-baseline gap-3">
           <h3
