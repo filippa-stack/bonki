@@ -184,11 +184,13 @@ export default function Home() {
           <>
             {/* Resume banner — non-intrusive, shown when active session exists */}
             {effectiveCardId && (
-              <ResumeBanner cardId={effectiveCardId} />
+              <div className="px-6 pt-8 mb-8">
+                <ResumeBanner cardId={effectiveCardId} />
+              </div>
             )}
 
             {/* Categories listing — always visible */}
-            <div className="px-6 pt-[64px] pb-[80px]">
+            <div className={`px-6 pb-[80px] ${effectiveCardId ? 'pt-0' : 'pt-[64px]'}`}>
               <h1
                 className="text-[22px] font-medium mb-[72px]"
                 style={{ color: 'var(--color-text-secondary)' }}
