@@ -565,7 +565,7 @@ export default function CardView() {
           <motion.div
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.32, ease: [0.4, 0, 0.2, 1] }}
+            transition={{ duration: 0.32, ease: [0, 0, 0.2, 1] }}
             className="text-center max-w-md mx-auto"
             style={{ paddingTop: 24 }}
           >
@@ -576,7 +576,7 @@ export default function CardView() {
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: BEAT_1, duration: BEAT_3, ease: EASE }}
+            transition={{ delay: 0.42, duration: 0.32, ease: [0, 0, 0.2, 1] }}
             className="max-w-md mx-auto mt-16 space-y-3"
           >
             <p className="text-[12px] text-muted-foreground/30 text-center leading-relaxed">
@@ -589,7 +589,7 @@ export default function CardView() {
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 0.12, duration: 0.32, ease: [0.4, 0, 0.2, 1] }}
+            transition={{ delay: 0.54, duration: 0.32, ease: [0, 0, 0.2, 1] }}
             className="max-w-md mx-auto mt-24 flex flex-col items-center"
           >
             <button
