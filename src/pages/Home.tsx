@@ -274,7 +274,7 @@ export default function Home() {
                         <div className="flex items-center justify-between gap-3 w-full">
                           <div className="flex-1 min-w-0">
                             <h3
-                              className="text-[12.5px] font-normal"
+                              className={`text-[12.5px] ${index === 0 && exploredIds.length === 0 ? 'font-[450]' : 'font-normal'}`}
                               style={{
                                 color: allExplored ? 'var(--color-text-secondary)' : 'var(--color-text-primary)',
                                 opacity: allExplored ? 0.7 : 0.9,
