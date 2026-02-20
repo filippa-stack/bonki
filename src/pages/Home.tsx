@@ -220,7 +220,7 @@ export default function Home() {
                         className="text-[14px] mb-[8px]"
                         style={{ color: 'var(--color-text-secondary)', opacity: 0.7 }}
                       >
-                        En bra plats att börja
+                        Rekommenderad start
                       </p>
                     )}
                     <div
