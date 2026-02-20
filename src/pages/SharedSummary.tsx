@@ -332,26 +332,26 @@ export default function SharedSummary() {
                    <div className="border-t border-foreground/[0.08] mb-8" />
                    <SectionLabel>Er resa tillsammans</SectionLabel>
                    <div className="space-y-4">
-                    <p className="text-xs text-muted-foreground/70 text-center">
+                    <p className="text-xs text-muted-foreground/50 text-center">
                       {exploredCount === 0
                         ? 'Ni har inte börjat ännu.'
                         : `${exploredCount} samtal tillsammans.`}
                     </p>
-                    <div className="space-y-3">
+                    <div className="space-y-[18px]">
                       {categoryProgress.map((cat) => (
                         <div key={cat.id}>
                           <div className="flex items-center justify-between mb-1.5">
-                            <p className="text-[11px] text-foreground/70">{cat.title}</p>
-                            <p className="text-[10px] text-muted-foreground/50">{cat.explored}/{cat.total}</p>
+                            <p className="text-[11px] text-foreground/60">{cat.title}</p>
+                            <p className="text-[10px] text-muted-foreground/40">{cat.explored}/{cat.total}</p>
                           </div>
                           <div className="flex gap-[3px]">
                             {Array.from({ length: cat.total }).map((_, i) => (
                               <div
                                 key={i}
-                                className={`h-1.5 flex-1 rounded-full ${
+                                className={`h-[3px] flex-1 rounded-full ${
                                   i < cat.explored
-                                    ? 'bg-primary/40'
-                                    : 'bg-border/20'
+                                    ? 'bg-primary/25'
+                                    : 'bg-foreground/[0.06]'
                                 }`}
                               />
                             ))}
