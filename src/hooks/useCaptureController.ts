@@ -15,16 +15,28 @@
 import { useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
-export const CAPTURE_QUEUE = [
-  { label: 'Onboarding',             file: '01-onboarding.png',        path: '/',           devState: null,                 skipOnboarding: false },
-  { label: 'Home – Solo',            file: '02-home-solo.png',         path: '/',           devState: 'solo',              skipOnboarding: true  },
-  { label: 'Home – Paired Idle',     file: '03-home-paired-idle.png',  path: '/',           devState: 'pairedIdle',        skipOnboarding: true  },
-  { label: 'Home – Paired Active',   file: '04-home-paired-active.png',path: '/',           devState: 'pairedActive',      skipOnboarding: true  },
-  { label: 'Home – Waiting',         file: '05-home-waiting.png',      path: '/',           devState: 'waiting',           skipOnboarding: true  },
-  { label: 'Home – Completed',       file: '06-home-completed.png',    path: '/',           devState: 'completed',         skipOnboarding: true  },
-  { label: 'Categories (Browse)',    file: '07-categories.png',        path: '/categories', devState: 'browse',            skipOnboarding: false },
-  { label: 'Archive – Empty',        file: '08-archive-empty.png',     path: '/saved',      devState: 'archiveEmpty',      skipOnboarding: false },
-  { label: 'Archive – With History', file: '09-archive-history.png',   path: '/saved',      devState: 'archiveWithHistory',skipOnboarding: false },
+export const CAPTURE_QUEUE: {
+  label: string; file: string; path: string;
+  devState: string | null; skipOnboarding: boolean; devStep?: number;
+}[] = [
+  // ── Onboarding ────────────────────────────────────────────────────────────
+  { label: 'Onboarding',              file: '01-onboarding.png',          path: '/',                      devState: null,                  skipOnboarding: false },
+  // ── Home ──────────────────────────────────────────────────────────────────
+  { label: 'Home – Solo',             file: '02-home-solo.png',           path: '/',                      devState: 'solo',                skipOnboarding: true  },
+  { label: 'Home – Completed',        file: '03-home-completed.png',      path: '/',                      devState: 'completed',           skipOnboarding: true  },
+  // ── Categories ────────────────────────────────────────────────────────────
+  { label: 'Categories',              file: '04-categories.png',          path: '/categories',            devState: 'browse',              skipOnboarding: false },
+  { label: 'Category – Topic List',   file: '05-category-topics.png',     path: '/category/dev-category', devState: 'browse',              skipOnboarding: false },
+  // ── Card / Session (4 steps) — devStep forces CardView to that step ───────
+  { label: 'Card – Step 1 (Opening)', file: '06-card-step1.png',          path: '/card/dev-card',         devState: 'pairedActive',        skipOnboarding: false, devStep: 0 },
+  { label: 'Card – Step 2 (Reflect)', file: '07-card-step2.png',          path: '/card/dev-card',         devState: 'pairedActive',        skipOnboarding: false, devStep: 1 },
+  { label: 'Card – Step 3 (Scenario)',file: '08-card-step3.png',          path: '/card/dev-card',         devState: 'pairedActive',        skipOnboarding: false, devStep: 2 },
+  { label: 'Card – Step 4 (Exercise)',file: '09-card-step4.png',          path: '/card/dev-card',         devState: 'pairedActive',        skipOnboarding: false, devStep: 3 },
+  // ── Completion ────────────────────────────────────────────────────────────
+  { label: 'Card – Completion',       file: '10-card-completion.png',     path: '/card/dev-card',         devState: 'completed',           skipOnboarding: false },
+  // ── Archive ───────────────────────────────────────────────────────────────
+  { label: 'Archive – Empty',         file: '11-archive-empty.png',       path: '/saved',                 devState: 'archiveEmpty',        skipOnboarding: false },
+  { label: 'Archive – With History',  file: '12-archive-history.png',     path: '/saved',                 devState: 'archiveWithHistory',  skipOnboarding: false },
 ];
 
 const RESULTS_KEY = '__sc_results';
@@ -56,6 +68,7 @@ function buildCaptureUrl(step: number): string {
   const item = CAPTURE_QUEUE[step];
   const params = new URLSearchParams({ __sc_step: String(step) });
   if (item.devState) params.set('devState', item.devState);
+  if (item.devStep !== undefined) params.set('__sc_dev_step', String(item.devStep));
   return `${item.path}?${params.toString()}`;
 }
 
