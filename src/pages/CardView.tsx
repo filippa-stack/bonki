@@ -201,10 +201,16 @@ export default function CardView() {
   // Set to a number to display a previous step without touching the server.
   const [localStepIndex, setLocalStepIndex] = useState<number | null>(null);
 
+  // ─── Sub-prompt index within current stage ───
+  // Tracks which prompt within a section is currently displayed.
+  // Resets to 0 whenever the stage changes.
+  const [localPromptIndex, setLocalPromptIndex] = useState(0);
+
   // Reset local override whenever the server advances (e.g. after refetch)
   const serverStepIndex = normalizedSession.currentStepIndex;
   useEffect(() => {
     setLocalStepIndex(null);
+    setLocalPromptIndex(0);
   }, [serverStepIndex]);
 
   const focusNoteParam = searchParams.get('focusNote');
@@ -538,7 +544,7 @@ export default function CardView() {
         <AnimatePresence mode="wait">
           {currentSection && (
             <motion.div
-              key={currentSection.id}
+              key={`${currentSection.id}-${cardViewMode === 'live' ? localPromptIndex : 0}`}
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0 }}
@@ -558,33 +564,59 @@ export default function CardView() {
                   initialFocusNoteIndex={cardViewMode === 'revisit' ? initialFocusNote : null}
                   focusPromptIndex={cardViewMode === 'revisit' ? initialFocusNote : null}
                   disableShare={isActiveSession}
+                  promptIndex={cardViewMode === 'live' ? localPromptIndex : undefined}
                 />
               </motion.div>
 
               {/* ── MODE: live — session reflection (single writer) ── */}
-              {cardViewMode === 'live' && cardId && (
-                <>
-                  {/* Step 4 — Reflection box: delay BEAT_2, duration BEAT_3 */}
-                  <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: BEAT_2, duration: BEAT_3, ease: EASE }}
-                  >
-                    <SessionStepReflection
-                      sessionId={normalizedSession.sessionId}
-                      stepIndex={currentStepIndex}
-                      onLocked={async () => { await handleCompleteStep(); }}
-                      onBack={() => {
-                        if (currentStepIndex > 0) {
-                          setLocalStepIndex(currentStepIndex - 1);
-                        } else {
-                          navigate('/');
-                        }
-                      }}
-                    />
-                  </motion.div>
-                </>
-              )}
+              {cardViewMode === 'live' && cardId && (() => {
+                const sectionPromptCount = currentSection.prompts?.length ?? 1;
+                const isLastPromptInStage = localPromptIndex >= sectionPromptCount - 1;
+                const isLastStage = currentStepIndex >= STEP_ORDER.length - 1;
+
+                return (
+                  <>
+                    {/* Step 4 — Reflection box: delay BEAT_2, duration BEAT_3 */}
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ delay: BEAT_2, duration: BEAT_3, ease: EASE }}
+                    >
+                      <SessionStepReflection
+                        sessionId={normalizedSession.sessionId}
+                        stepIndex={currentStepIndex}
+                        isLastStep={isLastStage && isLastPromptInStage}
+                        onLocked={async () => {
+                          if (isLastPromptInStage) {
+                            // Last prompt in this stage → advance DB stage
+                            await handleCompleteStep();
+                          } else {
+                            // More prompts remain in this stage → advance locally
+                            setLocalPromptIndex(localPromptIndex + 1);
+                          }
+                        }}
+                        onBack={() => {
+                          if (localPromptIndex > 0) {
+                            // Go back within stage
+                            setLocalPromptIndex(localPromptIndex - 1);
+                          } else if (currentStepIndex > 0) {
+                            // Go back to previous stage, land on its last prompt
+                            const prevStageIndex = currentStepIndex - 1;
+                            const prevSection = card.sections.find(
+                              s => s.type === STEP_ORDER[prevStageIndex]
+                            );
+                            const prevPromptCount = prevSection?.prompts?.length ?? 1;
+                            setLocalStepIndex(prevStageIndex);
+                            setLocalPromptIndex(prevPromptCount - 1);
+                          } else {
+                            navigate('/');
+                          }
+                        }}
+                      />
+                    </motion.div>
+                  </>
+                );
+              })()}
 
               {/* ── MODE: revisit — step CTA ── */}
               {cardViewMode === 'revisit' && (
