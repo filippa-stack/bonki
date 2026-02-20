@@ -349,7 +349,7 @@ export default function SharedSummary() {
                                 key={i}
                                 className={`h-[2px] flex-1 ${
                                   i < cat.explored
-                                    ? 'bg-primary/20'
+                                    ? 'bg-foreground/15'
                                     : 'bg-foreground/[0.10]'
                                 }`}
                               />
