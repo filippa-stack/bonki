@@ -221,8 +221,8 @@ export default function SharedSummary() {
           transition={{ duration: 0.15 }}
           className="mb-10 text-center"
         >
-          <h1 className="font-serif text-2xl font-semibold text-foreground tracking-tight">Vårt utrymme</h1>
-          <p className="text-sm text-muted-foreground/60 mt-2">En överblick över det du redan har utforskat.</p>
+          <h1 className="font-serif text-xl font-semibold text-foreground tracking-tight">Vårt utrymme</h1>
+          <p className="text-sm text-muted-foreground/70 mt-4">En överblick över det du redan har utforskat.</p>
         </motion.div>
 
         {/* ─── Empty state ─── */}
@@ -231,13 +231,13 @@ export default function SharedSummary() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.15 }}
-            className="min-h-[60vh] flex flex-col justify-center text-center"
+            className="pt-16 text-center"
           >
-            <div className="space-y-3">
-              <p className="text-sm text-muted-foreground/70 leading-relaxed">
+            <div className="space-y-5">
+              <p className="text-base text-muted-foreground/70 leading-relaxed">
                 Här samlas dina samtal.
               </p>
-              <p className="text-xs text-muted-foreground/50">
+              <p className="text-sm text-muted-foreground/55">
                 Det du delar sparas här.
               </p>
             </div>
