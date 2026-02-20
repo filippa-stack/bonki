@@ -227,7 +227,7 @@ function SharedSpaceLink({ isImmersive }: { isImmersive: boolean }) {
   return (
     <button
       onClick={() => navigate('/shared')}
-      className="text-[13px] font-sans font-medium transition-all hover:underline underline-offset-4"
+      className="text-[13px] font-sans font-medium transition-all hover:underline underline-offset-4 whitespace-nowrap shrink-0"
       style={{
         color: isImmersive ? 'hsl(0 0% 100%)' : 'var(--color-text-primary)',
         opacity: isImmersive ? 0.6 : 0.8,
