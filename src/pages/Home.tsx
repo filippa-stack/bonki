@@ -206,6 +206,7 @@ export default function Home() {
                 const catCards = cards.filter((c) => c.categoryId === category.id);
                 const allExplored = catCards.length > 0 && catCards.every((c) => exploredIds.includes(c.id));
                 const isGuided = category.id === guidedCategoryId;
+                const prevIsGuided = index > 0 && sortedCategories[index - 1]?.id === guidedCategoryId;
 
                 return (
                   <motion.div
@@ -213,11 +214,11 @@ export default function Home() {
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ delay: Math.min(0.08 + index * 0.05, 0.3), duration: 0.2, ease: [0.4, 0.0, 0.2, 1] }}
-                    className={isGuided ? (index > 0 ? 'mt-[64px] mb-[-8px]' : 'mb-[-8px]') : (index > 0 ? 'mt-[48px]' : '')}
+                    className={isGuided ? (index > 0 ? 'mt-[82px]' : '') : (index > 0 ? (prevIsGuided ? 'mt-[68px]' : 'mt-[58px]') : '')}
                   >
                     {isGuided && (
                       <p
-                        className="text-[14px] mb-[8px]"
+                        className="text-[14px] font-medium mb-[5px]"
                         style={{ color: 'var(--color-text-secondary)', opacity: 0.7 }}
                       >
                         Rekommenderad start
@@ -231,11 +232,15 @@ export default function Home() {
                       onKeyDown={(e) => {
                         if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); navigate(`/category/${category.id}`); }
                       }}
-                      className="w-full cursor-pointer transition-opacity hover:opacity-70 min-h-[44px] flex flex-col justify-center"
+                      className="row-bloom row-lift group relative w-full cursor-pointer min-h-[56px] flex flex-col justify-center rounded-sm py-[13px] px-2 hover:bg-black/[0.03] hover:pl-[14px] focus-visible:bg-black/[0.03] focus-visible:pl-[14px] focus-visible:outline-none active:pl-[14px] active:transition-none"
                     >
+                      <span
+                        className="absolute right-2 top-1/2 -translate-y-1/2 w-3 h-px"
+                        style={{ backgroundColor: 'var(--color-text-primary)', opacity: 0.4 }}
+                      />
                       <div className="flex items-baseline gap-3">
                         <h3
-                          className={`text-[20px] leading-snug flex-1 ${isGuided ? 'font-semibold' : 'font-medium'}`}
+                          className={`text-[20px] leading-snug flex-1 ${isGuided ? 'font-[550]' : 'font-medium'}`}
                           style={{ color: allExplored ? 'var(--color-text-secondary)' : isGuided ? '#151413' : 'var(--color-text-primary)' }}
                         >
                           {category.title}
