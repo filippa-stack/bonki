@@ -124,7 +124,7 @@ function CardEntry({ card, index, isCompleted = false, onNavigate, isLast = fals
         onKeyDown={(e) => {
           if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleTap(); }
         }}
-        className="row-bloom row-lift relative w-full cursor-pointer min-h-[56px] flex flex-col justify-center rounded-sm py-[13px] px-2 hover:bg-black/[0.03] hover:pl-[14px] focus-visible:bg-black/[0.03] focus-visible:pl-[14px] focus-visible:outline-none active:pl-[14px] active:transition-none"
+        className="row-bloom row-lift relative w-full cursor-pointer min-h-[56px] flex flex-col justify-center rounded-sm py-[13px] px-2 hover:bg-black/[0.03] hover:pl-[14px] focus-visible:bg-black/[0.03] focus-visible:pl-[14px] focus-visible:outline-none active:pl-[14px] active:transition-none transition-colors duration-150 ease-out"
       >
         <div className="flex items-baseline gap-3">
           <h3
@@ -144,6 +144,12 @@ function CardEntry({ card, index, isCompleted = false, onNavigate, isLast = fals
           </p>
         )}
       </div>
+      {!isLast && (
+        <div
+          className="mt-[13px] h-px"
+          style={{ backgroundColor: 'var(--color-text-primary)', opacity: 0.08 }}
+        />
+      )}
     </motion.div>
   );
 }
