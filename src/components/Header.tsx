@@ -153,16 +153,16 @@ export default function Header({
           {isImmersive && onLeaveSession && (
             <button
               onClick={onLeaveSession}
-              className="text-[10px] font-sans whitespace-nowrap shrink-0 ml-5 mr-2"
+              className="text-[9px] font-sans whitespace-nowrap shrink-0 ml-5 mr-2"
               style={{
                 color: 'hsl(0 0% 100%)',
-                opacity: 0.5,
+                opacity: 0.25,
                 fontWeight: 400,
                 textDecoration: 'none',
                 transition: 'opacity 150ms ease',
               }}
-              onMouseEnter={(e) => { e.currentTarget.style.opacity = '0.7'; }}
-              onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.5'; }}
+              onMouseEnter={(e) => { e.currentTarget.style.opacity = '0.45'; }}
+              onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.25'; }}
             >
               Lämna samtalet
             </button>
