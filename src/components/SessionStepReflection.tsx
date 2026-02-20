@@ -81,6 +81,10 @@ export default function SessionStepReflection({
         </div>
       </div>
 
+      <p className="mt-2 text-[12px]" style={{ color: 'var(--color-text-secondary)', opacity: 0.6 }}>
+        Det du skriver sparas automatiskt i Vårt utrymme.
+      </p>
+
       <div className="mt-22 space-y-2">
         <button
           onClick={handleAdvance}
