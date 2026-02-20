@@ -687,7 +687,7 @@ export default function CardView() {
       )}
 
       {/* Section content — centered, max 520px for readability */}
-      <div className="px-6 pt-8 pb-8 relative">
+      <div className="px-6 pt-4 pb-8 relative">
         <div className="max-w-[520px] mx-auto">
         <AnimatePresence mode="wait">
           {currentSection && (
