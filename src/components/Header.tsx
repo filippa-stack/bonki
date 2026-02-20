@@ -91,7 +91,7 @@ export default function Header({
               src={bonkiLogo}
               alt="Still Us"
               className={`h-7 w-7 object-contain cursor-pointer opacity-75 ${isImmersive ? 'brightness-0 invert' : ''}`}
-              onClick={() => navigate('/')}
+              onClick={() => navigate('/', { replace: false })}
             />
           )}
           {title && (
