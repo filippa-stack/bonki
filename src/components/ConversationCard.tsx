@@ -31,7 +31,7 @@ export default function ConversationCard({ conversation, onClick, variant = 'def
             </p>
             <p className="text-xs mt-1" style={{ color: 'var(--color-text-secondary)' }}>{timeAgo}</p>
           </div>
-          <ArrowRight className="w-4 h-4 flex-shrink-0" style={{ color: 'var(--color-text-secondary)', opacity: 0.4 }} />
+          <ArrowRight className="w-3.5 h-3.5 flex-shrink-0" style={{ color: 'var(--color-text-secondary)', opacity: 0.6 }} />
         </div>
       </button>
     );
@@ -42,7 +42,7 @@ export default function ConversationCard({ conversation, onClick, variant = 'def
       initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
       onClick={onClick}
-      className="w-full text-left px-6 py-6 rounded-card transition-opacity hover:opacity-80"
+      className="w-full text-left px-6 py-6 rounded-card transition-opacity hover:opacity-80 group"
       style={{ backgroundColor: 'hsl(var(--background))', border: '1px solid hsl(var(--foreground) / 0.09)' }}
     >
       <div className="flex items-start justify-between gap-4">
@@ -65,7 +65,7 @@ export default function ConversationCard({ conversation, onClick, variant = 'def
             )}
           </div>
         </div>
-        <ArrowRight className="w-4 h-4 flex-shrink-0 mt-1" style={{ color: 'var(--color-text-secondary)', opacity: 0.3 }} />
+        <ArrowRight className="w-3.5 h-3.5 flex-shrink-0 mt-1 opacity-60 group-hover:opacity-90 transition-opacity" style={{ color: 'var(--color-text-secondary)' }} />
       </div>
     </motion.button>
   );
