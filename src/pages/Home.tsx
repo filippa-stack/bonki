@@ -188,7 +188,7 @@ export default function Home() {
 
       <div className="flex-1">
         <div style={headerCompress}>
-          <Header showBackgroundPicker={false} showBackupManager={false} showSaveIndicator={false} />
+          <Header showBackgroundPicker={false} showBackupManager={false} showSaveIndicator={false} showSharedLink={false} minimal />
         </div>
 
         {/* Loading skeleton */}
