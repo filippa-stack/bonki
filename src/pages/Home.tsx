@@ -249,10 +249,15 @@ export default function Home() {
                           e.currentTarget.style.transform = '';
                         }}
                       >
-                        <div className="flex-1 min-w-0">
+                        <div className="flex-1 min-w-0 py-3">
                           <h3
-                            className="text-[15px] leading-snug font-medium"
-                            style={{ color: allExplored ? 'var(--color-text-secondary)' : 'var(--color-text-primary)', opacity: allExplored ? 0.7 : 0.9 }}
+                            className="text-[15px] font-medium"
+                            style={{
+                              color: allExplored ? 'var(--color-text-secondary)' : 'var(--color-text-primary)',
+                              opacity: allExplored ? 0.7 : 0.9,
+                              lineHeight: '1.35',
+                              textWrap: 'balance',
+                            }}
                           >
                             {category.title}
                           </h3>
