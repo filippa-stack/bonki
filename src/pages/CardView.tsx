@@ -87,6 +87,7 @@ export default function CardView() {
     saveConversation,
     getCardById,
     getCategoryById,
+    cards,
     // NOTE: currentSession, startSession, completeSessionStep, pauseSession
     // are REMOVED — all session authority comes from normalizedSession.
   } = useApp();
@@ -340,6 +341,16 @@ export default function CardView() {
     );
   }
 
+  // ─── Post-completion navigation (Case A / B) ───────────────────
+  // Case A: more unexplored topics remain in this category → /category/:id
+  // Case B: this was the last topic → /categories
+  const postCompletionDestination = (() => {
+    if (!category) return '/categories';
+    const categoryCards = cards.filter(c => c.categoryId === category.id);
+    const remainingCards = categoryCards.filter(c => c.id !== card.id);
+    return remainingCards.length > 0 ? `/category/${category.id}` : '/categories';
+  })();
+
   // ─────────────────────────────────────────────────────────────
   //  MODE: 'history' — completed session archive view
   // ─────────────────────────────────────────────────────────────
@@ -350,7 +361,7 @@ export default function CardView() {
         cardTitle={card.title}
         categoryId={category?.id}
         categoryTitle={category?.title}
-        onExploreAgain={() => navigate('/')}
+        onExploreAgain={() => navigate(postCompletionDestination)}
       />
     );
   }
@@ -436,11 +447,11 @@ export default function CardView() {
           >
             <p className="text-xs text-muted-foreground/40">Ni kan alltid komma tillbaka.</p>
             <Button
-              onClick={() => navigate('/')}
+              onClick={() => navigate(postCompletionDestination)}
               size="lg"
               className="w-full h-14 rounded-card font-normal"
             >
-              Tillbaka till startsidan
+              Tillbaka till översikten
             </Button>
           </motion.div>
 
