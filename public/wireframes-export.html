@@ -90,7 +90,7 @@
 <body>
 
 <h1>Still Us — Wireframes</h1>
-<p class="subtitle">Volume 1 · Single User Model · Februari 2026 · Uppdaterad: 20 feb 2026</p>
+<p class="subtitle">Volume 1 · Single User Model · Februari 2026 · Uppdaterad: 20 feb 2026 · Inkl. non-blocking progression &amp; session guard</p>
 
 <div class="actions">
   <button class="btn-dl" id="downloadBtn" onclick="exportAll()">📦 Ladda ner wireframes som ZIP</button>
@@ -163,7 +163,7 @@
       </div>
       <div class="arch-node red">
         <div class="node-title">complete_couple_session_step (RPC)</div>
-        <div class="node-sub">Markerar steg klart. Returnerar { is_step_complete, is_session_complete }. Ingen partner_left i Vol 1.</div>
+        <div class="node-sub">Markerar steg klart. Returnerar { is_step_complete, is_session_complete }. Non-blocking: UI avancerar lokalt först, RPC körs i bakgrund med max 2 retries. Self-healing guard: om sessionId saknas → auto-activate → retry.</div>
       </div>
       <div class="arch-node red">
         <div class="node-title">get_active_session_state (RPC)</div>
@@ -205,9 +205,27 @@
         <span class="flow-arrow">→</span>
         <span class="flow-pill green">upsert step_reflections state:'ready'</span>
         <span class="flow-arrow">→</span>
-        <span class="flow-pill red">complete_couple_session_step RPC</span>
+        <span class="flow-pill green">UI avancerar lokalt (non-blocking)</span>
         <span class="flow-arrow">→</span>
-        <span class="flow-pill green">refetch → nästa steg</span>
+        <span class="flow-pill red">complete_couple_session_step RPC (bakgrund)</span>
+      </div>
+      <div class="flow-row">
+        <span class="flow-pill gray">RPC misslyckas</span>
+        <span class="flow-arrow">→</span>
+        <span class="flow-pill amber">micro-toast "Vi sparar så fort vi kan"</span>
+        <span class="flow-arrow">→</span>
+        <span class="flow-pill red">retry × 2 (1.5s delay)</span>
+        <span class="flow-arrow">→</span>
+        <span class="flow-pill green">refetch vid success</span>
+      </div>
+      <div class="flow-row">
+        <span class="flow-pill gray">Inget sessionId</span>
+        <span class="flow-arrow">→</span>
+        <span class="flow-pill red">activate_couple_session (self-heal)</span>
+        <span class="flow-arrow">→</span>
+        <span class="flow-pill green">refetch → retry write</span>
+        <span class="flow-arrow">→</span>
+        <span class="flow-pill amber">fallback: lokal advance</span>
       </div>
       <div class="flow-row">
         <span class="flow-pill gray">Sista steget klart</span>
@@ -243,7 +261,8 @@
     </div>
     <div style="margin-top:10px;font-size:10px;color:#aaa;">
       devState=pairedActive → mode: active. Alla övriga devState → mode: idle.<br>
-      <b>Borttaget i Vol 1:</b> waiting-mode, proposalIncoming, partner_left, paired/duo-logik.
+      <b>Borttaget i Vol 1:</b> waiting-mode, proposalIncoming, partner_left, paired/duo-logik.<br>
+      <b>Non-blocking progression:</b> UI avancerar alltid lokalt. Backend-fel → micro-toast + bakgrundsretry (2×). Inga blockerande spinners.
     </div>
   </div>
 </div>
@@ -299,11 +318,11 @@
       </thead>
       <tbody>
         <tr>
-          <td><span class="key-chip">step_complete_fail</span></td>
-          <td>Kunde inte markera steget som klart</td>
-          <td style="color:#CC0000">error</td>
+          <td><span class="key-chip">step_retry</span></td>
+          <td>Vi sparar så fort vi kan. Fortsätt bara.</td>
+          <td style="color:#1565c0">neutral</td>
           <td>CardView.tsx</td>
-          <td>complete_couple_session_step RPC returnerar error</td>
+          <td>complete_couple_session_step RPC misslyckas → non-blocking retry (max 2×)</td>
         </tr>
         <tr>
           <td><span class="key-chip">copy_link</span></td>
@@ -520,7 +539,7 @@
   <div class="flow-row" style="margin-bottom:10px;"><span class="flow-pill red">normalizedSession.cardId matchar</span><span class="flow-arrow">→</span><span class="sn-mode live" style="padding:4px 10px;border-radius:6px;font-size:11px;">live</span></div>
   <div class="flow-row" style="margin-bottom:10px;"><span class="flow-pill amber">Avslutad session finns för kortet</span><span class="flow-arrow">→</span><span class="sn-mode history" style="padding:4px 10px;border-radius:6px;font-size:11px;">history</span></div>
   <div class="flow-row"><span class="flow-pill gray">Default (nytt kort)</span><span class="flow-arrow">→</span><span class="sn-mode live" style="padding:4px 10px;border-radius:6px;font-size:11px;">live (auto-aktiverar session)</span></div>
-  <div style="margin-top:12px;font-size:10px;color:#aaa;"><strong>Auto-aktivering:</strong> Om inget sessionId finns och kortet inte är avklarat anropas activate_couple_session RPC direkt. Sker exakt en gång via activatingRef.</div>
+  <div style="margin-top:12px;font-size:10px;color:#aaa;"><strong>Auto-aktivering:</strong> Om inget sessionId finns och kortet inte är avklarat anropas activate_couple_session RPC direkt. Sker exakt en gång via activatingRef.<br><strong>Self-healing guard (handleCompleteStep):</strong> Om sessionId saknas vid stegmarkering → försök activate → refetch → retry. Om fortfarande saknas → non-blocking lokal advance + micro-toast.</div>
 </div>
 
 <!-- F6: devState params -->
@@ -807,9 +826,9 @@
         <div style="min-height:60px;font-size:9px;color:#bbb;">Skriv din reflektion — valfritt.</div>
         <div style="font-size:8px;color:#bbb;display:flex;align-items:center;gap:3px;margin-top:4px;">🔒 Bara du kan se det här</div>
       </div>
-      <!-- CTA: dark green, not brand red -->
+      <!-- CTA: dark green, not brand red — non-blocking -->
       <div style="background:#1F3D2B;color:#fff;padding:9px 14px;border-radius:14px;text-align:center;font-size:11px;font-weight:500;margin-top:6px;">Fortsätt</div>
-      <div class="info-note center">Stegindikatorn: 4 horisontella piller. Aktiv = mörk. Klara = dämpad. Kommande = border.</div>
+      <div class="info-note center">Non-blocking: UI avancerar lokalt. RPC körs i bakgrund. Vid fel: micro-toast + max 2 retries. Stegindikatorn: 4 piller (aktiv = mörk, klara = dämpad).</div>
     </div>
   </div>
 

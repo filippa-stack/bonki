@@ -50,7 +50,7 @@
 <body>
 
 <h1>Still Us — Screen Wireframes</h1>
-<p class="subtitle">18 state-based UI variations · Updated February 2026 · Includes Sacred Session Guard, NewChapterBanner, system_events</p>
+<p class="subtitle">18 state-based UI variations · Updated February 2026 · Includes Sacred Session Guard, NewChapterBanner, system_events, non-blocking progression &amp; self-healing session guard</p>
 
 <div class="toc">
   <strong>Innehåll:</strong><br>
@@ -356,7 +356,9 @@
   </div>
   <ul class="annotations">
     <li>Reflexionsstate: draft → ready (user klar) → revealed (båda klara) → locked (steg avslutat)</li>
-    <li>complete_couple_session_step() RPC server-side → returnerar is_waiting/is_step_complete/is_session_complete</li>
+    <li>complete_couple_session_step() RPC: <strong>non-blocking</strong> — UI avancerar lokalt först, RPC körs i bakgrund</li>
+    <li>Vid RPC-fel: micro-toast "Vi sparar så fort vi kan" + max 2 retries (1.5s delay)</li>
+    <li>Self-healing guard: om sessionId saknas → auto-activate → refetch → retry → fallback lokal advance</li>
     <li>Realtime: couple_sessions + couple_session_completions → debounced 300ms refetch</li>
     <li>StepProgressIndicator visar visuellt per-steg-status</li>
     <li>ActiveSessionGuard: BARA / och /card/:activeId tillåts</li>
