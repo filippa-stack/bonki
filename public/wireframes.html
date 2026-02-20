@@ -317,51 +317,51 @@
 <!-- ════════════════════════════════════════════ -->
 <div class="section-header">AKTIV SESSION</div>
 
-<!-- 8. ACTIVE SESSION (CARDVIEW) -->
+<!-- 8. ACTIVE SESSION (CARDVIEW) — Journal-style -->
 <div id="active-session" class="wireframe">
-  <h2>8. Aktiv Session — CardView</h2>
-  <div class="route">/card/:cardId · appMode='SESSION_ACTIVE'</div>
-  <div class="frame">
-    <div class="header-bar">
-      <span>[Logotyp] Arbetsfördelning</span>
-      <span class="row"><span class="badge">Sparar…</span> ⚙️</span>
+  <h2>8. Aktiv Session — CardView (Journal-style)</h2>
+  <div class="route">/card/:cardId · mode='live' · immersive header</div>
+  <div class="frame" style="background:#F8F5F1;">
+    <!-- Immersive dark green header: category title centered, "Lämna samtalet" link right -->
+    <div class="header-bar" style="background:#1C3A2D;color:#fff;border-bottom:none;padding:10px 12px 16px;">
+      <span style="font-size:11px;">← Kategori</span>
+      <span style="font-size:10px;opacity:0.5;">Lämna samtalet</span>
     </div>
-    <div class="spacer"></div>
-    <div class="progress-bar">
-      <span class="progress-step done"></span>
-      <span class="progress-step current"></span>
-      <span class="progress-step"></span>
-      <span class="progress-step"></span>
+    <!-- 4 horizontal pill bars: current = dark ink (#1C1B1A), done = 30% opacity, pending = border -->
+    <div style="display:flex;gap:5px;padding:12px 0 4px;">
+      <span style="flex:1;height:3px;border-radius:3px;background:rgba(28,27,26,0.3);"></span>
+      <span style="flex:1;height:3px;border-radius:3px;background:#1C1B1A;"></span>
+      <span style="flex:1;height:3px;border-radius:3px;background:#e0ddd9;"></span>
+      <span style="flex:1;height:3px;border-radius:3px;background:#e0ddd9;"></span>
     </div>
-    <div class="muted center" style="margin-top:4px;">Steg 2 / 4 — Tankeväckare</div>
-    <div class="spacer"></div>
-    <div class="card">
-      <div class="muted" style="font-size:11px;">TANKEVÄCKARE</div>
-      <div class="spacer-sm"></div>
-      <div class="serif" style="font-size:16px; line-height:1.5;">Hur fördelar ni det mentala lasset hemma idag?</div>
-      <div class="spacer"></div>
-      <div class="muted" style="font-size:11px;">Frågor att fundera på:</div>
-      <div class="tag">Vem planerar?</div>
-      <div class="tag">Vem kommer ihåg?</div>
-      <div class="tag">Vem oroar sig?</div>
+    <!-- Ritual hint -->
+    <div class="center muted" style="font-size:10px;margin:6px 0 16px;letter-spacing:0.3px;">Det finns inget rätt svar här. Bara ert.</div>
+    <!-- Card title: serif, centered, 18px -->
+    <div class="center serif" style="font-size:18px;margin-bottom:4px;">När dagen är slut</div>
+    <!-- Card subtitle: muted, centered -->
+    <div class="center muted" style="font-size:14px;margin-bottom:32px;">Ansvar för hem och hushåll, återhämtning</div>
+    <!-- Large serif question: the emotional core -->
+    <div class="center serif" style="font-size:20px;line-height:1.6;margin-bottom:48px;">När under dagen känner du att du kan släppa ansvaret?</div>
+    <!-- Reflection box: bordered, rounded, min-height -->
+    <div style="border:1px solid #DDD8D2;border-radius:16px;padding:16px;margin-bottom:8px;">
+      <div style="min-height:80px;font-size:12px;color:#bbb;">Skriv din reflektion — valfritt.</div>
+      <div style="font-size:10px;color:#ccc;display:flex;align-items:center;gap:4px;margin-top:8px;">🔒 Bara du kan se det här</div>
     </div>
-    <div class="spacer"></div>
-    <div class="card">
-      <div class="muted" style="font-size:11px;">DIN REFLEKTION</div>
-      <div style="border:1px solid #ddd; border-radius:8px; padding:10px; min-height:80px; margin-top:6px; color:#999;">Skriv din reflektion…</div>
-      <div class="spacer-sm"></div>
-      <div class="btn">Markera som klar →</div>
-    </div>
-    <div class="spacer"></div>
+    <!-- Autosave note -->
+    <div class="muted" style="font-size:11px;margin-bottom:20px;">Det du skriver sparas automatiskt i Vårt utrymme.</div>
+    <!-- CTA: Bonki dark green -->
+    <div style="background:#1E3D2F;color:#fff;padding:12px 18px;border-radius:14px;text-align:center;font-size:13px;font-weight:500;">Fortsätt</div>
+    <div class="spacer-sm"></div>
   </div>
   <ul class="annotations">
-    <li>Reflexionsstate: draft → ready (user klar) → revealed (båda klara) → locked (steg avslutat)</li>
-    <li>complete_couple_session_step() RPC: <strong>non-blocking</strong> — UI avancerar lokalt först, RPC körs i bakgrund</li>
+    <li>Journal-style: frågan är den emotionella kärnan, stor serif centrerad</li>
+    <li>Header: immersiv mörkgrön (#1C3A2D), "Lämna samtalet" som diskret textlänk (50% opacitet)</li>
+    <li>4 pill-bars som enda progress-indikator — ingen vertikal depth spine</li>
+    <li>Reflexionsstate: draft → ready → revealed → locked</li>
+    <li>complete_couple_session_step() RPC: <strong>non-blocking</strong> — UI avancerar lokalt först, RPC i bakgrund</li>
     <li>Vid RPC-fel: micro-toast "Vi sparar så fort vi kan" + max 2 retries (1.5s delay)</li>
     <li>Self-healing guard: om sessionId saknas → auto-activate → refetch → retry → fallback lokal advance</li>
-    <li>Realtime: couple_sessions + couple_session_completions → debounced 300ms refetch</li>
-    <li>StepProgressIndicator visar visuellt per-steg-status</li>
-    <li>ActiveSessionGuard: BARA / och /card/:activeId tillåts</li>
+    <li>Autosave: debounced 800ms upsert till step_reflections</li>
   </ul>
 </div>
 
