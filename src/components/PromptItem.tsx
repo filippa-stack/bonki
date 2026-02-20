@@ -63,12 +63,17 @@ export default function PromptItem({ prompt, index, sectionType, preamble }: Pro
             {preamble}
           </p>
         )}
-        <p
-          className="text-subheading w-full text-center"
-          style={gravity}
-        >
-          {prompt.text}
-        </p>
+        <div className="w-full text-center space-y-5">
+          {prompt.text.split('\n').filter(p => p.trim() !== '').map((para, i) => (
+            <p
+              key={i}
+              className="text-subheading"
+              style={gravity}
+            >
+              {para}
+            </p>
+          ))}
+        </div>
       </div>
     </motion.div>
   );
