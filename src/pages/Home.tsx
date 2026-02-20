@@ -2,7 +2,8 @@ import { RECOMMENDED_CATEGORY_ORDER } from '@/lib/recommendedOrder';
 
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useMemo, useState } from 'react';
+import { useMemo, useState, CSSProperties } from 'react';
+import { useScrollCompression } from '@/hooks/useScrollCompression';
 import { useTranslation } from 'react-i18next';
 import { useApp } from '@/contexts/AppContext';
 import { useSiteSettings } from '@/contexts/SiteSettingsContext';
@@ -154,8 +155,23 @@ export default function Home() {
     return null;
   }, [cards, exploredIds]);
 
+  const { scrollRef, progress: scrollP } = useScrollCompression(80);
+
+  // Derived compression styles
+  const headerCompress: CSSProperties = {
+    transition: 'transform 180ms ease-out, opacity 180ms ease-out',
+    transform: `scale(${1 - scrollP * 0.03})`,
+    opacity: 1 - scrollP * 0.15,
+  };
+
+  const slabCompress: CSSProperties = {
+    transition: 'transform 200ms ease-out, opacity 200ms ease-out, box-shadow 200ms ease-out',
+    transform: `translateY(${-scrollP * 12}px) scale(${1 - scrollP * 0.03})`,
+    opacity: 1 - scrollP * 0.08,
+  };
+
   return (
-    <div className="min-h-screen flex flex-col page-bg">
+    <div ref={scrollRef} className="min-h-screen flex flex-col page-bg overflow-y-auto" style={{ height: '100vh' }}>
       {/* 7+ day return overlay */}
       <AnimatePresence>
         {showReturnOverlay && (
@@ -171,7 +187,9 @@ export default function Home() {
       </AnimatePresence>
 
       <div className="flex-1">
-        <Header showBackgroundPicker={false} showBackupManager={false} showSaveIndicator={false} />
+        <div style={headerCompress}>
+          <Header showBackgroundPicker={false} showBackupManager={false} showSaveIndicator={false} />
+        </div>
 
         {/* Loading skeleton */}
         {mode === 'loading' && (
@@ -183,7 +201,7 @@ export default function Home() {
         {mode !== 'loading' && (
           <>
             {/* Focus Slab — single block for resume or recommended */}
-            <div className="px-6 pt-8 mb-10">
+            <div className="px-6 pt-8 mb-10" style={slabCompress}>
               <FocusSlab />
             </div>
 
