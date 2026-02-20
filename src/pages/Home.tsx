@@ -192,7 +192,7 @@ export default function Home() {
             {/* Categories listing — always visible */}
             <div className={`px-6 pb-[80px] ${effectiveCardId ? 'pt-0' : 'pt-[64px]'}`}>
               <h1
-                className="text-[22px] font-medium"
+                className="text-[22px] font-normal"
                 style={{
                   color: 'var(--color-text-secondary)',
                   marginBottom: effectiveCardId ? '68px' : '72px',
