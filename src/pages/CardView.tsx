@@ -590,7 +590,7 @@ export default function CardView() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.12, duration: 0.32, ease: [0.4, 0, 0.2, 1] }}
-            className="max-w-md mx-auto mt-16 flex flex-col items-center"
+            className="max-w-md mx-auto mt-24 flex flex-col items-center"
           >
             <button
               onClick={() => navigate(category ? `/category/${category.id}` : '/categories')}
