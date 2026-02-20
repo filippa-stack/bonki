@@ -1,4 +1,4 @@
-import { ArrowLeft, LogOut, Plus, Settings } from 'lucide-react';
+import { ArrowLeft, LogOut, Plus, Settings, BookText } from 'lucide-react';
 import { useTogetherMode } from '@/hooks/useTogetherMode';
 import { useCoupleSpaceContext } from '@/contexts/CoupleSpaceContext';
 import { useNavigate } from 'react-router-dom';
@@ -154,8 +154,16 @@ export default function Header({
             </div>
           )}
 
-          {/* Hide shared space link in immersive/session mode or when explicitly hidden */}
-          {!isImmersive && showSharedLink && <SharedSpaceLink isImmersive={false} />}
+          {/* Archive icon — Home only (not immersive) */}
+          {!isImmersive && showSharedLink && (
+            <button
+              onClick={() => navigate('/shared')}
+              className="text-muted-foreground/50 hover:text-muted-foreground transition-colors"
+              aria-label={t('header.shared_space')}
+            >
+              <BookText className="w-[18px] h-[18px]" />
+            </button>
+          )}
 
           {/* Leave session button (immersive only) */}
           {isImmersive && onLeaveSession && (
@@ -270,29 +278,5 @@ export default function Header({
         </div>
       </div>
     </header>
-  );
-}
-
-function SharedSpaceLink({ isImmersive }: { isImmersive: boolean }) {
-  const { t } = useTranslation();
-  const navigate = useNavigate();
-
-  return (
-    <button
-      onClick={() => navigate('/shared')}
-      className="text-[13px] font-sans font-medium whitespace-nowrap shrink-0 mr-4 no-underline hover:underline underline-offset-4"
-      style={{
-        fontWeight: 500,
-        color: isImmersive ? 'hsl(0 0% 100%)' : 'var(--color-text-primary)',
-        opacity: isImmersive ? 0.6 : 0.85,
-        textDecorationColor: isImmersive ? 'hsl(0 0% 100% / 0.3)' : 'hsl(var(--foreground) / 0.3)',
-        textDecorationThickness: '1px',
-        transition: 'opacity 150ms ease, text-decoration-color 150ms ease',
-      }}
-      onMouseEnter={(e) => { e.currentTarget.style.opacity = isImmersive ? '0.85' : '1'; }}
-      onMouseLeave={(e) => { e.currentTarget.style.opacity = isImmersive ? '0.6' : '0.85'; }}
-    >
-      {t('header.shared_space')}
-    </button>
   );
 }

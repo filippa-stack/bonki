@@ -223,7 +223,7 @@ export default function SharedSummary() {
           transition={{ duration: 0.15 }}
           className="mb-10 text-center"
         >
-          <h1 className="font-serif text-xl font-medium text-foreground tracking-tight">Vårt utrymme</h1>
+          <h1 className="font-serif text-xl font-medium text-foreground tracking-tight">{t('shared.title')}</h1>
           <p className="text-sm text-muted-foreground/50 mt-2">En överblick över det du redan har utforskat.</p>
         </motion.div>
 
