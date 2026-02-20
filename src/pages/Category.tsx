@@ -1,6 +1,6 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ChevronRight } from 'lucide-react';
+import { ChevronRight, Check } from 'lucide-react';
 import { BEAT_1, EASE } from '@/lib/motion';
 import { useTranslation } from 'react-i18next';
 import { useApp } from '@/contexts/AppContext';
@@ -131,6 +131,14 @@ function CardEntry({ card, index, isCompleted = false, onNavigate }: CardEntryPr
             </p>
           )}
         </div>
+        {isCompleted && (
+          <Check
+            size={14}
+            className="flex-shrink-0"
+            style={{ color: 'var(--color-text-secondary)', opacity: 0.3 }}
+            aria-label="Avklarad"
+          />
+        )}
         <ChevronRight
           size={18}
           className="flex-shrink-0"
