@@ -229,7 +229,7 @@ export default function Home() {
                         }}
                         className="cursor-pointer"
                         style={{
-                          height: '64px',
+                          minHeight: '64px',
                           borderRadius: '16px',
                           padding: '0 24px',
                           display: 'flex',
@@ -255,8 +255,9 @@ export default function Home() {
                             style={{
                               color: allExplored ? 'var(--color-text-secondary)' : 'var(--color-text-primary)',
                               opacity: allExplored ? 0.7 : 0.9,
-                              lineHeight: '1.35',
+                              lineHeight: '1.3',
                               textWrap: 'balance',
+                              wordBreak: 'keep-all',
                             }}
                           >
                             {category.title}
