@@ -63,27 +63,28 @@ export default function SessionStepReflection({
     /* 48px above reflection, 32px between reflection and button */
     <div className="mt-12 mb-1">
       <div
-        className="rounded-card overflow-hidden"
-        style={{ border: '1px solid hsl(var(--border))', backgroundColor: 'transparent', padding: '2rem' }}
+        className="overflow-hidden"
+        style={{
+          border: '0.5px solid hsl(var(--border) / 0.5)',
+          borderRadius: '16px',
+          backgroundColor: 'transparent',
+          padding: '24px 28px',
+        }}
       >
         <textarea
           value={displayText}
           onChange={(e) => handleChange(e.target.value)}
-          placeholder="Skriv din reflektion — valfritt."
+          placeholder="Skriv fritt — valfritt."
           className="w-full min-h-[120px] bg-transparent resize-none focus:outline-none focus:ring-0 text-sm leading-relaxed placeholder:[color:#8C8681]"
           style={{ color: 'var(--color-ink)' }}
         />
-        <div className="flex items-center pt-2">
-          <span className="text-xs flex items-center gap-1" style={{ color: 'var(--color-text-secondary)', opacity: 0.4 }}>
+        <div className="flex items-center pt-3">
+          <span className="text-[10px] flex items-center gap-1" style={{ color: 'var(--color-text-secondary)', opacity: 0.3 }}>
             <Lock className="w-3 h-3" />
-            Bara du kan se det här
+            Privat
           </span>
         </div>
       </div>
-
-      <p className="mt-2 text-[12px]" style={{ color: 'var(--color-text-secondary)', opacity: 0.6 }}>
-        Det du skriver sparas automatiskt i Vårt utrymme.
-      </p>
 
       <div className="mt-22 space-y-2">
         <button
