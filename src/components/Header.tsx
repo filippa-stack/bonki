@@ -38,6 +38,8 @@ interface HeaderProps {
   showBackgroundPicker?: boolean;
   showSaveIndicator?: boolean;
   showBackupManager?: boolean;
+  showSharedLink?: boolean;
+  minimal?: boolean;
   variant?: 'default' | 'immersive';
   onImmersiveBack?: () => void;
   onLeaveSession?: () => void;
@@ -50,6 +52,8 @@ export default function Header({
   showBackgroundPicker = false,
   showSaveIndicator = true,
   showBackupManager = true,
+  showSharedLink = true,
+  minimal = false,
   variant = 'default',
   onImmersiveBack,
   onLeaveSession,
@@ -71,9 +75,13 @@ export default function Header({
 
   return (
     <header
-      className={`sticky top-0 z-10 ${isImmersive ? '' : 'backdrop-blur-md border-b border-black/[0.04]'}`}
+      className={`sticky top-0 z-10 ${isImmersive ? '' : minimal ? '' : 'backdrop-blur-md border-b border-black/[0.04]'}`}
       style={{
-        backgroundColor: isImmersive ? 'var(--session-header-bg)' : 'hsl(var(--surface-chrome) / 0.85)',
+        backgroundColor: isImmersive
+          ? 'var(--session-header-bg)'
+          : minimal
+            ? 'transparent'
+            : 'hsl(var(--surface-chrome) / 0.85)',
         filter: isImmersive ? 'saturate(0.75) brightness(0.9)' : undefined,
         boxShadow: 'none',
       }}
@@ -104,7 +112,7 @@ export default function Header({
             <img
               src={bonkiLogo}
               alt="Still Us"
-              className={`h-7 w-7 object-contain cursor-pointer ${isImmersive ? 'brightness-0 invert opacity-80' : 'opacity-75'}`}
+              className={`object-contain cursor-pointer ${minimal ? 'h-6 w-6 opacity-45' : 'h-7 w-7'} ${isImmersive ? 'brightness-0 invert opacity-80' : minimal ? '' : 'opacity-75'}`}
               onClick={() => navigate('/', { replace: false })}
             />
           )}
@@ -146,8 +154,8 @@ export default function Header({
             </div>
           )}
 
-          {/* Hide shared space link in immersive/session mode */}
-          {!isImmersive && <SharedSpaceLink isImmersive={false} />}
+          {/* Hide shared space link in immersive/session mode or when explicitly hidden */}
+          {!isImmersive && showSharedLink && <SharedSpaceLink isImmersive={false} />}
 
           {/* Leave session button (immersive only) */}
           {isImmersive && onLeaveSession && (
