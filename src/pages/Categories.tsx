@@ -11,6 +11,7 @@ import { selectExploredCardIds } from '@/selectors/spaceSnapshotSelectors';
 import Header from '@/components/Header';
 import ResumeBanner from '@/components/ResumeBanner';
 import { useNormalizedSessionContext } from '@/contexts/NormalizedSessionContext';
+import { useDevState } from '@/contexts/DevStateContext';
 
 import { RECOMMENDED_CATEGORY_ORDER } from '@/lib/recommendedOrder';
 
@@ -23,6 +24,10 @@ export default function Categories() {
   const { snapshot } = useSpaceSnapshot(user?.id ?? null, space?.id ?? null);
   const exploredIds = selectExploredCardIds(snapshot);
   const normalizedSession = useNormalizedSessionContext();
+  const devState = useDevState();
+
+  // In devState=pairedActive, provide a mock cardId so the ResumeBanner renders
+  const effectiveCardId = normalizedSession.cardId ?? (devState === 'pairedActive' ? 'listening-presence' : null);
 
   // Sort categories by recommended order; unlisted ones go at the end
   const sortedCategories = useMemo(() => {
@@ -50,9 +55,9 @@ export default function Categories() {
       <Header showBack backTo="/" />
 
       <div className="px-6 pt-[64px] pb-[80px]">
-        {normalizedSession.cardId && (
+        {effectiveCardId && (
           <div className="mb-6">
-            <ResumeBanner cardId={normalizedSession.cardId} />
+            <ResumeBanner cardId={effectiveCardId} />
           </div>
         )}
         <h1
