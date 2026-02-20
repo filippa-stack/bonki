@@ -373,16 +373,18 @@ export default function SharedSummary() {
                    className="mb-12"
                  >
                    <SectionLabel>Besökta samtal</SectionLabel>
-                   <div className="divide-y divide-foreground/[0.08]">
+                   <div className="divide-y divide-foreground/[0.08] [&>*:nth-child(2)]:border-t-[hsl(var(--foreground)/0.14)]">
                      {cards
                        .filter(c => exploredIds.includes(c.id))
-                       .map(card => {
+                       .map((card, index) => {
                          const category = getCategoryById(card.categoryId);
+                         const isFirst = index === 0;
                          return (
                            <button
                              key={card.id}
                              onClick={() => navigate(`/card/${card.id}?revisit=true`)}
-                             className="w-full text-left group py-5 first:pt-0"
+                             className={`w-full text-left group ${isFirst ? 'pt-0 pb-6' : 'py-5'}`}
+                             style={!isFirst ? { borderTopColor: 'hsl(var(--foreground) / 0.08)' } : undefined}
                            >
                              {category && (
                                <p className="text-[12px] text-foreground/60 mb-2 leading-none">
@@ -390,7 +392,7 @@ export default function SharedSummary() {
                                </p>
                              )}
                              <div className="flex items-baseline justify-between gap-3">
-                               <p className="font-serif text-[17px] leading-snug text-foreground/80 group-hover:text-foreground transition-colors">
+                               <p className={`font-serif text-[17px] leading-snug transition-colors group-hover:text-foreground ${isFirst ? 'font-semibold text-foreground/90' : 'text-foreground/80'}`}>
                                  {card.title}
                                </p>
                                <span className="text-muted-foreground opacity-55 group-hover:opacity-80 transition-opacity flex-shrink-0 text-sm">→</span>
