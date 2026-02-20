@@ -16,7 +16,7 @@ import RelationSettings from '@/components/RelationSettings';
 import RelationshipMemory from '@/components/RelationshipMemory';
 import Footer from '@/components/Footer';
 import ReturnOverlay from '@/components/ReturnOverlay';
-import ResumeBanner from '@/components/ResumeBanner';
+import FocusSlab from '@/components/FocusSlab';
 import ConfidenceCheckPanel from '@/components/ConfidenceCheckPanel';
 import CompletionMarker from '@/components/CompletionMarker';
 import { useThemeVars } from '@/hooks/useThemeVars';
@@ -182,12 +182,10 @@ export default function Home() {
 
         {mode !== 'loading' && (
           <>
-            {/* Resume banner — non-intrusive, shown when active session exists */}
-            {effectiveCardId && (
-              <div className="px-6 pt-8 mb-10">
-                <ResumeBanner cardId={effectiveCardId} />
-              </div>
-            )}
+            {/* Focus Slab — single block for resume or recommended */}
+            <div className="px-6 pt-8 mb-10">
+              <FocusSlab />
+            </div>
 
             {/* Categories listing — always visible */}
             <div className={`px-6 pb-[80px] ${effectiveCardId ? 'pt-0' : 'pt-[64px]'}`}>
