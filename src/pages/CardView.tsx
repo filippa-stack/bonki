@@ -369,12 +369,34 @@ export default function CardView() {
 
     if (!normalizedSession.sessionId) return;
 
-    const { data, error } = await supabase.rpc('complete_couple_session_step', {
+    const rpcParams = {
       p_session_id: normalizedSession.sessionId,
       p_step_index: displayIndex,
-    });
+    };
+
+    if (isDevToolsEnabled()) {
+      console.log('[step-complete] RPC params:', rpcParams);
+      console.log('[step-complete] context:', {
+        couple_space_id: space?.id ?? null,
+        cardViewMode,
+        appMode: normalizedSession.appMode,
+        normalizedCardId: normalizedSession.cardId,
+        routeCardId: cardId,
+      });
+    }
+
+    const { data, error } = await supabase.rpc('complete_couple_session_step', rpcParams);
 
     if (error) {
+      if (isDevToolsEnabled()) {
+        console.error('[step-complete] FULL ERROR:', JSON.stringify(error, null, 2));
+        console.error('[step-complete] error fields:', {
+          message: error.message,
+          code: error.code,
+          details: error.details,
+          hint: error.hint,
+        });
+      }
       console.error('Step completion error:', error);
       toastErrorOnce('step_complete_fail', 'Kunde inte markera steget som klart');
       return;
