@@ -242,15 +242,15 @@ export default function Home() {
                       >
                         <div className="flex-1 min-w-0">
                           <h3
-                            className="font-serif text-[18px] leading-snug font-medium"
-                            style={{ color: allExplored ? 'var(--color-text-secondary)' : 'var(--color-text-primary)' }}
+                            className="text-[15px] leading-snug font-medium"
+                            style={{ color: allExplored ? 'var(--color-text-secondary)' : 'var(--color-text-primary)', opacity: allExplored ? 0.7 : 0.9 }}
                           >
                             {category.title}
                           </h3>
                           {category.entryLine && (
                             <p
-                              className="text-[13px] mt-1 truncate"
-                              style={{ color: 'var(--color-text-secondary)', opacity: 0.7 }}
+                              className="text-[12px] mt-0.5 truncate"
+                              style={{ color: 'var(--color-text-secondary)', opacity: 0.5 }}
                             >
                               {category.entryLine}
                             </p>
