@@ -96,7 +96,7 @@ export default function Categories() {
                   onKeyDown={(e) => {
                     if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); navigate(`/category/${category.id}`); }
                   }}
-                  className="row-bloom group relative w-full cursor-pointer min-h-[56px] flex flex-col justify-center rounded-sm py-[13px] px-2 transition-[background-color] duration-[120ms] ease-out hover:bg-black/[0.03] active:bg-black/[0.04] active:transition-none"
+                  className="row-bloom group relative w-full cursor-pointer min-h-[56px] flex flex-col justify-center rounded-sm py-[13px] px-2 transition-[background-color,padding-left] duration-[140ms] ease-out hover:bg-black/[0.03] hover:pl-[14px] focus-visible:bg-black/[0.03] focus-visible:pl-[14px] focus-visible:outline-none active:bg-black/[0.05] active:pl-[14px] active:transition-none"
                 >
                   <span
                     className="absolute right-2 top-1/2 -translate-y-1/2 w-3 h-px"
