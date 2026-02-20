@@ -86,7 +86,7 @@ export default function Categories() {
                   className="text-[14px] font-medium mb-[5px]"
                   style={{ color: 'var(--color-text-secondary)', opacity: 0.7 }}
                 >
-                  En bra plats att börja
+                  Rekommenderad start
                 </p>
               )}
                 <div
