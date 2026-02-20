@@ -495,6 +495,19 @@ export default function CardView() {
         onImmersiveBack={undefined}
       />
 
+      {/* Exit affordance — live mode only, top-right, no session mutation */}
+      {isLive && (
+        <div className="flex justify-end px-6 -mt-1">
+          <button
+            onClick={() => navigate('/')}
+            className="text-xs transition-opacity hover:opacity-100"
+            style={{ color: 'var(--color-text-secondary)', opacity: 0.7 }}
+          >
+            Lämna samtalet
+          </button>
+        </div>
+      )}
+
       {/* Step progress — neutral text only */}
       {cardViewMode === 'live' && (
         <motion.div
