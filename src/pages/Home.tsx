@@ -222,7 +222,7 @@ export default function Home() {
                 {sortedCategories.map((category, index) => {
                   const catCards = cards.filter((c) => c.categoryId === category.id);
                   const allExplored = catCards.length > 0 && catCards.every((c) => exploredIds.includes(c.id));
-                  const isFirstTime = index === 0 && exploredIds.length === 0;
+                  
 
                   return (
                     <motion.div
@@ -242,14 +242,13 @@ export default function Home() {
                         }}
                         className="cursor-pointer"
                         style={{
-                          minHeight: isFirstTime ? '48px' : '44px',
+                          minHeight: '44px',
                           borderRadius: '10px',
-                          padding: isFirstTime ? '8px 20px' : '0 20px',
+                          padding: '0 20px',
                           display: 'flex',
-                          alignItems: isFirstTime ? 'flex-start' : 'center',
-                          flexDirection: isFirstTime ? 'column' : 'row',
-                          justifyContent: isFirstTime ? 'center' : 'space-between',
-                          gap: isFirstTime ? '1px' : '8px',
+                          alignItems: 'center',
+                          justifyContent: 'space-between',
+                          gap: '8px',
                           background: 'hsl(var(--muted) / 0.12)',
                           transition: 'transform 120ms ease-out',
                         }}
@@ -263,14 +262,6 @@ export default function Home() {
                           e.currentTarget.style.transform = '';
                         }}
                       >
-                        {isFirstTime && (
-                          <p
-                            className="text-[8px] uppercase tracking-[0.06em] font-light"
-                            style={{ color: 'var(--color-text-secondary)', opacity: 0.4 }}
-                          >
-                            Börja här
-                          </p>
-                        )}
                         <div className="flex items-center justify-between gap-3 w-full">
                           <div className="flex-1 min-w-0">
                             <h3
