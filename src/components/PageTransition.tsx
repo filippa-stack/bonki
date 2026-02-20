@@ -8,16 +8,18 @@ interface PageTransitionProps {
   className?: string;
 }
 
-const doorwayVariants = {
-  initial: { opacity: 0, scale: 0.97, transformOrigin: 'center top' },
+/* Card/conversation routes scale in from slightly above (1.02 → 1.0) */
+const cardEnterVariants = {
+  initial: { opacity: 0, scale: 1.02, transformOrigin: 'center top' },
   animate: { opacity: 1, scale: 1 },
-  exit: { opacity: 0, scale: 0.97 },
+  exit: { opacity: 0, scale: 0.98 },
 };
 
-const fadeVariants = {
+/* Non-card routes use a subtle fade; exit scales down when yielding to a card */
+const defaultVariants = {
   initial: { opacity: 0 },
   animate: { opacity: 1 },
-  exit: { opacity: 0 },
+  exit: { opacity: 0, scale: 0.98 },
 };
 
 export default function PageTransition({ children, className }: PageTransitionProps) {
@@ -28,7 +30,7 @@ export default function PageTransition({ children, className }: PageTransitionPr
     window.scrollTo(0, 0);
   }, []);
 
-  const variants = isCardRoute ? doorwayVariants : fadeVariants;
+  const variants = isCardRoute ? cardEnterVariants : defaultVariants;
 
   return (
     <motion.div
@@ -37,7 +39,7 @@ export default function PageTransition({ children, className }: PageTransitionPr
       exit="exit"
       variants={variants}
       transition={{
-        duration: isCardRoute ? 0.18 : 0.15,
+        duration: 0.28,
         ease: [0.4, 0.0, 0.2, 1],
       }}
       className={className}
