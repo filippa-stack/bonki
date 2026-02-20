@@ -25,6 +25,7 @@ import { Button } from '@/components/ui/button';
 import { ArrowRight, Home, BookOpen } from 'lucide-react';
 import SessionTakeaway from '@/components/SessionTakeaway';
 import CompletedSessionView from '@/components/CompletedSessionView';
+import LockedReflectionDisplay from '@/components/LockedReflectionDisplay';
 
 import { useDevState } from '@/contexts/DevStateContext';
 import { useNormalizedSessionContext } from '@/contexts/NormalizedSessionContext';
@@ -56,7 +57,8 @@ function resolveCardViewMode({
   if (isRevisitMode) return 'revisit';
   if (showCompletion) return 'completion';
   if (hasActiveSession) return 'live';
-  if (hasCompletedSessionForCard) return 'history';
+  // Completed cards → full revisit mode (read-only, with saved reflections)
+  if (hasCompletedSessionForCard) return 'revisit';
   return 'live';
 }
 
@@ -124,6 +126,7 @@ export default function CardView() {
 
   // ─── Completed session check ───
   const [hasCompletedNormalizedSession, setHasCompletedNormalizedSession] = useState(false);
+  const [completedSessionId, setCompletedSessionId] = useState<string | null>(null);
 
   // showCompletion: session just finished — takeaway ritual before archive
   const [showCompletion, setShowCompletion] = useState(
@@ -139,9 +142,13 @@ export default function CardView() {
       .eq('couple_space_id', space.id)
       .eq('card_id', cardId)
       .eq('status', 'completed')
+      .order('started_at', { ascending: false })
       .limit(1)
       .maybeSingle()
-      .then(({ data }) => setHasCompletedNormalizedSession(!!data));
+      .then(({ data }) => {
+        setHasCompletedNormalizedSession(!!data);
+        setCompletedSessionId(data?.id ?? null);
+      });
   }, [space, cardId, devState, showCompletion]);
 
   // ─── Auto-show completion when session disappears post-lock ───
@@ -578,7 +585,9 @@ export default function CardView() {
         </motion.h1>
         {cardViewMode === 'revisit' && (
           <div className="mt-4 text-center">
-            <p className="text-[11px] tracking-wide" style={{ color: 'var(--color-text-secondary)', opacity: 0.5 }}>Förhandskoll</p>
+            <p className="text-[11px] tracking-wide" style={{ color: 'var(--color-text-secondary)', opacity: 0.5 }}>
+              {completedSessionId ? 'Utforskat' : 'Förhandskoll'}
+            </p>
           </div>
         )}
         {card.subtitle && (
@@ -670,23 +679,31 @@ export default function CardView() {
                 );
               })()}
 
-              {/* ── MODE: revisit — step CTA ── */}
+              {/* ── MODE: revisit — saved reflection + step navigation ── */}
               {cardViewMode === 'revisit' && (
                 <motion.div
-                  className="pt-8 pb-8 space-y-4"
-                  initial={isLive ? { opacity: 0 } : false}
+                  className="pb-8 space-y-4"
+                  initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
-                  transition={{ delay: isLive ? BEAT_2 + BEAT_2 : 0, duration: BEAT_3, ease: EASE }}
+                  transition={{ delay: BEAT_1, duration: BEAT_3, ease: EASE }}
                 >
-                  <button
-                    onClick={() => handleRevisitNext(card)}
-                    className="cta-primary gap-2"
-                  >
-                    {currentStepIndex >= STEP_ORDER.length - 1 ? 'Klar' : 'Nästa'}
-                    <ArrowRight className="w-4 h-4" />
-                  </button>
+                  {/* Read-only saved reflection (only when revisiting a completed card) */}
+                  {completedSessionId && (
+                    <LockedReflectionDisplay
+                      sessionId={completedSessionId}
+                      stepIndex={currentStepIndex}
+                    />
+                  )}
 
-                  {(currentStepIndex > 0 || cardViewMode === 'revisit') && (
+                  <div className="pt-6 space-y-4">
+                    <button
+                      onClick={() => handleRevisitNext(card)}
+                      className="cta-primary gap-2"
+                    >
+                      {currentStepIndex >= STEP_ORDER.length - 1 ? 'Klar' : 'Nästa'}
+                      <ArrowRight className="w-4 h-4" />
+                    </button>
+
                     <div className="flex justify-center">
                       <button
                         onClick={() => setReviewOpen(true)}
@@ -697,7 +714,7 @@ export default function CardView() {
                         Se sammanfattning
                       </button>
                     </div>
-                  )}
+                  </div>
                 </motion.div>
               )}
 
