@@ -4,7 +4,7 @@
 // All session state must come from normalized tables.
 
 import { useState, useEffect, useRef, useCallback } from 'react';
-import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
+import { useParams, useNavigate, useSearchParams, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { useApp } from '@/contexts/AppContext';
@@ -79,8 +79,20 @@ const STEP_CTA_KEYS: Record<string, string> = {
 export default function CardView() {
   const { cardId } = useParams<{ cardId: string }>();
   const navigate = useNavigate();
+  const location = useLocation();
   const [searchParams] = useSearchParams();
   const isRevisitMode = searchParams.get('revisit') === 'true';
+
+  // Detect resume navigation — suppress entry animations on first paint
+  const isResumed = (location.state as { resumed?: boolean } | null)?.resumed === true;
+  const [suppressEntryAnim] = useState(() => isResumed);
+  // Clear navigation state after first read so back-navigation animates normally
+  useEffect(() => {
+    if (isResumed) {
+      window.history.replaceState({ ...window.history.state, usr: { resumed: false } }, '');
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   const { t } = useTranslation();
   const {
     getConversationForCard,
@@ -239,13 +251,20 @@ export default function CardView() {
   const [showInterstitial, setShowInterstitial] = useState(false);
   const prevStepRef = useRef(currentStepIndex);
 
+  // Track whether first render has passed (to allow interstitial after resume)
+  const firstRenderRef = useRef(true);
+  useEffect(() => { firstRenderRef.current = false; }, []);
+
   useEffect(() => {
     if (cardViewMode !== 'live') return;
+    // Skip interstitial on the very first render when resuming
     if (prevStepRef.current !== currentStepIndex && currentStepIndex > 0) {
-      setShowInterstitial(true);
-      const timer = setTimeout(() => setShowInterstitial(false), 700);
-      prevStepRef.current = currentStepIndex;
-      return () => clearTimeout(timer);
+      if (!firstRenderRef.current) {
+        setShowInterstitial(true);
+        const timer = setTimeout(() => setShowInterstitial(false), 700);
+        prevStepRef.current = currentStepIndex;
+        return () => clearTimeout(timer);
+      }
     }
     prevStepRef.current = currentStepIndex;
   }, [currentStepIndex, cardViewMode]);
@@ -494,7 +513,7 @@ export default function CardView() {
     <motion.div
       className="min-h-screen"
       style={{ backgroundColor: 'var(--color-bg-base)' }}
-      initial={isLive ? { opacity: 0, scale: 0.97 } : false}
+      initial={isLive && !suppressEntryAnim ? { opacity: 0, scale: 0.97 } : false}
       animate={isExiting ? { opacity: 0, scale: 0.97 } : { opacity: 1, scale: 1 }}
       transition={{ duration: isExiting ? 0.3 : 0.28, ease: [0.4, 0.0, 0.2, 1] }}
     >
@@ -524,9 +543,9 @@ export default function CardView() {
       {cardViewMode === 'live' && (
         <motion.div
           className="px-6 pt-12 pb-2"
-          initial={isLive ? { opacity: 0 } : false}
+          initial={isLive && !suppressEntryAnim ? { opacity: 0 } : false}
           animate={{ opacity: 1 }}
-          transition={{ delay: isLive ? BEAT_1 : 0, duration: BEAT_3, ease: EASE }}
+          transition={{ delay: isLive && !suppressEntryAnim ? BEAT_1 : 0, duration: BEAT_3, ease: EASE }}
         >
           <StepProgressIndicator
             currentStepIndex={currentStepIndex}
@@ -544,7 +563,7 @@ export default function CardView() {
 
       <div className="px-6 pb-8" style={{ paddingTop: 'calc(var(--space-title-above) + 24px)' }}>
         <motion.h1
-          initial={{ opacity: 0 }}
+          initial={suppressEntryAnim ? false : { opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: BEAT_3, ease: EASE }}
           className="text-xl md:text-2xl font-serif text-center"
@@ -559,9 +578,9 @@ export default function CardView() {
         )}
         {card.subtitle && (
           <motion.p
-            initial={{ opacity: 0 }}
+            initial={suppressEntryAnim ? false : { opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: BEAT_1, duration: BEAT_3, ease: EASE }}
+            transition={{ delay: suppressEntryAnim ? 0 : BEAT_1, duration: BEAT_3, ease: EASE }}
             className="text-sm not-italic mt-4 text-center max-w-2xl mx-auto leading-relaxed"
             style={{ color: 'var(--color-text-secondary)' }}
           >
@@ -584,9 +603,9 @@ export default function CardView() {
             >
               {/* Step 3 — Prompt: delay BEAT_1, duration BEAT_3 (live only) */}
               <motion.div
-                initial={isLive ? { opacity: 0 } : false}
+                initial={isLive && !suppressEntryAnim ? { opacity: 0 } : false}
                 animate={{ opacity: 1 }}
-                transition={{ delay: isLive ? BEAT_1 : 0, duration: BEAT_3, ease: EASE }}
+                transition={{ delay: isLive && !suppressEntryAnim ? BEAT_1 : 0, duration: BEAT_3, ease: EASE }}
               >
                 <SectionView
                   ref={sectionViewRef}
@@ -620,19 +639,15 @@ export default function CardView() {
                         isLastStep={isLastStage && isLastPromptInStage}
                         onLocked={async () => {
                           if (isLastPromptInStage) {
-                            // Last prompt in this stage → advance DB stage
                             await handleCompleteStep();
                           } else {
-                            // More prompts remain in this stage → advance locally
                             setLocalPromptIndex(localPromptIndex + 1);
                           }
                         }}
                         onBack={() => {
                           if (localPromptIndex > 0) {
-                            // Go back within stage
                             setLocalPromptIndex(localPromptIndex - 1);
                           } else if (currentStepIndex > 0) {
-                            // Go back to previous stage, land on its last prompt
                             const prevStageIndex = currentStepIndex - 1;
                             const prevSection = card.sections.find(
                               s => s.type === STEP_ORDER[prevStageIndex]
