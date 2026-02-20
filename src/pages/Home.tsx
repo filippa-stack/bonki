@@ -83,6 +83,9 @@ export default function Home() {
   const { mode } = appModeState;
   const { isTogether } = useTogetherMode();
 
+  // In devState=pairedActive, provide a mock cardId so the ResumeBanner renders
+  const effectiveCardId = normalizedSession.cardId ?? (devState === 'pairedActive' ? 'listening-presence' : null);
+
   // Snapshot-derived values
   const snapshotLastActivityAt = selectLastActivityAt(snapshot);
   const exploredIds = selectExploredCardIds(snapshot);
@@ -180,8 +183,8 @@ export default function Home() {
         {mode !== 'loading' && (
           <>
             {/* Resume banner — non-intrusive, shown when active session exists */}
-            {normalizedSession.cardId && (
-              <ResumeBanner cardId={normalizedSession.cardId} />
+            {effectiveCardId && (
+              <ResumeBanner cardId={effectiveCardId} />
             )}
 
             {/* Categories listing — always visible */}
