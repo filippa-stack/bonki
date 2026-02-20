@@ -60,8 +60,8 @@ export default function Category() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: BEAT_1, duration: 0.2, ease: EASE }}
-            className="text-body mt-2 max-w-md"
-            style={{ color: 'var(--color-text-secondary)' }}
+            className="text-body mt-[14px] max-w-md"
+            style={{ color: 'var(--color-text-secondary)', opacity: 0.6 }}
           >
             {category.entryLine}
           </motion.p>
@@ -70,8 +70,8 @@ export default function Category() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: BEAT_1 + 0.1, duration: 0.2, ease: EASE }}
-          className="text-[16px] mt-[32px]"
-          style={{ color: 'var(--color-text-secondary)', opacity: 0.7 }}
+          className="text-[16px] mt-[44px]"
+          style={{ color: 'var(--color-text-secondary)', opacity: 0.6 }}
         >
           Utforska i er takt.
         </motion.p>
@@ -123,7 +123,7 @@ function CardEntry({ card, index, isCompleted = false, onNavigate, isLast = fals
         ? { duration: 0.18, ease: [0.4, 0.0, 0.2, 1] }
         : { delay: Math.min(0.08 + index * 0.05, 0.24), duration: 0.2, ease: [0.4, 0.0, 0.2, 1] }
       }
-      className={index === 0 ? 'mt-[16px]' : 'mt-[48px]'}
+      className={index === 0 ? 'mt-[28px]' : 'mt-[48px]'}
       style={{ transformOrigin: 'center left' }}
     >
       <div
