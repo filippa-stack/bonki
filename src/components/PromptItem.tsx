@@ -36,7 +36,7 @@ const DEPTH_GRAVITY: Record<string, React.CSSProperties> = {
   opening:    { fontWeight: 500, color: 'var(--color-text-primary)', lineHeight: 1.55 },
   reflective: { fontWeight: 500, color: 'hsl(30, 3%, 8%)',          lineHeight: 1.55 },
   scenario:   { fontWeight: 500, color: 'hsl(30, 3%, 6%)',          lineHeight: 1.45 },
-  exercise:   { fontWeight: 600, color: 'hsl(30, 3%, 4%)',          lineHeight: 1.45 },
+  exercise:   { fontWeight: 500, color: 'hsl(30, 3%, 4%)',          lineHeight: 1.45 },
 };
 
 /**
@@ -57,8 +57,8 @@ export default function PromptItem({ prompt, index, sectionType, preamble }: Pro
       <div className="px-8 py-8">
         {preamble && (
           <p
-            className="text-body text-center font-serif mb-8"
-            style={{ color: 'var(--color-text-secondary)' }}
+            className="text-subheading text-center mb-12"
+            style={{ color: 'var(--color-text-secondary)', fontWeight: 400 }}
           >
             {preamble}
           </p>
