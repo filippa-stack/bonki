@@ -575,10 +575,10 @@ export default function CardView() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: BEAT_1, duration: BEAT_3, ease: EASE }}
-            className="max-w-md mx-auto mt-10 space-y-3"
+            className="max-w-md mx-auto mt-14 space-y-3"
           >
-            <p className="text-body text-muted-foreground/70 text-center leading-relaxed">
-              Vad vill ni bära med er?
+            <p className="text-[13px] text-muted-foreground/45 text-center leading-relaxed">
+              Vad vill ni minnas?
             </p>
             <SessionTakeaway sessionId={activeSessionId} />
           </motion.div>
