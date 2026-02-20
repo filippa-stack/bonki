@@ -211,6 +211,7 @@ export default function Home() {
                 {sortedCategories.map((category, index) => {
                   const catCards = cards.filter((c) => c.categoryId === category.id);
                   const allExplored = catCards.length > 0 && catCards.every((c) => exploredIds.includes(c.id));
+                  const isFirstTime = index === 0 && exploredIds.length === 0;
 
                   return (
                     <motion.div
@@ -220,6 +221,14 @@ export default function Home() {
                       transition={{ delay: Math.min(0.08 + index * 0.05, 0.3), duration: 0.2, ease: [0.4, 0.0, 0.2, 1] }}
                       style={{ marginTop: index === 0 ? 0 : index === 3 ? '32px' : '16px' }}
                     >
+                      {isFirstTime && (
+                        <p
+                          className="text-[10px] uppercase tracking-[0.08em] font-light mb-2 pl-1"
+                          style={{ color: 'var(--color-text-secondary)', opacity: 0.5 }}
+                        >
+                          Börja här
+                        </p>
+                      )}
                       <div
                         onClick={() => { markNavigated(); navigate(`/category/${category.id}`); }}
                         role="button"
