@@ -134,7 +134,7 @@ function CardEntry({ card, index, isCompleted = false, onNavigate, isLast = fals
         onKeyDown={(e) => {
           if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleTap(); }
         }}
-        className="w-full cursor-pointer min-h-[44px] flex flex-col justify-center rounded-sm px-2 -mx-2 transition-[background-color,padding-left] duration-[120ms] ease-out hover:bg-black/[0.03] hover:pl-[14px]"
+        className="w-full cursor-pointer min-h-[44px] flex flex-col justify-center rounded-sm px-2 -mx-2 transition-[background-color,padding-left] duration-[120ms] ease-out hover:bg-black/[0.03] hover:pl-[14px] active:bg-black/[0.05] active:transition-[background-color] active:duration-[80ms]"
       >
         <div className="flex items-baseline gap-3">
           <h3
