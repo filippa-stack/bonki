@@ -3,7 +3,7 @@ import { useSearchParams } from 'react-router-dom';
 import type { DevState } from '@/hooks/useDevState';
 
 const VALID_STATES: DevState[] = [
-  'solo', 'pairedIdle', 'pairedActive',
+  'solo', 'pairedIdle', 'pairedActive', 'proposalIncoming',
   'waiting', 'completed', 'archiveEmpty', 'archiveWithHistory', 'browse',
 ];
 
