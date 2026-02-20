@@ -1,4 +1,4 @@
-import { LogOut, Plus, Settings } from 'lucide-react';
+import { ArrowLeft, LogOut, Plus, Settings } from 'lucide-react';
 import { useTogetherMode } from '@/hooks/useTogetherMode';
 import { useCoupleSpaceContext } from '@/contexts/CoupleSpaceContext';
 import { useNavigate } from 'react-router-dom';
@@ -80,7 +80,7 @@ export default function Header({
     >
       <div className="relative flex items-center justify-between px-6" style={{ height: isImmersive ? '1.875rem' : '3.75rem' }}>
         {/* ── Left: Logo ── */}
-        <div className="flex items-center gap-3 flex-1 min-w-0">
+        <div className="flex items-center gap-2 flex-1 min-w-0">
           {isImmersive && onImmersiveBack && (
             <button
               onClick={onImmersiveBack}
@@ -88,6 +88,16 @@ export default function Header({
               style={{ color: 'hsl(0 0% 100% / 0.6)' }}
             >
               Tillbaka
+            </button>
+          )}
+          {!isImmersive && showBack && (
+            <button
+              onClick={() => navigate(backTo || '/')}
+              className="flex items-center gap-1 text-[13px] font-sans text-muted-foreground/70 hover:text-muted-foreground transition-colors shrink-0"
+              aria-label="Tillbaka"
+            >
+              <ArrowLeft className="w-4 h-4" />
+              <span className="hidden sm:inline">Tillbaka</span>
             </button>
           )}
           {!(isImmersive && onImmersiveBack) && (
