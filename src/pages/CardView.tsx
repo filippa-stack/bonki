@@ -544,7 +544,7 @@ export default function CardView() {
           <button
             onClick={() => navigate('/')}
             className="text-xs transition-opacity hover:opacity-100"
-            style={{ color: 'var(--color-text-secondary)', opacity: 0.7 }}
+            style={{ color: 'var(--color-text-secondary)', opacity: 0.6 }}
           >
             Lämna samtalet
           </button>
@@ -554,7 +554,7 @@ export default function CardView() {
       {/* Step progress — neutral text only */}
       {cardViewMode === 'live' && (
         <motion.div
-          className="px-6 pt-12 pb-2"
+          className="px-6 pt-6 pb-2"
           initial={isLive && !suppressEntryAnim ? { opacity: 0 } : false}
           animate={{ opacity: 1 }}
           transition={{ delay: isLive && !suppressEntryAnim ? BEAT_1 : 0, duration: BEAT_3, ease: EASE }}

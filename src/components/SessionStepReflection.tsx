@@ -91,7 +91,7 @@ export default function SessionStepReflection({
           disabled={submitting}
           className="w-full h-9 flex items-center justify-center text-sm font-medium transition-opacity disabled:opacity-50 hover:opacity-90 px-8 rounded-button"
           style={{
-            backgroundColor: 'hsl(152 24% 16%)',
+            backgroundColor: 'hsl(152 19% 16%)',
             color: 'var(--color-button-text)',
           }}
         >
