@@ -43,7 +43,7 @@ export default function ResumeBanner({ cardId }: ResumeBannerProps) {
         </button>
       </div>
       <button
-        onClick={() => navigate(`/card/${cardId}`)}
+        onClick={() => navigate(`/card/${cardId}`, { state: { resumed: true } })}
         className="h-9 px-5 text-sm font-medium rounded-button transition-opacity hover:opacity-90"
         style={{
           maxWidth: '220px',
