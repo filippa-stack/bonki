@@ -1,7 +1,7 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { ChevronRight } from 'lucide-react';
 import { BEAT_1, EASE } from '@/lib/motion';
-import CompletionMarker from '@/components/CompletionMarker';
 import { useTranslation } from 'react-i18next';
 import { useApp } from '@/contexts/AppContext';
 import { useAuth } from '@/contexts/AuthContext';
@@ -67,7 +67,7 @@ export default function Category() {
         )}
       </div>
 
-      <div className="px-6 pt-[24px] pb-[80px]">
+      <div className="px-6 pt-[24px] pb-[80px] flex flex-col gap-4">
         {cards.map((card, index) => (
           <CardEntry
             key={card.id}
@@ -97,50 +97,46 @@ interface CardEntryProps {
   isLast?: boolean;
 }
 
-function CardEntry({ card, index, isCompleted = false, onNavigate, isLast = false }: CardEntryProps) {
-  const handleTap = () => onNavigate();
-
+function CardEntry({ card, index, isCompleted = false, onNavigate }: CardEntryProps) {
   return (
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ delay: Math.min(0.08 + index * 0.05, 0.24), duration: 0.2, ease: [0.4, 0.0, 0.2, 1] }}
-      className={index === 0 ? 'mt-[38px]' : 'mt-[49px]'}
     >
       <div
-        onClick={handleTap}
+        onClick={onNavigate}
         role="button"
         tabIndex={0}
         aria-label={card.title}
         onKeyDown={(e) => {
-          if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleTap(); }
+          if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onNavigate(); }
         }}
-        className="row-bloom row-lift relative w-full cursor-pointer min-h-[56px] flex flex-col justify-center rounded-sm py-[13px] px-2 hover:bg-black/[0.03] hover:pl-[14px] focus-visible:bg-black/[0.03] focus-visible:pl-[14px] focus-visible:outline-none active:pl-[14px] active:transition-none transition-colors duration-150 ease-out"
+        className="w-full cursor-pointer rounded-[16px] px-5 py-4 flex items-center gap-3 transition-colors duration-150 ease-out hover:opacity-80 focus-visible:outline-none"
+        style={{ backgroundColor: 'var(--color-surface-primary, rgba(0,0,0,0.03))' }}
       >
-        <div className="flex items-baseline gap-3">
+        <div className="flex-1 min-w-0">
           <h3
-            className="text-subheading flex-1"
+            className="text-subheading"
             style={{ color: isCompleted ? 'var(--color-text-secondary)' : 'var(--color-text-primary)' }}
           >
             {card.title}
           </h3>
-          <CompletionMarker completed={isCompleted} />
+          {card.subtitle && (
+            <p
+              className="text-body mt-1"
+              style={{ color: 'var(--color-text-secondary)', opacity: 0.5 }}
+            >
+              {card.subtitle}
+            </p>
+          )}
         </div>
-        {card.subtitle && (
-          <p
-            className="text-body mt-1"
-            style={{ color: 'var(--color-text-secondary)' }}
-          >
-            {card.subtitle}
-          </p>
-        )}
-      </div>
-      {!isLast && (
-        <div
-          className="mt-[13px] h-px"
-          style={{ backgroundColor: 'var(--color-text-primary)', opacity: 0.08 }}
+        <ChevronRight
+          size={18}
+          className="flex-shrink-0"
+          style={{ color: 'var(--color-text-secondary)', opacity: 0.35 }}
         />
-      )}
+      </div>
     </motion.div>
   );
 }
