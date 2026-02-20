@@ -652,7 +652,23 @@ export default function CardView() {
         showBack
         backTo={exitBackTo}
         variant="immersive"
-        onImmersiveBack={undefined}
+        onImmersiveBack={isLive ? (() => {
+          // Step back through prompts → stages → exit to home
+          const displayIndex = localStepIndex ?? serverStepIndex;
+          if (localPromptIndex > 0) {
+            setLocalPromptIndex(localPromptIndex - 1);
+          } else if (displayIndex > 0) {
+            const prevStageIndex = displayIndex - 1;
+            const prevSection = card.sections.find(
+              s => s.type === STEP_ORDER[prevStageIndex]
+            );
+            const prevPromptCount = prevSection?.prompts?.length ?? 1;
+            setLocalStepIndex(prevStageIndex);
+            setLocalPromptIndex(prevPromptCount - 1);
+          } else {
+            navigate('/');
+          }
+        }) : undefined}
         onLeaveSession={isLive ? () => navigate('/') : undefined}
       />
 
