@@ -235,12 +235,12 @@ export default function SharedSummary() {
             transition={{ duration: 0.15 }}
             className="pt-16 text-center"
           >
-            <div className="space-y-5">
-              <p className="text-base text-muted-foreground/70 leading-relaxed">
-                Här samlas dina samtal.
+            <div className="space-y-4">
+              <p className="text-base text-foreground/70 leading-relaxed">
+                Här växer det ni delar.
               </p>
-              <p className="text-sm text-muted-foreground/55">
-                Det du delar sparas här.
+              <p className="text-sm leading-relaxed" style={{ color: 'var(--color-text-secondary)', opacity: 0.6 }}>
+                När ni har haft ert första samtal, börjar rummet ta form.
               </p>
             </div>
           </motion.div>
