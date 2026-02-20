@@ -38,7 +38,7 @@ export default function WelcomeBackBanner({
       )}
       <div className="flex flex-wrap items-center gap-3 mt-4">
         {lastCardTitle && (
-          <Button size="sm" className="gap-1.5" onClick={onContinue}>
+          <Button variant="primary" size="sm" className="gap-1.5" onClick={onContinue}>
             {t('welcome_back.continue')}
             <ArrowRight className="w-3.5 h-3.5" />
           </Button>

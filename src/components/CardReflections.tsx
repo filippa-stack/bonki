@@ -136,7 +136,7 @@ export default function CardReflections({ cardId }: CardReflectionsProps) {
                   autoFocus
                 />
                 <div className="flex gap-3 mt-3">
-                  <Button size="sm" onClick={handleSaveShared}>
+                  <Button variant="primary" size="sm" onClick={handleSaveShared}>
                     {t('reflections.save_shared')}
                   </Button>
                   <Button

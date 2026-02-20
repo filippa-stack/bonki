@@ -28,7 +28,7 @@ export default function SyncPrompt({ partnerStepIndex, stepLabels, onCatchUp, on
         {t('sync_prompt.current_position', { step: stepName })}
       </p>
       <div className="flex flex-col sm:flex-row gap-2">
-        <Button onClick={onCatchUp} size="sm" className="gap-2">
+        <Button variant="primary" onClick={onCatchUp} size="sm" className="gap-2">
           {t('sync_prompt.catch_up')}
           <ArrowRight className="w-3.5 h-3.5" />
         </Button>
