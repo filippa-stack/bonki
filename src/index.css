@@ -18,7 +18,7 @@
     --popover: 0 0% 100%;
     --popover-foreground: 30 3% 10%;
 
-    --primary: 150 32% 18%;               /* #1F3D2B */
+    --primary: 150 32% 18%;               /* #1E3D2F */
     --primary-foreground: 0 0% 100%;
 
     --secondary: 30 10% 88%;
@@ -118,21 +118,21 @@
     --color-surface: #E3DCD4;
     --color-surface-primary: #E3DCD4;
     --color-surface-secondary: #E3DCD4;
-    --color-cta: #1F3D2B;
+    --color-cta: #1E3D2F;
     --color-ink: #1C1B1A;
     --color-secondary: #6B6763;
     --color-accent: #C1121F;
     --color-accent-soft: #6D4C6D;
     --color-text-primary: #1C1B1A;
     --color-text-secondary: #6B6763;
-    --color-button-primary: #1F3D2B;
+    --color-button-primary: #1E3D2F;
     --color-button-text: #FFFFFF;
     --color-divider: #D6D0C8;
 
     /* ── CTA canonical tokens ── */
-    --cta-bg:    #1F3D2B;
+    --cta-bg:    #1E3D2F;
     --cta-text:  #FFFFFF;
-    --cta-hover: #192f24;
+    --cta-hover: #172d24;
 
     /* Dynamic overrides — set via useThemeVars hook at runtime */
     --page-bg: var(--color-bg);
