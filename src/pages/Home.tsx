@@ -273,10 +273,15 @@ export default function Home() {
                             {category.title}
                           </h3>
                         </div>
-                        <ChevronRight
-                          className="w-4 h-4 shrink-0"
-                          style={{ color: 'var(--color-text-secondary)', opacity: 0.4 }}
-                        />
+                        <div className="flex items-center gap-2 shrink-0">
+                          {catCards.some((c) => exploredIds.includes(c.id)) && (
+                            <CompletionMarker completed />
+                          )}
+                          <ChevronRight
+                            className="w-4 h-4"
+                            style={{ color: 'var(--color-text-secondary)', opacity: 0.4 }}
+                          />
+                        </div>
                       </div>
                     </motion.div>
                   );
