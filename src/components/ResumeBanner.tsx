@@ -21,7 +21,7 @@ export default function ResumeBanner({ cardId }: ResumeBannerProps) {
   return (
     <div
       style={{
-        backgroundColor: 'hsl(var(--muted) / 0.3)',
+        background: 'linear-gradient(180deg, hsl(var(--muted) / 0.28) 0%, hsl(var(--muted) / 0.34) 50%, hsl(var(--muted) / 0.28) 100%)',
         padding: '10px 14px',
         borderRadius: '16px',
       }}
