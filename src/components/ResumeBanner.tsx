@@ -20,10 +20,10 @@ export default function ResumeBanner({ cardId }: ResumeBannerProps) {
 
   return (
     <div
-      className="rounded-card"
       style={{
-        backgroundColor: 'hsl(var(--muted) / 0.5)',
-        padding: '12px 16px',
+        backgroundColor: 'hsl(var(--muted) / 0.3)',
+        padding: '10px 14px',
+        borderRadius: '16px',
       }}
     >
       <div className="flex items-start justify-between">
@@ -46,9 +46,10 @@ export default function ResumeBanner({ cardId }: ResumeBannerProps) {
         onClick={() => navigate(`/card/${cardId}`, { state: { resumed: true } })}
         className="h-9 px-5 text-sm font-medium rounded-button transition-opacity hover:opacity-90"
         style={{
-          maxWidth: '220px',
+          maxWidth: '160px',
           backgroundColor: 'var(--color-button-primary)',
           color: 'var(--color-button-text)',
+          letterSpacing: '0.2px',
         }}
       >
         Fortsätt
