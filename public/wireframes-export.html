@@ -90,7 +90,7 @@
 <body>
 
 <h1>Still Us — Wireframes</h1>
-<p class="subtitle">Volume 1 · Single User Model · Februari 2026</p>
+<p class="subtitle">Volume 1 · Single User Model · Februari 2026 · Uppdaterad: 20 feb 2026</p>
 
 <div class="actions">
   <button class="btn-dl" id="downloadBtn" onclick="exportAll()">📦 Ladda ner wireframes som ZIP</button>
@@ -123,7 +123,7 @@
       </div>
       <div class="arch-node green">
         <div class="node-title">CoupleSpaceProvider</div>
-        <div class="node-sub">useCoupleSpace() · hämtar space + memberCount · realtime på couple_spaces · auto-skapar utrymme om ingen membership finns</div>
+        <div class="node-sub">useCoupleSpace() · hämtar space · realtime på couple_spaces · auto-skapar utrymme vid första login · Vol 1: alltid single-member</div>
       </div>
       <div class="arch-node green">
         <div class="node-title">NormalizedSessionProvider</div>
@@ -135,7 +135,7 @@
       </div>
     </div>
     <div style="margin-top:14px;font-size:10px;color:#aaa;font-style:italic;">
-      ProposalsProvider borttagen. usePartnerNotifications körs i Index men är passiv (inga toasts i Vol 1). Inget partnerlogik, ingen A/B-gating.
+      ProposalsProvider borttagen. Partner-toasts borttagna. Inget partnerlogik, ingen A/B-gating, ingen waiting-mode. Vol 1 = single writer, single space.
     </div>
   </div>
 </div>
@@ -242,7 +242,8 @@
       </div>
     </div>
     <div style="margin-top:10px;font-size:10px;color:#aaa;">
-      devState=pairedActive → mode: active. Alla andra devState → mode: idle. Ingen 'waiting'-mode i Vol 1.
+      devState=pairedActive → mode: active. Alla övriga devState → mode: idle.<br>
+      <b>Borttaget i Vol 1:</b> waiting-mode, proposalIncoming, partner_left, paired/duo-logik.
     </div>
   </div>
 </div>
@@ -410,6 +411,13 @@
           <td>navigate('/')</td>
           <td>—</td>
         </tr>
+        <tr>
+          <td><span class="route-chip">/screenshot-export</span></td>
+          <td>ScreenshotExport.tsx</td>
+          <td>Direkt URL (dev/preview)</td>
+          <td>Startar capture-loop via useCaptureController · navigerar /?__sc_step=0 → sekventiell tur → /screenshot-export?sc_done=1</td>
+          <td>Ingen auth · dev-only</td>
+        </tr>
       </tbody>
     </table>
   </div>
@@ -441,18 +449,93 @@
 
 <div class="map-section">
   <div class="map-box">
-    <h3>devState query params (dev-only override)</h3>
+    <h3>devState query params (dev/preview-only override)</h3>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;font-size:11px;">
-      <div><span class="key-chip">?devState=pairedActive</span> → mode: active</div>
-      <div><span class="key-chip">?devState=completed</span> → mode: idle</div>
-      <div><span class="key-chip">?devState=solo</span> → mode: idle</div>
-      <div><span class="key-chip">?devState=pairedIdle</span> → mode: idle</div>
-      <div><span class="key-chip">?devState=archiveEmpty</span> → mode: idle</div>
-      <div><span class="key-chip">?devState=archiveWithHistory</span> → mode: idle</div>
-      <div><span class="key-chip">?devState=browse</span> → mode: idle (alla kort upplåsta)</div>
+      <div><span class="key-chip">?devState=solo</span> → mode: idle · inga avslutade samtal</div>
+      <div><span class="key-chip">?devState=completed</span> → mode: idle · har avslutade samtal</div>
+      <div><span class="key-chip">?devState=pairedActive</span> → mode: active · visar aktiv kortvy</div>
+      <div><span class="key-chip">?devState=archiveEmpty</span> → mode: idle · tomt arkiv</div>
+      <div><span class="key-chip">?devState=archiveWithHistory</span> → mode: idle · historik finns</div>
+      <div><span class="key-chip">?devState=browse</span> → mode: idle · alla kort upplåsta</div>
     </div>
     <div style="margin-top:10px;font-size:10px;color:#aaa;font-style:italic;">
-      proposalIncoming + waiting är borttagna. DevModeBadge visas i hörnet under dev.
+      Borttagna: pairedIdle, proposalIncoming, waiting. DevModeBadge visas i hörnet i dev/preview. Alla DB-skrivningar är stubbade när devState är aktivt.
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     0G — A11Y & HIT TARGETS
+     ══════════════════════════════════════════════════════════ -->
+<div class="section-title">0G · Tillgänglighet &amp; tap-targets</div>
+<div class="map-section">
+  <div class="map-box">
+    <h3>A11Y-regler (Feb 2026)</h3>
+    <div class="arch-grid">
+      <div class="arch-node green">
+        <div class="node-title">Listobjekt — min 44px höjd</div>
+        <div class="node-sub">Kategori- och ämnesrader har min-h-[44px] + flex flex-col justify-center. Hela raden är tryckmål (ej bara text).</div>
+      </div>
+      <div class="arch-node green">
+        <div class="node-title">CompletionMarker</div>
+        <div class="node-sub">SVG-ikonen har role="img" aria-label="Avklarad". Visuell storlek 12px men tryckmål utökat med 6px padding + negativa marginaler (≈24×24px). Påverkar inte radens tryckmål.</div>
+      </div>
+      <div class="arch-node green">
+        <div class="node-title">Listradar — aria-label</div>
+        <div class="node-sub">Interaktiva containrar i Category.tsx och Categories.tsx har aria-label som speglar korttiteln för skärmläsare.</div>
+      </div>
+      <div class="arch-node gray">
+        <div class="node-title">Princip</div>
+        <div class="node-sub">Premium-känsla + tillgänglighet utan visuellt brus. Inga synliga etiketter på markeringen — enbart ARIA.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     0H — SCREENSHOT EXPORT TOOL
+     ══════════════════════════════════════════════════════════ -->
+<div class="section-title">0H · Screenshot Export Tool</div>
+<div class="map-section">
+  <div class="map-box">
+    <h3>React-baserat skärmbildsverktyg — /screenshot-export</h3>
+    <div style="background:#fff8e1;border:1px solid #f57c0033;border-radius:10px;padding:14px;margin-bottom:18px;font-size:11px;color:#6d4c00;line-height:1.8;">
+      <b>Inte public/screenshot-export.html</b> — använd den inbyggda React-sidan <code>/screenshot-export</code> (kräver inloggning).
+    </div>
+    <div class="arch-grid">
+      <div class="arch-node blue">
+        <div class="node-title">ScreenshotExport.tsx</div>
+        <div class="node-sub">Dashboard-sida. Startar loop via navigate() → steg 0. Visar grid när sc_done=1. ZIP-nedladdning via jszip.</div>
+      </div>
+      <div class="arch-node blue">
+        <div class="node-title">useCaptureController</div>
+        <div class="node-sub">Kör inuti App på varje rutt. Detekterar ?__sc_step=N. Väntar 2500ms → html2canvas → sessionStorage → navigate nästa steg. Deduplicering via __sc_captured i sessionStorage (överlever re-mounts).</div>
+      </div>
+      <div class="arch-node blue">
+        <div class="node-title">__sc_dev_step param</div>
+        <div class="node-sub">Tvingar CardView till ett visst stegindex utan RPC. Används för att fånga steg 1–3 i kortflödet.</div>
+      </div>
+    </div>
+    <div style="margin-top:14px;">
+      <div style="font-size:11px;font-weight:600;margin-bottom:8px;">12-stegs capture-kö (Vol 1):</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:8px;font-size:10px;color:#555;">
+        <div>01 · Onboarding</div>
+        <div>02 · Home – Solo</div>
+        <div>03 · Home – Completed</div>
+        <div>04 · Categories</div>
+        <div>05 · Category – Topic List</div>
+        <div>06 · Card – Step 1 (Opening)</div>
+        <div>07 · Card – Step 2 (Reflect)</div>
+        <div>08 · Card – Step 3 (Scenario)</div>
+        <div>09 · Card – Step 4 (Exercise)</div>
+        <div>10 · Card – Completion</div>
+        <div>11 · Archive – Empty</div>
+        <div>12 · Archive – With History</div>
+      </div>
+      <div style="margin-top:10px;font-size:10px;color:#aaa;">
+        Borttagna från kön: pairedIdle, pairedActive (hem), waiting — ej relevanta i Vol 1.
+        html2canvas löser CSS-variabler via onclone-callback som inlinad computed styles.
+      </div>
     </div>
   </div>
 </div>
@@ -520,7 +603,7 @@
 <!-- ═══════════════════════════════════════════════════════════
      2. HEM — IDLE (ingen aktiv session)
      ═══════════════════════════════════════════════════════════ -->
-<div class="section-title">2. Hem — idle (spaceSnapshot.sessions = null)</div>
+<div class="section-title">2. Hem — idle, ingen aktiv session (Vol 1 · single user)</div>
 <div class="wireframe-grid">
 
   <div class="wireframe" data-name="04-home-idle">
@@ -559,7 +642,7 @@
 <!-- ═══════════════════════════════════════════════════════════
      3. HEM — AKTIV SESSION
      ═══════════════════════════════════════════════════════════ -->
-<div class="section-title">3. Hem — aktiv session (spaceSnapshot.sessions ≠ null)</div>
+<div class="section-title">3. Hem — aktiv session (sessionId ≠ null)</div>
 <div class="wireframe-grid">
 
   <div class="wireframe" data-name="05-home-active">
