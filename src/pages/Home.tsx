@@ -201,7 +201,7 @@ export default function Home() {
         {mode !== 'loading' && (
           <>
             {/* Focus Slab — single block for resume or recommended */}
-            <div className="px-6 pt-12 mb-12" style={slabCompress}>
+            <div className="px-6 pt-8 mb-12" style={slabCompress}>
               <FocusSlab />
             </div>
 
