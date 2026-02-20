@@ -201,12 +201,12 @@ export default function Home() {
         {mode !== 'loading' && (
           <>
             {/* Focus Slab — single block for resume or recommended */}
-            <div className="px-6 pt-8 mb-10" style={slabCompress}>
+            <div className="px-6 pt-16 mb-12" style={slabCompress}>
               <FocusSlab />
             </div>
 
             {/* Categories listing — always visible */}
-            <div className="px-6 pb-[80px] pt-4">
+            <div className="px-6 pb-24">
               <div className="flex flex-col gap-4">
                 {sortedCategories.map((category, index) => {
                   const catCards = cards.filter((c) => c.categoryId === category.id);
@@ -231,7 +231,7 @@ export default function Home() {
                         style={{
                           minHeight: '80px',
                           borderRadius: '16px',
-                          padding: '16px 18px',
+                          padding: '16px 24px',
                           display: 'flex',
                           alignItems: 'center',
                           justifyContent: 'space-between',
