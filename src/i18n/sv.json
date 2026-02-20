@@ -68,7 +68,7 @@
     "go_back": "Gå tillbaka",
     "background": "Bakgrund",
     "sign_out": "Logga ut",
-    "shared_space": "Vårt utrymme"
+    "shared_space": "Era samtal"
   },
   "saved": {
     "title": "Sparade samtal",
@@ -185,7 +185,7 @@
     "no_notes_yet": "Inga anteckningar än"
   },
   "shared": {
-    "title": "Vårt utrymme",
+    "title": "Era samtal",
     "highlights_title": "Att minnas",
     "search_placeholder": "Sök…",
     "empty": "Här kommer era delade tankar",
