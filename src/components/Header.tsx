@@ -101,8 +101,6 @@ export default function Header({
           )}
         </div>
 
-        {/* Centered navigation anchor — always visible */}
-        <SharedSpaceLink isImmersive={isImmersive} />
         <div className="flex items-center gap-2 sm:gap-4 min-w-0 flex-1 justify-end">
           {showSaveIndicator && (
             <div className="flex items-center gap-2 min-h-[20px]">
@@ -124,6 +122,7 @@ export default function Header({
               />
             </div>
           )}
+          <SharedSpaceLink isImmersive={isImmersive} />
           <Popover>
             <PopoverTrigger asChild>
               <Button variant="ghost" size="icon" className={isImmersive ? 'text-white/70 hover:text-white hover:bg-white/10' : 'text-muted-foreground/60 hover:text-muted-foreground'}>
@@ -228,13 +227,15 @@ function SharedSpaceLink({ isImmersive }: { isImmersive: boolean }) {
   return (
     <button
       onClick={() => navigate('/shared')}
-      className="text-[13px] font-sans font-medium transition-opacity"
+      className="text-[13px] font-sans font-medium transition-all hover:underline underline-offset-4"
       style={{
         color: isImmersive ? 'hsl(0 0% 100%)' : 'var(--color-text-primary)',
-        opacity: isImmersive ? 0.6 : 0.75,
+        opacity: isImmersive ? 0.6 : 0.8,
+        textDecorationColor: isImmersive ? 'hsl(0 0% 100% / 0.3)' : 'hsl(var(--foreground) / 0.3)',
+        textDecorationThickness: '1px',
       }}
-      onMouseEnter={(e) => { e.currentTarget.style.opacity = isImmersive ? '0.8' : '0.95'; }}
-      onMouseLeave={(e) => { e.currentTarget.style.opacity = isImmersive ? '0.6' : '0.75'; }}
+      onMouseEnter={(e) => { e.currentTarget.style.opacity = isImmersive ? '0.85' : '1'; }}
+      onMouseLeave={(e) => { e.currentTarget.style.opacity = isImmersive ? '0.6' : '0.8'; }}
     >
       {t('header.shared_space')}
     </button>
