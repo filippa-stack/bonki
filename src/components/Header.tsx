@@ -1,4 +1,4 @@
-import { LogOut, Plus, Settings, Users } from 'lucide-react';
+import { LogOut, Plus, Settings } from 'lucide-react';
 import { useTogetherMode } from '@/hooks/useTogetherMode';
 import { useCoupleSpaceContext } from '@/contexts/CoupleSpaceContext';
 import { useNavigate } from 'react-router-dom';
