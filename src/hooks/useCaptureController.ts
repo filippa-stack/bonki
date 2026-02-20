@@ -2,37 +2,54 @@
  * CaptureController — drives the sequential screenshot capture loop.
  *
  * Flow:
- *   1. ScreenshotExport page writes CAPTURE_QUEUE to sessionStorage and
- *      navigates to the first URL with ?__sc_step=0.
+ *   1. ScreenshotExport page clears state and navigates to the first URL with ?__sc_step=0.
  *   2. This hook, running inside App, detects __sc_step, waits for the
- *      React tree to settle, captures document.body with html2canvas,
- *      stores the result, and advances to the next step.
+ *      React tree to settle, captures document.documentElement with html2canvas,
+ *      stores the result in sessionStorage, and advances to the next step.
  *   3. After all steps, navigates to /screenshot-export?sc_done=1.
+ *
+ * Guards against double-capture by persisting captured step indices in sessionStorage
+ * (survives component re-mounts caused by navigation).
  */
 
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
 export const CAPTURE_QUEUE = [
-  { label: 'Onboarding',            file: '01-onboarding.png',       path: '/',           devState: null,                skipOnboarding: false },
-  { label: 'Home – Solo',           file: '02-home-solo.png',        path: '/',           devState: 'solo',             skipOnboarding: true  },
-  { label: 'Home – Paired Idle',    file: '03-home-paired-idle.png', path: '/',           devState: 'pairedIdle',       skipOnboarding: true  },
-  { label: 'Home – Paired Active',  file: '04-home-paired-active.png',path: '/',          devState: 'pairedActive',     skipOnboarding: true  },
-  { label: 'Home – Waiting',        file: '05-home-waiting.png',     path: '/',           devState: 'waiting',          skipOnboarding: true  },
-  { label: 'Home – Completed',      file: '06-home-completed.png',   path: '/',           devState: 'completed',        skipOnboarding: true  },
-  { label: 'Categories (Browse)',   file: '07-categories.png',       path: '/categories', devState: 'browse',           skipOnboarding: false },
-  { label: 'Archive – Empty',       file: '08-archive-empty.png',    path: '/saved',      devState: 'archiveEmpty',     skipOnboarding: false },
-  { label: 'Archive – With History',file: '09-archive-history.png',  path: '/saved',      devState: 'archiveWithHistory', skipOnboarding: false },
+  { label: 'Onboarding',             file: '01-onboarding.png',        path: '/',           devState: null,                 skipOnboarding: false },
+  { label: 'Home – Solo',            file: '02-home-solo.png',         path: '/',           devState: 'solo',              skipOnboarding: true  },
+  { label: 'Home – Paired Idle',     file: '03-home-paired-idle.png',  path: '/',           devState: 'pairedIdle',        skipOnboarding: true  },
+  { label: 'Home – Paired Active',   file: '04-home-paired-active.png',path: '/',           devState: 'pairedActive',      skipOnboarding: true  },
+  { label: 'Home – Waiting',         file: '05-home-waiting.png',      path: '/',           devState: 'waiting',           skipOnboarding: true  },
+  { label: 'Home – Completed',       file: '06-home-completed.png',    path: '/',           devState: 'completed',         skipOnboarding: true  },
+  { label: 'Categories (Browse)',    file: '07-categories.png',        path: '/categories', devState: 'browse',            skipOnboarding: false },
+  { label: 'Archive – Empty',        file: '08-archive-empty.png',     path: '/saved',      devState: 'archiveEmpty',      skipOnboarding: false },
+  { label: 'Archive – With History', file: '09-archive-history.png',   path: '/saved',      devState: 'archiveWithHistory',skipOnboarding: false },
 ];
 
 const RESULTS_KEY = '__sc_results';
+const CAPTURED_KEY = '__sc_captured';
 
 export function getStoredResults(): { label: string; file: string; dataUrl: string }[] {
   try { return JSON.parse(sessionStorage.getItem(RESULTS_KEY) || '[]'); } catch { return []; }
 }
 
+function getCapturedSteps(): Set<number> {
+  try {
+    const arr = JSON.parse(sessionStorage.getItem(CAPTURED_KEY) || '[]');
+    return new Set<number>(arr);
+  } catch { return new Set(); }
+}
+
+function markStepCaptured(step: number) {
+  const steps = getCapturedSteps();
+  steps.add(step);
+  sessionStorage.setItem(CAPTURED_KEY, JSON.stringify([...steps]));
+}
+
 export function clearStoredResults() {
   sessionStorage.removeItem(RESULTS_KEY);
+  sessionStorage.removeItem(CAPTURED_KEY);
 }
 
 function buildCaptureUrl(step: number): string {
@@ -45,25 +62,26 @@ function buildCaptureUrl(step: number): string {
 export function useCaptureController() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-  const runningRef = useRef(false);
 
   const stepStr = searchParams.get('__sc_step');
 
   useEffect(() => {
     if (stepStr === null) return;
-    if (runningRef.current) return;
-    runningRef.current = true;
 
     const step = parseInt(stepStr, 10);
     if (isNaN(step) || step < 0 || step >= CAPTURE_QUEUE.length) return;
 
+    // Guard: skip if already captured (persists across re-mounts)
+    if (getCapturedSteps().has(step)) return;
+    markStepCaptured(step);
+
     const item = CAPTURE_QUEUE[step];
 
     const doCapture = async () => {
-      // Wait for React + animations
-      await new Promise(r => setTimeout(r, 2200));
+      // Wait for React + animations to settle
+      await new Promise(r => setTimeout(r, 2500));
 
-      // Skip onboarding if needed
+      // Skip onboarding overlay if needed
       if (item.skipOnboarding) {
         const skipBtn = Array.from(document.querySelectorAll('button'))
           .find(b => b.textContent?.includes('Hoppa'));
@@ -73,10 +91,9 @@ export function useCaptureController() {
         }
       }
 
-      // Capture — resolve CSS custom properties so html2canvas gets real values
+      // Inline computed styles so html2canvas resolves CSS custom properties
       const { default: html2canvas } = await import('html2canvas');
 
-      // Inline all computed styles on every element so html2canvas sees real colors
       function inlineComputedStyles(root: HTMLElement) {
         const all = root.querySelectorAll('*') as NodeListOf<HTMLElement>;
         all.forEach((el) => {
@@ -109,7 +126,7 @@ export function useCaptureController() {
 
       const dataUrl = canvas.toDataURL('image/png');
 
-      // Store
+      // Store result
       const results = getStoredResults();
       results[step] = { label: item.label, file: item.file, dataUrl };
       sessionStorage.setItem(RESULTS_KEY, JSON.stringify(results));
