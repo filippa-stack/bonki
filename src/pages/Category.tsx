@@ -134,12 +134,24 @@ function CardEntry({ card, index, isCompleted = false, onNavigate, isLast = fals
         }}
         className="w-full cursor-pointer transition-opacity hover:opacity-70"
       >
-        <h3
-          className="text-subheading"
-          style={{ color: isCompleted ? 'var(--color-text-secondary)' : index === 0 ? '#151413' : 'var(--color-text-primary)' }}
-        >
-          {card.title}
-        </h3>
+        <div className="flex items-baseline gap-3">
+          <h3
+            className="text-subheading flex-1"
+            style={{ color: isCompleted ? 'var(--color-text-secondary)' : index === 0 ? '#151413' : 'var(--color-text-primary)' }}
+          >
+            {card.title}
+          </h3>
+          {isCompleted && (
+            <svg
+              width="12" height="12" viewBox="0 0 12 12" fill="none"
+              aria-hidden="true"
+              style={{ flexShrink: 0, opacity: 0.3, marginBottom: '2px' }}
+            >
+              <circle cx="6" cy="6" r="5.5" stroke="currentColor" strokeWidth="1.2" />
+              <path d="M3.5 6l1.8 1.8 3.2-3.2" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          )}
+        </div>
         {card.subtitle && (
           <p
             className="text-body mt-1"
