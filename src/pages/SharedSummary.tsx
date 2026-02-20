@@ -336,7 +336,7 @@ export default function SharedSummary() {
                         ? 'Ni har inte börjat ännu.'
                         : `${exploredCount} samtal tillsammans.`}
                     </p>
-                    <div className="space-y-[18px]">
+                    <div className="space-y-[26px]">
                       {categoryProgress.map((cat) => (
                         <div key={cat.id}>
                           <div className="flex items-center justify-between mb-1.5">
