@@ -286,22 +286,8 @@ export default function CardView() {
       ? revisitStepIndex
       : (localStepIndex ?? serverStepIndex);
 
-  // ─── DEV-ONLY debug strip ───
-  const _devDebug = isDevToolsEnabled() && (
-    <div style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 99999, background: 'rgba(0,0,0,0.85)', color: '#0f0', fontSize: 10, fontFamily: 'monospace', padding: '4px 8px', display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
-      <span>mode={cardViewMode}</span>
-      <span>active={String(isActiveSession)}</span>
-      <span>sid={normalizedSession.sessionId?.slice(0,8) ?? '∅'}</span>
-      <span>nCard={normalizedSession.cardId ?? '∅'}</span>
-      <span>rCard={cardId}</span>
-      <span>completed={String(hasCompletedNormalizedSession)}</span>
-      <span>cSid={completedSessionId?.slice(0,8) ?? '∅'}</span>
-      <span>step={currentStepIndex}/{serverStepIndex}</span>
-      <span>revisit={String(isRevisitMode)}</span>
-      <span>loading={String(normalizedSession.loading)}</span>
-      <span>showComp={String(showCompletion)}</span>
-    </div>
-  );
+  // ─── DEV-ONLY debug strip (disabled — never visible) ───
+  const _devDebug = null;
 
   // ─── Stage interstitial (micro-moment between depth layers) ───
   const [showInterstitial, setShowInterstitial] = useState(false);
