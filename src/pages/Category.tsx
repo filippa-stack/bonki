@@ -134,7 +134,7 @@ function CardEntry({ card, index, isCompleted = false, onNavigate, isLast = fals
         onKeyDown={(e) => {
           if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleTap(); }
         }}
-        className="group relative w-full cursor-pointer min-h-[44px] flex flex-col justify-center rounded-sm px-2 transition-[background-color,padding-left,transform] duration-[140ms] ease-out hover:-translate-y-0.5 hover:bg-black/[0.03] hover:pl-[14px] active:bg-black/[0.05] active:duration-[80ms]"
+        className="row-bloom group relative w-full cursor-pointer min-h-[44px] flex flex-col justify-center rounded-sm px-2 transition-[background-color,padding-left,transform] duration-[140ms] ease-out hover:-translate-y-0.5 hover:bg-black/[0.03] hover:pl-[14px] active:bg-black/[0.05] active:duration-[80ms]"
       >
         <span
           className="absolute right-2 top-1/2 -translate-y-1/2 w-3 h-px"
