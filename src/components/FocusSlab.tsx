@@ -102,7 +102,7 @@ export default function FocusSlab() {
       {/* Session / category title */}
       <h2
         className="font-serif font-semibold leading-snug mt-1"
-        style={{ color: 'var(--color-text-primary)', fontSize: '24px' }}
+        style={{ color: 'var(--color-text-primary)', fontSize: '26px' }}
       >
         {title}
       </h2>
