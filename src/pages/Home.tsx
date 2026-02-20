@@ -191,16 +191,6 @@ export default function Home() {
 
             {/* Categories listing — always visible */}
             <div className={`px-6 pb-[80px] ${effectiveCardId ? 'pt-0' : 'pt-[64px]'}`}>
-              <h1
-                className="text-[22px] font-medium"
-                style={{
-                  color: 'var(--color-text-secondary)',
-                  marginBottom: effectiveCardId ? '68px' : '72px',
-                  opacity: effectiveCardId ? 0.9 : 1,
-                }}
-              >
-                Var vill ni börja?
-              </h1>
 
               {sortedCategories.map((category, index) => {
                 const catCards = cards.filter((c) => c.categoryId === category.id);
