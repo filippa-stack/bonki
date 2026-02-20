@@ -86,7 +86,7 @@ export default function SessionStepReflection({
         </div>
       </div>
 
-      <div className="mt-32 space-y-4">
+      <div className="mt-40 pb-12">
         <button
           onClick={handleAdvance}
           disabled={submitting}
@@ -102,8 +102,8 @@ export default function SessionStepReflection({
         {onBack && (
           <button
             onClick={onBack}
-            className="w-full h-10 flex items-center justify-center text-[12px] transition-opacity hover:opacity-50"
-            style={{ color: 'var(--color-text-secondary)', opacity: 0.35 }}
+            className="w-full h-10 flex items-center justify-center text-[12px] transition-opacity hover:opacity-50 mt-3"
+            style={{ color: 'var(--color-text-secondary)', opacity: 0.3 }}
           >
             Tillbaka
           </button>
