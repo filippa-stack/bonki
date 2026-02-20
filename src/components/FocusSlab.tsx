@@ -71,8 +71,8 @@ export default function FocusSlab() {
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'space-between',
-        background: 'linear-gradient(180deg, hsl(var(--muted) / 0.22) 0%, hsl(var(--muted) / 0.32) 100%)',
-        boxShadow: '0 2px 8px hsl(var(--foreground) / 0.04), 0 1px 2px hsl(var(--foreground) / 0.03)',
+        background: 'linear-gradient(180deg, hsl(var(--muted) / 0.32) 0%, hsl(var(--muted) / 0.45) 100%)',
+        boxShadow: '0 4px 16px hsl(var(--foreground) / 0.06), 0 1px 3px hsl(var(--foreground) / 0.04)',
         transition: 'transform 120ms ease-out, box-shadow 120ms ease-out',
       }}
       onPointerDown={(e) => {
