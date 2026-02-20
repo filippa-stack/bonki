@@ -692,35 +692,13 @@ export default function CardView() {
         </motion.div>
       )}
 
-      <div className="px-6 pb-8" style={{ paddingTop: 'calc(var(--space-title-above) + 32px)' }}>
-        <motion.h1
-          initial={suppressEntryAnim ? false : { opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: BEAT_3, ease: EASE }}
-          className="text-2xl md:text-3xl font-serif text-center mb-6"
-          style={{ color: 'var(--color-text-primary)', lineHeight: '1.35' }}
-        >
-          {card.title}
-        </motion.h1>
-        {cardViewMode === 'revisit' && (
-          <div className="mt-3 text-center">
-            <p className="text-[12px]" style={{ color: 'var(--color-text-secondary)', opacity: 0.6 }}>
-              {completedSessionId ? 'Visar tidigare samtal' : 'Förhandskoll'}
-            </p>
-          </div>
-        )}
-        {card.subtitle && (
-          <motion.p
-            initial={suppressEntryAnim ? false : { opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: suppressEntryAnim ? 0 : BEAT_1, duration: BEAT_3, ease: EASE }}
-            className="text-sm not-italic mt-4 text-center max-w-2xl mx-auto leading-relaxed"
-            style={{ color: 'var(--color-text-secondary)' }}
-          >
-            {card.subtitle}
-          </motion.p>
-        )}
-      </div>
+      {cardViewMode === 'revisit' && (
+        <div className="px-6 pt-4 text-center">
+          <p className="text-[12px]" style={{ color: 'var(--color-text-secondary)', opacity: 0.6 }}>
+            {completedSessionId ? 'Visar tidigare samtal' : 'Förhandskoll'}
+          </p>
+        </div>
+      )}
 
       {/* Section content — centered, max 520px for readability */}
       <div className="px-6 pb-8 relative">
