@@ -26,6 +26,7 @@ const PAGES = [
   { path: '/saved', label: '💾 Saved Conversations' },
   { path: '/shared', label: '🤝 Shared Summary' },
   { path: '/shared?devState=archiveWithHistory', label: '📚 Shared w/ History' },
+  { path: '/shared?devState=archiveEmpty', label: '🫙 Shared (empty)' },
   { path: '/category/emotional-intimacy', label: '📂 Emotional Intimacy' },
   { path: '/category/communication', label: '📂 Communication' },
   { path: '/category/daily-life', label: '📂 Daily Life' },
