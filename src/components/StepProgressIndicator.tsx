@@ -51,14 +51,14 @@ export default function StepProgressIndicator({
           <span
             key={step.stage_key}
             className={cn(
-              'h-[3px] flex-1 max-w-[32px] rounded-full transition-colors duration-200',
+              'h-[2px] flex-1 max-w-[28px] rounded-full transition-colors duration-200',
             )}
             style={{
               backgroundColor: isCurrent
-                ? 'var(--color-ink)'
+                ? 'hsl(var(--foreground) / 0.5)'
                 : isCompleted
-                  ? 'hsl(var(--muted-foreground) / 0.3)'
-                  : 'hsl(var(--border))',
+                  ? 'hsl(var(--foreground) / 0.15)'
+                  : 'hsl(var(--foreground) / 0.07)',
             }}
           />
         );
