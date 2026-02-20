@@ -104,7 +104,9 @@ function CardEntry({ card, index, isCompleted = false, onNavigate }: CardEntryPr
       animate={{ opacity: 1 }}
       transition={{ delay: Math.min(0.08 + index * 0.05, 0.24), duration: 0.2, ease: [0.4, 0.0, 0.2, 1] }}
     >
-      <div
+      <motion.div
+        whileTap={{ scale: 0.99 }}
+        transition={{ duration: 0.12, ease: [0, 0, 0.2, 1] }}
         onClick={onNavigate}
         role="button"
         tabIndex={0}
@@ -112,7 +114,7 @@ function CardEntry({ card, index, isCompleted = false, onNavigate }: CardEntryPr
         onKeyDown={(e) => {
           if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onNavigate(); }
         }}
-        className="w-full cursor-pointer rounded-[16px] px-5 py-3 flex items-center gap-3 transition-colors duration-150 ease-out hover:opacity-80 focus-visible:outline-none"
+        className="w-full cursor-pointer rounded-[16px] px-5 py-3 flex items-center gap-3 hover:opacity-80 focus-visible:outline-none"
         style={{ backgroundColor: 'rgba(0, 0, 0, 0.025)' }}
       >
         <div className="flex-1 min-w-0">
@@ -144,7 +146,7 @@ function CardEntry({ card, index, isCompleted = false, onNavigate }: CardEntryPr
           className="flex-shrink-0"
           style={{ color: 'var(--color-text-secondary)', opacity: 0.35 }}
         />
-      </div>
+      </motion.div>
     </motion.div>
   );
 }
