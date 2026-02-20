@@ -74,10 +74,11 @@ export default function Header({
       className={`sticky top-0 z-10 ${isImmersive ? '' : 'backdrop-blur-md border-b border-black/[0.04]'}`}
       style={{
         backgroundColor: isImmersive ? 'var(--session-header-bg)' : 'hsl(var(--surface-chrome) / 0.85)',
+        filter: isImmersive ? 'saturate(0.98)' : undefined,
         boxShadow: 'none',
       }}
     >
-      <div className="relative flex items-center justify-between px-6" style={{ height: isImmersive ? '2.125rem' : '3.75rem' }}>
+      <div className="relative flex items-center justify-between px-6" style={{ height: isImmersive ? '1.875rem' : '3.75rem' }}>
         {/* ── Left: Logo ── */}
         <div className="flex items-center gap-3 flex-1 min-w-0">
           {isImmersive && onImmersiveBack && (
@@ -107,7 +108,7 @@ export default function Header({
 
         {/* ── Center: Session title (immersive only) ── */}
         {isImmersive && title && (
-          <h1 className="font-serif text-[15px] font-medium truncate text-white absolute left-1/2 -translate-x-1/2 max-w-[50%] text-center pointer-events-none">
+          <h1 className="font-serif text-[14.5px] font-medium truncate text-white absolute left-1/2 -translate-x-1/2 max-w-[50%] text-center pointer-events-none">
             {title}
           </h1>
         )}
@@ -142,7 +143,7 @@ export default function Header({
           {isImmersive && onLeaveSession && (
             <button
               onClick={onLeaveSession}
-              className="text-[10px] font-sans whitespace-nowrap shrink-0 ml-3 mr-2"
+              className="text-[10px] font-sans whitespace-nowrap shrink-0 ml-5 mr-2"
               style={{
                 color: 'hsl(0 0% 100%)',
                 opacity: 0.5,
