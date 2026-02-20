@@ -33,8 +33,9 @@ const SectionView = forwardRef<SectionViewHandle, SectionViewProps>(
   function SectionView({ section, promptIndex = 0 }, ref) {
     // If section has no prompts but has content, treat content as the prompt
     // (this is the case for exercise/teamwork stages).
-    const rawPrompts = section.prompts && section.prompts.length > 0
-      ? section.prompts
+    const hasExplicitPrompts = !!(section.prompts && section.prompts.length > 0);
+    const rawPrompts = hasExplicitPrompts
+      ? section.prompts!
       : section.content
         ? [section.content]
         : [];
@@ -46,6 +47,12 @@ const SectionView = forwardRef<SectionViewHandle, SectionViewProps>(
 
     if (!prompt) return null;
 
+    // Only show preamble when the section has explicit prompts separate from content
+    const showPreamble =
+      hasExplicitPrompts &&
+      (section.type === 'scenario' || section.type === 'exercise') &&
+      promptIndex === 0;
+
     return (
       <div className="py-12">
         <PromptItem
@@ -53,11 +60,7 @@ const SectionView = forwardRef<SectionViewHandle, SectionViewProps>(
           promptId={`prompt-${promptIndex}`}
           index={promptIndex}
           sectionType={section.type as 'opening' | 'reflective' | 'scenario' | 'exercise'}
-          preamble={
-            (section.type === 'scenario' || section.type === 'exercise') && promptIndex === 0
-              ? section.content
-              : undefined
-          }
+          preamble={showPreamble ? section.content : undefined}
           highlightCount={0}
           privateNote={undefined}
           sharedNote={undefined}
