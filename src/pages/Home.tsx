@@ -193,7 +193,11 @@ export default function Home() {
             <div className={`px-6 pb-[80px] ${effectiveCardId ? 'pt-0' : 'pt-[64px]'}`}>
               <h1
                 className="text-[22px] font-medium"
-                style={{ color: 'var(--color-text-secondary)', marginBottom: effectiveCardId ? '68px' : '72px' }}
+                style={{
+                  color: 'var(--color-text-secondary)',
+                  marginBottom: effectiveCardId ? '68px' : '72px',
+                  opacity: effectiveCardId ? 0.9 : 1,
+                }}
               >
                 Var vill ni börja?
               </h1>
