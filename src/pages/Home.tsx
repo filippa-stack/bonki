@@ -263,6 +263,7 @@ export default function Home() {
                         style={{
                           borderRadius: isPrimary ? '24px' : '16px',
                           padding: isPrimary ? '24px' : '20px',
+                          minHeight: '48px',
                           display: 'flex',
                           alignItems: 'center',
                           justifyContent: 'space-between',
@@ -302,9 +303,9 @@ export default function Home() {
                                 fontSize: isPrimary ? '14px' : '12.5px',
                                 color: allExplored ? 'var(--color-text-secondary)' : 'var(--color-text-primary)',
                                 opacity: allExplored ? 0.7 : 0.9,
-                                lineHeight: '1.25',
-                                textWrap: 'balance',
-                                wordBreak: 'keep-all',
+                                lineHeight: '1.4',
+                                overflowWrap: 'break-word',
+                                wordBreak: 'break-word',
                               }}
                             >
                               {category.title}
