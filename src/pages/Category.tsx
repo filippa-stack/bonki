@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { BEAT_1, EASE } from '@/lib/motion';
@@ -108,23 +107,14 @@ interface CardEntryProps {
 }
 
 function CardEntry({ card, index, isCompleted = false, onNavigate, isLast = false }: CardEntryProps) {
-  const [tapped, setTapped] = useState(false);
-
-  const handleTap = () => {
-    setTapped(true);
-    setTimeout(() => onNavigate(), 180);
-  };
+  const handleTap = () => onNavigate();
 
   return (
     <motion.div
       initial={{ opacity: 0 }}
-      animate={{ opacity: tapped ? 0.6 : 1, scale: tapped ? 1.02 : 1 }}
-      transition={tapped
-        ? { duration: 0.18, ease: [0.4, 0.0, 0.2, 1] }
-        : { delay: Math.min(0.08 + index * 0.05, 0.24), duration: 0.2, ease: [0.4, 0.0, 0.2, 1] }
-      }
+      animate={{ opacity: 1 }}
+      transition={{ delay: Math.min(0.08 + index * 0.05, 0.24), duration: 0.2, ease: [0.4, 0.0, 0.2, 1] }}
       className={index === 0 ? 'mt-[38px]' : 'mt-[58px]'}
-      style={{ transformOrigin: 'center left' }}
     >
       <div
         onClick={handleTap}
@@ -134,16 +124,12 @@ function CardEntry({ card, index, isCompleted = false, onNavigate, isLast = fals
         onKeyDown={(e) => {
           if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleTap(); }
         }}
-        className="row-bloom group relative w-full cursor-pointer min-h-[44px] flex flex-col justify-center rounded-sm px-2 transition-[background-color,padding-left,transform] duration-[140ms] ease-out hover:-translate-y-0.5 hover:bg-black/[0.03] hover:pl-[14px] active:bg-black/[0.05] active:duration-[80ms]"
+        className="row-bloom relative w-full cursor-pointer min-h-[56px] flex flex-col justify-center rounded-sm py-[13px] px-2 transition-[background-color,padding-left] duration-[140ms] ease-out hover:bg-black/[0.03] hover:pl-[14px] focus-visible:bg-black/[0.03] focus-visible:pl-[14px] focus-visible:outline-none active:bg-black/[0.05] active:pl-[14px] active:transition-none"
       >
-        <span
-          className="absolute right-2 top-1/2 -translate-y-1/2 w-3 h-px"
-          style={{ backgroundColor: 'var(--color-text-primary)', opacity: 0.4 }}
-        />
         <div className="flex items-baseline gap-3">
           <h3
-            className="text-subheading flex-1 transition-[font-weight,filter] duration-[140ms] ease-out group-hover:font-semibold group-hover:[filter:brightness(0.85)]"
-            style={{ color: isCompleted ? 'var(--color-text-secondary)' : index === 0 ? '#151413' : 'var(--color-text-primary)' }}
+            className="text-subheading flex-1"
+            style={{ color: isCompleted ? 'var(--color-text-secondary)' : 'var(--color-text-primary)' }}
           >
             {card.title}
           </h3>
