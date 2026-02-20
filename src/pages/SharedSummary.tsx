@@ -212,7 +212,7 @@ export default function SharedSummary() {
     <div className="min-h-screen page-bg">
       <Header showBack backTo="/" />
 
-      <div className="px-6 pt-20 pb-10 mx-auto" style={{ maxWidth: 540 }}>
+      <div className="px-6 pt-[64px] pb-10 mx-auto" style={{ maxWidth: 540 }}>
 
         {/* ─── Title ─── */}
         <motion.div
@@ -221,7 +221,7 @@ export default function SharedSummary() {
           transition={{ duration: 0.15 }}
           className="mb-10 text-center"
         >
-          <h1 className="font-serif text-xl font-semibold text-foreground tracking-tight">Vårt utrymme</h1>
+          <h1 className="font-serif text-xl font-medium text-foreground tracking-tight">Vårt utrymme</h1>
           <p className="text-sm text-muted-foreground/70 mt-4">En överblick över det du redan har utforskat.</p>
         </motion.div>
 

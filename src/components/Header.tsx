@@ -95,7 +95,7 @@ export default function Header({
             />
           )}
           {title && (
-            <h1 className={`font-serif text-lg truncate ${isImmersive ? 'text-white' : 'text-foreground'}`}>
+            <h1 className={`font-serif text-lg font-medium truncate ${isImmersive ? 'text-white' : 'text-foreground'}`}>
               {title}
             </h1>
           )}
