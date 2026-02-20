@@ -588,7 +588,7 @@ export default function CardView() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: BEAT_3, duration: BEAT_3, ease: EASE }}
-            className="max-w-md mx-auto mt-16 flex flex-col items-center gap-4"
+            className="max-w-md mx-auto mt-16 flex flex-col items-center"
           >
             <button
               onClick={() => navigate(category ? `/category/${category.id}` : '/categories')}
@@ -598,8 +598,8 @@ export default function CardView() {
             </button>
             <button
               onClick={() => navigate('/categories')}
-              className="text-sm transition-opacity hover:opacity-100"
-              style={{ color: 'var(--color-text-secondary)', opacity: 0.7 }}
+              className="text-[11px] transition-opacity hover:opacity-60 mt-8"
+              style={{ color: 'var(--color-text-secondary)', opacity: 0.35 }}
             >
               Till översikten
             </button>
