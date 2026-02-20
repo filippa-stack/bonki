@@ -207,7 +207,7 @@ export default function Home() {
 
             {/* Categories listing — always visible */}
             <div className="px-6 pb-24">
-              <div className="flex flex-col gap-4">
+              <div className="flex flex-col">
                 {sortedCategories.map((category, index) => {
                   const catCards = cards.filter((c) => c.categoryId === category.id);
                   const allExplored = catCards.length > 0 && catCards.every((c) => exploredIds.includes(c.id));
@@ -218,6 +218,7 @@ export default function Home() {
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       transition={{ delay: Math.min(0.08 + index * 0.05, 0.3), duration: 0.2, ease: [0.4, 0.0, 0.2, 1] }}
+                      style={{ marginTop: index === 0 ? 0 : index === 3 ? '32px' : '16px' }}
                     >
                       <div
                         onClick={() => { markNavigated(); navigate(`/category/${category.id}`); }}
