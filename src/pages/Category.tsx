@@ -113,7 +113,7 @@ function CardEntry({ card, index, isCompleted = false, onNavigate }: CardEntryPr
           if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onNavigate(); }
         }}
         className="w-full cursor-pointer rounded-[16px] px-5 py-4 flex items-center gap-3 transition-colors duration-150 ease-out hover:opacity-80 focus-visible:outline-none"
-        style={{ backgroundColor: 'var(--color-surface-primary, rgba(0,0,0,0.03))' }}
+        style={{ backgroundColor: 'rgba(0, 0, 0, 0.025)' }}
       >
         <div className="flex-1 min-w-0">
           <h3
