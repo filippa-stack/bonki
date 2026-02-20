@@ -231,7 +231,7 @@ export default function Home() {
                         }}
                         className="cursor-pointer"
                         style={{
-                          minHeight: isFirstTime ? '52px' : '48px',
+                          minHeight: isFirstTime ? '48px' : '44px',
                           borderRadius: '10px',
                           padding: isFirstTime ? '8px 20px' : '0 20px',
                           display: 'flex',
