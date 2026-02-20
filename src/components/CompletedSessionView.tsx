@@ -138,9 +138,13 @@ export default function CompletedSessionView({
         <Header title={categoryTitle} showBack backTo="/" />
         <div className="px-6 pt-title-above pb-8 text-center max-w-md mx-auto space-y-8">
           <p className="text-sm text-muted-foreground">Ingen tidigare session hittades.</p>
-          <Button onClick={onExploreAgain} size="lg" className="w-full h-14 rounded-card font-normal">
+          <button
+            onClick={onExploreAgain}
+            className="w-full h-[54px] rounded-card font-normal text-sm transition-opacity hover:opacity-90"
+            style={{ backgroundColor: 'hsl(150 27% 18%)', color: '#fff' }}
+          >
             Utforska igen
-          </Button>
+          </button>
         </div>
       </div>
     );
@@ -170,8 +174,13 @@ export default function CompletedSessionView({
             transition={{ duration: BEAT_3, ease: EASE }}
             className="text-center space-y-3"
           >
-            <h2 className="text-heading text-foreground">Samtalet är sparat.</h2>
-            <p className="text-meta text-muted-foreground/60">Ni kan fortsätta när ni vill.</p>
+            <h2
+              className="text-foreground"
+              style={{ fontFamily: 'var(--font-serif)', fontSize: '22px', fontWeight: 450, letterSpacing: '-0.02em', lineHeight: 1.2 }}
+            >
+              Samtalet är sparat.
+            </h2>
+            <p className="text-meta text-muted-foreground/60 mt-[8px]">Ni kan fortsätta när ni vill.</p>
             <p className="text-[11px] text-muted-foreground/35 tracking-wide">
               {formatSessionDate(session.startedAt)}
             </p>
@@ -244,13 +253,13 @@ export default function CompletedSessionView({
             className="mt-16 space-y-4 text-center"
           >
             <p className="text-xs text-muted-foreground/40">Ni kan alltid komma tillbaka.</p>
-            <Button
+          <button
               onClick={onExploreAgain}
-              size="lg"
-              className="w-full h-14 rounded-card font-normal"
+              className="w-full h-[54px] rounded-card font-normal text-sm transition-opacity hover:opacity-90 active:scale-[0.98]"
+              style={{ backgroundColor: 'hsl(150 27% 18%)', color: '#fff' }}
             >
               Tillbaka till översikten
-            </Button>
+            </button>
           </motion.div>
 
         </div>
