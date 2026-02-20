@@ -65,16 +65,16 @@ export default function SessionStepReflection({
       <div
         className="overflow-hidden"
         style={{
-          border: '0.5px solid hsl(var(--border) / 0.5)',
-          borderRadius: '16px',
+          border: '0.5px solid hsl(var(--border) / 0.3)',
+          borderRadius: '20px',
           backgroundColor: 'transparent',
-          padding: '24px 28px',
+          padding: '28px 32px',
         }}
       >
         <textarea
           value={displayText}
           onChange={(e) => handleChange(e.target.value)}
-          placeholder="Skriv fritt — valfritt."
+          placeholder="Skriv fritt."
           className="w-full min-h-[120px] bg-transparent resize-none focus:outline-none focus:ring-0 text-sm leading-relaxed placeholder:[color:#8C8681]"
           style={{ color: 'var(--color-ink)' }}
         />
