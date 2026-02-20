@@ -51,7 +51,7 @@ export default function StepProgressIndicator({
           <span
             key={step.stage_key}
             className={cn(
-              'h-1 flex-1 max-w-[40px] rounded-full transition-colors duration-200',
+              'h-[3px] flex-1 max-w-[32px] rounded-full transition-colors duration-200',
             )}
             style={{
               backgroundColor: isCurrent
