@@ -231,9 +231,9 @@ export default function Home() {
                         }}
                         className="cursor-pointer"
                         style={{
-                          minHeight: isFirstTime ? '56px' : '48px',
+                          minHeight: isFirstTime ? '52px' : '48px',
                           borderRadius: '10px',
-                          padding: isFirstTime ? '10px 20px' : '0 20px',
+                          padding: isFirstTime ? '8px 20px' : '0 20px',
                           display: 'flex',
                           alignItems: isFirstTime ? 'flex-start' : 'center',
                           flexDirection: isFirstTime ? 'column' : 'row',
@@ -254,7 +254,7 @@ export default function Home() {
                       >
                         {isFirstTime && (
                           <p
-                            className="text-[9px] uppercase tracking-[0.1em] font-light"
+                            className="text-[8px] uppercase tracking-[0.06em] font-light"
                             style={{ color: 'var(--color-text-secondary)', opacity: 0.4 }}
                           >
                             Börja här
