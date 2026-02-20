@@ -26,10 +26,10 @@ export default function SavedConversations() {
             animate={{ opacity: 1 }}
             className="text-center py-20"
           >
-            <h2 className="font-serif text-xl mb-3" style={{ color: 'var(--color-text-primary)' }}>
+            <h2 className="font-serif text-xl font-medium mb-4" style={{ color: 'var(--color-text-primary)' }}>
               Sparade samtal
             </h2>
-            <p className="text-sm leading-relaxed mb-10" style={{ color: 'var(--color-text-secondary)' }}>
+            <p className="text-sm leading-relaxed mb-10" style={{ color: 'var(--color-text-secondary)', opacity: 0.65 }}>
               När ni sparar ett samtal dyker det upp här. Det kan vara något ni vill återvända till.
             </p>
             <button
