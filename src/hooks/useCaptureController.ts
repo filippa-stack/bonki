@@ -20,23 +20,27 @@ export const CAPTURE_QUEUE: {
   devState: string | null; skipOnboarding: boolean; devStep?: number;
 }[] = [
   // ── Onboarding ────────────────────────────────────────────────────────────
-  { label: 'Onboarding',              file: '01-onboarding.png',          path: '/',                      devState: null,                  skipOnboarding: false },
-  // ── Home ──────────────────────────────────────────────────────────────────
-  { label: 'Home – Solo',             file: '02-home-solo.png',           path: '/',                      devState: 'solo',                skipOnboarding: true  },
-  { label: 'Home – Completed',        file: '03-home-completed.png',      path: '/',                      devState: 'completed',           skipOnboarding: true  },
+  { label: 'Onboarding',              file: '01-onboarding.png',          path: '/',                              devState: null,                  skipOnboarding: false },
+  // ── Home states ────────────────────────────────────────────────────────────
+  { label: 'Home – Solo',             file: '02-home-solo.png',           path: '/',                              devState: 'solo',                skipOnboarding: true  },
+  { label: 'Home – Paired Idle',      file: '03-home-paired-idle.png',    path: '/',                              devState: 'pairedIdle',          skipOnboarding: true  },
+  { label: 'Home – Paired Active',    file: '04-home-paired-active.png',  path: '/',                              devState: 'pairedActive',        skipOnboarding: true  },
+  { label: 'Home – Proposal',         file: '05-home-proposal.png',       path: '/',                              devState: 'proposalIncoming',    skipOnboarding: true  },
+  { label: 'Home – Waiting',          file: '06-home-waiting.png',        path: '/',                              devState: 'waiting',             skipOnboarding: true  },
+  { label: 'Home – Completed',        file: '07-home-completed.png',      path: '/',                              devState: 'completed',           skipOnboarding: true  },
   // ── Categories ────────────────────────────────────────────────────────────
-  { label: 'Categories',              file: '04-categories.png',          path: '/categories',            devState: 'browse',              skipOnboarding: false },
-  { label: 'Category – Topic List',   file: '05-category-topics.png',     path: '/category/dev-category', devState: 'browse',              skipOnboarding: false },
-  // ── Card / Session (4 steps) — devStep forces CardView to that step ───────
-  { label: 'Card – Step 1 (Opening)', file: '06-card-step1.png',          path: '/card/dev-card',         devState: 'pairedActive',        skipOnboarding: false, devStep: 0 },
-  { label: 'Card – Step 2 (Reflect)', file: '07-card-step2.png',          path: '/card/dev-card',         devState: 'pairedActive',        skipOnboarding: false, devStep: 1 },
-  { label: 'Card – Step 3 (Scenario)',file: '08-card-step3.png',          path: '/card/dev-card',         devState: 'pairedActive',        skipOnboarding: false, devStep: 2 },
-  { label: 'Card – Step 4 (Exercise)',file: '09-card-step4.png',          path: '/card/dev-card',         devState: 'pairedActive',        skipOnboarding: false, devStep: 3 },
+  { label: 'Categories',              file: '08-categories.png',          path: '/categories',                    devState: 'browse',              skipOnboarding: false },
+  { label: 'Category – Topic List',   file: '09-category-topics.png',     path: '/category/communication',        devState: 'browse',              skipOnboarding: false },
+  // ── Card / Session (4 steps) ──────────────────────────────────────────────
+  { label: 'Card – Step 1 (Opening)', file: '10-card-step1.png',          path: '/card/listening-presence',        devState: 'pairedActive',        skipOnboarding: false, devStep: 0 },
+  { label: 'Card – Step 2 (Reflect)', file: '11-card-step2.png',          path: '/card/listening-presence',        devState: 'pairedActive',        skipOnboarding: false, devStep: 1 },
+  { label: 'Card – Step 3 (Scenario)',file: '12-card-step3.png',          path: '/card/listening-presence',        devState: 'pairedActive',        skipOnboarding: false, devStep: 2 },
+  { label: 'Card – Step 4 (Exercise)',file: '13-card-step4.png',          path: '/card/listening-presence',        devState: 'pairedActive',        skipOnboarding: false, devStep: 3 },
   // ── Completion ────────────────────────────────────────────────────────────
-  { label: 'Card – Completion',       file: '10-card-completion.png',     path: '/card/dev-card',         devState: 'completed',           skipOnboarding: false },
+  { label: 'Card – Completion',       file: '14-card-completion.png',     path: '/card/listening-presence',        devState: 'completed',           skipOnboarding: false },
   // ── Archive ───────────────────────────────────────────────────────────────
-  { label: 'Archive – Empty',         file: '11-archive-empty.png',       path: '/saved',                 devState: 'archiveEmpty',        skipOnboarding: false },
-  { label: 'Archive – With History',  file: '12-archive-history.png',     path: '/saved',                 devState: 'archiveWithHistory',  skipOnboarding: false },
+  { label: 'Archive – Empty',         file: '15-archive-empty.png',       path: '/shared',                        devState: 'archiveEmpty',        skipOnboarding: false },
+  { label: 'Archive – With History',  file: '16-archive-history.png',     path: '/shared',                        devState: 'archiveWithHistory',  skipOnboarding: false },
 ];
 
 const RESULTS_KEY = '__sc_results';

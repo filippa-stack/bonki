@@ -5,7 +5,7 @@
  * Import useDevState from '@/contexts/DevStateContext' to read it.
  *
  * Supported values:
- *   solo | pairedIdle | pairedActive | waiting | completed
+ *   solo | pairedIdle | pairedActive | proposalIncoming | waiting | completed
  *   archiveEmpty | archiveWithHistory | browse
  */
 
@@ -13,6 +13,7 @@ export type DevState =
   | 'solo'
   | 'pairedIdle'
   | 'pairedActive'
+  | 'proposalIncoming'
   | 'waiting'
   | 'completed'
   | 'archiveEmpty'
