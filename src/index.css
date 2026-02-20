@@ -175,7 +175,7 @@
 
   .text-display {
     font-family: var(--font-serif);
-    font-size: 34px;
+    font-size: 38px;
     @apply font-medium tracking-tight leading-tight;
   }
 
