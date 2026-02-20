@@ -556,7 +556,9 @@ export default function CardView() {
         animate={{ opacity: 1 }}
         transition={{ duration: 0.32, ease: [0.4, 0, 0.2, 1] }}
       >
-        <Header title={category?.title} showBack backTo="/" />
+        <div style={{ opacity: 0.55 }}>
+          <Header title={category?.title} showBack backTo="/" />
+        </div>
         <div className="px-6 pt-title-above pb-16">
 
           {/* Heading — grounded, intentional */}
