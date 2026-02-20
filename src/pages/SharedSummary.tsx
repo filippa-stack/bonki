@@ -373,19 +373,20 @@ export default function SharedSummary() {
                    className="mb-12"
                  >
                    <SectionLabel>Besökta samtal</SectionLabel>
-                   <div className="space-y-8">
+                   <div className="divide-y divide-foreground/[0.08]">
                      {cards
                        .filter(c => exploredIds.includes(c.id))
                        .map(card => (
                          <button
                            key={card.id}
                            onClick={() => navigate(`/card/${card.id}?revisit=true`)}
-                           className="w-full text-left group"
+                           className="w-full text-left group py-5 first:pt-0"
                          >
                            <div className="flex items-baseline justify-between gap-3">
                              <p className="font-serif text-[17px] leading-snug text-foreground/80 group-hover:text-foreground transition-colors">
                                {card.title}
                              </p>
+                             <span className="text-muted-foreground opacity-55 group-hover:opacity-80 transition-opacity flex-shrink-0 text-sm">→</span>
                            </div>
                            {card.subtitle && (
                              <p className="text-sm text-muted-foreground/55 mt-0.5 leading-relaxed">
