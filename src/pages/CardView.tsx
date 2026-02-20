@@ -400,52 +400,50 @@ export default function CardView() {
       >
         <Header title={category?.title} showBack backTo="/" />
         <div className="px-6 pt-title-above pb-16">
+
+          {/* Heading — exhale moment */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: BEAT_3, ease: EASE }}
-            className="text-center max-w-md mx-auto space-y-3"
+            className="text-center max-w-md mx-auto space-y-4"
           >
-            <h2 className="text-xl font-serif text-foreground">Ta en stund.</h2>
-            <p className="text-sm text-muted-foreground leading-relaxed">
+            <h2 className="text-display text-foreground">Ta en stund.</h2>
+            <p className="text-body text-muted-foreground leading-relaxed">
               Det ni just delade får landa. Här kan ni skriva en gemensam sammanfattning om ni vill.
             </p>
           </motion.div>
 
+          {/* Takeaway input */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: BEAT_1, duration: BEAT_3, ease: EASE }}
-            className="max-w-md mx-auto mt-16 space-y-2"
+            className="max-w-md mx-auto mt-16 space-y-3"
           >
-            <p className="text-sm text-muted-foreground text-center leading-relaxed">
+            <p className="text-body text-muted-foreground/70 text-center leading-relaxed">
               Vill ni formulera något att ta med er?
             </p>
             <SessionTakeaway sessionId={activeSessionId} />
           </motion.div>
 
+          {/* CTA — large breathing room before asking user to leave */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: BEAT_2, duration: BEAT_3, ease: EASE }}
-            className="max-w-md mx-auto mt-16 space-y-8 text-center"
+            transition={{ delay: BEAT_3, duration: BEAT_3, ease: EASE }}
+            className="max-w-md mx-auto mt-24 space-y-6 text-center"
           >
+            <p className="text-xs text-muted-foreground/40">Ni kan alltid komma tillbaka.</p>
             <Button
               onClick={() => navigate('/')}
               size="lg"
-              className="w-full h-14 rounded-card gap-2 font-normal"
+              className="w-full h-14 rounded-card font-normal"
             >
-              Till Hem
+              Tillbaka till startsidan
             </Button>
-            <div className="pt-4 text-center">
-              <button
-                onClick={() => navigate(`/card/${card.id}?revisit=true`)}
-                className="text-xs text-muted-foreground/50 hover:text-muted-foreground transition-colors"
-              >
-                Läs igen
-              </button>
-            </div>
           </motion.div>
+
         </div>
       </motion.div>
     );
