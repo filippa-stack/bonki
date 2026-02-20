@@ -269,7 +269,7 @@
     letter-spacing: 0.01em;
     box-shadow: none;
     border: none;
-    transition: background-color 260ms ease-out, transform 240ms ease-out;
+    transition: background-color 260ms ease-out, transform 120ms ease-out;
   }
 
   .cta-primary:hover:not(:disabled) {
@@ -277,7 +277,7 @@
   }
 
   .cta-primary:active:not(:disabled) {
-    transform: scale(0.98);
+    transform: scale(0.97);
     background-color: var(--cta-hover);
   }
 
