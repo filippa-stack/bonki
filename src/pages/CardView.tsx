@@ -184,6 +184,7 @@ export default function CardView() {
         // If there's an active session for a DIFFERENT card, abandon it first (not "complete")
         const didSwitch = !!(normalizedSession.sessionId && normalizedSession.cardId !== cardId);
         if (didSwitch) {
+          if (isDevToolsEnabled()) console.log('[switch] abandon called', normalizedSession.sessionId);
           const { error: abandonErr } = await supabase.rpc('abandon_active_session', {
             p_session_id: normalizedSession.sessionId,
           });
@@ -193,7 +194,7 @@ export default function CardView() {
           }
         }
 
-        // Activate the new session
+        if (isDevToolsEnabled()) console.log('[switch] activate called', cardId);
         const { error } = await supabase.rpc('activate_couple_session', {
           p_couple_space_id: space.id,
           p_category_id: card.categoryId,
@@ -204,6 +205,7 @@ export default function CardView() {
           console.error('Session activation failed:', error);
           toastErrorOnce('activate_session_fail', 'Kunde inte starta samtalet');
         } else {
+          if (isDevToolsEnabled()) console.log('[switch] navigated to', `/card/${cardId}`, didSwitch ? '(switched)' : '(fresh)');
           await normalizedSession.refetch();
           if (didSwitch) {
             toast('Bytte samtal. Det förra är sparat i Vårt utrymme.', { duration: 2500 });
