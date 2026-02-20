@@ -202,10 +202,10 @@ export default function Home() {
           <>
             {/* Focus zone: Resume/Recommended slab OR first-time header */}
             {exploredIds.length === 0 ? (
-              <div className="px-6 pt-8 mb-12" style={slabCompress}>
+              <div className="px-6 pt-12 mb-16" style={slabCompress}>
                 <h2
-                  className="font-medium"
-                  style={{ fontSize: '18px', color: 'var(--color-text-primary)', opacity: 0.75, letterSpacing: '0.01em' }}
+                  className="font-normal"
+                  style={{ fontSize: '16px', color: 'var(--color-text-primary)', opacity: 0.6, letterSpacing: '0.01em' }}
                 >
                   Utforska
                 </h2>
