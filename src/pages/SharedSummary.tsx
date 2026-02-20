@@ -224,7 +224,7 @@ export default function SharedSummary() {
           className="mb-10 text-center"
         >
           <h1 className="font-serif text-xl font-medium text-foreground tracking-tight">Vårt utrymme</h1>
-          <p className="text-sm text-muted-foreground/55 mt-4">En överblick över det du redan har utforskat.</p>
+          <p className="text-sm text-muted-foreground/55 mt-2">En överblick över det du redan har utforskat.</p>
         </motion.div>
 
         {/* ─── Empty state ─── */}
@@ -236,10 +236,10 @@ export default function SharedSummary() {
             className="pt-16 text-center"
           >
             <div className="space-y-4">
-              <p className="text-base text-foreground/70 leading-relaxed">
+              <p className="text-base font-medium text-foreground/70 leading-relaxed mt-12">
                 Här växer det ni delar.
               </p>
-              <p className="text-sm leading-relaxed" style={{ color: 'var(--color-text-secondary)', opacity: 0.6 }}>
+              <p className="text-sm leading-relaxed text-muted-foreground/57">
                 När ni har haft ert första samtal, börjar rummet ta form.
               </p>
             </div>
