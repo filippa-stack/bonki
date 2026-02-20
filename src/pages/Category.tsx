@@ -120,7 +120,10 @@ function CardEntry({ card, index, isCompleted = false, onNavigate }: CardEntryPr
         <div className="flex-1 min-w-0">
           <h3
             className="text-subheading"
-            style={{ color: isCompleted ? 'var(--color-text-secondary)' : 'var(--color-text-primary)' }}
+            style={{
+              color: isCompleted ? 'var(--color-text-secondary)' : 'var(--color-text-primary)',
+              fontWeight: index === 0 ? 600 : undefined,
+            }}
           >
             {card.title}
           </h3>
