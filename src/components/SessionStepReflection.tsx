@@ -86,7 +86,7 @@ export default function SessionStepReflection({
         </div>
       </div>
 
-      <div className="mt-40 pb-12">
+      <div className="mt-24 pb-8">
         <button
           onClick={handleAdvance}
           disabled={submitting}
