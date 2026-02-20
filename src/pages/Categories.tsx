@@ -78,11 +78,11 @@ export default function Categories() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: Math.min(0.08 + index * 0.05, 0.3), duration: 0.2, ease: [0.4, 0.0, 0.2, 1] }}
-              className={isGuided ? (index > 0 ? 'mt-[74px] mb-[-8px]' : 'mb-[-8px]') : (index > 0 ? 'mt-[58px]' : '')}
+              className={isGuided ? (index > 0 ? 'mt-[82px]' : '') : (index > 0 ? 'mt-[58px]' : '')}
             >
               {isGuided && (
                 <p
-                  className="text-[14px] mb-[8px]"
+                  className="text-[14px] font-medium mb-[5px]"
                   style={{ color: 'var(--color-text-secondary)', opacity: 0.7 }}
                 >
                   En bra plats att börja
