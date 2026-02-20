@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { BEAT_1, EASE } from '@/lib/motion';
+import CompletionMarker from '@/components/CompletionMarker';
 import { useTranslation } from 'react-i18next';
 import { useApp } from '@/contexts/AppContext';
 import { useAuth } from '@/contexts/AuthContext';
@@ -141,16 +142,7 @@ function CardEntry({ card, index, isCompleted = false, onNavigate, isLast = fals
           >
             {card.title}
           </h3>
-          {isCompleted && (
-            <svg
-              width="12" height="12" viewBox="0 0 12 12" fill="none"
-              aria-hidden="true"
-              style={{ flexShrink: 0, opacity: 0.3, marginBottom: '2px' }}
-            >
-              <circle cx="6" cy="6" r="5.5" stroke="currentColor" strokeWidth="1.2" />
-              <path d="M3.5 6l1.8 1.8 3.2-3.2" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-          )}
+          <CompletionMarker completed={isCompleted} />
         </div>
         {card.subtitle && (
           <p
