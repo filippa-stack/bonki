@@ -198,6 +198,16 @@ export default function CardView() {
   }, [devState, isRevisitMode, showCompletion, normalizedSession.loading, isActiveSession, normalizedSession.sessionId, space?.id, cardId, hasCompletedNormalizedSession]);
   
 
+  // ─── Sanitize URL: strip revisit=true when an active session exists ───
+  useEffect(() => {
+    if (isRevisitMode && isActiveSession) {
+      const cleaned = new URLSearchParams(searchParams);
+      cleaned.delete('revisit');
+      const qs = cleaned.toString();
+      navigate(`/card/${cardId}${qs ? `?${qs}` : ''}`, { replace: true });
+    }
+  }, [isRevisitMode, isActiveSession, searchParams, cardId, navigate]);
+
   // ─── Single resolver — the only gate for which surface mounts ───
   const cardViewMode: CardViewMode = resolveCardViewMode({
     isRevisitMode,
