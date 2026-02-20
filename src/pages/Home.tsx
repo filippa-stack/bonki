@@ -261,11 +261,11 @@ export default function Home() {
                       >
                         <div className="flex-1 min-w-0">
                           <h3
-                            className="text-[13px] font-normal"
+                            className="text-[12.5px] font-normal"
                             style={{
                               color: allExplored ? 'var(--color-text-secondary)' : 'var(--color-text-primary)',
                               opacity: allExplored ? 0.7 : 0.9,
-                              lineHeight: '1.3',
+                              lineHeight: '1.25',
                               textWrap: 'balance',
                               wordBreak: 'keep-all',
                             }}
