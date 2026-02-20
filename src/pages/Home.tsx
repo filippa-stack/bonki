@@ -229,9 +229,9 @@ export default function Home() {
                         }}
                         className="cursor-pointer"
                         style={{
-                          minHeight: '80px',
+                          minHeight: '64px',
                           borderRadius: '16px',
-                          padding: '16px 24px',
+                          padding: '0 24px',
                           display: 'flex',
                           alignItems: 'center',
                           justifyContent: 'space-between',
