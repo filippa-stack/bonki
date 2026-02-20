@@ -91,16 +91,17 @@ export default function FocusSlab() {
         {title}
       </h2>
 
-      {/* Button */}
+      {/* Button — subdued, doesn't compete with slab */}
       <div className="mt-auto pt-3">
         <span
-          className="inline-flex items-center px-5 text-sm font-medium"
+          className="inline-flex items-center px-4 text-[12px] font-medium"
           style={{
-            height: '32px',
+            height: '28px',
             backgroundColor: 'var(--cta-bg)',
             color: 'var(--cta-text)',
-            borderRadius: '16px',
+            borderRadius: '14px',
             letterSpacing: '0.2px',
+            opacity: 0.85,
           }}
         >
           {buttonLabel}
