@@ -668,13 +668,6 @@ export default function CardView() {
             currentStepIndex={currentStepIndex}
             completedSteps={Array.from({ length: serverStepIndex }, (_, i) => i)}
           />
-          {currentSection && STEP_RITUAL_HINTS[currentSection.type] && (
-            <p className="mt-6 text-center text-[9px] tracking-wider" style={{ color: 'var(--color-text-secondary)', opacity: 0.25 }}>
-              {isTogether
-                ? STEP_RITUAL_HINTS[currentSection.type].together
-                : STEP_RITUAL_HINTS[currentSection.type].solo}
-            </p>
-          )}
         </motion.div>
       )}
 
