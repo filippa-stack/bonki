@@ -200,10 +200,21 @@ export default function Home() {
 
         {mode !== 'loading' && (
           <>
-            {/* Focus Slab — single block for resume or recommended */}
-            <div className="px-6 pt-8 mb-12" style={slabCompress}>
-              <FocusSlab />
-            </div>
+            {/* Focus zone: Resume/Recommended slab OR first-time header */}
+            {exploredIds.length === 0 ? (
+              <div className="px-6 pt-8 mb-12" style={slabCompress}>
+                <h2
+                  className="font-serif font-medium"
+                  style={{ fontSize: '20px', color: 'var(--color-text-primary)', opacity: 0.85 }}
+                >
+                  Var vill ni börja?
+                </h2>
+              </div>
+            ) : (
+              <div className="px-6 pt-8 mb-12" style={slabCompress}>
+                <FocusSlab />
+              </div>
+            )}
 
             {/* Categories listing — always visible */}
             <div className="px-6 pb-24">
