@@ -673,7 +673,7 @@ export default function CardView() {
       {/* Step progress — neutral text only */}
       {cardViewMode === 'live' && (
         <motion.div
-          className="px-6 pt-6 pb-2"
+          className="px-6 pt-3 pb-1"
           initial={isLive && !suppressEntryAnim ? { opacity: 0 } : false}
           animate={{ opacity: 1 }}
           transition={{ delay: isLive && !suppressEntryAnim ? BEAT_1 : 0, duration: BEAT_3, ease: EASE }}
@@ -692,7 +692,7 @@ export default function CardView() {
         </motion.div>
       )}
 
-      <div className="px-6 pb-8" style={{ paddingTop: 'calc(var(--space-title-above) + 24px)' }}>
+      <div className="px-6 pb-8" style={{ paddingTop: 'calc(var(--space-title-above) + 16px)' }}>
         <motion.h1
           initial={suppressEntryAnim ? false : { opacity: 0 }}
           animate={{ opacity: 1 }}
