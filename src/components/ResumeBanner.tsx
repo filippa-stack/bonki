@@ -37,8 +37,16 @@ export default function ResumeBanner({ cardId }: ResumeBannerProps) {
         </div>
         <button
           onClick={handleDismiss}
-          className="text-xs leading-none ml-3 mt-0.5 transition-opacity hover:opacity-100"
-          style={{ color: 'var(--color-text-secondary)', opacity: 0.6 }}
+          className="leading-none ml-1 -mt-0.5 -mr-1 transition-opacity hover:opacity-80"
+          style={{
+            color: 'var(--color-text-secondary)',
+            opacity: 0.5,
+            fontSize: '16px',
+            padding: '8px 10px',
+            background: 'none',
+            border: 'none',
+            lineHeight: 1,
+          }}
           aria-label="Stäng"
         >
           ×
