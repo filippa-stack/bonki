@@ -41,7 +41,7 @@ export default function SavedConversations() {
             </button>
           </motion.div>
         ) : (
-          <div className="space-y-6">
+          <div className="space-y-8">
             {sortedConversations.map((conversation, index) => (
               <motion.div
                 key={conversation.id}
