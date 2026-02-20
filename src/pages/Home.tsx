@@ -184,7 +184,7 @@ export default function Home() {
           <>
             {/* Resume banner — non-intrusive, shown when active session exists */}
             {effectiveCardId && (
-              <div className="px-6 pt-8 mb-8">
+              <div className="px-6 pt-8 mb-10">
                 <ResumeBanner cardId={effectiveCardId} />
               </div>
             )}
