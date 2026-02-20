@@ -204,10 +204,10 @@ export default function Home() {
             {exploredIds.length === 0 ? (
               <div className="px-6 pt-8 mb-12" style={slabCompress}>
                 <h2
-                  className="font-serif font-medium"
-                  style={{ fontSize: '20px', color: 'var(--color-text-primary)', opacity: 0.85 }}
+                  className="font-medium"
+                  style={{ fontSize: '18px', color: 'var(--color-text-primary)', opacity: 0.75, letterSpacing: '0.01em' }}
                 >
-                  Var vill ni börja?
+                  Utforska
                 </h2>
               </div>
             ) : (
