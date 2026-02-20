@@ -65,9 +65,9 @@ export default function SessionStepReflection({
       <div
         className="overflow-hidden"
         style={{
-          border: '0.5px solid hsl(var(--border) / 0.06)',
+          border: '0.5px solid hsl(var(--border) / 0.03)',
           borderRadius: '24px',
-          backgroundColor: 'hsl(30 10% 95% / 0.45)',
+          backgroundColor: 'hsl(30 12% 94% / 0.35)',
           padding: '32px 36px',
         }}
       >
@@ -79,8 +79,8 @@ export default function SessionStepReflection({
           style={{ color: 'var(--color-ink)' }}
         />
         <div className="flex items-center pt-3">
-          <span className="text-[10px] flex items-center gap-1" style={{ color: 'var(--color-text-secondary)', opacity: 0.3 }}>
-            <Lock className="w-3 h-3" />
+          <span className="text-[9px] flex items-center gap-1" style={{ color: 'var(--color-text-secondary)', opacity: 0.2 }}>
+            <Lock className="w-2.5 h-2.5" />
             Privat
           </span>
         </div>
