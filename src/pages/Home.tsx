@@ -16,6 +16,7 @@ import RelationSettings from '@/components/RelationSettings';
 import RelationshipMemory from '@/components/RelationshipMemory';
 import Footer from '@/components/Footer';
 import ReturnOverlay from '@/components/ReturnOverlay';
+import ResumeBanner from '@/components/ResumeBanner';
 import ConfidenceCheckPanel from '@/components/ConfidenceCheckPanel';
 import { useThemeVars } from '@/hooks/useThemeVars';
 import { supabase } from '@/integrations/supabase/client';
@@ -186,53 +187,20 @@ export default function Home() {
           </div>
         )}
 
-        {/* ═══ ACTIVE — single centered session module ═══ */}
-        {mode === 'active' && normalizedSession.cardId && (() => {
-          const activeCard = getCardById(normalizedSession.cardId!);
-          const activeCategory = activeCard ? getCategoryById(activeCard.categoryId) : null;
-          if (!activeCard || !activeCategory) return null;
-          return (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.3 }}
-              className="px-6 pt-[120px] pb-[80px] flex flex-col items-center justify-center"
-            >
-              <div className="w-full max-w-sm text-center">
-                {/* Ritual headline */}
-                <h1
-                  className="text-heading mb-[40px]"
-                  style={{ color: 'var(--color-text-primary)' }}
-                >
-                  Ett samtal i taget.
-                </h1>
+        {/* ═══ Resume banner — non-intrusive, shown when active session exists ═══ */}
+        {mode === 'active' && normalizedSession.cardId && (
+          <ResumeBanner cardId={normalizedSession.cardId} />
+        )}
 
-                {/* Primary action */}
-                <button
-                  onClick={() => { markNavigated(); navigate(`/card/${normalizedSession.cardId}`); }}
-                  className="w-full h-14 rounded-button flex items-center justify-center text-sm font-medium transition-opacity hover:opacity-90"
-                  style={{
-                    backgroundColor: 'var(--color-button-primary)',
-                    color: 'var(--color-button-text)',
-                  }}
-                >
-                  Fortsätt samtalet
-                </button>
-              </div>
-            </motion.div>
-          );
-        })()}
-
-        {/* ═══ IDLE — quiet single CTA ═══ */}
-        {mode === 'idle' && (
+        {/* ═══ Main CTA — always visible regardless of session state ═══ */}
+        {(mode === 'active' || mode === 'idle') && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.3 }}
-            className="px-6 pt-[120px] pb-[80px] flex flex-col items-center justify-center"
+            className="px-6 pt-[80px] pb-[80px] flex flex-col items-center justify-center"
           >
             <div className="w-full max-w-sm text-center">
-              {/* Ritual headline */}
               <h1
                 className="text-heading mb-[40px]"
                 style={{ color: 'var(--color-text-primary)' }}
@@ -241,17 +209,14 @@ export default function Home() {
               </h1>
 
               <button
-                onClick={() => {
-                  markNavigated();
-                  navigate('/categories');
-                }}
+                onClick={() => { markNavigated(); navigate('/categories'); }}
                 className="w-full h-14 rounded-button flex items-center justify-center text-sm font-medium transition-opacity hover:opacity-90"
                 style={{
                   backgroundColor: 'var(--color-button-primary)',
                   color: 'var(--color-button-text)',
                 }}
               >
-                Starta samtal
+                {mode === 'idle' ? 'Starta samtal' : 'Utforska kategorier'}
               </button>
 
               {/* Subtle archive link */}
