@@ -134,7 +134,7 @@ function CardEntry({ card, index, isCompleted = false, onNavigate, isLast = fals
         onKeyDown={(e) => {
           if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleTap(); }
         }}
-        className="relative w-full cursor-pointer min-h-[44px] flex flex-col justify-center rounded-sm px-2 transition-[background-color,padding-left] duration-[120ms] ease-out hover:bg-black/[0.03] hover:pl-[14px] active:bg-black/[0.05] active:duration-[80ms]"
+        className="group relative w-full cursor-pointer min-h-[44px] flex flex-col justify-center rounded-sm px-2 transition-[background-color,padding-left,transform] duration-[140ms] ease-out hover:-translate-y-0.5 hover:bg-black/[0.03] hover:pl-[14px] active:bg-black/[0.05] active:duration-[80ms]"
       >
         <span
           className="absolute right-2 top-1/2 -translate-y-1/2 w-3 h-px"
@@ -142,7 +142,7 @@ function CardEntry({ card, index, isCompleted = false, onNavigate, isLast = fals
         />
         <div className="flex items-baseline gap-3">
           <h3
-            className="text-subheading flex-1"
+            className="text-subheading flex-1 transition-[font-weight,filter] duration-[140ms] ease-out group-hover:font-semibold group-hover:[filter:brightness(0.85)]"
             style={{ color: isCompleted ? 'var(--color-text-secondary)' : index === 0 ? '#151413' : 'var(--color-text-primary)' }}
           >
             {card.title}
