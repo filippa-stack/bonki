@@ -221,14 +221,6 @@ export default function Home() {
                       transition={{ delay: Math.min(0.08 + index * 0.05, 0.3), duration: 0.2, ease: [0.4, 0.0, 0.2, 1] }}
                       style={{ marginTop: index === 0 ? 0 : index === 3 ? '32px' : '16px' }}
                     >
-                      {isFirstTime && (
-                        <p
-                          className="text-[10px] uppercase tracking-[0.08em] font-light mb-2 pl-1"
-                          style={{ color: 'var(--color-text-secondary)', opacity: 0.4 }}
-                        >
-                          Börja här
-                        </p>
-                      )}
                       <div
                         onClick={() => { markNavigated(); navigate(`/category/${category.id}`); }}
                         role="button"
@@ -239,13 +231,14 @@ export default function Home() {
                         }}
                         className="cursor-pointer"
                         style={{
-                          minHeight: '64px',
+                          minHeight: isFirstTime ? '72px' : '64px',
                           borderRadius: '12px',
-                          padding: '0 24px',
+                          padding: isFirstTime ? '12px 24px' : '0 24px',
                           display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'space-between',
-                          gap: '12px',
+                          alignItems: isFirstTime ? 'flex-start' : 'center',
+                          flexDirection: isFirstTime ? 'column' : 'row',
+                          justifyContent: isFirstTime ? 'center' : 'space-between',
+                          gap: isFirstTime ? '2px' : '12px',
                           background: 'hsl(var(--muted) / 0.12)',
                           transition: 'transform 120ms ease-out',
                         }}
@@ -259,28 +252,38 @@ export default function Home() {
                           e.currentTarget.style.transform = '';
                         }}
                       >
-                        <div className="flex-1 min-w-0">
-                          <h3
-                            className="text-[12.5px] font-normal"
-                            style={{
-                              color: allExplored ? 'var(--color-text-secondary)' : 'var(--color-text-primary)',
-                              opacity: allExplored ? 0.7 : 0.9,
-                              lineHeight: '1.25',
-                              textWrap: 'balance',
-                              wordBreak: 'keep-all',
-                            }}
-                          >
-                            {category.title}
-                          </h3>
-                        </div>
-                        <div className="flex items-center gap-2 shrink-0">
-                          {catCards.some((c) => exploredIds.includes(c.id)) && (
-                            <CompletionMarker completed />
-                          )}
-                          <ChevronRight
-                            className="w-4 h-4"
+                        {isFirstTime && (
+                          <p
+                            className="text-[9px] uppercase tracking-[0.1em] font-light"
                             style={{ color: 'var(--color-text-secondary)', opacity: 0.4 }}
-                          />
+                          >
+                            Börja här
+                          </p>
+                        )}
+                        <div className="flex items-center justify-between gap-3 w-full">
+                          <div className="flex-1 min-w-0">
+                            <h3
+                              className="text-[12.5px] font-normal"
+                              style={{
+                                color: allExplored ? 'var(--color-text-secondary)' : 'var(--color-text-primary)',
+                                opacity: allExplored ? 0.7 : 0.9,
+                                lineHeight: '1.25',
+                                textWrap: 'balance',
+                                wordBreak: 'keep-all',
+                              }}
+                            >
+                              {category.title}
+                            </h3>
+                          </div>
+                          <div className="flex items-center gap-2 shrink-0">
+                            {catCards.some((c) => exploredIds.includes(c.id)) && (
+                              <CompletionMarker completed />
+                            )}
+                            <ChevronRight
+                              className="w-4 h-4"
+                              style={{ color: 'var(--color-text-secondary)', opacity: 0.4 }}
+                            />
+                          </div>
                         </div>
                       </div>
                     </motion.div>
