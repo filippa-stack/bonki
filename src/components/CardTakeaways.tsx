@@ -194,7 +194,7 @@ export default function CardTakeaways({ cardId, compact = false }: CardTakeaways
                   <Button variant="ghost" size="sm" className="text-xs h-7" onClick={() => setEditingShared(false)}>
                     Avbryt
                   </Button>
-                  <Button size="sm" className="text-xs h-7" onClick={handleSaveEditShared} disabled={!editText.trim()}>
+                  <Button variant="primary" size="sm" className="text-xs h-7" onClick={handleSaveEditShared} disabled={!editText.trim()}>
                     Spara
                   </Button>
                 </div>

@@ -190,7 +190,7 @@ export default function BackupManager() {
               onChange={(e) => setBackupName(e.target.value)}
               className="flex-1"
             />
-            <Button onClick={createBackup} disabled={creating} size="sm">
+            <Button variant="primary" onClick={createBackup} disabled={creating} size="sm">
               {creating ? (
                 <Loader2 className="w-4 h-4 animate-spin" />
               ) : (
