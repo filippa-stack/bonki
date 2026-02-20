@@ -96,7 +96,7 @@ export default function Categories() {
                   onKeyDown={(e) => {
                     if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); navigate(`/category/${category.id}`); }
                   }}
-                  className="row-bloom group relative w-full cursor-pointer min-h-[44px] flex flex-col justify-center rounded-sm px-2 transition-[background-color,padding-left,transform] duration-[140ms] ease-out hover:-translate-y-0.5 hover:bg-black/[0.03] hover:pl-[14px] active:bg-black/[0.05] active:duration-[80ms]"
+                  className="row-bloom group relative w-full cursor-pointer min-h-[56px] flex flex-col justify-center rounded-sm py-[13px] px-2 transition-[background-color] duration-[120ms] ease-out hover:bg-black/[0.03] active:bg-black/[0.04] active:transition-none"
                 >
                   <span
                     className="absolute right-2 top-1/2 -translate-y-1/2 w-3 h-px"
@@ -104,7 +104,7 @@ export default function Categories() {
                   />
                   <div className="flex items-baseline gap-3">
                     <h3
-                      className={`text-[20px] leading-snug flex-1 transition-[font-weight,filter] duration-[140ms] ease-out group-hover:font-semibold group-hover:[filter:brightness(0.85)] ${isGuided ? 'font-semibold' : 'font-medium'}`}
+                      className={`text-[20px] leading-snug flex-1 ${isGuided ? 'font-semibold' : 'font-medium'}`}
                       style={{ color: allExplored ? 'var(--color-text-secondary)' : isGuided ? '#151413' : 'var(--color-text-primary)' }}
                     >
                       {category.title}
