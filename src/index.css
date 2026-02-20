@@ -258,7 +258,7 @@
     align-items: center;
     justify-content: center;
     width: 100%;
-    max-width: 220px;
+    max-width: 200px;
     height: 48px;
     border-radius: var(--radius-button);
     background-color: var(--cta-bg);
