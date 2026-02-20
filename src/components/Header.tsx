@@ -74,11 +74,11 @@ export default function Header({
       className={`sticky top-0 z-10 ${isImmersive ? '' : 'backdrop-blur-md border-b border-black/[0.04]'}`}
       style={{
         backgroundColor: isImmersive ? 'var(--session-header-bg)' : 'hsl(var(--surface-chrome) / 0.85)',
-        filter: isImmersive ? 'saturate(0.85) brightness(0.95)' : undefined,
+        filter: isImmersive ? 'saturate(0.75) brightness(0.9)' : undefined,
         boxShadow: 'none',
       }}
     >
-      <div className="relative flex items-center justify-between px-6" style={{ height: isImmersive ? '1.875rem' : '3.75rem' }}>
+      <div className="relative flex items-center justify-between px-6" style={{ height: isImmersive ? '1.5rem' : '3.75rem' }}>
         {/* ── Left: Logo ── */}
         <div className="flex items-center gap-2 flex-1 min-w-0">
           {isImmersive && onImmersiveBack && (
@@ -118,7 +118,7 @@ export default function Header({
 
         {/* ── Center: Session title (immersive only) ── */}
         {isImmersive && title && (
-          <h1 className="font-serif text-[13px] font-normal truncate text-white/70 absolute left-1/2 -translate-x-1/2 max-w-[50%] text-center pointer-events-none">
+          <h1 className="font-serif text-[12px] font-normal truncate text-white/50 absolute left-1/2 -translate-x-1/2 max-w-[50%] text-center pointer-events-none">
             {title}
           </h1>
         )}
