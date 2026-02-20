@@ -65,7 +65,7 @@ export default function FocusSlab() {
       className="cursor-pointer transition-transform active:scale-[0.985]"
       style={{
         borderRadius: '24px',
-        padding: '20px 22px 18px',
+        padding: '24px',
         minHeight: '128px',
         maxHeight: '140px',
         display: 'flex',
