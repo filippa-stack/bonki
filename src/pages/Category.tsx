@@ -145,9 +145,10 @@ function CardEntry({ card, index, isCompleted = false, onNavigate }: CardEntryPr
           />
         )}
         <ChevronRight
-          size={18}
+          size={16}
+          strokeWidth={1.5}
           className="flex-shrink-0"
-          style={{ color: 'var(--color-text-secondary)', opacity: 0.35 }}
+          style={{ color: 'var(--color-text-secondary)', opacity: 0.25 }}
         />
       </motion.div>
     </motion.div>
