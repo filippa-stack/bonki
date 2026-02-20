@@ -54,10 +54,11 @@ function resolveCardViewMode({
   hasCompletedSessionForCard: boolean;
   showCompletion: boolean;
 }): CardViewMode {
-  if (isRevisitMode) return 'revisit';
+  // Active session ALWAYS wins — even if URL has ?revisit=true
   if (showCompletion) return 'completion';
   if (hasActiveSession) return 'live';
-  // Completed cards → full revisit mode (read-only, with saved reflections)
+  // No active session — honour explicit revisit param or completed-card fallback
+  if (isRevisitMode) return 'revisit';
   if (hasCompletedSessionForCard) return 'revisit';
   return 'live';
 }
