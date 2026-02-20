@@ -9,6 +9,8 @@ import { useCoupleSpaceContext } from '@/contexts/CoupleSpaceContext';
 import { useSpaceSnapshot } from '@/hooks/useSpaceSnapshot';
 import { selectExploredCardIds } from '@/selectors/spaceSnapshotSelectors';
 import Header from '@/components/Header';
+import ResumeBanner from '@/components/ResumeBanner';
+import { useNormalizedSessionContext } from '@/contexts/NormalizedSessionContext';
 
 import { RECOMMENDED_CATEGORY_ORDER } from '@/lib/recommendedOrder';
 
@@ -20,6 +22,7 @@ export default function Categories() {
   const { space } = useCoupleSpaceContext();
   const { snapshot } = useSpaceSnapshot(user?.id ?? null, space?.id ?? null);
   const exploredIds = selectExploredCardIds(snapshot);
+  const normalizedSession = useNormalizedSessionContext();
 
   // Sort categories by recommended order; unlisted ones go at the end
   const sortedCategories = useMemo(() => {
@@ -47,6 +50,11 @@ export default function Categories() {
       <Header showBack backTo="/" />
 
       <div className="px-6 pt-[64px] pb-[80px]">
+        {normalizedSession.cardId && (
+          <div className="mb-6">
+            <ResumeBanner cardId={normalizedSession.cardId} />
+          </div>
+        )}
         <h1
           className="text-[22px] font-medium mb-[72px]"
           style={{ color: 'var(--color-text-secondary)' }}
