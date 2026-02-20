@@ -114,7 +114,7 @@ function CardEntry({ card, index, isCompleted = false, onNavigate, isLast = fals
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ delay: Math.min(0.08 + index * 0.05, 0.24), duration: 0.2, ease: [0.4, 0.0, 0.2, 1] }}
-      className={index === 0 ? 'mt-[38px]' : 'mt-[58px]'}
+      className={index === 0 ? 'mt-[38px]' : 'mt-[49px]'}
     >
       <div
         onClick={handleTap}
