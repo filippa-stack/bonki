@@ -214,18 +214,23 @@ export default function SharedSummary() {
     <div className="min-h-screen page-bg">
       <Header showBack backTo="/" />
 
-      <div className="px-6 pt-[80px] pb-10 mx-auto" style={{ maxWidth: 540 }}>
+      <div className="px-6 pb-10 mx-auto" style={{ maxWidth: 540, paddingTop: '32px' }}>
 
         {/* ─── Title ─── */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 0.15 }}
-          className="mb-10 text-center"
+          transition={{ duration: 0.2, ease: [0.4, 0, 0.2, 1] }}
+          className="text-center"
         >
           <h1 className="font-serif text-xl font-medium text-foreground tracking-tight">{t('shared.title')}</h1>
-          <p className="text-sm text-muted-foreground/50 mt-2">En överblick över det du redan har utforskat.</p>
+          <p className="text-sm text-muted-foreground/50" style={{ marginTop: '16px' }}>
+            Här finns det ni har utforskat tillsammans.
+          </p>
         </motion.div>
+
+        {/* 48px before content */}
+        <div style={{ height: '48px' }} />
 
         {/* ─── Empty state ─── */}
         {!hasContent && !hasActiveFilter && !effectiveLoading && (
