@@ -230,7 +230,7 @@ export default function Home() {
                         className="cursor-pointer"
                         style={{
                           minHeight: '64px',
-                          borderRadius: '16px',
+                          borderRadius: '12px',
                           padding: '0 24px',
                           display: 'flex',
                           alignItems: 'center',
