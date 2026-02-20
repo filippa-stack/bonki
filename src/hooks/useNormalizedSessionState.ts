@@ -40,6 +40,12 @@ export function useNormalizedSessionState(): NormalizedSessionState {
   const spaceId = space?.id;
 
   const fetchState = useCallback(async () => {
+    // Cancel any pending debounced refetch so it doesn't overwrite our result
+    if (debounceRef.current) {
+      clearTimeout(debounceRef.current);
+      debounceRef.current = undefined;
+    }
+
     if (!userId) {
       setState({ appMode: null, sessionId: null, cardId: null, categoryId: null, currentStepIndex: 0, waiting: false });
       setLoading(false);
