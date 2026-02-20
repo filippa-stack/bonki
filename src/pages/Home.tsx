@@ -251,7 +251,7 @@ export default function Home() {
                       >
                         <div className="flex-1 min-w-0 py-3">
                           <h3
-                            className="text-[14px] font-normal"
+                            className="text-[13px] font-normal"
                             style={{
                               color: allExplored ? 'var(--color-text-secondary)' : 'var(--color-text-primary)',
                               opacity: allExplored ? 0.7 : 0.9,

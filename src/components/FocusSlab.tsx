@@ -65,8 +65,8 @@ export default function FocusSlab() {
       className="cursor-pointer"
       style={{
         borderRadius: '24px',
-        padding: '24px',
-        minHeight: '128px',
+        padding: '28px 24px',
+        minHeight: '136px',
         maxHeight: '140px',
         display: 'flex',
         flexDirection: 'column',
@@ -102,7 +102,7 @@ export default function FocusSlab() {
       {/* Session / category title */}
       <h2
         className="font-serif font-semibold leading-snug mt-1"
-        style={{ color: 'var(--color-text-primary)', fontSize: '21px' }}
+        style={{ color: 'var(--color-text-primary)', fontSize: '24px' }}
       >
         {title}
       </h2>
