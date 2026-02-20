@@ -65,15 +65,6 @@ export default function Category() {
             {category.entryLine}
           </motion.p>
         )}
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: BEAT_1 + 0.1, duration: 0.2, ease: EASE }}
-          className="text-[16px] mt-[44px]"
-          style={{ color: 'var(--color-text-secondary)', opacity: 0.6 }}
-        >
-          Utforska i er takt.
-        </motion.p>
       </div>
 
       <div className="px-6 pt-[32px] pb-[80px]">
