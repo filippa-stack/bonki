@@ -340,7 +340,7 @@ export default function SharedSummary() {
                       {categoryProgress.map((cat) => (
                         <div key={cat.id}>
                           <div className="flex items-center justify-between mb-1.5">
-                            <p className="text-[11px] text-foreground/60">{cat.title}</p>
+                            <p className="text-[11px] font-medium text-foreground/60">{cat.title}</p>
                             <p className="text-[9px] text-muted-foreground/35">{cat.explored}/{cat.total}</p>
                           </div>
                           <div className="flex gap-[3px]">
