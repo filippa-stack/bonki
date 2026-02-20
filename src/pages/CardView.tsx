@@ -569,7 +569,7 @@ export default function CardView() {
             className="text-center max-w-md mx-auto"
             style={{ paddingTop: 24 }}
           >
-            <h2 className="font-serif text-[28px] font-semibold leading-[1.25] text-foreground">Det ni just gjorde betyder något.</h2>
+            <h2 className="font-serif text-[28px] font-semibold leading-[1.25] tracking-[-0.01em] text-foreground">Det ni just gjorde betyder något.</h2>
           </motion.div>
 
           {/* Takeaway input */}
