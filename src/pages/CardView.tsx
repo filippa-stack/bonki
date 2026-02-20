@@ -584,9 +584,9 @@ export default function CardView() {
           {card.title}
         </motion.h1>
         {cardViewMode === 'revisit' && (
-          <div className="mt-4 text-center">
-            <p className="text-[11px] tracking-wide" style={{ color: 'var(--color-text-secondary)', opacity: 0.5 }}>
-              {completedSessionId ? 'Utforskat' : 'Förhandskoll'}
+          <div className="mt-3 text-center">
+            <p className="text-[12px]" style={{ color: 'var(--color-text-secondary)', opacity: 0.6 }}>
+              {completedSessionId ? 'Visar tidigare samtal' : 'Förhandskoll'}
             </p>
           </div>
         )}
