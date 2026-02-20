@@ -331,6 +331,7 @@ export default function SharedSummary() {
                  >
                    <div className="border-t border-foreground/[0.08] mb-8" />
                    <SectionLabel>Er resa tillsammans</SectionLabel>
+                   <p className="text-[12px] text-foreground/60 text-center mb-8">Så här har ni rört er hittills.</p>
                    <div className="space-y-4">
                     <p className="text-xs text-muted-foreground/50 text-center">
                       {exploredCount === 0
