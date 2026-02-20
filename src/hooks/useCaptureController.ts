@@ -73,11 +73,25 @@ export function useCaptureController() {
         }
       }
 
-      // Capture
+      // Capture — resolve CSS custom properties so html2canvas gets real values
       const { default: html2canvas } = await import('html2canvas');
+
+      // Inline all computed styles on every element so html2canvas sees real colors
+      function inlineComputedStyles(root: HTMLElement) {
+        const all = root.querySelectorAll('*') as NodeListOf<HTMLElement>;
+        all.forEach((el) => {
+          const cs = window.getComputedStyle(el);
+          el.style.color = cs.color;
+          el.style.backgroundColor = cs.backgroundColor;
+          el.style.borderColor = cs.borderColor;
+          el.style.fill = cs.fill;
+          el.style.stroke = cs.stroke;
+        });
+      }
+
       const canvas = await html2canvas(document.documentElement, {
         useCORS: true,
-        allowTaint: false,
+        allowTaint: true,
         backgroundColor: '#f5f5f3',
         scale: 2,
         windowWidth: window.innerWidth,
@@ -88,6 +102,9 @@ export function useCaptureController() {
         y: 0,
         scrollX: 0,
         scrollY: 0,
+        onclone: (_doc, el) => {
+          inlineComputedStyles(el);
+        },
       });
 
       const dataUrl = canvas.toDataURL('image/png');
