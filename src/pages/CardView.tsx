@@ -200,7 +200,14 @@ export default function CardView() {
   // ─── Local display step (live mode) ───
   // Null = follow normalizedSession.currentStepIndex (server authority).
   // Set to a number to display a previous step without touching the server.
-  const [localStepIndex, setLocalStepIndex] = useState<number | null>(null);
+  // __sc_dev_step: screenshot capture param that forces a specific step (dev only)
+  const scDevStep = (() => {
+    const raw = searchParams.get('__sc_dev_step');
+    if (raw === null) return null;
+    const n = parseInt(raw, 10);
+    return !isNaN(n) ? n : null;
+  })();
+  const [localStepIndex, setLocalStepIndex] = useState<number | null>(scDevStep);
 
   // ─── Sub-prompt index within current stage ───
   // Tracks which prompt within a section is currently displayed.
