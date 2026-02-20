@@ -556,7 +556,7 @@ export default function CardView() {
         animate={{ opacity: 1 }}
         transition={{ duration: 0.32, ease: [0.4, 0, 0.2, 1] }}
       >
-        <div style={{ opacity: 0.55 }}>
+        <div style={{ opacity: 0.4 }}>
           <Header title={category?.title} showBack backTo="/" />
         </div>
         <div className="px-6 pt-title-above pb-16">
