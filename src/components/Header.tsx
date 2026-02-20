@@ -93,7 +93,7 @@ export default function Header({
             <img
               src={bonkiLogo}
               alt="Still Us"
-              className={`h-7 w-7 object-contain cursor-pointer opacity-75 ${isImmersive ? 'brightness-0 invert' : ''}`}
+              className={`h-7 w-7 object-contain cursor-pointer ${isImmersive ? 'brightness-0 invert opacity-80' : 'opacity-75'}`}
               onClick={() => navigate('/', { replace: false })}
             />
           )}
@@ -107,7 +107,7 @@ export default function Header({
 
         {/* ── Center: Session title (immersive only) ── */}
         {isImmersive && title && (
-          <h1 className="font-serif text-base font-medium truncate text-white absolute left-1/2 -translate-x-1/2 max-w-[50%] text-center pointer-events-none">
+          <h1 className="font-serif text-[15px] font-medium truncate text-white absolute left-1/2 -translate-x-1/2 max-w-[50%] text-center pointer-events-none">
             {title}
           </h1>
         )}
@@ -142,17 +142,16 @@ export default function Header({
           {isImmersive && onLeaveSession && (
             <button
               onClick={onLeaveSession}
-              className="text-[11px] font-sans whitespace-nowrap shrink-0 mr-2 no-underline hover:underline underline-offset-4"
+              className="text-[10px] font-sans whitespace-nowrap shrink-0 ml-3 mr-2"
               style={{
                 color: 'hsl(0 0% 100%)',
-                opacity: 0.55,
+                opacity: 0.5,
                 fontWeight: 400,
-                textDecorationColor: 'hsl(0 0% 100% / 0.3)',
-                textDecorationThickness: '1px',
+                textDecoration: 'none',
                 transition: 'opacity 150ms ease',
               }}
-              onMouseEnter={(e) => { e.currentTarget.style.opacity = '0.85'; }}
-              onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.55'; }}
+              onMouseEnter={(e) => { e.currentTarget.style.opacity = '0.7'; }}
+              onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.5'; }}
             >
               Lämna samtalet
             </button>
