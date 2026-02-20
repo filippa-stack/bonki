@@ -163,21 +163,21 @@ export default function CompletedSessionView({
       <div className="px-6 pt-title-above pb-8">
         <div className="max-w-md mx-auto space-y-8 pb-8">
 
-          {/* Completion header */}
+          {/* Completion header — heading first, quiet date below */}
           <motion.div
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: BEAT_3, ease: EASE }}
-            className="text-center space-y-2"
+            className="text-center space-y-3"
           >
-            <p className="text-[11px] text-muted-foreground/50 tracking-wide uppercase">
-              Session från {formatSessionDate(session.startedAt)}
-            </p>
             <h2 className="text-heading text-foreground">Samtalet är sparat.</h2>
             <p className="text-meta text-muted-foreground/60">Ni kan fortsätta när ni vill.</p>
+            <p className="text-[11px] text-muted-foreground/35 tracking-wide">
+              {formatSessionDate(session.startedAt)}
+            </p>
           </motion.div>
 
-          {/* Locked reflections: delay BEAT_2, opacity 0→1, translateY 12→0, BEAT_3 */}
+          {/* Locked reflections — no step labels, memory not recap */}
           {stepGroups.length > 0 && (
             <motion.div
               initial={{ opacity: 0, y: 12 }}
@@ -187,8 +187,6 @@ export default function CompletedSessionView({
             >
               {stepGroups.map((group, idx) => (
                 <div key={idx} className="space-y-4">
-                  <p className="text-xs text-muted-foreground/40 tracking-wide">{group.label}</p>
-
                   {/* Partner first */}
                   {group.partnerRef && group.partnerRef.text.trim() && (
                     <div className="space-y-1">
@@ -197,7 +195,7 @@ export default function CompletedSessionView({
                           ? group.partnerRef.speakerLabel
                           : partnerName}
                       </p>
-                      <div className="rounded-card border border-border/20 overflow-hidden">
+                      <div className="rounded-card bg-muted/10 overflow-hidden">
                         <p className="p-6 text-sm text-foreground whitespace-pre-wrap">{group.partnerRef.text}</p>
                       </div>
                     </div>
@@ -211,7 +209,7 @@ export default function CompletedSessionView({
                           ? group.myRef.speakerLabel
                           : myName}
                       </p>
-                      <div className="rounded-card border border-border/20 overflow-hidden">
+                      <div className="rounded-card bg-muted/10 overflow-hidden">
                         <p className="p-6 text-sm text-foreground whitespace-pre-wrap">{group.myRef.text}</p>
                       </div>
                     </div>
@@ -223,7 +221,7 @@ export default function CompletedSessionView({
             </motion.div>
           )}
 
-          {/* Takeaway block: delay BEAT_2, opacity 0→1, translateY 12→0, BEAT_3 */}
+          {/* Takeaway block */}
           {session.takeawayText && (
             <motion.div
               initial={{ opacity: 0, y: 12 }}
@@ -232,33 +230,27 @@ export default function CompletedSessionView({
               className="space-y-2"
             >
               <p className="text-xs text-muted-foreground/40 tracking-wide">Det ni tog med er</p>
-              <div className="rounded-card border border-border/20 overflow-hidden">
+              <div className="rounded-card bg-muted/10 overflow-hidden">
                 <p className="p-6 text-sm text-foreground whitespace-pre-wrap">{session.takeawayText}</p>
               </div>
             </motion.div>
           )}
 
-          {/* Drawer trigger / CTA */}
+          {/* CTA — mt-16 breathing room before exit */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: BEAT_1, duration: BEAT_3, ease: EASE }}
-            className="space-y-4 text-center"
+            transition={{ delay: BEAT_3, duration: BEAT_3, ease: EASE }}
+            className="mt-16 space-y-4 text-center"
           >
-            <p className="text-xs text-muted-foreground/50">Ni kan alltid komma tillbaka.</p>
+            <p className="text-xs text-muted-foreground/40">Ni kan alltid komma tillbaka.</p>
             <Button
               onClick={onExploreAgain}
               size="lg"
-              className="w-full h-14 rounded-card gap-2 font-normal"
+              className="w-full h-14 rounded-card font-normal"
             >
               Tillbaka till översikten
             </Button>
-            <button
-              onClick={() => navigate('/')}
-              className="text-xs text-muted-foreground/50 hover:text-muted-foreground transition-colors"
-            >
-              Till Hem
-            </button>
           </motion.div>
 
         </div>
