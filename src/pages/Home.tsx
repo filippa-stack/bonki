@@ -246,7 +246,7 @@ export default function Home() {
                           alignItems: 'center',
                           justifyContent: 'space-between',
                           gap: '12px',
-                          background: 'hsl(var(--muted) / 0.07)',
+                          background: 'hsl(var(--muted) / 0.12)',
                           transition: 'transform 120ms ease-out',
                         }}
                         onPointerDown={(e) => {
