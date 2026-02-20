@@ -58,8 +58,8 @@ export default function ResumeBanner({ cardId }: ResumeBannerProps) {
         style={{
           height: '32px',
           maxWidth: '160px',
-          backgroundColor: '#192f24',
-          color: 'var(--color-button-text)',
+          backgroundColor: 'var(--cta-bg)',
+          color: 'var(--cta-text)',
           letterSpacing: '0.2px',
           borderRadius: '20px',
           boxShadow: 'none',
