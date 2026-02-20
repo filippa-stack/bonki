@@ -443,20 +443,32 @@ export default function CardView() {
             <SessionTakeaway sessionId={activeSessionId} />
           </motion.div>
 
-          {/* CTA — exhale pause before exit */}
+          {/* CTAs — exhale pause before exit */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: BEAT_3, duration: BEAT_3, ease: EASE }}
-            className="max-w-md mx-auto mt-16 text-center"
+            className="max-w-md mx-auto mt-16 flex flex-col items-center gap-4"
           >
-            <Button
-              onClick={() => navigate(postCompletionDestination)}
-              size="lg"
-              className="w-full h-14 rounded-card font-normal"
+            <button
+              onClick={() => navigate(category ? `/category/${category.id}` : '/categories')}
+              className="h-12 px-8 rounded-button text-sm font-medium transition-opacity hover:opacity-90"
+              style={{
+                maxWidth: '240px',
+                width: '100%',
+                backgroundColor: 'var(--color-button-primary)',
+                color: 'var(--color-button-text)',
+              }}
             >
-              Tillbaka
-            </Button>
+              Fortsätt utforska
+            </button>
+            <button
+              onClick={() => navigate('/categories')}
+              className="text-sm transition-opacity hover:opacity-100"
+              style={{ color: 'var(--color-text-secondary)', opacity: 0.7 }}
+            >
+              Till översikten
+            </button>
           </motion.div>
 
         </div>
