@@ -104,7 +104,7 @@ export default function Categories() {
                   />
                   <div className="flex items-baseline gap-3">
                     <h3
-                      className={`text-[20px] leading-snug flex-1 ${isGuided ? 'font-semibold' : 'font-medium'}`}
+                      className={`text-[20px] leading-snug flex-1 ${isGuided ? 'font-[550]' : 'font-medium'}`}
                       style={{ color: allExplored ? 'var(--color-text-secondary)' : isGuided ? '#151413' : 'var(--color-text-primary)' }}
                     >
                       {category.title}
