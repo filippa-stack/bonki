@@ -5,6 +5,8 @@ import { motion } from 'framer-motion';
 import { BEAT_1, BEAT_2, BEAT_3 } from '@/lib/motion';
 import { useNavigate } from 'react-router-dom';
 import { useApp } from '@/contexts/AppContext';
+import { formatDistanceToNow } from 'date-fns';
+import { sv } from 'date-fns/locale';
 import { useAuth } from '@/contexts/AuthContext';
 import { useSpaceSnapshot } from '@/hooks/useSpaceSnapshot';
 import { selectExploredCardIds } from '@/selectors/spaceSnapshotSelectors';
@@ -359,6 +361,43 @@ export default function SharedSummary() {
                   </div>
                 </motion.div>
               )}
+
+              {/* ═══════════════════════════════════════════
+                  SECTION 2.5: "Besökta samtal" — explored cards list
+                  ═══════════════════════════════════════════ */}
+               {!hasActiveFilter && exploredIds.length > 0 && (
+                 <motion.div
+                   initial={{ opacity: 0 }}
+                   animate={{ opacity: 1 }}
+                   transition={{ delay: BEAT_3, duration: 0.15 }}
+                   className="mb-12"
+                 >
+                   <SectionLabel>Besökta samtal</SectionLabel>
+                   <div className="space-y-8">
+                     {cards
+                       .filter(c => exploredIds.includes(c.id))
+                       .map(card => (
+                         <button
+                           key={card.id}
+                           onClick={() => navigate(`/card/${card.id}?revisit=true`)}
+                           className="w-full text-left group"
+                         >
+                           <div className="flex items-baseline justify-between gap-3">
+                             <p className="font-serif text-[17px] leading-snug text-foreground/80 group-hover:text-foreground transition-colors">
+                               {card.title}
+                             </p>
+                           </div>
+                           {card.subtitle && (
+                             <p className="text-sm text-muted-foreground/55 mt-0.5 leading-relaxed">
+                               {card.subtitle}
+                             </p>
+                           )}
+                         </button>
+                       ))
+                     }
+                   </div>
+                 </motion.div>
+               )}
 
               {/* ═══════════════════════════════════════════
                   SECTION 3: "Er historia" — Archive timeline

@@ -255,16 +255,6 @@ export default function Home() {
                 );
               })}
 
-              {/* Subtle archive link */}
-              <div className="mt-[64px] text-center">
-                <button
-                  onClick={() => navigate('/saved')}
-                  className="text-meta transition-colors hover:text-foreground"
-                  style={{ color: 'var(--color-text-secondary)', opacity: 0.5 }}
-                >
-                  Arkiv
-                </button>
-              </div>
             </div>
           </>
         )}
