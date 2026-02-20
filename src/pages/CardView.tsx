@@ -369,10 +369,43 @@ export default function CardView() {
       return;
     }
 
-    if (!normalizedSession.sessionId) return;
+    // ── Guard: ensure we have a valid session before writing ──
+    let sessionId = normalizedSession.sessionId;
+
+    if (!sessionId) {
+      // Attempt to activate a session, then retry
+      const card = getCardById(cardId);
+      if (space?.id && card) {
+        if (isDevToolsEnabled()) console.log('[step-complete] no sessionId — attempting activate');
+        const { error: actErr } = await supabase.rpc('activate_couple_session', {
+          p_couple_space_id: space.id,
+          p_category_id: card.categoryId,
+          p_card_id: cardId,
+          p_step_count: STEP_ORDER.length,
+        });
+        if (!actErr) {
+          await normalizedSession.refetch();
+          sessionId = normalizedSession.sessionId;
+        }
+      }
+
+      // Still no session — fall back to non-blocking local advance
+      if (!sessionId) {
+        if (isDevToolsEnabled()) console.warn('[step-complete] no session after retry — advancing locally');
+        if (displayIndex >= STEP_ORDER.length - 1) {
+          setShowCompletion(true);
+        } else {
+          setLocalStepIndex(displayIndex + 1);
+        }
+        toastOnce('step_retry', () =>
+          toast('Vi sparar så fort vi kan. Fortsätt bara.', { duration: 2500 })
+        );
+        return;
+      }
+    }
 
     const rpcParams = {
-      p_session_id: normalizedSession.sessionId,
+      p_session_id: sessionId,
       p_step_index: displayIndex,
     };
 
