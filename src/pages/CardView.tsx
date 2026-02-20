@@ -692,13 +692,13 @@ export default function CardView() {
         </motion.div>
       )}
 
-      <div className="px-6 pb-8" style={{ paddingTop: 'calc(var(--space-title-above) + 16px)' }}>
+      <div className="px-6 pb-8" style={{ paddingTop: 'calc(var(--space-title-above) + 32px)' }}>
         <motion.h1
           initial={suppressEntryAnim ? false : { opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: BEAT_3, ease: EASE }}
-          className="text-xl md:text-2xl font-serif text-center"
-          style={{ color: 'var(--color-text-primary)', lineHeight: '1.7' }}
+          className="text-2xl md:text-3xl font-serif text-center mb-6"
+          style={{ color: 'var(--color-text-primary)', lineHeight: '1.35' }}
         >
           {card.title}
         </motion.h1>
