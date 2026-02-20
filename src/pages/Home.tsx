@@ -236,23 +236,17 @@ export default function Home() {
                           alignItems: 'center',
                           justifyContent: 'space-between',
                           gap: '12px',
-                          background: 'hsl(var(--muted) / 0.18)',
-                          transition: 'transform 120ms ease-out, box-shadow 120ms ease-out, filter 150ms ease',
+                          background: 'hsl(var(--muted) / 0.10)',
+                          transition: 'transform 120ms ease-out',
                         }}
                         onPointerDown={(e) => {
-                          const el = e.currentTarget;
-                          el.style.transform = 'scale(0.98)';
-                          el.style.boxShadow = '0 0 0 hsl(var(--foreground) / 0)';
+                          e.currentTarget.style.transform = 'scale(0.98)';
                         }}
                         onPointerUp={(e) => {
-                          const el = e.currentTarget;
-                          el.style.transform = '';
-                          el.style.boxShadow = '';
+                          e.currentTarget.style.transform = '';
                         }}
                         onPointerLeave={(e) => {
-                          const el = e.currentTarget;
-                          el.style.transform = '';
-                          el.style.boxShadow = '';
+                          e.currentTarget.style.transform = '';
                         }}
                       >
                         <div className="flex-1 min-w-0">
