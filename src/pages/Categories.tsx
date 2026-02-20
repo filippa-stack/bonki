@@ -2,6 +2,7 @@ import { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
+import CompletionMarker from '@/components/CompletionMarker';
 import { useApp } from '@/contexts/AppContext';
 import { useAuth } from '@/contexts/AuthContext';
 import { useCoupleSpaceContext } from '@/contexts/CoupleSpaceContext';
@@ -90,16 +91,7 @@ export default function Categories() {
                     >
                       {category.title}
                     </h3>
-                    {allExplored && (
-                      <svg
-                        width="12" height="12" viewBox="0 0 12 12" fill="none"
-                        aria-hidden="true"
-                        style={{ flexShrink: 0, opacity: 0.3, color: 'var(--color-text-secondary)', marginBottom: '2px' }}
-                      >
-                        <circle cx="6" cy="6" r="5.5" stroke="currentColor" strokeWidth="1.2" />
-                        <path d="M3.5 6l1.8 1.8 3.2-3.2" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
-                      </svg>
-                    )}
+                    <CompletionMarker completed={allExplored} />
                   </div>
                 {category.entryLine && (
                   <p
