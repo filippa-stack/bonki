@@ -200,22 +200,32 @@ export default function Home() {
 
         {mode !== 'loading' && (
           <>
-            {/* Focus zone: Resume/Recommended slab OR first-time header */}
-            {exploredIds.length === 0 ? (
-              <div className="pt-6 mb-16" />
-            ) : (
-              <div className="px-6 pt-8 mb-12" style={slabCompress}>
-                <FocusSlab />
-              </div>
-            )}
+            {/* ZONE A — Identity */}
+            <div className="pt-[80px] px-6 text-center">
+              <h1
+                className="font-serif font-semibold"
+                style={{ fontSize: '28px', color: 'var(--color-text-primary)', lineHeight: 1.2 }}
+              >
+                Vårt utrymme
+              </h1>
+              <p
+                className="mt-4"
+                style={{ fontSize: '14px', color: 'var(--color-text-secondary)', opacity: 0.55, lineHeight: 1.4 }}
+              >
+                Här börjar era samtal.
+              </p>
+            </div>
 
-            {/* Categories listing — always visible */}
+            {/* 48px spacing after Zone A */}
+            <div style={{ height: '48px' }} />
+
+            {/* Categories */}
             <div className="px-6 pb-24">
-              <div className="flex flex-col">
+              <div className="flex flex-col" style={{ gap: '24px' }}>
                 {sortedCategories.map((category, index) => {
                   const catCards = cards.filter((c) => c.categoryId === category.id);
                   const allExplored = catCards.length > 0 && catCards.every((c) => exploredIds.includes(c.id));
-                  
+                  const isPrimary = index === 0;
 
                   return (
                     <motion.div
@@ -223,7 +233,6 @@ export default function Home() {
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       transition={{ delay: Math.min(0.08 + index * 0.05, 0.3), duration: 0.2, ease: [0.4, 0.0, 0.2, 1] }}
-                      style={{ marginTop: index === 0 ? 0 : index === 3 ? '32px' : '16px' }}
                     >
                       <div
                         onClick={() => { markNavigated(); navigate(`/category/${category.id}`); }}
@@ -235,15 +244,19 @@ export default function Home() {
                         }}
                         className="cursor-pointer"
                         style={{
-                          minHeight: '44px',
-                          borderRadius: '10px',
-                          padding: '0 20px',
+                          borderRadius: isPrimary ? '24px' : '16px',
+                          padding: isPrimary ? '24px' : '20px',
                           display: 'flex',
                           alignItems: 'center',
                           justifyContent: 'space-between',
                           gap: '8px',
-                          background: 'hsl(var(--muted) / 0.12)',
-                          transition: 'transform 120ms ease-out',
+                          background: isPrimary
+                            ? 'hsl(var(--muted) / 0.22)'
+                            : 'hsl(var(--muted) / 0.10)',
+                          boxShadow: isPrimary
+                            ? '0 4px 16px hsl(var(--foreground) / 0.06)'
+                            : 'none',
+                          transition: 'transform 120ms ease-out, box-shadow 120ms ease-out',
                         }}
                         onPointerDown={(e) => {
                           e.currentTarget.style.transform = 'scale(0.98)';
@@ -258,8 +271,9 @@ export default function Home() {
                         <div className="flex items-center justify-between gap-3 w-full">
                           <div className="flex-1 min-w-0">
                             <h3
-                              className={`text-[12.5px] ${index === 0 && exploredIds.length === 0 ? 'font-[450]' : 'font-normal'}`}
+                              className="font-normal"
                               style={{
+                                fontSize: isPrimary ? '14px' : '12.5px',
                                 color: allExplored ? 'var(--color-text-secondary)' : 'var(--color-text-primary)',
                                 opacity: allExplored ? 0.7 : 0.9,
                                 lineHeight: '1.25',
