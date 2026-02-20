@@ -2,6 +2,7 @@ import { motion } from 'framer-motion';
 import { ConversationThread } from '@/types';
 import { getCardById } from '@/data/content';
 import { formatDistanceToNow } from 'date-fns';
+import { sv } from 'date-fns/locale';
 import { ArrowRight } from 'lucide-react';
 
 interface ConversationCardProps {
@@ -15,7 +16,7 @@ export default function ConversationCard({ conversation, onClick, variant = 'def
   const card = getCardById(conversation.cardId);
   if (!card) return null;
 
-  const timeAgo = formatDistanceToNow(conversation.lastActivityAt, { addSuffix: true });
+  const timeAgo = formatDistanceToNow(conversation.lastActivityAt, { addSuffix: true, locale: sv });
 
   if (variant === 'compact') {
     return (
@@ -29,7 +30,7 @@ export default function ConversationCard({ conversation, onClick, variant = 'def
             <p className="font-serif text-lg truncate" style={{ color: 'var(--color-text-primary)' }}>
               {card.title}
             </p>
-            <p className="text-xs mt-1" style={{ color: 'var(--color-text-secondary)' }}>{timeAgo}</p>
+            <p className="text-xs mt-1" style={{ color: 'var(--color-text-secondary)', opacity: 0.6 }}>{timeAgo}</p>
           </div>
           <ArrowRight className="w-3.5 h-3.5 flex-shrink-0" style={{ color: 'var(--color-text-secondary)', opacity: 0.6 }} />
         </div>
