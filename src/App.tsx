@@ -17,7 +17,7 @@ import Index from "./pages/Index";
 import Categories from "./pages/Categories";
 import Category from "./pages/Category";
 import CardView from "./pages/CardView";
-import SavedConversations from "./pages/SavedConversations";
+
 import SharedSummary from "./pages/SharedSummary";
 import Login from "./pages/Login";
 import NotFound from "./pages/NotFound";
@@ -63,7 +63,7 @@ function ProtectedRoutes() {
             <Route path="/categories" element={<PageTransition><Categories /></PageTransition>} />
             <Route path="/category/:categoryId" element={<PageTransition><Category /></PageTransition>} />
             <Route path="/card/:cardId" element={<PageTransition><CardView /></PageTransition>} />
-            <Route path="/saved" element={<PageTransition><SavedConversations /></PageTransition>} />
+            <Route path="/saved" element={<Navigate to="/shared" replace />} />
             <Route path="/shared" element={<PageTransition><SharedSummary /></PageTransition>} />
             <Route path="*" element={<NotFound />} />
           </Routes>
