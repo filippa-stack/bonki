@@ -99,15 +99,6 @@ export default function SessionStepReflection({
             : 'Fortsätt'}
         </button>
 
-        {onBack && (
-          <button
-            onClick={onBack}
-            className="w-full h-10 flex items-center justify-center text-[12px] transition-opacity hover:opacity-50 mt-3"
-            style={{ color: 'var(--color-text-secondary)', opacity: 0.3 }}
-          >
-            Tillbaka
-          </button>
-        )}
       </div>
     </div>
   );
