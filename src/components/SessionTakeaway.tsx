@@ -36,20 +36,18 @@ export default function SessionTakeaway({ sessionId }: SessionTakeawayProps) {
 
   return (
     <div className="space-y-2">
-      <div className="h-px bg-border/30 mb-4" />
-      <Textarea
-        value={text}
-        onChange={(e) => setText(e.target.value)}
-        placeholder="Skriv något ni vill bära med er."
-        className="min-h-[56px] text-sm resize-none bg-transparent border-none shadow-none focus-visible:ring-0 px-0 placeholder:text-muted-foreground/40"
-        rows={2}
-      />
-      <span className="text-[10px] text-muted-foreground/40">
+      <div className="rounded-card bg-muted/10 overflow-hidden">
+        <Textarea
+          value={text}
+          onChange={(e) => setText(e.target.value)}
+          placeholder="Skriv något ni vill bära med er."
+          className="min-h-[80px] text-sm resize-none bg-transparent border-none shadow-none focus-visible:ring-0 px-6 py-5 placeholder:text-muted-foreground/40"
+          rows={3}
+        />
+      </div>
+      <span className="text-[10px] text-muted-foreground/40 block text-right px-1">
         {saveStatus === 'saving' ? 'Sparar…' : saveStatus === 'saved' ? 'Sparad' : '\u00A0'}
       </span>
-      <p className="text-xs text-muted-foreground/40 text-center">
-        När ni lämnar sidan låses texten.
-      </p>
     </div>
   );
 }
