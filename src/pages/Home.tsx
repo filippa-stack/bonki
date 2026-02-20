@@ -219,8 +219,20 @@ export default function Home() {
             {/* 48px spacing after Zone A */}
             <div style={{ height: '48px' }} />
 
-            {/* Categories */}
-            <div className="px-6 pb-24">
+            {/* Categories — depth layer */}
+            <div
+              className="px-6 pb-24"
+              style={{
+                marginLeft: '-16px',
+                marginRight: '-16px',
+                paddingLeft: 'calc(24px + 16px)',
+                paddingRight: 'calc(24px + 16px)',
+                paddingTop: '16px',
+                marginTop: '-16px',
+                background: 'hsl(var(--foreground) / 0.02)',
+                borderRadius: '32px',
+              }}
+            >
               <div className="flex flex-col" style={{ gap: '24px' }}>
                 {sortedCategories.map((category, index) => {
                   const catCards = cards.filter((c) => c.categoryId === category.id);
