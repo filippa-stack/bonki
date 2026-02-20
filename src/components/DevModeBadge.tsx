@@ -89,6 +89,21 @@ export default function DevModeBadge() {
               {location.pathname === p.path ? '▶ ' : '  '}{p.label}
             </button>
           ))}
+
+          <div className="border-t border-white/10 mt-1">
+            <button
+              onClick={() => {
+                try { localStorage.removeItem('devToolsEnabled'); } catch {}
+                const url = new URL(window.location.href);
+                url.searchParams.delete('dev');
+                url.searchParams.delete('devState');
+                window.location.href = url.toString();
+              }}
+              className="w-full text-left px-3 py-2 text-red-400/70 hover:text-red-400 hover:bg-white/10 transition-colors"
+            >
+              ✕ Disable Dev Tools
+            </button>
+          </div>
         </div>
       )}
 
