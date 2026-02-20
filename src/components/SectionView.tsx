@@ -14,6 +14,8 @@ interface SectionViewProps {
   initialFocusNoteIndex?: number | null;
   focusPromptIndex?: number | null;
   disableShare?: boolean;
+  /** Which prompt within the section to display (default: 0) */
+  promptIndex?: number;
 }
 
 const normalizePrompt = (prompt: string | Prompt): Prompt => {
@@ -29,12 +31,12 @@ const normalizePrompt = (prompt: string | Prompt): Prompt => {
  * CardView passes only the section matching current_step_index.
  */
 const SectionView = forwardRef<SectionViewHandle, SectionViewProps>(
-  function SectionView({ section }, ref) {
+  function SectionView({ section, promptIndex = 0 }, ref) {
     const normalizedPrompts = (section.prompts || []).map(normalizePrompt);
 
-    // One prompt per step: always show the first prompt in the section.
-    // Preamble (scenario/exercise context) is shown above if present.
-    const prompt = normalizedPrompts[0];
+    // Display the specific prompt at promptIndex.
+    // Falls back to index 0 if out of range.
+    const prompt = normalizedPrompts[promptIndex] ?? normalizedPrompts[0];
 
     if (!prompt) return null;
 
@@ -47,11 +49,11 @@ const SectionView = forwardRef<SectionViewHandle, SectionViewProps>(
       >
         <PromptItem
           prompt={prompt}
-          promptId="prompt-0"
-          index={0}
+          promptId={`prompt-${promptIndex}`}
+          index={promptIndex}
           sectionType={section.type as 'opening' | 'reflective' | 'scenario' | 'exercise'}
           preamble={
-            (section.type === 'scenario' || section.type === 'exercise')
+            (section.type === 'scenario' || section.type === 'exercise') && promptIndex === 0
               ? section.content
               : undefined
           }

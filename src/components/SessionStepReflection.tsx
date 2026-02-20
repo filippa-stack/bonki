@@ -5,6 +5,8 @@ import { useSessionReflections } from '@/hooks/useSessionReflections';
 interface SessionStepReflectionProps {
   sessionId?: string | null;
   stepIndex: number;
+  /** When true, button shows "Avsluta samtalet" instead of "Fortsätt" */
+  isLastStep?: boolean;
   /** Called after reflection is persisted — parent calls complete_couple_session_step */
   onLocked?: () => void | Promise<void>;
   /** Called to go back one step — only shown when stepIndex > 0 */
@@ -14,6 +16,7 @@ interface SessionStepReflectionProps {
 export default function SessionStepReflection({
   sessionId = null,
   stepIndex,
+  isLastStep = false,
   onLocked,
   onBack,
 }: SessionStepReflectionProps) {
@@ -90,7 +93,7 @@ export default function SessionStepReflection({
         >
           {submitting
             ? 'Sparar…'
-            : stepIndex >= 3
+            : isLastStep
             ? 'Avsluta samtalet'
             : 'Fortsätt'}
         </button>
