@@ -347,10 +347,10 @@ export default function SharedSummary() {
                             {Array.from({ length: cat.total }).map((_, i) => (
                               <div
                                 key={i}
-                                className={`h-[3px] flex-1 rounded-full ${
+                                className={`h-[2px] flex-1 ${
                                   i < cat.explored
-                                    ? 'bg-primary/25'
-                                    : 'bg-foreground/[0.06]'
+                                    ? 'bg-primary/20'
+                                    : 'bg-foreground/[0.10]'
                                 }`}
                               />
                             ))}
