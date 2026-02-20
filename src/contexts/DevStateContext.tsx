@@ -1,5 +1,6 @@
 import { createContext, useContext, useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
+import { isDevToolsEnabled } from '@/lib/devTools';
 import type { DevState } from '@/hooks/useDevState';
 
 const VALID_STATES: DevState[] = [
@@ -13,8 +14,7 @@ export function DevStateProvider({ children }: { children: React.ReactNode }) {
   const [params] = useSearchParams();
 
   const devState = useMemo<DevState>(() => {
-    // Allow devState in preview builds too (safe: read-only UI override, no DB writes)
-    if (import.meta.env.PROD && !window.location.hostname.includes('preview')) return null;
+    if (!isDevToolsEnabled()) return null;
 
     const raw = params.get('devState');
     if (!raw) return null;

@@ -1,12 +1,8 @@
 import { useState } from 'react';
 import { useNavigate, useLocation, useSearchParams } from 'react-router-dom';
 import { useDevState } from '@/contexts/DevStateContext';
+import { isDevToolsEnabled } from '@/lib/devTools';
 import { ChevronUp, ChevronDown } from 'lucide-react';
-
-// Only render in non-production builds
-const IS_DEV_BUILD =
-  import.meta.env.DEV ||
-  (typeof window !== 'undefined' && window.location.hostname.includes('preview'));
 
 const DEV_STATES = [
   { value: 'solo', label: 'Solo' },
@@ -49,7 +45,7 @@ export default function DevModeBadge() {
   const [open, setOpen] = useState(false);
 
   // Hide during screenshot capture
-  if (!IS_DEV_BUILD || searchParams.has('__sc_step')) return null;
+  if (!isDevToolsEnabled() || searchParams.has('__sc_step')) return null;
 
   const currentDevState = devState ?? 'solo';
 
