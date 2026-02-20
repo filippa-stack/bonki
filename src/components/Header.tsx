@@ -75,7 +75,7 @@ export default function Header({
         boxShadow: 'none',
       }}
     >
-      <div className="flex items-center justify-between px-6" style={{ height: isImmersive ? '2.25rem' : '3.5rem' }}>
+      <div className="flex items-center justify-between px-6" style={{ height: isImmersive ? '2.5rem' : '3.75rem' }}>
         <div className="flex items-center gap-3 flex-1 min-w-0">
           {isImmersive && onImmersiveBack && (
             <button
