@@ -899,6 +899,10 @@ export type Database = {
       }
     }
     Functions: {
+      abandon_active_session: {
+        Args: { p_session_id: string }
+        Returns: undefined
+      }
       activate_couple_session: {
         Args: {
           p_card_id: string

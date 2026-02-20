@@ -181,16 +181,14 @@ export default function CardView() {
 
     (async () => {
       try {
-        // If there's an active session for a DIFFERENT card, soft-complete it first
+        // If there's an active session for a DIFFERENT card, abandon it first (not "complete")
         if (normalizedSession.sessionId && normalizedSession.cardId !== cardId) {
-          const { error: completeErr } = await supabase
-            .from('couple_sessions')
-            .update({ status: 'completed', ended_at: new Date().toISOString(), last_activity_at: new Date().toISOString() })
-            .eq('id', normalizedSession.sessionId);
+          const { error: abandonErr } = await supabase.rpc('abandon_active_session', {
+            p_session_id: normalizedSession.sessionId,
+          });
 
-          if (completeErr) {
-            // Fallback: try via RPC to complete all remaining steps
-            console.warn('Direct session complete failed, trying RPC:', completeErr.message);
+          if (abandonErr) {
+            console.warn('abandon_active_session failed:', abandonErr.message);
           }
         }
 
