@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Screenshot Export — Still Us</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #f5f5f3;
+      color: #1a1a1a;
+      padding: 40px 24px;
+      min-height: 100vh;
+    }
+    h1 { font-size: 22px; font-weight: 600; margin-bottom: 8px; }
+    p.sub { font-size: 14px; color: #666; margin-bottom: 32px; }
+
+    #controls {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      margin-bottom: 32px;
+      flex-wrap: wrap;
+    }
+    button {
+      padding: 12px 24px;
+      border-radius: 10px;
+      border: none;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: opacity 0.15s;
+    }
+    button:hover { opacity: 0.8; }
+    button:disabled { opacity: 0.4; cursor: not-allowed; }
+    #startBtn { background: #1c3a2b; color: #fff; }
+    #downloadBtn { background: #fff; color: #1c3a2b; border: 1.5px solid #1c3a2b; display: none; }
+
+    #log {
+      font-size: 13px;
+      color: #555;
+      margin-bottom: 24px;
+      min-height: 20px;
+    }
+    #progress-bar-wrap {
+      width: 100%;
+      max-width: 480px;
+      height: 4px;
+      background: #e0e0e0;
+      border-radius: 4px;
+      margin-bottom: 24px;
+      display: none;
+    }
+    #progress-bar {
+      height: 100%;
+      background: #1c3a2b;
+      border-radius: 4px;
+      width: 0%;
+      transition: width 0.3s;
+    }
+
+    #grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 20px;
+    }
+    .card {
+      background: #fff;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+    }
+    .card img {
+      width: 100%;
+      display: block;
+    }
+    .card-label {
+      padding: 10px 14px;
+      font-size: 12px;
+      color: #555;
+      border-top: 1px solid #f0f0f0;
+    }
+    .card-label strong { display: block; font-size: 13px; color: #1a1a1a; margin-bottom: 2px; }
+
+    iframe#capture-frame {
+      position: fixed;
+      left: -9999px;
+      top: 0;
+      width: 390px;
+      height: 844px;
+      border: none;
+      background: #fff;
+    }
+  </style>
+</head>
+<body>
+  <h1>Screenshot Export</h1>
+  <p class="sub">Captures all app states at 390×844 (iPhone 14 Pro) and packages them as a ZIP file.</p>
+
+  <div id="controls">
+    <button id="startBtn">▶ Capture all screens</button>
+    <button id="downloadBtn">⬇ Download ZIP</button>
+  </div>
+
+  <div id="progress-bar-wrap"><div id="progress-bar"></div></div>
+  <div id="log">Ready. Click "Capture all screens" to begin.</div>
+  <div id="grid"></div>
+
+  <iframe id="capture-frame"></iframe>
+
+  <script>
+    const PAGES = [
+      { label: 'Onboarding', file: '01-onboarding.png', path: '/', devState: null, waitMs: 2000 },
+      { label: 'Home – Solo', file: '02-home-solo.png', path: '/', devState: 'solo', waitMs: 1800 },
+      { label: 'Home – Paired Idle', file: '03-home-paired-idle.png', path: '/', devState: 'pairedIdle', waitMs: 1800 },
+      { label: 'Home – Paired Active', file: '04-home-paired-active.png', path: '/', devState: 'pairedActive', waitMs: 1800 },
+      { label: 'Home – Waiting', file: '05-home-waiting.png', path: '/', devState: 'waiting', waitMs: 1800 },
+      { label: 'Home – Completed', file: '06-home-completed.png', path: '/', devState: 'completed', waitMs: 1800 },
+      { label: 'Categories (Browse)', file: '07-categories.png', path: '/categories', devState: 'browse', waitMs: 2000 },
+      { label: 'Archive – Empty', file: '08-archive-empty.png', path: '/saved', devState: 'archiveEmpty', waitMs: 1800 },
+      { label: 'Archive – With History', file: '09-archive-history.png', path: '/saved', devState: 'archiveWithHistory', waitMs: 1800 },
+    ];
+
+    const frame = document.getElementById('capture-frame');
+    const grid = document.getElementById('grid');
+    const log = document.getElementById('log');
+    const progressWrap = document.getElementById('progress-bar-wrap');
+    const progressBar = document.getElementById('progress-bar');
+    const startBtn = document.getElementById('startBtn');
+    const downloadBtn = document.getElementById('downloadBtn');
+
+    let capturedImages = [];
+
+    function setLog(msg) { log.textContent = msg; }
+    function setProgress(n, total) {
+      const pct = Math.round((n / total) * 100);
+      progressBar.style.width = pct + '%';
+    }
+
+    function buildUrl(path, devState) {
+      const base = window.location.origin;
+      const url = new URL(path, base);
+      if (devState) url.searchParams.set('devState', devState);
+      return url.toString();
+    }
+
+    function loadFrame(url) {
+      return new Promise((resolve) => {
+        frame.onload = () => resolve();
+        frame.src = url;
+      });
+    }
+
+    function wait(ms) {
+      return new Promise(r => setTimeout(r, ms));
+    }
+
+    async function captureFrame(label) {
+      const doc = frame.contentDocument || frame.contentWindow.document;
+      const canvas = await html2canvas(doc.body, {
+        width: 390,
+        height: 844,
+        scale: 2,
+        useCORS: true,
+        allowTaint: true,
+        backgroundColor: '#f5f5f3',
+        windowWidth: 390,
+        windowHeight: 844,
+      });
+      return canvas.toDataURL('image/png');
+    }
+
+    function addToGrid(label, dataUrl) {
+      const card = document.createElement('div');
+      card.className = 'card';
+      card.innerHTML = `
+        <img src="${dataUrl}" alt="${label}" />
+        <div class="card-label"><strong>${label}</strong></div>
+      `;
+      grid.appendChild(card);
+    }
+
+    function dataUrlToBlob(dataUrl) {
+      const [header, data] = dataUrl.split(',');
+      const mime = header.match(/:(.*?);/)[1];
+      const binary = atob(data);
+      const arr = new Uint8Array(binary.length);
+      for (let i = 0; i < binary.length; i++) arr[i] = binary.charCodeAt(i);
+      return new Blob([arr], { type: mime });
+    }
+
+    async function runCapture() {
+      startBtn.disabled = true;
+      capturedImages = [];
+      grid.innerHTML = '';
+      progressWrap.style.display = 'block';
+      downloadBtn.style.display = 'none';
+
+      for (let i = 0; i < PAGES.length; i++) {
+        const page = PAGES[i];
+        setLog(`Capturing ${i + 1}/${PAGES.length}: ${page.label}…`);
+        setProgress(i, PAGES.length);
+
+        const url = buildUrl(page.path, page.devState);
+        await loadFrame(url);
+        await wait(page.waitMs);
+
+        // For onboarding: skip "Hoppa över" — we want the onboarding screen itself
+        // For others with solo/pairedIdle etc, we need to skip onboarding if shown
+        const frameDoc = frame.contentDocument || frame.contentWindow.document;
+        const skipBtn = frameDoc.querySelector('button');
+        if (page.devState && skipBtn && skipBtn.textContent.includes('Hoppa')) {
+          skipBtn.click();
+          await wait(800);
+        }
+
+        const dataUrl = await captureFrame(page.label);
+        capturedImages.push({ file: page.file, label: page.label, dataUrl });
+        addToGrid(page.label, dataUrl);
+      }
+
+      setProgress(PAGES.length, PAGES.length);
+      setLog(`✅ Done! ${PAGES.length} screenshots captured.`);
+      startBtn.disabled = false;
+      downloadBtn.style.display = 'inline-block';
+    }
+
+    async function downloadZip() {
+      if (capturedImages.length === 0) return;
+      downloadBtn.disabled = true;
+      setLog('Packaging ZIP…');
+
+      const zip = new JSZip();
+      const folder = zip.folder('still-us-screenshots');
+      for (const img of capturedImages) {
+        folder.file(img.file, dataUrlToBlob(img.dataUrl));
+      }
+
+      const blob = await zip.generateAsync({ type: 'blob' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'still-us-screenshots.zip';
+      a.click();
+      URL.revokeObjectURL(url);
+
+      downloadBtn.disabled = false;
+      setLog('✅ ZIP downloaded!');
+    }
+
+    startBtn.addEventListener('click', runCapture);
+    downloadBtn.addEventListener('click', downloadZip);
+  </script>
+</body>
+</html>
