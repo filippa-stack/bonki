@@ -134,6 +134,12 @@
     --cta-text:  #FFFFFF;
     --cta-hover: #172d24;
 
+    /* ── Session containment header tokens ── */
+    /* Applied ONLY to immersive active-session header. Never to CTAs or global buttons. */
+    --session-header-bg:    #1C3A2D;
+    --session-header-hover: #224233;
+    --session-header-press: #162E24;
+
     /* Dynamic overrides — set via useThemeVars hook at runtime */
     --page-bg: var(--color-bg);
     --hero-title-color: var(--color-ink);
