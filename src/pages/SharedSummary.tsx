@@ -544,7 +544,7 @@ export default function SharedSummary() {
 
 function SectionLabel({ children }: { children: React.ReactNode }) {
   return (
-    <p className="text-sm font-semibold text-foreground/70 uppercase tracking-[0.12em] mb-6 text-center">
+    <p className="text-sm font-medium text-foreground/75 mb-6 text-center tracking-normal normal-case">
       {children}
     </p>
   );
