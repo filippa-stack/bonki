@@ -176,26 +176,28 @@ export default function Home() {
 
   // Dynamic recommendation logic
   const resumeBannerCardId = snapshot?.sessions?.session?.card_id ?? null;
+  const resumeBannerCategoryId = useMemo(() => {
+    if (!resumeBannerCardId) return null;
+    const c = cards.find(c => c.id === resumeBannerCardId);
+    return c?.categoryId ?? null;
+  }, [resumeBannerCardId, cards]);
+
   const recommendation = useMemo<{ categoryId: string; label: string } | 'all-done' | null>(() => {
-    // Priority 1: In-progress category
+    // Priority 1: First fully unstarted category (zero completed AND zero in-progress)
     for (const catId of RECOMMENDED_CATEGORY_ORDER) {
-      const catCards = cards.filter(c => c.categoryId === catId);
-      if (catCards.some(c => inProgressCardIds.includes(c.id))) {
-        return { categoryId: catId, label: 'Fortsätt där ni är' };
-      }
-    }
-    // Priority 2: First unstarted category (zero completed cards)
-    for (const catId of RECOMMENDED_CATEGORY_ORDER) {
+      if (catId === resumeBannerCategoryId) continue; // skip — resume banner handles it
       const catCards = cards.filter(c => c.categoryId === catId);
       if (catCards.length === 0) continue;
-      const completedCount = catCards.filter(c => completedCardIds.includes(c.id)).length;
-      if (completedCount === 0) {
+      const hasCompleted = catCards.some(c => completedCardIds.includes(c.id));
+      const hasInProgress = catCards.some(c => inProgressCardIds.includes(c.id));
+      if (!hasCompleted && !hasInProgress) {
         return { categoryId: catId, label: 'Rekommenderad start' };
       }
     }
-    // Priority 3: Partially completed — most remaining
+    // Priority 2/3: Category with most remaining uncompleted cards
     let best: { catId: string; remaining: number } | null = null;
     for (const catId of RECOMMENDED_CATEGORY_ORDER) {
+      if (catId === resumeBannerCategoryId) continue;
       const catCards = cards.filter(c => c.categoryId === catId);
       if (catCards.length === 0) continue;
       const completedCount = catCards.filter(c => completedCardIds.includes(c.id)).length;
@@ -208,17 +210,10 @@ export default function Home() {
     // Priority 4: All done
     const hasAnyCards = cards.some(c => RECOMMENDED_CATEGORY_ORDER.includes(c.categoryId as any));
     return hasAnyCards ? 'all-done' : null;
-  }, [cards, completedCardIds, inProgressCardIds]);
+  }, [cards, completedCardIds, inProgressCardIds, resumeBannerCategoryId]);
 
-  // Hide recommendation if resume banner already shows same category
-  const showRecommendation = useMemo(() => {
-    if (!recommendation || recommendation === 'all-done') return recommendation;
-    if (resumeBannerCardId) {
-      const resumeCard = cards.find(c => c.id === resumeBannerCardId);
-      if (resumeCard && resumeCard.categoryId === recommendation.categoryId) return null;
-    }
-    return recommendation;
-  }, [recommendation, resumeBannerCardId, cards]);
+  // showRecommendation is the same as recommendation now (filtering already done above)
+  const showRecommendation = recommendation;
 
   const { scrollRef, progress: scrollP } = useScrollCompression(80);
 
@@ -359,27 +354,75 @@ export default function Home() {
                 </p>
               </div>
             )}
-            {showRecommendation && showRecommendation !== 'all-done' && (
-              <div className="px-6 mb-2">
-                <p
-                  className="type-meta"
-                  style={{ color: 'var(--accent-saffron)', opacity: 0.85 }}
-                >
-                  {showRecommendation.label}
-                </p>
-              </div>
-            )}
+            {showRecommendation && showRecommendation !== 'all-done' && (() => {
+              const recCat = categories.find(c => c.id === showRecommendation.categoryId);
+              if (!recCat) return null;
+              return (
+                <div className="px-6" style={{ marginBottom: '20px' }}>
+                  <p style={{
+                    fontFamily: 'Inter, sans-serif',
+                    fontSize: '12px',
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.08em',
+                    color: '#C4821D',
+                    marginBottom: '10px',
+                    display: 'block',
+                  }}>
+                    {showRecommendation.label}
+                  </p>
+                  <div
+                    onClick={() => { markNavigated(); navigate(`/category/${recCat.id}`); }}
+                    role="button"
+                    tabIndex={0}
+                    aria-label={recCat.title}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); navigate(`/category/${recCat.id}`); }
+                    }}
+                    className="cursor-pointer"
+                    style={{
+                      borderRadius: '18px',
+                      padding: '24px 20px',
+                      minHeight: '48px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      gap: '8px',
+                      background: 'hsl(36, 22%, 95%)',
+                      border: '1px solid hsl(36, 18%, 84%)',
+                      transition: 'transform 120ms ease-out, box-shadow 120ms ease-out',
+                    }}
+                    onPointerDown={(e) => {
+                      e.currentTarget.style.transform = 'scale(0.98)';
+                      e.currentTarget.style.boxShadow = '0 2px 8px hsl(var(--foreground) / 0.08)';
+                    }}
+                    onPointerUp={(e) => { e.currentTarget.style.transform = ''; e.currentTarget.style.boxShadow = ''; }}
+                    onPointerLeave={(e) => { e.currentTarget.style.transform = ''; e.currentTarget.style.boxShadow = ''; }}
+                  >
+                    <div className="flex-1 min-w-0">
+                      <h3 className="type-h3" style={{ color: 'var(--text-primary)', fontWeight: 500, fontSize: '16px', textWrap: 'balance', hyphens: 'auto' }}>
+                        {recCat.title}
+                      </h3>
+                      {recCat.entryLine && (
+                        <p className="type-body" style={{ color: 'var(--text-secondary)', marginTop: '8px' }}>
+                          {recCat.entryLine}
+                        </p>
+                      )}
+                    </div>
+                    <ChevronRight data-chevron className="w-4 h-4 shrink-0" style={{ color: 'var(--accent-saffron)', opacity: 0.6 }} />
+                  </div>
+                </div>
+              );
+            })()}
 
             {/* Categories */}
             <div className="px-6" style={{ paddingBottom: 'max(env(safe-area-inset-bottom, 0px), 64px)' }}>
               <div className="flex flex-col" style={{ gap: '24px' }}>
-                {sortedCategories.map((category, index) => {
+                {sortedCategories.filter(c => !(showRecommendation && showRecommendation !== 'all-done' && c.id === showRecommendation.categoryId)).map((category, index) => {
                   const catCards = cards.filter((c) => c.categoryId === category.id);
                   const completedCount = catCards.filter(c => completedCardIds.includes(c.id)).length;
                   const allCompleted = completedCount === catCards.length && catCards.length > 0;
                   const someCompleted = completedCount > 0 && !allCompleted;
-                  const isRecommended = showRecommendation && showRecommendation !== 'all-done' && category.id === showRecommendation.categoryId;
-                  const isPrimary = isRecommended || index === 0;
+                  const isPrimary = index === 0;
 
                   return (
                     <motion.div
