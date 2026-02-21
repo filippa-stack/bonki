@@ -102,19 +102,12 @@ export default function Login() {
           transition={{ delay: BEAT_2, duration: 0.15 }}
           style={{ marginTop: '28px' }}
         >
-          <div className="text-left mb-4">
-            <TermsConsent checked={termsAccepted} onCheckedChange={(val) => { setTermsAccepted(val); if (val) setTermsError(false); }} />
-            {termsError && (
-              <p className="text-xs text-destructive mt-2">{t('login.terms_required')}</p>
-            )}
-          </div>
-
           <Button
             onClick={handleGoogleSignIn}
             disabled={loading}
             className={`w-full h-14 text-base font-medium rounded-2xl shadow-sm ${settings.buttonColor ? 'btn-themed' : ''}`}
             variant={settings.buttonColor ? "default" : "outline"}
-            style={{ ...buttonStyle, border: '1px solid hsl(var(--border) / 0.25)' }}
+            style={{ ...buttonStyle, border: '1px solid rgba(0,0,0,0.12)', borderRadius: '12px' }}
           >
             {loading ? (
               <Loader2 className="w-5 h-5 mr-2 animate-spin" />
@@ -128,6 +121,13 @@ export default function Login() {
             )}
             {t('login.sign_in_google')}
           </Button>
+
+          <div className={`text-left mt-4 transition-transform duration-200 ${termsError ? 'animate-[shake_0.3s_ease-in-out]' : ''}`}>
+            <TermsConsent checked={termsAccepted} onCheckedChange={(val) => { setTermsAccepted(val); if (val) setTermsError(false); }} />
+            {termsError && (
+              <p className="text-xs text-destructive mt-2">{t('login.terms_required')}</p>
+            )}
+          </div>
 
           {error && (
             <p className="text-sm text-destructive mt-4">{error}</p>

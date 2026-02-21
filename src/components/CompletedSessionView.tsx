@@ -119,7 +119,7 @@ export default function CompletedSessionView({
   if (loading) {
     return (
       <div className="min-h-screen page-bg">
-        <Header title={categoryTitle} showBack backTo={categoryId ? `/category/${categoryId}` : '/'} />
+        <Header title={cardTitle} showBack backTo={categoryId ? `/category/${categoryId}` : '/'} />
         <div className="px-6 pt-title-above pb-8">
           <div className="max-w-md mx-auto space-y-4">
             <div className="h-6 w-48 rounded bg-muted/30 animate-pulse mx-auto" />
@@ -135,7 +135,7 @@ export default function CompletedSessionView({
     // No completed session found — shouldn't happen, but gracefully CTA
     return (
       <div className="min-h-screen page-bg">
-        <Header title={categoryTitle} showBack backTo={categoryId ? `/category/${categoryId}` : '/'} />
+        <Header title={cardTitle} showBack backTo={categoryId ? `/category/${categoryId}` : '/'} />
         <div className="px-6 pt-title-above pb-8 text-center max-w-md mx-auto space-y-8">
           <p className="text-sm text-muted-foreground">Ingen tidigare session hittades.</p>
           <button
@@ -161,7 +161,7 @@ export default function CompletedSessionView({
 
   return (
     <div className="min-h-screen page-bg">
-      <Header title={categoryTitle} showBack backTo={categoryId ? `/category/${categoryId}` : '/'} />
+      <Header title={cardTitle} showBack backTo={categoryId ? `/category/${categoryId}` : '/'} />
 
       <div className="px-6 pt-title-above pb-8">
         <div className="max-w-md mx-auto space-y-8 pb-8">
@@ -249,7 +249,7 @@ export default function CompletedSessionView({
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: BEAT_3, duration: EMOTION, ease: [...EASE] }}
-            className="mt-12 text-center"
+            className="mt-6 text-center"
           >
           <div className="space-y-5">
             <button
