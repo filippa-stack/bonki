@@ -1,5 +1,3 @@
-import { cn } from '@/lib/utils';
-
 export interface StageStep {
   stage_key: 'oppnare' | 'tankevackare' | 'scenario' | 'teamwork';
   label: string;
@@ -33,33 +31,31 @@ export default function StepProgressIndicator({
   className,
 }: StepProgressIndicatorProps) {
   return (
-    <div className={cn('flex items-center justify-center', className)} style={{ gap: '6px' }}>
+    <div className={className} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
       {STAGE_STEPS.map((step, index) => {
         const isCompleted = completedSteps.includes(index) || index < currentStepIndex;
         const isCurrent = index === currentStepIndex;
 
-        // During transition the completing dash (prev) snaps to completed,
-        // and the new current dash animates in with a 200ms delay.
-        const transitionDelay = isTransitioning && isCurrent ? '200ms' : '0ms';
+        const transitionDelay = isTransitioning && isCurrent ? '150ms' : '0ms';
 
-        const bgColor = isCurrent
+        const size = isCurrent ? 8 : 6;
+        const bg = isCurrent
           ? 'var(--accent-saffron)'
           : isCompleted
             ? 'var(--text-secondary)'
             : 'var(--text-ghost)';
-        const opacity = isCurrent ? 1.0 : isCompleted ? 0.50 : 1.0;
-        const width = isCurrent ? 28 : 24;
+        const opacity = isCompleted ? 0.45 : 1.0;
 
         return (
           <span
             key={step.stage_key}
             style={{
-              height: '3px',
-              borderRadius: '2px',
-              width: `${width}px`,
-              backgroundColor: bgColor,
+              width: `${size}px`,
+              height: `${size}px`,
+              borderRadius: '50%',
+              backgroundColor: bg,
               opacity,
-              transition: `width 300ms ease-out ${transitionDelay}, opacity 300ms ease-out ${transitionDelay}`,
+              transition: `width 250ms ease-out ${transitionDelay}, height 250ms ease-out ${transitionDelay}, opacity 250ms ease-out ${transitionDelay}`,
             }}
           />
         );
