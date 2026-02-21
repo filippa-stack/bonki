@@ -30,9 +30,7 @@ import SessionStepReflection from '@/components/SessionStepReflection';
 
 import StageInterstitial from '@/components/StageInterstitial';
 
-import ReviewDrawer from '@/components/ReviewDrawer';
-import { Button } from '@/components/ui/button';
-import { ArrowRight, BookOpen } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import SessionTakeaway from '@/components/SessionTakeaway';
 import CompletedSessionView from '@/components/CompletedSessionView';
 import LockedReflectionDisplay from '@/components/LockedReflectionDisplay';
@@ -53,33 +51,11 @@ const COMPLETION_MESSAGES = [
 // ─────────────────────────────────────────────────────────────
 // Card view mode — the single source of truth for which surface mounts.
 //
-//   'live'       → active paired session, SessionStepReflection visible
-//   'revisit'    → read-only walkthrough via ?revisit=true query param
-//   'history'    → session is completed, CompletedSessionView mounts
+//   'live'       → active session, SessionStepReflection visible
+//   'archive'    → read-only view from Era samtal (from=archive)
 //   'completion' → session just finished, takeaway screen
-//   'guard'      → paired but no active session, entry blocked
 // ─────────────────────────────────────────────────────────────
-type CardViewMode = 'live' | 'revisit' | 'history' | 'completion' | 'guard';
-
-function resolveCardViewMode({
-  isRevisitMode,
-  hasActiveSession,
-  hasCompletedSessionForCard,
-  showCompletion,
-}: {
-  isRevisitMode: boolean;
-  hasActiveSession: boolean;
-  hasCompletedSessionForCard: boolean;
-  showCompletion: boolean;
-}): CardViewMode {
-  // Active session ALWAYS wins — even if URL has ?revisit=true
-  if (showCompletion) return 'completion';
-  if (hasActiveSession) return 'live';
-  // No active session — honour explicit revisit param or completed-card fallback
-  if (isRevisitMode) return 'revisit';
-  if (hasCompletedSessionForCard) return 'revisit';
-  return 'live';
-}
+type CardViewMode = 'live' | 'archive' | 'completion';
 
 const STEP_ORDER = ['opening', 'reflective', 'scenario', 'exercise'] as const;
 
@@ -102,7 +78,6 @@ export default function CardView() {
   const navigate = useNavigate();
   const location = useLocation();
   const [searchParams] = useSearchParams();
-  const isRevisitMode = searchParams.get('revisit') === 'true';
   const isFromArchive = searchParams.get('from') === 'archive';
 
   // Detect resume navigation — suppress entry animations on first paint
@@ -122,8 +97,6 @@ export default function CardView() {
     getCardById,
     getCategoryById,
     cards,
-    // NOTE: currentSession, startSession, completeSessionStep, pauseSession
-    // are REMOVED — all session authority comes from normalizedSession.
   } = useApp();
   const { space } = useCoupleSpaceContext();
   const devState = useDevState();
@@ -144,8 +117,7 @@ export default function CardView() {
     }
   }, [isActiveSession, normalizedSession.sessionId]);
 
-  // ─── Completed session check ───
-  const [hasCompletedNormalizedSession, setHasCompletedNormalizedSession] = useState(false);
+  // ─── Completed session check (for count only, not gating) ───
   const [completedSessionId, setCompletedSessionId] = useState<string | null>(null);
   const [completedSessionCount, setCompletedSessionCount] = useState(0);
 
@@ -167,7 +139,6 @@ export default function CardView() {
       .limit(1)
       .maybeSingle()
       .then(({ data }) => {
-        setHasCompletedNormalizedSession(!!data);
         setCompletedSessionId(data?.id ?? null);
       });
     // Count all completed sessions in this space for message rotation
@@ -183,24 +154,22 @@ export default function CardView() {
 
   // ─── Auto-show completion when session disappears post-lock ───
   useEffect(() => {
-    if (isRevisitMode) return;
+    if (isFromArchive) return;
     if (activeSessionId && !normalizedSession.sessionId && !normalizedSession.loading && !showCompletion) {
       setShowCompletion(true);
     }
-  }, [activeSessionId, normalizedSession.sessionId, normalizedSession.loading, isRevisitMode, showCompletion]);
+  }, [activeSessionId, normalizedSession.sessionId, normalizedSession.loading, isFromArchive, showCompletion]);
 
   // Volume 1: single-writer model, reflection surface always active
 
-  // ─── Auto-activate session when entering a card in live mode ───
-  // If another card's session is active, soft-complete it first, then activate for this card.
+  // ─── Auto-activate session when entering a card ───
+  // Always creates a new session. If another card's session is active, abandon it first.
   const activatingRef = useRef(false);
   useEffect(() => {
-    if (devState || isRevisitMode || showCompletion) return;
+    if (devState || isFromArchive || showCompletion) return;
     if (normalizedSession.loading || isActiveSession) return;
     if (activatingRef.current) return;
     if (!space?.id || !cardId) return;
-    // Don't activate if there's already a completed session for this card
-    if (hasCompletedNormalizedSession) return;
 
     const card = getCardById(cardId);
     if (!card) return;
@@ -209,7 +178,7 @@ export default function CardView() {
 
     (async () => {
       try {
-        // If there's an active session for a DIFFERENT card, abandon it first (not "complete")
+        // If there's an active session for a DIFFERENT card, abandon it first
         const didSwitch = !!(normalizedSession.sessionId && normalizedSession.cardId !== cardId);
         if (didSwitch) {
           if (isDevToolsEnabled()) console.log('[switch] abandon called', normalizedSession.sessionId);
@@ -244,29 +213,18 @@ export default function CardView() {
       }
     })();
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [devState, isRevisitMode, showCompletion, normalizedSession.loading, isActiveSession, normalizedSession.sessionId, space?.id, cardId, hasCompletedNormalizedSession]);
+  }, [devState, isFromArchive, showCompletion, normalizedSession.loading, isActiveSession, normalizedSession.sessionId, space?.id, cardId]);
 
-
-  // ─── Sanitize URL: strip revisit=true when an active session exists ───
-  useEffect(() => {
-    if (isRevisitMode && isActiveSession) {
-      const cleaned = new URLSearchParams(searchParams);
-      cleaned.delete('revisit');
-      const qs = cleaned.toString();
-      navigate(`/card/${cardId}${qs ? `?${qs}` : ''}`, { replace: true });
-    }
-  }, [isRevisitMode, isActiveSession, searchParams, cardId, navigate]);
-
-  // ─── Single resolver — the only gate for which surface mounts ───
-  const cardViewMode: CardViewMode = resolveCardViewMode({
-    isRevisitMode,
-    hasActiveSession: isActiveSession,
-    hasCompletedSessionForCard: hasCompletedNormalizedSession,
-    showCompletion,
-  });
+  // ─── Single resolver ───
+  const cardViewMode: CardViewMode = (() => {
+    if (showCompletion) return 'completion';
+    if (isFromArchive) return 'archive';
+    return 'live';
+  })();
 
   // ─── Step index ───
-  const initialRevisitStep = (() => {
+  // Archive mode: use step param from URL
+  const initialArchiveStep = (() => {
     const stepParam = searchParams.get('step');
     if (stepParam !== null) {
       const parsed = parseInt(stepParam, 10);
@@ -274,12 +232,9 @@ export default function CardView() {
     }
     return 0;
   })();
-  const [revisitStepIndex, setRevisitStepIndex] = useState(initialRevisitStep);
+  const [archiveStepIndex, setArchiveStepIndex] = useState(initialArchiveStep);
 
   // ─── Local display step (live mode) ───
-  // Null = follow normalizedSession.currentStepIndex (server authority).
-  // Set to a number to display a previous step without touching the server.
-  // __sc_dev_step: screenshot capture param that forces a specific step (dev only)
   const scDevStep = (() => {
     const raw = searchParams.get('__sc_dev_step');
     if (raw === null) return null;
@@ -289,29 +244,18 @@ export default function CardView() {
   const [localStepIndex, setLocalStepIndex] = useState<number | null>(scDevStep);
 
   // ─── Sub-prompt index within current stage ───
-  // Tracks which prompt within a section is currently displayed.
-  // Resets to 0 whenever the stage changes.
   const [localPromptIndex, setLocalPromptIndex] = useState(0);
 
-  // Reset local override whenever the server advances (e.g. after refetch)
+  // Reset local override whenever the server advances
   const serverStepIndex = normalizedSession.currentStepIndex;
   useEffect(() => {
     setLocalStepIndex(null);
     setLocalPromptIndex(0);
   }, [serverStepIndex]);
 
-  const focusNoteParam = searchParams.get('focusNote');
-  const promptParam = searchParams.get('prompt');
-  const initialFocusNote = (() => {
-    const raw = focusNoteParam ?? promptParam;
-    if (raw === null) return null;
-    const parsed = parseInt(raw, 10);
-    return !isNaN(parsed) && parsed >= 0 ? parsed : null;
-  })();
-
   const currentStepIndex =
-    cardViewMode === 'revisit'
-      ? revisitStepIndex
+    cardViewMode === 'archive'
+      ? archiveStepIndex
       : (localStepIndex ?? serverStepIndex);
 
   // ─── DEV-ONLY debug strip (disabled — never visible) ───
@@ -321,13 +265,11 @@ export default function CardView() {
   const [showInterstitial, setShowInterstitial] = useState(false);
   const prevStepRef = useRef(currentStepIndex);
 
-  // Track whether first render has passed (to allow interstitial after resume)
   const firstRenderRef = useRef(true);
   useEffect(() => { firstRenderRef.current = false; }, []);
 
   useEffect(() => {
     if (cardViewMode !== 'live') return;
-    // Skip interstitial on the very first render when resuming
     if (prevStepRef.current !== currentStepIndex && currentStepIndex > 0) {
       if (!firstRenderRef.current) {
         setShowInterstitial(true);
@@ -339,11 +281,9 @@ export default function CardView() {
     prevStepRef.current = currentStepIndex;
   }, [currentStepIndex, cardViewMode]);
 
-  const [reviewOpen, setReviewOpen] = useState(false);
   const [isExiting, setIsExiting] = useState(false);
   const [showLeaveConfirm, setShowLeaveConfirm] = useState(false);
   const sectionViewRef = useRef<SectionViewHandle>(null);
-  
 
   const existingConversation = cardId ? getConversationForCard(cardId) : undefined;
 
@@ -358,8 +298,6 @@ export default function CardView() {
   }, [currentStepIndex, cardId, cardViewMode, getCardById, saveConversation]);
 
   // ─── Handle step completion / advance ───
-  // If the user is viewing a previous step (local < server), just advance locally.
-  // If at the real frontier, call the RPC then clear the local override (refetch drives it).
   const pendingRetryRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const handleCompleteStep = useCallback(async () => {
@@ -368,13 +306,12 @@ export default function CardView() {
     const displayIndex = localStepIndex ?? serverStepIndex;
     const atFrontier = displayIndex >= serverStepIndex;
 
-    // Navigating forward through an already-completed step — no RPC needed
     if (!atFrontier) {
       setLocalStepIndex(displayIndex + 1);
       return;
     }
 
-    // DevState: advance locally without RPC (no real session exists)
+    // DevState: advance locally without RPC
     if (devState) {
       if (displayIndex >= STEP_ORDER.length - 1) {
         setShowCompletion(true);
@@ -388,7 +325,6 @@ export default function CardView() {
     let sessionId = normalizedSession.sessionId;
 
     if (!sessionId) {
-      // Attempt to activate a session, then retry
       const card = getCardById(cardId);
       if (space?.id && card) {
         if (isDevToolsEnabled()) console.log('[step-complete] no sessionId — attempting activate');
@@ -404,7 +340,6 @@ export default function CardView() {
         }
       }
 
-      // Still no session — fall back to non-blocking local advance
       if (!sessionId) {
         if (isDevToolsEnabled()) console.warn('[step-complete] no session after retry — advancing locally');
         if (displayIndex >= STEP_ORDER.length - 1) {
@@ -453,7 +388,6 @@ export default function CardView() {
       return true;
     };
 
-    // First attempt — if it succeeds, refetch and we're done
     const ok = await attemptRpc(1);
     if (ok) {
       if (!isLastStep) setLocalStepIndex(displayIndex + 1);
@@ -461,7 +395,7 @@ export default function CardView() {
       return;
     }
 
-    // RPC failed — advance UI anyway, show subtle toast, queue retries
+    // RPC failed — advance UI anyway
     if (isLastStep) {
       setShowCompletion(true);
     } else {
@@ -471,7 +405,6 @@ export default function CardView() {
       toast('Vi sparar så fort vi kan. Fortsätt bara.', { duration: 2500 })
     );
 
-    // Background retries (max 2)
     const retryInBackground = (remaining: number) => {
       if (remaining <= 0) return;
       pendingRetryRef.current = setTimeout(async () => {
@@ -486,17 +419,15 @@ export default function CardView() {
     retryInBackground(2);
   }, [normalizedSession, localStepIndex, serverStepIndex, cardViewMode, devState]);
 
-  // ─── Revisit "Next" handler ───
-  const handleRevisitNext = (card: ReturnType<typeof getCardById>) => {
+  // ─── Archive "Next" handler ───
+  const handleArchiveNext = (card: ReturnType<typeof getCardById>) => {
     if (!card) return;
-    if (revisitStepIndex < STEP_ORDER.length - 1) {
-      const next = revisitStepIndex + 1;
-      setRevisitStepIndex(next);
-      const promptSuffix = initialFocusNote !== null ? `&prompt=${initialFocusNote}` : '';
-      navigate(`/card/${card.id}?revisit=true&step=${next}${promptSuffix}`, { replace: true });
+    if (archiveStepIndex < STEP_ORDER.length - 1) {
+      const next = archiveStepIndex + 1;
+      setArchiveStepIndex(next);
+      navigate(`/card/${card.id}?from=archive&step=${next}`, { replace: true });
     } else {
-      const category = getCardById(card.id) ? getCategoryById(card.categoryId) : undefined;
-      navigate(category ? `/category/${category.id}` : '/');
+      navigate('/shared');
     }
   };
 
@@ -518,55 +449,13 @@ export default function CardView() {
     );
   }
 
-  // ─── Post-completion navigation (Case A / B) ───────────────────
-  // Case A: more unexplored topics remain in this category → /category/:id
-  // Case B: this was the last topic → /
+  // ─── Post-completion navigation ───
   const postCompletionDestination = (() => {
     if (!category) return '/';
     const categoryCards = cards.filter(c => c.categoryId === category.id);
     const remainingCards = categoryCards.filter(c => c.id !== card.id);
     return remainingCards.length > 0 ? `/category/${category.id}` : '/';
   })();
-
-  // ─────────────────────────────────────────────────────────────
-  //  MODE: 'history' — completed session archive view
-  // ─────────────────────────────────────────────────────────────
-  if (cardViewMode === 'history') {
-    return (
-      <CompletedSessionView
-        cardId={card.id}
-        cardTitle={card.title}
-        categoryId={category?.id}
-        categoryTitle={category?.title}
-        onExploreAgain={() => navigate(postCompletionDestination)}
-      />
-    );
-  }
-
-  // ─────────────────────────────────────────────────────────────
-  //  MODE: 'guard' — paired but no active session
-  // ─────────────────────────────────────────────────────────────
-  if (cardViewMode === 'guard') {
-    return (
-      <div className="min-h-screen page-bg">
-        <Header title={category?.title} showBack backTo={category ? `/category/${category.id}` : '/'} />
-        <div className="px-6 pt-title-above pb-16 max-w-md mx-auto text-center space-y-8">
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: BEAT_3, ease: EASE }}
-            className="space-y-3"
-          >
-            <h2 className="text-xl font-serif text-foreground">Inget aktivt samtal</h2>
-            <p className="text-sm text-muted-foreground leading-relaxed">
-              Ni behöver föreslå och acceptera detta samtal innan ni kan börja.
-            </p>
-          </motion.div>
-          {/* Back navigation handled by top bar */}
-        </div>
-      </div>
-    );
-  }
 
   // ─────────────────────────────────────────────────────────────
   //  MODE: 'completion' — session just finished, takeaway ritual
@@ -606,7 +495,7 @@ export default function CardView() {
             <SessionTakeaway sessionId={activeSessionId} />
           </motion.div>
 
-          {/* CTAs — exhale pause before exit */}
+          {/* CTAs */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -655,12 +544,12 @@ export default function CardView() {
   }
 
   // ─────────────────────────────────────────────────────────────
-  //  MODE: 'live' | 'revisit' — active conversation surface
+  //  MODE: 'live' | 'archive' — conversation surface
   // ─────────────────────────────────────────────────────────────
   const currentSection = card.sections.find(s => s.type === STEP_ORDER[currentStepIndex]);
   const isLive = cardViewMode === 'live';
 
-  const exitBackTo = category ? `/category/${category.id}` : '/';
+  const exitBackTo = isFromArchive ? '/shared' : (category ? `/category/${category.id}` : '/');
 
   const handleSessionExit = () => {
     if (isExiting) return;
@@ -692,7 +581,7 @@ export default function CardView() {
     >
       <StageInterstitial visible={showInterstitial} />
       <Header
-        title={cardViewMode === 'revisit' ? `${category?.title} · Återbesök` : category?.title}
+        title={category?.title}
         showBack
         backTo={exitBackTo}
         variant="immersive"
@@ -716,8 +605,8 @@ export default function CardView() {
         onLeaveSession={isLive ? () => setShowLeaveConfirm(true) : undefined}
       />
 
-      {/* Step progress — vertical dots on left edge (hidden when from archive) */}
-      {cardViewMode === 'live' && !isFromArchive && (
+      {/* Step progress — vertical dots on left edge (live only) */}
+      {isLive && (
         <motion.div
           style={{
             position: 'fixed',
@@ -726,9 +615,9 @@ export default function CardView() {
             transform: 'translateY(-50%)',
             zIndex: 20,
           }}
-          initial={isLive && !suppressEntryAnim ? { opacity: 0 } : false}
+          initial={!suppressEntryAnim ? { opacity: 0 } : false}
           animate={{ opacity: 1 }}
-          transition={{ delay: isLive && !suppressEntryAnim ? BEAT_1 : 0, duration: BEAT_3, ease: EASE }}
+          transition={{ delay: !suppressEntryAnim ? BEAT_1 : 0, duration: BEAT_3, ease: EASE }}
         >
           <StepProgressIndicator
             currentStepIndex={currentStepIndex}
@@ -737,8 +626,6 @@ export default function CardView() {
           />
         </motion.div>
       )}
-
-      {/* Revisit banners removed — header label handles this now */}
 
       {/* Section content — centered, max 520px for readability */}
       <div className="px-6 pt-4 pb-8 relative">
@@ -752,7 +639,7 @@ export default function CardView() {
               exit={{ opacity: 0, y: 0, transition: { duration: 0.15, ease: [0.4, 0, 1, 1] } }}
               transition={{ duration: 0.28, ease: [0.4, 0, 0.2, 1] }}
             >
-              {/* Step 3 — Prompt: delay BEAT_1, duration BEAT_3 (live only) */}
+              {/* Prompt content */}
               <motion.div
                 initial={isLive && !suppressEntryAnim ? { opacity: 0 } : false}
                 animate={{ opacity: 1 }}
@@ -762,16 +649,16 @@ export default function CardView() {
                   ref={sectionViewRef}
                   section={currentSection}
                   card={card}
-                  isRevisitMode={cardViewMode === 'revisit'}
-                  initialFocusNoteIndex={cardViewMode === 'revisit' ? initialFocusNote : null}
-                  focusPromptIndex={cardViewMode === 'revisit' ? initialFocusNote : null}
+                  isRevisitMode={cardViewMode === 'archive'}
+                  initialFocusNoteIndex={null}
+                  focusPromptIndex={null}
                   disableShare={isActiveSession}
-                  promptIndex={cardViewMode === 'live' ? localPromptIndex : undefined}
+                  promptIndex={isLive ? localPromptIndex : undefined}
                 />
               </motion.div>
 
               {/* ── Ritual hint (live only) ── */}
-              {cardViewMode === 'live' && (() => {
+              {isLive && (() => {
                 const stageKey = STEP_ORDER[currentStepIndex];
                 const hint = STEP_RITUAL_HINTS[stageKey];
                 if (!hint) return null;
@@ -788,63 +675,59 @@ export default function CardView() {
               })()}
 
               {/* ── MODE: live — session reflection (single writer) ── */}
-              {cardViewMode === 'live' && cardId && (() => {
+              {isLive && cardId && (() => {
                 const sectionPromptCount = currentSection.prompts?.length ?? 1;
                 const isLastPromptInStage = localPromptIndex >= sectionPromptCount - 1;
                 const isLastStage = currentStepIndex >= STEP_ORDER.length - 1;
 
                 return (
-                  <>
-                    {/* Step 4 — Reflection box: delay BEAT_2, duration BEAT_3 */}
-                    <motion.div
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      transition={{ delay: BEAT_2, duration: BEAT_3, ease: EASE }}
-                    >
-                      <SessionStepReflection
-                        key={`${currentStepIndex}-${localPromptIndex}`}
-                        sessionId={normalizedSession.sessionId}
-                        stepIndex={currentStepIndex}
-                        promptIndex={localPromptIndex}
-                        isLastStep={isLastStage && isLastPromptInStage}
-                        isFirstVisit={!hasCompletedNormalizedSession}
-                        onLocked={async () => {
-                          if (isLastPromptInStage) {
-                            await handleCompleteStep();
-                          } else {
-                            setLocalPromptIndex(localPromptIndex + 1);
-                          }
-                        }}
-                        onBack={() => {
-                          if (localPromptIndex > 0) {
-                            setLocalPromptIndex(localPromptIndex - 1);
-                          } else if (currentStepIndex > 0) {
-                            const prevStageIndex = currentStepIndex - 1;
-                            const prevSection = card.sections.find(
-                              s => s.type === STEP_ORDER[prevStageIndex]
-                            );
-                            const prevPromptCount = prevSection?.prompts?.length ?? 1;
-                            setLocalStepIndex(prevStageIndex);
-                            setLocalPromptIndex(prevPromptCount - 1);
-                          } else {
-                            setShowLeaveConfirm(true);
-                          }
-                        }}
-                      />
-                    </motion.div>
-                  </>
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: BEAT_2, duration: BEAT_3, ease: EASE }}
+                  >
+                    <SessionStepReflection
+                      key={`${currentStepIndex}-${localPromptIndex}`}
+                      sessionId={normalizedSession.sessionId}
+                      stepIndex={currentStepIndex}
+                      promptIndex={localPromptIndex}
+                      isLastStep={isLastStage && isLastPromptInStage}
+                      isFirstVisit={false}
+                      onLocked={async () => {
+                        if (isLastPromptInStage) {
+                          await handleCompleteStep();
+                        } else {
+                          setLocalPromptIndex(localPromptIndex + 1);
+                        }
+                      }}
+                      onBack={() => {
+                        if (localPromptIndex > 0) {
+                          setLocalPromptIndex(localPromptIndex - 1);
+                        } else if (currentStepIndex > 0) {
+                          const prevStageIndex = currentStepIndex - 1;
+                          const prevSection = card.sections.find(
+                            s => s.type === STEP_ORDER[prevStageIndex]
+                          );
+                          const prevPromptCount = prevSection?.prompts?.length ?? 1;
+                          setLocalStepIndex(prevStageIndex);
+                          setLocalPromptIndex(prevPromptCount - 1);
+                        } else {
+                          setShowLeaveConfirm(true);
+                        }
+                      }}
+                    />
+                  </motion.div>
                 );
               })()}
 
-              {/* ── MODE: revisit — saved reflection + navigation ── */}
-              {cardViewMode === 'revisit' && (
+              {/* ── MODE: archive — read-only saved reflection ── */}
+              {cardViewMode === 'archive' && (
                 <motion.div
                   className="pb-8 space-y-4"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: BEAT_1, duration: BEAT_3, ease: EASE }}
                 >
-                  {/* Read-only saved reflection */}
                   {completedSessionId && (
                     <LockedReflectionDisplay
                       sessionId={completedSessionId}
@@ -852,40 +735,17 @@ export default function CardView() {
                     />
                   )}
 
-                  {isFromArchive ? (
-                    /* Archive mode — back handled by top bar, no step navigation */
-                    null
-                  ) : (
-                    /* Standard revisit — step navigation */
-                    <div className="pt-6 space-y-4">
-                      <button
-                        onClick={() => handleRevisitNext(card)}
-                        className="cta-primary gap-2"
-                      >
-                        {currentStepIndex >= STEP_ORDER.length - 1 ? 'Klar' : 'Nästa'}
-                        <ArrowRight className="w-4 h-4" />
-                      </button>
-
-                      <div className="flex justify-center">
-                        <button
-                          onClick={() => setReviewOpen(true)}
-                          className="flex items-center gap-1.5 text-[12px] transition-colors"
-                          style={{ color: 'var(--color-text-secondary)', opacity: 0.5 }}
-                        >
-                          <BookOpen className="w-3.5 h-3.5" />
-                          Se sammanfattning
-                        </button>
-                      </div>
-                    </div>
-                  )}
+                  <div className="pt-6 space-y-4">
+                    <button
+                      onClick={() => handleArchiveNext(card)}
+                      className="cta-primary gap-2"
+                    >
+                      {currentStepIndex >= STEP_ORDER.length - 1 ? 'Klar' : 'Nästa'}
+                      <ArrowRight className="w-4 h-4" />
+                    </button>
+                  </div>
                 </motion.div>
               )}
-
-              <ReviewDrawer
-                open={reviewOpen}
-                onClose={() => setReviewOpen(false)}
-                card={card}
-              />
             </motion.div>
           )}
         </AnimatePresence>
