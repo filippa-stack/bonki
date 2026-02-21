@@ -368,7 +368,7 @@ export default function SharedSummary() {
 
                               {/* Revisit link */}
                               <button
-                                onClick={() => navigate(`/card/${entry.cardId}?revisit=true&from=archive`)}
+                                onClick={() => navigate(`/card/${entry.cardId}?from=archive`)}
                                 className="type-meta mt-6 mb-2 transition-opacity hover:opacity-60"
                                 style={{ color: 'var(--text-ghost)' }}
                               >
@@ -405,7 +405,7 @@ export default function SharedSummary() {
                                   {group.older.map((older) => (
                                     <button
                                       key={older.sessionId}
-                                      onClick={() => navigate(`/card/${older.cardId}?revisit=true&from=archive`)}
+                                      onClick={() => navigate(`/card/${older.cardId}?from=archive`)}
                                       className="w-full text-left"
                                       style={{
                                         padding: '10px 8px',
