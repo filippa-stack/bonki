@@ -43,6 +43,13 @@ import { isDevToolsEnabled } from '@/lib/devTools';
 import { useTogetherMode } from '@/hooks/useTogetherMode';
 import { BEAT_1, BEAT_2, BEAT_3, EASE, PRESS, PAGE, EMOTION } from '@/lib/motion';
 
+const COMPLETION_MESSAGES = [
+  'Det ni just gjorde betyder något.',
+  'Ni tog er tid för varandra.',
+  'Det här samtalet tillhör er.',
+  'Något litet, som faktiskt räknas.',
+];
+
 // ─────────────────────────────────────────────────────────────
 // Card view mode — the single source of truth for which surface mounts.
 //
@@ -140,6 +147,7 @@ export default function CardView() {
   // ─── Completed session check ───
   const [hasCompletedNormalizedSession, setHasCompletedNormalizedSession] = useState(false);
   const [completedSessionId, setCompletedSessionId] = useState<string | null>(null);
+  const [completedSessionCount, setCompletedSessionCount] = useState(0);
 
   // showCompletion: session just finished — takeaway ritual before archive
   const [showCompletion, setShowCompletion] = useState(
@@ -161,6 +169,15 @@ export default function CardView() {
       .then(({ data }) => {
         setHasCompletedNormalizedSession(!!data);
         setCompletedSessionId(data?.id ?? null);
+      });
+    // Count all completed sessions in this space for message rotation
+    supabase
+      .from('couple_sessions')
+      .select('id', { count: 'exact', head: true })
+      .eq('couple_space_id', space.id)
+      .eq('status', 'completed')
+      .then(({ count }) => {
+        setCompletedSessionCount(count ?? 0);
       });
   }, [space, cardId, devState, showCompletion]);
 
@@ -228,7 +245,7 @@ export default function CardView() {
     })();
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [devState, isRevisitMode, showCompletion, normalizedSession.loading, isActiveSession, normalizedSession.sessionId, space?.id, cardId, hasCompletedNormalizedSession]);
-  
+
 
   // ─── Sanitize URL: strip revisit=true when an active session exists ───
   useEffect(() => {
@@ -575,7 +592,7 @@ export default function CardView() {
             className="text-center max-w-md mx-auto"
             style={{ paddingTop: 24 }}
           >
-            <h2 className="type-h1 text-foreground">Det ni just gjorde betyder något.</h2>
+            <h2 className="type-h1 text-foreground">{COMPLETION_MESSAGES[completedSessionCount % COMPLETION_MESSAGES.length]}</h2>
           </motion.div>
 
           {/* Takeaway input */}
