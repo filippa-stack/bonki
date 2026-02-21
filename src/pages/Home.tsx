@@ -254,15 +254,19 @@ export default function Home() {
                         }}
                         className="cursor-pointer"
                         style={{
-                          borderRadius: '16px',
-                          padding: '20px',
+                          borderRadius: isPrimary ? '24px' : '16px',
+                          padding: isPrimary ? '24px' : '20px',
                           minHeight: '48px',
                           display: 'flex',
                           alignItems: 'center',
                           justifyContent: 'space-between',
                           gap: '8px',
-                          background: 'rgba(0, 0, 0, 0.025)',
-                          boxShadow: 'none',
+                          background: isPrimary
+                            ? 'hsl(var(--muted) / 0.28)'
+                            : 'hsl(var(--muted) / 0.07)',
+                          boxShadow: isPrimary
+                            ? '0 4px 20px hsl(var(--foreground) / 0.08)'
+                            : 'none',
                           transition: 'transform 120ms ease-out, box-shadow 120ms ease-out',
                         }}
                         onPointerDown={(e) => {
