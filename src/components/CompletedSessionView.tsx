@@ -253,15 +253,8 @@ export default function CompletedSessionView({
           >
           <div className="space-y-5">
             <button
-              onClick={() => navigate('/shared')}
-              className="cta-primary"
-            >
-              Till vårt utrymme
-            </button>
-            <button
               onClick={() => navigate('/categories')}
-              className="block w-full text-sm transition-opacity hover:opacity-70"
-              style={{ color: 'var(--color-text-secondary)', opacity: 0.55 }}
+              className="cta-primary"
             >
               Utforska fler ämnen
             </button>

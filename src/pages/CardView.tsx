@@ -22,7 +22,7 @@ import StageInterstitial from '@/components/StageInterstitial';
 
 import ReviewDrawer from '@/components/ReviewDrawer';
 import { Button } from '@/components/ui/button';
-import { ArrowRight, Home, BookOpen } from 'lucide-react';
+import { ArrowRight, BookOpen } from 'lucide-react';
 import SessionTakeaway from '@/components/SessionTakeaway';
 import CompletedSessionView from '@/components/CompletedSessionView';
 import LockedReflectionDisplay from '@/components/LockedReflectionDisplay';
@@ -534,13 +534,7 @@ export default function CardView() {
               Ni behöver föreslå och acceptera detta samtal innan ni kan börja.
             </p>
           </motion.div>
-          <button
-            onClick={() => navigate('/')}
-            className="cta-primary gap-2"
-          >
-            <Home className="w-4 h-4" />
-            Tillbaka till Hem
-          </button>
+          {/* Back navigation handled by top bar */}
         </div>
       </div>
     );
@@ -799,15 +793,8 @@ export default function CardView() {
                   )}
 
                   {isFromArchive ? (
-                    /* Archive mode — single exit action, no step navigation */
-                    <div className="pt-6">
-                      <button
-                        onClick={() => navigate('/shared')}
-                        className="cta-primary"
-                      >
-                        Tillbaka till era samtal
-                      </button>
-                    </div>
+                    /* Archive mode — back handled by top bar, no step navigation */
+                    null
                   ) : (
                     /* Standard revisit — step navigation */
                     <div className="pt-6 space-y-4">
