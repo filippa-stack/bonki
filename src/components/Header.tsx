@@ -1,13 +1,11 @@
 import { ArrowLeft, LogOut, Plus, Settings, BookText } from 'lucide-react';
 import { useTogetherMode } from '@/hooks/useTogetherMode';
-import { useCoupleSpaceContext } from '@/contexts/CoupleSpaceContext';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useApp } from '@/contexts/AppContext';
 import { useAuth } from '@/contexts/AuthContext';
 import { useNormalizedSessionContext } from '@/contexts/NormalizedSessionContext';
 import { toast } from 'sonner';
-import ColorPicker from '@/components/ColorPicker';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -19,9 +17,6 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
-import SaveIndicator from '@/components/SaveIndicator';
-
-import BackupManager from '@/components/BackupManager';
 
 import bonkiLogo from '@/assets/bonki-logo.png';
 import {
@@ -35,10 +30,8 @@ interface HeaderProps {
   title?: string;
   showBack?: boolean;
   backTo?: string;
-  showBackgroundPicker?: boolean;
-  showSaveIndicator?: boolean;
-  showBackupManager?: boolean;
   showSharedLink?: boolean;
+  showSettings?: boolean;
   minimal?: boolean;
   variant?: 'default' | 'immersive';
   onImmersiveBack?: () => void;
@@ -49,10 +42,8 @@ export default function Header({
   title,
   showBack = false,
   backTo,
-  showBackgroundPicker = false,
-  showSaveIndicator = true,
-  showBackupManager = true,
-  showSharedLink = true,
+  showSharedLink = false,
+  showSettings = false,
   minimal = false,
   variant = 'default',
   onImmersiveBack,
@@ -60,7 +51,7 @@ export default function Header({
 }: HeaderProps) {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const { backgroundColor, setBackgroundColor, saveStatus, lastSavedAt, saveError, switchToNewSpace } = useApp();
+  const { switchToNewSpace } = useApp();
   const { togetherMode, setTogetherMode } = useTogetherMode();
   const normalizedSession = useNormalizedSessionContext();
   const hasActiveSession = !normalizedSession.loading && !!normalizedSession.sessionId;
@@ -87,7 +78,7 @@ export default function Header({
       }}
     >
       <div className="relative flex items-center justify-between px-6" style={{ height: isImmersive ? '1.5rem' : '3.75rem' }}>
-        {/* ── Left: Logo ── */}
+        {/* ── Left ── */}
         <div className="flex items-center gap-2 flex-1 min-w-0">
           {isImmersive && onImmersiveBack && (
             <button
@@ -108,53 +99,32 @@ export default function Header({
               <span className="hidden sm:inline">Tillbaka</span>
             </button>
           )}
-          {!(isImmersive && onImmersiveBack) && (
+          {/* Logo — show on home (minimal, no back) or default pages with back */}
+          {!(isImmersive && onImmersiveBack) && !showBack && (
             <img
               src={bonkiLogo}
               alt="Still Us"
-              className={`object-contain cursor-pointer ${minimal ? 'h-6 w-6 opacity-45' : 'h-7 w-7'} ${isImmersive ? 'brightness-0 invert opacity-80' : minimal ? '' : 'opacity-75'}`}
+              className={`object-contain cursor-pointer ${minimal ? 'h-6 w-6 opacity-45' : 'h-7 w-7 opacity-75'}`}
               onClick={() => navigate('/', { replace: false })}
             />
           )}
-          {/* Show title inline for default mode */}
-          {!isImmersive && title && (
-            <h1 className="font-serif text-lg font-medium truncate text-foreground">
-              {title}
-            </h1>
-          )}
         </div>
 
-        {/* ── Center: Session title (immersive only) ── */}
+        {/* ── Center: title ── */}
         {isImmersive && title && (
           <h1 className="font-serif text-[11px] font-normal truncate text-white/35 absolute left-1/2 -translate-x-1/2 max-w-[50%] text-center pointer-events-none">
             {title}
           </h1>
         )}
+        {!isImmersive && title && (
+          <h1 className="font-serif text-lg font-medium truncate text-foreground absolute left-1/2 -translate-x-1/2 max-w-[50%] text-center pointer-events-none">
+            {title}
+          </h1>
+        )}
 
         {/* ── Right ── */}
-        <div className="flex items-center gap-2 sm:gap-4 min-w-0 flex-1 justify-end">
-          {showSaveIndicator && (
-            <div className="flex items-center gap-2 min-h-[20px]">
-              <SaveIndicator
-                status={saveStatus}
-                error={saveError}
-                lastSavedAt={lastSavedAt}
-              />
-            </div>
-          )}
-          {showBackupManager && <BackupManager />}
-
-          {showBackgroundPicker && (
-            <div className="flex items-center gap-2">
-              <span className="text-xs text-muted-foreground hidden sm:inline">{t('header.background')}</span>
-              <ColorPicker
-                currentColor={backgroundColor}
-                onColorChange={setBackgroundColor}
-              />
-            </div>
-          )}
-
-          {/* Archive icon — Home only (not immersive) */}
+        <div className="flex items-center gap-2 sm:gap-3 min-w-0 flex-1 justify-end">
+          {/* Journal icon */}
           {!isImmersive && showSharedLink && (
             <button
               onClick={() => navigate('/shared')}
@@ -165,7 +135,7 @@ export default function Header({
             </button>
           )}
 
-          {/* Leave session button (immersive only) */}
+          {/* Leave session (immersive only) */}
           {isImmersive && onLeaveSession && (
             <button
               onClick={onLeaveSession}
@@ -174,7 +144,6 @@ export default function Header({
                 color: 'hsl(0 0% 100%)',
                 opacity: 0.25,
                 fontWeight: 400,
-                textDecoration: 'none',
                 transition: 'opacity 150ms ease',
               }}
               onMouseEnter={(e) => { e.currentTarget.style.opacity = '0.45'; }}
@@ -184,99 +153,133 @@ export default function Header({
             </button>
           )}
 
-          <Popover>
-            <PopoverTrigger asChild>
-              <Button variant="ghost" size="icon" className={isImmersive ? 'text-white/70 hover:text-white hover:bg-white/10' : 'text-muted-foreground/60 hover:text-muted-foreground'}>
-                <Settings className="w-4 h-4" />
-              </Button>
-            </PopoverTrigger>
-            <PopoverContent className="w-56 p-2" align="end">
-
-              {/* ── SECTION 1: Space actions ── */}
-              <div className="space-y-0.5">
-                <AlertDialog>
-                  <AlertDialogTrigger asChild>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      className="w-full justify-start text-xs gap-1.5"
-                      disabled={hasActiveSession}
-                    >
-                      <Plus className="w-3.5 h-3.5" />
-                      Nytt kapitel
-                    </Button>
-                  </AlertDialogTrigger>
-                  {!hasActiveSession && (
-                    <AlertDialogContent>
-                      <AlertDialogHeader>
-                        <AlertDialogTitle className="font-serif text-lg">Nytt kapitel?</AlertDialogTitle>
-                        <AlertDialogDescription className="text-sm text-muted-foreground leading-relaxed pt-1">
-                          Skapar ett nytt tomt utrymme med samma partner.
-                        </AlertDialogDescription>
-                      </AlertDialogHeader>
-                      <AlertDialogFooter className="mt-2">
-                        <AlertDialogCancel>Avbryt</AlertDialogCancel>
-                        <AlertDialogAction onClick={async () => {
-                          const result = await switchToNewSpace();
-                          if (result.ok) {
-                            toast.success('Nytt utrymme skapat.');
-                            navigate('/');
-                          } else {
-                            toast.error('Kunde inte skapa nytt utrymme.');
-                          }
-                        }}>
-                          Nytt kapitel
-                        </AlertDialogAction>
-                      </AlertDialogFooter>
-                    </AlertDialogContent>
-                  )}
-                </AlertDialog>
-                {hasActiveSession && (
-                  <p className="text-[11px] text-muted-foreground/50 px-2 pb-1 leading-snug">
-                    Ni är mitt i ett samtal. Avsluta det först.
-                  </p>
-                )}
-              </div>
-
-              {/* ── SECTION 1b: Samtalsläge ── */}
-              <div className="border-t border-border/30 mt-2 pt-2 px-2 pb-1">
-                <p className="text-[10px] text-muted-foreground/60 uppercase tracking-wider mb-1.5">Samtalsläge</p>
-                <div className="flex gap-1">
-                  <Button
-                    variant={togetherMode === 'together' ? 'default' : 'ghost'}
-                    size="sm"
-                    className="flex-1 text-xs h-7"
-                    onClick={() => setTogetherMode('together')}
-                  >
-                    Tillsammans
-                  </Button>
-                  <Button
-                    variant={togetherMode === 'solo' ? 'default' : 'ghost'}
-                    size="sm"
-                    className="flex-1 text-xs h-7"
-                    onClick={() => setTogetherMode('solo')}
-                  >
-                    Själv
-                  </Button>
-                </div>
-              </div>
-
-              {/* ── SECTION 2: Account ── */}
-              <div className="border-t border-border/30 mt-2 pt-2">
-                <Button
-                  variant="ghost"
-                  className="w-full justify-start text-destructive hover:text-destructive hover:bg-destructive/10"
-                  onClick={handleSignOut}
-                >
-                  <LogOut className="w-4 h-4 mr-2" />
-                  {t('header.sign_out')}
-                </Button>
-              </div>
-
-            </PopoverContent>
-          </Popover>
+          {/* Settings popover */}
+          {showSettings && !isImmersive && (
+            <SettingsPopover
+              hasActiveSession={hasActiveSession}
+              togetherMode={togetherMode}
+              setTogetherMode={setTogetherMode}
+              switchToNewSpace={switchToNewSpace}
+              handleSignOut={handleSignOut}
+              navigate={navigate}
+              t={t}
+            />
+          )}
         </div>
       </div>
     </header>
+  );
+}
+
+/* ─── Settings popover (extracted) ─── */
+function SettingsPopover({
+  hasActiveSession,
+  togetherMode,
+  setTogetherMode,
+  switchToNewSpace,
+  handleSignOut,
+  navigate,
+  t,
+}: {
+  hasActiveSession: boolean;
+  togetherMode: string;
+  setTogetherMode: (m: 'together' | 'solo') => void;
+  switchToNewSpace: () => Promise<{ ok: boolean }>;
+  handleSignOut: () => void;
+  navigate: (path: string) => void;
+  t: (key: string) => string;
+}) {
+  return (
+    <Popover>
+      <PopoverTrigger asChild>
+        <Button variant="ghost" size="icon" className="text-muted-foreground/60 hover:text-muted-foreground">
+          <Settings className="w-4 h-4" />
+        </Button>
+      </PopoverTrigger>
+      <PopoverContent className="w-56 p-2" align="end">
+
+        {/* ── Space actions ── */}
+        <div className="space-y-0.5">
+          <AlertDialog>
+            <AlertDialogTrigger asChild>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="w-full justify-start text-xs gap-1.5"
+                disabled={hasActiveSession}
+              >
+                <Plus className="w-3.5 h-3.5" />
+                Nytt kapitel
+              </Button>
+            </AlertDialogTrigger>
+            {!hasActiveSession && (
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle className="font-serif text-lg">Nytt kapitel?</AlertDialogTitle>
+                  <AlertDialogDescription className="text-sm text-muted-foreground leading-relaxed pt-1">
+                    Skapar ett nytt tomt utrymme med samma partner.
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter className="mt-2">
+                  <AlertDialogCancel>Avbryt</AlertDialogCancel>
+                  <AlertDialogAction onClick={async () => {
+                    const result = await switchToNewSpace();
+                    if (result.ok) {
+                      toast.success('Nytt utrymme skapat.');
+                      navigate('/');
+                    } else {
+                      toast.error('Kunde inte skapa nytt utrymme.');
+                    }
+                  }}>
+                    Nytt kapitel
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            )}
+          </AlertDialog>
+          {hasActiveSession && (
+            <p className="text-[11px] text-muted-foreground/50 px-2 pb-1 leading-snug">
+              Ni är mitt i ett samtal. Avsluta det först.
+            </p>
+          )}
+        </div>
+
+        {/* ── Samtalsläge ── */}
+        <div className="border-t border-border/30 mt-2 pt-2 px-2 pb-1">
+          <p className="text-[10px] text-muted-foreground/60 uppercase tracking-wider mb-1.5">Samtalsläge</p>
+          <div className="flex gap-1">
+            <Button
+              variant={togetherMode === 'together' ? 'default' : 'ghost'}
+              size="sm"
+              className="flex-1 text-xs h-7"
+              onClick={() => setTogetherMode('together')}
+            >
+              Tillsammans
+            </Button>
+            <Button
+              variant={togetherMode === 'solo' ? 'default' : 'ghost'}
+              size="sm"
+              className="flex-1 text-xs h-7"
+              onClick={() => setTogetherMode('solo')}
+            >
+              Själv
+            </Button>
+          </div>
+        </div>
+
+        {/* ── Account ── */}
+        <div className="border-t border-border/30 mt-2 pt-2">
+          <Button
+            variant="ghost"
+            className="w-full justify-start text-destructive hover:text-destructive hover:bg-destructive/10"
+            onClick={handleSignOut}
+          >
+            <LogOut className="w-4 h-4 mr-2" />
+            {t('header.sign_out')}
+          </Button>
+        </div>
+
+      </PopoverContent>
+    </Popover>
   );
 }
