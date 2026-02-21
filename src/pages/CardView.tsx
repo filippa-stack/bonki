@@ -874,7 +874,10 @@ export default function CardView() {
         </AlertDialogHeader>
         <AlertDialogFooter className="mt-2">
           <AlertDialogCancel>Fortsätt</AlertDialogCancel>
-          <AlertDialogAction onClick={() => navigate(exitBackTo)}>
+          <AlertDialogAction
+            onClick={() => navigate(exitBackTo)}
+            className="bg-destructive text-white hover:bg-destructive/90"
+          >
             Avsluta
           </AlertDialogAction>
         </AlertDialogFooter>
