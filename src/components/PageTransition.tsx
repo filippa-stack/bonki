@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import { ReactNode, useLayoutEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-
+import { PAGE, EASE } from '@/lib/motion';
 
 interface PageTransitionProps {
   children: ReactNode;
@@ -39,8 +39,8 @@ export default function PageTransition({ children, className }: PageTransitionPr
       exit="exit"
       variants={variants}
       transition={{
-        duration: 0.28,
-        ease: [0.4, 0.0, 0.2, 1],
+        duration: PAGE,
+        ease: [...EASE],
       }}
       className={className}
     >

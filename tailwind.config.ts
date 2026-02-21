@@ -134,7 +134,7 @@ export default {
         'calm': 'cubic-bezier(0.4, 0, 0.2, 1)',
       },
       transitionDuration: {
-        'calm': '150ms',
+        'calm': '120ms',
       },
     },
   },

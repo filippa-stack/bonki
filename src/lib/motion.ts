@@ -1,12 +1,25 @@
 /**
  * Global motion constants — single source of truth.
  *
- * BEAT values are the only permitted delay increments across the app.
- * Stagger offsets must be multiples of a BEAT.
- * No delay should exceed BEAT_3 * N where N keeps total ≤ 320ms.
+ * THREE canonical durations:
+ *   PRESS    → 120ms  (tactile feedback, scale 0.98)
+ *   PAGE     → 280ms  (page transitions, navigations)
+ *   EMOTION  → 320ms  (fade-ins, reveals, emotional beats)
  *
- * Easing: cubic-bezier(0.4, 0.0, 0.2, 1) — Material standard ease.
+ * No bounce. No spring. No overshoot.
+ *
+ * BEAT values are the only permitted delay increments.
+ * Stagger offsets must be multiples of a BEAT.
  */
+
+/** Press feedback duration (120ms) */
+export const PRESS = 0.12;
+
+/** Page transition duration (280ms) */
+export const PAGE = 0.28;
+
+/** Emotional fade-in duration (320ms) */
+export const EMOTION = 0.32;
 
 /** 60ms — first stagger beat */
 export const BEAT_1 = 0.06;

@@ -31,7 +31,7 @@ import { useDevState } from '@/contexts/DevStateContext';
 import { useNormalizedSessionContext } from '@/contexts/NormalizedSessionContext';
 import { isDevToolsEnabled } from '@/lib/devTools';
 import { useTogetherMode } from '@/hooks/useTogetherMode';
-import { BEAT_1, BEAT_2, BEAT_3, EASE } from '@/lib/motion';
+import { BEAT_1, BEAT_2, BEAT_3, EASE, PRESS, PAGE, EMOTION } from '@/lib/motion';
 
 // ─────────────────────────────────────────────────────────────
 // Card view mode — the single source of truth for which surface mounts.
@@ -549,7 +549,7 @@ export default function CardView() {
         className="min-h-screen page-bg"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ duration: 0.32, ease: [0.4, 0, 0.2, 1] }}
+        transition={{ duration: EMOTION, ease: [...EASE] }}
       >
         <div style={{ opacity: 0.4 }}>
           <Header title={category?.title} showBack backTo="/" />
@@ -560,7 +560,7 @@ export default function CardView() {
           <motion.div
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.32, ease: [0, 0, 0.2, 1] }}
+            transition={{ duration: EMOTION, ease: [0, 0, 0.2, 1] }}
             className="text-center max-w-md mx-auto"
             style={{ paddingTop: 24 }}
           >
@@ -571,7 +571,7 @@ export default function CardView() {
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 0.42, duration: 0.32, ease: [0, 0, 0.2, 1] }}
+            transition={{ delay: 0.42, duration: EMOTION, ease: [0, 0, 0.2, 1] }}
             className="max-w-md mx-auto mt-16 space-y-3"
           >
             <p className="type-meta text-muted-foreground/30 text-center">
@@ -584,7 +584,7 @@ export default function CardView() {
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 0.54, duration: 0.32, ease: [0, 0, 0.2, 1] }}
+            transition={{ delay: 0.54, duration: EMOTION, ease: [0, 0, 0.2, 1] }}
             className="max-w-md mx-auto mt-24 flex flex-col items-center"
           >
             <button
@@ -637,10 +637,10 @@ export default function CardView() {
       animate={isExiting ? { opacity: 0, scale: 0.97 } : { opacity: 1, scale: 1 }}
       transition={
         isExiting
-          ? { duration: 0.3, ease: [0.4, 0.0, 0.2, 1] }
+          ? { duration: PAGE, ease: [...EASE] }
           : suppressEntryAnim
-            ? { duration: 0.12, ease: [0.4, 0.0, 0.2, 1] }
-            : { duration: 0.28, ease: [0.4, 0.0, 0.2, 1] }
+            ? { duration: PRESS, ease: [...EASE] }
+            : { duration: PAGE, ease: [...EASE] }
       }
     >
       <StageInterstitial visible={showInterstitial} />
