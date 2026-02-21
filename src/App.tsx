@@ -6,7 +6,7 @@ import { AnimatePresence } from "framer-motion";
 import { AuthProvider, useAuth } from "@/contexts/AuthContext";
 import { AppProvider, useApp } from "@/contexts/AppContext";
 import { DevStateProvider } from "@/contexts/DevStateContext";
-import RemoteCardCue from "@/components/RemoteCardCue";
+
 import ActiveSessionGuard from "@/components/ActiveSessionGuard";
 import DevModeBadge from "@/components/DevModeBadge";
 import { SiteSettingsProvider } from "@/contexts/SiteSettingsContext";
@@ -55,7 +55,7 @@ function ProtectedRoutes() {
     <CoupleSpaceProvider>
     <NormalizedSessionProvider>
     <AppProvider>
-      <RemoteCardCueGlobal />
+      
       <ActiveSessionGuard>
         <AnimatePresence mode="wait">
           <Routes location={location} key={location.pathname}>
@@ -75,10 +75,7 @@ function ProtectedRoutes() {
   );
 }
 
-function RemoteCardCueGlobal() {
-  const { remoteCardChanged, dismissRemoteCardCue } = useApp();
-  return <RemoteCardCue show={remoteCardChanged} onDone={dismissRemoteCardCue} />;
-}
+
 
 function AppRoutes() {
   const { user, loading } = useAuth();
