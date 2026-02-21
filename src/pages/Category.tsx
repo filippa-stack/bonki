@@ -42,7 +42,7 @@ export default function Category() {
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: 'var(--color-bg-base)' }}>
-      <Header title={category?.title} showBack backTo="/" showSharedLink />
+      <Header title={category?.title} showBack backTo="/categories" showSharedLink />
 
       <div className="px-6 pt-title-above pb-0">
         <motion.h1
