@@ -183,7 +183,7 @@ export default function SharedSummary() {
                     duration: 0.22,
                     ease: [0.4, 0, 0.2, 1],
                   }}
-                  onClick={() => navigate(`/card/${entry.cardId}?revisit=true`)}
+                  onClick={() => navigate(`/card/${entry.cardId}?revisit=true&from=archive`)}
                   className="w-full text-left group"
                 >
                   {/* Category */}

@@ -86,6 +86,7 @@ export default function CardView() {
   const location = useLocation();
   const [searchParams] = useSearchParams();
   const isRevisitMode = searchParams.get('revisit') === 'true';
+  const isFromArchive = searchParams.get('from') === 'archive';
 
   // Detect resume navigation — suppress entry animations on first paint
   const isResumed = (location.state as { resumed?: boolean } | null)?.resumed === true;
@@ -674,8 +675,8 @@ export default function CardView() {
         onLeaveSession={isLive ? () => navigate('/') : undefined}
       />
 
-      {/* Step progress — neutral text only */}
-      {cardViewMode === 'live' && (
+      {/* Step progress — neutral text only (hidden when from archive) */}
+      {cardViewMode === 'live' && !isFromArchive && (
         <motion.div
           className="px-6 pt-8 pb-1"
           initial={isLive && !suppressEntryAnim ? { opacity: 0 } : false}
@@ -689,10 +690,18 @@ export default function CardView() {
         </motion.div>
       )}
 
-      {cardViewMode === 'revisit' && (
+      {cardViewMode === 'revisit' && !isFromArchive && (
         <div className="px-6 pt-4 text-center">
           <p className="text-[12px]" style={{ color: 'var(--color-text-secondary)', opacity: 0.6 }}>
             {completedSessionId ? 'Visar tidigare samtal' : 'Förhandskoll'}
+          </p>
+        </div>
+      )}
+
+      {cardViewMode === 'revisit' && isFromArchive && (
+        <div className="px-6 pt-4 text-center">
+          <p className="text-[12px]" style={{ color: 'var(--color-text-secondary)', opacity: 0.5 }}>
+            Visar tidigare samtal
           </p>
         </div>
       )}
@@ -773,7 +782,7 @@ export default function CardView() {
                 );
               })()}
 
-              {/* ── MODE: revisit — saved reflection + step navigation ── */}
+              {/* ── MODE: revisit — saved reflection + navigation ── */}
               {cardViewMode === 'revisit' && (
                 <motion.div
                   className="pb-8 space-y-4"
@@ -781,7 +790,7 @@ export default function CardView() {
                   animate={{ opacity: 1 }}
                   transition={{ delay: BEAT_1, duration: BEAT_3, ease: EASE }}
                 >
-                  {/* Read-only saved reflection (only when revisiting a completed card) */}
+                  {/* Read-only saved reflection */}
                   {completedSessionId && (
                     <LockedReflectionDisplay
                       sessionId={completedSessionId}
@@ -789,26 +798,39 @@ export default function CardView() {
                     />
                   )}
 
-                  <div className="pt-6 space-y-4">
-                    <button
-                      onClick={() => handleRevisitNext(card)}
-                      className="cta-primary gap-2"
-                    >
-                      {currentStepIndex >= STEP_ORDER.length - 1 ? 'Klar' : 'Nästa'}
-                      <ArrowRight className="w-4 h-4" />
-                    </button>
-
-                    <div className="flex justify-center">
+                  {isFromArchive ? (
+                    /* Archive mode — single exit action, no step navigation */
+                    <div className="pt-6">
                       <button
-                        onClick={() => setReviewOpen(true)}
-                        className="flex items-center gap-1.5 text-[12px] transition-colors"
-                        style={{ color: 'var(--color-text-secondary)', opacity: 0.5 }}
+                        onClick={() => navigate('/shared')}
+                        className="cta-primary"
                       >
-                        <BookOpen className="w-3.5 h-3.5" />
-                        Se sammanfattning
+                        Tillbaka till era samtal
                       </button>
                     </div>
-                  </div>
+                  ) : (
+                    /* Standard revisit — step navigation */
+                    <div className="pt-6 space-y-4">
+                      <button
+                        onClick={() => handleRevisitNext(card)}
+                        className="cta-primary gap-2"
+                      >
+                        {currentStepIndex >= STEP_ORDER.length - 1 ? 'Klar' : 'Nästa'}
+                        <ArrowRight className="w-4 h-4" />
+                      </button>
+
+                      <div className="flex justify-center">
+                        <button
+                          onClick={() => setReviewOpen(true)}
+                          className="flex items-center gap-1.5 text-[12px] transition-colors"
+                          style={{ color: 'var(--color-text-secondary)', opacity: 0.5 }}
+                        >
+                          <BookOpen className="w-3.5 h-3.5" />
+                          Se sammanfattning
+                        </button>
+                      </div>
+                    </div>
+                  )}
                 </motion.div>
               )}
 
