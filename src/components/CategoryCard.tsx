@@ -39,8 +39,8 @@ export default function CategoryCard({
         </div>
         {category.entryLine && (
           <p
-            className="text-meta leading-relaxed"
-            style={{ color: 'var(--color-text-secondary)' }}
+            className="type-body leading-relaxed"
+            style={{ color: 'var(--color-text-secondary)', opacity: 0.8 }}
           >
             {category.entryLine}
           </p>
