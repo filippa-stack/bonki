@@ -299,6 +299,14 @@ export default function Home() {
                             >
                               {category.title}
                             </h3>
+                            {category.entryLine && (
+                              <p
+                                className={isPrimary ? 'type-body' : 'type-meta'}
+                                style={{ color: 'var(--color-text-secondary)', opacity: 0.55, marginTop: '2px' }}
+                              >
+                                {category.entryLine}
+                              </p>
+                            )}
                           </div>
                           <div className="flex items-center gap-2 shrink-0">
                             {catCards.some((c) => exploredIds.includes(c.id)) && (
