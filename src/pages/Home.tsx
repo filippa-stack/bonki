@@ -212,7 +212,7 @@ export default function Home() {
               </h1>
               <p
                 className="type-body mt-4"
-                style={{ color: 'var(--color-text-secondary)', opacity: 0.55 }}
+                style={{ color: 'var(--color-text-secondary)', opacity: 0.8 }}
               >
                 Här börjar era samtal.
               </p>

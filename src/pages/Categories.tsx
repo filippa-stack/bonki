@@ -62,7 +62,7 @@ export default function Categories() {
         )}
         <h1
           className="type-h1 mb-12"
-          style={{ color: 'var(--color-text-secondary)' }}
+          style={{ color: 'var(--color-text-primary)' }}
         >
           Var vill ni börja?
         </h1>
@@ -114,8 +114,8 @@ export default function Categories() {
                   </div>
                   {category.entryLine && (
                     <p
-                      className="text-body mt-1"
-                      style={{ color: 'var(--color-text-secondary)' }}
+                      className="type-body mt-1"
+                      style={{ color: 'var(--color-text-secondary)', opacity: 0.8 }}
                     >
                       {category.entryLine}
                     </p>
