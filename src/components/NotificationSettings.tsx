@@ -22,7 +22,7 @@ export default function NotificationSettings() {
       </button>
 
       {open && (
-        <div className="space-y-5 mt-2 pb-2">
+        <div className="space-y-4 mt-2 pb-2">
           <label className="flex items-center justify-between gap-4 cursor-pointer">
             <div>
               <p className="text-sm" style={{ color: 'var(--color-text-primary)' }}>

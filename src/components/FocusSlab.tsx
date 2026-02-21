@@ -65,8 +65,8 @@ export default function FocusSlab() {
       className="cursor-pointer"
       style={{
         borderRadius: '24px',
-        padding: '28px 28px 24px',
-        minHeight: '148px',
+        padding: '24px 24px 24px',
+        minHeight: '144px',
         maxHeight: '160px',
         display: 'flex',
         flexDirection: 'column',

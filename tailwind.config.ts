@@ -97,9 +97,9 @@ export default {
       },
       spacing: {
         'gentle': '1.5rem',    // 24px
-        'breath': '2.5rem',    // 40px
+        'breath': '3rem',      // 48px
         'section': '2rem',     // 32px
-        'title-above': '4rem', // 64px — min above page titles
+        'title-above': '3rem', // 48px
       },
       keyframes: {
         "accordion-down": {

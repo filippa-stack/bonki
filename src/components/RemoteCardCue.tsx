@@ -40,7 +40,7 @@ export default function RemoteCardCue({ show, onDone }: RemoteCardCueProps) {
           animate={{ opacity: 0.95 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.15 }}
-          className="fixed top-[4.25rem] left-1/2 -translate-x-1/2 z-40 pointer-events-none"
+          className="fixed top-16 left-1/2 -translate-x-1/2 z-40 pointer-events-none"
         >
           <div className="px-4 py-1.5 rounded-full bg-muted/80 backdrop-blur-sm text-muted-foreground text-[11px] tracking-wide">
             Din partner fortsatte – ni är på samma kort

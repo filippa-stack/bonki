@@ -100,11 +100,16 @@
     --font-serif: 'Cormorant Garamond', Georgia, serif;
     --font-sans: 'Inter', -apple-system, sans-serif;
 
-    /* Spacing rhythm (8px grid) */
-    --space-gentle: 1.5rem;   /* 24px */
-    --space-breath: 2.5rem;   /* 40px */
-    --space-section: 2rem;    /* 32px */
-    --space-title-above: 4rem; /* 64px */
+    /* Spacing rhythm — LOCKED to 8px grid: 8, 16, 24, 32, 48 only */
+    --space-xs:     0.5rem;    /* 8px */
+    --space-sm:     1rem;      /* 16px */
+    --space-md:     1.5rem;    /* 24px */
+    --space-lg:     2rem;      /* 32px */
+    --space-xl:     3rem;      /* 48px */
+    --space-gentle: 1.5rem;    /* 24px */
+    --space-breath: 3rem;      /* 48px */
+    --space-section: 2rem;     /* 32px */
+    --space-title-above: 3rem; /* 48px */
 
     /* Transitions */
     --transition-calm: 150ms cubic-bezier(0.4, 0, 0.2, 1);

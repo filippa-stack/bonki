@@ -61,14 +61,14 @@ export default function SessionStepReflection({
 
   return (
     /* 48px above reflection, 32px between reflection and button */
-    <div className="mt-16 mb-1">
+    <div className="mt-12 mb-1">
       <div
         className="overflow-hidden"
         style={{
           border: '0.5px solid hsl(var(--border) / 0.03)',
           borderRadius: '24px',
           backgroundColor: 'hsl(30 12% 94% / 0.35)',
-          padding: '32px 36px',
+          padding: '32px 32px',
         }}
       >
         <textarea

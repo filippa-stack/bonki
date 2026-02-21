@@ -127,7 +127,7 @@ export default function SharedSummary() {
     <div className="min-h-screen page-bg">
       <Header title={t('shared.title')} showBack backTo="/" showSettings />
 
-      <div className="px-6 pb-10 mx-auto" style={{ maxWidth: 540, paddingTop: '32px' }}>
+      <div className="px-6 pb-8 mx-auto" style={{ maxWidth: 540, paddingTop: '32px' }}>
 
         {/* ─── Title ─── */}
         <motion.div
@@ -155,7 +155,7 @@ export default function SharedSummary() {
             <p className="type-h2 text-foreground/70 mt-6">
               Här växer det ni delar.
             </p>
-            <p className="type-body text-muted-foreground/57 mt-7">
+            <p className="type-body text-muted-foreground/57 mt-8">
               När ni har haft ert första samtal, börjar rummet ta form.
             </p>
           </motion.div>

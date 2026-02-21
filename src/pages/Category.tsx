@@ -59,7 +59,7 @@ export default function Category() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: BEAT_1, duration: 0.2, ease: EASE }}
-            className="type-body mt-[20px] max-w-[280px] leading-[1.45]"
+            className="type-body mt-4 max-w-[280px]"
             style={{ color: 'var(--color-text-secondary)', opacity: 0.22 }}
           >
             {category.entryLine}
@@ -67,7 +67,7 @@ export default function Category() {
         )}
       </div>
 
-      <div className="px-6 pt-[48px] pb-[80px] flex flex-col gap-4">
+      <div className="px-6 pt-12 pb-24 flex flex-col gap-4">
         {cards.map((card, index) => (
           <CardEntry
             key={card.id}
