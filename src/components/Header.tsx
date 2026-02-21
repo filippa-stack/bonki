@@ -77,97 +77,113 @@ export default function Header({
         boxShadow: 'none',
       }}
     >
-      <div className="relative flex items-center justify-between px-6" style={{ height: isImmersive ? '2.5rem' : '3.75rem' }}>
-        {/* ── Left ── */}
-        <div className="flex items-center gap-2 flex-1 min-w-0">
-          {isImmersive && onImmersiveBack && (
-            <button
-              onClick={onImmersiveBack}
-              className="flex items-center justify-center shrink-0"
-              style={{ width: '44px', height: '44px', marginLeft: '-10px' }}
-              aria-label="Tillbaka"
-            >
-              <ArrowLeft className="w-5 h-5" style={{ color: 'hsl(0 0% 100% / 0.6)' }} />
-            </button>
-          )}
-          {!isImmersive && showBack && (
-            <button
-              onClick={() => navigate(backTo || '/')}
-              className="flex items-center justify-center shrink-0"
-              style={{ width: '44px', height: '44px', marginLeft: '-10px' }}
-              aria-label="Tillbaka"
-            >
-              <ArrowLeft className="w-5 h-5" style={{ color: 'var(--color-text-primary)', opacity: 0.55 }} />
-            </button>
-          )}
-          {/* Logo — show on home (minimal, no back) or default pages with back */}
-          {!(isImmersive && onImmersiveBack) && !showBack && (
-            <img
-              src={bonkiLogo}
-              alt="Still Us"
-              className={`object-contain cursor-pointer ${minimal ? 'h-6 w-6 opacity-45' : 'h-7 w-7 opacity-75'}`}
-              onClick={() => navigate('/', { replace: false })}
-            />
-          )}
+      {isImmersive ? (
+        /* ── Immersive: proper three-column grid ── */
+        <div className="flex items-center px-4" style={{ height: '2.5rem' }}>
+          {/* LEFT: back arrow */}
+          <div className="flex items-center justify-start" style={{ minWidth: '64px' }}>
+            {onImmersiveBack && (
+              <button
+                onClick={onImmersiveBack}
+                className="flex items-center justify-center shrink-0"
+                style={{ width: '44px', height: '44px' }}
+                aria-label="Tillbaka"
+              >
+                <ArrowLeft className="w-5 h-5" style={{ color: 'hsl(0 0% 100% / 0.6)' }} />
+              </button>
+            )}
+          </div>
+
+          {/* CENTER: category title */}
+          <div className="flex-1 min-w-0 flex items-center justify-center">
+            {title && (
+              <h1
+                className="type-meta font-normal truncate text-center pointer-events-none"
+                style={{ color: 'hsl(0 0% 100% / 0.70)', maxWidth: '100%' }}
+              >
+                {title.length > 18 ? title.slice(0, 18) + '…' : title}
+              </h1>
+            )}
+          </div>
+
+          {/* RIGHT: leave session */}
+          <div className="flex items-center justify-end" style={{ minWidth: '80px' }}>
+            {onLeaveSession && (
+              <button
+                onClick={onLeaveSession}
+                className="font-sans whitespace-nowrap shrink-0"
+                style={{
+                  fontSize: '13px',
+                  color: 'hsl(0 0% 100%)',
+                  opacity: 0.55,
+                  fontWeight: 400,
+                  transition: 'opacity 150ms ease',
+                }}
+                onMouseEnter={(e) => { e.currentTarget.style.opacity = '0.85'; }}
+                onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.55'; }}
+              >
+                Lämna samtalet
+              </button>
+            )}
+          </div>
         </div>
+      ) : (
+        /* ── Default header layout (unchanged) ── */
+        <div className="relative flex items-center justify-between px-6" style={{ height: '3.75rem' }}>
+          {/* Left */}
+          <div className="flex items-center gap-2 flex-1 min-w-0">
+            {showBack && (
+              <button
+                onClick={() => navigate(backTo || '/')}
+                className="flex items-center justify-center shrink-0"
+                style={{ width: '44px', height: '44px', marginLeft: '-10px' }}
+                aria-label="Tillbaka"
+              >
+                <ArrowLeft className="w-5 h-5" style={{ color: 'var(--color-text-primary)', opacity: 0.55 }} />
+              </button>
+            )}
+            {!showBack && (
+              <img
+                src={bonkiLogo}
+                alt="Still Us"
+                className={`object-contain cursor-pointer ${minimal ? 'h-6 w-6 opacity-45' : 'h-7 w-7 opacity-75'}`}
+                onClick={() => navigate('/', { replace: false })}
+              />
+            )}
+          </div>
 
-        {/* ── Center: title ── */}
-        {isImmersive && title && (
-          <h1 className="font-serif text-[11px] font-normal truncate text-white/35 absolute left-1/2 -translate-x-1/2 max-w-[50%] text-center pointer-events-none">
-            {title}
-          </h1>
-        )}
-        {!isImmersive && title && (
-          <h1 className="font-serif text-lg font-medium truncate text-foreground absolute left-1/2 -translate-x-1/2 max-w-[50%] text-center pointer-events-none">
-            {title}
-          </h1>
-        )}
-
-        {/* ── Right ── */}
-        <div className="flex items-center gap-2 sm:gap-3 min-w-0 flex-1 justify-end">
-          {/* Journal icon */}
-          {!isImmersive && showSharedLink && (
-            <button
-              onClick={() => navigate('/shared')}
-              className="text-muted-foreground/50 hover:text-muted-foreground transition-colors"
-              aria-label={t('header.shared_space')}
-            >
-              <BookText className="w-[18px] h-[18px]" />
-            </button>
+          {/* Center title */}
+          {title && (
+            <h1 className="font-serif text-lg font-medium truncate text-foreground absolute left-1/2 -translate-x-1/2 max-w-[50%] text-center pointer-events-none">
+              {title}
+            </h1>
           )}
 
-          {/* Leave session (immersive only) */}
-          {isImmersive && onLeaveSession && (
-            <button
-              onClick={onLeaveSession}
-              className="text-[13px] font-sans whitespace-nowrap shrink-0 ml-5 mr-2"
-              style={{
-                color: 'hsl(0 0% 100%)',
-                opacity: 0.55,
-                fontWeight: 400,
-                transition: 'opacity 150ms ease',
-              }}
-              onMouseEnter={(e) => { e.currentTarget.style.opacity = '0.85'; }}
-              onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.55'; }}
-            >
-              Lämna samtalet
-            </button>
-          )}
-
-          {/* Settings popover */}
-          {showSettings && !isImmersive && (
-            <SettingsPopover
-              hasActiveSession={hasActiveSession}
-              togetherMode={togetherMode}
-              setTogetherMode={setTogetherMode}
-              switchToNewSpace={switchToNewSpace}
-              handleSignOut={handleSignOut}
-              navigate={navigate}
-              t={t}
-            />
-          )}
+          {/* Right */}
+          <div className="flex items-center gap-2 sm:gap-3 min-w-0 flex-1 justify-end">
+            {showSharedLink && (
+              <button
+                onClick={() => navigate('/shared')}
+                className="text-muted-foreground/50 hover:text-muted-foreground transition-colors"
+                aria-label={t('header.shared_space')}
+              >
+                <BookText className="w-[18px] h-[18px]" />
+              </button>
+            )}
+            {showSettings && (
+              <SettingsPopover
+                hasActiveSession={hasActiveSession}
+                togetherMode={togetherMode}
+                setTogetherMode={setTogetherMode}
+                switchToNewSpace={switchToNewSpace}
+                handleSignOut={handleSignOut}
+                navigate={navigate}
+                t={t}
+              />
+            )}
+          </div>
         </div>
-      </div>
+      )}
     </header>
   );
 }
