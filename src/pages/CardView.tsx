@@ -5,6 +5,16 @@
 
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { useParams, useNavigate, useSearchParams, useLocation } from 'react-router-dom';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { useApp } from '@/contexts/AppContext';
@@ -314,6 +324,7 @@ export default function CardView() {
 
   const [reviewOpen, setReviewOpen] = useState(false);
   const [isExiting, setIsExiting] = useState(false);
+  const [showLeaveConfirm, setShowLeaveConfirm] = useState(false);
   const sectionViewRef = useRef<SectionViewHandle>(null);
   
 
@@ -521,7 +532,7 @@ export default function CardView() {
   if (cardViewMode === 'guard') {
     return (
       <div className="min-h-screen page-bg">
-        <Header title={category?.title} showBack backTo="/" />
+        <Header title={category?.title} showBack backTo={category ? `/category/${category.id}` : '/'} />
         <div className="px-6 pt-title-above pb-16 max-w-md mx-auto text-center space-y-8">
           <motion.div
             initial={{ opacity: 0 }}
@@ -552,7 +563,7 @@ export default function CardView() {
         transition={{ duration: EMOTION, ease: [...EASE] }}
       >
         <div style={{ opacity: 0.4 }}>
-          <Header title={category?.title} showBack backTo="/" />
+          <Header title={category?.title} showBack backTo={category ? `/category/${category.id}` : '/'} />
         </div>
         <div className="px-6 pt-title-above pb-16">
 
@@ -650,7 +661,7 @@ export default function CardView() {
         backTo={exitBackTo}
         variant="immersive"
         onImmersiveBack={isLive ? (() => {
-          // Step back through prompts → stages → exit to home
+          // Step back through prompts → stages → confirmation at step 0
           const displayIndex = localStepIndex ?? serverStepIndex;
           if (localPromptIndex > 0) {
             setLocalPromptIndex(localPromptIndex - 1);
@@ -663,10 +674,10 @@ export default function CardView() {
             setLocalStepIndex(prevStageIndex);
             setLocalPromptIndex(prevPromptCount - 1);
           } else {
-            navigate('/');
+            setShowLeaveConfirm(true);
           }
         }) : undefined}
-        onLeaveSession={isLive ? () => navigate('/') : undefined}
+        onLeaveSession={isLive ? () => setShowLeaveConfirm(true) : undefined}
       />
 
       {/* Step progress — neutral text only (hidden when from archive) */}
@@ -767,7 +778,7 @@ export default function CardView() {
                             setLocalStepIndex(prevStageIndex);
                             setLocalPromptIndex(prevPromptCount - 1);
                           } else {
-                            navigate('/');
+                            setShowLeaveConfirm(true);
                           }
                         }}
                       />
@@ -832,6 +843,24 @@ export default function CardView() {
         </div>
       </div>
     </motion.div>
+
+    {/* Leave session confirmation */}
+    <AlertDialog open={showLeaveConfirm} onOpenChange={setShowLeaveConfirm}>
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle className="font-serif text-lg">Avsluta samtalet?</AlertDialogTitle>
+          <AlertDialogDescription className="text-sm text-muted-foreground leading-relaxed pt-1">
+            Era svar sparas.
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter className="mt-2">
+          <AlertDialogCancel>Fortsätt</AlertDialogCancel>
+          <AlertDialogAction onClick={() => navigate(exitBackTo)}>
+            Avsluta
+          </AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
     </>
   );
 }
