@@ -592,7 +592,7 @@ export default function CardView() {
             className="text-center max-w-md mx-auto"
             style={{ paddingTop: 24 }}
           >
-            <h2 className="type-h1 text-foreground">{COMPLETION_MESSAGES[completedSessionCount % COMPLETION_MESSAGES.length]}</h2>
+            <h2 className="type-h1" style={{ color: 'var(--accent-saffron)' }}>{COMPLETION_MESSAGES[completedSessionCount % COMPLETION_MESSAGES.length]}</h2>
           </motion.div>
 
           {/* Takeaway input */}
