@@ -70,7 +70,7 @@ export default function Login() {
           animate={{ opacity: 1 }}
           transition={{ duration: 0.15, delay: BEAT_1 }}
           className="uppercase font-sans"
-          style={{ fontSize: '11px', letterSpacing: '0.12em', color: '#FF0000', opacity: 0.70, marginBottom: '24px' }}
+          style={{ fontSize: '11px', letterSpacing: '0.12em', color: 'var(--accent-saffron)', marginBottom: '24px' }}
         >
           BONKI
         </motion.p>
@@ -83,13 +83,13 @@ export default function Login() {
         >
           <h1
             className="font-serif font-semibold"
-            style={{ fontSize: '28px', lineHeight: 1.1, color: 'hsl(var(--foreground))' }}
+            style={{ fontSize: '28px', lineHeight: 1.1, color: 'var(--text-primary)' }}
           >
             STILL US
           </h1>
           <p
             className="font-serif italic"
-            style={{ fontSize: '18px', color: 'hsl(var(--foreground))', opacity: 0.55, marginTop: '4px' }}
+            style={{ fontSize: '18px', color: 'var(--text-tertiary)', marginTop: '4px' }}
           >
             So we stay us
           </p>

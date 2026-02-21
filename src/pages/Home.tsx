@@ -207,12 +207,12 @@ export default function Home() {
               animate={{ opacity: 1 }}
               transition={{ duration: 0.2, ease: [0.4, 0, 0.2, 1] }}
             >
-              <h1 className="type-h1" style={{ color: 'var(--color-text-primary)' }}>
+              <h1 className="type-h1" style={{ color: 'var(--text-primary)' }}>
                 Vårt utrymme
               </h1>
               <p
                 className="type-body mt-4"
-                style={{ color: 'var(--color-text-secondary)', opacity: 0.8 }}
+                style={{ color: 'var(--text-secondary)' }}
               >
                 {exploredIds.length === 0
                   ? 'Välj ett ämne och börja utforska.'
@@ -257,20 +257,20 @@ export default function Home() {
                     <div className="flex-1 min-w-0">
                       <p
                         className="font-sans uppercase"
-                        style={{ fontSize: '11px', color: 'var(--color-text-secondary)', opacity: 0.60, letterSpacing: '0.08em' }}
+                        style={{ fontSize: '11px', color: 'var(--text-tertiary)', letterSpacing: '0.08em' }}
                       >
                         Fortsätt där ni slutade
                       </p>
-                      <p className="font-serif text-xl font-medium mt-1 truncate" style={{ color: 'hsl(var(--foreground))' }}>
+                      <p className="font-serif text-xl font-medium mt-1 truncate" style={{ color: 'var(--text-primary)' }}>
                         {card?.title || cardId}
                       </p>
                       {cat && (
-                        <p className="font-sans mt-0.5" style={{ fontSize: '12px', color: 'var(--color-text-secondary)' }}>
+                        <p className="font-sans mt-0.5" style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>
                           {cat.title}
                         </p>
                       )}
                     </div>
-                    <ChevronRight className="w-5 h-5 shrink-0 ml-3" style={{ color: 'hsl(var(--foreground))', opacity: 0.40 }} />
+                    <ChevronRight className="w-5 h-5 shrink-0 ml-3" style={{ color: 'var(--text-ghost)' }} />
                   </div>
                 </motion.div>
               );
@@ -297,7 +297,7 @@ export default function Home() {
                       {index === 0 && guidedCategoryId === 'emotional-intimacy' && (
                         <p
                           className="type-meta mb-2"
-                          style={{ color: 'var(--color-text-secondary)', opacity: 0.7 }}
+                          style={{ color: 'var(--accent-saffron)', opacity: 0.85 }}
                         >
                           Rekommenderad start
                         </p>
@@ -351,8 +351,7 @@ export default function Home() {
                             <h3
                               className="type-h3"
                               style={{
-                                color: allExplored ? 'var(--color-text-secondary)' : 'var(--color-text-primary)',
-                                opacity: allExplored ? 0.7 : 0.9,
+                                color: allExplored ? 'var(--text-tertiary)' : 'var(--text-primary)',
                               }}
                             >
                               {category.title}
@@ -360,7 +359,7 @@ export default function Home() {
                             {category.entryLine && (
                               <p
                                 className={isPrimary ? 'type-body' : 'type-meta'}
-                                style={{ color: 'var(--color-text-secondary)', opacity: 0.55, marginTop: '2px' }}
+                                style={{ color: 'var(--text-tertiary)', marginTop: '2px' }}
                               >
                                 {category.entryLine}
                               </p>
@@ -373,7 +372,7 @@ export default function Home() {
                             <ChevronRight
                               data-chevron
                               className="w-4 h-4"
-                              style={{ color: 'var(--color-text-secondary)', opacity: 0.55, transition: 'transform 120ms ease-out' }}
+                              style={{ color: 'var(--text-ghost)', transition: 'transform 120ms ease-out' }}
                             />
                           </div>
                         </div>

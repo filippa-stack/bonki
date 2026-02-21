@@ -201,7 +201,7 @@ export default function SharedSummary() {
           transition={{ duration: 0.2, ease: [0.4, 0, 0.2, 1] }}
           className="text-center"
         >
-          <p className="type-body text-muted-foreground/50">
+          <p className="type-body" style={{ color: 'var(--text-tertiary)' }}>
             Vad ni burit med er.
           </p>
         </motion.div>
@@ -218,13 +218,13 @@ export default function SharedSummary() {
           >
             <p
               className="font-serif text-center"
-              style={{ fontSize: '22px', color: 'var(--foreground)', opacity: 0.5 }}
+              style={{ fontSize: '22px', color: 'var(--text-primary)', opacity: 0.5 }}
             >
               Här finns det ni skrivit.
             </p>
             <p
               className="text-center mt-2"
-              style={{ fontFamily: 'var(--font-sans)', fontSize: '14px', color: 'var(--color-text-secondary)', opacity: 0.5 }}
+              style={{ fontFamily: 'var(--font-sans)', fontSize: '14px', color: 'var(--text-tertiary)' }}
             >
               Era reflektioner samlas här efter varje samtal.
             </p>
@@ -260,7 +260,7 @@ export default function SharedSummary() {
                     {/* ── Entry card ── */}
                     <div
                       style={{
-                        background: 'hsl(var(--muted) / 0.12)',
+                        background: 'var(--surface-raised)',
                         borderRadius: '12px',
                         padding: '16px',
                       }}
@@ -272,11 +272,11 @@ export default function SharedSummary() {
                       >
                         <div className="flex items-start justify-between">
                           <div className="flex-1 min-w-0">
-                            <p
+                             <p
                               className="font-serif"
                               style={{
                                 fontSize: '20px',
-                                color: 'var(--foreground)',
+                                color: 'var(--text-primary)',
                                 fontWeight: 400,
                                 lineHeight: 1.3,
                               }}
@@ -288,7 +288,7 @@ export default function SharedSummary() {
                               style={{
                                 fontFamily: 'var(--font-sans)',
                                 fontSize: '12px',
-                                color: 'var(--color-text-secondary)',
+                                color: 'var(--text-tertiary)',
                                 opacity: 0.6,
                               }}
                             >
@@ -299,7 +299,7 @@ export default function SharedSummary() {
                           <ChevronRight
                             className="w-4 h-4 mt-1.5 flex-shrink-0 transition-transform duration-200"
                             style={{
-                              color: 'var(--color-text-secondary)',
+                              color: 'var(--text-ghost)',
                               opacity: 0.3,
                               transform: isExpanded ? 'rotate(90deg)' : 'rotate(0deg)',
                             }}
@@ -311,8 +311,7 @@ export default function SharedSummary() {
                           <p
                             className="type-body mt-2"
                             style={{
-                              color: 'var(--foreground)',
-                              opacity: 0.65,
+                              color: 'var(--text-secondary)',
                               display: '-webkit-box',
                               WebkitLineClamp: 2,
                               WebkitBoxOrient: 'vertical',
@@ -343,11 +342,11 @@ export default function SharedSummary() {
                                       <div style={{ height: '1px', background: 'hsl(var(--border) / 0.12)', margin: '16px 0' }} />
                                     )}
                                     {question && (
-                                      <p className="type-meta" style={{ color: 'var(--color-text-secondary)', opacity: 0.4, marginBottom: '6px', lineHeight: 1.5 }}>
+                                      <p className="type-meta" style={{ color: 'var(--text-tertiary)', marginBottom: '6px', lineHeight: 1.5 }}>
                                         {question}
                                       </p>
                                     )}
-                                    <p className="type-body font-serif whitespace-pre-wrap" style={{ lineHeight: 1.8, color: 'var(--color-text-primary)', opacity: 0.75 }}>
+                                    <p className="type-body font-serif whitespace-pre-wrap" style={{ lineHeight: 1.8, color: 'var(--text-primary)' }}>
                                       {ref.text}
                                     </p>
                                   </div>
@@ -358,10 +357,10 @@ export default function SharedSummary() {
                               {entry.takeaway && (
                                 <div>
                                   <div style={{ height: '1px', background: 'hsl(var(--border) / 0.15)', marginTop: '16px', marginBottom: '12px' }} />
-                                  <p className="type-meta uppercase" style={{ color: 'var(--color-text-secondary)', opacity: 0.55, letterSpacing: '0.06em', marginBottom: '6px' }}>
+                                  <p className="type-meta uppercase" style={{ color: 'var(--accent-saffron)', letterSpacing: '0.06em', marginBottom: '6px' }}>
                                     Ni bar med er:
                                   </p>
-                                  <p className="font-serif italic whitespace-pre-wrap" style={{ fontSize: '18px', lineHeight: 1.6, color: 'var(--foreground)', opacity: 0.85 }}>
+                                  <p className="font-serif italic whitespace-pre-wrap" style={{ fontSize: '18px', lineHeight: 1.6, color: 'var(--text-primary)' }}>
                                     {entry.takeaway}
                                   </p>
                                 </div>
@@ -371,7 +370,7 @@ export default function SharedSummary() {
                               <button
                                 onClick={() => navigate(`/card/${entry.cardId}?revisit=true&from=archive`)}
                                 className="type-meta mt-6 mb-2 transition-opacity hover:opacity-60"
-                                style={{ color: 'var(--color-text-secondary)', opacity: 0.35 }}
+                                style={{ color: 'var(--text-ghost)' }}
                               >
                                 Visa hela samtalet →
                               </button>
@@ -386,7 +385,7 @@ export default function SharedSummary() {
                           <button
                             onClick={(e) => { e.stopPropagation(); setShowOlderFor(showingOlder ? null : group.cardId); }}
                             className="type-meta transition-opacity hover:opacity-60"
-                            style={{ color: 'var(--color-text-secondary)', opacity: 0.45, marginTop: '4px' }}
+                            style={{ color: 'var(--text-tertiary)', marginTop: '4px' }}
                           >
                             {showingOlder
                               ? 'Dölj tidigare'
@@ -413,11 +412,11 @@ export default function SharedSummary() {
                                         borderTop: '1px solid hsl(var(--border) / 0.08)',
                                       }}
                                     >
-                                      <p
+                                       <p
                                         style={{
                                           fontFamily: 'var(--font-sans)',
                                           fontSize: '12px',
-                                          color: 'var(--color-text-secondary)',
+                                          color: 'var(--text-tertiary)',
                                           opacity: 0.6,
                                         }}
                                       >
@@ -427,8 +426,7 @@ export default function SharedSummary() {
                                         <p
                                           className="type-body mt-1"
                                           style={{
-                                            color: 'var(--foreground)',
-                                            opacity: 0.5,
+                                            color: 'var(--text-secondary)',
                                             display: '-webkit-box',
                                             WebkitLineClamp: 2,
                                             WebkitBoxOrient: 'vertical',
