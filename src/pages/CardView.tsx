@@ -777,6 +777,7 @@ export default function CardView() {
                         sessionId={normalizedSession.sessionId}
                         stepIndex={currentStepIndex}
                         isLastStep={isLastStage && isLastPromptInStage}
+                        isFirstVisit={!hasCompletedNormalizedSession}
                         onLocked={async () => {
                           if (isLastPromptInStage) {
                             await handleCompleteStep();
