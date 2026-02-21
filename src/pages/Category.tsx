@@ -60,7 +60,7 @@ export default function Category() {
             animate={{ opacity: 1 }}
             transition={{ delay: BEAT_1, duration: 0.2, ease: EASE }}
             className="type-body mt-4 mx-auto max-w-[280px]"
-            style={{ color: 'var(--color-text-secondary)', opacity: 0.8, marginBottom: '40px' }}
+            style={{ color: 'var(--accent-saffron)', opacity: 0.85, marginBottom: '40px' }}
           >
             {category.entryLine}
           </motion.p>
