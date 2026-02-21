@@ -45,6 +45,7 @@ const DEPTH_GRAVITY: Record<string, React.CSSProperties> = {
  */
 export default function PromptItem({ prompt, index, sectionType, preamble }: PromptItemProps) {
   const gravity = DEPTH_GRAVITY[sectionType || 'opening'] || DEPTH_GRAVITY.opening;
+  const isExercise = sectionType === 'exercise';
 
   return (
     <motion.div
@@ -63,17 +64,62 @@ export default function PromptItem({ prompt, index, sectionType, preamble }: Pro
             {preamble}
           </p>
         )}
-        <div className={`w-full text-center space-y-5 ${preamble ? 'mt-8' : ''}`}>
-          {prompt.text.split('\n').filter(p => p.trim() !== '').map((para, i) => (
+
+        {isExercise ? (
+          /* ── Teamwork: assignment block ── */
+          <div
+            className={preamble ? 'mt-8' : ''}
+            style={{
+              background: 'var(--surface-raised)',
+              border: '1px solid hsl(var(--border) / 0.18)',
+              borderLeft: '3px solid var(--accent-saffron)',
+              borderRadius: '0 12px 12px 0',
+              padding: '16px 20px',
+              margin: '24px 0',
+              width: '100%',
+            }}
+          >
             <p
-              key={i}
-              className="font-serif"
-              style={{ fontSize: '26px', ...gravity }}
+              style={{
+                fontFamily: 'Inter, sans-serif',
+                fontSize: '11px',
+                textTransform: 'uppercase',
+                letterSpacing: '0.10em',
+                color: 'var(--accent-saffron)',
+                marginBottom: '8px',
+              }}
             >
-              {para}
+              Gör tillsammans
             </p>
-          ))}
-        </div>
+            {prompt.text.split('\n').filter(p => p.trim() !== '').map((para, i) => (
+              <p
+                key={i}
+                className="font-serif"
+                style={{
+                  fontSize: '20px',
+                  fontWeight: 400,
+                  color: 'var(--text-primary)',
+                  lineHeight: 1.4,
+                }}
+              >
+                {para}
+              </p>
+            ))}
+          </div>
+        ) : (
+          /* ── Default: centered question text ── */
+          <div className={`w-full text-center space-y-5 ${preamble ? 'mt-8' : ''}`}>
+            {prompt.text.split('\n').filter(p => p.trim() !== '').map((para, i) => (
+              <p
+                key={i}
+                className="font-serif"
+                style={{ fontSize: '26px', ...gravity }}
+              >
+                {para}
+              </p>
+            ))}
+          </div>
+        )}
       </div>
     </motion.div>
   );
