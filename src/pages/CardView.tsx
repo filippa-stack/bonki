@@ -503,12 +503,12 @@ export default function CardView() {
 
   // ─── Post-completion navigation (Case A / B) ───────────────────
   // Case A: more unexplored topics remain in this category → /category/:id
-  // Case B: this was the last topic → /categories
+  // Case B: this was the last topic → /
   const postCompletionDestination = (() => {
-    if (!category) return '/categories';
+    if (!category) return '/';
     const categoryCards = cards.filter(c => c.categoryId === category.id);
     const remainingCards = categoryCards.filter(c => c.id !== card.id);
-    return remainingCards.length > 0 ? `/category/${category.id}` : '/categories';
+    return remainingCards.length > 0 ? `/category/${category.id}` : '/';
   })();
 
   // ─────────────────────────────────────────────────────────────
@@ -605,7 +605,7 @@ export default function CardView() {
               Fortsätt utforska
             </button>
             <button
-              onClick={() => navigate('/categories')}
+              onClick={() => navigate('/')}
               className="type-meta transition-opacity hover:opacity-60 mt-8"
               style={{ color: 'var(--color-text-secondary)', opacity: 0.35 }}
             >
