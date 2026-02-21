@@ -216,11 +216,17 @@ export default function SharedSummary() {
             transition={{ duration: 0.15 }}
             className="pt-8 pb-24 text-center"
           >
-            <p className="type-h2 text-foreground/70 mt-6">
-              Här växer det ni delar.
+            <p
+              className="font-serif text-center"
+              style={{ fontSize: '22px', color: 'var(--foreground)', opacity: 0.5 }}
+            >
+              Här finns det ni skrivit.
             </p>
-            <p className="type-body text-muted-foreground/57 mt-8">
-              Ert första avslutade samtal dyker upp här.
+            <p
+              className="text-center mt-2"
+              style={{ fontFamily: 'var(--font-sans)', fontSize: '14px', color: 'var(--color-text-secondary)', opacity: 0.5 }}
+            >
+              Era reflektioner samlas här efter varje samtal.
             </p>
           </motion.div>
         )}

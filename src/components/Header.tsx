@@ -1,4 +1,4 @@
-import { ArrowLeft, LogOut, Plus, Settings, BookText } from 'lucide-react';
+import { ArrowLeft, LogOut, Plus, Settings, BookOpen } from 'lucide-react';
 import { useTogetherMode } from '@/hooks/useTogetherMode';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -167,7 +167,7 @@ export default function Header({
                 className="text-muted-foreground/50 hover:text-muted-foreground transition-colors"
                 aria-label={t('header.shared_space')}
               >
-                <BookText className="w-[18px] h-[18px]" />
+                <BookOpen className="w-[18px] h-[18px]" />
               </button>
             )}
             {showSettings && (
