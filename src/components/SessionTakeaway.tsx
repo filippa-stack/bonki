@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import { Textarea } from '@/components/ui/textarea';
+
 import { useCardTakeaway } from '@/hooks/useCardTakeaway';
 
 interface SessionTakeawayProps {
@@ -35,19 +35,32 @@ export default function SessionTakeaway({ sessionId }: SessionTakeawayProps) {
   }
 
   return (
-    <div className="space-y-2">
-      <div className="rounded-card bg-muted/10 overflow-hidden">
-        <Textarea
+    <div>
+      <div>
+        <textarea
           value={text}
           onChange={(e) => setText(e.target.value)}
           placeholder="Skriv något ni vill bära med er."
-          className="min-h-[80px] text-sm resize-none bg-transparent border-none shadow-none focus-visible:ring-0 px-6 py-5 placeholder:text-muted-foreground/40"
           rows={3}
           inputMode="text"
           autoCorrect="on"
           autoCapitalize="sentences"
           spellCheck={true}
           enterKeyHint="done"
+          style={{
+            display: 'block',
+            width: '100%',
+            minHeight: '100px',
+            backgroundColor: '#F5F0EB',
+            border: '1px solid rgba(0,0,0,0.15)',
+            borderRadius: '12px',
+            padding: '16px',
+            fontFamily: 'Inter, sans-serif',
+            fontSize: '15px',
+            color: '#1C1B1A',
+            resize: 'none' as const,
+            outline: 'none',
+          }}
         />
       </div>
       <span className="text-[10px] text-muted-foreground/40 block text-right px-1">
