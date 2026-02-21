@@ -19,6 +19,7 @@ const DEDUPE_WINDOW_MS = 10_000;
  * - Conversation progress: when partner resumes after a long pause (opt-in)
  */
 export function usePartnerNotifications() {
+  return; // Disabled: single shared account model
   const { user } = useAuth();
   const { space } = useCoupleSpace();
   const { prefs } = useNotificationPreferences();
