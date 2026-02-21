@@ -54,14 +54,14 @@ export default function Categories() {
     <div className="min-h-screen" style={{ backgroundColor: 'var(--color-bg-base)' }}>
       <Header showBack backTo="/" showSharedLink />
 
-      <div className="px-6 pt-12 pb-24">
+      <div className="px-6 pt-8 pb-24">
         {effectiveCardId && (
           <div className="mb-6">
             <ResumeBanner cardId={effectiveCardId} />
           </div>
         )}
         <h1
-          className="type-h1 mb-12"
+          className="type-h1"
           style={{ color: 'var(--color-text-primary)' }}
         >
           Var vill ni börja?
@@ -79,7 +79,7 @@ export default function Categories() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: Math.min(0.08 + index * 0.05, 0.3), duration: 0.2, ease: [0.4, 0.0, 0.2, 1] }}
-              className={isGuided ? (index > 0 ? 'mt-12' : '') : (index > 0 ? (prevIsGuided ? 'mt-12' : 'mt-12') : '')}
+              className={index === 0 ? 'mt-12' : 'mt-6'}
             >
               {isGuided && (
                 <p
