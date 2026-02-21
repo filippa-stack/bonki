@@ -56,46 +56,58 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-background px-6">
+    <div className="min-h-screen flex flex-col items-center bg-background px-6" style={{ paddingTop: '38vh', paddingBottom: '24px' }}>
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.15 }}
-        className="w-full max-w-xs space-y-10 text-center"
+        className="w-full max-w-xs text-center"
+        style={{ marginTop: '-120px' }}
       >
-        <motion.img
-          src={bonkiLogo}
-          alt="Still Us"
-          className="h-20 w-auto mx-auto"
+        {/* Publisher label */}
+        <motion.p
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.15, delay: BEAT_1 }}
-        />
+          className="uppercase font-sans"
+          style={{ fontSize: '11px', letterSpacing: '0.12em', color: '#FF0000', opacity: 0.70, marginBottom: '24px' }}
+        >
+          BONKI
+        </motion.p>
 
-        <motion.h1
+        {/* Product name + tagline as one unit */}
+        <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: BEAT_1, duration: 0.15 }}
-          className="text-display font-serif"
-          style={{ color: '#FF0000' }}
         >
-          STILL US
-          <br />
-          So we stay us
-        </motion.h1>
+          <h1
+            className="font-serif font-semibold"
+            style={{ fontSize: '28px', lineHeight: 1.1, color: 'hsl(var(--foreground))' }}
+          >
+            STILL US
+          </h1>
+          <p
+            className="font-serif italic"
+            style={{ fontSize: '18px', color: 'hsl(var(--foreground))', opacity: 0.55, marginTop: '4px' }}
+          >
+            So we stay us
+          </p>
+        </motion.div>
 
+        {/* Button + terms */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: BEAT_2, duration: 0.15 }}
-          className="space-y-5"
+          style={{ marginTop: '28px' }}
         >
           <Button
             onClick={handleGoogleSignIn}
             disabled={loading}
             className={`w-full h-14 text-base font-medium rounded-2xl shadow-sm ${settings.buttonColor ? 'btn-themed' : ''}`}
             variant={settings.buttonColor ? "default" : "outline"}
-            style={buttonStyle}
+            style={{ ...buttonStyle, border: '1px solid hsl(var(--border) / 0.25)' }}
           >
             {loading ? (
               <Loader2 className="w-5 h-5 mr-2 animate-spin" />
@@ -110,7 +122,7 @@ export default function Login() {
             {t('login.sign_in_google')}
           </Button>
 
-          <div className="text-left">
+          <div className="text-left mt-4">
             <TermsConsent checked={termsAccepted} onCheckedChange={(val) => { setTermsAccepted(val); if (val) setTermsError(false); }} />
             {termsError && (
               <p className="text-xs text-destructive mt-2">{t('login.terms_required')}</p>
@@ -118,7 +130,7 @@ export default function Login() {
           </div>
 
           {error && (
-            <p className="text-sm text-destructive">{error}</p>
+            <p className="text-sm text-destructive mt-4">{error}</p>
           )}
         </motion.div>
       </motion.div>
