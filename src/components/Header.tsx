@@ -148,6 +148,7 @@ export default function Header({
                 src={bonkiLogo}
                 alt="Still Us"
                 className={`object-contain cursor-pointer ${minimal ? 'h-6 w-6 opacity-45' : 'h-7 w-7 opacity-75'}`}
+                style={{ filter: 'brightness(0) invert(1)' }}
                 onClick={() => navigate('/', { replace: false })}
               />
             )}
