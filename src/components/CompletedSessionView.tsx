@@ -12,7 +12,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { useCoupleSpaceContext as useCoupleSpace } from '@/contexts/CoupleSpaceContext';
 import Header from '@/components/Header';
-import { BEAT_1, BEAT_2, BEAT_3, EASE } from '@/lib/motion';
+import { BEAT_1, BEAT_2, BEAT_3, EASE, EMOTION } from '@/lib/motion';
 
 const STEP_LABELS = ['Början', 'Fördjupning', 'I vardagen', 'Tillsammans'];
 
@@ -170,7 +170,7 @@ export default function CompletedSessionView({
           <motion.div
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: BEAT_3, ease: EASE }}
+            transition={{ duration: EMOTION, ease: [...EASE] }}
             className="text-center space-y-3"
           >
             <h2
@@ -189,7 +189,7 @@ export default function CompletedSessionView({
             <motion.div
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: BEAT_2, duration: BEAT_3, ease: EASE }}
+              transition={{ delay: BEAT_2, duration: EMOTION, ease: [...EASE] }}
               className="space-y-8"
             >
               {stepGroups.map((group, idx) => (
@@ -233,7 +233,7 @@ export default function CompletedSessionView({
             <motion.div
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: BEAT_2, duration: BEAT_3, ease: EASE }}
+              transition={{ delay: BEAT_2, duration: EMOTION, ease: [...EASE] }}
               className="space-y-2"
             >
               <p className="type-meta text-muted-foreground/40 tracking-wide">Det ni tog med er</p>
@@ -247,7 +247,7 @@ export default function CompletedSessionView({
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: BEAT_3, duration: BEAT_3, ease: EASE }}
+            transition={{ delay: BEAT_3, duration: EMOTION, ease: [...EASE] }}
             className="mt-12 text-center"
           >
           <div className="space-y-5">
