@@ -124,8 +124,8 @@ export default function PromptItem({ prompt, index, sectionType, preamble }: Pro
           <div
             className={preamble ? 'mt-8' : ''}
             style={{
-              background: 'var(--surface-raised)',
-              border: '1px solid hsl(var(--border) / 0.18)',
+              background: '#F7F3EE',
+              border: '1px solid rgba(180, 158, 130, 0.25)',
               borderLeft: '3px solid var(--accent-saffron)',
               borderRadius: '0 12px 12px 0',
               padding: '16px 20px',
