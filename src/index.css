@@ -117,38 +117,58 @@
     /* Card styling */
     --card-shadow: var(--shadow-card);
 
+    /* ── Text hierarchy tokens (no opacity — absolute values) ── */
+    --text-primary:    hsl(220, 25%, 18%);   /* Midnight ink */
+    --text-secondary:  hsl(30, 10%, 40%);    /* Warm grey */
+    --text-tertiary:   hsl(30, 8%, 56%);     /* Recedes */
+    --text-ghost:      hsl(30, 6%, 70%);     /* Placeholders */
+    --text-accent:     hsl(38, 88%, 46%);    /* Burnt saffron — sparingly */
+
+    /* ── Accent tokens ── */
+    --accent-saffron:       hsl(38, 88%, 46%);
+    --accent-saffron-muted: hsl(38, 60%, 72%);
+
+    /* ── Surface layering ── */
+    --surface-base:   hsl(36, 20%, 95%);
+    --surface-raised: hsl(36, 16%, 98%);
+    --surface-sunken: hsl(36, 22%, 92%);
+
+    /* ── CTA pressed/hover states ── */
+    --cta-default: hsl(158, 35%, 18%);
+    --cta-hover-v2: hsl(158, 38%, 23%);
+    --cta-active:  hsl(158, 32%, 14%);
+
     /* ── Semantic color tokens ── */
-    --color-bg: hsl(30, 10%, 97%);
-    --color-bg-base: hsl(30, 10%, 97%);
+    --color-bg: var(--surface-base);
+    --color-bg-base: var(--surface-base);
     --color-surface: #E3DCD4;
     --color-surface-primary: #E3DCD4;
     --color-surface-secondary: #E3DCD4;
-    --color-cta: #1E3D2F;
-    --color-ink: #1C1B1A;
-    --color-secondary: #6B6763;
+    --color-cta: hsl(158, 35%, 18%);
+    --color-ink: var(--text-primary);
+    --color-secondary: var(--text-secondary);
     --color-accent: #C1121F;
     --color-accent-soft: #6D4C6D;
-    --color-text-primary: #1C1B1A;
-    --color-text-secondary: #6B6763;
-    --color-button-primary: #1E3D2F;
+    --color-text-primary: var(--text-primary);
+    --color-text-secondary: var(--text-secondary);
+    --color-button-primary: hsl(158, 35%, 18%);
     --color-button-text: #FFFFFF;
     --color-divider: #D6D0C8;
 
     /* ── CTA canonical tokens ── */
-    --cta-bg:    #1E3D2F;
+    --cta-bg:    var(--cta-default);
     --cta-text:  #FFFFFF;
-    --cta-hover: #172d24;
+    --cta-hover: var(--cta-hover-v2);
 
     /* ── Session containment header tokens ── */
-    /* Applied ONLY to immersive active-session header. Never to CTAs or global buttons. */
     --session-header-bg:    #1C3A2D;
     --session-header-hover: #224233;
     --session-header-press: #162E24;
 
     /* Dynamic overrides — set via useThemeVars hook at runtime */
     --page-bg: var(--color-bg);
-    --hero-title-color: var(--color-ink);
-    --hero-subtitle-color: var(--color-secondary);
+    --hero-title-color: var(--text-primary);
+    --hero-subtitle-color: var(--text-secondary);
     --btn-primary-bg: var(--color-cta);
     --btn-primary-text: #FFFFFF;
   }
@@ -168,8 +188,8 @@
     @apply bg-background text-foreground font-sans;
     font-family: var(--font-sans);
     padding-bottom: env(safe-area-inset-bottom, 0px);
-    background-color: var(--color-bg);
-    color: var(--color-ink);
+    background-color: var(--surface-base);
+    color: var(--text-primary);
     line-height: 1.6;
     letter-spacing: -0.01em;
   }
@@ -292,12 +312,12 @@
   }
 
   .cta-primary:hover:not(:disabled) {
-    background-color: var(--cta-hover);
+    background-color: var(--cta-hover-v2);
   }
 
   .cta-primary:active:not(:disabled) {
     transform: scale(0.97);
-    background-color: var(--cta-hover);
+    background-color: var(--cta-active);
   }
 
   .cta-primary:disabled {

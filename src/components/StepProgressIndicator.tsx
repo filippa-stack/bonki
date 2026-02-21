@@ -42,7 +42,12 @@ export default function StepProgressIndicator({
         // and the new current dash animates in with a 200ms delay.
         const transitionDelay = isTransitioning && isCurrent ? '200ms' : '0ms';
 
-        const opacity = isCurrent ? 1.0 : isCompleted ? 0.55 : 0.15;
+        const bgColor = isCurrent
+          ? 'var(--accent-saffron)'
+          : isCompleted
+            ? 'var(--text-secondary)'
+            : 'var(--text-ghost)';
+        const opacity = isCurrent ? 1.0 : isCompleted ? 0.50 : 1.0;
         const width = isCurrent ? 28 : 24;
 
         return (
@@ -52,7 +57,7 @@ export default function StepProgressIndicator({
               height: '3px',
               borderRadius: '2px',
               width: `${width}px`,
-              backgroundColor: '#1C1B1A',
+              backgroundColor: bgColor,
               opacity,
               transition: `width 300ms ease-out ${transitionDelay}, opacity 300ms ease-out ${transitionDelay}`,
             }}

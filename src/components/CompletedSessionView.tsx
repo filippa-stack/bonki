@@ -174,12 +174,13 @@ export default function CompletedSessionView({
             className="text-center space-y-3"
           >
             <h2
-              className="type-h1 text-foreground"
+              className="type-h1"
+              style={{ color: 'var(--accent-saffron)' }}
             >
               Samtalet är sparat.
             </h2>
-            <p className="type-body text-muted-foreground/60 mt-[8px]">Ni kan fortsätta när ni vill.</p>
-            <p className="type-meta text-muted-foreground/35 tracking-wide">
+            <p className="type-body mt-[8px]" style={{ color: 'var(--text-tertiary)' }}>Ni kan fortsätta när ni vill.</p>
+            <p className="type-meta tracking-wide" style={{ color: 'var(--text-ghost)' }}>
               {formatSessionDate(session.startedAt)}
             </p>
           </motion.div>
@@ -195,29 +196,29 @@ export default function CompletedSessionView({
               {stepGroups.map((group, idx) => (
                 <div key={idx} className="space-y-4">
                   {/* Partner first */}
-                  {group.partnerRef && group.partnerRef.text.trim() && (
+                    {group.partnerRef && group.partnerRef.text.trim() && (
                     <div className="space-y-1">
-                      <p className="text-xs text-muted-foreground/60 px-1">
+                      <p className="text-xs px-1" style={{ color: 'var(--text-tertiary)' }}>
                         {group.partnerRef.speakerLabel && /^[AB]$/.test(group.partnerRef.speakerLabel)
                           ? group.partnerRef.speakerLabel
                           : partnerName}
                       </p>
-                      <div className="rounded-card bg-muted/10 overflow-hidden">
-                        <p className="p-6 text-sm text-foreground whitespace-pre-wrap">{group.partnerRef.text}</p>
+                      <div className="rounded-card overflow-hidden" style={{ background: 'var(--surface-raised)' }}>
+                        <p className="p-6 text-sm whitespace-pre-wrap" style={{ color: 'var(--text-primary)' }}>{group.partnerRef.text}</p>
                       </div>
                     </div>
                   )}
 
                   {/* User second */}
-                  {group.myRef && group.myRef.text.trim() && (
+                   {group.myRef && group.myRef.text.trim() && (
                     <div className="space-y-1">
-                      <p className="text-xs text-muted-foreground/60 px-1">
+                      <p className="text-xs px-1" style={{ color: 'var(--text-tertiary)' }}>
                         {group.myRef.speakerLabel && /^[AB]$/.test(group.myRef.speakerLabel)
                           ? group.myRef.speakerLabel
                           : myName}
                       </p>
-                      <div className="rounded-card bg-muted/10 overflow-hidden">
-                        <p className="p-6 text-sm text-foreground whitespace-pre-wrap">{group.myRef.text}</p>
+                      <div className="rounded-card overflow-hidden" style={{ background: 'var(--surface-raised)' }}>
+                        <p className="p-6 text-sm whitespace-pre-wrap" style={{ color: 'var(--text-primary)' }}>{group.myRef.text}</p>
                       </div>
                     </div>
                   )}
@@ -236,9 +237,9 @@ export default function CompletedSessionView({
               transition={{ delay: BEAT_2, duration: EMOTION, ease: [...EASE] }}
               className="space-y-2"
             >
-              <p className="type-meta text-muted-foreground/40 tracking-wide">Det ni tog med er</p>
-              <div className="rounded-card bg-muted/10 overflow-hidden">
-                <p className="p-6 text-sm text-foreground whitespace-pre-wrap">{session.takeawayText}</p>
+              <p className="type-meta tracking-wide" style={{ color: 'var(--text-tertiary)' }}>Det ni tog med er</p>
+              <div className="rounded-card overflow-hidden" style={{ background: 'var(--surface-raised)' }}>
+                <p className="p-6 text-sm whitespace-pre-wrap" style={{ color: 'var(--text-primary)' }}>{session.takeawayText}</p>
               </div>
             </motion.div>
           )}
@@ -253,8 +254,8 @@ export default function CompletedSessionView({
           <div className="space-y-5">
             <button
               onClick={() => navigate('/shared')}
-              className="type-meta text-center block mx-auto mt-6 mb-6 hover:underline transition-opacity"
-              style={{ color: 'var(--color-text-secondary)', opacity: 0.65 }}
+              className="type-meta text-center block mx-auto mt-6 mb-6 underline hover:no-underline transition-opacity"
+              style={{ color: 'var(--text-secondary)' }}
             >
               Se reflektionerna i Era samtal
             </button>
