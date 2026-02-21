@@ -314,19 +314,20 @@ export default function Home() {
                         }}
                         className="cursor-pointer"
                         style={{
-                          borderRadius: isPrimary ? '24px' : '16px',
-                          padding: isPrimary ? '24px' : '20px',
+                          borderRadius: isPrimary ? '18px' : '14px',
+                          padding: isPrimary ? '24px 20px' : '20px 18px',
                           minHeight: '48px',
                           display: 'flex',
                           alignItems: 'center',
                           justifyContent: 'space-between',
                           gap: '8px',
                           background: isPrimary
-                            ? 'hsl(var(--muted) / 0.28)'
-                            : 'hsl(var(--muted) / 0.07)',
-                          boxShadow: isPrimary
-                            ? '0 4px 20px hsl(var(--foreground) / 0.08)'
-                            : 'none',
+                            ? 'hsl(36, 22%, 95%)'
+                            : 'hsl(36, 20%, 97%)',
+                          border: isPrimary
+                            ? '1px solid hsl(36, 18%, 84%)'
+                            : '1px solid hsl(36, 15%, 88%)',
+                          boxShadow: 'none',
                           transition: 'transform 120ms ease-out, box-shadow 120ms ease-out',
                         }}
                         onPointerDown={(e) => {
@@ -354,6 +355,8 @@ export default function Home() {
                               className="type-h3"
                               style={{
                                 color: allExplored ? 'var(--text-tertiary)' : 'var(--text-primary)',
+                                fontWeight: 500,
+                                fontSize: '16px',
                               }}
                             >
                               {category.title}
@@ -361,7 +364,7 @@ export default function Home() {
                             {category.entryLine && (
                               <p
                                 className={isPrimary ? 'type-body' : 'type-meta'}
-                                style={{ color: 'var(--text-tertiary)', marginTop: '2px' }}
+                                style={{ color: 'var(--text-secondary)', marginTop: '8px' }}
                               >
                                 {category.entryLine}
                               </p>
@@ -374,7 +377,7 @@ export default function Home() {
                             <ChevronRight
                               data-chevron
                               className="w-4 h-4"
-                              style={{ color: 'var(--text-ghost)', transition: 'transform 120ms ease-out' }}
+                              style={{ color: 'var(--accent-saffron)', opacity: 0.6, transition: 'transform 120ms ease-out' }}
                             />
                           </div>
                         </div>
