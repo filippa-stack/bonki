@@ -89,7 +89,7 @@ export default function Login() {
           </h1>
           <p
             className="font-serif italic"
-            style={{ fontSize: '18px', color: 'var(--text-tertiary)', marginTop: '4px' }}
+            style={{ fontSize: '18px', color: 'var(--accent-saffron)', opacity: 0.85, marginTop: '4px' }}
           >
             So we stay us
           </p>

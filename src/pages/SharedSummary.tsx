@@ -288,8 +288,8 @@ export default function SharedSummary() {
                               style={{
                                 fontFamily: 'var(--font-sans)',
                                 fontSize: '12px',
-                                color: 'var(--text-tertiary)',
-                                opacity: 0.6,
+                                color: 'var(--accent-saffron)',
+                                opacity: 0.75,
                               }}
                             >
                               {entry.categoryTitle}{entry.categoryTitle && ' · '}{formatDate(entry.completedAt)}
