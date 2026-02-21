@@ -18,6 +18,7 @@ import {
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { useApp } from '@/contexts/AppContext';
+import { useAuth } from '@/contexts/AuthContext';
 import { useCoupleSpaceContext } from '@/contexts/CoupleSpaceContext';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
@@ -31,7 +32,7 @@ import SessionStepReflection from '@/components/SessionStepReflection';
 import StageInterstitial from '@/components/StageInterstitial';
 
 import { ArrowRight } from 'lucide-react';
-import SessionTakeaway from '@/components/SessionTakeaway';
+
 import CompletedSessionView from '@/components/CompletedSessionView';
 import LockedReflectionDisplay from '@/components/LockedReflectionDisplay';
 
@@ -482,7 +483,7 @@ export default function CardView() {
             <h2 className="type-h1" style={{ color: 'var(--accent-saffron)' }}>{COMPLETION_MESSAGES[completedSessionCount % COMPLETION_MESSAGES.length]}</h2>
           </motion.div>
 
-          {/* Takeaway input */}
+          {/* Takeaway input — inline to avoid hook issues */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -492,14 +493,7 @@ export default function CardView() {
             <p className="type-meta text-muted-foreground/30 text-center">
               Något ni tar med er härifrån.
             </p>
-            <div style={{
-              display: 'block',
-              width: '100%',
-              marginTop: '16px',
-              marginBottom: '24px',
-            }}>
-              <SessionTakeaway sessionId={activeSessionId} />
-            </div>
+            <CompletionTakeaway sessionId={activeSessionId} spaceId={space?.id ?? null} />
           </motion.div>
 
           {/* CTAs */}
@@ -781,5 +775,74 @@ export default function CardView() {
       </AlertDialogContent>
     </AlertDialog>
     </>
+  );
+}
+
+/* ─── Inline takeaway for completion screen ─── */
+const TAKEAWAY_AUTOSAVE = 800;
+
+function CompletionTakeaway({ sessionId, spaceId }: { sessionId: string | null; spaceId: string | null }) {
+  const { user } = useAuth();
+  const [text, setText] = useState('');
+  const [rowId, setRowId] = useState<string | null>(null);
+  const [status, setStatus] = useState<'idle' | 'saving' | 'saved'>('idle');
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const userId = user?.id;
+
+  const handleChange = useCallback((value: string) => {
+    setText(value);
+    setStatus('saving');
+    if (timerRef.current) clearTimeout(timerRef.current);
+    timerRef.current = setTimeout(async () => {
+      if (!sessionId || !userId || !spaceId) return;
+      if (rowId) {
+        await supabase.from('couple_takeaways').update({ content: value } as any).eq('id', rowId);
+      } else if (value.trim()) {
+        const { data } = await supabase
+          .from('couple_takeaways')
+          .insert({ session_id: sessionId, couple_space_id: spaceId, content: value, created_by: userId } as any)
+          .select('id')
+          .single();
+        if (data) setRowId(data.id);
+      }
+      setStatus('saved');
+      setTimeout(() => setStatus('idle'), 1500);
+    }, TAKEAWAY_AUTOSAVE);
+  }, [sessionId, userId, spaceId, rowId]);
+
+  useEffect(() => { return () => { if (timerRef.current) clearTimeout(timerRef.current); }; }, []);
+
+  return (
+    <div>
+      <textarea
+        value={text}
+        onChange={(e) => handleChange(e.target.value)}
+        placeholder="Skriv något ni vill bära med er."
+        rows={3}
+        inputMode="text"
+        autoCorrect="on"
+        autoCapitalize="sentences"
+        spellCheck={true}
+        enterKeyHint="done"
+        style={{
+          display: 'block',
+          width: '100%',
+          minHeight: '100px',
+          backgroundColor: '#F5F0EB',
+          border: '1px solid rgba(0,0,0,0.15)',
+          borderRadius: '12px',
+          padding: '16px',
+          fontFamily: 'Inter, sans-serif',
+          fontSize: '15px',
+          color: '#1C1B1A',
+          resize: 'none' as const,
+          outline: 'none',
+          boxSizing: 'border-box' as const,
+        }}
+      />
+      <span style={{ display: 'block', textAlign: 'right', fontSize: '10px', color: 'rgba(0,0,0,0.25)', marginTop: '4px', paddingRight: '4px' }}>
+        {status === 'saving' ? 'Sparar…' : status === 'saved' ? 'Sparad' : '\u00A0'}
+      </span>
+    </div>
   );
 }
