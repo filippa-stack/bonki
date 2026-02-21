@@ -5,6 +5,8 @@ import { useSessionReflections } from '@/hooks/useSessionReflections';
 interface SessionStepReflectionProps {
   sessionId?: string | null;
   stepIndex: number;
+  /** Prompt index within the current stage (default 0) */
+  promptIndex?: number;
   /** When true, button shows "Avsluta samtalet" instead of "Fortsätt" */
   isLastStep?: boolean;
   /** First visit to this card (no completed session exists) */
@@ -18,13 +20,18 @@ interface SessionStepReflectionProps {
 export default function SessionStepReflection({
   sessionId = null,
   stepIndex,
+  promptIndex = 0,
   isLastStep = false,
   isFirstVisit = false,
   onLocked,
   onBack,
 }: SessionStepReflectionProps) {
+  // Encode stage + prompt into a single step_index for the DB.
+  // stage 0 prompt 0 → 0, stage 0 prompt 1 → 1, stage 1 prompt 0 → 100, etc.
+  const reflectionStepIndex = stepIndex * 100 + promptIndex;
+
   const { loading, myReflection, setText, markReady } =
-    useSessionReflections(sessionId, stepIndex);
+    useSessionReflections(sessionId, reflectionStepIndex);
 
   const [localText, setLocalText] = useState('');
   const [submitting, setSubmitting] = useState(false);

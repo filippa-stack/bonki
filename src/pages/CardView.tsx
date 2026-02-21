@@ -791,8 +791,10 @@ export default function CardView() {
                       transition={{ delay: BEAT_2, duration: BEAT_3, ease: EASE }}
                     >
                       <SessionStepReflection
+                        key={`${currentStepIndex}-${localPromptIndex}`}
                         sessionId={normalizedSession.sessionId}
                         stepIndex={currentStepIndex}
+                        promptIndex={localPromptIndex}
                         isLastStep={isLastStage && isLastPromptInStage}
                         isFirstVisit={!hasCompletedNormalizedSession}
                         onLocked={async () => {
