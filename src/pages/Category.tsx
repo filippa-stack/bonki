@@ -49,7 +49,7 @@ export default function Category() {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.28, ease: [0.4, 0.0, 0.2, 1] }}
-          className="font-serif text-[32px] font-semibold leading-[1.2]"
+          className="type-h1"
           style={{ color: 'var(--color-text-primary)' }}
         >
           {category.title}
@@ -59,7 +59,7 @@ export default function Category() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: BEAT_1, duration: 0.2, ease: EASE }}
-            className="text-body mt-[20px] max-w-[280px] leading-[1.45]"
+            className="type-body mt-[20px] max-w-[280px] leading-[1.45]"
             style={{ color: 'var(--color-text-secondary)', opacity: 0.22 }}
           >
             {category.entryLine}
@@ -119,17 +119,16 @@ function CardEntry({ card, index, isCompleted = false, onNavigate }: CardEntryPr
       >
         <div className="flex-1 min-w-0">
           <h3
-            className="text-subheading"
+            className="type-h2"
             style={{
               color: isCompleted ? 'var(--color-text-secondary)' : 'var(--color-text-primary)',
-              fontWeight: index === 0 ? 600 : undefined,
             }}
           >
             {card.title}
           </h3>
           {card.subtitle && (
             <p
-              className="text-[12px] mt-px leading-relaxed"
+              className="type-meta mt-px"
               style={{ color: 'var(--color-text-secondary)', opacity: 0.32 }}
             >
               {card.subtitle}

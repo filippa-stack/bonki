@@ -177,43 +177,56 @@
 }
 
 @layer components {
-  /* ── Type scale (locked) ── */
-  /* Hero Title:    34px / Medium */
-  /* Section Title: 24px / Medium */
-  /* Card Question: 22px / Medium */
-  /* Body Text:     16px / Regular */
-  /* Meta Text:     14px / Regular */
+  /* ── Type scale — LOCKED (5 tiers only) ──────────────────── */
+  /* H1:   Category titles, completion headlines                */
+  /* H2:   Question / prompt text                               */
+  /* H3:   Topic titles, card titles in lists                   */
+  /* Body: Subtitles, descriptions, body copy                   */
+  /* Meta: Dates, private labels, status text                   */
+  /* No additional font sizes allowed outside these five tiers. */
 
-  .text-display {
+  .type-h1 {
     font-family: var(--font-serif);
-    font-size: 38px;
-    @apply font-medium tracking-tight leading-tight;
+    font-size: 28px;
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
   }
 
-  .text-heading {
-    font-family: var(--font-serif);
-    font-size: 24px;
-    @apply font-medium leading-snug;
-  }
-
-  .text-subheading {
+  .type-h2 {
     font-family: var(--font-serif);
     font-size: 18px;
+    font-weight: 500;
     line-height: 1.4;
-    @apply font-medium;
   }
 
-  .text-body {
-    font-family: var(--font-sans);
-    font-size: 16px;
-    @apply font-normal leading-relaxed;
-  }
-
-  .text-meta {
+  .type-h3 {
     font-family: var(--font-sans);
     font-size: 14px;
-    @apply font-normal;
+    font-weight: 500;
+    line-height: 1.4;
   }
+
+  .type-body {
+    font-family: var(--font-sans);
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.5;
+  }
+
+  .type-meta {
+    font-family: var(--font-sans);
+    font-size: 11px;
+    font-weight: 400;
+    line-height: 1.4;
+  }
+
+  /* Legacy aliases — map to locked tiers */
+  .text-display { font-family: var(--font-serif); font-size: 28px; font-weight: 600; line-height: 1.2; letter-spacing: -0.01em; }
+  .text-heading { font-family: var(--font-serif); font-size: 28px; font-weight: 600; line-height: 1.2; letter-spacing: -0.01em; }
+  .text-subheading { font-family: var(--font-serif); font-size: 18px; font-weight: 500; line-height: 1.4; }
+  .text-body { font-family: var(--font-sans); font-size: 14px; font-weight: 400; line-height: 1.5; }
+  .text-meta { font-family: var(--font-sans); font-size: 11px; font-weight: 400; line-height: 1.4; }
 
   .text-gentle {
     @apply text-muted-foreground;

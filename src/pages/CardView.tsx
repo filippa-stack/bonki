@@ -564,7 +564,7 @@ export default function CardView() {
             className="text-center max-w-md mx-auto"
             style={{ paddingTop: 24 }}
           >
-            <h2 className="font-serif text-[28px] font-semibold leading-[1.25] tracking-[-0.01em] text-foreground">Det ni just gjorde betyder något.</h2>
+            <h2 className="type-h1 text-foreground">Det ni just gjorde betyder något.</h2>
           </motion.div>
 
           {/* Takeaway input */}
@@ -574,7 +574,7 @@ export default function CardView() {
             transition={{ delay: 0.42, duration: 0.32, ease: [0, 0, 0.2, 1] }}
             className="max-w-md mx-auto mt-16 space-y-3"
           >
-            <p className="text-[12px] text-muted-foreground/30 text-center leading-relaxed">
+            <p className="type-meta text-muted-foreground/30 text-center">
               Bär med er det som kändes sant.
             </p>
             <SessionTakeaway sessionId={activeSessionId} />
@@ -595,7 +595,7 @@ export default function CardView() {
             </button>
             <button
               onClick={() => navigate('/categories')}
-              className="text-[11px] transition-opacity hover:opacity-60 mt-8"
+              className="type-meta transition-opacity hover:opacity-60 mt-8"
               style={{ color: 'var(--color-text-secondary)', opacity: 0.35 }}
             >
               Till översikten
@@ -686,7 +686,7 @@ export default function CardView() {
 
       {cardViewMode === 'revisit' && !isFromArchive && (
         <div className="px-6 pt-4 text-center">
-          <p className="text-[12px]" style={{ color: 'var(--color-text-secondary)', opacity: 0.6 }}>
+          <p className="type-meta" style={{ color: 'var(--color-text-secondary)', opacity: 0.6 }}>
             {completedSessionId ? 'Visar tidigare samtal' : 'Förhandskoll'}
           </p>
         </div>
@@ -694,7 +694,7 @@ export default function CardView() {
 
       {cardViewMode === 'revisit' && isFromArchive && (
         <div className="px-6 pt-4 text-center">
-          <p className="text-[12px]" style={{ color: 'var(--color-text-secondary)', opacity: 0.5 }}>
+          <p className="type-meta" style={{ color: 'var(--color-text-secondary)', opacity: 0.5 }}>
             Visar tidigare samtal
           </p>
         </div>
