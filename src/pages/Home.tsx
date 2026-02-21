@@ -214,7 +214,11 @@ export default function Home() {
                 className="type-body mt-4"
                 style={{ color: 'var(--color-text-secondary)', opacity: 0.8 }}
               >
-                Här börjar era samtal.
+                {exploredIds.length === 0
+                  ? 'Välj ett ämne och börja utforska.'
+                  : exploredIds.length <= 5
+                    ? 'Ni har börjat. Fortsätt i er takt.'
+                    : 'Ert samtal fortsätter.'}
               </p>
             </motion.div>
 
@@ -276,8 +280,8 @@ export default function Home() {
               );
             })()}
 
-            {/* 48px spacing before categories */}
-            <div style={{ height: '48px' }} />
+            {/* 32px spacing before categories */}
+            <div style={{ height: '32px' }} />
 
             {/* Categories */}
             <div className="px-6" style={{ paddingBottom: 'max(env(safe-area-inset-bottom, 0px), 64px)' }}>
