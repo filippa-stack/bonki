@@ -47,7 +47,7 @@ export default function ContinueModule({
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.15 }}
-      className="px-6 mb-10"
+      className="px-6 mb-8"
     >
       <div
         className="card-reflection relative py-6 px-5 border border-border/30"
@@ -60,14 +60,14 @@ export default function ContinueModule({
         }}
       >
 
-        <p className="font-serif text-lg mb-[8px]" style={textStyle}>
+        <p className="font-serif text-lg mb-2" style={textStyle}>
           {cardTitle}
         </p>
-        <p className="text-xs mb-[6px]" style={mutedTextStyle}>
+        <p className="text-xs mb-2" style={mutedTextStyle}>
           {categoryTitle}{timeCue ? ` · ${timeCue}` : ''}
         </p>
 
-        <div className="flex flex-col sm:flex-row gap-2 mt-[12px]">
+        <div className="flex flex-col sm:flex-row gap-2 mt-4">
           <Button
             onClick={onContinue}
             className="gap-2 bg-[#497575] text-white hover:bg-[#365757]"

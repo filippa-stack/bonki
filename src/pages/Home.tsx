@@ -259,7 +259,7 @@ export default function Home() {
                         className="cursor-pointer"
                         style={{
                           borderRadius: isPrimary ? '24px' : '16px',
-                          padding: isPrimary ? '24px' : '20px',
+                          padding: isPrimary ? '24px' : '16px',
                           minHeight: '48px',
                           display: 'flex',
                           alignItems: 'center',

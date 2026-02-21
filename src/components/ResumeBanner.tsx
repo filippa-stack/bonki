@@ -22,8 +22,8 @@ export default function ResumeBanner({ cardId }: ResumeBannerProps) {
     <div
       style={{
         background: 'linear-gradient(180deg, hsl(var(--muted) / 0.28) 0%, hsl(var(--muted) / 0.34) 50%, hsl(var(--muted) / 0.28) 100%)',
-        padding: '10px 14px',
-        borderRadius: '26px',
+        padding: '8px 16px',
+        borderRadius: '24px',
       }}
     >
       <div className="flex items-start justify-between">

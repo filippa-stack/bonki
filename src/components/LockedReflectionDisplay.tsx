@@ -37,7 +37,7 @@ export default function LockedReflectionDisplay({ sessionId, stepIndex }: Props)
   if (loading || !text) return null;
 
   return (
-    <div className="mt-10 mb-1" style={{ paddingLeft: '16px' }}>
+    <div className="mt-8 mb-1" style={{ paddingLeft: '16px' }}>
       <p
         className="type-body font-serif whitespace-pre-wrap"
         style={{
@@ -51,7 +51,7 @@ export default function LockedReflectionDisplay({ sessionId, stepIndex }: Props)
       <p
         className="type-meta"
         style={{
-          marginTop: '12px',
+          marginTop: '16px',
           color: 'var(--color-text-secondary)',
           opacity: 0.3,
           letterSpacing: '0.04em',

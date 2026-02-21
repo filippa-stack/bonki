@@ -54,14 +54,14 @@ export default function Categories() {
     <div className="min-h-screen" style={{ backgroundColor: 'var(--color-bg-base)' }}>
       <Header showBack backTo="/" showSharedLink />
 
-      <div className="px-6 pt-[64px] pb-[80px]">
+      <div className="px-6 pt-12 pb-24">
         {effectiveCardId && (
           <div className="mb-6">
             <ResumeBanner cardId={effectiveCardId} />
           </div>
         )}
         <h1
-          className="text-[22px] font-medium mb-[72px]"
+          className="type-h1 mb-12"
           style={{ color: 'var(--color-text-secondary)' }}
         >
           Var vill ni börja?
@@ -79,11 +79,11 @@ export default function Categories() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: Math.min(0.08 + index * 0.05, 0.3), duration: 0.2, ease: [0.4, 0.0, 0.2, 1] }}
-              className={isGuided ? (index > 0 ? 'mt-[82px]' : '') : (index > 0 ? (prevIsGuided ? 'mt-[68px]' : 'mt-[58px]') : '')}
+              className={isGuided ? (index > 0 ? 'mt-12' : '') : (index > 0 ? (prevIsGuided ? 'mt-12' : 'mt-12') : '')}
             >
               {isGuided && (
                 <p
-                  className="text-[14px] font-medium mb-[5px]"
+                  className="type-body mb-2"
                   style={{ color: 'var(--color-text-secondary)', opacity: 0.7 }}
                 >
                   Rekommenderad start
@@ -97,7 +97,7 @@ export default function Categories() {
                   onKeyDown={(e) => {
                     if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); navigate(`/category/${category.id}`); }
                   }}
-                  className="row-bloom row-lift group relative w-full cursor-pointer min-h-[56px] flex flex-col justify-center rounded-sm py-[13px] px-2 hover:bg-black/[0.03] hover:pl-[14px] focus-visible:bg-black/[0.03] focus-visible:pl-[14px] focus-visible:outline-none active:pl-[14px] active:transition-none"
+                  className="row-bloom row-lift group relative w-full cursor-pointer min-h-[48px] flex flex-col justify-center rounded-sm py-3 px-2 hover:bg-black/[0.03] hover:pl-4 focus-visible:bg-black/[0.03] focus-visible:pl-4 focus-visible:outline-none active:pl-4 active:transition-none"
                 >
                   <span
                     className="absolute right-2 top-1/2 -translate-y-1/2 w-3 h-px"
@@ -105,7 +105,7 @@ export default function Categories() {
                   />
                   <div className="flex items-baseline gap-3">
                     <h3
-                      className={`text-[20px] leading-snug flex-1 ${isGuided ? 'font-[550]' : 'font-medium'}`}
+                      className={`type-h2 leading-snug flex-1 ${isGuided ? 'font-semibold' : 'font-medium'}`}
                       style={{ color: allExplored ? 'var(--color-text-secondary)' : isGuided ? '#151413' : 'var(--color-text-primary)' }}
                     >
                       {category.title}
