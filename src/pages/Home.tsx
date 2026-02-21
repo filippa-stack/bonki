@@ -86,9 +86,11 @@ export default function Home() {
 
   // Direct DB query for completed card IDs (bypasses snapshot)
   const [completedCardIds, setCompletedCardIds] = useState<string[]>([]);
+  const [inProgressCardIds, setInProgressCardIds] = useState<string[]>([]);
   useEffect(() => {
     if (!space?.id) return;
     let cancelled = false;
+    // Fetch completed
     supabase
       .from('couple_sessions')
       .select('card_id')
@@ -97,6 +99,17 @@ export default function Home() {
       .then(({ data }) => {
         if (!cancelled && data) {
           setCompletedCardIds(data.map(s => s.card_id).filter(Boolean) as string[]);
+        }
+      });
+    // Fetch active/abandoned (in-progress)
+    supabase
+      .from('couple_sessions')
+      .select('card_id')
+      .eq('couple_space_id', space.id)
+      .in('status', ['active', 'abandoned'])
+      .then(({ data }) => {
+        if (!cancelled && data) {
+          setInProgressCardIds(data.map(s => s.card_id).filter(Boolean) as string[]);
         }
       });
     return () => { cancelled = true; };
@@ -161,16 +174,51 @@ export default function Home() {
     });
   }, [categories]);
 
-  // First recommended category with unexplored cards
-  const guidedCategoryId = useMemo(() => {
+  // Dynamic recommendation logic
+  const resumeBannerCardId = snapshot?.sessions?.session?.card_id ?? null;
+  const recommendation = useMemo<{ categoryId: string; label: string } | 'all-done' | null>(() => {
+    // Priority 1: In-progress category
     for (const catId of RECOMMENDED_CATEGORY_ORDER) {
-      const catCards = cards.filter((c) => c.categoryId === catId);
-      if (catCards.length === 0) continue;
-      const allExplored = catCards.every((c) => exploredIds.includes(c.id));
-      if (!allExplored) return catId;
+      const catCards = cards.filter(c => c.categoryId === catId);
+      if (catCards.some(c => inProgressCardIds.includes(c.id))) {
+        return { categoryId: catId, label: 'Fortsätt där ni är' };
+      }
     }
-    return null;
-  }, [cards, exploredIds]);
+    // Priority 2: First unstarted category (zero completed cards)
+    for (const catId of RECOMMENDED_CATEGORY_ORDER) {
+      const catCards = cards.filter(c => c.categoryId === catId);
+      if (catCards.length === 0) continue;
+      const completedCount = catCards.filter(c => completedCardIds.includes(c.id)).length;
+      if (completedCount === 0) {
+        return { categoryId: catId, label: 'Rekommenderad start' };
+      }
+    }
+    // Priority 3: Partially completed — most remaining
+    let best: { catId: string; remaining: number } | null = null;
+    for (const catId of RECOMMENDED_CATEGORY_ORDER) {
+      const catCards = cards.filter(c => c.categoryId === catId);
+      if (catCards.length === 0) continue;
+      const completedCount = catCards.filter(c => completedCardIds.includes(c.id)).length;
+      const remaining = catCards.length - completedCount;
+      if (remaining > 0 && (!best || remaining > best.remaining)) {
+        best = { catId, remaining };
+      }
+    }
+    if (best) return { categoryId: best.catId, label: 'Fortsätt utforska' };
+    // Priority 4: All done
+    const hasAnyCards = cards.some(c => RECOMMENDED_CATEGORY_ORDER.includes(c.categoryId as any));
+    return hasAnyCards ? 'all-done' : null;
+  }, [cards, completedCardIds, inProgressCardIds]);
+
+  // Hide recommendation if resume banner already shows same category
+  const showRecommendation = useMemo(() => {
+    if (!recommendation || recommendation === 'all-done') return recommendation;
+    if (resumeBannerCardId) {
+      const resumeCard = cards.find(c => c.id === resumeBannerCardId);
+      if (resumeCard && resumeCard.categoryId === recommendation.categoryId) return null;
+    }
+    return recommendation;
+  }, [recommendation, resumeBannerCardId, cards]);
 
   const { scrollRef, progress: scrollP } = useScrollCompression(80);
 
@@ -298,6 +346,30 @@ export default function Home() {
             {/* 20px spacing before categories */}
             <div style={{ height: '20px' }} />
 
+            {/* Recommendation section */}
+            {showRecommendation === 'all-done' && (
+              <div className="px-6 py-8 text-center">
+                <p style={{
+                  fontFamily: "'Cormorant Garamond', serif",
+                  fontStyle: 'italic',
+                  fontSize: '18px',
+                  color: 'var(--text-secondary)',
+                }}>
+                  Ni har utforskat allt. Välj ett ämne att återvända till.
+                </p>
+              </div>
+            )}
+            {showRecommendation && showRecommendation !== 'all-done' && (
+              <div className="px-6 mb-2">
+                <p
+                  className="type-meta"
+                  style={{ color: 'var(--accent-saffron)', opacity: 0.85 }}
+                >
+                  {showRecommendation.label}
+                </p>
+              </div>
+            )}
+
             {/* Categories */}
             <div className="px-6" style={{ paddingBottom: 'max(env(safe-area-inset-bottom, 0px), 64px)' }}>
               <div className="flex flex-col" style={{ gap: '24px' }}>
@@ -306,7 +378,8 @@ export default function Home() {
                   const completedCount = catCards.filter(c => completedCardIds.includes(c.id)).length;
                   const allCompleted = completedCount === catCards.length && catCards.length > 0;
                   const someCompleted = completedCount > 0 && !allCompleted;
-                  const isPrimary = index === 0;
+                  const isRecommended = showRecommendation && showRecommendation !== 'all-done' && category.id === showRecommendation.categoryId;
+                  const isPrimary = isRecommended || index === 0;
 
                   return (
                     <motion.div
@@ -315,14 +388,6 @@ export default function Home() {
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: 0.2 + index * 0.03, duration: 0.22, ease: [0.4, 0, 0.2, 1] }}
                     >
-                      {index === 0 && guidedCategoryId === 'emotional-intimacy' && (
-                        <p
-                          className="type-meta mb-2"
-                          style={{ color: 'var(--accent-saffron)', opacity: 0.85 }}
-                        >
-                          Rekommenderad start
-                        </p>
-                      )}
                       <div
                         onClick={() => { markNavigated(); navigate(`/category/${category.id}`); }}
                         role="button"
