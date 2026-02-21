@@ -185,6 +185,16 @@ export default function SharedSummary() {
     return Array.from(map.values());
   }, [entries]);
 
+  // Helper: does a group have any notes (reflections or takeaway)?
+  const groupHasNotes = (g: GroupedEntry) => {
+    const check = (e: CompletedEntry) => e.reflections.length > 0 || e.takeaway.trim().length > 0;
+    return check(g.latest) || g.older.some(check);
+  };
+
+  const withNotes = useMemo(() => grouped.filter(groupHasNotes), [grouped]);
+  const withoutNotes = useMemo(() => grouped.filter(g => !groupHasNotes(g)), [grouped]);
+  const bothExist = withNotes.length > 0 && withoutNotes.length > 0;
+
   // Track which groups have expanded reflections and which show older entries
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [showOlderFor, setShowOlderFor] = useState<string | null>(null);
@@ -241,7 +251,8 @@ export default function SharedSummary() {
         ) : (
           hasContent && (
             <div className="flex flex-col" style={{ gap: '12px' }}>
-              {grouped.map((group, index) => {
+              {/* Section 1: Sessions with notes */}
+              {withNotes.map((group, index) => {
                 const entry = group.latest;
                 const isExpanded = expandedId === entry.sessionId;
                 const olderCount = group.older.length;
@@ -258,7 +269,6 @@ export default function SharedSummary() {
                       ease: [0.4, 0, 0.2, 1],
                     }}
                   >
-                    {/* ── Entry card ── */}
                     <div
                       style={{
                         background: 'var(--surface-raised)',
@@ -266,14 +276,13 @@ export default function SharedSummary() {
                         padding: '16px',
                       }}
                     >
-                      {/* Main tappable area */}
                       <button
                         onClick={() => setExpandedId(isExpanded ? null : entry.sessionId)}
                         className="w-full text-left"
                       >
                         <div className="flex items-start justify-between">
                           <div className="flex-1 min-w-0">
-                             <p
+                            <p
                               className="font-serif"
                               style={{
                                 fontSize: '20px',
@@ -296,7 +305,6 @@ export default function SharedSummary() {
                               {entry.categoryTitle}{entry.categoryTitle && ' · '}{formatDate(entry.completedAt)}
                             </p>
                           </div>
-
                           <ChevronRight
                             className="w-4 h-4 mt-1.5 flex-shrink-0 transition-transform duration-200"
                             style={{
@@ -306,8 +314,6 @@ export default function SharedSummary() {
                             }}
                           />
                         </div>
-
-                        {/* Excerpt — 2-line clamp, only when collapsed */}
                         {!isExpanded && entry.excerpt && (
                           <p
                             className="type-body mt-2"
@@ -324,7 +330,6 @@ export default function SharedSummary() {
                         )}
                       </button>
 
-                      {/* Expanded reflections */}
                       <AnimatePresence>
                         {isExpanded && (
                           <motion.div
@@ -354,13 +359,11 @@ export default function SharedSummary() {
                                 );
                               })}
 
-                              {/* Editable Takeaway */}
                               <div>
                                 <div style={{ height: '1px', background: 'hsl(var(--border) / 0.15)', marginTop: '16px', marginBottom: '12px' }} />
                                 <ArchiveTakeaway sessionId={entry.sessionId} initialText={entry.takeaway} />
                               </div>
 
-                              {/* Revisit link */}
                               <button
                                 onClick={() => navigate(`/card/${entry.cardId}?from=archive`)}
                                 className="type-meta mt-6 mb-2 transition-opacity hover:opacity-60"
@@ -373,7 +376,6 @@ export default function SharedSummary() {
                         )}
                       </AnimatePresence>
 
-                      {/* Older visits toggle */}
                       {olderCount > 0 && (
                         <div style={{ paddingTop: '4px' }}>
                           <button
@@ -381,11 +383,8 @@ export default function SharedSummary() {
                             className="type-meta transition-opacity hover:opacity-60"
                             style={{ color: 'var(--text-tertiary)', marginTop: '4px' }}
                           >
-                            {showingOlder
-                              ? 'Dölj tidigare'
-                              : `+ ${olderCount} tidigare samtal`}
+                            {showingOlder ? 'Dölj tidigare' : `+ ${olderCount} tidigare samtal`}
                           </button>
-
                           <AnimatePresence>
                             {showingOlder && (
                               <motion.div
@@ -395,25 +394,15 @@ export default function SharedSummary() {
                                 transition={{ duration: 0.2, ease: [0.4, 0, 0.2, 1] }}
                                 className="overflow-hidden"
                               >
-                                <div style={{ marginTop: '12px' }} className="flex flex-col" >
+                                <div style={{ marginTop: '12px' }} className="flex flex-col">
                                   {group.older.map((older) => (
                                     <button
                                       key={older.sessionId}
                                       onClick={() => navigate(`/card/${older.cardId}?from=archive`)}
                                       className="w-full text-left"
-                                      style={{
-                                        padding: '10px 8px',
-                                        borderTop: '1px solid hsl(var(--border) / 0.08)',
-                                      }}
+                                      style={{ padding: '10px 8px', borderTop: '1px solid hsl(var(--border) / 0.08)' }}
                                     >
-                                       <p
-                                        style={{
-                                          fontFamily: 'var(--font-sans)',
-                                          fontSize: '12px',
-                                          color: 'var(--text-tertiary)',
-                                          opacity: 0.6,
-                                        }}
-                                      >
+                                      <p style={{ fontFamily: 'var(--font-sans)', fontSize: '12px', color: 'var(--text-tertiary)', opacity: 0.6 }}>
                                         {formatDate(older.completedAt)}
                                       </p>
                                       {older.excerpt && (
@@ -440,6 +429,78 @@ export default function SharedSummary() {
                         </div>
                       )}
                     </div>
+                  </motion.div>
+                );
+              })}
+
+              {/* Divider + Section 2: Sessions without notes */}
+              {bothExist && (
+                <>
+                  <div style={{ margin: '24px 0' }}>
+                    <div style={{ height: '1px', background: 'hsl(var(--border) / 0.15)' }} />
+                  </div>
+                  <p
+                    className="text-center"
+                    style={{
+                      fontFamily: 'Inter, sans-serif',
+                      fontSize: '11px',
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.08em',
+                      color: 'var(--text-tertiary)',
+                      marginBottom: '16px',
+                    }}
+                  >
+                    Avslutade utan anteckningar
+                  </p>
+                </>
+              )}
+
+              {withoutNotes.map((group, index) => {
+                const entry = group.latest;
+                return (
+                  <motion.div
+                    key={group.cardId}
+                    initial={{ opacity: 0, y: 8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{
+                      delay: 0.1 + (withNotes.length + index) * 0.03,
+                      duration: 0.22,
+                      ease: [0.4, 0, 0.2, 1],
+                    }}
+                  >
+                    <button
+                      onClick={() => navigate(`/card/${entry.cardId}?from=archive`)}
+                      className="w-full text-left"
+                      style={{
+                        background: 'var(--surface-raised)',
+                        borderRadius: '12px',
+                        padding: '16px',
+                        opacity: 0.70,
+                      }}
+                    >
+                      <p
+                        className="font-serif"
+                        style={{
+                          fontSize: '20px',
+                          color: 'var(--text-primary)',
+                          fontWeight: 400,
+                          lineHeight: 1.3,
+                        }}
+                      >
+                        {entry.cardTitle}
+                      </p>
+                      <p
+                        className="mt-1"
+                        style={{
+                          fontFamily: 'var(--font-sans)',
+                          fontSize: '12px',
+                          color: 'var(--accent-saffron)',
+                          opacity: 0.75,
+                        }}
+                      >
+                        {entry.categoryTitle}{entry.categoryTitle && ' · '}{formatDate(entry.completedAt)}
+                      </p>
+                    </button>
                   </motion.div>
                 );
               })}
