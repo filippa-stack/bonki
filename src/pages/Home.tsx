@@ -2,7 +2,7 @@ import { RECOMMENDED_CATEGORY_ORDER } from '@/lib/recommendedOrder';
 
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useMemo, useState, CSSProperties } from 'react';
+import { useMemo, useState, useEffect, CSSProperties } from 'react';
 import { useScrollCompression } from '@/hooks/useScrollCompression';
 import { useTranslation } from 'react-i18next';
 import { useApp } from '@/contexts/AppContext';
@@ -84,7 +84,24 @@ export default function Home() {
   const { mode } = appModeState;
   const { isTogether } = useTogetherMode();
 
-  // In devState=pairedActive, provide a mock cardId so the ResumeBanner renders
+  // Direct DB query for completed card IDs (bypasses snapshot)
+  const [completedCardIds, setCompletedCardIds] = useState<string[]>([]);
+  useEffect(() => {
+    if (!space?.id) return;
+    let cancelled = false;
+    supabase
+      .from('couple_sessions')
+      .select('card_id')
+      .eq('couple_space_id', space.id)
+      .eq('status', 'completed')
+      .then(({ data }) => {
+        if (!cancelled && data) {
+          setCompletedCardIds(data.map(s => s.card_id).filter(Boolean) as string[]);
+        }
+      });
+    return () => { cancelled = true; };
+  }, [space?.id]);
+
   const effectiveCardId = normalizedSession.cardId ?? (devState === 'pairedActive' ? 'listening-presence' : null);
 
   // Snapshot-derived values
@@ -286,7 +303,9 @@ export default function Home() {
               <div className="flex flex-col" style={{ gap: '24px' }}>
                 {sortedCategories.map((category, index) => {
                   const catCards = cards.filter((c) => c.categoryId === category.id);
-                  const allExplored = catCards.length > 0 && catCards.every((c) => exploredIds.includes(c.id));
+                  const completedCount = catCards.filter(c => completedCardIds.includes(c.id)).length;
+                  const allCompleted = completedCount === catCards.length && catCards.length > 0;
+                  const someCompleted = completedCount > 0 && !allCompleted;
                   const isPrimary = index === 0;
 
                   return (
@@ -353,8 +372,8 @@ export default function Home() {
                           <div className="flex-1 min-w-0">
                             <h3
                               className="type-h3"
-                              style={{
-                                color: allExplored ? 'var(--text-tertiary)' : 'var(--text-primary)',
+                            style={{
+                              color: allCompleted ? 'var(--text-tertiary)' : 'var(--text-primary)',
                                 fontWeight: 500,
                                 fontSize: '16px',
                               }}
@@ -371,10 +390,17 @@ export default function Home() {
                             )}
                           </div>
                           <div className="flex items-center gap-2 shrink-0">
-                            {allExplored ? (
-                              <Check size={12} style={{ color: 'var(--color-text-tertiary)', opacity: 0.50 }} />
-                            ) : catCards.some((c) => exploredIds.includes(c.id)) ? (
-                              <Circle size={6} fill="var(--accent-saffron)" stroke="none" style={{ opacity: 0.60 }} />
+                            {allCompleted ? (
+                              <Check size={13} style={{ color: '#1E3D2F', opacity: 0.50 }} />
+                            ) : someCompleted ? (
+                              <span style={{
+                                display: 'inline-block',
+                                width: '7px',
+                                height: '7px',
+                                borderRadius: '50%',
+                                backgroundColor: '#C4821D',
+                                opacity: 0.70,
+                              }} />
                             ) : null}
                             <ChevronRight
                               data-chevron
