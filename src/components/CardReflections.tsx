@@ -77,6 +77,10 @@ export default function CardReflections({ cardId }: CardReflectionsProps) {
               placeholder={t('reflections.private_notes_hint')}
               className="w-full min-h-[100px] p-4 rounded-card bg-transparent border border-border/20 text-foreground placeholder:text-muted-foreground resize-none focus:outline-none focus:ring-0 focus:border-primary/30 font-sans text-base"
               autoFocus={isEditingPrivate}
+              inputMode="text"
+              autoCorrect="on"
+              autoCapitalize="sentences"
+              spellCheck={true}
             />
             <div className="flex gap-3 mt-3">
               <Button
@@ -134,6 +138,10 @@ export default function CardReflections({ cardId }: CardReflectionsProps) {
                   onChange={(e) => setSharedText(e.target.value)}
                   className="w-full min-h-[100px] p-4 rounded-card bg-transparent border border-border/20 text-foreground placeholder:text-muted-foreground resize-none focus:outline-none focus:ring-0 focus:border-primary/30 font-sans text-base"
                   autoFocus
+                  inputMode="text"
+                  autoCorrect="on"
+                  autoCapitalize="sentences"
+                  spellCheck={true}
                 />
                 <div className="flex gap-3 mt-3">
                   <Button variant="primary" size="sm" onClick={handleSaveShared}>

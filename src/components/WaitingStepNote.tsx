@@ -75,6 +75,10 @@ export default function WaitingStepNote({ cardId, sectionId, disableShare }: Wai
           value={text}
           onChange={(e) => setText(e.target.value)}
           placeholder="Skriv något du vill komma ihåg…"
+          inputMode="text"
+          autoCorrect="on"
+          autoCapitalize="sentences"
+          spellCheck={true}
           className="w-full min-h-[64px] p-3 bg-transparent resize-none focus:outline-none focus:ring-0 text-sm text-foreground placeholder:text-muted-foreground/60"
         />
         <p className="px-3 pb-1 text-xs text-muted-foreground/65">Du väljer alltid själv vad som delas.</p>

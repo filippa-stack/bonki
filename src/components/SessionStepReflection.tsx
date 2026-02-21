@@ -85,6 +85,10 @@ export default function SessionStepReflection({
           value={displayText}
           onChange={(e) => handleChange(e.target.value)}
           placeholder="Skriv fritt."
+          inputMode="text"
+          autoCorrect="on"
+          autoCapitalize="sentences"
+          spellCheck={true}
           className="w-full min-h-[120px] bg-transparent resize-none focus:outline-none focus:ring-0 text-sm leading-relaxed placeholder:[color:#8C8681]"
           style={{ color: 'var(--color-ink)' }}
         />
