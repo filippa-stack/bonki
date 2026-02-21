@@ -258,19 +258,15 @@ export default function Home() {
                         }}
                         className="cursor-pointer"
                         style={{
-                          borderRadius: isPrimary ? '24px' : '16px',
-                          padding: isPrimary ? '24px' : '16px',
+                          borderRadius: '16px',
+                          padding: '20px',
                           minHeight: '48px',
                           display: 'flex',
                           alignItems: 'center',
                           justifyContent: 'space-between',
                           gap: '8px',
-                          background: isPrimary
-                            ? 'hsl(var(--muted) / 0.22)'
-                            : 'hsl(var(--muted) / 0.10)',
-                          boxShadow: isPrimary
-                            ? '0 4px 16px hsl(var(--foreground) / 0.06)'
-                            : 'none',
+                          background: 'rgba(0, 0, 0, 0.025)',
+                          boxShadow: 'none',
                           transition: 'transform 120ms ease-out, box-shadow 120ms ease-out',
                         }}
                         onPointerDown={(e) => {
@@ -311,7 +307,7 @@ export default function Home() {
                             <ChevronRight
                               data-chevron
                               className="w-4 h-4"
-                              style={{ color: 'var(--color-text-secondary)', opacity: 0.5, transition: 'transform 120ms ease-out' }}
+                              style={{ color: 'var(--color-text-secondary)', opacity: 0.55, transition: 'transform 120ms ease-out' }}
                             />
                           </div>
                         </div>
