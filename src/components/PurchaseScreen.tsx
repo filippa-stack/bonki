@@ -62,7 +62,7 @@ export default function PurchaseScreen({ onPurchaseComplete }: PurchaseScreenPro
             {t('purchase.title', 'Ert gemensamma utrymme')}
           </h1>
           <p className="text-body text-muted-foreground leading-relaxed">
-            {t('purchase.subtitle', 'Ett engångsköp låser upp ert gemensamma utrymme för två. Din partner betalar inte.')}
+            {t('purchase.subtitle', 'Ett engångsköp — för er båda. Inga dolda kostnader.')}
           </p>
         </div>
 
@@ -81,7 +81,7 @@ export default function PurchaseScreen({ onPurchaseComplete }: PurchaseScreenPro
           <div className="flex items-start gap-3">
             <Check className="w-4 h-4 text-primary mt-0.5 shrink-0" />
             <p className="text-sm text-foreground">
-              {t('purchase.benefit_2', 'Bjud in din partner utan extra kostnad')}
+              {t('purchase.benefit_2', 'Dela utrymmet — båda har tillgång från dag ett')}
             </p>
           </div>
           <div className="flex items-start gap-3">
