@@ -43,6 +43,11 @@ export default function SessionTakeaway({ sessionId }: SessionTakeawayProps) {
           placeholder="Skriv något ni vill bära med er."
           className="min-h-[80px] text-sm resize-none bg-transparent border-none shadow-none focus-visible:ring-0 px-6 py-5 placeholder:text-muted-foreground/40"
           rows={3}
+          inputMode="text"
+          autoCorrect="on"
+          autoCapitalize="sentences"
+          spellCheck={true}
+          enterKeyHint="done"
         />
       </div>
       <span className="text-[10px] text-muted-foreground/40 block text-right px-1">

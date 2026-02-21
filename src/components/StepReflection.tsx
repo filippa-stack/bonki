@@ -128,6 +128,10 @@ export default function StepReflection({ section, card, defaultExpanded = false 
           onChange={(e) => handleChange(e.target.value)}
           onFocus={handleFocus}
           placeholder="Skriv en tanke…"
+          inputMode="text"
+          autoCorrect="on"
+          autoCapitalize="sentences"
+          spellCheck={true}
           className="w-full min-h-[72px] p-3 bg-transparent resize-none focus:outline-none focus:ring-0 text-sm text-foreground placeholder:text-muted-foreground/60"
         />
 
