@@ -5,8 +5,6 @@ export interface StageStep {
   label: string;
 }
 
-// Canonical step definitions — one step per stage in Volume 1.
-// stage_key maps to section type: opening→oppnare, reflective→tankevackare, etc.
 export const STAGE_STEPS: StageStep[] = [
   { stage_key: 'oppnare',     label: 'Öppnare'     },
   { stage_key: 'tankevackare', label: 'Tankeväckare' },
@@ -14,7 +12,6 @@ export const STAGE_STEPS: StageStep[] = [
   { stage_key: 'teamwork',    label: 'Teamwork'     },
 ];
 
-// Maps section.type → stage_key
 export const SECTION_TYPE_TO_STAGE: Record<string, StageStep['stage_key']> = {
   opening:    'oppnare',
   reflective: 'tankevackare',
@@ -25,40 +22,39 @@ export const SECTION_TYPE_TO_STAGE: Record<string, StageStep['stage_key']> = {
 interface StepProgressIndicatorProps {
   currentStepIndex: number;
   completedSteps: number[];
+  isTransitioning?: boolean;
   className?: string;
 }
 
-/**
- * Read-only stage indicator bar.
- * - Highlights the current stage (derived from current_step_index).
- * - Marks prior stages as completed.
- * - NOT clickable — stage progression is implicit.
- */
 export default function StepProgressIndicator({
   currentStepIndex,
   completedSteps,
+  isTransitioning = false,
   className,
 }: StepProgressIndicatorProps) {
-  const currentStage = STAGE_STEPS[currentStepIndex]?.stage_key;
-
   return (
-    <div className={cn('flex items-center justify-center gap-2', className)}>
+    <div className={cn('flex items-center justify-center', className)} style={{ gap: '6px' }}>
       {STAGE_STEPS.map((step, index) => {
-        const isCurrent = index === currentStepIndex;
         const isCompleted = completedSteps.includes(index) || index < currentStepIndex;
+        const isCurrent = index === currentStepIndex;
+
+        // During transition the completing dash (prev) snaps to completed,
+        // and the new current dash animates in with a 200ms delay.
+        const transitionDelay = isTransitioning && isCurrent ? '200ms' : '0ms';
+
+        const opacity = isCurrent ? 1.0 : isCompleted ? 0.55 : 0.15;
+        const width = isCurrent ? 28 : 24;
 
         return (
           <span
             key={step.stage_key}
-            className={cn(
-              'h-[2px] flex-1 max-w-[28px] rounded-full transition-colors duration-200',
-            )}
             style={{
-              backgroundColor: isCurrent
-                ? 'hsl(var(--foreground) / 0.25)'
-                : isCompleted
-                  ? 'hsl(var(--foreground) / 0.10)'
-                  : 'hsl(var(--foreground) / 0.04)',
+              height: '3px',
+              borderRadius: '2px',
+              width: `${width}px`,
+              backgroundColor: '#1C1B1A',
+              opacity,
+              transition: `width 300ms ease-out ${transitionDelay}, opacity 300ms ease-out ${transitionDelay}`,
             }}
           />
         );

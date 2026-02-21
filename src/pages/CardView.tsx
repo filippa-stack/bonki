@@ -314,7 +314,7 @@ export default function CardView() {
     if (prevStepRef.current !== currentStepIndex && currentStepIndex > 0) {
       if (!firstRenderRef.current) {
         setShowInterstitial(true);
-        const timer = setTimeout(() => setShowInterstitial(false), 700);
+        const timer = setTimeout(() => setShowInterstitial(false), 500);
         prevStepRef.current = currentStepIndex;
         return () => clearTimeout(timer);
       }
@@ -691,6 +691,7 @@ export default function CardView() {
           <StepProgressIndicator
             currentStepIndex={currentStepIndex}
             completedSteps={Array.from({ length: serverStepIndex }, (_, i) => i)}
+            isTransitioning={showInterstitial}
           />
         </motion.div>
       )}
