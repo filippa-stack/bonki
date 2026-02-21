@@ -114,8 +114,14 @@ function CardEntry({ card, index, isCompleted = false, onNavigate }: CardEntryPr
         onKeyDown={(e) => {
           if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onNavigate(); }
         }}
-        className="w-full cursor-pointer rounded-[16px] flex items-center gap-3 hover:opacity-80 focus-visible:outline-none"
-        style={{ backgroundColor: 'rgba(0, 0, 0, 0.025)', padding: '20px' }}
+        className="w-full cursor-pointer flex items-center gap-3 hover:opacity-80 focus-visible:outline-none"
+        style={{
+          backgroundColor: 'hsl(36, 20%, 97%)',
+          border: '1px solid hsl(36, 15%, 88%)',
+          borderRadius: '14px',
+          padding: '20px 18px',
+          marginBottom: '10px',
+        }}
       >
         <div className="flex-1 min-w-0">
           <h3
@@ -147,7 +153,7 @@ function CardEntry({ card, index, isCompleted = false, onNavigate }: CardEntryPr
           size={16}
           strokeWidth={1.5}
           className="flex-shrink-0"
-          style={{ color: 'var(--color-text-secondary)', opacity: 0.40 }}
+          style={{ color: 'var(--accent-saffron)', opacity: 0.60 }}
         />
       </motion.div>
     </motion.div>
