@@ -492,7 +492,14 @@ export default function CardView() {
             <p className="type-meta text-muted-foreground/30 text-center">
               Något ni tar med er härifrån.
             </p>
-            <SessionTakeaway sessionId={activeSessionId} />
+            <div style={{
+              display: 'block',
+              width: '100%',
+              marginTop: '16px',
+              marginBottom: '24px',
+            }}>
+              <SessionTakeaway sessionId={activeSessionId} />
+            </div>
           </motion.div>
 
           {/* CTAs */}

@@ -45,6 +45,21 @@ export default function Category() {
       <Header title={category?.title} showBack backTo="/" />
 
       <div className="px-6 pt-6 pb-24 flex flex-col">
+        {/* Saffron entryLine — the color-pop moment */}
+        {category.entryLine && (
+          <p
+            className="text-center mb-6"
+            style={{
+              fontFamily: "'Cormorant Garamond', serif",
+              fontSize: '18px',
+              fontStyle: 'italic',
+              color: 'var(--accent-saffron)',
+              opacity: 0.90,
+            }}
+          >
+            {category.entryLine}
+          </p>
+        )}
         {cards.map((card, index) => (
           <CardEntry
             key={card.id}
@@ -101,15 +116,6 @@ function CardEntry({ card, index, isCompleted = false, onNavigate, isLast = fals
         }}
       >
         <div className="flex-1 min-w-0">
-        <div className="flex items-center gap-2">
-          {isCompleted && (
-            <Check
-              size={14}
-              className="flex-shrink-0"
-              style={{ color: 'hsl(158, 35%, 18%)', opacity: 0.60 }}
-              aria-label="Avklarad"
-            />
-          )}
           <h3
             className="font-serif"
             style={{
@@ -120,7 +126,6 @@ function CardEntry({ card, index, isCompleted = false, onNavigate, isLast = fals
           >
             {card.title}
           </h3>
-        </div>
           {card.subtitle && (
             <p
               className="type-meta mt-px"
@@ -130,12 +135,22 @@ function CardEntry({ card, index, isCompleted = false, onNavigate, isLast = fals
             </p>
           )}
         </div>
-        <ChevronRight
-          size={16}
-          strokeWidth={1.5}
-          className="flex-shrink-0"
-          style={{ color: 'var(--accent-saffron)', opacity: 0.60 }}
-        />
+        <div className="flex items-center gap-2 shrink-0">
+          {isCompleted && (
+            <Check
+              size={16}
+              className="flex-shrink-0"
+              style={{ color: '#1E3D2F', opacity: 0.55 }}
+              aria-label="Avklarad"
+            />
+          )}
+          <ChevronRight
+            size={16}
+            strokeWidth={1.5}
+            className="flex-shrink-0"
+            style={{ color: 'var(--accent-saffron)', opacity: 0.60 }}
+          />
+        </div>
       </motion.div>
     </motion.div>
   );

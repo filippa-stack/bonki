@@ -52,7 +52,7 @@ export default function Categories() {
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: 'var(--color-bg-base)' }}>
-      <Header showBack backTo="/" showSharedLink />
+      <Header showBack backTo="/" />
 
       <div className="px-6 pt-8 pb-24">
         {effectiveCardId && (
