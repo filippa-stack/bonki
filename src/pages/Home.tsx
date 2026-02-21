@@ -182,20 +182,20 @@ export default function Home() {
     return c?.categoryId ?? null;
   }, [resumeBannerCardId, cards]);
 
-  const recommendation = useMemo<{ categoryId: string } | null>(() => {
-    const rec = sortedCategories.find(category => {
+  const recommendedCategory = useMemo(() => {
+    if (!completedCardIds) return null;
+    for (const category of sortedCategories) {
       const catCards = cards.filter(c => c.categoryId === category.id);
-      if (catCards.length === 0) return false;
+      if (catCards.length === 0) continue;
       const completedCount = catCards.filter(c => completedCardIds.includes(c.id)).length;
-      return completedCount < catCards.length;
-    });
-    if (!rec) return null;
-    // Hide if same category as resume banner
-    if (rec.id === resumeBannerCategoryId) return null;
-    return { categoryId: rec.id };
-  }, [sortedCategories, cards, completedCardIds, resumeBannerCategoryId]);
+      if (completedCount < catCards.length) {
+        return category;
+      }
+    }
+    return null;
+  }, [sortedCategories, cards, completedCardIds]);
 
-  const showRecommendation = recommendation;
+  const showRecommendation = !!recommendedCategory;
 
   const { scrollRef, progress: scrollP } = useScrollCompression(80);
 
@@ -324,9 +324,8 @@ export default function Home() {
             <div style={{ height: '20px' }} />
 
             {/* Recommendation section */}
-            {showRecommendation && (() => {
-              const recCat = categories.find(c => c.id === showRecommendation.categoryId);
-              if (!recCat) return null;
+            {recommendedCategory && (() => {
+              const recCat = recommendedCategory;
               return (
                 <div className="px-6" style={{ marginBottom: '20px' }}>
                   <p style={{
@@ -388,7 +387,7 @@ export default function Home() {
             {/* Categories */}
             <div className="px-6" style={{ paddingBottom: 'max(env(safe-area-inset-bottom, 0px), 64px)' }}>
               <div className="flex flex-col" style={{ gap: '24px' }}>
-                {sortedCategories.filter(c => !(showRecommendation && c.id === showRecommendation.categoryId)).map((category, index) => {
+                {(recommendedCategory ? sortedCategories.filter(c => c.id !== recommendedCategory.id) : sortedCategories).map((category, index) => {
                   const catCards = cards.filter((c) => c.categoryId === category.id);
                   const completedCount = catCards.filter(c => completedCardIds.includes(c.id)).length;
                   const allCompleted = completedCount === catCards.length && catCards.length > 0;
