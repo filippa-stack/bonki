@@ -1,16 +1,12 @@
+import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ChevronRight, Check, Circle } from 'lucide-react';
-import { BEAT_1, EASE } from '@/lib/motion';
+import { ChevronRight, Check } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useApp } from '@/contexts/AppContext';
 import { useAuth } from '@/contexts/AuthContext';
 import { useCoupleSpaceContext } from '@/contexts/CoupleSpaceContext';
-import { useSpaceSnapshot } from '@/hooks/useSpaceSnapshot';
-import {
-  selectExploredCardIds,
-  selectCardVisitDates,
-} from '@/selectors/spaceSnapshotSelectors';
+import { supabase } from '@/integrations/supabase/client';
 import Header from '@/components/Header';
 
 export default function Category() {
@@ -20,10 +16,24 @@ export default function Category() {
   const { getCategoryById, getCardsByCategory } = useApp();
   const { user } = useAuth();
   const { space } = useCoupleSpaceContext();
-  const { snapshot } = useSpaceSnapshot(user?.id ?? null, space?.id ?? null);
 
-  const exploredIds = selectExploredCardIds(snapshot);
-  const cardVisitDates = selectCardVisitDates(snapshot);
+  const [completedCardIds, setCompletedCardIds] = useState<string[]>([]);
+
+  useEffect(() => {
+    if (!space?.id) return;
+    let cancelled = false;
+    supabase
+      .from('couple_sessions')
+      .select('card_id')
+      .eq('couple_space_id', space.id)
+      .eq('status', 'completed')
+      .then(({ data }) => {
+        if (!cancelled && data) {
+          setCompletedCardIds(data.map(s => s.card_id).filter(Boolean) as string[]);
+        }
+      });
+    return () => { cancelled = true; };
+  }, [space?.id]);
 
   const category = categoryId ? getCategoryById(categoryId) : undefined;
   const cards = categoryId ? getCardsByCategory(categoryId) : [];
@@ -65,8 +75,7 @@ export default function Category() {
             key={card.id}
             card={card}
             index={index}
-            isCompleted={exploredIds.includes(card.id)}
-            lastVisitedAt={cardVisitDates[card.id] || null}
+            isCompleted={completedCardIds.includes(card.id)}
             onNavigate={() => navigate(`/card/${card.id}`)}
             isLast={index === cards.length - 1}
           />
@@ -84,7 +93,6 @@ interface CardEntryProps {
   };
   index: number;
   isCompleted?: boolean;
-  lastVisitedAt?: string | null;
   onNavigate: () => void;
   isLast?: boolean;
 }
