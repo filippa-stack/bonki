@@ -68,10 +68,7 @@ export default function Header({
     <header
       className={`sticky top-0 z-10`}
       style={{
-        backgroundColor: isImmersive
-          ? 'var(--session-header-bg)'
-          : 'hsl(158, 35%, 18%)',
-        filter: isImmersive ? 'saturate(0.75) brightness(0.9)' : undefined,
+        backgroundColor: 'hsl(158, 35%, 18%)',
         boxShadow: 'none',
       }}
     >
@@ -127,7 +124,7 @@ export default function Header({
         </div>
       ) : (
         /* ── Default header layout (unchanged) ── */
-        <div className="relative flex items-center justify-between px-6" style={{ height: '3.75rem' }}>
+        <div className="relative flex items-center justify-between px-6" style={{ height: '2.5rem' }}>
           {/* Left */}
           <div className="flex items-center gap-2 flex-1 min-w-0">
             {showBack && (
