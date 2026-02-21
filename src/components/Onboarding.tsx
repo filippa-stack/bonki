@@ -7,16 +7,19 @@ import { BEAT_1, BEAT_2, BEAT_3, EASE } from '@/lib/motion';
 const slides = [
   {
     title: 'Utforska i er takt.',
-    content: 'Välj ett ämne. Läs tillsammans. Reflektera var för sig.\n\nDet finns inget rätt sätt — bara ert.',
+    content: 'Välj ett ämne. Läs tillsammans. Reflektera var för sig.',
+    saffronLine: 'Det finns inget rätt sätt — bara ert.',
     cta: 'Fortsätt',
   },
   {
     title: 'Ett gemensamt rum.',
-    content: 'För samtal ni vill hålla levande.\n\nStill Us är skapat för er — ett utrymme att mötas i, mitt i vardagen.',
+    saffronLine: 'För samtal ni vill hålla levande.',
+    content: 'Still Us är skapat för er — ett utrymme att mötas i, mitt i vardagen.',
     cta: 'Fortsätt',
   },
   {
     title: 'Omsorgsfullt utvecklat.',
+    titleColor: '#C4821D',
     content: 'Varje samtal bygger på psykologisk forskning om relationer och anknytning.\n\nFormulerat för att skapa klarhet, närhet och förståelse — i er takt.',
     cta: 'Kom igång',
   },
@@ -58,6 +61,7 @@ export default function Onboarding() {
               animate={{ opacity: 1 }}
               transition={{ duration: BEAT_3, ease: EASE }}
               className="text-display text-foreground"
+              style={slides[currentSlide].titleColor ? { color: slides[currentSlide].titleColor } : undefined}
             >
               {slides[currentSlide].title}
             </motion.h1>
@@ -71,6 +75,24 @@ export default function Onboarding() {
             >
               {slides[currentSlide].content}
             </motion.p>
+
+            {/* Saffron accent line */}
+            {slides[currentSlide].saffronLine && (
+              <motion.p
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: BEAT_1 + 0.1, duration: BEAT_3, ease: EASE }}
+                className="mt-6"
+                style={{
+                  fontFamily: "'Cormorant Garamond', serif",
+                  fontStyle: 'italic',
+                  fontSize: '18px',
+                  color: '#C4821D',
+                }}
+              >
+                {slides[currentSlide].saffronLine}
+              </motion.p>
+            )}
           </motion.div>
         </AnimatePresence>
 

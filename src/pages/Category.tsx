@@ -83,6 +83,11 @@ export default function Category() {
               fontStyle: 'italic',
               color: 'var(--accent-saffron)',
               opacity: 0.90,
+              textWrap: 'balance',
+              hyphens: 'auto',
+              display: 'block',
+              maxWidth: '85%',
+              margin: '24px auto 28px',
             }}
           >
             {category.entryLine}
