@@ -53,7 +53,7 @@ export function useCardTakeaway(sessionId: string | null): UseCardTakeawayReturn
         .eq('session_id', sessionId)
         .eq('created_by', userId)
         .limit(1)
-        .single();
+        .maybeSingle();
 
       if (cancelled) return;
 
