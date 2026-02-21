@@ -15,7 +15,7 @@ import { ArrowRight, Bookmark, Share2, ChevronDown, ChevronRight } from 'lucide-
 import NotificationSettings from '@/components/NotificationSettings';
 import RelationSettings from '@/components/RelationSettings';
 import RelationshipMemory from '@/components/RelationshipMemory';
-import Footer from '@/components/Footer';
+
 import ReturnOverlay from '@/components/ReturnOverlay';
 import FocusSlab from '@/components/FocusSlab';
 import ConfidenceCheckPanel from '@/components/ConfidenceCheckPanel';
@@ -222,7 +222,7 @@ export default function Home() {
             <div style={{ height: '48px' }} />
 
             {/* Categories */}
-            <div className="px-6 pb-24">
+            <div className="px-6 pb-16">
               <div className="flex flex-col" style={{ gap: '24px' }}>
                 {sortedCategories.map((category, index) => {
                   const catCards = cards.filter((c) => c.categoryId === category.id);
@@ -320,7 +320,7 @@ export default function Home() {
           </>
         )}
       </div>
-      <Footer />
+      
     </div>
   );
 }
