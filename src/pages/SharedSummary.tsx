@@ -54,6 +54,31 @@ function getQuestionText(
   return typeof prompt === 'string' ? prompt : prompt.text;
 }
 
+/** Render text with bullet parsing for teamwork assignments */
+function renderBulletText(text: string) {
+  if (!text.includes('•')) {
+    return <span>{text}</span>;
+  }
+  const items = text.split('•').map(s => s.trim()).filter(Boolean);
+  const hasIntro = !text.startsWith('•');
+  const intro = hasIntro ? items[0] : null;
+  const listItems = hasIntro ? items.slice(1) : items;
+  return (
+    <div>
+      {intro && <p style={{ marginBottom: '8px' }}>{intro}</p>}
+      <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+        {listItems.map((item, i) => (
+          <li key={i} style={{
+            paddingLeft: '12px',
+            borderLeft: '2px solid rgba(196, 130, 45, 0.35)',
+            marginBottom: '4px',
+          }}>{item}</li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
 export default function SharedSummary() {
   const navigate = useNavigate();
   const { getCardById, getCategoryById } = useApp();
@@ -308,21 +333,24 @@ export default function SharedSummary() {
                           <ChevronRight
                             className="w-4 h-4 mt-1.5 flex-shrink-0 transition-transform duration-200"
                             style={{
-                              color: 'var(--text-ghost)',
-                              opacity: 0.3,
+                              color: '#C4821D',
+                              opacity: 0.55,
                               transform: isExpanded ? 'rotate(90deg)' : 'rotate(0deg)',
                             }}
                           />
                         </div>
                         {!isExpanded && entry.excerpt && (
                           <p
-                            className="type-body mt-2"
+                            className="mt-2"
                             style={{
+                              fontFamily: 'Inter, sans-serif',
+                              fontSize: '13px',
                               color: 'var(--text-secondary)',
                               display: '-webkit-box',
                               WebkitLineClamp: 2,
                               WebkitBoxOrient: 'vertical',
                               overflow: 'hidden',
+                              marginTop: '6px',
                             }}
                           >
                             {entry.excerpt}
@@ -348,13 +376,13 @@ export default function SharedSummary() {
                                       <div style={{ height: '1px', background: 'hsl(var(--border) / 0.12)', margin: '16px 0' }} />
                                     )}
                                     {question && (
-                                      <p className="type-meta" style={{ color: 'var(--text-tertiary)', marginBottom: '6px', lineHeight: 1.5 }}>
-                                        {question}
+                                      <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '13px', fontWeight: 400, color: '#7A7067', marginBottom: '6px', lineHeight: 1.4 }}>
+                                        {renderBulletText(question)}
                                       </p>
                                     )}
-                                    <p className="type-body font-serif whitespace-pre-wrap" style={{ lineHeight: 1.8, color: 'var(--text-primary)' }}>
-                                      {ref.text}
-                                    </p>
+                                    <div className="font-serif whitespace-pre-wrap" style={{ fontSize: '20px', fontWeight: 500, lineHeight: 1.5, color: '#1C1B1A', marginBottom: '24px' }}>
+                                      {renderBulletText(ref.text)}
+                                    </div>
                                   </div>
                                 );
                               })}
