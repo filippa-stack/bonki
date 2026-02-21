@@ -718,10 +718,16 @@ export default function CardView() {
         onLeaveSession={isLive ? () => setShowLeaveConfirm(true) : undefined}
       />
 
-      {/* Step progress — neutral text only (hidden when from archive) */}
+      {/* Step progress — vertical dots on left edge (hidden when from archive) */}
       {cardViewMode === 'live' && !isFromArchive && (
         <motion.div
-          className="px-6 pt-8 pb-1"
+          style={{
+            position: 'fixed',
+            left: '16px',
+            top: '50%',
+            transform: 'translateY(-50%)',
+            zIndex: 20,
+          }}
           initial={isLive && !suppressEntryAnim ? { opacity: 0 } : false}
           animate={{ opacity: 1 }}
           transition={{ delay: isLive && !suppressEntryAnim ? BEAT_1 : 0, duration: BEAT_3, ease: EASE }}
