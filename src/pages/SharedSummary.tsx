@@ -1,135 +1,111 @@
 import { useState, useMemo, useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { useApp } from '@/contexts/AppContext';
-import { formatDistanceToNow } from 'date-fns';
-import { sv } from 'date-fns/locale';
 import { useAuth } from '@/contexts/AuthContext';
-import { useSpaceSnapshot } from '@/hooks/useSpaceSnapshot';
-import { selectExploredCardIds } from '@/selectors/spaceSnapshotSelectors';
 import { useCoupleSpaceContext } from '@/contexts/CoupleSpaceContext';
 import { supabase } from '@/integrations/supabase/client';
 import { useDevState } from '@/contexts/DevStateContext';
 import Header from '@/components/Header';
 
-export interface SharedNoteRow {
-  id: string;
-  card_id: string;
-  section_id: string;
-  prompt_id: string;
-  content: string;
-  is_highlight: boolean;
-  author_label: string | null;
-  shared_at: string | null;
-  created_at: string;
-  updated_at: string;
-  user_id: string;
-}
-
-interface JournalEntry {
+interface CompletedEntry {
+  sessionId: string;
   cardId: string;
   cardTitle: string;
   categoryTitle: string;
-  completedAt: string | null;
+  completedAt: string;
   excerpt: string;
 }
 
 export default function SharedSummary() {
-  const { t } = useTranslation();
   const navigate = useNavigate();
-  const { categories, getCardById, getCategoryById, cards } = useApp();
+  const { getCardById, getCategoryById } = useApp();
   const { user } = useAuth();
   const { space } = useCoupleSpaceContext();
-  const { snapshot } = useSpaceSnapshot(user?.id ?? null, space?.id ?? null);
 
-  const [sharedNotes, setSharedNotes] = useState<SharedNoteRow[]>([]);
+  const [entries, setEntries] = useState<CompletedEntry[]>([]);
   const [loading, setLoading] = useState(true);
 
-  // Fetch completed sessions for dates
-  const [sessionDates, setSessionDates] = useState<Record<string, string>>({});
+  const devState = useDevState();
 
   useEffect(() => {
-    if (!user || !space) {
-      setLoading(false);
-      return;
-    }
+    if (!user || !space) { setLoading(false); return; }
 
-    const fetchData = async () => {
+    let cancelled = false;
+
+    const fetch = async () => {
       setLoading(true);
 
-      const [notesRes, sessionsRes] = await Promise.all([
-        supabase
-          .from('prompt_notes')
-          .select('*')
-          .eq('couple_space_id', space.id)
-          .eq('visibility', 'shared')
-          .order('created_at', { ascending: false }),
-        supabase
-          .from('card_sessions')
-          .select('card_id, completed_at')
-          .eq('couple_space_id', space.id)
-          .not('completed_at', 'is', null)
-          .order('completed_at', { ascending: false }),
-      ]);
+      // 1. Get all completed sessions
+      const { data: sessions } = await supabase
+        .from('couple_sessions')
+        .select('id, card_id, category_id, started_at, ended_at')
+        .eq('couple_space_id', space.id)
+        .eq('status', 'completed')
+        .order('started_at', { ascending: false });
 
-      if (!notesRes.error) setSharedNotes(notesRes.data || []);
-      if (!sessionsRes.error) {
-        const dates: Record<string, string> = {};
-        for (const s of sessionsRes.data || []) {
-          if (!dates[s.card_id] && s.completed_at) dates[s.card_id] = s.completed_at;
-        }
-        setSessionDates(dates);
+      if (cancelled || !sessions?.length) { setLoading(false); return; }
+
+      // 2. Get first non-empty reflection per session for excerpt
+      const sessionIds = sessions.map(s => s.id);
+      const { data: reflections } = await supabase
+        .from('step_reflections')
+        .select('session_id, text, step_index')
+        .in('session_id', sessionIds)
+        .eq('state', 'locked')
+        .neq('text', '')
+        .order('step_index', { ascending: true });
+
+      if (cancelled) return;
+
+      // Build a map: session_id -> first reflection text
+      const excerptMap: Record<string, string> = {};
+      for (const r of reflections || []) {
+        if (!excerptMap[r.session_id]) excerptMap[r.session_id] = r.text;
       }
+
+      const built: CompletedEntry[] = sessions
+        .filter(s => s.card_id)
+        .map(s => {
+          const card = getCardById(s.card_id!);
+          const category = s.category_id ? getCategoryById(s.category_id) : null;
+          return {
+            sessionId: s.id,
+            cardId: s.card_id!,
+            cardTitle: card?.title || s.card_id!,
+            categoryTitle: category?.title || '',
+            completedAt: s.ended_at || s.started_at,
+            excerpt: excerptMap[s.id] || '',
+          };
+        });
+
+      setEntries(built);
       setLoading(false);
     };
 
-    fetchData();
-  }, [user, space]);
+    fetch();
+    return () => { cancelled = true; };
+  }, [user, space, getCardById, getCategoryById]);
 
-  const exploredIds = selectExploredCardIds(snapshot);
-
-  // Build journal entries from explored cards
-  const journalEntries: JournalEntry[] = useMemo(() => {
-    return cards
-      .filter(c => exploredIds.includes(c.id))
-      .map(card => {
-        const category = getCategoryById(card.categoryId);
-        // Find most recent shared note for this card as excerpt
-        const cardNotes = sharedNotes.filter(n => n.card_id === card.id);
-        const excerpt = cardNotes.length > 0 ? cardNotes[0].content : '';
-        const completedAt = sessionDates[card.id] || null;
-
-        return {
-          cardId: card.id,
-          cardTitle: card.title,
-          categoryTitle: category?.title || '',
-          completedAt,
-          excerpt,
-        };
-      })
-      .sort((a, b) => {
-        // Most recently completed first
-        if (a.completedAt && b.completedAt) return b.completedAt.localeCompare(a.completedAt);
-        if (a.completedAt) return -1;
-        if (b.completedAt) return 1;
-        return 0;
-      });
-  }, [cards, exploredIds, getCategoryById, sharedNotes, sessionDates]);
-
-  const devState = useDevState();
   const hasContent = devState === 'archiveEmpty' ? false
     : devState === 'archiveWithHistory' ? true
-    : journalEntries.length > 0;
+    : entries.length > 0;
   const effectiveLoading = devState ? false : loading;
+
+  const formatDate = (iso: string) => {
+    const d = new Date(iso);
+    const day = d.getDate();
+    const month = d.toLocaleString('sv-SE', { month: 'short' }).replace('.', '');
+    return `${day} ${month}`;
+  };
 
   return (
     <div className="min-h-screen page-bg">
-      <Header title={t('shared.title')} showBack backTo="/" showSettings />
+      <Header title="Era samtal" showBack backTo="/" />
 
       <div className="px-6 pb-8 mx-auto" style={{ maxWidth: 540, paddingTop: '32px' }}>
 
-        {/* ─── Title ─── */}
+        {/* Subtitle */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -137,14 +113,13 @@ export default function SharedSummary() {
           className="text-center"
         >
           <p className="type-body text-muted-foreground/50">
-            Här finns det ni har utforskat tillsammans.
+            Vad ni burit med er.
           </p>
         </motion.div>
 
-        {/* 48px before content */}
         <div style={{ height: '48px' }} />
 
-        {/* ─── Empty state ─── */}
+        {/* Empty state */}
         {!hasContent && !effectiveLoading && (
           <motion.div
             initial={{ opacity: 0 }}
@@ -156,7 +131,7 @@ export default function SharedSummary() {
               Här växer det ni delar.
             </p>
             <p className="type-body text-muted-foreground/57 mt-8">
-              När ni har haft ert första samtal, börjar rummet ta form.
+              Ert första avslutade samtal dyker upp här.
             </p>
           </motion.div>
         )}
@@ -170,9 +145,9 @@ export default function SharedSummary() {
         ) : (
           hasContent && (
             <div className="flex flex-col" style={{ gap: '32px' }}>
-              {journalEntries.map((entry, index) => (
+              {entries.map((entry, index) => (
                 <motion.button
-                  key={entry.cardId}
+                  key={`${entry.sessionId}`}
                   initial={{ opacity: 0, y: 8 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{
@@ -183,65 +158,47 @@ export default function SharedSummary() {
                   onClick={() => navigate(`/card/${entry.cardId}?revisit=true&from=archive`)}
                   className="w-full text-left group"
                 >
-                  {/* Category */}
+                  {/* Card title */}
                   <p
-                    className="type-meta uppercase tracking-[0.08em]"
+                    className="type-h3"
                     style={{
-                      color: 'var(--color-text-secondary)',
-                      opacity: 0.5,
-                    }}
-                  >
-                    {entry.categoryTitle}
-                  </p>
-
-                  {/* Topic title — 8px below category */}
-                  <p
-                    className="type-h2 group-hover:text-foreground transition-colors"
-                    style={{
-                      marginTop: '8px',
                       color: 'var(--color-text-primary)',
                       opacity: 0.9,
+                      fontFamily: 'var(--font-serif)',
                     }}
                   >
                     {entry.cardTitle}
                   </p>
 
-                  {/* Date — 8px below title */}
-                  {entry.completedAt && (
-                    <p
-                      className="type-meta"
-                      style={{
-                        marginTop: '8px',
-                        color: 'var(--color-text-secondary)',
-                        opacity: 0.35,
-                      }}
-                    >
-                      {formatDistanceToNow(new Date(entry.completedAt), {
-                        addSuffix: true,
-                        locale: sv,
-                      })}
-                    </p>
-                  )}
+                  {/* Category + date */}
+                  <p
+                    className="type-meta mt-1"
+                    style={{
+                      color: 'var(--color-text-secondary)',
+                      opacity: 0.45,
+                    }}
+                  >
+                    {entry.categoryTitle}{entry.categoryTitle && ' · '}{formatDate(entry.completedAt)}
+                  </p>
 
-                  {/* Reflection excerpt — 16px below, max 3 lines with fade */}
+                  {/* Reflection excerpt — max 2 lines */}
                   {entry.excerpt && (
                     <div
                       className="relative overflow-hidden"
                       style={{
-                        marginTop: '16px',
-                        maxHeight: 'calc(1.6em * 3)',
+                        marginTop: '10px',
+                        maxHeight: 'calc(1.6em * 2)',
                       }}
                     >
                       <p
                         className="type-body"
                         style={{
                           color: 'var(--color-text-secondary)',
-                          opacity: 0.6,
+                          opacity: 0.5,
                         }}
                       >
                         {entry.excerpt}
                       </p>
-                      {/* Fade-out gradient */}
                       <div
                         className="absolute bottom-0 left-0 right-0 pointer-events-none"
                         style={{

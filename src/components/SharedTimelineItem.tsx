@@ -1,6 +1,18 @@
 import { motion } from 'framer-motion';
 import { ExternalLink, Star } from 'lucide-react';
-import type { SharedNoteRow } from '@/pages/SharedSummary';
+export interface SharedNoteRow {
+  id: string;
+  card_id: string;
+  section_id: string;
+  prompt_id: string;
+  content: string;
+  is_highlight: boolean;
+  author_label: string | null;
+  shared_at: string | null;
+  created_at: string;
+  updated_at: string;
+  user_id: string;
+}
 
 interface SharedTimelineItemProps {
   note: SharedNoteRow & {
