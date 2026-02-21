@@ -65,7 +65,7 @@ export default function SessionStepReflection({
       <div
         className="overflow-hidden"
         style={{
-          border: '0.5px solid hsl(var(--border) / 0.03)',
+          border: '1px solid hsl(var(--border) / 0.18)',
           borderRadius: '24px',
           backgroundColor: 'hsl(30 12% 94% / 0.35)',
           padding: '32px 32px',
@@ -79,14 +79,14 @@ export default function SessionStepReflection({
           style={{ color: 'var(--color-ink)' }}
         />
         <div className="flex items-center pt-3">
-          <span className="type-meta flex items-center gap-1" style={{ color: 'var(--color-text-secondary)', opacity: 0.2 }}>
+          <span className="type-meta flex items-center gap-1" style={{ color: 'var(--color-text-secondary)', opacity: 0.5 }}>
             <Lock className="w-2.5 h-2.5" />
             Privat
           </span>
         </div>
       </div>
 
-      <div className="mt-24 pb-8">
+      <div className="mt-12 pb-8">
         <button
           onClick={handleAdvance}
           disabled={submitting}
