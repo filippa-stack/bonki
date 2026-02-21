@@ -14,7 +14,7 @@ import { CoupleSpaceProvider } from "@/contexts/CoupleSpaceContext";
 import { NormalizedSessionProvider } from "@/contexts/NormalizedSessionContext";
 import PageTransition from "@/components/PageTransition";
 import Index from "./pages/Index";
-import Categories from "./pages/Categories";
+
 import Category from "./pages/Category";
 import CardView from "./pages/CardView";
 
@@ -60,7 +60,7 @@ function ProtectedRoutes() {
         <AnimatePresence mode="wait">
           <Routes location={location} key={location.pathname}>
             <Route path="/" element={<PageTransition><Index /></PageTransition>} />
-            <Route path="/categories" element={<PageTransition><Categories /></PageTransition>} />
+            <Route path="/categories" element={<Navigate to="/" replace />} />
             <Route path="/category/:categoryId" element={<PageTransition><Category /></PageTransition>} />
             <Route path="/card/:cardId" element={<PageTransition><CardView /></PageTransition>} />
             <Route path="/saved" element={<Navigate to="/shared" replace />} />

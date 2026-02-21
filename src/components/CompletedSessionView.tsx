@@ -252,7 +252,7 @@ export default function CompletedSessionView({
           >
           <div className="space-y-5">
             <button
-              onClick={() => navigate('/categories')}
+              onClick={() => navigate('/')}
               className="cta-primary"
             >
               Utforska fler ämnen

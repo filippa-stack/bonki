@@ -236,6 +236,14 @@ export default function Home() {
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: 0.2 + index * 0.03, duration: 0.22, ease: [0.4, 0, 0.2, 1] }}
                     >
+                      {index === 0 && guidedCategoryId === 'emotional-intimacy' && (
+                        <p
+                          className="type-meta mb-2"
+                          style={{ color: 'var(--color-text-secondary)', opacity: 0.7 }}
+                        >
+                          Rekommenderad start
+                        </p>
+                      )}
                       <div
                         onClick={() => { markNavigated(); navigate(`/category/${category.id}`); }}
                         role="button"
