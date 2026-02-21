@@ -6,6 +6,11 @@ import { BEAT_1, BEAT_2, BEAT_3, EASE } from '@/lib/motion';
 
 const slides = [
   {
+    title: 'Utforska i er takt.',
+    content: 'Välj ett ämne. Läs tillsammans. Reflektera var för sig.\n\nDet finns inget rätt sätt — bara ert.',
+    cta: 'Fortsätt',
+  },
+  {
     title: 'Ett gemensamt rum.',
     content: 'För samtal ni vill hålla levande.\n\nStill Us är skapat för er — ett utrymme att mötas i, mitt i vardagen.',
     cta: 'Fortsätt',
@@ -13,11 +18,6 @@ const slides = [
   {
     title: 'Omsorgsfullt utvecklat.',
     content: 'Varje samtal bygger på psykologisk forskning om relationer och anknytning.\n\nFormulerat för att skapa klarhet, närhet och förståelse — i er takt.',
-    cta: 'Fortsätt',
-  },
-  {
-    title: 'Utforska i er takt.',
-    content: 'Välj ett ämne. Läs tillsammans. Reflektera var för sig.\n\nDet finns inget rätt sätt — bara ert.',
     cta: 'Kom igång',
   },
 ];
