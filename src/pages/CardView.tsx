@@ -469,7 +469,7 @@ export default function CardView() {
         animate={{ opacity: 1 }}
         transition={{ duration: EMOTION, ease: [...EASE] }}
       >
-        <Header title={category?.title} showBack backTo={category ? `/category/${category.id}` : '/'} />
+        <Header title={card.title} showBack backTo={category ? `/category/${category.id}` : '/'} />
         <div className="px-6 pt-title-above pb-16">
 
           {/* Heading — grounded, intentional */}
@@ -501,7 +501,7 @@ export default function CardView() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.54, duration: EMOTION, ease: [0, 0, 0.2, 1] }}
-            className="max-w-md mx-auto mt-24 flex flex-col items-center"
+            className="max-w-md mx-auto mt-6 flex flex-col items-center"
           >
             <button
               onClick={() => navigate('/shared')}
@@ -629,7 +629,7 @@ export default function CardView() {
       )}
 
       {/* Section content — centered, max 520px for readability */}
-      <div className="px-6 pt-4 pb-8 relative">
+      <div className="px-6 pt-4 relative" style={{ paddingBottom: 'calc(24px + env(safe-area-inset-bottom, 0px))' }}>
         <div className="max-w-[520px] mx-auto">
         <AnimatePresence mode="wait">
           {currentSection && (
