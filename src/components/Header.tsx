@@ -66,13 +66,11 @@ export default function Header({
 
   return (
     <header
-      className={`sticky top-0 z-10 ${isImmersive ? '' : minimal ? '' : 'backdrop-blur-md border-b border-black/[0.04]'}`}
+      className={`sticky top-0 z-10`}
       style={{
         backgroundColor: isImmersive
           ? 'var(--session-header-bg)'
-          : minimal
-            ? 'transparent'
-            : 'hsl(var(--surface-chrome) / 0.85)',
+          : 'hsl(158, 35%, 18%)',
         filter: isImmersive ? 'saturate(0.75) brightness(0.9)' : undefined,
         boxShadow: 'none',
       }}
@@ -138,8 +136,11 @@ export default function Header({
                 className="flex items-center justify-center shrink-0"
                 style={{ width: '44px', height: '44px', marginLeft: '-10px' }}
                 aria-label="Tillbaka"
+                onPointerDown={(e) => { const svg = e.currentTarget.querySelector('svg'); if (svg) svg.style.opacity = '1'; }}
+                onPointerUp={(e) => { const svg = e.currentTarget.querySelector('svg'); if (svg) svg.style.opacity = '0.75'; }}
+                onPointerLeave={(e) => { const svg = e.currentTarget.querySelector('svg'); if (svg) svg.style.opacity = '0.75'; }}
               >
-                <ArrowLeft className="w-5 h-5" style={{ color: 'var(--color-text-primary)', opacity: 0.55 }} />
+                <ArrowLeft className="w-5 h-5" style={{ color: 'white', opacity: 0.75, transition: 'opacity 150ms ease' }} />
               </button>
             )}
             {!showBack && (
@@ -154,7 +155,10 @@ export default function Header({
 
           {/* Center title */}
           {title && (
-            <h1 className="font-serif text-lg font-medium truncate text-foreground absolute left-1/2 -translate-x-1/2 max-w-[50%] text-center pointer-events-none">
+            <h1
+              className="font-serif text-lg font-medium truncate absolute left-1/2 -translate-x-1/2 max-w-[50%] text-center pointer-events-none"
+              style={{ color: 'white', opacity: 0.90 }}
+            >
               {title}
             </h1>
           )}
@@ -164,8 +168,11 @@ export default function Header({
             {showSharedLink && (
               <button
                 onClick={() => navigate('/shared')}
-                className="text-muted-foreground/50 hover:text-muted-foreground transition-colors"
+                style={{ color: 'white', opacity: 0.65, transition: 'opacity 150ms ease' }}
                 aria-label={t('header.shared_space')}
+                onPointerDown={(e) => { e.currentTarget.style.opacity = '1'; }}
+                onPointerUp={(e) => { e.currentTarget.style.opacity = '0.65'; }}
+                onPointerLeave={(e) => { e.currentTarget.style.opacity = '0.65'; }}
               >
                 <BookOpen className="w-[18px] h-[18px]" />
               </button>
@@ -209,7 +216,7 @@ function SettingsPopover({
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Button variant="ghost" size="icon" className="text-muted-foreground/60 hover:text-muted-foreground">
+        <Button variant="ghost" size="icon" style={{ color: 'white', opacity: 0.65 }} className="hover:opacity-100">
           <Settings className="w-4 h-4" />
         </Button>
       </PopoverTrigger>
