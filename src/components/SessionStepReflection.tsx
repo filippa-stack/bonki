@@ -72,32 +72,31 @@ export default function SessionStepReflection({
   return (
     /* 48px above reflection, 32px between reflection and button */
     <div className="mt-12 mb-1">
-      <div
-        className="overflow-hidden"
+      <textarea
+        value={displayText}
+        onChange={(e) => handleChange(e.target.value)}
+        placeholder="Skriv fritt."
+        inputMode="text"
+        autoCorrect="on"
+        autoCapitalize="sentences"
+        spellCheck={true}
+        className="w-full min-h-[120px] resize-none focus:outline-none focus:ring-0 text-sm leading-relaxed placeholder:[color:#8C8681]"
         style={{
-          border: '1px solid hsl(var(--border) / 0.18)',
-          borderRadius: '24px',
-          backgroundColor: 'hsl(30 12% 94% / 0.35)',
-          padding: '32px 32px',
+          color: 'var(--color-ink)',
+          background: 'var(--surface-raised)',
+          border: '1px solid hsl(var(--border) / 0.20)',
+          borderRadius: '12px',
+          padding: '16px',
+          transition: 'border-color 200ms ease',
         }}
-      >
-        <textarea
-          value={displayText}
-          onChange={(e) => handleChange(e.target.value)}
-          placeholder="Skriv fritt."
-          inputMode="text"
-          autoCorrect="on"
-          autoCapitalize="sentences"
-          spellCheck={true}
-          className="w-full min-h-[120px] bg-transparent resize-none focus:outline-none focus:ring-0 text-sm leading-relaxed placeholder:[color:#8C8681]"
-          style={{ color: 'var(--color-ink)' }}
-        />
-        <div className="flex items-center pt-3">
-          <span className="type-meta flex items-center gap-1" style={{ color: 'var(--color-text-secondary)', opacity: 0.5 }}>
-            <Lock className="w-2.5 h-2.5" />
-            Privat
-          </span>
-        </div>
+        onFocus={(e) => { e.currentTarget.style.borderColor = 'hsl(var(--border) / 0.40)'; }}
+        onBlur={(e) => { e.currentTarget.style.borderColor = 'hsl(var(--border) / 0.20)'; }}
+      />
+      <div className="flex items-center mt-2">
+        <span className="type-meta flex items-center gap-1" style={{ color: 'var(--text-tertiary)' }}>
+          <Lock className="w-2.5 h-2.5" />
+          Privat
+        </span>
       </div>
 
       {stepIndex === 0 && isFirstVisit && (
