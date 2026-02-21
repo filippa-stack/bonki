@@ -741,6 +741,23 @@ export default function CardView() {
                 />
               </motion.div>
 
+              {/* ── Ritual hint (live only) ── */}
+              {cardViewMode === 'live' && (() => {
+                const stageKey = STEP_ORDER[currentStepIndex];
+                const hint = STEP_RITUAL_HINTS[stageKey];
+                if (!hint) return null;
+                return (
+                  <div className="mt-8 mb-8 text-center">
+                    <p
+                      className="type-meta italic"
+                      style={{ color: 'var(--color-text-secondary)', opacity: 0.55 }}
+                    >
+                      {isTogether ? hint.together : hint.solo}
+                    </p>
+                  </div>
+                );
+              })()}
+
               {/* ── MODE: live — session reflection (single writer) ── */}
               {cardViewMode === 'live' && cardId && (() => {
                 const sectionPromptCount = currentSection.prompts?.length ?? 1;
