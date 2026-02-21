@@ -183,33 +183,40 @@ export default function Home() {
   }, [resumeBannerCardId, cards]);
 
   const recommendation = useMemo<{ categoryId: string; label: string } | 'all-done' | null>(() => {
-    // Priority 1: First fully unstarted category (zero completed AND zero in-progress)
-    for (const catId of RECOMMENDED_CATEGORY_ORDER) {
-      if (catId === resumeBannerCategoryId) continue; // skip — resume banner handles it
+    // Compute per-category stats
+    const stats = RECOMMENDED_CATEGORY_ORDER.map(catId => {
       const catCards = cards.filter(c => c.categoryId === catId);
-      if (catCards.length === 0) continue;
-      const hasCompleted = catCards.some(c => completedCardIds.includes(c.id));
-      const hasInProgress = catCards.some(c => inProgressCardIds.includes(c.id));
-      if (!hasCompleted && !hasInProgress) {
-        return { categoryId: catId, label: 'Rekommenderad start' };
-      }
-    }
-    // Priority 2/3: Category with most remaining uncompleted cards
-    let best: { catId: string; remaining: number } | null = null;
-    for (const catId of RECOMMENDED_CATEGORY_ORDER) {
-      if (catId === resumeBannerCategoryId) continue;
-      const catCards = cards.filter(c => c.categoryId === catId);
-      if (catCards.length === 0) continue;
-      const completedCount = catCards.filter(c => completedCardIds.includes(c.id)).length;
-      const remaining = catCards.length - completedCount;
-      if (remaining > 0 && (!best || remaining > best.remaining)) {
-        best = { catId, remaining };
-      }
+      const completedCards = catCards.filter(c => completedCardIds.includes(c.id));
+      const inProgressCards = catCards.filter(c => inProgressCardIds.includes(c.id) && !completedCardIds.includes(c.id));
+      return {
+        catId,
+        totalCards: catCards.length,
+        completedCount: completedCards.length,
+        isFullyCompleted: completedCards.length === catCards.length && catCards.length > 0,
+        hasInProgress: inProgressCards.length > 0,
+        isUntouched: completedCards.length === 0 && inProgressCards.length === 0,
+        remaining: catCards.length - completedCards.length,
+      };
+    }).filter(s => s.totalCards > 0);
+
+    // Priority 1: First in-progress category (not fully completed, not resume banner)
+    const inProg = stats.find(s => s.hasInProgress && !s.isFullyCompleted && s.catId !== resumeBannerCategoryId);
+    if (inProg) return { categoryId: inProg.catId, label: 'Fortsätt där ni är' };
+
+    // Priority 2: First untouched category
+    const untouched = stats.find(s => s.isUntouched && s.catId !== resumeBannerCategoryId);
+    if (untouched) return { categoryId: untouched.catId, label: 'Rekommenderad start' };
+
+    // Priority 3: Partially completed with most remaining
+    let best: typeof stats[0] | null = null;
+    for (const s of stats) {
+      if (s.isFullyCompleted || s.catId === resumeBannerCategoryId) continue;
+      if (!best || s.remaining > best.remaining) best = s;
     }
     if (best) return { categoryId: best.catId, label: 'Fortsätt utforska' };
+
     // Priority 4: All done
-    const hasAnyCards = cards.some(c => RECOMMENDED_CATEGORY_ORDER.includes(c.categoryId as any));
-    return hasAnyCards ? 'all-done' : null;
+    return stats.length > 0 ? 'all-done' : null;
   }, [cards, completedCardIds, inProgressCardIds, resumeBannerCategoryId]);
 
   // showRecommendation is the same as recommendation now (filtering already done above)
@@ -360,11 +367,12 @@ export default function Home() {
               return (
                 <div className="px-6" style={{ marginBottom: '20px' }}>
                   <p style={{
-                    fontFamily: 'Inter, sans-serif',
                     fontSize: '12px',
-                    textTransform: 'uppercase',
-                    letterSpacing: '0.08em',
+                    fontWeight: '500',
                     color: '#C4821D',
+                    letterSpacing: '0.06em',
+                    textTransform: 'uppercase' as const,
+                    opacity: 0.85,
                     marginBottom: '10px',
                     display: 'block',
                   }}>
@@ -421,7 +429,8 @@ export default function Home() {
                   const catCards = cards.filter((c) => c.categoryId === category.id);
                   const completedCount = catCards.filter(c => completedCardIds.includes(c.id)).length;
                   const allCompleted = completedCount === catCards.length && catCards.length > 0;
-                  const someCompleted = completedCount > 0 && !allCompleted;
+                  const hasInProgressCards = catCards.some(c => inProgressCardIds.includes(c.id) && !completedCardIds.includes(c.id));
+                  const someStarted = (completedCount > 0 || hasInProgressCards) && !allCompleted;
                   const isPrimary = index === 0;
 
                   return (
@@ -502,7 +511,7 @@ export default function Home() {
                           <div className="flex items-center gap-2 shrink-0">
                             {allCompleted ? (
                               <Check size={13} style={{ color: '#1E3D2F', opacity: 0.50, marginRight: '10px' }} />
-                            ) : someCompleted ? (
+                            ) : someStarted ? (
                               <span style={{
                                 display: 'inline-block',
                                 width: '7px',
