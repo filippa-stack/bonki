@@ -7,6 +7,8 @@ interface SessionStepReflectionProps {
   stepIndex: number;
   /** When true, button shows "Avsluta samtalet" instead of "Fortsätt" */
   isLastStep?: boolean;
+  /** First visit to this card (no completed session exists) */
+  isFirstVisit?: boolean;
   /** Called after reflection is persisted — parent calls complete_couple_session_step */
   onLocked?: () => void | Promise<void>;
   /** Called to go back one step — only shown when stepIndex > 0 */
@@ -17,6 +19,7 @@ export default function SessionStepReflection({
   sessionId = null,
   stepIndex,
   isLastStep = false,
+  isFirstVisit = false,
   onLocked,
   onBack,
 }: SessionStepReflectionProps) {
@@ -85,6 +88,15 @@ export default function SessionStepReflection({
           </span>
         </div>
       </div>
+
+      {stepIndex === 0 && isFirstVisit && (
+        <p
+          className="type-meta mt-3"
+          style={{ color: 'var(--color-text-secondary)', opacity: 0.5 }}
+        >
+          Dina svar sparas i Era samtal efter avslutat kort.
+        </p>
+      )}
 
       <div className="mt-12 pb-8">
         <button
