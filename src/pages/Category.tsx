@@ -58,8 +58,10 @@ export default function Category() {
         {/* Saffron entryLine — the color-pop moment */}
         {category.entryLine && (
           <p
-            className="text-center mb-7"
+            className="text-center"
             style={{
+              marginTop: '24px',
+              marginBottom: '28px',
               fontFamily: "'Cormorant Garamond', serif",
               fontSize: '18px',
               fontStyle: 'italic',
