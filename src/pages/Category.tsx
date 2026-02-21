@@ -42,15 +42,15 @@ export default function Category() {
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: 'var(--color-bg-base)' }}>
-      <Header title={category?.title} showBack backTo="/" showSharedLink />
+      <Header title={category?.title} showBack backTo="/" />
 
-      <div className="px-6 pt-8 pb-0">
+      <div className="px-6 pt-8 pb-0 text-center">
         <motion.h1
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.28, ease: [0.4, 0.0, 0.2, 1] }}
-          className="type-h1"
-          style={{ color: 'var(--color-text-primary)' }}
+          className="font-serif"
+          style={{ color: 'var(--color-text-primary)', fontSize: '32px' }}
         >
           {category.title}
         </motion.h1>
@@ -59,15 +59,16 @@ export default function Category() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: BEAT_1, duration: 0.2, ease: EASE }}
-            className="type-body mt-4 max-w-[280px]"
-            style={{ color: 'var(--color-text-secondary)', opacity: 0.8 }}
+            className="type-body mt-4 mx-auto max-w-[280px]"
+            style={{ color: 'var(--color-text-secondary)', opacity: 0.8, marginBottom: '40px' }}
           >
             {category.entryLine}
           </motion.p>
         )}
+        {!category.entryLine && <div style={{ height: '40px' }} />}
       </div>
 
-      <div className="px-6 pt-12 pb-24 flex flex-col gap-6">
+      <div className="px-6 pt-0 pb-24 flex flex-col">
         {cards.map((card, index) => (
           <CardEntry
             key={card.id}
@@ -97,7 +98,7 @@ interface CardEntryProps {
   isLast?: boolean;
 }
 
-function CardEntry({ card, index, isCompleted = false, onNavigate }: CardEntryProps) {
+function CardEntry({ card, index, isCompleted = false, onNavigate, isLast = false }: CardEntryProps) {
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -116,17 +117,16 @@ function CardEntry({ card, index, isCompleted = false, onNavigate }: CardEntryPr
         }}
         className="w-full cursor-pointer flex items-center gap-3 hover:opacity-80 focus-visible:outline-none"
         style={{
-          backgroundColor: 'hsl(36, 20%, 97%)',
-          border: '1px solid hsl(36, 15%, 88%)',
-          borderRadius: '14px',
-          padding: '20px 18px',
-          marginBottom: '10px',
+          padding: '20px 0',
+          borderBottom: isLast ? 'none' : '1px solid hsl(var(--border) / 0.12)',
         }}
       >
         <div className="flex-1 min-w-0">
           <h3
-            className="type-h2"
+            className="font-serif"
             style={{
+              fontSize: '18px',
+              fontWeight: 400,
               color: isCompleted ? 'var(--color-text-secondary)' : 'var(--color-text-primary)',
             }}
           >
@@ -135,7 +135,7 @@ function CardEntry({ card, index, isCompleted = false, onNavigate }: CardEntryPr
           {card.subtitle && (
             <p
               className="type-meta mt-px"
-              style={{ color: 'var(--color-text-secondary)', opacity: 0.60 }}
+              style={{ color: 'var(--color-text-secondary)' }}
             >
               {card.subtitle}
             </p>
