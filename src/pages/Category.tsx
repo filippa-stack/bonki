@@ -18,10 +18,13 @@ export default function Category() {
   const { space } = useCoupleSpaceContext();
 
   const [completedCardIds, setCompletedCardIds] = useState<string[]>([]);
+  const [inProgressCardIds, setInProgressCardIds] = useState<string[]>([]);
 
   useEffect(() => {
     if (!space?.id) return;
     let cancelled = false;
+
+    // Fetch completed sessions
     supabase
       .from('couple_sessions')
       .select('card_id')
@@ -32,6 +35,19 @@ export default function Category() {
           setCompletedCardIds(data.map(s => s.card_id).filter(Boolean) as string[]);
         }
       });
+
+    // Fetch in-progress sessions
+    supabase
+      .from('couple_sessions')
+      .select('card_id')
+      .eq('couple_space_id', space.id)
+      .in('status', ['active', 'abandoned', 'in_progress'])
+      .then(({ data }) => {
+        if (!cancelled && data) {
+          setInProgressCardIds(data.map(s => s.card_id).filter(Boolean) as string[]);
+        }
+      });
+
     return () => { cancelled = true; };
   }, [space?.id]);
 
@@ -72,16 +88,21 @@ export default function Category() {
             {category.entryLine}
           </p>
         )}
-        {cards.map((card, index) => (
-          <CardEntry
-            key={card.id}
-            card={card}
-            index={index}
-            isCompleted={completedCardIds.includes(card.id)}
-            onNavigate={() => navigate(`/card/${card.id}`)}
-            isLast={index === cards.length - 1}
-          />
-        ))}
+        {cards.map((card, index) => {
+          const isCompleted = completedCardIds.includes(card.id);
+          const isInProgress = !isCompleted && inProgressCardIds.includes(card.id);
+          return (
+            <CardEntry
+              key={card.id}
+              card={card}
+              index={index}
+              isCompleted={isCompleted}
+              isInProgress={isInProgress}
+              onNavigate={() => navigate(`/card/${card.id}`)}
+              isLast={index === cards.length - 1}
+            />
+          );
+        })}
       </div>
     </div>
   );
@@ -95,11 +116,12 @@ interface CardEntryProps {
   };
   index: number;
   isCompleted?: boolean;
+  isInProgress?: boolean;
   onNavigate: () => void;
   isLast?: boolean;
 }
 
-function CardEntry({ card, index, isCompleted = false, onNavigate, isLast = false }: CardEntryProps) {
+function CardEntry({ card, index, isCompleted = false, isInProgress = false, onNavigate, isLast = false }: CardEntryProps) {
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -125,17 +147,33 @@ function CardEntry({ card, index, isCompleted = false, onNavigate, isLast = fals
           borderRadius: '14px',
         }}
       >
-        <div className="flex-1 min-w-0">
-          <h3
-            className="font-serif"
-            style={{
-              fontSize: '17px',
-              fontWeight: 500,
-              color: isCompleted ? 'var(--color-text-secondary)' : 'var(--color-text-primary)',
-            }}
-          >
-            {card.title}
-          </h3>
+        <div className="flex-1 min-w-0 flex items-start">
+          {isInProgress && (
+            <span
+              style={{
+                display: 'inline-block',
+                width: '7px',
+                height: '7px',
+                borderRadius: '50%',
+                backgroundColor: '#C4821D',
+                opacity: 0.75,
+                marginRight: '10px',
+                marginTop: '7px',
+                flexShrink: 0,
+              }}
+            />
+          )}
+          <div className="min-w-0">
+            <h3
+              className="font-serif"
+              style={{
+                fontSize: '17px',
+                fontWeight: 500,
+                color: isCompleted ? 'var(--color-text-secondary)' : 'var(--color-text-primary)',
+              }}
+            >
+              {card.title}
+            </h3>
           {card.subtitle && (
             <p
               className="type-meta mt-px"
@@ -144,6 +182,7 @@ function CardEntry({ card, index, isCompleted = false, onNavigate, isLast = fals
               {card.subtitle}
             </p>
           )}
+          </div>
         </div>
         <div className="flex items-center gap-2 shrink-0">
           {isCompleted && (
