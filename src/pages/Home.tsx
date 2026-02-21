@@ -373,7 +373,7 @@ export default function Home() {
                             <h3
                               className="type-h3"
                             style={{
-                              color: allCompleted ? 'var(--text-tertiary)' : 'var(--text-primary)',
+                              color: 'var(--text-primary)',
                                 fontWeight: 500,
                                 fontSize: '16px',
                               }}
@@ -391,7 +391,7 @@ export default function Home() {
                           </div>
                           <div className="flex items-center gap-2 shrink-0">
                             {allCompleted ? (
-                              <Check size={13} style={{ color: '#1E3D2F', opacity: 0.50 }} />
+                              <Check size={13} style={{ color: '#1E3D2F', opacity: 0.50, marginRight: '10px' }} />
                             ) : someCompleted ? (
                               <span style={{
                                 display: 'inline-block',
