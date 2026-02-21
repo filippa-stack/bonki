@@ -167,6 +167,7 @@
   body {
     @apply bg-background text-foreground font-sans;
     font-family: var(--font-sans);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
     background-color: var(--color-bg);
     color: var(--color-ink);
     line-height: 1.6;

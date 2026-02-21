@@ -222,7 +222,7 @@ export default function Home() {
             <div style={{ height: '48px' }} />
 
             {/* Categories */}
-            <div className="px-6 pb-16">
+            <div className="px-6" style={{ paddingBottom: 'max(env(safe-area-inset-bottom, 0px), 64px)' }}>
               <div className="flex flex-col" style={{ gap: '24px' }}>
                 {sortedCategories.map((category, index) => {
                   const catCards = cards.filter((c) => c.categoryId === category.id);
