@@ -33,10 +33,10 @@ interface PromptItemProps {
  * No layout changes, only weight/tone/rhythm.
  */
 const DEPTH_GRAVITY: Record<string, React.CSSProperties> = {
-  opening:    { fontWeight: 500, color: 'var(--color-text-primary)', lineHeight: 1.55 },
-  reflective: { fontWeight: 500, color: 'hsl(30, 3%, 8%)',          lineHeight: 1.55 },
-  scenario:   { fontWeight: 500, color: 'hsl(30, 3%, 6%)',          lineHeight: 1.45 },
-  exercise:   { fontWeight: 500, color: 'hsl(30, 3%, 4%)',          lineHeight: 1.45 },
+  opening:    { fontWeight: 700, color: 'var(--color-text-primary)', lineHeight: 1.35 },
+  reflective: { fontWeight: 700, color: 'hsl(30, 3%, 8%)',          lineHeight: 1.35 },
+  scenario:   { fontWeight: 700, color: 'hsl(30, 3%, 6%)',          lineHeight: 1.35 },
+  exercise:   { fontWeight: 700, color: 'hsl(30, 3%, 4%)',          lineHeight: 1.35 },
 };
 
 /**
@@ -63,12 +63,12 @@ export default function PromptItem({ prompt, index, sectionType, preamble }: Pro
             {preamble}
           </p>
         )}
-        <div className="w-full text-center space-y-5">
+        <div className={`w-full text-center space-y-5 ${preamble ? 'mt-8' : ''}`}>
           {prompt.text.split('\n').filter(p => p.trim() !== '').map((para, i) => (
             <p
               key={i}
-              className="text-subheading"
-              style={gravity}
+              className="font-serif"
+              style={{ fontSize: '26px', ...gravity }}
             >
               {para}
             </p>
