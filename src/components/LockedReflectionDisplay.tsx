@@ -37,25 +37,30 @@ export default function LockedReflectionDisplay({ sessionId, stepIndex }: Props)
   if (loading || !text) return null;
 
   return (
-    <div className="mt-10 mb-1">
-      <div
-        className="rounded-card overflow-hidden"
+    <div className="mt-10 mb-1" style={{ paddingLeft: '16px' }}>
+      <p
+        className="font-serif whitespace-pre-wrap"
         style={{
-          border: '1px solid hsl(var(--border) / 0.6)',
-          backgroundColor: 'hsl(var(--muted) / 0.08)',
-          padding: '1.5rem',
+          fontSize: '14px',
+          lineHeight: 1.8,
+          color: 'var(--color-text-primary)',
+          opacity: 0.75,
         }}
       >
-        <p
-          className="text-sm leading-relaxed whitespace-pre-wrap"
-          style={{ color: 'var(--color-ink)' }}
-        >
-          {text}
-        </p>
-        <p className="mt-3 text-xs" style={{ color: 'var(--color-text-secondary)', opacity: 0.45 }}>
-          Din reflektion
-        </p>
-      </div>
+        {text}
+      </p>
+      <p
+        className="font-sans"
+        style={{
+          marginTop: '12px',
+          fontSize: '10px',
+          color: 'var(--color-text-secondary)',
+          opacity: 0.3,
+          letterSpacing: '0.04em',
+        }}
+      >
+        Din reflektion
+      </p>
     </div>
   );
 }
