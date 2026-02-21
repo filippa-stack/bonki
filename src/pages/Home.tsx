@@ -226,15 +226,11 @@ export default function Home() {
             {(() => {
               const activeSession = snapshot?.sessions;
               if (!activeSession) return null;
-              const { session, completions } = activeSession;
+              const { session } = activeSession;
               const cardId = session.card_id;
               if (!cardId) return null;
               const card = getCardById(cardId);
               const cat = session.category_id ? getCategoryById(session.category_id) : null;
-              const maxCompleted = completions.length > 0
-                ? Math.max(...completions.map(c => c.step_index))
-                : -1;
-              const nextStep = maxCompleted + 1;
 
               return (
                 <motion.div
@@ -244,11 +240,11 @@ export default function Home() {
                   transition={{ duration: 0.2, ease: [0.4, 0, 0.2, 1] }}
                 >
                   <div
-                    onClick={() => { markNavigated(); navigate(`/card/${cardId}?step=${nextStep}`); }}
+                    onClick={() => { markNavigated(); navigate(`/card/${cardId}`, { state: { resumed: true } }); }}
                     role="button"
                     tabIndex={0}
                     onKeyDown={(e) => {
-                      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); navigate(`/card/${cardId}?step=${nextStep}`); }
+                      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); navigate(`/card/${cardId}`, { state: { resumed: true } }); }
                     }}
                     className="cursor-pointer flex items-center justify-between"
                     style={{
@@ -260,8 +256,8 @@ export default function Home() {
                   >
                     <div className="flex-1 min-w-0">
                       <p
-                        className="type-meta uppercase"
-                        style={{ color: 'var(--color-text-secondary)', opacity: 0.60, letterSpacing: '0.08em', fontSize: '11px' }}
+                        className="font-sans uppercase"
+                        style={{ fontSize: '11px', color: 'var(--color-text-secondary)', opacity: 0.60, letterSpacing: '0.08em' }}
                       >
                         Fortsätt där ni slutade
                       </p>
@@ -269,7 +265,7 @@ export default function Home() {
                         {card?.title || cardId}
                       </p>
                       {cat && (
-                        <p className="type-meta mt-0.5" style={{ color: 'var(--color-text-secondary)', fontSize: '12px' }}>
+                        <p className="font-sans mt-0.5" style={{ fontSize: '12px', color: 'var(--color-text-secondary)' }}>
                           {cat.title}
                         </p>
                       )}
