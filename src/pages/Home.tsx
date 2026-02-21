@@ -280,7 +280,7 @@ export default function Home() {
                       >
                         Fortsätt där ni slutade
                       </p>
-                      <p className="font-serif text-xl font-medium mt-1 truncate" style={{ color: 'var(--text-primary)' }}>
+                      <p className="font-serif text-xl font-medium mt-1" style={{ color: 'var(--text-primary)', textWrap: 'balance', hyphens: 'auto' }}>
                         {card?.title || cardId}
                       </p>
                       {cat && (
@@ -295,8 +295,8 @@ export default function Home() {
               );
             })()}
 
-            {/* 32px spacing before categories */}
-            <div style={{ height: '32px' }} />
+            {/* 20px spacing before categories */}
+            <div style={{ height: '20px' }} />
 
             {/* Categories */}
             <div className="px-6" style={{ paddingBottom: 'max(env(safe-area-inset-bottom, 0px), 64px)' }}>
@@ -376,6 +376,8 @@ export default function Home() {
                               color: 'var(--text-primary)',
                                 fontWeight: 500,
                                 fontSize: '16px',
+                                textWrap: 'balance',
+                                hyphens: 'auto',
                               }}
                             >
                               {category.title}
