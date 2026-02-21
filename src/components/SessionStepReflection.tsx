@@ -114,7 +114,7 @@ export default function SessionStepReflection({
           {submitting
             ? 'Sparar…'
             : isLastStep
-            ? 'Avsluta samtalet'
+            ? 'Klar'
             : 'Fortsätt'}
         </button>
 
