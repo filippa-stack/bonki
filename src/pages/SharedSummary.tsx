@@ -125,7 +125,7 @@ export default function SharedSummary() {
 
   return (
     <div className="min-h-screen page-bg">
-      <Header showBack backTo="/" showSharedLink={false} />
+      <Header title={t('shared.title')} showBack backTo="/" showSettings />
 
       <div className="px-6 pb-10 mx-auto" style={{ maxWidth: 540, paddingTop: '32px' }}>
 
@@ -136,10 +136,7 @@ export default function SharedSummary() {
           transition={{ duration: 0.2, ease: [0.4, 0, 0.2, 1] }}
           className="text-center"
         >
-          <h1 className="font-serif text-xl font-medium text-foreground tracking-tight">
-            {t('shared.title')}
-          </h1>
-          <p className="text-sm text-muted-foreground/50" style={{ marginTop: '16px' }}>
+          <p className="text-sm text-muted-foreground/50">
             Här finns det ni har utforskat tillsammans.
           </p>
         </motion.div>
