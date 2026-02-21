@@ -1,6 +1,6 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ChevronRight, Check } from 'lucide-react';
+import { ChevronRight, Check, Circle } from 'lucide-react';
 import { BEAT_1, EASE } from '@/lib/motion';
 import { useTranslation } from 'react-i18next';
 import { useApp } from '@/contexts/AppContext';
@@ -101,6 +101,15 @@ function CardEntry({ card, index, isCompleted = false, onNavigate, isLast = fals
         }}
       >
         <div className="flex-1 min-w-0">
+        <div className="flex items-center gap-2">
+          {isCompleted && (
+            <Check
+              size={14}
+              className="flex-shrink-0"
+              style={{ color: 'hsl(158, 35%, 18%)', opacity: 0.60 }}
+              aria-label="Avklarad"
+            />
+          )}
           <h3
             className="font-serif"
             style={{
@@ -111,6 +120,7 @@ function CardEntry({ card, index, isCompleted = false, onNavigate, isLast = fals
           >
             {card.title}
           </h3>
+        </div>
           {card.subtitle && (
             <p
               className="type-meta mt-px"
@@ -120,14 +130,6 @@ function CardEntry({ card, index, isCompleted = false, onNavigate, isLast = fals
             </p>
           )}
         </div>
-        {isCompleted && (
-          <Check
-            size={14}
-            className="flex-shrink-0"
-            style={{ color: 'var(--color-text-secondary)', opacity: 0.3 }}
-            aria-label="Avklarad"
-          />
-        )}
         <ChevronRight
           size={16}
           strokeWidth={1.5}

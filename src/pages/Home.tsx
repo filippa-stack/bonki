@@ -11,7 +11,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useCoupleSpaceContext } from '@/contexts/CoupleSpaceContext';
 import CategoryCard from '@/components/CategoryCard';
 import Header from '@/components/Header';
-import { ArrowRight, Bookmark, Share2, ChevronDown, ChevronRight } from 'lucide-react';
+import { ArrowRight, Bookmark, Share2, ChevronDown, ChevronRight, Check, Circle } from 'lucide-react';
 import NotificationSettings from '@/components/NotificationSettings';
 import RelationSettings from '@/components/RelationSettings';
 import RelationshipMemory from '@/components/RelationshipMemory';
@@ -371,9 +371,11 @@ export default function Home() {
                             )}
                           </div>
                           <div className="flex items-center gap-2 shrink-0">
-                            {catCards.some((c) => exploredIds.includes(c.id)) && (
-                              <CompletionMarker completed />
-                            )}
+                            {allExplored ? (
+                              <Check size={12} style={{ color: 'var(--color-text-tertiary)', opacity: 0.50 }} />
+                            ) : catCards.some((c) => exploredIds.includes(c.id)) ? (
+                              <Circle size={6} fill="var(--accent-saffron)" stroke="none" style={{ opacity: 0.60 }} />
+                            ) : null}
                             <ChevronRight
                               data-chevron
                               className="w-4 h-4"

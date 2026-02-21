@@ -94,10 +94,9 @@ export default function ReviewDrawer({ open, onClose, card }: ReviewDrawerProps)
   const { user } = useAuth();
   const { space } = useCoupleSpace();
   const [cardNotes, setCardNotes] = useState<CardNote[]>([]);
+  const [completedStepIndices, setCompletedStepIndices] = useState<Set<number>>(new Set());
   const [noteFilter, setNoteFilter] = useState<'all' | 'my_private' | 'my_shared' | 'partner'>('all');
   
-  // No auto-scroll ref needed anymore
-
 
   const filteredNotes = noteFilter === 'all'
     ? cardNotes
@@ -125,7 +124,31 @@ export default function ReviewDrawer({ open, onClose, card }: ReviewDrawerProps)
   useEffect(() => {
     if (!open || !user || !space) return;
 
-    const fetchAllNotes = async () => {
+    const fetchAllData = async () => {
+      // Fetch the most recently completed session for this card
+      const { data: sessionData } = await supabase
+        .from('couple_sessions')
+        .select('id')
+        .eq('couple_space_id', space.id)
+        .eq('card_id', card.id)
+        .eq('status', 'completed')
+        .order('ended_at', { ascending: false })
+        .limit(1)
+        .maybeSingle();
+
+      // Fetch step_reflections for that session to determine which stages were visited
+      if (sessionData?.id) {
+        const { data: reflections } = await supabase
+          .from('step_reflections')
+          .select('step_index')
+          .eq('session_id', sessionData.id);
+        
+        const indices = new Set((reflections || []).map(r => r.step_index));
+        setCompletedStepIndices(indices);
+      } else {
+        setCompletedStepIndices(new Set());
+      }
+
       // Fetch my notes
       const { data: myData } = await supabase
         .from('prompt_notes')
@@ -176,7 +199,6 @@ export default function ReviewDrawer({ open, onClose, card }: ReviewDrawerProps)
       const myNotes = (myData || [])
         .filter(n => n.content.trim())
         .map(n => mapNote(n, false))
-        // Deduplicate: if both private+shared exist for same prompt, keep shared
         .reduce<CardNote[]>((acc, note) => {
           const existing = acc.findIndex(n => n.sectionId === note.sectionId && n.promptId === note.promptId);
           if (existing >= 0) {
@@ -202,7 +224,7 @@ export default function ReviewDrawer({ open, onClose, card }: ReviewDrawerProps)
       setCardNotes(allNotes);
     };
 
-    fetchAllNotes();
+    fetchAllData();
   }, [open, user, space, card]);
 
   const handleNoteClick = (note: CardNote) => {
@@ -240,25 +262,23 @@ export default function ReviewDrawer({ open, onClose, card }: ReviewDrawerProps)
             <div className="grid gap-1.5 p-4 text-left border-b border-divider pb-4 shrink-0">
               <div className="flex items-center justify-between">
                 <h2 className="font-serif text-lg text-foreground">
-                  {t('review_drawer.title', 'Se tillbaka')}
+                  {t('review_drawer.title', 'Era svar')}
                 </h2>
                 <Button variant="ghost" size="icon" className="text-muted-foreground" onClick={onClose}>
                   <X className="w-4 h-4" />
                 </Button>
               </div>
-              <p className="text-xs text-muted-foreground mt-1">
-                {t('review_drawer.hint', 'Se vad ni skrev — och fortsätt när det passar. Det här påverkar inte var ni är i samtalet.')}
-              </p>
+              {/* Hint removed */}
             </div>
 
         <Tabs defaultValue="overview" className="flex-1 flex flex-col overflow-hidden">
           <TabsList className="mx-6 mt-3 mb-0 grid grid-cols-2 w-auto">
             <TabsTrigger value="overview" className="text-xs">
-              Översikt
+              Frågor
             </TabsTrigger>
             <TabsTrigger value="notes" className="text-xs gap-1">
               <FileText className="w-3 h-3" />
-              Mina anteckningar
+              Era svar
               {cardNotes.length > 0 && (
                 <span className="ml-1 text-[10px] bg-primary/15 text-primary rounded-full px-1.5 py-0.5 leading-none">
                   {cardNotes.length}
@@ -278,9 +298,9 @@ export default function ReviewDrawer({ open, onClose, card }: ReviewDrawerProps)
                   const status = sectionNoteStatus[section.id];
                   const hasAnyNotes = status?.hasPrivate || status?.hasShared || status?.hasPartnerShared;
 
-                  // A step is unlocked for reading if it has any notes (my or partner's),
-                  // or it is the first step (always visible). This is purely prompt_notes-derived.
-                  const isUnlocked = index === 0 || !!hasAnyNotes;
+                  // A step is unlocked if it has notes, step_reflections, or is the first step.
+                  const hasReflectionForStep = completedStepIndices.has(index);
+                  const isUnlocked = index === 0 || !!hasAnyNotes || hasReflectionForStep;
 
                   return (
                     <motion.div
@@ -356,9 +376,7 @@ export default function ReviewDrawer({ open, onClose, card }: ReviewDrawerProps)
 
                 <div className="border-t border-divider pt-6">
                   <CardTakeaways cardId={card.id} compact />
-                  <p className="text-xs text-muted-foreground/50 not-italic text-center mt-3">
-                    Det här påverkar inte er takt.
-                  </p>
+                  {/* Removed pace disclaimer */}
                 </div>
 
                 <div className="border-t border-divider pt-6 space-y-4">
@@ -382,9 +400,7 @@ export default function ReviewDrawer({ open, onClose, card }: ReviewDrawerProps)
                       </Button>
                     ))}
                   </div>
-                  <p className="text-xs text-muted-foreground/50 not-italic text-center">
-                    Det här påverkar inte ert gemensamma tempo.
-                  </p>
+                  {/* Removed tempo disclaimer */}
                 </div>
               </div>
             </ScrollArea>

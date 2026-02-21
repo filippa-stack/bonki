@@ -692,7 +692,7 @@ export default function CardView() {
     >
       <StageInterstitial visible={showInterstitial} />
       <Header
-        title={category?.title}
+        title={cardViewMode === 'revisit' ? `${category?.title} · Återbesök` : category?.title}
         showBack
         backTo={exitBackTo}
         variant="immersive"
@@ -712,7 +712,7 @@ export default function CardView() {
           } else {
             setShowLeaveConfirm(true);
           }
-        }) : undefined}
+        }) : () => navigate(exitBackTo)}
         onLeaveSession={isLive ? () => setShowLeaveConfirm(true) : undefined}
       />
 
@@ -738,21 +738,7 @@ export default function CardView() {
         </motion.div>
       )}
 
-      {cardViewMode === 'revisit' && !isFromArchive && (
-        <div className="px-6 pt-4 text-center">
-          <p className="type-meta" style={{ color: 'var(--color-text-secondary)', opacity: 0.6 }}>
-            {completedSessionId ? 'Visar tidigare samtal' : 'Förhandskoll'}
-          </p>
-        </div>
-      )}
-
-      {cardViewMode === 'revisit' && isFromArchive && (
-        <div className="px-6 pt-4 text-center">
-          <p className="type-meta" style={{ color: 'var(--color-text-secondary)', opacity: 0.5 }}>
-            Visar tidigare samtal
-          </p>
-        </div>
-      )}
+      {/* Revisit banners removed — header label handles this now */}
 
       {/* Section content — centered, max 520px for readability */}
       <div className="px-6 pt-4 pb-8 relative">
