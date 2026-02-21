@@ -182,44 +182,19 @@ export default function Home() {
     return c?.categoryId ?? null;
   }, [resumeBannerCardId, cards]);
 
-  const recommendation = useMemo<{ categoryId: string; label: string } | 'all-done' | null>(() => {
-    // Compute per-category stats
-    const stats = RECOMMENDED_CATEGORY_ORDER.map(catId => {
-      const catCards = cards.filter(c => c.categoryId === catId);
-      const completedCards = catCards.filter(c => completedCardIds.includes(c.id));
-      const inProgressCards = catCards.filter(c => inProgressCardIds.includes(c.id) && !completedCardIds.includes(c.id));
-      return {
-        catId,
-        totalCards: catCards.length,
-        completedCount: completedCards.length,
-        isFullyCompleted: completedCards.length === catCards.length && catCards.length > 0,
-        hasInProgress: inProgressCards.length > 0,
-        isUntouched: completedCards.length === 0 && inProgressCards.length === 0,
-        remaining: catCards.length - completedCards.length,
-      };
-    }).filter(s => s.totalCards > 0);
+  const recommendation = useMemo<{ categoryId: string } | null>(() => {
+    const rec = sortedCategories.find(category => {
+      const catCards = cards.filter(c => c.categoryId === category.id);
+      if (catCards.length === 0) return false;
+      const completedCount = catCards.filter(c => completedCardIds.includes(c.id)).length;
+      return completedCount < catCards.length;
+    });
+    if (!rec) return null;
+    // Hide if same category as resume banner
+    if (rec.id === resumeBannerCategoryId) return null;
+    return { categoryId: rec.id };
+  }, [sortedCategories, cards, completedCardIds, resumeBannerCategoryId]);
 
-    // Priority 1: First in-progress category (not fully completed, not resume banner)
-    const inProg = stats.find(s => s.hasInProgress && !s.isFullyCompleted && s.catId !== resumeBannerCategoryId);
-    if (inProg) return { categoryId: inProg.catId, label: 'Fortsätt där ni är' };
-
-    // Priority 2: First untouched category
-    const untouched = stats.find(s => s.isUntouched && s.catId !== resumeBannerCategoryId);
-    if (untouched) return { categoryId: untouched.catId, label: 'Rekommenderad start' };
-
-    // Priority 3: Partially completed with most remaining
-    let best: typeof stats[0] | null = null;
-    for (const s of stats) {
-      if (s.isFullyCompleted || s.catId === resumeBannerCategoryId) continue;
-      if (!best || s.remaining > best.remaining) best = s;
-    }
-    if (best) return { categoryId: best.catId, label: 'Fortsätt utforska' };
-
-    // Priority 4: All done
-    return stats.length > 0 ? 'all-done' : null;
-  }, [cards, completedCardIds, inProgressCardIds, resumeBannerCategoryId]);
-
-  // showRecommendation is the same as recommendation now (filtering already done above)
   const showRecommendation = recommendation;
 
   const { scrollRef, progress: scrollP } = useScrollCompression(80);
@@ -349,19 +324,7 @@ export default function Home() {
             <div style={{ height: '20px' }} />
 
             {/* Recommendation section */}
-            {showRecommendation === 'all-done' && (
-              <div className="px-6 py-8 text-center">
-                <p style={{
-                  fontFamily: "'Cormorant Garamond', serif",
-                  fontStyle: 'italic',
-                  fontSize: '18px',
-                  color: 'var(--text-secondary)',
-                }}>
-                  Ni har utforskat allt. Välj ett ämne att återvända till.
-                </p>
-              </div>
-            )}
-            {showRecommendation && showRecommendation !== 'all-done' && (() => {
+            {showRecommendation && (() => {
               const recCat = categories.find(c => c.id === showRecommendation.categoryId);
               if (!recCat) return null;
               return (
@@ -376,7 +339,7 @@ export default function Home() {
                     marginBottom: '10px',
                     display: 'block',
                   }}>
-                    {showRecommendation.label}
+                    Rekommenderad start
                   </p>
                   <div
                     onClick={() => { markNavigated(); navigate(`/category/${recCat.id}`); }}
@@ -388,15 +351,15 @@ export default function Home() {
                     }}
                     className="cursor-pointer"
                     style={{
-                      borderRadius: '18px',
-                      padding: '24px 20px',
+                      borderRadius: '16px',
+                      padding: '20px',
                       minHeight: '48px',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'space-between',
                       gap: '8px',
-                      background: 'hsl(36, 22%, 95%)',
-                      border: '1px solid hsl(36, 18%, 84%)',
+                      background: 'hsl(36, 22%, 96%)',
+                      border: '1px solid hsl(36, 20%, 84%)',
                       transition: 'transform 120ms ease-out, box-shadow 120ms ease-out',
                     }}
                     onPointerDown={(e) => {
@@ -425,13 +388,13 @@ export default function Home() {
             {/* Categories */}
             <div className="px-6" style={{ paddingBottom: 'max(env(safe-area-inset-bottom, 0px), 64px)' }}>
               <div className="flex flex-col" style={{ gap: '24px' }}>
-                {sortedCategories.filter(c => !(showRecommendation && showRecommendation !== 'all-done' && c.id === showRecommendation.categoryId)).map((category, index) => {
+                {sortedCategories.filter(c => !(showRecommendation && c.id === showRecommendation.categoryId)).map((category, index) => {
                   const catCards = cards.filter((c) => c.categoryId === category.id);
                   const completedCount = catCards.filter(c => completedCardIds.includes(c.id)).length;
                   const allCompleted = completedCount === catCards.length && catCards.length > 0;
                   const hasInProgressCards = catCards.some(c => inProgressCardIds.includes(c.id) && !completedCardIds.includes(c.id));
-                  const someStarted = (completedCount > 0 || hasInProgressCards) && !allCompleted;
-                  const isPrimary = index === 0;
+                   const someStarted = (completedCount > 0 || hasInProgressCards) && !allCompleted;
+                  
 
                   return (
                     <motion.div
@@ -449,20 +412,16 @@ export default function Home() {
                           if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); navigate(`/category/${category.id}`); }
                         }}
                         className="cursor-pointer"
-                        style={{
-                          borderRadius: isPrimary ? '18px' : '14px',
-                          padding: isPrimary ? '24px 20px' : '20px 18px',
+                         style={{
+                          borderRadius: '14px',
+                          padding: '16px 18px',
                           minHeight: '48px',
                           display: 'flex',
                           alignItems: 'center',
                           justifyContent: 'space-between',
                           gap: '8px',
-                          background: isPrimary
-                            ? 'hsl(36, 22%, 95%)'
-                            : 'hsl(36, 20%, 97%)',
-                          border: isPrimary
-                            ? '1px solid hsl(36, 18%, 84%)'
-                            : '1px solid hsl(36, 15%, 88%)',
+                          background: 'hsl(36, 20%, 98%)',
+                          border: '1px solid hsl(36, 15%, 90%)',
                           boxShadow: 'none',
                           transition: 'transform 120ms ease-out, box-shadow 120ms ease-out',
                         }}
@@ -501,7 +460,7 @@ export default function Home() {
                             </h3>
                             {category.entryLine && (
                               <p
-                                className={isPrimary ? 'type-body' : 'type-meta'}
+                                className="type-meta"
                                 style={{ color: 'var(--text-secondary)', marginTop: '8px' }}
                               >
                                 {category.entryLine}
