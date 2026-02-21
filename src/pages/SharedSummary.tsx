@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { useApp } from '@/contexts/AppContext';
@@ -7,7 +7,7 @@ import { useCoupleSpaceContext } from '@/contexts/CoupleSpaceContext';
 import { supabase } from '@/integrations/supabase/client';
 import { useDevState } from '@/contexts/DevStateContext';
 import Header from '@/components/Header';
-import { ChevronDown } from 'lucide-react';
+import { ChevronRight, ChevronDown } from 'lucide-react';
 import type { Prompt } from '@/types';
 
 const STEP_ORDER = ['opening', 'reflective', 'scenario', 'exercise'] as const;
@@ -61,7 +61,6 @@ export default function SharedSummary() {
 
   const [entries, setEntries] = useState<CompletedEntry[]>([]);
   const [loading, setLoading] = useState(true);
-  const [expandedId, setExpandedId] = useState<string | null>(null);
 
   const devState = useDevState();
 
@@ -157,6 +156,38 @@ export default function SharedSummary() {
     return `${day} ${month}`;
   };
 
+  // ─── Group entries by cardId ───
+  interface GroupedEntry {
+    cardId: string;
+    cardTitle: string;
+    categoryTitle: string;
+    latest: CompletedEntry;
+    older: CompletedEntry[];
+  }
+
+  const grouped = useMemo(() => {
+    const map = new Map<string, GroupedEntry>();
+    for (const entry of entries) {
+      const existing = map.get(entry.cardId);
+      if (existing) {
+        existing.older.push(entry);
+      } else {
+        map.set(entry.cardId, {
+          cardId: entry.cardId,
+          cardTitle: entry.cardTitle,
+          categoryTitle: entry.categoryTitle,
+          latest: entry,
+          older: [],
+        });
+      }
+    }
+    return Array.from(map.values());
+  }, [entries]);
+
+  // Track which groups have expanded reflections and which show older entries
+  const [expandedId, setExpandedId] = useState<string | null>(null);
+  const [showOlderFor, setShowOlderFor] = useState<string | null>(null);
+
   return (
     <div className="min-h-screen page-bg">
       <Header title="Era samtal" showBack backTo="/" />
@@ -202,13 +233,16 @@ export default function SharedSummary() {
           </div>
         ) : (
           hasContent && (
-            <div className="flex flex-col" style={{ gap: '32px' }}>
-              {entries.map((entry, index) => {
+            <div className="flex flex-col" style={{ gap: '12px' }}>
+              {grouped.map((group, index) => {
+                const entry = group.latest;
                 const isExpanded = expandedId === entry.sessionId;
+                const olderCount = group.older.length;
+                const showingOlder = showOlderFor === group.cardId;
 
                 return (
                   <motion.div
-                    key={entry.sessionId}
+                    key={group.cardId}
                     initial={{ opacity: 0, y: 8 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{
@@ -217,185 +251,197 @@ export default function SharedSummary() {
                       ease: [0.4, 0, 0.2, 1],
                     }}
                   >
-                    {/* Collapsed header — always visible */}
-                    <button
-                      onClick={() => setExpandedId(isExpanded ? null : entry.sessionId)}
-                      className="w-full text-left group"
+                    {/* ── Entry card ── */}
+                    <div
+                      style={{
+                        background: 'hsl(var(--muted) / 0.12)',
+                        borderRadius: '12px',
+                        padding: '16px',
+                      }}
                     >
-                      <div className="flex items-start justify-between">
-                        <div className="flex-1 min-w-0">
-                          {/* Card title */}
-                          <p
-                            className="type-h3"
-                            style={{
-                              color: 'var(--color-text-primary)',
-                              opacity: 0.9,
-                              fontFamily: 'var(--font-serif)',
-                            }}
-                          >
-                            {entry.cardTitle}
-                          </p>
+                      {/* Main tappable area */}
+                      <button
+                        onClick={() => setExpandedId(isExpanded ? null : entry.sessionId)}
+                        className="w-full text-left"
+                      >
+                        <div className="flex items-start justify-between">
+                          <div className="flex-1 min-w-0">
+                            <p
+                              className="font-serif"
+                              style={{
+                                fontSize: '20px',
+                                color: 'var(--foreground)',
+                                fontWeight: 400,
+                                lineHeight: 1.3,
+                              }}
+                            >
+                              {entry.cardTitle}
+                            </p>
+                            <p
+                              className="mt-1"
+                              style={{
+                                fontFamily: 'var(--font-sans)',
+                                fontSize: '12px',
+                                color: 'var(--color-text-secondary)',
+                                opacity: 0.6,
+                              }}
+                            >
+                              {entry.categoryTitle}{entry.categoryTitle && ' · '}{formatDate(entry.completedAt)}
+                            </p>
+                          </div>
 
-                          {/* Category + date */}
-                          <p
-                            className="type-meta mt-1"
-                            style={{
-                              color: 'var(--color-text-secondary)',
-                              opacity: 0.45,
-                            }}
-                          >
-                            {entry.categoryTitle}{entry.categoryTitle && ' · '}{formatDate(entry.completedAt)}
-                          </p>
-                        </div>
-
-                        {entry.reflections.length > 0 && (
-                          <ChevronDown
+                          <ChevronRight
                             className="w-4 h-4 mt-1.5 flex-shrink-0 transition-transform duration-200"
                             style={{
                               color: 'var(--color-text-secondary)',
                               opacity: 0.3,
-                              transform: isExpanded ? 'rotate(180deg)' : 'rotate(0deg)',
+                              transform: isExpanded ? 'rotate(90deg)' : 'rotate(0deg)',
                             }}
                           />
-                        )}
-                      </div>
+                        </div>
 
-                      {/* Excerpt — only when collapsed */}
-                      {!isExpanded && entry.excerpt && (
-                        <div
-                          className="relative overflow-hidden"
-                          style={{
-                            marginTop: '10px',
-                            maxHeight: 'calc(1.6em * 2)',
-                          }}
-                        >
+                        {/* Excerpt — 2-line clamp, only when collapsed */}
+                        {!isExpanded && entry.excerpt && (
                           <p
-                            className="type-body"
+                            className="type-body mt-2"
                             style={{
-                              color: 'var(--color-text-secondary)',
-                              opacity: 0.5,
+                              color: 'var(--foreground)',
+                              opacity: 0.65,
+                              display: '-webkit-box',
+                              WebkitLineClamp: 2,
+                              WebkitBoxOrient: 'vertical',
+                              overflow: 'hidden',
                             }}
                           >
                             {entry.excerpt}
                           </p>
-                          <div
-                            className="absolute bottom-0 left-0 right-0 pointer-events-none"
-                            style={{
-                              height: '1.6em',
-                              background: 'linear-gradient(to bottom, transparent, var(--color-bg, hsl(var(--background))))',
-                            }}
-                          />
-                        </div>
-                      )}
-                    </button>
+                        )}
+                      </button>
 
-                    {/* Expanded reflections */}
-                    <AnimatePresence>
-                      {isExpanded && (
-                        <motion.div
-                          initial={{ opacity: 0, height: 0 }}
-                          animate={{ opacity: 1, height: 'auto' }}
-                          exit={{ opacity: 0, height: 0 }}
-                          transition={{ duration: 0.2, ease: [0.4, 0, 0.2, 1] }}
-                          className="overflow-hidden"
-                        >
-                          <div style={{ paddingTop: '16px', paddingLeft: '16px' }}>
-                            {entry.reflections.map((ref, ri) => {
-                              const question = getQuestionText(getCardById, entry.cardId, ref.stepIndex);
-
-                              return (
-                                <div key={ri}>
-                                  {ri > 0 && (
-                                    <div
-                                      style={{
-                                        height: '1px',
-                                        background: 'hsl(var(--border) / 0.12)',
-                                        margin: '16px 0',
-                                      }}
-                                    />
-                                  )}
-
-                                  {/* Question label */}
-                                  {question && (
-                                    <p
-                                      className="type-meta"
-                                      style={{
-                                        color: 'var(--color-text-secondary)',
-                                        opacity: 0.4,
-                                        marginBottom: '6px',
-                                        lineHeight: 1.5,
-                                      }}
-                                    >
-                                      {question}
+                      {/* Expanded reflections */}
+                      <AnimatePresence>
+                        {isExpanded && (
+                          <motion.div
+                            initial={{ opacity: 0, height: 0 }}
+                            animate={{ opacity: 1, height: 'auto' }}
+                            exit={{ opacity: 0, height: 0 }}
+                            transition={{ duration: 0.2, ease: [0.4, 0, 0.2, 1] }}
+                            className="overflow-hidden"
+                          >
+                            <div style={{ paddingTop: '16px', paddingLeft: '8px' }}>
+                              {entry.reflections.map((ref, ri) => {
+                                const question = getQuestionText(getCardById, entry.cardId, ref.stepIndex);
+                                return (
+                                  <div key={ri}>
+                                    {ri > 0 && (
+                                      <div style={{ height: '1px', background: 'hsl(var(--border) / 0.12)', margin: '16px 0' }} />
+                                    )}
+                                    {question && (
+                                      <p className="type-meta" style={{ color: 'var(--color-text-secondary)', opacity: 0.4, marginBottom: '6px', lineHeight: 1.5 }}>
+                                        {question}
+                                      </p>
+                                    )}
+                                    <p className="type-body font-serif whitespace-pre-wrap" style={{ lineHeight: 1.8, color: 'var(--color-text-primary)', opacity: 0.75 }}>
+                                      {ref.text}
                                     </p>
-                                  )}
+                                  </div>
+                                );
+                              })}
 
-                                  {/* Answer */}
-                                  <p
-                                    className="type-body font-serif whitespace-pre-wrap"
-                                    style={{
-                                      lineHeight: 1.8,
-                                      color: 'var(--color-text-primary)',
-                                      opacity: 0.75,
-                                    }}
-                                  >
-                                    {ref.text}
+                              {/* Takeaway */}
+                              {entry.takeaway && (
+                                <div>
+                                  <div style={{ height: '1px', background: 'hsl(var(--border) / 0.15)', marginTop: '16px', marginBottom: '12px' }} />
+                                  <p className="type-meta uppercase" style={{ color: 'var(--color-text-secondary)', opacity: 0.55, letterSpacing: '0.06em', marginBottom: '6px' }}>
+                                    Ni bar med er:
+                                  </p>
+                                  <p className="font-serif italic whitespace-pre-wrap" style={{ fontSize: '18px', lineHeight: 1.6, color: 'var(--foreground)', opacity: 0.85 }}>
+                                    {entry.takeaway}
                                   </p>
                                 </div>
-                              );
-                            })}
+                              )}
 
-                            {/* Takeaway */}
-                            {entry.takeaway && (
-                              <div>
-                                <div
-                                  style={{
-                                    height: '1px',
-                                    background: 'hsl(var(--border) / 0.15)',
-                                    marginTop: '16px',
-                                    marginBottom: '12px',
-                                  }}
-                                />
-                                <p
-                                  className="type-meta uppercase"
-                                  style={{
-                                    color: 'var(--color-text-secondary)',
-                                    opacity: 0.55,
-                                    letterSpacing: '0.06em',
-                                    marginBottom: '6px',
-                                  }}
-                                >
-                                  Ni bar med er:
-                                </p>
-                                <p
-                                  className="font-serif italic whitespace-pre-wrap"
-                                  style={{
-                                    fontSize: '18px',
-                                    lineHeight: 1.6,
-                                    color: 'var(--foreground)',
-                                    opacity: 0.85,
-                                  }}
-                                >
-                                  {entry.takeaway}
-                                </p>
-                              </div>
+                              {/* Revisit link */}
+                              <button
+                                onClick={() => navigate(`/card/${entry.cardId}?revisit=true&from=archive`)}
+                                className="type-meta mt-6 mb-2 transition-opacity hover:opacity-60"
+                                style={{ color: 'var(--color-text-secondary)', opacity: 0.35 }}
+                              >
+                                Visa hela samtalet →
+                              </button>
+                            </div>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+
+                      {/* Older visits toggle */}
+                      {olderCount > 0 && (
+                        <div style={{ paddingTop: '4px' }}>
+                          <button
+                            onClick={(e) => { e.stopPropagation(); setShowOlderFor(showingOlder ? null : group.cardId); }}
+                            className="type-meta transition-opacity hover:opacity-60"
+                            style={{ color: 'var(--color-text-secondary)', opacity: 0.45, marginTop: '4px' }}
+                          >
+                            {showingOlder
+                              ? 'Dölj tidigare'
+                              : `+ ${olderCount} tidigare samtal`}
+                          </button>
+
+                          <AnimatePresence>
+                            {showingOlder && (
+                              <motion.div
+                                initial={{ opacity: 0, height: 0 }}
+                                animate={{ opacity: 1, height: 'auto' }}
+                                exit={{ opacity: 0, height: 0 }}
+                                transition={{ duration: 0.2, ease: [0.4, 0, 0.2, 1] }}
+                                className="overflow-hidden"
+                              >
+                                <div style={{ marginTop: '12px' }} className="flex flex-col" >
+                                  {group.older.map((older) => (
+                                    <button
+                                      key={older.sessionId}
+                                      onClick={() => navigate(`/card/${older.cardId}?revisit=true&from=archive`)}
+                                      className="w-full text-left"
+                                      style={{
+                                        padding: '10px 8px',
+                                        borderTop: '1px solid hsl(var(--border) / 0.08)',
+                                      }}
+                                    >
+                                      <p
+                                        style={{
+                                          fontFamily: 'var(--font-sans)',
+                                          fontSize: '12px',
+                                          color: 'var(--color-text-secondary)',
+                                          opacity: 0.6,
+                                        }}
+                                      >
+                                        {formatDate(older.completedAt)}
+                                      </p>
+                                      {older.excerpt && (
+                                        <p
+                                          className="type-body mt-1"
+                                          style={{
+                                            color: 'var(--foreground)',
+                                            opacity: 0.5,
+                                            display: '-webkit-box',
+                                            WebkitLineClamp: 2,
+                                            WebkitBoxOrient: 'vertical',
+                                            overflow: 'hidden',
+                                            fontSize: '13px',
+                                          }}
+                                        >
+                                          {older.excerpt}
+                                        </p>
+                                      )}
+                                    </button>
+                                  ))}
+                                </div>
+                              </motion.div>
                             )}
-
-                            {/* Link to revisit full card */}
-                            <button
-                              onClick={() => navigate(`/card/${entry.cardId}?revisit=true&from=archive`)}
-                              className="type-meta mt-6 mb-2 transition-opacity hover:opacity-60"
-                              style={{
-                                color: 'var(--color-text-secondary)',
-                                opacity: 0.35,
-                              }}
-                            >
-                              Visa hela samtalet →
-                            </button>
-                          </div>
-                        </motion.div>
+                          </AnimatePresence>
+                        </div>
                       )}
-                    </AnimatePresence>
+                    </div>
                   </motion.div>
                 );
               })}
