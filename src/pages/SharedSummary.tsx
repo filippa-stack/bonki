@@ -25,6 +25,7 @@ interface CompletedEntry {
   completedAt: string;
   excerpt: string;
   reflections: ReflectionRow[];
+  takeaway: string;
 }
 
 /** Decode composite step_index → { stageIndex, promptIndex } */
@@ -102,6 +103,22 @@ export default function SharedSummary() {
         reflectionMap.set(r.session_id, list);
       }
 
+      // 3. Get takeaways for these sessions
+      const { data: takeaways } = await supabase
+        .from('couple_takeaways')
+        .select('session_id, content')
+        .in('session_id', sessionIds)
+        .neq('content', '');
+
+      if (cancelled) return;
+
+      const takeawayMap = new Map<string, string>();
+      for (const t of takeaways || []) {
+        if (t.content?.trim() && !takeawayMap.has(t.session_id)) {
+          takeawayMap.set(t.session_id, t.content.trim());
+        }
+      }
+
       const built: CompletedEntry[] = sessions
         .filter(s => s.card_id)
         .map(s => {
@@ -116,6 +133,7 @@ export default function SharedSummary() {
             completedAt: s.ended_at || s.started_at,
             excerpt: refs[0]?.text || '',
             reflections: refs,
+            takeaway: takeawayMap.get(s.id) || '',
           };
         });
 
@@ -326,6 +344,42 @@ export default function SharedSummary() {
                                 </div>
                               );
                             })}
+
+                            {/* Takeaway */}
+                            {entry.takeaway && (
+                              <div>
+                                <div
+                                  style={{
+                                    height: '1px',
+                                    background: 'hsl(var(--border) / 0.15)',
+                                    marginTop: '16px',
+                                    marginBottom: '12px',
+                                  }}
+                                />
+                                <p
+                                  className="type-meta uppercase"
+                                  style={{
+                                    color: 'var(--color-text-secondary)',
+                                    opacity: 0.55,
+                                    letterSpacing: '0.06em',
+                                    marginBottom: '6px',
+                                  }}
+                                >
+                                  Ni bar med er:
+                                </p>
+                                <p
+                                  className="font-serif italic whitespace-pre-wrap"
+                                  style={{
+                                    fontSize: '18px',
+                                    lineHeight: 1.6,
+                                    color: 'var(--foreground)',
+                                    opacity: 0.85,
+                                  }}
+                                >
+                                  {entry.takeaway}
+                                </p>
+                              </div>
+                            )}
 
                             {/* Link to revisit full card */}
                             <button
