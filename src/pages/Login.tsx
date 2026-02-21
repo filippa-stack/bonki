@@ -102,6 +102,13 @@ export default function Login() {
           transition={{ delay: BEAT_2, duration: 0.15 }}
           style={{ marginTop: '28px' }}
         >
+          <div className="text-left mb-4">
+            <TermsConsent checked={termsAccepted} onCheckedChange={(val) => { setTermsAccepted(val); if (val) setTermsError(false); }} />
+            {termsError && (
+              <p className="text-xs text-destructive mt-2">{t('login.terms_required')}</p>
+            )}
+          </div>
+
           <Button
             onClick={handleGoogleSignIn}
             disabled={loading}
@@ -121,13 +128,6 @@ export default function Login() {
             )}
             {t('login.sign_in_google')}
           </Button>
-
-          <div className="text-left mt-4">
-            <TermsConsent checked={termsAccepted} onCheckedChange={(val) => { setTermsAccepted(val); if (val) setTermsError(false); }} />
-            {termsError && (
-              <p className="text-xs text-destructive mt-2">{t('login.terms_required')}</p>
-            )}
-          </div>
 
           {error && (
             <p className="text-sm text-destructive mt-4">{error}</p>
