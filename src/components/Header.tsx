@@ -83,10 +83,11 @@ export default function Header({
           {isImmersive && onImmersiveBack && (
             <button
               onClick={onImmersiveBack}
-              className="text-[14px] transition-opacity hover:opacity-70"
-              style={{ color: 'hsl(0 0% 100% / 0.6)' }}
+              className="flex items-center justify-center shrink-0"
+              style={{ width: '44px', height: '44px', marginLeft: '-10px' }}
+              aria-label="Tillbaka"
             >
-              Tillbaka
+              <ArrowLeft className="w-5 h-5" style={{ color: 'hsl(0 0% 100% / 0.6)' }} />
             </button>
           )}
           {!isImmersive && showBack && (
