@@ -218,7 +218,65 @@ export default function Home() {
               </p>
             </motion.div>
 
-            {/* 48px spacing after Zone A */}
+            {/* Resume banner — active session */}
+            {(() => {
+              const activeSession = snapshot?.sessions;
+              if (!activeSession) return null;
+              const { session, completions } = activeSession;
+              const cardId = session.card_id;
+              if (!cardId) return null;
+              const card = getCardById(cardId);
+              const cat = session.category_id ? getCategoryById(session.category_id) : null;
+              const maxCompleted = completions.length > 0
+                ? Math.max(...completions.map(c => c.step_index))
+                : -1;
+              const nextStep = maxCompleted + 1;
+
+              return (
+                <motion.div
+                  className="px-6 mt-8"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.2, ease: [0.4, 0, 0.2, 1] }}
+                >
+                  <div
+                    onClick={() => { markNavigated(); navigate(`/card/${cardId}?step=${nextStep}`); }}
+                    role="button"
+                    tabIndex={0}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); navigate(`/card/${cardId}?step=${nextStep}`); }
+                    }}
+                    className="cursor-pointer flex items-center justify-between"
+                    style={{
+                      borderRadius: '16px',
+                      padding: '16px 20px',
+                      background: 'hsl(var(--muted) / 0.20)',
+                      border: '1px solid hsl(var(--border) / 0.20)',
+                    }}
+                  >
+                    <div className="flex-1 min-w-0">
+                      <p
+                        className="type-meta uppercase"
+                        style={{ color: 'var(--color-text-secondary)', opacity: 0.60, letterSpacing: '0.08em', fontSize: '11px' }}
+                      >
+                        Fortsätt där ni slutade
+                      </p>
+                      <p className="font-serif text-xl font-medium mt-1 truncate" style={{ color: 'hsl(var(--foreground))' }}>
+                        {card?.title || cardId}
+                      </p>
+                      {cat && (
+                        <p className="type-meta mt-0.5" style={{ color: 'var(--color-text-secondary)', fontSize: '12px' }}>
+                          {cat.title}
+                        </p>
+                      )}
+                    </div>
+                    <ChevronRight className="w-5 h-5 shrink-0 ml-3" style={{ color: 'hsl(var(--foreground))', opacity: 0.40 }} />
+                  </div>
+                </motion.div>
+              );
+            })()}
+
+            {/* 48px spacing before categories */}
             <div style={{ height: '48px' }} />
 
             {/* Categories */}
