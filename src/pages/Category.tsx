@@ -117,16 +117,19 @@ function CardEntry({ card, index, isCompleted = false, onNavigate, isLast = fals
         }}
         className="w-full cursor-pointer flex items-center gap-3 hover:opacity-80 focus-visible:outline-none"
         style={{
-          padding: '20px 0',
-          borderBottom: isLast ? 'none' : '1px solid hsl(var(--border) / 0.12)',
+          padding: '18px 16px',
+          marginBottom: isLast ? '0' : '10px',
+          background: 'hsl(36, 20%, 97%)',
+          border: '1px solid hsl(36, 15%, 88%)',
+          borderRadius: '14px',
         }}
       >
         <div className="flex-1 min-w-0">
           <h3
             className="font-serif"
             style={{
-              fontSize: '18px',
-              fontWeight: 400,
+              fontSize: '17px',
+              fontWeight: 500,
               color: isCompleted ? 'var(--color-text-secondary)' : 'var(--color-text-primary)',
             }}
           >

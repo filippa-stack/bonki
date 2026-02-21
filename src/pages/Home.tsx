@@ -250,16 +250,16 @@ export default function Home() {
                     }}
                     className="cursor-pointer flex items-center justify-between"
                     style={{
-                      borderRadius: '16px',
+                      borderRadius: '14px',
                       padding: '16px 20px',
-                      background: 'hsl(var(--muted) / 0.20)',
-                      border: '1px solid hsl(var(--border) / 0.20)',
+                      background: 'hsl(36, 20%, 97%)',
+                      border: '1px solid hsl(36, 15%, 88%)',
                     }}
                   >
                     <div className="flex-1 min-w-0">
                       <p
                         className="font-sans uppercase"
-                        style={{ fontSize: '11px', color: 'var(--text-tertiary)', letterSpacing: '0.08em' }}
+                        style={{ fontSize: '11px', color: 'var(--accent-saffron)', opacity: 0.75, letterSpacing: '0.08em' }}
                       >
                         Fortsätt där ni slutade
                       </p>
@@ -272,7 +272,7 @@ export default function Home() {
                         </p>
                       )}
                     </div>
-                    <ChevronRight className="w-5 h-5 shrink-0 ml-3" style={{ color: 'var(--text-ghost)' }} />
+                    <ChevronRight className="w-5 h-5 shrink-0 ml-3" style={{ color: 'var(--accent-saffron)', opacity: 0.6 }} />
                   </div>
                 </motion.div>
               );
