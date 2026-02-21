@@ -603,7 +603,7 @@ export default function CardView() {
             className="max-w-md mx-auto mt-16 space-y-3"
           >
             <p className="type-meta text-muted-foreground/30 text-center">
-              Bär med er det som kändes sant.
+              Något ni tar med er härifrån.
             </p>
             <SessionTakeaway sessionId={activeSessionId} />
           </motion.div>
