@@ -1,7 +1,7 @@
 import { Category, Card } from '@/types';
 
 /** Bump this whenever categories or cards change in this file */
-export const CONTENT_VERSION = 2;
+export const CONTENT_VERSION = 3;
 
 export const categories: Category[] = [
   {
@@ -77,285 +77,7 @@ export const categories: Category[] = [
 ];
 
 export const cards: Card[] = [
-  {
-    id: 'listening-presence',
-    title: 'När dagen är slut',
-    subtitle: 'Ansvar för hem och hushåll, återhämtning',
-    categoryId: 'communication',
-    sections: [
-      {
-        id: 'opening-1',
-        type: 'opening',
-        title: 'Början',
-        content: 'De här frågorna öppnar samtalet varsamt. Det finns inga rätta svar — bara er ärliga upplevelse.',
-        prompts: [
-          'När under dagen känner du att du kan släppa ansvaret?',
-          'Vad behöver vara gjort eller sagt för att du ska kunna landa?',
-          'Vad i vårt sätt att avsluta dagen gör att du fortfarande bär med dig tankar och ansvar när du ska somna?',
-        ],
-      },
-      {
-        id: 'reflective-1',
-        type: 'reflective',
-        title: 'Fördjupning',
-        content: 'Ta er tid med de här. Ni kanske vill sitta med dem en stund innan ni pratar.',
-        prompts: [
-          'När märker du att du fortsätter med sysslor av vana snarare än av behov?',
-          'Vad tror du att jag läser in när du fortsätter utan att säga något?',
-        ],
-      },
-      {
-        id: 'scenario-1',
-        type: 'scenario',
-        title: 'I vardagen',
-        content: 'Efter läggning gör ni olika saker. En fortsätter "lite till", den andra sätter sig. Ingen säger något, men båda drar egna slutsatser.',
-        prompts: [
-          'Vilka små tecken uppstår mellan er när dagen är slut för den ena, men inte för den andra?',
-        ],
-      },
-      {
-        id: 'exercise-1',
-        type: 'exercise',
-        title: 'Tillsammans',
-        content: 'Välj en konkret handling eller mening som markerar att dagen är avslutad för er båda.',
-        prompts: [
-          'Prova i tre kvällar — och prata sedan om vad det förändrade.',
-        ],
-      },
-    ],
-  },
-  {
-    id: 'expressing-needs',
-    title: 'Mitt sätt, ditt sätt',
-    subtitle: 'Olika sätt att vara förälder',
-    categoryId: 'communication',
-    sections: [
-      {
-        id: 'opening-2',
-        type: 'opening',
-        title: 'Början',
-        content: 'Börja där det känns naturligt.',
-        prompts: [
-          'När känner du dig mest ifrågasatt i ditt sätt att vara förälder?',
-          'När känner du dig tryggast i att göra saker på ditt eget sätt?',
-          'I vilka stunder upplever du att våra olikheter blir tydliga för barnet?',
-        ],
-      },
-      {
-        id: 'reflective-2',
-        type: 'reflective',
-        title: 'Fördjupning',
-        content: 'De här frågorna bjuder in till att titta inåt.',
-        prompts: [
-          'När märker du att du försvarar ditt sätt att hantera situationer i förhållandet snarare än att beskriva det?',
-          'I vilka lägen påverkar mitt sätt att hantera situationer hur trygg du känner dig i ditt eget?',
-        ],
-      },
-      {
-        id: 'scenario-2',
-        type: 'scenario',
-        title: 'I vardagen',
-        content: 'Ni gör samma saker, men på olika sätt. Barnet börjar navigera mellan er.',
-        prompts: [
-          'Hur påverkas ert samspel när olikheterna blir synliga i vardagen?',
-        ],
-      },
-      {
-        id: 'exercise-2',
-        type: 'exercise',
-        title: 'Tillsammans',
-        content: 'Välj ett område där ni medvetet låter två sätt samexistera.',
-        prompts: [
-          'Prata om vad ni vill att barnet ska förstå — inte om vem som gör rätt.',
-        ],
-      },
-    ],
-  },
-  {
-    id: 'conflict-repair',
-    title: 'Rollerna vi tar (och får)',
-    subtitle: 'Roller som uppstår utan att ni valt dem',
-    categoryId: 'communication',
-    sections: [
-      {
-        id: 'opening-3',
-        type: 'opening',
-        title: 'Början',
-        content: 'Roller formas ofta utan att vi väljer dem.',
-        prompts: [
-          'Finns det en roll i familjen som känns mer självklar för dig än en roll du själv valt?',
-          'När kliver du in i en roll utan att tänka efter?',
-          'Vilken roll skulle du vilja ta mer plats i?',
-        ],
-      },
-      {
-        id: 'reflective-3',
-        type: 'reflective',
-        title: 'Fördjupning',
-        content: 'De här frågorna utforskar mönster och historia.',
-        prompts: [
-          'När märker du att en roll ger dig inflytande — och när begränsar den dig?',
-          'Vad händer mellan oss när en av oss blir den som "kan mest"?',
-        ],
-      },
-      {
-        id: 'scenario-3',
-        type: 'scenario',
-        title: 'I vardagen',
-        content: 'En uppgift har blivit "din". Den andra kliver undan. Med tiden blir skillnaden självklar.',
-        prompts: [
-          'Hur påverkas relationen när roller inte längre ifrågasätts?',
-        ],
-      },
-      {
-        id: 'exercise-3',
-        type: 'exercise',
-        title: 'Tillsammans',
-        content: 'Välj en etablerad roll att dela eller byta under en period.',
-        prompts: [
-          'Prata om vad som känns ovant — utan att rätta varandra.',
-        ],
-      },
-    ],
-  },
-  {
-    id: 'different-parenting-styles',
-    title: 'Uppfostran vi ärvt',
-    subtitle: 'Reaktioner formade av uppväxt',
-    categoryId: 'parenting-together',
-    sections: [
-      {
-        id: 'opening-4',
-        type: 'opening',
-        title: 'Början',
-        content: 'Varje förälder bär med sig sin egen historia.',
-        prompts: [
-          'I vilka situationer märker du att din uppväxt talar genom dig?',
-          'Vad från din bakgrund vill du föra vidare, även när det skaver mellan oss?',
-          'När märks skillnaderna i hur vi uppfattar och reagerar på situationer som tydligast?',
-        ],
-      },
-      {
-        id: 'reflective-4',
-        type: 'reflective',
-        title: 'Fördjupning',
-        content: 'Fundera på rötterna till era reaktioner.',
-        prompts: [
-          'När märker du att du reagerar utifrån din historia snarare än på situationen som är nu?',
-          'Vad i vårt samspel gör sådana situationer extra laddade för dig?',
-        ],
-      },
-      {
-        id: 'scenario-4',
-        type: 'scenario',
-        title: 'I vardagen',
-        content: 'En vardagssituation väcker starka reaktioner. Den ena reagerar på händelsen, den andra på känslan som väcks.',
-        prompts: [
-          'Hur pratar ni om det som hände utan att avgöra vems reaktion som var rimligast?',
-        ],
-      },
-      {
-        id: 'exercise-4',
-        type: 'exercise',
-        title: 'Tillsammans',
-        content: 'Bestäm en gemensam formulering ni kan använda i stunden.',
-        prompts: [
-          'Prata efteråt om vad den skyddade — och vad den inte gjorde.',
-        ],
-      },
-    ],
-  },
-  {
-    id: 'parenting-exhaustion',
-    title: 'Mina, dina, våra värderingar',
-    subtitle: 'Värderingar i vardagliga val',
-    categoryId: 'parenting-together',
-    sections: [
-      {
-        id: 'opening-5',
-        type: 'opening',
-        title: 'Början',
-        content: 'Värderingar syns tydligast i vardagen.',
-        prompts: [
-          'Vilken värdering vill du att barnet ska känna i vårt sätt att vara, mot varandra och i familjen?',
-          'När upplever du tydligast att vi vill visa olika saker i samma situation?',
-          'Vilken värdering tycker du är svårast att leva efter i vardagen?',
-        ],
-      },
-      {
-        id: 'reflective-5',
-        type: 'reflective',
-        title: 'Fördjupning',
-        content: 'De här frågorna bjuder in till ärlighet om era val.',
-        prompts: [
-          'När märker du att du själv gör något som går emot en värdering du egentligen vill stå för?',
-          'På vilka sätt gör vårt samspel det lättare — eller svårare — för dig att agera i linje med det som är viktigt för dig?',
-        ],
-      },
-      {
-        id: 'scenario-5',
-        type: 'scenario',
-        title: 'I vardagen',
-        content: 'Barnet beter sig respektlöst. En markerar direkt mot barnet. Den andra reagerar mer på hur gränsen sätts: ton, ordval eller situation.',
-        prompts: [
-          'När ni reagerar olika i stunden, vad är det som var och en av er försöker skydda just då?',
-        ],
-      },
-      {
-        id: 'exercise-5',
-        type: 'exercise',
-        title: 'Tillsammans',
-        content: 'Nästa gång ni reagerar olika i en liknande situation: hur kan ni visa respekt för det som den andra försöker skydda, utan att ge upp det som är viktigt för dig själv?',
-        prompts: [
-          'Prata om hur detta skulle kunna märkas i ton, timing eller ordval — inte som en lösning, utan som ett sätt att förstå varandra bättre.',
-        ],
-      },
-    ],
-  },
-  {
-    id: 'parenting-boundaries',
-    title: 'Att säga ifrån',
-    subtitle: 'Gränser, starka reaktioner och samspel',
-    categoryId: 'parenting-together',
-    sections: [
-      {
-        id: 'opening-6a',
-        type: 'opening',
-        title: 'Början',
-        content: 'Gränssättning berör ofta mer än det som syns.',
-        prompts: [
-          'Vad betyder det för dig att säga ifrån på ett sätt som du kan stå för?',
-          'När känner du dig mest osäker på hur vi markerar tillsammans?',
-          'Vad väcker starkast reaktion i dig när barnet går över en gräns?',
-        ],
-      },
-      {
-        id: 'reflective-6a',
-        type: 'reflective',
-        title: 'Fördjupning',
-        content: 'Utforska vad som driver era reaktioner.',
-        prompts: [
-          'När märker du att din reaktion drivs av oro snarare än av situationen?',
-          'Vad händer mellan oss när vi vill markera på olika sätt?',
-        ],
-      },
-      {
-        id: 'scenario-6a',
-        type: 'scenario',
-        title: 'I vardagen',
-        content: 'Ett beteende väcker olika impulser. Den ena vill agera direkt, den andra vill avvakta.',
-        prompts: [
-          'Hur påverkas samspelet när ni inte delar åsikt om timing?',
-        ],
-      },
-      {
-        id: 'exercise-6a',
-        type: 'exercise',
-        title: 'Tillsammans',
-        content: 'Bestäm gemensamt två förhållningssätt: vad ni vill undvika att agera på i affekt — och vad som är viktigt att komma ihåg även när ni tycker olika.',
-      },
-    ],
-  },
+  // ── emotional-intimacy: smallest-we, identity-shift ──
   {
     id: 'smallest-we',
     title: 'Vårt minsta \u201Cvi\u201D',
@@ -450,100 +172,469 @@ export const cards: Card[] = [
       },
     ],
   },
+  // ── communication: listening-presence, conflict-repair, expressing-needs ──
   {
-    id: 'love-languages',
-    title: 'Kärleksspråk',
-    subtitle: 'Närhet och hur signaler uppfattas',
-    categoryId: 'daily-life',
+    id: 'listening-presence',
+    title: 'När dagen är slut',
+    subtitle: 'Ansvar för hem och hushåll, återhämtning',
+    categoryId: 'communication',
     sections: [
       {
-        id: 'opening-9',
+        id: 'opening-1',
         type: 'opening',
         title: 'Början',
-        content: 'Närhet börjar med att förstå varandras språk.',
+        content: 'De här frågorna öppnar samtalet varsamt. Det finns inga rätta svar — bara er ärliga upplevelse.',
         prompts: [
-          'Vilka små gester får dig att känna dig älskad?',
-          'Vad får dig att känna närhet just nu oavsett om det leder till sex eller inte?',
-          'När har vi senast tolkat varandras signaler om närhet på olika sätt?',
+          'När under dagen känner du att du kan släppa ansvaret?',
+          'Vad behöver vara gjort eller sagt för att du ska kunna landa?',
+          'Vad i vårt sätt att avsluta dagen gör att du fortfarande bär med dig tankar och ansvar när du ska somna?',
         ],
       },
       {
-        id: 'reflective-9',
+        id: 'reflective-1',
         type: 'reflective',
         title: 'Fördjupning',
-        content: 'Utforska hur ni läser varandra.',
+        content: 'Ta er tid med de här. Ni kanske vill sitta med dem en stund innan ni pratar.',
         prompts: [
-          'Vilka tecken hos mig tolkar du som en inbjudan — och vilka missar du lätt?',
-          'När känns ett \u201Cnej\u201D som avvisande för dig — och när känns det som omsorg om er?',
+          'När märker du att du fortsätter med sysslor av vana snarare än av behov?',
+          'Vad tror du att jag läser in när du fortsätter utan att säga något?',
         ],
       },
       {
-        id: 'scenario-9',
+        id: 'scenario-1',
         type: 'scenario',
         title: 'I vardagen',
-        content: 'Trötthet och längtan krockar. Den ena vill vara nära, den andra orkar inte. Trots goda intentioner smyger sig både press och tolkningar in.',
+        content: 'Efter läggning gör ni olika saker. En fortsätter "lite till", den andra sätter sig. Ingen säger något, men båda drar egna slutsatser.',
         prompts: [
-          'Hur skiljer ni mellan att säga nej till fysisk närhet och ja till relationen?',
+          'Vilka små tecken uppstår mellan er när dagen är slut för den ena, men inte för den andra?',
         ],
       },
       {
-        id: 'exercise-9',
+        id: 'exercise-1',
         type: 'exercise',
         title: 'Tillsammans',
-        content: 'Skapa två tydliga signaler: \u201CJag längtar efter närhet\u201D och \u201CJag kan inte just nu, men jag vill dig\u201D.',
+        content: 'Välj en konkret handling eller mening som markerar att dagen är avslutad för er båda.',
         prompts: [
-          'Hur kan de se ut så att ingen behöver gissa?',
+          'Prova i tre kvällar — och prata sedan om vad det förändrade.',
         ],
       },
     ],
   },
   {
-    id: 'family-ab',
-    title: 'När vårt \u201Cvi\u201D blir \u201CFamiljen AB\u201D',
-    subtitle: 'Logistik som ersätter kontakt',
-    categoryId: 'daily-life',
+    id: 'conflict-repair',
+    title: 'Rollerna vi tar (och får)',
+    subtitle: 'Roller som uppstår utan att ni valt dem',
+    categoryId: 'communication',
     sections: [
       {
-        id: 'opening-10',
+        id: 'opening-3',
         type: 'opening',
         title: 'Början',
-        content: 'När samarbete tar över känslan.',
+        content: 'Roller formas ofta utan att vi väljer dem.',
         prompts: [
-          'När märker du att jag börjar låta mer som en kollega än en partner?',
-          'Vad hos mig saknar du mest när vi fastnar i logistik?',
-          'När känner du dig effektiv men inte sedd i det du gör?',
+          'Finns det en roll i familjen som känns mer självklar för dig än en roll du själv valt?',
+          'När kliver du in i en roll utan att tänka efter?',
+          'Vilken roll skulle du vilja ta mer plats i?',
         ],
       },
       {
-        id: 'reflective-10',
+        id: 'reflective-3',
         type: 'reflective',
         title: 'Fördjupning',
-        content: 'Utforska gränsen mellan effektivitet och avstånd.',
+        content: 'De här frågorna utforskar mönster och historia.',
         prompts: [
-          'På vilka sätt kan ett starkt samarbete göra att känslor kommer i andra hand?',
-          'När blir effektivitet ett sätt att vara nära — och när blir det ett sätt att slippa känna efter?',
+          'När märker du att en roll ger dig inflytande — och när begränsar den dig?',
+          'Vad händer mellan oss när en av oss blir den som "kan mest"?',
         ],
       },
       {
-        id: 'scenario-10',
+        id: 'scenario-3',
         type: 'scenario',
         title: 'I vardagen',
-        content: 'Ni löser vardagen smidigt. Allt fungerar. Men samtalen handlar nästan bara om tider, ansvar och barn. Ingen längtar — men ingen klagar heller.',
+        content: 'En uppgift har blivit "din". Den andra kliver undan. Med tiden blir skillnaden självklar.',
         prompts: [
-          'Hur länge kan en relation leva på funktion innan något viktigt tystnar i oss?',
+          'Hur påverkas relationen när roller inte längre ifrågasätts?',
         ],
       },
       {
-        id: 'exercise-10',
+        id: 'exercise-3',
         type: 'exercise',
         title: 'Tillsammans',
-        content: 'Avsätt tio minuter en gång den här veckan där ni inte pratar om barn eller logistik.',
+        content: 'Välj en etablerad roll att dela eller byta under en period.',
         prompts: [
-          'Om ni inte har något att säga — sitt kvar ändå.',
+          'Prata om vad som känns ovant — utan att rätta varandra.',
         ],
       },
     ],
   },
+  {
+    id: 'expressing-needs',
+    title: 'Mitt sätt, ditt sätt',
+    subtitle: 'Olika sätt att vara förälder',
+    categoryId: 'communication',
+    sections: [
+      {
+        id: 'opening-2',
+        type: 'opening',
+        title: 'Början',
+        content: 'Börja där det känns naturligt.',
+        prompts: [
+          'När känner du dig mest ifrågasatt i ditt sätt att vara förälder?',
+          'När känner du dig tryggast i att göra saker på ditt eget sätt?',
+          'I vilka stunder upplever du att våra olikheter blir tydliga för barnet?',
+        ],
+      },
+      {
+        id: 'reflective-2',
+        type: 'reflective',
+        title: 'Fördjupning',
+        content: 'De här frågorna bjuder in till att titta inåt.',
+        prompts: [
+          'När märker du att du försvarar ditt sätt att hantera situationer i förhållandet snarare än att beskriva det?',
+          'I vilka lägen påverkar mitt sätt att hantera situationer hur trygg du känner dig i ditt eget?',
+        ],
+      },
+      {
+        id: 'scenario-2',
+        type: 'scenario',
+        title: 'I vardagen',
+        content: 'Ni gör samma saker, men på olika sätt. Barnet börjar navigera mellan er.',
+        prompts: [
+          'Hur påverkas ert samspel när olikheterna blir synliga i vardagen?',
+        ],
+      },
+      {
+        id: 'exercise-2',
+        type: 'exercise',
+        title: 'Tillsammans',
+        content: 'Välj ett område där ni medvetet låter två sätt samexistera.',
+        prompts: [
+          'Prata om vad ni vill att barnet ska förstå — inte om vem som gör rätt.',
+        ],
+      },
+    ],
+  },
+  // ── category-8: behind-the-scenes, thoughtful-space ──
+  {
+    id: 'behind-the-scenes',
+    title: 'Framför och bakom kulisserna',
+    subtitle: 'Enighet, reparation och ansvar',
+    categoryId: 'category-8',
+    sections: [
+      {
+        id: 'opening-17',
+        type: 'opening',
+        title: 'Början',
+        content: 'Att vara på samma sida — vad innebär det egentligen?',
+        prompts: [
+          'När känner du dig mest skyddad av mig som förälder?',
+          'När känns det som att vi inte riktigt är på samma sida?',
+          'Vad behöver du efter en situation där vi agerat olika inför barnet?',
+        ],
+      },
+      {
+        id: 'reflective-17',
+        type: 'reflective',
+        title: 'Fördjupning',
+        content: 'Utforska skillnaden mellan fasad och äkta enighet.',
+        prompts: [
+          'Hur märks skillnaden mellan att visa enad front — och att känna sig enad bakom kulisserna?',
+          'Vad händer mellan er när oenighet hanteras öppet i efterhand — jämfört med när den aldrig riktigt får utrymme?',
+        ],
+      },
+      {
+        id: 'scenario-17',
+        type: 'scenario',
+        title: 'I vardagen',
+        content: 'Efter en jobbig kväll tappar en av er tålamodet inför barnet. Den andra reagerar på det, men ni tar inte diskussionen där och då.',
+        prompts: [
+          'Hur tar ni ansvar för det som hände — både inför varandra och inför barnet?',
+        ],
+      },
+      {
+        id: 'exercise-17',
+        type: 'exercise',
+        title: 'Tillsammans',
+        content: 'Bestäm hur ni signalerar \u201Cvi tar det sen\u201D, hur ni pratar om det utan att bli motparter, och hur ni visar barnet att vuxna också reparerar konflikter.',
+      },
+    ],
+  },
+  {
+    id: 'thoughtful-space',
+    title: 'Omtänksamt utrymme',
+    subtitle: 'Att ge och ta utrymme utan att skapa avstånd',
+    categoryId: 'category-8',
+    sections: [
+      {
+        id: 'opening-18',
+        type: 'opening',
+        title: 'Början',
+        content: 'Utrymme kan vara kärlek — eller avstånd.',
+        prompts: [
+          'Hur märker du själv att du behöver utrymme innan det blir för mycket?',
+          'Hur vill du att jag tolkar din tystnad?',
+          'När känner du dig trygg i att jag stannar kvar, även utan att lösa något, när vi är i konflikt?',
+        ],
+      },
+      {
+        id: 'reflective-18',
+        type: 'reflective',
+        title: 'Fördjupning',
+        content: 'Utforska gränsen mellan omsorg och övergivande.',
+        prompts: [
+          'När känns det kärleksfullt att lämna den andre ifred — och när känns det som övergivande?',
+          'När är det omtänksamt att stå kvar — och när blir det påträngande?',
+        ],
+      },
+      {
+        id: 'scenario-18',
+        type: 'scenario',
+        title: 'I vardagen',
+        content: 'En drar sig undan för att orka, den andra känner sig övergiven. Båda försöker skydda relationen.',
+        prompts: [
+          'Hur vet ni när utrymme hjälper — och när det börjar skapa avstånd?',
+        ],
+      },
+      {
+        id: 'exercise-18',
+        type: 'exercise',
+        title: 'Tillsammans',
+        content: 'Kom överens om tydliga tecken för:\n• när jag behöver vara ifred\n• när jag behöver att du stannar\n• när jag inte vet vad jag behöver',
+      },
+    ],
+  },
+  // ── category-7: facing-adversity, self-esteem-wavering ──
+  {
+    id: 'facing-adversity',
+    title: 'Att möta motgångar',
+    subtitle: 'Olika sätt att hantera press',
+    categoryId: 'category-7',
+    sections: [
+      {
+        id: 'opening-16',
+        type: 'opening',
+        title: 'Början',
+        content: 'Motgångar visar hur ni fungerar ihop.',
+        prompts: [
+          'Hur brukar du hantera motgång — genom att prata, agera eller dra dig undan?',
+          'Vad känns mest stöttande för dig i svåra perioder?',
+          'Vad gör det svårt för oss att möta motgång på olika sätt?',
+        ],
+      },
+      {
+        id: 'reflective-16',
+        type: 'reflective',
+        title: 'Fördjupning',
+        content: 'Utforska era olika strategier.',
+        prompts: [
+          'Hur visar sig era olika sätt att hantera motgång innan ni hinner prata om det?',
+          'När hjälper det er att vara nära — och när hjälper det er mer att ta paus var för sig och komma tillbaka till varandra?',
+        ],
+      },
+      {
+        id: 'scenario-16',
+        type: 'scenario',
+        title: 'I vardagen',
+        content: 'Ni möter en svår period. En vill planera och agera, den andra behöver pausa och reflektera.',
+        prompts: [
+          'Hur skapar ni utrymme för båda sätten utan att lämna varandra?',
+        ],
+      },
+      {
+        id: 'exercise-16',
+        type: 'exercise',
+        title: 'Tillsammans',
+        content: 'Tänk ut hur en vecka kan se ut där båda era sätt får plats — utan att det ena blir norm och det andra undantag.',
+      },
+    ],
+  },
+  {
+    id: 'self-esteem-wavering',
+    title: 'När självkänslan svajar',
+    subtitle: 'Sårbarhet och förändrade roller',
+    categoryId: 'category-7',
+    sections: [
+      {
+        id: 'opening-15',
+        type: 'opening',
+        title: 'Början',
+        content: 'Självkänsla påverkar allt — även er.',
+        prompts: [
+          'När lägger du märke till att din självkänsla påverkar hur du tar plats i familjen?',
+          'Vad är svårast för mig att se hos dig när du tvivlar på dig själv?',
+          'Hur förändras samspelet mellan oss när en av oss känner sig mindre viktig?',
+        ],
+      },
+      {
+        id: 'reflective-15',
+        type: 'reflective',
+        title: 'Fördjupning',
+        content: 'Utforska vad som döljs bakom fasaden.',
+        prompts: [
+          'När märker du att du försöker framstå som stark eller fungerande, i stället för att visa hur du faktiskt har det i relationen?',
+          'Vad hos dig blir svårare att stå upp för när du inte känner dig säker i din roll?',
+        ],
+      },
+      {
+        id: 'scenario-15',
+        type: 'scenario',
+        title: 'I vardagen',
+        content: 'En motgång gör att en av er börjar ta mindre plats (förlorat jobbet, misslyckats med ett projekt, gått upp i vikt). Det sägs inte rakt ut, men märks i din ton och ditt initiativ. Barnet anpassar sig.',
+        prompts: [
+          'Hur pratar ni om det som hänt utan att skapa hierarkier eller förstärka tvivel?',
+        ],
+      },
+      {
+        id: 'exercise-15',
+        type: 'exercise',
+        title: 'Tillsammans',
+        content: 'Enas om vilka ord ni använder — och undviker — inför barnet när någon tvivlar på sig själv. Bestäm också vilka ansvar som tillfälligt kan skifta utan att någon tappar sin roll.',
+        prompts: [
+          'Syftet är att ingen ska tappa värde i familjen för att den tappar fotfästet.',
+        ],
+      },
+    ],
+  },
+  // ── parenting-together: different-parenting-styles, parenting-boundaries, parenting-exhaustion ──
+  {
+    id: 'different-parenting-styles',
+    title: 'Uppfostran vi ärvt',
+    subtitle: 'Reaktioner formade av uppväxt',
+    categoryId: 'parenting-together',
+    sections: [
+      {
+        id: 'opening-4',
+        type: 'opening',
+        title: 'Början',
+        content: 'Varje förälder bär med sig sin egen historia.',
+        prompts: [
+          'I vilka situationer märker du att din uppväxt talar genom dig?',
+          'Vad från din bakgrund vill du föra vidare, även när det skaver mellan oss?',
+          'När märks skillnaderna i hur vi uppfattar och reagerar på situationer som tydligast?',
+        ],
+      },
+      {
+        id: 'reflective-4',
+        type: 'reflective',
+        title: 'Fördjupning',
+        content: 'Fundera på rötterna till era reaktioner.',
+        prompts: [
+          'När märker du att du reagerar utifrån din historia snarare än på situationen som är nu?',
+          'Vad i vårt samspel gör sådana situationer extra laddade för dig?',
+        ],
+      },
+      {
+        id: 'scenario-4',
+        type: 'scenario',
+        title: 'I vardagen',
+        content: 'En vardagssituation väcker starka reaktioner. Den ena reagerar på händelsen, den andra på känslan som väcks.',
+        prompts: [
+          'Hur pratar ni om det som hände utan att avgöra vems reaktion som var rimligast?',
+        ],
+      },
+      {
+        id: 'exercise-4',
+        type: 'exercise',
+        title: 'Tillsammans',
+        content: 'Bestäm en gemensam formulering ni kan använda i stunden.',
+        prompts: [
+          'Prata efteråt om vad den skyddade — och vad den inte gjorde.',
+        ],
+      },
+    ],
+  },
+  {
+    id: 'parenting-boundaries',
+    title: 'Att säga ifrån',
+    subtitle: 'Gränser, starka reaktioner och samspel',
+    categoryId: 'parenting-together',
+    sections: [
+      {
+        id: 'opening-6a',
+        type: 'opening',
+        title: 'Början',
+        content: 'Gränssättning berör ofta mer än det som syns.',
+        prompts: [
+          'Vad betyder det för dig att säga ifrån på ett sätt som du kan stå för?',
+          'När känner du dig mest osäker på hur vi markerar tillsammans?',
+          'Vad väcker starkast reaktion i dig när barnet går över en gräns?',
+        ],
+      },
+      {
+        id: 'reflective-6a',
+        type: 'reflective',
+        title: 'Fördjupning',
+        content: 'Utforska vad som driver era reaktioner.',
+        prompts: [
+          'När märker du att din reaktion drivs av oro snarare än av situationen?',
+          'Vad händer mellan oss när vi vill markera på olika sätt?',
+        ],
+      },
+      {
+        id: 'scenario-6a',
+        type: 'scenario',
+        title: 'I vardagen',
+        content: 'Ett beteende väcker olika impulser. Den ena vill agera direkt, den andra vill avvakta.',
+        prompts: [
+          'Hur påverkas samspelet när ni inte delar åsikt om timing?',
+        ],
+      },
+      {
+        id: 'exercise-6a',
+        type: 'exercise',
+        title: 'Tillsammans',
+        content: 'Bestäm gemensamt två förhållningssätt: vad ni vill undvika att agera på i affekt — och vad som är viktigt att komma ihåg även när ni tycker olika.',
+      },
+    ],
+  },
+  {
+    id: 'parenting-exhaustion',
+    title: 'Mina, dina, våra värderingar',
+    subtitle: 'Värderingar i vardagliga val',
+    categoryId: 'parenting-together',
+    sections: [
+      {
+        id: 'opening-5',
+        type: 'opening',
+        title: 'Början',
+        content: 'Värderingar syns tydligast i vardagen.',
+        prompts: [
+          'Vilken värdering vill du att barnet ska känna i vårt sätt att vara, mot varandra och i familjen?',
+          'När upplever du tydligast att vi vill visa olika saker i samma situation?',
+          'Vilken värdering tycker du är svårast att leva efter i vardagen?',
+        ],
+      },
+      {
+        id: 'reflective-5',
+        type: 'reflective',
+        title: 'Fördjupning',
+        content: 'De här frågorna bjuder in till ärlighet om era val.',
+        prompts: [
+          'När märker du att du själv gör något som går emot en värdering du egentligen vill stå för?',
+          'På vilka sätt gör vårt samspel det lättare — eller svårare — för dig att agera i linje med det som är viktigt för dig?',
+        ],
+      },
+      {
+        id: 'scenario-5',
+        type: 'scenario',
+        title: 'I vardagen',
+        content: 'Barnet beter sig respektlöst. En markerar direkt mot barnet. Den andra reagerar mer på hur gränsen sätts: ton, ordval eller situation.',
+        prompts: [
+          'När ni reagerar olika i stunden, vad är det som var och en av er försöker skydda just då?',
+        ],
+      },
+      {
+        id: 'exercise-5',
+        type: 'exercise',
+        title: 'Tillsammans',
+        content: 'Nästa gång ni reagerar olika i en liknande situation: hur kan ni visa respekt för det som den andra försöker skydda, utan att ge upp det som är viktigt för dig själv?',
+        prompts: [
+          'Prata om hur detta skulle kunna märkas i ton, timing eller ordval — inte som en lösning, utan som ett sätt att förstå varandra bättre.',
+        ],
+      },
+    ],
+  },
+  // ── individual-needs: family-voices, our-traditions ──
   {
     id: 'family-voices',
     title: 'Röster från släkten',
@@ -634,273 +725,7 @@ export const cards: Card[] = [
       },
     ],
   },
-  {
-    id: 'risk-under-responsibility',
-    title: 'Risk under ansvar',
-    subtitle: 'Mod, trygghet och gemensamma ramar',
-    categoryId: 'category-6',
-    sections: [
-      {
-        id: 'opening-13',
-        type: 'opening',
-        title: 'Början',
-        content: 'Ekonomiska beslut berör mer än pengar.',
-        prompts: [
-          'När känns risk som utveckling för dig och när känns den som ett hot?',
-          'Vad behöver du för att känna trygghet när vi tar ekonomiska beslut?',
-          'Vilken sorts mod vill du att barnet ska se hos oss?',
-        ],
-      },
-      {
-        id: 'reflective-13',
-        type: 'reflective',
-        title: 'Fördjupning',
-        content: 'Utforska gränsen mellan mod och ansvar.',
-        prompts: [
-          'Vad behöver vara på plats för att en risk ska kännas ansvarsfull för er — inte bara modig?',
-          'När upplever du att trygghet byggs mest: när risk undviks eller när den hanteras?',
-        ],
-      },
-      {
-        id: 'scenario-13',
-        type: 'scenario',
-        title: 'I vardagen',
-        content: 'En av er vill starta eget eller studera vidare, vilket innebär lägre inkomster under en period.',
-        prompts: [
-          'Hur sätter ni gemensamma ramar för risk och trygghet, och vilka tecken visar att balansen håller på att rubbas?',
-        ],
-      },
-      {
-        id: 'exercise-13',
-        type: 'exercise',
-        title: 'Tillsammans',
-        content: 'Välj en möjlig framtida satsning (något ni kan tänka er att någon av er vill satsa på någon gång). Prata igenom:\n• Vad skulle vara bästa utfallet?\n• Vad skulle vara det värsta rimliga utfallet?\n• Vilken gräns skulle ni inte vilja passera (tid/pengar/ork)?\n• Vilka två tecken skulle betyda: \u201Cnu behöver vi bromsa\u201D?',
-      },
-    ],
-  },
-  {
-    id: 'worth-spending-on',
-    title: 'Värt att spendera på',
-    subtitle: 'Vad som känns värdefullt att investera i; tid, energi, pengar',
-    categoryId: 'category-6',
-    sections: [
-      {
-        id: 'opening-14',
-        type: 'opening',
-        title: 'Början',
-        content: 'Vad är värt vad — och för vem?',
-        prompts: [
-          'Vad är enligt dig en formande erfarenhet för ett barn?',
-          'Vilken upplevelse tycker du är värd att spara stort till — och varför?',
-          'Vad hade du själv velat få vara med om som barn?',
-        ],
-      },
-      {
-        id: 'reflective-14',
-        type: 'reflective',
-        title: 'Fördjupning',
-        content: 'Utforska vad som driver era val.',
-        prompts: [
-          'Lär sig barn mest av upplevelser — eller av att se oss anstränga oss för något?',
-          'Vad riskerar vi att signalera som värdefullt utan att vi tycker det?',
-        ],
-      },
-      {
-        id: 'scenario-14',
-        type: 'scenario',
-        title: 'I vardagen',
-        content: 'Ni står inför en kostsam satsning och märker att frågan väcker olika bilder av vad som är \u201Cvärt det\u201D. Barnet märker att något stort är på gång.',
-        prompts: [
-          'Hur avgör ni när det är värt det bortom prislappen?',
-        ],
-      },
-      {
-        id: 'exercise-14',
-        type: 'exercise',
-        title: 'Tillsammans',
-        content: 'Enas om vad som gör satsningen värd pengarna, vad ni är beredda att avstå eller vänta med, och hur barnet får vara delaktigt i vägen dit.',
-      },
-    ],
-  },
-  {
-    id: 'self-esteem-wavering',
-    title: 'När självkänslan svajar',
-    subtitle: 'Sårbarhet och förändrade roller',
-    categoryId: 'category-7',
-    sections: [
-      {
-        id: 'opening-15',
-        type: 'opening',
-        title: 'Början',
-        content: 'Självkänsla påverkar allt — även er.',
-        prompts: [
-          'När lägger du märke till att din självkänsla påverkar hur du tar plats i familjen?',
-          'Vad är svårast för mig att se hos dig när du tvivlar på dig själv?',
-          'Hur förändras samspelet mellan oss när en av oss känner sig mindre viktig?',
-        ],
-      },
-      {
-        id: 'reflective-15',
-        type: 'reflective',
-        title: 'Fördjupning',
-        content: 'Utforska vad som döljs bakom fasaden.',
-        prompts: [
-          'När märker du att du försöker framstå som stark eller fungerande, i stället för att visa hur du faktiskt har det i relationen?',
-          'Vad hos dig blir svårare att stå upp för när du inte känner dig säker i din roll?',
-        ],
-      },
-      {
-        id: 'scenario-15',
-        type: 'scenario',
-        title: 'I vardagen',
-        content: 'En motgång gör att en av er börjar ta mindre plats (förlorat jobbet, misslyckats med ett projekt, gått upp i vikt). Det sägs inte rakt ut, men märks i din ton och ditt initiativ. Barnet anpassar sig.',
-        prompts: [
-          'Hur pratar ni om det som hänt utan att skapa hierarkier eller förstärka tvivel?',
-        ],
-      },
-      {
-        id: 'exercise-15',
-        type: 'exercise',
-        title: 'Tillsammans',
-        content: 'Enas om vilka ord ni använder — och undviker — inför barnet när någon tvivlar på sig själv. Bestäm också vilka ansvar som tillfälligt kan skifta utan att någon tappar sin roll.',
-        prompts: [
-          'Syftet är att ingen ska tappa värde i familjen för att den tappar fotfästet.',
-        ],
-      },
-    ],
-  },
-  {
-    id: 'facing-adversity',
-    title: 'Att möta motgångar',
-    subtitle: 'Olika sätt att hantera press',
-    categoryId: 'category-7',
-    sections: [
-      {
-        id: 'opening-16',
-        type: 'opening',
-        title: 'Början',
-        content: 'Motgångar visar hur ni fungerar ihop.',
-        prompts: [
-          'Hur brukar du hantera motgång — genom att prata, agera eller dra dig undan?',
-          'Vad känns mest stöttande för dig i svåra perioder?',
-          'Vad gör det svårt för oss att möta motgång på olika sätt?',
-        ],
-      },
-      {
-        id: 'reflective-16',
-        type: 'reflective',
-        title: 'Fördjupning',
-        content: 'Utforska era olika strategier.',
-        prompts: [
-          'Hur visar sig era olika sätt att hantera motgång innan ni hinner prata om det?',
-          'När hjälper det er att vara nära — och när hjälper det er mer att ta paus var för sig och komma tillbaka till varandra?',
-        ],
-      },
-      {
-        id: 'scenario-16',
-        type: 'scenario',
-        title: 'I vardagen',
-        content: 'Ni möter en svår period. En vill planera och agera, den andra behöver pausa och reflektera.',
-        prompts: [
-          'Hur skapar ni utrymme för båda sätten utan att lämna varandra?',
-        ],
-      },
-      {
-        id: 'exercise-16',
-        type: 'exercise',
-        title: 'Tillsammans',
-        content: 'Tänk ut hur en vecka kan se ut där båda era sätt får plats — utan att det ena blir norm och det andra undantag.',
-      },
-    ],
-  },
-  {
-    id: 'behind-the-scenes',
-    title: 'Framför och bakom kulisserna',
-    subtitle: 'Enighet, reparation och ansvar',
-    categoryId: 'category-8',
-    sections: [
-      {
-        id: 'opening-17',
-        type: 'opening',
-        title: 'Början',
-        content: 'Att vara på samma sida — vad innebär det egentligen?',
-        prompts: [
-          'När känner du dig mest skyddad av mig som förälder?',
-          'När känns det som att vi inte riktigt är på samma sida?',
-          'Vad behöver du efter en situation där vi agerat olika inför barnet?',
-        ],
-      },
-      {
-        id: 'reflective-17',
-        type: 'reflective',
-        title: 'Fördjupning',
-        content: 'Utforska skillnaden mellan fasad och äkta enighet.',
-        prompts: [
-          'Hur märks skillnaden mellan att visa enad front — och att känna sig enad bakom kulisserna?',
-          'Vad händer mellan er när oenighet hanteras öppet i efterhand — jämfört med när den aldrig riktigt får utrymme?',
-        ],
-      },
-      {
-        id: 'scenario-17',
-        type: 'scenario',
-        title: 'I vardagen',
-        content: 'Efter en jobbig kväll tappar en av er tålamodet inför barnet. Den andra reagerar på det, men ni tar inte diskussionen där och då.',
-        prompts: [
-          'Hur tar ni ansvar för det som hände — både inför varandra och inför barnet?',
-        ],
-      },
-      {
-        id: 'exercise-17',
-        type: 'exercise',
-        title: 'Tillsammans',
-        content: 'Bestäm hur ni signalerar \u201Cvi tar det sen\u201D, hur ni pratar om det utan att bli motparter, och hur ni visar barnet att vuxna också reparerar konflikter.',
-      },
-    ],
-  },
-  {
-    id: 'thoughtful-space',
-    title: 'Omtänksamt utrymme',
-    subtitle: 'Att ge och ta utrymme utan att skapa avstånd',
-    categoryId: 'category-8',
-    sections: [
-      {
-        id: 'opening-18',
-        type: 'opening',
-        title: 'Början',
-        content: 'Utrymme kan vara kärlek — eller avstånd.',
-        prompts: [
-          'Hur märker du själv att du behöver utrymme innan det blir för mycket?',
-          'Hur vill du att jag tolkar din tystnad?',
-          'När känner du dig trygg i att jag stannar kvar, även utan att lösa något, när vi är i konflikt?',
-        ],
-      },
-      {
-        id: 'reflective-18',
-        type: 'reflective',
-        title: 'Fördjupning',
-        content: 'Utforska gränsen mellan omsorg och övergivande.',
-        prompts: [
-          'När känns det kärleksfullt att lämna den andre ifred — och när känns det som övergivande?',
-          'När är det omtänksamt att stå kvar — och när blir det påträngande?',
-        ],
-      },
-      {
-        id: 'scenario-18',
-        type: 'scenario',
-        title: 'I vardagen',
-        content: 'En drar sig undan för att orka, den andra känner sig övergiven. Båda försöker skydda relationen.',
-        prompts: [
-          'Hur vet ni när utrymme hjälper — och när det börjar skapa avstånd?',
-        ],
-      },
-      {
-        id: 'exercise-18',
-        type: 'exercise',
-        title: 'Tillsammans',
-        content: 'Kom överens om tydliga tecken för:\n• när jag behöver vara ifred\n• när jag behöver att du stannar\n• när jag inte vet vad jag behöver',
-      },
-    ],
-  },
+  // ── category-9: our-philosophy, when-life-tilts ──
   {
     id: 'our-philosophy',
     title: 'Vår filosofi',
@@ -989,6 +814,191 @@ export const cards: Card[] = [
       },
     ],
   },
+  // ── category-6: worth-spending-on, risk-under-responsibility ──
+  {
+    id: 'worth-spending-on',
+    title: 'Värt att spendera på',
+    subtitle: 'Vad som känns värdefullt att investera i; tid, energi, pengar',
+    categoryId: 'category-6',
+    sections: [
+      {
+        id: 'opening-14',
+        type: 'opening',
+        title: 'Början',
+        content: 'Vad är värt vad — och för vem?',
+        prompts: [
+          'Vad är enligt dig en formande erfarenhet för ett barn?',
+          'Vilken upplevelse tycker du är värd att spara stort till — och varför?',
+          'Vad hade du själv velat få vara med om som barn?',
+        ],
+      },
+      {
+        id: 'reflective-14',
+        type: 'reflective',
+        title: 'Fördjupning',
+        content: 'Utforska vad som driver era val.',
+        prompts: [
+          'Lär sig barn mest av upplevelser — eller av att se oss anstränga oss för något?',
+          'Vad riskerar vi att signalera som värdefullt utan att vi tycker det?',
+        ],
+      },
+      {
+        id: 'scenario-14',
+        type: 'scenario',
+        title: 'I vardagen',
+        content: 'Ni står inför en kostsam satsning och märker att frågan väcker olika bilder av vad som är \u201Cvärt det\u201D. Barnet märker att något stort är på gång.',
+        prompts: [
+          'Hur avgör ni när det är värt det bortom prislappen?',
+        ],
+      },
+      {
+        id: 'exercise-14',
+        type: 'exercise',
+        title: 'Tillsammans',
+        content: 'Enas om vad som gör satsningen värd pengarna, vad ni är beredda att avstå eller vänta med, och hur barnet får vara delaktigt i vägen dit.',
+      },
+    ],
+  },
+  {
+    id: 'risk-under-responsibility',
+    title: 'Risk under ansvar',
+    subtitle: 'Mod, trygghet och gemensamma ramar',
+    categoryId: 'category-6',
+    sections: [
+      {
+        id: 'opening-13',
+        type: 'opening',
+        title: 'Början',
+        content: 'Ekonomiska beslut berör mer än pengar.',
+        prompts: [
+          'När känns risk som utveckling för dig och när känns den som ett hot?',
+          'Vad behöver du för att känna trygghet när vi tar ekonomiska beslut?',
+          'Vilken sorts mod vill du att barnet ska se hos oss?',
+        ],
+      },
+      {
+        id: 'reflective-13',
+        type: 'reflective',
+        title: 'Fördjupning',
+        content: 'Utforska gränsen mellan mod och ansvar.',
+        prompts: [
+          'Vad behöver vara på plats för att en risk ska kännas ansvarsfull för er — inte bara modig?',
+          'När upplever du att trygghet byggs mest: när risk undviks eller när den hanteras?',
+        ],
+      },
+      {
+        id: 'scenario-13',
+        type: 'scenario',
+        title: 'I vardagen',
+        content: 'En av er vill starta eget eller studera vidare, vilket innebär lägre inkomster under en period.',
+        prompts: [
+          'Hur sätter ni gemensamma ramar för risk och trygghet, och vilka tecken visar att balansen håller på att rubbas?',
+        ],
+      },
+      {
+        id: 'exercise-13',
+        type: 'exercise',
+        title: 'Tillsammans',
+        content: 'Välj en möjlig framtida satsning (något ni kan tänka er att någon av er vill satsa på någon gång). Prata igenom:\n• Vad skulle vara bästa utfallet?\n• Vad skulle vara det värsta rimliga utfallet?\n• Vilken gräns skulle ni inte vilja passera (tid/pengar/ork)?\n• Vilka två tecken skulle betyda: \u201Cnu behöver vi bromsa\u201D?',
+      },
+    ],
+  },
+  // ── daily-life: family-ab, love-languages ──
+  {
+    id: 'family-ab',
+    title: 'När vårt \u201Cvi\u201D blir \u201CFamiljen AB\u201D',
+    subtitle: 'Logistik som ersätter kontakt',
+    categoryId: 'daily-life',
+    sections: [
+      {
+        id: 'opening-10',
+        type: 'opening',
+        title: 'Början',
+        content: 'När samarbete tar över känslan.',
+        prompts: [
+          'När märker du att jag börjar låta mer som en kollega än en partner?',
+          'Vad hos mig saknar du mest när vi fastnar i logistik?',
+          'När känner du dig effektiv men inte sedd i det du gör?',
+        ],
+      },
+      {
+        id: 'reflective-10',
+        type: 'reflective',
+        title: 'Fördjupning',
+        content: 'Utforska gränsen mellan effektivitet och avstånd.',
+        prompts: [
+          'På vilka sätt kan ett starkt samarbete göra att känslor kommer i andra hand?',
+          'När blir effektivitet ett sätt att vara nära — och när blir det ett sätt att slippa känna efter?',
+        ],
+      },
+      {
+        id: 'scenario-10',
+        type: 'scenario',
+        title: 'I vardagen',
+        content: 'Ni löser vardagen smidigt. Allt fungerar. Men samtalen handlar nästan bara om tider, ansvar och barn. Ingen längtar — men ingen klagar heller.',
+        prompts: [
+          'Hur länge kan en relation leva på funktion innan något viktigt tystnar i oss?',
+        ],
+      },
+      {
+        id: 'exercise-10',
+        type: 'exercise',
+        title: 'Tillsammans',
+        content: 'Avsätt tio minuter en gång den här veckan där ni inte pratar om barn eller logistik.',
+        prompts: [
+          'Om ni inte har något att säga — sitt kvar ändå.',
+        ],
+      },
+    ],
+  },
+  {
+    id: 'love-languages',
+    title: 'Kärleksspråk',
+    subtitle: 'Närhet och hur signaler uppfattas',
+    categoryId: 'daily-life',
+    sections: [
+      {
+        id: 'opening-9',
+        type: 'opening',
+        title: 'Början',
+        content: 'Närhet börjar med att förstå varandras språk.',
+        prompts: [
+          'Vilka små gester får dig att känna dig älskad?',
+          'Vad får dig att känna närhet just nu oavsett om det leder till sex eller inte?',
+          'När har vi senast tolkat varandras signaler om närhet på olika sätt?',
+        ],
+      },
+      {
+        id: 'reflective-9',
+        type: 'reflective',
+        title: 'Fördjupning',
+        content: 'Utforska hur ni läser varandra.',
+        prompts: [
+          'Vilka tecken hos mig tolkar du som en inbjudan — och vilka missar du lätt?',
+          'När känns ett \u201Cnej\u201D som avvisande för dig — och när känns det som omsorg om er?',
+        ],
+      },
+      {
+        id: 'scenario-9',
+        type: 'scenario',
+        title: 'I vardagen',
+        content: 'Trötthet och längtan krockar. Den ena vill vara nära, den andra orkar inte. Trots goda intentioner smyger sig både press och tolkningar in.',
+        prompts: [
+          'Hur skiljer ni mellan att säga nej till fysisk närhet och ja till relationen?',
+        ],
+      },
+      {
+        id: 'exercise-9',
+        type: 'exercise',
+        title: 'Tillsammans',
+        content: 'Skapa två tydliga signaler: \u201CJag längtar efter närhet\u201D och \u201CJag kan inte just nu, men jag vill dig\u201D.',
+        prompts: [
+          'Hur kan de se ut så att ingen behöver gissa?',
+        ],
+      },
+    ],
+  },
+  // ── category-10: adrift, choosing-to-stay ──
   {
     id: 'adrift',
     title: 'På drift',
@@ -1092,4 +1102,3 @@ export function getCardById(cardId: string): Card | undefined {
 export function getCategoryById(categoryId: string): Category | undefined {
   return categories.find((cat) => cat.id === categoryId);
 }
-
