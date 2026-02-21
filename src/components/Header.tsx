@@ -77,7 +77,7 @@ export default function Header({
         boxShadow: 'none',
       }}
     >
-      <div className="relative flex items-center justify-between px-6" style={{ height: isImmersive ? '1.5rem' : '3.75rem' }}>
+      <div className="relative flex items-center justify-between px-6" style={{ height: isImmersive ? '2.5rem' : '3.75rem' }}>
         {/* ── Left ── */}
         <div className="flex items-center gap-2 flex-1 min-w-0">
           {isImmersive && onImmersiveBack && (
@@ -140,15 +140,15 @@ export default function Header({
           {isImmersive && onLeaveSession && (
             <button
               onClick={onLeaveSession}
-              className="text-[9px] font-sans whitespace-nowrap shrink-0 ml-5 mr-2"
+              className="text-[13px] font-sans whitespace-nowrap shrink-0 ml-5 mr-2"
               style={{
                 color: 'hsl(0 0% 100%)',
-                opacity: 0.25,
+                opacity: 0.55,
                 fontWeight: 400,
                 transition: 'opacity 150ms ease',
               }}
-              onMouseEnter={(e) => { e.currentTarget.style.opacity = '0.45'; }}
-              onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.25'; }}
+              onMouseEnter={(e) => { e.currentTarget.style.opacity = '0.85'; }}
+              onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.55'; }}
             >
               Lämna samtalet
             </button>
