@@ -129,7 +129,7 @@ function CardEntry({ card, index, isCompleted = false, onNavigate }: CardEntryPr
           {card.subtitle && (
             <p
               className="type-meta mt-px"
-              style={{ color: 'var(--color-text-secondary)', opacity: 0.32 }}
+              style={{ color: 'var(--color-text-secondary)', opacity: 0.60 }}
             >
               {card.subtitle}
             </p>
@@ -147,7 +147,7 @@ function CardEntry({ card, index, isCompleted = false, onNavigate }: CardEntryPr
           size={16}
           strokeWidth={1.5}
           className="flex-shrink-0"
-          style={{ color: 'var(--color-text-secondary)', opacity: 0.55 }}
+          style={{ color: 'var(--color-text-secondary)', opacity: 0.40 }}
         />
       </motion.div>
     </motion.div>
