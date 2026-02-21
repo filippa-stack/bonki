@@ -7,6 +7,7 @@ import { useCoupleSpaceContext } from '@/contexts/CoupleSpaceContext';
 import { supabase } from '@/integrations/supabase/client';
 import { useDevState } from '@/contexts/DevStateContext';
 import Header from '@/components/Header';
+import ArchiveTakeaway from '@/components/ArchiveTakeaway';
 import { ChevronRight, ChevronDown } from 'lucide-react';
 import type { Prompt } from '@/types';
 
@@ -353,18 +354,11 @@ export default function SharedSummary() {
                                 );
                               })}
 
-                              {/* Takeaway */}
-                              {entry.takeaway && (
-                                <div>
-                                  <div style={{ height: '1px', background: 'hsl(var(--border) / 0.15)', marginTop: '16px', marginBottom: '12px' }} />
-                                  <p className="type-meta uppercase" style={{ color: 'var(--accent-saffron)', letterSpacing: '0.06em', marginBottom: '6px' }}>
-                                    Ni bar med er:
-                                  </p>
-                                  <p className="font-serif italic whitespace-pre-wrap" style={{ fontSize: '18px', lineHeight: 1.6, color: 'var(--text-primary)' }}>
-                                    {entry.takeaway}
-                                  </p>
-                                </div>
-                              )}
+                              {/* Editable Takeaway */}
+                              <div>
+                                <div style={{ height: '1px', background: 'hsl(var(--border) / 0.15)', marginTop: '16px', marginBottom: '12px' }} />
+                                <ArchiveTakeaway sessionId={entry.sessionId} initialText={entry.takeaway} />
+                              </div>
 
                               {/* Revisit link */}
                               <button
