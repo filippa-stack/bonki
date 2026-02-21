@@ -44,7 +44,7 @@ export default function Category() {
     <div className="min-h-screen" style={{ backgroundColor: 'var(--color-bg-base)' }}>
       <Header title={category?.title} showBack backTo="/categories" showSharedLink />
 
-      <div className="px-6 pt-title-above pb-0">
+      <div className="px-6 pt-8 pb-0">
         <motion.h1
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
@@ -67,7 +67,7 @@ export default function Category() {
         )}
       </div>
 
-      <div className="px-6 pt-12 pb-24 flex flex-col gap-4">
+      <div className="px-6 pt-12 pb-24 flex flex-col gap-6">
         {cards.map((card, index) => (
           <CardEntry
             key={card.id}
