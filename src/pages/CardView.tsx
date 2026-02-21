@@ -616,6 +616,27 @@ export default function CardView() {
             className="max-w-md mx-auto mt-24 flex flex-col items-center"
           >
             <button
+              onClick={() => navigate('/shared')}
+              style={{
+                display: 'block',
+                width: '100%',
+                textAlign: 'center',
+                fontSize: '13px',
+                fontFamily: 'Inter, sans-serif',
+                color: 'var(--text-secondary)',
+                opacity: 0.70,
+                textDecoration: 'underline',
+                background: 'none',
+                border: 'none',
+                cursor: 'pointer',
+                marginTop: '24px',
+                marginBottom: '16px',
+                padding: '8px 0',
+              }}
+            >
+              Se reflektionerna i Era samtal
+            </button>
+            <button
               onClick={() => navigate(category ? `/category/${category.id}` : '/categories')}
               className="cta-primary"
             >
