@@ -174,13 +174,12 @@ export default function CompletedSessionView({
             className="text-center space-y-3"
           >
             <h2
-              className="text-foreground"
-              style={{ fontFamily: 'var(--font-serif)', fontSize: '22px', fontWeight: 450, letterSpacing: '-0.02em', lineHeight: 1.2 }}
+              className="type-h1 text-foreground"
             >
               Samtalet är sparat.
             </h2>
-            <p className="text-meta text-muted-foreground/60 mt-[8px]">Ni kan fortsätta när ni vill.</p>
-            <p className="text-[11px] text-muted-foreground/35 tracking-wide">
+            <p className="type-body text-muted-foreground/60 mt-[8px]">Ni kan fortsätta när ni vill.</p>
+            <p className="type-meta text-muted-foreground/35 tracking-wide">
               {formatSessionDate(session.startedAt)}
             </p>
           </motion.div>
@@ -237,7 +236,7 @@ export default function CompletedSessionView({
               transition={{ delay: BEAT_2, duration: BEAT_3, ease: EASE }}
               className="space-y-2"
             >
-              <p className="text-xs text-muted-foreground/40 tracking-wide">Det ni tog med er</p>
+              <p className="type-meta text-muted-foreground/40 tracking-wide">Det ni tog med er</p>
               <div className="rounded-card bg-muted/10 overflow-hidden">
                 <p className="p-6 text-sm text-foreground whitespace-pre-wrap">{session.takeawayText}</p>
               </div>

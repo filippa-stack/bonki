@@ -136,7 +136,7 @@ export default function SharedSummary() {
           transition={{ duration: 0.2, ease: [0.4, 0, 0.2, 1] }}
           className="text-center"
         >
-          <p className="text-sm text-muted-foreground/50">
+          <p className="type-body text-muted-foreground/50">
             Här finns det ni har utforskat tillsammans.
           </p>
         </motion.div>
@@ -152,10 +152,10 @@ export default function SharedSummary() {
             transition={{ duration: 0.15 }}
             className="pt-8 pb-24 text-center"
           >
-            <p className="text-[17px] font-medium text-foreground/70 leading-relaxed mt-6">
+            <p className="type-h2 text-foreground/70 mt-6">
               Här växer det ni delar.
             </p>
-            <p className="text-sm leading-relaxed text-muted-foreground/57 mt-7">
+            <p className="type-body text-muted-foreground/57 mt-7">
               När ni har haft ert första samtal, börjar rummet ta form.
             </p>
           </motion.div>
@@ -185,12 +185,10 @@ export default function SharedSummary() {
                 >
                   {/* Category */}
                   <p
-                    className="uppercase tracking-[0.08em] font-sans"
+                    className="type-meta uppercase tracking-[0.08em]"
                     style={{
-                      fontSize: '10px',
                       color: 'var(--color-text-secondary)',
                       opacity: 0.5,
-                      lineHeight: 1,
                     }}
                   >
                     {entry.categoryTitle}
@@ -198,11 +196,9 @@ export default function SharedSummary() {
 
                   {/* Topic title — 8px below category */}
                   <p
-                    className="font-serif group-hover:text-foreground transition-colors"
+                    className="type-h2 group-hover:text-foreground transition-colors"
                     style={{
                       marginTop: '8px',
-                      fontSize: '17px',
-                      lineHeight: 1.3,
                       color: 'var(--color-text-primary)',
                       opacity: 0.9,
                     }}
@@ -213,13 +209,11 @@ export default function SharedSummary() {
                   {/* Date — 8px below title */}
                   {entry.completedAt && (
                     <p
-                      className="font-sans"
+                      className="type-meta"
                       style={{
                         marginTop: '8px',
-                        fontSize: '11px',
                         color: 'var(--color-text-secondary)',
                         opacity: 0.35,
-                        lineHeight: 1,
                       }}
                     >
                       {formatDistanceToNow(new Date(entry.completedAt), {
@@ -239,10 +233,8 @@ export default function SharedSummary() {
                       }}
                     >
                       <p
-                        className="font-sans"
+                        className="type-body"
                         style={{
-                          fontSize: '13px',
-                          lineHeight: 1.6,
                           color: 'var(--color-text-secondary)',
                           opacity: 0.6,
                         }}

@@ -95,7 +95,7 @@ export default function CardTakeaways({ cardId, compact = false }: CardTakeaways
           rows={compact ? 2 : 2}
         />
         <div className="flex items-center justify-between">
-          <span className="text-[10px] text-muted-foreground/40">
+          <span className="type-meta text-muted-foreground/40">
             {saveStatus === 'saving' ? 'Sparar…' : saveStatus === 'saved' ? 'Sparad' : '\u00A0'}
           </span>
           {privateText.trim() && !sharedNote && !showSharePreview && (

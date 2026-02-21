@@ -39,9 +39,8 @@ export default function LockedReflectionDisplay({ sessionId, stepIndex }: Props)
   return (
     <div className="mt-10 mb-1" style={{ paddingLeft: '16px' }}>
       <p
-        className="font-serif whitespace-pre-wrap"
+        className="type-body font-serif whitespace-pre-wrap"
         style={{
-          fontSize: '14px',
           lineHeight: 1.8,
           color: 'var(--color-text-primary)',
           opacity: 0.75,
@@ -50,10 +49,9 @@ export default function LockedReflectionDisplay({ sessionId, stepIndex }: Props)
         {text}
       </p>
       <p
-        className="font-sans"
+        className="type-meta"
         style={{
           marginTop: '12px',
-          fontSize: '10px',
           color: 'var(--color-text-secondary)',
           opacity: 0.3,
           letterSpacing: '0.04em',

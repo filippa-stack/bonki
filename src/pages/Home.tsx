@@ -207,15 +207,12 @@ export default function Home() {
               animate={{ opacity: 1 }}
               transition={{ duration: 0.2, ease: [0.4, 0, 0.2, 1] }}
             >
-              <h1
-                className="font-serif font-semibold"
-                style={{ fontSize: '28px', color: 'var(--color-text-primary)', lineHeight: 1.2 }}
-              >
+              <h1 className="type-h1" style={{ color: 'var(--color-text-primary)' }}>
                 Vårt utrymme
               </h1>
               <p
-                className="mt-4"
-                style={{ fontSize: '14px', color: 'var(--color-text-secondary)', opacity: 0.55, lineHeight: 1.4 }}
+                className="type-body mt-4"
+                style={{ color: 'var(--color-text-secondary)', opacity: 0.55 }}
               >
                 Här börjar era samtal.
               </p>
@@ -298,14 +295,10 @@ export default function Home() {
                         <div className="flex items-center justify-between gap-3 w-full">
                           <div className="flex-1 min-w-0">
                             <h3
-                              className="font-normal"
+                              className="type-h3"
                               style={{
-                                fontSize: isPrimary ? '14px' : '12.5px',
                                 color: allExplored ? 'var(--color-text-secondary)' : 'var(--color-text-primary)',
                                 opacity: allExplored ? 0.7 : 0.9,
-                                lineHeight: '1.4',
-                                overflowWrap: 'break-word',
-                                wordBreak: 'break-word',
                               }}
                             >
                               {category.title}

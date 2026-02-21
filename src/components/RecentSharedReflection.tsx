@@ -75,11 +75,11 @@ export default function RecentSharedReflection() {
         className="p-3 rounded-xl border border-border bg-card cursor-pointer hover:border-primary/20 transition-colors"
         onClick={() => navigate('/shared')}
       >
-        <p className="text-[13px] text-foreground/80 whitespace-pre-wrap leading-relaxed">
+        <p className="type-body text-foreground/80 whitespace-pre-wrap leading-relaxed">
           {truncatedContent}
         </p>
         <div className="flex items-center justify-between mt-2">
-          <p className="text-[10px] text-muted-foreground/60">
+          <p className="type-meta text-muted-foreground/60">
             {[
               category?.title && card?.title ? `${category.title} · ${card.title}` : null,
               note.author_label,
