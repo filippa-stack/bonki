@@ -92,12 +92,11 @@ export default function Header({
           {!isImmersive && showBack && (
             <button
               onClick={() => navigate(backTo || '/')}
-              className="flex items-center gap-2 font-sans text-foreground/[0.87] hover:text-foreground transition-colors shrink-0"
-              style={{ fontSize: '16px', fontWeight: 400 }}
+              className="flex items-center justify-center shrink-0"
+              style={{ width: '44px', height: '44px', marginLeft: '-10px' }}
               aria-label="Tillbaka"
             >
-              <ArrowLeft className="w-4 h-4" />
-              <span>Tillbaka</span>
+              <ArrowLeft className="w-5 h-5" style={{ color: 'var(--color-text-primary)', opacity: 0.55 }} />
             </button>
           )}
           {/* Logo — show on home (minimal, no back) or default pages with back */}
