@@ -214,11 +214,13 @@ export default function Home() {
                 className="type-body mt-4"
                 style={{ color: 'var(--text-secondary)' }}
               >
-                {exploredIds.length === 0
-                  ? 'Välj ett ämne och börja utforska.'
-                  : exploredIds.length <= 5
-                    ? 'Ni har börjat. Fortsätt i er takt.'
-                    : 'Ert samtal fortsätter.'}
+                {snapshot?.sessions
+                  ? 'Ni har börjat. Fortsätt i er takt.'
+                  : exploredIds.length === 0
+                    ? 'Välj ett ämne och börja utforska.'
+                    : exploredIds.length <= 5
+                      ? 'Ni har börjat. Fortsätt i er takt.'
+                      : 'Ert samtal fortsätter.'}
               </p>
             </motion.div>
 
