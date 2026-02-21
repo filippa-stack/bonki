@@ -252,6 +252,13 @@ export default function CompletedSessionView({
           >
           <div className="space-y-5">
             <button
+              onClick={() => navigate('/shared')}
+              className="type-meta text-center block mx-auto mt-6 mb-6 hover:underline transition-opacity"
+              style={{ color: 'var(--color-text-secondary)', opacity: 0.65 }}
+            >
+              Se reflektionerna i Era samtal
+            </button>
+            <button
               onClick={() => navigate('/')}
               className="cta-primary"
             >
