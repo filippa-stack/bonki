@@ -66,36 +66,33 @@ export default function PromptItem({ prompt, index, sectionType, preamble }: Pro
     const items = fullText.split('•').map(s => s.trim()).filter(Boolean);
     const hasIntro = !fullText.startsWith('•');
     const intro = hasIntro ? items[0] : null;
-    const listItems = hasIntro ? items.slice(1) : items;
+    const subQuestions = hasIntro ? items.slice(1) : items;
 
     return (
       <div>
         {intro && (
           <p
             className="font-serif"
-            style={{ fontSize: '20px', lineHeight: 1.4, color: '#1C1B1A', marginBottom: '12px' }}
+            style={{ fontSize: '20px', lineHeight: 1.4, color: '#1C1B1A' }}
           >
             {intro}
           </p>
         )}
-        <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
-          {listItems.map((item, i) => (
-            <li
-              key={i}
-              className="font-serif"
-              style={{
-                fontSize: '18px',
-                lineHeight: 1.5,
-                color: '#1C1B1A',
-                paddingLeft: '16px',
-                marginBottom: '6px',
-                borderLeft: '2px solid rgba(196, 130, 45, 0.40)',
-              }}
-            >
-              {item}
-            </li>
-          ))}
-        </ul>
+        {subQuestions.map((item, i) => (
+          <p
+            key={i}
+            className="font-serif"
+            style={{
+              fontSize: '17px',
+              fontWeight: 400,
+              lineHeight: 1.5,
+              color: 'var(--color-text-secondary)',
+              marginTop: '12px',
+            }}
+          >
+            {item}
+          </p>
+        ))}
       </div>
     );
   };
