@@ -365,6 +365,7 @@ export default function Home() {
                         className="cursor-pointer"
                         style={{
                           borderRadius: '0 14px 14px 0',
+                          border: '1px solid hsl(36, 15%, 85%)',
                           borderLeft: `3px solid ${recAccent}`,
                           padding: '20px',
                           minHeight: '48px',
@@ -373,15 +374,17 @@ export default function Home() {
                           justifyContent: 'space-between',
                           gap: '8px',
                           background: 'hsl(36, 22%, 96%)',
-                          transition: 'transform 120ms ease-out, box-shadow 120ms ease-out, background-color 0.15s ease',
+                          transition: 'border-color 0.15s ease, background-color 0.15s ease, transform 120ms ease-out, box-shadow 120ms ease-out',
                         }}
                         onPointerDown={(e) => {
                           e.currentTarget.style.transform = 'scale(0.98)';
                           e.currentTarget.style.boxShadow = '0 2px 8px hsl(var(--foreground) / 0.08)';
                           e.currentTarget.style.backgroundColor = 'hsl(36, 20%, 95%)';
+                          e.currentTarget.style.borderColor = 'hsl(36, 15%, 72%)';
+                          e.currentTarget.style.borderLeftColor = recAccent;
                         }}
-                        onPointerUp={(e) => { e.currentTarget.style.transform = ''; e.currentTarget.style.boxShadow = ''; e.currentTarget.style.backgroundColor = ''; }}
-                        onPointerLeave={(e) => { e.currentTarget.style.transform = ''; e.currentTarget.style.boxShadow = ''; e.currentTarget.style.backgroundColor = ''; }}
+                        onPointerUp={(e) => { e.currentTarget.style.transform = ''; e.currentTarget.style.boxShadow = ''; e.currentTarget.style.backgroundColor = ''; e.currentTarget.style.borderColor = ''; e.currentTarget.style.borderLeftColor = ''; }}
+                        onPointerLeave={(e) => { e.currentTarget.style.transform = ''; e.currentTarget.style.boxShadow = ''; e.currentTarget.style.backgroundColor = ''; e.currentTarget.style.borderColor = ''; e.currentTarget.style.borderLeftColor = ''; }}
                       >
                         <div className="flex-1 min-w-0">
                           <h3 className="type-h3" style={{ color: 'var(--text-primary)', fontWeight: 500, fontSize: '16px', textWrap: 'balance', hyphens: 'auto' }}>
@@ -433,6 +436,7 @@ export default function Home() {
                         className="cursor-pointer"
                          style={{
                           borderRadius: '0 14px 14px 0',
+                          border: '1px solid hsl(36, 15%, 88%)',
                           borderLeft: `3px solid ${accent}`,
                           padding: '16px 18px',
                           minHeight: '72px',
@@ -442,12 +446,14 @@ export default function Home() {
                           gap: '8px',
                           background: 'hsl(36, 20%, 98%)',
                           boxShadow: 'none',
-                          transition: 'transform 120ms ease-out, box-shadow 120ms ease-out, background-color 0.15s ease',
+                          transition: 'border-color 0.15s ease, background-color 0.15s ease, transform 120ms ease-out, box-shadow 120ms ease-out',
                         }}
                         onPointerDown={(e) => {
                           e.currentTarget.style.transform = 'scale(0.98)';
                           e.currentTarget.style.boxShadow = '0 2px 8px hsl(var(--foreground) / 0.08)';
-                          e.currentTarget.style.backgroundColor = 'hsl(36, 20%, 95%)';
+                          e.currentTarget.style.backgroundColor = 'hsl(36, 20%, 96%)';
+                          e.currentTarget.style.borderColor = 'hsl(36, 15%, 72%)';
+                          e.currentTarget.style.borderLeftColor = accent;
                           const chevron = e.currentTarget.querySelector('[data-chevron]') as HTMLElement;
                           if (chevron) chevron.style.transform = 'translateX(2px)';
                         }}
@@ -455,6 +461,8 @@ export default function Home() {
                           e.currentTarget.style.transform = '';
                           e.currentTarget.style.boxShadow = '';
                           e.currentTarget.style.backgroundColor = '';
+                          e.currentTarget.style.borderColor = '';
+                          e.currentTarget.style.borderLeftColor = '';
                           const chevron = e.currentTarget.querySelector('[data-chevron]') as HTMLElement;
                           if (chevron) chevron.style.transform = '';
                         }}
@@ -462,6 +470,8 @@ export default function Home() {
                           e.currentTarget.style.transform = '';
                           e.currentTarget.style.boxShadow = '';
                           e.currentTarget.style.backgroundColor = '';
+                          e.currentTarget.style.borderColor = '';
+                          e.currentTarget.style.borderLeftColor = '';
                           const chevron = e.currentTarget.querySelector('[data-chevron]') as HTMLElement;
                           if (chevron) chevron.style.transform = '';
                         }}
