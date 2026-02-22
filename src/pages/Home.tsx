@@ -38,7 +38,22 @@ import {
 } from '@/selectors/spaceSnapshotSelectors';
 import { categories as allCategories, cards as allCards } from '@/data/content';
 
+const CATEGORY_ACCENTS: Record<number, string> = {
+  0: 'hsl(158, 35%, 22%)',   // deep green
+  1: 'hsl(38, 70%, 48%)',    // amber
+  2: 'hsl(200, 30%, 38%)',   // slate blue
+  3: 'hsl(10, 40%, 42%)',    // warm terracotta
+  4: 'hsl(80, 25%, 35%)',    // olive
+  5: 'hsl(28, 50%, 40%)',    // burnt sienna
+  6: 'hsl(260, 20%, 40%)',   // muted plum
+  7: 'hsl(45, 55%, 42%)',    // dark gold
+  8: 'hsl(340, 30%, 40%)',   // dusty rose
+  9: 'hsl(170, 25%, 32%)',   // teal
+};
 
+function getCategoryAccent(index: number): string {
+  return CATEGORY_ACCENTS[index] ?? 'hsl(38, 70%, 48%)';
+}
 
 /** Collapsed "Notiser" row — expands inline on tap */
 function NotiserSection() {
@@ -322,56 +337,65 @@ export default function Home() {
               const recCat = recommendedCategory;
               return (
                 <div className="px-6" style={{ marginBottom: '20px' }}>
-                  <p style={{
-                    fontSize: '15px',
-                    fontFamily: 'var(--font-serif)',
-                    fontStyle: 'italic',
-                    color: 'var(--accent-text)',
-                    marginBottom: '10px',
-                    display: 'block',
-                  }}>
-                    Börja här
-                  </p>
-                  <div
-                    onClick={() => { markNavigated(); navigate(`/category/${recCat.id}`); }}
-                    role="button"
-                    tabIndex={0}
-                    aria-label={recCat.title}
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); navigate(`/category/${recCat.id}`); }
-                    }}
-                    className="cursor-pointer"
-                    style={{
-                      borderRadius: '16px',
-                      padding: '20px',
-                      minHeight: '48px',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'space-between',
-                      gap: '8px',
-                      background: 'hsl(36, 22%, 96%)',
-                      border: '1px solid hsl(36, 20%, 84%)',
-                      transition: 'transform 120ms ease-out, box-shadow 120ms ease-out',
-                    }}
-                    onPointerDown={(e) => {
-                      e.currentTarget.style.transform = 'scale(0.98)';
-                      e.currentTarget.style.boxShadow = '0 2px 8px hsl(var(--foreground) / 0.08)';
-                    }}
-                    onPointerUp={(e) => { e.currentTarget.style.transform = ''; e.currentTarget.style.boxShadow = ''; }}
-                    onPointerLeave={(e) => { e.currentTarget.style.transform = ''; e.currentTarget.style.boxShadow = ''; }}
-                  >
-                    <div className="flex-1 min-w-0">
-                      <h3 className="type-h3" style={{ color: 'var(--text-primary)', fontWeight: 500, fontSize: '16px', textWrap: 'balance', hyphens: 'auto' }}>
-                        {recCat.title}
-                      </h3>
-                      {recCat.entryLine && (
-                        <p className="type-body" style={{ color: 'var(--text-secondary)', marginTop: '8px' }}>
-                          {recCat.entryLine}
-                        </p>
-                      )}
-                    </div>
-                    <ChevronRight data-chevron className="w-4 h-4 shrink-0" style={{ color: 'var(--accent-saffron)', opacity: 0.6 }} />
-                  </div>
+               {(() => {
+                  const recIndex = sortedCategories.findIndex(c => c.id === recCat.id);
+                  const recAccent = getCategoryAccent(recIndex >= 0 ? recIndex : 0);
+                  return (
+                    <>
+                      <p style={{
+                        fontSize: '15px',
+                        fontFamily: 'var(--font-serif)',
+                        fontStyle: 'italic',
+                        color: 'var(--accent-text)',
+                        marginBottom: '10px',
+                        display: 'block',
+                      }}>
+                        Börja här
+                      </p>
+                      <div
+                        onClick={() => { markNavigated(); navigate(`/category/${recCat.id}`); }}
+                        role="button"
+                        tabIndex={0}
+                        aria-label={recCat.title}
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); navigate(`/category/${recCat.id}`); }
+                        }}
+                        className="cursor-pointer"
+                        style={{
+                          borderRadius: '0 14px 14px 0',
+                          borderLeft: `3px solid ${recAccent}`,
+                          padding: '20px',
+                          minHeight: '48px',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'space-between',
+                          gap: '8px',
+                          background: 'hsl(36, 22%, 96%)',
+                          transition: 'transform 120ms ease-out, box-shadow 120ms ease-out, background-color 0.15s ease',
+                        }}
+                        onPointerDown={(e) => {
+                          e.currentTarget.style.transform = 'scale(0.98)';
+                          e.currentTarget.style.boxShadow = '0 2px 8px hsl(var(--foreground) / 0.08)';
+                          e.currentTarget.style.backgroundColor = 'hsl(36, 20%, 95%)';
+                        }}
+                        onPointerUp={(e) => { e.currentTarget.style.transform = ''; e.currentTarget.style.boxShadow = ''; e.currentTarget.style.backgroundColor = ''; }}
+                        onPointerLeave={(e) => { e.currentTarget.style.transform = ''; e.currentTarget.style.boxShadow = ''; e.currentTarget.style.backgroundColor = ''; }}
+                      >
+                        <div className="flex-1 min-w-0">
+                          <h3 className="type-h3" style={{ color: 'var(--text-primary)', fontWeight: 500, fontSize: '16px', textWrap: 'balance', hyphens: 'auto' }}>
+                            {recCat.title}
+                          </h3>
+                          {recCat.entryLine && (
+                            <p className="font-serif italic" style={{ fontSize: '14px', color: 'var(--color-text-secondary)', opacity: 0.85, marginTop: '8px' }}>
+                              {recCat.entryLine}
+                            </p>
+                          )}
+                        </div>
+                        <ChevronRight data-chevron className="w-4 h-4 shrink-0" style={{ color: 'var(--accent-saffron)', opacity: 0.6 }} />
+                      </div>
+                    </>
+                  );
+                })()}
                 </div>
               );
             })()}
@@ -380,6 +404,8 @@ export default function Home() {
             <div className="px-6" style={{ paddingBottom: 'max(env(safe-area-inset-bottom, 0px), 64px)' }}>
               <div className="flex flex-col" style={{ gap: '10px' }}>
                 {(recommendedCategory ? sortedCategories.filter(c => c.id !== recommendedCategory.id) : sortedCategories).map((category, index) => {
+                  const globalIndex = sortedCategories.findIndex(c => c.id === category.id);
+                  const accent = getCategoryAccent(globalIndex >= 0 ? globalIndex : index);
                   const catCards = cards.filter((c) => c.categoryId === category.id);
                   const completedCount = catCards.filter(c => completedCardIds.includes(c.id)).length;
                   const allCompleted = completedCount === catCards.length && catCards.length > 0;
@@ -404,7 +430,8 @@ export default function Home() {
                         }}
                         className="cursor-pointer"
                          style={{
-                          borderRadius: '14px',
+                          borderRadius: '0 14px 14px 0',
+                          borderLeft: `3px solid ${accent}`,
                           padding: '16px 18px',
                           minHeight: '48px',
                           display: 'flex',
@@ -412,33 +439,35 @@ export default function Home() {
                           justifyContent: 'space-between',
                           gap: '8px',
                           background: 'hsl(36, 20%, 98%)',
-                          border: '1px solid hsl(36, 15%, 90%)',
                           boxShadow: 'none',
-                          transition: 'transform 120ms ease-out, box-shadow 120ms ease-out',
+                          transition: 'transform 120ms ease-out, box-shadow 120ms ease-out, background-color 0.15s ease',
                         }}
                         onPointerDown={(e) => {
                           e.currentTarget.style.transform = 'scale(0.98)';
                           e.currentTarget.style.boxShadow = '0 2px 8px hsl(var(--foreground) / 0.08)';
+                          e.currentTarget.style.backgroundColor = 'hsl(36, 20%, 95%)';
                           const chevron = e.currentTarget.querySelector('[data-chevron]') as HTMLElement;
                           if (chevron) chevron.style.transform = 'translateX(2px)';
                         }}
                         onPointerUp={(e) => {
                           e.currentTarget.style.transform = '';
                           e.currentTarget.style.boxShadow = '';
+                          e.currentTarget.style.backgroundColor = '';
                           const chevron = e.currentTarget.querySelector('[data-chevron]') as HTMLElement;
                           if (chevron) chevron.style.transform = '';
                         }}
                         onPointerLeave={(e) => {
                           e.currentTarget.style.transform = '';
                           e.currentTarget.style.boxShadow = '';
+                          e.currentTarget.style.backgroundColor = '';
                           const chevron = e.currentTarget.querySelector('[data-chevron]') as HTMLElement;
                           if (chevron) chevron.style.transform = '';
                         }}
                       >
                         <div className="flex items-center justify-between gap-3 w-full">
                           <div className="flex-1 min-w-0">
-                            <p className="font-sans uppercase" style={{ fontSize: '10px', letterSpacing: '0.08em', color: 'var(--color-text-tertiary)', opacity: 0.5 }}>
-                              {String(index + 1).padStart(2, '0')}
+                            <p className="font-sans uppercase" style={{ fontSize: '10px', letterSpacing: '0.08em', color: accent, opacity: 0.6 }}>
+                              {String(globalIndex + 1).padStart(2, '0')}
                             </p>
                             <h3
                               className="type-h3"
