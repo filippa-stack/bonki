@@ -56,6 +56,7 @@ const SectionView = forwardRef<SectionViewHandle, SectionViewProps>(
     return (
       <div className="py-12">
         <PromptItem
+          key={`${section.id}-${promptIndex}`}
           prompt={prompt}
           promptId={`prompt-${promptIndex}`}
           index={promptIndex}

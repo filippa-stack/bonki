@@ -1,5 +1,4 @@
 import { motion } from 'framer-motion';
-import { BEAT_1 } from '@/lib/motion';
 import { Prompt } from '@/types';
 
 interface PromptItemProps {
@@ -101,27 +100,34 @@ export default function PromptItem({ prompt, index, sectionType, preamble }: Pro
     );
   };
 
+  const enterEase = [0.25, 0.1, 0.25, 1.0] as const;
+
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ delay: index * BEAT_1, duration: 0.15 }}
+    <div
       className="rounded-card overflow-hidden"
       style={{ backgroundColor: 'transparent' }}
     >
       <div className="px-8 py-8">
         {preamble && (
-          <p
+          <motion.p
+            key={`preamble-${index}`}
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.45, delay: 0.05, ease: enterEase }}
             className="text-subheading text-center mb-12"
             style={{ color: 'var(--color-text-secondary)', fontWeight: 400 }}
           >
             {preamble}
-          </p>
+          </motion.p>
         )}
 
         {isExercise ? (
           /* ── Teamwork: assignment block ── */
-          <div
+          <motion.div
+            key={`exercise-${index}-${prompt.text.slice(0, 20)}`}
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.45, ease: enterEase }}
             className={preamble ? 'mt-8' : ''}
             style={{
               background: '#F7F3EE',
@@ -147,10 +153,16 @@ export default function PromptItem({ prompt, index, sectionType, preamble }: Pro
               Gör tillsammans
             </p>
             {renderAssignmentText(prompt.text)}
-          </div>
+          </motion.div>
         ) : (
           /* ── Default: centered question text ── */
-          <div className={`w-full text-center space-y-5 ${preamble ? 'mt-8' : ''}`}>
+          <motion.div
+            key={`question-${index}-${prompt.text.slice(0, 20)}`}
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.45, ease: enterEase }}
+            className={`w-full text-center space-y-5 ${preamble ? 'mt-8' : ''}`}
+          >
             {prompt.text.split('\n').filter(p => p.trim() !== '').map((para, i) => (
               <p
                 key={i}
@@ -160,9 +172,9 @@ export default function PromptItem({ prompt, index, sectionType, preamble }: Pro
                 {para}
               </p>
             ))}
-          </div>
+          </motion.div>
         )}
       </div>
-    </motion.div>
+    </div>
   );
 }
