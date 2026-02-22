@@ -598,7 +598,7 @@ export default function CardView() {
               className="cta-primary"
               style={{ maxWidth: '220px', width: '100%', marginTop: '32px' }}
             >
-              Fortsätt utforska
+              Nästa samtal
             </button>
             <button
               onClick={() => navigate('/')}

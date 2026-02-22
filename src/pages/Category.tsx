@@ -131,7 +131,7 @@ export default function Category() {
           const allCompleted = cards.length > 0 && cards.every(c => completedCardIds.includes(c.id));
           return (
             <div style={{
-              marginTop: '48px',
+              marginTop: '20px',
               textAlign: 'center',
               paddingBottom: 'calc(32px + env(safe-area-inset-bottom, 0px))',
             }}>
