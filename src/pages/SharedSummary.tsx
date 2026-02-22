@@ -6,9 +6,8 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useCoupleSpaceContext } from '@/contexts/CoupleSpaceContext';
 import { supabase } from '@/integrations/supabase/client';
 import { useDevState } from '@/contexts/DevStateContext';
-import Header from '@/components/Header';
 import ArchiveTakeaway from '@/components/ArchiveTakeaway';
-import { ChevronRight, ChevronDown } from 'lucide-react';
+import { ArrowLeft, ChevronRight, Settings } from 'lucide-react';
 import type { Prompt } from '@/types';
 
 const STEP_ORDER = ['opening', 'reflective', 'scenario', 'exercise'] as const;
@@ -226,7 +225,35 @@ export default function SharedSummary() {
 
   return (
     <div className="min-h-screen page-bg">
-      <Header title="Era samtal" showBack backTo="/" />
+      {/* Minimal inline header — no green bar */}
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          height: '48px',
+          padding: '0 16px',
+          borderBottom: '1px solid hsl(36, 18%, 90%)',
+          background: 'transparent',
+        }}
+      >
+        <button
+          onClick={() => navigate('/')}
+          style={{ width: '44px', height: '44px', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'none', border: 'none', cursor: 'pointer' }}
+          aria-label="Tillbaka"
+        >
+          <ArrowLeft className="w-5 h-5" style={{ color: 'var(--color-text-secondary)' }} />
+        </button>
+        <h1
+          className="font-serif"
+          style={{ fontSize: '18px', fontWeight: 600, color: 'var(--color-text-primary)' }}
+        >
+          Era samtal
+        </h1>
+        <div style={{ width: '44px', height: '44px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <Settings className="w-4 h-4" style={{ color: 'var(--text-tertiary)', opacity: 0.6 }} />
+        </div>
+      </div>
 
       <div className="px-6 pb-8 mx-auto" style={{ maxWidth: 540, paddingTop: '32px' }}>
 
@@ -237,12 +264,18 @@ export default function SharedSummary() {
           transition={{ duration: 0.2, ease: [0.4, 0, 0.2, 1] }}
           className="text-center"
         >
-          <p className="type-body" style={{ color: 'var(--text-tertiary)' }}>
+          <p
+            className="font-serif italic"
+            style={{
+              fontSize: '17px',
+              color: 'var(--color-text-secondary)',
+              opacity: 0.7,
+              margin: '16px 0 28px',
+            }}
+          >
             Vad ni burit med er.
           </p>
         </motion.div>
-
-        <div style={{ height: '48px' }} />
 
         {/* Empty state */}
         {!hasContent && !effectiveLoading && (
@@ -253,16 +286,23 @@ export default function SharedSummary() {
             className="pt-8 pb-24 text-center"
           >
             <p
-              className="font-serif text-center"
-              style={{ fontSize: '22px', color: 'var(--text-primary)', opacity: 0.5 }}
+              className="font-serif italic text-center"
+              style={{ fontSize: '17px', color: 'var(--text-primary)', opacity: 0.45 }}
             >
-              Här finns det ni skrivit.
+              Era samtal visas här.
             </p>
             <p
-              className="text-center mt-2"
-              style={{ fontFamily: 'var(--font-sans)', fontSize: '14px', color: 'var(--text-tertiary)' }}
+              className="text-center mt-3"
+              style={{
+                fontFamily: 'var(--font-sans)',
+                fontSize: '10px',
+                letterSpacing: '0.07em',
+                textTransform: 'uppercase',
+                color: 'var(--text-tertiary)',
+                opacity: 0.35,
+              }}
             >
-              Era reflektioner samlas här efter varje samtal.
+              Börja ett samtal för att se det här.
             </p>
           </motion.div>
         )}
@@ -289,9 +329,9 @@ export default function SharedSummary() {
                     initial={{ opacity: 0, y: 8 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{
-                      delay: 0.1 + index * 0.03,
-                      duration: 0.22,
-                      ease: [0.4, 0, 0.2, 1],
+                      delay: index * 0.05,
+                      duration: 0.4,
+                      ease: 'easeOut',
                     }}
                   >
                     <div
@@ -393,8 +433,21 @@ export default function SharedSummary() {
 
                               <button
                                 onClick={() => navigate(`/card/${entry.cardId}?from=archive`)}
-                                className="type-meta mt-6 mb-2 transition-opacity hover:opacity-60"
-                                style={{ color: 'var(--text-ghost)' }}
+                                style={{
+                                  fontSize: '11px',
+                                  letterSpacing: '0.05em',
+                                  textTransform: 'uppercase',
+                                  fontFamily: 'var(--font-sans)',
+                                  color: 'var(--color-text-secondary)',
+                                  opacity: 0.55,
+                                  textDecoration: 'none',
+                                  marginTop: '12px',
+                                  display: 'inline-block',
+                                  background: 'none',
+                                  border: 'none',
+                                  cursor: 'pointer',
+                                  padding: 0,
+                                }}
                               >
                                 Visa hela samtalet →
                               </button>
@@ -490,9 +543,9 @@ export default function SharedSummary() {
                     initial={{ opacity: 0, y: 8 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{
-                      delay: 0.1 + (withNotes.length + index) * 0.03,
-                      duration: 0.22,
-                      ease: [0.4, 0, 0.2, 1],
+                      delay: (withNotes.length + index) * 0.05,
+                      duration: 0.4,
+                      ease: 'easeOut',
                     }}
                   >
                     <button

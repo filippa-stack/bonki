@@ -61,19 +61,19 @@ export default function ArchiveTakeaway({ sessionId, initialText }: ArchiveTakea
   }, []);
 
   const textareaStyle: React.CSSProperties = {
-    backgroundColor: '#F7F3EE',
-    border: '1px solid rgba(180, 158, 130, 0.35)',
-    borderRadius: '12px',
-    padding: '14px 16px',
-    fontFamily: "'Cormorant Garamond', serif",
-    fontSize: '18px',
+    backgroundColor: 'hsl(36, 22%, 96%)',
+    border: '1px solid hsl(36, 20%, 88%)',
+    borderRadius: '10px',
+    padding: '16px',
+    fontFamily: 'var(--font-serif)',
+    fontSize: '17px',
     fontStyle: 'italic',
-    color: '#1C1B1A',
+    color: 'var(--color-text-primary)',
     width: '100%',
     minHeight: '80px',
     resize: 'none' as const,
     outline: 'none',
-    lineHeight: 1.6,
+    lineHeight: 1.5,
   };
 
   return (
@@ -81,11 +81,11 @@ export default function ArchiveTakeaway({ sessionId, initialText }: ArchiveTakea
       {hasExisting ? (
         <p
           style={{
-            fontFamily: 'Inter, sans-serif',
-            fontSize: '11px',
+            fontFamily: 'var(--font-sans)',
+            fontSize: '10px',
             textTransform: 'uppercase',
             letterSpacing: '0.08em',
-            color: 'var(--accent-saffron)',
+            color: 'var(--accent-text)',
             marginBottom: '8px',
           }}
         >
