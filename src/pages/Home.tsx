@@ -378,10 +378,10 @@ export default function Home() {
                         onPointerDown={(e) => {
                           e.currentTarget.style.transform = 'scale(0.98)';
                           e.currentTarget.style.boxShadow = '0 2px 8px hsl(var(--foreground) / 0.08)';
-                          e.currentTarget.style.backgroundColor = 'hsl(36, 20%, 95%)';
+                          e.currentTarget.style.backgroundColor = 'hsl(36, 18%, 93%)';
                         }}
-                        onPointerUp={(e) => { e.currentTarget.style.transform = ''; e.currentTarget.style.boxShadow = ''; e.currentTarget.style.backgroundColor = ''; }}
-                        onPointerLeave={(e) => { e.currentTarget.style.transform = ''; e.currentTarget.style.boxShadow = ''; e.currentTarget.style.backgroundColor = ''; }}
+                        onPointerUp={(e) => { e.currentTarget.style.transform = ''; e.currentTarget.style.boxShadow = ''; e.currentTarget.style.backgroundColor = 'hsl(36, 22%, 96%)'; }}
+                        onPointerLeave={(e) => { e.currentTarget.style.transform = ''; e.currentTarget.style.boxShadow = ''; e.currentTarget.style.backgroundColor = 'hsl(36, 22%, 96%)'; }}
                       >
                         <div className="flex-1 min-w-0">
                           <h3 className="type-h3" style={{ color: 'var(--text-primary)', fontWeight: 500, fontSize: '16px', textWrap: 'balance', hyphens: 'auto' }}>
@@ -447,21 +447,21 @@ export default function Home() {
                         onPointerDown={(e) => {
                           e.currentTarget.style.transform = 'scale(0.98)';
                           e.currentTarget.style.boxShadow = '0 2px 8px hsl(var(--foreground) / 0.08)';
-                          e.currentTarget.style.backgroundColor = 'hsl(36, 20%, 95%)';
+                          e.currentTarget.style.backgroundColor = 'hsl(36, 18%, 93%)';
                           const chevron = e.currentTarget.querySelector('[data-chevron]') as HTMLElement;
                           if (chevron) chevron.style.transform = 'translateX(2px)';
                         }}
                         onPointerUp={(e) => {
                           e.currentTarget.style.transform = '';
                           e.currentTarget.style.boxShadow = '';
-                          e.currentTarget.style.backgroundColor = '';
+                          e.currentTarget.style.backgroundColor = 'hsl(36, 20%, 98%)';
                           const chevron = e.currentTarget.querySelector('[data-chevron]') as HTMLElement;
                           if (chevron) chevron.style.transform = '';
                         }}
                         onPointerLeave={(e) => {
                           e.currentTarget.style.transform = '';
                           e.currentTarget.style.boxShadow = '';
-                          e.currentTarget.style.backgroundColor = '';
+                          e.currentTarget.style.backgroundColor = 'hsl(36, 20%, 98%)';
                           const chevron = e.currentTarget.querySelector('[data-chevron]') as HTMLElement;
                           if (chevron) chevron.style.transform = '';
                         }}
