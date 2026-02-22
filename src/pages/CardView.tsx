@@ -475,13 +475,13 @@ export default function CardView() {
         </div>
         <div className="px-6 pt-title-above pb-16">
 
-          {/* Heading — grounded, intentional */}
+          {/* Heading */}
           <motion.div
-            initial={{ opacity: 0, y: 12 }}
+            initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1.0] }}
+            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
             className="text-center max-w-md mx-auto"
-            style={{ paddingTop: 24 }}
+            style={{ paddingTop: 24, marginBottom: '40px' }}
           >
             <h2
               className="font-serif"
@@ -498,35 +498,37 @@ export default function CardView() {
             </h2>
           </motion.div>
 
-          {/* Takeaway input — inline to avoid hook issues */}
+          {/* Takeaway prompt */}
           <motion.div
-            initial={{ opacity: 0, y: 12 }}
+            initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.15, duration: 0.6, ease: [0.25, 0.1, 0.25, 1.0] }}
-            className="max-w-md mx-auto mt-16 space-y-3"
+            transition={{ delay: 0.2, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+            className="max-w-md mx-auto"
           >
             <p
               className="font-serif italic text-center"
-              style={{ fontSize: '17px', color: 'var(--color-text-secondary)', opacity: 0.65 }}
+              style={{ fontSize: '18px', color: 'var(--color-text-primary)', opacity: 0.75, marginBottom: '16px' }}
             >
               Vad tar ni med er?
             </p>
-            <motion.div
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3, duration: 0.6, ease: [0.25, 0.1, 0.25, 1.0] }}
-            >
-              <CompletionTakeaway sessionId={activeSessionId} spaceId={space?.id ?? null} />
-            </motion.div>
           </motion.div>
 
-          {/* CTAs */}
+          {/* Takeaway field */}
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.54, duration: EMOTION, ease: [0, 0, 0.2, 1] }}
-            className="max-w-md mx-auto mt-6 flex flex-col items-center"
-            style={{ paddingBottom: 'calc(16px + env(safe-area-inset-bottom, 0px))' }}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.35, duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+            className="max-w-md mx-auto"
+          >
+            <CompletionTakeaway sessionId={activeSessionId} spaceId={space?.id ?? null} />
+          </motion.div>
+
+          {/* Archive link */}
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+            className="max-w-md mx-auto"
           >
             <button
               onClick={() => navigate('/shared')}
@@ -534,26 +536,36 @@ export default function CardView() {
                 display: 'block',
                 width: '100%',
                 textAlign: 'center',
-                fontSize: '12px',
-                letterSpacing: '0.06em',
+                fontSize: '10px',
+                letterSpacing: '0.07em',
                 textTransform: 'uppercase' as const,
-                fontFamily: 'Inter, sans-serif',
-                color: 'var(--color-text-secondary)',
-                opacity: 0.6,
+                fontFamily: 'var(--font-sans)',
+                color: 'var(--color-text-tertiary)',
+                opacity: 0.40,
                 textDecoration: 'none',
                 background: 'none',
                 border: 'none',
                 cursor: 'pointer',
                 marginTop: '24px',
-                marginBottom: '16px',
                 padding: '8px 0',
               }}
             >
               Se reflektionerna i Era samtal
             </button>
+          </motion.div>
+
+          {/* CTAs */}
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.6, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+            className="max-w-md mx-auto flex flex-col items-center"
+            style={{ paddingBottom: 'calc(24px + env(safe-area-inset-bottom, 0px))' }}
+          >
             <button
               onClick={() => navigate(category ? `/category/${category.id}` : '/categories')}
               className="cta-primary"
+              style={{ maxWidth: '220px', width: '100%', marginTop: '32px' }}
             >
               Fortsätt utforska
             </button>
@@ -562,7 +574,7 @@ export default function CardView() {
               className="type-meta transition-opacity hover:opacity-60 mt-8"
               style={{ color: 'var(--color-text-secondary)', opacity: 0.35 }}
             >
-              Tillbaka
+              Stäng
             </button>
           </motion.div>
 
@@ -855,14 +867,14 @@ function CompletionTakeaway({ sessionId, spaceId }: { sessionId: string | null; 
           display: 'block',
           width: '100%',
           minHeight: '100px',
-          backgroundColor: 'hsl(36, 22%, 96%)',
-          border: '1px solid hsl(36, 20%, 84%)',
-          borderRadius: '12px',
-          padding: '16px',
-          fontFamily: "'Cormorant Garamond', Georgia, serif",
-          fontStyle: 'italic',
-          fontSize: '16px',
-          color: '#1C1B1A',
+          backgroundColor: 'hsl(36, 24%, 93%)',
+          border: '1px solid hsl(36, 20%, 82%)',
+          borderRadius: '14px',
+          padding: '20px',
+          fontFamily: 'var(--font-serif)',
+          fontSize: '17px',
+          lineHeight: 1.6,
+          color: 'var(--color-text-primary)',
           resize: 'none' as const,
           outline: 'none',
           boxSizing: 'border-box' as const,
