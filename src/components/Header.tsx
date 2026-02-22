@@ -48,11 +48,17 @@ export default function Header({
     <header
       className={`sticky top-0 z-10`}
       style={{
-        backgroundColor: isImmersive ? 'transparent' : 'hsl(158, 32%, 14%)',
+        backgroundColor: isImmersive
+          ? (isDarkSurface ? 'transparent' : 'hsla(36, 20%, 94%, 0.92)')
+          : 'hsl(158, 32%, 14%)',
         boxShadow: 'none',
         borderBottom: isImmersive
-          ? (isDarkSurface ? '1px solid hsl(158, 25%, 20%)' : '1px solid hsl(36, 18%, 86%)')
+          ? (isDarkSurface ? '1px solid hsl(158, 25%, 20%)' : '1px solid hsl(36, 20%, 80%)')
           : 'none',
+        ...(isImmersive && !isDarkSurface ? {
+          backdropFilter: 'blur(8px)',
+          WebkitBackdropFilter: 'blur(8px)',
+        } : {}),
       }}
     >
       {isImmersive ? (
