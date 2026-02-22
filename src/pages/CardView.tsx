@@ -502,6 +502,7 @@ export default function CardView() {
             animate={{ opacity: 1 }}
             transition={{ delay: 0.54, duration: EMOTION, ease: [0, 0, 0.2, 1] }}
             className="max-w-md mx-auto mt-6 flex flex-col items-center"
+            style={{ paddingBottom: 'calc(16px + env(safe-area-inset-bottom, 0px))' }}
           >
             <button
               onClick={() => navigate('/shared')}
