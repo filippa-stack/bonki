@@ -1,6 +1,7 @@
 import { forwardRef } from 'react';
 import { Section, Card, Prompt } from '@/types';
 import PromptItem from '@/components/PromptItem';
+import BookmarkButton from '@/components/BookmarkButton';
 
 export interface SectionViewHandle {
   openNoteForCurrent: () => void;
@@ -15,6 +16,13 @@ interface SectionViewProps {
   disableShare?: boolean;
   /** Which prompt within the section to display (default: 0) */
   promptIndex?: number;
+  /** Session context for bookmarks */
+  coupleSpaceId?: string | null;
+  sessionId?: string | null;
+  cardId?: string | null;
+  stageIndex?: number;
+  isLive?: boolean;
+  isReflectionStep?: boolean;
 }
 
 const normalizePrompt = (prompt: string | Prompt): Prompt => {
@@ -30,9 +38,8 @@ const normalizePrompt = (prompt: string | Prompt): Prompt => {
  * CardView passes only the section matching current_step_index.
  */
 const SectionView = forwardRef<SectionViewHandle, SectionViewProps>(
-  function SectionView({ section, promptIndex = 0 }, ref) {
+  function SectionView({ section, promptIndex = 0, coupleSpaceId, sessionId, cardId, stageIndex, isLive, isReflectionStep }, ref) {
     // If section has no prompts but has content, treat content as the prompt
-    // (this is the case for exercise/teamwork stages).
     const hasExplicitPrompts = !!(section.prompts && section.prompts.length > 0);
     const rawPrompts = hasExplicitPrompts
       ? section.prompts!
@@ -41,20 +48,32 @@ const SectionView = forwardRef<SectionViewHandle, SectionViewProps>(
         : [];
     const normalizedPrompts = rawPrompts.map(normalizePrompt);
 
-    // Display the specific prompt at promptIndex.
-    // Falls back to index 0 if out of range.
     const prompt = normalizedPrompts[promptIndex] ?? normalizedPrompts[0];
 
     if (!prompt) return null;
 
-    // Only show preamble when the section has explicit prompts separate from content
     const showPreamble =
       hasExplicitPrompts &&
       (section.type === 'scenario' || section.type === 'exercise') &&
       promptIndex === 0;
 
     return (
-      <div className="py-12">
+      <div className="py-12 relative">
+        {/* Bookmark button — top right, live sessions only */}
+        {isLive && coupleSpaceId && sessionId && cardId && stageIndex !== undefined && (
+          <div style={{ position: 'absolute', top: '12px', right: '0px', zIndex: 2 }}>
+            <BookmarkButton
+              coupleSpaceId={coupleSpaceId}
+              sessionId={sessionId}
+              cardId={cardId}
+              stageIndex={stageIndex}
+              promptIndex={promptIndex}
+              questionText={prompt.text}
+              isDarkBackground={isReflectionStep}
+            />
+          </div>
+        )}
+
         <PromptItem
           key={`${section.id}-${promptIndex}`}
           prompt={prompt}
