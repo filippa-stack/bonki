@@ -61,7 +61,7 @@ export default function SessionStepReflection({
       <textarea
         value={displayText}
         onChange={(e) => handleChange(e.target.value)}
-        placeholder="Skriv fritt."
+        placeholder="Skriv."
         inputMode="text"
         autoCorrect="on"
         autoCapitalize="sentences"
