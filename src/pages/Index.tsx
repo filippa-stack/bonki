@@ -1,7 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useApp } from '@/contexts/AppContext';
 import { useCoupleSpaceContext } from '@/contexts/CoupleSpaceContext';
 import { usePartnerNotifications } from '@/hooks/usePartnerNotifications';
+import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import Onboarding from '@/components/Onboarding';
 import Home from '@/pages/Home';
@@ -32,24 +33,83 @@ function markSpacePaid(spaceId: string | null | undefined) {
   localStorage.setItem(PURCHASE_KEY_LEGACY, 'true');
 }
 
+/** One-time migration: copy paid_at into user_product_access */
+async function migrateProductAccess(userId: string, paidAt: string) {
+  const { data: existing } = await supabase
+    .from('user_product_access')
+    .select('id')
+    .eq('user_id', userId)
+    .eq('product_id', 'still_us')
+    .maybeSingle();
+
+  if (!existing) {
+    await supabase.from('user_product_access').insert({
+      user_id: userId,
+      product_id: 'still_us',
+      granted_at: paidAt,
+      granted_via: 'purchase',
+    });
+  }
+}
+
+/** Check user_product_access for purchase */
+async function checkProductAccess(userId: string): Promise<boolean> {
+  const { data } = await supabase
+    .from('user_product_access')
+    .select('id')
+    .eq('user_id', userId)
+    .eq('product_id', 'still_us')
+    .maybeSingle();
+  return !!data;
+}
+
 export default function Index() {
   const { hasCompletedOnboarding } = useApp();
   const { space } = useCoupleSpaceContext();
+  const { user } = useAuth();
 
   const [hasPurchased, setHasPurchased] = useState(() => isSpacePaid(space?.id, space?.paid_at));
+  const migrationRan = useRef(false);
 
-  // Re-evaluate when space loads from DB
+  // Re-evaluate when space loads — check localStorage/paid_at + user_product_access
   useEffect(() => {
-    if (space?.id && !hasPurchased && isSpacePaid(space.id, space.paid_at)) {
+    if (hasPurchased) return;
+
+    // Sync check: localStorage / paid_at
+    if (space?.id && isSpacePaid(space.id, space.paid_at)) {
       setHasPurchased(true);
     }
-  }, [space?.id, space?.paid_at, hasPurchased]);
+
+    // Async check: user_product_access
+    if (user?.id) {
+      checkProductAccess(user.id).then((has) => {
+        if (has) setHasPurchased(true);
+      });
+    }
+  }, [space?.id, space?.paid_at, user?.id, hasPurchased]);
+
+  // One-time migration: paid_at → user_product_access
+  useEffect(() => {
+    if (migrationRan.current) return;
+    if (!user?.id || !space?.paid_at) return;
+    migrationRan.current = true;
+    migrateProductAccess(user.id, space.paid_at);
+  }, [user?.id, space?.paid_at]);
 
   usePartnerNotifications();
 
   const handlePurchaseComplete = () => {
     markSpacePaid(space?.id);
     setHasPurchased(true);
+    // Also write to user_product_access
+    if (user?.id) {
+      supabase.from('user_product_access').insert({
+        user_id: user.id,
+        product_id: 'still_us',
+        granted_at: new Date().toISOString(),
+        granted_via: 'purchase',
+      }).then(() => {});
+    }
   };
 
   if (!hasCompletedOnboarding) {
