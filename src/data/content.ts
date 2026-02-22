@@ -6,7 +6,7 @@ export const CONTENT_VERSION = 5;
 export const categories: Category[] = [
   {
     id: 'emotional-intimacy',
-    title: 'Ni två',
+    title: 'Paret vs föräldrarna',
     entryLine: 'Vem är ni för varandra, bortom föräldraskapet?',
     description: 'Att hitta tillbaka till varandra bortom föräldrarollen',
     cardCount: 2,

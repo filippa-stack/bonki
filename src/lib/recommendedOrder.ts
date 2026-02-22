@@ -1,5 +1,5 @@
 export const RECOMMENDED_CATEGORY_ORDER = [
-  'emotional-intimacy',   // 1. Ni två (* start)
+  'emotional-intimacy',   // 1. Paret vs föräldrarna (* start)
   'communication',        // 2. Det osynliga arbetet
   'category-8',           // 3. Orden mellan er
   'category-7',           // 4. Innan det brister
