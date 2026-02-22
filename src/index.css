@@ -139,6 +139,8 @@ h1, h2, h3,
     /* ── Accent tokens ── */
     --accent-saffron:       hsl(38, 88%, 46%);
     --accent-saffron-muted: hsl(38, 60%, 72%);
+    --accent-text:          hsl(38, 72%, 38%);  /* Darker amber for editorial text */
+    --color-text-tertiary:  var(--text-tertiary);
 
     /* ── Surface layering ── */
     --surface-base:   hsl(36, 20%, 95%);
@@ -543,4 +545,10 @@ h1, h2, h3,
   opacity: 0.06;
   pointer-events: none;
   mix-blend-mode: overlay;
+}
+
+/* ── Saffron pulse for in-progress dots ── */
+@keyframes saffron-pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.6; transform: scale(0.85); }
 }
