@@ -1,5 +1,4 @@
-import { ArrowLeft, LogOut, Plus, Settings, BookOpen } from 'lucide-react';
-import { useTogetherMode } from '@/hooks/useTogetherMode';
+import { ArrowLeft, LogOut, Plus, Settings } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useApp } from '@/contexts/AppContext';
@@ -52,7 +51,7 @@ export default function Header({
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { switchToNewSpace } = useApp();
-  const { togetherMode, setTogetherMode } = useTogetherMode();
+  // samtalsläge removed from UI — always defaults to Tillsammans
   const normalizedSession = useNormalizedSessionContext();
   const hasActiveSession = !normalizedSession.loading && !!normalizedSession.sessionId;
   const { signOut } = useAuth();
@@ -174,20 +173,32 @@ export default function Header({
             {showSharedLink && (
               <button
                 onClick={() => navigate('/shared')}
-                style={{ color: 'white', opacity: 0.65, transition: 'opacity 150ms ease' }}
+                style={{
+                  fontFamily: 'var(--font-sans)',
+                  fontSize: '12px',
+                  letterSpacing: '0.04em',
+                  color: 'white',
+                  opacity: 0.85,
+                  cursor: 'pointer',
+                  padding: '8px 4px',
+                  minHeight: '44px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  background: 'none',
+                  border: 'none',
+                  transition: 'opacity 150ms ease',
+                }}
                 aria-label={t('header.shared_space')}
                 onPointerDown={(e) => { e.currentTarget.style.opacity = '1'; }}
-                onPointerUp={(e) => { e.currentTarget.style.opacity = '0.65'; }}
-                onPointerLeave={(e) => { e.currentTarget.style.opacity = '0.65'; }}
+                onPointerUp={(e) => { e.currentTarget.style.opacity = '0.85'; }}
+                onPointerLeave={(e) => { e.currentTarget.style.opacity = '0.85'; }}
               >
-                <BookOpen className="w-[18px] h-[18px]" />
+                Era samtal
               </button>
             )}
             {showSettings && (
               <SettingsPopover
                 hasActiveSession={hasActiveSession}
-                togetherMode={togetherMode}
-                setTogetherMode={setTogetherMode}
                 switchToNewSpace={switchToNewSpace}
                 handleSignOut={handleSignOut}
                 navigate={navigate}
@@ -204,16 +215,12 @@ export default function Header({
 /* ─── Settings popover (extracted) ─── */
 function SettingsPopover({
   hasActiveSession,
-  togetherMode,
-  setTogetherMode,
   switchToNewSpace,
   handleSignOut,
   navigate,
   t,
 }: {
   hasActiveSession: boolean;
-  togetherMode: string;
-  setTogetherMode: (m: 'together' | 'solo') => void;
   switchToNewSpace: () => Promise<{ ok: boolean }>;
   handleSignOut: () => void;
   navigate: (path: string) => void;
@@ -239,7 +246,12 @@ function SettingsPopover({
                 disabled={hasActiveSession}
               >
                 <Plus className="w-3.5 h-3.5" />
-                Nytt kapitel
+                <div>
+                  <span>Nytt kapitel</span>
+                  <p style={{ fontSize: '11px', color: 'var(--color-text-tertiary)', opacity: 0.6, fontWeight: 400, marginTop: '1px' }}>
+                    Bjud in din partner
+                  </p>
+                </div>
               </Button>
             </AlertDialogTrigger>
             {!hasActiveSession && (
@@ -272,29 +284,6 @@ function SettingsPopover({
               Ni är mitt i ett samtal. Avsluta det först.
             </p>
           )}
-        </div>
-
-        {/* ── Samtalsläge ── */}
-        <div className="border-t border-border/30 mt-2 pt-2 px-2 pb-1">
-          <p className="text-[10px] text-muted-foreground/60 uppercase tracking-wider mb-1.5">Samtalsläge</p>
-          <div className="flex gap-1">
-            <Button
-              variant={togetherMode === 'together' ? 'default' : 'ghost'}
-              size="sm"
-              className="flex-1 text-xs h-7"
-              onClick={() => setTogetherMode('together')}
-            >
-              Tillsammans
-            </Button>
-            <Button
-              variant={togetherMode === 'solo' ? 'default' : 'ghost'}
-              size="sm"
-              className="flex-1 text-xs h-7"
-              onClick={() => setTogetherMode('solo')}
-            >
-              Själv
-            </Button>
-          </div>
         </div>
 
         {/* ── Account ── */}

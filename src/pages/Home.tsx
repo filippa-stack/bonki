@@ -27,7 +27,7 @@ import { toastSuccessOnce, toastErrorOnce } from '@/lib/toastOnce';
 import { useDevState } from '@/contexts/DevStateContext';
 import { useAppMode } from '@/hooks/useAppMode';
 import { useNormalizedSessionContext } from '@/contexts/NormalizedSessionContext';
-import { useTogetherMode } from '@/hooks/useTogetherMode';
+// samtalsläge removed from UI — always defaults to Tillsammans
 import { useSpaceSnapshot } from '@/hooks/useSpaceSnapshot';
 import {
   selectLastActivityAt,
@@ -97,7 +97,7 @@ export default function Home() {
   const appModeState = useAppMode();
   const normalizedSession = useNormalizedSessionContext();
   const { mode } = appModeState;
-  const { isTogether } = useTogetherMode();
+  const isTogether = true; // samtalsläge removed from UI — always defaults to Tillsammans
 
   // Direct DB query for completed card IDs (bypasses snapshot)
   const [completedCardIds, setCompletedCardIds] = useState<string[]>([]);

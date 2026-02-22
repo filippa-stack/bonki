@@ -39,6 +39,7 @@ import LockedReflectionDisplay from '@/components/LockedReflectionDisplay';
 import { useDevState } from '@/contexts/DevStateContext';
 import { useNormalizedSessionContext } from '@/contexts/NormalizedSessionContext';
 import { isDevToolsEnabled } from '@/lib/devTools';
+// samtalsläge removed from UI — always defaults to Tillsammans
 import { useTogetherMode } from '@/hooks/useTogetherMode';
 import { BEAT_1, BEAT_2, BEAT_3, EASE, PRESS, PAGE, EMOTION } from '@/lib/motion';
 
