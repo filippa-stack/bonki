@@ -118,9 +118,7 @@ export default function PromptItem({ prompt, index, sectionType, preamble }: Pro
               fontStyle: 'normal',
               fontSize: '15px',
               lineHeight: 1.65,
-              textAlign: 'left',
-              paddingLeft: '4px',
-              paddingRight: '4px',
+              textAlign: 'center',
               marginBottom: '32px',
             }}
           >
