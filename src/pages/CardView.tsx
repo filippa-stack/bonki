@@ -690,10 +690,10 @@ export default function CardView() {
                 const hint = STEP_RITUAL_HINTS[stageKey];
                 if (!hint) return null;
                 return (
-                  <div className="mt-8 mb-8 text-center">
+                  <div style={{ marginTop: '20px', marginBottom: '0' }} className="text-center">
                     <p
-                      className="type-meta italic"
-                      style={{ color: 'var(--color-text-secondary)', opacity: 0.55 }}
+                      className="font-serif italic"
+                      style={{ fontSize: '14px', color: 'var(--color-text-tertiary)', opacity: 0.55 }}
                     >
                       {isTogether ? hint.together : hint.solo}
                     </p>
