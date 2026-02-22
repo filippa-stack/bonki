@@ -789,7 +789,7 @@ export default function CardView() {
       {/* Step progress — centered horizontal dots (live only) */}
       {isLive && (
         <motion.div
-          style={{ paddingTop: '16px' }}
+          style={{ paddingTop: '16px', marginTop: '20px' }}
           initial={!suppressEntryAnim ? { opacity: 0 } : false}
           animate={{ opacity: 1 }}
           transition={{ delay: !suppressEntryAnim ? BEAT_1 : 0, duration: BEAT_3, ease: EASE }}
