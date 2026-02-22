@@ -265,18 +265,20 @@ export default function Home() {
               <h1 className="type-h1" style={{ color: 'var(--text-primary)' }}>
                 Vårt utrymme
               </h1>
-              <p
-                className="type-body mt-4"
-                style={{ color: 'var(--text-secondary)' }}
-              >
-                {snapshot?.sessions
-                  ? 'Ni har börjat.'
-                  : exploredIds.length === 0
-                    ? 'Välj ett ämne.'
-                    : exploredIds.length <= 5
-                      ? 'Ni har börjat.'
-                      : 'Ert samtal fortsätter.'}
-              </p>
+              {!snapshot?.sessions && exploredIds.length === 0 && (
+                <p
+                  className="mt-4"
+                  style={{
+                    fontFamily: 'var(--font-serif)',
+                    fontStyle: 'italic',
+                    fontSize: '15px',
+                    color: 'var(--color-text-secondary)',
+                    opacity: 0.6,
+                  }}
+                >
+                  Välj ett ämne nedan.
+                </p>
+              )}
             </motion.div>
 
             {/* Resume banner — active session */}
@@ -321,7 +323,7 @@ export default function Home() {
                         </p>
                       )}
                     </div>
-                    <span className="font-sans shrink-0 ml-3" style={{ fontSize: '12px', letterSpacing: '0.04em', color: 'hsl(36, 16%, 92%)', opacity: 0.7 }}>
+                    <span className="font-sans shrink-0 ml-3" style={{ fontSize: '13px', letterSpacing: '0.03em', color: 'hsl(36, 16%, 88%)', opacity: 0.85, minWidth: '80px', textAlign: 'right' }}>
                       Fortsätt →
                     </span>
                   </div>
@@ -433,7 +435,7 @@ export default function Home() {
                           borderRadius: '0 14px 14px 0',
                           borderLeft: `3px solid ${accent}`,
                           padding: '16px 18px',
-                          minHeight: '48px',
+                          minHeight: '72px',
                           display: 'flex',
                           alignItems: 'center',
                           justifyContent: 'space-between',
