@@ -6,21 +6,21 @@ export const CONTENT_VERSION = 3;
 export const categories: Category[] = [
   {
     id: 'communication',
-    title: 'Arbetsfördelning & mentala lasset',
+    title: 'Det osynliga arbetet',
     entryLine: 'Vem bär vad — och hur känns det egentligen?',
     description: 'Ansvar för hem och hushåll, återhämtning',
     cardCount: 3,
   },
   {
     id: 'parenting-together',
-    title: 'Uppfostringsstilar',
+    title: 'Två sätt att vara förälder',
     entryLine: 'Ni gör det på olika sätt — och det är okej att prata om.',
     description: 'Gränser, gemensam linje och olikheter som föräldrar',
     cardCount: 3,
   },
   {
     id: 'emotional-intimacy',
-    title: 'Paridentitet vs föräldraidentitet',
+    title: 'Ni två',
     entryLine: 'Vem är ni för varandra, bortom föräldraskapet?',
     description: 'Att hitta tillbaka till varandra bortom föräldrarollen',
     cardCount: 2,
@@ -48,14 +48,14 @@ export const categories: Category[] = [
   },
   {
     id: 'category-7',
-    title: 'Motståndskraft innan det brister',
+    title: 'Det som håller',
     entryLine: 'Hur ni håller ihop — även när det är svårt.',
     description: 'Sårbarhet, motgångar och att möta press tillsammans',
     cardCount: 2,
   },
   {
     id: 'category-8',
-    title: 'Kommunikation & stöd',
+    title: 'Orden mellan er',
     entryLine: 'Hur ni pratar — och hur ni lyssnar.',
     description: 'Enighet, reparation och att ge varandra utrymme',
     cardCount: 2,
