@@ -36,6 +36,7 @@ import { ArrowRight } from 'lucide-react';
 import CompletedSessionView from '@/components/CompletedSessionView';
 import LockedReflectionDisplay from '@/components/LockedReflectionDisplay';
 
+import GorTillsammansOverlay, { hasSeenGorTillsammans } from '@/components/GorTillsammansOverlay';
 import { useDevState } from '@/contexts/DevStateContext';
 import { useNormalizedSessionContext } from '@/contexts/NormalizedSessionContext';
 import { isDevToolsEnabled } from '@/lib/devTools';
@@ -445,6 +446,19 @@ export default function CardView() {
     }
   };
 
+  // ─── GÖR TILLSAMMANS one-time overlay ───
+  const [showGorTillsammans, setShowGorTillsammans] = useState(false);
+  const preCardStageType = STEP_ORDER[currentStepIndex];
+  const preCardIsExercise = preCardStageType === 'exercise';
+  useEffect(() => {
+    const isLiveMode = cardViewMode === 'live';
+    if (isLiveMode && preCardIsExercise && !hasSeenGorTillsammans()) {
+      setShowGorTillsammans(true);
+    } else {
+      setShowGorTillsammans(false);
+    }
+  }, [cardViewMode, preCardIsExercise]);
+
   // ─────────────────────────────────────────────────────────────
   //  Early exits (card not found)
   // ─────────────────────────────────────────────────────────────
@@ -603,6 +617,8 @@ export default function CardView() {
   const currentStageType = STEP_ORDER[currentStepIndex];
   const isReflectionStep = currentStageType === 'opening' || currentStageType === 'reflective';
   const isLive = cardViewMode === 'live';
+  const isExerciseStep = currentStageType === 'exercise';
+
 
   // ─── Session start screen — ritual before first question ───
   const showStartScreen = isLive && currentStepIndex === 0 && localPromptIndex === 0 && !hasStarted;
@@ -913,6 +929,13 @@ export default function CardView() {
         </div>
       </div>
     </motion.div>
+
+    {/* GÖR TILLSAMMANS one-time overlay */}
+    <AnimatePresence>
+      {showGorTillsammans && (
+        <GorTillsammansOverlay onDismiss={() => setShowGorTillsammans(false)} />
+      )}
+    </AnimatePresence>
 
     {/* Leave session confirmation */}
     <AlertDialog open={showLeaveConfirm} onOpenChange={setShowLeaveConfirm}>
