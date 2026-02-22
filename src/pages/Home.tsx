@@ -270,7 +270,6 @@ export default function Home() {
                   className="mt-4"
                   style={{
                     fontFamily: 'var(--font-serif)',
-                    fontStyle: 'italic',
                     fontSize: '15px',
                     color: 'var(--color-text-secondary)',
                     opacity: 0.6,
@@ -347,7 +346,6 @@ export default function Home() {
                       <p style={{
                         fontSize: '15px',
                         fontFamily: 'var(--font-serif)',
-                        fontStyle: 'italic',
                         color: 'var(--accent-text)',
                         marginBottom: '10px',
                         display: 'block',

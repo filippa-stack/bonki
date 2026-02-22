@@ -137,10 +137,9 @@ export default function Category() {
             }}>
               <p style={{
                 fontFamily: 'var(--font-serif)',
-                fontStyle: 'italic',
                 fontSize: '14px',
                 color: 'var(--color-text-tertiary)',
-                opacity: 0.4,
+                opacity: 0.45,
                 lineHeight: 1.5,
               }}>
                 {allCompleted

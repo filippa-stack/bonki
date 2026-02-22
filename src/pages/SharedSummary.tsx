@@ -295,7 +295,7 @@ export default function SharedSummary() {
           className="text-center"
         >
           <p
-            className="font-serif italic"
+            className="font-serif"
             style={{
               fontSize: '17px',
               color: 'var(--color-text-secondary)',
@@ -316,7 +316,7 @@ export default function SharedSummary() {
             className="pt-8 pb-24 text-center"
           >
             <p
-              className="font-serif italic text-center"
+              className="font-serif text-center"
               style={{ fontSize: '17px', color: 'var(--text-primary)', opacity: 0.45 }}
             >
               Era samtal visas här.
@@ -411,7 +411,7 @@ export default function SharedSummary() {
                         </div>
                         {!isExpanded && entry.excerpt && (
                           <p
-                            className="mt-2 font-serif italic"
+                            className="mt-2 font-serif"
                             style={{
                               fontSize: '15px',
                               color: 'var(--color-text-secondary)',
@@ -517,7 +517,7 @@ export default function SharedSummary() {
                                       </p>
                                       {older.excerpt && (
                                         <p
-                                          className="font-serif italic mt-1"
+                                          className="font-serif mt-1"
                                           style={{
                                             color: 'var(--color-text-secondary)',
                                             display: '-webkit-box',
@@ -547,7 +547,7 @@ export default function SharedSummary() {
               {bookmarks.length > 0 && (
                 <div style={{ marginTop: '24px', marginBottom: '8px' }}>
                   <p
-                    className="font-serif italic"
+                    className="font-serif"
                     style={{
                       fontSize: '15px',
                       color: 'var(--accent-text)',
