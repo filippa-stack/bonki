@@ -464,7 +464,8 @@ export default function CardView() {
   if (cardViewMode === 'completion') {
     return (
       <motion.div
-        className="min-h-screen page-bg"
+        className="min-h-screen"
+        style={{ backgroundColor: 'hsl(36, 28%, 93%)' }}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: EMOTION, ease: [...EASE] }}
@@ -476,26 +477,47 @@ export default function CardView() {
 
           {/* Heading — grounded, intentional */}
           <motion.div
-            initial={{ opacity: 0, y: 8 }}
+            initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: EMOTION, ease: [0, 0, 0.2, 1] }}
+            transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1.0] }}
             className="text-center max-w-md mx-auto"
             style={{ paddingTop: 24 }}
           >
-            <h2 className="type-h1" style={{ color: 'var(--accent-saffron)' }}>{COMPLETION_MESSAGES[completedSessionCount % COMPLETION_MESSAGES.length]}</h2>
+            <h2
+              className="font-serif"
+              style={{
+                fontSize: '36px',
+                fontWeight: 600,
+                color: 'var(--accent-saffron)',
+                textAlign: 'center',
+                lineHeight: 1.2,
+                letterSpacing: '-0.01em',
+              }}
+            >
+              {COMPLETION_MESSAGES[completedSessionCount % COMPLETION_MESSAGES.length]}
+            </h2>
           </motion.div>
 
           {/* Takeaway input — inline to avoid hook issues */}
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.42, duration: EMOTION, ease: [0, 0, 0.2, 1] }}
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.15, duration: 0.6, ease: [0.25, 0.1, 0.25, 1.0] }}
             className="max-w-md mx-auto mt-16 space-y-3"
           >
-            <p className="type-meta text-muted-foreground/30 text-center">
+            <p
+              className="font-serif italic text-center"
+              style={{ fontSize: '17px', color: 'var(--color-text-secondary)', opacity: 0.65 }}
+            >
               Något ni tar med er härifrån.
             </p>
-            <CompletionTakeaway sessionId={activeSessionId} spaceId={space?.id ?? null} />
+            <motion.div
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3, duration: 0.6, ease: [0.25, 0.1, 0.25, 1.0] }}
+            >
+              <CompletionTakeaway sessionId={activeSessionId} spaceId={space?.id ?? null} />
+            </motion.div>
           </motion.div>
 
           {/* CTAs */}
@@ -512,11 +534,13 @@ export default function CardView() {
                 display: 'block',
                 width: '100%',
                 textAlign: 'center',
-                fontSize: '13px',
+                fontSize: '12px',
+                letterSpacing: '0.06em',
+                textTransform: 'uppercase' as const,
                 fontFamily: 'Inter, sans-serif',
-                color: 'var(--text-secondary)',
-                opacity: 0.70,
-                textDecoration: 'underline',
+                color: 'var(--color-text-secondary)',
+                opacity: 0.6,
+                textDecoration: 'none',
                 background: 'none',
                 border: 'none',
                 cursor: 'pointer',
@@ -831,17 +855,19 @@ function CompletionTakeaway({ sessionId, spaceId }: { sessionId: string | null; 
           display: 'block',
           width: '100%',
           minHeight: '100px',
-          backgroundColor: 'var(--surface-raised)',
-          border: '1px solid hsl(var(--border) / 0.20)',
+          backgroundColor: 'hsl(36, 22%, 96%)',
+          border: '1px solid hsl(36, 20%, 84%)',
           borderRadius: '12px',
           padding: '16px',
-          fontFamily: 'Inter, sans-serif',
-          fontSize: '15px',
+          fontFamily: "'Cormorant Garamond', Georgia, serif",
+          fontStyle: 'italic',
+          fontSize: '16px',
           color: '#1C1B1A',
           resize: 'none' as const,
           outline: 'none',
           boxSizing: 'border-box' as const,
         }}
+        className="placeholder:font-serif placeholder:italic placeholder:text-[16px] placeholder:text-[var(--text-ghost)]"
       />
       <span style={{ display: 'block', textAlign: 'right', fontSize: '10px', color: 'rgba(0,0,0,0.25)', marginTop: '4px', paddingRight: '4px' }}>
         {status === 'saving' ? 'Sparar…' : status === 'saved' ? 'Sparad' : '\u00A0'}
