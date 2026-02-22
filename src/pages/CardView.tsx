@@ -757,7 +757,7 @@ export default function CardView() {
     >
       <StageInterstitial visible={showInterstitial} />
       <Header
-        title={category?.title}
+        title={card?.title ?? category?.title}
         showBack
         backTo={exitBackTo}
         variant="immersive"
