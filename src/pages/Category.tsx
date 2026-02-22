@@ -125,6 +125,31 @@ export default function Category() {
             />
           );
         })}
+
+        {/* Bottom anchor */}
+        {(() => {
+          const allCompleted = cards.length > 0 && cards.every(c => completedCardIds.includes(c.id));
+          return (
+            <div style={{
+              marginTop: '48px',
+              textAlign: 'center',
+              paddingBottom: 'calc(32px + env(safe-area-inset-bottom, 0px))',
+            }}>
+              <p style={{
+                fontFamily: 'var(--font-serif)',
+                fontStyle: 'italic',
+                fontSize: '14px',
+                color: 'var(--color-text-tertiary)',
+                opacity: 0.4,
+                lineHeight: 1.5,
+              }}>
+                {allCompleted
+                  ? 'Ni har utforskat det här området.'
+                  : 'Välj ett samtal ovan.'}
+              </p>
+            </div>
+          );
+        })()}
       </div>
     </div>
   );
