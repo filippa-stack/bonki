@@ -93,10 +93,18 @@ export default function Header({
           <div className="flex-1 min-w-0 flex items-center justify-center">
             {title && (
               <h1
-                className="type-meta font-normal truncate text-center pointer-events-none"
-                style={{ color: 'hsl(0 0% 100% / 0.70)', maxWidth: '100%' }}
+                className="font-sans font-normal pointer-events-none"
+                style={{
+                  fontSize: '11px',
+                  letterSpacing: '0.04em',
+                  color: 'hsl(0 0% 100% / 0.70)',
+                  maxWidth: '55%',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  whiteSpace: 'nowrap',
+                }}
               >
-                {title.length > 18 ? title.slice(0, 18) + '…' : title}
+                {title}
               </h1>
             )}
           </div>
