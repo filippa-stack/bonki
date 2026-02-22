@@ -1,7 +1,7 @@
 import { Category, Card } from '@/types';
 
 /** Bump this whenever categories or cards change in this file */
-export const CONTENT_VERSION = 4;
+export const CONTENT_VERSION = 5;
 
 export const categories: Category[] = [
   {
@@ -27,7 +27,7 @@ export const categories: Category[] = [
   },
   {
     id: 'category-7',
-    title: 'Det som håller',
+    title: 'Innan det brister',
     entryLine: 'Hur ni håller ihop — även när det är svårt.',
     description: 'Sårbarhet, motgångar och att möta press tillsammans',
     cardCount: 2,
@@ -55,14 +55,14 @@ export const categories: Category[] = [
   },
   {
     id: 'category-6',
-    title: 'Pengar mellan oss',
+    title: 'Trygghet & risk',
     entryLine: 'Mod, trygghet och gemensamma ramar kring ekonomi.',
     description: 'Risk, värderingar och ekonomiska beslut som föräldrar',
     cardCount: 2,
   },
   {
     id: 'daily-life',
-    title: 'Hur ni rör varandra',
+    title: 'Fortfarande nära',
     entryLine: 'De små stunderna som håller er nära.',
     description: 'Beröring, längtan och att vara nära i vardagen',
     cardCount: 2,
