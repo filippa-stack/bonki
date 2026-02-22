@@ -575,6 +575,8 @@ export default function CardView() {
   //  MODE: 'live' | 'archive' — conversation surface
   // ─────────────────────────────────────────────────────────────
   const currentSection = card.sections.find(s => s.type === STEP_ORDER[currentStepIndex]);
+  const currentStageType = STEP_ORDER[currentStepIndex];
+  const isReflectionStep = currentStageType === 'opening' || currentStageType === 'reflective';
   const isLive = cardViewMode === 'live';
 
   const exitBackTo = isFromArchive ? '/shared' : (category ? `/category/${category.id}` : '/');
@@ -590,7 +592,10 @@ export default function CardView() {
     {_devDebug}
     <motion.div
       className="min-h-screen"
-      style={{ backgroundColor: 'var(--color-bg-base)' }}
+      style={{
+        backgroundColor: isLive && isReflectionStep ? 'hsl(36, 22%, 92%)' : 'hsl(36, 20%, 95%)',
+        transition: 'background-color 0.6s ease',
+      }}
       initial={
         suppressEntryAnim
           ? { opacity: 0 }
@@ -721,6 +726,7 @@ export default function CardView() {
                       promptIndex={localPromptIndex}
                       isLastStep={isLastStage && isLastPromptInStage}
                       isFirstVisit={false}
+                      isReflectionStep={isReflectionStep}
                       onLocked={async () => {
                         if (isLastPromptInStage) {
                           await handleCompleteStep();

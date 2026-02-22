@@ -1,20 +1,16 @@
 import { useState } from 'react';
-import { Lock } from 'lucide-react';
 import { useSessionReflections } from '@/hooks/useSessionReflections';
 
 interface SessionStepReflectionProps {
   sessionId?: string | null;
   stepIndex: number;
-  /** Prompt index within the current stage (default 0) */
   promptIndex?: number;
-  /** When true, button shows "Avsluta samtalet" instead of "Fortsätt" */
   isLastStep?: boolean;
-  /** First visit to this card (no completed session exists) */
   isFirstVisit?: boolean;
-  /** Called after reflection is persisted — parent calls complete_couple_session_step */
   onLocked?: () => void | Promise<void>;
-  /** Called to go back one step — only shown when stepIndex > 0 */
   onBack?: () => void;
+  /** Whether this is a reflection step (opening/deepening) for styling */
+  isReflectionStep?: boolean;
 }
 
 export default function SessionStepReflection({
@@ -25,9 +21,8 @@ export default function SessionStepReflection({
   isFirstVisit = false,
   onLocked,
   onBack,
+  isReflectionStep = false,
 }: SessionStepReflectionProps) {
-  // Encode stage + prompt into a single step_index for the DB.
-  // stage 0 prompt 0 → 0, stage 0 prompt 1 → 1, stage 1 prompt 0 → 100, etc.
   const reflectionStepIndex = stepIndex * 100 + promptIndex;
 
   const { loading, myReflection, setText, markReady } =
@@ -43,14 +38,6 @@ export default function SessionStepReflection({
     setText(value);
   };
 
-  /**
-   * Progression sequence:
-   * 1. Persist reflection text (if any) via markReady
-   * 2. Call onLocked → parent calls complete_couple_session_step RPC
-   * 3. RPC response triggers refetch → current_step_index increments → re-render
-   *
-   * Reflection is optional — button is always enabled.
-   */
   const handleAdvance = async () => {
     setSubmitting(true);
     try {
@@ -70,7 +57,6 @@ export default function SessionStepReflection({
   }
 
   return (
-    /* 48px above reflection, 32px between reflection and button */
     <div className="mt-12 mb-1">
       <textarea
         value={displayText}
@@ -83,19 +69,26 @@ export default function SessionStepReflection({
         className="w-full min-h-[120px] resize-none focus:outline-none focus:ring-0 text-sm leading-relaxed placeholder:[color:#8C8681]"
         style={{
           color: 'var(--color-ink)',
-          background: 'var(--surface-raised)',
-          border: '1px solid hsl(var(--border) / 0.20)',
+          background: isReflectionStep ? 'hsl(36, 20%, 96%)' : 'var(--surface-raised)',
+          border: isReflectionStep ? '1px solid hsl(36, 18%, 84%)' : '1px solid hsl(var(--border) / 0.20)',
           borderRadius: '12px',
           padding: '16px',
-          transition: 'border-color 200ms ease',
+          transition: 'border-color 200ms ease, background-color 400ms ease',
         }}
-        onFocus={(e) => { e.currentTarget.style.borderColor = 'hsl(var(--border) / 0.40)'; }}
-        onBlur={(e) => { e.currentTarget.style.borderColor = 'hsl(var(--border) / 0.20)'; }}
+        onFocus={(e) => { e.currentTarget.style.borderColor = isReflectionStep ? 'hsl(36, 18%, 74%)' : 'hsl(var(--border) / 0.40)'; }}
+        onBlur={(e) => { e.currentTarget.style.borderColor = isReflectionStep ? 'hsl(36, 18%, 84%)' : 'hsl(var(--border) / 0.20)'; }}
       />
       <div className="flex items-center mt-2">
-        <span className="type-meta flex items-center gap-1" style={{ color: 'var(--text-tertiary)' }}>
-          <Lock className="w-2.5 h-2.5" />
-          Privat
+        <span
+          style={{
+            fontSize: '11px',
+            letterSpacing: '0.05em',
+            textTransform: 'uppercase',
+            color: 'var(--text-tertiary)',
+            opacity: 0.5,
+          }}
+        >
+          Bara er
         </span>
       </div>
 
@@ -120,7 +113,6 @@ export default function SessionStepReflection({
             ? 'Klar'
             : 'Fortsätt'}
         </button>
-
       </div>
     </div>
   );
