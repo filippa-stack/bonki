@@ -195,8 +195,6 @@ export default function Home() {
     return null;
   }, [sortedCategories, cards, completedCardIds]);
 
-  const showRecommendation = !!recommendedCategory;
-
   const { scrollRef, progress: scrollP } = useScrollCompression(80);
 
   // Derived compression styles
