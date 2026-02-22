@@ -1,146 +1,376 @@
 import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, PanInfo } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { useApp } from '@/contexts/AppContext';
-import { BEAT_1, BEAT_2, BEAT_3, EASE } from '@/lib/motion';
 
-const slides = [
-  {
-    title: 'Utforska i er takt.',
-    content: 'Välj ett ämne. Läs. Reflektera.',
-    saffronLine: 'Det finns inget rätt sätt — bara ert.',
-    cta: 'Fortsätt',
-  },
-  {
-    title: 'Ett gemensamt rum.',
-    saffronLine: 'För samtal ni vill hålla levande.',
-    content: 'Still Us är skapat för er — ett utrymme att mötas i, mitt i vardagen.',
-    cta: 'Fortsätt',
-  },
-  {
-    title: 'Omsorgsfullt utvecklat.',
-    titleColor: '#C4821D',
-    content: 'Varje samtal bygger på psykologisk forskning om relationer och anknytning.\n\nFormulerat för att skapa klarhet, närhet och förståelse — i er takt.',
-    cta: 'Kom igång',
-  },
-];
+const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
 export default function Onboarding() {
   const { t } = useTranslation();
   const [currentSlide, setCurrentSlide] = useState(0);
-  const { completeOnboarding, initializeCoupleSpace, backgroundColor } = useApp();
-
-  const handleNext = () => {
-    if (currentSlide < slides.length - 1) {
-      setCurrentSlide(currentSlide + 1);
-    }
-  };
+  const { completeOnboarding, initializeCoupleSpace } = useApp();
 
   const handleComplete = () => {
     initializeCoupleSpace();
     completeOnboarding();
   };
 
-  const isLastSlide = currentSlide === slides.length - 1;
+  const handleNext = () => {
+    if (currentSlide < 2) setCurrentSlide(currentSlide + 1);
+    else handleComplete();
+  };
+
+  const handleDragEnd = (_: unknown, info: PanInfo) => {
+    const SWIPE_THRESHOLD = 50;
+    const VELOCITY_THRESHOLD = 300;
+    if (info.offset.x < -SWIPE_THRESHOLD || info.velocity.x < -VELOCITY_THRESHOLD) {
+      if (currentSlide < 2) setCurrentSlide(currentSlide + 1);
+      else handleComplete();
+    }
+    if (info.offset.x > SWIPE_THRESHOLD || info.velocity.x > VELOCITY_THRESHOLD) {
+      if (currentSlide > 0) setCurrentSlide(currentSlide - 1);
+    }
+  };
+
+  const isDark = currentSlide === 2;
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center px-6 py-12 page-bg">
-      <div className="w-full max-w-md">
+    <div
+      className="min-h-screen flex flex-col"
+      style={{
+        backgroundColor: currentSlide === 0
+          ? 'hsl(36, 20%, 95%)'
+          : currentSlide === 1
+            ? 'hsl(36, 18%, 94%)'
+            : 'hsl(158, 32%, 14%)',
+        transition: 'background-color 0.5s ease',
+      }}
+    >
+      <div className="flex-1 flex flex-col">
         <AnimatePresence mode="wait">
           <motion.div
             key={currentSlide}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: BEAT_3, ease: EASE }}
-            className="text-center"
+            transition={{ duration: 0.3, ease: EASE }}
+            className="flex-1 flex flex-col"
+            drag="x"
+            dragConstraints={{ left: 0, right: 0 }}
+            dragElastic={0.15}
+            onDragEnd={handleDragEnd}
           >
-            {/* Headline */}
-            <motion.h1
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: BEAT_3, ease: EASE }}
-              className="text-display text-foreground"
-              style={slides[currentSlide].titleColor ? { color: slides[currentSlide].titleColor } : undefined}
-            >
-              {slides[currentSlide].title}
-            </motion.h1>
-
-            {/* Body — BEAT_1 after headline */}
-            <motion.p
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: BEAT_1, duration: BEAT_3, ease: EASE }}
-              className="text-body text-gentle leading-relaxed mt-8 whitespace-pre-line"
-            >
-              {slides[currentSlide].content}
-            </motion.p>
-
-            {/* Saffron accent line */}
-            {slides[currentSlide].saffronLine && (
-              <motion.p
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: BEAT_1 + 0.1, duration: BEAT_3, ease: EASE }}
-                className="mt-6"
-                style={{
-                  fontFamily: "'Cormorant Garamond', serif",
-                  fontStyle: 'italic',
-                  fontSize: '18px',
-                  color: '#C4821D',
-                }}
-              >
-                {slides[currentSlide].saffronLine}
-              </motion.p>
-            )}
+            {/* Slide content */}
+            <div className="flex-1 flex flex-col" style={{ position: 'relative' }}>
+              {currentSlide === 0 && <Slide1 />}
+              {currentSlide === 1 && <Slide2 />}
+              {currentSlide === 2 && <Slide3 />}
+            </div>
           </motion.div>
         </AnimatePresence>
 
-        {/* CTA — BEAT_2 after body */}
-        <motion.div
-          key={`cta-${currentSlide}`}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: BEAT_2, duration: BEAT_3, ease: EASE }}
-          className="mt-12 flex flex-col items-center gap-6"
+        {/* Bottom controls */}
+        <div
+          style={{
+            paddingBottom: 'calc(32px + env(safe-area-inset-bottom, 0px))',
+            paddingTop: '24px',
+          }}
+          className="flex flex-col items-center gap-5 px-6"
         >
-          <button
-            onClick={isLastSlide ? handleComplete : handleNext}
-            className="cta-primary"
-          >
-            {slides[currentSlide].cta}
-          </button>
+          {/* CTA button */}
+          {currentSlide === 2 ? (
+            <button
+              onClick={handleComplete}
+              style={{
+                width: '60%',
+                fontSize: '15px',
+                letterSpacing: '0.02em',
+                background: 'hsl(36, 16%, 92%)',
+                color: 'hsl(158, 32%, 14%)',
+                borderRadius: '14px',
+                padding: '14px 0',
+                fontWeight: 600,
+                border: 'none',
+                cursor: 'pointer',
+              }}
+            >
+              Kom igång
+            </button>
+          ) : (
+            <button
+              onClick={handleNext}
+              className="cta-primary"
+              style={{ width: '60%', fontSize: '15px', letterSpacing: '0.02em' }}
+            >
+              Fortsätt
+            </button>
+          )}
 
           {/* Progress dots */}
-          <div className="flex gap-2">
-            {slides.map((_, index) => (
+          <div style={{ display: 'flex', gap: '6px', alignItems: 'center' }}>
+            {[0, 1, 2].map((i) => (
               <button
-                key={index}
-                onClick={() => setCurrentSlide(index)}
-                className={`w-1.5 h-1.5 rounded-full transition-all duration-150 ${
-                  index === currentSlide
-                    ? 'bg-primary/40 w-4'
-                    : 'bg-border/40 hover:bg-muted-foreground/20'
-                }`}
-                aria-label={t('onboarding.slide_label', { number: index + 1 })}
+                key={i}
+                onClick={() => setCurrentSlide(i)}
+                aria-label={t('onboarding.slide_label', { number: i + 1 })}
+                style={{
+                  width: i === currentSlide ? '14px' : '5px',
+                  height: '5px',
+                  borderRadius: i === currentSlide ? '4px' : '50%',
+                  background: i === currentSlide
+                    ? '#C4821D'
+                    : isDark
+                      ? 'hsl(158, 20%, 30%)'
+                      : 'var(--color-text-ghost)',
+                  opacity: i === currentSlide ? 1 : isDark ? 0.4 : 0.3,
+                  border: 'none',
+                  padding: 0,
+                  cursor: 'pointer',
+                  transition: 'width 0.3s ease, background 0.3s ease, opacity 0.3s ease',
+                }}
               />
             ))}
           </div>
 
-          {/* "Hoppa över" — fixed height to prevent layout shift on last slide */}
-          <div className="h-6 flex items-center">
-            {!isLastSlide && (
+          {/* Skip link */}
+          <div style={{ height: '20px', display: 'flex', alignItems: 'center' }}>
+            {currentSlide < 2 && (
               <button
                 onClick={handleComplete}
-                className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                style={{
+                  fontSize: '12px',
+                  letterSpacing: '0.05em',
+                  textTransform: 'uppercase' as const,
+                  color: isDark ? 'hsl(36, 12%, 70%)' : 'var(--color-text-tertiary)',
+                  opacity: 0.45,
+                  background: 'none',
+                  border: 'none',
+                  cursor: 'pointer',
+                  textDecoration: 'none',
+                  textAlign: 'center' as const,
+                }}
               >
-                {t('onboarding.skip')}
+                Hoppa över
               </button>
             )}
           </div>
-        </motion.div>
+        </div>
       </div>
     </div>
   );
 }
 
+/* ─── SLIDE 1: "Ett gemensamt rum." ─── */
+function Slide1() {
+  return (
+    <div className="flex-1 flex flex-col justify-end" style={{ paddingBottom: '32px' }}>
+      <motion.h1
+        initial={{ opacity: 0, x: -12 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ delay: 0, duration: 0.6, ease: EASE }}
+        style={{
+          fontFamily: 'var(--font-serif)',
+          fontSize: '38px',
+          fontWeight: 700,
+          color: 'var(--color-text-primary)',
+          lineHeight: 1.15,
+          textAlign: 'left',
+          paddingLeft: '32px',
+          paddingRight: '48px',
+          letterSpacing: '-0.01em',
+        }}
+      >
+        Ett gemensamt rum.
+      </motion.h1>
+
+      <motion.p
+        initial={{ opacity: 0, x: -8 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ delay: 0.15, duration: 0.5, ease: EASE }}
+        style={{
+          fontFamily: 'var(--font-sans)',
+          fontSize: '15px',
+          color: 'var(--color-text-secondary)',
+          opacity: 0.75,
+          textAlign: 'left',
+          paddingLeft: '32px',
+          paddingRight: '48px',
+          marginTop: '16px',
+          lineHeight: 1.6,
+        }}
+      >
+        Still Us är skapat för er — ett utrymme att mötas i, mitt i vardagen.
+      </motion.p>
+
+      <motion.p
+        initial={{ opacity: 0, x: -8 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ delay: 0.28, duration: 0.5, ease: EASE }}
+        style={{
+          fontFamily: 'var(--font-serif)',
+          fontStyle: 'italic',
+          fontSize: '17px',
+          color: 'var(--accent-text)',
+          textAlign: 'left',
+          paddingLeft: '32px',
+          marginTop: '12px',
+        }}
+      >
+        För samtal ni vill hålla levande.
+      </motion.p>
+    </div>
+  );
+}
+
+/* ─── SLIDE 2: "Utforska i er takt." ─── */
+function Slide2() {
+  return (
+    <div className="flex-1 flex flex-col items-center justify-center" style={{ position: 'relative', padding: '0 32px' }}>
+      {/* Decorative "02" */}
+      <motion.span
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 0.04 }}
+        transition={{ delay: 0, duration: 0.8, ease: EASE }}
+        style={{
+          fontFamily: 'var(--font-serif)',
+          fontSize: '180px',
+          fontWeight: 700,
+          color: 'var(--color-text-primary)',
+          position: 'absolute',
+          top: '15%',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          pointerEvents: 'none',
+          userSelect: 'none',
+          zIndex: 0,
+          lineHeight: 1,
+        }}
+        aria-hidden
+      >
+        02
+      </motion.span>
+
+      <div style={{ position: 'relative', zIndex: 1, textAlign: 'center' }}>
+        <motion.h1
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1, duration: 0.55, ease: EASE }}
+          style={{
+            fontFamily: 'var(--font-serif)',
+            fontSize: '34px',
+            fontWeight: 700,
+            color: 'var(--color-text-primary)',
+            textAlign: 'center',
+            lineHeight: 1.2,
+          }}
+        >
+          Utforska i er takt.
+        </motion.h1>
+
+        <motion.p
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.22, duration: 0.5, ease: EASE }}
+          style={{
+            fontFamily: 'var(--font-sans)',
+            fontSize: '15px',
+            color: 'var(--color-text-secondary)',
+            opacity: 0.75,
+            textAlign: 'center',
+            marginTop: '16px',
+            lineHeight: 1.6,
+          }}
+        >
+          Välj ett ämne. Läs. Reflektera.
+        </motion.p>
+
+        <motion.p
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.34, duration: 0.5, ease: EASE }}
+          style={{
+            fontFamily: 'var(--font-serif)',
+            fontStyle: 'italic',
+            fontSize: '17px',
+            color: 'var(--accent-text)',
+            textAlign: 'center',
+            marginTop: '12px',
+          }}
+        >
+          Det finns inget rätt sätt — bara ert.
+        </motion.p>
+      </div>
+    </div>
+  );
+}
+
+/* ─── SLIDE 3: "Omsorgsfullt utvecklat." ─── */
+function Slide3() {
+  return (
+    <div className="flex-1 flex flex-col items-center justify-center" style={{ padding: '0 32px' }}>
+      <motion.h1
+        initial={{ opacity: 0, y: 12 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0, duration: 0.6, ease: EASE }}
+        style={{
+          fontFamily: 'var(--font-serif)',
+          fontSize: '34px',
+          fontWeight: 700,
+          color: 'hsl(36, 16%, 92%)',
+          textAlign: 'center',
+          lineHeight: 1.2,
+        }}
+      >
+        Omsorgsfullt utvecklat.
+      </motion.h1>
+
+      <motion.p
+        initial={{ opacity: 0, y: 8 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.15, duration: 0.55, ease: EASE }}
+        style={{
+          fontFamily: 'var(--font-sans)',
+          fontSize: '15px',
+          color: 'hsl(36, 12%, 78%)',
+          textAlign: 'center',
+          marginTop: '16px',
+          lineHeight: 1.6,
+        }}
+      >
+        Varje samtal bygger på psykologisk forskning om relationer och anknytning.
+      </motion.p>
+
+      <motion.p
+        initial={{ opacity: 0, y: 8 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.15, duration: 0.55, ease: EASE }}
+        style={{
+          fontFamily: 'var(--font-sans)',
+          fontSize: '15px',
+          color: 'hsl(36, 12%, 78%)',
+          textAlign: 'center',
+          marginTop: '8px',
+          lineHeight: 1.6,
+        }}
+      >
+        Formulerat för att skapa klarhet, närhet och förståelse — i er takt.
+      </motion.p>
+
+      <motion.p
+        initial={{ opacity: 0, y: 8 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.3, duration: 0.5, ease: EASE }}
+        style={{
+          fontFamily: 'var(--font-serif)',
+          fontStyle: 'italic',
+          fontSize: '22px',
+          color: '#C4821D',
+          textAlign: 'center',
+          marginTop: '20px',
+        }}
+      >
+        Bara er.
+      </motion.p>
+    </div>
+  );
+}
