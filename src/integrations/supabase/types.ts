@@ -358,6 +358,7 @@ export type Database = {
           ended_at: string | null
           id: string
           last_activity_at: string
+          product_id: string
           started_at: string
           status: string
         }
@@ -370,6 +371,7 @@ export type Database = {
           ended_at?: string | null
           id?: string
           last_activity_at?: string
+          product_id?: string
           started_at?: string
           status: string
         }
@@ -382,6 +384,7 @@ export type Database = {
           ended_at?: string | null
           id?: string
           last_activity_at?: string
+          product_id?: string
           started_at?: string
           status?: string
         }
@@ -398,6 +401,13 @@ export type Database = {
             columns: ["couple_space_id"]
             isOneToOne: false
             referencedRelation: "couple_spaces_safe"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "couple_sessions_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
             referencedColumns: ["id"]
           },
         ]
@@ -514,6 +524,27 @@ export type Database = {
         }
         Relationships: []
       }
+      products: {
+        Row: {
+          created_at: string
+          id: string
+          is_active: boolean
+          name: string
+        }
+        Insert: {
+          created_at?: string
+          id: string
+          is_active?: boolean
+          name: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          name?: string
+        }
+        Relationships: []
+      }
       prompt_notes: {
         Row: {
           author_label: string | null
@@ -584,6 +615,7 @@ export type Database = {
           couple_space_id: string
           id: string
           is_active: boolean
+          product_id: string
           prompt_index: number
           question_text: string
           session_id: string
@@ -595,6 +627,7 @@ export type Database = {
           couple_space_id: string
           id?: string
           is_active?: boolean
+          product_id?: string
           prompt_index: number
           question_text: string
           session_id: string
@@ -606,6 +639,7 @@ export type Database = {
           couple_space_id?: string
           id?: string
           is_active?: boolean
+          product_id?: string
           prompt_index?: number
           question_text?: string
           session_id?: string
@@ -624,6 +658,13 @@ export type Database = {
             columns: ["couple_space_id"]
             isOneToOne: false
             referencedRelation: "couple_spaces_safe"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "question_bookmarks_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
             referencedColumns: ["id"]
           },
           {
@@ -723,6 +764,7 @@ export type Database = {
       step_reflections: {
         Row: {
           id: string
+          product_id: string
           session_id: string
           speaker_label: string | null
           state: Database["public"]["Enums"]["reflection_state"]
@@ -733,6 +775,7 @@ export type Database = {
         }
         Insert: {
           id?: string
+          product_id?: string
           session_id: string
           speaker_label?: string | null
           state?: Database["public"]["Enums"]["reflection_state"]
@@ -743,6 +786,7 @@ export type Database = {
         }
         Update: {
           id?: string
+          product_id?: string
           session_id?: string
           speaker_label?: string | null
           state?: Database["public"]["Enums"]["reflection_state"]
@@ -752,6 +796,13 @@ export type Database = {
           user_id?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "step_reflections_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "step_reflections_session_id_fkey"
             columns: ["session_id"]
@@ -892,6 +943,38 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      user_product_access: {
+        Row: {
+          granted_at: string
+          granted_via: string
+          id: string
+          product_id: string
+          user_id: string
+        }
+        Insert: {
+          granted_at?: string
+          granted_via?: string
+          id?: string
+          product_id: string
+          user_id: string
+        }
+        Update: {
+          granted_at?: string
+          granted_via?: string
+          id?: string
+          product_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_product_access_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       user_settings: {
         Row: {
