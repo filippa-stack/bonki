@@ -167,7 +167,7 @@ function CardEntry({ card, index, isCompleted = false, isInProgress = false, onN
         style={{
           padding: '18px 16px',
           marginBottom: isLast ? '0' : '10px',
-          background: 'hsl(36, 20%, 97%)',
+          background: isCompleted ? 'rgba(0,0,0,0.015)' : 'hsl(36, 20%, 97%)',
           border: '1px solid hsl(36, 15%, 88%)',
           borderLeft: `3px solid ${accentColor}`,
           borderRadius: '14px',
@@ -197,7 +197,7 @@ function CardEntry({ card, index, isCompleted = false, isInProgress = false, onN
                 fontSize: '10px',
                 letterSpacing: '0.08em',
                 color: 'var(--color-text-tertiary)',
-                opacity: 0.5,
+                opacity: isCompleted ? 0.30 : 0.5,
                 display: 'block',
                 marginBottom: '2px',
               }}
@@ -209,7 +209,8 @@ function CardEntry({ card, index, isCompleted = false, isInProgress = false, onN
               style={{
                 fontSize: '17px',
                 fontWeight: 500,
-                color: isCompleted ? 'var(--color-text-secondary)' : 'var(--color-text-primary)',
+                color: isCompleted ? 'var(--color-text-primary)' : 'var(--color-text-primary)',
+                opacity: isCompleted ? 0.45 : 1,
               }}
             >
               {card.title}
@@ -217,7 +218,7 @@ function CardEntry({ card, index, isCompleted = false, isInProgress = false, onN
             {card.subtitle && (
               <p
                 className="type-meta mt-px"
-                style={{ color: 'var(--color-text-secondary)', opacity: 0.80 }}
+                style={{ color: 'var(--color-text-secondary)', opacity: isCompleted ? 0.35 : 0.80 }}
               >
                 {card.subtitle}
               </p>
