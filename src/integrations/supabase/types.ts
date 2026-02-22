@@ -577,6 +577,64 @@ export type Database = {
           },
         ]
       }
+      question_bookmarks: {
+        Row: {
+          bookmarked_at: string
+          card_id: string
+          couple_space_id: string
+          id: string
+          is_active: boolean
+          prompt_index: number
+          question_text: string
+          session_id: string
+          stage_index: number
+        }
+        Insert: {
+          bookmarked_at?: string
+          card_id: string
+          couple_space_id: string
+          id?: string
+          is_active?: boolean
+          prompt_index: number
+          question_text: string
+          session_id: string
+          stage_index: number
+        }
+        Update: {
+          bookmarked_at?: string
+          card_id?: string
+          couple_space_id?: string
+          id?: string
+          is_active?: boolean
+          prompt_index?: number
+          question_text?: string
+          session_id?: string
+          stage_index?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "question_bookmarks_couple_space_id_fkey"
+            columns: ["couple_space_id"]
+            isOneToOne: false
+            referencedRelation: "couple_spaces"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "question_bookmarks_couple_space_id_fkey"
+            columns: ["couple_space_id"]
+            isOneToOne: false
+            referencedRelation: "couple_spaces_safe"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "question_bookmarks_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "couple_sessions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       redundant_purchases: {
         Row: {
           created_at: string

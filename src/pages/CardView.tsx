@@ -694,6 +694,12 @@ export default function CardView() {
                   focusPromptIndex={null}
                   disableShare={isActiveSession}
                   promptIndex={isLive ? localPromptIndex : undefined}
+                  coupleSpaceId={space?.id ?? null}
+                  sessionId={normalizedSession.sessionId ?? null}
+                  cardId={cardId ?? null}
+                  stageIndex={currentStepIndex}
+                  isLive={isLive}
+                  isReflectionStep={isReflectionStep}
                 />
               </motion.div>
 

@@ -10,6 +10,16 @@ import ArchiveTakeaway from '@/components/ArchiveTakeaway';
 import { ArrowLeft, ChevronRight, Settings } from 'lucide-react';
 import type { Prompt } from '@/types';
 
+interface BookmarkRow {
+  id: string;
+  session_id: string;
+  card_id: string;
+  stage_index: number;
+  prompt_index: number;
+  question_text: string;
+  bookmarked_at: string;
+}
+
 const STEP_ORDER = ['opening', 'reflective', 'scenario', 'exercise'] as const;
 
 interface ReflectionRow {
@@ -86,6 +96,8 @@ export default function SharedSummary() {
 
   const [entries, setEntries] = useState<CompletedEntry[]>([]);
   const [loading, setLoading] = useState(true);
+
+  const [bookmarks, setBookmarks] = useState<BookmarkRow[]>([]);
 
   const devState = useDevState();
 
@@ -168,6 +180,24 @@ export default function SharedSummary() {
     fetchData();
     return () => { cancelled = true; };
   }, [user, space, getCardById, getCategoryById]);
+
+  // Fetch active bookmarks
+  useEffect(() => {
+    if (!user || !space) return;
+    let cancelled = false;
+    supabase
+      .from('question_bookmarks' as any)
+      .select('id, session_id, card_id, stage_index, prompt_index, question_text, bookmarked_at')
+      .eq('couple_space_id', space.id)
+      .eq('is_active', true)
+      .order('bookmarked_at', { ascending: false })
+      .then(({ data }) => {
+        if (!cancelled && data) {
+          setBookmarks(data as any as BookmarkRow[]);
+        }
+      });
+    return () => { cancelled = true; };
+  }, [user, space]);
 
   const hasContent = devState === 'archiveEmpty' ? false
     : devState === 'archiveWithHistory' ? true
@@ -512,6 +542,80 @@ export default function SharedSummary() {
                   </motion.div>
                 );
               })}
+
+              {/* Bookmarked questions section */}
+              {bookmarks.length > 0 && (
+                <div style={{ marginTop: '24px', marginBottom: '8px' }}>
+                  <p
+                    className="font-serif italic"
+                    style={{
+                      fontSize: '15px',
+                      color: 'var(--accent-text)',
+                      marginBottom: '16px',
+                    }}
+                  >
+                    Ni ville återvända hit.
+                  </p>
+                  <div className="flex flex-col" style={{ gap: '8px' }}>
+                    {bookmarks.map((bm) => {
+                      const card = getCardById(bm.card_id);
+                      const category = card?.categoryId ? getCategoryById(card.categoryId) : null;
+                      return (
+                        <button
+                          key={bm.id}
+                          onClick={() => navigate(`/card/${bm.card_id}?from=archive`)}
+                          className="w-full text-left"
+                          style={{
+                            background: 'hsl(36, 22%, 96%)',
+                            border: '1px solid hsl(36, 20%, 86%)',
+                            borderRadius: '12px',
+                            padding: '16px',
+                            cursor: 'pointer',
+                          }}
+                        >
+                          <div className="flex items-start gap-3">
+                            <div
+                              style={{
+                                width: '6px',
+                                height: '6px',
+                                borderRadius: '50%',
+                                backgroundColor: '#C4821D',
+                                flexShrink: 0,
+                                marginTop: '7px',
+                              }}
+                            />
+                            <div className="flex-1 min-w-0">
+                              <p
+                                className="font-serif"
+                                style={{
+                                  fontSize: '16px',
+                                  color: 'var(--color-text-primary)',
+                                  lineHeight: 1.4,
+                                }}
+                              >
+                                {bm.question_text}
+                              </p>
+                              <p
+                                style={{
+                                  fontFamily: 'var(--font-sans)',
+                                  fontSize: '10px',
+                                  textTransform: 'uppercase',
+                                  letterSpacing: '0.06em',
+                                  color: 'var(--color-text-tertiary)',
+                                  opacity: 0.5,
+                                  marginTop: '8px',
+                                }}
+                              >
+                                {category?.title}{category?.title && card?.title ? ' · ' : ''}{card?.title}
+                              </p>
+                            </div>
+                          </div>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
 
               {/* Divider + Section 2: Sessions without notes */}
               {bothExist && (
