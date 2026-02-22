@@ -5,20 +5,6 @@ export const CONTENT_VERSION = 3;
 
 export const categories: Category[] = [
   {
-    id: 'communication',
-    title: 'Det osynliga arbetet',
-    entryLine: 'Vem bär vad — och hur känns det egentligen?',
-    description: 'Ansvar för hem och hushåll, återhämtning',
-    cardCount: 3,
-  },
-  {
-    id: 'parenting-together',
-    title: 'Två sätt att vara förälder',
-    entryLine: 'Ni gör det på olika sätt — och det är okej att prata om.',
-    description: 'Gränser, gemensam linje och olikheter som föräldrar',
-    cardCount: 3,
-  },
-  {
     id: 'emotional-intimacy',
     title: 'Ni två',
     entryLine: 'Vem är ni för varandra, bortom föräldraskapet?',
@@ -26,24 +12,17 @@ export const categories: Category[] = [
     cardCount: 2,
   },
   {
-    id: 'daily-life',
-    title: 'Hur ni rör varandra',
-    entryLine: 'De små stunderna som håller er nära.',
-    description: 'Beröring, längtan och att vara nära i vardagen',
-    cardCount: 2,
+    id: 'communication',
+    title: 'Det osynliga arbetet',
+    entryLine: 'Vem bär vad — och hur känns det egentligen?',
+    description: 'Ansvar för hem och hushåll, återhämtning',
+    cardCount: 3,
   },
   {
-    id: 'individual-needs',
-    title: 'Det vi ärvt',
-    entryLine: 'Det ni bär med er — och hur det formar ert hem.',
-    description: 'Traditioner, förväntningar och att forma ert eget',
-    cardCount: 2,
-  },
-  {
-    id: 'category-6',
-    title: 'Pengar mellan oss',
-    entryLine: 'Mod, trygghet och gemensamma ramar kring ekonomi.',
-    description: 'Risk, värderingar och ekonomiska beslut som föräldrar',
+    id: 'category-8',
+    title: 'Orden mellan er',
+    entryLine: 'Hur ni pratar — och hur ni lyssnar.',
+    description: 'Enighet, reparation och att ge varandra utrymme',
     cardCount: 2,
   },
   {
@@ -54,10 +33,17 @@ export const categories: Category[] = [
     cardCount: 2,
   },
   {
-    id: 'category-8',
-    title: 'Orden mellan er',
-    entryLine: 'Hur ni pratar — och hur ni lyssnar.',
-    description: 'Enighet, reparation och att ge varandra utrymme',
+    id: 'parenting-together',
+    title: 'Två sätt att vara förälder',
+    entryLine: 'Ni gör det på olika sätt — och det är okej att prata om.',
+    description: 'Gränser, gemensam linje och olikheter som föräldrar',
+    cardCount: 3,
+  },
+  {
+    id: 'individual-needs',
+    title: 'Det vi ärvt',
+    entryLine: 'Det ni bär med er — och hur det formar ert hem.',
+    description: 'Traditioner, förväntningar och att forma ert eget',
     cardCount: 2,
   },
   {
@@ -65,6 +51,20 @@ export const categories: Category[] = [
     title: 'Vart vi är på väg',
     entryLine: 'Vad ni står för — och vart ni är på väg.',
     description: 'Värderingar under press och drömmar som kräver mod',
+    cardCount: 2,
+  },
+  {
+    id: 'category-6',
+    title: 'Pengar mellan oss',
+    entryLine: 'Mod, trygghet och gemensamma ramar kring ekonomi.',
+    description: 'Risk, värderingar och ekonomiska beslut som föräldrar',
+    cardCount: 2,
+  },
+  {
+    id: 'daily-life',
+    title: 'Hur ni rör varandra',
+    entryLine: 'De små stunderna som håller er nära.',
+    description: 'Beröring, längtan och att vara nära i vardagen',
     cardCount: 2,
   },
   {
