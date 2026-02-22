@@ -1,3 +1,5 @@
+import { motion, AnimatePresence } from 'framer-motion';
+
 export interface StageStep {
   stage_key: 'oppnare' | 'tankevackare' | 'scenario' | 'teamwork';
   label: string;
@@ -30,36 +32,59 @@ export default function StepProgressIndicator({
   isTransitioning = false,
   className,
 }: StepProgressIndicatorProps) {
+  const currentLabel = STAGE_STEPS[currentStepIndex]?.label ?? '';
+
   return (
-    <div className={className} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
-      {STAGE_STEPS.map((step, index) => {
-        const isCompleted = completedSteps.includes(index) || index < currentStepIndex;
-        const isCurrent = index === currentStepIndex;
+    <div className={className} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+      {/* Stage label */}
+      <AnimatePresence mode="wait">
+        <motion.span
+          key={currentLabel}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.3 }}
+          style={{
+            fontFamily: 'var(--font-sans)',
+            fontSize: '10px',
+            letterSpacing: '0.09em',
+            textTransform: 'uppercase',
+            color: 'var(--text-tertiary)',
+            opacity: 0.5,
+            marginBottom: '8px',
+            textAlign: 'center',
+          }}
+        >
+          {currentLabel}
+        </motion.span>
+      </AnimatePresence>
 
-        const transitionDelay = isTransitioning && isCurrent ? '150ms' : '0ms';
+      {/* Horizontal dots */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '28px' }}>
+        {STAGE_STEPS.map((step, index) => {
+          const isCompleted = completedSteps.includes(index) || index < currentStepIndex;
+          const isCurrent = index === currentStepIndex;
 
-        const size = isCurrent ? 8 : 6;
-        const bg = isCurrent
-          ? 'var(--accent-saffron)'
-          : isCompleted
-            ? 'var(--text-secondary)'
-            : 'var(--text-ghost)';
-        const opacity = isCompleted ? 0.45 : 1.0;
-
-        return (
-          <span
-            key={step.stage_key}
-            style={{
-              width: `${size}px`,
-              height: `${size}px`,
-              borderRadius: '50%',
-              backgroundColor: bg,
-              opacity,
-              transition: `width 250ms ease-out ${transitionDelay}, height 250ms ease-out ${transitionDelay}, opacity 250ms ease-out ${transitionDelay}`,
-            }}
-          />
-        );
-      })}
+          return (
+            <span
+              key={step.stage_key}
+              style={{
+                display: 'inline-block',
+                width: isCurrent ? '16px' : '5px',
+                height: '5px',
+                borderRadius: isCurrent ? '4px' : '50%',
+                backgroundColor: isCurrent
+                  ? '#C4821D'
+                  : isCompleted
+                    ? 'hsl(158, 32%, 14%)'
+                    : 'var(--text-ghost)',
+                opacity: isCurrent ? 1.0 : isCompleted ? 0.30 : 0.20,
+                transition: 'width 0.3s ease, border-radius 0.3s ease, opacity 0.25s ease, background-color 0.25s ease',
+              }}
+            />
+          );
+        })}
+      </div>
     </div>
   );
 }
