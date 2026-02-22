@@ -1,29 +1,10 @@
-import { ArrowLeft, LogOut, Plus, Settings } from 'lucide-react';
+import { ArrowLeft } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { useApp } from '@/contexts/AppContext';
 import { useAuth } from '@/contexts/AuthContext';
 import { useNormalizedSessionContext } from '@/contexts/NormalizedSessionContext';
-import { toast } from 'sonner';
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from '@/components/ui/alert-dialog';
 
 import bonkiLogo from '@/assets/bonki-logo.png';
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '@/components/ui/popover';
-import { Button } from '@/components/ui/button';
 
 interface HeaderProps {
   title?: string;
@@ -50,8 +31,6 @@ export default function Header({
 }: HeaderProps) {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const { switchToNewSpace } = useApp();
-  // samtalsläge removed from UI — always defaults to Tillsammans
   const normalizedSession = useNormalizedSessionContext();
   const hasActiveSession = !normalizedSession.loading && !!normalizedSession.sessionId;
   const { signOut } = useAuth();
@@ -197,13 +176,29 @@ export default function Header({
               </button>
             )}
             {showSettings && (
-              <SettingsPopover
-                hasActiveSession={hasActiveSession}
-                switchToNewSpace={switchToNewSpace}
-                handleSignOut={handleSignOut}
-                navigate={navigate}
-                t={t}
-              />
+              <button
+                onClick={handleSignOut}
+                style={{
+                  fontFamily: 'var(--font-sans)',
+                  fontSize: '11px',
+                  letterSpacing: '0.04em',
+                  color: 'white',
+                  opacity: 0.55,
+                  cursor: 'pointer',
+                  background: 'none',
+                  border: 'none',
+                  padding: '8px 4px',
+                  minHeight: '44px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  transition: 'opacity 150ms ease',
+                }}
+                onPointerDown={(e) => { e.currentTarget.style.opacity = '0.85'; }}
+                onPointerUp={(e) => { e.currentTarget.style.opacity = '0.55'; }}
+                onPointerLeave={(e) => { e.currentTarget.style.opacity = '0.55'; }}
+              >
+                {t('header.sign_out')}
+              </button>
             )}
           </div>
         </div>
@@ -212,93 +207,3 @@ export default function Header({
   );
 }
 
-/* ─── Settings popover (extracted) ─── */
-function SettingsPopover({
-  hasActiveSession,
-  switchToNewSpace,
-  handleSignOut,
-  navigate,
-  t,
-}: {
-  hasActiveSession: boolean;
-  switchToNewSpace: () => Promise<{ ok: boolean }>;
-  handleSignOut: () => void;
-  navigate: (path: string) => void;
-  t: (key: string) => string;
-}) {
-  return (
-    <Popover>
-      <PopoverTrigger asChild>
-        <Button variant="ghost" size="icon" style={{ color: 'white', opacity: 0.65 }} className="hover:opacity-100">
-          <Settings className="w-4 h-4" />
-        </Button>
-      </PopoverTrigger>
-      <PopoverContent className="w-56 p-2" align="end">
-
-        {/* ── Space actions ── */}
-        <div className="space-y-0.5">
-          <AlertDialog>
-            <AlertDialogTrigger asChild>
-              <Button
-                variant="ghost"
-                size="sm"
-                className="w-full justify-start text-xs gap-1.5"
-                disabled={hasActiveSession}
-              >
-                <Plus className="w-3.5 h-3.5" />
-                <div>
-                  <span>Nytt kapitel</span>
-                  <p style={{ fontSize: '11px', color: 'var(--color-text-tertiary)', opacity: 0.6, fontWeight: 400, marginTop: '1px' }}>
-                    Bjud in din partner
-                  </p>
-                </div>
-              </Button>
-            </AlertDialogTrigger>
-            {!hasActiveSession && (
-              <AlertDialogContent>
-                <AlertDialogHeader>
-                  <AlertDialogTitle className="font-serif text-lg">Nytt kapitel?</AlertDialogTitle>
-                  <AlertDialogDescription className="text-sm text-muted-foreground leading-relaxed pt-1">
-                    Skapar ett nytt tomt utrymme med samma partner.
-                  </AlertDialogDescription>
-                </AlertDialogHeader>
-                <AlertDialogFooter className="mt-2">
-                  <AlertDialogCancel>Avbryt</AlertDialogCancel>
-                  <AlertDialogAction onClick={async () => {
-                    const result = await switchToNewSpace();
-                    if (result.ok) {
-                      toast.success('Nytt utrymme skapat.');
-                      navigate('/');
-                    } else {
-                      toast.error('Kunde inte skapa nytt utrymme.');
-                    }
-                  }}>
-                    Nytt kapitel
-                  </AlertDialogAction>
-                </AlertDialogFooter>
-              </AlertDialogContent>
-            )}
-          </AlertDialog>
-          {hasActiveSession && (
-            <p className="text-[11px] text-muted-foreground/50 px-2 pb-1 leading-snug">
-              Ni är mitt i ett samtal. Avsluta det först.
-            </p>
-          )}
-        </div>
-
-        {/* ── Account ── */}
-        <div className="border-t border-border/30 mt-2 pt-2">
-          <Button
-            variant="ghost"
-            className="w-full justify-start text-destructive hover:text-destructive hover:bg-destructive/10"
-            onClick={handleSignOut}
-          >
-            <LogOut className="w-4 h-4 mr-2" />
-            {t('header.sign_out')}
-          </Button>
-        </div>
-
-      </PopoverContent>
-    </Popover>
-  );
-}
