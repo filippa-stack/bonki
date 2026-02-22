@@ -509,7 +509,7 @@ export default function CardView() {
               className="font-serif italic text-center"
               style={{ fontSize: '17px', color: 'var(--color-text-secondary)', opacity: 0.65 }}
             >
-              Något ni tar med er härifrån.
+              Vad tar ni med er?
             </p>
             <motion.div
               initial={{ opacity: 0, y: 12 }}
@@ -562,7 +562,7 @@ export default function CardView() {
               className="type-meta transition-opacity hover:opacity-60 mt-8"
               style={{ color: 'var(--color-text-secondary)', opacity: 0.35 }}
             >
-              Till översikten
+              Tillbaka
             </button>
           </motion.div>
 

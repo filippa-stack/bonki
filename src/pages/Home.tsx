@@ -257,7 +257,7 @@ export default function Home() {
                 {snapshot?.sessions
                   ? 'Ni har börjat. Fortsätt i er takt.'
                   : exploredIds.length === 0
-                    ? 'Välj ett ämne och börja utforska.'
+                    ? 'Välj ett ämne.'
                     : exploredIds.length <= 5
                       ? 'Ni har börjat. Fortsätt i er takt.'
                       : 'Ert samtal fortsätter.'}

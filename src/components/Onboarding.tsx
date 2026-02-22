@@ -7,7 +7,7 @@ import { BEAT_1, BEAT_2, BEAT_3, EASE } from '@/lib/motion';
 const slides = [
   {
     title: 'Utforska i er takt.',
-    content: 'Välj ett ämne. Läs tillsammans. Reflektera var för sig.',
+    content: 'Välj ett ämne. Läs. Reflektera.',
     saffronLine: 'Det finns inget rätt sätt — bara ert.',
     cta: 'Fortsätt',
   },

@@ -41,7 +41,7 @@
   "onboarding": {
     "begin": "Börja",
     "continue": "Fortsätt",
-    "skip": "Hoppa över introduktionen",
+    "skip": "Hoppa över",
     "slide_label": "Gå till sida {{number}}"
   },
   "home": {
