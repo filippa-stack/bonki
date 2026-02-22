@@ -196,27 +196,6 @@ function CardEntry({ card, index, isCompleted = false, isInProgress = false, onN
           border: '1px solid hsl(36, 15%, 88%)',
           borderLeft: `3px solid ${accentColor}`,
           borderRadius: '14px',
-          transition: 'border-color 0.15s ease, background-color 0.15s ease',
-        }}
-        onPointerEnter={(e) => {
-          e.currentTarget.style.borderColor = 'hsl(36, 15%, 78%)';
-          e.currentTarget.style.borderLeftColor = accentColor;
-          e.currentTarget.style.backgroundColor = 'hsl(36, 20%, 97%)';
-        }}
-        onPointerDown={(e) => {
-          e.currentTarget.style.borderColor = 'hsl(36, 15%, 72%)';
-          e.currentTarget.style.borderLeftColor = accentColor;
-          e.currentTarget.style.backgroundColor = 'hsl(36, 20%, 96%)';
-        }}
-        onPointerUp={(e) => {
-          e.currentTarget.style.borderColor = '';
-          e.currentTarget.style.borderLeftColor = '';
-          e.currentTarget.style.backgroundColor = '';
-        }}
-        onPointerLeave={(e) => {
-          e.currentTarget.style.borderColor = '';
-          e.currentTarget.style.borderLeftColor = '';
-          e.currentTarget.style.backgroundColor = '';
         }}
       >
         <div className="flex-1 min-w-0 flex items-start">
