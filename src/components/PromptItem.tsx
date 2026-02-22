@@ -111,8 +111,18 @@ export default function PromptItem({ prompt, index, sectionType, preamble }: Pro
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.45, delay: 0.05, ease: enterEase }}
-            className="text-subheading text-center mb-12"
-            style={{ color: 'var(--color-text-secondary)', fontWeight: 400 }}
+            style={{
+              color: 'var(--color-text-secondary)',
+              opacity: 0.80,
+              fontWeight: 400,
+              fontStyle: 'normal',
+              fontSize: '15px',
+              lineHeight: 1.65,
+              textAlign: 'left',
+              paddingLeft: '4px',
+              paddingRight: '4px',
+              marginBottom: '32px',
+            }}
           >
             {preamble}
           </motion.p>
