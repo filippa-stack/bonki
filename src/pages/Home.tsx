@@ -255,11 +255,11 @@ export default function Home() {
                 style={{ color: 'var(--text-secondary)' }}
               >
                 {snapshot?.sessions
-                  ? 'Ni har börjat. Fortsätt i er takt.'
+                  ? 'Ni har börjat.'
                   : exploredIds.length === 0
                     ? 'Välj ett ämne.'
                     : exploredIds.length <= 5
-                      ? 'Ni har börjat. Fortsätt i er takt.'
+                      ? 'Ni har börjat.'
                       : 'Ert samtal fortsätter.'}
               </p>
             </motion.div>
@@ -277,9 +277,9 @@ export default function Home() {
               return (
                 <motion.div
                   className="px-6 mt-8"
-                  initial={{ opacity: 0, y: 10 }}
+                  initial={{ opacity: 0, y: 8 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+                  transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
                 >
                   <div
                     onClick={() => { markNavigated(); navigate(`/card/${cardId}`, { state: { resumed: true } }); }}
@@ -290,29 +290,25 @@ export default function Home() {
                     }}
                     className="cursor-pointer flex items-center justify-between"
                     style={{
-                      borderRadius: '14px',
-                      padding: '16px 20px',
-                      background: 'hsl(36, 20%, 97%)',
-                      border: '1px solid hsl(36, 15%, 88%)',
+                      borderRadius: '16px',
+                      padding: '20px 24px',
+                      background: 'hsl(158, 30%, 14%)',
+                      border: 'none',
                     }}
                   >
                     <div className="flex-1 min-w-0">
-                      <p
-                        className="font-sans uppercase"
-                        style={{ fontSize: '11px', color: 'var(--accent-saffron)', opacity: 0.75, letterSpacing: '0.08em' }}
-                      >
-                        Fortsätt där ni slutade
-                      </p>
-                      <p className="font-serif text-xl font-medium mt-1" style={{ color: 'var(--text-primary)', textWrap: 'balance', hyphens: 'auto' }}>
+                      <p className="font-serif font-semibold" style={{ fontSize: '20px', color: 'hsl(36, 16%, 92%)', textWrap: 'balance', hyphens: 'auto' }}>
                         {card?.title || cardId}
                       </p>
                       {cat && (
-                        <p className="font-sans mt-0.5" style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>
+                        <p className="font-sans mt-1" style={{ fontSize: '13px', color: '#C4821D', opacity: 0.75 }}>
                           {cat.title}
                         </p>
                       )}
                     </div>
-                    <ChevronRight className="w-5 h-5 shrink-0 ml-3" style={{ color: 'var(--accent-saffron)', opacity: 0.6 }} />
+                    <span className="font-sans shrink-0 ml-3" style={{ fontSize: '12px', letterSpacing: '0.04em', color: 'hsl(36, 16%, 92%)', opacity: 0.7 }}>
+                      Fortsätt →
+                    </span>
                   </div>
                 </motion.div>
               );
@@ -327,16 +323,14 @@ export default function Home() {
               return (
                 <div className="px-6" style={{ marginBottom: '20px' }}>
                   <p style={{
-                    fontSize: '12px',
-                    fontWeight: '500',
-                    color: '#C4821D',
-                    letterSpacing: '0.06em',
-                    textTransform: 'uppercase' as const,
-                    opacity: 0.85,
+                    fontSize: '15px',
+                    fontFamily: 'var(--font-serif)',
+                    fontStyle: 'italic',
+                    color: 'var(--accent-text)',
                     marginBottom: '10px',
                     display: 'block',
                   }}>
-                    Rekommenderad start
+                    Börja här
                   </p>
                   <div
                     onClick={() => { markNavigated(); navigate(`/category/${recCat.id}`); }}
@@ -384,7 +378,7 @@ export default function Home() {
 
             {/* Categories */}
             <div className="px-6" style={{ paddingBottom: 'max(env(safe-area-inset-bottom, 0px), 64px)' }}>
-              <div className="flex flex-col" style={{ gap: '24px' }}>
+              <div className="flex flex-col" style={{ gap: '10px' }}>
                 {(recommendedCategory ? sortedCategories.filter(c => c.id !== recommendedCategory.id) : sortedCategories).map((category, index) => {
                   const catCards = cards.filter((c) => c.categoryId === category.id);
                   const completedCount = catCards.filter(c => completedCardIds.includes(c.id)).length;
@@ -443,6 +437,9 @@ export default function Home() {
                       >
                         <div className="flex items-center justify-between gap-3 w-full">
                           <div className="flex-1 min-w-0">
+                            <p className="font-sans uppercase" style={{ fontSize: '10px', letterSpacing: '0.08em', color: 'var(--color-text-tertiary)', opacity: 0.5 }}>
+                              {String(index + 1).padStart(2, '0')}
+                            </p>
                             <h3
                               className="type-h3"
                             style={{
@@ -451,14 +448,15 @@ export default function Home() {
                                 fontSize: '16px',
                                 textWrap: 'balance',
                                 hyphens: 'auto',
+                                marginTop: '2px',
                               }}
                             >
                               {category.title}
                             </h3>
                             {category.entryLine && (
                               <p
-                                className="type-meta"
-                                style={{ color: 'var(--text-secondary)', marginTop: '8px' }}
+                                className="font-serif italic"
+                                style={{ fontSize: '14px', color: 'var(--color-text-secondary)', opacity: 0.85, marginTop: '8px' }}
                               >
                                 {category.entryLine}
                               </p>
