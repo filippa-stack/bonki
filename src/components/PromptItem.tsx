@@ -130,11 +130,11 @@ export default function PromptItem({ prompt, index, sectionType, preamble }: Pro
             transition={{ duration: 0.45, ease: enterEase }}
             className={preamble ? 'mt-8' : ''}
             style={{
-              background: '#F7F3EE',
-              border: '1px solid rgba(180, 158, 130, 0.25)',
-              borderLeft: '3px solid var(--accent-saffron)',
+              backgroundColor: 'hsl(38, 40%, 97%)',
+              border: '1px solid hsl(38, 30%, 90%)',
+              borderLeft: '4px solid #C4821D',
               borderRadius: '0 12px 12px 0',
-              padding: '16px 20px',
+              padding: '20px 20px 20px 24px',
               margin: '24px 0',
               marginTop: !preamble ? '48px' : '24px',
               width: '100%',
@@ -142,17 +142,19 @@ export default function PromptItem({ prompt, index, sectionType, preamble }: Pro
           >
             <p
               style={{
-                fontFamily: 'Inter, sans-serif',
-                fontSize: '11px',
+                fontFamily: 'var(--font-sans, Inter, sans-serif)',
+                fontSize: '10px',
                 textTransform: 'uppercase',
                 letterSpacing: '0.10em',
-                color: 'var(--accent-saffron)',
+                color: 'var(--accent-text)',
                 marginBottom: '8px',
               }}
             >
               Gör tillsammans
             </p>
-            {renderAssignmentText(prompt.text)}
+            <div style={{ fontFamily: 'var(--font-serif)', fontSize: '20px', fontWeight: 600, lineHeight: 1.4, color: 'var(--color-text-primary)' }}>
+              {renderAssignmentText(prompt.text)}
+            </div>
           </motion.div>
         ) : (
           /* ── Default: centered question text ── */
@@ -167,7 +169,12 @@ export default function PromptItem({ prompt, index, sectionType, preamble }: Pro
               <p
                 key={i}
                 className="font-serif"
-                style={{ fontSize: '26px', ...gravity }}
+                style={{
+                  fontSize: 'clamp(24px, 6vw, 32px)',
+                  textWrap: 'balance',
+                  textAlign: 'center',
+                  ...gravity,
+                }}
               >
                 {para}
               </p>

@@ -66,26 +66,40 @@ export default function SessionStepReflection({
         autoCorrect="on"
         autoCapitalize="sentences"
         spellCheck={true}
-        className="w-full min-h-[120px] resize-none focus:outline-none focus:ring-0 text-sm leading-relaxed placeholder:[color:#8C8681]"
+        className="w-full resize-none focus:outline-none focus:ring-0 placeholder:[color:#8C8681]"
         style={{
+          minHeight: '120px',
+          maxHeight: '240px',
+          overflow: 'auto',
+          fontFamily: 'var(--font-serif)',
+          fontSize: '17px',
+          lineHeight: 1.6,
           color: 'var(--color-ink)',
           background: isReflectionStep ? 'hsl(36, 20%, 96%)' : 'var(--surface-raised)',
           border: isReflectionStep ? '1px solid hsl(36, 18%, 84%)' : '1px solid hsl(var(--border) / 0.20)',
           borderRadius: '12px',
           padding: '16px',
-          transition: 'border-color 200ms ease, background-color 400ms ease',
+          transition: 'border-color 200ms ease, background-color 400ms ease, box-shadow 0.2s ease',
         }}
-        onFocus={(e) => { e.currentTarget.style.borderColor = isReflectionStep ? 'hsl(36, 18%, 74%)' : 'hsl(var(--border) / 0.40)'; }}
-        onBlur={(e) => { e.currentTarget.style.borderColor = isReflectionStep ? 'hsl(36, 18%, 84%)' : 'hsl(var(--border) / 0.20)'; }}
+        onFocus={(e) => {
+          e.currentTarget.style.borderColor = isReflectionStep ? 'hsl(36, 18%, 74%)' : 'hsl(var(--border) / 0.40)';
+          e.currentTarget.style.boxShadow = '0 0 0 2px hsla(38, 70%, 48%, 0.15)';
+        }}
+        onBlur={(e) => {
+          e.currentTarget.style.borderColor = isReflectionStep ? 'hsl(36, 18%, 84%)' : 'hsl(var(--border) / 0.20)';
+          e.currentTarget.style.boxShadow = 'none';
+        }}
       />
-      <div className="flex items-center mt-2">
+      <div className="flex items-center justify-center mt-2">
         <span
           style={{
             fontSize: '11px',
-            letterSpacing: '0.05em',
+            letterSpacing: '0.06em',
             textTransform: 'uppercase',
             color: 'var(--text-tertiary)',
-            opacity: 0.5,
+            opacity: 0.55,
+            marginTop: '8px',
+            textAlign: 'center',
           }}
         >
           Bara er
