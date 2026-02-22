@@ -469,7 +469,7 @@ export default function Home() {
                         <div className="flex items-center justify-between gap-3 w-full">
                           <div className="flex-1 min-w-0">
                             <p className="font-sans uppercase" style={{ fontSize: '10px', letterSpacing: '0.08em', color: accent, opacity: 0.6 }}>
-                              {String(globalIndex + 1).padStart(2, '0')}
+                              {String((RECOMMENDED_CATEGORY_ORDER as readonly string[]).indexOf(category.id) + 1).padStart(2, '0')}
                             </p>
                             <h3
                               className="type-h3"
