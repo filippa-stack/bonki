@@ -68,7 +68,7 @@ export default function Header({
     <header
       className={`sticky top-0 z-10`}
       style={{
-        backgroundColor: 'hsl(158, 35%, 18%)',
+        backgroundColor: 'hsl(158, 32%, 14%)',
         boxShadow: 'none',
       }}
     >
