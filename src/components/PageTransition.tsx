@@ -1,26 +1,11 @@
 import { motion } from 'framer-motion';
 import { ReactNode, useLayoutEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import { PAGE, EASE } from '@/lib/motion';
 
 interface PageTransitionProps {
   children: ReactNode;
   className?: string;
 }
-
-/* Card/conversation routes scale in from slightly above (1.02 → 1.0) */
-const cardEnterVariants = {
-  initial: { opacity: 0, scale: 1.02, transformOrigin: 'center top' },
-  animate: { opacity: 1, scale: 1 },
-  exit: { opacity: 0, scale: 0.98 },
-};
-
-/* Non-card routes use a subtle fade; exit scales down when yielding to a card */
-const defaultVariants = {
-  initial: { opacity: 0 },
-  animate: { opacity: 1 },
-  exit: { opacity: 0, scale: 0.98 },
-};
 
 export default function PageTransition({ children, className }: PageTransitionProps) {
   const location = useLocation();
@@ -30,18 +15,16 @@ export default function PageTransition({ children, className }: PageTransitionPr
     window.scrollTo(0, 0);
   }, []);
 
-  const variants = isCardRoute ? cardEnterVariants : defaultVariants;
-
   return (
     <motion.div
-      initial="initial"
-      animate="animate"
-      exit="exit"
-      variants={variants}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
       transition={{
-        duration: PAGE,
-        ease: [...EASE],
+        duration: isCardRoute ? 0.35 : 0.22,
+        ease: isCardRoute ? [0.22, 1, 0.36, 1] : 'easeInOut',
       }}
+      style={{ width: '100%', minHeight: '100%' }}
       className={className}
     >
       {children}
