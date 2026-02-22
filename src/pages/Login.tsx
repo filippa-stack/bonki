@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { lovable } from '@/integrations/lovable/index';
 import { useSiteSettings } from '@/contexts/SiteSettingsContext';
 import { Loader2 } from 'lucide-react';
-import bonkiLogo from '@/assets/bonki-logo.png';
+
 import TermsConsent from '@/components/TermsConsent';
 import { TERMS_VERSION, PRIVACY_VERSION } from '@/lib/legal';
 import type { Json } from '@/integrations/supabase/types';
@@ -64,34 +64,29 @@ export default function Login() {
         className="w-full max-w-xs text-center"
         style={{ marginTop: '-120px' }}
       >
-        {/* Publisher label */}
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.15, delay: BEAT_1 }}
-          className="uppercase font-sans"
-          style={{ fontSize: '11px', letterSpacing: '0.12em', color: 'var(--accent-saffron)', marginBottom: '24px' }}
-        >
-          BONKI
-        </motion.p>
-
-        {/* Product name + tagline as one unit */}
+        {/* Brand hierarchy */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: BEAT_1, duration: 0.15 }}
         >
           <h1
-            className="font-serif font-semibold"
-            style={{ fontSize: '28px', lineHeight: 1.1, color: 'var(--text-primary)' }}
+            className="font-serif"
+            style={{ fontSize: '42px', fontWeight: 700, lineHeight: 1.1, color: 'var(--color-text-primary)', letterSpacing: '0.02em', textAlign: 'center' }}
           >
-            STILL US
+            BONKI
           </h1>
           <p
             className="font-serif italic"
-            style={{ fontSize: '18px', color: 'var(--accent-saffron)', opacity: 0.85, marginTop: '4px' }}
+            style={{ fontSize: '22px', color: 'var(--accent-text)', textAlign: 'center', marginTop: '4px' }}
           >
-            So we stay us
+            Still Us
+          </p>
+          <p
+            className="font-serif italic"
+            style={{ fontSize: '16px', color: 'var(--color-text-secondary)', opacity: 0.65, textAlign: 'center', marginTop: '8px' }}
+          >
+            So we stay us.
           </p>
         </motion.div>
 
@@ -128,6 +123,10 @@ export default function Login() {
               <p className="text-xs text-destructive mt-2">{t('login.terms_required')}</p>
             )}
           </div>
+
+          <p style={{ fontSize: '12px', color: 'var(--color-text-tertiary)', opacity: 0.55, textAlign: 'center', marginTop: '16px' }}>
+            Ditt BONKI-konto — ett ställe för allt.
+          </p>
 
           {error && (
             <p className="text-sm text-destructive mt-4">{error}</p>
