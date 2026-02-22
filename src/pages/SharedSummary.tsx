@@ -156,7 +156,7 @@ export default function SharedSummary() {
             cardTitle: card?.title || s.card_id!,
             categoryTitle: category?.title || '',
             completedAt: s.ended_at || s.started_at,
-            excerpt: refs[0]?.text || '',
+            excerpt: (takeawayMap.get(s.id) || refs[0]?.text || '').trim(),
             reflections: refs,
             takeaway: takeawayMap.get(s.id) || '',
           };
@@ -341,11 +341,10 @@ export default function SharedSummary() {
                         </div>
                         {!isExpanded && entry.excerpt && (
                           <p
-                            className="mt-2"
+                            className="mt-2 font-serif italic"
                             style={{
-                              fontFamily: 'Inter, sans-serif',
-                              fontSize: '13px',
-                              color: 'var(--text-secondary)',
+                              fontSize: '15px',
+                              color: 'var(--color-text-secondary)',
                               display: '-webkit-box',
                               WebkitLineClamp: 2,
                               WebkitBoxOrient: 'vertical',
@@ -435,14 +434,14 @@ export default function SharedSummary() {
                                       </p>
                                       {older.excerpt && (
                                         <p
-                                          className="type-body mt-1"
+                                          className="font-serif italic mt-1"
                                           style={{
-                                            color: 'var(--text-secondary)',
+                                            color: 'var(--color-text-secondary)',
                                             display: '-webkit-box',
                                             WebkitLineClamp: 2,
                                             WebkitBoxOrient: 'vertical',
                                             overflow: 'hidden',
-                                            fontSize: '13px',
+                                            fontSize: '15px',
                                           }}
                                         >
                                           {older.excerpt}
