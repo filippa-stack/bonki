@@ -255,6 +255,18 @@ export default function CardView() {
     setLocalPromptIndex(0);
   }, [serverStepIndex]);
 
+  // ─── Session start screen — ritual gate before first question ───
+  // Skip if resuming mid-session or in archive/completion mode
+  const [hasStarted, setHasStarted] = useState(() => {
+    if (isResumed || isFromArchive) return true;
+    if (devState) return false;
+    return false;
+  });
+  // Auto-skip start screen when server says we're past step 0
+  useEffect(() => {
+    if (serverStepIndex > 0 && !hasStarted) setHasStarted(true);
+  }, [serverStepIndex, hasStarted]);
+
   const currentStepIndex =
     cardViewMode === 'archive'
       ? archiveStepIndex
@@ -591,6 +603,108 @@ export default function CardView() {
   const currentStageType = STEP_ORDER[currentStepIndex];
   const isReflectionStep = currentStageType === 'opening' || currentStageType === 'reflective';
   const isLive = cardViewMode === 'live';
+
+  // ─── Session start screen — ritual before first question ───
+  const showStartScreen = isLive && currentStepIndex === 0 && localPromptIndex === 0 && !hasStarted;
+
+  if (showStartScreen) {
+    return (
+      <motion.div
+        className="min-h-screen flex flex-col items-center justify-center px-6"
+        style={{ backgroundColor: 'hsl(36, 20%, 95%)' }}
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+      >
+        {/* Category name */}
+        <span
+          style={{
+            fontFamily: 'var(--font-sans)',
+            fontSize: '11px',
+            letterSpacing: '0.08em',
+            textTransform: 'uppercase',
+            color: 'var(--color-text-tertiary)',
+            opacity: 0.5,
+            marginBottom: '8px',
+          }}
+        >
+          {category?.title}
+        </span>
+
+        {/* Topic title */}
+        <h1
+          className="font-serif"
+          style={{
+            fontSize: '28px',
+            fontWeight: 700,
+            color: 'var(--color-text-primary)',
+            textAlign: 'center',
+            lineHeight: 1.2,
+            marginBottom: '32px',
+          }}
+        >
+          {card.title}
+        </h1>
+
+        {/* Divider */}
+        <div
+          style={{
+            width: '32px',
+            height: '1px',
+            background: 'var(--color-text-ghost)',
+            margin: '0 auto 32px',
+          }}
+        />
+
+        {/* Instructions */}
+        <p
+          className="font-serif italic"
+          style={{
+            fontSize: '19px',
+            color: 'var(--color-text-secondary)',
+            textAlign: 'center',
+            marginBottom: '8px',
+          }}
+        >
+          Lägg ner telefonerna.
+        </p>
+        <p
+          className="font-serif italic"
+          style={{
+            fontSize: '19px',
+            color: 'var(--color-text-secondary)',
+            textAlign: 'center',
+            marginBottom: '48px',
+          }}
+        >
+          Läs frågorna högt för varandra.
+        </p>
+
+        {/* Start button */}
+        <button
+          onClick={() => setHasStarted(true)}
+          className="cta-primary"
+          style={{ width: '60%', maxWidth: '280px' }}
+        >
+          Vi är redo.
+        </button>
+
+        {/* Sub-text */}
+        <p
+          className="font-serif italic"
+          style={{
+            fontSize: '14px',
+            color: 'var(--accent-text)',
+            textAlign: 'center',
+            marginTop: '20px',
+            opacity: 0.8,
+          }}
+        >
+          Det finns inget rätt sätt — bara ert.
+        </p>
+      </motion.div>
+    );
+  }
 
   const exitBackTo = isFromArchive ? '/shared' : (category ? `/category/${category.id}` : '/');
 
