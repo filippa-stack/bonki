@@ -57,7 +57,7 @@ export default function SessionStepReflection({
   }
 
   return (
-    <div className="mt-12 mb-1">
+    <div style={{ marginTop: '16px', marginBottom: '1px' }}>
       <textarea
         value={displayText}
         onChange={(e) => handleChange(e.target.value)}
