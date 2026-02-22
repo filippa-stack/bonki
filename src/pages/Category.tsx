@@ -67,19 +67,22 @@ export default function Category() {
   }
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: 'var(--color-bg-base)' }}>
+    <div className="min-h-screen" style={{ backgroundColor: 'hsl(36, 18%, 94%)', transition: 'background-color 0.4s ease' }}>
       <Header title={category?.title} showBack backTo="/" />
 
       <div className="px-6 pt-6 pb-24 flex flex-col">
         {/* Saffron entryLine — the color-pop moment */}
         {category.entryLine && (
-          <p
+          <motion.p
             className="text-center"
+            initial={{ opacity: 0, y: 6 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.45, delay: 0.05, ease: [0.22, 1, 0.36, 1] }}
             style={{
               marginTop: '24px',
               marginBottom: '28px',
               fontFamily: "'Cormorant Garamond', serif",
-              fontSize: '18px',
+              fontSize: '19px',
               fontStyle: 'italic',
               color: 'var(--accent-saffron)',
               opacity: 0.90,
@@ -91,7 +94,7 @@ export default function Category() {
             }}
           >
             {category.entryLine}
-          </p>
+          </motion.p>
         )}
         {cards.map((card, index) => {
           const isCompleted = completedCardIds.includes(card.id);
@@ -129,9 +132,9 @@ interface CardEntryProps {
 function CardEntry({ card, index, isCompleted = false, isInProgress = false, onNavigate, isLast = false }: CardEntryProps) {
   return (
     <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ delay: Math.min(0.08 + index * 0.05, 0.24), duration: 0.2, ease: [0.4, 0.0, 0.2, 1] }}
+      initial={{ opacity: 0, y: 6 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: index * 0.06, duration: 0.4, ease: 'easeOut' }}
     >
       <motion.div
         whileTap={{ scale: 0.99 }}

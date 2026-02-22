@@ -243,9 +243,9 @@ export default function Home() {
             {/* ZONE A — Identity */}
             <motion.div
               className="pt-8 px-6 text-center"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.2, ease: [0.4, 0, 0.2, 1] }}
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
             >
               <h1 className="type-h1" style={{ color: 'var(--text-primary)' }}>
                 Vårt utrymme
@@ -277,9 +277,9 @@ export default function Home() {
               return (
                 <motion.div
                   className="px-6 mt-8"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ duration: 0.2, ease: [0.4, 0, 0.2, 1] }}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
                 >
                   <div
                     onClick={() => { markNavigated(); navigate(`/card/${cardId}`, { state: { resumed: true } }); }}
@@ -396,9 +396,9 @@ export default function Home() {
                   return (
                     <motion.div
                       key={category.id}
-                      initial={{ opacity: 0, y: 8 }}
+                      initial={{ opacity: 0, y: 6 }}
                       animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 0.2 + index * 0.03, duration: 0.22, ease: [0.4, 0, 0.2, 1] }}
+                      transition={{ delay: index * 0.05, duration: 0.4, ease: 'easeOut' }}
                     >
                       <div
                         onClick={() => { markNavigated(); navigate(`/category/${category.id}`); }}
