@@ -765,6 +765,7 @@ export default function CardView() {
         showBack
         backTo={exitBackTo}
         variant="immersive"
+        isDarkSurface={isReflectionStep}
         onImmersiveBack={isLive ? (() => {
           // Step back through prompts → stages → confirmation at step 0
           const displayIndex = localStepIndex ?? serverStepIndex;

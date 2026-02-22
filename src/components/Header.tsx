@@ -16,6 +16,7 @@ interface HeaderProps {
   variant?: 'default' | 'immersive';
   onImmersiveBack?: () => void;
   onLeaveSession?: () => void;
+  isDarkSurface?: boolean;
 }
 
 export default function Header({
@@ -28,6 +29,7 @@ export default function Header({
   variant = 'default',
   onImmersiveBack,
   onLeaveSession,
+  isDarkSurface = false,
 }: HeaderProps) {
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -46,8 +48,11 @@ export default function Header({
     <header
       className={`sticky top-0 z-10`}
       style={{
-        backgroundColor: 'hsl(158, 32%, 14%)',
+        backgroundColor: isImmersive ? 'transparent' : 'hsl(158, 32%, 14%)',
         boxShadow: 'none',
+        borderBottom: isImmersive
+          ? (isDarkSurface ? '1px solid hsl(158, 25%, 20%)' : '1px solid hsl(36, 18%, 86%)')
+          : 'none',
       }}
     >
       {isImmersive ? (
@@ -59,10 +64,16 @@ export default function Header({
               <button
                 onClick={onImmersiveBack}
                 className="flex items-center justify-center shrink-0"
-                style={{ width: '44px', height: '44px' }}
+                style={{ minHeight: '44px', display: 'flex', alignItems: 'center' }}
                 aria-label="Tillbaka"
               >
-                <ArrowLeft className="w-5 h-5" style={{ color: 'hsl(0 0% 100% / 0.6)' }} />
+                <ArrowLeft
+                  className="w-5 h-5"
+                  style={{
+                    color: isDarkSurface ? 'hsl(36, 20%, 88%)' : 'var(--color-text-secondary)',
+                    opacity: isDarkSurface ? 0.7 : 1,
+                  }}
+                />
               </button>
             )}
           </div>
@@ -74,8 +85,9 @@ export default function Header({
                 className="font-sans font-normal pointer-events-none"
                 style={{
                   fontSize: '11px',
-                  letterSpacing: '0.04em',
-                  color: 'hsl(0 0% 100% / 0.70)',
+                  letterSpacing: '0.06em',
+                  textTransform: 'uppercase',
+                  color: isDarkSurface ? 'hsl(36, 20%, 70%)' : 'var(--color-text-tertiary)',
                   maxWidth: '55%',
                   overflow: 'hidden',
                   textOverflow: 'ellipsis',
@@ -94,14 +106,17 @@ export default function Header({
                 onClick={onLeaveSession}
                 className="font-sans whitespace-nowrap shrink-0"
                 style={{
-                  fontSize: '13px',
-                  color: 'hsl(0 0% 100%)',
-                  opacity: 0.55,
+                  fontSize: '12px',
+                  color: isDarkSurface ? 'hsl(36, 20%, 88%)' : 'var(--color-text-secondary)',
+                  opacity: isDarkSurface ? 0.4 : 0.45,
                   fontWeight: 400,
+                  minHeight: '44px',
+                  display: 'flex',
+                  alignItems: 'center',
                   transition: 'opacity 150ms ease',
                 }}
                 onMouseEnter={(e) => { e.currentTarget.style.opacity = '0.85'; }}
-                onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.55'; }}
+                onMouseLeave={(e) => { e.currentTarget.style.opacity = isDarkSurface ? '0.4' : '0.45'; }}
               >
                 Lämna samtalet
               </button>
