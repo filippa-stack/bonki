@@ -678,7 +678,7 @@ export default function CardView() {
 
         {/* Instructions */}
         <p
-          className="font-serif italic"
+          className="font-serif"
           style={{
             fontSize: '19px',
             color: 'var(--color-text-secondary)',
@@ -689,7 +689,7 @@ export default function CardView() {
           Ni behöver bara närvaro.
         </p>
         <p
-          className="font-serif italic"
+          className="font-serif"
           style={{
             fontSize: '19px',
             color: 'var(--color-text-secondary)',
@@ -711,13 +711,13 @@ export default function CardView() {
 
         {/* Sub-text */}
         <p
-          className="font-serif italic"
+          className="font-serif"
           style={{
             fontSize: '14px',
             color: 'var(--accent-text)',
             textAlign: 'center',
             marginTop: '20px',
-            opacity: 0.8,
+            opacity: 0.65,
           }}
         >
           Inget av det ni delar lämnar det här rummet.
