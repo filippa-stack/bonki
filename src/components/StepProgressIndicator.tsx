@@ -6,10 +6,10 @@ export interface StageStep {
 }
 
 export const STAGE_STEPS: StageStep[] = [
-  { stage_key: 'oppnare',     label: 'Öppnare'     },
-  { stage_key: 'tankevackare', label: 'Tankeväckare' },
-  { stage_key: 'scenario',    label: 'Scenario'     },
-  { stage_key: 'teamwork',    label: 'Teamwork'     },
+  { stage_key: 'oppnare',     label: 'Kom igång'        },
+  { stage_key: 'tankevackare', label: 'Gå djupare'      },
+  { stage_key: 'scenario',    label: 'Föreställ er'     },
+  { stage_key: 'teamwork',    label: 'I verkligheten'   },
 ];
 
 export const SECTION_TYPE_TO_STAGE: Record<string, StageStep['stage_key']> = {

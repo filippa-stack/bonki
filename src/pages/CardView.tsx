@@ -45,10 +45,14 @@ import { useTogetherMode } from '@/hooks/useTogetherMode';
 import { BEAT_1, BEAT_2, BEAT_3, EASE, PRESS, PAGE, EMOTION } from '@/lib/motion';
 
 const COMPLETION_MESSAGES = [
-  'Det ni just gjorde betyder något.',
-  'Ni tog er tid för varandra.',
   'Det här samtalet tillhör er.',
-  'Något litet, som faktiskt räknas.',
+  'Ni tog er tid för varandra.',
+  'Det ni just gjorde betyder något.',
+  'Ni lyssnade. Det är mer än de flesta gör.',
+  'Varje samtal är ett val. Ni valde rätt.',
+  'Det är inte självklart. Men ni gjorde det.',
+  'Ni var här. Helt och hållet.',
+  'Det räcker. Det mer än räcker.',
 ];
 
 // ─────────────────────────────────────────────────────────────
@@ -521,7 +525,7 @@ export default function CardView() {
                 letterSpacing: '-0.01em',
               }}
             >
-              {COMPLETION_MESSAGES[completedSessionCount % COMPLETION_MESSAGES.length]}
+              {COMPLETION_MESSAGES[Math.floor(Math.random() * COMPLETION_MESSAGES.length)]}
             </h2>
           </motion.div>
 
@@ -682,7 +686,7 @@ export default function CardView() {
             marginBottom: '8px',
           }}
         >
-          Lägg ner telefonerna.
+          Ni behöver bara närvaro.
         </p>
         <p
           className="font-serif italic"
@@ -716,7 +720,7 @@ export default function CardView() {
             opacity: 0.8,
           }}
         >
-          Det finns inget rätt sätt — bara ert.
+          Inget av det ni delar lämnar det här rummet.
         </p>
       </motion.div>
     );

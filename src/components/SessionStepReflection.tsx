@@ -102,7 +102,7 @@ export default function SessionStepReflection({
             textAlign: 'center',
           }}
         >
-          Bara er
+          Bara ert
         </span>
       </div>
 
