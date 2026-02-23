@@ -12,7 +12,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useCoupleSpaceContext } from '@/contexts/CoupleSpaceContext';
 import CategoryCard from '@/components/CategoryCard';
 import Header from '@/components/Header';
-import { ArrowRight, Bookmark, Share2, ChevronDown, ChevronRight, Check, Circle } from 'lucide-react';
+import { ArrowRight, Bookmark, Share2, ChevronDown, ChevronRight, Check, Circle, Settings } from 'lucide-react';
 import NotificationSettings from '@/components/NotificationSettings';
 import RelationSettings from '@/components/RelationSettings';
 import RelationshipMemory from '@/components/RelationshipMemory';
@@ -273,7 +273,7 @@ export default function Home() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
             >
-              <h1 className="type-h1" style={{ color: 'var(--text-primary)' }}>
+              <h1 className="type-h1" style={{ color: 'var(--text-primary)', marginBottom: '36px' }}>
                 Vårt utrymme
               </h1>
             </motion.div>
@@ -330,7 +330,7 @@ export default function Home() {
             })()}
 
             {/* Spacing before categories */}
-            <div style={{ height: '36px' }} />
+            <div style={{ height: '0px' }} />
 
             {/* Recommendation section */}
             {recommendedCategory && (() => {
@@ -362,26 +362,26 @@ export default function Home() {
                           if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); navigate(`/category/${recCat.id}`); }
                         }}
                         className="cursor-pointer"
-                        style={{
+                         style={{
                           borderRadius: '0 14px 14px 0',
-                          borderLeft: '3px solid #8B5E1A',
+                          borderLeft: '2px solid hsla(158, 32%, 14%, 0.70)',
                           padding: '20px',
                           minHeight: '48px',
                           display: 'flex',
                           alignItems: 'center',
                           justifyContent: 'space-between',
                           gap: '8px',
-                          background: 'hsl(36, 22%, 96%)',
+                          background: 'transparent',
                           boxShadow: '0 2px 8px hsla(0, 0%, 0%, 0.06)',
                           transition: 'transform 120ms ease-out, box-shadow 120ms ease-out, background-color 0.15s ease',
                         }}
-                        onPointerDown={(e) => {
+                         onPointerDown={(e) => {
                           e.currentTarget.style.transform = 'scale(0.98)';
                           e.currentTarget.style.boxShadow = '0 2px 8px hsl(var(--foreground) / 0.08)';
                           e.currentTarget.style.backgroundColor = 'hsl(36, 18%, 93%)';
                         }}
-                        onPointerUp={(e) => { e.currentTarget.style.transform = ''; e.currentTarget.style.boxShadow = ''; e.currentTarget.style.backgroundColor = 'hsl(36, 22%, 96%)'; }}
-                        onPointerLeave={(e) => { e.currentTarget.style.transform = ''; e.currentTarget.style.boxShadow = ''; e.currentTarget.style.backgroundColor = 'hsl(36, 22%, 96%)'; }}
+                        onPointerUp={(e) => { e.currentTarget.style.transform = ''; e.currentTarget.style.boxShadow = '0 2px 8px hsla(0, 0%, 0%, 0.06)'; e.currentTarget.style.backgroundColor = 'transparent'; }}
+                        onPointerLeave={(e) => { e.currentTarget.style.transform = ''; e.currentTarget.style.boxShadow = '0 2px 8px hsla(0, 0%, 0%, 0.06)'; e.currentTarget.style.backgroundColor = 'transparent'; }}
                       >
                         <div className="flex-1 min-w-0">
                           <h3 className="type-h3" style={{ color: 'var(--text-primary)', fontWeight: 500, fontSize: '16px', textWrap: 'balance', hyphens: 'auto' }}>
@@ -403,7 +403,7 @@ export default function Home() {
             })()}
 
             {/* Categories */}
-            <div className="px-6" style={{ paddingBottom: '32px' }}>
+            <div className="px-6" style={{ paddingBottom: '48px' }}>
               <div className="flex flex-col" style={{ gap: '8px' }}>
                 {(recommendedCategory ? sortedCategories.filter(c => c.id !== recommendedCategory.id) : sortedCategories).map((category, index) => {
                   const globalIndex = sortedCategories.findIndex(c => c.id === category.id);
@@ -433,14 +433,14 @@ export default function Home() {
                         className="cursor-pointer"
                          style={{
                           borderRadius: '0 14px 14px 0',
-                          borderLeft: '3px solid hsla(36, 15%, 80%, 0.40)',
+                          borderLeft: '2px solid hsla(36, 15%, 80%, 0.40)',
                           padding: '16px 18px',
                           minHeight: '72px',
                           display: 'flex',
                           alignItems: 'center',
                           justifyContent: 'space-between',
                           gap: '8px',
-                          background: 'hsl(36, 20%, 98%)',
+                          background: 'transparent',
                           boxShadow: 'none',
                           transition: 'transform 120ms ease-out, box-shadow 120ms ease-out, background-color 0.15s ease',
                         }}
@@ -454,21 +454,21 @@ export default function Home() {
                         onPointerUp={(e) => {
                           e.currentTarget.style.transform = '';
                           e.currentTarget.style.boxShadow = '';
-                          e.currentTarget.style.backgroundColor = 'hsl(36, 20%, 98%)';
+                          e.currentTarget.style.backgroundColor = 'transparent';
                           const chevron = e.currentTarget.querySelector('[data-chevron]') as HTMLElement;
                           if (chevron) chevron.style.transform = '';
                         }}
                         onPointerLeave={(e) => {
                           e.currentTarget.style.transform = '';
                           e.currentTarget.style.boxShadow = '';
-                          e.currentTarget.style.backgroundColor = 'hsl(36, 20%, 98%)';
+                          e.currentTarget.style.backgroundColor = 'transparent';
                           const chevron = e.currentTarget.querySelector('[data-chevron]') as HTMLElement;
                           if (chevron) chevron.style.transform = '';
                         }}
                       >
                         <div className="flex items-center justify-between gap-3 w-full">
                           <div className="flex-1 min-w-0">
-                            <p className="font-sans uppercase" style={{ fontSize: '11px', letterSpacing: '0.08em', color: 'var(--color-text-tertiary)', opacity: 0.5 }}>
+                            <p className="font-sans uppercase" style={{ fontSize: '10px', letterSpacing: '0.08em', color: 'var(--color-text-tertiary)', opacity: 0.40 }}>
                               {String((RECOMMENDED_CATEGORY_ORDER as readonly string[]).indexOf(category.id) + 1).padStart(2, '0')}
                             </p>
                             <h3
