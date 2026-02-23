@@ -104,24 +104,26 @@ export default function Header({
           {/* RIGHT: leave session */}
           <div className="flex items-center justify-end" style={{ minWidth: '80px' }}>
             {onLeaveSession && (
-              <button
-                onClick={onLeaveSession}
-                className="font-sans whitespace-nowrap shrink-0"
-                style={{
-                  fontSize: '12px',
-                  color: isDarkSurface ? 'hsl(36, 20%, 88%)' : 'var(--color-text-secondary)',
-                  opacity: isDarkSurface ? 0.4 : 0.45,
-                  fontWeight: 400,
-                  minHeight: '44px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  transition: 'opacity 150ms ease',
-                }}
-                onMouseEnter={(e) => { e.currentTarget.style.opacity = '0.85'; }}
-                onMouseLeave={(e) => { e.currentTarget.style.opacity = isDarkSurface ? '0.4' : '0.45'; }}
-              >
-                Lämna samtalet
-              </button>
+              <div style={{ minHeight: '44px', display: 'flex', alignItems: 'center' }}>
+                <button
+                  onClick={onLeaveSession}
+                  className="font-sans whitespace-nowrap shrink-0"
+                  style={{
+                    fontSize: '13px',
+                    color: isDarkSurface ? 'hsl(36, 20%, 88%)' : 'var(--color-text-secondary)',
+                    opacity: 0.50,
+                    fontWeight: 400,
+                    background: 'none',
+                    border: 'none',
+                    cursor: 'pointer',
+                    transition: 'opacity 150ms ease',
+                  }}
+                  onMouseEnter={(e) => { e.currentTarget.style.opacity = '0.85'; }}
+                  onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.50'; }}
+                >
+                  Lämna samtalet
+                </button>
+              </div>
             )}
           </div>
         </div>
@@ -148,8 +150,9 @@ export default function Header({
                 src={bonkiLogo}
                 alt="Still Us"
                 className={`object-contain cursor-pointer ${minimal ? 'h-6 w-6 opacity-45' : 'h-7 w-7 opacity-75'}`}
-                style={{ filter: 'brightness(0) invert(1)' }}
+                style={{ filter: 'brightness(0) invert(1)', cursor: 'pointer' }}
                 onClick={() => navigate('/', { replace: false })}
+                aria-label="Tillbaka till startsidan"
               />
             )}
           </div>
