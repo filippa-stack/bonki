@@ -61,8 +61,8 @@ export default function ArchiveTakeaway({ sessionId, initialText }: ArchiveTakea
   }, []);
 
   const textareaStyle: React.CSSProperties = {
-    backgroundColor: 'hsl(36, 22%, 96%)',
-    border: '1px solid hsl(36, 20%, 88%)',
+    backgroundColor: 'var(--surface-sunken)',
+    border: '1px solid hsl(var(--neutral-300))',
     borderRadius: '10px',
     padding: '16px',
     fontFamily: 'var(--font-serif)',

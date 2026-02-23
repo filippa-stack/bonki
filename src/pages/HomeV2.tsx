@@ -379,16 +379,16 @@ export default function HomeV2() {
                           alignItems: 'center',
                           justifyContent: 'space-between',
                           gap: '8px',
-                          backgroundColor: 'hsl(36, 18%, 95%)',
+                          backgroundColor: 'var(--surface-raised)',
                           boxShadow: 'none',
                           transition: 'transform 60ms ease-out, background-color 60ms ease-out',
                         }}
                          onPointerDown={(e) => {
                           e.currentTarget.style.transform = 'scale(0.988)';
-                          e.currentTarget.style.backgroundColor = 'hsl(36, 18%, 96%)';
+                          e.currentTarget.style.backgroundColor = '';
                         }}
-                        onPointerUp={(e) => { e.currentTarget.style.transform = ''; e.currentTarget.style.backgroundColor = 'hsl(36, 18%, 95%)'; }}
-                        onPointerLeave={(e) => { e.currentTarget.style.transform = ''; e.currentTarget.style.backgroundColor = 'hsl(36, 18%, 95%)'; }}
+                        onPointerUp={(e) => { e.currentTarget.style.transform = ''; e.currentTarget.style.backgroundColor = ''; }}
+                        onPointerLeave={(e) => { e.currentTarget.style.transform = ''; e.currentTarget.style.backgroundColor = ''; }}
                       >
                         <div className="flex-1 min-w-0">
                           <h3 className="type-h3" style={{ color: 'var(--text-primary)', fontWeight: 500, fontSize: '16px', textWrap: 'balance', hyphens: 'auto' }}>
@@ -458,25 +458,25 @@ export default function HomeV2() {
                           alignItems: 'center',
                           justifyContent: 'space-between',
                           gap: '8px',
-                          backgroundColor: 'hsl(36, 15%, 98%)',
+                          backgroundColor: 'var(--surface-raised)',
                           boxShadow: 'none',
                           transition: 'transform 60ms ease-out, background-color 60ms ease-out',
                         }}
                         onPointerDown={(e) => {
                           e.currentTarget.style.transform = 'scale(0.988)';
-                          e.currentTarget.style.backgroundColor = 'hsl(36, 18%, 96%)';
+                          e.currentTarget.style.backgroundColor = '';
                           const chevron = e.currentTarget.querySelector('[data-chevron]') as HTMLElement;
                           if (chevron) chevron.style.transform = 'translateX(2px)';
                         }}
                         onPointerUp={(e) => {
                           e.currentTarget.style.transform = '';
-                          e.currentTarget.style.backgroundColor = 'hsl(36, 15%, 98%)';
+                          e.currentTarget.style.backgroundColor = '';
                           const chevron = e.currentTarget.querySelector('[data-chevron]') as HTMLElement;
                           if (chevron) chevron.style.transform = '';
                         }}
                         onPointerLeave={(e) => {
                           e.currentTarget.style.transform = '';
-                          e.currentTarget.style.backgroundColor = 'hsl(36, 15%, 98%)';
+                          e.currentTarget.style.backgroundColor = '';
                           const chevron = e.currentTarget.querySelector('[data-chevron]') as HTMLElement;
                           if (chevron) chevron.style.transform = '';
                         }}

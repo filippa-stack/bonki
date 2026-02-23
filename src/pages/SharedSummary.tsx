@@ -278,7 +278,7 @@ export default function SharedSummary() {
   const [showOlderFor, setShowOlderFor] = useState<string | null>(null);
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: 'hsl(36, 15%, 93%)' }}>
+    <div className="min-h-screen" style={{ backgroundColor: 'var(--surface-base)' }}>
       <Header showBack backTo="/" />
 
       <div className="px-6 pb-8 mx-auto" style={{ maxWidth: 540, paddingTop: '24px' }}>
@@ -372,8 +372,8 @@ export default function SharedSummary() {
                   >
                     <div
                       style={{
-                        backgroundColor: 'hsl(36, 20%, 97%)',
-                        border: '1px solid hsl(36, 15%, 86%)',
+                        backgroundColor: 'var(--surface-raised)',
+                        border: '1px solid hsl(var(--neutral-300))',
                         borderRadius: '14px',
                         padding: '18px 16px 18px 20px',
                         marginBottom: '10px',
@@ -607,8 +607,8 @@ export default function SharedSummary() {
                         <div
                           key={bm.id}
                           style={{
-                            background: 'hsl(36, 16%, 98%)',
-                            border: '1px solid hsl(36, 15%, 88%)',
+                            background: 'var(--surface-raised)',
+                            border: '1px solid hsl(var(--neutral-300))',
                             borderRadius: '12px',
                             padding: '16px',
                           }}
@@ -685,8 +685,8 @@ export default function SharedSummary() {
                       onClick={() => navigate(`/card/${entry.cardId}?from=archive`)}
                       className="w-full text-left"
                       style={{
-                        backgroundColor: 'hsl(36, 20%, 97%)',
-                        border: '1px solid hsl(36, 15%, 86%)',
+                        backgroundColor: 'var(--surface-raised)',
+                        border: '1px solid hsl(var(--neutral-300))',
                         borderRadius: '14px',
                         padding: '18px 16px 18px 20px',
                         marginBottom: '10px',
