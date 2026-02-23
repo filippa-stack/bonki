@@ -335,7 +335,7 @@ export default function Home() {
                         </p>
                       )}
                     </div>
-                    <span className="font-sans shrink-0 self-center" style={{ fontSize: '13px', fontWeight: 500, color: 'hsl(36, 16%, 92%)', opacity: 0.7 }}>
+                    <span className="font-sans shrink-0 self-center" style={{ fontSize: '13px', fontWeight: 500, color: 'hsl(36, 16%, 92%)', opacity: 0.7, transform: 'translateY(1px)' }}>
                       Fortsätt<span style={{ marginLeft: '4px' }}>→</span>
                     </span>
                   </div>
