@@ -518,76 +518,68 @@ export default function SharedSummary() {
 
               {/* Bookmarked questions section */}
               {bookmarks.length > 0 && (
-                <div style={{ marginTop: '24px', marginBottom: '8px' }}>
+                <>
+                  <div style={{ margin: '24px 0' }}>
+                    <div style={{ height: '1px', background: 'hsl(var(--border) / 0.15)' }} />
+                  </div>
                   <p
-                    className="font-serif"
+                    className="text-center"
                     style={{
-                      fontSize: '15px',
-                      color: 'var(--accent-text)',
+                      fontFamily: 'Inter, sans-serif',
+                      fontSize: '11px',
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.08em',
+                      color: 'var(--text-tertiary)',
                       marginBottom: '16px',
                     }}
                   >
-                    Ni ville återvända hit.
+                    Frågor ni velat återvända till
                   </p>
                   <div className="flex flex-col" style={{ gap: '8px' }}>
                     {bookmarks.map((bm) => {
                       const card = getCardById(bm.card_id);
                       const category = card?.categoryId ? getCategoryById(card.categoryId) : null;
                       return (
-                        <button
+                        <div
                           key={bm.id}
-                          onClick={() => navigate(`/card/${bm.card_id}?from=archive`)}
-                          className="w-full text-left"
                           style={{
-                            background: 'hsl(36, 22%, 96%)',
-                            border: '1px solid hsl(36, 20%, 86%)',
+                            background: 'hsl(36, 16%, 98%)',
+                            border: '1px solid hsl(36, 15%, 88%)',
                             borderRadius: '12px',
                             padding: '16px',
-                            cursor: 'pointer',
                           }}
                         >
-                          <div className="flex items-start gap-3">
-                            <div
-                              style={{
-                                width: '6px',
-                                height: '6px',
-                                borderRadius: '50%',
-                                backgroundColor: '#C4821D',
-                                flexShrink: 0,
-                                marginTop: '7px',
-                              }}
-                            />
-                            <div className="flex-1 min-w-0">
-                              <p
-                                className="font-serif"
-                                style={{
-                                  fontSize: '16px',
-                                  color: 'var(--color-text-primary)',
-                                  lineHeight: 1.4,
-                                }}
-                              >
-                                {bm.question_text}
-                              </p>
-                              <p
-                                style={{
-                                  fontFamily: 'var(--font-sans)',
-                                  fontSize: '10px',
-                                  textTransform: 'uppercase',
-                                  letterSpacing: '0.06em',
-                                  color: 'var(--color-text-tertiary)',
-                                  opacity: 0.5,
-                                  marginTop: '8px',
-                                }}
-                              >
-                                {category?.title}{category?.title && card?.title ? ' · ' : ''}{card?.title}
-                              </p>
-                            </div>
-                          </div>
-                        </button>
+                          <p
+                            className="font-serif"
+                            style={{
+                              fontSize: '16px',
+                              fontWeight: 700,
+                              color: 'var(--color-text-primary)',
+                              lineHeight: 1.4,
+                              display: '-webkit-box',
+                              WebkitLineClamp: 2,
+                              WebkitBoxOrient: 'vertical',
+                              overflow: 'hidden',
+                            }}
+                          >
+                            {bm.question_text}
+                          </p>
+                          <p
+                            style={{
+                              fontFamily: 'Inter, sans-serif',
+                              fontSize: '12px',
+                              color: '#8B5E1A',
+                              opacity: 0.7,
+                              marginTop: '8px',
+                            }}
+                          >
+                            {card?.title ?? bm.card_id}{' · '}{formatDate(bm.bookmarked_at)}
+                          </p>
+                        </div>
                       );
                     })}
                   </div>
-                </div>
+                </>
               )}
 
               {/* Divider + Section 2: Sessions without notes */}
