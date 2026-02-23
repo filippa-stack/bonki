@@ -88,7 +88,7 @@ export default function BookmarkButton({
           fill={isBookmarked ? activeColor : 'none'}
           style={{
             color: isBookmarked ? activeColor : (isFirstEncounter ? activeColor : inactiveColor),
-            opacity: 1,
+            opacity: isBookmarked ? 1 : 0.45,
             transition: 'color 0.2s ease',
           }}
         />
