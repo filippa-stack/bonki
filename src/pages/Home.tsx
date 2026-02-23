@@ -437,7 +437,7 @@ export default function Home() {
             })()}
 
             {/* VI SOM BAS section header */}
-            <div className="px-6" style={{ marginTop: '48px', marginBottom: '8px' }}>
+            <div className="px-6" style={{ marginTop: '56px', marginBottom: '8px' }}>
               <p style={{
                 paddingLeft: '20px',
                 fontFamily: 'var(--font-sans)',
@@ -544,7 +544,7 @@ export default function Home() {
                    const sectionHeader = (sectionLabel && sectionLabel !== 'VI SOM BAS') ? (() => {
                      if (isFirstSection) isFirstSection = false;
                      return (
-                       <div key={`section-${category.id}`} style={{ marginTop: '48px', marginBottom: '8px' }}>
+                       <div key={`section-${category.id}`} style={{ marginTop: '56px', marginBottom: '8px' }}>
                          <p style={{
                            paddingLeft: '20px',
                            fontFamily: 'var(--font-sans)',
