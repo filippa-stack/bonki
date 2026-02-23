@@ -137,7 +137,7 @@ export default function SessionStepReflection({
         className="flex flex-col items-center"
         style={{
           paddingBottom: 'calc(24px + env(safe-area-inset-bottom, 0px))',
-          marginTop: '24px',
+          marginTop: '40px',
         }}
       >
         <button
@@ -155,8 +155,8 @@ export default function SessionStepReflection({
 
         <button
           onClick={() => navigate('/')}
-          className="type-meta text-center block mx-auto mt-4 hover:underline transition-opacity"
-          style={{ color: 'var(--text-secondary)', opacity: 0.65, background: 'none', border: 'none', cursor: 'pointer' }}
+          className="type-meta text-center block mx-auto hover:underline transition-opacity"
+          style={{ color: 'var(--text-secondary)', opacity: 0.65, background: 'none', border: 'none', cursor: 'pointer', marginTop: '24px' }}
         >
           Tillbaka till översikten
         </button>
