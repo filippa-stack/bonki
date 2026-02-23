@@ -731,8 +731,9 @@ export default function CardView() {
         <p
           className="font-serif"
           style={{
-            fontSize: '19px',
-            color: 'var(--color-text-secondary)',
+            fontSize: '20px',
+            color: 'var(--color-text-primary)',
+            opacity: 0.80,
             textAlign: 'center',
             marginBottom: '8px',
           }}
@@ -742,14 +743,28 @@ export default function CardView() {
         <p
           className="font-serif"
           style={{
-            fontSize: '19px',
-            color: 'var(--color-text-secondary)',
+            fontSize: '20px',
+            color: 'var(--color-text-primary)',
+            opacity: 0.80,
             textAlign: 'center',
-            marginBottom: '48px',
+            marginBottom: '0',
           }}
         >
           Läs frågorna högt för varandra.
         </p>
+
+        {/* Divider */}
+        <div style={{ width: '100%', maxWidth: '200px', height: '1px', background: 'hsl(36, 12%, 84%)', margin: '20px auto' }} />
+
+        {/* Mechanics */}
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px', marginBottom: '24px' }}>
+          <p style={{ fontFamily: 'var(--font-sans)', fontSize: '13px', color: 'var(--color-text-secondary)', opacity: 0.65, textAlign: 'center' }}>
+            Prata om frågorna tillsammans.
+          </p>
+          <p style={{ fontFamily: 'var(--font-sans)', fontSize: '13px', color: 'var(--color-text-secondary)', opacity: 0.65, textAlign: 'center' }}>
+            En av er antecknar det ni vill minnas.
+          </p>
+        </div>
 
         {/* Start button */}
         <button
