@@ -361,7 +361,7 @@ export default function Home() {
                         opacity: 0.55,
                         marginBottom: '8px',
                       }}>
-                        Välkommen till ert utrymme.
+                        Välkommen, ni två.
                       </p>
                       <p style={{
                         fontFamily: 'var(--font-serif)',
