@@ -634,7 +634,7 @@ export default function CardView() {
         transition={{ duration: EMOTION, ease: [...EASE] }}
       >
         <div style={{ opacity: 0.4, pointerEvents: 'none' }}>
-          <Header title={card.title} showBack backTo={category ? `/category/${category.id}` : '/'} />
+          <Header title="" showBack backTo={category ? `/category/${category.id}` : '/'} />
         </div>
         <div className="px-6 pt-title-above pb-16">
 
@@ -1295,21 +1295,24 @@ function CompletionTakeaway({ sessionId, spaceId }: { sessionId: string | null; 
         autoCapitalize="sentences"
         spellCheck={true}
         enterKeyHint="done"
-        className="w-full resize-none focus:outline-none focus:ring-0 text-center"
+        className={`w-full resize-none focus:outline-none focus:ring-0 ${hasFill ? 'text-left' : 'text-center'}`}
         style={{
           display: 'block',
           width: '100%',
-          height: isFocused || hasFill ? 'auto' : '96px',
-          minHeight: isFocused || hasFill ? '96px' : undefined,
+          height: isFocused || hasFill ? 'auto' : '88px',
+          minHeight: '88px',
           maxHeight: '240px',
           overflow: 'auto',
           backgroundColor: isFocused || hasFill
             ? 'hsl(36, 30%, 93%)'
-            : 'hsl(36, 25%, 91%)',
+            : 'hsl(36, 30%, 87%)',
           border: 'none',
+          borderTop: isFocused
+            ? '1.5px solid #C4821D'
+            : '1px solid hsl(36, 18%, 80%)',
           borderBottom: isFocused
             ? '1.5px solid #C4821D'
-            : '1px solid hsl(36, 18%, 82%)',
+            : '1px solid hsl(36, 18%, 80%)',
           borderRadius: 0,
           padding: '16px 0 12px 0',
           fontFamily: hasFill ? 'Inter, sans-serif' : 'var(--font-serif)',
@@ -1317,7 +1320,7 @@ function CompletionTakeaway({ sessionId, spaceId }: { sessionId: string | null; 
           lineHeight: 1.6,
           color: 'var(--color-text-primary)',
           boxShadow: 'none',
-          transition: 'background-color 200ms ease, border-bottom 200ms ease',
+          transition: 'background-color 200ms ease, border-top 200ms ease, border-bottom 200ms ease',
         }}
       />
       <style>{`
