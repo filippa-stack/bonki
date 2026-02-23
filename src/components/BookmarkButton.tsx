@@ -3,7 +3,7 @@ import { motion, useAnimation } from 'framer-motion';
 import { Bookmark } from 'lucide-react';
 import { useQuestionBookmark } from '@/hooks/useQuestionBookmark';
 
-const TOOLTIP_KEY = 'bookmark_tooltip_shown';
+const SESSIONS_KEY = 'bookmark_sessions_shown';
 
 interface BookmarkButtonProps {
   coupleSpaceId: string | null;
@@ -39,13 +39,15 @@ export default function BookmarkButton({
   const controls = useAnimation();
 
   const [showLabel, setShowLabel] = useState(false);
+  const [isFirstEncounter, setIsFirstEncounter] = useState(false);
 
   useEffect(() => {
     if (!showTooltipHint) return;
-    const alreadyShown = localStorage.getItem(TOOLTIP_KEY) === 'true';
-    if (!alreadyShown) {
+    const count = parseInt(localStorage.getItem(SESSIONS_KEY) ?? '0', 10);
+    if (count < 3) {
       setShowLabel(true);
-      localStorage.setItem(TOOLTIP_KEY, 'true');
+      setIsFirstEncounter(true);
+      localStorage.setItem(SESSIONS_KEY, String(count + 1));
     }
   }, [showTooltipHint]);
 
@@ -85,7 +87,7 @@ export default function BookmarkButton({
           size={20}
           fill={isBookmarked ? activeColor : 'none'}
           style={{
-            color: isBookmarked ? activeColor : inactiveColor,
+            color: isBookmarked ? activeColor : (isFirstEncounter ? activeColor : inactiveColor),
             opacity: 1,
             transition: 'color 0.2s ease',
           }}
