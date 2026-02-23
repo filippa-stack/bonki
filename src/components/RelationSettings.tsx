@@ -136,7 +136,7 @@ export default function RelationSettings({ onCreateNewSpace, onLeavePartner }: R
   };
 
   return (
-    <div className="border-t" style={{ borderColor: '#ECEAE5' }}>
+    <div className="border-t" style={{ borderColor: 'hsl(var(--neutral-300))' }}>
       {/* Collapsed toggle */}
       <button
         onClick={() => setOpen(!open)}
@@ -205,11 +205,11 @@ export default function RelationSettings({ onCreateNewSpace, onLeavePartner }: R
 
           {/* Avancerat divider — extremely subtle */}
           <div className="flex items-center gap-3">
-            <div className="flex-1 border-t" style={{ borderColor: '#ECEAE5' }} />
+            <div className="flex-1 border-t" style={{ borderColor: 'hsl(var(--neutral-300))' }} />
             <span className="text-[10px] tracking-widest uppercase" style={{ color: 'var(--color-text-secondary)', opacity: 0.4 }}>
               Avancerat
             </span>
-            <div className="flex-1 border-t" style={{ borderColor: '#ECEAE5' }} />
+            <div className="flex-1 border-t" style={{ borderColor: 'hsl(var(--neutral-300))' }} />
           </div>
 
           {/* Byt partner — destructive, text-only */}

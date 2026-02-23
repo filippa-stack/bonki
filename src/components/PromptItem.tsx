@@ -135,8 +135,8 @@ export default function PromptItem({ prompt, index, sectionType, preamble }: Pro
             transition={{ duration: 0.45, ease: enterEase }}
             className={preamble ? 'mt-10' : ''}
             style={{
-              backgroundColor: 'hsl(38, 40%, 97%)',
-              border: '1px solid hsl(38, 30%, 90%)',
+              backgroundColor: 'var(--surface-raised)',
+              border: '1px solid hsl(var(--neutral-300))',
               borderLeft: '4px solid #C4821D',
               borderRadius: '0 12px 12px 0',
               padding: '20px 20px 20px 24px',
