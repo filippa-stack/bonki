@@ -376,12 +376,17 @@ export default function Home() {
                           transition: 'transform 120ms ease-out, box-shadow 120ms ease-out, background-color 0.15s ease',
                         }}
                          onPointerDown={(e) => {
-                          e.currentTarget.style.transform = 'scale(0.98)';
-                          e.currentTarget.style.boxShadow = '0 2px 8px hsl(var(--foreground) / 0.08)';
-                          e.currentTarget.style.backgroundColor = 'hsl(36, 18%, 93%)';
+                          const chevron = e.currentTarget.querySelector('[data-chevron]') as HTMLElement;
+                          if (chevron) chevron.style.color = 'var(--text-primary)';
                         }}
-                        onPointerUp={(e) => { e.currentTarget.style.transform = ''; e.currentTarget.style.boxShadow = '0 2px 8px hsla(0, 0%, 0%, 0.06)'; e.currentTarget.style.backgroundColor = 'transparent'; }}
-                        onPointerLeave={(e) => { e.currentTarget.style.transform = ''; e.currentTarget.style.boxShadow = '0 2px 8px hsla(0, 0%, 0%, 0.06)'; e.currentTarget.style.backgroundColor = 'transparent'; }}
+                        onPointerUp={(e) => {
+                          const chevron = e.currentTarget.querySelector('[data-chevron]') as HTMLElement;
+                          if (chevron) chevron.style.color = '';
+                        }}
+                        onPointerLeave={(e) => {
+                          const chevron = e.currentTarget.querySelector('[data-chevron]') as HTMLElement;
+                          if (chevron) chevron.style.color = '';
+                        }}
                       >
                         <div className="flex-1 min-w-0">
                           <h3 className="type-h3" style={{ color: 'var(--text-primary)', fontWeight: 500, fontSize: '16px', textWrap: 'balance', hyphens: 'auto' }}>
@@ -445,25 +450,16 @@ export default function Home() {
                           transition: 'transform 120ms ease-out, box-shadow 120ms ease-out, background-color 0.15s ease',
                         }}
                         onPointerDown={(e) => {
-                          e.currentTarget.style.transform = 'scale(0.98)';
-                          e.currentTarget.style.boxShadow = '0 2px 8px hsl(var(--foreground) / 0.08)';
-                          e.currentTarget.style.backgroundColor = 'hsl(36, 18%, 93%)';
                           const chevron = e.currentTarget.querySelector('[data-chevron]') as HTMLElement;
-                          if (chevron) chevron.style.transform = 'translateX(2px)';
+                          if (chevron) chevron.style.color = 'var(--text-primary)';
                         }}
                         onPointerUp={(e) => {
-                          e.currentTarget.style.transform = '';
-                          e.currentTarget.style.boxShadow = '';
-                          e.currentTarget.style.backgroundColor = 'transparent';
                           const chevron = e.currentTarget.querySelector('[data-chevron]') as HTMLElement;
-                          if (chevron) chevron.style.transform = '';
+                          if (chevron) chevron.style.color = '';
                         }}
                         onPointerLeave={(e) => {
-                          e.currentTarget.style.transform = '';
-                          e.currentTarget.style.boxShadow = '';
-                          e.currentTarget.style.backgroundColor = 'transparent';
                           const chevron = e.currentTarget.querySelector('[data-chevron]') as HTMLElement;
-                          if (chevron) chevron.style.transform = '';
+                          if (chevron) chevron.style.color = '';
                         }}
                       >
                         <div className="flex items-center justify-between gap-3 w-full">
