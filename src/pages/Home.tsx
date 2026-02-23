@@ -308,7 +308,7 @@ export default function Home() {
                     }}
                     className="cursor-pointer group"
                     style={{
-                      borderRadius: '14px',
+                      borderRadius: '12px',
                       padding: '16px 20px',
                       background: 'hsl(158, 30%, 14%)',
                       border: 'none',
@@ -361,7 +361,7 @@ export default function Home() {
                   >
                     <div style={{
                       background: 'hsl(158, 32%, 14%)',
-                      borderRadius: '14px',
+                      borderRadius: '12px',
                       padding: '20px',
                       width: '100%',
                     }}>
@@ -404,8 +404,8 @@ export default function Home() {
                 >
                   <div style={{
                     background: 'hsl(36, 20%, 93%)',
-                    borderRadius: '14px',
-                      padding: '20px',
+                    borderRadius: '12px',
+                      padding: '20px 20px 20px 17px',
                       borderLeft: '3px solid hsl(158, 32%, 14%)',
                     width: '100%',
                   }}>
@@ -474,7 +474,7 @@ export default function Home() {
                         className="cursor-pointer"
                          style={{
                           borderRadius: '12px',
-                          padding: '20px',
+                          padding: '20px 20px 20px 17px',
                           minHeight: '48px',
                           display: 'flex',
                           alignItems: 'center',
