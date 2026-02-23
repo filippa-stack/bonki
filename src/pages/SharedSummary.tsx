@@ -279,7 +279,7 @@ export default function SharedSummary() {
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: 'hsl(36, 22%, 92%)' }}>
-      <Header showBack backTo="/" variant="immersive" onImmersiveBack={() => navigate('/')} />
+      <Header showBack backTo="/" />
 
       <div className="px-6 pb-8 mx-auto" style={{ maxWidth: 540, paddingTop: '24px' }}>
 
