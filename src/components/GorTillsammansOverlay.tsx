@@ -30,6 +30,12 @@ export default function GorTillsammansOverlay({ onDismiss }: Props) {
       transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
     >
 
+      {/* Two-person icon */}
+      <div style={{ display: 'flex', gap: '8px', marginBottom: '24px' }}>
+        <span style={{ width: '10px', height: '10px', borderRadius: '50%', background: 'var(--color-text-secondary)' }} />
+        <span style={{ width: '10px', height: '10px', borderRadius: '50%', background: 'var(--color-text-secondary)' }} />
+      </div>
+
       {/* Heading */}
       <h2
         className="font-serif"
