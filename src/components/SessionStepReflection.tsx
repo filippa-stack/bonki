@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useSessionReflections } from '@/hooks/useSessionReflections';
 
 interface SessionStepReflectionProps {
@@ -11,6 +12,8 @@ interface SessionStepReflectionProps {
   onBack?: () => void;
   /** Whether this is a reflection step (opening/deepening) for styling */
   isReflectionStep?: boolean;
+  /** Whether this is an exercise/assignment step */
+  isExerciseStep?: boolean;
 }
 
 export default function SessionStepReflection({
@@ -22,7 +25,9 @@ export default function SessionStepReflection({
   onLocked,
   onBack,
   isReflectionStep = false,
+  isExerciseStep = false,
 }: SessionStepReflectionProps) {
+  const navigate = useNavigate();
   const reflectionStepIndex = stepIndex * 100 + promptIndex;
 
   const { loading, myReflection, setText, markReady } =
@@ -152,6 +157,28 @@ export default function SessionStepReflection({
             ? 'Klar'
             : 'Fortsätt'}
         </button>
+
+        {isExerciseStep && (
+          <button
+            onClick={() => navigate('/')}
+            style={{
+              display: 'block',
+              width: '100%',
+              marginTop: '16px',
+              minHeight: '44px',
+              background: 'none',
+              border: 'none',
+              cursor: 'pointer',
+              fontFamily: 'Inter, sans-serif',
+              fontSize: '13px',
+              color: 'var(--color-text-secondary)',
+              opacity: 0.50,
+              textAlign: 'center',
+            }}
+          >
+            Vi pausar här — fortsätt en annan dag
+          </button>
+        )}
       </div>
     </div>
   );
