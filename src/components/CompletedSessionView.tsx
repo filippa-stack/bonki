@@ -250,12 +250,12 @@ export default function CompletedSessionView({
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: BEAT_3, duration: EMOTION, ease: [...EASE] }}
-            className="mt-6 text-center"
+            className="text-center" style={{ marginTop: '16px' }}
           >
-          <div className="space-y-5">
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '24px' }}>
             <button
               onClick={() => navigate('/shared')}
-              className="type-meta text-center block mx-auto mt-6 mb-6 underline hover:no-underline transition-opacity"
+              className="type-meta text-center block mx-auto underline hover:no-underline transition-opacity"
               style={{ color: 'var(--text-secondary)' }}
             >
               Se reflektionerna i Era samtal

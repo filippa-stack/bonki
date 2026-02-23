@@ -772,7 +772,7 @@ export default function CardView() {
             style={{ paddingBottom: 'calc(24px + env(safe-area-inset-bottom, 0px))' }}
           >
             {postCompletionNav.type === 'all_complete' ? (
-              <div className="text-center" style={{ marginTop: '32px' }}>
+              <div className="text-center" style={{ marginTop: '40px' }}>
                 <p style={{
                   fontFamily: "'Cormorant Garamond', serif",
                   fontSize: '18px',
@@ -795,15 +795,15 @@ export default function CardView() {
               <button
                 onClick={() => navigate(postCompletionNav.destination)}
                 className="cta-primary"
-                style={{ maxWidth: '220px', width: '100%', marginTop: '32px' }}
+                style={{ maxWidth: '220px', width: '100%', marginTop: '40px' }}
               >
                 {postCompletionNav.label}
               </button>
             )}
             <button
               onClick={() => navigate('/')}
-              className="type-meta transition-opacity hover:opacity-60 mt-8"
-              style={{ color: 'var(--color-text-secondary)', opacity: 0.35 }}
+              className="type-meta transition-opacity hover:opacity-60"
+              style={{ color: 'var(--color-text-secondary)', opacity: 0.35, marginTop: '24px' }}
             >
               Till översikten
             </button>
