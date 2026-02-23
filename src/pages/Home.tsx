@@ -322,22 +322,22 @@ export default function Home() {
                         </p>
                       )}
                     </div>
-                    <span className="font-sans shrink-0 ml-3" style={{ fontSize: '13px', letterSpacing: '0.03em', color: 'hsl(36, 16%, 88%)', opacity: 0.85, minWidth: '80px', textAlign: 'right' }}>
-                      Fortsätt →
+                    <span className="font-sans shrink-0 ml-3 flex items-center" style={{ fontSize: '14px', fontWeight: 500, color: 'white', minWidth: '80px', justifyContent: 'flex-end' }}>
+                      Fortsätt<span style={{ marginLeft: '6px' }}>→</span>
                     </span>
                   </div>
                 </motion.div>
               );
             })()}
 
-            {/* 20px spacing before categories */}
-            <div style={{ height: '20px' }} />
+            {/* 28px spacing before categories */}
+            <div style={{ height: '28px' }} />
 
             {/* Recommendation section */}
             {recommendedCategory && (() => {
               const recCat = recommendedCategory;
               return (
-                <div className="px-6" style={{ marginBottom: '20px' }}>
+                <div className="px-6" style={{ marginBottom: '12px' }}>
                {(() => {
                   const recIndex = sortedCategories.findIndex(c => c.id === recCat.id);
                   const recAccent = getCategoryAccent(recIndex >= 0 ? recIndex : 0);
@@ -347,7 +347,7 @@ export default function Home() {
                         fontSize: '11px',
                         fontFamily: 'var(--font-sans)',
                         color: '#8B5E1A',
-                        marginBottom: '10px',
+                        marginBottom: '12px',
                         display: 'block',
                         textTransform: 'uppercase',
                         letterSpacing: '0.1em',
@@ -404,7 +404,7 @@ export default function Home() {
 
             {/* Categories */}
             <div className="px-6" style={{ paddingBottom: 'max(env(safe-area-inset-bottom, 0px), 64px)' }}>
-              <div className="flex flex-col" style={{ gap: '10px' }}>
+              <div className="flex flex-col" style={{ gap: '8px' }}>
                 {(recommendedCategory ? sortedCategories.filter(c => c.id !== recommendedCategory.id) : sortedCategories).map((category, index) => {
                   const globalIndex = sortedCategories.findIndex(c => c.id === category.id);
                   const accent = getCategoryAccent(globalIndex >= 0 ? globalIndex : index);
