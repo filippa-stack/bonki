@@ -368,11 +368,11 @@ export default function Home() {
                       <p style={{
                         fontFamily: 'var(--font-serif)',
                         fontStyle: 'italic',
-                        fontSize: '15px',
+                        fontSize: '13.5px',
                         fontWeight: 400,
                         color: '#C4821D',
                         opacity: 0.75,
-                        lineHeight: 1.45,
+                        lineHeight: 1.55,
                         textWrap: 'balance',
                       } as React.CSSProperties}>
                         Det här är er plats att utforska tillsammans.
@@ -384,7 +384,7 @@ export default function Home() {
                         color: 'white',
                         lineHeight: 1.35,
                         textWrap: 'balance',
-                        marginTop: '10px',
+                        marginTop: '14px',
                       } as React.CSSProperties}>
                         Välj ett ämne och börja samtalet.
                       </p>
@@ -412,11 +412,11 @@ export default function Home() {
                     <p style={{
                       fontFamily: 'var(--font-serif)',
                       fontStyle: 'italic',
-                      fontSize: '15px',
+                      fontSize: '13.5px',
                       fontWeight: 400,
                       color: '#C4821D',
                       opacity: 0.75,
-                      lineHeight: 1.45,
+                      lineHeight: 1.55,
                       textWrap: 'balance',
                     } as React.CSSProperties}>
                       Vad kul att ni är tillbaka.
@@ -427,7 +427,7 @@ export default function Home() {
                       fontWeight: 600,
                       color: 'var(--color-text-primary)',
                       lineHeight: 1.35,
-                      marginTop: '10px',
+                      marginTop: '14px',
                     }}>
                       Vad vill ni utforska idag?
                     </p>
