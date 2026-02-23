@@ -414,12 +414,12 @@ export default function Home() {
                       fontStyle: 'italic',
                       fontSize: '15px',
                       fontWeight: 400,
-                      color: 'var(--color-text-secondary)',
-                      opacity: 0.7,
+                      color: '#C4821D',
+                      opacity: 0.75,
                       lineHeight: 1.45,
                       textWrap: 'balance',
                     } as React.CSSProperties}>
-                      Skönt att ni är tillbaka.
+                      Vad kul att ni är tillbaka.
                     </p>
                     <p style={{
                       fontFamily: 'var(--font-serif)',
