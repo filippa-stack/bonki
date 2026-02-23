@@ -431,16 +431,16 @@ export default function Home() {
             })()}
 
             {/* VI SOM BAS section header */}
-            <div className="px-6" style={{ marginTop: '32px', marginBottom: '8px' }}>
+            <div className="px-6" style={{ marginTop: '40px', marginBottom: '12px' }}>
               <p style={{
                 paddingLeft: '20px',
                 fontFamily: 'var(--font-sans)',
-                fontSize: '11px',
-                fontWeight: 500,
-                letterSpacing: '0.08em',
+                fontSize: '10px',
+                fontWeight: 600,
+                letterSpacing: '0.14em',
                 textTransform: 'uppercase',
                 color: 'var(--color-text-tertiary)',
-                opacity: 0.55,
+                opacity: 0.7,
               }}>
                 VI SOM BAS
               </p>
@@ -544,20 +544,20 @@ export default function Home() {
                    const sectionHeader = (sectionLabel && sectionLabel !== 'VI SOM BAS') ? (() => {
                      if (isFirstSection) isFirstSection = false;
                      return (
-                       <div key={`section-${category.id}`} style={{ marginTop: '32px', marginBottom: '8px' }}>
+                       <div key={`section-${category.id}`} style={{ marginTop: '40px', marginBottom: '12px' }}>
                          <p style={{
                            paddingLeft: '20px',
-                          fontFamily: 'var(--font-sans)',
-                          fontSize: '11px',
-                          fontWeight: 500,
-                          letterSpacing: '0.08em',
-                          textTransform: 'uppercase',
-                          color: 'var(--color-text-tertiary)',
-                          opacity: 0.55,
-                        }}>
-                          {sectionLabel}
-                        </p>
-                      </div>
+                           fontFamily: 'var(--font-sans)',
+                           fontSize: '10px',
+                           fontWeight: 600,
+                           letterSpacing: '0.14em',
+                           textTransform: 'uppercase',
+                           color: 'var(--color-text-tertiary)',
+                           opacity: 0.7,
+                         }}>
+                           {sectionLabel}
+                         </p>
+                       </div>
                     );
                   })() : null;
                   
