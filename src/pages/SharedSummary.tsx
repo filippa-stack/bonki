@@ -278,7 +278,7 @@ export default function SharedSummary() {
   const [showOlderFor, setShowOlderFor] = useState<string | null>(null);
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: 'hsl(36, 22%, 92%)' }}>
+    <div className="min-h-screen" style={{ backgroundColor: 'hsl(36, 15%, 93%)' }}>
       <Header showBack backTo="/" />
 
       <div className="px-6 pb-8 mx-auto" style={{ maxWidth: 540, paddingTop: '24px' }}>
@@ -309,9 +309,10 @@ export default function SharedSummary() {
               fontSize: '16px',
               fontStyle: 'italic',
               color: 'var(--color-text-secondary)',
-              opacity: 0.7,
+              opacity: 0.65,
               textAlign: 'center',
-              marginBottom: '32px',
+              marginBottom: '28px',
+              marginTop: '8px',
             }}
           >
             Vad ni burit med er.
@@ -371,9 +372,12 @@ export default function SharedSummary() {
                   >
                     <div
                       style={{
-                        background: 'var(--surface-raised)',
-                        borderRadius: '12px',
-                        padding: '16px',
+                        backgroundColor: 'hsl(36, 20%, 97%)',
+                        border: '1px solid hsl(36, 15%, 86%)',
+                        borderRadius: '14px',
+                        padding: '18px 16px 18px 20px',
+                        marginBottom: '10px',
+                        boxShadow: '0 2px 8px hsla(30, 20%, 35%, 0.10), 0 1px 2px hsla(30, 20%, 35%, 0.06)',
                         borderLeft: `3px solid ${getCategoryAccent(group.categoryId)}`,
                       }}
                     >
@@ -388,11 +392,11 @@ export default function SharedSummary() {
                                 <p
                                   className="font-serif"
                                   style={{
-                                    fontSize: '16px',
+                                    fontSize: '17px',
                                     fontWeight: 500,
                                     color: 'var(--color-text-primary)',
-                                    lineHeight: 1.4,
-                                    marginBottom: '8px',
+                                    lineHeight: 1.5,
+                                    marginBottom: '10px',
                                     display: '-webkit-box',
                                     WebkitLineClamp: 3,
                                     WebkitBoxOrient: 'vertical',
@@ -415,9 +419,8 @@ export default function SharedSummary() {
                                   style={{
                                     fontFamily: 'var(--font-sans)',
                                     fontSize: '11px',
-                                    color: 'var(--accent-saffron)',
-                                    opacity: 0.75,
-                                    marginTop: '4px',
+                                    color: 'var(--accent-text)',
+                                    marginTop: '6px',
                                   }}
                                 >
                                   {entry.categoryTitle}{entry.categoryTitle && ' · '}{formatDate(entry.completedAt)}
@@ -428,9 +431,10 @@ export default function SharedSummary() {
                                 <p
                                   className="font-serif"
                                   style={{
-                                    fontSize: '16px',
+                                    fontSize: '17px',
                                     fontWeight: 500,
                                     color: 'var(--color-text-primary)',
+                                    opacity: 0.6,
                                     lineHeight: 1.3,
                                   }}
                                 >
@@ -440,9 +444,8 @@ export default function SharedSummary() {
                                   style={{
                                     fontFamily: 'var(--font-sans)',
                                     fontSize: '11px',
-                                    color: 'var(--accent-saffron)',
-                                    opacity: 0.75,
-                                    marginTop: '4px',
+                                    color: 'var(--accent-text)',
+                                    marginTop: '6px',
                                   }}
                                 >
                                   {entry.categoryTitle}{entry.categoryTitle && ' · '}{formatDate(entry.completedAt)}
@@ -682,19 +685,22 @@ export default function SharedSummary() {
                       onClick={() => navigate(`/card/${entry.cardId}?from=archive`)}
                       className="w-full text-left"
                       style={{
-                        background: 'var(--surface-raised)',
-                        borderRadius: '12px',
-                        padding: '16px',
-                        opacity: 0.55,
+                        backgroundColor: 'hsl(36, 20%, 97%)',
+                        border: '1px solid hsl(36, 15%, 86%)',
+                        borderRadius: '14px',
+                        padding: '18px 16px 18px 20px',
+                        marginBottom: '10px',
+                        boxShadow: '0 2px 8px hsla(30, 20%, 35%, 0.10), 0 1px 2px hsla(30, 20%, 35%, 0.06)',
                         borderLeft: `3px solid ${getCategoryAccent(group.categoryId)}`,
                       }}
                     >
                       <p
                         className="font-serif"
                         style={{
-                          fontSize: '16px',
+                          fontSize: '17px',
                           fontWeight: 500,
                           color: 'var(--color-text-primary)',
+                          opacity: 0.6,
                           lineHeight: 1.3,
                         }}
                       >
@@ -704,9 +710,8 @@ export default function SharedSummary() {
                         style={{
                           fontFamily: 'var(--font-sans)',
                           fontSize: '11px',
-                          color: 'var(--accent-saffron)',
-                          opacity: 0.75,
-                          marginTop: '4px',
+                          color: 'var(--accent-text)',
+                          marginTop: '6px',
                         }}
                       >
                         {entry.categoryTitle}{entry.categoryTitle && ' · '}{formatDate(entry.completedAt)}
