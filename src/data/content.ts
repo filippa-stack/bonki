@@ -27,7 +27,7 @@ export const categories: Category[] = [
   },
   {
     id: 'category-7',
-    title: 'Innan det brister',
+    title: 'Att hålla ihop',
     entryLine: 'Hur ni håller ihop — även när det är svårt.',
     description: 'Sårbarhet, motgångar och att möta press tillsammans',
     cardCount: 2,
@@ -48,7 +48,7 @@ export const categories: Category[] = [
   },
   {
     id: 'category-9',
-    title: 'Vart vi är på väg',
+    title: 'Vår riktning',
     entryLine: 'Vad ni står för — och vart ni är på väg.',
     description: 'Värderingar under press och drömmar som kräver mod',
     cardCount: 2,
