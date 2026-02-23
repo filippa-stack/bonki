@@ -112,10 +112,10 @@ export default function SessionStepReflection({
       <style>{`
         .reflection-field-wrapper textarea::placeholder {
           font-family: 'Cormorant Garamond', serif !important;
-          font-style: italic !important;
+          font-style: normal !important;
           font-size: 16px !important;
-          color: #8B5E1A !important;
-          opacity: 0.80 !important;
+          color: var(--text-ghost) !important;
+          opacity: 0.70 !important;
           transition: opacity 300ms ease !important;
         }
         .reflection-field-wrapper textarea:focus::placeholder {
