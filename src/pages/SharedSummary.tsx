@@ -7,7 +7,8 @@ import { useCoupleSpaceContext } from '@/contexts/CoupleSpaceContext';
 import { supabase } from '@/integrations/supabase/client';
 import { useDevState } from '@/contexts/DevStateContext';
 import ArchiveTakeaway from '@/components/ArchiveTakeaway';
-import { ArrowLeft, ChevronRight, Settings } from 'lucide-react';
+import { ChevronRight } from 'lucide-react';
+import Header from '@/components/Header';
 import type { Prompt } from '@/types';
 
 interface BookmarkRow {
@@ -255,35 +256,7 @@ export default function SharedSummary() {
 
   return (
     <div className="min-h-screen page-bg">
-      {/* Minimal inline header — no green bar */}
-      <div
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          height: '48px',
-          padding: '0 16px',
-          borderBottom: '1px solid hsl(36, 18%, 90%)',
-          background: 'transparent',
-        }}
-      >
-        <button
-          onClick={() => navigate('/')}
-          style={{ width: '44px', height: '44px', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'none', border: 'none', cursor: 'pointer' }}
-          aria-label="Tillbaka"
-        >
-          <ArrowLeft className="w-5 h-5" style={{ color: 'var(--color-text-secondary)' }} />
-        </button>
-        <h1
-          className="font-serif"
-          style={{ fontSize: '18px', fontWeight: 600, color: 'var(--color-text-primary)' }}
-        >
-          Era samtal
-        </h1>
-        <div style={{ width: '44px', height: '44px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <Settings className="w-4 h-4" style={{ color: 'var(--text-tertiary)', opacity: 0.6 }} />
-        </div>
-      </div>
+      <Header title="Era samtal" showBack backTo="/" />
 
       <div className="px-6 pb-8 mx-auto" style={{ maxWidth: 540, paddingTop: '32px' }}>
 
