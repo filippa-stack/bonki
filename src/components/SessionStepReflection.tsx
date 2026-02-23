@@ -136,11 +136,8 @@ export default function SessionStepReflection({
       <div
         className="flex flex-col items-center"
         style={{
-          paddingBottom: 'calc(16px + env(safe-area-inset-bottom, 0px))',
+          paddingBottom: 'calc(24px + env(safe-area-inset-bottom, 0px))',
           marginTop: '16px',
-          position: 'sticky',
-          bottom: '24px',
-          zIndex: 5,
         }}
       >
         <button
@@ -184,16 +181,6 @@ export default function SessionStepReflection({
             >
               Vi pausar här — fortsätt en annan dag
             </button>
-            <p style={{
-              fontFamily: 'Inter, sans-serif',
-              fontSize: '11px',
-              color: 'var(--color-text-tertiary)',
-              opacity: 0.30,
-              textAlign: 'center',
-              marginTop: '4px',
-            }}>
-              Appen kommer ihåg var ni är.
-            </p>
           </div>
         )}
       </div>
