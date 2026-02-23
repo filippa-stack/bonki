@@ -71,14 +71,14 @@ export default function Header({
             {title && (
               <div className="flex-1 min-w-0 text-center">
                 <h1
-                  className="font-sans truncate"
+                  className={isDarkSurface ? "font-sans truncate" : "font-serif truncate"}
                   style={{
-                    fontSize: '11px',
-                    letterSpacing: '0.06em',
-                    textTransform: 'uppercase',
-                    color: isDarkSurface ? 'hsl(36, 20%, 88%)' : 'var(--color-text-secondary)',
-                    opacity: isDarkSurface ? 0.6 : 0.55,
-                    fontWeight: 500,
+                    fontSize: isDarkSurface ? '11px' : '15px',
+                    letterSpacing: isDarkSurface ? '0.06em' : '0.01em',
+                    textTransform: isDarkSurface ? 'uppercase' : 'none',
+                    color: isDarkSurface ? 'hsl(36, 20%, 88%)' : 'var(--color-text-primary)',
+                    opacity: isDarkSurface ? 0.6 : 0.8,
+                    fontWeight: isDarkSurface ? 500 : 400,
                   }}
                 >
                   {title}
