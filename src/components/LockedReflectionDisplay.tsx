@@ -21,15 +21,20 @@ export default function LockedReflectionDisplay({ sessionId, stepIndex }: Props)
     setLoading(true);
     if (!sessionId || !user) { setLoading(false); return; }
 
+    // Reflections are stored at stepIndex * 100 + promptIndex
+    const encodedStep = stepIndex * 100;
     supabase
       .from('step_reflections')
       .select('text')
       .eq('session_id', sessionId)
-      .eq('step_index', stepIndex)
+      .gte('step_index', encodedStep)
+      .lt('step_index', encodedStep + 100)
       .eq('user_id', user.id)
-      .maybeSingle()
+      .order('step_index', { ascending: true })
+      .limit(1)
       .then(({ data }) => {
-        if (data?.text?.trim()) setText(data.text.trim());
+        const row = Array.isArray(data) ? data?.[0] : data;
+        if (row?.text?.trim()) setText(row.text.trim());
         setLoading(false);
       });
   }, [sessionId, stepIndex, user]);

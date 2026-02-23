@@ -151,7 +151,8 @@ export default function CompletedSessionView({
 
   // Group reflections by step
   const stepGroups = STEP_LABELS.map((label, stepIdx) => {
-    const stepReflections = session.reflections.filter(r => r.stepIndex === stepIdx);
+    // Reflections are stored at stepIndex * 100 + promptIndex
+    const stepReflections = session.reflections.filter(r => Math.floor(r.stepIndex / 100) === stepIdx);
     const partnerRef = stepReflections.find(r => r.userId !== user?.id);
     const myRef = stepReflections.find(r => r.userId === user?.id);
     return { label, partnerRef, myRef };

@@ -131,6 +131,8 @@ export default function Home() {
   }, [space?.id]);
 
   const effectiveCardId = normalizedSession.cardId ?? (devState === 'pairedActive' ? 'listening-presence' : null);
+  // Prefer normalizedSession (refetched deterministically) over snapshot for resume banner
+  const resumeCardFromNormalized = normalizedSession.sessionId ? normalizedSession.cardId : null;
 
   // Snapshot-derived values
   const snapshotLastActivityAt = selectLastActivityAt(snapshot);
@@ -282,13 +284,14 @@ export default function Home() {
 
             {/* Resume banner — active session */}
             {(() => {
-              const activeSession = snapshot?.sessions;
-              if (!activeSession) return null;
-              const { session } = activeSession;
-              const cardId = session.card_id;
+              // Prefer normalizedSession (always fresh) over snapshot for resume banner
+              const cardId = resumeCardFromNormalized
+                ?? snapshot?.sessions?.session?.card_id
+                ?? null;
               if (!cardId) return null;
               const card = getCardById(cardId);
-              const cat = session.category_id ? getCategoryById(session.category_id) : null;
+              const catId = normalizedSession.categoryId ?? snapshot?.sessions?.session?.category_id ?? null;
+              const cat = catId ? getCategoryById(catId) : null;
 
               return (
                 <motion.div
