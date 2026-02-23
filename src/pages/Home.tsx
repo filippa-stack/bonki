@@ -370,8 +370,8 @@ export default function Home() {
                         fontStyle: 'italic',
                         fontSize: '15px',
                         fontWeight: 400,
-                        color: 'hsl(36, 16%, 92%)',
-                        opacity: 0.6,
+                        color: '#C4821D',
+                        opacity: 0.75,
                         lineHeight: 1.45,
                         textWrap: 'balance',
                       } as React.CSSProperties}>
