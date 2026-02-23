@@ -276,19 +276,6 @@ export default function Home() {
               <h1 className="type-h1" style={{ color: 'var(--text-primary)' }}>
                 Vårt utrymme
               </h1>
-              {!snapshot?.sessions && exploredIds.length === 0 && (
-                <p
-                  className="mt-4"
-                  style={{
-                    fontFamily: 'var(--font-serif)',
-                    fontSize: '15px',
-                    color: 'var(--color-text-secondary)',
-                    opacity: 0.6,
-                  }}
-                >
-                  Välj ett ämne nedan.
-                </p>
-              )}
             </motion.div>
 
             {/* Resume banner — active session */}
@@ -334,7 +321,7 @@ export default function Home() {
                         </p>
                       )}
                     </div>
-                    <span className="font-sans shrink-0 ml-3 flex items-center" style={{ fontSize: '14px', fontWeight: 500, color: 'white', minWidth: '80px', justifyContent: 'flex-end' }}>
+                    <span className="font-sans shrink-0 ml-3 flex items-center self-stretch" style={{ fontSize: '14px', fontWeight: 500, color: 'white', minWidth: '80px', justifyContent: 'flex-end' }}>
                       Fortsätt<span style={{ marginLeft: '6px' }}>→</span>
                     </span>
                   </div>
@@ -415,7 +402,7 @@ export default function Home() {
             })()}
 
             {/* Categories */}
-            <div className="px-6" style={{ paddingBottom: 'max(env(safe-area-inset-bottom, 0px), 64px)' }}>
+            <div className="px-6" style={{ paddingBottom: 'max(calc(32px + env(safe-area-inset-bottom, 0px)), 64px)' }}>
               <div className="flex flex-col" style={{ gap: '8px' }}>
                 {(recommendedCategory ? sortedCategories.filter(c => c.id !== recommendedCategory.id) : sortedCategories).map((category, index) => {
                   const globalIndex = sortedCategories.findIndex(c => c.id === category.id);
