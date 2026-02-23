@@ -506,13 +506,33 @@ export default function CardView() {
         </div>
         <div className="px-6 pt-title-above pb-16">
 
+          {/* Temporal release */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.2, duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
+            className="text-center max-w-md mx-auto"
+            style={{ marginBottom: '16px', paddingTop: 24 }}
+          >
+            <p style={{
+              fontSize: '11px',
+              fontFamily: 'var(--font-sans)',
+              textTransform: 'uppercase',
+              letterSpacing: '0.10em',
+              color: 'var(--color-text-secondary)',
+              opacity: 0.50,
+            }}>
+              Bra jobbat.
+            </p>
+          </motion.div>
+
           {/* Heading */}
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
             className="text-center max-w-md mx-auto"
-            style={{ paddingTop: 24, marginBottom: '40px' }}
+            style={{ marginBottom: '40px' }}
           >
             <h2
               className="font-serif"
@@ -554,47 +574,16 @@ export default function CardView() {
             <CompletionTakeaway sessionId={activeSessionId} spaceId={space?.id ?? null} />
           </motion.div>
 
-          {/* Archive link */}
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-            className="max-w-md mx-auto"
-          >
-            <button
-              onClick={() => navigate('/shared')}
-              style={{
-                display: 'block',
-                width: '100%',
-                textAlign: 'center',
-                fontSize: '10px',
-                letterSpacing: '0.07em',
-                textTransform: 'uppercase' as const,
-                fontFamily: 'var(--font-sans)',
-                color: 'var(--color-text-tertiary)',
-                opacity: 0.40,
-                textDecoration: 'none',
-                background: 'none',
-                border: 'none',
-                cursor: 'pointer',
-                marginTop: '24px',
-                padding: '8px 0',
-              }}
-            >
-              Se reflektionerna i Era samtal
-            </button>
-          </motion.div>
-
           {/* CTAs */}
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.6, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ delay: 0.5, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
             className="max-w-md mx-auto flex flex-col items-center"
             style={{ paddingBottom: 'calc(24px + env(safe-area-inset-bottom, 0px))' }}
           >
             <button
-              onClick={() => navigate(category ? `/category/${category.id}` : '/categories')}
+              onClick={() => navigate(postCompletionDestination)}
               className="cta-primary"
               style={{ maxWidth: '220px', width: '100%', marginTop: '32px' }}
             >
@@ -605,7 +594,47 @@ export default function CardView() {
               className="type-meta transition-opacity hover:opacity-60 mt-8"
               style={{ color: 'var(--color-text-secondary)', opacity: 0.35 }}
             >
-              Stäng
+              Till översikten
+            </button>
+
+            {/* Archive shortcut */}
+            <button
+              onClick={() => navigate('/shared')}
+              style={{
+                fontFamily: 'var(--font-sans)',
+                fontSize: '13px',
+                color: 'var(--color-text-secondary)',
+                opacity: 0.55,
+                background: 'none',
+                border: 'none',
+                cursor: 'pointer',
+                marginTop: '16px',
+                minHeight: '44px',
+                display: 'flex',
+                alignItems: 'center',
+              }}
+            >
+              Se era anteckningar
+            </button>
+
+            {/* Quiet exit */}
+            <button
+              onClick={() => navigate('/')}
+              style={{
+                fontFamily: 'var(--font-sans)',
+                fontSize: '12px',
+                color: 'var(--color-text-tertiary)',
+                opacity: 0.40,
+                background: 'none',
+                border: 'none',
+                cursor: 'pointer',
+                marginTop: '8px',
+                minHeight: '44px',
+                display: 'flex',
+                alignItems: 'center',
+              }}
+            >
+              Avsluta för idag
             </button>
           </motion.div>
 
