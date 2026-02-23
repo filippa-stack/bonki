@@ -10,9 +10,7 @@ interface SessionStepReflectionProps {
   isFirstVisit?: boolean;
   onLocked?: () => void | Promise<void>;
   onBack?: () => void;
-  /** Whether this is a reflection step (opening/deepening) for styling */
   isReflectionStep?: boolean;
-  /** Whether this is an exercise/assignment step */
   isExerciseStep?: boolean;
 }
 
@@ -45,7 +43,15 @@ export default function SessionStepReflection({
     }
   }, [loading, myReflection]);
 
-  const displayText = myReflection?.text ?? localText;
+  // Sync server text into local when it arrives
+  useEffect(() => {
+    if (!loading && myReflection?.text) {
+      setLocalText(myReflection.text);
+    }
+  }, [loading, myReflection?.text]);
+
+  // Use local text as the source of truth for the field
+  const displayText = localText;
 
   const handleChange = (value: string) => {
     setLocalText(value);
@@ -62,18 +68,11 @@ export default function SessionStepReflection({
     }
   };
 
-  if (loading) {
-    return (
-      <div className="mt-8 mb-1">
-        <div className="h-20 rounded-card bg-muted/20 animate-pulse" />
-      </div>
-    );
-  }
-
+  // CHANGE 1: Always render the field — no loading gate
   const hasFill = displayText.trim().length > 0;
 
   return (
-    <div style={{ marginTop: '16px', marginBottom: '1px' }}>
+    <div className="reflection-field-wrapper" style={{ marginTop: '16px', marginBottom: '1px' }}>
       <textarea
         value={displayText}
         onChange={(e) => handleChange(e.target.value)}
@@ -110,7 +109,6 @@ export default function SessionStepReflection({
           transition: 'background-color 200ms ease, border-top 200ms ease, border-bottom 200ms ease',
         }}
       />
-      {/* Placeholder overlay for custom styling */}
       <style>{`
         .reflection-field-wrapper textarea::placeholder {
           font-family: 'Cormorant Garamond', serif !important;
