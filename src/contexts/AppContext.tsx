@@ -373,12 +373,11 @@ export function AppProvider({ children }: { children: ReactNode }) {
     setState((prev) => ({ ...prev, coupleSpace: newSpace }));
   };
 
-  const saveConversation = (cardId: string, sectionId: string, stepIndex?: number) => {
-    if (!state.coupleSpace) return;
-    const now = new Date();
+  const saveConversation = useCallback((cardId: string, sectionId: string, stepIndex?: number) => {
     setState((prev) => {
       const space = prev.coupleSpace;
       if (!space) return prev;
+      const now = new Date();
       const existingThread = space.conversationThreads.find((t) => t.cardId === cardId);
       const updatedThreads = existingThread
         ? space.conversationThreads.map((t) =>
@@ -400,7 +399,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
           ];
       return { ...prev, coupleSpace: { ...space, conversationThreads: updatedThreads } };
     });
-  };
+  }, []);
 
   const getConversationForCard = (cardId: string): ConversationThread | undefined => {
     return state.coupleSpace?.conversationThreads.find((t) => t.cardId === cardId);
