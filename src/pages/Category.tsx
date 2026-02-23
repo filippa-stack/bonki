@@ -198,12 +198,13 @@ function CardEntry({ card, index, isCompleted = false, isInProgress = false, onN
         }}
         className="w-full cursor-pointer flex items-center gap-3 hover:opacity-80 focus-visible:outline-none"
         style={{
-          padding: '18px 16px',
+          padding: '18px 16px 18px 20px',
           marginBottom: isLast ? '0' : '10px',
           background: isCompleted ? 'rgba(0,0,0,0.015)' : 'hsl(36, 20%, 97%)',
-          border: '1px solid hsl(36, 15%, 88%)',
+          border: '1px solid hsl(36, 15%, 86%)',
           borderLeft: `3px solid ${accentColor}`,
           borderRadius: '14px',
+          boxShadow: '0 2px 8px hsla(30, 20%, 35%, 0.10), 0 1px 2px hsla(30, 20%, 35%, 0.06)',
         }}
       >
         <div className="flex-1 min-w-0 flex items-start">
@@ -240,9 +241,9 @@ function CardEntry({ card, index, isCompleted = false, isInProgress = false, onN
             <h3
               className="font-serif"
               style={{
-                fontSize: '17px',
-                fontWeight: 500,
-                color: isCompleted ? 'var(--color-text-primary)' : 'var(--color-text-primary)',
+                fontSize: '18px',
+                fontWeight: 600,
+                color: 'var(--color-text-primary)',
                 opacity: isCompleted ? 0.55 : 1,
               }}
             >
@@ -250,8 +251,14 @@ function CardEntry({ card, index, isCompleted = false, isInProgress = false, onN
             </h3>
             {card.subtitle && (
               <p
-                className="type-meta mt-px"
-                style={{ color: 'var(--color-text-secondary)', opacity: isCompleted ? 0.45 : 0.80 }}
+                className="font-serif"
+                style={{
+                  fontSize: '14px',
+                  color: 'var(--color-text-secondary)',
+                  opacity: isCompleted ? 0.45 : 0.80,
+                  lineHeight: 1.5,
+                  marginTop: '4px',
+                }}
               >
                 {card.subtitle}
               </p>
