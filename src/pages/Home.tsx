@@ -462,7 +462,7 @@ export default function Home() {
                           justifyContent: 'space-between',
                           gap: '8px',
                           background: 'hsl(36, 20%, 97%)',
-                          boxShadow: '0 1px 3px hsla(30, 15%, 50%, 0.08)',
+                          boxShadow: '0 2px 8px hsla(30, 20%, 35%, 0.10), 0 1px 2px hsla(30, 20%, 35%, 0.06)',
                           transition: 'transform 120ms ease-out, box-shadow 120ms ease-out, background-color 0.15s ease',
                         }}
                          onPointerDown={(e) => {
@@ -542,7 +542,7 @@ export default function Home() {
                           justifyContent: 'space-between',
                           gap: '8px',
                           background: 'hsl(36, 20%, 97%)',
-                          boxShadow: '0 1px 3px hsla(30, 15%, 50%, 0.08)',
+                          boxShadow: '0 2px 8px hsla(30, 20%, 35%, 0.10), 0 1px 2px hsla(30, 20%, 35%, 0.06)',
                           transition: 'transform 120ms ease-out, box-shadow 120ms ease-out, background-color 0.15s ease',
                         }}
                         onPointerDown={(e) => {
