@@ -383,6 +383,13 @@ h1, h2, h3,
     .row-lift:hover h3 {
       filter: brightness(0.96);
     }
+    /* Desktop chevron micro-nudge on card hover */
+    [data-chevron] {
+      transition: transform 180ms ease-out;
+    }
+    .cursor-pointer:hover [data-chevron] {
+      transform: translateX(2px);
+    }
   }
 
   .btn-gentle {
