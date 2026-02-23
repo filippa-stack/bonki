@@ -88,7 +88,7 @@ const SectionView = forwardRef<SectionViewHandle, SectionViewProps>(
                 size={20}
                 style={{
                   color: 'var(--color-text-tertiary)',
-                  opacity: 0.45,
+                  opacity: 0.35,
                 }}
               />
             </button>

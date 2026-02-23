@@ -50,7 +50,7 @@ export default function StepProgressIndicator({
             letterSpacing: '0.09em',
             textTransform: 'uppercase',
             color: 'var(--text-tertiary)',
-            opacity: 0.5,
+            opacity: 0.38,
             marginBottom: '6px',
             textAlign: 'center',
           }}
@@ -60,7 +60,7 @@ export default function StepProgressIndicator({
       </AnimatePresence>
 
       {/* Horizontal dots */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '24px' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '32px' }}>
         {STAGE_STEPS.map((step, index) => {
           const isCompleted = completedSteps.includes(index) || index < currentStepIndex;
           const isCurrent = index === currentStepIndex;
@@ -78,7 +78,7 @@ export default function StepProgressIndicator({
                   : isCompleted
                     ? 'hsl(158, 32%, 14%)'
                     : 'var(--text-ghost)',
-                opacity: isCurrent ? 1.0 : isCompleted ? 0.25 : 0.18,
+                opacity: isCurrent ? 0.85 : isCompleted ? 0.20 : 0.14,
                 transition: 'width 0.3s ease, border-radius 0.3s ease, opacity 0.25s ease, background-color 0.25s ease',
               }}
             />
