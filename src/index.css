@@ -372,6 +372,10 @@ h1, h2, h3,
   /* ── Category tile — premium interactive surface ── */
   .tile-door {
     will-change: transform, box-shadow;
+    box-shadow:
+      0 1px 2px hsla(30, 15%, 25%, 0.04),
+      0 4px 16px -4px hsla(30, 18%, 28%, 0.07),
+      0 12px 40px -8px hsla(30, 12%, 25%, 0.05) !important;
     transition: transform 240ms cubic-bezier(0.22, 1, 0.36, 1),
                 box-shadow 280ms ease-out;
   }
@@ -380,8 +384,9 @@ h1, h2, h3,
     .tile-door:hover {
       transform: translateY(-2px);
       box-shadow:
-        0 4px 40px -6px hsla(30, 18%, 28%, 0.09),
-        0 1px 3px hsla(30, 15%, 30%, 0.04) !important;
+        0 2px 4px hsla(30, 15%, 25%, 0.05),
+        0 8px 24px -4px hsla(30, 20%, 28%, 0.10),
+        0 20px 50px -10px hsla(30, 15%, 25%, 0.07) !important;
     }
     .tile-door:hover [data-chevron] {
       transform: translateX(3px);
@@ -394,7 +399,9 @@ h1, h2, h3,
 
   .tile-door:active {
     transform: scale(0.985) !important;
-    box-shadow: 0 1px 20px -4px hsla(30, 12%, 28%, 0.06) !important;
+    box-shadow:
+      0 1px 2px hsla(30, 15%, 25%, 0.04),
+      0 2px 8px -2px hsla(30, 12%, 28%, 0.06) !important;
     transition: transform 80ms ease-out, box-shadow 80ms ease-out;
   }
 
