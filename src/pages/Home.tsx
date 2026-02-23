@@ -488,11 +488,11 @@ export default function Home() {
                           <p className="font-sans uppercase" style={{ fontSize: '10px', letterSpacing: '0.06em', color: 'var(--accent-text)', opacity: 0.8, marginBottom: '4px' }}>
                             Rekommenderad start
                           </p>
-                          <h3 className="font-serif" style={{ color: 'var(--color-text-primary)', fontWeight: 600, fontSize: '18px', textWrap: 'balance', hyphens: 'auto', marginTop: '2px' }}>
+                          <h3 className="font-serif" style={{ color: 'var(--color-text-primary)', fontWeight: 600, fontSize: '18px', lineHeight: 1.35, textWrap: 'balance', hyphens: 'auto', marginTop: '2px' }}>
                             {recCat.title}
                           </h3>
                           {recCat.entryLine && (
-                            <p className="font-serif" style={{ fontSize: '14px', color: 'var(--color-text-secondary)', opacity: 0.80, lineHeight: 1.5, marginTop: '8px' }}>
+                            <p className="font-serif" style={{ fontSize: '14px', fontWeight: 400, color: 'var(--color-text-secondary)', opacity: 0.80, lineHeight: 1.55, marginTop: '6px', letterSpacing: '0.005em' }}>
                               {recCat.entryLine}
                             </p>
                           )}
@@ -597,6 +597,7 @@ export default function Home() {
                               color: 'var(--color-text-primary)',
                               fontWeight: 600,
                               fontSize: '18px',
+                              lineHeight: 1.35,
                               textWrap: 'balance',
                               hyphens: 'auto',
                               marginTop: '2px',
@@ -607,7 +608,7 @@ export default function Home() {
                           {category.entryLine && (
                             <p
                               className="font-serif"
-                              style={{ fontSize: '14px', color: 'var(--color-text-secondary)', opacity: 0.80, lineHeight: 1.5, marginTop: '6px' }}
+                              style={{ fontSize: '14px', fontWeight: 400, color: 'var(--color-text-secondary)', opacity: 0.80, lineHeight: 1.55, marginTop: '6px', letterSpacing: '0.005em' }}
                             >
                               {category.entryLine}
                             </p>
