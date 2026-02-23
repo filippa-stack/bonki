@@ -309,7 +309,7 @@ export default function Home() {
                     className="cursor-pointer group"
                     style={{
                       borderRadius: '12px',
-                      padding: '16px 20px',
+                      padding: '18px 20px',
                       background: 'hsl(158, 30%, 14%)',
                       border: 'none',
                       display: 'flex',
