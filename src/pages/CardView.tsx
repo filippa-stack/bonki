@@ -364,9 +364,13 @@ export default function CardView() {
 
   // ─── Handle step completion / advance ───
   const pendingRetryRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const completingRef = useRef(false);
 
   const handleCompleteStep = useCallback(async () => {
     if (cardViewMode !== 'live') return;
+    if (completingRef.current) return;
+    completingRef.current = true;
+    try {
 
     const displayIndex = localStepIndex ?? serverStepIndex;
     const atFrontier = displayIndex >= serverStepIndex;
@@ -400,8 +404,12 @@ export default function CardView() {
           p_step_count: STEP_ORDER.length,
         });
         if (!actErr) {
-          await normalizedSession.refetch();
-          sessionId = normalizedSession.sessionId;
+          // Read session ID directly — React state won't update in this closure
+          const { data: freshState } = await supabase.rpc('get_active_session_state');
+          const row = Array.isArray(freshState) ? freshState[0] : freshState;
+          sessionId = row?.session_id ?? null;
+          // Update context in background for other consumers
+          normalizedSession.refetch();
         }
       }
 
@@ -524,6 +532,9 @@ export default function CardView() {
       }, 1500);
     };
     retryInBackground(2);
+    } finally {
+      completingRef.current = false;
+    }
   }, [normalizedSession, localStepIndex, serverStepIndex, cardViewMode, devState]);
 
   // ─── Archive "Next" handler ───
