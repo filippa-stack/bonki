@@ -270,12 +270,12 @@ export default function Home() {
           <>
             {/* ZONE A — Identity */}
             <motion.div
-              className="pt-8 px-6 text-center"
+              className="pt-12 px-6 text-center"
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
             >
-              <h1 className="type-h1" style={{ color: 'var(--text-primary)', marginBottom: '36px' }}>
+              <h1 className="type-h1" style={{ color: 'var(--text-primary)', marginBottom: '48px' }}>
                 Ert utrymme
               </h1>
             </motion.div>
@@ -308,7 +308,7 @@ export default function Home() {
                     className="cursor-pointer flex items-center justify-between"
                     style={{
                       borderRadius: '16px',
-                      padding: '20px 24px',
+                      padding: '20px 20px',
                       background: 'hsl(158, 30%, 14%)',
                       border: 'none',
                     }}
@@ -350,8 +350,7 @@ export default function Home() {
                     <div style={{
                       background: 'hsl(158, 32%, 14%)',
                       borderRadius: '14px',
-                      padding: '20px 20px 20px 24px',
-                      paddingTop: '20px',
+                      padding: '20px',
                       width: '100%',
                     }}>
                       <p style={{
@@ -402,8 +401,8 @@ export default function Home() {
                   <div style={{
                     background: 'hsl(36, 20%, 93%)',
                     borderRadius: '14px',
-                    padding: '20px 20px 20px 24px',
-                    borderLeft: '3px solid hsl(158, 32%, 14%)',
+                      padding: '20px',
+                      borderLeft: '3px solid hsl(158, 32%, 14%)',
                     width: '100%',
                   }}>
                     <p style={{
@@ -431,12 +430,10 @@ export default function Home() {
               );
             })()}
 
-            {/* Spacing before categories */}
-            <div style={{ height: '0px' }} />
-
             {/* VI SOM BAS section header */}
-            <div className="px-6" style={{ marginTop: '24px', marginBottom: '12px' }}>
+            <div className="px-6" style={{ marginTop: '32px', marginBottom: '8px' }}>
               <p style={{
+                paddingLeft: '20px',
                 fontFamily: 'var(--font-sans)',
                 fontSize: '11px',
                 fontWeight: 500,
@@ -453,7 +450,7 @@ export default function Home() {
             {recommendedCategory && (() => {
               const recCat = recommendedCategory;
               return (
-                <div className="px-6" style={{ marginBottom: '12px', marginTop: '0px' }}>
+                <div className="px-6" style={{ marginBottom: '10px', marginTop: '0px' }}>
                {(() => {
                   const recIndex = sortedCategories.findIndex(c => c.id === recCat.id);
                   const recAccent = getCategoryAccent(recIndex >= 0 ? recIndex : 0);
@@ -471,7 +468,7 @@ export default function Home() {
                         className="cursor-pointer"
                          style={{
                           borderRadius: '0 14px 14px 0',
-                          padding: '18px 16px 18px 20px',
+                          padding: '18px 20px',
                           minHeight: '48px',
                           display: 'flex',
                           alignItems: 'center',
@@ -520,7 +517,7 @@ export default function Home() {
 
             {/* Categories */}
             <div className="px-6" style={{ paddingBottom: '48px' }}>
-              <div className="flex flex-col" style={{ gap: '10px' }}>
+              <div className="flex flex-col" style={{ gap: '8px' }}>
                 {(() => {
                   const SECTION_GROUPS: { label: string; ids: string[] }[] = [
                     { label: 'VI SOM BAS', ids: ['emotional-intimacy', 'communication', 'category-8', 'category-7'] },
@@ -544,12 +541,12 @@ export default function Home() {
                    const someStarted = (completedCount > 0 || hasInProgressCards) && !allCompleted;
                   const sectionLabel = idToSection.get(category.id);
                   // Skip "VI SOM BAS" — already rendered above the recommended card
-                  const sectionHeader = (sectionLabel && sectionLabel !== 'VI SOM BAS') ? (() => {
-                    const mt = '28px';
-                    if (isFirstSection) isFirstSection = false;
-                    return (
-                      <div key={`section-${category.id}`} style={{ marginTop: mt, marginBottom: '12px' }}>
-                        <p style={{
+                   const sectionHeader = (sectionLabel && sectionLabel !== 'VI SOM BAS') ? (() => {
+                     if (isFirstSection) isFirstSection = false;
+                     return (
+                       <div key={`section-${category.id}`} style={{ marginTop: '32px', marginBottom: '8px' }}>
+                         <p style={{
+                           paddingLeft: '20px',
                           fontFamily: 'var(--font-sans)',
                           fontSize: '11px',
                           fontWeight: 500,
@@ -585,7 +582,7 @@ export default function Home() {
                          style={{
                           borderRadius: '0 14px 14px 0',
                           borderLeft: 'none',
-                          padding: '18px 16px 18px 20px',
+                          padding: '18px 20px',
                           minHeight: '72px',
                           display: 'flex',
                           alignItems: 'center',
