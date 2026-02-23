@@ -504,7 +504,20 @@ export default function Home() {
             {/* Categories */}
             <div className="px-6" style={{ paddingBottom: '48px' }}>
               <div className="flex flex-col" style={{ gap: '10px' }}>
-                {(recommendedCategory ? sortedCategories.filter(c => c.id !== recommendedCategory.id) : sortedCategories).map((category, index) => {
+                {(() => {
+                  const SECTION_GROUPS: { label: string; ids: string[] }[] = [
+                    { label: 'VI SOM BAS', ids: ['emotional-intimacy', 'communication', 'category-8', 'category-7'] },
+                    { label: 'VI & OMVÄRLDEN', ids: ['parenting-together', 'individual-needs', 'category-9'] },
+                    { label: 'VI SOM VÄLJER VARANDRA', ids: ['category-6', 'daily-life', 'category-10'] },
+                  ];
+                  const sectionStartIds = new Set(SECTION_GROUPS.map(g => g.ids[0]));
+                  const idToSection = new Map<string, string>();
+                  SECTION_GROUPS.forEach(g => g.ids.forEach(id => { if (id === g.ids[0]) idToSection.set(id, g.label); }));
+
+                  const displayCategories = recommendedCategory ? sortedCategories.filter(c => c.id !== recommendedCategory.id) : sortedCategories;
+                  let isFirstSection = true;
+
+                  return displayCategories.map((category, index) => {
                   const globalIndex = sortedCategories.findIndex(c => c.id === category.id);
                   const accent = getCategoryAccent(globalIndex >= 0 ? globalIndex : index);
                   const catCards = cards.filter((c) => c.categoryId === category.id);
@@ -512,9 +525,30 @@ export default function Home() {
                   const allCompleted = completedCount === catCards.length && catCards.length > 0;
                   const hasInProgressCards = catCards.some(c => inProgressCardIds.includes(c.id) && !completedCardIds.includes(c.id));
                    const someStarted = (completedCount > 0 || hasInProgressCards) && !allCompleted;
+                  const sectionLabel = idToSection.get(category.id);
+                  const sectionHeader = sectionLabel ? (() => {
+                    const mt = isFirstSection ? '16px' : '28px';
+                    if (isFirstSection) isFirstSection = false;
+                    return (
+                      <div key={`section-${category.id}`} style={{ marginTop: mt, marginBottom: '12px' }}>
+                        <p style={{
+                          fontFamily: 'var(--font-sans)',
+                          fontSize: '11px',
+                          fontWeight: 500,
+                          letterSpacing: '0.08em',
+                          textTransform: 'uppercase',
+                          color: 'var(--color-text-tertiary)',
+                          opacity: 0.55,
+                        }}>
+                          {sectionLabel}
+                        </p>
+                      </div>
+                    );
+                  })() : null;
                   
 
                   return (
+                    <>{sectionHeader}
                     <motion.div
                       key={category.id}
                       initial={{ opacity: 0, y: 6 }}
@@ -606,8 +640,10 @@ export default function Home() {
                         </div>
                       </div>
                     </motion.div>
+                    </>
                   );
-                })}
+                });
+                })()}
               </div>
               {(() => {
                 const totalCategories = sortedCategories.length;
