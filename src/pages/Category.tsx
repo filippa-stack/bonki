@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ChevronRight, Check } from 'lucide-react';
@@ -7,6 +7,7 @@ import { useApp } from '@/contexts/AppContext';
 import { useAuth } from '@/contexts/AuthContext';
 import { useCoupleSpaceContext } from '@/contexts/CoupleSpaceContext';
 import { supabase } from '@/integrations/supabase/client';
+import { useOptimisticCompletions } from '@/contexts/OptimisticCompletionsContext';
 import Header from '@/components/Header';
 
 export default function Category() {
@@ -16,8 +17,9 @@ export default function Category() {
   const { getCategoryById, getCardsByCategory } = useApp();
   const { user } = useAuth();
   const { space } = useCoupleSpaceContext();
+  const { optimisticCardIds } = useOptimisticCompletions();
 
-  const [completedCardIds, setCompletedCardIds] = useState<string[]>([]);
+  const [serverCompletedCardIds, setServerCompletedCardIds] = useState<string[]>([]);
   const [inProgressCardIds, setInProgressCardIds] = useState<string[]>([]);
 
   useEffect(() => {
@@ -31,7 +33,7 @@ export default function Category() {
       .eq('status', 'completed')
       .then(({ data }) => {
         if (!cancelled && data) {
-          setCompletedCardIds(data.map(s => s.card_id).filter(Boolean) as string[]);
+          setServerCompletedCardIds(data.map(s => s.card_id).filter(Boolean) as string[]);
         }
       });
 
@@ -48,6 +50,13 @@ export default function Category() {
 
     return () => { cancelled = true; };
   }, [space?.id]);
+
+  // Merge server + optimistic completions
+  const completedCardIds = useMemo(() => {
+    const merged = new Set(serverCompletedCardIds);
+    optimisticCardIds.forEach(id => merged.add(id));
+    return Array.from(merged);
+  }, [serverCompletedCardIds, optimisticCardIds]);
 
   const category = categoryId ? getCategoryById(categoryId) : undefined;
   const cards = categoryId ? getCardsByCategory(categoryId) : [];

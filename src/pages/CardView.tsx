@@ -42,6 +42,7 @@ import { useNormalizedSessionContext } from '@/contexts/NormalizedSessionContext
 import { isDevToolsEnabled } from '@/lib/devTools';
 // samtalsläge removed from UI — always defaults to Tillsammans
 import { useTogetherMode } from '@/hooks/useTogetherMode';
+import { useOptimisticCompletions } from '@/contexts/OptimisticCompletionsContext';
 import { BEAT_1, BEAT_2, BEAT_3, EASE, PRESS, PAGE, EMOTION } from '@/lib/motion';
 import { RECOMMENDED_CATEGORY_ORDER } from '@/lib/recommendedOrder';
 
@@ -112,6 +113,7 @@ export default function CardView() {
   // ─── Normalized session state — the ONLY session authority ───
   const normalizedSession = useNormalizedSessionContext();
   const { isTogether } = useTogetherMode();
+  const { markCompleted: markCardCompleted } = useOptimisticCompletions();
 
   const isActiveSession = !!(normalizedSession.sessionId && normalizedSession.cardId === cardId);
 
@@ -130,9 +132,16 @@ export default function CardView() {
   const [completedSessionCount, setCompletedSessionCount] = useState(0);
 
   // showCompletion: session just finished — takeaway ritual before archive
-  const [showCompletion, setShowCompletion] = useState(
+  const [showCompletion, _setShowCompletion] = useState(
     devState === 'completed' ? true : false
   );
+  // Wrapper that also marks the card as optimistically completed
+  const setShowCompletion = useCallback((val: boolean) => {
+    _setShowCompletion(val);
+    if (val && cardId) {
+      markCardCompleted(cardId);
+    }
+  }, [cardId, markCardCompleted]);
 
   useEffect(() => {
     if (devState) return;
