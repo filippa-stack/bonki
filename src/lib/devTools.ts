@@ -10,8 +10,6 @@
  * unless explicitly opted-in via (2) or (3).
  */
 export function isDevToolsEnabled(): boolean {
-  if (import.meta.env.DEV) return true;
-
   if (typeof window === 'undefined') return false;
 
   const params = new URLSearchParams(window.location.search);
