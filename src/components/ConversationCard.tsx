@@ -10,9 +10,10 @@ interface ConversationCardProps {
   onClick: () => void;
   variant?: 'default' | 'compact';
   isCompleted?: boolean;
+  isActive?: boolean;
 }
 
-export default function ConversationCard({ conversation, onClick, variant = 'default', isCompleted = false }: ConversationCardProps) {
+export default function ConversationCard({ conversation, onClick, variant = 'default', isCompleted = false, isActive = false }: ConversationCardProps) {
   const card = getCardById(conversation.cardId);
   if (!card) return null;
 
@@ -27,9 +28,24 @@ export default function ConversationCard({ conversation, onClick, variant = 'def
       >
         <div className="flex items-center justify-between gap-3">
           <div className="flex-1 min-w-0">
-            <p className="font-serif text-lg truncate" style={{ color: 'var(--color-text-primary)' }}>
-              {card.title}
-            </p>
+            <div className="flex items-center gap-2">
+              {isActive && (
+                <span
+                  style={{
+                    display: 'inline-block',
+                    width: '7px',
+                    height: '7px',
+                    borderRadius: '50%',
+                    backgroundColor: '#C4821D',
+                    flexShrink: 0,
+                    animation: 'saffron-pulse 2.5s ease-in-out infinite',
+                  }}
+                />
+              )}
+              <p className="font-serif text-lg truncate" style={{ color: 'var(--color-text-primary)' }}>
+                {card.title}
+              </p>
+            </div>
             <p className="text-xs mt-1" style={{ color: 'var(--color-text-secondary)', opacity: 0.6 }}>{timeAgo}</p>
           </div>
           <ArrowRight className="w-3.5 h-3.5 flex-shrink-0" style={{ color: 'var(--color-text-secondary)', opacity: 0.6 }} />
@@ -56,9 +72,25 @@ export default function ConversationCard({ conversation, onClick, variant = 'def
       )}
       <div className="flex items-start justify-between gap-4">
         <div className="flex-1 min-w-0">
-          <h3 className="font-serif text-xl leading-snug mb-1" style={{ color: 'var(--color-text-primary)' }}>
-            {card.title}
-          </h3>
+          <div className="flex items-start gap-2">
+            {isActive && (
+              <span
+                style={{
+                  display: 'inline-block',
+                  width: '8px',
+                  height: '8px',
+                  borderRadius: '50%',
+                  backgroundColor: '#C4821D',
+                  marginTop: '7px',
+                  flexShrink: 0,
+                  animation: 'saffron-pulse 2.5s ease-in-out infinite',
+                }}
+              />
+            )}
+            <h3 className="font-serif text-xl leading-snug mb-1" style={{ color: 'var(--color-text-primary)' }}>
+              {card.title}
+            </h3>
+          </div>
           {card.subtitle && (
             <p className="text-sm mb-2 leading-relaxed" style={{ color: 'var(--color-text-secondary)' }}>{card.subtitle}</p>
           )}
