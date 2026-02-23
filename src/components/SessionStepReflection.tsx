@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import { useSessionReflections } from '@/hooks/useSessionReflections';
 
 interface SessionStepReflectionProps {
@@ -30,6 +30,7 @@ export default function SessionStepReflection({
 
   const [localText, setLocalText] = useState('');
   const [submitting, setSubmitting] = useState(false);
+  const [isFocused, setIsFocused] = useState(false);
 
   // Track whether the user had already written something when this mounted
   const hadPriorTextRef = useRef(false);
@@ -64,38 +65,56 @@ export default function SessionStepReflection({
     );
   }
 
-  const isRevisited = hadPriorTextRef.current;
+  const hasFill = displayText.trim().length > 0;
 
   return (
     <div style={{ marginTop: '16px', marginBottom: '1px' }}>
-      <div className="reflection-field-wrapper">
-        <textarea
-          value={displayText}
-          onChange={(e) => handleChange(e.target.value)}
-          placeholder="Vad vill ni minnas från det här samtalet?"
-          inputMode="text"
-          autoCorrect="on"
-          autoCapitalize="sentences"
-          spellCheck={true}
-          className="w-full resize-none focus:outline-none focus:ring-0 placeholder:font-serif placeholder:italic placeholder:text-[14px]"
-          style={{
-            minHeight: '120px',
-            maxHeight: '240px',
-            overflow: 'auto',
-            fontFamily: 'var(--font-serif)',
-            fontSize: '17px',
-            lineHeight: 1.6,
-            color: 'var(--color-ink)',
-            backgroundColor: 'hsl(36, 20%, 95%)',
-            border: 'none',
-            borderBottom: '1px solid hsl(36, 12%, 78%)',
-            borderRadius: 0,
-            padding: '16px',
-            boxShadow: 'none',
-            transition: 'border-color 200ms ease',
-          }}
-        />
-      </div>
+      <textarea
+        value={displayText}
+        onChange={(e) => handleChange(e.target.value)}
+        onFocus={() => setIsFocused(true)}
+        onBlur={() => setIsFocused(false)}
+        placeholder="Vad vill ni minnas från det här samtalet?"
+        inputMode="text"
+        autoCorrect="on"
+        autoCapitalize="sentences"
+        spellCheck={true}
+        className="w-full resize-none focus:outline-none focus:ring-0"
+        style={{
+          minHeight: '96px',
+          maxHeight: '240px',
+          overflow: 'auto',
+          fontFamily: hasFill ? 'Inter, sans-serif' : 'var(--font-serif)',
+          fontSize: hasFill ? '15px' : '17px',
+          lineHeight: 1.6,
+          color: 'var(--color-text-primary)',
+          backgroundColor: isFocused || hasFill
+            ? 'hsl(36, 30%, 93%)'
+            : 'hsl(36, 25%, 91%)',
+          border: 'none',
+          borderBottom: isFocused
+            ? '1.5px solid #C4821D'
+            : '1px solid hsl(36, 18%, 82%)',
+          borderRadius: 0,
+          padding: '16px 0 12px 0',
+          boxShadow: 'none',
+          transition: 'background-color 200ms ease, border-bottom 200ms ease',
+        }}
+      />
+      {/* Placeholder overlay for custom styling */}
+      <style>{`
+        .reflection-field-wrapper textarea::placeholder {
+          font-family: 'Cormorant Garamond', serif !important;
+          font-style: italic !important;
+          font-size: 16px !important;
+          color: #8B5E1A !important;
+          opacity: 0.60 !important;
+          transition: opacity 300ms ease !important;
+        }
+        .reflection-field-wrapper textarea:focus::placeholder {
+          opacity: 0 !important;
+        }
+      `}</style>
       <div style={{ minHeight: '44px', display: 'flex', alignItems: 'center', justifyContent: 'center', marginTop: '8px' }}>
         <span
           className="font-serif"
@@ -125,7 +144,7 @@ export default function SessionStepReflection({
           onClick={handleAdvance}
           disabled={submitting}
           className="cta-primary"
-          style={isRevisited ? { opacity: 0.80 } : undefined}
+          style={hadPriorTextRef.current ? { opacity: 0.80 } : undefined}
         >
           {submitting
             ? 'Sparar…'
