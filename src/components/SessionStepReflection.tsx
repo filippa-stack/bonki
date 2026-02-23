@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useSessionReflections } from '@/hooks/useSessionReflections';
 
 interface SessionStepReflectionProps {
@@ -31,6 +31,14 @@ export default function SessionStepReflection({
   const [localText, setLocalText] = useState('');
   const [submitting, setSubmitting] = useState(false);
 
+  // Track whether the user had already written something when this mounted
+  const hadPriorTextRef = useRef(false);
+  useEffect(() => {
+    if (!loading && myReflection?.text?.trim()) {
+      hadPriorTextRef.current = true;
+    }
+  }, [loading, myReflection]);
+
   const displayText = myReflection?.text ?? localText;
 
   const handleChange = (value: string) => {
@@ -55,6 +63,8 @@ export default function SessionStepReflection({
       </div>
     );
   }
+
+  const isRevisited = hadPriorTextRef.current;
 
   return (
     <div style={{ marginTop: '16px', marginBottom: '1px' }}>
@@ -115,6 +125,7 @@ export default function SessionStepReflection({
           onClick={handleAdvance}
           disabled={submitting}
           className="cta-primary"
+          style={isRevisited ? { opacity: 0.80 } : undefined}
         >
           {submitting
             ? 'Sparar…'
