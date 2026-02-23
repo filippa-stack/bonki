@@ -3,7 +3,7 @@
 // The JSON session model is deprecated.
 // All session state must come from normalized tables.
 
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import { useParams, useNavigate, useSearchParams, useLocation } from 'react-router-dom';
 import {
   AlertDialog,
@@ -43,6 +43,7 @@ import { isDevToolsEnabled } from '@/lib/devTools';
 // samtalsläge removed from UI — always defaults to Tillsammans
 import { useTogetherMode } from '@/hooks/useTogetherMode';
 import { BEAT_1, BEAT_2, BEAT_3, EASE, PRESS, PAGE, EMOTION } from '@/lib/motion';
+import { RECOMMENDED_CATEGORY_ORDER } from '@/lib/recommendedOrder';
 
 const COMPLETION_MESSAGES = [
   'Det här samtalet tillhör er.',
@@ -505,12 +506,53 @@ export default function CardView() {
     }
   }, [cardViewMode, preCardIsExercise]);
 
-  // ─────────────────────────────────────────────────────────────
-  //  Early exits (card not found)
-  // ─────────────────────────────────────────────────────────────
+  // ─── Post-completion navigation (hooks before early return) ───
   const card = cardId ? getCardById(cardId) : undefined;
   const category = card ? getCategoryById(card.categoryId) : undefined;
 
+  const [completedCardIds, setCompletedCardIds] = useState<Set<string>>(new Set());
+  useEffect(() => {
+    if (!space?.id) return;
+    supabase
+      .from('couple_sessions')
+      .select('card_id')
+      .eq('couple_space_id', space.id)
+      .eq('status', 'completed')
+      .then(({ data }) => {
+        if (data) {
+          setCompletedCardIds(new Set(data.map((r: any) => r.card_id).filter(Boolean)));
+        }
+      });
+  }, [space?.id, cardViewMode]);
+
+  const postCompletionNav = useMemo(() => {
+    if (!category || !card) return { type: 'home' as const, destination: '/', label: '' };
+
+    const categoryCards = cards.filter(c => c.categoryId === category.id);
+    const effectiveCompleted = new Set(completedCardIds);
+    effectiveCompleted.add(card.id);
+
+    const nextIncompleteInCategory = categoryCards.find(c => !effectiveCompleted.has(c.id));
+
+    if (nextIncompleteInCategory) {
+      return { type: 'next_card' as const, destination: `/card/${nextIncompleteInCategory.id}`, label: 'Nästa samtal' };
+    }
+
+    for (const catId of RECOMMENDED_CATEGORY_ORDER) {
+      if (catId === category.id) continue;
+      const catCards = cards.filter(c => c.categoryId === catId);
+      const hasIncomplete = catCards.some(c => !effectiveCompleted.has(c.id));
+      if (hasIncomplete) {
+        return { type: 'next_category' as const, destination: `/category/${catId}`, label: 'Nästa ämne' };
+      }
+    }
+
+    return { type: 'all_complete' as const, destination: '/', label: '' };
+  }, [category, card, cards, completedCardIds]);
+
+  // ─────────────────────────────────────────────────────────────
+  //  Early exit (card not found)
+  // ─────────────────────────────────────────────────────────────
   if (!card) {
     return (
       <div className="min-h-screen page-bg animate-fade-in">
@@ -522,14 +564,6 @@ export default function CardView() {
       </div>
     );
   }
-
-  // ─── Post-completion navigation ───
-  const postCompletionDestination = (() => {
-    if (!category) return '/';
-    const categoryCards = cards.filter(c => c.categoryId === category.id);
-    const remainingCards = categoryCards.filter(c => c.id !== card.id);
-    return remainingCards.length > 0 ? `/category/${category.id}` : '/';
-  })();
 
   // ─────────────────────────────────────────────────────────────
   //  MODE: 'completion' — session just finished, takeaway ritual
@@ -624,13 +658,35 @@ export default function CardView() {
             className="max-w-md mx-auto flex flex-col items-center"
             style={{ paddingBottom: 'calc(24px + env(safe-area-inset-bottom, 0px))' }}
           >
-            <button
-              onClick={() => navigate(postCompletionDestination)}
-              className="cta-primary"
-              style={{ maxWidth: '220px', width: '100%', marginTop: '32px' }}
-            >
-              Nästa samtal
-            </button>
+            {postCompletionNav.type === 'all_complete' ? (
+              <div className="text-center" style={{ marginTop: '32px' }}>
+                <p style={{
+                  fontFamily: "'Cormorant Garamond', serif",
+                  fontSize: '18px',
+                  fontStyle: 'italic',
+                  color: '#8B5E1A',
+                }}>
+                  Ni har utforskat allt. För nu.
+                </p>
+                <p style={{
+                  fontFamily: 'Inter, sans-serif',
+                  fontSize: '13px',
+                  color: 'var(--color-text-secondary)',
+                  opacity: 0.60,
+                  marginTop: '8px',
+                }}>
+                  Korten öppnar sig igen när ni är redo.
+                </p>
+              </div>
+            ) : (
+              <button
+                onClick={() => navigate(postCompletionNav.destination)}
+                className="cta-primary"
+                style={{ maxWidth: '220px', width: '100%', marginTop: '32px' }}
+              >
+                {postCompletionNav.label}
+              </button>
+            )}
             <button
               onClick={() => navigate('/')}
               className="type-meta transition-opacity hover:opacity-60 mt-8"
