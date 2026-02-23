@@ -306,7 +306,7 @@ export default function Home() {
                     onKeyDown={(e) => {
                       if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); navigate(`/card/${cardId}`, { state: { resumed: true } }); }
                     }}
-                    className="cursor-pointer"
+                    className="cursor-pointer group"
                     style={{
                       borderRadius: '14px',
                       padding: '16px 20px',
@@ -316,7 +316,11 @@ export default function Home() {
                       alignItems: 'center',
                       justifyContent: 'space-between',
                       gap: '12px',
+                      transition: 'transform 180ms ease-out, box-shadow 180ms ease-out',
                     }}
+                    onPointerDown={(e) => { (e.currentTarget as HTMLElement).style.transform = 'scale(0.99)'; }}
+                    onPointerUp={(e) => { (e.currentTarget as HTMLElement).style.transform = ''; }}
+                    onPointerLeave={(e) => { (e.currentTarget as HTMLElement).style.transform = ''; }}
                   >
                     <div className="flex-1 min-w-0">
                       <p className="font-sans" style={{ fontSize: '10px', fontWeight: 500, letterSpacing: '0.12em', textTransform: 'uppercase' as const, color: 'hsl(36, 16%, 92%)', opacity: 0.45, marginBottom: '6px', lineHeight: 1 }}>
@@ -480,9 +484,9 @@ export default function Home() {
                           border: '1px solid hsl(36, 15%, 86%)',
                           borderLeft: '3px solid hsl(158, 32%, 14%)',
                           boxShadow: '0 1px 3px hsla(30, 20%, 35%, 0.08), 0 0.5px 1px hsla(30, 20%, 35%, 0.05)',
-                          transition: 'transform 80ms ease-out',
+                          transition: 'transform 180ms ease-out, box-shadow 180ms ease-out',
                         }}
-                         onPointerDown={(e) => { (e.currentTarget as HTMLElement).style.transform = 'scale(0.985)'; }}
+                         onPointerDown={(e) => { (e.currentTarget as HTMLElement).style.transform = 'scale(0.99)'; }}
                          onPointerUp={(e) => { (e.currentTarget as HTMLElement).style.transform = ''; }}
                          onPointerLeave={(e) => { (e.currentTarget as HTMLElement).style.transform = ''; }}
                       >
@@ -499,7 +503,7 @@ export default function Home() {
                             </p>
                           )}
                         </div>
-                        <ChevronRight data-chevron className="w-4 h-4 shrink-0 self-center" style={{ color: 'var(--accent-saffron)', opacity: 0.5 }} />
+                        <ChevronRight data-chevron className="w-4 h-4 shrink-0 self-center" style={{ color: 'var(--accent-saffron)', opacity: 0.5, transition: 'transform 180ms ease-out' }} />
                       </div>
                     </>
                   );
@@ -583,9 +587,9 @@ export default function Home() {
                           background: 'hsl(36, 20%, 97%)',
                           border: '1px solid hsl(36, 15%, 86%)',
                           boxShadow: '0 1px 3px hsla(30, 20%, 35%, 0.08), 0 0.5px 1px hsla(30, 20%, 35%, 0.05)',
-                          transition: 'transform 80ms ease-out',
+                          transition: 'transform 180ms ease-out, box-shadow 180ms ease-out',
                         }}
-                        onPointerDown={(e) => { (e.currentTarget as HTMLElement).style.transform = 'scale(0.985)'; }}
+                        onPointerDown={(e) => { (e.currentTarget as HTMLElement).style.transform = 'scale(0.99)'; }}
                         onPointerUp={(e) => { (e.currentTarget as HTMLElement).style.transform = ''; }}
                         onPointerLeave={(e) => { (e.currentTarget as HTMLElement).style.transform = ''; }}
                       >
@@ -632,7 +636,7 @@ export default function Home() {
                           <ChevronRight
                             data-chevron
                             className="w-4 h-4"
-                            style={{ color: 'var(--accent-saffron)', opacity: 0.5, transition: 'transform 80ms ease-out' }}
+                            style={{ color: 'var(--accent-saffron)', opacity: 0.5, transition: 'transform 180ms ease-out' }}
                           />
                         </div>
                       </div>
