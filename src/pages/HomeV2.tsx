@@ -266,9 +266,25 @@ export default function HomeV2() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
             >
-              <h1 className="type-h1" style={{ color: 'var(--text-primary)', marginBottom: '36px' }}>
+              <h1 className="type-h1" style={{ color: 'var(--text-primary)', marginBottom: resumeCardFromNormalized || snapshot?.sessions?.session?.card_id ? '0px' : '10px' }}>
                 Vårt utrymme
               </h1>
+              {/* First-time hero phrase — only when no active session */}
+              {!resumeCardFromNormalized && !snapshot?.sessions?.session?.card_id && (
+                <p style={{
+                  fontFamily: 'Cormorant Garamond, serif',
+                  fontSize: '17px',
+                  fontWeight: 400,
+                  fontStyle: 'italic',
+                  color: 'var(--text-secondary)',
+                  textAlign: 'center',
+                  opacity: 0.80,
+                  marginTop: '0px',
+                  marginBottom: '20px',
+                }}>
+                  Välj ett ämne — och börja utforska varandra.
+                </p>
+              )}
             </motion.div>
 
             {/* Resume banner — active session */}
@@ -385,7 +401,18 @@ export default function HomeV2() {
                             </p>
                           )}
                         </div>
-                        <ChevronRight data-chevron className="w-4 h-4 shrink-0" style={{ color: 'var(--accent-saffron)', opacity: 0.6 }} />
+                        <div className="flex items-center gap-2 shrink-0">
+                          <span style={{
+                            display: 'inline-block',
+                            width: '7px',
+                            height: '7px',
+                            borderRadius: '50%',
+                            backgroundColor: 'hsl(38, 88%, 46%)',
+                            opacity: 0.90,
+                            animation: 'saffron-ring-pulse 2.4s ease-in-out infinite',
+                          }} />
+                          <ChevronRight data-chevron className="w-4 h-4 shrink-0" style={{ color: 'var(--accent-saffron)', opacity: 0.6 }} />
+                        </div>
                       </div>
                     </>
                   );
@@ -494,8 +521,8 @@ export default function HomeV2() {
                                 width: '7px',
                                 height: '7px',
                                 borderRadius: '50%',
-                                backgroundColor: '#C4821D',
-                                opacity: 0.70,
+                                backgroundColor: 'hsl(38, 88%, 46%)',
+                                opacity: 0.90,
                               }} />
                             ) : null}
                             <ChevronRight
