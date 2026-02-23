@@ -955,6 +955,7 @@ export default function CardView() {
                       isLastStep={isLastStage && isLastPromptInStage}
                       isFirstVisit={false}
                       isReflectionStep={isReflectionStep}
+                      isExerciseStep={isExerciseStep}
                       onLocked={async () => {
                         if (isLastPromptInStage) {
                           await handleCompleteStep();
