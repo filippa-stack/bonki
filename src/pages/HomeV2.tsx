@@ -371,34 +371,31 @@ export default function HomeV2() {
                         }}
                         className="cursor-pointer"
                          style={{
-                          borderRadius: '12px',
-                          borderLeft: '2px solid hsl(158, 32%, 14%)',
-                          border: '1px solid hsl(36, 20%, 86%)',
-                          borderLeftWidth: '2px',
-                          borderLeftColor: 'hsl(158, 32%, 14%)',
-                          padding: '16px 18px',
+                          borderRadius: '0 14px 14px 0',
+                          borderLeft: '2px solid hsla(158, 32%, 14%, 0.65)',
+                          padding: '20px',
                           minHeight: '48px',
                           display: 'flex',
                           alignItems: 'center',
                           justifyContent: 'space-between',
                           gap: '8px',
-                          backgroundColor: 'hsl(36, 30%, 97%)',
-                          boxShadow: '0 1px 4px rgba(0,0,0,0.07), 0 0 0 1px rgba(0,0,0,0.03)',
+                          backgroundColor: 'hsl(36, 18%, 95%)',
+                          boxShadow: 'none',
                           transition: 'transform 60ms ease-out, background-color 60ms ease-out',
                         }}
                          onPointerDown={(e) => {
                           e.currentTarget.style.transform = 'scale(0.988)';
-                          e.currentTarget.style.backgroundColor = 'hsl(36, 15%, 97%)';
+                          e.currentTarget.style.backgroundColor = 'hsl(36, 18%, 96%)';
                         }}
-                        onPointerUp={(e) => { e.currentTarget.style.transform = ''; e.currentTarget.style.backgroundColor = 'hsl(36, 30%, 97%)'; }}
-                        onPointerLeave={(e) => { e.currentTarget.style.transform = ''; e.currentTarget.style.backgroundColor = 'hsl(36, 30%, 97%)'; }}
+                        onPointerUp={(e) => { e.currentTarget.style.transform = ''; e.currentTarget.style.backgroundColor = 'hsl(36, 18%, 95%)'; }}
+                        onPointerLeave={(e) => { e.currentTarget.style.transform = ''; e.currentTarget.style.backgroundColor = 'hsl(36, 18%, 95%)'; }}
                       >
                         <div className="flex-1 min-w-0">
-                          <h3 className="font-sans" style={{ color: 'hsl(220, 25%, 18%)', fontWeight: 600, fontSize: '16px', textWrap: 'balance', hyphens: 'auto' }}>
+                          <h3 className="type-h3" style={{ color: 'var(--text-primary)', fontWeight: 500, fontSize: '16px', textWrap: 'balance', hyphens: 'auto' }}>
                             {recCat.title}
                           </h3>
                           {recCat.entryLine && (
-                            <p className="font-serif" style={{ fontSize: '15px', color: 'hsl(30, 10%, 48%)', opacity: 0.80, marginTop: '4px' }}>
+                            <p className="font-serif" style={{ fontSize: '16px', color: 'var(--color-text-secondary)', marginTop: '8px' }}>
                               {recCat.entryLine}
                             </p>
                           )}
@@ -413,7 +410,7 @@ export default function HomeV2() {
                             opacity: 0.90,
                             animation: 'saffron-ring-pulse 2.4s ease-in-out infinite',
                           }} />
-                          <ChevronRight data-chevron className="w-4 h-4 shrink-0" style={{ color: 'hsl(38, 75%, 48%)', opacity: 1.0 }} />
+                          <ChevronRight data-chevron className="w-4 h-4 shrink-0" style={{ color: 'var(--accent-saffron)', opacity: 0.6 }} />
                         </div>
                       </div>
                     </>
@@ -453,50 +450,51 @@ export default function HomeV2() {
                         }}
                         className="cursor-pointer"
                          style={{
-                          borderRadius: '12px',
-                          border: '1px solid hsl(36, 20%, 86%)',
+                          borderRadius: '0 14px 14px 0',
+                          borderLeft: '2px solid hsla(36, 15%, 80%, 0.40)',
                           padding: '16px 18px',
                           minHeight: '72px',
                           display: 'flex',
                           alignItems: 'center',
                           justifyContent: 'space-between',
                           gap: '8px',
-                          backgroundColor: 'hsl(0, 0%, 100%)',
-                          boxShadow: '0 1px 4px rgba(0,0,0,0.07), 0 0 0 1px rgba(0,0,0,0.03)',
+                          backgroundColor: 'hsl(36, 15%, 98%)',
+                          boxShadow: 'none',
                           transition: 'transform 60ms ease-out, background-color 60ms ease-out',
                         }}
                         onPointerDown={(e) => {
                           e.currentTarget.style.transform = 'scale(0.988)';
-                          e.currentTarget.style.backgroundColor = 'hsl(36, 15%, 97%)';
+                          e.currentTarget.style.backgroundColor = 'hsl(36, 18%, 96%)';
                           const chevron = e.currentTarget.querySelector('[data-chevron]') as HTMLElement;
                           if (chevron) chevron.style.transform = 'translateX(2px)';
                         }}
                         onPointerUp={(e) => {
                           e.currentTarget.style.transform = '';
-                          e.currentTarget.style.backgroundColor = 'hsl(0, 0%, 100%)';
+                          e.currentTarget.style.backgroundColor = 'hsl(36, 15%, 98%)';
                           const chevron = e.currentTarget.querySelector('[data-chevron]') as HTMLElement;
                           if (chevron) chevron.style.transform = '';
                         }}
                         onPointerLeave={(e) => {
                           e.currentTarget.style.transform = '';
-                          e.currentTarget.style.backgroundColor = 'hsl(0, 0%, 100%)';
+                          e.currentTarget.style.backgroundColor = 'hsl(36, 15%, 98%)';
                           const chevron = e.currentTarget.querySelector('[data-chevron]') as HTMLElement;
                           if (chevron) chevron.style.transform = '';
                         }}
                       >
                         <div className="flex items-center justify-between gap-3 w-full">
                           <div className="flex-1 min-w-0">
-                            <p className="font-sans uppercase" style={{ fontSize: '10px', letterSpacing: '0.08em', color: 'hsl(30, 8%, 62%)', opacity: 0.35, marginBottom: '4px' }}>
+                            <p className="font-sans uppercase" style={{ fontSize: '10px', letterSpacing: '0.08em', color: 'var(--color-text-tertiary)', opacity: 0.40 }}>
                               {String((RECOMMENDED_CATEGORY_ORDER as readonly string[]).indexOf(category.id) + 1).padStart(2, '0')}
                             </p>
                             <h3
-                              className="font-sans"
+                              className="type-h3"
                             style={{
-                              color: 'hsl(220, 25%, 18%)',
-                                fontWeight: 600,
+                              color: 'var(--text-primary)',
+                                fontWeight: 500,
                                 fontSize: '16px',
                                 textWrap: 'balance',
                                 hyphens: 'auto',
+                                marginTop: '2px',
                               }}
                             >
                               {category.title}
@@ -504,7 +502,7 @@ export default function HomeV2() {
                             {category.entryLine && (
                               <p
                                 className="font-serif"
-                                style={{ fontSize: '15px', color: 'hsl(30, 10%, 48%)', opacity: 0.80, marginTop: '4px' }}
+                                style={{ fontSize: '16px', color: 'var(--color-text-secondary)', marginTop: '8px' }}
                               >
                                 {category.entryLine}
                               </p>
@@ -526,7 +524,7 @@ export default function HomeV2() {
                             <ChevronRight
                               data-chevron
                               className="w-4 h-4"
-                              style={{ color: 'hsl(38, 75%, 48%)', opacity: 1.0, transition: 'transform 120ms ease-out' }}
+                              style={{ color: 'var(--accent-saffron)', opacity: 0.6, transition: 'transform 120ms ease-out' }}
                             />
                           </div>
                         </div>
