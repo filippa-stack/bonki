@@ -901,6 +901,20 @@ export default function CardView() {
                   stageIndex={currentStepIndex}
                   isLive={isLive}
                   isReflectionStep={isReflectionStep}
+                  showBackArrow={isLive && !(currentStepIndex === 0 && localPromptIndex === 0)}
+                  onBack={isLive ? (() => {
+                    if (localPromptIndex > 0) {
+                      setLocalPromptIndex(localPromptIndex - 1);
+                    } else if (currentStepIndex > 0) {
+                      const prevStageIndex = currentStepIndex - 1;
+                      const prevSection = card.sections.find(
+                        s => s.type === STEP_ORDER[prevStageIndex]
+                      );
+                      const prevPromptCount = prevSection?.prompts?.length ?? 1;
+                      setLocalStepIndex(prevStageIndex);
+                      setLocalPromptIndex(prevPromptCount - 1);
+                    }
+                  }) : undefined}
                 />
               </motion.div>
 

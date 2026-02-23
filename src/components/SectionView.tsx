@@ -2,6 +2,7 @@ import { forwardRef } from 'react';
 import { Section, Card, Prompt } from '@/types';
 import PromptItem from '@/components/PromptItem';
 import BookmarkButton from '@/components/BookmarkButton';
+import { ArrowLeft } from 'lucide-react';
 
 export interface SectionViewHandle {
   openNoteForCurrent: () => void;
@@ -23,6 +24,10 @@ interface SectionViewProps {
   stageIndex?: number;
   isLive?: boolean;
   isReflectionStep?: boolean;
+  /** Callback for the back arrow within the question surface */
+  onBack?: () => void;
+  /** Whether the back arrow should be shown (hidden at stage 0, prompt 0) */
+  showBackArrow?: boolean;
 }
 
 const normalizePrompt = (prompt: string | Prompt): Prompt => {
@@ -38,7 +43,7 @@ const normalizePrompt = (prompt: string | Prompt): Prompt => {
  * CardView passes only the section matching current_step_index.
  */
 const SectionView = forwardRef<SectionViewHandle, SectionViewProps>(
-  function SectionView({ section, promptIndex = 0, coupleSpaceId, sessionId, cardId, stageIndex, isLive, isReflectionStep }, ref) {
+  function SectionView({ section, promptIndex = 0, coupleSpaceId, sessionId, cardId, stageIndex, isLive, isReflectionStep, onBack, showBackArrow = false }, ref) {
     // If section has no prompts but has content, treat content as the prompt
     const hasExplicitPrompts = !!(section.prompts && section.prompts.length > 0);
     const rawPrompts = hasExplicitPrompts
@@ -59,6 +64,35 @@ const SectionView = forwardRef<SectionViewHandle, SectionViewProps>(
 
     return (
       <div className="py-12 relative">
+        {/* Back arrow — top left, live sessions only, hidden at first question */}
+        {isLive && showBackArrow && onBack && (
+          <div style={{ position: 'absolute', top: '12px', left: '0px', zIndex: 2 }}>
+            <button
+              onClick={onBack}
+              aria-label="Föregående fråga"
+              style={{
+                minHeight: '44px',
+                minWidth: '44px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                background: 'none',
+                border: 'none',
+                cursor: 'pointer',
+                padding: '12px',
+              }}
+            >
+              <ArrowLeft
+                size={20}
+                style={{
+                  color: 'var(--color-text-secondary)',
+                  opacity: 0.45,
+                }}
+              />
+            </button>
+          </div>
+        )}
+
         {/* Bookmark button — top right, live sessions only */}
         {isLive && coupleSpaceId && sessionId && cardId && stageIndex !== undefined && (
           <div style={{ position: 'absolute', top: '12px', right: '0px', zIndex: 2 }}>
