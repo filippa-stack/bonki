@@ -80,26 +80,8 @@ export default function Header({
             )}
           </div>
 
-          {/* CENTER: category title */}
-          <div className="flex-1 min-w-0 flex items-center justify-center">
-            {title && (
-              <h1
-                className="font-sans font-normal pointer-events-none"
-                style={{
-                  fontSize: '11px',
-                  letterSpacing: '0.06em',
-                  textTransform: 'uppercase',
-                  color: isDarkSurface ? 'hsl(36, 20%, 70%)' : 'var(--color-text-tertiary)',
-                  maxWidth: '55%',
-                  overflow: 'hidden',
-                  textOverflow: 'ellipsis',
-                  whiteSpace: 'nowrap',
-                }}
-              >
-                {title}
-              </h1>
-            )}
-          </div>
+          {/* CENTER: intentionally empty */}
+          <div className="flex-1 min-w-0" />
 
           {/* RIGHT: leave session */}
           <div className="flex items-center justify-end" style={{ minWidth: '80px' }}>
