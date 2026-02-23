@@ -473,7 +473,7 @@ export default function Home() {
                         }}
                         className="cursor-pointer"
                          style={{
-                          borderRadius: '12px',
+                          borderRadius: '10px',
                           padding: '20px',
                           minHeight: '48px',
                           display: 'flex',
@@ -481,8 +481,8 @@ export default function Home() {
                           justifyContent: 'space-between',
                           gap: '12px',
                           background: 'var(--surface-raised)',
-                          border: '1px solid hsl(var(--neutral-300))',
-                          boxShadow: '0 1px 3px hsla(30, 20%, 35%, 0.08), 0 0.5px 1px hsla(30, 20%, 35%, 0.05)',
+                          border: 'none',
+                          boxShadow: '0 2px 8px -2px hsla(30, 15%, 30%, 0.06), 0 0 0 0.5px hsla(30, 15%, 30%, 0.04)',
                           transition: 'transform 180ms ease-out, box-shadow 180ms ease-out',
                           position: 'relative' as const,
                           overflow: 'hidden',
@@ -580,7 +580,7 @@ export default function Home() {
                         }}
                         className="cursor-pointer"
                          style={{
-                          borderRadius: '12px',
+                          borderRadius: '10px',
                           padding: '20px',
                           minHeight: '72px',
                           display: 'flex',
@@ -588,8 +588,8 @@ export default function Home() {
                           justifyContent: 'space-between',
                           gap: '12px',
                           background: 'var(--surface-raised)',
-                          border: '1px solid hsl(var(--neutral-300))',
-                          boxShadow: '0 1px 3px hsla(30, 20%, 35%, 0.08), 0 0.5px 1px hsla(30, 20%, 35%, 0.05)',
+                          border: 'none',
+                          boxShadow: '0 2px 8px -2px hsla(30, 15%, 30%, 0.06), 0 0 0 0.5px hsla(30, 15%, 30%, 0.04)',
                           transition: 'transform 180ms ease-out, box-shadow 180ms ease-out',
                         }}
                         onPointerDown={(e) => { (e.currentTarget as HTMLElement).style.transform = 'scale(0.99)'; }}
