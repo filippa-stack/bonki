@@ -312,7 +312,7 @@ export default function Home() {
                     }}
                   >
                     <div className="flex-1 min-w-0">
-                      <p className="font-serif font-semibold" style={{ fontSize: '20px', color: 'hsl(36, 16%, 92%)', textWrap: 'balance', hyphens: 'auto' }}>
+                      <p className="font-serif font-semibold" style={{ fontSize: '20px', color: 'hsl(36, 16%, 92%)', textWrap: 'balance', WebkitTextWrap: 'balance', hyphens: 'auto' } as React.CSSProperties}>
                         {card?.title || cardId}
                       </p>
                       {cat && (
@@ -462,6 +462,7 @@ export default function Home() {
                           justifyContent: 'space-between',
                           gap: '8px',
                           background: 'hsl(36, 20%, 97%)',
+                          border: '1px solid hsl(36, 15%, 86%)',
                           boxShadow: '0 2px 8px hsla(30, 20%, 35%, 0.10), 0 1px 2px hsla(30, 20%, 35%, 0.06)',
                           transition: 'transform 120ms ease-out, box-shadow 120ms ease-out, background-color 0.15s ease',
                         }}
@@ -481,9 +482,6 @@ export default function Home() {
                         <div className="flex-1 min-w-0">
                           <p className="font-sans uppercase" style={{ fontSize: '10px', letterSpacing: '0.06em', color: 'var(--accent-text)', opacity: 0.8, marginBottom: '4px' }}>
                             Rekommenderad start
-                          </p>
-                          <p className="font-sans uppercase" style={{ fontSize: '10px', letterSpacing: '0.08em', color: 'var(--color-text-tertiary)', opacity: 0.40 }}>
-                             {String((RECOMMENDED_CATEGORY_ORDER as readonly string[]).indexOf(recCat.id) + 1).padStart(2, '0')}
                           </p>
                           <h3 className="type-h3" style={{ color: 'var(--text-primary)', fontWeight: 500, fontSize: '16px', textWrap: 'balance', hyphens: 'auto', marginTop: '2px' }}>
                             {recCat.title}
@@ -542,6 +540,7 @@ export default function Home() {
                           justifyContent: 'space-between',
                           gap: '8px',
                           background: 'hsl(36, 20%, 97%)',
+                          border: '1px solid hsl(36, 15%, 86%)',
                           boxShadow: '0 2px 8px hsla(30, 20%, 35%, 0.10), 0 1px 2px hsla(30, 20%, 35%, 0.06)',
                           transition: 'transform 120ms ease-out, box-shadow 120ms ease-out, background-color 0.15s ease',
                         }}
