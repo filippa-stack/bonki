@@ -1081,7 +1081,7 @@ export default function CardView() {
       )}
 
       {/* Section content — centered, max 520px for readability */}
-      <div className="px-6 pt-4 relative" style={{ paddingBottom: 'calc(24px + env(safe-area-inset-bottom, 0px))' }}>
+      <div className="px-6 pt-4 relative" style={{ paddingBottom: 'calc(120px + env(safe-area-inset-bottom, 0px))' }}>
         <div className="max-w-[520px] mx-auto">
         <AnimatePresence mode="wait">
           {currentSection && (

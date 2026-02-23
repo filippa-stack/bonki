@@ -86,7 +86,8 @@ export default function SessionStepReflection({
         spellCheck={true}
         className="w-full resize-none focus:outline-none focus:ring-0 text-center"
         style={{
-          minHeight: '96px',
+          height: isFocused || hasFill ? 'auto' : '96px',
+          minHeight: isFocused || hasFill ? '96px' : undefined,
           maxHeight: '240px',
           overflow: 'auto',
           fontFamily: hasFill ? 'Inter, sans-serif' : 'var(--font-serif)',
