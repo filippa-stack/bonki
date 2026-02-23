@@ -23,17 +23,12 @@ export default function GorTillsammansOverlay({ onDismiss }: Props) {
   return (
     <motion.div
       className="fixed inset-0 z-50 flex flex-col items-center justify-center px-6"
-      style={{ backgroundColor: 'hsla(36, 20%, 95%, 0.97)' }}
+      style={{ backgroundColor: 'hsla(36, 20%, 95%, 0.98)', paddingBottom: 'env(safe-area-inset-bottom, 24px)' }}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
     >
-      {/* Two circles icon */}
-      <div style={{ display: 'flex', gap: '8px', marginBottom: '24px' }}>
-        <div style={{ width: 10, height: 10, borderRadius: '50%', background: 'var(--color-text-secondary)' }} />
-        <div style={{ width: 10, height: 10, borderRadius: '50%', background: 'var(--color-text-secondary)' }} />
-      </div>
 
       {/* Heading */}
       <h2
