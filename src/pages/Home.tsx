@@ -312,7 +312,7 @@ export default function Home() {
                     }}
                   >
                     <div className="flex-1 min-w-0">
-                      <p className="font-serif font-semibold" style={{ fontSize: '20px', color: 'hsl(36, 16%, 92%)', textWrap: 'balance', WebkitTextWrap: 'balance', hyphens: 'auto' } as React.CSSProperties}>
+                      <p className="font-serif font-semibold" style={{ fontSize: '20px', color: 'hsl(36, 16%, 92%)', textWrap: 'balance', WebkitTextWrap: 'balance', maxWidth: '70%', hyphens: 'auto' } as React.CSSProperties}>
                         {card?.title || cardId}
                       </p>
                       {cat && (
@@ -432,11 +432,26 @@ export default function Home() {
             {/* Spacing before categories */}
             <div style={{ height: '0px' }} />
 
+            {/* VI SOM BAS section header */}
+            <div className="px-6" style={{ marginTop: '24px', marginBottom: '12px' }}>
+              <p style={{
+                fontFamily: 'var(--font-sans)',
+                fontSize: '11px',
+                fontWeight: 500,
+                letterSpacing: '0.08em',
+                textTransform: 'uppercase',
+                color: 'var(--color-text-tertiary)',
+                opacity: 0.55,
+              }}>
+                VI SOM BAS
+              </p>
+            </div>
+
             {/* Recommendation section */}
             {recommendedCategory && (() => {
               const recCat = recommendedCategory;
               return (
-                <div className="px-6" style={{ marginBottom: '12px', marginTop: '20px' }}>
+                <div className="px-6" style={{ marginBottom: '12px', marginTop: '0px' }}>
                {(() => {
                   const recIndex = sortedCategories.findIndex(c => c.id === recCat.id);
                   const recAccent = getCategoryAccent(recIndex >= 0 ? recIndex : 0);
@@ -526,8 +541,9 @@ export default function Home() {
                   const hasInProgressCards = catCards.some(c => inProgressCardIds.includes(c.id) && !completedCardIds.includes(c.id));
                    const someStarted = (completedCount > 0 || hasInProgressCards) && !allCompleted;
                   const sectionLabel = idToSection.get(category.id);
-                  const sectionHeader = sectionLabel ? (() => {
-                    const mt = isFirstSection ? '16px' : '28px';
+                  // Skip "VI SOM BAS" — already rendered above the recommended card
+                  const sectionHeader = (sectionLabel && sectionLabel !== 'VI SOM BAS') ? (() => {
+                    const mt = '28px';
                     if (isFirstSection) isFirstSection = false;
                     return (
                       <div key={`section-${category.id}`} style={{ marginTop: mt, marginBottom: '12px' }}>
