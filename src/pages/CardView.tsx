@@ -1267,8 +1267,11 @@ function CompletionTakeaway({ sessionId, spaceId }: { sessionId: string | null; 
   const [text, setText] = useState('');
   const [rowId, setRowId] = useState<string | null>(null);
   const [status, setStatus] = useState<'idle' | 'saving' | 'saved'>('idle');
+  const [isFocused, setIsFocused] = useState(false);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const userId = user?.id;
+
+  const hasFill = text.trim().length > 0;
 
   const handleChange = useCallback((value: string) => {
     setText(value);
@@ -1294,36 +1297,58 @@ function CompletionTakeaway({ sessionId, spaceId }: { sessionId: string | null; 
   useEffect(() => { return () => { if (timerRef.current) clearTimeout(timerRef.current); }; }, []);
 
   return (
-    <div>
+    <div className="completion-takeaway-wrapper">
       <textarea
         value={text}
         onChange={(e) => handleChange(e.target.value)}
+        onFocus={() => setIsFocused(true)}
+        onBlur={() => setIsFocused(false)}
         placeholder="Skriv något ni vill bära med er."
-        rows={3}
         inputMode="text"
         autoCorrect="on"
         autoCapitalize="sentences"
         spellCheck={true}
         enterKeyHint="done"
+        className="w-full resize-none focus:outline-none focus:ring-0 text-center"
         style={{
           display: 'block',
           width: '100%',
-          minHeight: '100px',
-          backgroundColor: 'hsl(36, 24%, 93%)',
-          border: '1px solid hsl(36, 20%, 82%)',
-          borderRadius: '14px',
-          padding: '20px',
-          fontFamily: 'var(--font-serif)',
-          fontSize: '17px',
+          height: isFocused || hasFill ? 'auto' : '96px',
+          minHeight: isFocused || hasFill ? '96px' : undefined,
+          maxHeight: '240px',
+          overflow: 'auto',
+          backgroundColor: isFocused || hasFill
+            ? 'hsl(36, 30%, 93%)'
+            : 'hsl(36, 25%, 91%)',
+          border: 'none',
+          borderBottom: isFocused
+            ? '1.5px solid #C4821D'
+            : '1px solid hsl(36, 18%, 82%)',
+          borderRadius: 0,
+          padding: '16px 0 12px 0',
+          fontFamily: hasFill ? 'Inter, sans-serif' : 'var(--font-serif)',
+          fontSize: hasFill ? '15px' : '17px',
           lineHeight: 1.6,
           color: 'var(--color-text-primary)',
-          resize: 'none' as const,
-          outline: 'none',
-          boxSizing: 'border-box' as const,
+          boxShadow: 'none',
+          transition: 'background-color 200ms ease, border-bottom 200ms ease',
         }}
-        className="placeholder:font-serif placeholder:text-[16px] placeholder:text-[var(--text-ghost)]"
       />
-      <span style={{ display: 'block', textAlign: 'right', fontSize: '10px', color: 'rgba(0,0,0,0.25)', marginTop: '4px', paddingRight: '4px' }}>
+      <style>{`
+        .completion-takeaway-wrapper textarea::placeholder {
+          font-family: 'Cormorant Garamond', serif !important;
+          font-style: italic !important;
+          font-size: 16px !important;
+          color: #8B5E1A !important;
+          opacity: 0.60 !important;
+          text-align: center !important;
+          transition: opacity 300ms ease !important;
+        }
+        .completion-takeaway-wrapper textarea:focus::placeholder {
+          opacity: 0 !important;
+        }
+      `}</style>
+      <span style={{ display: 'block', textAlign: 'center', fontSize: '10px', color: 'rgba(0,0,0,0.25)', marginTop: '4px' }}>
         {status === 'saving' ? 'Sparar…' : status === 'saved' ? 'Sparad' : '\u00A0'}
       </span>
     </div>
