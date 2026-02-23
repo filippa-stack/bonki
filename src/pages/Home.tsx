@@ -237,7 +237,7 @@ export default function Home() {
   };
 
   return (
-    <div ref={scrollRef} className="min-h-screen flex flex-col overflow-y-auto" style={{ height: '100vh', backgroundColor: 'var(--color-bg-base)' }}>
+    <div ref={scrollRef} className="min-h-screen flex flex-col overflow-y-auto" style={{ height: '100vh', backgroundColor: 'hsl(36, 18%, 93%)' }}>
       {/* 7+ day return overlay */}
       <AnimatePresence>
         {showReturnOverlay && (
@@ -371,7 +371,7 @@ export default function Home() {
                           alignItems: 'center',
                           justifyContent: 'space-between',
                           gap: '8px',
-                          background: 'transparent',
+                          background: 'hsl(36, 16%, 90%)',
                           boxShadow: '0 2px 8px hsla(0, 0%, 0%, 0.06)',
                           transition: 'transform 120ms ease-out, box-shadow 120ms ease-out, background-color 0.15s ease',
                         }}
@@ -440,7 +440,7 @@ export default function Home() {
                           alignItems: 'center',
                           justifyContent: 'space-between',
                           gap: '8px',
-                          background: 'transparent',
+                          background: 'hsl(36, 20%, 97%)',
                           boxShadow: 'none',
                           transition: 'transform 120ms ease-out, box-shadow 120ms ease-out, background-color 0.15s ease',
                         }}
