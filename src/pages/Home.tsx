@@ -274,7 +274,7 @@ export default function Home() {
               transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
             >
               <h1 className="type-h1" style={{ color: 'var(--text-primary)', marginBottom: '36px' }}>
-                Vårt utrymme
+                Ert utrymme
               </h1>
             </motion.div>
 
@@ -381,7 +381,7 @@ export default function Home() {
                         color: '#C4821D',
                         marginTop: '8px',
                       }}>
-                        Börja var ni vill — det finns inget fel val.
+                        Välj ett ämne och börja samtalet.
                       </p>
                     </div>
                   </motion.div>
@@ -442,18 +442,8 @@ export default function Home() {
                   const recAccent = getCategoryAccent(recIndex >= 0 ? recIndex : 0);
                   return (
                     <>
-                      <p style={{
-                        fontSize: '11px',
-                        fontFamily: 'var(--font-sans)',
-                        color: '#8B5E1A',
-                        marginBottom: '14px',
-                        display: 'block',
-                        textTransform: 'uppercase',
-                        letterSpacing: '0.1em',
-                      }}>
-                        Börja här
-                      </p>
                       <div
+
                         onClick={() => { markNavigated(); navigate(`/category/${recCat.id}`); }}
                         role="button"
                         tabIndex={0}
@@ -489,8 +479,11 @@ export default function Home() {
                         }}
                       >
                         <div className="flex-1 min-w-0">
+                          <p className="font-sans uppercase" style={{ fontSize: '10px', letterSpacing: '0.06em', color: 'var(--accent-text)', opacity: 0.8, marginBottom: '4px' }}>
+                            Rekommenderad start
+                          </p>
                           <p className="font-sans uppercase" style={{ fontSize: '10px', letterSpacing: '0.08em', color: 'var(--color-text-tertiary)', opacity: 0.40 }}>
-                            {String((RECOMMENDED_CATEGORY_ORDER as readonly string[]).indexOf(recCat.id) + 1).padStart(2, '0')}
+                             {String((RECOMMENDED_CATEGORY_ORDER as readonly string[]).indexOf(recCat.id) + 1).padStart(2, '0')}
                           </p>
                           <h3 className="type-h3" style={{ color: 'var(--text-primary)', fontWeight: 500, fontSize: '16px', textWrap: 'balance', hyphens: 'auto', marginTop: '2px' }}>
                             {recCat.title}
