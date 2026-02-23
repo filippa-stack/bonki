@@ -392,43 +392,85 @@ export default function CardView() {
     // Always advance UI immediately
     const isLastStep = displayIndex >= STEP_ORDER.length - 1;
 
-    const attemptRpc = async (attempt: number): Promise<boolean> => {
+    const isSessionInactive = (err: any) =>
+      err?.message?.includes('session_not_active') || err?.code === 'P0001' && err?.message?.includes('session_not_active');
+
+    const attemptRpc = async (attempt: number): Promise<'ok' | 'session_inactive' | 'error'> => {
       const { data, error } = await supabase.rpc('complete_couple_session_step', rpcParams);
       if (error) {
         if (isDevToolsEnabled()) {
           console.error(`[step-complete] attempt ${attempt} FULL ERROR:`, JSON.stringify(error, null, 2));
         }
-        return false;
+        if (isSessionInactive(error)) return 'session_inactive';
+        return 'error';
       }
       const result = Array.isArray(data) ? data[0] : data;
       if (result?.is_session_complete) {
         setShowCompletion(true);
       }
-      return true;
+      return 'ok';
     };
 
-    const ok = await attemptRpc(1);
-    if (ok) {
+    const result = await attemptRpc(1);
+
+    if (result === 'session_inactive') {
+      navigate('/');
+      toastOnce('session_ended', () =>
+        toast('Din session avslutades. Ni kan fortsätta härifrån.', {
+          duration: 4000,
+          style: {
+            background: 'hsl(36, 20%, 95%)',
+            color: 'var(--color-text-primary)',
+            fontFamily: 'Inter, sans-serif',
+            fontSize: '14px',
+          },
+        })
+      );
+      return;
+    }
+
+    if (result === 'ok') {
       if (!isLastStep) setLocalStepIndex(displayIndex + 1);
       await normalizedSession.refetch();
       return;
     }
 
-    // RPC failed — advance UI anyway
+    // Generic error — advance UI anyway
     if (isLastStep) {
       setShowCompletion(true);
     } else {
       setLocalStepIndex(displayIndex + 1);
     }
     toastOnce('step_retry', () =>
-      toast('Vi sparar så fort vi kan. Fortsätt bara.', { duration: 2500 })
+      toast('Något gick fel. Försök igen.', {
+        duration: 4000,
+        style: {
+          background: 'hsl(36, 20%, 95%)',
+          color: 'var(--color-text-primary)',
+          fontFamily: 'Inter, sans-serif',
+          fontSize: '14px',
+        },
+      })
     );
 
     const retryInBackground = (remaining: number) => {
       if (remaining <= 0) return;
       pendingRetryRef.current = setTimeout(async () => {
-        const retryOk = await attemptRpc(3 - remaining + 1);
-        if (retryOk) {
+        const retryResult = await attemptRpc(3 - remaining + 1);
+        if (retryResult === 'session_inactive') {
+          navigate('/');
+          toastOnce('session_ended', () =>
+            toast('Din session avslutades. Ni kan fortsätta härifrån.', {
+              duration: 4000,
+              style: {
+                background: 'hsl(36, 20%, 95%)',
+                color: 'var(--color-text-primary)',
+                fontFamily: 'Inter, sans-serif',
+                fontSize: '14px',
+              },
+            })
+          );
+        } else if (retryResult === 'ok') {
           normalizedSession.refetch();
         } else if (remaining > 1) {
           retryInBackground(remaining - 1);
