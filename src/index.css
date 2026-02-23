@@ -23,13 +23,17 @@ h1, h2, h3,
 
 @layer base {
   :root {
-    /* ── Calm neutral palette ── */
+    /* ── Foundation neutrals (warm-paper scale) ── */
+    --neutral-50:  36 18% 97%;     /* Base bg — page background */
+    --neutral-100: 36 14% 98.5%;   /* Raised — cards, elevated surfaces */
+    --neutral-200: 36 18% 96%;     /* Notes, reflections, sunken areas */
+    --neutral-300: 36 12% 88%;     /* Borders, dividers */
 
     /* Tailwind base tokens (HSL without hsl()) */
-    --background: 30 10% 97%;              /* Near-white, low saturation */
+    --background: var(--neutral-50);
     --foreground: 30 3% 10%;              /* #1C1B1A */
 
-    --card: 28 16% 84%;                   /* #E3DCD4 */
+    --card: var(--neutral-100);           /* Warm near-white (was #E3DCD4) */
     --card-foreground: 30 3% 10%;
 
     --popover: 0 0% 100%;
@@ -50,8 +54,8 @@ h1, h2, h3,
     --destructive: 355 86% 30%;           /* #C1121F mapped */
     --destructive-foreground: 0 0% 100%;
 
-    --border: 30 14% 82%;
-    --input: 30 14% 82%;
+    --border: var(--neutral-300);
+    --input: var(--neutral-300);
     --ring: 150 32% 18%;
 
     --radius: 1.25rem;
@@ -68,37 +72,37 @@ h1, h2, h3,
     --border-card: 1px solid rgba(0,0,0,0.04);
 
     /* Custom tokens */
-    --surface-warm: 0 0% 100%;
-    --surface-elevated: 0 0% 100%;
+    --surface-warm: var(--neutral-50);
+    --surface-elevated: var(--neutral-100);
     --surface-chrome: 0 0% 100%;
     --text-gentle: 30 5% 43%;
-    --divider: 36 18% 86%;
+    --divider: var(--neutral-300);
 
     /* Card hierarchy */
-    --card-l1-bg: 0 0% 100%;
-    --card-l1-border: 36 18% 86%;
+    --card-l1-bg: var(--neutral-100);
+    --card-l1-border: var(--neutral-300);
     --card-l1-border-width: 1px;
 
-    --card-l2-bg: 0 0% 100%;
-    --card-l2-border: 0 0% 100%;
+    --card-l2-bg: var(--neutral-100);
+    --card-l2-border: var(--neutral-100);
     --card-l2-border-width: 1px;
     --card-l2-shadow: 0 1px 3px 0 hsl(0 0% 0% / 0.02);
 
-    --card-l3-bg: 36 20% 97%;
-    --card-l3-border: 36 18% 90%;
+    --card-l3-bg: var(--neutral-50);
+    --card-l3-border: var(--neutral-300);
     --card-l3-border-width: 1px;
     --card-l3-shadow: 0 2px 8px -4px hsl(0 0% 0% / 0.05);
 
     /* Legacy compat */
     --card-border-width: 1px;
-    --card-border-color: 36 18% 86%;
+    --card-border-color: var(--neutral-300);
     --card-sub-border-width: 1px;
-    --card-sub-border-color: 0 0% 100%;
+    --card-sub-border-color: var(--neutral-100);
     --card-sub-shadow: 0 1px 4px 0 hsl(0 0% 0% / 0.02);
 
     /* Note surfaces */
-    --note-bg: #EEE8E1;
-    --note-border: #CFC7BE;
+    --note-bg: hsl(var(--neutral-200));
+    --note-border: hsl(var(--neutral-300));
     --note-text: 30 3% 10%;
     --note-placeholder: #8C8681;
 
@@ -147,10 +151,10 @@ h1, h2, h3,
     --accent-text:          hsl(38, 72%, 38%);  /* Darker amber for editorial text */
     --color-text-tertiary:  var(--text-tertiary);
 
-    /* ── Surface layering ── */
-    --surface-base:   hsl(36, 20%, 95%);
-    --surface-raised: hsl(36, 16%, 98%);
-    --surface-sunken: hsl(36, 22%, 92%);
+    /* ── Surface layering (mapped to foundation neutrals) ── */
+    --surface-base:   hsl(var(--neutral-50));
+    --surface-raised: hsl(var(--neutral-100));
+    --surface-sunken: hsl(var(--neutral-200));
 
     /* ── CTA pressed/hover states ── */
     --cta-default: hsl(158, 35%, 18%);
@@ -160,9 +164,9 @@ h1, h2, h3,
     /* ── Semantic color tokens ── */
     --color-bg: var(--surface-base);
     --color-bg-base: var(--surface-base);
-    --color-surface: #E3DCD4;
-    --color-surface-primary: #E3DCD4;
-    --color-surface-secondary: #E3DCD4;
+    --color-surface: hsl(var(--neutral-100));
+    --color-surface-primary: hsl(var(--neutral-100));
+    --color-surface-secondary: hsl(var(--neutral-100));
     --color-cta: hsl(158, 35%, 18%);
     --color-ink: var(--text-primary);
     --color-secondary: var(--text-secondary);
@@ -172,7 +176,7 @@ h1, h2, h3,
     --color-text-secondary: var(--text-secondary);
     --color-button-primary: hsl(158, 35%, 18%);
     --color-button-text: #FFFFFF;
-    --color-divider: #D6D0C8;
+    --color-divider: hsl(var(--neutral-300));
 
     /* ── CTA canonical tokens ── */
     --cta-bg:    var(--cta-default);
