@@ -72,7 +72,7 @@ export default function SessionStepReflection({
   const hasFill = displayText.trim().length > 0;
 
   return (
-    <div className="reflection-field-wrapper" style={{ marginTop: '24px', marginBottom: '1px' }}>
+    <div className="reflection-field-wrapper" style={{ marginTop: '32px', marginBottom: '8px' }}>
       <textarea
         value={displayText}
         onChange={(e) => handleChange(e.target.value)}
@@ -95,16 +95,16 @@ export default function SessionStepReflection({
           color: 'var(--color-text-primary)',
           backgroundColor: isFocused || hasFill
             ? 'hsl(36, 30%, 93%)'
-            : 'hsl(36, 30%, 87%)',
+            : 'hsl(36, 28%, 90%)',
           border: 'none',
           borderTop: isFocused
-            ? '1.5px solid #C4821D'
-            : '1px solid hsl(36, 18%, 80%)',
+            ? '1px solid hsl(36, 30%, 72%)'
+            : '1px solid hsl(36, 18%, 83%)',
           borderBottom: isFocused
-            ? '1.5px solid #C4821D'
-            : '1px solid hsl(36, 18%, 80%)',
+            ? '1px solid hsl(36, 30%, 72%)'
+            : '1px solid hsl(36, 18%, 83%)',
           borderRadius: 0,
-          padding: '16px 0 12px 0',
+          padding: '20px 8px 16px 8px',
           boxShadow: 'none',
           transition: 'background-color 200ms ease, border-top 200ms ease, border-bottom 200ms ease',
         }}
