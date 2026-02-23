@@ -631,11 +631,33 @@ export default function CardView() {
     return (
       <motion.div
         className="min-h-screen flex flex-col items-center justify-center px-6"
-        style={{ backgroundColor: 'hsl(36, 20%, 95%)' }}
+        style={{ backgroundColor: 'hsl(36, 20%, 95%)', position: 'relative' }}
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
       >
+        {/* Back navigation */}
+        <button
+          onClick={() => navigate(category ? `/category/${category.id}` : '/')}
+          style={{
+            position: 'absolute',
+            top: '16px',
+            left: '16px',
+            minHeight: '44px',
+            minWidth: '88px',
+            display: 'flex',
+            alignItems: 'center',
+            fontFamily: 'var(--font-sans)',
+            fontSize: '13px',
+            color: 'var(--color-text-secondary)',
+            opacity: 0.55,
+            background: 'none',
+            border: 'none',
+            cursor: 'pointer',
+          }}
+        >
+          ← Välj samtal
+        </button>
         {/* Category name */}
         <span
           style={{
