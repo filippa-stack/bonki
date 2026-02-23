@@ -90,19 +90,18 @@ export default function SessionStepReflection({
           e.currentTarget.style.boxShadow = 'none';
         }}
       />
-      <div className="flex items-center justify-center mt-2">
+      <div style={{ minHeight: '44px', display: 'flex', alignItems: 'center', justifyContent: 'center', marginTop: '8px' }}>
         <span
+          className="font-serif"
           style={{
-            fontSize: '11px',
-            letterSpacing: '0.06em',
-            textTransform: 'uppercase',
-            color: 'var(--text-tertiary)',
-            opacity: 0.55,
-            marginTop: '8px',
+            fontSize: '12px',
+            fontStyle: 'italic',
+            color: '#8B5E1A',
+            opacity: 0.65,
             textAlign: 'center',
           }}
         >
-          Bara ert
+          Era gemensamma tankar.
         </span>
       </div>
 
