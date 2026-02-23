@@ -1098,7 +1098,7 @@ export default function CardView() {
         >
           <StepProgressIndicator
             currentStepIndex={currentStepIndex}
-            completedSteps={Array.from({ length: serverStepIndex }, (_, i) => i)}
+            completedSteps={Array.from({ length: currentStepIndex }, (_, i) => i)}
             isTransitioning={showInterstitial}
           />
         </motion.div>
