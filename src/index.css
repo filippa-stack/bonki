@@ -349,15 +349,15 @@ h1, h2, h3,
     pointer-events: none;
   }
 
-  /* ── Row bloom — micro radial gradient on hover ── */
+  /* ── Row bloom — warm inner glow on hover ── */
   .row-bloom::before {
     content: '';
     position: absolute;
     inset: 0;
     border-radius: inherit;
-    background: radial-gradient(ellipse at 40% 50%, rgba(255, 255, 255, 0.09) 0%, transparent 72%);
+    background: radial-gradient(ellipse at 30% 40%, hsla(38, 50%, 80%, 0.12) 0%, transparent 70%);
     opacity: 0;
-    transition: opacity 160ms ease-out;
+    transition: opacity 280ms ease-out;
     pointer-events: none;
     z-index: 0;
   }
@@ -367,6 +367,35 @@ h1, h2, h3,
   .row-bloom > * {
     position: relative;
     z-index: 1;
+  }
+
+  /* ── Category tile — premium interactive surface ── */
+  .tile-door {
+    will-change: transform, box-shadow;
+    transition: transform 240ms cubic-bezier(0.22, 1, 0.36, 1),
+                box-shadow 280ms ease-out;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .tile-door:hover {
+      transform: translateY(-2px);
+      box-shadow:
+        0 4px 40px -6px hsla(30, 18%, 28%, 0.09),
+        0 1px 3px hsla(30, 15%, 30%, 0.04) !important;
+    }
+    .tile-door:hover [data-chevron] {
+      transform: translateX(3px);
+      opacity: 0.75 !important;
+    }
+    .tile-door:hover h3 {
+      color: hsl(220, 28%, 14%) !important;
+    }
+  }
+
+  .tile-door:active {
+    transform: scale(0.985) !important;
+    box-shadow: 0 1px 20px -4px hsla(30, 12%, 28%, 0.06) !important;
+    transition: transform 80ms ease-out, box-shadow 80ms ease-out;
   }
 
   /* ── Magnetic hover lift — category/topic rows only ── */
@@ -389,7 +418,7 @@ h1, h2, h3,
     }
     /* Desktop chevron micro-nudge on card hover */
     [data-chevron] {
-      transition: transform 180ms ease-out;
+      transition: transform 180ms ease-out, opacity 180ms ease-out;
     }
     .cursor-pointer:hover [data-chevron] {
       transform: translateX(2px);

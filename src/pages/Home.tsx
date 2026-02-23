@@ -471,7 +471,7 @@ export default function Home() {
                         onKeyDown={(e) => {
                           if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); navigate(`/category/${recCat.id}`); }
                         }}
-                        className="cursor-pointer"
+                        className="cursor-pointer tile-door row-bloom"
                          style={{
                           borderRadius: '10px',
                           padding: '20px',
@@ -483,13 +483,9 @@ export default function Home() {
                           background: 'var(--surface-raised)',
                           border: 'none',
                           boxShadow: '0 1.5px 40px -8px hsla(30, 12%, 28%, 0.05)',
-                          transition: 'transform 180ms ease-out, box-shadow 180ms ease-out',
                           position: 'relative' as const,
                           overflow: 'hidden',
                         }}
-                         onPointerDown={(e) => { (e.currentTarget as HTMLElement).style.transform = 'scale(0.99)'; }}
-                         onPointerUp={(e) => { (e.currentTarget as HTMLElement).style.transform = ''; }}
-                         onPointerLeave={(e) => { (e.currentTarget as HTMLElement).style.transform = ''; }}
                       >
                         {/* Inset accent bar */}
                         <span aria-hidden style={{ position: 'absolute', left: '6px', top: '8px', bottom: '8px', width: '2px', borderRadius: '1px', background: 'hsl(158, 32%, 14%)' }} />
@@ -578,7 +574,7 @@ export default function Home() {
                         onKeyDown={(e) => {
                           if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); navigate(`/category/${category.id}`); }
                         }}
-                        className="cursor-pointer"
+                        className="cursor-pointer tile-door row-bloom"
                          style={{
                           borderRadius: '10px',
                           padding: '20px',
@@ -590,11 +586,9 @@ export default function Home() {
                           background: 'var(--surface-raised)',
                           border: 'none',
                           boxShadow: '0 1.5px 40px -8px hsla(30, 12%, 28%, 0.05)',
-                          transition: 'transform 180ms ease-out, box-shadow 180ms ease-out',
+                          position: 'relative' as const,
+                          overflow: 'hidden',
                         }}
-                        onPointerDown={(e) => { (e.currentTarget as HTMLElement).style.transform = 'scale(0.99)'; }}
-                        onPointerUp={(e) => { (e.currentTarget as HTMLElement).style.transform = ''; }}
-                        onPointerLeave={(e) => { (e.currentTarget as HTMLElement).style.transform = ''; }}
                       >
                         <div className="flex-1 min-w-0">
                           <p className="font-sans" style={{ fontSize: '10px', fontWeight: 500, letterSpacing: '0.12em', lineHeight: 1, color: 'var(--color-text-tertiary)', opacity: 0.55, marginBottom: '4px' }}>
