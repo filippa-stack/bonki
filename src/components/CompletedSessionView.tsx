@@ -164,8 +164,8 @@ export default function CompletedSessionView({
     <div className="min-h-screen page-bg">
       <Header title={cardTitle} showBack backTo={categoryId ? `/category/${categoryId}` : '/'} />
 
-      <div className="px-6 pt-title-above pb-8">
-        <div className="max-w-md mx-auto space-y-8 pb-8">
+      <div className="px-6 pb-8" style={{ paddingTop: '32px' }}>
+        <div className="max-w-md mx-auto pb-8" style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
 
           {/* Completion header — heading first, quiet date below */}
           <motion.div
