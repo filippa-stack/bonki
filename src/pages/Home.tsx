@@ -237,7 +237,7 @@ export default function Home() {
   };
 
   return (
-    <div ref={scrollRef} className="min-h-screen flex flex-col overflow-y-auto" style={{ height: '100vh', backgroundColor: 'hsl(36, 18%, 93%)' }}>
+    <div ref={scrollRef} className="min-h-screen flex flex-col overflow-y-auto" style={{ height: '100vh', backgroundColor: 'hsl(36, 15%, 91%)' }}>
       {/* 7+ day return overlay */}
       <AnimatePresence>
         {showReturnOverlay && (
@@ -364,15 +364,15 @@ export default function Home() {
                         className="cursor-pointer"
                          style={{
                           borderRadius: '0 14px 14px 0',
-                          borderLeft: '2px solid hsla(158, 32%, 14%, 0.70)',
+                          borderLeft: '3px solid hsl(158, 32%, 14%)',
                           padding: '20px',
                           minHeight: '48px',
                           display: 'flex',
                           alignItems: 'center',
                           justifyContent: 'space-between',
                           gap: '8px',
-                          background: 'hsl(36, 16%, 90%)',
-                          boxShadow: '0 2px 8px hsla(0, 0%, 0%, 0.06)',
+                          background: 'hsl(36, 20%, 97%)',
+                          boxShadow: '0 1px 3px hsla(30, 15%, 50%, 0.08)',
                           transition: 'transform 120ms ease-out, box-shadow 120ms ease-out, background-color 0.15s ease',
                         }}
                          onPointerDown={(e) => {
@@ -438,7 +438,7 @@ export default function Home() {
                         className="cursor-pointer"
                          style={{
                           borderRadius: '0 14px 14px 0',
-                          borderLeft: '2px solid hsla(36, 15%, 80%, 0.40)',
+                          borderLeft: 'none',
                           padding: '16px 18px',
                           minHeight: '72px',
                           display: 'flex',
@@ -446,7 +446,7 @@ export default function Home() {
                           justifyContent: 'space-between',
                           gap: '8px',
                           background: 'hsl(36, 20%, 97%)',
-                          boxShadow: 'none',
+                          boxShadow: '0 1px 3px hsla(30, 15%, 50%, 0.08)',
                           transition: 'transform 120ms ease-out, box-shadow 120ms ease-out, background-color 0.15s ease',
                         }}
                         onPointerDown={(e) => {
