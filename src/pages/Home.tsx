@@ -134,14 +134,15 @@ export default function Home() {
 
   // Merge server + optimistic completions
   const completedCardIds = useMemo(() => {
+    if (devState === 'browse') return []; // simulate fresh user
     const merged = new Set(serverCompletedCardIds);
     optimisticCardIds.forEach(id => merged.add(id));
     return Array.from(merged);
-  }, [serverCompletedCardIds, optimisticCardIds]);
+  }, [serverCompletedCardIds, optimisticCardIds, devState]);
 
   const effectiveCardId = normalizedSession.cardId ?? (devState === 'pairedActive' ? 'listening-presence' : null);
   // Prefer normalizedSession (refetched deterministically) over snapshot for resume banner
-  const resumeCardFromNormalized = normalizedSession.sessionId ? normalizedSession.cardId : null;
+  const resumeCardFromNormalized = devState === 'browse' ? null : (normalizedSession.sessionId ? normalizedSession.cardId : null);
 
   // Snapshot-derived values
   const snapshotLastActivityAt = selectLastActivityAt(snapshot);
@@ -179,10 +180,11 @@ export default function Home() {
   const SEVEN_DAYS_MS = 7 * 24 * 60 * 60 * 1000;
 
   const showReturnOverlay = useMemo(() => {
+    if (devState === 'browse') return false;
     if (returnOverlayDismissed) return false;
     if (lastActivityElapsed < SEVEN_DAYS_MS) return false;
     return !!(mode === 'active' || snapshotLastCompletedCardId || snapshotLastOpenedCardId);
-  }, [returnOverlayDismissed, lastActivityElapsed, mode, snapshotLastCompletedCardId, snapshotLastOpenedCardId]);
+  }, [devState, returnOverlayDismissed, lastActivityElapsed, mode, snapshotLastCompletedCardId, snapshotLastOpenedCardId]);
 
   const returnResumeCardId = normalizedSession.cardId || snapshotLastOpenedCardId || snapshotLastCompletedCardId || null;
 
@@ -201,7 +203,7 @@ export default function Home() {
   }, [categories]);
 
   // Dynamic recommendation logic
-  const resumeBannerCardId = snapshot?.sessions?.session?.card_id ?? null;
+  const resumeBannerCardId = devState === 'browse' ? null : (snapshot?.sessions?.session?.card_id ?? null);
   const resumeBannerCategoryId = useMemo(() => {
     if (!resumeBannerCardId) return null;
     const c = cards.find(c => c.id === resumeBannerCardId);
