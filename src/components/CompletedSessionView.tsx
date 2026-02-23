@@ -80,7 +80,7 @@ export default function CompletedSessionView({
           .from('step_reflections')
           .select('step_index, user_id, text, speaker_label')
           .eq('session_id', sessionRow.id)
-          .eq('state', 'locked'),
+          .in('state', ['locked', 'revealed', 'ready']),
         supabase
           .from('couple_takeaways')
           .select('content')
