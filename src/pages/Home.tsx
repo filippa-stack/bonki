@@ -474,7 +474,7 @@ export default function Home() {
                         className="cursor-pointer"
                          style={{
                           borderRadius: '12px',
-                          padding: '20px 20px 20px 17px',
+                          padding: '20px',
                           minHeight: '48px',
                           display: 'flex',
                           alignItems: 'center',
@@ -482,14 +482,17 @@ export default function Home() {
                           gap: '12px',
                           background: 'hsl(36, 20%, 97%)',
                           border: '1px solid hsl(36, 15%, 86%)',
-                          borderLeft: '2px solid hsl(158, 32%, 14%)',
                           boxShadow: '0 1px 3px hsla(30, 20%, 35%, 0.08), 0 0.5px 1px hsla(30, 20%, 35%, 0.05)',
                           transition: 'transform 180ms ease-out, box-shadow 180ms ease-out',
+                          position: 'relative' as const,
+                          overflow: 'hidden',
                         }}
                          onPointerDown={(e) => { (e.currentTarget as HTMLElement).style.transform = 'scale(0.99)'; }}
                          onPointerUp={(e) => { (e.currentTarget as HTMLElement).style.transform = ''; }}
                          onPointerLeave={(e) => { (e.currentTarget as HTMLElement).style.transform = ''; }}
                       >
+                        {/* Inset accent bar */}
+                        <span aria-hidden style={{ position: 'absolute', left: '6px', top: '8px', bottom: '8px', width: '2px', borderRadius: '1px', background: 'hsl(158, 32%, 14%)' }} />
                         <div className="flex-1 min-w-0">
                           <p className="font-sans uppercase" style={{ fontSize: '10px', letterSpacing: '0.06em', color: 'var(--accent-text)', opacity: 0.8, marginBottom: '4px' }}>
                             Rekommenderad start
