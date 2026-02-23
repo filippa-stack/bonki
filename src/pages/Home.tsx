@@ -329,8 +329,8 @@ export default function Home() {
               );
             })()}
 
-            {/* 28px spacing before categories */}
-            <div style={{ height: '28px' }} />
+            {/* Spacing before categories */}
+            <div style={{ height: '36px' }} />
 
             {/* Recommendation section */}
             {recommendedCategory && (() => {
@@ -346,7 +346,7 @@ export default function Home() {
                         fontSize: '11px',
                         fontFamily: 'var(--font-sans)',
                         color: '#8B5E1A',
-                        marginBottom: '12px',
+                        marginBottom: '14px',
                         display: 'block',
                         textTransform: 'uppercase',
                         letterSpacing: '0.1em',
@@ -372,6 +372,7 @@ export default function Home() {
                           justifyContent: 'space-between',
                           gap: '8px',
                           background: 'hsl(36, 22%, 96%)',
+                          boxShadow: '0 2px 8px hsla(0, 0%, 0%, 0.06)',
                           transition: 'transform 120ms ease-out, box-shadow 120ms ease-out, background-color 0.15s ease',
                         }}
                         onPointerDown={(e) => {
@@ -387,7 +388,7 @@ export default function Home() {
                             {recCat.title}
                           </h3>
                           {recCat.entryLine && (
-                            <p className="font-serif" style={{ fontSize: '15px', color: 'var(--color-text-secondary)', marginTop: '8px' }}>
+                            <p className="font-serif" style={{ fontSize: '16px', color: 'var(--color-text-secondary)', marginTop: '8px' }}>
                               {recCat.entryLine}
                             </p>
                           )}
@@ -402,7 +403,7 @@ export default function Home() {
             })()}
 
             {/* Categories */}
-            <div className="px-6" style={{ paddingBottom: 'max(calc(32px + env(safe-area-inset-bottom, 0px)), 64px)' }}>
+            <div className="px-6" style={{ paddingBottom: '32px' }}>
               <div className="flex flex-col" style={{ gap: '8px' }}>
                 {(recommendedCategory ? sortedCategories.filter(c => c.id !== recommendedCategory.id) : sortedCategories).map((category, index) => {
                   const globalIndex = sortedCategories.findIndex(c => c.id === category.id);
@@ -486,7 +487,7 @@ export default function Home() {
                             {category.entryLine && (
                               <p
                                 className="font-serif"
-                                style={{ fontSize: '15px', color: 'var(--color-text-secondary)', marginTop: '8px' }}
+                                style={{ fontSize: '16px', color: 'var(--color-text-secondary)', marginTop: '8px' }}
                               >
                                 {category.entryLine}
                               </p>
