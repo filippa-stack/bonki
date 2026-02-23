@@ -655,7 +655,7 @@ export default function Home() {
                 if (fullyCompletedCount === 0) return null;
                 const isAllDone = fullyCompletedCount >= totalCategories;
                 return (
-                  <div style={{ textAlign: 'center', marginTop: '32px', paddingBottom: '24px' }}>
+                  <div style={{ textAlign: 'center', marginTop: '32px', paddingBottom: '48px' }}>
                     <p style={{
                       fontFamily: 'var(--font-sans)',
                       fontSize: '12px',
