@@ -307,16 +307,16 @@ export default function CardView() {
   }, [serverStepIndex]);
 
   // ─── Session start screen — ritual gate before first question ───
-  // Skip if resuming mid-session or in archive/completion mode
-  const [hasStarted, setHasStarted] = useState(() => {
-    if (isResumed || isFromArchive) return true;
-    if (devState) return false;
-    return false;
+  // showStartScreen is a pure UX gate, decoupled from session state.
+  // Set true on mount for live mode; only cleared by explicit user tap.
+  const [showStartScreen, setShowStartScreen] = useState(() => {
+    if (isResumed || isFromArchive) return false;
+    if (devState === 'completed') return false;
+    // Always show start screen when entering a card in live mode
+    return true;
   });
-  // Auto-skip start screen when server says we're past step 0
-  useEffect(() => {
-    if (serverStepIndex > 0 && !hasStarted) setHasStarted(true);
-  }, [serverStepIndex, hasStarted]);
+
+  const hasStarted = !showStartScreen;
 
   const currentStepIndex =
     cardViewMode === 'archive'
@@ -808,9 +808,9 @@ export default function CardView() {
 
 
   // ─── Session start screen — ritual before first question ───
-  const showStartScreen = isLive && currentStepIndex === 0 && localPromptIndex === 0 && !hasStarted;
+  const shouldShowStartScreen = showStartScreen && isLive;
 
-  if (showStartScreen) {
+  if (shouldShowStartScreen) {
     return (
       <motion.div
         className="min-h-screen flex flex-col items-center justify-center px-6"
@@ -945,7 +945,7 @@ export default function CardView() {
             </p>
             <div style={{ display: 'flex', gap: '8px', justifyContent: 'center' }}>
               <button
-                onClick={() => { setStaleSession(false); setHasStarted(true); }}
+                onClick={() => { setStaleSession(false); setShowStartScreen(false); }}
                 style={{
                   fontFamily: 'Inter, sans-serif',
                   fontSize: '13px',
@@ -980,7 +980,7 @@ export default function CardView() {
 
         {/* Start button */}
         <button
-          onClick={() => setHasStarted(true)}
+          onClick={() => setShowStartScreen(false)}
           className="cta-primary"
           style={{ width: '60%', maxWidth: '280px' }}
         >
