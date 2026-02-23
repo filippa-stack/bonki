@@ -588,7 +588,7 @@ export default function Home() {
                         onPointerLeave={(e) => { (e.currentTarget as HTMLElement).style.transform = ''; }}
                       >
                         <div className="flex-1 min-w-0">
-                          <p className="font-sans uppercase" style={{ fontSize: '10px', letterSpacing: '0.08em', color: 'var(--color-text-tertiary)', opacity: 0.45 }}>
+                          <p className="font-sans" style={{ fontSize: '10px', fontWeight: 500, letterSpacing: '0.12em', lineHeight: 1, color: 'var(--color-text-tertiary)', opacity: 0.55, marginBottom: '4px' }}>
                             {String((RECOMMENDED_CATEGORY_ORDER as readonly string[]).indexOf(category.id) + 1).padStart(2, '0')}
                           </p>
                           <h3
