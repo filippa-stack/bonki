@@ -31,7 +31,7 @@ import SessionStepReflection from '@/components/SessionStepReflection';
 
 import StageInterstitial from '@/components/StageInterstitial';
 
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, ArrowLeft } from 'lucide-react';
 
 import CompletedSessionView from '@/components/CompletedSessionView';
 import LockedReflectionDisplay from '@/components/LockedReflectionDisplay';
@@ -674,7 +674,40 @@ export default function CardView() {
         <div style={{ opacity: 0.4, pointerEvents: 'none' }}>
           <Header title="" showBack backTo={category ? `/category/${category.id}` : '/'} />
         </div>
-        <div className="px-6 pt-title-above pb-16">
+        <div className="px-6 pt-title-above pb-16 relative">
+          {/* Back arrow — return to last step */}
+          <div style={{ position: 'absolute', top: '12px', left: '6px', zIndex: 2 }}>
+            <button
+              onClick={() => {
+                _setShowCompletion(false);
+                const lastStageIndex = STEP_ORDER.length - 1;
+                const lastSection = card.sections.find(s => s.type === STEP_ORDER[lastStageIndex]);
+                const lastPromptCount = lastSection?.prompts?.length ?? 1;
+                setLocalStepIndex(lastStageIndex);
+                setLocalPromptIndex(lastPromptCount - 1);
+              }}
+              aria-label="Tillbaka till sista steget"
+              style={{
+                minHeight: '44px',
+                minWidth: '44px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                background: 'none',
+                border: 'none',
+                cursor: 'pointer',
+                padding: '12px',
+              }}
+            >
+              <ArrowLeft
+                size={20}
+                style={{
+                  color: 'var(--color-text-tertiary)',
+                  opacity: 0.45,
+                }}
+              />
+            </button>
+          </div>
 
           {/* Temporal release */}
           <motion.div
