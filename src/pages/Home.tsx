@@ -275,7 +275,7 @@ export default function Home() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
             >
-              <h1 className="type-h1" style={{ color: 'var(--text-primary)', marginBottom: '48px' }}>
+              <h1 className="type-h1" style={{ color: 'var(--text-primary)', marginBottom: '32px' }}>
                 Ert utrymme
               </h1>
             </motion.div>
@@ -293,10 +293,11 @@ export default function Home() {
 
               return (
                 <motion.div
-                  className="px-6 mt-8"
+                  className="px-6"
                   initial={{ opacity: 0, y: 8 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                  style={{ marginBottom: '24px' }}
                 >
                   <div
                     onClick={() => { markNavigated(); navigate(`/card/${cardId}`, { state: { resumed: true } }); }}
@@ -305,26 +306,33 @@ export default function Home() {
                     onKeyDown={(e) => {
                       if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); navigate(`/card/${cardId}`, { state: { resumed: true } }); }
                     }}
-                    className="cursor-pointer flex items-center justify-between"
+                    className="cursor-pointer"
                     style={{
-                      borderRadius: '16px',
-                      padding: '20px 20px',
+                      borderRadius: '14px',
+                      padding: '16px 20px',
                       background: 'hsl(158, 30%, 14%)',
                       border: 'none',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      gap: '12px',
                     }}
                   >
                     <div className="flex-1 min-w-0">
-                      <p className="font-serif font-semibold" style={{ fontSize: '20px', color: 'hsl(36, 16%, 92%)', textWrap: 'balance', WebkitTextWrap: 'balance', maxWidth: '70%', hyphens: 'auto' } as React.CSSProperties}>
+                      <p className="font-sans" style={{ fontSize: '10px', fontWeight: 500, letterSpacing: '0.12em', textTransform: 'uppercase' as const, color: 'hsl(36, 16%, 92%)', opacity: 0.45, marginBottom: '6px', lineHeight: 1 }}>
+                        Ni var mitt i
+                      </p>
+                      <p className="font-serif" style={{ fontSize: '18px', fontWeight: 600, lineHeight: 1.35, color: 'hsl(36, 16%, 92%)', textWrap: 'balance', hyphens: 'auto', maxWidth: '80%' } as React.CSSProperties}>
                         {card?.title || cardId}
                       </p>
                       {cat && (
-                        <p className="font-sans mt-1" style={{ fontSize: '13px', color: '#C4821D', opacity: 0.75 }}>
+                        <p className="font-sans" style={{ fontSize: '12px', color: '#C4821D', opacity: 0.7, marginTop: '4px' }}>
                           {cat.title}
                         </p>
                       )}
                     </div>
-                    <span className="font-sans shrink-0 ml-3 flex items-center self-stretch" style={{ fontSize: '14px', fontWeight: 500, color: 'white', minWidth: '80px', justifyContent: 'flex-end' }}>
-                      Fortsätt<span style={{ marginLeft: '6px' }}>→</span>
+                    <span className="font-sans shrink-0 self-center" style={{ fontSize: '13px', fontWeight: 500, color: 'hsl(36, 16%, 92%)', opacity: 0.7 }}>
+                      Fortsätt<span style={{ marginLeft: '4px' }}>→</span>
                     </span>
                   </div>
                 </motion.div>
@@ -354,34 +362,26 @@ export default function Home() {
                       width: '100%',
                     }}>
                       <p style={{
-                        fontFamily: 'var(--font-sans)',
-                        fontSize: '11px',
-                        letterSpacing: '0.06em',
-                        textTransform: 'uppercase' as const,
-                        color: 'white',
-                        opacity: 0.55,
-                        marginBottom: '8px',
-                      }}>
-                        Välkommen, ni två.
-                      </p>
-                      <p style={{
-                        fontFamily: 'var(--font-serif)',
-                        fontSize: '20px',
-                        fontWeight: 600,
-                        color: 'white',
-                        lineHeight: 1.3,
-                        textWrap: 'balance',
-                        WebkitTextWrap: 'balance',
-                      } as React.CSSProperties}>
-                        Välj ett ämne och börja.
-                      </p>
-                      <p style={{
                         fontFamily: 'var(--font-serif)',
                         fontStyle: 'italic',
-                        fontSize: '14px',
-                        color: '#C4821D',
-                        marginTop: '8px',
-                      }}>
+                        fontSize: '15px',
+                        fontWeight: 400,
+                        color: 'hsl(36, 16%, 92%)',
+                        opacity: 0.6,
+                        lineHeight: 1.45,
+                        textWrap: 'balance',
+                      } as React.CSSProperties}>
+                        Det här är er plats att utforska tillsammans.
+                      </p>
+                      <p style={{
+                        fontFamily: 'var(--font-serif)',
+                        fontSize: '18px',
+                        fontWeight: 600,
+                        color: 'white',
+                        lineHeight: 1.35,
+                        textWrap: 'balance',
+                        marginTop: '10px',
+                      } as React.CSSProperties}>
                         Välj ett ämne och börja samtalet.
                       </p>
                     </div>
@@ -406,22 +406,24 @@ export default function Home() {
                     width: '100%',
                   }}>
                     <p style={{
-                      fontFamily: 'var(--font-sans)',
-                      fontSize: '11px',
-                      letterSpacing: '0.06em',
-                      textTransform: 'uppercase' as const,
-                      color: 'var(--color-text-tertiary)',
-                      opacity: 0.6,
-                      marginBottom: '8px',
-                    }}>
-                      Välkommen tillbaka.
+                      fontFamily: 'var(--font-serif)',
+                      fontStyle: 'italic',
+                      fontSize: '15px',
+                      fontWeight: 400,
+                      color: 'var(--color-text-secondary)',
+                      opacity: 0.7,
+                      lineHeight: 1.45,
+                      textWrap: 'balance',
+                    } as React.CSSProperties}>
+                      Skönt att ni är tillbaka.
                     </p>
                     <p style={{
                       fontFamily: 'var(--font-serif)',
-                      fontSize: '20px',
+                      fontSize: '18px',
                       fontWeight: 600,
                       color: 'var(--color-text-primary)',
-                      lineHeight: 1.3,
+                      lineHeight: 1.35,
+                      marginTop: '10px',
                     }}>
                       Vad vill ni utforska idag?
                     </p>
