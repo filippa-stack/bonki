@@ -681,20 +681,6 @@ export default function CardView() {
             </h2>
           </motion.div>
 
-          {/* Takeaway prompt */}
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-            className="max-w-md mx-auto"
-          >
-            <p
-              className="font-serif text-center"
-              style={{ fontSize: '18px', color: 'var(--color-text-primary)', opacity: 0.75, marginBottom: '16px' }}
-            >
-              Vad tar ni med er?
-            </p>
-          </motion.div>
 
           {/* Takeaway field */}
           <motion.div
@@ -1340,7 +1326,7 @@ function CompletionTakeaway({ sessionId, spaceId }: { sessionId: string | null; 
           font-style: italic !important;
           font-size: 16px !important;
           color: #8B5E1A !important;
-          opacity: 0.60 !important;
+          opacity: 0.75 !important;
           text-align: center !important;
           transition: opacity 300ms ease !important;
         }
