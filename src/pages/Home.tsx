@@ -454,8 +454,7 @@ export default function Home() {
                         className="cursor-pointer"
                          style={{
                           borderRadius: '0 14px 14px 0',
-                          borderLeft: '3px solid hsl(158, 32%, 14%)',
-                          padding: '20px',
+                          padding: '18px 16px 18px 20px',
                           minHeight: '48px',
                           display: 'flex',
                           alignItems: 'center',
@@ -463,6 +462,7 @@ export default function Home() {
                           gap: '8px',
                           background: 'hsl(36, 20%, 97%)',
                           border: '1px solid hsl(36, 15%, 86%)',
+                          borderLeft: '3px solid hsl(158, 32%, 14%)',
                           boxShadow: '0 2px 8px hsla(30, 20%, 35%, 0.10), 0 1px 2px hsla(30, 20%, 35%, 0.06)',
                           transition: 'transform 120ms ease-out, box-shadow 120ms ease-out, background-color 0.15s ease',
                         }}
@@ -483,11 +483,11 @@ export default function Home() {
                           <p className="font-sans uppercase" style={{ fontSize: '10px', letterSpacing: '0.06em', color: 'var(--accent-text)', opacity: 0.8, marginBottom: '4px' }}>
                             Rekommenderad start
                           </p>
-                          <h3 className="type-h3" style={{ color: 'var(--text-primary)', fontWeight: 500, fontSize: '16px', textWrap: 'balance', hyphens: 'auto', marginTop: '2px' }}>
+                          <h3 className="font-serif" style={{ color: 'var(--color-text-primary)', fontWeight: 600, fontSize: '18px', textWrap: 'balance', hyphens: 'auto', marginTop: '2px' }}>
                             {recCat.title}
                           </h3>
                           {recCat.entryLine && (
-                            <p className="font-serif" style={{ fontSize: '16px', color: 'var(--color-text-secondary)', marginTop: '8px' }}>
+                            <p className="font-serif" style={{ fontSize: '14px', color: 'var(--color-text-secondary)', opacity: 0.80, lineHeight: 1.5, marginTop: '8px' }}>
                               {recCat.entryLine}
                             </p>
                           )}
@@ -503,7 +503,7 @@ export default function Home() {
 
             {/* Categories */}
             <div className="px-6" style={{ paddingBottom: '48px' }}>
-              <div className="flex flex-col" style={{ gap: '8px' }}>
+              <div className="flex flex-col" style={{ gap: '10px' }}>
                 {(recommendedCategory ? sortedCategories.filter(c => c.id !== recommendedCategory.id) : sortedCategories).map((category, index) => {
                   const globalIndex = sortedCategories.findIndex(c => c.id === category.id);
                   const accent = getCategoryAccent(globalIndex >= 0 ? globalIndex : index);
@@ -533,7 +533,7 @@ export default function Home() {
                          style={{
                           borderRadius: '0 14px 14px 0',
                           borderLeft: 'none',
-                          padding: '16px 18px',
+                          padding: '18px 16px 18px 20px',
                           minHeight: '72px',
                           display: 'flex',
                           alignItems: 'center',
@@ -559,15 +559,15 @@ export default function Home() {
                       >
                         <div className="flex items-center justify-between gap-3 w-full">
                           <div className="flex-1 min-w-0">
-                            <p className="font-sans uppercase" style={{ fontSize: '10px', letterSpacing: '0.08em', color: 'var(--color-text-tertiary)', opacity: 0.40 }}>
+                            <p className="font-sans uppercase" style={{ fontSize: '10px', letterSpacing: '0.08em', color: 'var(--color-text-tertiary)', opacity: 0.45 }}>
                               {String((RECOMMENDED_CATEGORY_ORDER as readonly string[]).indexOf(category.id) + 1).padStart(2, '0')}
                             </p>
                             <h3
-                              className="type-h3"
-                            style={{
-                              color: 'var(--text-primary)',
-                                fontWeight: 500,
-                                fontSize: '16px',
+                              className="font-serif"
+                              style={{
+                                color: 'var(--color-text-primary)',
+                                fontWeight: 600,
+                                fontSize: '18px',
                                 textWrap: 'balance',
                                 hyphens: 'auto',
                                 marginTop: '2px',
@@ -578,7 +578,7 @@ export default function Home() {
                             {category.entryLine && (
                               <p
                                 className="font-serif"
-                                style={{ fontSize: '16px', color: 'var(--color-text-secondary)', marginTop: '8px' }}
+                                style={{ fontSize: '14px', color: 'var(--color-text-secondary)', opacity: 0.80, lineHeight: 1.5, marginTop: '6px' }}
                               >
                                 {category.entryLine}
                               </p>
