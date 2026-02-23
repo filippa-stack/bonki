@@ -234,7 +234,7 @@ function CardEntry({ card, index, isCompleted = false, isInProgress = false, onN
                 fontSize: '17px',
                 fontWeight: 500,
                 color: isCompleted ? 'var(--color-text-primary)' : 'var(--color-text-primary)',
-                opacity: isCompleted ? 0.45 : 1,
+                opacity: isCompleted ? 0.55 : 1,
               }}
             >
               {card.title}
@@ -242,7 +242,7 @@ function CardEntry({ card, index, isCompleted = false, isInProgress = false, onN
             {card.subtitle && (
               <p
                 className="type-meta mt-px"
-                style={{ color: 'var(--color-text-secondary)', opacity: isCompleted ? 0.35 : 0.80 }}
+                style={{ color: 'var(--color-text-secondary)', opacity: isCompleted ? 0.45 : 0.80 }}
               >
                 {card.subtitle}
               </p>
