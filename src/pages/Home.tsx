@@ -365,7 +365,7 @@ export default function Home() {
                         className="cursor-pointer"
                         style={{
                           borderRadius: '0 14px 14px 0',
-                          borderLeft: `3px solid ${recAccent}`,
+                          borderLeft: '3px solid #8B5E1A',
                           padding: '20px',
                           minHeight: '48px',
                           display: 'flex',
@@ -433,7 +433,7 @@ export default function Home() {
                         className="cursor-pointer"
                          style={{
                           borderRadius: '0 14px 14px 0',
-                          borderLeft: `3px solid ${accent}`,
+                          borderLeft: '3px solid hsla(36, 15%, 80%, 0.40)',
                           padding: '16px 18px',
                           minHeight: '72px',
                           display: 'flex',
@@ -468,7 +468,7 @@ export default function Home() {
                       >
                         <div className="flex items-center justify-between gap-3 w-full">
                           <div className="flex-1 min-w-0">
-                            <p className="font-sans uppercase" style={{ fontSize: '10px', letterSpacing: '0.08em', color: accent, opacity: 0.6 }}>
+                            <p className="font-sans uppercase" style={{ fontSize: '11px', letterSpacing: '0.08em', color: 'var(--color-text-tertiary)', opacity: 0.5 }}>
                               {String((RECOMMENDED_CATEGORY_ORDER as readonly string[]).indexOf(category.id) + 1).padStart(2, '0')}
                             </p>
                             <h3
