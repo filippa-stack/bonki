@@ -482,7 +482,7 @@ export default function Home() {
                           gap: '12px',
                           background: 'hsl(36, 20%, 97%)',
                           border: '1px solid hsl(36, 15%, 86%)',
-                          borderLeft: '3px solid hsl(158, 32%, 14%)',
+                          borderLeft: '2px solid hsl(158, 32%, 14%)',
                           boxShadow: '0 1px 3px hsla(30, 20%, 35%, 0.08), 0 0.5px 1px hsla(30, 20%, 35%, 0.05)',
                           transition: 'transform 180ms ease-out, box-shadow 180ms ease-out',
                         }}
