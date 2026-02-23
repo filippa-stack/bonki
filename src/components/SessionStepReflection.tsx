@@ -58,38 +58,34 @@ export default function SessionStepReflection({
 
   return (
     <div style={{ marginTop: '16px', marginBottom: '1px' }}>
-      <textarea
-        value={displayText}
-        onChange={(e) => handleChange(e.target.value)}
-        placeholder="Skriv."
-        inputMode="text"
-        autoCorrect="on"
-        autoCapitalize="sentences"
-        spellCheck={true}
-        className="w-full resize-none focus:outline-none focus:ring-0 placeholder:[color:#8C8681]"
-        style={{
-          minHeight: '120px',
-          maxHeight: '240px',
-          overflow: 'auto',
-          fontFamily: 'var(--font-serif)',
-          fontSize: '17px',
-          lineHeight: 1.6,
-          color: 'var(--color-ink)',
-          background: isReflectionStep ? 'hsl(36, 20%, 96%)' : 'var(--surface-raised)',
-          border: isReflectionStep ? '1px solid hsl(36, 18%, 84%)' : '1px solid hsl(var(--border) / 0.20)',
-          borderRadius: '12px',
-          padding: '16px',
-          transition: 'border-color 200ms ease, background-color 400ms ease, box-shadow 0.2s ease',
-        }}
-        onFocus={(e) => {
-          e.currentTarget.style.borderColor = isReflectionStep ? 'hsl(36, 18%, 74%)' : 'hsl(var(--border) / 0.40)';
-          e.currentTarget.style.boxShadow = '0 0 0 2px hsla(38, 70%, 48%, 0.15)';
-        }}
-        onBlur={(e) => {
-          e.currentTarget.style.borderColor = isReflectionStep ? 'hsl(36, 18%, 84%)' : 'hsl(var(--border) / 0.20)';
-          e.currentTarget.style.boxShadow = 'none';
-        }}
-      />
+      <div className="reflection-field-wrapper">
+        <textarea
+          value={displayText}
+          onChange={(e) => handleChange(e.target.value)}
+          placeholder="Vad vill ni minnas från det här samtalet?"
+          inputMode="text"
+          autoCorrect="on"
+          autoCapitalize="sentences"
+          spellCheck={true}
+          className="w-full resize-none focus:outline-none focus:ring-0 placeholder:font-serif placeholder:italic placeholder:text-[14px]"
+          style={{
+            minHeight: '120px',
+            maxHeight: '240px',
+            overflow: 'auto',
+            fontFamily: 'var(--font-serif)',
+            fontSize: '17px',
+            lineHeight: 1.6,
+            color: 'var(--color-ink)',
+            backgroundColor: 'hsl(36, 20%, 95%)',
+            border: 'none',
+            borderBottom: '1px solid hsl(36, 12%, 78%)',
+            borderRadius: 0,
+            padding: '16px',
+            boxShadow: 'none',
+            transition: 'border-color 200ms ease',
+          }}
+        />
+      </div>
       <div style={{ minHeight: '44px', display: 'flex', alignItems: 'center', justifyContent: 'center', marginTop: '8px' }}>
         <span
           className="font-serif"
