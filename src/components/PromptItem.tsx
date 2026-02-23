@@ -113,13 +113,13 @@ export default function PromptItem({ prompt, index, sectionType, preamble }: Pro
             transition={{ duration: 0.45, delay: 0.05, ease: enterEase }}
             style={{
               color: 'var(--color-text-secondary)',
-              opacity: 0.80,
+              opacity: 0.65,
               fontWeight: 400,
               fontStyle: 'normal',
-              fontSize: '15px',
-              lineHeight: 1.65,
+              fontSize: '14px',
+              lineHeight: 1.7,
               textAlign: 'center',
-              marginBottom: '32px',
+              marginBottom: '40px',
             }}
           >
             {preamble}
@@ -133,7 +133,7 @@ export default function PromptItem({ prompt, index, sectionType, preamble }: Pro
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.45, ease: enterEase }}
-            className={preamble ? 'mt-8' : ''}
+            className={preamble ? 'mt-10' : ''}
             style={{
               backgroundColor: 'hsl(38, 40%, 97%)',
               border: '1px solid hsl(38, 30%, 90%)',
@@ -168,7 +168,7 @@ export default function PromptItem({ prompt, index, sectionType, preamble }: Pro
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.45, ease: enterEase }}
-            className={`w-full text-center space-y-5 ${preamble ? 'mt-8' : ''}`}
+            className={`w-full text-center space-y-5 ${preamble ? 'mt-10' : ''}`}
           >
             {prompt.text.split('\n').filter(p => p.trim() !== '').map((para, i) => (
               <p
