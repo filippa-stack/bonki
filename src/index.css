@@ -24,8 +24,8 @@ h1, h2, h3,
 @layer base {
   :root {
     /* ── Foundation neutrals (warm-paper scale) ── */
-    --neutral-50:  36 18% 97%;     /* Base bg — page background */
-    --neutral-100: 36 14% 97.8%;   /* Raised — cards, elevated surfaces (closer to base) */
+    --neutral-50:  36 15% 95.5%;   /* Base bg — warm linen */
+    --neutral-100: 38 18% 98%;     /* Raised — vellum, saffron-harmonic */
     --neutral-200: 36 18% 96%;     /* Notes, reflections, sunken areas */
     --neutral-300: 36 12% 88%;     /* Borders, dividers */
 
