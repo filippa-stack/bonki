@@ -511,7 +511,7 @@ export default function CardView() {
         toast('Din session avslutades. Ni kan fortsätta härifrån.', {
           duration: 4000,
           style: {
-            background: 'hsl(36, 20%, 95%)',
+            background: 'var(--surface-base)',
             color: 'var(--color-text-primary)',
             fontFamily: 'Inter, sans-serif',
             fontSize: '14px',
@@ -537,7 +537,7 @@ export default function CardView() {
       toast('Något gick fel. Försök igen.', {
         duration: 4000,
         style: {
-          background: 'hsl(36, 20%, 95%)',
+          background: 'var(--surface-base)',
           color: 'var(--color-text-primary)',
           fontFamily: 'Inter, sans-serif',
           fontSize: '14px',
@@ -555,7 +555,7 @@ export default function CardView() {
             toast('Din session avslutades. Ni kan fortsätta härifrån.', {
               duration: 4000,
               style: {
-                background: 'hsl(36, 20%, 95%)',
+                background: 'var(--surface-base)',
                 color: 'var(--color-text-primary)',
                 fontFamily: 'Inter, sans-serif',
                 fontSize: '14px',
@@ -666,7 +666,7 @@ export default function CardView() {
     return (
       <motion.div
         className="min-h-screen"
-        style={{ backgroundColor: 'hsl(36, 28%, 93%)' }}
+        style={{ backgroundColor: 'var(--surface-base)' }}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: EMOTION, ease: [...EASE] }}
@@ -871,7 +871,7 @@ export default function CardView() {
     return (
       <motion.div
         className="min-h-screen flex flex-col items-center justify-center px-6"
-        style={{ backgroundColor: 'hsl(36, 20%, 95%)', position: 'relative' }}
+        style={{ backgroundColor: 'var(--surface-base)', position: 'relative' }}
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
@@ -965,7 +965,7 @@ export default function CardView() {
         </p>
 
         {/* Divider */}
-        <div style={{ width: '100%', maxWidth: '200px', height: '1px', background: 'hsl(36, 12%, 84%)', margin: '20px auto' }} />
+        <div style={{ width: '100%', maxWidth: '200px', height: '1px', background: 'hsl(var(--neutral-300))', margin: '20px auto' }} />
 
         {/* Mechanics */}
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px', marginBottom: '24px' }}>
@@ -983,8 +983,8 @@ export default function CardView() {
             style={{
               width: '100%',
               maxWidth: '360px',
-              background: 'hsl(36, 20%, 92%)',
-              borderBottom: '1px solid hsl(36, 15%, 82%)',
+              background: 'var(--surface-sunken)',
+              borderBottom: '1px solid hsl(var(--neutral-300))',
               borderRadius: '8px',
               padding: '12px 20px',
               marginBottom: '20px',
@@ -1008,7 +1008,7 @@ export default function CardView() {
                   fontSize: '13px',
                   padding: '8px 16px',
                   background: 'none',
-                  border: '1px solid hsl(36, 15%, 78%)',
+                  border: '1px solid hsl(var(--neutral-300))',
                   borderRadius: '6px',
                   cursor: 'pointer',
                   color: 'var(--color-text-primary)',
@@ -1023,7 +1023,7 @@ export default function CardView() {
                   fontSize: '13px',
                   padding: '8px 16px',
                   background: 'var(--color-text-primary)',
-                  color: 'hsl(36, 20%, 95%)',
+                  color: 'var(--surface-base)',
                   border: 'none',
                   borderRadius: '6px',
                   cursor: 'pointer',
@@ -1075,7 +1075,7 @@ export default function CardView() {
     <motion.div
       className="min-h-screen"
       style={{
-        backgroundColor: isLive && isReflectionStep ? 'hsl(36, 22%, 92%)' : 'hsl(36, 20%, 95%)',
+        backgroundColor: 'var(--surface-base)',
         transition: 'background-color 0.6s ease',
       }}
       initial={
@@ -1155,7 +1155,7 @@ export default function CardView() {
                   style={{
                     width: '80%',
                     height: '20px',
-                    backgroundColor: 'hsl(36, 15%, 88%)',
+                    backgroundColor: 'hsl(var(--neutral-300) / 0.6)',
                     borderRadius: '4px',
                     animation: 'skeletonPulse 2s ease-in-out infinite',
                   }}
@@ -1164,7 +1164,7 @@ export default function CardView() {
                   style={{
                     width: '60%',
                     height: '20px',
-                    backgroundColor: 'hsl(36, 15%, 88%)',
+                    backgroundColor: 'hsl(var(--neutral-300) / 0.6)',
                     borderRadius: '4px',
                     animation: 'skeletonPulse 2s ease-in-out infinite',
                     animationDelay: '0.3s',
@@ -1436,15 +1436,15 @@ function CompletionTakeaway({ sessionId, spaceId }: { sessionId: string | null; 
           maxHeight: '240px',
           overflow: 'auto',
           backgroundColor: isFocused || hasFill
-            ? 'hsl(36, 30%, 93%)'
-            : 'hsl(36, 30%, 87%)',
+            ? 'var(--surface-raised)'
+            : 'var(--surface-sunken)',
           border: 'none',
           borderTop: isFocused
             ? '1.5px solid #C4821D'
-            : '1px solid hsl(36, 18%, 80%)',
+            : '1px solid hsl(var(--neutral-300))',
           borderBottom: isFocused
             ? '1.5px solid #C4821D'
-            : '1px solid hsl(36, 18%, 80%)',
+            : '1px solid hsl(var(--neutral-300))',
           borderRadius: 0,
           padding: '16px 0 12px 0',
           fontFamily: hasFill ? 'Inter, sans-serif' : 'var(--font-serif)',
