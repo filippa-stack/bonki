@@ -390,8 +390,13 @@ export default function CardView() {
       return;
     }
 
-    // ── Guard: ensure we have a valid session before writing ──
-    let sessionId = normalizedSession.sessionId;
+    // ── Always fetch fresh session ID to avoid stale/abandoned references ──
+    let sessionId: string | null = null;
+    {
+      const { data: freshState } = await supabase.rpc('get_active_session_state');
+      const row = Array.isArray(freshState) ? freshState[0] : freshState;
+      sessionId = row?.session_id ?? null;
+    }
 
     if (!sessionId) {
       const card = getCardById(cardId);
@@ -404,11 +409,9 @@ export default function CardView() {
           p_step_count: STEP_ORDER.length,
         });
         if (!actErr) {
-          // Read session ID directly — React state won't update in this closure
           const { data: freshState } = await supabase.rpc('get_active_session_state');
           const row = Array.isArray(freshState) ? freshState[0] : freshState;
           sessionId = row?.session_id ?? null;
-          // Update context in background for other consumers
           normalizedSession.refetch();
         }
       }
@@ -468,6 +471,32 @@ export default function CardView() {
     const result = await attemptRpc(1);
 
     if (result === 'session_inactive') {
+      // Session was abandoned/replaced — try to recover with the current active session
+      if (isDevToolsEnabled()) console.log('[step-complete] session_inactive — attempting recovery');
+      const { data: freshState } = await supabase.rpc('get_active_session_state');
+      const row = Array.isArray(freshState) ? freshState[0] : freshState;
+      const freshSessionId = row?.session_id ?? null;
+
+      if (freshSessionId && freshSessionId !== sessionId && row?.card_id === cardId) {
+        // We have a valid active session for THIS card — retry with it
+        if (isDevToolsEnabled()) console.log('[step-complete] recovered fresh sessionId:', freshSessionId);
+        const { data: retryData, error: retryErr } = await supabase.rpc('complete_couple_session_step', {
+          p_session_id: freshSessionId,
+          p_step_index: displayIndex,
+        });
+        if (!retryErr) {
+          const retryResult = Array.isArray(retryData) ? retryData[0] : retryData;
+          if (retryResult?.is_session_complete) {
+            setShowCompletion(true);
+          } else if (!isLastStep) {
+            setLocalStepIndex(displayIndex + 1);
+          }
+          normalizedSession.refetch();
+          return;
+        }
+      }
+
+      // If recovery failed or session is for a different card, redirect home
       navigate('/');
       toastOnce('session_ended', () =>
         toast('Din session avslutades. Ni kan fortsätta härifrån.', {
