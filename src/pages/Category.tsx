@@ -88,7 +88,7 @@ export default function Category() {
   }
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: 'hsl(36, 18%, 94%)', transition: 'background-color 0.4s ease' }}>
+    <div className="min-h-screen" style={{ backgroundColor: 'var(--surface-base)', transition: 'background-color 0.4s ease' }}>
       <Header title={category?.title} showBack backTo="/" />
 
       <div className="px-6 pt-6 pb-24 flex flex-col">
@@ -200,8 +200,8 @@ function CardEntry({ card, index, isCompleted = false, isInProgress = false, onN
         style={{
           padding: '18px 16px 18px 20px',
           marginBottom: isLast ? '0' : '10px',
-          background: isCompleted ? 'rgba(0,0,0,0.015)' : 'hsl(36, 20%, 97%)',
-          border: '1px solid hsl(36, 15%, 86%)',
+          background: isCompleted ? 'rgba(0,0,0,0.015)' : 'var(--surface-raised)',
+          border: '1px solid hsl(var(--neutral-300))',
           borderLeft: `3px solid ${accentColor}`,
           borderRadius: '14px',
           boxShadow: '0 2px 8px hsla(30, 20%, 35%, 0.10), 0 1px 2px hsla(30, 20%, 35%, 0.06)',

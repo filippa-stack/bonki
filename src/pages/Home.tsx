@@ -239,7 +239,7 @@ export default function Home() {
   };
 
   return (
-    <div ref={scrollRef} className="min-h-screen flex flex-col overflow-y-auto" style={{ height: '100vh', backgroundColor: 'hsl(36, 15%, 91%)' }}>
+    <div ref={scrollRef} className="min-h-screen flex flex-col overflow-y-auto" style={{ height: '100vh', backgroundColor: 'var(--surface-base)' }}>
       {/* 7+ day return overlay */}
       <AnimatePresence>
         {showReturnOverlay && (
@@ -403,7 +403,7 @@ export default function Home() {
                   style={{ marginBottom: '24px' }}
                 >
                   <div style={{
-                    background: 'hsl(36, 20%, 93%)',
+                    background: 'var(--surface-raised)',
                     borderRadius: '12px',
                       padding: '20px 20px 20px 17px',
                       borderLeft: '3px solid hsl(158, 32%, 14%)',
@@ -480,8 +480,8 @@ export default function Home() {
                           alignItems: 'center',
                           justifyContent: 'space-between',
                           gap: '12px',
-                          background: 'hsl(36, 20%, 97%)',
-                          border: '1px solid hsl(36, 15%, 86%)',
+                          background: 'var(--surface-raised)',
+                          border: '1px solid hsl(var(--neutral-300))',
                           boxShadow: '0 1px 3px hsla(30, 20%, 35%, 0.08), 0 0.5px 1px hsla(30, 20%, 35%, 0.05)',
                           transition: 'transform 180ms ease-out, box-shadow 180ms ease-out',
                           position: 'relative' as const,
@@ -587,8 +587,8 @@ export default function Home() {
                           alignItems: 'center',
                           justifyContent: 'space-between',
                           gap: '12px',
-                          background: 'hsl(36, 20%, 97%)',
-                          border: '1px solid hsl(36, 15%, 86%)',
+                          background: 'var(--surface-raised)',
+                          border: '1px solid hsl(var(--neutral-300))',
                           boxShadow: '0 1px 3px hsla(30, 20%, 35%, 0.08), 0 0.5px 1px hsla(30, 20%, 35%, 0.05)',
                           transition: 'transform 180ms ease-out, box-shadow 180ms ease-out',
                         }}
