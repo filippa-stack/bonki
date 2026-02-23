@@ -24,6 +24,8 @@ interface SectionViewProps {
   stageIndex?: number;
   isLive?: boolean;
   isReflectionStep?: boolean;
+  /** Whether this is an exercise step — uses tighter padding */
+  isExerciseStep?: boolean;
   /** Callback for the back arrow within the question surface */
   onBack?: () => void;
   /** Whether the back arrow should be shown (hidden at stage 0, prompt 0) */
@@ -43,7 +45,7 @@ const normalizePrompt = (prompt: string | Prompt): Prompt => {
  * CardView passes only the section matching current_step_index.
  */
 const SectionView = forwardRef<SectionViewHandle, SectionViewProps>(
-  function SectionView({ section, promptIndex = 0, coupleSpaceId, sessionId, cardId, stageIndex, isLive, isReflectionStep, onBack, showBackArrow = false }, ref) {
+  function SectionView({ section, promptIndex = 0, coupleSpaceId, sessionId, cardId, stageIndex, isLive, isReflectionStep, isExerciseStep, onBack, showBackArrow = false }, ref) {
     // If section has no prompts but has content, treat content as the prompt
     const hasExplicitPrompts = !!(section.prompts && section.prompts.length > 0);
     const rawPrompts = hasExplicitPrompts
@@ -63,7 +65,7 @@ const SectionView = forwardRef<SectionViewHandle, SectionViewProps>(
       promptIndex === 0;
 
     return (
-      <div className="py-12 relative">
+      <div className={isExerciseStep ? "py-4 relative" : "py-12 relative"}>
         {/* Back arrow — top left, live sessions only, hidden at first question */}
         {isLive && showBackArrow && onBack && (
           <div style={{ position: 'absolute', top: '12px', left: '0px', zIndex: 2 }}>

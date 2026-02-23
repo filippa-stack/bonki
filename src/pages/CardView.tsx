@@ -1160,6 +1160,7 @@ export default function CardView() {
                   stageIndex={currentStepIndex}
                   isLive={isLive}
                   isReflectionStep={isReflectionStep}
+                  isExerciseStep={isExerciseStep}
                   showBackArrow={isLive && !(currentStepIndex === 0 && localPromptIndex === 0)}
                   onBack={isLive ? (() => {
                     if (localPromptIndex > 0) {

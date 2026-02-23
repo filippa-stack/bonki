@@ -72,7 +72,7 @@ export default function SessionStepReflection({
   const hasFill = displayText.trim().length > 0;
 
   return (
-    <div className="reflection-field-wrapper" style={{ marginTop: '16px', marginBottom: '1px' }}>
+    <div className="reflection-field-wrapper" style={{ marginTop: '12px', marginBottom: '1px' }}>
       <textarea
         value={displayText}
         onChange={(e) => handleChange(e.target.value)}
@@ -122,20 +122,7 @@ export default function SessionStepReflection({
           opacity: 0 !important;
         }
       `}</style>
-      <div style={{ minHeight: '44px', display: 'flex', alignItems: 'center', justifyContent: 'center', marginTop: '8px' }}>
-        <span
-          className="font-serif"
-          style={{
-            fontSize: '12px',
-            fontStyle: 'normal',
-            color: '#8B5E1A',
-            opacity: 0.65,
-            textAlign: 'center',
-          }}
-        >
-          Era gemensamma tankar.
-        </span>
-      </div>
+      {/* Removed 'Era gemensamma tankar.' label — placeholder communicates shared ownership */}
 
       {stepIndex === 0 && isFirstVisit && (
         <p
@@ -146,7 +133,16 @@ export default function SessionStepReflection({
         </p>
       )}
 
-      <div className="mt-6 flex flex-col items-center" style={{ paddingBottom: 'calc(16px + env(safe-area-inset-bottom, 0px))' }}>
+      <div
+        className="flex flex-col items-center"
+        style={{
+          paddingBottom: 'calc(16px + env(safe-area-inset-bottom, 0px))',
+          marginTop: '16px',
+          position: 'sticky',
+          bottom: '24px',
+          zIndex: 5,
+        }}
+      >
         <button
           onClick={handleAdvance}
           disabled={submitting}
@@ -161,13 +157,12 @@ export default function SessionStepReflection({
         </button>
 
         {isExerciseStep && (
-          <>
+          <div style={{ textAlign: 'center', marginTop: '16px' }}>
             <button
               onClick={() => navigate('/')}
               style={{
                 display: 'block',
                 width: '100%',
-                marginTop: '16px',
                 minHeight: '44px',
                 background: 'none',
                 border: 'none',
@@ -185,13 +180,13 @@ export default function SessionStepReflection({
               fontFamily: 'Inter, sans-serif',
               fontSize: '11px',
               color: 'var(--color-text-tertiary)',
-              opacity: 0.35,
+              opacity: 0.30,
               textAlign: 'center',
-              marginTop: '8px',
+              marginTop: '4px',
             }}>
               Appen kommer ihåg var ni är.
             </p>
-          </>
+          </div>
         )}
       </div>
     </div>
