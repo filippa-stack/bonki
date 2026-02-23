@@ -64,28 +64,28 @@ export default function Header({
         {isImmersive ? (
           /* ── Immersive: proper three-column grid ── */
           <div className="flex items-center px-4" style={{ height: '2.5rem' }}>
-            {/* LEFT: back arrow */}
-            <div className="flex items-center justify-start" style={{ minWidth: '64px' }}>
-              {onImmersiveBack && (
-                <button
-                  onClick={onImmersiveBack}
-                  className="flex items-center justify-center shrink-0"
-                  style={{ minHeight: '44px', display: 'flex', alignItems: 'center' }}
-                  aria-label="Tillbaka"
-                >
-                  <ArrowLeft
-                    className="w-5 h-5"
-                    style={{
-                      color: isDarkSurface ? 'hsl(36, 20%, 88%)' : 'var(--color-text-secondary)',
-                      opacity: isDarkSurface ? 0.7 : 1,
-                    }}
-                  />
-                </button>
-              )}
-            </div>
+            {/* LEFT: spacer */}
+            <div className="flex items-center justify-start" style={{ minWidth: '64px' }} />
 
-            {/* CENTER: intentionally empty */}
-            <div className="flex-1 min-w-0" />
+            {/* CENTER: card title */}
+            {title && (
+              <div className="flex-1 min-w-0 text-center">
+                <h1
+                  className="font-sans truncate"
+                  style={{
+                    fontSize: '11px',
+                    letterSpacing: '0.06em',
+                    textTransform: 'uppercase',
+                    color: isDarkSurface ? 'hsl(36, 20%, 88%)' : 'var(--color-text-secondary)',
+                    opacity: isDarkSurface ? 0.6 : 0.55,
+                    fontWeight: 500,
+                  }}
+                >
+                  {title}
+                </h1>
+              </div>
+            )}
+            {!title && <div className="flex-1 min-w-0" />}
 
             {/* RIGHT: leave session */}
             <div className="flex items-center justify-end" style={{ minWidth: '80px' }}>

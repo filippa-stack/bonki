@@ -87,7 +87,7 @@ const SectionView = forwardRef<SectionViewHandle, SectionViewProps>(
               <ArrowLeft
                 size={20}
                 style={{
-                  color: 'var(--color-text-secondary)',
+                  color: 'var(--color-text-tertiary)',
                   opacity: 0.45,
                 }}
               />
