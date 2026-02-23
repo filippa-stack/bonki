@@ -329,6 +329,59 @@ export default function Home() {
               );
             })()}
 
+            {/* Welcome card — first-time users only (no active session, no completed sessions) */}
+            {(() => {
+              const hasResumeCard = !!(resumeCardFromNormalized ?? snapshot?.sessions?.session?.card_id);
+              const hasCompletedSessions = completedCardIds.length > 0;
+              if (hasResumeCard || hasCompletedSessions) return null;
+              return (
+                <motion.div
+                  className="px-6"
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                  style={{ marginBottom: '24px' }}
+                >
+                  <div style={{
+                    background: 'hsl(158, 32%, 14%)',
+                    borderRadius: '14px',
+                    padding: '20px 20px 20px 24px',
+                    width: '100%',
+                  }}>
+                    <p style={{
+                      fontFamily: 'var(--font-sans)',
+                      fontSize: '11px',
+                      letterSpacing: '0.06em',
+                      textTransform: 'uppercase' as const,
+                      color: 'white',
+                      opacity: 0.55,
+                      marginBottom: '8px',
+                    }}>
+                      Välkommen till ert utrymme.
+                    </p>
+                    <p style={{
+                      fontFamily: 'var(--font-serif)',
+                      fontSize: '20px',
+                      fontWeight: 600,
+                      color: 'white',
+                      lineHeight: 1.3,
+                    }}>
+                      Välj ett ämne nedan och börja.
+                    </p>
+                    <p style={{
+                      fontFamily: 'var(--font-serif)',
+                      fontStyle: 'italic',
+                      fontSize: '14px',
+                      color: '#C4821D',
+                      marginTop: '8px',
+                    }}>
+                      Det finns inget rätt sätt — bara ert.
+                    </p>
+                  </div>
+                </motion.div>
+              );
+            })()}
+
             {/* Spacing before categories */}
             <div style={{ height: '0px' }} />
 
