@@ -84,7 +84,7 @@ export default function SessionStepReflection({
         autoCorrect="on"
         autoCapitalize="sentences"
         spellCheck={true}
-        className="w-full resize-none focus:outline-none focus:ring-0"
+        className="w-full resize-none focus:outline-none focus:ring-0 text-center"
         style={{
           minHeight: '96px',
           maxHeight: '240px',
