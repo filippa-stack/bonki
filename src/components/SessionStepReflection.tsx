@@ -94,19 +94,15 @@ export default function SessionStepReflection({
           lineHeight: 1.6,
           color: 'var(--color-text-primary)',
           backgroundColor: isFocused || hasFill
-            ? 'var(--surface-raised)'
-            : 'var(--surface-sunken)',
+            ? 'hsl(0 0% 100% / 0.65)'
+            : 'hsl(0 0% 100% / 0.35)',
           border: 'none',
-          borderTop: isFocused
-            ? '1.5px solid #C4821D'
-            : '1px solid hsl(var(--neutral-300))',
-          borderBottom: isFocused
-            ? '1.5px solid #C4821D'
-            : '1px solid hsl(var(--neutral-300))',
-          borderRadius: 0,
-          padding: '20px 8px 16px 8px',
-          boxShadow: 'none',
-          transition: 'background-color 200ms ease, border-top 200ms ease, border-bottom 200ms ease',
+          borderRadius: '8px',
+          padding: '24px 20px 20px 20px',
+          boxShadow: isFocused
+            ? 'inset 0 1px 0 #C4821D, inset 0 -1px 0 #C4821D, 0 0 0 3px hsla(38, 80%, 46%, 0.08)'
+            : 'inset 0 1px 3px hsla(30, 12%, 25%, 0.06), 0 1px 2px hsla(0, 0%, 100%, 0.6)',
+          transition: 'background-color 280ms ease, box-shadow 280ms ease',
         }}
       />
       <style>{`
