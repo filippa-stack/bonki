@@ -159,25 +159,37 @@ export default function SessionStepReflection({
         </button>
 
         {isExerciseStep && (
-          <button
-            onClick={() => navigate('/')}
-            style={{
-              display: 'block',
-              width: '100%',
-              marginTop: '16px',
-              minHeight: '44px',
-              background: 'none',
-              border: 'none',
-              cursor: 'pointer',
+          <>
+            <button
+              onClick={() => navigate('/')}
+              style={{
+                display: 'block',
+                width: '100%',
+                marginTop: '16px',
+                minHeight: '44px',
+                background: 'none',
+                border: 'none',
+                cursor: 'pointer',
+                fontFamily: 'Inter, sans-serif',
+                fontSize: '13px',
+                color: 'var(--color-text-secondary)',
+                opacity: 0.50,
+                textAlign: 'center',
+              }}
+            >
+              Vi pausar här — fortsätt en annan dag
+            </button>
+            <p style={{
               fontFamily: 'Inter, sans-serif',
-              fontSize: '13px',
-              color: 'var(--color-text-secondary)',
-              opacity: 0.50,
+              fontSize: '11px',
+              color: 'var(--color-text-tertiary)',
+              opacity: 0.35,
               textAlign: 'center',
-            }}
-          >
-            Vi pausar här — fortsätt en annan dag
-          </button>
+              marginTop: '8px',
+            }}>
+              Appen kommer ihåg var ni är.
+            </p>
+          </>
         )}
       </div>
     </div>
