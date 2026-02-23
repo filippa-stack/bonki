@@ -329,11 +329,64 @@ export default function Home() {
               );
             })()}
 
-            {/* Welcome card — first-time users only (no active session, no completed sessions) */}
+            {/* Welcome / returning card — state A or B */}
             {(() => {
               const hasResumeCard = !!(resumeCardFromNormalized ?? snapshot?.sessions?.session?.card_id);
+              if (hasResumeCard) return null; // STATE C — resume card handles it
               const hasCompletedSessions = completedCardIds.length > 0;
-              if (hasResumeCard || hasCompletedSessions) return null;
+
+              if (!hasCompletedSessions) {
+                // STATE A — first time
+                return (
+                  <motion.div
+                    className="px-6"
+                    initial={{ opacity: 0, y: 8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                    style={{ marginBottom: '24px' }}
+                  >
+                    <div style={{
+                      background: 'hsl(158, 32%, 14%)',
+                      borderRadius: '14px',
+                      padding: '20px 20px 20px 24px',
+                      paddingTop: '20px',
+                      width: '100%',
+                    }}>
+                      <p style={{
+                        fontFamily: 'var(--font-sans)',
+                        fontSize: '11px',
+                        letterSpacing: '0.06em',
+                        textTransform: 'uppercase' as const,
+                        color: 'white',
+                        opacity: 0.55,
+                        marginBottom: '8px',
+                      }}>
+                        Välkommen till ert utrymme.
+                      </p>
+                      <p style={{
+                        fontFamily: 'var(--font-serif)',
+                        fontSize: '20px',
+                        fontWeight: 600,
+                        color: 'white',
+                        lineHeight: 1.3,
+                      }}>
+                        Välj ett ämne nedan och börja.
+                      </p>
+                      <p style={{
+                        fontFamily: 'var(--font-serif)',
+                        fontStyle: 'italic',
+                        fontSize: '14px',
+                        color: '#C4821D',
+                        marginTop: '8px',
+                      }}>
+                        Börja var ni vill — det finns inget fel val.
+                      </p>
+                    </div>
+                  </motion.div>
+                );
+              }
+
+              // STATE B — returning, no active session
               return (
                 <motion.div
                   className="px-6"
@@ -343,9 +396,10 @@ export default function Home() {
                   style={{ marginBottom: '24px' }}
                 >
                   <div style={{
-                    background: 'hsl(158, 32%, 14%)',
+                    background: 'hsl(36, 20%, 93%)',
                     borderRadius: '14px',
                     padding: '20px 20px 20px 24px',
+                    borderLeft: '3px solid hsl(158, 32%, 14%)',
                     width: '100%',
                   }}>
                     <p style={{
@@ -353,29 +407,20 @@ export default function Home() {
                       fontSize: '11px',
                       letterSpacing: '0.06em',
                       textTransform: 'uppercase' as const,
-                      color: 'white',
-                      opacity: 0.55,
+                      color: 'var(--color-text-tertiary)',
+                      opacity: 0.6,
                       marginBottom: '8px',
                     }}>
-                      Välkommen till ert utrymme.
+                      Välkommen tillbaka.
                     </p>
                     <p style={{
                       fontFamily: 'var(--font-serif)',
                       fontSize: '20px',
                       fontWeight: 600,
-                      color: 'white',
+                      color: 'var(--color-text-primary)',
                       lineHeight: 1.3,
                     }}>
-                      Välj ett ämne nedan och börja.
-                    </p>
-                    <p style={{
-                      fontFamily: 'var(--font-serif)',
-                      fontStyle: 'italic',
-                      fontSize: '14px',
-                      color: '#C4821D',
-                      marginTop: '8px',
-                    }}>
-                      Det finns inget rätt sätt — bara ert.
+                      Vad vill ni utforska idag?
                     </p>
                   </div>
                 </motion.div>
@@ -389,7 +434,7 @@ export default function Home() {
             {recommendedCategory && (() => {
               const recCat = recommendedCategory;
               return (
-                <div className="px-6" style={{ marginBottom: '12px' }}>
+                <div className="px-6" style={{ marginBottom: '12px', marginTop: '20px' }}>
                {(() => {
                   const recIndex = sortedCategories.findIndex(c => c.id === recCat.id);
                   const recAccent = getCategoryAccent(recIndex >= 0 ? recIndex : 0);
@@ -442,7 +487,10 @@ export default function Home() {
                         }}
                       >
                         <div className="flex-1 min-w-0">
-                          <h3 className="type-h3" style={{ color: 'var(--text-primary)', fontWeight: 500, fontSize: '16px', textWrap: 'balance', hyphens: 'auto' }}>
+                          <p className="font-sans uppercase" style={{ fontSize: '10px', letterSpacing: '0.08em', color: 'var(--color-text-tertiary)', opacity: 0.40 }}>
+                            {String((RECOMMENDED_CATEGORY_ORDER as readonly string[]).indexOf(recCat.id) + 1).padStart(2, '0')}
+                          </p>
+                          <h3 className="type-h3" style={{ color: 'var(--text-primary)', fontWeight: 500, fontSize: '16px', textWrap: 'balance', hyphens: 'auto', marginTop: '2px' }}>
                             {recCat.title}
                           </h3>
                           {recCat.entryLine && (
