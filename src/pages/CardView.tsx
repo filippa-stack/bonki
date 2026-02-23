@@ -1148,6 +1148,32 @@ export default function CardView() {
               exit={{ opacity: 0, y: -8, transition: { duration: 0.15, ease: [0.4, 0, 1, 1] } }}
               transition={{ duration: 0.2, ease: [0.4, 0, 0.2, 1], delay: 0.1 }}
             >
+              {/* Stage label — archive mode only */}
+              {cardViewMode === 'archive' && (() => {
+                const STAGE_LABELS: Record<number, string> = {
+                  0: 'KOM IGÅNG',
+                  1: 'GÅ DJUPARE',
+                  2: 'FÖRESTÄLL ER',
+                  3: 'I VERKLIGHETEN',
+                };
+                const label = STAGE_LABELS[currentStepIndex];
+                if (!label) return null;
+                return (
+                  <p style={{
+                    fontSize: '10px',
+                    letterSpacing: '0.08em',
+                    textTransform: 'uppercase',
+                    color: 'var(--color-text-tertiary)',
+                    opacity: 0.45,
+                    textAlign: 'center',
+                    marginBottom: '12px',
+                    marginTop: '16px',
+                  }}>
+                    {label}
+                  </p>
+                );
+              })()}
+
               {/* Prompt content */}
               <motion.div
                 initial={isLive && !suppressEntryAnim ? { opacity: 0 } : false}
@@ -1255,7 +1281,8 @@ export default function CardView() {
               {/* ── MODE: archive — read-only saved reflection ── */}
               {cardViewMode === 'archive' && (
                 <motion.div
-                  className="pb-8 space-y-4"
+                  className="pb-8"
+                  style={{ padding: '0 8px' }}
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: BEAT_1, duration: BEAT_3, ease: EASE }}
@@ -1267,10 +1294,11 @@ export default function CardView() {
                     />
                   )}
 
-                  <div className="pt-6 space-y-4 flex flex-col items-center">
+                  <div style={{ display: 'flex', justifyContent: 'center', marginTop: '24px' }}>
                     <button
                       onClick={() => handleArchiveNext(card)}
                       className="cta-primary gap-2"
+                      style={{ width: '60%', margin: '0 auto' }}
                     >
                       {currentStepIndex >= STEP_ORDER.length - 1 ? 'Klar' : 'Nästa'}
                       <ArrowRight className="w-4 h-4" />

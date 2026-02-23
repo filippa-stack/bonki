@@ -43,28 +43,23 @@ export default function LockedReflectionDisplay({ sessionId, stepIndex }: Props)
   if (loading || !text) return null;
 
   return (
-    <div className="mt-8 mb-1" style={{ paddingLeft: '16px' }}>
-      <p
-        className="type-body font-serif whitespace-pre-wrap"
-        style={{
-          lineHeight: 1.8,
-          color: 'var(--color-text-primary)',
-          opacity: 0.75,
-        }}
-      >
-        {text}
-      </p>
-      <p
-        className="type-meta"
-        style={{
-          marginTop: '16px',
-          color: 'var(--color-text-secondary)',
-          opacity: 0.3,
-          letterSpacing: '0.04em',
-        }}
-      >
-        Din reflektion
-      </p>
+    <div
+      style={{
+        fontFamily: 'var(--font-serif)',
+        fontSize: '16px',
+        fontWeight: 400,
+        color: 'var(--color-text-secondary)',
+        textAlign: 'left',
+        lineHeight: 1.7,
+        padding: '16px',
+        background: 'hsl(36, 20%, 97%)',
+        borderRadius: '12px',
+        border: '1px solid hsl(36, 15%, 88%)',
+        marginBottom: '32px',
+        whiteSpace: 'pre-wrap',
+      }}
+    >
+      {text}
     </div>
   );
 }
