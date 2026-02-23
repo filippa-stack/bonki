@@ -369,8 +369,10 @@ export default function Home() {
                         fontWeight: 600,
                         color: 'white',
                         lineHeight: 1.3,
-                      }}>
-                        Välj ett ämne nedan och börja.
+                        textWrap: 'balance',
+                        WebkitTextWrap: 'balance',
+                      } as React.CSSProperties}>
+                        Välj ett ämne och börja.
                       </p>
                       <p style={{
                         fontFamily: 'var(--font-serif)',
