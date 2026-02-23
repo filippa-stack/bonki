@@ -160,6 +160,51 @@ export default function CardView() {
       });
   }, [space, cardId, devState, showCompletion]);
 
+  // ─── Stale/orphan session detection ───
+  const [staleSession, setStaleSession] = useState(false);
+  const staleCheckedRef = useRef(false);
+  useEffect(() => {
+    if (staleCheckedRef.current || devState || isFromArchive) return;
+    if (!normalizedSession.sessionId || normalizedSession.loading) return;
+    if (normalizedSession.cardId !== cardId) return;
+
+    staleCheckedRef.current = true;
+
+    (async () => {
+      const { data } = await supabase
+        .from('couple_sessions')
+        .select('created_at')
+        .eq('id', normalizedSession.sessionId!)
+        .maybeSingle();
+
+      if (!data?.created_at) return;
+
+      const ageMs = Date.now() - new Date(data.created_at).getTime();
+      const THIRTY_DAYS = 30 * 24 * 60 * 60 * 1000;
+      if (ageMs > THIRTY_DAYS) {
+        setStaleSession(true);
+      }
+    })();
+  }, [normalizedSession.sessionId, normalizedSession.loading, normalizedSession.cardId, cardId, devState, isFromArchive]);
+
+  const handleAbandonAndRestart = useCallback(async () => {
+    if (!normalizedSession.sessionId || !space?.id || !cardId) return;
+    const card = getCardById(cardId);
+    if (!card) return;
+
+    await supabase.rpc('abandon_active_session', { p_session_id: normalizedSession.sessionId });
+    const { error } = await supabase.rpc('activate_couple_session', {
+      p_couple_space_id: space.id,
+      p_category_id: card.categoryId,
+      p_card_id: cardId,
+      p_step_count: STEP_ORDER.length,
+    });
+    if (!error) {
+      await normalizedSession.refetch();
+      setStaleSession(false);
+    }
+  }, [normalizedSession.sessionId, space?.id, cardId, getCardById]);
+
   // ─── Auto-show completion when session disappears post-lock ───
   useEffect(() => {
     if (isFromArchive) return;
@@ -863,6 +908,64 @@ export default function CardView() {
             En av er antecknar det ni vill minnas.
           </p>
         </div>
+
+        {/* Orphan/stale session banner */}
+        {staleSession && (
+          <div
+            style={{
+              width: '100%',
+              maxWidth: '360px',
+              background: 'hsl(36, 20%, 92%)',
+              borderBottom: '1px solid hsl(36, 15%, 82%)',
+              borderRadius: '8px',
+              padding: '12px 20px',
+              marginBottom: '20px',
+              textAlign: 'center',
+            }}
+          >
+            <p style={{
+              fontFamily: 'Inter, sans-serif',
+              fontSize: '13px',
+              color: 'var(--color-text-primary)',
+              marginBottom: '12px',
+              lineHeight: 1.5,
+            }}>
+              Det verkar som att ett tidigare samtal inte avslutades. Vill ni fortsätta det eller börja om?
+            </p>
+            <div style={{ display: 'flex', gap: '8px', justifyContent: 'center' }}>
+              <button
+                onClick={() => { setStaleSession(false); setHasStarted(true); }}
+                style={{
+                  fontFamily: 'Inter, sans-serif',
+                  fontSize: '13px',
+                  padding: '8px 16px',
+                  background: 'none',
+                  border: '1px solid hsl(36, 15%, 78%)',
+                  borderRadius: '6px',
+                  cursor: 'pointer',
+                  color: 'var(--color-text-primary)',
+                }}
+              >
+                Fortsätt
+              </button>
+              <button
+                onClick={handleAbandonAndRestart}
+                style={{
+                  fontFamily: 'Inter, sans-serif',
+                  fontSize: '13px',
+                  padding: '8px 16px',
+                  background: 'var(--color-text-primary)',
+                  color: 'hsl(36, 20%, 95%)',
+                  border: 'none',
+                  borderRadius: '6px',
+                  cursor: 'pointer',
+                }}
+              >
+                Börja om
+              </button>
+            </div>
+          </div>
+        )}
 
         {/* Start button */}
         <button
