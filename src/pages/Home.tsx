@@ -275,7 +275,7 @@ export default function Home() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
             >
-              <h1 className="type-h1" style={{ color: 'var(--text-primary)', marginBottom: '32px' }}>
+              <h1 className="type-h1" style={{ color: 'var(--text-primary)', marginBottom: '38px' }}>
                 Ert utrymme
               </h1>
             </motion.div>
