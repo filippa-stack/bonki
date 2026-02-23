@@ -39,9 +39,9 @@ export default function Onboarding() {
       className="min-h-screen flex flex-col"
       style={{
         backgroundColor: currentSlide === 0
-          ? 'hsl(36, 20%, 95%)'
+          ? 'var(--surface-base)'
           : currentSlide === 1
-            ? 'hsl(36, 18%, 94%)'
+            ? 'var(--surface-base)'
             : 'hsl(158, 32%, 14%)',
         transition: 'background-color 0.5s ease',
       }}
@@ -85,7 +85,7 @@ export default function Onboarding() {
                 width: '60%',
                 fontSize: '15px',
                 letterSpacing: '0.02em',
-                background: 'hsl(36, 16%, 92%)',
+                background: 'var(--surface-sunken)',
                 color: 'hsl(158, 32%, 14%)',
                 borderRadius: '14px',
                 padding: '14px 0',

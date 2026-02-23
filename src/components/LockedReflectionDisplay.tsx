@@ -52,9 +52,9 @@ export default function LockedReflectionDisplay({ sessionId, stepIndex }: Props)
         textAlign: 'left',
         lineHeight: 1.7,
         padding: '16px',
-        background: 'hsl(36, 20%, 97%)',
+        background: 'var(--surface-raised)',
         borderRadius: '12px',
-        border: '1px solid hsl(36, 15%, 88%)',
+        border: '1px solid hsl(var(--neutral-300))',
         marginBottom: '32px',
         whiteSpace: 'pre-wrap',
       }}
