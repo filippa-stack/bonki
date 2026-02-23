@@ -33,9 +33,9 @@ interface PromptItemProps {
  */
 const DEPTH_GRAVITY: Record<string, React.CSSProperties> = {
   opening:    { fontWeight: 700, color: 'var(--color-text-primary)', lineHeight: 1.35 },
-  reflective: { fontWeight: 700, color: 'hsl(30, 3%, 8%)',          lineHeight: 1.35 },
-  scenario:   { fontWeight: 700, color: 'hsl(30, 3%, 6%)',          lineHeight: 1.35 },
-  exercise:   { fontWeight: 700, color: 'hsl(30, 3%, 4%)',          lineHeight: 1.35 },
+  reflective: { fontWeight: 700, color: 'var(--color-text-primary)', lineHeight: 1.35 },
+  scenario:   { fontWeight: 700, color: 'var(--color-text-primary)', lineHeight: 1.30 },
+  exercise:   { fontWeight: 700, color: 'var(--color-text-primary)', lineHeight: 1.30 },
 };
 
 /**
@@ -56,7 +56,7 @@ export default function PromptItem({ prompt, index, sectionType, preamble }: Pro
         <p
           key={i}
           className="font-serif"
-          style={{ fontSize: '20px', fontWeight: 400, color: '#1C1B1A', lineHeight: 1.4 }}
+          style={{ fontSize: '20px', fontWeight: 400, color: 'var(--color-text-primary)', lineHeight: 1.4 }}
         >
           {para}
         </p>
@@ -73,7 +73,7 @@ export default function PromptItem({ prompt, index, sectionType, preamble }: Pro
         {intro && (
           <p
             className="font-serif"
-            style={{ fontSize: '20px', lineHeight: 1.4, color: '#1C1B1A' }}
+            style={{ fontSize: '20px', lineHeight: 1.4, color: 'var(--color-text-primary)' }}
           >
             {intro}
           </p>
@@ -136,13 +136,14 @@ export default function PromptItem({ prompt, index, sectionType, preamble }: Pro
             className={preamble ? 'mt-10' : ''}
             style={{
               backgroundColor: 'var(--surface-raised)',
-              border: '1px solid hsl(var(--neutral-300))',
-              borderLeft: '4px solid #C4821D',
-              borderRadius: '0 12px 12px 0',
-              padding: '20px 20px 20px 24px',
+              border: 'none',
+              borderLeft: '3px solid #C4821D',
+              borderRadius: '0 10px 10px 0',
+              padding: '24px 24px 24px 28px',
               margin: '24px 0',
               marginTop: !preamble ? '48px' : '24px',
               width: '100%',
+              boxShadow: '0 2px 16px -4px hsla(30, 18%, 28%, 0.06), inset 0 1px 0 hsla(0, 0%, 100%, 0.5)',
             }}
           >
             <p
