@@ -3,6 +3,7 @@ import { useApp } from '@/contexts/AppContext';
 import { useCoupleSpaceContext } from '@/contexts/CoupleSpaceContext';
 import { usePartnerNotifications } from '@/hooks/usePartnerNotifications';
 import { useAuth } from '@/contexts/AuthContext';
+import { useDevState } from '@/contexts/DevStateContext';
 import { supabase } from '@/integrations/supabase/client';
 import Onboarding from '@/components/Onboarding';
 import Home from '@/pages/Home';
@@ -67,6 +68,7 @@ export default function Index() {
   const { hasCompletedOnboarding } = useApp();
   const { space } = useCoupleSpaceContext();
   const { user } = useAuth();
+  const devState = useDevState();
 
   const [hasPurchased, setHasPurchased] = useState(() => isSpacePaid(space?.id, space?.paid_at));
   const migrationRan = useRef(false);
@@ -111,6 +113,11 @@ export default function Index() {
       }).then(() => {});
     }
   };
+
+  // devState=browse bypasses onboarding & purchase gates
+  if (devState === 'browse') {
+    return <Home />;
+  }
 
   if (!hasCompletedOnboarding) {
     return <Onboarding />;
