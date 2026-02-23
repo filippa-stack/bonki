@@ -156,6 +156,14 @@ export default function SessionStepReflection({
             : 'Fortsätt'}
         </button>
 
+        <button
+          onClick={() => navigate('/')}
+          className="type-meta text-center block mx-auto mt-4 hover:underline transition-opacity"
+          style={{ color: 'var(--text-secondary)', opacity: 0.65, background: 'none', border: 'none', cursor: 'pointer' }}
+        >
+          Tillbaka till översikten
+        </button>
+
         {isExerciseStep && (
           <div style={{ textAlign: 'center', marginTop: '16px' }}>
             <button
