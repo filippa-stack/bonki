@@ -412,6 +412,10 @@ h1, h2, h3,
     background-color: var(--page-bg);
   }
 
+  .reflection-field-wrapper:focus-within textarea {
+    border-bottom-color: #C4821D;
+  }
+
   /* Hero typography — driven by useThemeVars */
   .hero-title-color {
     color: var(--hero-title-color);
