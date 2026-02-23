@@ -86,8 +86,8 @@ export default function SessionStepReflection({
         spellCheck={true}
         className="w-full resize-none focus:outline-none focus:ring-0 text-center"
         style={{
-          height: isFocused || hasFill ? 'auto' : '96px',
-          minHeight: isFocused || hasFill ? '96px' : undefined,
+          height: isFocused || hasFill ? 'auto' : '88px',
+          minHeight: '88px',
           maxHeight: '240px',
           overflow: 'auto',
           fontFamily: hasFill ? 'Inter, sans-serif' : 'var(--font-serif)',
@@ -96,15 +96,18 @@ export default function SessionStepReflection({
           color: 'var(--color-text-primary)',
           backgroundColor: isFocused || hasFill
             ? 'hsl(36, 30%, 93%)'
-            : 'hsl(36, 25%, 91%)',
+            : 'hsl(36, 30%, 87%)',
           border: 'none',
+          borderTop: isFocused
+            ? '1.5px solid #C4821D'
+            : '1px solid hsl(36, 18%, 80%)',
           borderBottom: isFocused
             ? '1.5px solid #C4821D'
-            : '1px solid hsl(36, 18%, 82%)',
+            : '1px solid hsl(36, 18%, 80%)',
           borderRadius: 0,
           padding: '16px 0 12px 0',
           boxShadow: 'none',
-          transition: 'background-color 200ms ease, border-bottom 200ms ease',
+          transition: 'background-color 200ms ease, border-top 200ms ease, border-bottom 200ms ease',
         }}
       />
       {/* Placeholder overlay for custom styling */}
@@ -114,7 +117,7 @@ export default function SessionStepReflection({
           font-style: italic !important;
           font-size: 16px !important;
           color: #8B5E1A !important;
-          opacity: 0.60 !important;
+          opacity: 0.80 !important;
           transition: opacity 300ms ease !important;
         }
         .reflection-field-wrapper textarea:focus::placeholder {
