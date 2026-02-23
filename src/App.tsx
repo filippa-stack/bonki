@@ -12,6 +12,7 @@ import DevModeBadge from "@/components/DevModeBadge";
 import { SiteSettingsProvider } from "@/contexts/SiteSettingsContext";
 import { CoupleSpaceProvider } from "@/contexts/CoupleSpaceContext";
 import { NormalizedSessionProvider } from "@/contexts/NormalizedSessionContext";
+import { OptimisticCompletionsProvider } from "@/contexts/OptimisticCompletionsContext";
 import PageTransition from "@/components/PageTransition";
 import Index from "./pages/Index";
 
@@ -54,6 +55,7 @@ function ProtectedRoutes() {
   return (
     <CoupleSpaceProvider>
     <NormalizedSessionProvider>
+    <OptimisticCompletionsProvider>
     <AppProvider>
       
       <ActiveSessionGuard>
@@ -70,6 +72,7 @@ function ProtectedRoutes() {
         </AnimatePresence>
       </ActiveSessionGuard>
     </AppProvider>
+    </OptimisticCompletionsProvider>
     </NormalizedSessionProvider>
     </CoupleSpaceProvider>
   );

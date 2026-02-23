@@ -3,6 +3,7 @@ import { RECOMMENDED_CATEGORY_ORDER } from '@/lib/recommendedOrder';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useMemo, useState, useEffect, CSSProperties } from 'react';
+import { useOptimisticCompletions } from '@/contexts/OptimisticCompletionsContext';
 import { useScrollCompression } from '@/hooks/useScrollCompression';
 import { useTranslation } from 'react-i18next';
 import { useApp } from '@/contexts/AppContext';
@@ -100,7 +101,8 @@ export default function Home() {
   const isTogether = true; // samtalsläge removed from UI — always defaults to Tillsammans
 
   // Direct DB query for completed card IDs (bypasses snapshot)
-  const [completedCardIds, setCompletedCardIds] = useState<string[]>([]);
+  const { optimisticCardIds } = useOptimisticCompletions();
+  const [serverCompletedCardIds, setServerCompletedCardIds] = useState<string[]>([]);
   const [inProgressCardIds, setInProgressCardIds] = useState<string[]>([]);
   useEffect(() => {
     if (!space?.id) return;
@@ -113,7 +115,7 @@ export default function Home() {
       .eq('status', 'completed')
       .then(({ data }) => {
         if (!cancelled && data) {
-          setCompletedCardIds(data.map(s => s.card_id).filter(Boolean) as string[]);
+          setServerCompletedCardIds(data.map(s => s.card_id).filter(Boolean) as string[]);
         }
       });
     // Fetch active/abandoned (in-progress)
@@ -129,6 +131,13 @@ export default function Home() {
       });
     return () => { cancelled = true; };
   }, [space?.id]);
+
+  // Merge server + optimistic completions
+  const completedCardIds = useMemo(() => {
+    const merged = new Set(serverCompletedCardIds);
+    optimisticCardIds.forEach(id => merged.add(id));
+    return Array.from(merged);
+  }, [serverCompletedCardIds, optimisticCardIds]);
 
   const effectiveCardId = normalizedSession.cardId ?? (devState === 'pairedActive' ? 'listening-presence' : null);
   // Prefer normalizedSession (refetched deterministically) over snapshot for resume banner
