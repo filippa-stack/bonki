@@ -3,7 +3,7 @@ import { ConversationThread } from '@/types';
 import { getCardById } from '@/data/content';
 import { formatDistanceToNow } from 'date-fns';
 import { sv } from 'date-fns/locale';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, Check } from 'lucide-react';
 
 interface ConversationCardProps {
   conversation: ConversationThread;
@@ -22,8 +22,8 @@ export default function ConversationCard({ conversation, onClick, variant = 'def
     return (
       <button
         onClick={onClick}
-      className="w-full text-left p-6 rounded-card transition-opacity hover:opacity-80"
-        style={{ backgroundColor: 'hsl(var(--background))', border: '1px solid hsl(var(--foreground) / 0.09)' }}
+        className="w-full text-left p-6 rounded-card transition-opacity hover:opacity-80"
+        style={{ backgroundColor: 'hsl(36, 16%, 98%)', border: '1px solid hsl(var(--foreground) / 0.09)' }}
       >
         <div className="flex items-center justify-between gap-3">
           <div className="flex-1 min-w-0">
@@ -43,9 +43,17 @@ export default function ConversationCard({ conversation, onClick, variant = 'def
       initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
       onClick={onClick}
-      className="w-full text-left px-6 py-6 rounded-card transition-opacity hover:opacity-80 group"
-      style={{ backgroundColor: 'hsl(var(--background))', border: '1px solid hsl(var(--foreground) / 0.09)' }}
+      className="w-full text-left px-6 py-6 rounded-card transition-opacity hover:opacity-80 group relative"
+      style={{ backgroundColor: 'hsl(36, 16%, 98%)', border: '1px solid hsl(var(--foreground) / 0.09)' }}
     >
+      {isCompleted && (
+        <div style={{ position: 'absolute', top: '14px', right: '14px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '2px' }}>
+          <Check size={14} style={{ color: 'hsl(158, 32%, 14%)' }} strokeWidth={2.5} />
+          <span style={{ fontFamily: 'Inter, sans-serif', fontSize: '10px', color: 'var(--color-text-tertiary)', opacity: 0.5 }}>
+            Gör om
+          </span>
+        </div>
+      )}
       <div className="flex items-start justify-between gap-4">
         <div className="flex-1 min-w-0">
           <h3 className="font-serif text-xl leading-snug mb-1" style={{ color: 'var(--color-text-primary)' }}>
@@ -54,17 +62,7 @@ export default function ConversationCard({ conversation, onClick, variant = 'def
           {card.subtitle && (
             <p className="text-sm mb-2 leading-relaxed" style={{ color: 'var(--color-text-secondary)' }}>{card.subtitle}</p>
           )}
-            <div className="flex items-center gap-2 flex-wrap">
-            <p className="text-xs" style={{ color: 'var(--color-text-secondary)', opacity: 0.6 }}>{timeAgo}</p>
-            {isCompleted && (
-              <span
-                className="text-[10px] px-2 py-0.5 rounded-full"
-                style={{ backgroundColor: '#D9D6CF', color: '#6B6B6B' }}
-              >
-                Genomförd
-              </span>
-            )}
-          </div>
+          <p className="text-xs" style={{ color: 'var(--color-text-secondary)', opacity: 0.6 }}>{timeAgo}</p>
         </div>
         <ArrowRight className="w-3.5 h-3.5 flex-shrink-0 mt-1 opacity-60 group-hover:opacity-90 transition-opacity" style={{ color: 'var(--color-text-secondary)' }} />
       </div>
