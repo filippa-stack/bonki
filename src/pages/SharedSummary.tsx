@@ -9,7 +9,26 @@ import { useDevState } from '@/contexts/DevStateContext';
 import ArchiveTakeaway from '@/components/ArchiveTakeaway';
 import { ChevronRight } from 'lucide-react';
 import Header from '@/components/Header';
+import { RECOMMENDED_CATEGORY_ORDER } from '@/lib/recommendedOrder';
 import type { Prompt } from '@/types';
+
+const CATEGORY_ACCENTS: Record<number, string> = {
+  0: 'hsl(158, 35%, 22%)',
+  1: 'hsl(38, 70%, 48%)',
+  2: 'hsl(200, 30%, 38%)',
+  3: 'hsl(10, 40%, 42%)',
+  4: 'hsl(80, 25%, 35%)',
+  5: 'hsl(28, 50%, 40%)',
+  6: 'hsl(260, 20%, 40%)',
+  7: 'hsl(45, 55%, 42%)',
+  8: 'hsl(340, 30%, 40%)',
+  9: 'hsl(170, 25%, 32%)',
+};
+
+function getCategoryAccent(categoryId: string): string {
+  const idx = (RECOMMENDED_CATEGORY_ORDER as readonly string[]).indexOf(categoryId);
+  return CATEGORY_ACCENTS[idx >= 0 ? idx : 0] ?? 'hsl(38, 70%, 48%)';
+}
 
 interface BookmarkRow {
   id: string;
@@ -32,6 +51,7 @@ interface CompletedEntry {
   sessionId: string;
   cardId: string;
   cardTitle: string;
+  categoryId: string;
   categoryTitle: string;
   completedAt: string;
   excerpt: string;
@@ -166,6 +186,7 @@ export default function SharedSummary() {
             sessionId: s.id,
             cardId: s.card_id!,
             cardTitle: card?.title || s.card_id!,
+            categoryId: s.category_id || '',
             categoryTitle: category?.title || '',
             completedAt: s.ended_at || s.started_at,
             excerpt: (takeawayMap.get(s.id) || refs[0]?.text || '').trim(),
@@ -216,6 +237,7 @@ export default function SharedSummary() {
   interface GroupedEntry {
     cardId: string;
     cardTitle: string;
+    categoryId: string;
     categoryTitle: string;
     latest: CompletedEntry;
     older: CompletedEntry[];
@@ -231,6 +253,7 @@ export default function SharedSummary() {
         map.set(entry.cardId, {
           cardId: entry.cardId,
           cardTitle: entry.cardTitle,
+          categoryId: entry.categoryId,
           categoryTitle: entry.categoryTitle,
           latest: entry,
           older: [],
@@ -255,10 +278,23 @@ export default function SharedSummary() {
   const [showOlderFor, setShowOlderFor] = useState<string | null>(null);
 
   return (
-    <div className="min-h-screen page-bg">
-      <Header title="Era samtal" showBack backTo="/" />
+    <div className="min-h-screen" style={{ backgroundColor: 'hsl(36, 22%, 92%)' }}>
+      <Header showBack backTo="/" variant="immersive" onImmersiveBack={() => navigate('/')} />
 
-      <div className="px-6 pb-8 mx-auto" style={{ maxWidth: 540, paddingTop: '32px' }}>
+      <div className="px-6 pb-8 mx-auto" style={{ maxWidth: 540, paddingTop: '24px' }}>
+
+        {/* Page title */}
+        <h1
+          className="font-serif text-center"
+          style={{
+            fontSize: '17px',
+            color: 'var(--color-text-primary)',
+            fontWeight: 500,
+            marginBottom: '8px',
+          }}
+        >
+          Era samtal
+        </h1>
 
         {/* Subtitle */}
         <motion.div
@@ -270,10 +306,12 @@ export default function SharedSummary() {
           <p
             className="font-serif"
             style={{
-              fontSize: '17px',
+              fontSize: '16px',
+              fontStyle: 'italic',
               color: 'var(--color-text-secondary)',
               opacity: 0.7,
-              margin: '16px 0 28px',
+              textAlign: 'center',
+              marginBottom: '32px',
             }}
           >
             Vad ni burit med er.
@@ -286,26 +324,20 @@ export default function SharedSummary() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.15 }}
-            className="pt-8 pb-24 text-center"
+            className="text-center"
+            style={{ marginTop: '48px' }}
           >
             <p
-              className="font-serif text-center"
-              style={{ fontSize: '17px', color: 'var(--text-primary)', opacity: 0.45 }}
-            >
-              Era samtal visas här.
-            </p>
-            <p
-              className="text-center mt-3"
+              className="font-serif"
               style={{
-                fontFamily: 'var(--font-sans)',
-                fontSize: '10px',
-                letterSpacing: '0.07em',
-                textTransform: 'uppercase',
-                color: 'var(--text-tertiary)',
-                opacity: 0.35,
+                fontSize: '15px',
+                fontStyle: 'italic',
+                color: 'var(--color-text-tertiary)',
+                opacity: 0.45,
+                textAlign: 'center',
               }}
             >
-              Börja ett samtal för att se det här.
+              Era samtal visas här.
             </p>
           </motion.div>
         )}
@@ -342,6 +374,7 @@ export default function SharedSummary() {
                         background: 'var(--surface-raised)',
                         borderRadius: '12px',
                         padding: '16px',
+                        borderLeft: `3px solid ${getCategoryAccent(group.categoryId)}`,
                       }}
                     >
                       <button
@@ -350,28 +383,72 @@ export default function SharedSummary() {
                       >
                         <div className="flex items-start justify-between">
                           <div className="flex-1 min-w-0">
-                            <p
-                              className="font-serif"
-                              style={{
-                                fontSize: '20px',
-                                color: 'var(--text-primary)',
-                                fontWeight: 400,
-                                lineHeight: 1.3,
-                              }}
-                            >
-                              {entry.cardTitle}
-                            </p>
-                            <p
-                              className="mt-1"
-                              style={{
-                                fontFamily: 'var(--font-sans)',
-                                fontSize: '12px',
-                                color: 'var(--accent-saffron)',
-                                opacity: 0.75,
-                              }}
-                            >
-                              {entry.categoryTitle}{entry.categoryTitle && ' · '}{formatDate(entry.completedAt)}
-                            </p>
+                            {entry.takeaway ? (
+                              <>
+                                <p
+                                  className="font-serif"
+                                  style={{
+                                    fontSize: '16px',
+                                    fontWeight: 500,
+                                    color: 'var(--color-text-primary)',
+                                    lineHeight: 1.4,
+                                    marginBottom: '8px',
+                                    display: '-webkit-box',
+                                    WebkitLineClamp: 3,
+                                    WebkitBoxOrient: 'vertical',
+                                    overflow: 'hidden',
+                                  }}
+                                >
+                                  {entry.takeaway}
+                                </p>
+                                <p
+                                  style={{
+                                    fontFamily: 'var(--font-sans)',
+                                    fontSize: '12px',
+                                    color: 'var(--color-text-tertiary)',
+                                    opacity: 0.6,
+                                  }}
+                                >
+                                  {entry.cardTitle}
+                                </p>
+                                <p
+                                  style={{
+                                    fontFamily: 'var(--font-sans)',
+                                    fontSize: '11px',
+                                    color: 'var(--accent-saffron)',
+                                    opacity: 0.75,
+                                    marginTop: '4px',
+                                  }}
+                                >
+                                  {entry.categoryTitle}{entry.categoryTitle && ' · '}{formatDate(entry.completedAt)}
+                                </p>
+                              </>
+                            ) : (
+                              <>
+                                <p
+                                  className="font-serif"
+                                  style={{
+                                    fontSize: '16px',
+                                    fontWeight: 500,
+                                    color: 'var(--color-text-primary)',
+                                    lineHeight: 1.3,
+                                  }}
+                                >
+                                  {entry.cardTitle}
+                                </p>
+                                <p
+                                  style={{
+                                    fontFamily: 'var(--font-sans)',
+                                    fontSize: '11px',
+                                    color: 'var(--accent-saffron)',
+                                    opacity: 0.75,
+                                    marginTop: '4px',
+                                  }}
+                                >
+                                  {entry.categoryTitle}{entry.categoryTitle && ' · '}{formatDate(entry.completedAt)}
+                                </p>
+                              </>
+                            )}
                           </div>
                           <ChevronRight
                             className="w-4 h-4 mt-1.5 flex-shrink-0 transition-transform duration-200"
@@ -382,22 +459,6 @@ export default function SharedSummary() {
                             }}
                           />
                         </div>
-                        {!isExpanded && entry.excerpt && (
-                          <p
-                            className="mt-2 font-serif"
-                            style={{
-                              fontSize: '15px',
-                              color: 'var(--color-text-secondary)',
-                              display: '-webkit-box',
-                              WebkitLineClamp: 2,
-                              WebkitBoxOrient: 'vertical',
-                              overflow: 'hidden',
-                              marginTop: '6px',
-                            }}
-                          >
-                            {entry.excerpt}
-                          </p>
-                        )}
                       </button>
 
                       <AnimatePresence>
@@ -624,27 +685,28 @@ export default function SharedSummary() {
                         background: 'var(--surface-raised)',
                         borderRadius: '12px',
                         padding: '16px',
-                        opacity: 0.70,
+                        opacity: 0.55,
+                        borderLeft: `3px solid ${getCategoryAccent(group.categoryId)}`,
                       }}
                     >
                       <p
                         className="font-serif"
                         style={{
-                          fontSize: '20px',
-                          color: 'var(--text-primary)',
-                          fontWeight: 400,
+                          fontSize: '16px',
+                          fontWeight: 500,
+                          color: 'var(--color-text-primary)',
                           lineHeight: 1.3,
                         }}
                       >
                         {entry.cardTitle}
                       </p>
                       <p
-                        className="mt-1"
                         style={{
                           fontFamily: 'var(--font-sans)',
-                          fontSize: '12px',
+                          fontSize: '11px',
                           color: 'var(--accent-saffron)',
                           opacity: 0.75,
+                          marginTop: '4px',
                         }}
                       >
                         {entry.categoryTitle}{entry.categoryTitle && ' · '}{formatDate(entry.completedAt)}
