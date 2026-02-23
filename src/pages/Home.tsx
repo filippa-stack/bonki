@@ -482,7 +482,7 @@ export default function Home() {
                           gap: '12px',
                           background: 'var(--surface-raised)',
                           border: 'none',
-                          boxShadow: '0 2px 8px -2px hsla(30, 15%, 30%, 0.06), 0 0 0 0.5px hsla(30, 15%, 30%, 0.04)',
+                          boxShadow: '0 1.5px 40px -8px hsla(30, 12%, 28%, 0.05)',
                           transition: 'transform 180ms ease-out, box-shadow 180ms ease-out',
                           position: 'relative' as const,
                           overflow: 'hidden',
@@ -589,7 +589,7 @@ export default function Home() {
                           gap: '12px',
                           background: 'var(--surface-raised)',
                           border: 'none',
-                          boxShadow: '0 2px 8px -2px hsla(30, 15%, 30%, 0.06), 0 0 0 0.5px hsla(30, 15%, 30%, 0.04)',
+                          boxShadow: '0 1.5px 40px -8px hsla(30, 12%, 28%, 0.05)',
                           transition: 'transform 180ms ease-out, box-shadow 180ms ease-out',
                         }}
                         onPointerDown={(e) => { (e.currentTarget as HTMLElement).style.transform = 'scale(0.99)'; }}
