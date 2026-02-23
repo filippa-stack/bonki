@@ -537,7 +537,7 @@ export default function CardView() {
             className="max-w-md mx-auto"
           >
             <p
-              className="font-serif italic text-center"
+              className="font-serif text-center"
               style={{ fontSize: '18px', color: 'var(--color-text-primary)', opacity: 0.75, marginBottom: '16px' }}
             >
               Vad tar ni med er?
@@ -869,7 +869,7 @@ export default function CardView() {
                   <div style={{ marginTop: '20px', marginBottom: '0' }} className="text-center">
                     <p
                       className="font-serif italic"
-                      style={{ fontSize: '14px', color: 'var(--color-text-tertiary)', opacity: 0.55 }}
+                      style={{ fontSize: '17px', color: '#8B5E1A', opacity: 0.55 }}
                     >
                       {isTogether ? hint.together : hint.solo}
                     </p>
@@ -1050,7 +1050,7 @@ function CompletionTakeaway({ sessionId, spaceId }: { sessionId: string | null; 
           outline: 'none',
           boxSizing: 'border-box' as const,
         }}
-        className="placeholder:font-serif placeholder:italic placeholder:text-[16px] placeholder:text-[var(--text-ghost)]"
+        className="placeholder:font-serif placeholder:text-[16px] placeholder:text-[var(--text-ghost)]"
       />
       <span style={{ display: 'block', textAlign: 'right', fontSize: '10px', color: 'rgba(0,0,0,0.25)', marginTop: '4px', paddingRight: '4px' }}>
         {status === 'saving' ? 'Sparar…' : status === 'saved' ? 'Sparad' : '\u00A0'}

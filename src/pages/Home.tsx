@@ -344,11 +344,13 @@ export default function Home() {
                   return (
                     <>
                       <p style={{
-                        fontSize: '15px',
-                        fontFamily: 'var(--font-serif)',
-                        color: 'var(--accent-text)',
+                        fontSize: '11px',
+                        fontFamily: 'var(--font-sans)',
+                        color: '#8B5E1A',
                         marginBottom: '10px',
                         display: 'block',
+                        textTransform: 'uppercase',
+                        letterSpacing: '0.1em',
                       }}>
                         Börja här
                       </p>
@@ -386,7 +388,7 @@ export default function Home() {
                             {recCat.title}
                           </h3>
                           {recCat.entryLine && (
-                            <p className="font-serif italic" style={{ fontSize: '14px', color: 'var(--color-text-secondary)', opacity: 0.85, marginTop: '8px' }}>
+                            <p className="font-serif" style={{ fontSize: '15px', color: 'var(--color-text-secondary)', marginTop: '8px' }}>
                               {recCat.entryLine}
                             </p>
                           )}
@@ -484,8 +486,8 @@ export default function Home() {
                             </h3>
                             {category.entryLine && (
                               <p
-                                className="font-serif italic"
-                                style={{ fontSize: '14px', color: 'var(--color-text-secondary)', opacity: 0.85, marginTop: '8px' }}
+                                className="font-serif"
+                                style={{ fontSize: '15px', color: 'var(--color-text-secondary)', marginTop: '8px' }}
                               >
                                 {category.entryLine}
                               </p>

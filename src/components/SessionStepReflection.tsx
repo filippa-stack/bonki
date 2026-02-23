@@ -95,7 +95,7 @@ export default function SessionStepReflection({
           className="font-serif"
           style={{
             fontSize: '12px',
-            fontStyle: 'italic',
+            fontStyle: 'normal',
             color: '#8B5E1A',
             opacity: 0.65,
             textAlign: 'center',
