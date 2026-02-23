@@ -69,11 +69,11 @@ export default function Onboarding() {
           </motion.div>
         </AnimatePresence>
 
-        {/* Bottom controls */}
+        {/* Bottom controls — content-attached on slides 0-1, bottom-anchored on slide 2 */}
         <div
           style={{
             paddingBottom: 'calc(32px + env(safe-area-inset-bottom, 0px))',
-            paddingTop: '24px',
+            paddingTop: currentSlide < 2 ? '40px' : '24px',
           }}
           className="flex flex-col items-center gap-5 px-6"
         >
@@ -107,28 +107,38 @@ export default function Onboarding() {
           )}
 
           {/* Progress dots */}
-          <div style={{ display: 'flex', gap: '6px', alignItems: 'center' }}>
+          <div style={{ display: 'flex', gap: '4px', alignItems: 'center' }}>
             {[0, 1, 2].map((i) => (
               <button
                 key={i}
                 onClick={() => setCurrentSlide(i)}
                 aria-label={t('onboarding.slide_label', { number: i + 1 })}
                 style={{
-                  width: i === currentSlide ? '14px' : '5px',
-                  height: '5px',
-                  borderRadius: i === currentSlide ? '4px' : '50%',
-                  background: i === currentSlide
-                    ? '#C4821D'
-                    : isDark
-                      ? 'hsl(158, 20%, 30%)'
-                      : 'var(--color-text-ghost)',
-                  opacity: i === currentSlide ? 1 : isDark ? 0.4 : 0.3,
+                  background: 'none',
                   border: 'none',
-                  padding: 0,
+                  padding: '14px 8px',
                   cursor: 'pointer',
-                  transition: 'width 0.3s ease, background 0.3s ease, opacity 0.3s ease',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
                 }}
-              />
+              >
+                <span
+                  style={{
+                    display: 'block',
+                    width: i === currentSlide ? '14px' : '5px',
+                    height: '5px',
+                    borderRadius: i === currentSlide ? '4px' : '50%',
+                    background: i === currentSlide
+                      ? '#C4821D'
+                      : isDark
+                        ? 'hsl(158, 20%, 30%)'
+                        : 'var(--color-text-ghost)',
+                    opacity: i === currentSlide ? 1 : isDark ? 0.4 : 0.3,
+                    transition: 'width 0.3s ease, background 0.3s ease, opacity 0.3s ease',
+                  }}
+                />
+              </button>
             ))}
           </div>
 
@@ -226,10 +236,10 @@ function Slide1() {
 function Slide2() {
   return (
     <div className="flex-1 flex flex-col items-center justify-center" style={{ position: 'relative', padding: '0 32px' }}>
-      {/* Decorative "02" */}
+      {/* Decorative "02" — aligned to headline baseline */}
       <motion.span
         initial={{ opacity: 0 }}
-        animate={{ opacity: 0.04 }}
+        animate={{ opacity: 0.06 }}
         transition={{ delay: 0, duration: 0.8, ease: EASE }}
         style={{
           fontFamily: 'var(--font-serif)',
@@ -237,9 +247,9 @@ function Slide2() {
           fontWeight: 700,
           color: 'var(--color-text-primary)',
           position: 'absolute',
-          top: '15%',
+          top: '50%',
           left: '50%',
-          transform: 'translateX(-50%)',
+          transform: 'translate(-50%, -55%)',
           pointerEvents: 'none',
           userSelect: 'none',
           zIndex: 0,
