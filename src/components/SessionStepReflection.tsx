@@ -72,7 +72,7 @@ export default function SessionStepReflection({
   const hasFill = displayText.trim().length > 0;
 
   return (
-    <div className="reflection-field-wrapper" style={{ marginTop: '12px', marginBottom: '1px' }}>
+    <div className="reflection-field-wrapper" style={{ marginTop: '24px', marginBottom: '1px' }}>
       <textarea
         value={displayText}
         onChange={(e) => handleChange(e.target.value)}
@@ -137,7 +137,7 @@ export default function SessionStepReflection({
         className="flex flex-col items-center"
         style={{
           paddingBottom: 'calc(24px + env(safe-area-inset-bottom, 0px))',
-          marginTop: '16px',
+          marginTop: '24px',
         }}
       >
         <button

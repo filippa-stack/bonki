@@ -715,7 +715,7 @@ export default function CardView() {
             animate={{ opacity: 1 }}
             transition={{ delay: 0.2, duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
             className="text-center max-w-md mx-auto"
-            style={{ marginBottom: '16px', paddingTop: 24 }}
+            style={{ marginBottom: '24px', paddingTop: 32 }}
           >
             <p style={{
               fontSize: '11px',
@@ -735,7 +735,7 @@ export default function CardView() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
             className="text-center max-w-md mx-auto"
-            style={{ marginBottom: '40px' }}
+            style={{ marginBottom: '48px' }}
           >
             <h2
               className="font-serif"
@@ -1138,7 +1138,7 @@ export default function CardView() {
       )}
 
       {/* Section content — centered, max 520px for readability */}
-      <div className="px-6 pt-4 relative" style={{ paddingBottom: 'calc(120px + env(safe-area-inset-bottom, 0px))' }}>
+      <div className="px-6 relative" style={{ paddingTop: '8px', paddingBottom: 'calc(120px + env(safe-area-inset-bottom, 0px))' }}>
         <div className="max-w-[520px] mx-auto">
         <AnimatePresence mode="wait">
           {!currentSection && (

@@ -65,7 +65,7 @@ const SectionView = forwardRef<SectionViewHandle, SectionViewProps>(
       promptIndex === 0;
 
     return (
-      <div className={isExerciseStep ? "py-4 relative" : "py-12 relative"}>
+      <div className={isExerciseStep ? "relative" : "relative"} style={{ paddingTop: isExerciseStep ? '16px' : '48px', paddingBottom: isExerciseStep ? '16px' : '32px' }}>
         {/* Back arrow — top left, live sessions only, hidden at first question */}
         {isLive && showBackArrow && onBack && (
           <div style={{ position: 'absolute', top: '12px', left: '0px', zIndex: 2 }}>
