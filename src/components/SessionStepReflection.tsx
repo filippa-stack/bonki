@@ -148,7 +148,7 @@ export default function SessionStepReflection({
         </p>
       )}
 
-      <div className="mt-6" style={{ paddingBottom: 'calc(16px + env(safe-area-inset-bottom, 0px))' }}>
+      <div className="mt-6 flex flex-col items-center" style={{ paddingBottom: 'calc(16px + env(safe-area-inset-bottom, 0px))' }}>
         <button
           onClick={handleAdvance}
           disabled={submitting}

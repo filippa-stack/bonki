@@ -1196,7 +1196,7 @@ export default function CardView() {
                     />
                   )}
 
-                  <div className="pt-6 space-y-4">
+                  <div className="pt-6 space-y-4 flex flex-col items-center">
                     <button
                       onClick={() => handleArchiveNext(card)}
                       className="cta-primary gap-2"
