@@ -1099,13 +1099,45 @@ export default function CardView() {
       <div className="px-6 pt-4 relative" style={{ paddingBottom: 'calc(120px + env(safe-area-inset-bottom, 0px))' }}>
         <div className="max-w-[520px] mx-auto">
         <AnimatePresence mode="wait">
+          {!currentSection && (
+            <motion.div
+              key="question-skeleton"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0, transition: { duration: 0.1 } }}
+              transition={{ duration: 0.15, delay: 0.1 }}
+              className="py-12"
+            >
+              <div className="flex flex-col items-center gap-3">
+                <div
+                  style={{
+                    width: '80%',
+                    height: '20px',
+                    backgroundColor: 'hsl(36, 15%, 88%)',
+                    borderRadius: '4px',
+                    animation: 'skeletonPulse 2s ease-in-out infinite',
+                  }}
+                />
+                <div
+                  style={{
+                    width: '60%',
+                    height: '20px',
+                    backgroundColor: 'hsl(36, 15%, 88%)',
+                    borderRadius: '4px',
+                    animation: 'skeletonPulse 2s ease-in-out infinite',
+                    animationDelay: '0.3s',
+                  }}
+                />
+              </div>
+            </motion.div>
+          )}
           {currentSection && (
             <motion.div
-              key={currentSection.id}
-              initial={{ opacity: 0.4, y: 8 }}
+              key={`${currentSection.id}-${localPromptIndex}`}
+              initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 0, transition: { duration: 0.15, ease: [0.4, 0, 1, 1] } }}
-              transition={{ duration: 0.28, ease: [0.4, 0, 0.2, 1] }}
+              exit={{ opacity: 0, y: -8, transition: { duration: 0.15, ease: [0.4, 0, 1, 1] } }}
+              transition={{ duration: 0.2, ease: [0.4, 0, 0.2, 1], delay: 0.1 }}
             >
               {/* Prompt content */}
               <motion.div
