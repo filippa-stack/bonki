@@ -1,83 +1,76 @@
 import { Category, Card } from '@/types';
 
 /** Bump this whenever categories or cards change in this file */
-export const CONTENT_VERSION = 7;
+export const CONTENT_VERSION = 8;
 
 export const categories: Category[] = [
   {
     id: 'emotional-intimacy',
-    title: 'Paret vs föräldrarna',
-    entryLine: 'Vem är ni för varandra, bortom föräldraskapet?',
-    description: 'Att hitta tillbaka till varandra bortom föräldrarollen',
-    cardCount: 2,
-  },
-  {
-    id: 'communication',
-    title: 'Det osynliga arbetet',
-    entryLine: 'Vem bär vad — och hur känns det egentligen?',
-    description: 'Ansvar för hem och hushåll, återhämtning',
+    title: 'Vi i oss',
+    entryLine: 'Vem är ni för varandra — bortom allt annat?',
+    description: 'Identitet, tillhörighet och ert minsta vi',
     cardCount: 3,
   },
   {
-    id: 'category-8',
-    title: 'Orden mellan er',
-    entryLine: 'Hur ni pratar — och hur ni lyssnar.',
-    description: 'Enighet, reparation och att ge varandra utrymme',
-    cardCount: 2,
+    id: 'communication',
+    title: 'Vardagen mellan oss',
+    entryLine: 'Roller, ansvar och det som sker mellan raderna.',
+    description: 'Vardagens mönster och hur ni möter dem',
+    cardCount: 4,
   },
   {
-    id: 'category-7',
-    title: 'Att hålla ihop',
-    entryLine: 'Hur ni håller ihop — även när det är svårt.',
-    description: 'Sårbarhet, motgångar och att möta press tillsammans',
-    cardCount: 2,
+    id: 'category-8',
+    title: 'Att hålla kvar varandra',
+    entryLine: 'Att stanna kvar — även när det vore enklare att släppa.',
+    description: 'Enighet, utrymme och sårbarhet',
+    cardCount: 3,
   },
   {
     id: 'parenting-together',
-    title: 'Två sätt att vara förälder',
-    entryLine: 'Ni gör det på olika sätt — och det är okej att prata om.',
-    description: 'Gränser, gemensam linje och olikheter som föräldrar',
+    title: 'När vi tycker olika',
+    entryLine: 'Olikheter som skaver — och vad de säger om er.',
+    description: 'Uppfostran, gränser och värderingar',
     cardCount: 3,
   },
   {
     id: 'individual-needs',
-    title: 'Det vi ärvt',
-    entryLine: 'Det ni bär med er — och hur det formar ert hem.',
-    description: 'Traditioner, förväntningar och att forma ert eget',
+    title: 'Det vi bär med oss',
+    entryLine: 'Det ni ärvt — och hur det formar ert hem.',
+    description: 'Släkt, traditioner och förväntningar',
     cardCount: 2,
   },
   {
     id: 'category-9',
-    title: 'Vår riktning',
+    title: 'Dit vi är på väg',
     entryLine: 'Vad ni står för — och vart ni är på väg.',
     description: 'Värderingar under press och drömmar som kräver mod',
     cardCount: 2,
   },
   {
     id: 'category-6',
-    title: 'Trygghet & risk',
-    entryLine: 'Mod, trygghet och gemensamma ramar kring ekonomi.',
-    description: 'Risk, värderingar och ekonomiska beslut som föräldrar',
+    title: 'Trygghet & mod',
+    entryLine: 'Mod, trygghet och gemensamma ramar.',
+    description: 'Risk, ekonomi och vad som är värt att satsa på',
     cardCount: 2,
   },
   {
     id: 'daily-life',
-    title: 'Fortfarande nära',
-    entryLine: 'De små stunderna som håller er nära.',
-    description: 'Beröring, längtan och att vara nära i vardagen',
+    title: 'Vi nära',
+    entryLine: 'Avstånd, längtan och att hitta tillbaka.',
+    description: 'Närhet, drift och att välja varandra i vardagen',
     cardCount: 2,
   },
   {
     id: 'category-10',
-    title: 'Att fortsätta välja',
+    title: 'Att välja oss',
     entryLine: 'Att fortsätta välja varandra — med öppna ögon.',
-    description: 'När relationen ändrar riktning och valet att stanna blir aktivt',
-    cardCount: 2,
+    description: 'Det aktiva valet att stanna och bygga vidare',
+    cardCount: 1,
   },
 ];
 
 export const cards: Card[] = [
-  // ── emotional-intimacy: smallest-we, identity-shift ──
+  // ── Layer 1: Vi i oss ──────────────────────────────────
   {
     id: 'smallest-we',
     title: 'Vårt minsta \u201Cvi\u201D',
@@ -121,6 +114,53 @@ export const cards: Card[] = [
         content: 'Välj en mycket liten handling eller aktivitet ni gör tillsammans tre gånger kommande vecka.',
         prompts: [
           'Se det som ett test, inte en lösning.',
+        ],
+      },
+    ],
+  },
+  {
+    id: 'family-ab',
+    title: 'När vårt \u201Cvi\u201D blir \u201CFamiljen AB\u201D',
+    subtitle: 'Logistik som ersätter kontakt',
+    categoryId: 'emotional-intimacy',
+    sections: [
+      {
+        id: 'opening-10',
+        type: 'opening',
+        title: 'Början',
+        content: 'När samarbete tar över känslan.',
+        prompts: [
+          'När märker du att jag börjar låta mer som en kollega än en partner?',
+          'Vad hos mig saknar du mest när vi fastnar i logistik?',
+          'När känner du dig effektiv men inte sedd i det du gör?',
+        ],
+      },
+      {
+        id: 'reflective-10',
+        type: 'reflective',
+        title: 'Fördjupning',
+        content: 'Utforska gränsen mellan effektivitet och avstånd.',
+        prompts: [
+          'På vilka sätt kan ett starkt samarbete göra att känslor kommer i andra hand?',
+          'När blir effektivitet ett sätt att vara nära — och när blir det ett sätt att slippa känna efter?',
+        ],
+      },
+      {
+        id: 'scenario-10',
+        type: 'scenario',
+        title: 'I vardagen',
+        content: 'Ni löser vardagen smidigt. Allt fungerar. Men samtalen handlar nästan bara om tider, ansvar och barn. Ingen längtar — men ingen klagar heller.',
+        prompts: [
+          'Hur länge kan en relation leva på funktion innan något viktigt tystnar i oss?',
+        ],
+      },
+      {
+        id: 'exercise-10',
+        type: 'exercise',
+        title: 'Tillsammans',
+        content: 'Avsätt tio minuter en gång den här veckan där ni inte pratar om barn eller logistik.',
+        prompts: [
+          'Om ni inte har något att säga — sitt kvar ändå.',
         ],
       },
     ],
@@ -172,7 +212,7 @@ export const cards: Card[] = [
       },
     ],
   },
-  // ── communication: listening-presence, conflict-repair, expressing-needs ──
+  // ── Layer 2: Vardagen mellan oss ───────────────────────
   {
     id: 'listening-presence',
     title: 'När dagen är slut',
@@ -314,7 +354,51 @@ export const cards: Card[] = [
       },
     ],
   },
-  // ── category-8: behind-the-scenes, thoughtful-space ──
+  {
+    id: 'facing-adversity',
+    title: 'Att möta motgångar',
+    subtitle: 'Olika sätt att hantera press',
+    categoryId: 'communication',
+    sections: [
+      {
+        id: 'opening-16',
+        type: 'opening',
+        title: 'Början',
+        content: 'Motgångar visar hur ni fungerar ihop.',
+        prompts: [
+          'Hur brukar du hantera motgång — genom att prata, agera eller dra dig undan?',
+          'Vad känns mest stöttande för dig i svåra perioder?',
+          'Vad gör det svårt för oss att möta motgång på olika sätt?',
+        ],
+      },
+      {
+        id: 'reflective-16',
+        type: 'reflective',
+        title: 'Fördjupning',
+        content: 'Utforska era olika strategier.',
+        prompts: [
+          'Hur visar sig era olika sätt att hantera motgång innan ni hinner prata om det?',
+          'När hjälper det er att vara nära — och när hjälper det er mer att ta paus var för sig och komma tillbaka till varandra?',
+        ],
+      },
+      {
+        id: 'scenario-16',
+        type: 'scenario',
+        title: 'I vardagen',
+        content: 'Ni möter en svår period. En vill planera och agera, den andra behöver pausa och reflektera.',
+        prompts: [
+          'Hur skapar ni utrymme för båda sätten utan att lämna varandra?',
+        ],
+      },
+      {
+        id: 'exercise-16',
+        type: 'exercise',
+        title: 'Tillsammans',
+        content: 'Tänk ut hur en vecka kan se ut där båda era sätt får plats — utan att det ena blir norm och det andra undantag.',
+      },
+    ],
+  },
+  // ── Layer 3: Att hålla kvar varandra ───────────────────
   {
     id: 'behind-the-scenes',
     title: 'Framför och bakom kulisserna',
@@ -403,56 +487,11 @@ export const cards: Card[] = [
       },
     ],
   },
-  // ── category-7: facing-adversity, self-esteem-wavering ──
-  {
-    id: 'facing-adversity',
-    title: 'Att möta motgångar',
-    subtitle: 'Olika sätt att hantera press',
-    categoryId: 'category-7',
-    sections: [
-      {
-        id: 'opening-16',
-        type: 'opening',
-        title: 'Början',
-        content: 'Motgångar visar hur ni fungerar ihop.',
-        prompts: [
-          'Hur brukar du hantera motgång — genom att prata, agera eller dra dig undan?',
-          'Vad känns mest stöttande för dig i svåra perioder?',
-          'Vad gör det svårt för oss att möta motgång på olika sätt?',
-        ],
-      },
-      {
-        id: 'reflective-16',
-        type: 'reflective',
-        title: 'Fördjupning',
-        content: 'Utforska era olika strategier.',
-        prompts: [
-          'Hur visar sig era olika sätt att hantera motgång innan ni hinner prata om det?',
-          'När hjälper det er att vara nära — och när hjälper det er mer att ta paus var för sig och komma tillbaka till varandra?',
-        ],
-      },
-      {
-        id: 'scenario-16',
-        type: 'scenario',
-        title: 'I vardagen',
-        content: 'Ni möter en svår period. En vill planera och agera, den andra behöver pausa och reflektera.',
-        prompts: [
-          'Hur skapar ni utrymme för båda sätten utan att lämna varandra?',
-        ],
-      },
-      {
-        id: 'exercise-16',
-        type: 'exercise',
-        title: 'Tillsammans',
-        content: 'Tänk ut hur en vecka kan se ut där båda era sätt får plats — utan att det ena blir norm och det andra undantag.',
-      },
-    ],
-  },
   {
     id: 'self-esteem-wavering',
     title: 'När självkänslan svajar',
     subtitle: 'Sårbarhet och förändrade roller',
-    categoryId: 'category-7',
+    categoryId: 'category-8',
     sections: [
       {
         id: 'opening-15',
@@ -495,7 +534,7 @@ export const cards: Card[] = [
       },
     ],
   },
-  // ── parenting-together: different-parenting-styles, parenting-boundaries, parenting-exhaustion ──
+  // ── Layer 4: När vi tycker olika ───────────────────────
   {
     id: 'different-parenting-styles',
     title: 'Uppfostran vi ärvt',
@@ -634,7 +673,7 @@ export const cards: Card[] = [
       },
     ],
   },
-  // ── individual-needs: family-voices, our-traditions ──
+  // ── Layer 5: Det vi bär med oss ────────────────────────
   {
     id: 'family-voices',
     title: 'Röster från släkten',
@@ -725,7 +764,7 @@ export const cards: Card[] = [
       },
     ],
   },
-  // ── category-9: our-philosophy, when-life-tilts ──
+  // ── Layer 6: Dit vi är på väg ──────────────────────────
   {
     id: 'our-philosophy',
     title: 'Vår filosofi',
@@ -814,7 +853,7 @@ export const cards: Card[] = [
       },
     ],
   },
-  // ── category-6: worth-spending-on, risk-under-responsibility ──
+  // ── Layer 7: Trygghet & mod ────────────────────────────
   {
     id: 'worth-spending-on',
     title: 'Värt att spendera på',
@@ -903,51 +942,49 @@ export const cards: Card[] = [
       },
     ],
   },
-  // ── daily-life: family-ab, love-languages ──
+  // ── Layer 8: Vi nära ───────────────────────────────────
   {
-    id: 'family-ab',
-    title: 'När vårt \u201Cvi\u201D blir \u201CFamiljen AB\u201D',
-    subtitle: 'Logistik som ersätter kontakt',
+    id: 'adrift',
+    title: 'På drift',
+    subtitle: 'När relationen långsamt ändrar riktning',
     categoryId: 'daily-life',
     sections: [
       {
-        id: 'opening-10',
+        id: 'opening-21',
         type: 'opening',
         title: 'Början',
-        content: 'När samarbete tar över känslan.',
+        content: 'Ibland märks förändringen inte förrän efteråt.',
         prompts: [
-          'När märker du att jag börjar låta mer som en kollega än en partner?',
-          'Vad hos mig saknar du mest när vi fastnar i logistik?',
-          'När känner du dig effektiv men inte sedd i det du gör?',
+          'Vad gör ni mindre av idag än för ett år sedan, 5 år sedan, 10 år sedan?',
+          'När känner du dig ensam trots att ni är tillsammans?',
+          'När kände du dig senast vald av mig, inte bara inkluderad?',
         ],
       },
       {
-        id: 'reflective-10',
+        id: 'reflective-21',
         type: 'reflective',
         title: 'Fördjupning',
-        content: 'Utforska gränsen mellan effektivitet och avstånd.',
+        content: 'Utforska vad avstånd egentligen handlar om.',
         prompts: [
-          'På vilka sätt kan ett starkt samarbete göra att känslor kommer i andra hand?',
-          'När blir effektivitet ett sätt att vara nära — och när blir det ett sätt att slippa känna efter?',
+          'När märker ni att avstånd växer mest: efter en konflikt — eller efter långa perioder av artigt avstånd?',
+          'Hur påverkar ert sätt att hantera avstånd relationens riktning över tid?',
         ],
       },
       {
-        id: 'scenario-10',
+        id: 'scenario-21',
         type: 'scenario',
         title: 'I vardagen',
-        content: 'Ni löser vardagen smidigt. Allt fungerar. Men samtalen handlar nästan bara om tider, ansvar och barn. Ingen längtar — men ingen klagar heller.',
+        content: 'Ni bråkar sällan. Men ni skrattar inte heller som förr. Närhet skjuts upp till \u201Csen\u201D.',
         prompts: [
-          'Hur länge kan en relation leva på funktion innan något viktigt tystnar i oss?',
+          'Vilka tecken hos er gör att det känns som en tillfällig paus — och vilka tecken gör att det börjar kännas som ett nytt normalläge?',
         ],
       },
       {
-        id: 'exercise-10',
+        id: 'exercise-21',
         type: 'exercise',
         title: 'Tillsammans',
-        content: 'Avsätt tio minuter en gång den här veckan där ni inte pratar om barn eller logistik.',
-        prompts: [
-          'Om ni inte har något att säga — sitt kvar ändå.',
-        ],
+        content: 'Gör ett litet experiment i en vecka som bryter autopiloten (ett nytt sätt att hälsa, ta i varandra, fråga varandra frågor, vara nära varandra).',
+        prompts: ['Prata sedan: förde det er närmare — eller visade det på ett avstånd mellan er?'],
       },
     ],
   },
@@ -998,52 +1035,7 @@ export const cards: Card[] = [
       },
     ],
   },
-  // ── category-10: adrift, choosing-to-stay ──
-  {
-    id: 'adrift',
-    title: 'På drift',
-    subtitle: 'När relationen långsamt ändrar riktning',
-    categoryId: 'category-10',
-    sections: [
-      {
-        id: 'opening-21',
-        type: 'opening',
-        title: 'Början',
-        content: 'Ibland märks förändringen inte förrän efteråt.',
-        prompts: [
-          'Vad gör ni mindre av idag än för ett år sedan, 5 år sedan, 10 år sedan?',
-          'När känner du dig ensam trots att ni är tillsammans?',
-          'När kände du dig senast vald av mig, inte bara inkluderad?',
-        ],
-      },
-      {
-        id: 'reflective-21',
-        type: 'reflective',
-        title: 'Fördjupning',
-        content: 'Utforska vad avstånd egentligen handlar om.',
-        prompts: [
-          'När märker ni att avstånd växer mest: efter en konflikt — eller efter långa perioder av artigt avstånd?',
-          'Hur påverkar ert sätt att hantera avstånd relationens riktning över tid?',
-        ],
-      },
-      {
-        id: 'scenario-21',
-        type: 'scenario',
-        title: 'I vardagen',
-        content: 'Ni bråkar sällan. Men ni skrattar inte heller som förr. Närhet skjuts upp till \u201Csen\u201D.',
-        prompts: [
-          'Vilka tecken hos er gör att det känns som en tillfällig paus — och vilka tecken gör att det börjar kännas som ett nytt normalläge?',
-        ],
-      },
-      {
-        id: 'exercise-21',
-        type: 'exercise',
-        title: 'Tillsammans',
-        content: 'Gör ett litet experiment i en vecka som bryter autopiloten (ett nytt sätt att hälsa, ta i varandra, fråga varandra frågor, vara nära varandra).',
-        prompts: ['Prata sedan: förde det er närmare — eller visade det på ett avstånd mellan er?'],
-      },
-    ],
-  },
+  // ── Layer 9: Att välja oss ─────────────────────────────
   {
     id: 'choosing-to-stay',
     title: 'Att fortsätta välja',
