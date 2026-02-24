@@ -104,7 +104,7 @@ export default function BookmarkButton({
             whiteSpace: 'nowrap',
           }}
         >
-          Spara fråga
+          Spara till Era samtal
         </span>
       )}
     </div>
