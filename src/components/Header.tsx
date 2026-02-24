@@ -56,9 +56,7 @@ export default function Header({
             ? (isDarkSurface ? 'transparent' : 'var(--surface-base)')
             : 'hsl(158, 32%, 14%)',
           boxShadow: 'none',
-          borderBottom: isImmersive
-            ? (isDarkSurface ? '1px solid hsl(158, 25%, 20%)' : 'none')
-            : 'none',
+          borderBottom: 'none',
         }}
       >
         {isImmersive ? (
