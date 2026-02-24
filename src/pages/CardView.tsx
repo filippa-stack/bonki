@@ -146,6 +146,10 @@ export default function CardView() {
   const [showCompletion, _setShowCompletion] = useState(
     devState === 'completed' ? true : false
   );
+  const completionHeadline = useMemo(
+    () => COMPLETION_MESSAGES[Math.floor(Math.random() * COMPLETION_MESSAGES.length)],
+    []
+  );
   // Wrapper that also marks the card as optimistically completed
   const setShowCompletion = useCallback((val: boolean) => {
     _setShowCompletion(val);
@@ -752,7 +756,7 @@ export default function CardView() {
                 textWrap: 'balance',
               }}
             >
-              {COMPLETION_MESSAGES[Math.floor(Math.random() * COMPLETION_MESSAGES.length)]}
+              {completionHeadline}
             </h2>
           </motion.div>
 
@@ -901,7 +905,7 @@ export default function CardView() {
             cursor: 'pointer',
           }}
         >
-          ← Till samtal
+          ← Tillbaka
         </motion.button>
 
         {/* Category name */}
