@@ -1,4 +1,5 @@
 import { motion, AnimatePresence } from 'framer-motion';
+import { EASE, EMOTION } from '@/lib/motion';
 
 export interface StageStep {
   stage_key: 'oppnare' | 'tankevackare' | 'scenario' | 'teamwork';
@@ -40,10 +41,10 @@ export default function StepProgressIndicator({
       <AnimatePresence mode="wait">
         <motion.span
           key={currentLabel}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.3 }}
+          initial={{ opacity: 0, y: 4 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -4 }}
+          transition={{ duration: EMOTION, ease: [...EASE] }}
           style={{
             fontFamily: 'var(--font-sans)',
             fontSize: '10px',
@@ -66,11 +67,15 @@ export default function StepProgressIndicator({
           const isCurrent = index === currentStepIndex;
 
           return (
-            <span
+            <motion.span
               key={step.stage_key}
+              animate={{
+                width: isCurrent ? 16 : 5,
+                opacity: isCurrent ? 0.85 : isCompleted ? 0.20 : 0.14,
+              }}
+              transition={{ duration: EMOTION, ease: [...EASE] }}
               style={{
                 display: 'inline-block',
-                width: isCurrent ? '16px' : '5px',
                 height: '5px',
                 borderRadius: isCurrent ? '4px' : '50%',
                 backgroundColor: isCurrent
@@ -78,8 +83,7 @@ export default function StepProgressIndicator({
                   : isCompleted
                     ? 'var(--cta-active)'
                     : 'var(--text-ghost)',
-                opacity: isCurrent ? 0.85 : isCompleted ? 0.20 : 0.14,
-                transition: 'width 0.3s ease, border-radius 0.3s ease, opacity 0.25s ease, background-color 0.25s ease',
+                transition: 'border-radius 0.3s ease, background-color 0.25s ease',
               }}
             />
           );

@@ -1,6 +1,8 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import { useSessionReflections } from '@/hooks/useSessionReflections';
+import { BEAT_2, EMOTION, EASE } from '@/lib/motion';
 
 interface SessionStepReflectionProps {
   sessionId?: string | null;
@@ -72,7 +74,13 @@ export default function SessionStepReflection({
   const hasFill = displayText.trim().length > 0;
 
   return (
-    <div className="reflection-field-wrapper" style={{ marginTop: '32px', marginBottom: '8px' }}>
+    <motion.div
+      className="reflection-field-wrapper"
+      style={{ marginTop: '32px', marginBottom: '8px' }}
+      initial={{ opacity: 0, y: 6 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: BEAT_2, duration: EMOTION, ease: [...EASE] }}
+    >
       <textarea
         value={displayText}
         onChange={(e) => handleChange(e.target.value)}
@@ -92,16 +100,16 @@ export default function SessionStepReflection({
           fontFamily: hasFill ? 'var(--font-sans)' : 'var(--font-serif)',
           fontSize: hasFill ? '15px' : '17px',
           lineHeight: 1.6,
-          color: 'var(--color-text-primary)',
+          color: 'var(--text-primary)',
           backgroundColor: isFocused || hasFill
             ? 'hsl(0 0% 100% / 0.65)'
             : 'hsl(0 0% 100% / 0.35)',
           border: 'none',
-          borderRadius: '8px',
+          borderRadius: '10px',
           padding: '24px 20px 20px 20px',
           boxShadow: isFocused
             ? 'inset 0 1px 0 var(--accent-saffron), inset 0 -1px 0 var(--accent-saffron), 0 0 0 3px hsla(38, 80%, 46%, 0.08)'
-            : 'inset 0 1px 3px hsla(30, 12%, 25%, 0.06), 0 1px 2px hsla(0, 0%, 100%, 0.6)',
+            : '0 1px 2px hsla(30, 15%, 25%, 0.04), 0 4px 16px -4px hsla(30, 18%, 28%, 0.06)',
           transition: 'background-color 280ms ease, box-shadow 280ms ease',
         }}
       />
@@ -123,7 +131,7 @@ export default function SessionStepReflection({
       {stepIndex === 0 && isFirstVisit && (
         <p
           className="type-meta mt-3"
-          style={{ color: 'var(--color-text-secondary)', opacity: 0.5 }}
+          style={{ color: 'var(--text-secondary)', opacity: 0.5 }}
         >
           Dina svar sparas i Era samtal efter avslutat kort.
         </p>
@@ -136,18 +144,20 @@ export default function SessionStepReflection({
           marginTop: '40px',
         }}
       >
-        <button
+        <motion.button
           onClick={handleAdvance}
           disabled={submitting}
           className="cta-primary"
           style={hadPriorTextRef.current ? { opacity: 0.80 } : undefined}
+          whileTap={{ scale: 0.98 }}
+          transition={{ duration: 0.12 }}
         >
           {submitting
             ? 'Sparar…'
             : isLastStep
             ? 'Klar'
             : 'Fortsätt'}
-        </button>
+        </motion.button>
 
         <button
           onClick={() => navigate('/')}
@@ -168,9 +178,9 @@ export default function SessionStepReflection({
                 background: 'none',
                 border: 'none',
                 cursor: 'pointer',
-                fontFamily: 'Inter, sans-serif',
+                fontFamily: 'var(--font-sans)',
                 fontSize: '13px',
-                color: 'var(--color-text-secondary)',
+                color: 'var(--text-secondary)',
                 opacity: 0.50,
                 textAlign: 'center',
               }}
@@ -180,6 +190,6 @@ export default function SessionStepReflection({
           </div>
         )}
       </div>
-    </div>
+    </motion.div>
   );
 }

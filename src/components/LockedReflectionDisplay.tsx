@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
+import { EMOTION, EASE, BEAT_1 } from '@/lib/motion';
 
 interface Props {
   sessionId: string | null;
@@ -43,23 +45,27 @@ export default function LockedReflectionDisplay({ sessionId, stepIndex }: Props)
   if (loading || !text) return null;
 
   return (
-    <div
+    <motion.div
+      initial={{ opacity: 0, y: 6 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: BEAT_1, duration: EMOTION, ease: [...EASE] }}
       style={{
         fontFamily: 'var(--font-serif)',
         fontSize: '16px',
         fontWeight: 400,
-        color: 'var(--color-text-secondary)',
+        color: 'var(--text-secondary)',
         textAlign: 'left',
         lineHeight: 1.7,
-        padding: '16px',
+        padding: '20px',
         background: 'var(--surface-raised)',
-        borderRadius: '12px',
-        border: '1px solid hsl(var(--neutral-300))',
+        borderRadius: '10px',
+        border: 'none',
         marginBottom: '32px',
         whiteSpace: 'pre-wrap',
+        boxShadow: '0 1px 2px hsla(30, 15%, 25%, 0.04), 0 4px 16px -4px hsla(30, 18%, 28%, 0.06)',
       }}
     >
       {text}
-    </div>
+    </motion.div>
   );
 }
