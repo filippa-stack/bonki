@@ -14,6 +14,7 @@ import { CoupleSpaceProvider } from "@/contexts/CoupleSpaceContext";
 import { NormalizedSessionProvider } from "@/contexts/NormalizedSessionContext";
 import { OptimisticCompletionsProvider } from "@/contexts/OptimisticCompletionsContext";
 import PageTransition from "@/components/PageTransition";
+import MobileOnlyGate from "@/components/MobileOnlyGate";
 import Index from "./pages/Index";
 import HomeV2 from "./pages/HomeV2";
 
@@ -117,8 +118,10 @@ const App = () => (
           <Sonner position="bottom-center" offset={{ bottom: 64 }} toastOptions={{ classNames: { toast: 'mx-6' } }} />
           <BrowserRouter>
             <DevStateProvider>
-              <DevModeBadge />
-              <AppRoutes />
+              <MobileOnlyGate>
+                <DevModeBadge />
+                <AppRoutes />
+              </MobileOnlyGate>
             </DevStateProvider>
           </BrowserRouter>
         </TooltipProvider>
