@@ -686,9 +686,7 @@ export default function CardView() {
         animate={{ opacity: 1 }}
         transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
       >
-        <div style={{ opacity: 0.4, pointerEvents: 'none' }}>
-          <Header title="" showBack backTo={category ? `/category/${category.id}` : '/'} />
-        </div>
+        <Header title="" variant="immersive" />
         <div className="px-6 pb-16 relative" style={{ paddingTop: '48px' }}>
           {/* Back arrow — same style as session question pages */}
           <motion.div
