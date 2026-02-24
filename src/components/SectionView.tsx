@@ -47,22 +47,30 @@ const normalizePrompt = (prompt: string | Prompt): Prompt => {
 const SectionView = forwardRef<SectionViewHandle, SectionViewProps>(
   function SectionView({ section, promptIndex = 0, coupleSpaceId, sessionId, cardId, stageIndex, isLive, isReflectionStep, isExerciseStep, onBack, showBackArrow = false }, ref) {
     // If section has no prompts but has content, treat content as the prompt
+    // Merge content into prompts for scenario/exercise so everything
+    // renders uniformly as centered questions.
+    const isScenarioOrExercise = section.type === 'scenario' || section.type === 'exercise';
     const hasExplicitPrompts = !!(section.prompts && section.prompts.length > 0);
-    const rawPrompts = hasExplicitPrompts
-      ? section.prompts!
-      : section.content
-        ? [section.content]
-        : [];
-    const normalizedPrompts = rawPrompts.map(normalizePrompt);
 
+    let rawPrompts: (string | Prompt)[];
+    if (hasExplicitPrompts) {
+      // For scenario/exercise, prepend content as first prompt if it exists
+      if (isScenarioOrExercise && section.content) {
+        rawPrompts = [section.content, ...section.prompts!];
+      } else {
+        rawPrompts = section.prompts!;
+      }
+    } else {
+      rawPrompts = section.content ? [section.content] : [];
+    }
+
+    const normalizedPrompts = rawPrompts.map(normalizePrompt);
     const prompt = normalizedPrompts[promptIndex] ?? normalizedPrompts[0];
 
     if (!prompt) return null;
 
-    const showPreamble =
-      hasExplicitPrompts &&
-      (section.type === 'scenario' || section.type === 'exercise') &&
-      promptIndex === 0;
+    // No preamble — everything is a prompt now
+    const showPreamble = false;
 
     return (
       <div className={isExerciseStep ? "relative" : "relative"} style={{ paddingTop: isExerciseStep ? '16px' : '48px', paddingBottom: isExerciseStep ? '16px' : '32px' }}>
