@@ -735,14 +735,14 @@ export default function CardView() {
             className="text-center max-w-md mx-auto"
             style={{ marginBottom: '32px', paddingTop: 24 }}
           >
-            <div style={{ display: 'flex', justifyContent: 'center', gap: '8px' }}>
-              {[0, 1, 2].map(i => (
+            <div style={{ display: 'flex', justifyContent: 'center', gap: '6px' }}>
+              {[0, 1].map(i => (
                 <span key={i} style={{
-                  width: i === 1 ? '6px' : '4px',
-                  height: i === 1 ? '6px' : '4px',
+                  width: '4px',
+                  height: '4px',
                   borderRadius: '50%',
                   backgroundColor: 'var(--accent-saffron)',
-                  opacity: i === 1 ? 0.5 : 0.2,
+                  opacity: 0.35,
                 }} />
               ))}
             </div>
@@ -910,7 +910,7 @@ export default function CardView() {
             cursor: 'pointer',
           }}
         >
-          ← Välj samtal
+          ← Till samtal
         </motion.button>
 
         {/* Category name */}
@@ -959,17 +959,17 @@ export default function CardView() {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            gap: '8px',
+            gap: '6px',
             margin: '0 auto 36px',
           }}
         >
-          {[0, 1, 2].map(i => (
+          {[0, 1].map(i => (
             <span key={i} style={{
-              width: i === 1 ? '6px' : '4px',
-              height: i === 1 ? '6px' : '4px',
+              width: '4px',
+              height: '4px',
               borderRadius: '50%',
               backgroundColor: 'var(--accent-saffron)',
-              opacity: i === 1 ? 0.6 : 0.25,
+              opacity: 0.35,
             }} />
           ))}
         </motion.div>
