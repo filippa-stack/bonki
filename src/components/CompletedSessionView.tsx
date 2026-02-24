@@ -16,13 +16,13 @@ const STEP_LABELS = ['Början', 'Fördjupning', 'I vardagen', 'Tillsammans'];
 
 const COMPLETION_HEADLINES = [
   'Ni tog er tid för varandra.',
-  'Det räcker. Det mer än räcker.',
   'Samtalet är sparat.',
-  'Något hände här.',
-  'Ni lyssnade på riktigt.',
-  'Det här var ert.',
-  'Tack för att ni stannade.',
+  'Det här samtalet tillhör er.',
+  'Tack för att ni stannade kvar.',
+  'Det här var bara för er.',
   'Ni valde varandra igen.',
+  'Varje samtal är ett val. Ni valde rätt.',
+  'Det ni just gjorde betyder något.',
 ];
 
 interface CompletedSessionViewProps {
