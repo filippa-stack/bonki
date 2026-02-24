@@ -85,7 +85,12 @@ function getQuestionText(
   return typeof prompt === 'string' ? prompt : prompt.text;
 }
 
-/** Get all questions from ALL stages with matching reflections */
+/** Get all questions from ALL stages with matching reflections.
+ *  Reflections are stored with encoded step_index = stageIdx * 100 + promptIdx.
+ *  We gather reflections per stage (floor(stepIndex/100)) and match them to
+ *  prompts by their local offset (stepIndex % 100). Unmatched reflections are
+ *  appended at the end of their stage so nothing is lost.
+ */
 function getAllQuestionsWithReflections(
   getCardById: (id: string) => any,
   cardId: string,
@@ -94,9 +99,13 @@ function getAllQuestionsWithReflections(
   const card = getCardById(cardId);
   if (!card) return [];
 
-  const reflectionMap = new Map<number, string>();
+  // Group reflections by stage
+  const stageReflections = new Map<number, Map<number, string>>();
   for (const r of reflections) {
-    reflectionMap.set(r.stepIndex, r.text);
+    const stage = Math.floor(r.stepIndex / 100);
+    const local = r.stepIndex % 100;
+    if (!stageReflections.has(stage)) stageReflections.set(stage, new Map());
+    stageReflections.get(stage)!.set(local, r.text);
   }
 
   const result: { question: string; reflection: string | null; stageIndex: number }[] = [];
@@ -107,14 +116,33 @@ function getAllQuestionsWithReflections(
     if (!section) continue;
 
     const prompts: (string | Prompt)[] = section.prompts ?? (section.content ? [section.content] : []);
+    const refMap = stageReflections.get(stageIdx) ?? new Map<number, string>();
+    const matchedLocals = new Set<number>();
+
     for (let promptIdx = 0; promptIdx < prompts.length; promptIdx++) {
       const prompt = prompts[promptIdx];
       const questionText = typeof prompt === 'string' ? prompt : prompt.text;
       if (!questionText) continue;
-      const encoded = stageIdx * 100 + promptIdx;
+      const ref = refMap.get(promptIdx) ?? null;
+      if (ref) matchedLocals.add(promptIdx);
       result.push({
         question: questionText,
-        reflection: reflectionMap.get(encoded) || null,
+        reflection: ref,
+        stageIndex: stageIdx,
+      });
+    }
+
+    // Append any unmatched reflections for this stage (saved at unexpected indices)
+    for (const [local, text] of refMap.entries()) {
+      if (matchedLocals.has(local)) continue;
+      // Try to find the closest prompt text, or use a generic label
+      const closestPrompt = prompts[0];
+      const qText = closestPrompt
+        ? (typeof closestPrompt === 'string' ? closestPrompt : closestPrompt.text)
+        : '';
+      result.push({
+        question: qText,
+        reflection: text,
         stageIndex: stageIdx,
       });
     }
