@@ -131,7 +131,7 @@ export default function PromptItem({ prompt, index, sectionType, preamble }: Pro
         )}
 
         {isExercise ? (
-          /* ── Teamwork: assignment block ── */
+          /* ── Teamwork: assignment block with same question typography ── */
           <motion.div
             key={`exercise-${index}-${prompt.text.slice(0, 20)}`}
             initial={{ opacity: 0, y: 8 }}
@@ -157,13 +157,26 @@ export default function PromptItem({ prompt, index, sectionType, preamble }: Pro
                 textTransform: 'uppercase',
                 letterSpacing: '0.10em',
                 color: 'var(--accent-text)',
-                marginBottom: '8px',
+                marginBottom: '16px',
               }}
             >
               Gör tillsammans
             </p>
-            <div style={{ fontFamily: 'var(--font-serif)', fontSize: '20px', fontWeight: 600, lineHeight: 1.4, color: 'var(--text-primary)' }}>
-              {renderAssignmentText(prompt.text)}
+            <div className="space-y-5">
+              {prompt.text.split('\n').filter(p => p.trim() !== '').map((para, i) => (
+                <p
+                  key={i}
+                  className="font-serif"
+                  style={{
+                    fontSize: 'clamp(24px, 6vw, 32px)',
+                    textWrap: 'balance',
+                    textAlign: 'center',
+                    ...gravity,
+                  }}
+                >
+                  {para}
+                </p>
+              ))}
             </div>
           </motion.div>
         ) : (

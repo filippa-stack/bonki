@@ -48,13 +48,24 @@ const SectionView = forwardRef<SectionViewHandle, SectionViewProps>(
   function SectionView({ section, promptIndex = 0, coupleSpaceId, sessionId, cardId, stageIndex, isLive, isReflectionStep, isExerciseStep, onBack, showBackArrow = false }, ref) {
     // If section has no prompts but has content, treat content as the prompt
     const hasExplicitPrompts = !!(section.prompts && section.prompts.length > 0);
-    const rawPrompts = hasExplicitPrompts
-      ? section.prompts!
-      : section.content
-        ? [section.content]
-        : [];
-    const normalizedPrompts = rawPrompts.map(normalizePrompt);
+    const isExercise = section.type === 'exercise';
 
+    let rawPrompts: (string | Prompt)[];
+    if (hasExplicitPrompts) {
+      if (isExercise && section.content) {
+        // Merge content + all prompts into a single combined prompt for the box
+        const allTexts = [section.content, ...section.prompts!.map(p =>
+          typeof p === 'string' ? p : p.text
+        )];
+        rawPrompts = [{ text: allTexts.join('\n'), color: undefined, textColor: undefined }];
+      } else {
+        rawPrompts = section.prompts!;
+      }
+    } else {
+      rawPrompts = section.content ? [section.content] : [];
+    }
+
+    const normalizedPrompts = rawPrompts.map(normalizePrompt);
     const prompt = normalizedPrompts[promptIndex] ?? normalizedPrompts[0];
 
     if (!prompt) return null;
