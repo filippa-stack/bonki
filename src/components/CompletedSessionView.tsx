@@ -3,10 +3,9 @@
 // The JSON session model is deprecated.
 // All session state must come from normalized tables.
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Separator } from '@/components/ui/separator';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { useCoupleSpaceContext as useCoupleSpace } from '@/contexts/CoupleSpaceContext';
@@ -14,6 +13,17 @@ import Header from '@/components/Header';
 import { BEAT_1, BEAT_2, BEAT_3, EASE, EMOTION } from '@/lib/motion';
 
 const STEP_LABELS = ['Början', 'Fördjupning', 'I vardagen', 'Tillsammans'];
+
+const COMPLETION_HEADLINES = [
+  'Ni tog er tid för varandra.',
+  'Det räcker. Det mer än räcker.',
+  'Samtalet är sparat.',
+  'Något hände här.',
+  'Ni lyssnade på riktigt.',
+  'Det här var ert.',
+  'Tack för att ni stannade.',
+  'Ni valde varandra igen.',
+];
 
 interface CompletedSessionViewProps {
   cardId: string;
@@ -52,6 +62,10 @@ export default function CompletedSessionView({
 
   const myName = 'Du';
   const partnerName = 'Din partner';
+
+  const headline = useMemo(() =>
+    COMPLETION_HEADLINES[Math.floor(Math.random() * COMPLETION_HEADLINES.length)],
+  []);
 
   useEffect(() => {
     if (!space || !cardId) { setLoading(false); return; }
@@ -159,16 +173,21 @@ export default function CompletedSessionView({
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-            className="text-center space-y-3"
+            className="text-center"
+            style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}
           >
             <h2
-              className="type-h1"
-              style={{ color: 'var(--accent-saffron)' }}
+              className="font-serif"
+              style={{
+                fontSize: 'clamp(26px, 7vw, 34px)',
+                fontWeight: 400,
+                lineHeight: 1.2,
+                color: 'var(--accent-saffron)',
+              }}
             >
-              Samtalet är sparat.
+              {headline}
             </h2>
-            <p className="type-body mt-[8px]" style={{ color: 'var(--text-tertiary)' }}>Ni kan fortsätta när ni vill.</p>
-            <p className="type-meta tracking-wide" style={{ color: 'var(--text-ghost)' }}>
+            <p className="font-serif italic" style={{ fontSize: '15px', color: 'var(--text-tertiary)', opacity: 0.7 }}>
               {formatSessionDate(session.startedAt)}
             </p>
           </motion.div>
@@ -191,43 +210,43 @@ export default function CompletedSessionView({
                 >
                   {/* Partner first */}
                   {group.partnerRef && group.partnerRef.text.trim() && (
-                    <div className="space-y-1">
-                      <p className="text-xs px-1" style={{ color: 'var(--text-tertiary)' }}>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                      <p style={{ fontSize: '11px', letterSpacing: '0.04em', color: 'var(--text-tertiary)', opacity: 0.6, paddingLeft: '2px' }}>
                         {group.partnerRef.speakerLabel && /^[AB]$/.test(group.partnerRef.speakerLabel)
                           ? group.partnerRef.speakerLabel
                           : partnerName}
                       </p>
                       <div style={{
                         background: 'var(--surface-raised)',
-                        borderRadius: '10px',
-                        overflow: 'hidden',
-                        boxShadow: '0 1px 2px hsla(30, 15%, 25%, 0.04), 0 4px 16px -4px hsla(30, 18%, 28%, 0.06)',
+                        borderRadius: '12px',
+                        boxShadow: '0 1px 3px hsla(30, 15%, 25%, 0.04), 0 4px 16px -4px hsla(30, 18%, 28%, 0.06)',
                       }}>
-                        <p className="p-6 text-sm whitespace-pre-wrap" style={{ color: 'var(--text-primary)' }}>{group.partnerRef.text}</p>
+                        <p className="font-serif italic whitespace-pre-wrap" style={{ padding: '20px 24px', fontSize: '17px', lineHeight: 1.7, color: 'var(--text-primary)' }}>{group.partnerRef.text}</p>
                       </div>
                     </div>
                   )}
 
                   {/* User second */}
                   {group.myRef && group.myRef.text.trim() && (
-                    <div className="space-y-1">
-                      <p className="text-xs px-1" style={{ color: 'var(--text-tertiary)' }}>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                      <p style={{ fontSize: '11px', letterSpacing: '0.04em', color: 'var(--text-tertiary)', opacity: 0.6, paddingLeft: '2px' }}>
                         {group.myRef.speakerLabel && /^[AB]$/.test(group.myRef.speakerLabel)
                           ? group.myRef.speakerLabel
                           : myName}
                       </p>
                       <div style={{
                         background: 'var(--surface-raised)',
-                        borderRadius: '10px',
-                        overflow: 'hidden',
-                        boxShadow: '0 1px 2px hsla(30, 15%, 25%, 0.04), 0 4px 16px -4px hsla(30, 18%, 28%, 0.06)',
+                        borderRadius: '12px',
+                        boxShadow: '0 1px 3px hsla(30, 15%, 25%, 0.04), 0 4px 16px -4px hsla(30, 18%, 28%, 0.06)',
                       }}>
-                        <p className="p-6 text-sm whitespace-pre-wrap" style={{ color: 'var(--text-primary)' }}>{group.myRef.text}</p>
+                        <p className="font-serif italic whitespace-pre-wrap" style={{ padding: '20px 24px', fontSize: '17px', lineHeight: 1.7, color: 'var(--text-primary)' }}>{group.myRef.text}</p>
                       </div>
                     </div>
                   )}
 
-                  {idx < stepGroups.length - 1 && <Separator className="opacity-10" />}
+                  {idx < stepGroups.length - 1 && (
+                    <div style={{ height: '1px', margin: '8px 32px', background: 'linear-gradient(90deg, transparent, var(--text-ghost), transparent)', opacity: 0.25 }} />
+                  )}
                 </motion.div>
               ))}
             </motion.div>
@@ -239,16 +258,15 @@ export default function CompletedSessionView({
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: BEAT_3, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-              className="space-y-2"
+              style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}
             >
-              <p className="type-meta tracking-wide" style={{ color: 'var(--text-tertiary)' }}>Det ni tog med er</p>
+              <p style={{ fontSize: '11px', letterSpacing: '0.06em', textTransform: 'uppercase', color: 'var(--text-tertiary)', opacity: 0.55 }}>Det ni tog med er</p>
               <div style={{
-                background: 'var(--surface-raised)',
-                borderRadius: '10px',
-                overflow: 'hidden',
-                boxShadow: '0 1px 2px hsla(30, 15%, 25%, 0.04), 0 4px 16px -4px hsla(30, 18%, 28%, 0.06)',
+                background: 'hsl(36 20% 97% / 0.70)',
+                borderRadius: '12px',
+                boxShadow: 'inset 0 1px 3px hsla(30, 12%, 25%, 0.04), 0 1px 2px hsla(30, 15%, 25%, 0.03)',
               }}>
-                <p className="p-6 text-sm whitespace-pre-wrap" style={{ color: 'var(--text-primary)' }}>{session.takeawayText}</p>
+                <p className="font-serif italic whitespace-pre-wrap" style={{ padding: '20px 24px', fontSize: '17px', lineHeight: 1.7, color: 'var(--text-secondary)' }}>{session.takeawayText}</p>
               </div>
             </motion.div>
           )}
@@ -258,23 +276,21 @@ export default function CompletedSessionView({
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: BEAT_3 + 0.06, duration: EMOTION, ease: [...EASE] }}
-            className="text-center" style={{ marginTop: '16px' }}
+            style={{ marginTop: '8px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '20px' }}
           >
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '24px' }}>
-              <button
-                onClick={() => navigate('/shared')}
-                className="type-meta text-center block mx-auto underline hover:no-underline transition-opacity"
-                style={{ color: 'var(--text-secondary)' }}
-              >
-                Se reflektionerna i Era samtal
-              </button>
-              <button
-                onClick={() => navigate('/')}
-                className="cta-primary"
-              >
-                Utforska fler ämnen
-              </button>
-            </div>
+            <button
+              onClick={() => navigate('/shared')}
+              className="font-serif italic"
+              style={{ fontSize: '14px', color: 'var(--text-secondary)', opacity: 0.65, background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline', textUnderlineOffset: '3px' }}
+            >
+              Se reflektionerna i Era samtal
+            </button>
+            <button
+              onClick={() => navigate('/')}
+              className="cta-primary"
+            >
+              Utforska fler ämnen
+            </button>
           </motion.div>
 
         </div>
