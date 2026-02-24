@@ -3,6 +3,7 @@ import { motion, AnimatePresence, PanInfo } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { useApp } from '@/contexts/AppContext';
 
+/** Apple-grade ease: slow start, confident finish */
 const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
 export default function Onboarding() {
@@ -38,12 +39,8 @@ export default function Onboarding() {
     <div
       className="min-h-screen flex flex-col"
       style={{
-        backgroundColor: currentSlide === 0
-          ? 'var(--surface-base)'
-          : currentSlide === 1
-            ? 'var(--surface-base)'
-            : 'hsl(158, 32%, 14%)',
-        transition: 'background-color 0.5s ease',
+        backgroundColor: isDark ? 'var(--cta-active)' : 'var(--surface-base)',
+        transition: 'background-color 0.7s cubic-bezier(0.22, 1, 0.36, 1)',
       }}
     >
       <div className="flex-1 flex flex-col">
@@ -53,14 +50,13 @@ export default function Onboarding() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.3, ease: EASE }}
+            transition={{ duration: 0.5, ease: EASE }}
             className="flex-1 flex flex-col"
             drag="x"
             dragConstraints={{ left: 0, right: 0 }}
             dragElastic={0.15}
             onDragEnd={handleDragEnd}
           >
-            {/* Slide content */}
             <div className="flex-1 flex flex-col" style={{ position: 'relative' }}>
               {currentSlide === 0 && <Slide1 />}
               {currentSlide === 1 && <Slide2 />}
@@ -69,7 +65,7 @@ export default function Onboarding() {
           </motion.div>
         </AnimatePresence>
 
-        {/* Bottom controls — content-attached on slides 0-1, bottom-anchored on slide 2 */}
+        {/* ── Bottom controls ── */}
         <div
           style={{
             paddingBottom: 'calc(32px + env(safe-area-inset-bottom, 0px))',
@@ -83,15 +79,19 @@ export default function Onboarding() {
               onClick={handleComplete}
               style={{
                 width: '60%',
+                maxWidth: '280px',
                 fontSize: '15px',
                 letterSpacing: '0.02em',
                 background: 'var(--surface-sunken)',
-                color: 'hsl(158, 32%, 14%)',
-                borderRadius: '14px',
+                color: 'var(--cta-active)',
+                borderRadius: 'var(--radius-button)',
                 padding: '14px 0',
                 fontWeight: 600,
+                fontFamily: 'var(--font-sans)',
                 border: 'none',
                 cursor: 'pointer',
+                boxShadow: '0 2px 12px -2px hsla(30, 18%, 25%, 0.12), 0 1px 3px hsla(30, 12%, 20%, 0.06)',
+                transition: 'transform 200ms ease-out, box-shadow 300ms ease-out',
               }}
             >
               Kom igång
@@ -100,7 +100,12 @@ export default function Onboarding() {
             <button
               onClick={handleNext}
               className="cta-primary"
-              style={{ width: '60%', fontSize: '15px', letterSpacing: '0.02em' }}
+              style={{
+                width: '60%',
+                fontSize: '15px',
+                letterSpacing: '0.02em',
+                boxShadow: '0 2px 12px -2px hsla(158, 30%, 15%, 0.18), 0 1px 3px hsla(158, 25%, 12%, 0.08)',
+              }}
             >
               Fortsätt
             </button>
@@ -130,12 +135,12 @@ export default function Onboarding() {
                     height: '5px',
                     borderRadius: i === currentSlide ? '4px' : '50%',
                     background: i === currentSlide
-                      ? '#C4821D'
+                      ? 'var(--accent-saffron)'
                       : isDark
                         ? 'hsl(158, 20%, 30%)'
-                        : 'var(--color-text-ghost)',
+                        : 'var(--text-ghost)',
                     opacity: i === currentSlide ? 1 : isDark ? 0.4 : 0.3,
-                    transition: 'width 0.3s ease, background 0.3s ease, opacity 0.3s ease',
+                    transition: 'width 0.4s cubic-bezier(0.22, 1, 0.36, 1), background 0.4s ease, opacity 0.4s ease',
                   }}
                 />
               </button>
@@ -158,6 +163,7 @@ export default function Onboarding() {
                   cursor: 'pointer',
                   textDecoration: 'none',
                   textAlign: 'center' as const,
+                  fontFamily: 'var(--font-sans)',
                 }}
               >
                 Hoppa över
@@ -173,30 +179,30 @@ export default function Onboarding() {
 /* ─── SLIDE 1: "Ett gemensamt rum." ─── */
 function Slide1() {
   return (
-    <div className="flex-1 flex flex-col justify-end" style={{ paddingBottom: '32px' }}>
+    <div className="flex-1 flex flex-col justify-center" style={{ paddingBottom: '48px' }}>
       <motion.h1
-        initial={{ opacity: 0, x: -12 }}
+        initial={{ opacity: 0, x: -16 }}
         animate={{ opacity: 1, x: 0 }}
-        transition={{ delay: 0, duration: 0.6, ease: EASE }}
+        transition={{ delay: 0.1, duration: 0.7, ease: EASE }}
         style={{
           fontFamily: 'var(--font-serif)',
-          fontSize: '38px',
+          fontSize: '42px',
           fontWeight: 700,
           color: 'var(--color-text-primary)',
-          lineHeight: 1.15,
+          lineHeight: 1.1,
           textAlign: 'left',
           paddingLeft: '32px',
           paddingRight: '48px',
-          letterSpacing: '-0.01em',
+          letterSpacing: '-0.02em',
         }}
       >
         Ett gemensamt rum.
       </motion.h1>
 
       <motion.p
-        initial={{ opacity: 0, x: -8 }}
+        initial={{ opacity: 0, x: -10 }}
         animate={{ opacity: 1, x: 0 }}
-        transition={{ delay: 0.15, duration: 0.5, ease: EASE }}
+        transition={{ delay: 0.3, duration: 0.6, ease: EASE }}
         style={{
           fontFamily: 'var(--font-sans)',
           fontSize: '15px',
@@ -205,7 +211,7 @@ function Slide1() {
           textAlign: 'left',
           paddingLeft: '32px',
           paddingRight: '48px',
-          marginTop: '16px',
+          marginTop: '20px',
           lineHeight: 1.6,
         }}
       >
@@ -215,7 +221,7 @@ function Slide1() {
       <motion.p
         initial={{ opacity: 0, x: -8 }}
         animate={{ opacity: 1, x: 0 }}
-        transition={{ delay: 0.28, duration: 0.5, ease: EASE }}
+        transition={{ delay: 0.5, duration: 0.6, ease: EASE }}
         style={{
           fontFamily: 'var(--font-serif)',
           fontStyle: 'italic',
@@ -223,7 +229,7 @@ function Slide1() {
           color: 'var(--accent-text)',
           textAlign: 'left',
           paddingLeft: '32px',
-          marginTop: '12px',
+          marginTop: '16px',
         }}
       >
         För samtal ni vill hålla levande.
@@ -236,11 +242,11 @@ function Slide1() {
 function Slide2() {
   return (
     <div className="flex-1 flex flex-col items-center justify-center" style={{ position: 'relative', padding: '0 32px' }}>
-      {/* Decorative "02" — aligned to headline baseline */}
+      {/* Decorative "02" watermark */}
       <motion.span
         initial={{ opacity: 0 }}
         animate={{ opacity: 0.06 }}
-        transition={{ delay: 0, duration: 0.8, ease: EASE }}
+        transition={{ delay: 0, duration: 1.0, ease: EASE }}
         style={{
           fontFamily: 'var(--font-serif)',
           fontSize: '180px',
@@ -262,32 +268,33 @@ function Slide2() {
 
       <div style={{ position: 'relative', zIndex: 1, textAlign: 'center' }}>
         <motion.h1
-          initial={{ opacity: 0, y: 10 }}
+          initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1, duration: 0.55, ease: EASE }}
+          transition={{ delay: 0.15, duration: 0.7, ease: EASE }}
           style={{
             fontFamily: 'var(--font-serif)',
-            fontSize: '34px',
+            fontSize: '36px',
             fontWeight: 700,
             color: 'var(--color-text-primary)',
             textAlign: 'center',
-            lineHeight: 1.2,
+            lineHeight: 1.15,
+            letterSpacing: '-0.02em',
           }}
         >
           Utforska i er takt.
         </motion.h1>
 
         <motion.p
-          initial={{ opacity: 0, y: 8 }}
+          initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.22, duration: 0.5, ease: EASE }}
+          transition={{ delay: 0.35, duration: 0.6, ease: EASE }}
           style={{
             fontFamily: 'var(--font-sans)',
             fontSize: '15px',
             color: 'var(--color-text-secondary)',
             opacity: 0.75,
             textAlign: 'center',
-            marginTop: '16px',
+            marginTop: '20px',
             lineHeight: 1.6,
           }}
         >
@@ -297,14 +304,14 @@ function Slide2() {
         <motion.p
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.34, duration: 0.5, ease: EASE }}
+          transition={{ delay: 0.55, duration: 0.6, ease: EASE }}
           style={{
             fontFamily: 'var(--font-serif)',
             fontStyle: 'italic',
             fontSize: '17px',
             color: 'var(--accent-text)',
             textAlign: 'center',
-            marginTop: '12px',
+            marginTop: '16px',
           }}
         >
           Det finns inget rätt sätt — bara ert.
@@ -319,31 +326,32 @@ function Slide3() {
   return (
     <div className="flex-1 flex flex-col items-center justify-center" style={{ padding: '0 32px' }}>
       <motion.h1
-        initial={{ opacity: 0, y: 12 }}
+        initial={{ opacity: 0, y: 14 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0, duration: 0.6, ease: EASE }}
+        transition={{ delay: 0.1, duration: 0.7, ease: EASE }}
         style={{
           fontFamily: 'var(--font-serif)',
-          fontSize: '34px',
+          fontSize: '36px',
           fontWeight: 700,
           color: 'hsl(36, 16%, 92%)',
           textAlign: 'center',
-          lineHeight: 1.2,
+          lineHeight: 1.15,
+          letterSpacing: '-0.02em',
         }}
       >
         Omsorgsfullt utvecklat.
       </motion.h1>
 
       <motion.p
-        initial={{ opacity: 0, y: 8 }}
+        initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.15, duration: 0.55, ease: EASE }}
+        transition={{ delay: 0.3, duration: 0.65, ease: EASE }}
         style={{
           fontFamily: 'var(--font-sans)',
           fontSize: '15px',
           color: 'hsl(36, 12%, 78%)',
           textAlign: 'center',
-          marginTop: '16px',
+          marginTop: '20px',
           lineHeight: 1.6,
         }}
       >
@@ -353,13 +361,13 @@ function Slide3() {
       <motion.p
         initial={{ opacity: 0, y: 8 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.15, duration: 0.55, ease: EASE }}
+        transition={{ delay: 0.45, duration: 0.6, ease: EASE }}
         style={{
           fontFamily: 'var(--font-sans)',
           fontSize: '15px',
           color: 'hsl(36, 12%, 78%)',
           textAlign: 'center',
-          marginTop: '8px',
+          marginTop: '10px',
           lineHeight: 1.6,
         }}
       >
@@ -369,14 +377,14 @@ function Slide3() {
       <motion.p
         initial={{ opacity: 0, y: 8 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.3, duration: 0.5, ease: EASE }}
+        transition={{ delay: 0.65, duration: 0.6, ease: EASE }}
         style={{
           fontFamily: 'var(--font-serif)',
           fontStyle: 'italic',
           fontSize: '22px',
-          color: '#C4821D',
+          color: 'var(--accent-saffron)',
           textAlign: 'center',
-          marginTop: '20px',
+          marginTop: '24px',
         }}
       >
         Bara er.
