@@ -155,35 +155,34 @@ export default function SessionStepReflection({
             : 'Fortsätt'}
         </motion.button>
 
-        <button
-          onClick={() => navigate('/')}
-          className="type-meta text-center block mx-auto transition-opacity hover:opacity-60"
-          style={{ color: 'var(--text-tertiary)', opacity: 0.35, background: 'none', border: 'none', cursor: 'pointer', marginTop: '24px' }}
-        >
-          Till startsidan
-        </button>
-
-        {isExerciseStep && (
-          <div style={{ textAlign: 'center', marginTop: '16px' }}>
-            <button
-              onClick={() => navigate('/')}
-              style={{
-                display: 'block',
-                width: '100%',
-                minHeight: '44px',
-                background: 'none',
-                border: 'none',
-                cursor: 'pointer',
-                fontFamily: 'var(--font-sans)',
-                fontSize: '13px',
-                color: 'var(--text-secondary)',
-                opacity: 0.50,
-                textAlign: 'center',
-              }}
-            >
-              Vi pausar här — fortsätt en annan dag
-            </button>
-          </div>
+        {isExerciseStep ? (
+          <button
+            onClick={() => navigate('/')}
+            style={{
+              display: 'block',
+              width: '100%',
+              minHeight: '44px',
+              marginTop: '24px',
+              background: 'none',
+              border: 'none',
+              cursor: 'pointer',
+              fontFamily: 'var(--font-sans)',
+              fontSize: '13px',
+              color: 'var(--text-secondary)',
+              opacity: 0.50,
+              textAlign: 'center',
+            }}
+          >
+            Vi pausar här — fortsätt en annan dag
+          </button>
+        ) : (
+          <button
+            onClick={() => navigate('/')}
+            className="type-meta text-center block mx-auto transition-opacity hover:opacity-60"
+            style={{ color: 'var(--text-tertiary)', opacity: 0.35, background: 'none', border: 'none', cursor: 'pointer', marginTop: '24px' }}
+          >
+            Till startsidan
+          </button>
         )}
       </div>
     </motion.div>
