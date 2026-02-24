@@ -55,14 +55,14 @@ export const categories: Category[] = [
   },
   {
     id: 'daily-life',
-    title: 'Ni nära',
+    title: 'Nära varandra',
     entryLine: 'Avstånd, längtan och att hitta tillbaka.',
     description: 'Närhet, drift och att välja varandra i vardagen',
     cardCount: 2,
   },
   {
     id: 'category-10',
-    title: 'Att välja er',
+    title: 'Att välja varandra',
     entryLine: 'Att fortsätta välja varandra — med öppna ögon.',
     description: 'Det aktiva valet att stanna och bygga vidare',
     cardCount: 1,
