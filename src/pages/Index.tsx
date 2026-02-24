@@ -114,8 +114,8 @@ export default function Index() {
     }
   };
 
-  // devState=browse bypasses onboarding & purchase gates
-  if (devState === 'browse') {
+  // Any devState bypasses onboarding & purchase gates
+  if (devState) {
     return <Home />;
   }
 

@@ -283,6 +283,7 @@ export default function Home() {
             {/* Resume banner — active session */}
             {(() => {
               // Prefer normalizedSession (always fresh) over snapshot for resume banner
+              if (devState === 'browse') return null; // simulate fresh user
               const cardId = resumeCardFromNormalized
                 ?? snapshot?.sessions?.session?.card_id
                 ?? null;
@@ -346,7 +347,7 @@ export default function Home() {
 
             {/* Welcome / returning card — state A or B */}
             {(() => {
-              const hasResumeCard = !!(resumeCardFromNormalized ?? snapshot?.sessions?.session?.card_id);
+              const hasResumeCard = devState === 'browse' ? false : !!(resumeCardFromNormalized ?? snapshot?.sessions?.session?.card_id);
               if (hasResumeCard) return null; // STATE C — resume card handles it
               const hasCompletedSessions = completedCardIds.length > 0;
 
