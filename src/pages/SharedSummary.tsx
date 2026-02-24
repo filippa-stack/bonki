@@ -85,7 +85,7 @@ function getQuestionText(
   return typeof prompt === 'string' ? prompt : prompt.text;
 }
 
-/** Get all questions from reflective, scenario, and exercise stages with matching reflections */
+/** Get all questions from ALL stages with matching reflections */
 function getAllQuestionsWithReflections(
   getCardById: (id: string) => any,
   cardId: string,
@@ -101,8 +101,7 @@ function getAllQuestionsWithReflections(
 
   const result: { question: string; reflection: string | null; stageIndex: number }[] = [];
 
-  // Stages 1-3: reflective, scenario, exercise (skip opening at index 0)
-  for (let stageIdx = 1; stageIdx < STEP_ORDER.length; stageIdx++) {
+  for (let stageIdx = 0; stageIdx < STEP_ORDER.length; stageIdx++) {
     const stageType = STEP_ORDER[stageIdx];
     const section = card.sections.find((s: any) => s.type === stageType);
     if (!section) continue;
