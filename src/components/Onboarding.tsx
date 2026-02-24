@@ -296,10 +296,27 @@ function Slide2() {
           Välj ett ämne. Läs. Reflektera.
         </motion.p>
 
+          <motion.p
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.5, duration: 0.6, ease: EASE }}
+          style={{
+            fontFamily: 'var(--font-sans)',
+            fontSize: '15px',
+            color: 'var(--color-text-secondary)',
+            opacity: 0.75,
+            textAlign: 'center',
+            marginTop: '10px',
+            lineHeight: 1.6,
+          }}
+        >
+          Pausa när det behövs. Återkom när det går.
+        </motion.p>
+
         <motion.p
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.55, duration: 0.6, ease: EASE }}
+          transition={{ delay: 0.65, duration: 0.6, ease: EASE }}
           style={{
             fontFamily: 'var(--font-serif)',
             fontStyle: 'italic',
