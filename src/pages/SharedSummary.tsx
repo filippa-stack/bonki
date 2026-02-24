@@ -693,7 +693,8 @@ export default function SharedSummary() {
                           }}
                         >
                           <div
-                            className="tile-door row-bloom relative"
+                            className="tile-door row-bloom relative cursor-pointer"
+                            onClick={() => navigate(`/card/${bm.card_id}?from=archive&step=${bm.stage_index}&prompt=${bm.prompt_index}`)}
                             style={{
                               background: 'var(--surface-raised)',
                               border: '1px solid hsl(var(--neutral-300))',
