@@ -727,48 +727,67 @@ export default function CardView() {
             </button>
           </motion.div>
 
-          {/* Temporal release */}
+          {/* Decorative dots */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 0.15, duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ delay: 0.1, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
             className="text-center max-w-md mx-auto"
-            style={{ marginBottom: '24px', paddingTop: 32 }}
+            style={{ marginBottom: '32px', paddingTop: 24 }}
           >
-            <p style={{
-              fontSize: '11px',
-              fontFamily: 'var(--font-sans)',
-              textTransform: 'uppercase',
-              letterSpacing: '0.10em',
-              color: 'var(--text-tertiary)',
-              opacity: 0.50,
-            }}>
-              Bra jobbat.
-            </p>
+            <div style={{ display: 'flex', justifyContent: 'center', gap: '8px' }}>
+              {[0, 1, 2].map(i => (
+                <span key={i} style={{
+                  width: i === 1 ? '6px' : '4px',
+                  height: i === 1 ? '6px' : '4px',
+                  borderRadius: '50%',
+                  backgroundColor: 'var(--accent-saffron)',
+                  opacity: i === 1 ? 0.5 : 0.2,
+                }} />
+              ))}
+            </div>
           </motion.div>
 
           {/* Heading */}
           <motion.div
-            initial={{ opacity: 0, y: 12 }}
+            initial={{ opacity: 0, y: 14 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.25, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ delay: 0.2, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
             className="text-center max-w-md mx-auto"
-            style={{ marginBottom: '48px' }}
+            style={{ marginBottom: '12px' }}
           >
             <h2
               className="font-serif"
               style={{
-                fontSize: '36px',
+                fontSize: 'clamp(30px, 8vw, 38px)',
                 fontWeight: 600,
                 color: 'var(--accent-saffron)',
                 textAlign: 'center',
-                lineHeight: 1.2,
-                letterSpacing: '-0.01em',
+                lineHeight: 1.15,
+                letterSpacing: '-0.015em',
+                textWrap: 'balance',
               }}
             >
               {COMPLETION_MESSAGES[Math.floor(Math.random() * COMPLETION_MESSAGES.length)]}
             </h2>
           </motion.div>
+
+          {/* Subtitle */}
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.35, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+            className="font-serif italic"
+            style={{
+              fontSize: '15px',
+              color: 'var(--text-tertiary)',
+              textAlign: 'center',
+              marginBottom: '48px',
+              opacity: 0.6,
+            }}
+          >
+            Skriv ned det ni vill minnas.
+          </motion.p>
 
           {/* Takeaway field */}
           <motion.div
@@ -901,12 +920,12 @@ export default function CardView() {
           transition={{ delay: BEAT_1, duration: EMOTION, ease: [...EASE] }}
           style={{
             fontFamily: 'var(--font-sans)',
-            fontSize: '11px',
-            letterSpacing: '0.08em',
+            fontSize: '10px',
+            letterSpacing: '0.12em',
             textTransform: 'uppercase',
             color: 'var(--text-tertiary)',
-            opacity: 0.5,
-            marginBottom: '8px',
+            opacity: 0.45,
+            marginBottom: '10px',
           }}
         >
           {category?.title}
@@ -915,74 +934,78 @@ export default function CardView() {
         {/* Topic title */}
         <motion.h1
           className="font-serif"
-          initial={{ opacity: 0, y: 8 }}
+          initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: BEAT_1, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ delay: BEAT_1, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
           style={{
-            fontSize: '28px',
+            fontSize: 'clamp(26px, 7vw, 34px)',
             fontWeight: 700,
             color: 'var(--text-primary)',
             textAlign: 'center',
-            lineHeight: 1.2,
-            marginBottom: '32px',
+            lineHeight: 1.15,
+            letterSpacing: '-0.01em',
+            marginBottom: '40px',
           }}
         >
           {card.title}
         </motion.h1>
 
-        {/* Divider */}
+        {/* Decorative dot divider */}
         <motion.div
-          initial={{ scaleX: 0 }}
-          animate={{ scaleX: 1 }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
           transition={{ delay: BEAT_2, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
           style={{
-            width: '32px',
-            height: '1px',
-            background: 'var(--text-ghost)',
-            margin: '0 auto 32px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: '8px',
+            margin: '0 auto 36px',
           }}
-        />
+        >
+          {[0, 1, 2].map(i => (
+            <span key={i} style={{
+              width: i === 1 ? '6px' : '4px',
+              height: i === 1 ? '6px' : '4px',
+              borderRadius: '50%',
+              backgroundColor: 'var(--accent-saffron)',
+              opacity: i === 1 ? 0.6 : 0.25,
+            }} />
+          ))}
+        </motion.div>
 
         {/* Instructions */}
         <motion.div
           initial={{ opacity: 0, y: 6 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: BEAT_2, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-          style={{ textAlign: 'center', marginBottom: '0' }}
+          style={{ textAlign: 'center', marginBottom: '8px' }}
         >
           <p
-            className="font-serif"
+            className="font-serif italic"
             style={{
-              fontSize: '20px',
+              fontSize: '19px',
               color: 'var(--text-primary)',
-              opacity: 0.80,
+              opacity: 0.75,
               textAlign: 'center',
-              marginBottom: '0',
+              lineHeight: 1.5,
             }}
           >
             Läs frågorna högt för varandra.
           </p>
         </motion.div>
 
-        {/* Divider */}
-        <motion.div
-          initial={{ scaleX: 0 }}
-          animate={{ scaleX: 1 }}
-          transition={{ delay: BEAT_3, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-          style={{ width: '100%', maxWidth: '200px', height: '1px', background: 'var(--text-ghost)', margin: '20px auto' }}
-        />
-
         {/* Mechanics */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: BEAT_3, duration: EMOTION, ease: [...EASE] }}
-          style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px', marginBottom: '24px' }}
+          style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '3px', marginBottom: '32px' }}
         >
-          <p style={{ fontFamily: 'var(--font-sans)', fontSize: '13px', color: 'var(--text-secondary)', opacity: 0.65, textAlign: 'center' }}>
+          <p style={{ fontFamily: 'var(--font-sans)', fontSize: '12px', color: 'var(--text-tertiary)', opacity: 0.55, textAlign: 'center' }}>
             Prata om frågorna tillsammans.
           </p>
-          <p style={{ fontFamily: 'var(--font-sans)', fontSize: '13px', color: 'var(--text-secondary)', opacity: 0.65, textAlign: 'center' }}>
+          <p style={{ fontFamily: 'var(--font-sans)', fontSize: '12px', color: 'var(--text-tertiary)', opacity: 0.55, textAlign: 'center' }}>
             En av er antecknar det ni vill minnas.
           </p>
         </motion.div>
@@ -1066,16 +1089,16 @@ export default function CardView() {
 
         {/* Sub-text */}
         <motion.p
-          className="font-serif"
+          className="font-serif italic"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 0.35, duration: EMOTION, ease: [...EASE] }}
+          transition={{ delay: 0.40, duration: EMOTION, ease: [...EASE] }}
           style={{
-            fontSize: '14px',
+            fontSize: '13px',
             color: 'var(--accent-text)',
             textAlign: 'center',
-            marginTop: '20px',
-            opacity: 0.65,
+            marginTop: '24px',
+            opacity: 0.50,
           }}
         >
           Inget av det ni delar lämnar det här rummet.
@@ -1259,10 +1282,10 @@ export default function CardView() {
                 const hint = STEP_RITUAL_HINTS[stageKey];
                 if (!hint) return null;
                 return (
-                  <div style={{ marginTop: '12px', marginBottom: '0' }} className="text-center">
+                  <div style={{ marginTop: '16px', marginBottom: '0' }} className="text-center">
                     <p
                       className="font-serif italic"
-                      style={{ fontSize: '15px', color: 'var(--accent-text)', opacity: 0.55 }}
+                      style={{ fontSize: '14px', color: 'var(--accent-text)', opacity: 0.45, lineHeight: 1.5 }}
                     >
                       {isTogether ? hint.together : hint.solo}
                     </p>
@@ -1443,23 +1466,19 @@ function CompletionTakeaway({ sessionId, spaceId }: { sessionId: string | null; 
           maxHeight: '240px',
           overflow: 'auto',
           backgroundColor: isFocused || hasFill
-            ? 'var(--surface-raised)'
-            : 'var(--surface-sunken)',
+            ? 'hsl(36 20% 97% / 0.85)'
+            : 'hsl(36 18% 96% / 0.50)',
           border: 'none',
-          borderTop: isFocused
-            ? '1.5px solid var(--accent-saffron)'
-            : '1px solid hsl(var(--neutral-300))',
-          borderBottom: isFocused
-            ? '1.5px solid var(--accent-saffron)'
-            : '1px solid hsl(var(--neutral-300))',
-          borderRadius: 0,
-          padding: '16px 0 12px 0',
+          borderRadius: '12px',
+          padding: '20px 24px 16px 24px',
           fontFamily: hasFill ? 'var(--font-sans)' : 'var(--font-serif)',
           fontSize: hasFill ? '15px' : '17px',
           lineHeight: 1.6,
           color: 'var(--color-text-primary)',
-          boxShadow: 'none',
-          transition: 'background-color 200ms ease, border-top 200ms ease, border-bottom 200ms ease',
+          boxShadow: isFocused
+            ? 'inset 0 1px 0 var(--accent-saffron-muted), inset 0 -1px 0 var(--accent-saffron-muted), 0 0 0 4px hsla(38, 80%, 46%, 0.06)'
+            : 'inset 0 1px 3px hsla(30, 12%, 25%, 0.05), 0 1px 2px hsla(30, 15%, 25%, 0.03)',
+          transition: 'background-color 320ms ease, box-shadow 320ms ease',
         }}
       />
       <style>{`

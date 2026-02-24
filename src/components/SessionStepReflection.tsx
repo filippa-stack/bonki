@@ -126,11 +126,9 @@ export default function SessionStepReflection({
           opacity: 0 !important;
         }
       `}</style>
-      {/* Removed 'Era gemensamma tankar.' label — placeholder communicates shared ownership */}
-
       <p
-        className="type-meta mt-2"
-        style={{ color: 'var(--text-ghost)', opacity: 0.50, textAlign: 'center' }}
+        className="type-meta"
+        style={{ color: 'var(--text-ghost)', opacity: 0.40, textAlign: 'center', marginTop: '6px', fontSize: '10px', letterSpacing: '0.08em' }}
       >
         Valfritt
       </p>
