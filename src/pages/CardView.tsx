@@ -50,11 +50,11 @@ const COMPLETION_MESSAGES = [
   'Det här samtalet tillhör er.',
   'Ni tog er tid för varandra.',
   'Det ni just gjorde betyder något.',
-  'Ni lyssnade. Det är mer än de flesta gör.',
   'Varje samtal är ett val. Ni valde rätt.',
-  'Det är inte självklart. Men ni gjorde det.',
   'Ni var här. Helt och hållet.',
-  'Det räcker. Det mer än räcker.',
+  'Tack för att ni stannade kvar.',
+  'Ni valde varandra igen.',
+  'Det här var bara för er.',
 ];
 
 // ─────────────────────────────────────────────────────────────
