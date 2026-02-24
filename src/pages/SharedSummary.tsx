@@ -10,7 +10,10 @@ import ArchiveTakeaway from '@/components/ArchiveTakeaway';
 import { ChevronRight } from 'lucide-react';
 import Header from '@/components/Header';
 import { RECOMMENDED_CATEGORY_ORDER } from '@/lib/recommendedOrder';
+import { EMOTION, BEAT_1 } from '@/lib/motion';
 import type { Prompt } from '@/types';
+
+const ease = [0.4, 0, 0.2, 1] as const;
 
 const CATEGORY_ACCENTS: Record<number, string> = {
   0: 'hsl(158, 35%, 22%)',
@@ -43,7 +46,7 @@ interface BookmarkRow {
 const STEP_ORDER = ['opening', 'reflective', 'scenario', 'exercise'] as const;
 
 interface ReflectionRow {
-  stepIndex: number; // encoded: stageIndex * 100 + promptIndex
+  stepIndex: number;
   text: string;
 }
 
@@ -59,12 +62,10 @@ interface CompletedEntry {
   takeaway: string;
 }
 
-/** Decode composite step_index → { stageIndex, promptIndex } */
 function decodeStepIndex(encoded: number) {
   return { stageIndex: Math.floor(encoded / 100), promptIndex: encoded % 100 };
 }
 
-/** Look up the question text for a given card and encoded step_index */
 function getQuestionText(
   getCardById: (id: string) => any,
   cardId: string,
@@ -84,7 +85,6 @@ function getQuestionText(
   return typeof prompt === 'string' ? prompt : prompt.text;
 }
 
-/** Render text with bullet parsing for teamwork assignments */
 function renderBulletText(text: string) {
   if (!text.includes('•')) {
     return <span>{text}</span>;
@@ -100,7 +100,7 @@ function renderBulletText(text: string) {
         {listItems.map((item, i) => (
           <li key={i} style={{
             paddingLeft: '12px',
-            borderLeft: '2px solid rgba(196, 130, 45, 0.35)',
+            borderLeft: '2px solid hsla(38, 60%, 55%, 0.35)',
             marginBottom: '4px',
           }}>{item}</li>
         ))}
@@ -130,7 +130,6 @@ export default function SharedSummary() {
     const fetchData = async () => {
       setLoading(true);
 
-      // 1. Get all completed sessions
       const { data: sessions } = await supabase
         .from('couple_sessions')
         .select('id, card_id, category_id, started_at, ended_at')
@@ -140,7 +139,6 @@ export default function SharedSummary() {
 
       if (cancelled || !sessions?.length) { setLoading(false); return; }
 
-      // 2. Get ALL non-empty reflections for these sessions
       const sessionIds = sessions.map(s => s.id);
       const { data: reflections } = await supabase
         .from('step_reflections')
@@ -151,7 +149,6 @@ export default function SharedSummary() {
 
       if (cancelled) return;
 
-      // Build a map: session_id -> sorted reflections
       const reflectionMap = new Map<string, ReflectionRow[]>();
       for (const r of reflections || []) {
         if (!r.text?.trim()) continue;
@@ -160,7 +157,6 @@ export default function SharedSummary() {
         reflectionMap.set(r.session_id, list);
       }
 
-      // 3. Get takeaways for these sessions
       const { data: takeaways } = await supabase
         .from('couple_takeaways')
         .select('session_id, content')
@@ -203,7 +199,6 @@ export default function SharedSummary() {
     return () => { cancelled = true; };
   }, [user, space, getCardById, getCategoryById]);
 
-  // Fetch active bookmarks
   useEffect(() => {
     if (!user || !space) return;
     let cancelled = false;
@@ -233,7 +228,6 @@ export default function SharedSummary() {
     return `${day} ${month}`;
   };
 
-  // ─── Group entries by cardId ───
   interface GroupedEntry {
     cardId: string;
     cardTitle: string;
@@ -263,7 +257,6 @@ export default function SharedSummary() {
     return Array.from(map.values());
   }, [entries]);
 
-  // Helper: does a group have any notes (reflections or takeaway)?
   const groupHasNotes = (g: GroupedEntry) => {
     const check = (e: CompletedEntry) => e.reflections.length > 0 || e.takeaway.trim().length > 0;
     return check(g.latest) || g.older.some(check);
@@ -273,7 +266,6 @@ export default function SharedSummary() {
   const withoutNotes = useMemo(() => grouped.filter(g => !groupHasNotes(g)), [grouped]);
   const bothExist = withNotes.length > 0 && withoutNotes.length > 0;
 
-  // Track which groups have expanded reflections and which show older entries
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [showOlderFor, setShowOlderFor] = useState<string | null>(null);
 
@@ -281,10 +273,13 @@ export default function SharedSummary() {
     <div className="min-h-screen" style={{ backgroundColor: 'var(--surface-base)' }}>
       <Header showBack backTo="/" />
 
-      <div className="px-6 pb-8 mx-auto" style={{ maxWidth: 540, paddingTop: '24px' }}>
+      <div className="px-5 pb-8 mx-auto" style={{ maxWidth: 540, paddingTop: '24px' }}>
 
         {/* Page title */}
-        <h1
+        <motion.h1
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: EMOTION, ease }}
           className="font-serif text-center"
           style={{
             fontSize: '17px',
@@ -294,36 +289,31 @@ export default function SharedSummary() {
           }}
         >
           Era samtal
-        </h1>
+        </motion.h1>
 
         {/* Subtitle */}
-        <motion.div
+        <motion.p
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 0.2, ease: [0.4, 0, 0.2, 1] }}
-          className="text-center"
+          transition={{ duration: EMOTION, delay: BEAT_1, ease }}
+          className="font-serif text-center"
+          style={{
+            fontSize: '16px',
+            color: 'var(--color-text-secondary)',
+            opacity: 0.65,
+            marginBottom: '32px',
+            marginTop: '8px',
+          }}
         >
-          <p
-            className="font-serif"
-            style={{
-              fontSize: '16px',
-              color: 'var(--color-text-secondary)',
-              opacity: 0.65,
-              textAlign: 'center',
-              marginBottom: '28px',
-              marginTop: '8px',
-            }}
-          >
-            Vad ni burit med er.
-          </p>
-        </motion.div>
+          Vad ni burit med er.
+        </motion.p>
 
         {/* Empty state */}
         {!hasContent && !effectiveLoading && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 0.15 }}
+            transition={{ duration: EMOTION, ease }}
             className="text-center"
             style={{ marginTop: '48px' }}
           >
@@ -349,7 +339,7 @@ export default function SharedSummary() {
           </div>
         ) : (
           hasContent && (
-            <div className="flex flex-col" style={{ gap: '12px' }}>
+            <div className="flex flex-col" style={{ gap: '8px' }}>
               {/* Section 1: Sessions with notes */}
               {withNotes.map((group, index) => {
                 const entry = group.latest;
@@ -363,19 +353,18 @@ export default function SharedSummary() {
                     initial={{ opacity: 0, y: 8 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{
-                      delay: index * 0.05,
-                      duration: 0.4,
-                      ease: 'easeOut',
+                      delay: index * BEAT_1,
+                      duration: EMOTION,
+                      ease,
                     }}
                   >
                     <div
+                      className="tile-door row-bloom relative"
                       style={{
                         backgroundColor: 'var(--surface-raised)',
                         border: '1px solid hsl(var(--neutral-300))',
                         borderRadius: '14px',
                         padding: '18px 16px 18px 20px',
-                        marginBottom: '10px',
-                        boxShadow: '0 2px 8px hsla(30, 20%, 35%, 0.10), 0 1px 2px hsla(30, 20%, 35%, 0.06)',
                         borderLeft: `3px solid ${getCategoryAccent(group.categoryId)}`,
                       }}
                     >
@@ -404,9 +393,8 @@ export default function SharedSummary() {
                                   {entry.takeaway}
                                 </p>
                                 <p
+                                  className="type-meta"
                                   style={{
-                                    fontFamily: 'var(--font-sans)',
-                                    fontSize: '12px',
                                     color: 'var(--color-text-tertiary)',
                                     opacity: 0.6,
                                   }}
@@ -414,9 +402,8 @@ export default function SharedSummary() {
                                   {entry.cardTitle}
                                 </p>
                                 <p
+                                  className="type-meta"
                                   style={{
-                                    fontFamily: 'var(--font-sans)',
-                                    fontSize: '11px',
                                     color: 'var(--accent-text)',
                                     marginTop: '6px',
                                   }}
@@ -439,9 +426,8 @@ export default function SharedSummary() {
                                   {entry.cardTitle}
                                 </p>
                                 <p
+                                  className="type-meta"
                                   style={{
-                                    fontFamily: 'var(--font-sans)',
-                                    fontSize: '11px',
                                     color: 'var(--accent-text)',
                                     marginTop: '6px',
                                   }}
@@ -452,11 +438,13 @@ export default function SharedSummary() {
                             )}
                           </div>
                           <ChevronRight
-                            className="w-4 h-4 mt-1.5 flex-shrink-0 transition-transform duration-200"
+                            data-chevron
+                            className="w-4 h-4 mt-1.5 flex-shrink-0"
                             style={{
-                              color: '#C4821D',
+                              color: 'var(--accent-saffron)',
                               opacity: 0.55,
                               transform: isExpanded ? 'rotate(90deg)' : 'rotate(0deg)',
+                              transition: 'transform 200ms cubic-bezier(0.4, 0, 0.2, 1)',
                             }}
                           />
                         </div>
@@ -468,7 +456,7 @@ export default function SharedSummary() {
                             initial={{ opacity: 0, height: 0 }}
                             animate={{ opacity: 1, height: 'auto' }}
                             exit={{ opacity: 0, height: 0 }}
-                            transition={{ duration: 0.2, ease: [0.4, 0, 0.2, 1] }}
+                            transition={{ duration: 0.2, ease }}
                             className="overflow-hidden"
                           >
                             <div style={{ paddingTop: '16px', paddingLeft: '8px' }}>
@@ -480,11 +468,28 @@ export default function SharedSummary() {
                                       <div style={{ height: '1px', background: 'hsl(var(--border) / 0.12)', margin: '16px 0' }} />
                                     )}
                                     {question && (
-                                      <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '13px', fontWeight: 400, color: '#7A7067', marginBottom: '6px', lineHeight: 1.4 }}>
+                                      <p
+                                        className="type-body"
+                                        style={{
+                                          fontSize: '13px',
+                                          color: 'var(--color-text-tertiary)',
+                                          marginBottom: '6px',
+                                          lineHeight: 1.4,
+                                        }}
+                                      >
                                         {renderBulletText(question)}
                                       </p>
                                     )}
-                                    <div className="font-serif whitespace-pre-wrap" style={{ fontSize: '20px', fontWeight: 500, lineHeight: 1.5, color: '#1C1B1A', marginBottom: '24px' }}>
+                                    <div
+                                      className="font-serif whitespace-pre-wrap"
+                                      style={{
+                                        fontSize: '20px',
+                                        fontWeight: 500,
+                                        lineHeight: 1.5,
+                                        color: 'var(--color-text-primary)',
+                                        marginBottom: '24px',
+                                      }}
+                                    >
                                       {renderBulletText(ref.text)}
                                     </div>
                                   </div>
@@ -498,11 +503,10 @@ export default function SharedSummary() {
 
                               <button
                                 onClick={() => navigate(`/card/${entry.cardId}?from=archive`)}
+                                className="type-meta"
                                 style={{
-                                  fontSize: '11px',
                                   letterSpacing: '0.05em',
                                   textTransform: 'uppercase',
-                                  fontFamily: 'var(--font-sans)',
                                   color: 'var(--color-text-secondary)',
                                   opacity: 0.55,
                                   textDecoration: 'none',
@@ -512,7 +516,10 @@ export default function SharedSummary() {
                                   border: 'none',
                                   cursor: 'pointer',
                                   padding: 0,
+                                  transition: 'opacity 150ms ease',
                                 }}
+                                onMouseEnter={(e) => { e.currentTarget.style.opacity = '0.85'; }}
+                                onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.55'; }}
                               >
                                 Visa hela samtalet →
                               </button>
@@ -525,8 +532,18 @@ export default function SharedSummary() {
                         <div style={{ paddingTop: '4px' }}>
                           <button
                             onClick={(e) => { e.stopPropagation(); setShowOlderFor(showingOlder ? null : group.cardId); }}
-                            className="type-meta transition-opacity hover:opacity-60"
-                            style={{ color: 'var(--text-tertiary)', marginTop: '4px' }}
+                            className="type-meta"
+                            style={{
+                              color: 'var(--color-text-tertiary)',
+                              marginTop: '4px',
+                              background: 'none',
+                              border: 'none',
+                              cursor: 'pointer',
+                              padding: 0,
+                              transition: 'opacity 150ms ease',
+                            }}
+                            onMouseEnter={(e) => { e.currentTarget.style.opacity = '0.6'; }}
+                            onMouseLeave={(e) => { e.currentTarget.style.opacity = '1'; }}
                           >
                             {showingOlder ? 'Dölj tidigare' : `+ ${olderCount} tidigare samtal`}
                           </button>
@@ -536,7 +553,7 @@ export default function SharedSummary() {
                                 initial={{ opacity: 0, height: 0 }}
                                 animate={{ opacity: 1, height: 'auto' }}
                                 exit={{ opacity: 0, height: 0 }}
-                                transition={{ duration: 0.2, ease: [0.4, 0, 0.2, 1] }}
+                                transition={{ duration: 0.2, ease }}
                                 className="overflow-hidden"
                               >
                                 <div style={{ marginTop: '12px' }} className="flex flex-col">
@@ -545,9 +562,15 @@ export default function SharedSummary() {
                                       key={older.sessionId}
                                       onClick={() => navigate(`/card/${older.cardId}?from=archive`)}
                                       className="w-full text-left"
-                                      style={{ padding: '10px 8px', borderTop: '1px solid hsl(var(--border) / 0.08)' }}
+                                      style={{
+                                        padding: '10px 8px',
+                                        borderTop: '1px solid hsl(var(--border) / 0.08)',
+                                        background: 'none',
+                                        border: 'none',
+                                        cursor: 'pointer',
+                                      }}
                                     >
-                                      <p style={{ fontFamily: 'var(--font-sans)', fontSize: '12px', color: 'var(--text-tertiary)', opacity: 0.6 }}>
+                                      <p className="type-meta" style={{ color: 'var(--color-text-tertiary)', opacity: 0.6 }}>
                                         {formatDate(older.completedAt)}
                                       </p>
                                       {older.excerpt && (
@@ -585,59 +608,67 @@ export default function SharedSummary() {
                     <div style={{ height: '1px', background: 'hsl(var(--border) / 0.15)' }} />
                   </div>
                   <p
-                    className="text-center"
+                    className="type-meta text-center"
                     style={{
-                      fontFamily: 'Inter, sans-serif',
-                      fontSize: '11px',
                       textTransform: 'uppercase',
                       letterSpacing: '0.08em',
-                      color: 'var(--text-tertiary)',
+                      color: 'var(--color-text-tertiary)',
                       marginBottom: '16px',
                     }}
                   >
                     Frågor ni velat återvända till
                   </p>
                   <div className="flex flex-col" style={{ gap: '8px' }}>
-                    {bookmarks.map((bm) => {
+                    {bookmarks.map((bm, bmIdx) => {
                       const card = getCardById(bm.card_id);
                       const category = card?.categoryId ? getCategoryById(card.categoryId) : null;
                       return (
-                        <div
+                        <motion.div
                           key={bm.id}
-                          style={{
-                            background: 'var(--surface-raised)',
-                            border: '1px solid hsl(var(--neutral-300))',
-                            borderRadius: '12px',
-                            padding: '16px',
+                          initial={{ opacity: 0, y: 6 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{
+                            delay: bmIdx * BEAT_1,
+                            duration: EMOTION,
+                            ease,
                           }}
                         >
-                          <p
-                            className="font-serif"
+                          <div
+                            className="tile-door row-bloom relative"
                             style={{
-                              fontSize: '16px',
-                              fontWeight: 700,
-                              color: 'var(--color-text-primary)',
-                              lineHeight: 1.4,
-                              display: '-webkit-box',
-                              WebkitLineClamp: 2,
-                              WebkitBoxOrient: 'vertical',
-                              overflow: 'hidden',
+                              background: 'var(--surface-raised)',
+                              border: '1px solid hsl(var(--neutral-300))',
+                              borderRadius: '12px',
+                              padding: '16px',
                             }}
                           >
-                            {bm.question_text}
-                          </p>
-                          <p
-                            style={{
-                              fontFamily: 'Inter, sans-serif',
-                              fontSize: '12px',
-                              color: '#8B5E1A',
-                              opacity: 0.7,
-                              marginTop: '8px',
-                            }}
-                          >
-                            {card?.title ?? bm.card_id}{' · '}{formatDate(bm.bookmarked_at)}
-                          </p>
-                        </div>
+                            <p
+                              className="font-serif"
+                              style={{
+                                fontSize: '16px',
+                                fontWeight: 700,
+                                color: 'var(--color-text-primary)',
+                                lineHeight: 1.4,
+                                display: '-webkit-box',
+                                WebkitLineClamp: 2,
+                                WebkitBoxOrient: 'vertical',
+                                overflow: 'hidden',
+                              }}
+                            >
+                              {bm.question_text}
+                            </p>
+                            <p
+                              className="type-meta"
+                              style={{
+                                color: 'var(--accent-text)',
+                                opacity: 0.7,
+                                marginTop: '8px',
+                              }}
+                            >
+                              {card?.title ?? bm.card_id}{' · '}{formatDate(bm.bookmarked_at)}
+                            </p>
+                          </div>
+                        </motion.div>
                       );
                     })}
                   </div>
@@ -651,13 +682,11 @@ export default function SharedSummary() {
                     <div style={{ height: '1px', background: 'hsl(var(--border) / 0.15)' }} />
                   </div>
                   <p
-                    className="text-center"
+                    className="type-meta text-center"
                     style={{
-                      fontFamily: 'Inter, sans-serif',
-                      fontSize: '11px',
                       textTransform: 'uppercase',
                       letterSpacing: '0.08em',
-                      color: 'var(--text-tertiary)',
+                      color: 'var(--color-text-tertiary)',
                       marginBottom: '16px',
                     }}
                   >
@@ -674,22 +703,21 @@ export default function SharedSummary() {
                     initial={{ opacity: 0, y: 8 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{
-                      delay: (withNotes.length + index) * 0.05,
-                      duration: 0.4,
-                      ease: 'easeOut',
+                      delay: (withNotes.length + index) * BEAT_1,
+                      duration: EMOTION,
+                      ease,
                     }}
                   >
                     <button
                       onClick={() => navigate(`/card/${entry.cardId}?from=archive`)}
-                      className="w-full text-left"
+                      className="w-full text-left tile-door row-bloom relative"
                       style={{
                         backgroundColor: 'var(--surface-raised)',
                         border: '1px solid hsl(var(--neutral-300))',
                         borderRadius: '14px',
                         padding: '18px 16px 18px 20px',
-                        marginBottom: '10px',
-                        boxShadow: '0 2px 8px hsla(30, 20%, 35%, 0.10), 0 1px 2px hsla(30, 20%, 35%, 0.06)',
                         borderLeft: `3px solid ${getCategoryAccent(group.categoryId)}`,
+                        cursor: 'pointer',
                       }}
                     >
                       <p
@@ -705,9 +733,8 @@ export default function SharedSummary() {
                         {entry.cardTitle}
                       </p>
                       <p
+                        className="type-meta"
                         style={{
-                          fontFamily: 'var(--font-sans)',
-                          fontSize: '11px',
                           color: 'var(--accent-text)',
                           marginTop: '6px',
                         }}
