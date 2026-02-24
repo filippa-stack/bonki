@@ -10,6 +10,8 @@ import { supabase } from '@/integrations/supabase/client';
 import { useOptimisticCompletions } from '@/contexts/OptimisticCompletionsContext';
 import Header from '@/components/Header';
 
+const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
+
 export default function Category() {
   const { t } = useTranslation();
   const { categoryId } = useParams<{ categoryId: string }>();
@@ -51,7 +53,6 @@ export default function Category() {
     return () => { cancelled = true; };
   }, [space?.id]);
 
-  // Merge server + optimistic completions
   const completedCardIds = useMemo(() => {
     const merged = new Set(serverCompletedCardIds);
     optimisticCardIds.forEach(id => merged.add(id));
@@ -61,63 +62,53 @@ export default function Category() {
   const category = categoryId ? getCategoryById(categoryId) : undefined;
   const cards = categoryId ? getCardsByCategory(categoryId) : [];
 
-  // Map category ID to its CSS accent color
-  const categoryColorMap: Record<string, string> = {
-    'emotional-intimacy': 'hsl(30, 15%, 70%)',
-    'communication': 'hsl(36, 20%, 75%)',
-    'category-8': 'hsl(30, 10%, 65%)',
-    'category-7': 'hsl(20, 12%, 68%)',
-    'category-9': 'hsl(30, 8%, 72%)',
-    'fun-connection': 'hsl(36, 20%, 75%)',
-    'physical-intimacy': 'hsl(20, 12%, 68%)',
-    'financial-harmony': 'hsl(30, 8%, 72%)',
-    'growth-resilience': 'hsl(30, 10%, 65%)',
-  };
-  const accentColor = (categoryId && categoryColorMap[categoryId]) || 'hsl(30, 12%, 68%)';
-
   if (!category) {
     return (
-      <div className="min-h-screen" style={{ backgroundColor: 'var(--color-bg-base)' }}>
-        <div className="h-14 border-b border-border" style={{ backgroundColor: 'var(--color-surface-primary)' }} />
-        <div className="px-6 pt-12 space-y-4 max-w-md mx-auto text-center">
+      <div className="min-h-screen" style={{ backgroundColor: 'var(--surface-base)' }}>
+        <div className="h-14 border-b border-border" style={{ backgroundColor: 'var(--surface-raised)' }} />
+        <div className="px-5 pt-12 space-y-4 max-w-md mx-auto text-center">
           <div className="h-6 w-40 rounded bg-muted/30 animate-pulse mx-auto" />
-          <p className="text-sm" style={{ color: 'var(--color-text-secondary)' }}>{t('category.not_found')}</p>
+          <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>{t('category.not_found')}</p>
         </div>
       </div>
     );
   }
 
+  const allCompleted = cards.length > 0 && cards.every(c => completedCardIds.includes(c.id));
+
   return (
-    <div className="min-h-screen" style={{ backgroundColor: 'var(--surface-base)', transition: 'background-color 0.4s ease' }}>
+    <div className="min-h-screen" style={{ backgroundColor: 'var(--surface-base)' }}>
       <Header title={category?.title} showBack backTo="/" />
 
-      <div className="px-6 pt-6 pb-24 flex flex-col">
-        {/* EntryLine — editorial italic subtitle */}
+      <div className="px-5 pt-2 pb-24 flex flex-col">
+        {/* Editorial entry line */}
         {category.entryLine && (
           <motion.p
             className="text-center"
             initial={{ opacity: 0, y: 6 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.05, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 0.6, delay: 0.05, ease: EASE }}
             style={{
               marginTop: '8px',
-              marginBottom: '32px',
+              marginBottom: '40px',
               fontFamily: 'var(--font-serif)',
               fontSize: '22px',
               fontStyle: 'normal',
               lineHeight: 1.4,
-              color: '#8B5E1A',
+              color: 'var(--accent-text)',
               textWrap: 'balance',
               hyphens: 'auto',
               display: 'block',
               maxWidth: '85%',
               marginLeft: 'auto',
               marginRight: 'auto',
-            }}
+            } as React.CSSProperties}
           >
             {category.entryLine}
           </motion.p>
         )}
+
+        {/* Card list */}
         {cards.map((card, index) => {
           const isCompleted = completedCardIds.includes(card.id);
           const isInProgress = !isCompleted && inProgressCardIds.includes(card.id);
@@ -130,38 +121,34 @@ export default function Category() {
               isInProgress={isInProgress}
               onNavigate={() => navigate(`/card/${card.id}`)}
               isLast={index === cards.length - 1}
-              accentColor={accentColor}
             />
           );
         })}
 
         {/* Bottom anchor */}
-        {(() => {
-          const allCompleted = cards.length > 0 && cards.every(c => completedCardIds.includes(c.id));
-          return (
-            <div style={{
-              marginTop: '20px',
-              textAlign: 'center',
-              paddingBottom: 'calc(32px + env(safe-area-inset-bottom, 0px))',
-            }}>
-              <p style={{
-                fontFamily: 'var(--font-serif)',
-                fontSize: '14px',
-                color: 'var(--color-text-tertiary)',
-                opacity: 0.45,
-                lineHeight: 1.5,
-              }}>
-                {allCompleted
-                  ? 'Ni har utforskat det här området.'
-                  : 'Välj ett samtal ovan.'}
-              </p>
-            </div>
-          );
-        })()}
+        <div style={{
+          marginTop: '24px',
+          textAlign: 'center',
+          paddingBottom: 'calc(32px + env(safe-area-inset-bottom, 0px))',
+        }}>
+          <p style={{
+            fontFamily: 'var(--font-serif)',
+            fontSize: '14px',
+            color: 'var(--text-tertiary)',
+            opacity: 0.45,
+            lineHeight: 1.5,
+          }}>
+            {allCompleted
+              ? 'Ni har utforskat det här området.'
+              : 'Välj ett samtal ovan.'}
+          </p>
+        </div>
       </div>
     </div>
   );
 }
+
+/* ─── Card Entry (tile-door pattern) ─── */
 
 interface CardEntryProps {
   card: {
@@ -174,21 +161,19 @@ interface CardEntryProps {
   isInProgress?: boolean;
   onNavigate: () => void;
   isLast?: boolean;
-  accentColor: string;
 }
 
-function CardEntry({ card, index, isCompleted = false, isInProgress = false, onNavigate, isLast = false, accentColor }: CardEntryProps) {
+function CardEntry({ card, index, isCompleted = false, isInProgress = false, onNavigate, isLast = false }: CardEntryProps) {
   const chapterNum = String(index + 1).padStart(2, '0');
 
   return (
     <motion.div
       initial={{ opacity: 0, y: 6 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: index * 0.06, duration: 0.4, ease: 'easeOut' }}
+      transition={{ delay: index * 0.06, duration: 0.5, ease: EASE }}
+      style={{ marginBottom: isLast ? '0' : '8px' }}
     >
-      <motion.div
-        whileTap={{ scale: 0.99 }}
-        transition={{ duration: 0.12, ease: [0, 0, 0.2, 1] }}
+      <div
         onClick={onNavigate}
         role="button"
         tabIndex={0}
@@ -196,18 +181,41 @@ function CardEntry({ card, index, isCompleted = false, isInProgress = false, onN
         onKeyDown={(e) => {
           if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onNavigate(); }
         }}
-        className="w-full cursor-pointer flex items-center gap-3 hover:opacity-80 focus-visible:outline-none"
+        className="w-full cursor-pointer group"
         style={{
-          padding: '18px 16px 18px 20px',
-          marginBottom: isLast ? '0' : '10px',
-          background: isCompleted ? 'rgba(0,0,0,0.015)' : 'var(--surface-raised)',
-          border: '1px solid hsl(var(--neutral-300))',
-          borderLeft: `3px solid ${accentColor}`,
-          borderRadius: '14px',
-          boxShadow: '0 2px 8px hsla(30, 20%, 35%, 0.10), 0 1px 2px hsla(30, 20%, 35%, 0.06)',
+          padding: '20px 20px',
+          background: isCompleted
+            ? 'var(--surface-base)'
+            : 'var(--surface-raised)',
+          border: 'none',
+          borderRadius: '10px',
+          boxShadow: isCompleted
+            ? 'none'
+            : '0 1px 3px hsla(30, 20%, 30%, 0.06), 0 2px 8px -2px hsla(30, 18%, 28%, 0.08)',
+          transition: 'transform 180ms ease-out, box-shadow 180ms ease-out',
+        }}
+        onPointerDown={(e) => {
+          if (isCompleted) return;
+          const el = e.currentTarget;
+          el.style.transform = 'scale(0.99)';
+        }}
+        onPointerUp={(e) => {
+          e.currentTarget.style.transform = '';
+        }}
+        onPointerLeave={(e) => {
+          e.currentTarget.style.transform = '';
+          e.currentTarget.style.boxShadow = '';
+        }}
+        onPointerEnter={(e) => {
+          if (isCompleted) return;
+          const el = e.currentTarget;
+          el.style.transform = 'translateY(-2px)';
+          el.style.boxShadow =
+            '0 4px 16px -4px hsla(30, 20%, 28%, 0.12), 0 2px 6px hsla(30, 18%, 30%, 0.06)';
         }}
       >
-        <div className="flex-1 min-w-0 flex items-start">
+        <div className="flex items-start">
+          {/* In-progress dot */}
           {isInProgress && (
             <span
               style={{
@@ -215,7 +223,7 @@ function CardEntry({ card, index, isCompleted = false, isInProgress = false, onN
                 width: '8px',
                 height: '8px',
                 borderRadius: '50%',
-                backgroundColor: '#C4821D',
+                backgroundColor: 'var(--accent-saffron)',
                 marginRight: '10px',
                 marginTop: '7px',
                 flexShrink: 0,
@@ -223,14 +231,15 @@ function CardEntry({ card, index, isCompleted = false, isInProgress = false, onN
               }}
             />
           )}
-          <div className="min-w-0">
+
+          <div className="flex-1 min-w-0">
             {/* Chapter number */}
             <span
               style={{
                 fontFamily: 'var(--font-sans)',
                 fontSize: '10px',
                 letterSpacing: '0.08em',
-                color: 'var(--color-text-tertiary)',
+                color: 'var(--text-tertiary)',
                 opacity: isCompleted ? 0.30 : 0.5,
                 display: 'block',
                 marginBottom: '2px',
@@ -243,8 +252,9 @@ function CardEntry({ card, index, isCompleted = false, isInProgress = false, onN
               style={{
                 fontSize: '18px',
                 fontWeight: 600,
-                color: 'var(--color-text-primary)',
-                opacity: isCompleted ? 0.55 : 1,
+                color: 'var(--text-primary)',
+                opacity: isCompleted ? 0.50 : 1,
+                lineHeight: 1.3,
               }}
             >
               {card.title}
@@ -254,8 +264,8 @@ function CardEntry({ card, index, isCompleted = false, isInProgress = false, onN
                 className="font-serif"
                 style={{
                   fontSize: '14px',
-                  color: 'var(--color-text-secondary)',
-                  opacity: isCompleted ? 0.45 : 0.80,
+                  color: 'var(--text-secondary)',
+                  opacity: isCompleted ? 0.40 : 0.75,
                   lineHeight: 1.5,
                   marginTop: '4px',
                 }}
@@ -264,24 +274,26 @@ function CardEntry({ card, index, isCompleted = false, isInProgress = false, onN
               </p>
             )}
           </div>
-        </div>
-        <div className="flex items-center gap-2 shrink-0">
-          {isCompleted && (
-            <Check
+
+          {/* Right side: check + chevron */}
+          <div className="flex items-center gap-2 shrink-0 ml-3" style={{ marginTop: '4px' }}>
+            {isCompleted && (
+              <Check
+                size={16}
+                className="flex-shrink-0"
+                style={{ color: 'var(--cta-default)', opacity: 0.50 }}
+                aria-label="Avklarad"
+              />
+            )}
+            <ChevronRight
               size={16}
-              className="flex-shrink-0"
-              style={{ color: '#1E3D2F', opacity: 0.55 }}
-              aria-label="Avklarad"
+              strokeWidth={1.5}
+              className="flex-shrink-0 transition-transform duration-150 group-hover:translate-x-0.5"
+              style={{ color: 'var(--accent-saffron)', opacity: 0.55 }}
             />
-          )}
-          <ChevronRight
-            size={16}
-            strokeWidth={1.5}
-            className="flex-shrink-0"
-            style={{ color: 'var(--accent-saffron)', opacity: 0.60 }}
-          />
+          </div>
         </div>
-      </motion.div>
+      </div>
     </motion.div>
   );
 }
