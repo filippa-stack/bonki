@@ -85,6 +85,45 @@ function getQuestionText(
   return typeof prompt === 'string' ? prompt : prompt.text;
 }
 
+/** Get all questions from reflective, scenario, and exercise stages with matching reflections */
+function getAllQuestionsWithReflections(
+  getCardById: (id: string) => any,
+  cardId: string,
+  reflections: ReflectionRow[],
+): { question: string; reflection: string | null; stageIndex: number }[] {
+  const card = getCardById(cardId);
+  if (!card) return [];
+
+  const reflectionMap = new Map<number, string>();
+  for (const r of reflections) {
+    reflectionMap.set(r.stepIndex, r.text);
+  }
+
+  const result: { question: string; reflection: string | null; stageIndex: number }[] = [];
+
+  // Stages 1-3: reflective, scenario, exercise (skip opening at index 0)
+  for (let stageIdx = 1; stageIdx < STEP_ORDER.length; stageIdx++) {
+    const stageType = STEP_ORDER[stageIdx];
+    const section = card.sections.find((s: any) => s.type === stageType);
+    if (!section) continue;
+
+    const prompts: (string | Prompt)[] = section.prompts ?? (section.content ? [section.content] : []);
+    for (let promptIdx = 0; promptIdx < prompts.length; promptIdx++) {
+      const prompt = prompts[promptIdx];
+      const questionText = typeof prompt === 'string' ? prompt : prompt.text;
+      if (!questionText) continue;
+      const encoded = stageIdx * 100 + promptIdx;
+      result.push({
+        question: questionText,
+        reflection: reflectionMap.get(encoded) || null,
+        stageIndex: stageIdx,
+      });
+    }
+  }
+
+  return result;
+}
+
 function renderBulletText(text: string) {
   if (!text.includes('•')) {
     return <span>{text}</span>;
@@ -460,26 +499,23 @@ export default function SharedSummary() {
                             className="overflow-hidden"
                           >
                             <div style={{ paddingTop: '16px', paddingLeft: '8px' }}>
-                              {entry.reflections.map((ref, ri) => {
-                                const question = getQuestionText(getCardById, entry.cardId, ref.stepIndex);
-                                return (
-                                  <div key={ri}>
-                                    {ri > 0 && (
-                                      <div style={{ height: '1px', background: 'hsl(var(--border) / 0.12)', margin: '16px 0' }} />
-                                    )}
-                                    {question && (
-                                      <p
-                                        className="type-body"
-                                        style={{
-                                          fontSize: '13px',
-                                          color: 'var(--color-text-tertiary)',
-                                          marginBottom: '6px',
-                                          lineHeight: 1.4,
-                                        }}
-                                      >
-                                        {renderBulletText(question)}
-                                      </p>
-                                    )}
+                              {getAllQuestionsWithReflections(getCardById, entry.cardId, entry.reflections).map((item, qi) => (
+                                <div key={qi}>
+                                  {qi > 0 && (
+                                    <div style={{ height: '1px', background: 'hsl(var(--border) / 0.12)', margin: '16px 0' }} />
+                                  )}
+                                  <p
+                                    className="type-body"
+                                    style={{
+                                      fontSize: '13px',
+                                      color: 'var(--color-text-tertiary)',
+                                      marginBottom: '6px',
+                                      lineHeight: 1.4,
+                                    }}
+                                  >
+                                    {renderBulletText(item.question)}
+                                  </p>
+                                  {item.reflection && (
                                     <div
                                       className="font-serif whitespace-pre-wrap"
                                       style={{
@@ -487,42 +523,19 @@ export default function SharedSummary() {
                                         fontWeight: 500,
                                         lineHeight: 1.5,
                                         color: 'var(--color-text-primary)',
-                                        marginBottom: '24px',
+                                        marginBottom: '8px',
                                       }}
                                     >
-                                      {renderBulletText(ref.text)}
+                                      {renderBulletText(item.reflection)}
                                     </div>
-                                  </div>
-                                );
-                              })}
+                                  )}
+                                </div>
+                              ))}
 
                               <div>
                                 <div style={{ height: '1px', background: 'hsl(var(--border) / 0.15)', marginTop: '16px', marginBottom: '12px' }} />
                                 <ArchiveTakeaway sessionId={entry.sessionId} initialText={entry.takeaway} />
                               </div>
-
-                              <button
-                                onClick={() => navigate(`/card/${entry.cardId}?from=archive`)}
-                                className="type-meta"
-                                style={{
-                                  letterSpacing: '0.05em',
-                                  textTransform: 'uppercase',
-                                  color: 'var(--color-text-secondary)',
-                                  opacity: 0.55,
-                                  textDecoration: 'none',
-                                  marginTop: '12px',
-                                  display: 'inline-block',
-                                  background: 'none',
-                                  border: 'none',
-                                  cursor: 'pointer',
-                                  padding: 0,
-                                  transition: 'opacity 150ms ease',
-                                }}
-                                onMouseEnter={(e) => { e.currentTarget.style.opacity = '0.85'; }}
-                                onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.55'; }}
-                              >
-                                Visa hela samtalet →
-                              </button>
                             </div>
                           </motion.div>
                         )}
