@@ -68,6 +68,19 @@ type CardViewMode = 'live' | 'archive' | 'completion';
 
 const STEP_ORDER = ['opening', 'reflective', 'scenario', 'exercise'] as const;
 
+/**
+ * Returns the effective prompt count for a section, matching SectionView's
+ * content-merging logic (scenario sections prepend content as prompt 0).
+ */
+function getEffectivePromptCount(section: { type: string; content?: string; prompts?: unknown[] } | undefined): number {
+  if (!section) return 1;
+  const hasPrompts = !!(section.prompts && section.prompts.length > 0);
+  if (!hasPrompts) return section.content ? 1 : 1;
+  const isScenario = section.type === 'scenario';
+  const base = section.prompts!.length;
+  return (isScenario && section.content) ? base + 1 : base;
+}
+
 const STEP_RITUAL_HINTS: Record<string, { together: string; solo: string }> = {
   opening:    { together: 'Det finns inget rätt svar här. Bara ert.',  solo: 'Det finns inget rätt svar här. Bara ditt.' },
   reflective: { together: 'Lyssna färdigt innan ni svarar.',          solo: 'Ta tid på dig innan du svarar.' },
@@ -693,7 +706,7 @@ export default function CardView() {
                 _setShowCompletion(false);
                 const lastStageIndex = STEP_ORDER.length - 1;
                 const lastSection = card.sections.find(s => s.type === STEP_ORDER[lastStageIndex]);
-                const lastPromptCount = lastSection?.prompts?.length ?? 1;
+                const lastPromptCount = getEffectivePromptCount(lastSection);
                 setLocalStepIndex(lastStageIndex);
                 setLocalPromptIndex(lastPromptCount - 1);
               }}
@@ -1290,7 +1303,7 @@ export default function CardView() {
                       const prevSection = card.sections.find(
                         s => s.type === STEP_ORDER[prevStageIndex]
                       );
-                      const prevPromptCount = prevSection?.prompts?.length ?? 1;
+                      const prevPromptCount = getEffectivePromptCount(prevSection);
                       setLocalStepIndex(prevStageIndex);
                       setLocalPromptIndex(prevPromptCount - 1);
                     }
@@ -1317,7 +1330,7 @@ export default function CardView() {
 
               {/* ── MODE: live — session reflection (single writer) ── */}
               {isLive && cardId && (() => {
-                const sectionPromptCount = currentSection.prompts?.length ?? 1;
+                const sectionPromptCount = getEffectivePromptCount(currentSection);
                 const isLastPromptInStage = localPromptIndex >= sectionPromptCount - 1;
                 const isLastStage = currentStepIndex >= STEP_ORDER.length - 1;
 
@@ -1351,7 +1364,7 @@ export default function CardView() {
                           const prevSection = card.sections.find(
                             s => s.type === STEP_ORDER[prevStageIndex]
                           );
-                          const prevPromptCount = prevSection?.prompts?.length ?? 1;
+                          const prevPromptCount = getEffectivePromptCount(prevSection);
                           setLocalStepIndex(prevStageIndex);
                           setLocalPromptIndex(prevPromptCount - 1);
                         } else {
