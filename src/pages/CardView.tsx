@@ -522,7 +522,13 @@ export default function CardView() {
     }
 
     if (result === 'ok') {
-      if (!isLastStep) setLocalStepIndex(displayIndex + 1);
+      if (isLastStep) {
+        // Always show completion on the last step — single-writer model
+        // doesn't require partner gating.
+        setShowCompletion(true);
+      } else {
+        setLocalStepIndex(displayIndex + 1);
+      }
       await normalizedSession.refetch();
       return;
     }
