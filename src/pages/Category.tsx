@@ -80,7 +80,7 @@ export default function Category() {
     <div className="min-h-screen" style={{ backgroundColor: 'var(--surface-base)' }}>
       <Header title={category?.title} showBack backTo="/" />
 
-      <div className="px-5 pt-2 pb-24 flex flex-col">
+      <div className="px-5 pt-4 pb-24 flex flex-col">
         {/* Editorial entry line */}
         {category.entryLine && (
           <motion.p
@@ -127,20 +127,21 @@ export default function Category() {
 
         {/* Bottom anchor */}
         <div style={{
-          marginTop: '24px',
+          marginTop: '32px',
           textAlign: 'center',
           paddingBottom: 'calc(32px + env(safe-area-inset-bottom, 0px))',
         }}>
           <p style={{
             fontFamily: 'var(--font-serif)',
+            fontStyle: 'italic',
             fontSize: '14px',
             color: 'var(--text-tertiary)',
-            opacity: 0.45,
+            opacity: 0.40,
             lineHeight: 1.5,
           }}>
             {allCompleted
               ? 'Ni har utforskat det här området.'
-              : 'Välj ett samtal ovan.'}
+              : 'Välj ett samtal.'}
           </p>
         </div>
       </div>

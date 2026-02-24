@@ -393,10 +393,11 @@ function Slide3() {
         style={{
           fontFamily: 'var(--font-serif)',
           fontStyle: 'italic',
-          fontSize: '22px',
+          fontSize: '20px',
           color: 'var(--accent-saffron)',
           textAlign: 'center',
-          marginTop: '24px',
+          marginTop: '28px',
+          letterSpacing: '-0.01em',
         }}
       >
         Bara er.

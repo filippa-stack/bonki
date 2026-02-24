@@ -97,13 +97,13 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center bg-background px-6" style={{ paddingTop: '38vh', paddingBottom: '24px' }}>
+    <div className="min-h-screen flex flex-col items-center bg-background px-6" style={{ paddingTop: '36vh', paddingBottom: '24px' }}>
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.15 }}
         className="w-full max-w-xs text-center"
-        style={{ marginTop: '-120px' }}
+        style={{ marginTop: '-100px' }}
       >
         {/* Brand hierarchy */}
         <motion.div
@@ -124,8 +124,8 @@ export default function Login() {
             Still Us
           </p>
           <p
-            className="font-serif italic"
-            style={{ fontSize: '16px', color: 'var(--color-text-secondary)', opacity: 0.65, textAlign: 'center', marginTop: '8px' }}
+            className="font-serif"
+            style={{ fontSize: '14px', color: 'var(--color-text-secondary)', opacity: 0.50, textAlign: 'center', marginTop: '10px', letterSpacing: '0.04em' }}
           >
             So we stay us.
           </p>
@@ -136,7 +136,7 @@ export default function Login() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: BEAT_2, duration: 0.15 }}
-          style={{ marginTop: '28px' }}
+          style={{ marginTop: '40px' }}
         >
           <AnimatePresence mode="wait">
             {magicLinkSent ? (
@@ -220,9 +220,9 @@ export default function Login() {
                 <Button
                   onClick={handleGoogleSignIn}
                   disabled={loading}
-                  className={`w-full h-14 text-base font-medium rounded-2xl shadow-sm ${settings.buttonColor ? 'btn-themed' : ''}`}
+                  className={`w-full h-14 text-base font-medium shadow-sm ${settings.buttonColor ? 'btn-themed' : ''}`}
                   variant={settings.buttonColor ? "default" : "outline"}
-                  style={{ ...buttonStyle, border: '1px solid rgba(0,0,0,0.12)', borderRadius: '12px' }}
+                  style={{ ...buttonStyle, border: '1px solid rgba(0,0,0,0.08)', borderRadius: '14px', boxShadow: '0 1px 4px hsla(30, 15%, 20%, 0.06)' }}
                 >
                   {loading ? (
                     <Loader2 className="w-5 h-5 mr-2 animate-spin" />
@@ -262,7 +262,7 @@ export default function Login() {
             </div>
           )}
 
-          <p style={{ fontSize: '12px', color: 'var(--color-text-tertiary)', opacity: 0.55, textAlign: 'center', marginTop: '16px' }}>
+          <p style={{ fontFamily: 'var(--font-serif)', fontStyle: 'italic', fontSize: '13px', color: 'var(--color-text-tertiary)', opacity: 0.40, textAlign: 'center', marginTop: '20px', letterSpacing: '0.01em' }}>
             Ert konto. Era samtal.
           </p>
 
