@@ -6,14 +6,14 @@ export const CONTENT_VERSION = 8;
 export const categories: Category[] = [
   {
     id: 'emotional-intimacy',
-    title: 'Vi i oss',
+    title: 'Ni i er',
     entryLine: 'Vem är ni för varandra — bortom allt annat?',
     description: 'Identitet, tillhörighet och ert minsta vi',
     cardCount: 3,
   },
   {
     id: 'communication',
-    title: 'Vardagen mellan oss',
+    title: 'Vardagen mellan er',
     entryLine: 'Roller, ansvar och det som sker mellan raderna.',
     description: 'Vardagens mönster och hur ni möter dem',
     cardCount: 4,
@@ -27,21 +27,21 @@ export const categories: Category[] = [
   },
   {
     id: 'parenting-together',
-    title: 'När vi tycker olika',
+    title: 'När ni tycker olika',
     entryLine: 'Olikheter som skaver — och vad de säger om er.',
     description: 'Uppfostran, gränser och värderingar',
     cardCount: 3,
   },
   {
     id: 'individual-needs',
-    title: 'Det vi bär med oss',
+    title: 'Det ni bär med er',
     entryLine: 'Det ni ärvt — och hur det formar ert hem.',
     description: 'Släkt, traditioner och förväntningar',
     cardCount: 2,
   },
   {
     id: 'category-9',
-    title: 'Dit vi är på väg',
+    title: 'Dit ni är på väg',
     entryLine: 'Vad ni står för — och vart ni är på väg.',
     description: 'Värderingar under press och drömmar som kräver mod',
     cardCount: 2,
@@ -55,14 +55,14 @@ export const categories: Category[] = [
   },
   {
     id: 'daily-life',
-    title: 'Vi nära',
+    title: 'Ni nära',
     entryLine: 'Avstånd, längtan och att hitta tillbaka.',
     description: 'Närhet, drift och att välja varandra i vardagen',
     cardCount: 2,
   },
   {
     id: 'category-10',
-    title: 'Att välja oss',
+    title: 'Att välja er',
     entryLine: 'Att fortsätta välja varandra — med öppna ögon.',
     description: 'Det aktiva valet att stanna och bygga vidare',
     cardCount: 1,
@@ -73,7 +73,7 @@ export const cards: Card[] = [
   // ── Layer 1: Vi i oss ──────────────────────────────────
   {
     id: 'smallest-we',
-    title: 'Vårt minsta \u201Cvi\u201D',
+    title: 'Ert minsta \u201Cvi\u201D',
     subtitle: 'Det minsta ni kan göra för att hålla ihop i vardagen',
     categoryId: 'emotional-intimacy',
     sections: [
@@ -83,9 +83,9 @@ export const cards: Card[] = [
         title: 'Början',
         content: 'Små saker som håller er nära.',
         prompts: [
-          'Vad mellan oss skulle du lägga märke till först om det försvann?',
-          'När känner du, även korta stunder, att vi är mer än ett team?',
-          'Vad gör vi idag som vi inte gjorde för ett år sedan?',
+          'Vad mellan er skulle du lägga märke till först om det försvann?',
+          'När känner du, även korta stunder, att ni är mer än ett team?',
+          'Vad gör ni idag som ni inte gjorde för ett år sedan?',
         ],
       },
       {
@@ -95,7 +95,7 @@ export const cards: Card[] = [
         content: 'Stanna upp och känn efter.',
         prompts: [
           'När lägger du märke till att ert \u201Cvi\u201D får mindre plats i vardagen, trots att ingen av er har valt bort det?',
-          'Vad händer i dig när utrymmet för oss minskar — blir du tystare, mer effektiv, mer irriterad, mer ensam?',
+          'Vad händer i dig när utrymmet för er minskar — blir du tystare, mer effektiv, mer irriterad, mer ensam?',
         ],
       },
       {
@@ -120,7 +120,7 @@ export const cards: Card[] = [
   },
   {
     id: 'family-ab',
-    title: 'När vårt \u201Cvi\u201D blir \u201CFamiljen AB\u201D',
+    title: 'När ert \u201Cvi\u201D blir \u201CFamiljen AB\u201D',
     subtitle: 'Logistik som ersätter kontakt',
     categoryId: 'emotional-intimacy',
     sections: [
@@ -131,7 +131,7 @@ export const cards: Card[] = [
         content: 'När samarbete tar över känslan.',
         prompts: [
           'När märker du att jag börjar låta mer som en kollega än en partner?',
-          'Vad hos mig saknar du mest när vi fastnar i logistik?',
+          'Vad hos mig saknar du mest när ni fastnar i logistik?',
           'När känner du dig effektiv men inte sedd i det du gör?',
         ],
       },
@@ -151,7 +151,7 @@ export const cards: Card[] = [
         title: 'I vardagen',
         content: 'Ni löser vardagen smidigt. Allt fungerar. Men samtalen handlar nästan bara om tider, ansvar och barn. Ingen längtar — men ingen klagar heller.',
         prompts: [
-          'Hur länge kan en relation leva på funktion innan något viktigt tystnar i oss?',
+          'Hur länge kan en relation leva på funktion innan något viktigt tystnar i er?',
         ],
       },
       {
@@ -262,7 +262,7 @@ export const cards: Card[] = [
   },
   {
     id: 'conflict-repair',
-    title: 'Rollerna vi tar (och får)',
+    title: 'Rollerna ni tar (och får)',
     subtitle: 'Roller som uppstår utan att ni valt dem',
     categoryId: 'communication',
     sections: [
@@ -270,7 +270,7 @@ export const cards: Card[] = [
         id: 'opening-3',
         type: 'opening',
         title: 'Början',
-        content: 'Roller formas ofta utan att vi väljer dem.',
+        content: 'Roller formas ofta utan att ni väljer dem.',
         prompts: [
           'Finns det en roll i familjen som känns mer självklar för dig än en roll du själv valt?',
           'När kliver du in i en roll utan att tänka efter?',
@@ -284,7 +284,7 @@ export const cards: Card[] = [
         content: 'De här frågorna utforskar mönster och historia.',
         prompts: [
           'När märker du att en roll ger dig inflytande — och när begränsar den dig?',
-          'Vad händer mellan oss när en av oss blir den som "kan mest"?',
+          'Vad händer mellan er när en av er blir den som "kan mest"?',
         ],
       },
       {
@@ -321,7 +321,7 @@ export const cards: Card[] = [
         prompts: [
           'När känner du dig mest ifrågasatt i ditt sätt att vara förälder?',
           'När känner du dig tryggast i att göra saker på ditt eget sätt?',
-          'I vilka stunder upplever du att våra olikheter blir tydliga för barnet?',
+          'I vilka stunder upplever du att era olikheter blir tydliga för barnet?',
         ],
       },
       {
@@ -368,7 +368,7 @@ export const cards: Card[] = [
         prompts: [
           'Hur brukar du hantera motgång — genom att prata, agera eller dra dig undan?',
           'Vad känns mest stöttande för dig i svåra perioder?',
-          'Vad gör det svårt för oss att möta motgång på olika sätt?',
+          'Vad gör det svårt för er att möta motgång på olika sätt?',
         ],
       },
       {
@@ -439,7 +439,7 @@ export const cards: Card[] = [
         id: 'exercise-17',
         type: 'exercise',
         title: 'Tillsammans',
-        content: 'Bestäm hur ni signalerar \u201Cvi tar det sen\u201D, hur ni pratar om det utan att bli motparter, och hur ni visar barnet att vuxna också reparerar konflikter.',
+        content: 'Bestäm hur ni signalerar \u201Cni tar det sen\u201D, hur ni pratar om det utan att bli motparter, och hur ni visar barnet att vuxna också reparerar konflikter.',
       },
     ],
   },
@@ -457,7 +457,7 @@ export const cards: Card[] = [
         prompts: [
           'Hur märker du själv att du behöver utrymme innan det blir för mycket?',
           'Hur vill ni att partnern ska tolka er tystnad när ni har dragit er undan för en stund?',
-          'När känner du dig trygg i att jag stannar kvar, även utan att lösa något, när vi är i konflikt?',
+          'När känner du dig trygg i att jag stannar kvar, även utan att lösa något, när ni är i konflikt?',
         ],
       },
       {
@@ -501,7 +501,7 @@ export const cards: Card[] = [
         prompts: [
           'När lägger du märke till att din självkänsla påverkar hur du tar plats i familjen?',
           'Vad är svårast för er att se hos er partner i de stunder då dennes självkänsla svajar och denne tvivlar på sin roll i familjen?',
-          'Hur förändras samspelet mellan oss när en av oss känner sig mindre viktig?',
+          'Hur förändras samspelet mellan er när en av er känner sig mindre viktig?',
         ],
       },
       {
@@ -537,7 +537,7 @@ export const cards: Card[] = [
   // ── Layer 4: När vi tycker olika ───────────────────────
   {
     id: 'different-parenting-styles',
-    title: 'Uppfostran vi ärvt',
+    title: 'Uppfostran ni ärvt',
     subtitle: 'Reaktioner formade av uppväxt',
     categoryId: 'parenting-together',
     sections: [
@@ -549,7 +549,7 @@ export const cards: Card[] = [
         prompts: [
           'I vilka situationer märker du att din uppväxt talar genom dig?',
           'Vilka värderingar eller beteenden från er egen uppväxt vill ni föra vidare till barnet, även när ni är oense om det?',
-          'När märks skillnaderna i hur vi uppfattar och reagerar på situationer som tydligast?',
+          'När märks skillnaderna i hur ni uppfattar och reagerar på situationer som tydligast?',
         ],
       },
       {
@@ -595,7 +595,7 @@ export const cards: Card[] = [
         content: 'Gränssättning berör ofta mer än det som syns.',
         prompts: [
           'Vad betyder det för dig att säga ifrån på ett sätt som du kan stå för?',
-          'När känner du dig mest osäker på hur vi markerar tillsammans?',
+          'När känner du dig mest osäker på hur ni markerar tillsammans?',
           'Vad väcker starkast reaktion i dig när barnet går över en gräns?',
         ],
       },
@@ -606,7 +606,7 @@ export const cards: Card[] = [
         content: 'Utforska vad som driver era reaktioner.',
         prompts: [
           'När märker du att din reaktion drivs av oro snarare än av situationen?',
-          'Vad händer mellan oss när vi vill markera på olika sätt?',
+          'Vad händer mellan er när ni vill markera på olika sätt?',
         ],
       },
       {
@@ -628,7 +628,7 @@ export const cards: Card[] = [
   },
   {
     id: 'parenting-exhaustion',
-    title: 'Mina, dina, våra värderingar',
+    title: 'Mina, dina, era värderingar',
     subtitle: 'Värderingar i vardagliga val',
     categoryId: 'parenting-together',
     sections: [
@@ -638,8 +638,8 @@ export const cards: Card[] = [
         title: 'Början',
         content: 'Värderingar syns tydligast i vardagen.',
         prompts: [
-          'Vilken värdering vill du att barnet ska känna i vårt sätt att vara, mot varandra och i familjen?',
-          'När upplever du tydligast att vi vill visa olika saker i samma situation?',
+          'Vilken värdering vill du att barnet ska känna i ert sätt att vara, mot varandra och i familjen?',
+          'När upplever du tydligast att ni vill visa olika saker i samma situation?',
           'Vilken värdering tycker du är svårast att leva efter i vardagen?',
         ],
       },
@@ -687,7 +687,7 @@ export const cards: Card[] = [
         content: 'Släktens röster bär både värme och vikt.',
         prompts: [
           'När känns släktens åsikter stöttande — och när känns de som ett intrång?',
-          'När önskar du att jag stod tydligare på vår sida?',
+          'När önskar du att jag stod tydligare på er sida?',
           'Vad är viktigast för dig i mötet med släkten: harmoni eller tydlighet?',
         ],
       },
@@ -720,7 +720,7 @@ export const cards: Card[] = [
   },
   {
     id: 'our-traditions',
-    title: 'Mina, dina, våra traditioner',
+    title: 'Mina, dina, era traditioner',
     subtitle: 'Tillhörighet och vad ni väljer att föra vidare',
     categoryId: 'individual-needs',
     sections: [
@@ -732,7 +732,7 @@ export const cards: Card[] = [
         prompts: [
           'Vilken tradition eller återkommande firande bär mest betydelse för dig, bortom själva utförandet?',
           'När känner du att kompromisser gör att något som är viktigt för dig kan förloras?',
-          'Vad hoppas du att våra traditioner eller återkommande firande säger om oss som familj?',
+          'Vad hoppas du att era traditioner eller återkommande firande säger om er som familj?',
         ],
       },
       {
@@ -741,7 +741,7 @@ export const cards: Card[] = [
         title: 'Fördjupning',
         content: 'Vad behåller ni — och vad släpper ni?',
         prompts: [
-          'Vilka traditioner vill vi bevara och vilka vill vi omforma? När suddar kompromisser ut mer än de förenar?',
+          'Vilka traditioner vill ni bevara och vilka vill ni omforma? När suddar kompromisser ut mer än de förenar?',
         ],
       },
       {
@@ -767,7 +767,7 @@ export const cards: Card[] = [
   // ── Layer 6: Dit vi är på väg ──────────────────────────
   {
     id: 'our-philosophy',
-    title: 'Vår filosofi',
+    title: 'Er filosofi',
     subtitle: 'Värderingar under press',
     categoryId: 'category-9',
     sections: [
@@ -821,7 +821,7 @@ export const cards: Card[] = [
         title: 'Början',
         content: 'Drömmar kräver mod — av er båda.',
         prompts: [
-          'Vilken dröm i ditt liv kräver mod från oss båda?',
+          'Vilken dröm i ditt liv kräver mod från er båda?',
           'Vad behöver du för att våga satsa utan att relationen känns hotad?',
           'När upplever du att uppoffring stärker er — och när väcker den oro?',
         ],
@@ -877,8 +877,8 @@ export const cards: Card[] = [
         title: 'Fördjupning',
         content: 'Utforska vad som driver era val.',
         prompts: [
-          'Lär sig barn mest av upplevelser — eller av att se oss anstränga oss för något?',
-          'Vad riskerar vi att signalera som värdefullt utan att vi tycker det?',
+          'Lär sig barn mest av upplevelser — eller av att se er anstränga er för något?',
+          'Vad riskerar ni att signalera som värdefullt utan att ni tycker det?',
         ],
       },
       {
@@ -911,8 +911,8 @@ export const cards: Card[] = [
         content: 'Ekonomiska beslut berör mer än pengar.',
         prompts: [
           'När känns risk som utveckling för dig och när känns den som ett hot?',
-          'Vad behöver du för att känna trygghet när vi tar ekonomiska beslut?',
-          'Vilken sorts mod vill du att barnet ska se hos oss?',
+          'Vad behöver du för att känna trygghet när ni tar ekonomiska beslut?',
+          'Vilken sorts mod vill du att barnet ska se hos er?',
         ],
       },
       {
@@ -938,7 +938,7 @@ export const cards: Card[] = [
         id: 'exercise-13',
         type: 'exercise',
         title: 'Tillsammans',
-        content: 'Välj en möjlig framtida satsning (något ni kan tänka er att någon av er vill satsa på någon gång). Prata igenom:\n• Vad skulle vara bästa utfallet?\n• Vad skulle vara det värsta rimliga utfallet?\n• Vilken gräns skulle ni inte vilja passera (tid/pengar/ork)?\n• Vilka två tecken skulle betyda: \u201Cnu behöver vi bromsa\u201D?',
+        content: 'Välj en möjlig framtida satsning (något ni kan tänka er att någon av er vill satsa på någon gång). Prata igenom:\n• Vad skulle vara bästa utfallet?\n• Vad skulle vara det värsta rimliga utfallet?\n• Vilken gräns skulle ni inte vilja passera (tid/pengar/ork)?\n• Vilka två tecken skulle betyda: \u201Cnu behöver ni bromsa\u201D?',
       },
     ],
   },
@@ -1002,7 +1002,7 @@ export const cards: Card[] = [
         prompts: [
           'Vilka små gester får dig att känna dig älskad?',
           'Vad får dig att känna närhet just nu oavsett om det leder till sex eller inte?',
-          'När har vi senast tolkat varandras signaler om närhet på olika sätt?',
+          'När har ni senast tolkat varandras signaler om närhet på olika sätt?',
         ],
       },
       {
@@ -1050,7 +1050,7 @@ export const cards: Card[] = [
         prompts: [
           'När har du senast känt att du aktivt tog ställning för relationen — inte som reaktion, utan som eget val?',
           'Vad gör du i relationen idag som är ett val, inte en följd av ansvar eller vana?',
-          'När känns det tydligast för dig att du skulle kunna välja annorlunda men fortsätter att välja oss?',
+          'När känns det tydligast för dig att du skulle kunna välja annorlunda men fortsätter att välja er?',
         ],
       },
       {
@@ -1076,7 +1076,7 @@ export const cards: Card[] = [
         id: 'exercise-22',
         type: 'exercise',
         title: 'Tillsammans',
-        content: 'Svara var för sig, utan att förklara eller försvara: \u201CVad gör att jag väljer oss just nu?\u201D',
+        content: 'Svara var för sig, utan att förklara eller försvara: \u201CVad gör att jag väljer er just nu?\u201D',
         prompts: ['Lyssna utan att svara tillbaka.'],
       },
     ],
