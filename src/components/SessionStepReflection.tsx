@@ -89,7 +89,7 @@ export default function SessionStepReflection({
           minHeight: '88px',
           maxHeight: '240px',
           overflow: 'auto',
-          fontFamily: hasFill ? 'Inter, sans-serif' : 'var(--font-serif)',
+          fontFamily: hasFill ? 'var(--font-sans)' : 'var(--font-serif)',
           fontSize: hasFill ? '15px' : '17px',
           lineHeight: 1.6,
           color: 'var(--color-text-primary)',
@@ -100,7 +100,7 @@ export default function SessionStepReflection({
           borderRadius: '8px',
           padding: '24px 20px 20px 20px',
           boxShadow: isFocused
-            ? 'inset 0 1px 0 #C4821D, inset 0 -1px 0 #C4821D, 0 0 0 3px hsla(38, 80%, 46%, 0.08)'
+            ? 'inset 0 1px 0 var(--accent-saffron), inset 0 -1px 0 var(--accent-saffron), 0 0 0 3px hsla(38, 80%, 46%, 0.08)'
             : 'inset 0 1px 3px hsla(30, 12%, 25%, 0.06), 0 1px 2px hsla(0, 0%, 100%, 0.6)',
           transition: 'background-color 280ms ease, box-shadow 280ms ease',
         }}

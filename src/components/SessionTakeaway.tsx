@@ -55,9 +55,9 @@ export default function SessionTakeaway({ sessionId }: SessionTakeawayProps) {
             border: '1px solid hsl(var(--border) / 0.20)',
             borderRadius: '12px',
             padding: '16px',
-            fontFamily: 'Inter, sans-serif',
+            fontFamily: 'var(--font-sans)',
             fontSize: '15px',
-            color: '#1C1B1A',
+            color: 'var(--text-primary)',
             resize: 'none' as const,
             outline: 'none',
           }}
