@@ -689,13 +689,13 @@ export default function CardView() {
         <div style={{ opacity: 0.4, pointerEvents: 'none' }}>
           <Header title="" showBack backTo={category ? `/category/${category.id}` : '/'} />
         </div>
-        <div className="px-6 pb-16 relative" style={{ paddingTop: '32px' }}>
-          {/* Back arrow — return to last step */}
+        <div className="px-6 pb-16 relative" style={{ paddingTop: '48px' }}>
+          {/* Back arrow — same style as session question pages */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: BEAT_3, duration: EMOTION }}
-            style={{ position: 'absolute', top: '12px', left: '6px', zIndex: 2 }}
+            style={{ position: 'absolute', top: '12px', left: '0px', zIndex: 2 }}
           >
             <button
               onClick={() => {
@@ -722,8 +722,8 @@ export default function CardView() {
               <ArrowLeft
                 size={20}
                 style={{
-                  color: 'var(--text-tertiary)',
-                  opacity: 0.45,
+                  color: 'var(--color-text-tertiary)',
+                  opacity: 0.35,
                 }}
               />
             </button>
