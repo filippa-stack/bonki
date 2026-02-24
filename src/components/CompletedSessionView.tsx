@@ -23,6 +23,8 @@ const COMPLETION_HEADLINES = [
   'Ni valde varandra igen.',
   'Varje samtal är ett val. Ni valde rätt.',
   'Det ni just gjorde betyder något.',
+  'Ni gav varandra hela rummet.',
+  'Det här är hur ni växer.',
 ];
 
 interface CompletedSessionViewProps {

@@ -55,6 +55,8 @@ const COMPLETION_MESSAGES = [
   'Tack för att ni stannade kvar.',
   'Ni valde varandra igen.',
   'Det här var bara för er.',
+  'Ni gav varandra hela rummet.',
+  'Det här är hur ni växer.',
 ];
 
 // ─────────────────────────────────────────────────────────────
