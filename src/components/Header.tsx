@@ -56,7 +56,9 @@ export default function Header({
             ? (isDarkSurface ? 'transparent' : 'var(--surface-base)')
             : 'hsl(158, 32%, 14%)',
           boxShadow: 'none',
-          borderBottom: 'none',
+          borderBottom: isImmersive
+            ? (isDarkSurface ? '1px solid hsl(158, 25%, 20%)' : 'none')
+            : 'none',
         }}
       >
         {isImmersive ? (
@@ -75,7 +77,7 @@ export default function Header({
                     letterSpacing: isDarkSurface ? '0.06em' : '0.01em',
                     textTransform: isDarkSurface ? 'uppercase' : 'none',
                     color: isDarkSurface ? 'hsl(36, 20%, 88%)' : 'var(--color-text-primary)',
-                    opacity: isDarkSurface ? 0.6 : 0.8,
+                    opacity: isDarkSurface ? 0.6 : 0.45,
                     fontWeight: isDarkSurface ? 500 : 400,
                   }}
                 >
