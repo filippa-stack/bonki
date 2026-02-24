@@ -183,16 +183,16 @@ function CardEntry({ card, index, isCompleted = false, isInProgress = false, onN
         }}
         className="w-full cursor-pointer group"
         style={{
-          padding: '20px 20px',
+          padding: '22px 20px',
           background: isCompleted
             ? 'var(--surface-base)'
             : 'var(--surface-raised)',
           border: 'none',
-          borderRadius: '10px',
+          borderRadius: '12px',
           boxShadow: isCompleted
             ? 'none'
-            : '0 1px 3px hsla(30, 20%, 30%, 0.06), 0 2px 8px -2px hsla(30, 18%, 28%, 0.08)',
-          transition: 'transform 180ms ease-out, box-shadow 180ms ease-out',
+            : '0 1px 3px hsla(30, 20%, 30%, 0.06), 0 6px 24px -6px hsla(30, 18%, 28%, 0.09)',
+          transition: 'transform 200ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 260ms ease-out',
         }}
         onPointerDown={(e) => {
           if (isCompleted) return;
@@ -209,9 +209,9 @@ function CardEntry({ card, index, isCompleted = false, isInProgress = false, onN
         onPointerEnter={(e) => {
           if (isCompleted) return;
           const el = e.currentTarget;
-          el.style.transform = 'translateY(-2px)';
+          el.style.transform = 'translateY(-3px)';
           el.style.boxShadow =
-            '0 4px 16px -4px hsla(30, 20%, 28%, 0.12), 0 2px 6px hsla(30, 18%, 30%, 0.06)';
+            '0 4px 12px -4px hsla(30, 20%, 28%, 0.10), 0 12px 36px -8px hsla(30, 18%, 30%, 0.08)';
         }}
       >
         <div className="flex items-start">

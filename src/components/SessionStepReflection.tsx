@@ -93,8 +93,8 @@ export default function SessionStepReflection({
         spellCheck={true}
         className="w-full resize-none focus:outline-none focus:ring-0 text-center"
         style={{
-          height: isFocused || hasFill ? 'auto' : '72px',
-          minHeight: '72px',
+          height: isFocused || hasFill ? 'auto' : '80px',
+          minHeight: '80px',
           maxHeight: '180px',
           overflow: 'auto',
           fontFamily: hasFill ? 'var(--font-sans)' : 'var(--font-serif)',
@@ -102,15 +102,15 @@ export default function SessionStepReflection({
           lineHeight: 1.6,
           color: 'var(--text-primary)',
           backgroundColor: isFocused || hasFill
-            ? 'hsl(0 0% 100% / 0.65)'
-            : 'hsl(0 0% 100% / 0.35)',
+            ? 'hsl(36 20% 97% / 0.80)'
+            : 'hsl(36 18% 96% / 0.50)',
           border: 'none',
-          borderRadius: '10px',
-          padding: '18px 20px 16px 20px',
+          borderRadius: '12px',
+          padding: '22px 24px 20px 24px',
           boxShadow: isFocused
-            ? 'inset 0 1px 0 var(--accent-saffron), inset 0 -1px 0 var(--accent-saffron), 0 0 0 3px hsla(38, 80%, 46%, 0.08)'
-            : '0 1px 2px hsla(30, 15%, 25%, 0.04), 0 4px 16px -4px hsla(30, 18%, 28%, 0.06)',
-          transition: 'background-color 280ms ease, box-shadow 280ms ease',
+            ? 'inset 0 1px 0 var(--accent-saffron-muted), inset 0 -1px 0 var(--accent-saffron-muted), 0 0 0 4px hsla(38, 80%, 46%, 0.06)'
+            : 'inset 0 1px 3px hsla(30, 12%, 25%, 0.05), 0 1px 2px hsla(30, 15%, 25%, 0.03)',
+          transition: 'background-color 320ms ease, box-shadow 320ms ease, border-radius 200ms ease',
         }}
       />
       <style>{`
