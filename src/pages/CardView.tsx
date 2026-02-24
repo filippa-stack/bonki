@@ -780,7 +780,7 @@ export default function CardView() {
               opacity: 0.50,
             }}
           >
-            Något ni vill ta med er?
+            Finns det något ni vill komma ihåg?
           </motion.p>
 
           {/* Takeaway field */}
