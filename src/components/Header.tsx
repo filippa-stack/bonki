@@ -53,7 +53,7 @@ export default function Header({
         className={`sticky top-0 z-10`}
         style={{
           backgroundColor: isImmersive
-            ? (isDarkSurface ? 'var(--cta-active)' : 'var(--surface-base)')
+            ? (isDarkSurface ? 'transparent' : 'var(--surface-base)')
             : 'hsl(158, 32%, 14%)',
           boxShadow: 'none',
           borderBottom: isImmersive
@@ -77,7 +77,7 @@ export default function Header({
                     letterSpacing: isDarkSurface ? '0.06em' : '0.01em',
                     textTransform: isDarkSurface ? 'uppercase' : 'none',
                     color: isDarkSurface ? 'hsl(36, 20%, 88%)' : 'var(--color-text-primary)',
-                    opacity: isDarkSurface ? 0.6 : 0.45,
+                    opacity: isDarkSurface ? 0.6 : 0.8,
                     fontWeight: isDarkSurface ? 500 : 400,
                   }}
                 >
