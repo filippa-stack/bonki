@@ -103,23 +103,23 @@ export default function PromptItem({ prompt, index, sectionType, preamble }: Pro
       className="rounded-card overflow-hidden"
       style={{ backgroundColor: 'transparent' }}
     >
-      <div className="px-8 py-8">
-        {/* ── Scenario preamble — same monumental serif, fades in first ── */}
+      <div className="px-6 py-4">
+        {/* ── Scenario preamble ── */}
         {preamble && (
           <motion.div
             key={`preamble-${index}`}
-            initial={{ opacity: 0, y: 12 }}
+            initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.0, ease: enterEase }}
             className="w-full text-center"
-            style={{ marginBottom: '48px' }}
+            style={{ marginBottom: '28px' }}
           >
             {preamble.split('\n').filter(p => p.trim() !== '').map((para, i) => (
               <p
                 key={i}
                 className="font-serif"
                 style={{
-                  fontSize: 'clamp(22px, 5.5vw, 30px)',
+                  fontSize: 'clamp(19px, 4.5vw, 25px)',
                   textWrap: 'balance',
                   textAlign: 'center',
                   fontWeight: 400,
@@ -148,9 +148,9 @@ export default function PromptItem({ prompt, index, sectionType, preamble }: Pro
               border: 'none',
               borderLeft: '3px solid var(--accent-saffron)',
               borderRadius: '0 12px 12px 0',
-              padding: '28px 28px 28px 32px',
-              margin: '24px 0',
-              marginTop: !preamble ? '48px' : '24px',
+              padding: '20px 24px 20px 28px',
+              margin: '16px 0',
+              marginTop: !preamble ? '24px' : '16px',
               width: '100%',
               boxShadow:
                 '0 1px 3px hsla(30, 15%, 25%, 0.04), ' +
@@ -167,12 +167,12 @@ export default function PromptItem({ prompt, index, sectionType, preamble }: Pro
                 textTransform: 'uppercase',
                 letterSpacing: '0.12em',
                 color: 'var(--accent-text)',
-                marginBottom: '20px',
+                marginBottom: '14px',
               }}
             >
               Gör tillsammans
             </motion.p>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
               {prompt.text.split('\n').filter(p => p.trim() !== '').map((para, i) => (
                 <motion.p
                   key={i}
@@ -181,7 +181,7 @@ export default function PromptItem({ prompt, index, sectionType, preamble }: Pro
                   transition={{ duration: 0.5, delay: 0.2 + i * 0.06, ease: enterEase }}
                   className="font-serif"
                   style={{
-                    fontSize: 'clamp(22px, 5.5vw, 30px)',
+                    fontSize: 'clamp(19px, 4.5vw, 25px)',
                     textWrap: 'pretty',
                     textAlign: 'left',
                     ...gravity,
@@ -205,14 +205,14 @@ export default function PromptItem({ prompt, index, sectionType, preamble }: Pro
               ease: enterEase,
             }}
             className={`w-full text-center ${preamble ? 'mt-10' : ''}`}
-            style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}
+            style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}
           >
             {prompt.text.split('\n').filter(p => p.trim() !== '').map((para, i) => (
               <p
                 key={i}
                 className="font-serif"
                 style={{
-                  fontSize: 'clamp(24px, 6vw, 32px)',
+                  fontSize: 'clamp(21px, 5vw, 28px)',
                   textWrap: 'balance',
                   textAlign: 'center',
                   ...gravity,

@@ -76,7 +76,7 @@ export default function SessionStepReflection({
   return (
     <motion.div
       className="reflection-field-wrapper"
-      style={{ marginTop: '32px', marginBottom: '8px' }}
+      style={{ marginTop: '20px', marginBottom: '4px' }}
       initial={{ opacity: 0, y: 6 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: BEAT_2, duration: EMOTION, ease: [...EASE] }}
@@ -93,9 +93,9 @@ export default function SessionStepReflection({
         spellCheck={true}
         className="w-full resize-none focus:outline-none focus:ring-0 text-center"
         style={{
-          height: isFocused || hasFill ? 'auto' : '88px',
-          minHeight: '88px',
-          maxHeight: '240px',
+          height: isFocused || hasFill ? 'auto' : '72px',
+          minHeight: '72px',
+          maxHeight: '180px',
           overflow: 'auto',
           fontFamily: hasFill ? 'var(--font-sans)' : 'var(--font-serif)',
           fontSize: hasFill ? '15px' : '17px',
@@ -106,7 +106,7 @@ export default function SessionStepReflection({
             : 'hsl(0 0% 100% / 0.35)',
           border: 'none',
           borderRadius: '10px',
-          padding: '24px 20px 20px 20px',
+          padding: '18px 20px 16px 20px',
           boxShadow: isFocused
             ? 'inset 0 1px 0 var(--accent-saffron), inset 0 -1px 0 var(--accent-saffron), 0 0 0 3px hsla(38, 80%, 46%, 0.08)'
             : '0 1px 2px hsla(30, 15%, 25%, 0.04), 0 4px 16px -4px hsla(30, 18%, 28%, 0.06)',
@@ -140,8 +140,8 @@ export default function SessionStepReflection({
       <div
         className="flex flex-col items-center"
         style={{
-          paddingBottom: 'calc(24px + env(safe-area-inset-bottom, 0px))',
-          marginTop: '40px',
+          paddingBottom: 'calc(16px + env(safe-area-inset-bottom, 0px))',
+          marginTop: '24px',
         }}
       >
         <motion.button
