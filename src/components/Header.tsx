@@ -115,7 +115,7 @@ export default function Header({
             {!title && <div className="flex-1 min-w-0" />}
 
             {/* RIGHT: leave session */}
-            <div className="flex items-center justify-end" style={{ minWidth: '80px' }}>
+            <div className="flex items-center justify-end" style={{ minWidth: '100px' }}>
               {onLeaveSession && (
                 <div style={{ minHeight: '44px', display: 'flex', alignItems: 'center' }}>
                   <button
