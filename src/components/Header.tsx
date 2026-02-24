@@ -64,8 +64,35 @@ export default function Header({
         {isImmersive ? (
           /* ── Immersive: proper three-column grid ── */
           <div className="flex items-center px-4" style={{ height: '2.5rem' }}>
-            {/* LEFT: spacer */}
-            <div className="flex items-center justify-start" style={{ minWidth: '64px' }} />
+            {/* LEFT: back arrow or spacer */}
+            <div className="flex items-center justify-start" style={{ minWidth: '64px' }}>
+              {onImmersiveBack && (
+                <button
+                  onClick={onImmersiveBack}
+                  aria-label="Tillbaka"
+                  style={{
+                    minHeight: '44px',
+                    minWidth: '44px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    background: 'none',
+                    border: 'none',
+                    cursor: 'pointer',
+                    marginLeft: '-12px',
+                  }}
+                >
+                  <ArrowLeft
+                    size={20}
+                    style={{
+                      color: isDarkSurface ? 'hsl(36, 20%, 88%)' : 'var(--color-text-tertiary)',
+                      opacity: 0.45,
+                      transition: 'opacity 150ms ease',
+                    }}
+                  />
+                </button>
+              )}
+            </div>
 
             {/* CENTER: card title */}
             {title && (
