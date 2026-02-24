@@ -80,6 +80,7 @@ const SectionView = forwardRef<SectionViewHandle, SectionViewProps>(
       <div className="relative" style={{
         paddingTop: isExerciseStep ? '12px'
           : (section.type === 'scenario') ? '20px'
+          : (isLive && showBackArrow) ? '56px'
           : '48px',
         paddingBottom: isExerciseStep ? '8px' : '16px',
       }}>

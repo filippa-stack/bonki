@@ -89,12 +89,13 @@ export default function Category() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.05, ease: EASE }}
             style={{
-              marginTop: '8px',
-              marginBottom: '40px',
+              marginTop: '24px',
+              marginBottom: '48px',
               fontFamily: 'var(--font-serif)',
-              fontSize: '22px',
+              fontSize: 'clamp(20px, 5.5vw, 26px)',
               fontStyle: 'normal',
-              lineHeight: 1.4,
+              fontWeight: 400,
+              lineHeight: 1.35,
               color: 'var(--accent-text)',
               textWrap: 'balance',
               hyphens: 'auto',
@@ -102,6 +103,7 @@ export default function Category() {
               maxWidth: '85%',
               marginLeft: 'auto',
               marginRight: 'auto',
+              letterSpacing: '-0.01em',
             } as React.CSSProperties}
           >
             {category.entryLine}
