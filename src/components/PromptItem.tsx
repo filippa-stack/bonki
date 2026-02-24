@@ -105,24 +105,29 @@ export default function PromptItem({ prompt, index, sectionType, preamble }: Pro
     >
       <div className="px-8 py-8">
         {preamble && (
-          <motion.p
+          <motion.div
             key={`preamble-${index}`}
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.45, delay: 0.05, ease: enterEase }}
-            style={{
-              color: 'var(--text-secondary)',
-              opacity: 0.65,
-              fontWeight: 400,
-              fontStyle: 'normal',
-              fontSize: '14px',
-              lineHeight: 1.7,
-              textAlign: 'center',
-              marginBottom: '40px',
-            }}
+            className="w-full text-center space-y-5"
+            style={{ marginBottom: '40px' }}
           >
-            {preamble}
-          </motion.p>
+            {preamble.split('\n').filter(p => p.trim() !== '').map((para, i) => (
+              <p
+                key={i}
+                className="font-serif"
+                style={{
+                  fontSize: 'clamp(24px, 6vw, 32px)',
+                  textWrap: 'balance',
+                  textAlign: 'center',
+                  ...gravity,
+                }}
+              >
+                {para}
+              </p>
+            ))}
+          </motion.div>
         )}
 
         {isExercise ? (
