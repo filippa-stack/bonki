@@ -124,7 +124,6 @@ const SectionView = forwardRef<SectionViewHandle, SectionViewProps>(
               promptIndex={promptIndex}
               questionText={prompt.text}
               isDarkBackground={isReflectionStep}
-              showTooltipHint={stageIndex === 0 && promptIndex === 0}
             />
           </div>
         )}
