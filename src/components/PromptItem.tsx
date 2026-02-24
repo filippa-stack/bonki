@@ -205,14 +205,14 @@ export default function PromptItem({ prompt, index, sectionType, preamble }: Pro
               ease: enterEase,
             }}
             className={`w-full text-center ${preamble ? 'mt-10' : ''}`}
-            style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}
+            style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}
           >
             {prompt.text.split('\n').filter(p => p.trim() !== '').map((para, i) => (
               <p
                 key={i}
                 className="font-serif"
                 style={{
-                  fontSize: 'clamp(21px, 5vw, 28px)',
+                  fontSize: 'clamp(24px, 6vw, 32px)',
                   textWrap: 'balance',
                   textAlign: 'center',
                   ...gravity,
