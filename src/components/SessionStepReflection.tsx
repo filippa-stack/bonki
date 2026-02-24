@@ -163,28 +163,6 @@ export default function SessionStepReflection({
           Till startsidan
         </button>
 
-        {isExerciseStep && (
-          <div style={{ textAlign: 'center', marginTop: '16px' }}>
-            <button
-              onClick={() => navigate('/')}
-              style={{
-                display: 'block',
-                width: '100%',
-                minHeight: '44px',
-                background: 'none',
-                border: 'none',
-                cursor: 'pointer',
-                fontFamily: 'var(--font-sans)',
-                fontSize: '13px',
-                color: 'var(--text-secondary)',
-                opacity: 0.50,
-                textAlign: 'center',
-              }}
-            >
-              Vi pausar här — fortsätt en annan dag
-            </button>
-          </div>
-        )}
       </div>
     </motion.div>
   );

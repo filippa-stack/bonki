@@ -127,7 +127,7 @@ export default function Login() {
             className="font-serif"
             style={{ fontSize: '14px', color: 'var(--color-text-secondary)', opacity: 0.50, textAlign: 'center', marginTop: '10px', letterSpacing: '0.04em' }}
           >
-            So we stay us.
+            Så vi förblir vi.
           </p>
         </motion.div>
 

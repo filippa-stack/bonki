@@ -282,16 +282,16 @@ export default function CompletedSessionView({
           >
             <button
               onClick={() => navigate('/shared')}
-              className="font-serif italic"
-              style={{ fontSize: '14px', color: 'var(--text-secondary)', opacity: 0.65, background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline', textUnderlineOffset: '3px' }}
+              className="font-sans"
+              style={{ fontSize: '13px', color: 'var(--text-secondary)', opacity: 0.55, background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline', textUnderlineOffset: '3px' }}
             >
-              Se reflektionerna i Era samtal
+              Se alla era anteckningar
             </button>
             <button
               onClick={() => navigate('/')}
               className="cta-primary"
             >
-              Utforska fler ämnen
+              Fortsätt utforska
             </button>
           </motion.div>
 
