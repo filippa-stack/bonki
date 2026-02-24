@@ -40,7 +40,7 @@ export default function SessionTakeaway({ sessionId }: SessionTakeawayProps) {
         <textarea
           value={text}
           onChange={(e) => setText(e.target.value)}
-          placeholder="Skriv något ni vill bära med er."
+          placeholder="En tanke, ett löfte, något litet."
           rows={3}
           inputMode="text"
           autoCorrect="on"
