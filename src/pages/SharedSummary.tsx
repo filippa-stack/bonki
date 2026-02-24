@@ -604,7 +604,7 @@ export default function SharedSummary() {
                             onMouseEnter={(e) => { e.currentTarget.style.opacity = '0.6'; }}
                             onMouseLeave={(e) => { e.currentTarget.style.opacity = '1'; }}
                           >
-                            {showingOlder ? 'Dölj tidigare' : `+ ${olderCount} tidigare samtal`}
+                            {showingOlder ? 'Dölj tidigare' : `${olderCount} tidigare samtal`}
                           </button>
                           <AnimatePresence>
                             {showingOlder && (
@@ -750,7 +750,7 @@ export default function SharedSummary() {
                       marginBottom: '16px',
                     }}
                   >
-                    Avslutade utan anteckningar
+                    Utan anteckningar
                   </p>
                 </>
               )}
