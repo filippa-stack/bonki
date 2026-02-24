@@ -103,7 +103,7 @@ export default function Header({
                     fontSize: '13px',
                     letterSpacing: '0.02em',
                     textTransform: 'none',
-                    color: isDarkSurface ? 'hsl(36, 20%, 88%)' : 'var(--color-text-primary)',
+                    color: 'var(--color-text-primary)',
                     opacity: 0.90,
                     fontWeight: 400,
                   }}
