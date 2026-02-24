@@ -179,7 +179,7 @@ export default function Onboarding() {
 /* ─── SLIDE 1: "Ett gemensamt rum." ─── */
 function Slide1() {
   return (
-    <div className="flex-1 flex flex-col justify-center" style={{ paddingBottom: '48px' }}>
+    <div className="flex-1 flex flex-col items-center justify-center" style={{ padding: '0 32px' }}>
       <motion.h1
         initial={{ opacity: 0, x: -16 }}
         animate={{ opacity: 1, x: 0 }}
@@ -190,9 +190,7 @@ function Slide1() {
           fontWeight: 700,
           color: 'var(--color-text-primary)',
           lineHeight: 1.1,
-          textAlign: 'left',
-          paddingLeft: '32px',
-          paddingRight: '48px',
+          textAlign: 'center',
           letterSpacing: '-0.02em',
         }}
       >
@@ -208,9 +206,7 @@ function Slide1() {
           fontSize: '15px',
           color: 'var(--color-text-secondary)',
           opacity: 0.75,
-          textAlign: 'left',
-          paddingLeft: '32px',
-          paddingRight: '48px',
+          textAlign: 'center',
           marginTop: '20px',
           lineHeight: 1.6,
         }}
@@ -227,8 +223,7 @@ function Slide1() {
           fontStyle: 'italic',
           fontSize: '17px',
           color: 'var(--accent-text)',
-          textAlign: 'left',
-          paddingLeft: '32px',
+          textAlign: 'center',
           marginTop: '16px',
         }}
       >
