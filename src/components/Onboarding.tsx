@@ -16,8 +16,10 @@ export default function Onboarding() {
     completeOnboarding();
   };
 
+  const LAST_SLIDE = 3;
+
   const handleNext = () => {
-    if (currentSlide < 2) setCurrentSlide(currentSlide + 1);
+    if (currentSlide < LAST_SLIDE) setCurrentSlide(currentSlide + 1);
     else handleComplete();
   };
 
@@ -25,7 +27,7 @@ export default function Onboarding() {
     const SWIPE_THRESHOLD = 50;
     const VELOCITY_THRESHOLD = 300;
     if (info.offset.x < -SWIPE_THRESHOLD || info.velocity.x < -VELOCITY_THRESHOLD) {
-      if (currentSlide < 2) setCurrentSlide(currentSlide + 1);
+      if (currentSlide < LAST_SLIDE) setCurrentSlide(currentSlide + 1);
       else handleComplete();
     }
     if (info.offset.x > SWIPE_THRESHOLD || info.velocity.x > VELOCITY_THRESHOLD) {
@@ -33,7 +35,7 @@ export default function Onboarding() {
     }
   };
 
-  const isDark = currentSlide === 2;
+  const isDark = currentSlide === LAST_SLIDE;
 
   return (
     <div
@@ -60,7 +62,8 @@ export default function Onboarding() {
             <div className="flex-1 flex flex-col" style={{ position: 'relative' }}>
               {currentSlide === 0 && <Slide1 />}
               {currentSlide === 1 && <Slide2 />}
-              {currentSlide === 2 && <Slide3 />}
+              {currentSlide === 2 && <SlideMechanics />}
+              {currentSlide === 3 && <Slide3 />}
             </div>
           </motion.div>
         </AnimatePresence>
@@ -74,7 +77,7 @@ export default function Onboarding() {
           className="flex flex-col items-center gap-5 px-6"
         >
           {/* CTA button */}
-          {currentSlide === 2 ? (
+          {currentSlide === LAST_SLIDE ? (
             <button
               onClick={handleComplete}
               style={{
@@ -113,7 +116,7 @@ export default function Onboarding() {
 
           {/* Progress dots */}
           <div style={{ display: 'flex', gap: '4px', alignItems: 'center' }}>
-            {[0, 1, 2].map((i) => (
+            {[0, 1, 2, 3].map((i) => (
               <button
                 key={i}
                 onClick={() => setCurrentSlide(i)}
@@ -149,7 +152,7 @@ export default function Onboarding() {
 
           {/* Skip link */}
           <div style={{ height: '20px', display: 'flex', alignItems: 'center' }}>
-            {currentSlide < 2 && (
+            {currentSlide < LAST_SLIDE && (
               <button
                 onClick={handleComplete}
                 style={{
@@ -329,6 +332,122 @@ function Slide2() {
           Det finns inget rätt sätt — bara ert.
         </motion.p>
       </div>
+    </div>
+  );
+}
+
+/* ─── SLIDE MECHANICS: "Så funkar det." ─── */
+function SlideMechanics() {
+  const steps = [
+    { num: '01', text: 'Välj ett tema. Ta samtalet i er takt.' },
+    { num: '02', text: 'Låt var och en tala till punkt.' },
+    { num: '03', text: 'Anteckna det ni vill minnas.' },
+  ];
+
+  return (
+    <div className="flex-1 flex flex-col items-center justify-center" style={{ padding: '0 32px' }}>
+      <motion.p
+        initial={{ opacity: 0, y: 8 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.05, duration: 0.6, ease: EASE }}
+        style={{
+          fontFamily: 'var(--font-sans)',
+          fontSize: '11px',
+          letterSpacing: '0.12em',
+          textTransform: 'uppercase' as const,
+          color: 'var(--accent-saffron)',
+          marginBottom: '16px',
+          fontWeight: 600,
+        }}
+      >
+        Så funkar det
+      </motion.p>
+
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', maxWidth: '300px', width: '100%' }}>
+        {steps.map((step, i) => (
+          <motion.div
+            key={step.num}
+            initial={{ opacity: 0, x: -12 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.15 + i * 0.15, duration: 0.6, ease: EASE }}
+            style={{ display: 'flex', alignItems: 'baseline', gap: '14px' }}
+          >
+            <span
+              style={{
+                fontFamily: 'var(--font-serif)',
+                fontSize: '28px',
+                fontWeight: 700,
+                color: 'var(--color-text-primary)',
+                opacity: 0.08,
+                lineHeight: 1,
+                flexShrink: 0,
+                minWidth: '32px',
+              }}
+            >
+              {step.num}
+            </span>
+            <span
+              style={{
+                fontFamily: 'var(--font-sans)',
+                fontSize: '15px',
+                color: 'var(--color-text-primary)',
+                lineHeight: 1.55,
+              }}
+            >
+              {step.text}
+            </span>
+          </motion.div>
+        ))}
+      </div>
+
+      {/* Divider */}
+      <motion.div
+        initial={{ opacity: 0, scaleX: 0 }}
+        animate={{ opacity: 1, scaleX: 1 }}
+        transition={{ delay: 0.65, duration: 0.7, ease: EASE }}
+        style={{
+          width: '40px',
+          height: '1px',
+          background: 'var(--color-text-primary)',
+          opacity: 0.1,
+          marginTop: '28px',
+          marginBottom: '24px',
+          transformOrigin: 'center',
+        }}
+      />
+
+      <motion.p
+        initial={{ opacity: 0, y: 6 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.75, duration: 0.6, ease: EASE }}
+        style={{
+          fontFamily: 'var(--font-sans)',
+          fontSize: '14px',
+          color: 'var(--color-text-secondary)',
+          opacity: 0.65,
+          textAlign: 'center',
+          lineHeight: 1.65,
+          maxWidth: '260px',
+        }}
+      >
+        Pausa när det behövs. Återkom när det går.
+      </motion.p>
+
+      <motion.p
+        initial={{ opacity: 0, y: 6 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.9, duration: 0.6, ease: EASE }}
+        style={{
+          fontFamily: 'var(--font-serif)',
+          fontStyle: 'italic',
+          fontSize: '17px',
+          color: 'var(--accent-text)',
+          textAlign: 'center',
+          marginTop: '14px',
+        }}
+      >
+        Värdet ligger i reflektionen, inte i lösningen.
+      </motion.p>
     </div>
   );
 }
