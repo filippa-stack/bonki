@@ -61,19 +61,20 @@ export default function ArchiveTakeaway({ sessionId, initialText }: ArchiveTakea
   }, []);
 
   const textareaStyle: React.CSSProperties = {
-    backgroundColor: 'var(--surface-sunken)',
-    border: '1px solid hsl(var(--neutral-300))',
+    backgroundColor: 'hsl(36 20% 97% / 0.70)',
+    border: 'none',
     borderRadius: '10px',
     padding: '16px',
     fontFamily: 'var(--font-serif)',
-    fontSize: '17px',
+    fontSize: '16px',
     fontStyle: 'italic',
     color: 'var(--color-text-primary)',
     width: '100%',
-    minHeight: '80px',
+    minHeight: '72px',
     resize: 'none' as const,
     outline: 'none',
-    lineHeight: 1.5,
+    lineHeight: 1.55,
+    boxShadow: 'inset 0 1px 3px hsla(30, 12%, 25%, 0.04)',
   };
 
   return (

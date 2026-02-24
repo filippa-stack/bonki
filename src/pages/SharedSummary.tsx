@@ -367,10 +367,11 @@ export default function SharedSummary() {
           transition={{ duration: EMOTION, ease }}
           className="font-serif text-center"
           style={{
-            fontSize: '17px',
+            fontSize: '18px',
             color: 'var(--color-text-primary)',
-            fontWeight: 500,
-            marginBottom: '8px',
+            fontWeight: 600,
+            letterSpacing: '-0.01em',
+            marginBottom: '6px',
           }}
         >
           Era samtal
@@ -381,13 +382,13 @@ export default function SharedSummary() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: EMOTION, delay: BEAT_1, ease }}
-          className="font-serif text-center"
+          className="font-serif italic text-center"
           style={{
-            fontSize: '16px',
-            color: 'var(--color-text-secondary)',
-            opacity: 0.65,
-            marginBottom: '32px',
-            marginTop: '8px',
+            fontSize: '15px',
+            color: 'var(--color-text-tertiary)',
+            opacity: 0.55,
+            marginBottom: '36px',
+            marginTop: '4px',
           }}
         >
           Vad ni burit med er.
@@ -447,10 +448,11 @@ export default function SharedSummary() {
                       className="tile-door row-bloom relative"
                       style={{
                         backgroundColor: 'var(--surface-raised)',
-                        border: '1px solid hsl(var(--neutral-300))',
+                        border: 'none',
                         borderRadius: '14px',
-                        padding: '18px 16px 18px 20px',
+                        padding: '20px 18px 20px 22px',
                         borderLeft: `3px solid ${getCategoryAccent(group.categoryId)}`,
+                        boxShadow: '0 1px 3px hsla(30, 15%, 25%, 0.04), 0 4px 16px -4px hsla(30, 18%, 28%, 0.06)',
                       }}
                     >
                       <button
@@ -544,19 +546,20 @@ export default function SharedSummary() {
                             transition={{ duration: 0.2, ease }}
                             className="overflow-hidden"
                           >
-                            <div style={{ paddingTop: '16px', paddingLeft: '8px' }}>
+                            <div style={{ paddingTop: '20px', paddingLeft: '4px' }}>
                               {getAllQuestionsWithReflections(getCardById, entry.cardId, entry.reflections).map((item, qi) => (
                                 <div key={qi}>
                                   {qi > 0 && (
-                                    <div style={{ height: '1px', background: 'hsl(var(--border) / 0.12)', margin: '16px 0' }} />
+                                    <div style={{ height: '1px', background: 'linear-gradient(90deg, hsl(var(--border) / 0.12) 0%, hsl(var(--border) / 0) 100%)', margin: '20px 0' }} />
                                   )}
                                   <p
                                     className="type-body"
                                     style={{
-                                      fontSize: '13px',
+                                      fontSize: '12px',
                                       color: 'var(--color-text-tertiary)',
-                                      marginBottom: '6px',
-                                      lineHeight: 1.4,
+                                      marginBottom: '8px',
+                                      lineHeight: 1.5,
+                                      opacity: 0.7,
                                     }}
                                   >
                                     {renderBulletText(item.question)}
@@ -565,9 +568,10 @@ export default function SharedSummary() {
                                     <div
                                       className="font-serif whitespace-pre-wrap"
                                       style={{
-                                        fontSize: '20px',
+                                        fontSize: '18px',
                                         fontWeight: 500,
-                                        lineHeight: 1.5,
+                                        fontStyle: 'italic',
+                                        lineHeight: 1.55,
                                         color: 'var(--color-text-primary)',
                                         marginBottom: '8px',
                                       }}
@@ -579,7 +583,7 @@ export default function SharedSummary() {
                               ))}
 
                               <div>
-                                <div style={{ height: '1px', background: 'hsl(var(--border) / 0.15)', marginTop: '16px', marginBottom: '12px' }} />
+                                <div style={{ height: '1px', background: 'linear-gradient(90deg, hsl(var(--border) / 0.15) 0%, hsl(var(--border) / 0) 100%)', marginTop: '20px', marginBottom: '14px' }} />
                                 <ArchiveTakeaway sessionId={entry.sessionId} initialText={entry.takeaway} />
                               </div>
                             </div>
@@ -663,8 +667,8 @@ export default function SharedSummary() {
               {/* Bookmarked questions section */}
               {bookmarks.length > 0 && (
                 <>
-                  <div style={{ margin: '24px 0' }}>
-                    <div style={{ height: '1px', background: 'hsl(var(--border) / 0.15)' }} />
+                  <div style={{ margin: '28px 0', display: 'flex', alignItems: 'center', gap: '12px' }}>
+                    <div style={{ flex: 1, height: '1px', background: 'linear-gradient(90deg, hsl(var(--border) / 0) 0%, hsl(var(--border) / 0.15) 50%, hsl(var(--border) / 0) 100%)' }} />
                   </div>
                   <p
                     className="type-meta text-center"
@@ -697,9 +701,10 @@ export default function SharedSummary() {
                             onClick={() => navigate(`/card/${bm.card_id}?from=archive&step=${bm.stage_index}&prompt=${bm.prompt_index}`)}
                             style={{
                               background: 'var(--surface-raised)',
-                              border: '1px solid hsl(var(--neutral-300))',
+                              border: 'none',
                               borderRadius: '12px',
-                              padding: '16px',
+                              padding: '18px',
+                              boxShadow: '0 1px 3px hsla(30, 15%, 25%, 0.04), 0 4px 16px -4px hsla(30, 18%, 28%, 0.06)',
                             }}
                           >
                             <p
@@ -738,8 +743,8 @@ export default function SharedSummary() {
               {/* Divider + Section 2: Sessions without notes */}
               {bothExist && (
                 <>
-                  <div style={{ margin: '24px 0' }}>
-                    <div style={{ height: '1px', background: 'hsl(var(--border) / 0.15)' }} />
+                  <div style={{ margin: '28px 0', display: 'flex', alignItems: 'center', gap: '12px' }}>
+                    <div style={{ flex: 1, height: '1px', background: 'linear-gradient(90deg, hsl(var(--border) / 0) 0%, hsl(var(--border) / 0.15) 50%, hsl(var(--border) / 0) 100%)' }} />
                   </div>
                   <p
                     className="type-meta text-center"
@@ -772,11 +777,12 @@ export default function SharedSummary() {
                       className="w-full text-left"
                       style={{
                         backgroundColor: 'var(--surface-raised)',
-                        border: '1px solid hsl(var(--neutral-300))',
+                        border: 'none',
                         borderRadius: '14px',
                         padding: '18px 16px 18px 20px',
                         borderLeft: `3px solid ${getCategoryAccent(group.categoryId)}`,
-                        opacity: 0.55,
+                        opacity: 0.50,
+                        boxShadow: '0 1px 2px hsla(30, 15%, 25%, 0.03)',
                       }}
                     >
                       <p
