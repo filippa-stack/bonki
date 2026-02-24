@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import { Prompt } from '@/types';
+import { EASE } from '@/lib/motion';
 
 interface PromptItemProps {
   prompt: Prompt;
@@ -32,10 +33,10 @@ interface PromptItemProps {
  * No layout changes, only weight/tone/rhythm.
  */
 const DEPTH_GRAVITY: Record<string, React.CSSProperties> = {
-  opening:    { fontWeight: 700, color: 'var(--color-text-primary)', lineHeight: 1.35 },
-  reflective: { fontWeight: 700, color: 'var(--color-text-primary)', lineHeight: 1.35 },
-  scenario:   { fontWeight: 700, color: 'var(--color-text-primary)', lineHeight: 1.30 },
-  exercise:   { fontWeight: 700, color: 'var(--color-text-primary)', lineHeight: 1.30 },
+  opening:    { fontWeight: 700, color: 'var(--text-primary)', lineHeight: 1.35 },
+  reflective: { fontWeight: 700, color: 'var(--text-primary)', lineHeight: 1.35 },
+  scenario:   { fontWeight: 700, color: 'var(--text-primary)', lineHeight: 1.30 },
+  exercise:   { fontWeight: 700, color: 'var(--text-primary)', lineHeight: 1.30 },
 };
 
 /**
@@ -56,7 +57,7 @@ export default function PromptItem({ prompt, index, sectionType, preamble }: Pro
         <p
           key={i}
           className="font-serif"
-          style={{ fontSize: '20px', fontWeight: 400, color: 'var(--color-text-primary)', lineHeight: 1.4 }}
+          style={{ fontSize: '20px', fontWeight: 400, color: 'var(--text-primary)', lineHeight: 1.4 }}
         >
           {para}
         </p>
@@ -73,7 +74,7 @@ export default function PromptItem({ prompt, index, sectionType, preamble }: Pro
         {intro && (
           <p
             className="font-serif"
-            style={{ fontSize: '20px', lineHeight: 1.4, color: 'var(--color-text-primary)' }}
+            style={{ fontSize: '20px', lineHeight: 1.4, color: 'var(--text-primary)' }}
           >
             {intro}
           </p>
@@ -86,7 +87,7 @@ export default function PromptItem({ prompt, index, sectionType, preamble }: Pro
               fontSize: '17px',
               fontWeight: 400,
               lineHeight: 1.5,
-              color: 'var(--color-text-secondary)',
+              color: 'var(--text-secondary)',
               marginTop: '12px',
             }}
           >
@@ -97,7 +98,7 @@ export default function PromptItem({ prompt, index, sectionType, preamble }: Pro
     );
   };
 
-  const enterEase = [0.25, 0.1, 0.25, 1.0] as const;
+  const enterEase = [...EASE] as [number, number, number, number];
 
   return (
     <div
@@ -112,7 +113,7 @@ export default function PromptItem({ prompt, index, sectionType, preamble }: Pro
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.45, delay: 0.05, ease: enterEase }}
             style={{
-              color: 'var(--color-text-secondary)',
+              color: 'var(--text-secondary)',
               opacity: 0.65,
               fontWeight: 400,
               fontStyle: 'normal',
@@ -132,7 +133,7 @@ export default function PromptItem({ prompt, index, sectionType, preamble }: Pro
             key={`exercise-${index}-${prompt.text.slice(0, 20)}`}
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.45, ease: enterEase }}
+            transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
             className={preamble ? 'mt-10' : ''}
             style={{
               backgroundColor: 'var(--surface-raised)',
@@ -143,12 +144,12 @@ export default function PromptItem({ prompt, index, sectionType, preamble }: Pro
               margin: '24px 0',
               marginTop: !preamble ? '48px' : '24px',
               width: '100%',
-              boxShadow: '0 2px 16px -4px hsla(30, 18%, 28%, 0.06), inset 0 1px 0 hsla(0, 0%, 100%, 0.5)',
+              boxShadow: '0 1px 2px hsla(30, 15%, 25%, 0.04), 0 4px 16px -4px hsla(30, 18%, 28%, 0.06)',
             }}
           >
             <p
               style={{
-                fontFamily: 'var(--font-sans, Inter, sans-serif)',
+                fontFamily: 'var(--font-sans)',
                 fontSize: '10px',
                 textTransform: 'uppercase',
                 letterSpacing: '0.10em',
@@ -158,7 +159,7 @@ export default function PromptItem({ prompt, index, sectionType, preamble }: Pro
             >
               Gör tillsammans
             </p>
-            <div style={{ fontFamily: 'var(--font-serif)', fontSize: '20px', fontWeight: 600, lineHeight: 1.4, color: 'var(--color-text-primary)' }}>
+            <div style={{ fontFamily: 'var(--font-serif)', fontSize: '20px', fontWeight: 600, lineHeight: 1.4, color: 'var(--text-primary)' }}>
               {renderAssignmentText(prompt.text)}
             </div>
           </motion.div>
@@ -168,7 +169,7 @@ export default function PromptItem({ prompt, index, sectionType, preamble }: Pro
             key={`question-${index}-${prompt.text.slice(0, 20)}`}
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.45, ease: enterEase }}
+            transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
             className={`w-full text-center space-y-5 ${preamble ? 'mt-10' : ''}`}
           >
             {prompt.text.split('\n').filter(p => p.trim() !== '').map((para, i) => (

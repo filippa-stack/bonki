@@ -5,9 +5,8 @@
 
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { Separator } from '@/components/ui/separator';
-import { Button } from '@/components/ui/button';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { useCoupleSpaceContext as useCoupleSpace } from '@/contexts/CoupleSpaceContext';
@@ -60,7 +59,6 @@ export default function CompletedSessionView({
     let cancelled = false;
 
     const fetchSession = async () => {
-      // All sessions are normalized — query couple_sessions exclusively.
       const { data: sessionRow } = await supabase
         .from('couple_sessions')
         .select('id, started_at')
@@ -73,8 +71,6 @@ export default function CompletedSessionView({
 
       if (cancelled || !sessionRow) { setLoading(false); return; }
 
-      // step_reflections.session_id now references couple_sessions.id
-      // couple_takeaways.session_id also references couple_sessions.id
       const [reflRes, takeawayRes] = await Promise.all([
         supabase
           .from('step_reflections')
@@ -132,18 +128,12 @@ export default function CompletedSessionView({
   }
 
   if (!session) {
-    // No completed session found — shouldn't happen, but gracefully CTA
     return (
       <div className="min-h-screen page-bg">
         <Header title={cardTitle} showBack backTo={categoryId ? `/category/${categoryId}` : '/'} />
         <div className="px-6 pt-title-above pb-8 text-center max-w-md mx-auto space-y-8">
-          <p className="text-sm text-muted-foreground">Ingen tidigare session hittades.</p>
-          <button
-            onClick={onExploreAgain}
-            className="cta-primary"
-          >
-            Utforska igen
-          </button>
+          <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>Ingen tidigare session hittades.</p>
+          <button onClick={onExploreAgain} className="cta-primary">Utforska igen</button>
         </div>
       </div>
     );
@@ -151,14 +141,11 @@ export default function CompletedSessionView({
 
   // Group reflections by step
   const stepGroups = STEP_LABELS.map((label, stepIdx) => {
-    // Reflections are stored at stepIndex * 100 + promptIndex
     const stepReflections = session.reflections.filter(r => Math.floor(r.stepIndex / 100) === stepIdx);
     const partnerRef = stepReflections.find(r => r.userId !== user?.id);
     const myRef = stepReflections.find(r => r.userId === user?.id);
     return { label, partnerRef, myRef };
   }).filter(g => g.partnerRef || g.myRef);
-
-
 
   return (
     <div className="min-h-screen page-bg">
@@ -167,11 +154,11 @@ export default function CompletedSessionView({
       <div className="px-6 pb-8" style={{ paddingTop: '32px' }}>
         <div className="max-w-md mx-auto pb-8" style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
 
-          {/* Completion header — heading first, quiet date below */}
+          {/* Completion header */}
           <motion.div
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: EMOTION, ease: [...EASE] }}
+            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
             className="text-center space-y-3"
           >
             <h2
@@ -186,46 +173,62 @@ export default function CompletedSessionView({
             </p>
           </motion.div>
 
-          {/* Locked reflections — no step labels, memory not recap */}
+          {/* Locked reflections */}
           {stepGroups.length > 0 && (
             <motion.div
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: BEAT_2, duration: EMOTION, ease: [...EASE] }}
+              transition={{ delay: BEAT_2, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
               className="space-y-8"
             >
               {stepGroups.map((group, idx) => (
-                <div key={idx} className="space-y-4">
+                <motion.div
+                  key={idx}
+                  className="space-y-4"
+                  initial={{ opacity: 0, y: 6 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: BEAT_2 + idx * 0.06, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                >
                   {/* Partner first */}
-                    {group.partnerRef && group.partnerRef.text.trim() && (
+                  {group.partnerRef && group.partnerRef.text.trim() && (
                     <div className="space-y-1">
                       <p className="text-xs px-1" style={{ color: 'var(--text-tertiary)' }}>
                         {group.partnerRef.speakerLabel && /^[AB]$/.test(group.partnerRef.speakerLabel)
                           ? group.partnerRef.speakerLabel
                           : partnerName}
                       </p>
-                      <div className="rounded-card overflow-hidden" style={{ background: 'var(--surface-raised)' }}>
+                      <div style={{
+                        background: 'var(--surface-raised)',
+                        borderRadius: '10px',
+                        overflow: 'hidden',
+                        boxShadow: '0 1px 2px hsla(30, 15%, 25%, 0.04), 0 4px 16px -4px hsla(30, 18%, 28%, 0.06)',
+                      }}>
                         <p className="p-6 text-sm whitespace-pre-wrap" style={{ color: 'var(--text-primary)' }}>{group.partnerRef.text}</p>
                       </div>
                     </div>
                   )}
 
                   {/* User second */}
-                   {group.myRef && group.myRef.text.trim() && (
+                  {group.myRef && group.myRef.text.trim() && (
                     <div className="space-y-1">
                       <p className="text-xs px-1" style={{ color: 'var(--text-tertiary)' }}>
                         {group.myRef.speakerLabel && /^[AB]$/.test(group.myRef.speakerLabel)
                           ? group.myRef.speakerLabel
                           : myName}
                       </p>
-                      <div className="rounded-card overflow-hidden" style={{ background: 'var(--surface-raised)' }}>
+                      <div style={{
+                        background: 'var(--surface-raised)',
+                        borderRadius: '10px',
+                        overflow: 'hidden',
+                        boxShadow: '0 1px 2px hsla(30, 15%, 25%, 0.04), 0 4px 16px -4px hsla(30, 18%, 28%, 0.06)',
+                      }}>
                         <p className="p-6 text-sm whitespace-pre-wrap" style={{ color: 'var(--text-primary)' }}>{group.myRef.text}</p>
                       </div>
                     </div>
                   )}
 
-                  {idx < stepGroups.length - 1 && <Separator className="opacity-20" />}
-                </div>
+                  {idx < stepGroups.length - 1 && <Separator className="opacity-10" />}
+                </motion.div>
               ))}
             </motion.div>
           )}
@@ -235,38 +238,43 @@ export default function CompletedSessionView({
             <motion.div
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: BEAT_2, duration: EMOTION, ease: [...EASE] }}
+              transition={{ delay: BEAT_3, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
               className="space-y-2"
             >
               <p className="type-meta tracking-wide" style={{ color: 'var(--text-tertiary)' }}>Det ni tog med er</p>
-              <div className="rounded-card overflow-hidden" style={{ background: 'var(--surface-raised)' }}>
+              <div style={{
+                background: 'var(--surface-raised)',
+                borderRadius: '10px',
+                overflow: 'hidden',
+                boxShadow: '0 1px 2px hsla(30, 15%, 25%, 0.04), 0 4px 16px -4px hsla(30, 18%, 28%, 0.06)',
+              }}>
                 <p className="p-6 text-sm whitespace-pre-wrap" style={{ color: 'var(--text-primary)' }}>{session.takeawayText}</p>
               </div>
             </motion.div>
           )}
 
-          {/* CTA — mt-16 breathing room before exit */}
+          {/* CTA */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: BEAT_3, duration: EMOTION, ease: [...EASE] }}
+            transition={{ delay: BEAT_3 + 0.06, duration: EMOTION, ease: [...EASE] }}
             className="text-center" style={{ marginTop: '16px' }}
           >
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '24px' }}>
-            <button
-              onClick={() => navigate('/shared')}
-              className="type-meta text-center block mx-auto underline hover:no-underline transition-opacity"
-              style={{ color: 'var(--text-secondary)' }}
-            >
-              Se reflektionerna i Era samtal
-            </button>
-            <button
-              onClick={() => navigate('/')}
-              className="cta-primary"
-            >
-              Utforska fler ämnen
-            </button>
-          </div>
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '24px' }}>
+              <button
+                onClick={() => navigate('/shared')}
+                className="type-meta text-center block mx-auto underline hover:no-underline transition-opacity"
+                style={{ color: 'var(--text-secondary)' }}
+              >
+                Se reflektionerna i Era samtal
+              </button>
+              <button
+                onClick={() => navigate('/')}
+                className="cta-primary"
+              >
+                Utforska fler ämnen
+              </button>
+            </div>
           </motion.div>
 
         </div>

@@ -669,14 +669,19 @@ export default function CardView() {
         style={{ backgroundColor: 'var(--surface-base)' }}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ duration: EMOTION, ease: [...EASE] }}
+        transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
       >
         <div style={{ opacity: 0.4, pointerEvents: 'none' }}>
           <Header title="" showBack backTo={category ? `/category/${category.id}` : '/'} />
         </div>
-        <div className="px-6 pt-title-above pb-16 relative">
+        <div className="px-6 pb-16 relative" style={{ paddingTop: '32px' }}>
           {/* Back arrow — return to last step */}
-          <div style={{ position: 'absolute', top: '12px', left: '6px', zIndex: 2 }}>
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: BEAT_3, duration: EMOTION }}
+            style={{ position: 'absolute', top: '12px', left: '6px', zIndex: 2 }}
+          >
             <button
               onClick={() => {
                 _setShowCompletion(false);
@@ -707,13 +712,13 @@ export default function CardView() {
                 }}
               />
             </button>
-          </div>
+          </motion.div>
 
           {/* Temporal release */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 0.2, duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
+            transition={{ delay: 0.15, duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
             className="text-center max-w-md mx-auto"
             style={{ marginBottom: '24px', paddingTop: 32 }}
           >
@@ -731,9 +736,9 @@ export default function CardView() {
 
           {/* Heading */}
           <motion.div
-            initial={{ opacity: 0, y: 10 }}
+            initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ delay: 0.25, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
             className="text-center max-w-md mx-auto"
             style={{ marginBottom: '48px' }}
           >
@@ -752,22 +757,21 @@ export default function CardView() {
             </h2>
           </motion.div>
 
-
           {/* Takeaway field */}
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.35, duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ delay: 0.4, duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
             className="max-w-md mx-auto"
           >
             <CompletionTakeaway sessionId={activeSessionId} spaceId={space?.id ?? null} />
           </motion.div>
 
-          {/* CTAs */}
+          {/* CTAs — cascading reveal */}
           <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.55, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
             className="max-w-md mx-auto flex flex-col items-center"
             style={{ paddingBottom: 'calc(24px + env(safe-area-inset-bottom, 0px))' }}
           >
@@ -792,61 +796,76 @@ export default function CardView() {
                 </p>
               </div>
             ) : (
-              <button
-                onClick={() => navigate(postCompletionNav.destination)}
-                className="cta-primary"
-                style={{ maxWidth: '220px', width: '100%', marginTop: '40px' }}
+              <motion.div
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.65, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                style={{ width: '100%', display: 'flex', justifyContent: 'center', marginTop: '40px' }}
               >
-                {postCompletionNav.label}
-              </button>
+                <button
+                  onClick={() => navigate(postCompletionNav.destination)}
+                  className="cta-primary"
+                  style={{ maxWidth: '220px', width: '100%' }}
+                >
+                  {postCompletionNav.label}
+                </button>
+              </motion.div>
             )}
-            <button
-              onClick={() => navigate('/')}
-              className="type-meta transition-opacity hover:opacity-60"
-              style={{ color: 'var(--text-tertiary)', opacity: 0.35, marginTop: '24px' }}
-            >
-              Till översikten
-            </button>
 
-            {/* Archive shortcut */}
-            <button
-              onClick={() => navigate('/shared')}
-              style={{
-                fontFamily: 'var(--font-sans)',
-                fontSize: '13px',
-                color: 'var(--text-secondary)',
-                opacity: 0.55,
-                background: 'none',
-                border: 'none',
-                cursor: 'pointer',
-                marginTop: '16px',
-                minHeight: '44px',
-                display: 'flex',
-                alignItems: 'center',
-              }}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.75, duration: EMOTION }}
+              style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}
             >
-              Se era anteckningar
-            </button>
+              <button
+                onClick={() => navigate('/')}
+                className="type-meta transition-opacity hover:opacity-60"
+                style={{ color: 'var(--text-tertiary)', opacity: 0.35, marginTop: '24px' }}
+              >
+                Till översikten
+              </button>
 
-            {/* Quiet exit */}
-            <button
-              onClick={() => navigate('/')}
-              style={{
-                fontFamily: 'var(--font-sans)',
-                fontSize: '12px',
-                color: 'var(--text-ghost)',
-                opacity: 0.40,
-                background: 'none',
-                border: 'none',
-                cursor: 'pointer',
-                marginTop: '8px',
-                minHeight: '44px',
-                display: 'flex',
-                alignItems: 'center',
-              }}
-            >
-              Avsluta för idag
-            </button>
+              {/* Archive shortcut */}
+              <button
+                onClick={() => navigate('/shared')}
+                style={{
+                  fontFamily: 'var(--font-sans)',
+                  fontSize: '13px',
+                  color: 'var(--text-secondary)',
+                  opacity: 0.55,
+                  background: 'none',
+                  border: 'none',
+                  cursor: 'pointer',
+                  marginTop: '16px',
+                  minHeight: '44px',
+                  display: 'flex',
+                  alignItems: 'center',
+                }}
+              >
+                Se era anteckningar
+              </button>
+
+              {/* Quiet exit */}
+              <button
+                onClick={() => navigate('/')}
+                style={{
+                  fontFamily: 'var(--font-sans)',
+                  fontSize: '12px',
+                  color: 'var(--text-ghost)',
+                  opacity: 0.40,
+                  background: 'none',
+                  border: 'none',
+                  cursor: 'pointer',
+                  marginTop: '8px',
+                  minHeight: '44px',
+                  display: 'flex',
+                  alignItems: 'center',
+                }}
+              >
+                Avsluta för idag
+              </button>
+            </motion.div>
           </motion.div>
 
         </div>
@@ -872,13 +891,16 @@ export default function CardView() {
       <motion.div
         className="min-h-screen flex flex-col items-center justify-center px-6"
         style={{ backgroundColor: 'var(--surface-base)', position: 'relative' }}
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: EMOTION, ease: [...EASE] }}
       >
         {/* Back navigation */}
-        <button
+        <motion.button
           onClick={() => navigate(category ? `/category/${category.id}` : '/')}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: BEAT_2, duration: EMOTION }}
           style={{
             position: 'absolute',
             top: '16px',
@@ -889,7 +911,7 @@ export default function CardView() {
             alignItems: 'center',
             fontFamily: 'var(--font-sans)',
             fontSize: '13px',
-            color: 'var(--color-text-secondary)',
+            color: 'var(--text-secondary)',
             opacity: 0.55,
             background: 'none',
             border: 'none',
@@ -897,104 +919,135 @@ export default function CardView() {
           }}
         >
           ← Välj samtal
-        </button>
+        </motion.button>
+
         {/* Category name */}
-        <span
+        <motion.span
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: BEAT_1, duration: EMOTION, ease: [...EASE] }}
           style={{
             fontFamily: 'var(--font-sans)',
             fontSize: '11px',
             letterSpacing: '0.08em',
             textTransform: 'uppercase',
-            color: 'var(--color-text-tertiary)',
+            color: 'var(--text-tertiary)',
             opacity: 0.5,
             marginBottom: '8px',
           }}
         >
           {category?.title}
-        </span>
+        </motion.span>
 
         {/* Topic title */}
-        <h1
+        <motion.h1
           className="font-serif"
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: BEAT_1, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
           style={{
             fontSize: '28px',
             fontWeight: 700,
-            color: 'var(--color-text-primary)',
+            color: 'var(--text-primary)',
             textAlign: 'center',
             lineHeight: 1.2,
             marginBottom: '32px',
           }}
         >
           {card.title}
-        </h1>
+        </motion.h1>
 
         {/* Divider */}
-        <div
+        <motion.div
+          initial={{ scaleX: 0 }}
+          animate={{ scaleX: 1 }}
+          transition={{ delay: BEAT_2, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
           style={{
             width: '32px',
             height: '1px',
-            background: 'var(--color-text-ghost)',
+            background: 'var(--text-ghost)',
             margin: '0 auto 32px',
           }}
         />
 
         {/* Instructions */}
-        <p
-          className="font-serif"
-          style={{
-            fontSize: '20px',
-            color: 'var(--color-text-primary)',
-            opacity: 0.80,
-            textAlign: 'center',
-            marginBottom: '8px',
-          }}
+        <motion.div
+          initial={{ opacity: 0, y: 6 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: BEAT_2, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+          style={{ textAlign: 'center', marginBottom: '0' }}
         >
-          Ni behöver bara närvaro.
-        </p>
-        <p
-          className="font-serif"
-          style={{
-            fontSize: '20px',
-            color: 'var(--color-text-primary)',
-            opacity: 0.80,
-            textAlign: 'center',
-            marginBottom: '0',
-          }}
-        >
-          Läs frågorna högt för varandra.
-        </p>
+          <p
+            className="font-serif"
+            style={{
+              fontSize: '20px',
+              color: 'var(--text-primary)',
+              opacity: 0.80,
+              textAlign: 'center',
+              marginBottom: '8px',
+            }}
+          >
+            Ni behöver bara närvaro.
+          </p>
+          <p
+            className="font-serif"
+            style={{
+              fontSize: '20px',
+              color: 'var(--text-primary)',
+              opacity: 0.80,
+              textAlign: 'center',
+              marginBottom: '0',
+            }}
+          >
+            Läs frågorna högt för varandra.
+          </p>
+        </motion.div>
 
         {/* Divider */}
-        <div style={{ width: '100%', maxWidth: '200px', height: '1px', background: 'var(--text-ghost)', margin: '20px auto' }} />
+        <motion.div
+          initial={{ scaleX: 0 }}
+          animate={{ scaleX: 1 }}
+          transition={{ delay: BEAT_3, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+          style={{ width: '100%', maxWidth: '200px', height: '1px', background: 'var(--text-ghost)', margin: '20px auto' }}
+        />
 
         {/* Mechanics */}
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px', marginBottom: '24px' }}>
-          <p style={{ fontFamily: 'var(--font-sans)', fontSize: '13px', color: 'var(--color-text-secondary)', opacity: 0.65, textAlign: 'center' }}>
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: BEAT_3, duration: EMOTION, ease: [...EASE] }}
+          style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px', marginBottom: '24px' }}
+        >
+          <p style={{ fontFamily: 'var(--font-sans)', fontSize: '13px', color: 'var(--text-secondary)', opacity: 0.65, textAlign: 'center' }}>
             Prata om frågorna tillsammans.
           </p>
-          <p style={{ fontFamily: 'var(--font-sans)', fontSize: '13px', color: 'var(--color-text-secondary)', opacity: 0.65, textAlign: 'center' }}>
+          <p style={{ fontFamily: 'var(--font-sans)', fontSize: '13px', color: 'var(--text-secondary)', opacity: 0.65, textAlign: 'center' }}>
             En av er antecknar det ni vill minnas.
           </p>
-        </div>
+        </motion.div>
 
         {/* Orphan/stale session banner */}
         {staleSession && (
-          <div
+          <motion.div
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: EMOTION, ease: [...EASE] }}
             style={{
               width: '100%',
               maxWidth: '360px',
               background: 'var(--surface-sunken)',
               borderBottom: '1px solid hsl(var(--neutral-300))',
-              borderRadius: '8px',
-              padding: '12px 20px',
+              borderRadius: '10px',
+              padding: '16px 20px',
               marginBottom: '20px',
               textAlign: 'center',
+              boxShadow: '0 1px 2px hsla(30, 15%, 25%, 0.04), 0 4px 16px -4px hsla(30, 18%, 28%, 0.06)',
             }}
           >
             <p style={{
-              fontFamily: 'Inter, sans-serif',
+              fontFamily: 'var(--font-sans)',
               fontSize: '13px',
-              color: 'var(--color-text-primary)',
+              color: 'var(--text-primary)',
               marginBottom: '12px',
               lineHeight: 1.5,
             }}>
@@ -1004,14 +1057,14 @@ export default function CardView() {
               <button
                 onClick={() => { setStaleSession(false); setShowStartScreen(false); }}
                 style={{
-                  fontFamily: 'Inter, sans-serif',
+                  fontFamily: 'var(--font-sans)',
                   fontSize: '13px',
                   padding: '8px 16px',
                   background: 'none',
                   border: '1px solid hsl(var(--neutral-300))',
-                  borderRadius: '6px',
+                  borderRadius: '8px',
                   cursor: 'pointer',
-                  color: 'var(--color-text-primary)',
+                  color: 'var(--text-primary)',
                 }}
               >
                 Fortsätt
@@ -1019,34 +1072,43 @@ export default function CardView() {
               <button
                 onClick={handleAbandonAndRestart}
                 style={{
-                  fontFamily: 'Inter, sans-serif',
+                  fontFamily: 'var(--font-sans)',
                   fontSize: '13px',
                   padding: '8px 16px',
-                  background: 'var(--color-text-primary)',
+                  background: 'var(--text-primary)',
                   color: 'var(--surface-base)',
                   border: 'none',
-                  borderRadius: '6px',
+                  borderRadius: '8px',
                   cursor: 'pointer',
                 }}
               >
                 Börja om
               </button>
             </div>
-          </div>
+          </motion.div>
         )}
 
         {/* Start button */}
-        <button
-          onClick={() => setShowStartScreen(false)}
-          className="cta-primary"
-          style={{ width: '60%', maxWidth: '280px' }}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.25, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
         >
-          Vi är redo.
-        </button>
+          <button
+            onClick={() => setShowStartScreen(false)}
+            className="cta-primary"
+            style={{ width: '60vw', maxWidth: '280px' }}
+          >
+            Vi är redo.
+          </button>
+        </motion.div>
 
         {/* Sub-text */}
-        <p
+        <motion.p
           className="font-serif"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.35, duration: EMOTION, ease: [...EASE] }}
           style={{
             fontSize: '14px',
             color: 'var(--accent-text)',
@@ -1056,7 +1118,7 @@ export default function CardView() {
           }}
         >
           Inget av det ni delar lämnar det här rummet.
-        </p>
+        </motion.p>
       </motion.div>
     );
   }
