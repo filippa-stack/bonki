@@ -66,6 +66,29 @@ function decodeStepIndex(encoded: number) {
   return { stageIndex: Math.floor(encoded / 100), promptIndex: encoded % 100 };
 }
 
+function getSectionPrompts(section: any): (string | Prompt)[] {
+  return section.prompts ?? (section.content ? [section.content] : []);
+}
+
+function getDisplayQuestionText(
+  section: any,
+  prompt: string | Prompt,
+  promptIndex: number,
+): string {
+  const promptText = typeof prompt === 'string' ? prompt : prompt.text;
+  const preamble = section.content?.trim();
+  const hasExplicitPrompts = Array.isArray(section.prompts) && section.prompts.length > 0;
+  const shouldMergePreamble =
+    hasExplicitPrompts &&
+    (section.type === 'scenario' || section.type === 'exercise') &&
+    promptIndex === 0 &&
+    !!preamble;
+
+  if (!shouldMergePreamble) return promptText;
+  if (preamble === promptText) return promptText;
+  return `${preamble} — ${promptText}`;
+}
+
 function getQuestionText(
   getCardById: (id: string) => any,
   cardId: string,
@@ -79,10 +102,10 @@ function getQuestionText(
   const section = card.sections.find((s: any) => s.type === stageType);
   if (!section) return null;
 
-  const prompts: (string | Prompt)[] = section.prompts ?? (section.content ? [section.content] : []);
+  const prompts = getSectionPrompts(section);
   const prompt = prompts[promptIndex];
   if (!prompt) return null;
-  return typeof prompt === 'string' ? prompt : prompt.text;
+  return getDisplayQuestionText(section, prompt, promptIndex);
 }
 
 /** Get all questions from ALL stages with matching reflections.
@@ -114,12 +137,12 @@ function getAllQuestionsWithReflections(
     const section = card.sections.find((s: any) => s.type === stageType);
     if (!section) continue;
 
-    const prompts: (string | Prompt)[] = section.prompts ?? (section.content ? [section.content] : []);
+    const prompts = getSectionPrompts(section);
     const stageRows = (stageReflections.get(stageIdx) || []).sort((a, b) => a.local - b.local);
 
     const rows = prompts
-      .map((prompt) => {
-        const questionText = typeof prompt === 'string' ? prompt : prompt.text;
+      .map((prompt, promptIdx) => {
+        const questionText = getDisplayQuestionText(section, prompt, promptIdx);
         if (!questionText) return null;
         return { question: questionText, reflection: null as string | null, stageIndex: stageIdx };
       })
