@@ -14,7 +14,7 @@ export default function StageTransitionChoice({ onContinue, onStop }: StageTrans
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.15 }}
-      className="my-10 py-10 px-6 text-center max-w-sm mx-auto space-y-6"
+      className="my-6 py-6 px-6 text-center max-w-sm mx-auto space-y-4"
     >
       <h2 className="text-lg font-serif text-foreground">
         Vill ni fortsätta?

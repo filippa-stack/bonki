@@ -1252,7 +1252,7 @@ export default function CardView() {
                 };
                 const label = STAGE_LABELS[currentStepIndex];
                 if (!label) return null;
-                return (
+                  return (
                   <p style={{
                     fontSize: '10px',
                     letterSpacing: '0.08em',
@@ -1260,8 +1260,8 @@ export default function CardView() {
                     color: 'var(--color-text-tertiary)',
                     opacity: 0.45,
                     textAlign: 'center',
-                    marginBottom: '12px',
-                    marginTop: '16px',
+                    marginBottom: '8px',
+                    marginTop: '8px',
                   }}>
                     {label}
                   </p>
@@ -1313,10 +1313,10 @@ export default function CardView() {
                 const hint = STEP_RITUAL_HINTS[stageKey];
                 if (!hint) return null;
                 return (
-                  <div style={{ marginTop: '20px', marginBottom: '0' }} className="text-center">
+                  <div style={{ marginTop: '12px', marginBottom: '0' }} className="text-center">
                     <p
                       className="font-serif italic"
-                      style={{ fontSize: '17px', color: 'var(--accent-text)', opacity: 0.55 }}
+                      style={{ fontSize: '15px', color: 'var(--accent-text)', opacity: 0.55 }}
                     >
                       {isTogether ? hint.together : hint.solo}
                     </p>
@@ -1388,7 +1388,7 @@ export default function CardView() {
                     />
                   )}
 
-                  <div style={{ display: 'flex', justifyContent: 'center', marginTop: '24px' }}>
+                  <div style={{ display: 'flex', justifyContent: 'center', marginTop: '16px' }}>
                     <button
                       onClick={() => handleArchiveNext(card)}
                       className="cta-primary gap-2"
