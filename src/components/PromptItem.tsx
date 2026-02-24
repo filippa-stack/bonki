@@ -137,7 +137,7 @@ export default function PromptItem({ prompt, index, sectionType, preamble }: Pro
             style={{
               backgroundColor: 'var(--surface-raised)',
               border: 'none',
-              borderLeft: '3px solid #C4821D',
+              borderLeft: '3px solid var(--accent-saffron)',
               borderRadius: '0 10px 10px 0',
               padding: '24px 24px 24px 28px',
               margin: '24px 0',

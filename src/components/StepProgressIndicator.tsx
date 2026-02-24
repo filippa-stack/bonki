@@ -74,9 +74,9 @@ export default function StepProgressIndicator({
                 height: '5px',
                 borderRadius: isCurrent ? '4px' : '50%',
                 backgroundColor: isCurrent
-                  ? '#C4821D'
+                  ? 'var(--accent-saffron)'
                   : isCompleted
-                    ? 'hsl(158, 32%, 14%)'
+                    ? 'var(--cta-active)'
                     : 'var(--text-ghost)',
                 opacity: isCurrent ? 0.85 : isCompleted ? 0.20 : 0.14,
                 transition: 'width 0.3s ease, border-radius 0.3s ease, opacity 0.25s ease, background-color 0.25s ease',

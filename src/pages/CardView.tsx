@@ -702,7 +702,7 @@ export default function CardView() {
               <ArrowLeft
                 size={20}
                 style={{
-                  color: 'var(--color-text-tertiary)',
+                  color: 'var(--text-tertiary)',
                   opacity: 0.45,
                 }}
               />
@@ -722,7 +722,7 @@ export default function CardView() {
               fontFamily: 'var(--font-sans)',
               textTransform: 'uppercase',
               letterSpacing: '0.10em',
-              color: 'var(--color-text-secondary)',
+              color: 'var(--text-tertiary)',
               opacity: 0.50,
             }}>
               Bra jobbat.
@@ -774,17 +774,17 @@ export default function CardView() {
             {postCompletionNav.type === 'all_complete' ? (
               <div className="text-center" style={{ marginTop: '40px' }}>
                 <p style={{
-                  fontFamily: "'Cormorant Garamond', serif",
+                  fontFamily: 'var(--font-serif)',
                   fontSize: '18px',
                   fontWeight: 500,
-                  color: '#8B5E1A',
+                  color: 'var(--accent-text)',
                 }}>
                   Ni har utforskat allt. För nu.
                 </p>
                 <p style={{
-                  fontFamily: 'Inter, sans-serif',
+                  fontFamily: 'var(--font-sans)',
                   fontSize: '13px',
-                  color: 'var(--color-text-secondary)',
+                  color: 'var(--text-tertiary)',
                   opacity: 0.60,
                   marginTop: '8px',
                 }}>
@@ -803,7 +803,7 @@ export default function CardView() {
             <button
               onClick={() => navigate('/')}
               className="type-meta transition-opacity hover:opacity-60"
-              style={{ color: 'var(--color-text-secondary)', opacity: 0.35, marginTop: '24px' }}
+              style={{ color: 'var(--text-tertiary)', opacity: 0.35, marginTop: '24px' }}
             >
               Till översikten
             </button>
@@ -814,7 +814,7 @@ export default function CardView() {
               style={{
                 fontFamily: 'var(--font-sans)',
                 fontSize: '13px',
-                color: 'var(--color-text-secondary)',
+                color: 'var(--text-secondary)',
                 opacity: 0.55,
                 background: 'none',
                 border: 'none',
@@ -834,7 +834,7 @@ export default function CardView() {
               style={{
                 fontFamily: 'var(--font-sans)',
                 fontSize: '12px',
-                color: 'var(--color-text-tertiary)',
+                color: 'var(--text-ghost)',
                 opacity: 0.40,
                 background: 'none',
                 border: 'none',
@@ -965,7 +965,7 @@ export default function CardView() {
         </p>
 
         {/* Divider */}
-        <div style={{ width: '100%', maxWidth: '200px', height: '1px', background: 'hsl(var(--neutral-300))', margin: '20px auto' }} />
+        <div style={{ width: '100%', maxWidth: '200px', height: '1px', background: 'var(--text-ghost)', margin: '20px auto' }} />
 
         {/* Mechanics */}
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px', marginBottom: '24px' }}>
@@ -1255,7 +1255,7 @@ export default function CardView() {
                   <div style={{ marginTop: '20px', marginBottom: '0' }} className="text-center">
                     <p
                       className="font-serif italic"
-                      style={{ fontSize: '17px', color: '#8B5E1A', opacity: 0.55 }}
+                      style={{ fontSize: '17px', color: 'var(--accent-text)', opacity: 0.55 }}
                     >
                       {isTogether ? hint.together : hint.solo}
                     </p>
@@ -1440,14 +1440,14 @@ function CompletionTakeaway({ sessionId, spaceId }: { sessionId: string | null; 
             : 'var(--surface-sunken)',
           border: 'none',
           borderTop: isFocused
-            ? '1.5px solid #C4821D'
+            ? '1.5px solid var(--accent-saffron)'
             : '1px solid hsl(var(--neutral-300))',
           borderBottom: isFocused
-            ? '1.5px solid #C4821D'
+            ? '1.5px solid var(--accent-saffron)'
             : '1px solid hsl(var(--neutral-300))',
           borderRadius: 0,
           padding: '16px 0 12px 0',
-          fontFamily: hasFill ? 'Inter, sans-serif' : 'var(--font-serif)',
+          fontFamily: hasFill ? 'var(--font-sans)' : 'var(--font-serif)',
           fontSize: hasFill ? '15px' : '17px',
           lineHeight: 1.6,
           color: 'var(--color-text-primary)',
@@ -1460,7 +1460,7 @@ function CompletionTakeaway({ sessionId, spaceId }: { sessionId: string | null; 
           font-family: 'Cormorant Garamond', serif !important;
           font-style: normal !important;
           font-size: 16px !important;
-          color: #8B5E1A !important;
+          color: var(--accent-text) !important;
           opacity: 0.75 !important;
           text-align: center !important;
           transition: opacity 300ms ease !important;
@@ -1469,7 +1469,7 @@ function CompletionTakeaway({ sessionId, spaceId }: { sessionId: string | null; 
           opacity: 0 !important;
         }
       `}</style>
-      <span style={{ display: 'block', textAlign: 'center', fontSize: '10px', color: 'rgba(0,0,0,0.25)', marginTop: '4px' }}>
+      <span style={{ display: 'block', textAlign: 'center', fontSize: '10px', color: 'var(--text-ghost)', marginTop: '4px' }}>
         {status === 'saving' ? 'Sparar…' : status === 'saved' ? 'Sparad' : '\u00A0'}
       </span>
     </div>
