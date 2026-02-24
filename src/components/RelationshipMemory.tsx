@@ -30,7 +30,7 @@ export default function RelationshipMemory({ cardTitle, categoryTitle, completed
             {t('home.relationship_memory_title')}
           </p>
         </div>
-        <p className="font-serif text-foreground">{t('home.relationship_memory_explored')} <em>{cardTitle}</em></p>
+        <p className="font-serif text-foreground">{t('home.relationship_memory_explored')} {cardTitle}</p>
         <p className="text-sm text-gentle mt-1">{categoryTitle} · {formattedDate}</p>
       </div>
     </motion.div>

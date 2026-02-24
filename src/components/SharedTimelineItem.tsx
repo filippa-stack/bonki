@@ -87,7 +87,7 @@ export default function SharedTimelineItem({
 
         {/* Prompt text */}
         {note.promptText && (
-          <p className="text-xs text-foreground/50 italic mb-2 leading-relaxed">{note.promptText}</p>
+          <p className="text-xs text-foreground/50 mb-2 leading-relaxed">{note.promptText}</p>
         )}
 
         {/* Reflection content — read-only */}

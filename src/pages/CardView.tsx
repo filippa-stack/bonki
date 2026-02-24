@@ -776,7 +776,7 @@ export default function CardView() {
                 <p style={{
                   fontFamily: "'Cormorant Garamond', serif",
                   fontSize: '18px',
-                  fontStyle: 'italic',
+                  fontWeight: 500,
                   color: '#8B5E1A',
                 }}>
                   Ni har utforskat allt. För nu.
@@ -1458,7 +1458,7 @@ function CompletionTakeaway({ sessionId, spaceId }: { sessionId: string | null; 
       <style>{`
         .completion-takeaway-wrapper textarea::placeholder {
           font-family: 'Cormorant Garamond', serif !important;
-          font-style: italic !important;
+          font-style: normal !important;
           font-size: 16px !important;
           color: #8B5E1A !important;
           opacity: 0.75 !important;
