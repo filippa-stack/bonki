@@ -86,7 +86,7 @@ export default function SessionStepReflection({
         onChange={(e) => handleChange(e.target.value)}
         onFocus={() => setIsFocused(true)}
         onBlur={() => setIsFocused(false)}
-        placeholder="Något ni vill ta med er?"
+        placeholder="Skriv något ni vill bära med er."
         inputMode="text"
         autoCorrect="on"
         autoCapitalize="sentences"

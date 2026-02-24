@@ -109,7 +109,7 @@ export default function ArchiveTakeaway({ sessionId, initialText }: ArchiveTakea
         value={text}
         onChange={(e) => setText(e.target.value)}
         onBlur={save}
-        placeholder="Skriv något ni vill minnas."
+        placeholder="Skriv något ni vill bära med er."
         style={textareaStyle}
       />
 

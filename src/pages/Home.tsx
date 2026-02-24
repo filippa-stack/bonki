@@ -10,21 +10,14 @@ import { useApp } from '@/contexts/AppContext';
 import { useSiteSettings } from '@/contexts/SiteSettingsContext';
 import { useAuth } from '@/contexts/AuthContext';
 import { useCoupleSpaceContext } from '@/contexts/CoupleSpaceContext';
-import CategoryCard from '@/components/CategoryCard';
 import Header from '@/components/Header';
-import { ArrowRight, Bookmark, Share2, ChevronDown, ChevronRight, Check, Circle, Settings } from 'lucide-react';
+import { ChevronDown, ChevronRight, Check } from 'lucide-react';
 import NotificationSettings from '@/components/NotificationSettings';
-import RelationSettings from '@/components/RelationSettings';
-import RelationshipMemory from '@/components/RelationshipMemory';
 
 import ReturnOverlay from '@/components/ReturnOverlay';
-import FocusSlab from '@/components/FocusSlab';
-import ConfidenceCheckPanel from '@/components/ConfidenceCheckPanel';
-import CompletionMarker from '@/components/CompletionMarker';
 import { useThemeVars } from '@/hooks/useThemeVars';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
-import { toastSuccessOnce, toastErrorOnce } from '@/lib/toastOnce';
 import { useDevState } from '@/contexts/DevStateContext';
 import { useAppMode } from '@/hooks/useAppMode';
 import { useNormalizedSessionContext } from '@/contexts/NormalizedSessionContext';
@@ -82,13 +75,10 @@ export default function Home() {
   const navigate = useNavigate();
   useThemeVars();
   const {
-    savedConversations,
     categories,
     getCardById,
     getCategoryById,
     cards,
-    getCategoryStatus,
-    switchToNewSpace,
   } = useApp();
   const { settings } = useSiteSettings();
   const { user } = useAuth();
@@ -516,7 +506,7 @@ export default function Home() {
               <div className="flex flex-col" style={{ gap: '8px' }}>
                 {(() => {
                   const SECTION_GROUPS: { label: string; ids: string[] }[] = [
-                    { label: 'VI SOM BAS', ids: ['emotional-intimacy', 'communication', 'category-8', 'category-7'] },
+                    { label: 'VI SOM BAS', ids: ['emotional-intimacy', 'communication', 'category-8'] },
                     { label: 'VI & OMVÄRLDEN', ids: ['parenting-together', 'individual-needs', 'category-9'] },
                     { label: 'VI SOM VÄLJER VARANDRA', ids: ['category-6', 'daily-life', 'category-10'] },
                   ];
