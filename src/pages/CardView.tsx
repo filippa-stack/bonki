@@ -1163,23 +1163,7 @@ export default function CardView() {
         backTo={exitBackTo}
         variant="immersive"
         isDarkSurface={isReflectionStep || currentStageType === 'scenario' || isExerciseStep}
-        onImmersiveBack={isLive ? (() => {
-          // Step back through prompts → stages → confirmation at step 0
-          const displayIndex = localStepIndex ?? serverStepIndex;
-          if (localPromptIndex > 0) {
-            setLocalPromptIndex(localPromptIndex - 1);
-          } else if (displayIndex > 0) {
-            const prevStageIndex = displayIndex - 1;
-            const prevSection = card.sections.find(
-              s => s.type === STEP_ORDER[prevStageIndex]
-            );
-            const prevPromptCount = prevSection?.prompts?.length ?? 1;
-            setLocalStepIndex(prevStageIndex);
-            setLocalPromptIndex(prevPromptCount - 1);
-          } else {
-            setShowLeaveConfirm(true);
-          }
-        }) : () => navigate(exitBackTo)}
+        onImmersiveBack={isLive ? undefined : () => navigate(exitBackTo)}
         onLeaveSession={isLive ? () => setShowLeaveConfirm(true) : undefined}
       />
 
