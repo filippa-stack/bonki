@@ -61,7 +61,7 @@ export default function StepProgressIndicator({
       </AnimatePresence>
 
       {/* Horizontal dots */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '32px' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '32px' }}>
         {STAGE_STEPS.map((step, index) => {
           const isCompleted = completedSteps.includes(index) || index < currentStepIndex;
           const isCurrent = index === currentStepIndex;
@@ -70,14 +70,14 @@ export default function StepProgressIndicator({
             <motion.span
               key={step.stage_key}
               animate={{
-                width: isCurrent ? 16 : 5,
-                opacity: isCurrent ? 0.85 : isCompleted ? 0.20 : 0.14,
+                width: isCurrent ? 20 : 6,
+                opacity: isCurrent ? 1 : isCompleted ? 0.30 : 0.12,
               }}
               transition={{ duration: EMOTION, ease: [...EASE] }}
               style={{
                 display: 'inline-block',
-                height: '5px',
-                borderRadius: isCurrent ? '4px' : '50%',
+                height: '4px',
+                borderRadius: isCurrent ? '3px' : '50%',
                 backgroundColor: isCurrent
                   ? 'var(--accent-saffron)'
                   : isCompleted

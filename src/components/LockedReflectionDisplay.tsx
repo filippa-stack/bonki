@@ -51,18 +51,19 @@ export default function LockedReflectionDisplay({ sessionId, stepIndex }: Props)
       transition={{ delay: BEAT_1, duration: EMOTION, ease: [...EASE] }}
       style={{
         fontFamily: 'var(--font-serif)',
-        fontSize: '16px',
+        fontSize: '17px',
         fontWeight: 400,
+        fontStyle: 'italic',
         color: 'var(--text-secondary)',
         textAlign: 'left',
         lineHeight: 1.7,
-        padding: '20px',
-        background: 'var(--surface-raised)',
-        borderRadius: '10px',
+        padding: '24px',
+        background: 'hsl(36 20% 97% / 0.70)',
+        borderRadius: '12px',
         border: 'none',
         marginBottom: '32px',
         whiteSpace: 'pre-wrap',
-        boxShadow: '0 1px 2px hsla(30, 15%, 25%, 0.04), 0 4px 16px -4px hsla(30, 18%, 28%, 0.06)',
+        boxShadow: 'inset 0 1px 3px hsla(30, 12%, 25%, 0.04), 0 1px 2px hsla(30, 15%, 25%, 0.03)',
       }}
     >
       {text}
