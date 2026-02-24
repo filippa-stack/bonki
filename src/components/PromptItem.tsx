@@ -123,10 +123,9 @@ export default function PromptItem({ prompt, index, sectionType, preamble }: Pro
                   textWrap: 'balance',
                   textAlign: 'center',
                   fontWeight: 400,
-                  fontStyle: 'italic',
                   color: 'var(--text-primary)',
                   lineHeight: 1.45,
-                  opacity: 0.82,
+                  opacity: 0.78,
                   marginBottom: i < preamble.split('\n').filter(p => p.trim() !== '').length - 1 ? '16px' : 0,
                 }}
               >
