@@ -439,8 +439,8 @@ export default function Home() {
             })()}
 
             {/* VI SOM BAS section header */}
-            <div className="px-6" style={{ marginTop: '56px', marginBottom: '8px' }}>
-              <p style={{
+            <div className="px-6" style={{ marginTop: '56px', marginBottom: '12px' }}>
+              <p className="section-divider" style={{
                 paddingLeft: '20px',
                 fontFamily: 'var(--font-sans)',
                 fontSize: '10px',
@@ -475,16 +475,16 @@ export default function Home() {
                         }}
                         className="cursor-pointer tile-door row-bloom"
                          style={{
-                          borderRadius: '10px',
-                          padding: '20px',
+                          borderRadius: '12px',
+                          padding: '22px 20px',
                           minHeight: '48px',
                           display: 'flex',
                           alignItems: 'center',
                           justifyContent: 'space-between',
                           gap: '12px',
-                          background: 'var(--surface-raised)',
+                          background: 'linear-gradient(135deg, hsl(36, 22%, 97%) 0%, hsl(38, 18%, 95%) 100%)',
                           border: 'none',
-                          boxShadow: '0 1.5px 40px -8px hsla(30, 12%, 28%, 0.05)',
+                          boxShadow: '0 2px 6px hsla(30, 18%, 28%, 0.06), 0 8px 32px -8px hsla(30, 15%, 25%, 0.10)',
                           position: 'relative' as const,
                           overflow: 'hidden',
                         }}
@@ -542,8 +542,8 @@ export default function Home() {
                    const sectionHeader = (sectionLabel && sectionLabel !== 'VI SOM BAS') ? (() => {
                      if (isFirstSection) isFirstSection = false;
                      return (
-                       <div key={`section-${category.id}`} style={{ marginTop: '56px', marginBottom: '8px' }}>
-                         <p style={{
+                       <div key={`section-${category.id}`} style={{ marginTop: '56px', marginBottom: '12px' }}>
+                         <p className="section-divider" style={{
                            paddingLeft: '20px',
                            fontFamily: 'var(--font-sans)',
                            fontSize: '10px',
@@ -578,8 +578,8 @@ export default function Home() {
                         }}
                         className="cursor-pointer tile-door row-bloom"
                          style={{
-                          borderRadius: '10px',
-                          padding: '20px',
+                          borderRadius: '12px',
+                          padding: '22px 20px',
                           minHeight: '72px',
                           display: 'flex',
                           alignItems: 'center',
@@ -587,7 +587,7 @@ export default function Home() {
                           gap: '12px',
                           background: 'var(--surface-raised)',
                           border: 'none',
-                          boxShadow: '0 1.5px 40px -8px hsla(30, 12%, 28%, 0.05)',
+                          boxShadow: '0 1px 3px hsla(30, 15%, 25%, 0.05), 0 6px 24px -6px hsla(30, 18%, 28%, 0.08)',
                           position: 'relative' as const,
                           overflow: 'hidden',
                         }}
