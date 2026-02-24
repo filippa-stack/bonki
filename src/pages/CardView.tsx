@@ -727,26 +727,8 @@ export default function CardView() {
             </button>
           </motion.div>
 
-          {/* Decorative dots */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.1, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-            className="text-center max-w-md mx-auto"
-            style={{ marginBottom: '32px', paddingTop: 24 }}
-          >
-            <div style={{ display: 'flex', justifyContent: 'center', gap: '6px' }}>
-              {[0, 1].map(i => (
-                <span key={i} style={{
-                  width: '4px',
-                  height: '4px',
-                  borderRadius: '50%',
-                  backgroundColor: 'var(--accent-saffron)',
-                  opacity: 0.35,
-                }} />
-              ))}
-            </div>
-          </motion.div>
+          {/* Spacer instead of dots */}
+          <div style={{ height: '24px' }} />
 
           {/* Heading */}
           <motion.div
@@ -777,16 +759,16 @@ export default function CardView() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.35, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-            className="font-serif italic"
+            className="font-sans"
             style={{
-              fontSize: '15px',
+              fontSize: '13px',
               color: 'var(--text-tertiary)',
               textAlign: 'center',
               marginBottom: '48px',
-              opacity: 0.6,
+              opacity: 0.50,
             }}
           >
-            Skriv ned det ni vill minnas.
+            Något ni vill ta med er?
           </motion.p>
 
           {/* Takeaway field */}
@@ -848,12 +830,19 @@ export default function CardView() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.75, duration: EMOTION }}
-              style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}
+              style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px' }}
             >
+              <button
+                onClick={() => navigate('/shared')}
+                className="font-sans"
+                style={{ fontSize: '13px', color: 'var(--text-secondary)', opacity: 0.55, background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline', textUnderlineOffset: '3px', marginTop: '20px' }}
+              >
+                Se alla era anteckningar
+              </button>
               <button
                 onClick={() => navigate('/')}
                 className="type-meta transition-opacity hover:opacity-60"
-                style={{ color: 'var(--text-tertiary)', opacity: 0.35, marginTop: '24px' }}
+                style={{ color: 'var(--text-tertiary)', opacity: 0.35 }}
               >
                 Till startsidan
               </button>
