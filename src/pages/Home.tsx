@@ -271,9 +271,9 @@ export default function Home() {
             {/* ZONE A — Identity */}
             <motion.div
               className="pt-12 px-6 text-center"
-              initial={{ opacity: 0, y: 8 }}
+              initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+              transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
             >
               <h1 className="type-h1" style={{ color: 'var(--text-primary)', marginBottom: '38px' }}>
                 Ert utrymme
@@ -294,9 +294,9 @@ export default function Home() {
               return (
                 <motion.div
                   className="px-6"
-                  initial={{ opacity: 0, y: 8 }}
+                  initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                  transition={{ delay: 0.15, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
                   style={{ marginBottom: '24px' }}
                 >
                   <div
@@ -310,15 +310,16 @@ export default function Home() {
                     style={{
                       borderRadius: '12px',
                       padding: '18px 20px',
-                      background: 'hsl(158, 30%, 14%)',
+                      background: 'var(--cta-active)',
                       border: 'none',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'space-between',
                       gap: '12px',
-                      transition: 'transform 180ms ease-out, box-shadow 180ms ease-out',
+                      boxShadow: '0 2px 16px -4px hsla(158, 30%, 12%, 0.15), 0 1px 3px hsla(158, 25%, 10%, 0.08)',
+                      transition: 'transform 200ms ease-out, box-shadow 200ms ease-out',
                     }}
-                    onPointerDown={(e) => { (e.currentTarget as HTMLElement).style.transform = 'scale(0.99)'; }}
+                    onPointerDown={(e) => { (e.currentTarget as HTMLElement).style.transform = 'scale(0.985)'; }}
                     onPointerUp={(e) => { (e.currentTarget as HTMLElement).style.transform = ''; }}
                     onPointerLeave={(e) => { (e.currentTarget as HTMLElement).style.transform = ''; }}
                   >
@@ -330,7 +331,7 @@ export default function Home() {
                         {card?.title || cardId}
                       </p>
                       {cat && (
-                        <p className="font-sans" style={{ fontSize: '12px', color: '#C4821D', opacity: 0.7, marginTop: '4px' }}>
+                        <p className="font-sans" style={{ fontSize: '12px', color: 'var(--accent-saffron)', opacity: 0.7, marginTop: '4px' }}>
                           {cat.title}
                         </p>
                       )}
@@ -354,22 +355,23 @@ export default function Home() {
                 return (
                   <motion.div
                     className="px-6"
-                    initial={{ opacity: 0, y: 8 }}
+                    initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                    transition={{ delay: 0.1, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
                     style={{ marginBottom: '24px' }}
                   >
                     <div style={{
-                      background: 'hsl(158, 32%, 14%)',
+                      background: 'var(--cta-active)',
                       borderRadius: '12px',
-                      padding: '20px',
+                      padding: '24px',
                       width: '100%',
+                      boxShadow: '0 2px 16px -4px hsla(158, 30%, 12%, 0.15), 0 1px 3px hsla(158, 25%, 10%, 0.08)',
                     }}>
                       <p style={{
                         fontFamily: 'var(--font-serif)',
                         fontSize: '13.5px',
                         fontWeight: 400,
-                        color: '#C4821D',
+                        color: 'var(--accent-saffron)',
                         opacity: 0.75,
                         lineHeight: 1.55,
                         textWrap: 'balance',
@@ -380,7 +382,7 @@ export default function Home() {
                         fontFamily: 'var(--font-serif)',
                         fontSize: '18px',
                         fontWeight: 600,
-                        color: 'white',
+                        color: 'hsl(36, 16%, 92%)',
                         lineHeight: 1.35,
                         textWrap: 'balance',
                         marginTop: '14px',
@@ -396,23 +398,24 @@ export default function Home() {
               return (
                 <motion.div
                   className="px-6"
-                  initial={{ opacity: 0, y: 8 }}
+                  initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                  transition={{ delay: 0.1, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
                   style={{ marginBottom: '24px' }}
                 >
                   <div style={{
                     background: 'var(--surface-raised)',
                     borderRadius: '12px',
-                      padding: '20px 20px 20px 17px',
-                      borderLeft: '3px solid hsl(158, 32%, 14%)',
+                    padding: '24px 24px 24px 21px',
+                    borderLeft: '3px solid var(--cta-active)',
                     width: '100%',
+                    boxShadow: '0 1px 2px hsla(30, 15%, 25%, 0.04), 0 4px 16px -4px hsla(30, 18%, 28%, 0.06)',
                   }}>
                     <p style={{
                       fontFamily: 'var(--font-serif)',
                       fontSize: '13.5px',
                       fontWeight: 400,
-                      color: '#C4821D',
+                      color: 'var(--accent-saffron)',
                       opacity: 0.75,
                       lineHeight: 1.55,
                       textWrap: 'balance',
@@ -486,7 +489,7 @@ export default function Home() {
                         }}
                       >
                         {/* Inset accent bar */}
-                        <span aria-hidden style={{ position: 'absolute', left: '6px', top: '8px', bottom: '8px', width: '2px', borderRadius: '1px', background: 'hsl(158, 32%, 14%)' }} />
+                        <span aria-hidden style={{ position: 'absolute', left: '6px', top: '8px', bottom: '8px', width: '2px', borderRadius: '1px', background: 'var(--cta-active)' }} />
                         <div className="flex-1 min-w-0">
                           <p className="font-sans uppercase" style={{ fontSize: '10px', letterSpacing: '0.06em', color: 'var(--accent-text)', opacity: 0.8, marginBottom: '4px' }}>
                             Rekommenderad start
@@ -560,9 +563,9 @@ export default function Home() {
                     <>{sectionHeader}
                     <motion.div
                       key={category.id}
-                      initial={{ opacity: 0, y: 6 }}
+                      initial={{ opacity: 0, y: 8 }}
                       animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: index * 0.05, duration: 0.4, ease: 'easeOut' }}
+                      transition={{ delay: 0.2 + index * 0.06, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
                     >
                       <div
                         onClick={() => { markNavigated(); navigate(`/category/${category.id}`); }}
