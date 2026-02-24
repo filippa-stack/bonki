@@ -708,25 +708,23 @@ export default function SharedSummary() {
                       ease,
                     }}
                   >
-                    <button
-                      onClick={() => navigate(`/card/${entry.cardId}?from=archive`)}
-                      className="w-full text-left tile-door row-bloom relative"
+                    <div
+                      className="w-full text-left"
                       style={{
                         backgroundColor: 'var(--surface-raised)',
                         border: '1px solid hsl(var(--neutral-300))',
                         borderRadius: '14px',
                         padding: '18px 16px 18px 20px',
                         borderLeft: `3px solid ${getCategoryAccent(group.categoryId)}`,
-                        cursor: 'pointer',
+                        opacity: 0.55,
                       }}
                     >
                       <p
                         className="font-serif"
                         style={{
-                          fontSize: '17px',
+                          fontSize: '15px',
                           fontWeight: 500,
                           color: 'var(--color-text-primary)',
-                          opacity: 0.6,
                           lineHeight: 1.3,
                         }}
                       >
@@ -735,13 +733,13 @@ export default function SharedSummary() {
                       <p
                         className="type-meta"
                         style={{
-                          color: 'var(--accent-text)',
+                          color: 'var(--color-text-tertiary)',
                           marginTop: '6px',
                         }}
                       >
                         {entry.categoryTitle}{entry.categoryTitle && ' · '}{formatDate(entry.completedAt)}
                       </p>
-                    </button>
+                    </div>
                   </motion.div>
                 );
               })}
