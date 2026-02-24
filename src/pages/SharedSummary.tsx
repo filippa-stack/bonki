@@ -87,9 +87,8 @@ function getQuestionText(
 
 /** Get all questions from ALL stages with matching reflections.
  *  Reflections are stored with encoded step_index = stageIdx * 100 + promptIdx.
- *  We gather reflections per stage (floor(stepIndex/100)) and match them to
- *  prompts by their local offset (stepIndex % 100). Unmatched reflections are
- *  appended at the end of their stage so nothing is lost.
+ *  Some legacy rows may have out-of-range prompt indexes within a stage.
+ *  Those are reassigned to the next unanswered question in that stage.
  */
 function getAllQuestionsWithReflections(
   getCardById: (id: string) => any,
@@ -99,13 +98,13 @@ function getAllQuestionsWithReflections(
   const card = getCardById(cardId);
   if (!card) return [];
 
-  // Group reflections by stage
-  const stageReflections = new Map<number, Map<number, string>>();
+  const stageReflections = new Map<number, Array<{ local: number; text: string }>>();
   for (const r of reflections) {
     const stage = Math.floor(r.stepIndex / 100);
     const local = r.stepIndex % 100;
-    if (!stageReflections.has(stage)) stageReflections.set(stage, new Map());
-    stageReflections.get(stage)!.set(local, r.text);
+    const list = stageReflections.get(stage) || [];
+    list.push({ local, text: r.text });
+    stageReflections.set(stage, list);
   }
 
   const result: { question: string; reflection: string | null; stageIndex: number }[] = [];
@@ -116,36 +115,33 @@ function getAllQuestionsWithReflections(
     if (!section) continue;
 
     const prompts: (string | Prompt)[] = section.prompts ?? (section.content ? [section.content] : []);
-    const refMap = stageReflections.get(stageIdx) ?? new Map<number, string>();
-    const matchedLocals = new Set<number>();
+    const stageRows = (stageReflections.get(stageIdx) || []).sort((a, b) => a.local - b.local);
 
-    for (let promptIdx = 0; promptIdx < prompts.length; promptIdx++) {
-      const prompt = prompts[promptIdx];
-      const questionText = typeof prompt === 'string' ? prompt : prompt.text;
-      if (!questionText) continue;
-      const ref = refMap.get(promptIdx) ?? null;
-      if (ref) matchedLocals.add(promptIdx);
-      result.push({
-        question: questionText,
-        reflection: ref,
-        stageIndex: stageIdx,
-      });
+    const rows = prompts
+      .map((prompt) => {
+        const questionText = typeof prompt === 'string' ? prompt : prompt.text;
+        if (!questionText) return null;
+        return { question: questionText, reflection: null as string | null, stageIndex: stageIdx };
+      })
+      .filter(Boolean) as { question: string; reflection: string | null; stageIndex: number }[];
+
+    // 1) Exact local-index match when possible
+    const overflow: string[] = [];
+    for (const ref of stageRows) {
+      if (ref.local >= 0 && ref.local < rows.length && rows[ref.local] && !rows[ref.local].reflection) {
+        rows[ref.local].reflection = ref.text;
+      } else {
+        overflow.push(ref.text);
+      }
     }
 
-    // Append any unmatched reflections for this stage (saved at unexpected indices)
-    for (const [local, text] of refMap.entries()) {
-      if (matchedLocals.has(local)) continue;
-      // Try to find the closest prompt text, or use a generic label
-      const closestPrompt = prompts[0];
-      const qText = closestPrompt
-        ? (typeof closestPrompt === 'string' ? closestPrompt : closestPrompt.text)
-        : '';
-      result.push({
-        question: qText,
-        reflection: text,
-        stageIndex: stageIdx,
-      });
+    // 2) Reassign out-of-range/duplicate indexes to first unanswered question
+    for (const text of overflow) {
+      const target = rows.find((r) => !r.reflection);
+      if (target) target.reflection = text;
     }
+
+    result.push(...rows);
   }
 
   return result;
