@@ -70,7 +70,8 @@ export default function Index() {
   const { user } = useAuth();
   const devState = useDevState();
 
-  const [hasPurchased, setHasPurchased] = useState(() => isSpacePaid(space?.id, space?.paid_at));
+  // Beta: bypass purchase gate — all testers have already paid externally
+  const [hasPurchased, setHasPurchased] = useState(true);
   const migrationRan = useRef(false);
 
   // Re-evaluate when space loads — check localStorage/paid_at + user_product_access
