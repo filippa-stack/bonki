@@ -407,20 +407,19 @@ export default function Home() {
                   <div style={{
                     background: 'var(--surface-raised)',
                     borderRadius: '12px',
-                    padding: '24px 24px 24px 21px',
-                    borderLeft: '3px solid var(--cta-active)',
+                    padding: '24px',
                     width: '100%',
-                    boxShadow: '0 1px 2px hsla(30, 15%, 25%, 0.04), 0 4px 16px -4px hsla(30, 18%, 28%, 0.06)',
+                    boxShadow: '0 1px 3px hsla(30, 15%, 25%, 0.04), 0 6px 24px -6px hsla(30, 18%, 28%, 0.07)',
                   }}>
                     <p style={{
                       fontFamily: 'var(--font-serif)',
-                      fontSize: '13.5px',
+                      fontStyle: 'italic',
+                      fontSize: '14px',
                       fontWeight: 400,
-                      color: 'var(--accent-saffron)',
-                      opacity: 0.75,
+                      color: 'var(--accent-text)',
+                      opacity: 0.70,
                       lineHeight: 1.55,
-                      textWrap: 'balance',
-                    } as React.CSSProperties}>
+                    }}>
                       Vad kul att ni är tillbaka.
                     </p>
                     <p style={{
@@ -429,7 +428,7 @@ export default function Home() {
                       fontWeight: 600,
                       color: 'var(--color-text-primary)',
                       lineHeight: 1.35,
-                      marginTop: '14px',
+                      marginTop: '12px',
                     }}>
                       Vad vill ni utforska idag?
                     </p>
@@ -439,16 +438,15 @@ export default function Home() {
             })()}
 
             {/* VI SOM BAS section header */}
-            <div className="px-6" style={{ marginTop: '56px', marginBottom: '12px' }}>
+            <div className="px-6" style={{ marginTop: '48px', marginBottom: '14px' }}>
               <p className="section-divider" style={{
-                paddingLeft: '20px',
                 fontFamily: 'var(--font-sans)',
                 fontSize: '10px',
                 fontWeight: 600,
                 letterSpacing: '0.14em',
                 textTransform: 'uppercase',
                 color: 'var(--color-text-tertiary)',
-                opacity: 0.7,
+                opacity: 0.55,
               }}>
                 VI SOM BAS
               </p>
@@ -542,16 +540,15 @@ export default function Home() {
                    const sectionHeader = (sectionLabel && sectionLabel !== 'VI SOM BAS') ? (() => {
                      if (isFirstSection) isFirstSection = false;
                      return (
-                       <div key={`section-${category.id}`} style={{ marginTop: '56px', marginBottom: '12px' }}>
+                       <div key={`section-${category.id}`} style={{ marginTop: '48px', marginBottom: '14px' }}>
                          <p className="section-divider" style={{
-                           paddingLeft: '20px',
                            fontFamily: 'var(--font-sans)',
                            fontSize: '10px',
                            fontWeight: 600,
                            letterSpacing: '0.14em',
                            textTransform: 'uppercase',
                            color: 'var(--color-text-tertiary)',
-                           opacity: 0.7,
+                           opacity: 0.55,
                          }}>
                            {sectionLabel}
                          </p>

@@ -24,20 +24,20 @@ export default function SavedConversations() {
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="text-center py-20"
+            className="text-center py-24 px-4"
           >
-            <h2 className="font-serif text-xl font-medium mb-4" style={{ color: 'var(--color-text-primary)' }}>
-              Sparade samtal
-            </h2>
-            <p className="text-sm leading-relaxed mb-10" style={{ color: 'var(--color-text-secondary)', opacity: 0.65 }}>
-              När ni sparar ett samtal dyker det upp här. Det kan vara något ni vill återvända till.
+            <p className="font-serif italic" style={{ fontSize: '18px', color: 'var(--accent-text)', opacity: 0.65, lineHeight: 1.5, marginBottom: '12px' }}>
+              Här samlas era samtal.
+            </p>
+            <p className="text-sm leading-relaxed" style={{ color: 'var(--color-text-secondary)', opacity: 0.55, maxWidth: '260px', marginLeft: 'auto', marginRight: 'auto' }}>
+              När ni utforskar ett ämne och skriver reflektioner dyker det upp här — ert delade minne.
             </p>
             <button
               onClick={() => navigate('/')}
-              className="text-sm transition-opacity hover:opacity-70"
-              style={{ color: 'var(--color-text-secondary)' }}
+              className="text-sm transition-opacity hover:opacity-70 mt-10"
+              style={{ color: 'var(--color-text-tertiary)', opacity: 0.45 }}
             >
-              Till hem
+              Till startsidan
             </button>
           </motion.div>
         ) : (
