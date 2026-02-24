@@ -401,6 +401,7 @@ export default function CardView() {
 
     if (!atFrontier) {
       setLocalStepIndex(displayIndex + 1);
+      setLocalPromptIndex(0);
       return;
     }
 
@@ -410,6 +411,7 @@ export default function CardView() {
         setShowCompletion(true);
       } else {
         setLocalStepIndex(displayIndex + 1);
+        setLocalPromptIndex(0);
       }
       return;
     }
@@ -446,6 +448,7 @@ export default function CardView() {
           setShowCompletion(true);
         } else {
           setLocalStepIndex(displayIndex + 1);
+          setLocalPromptIndex(0);
         }
         toastOnce('step_retry', () =>
           toast('Vi sparar så fort vi kan. Fortsätt bara.', { duration: 2500 })
@@ -514,6 +517,7 @@ export default function CardView() {
             setShowCompletion(true);
           } else if (!isLastStep) {
             setLocalStepIndex(displayIndex + 1);
+            setLocalPromptIndex(0);
           }
           normalizedSession.refetch();
           return;
@@ -543,6 +547,7 @@ export default function CardView() {
         setShowCompletion(true);
       } else {
         setLocalStepIndex(displayIndex + 1);
+        setLocalPromptIndex(0);
       }
       await normalizedSession.refetch();
       return;
@@ -553,6 +558,7 @@ export default function CardView() {
       setShowCompletion(true);
     } else {
       setLocalStepIndex(displayIndex + 1);
+      setLocalPromptIndex(0);
     }
     toastOnce('step_retry', () =>
       toast('Något gick fel. Försök igen.', {
