@@ -100,11 +100,11 @@ export default function Header({
                 <h1
                   className="font-serif truncate"
                   style={{
-                    fontSize: '15px',
-                    letterSpacing: '0.01em',
+                    fontSize: '13px',
+                    letterSpacing: '0.02em',
                     textTransform: 'none',
                     color: isDarkSurface ? 'hsl(36, 20%, 88%)' : 'var(--color-text-primary)',
-                    opacity: 0.80,
+                    opacity: 0.90,
                     fontWeight: 400,
                   }}
                 >
