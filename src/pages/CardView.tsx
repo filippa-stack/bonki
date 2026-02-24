@@ -70,15 +70,11 @@ const STEP_ORDER = ['opening', 'reflective', 'scenario', 'exercise'] as const;
 
 /**
  * Returns the effective prompt count for a section, matching SectionView's
- * content-merging logic (scenario sections prepend content as prompt 0).
+ * rendering logic. Content is shown as preamble (not an extra prompt step).
  */
 function getEffectivePromptCount(section: { type: string; content?: string; prompts?: unknown[] } | undefined): number {
   if (!section) return 1;
-  const hasPrompts = !!(section.prompts && section.prompts.length > 0);
-  if (!hasPrompts) return section.content ? 1 : 1;
-  const isScenario = section.type === 'scenario';
-  const base = section.prompts!.length;
-  return (isScenario && section.content) ? base + 1 : base;
+  return section.prompts?.length ?? (section.content ? 1 : 1);
 }
 
 const STEP_RITUAL_HINTS: Record<string, { together: string; solo: string }> = {
