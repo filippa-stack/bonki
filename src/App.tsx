@@ -16,7 +16,7 @@ import { OptimisticCompletionsProvider } from "@/contexts/OptimisticCompletionsC
 import PageTransition from "@/components/PageTransition";
 import MobileOnlyGate from "@/components/MobileOnlyGate";
 import Index from "./pages/Index";
-import HomeV2 from "./pages/HomeV2";
+
 
 import Category from "./pages/Category";
 import CardView from "./pages/CardView";
@@ -64,7 +64,7 @@ function ProtectedRoutes() {
         <AnimatePresence mode="wait">
           <Routes location={location} key={location.pathname}>
             <Route path="/" element={<PageTransition><Index /></PageTransition>} />
-            <Route path="/home-v2" element={<PageTransition><HomeV2 /></PageTransition>} />
+            
             <Route path="/categories" element={<Navigate to="/" replace />} />
             <Route path="/category/:categoryId" element={<PageTransition><Category /></PageTransition>} />
             <Route path="/card/:cardId" element={<PageTransition><CardView /></PageTransition>} />
