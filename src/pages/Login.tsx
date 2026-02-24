@@ -125,7 +125,7 @@ export default function Login() {
           </div>
 
           <p style={{ fontSize: '12px', color: 'var(--color-text-tertiary)', opacity: 0.55, textAlign: 'center', marginTop: '16px' }}>
-            Ditt BONKI-konto — ett ställe för allt.
+            Ert konto. Era samtal.
           </p>
 
           {error && (

@@ -86,7 +86,7 @@ export default function SessionStepReflection({
         onChange={(e) => handleChange(e.target.value)}
         onFocus={() => setIsFocused(true)}
         onBlur={() => setIsFocused(false)}
-        placeholder="Vad vill ni minnas från det här samtalet?"
+        placeholder="Något ni vill ta med er?"
         inputMode="text"
         autoCorrect="on"
         autoCapitalize="sentences"
@@ -128,14 +128,12 @@ export default function SessionStepReflection({
       `}</style>
       {/* Removed 'Era gemensamma tankar.' label — placeholder communicates shared ownership */}
 
-      {stepIndex === 0 && isFirstVisit && (
-        <p
-          className="type-meta mt-3"
-          style={{ color: 'var(--text-secondary)', opacity: 0.5 }}
-        >
-          Dina svar sparas i Era samtal efter avslutat kort.
-        </p>
-      )}
+      <p
+        className="type-meta mt-2"
+        style={{ color: 'var(--text-ghost)', opacity: 0.50, textAlign: 'center' }}
+      >
+        Valfritt
+      </p>
 
       <div
         className="flex flex-col items-center"
@@ -159,13 +157,6 @@ export default function SessionStepReflection({
             : 'Fortsätt'}
         </motion.button>
 
-        <button
-          onClick={() => navigate('/')}
-          className="type-meta text-center block mx-auto hover:underline transition-opacity"
-          style={{ color: 'var(--text-secondary)', opacity: 0.65, background: 'none', border: 'none', cursor: 'pointer', marginTop: '24px' }}
-        >
-          Tillbaka till översikten
-        </button>
 
         {isExerciseStep && (
           <div style={{ textAlign: 'center', marginTop: '16px' }}>

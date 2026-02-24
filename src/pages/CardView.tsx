@@ -836,47 +836,7 @@ export default function CardView() {
                 className="type-meta transition-opacity hover:opacity-60"
                 style={{ color: 'var(--text-tertiary)', opacity: 0.35, marginTop: '24px' }}
               >
-                Till översikten
-              </button>
-
-              {/* Archive shortcut */}
-              <button
-                onClick={() => navigate('/shared')}
-                style={{
-                  fontFamily: 'var(--font-sans)',
-                  fontSize: '13px',
-                  color: 'var(--text-secondary)',
-                  opacity: 0.55,
-                  background: 'none',
-                  border: 'none',
-                  cursor: 'pointer',
-                  marginTop: '16px',
-                  minHeight: '44px',
-                  display: 'flex',
-                  alignItems: 'center',
-                }}
-              >
-                Se era anteckningar
-              </button>
-
-              {/* Quiet exit */}
-              <button
-                onClick={() => navigate('/')}
-                style={{
-                  fontFamily: 'var(--font-sans)',
-                  fontSize: '12px',
-                  color: 'var(--text-ghost)',
-                  opacity: 0.40,
-                  background: 'none',
-                  border: 'none',
-                  cursor: 'pointer',
-                  marginTop: '8px',
-                  minHeight: '44px',
-                  display: 'flex',
-                  alignItems: 'center',
-                }}
-              >
-                Avsluta för idag
+                Till startsidan
               </button>
             </motion.div>
           </motion.div>
@@ -990,18 +950,6 @@ export default function CardView() {
           transition={{ delay: BEAT_2, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
           style={{ textAlign: 'center', marginBottom: '0' }}
         >
-          <p
-            className="font-serif"
-            style={{
-              fontSize: '20px',
-              color: 'var(--text-primary)',
-              opacity: 0.80,
-              textAlign: 'center',
-              marginBottom: '8px',
-            }}
-          >
-            Ni behöver bara närvaro.
-          </p>
           <p
             className="font-serif"
             style={{
