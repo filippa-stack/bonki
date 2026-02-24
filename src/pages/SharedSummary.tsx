@@ -307,7 +307,6 @@ export default function SharedSummary() {
             className="font-serif"
             style={{
               fontSize: '16px',
-              fontStyle: 'italic',
               color: 'var(--color-text-secondary)',
               opacity: 0.65,
               textAlign: 'center',
@@ -332,7 +331,6 @@ export default function SharedSummary() {
               className="font-serif"
               style={{
                 fontSize: '15px',
-                fontStyle: 'italic',
                 color: 'var(--color-text-tertiary)',
                 opacity: 0.45,
                 textAlign: 'center',

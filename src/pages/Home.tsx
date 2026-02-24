@@ -367,7 +367,6 @@ export default function Home() {
                     }}>
                       <p style={{
                         fontFamily: 'var(--font-serif)',
-                        fontStyle: 'italic',
                         fontSize: '13.5px',
                         fontWeight: 400,
                         color: '#C4821D',
@@ -411,7 +410,6 @@ export default function Home() {
                   }}>
                     <p style={{
                       fontFamily: 'var(--font-serif)',
-                      fontStyle: 'italic',
                       fontSize: '13.5px',
                       fontWeight: 400,
                       color: '#C4821D',
