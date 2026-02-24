@@ -98,6 +98,7 @@ export default function GorTillsammansOverlay({ onDismiss }: Props) {
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.25, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+        style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px' }}
       >
         <button
           onClick={handleDismiss}
@@ -105,6 +106,22 @@ export default function GorTillsammansOverlay({ onDismiss }: Props) {
           style={{ width: '60vw', maxWidth: '280px' }}
         >
           Vi förstår.
+        </button>
+        <button
+          onClick={onDismiss}
+          style={{
+            fontFamily: 'var(--font-sans)',
+            fontSize: '13px',
+            color: 'var(--text-secondary)',
+            opacity: 0.55,
+            background: 'none',
+            border: 'none',
+            cursor: 'pointer',
+            padding: '8px 16px',
+            minHeight: '44px',
+          }}
+        >
+          Tillbaka
         </button>
       </motion.div>
     </motion.div>
