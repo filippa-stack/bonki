@@ -178,8 +178,8 @@ export const cards: Card[] = [
         content: 'Vem har du blivit — och vem saknar du?',
         prompts: [
           'Vilken del av dig tar mindre plats idag än tidigare?',
-          'Finns det något du håller tillbaka för att det känns opraktiskt?',
-          'Finns det något du anpassat som faktiskt fungerar för dig?',
+          'Finns det något ni håller tillbaka för att det inte längre passar in i livet?',
+          'Finns det något ni har anpassat er till som faktiskt fungerar bra för er båda?',
         ],
       },
       {
@@ -188,7 +188,7 @@ export const cards: Card[] = [
         title: 'Fördjupning',
         content: 'Utforska vad anpassningen kostar.',
         prompts: [
-          'När märker du att anpassningen börjar kosta mer än den ger?',
+          'Hur märker ni att anpassningen till föräldrarollen börjar kosta mer än den ger er som par?',
           'Är det något i mitt sätt som gör det lättare — eller svårare — för dig att ta plats just nu?',
         ],
       },
@@ -227,7 +227,7 @@ export const cards: Card[] = [
         prompts: [
           'När under dagen känner du att du kan släppa ansvaret?',
           'Vad behöver vara gjort eller sagt för att du ska kunna landa?',
-          'Vad i vårt sätt att avsluta dagen gör att du fortfarande bär med dig tankar och ansvar när du ska somna?',
+          'Vad i ert sätt att avsluta dagen gör att någon av er fortfarande bär på ansvaret när ni ska somna?',
         ],
       },
       {
@@ -331,7 +331,7 @@ export const cards: Card[] = [
         content: 'De här frågorna bjuder in till att titta inåt.',
         prompts: [
           'När märker du att du försvarar ditt sätt att hantera situationer i förhållandet snarare än att beskriva det?',
-          'I vilka lägen påverkar mitt sätt att hantera situationer hur trygg du känner dig i ditt eget?',
+          'I vilka lägen påverkar den ena partnerns sätt att hantera situationer hur trygga ni känner er i ert eget sätt att vara föräldrar?',
         ],
       },
       {
@@ -411,9 +411,9 @@ export const cards: Card[] = [
         title: 'Början',
         content: 'Att vara på samma sida — vad innebär det egentligen?',
         prompts: [
-          'När känner du dig mest skyddad av mig som förälder?',
-          'När känns det som att vi inte riktigt är på samma sida?',
-          'Vad behöver du efter en situation där vi agerat olika inför barnet?',
+          'När känner ni er som föräldrar mest stöttade av varandra?',
+          'När känns det som att ni inte riktigt är på samma sida i ert gemensamma föräldraskap?',
+          'Vad behöver ni av varandra efter en situation där ni har visat olika fronter eller agerat på olika sätt inför barnet?',
         ],
       },
       {
@@ -423,7 +423,7 @@ export const cards: Card[] = [
         content: 'Utforska skillnaden mellan fasad och äkta enighet.',
         prompts: [
           'Hur märks skillnaden mellan att visa enad front — och att känna sig enad bakom kulisserna?',
-          'Vad händer mellan er när oenighet hanteras öppet i efterhand — jämfört med när den aldrig riktigt får utrymme?',
+          'Vad händer med er närhet när ni pratar om er oenighet i efterhand, jämfört med när den aldrig riktigt får utrymme utan lämnas som ett växande avstånd?',
         ],
       },
       {
@@ -456,7 +456,7 @@ export const cards: Card[] = [
         content: 'Utrymme kan vara kärlek — eller avstånd.',
         prompts: [
           'Hur märker du själv att du behöver utrymme innan det blir för mycket?',
-          'Hur vill du att jag tolkar din tystnad?',
+          'Hur vill ni att partnern ska tolka er tystnad när ni har dragit er undan för en stund?',
           'När känner du dig trygg i att jag stannar kvar, även utan att lösa något, när vi är i konflikt?',
         ],
       },
@@ -500,7 +500,7 @@ export const cards: Card[] = [
         content: 'Självkänsla påverkar allt — även er.',
         prompts: [
           'När lägger du märke till att din självkänsla påverkar hur du tar plats i familjen?',
-          'Vad är svårast för mig att se hos dig när du tvivlar på dig själv?',
+          'Vad är svårast för er att se hos er partner i de stunder då dennes självkänsla svajar och denne tvivlar på sin roll i familjen?',
           'Hur förändras samspelet mellan oss när en av oss känner sig mindre viktig?',
         ],
       },
@@ -548,7 +548,7 @@ export const cards: Card[] = [
         content: 'Varje förälder bär med sig sin egen historia.',
         prompts: [
           'I vilka situationer märker du att din uppväxt talar genom dig?',
-          'Vad från din bakgrund vill du föra vidare, även när det skaver mellan oss?',
+          'Vilka värderingar eller beteenden från er egen uppväxt vill ni föra vidare till barnet, även när ni är oense om det?',
           'När märks skillnaderna i hur vi uppfattar och reagerar på situationer som tydligast?',
         ],
       },
@@ -559,7 +559,7 @@ export const cards: Card[] = [
         content: 'Fundera på rötterna till era reaktioner.',
         prompts: [
           'När märker du att du reagerar utifrån din historia snarare än på situationen som är nu?',
-          'Vad i vårt samspel gör sådana situationer extra laddade för dig?',
+          'Vad i ert samspel gör det extra svårt för er när ni märker att ni reagerar utifrån er historia snarare än på det som händer här och nu?',
         ],
       },
       {
@@ -650,7 +650,7 @@ export const cards: Card[] = [
         content: 'De här frågorna bjuder in till ärlighet om era val.',
         prompts: [
           'När märker du att du själv gör något som går emot en värdering du egentligen vill stå för?',
-          'På vilka sätt gör vårt samspel det lättare — eller svårare — för dig att agera i linje med det som är viktigt för dig?',
+          'På vilka sätt gör ert samspel det lättare eller svårare för er att agera utifrån era värderingar, även i stunder då ni känner att ni går emot dem?',
         ],
       },
       {
@@ -789,7 +789,7 @@ export const cards: Card[] = [
         content: 'Utforska vad ni verkligen prioriterar.',
         prompts: [
           'Vilken värdering försvarar ni snabbast — och vilken släpper ni först när det blir jobbigt?',
-          'När blir ert behov av ordning en styrka för barnet — och när riskerar det att bli något barnet bara lyder utan att förstå?',
+          'När blir ert gemensamma behov av ordning en trygghet för barnet, och när riskerar det att bli en regel som barnet bara lyder utan att förstå syftet?',
         ],
       },
       {
@@ -1060,7 +1060,7 @@ export const cards: Card[] = [
         content: 'Utforska skillnaden mellan att stanna och att välja.',
         prompts: [
           'Vad behöver du själv göra, eller ta ställning till, för att välja relationen när inget yttre pressar dig att göra det eller att ingen ställer en direkt fråga till dig?',
-          'Hur märks det i en relation när båda parter vet att de väljer — inte bara fortsätter?',
+          'Hur märks det i er relation när ni båda vet att ni aktivt väljer att stanna kvar hos varandra, istället för att bara fortsätta av vana?',
         ],
       },
       {
