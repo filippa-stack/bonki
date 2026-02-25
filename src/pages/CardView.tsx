@@ -174,6 +174,29 @@ export default function CardView() {
     setFeedbackDismissed(true);
   }, []);
 
+  // Intercept navigation during completion: show feedback first if not yet seen
+  const navigateWithFeedback = useCallback((destination: string) => {
+    if (showCompletion && !feedbackDismissed && !showFeedback) {
+      setShowFeedback(true);
+      // Store destination so we navigate after dismiss
+      pendingNavRef.current = destination;
+      return;
+    }
+    navigate(destination);
+  }, [showCompletion, feedbackDismissed, showFeedback, navigate]);
+
+  const pendingNavRef = useRef<string | null>(null);
+
+  const handleFeedbackDismissWithNav = useCallback(() => {
+    setShowFeedback(false);
+    setFeedbackDismissed(true);
+    if (pendingNavRef.current) {
+      const dest = pendingNavRef.current;
+      pendingNavRef.current = null;
+      navigate(dest);
+    }
+  }, [navigate]);
+
   useEffect(() => {
     if (devState) return;
     if (!space || !cardId) return;
@@ -845,7 +868,7 @@ export default function CardView() {
                 style={{ width: '100%', display: 'flex', justifyContent: 'center', marginTop: '40px' }}
               >
                 <button
-                  onClick={() => navigate(postCompletionNav.destination)}
+                  onClick={() => navigateWithFeedback(postCompletionNav.destination)}
                   className="cta-primary"
                   style={{ maxWidth: '220px', width: '100%' }}
                 >
@@ -861,14 +884,14 @@ export default function CardView() {
               style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px' }}
             >
               <button
-                onClick={() => navigate('/shared')}
+                onClick={() => navigateWithFeedback('/shared')}
                 className="font-sans"
                 style={{ fontSize: '13px', color: 'var(--text-secondary)', opacity: 0.55, background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline', textUnderlineOffset: '3px', marginTop: '20px' }}
               >
                 Se alla era anteckningar
               </button>
               <button
-                onClick={() => navigate('/')}
+                onClick={() => navigateWithFeedback('/')}
                 className="type-meta transition-opacity hover:opacity-60"
                 style={{ color: 'var(--text-tertiary)', opacity: 0.35 }}
               >
@@ -882,7 +905,7 @@ export default function CardView() {
               sessionId={activeSessionId}
               coupleSpaceId={space.id}
               show={showFeedback}
-              onDismiss={handleFeedbackDismiss}
+              onDismiss={handleFeedbackDismissWithNav}
             />
           )}
         </div>

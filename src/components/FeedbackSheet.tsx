@@ -99,10 +99,24 @@ export default function FeedbackSheet({ sessionId, coupleSpaceId, show, onDismis
                 color: 'var(--text-primary)',
                 textAlign: 'center',
                 lineHeight: 1.5,
-                marginBottom: '28px',
+                marginBottom: '8px',
               }}
             >
               Vad hände i rummet under det här samtalet som inte hade hänt annars?
+            </p>
+
+            <p
+              className="font-sans"
+              style={{
+                fontSize: '13px',
+                color: 'var(--text-tertiary)',
+                opacity: 0.6,
+                textAlign: 'center',
+                lineHeight: 1.5,
+                marginBottom: '24px',
+              }}
+            >
+              Er feedback hjälper oss att göra Bonki bättre — tack för att ni är med och formar det.
             </p>
 
             {/* Textarea */}
