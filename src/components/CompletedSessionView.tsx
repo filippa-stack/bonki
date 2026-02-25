@@ -12,7 +12,7 @@ import { useCoupleSpaceContext as useCoupleSpace } from '@/contexts/CoupleSpaceC
 import Header from '@/components/Header';
 import { BEAT_1, BEAT_2, BEAT_3, EASE, EMOTION } from '@/lib/motion';
 
-const STEP_LABELS = ['Början', 'Fördjupning', 'I vardagen', 'Tillsammans'];
+const STEP_LABELS = ['Kom igång', 'Gå djupare', 'Föreställ er', 'I verkligheten'];
 
 const COMPLETION_HEADLINES = [
   'Ni tog er tid för varandra.',

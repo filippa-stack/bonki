@@ -2,7 +2,7 @@ import { RECOMMENDED_CATEGORY_ORDER } from '@/lib/recommendedOrder';
 
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useMemo, useState, useEffect, CSSProperties } from 'react';
+import React, { useMemo, useState, useEffect, CSSProperties } from 'react';
 import { useOptimisticCompletions } from '@/contexts/OptimisticCompletionsContext';
 import { useScrollCompression } from '@/hooks/useScrollCompression';
 import { useTranslation } from 'react-i18next';
@@ -551,8 +551,8 @@ export default function Home() {
                   })() : null;
                   
 
-                  return (
-                    <>{sectionHeader}
+                    return (
+                    <React.Fragment key={category.id}>{sectionHeader}
                     <motion.div
                       key={category.id}
                       initial={{ opacity: 0, y: 8 }}
@@ -631,7 +631,7 @@ export default function Home() {
                         </div>
                       </div>
                     </motion.div>
-                    </>
+                    </React.Fragment>
                   );
                 });
                 })()}

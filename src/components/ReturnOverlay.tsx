@@ -1,6 +1,4 @@
 import { motion } from 'framer-motion';
-import { Button } from '@/components/ui/button';
-import { ArrowRight } from 'lucide-react';
 
 interface ReturnOverlayProps {
   onResume: () => void;
@@ -33,7 +31,7 @@ export default function ReturnOverlay({ onResume, onStartNew, onBrowse }: Return
           onClick={onBrowse}
           className="text-xs text-muted-foreground hover:text-foreground transition-colors"
         >
-          Bläddra bland kort
+          Bläddra bland ämnen
         </button>
       </div>
     </motion.div>
