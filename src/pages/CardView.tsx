@@ -34,6 +34,7 @@ import StageInterstitial from '@/components/StageInterstitial';
 import { ArrowRight, ArrowLeft } from 'lucide-react';
 
 import CompletedSessionView from '@/components/CompletedSessionView';
+import FeedbackSheet from '@/components/FeedbackSheet';
 import LockedReflectionDisplay from '@/components/LockedReflectionDisplay';
 
 import GorTillsammansOverlay, { hasSeenGorTillsammans } from '@/components/GorTillsammansOverlay';
@@ -157,6 +158,21 @@ export default function CardView() {
       markCardCompleted(cardId);
     }
   }, [cardId, markCardCompleted]);
+
+  // ─── Feedback modal state ───
+  const [feedbackDismissed, setFeedbackDismissed] = useState(false);
+  const [showFeedback, setShowFeedback] = useState(false);
+
+  useEffect(() => {
+    if (!showCompletion || feedbackDismissed) return;
+    const timer = setTimeout(() => setShowFeedback(true), 2000);
+    return () => clearTimeout(timer);
+  }, [showCompletion, feedbackDismissed]);
+
+  const handleFeedbackDismiss = useCallback(() => {
+    setShowFeedback(false);
+    setFeedbackDismissed(true);
+  }, []);
 
   useEffect(() => {
     if (devState) return;
@@ -861,6 +877,14 @@ export default function CardView() {
             </motion.div>
           </motion.div>
 
+          {activeSessionId && space && (
+            <FeedbackSheet
+              sessionId={activeSessionId}
+              coupleSpaceId={space.id}
+              show={showFeedback}
+              onDismiss={handleFeedbackDismiss}
+            />
+          )}
         </div>
       </motion.div>
     );
