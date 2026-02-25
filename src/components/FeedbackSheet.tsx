@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { supabase } from '@/integrations/supabase/client';
 
@@ -66,8 +66,8 @@ export default function FeedbackSheet({ sessionId, coupleSpaceId, show, onDismis
             style={{
               width: '100%',
               maxHeight: '60vh',
-              background: 'hsl(36, 20%, 95%)',
-              borderRadius: '24px 24px 0 0',
+              background: 'var(--surface-base)',
+              borderRadius: 'var(--radius-card) var(--radius-card) 0 0',
               padding: '40px 32px calc(32px + env(safe-area-inset-bottom, 0px))',
               display: 'flex',
               flexDirection: 'column',
@@ -77,12 +77,11 @@ export default function FeedbackSheet({ sessionId, coupleSpaceId, show, onDismis
           >
             {/* BONKI label */}
             <p
-              className="font-sans"
+              className="type-meta"
               style={{
-                fontSize: '11px',
                 textTransform: 'uppercase',
                 letterSpacing: '0.12em',
-                color: 'hsl(30, 8%, 56%)',
+                color: 'var(--text-tertiary)',
                 opacity: 0.6,
                 textAlign: 'center',
                 marginBottom: '24px',
@@ -97,7 +96,7 @@ export default function FeedbackSheet({ sessionId, coupleSpaceId, show, onDismis
               style={{
                 fontSize: '22px',
                 fontWeight: 400,
-                color: 'hsl(220, 25%, 18%)',
+                color: 'var(--text-primary)',
                 textAlign: 'center',
                 lineHeight: 1.5,
                 marginBottom: '28px',
@@ -113,13 +112,13 @@ export default function FeedbackSheet({ sessionId, coupleSpaceId, show, onDismis
               placeholder="Skriv fritt..."
               className="font-sans"
               style={{
-                background: 'hsl(36, 22%, 92%)',
+                background: 'var(--surface-sunken)',
                 border: 'none',
                 outline: 'none',
-                borderRadius: '12px',
+                borderRadius: 'var(--radius-pill)',
                 padding: '16px',
                 fontSize: '16px',
-                color: 'hsl(220, 25%, 18%)',
+                color: 'var(--text-primary)',
                 minHeight: '100px',
                 resize: 'none',
                 marginBottom: '20px',
@@ -134,16 +133,17 @@ export default function FeedbackSheet({ sessionId, coupleSpaceId, show, onDismis
               disabled={submitting}
               className="font-sans"
               style={{
-                background: 'hsl(158, 35%, 18%)',
-                color: '#fff',
+                background: 'var(--cta-bg)',
+                color: 'var(--cta-text)',
                 fontSize: '15px',
                 fontWeight: 500,
                 border: 'none',
-                borderRadius: '12px',
+                borderRadius: 'var(--radius-button)',
                 height: '52px',
                 width: '100%',
                 cursor: 'pointer',
                 opacity: submitting ? 0.6 : 1,
+                transition: 'background-color 260ms ease-out',
               }}
             >
               Skicka
@@ -157,7 +157,7 @@ export default function FeedbackSheet({ sessionId, coupleSpaceId, show, onDismis
                 background: 'none',
                 border: 'none',
                 fontSize: '14px',
-                color: 'hsl(30, 8%, 56%)',
+                color: 'var(--text-tertiary)',
                 opacity: 0.6,
                 height: '44px',
                 width: '100%',
