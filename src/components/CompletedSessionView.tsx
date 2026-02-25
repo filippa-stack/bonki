@@ -3,9 +3,10 @@
 // The JSON session model is deprecated.
 // All session state must come from normalized tables.
 
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import FeedbackSheet from '@/components/FeedbackSheet';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { useCoupleSpaceContext as useCoupleSpace } from '@/contexts/CoupleSpaceContext';
@@ -61,6 +62,8 @@ export default function CompletedSessionView({
   const { space } = useCoupleSpace();
   const [session, setSession] = useState<SessionData | null>(null);
   const [loading, setLoading] = useState(true);
+  const [feedbackDismissed, setFeedbackDismissed] = useState(false);
+  const [showFeedback, setShowFeedback] = useState(false);
 
   const myName = 'Du';
   const partnerName = 'Din partner';
@@ -68,6 +71,18 @@ export default function CompletedSessionView({
   const headline = useMemo(() =>
     COMPLETION_HEADLINES[Math.floor(Math.random() * COMPLETION_HEADLINES.length)],
   []);
+
+  // Show feedback sheet 2s after content renders
+  useEffect(() => {
+    if (loading || !session || feedbackDismissed) return;
+    const timer = setTimeout(() => setShowFeedback(true), 2000);
+    return () => clearTimeout(timer);
+  }, [loading, session, feedbackDismissed]);
+
+  const handleFeedbackDismiss = useCallback(() => {
+    setShowFeedback(false);
+    setFeedbackDismissed(true);
+  }, []);
 
   useEffect(() => {
     if (!space || !cardId) { setLoading(false); return; }
@@ -297,6 +312,15 @@ export default function CompletedSessionView({
 
         </div>
       </div>
+
+      {session && space && (
+        <FeedbackSheet
+          sessionId={session.id}
+          coupleSpaceId={space.id}
+          show={showFeedback}
+          onDismiss={handleFeedbackDismiss}
+        />
+      )}
     </div>
   );
 }

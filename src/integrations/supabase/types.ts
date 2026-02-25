@@ -14,6 +14,52 @@ export type Database = {
   }
   public: {
     Tables: {
+      beta_feedback: {
+        Row: {
+          couple_space_id: string
+          id: string
+          response_text: string | null
+          session_id: string | null
+          submitted_at: string
+        }
+        Insert: {
+          couple_space_id: string
+          id?: string
+          response_text?: string | null
+          session_id?: string | null
+          submitted_at?: string
+        }
+        Update: {
+          couple_space_id?: string
+          id?: string
+          response_text?: string | null
+          session_id?: string | null
+          submitted_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "beta_feedback_couple_space_id_fkey"
+            columns: ["couple_space_id"]
+            isOneToOne: false
+            referencedRelation: "couple_spaces"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "beta_feedback_couple_space_id_fkey"
+            columns: ["couple_space_id"]
+            isOneToOne: false
+            referencedRelation: "couple_spaces_safe"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "beta_feedback_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "couple_sessions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       card_sessions: {
         Row: {
           card_id: string
