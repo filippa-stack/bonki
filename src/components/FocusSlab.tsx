@@ -39,7 +39,8 @@ export default function FocusSlab() {
   const resumeCategory = card ? getCategoryById(card.categoryId) : null;
   const guidedCategory = guidedCategoryId ? getCategoryById(guidedCategoryId) : null;
 
-  const microLabel = isResume ? 'Fortsätt där ni slutade' : 'Rekommenderad start';
+  const hasHistory = exploredIds.length > 0;
+  const microLabel = isResume ? 'Fortsätt där ni slutade' : hasHistory ? 'Nästa rekommenderade' : 'Rekommenderad start';
   const title = isResume
     ? (resumeCategory?.title ?? card?.title ?? 'Ert samtal')
     : (guidedCategory?.title ?? allCategories[0]?.title ?? '');

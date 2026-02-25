@@ -86,7 +86,7 @@ export default function Categories() {
                   className="type-body mb-2"
                   style={{ color: 'var(--color-text-secondary)', opacity: 0.7 }}
                 >
-                  Rekommenderad start
+                  {exploredIds.length > 0 ? 'Nästa rekommenderade' : 'Rekommenderad start'}
                 </p>
               )}
                 <div
