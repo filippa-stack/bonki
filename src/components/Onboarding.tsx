@@ -240,29 +240,6 @@ function Slide1() {
 function Slide2() {
   return (
     <div className="flex-1 flex flex-col items-center justify-center" style={{ position: 'relative', padding: '0 32px' }}>
-      {/* Decorative "02" watermark */}
-      <motion.span
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 0.06 }}
-        transition={{ delay: 0, duration: 1.0, ease: EASE }}
-        style={{
-          fontFamily: 'var(--font-serif)',
-          fontSize: '180px',
-          fontWeight: 700,
-          color: 'var(--color-text-primary)',
-          position: 'absolute',
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -55%)',
-          pointerEvents: 'none',
-          userSelect: 'none',
-          zIndex: 0,
-          lineHeight: 1,
-        }}
-        aria-hidden
-      >
-        02
-      </motion.span>
 
       <div style={{ position: 'relative', zIndex: 1, textAlign: 'center' }}>
         <motion.h1

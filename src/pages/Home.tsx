@@ -481,7 +481,7 @@ export default function Home() {
                         <span aria-hidden style={{ position: 'absolute', left: '6px', top: '8px', bottom: '8px', width: '2px', borderRadius: '1px', background: 'var(--cta-active)' }} />
                         <div className="flex-1 min-w-0">
                           <p className="font-sans uppercase" style={{ fontSize: '10px', letterSpacing: '0.06em', color: 'var(--accent-text)', opacity: 0.8, marginBottom: '4px' }}>
-                            Rekommenderad start
+                            01 · Rekommenderad start
                           </p>
                           <h3 className="font-serif" style={{ color: 'var(--color-text-primary)', fontWeight: 600, fontSize: '18px', lineHeight: 1.35, textWrap: 'balance', hyphens: 'auto', marginTop: '2px' }}>
                             {recCat.title}
@@ -516,10 +516,14 @@ export default function Home() {
 
                   const displayCategories = recommendedCategory ? sortedCategories.filter(c => c.id !== recommendedCategory.id) : sortedCategories;
                   let isFirstSection = true;
+                  // Dynamic sequential numbering: recommended card is implicitly 01, rest starts from 02
+                  let displayNumber = recommendedCategory ? 2 : 1;
 
                   return displayCategories.map((category, index) => {
                   const globalIndex = sortedCategories.findIndex(c => c.id === category.id);
                   const accent = getCategoryAccent(globalIndex >= 0 ? globalIndex : index);
+                  const currentDisplayNum = displayNumber++;
+
                   const catCards = cards.filter((c) => c.categoryId === category.id);
                   const completedCount = catCards.filter(c => completedCardIds.includes(c.id)).length;
                   const allCompleted = completedCount === catCards.length && catCards.length > 0;
@@ -581,7 +585,7 @@ export default function Home() {
                       >
                         <div className="flex-1 min-w-0">
                           <p className="font-sans" style={{ fontSize: '10px', fontWeight: 500, letterSpacing: '0.12em', lineHeight: 1, color: 'var(--color-text-tertiary)', opacity: 0.55, marginBottom: '4px' }}>
-                            {String((RECOMMENDED_CATEGORY_ORDER as readonly string[]).indexOf(category.id) + 1).padStart(2, '0')}
+                            {String(currentDisplayNum).padStart(2, '0')}
                           </p>
                           <h3
                             className="font-serif"
