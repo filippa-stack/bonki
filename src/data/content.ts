@@ -73,7 +73,7 @@ export const cards: Card[] = [
   // ── Layer 1: Vi i oss ──────────────────────────────────
   {
     id: 'smallest-we',
-    title: 'Ert minsta \u201Cvi\u201D',
+    title: 'Ert minsta "vi"',
     subtitle: 'Det minsta ni kan göra för att hålla ihop i vardagen',
     categoryId: 'emotional-intimacy',
     sections: [
@@ -120,7 +120,7 @@ export const cards: Card[] = [
   },
   {
     id: 'family-ab',
-    title: 'När ert \u201Cvi\u201D blir \u201CFamiljen AB\u201D',
+    title: 'När ert "vi" blir "Familjen AB"',
     subtitle: 'Logistik som ersätter kontakt',
     categoryId: 'emotional-intimacy',
     sections: [
@@ -151,7 +151,7 @@ export const cards: Card[] = [
         title: 'I vardagen',
         content: 'Ni löser vardagen smidigt. Allt fungerar. Men samtalen handlar nästan bara om tider, ansvar och barn. Ingen längtar — men ingen klagar heller.',
         prompts: [
-          'Var går gränsen för när en relation som \u201Cfungerar bra\u201D börjar kännas som att den går på tomgång?',
+          'Var går gränsen för när en relation som "fungerar bra" börjar kännas som att den går på tomgång?',
         ],
       },
       {
@@ -293,7 +293,7 @@ export const cards: Card[] = [
         title: 'I vardagen',
         content: 'En uppgift har blivit "din". Den andra kliver undan. Med tiden blir skillnaden självklar.',
         prompts: [
-          'När en uppgift hemma har \u201Ctillhört\u201D dig tillräckligt länge — börjar det kännas som att ingen annan kan ta den? Vad gör det med dig?',
+          'När en uppgift hemma har "tillhört" dig tillräckligt länge — börjar det kännas som att ingen annan kan ta den? Vad gör det med dig?',
         ],
       },
       {
@@ -439,7 +439,7 @@ export const cards: Card[] = [
         id: 'exercise-17',
         type: 'exercise',
         title: 'Tillsammans',
-        content: 'Bestäm hur ni signalerar \u201Cvi tar det sen\u201D. Prata om hur ni sedan tar upp det — utan att ställa er mot varandra. Bestäm också hur ni visar barnet att vuxna också reparerar konflikter.',
+        content: 'Bestäm hur ni signalerar "vi tar det sen". Prata om hur ni sedan tar upp det — utan att ställa er mot varandra. Bestäm också hur ni visar barnet att vuxna också reparerar konflikter.',
       },
     ],
   },
@@ -882,7 +882,7 @@ export const cards: Card[] = [
         id: 'scenario-14',
         type: 'scenario',
         title: 'I vardagen',
-        content: 'Ni står inför en kostsam satsning och märker att frågan väcker olika bilder av vad som är \u201Cvärt det\u201D. Barnet märker att något stort är på gång.',
+        content: 'Ni står inför en kostsam satsning och märker att frågan väcker olika bilder av vad som är "värt det". Barnet märker att något stort är på gång.',
         prompts: [
           'Vad gör att något är värt att spendera på — bortom att ni faktiskt har råd?',
         ],
@@ -935,7 +935,7 @@ export const cards: Card[] = [
         id: 'exercise-13',
         type: 'exercise',
         title: 'Tillsammans',
-        content: 'Välj en satsning som känns möjlig — något som en av er kanske vill ta tag i en dag.\nPrata igenom:\n• Vad skulle vara det bästa tänkbara utfallet?\n• Vad skulle vara det svåraste realistiska utfallet?\n• Vilken gräns vill ni inte passera — i tid, pengar eller energi?\n• Vilka två tecken skulle betyda: \u201Cnu behöver vi bromsa\u201D?',
+        content: 'Välj en satsning som känns möjlig — något som en av er kanske vill ta tag i en dag.\nPrata igenom:\n• Vad skulle vara det bästa tänkbara utfallet?\n• Vad skulle vara det svåraste realistiska utfallet?\n• Vilken gräns vill ni inte passera — i tid, pengar eller energi?\n• Vilka två tecken skulle betyda: "nu behöver vi bromsa"?',
       },
     ],
   },
@@ -971,7 +971,7 @@ export const cards: Card[] = [
         id: 'scenario-21',
         type: 'scenario',
         title: 'I vardagen',
-        content: 'Ni bråkar sällan. Men ni skrattar inte heller som förr. Närhet skjuts upp till \u201Csen\u201D.',
+        content: 'Ni bråkar sällan. Men ni skrattar inte heller som förr. Närhet skjuts upp till "sen".',
         prompts: [
           'Hur avgör ni om ni bara går igenom en tyst period — eller om något faktiskt håller på att förändras mellan er?',
         ],
@@ -1008,8 +1008,8 @@ export const cards: Card[] = [
         title: 'Fördjupning',
         content: 'Utforska hur ni läser varandra.',
         prompts: [
-          'Finns det något din partner gör som du lärt dig att känna igen som \u201Cjag vill vara nära\u201D — och något de gör som du ibland fortfarande mistolkar?',
-          'När någon säger \u201Cinte ikväll\u201D — när känns det som ett avvisande, och när känns det som ärlighet?',
+          'Finns det något din partner gör som du lärt dig att känna igen som "jag vill vara nära" — och något de gör som du ibland fortfarande mistolkar?',
+          'När någon säger "inte ikväll" — när känns det som ett avvisande, och när känns det som ärlighet?',
         ],
       },
       {
@@ -1018,14 +1018,14 @@ export const cards: Card[] = [
         title: 'I vardagen',
         content: 'Trötthet och längtan krockar. Den ena vill vara nära, den andra orkar inte. Trots goda intentioner smyger sig både press och tolkningar in.',
         prompts: [
-          'Är det lätt eller svårt hos er att skilja på ett \u201Cnej\u201D till sex och ett \u201Cnej\u201D till varandra — hur hanterar ni det?',
+          'Är det lätt eller svårt hos er att skilja på ett "nej" till sex och ett "nej" till varandra — hur hanterar ni det?',
         ],
       },
       {
         id: 'exercise-9',
         type: 'exercise',
         title: 'Tillsammans',
-        content: 'Skapa två tydliga signaler: \u201CJag längtar efter närhet\u201D och \u201CJag kan inte just nu, men jag vill dig\u201D.',
+        content: 'Skapa två tydliga signaler: "Jag längtar efter närhet" och "Jag kan inte just nu, men jag vill dig".',
         prompts: [
           'Hur kan de se ut så att ingen behöver gissa?',
         ],
@@ -1073,7 +1073,7 @@ export const cards: Card[] = [
         id: 'exercise-22',
         type: 'exercise',
         title: 'Tillsammans',
-        content: 'Svara var för sig, utan att förklara eller försvara: \u201CDet här hos dig gör att jag vill vara kvar.\u201D\nStanna upp. Låt din partner ta emot det — utan att svara direkt.\nAvsluta med: \u201CDet här vill jag inte ta för givet.\u201D\nTacka varandra.',
+        content: 'Svara var för sig, utan att förklara eller försvara: "Det här hos dig gör att jag vill vara kvar."\nStanna upp. Låt din partner ta emot det — utan att svara direkt.\nAvsluta med: "Det här vill jag inte ta för givet."\nTacka varandra.',
         prompts: ['Lyssna utan att kommentera eller lugna. Låt det få vara sant mellan er.'],
       },
     ],
