@@ -109,14 +109,13 @@ export default function FeedbackSheet({ sessionId, coupleSpaceId, show, onDismis
               className="font-sans"
               style={{
                 fontSize: '13px',
-                color: 'var(--text-tertiary)',
-                opacity: 0.6,
+                color: 'var(--accent-saffron)',
                 textAlign: 'center',
                 lineHeight: 1.5,
                 marginBottom: '24px',
               }}
             >
-              Er feedback hjälper oss att göra Bonki bättre — tack för att ni är med och formar det.
+              Som Founding Member är det just din feedback som hjälper oss att göra Still Us bättre – tusen tack för att du är med och formar det
             </p>
 
             {/* Textarea */}
