@@ -1084,7 +1084,7 @@ export default function CardView() {
             className="cta-primary"
             style={{ width: '60vw', maxWidth: '280px' }}
           >
-            Vi är redo.
+            Vi är redo
           </button>
         </motion.div>
 
