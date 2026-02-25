@@ -1,13 +1,16 @@
-import { ReactNode } from 'react';
+import { ReactNode, useState } from 'react';
+import { Check, Copy } from 'lucide-react';
 
-/**
- * Blocks desktop users with a friendly message.
- * Uses CSS media query via matchMedia for reliable detection.
- * Tablets (≤1024px) are allowed through.
- */
 export default function MobileOnlyGate({ children }: { children: ReactNode }) {
-  // We use a simple CSS-based approach: render both views,
-  // hide/show via Tailwind breakpoints (lg = 1024px)
+  const [copied, setCopied] = useState(false);
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(window.location.href).then(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    });
+  };
+
   return (
     <>
       {/* Desktop blocker — visible only on lg+ screens */}
@@ -37,19 +40,50 @@ export default function MobileOnlyGate({ children }: { children: ReactNode }) {
           >
             Öppna länken på din telefon för den bästa upplevelsen.
           </p>
-          <div
+          <button
+            onClick={handleCopy}
             style={{
-              padding: '16px 20px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '8px',
+              width: '100%',
+              padding: '14px 20px',
               borderRadius: 'var(--radius-card)',
               backgroundColor: 'var(--surface-raised)',
+              border: 'none',
+              cursor: 'pointer',
               fontFamily: 'var(--font-sans)',
-              fontSize: '13px',
+              fontSize: '14px',
+              fontWeight: 500,
+              color: 'var(--color-text-primary)',
+              lineHeight: 1.5,
+              transition: 'opacity 0.15s',
+            }}
+          >
+            {copied ? (
+              <>
+                <Check size={16} style={{ color: 'var(--accent-saffron)' }} />
+                Kopierad!
+              </>
+            ) : (
+              <>
+                <Copy size={16} style={{ opacity: 0.5 }} />
+                Kopiera länken
+              </>
+            )}
+          </button>
+          <p
+            style={{
+              fontFamily: 'var(--font-sans)',
+              fontSize: '12px',
               color: 'var(--color-text-secondary)',
+              opacity: 0.5,
               lineHeight: 1.5,
             }}
           >
-            Kopiera länken och klistra in den i din mobilwebbläsare, eller skicka den till dig själv.
-          </div>
+            Klistra in i din mobilwebbläsare eller skicka till dig själv.
+          </p>
         </div>
       </div>
 
