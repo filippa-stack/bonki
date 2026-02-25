@@ -31,16 +31,6 @@ export default function GorTillsammansOverlay({ onDismiss }: Props) {
       transition={{ duration: EMOTION, ease: [...EASE] }}
     >
 
-      {/* Two-person icon */}
-      <motion.div
-        initial={{ opacity: 0, scale: 0.8 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ delay: BEAT_1, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-        style={{ display: 'flex', gap: '8px', marginBottom: '24px' }}
-      >
-        <span style={{ width: '10px', height: '10px', borderRadius: '50%', background: 'var(--text-secondary)' }} />
-        <span style={{ width: '10px', height: '10px', borderRadius: '50%', background: 'var(--text-secondary)' }} />
-      </motion.div>
 
       {/* Heading */}
       <motion.h2
@@ -105,7 +95,7 @@ export default function GorTillsammansOverlay({ onDismiss }: Props) {
           className="cta-primary"
           style={{ width: '60vw', maxWidth: '280px' }}
         >
-          Vi förstår.
+          Vi förstår
         </button>
         <button
           onClick={onDismiss}
