@@ -8,6 +8,7 @@ import { AppProvider, useApp } from "@/contexts/AppContext";
 import { DevStateProvider } from "@/contexts/DevStateContext";
 
 import ActiveSessionGuard from "@/components/ActiveSessionGuard";
+import InstallGuideBanner from "@/components/InstallGuideBanner";
 import DevModeBadge from "@/components/DevModeBadge";
 import { SiteSettingsProvider } from "@/contexts/SiteSettingsContext";
 import { CoupleSpaceProvider } from "@/contexts/CoupleSpaceContext";
@@ -60,6 +61,7 @@ function ProtectedRoutes() {
     <OptimisticCompletionsProvider>
     <AppProvider>
       
+      <InstallGuideBanner />
       <ActiveSessionGuard>
         <AnimatePresence mode="wait">
           <Routes location={location} key={location.pathname}>
