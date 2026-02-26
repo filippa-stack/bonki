@@ -233,16 +233,18 @@
    Tiles in deep, rich tones against warm background.
    Light text. Like opening doors into dark rooms. Vogue cover. */
 .theme-dark-tiles {
-  --tile-bg-0: hsl(158, 32%, 16%);   /* deep forest */
-  --tile-bg-1: hsl(348, 38%, 20%);   /* burgundy */
-  --tile-bg-2: hsl(215, 28%, 18%);   /* midnight blue */
-  --tile-bg-3: hsl(14, 30%, 22%);    /* burnt umber */
-  --tile-bg-4: hsl(80, 20%, 18%);    /* deep olive */
-  --tile-bg-5: hsl(28, 35%, 20%);    /* dark sienna */
-  --tile-bg-6: hsl(280, 18%, 20%);   /* aubergine */
-  --tile-bg-7: hsl(45, 30%, 18%);    /* old gold */
-  --tile-bg-8: hsl(345, 25%, 22%);   /* deep rosé */
-  --tile-bg-9: hsl(185, 25%, 16%);   /* deep teal */
+  --tile-bg-0: hsl(36, 45%, 82%);    /* warm saffron */
+  --tile-bg-1: hsl(34, 40%, 80%);
+  --tile-bg-2: hsl(38, 42%, 81%);
+  --tile-bg-3: hsl(32, 38%, 79%);
+  --tile-bg-4: hsl(40, 44%, 82%);
+  --tile-bg-5: hsl(35, 40%, 80%);
+  --tile-bg-6: hsl(37, 42%, 81%);
+  --tile-bg-7: hsl(33, 38%, 79%);
+  --tile-bg-8: hsl(39, 43%, 82%);
+  --tile-bg-9: hsl(36, 40%, 80%);
+  --tile-text-dark: hsl(158, 32%, 14%);
+  --tile-text-muted: hsl(158, 22%, 28%);
 }
 
 /* Dark tiles — rich backgrounds */
@@ -257,15 +259,15 @@
 .theme-dark-tiles [data-cat-index="8"] { background: var(--tile-bg-8) !important; }
 .theme-dark-tiles [data-cat-index="9"] { background: var(--tile-bg-9) !important; }
 
-/* Dark tiles — flip text to light */
-.theme-dark-tiles [data-cat-index] h3 { color: hsl(36, 16%, 92%) !important; }
-.theme-dark-tiles [data-cat-index] p { color: hsl(36, 12%, 78%) !important; }
-.theme-dark-tiles [data-cat-index] [data-chevron] { color: hsl(38, 60%, 60%) !important; opacity: 0.7 !important; }
-.theme-dark-tiles [data-cat-index] [data-accent-bar] { background: hsl(38, 70%, 50%) !important; }
+/* Dark tiles — forest green text on saffron */
+.theme-dark-tiles [data-cat-index] h3 { color: var(--tile-text-dark) !important; }
+.theme-dark-tiles [data-cat-index] p { color: var(--tile-text-muted) !important; }
+.theme-dark-tiles [data-cat-index] [data-chevron] { color: var(--tile-text-dark) !important; opacity: 0.4 !important; }
+.theme-dark-tiles [data-cat-index] [data-accent-bar] { background: var(--tile-text-dark) !important; }
 
 /* Dark tiles — hover state */
 @media (hover: hover) and (pointer: fine) {
   .theme-dark-tiles [data-cat-index].tile-door:hover h3 {
-    color: hsl(36, 16%, 96%) !important;
+    color: hsl(158, 35%, 10%) !important;
   }
 }
