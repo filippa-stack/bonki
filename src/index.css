@@ -145,12 +145,12 @@ h1, h2, h3,
     --text-secondary:  hsl(30, 10%, 40%);    /* Warm grey */
     --text-tertiary:   hsl(30, 8%, 56%);     /* Recedes */
     --text-ghost:      hsl(30, 6%, 70%);     /* Placeholders */
-    --text-accent:     hsl(28, 65%, 42%);    /* Burnt umber — premium accent */
+    --text-accent:     hsl(25, 52%, 46%);    /* Warm caramel — brand accent */
 
-    /* ── Accent tokens — Burnt Umber ── */
-    --accent-saffron:       hsl(28, 65%, 42%);
-    --accent-saffron-muted: hsl(28, 45%, 65%);
-    --accent-text:          hsl(28, 55%, 36%);  /* Deep umber for editorial text */
+    /* ── Accent tokens — Warm Caramel (brand) ── */
+    --accent-saffron:       hsl(25, 52%, 46%);
+    --accent-saffron-muted: hsl(25, 38%, 62%);
+    --accent-text:          hsl(25, 48%, 38%);  /* Deep caramel for editorial text */
     --color-text-tertiary:  var(--text-tertiary);
 
     /* ── Surface layering (mapped to foundation neutrals) ── */
@@ -172,8 +172,8 @@ h1, h2, h3,
     --color-cta: hsl(var(--primary));
     --color-ink: var(--text-primary);
     --color-secondary: var(--text-secondary);
-    --color-accent: hsl(28, 65%, 42%);
-    --color-accent-soft: hsl(28, 40%, 65%);
+    --color-accent: hsl(25, 52%, 46%);
+    --color-accent-soft: hsl(25, 35%, 62%);
     --color-text-primary: var(--text-primary);
     --color-text-secondary: var(--text-secondary);
     --color-button-primary: hsl(var(--primary));
