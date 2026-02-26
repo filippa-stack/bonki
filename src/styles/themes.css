@@ -277,160 +277,196 @@
    chartreuse smoke recommendation markers.
    "Walking through rooms" — dark overview, light depth-work. */
 .theme-deep-fig {
-  /* Foundation — Deep Fig */
-  --neutral-50:  280 18% 16%;     /* #2B1E2F — app background */
-  --neutral-100: 36 22% 93%;      /* #F2ECE6 — Warm Bone (card surfaces) */
-  --neutral-200: 36 18% 89%;      /* Bone darkened 4% — reflection surfaces */
-  --neutral-300: 280 12% 28%;     /* Fig-tinted dividers */
+  /* Foundation — Deep Fig with warm layering */
+  --neutral-50:  280 18% 15%;     /* App background — deep fig */
+  --neutral-100: 36 22% 93%;      /* Warm Bone — card surfaces */
+  --neutral-200: 36 18% 89%;      /* Bone darkened 4% — reflection/input */
+  --neutral-300: 280 10% 24%;     /* Subtle fig dividers */
 
   --background: var(--neutral-50);
-  --foreground: 36 22% 93%;       /* Bone text on dark bg */
+  --foreground: 36 22% 93%;
 
   --card: var(--neutral-100);
-  --card-foreground: 280 18% 16%;
+  --card-foreground: 280 18% 14%;
 
   --popover: 36 22% 93%;
-  --popover-foreground: 280 18% 16%;
+  --popover-foreground: 280 18% 14%;
 
   /* Primary — Burnt Pomegranate */
-  --primary: 352 58% 40%;          /* #A02C3A */
-  --primary-hover: 352 55% 46%;
-  --primary-active: 352 60% 35%;
-  --primary-foreground: 36 22% 93%;
+  --primary: 352 56% 42%;
+  --primary-hover: 352 52% 48%;
+  --primary-active: 352 58% 36%;
+  --primary-foreground: 36 22% 95%;
 
-  --secondary: 280 12% 22%;
+  --secondary: 280 12% 20%;
   --secondary-foreground: 36 22% 93%;
 
-  --muted: 280 10% 24%;
-  --muted-foreground: 36 16% 70%;
+  --muted: 280 10% 22%;
+  --muted-foreground: 36 14% 65%;
 
-  --accent: 280 12% 22%;
+  --accent: 280 10% 20%;
   --accent-foreground: 36 22% 93%;
 
-  --destructive: 352 58% 40%;
-  --destructive-foreground: 36 22% 93%;
+  --destructive: 352 56% 42%;
+  --destructive-foreground: 36 22% 95%;
 
-  --border: 280 12% 28%;
-  --input: 280 12% 28%;
+  --border: 280 8% 22%;
+  --input: 280 8% 22%;
   --ring: var(--primary);
 
-  /* Text hierarchy — Bone spectrum on dark fig */
-  --text-primary:   hsl(36, 22%, 93%);    /* Warm Bone */
-  --text-secondary:  hsl(36, 16%, 72%);   /* Bone at 80% */
-  --text-tertiary:   hsl(36, 12%, 58%);   /* Bone receding */
-  --text-ghost:      hsl(280, 8%, 40%);   /* Fig ghost */
+  /* Text hierarchy — Bone with generous opacity steps */
+  --text-primary:    hsl(36, 20%, 92%);
+  --text-secondary:  hsl(36, 14%, 68%);
+  --text-tertiary:   hsl(36, 10%, 50%);
+  --text-ghost:      hsl(280, 6%, 36%);
+  --text-accent:     hsl(72, 45%, 50%);
 
-  /* Accent — Chartreuse Smoke for recommendations */
-  --accent-saffron:       hsl(72, 50%, 46%);    /* #9FAE3B */
-  --accent-saffron-muted: hsl(72, 35%, 60%);
-  --accent-text:          hsl(72, 45%, 50%);
+  /* Accent — Chartreuse Smoke */
+  --accent-saffron:       hsl(72, 48%, 48%);
+  --accent-saffron-muted: hsl(72, 30%, 58%);
+  --accent-text:          hsl(72, 42%, 52%);
 
-  /* Surfaces */
-  --surface-base:   hsl(280, 18%, 16%);   /* Deep Fig */
-  --surface-raised: hsl(36, 22%, 93%);    /* Warm Bone */
-  --surface-sunken: hsl(36, 18%, 89%);    /* Bone -4% */
-  --surface-chrome: 280 14% 14%;
+  /* Layered surfaces — Apple-level depth separation */
+  --surface-base:   hsl(280, 18%, 15%);   /* Canvas */
+  --surface-raised: hsl(36, 22%, 93%);    /* Bone cards */
+  --surface-sunken: hsl(280, 16%, 12%);   /* Below canvas — header, chrome */
+  --surface-chrome: 280 16% 12%;
 
-  /* Header — Deep Fig, flat, confident */
-  --session-header-bg:    hsl(280, 18%, 16%);
-  --session-header-hover: hsl(280, 16%, 22%);
-  --session-header-press: hsl(280, 20%, 12%);
-  --header-text:          hsl(36, 22%, 93%);
-  --header-text-muted:    hsl(36, 16%, 70%);
-  --header-border:        none;
+  /* Header — slightly darker than canvas for layered depth */
+  --session-header-bg:    hsl(280, 20%, 12%);
+  --session-header-hover: hsl(280, 16%, 18%);
+  --session-header-press: hsl(280, 22%, 10%);
+  --header-text:          hsl(36, 20%, 92%);
+  --header-text-muted:    hsl(36, 14%, 68%);
+  --header-border:        1px solid hsl(280, 10%, 20%);
 
-  /* CTA */
-  --cta-default: hsl(352, 58%, 40%);     /* Pomegranate */
-  --cta-hover-v2: hsl(352, 55%, 46%);
-  --cta-active:  hsl(352, 60%, 35%);
-  --cta-bg:      hsl(352, 58%, 40%);
-  --cta-text:    hsl(36, 22%, 93%);
+  /* CTA — Pomegranate */
+  --cta-default: hsl(352, 56%, 42%);
+  --cta-hover-v2: hsl(352, 52%, 48%);
+  --cta-active:  hsl(352, 58%, 36%);
+  --cta-bg:      hsl(352, 56%, 42%);
+  --cta-text:    hsl(36, 22%, 95%);
 
-  /* Semantic */
+  /* Semantic color tokens */
   --color-bg: var(--surface-base);
   --color-bg-base: var(--surface-base);
   --color-surface: hsl(36, 22%, 93%);
   --color-surface-primary: hsl(36, 22%, 93%);
-  --color-text-primary: hsl(36, 22%, 93%);
-  --color-text-secondary: hsl(36, 16%, 72%);
-  --color-text-tertiary: hsl(36, 12%, 58%);
-  --color-accent: hsl(352, 58%, 40%);
-  --color-accent-soft: hsl(352, 30%, 55%);
-  --color-divider: hsl(280, 12%, 28%);
+  --color-text-primary: hsl(36, 20%, 92%);
+  --color-text-secondary: hsl(36, 14%, 68%);
+  --color-text-tertiary: hsl(36, 10%, 50%);
+  --color-accent: hsl(352, 56%, 42%);
+  --color-accent-soft: hsl(352, 28%, 52%);
+  --color-divider: hsl(280, 8%, 22%);
 
-  /* Notes / reflections on dark */
-  --note-bg: 280 14% 20%;
-  --note-border: 280 10% 30%;
-  --note-text: 36 22% 93%;
-  --note-placeholder: hsl(280, 8%, 45%);
+  /* Notes on dark */
+  --note-bg: 280 14% 18%;
+  --note-border: 280 8% 26%;
+  --note-text: 36 20% 92%;
+  --note-placeholder: hsl(280, 6%, 42%);
 
-  /* Completion marker — pomegranate at 70% */
-  --color-completion: hsl(352, 58%, 40%);
+  /* Completion — pomegranate */
+  --color-completion: hsl(352, 56%, 42%);
 
-  /* Shadow tokens for bone cards on fig */
-  --shadow-card: 0 4px 24px -6px hsla(280, 30%, 8%, 0.35);
-  --shadow-card-featured: 0 8px 32px -4px hsla(280, 30%, 8%, 0.45);
+  /* Shadows — deep plum for floating bone cards */
+  --shadow-card: 0 2px 8px -2px hsla(280, 30%, 6%, 0.30),
+                 0 8px 32px -8px hsla(280, 25%, 4%, 0.40);
+  --shadow-card-featured: 0 4px 16px -4px hsla(280, 30%, 6%, 0.35),
+                          0 16px 48px -8px hsla(280, 25%, 4%, 0.45);
   --border-card: none;
 
-  /* Dusty Rose Fog for completion */
-  --dusty-rose-fog: hsl(10, 25%, 76%);   /* #C9A6A1 */
+  /* Card hierarchy overrides */
+  --card-l1-bg: var(--neutral-100);
+  --card-l1-border: 280 8% 22%;
+  --card-l1-border-width: 0px;
+
+  /* Dusty Rose Fog */
+  --dusty-rose-fog: hsl(10, 25%, 76%);
 }
 
-/* Deep Fig — bone cards with fig-shadow float */
+/* ── Deep Fig — Tile styling ── */
+
+/* Bone cards floating on fig */
 .theme-deep-fig .tile-door {
   background: hsl(36, 22%, 93%) !important;
   border: none !important;
-  box-shadow: 0 4px 24px -6px hsla(280, 30%, 8%, 0.35),
-              0 12px 40px -12px hsla(280, 25%, 6%, 0.25) !important;
-  border-radius: 14px !important;
+  border-radius: 16px !important;
+  box-shadow:
+    0 1px 2px hsla(280, 25%, 6%, 0.15),
+    0 4px 16px -4px hsla(280, 30%, 4%, 0.30),
+    0 16px 48px -12px hsla(280, 20%, 4%, 0.25) !important;
 }
 
+/* Text on bone tiles — Deep Fig ink */
 .theme-deep-fig .tile-door h3 {
-  color: hsl(280, 18%, 16%) !important;
+  color: hsl(280, 20%, 14%) !important;
 }
 
 .theme-deep-fig .tile-door p {
-  color: hsl(280, 14%, 32%) !important;
+  color: hsl(280, 12%, 36%) !important;
 }
 
 .theme-deep-fig .tile-door [data-chevron] {
-  color: hsl(280, 12%, 45%) !important;
-  opacity: 0.4 !important;
+  color: hsl(280, 8%, 50%) !important;
+  opacity: 0.35 !important;
 }
 
-/* Recommendation tile — chartreuse accents */
+/* Accent bar — chartreuse whisper */
 .theme-deep-fig .tile-door [data-accent-bar] {
-  background: hsl(72, 50%, 46%) !important;
+  background: hsl(72, 48%, 48%) !important;
+  opacity: 0.7 !important;
 }
 
-/* Completion checkmarks — pomegranate at 70% */
-.theme-deep-fig .tile-door svg[class*="check"],
+/* Completion marks — pomegranate, not green */
 .theme-deep-fig [data-cat-index] svg {
-  color: hsl(352, 58%, 40%) !important;
-  opacity: 0.70 !important;
+  color: hsl(352, 56%, 42%) !important;
+  opacity: 0.65 !important;
 }
 
-/* Row bloom override for dark bg — subtle plum inner glow */
+/* In-progress dots — pomegranate glow */
+.theme-deep-fig [data-cat-index] span[style*="borderRadius: '50%'"],
+.theme-deep-fig [data-cat-index] span[style*="border-radius:50%"] {
+  background-color: hsl(352, 56%, 42%) !important;
+}
+
+/* Row bloom — soft plum warmth on hover */
 .theme-deep-fig .row-bloom::before {
-  background: radial-gradient(ellipse at 25% 35%, hsla(280, 20%, 50%, 0.08) 0%, hsla(280, 15%, 40%, 0.03) 45%, transparent 75%) !important;
+  background: radial-gradient(
+    ellipse at 30% 40%,
+    hsla(352, 20%, 50%, 0.06) 0%,
+    hsla(280, 15%, 40%, 0.02) 50%,
+    transparent 80%
+  ) !important;
 }
 
-/* Header grain texture on fig */
+/* Header texture — barely visible on dark */
 .theme-deep-fig .header-textured::after {
-  opacity: 0.04 !important;
+  opacity: 0.03 !important;
 }
 
-/* Section dividers — bone tinted */
+/* Section dividers — bone hairline */
 .theme-deep-fig .section-divider::after {
-  background: linear-gradient(90deg, hsla(36, 16%, 70%, 0.20) 0%, hsla(36, 16%, 70%, 0) 100%) !important;
+  background: linear-gradient(
+    90deg,
+    hsla(36, 14%, 68%, 0.15) 0%,
+    hsla(36, 14%, 68%, 0) 100%
+  ) !important;
 }
 
+/* Tile hover — elevated, more shadow depth */
 @media (hover: hover) and (pointer: fine) {
   .theme-deep-fig .tile-door:hover {
-    box-shadow: 0 6px 32px -4px hsla(280, 30%, 8%, 0.45),
-                0 16px 48px -12px hsla(280, 25%, 6%, 0.30) !important;
+    transform: translateY(-4px);
+    box-shadow:
+      0 2px 4px hsla(280, 25%, 6%, 0.15),
+      0 8px 24px -4px hsla(280, 30%, 4%, 0.35),
+      0 24px 56px -12px hsla(280, 20%, 4%, 0.30) !important;
   }
   .theme-deep-fig .tile-door:hover h3 {
-    color: hsl(280, 20%, 12%) !important;
+    color: hsl(280, 22%, 10%) !important;
+  }
+  .theme-deep-fig .tile-door:hover [data-chevron] {
+    color: hsl(352, 56%, 42%) !important;
+    opacity: 0.6 !important;
   }
 }
