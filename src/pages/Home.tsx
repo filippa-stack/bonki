@@ -465,12 +465,13 @@ export default function Home() {
                         className="cursor-pointer tile-door row-bloom"
                          style={{
                           borderRadius: 'var(--radius-card, 12px)',
-                          padding: '22px 20px',
+                          padding: '28px 24px',
                           minHeight: '48px',
                           display: 'flex',
+                          flexDirection: 'column' as const,
                           alignItems: 'center',
-                          justifyContent: 'space-between',
-                          gap: '12px',
+                          textAlign: 'center' as const,
+                          gap: '4px',
                           background: 'linear-gradient(135deg, hsl(36, 22%, 97%) 0%, hsl(38, 18%, 95%) 100%)',
                           border: 'var(--border-card, none)',
                           boxShadow: 'var(--shadow-card-featured, 0 2px 6px hsla(30, 18%, 28%, 0.06), 0 8px 32px -8px hsla(30, 15%, 25%, 0.10))',
@@ -478,22 +479,17 @@ export default function Home() {
                           overflow: 'hidden',
                         }}
                       >
-                        {/* Inset accent bar */}
-                        <span aria-hidden style={{ position: 'absolute', left: '6px', top: '8px', bottom: '8px', width: '2px', borderRadius: '1px', background: 'var(--cta-active)' }} />
-                        <div className="flex-1 min-w-0">
-                          <p className="font-sans uppercase" style={{ fontSize: '10px', letterSpacing: '0.06em', color: 'var(--accent-text)', opacity: 0.8, marginBottom: '4px' }}>
-                            01 · Rekommenderad start
+                        <p className="font-sans uppercase" style={{ fontSize: '10px', letterSpacing: '0.06em', color: 'var(--accent-text)', opacity: 0.8, marginBottom: '2px' }}>
+                          01 · Rekommenderad start
+                        </p>
+                        <h3 className="font-serif" style={{ color: 'var(--color-text-primary)', fontWeight: 600, fontSize: '18px', lineHeight: 1.35, textWrap: 'balance', marginTop: '2px' }}>
+                          {recCat.title}
+                        </h3>
+                        {recCat.entryLine && (
+                          <p className="font-serif" style={{ fontSize: '14px', fontWeight: 400, color: 'var(--color-text-secondary)', opacity: 0.80, lineHeight: 1.55, marginTop: '4px', letterSpacing: '0.005em' }}>
+                            {recCat.entryLine}
                           </p>
-                          <h3 className="font-serif" style={{ color: 'var(--color-text-primary)', fontWeight: 600, fontSize: '18px', lineHeight: 1.35, textWrap: 'balance', hyphens: 'auto', marginTop: '2px' }}>
-                            {recCat.title}
-                          </h3>
-                          {recCat.entryLine && (
-                            <p className="font-serif" style={{ fontSize: '14px', fontWeight: 400, color: 'var(--color-text-secondary)', opacity: 0.80, lineHeight: 1.55, marginTop: '6px', letterSpacing: '0.005em' }}>
-                              {recCat.entryLine}
-                            </p>
-                          )}
-                        </div>
-                        <ChevronRight data-chevron className="w-4 h-4 shrink-0 self-center" style={{ color: 'var(--accent-saffron)', opacity: 0.5, transition: 'transform 180ms ease-out' }} />
+                        )}
                       </div>
                     </>
                   );
@@ -576,12 +572,13 @@ export default function Home() {
                         className="cursor-pointer tile-door row-bloom"
                          style={{
                           borderRadius: 'var(--radius-card, 12px)',
-                          padding: '22px 20px',
+                          padding: '28px 24px',
                           minHeight: '72px',
                           display: 'flex',
+                          flexDirection: 'column' as const,
                           alignItems: 'center',
-                          justifyContent: 'space-between',
-                          gap: '12px',
+                          textAlign: 'center' as const,
+                          gap: '4px',
                           background: 'var(--surface-raised)',
                           border: 'var(--border-card, none)',
                           boxShadow: 'var(--shadow-card, 0 1px 3px hsla(30, 15%, 25%, 0.05), 0 6px 24px -6px hsla(30, 18%, 28%, 0.08))',
@@ -589,52 +586,46 @@ export default function Home() {
                           overflow: 'hidden',
                         }}
                       >
-                        <div className="flex-1 min-w-0">
-                          <p className="font-sans" style={{ fontSize: '10px', fontWeight: 500, letterSpacing: '0.12em', lineHeight: 1, color: 'var(--color-text-tertiary)', opacity: 0.55, marginBottom: '4px' }}>
-                            {String(currentDisplayNum).padStart(2, '0')}
-                          </p>
-                          <h3
+                        {/* Status indicator */}
+                        {allCompleted ? (
+                          <Check size={13} style={{ color: '#1E3D2F', opacity: 0.40, position: 'absolute', top: '14px', right: '14px' }} />
+                        ) : someStarted ? (
+                          <span style={{
+                            display: 'inline-block',
+                            width: '7px',
+                            height: '7px',
+                            borderRadius: '50%',
+                            backgroundColor: '#C4821D',
+                            opacity: 0.70,
+                            position: 'absolute',
+                            top: '14px',
+                            right: '14px',
+                          }} />
+                        ) : null}
+                        <p className="font-sans" style={{ fontSize: '10px', fontWeight: 500, letterSpacing: '0.12em', lineHeight: 1, color: 'var(--color-text-tertiary)', opacity: 0.55, marginBottom: '2px' }}>
+                          {String(currentDisplayNum).padStart(2, '0')}
+                        </p>
+                        <h3
+                          className="font-serif"
+                          style={{
+                            color: 'var(--color-text-primary)',
+                            fontWeight: 600,
+                            fontSize: '18px',
+                            lineHeight: 1.35,
+                            textWrap: 'balance',
+                            marginTop: '2px',
+                          }}
+                        >
+                          {category.title}
+                        </h3>
+                        {category.entryLine && (
+                          <p
                             className="font-serif"
-                            style={{
-                              color: 'var(--color-text-primary)',
-                              fontWeight: 600,
-                              fontSize: '18px',
-                              lineHeight: 1.35,
-                              textWrap: 'balance',
-                              hyphens: 'auto',
-                              marginTop: '2px',
-                            }}
+                            style={{ fontSize: '14px', fontWeight: 400, color: 'var(--color-text-secondary)', opacity: 0.80, lineHeight: 1.55, marginTop: '4px', letterSpacing: '0.005em' }}
                           >
-                            {category.title}
-                          </h3>
-                          {category.entryLine && (
-                            <p
-                              className="font-serif"
-                              style={{ fontSize: '14px', fontWeight: 400, color: 'var(--color-text-secondary)', opacity: 0.80, lineHeight: 1.55, marginTop: '6px', letterSpacing: '0.005em' }}
-                            >
-                              {category.entryLine}
-                            </p>
-                          )}
-                        </div>
-                        <div className="flex items-center gap-2 shrink-0 self-center">
-                          {allCompleted ? (
-                            <Check size={13} style={{ color: '#1E3D2F', opacity: 0.50, marginRight: '10px' }} />
-                          ) : someStarted ? (
-                            <span style={{
-                              display: 'inline-block',
-                              width: '7px',
-                              height: '7px',
-                              borderRadius: '50%',
-                              backgroundColor: '#C4821D',
-                              opacity: 0.70,
-                            }} />
-                          ) : null}
-                          <ChevronRight
-                            data-chevron
-                            className="w-4 h-4"
-                            style={{ color: 'var(--accent-saffron)', opacity: 0.5, transition: 'transform 180ms ease-out' }}
-                          />
-                        </div>
+                            {category.entryLine}
+                          </p>
+                        )}
                       </div>
                     </motion.div>
                     </React.Fragment>
