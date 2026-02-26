@@ -25,6 +25,7 @@ const THEME_OPTIONS = [
   { value: 'stilla', label: '🌊 Stilla Djup', color: '#1E2D3F' },
   { value: 'berry', label: '🫐 Bold Berry', color: '#5C1A4A' },
   { value: 'midnight', label: '✨ Midnight Gold', color: '#1E2230' },
+  { value: 'light-header', label: '☀️ Light Header', color: '#F5F1EC' },
 ];
 
 const PAGES = [
