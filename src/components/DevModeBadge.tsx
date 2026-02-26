@@ -29,6 +29,7 @@ const THEME_OPTIONS = [
   { value: 'tonal-tiles', label: '🎨 Tonal Wash', color: '#D4DDD6' },
   { value: 'dark-tiles', label: '🖤 Dark Tiles', color: '#1E3F32' },
   { value: 'deep-fig', label: '🫐 Deep Fig', color: '#2B1E2F' },
+  { value: 'bonki-brand', label: '🎯 BONKI Brand', color: '#279d99' },
 ];
 
 const PAGES = [

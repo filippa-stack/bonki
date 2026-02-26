@@ -508,3 +508,236 @@
   pointer-events: none;
   z-index: 0;
 }
+
+/* ══════════════════════════════════════════════════════════════
+   11. BONKI Brand — Teal + Caramel + Dusty Rose
+   Three brand colors from the BONKI product range.
+   Teal header/CTA, caramel editorial accent, rose atmosphere.
+   ══════════════════════════════════════════════════════════════ */
+.theme-bonki-brand {
+  /* Foundation — warm cream with rose-kissed undertone */
+  --neutral-50:  30 18% 95%;
+  --neutral-100: 28 22% 97%;
+  --neutral-200: 26 16% 93%;
+  --neutral-300: 24 12% 87%;
+
+  --background: var(--neutral-50);
+  --foreground: 25 12% 12%;
+
+  --card: var(--neutral-100);
+  --card-foreground: 25 12% 12%;
+
+  --popover: 0 0% 100%;
+  --popover-foreground: 25 12% 12%;
+
+  /* Primary — Teal (#279d99) */
+  --primary: 177 60% 38%;
+  --primary-hover: 177 55% 43%;
+  --primary-active: 177 62% 32%;
+  --primary-foreground: 0 0% 100%;
+
+  --secondary: 350 18% 92%;
+  --secondary-foreground: 25 12% 12%;
+
+  --muted: 350 12% 90%;
+  --muted-foreground: 25 8% 45%;
+
+  --accent: 350 14% 91%;
+  --accent-foreground: 25 12% 12%;
+
+  --destructive: 5 72% 50%;
+  --destructive-foreground: 0 0% 100%;
+
+  --border: var(--neutral-300);
+  --input: var(--neutral-300);
+  --ring: var(--primary);
+
+  /* Text — warm editorial */
+  --text-primary:    hsl(25, 15%, 14%);
+  --text-secondary:  hsl(25, 10%, 40%);
+  --text-tertiary:   hsl(25, 8%, 54%);
+  --text-ghost:      hsl(25, 6%, 68%);
+  --text-accent:     hsl(25, 52%, 46%);
+
+  /* Accent — Warm Caramel */
+  --accent-saffron:       hsl(25, 52%, 46%);
+  --accent-saffron-muted: hsl(25, 35%, 62%);
+  --accent-text:          hsl(25, 48%, 38%);
+
+  /* Surfaces */
+  --surface-base:   hsl(var(--neutral-50));
+  --surface-raised: hsl(var(--neutral-100));
+  --surface-sunken: hsl(var(--neutral-200));
+  --surface-chrome: 0 0% 100%;
+
+  /* CTA — Teal */
+  --cta-default: hsl(177, 60%, 38%);
+  --cta-hover-v2: hsl(177, 55%, 43%);
+  --cta-active:  hsl(177, 62%, 32%);
+  --cta-bg:      hsl(177, 60%, 38%);
+  --cta-text:    #FFFFFF;
+
+  /* Header — Teal */
+  --session-header-bg:    hsl(177, 60%, 38%);
+  --session-header-hover: hsl(177, 55%, 43%);
+  --session-header-press: hsl(177, 62%, 32%);
+  --header-text:          #FFFFFF;
+  --header-text-muted:    hsla(0, 0%, 100%, 0.72);
+  --header-border:        none;
+
+  /* Semantic */
+  --color-bg: var(--surface-base);
+  --color-bg-base: var(--surface-base);
+  --color-surface: hsl(var(--neutral-100));
+  --color-surface-primary: hsl(var(--neutral-100));
+  --color-cta: hsl(177, 60%, 38%);
+  --color-ink: var(--text-primary);
+  --color-secondary: var(--text-secondary);
+  --color-accent: hsl(25, 52%, 46%);
+  --color-accent-soft: hsl(25, 35%, 62%);
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-tertiary: var(--text-tertiary);
+  --color-button-primary: hsl(177, 60%, 38%);
+  --color-button-text: #FFFFFF;
+  --color-divider: hsl(var(--neutral-300));
+
+  /* Buttons */
+  --btn-primary-bg: hsl(177, 60%, 38%);
+  --btn-primary-text: #FFFFFF;
+
+  /* Notes */
+  --note-bg: 350 14% 94%;
+  --note-border: 350 10% 88%;
+  --note-text: 25 12% 12%;
+  --note-placeholder: hsl(25, 6%, 58%);
+
+  /* Completion — teal */
+  --color-completion: hsl(177, 50%, 38%);
+
+  /* Shadows — warm */
+  --shadow-card: 0 1px 3px hsla(25, 20%, 20%, 0.05),
+                 0 4px 16px -6px hsla(25, 15%, 18%, 0.08);
+  --shadow-card-featured: 0 2px 6px hsla(25, 20%, 20%, 0.06),
+                          0 8px 28px -4px hsla(25, 15%, 18%, 0.12);
+  --border-card: none;
+
+  --card-l1-bg: var(--neutral-100);
+  --card-l1-border: var(--neutral-300);
+  --card-l1-border-width: 0px;
+}
+
+/* ── BONKI Brand — Tiles ── */
+.theme-bonki-brand .tile-door {
+  background: hsl(var(--neutral-100)) !important;
+  border: none !important;
+  border-radius: 14px !important;
+  box-shadow:
+    0 1px 3px hsla(25, 20%, 20%, 0.04),
+    0 4px 16px -6px hsla(350, 15%, 40%, 0.08),
+    0 12px 36px -12px hsla(25, 15%, 18%, 0.06) !important;
+}
+
+/* Rose bloom on tile hover */
+.theme-bonki-brand .row-bloom::before {
+  background: radial-gradient(
+    ellipse at 30% 40%,
+    hsla(350, 25%, 78%, 0.12) 0%,
+    hsla(350, 20%, 75%, 0.04) 50%,
+    transparent 80%
+  ) !important;
+}
+
+/* Accent bar — caramel */
+.theme-bonki-brand .tile-door [data-accent-bar] {
+  background: hsl(25, 52%, 46%) !important;
+  opacity: 0.55 !important;
+}
+
+/* Chevrons — teal */
+.theme-bonki-brand .tile-door [data-chevron] {
+  color: hsl(177, 45%, 38%) !important;
+  opacity: 0.40 !important;
+}
+
+/* Completion checkmarks — teal */
+.theme-bonki-brand [data-cat-index] svg {
+  color: hsl(177, 50%, 38%) !important;
+  opacity: 0.50 !important;
+}
+
+/* Tile hover */
+@media (hover: hover) and (pointer: fine) {
+  .theme-bonki-brand .tile-door:hover {
+    box-shadow:
+      0 2px 6px hsla(25, 20%, 20%, 0.06),
+      0 8px 24px -4px hsla(350, 18%, 40%, 0.12),
+      0 20px 48px -12px hsla(25, 15%, 18%, 0.10) !important;
+  }
+  .theme-bonki-brand .tile-door:hover h3 {
+    color: hsl(25, 15%, 10%) !important;
+  }
+  .theme-bonki-brand .tile-door:hover [data-chevron] {
+    color: hsl(177, 55%, 36%) !important;
+    opacity: 0.60 !important;
+  }
+}
+
+/* ── BONKI Brand — Hero tile: teal gradient ── */
+.theme-bonki-brand [data-fig-hero] {
+  background: linear-gradient(
+    155deg,
+    hsl(177, 60%, 38%) 0%,
+    hsl(177, 55%, 34%) 100%
+  ) !important;
+  border: none !important;
+  box-shadow:
+    0 2px 8px -2px hsla(177, 50%, 20%, 0.30),
+    0 8px 32px -8px hsla(177, 40%, 15%, 0.25),
+    inset 0 1px 0 0 hsla(0, 0%, 100%, 0.12) !important;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .theme-bonki-brand [data-fig-hero]:hover {
+    box-shadow:
+      0 4px 12px -2px hsla(177, 50%, 20%, 0.35),
+      0 16px 48px -8px hsla(177, 40%, 15%, 0.30),
+      0 0 48px -12px hsla(177, 50%, 45%, 0.10),
+      inset 0 1px 0 0 hsla(0, 0%, 100%, 0.18) !important;
+  }
+}
+
+/* ── BONKI Brand — Rose fog atmosphere ── */
+.theme-bonki-brand [data-fig-atmosphere] {
+  position: relative;
+}
+.theme-bonki-brand [data-fig-atmosphere]::before {
+  content: '';
+  position: absolute;
+  top: -40px;
+  left: 5%;
+  right: 5%;
+  height: 220px;
+  background: radial-gradient(
+    ellipse at 50% 60%,
+    hsla(350, 25%, 78%, 0.08) 0%,
+    hsla(350, 20%, 75%, 0.03) 40%,
+    transparent 70%
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── BONKI Brand — Section dividers ── */
+.theme-bonki-brand .section-divider::after {
+  background: linear-gradient(
+    90deg,
+    hsla(25, 30%, 55%, 0.20) 0%,
+    hsla(25, 20%, 55%, 0) 100%
+  ) !important;
+}
+
+/* Header grain — subtle */
+.theme-bonki-brand .header-textured::after {
+  opacity: 0.04 !important;
+}
