@@ -141,10 +141,22 @@ export default function Category() {
             opacity: 0.40,
             lineHeight: 1.5,
           }}>
-            {allCompleted
+          {allCompleted
               ? 'Ni har utforskat det här området.'
               : 'Välj ett samtal.'}
           </p>
+          {allCompleted && (
+            <p style={{
+              fontFamily: 'var(--font-sans)',
+              fontSize: '13px',
+              color: 'var(--color-text-secondary)',
+              opacity: 0.50,
+              lineHeight: 1.55,
+              marginTop: '6px',
+            }}>
+              Ni är alltid välkomna tillbaka hit.
+            </p>
+          )}
           <button
             onClick={() => navigate('/')}
             className="text-sm transition-opacity hover:opacity-70"
@@ -195,12 +207,12 @@ function CardEntry({ card, index, isCompleted = false, isInProgress = false, onN
         style={{
           padding: '22px 20px',
           background: isCompleted
-            ? 'var(--surface-base)'
+            ? 'var(--surface-raised)'
             : 'var(--surface-raised)',
           border: 'none',
           borderRadius: '12px',
           boxShadow: isCompleted
-            ? 'none'
+            ? '0 1px 2px hsla(30, 15%, 30%, 0.03)'
             : '0 1px 3px hsla(30, 20%, 30%, 0.06), 0 6px 24px -6px hsla(30, 18%, 28%, 0.09)',
           transition: 'transform 200ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 260ms ease-out',
         }}
@@ -288,12 +300,16 @@ function CardEntry({ card, index, isCompleted = false, isInProgress = false, onN
           {/* Right side: check + chevron */}
           <div className="flex items-center gap-2 shrink-0 ml-3" style={{ marginTop: '4px' }}>
             {isCompleted && (
-              <Check
-                size={16}
-                className="flex-shrink-0"
-                style={{ color: 'var(--cta-default)', opacity: 0.50 }}
-                aria-label="Avklarad"
-              />
+              <span style={{
+                fontFamily: 'var(--font-sans)',
+                fontSize: '10px',
+                letterSpacing: '0.04em',
+                color: 'var(--cta-default)',
+                opacity: 0.55,
+                fontWeight: 500,
+              }}>
+                Avklarad
+              </span>
             )}
             <ChevronRight
               size={16}

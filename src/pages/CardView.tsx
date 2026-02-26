@@ -320,9 +320,7 @@ export default function CardView() {
         } else {
           if (isDevToolsEnabled()) console.log('[switch] navigated to', `/card/${cardId}`, didSwitch ? '(switched)' : '(fresh)');
           await normalizedSession.refetch();
-          if (didSwitch) {
-            toastOnce('switch_card', () => toast('Bytte samtal. Det förra är sparat i Vårt utrymme.', { duration: 2500 }));
-          }
+          // Silent switch — no toast needed
         }
       } finally {
         activatingRef.current = false;
