@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate, useLocation, useSearchParams } from 'react-router-dom';
 import { useDevState } from '@/contexts/DevStateContext';
 import { isDevToolsEnabled } from '@/lib/devTools';
+import { VALID_THEMES } from '@/hooks/useThemeSwitcher';
 import { ChevronUp, ChevronDown } from 'lucide-react';
 
 const DEV_STATES = [
@@ -14,6 +15,16 @@ const DEV_STATES = [
   { value: 'archiveEmpty', label: 'Archive Empty' },
   { value: 'archiveWithHistory', label: 'Archive w/ History' },
   { value: 'browse', label: 'Browse (all unlocked)' },
+];
+
+const THEME_OPTIONS = [
+  { value: '', label: '🌿 Default (Forest)', color: '#1E3F32' },
+  { value: 'fired-earth', label: '🏺 Fired Earth', color: '#5A3214' },
+  { value: 'burgundy', label: '🍷 Burgundy', color: '#5C1A2A' },
+  { value: 'ink', label: '✒️ Jordat Bläck', color: '#3A2E24' },
+  { value: 'stilla', label: '🌊 Stilla Djup', color: '#1E2D3F' },
+  { value: 'berry', label: '🫐 Bold Berry', color: '#5C1A4A' },
+  { value: 'midnight', label: '✨ Midnight Gold', color: '#1E2230' },
 ];
 
 const PAGES = [
@@ -48,6 +59,7 @@ export default function DevModeBadge() {
   if (!isDevToolsEnabled() || searchParams.has('__sc_step')) return null;
 
   const currentDevState = devState ?? 'solo';
+  const currentTheme = searchParams.get('theme') ?? '';
 
   function navigateTo(path: string) {
     if (path.includes('devState=')) {
@@ -60,15 +72,49 @@ export default function DevModeBadge() {
 
   function switchState(state: string) {
     const currentPath = location.pathname;
-    navigate(`${currentPath}?devState=${state}`);
+    const params = new URLSearchParams(searchParams);
+    params.set('devState', state);
+    navigate(`${currentPath}?${params.toString()}`);
     setOpen(false);
+  }
+
+  function switchTheme(theme: string) {
+    const currentPath = location.pathname;
+    const params = new URLSearchParams(searchParams);
+    if (theme) {
+      params.set('theme', theme);
+    } else {
+      params.delete('theme');
+    }
+    navigate(`${currentPath}?${params.toString()}`);
   }
 
   return (
     <div className="fixed bottom-3 left-3 z-[9999] select-none">
       {open && (
-        <div className="mb-2 w-64 rounded-xl overflow-hidden bg-black/80 backdrop-blur-md text-white/90 shadow-2xl border border-white/10 text-[11px] font-mono">
-          <div className="px-3 py-2 text-white/40 uppercase tracking-widest text-[9px]">Dev State</div>
+        <div className="mb-2 w-64 max-h-[80vh] overflow-y-auto rounded-xl bg-black/80 backdrop-blur-md text-white/90 shadow-2xl border border-white/10 text-[11px] font-mono">
+          {/* Theme Picker */}
+          <div className="px-3 py-2 text-white/40 uppercase tracking-widest text-[9px]">Theme</div>
+          <div className="px-2 pb-2 flex flex-wrap gap-1">
+            {THEME_OPTIONS.map((t) => (
+              <button
+                key={t.value}
+                onClick={() => switchTheme(t.value)}
+                className={`flex items-center gap-1.5 px-2 py-1 rounded-md text-[10px] transition-colors ${
+                  currentTheme === t.value ? 'bg-white/20 text-white font-bold' : 'hover:bg-white/10 text-white/70'
+                }`}
+                title={t.label}
+              >
+                <span
+                  className="w-3 h-3 rounded-full border border-white/20 flex-shrink-0"
+                  style={{ backgroundColor: t.color }}
+                />
+                <span className="truncate">{t.label}</span>
+              </button>
+            ))}
+          </div>
+
+          <div className="border-t border-white/10 px-3 py-2 text-white/40 uppercase tracking-widest text-[9px]">Dev State</div>
           {DEV_STATES.map((s) => (
             <button
               key={s.value}
@@ -97,6 +143,7 @@ export default function DevModeBadge() {
                 const url = new URL(window.location.href);
                 url.searchParams.delete('dev');
                 url.searchParams.delete('devState');
+                url.searchParams.delete('theme');
                 window.location.href = url.toString();
               }}
               className="w-full text-left px-3 py-2 text-red-400/70 hover:text-red-400 hover:bg-white/10 transition-colors"
@@ -111,7 +158,7 @@ export default function DevModeBadge() {
         onClick={() => setOpen((v) => !v)}
         className="pointer-events-auto flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-mono tracking-wider bg-black/60 text-white/80 backdrop-blur-sm hover:bg-black/80 transition-colors"
       >
-        DEV TOOLS{devState ? ` · ${devState}` : ''}
+        DEV TOOLS{devState ? ` · ${devState}` : ''}{currentTheme ? ` · ${currentTheme}` : ''}
         {open ? <ChevronDown className="w-3 h-3" /> : <ChevronUp className="w-3 h-3" />}
       </button>
     </div>
