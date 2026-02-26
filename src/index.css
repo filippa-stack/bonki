@@ -56,7 +56,7 @@ h1, h2, h3,
 
     --border: var(--neutral-300);
     --input: var(--neutral-300);
-    --ring: 150 32% 18%;
+    --ring: var(--primary);
 
     --radius: 1.25rem;
 
@@ -157,9 +157,9 @@ h1, h2, h3,
     --surface-sunken: hsl(var(--neutral-200));
 
     /* ── CTA pressed/hover states ── */
-    --cta-default: hsl(158, 35%, 18%);
-    --cta-hover-v2: hsl(158, 38%, 23%);
-    --cta-active:  hsl(158, 32%, 14%);
+    --cta-default: hsl(var(--primary));
+    --cta-hover-v2: hsl(var(--primary-hover, 158 38% 23%));
+    --cta-active:  hsl(var(--primary-active, 158 32% 14%));
 
     /* ── Semantic color tokens ── */
     --color-bg: var(--surface-base);
@@ -167,14 +167,14 @@ h1, h2, h3,
     --color-surface: hsl(var(--neutral-100));
     --color-surface-primary: hsl(var(--neutral-100));
     --color-surface-secondary: hsl(var(--neutral-100));
-    --color-cta: hsl(158, 35%, 18%);
+    --color-cta: hsl(var(--primary));
     --color-ink: var(--text-primary);
     --color-secondary: var(--text-secondary);
     --color-accent: #C1121F;
     --color-accent-soft: #6D4C6D;
     --color-text-primary: var(--text-primary);
     --color-text-secondary: var(--text-secondary);
-    --color-button-primary: hsl(158, 35%, 18%);
+    --color-button-primary: hsl(var(--primary));
     --color-button-text: #FFFFFF;
     --color-divider: hsl(var(--neutral-300));
 
@@ -184,9 +184,9 @@ h1, h2, h3,
     --cta-hover: var(--cta-hover-v2);
 
     /* ── Session containment header tokens ── */
-    --session-header-bg:    #1C3A2D;
-    --session-header-hover: #224233;
-    --session-header-press: #162E24;
+    --session-header-bg:    hsl(var(--primary));
+    --session-header-hover: var(--cta-hover-v2);
+    --session-header-press: var(--cta-active);
 
     /* Dynamic overrides — set via useThemeVars hook at runtime */
     --page-bg: var(--color-bg);

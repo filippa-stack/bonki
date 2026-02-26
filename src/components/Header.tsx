@@ -53,11 +53,11 @@ export default function Header({
         className={`sticky top-0 z-10`}
         style={{
           backgroundColor: isImmersive
-            ? (isDarkSurface ? 'hsl(158, 32%, 14%)' : 'var(--surface-base)')
-            : 'hsl(158, 32%, 14%)',
+            ? (isDarkSurface ? 'var(--session-header-bg)' : 'var(--surface-base)')
+            : 'var(--session-header-bg)',
           boxShadow: 'none',
           borderBottom: isImmersive
-            ? (isDarkSurface ? '1px solid hsl(158, 25%, 20%)' : 'none')
+            ? (isDarkSurface ? '1px solid hsl(var(--primary) / 0.3)' : 'none')
             : 'none',
         }}
       >
