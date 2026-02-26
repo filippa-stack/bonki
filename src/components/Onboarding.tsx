@@ -107,7 +107,7 @@ export default function Onboarding() {
                 width: '60%',
                 fontSize: '15px',
                 letterSpacing: '0.02em',
-                boxShadow: '0 2px 12px -2px hsl(var(--primary) / 0.18), 0 1px 3px hsl(var(--primary) / 0.08)',
+                boxShadow: '0 2px 12px -2px hsla(158, 30%, 15%, 0.18), 0 1px 3px hsla(158, 25%, 12%, 0.08)',
               }}
             >
               Fortsätt
@@ -140,7 +140,7 @@ export default function Onboarding() {
                     background: i === currentSlide
                       ? 'var(--accent-saffron)'
                       : isDark
-                        ? 'hsl(var(--primary) / 0.5)'
+                        ? 'hsl(158, 20%, 30%)'
                         : 'var(--text-ghost)',
                     opacity: i === currentSlide ? 1 : isDark ? 0.4 : 0.3,
                     transition: 'width 0.4s cubic-bezier(0.22, 1, 0.36, 1), background 0.4s ease, opacity 0.4s ease',

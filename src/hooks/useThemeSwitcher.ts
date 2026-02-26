@@ -8,12 +8,6 @@ const VALID_THEMES = [
   'stilla',
   'berry',
   'midnight',
-  'light-header',
-  'tonal-tiles',
-  'dark-tiles',
-  'deep-fig',
-  'bonki-brand',
-  'foundation',
 ] as const;
 
 export type ThemeId = (typeof VALID_THEMES)[number] | null;

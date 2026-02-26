@@ -33,16 +33,16 @@ import {
 import { categories as allCategories, cards as allCards } from '@/data/content';
 
 const CATEGORY_ACCENTS: Record<number, string> = {
-  0: 'hsl(177, 60%, 38%)',   // teal (brand primary)
-  1: 'hsl(25, 52%, 46%)',    // warm caramel (brand)
-  2: 'hsl(210, 25%, 42%)',   // slate blue (brand books)
-  3: 'hsl(5, 55%, 48%)',     // muted coral (brand red)
-  4: 'hsl(65, 18%, 42%)',    // olive (brand)
-  5: 'hsl(350, 28%, 55%)',   // dusty rose (brand pink)
-  6: 'hsl(25, 40%, 38%)',    // deep caramel
-  7: 'hsl(195, 22%, 40%)',   // cool slate
-  8: 'hsl(340, 25%, 45%)',   // muted berry
-  9: 'hsl(177, 40%, 32%)',   // deep teal
+  0: 'hsl(158, 35%, 22%)',   // deep green
+  1: 'hsl(38, 70%, 48%)',    // amber
+  2: 'hsl(200, 30%, 38%)',   // slate blue
+  3: 'hsl(10, 40%, 42%)',    // warm terracotta
+  4: 'hsl(80, 25%, 35%)',    // olive
+  5: 'hsl(28, 50%, 40%)',    // burnt sienna
+  6: 'hsl(260, 20%, 40%)',   // muted plum
+  7: 'hsl(45, 55%, 42%)',    // dark gold
+  8: 'hsl(340, 30%, 40%)',   // dusty rose
+  9: 'hsl(170, 25%, 32%)',   // teal
 };
 
 function getCategoryAccent(index: number): string {
@@ -264,9 +264,8 @@ export default function Home() {
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-              style={{ paddingTop: '56px', paddingBottom: '8px' }}
             >
-              <h1 className="type-h1" style={{ color: 'var(--text-primary)', marginBottom: '38px', letterSpacing: '-0.01em' }}>
+              <h1 className="type-h1" style={{ color: 'var(--text-primary)', marginBottom: '38px' }}>
                 Ert utrymme
               </h1>
             </motion.div>
@@ -290,7 +289,6 @@ export default function Home() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.15, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
                   style={{ marginBottom: '24px' }}
-                  data-fig-atmosphere
                 >
                   <div
                     onClick={() => { markNavigated(); navigate(`/card/${cardId}`, { state: { resumed: true } }); }}
@@ -300,39 +298,37 @@ export default function Home() {
                       if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); navigate(`/card/${cardId}`, { state: { resumed: true } }); }
                     }}
                     className="cursor-pointer group"
-                    data-fig-hero
                     style={{
-                      borderRadius: '16px',
-                      padding: '22px 24px',
-                      background: 'var(--cta-bg)',
+                      borderRadius: '12px',
+                      padding: '18px 20px',
+                      background: 'var(--cta-active)',
                       border: 'none',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'space-between',
                       gap: '12px',
-                      boxShadow: '0 2px 12px -2px hsla(22, 40%, 25%, 0.25), 0 8px 32px -8px hsla(278, 25%, 8%, 0.30)',
+                      boxShadow: '0 2px 16px -4px hsla(158, 30%, 12%, 0.15), 0 1px 3px hsla(158, 25%, 10%, 0.08)',
                       transition: 'transform 200ms ease-out, box-shadow 200ms ease-out',
-                      position: 'relative' as const,
                     }}
                     onPointerDown={(e) => { (e.currentTarget as HTMLElement).style.transform = 'scale(0.985)'; }}
                     onPointerUp={(e) => { (e.currentTarget as HTMLElement).style.transform = ''; }}
                     onPointerLeave={(e) => { (e.currentTarget as HTMLElement).style.transform = ''; }}
                   >
                     <div className="flex-1 min-w-0">
-                      <p className="font-sans" style={{ fontSize: '10px', fontWeight: 500, letterSpacing: '0.12em', textTransform: 'uppercase' as const, color: 'var(--cta-text)', opacity: 0.50, marginBottom: '6px', lineHeight: 1 }}>
+                      <p className="font-sans" style={{ fontSize: '10px', fontWeight: 500, letterSpacing: '0.12em', textTransform: 'uppercase' as const, color: 'hsl(36, 16%, 92%)', opacity: 0.45, marginBottom: '6px', lineHeight: 1 }}>
                         Ni var mitt i
                       </p>
-                      <p className="font-serif" style={{ fontSize: '18px', fontWeight: 600, lineHeight: 1.35, color: 'var(--cta-text)', textWrap: 'balance', hyphens: 'auto', maxWidth: '80%' } as React.CSSProperties}>
+                      <p className="font-serif" style={{ fontSize: '18px', fontWeight: 600, lineHeight: 1.35, color: 'hsl(36, 16%, 92%)', textWrap: 'balance', hyphens: 'auto', maxWidth: '80%' } as React.CSSProperties}>
                         {card?.title || cardId}
                       </p>
                       {cat && (
-                        <p className="font-sans" style={{ fontSize: '12px', color: 'var(--cta-text)', opacity: 0.5, marginTop: '4px' }}>
+                        <p className="font-sans" style={{ fontSize: '12px', color: 'var(--accent-saffron)', opacity: 0.7, marginTop: '4px' }}>
                           {cat.title}
                         </p>
                       )}
                     </div>
-                    <span className="font-sans shrink-0 self-center group-hover:opacity-90" style={{ fontSize: '14px', fontWeight: 500, color: 'var(--cta-text)', opacity: 0.85, transition: 'opacity 200ms ease, transform 200ms ease' }}>
-                      Fortsätt<span style={{ marginLeft: '6px', display: 'inline-block', transition: 'transform 200ms ease' }} className="group-hover:translate-x-1">→</span>
+                    <span className="font-sans shrink-0 self-center" style={{ fontSize: '13px', fontWeight: 500, color: 'hsl(36, 16%, 92%)', opacity: 0.7, transform: 'translateY(1px)' }}>
+                      Fortsätt<span style={{ marginLeft: '4px' }}>→</span>
                     </span>
                   </div>
                 </motion.div>
@@ -355,22 +351,19 @@ export default function Home() {
                     transition={{ delay: 0.1, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
                     style={{ marginBottom: '24px' }}
                   >
-                    <div
-                      data-fig-hero
-                      style={{
-                      background: 'var(--cta-bg)',
-                      borderRadius: '16px',
-                      padding: '26px 24px',
+                    <div style={{
+                      background: 'var(--cta-active)',
+                      borderRadius: '12px',
+                      padding: '24px',
                       width: '100%',
-                      boxShadow: '0 2px 12px -2px hsla(22, 40%, 25%, 0.25), 0 8px 32px -8px hsla(278, 25%, 8%, 0.30)',
-                      position: 'relative' as const,
+                      boxShadow: '0 2px 16px -4px hsla(158, 30%, 12%, 0.15), 0 1px 3px hsla(158, 25%, 10%, 0.08)',
                     }}>
                       <p style={{
                         fontFamily: 'var(--font-serif)',
                         fontSize: '13.5px',
                         fontWeight: 400,
-                        color: 'var(--cta-text)',
-                        opacity: 0.6,
+                        color: 'var(--accent-saffron)',
+                        opacity: 0.75,
                         lineHeight: 1.55,
                         textWrap: 'balance',
                       } as React.CSSProperties}>
@@ -380,7 +373,7 @@ export default function Home() {
                         fontFamily: 'var(--font-serif)',
                         fontSize: '18px',
                         fontWeight: 600,
-                        color: 'var(--cta-text)',
+                        color: 'hsl(36, 16%, 92%)',
                         lineHeight: 1.35,
                         textWrap: 'balance',
                         marginTop: '14px',
@@ -460,7 +453,7 @@ export default function Home() {
                   return (
                     <>
                       <div
-                        data-cat-index={recIndex >= 0 ? recIndex : 0}
+
                         onClick={() => { markNavigated(); navigate(`/category/${recCat.id}`); }}
                         role="button"
                         tabIndex={0}
@@ -469,22 +462,23 @@ export default function Home() {
                           if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); navigate(`/category/${recCat.id}`); }
                         }}
                         className="cursor-pointer tile-door row-bloom"
-                          style={{
-                           borderRadius: '14px',
-                           padding: '24px 22px',
-                           minHeight: '48px',
-                           display: 'flex',
-                           alignItems: 'center',
-                           justifyContent: 'space-between',
-                           gap: '12px',
-                           background: 'var(--surface-raised)',
-                           border: 'none',
-                           position: 'relative' as const,
-                           overflow: 'hidden',
-                         }}
+                         style={{
+                          borderRadius: '12px',
+                          padding: '22px 20px',
+                          minHeight: '48px',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'space-between',
+                          gap: '12px',
+                          background: 'linear-gradient(135deg, hsl(36, 22%, 97%) 0%, hsl(38, 18%, 95%) 100%)',
+                          border: 'none',
+                          boxShadow: '0 2px 6px hsla(30, 18%, 28%, 0.06), 0 8px 32px -8px hsla(30, 15%, 25%, 0.10)',
+                          position: 'relative' as const,
+                          overflow: 'hidden',
+                        }}
                       >
                         {/* Inset accent bar */}
-                        <span data-accent-bar aria-hidden style={{ position: 'absolute', left: '6px', top: '8px', bottom: '8px', width: '2px', borderRadius: '1px', background: 'var(--accent-saffron)' }} />
+                        <span aria-hidden style={{ position: 'absolute', left: '6px', top: '8px', bottom: '8px', width: '2px', borderRadius: '1px', background: 'var(--cta-active)' }} />
                         <div className="flex-1 min-w-0">
                           <p className="font-sans uppercase" style={{ fontSize: '10px', letterSpacing: '0.06em', color: 'var(--accent-text)', opacity: 0.8, marginBottom: '4px' }}>
                             01 · Rekommenderad start
@@ -509,7 +503,7 @@ export default function Home() {
 
             {/* Categories */}
             <div className="px-6" style={{ paddingBottom: '48px' }}>
-              <div className="flex flex-col" style={{ gap: '10px' }}>
+              <div className="flex flex-col" style={{ gap: '8px' }}>
                 {(() => {
                   const SECTION_GROUPS: { label: string; ids: string[] }[] = [
                     { label: 'VI SOM BAS', ids: ['emotional-intimacy', 'communication', 'category-8'] },
@@ -566,7 +560,6 @@ export default function Home() {
                       transition={{ delay: 0.2 + index * 0.06, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
                     >
                       <div
-                        data-cat-index={globalIndex >= 0 ? globalIndex : index}
                         onClick={() => { markNavigated(); navigate(`/category/${category.id}`); }}
                         role="button"
                         tabIndex={0}
@@ -575,19 +568,20 @@ export default function Home() {
                           if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); navigate(`/category/${category.id}`); }
                         }}
                         className="cursor-pointer tile-door row-bloom"
-                          style={{
-                           borderRadius: '14px',
-                           padding: '24px 22px',
-                           minHeight: '72px',
-                           display: 'flex',
-                           alignItems: 'center',
-                           justifyContent: 'space-between',
-                           gap: '12px',
-                           background: 'var(--surface-raised)',
-                           border: 'none',
-                           position: 'relative' as const,
-                           overflow: 'hidden',
-                         }}
+                         style={{
+                          borderRadius: '12px',
+                          padding: '22px 20px',
+                          minHeight: '72px',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'space-between',
+                          gap: '12px',
+                          background: 'var(--surface-raised)',
+                          border: 'none',
+                          boxShadow: '0 1px 3px hsla(30, 15%, 25%, 0.05), 0 6px 24px -6px hsla(30, 18%, 28%, 0.08)',
+                          position: 'relative' as const,
+                          overflow: 'hidden',
+                        }}
                       >
                         <div className="flex-1 min-w-0">
                           <p className="font-sans" style={{ fontSize: '10px', fontWeight: 500, letterSpacing: '0.12em', lineHeight: 1, color: 'var(--color-text-tertiary)', opacity: 0.55, marginBottom: '4px' }}>
@@ -618,14 +612,14 @@ export default function Home() {
                         </div>
                         <div className="flex items-center gap-2 shrink-0 self-center">
                           {allCompleted ? (
-                            <Check size={13} style={{ color: 'var(--color-completion, #1E3D2F)', opacity: 0.50, marginRight: '10px' }} />
+                            <Check size={13} style={{ color: '#1E3D2F', opacity: 0.50, marginRight: '10px' }} />
                           ) : someStarted ? (
                             <span style={{
                               display: 'inline-block',
                               width: '7px',
                               height: '7px',
                               borderRadius: '50%',
-                              backgroundColor: 'var(--accent-saffron)',
+                              backgroundColor: '#C4821D',
                               opacity: 0.70,
                             }} />
                           ) : null}

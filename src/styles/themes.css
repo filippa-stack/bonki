@@ -1,34 +1,42 @@
 /* ══════════════════════════════════════════════════════════════
    Theme Overrides — toggled via .theme-{name} on <html>
    Each theme only overrides the tokens that differ from :root.
-   Activate via ?theme=fired-earth | burgundy | ink | stilla | berry | midnight | light-header
+   Activate via ?theme=fired-earth | burgundy | ink | stilla | berry | midnight
    ══════════════════════════════════════════════════════════════ */
 
 /* ── 1. Fired Earth ─────────────────────────────────────────
-   Uploaded palette: Parchment / Deep Umber / Moss / Fired Clay / Amber Wash */
+   Uploaded palette: Parchment / Deep Umber / Moss / Fired Clay / Amber Wash
+   Warm, earthy, artisanal. Clay accent replaces saffron. */
 .theme-fired-earth {
   --neutral-50:  35 22% 94%;
   --neutral-100: 34 20% 96%;
   --neutral-200: 33 18% 91%;
   --neutral-300: 30 14% 85%;
 
-  --primary: 152 28% 16%;
-  --primary-hover: 152 30% 22%;
-  --primary-active: 152 25% 12%;
+  --primary: 152 28% 16%;                /* Moss */
   --primary-foreground: 0 0% 100%;
 
-  --foreground: 22 20% 14%;
+  --foreground: 22 20% 14%;              /* Deep Umber */
   --text-primary: hsl(22, 20%, 14%);
   --text-secondary: hsl(22, 12%, 38%);
   --text-tertiary: hsl(25, 10%, 52%);
 
-  --accent-saffron: hsl(18, 65%, 42%);
+  --accent-saffron: hsl(18, 65%, 42%);   /* Fired Clay */
   --accent-saffron-muted: hsl(18, 45%, 65%);
   --accent-text: hsl(18, 55%, 36%);
 
-  --ring: var(--primary);
+  --cta-default: hsl(152, 28%, 16%);
+  --cta-hover-v2: hsl(152, 30%, 22%);
+  --cta-active: hsl(152, 25%, 12%);
+  --cta-bg: var(--cta-default);
+
+  --session-header-bg: hsl(152, 28%, 14%);
+  --session-header-hover: hsl(152, 28%, 19%);
+  --session-header-press: hsl(152, 25%, 11%);
+
+  --color-button-primary: hsl(152, 28%, 16%);
   --color-accent: hsl(18, 65%, 42%);
-  --color-accent-soft: hsl(32, 45%, 88%);
+  --color-accent-soft: hsl(32, 45%, 88%);   /* Amber wash */
 }
 
 /* ── 2. Varm Burgundy ───────────────────────────────────────
@@ -39,9 +47,7 @@
   --neutral-200: 25 14% 92%;
   --neutral-300: 22 10% 86%;
 
-  --primary: 348 45% 22%;
-  --primary-hover: 348 48% 28%;
-  --primary-active: 348 40% 17%;
+  --primary: 348 45% 22%;                /* Deep burgundy */
   --primary-foreground: 0 0% 100%;
 
   --foreground: 348 20% 14%;
@@ -49,11 +55,20 @@
   --text-secondary: hsl(340, 10%, 40%);
   --text-tertiary: hsl(335, 8%, 54%);
 
-  --accent-saffron: hsl(28, 80%, 52%);
+  --accent-saffron: hsl(28, 80% ,52%);   /* Burnt orange accent */
   --accent-saffron-muted: hsl(28, 55%, 70%);
   --accent-text: hsl(28, 65%, 42%);
 
-  --ring: var(--primary);
+  --cta-default: hsl(348, 45%, 22%);
+  --cta-hover-v2: hsl(348, 48%, 28%);
+  --cta-active: hsl(348, 40%, 17%);
+  --cta-bg: var(--cta-default);
+
+  --session-header-bg: hsl(348, 42%, 18%);
+  --session-header-hover: hsl(348, 42%, 24%);
+  --session-header-press: hsl(348, 38%, 14%);
+
+  --color-button-primary: hsl(348, 45%, 22%);
   --color-accent: hsl(348, 55%, 30%);
   --color-accent-soft: hsl(348, 25%, 75%);
 }
@@ -66,9 +81,7 @@
   --neutral-200: 35 10% 92%;
   --neutral-300: 32 8% 86%;
 
-  --primary: 25 18% 16%;
-  --primary-hover: 25 20% 22%;
-  --primary-active: 25 16% 12%;
+  --primary: 25 18% 16%;                 /* Warm ink */
   --primary-foreground: 0 0% 100%;
 
   --foreground: 25 15% 12%;
@@ -76,26 +89,33 @@
   --text-secondary: hsl(25, 8%, 42%);
   --text-tertiary: hsl(25, 6%, 56%);
 
-  --accent-saffron: hsl(42, 75%, 48%);
+  --accent-saffron: hsl(42, 75%, 48%);   /* Warm gold */
   --accent-saffron-muted: hsl(42, 50%, 68%);
   --accent-text: hsl(42, 60%, 38%);
 
-  --ring: var(--primary);
+  --cta-default: hsl(25, 18%, 16%);
+  --cta-hover-v2: hsl(25, 20%, 22%);
+  --cta-active: hsl(25, 16%, 12%);
+  --cta-bg: var(--cta-default);
+
+  --session-header-bg: hsl(25, 18%, 13%);
+  --session-header-hover: hsl(25, 18%, 19%);
+  --session-header-press: hsl(25, 16%, 10%);
+
+  --color-button-primary: hsl(25, 18%, 16%);
   --color-accent: hsl(42, 75%, 48%);
   --color-accent-soft: hsl(42, 40%, 78%);
 }
 
 /* ── 4. Stilla Djup ─────────────────────────────────────────
-   Deep blue-grey. Introspective, nordic. */
+   AI-suggested deep blue-grey. Introspective, nordic. */
 .theme-stilla {
   --neutral-50:  220 12% 95%;
   --neutral-100: 218 10% 97%;
   --neutral-200: 215 8% 92%;
   --neutral-300: 210 6% 86%;
 
-  --primary: 210 28% 18%;
-  --primary-hover: 210 30% 24%;
-  --primary-active: 210 25% 14%;
+  --primary: 210 28% 18%;                /* Steel blue */
   --primary-foreground: 0 0% 100%;
 
   --foreground: 215 20% 14%;
@@ -103,26 +123,34 @@
   --text-secondary: hsl(210, 10%, 42%);
   --text-tertiary: hsl(210, 8%, 56%);
 
-  --accent-saffron: hsl(32, 70%, 50%);
+  --accent-saffron: hsl(32, 70%, 50%);   /* Warm amber contrast */
   --accent-saffron-muted: hsl(32, 48%, 68%);
   --accent-text: hsl(32, 56%, 40%);
 
-  --ring: var(--primary);
+  --cta-default: hsl(210, 28%, 18%);
+  --cta-hover-v2: hsl(210, 30%, 24%);
+  --cta-active: hsl(210, 25%, 14%);
+  --cta-bg: var(--cta-default);
+
+  --session-header-bg: hsl(210, 28%, 15%);
+  --session-header-hover: hsl(210, 28%, 21%);
+  --session-header-press: hsl(210, 25%, 12%);
+
+  --color-button-primary: hsl(210, 28%, 18%);
   --color-accent: hsl(32, 70%, 50%);
   --color-accent-soft: hsl(210, 15%, 75%);
 }
 
 /* ── 5. Bold Berry ──────────────────────────────────────────
-   Playful but premium. Deep magenta with warm coral accent. */
+   Playful but premium. Deep magenta with warm coral accent.
+   More daring — lively without losing sophistication. */
 .theme-berry {
   --neutral-50:  320 8% 95%;
   --neutral-100: 315 6% 97%;
   --neutral-200: 310 5% 92%;
   --neutral-300: 305 4% 86%;
 
-  --primary: 325 40% 24%;
-  --primary-hover: 325 42% 30%;
-  --primary-active: 325 36% 19%;
+  --primary: 325 40% 24%;                /* Deep berry */
   --primary-foreground: 0 0% 100%;
 
   --foreground: 330 18% 14%;
@@ -130,962 +158,55 @@
   --text-secondary: hsl(320, 8%, 42%);
   --text-tertiary: hsl(315, 6%, 56%);
 
-  --accent-saffron: hsl(12, 72%, 56%);
+  --accent-saffron: hsl(12, 72%, 56%);   /* Warm coral */
   --accent-saffron-muted: hsl(12, 50%, 72%);
   --accent-text: hsl(12, 60%, 44%);
 
-  --ring: var(--primary);
+  --cta-default: hsl(325, 40%, 24%);
+  --cta-hover-v2: hsl(325, 42%, 30%);
+  --cta-active: hsl(325, 36%, 19%);
+  --cta-bg: var(--cta-default);
+
+  --session-header-bg: hsl(325, 38%, 20%);
+  --session-header-hover: hsl(325, 38%, 26%);
+  --session-header-press: hsl(325, 35%, 16%);
+
+  --color-button-primary: hsl(325, 40%, 24%);
   --color-accent: hsl(12, 72%, 56%);
   --color-accent-soft: hsl(325, 20%, 78%);
 }
 
 /* ── 6. Midnight Gold ───────────────────────────────────────
-   Dramatic dark slate with rich gold accent. */
+   Dramatic dark slate with rich gold accent.
+   Bold, luxurious, ceremonial. */
 .theme-midnight {
   --neutral-50:  45 10% 94%;
   --neutral-100: 42 8% 96%;
   --neutral-200: 40 6% 91%;
   --neutral-300: 38 5% 84%;
 
-  --primary: 220 20% 15%;
-  --primary-hover: 220 22% 22%;
-  --primary-active: 220 18% 11%;
-  --primary-foreground: 45 50% 90%;
+  --primary: 220 20% 15%;                /* Near-black slate */
+  --primary-foreground: 45 50% 90%;       /* Warm gold text */
 
   --foreground: 220 15% 12%;
   --text-primary: hsl(220, 15%, 12%);
   --text-secondary: hsl(35, 8%, 42%);
   --text-tertiary: hsl(35, 6%, 56%);
 
-  --accent-saffron: hsl(45, 85%, 50%);
+  --accent-saffron: hsl(45, 85%, 50%);   /* Rich gold */
   --accent-saffron-muted: hsl(45, 55%, 68%);
   --accent-text: hsl(45, 70%, 38%);
 
-  --ring: var(--primary);
+  --cta-default: hsl(220, 20%, 15%);
+  --cta-hover-v2: hsl(220, 22%, 22%);
+  --cta-active: hsl(220, 18%, 11%);
+  --cta-bg: var(--cta-default);
+
+  --session-header-bg: hsl(220, 20%, 12%);
+  --session-header-hover: hsl(220, 20%, 18%);
+  --session-header-press: hsl(220, 18%, 9%);
+
+  --color-button-primary: hsl(220, 20%, 15%);
   --color-accent: hsl(45, 85%, 50%);
   --color-accent-soft: hsl(45, 35%, 80%);
-}
-
-/* ── 7. Light Header ────────────────────────────────────────
-   Inverted header: warm background surface, dark forest text.
-   Same base palette as default but header flips to light. */
-.theme-light-header {
-  --session-header-bg: var(--surface-base);
-  --session-header-hover: var(--surface-raised);
-  --session-header-press: var(--surface-sunken);
-  --header-text: hsl(var(--primary));
-  --header-text-muted: hsl(var(--primary) / 0.6);
-  --header-border: 1px solid hsl(var(--neutral-300));
-}
-
-/* ── 8. Tonal Tiles ────────────────────────────────────────
-   Each category tile gets a unique, muted wash color.
-   Warm background stays. Text stays dark. Kinfolk meets Vogue. */
-.theme-tonal-tiles {
-  --tile-bg-0: hsl(158, 18%, 88%);   /* sage */
-  --tile-bg-1: hsl(38, 35%, 88%);    /* honey */
-  --tile-bg-2: hsl(210, 18%, 88%);   /* slate mist */
-  --tile-bg-3: hsl(14, 28%, 88%);    /* terracotta blush */
-  --tile-bg-4: hsl(80, 16%, 88%);    /* olive dew */
-  --tile-bg-5: hsl(28, 30%, 86%);    /* burnt sand */
-  --tile-bg-6: hsl(280, 12%, 89%);   /* plum haze */
-  --tile-bg-7: hsl(48, 30%, 87%);    /* champagne */
-  --tile-bg-8: hsl(345, 16%, 89%);   /* rosé */
-  --tile-bg-9: hsl(170, 16%, 87%);   /* teal mist */
-
-  --tile-accent-0: hsl(158, 30%, 32%);
-  --tile-accent-1: hsl(38, 55%, 38%);
-  --tile-accent-2: hsl(210, 25%, 35%);
-  --tile-accent-3: hsl(14, 35%, 38%);
-  --tile-accent-4: hsl(80, 22%, 32%);
-  --tile-accent-5: hsl(28, 40%, 35%);
-  --tile-accent-6: hsl(280, 18%, 38%);
-  --tile-accent-7: hsl(48, 40%, 35%);
-  --tile-accent-8: hsl(345, 22%, 38%);
-  --tile-accent-9: hsl(170, 22%, 32%);
-}
-
-/* Tonal tiles — per-index backgrounds */
-.theme-tonal-tiles [data-cat-index="0"] { background: var(--tile-bg-0) !important; }
-.theme-tonal-tiles [data-cat-index="1"] { background: var(--tile-bg-1) !important; }
-.theme-tonal-tiles [data-cat-index="2"] { background: var(--tile-bg-2) !important; }
-.theme-tonal-tiles [data-cat-index="3"] { background: var(--tile-bg-3) !important; }
-.theme-tonal-tiles [data-cat-index="4"] { background: var(--tile-bg-4) !important; }
-.theme-tonal-tiles [data-cat-index="5"] { background: var(--tile-bg-5) !important; }
-.theme-tonal-tiles [data-cat-index="6"] { background: var(--tile-bg-6) !important; }
-.theme-tonal-tiles [data-cat-index="7"] { background: var(--tile-bg-7) !important; }
-.theme-tonal-tiles [data-cat-index="8"] { background: var(--tile-bg-8) !important; }
-.theme-tonal-tiles [data-cat-index="9"] { background: var(--tile-bg-9) !important; }
-
-/* Tonal — accent bar picks up category color */
-.theme-tonal-tiles [data-cat-index="0"] [data-accent-bar] { background: var(--tile-accent-0) !important; }
-.theme-tonal-tiles [data-cat-index="1"] [data-accent-bar] { background: var(--tile-accent-1) !important; }
-.theme-tonal-tiles [data-cat-index="2"] [data-accent-bar] { background: var(--tile-accent-2) !important; }
-.theme-tonal-tiles [data-cat-index="3"] [data-accent-bar] { background: var(--tile-accent-3) !important; }
-.theme-tonal-tiles [data-cat-index="4"] [data-accent-bar] { background: var(--tile-accent-4) !important; }
-.theme-tonal-tiles [data-cat-index="5"] [data-accent-bar] { background: var(--tile-accent-5) !important; }
-.theme-tonal-tiles [data-cat-index="6"] [data-accent-bar] { background: var(--tile-accent-6) !important; }
-.theme-tonal-tiles [data-cat-index="7"] [data-accent-bar] { background: var(--tile-accent-7) !important; }
-.theme-tonal-tiles [data-cat-index="8"] [data-accent-bar] { background: var(--tile-accent-8) !important; }
-.theme-tonal-tiles [data-cat-index="9"] [data-accent-bar] { background: var(--tile-accent-9) !important; }
-
-/* ── 9. Dark Tiles ─────────────────────────────────────────
-   Tiles in deep, rich tones against warm background.
-   Light text. Like opening doors into dark rooms. Vogue cover. */
-.theme-dark-tiles {
-  --tile-bg-0: hsl(38, 75%, 68%);    /* rich saffron */
-  --tile-bg-1: hsl(36, 70%, 66%);
-  --tile-bg-2: hsl(40, 72%, 67%);
-  --tile-bg-3: hsl(34, 68%, 65%);
-  --tile-bg-4: hsl(42, 74%, 68%);
-  --tile-bg-5: hsl(37, 70%, 66%);
-  --tile-bg-6: hsl(39, 72%, 67%);
-  --tile-bg-7: hsl(35, 68%, 65%);
-  --tile-bg-8: hsl(41, 73%, 68%);
-  --tile-bg-9: hsl(38, 70%, 66%);
-  --tile-text-dark: hsl(158, 35%, 12%);
-  --tile-text-muted: hsl(158, 25%, 24%);
-}
-
-/* Dark tiles — rich backgrounds */
-.theme-dark-tiles [data-cat-index="0"] { background: var(--tile-bg-0) !important; }
-.theme-dark-tiles [data-cat-index="1"] { background: var(--tile-bg-1) !important; }
-.theme-dark-tiles [data-cat-index="2"] { background: var(--tile-bg-2) !important; }
-.theme-dark-tiles [data-cat-index="3"] { background: var(--tile-bg-3) !important; }
-.theme-dark-tiles [data-cat-index="4"] { background: var(--tile-bg-4) !important; }
-.theme-dark-tiles [data-cat-index="5"] { background: var(--tile-bg-5) !important; }
-.theme-dark-tiles [data-cat-index="6"] { background: var(--tile-bg-6) !important; }
-.theme-dark-tiles [data-cat-index="7"] { background: var(--tile-bg-7) !important; }
-.theme-dark-tiles [data-cat-index="8"] { background: var(--tile-bg-8) !important; }
-.theme-dark-tiles [data-cat-index="9"] { background: var(--tile-bg-9) !important; }
-
-/* Dark tiles — forest green text on saffron */
-.theme-dark-tiles [data-cat-index] h3 { color: var(--tile-text-dark) !important; }
-.theme-dark-tiles [data-cat-index] p { color: var(--tile-text-muted) !important; }
-.theme-dark-tiles [data-cat-index] [data-chevron] { color: var(--tile-text-dark) !important; opacity: 0.4 !important; }
-.theme-dark-tiles [data-cat-index] [data-accent-bar] { background: var(--tile-text-dark) !important; }
-
-/* Dark tiles — hover state */
-@media (hover: hover) and (pointer: fine) {
-  .theme-dark-tiles [data-cat-index].tile-door:hover h3 {
-    color: hsl(158, 35%, 10%) !important;
-  }
-}
-
-/* ── 10. Deep Fig ──────────────────────────────────────────
-   Apple dark-mode: layered darks. Sage green CTA (#cbe7d4).
-   Bone for text + accent labels. Rose fog as ambient atmosphere. */
-.theme-deep-fig {
-  /* Foundation — three shades of fig */
-  --neutral-50:  278 16% 14%;     /* Canvas — deepest */
-  --neutral-100: 278 14% 19%;     /* Raised tiles */
-  --neutral-200: 278 12% 23%;     /* Hover elevation */
-  --neutral-300: 278 8% 26%;      /* Borders */
-
-  --background: var(--neutral-50);
-  --foreground: 36 18% 90%;
-
-  --card: var(--neutral-100);
-  --card-foreground: 36 18% 90%;
-
-  --popover: var(--neutral-100);
-  --popover-foreground: 36 18% 90%;
-
-  /* Primary — Sage Green (#cbe7d4) */
-  --primary: 144 30% 85%;
-  --primary-hover: 144 32% 88%;
-  --primary-active: 144 28% 80%;
-  --primary-foreground: 278 20% 14%;
-
-  --secondary: 278 12% 20%;
-  --secondary-foreground: 36 18% 90%;
-
-  --muted: 278 10% 20%;
-  --muted-foreground: 36 12% 55%;
-
-  --accent: 278 10% 22%;
-  --accent-foreground: 36 18% 90%;
-
-  --destructive: 0 55% 45%;
-  --destructive-foreground: 36 18% 94%;
-
-  --border: 278 8% 22%;
-  --input: 278 10% 22%;
-  --ring: var(--primary);
-
-  /* Text — Bone spectrum */
-  --text-primary:    hsl(36, 18%, 90%);
-  --text-secondary:  hsl(36, 12%, 62%);
-  --text-tertiary:   hsl(36, 10%, 45%);
-  --text-ghost:      hsl(278, 6%, 32%);
-  --text-accent:     hsl(144, 25%, 72%);    /* Sage whisper for labels */
-
-  /* Accent — Sage-tinted for recommendation */
-  --accent-saffron:       hsl(144, 22%, 68%);
-  --accent-saffron-muted: hsl(144, 18%, 55%);
-  --accent-text:          hsl(144, 20%, 72%);   /* Sage fog text */
-
-  /* Layered surfaces */
-  --surface-base:   hsl(278, 16%, 14%);
-  --surface-raised: hsl(278, 14%, 19%);
-  --surface-sunken: hsl(278, 18%, 11%);
-  --surface-chrome: 278 18% 11%;
-
-  /* Header — sinks below canvas */
-  --session-header-bg:    hsl(278, 18%, 11%);
-  --session-header-hover: hsl(278, 14%, 16%);
-  --session-header-press: hsl(278, 20%, 9%);
-  --header-text:          hsl(36, 18%, 90%);
-  --header-text-muted:    hsl(36, 12%, 55%);
-  --header-border:        none;
-
-  /* CTA — Sage Green with depth */
-  --cta-default: hsl(144, 30%, 85%);
-  --cta-hover-v2: hsl(144, 32%, 88%);
-  --cta-active:  hsl(144, 28%, 80%);
-  --cta-bg:      hsl(144, 30%, 85%);
-  --cta-text:    hsl(278, 20%, 16%);
-
-  /* Semantic */
-  --color-bg: var(--surface-base);
-  --color-bg-base: var(--surface-base);
-  --color-surface: hsl(278, 14%, 19%);
-  --color-surface-primary: hsl(278, 14%, 19%);
-  --color-text-primary: hsl(36, 18%, 90%);
-  --color-text-secondary: hsl(36, 12%, 62%);
-  --color-text-tertiary: hsl(36, 10%, 45%);
-  --color-accent: hsl(144, 30%, 85%);
-  --color-accent-soft: hsl(144, 20%, 60%);
-  --color-divider: hsl(278, 8%, 22%);
-
-  /* Notes */
-  --note-bg: 278 12% 17%;
-  --note-border: 278 8% 24%;
-  --note-text: 36 18% 90%;
-  --note-placeholder: hsl(278, 6%, 38%);
-
-  /* Completion — sage */
-  --color-completion: hsl(144, 25%, 70%);
-
-  /* Shadows */
-  --shadow-card: 0 1px 3px hsla(278, 30%, 4%, 0.30),
-                 0 4px 16px -4px hsla(278, 25%, 2%, 0.40);
-  --shadow-card-featured: 0 2px 8px hsla(278, 30%, 4%, 0.35),
-                          0 8px 32px -4px hsla(278, 25%, 2%, 0.50);
-  --border-card: none;
-
-  --card-l1-bg: var(--neutral-100);
-  --card-l1-border: 278 8% 24%;
-  --card-l1-border-width: 1px;
-
-  --dusty-rose-fog: hsl(144, 18%, 78%);
-}
-
-/* ── Deep Fig — Tiles ── */
-
-.theme-deep-fig .tile-door {
-  background: hsl(278, 14%, 19%) !important;
-  border: 1px solid hsl(278, 8%, 24%) !important;
-  border-radius: 14px !important;
-  box-shadow:
-    0 1px 2px hsla(278, 25%, 4%, 0.20),
-    0 4px 16px -6px hsla(278, 20%, 2%, 0.35) !important;
-}
-
-.theme-deep-fig .tile-door h3 {
-  color: hsl(36, 18%, 88%) !important;
-}
-
-.theme-deep-fig .tile-door p {
-  color: hsl(36, 10%, 56%) !important;
-}
-
-.theme-deep-fig .tile-door [data-chevron] {
-  color: hsl(36, 10%, 45%) !important;
-  opacity: 0.35 !important;
-}
-
-/* Accent bar — sage whisper */
-.theme-deep-fig .tile-door [data-accent-bar] {
-  background: hsl(144, 30%, 75%) !important;
-  opacity: 0.5 !important;
-}
-
-/* Completion marks — sage */
-.theme-deep-fig [data-cat-index] svg {
-  color: hsl(144, 28%, 72%) !important;
-  opacity: 0.55 !important;
-}
-
-/* Row bloom — sage glow on hover */
-.theme-deep-fig .row-bloom::before {
-  background: radial-gradient(
-    ellipse at 30% 40%,
-    hsla(144, 25%, 65%, 0.06) 0%,
-    hsla(144, 18%, 55%, 0.03) 55%,
-    transparent 85%
-  ) !important;
-}
-
-/* Header grain */
-.theme-deep-fig .header-textured::after {
-  opacity: 0.025 !important;
-}
-
-/* Section dividers */
-.theme-deep-fig .section-divider::after {
-  background: linear-gradient(
-    90deg,
-    hsla(36, 12%, 55%, 0.20) 0%,
-    hsla(36, 12%, 55%, 0) 100%
-  ) !important;
-}
-
-/* ── Deep Fig — CTA / Resume tile with depth ── */
-
-/* The resume/welcome tile: sage green gradient */
-.theme-deep-fig [data-fig-hero] {
-  background: linear-gradient(
-    165deg,
-    hsl(144, 30%, 85%) 0%,
-    hsl(144, 26%, 80%) 100%
-  ) !important;
-  border: none !important;
-  box-shadow:
-    0 0 0 1px hsla(144, 25%, 75%, 0.15),
-    0 2px 8px -2px hsla(144, 20%, 40%, 0.20),
-    0 8px 32px -4px hsla(278, 30%, 4%, 0.40),
-    inset 0 1px 0 0 hsla(0, 0%, 100%, 0.15) !important;
-}
-
-/* Hover lift for hero */
-@media (hover: hover) and (pointer: fine) {
-  .theme-deep-fig [data-fig-hero]:hover {
-    box-shadow:
-      0 0 0 1px hsla(144, 25%, 75%, 0.25),
-      0 4px 12px -2px hsla(144, 20%, 40%, 0.25),
-      0 16px 48px -8px hsla(278, 30%, 4%, 0.45),
-      0 0 48px -12px hsla(144, 30%, 70%, 0.12),
-      inset 0 1px 0 0 hsla(0, 0%, 100%, 0.20) !important;
-  }
-}
-
-/* ── Deep Fig — Tile hover ── */
-@media (hover: hover) and (pointer: fine) {
-  .theme-deep-fig .tile-door:hover {
-    background: hsl(278, 13%, 22%) !important;
-    border-color: hsl(278, 8%, 28%) !important;
-    box-shadow:
-      0 2px 4px hsla(278, 25%, 4%, 0.25),
-      0 8px 24px -6px hsla(278, 20%, 2%, 0.40) !important;
-  }
-  .theme-deep-fig .tile-door:hover h3 {
-    color: hsl(36, 20%, 92%) !important;
-  }
-  .theme-deep-fig .tile-door:hover [data-chevron] {
-    color: hsl(144, 28%, 72%) !important;
-    opacity: 0.55 !important;
-  }
-}
-
-/* ── Deep Fig — Rose fog atmosphere behind hero zone ── */
-.theme-deep-fig [data-fig-atmosphere] {
-  position: relative;
-}
-.theme-deep-fig [data-fig-atmosphere]::before {
-  content: '';
-  position: absolute;
-  top: -40px;
-  left: 10%;
-  right: 10%;
-  height: 200px;
-  background: radial-gradient(
-    ellipse at 50% 60%,
-    hsla(144, 25%, 78%, 0.05) 0%,
-    hsla(144, 18%, 65%, 0.02) 40%,
-    transparent 70%
-  );
-  pointer-events: none;
-  z-index: 0;
-}
-
-/* ══════════════════════════════════════════════════════════════
-   11. BONKI Brand — Teal + Caramel + Dusty Rose
-   Three brand colors from the BONKI product range.
-   Teal header/CTA, caramel editorial accent, rose atmosphere.
-   ══════════════════════════════════════════════════════════════ */
-.theme-bonki-brand {
-  /* Foundation — warm cream with rose-kissed undertone */
-  --neutral-50:  30 18% 95%;
-  --neutral-100: 28 22% 97%;
-  --neutral-200: 26 16% 93%;
-  --neutral-300: 24 12% 87%;
-
-  --background: var(--neutral-50);
-  --foreground: 25 12% 12%;
-
-  --card: var(--neutral-100);
-  --card-foreground: 25 12% 12%;
-
-  --popover: 0 0% 100%;
-  --popover-foreground: 25 12% 12%;
-
-  /* Primary — Teal (#279d99) */
-  --primary: 177 60% 38%;
-  --primary-hover: 177 55% 43%;
-  --primary-active: 177 62% 32%;
-  --primary-foreground: 0 0% 100%;
-
-  --secondary: 350 18% 92%;
-  --secondary-foreground: 25 12% 12%;
-
-  --muted: 350 12% 90%;
-  --muted-foreground: 25 8% 45%;
-
-  --accent: 350 14% 91%;
-  --accent-foreground: 25 12% 12%;
-
-  --destructive: 5 72% 50%;
-  --destructive-foreground: 0 0% 100%;
-
-  --border: var(--neutral-300);
-  --input: var(--neutral-300);
-  --ring: var(--primary);
-
-  /* Text — warm editorial */
-  --text-primary:    hsl(25, 15%, 14%);
-  --text-secondary:  hsl(25, 10%, 40%);
-  --text-tertiary:   hsl(25, 8%, 54%);
-  --text-ghost:      hsl(25, 6%, 68%);
-  --text-accent:     hsl(25, 52%, 46%);
-
-  /* Accent — Warm Caramel */
-  --accent-saffron:       hsl(25, 52%, 46%);
-  --accent-saffron-muted: hsl(25, 35%, 62%);
-  --accent-text:          hsl(25, 48%, 38%);
-
-  /* Surfaces */
-  --surface-base:   hsl(var(--neutral-50));
-  --surface-raised: hsl(var(--neutral-100));
-  --surface-sunken: hsl(var(--neutral-200));
-  --surface-chrome: 0 0% 100%;
-
-  /* CTA — Teal */
-  --cta-default: hsl(177, 60%, 38%);
-  --cta-hover-v2: hsl(177, 55%, 43%);
-  --cta-active:  hsl(177, 62%, 32%);
-  --cta-bg:      hsl(177, 60%, 38%);
-  --cta-text:    #FFFFFF;
-
-  /* Header — Teal */
-  --session-header-bg:    hsl(177, 60%, 38%);
-  --session-header-hover: hsl(177, 55%, 43%);
-  --session-header-press: hsl(177, 62%, 32%);
-  --header-text:          #FFFFFF;
-  --header-text-muted:    hsla(0, 0%, 100%, 0.72);
-  --header-border:        none;
-
-  /* Semantic */
-  --color-bg: var(--surface-base);
-  --color-bg-base: var(--surface-base);
-  --color-surface: hsl(var(--neutral-100));
-  --color-surface-primary: hsl(var(--neutral-100));
-  --color-cta: hsl(177, 60%, 38%);
-  --color-ink: var(--text-primary);
-  --color-secondary: var(--text-secondary);
-  --color-accent: hsl(25, 52%, 46%);
-  --color-accent-soft: hsl(25, 35%, 62%);
-  --color-text-primary: var(--text-primary);
-  --color-text-secondary: var(--text-secondary);
-  --color-text-tertiary: var(--text-tertiary);
-  --color-button-primary: hsl(177, 60%, 38%);
-  --color-button-text: #FFFFFF;
-  --color-divider: hsl(var(--neutral-300));
-
-  /* Buttons */
-  --btn-primary-bg: hsl(177, 60%, 38%);
-  --btn-primary-text: #FFFFFF;
-
-  /* Notes */
-  --note-bg: 350 14% 94%;
-  --note-border: 350 10% 88%;
-  --note-text: 25 12% 12%;
-  --note-placeholder: hsl(25, 6%, 58%);
-
-  /* Completion — teal */
-  --color-completion: hsl(177, 50%, 38%);
-
-  /* Shadows — warm */
-  --shadow-card: 0 1px 3px hsla(25, 20%, 20%, 0.05),
-                 0 4px 16px -6px hsla(25, 15%, 18%, 0.08);
-  --shadow-card-featured: 0 2px 6px hsla(25, 20%, 20%, 0.06),
-                          0 8px 28px -4px hsla(25, 15%, 18%, 0.12);
-  --border-card: none;
-
-  --card-l1-bg: var(--neutral-100);
-  --card-l1-border: var(--neutral-300);
-  --card-l1-border-width: 0px;
-}
-
-/* ── BONKI Brand — Tiles ── */
-.theme-bonki-brand .tile-door {
-  background: hsl(var(--neutral-100)) !important;
-  border: none !important;
-  border-radius: 14px !important;
-  box-shadow:
-    0 1px 3px hsla(25, 20%, 20%, 0.04),
-    0 4px 16px -6px hsla(350, 15%, 40%, 0.08),
-    0 12px 36px -12px hsla(25, 15%, 18%, 0.06) !important;
-}
-
-/* Rose bloom on tile hover */
-.theme-bonki-brand .row-bloom::before {
-  background: radial-gradient(
-    ellipse at 30% 40%,
-    hsla(350, 25%, 78%, 0.12) 0%,
-    hsla(350, 20%, 75%, 0.04) 50%,
-    transparent 80%
-  ) !important;
-}
-
-/* Accent bar — caramel */
-.theme-bonki-brand .tile-door [data-accent-bar] {
-  background: hsl(25, 52%, 46%) !important;
-  opacity: 0.55 !important;
-}
-
-/* Chevrons — teal */
-.theme-bonki-brand .tile-door [data-chevron] {
-  color: hsl(177, 45%, 38%) !important;
-  opacity: 0.40 !important;
-}
-
-/* Completion checkmarks — teal */
-.theme-bonki-brand [data-cat-index] svg {
-  color: hsl(177, 50%, 38%) !important;
-  opacity: 0.50 !important;
-}
-
-/* Tile hover */
-@media (hover: hover) and (pointer: fine) {
-  .theme-bonki-brand .tile-door:hover {
-    box-shadow:
-      0 2px 6px hsla(25, 20%, 20%, 0.06),
-      0 8px 24px -4px hsla(350, 18%, 40%, 0.12),
-      0 20px 48px -12px hsla(25, 15%, 18%, 0.10) !important;
-  }
-  .theme-bonki-brand .tile-door:hover h3 {
-    color: hsl(25, 15%, 10%) !important;
-  }
-  .theme-bonki-brand .tile-door:hover [data-chevron] {
-    color: hsl(177, 55%, 36%) !important;
-    opacity: 0.60 !important;
-  }
-}
-
-/* ── BONKI Brand — Hero tile: teal gradient ── */
-.theme-bonki-brand [data-fig-hero] {
-  background: linear-gradient(
-    155deg,
-    hsl(177, 60%, 38%) 0%,
-    hsl(177, 55%, 34%) 100%
-  ) !important;
-  border: none !important;
-  box-shadow:
-    0 2px 8px -2px hsla(177, 50%, 20%, 0.30),
-    0 8px 32px -8px hsla(177, 40%, 15%, 0.25),
-    inset 0 1px 0 0 hsla(0, 0%, 100%, 0.12) !important;
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .theme-bonki-brand [data-fig-hero]:hover {
-    box-shadow:
-      0 4px 12px -2px hsla(177, 50%, 20%, 0.35),
-      0 16px 48px -8px hsla(177, 40%, 15%, 0.30),
-      0 0 48px -12px hsla(177, 50%, 45%, 0.10),
-      inset 0 1px 0 0 hsla(0, 0%, 100%, 0.18) !important;
-  }
-}
-
-/* ── BONKI Brand — Rose fog atmosphere ── */
-.theme-bonki-brand [data-fig-atmosphere] {
-  position: relative;
-}
-.theme-bonki-brand [data-fig-atmosphere]::before {
-  content: '';
-  position: absolute;
-  top: -40px;
-  left: 5%;
-  right: 5%;
-  height: 220px;
-  background: radial-gradient(
-    ellipse at 50% 60%,
-    hsla(350, 25%, 78%, 0.08) 0%,
-    hsla(350, 20%, 75%, 0.03) 40%,
-    transparent 70%
-  );
-  pointer-events: none;
-  z-index: 0;
-}
-
-/* ── BONKI Brand — Section dividers ── */
-.theme-bonki-brand .section-divider::after {
-  background: linear-gradient(
-    90deg,
-    hsla(25, 30%, 55%, 0.20) 0%,
-    hsla(25, 20%, 55%, 0) 100%
-  ) !important;
-}
-
-/* Header grain — subtle */
-.theme-bonki-brand .header-textured::after {
-  opacity: 0.04 !important;
-}
-
-/* ══════════════════════════════════════════════════════════════
-   12. The Foundation — Warm Architecture
-   Base: Deep warm charcoal (brown-ink, not cold blue)
-   Tiles: Soft cream-bone (paper warmth)
-   Accent: Muted wine — depth, not urgency
-   ══════════════════════════════════════════════════════════════ */
-.theme-foundation {
-  /* Foundation — warm dark layering (brown undertone, not blue) */
-  --neutral-50:  25 14% 14%;      /* Canvas — warm charcoal */
-  --neutral-100: 25 12% 18%;      /* Raised surfaces */
-  --neutral-200: 25 10% 22%;      /* Hover elevation */
-  --neutral-300: 25 8% 26%;       /* Borders — soft */
-
-  --background: var(--neutral-50);
-  --foreground: 32 16% 88%;
-
-  --card: var(--neutral-100);
-  --card-foreground: 32 16% 88%;
-
-  --popover: var(--neutral-100);
-  --popover-foreground: 32 16% 88%;
-
-  /* Primary — Muted wine (softer oxblood) */
-  --primary: 350 40% 38%;
-  --primary-hover: 350 36% 44%;
-  --primary-active: 350 42% 32%;
-  --primary-foreground: 32 20% 93%;
-
-  --secondary: 25 10% 20%;
-  --secondary-foreground: 32 14% 88%;
-
-  --muted: 25 8% 21%;
-  --muted-foreground: 32 10% 52%;
-
-  --accent: 25 8% 23%;
-  --accent-foreground: 32 14% 88%;
-
-  --destructive: 0 50% 42%;
-  --destructive-foreground: 32 20% 94%;
-
-  --border: 25 7% 24%;
-  --input: 25 8% 23%;
-  --ring: var(--primary);
-
-  /* Text — warm bone spectrum */
-  --text-primary:    hsl(32, 16%, 88%);
-  --text-secondary:  hsl(32, 10%, 60%);
-  --text-tertiary:   hsl(30, 8%, 46%);
-  --text-ghost:      hsl(25, 6%, 32%);
-  --text-accent:     hsl(350, 30%, 58%);
-
-  /* Accent — soft wine */
-  --accent-saffron:       hsl(350, 32%, 52%);
-  --accent-saffron-muted: hsl(350, 22%, 42%);
-  --accent-text:          hsl(350, 28%, 58%);
-
-  /* Layered surfaces — warm */
-  --surface-base:   hsl(25, 14%, 14%);
-  --surface-raised: hsl(25, 12%, 18%);
-  --surface-sunken: hsl(25, 16%, 11%);
-  --surface-chrome: 25 16% 11%;
-
-  /* Header — warm dark */
-  --session-header-bg:    hsl(25, 16%, 11%);
-  --session-header-hover: hsl(25, 12%, 16%);
-  --session-header-press: hsl(25, 18%, 9%);
-  --header-text:          hsl(32, 18%, 88%);
-  --header-text-muted:    hsl(32, 12%, 58%);
-  --header-border:        none;
-
-  /* CTA — Muted wine */
-  --cta-default: hsl(350, 40%, 38%);
-  --cta-hover-v2: hsl(350, 36%, 44%);
-  --cta-active:  hsl(350, 42%, 32%);
-  --cta-bg:      hsl(350, 40%, 38%);
-  --cta-text:    hsl(32, 20%, 93%);
-
-  /* Semantic — text on bone tiles */
-  --color-bg: var(--surface-base);
-  --color-bg-base: var(--surface-base);
-  --color-surface: hsl(34, 26%, 88%);         /* Warm cream bone */
-  --color-surface-primary: hsl(34, 26%, 88%);
-  --color-cta: hsl(350, 40%, 38%);
-  --color-ink: hsl(25, 18%, 14%);
-  --color-secondary: hsl(25, 10%, 38%);
-  --color-accent: hsl(350, 40%, 38%);
-  --color-accent-soft: hsl(350, 20%, 48%);
-  --color-text-primary: hsl(25, 18%, 14%);
-  --color-text-secondary: hsl(25, 10%, 38%);
-  --color-text-tertiary: hsl(25, 8%, 50%);
-  --color-button-primary: hsl(350, 40%, 38%);
-  --color-button-text: hsl(32, 20%, 93%);
-  --color-divider: hsl(25, 7%, 24%);
-
-  /* Buttons */
-  --btn-primary-bg: hsl(350, 40%, 38%);
-  --btn-primary-text: hsl(32, 20%, 93%);
-
-  /* Notes */
-  --note-bg: 25 10% 17%;
-  --note-border: 25 7% 24%;
-  --note-text: 32 14% 88%;
-  --note-placeholder: hsl(25, 6%, 38%);
-
-  /* Completion — wine */
-  --color-completion: hsl(350, 32%, 52%);
-
-  /* Shadows — warm, soft */
-  --shadow-card: 0 1px 3px hsla(25, 18%, 6%, 0.12),
-                 0 4px 16px -8px hsla(25, 14%, 4%, 0.20);
-  --shadow-card-featured: 0 2px 6px hsla(25, 18%, 6%, 0.16),
-                          0 8px 32px -8px hsla(25, 14%, 4%, 0.28);
-  --border-card: none;
-
-  --card-l1-bg: var(--neutral-100);
-  --card-l1-border: 25 7% 25%;
-  --card-l1-border-width: 1px;
-}
-
-/* ── Foundation — Tiles: Soft cream, warmly nested ── */
-.theme-foundation .tile-door {
-  background: hsl(34, 28%, 89%) !important;     /* Soft warm cream */
-  border: none !important;
-  border-radius: 18px !important;
-  padding: 28px 24px !important;
-  min-height: 84px !important;
-  box-shadow:
-    inset 0 0 0 1px hsla(32, 16%, 72%, 0.12),
-    inset 0 1px 0 0 hsla(0, 0%, 100%, 0.30),
-    0 2px 6px hsla(25, 16%, 8%, 0.06),
-    0 8px 28px -10px hsla(25, 14%, 4%, 0.16) !important;
-  transition: transform 300ms cubic-bezier(0.22, 1, 0.36, 1),
-              box-shadow 350ms ease-out,
-              background 300ms ease-out !important;
-}
-
-.theme-foundation .tile-door h3 {
-  color: hsl(25, 16%, 15%) !important;
-  font-size: 18px !important;
-  letter-spacing: -0.005em !important;
-}
-
-.theme-foundation .tile-door p {
-  color: hsl(25, 10%, 36%) !important;
-  opacity: 0.85 !important;
-}
-
-.theme-foundation .tile-door [data-chevron] {
-  color: hsl(25, 8%, 45%) !important;
-  opacity: 0.25 !important;
-}
-
-/* Accent bar — soft wine, gentle presence */
-.theme-foundation .tile-door [data-accent-bar] {
-  background: hsl(350, 35%, 42%) !important;
-  opacity: 0.35 !important;
-  width: 2.5px !important;
-}
-
-/* Completion checkmarks — wine */
-.theme-foundation [data-cat-index] svg {
-  color: hsl(350, 30%, 45%) !important;
-  opacity: 0.50 !important;
-}
-
-/* Row bloom — warm cream inner glow */
-.theme-foundation .row-bloom::before {
-  background: radial-gradient(
-    ellipse at 25% 35%,
-    hsla(34, 30%, 90%, 0.12) 0%,
-    hsla(32, 20%, 85%, 0.04) 50%,
-    transparent 80%
-  ) !important;
-}
-
-/* Tile list — generous breathing room */
-.theme-foundation .flex.flex-col {
-  gap: 14px !important;
-}
-
-/* Section labels — warm on dark */
-.theme-foundation .section-divider {
-  color: hsl(32, 12%, 55%) !important;
-  opacity: 0.60 !important;
-}
-
-/* Header grain — warm whisper */
-.theme-foundation .header-textured::after {
-  opacity: 0.02 !important;
-}
-
-/* Section dividers — warm fade */
-.theme-foundation .section-divider::after {
-  background: linear-gradient(
-    90deg,
-    hsla(32, 14%, 58%, 0.12) 0%,
-    hsla(32, 10%, 55%, 0) 100%
-  ) !important;
-}
-
-/* ── Foundation — Tile hover: gentle warm lift ── */
-@media (hover: hover) and (pointer: fine) {
-  .theme-foundation .tile-door:hover {
-    background: hsl(34, 30%, 91%) !important;
-    transform: translateY(-2px) !important;
-    box-shadow:
-      inset 0 0 0 1px hsla(32, 16%, 72%, 0.08),
-      inset 0 1px 0 0 hsla(0, 0%, 100%, 0.35),
-      0 3px 8px hsla(25, 16%, 8%, 0.08),
-      0 14px 40px -10px hsla(25, 14%, 4%, 0.22) !important;
-  }
-  .theme-foundation .tile-door:hover h3 {
-    color: hsl(25, 18%, 12%) !important;
-  }
-  .theme-foundation .tile-door:hover [data-chevron] {
-    color: hsl(350, 28%, 40%) !important;
-    opacity: 0.45 !important;
-    transform: translateX(3px) !important;
-  }
-}
-
-/* ── Foundation — Active press: soft compress ── */
-.theme-foundation .tile-door:active {
-  transform: scale(0.985) !important;
-  box-shadow:
-    inset 0 0 0 1px hsla(32, 14%, 68%, 0.14),
-    0 1px 2px hsla(25, 16%, 8%, 0.05),
-    0 2px 8px -4px hsla(25, 14%, 4%, 0.12) !important;
-  transition: transform 80ms ease-out, box-shadow 80ms ease-out !important;
-}
-
-/* ══ Foundation — Hero: Warm wine, inviting not aggressive ══ */
-.theme-foundation [data-fig-hero] {
-  background: linear-gradient(
-    155deg,
-    hsl(350, 38%, 40%) 0%,
-    hsl(350, 40%, 35%) 50%,
-    hsl(348, 42%, 30%) 100%
-  ) !important;
-  border: none !important;
-  border-radius: 20px !important;
-  padding: 30px 26px !important;
-  box-shadow:
-    0 0 0 1px hsla(350, 30%, 32%, 0.12),
-    inset 0 1px 0 0 hsla(0, 0%, 100%, 0.08),
-    0 4px 14px -4px hsla(350, 35%, 20%, 0.22),
-    0 12px 40px -10px hsla(25, 18%, 6%, 0.35),
-    0 0 64px -20px hsla(350, 40%, 40%, 0.10) !important;
-  transition: transform 300ms cubic-bezier(0.22, 1, 0.36, 1),
-              box-shadow 380ms ease-out !important;
-}
-
-/* Hero text — warm cream */
-.theme-foundation [data-fig-hero] h3,
-.theme-foundation [data-fig-hero] p,
-.theme-foundation [data-fig-hero] span {
-  color: hsl(32, 22%, 92%) !important;
-}
-
-/* Hero hover — gentle warmth bloom */
-@media (hover: hover) and (pointer: fine) {
-  .theme-foundation [data-fig-hero]:hover {
-    transform: translateY(-2px) !important;
-    box-shadow:
-      0 0 0 1px hsla(350, 30%, 32%, 0.18),
-      inset 0 1px 0 0 hsla(0, 0%, 100%, 0.12),
-      0 6px 18px -4px hsla(350, 35%, 20%, 0.28),
-      0 18px 52px -10px hsla(25, 18%, 6%, 0.40),
-      0 0 80px -16px hsla(350, 40%, 42%, 0.14) !important;
-  }
-}
-
-/* Hero press */
-.theme-foundation [data-fig-hero]:active {
-  transform: scale(0.987) !important;
-  box-shadow:
-    0 0 0 1px hsla(350, 30%, 30%, 0.15),
-    inset 0 1px 0 0 hsla(0, 0%, 100%, 0.05),
-    0 2px 6px -2px hsla(350, 35%, 20%, 0.20),
-    0 4px 16px -6px hsla(25, 18%, 6%, 0.28) !important;
-  transition: transform 80ms ease-out, box-shadow 80ms ease-out !important;
-}
-
-/* ── Foundation — Soft warm ambient behind hero ── */
-.theme-foundation [data-fig-atmosphere]::before {
-  display: none !important;
-}
-
-.theme-foundation [data-fig-atmosphere] {
-  position: relative;
-}
-.theme-foundation [data-fig-atmosphere]::after {
-  content: '';
-  position: absolute;
-  top: -40px;
-  left: 10%;
-  right: 10%;
-  height: 200px;
-  background: radial-gradient(
-    ellipse at 50% 65%,
-    hsla(350, 30%, 38%, 0.05) 0%,
-    hsla(350, 25%, 32%, 0.02) 45%,
-    transparent 75%
-  );
-  pointer-events: none;
-  z-index: 0;
-}
-
-/* ── Foundation — Progress bar: wine ── */
-.theme-foundation [role="progressbar"] [data-state] {
-  background: hsl(350, 40%, 38%) !important;
-}
-
-/* ── Foundation — CTA buttons: warm wine ── */
-.theme-foundation .cta-primary {
-  border-radius: 16px !important;
-  box-shadow:
-    0 0 0 1px hsla(350, 30%, 32%, 0.10),
-    0 2px 8px -2px hsla(350, 35%, 22%, 0.20),
-    0 0 40px -14px hsla(350, 38%, 40%, 0.08) !important;
-  transition: transform 280ms ease-out,
-              box-shadow 320ms ease-out,
-              background-color 280ms ease-out !important;
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .theme-foundation .cta-primary:hover {
-    transform: translateY(-1px) !important;
-    box-shadow:
-      0 0 0 1px hsla(350, 30%, 32%, 0.15),
-      0 4px 12px -2px hsla(350, 35%, 22%, 0.25),
-      0 0 48px -12px hsla(350, 38%, 42%, 0.12) !important;
-  }
-}
-
-.theme-foundation .cta-primary:active {
-  transform: scale(0.975) !important;
-  box-shadow:
-    0 0 0 1px hsla(350, 30%, 30%, 0.12),
-    0 1px 4px -1px hsla(350, 35%, 22%, 0.16) !important;
-}
-
-/* ── Foundation — H1 title: warm cream ── */
-.theme-foundation .type-h1 {
-  color: hsl(32, 18%, 90%) !important;
-  letter-spacing: -0.015em !important;
 }
