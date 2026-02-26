@@ -15,7 +15,8 @@ export function useWatermarkMode(): WatermarkMode {
   const [params] = useSearchParams();
   const raw = params.get('watermark');
   if (raw === 'full' || raw === 'behind' || raw === 'hero' || raw === 'heroAlt' || raw === 'tile') return raw as WatermarkMode;
-  return null;
+  if (raw === 'none') return null;
+  return 'heroAlt'; // default
 }
 
 export default function BackgroundWatermark() {
