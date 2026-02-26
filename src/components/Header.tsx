@@ -53,12 +53,13 @@ export default function Header({
         className={`sticky top-0 z-10`}
         style={{
           backgroundColor: isImmersive
-            ? (isDarkSurface ? 'var(--cta-active)' : 'var(--surface-base)')
+            ? 'var(--page-bg, var(--surface-base))'
             : 'var(--surface-base)',
           boxShadow: 'none',
           borderBottom: isImmersive
-            ? (isDarkSurface ? '1px solid hsl(158, 25%, 20%)' : 'none')
+            ? '1px solid var(--color-border-faint, hsla(158, 20%, 30%, 0.12))'
             : 'none',
+          backdropFilter: isImmersive ? 'blur(12px)' : undefined,
         }}
       >
         {isImmersive ? (
