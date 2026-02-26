@@ -9,6 +9,8 @@ const VALID_THEMES = [
   'berry',
   'midnight',
   'light-header',
+  'tonal-tiles',
+  'dark-tiles',
 ] as const;
 
 export type ThemeId = (typeof VALID_THEMES)[number] | null;

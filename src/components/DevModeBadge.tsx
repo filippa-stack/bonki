@@ -26,6 +26,8 @@ const THEME_OPTIONS = [
   { value: 'berry', label: '🫐 Bold Berry', color: '#5C1A4A' },
   { value: 'midnight', label: '✨ Midnight Gold', color: '#1E2230' },
   { value: 'light-header', label: '☀️ Light Header', color: '#F5F1EC' },
+  { value: 'tonal-tiles', label: '🎨 Tonal Wash', color: '#D4DDD6' },
+  { value: 'dark-tiles', label: '🖤 Dark Tiles', color: '#1E3F32' },
 ];
 
 const PAGES = [

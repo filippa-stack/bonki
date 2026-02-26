@@ -453,7 +453,7 @@ export default function Home() {
                   return (
                     <>
                       <div
-
+                        data-cat-index={recIndex >= 0 ? recIndex : 0}
                         onClick={() => { markNavigated(); navigate(`/category/${recCat.id}`); }}
                         role="button"
                         tabIndex={0}
@@ -478,7 +478,7 @@ export default function Home() {
                         }}
                       >
                         {/* Inset accent bar */}
-                        <span aria-hidden style={{ position: 'absolute', left: '6px', top: '8px', bottom: '8px', width: '2px', borderRadius: '1px', background: 'var(--cta-active)' }} />
+                        <span data-accent-bar aria-hidden style={{ position: 'absolute', left: '6px', top: '8px', bottom: '8px', width: '2px', borderRadius: '1px', background: 'var(--cta-active)' }} />
                         <div className="flex-1 min-w-0">
                           <p className="font-sans uppercase" style={{ fontSize: '10px', letterSpacing: '0.06em', color: 'var(--accent-text)', opacity: 0.8, marginBottom: '4px' }}>
                             01 · Rekommenderad start
@@ -560,6 +560,7 @@ export default function Home() {
                       transition={{ delay: 0.2 + index * 0.06, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
                     >
                       <div
+                        data-cat-index={globalIndex >= 0 ? globalIndex : index}
                         onClick={() => { markNavigated(); navigate(`/category/${category.id}`); }}
                         role="button"
                         tabIndex={0}
