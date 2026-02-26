@@ -10,33 +10,35 @@ const VALID_THEMES = [
   'midnight',
 ] as const;
 
+const VALID_SURFACES = ['lift', 'sculpt'] as const;
+
 export type ThemeId = (typeof VALID_THEMES)[number] | null;
+export type SurfaceId = (typeof VALID_SURFACES)[number] | null;
 
 /**
- * Reads ?theme= from the URL and applies the corresponding CSS class
- * on <html>. Removes the class when no theme param is present.
- *
- * Returns the active theme id (or null for default).
+ * Reads ?theme= and ?surface= from the URL and applies CSS classes on <html>.
  */
 export function useThemeSwitcher(): ThemeId {
   const [params] = useSearchParams();
   const raw = params.get('theme');
   const theme: ThemeId = raw && VALID_THEMES.includes(raw as any) ? (raw as ThemeId) : null;
 
+  const rawSurface = params.get('surface');
+  const surface: SurfaceId = rawSurface && VALID_SURFACES.includes(rawSurface as any) ? (rawSurface as SurfaceId) : null;
+
   useEffect(() => {
     const root = document.documentElement;
-    // Remove all theme classes
     VALID_THEMES.forEach((t) => root.classList.remove(`theme-${t}`));
-    // Apply active
-    if (theme) {
-      root.classList.add(`theme-${theme}`);
-    }
+    VALID_SURFACES.forEach((s) => root.classList.remove(`surface-${s}`));
+    if (theme) root.classList.add(`theme-${theme}`);
+    if (surface) root.classList.add(`surface-${surface}`);
     return () => {
       VALID_THEMES.forEach((t) => root.classList.remove(`theme-${t}`));
+      VALID_SURFACES.forEach((s) => root.classList.remove(`surface-${s}`));
     };
-  }, [theme]);
+  }, [theme, surface]);
 
   return theme;
 }
 
-export { VALID_THEMES };
+export { VALID_THEMES, VALID_SURFACES };
