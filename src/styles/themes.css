@@ -741,3 +741,244 @@
 .theme-bonki-brand .header-textured::after {
   opacity: 0.04 !important;
 }
+
+/* ══════════════════════════════════════════════════════════════
+   12. The Foundation — Apple Discipline + Couture Restraint
+   Base: Near-black ink (#1C1F26)
+   Tiles: Muted bone (#E6DED4)
+   Accent: Oxblood (#8E2A35) — controlled, intentional, 5% only
+   ══════════════════════════════════════════════════════════════ */
+.theme-foundation {
+  /* Foundation — near-black ink layering */
+  --neutral-50:  220 16% 13%;     /* Canvas — #1C1F26 */
+  --neutral-100: 220 14% 17%;     /* Raised surfaces */
+  --neutral-200: 220 12% 21%;     /* Hover elevation */
+  --neutral-300: 220 10% 25%;     /* Borders — subtle */
+
+  --background: var(--neutral-50);
+  --foreground: 30 12% 88%;
+
+  --card: var(--neutral-100);
+  --card-foreground: 30 12% 88%;
+
+  --popover: var(--neutral-100);
+  --popover-foreground: 30 12% 88%;
+
+  /* Primary — Oxblood (#8E2A35) */
+  --primary: 352 55% 36%;
+  --primary-hover: 352 50% 42%;
+  --primary-active: 352 58% 30%;
+  --primary-foreground: 30 18% 92%;
+
+  --secondary: 220 12% 19%;
+  --secondary-foreground: 30 12% 88%;
+
+  --muted: 220 10% 20%;
+  --muted-foreground: 30 8% 50%;
+
+  --accent: 220 10% 22%;
+  --accent-foreground: 30 12% 88%;
+
+  --destructive: 0 55% 45%;
+  --destructive-foreground: 30 18% 94%;
+
+  --border: 220 8% 22%;
+  --input: 220 10% 22%;
+  --ring: var(--primary);
+
+  /* Text — ink on bone, ink at 65% for secondary */
+  --text-primary:    hsl(30, 12%, 88%);
+  --text-secondary:  hsl(30, 8%, 58%);      /* ~65% of primary */
+  --text-tertiary:   hsl(30, 6%, 42%);
+  --text-ghost:      hsl(220, 6%, 30%);
+  --text-accent:     hsl(352, 45%, 55%);     /* Oxblood whisper */
+
+  /* Accent — oxblood only */
+  --accent-saffron:       hsl(352, 45%, 50%);
+  --accent-saffron-muted: hsl(352, 30%, 40%);
+  --accent-text:          hsl(352, 40%, 55%);
+
+  /* Layered surfaces */
+  --surface-base:   hsl(220, 16%, 13%);
+  --surface-raised: hsl(220, 14%, 17%);
+  --surface-sunken: hsl(220, 18%, 10%);
+  --surface-chrome: 220 18% 10%;
+
+  /* Header — sinks into ink */
+  --session-header-bg:    hsl(220, 18%, 10%);
+  --session-header-hover: hsl(220, 14%, 15%);
+  --session-header-press: hsl(220, 20%, 8%);
+  --header-text:          hsl(30, 18%, 88%);
+  --header-text-muted:    hsl(30, 10%, 55%);
+  --header-border:        none;
+
+  /* CTA — Oxblood, restrained */
+  --cta-default: hsl(352, 55%, 36%);
+  --cta-hover-v2: hsl(352, 50%, 42%);
+  --cta-active:  hsl(352, 58%, 30%);
+  --cta-bg:      hsl(352, 55%, 36%);
+  --cta-text:    hsl(30, 18%, 92%);
+
+  /* Semantic */
+  --color-bg: var(--surface-base);
+  --color-bg-base: var(--surface-base);
+  --color-surface: hsl(30, 22%, 86%);         /* Bone tiles */
+  --color-surface-primary: hsl(30, 22%, 86%);
+  --color-cta: hsl(352, 55%, 36%);
+  --color-ink: hsl(220, 20%, 10%);            /* Near-black for text on bone */
+  --color-secondary: hsl(220, 12%, 35%);
+  --color-accent: hsl(352, 55%, 36%);
+  --color-accent-soft: hsl(352, 25%, 45%);
+  --color-text-primary: hsl(220, 20%, 10%);   /* Dark ink on bone tiles */
+  --color-text-secondary: hsl(220, 12%, 35%);
+  --color-text-tertiary: hsl(220, 8%, 48%);
+  --color-button-primary: hsl(352, 55%, 36%);
+  --color-button-text: hsl(30, 18%, 92%);
+  --color-divider: hsl(220, 8%, 22%);
+
+  /* Buttons */
+  --btn-primary-bg: hsl(352, 55%, 36%);
+  --btn-primary-text: hsl(30, 18%, 92%);
+
+  /* Notes */
+  --note-bg: 220 12% 16%;
+  --note-border: 220 8% 22%;
+  --note-text: 30 12% 88%;
+  --note-placeholder: hsl(220, 6%, 35%);
+
+  /* Completion — oxblood */
+  --color-completion: hsl(352, 45%, 50%);
+
+  /* Shadows — ink-based, Apple-soft */
+  --shadow-card: 0 1px 2px hsla(220, 20%, 4%, 0.15),
+                 0 4px 16px -8px hsla(220, 16%, 2%, 0.25);
+  --shadow-card-featured: 0 2px 6px hsla(220, 20%, 4%, 0.20),
+                          0 8px 32px -8px hsla(220, 16%, 2%, 0.35);
+  --border-card: none;
+
+  --card-l1-bg: var(--neutral-100);
+  --card-l1-border: 220 8% 24%;
+  --card-l1-border-width: 1px;
+}
+
+/* ── Foundation — Tiles: Muted Bone carved from ink ── */
+.theme-foundation .tile-door {
+  background: hsl(30, 22%, 86%) !important;     /* #E6DED4 bone */
+  border: none !important;
+  border-radius: 14px !important;
+  box-shadow:
+    inset 0 0 0 1px hsla(220, 16%, 13%, 0.08),
+    0 1px 2px hsla(220, 20%, 4%, 0.10),
+    0 6px 24px -8px hsla(220, 16%, 2%, 0.20) !important;
+}
+
+.theme-foundation .tile-door h3 {
+  color: hsl(220, 20%, 10%) !important;           /* Near-black ink */
+}
+
+.theme-foundation .tile-door p {
+  color: hsl(220, 12%, 35%) !important;           /* Ink at 65% */
+}
+
+.theme-foundation .tile-door [data-chevron] {
+  color: hsl(220, 10%, 35%) !important;
+  opacity: 0.30 !important;
+}
+
+/* Accent bar — oxblood, restrained */
+.theme-foundation .tile-door [data-accent-bar] {
+  background: hsl(352, 55%, 36%) !important;
+  opacity: 0.35 !important;
+}
+
+/* Completion checkmarks — oxblood */
+.theme-foundation [data-cat-index] svg {
+  color: hsl(352, 45%, 42%) !important;
+  opacity: 0.50 !important;
+}
+
+/* Row bloom — bone glow, no color */
+.theme-foundation .row-bloom::before {
+  background: radial-gradient(
+    ellipse at 30% 40%,
+    hsla(30, 18%, 86%, 0.06) 0%,
+    hsla(30, 12%, 80%, 0.02) 55%,
+    transparent 85%
+  ) !important;
+}
+
+/* Header grain — nearly invisible */
+.theme-foundation .header-textured::after {
+  opacity: 0.02 !important;
+}
+
+/* Section dividers — ink whisper */
+.theme-foundation .section-divider::after {
+  background: linear-gradient(
+    90deg,
+    hsla(30, 10%, 55%, 0.15) 0%,
+    hsla(30, 8%, 55%, 0) 100%
+  ) !important;
+}
+
+/* ── Foundation — Tile hover: subtle lift, no drama ── */
+@media (hover: hover) and (pointer: fine) {
+  .theme-foundation .tile-door:hover {
+    background: hsl(30, 24%, 88%) !important;
+    box-shadow:
+      inset 0 0 0 1px hsla(220, 16%, 13%, 0.06),
+      0 2px 4px hsla(220, 20%, 4%, 0.12),
+      0 12px 32px -8px hsla(220, 16%, 2%, 0.25) !important;
+  }
+  .theme-foundation .tile-door:hover h3 {
+    color: hsl(220, 22%, 8%) !important;
+  }
+  .theme-foundation .tile-door:hover [data-chevron] {
+    color: hsl(220, 12%, 28%) !important;
+    opacity: 0.45 !important;
+  }
+}
+
+/* ── Foundation — Active session / Resume tile: oxblood glow ── */
+.theme-foundation [data-fig-hero] {
+  background: linear-gradient(
+    160deg,
+    hsl(352, 55%, 36%) 0%,
+    hsl(352, 50%, 30%) 100%
+  ) !important;
+  border: none !important;
+  box-shadow:
+    0 0 0 1px hsla(352, 40%, 30%, 0.20),
+    0 2px 8px -2px hsla(352, 45%, 20%, 0.25),
+    0 8px 32px -8px hsla(220, 20%, 4%, 0.40),
+    inset 0 1px 0 0 hsla(0, 0%, 100%, 0.08) !important;
+}
+
+/* Hero text — warm bone on oxblood */
+.theme-foundation [data-fig-hero] h3,
+.theme-foundation [data-fig-hero] p,
+.theme-foundation [data-fig-hero] span {
+  color: hsl(30, 18%, 90%) !important;
+}
+
+/* Hero hover — controlled glow */
+@media (hover: hover) and (pointer: fine) {
+  .theme-foundation [data-fig-hero]:hover {
+    box-shadow:
+      0 0 0 1px hsla(352, 40%, 30%, 0.30),
+      0 4px 12px -2px hsla(352, 45%, 20%, 0.30),
+      0 16px 48px -8px hsla(220, 20%, 4%, 0.45),
+      0 0 56px -16px hsla(352, 50%, 40%, 0.12),
+      inset 0 1px 0 0 hsla(0, 0%, 100%, 0.12) !important;
+  }
+}
+
+/* ── Foundation — No atmosphere fog. Architecture, not decoration ── */
+.theme-foundation [data-fig-atmosphere]::before {
+  display: none !important;
+}
+
+/* ── Foundation — Progress bar: oxblood ── */
+.theme-foundation [role="progressbar"] [data-state] {
+  background: hsl(352, 55%, 36%) !important;
+}
