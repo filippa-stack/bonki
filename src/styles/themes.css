@@ -324,3 +324,104 @@
   --radius-card: 1.125rem;
   --border-card: none;
 }
+
+/* ══════════════════════════════════════════════════════════════
+   EARTH THEMES — warm alternatives to forest green
+   Best paired with surface-invite variants
+   ══════════════════════════════════════════════════════════════ */
+
+/* ── 7. Terracotta ──────────────────────────────────────────
+   Bränd lera. Medelhavskänsla, varm och inbjudande. */
+.theme-terracotta {
+  --primary: 14 42% 26%;
+  --primary-foreground: 0 0% 100%;
+  --foreground: 14 22% 14%;
+  --text-primary: hsl(14, 22%, 14%);
+  --text-secondary: hsl(14, 12%, 40%);
+  --text-tertiary: hsl(14, 8%, 54%);
+  --accent-saffron: hsl(38, 75%, 50%);
+  --accent-saffron-muted: hsl(38, 50%, 68%);
+  --accent-text: hsl(38, 60%, 40%);
+  --cta-default: hsl(14, 42%, 26%);
+  --cta-hover-v2: hsl(14, 44%, 32%);
+  --cta-active: hsl(14, 38%, 20%);
+  --cta-bg: var(--cta-default);
+  --session-header-bg: hsl(14, 40%, 22%);
+  --session-header-hover: hsl(14, 40%, 28%);
+  --session-header-press: hsl(14, 36%, 18%);
+  --color-button-primary: hsl(14, 42%, 26%);
+  --color-accent: hsl(14, 50%, 34%);
+  --color-accent-soft: hsl(38, 40%, 80%);
+}
+
+/* ── 8. Umber ───────────────────────────────────────────────
+   Mörk jord. Djup, maskulin, tidlös. */
+.theme-umber {
+  --primary: 25 35% 20%;
+  --primary-foreground: 0 0% 100%;
+  --foreground: 25 20% 12%;
+  --text-primary: hsl(25, 20%, 12%);
+  --text-secondary: hsl(25, 10%, 40%);
+  --text-tertiary: hsl(25, 8%, 54%);
+  --accent-saffron: hsl(42, 70%, 50%);
+  --accent-saffron-muted: hsl(42, 45%, 68%);
+  --accent-text: hsl(42, 55%, 40%);
+  --cta-default: hsl(25, 35%, 20%);
+  --cta-hover-v2: hsl(25, 37%, 26%);
+  --cta-active: hsl(25, 32%, 16%);
+  --cta-bg: var(--cta-default);
+  --session-header-bg: hsl(25, 33%, 17%);
+  --session-header-hover: hsl(25, 33%, 23%);
+  --session-header-press: hsl(25, 30%, 14%);
+  --color-button-primary: hsl(25, 35%, 20%);
+  --color-accent: hsl(42, 70%, 50%);
+  --color-accent-soft: hsl(42, 35%, 80%);
+}
+
+/* ── 9. Ochre ───────────────────────────────────────────────
+   Varm ockra. Solbränt, energiskt men jordnära. */
+.theme-ochre {
+  --primary: 35 45% 24%;
+  --primary-foreground: 0 0% 100%;
+  --foreground: 30 20% 14%;
+  --text-primary: hsl(30, 20%, 14%);
+  --text-secondary: hsl(30, 10%, 42%);
+  --text-tertiary: hsl(30, 8%, 56%);
+  --accent-saffron: hsl(10, 55%, 48%);
+  --accent-saffron-muted: hsl(10, 38%, 65%);
+  --accent-text: hsl(10, 45%, 38%);
+  --cta-default: hsl(35, 45%, 24%);
+  --cta-hover-v2: hsl(35, 48%, 30%);
+  --cta-active: hsl(35, 40%, 19%);
+  --cta-bg: var(--cta-default);
+  --session-header-bg: hsl(35, 42%, 20%);
+  --session-header-hover: hsl(35, 42%, 26%);
+  --session-header-press: hsl(35, 38%, 16%);
+  --color-button-primary: hsl(35, 45%, 24%);
+  --color-accent: hsl(10, 55%, 48%);
+  --color-accent-soft: hsl(35, 30%, 78%);
+}
+
+/* ── 10. Slate Olive ────────────────────────────────────────
+   Olivgrå. Jordad men svalare, könsneutral. */
+.theme-olive {
+  --primary: 85 22% 22%;
+  --primary-foreground: 0 0% 100%;
+  --foreground: 80 15% 14%;
+  --text-primary: hsl(80, 15%, 14%);
+  --text-secondary: hsl(80, 8%, 42%);
+  --text-tertiary: hsl(80, 6%, 56%);
+  --accent-saffron: hsl(28, 65%, 50%);
+  --accent-saffron-muted: hsl(28, 42%, 68%);
+  --accent-text: hsl(28, 50%, 40%);
+  --cta-default: hsl(85, 22%, 22%);
+  --cta-hover-v2: hsl(85, 24%, 28%);
+  --cta-active: hsl(85, 20%, 17%);
+  --cta-bg: var(--cta-default);
+  --session-header-bg: hsl(85, 20%, 18%);
+  --session-header-hover: hsl(85, 20%, 24%);
+  --session-header-press: hsl(85, 18%, 15%);
+  --color-button-primary: hsl(85, 22%, 22%);
+  --color-accent: hsl(28, 65%, 50%);
+  --color-accent-soft: hsl(85, 15%, 78%);
+}
