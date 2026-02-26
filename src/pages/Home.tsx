@@ -613,7 +613,7 @@ export default function Home() {
                         </div>
                         <div className="flex items-center gap-2 shrink-0 self-center">
                           {allCompleted ? (
-                            <Check size={13} style={{ color: '#1E3D2F', opacity: 0.50, marginRight: '10px' }} />
+                            <Check size={13} style={{ color: 'var(--color-completion, #1E3D2F)', opacity: 0.50, marginRight: '10px' }} />
                           ) : someStarted ? (
                             <span style={{
                               display: 'inline-block',
