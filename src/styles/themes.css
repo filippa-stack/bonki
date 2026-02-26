@@ -55,9 +55,9 @@
   --text-secondary: hsl(340, 10%, 40%);
   --text-tertiary: hsl(335, 8%, 54%);
 
-  --accent-saffron: hsl(28, 80%, 52%);
-  --accent-saffron-muted: hsl(28, 55%, 70%);
-  --accent-text: hsl(28, 65%, 42%);
+  --accent-saffron: hsl(32, 92%, 56%);
+  --accent-saffron-muted: hsl(32, 60%, 72%);
+  --accent-text: hsl(32, 78%, 46%);
 
   --cta-default: hsl(348, 45%, 22%);
   --cta-hover-v2: hsl(348, 48%, 28%);
