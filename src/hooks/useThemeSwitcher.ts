@@ -16,6 +16,7 @@ const VALID_THEMES = [
   'oxblood',
   'plum',
   'teal-noir',
+  'deep-fig',
 ] as const;
 
 const VALID_SURFACES = ['lift', 'sculpt', 'paper', 'invite', 'invite-white', 'invite-ivory', 'invite-tinted'] as const;

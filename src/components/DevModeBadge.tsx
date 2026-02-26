@@ -33,6 +33,7 @@ const THEME_OPTIONS = [
   { value: 'oxblood', label: '🩸 Oxblood', color: '#4A1218' },
   { value: 'plum', label: '🍇 Plum', color: '#3E1850' },
   { value: 'teal-noir', label: '🦚 Teal Noir', color: '#143840' },
+  { value: 'deep-fig', label: '🫐 Deep Fig', color: '#3A1830' },
 ];
 
 const SURFACE_OPTIONS = [
