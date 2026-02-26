@@ -305,18 +305,18 @@ export default function Home() {
                       border: 'var(--border-card, none)',
                       display: 'flex',
                       alignItems: 'center',
-                      justifyContent: 'space-between',
+                      justifyContent: 'center',
                       gap: '12px',
-                      boxShadow: 'var(--shadow-card-featured, 0 2px 16px -4px hsla(30, 20%, 12%, 0.12), 0 8px 32px -8px hsla(30, 18%, 25%, 0.10))',
+                      boxShadow: '0 4px 20px -4px hsla(158, 30%, 12%, 0.18), 0 10px 40px -10px hsla(158, 25%, 10%, 0.14)',
                       position: 'relative' as const,
                       overflow: 'hidden',
                     }}
                   >
-                    <div className="flex-1 min-w-0">
+                    <div className="flex-1 min-w-0" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
                       <p className="font-sans" style={{ fontSize: '10px', fontWeight: 500, letterSpacing: '0.12em', textTransform: 'uppercase' as const, color: 'hsl(36, 16%, 92%)', opacity: 0.45, marginBottom: '4px', lineHeight: 1 }}>
                         Ni var mitt i
                       </p>
-                      <p className="font-serif" style={{ fontSize: '18px', fontWeight: 600, lineHeight: 1.35, color: 'hsl(36, 16%, 92%)', textWrap: 'balance', hyphens: 'auto', maxWidth: '80%' } as React.CSSProperties}>
+                      <p className="font-serif" style={{ fontSize: '18px', fontWeight: 600, lineHeight: 1.35, color: 'hsl(36, 16%, 92%)', textWrap: 'balance', hyphens: 'auto' } as React.CSSProperties}>
                         {card?.title || cardId}
                       </p>
                       {cat && (
@@ -325,7 +325,6 @@ export default function Home() {
                         </p>
                       )}
                     </div>
-                    <ChevronRight data-chevron className="w-4 h-4 shrink-0 self-center" style={{ color: 'hsl(36, 16%, 92%)', opacity: 0.5, transition: 'transform 180ms ease-out' }} />
                   </div>
                 </motion.div>
               );
@@ -474,7 +473,7 @@ export default function Home() {
                           gap: '4px',
                           background: 'linear-gradient(135deg, hsl(36, 22%, 97%) 0%, hsl(38, 18%, 95%) 100%)',
                           border: 'var(--border-card, none)',
-                          boxShadow: 'var(--shadow-card-featured, 0 2px 6px hsla(30, 18%, 28%, 0.06), 0 8px 32px -8px hsla(30, 15%, 25%, 0.10))',
+                          boxShadow: '0 4px 20px -4px hsla(30, 18%, 28%, 0.12), 0 12px 40px -10px hsla(30, 15%, 25%, 0.14)',
                           position: 'relative' as const,
                           overflow: 'hidden',
                         }}
@@ -581,7 +580,7 @@ export default function Home() {
                           gap: '4px',
                           background: 'var(--surface-raised)',
                           border: 'var(--border-card, none)',
-                          boxShadow: 'var(--shadow-card, 0 1px 3px hsla(30, 15%, 25%, 0.05), 0 6px 24px -6px hsla(30, 18%, 28%, 0.08))',
+                          boxShadow: '0 4px 20px -4px hsla(30, 18%, 28%, 0.10), 0 12px 40px -10px hsla(30, 15%, 25%, 0.12)',
                           position: 'relative' as const,
                           overflow: 'hidden',
                         }}
