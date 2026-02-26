@@ -302,7 +302,7 @@ export default function Home() {
                     className="cursor-pointer group"
                     data-fig-hero
                     style={{
-                      borderRadius: '18px',
+                      borderRadius: '16px',
                       padding: '26px 26px 24px',
                       background: 'var(--cta-bg)',
                       border: 'none',
@@ -318,19 +318,19 @@ export default function Home() {
                     onPointerLeave={(e) => { (e.currentTarget as HTMLElement).style.transform = ''; }}
                   >
                     <div className="flex-1 min-w-0">
-                      <p className="font-sans" style={{ fontSize: '10px', fontWeight: 500, letterSpacing: '0.12em', textTransform: 'uppercase' as const, color: 'var(--cta-text)', opacity: 0.50, marginBottom: '6px', lineHeight: 1 }}>
+                      <p className="font-sans" style={{ fontSize: '10px', fontWeight: 500, letterSpacing: '0.12em', textTransform: 'uppercase' as const, color: 'var(--cta-text)', opacity: 0.45, marginBottom: '6px', lineHeight: 1 }}>
                         Ni var mitt i
                       </p>
                       <p className="font-serif" style={{ fontSize: '18px', fontWeight: 600, lineHeight: 1.35, color: 'var(--cta-text)', textWrap: 'balance', hyphens: 'auto', maxWidth: '80%' } as React.CSSProperties}>
                         {card?.title || cardId}
                       </p>
                       {cat && (
-                        <p className="font-sans" style={{ fontSize: '12px', color: 'var(--accent-saffron)', opacity: 0.7, marginTop: '4px' }}>
+                        <p className="font-sans" style={{ fontSize: '12px', color: 'var(--cta-text)', opacity: 0.45, marginTop: '4px' }}>
                           {cat.title}
                         </p>
                       )}
                     </div>
-                    <span className="font-sans shrink-0 self-center group-hover:opacity-90" style={{ fontSize: '14px', fontWeight: 500, color: 'var(--cta-text)', opacity: 0.85, transition: 'opacity 200ms ease, transform 200ms ease' }}>
+                    <span className="font-sans shrink-0 self-center group-hover:opacity-90" style={{ fontSize: '14px', fontWeight: 500, color: 'var(--cta-text)', opacity: 0.75, transition: 'opacity 200ms ease, transform 200ms ease' }}>
                       Fortsätt<span style={{ marginLeft: '6px', display: 'inline-block', transition: 'transform 200ms ease' }} className="group-hover:translate-x-1">→</span>
                     </span>
                   </div>
