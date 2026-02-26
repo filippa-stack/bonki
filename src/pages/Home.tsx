@@ -264,8 +264,9 @@ export default function Home() {
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+              style={{ paddingTop: '56px', paddingBottom: '8px' }}
             >
-              <h1 className="type-h1" style={{ color: 'var(--text-primary)', marginBottom: '38px' }}>
+              <h1 className="type-h1" style={{ color: 'var(--text-primary)', marginBottom: '38px', letterSpacing: '-0.01em' }}>
                 Ert utrymme
               </h1>
             </motion.div>
@@ -299,15 +300,15 @@ export default function Home() {
                     }}
                     className="cursor-pointer group"
                     style={{
-                      borderRadius: '12px',
-                      padding: '18px 20px',
-                      background: 'var(--cta-active)',
+                      borderRadius: '14px',
+                      padding: '20px 22px',
+                      background: 'var(--cta-bg)',
                       border: 'none',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'space-between',
                       gap: '12px',
-                      boxShadow: '0 2px 16px -4px hsla(158, 30%, 12%, 0.15), 0 1px 3px hsla(158, 25%, 10%, 0.08)',
+                      boxShadow: '0 2px 12px -2px hsla(352, 30%, 20%, 0.20), 0 8px 32px -8px hsla(280, 25%, 8%, 0.25)',
                       transition: 'transform 200ms ease-out, box-shadow 200ms ease-out',
                     }}
                     onPointerDown={(e) => { (e.currentTarget as HTMLElement).style.transform = 'scale(0.985)'; }}
@@ -315,10 +316,10 @@ export default function Home() {
                     onPointerLeave={(e) => { (e.currentTarget as HTMLElement).style.transform = ''; }}
                   >
                     <div className="flex-1 min-w-0">
-                      <p className="font-sans" style={{ fontSize: '10px', fontWeight: 500, letterSpacing: '0.12em', textTransform: 'uppercase' as const, color: 'hsl(36, 16%, 92%)', opacity: 0.45, marginBottom: '6px', lineHeight: 1 }}>
+                      <p className="font-sans" style={{ fontSize: '10px', fontWeight: 500, letterSpacing: '0.12em', textTransform: 'uppercase' as const, color: 'var(--cta-text)', opacity: 0.50, marginBottom: '6px', lineHeight: 1 }}>
                         Ni var mitt i
                       </p>
-                      <p className="font-serif" style={{ fontSize: '18px', fontWeight: 600, lineHeight: 1.35, color: 'hsl(36, 16%, 92%)', textWrap: 'balance', hyphens: 'auto', maxWidth: '80%' } as React.CSSProperties}>
+                      <p className="font-serif" style={{ fontSize: '18px', fontWeight: 600, lineHeight: 1.35, color: 'var(--cta-text)', textWrap: 'balance', hyphens: 'auto', maxWidth: '80%' } as React.CSSProperties}>
                         {card?.title || cardId}
                       </p>
                       {cat && (
@@ -327,7 +328,7 @@ export default function Home() {
                         </p>
                       )}
                     </div>
-                    <span className="font-sans shrink-0 self-center" style={{ fontSize: '13px', fontWeight: 500, color: 'hsl(36, 16%, 92%)', opacity: 0.7, transform: 'translateY(1px)' }}>
+                    <span className="font-sans shrink-0 self-center" style={{ fontSize: '13px', fontWeight: 500, color: 'var(--cta-text)', opacity: 0.7, transform: 'translateY(1px)' }}>
                       Fortsätt<span style={{ marginLeft: '4px' }}>→</span>
                     </span>
                   </div>
@@ -352,11 +353,11 @@ export default function Home() {
                     style={{ marginBottom: '24px' }}
                   >
                     <div style={{
-                      background: 'var(--cta-active)',
-                      borderRadius: '12px',
+                      background: 'var(--cta-bg)',
+                      borderRadius: '14px',
                       padding: '24px',
                       width: '100%',
-                      boxShadow: '0 2px 16px -4px hsla(158, 30%, 12%, 0.15), 0 1px 3px hsla(158, 25%, 10%, 0.08)',
+                      boxShadow: '0 2px 12px -2px hsla(352, 30%, 20%, 0.20), 0 8px 32px -8px hsla(280, 25%, 8%, 0.25)',
                     }}>
                       <p style={{
                         fontFamily: 'var(--font-serif)',
@@ -373,7 +374,7 @@ export default function Home() {
                         fontFamily: 'var(--font-serif)',
                         fontSize: '18px',
                         fontWeight: 600,
-                        color: 'hsl(36, 16%, 92%)',
+                        color: 'var(--cta-text)',
                         lineHeight: 1.35,
                         textWrap: 'balance',
                         marginTop: '14px',
