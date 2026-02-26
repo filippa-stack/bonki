@@ -39,8 +39,10 @@ h1, h2, h3,
     --popover: 0 0% 100%;
     --popover-foreground: 30 3% 10%;
 
-    --primary: 158 35% 18%;               /* Forest green — matches header */
-    --primary-foreground: 0 0% 100%;
+    --primary: 144 30% 85%;               /* Sage green (#cbe7d4) */
+    --primary-hover: 144 32% 88%;
+    --primary-active: 144 26% 78%;
+    --primary-foreground: 220 25% 16%;
 
     --secondary: 30 10% 88%;
     --secondary-foreground: 30 3% 10%;
@@ -143,12 +145,12 @@ h1, h2, h3,
     --text-secondary:  hsl(30, 10%, 40%);    /* Warm grey */
     --text-tertiary:   hsl(30, 8%, 56%);     /* Recedes */
     --text-ghost:      hsl(30, 6%, 70%);     /* Placeholders */
-    --text-accent:     hsl(38, 88%, 46%);    /* Burnt saffron — sparingly */
+    --text-accent:     hsl(28, 65%, 42%);    /* Burnt umber — premium accent */
 
-    /* ── Accent tokens ── */
-    --accent-saffron:       hsl(38, 88%, 46%);
-    --accent-saffron-muted: hsl(38, 60%, 72%);
-    --accent-text:          hsl(38, 72%, 38%);  /* Darker amber for editorial text */
+    /* ── Accent tokens — Burnt Umber ── */
+    --accent-saffron:       hsl(28, 65%, 42%);
+    --accent-saffron-muted: hsl(28, 45%, 65%);
+    --accent-text:          hsl(28, 55%, 36%);  /* Deep umber for editorial text */
     --color-text-tertiary:  var(--text-tertiary);
 
     /* ── Surface layering (mapped to foundation neutrals) ── */
@@ -158,8 +160,8 @@ h1, h2, h3,
 
     /* ── CTA pressed/hover states ── */
     --cta-default: hsl(var(--primary));
-    --cta-hover-v2: hsl(var(--primary-hover, 158 38% 23%));
-    --cta-active:  hsl(var(--primary-active, 158 32% 14%));
+    --cta-hover-v2: hsl(var(--primary-hover));
+    --cta-active:  hsl(var(--primary-active));
 
     /* ── Semantic color tokens ── */
     --color-bg: var(--surface-base);
@@ -170,25 +172,25 @@ h1, h2, h3,
     --color-cta: hsl(var(--primary));
     --color-ink: var(--text-primary);
     --color-secondary: var(--text-secondary);
-    --color-accent: #C1121F;
-    --color-accent-soft: #6D4C6D;
+    --color-accent: hsl(28, 65%, 42%);
+    --color-accent-soft: hsl(28, 40%, 65%);
     --color-text-primary: var(--text-primary);
     --color-text-secondary: var(--text-secondary);
     --color-button-primary: hsl(var(--primary));
-    --color-button-text: #FFFFFF;
+    --color-button-text: hsl(220, 25%, 16%);
     --color-divider: hsl(var(--neutral-300));
 
     /* ── CTA canonical tokens ── */
     --cta-bg:    var(--cta-default);
-    --cta-text:  #FFFFFF;
+    --cta-text:  hsl(220, 25%, 16%);
     --cta-hover: var(--cta-hover-v2);
 
     /* ── Session containment header tokens ── */
     --session-header-bg:    hsl(var(--primary));
     --session-header-hover: var(--cta-hover-v2);
     --session-header-press: var(--cta-active);
-    --header-text:          #FFFFFF;
-    --header-text-muted:    hsla(0, 0%, 100%, 0.75);
+    --header-text:          hsl(220, 25%, 16%);
+    --header-text-muted:    hsla(220, 25%, 16%, 0.60);
     --header-border:        none;
 
     /* Dynamic overrides — set via useThemeVars hook at runtime */
@@ -196,7 +198,7 @@ h1, h2, h3,
     --hero-title-color: var(--text-primary);
     --hero-subtitle-color: var(--text-secondary);
     --btn-primary-bg: var(--color-cta);
-    --btn-primary-text: #FFFFFF;
+    --btn-primary-text: hsl(220, 25%, 16%);
   }
 }
 
