@@ -1,19 +1,20 @@
 import { useSearchParams } from 'react-router-dom';
 import bonkiLogo from '@/assets/bonki-logo.png';
 
-export type WatermarkMode = 'full' | 'behind' | 'hero' | null;
+export type WatermarkMode = 'full' | 'behind' | 'hero' | 'heroAlt' | null;
 
 /**
  * Reads ?watermark= from URL.
- * - full:   Giant centered logo filling the viewport
- * - behind: Logo behind tiles (tiles become semi-transparent via CSS class)
- * - hero:   Logo fills the top zone (header → first section)
- * - tile:   Handled inside CategoryCard directly
+ * - full:    Giant centered logo filling the viewport
+ * - behind:  Logo behind tiles (tiles become semi-transparent via CSS class)
+ * - hero:    Logo fills the top zone, behind everything (z-0)
+ * - heroAlt: Same size/pos as hero but z-[1] + gradient fade — logo shows through cards
+ * - tile:    Handled inside CategoryCard directly
  */
 export function useWatermarkMode(): WatermarkMode {
   const [params] = useSearchParams();
   const raw = params.get('watermark');
-  if (raw === 'full' || raw === 'behind' || raw === 'hero' || raw === 'tile') return raw as WatermarkMode;
+  if (raw === 'full' || raw === 'behind' || raw === 'hero' || raw === 'heroAlt' || raw === 'tile') return raw as WatermarkMode;
   return null;
 }
 
@@ -61,6 +62,33 @@ export default function BackgroundWatermark() {
             width: '96vw',
             maxWidth: '600px',
             opacity: 0.07,
+            filter: 'saturate(0.3)',
+          }}
+          draggable={false}
+        />
+      </div>
+    );
+  }
+
+  if (mode === 'heroAlt') {
+    return (
+      <div
+        className="absolute inset-x-0 pointer-events-none z-[1] flex items-start justify-center"
+        style={{
+          top: '12px',
+          maskImage: 'linear-gradient(to bottom, black 50%, transparent 100%)',
+          WebkitMaskImage: 'linear-gradient(to bottom, black 50%, transparent 100%)',
+        }}
+        aria-hidden="true"
+      >
+        <img
+          src={bonkiLogo}
+          alt=""
+          className="object-contain select-none"
+          style={{
+            width: '96vw',
+            maxWidth: '600px',
+            opacity: 0.06,
             filter: 'saturate(0.3)',
           }}
           draggable={false}
