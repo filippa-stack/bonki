@@ -273,7 +273,7 @@
 }
 
 /* ── 10. Deep Fig ──────────────────────────────────────────
-   Apple dark-mode: layered darks. Warm copper CTA (not pomegranate).
+   Apple dark-mode: layered darks. Sage green CTA (#cbe7d4).
    Bone for text + accent labels. Rose fog as ambient atmosphere. */
 .theme-deep-fig {
   /* Foundation — three shades of fig */
@@ -291,11 +291,11 @@
   --popover: var(--neutral-100);
   --popover-foreground: 36 18% 90%;
 
-  /* Primary — Warm Copper (ember glow, not cold red) */
-  --primary: 22 62% 48%;
-  --primary-hover: 22 58% 54%;
-  --primary-active: 22 65% 42%;
-  --primary-foreground: 36 20% 96%;
+  /* Primary — Sage Green (#cbe7d4) */
+  --primary: 144 30% 85%;
+  --primary-hover: 144 32% 88%;
+  --primary-active: 144 28% 80%;
+  --primary-foreground: 278 20% 14%;
 
   --secondary: 278 12% 20%;
   --secondary-foreground: 36 18% 90%;
@@ -316,14 +316,14 @@
   /* Text — Bone spectrum */
   --text-primary:    hsl(36, 18%, 90%);
   --text-secondary:  hsl(36, 12%, 62%);
-  --text-tertiary:   hsl(36, 10%, 45%);    /* Bone ghost, NOT fig — warmer */
+  --text-tertiary:   hsl(36, 10%, 45%);
   --text-ghost:      hsl(278, 6%, 32%);
-  --text-accent:     hsl(22, 55%, 62%);    /* Warm copper glow for labels */
+  --text-accent:     hsl(144, 25%, 72%);    /* Sage whisper for labels */
 
-  /* Accent — Rose-tinted bone for recommendation whisper */
-  --accent-saffron:       hsl(18, 45%, 60%);   /* Dusty copper */
-  --accent-saffron-muted: hsl(18, 30%, 50%);
-  --accent-text:          hsl(10, 30%, 72%);   /* Rose fog text */
+  /* Accent — Sage-tinted for recommendation */
+  --accent-saffron:       hsl(144, 22%, 68%);
+  --accent-saffron-muted: hsl(144, 18%, 55%);
+  --accent-text:          hsl(144, 20%, 72%);   /* Sage fog text */
 
   /* Layered surfaces */
   --surface-base:   hsl(278, 16%, 14%);
@@ -339,12 +339,12 @@
   --header-text-muted:    hsl(36, 12%, 55%);
   --header-border:        none;
 
-  /* CTA — Warm Copper with depth */
-  --cta-default: hsl(22, 62%, 48%);
-  --cta-hover-v2: hsl(22, 58%, 54%);
-  --cta-active:  hsl(22, 65%, 42%);
-  --cta-bg:      hsl(22, 62%, 48%);
-  --cta-text:    hsl(36, 20%, 96%);
+  /* CTA — Sage Green with depth */
+  --cta-default: hsl(144, 30%, 85%);
+  --cta-hover-v2: hsl(144, 32%, 88%);
+  --cta-active:  hsl(144, 28%, 80%);
+  --cta-bg:      hsl(144, 30%, 85%);
+  --cta-text:    hsl(278, 20%, 16%);
 
   /* Semantic */
   --color-bg: var(--surface-base);
@@ -354,8 +354,8 @@
   --color-text-primary: hsl(36, 18%, 90%);
   --color-text-secondary: hsl(36, 12%, 62%);
   --color-text-tertiary: hsl(36, 10%, 45%);
-  --color-accent: hsl(22, 62%, 48%);
-  --color-accent-soft: hsl(22, 35%, 50%);
+  --color-accent: hsl(144, 30%, 85%);
+  --color-accent-soft: hsl(144, 20%, 60%);
   --color-divider: hsl(278, 8%, 22%);
 
   /* Notes */
@@ -364,8 +364,8 @@
   --note-text: 36 18% 90%;
   --note-placeholder: hsl(278, 6%, 38%);
 
-  /* Completion — copper at 65% */
-  --color-completion: hsl(22, 55%, 50%);
+  /* Completion — sage */
+  --color-completion: hsl(144, 25%, 70%);
 
   /* Shadows */
   --shadow-card: 0 1px 3px hsla(278, 30%, 4%, 0.30),
@@ -378,7 +378,7 @@
   --card-l1-border: 278 8% 24%;
   --card-l1-border-width: 1px;
 
-  --dusty-rose-fog: hsl(10, 22%, 72%);
+  --dusty-rose-fog: hsl(144, 18%, 78%);
 }
 
 /* ── Deep Fig — Tiles ── */
@@ -405,24 +405,24 @@
   opacity: 0.35 !important;
 }
 
-/* Accent bar — warm copper whisper */
+/* Accent bar — sage whisper */
 .theme-deep-fig .tile-door [data-accent-bar] {
-  background: hsl(22, 55%, 50%) !important;
-  opacity: 0.6 !important;
+  background: hsl(144, 30%, 75%) !important;
+  opacity: 0.5 !important;
 }
 
-/* Completion marks — copper */
+/* Completion marks — sage */
 .theme-deep-fig [data-cat-index] svg {
-  color: hsl(22, 55%, 50%) !important;
+  color: hsl(144, 28%, 72%) !important;
   opacity: 0.55 !important;
 }
 
-/* Row bloom — warm copper glow on hover */
+/* Row bloom — sage glow on hover */
 .theme-deep-fig .row-bloom::before {
   background: radial-gradient(
     ellipse at 30% 40%,
-    hsla(22, 40%, 45%, 0.07) 0%,
-    hsla(10, 20%, 40%, 0.03) 55%,
+    hsla(144, 25%, 65%, 0.06) 0%,
+    hsla(144, 18%, 55%, 0.03) 55%,
     transparent 85%
   ) !important;
 }
@@ -443,30 +443,30 @@
 
 /* ── Deep Fig — CTA / Resume tile with depth ── */
 
-/* The resume/welcome tile: gradient + inner light + glow shadow */
+/* The resume/welcome tile: sage green gradient */
 .theme-deep-fig [data-fig-hero] {
   background: linear-gradient(
     165deg,
-    hsl(22, 62%, 50%) 0%,
-    hsl(22, 58%, 44%) 100%
+    hsl(144, 30%, 85%) 0%,
+    hsl(144, 26%, 80%) 100%
   ) !important;
   border: none !important;
   box-shadow:
-    0 0 0 1px hsla(22, 50%, 55%, 0.15),
-    0 2px 8px -2px hsla(22, 50%, 25%, 0.30),
+    0 0 0 1px hsla(144, 25%, 75%, 0.15),
+    0 2px 8px -2px hsla(144, 20%, 40%, 0.20),
     0 8px 32px -4px hsla(278, 30%, 4%, 0.40),
-    inset 0 1px 0 0 hsla(36, 30%, 80%, 0.12) !important;
+    inset 0 1px 0 0 hsla(0, 0%, 100%, 0.15) !important;
 }
 
 /* Hover lift for hero */
 @media (hover: hover) and (pointer: fine) {
   .theme-deep-fig [data-fig-hero]:hover {
     box-shadow:
-      0 0 0 1px hsla(22, 50%, 55%, 0.20),
-      0 4px 12px -2px hsla(22, 50%, 25%, 0.35),
+      0 0 0 1px hsla(144, 25%, 75%, 0.25),
+      0 4px 12px -2px hsla(144, 20%, 40%, 0.25),
       0 16px 48px -8px hsla(278, 30%, 4%, 0.45),
-      0 0 48px -12px hsla(22, 60%, 48%, 0.15),
-      inset 0 1px 0 0 hsla(36, 30%, 80%, 0.15) !important;
+      0 0 48px -12px hsla(144, 30%, 70%, 0.12),
+      inset 0 1px 0 0 hsla(0, 0%, 100%, 0.20) !important;
   }
 }
 
@@ -483,7 +483,7 @@
     color: hsl(36, 20%, 92%) !important;
   }
   .theme-deep-fig .tile-door:hover [data-chevron] {
-    color: hsl(22, 55%, 55%) !important;
+    color: hsl(144, 28%, 72%) !important;
     opacity: 0.55 !important;
   }
 }
@@ -501,8 +501,8 @@
   height: 200px;
   background: radial-gradient(
     ellipse at 50% 60%,
-    hsla(10, 22%, 72%, 0.06) 0%,
-    hsla(10, 18%, 60%, 0.03) 40%,
+    hsla(144, 25%, 78%, 0.05) 0%,
+    hsla(144, 18%, 65%, 0.02) 40%,
     transparent 70%
   );
   pointer-events: none;
