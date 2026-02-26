@@ -39,10 +39,10 @@ h1, h2, h3,
     --popover: 0 0% 100%;
     --popover-foreground: 30 3% 10%;
 
-    --primary: 144 30% 85%;               /* Sage green (#cbe7d4) */
-    --primary-hover: 144 32% 88%;
-    --primary-active: 144 26% 78%;
-    --primary-foreground: 220 25% 16%;
+    --primary: 177 60% 38%;               /* Teal jade (#279d99) */
+    --primary-hover: 177 55% 43%;
+    --primary-active: 177 62% 32%;
+    --primary-foreground: 0 0% 100%;
 
     --secondary: 30 10% 88%;
     --secondary-foreground: 30 3% 10%;
@@ -177,20 +177,20 @@ h1, h2, h3,
     --color-text-primary: var(--text-primary);
     --color-text-secondary: var(--text-secondary);
     --color-button-primary: hsl(var(--primary));
-    --color-button-text: hsl(220, 25%, 16%);
+    --color-button-text: #FFFFFF;
     --color-divider: hsl(var(--neutral-300));
 
     /* ── CTA canonical tokens ── */
     --cta-bg:    var(--cta-default);
-    --cta-text:  hsl(220, 25%, 16%);
+    --cta-text:  #FFFFFF;
     --cta-hover: var(--cta-hover-v2);
 
     /* ── Session containment header tokens ── */
     --session-header-bg:    hsl(var(--primary));
     --session-header-hover: var(--cta-hover-v2);
     --session-header-press: var(--cta-active);
-    --header-text:          hsl(220, 25%, 16%);
-    --header-text-muted:    hsla(220, 25%, 16%, 0.60);
+    --header-text:          #FFFFFF;
+    --header-text-muted:    hsla(0, 0%, 100%, 0.75);
     --header-border:        none;
 
     /* Dynamic overrides — set via useThemeVars hook at runtime */
@@ -198,7 +198,7 @@ h1, h2, h3,
     --hero-title-color: var(--text-primary);
     --hero-subtitle-color: var(--text-secondary);
     --btn-primary-bg: var(--color-cta);
-    --btn-primary-text: hsl(220, 25%, 16%);
+    --btn-primary-text: #FFFFFF;
   }
 }
 
