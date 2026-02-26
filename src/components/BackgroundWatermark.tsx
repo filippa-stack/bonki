@@ -50,18 +50,16 @@ export default function BackgroundWatermark() {
     return (
       <div
         className="absolute inset-x-0 pointer-events-none z-0 flex items-start justify-center"
-        style={{
-          top: '56px',
-        }}
+        style={{ top: '46px' }}
         aria-hidden="true"
       >
         <img
           src={bonkiLogo}
           alt=""
-          className="object-contain object-top select-none"
+          className="object-contain select-none"
           style={{
-            width: '72vw',
-            maxWidth: '420px',
+            width: '96vw',
+            maxWidth: '600px',
             opacity: 0.07,
             filter: 'saturate(0.3)',
           }}
