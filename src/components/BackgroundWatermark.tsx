@@ -49,22 +49,19 @@ export default function BackgroundWatermark() {
   if (mode === 'hero') {
     return (
       <div
-        className="absolute inset-x-0 pointer-events-none z-0 flex items-center justify-center"
+        className="absolute inset-x-0 pointer-events-none z-0 flex items-start justify-center"
         style={{
-          top: '56px',           /* below header */
-          height: 'calc(100vh - 56px - 160px)', /* stop well above "VI SOM BAS" */
+          top: '56px',
         }}
         aria-hidden="true"
       >
         <img
           src={bonkiLogo}
           alt=""
-          className="object-contain select-none"
+          className="object-contain object-top select-none"
           style={{
             width: '92vw',
             maxWidth: '560px',
-            height: '100%',
-            maxHeight: '560px',
             opacity: 0.07,
             filter: 'saturate(0.3)',
           }}
