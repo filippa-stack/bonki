@@ -10,7 +10,7 @@ const VALID_THEMES = [
   'midnight',
 ] as const;
 
-const VALID_SURFACES = ['lift', 'sculpt', 'paper', 'invite'] as const;
+const VALID_SURFACES = ['lift', 'sculpt', 'paper', 'invite', 'invite-white', 'invite-ivory', 'invite-tinted'] as const;
 
 export type ThemeId = (typeof VALID_THEMES)[number] | null;
 export type SurfaceId = (typeof VALID_SURFACES)[number] | null;
