@@ -326,7 +326,7 @@ export default function Home() {
                         {card?.title || cardId}
                       </p>
                       {cat && (
-                        <p className="font-sans" style={{ fontSize: '12px', color: 'var(--accent-saffron)', opacity: 0.7, marginTop: '4px' }}>
+                        <p className="font-sans" style={{ fontSize: '12px', color: 'var(--cta-text)', opacity: 0.5, marginTop: '4px' }}>
                           {cat.title}
                         </p>
                       )}
@@ -369,8 +369,8 @@ export default function Home() {
                         fontFamily: 'var(--font-serif)',
                         fontSize: '13.5px',
                         fontWeight: 400,
-                        color: 'var(--accent-saffron)',
-                        opacity: 0.75,
+                        color: 'var(--cta-text)',
+                        opacity: 0.6,
                         lineHeight: 1.55,
                         textWrap: 'balance',
                       } as React.CSSProperties}>
@@ -484,7 +484,7 @@ export default function Home() {
                          }}
                       >
                         {/* Inset accent bar */}
-                        <span data-accent-bar aria-hidden style={{ position: 'absolute', left: '6px', top: '8px', bottom: '8px', width: '2px', borderRadius: '1px', background: 'var(--cta-active)' }} />
+                        <span data-accent-bar aria-hidden style={{ position: 'absolute', left: '6px', top: '8px', bottom: '8px', width: '2px', borderRadius: '1px', background: 'var(--accent-saffron)' }} />
                         <div className="flex-1 min-w-0">
                           <p className="font-sans uppercase" style={{ fontSize: '10px', letterSpacing: '0.06em', color: 'var(--accent-text)', opacity: 0.8, marginBottom: '4px' }}>
                             01 · Rekommenderad start
