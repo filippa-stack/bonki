@@ -463,20 +463,19 @@ export default function Home() {
                           if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); navigate(`/category/${recCat.id}`); }
                         }}
                         className="cursor-pointer tile-door row-bloom"
-                         style={{
-                          borderRadius: '12px',
-                          padding: '22px 20px',
-                          minHeight: '48px',
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'space-between',
-                          gap: '12px',
-                          background: 'linear-gradient(135deg, hsl(36, 22%, 97%) 0%, hsl(38, 18%, 95%) 100%)',
-                          border: 'none',
-                          boxShadow: '0 2px 6px hsla(30, 18%, 28%, 0.06), 0 8px 32px -8px hsla(30, 15%, 25%, 0.10)',
-                          position: 'relative' as const,
-                          overflow: 'hidden',
-                        }}
+                          style={{
+                           borderRadius: '14px',
+                           padding: '24px 22px',
+                           minHeight: '48px',
+                           display: 'flex',
+                           alignItems: 'center',
+                           justifyContent: 'space-between',
+                           gap: '12px',
+                           background: 'var(--surface-raised)',
+                           border: 'none',
+                           position: 'relative' as const,
+                           overflow: 'hidden',
+                         }}
                       >
                         {/* Inset accent bar */}
                         <span data-accent-bar aria-hidden style={{ position: 'absolute', left: '6px', top: '8px', bottom: '8px', width: '2px', borderRadius: '1px', background: 'var(--cta-active)' }} />
@@ -504,7 +503,7 @@ export default function Home() {
 
             {/* Categories */}
             <div className="px-6" style={{ paddingBottom: '48px' }}>
-              <div className="flex flex-col" style={{ gap: '8px' }}>
+              <div className="flex flex-col" style={{ gap: '10px' }}>
                 {(() => {
                   const SECTION_GROUPS: { label: string; ids: string[] }[] = [
                     { label: 'VI SOM BAS', ids: ['emotional-intimacy', 'communication', 'category-8'] },
@@ -570,20 +569,19 @@ export default function Home() {
                           if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); navigate(`/category/${category.id}`); }
                         }}
                         className="cursor-pointer tile-door row-bloom"
-                         style={{
-                          borderRadius: '12px',
-                          padding: '22px 20px',
-                          minHeight: '72px',
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'space-between',
-                          gap: '12px',
-                          background: 'var(--surface-raised)',
-                          border: 'none',
-                          boxShadow: '0 1px 3px hsla(30, 15%, 25%, 0.05), 0 6px 24px -6px hsla(30, 18%, 28%, 0.08)',
-                          position: 'relative' as const,
-                          overflow: 'hidden',
-                        }}
+                          style={{
+                           borderRadius: '14px',
+                           padding: '24px 22px',
+                           minHeight: '72px',
+                           display: 'flex',
+                           alignItems: 'center',
+                           justifyContent: 'space-between',
+                           gap: '12px',
+                           background: 'var(--surface-raised)',
+                           border: 'none',
+                           position: 'relative' as const,
+                           overflow: 'hidden',
+                         }}
                       >
                         <div className="flex-1 min-w-0">
                           <p className="font-sans" style={{ fontSize: '10px', fontWeight: 500, letterSpacing: '0.12em', lineHeight: 1, color: 'var(--color-text-tertiary)', opacity: 0.55, marginBottom: '4px' }}>
