@@ -302,19 +302,18 @@ export default function Home() {
                     className="cursor-pointer group"
                     data-fig-hero
                     style={{
-                      borderRadius: '16px',
-                      padding: '22px 24px',
+                      borderRadius: '18px',
+                      padding: '26px 26px 24px',
                       background: 'var(--cta-bg)',
                       border: 'none',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'space-between',
-                      gap: '12px',
-                      boxShadow: '0 2px 12px -2px hsla(22, 40%, 25%, 0.25), 0 8px 32px -8px hsla(278, 25%, 8%, 0.30)',
-                      transition: 'transform 200ms ease-out, box-shadow 200ms ease-out',
+                      gap: '14px',
+                      transition: 'transform 240ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 300ms ease-out',
                       position: 'relative' as const,
                     }}
-                    onPointerDown={(e) => { (e.currentTarget as HTMLElement).style.transform = 'scale(0.985)'; }}
+                    onPointerDown={(e) => { (e.currentTarget as HTMLElement).style.transform = 'scale(0.98)'; }}
                     onPointerUp={(e) => { (e.currentTarget as HTMLElement).style.transform = ''; }}
                     onPointerLeave={(e) => { (e.currentTarget as HTMLElement).style.transform = ''; }}
                   >
