@@ -743,356 +743,349 @@
 }
 
 /* ══════════════════════════════════════════════════════════════
-   12. The Foundation — Apple Discipline + Couture Restraint
-   Base: Near-black ink (#1C1F26)
-   Tiles: Muted bone (#E6DED4)
-   Accent: Oxblood (#8E2A35) — controlled, intentional, 5% only
+   12. The Foundation — Warm Architecture
+   Base: Deep warm charcoal (brown-ink, not cold blue)
+   Tiles: Soft cream-bone (paper warmth)
+   Accent: Muted wine — depth, not urgency
    ══════════════════════════════════════════════════════════════ */
 .theme-foundation {
-  /* Foundation — near-black ink layering */
-  --neutral-50:  220 16% 13%;     /* Canvas — #1C1F26 */
-  --neutral-100: 220 14% 17%;     /* Raised surfaces */
-  --neutral-200: 220 12% 21%;     /* Hover elevation */
-  --neutral-300: 220 10% 25%;     /* Borders — subtle */
+  /* Foundation — warm dark layering (brown undertone, not blue) */
+  --neutral-50:  25 14% 14%;      /* Canvas — warm charcoal */
+  --neutral-100: 25 12% 18%;      /* Raised surfaces */
+  --neutral-200: 25 10% 22%;      /* Hover elevation */
+  --neutral-300: 25 8% 26%;       /* Borders — soft */
 
   --background: var(--neutral-50);
-  --foreground: 30 12% 88%;
+  --foreground: 32 16% 88%;
 
   --card: var(--neutral-100);
-  --card-foreground: 30 12% 88%;
+  --card-foreground: 32 16% 88%;
 
   --popover: var(--neutral-100);
-  --popover-foreground: 30 12% 88%;
+  --popover-foreground: 32 16% 88%;
 
-  /* Primary — Oxblood (#8E2A35) */
-  --primary: 352 55% 36%;
-  --primary-hover: 352 50% 42%;
-  --primary-active: 352 58% 30%;
-  --primary-foreground: 30 18% 92%;
+  /* Primary — Muted wine (softer oxblood) */
+  --primary: 350 40% 38%;
+  --primary-hover: 350 36% 44%;
+  --primary-active: 350 42% 32%;
+  --primary-foreground: 32 20% 93%;
 
-  --secondary: 220 12% 19%;
-  --secondary-foreground: 30 12% 88%;
+  --secondary: 25 10% 20%;
+  --secondary-foreground: 32 14% 88%;
 
-  --muted: 220 10% 20%;
-  --muted-foreground: 30 8% 50%;
+  --muted: 25 8% 21%;
+  --muted-foreground: 32 10% 52%;
 
-  --accent: 220 10% 22%;
-  --accent-foreground: 30 12% 88%;
+  --accent: 25 8% 23%;
+  --accent-foreground: 32 14% 88%;
 
-  --destructive: 0 55% 45%;
-  --destructive-foreground: 30 18% 94%;
+  --destructive: 0 50% 42%;
+  --destructive-foreground: 32 20% 94%;
 
-  --border: 220 8% 22%;
-  --input: 220 10% 22%;
+  --border: 25 7% 24%;
+  --input: 25 8% 23%;
   --ring: var(--primary);
 
-  /* Text — ink on bone, ink at 65% for secondary */
-  --text-primary:    hsl(30, 12%, 88%);
-  --text-secondary:  hsl(30, 8%, 58%);      /* ~65% of primary */
-  --text-tertiary:   hsl(30, 6%, 42%);
-  --text-ghost:      hsl(220, 6%, 30%);
-  --text-accent:     hsl(352, 45%, 55%);     /* Oxblood whisper */
+  /* Text — warm bone spectrum */
+  --text-primary:    hsl(32, 16%, 88%);
+  --text-secondary:  hsl(32, 10%, 60%);
+  --text-tertiary:   hsl(30, 8%, 46%);
+  --text-ghost:      hsl(25, 6%, 32%);
+  --text-accent:     hsl(350, 30%, 58%);
 
-  /* Accent — oxblood only */
-  --accent-saffron:       hsl(352, 45%, 50%);
-  --accent-saffron-muted: hsl(352, 30%, 40%);
-  --accent-text:          hsl(352, 40%, 55%);
+  /* Accent — soft wine */
+  --accent-saffron:       hsl(350, 32%, 52%);
+  --accent-saffron-muted: hsl(350, 22%, 42%);
+  --accent-text:          hsl(350, 28%, 58%);
 
-  /* Layered surfaces */
-  --surface-base:   hsl(220, 16%, 13%);
-  --surface-raised: hsl(220, 14%, 17%);
-  --surface-sunken: hsl(220, 18%, 10%);
-  --surface-chrome: 220 18% 10%;
+  /* Layered surfaces — warm */
+  --surface-base:   hsl(25, 14%, 14%);
+  --surface-raised: hsl(25, 12%, 18%);
+  --surface-sunken: hsl(25, 16%, 11%);
+  --surface-chrome: 25 16% 11%;
 
-  /* Header — sinks into ink */
-  --session-header-bg:    hsl(220, 18%, 10%);
-  --session-header-hover: hsl(220, 14%, 15%);
-  --session-header-press: hsl(220, 20%, 8%);
-  --header-text:          hsl(30, 18%, 88%);
-  --header-text-muted:    hsl(30, 10%, 55%);
+  /* Header — warm dark */
+  --session-header-bg:    hsl(25, 16%, 11%);
+  --session-header-hover: hsl(25, 12%, 16%);
+  --session-header-press: hsl(25, 18%, 9%);
+  --header-text:          hsl(32, 18%, 88%);
+  --header-text-muted:    hsl(32, 12%, 58%);
   --header-border:        none;
 
-  /* CTA — Oxblood, restrained */
-  --cta-default: hsl(352, 55%, 36%);
-  --cta-hover-v2: hsl(352, 50%, 42%);
-  --cta-active:  hsl(352, 58%, 30%);
-  --cta-bg:      hsl(352, 55%, 36%);
-  --cta-text:    hsl(30, 18%, 92%);
+  /* CTA — Muted wine */
+  --cta-default: hsl(350, 40%, 38%);
+  --cta-hover-v2: hsl(350, 36%, 44%);
+  --cta-active:  hsl(350, 42%, 32%);
+  --cta-bg:      hsl(350, 40%, 38%);
+  --cta-text:    hsl(32, 20%, 93%);
 
-  /* Semantic */
+  /* Semantic — text on bone tiles */
   --color-bg: var(--surface-base);
   --color-bg-base: var(--surface-base);
-  --color-surface: hsl(30, 22%, 86%);         /* Bone tiles */
-  --color-surface-primary: hsl(30, 22%, 86%);
-  --color-cta: hsl(352, 55%, 36%);
-  --color-ink: hsl(220, 20%, 10%);            /* Near-black for text on bone */
-  --color-secondary: hsl(220, 12%, 35%);
-  --color-accent: hsl(352, 55%, 36%);
-  --color-accent-soft: hsl(352, 25%, 45%);
-  --color-text-primary: hsl(220, 20%, 10%);   /* Dark ink on bone tiles */
-  --color-text-secondary: hsl(220, 12%, 35%);
-  --color-text-tertiary: hsl(220, 8%, 48%);
-  --color-button-primary: hsl(352, 55%, 36%);
-  --color-button-text: hsl(30, 18%, 92%);
-  --color-divider: hsl(220, 8%, 22%);
+  --color-surface: hsl(34, 26%, 88%);         /* Warm cream bone */
+  --color-surface-primary: hsl(34, 26%, 88%);
+  --color-cta: hsl(350, 40%, 38%);
+  --color-ink: hsl(25, 18%, 14%);
+  --color-secondary: hsl(25, 10%, 38%);
+  --color-accent: hsl(350, 40%, 38%);
+  --color-accent-soft: hsl(350, 20%, 48%);
+  --color-text-primary: hsl(25, 18%, 14%);
+  --color-text-secondary: hsl(25, 10%, 38%);
+  --color-text-tertiary: hsl(25, 8%, 50%);
+  --color-button-primary: hsl(350, 40%, 38%);
+  --color-button-text: hsl(32, 20%, 93%);
+  --color-divider: hsl(25, 7%, 24%);
 
   /* Buttons */
-  --btn-primary-bg: hsl(352, 55%, 36%);
-  --btn-primary-text: hsl(30, 18%, 92%);
+  --btn-primary-bg: hsl(350, 40%, 38%);
+  --btn-primary-text: hsl(32, 20%, 93%);
 
   /* Notes */
-  --note-bg: 220 12% 16%;
-  --note-border: 220 8% 22%;
-  --note-text: 30 12% 88%;
-  --note-placeholder: hsl(220, 6%, 35%);
+  --note-bg: 25 10% 17%;
+  --note-border: 25 7% 24%;
+  --note-text: 32 14% 88%;
+  --note-placeholder: hsl(25, 6%, 38%);
 
-  /* Completion — oxblood */
-  --color-completion: hsl(352, 45%, 50%);
+  /* Completion — wine */
+  --color-completion: hsl(350, 32%, 52%);
 
-  /* Shadows — ink-based, Apple-soft */
-  --shadow-card: 0 1px 2px hsla(220, 20%, 4%, 0.15),
-                 0 4px 16px -8px hsla(220, 16%, 2%, 0.25);
-  --shadow-card-featured: 0 2px 6px hsla(220, 20%, 4%, 0.20),
-                          0 8px 32px -8px hsla(220, 16%, 2%, 0.35);
+  /* Shadows — warm, soft */
+  --shadow-card: 0 1px 3px hsla(25, 18%, 6%, 0.12),
+                 0 4px 16px -8px hsla(25, 14%, 4%, 0.20);
+  --shadow-card-featured: 0 2px 6px hsla(25, 18%, 6%, 0.16),
+                          0 8px 32px -8px hsla(25, 14%, 4%, 0.28);
   --border-card: none;
 
   --card-l1-bg: var(--neutral-100);
-  --card-l1-border: 220 8% 24%;
+  --card-l1-border: 25 7% 25%;
   --card-l1-border-width: 1px;
 }
 
-/* ── Foundation — Tiles: Warm bone, carved from darkness ── */
+/* ── Foundation — Tiles: Soft cream, warmly nested ── */
 .theme-foundation .tile-door {
-  background: hsl(32, 24%, 87%) !important;     /* Warmer bone — tactile paper */
+  background: hsl(34, 28%, 89%) !important;     /* Soft warm cream */
   border: none !important;
-  border-radius: 16px !important;
+  border-radius: 18px !important;
   padding: 28px 24px !important;
   min-height: 84px !important;
   box-shadow:
-    inset 0 0 0 1px hsla(30, 12%, 70%, 0.12),
-    inset 0 1px 0 0 hsla(0, 0%, 100%, 0.35),
-    0 1px 3px hsla(220, 20%, 4%, 0.08),
-    0 8px 28px -8px hsla(220, 16%, 2%, 0.22) !important;
-  transition: transform 280ms cubic-bezier(0.22, 1, 0.36, 1),
-              box-shadow 320ms ease-out,
-              background 280ms ease-out !important;
+    inset 0 0 0 1px hsla(32, 16%, 72%, 0.12),
+    inset 0 1px 0 0 hsla(0, 0%, 100%, 0.30),
+    0 2px 6px hsla(25, 16%, 8%, 0.06),
+    0 8px 28px -10px hsla(25, 14%, 4%, 0.16) !important;
+  transition: transform 300ms cubic-bezier(0.22, 1, 0.36, 1),
+              box-shadow 350ms ease-out,
+              background 300ms ease-out !important;
 }
 
 .theme-foundation .tile-door h3 {
-  color: hsl(220, 22%, 8%) !important;
-  font-size: 19px !important;
-  letter-spacing: -0.01em !important;
+  color: hsl(25, 16%, 15%) !important;
+  font-size: 18px !important;
+  letter-spacing: -0.005em !important;
 }
 
 .theme-foundation .tile-door p {
-  color: hsl(220, 10%, 32%) !important;
+  color: hsl(25, 10%, 36%) !important;
   opacity: 0.85 !important;
 }
 
 .theme-foundation .tile-door [data-chevron] {
-  color: hsl(220, 10%, 40%) !important;
+  color: hsl(25, 8%, 45%) !important;
   opacity: 0.25 !important;
 }
 
-/* Accent bar — oxblood, more present */
+/* Accent bar — soft wine, gentle presence */
 .theme-foundation .tile-door [data-accent-bar] {
-  background: hsl(352, 55%, 36%) !important;
-  opacity: 0.45 !important;
+  background: hsl(350, 35%, 42%) !important;
+  opacity: 0.35 !important;
   width: 2.5px !important;
 }
 
-/* Completion checkmarks — oxblood */
+/* Completion checkmarks — wine */
 .theme-foundation [data-cat-index] svg {
-  color: hsl(352, 45%, 42%) !important;
-  opacity: 0.55 !important;
+  color: hsl(350, 30%, 45%) !important;
+  opacity: 0.50 !important;
 }
 
-/* Row bloom — warm inner luminance */
+/* Row bloom — warm cream inner glow */
 .theme-foundation .row-bloom::before {
   background: radial-gradient(
-    ellipse at 20% 30%,
-    hsla(32, 28%, 88%, 0.10) 0%,
-    hsla(30, 18%, 82%, 0.04) 50%,
+    ellipse at 25% 35%,
+    hsla(34, 30%, 90%, 0.12) 0%,
+    hsla(32, 20%, 85%, 0.04) 50%,
     transparent 80%
   ) !important;
 }
 
-/* Tile list — more breathing room */
+/* Tile list — generous breathing room */
 .theme-foundation .flex.flex-col {
-  gap: 16px !important;
+  gap: 14px !important;
 }
 
-/* Section labels — bone-tinted on ink */
+/* Section labels — warm on dark */
 .theme-foundation .section-divider {
-  color: hsl(30, 10%, 55%) !important;
-  opacity: 0.65 !important;
+  color: hsl(32, 12%, 55%) !important;
+  opacity: 0.60 !important;
 }
 
-/* Header grain — invisible */
+/* Header grain — warm whisper */
 .theme-foundation .header-textured::after {
-  opacity: 0.015 !important;
+  opacity: 0.02 !important;
 }
 
-/* Section dividers — bone whisper */
+/* Section dividers — warm fade */
 .theme-foundation .section-divider::after {
   background: linear-gradient(
     90deg,
-    hsla(30, 12%, 60%, 0.12) 0%,
-    hsla(30, 8%, 55%, 0) 100%
+    hsla(32, 14%, 58%, 0.12) 0%,
+    hsla(32, 10%, 55%, 0) 100%
   ) !important;
 }
 
-/* ── Foundation — Tile hover: warm lift ── */
+/* ── Foundation — Tile hover: gentle warm lift ── */
 @media (hover: hover) and (pointer: fine) {
   .theme-foundation .tile-door:hover {
-    background: hsl(32, 26%, 89%) !important;
-    transform: translateY(-3px) !important;
+    background: hsl(34, 30%, 91%) !important;
+    transform: translateY(-2px) !important;
     box-shadow:
-      inset 0 0 0 1px hsla(30, 12%, 70%, 0.08),
-      inset 0 1px 0 0 hsla(0, 0%, 100%, 0.40),
-      0 2px 6px hsla(220, 20%, 4%, 0.10),
-      0 14px 40px -8px hsla(220, 16%, 2%, 0.28) !important;
+      inset 0 0 0 1px hsla(32, 16%, 72%, 0.08),
+      inset 0 1px 0 0 hsla(0, 0%, 100%, 0.35),
+      0 3px 8px hsla(25, 16%, 8%, 0.08),
+      0 14px 40px -10px hsla(25, 14%, 4%, 0.22) !important;
   }
   .theme-foundation .tile-door:hover h3 {
-    color: hsl(220, 25%, 6%) !important;
+    color: hsl(25, 18%, 12%) !important;
   }
   .theme-foundation .tile-door:hover [data-chevron] {
-    color: hsl(352, 40%, 36%) !important;
-    opacity: 0.50 !important;
-    transform: translateX(4px) !important;
+    color: hsl(350, 28%, 40%) !important;
+    opacity: 0.45 !important;
+    transform: translateX(3px) !important;
   }
 }
 
-/* ── Foundation — Active press: tactile compress ── */
+/* ── Foundation — Active press: soft compress ── */
 .theme-foundation .tile-door:active {
-  transform: scale(0.982) !important;
+  transform: scale(0.985) !important;
   box-shadow:
-    inset 0 0 0 1px hsla(30, 12%, 65%, 0.15),
-    0 1px 2px hsla(220, 20%, 4%, 0.06),
-    0 2px 8px -4px hsla(220, 16%, 2%, 0.15) !important;
+    inset 0 0 0 1px hsla(32, 14%, 68%, 0.14),
+    0 1px 2px hsla(25, 16%, 8%, 0.05),
+    0 2px 8px -4px hsla(25, 14%, 4%, 0.12) !important;
   transition: transform 80ms ease-out, box-shadow 80ms ease-out !important;
 }
 
-/* ══ Foundation — Hero / Resume tile: Oxblood magnetic glow ══ */
+/* ══ Foundation — Hero: Warm wine, inviting not aggressive ══ */
 .theme-foundation [data-fig-hero] {
   background: linear-gradient(
-    158deg,
-    hsl(352, 52%, 38%) 0%,
-    hsl(352, 55%, 32%) 60%,
-    hsl(352, 58%, 28%) 100%
+    155deg,
+    hsl(350, 38%, 40%) 0%,
+    hsl(350, 40%, 35%) 50%,
+    hsl(348, 42%, 30%) 100%
   ) !important;
   border: none !important;
-  border-radius: 18px !important;
-  padding: 28px 26px !important;
+  border-radius: 20px !important;
+  padding: 30px 26px !important;
   box-shadow:
-    0 0 0 1px hsla(352, 40%, 30%, 0.15),
-    inset 0 1px 0 0 hsla(0, 0%, 100%, 0.10),
-    0 4px 12px -2px hsla(352, 50%, 18%, 0.30),
-    0 12px 40px -8px hsla(220, 20%, 4%, 0.45),
-    0 0 80px -20px hsla(352, 55%, 40%, 0.15) !important;
-  transition: transform 280ms cubic-bezier(0.22, 1, 0.36, 1),
-              box-shadow 350ms ease-out !important;
+    0 0 0 1px hsla(350, 30%, 32%, 0.12),
+    inset 0 1px 0 0 hsla(0, 0%, 100%, 0.08),
+    0 4px 14px -4px hsla(350, 35%, 20%, 0.22),
+    0 12px 40px -10px hsla(25, 18%, 6%, 0.35),
+    0 0 64px -20px hsla(350, 40%, 40%, 0.10) !important;
+  transition: transform 300ms cubic-bezier(0.22, 1, 0.36, 1),
+              box-shadow 380ms ease-out !important;
 }
 
-/* Hero text — warm bone on oxblood */
+/* Hero text — warm cream */
 .theme-foundation [data-fig-hero] h3,
 .theme-foundation [data-fig-hero] p,
 .theme-foundation [data-fig-hero] span {
-  color: hsl(30, 20%, 92%) !important;
+  color: hsl(32, 22%, 92%) !important;
 }
 
-/* Hero hover — the glow intensifies */
+/* Hero hover — gentle warmth bloom */
 @media (hover: hover) and (pointer: fine) {
   .theme-foundation [data-fig-hero]:hover {
     transform: translateY(-2px) !important;
     box-shadow:
-      0 0 0 1px hsla(352, 40%, 30%, 0.25),
-      inset 0 1px 0 0 hsla(0, 0%, 100%, 0.14),
-      0 6px 16px -2px hsla(352, 50%, 18%, 0.35),
-      0 20px 56px -8px hsla(220, 20%, 4%, 0.50),
-      0 0 96px -16px hsla(352, 55%, 42%, 0.20) !important;
+      0 0 0 1px hsla(350, 30%, 32%, 0.18),
+      inset 0 1px 0 0 hsla(0, 0%, 100%, 0.12),
+      0 6px 18px -4px hsla(350, 35%, 20%, 0.28),
+      0 18px 52px -10px hsla(25, 18%, 6%, 0.40),
+      0 0 80px -16px hsla(350, 40%, 42%, 0.14) !important;
   }
 }
 
 /* Hero press */
 .theme-foundation [data-fig-hero]:active {
-  transform: scale(0.985) !important;
+  transform: scale(0.987) !important;
   box-shadow:
-    0 0 0 1px hsla(352, 40%, 28%, 0.20),
-    inset 0 1px 0 0 hsla(0, 0%, 100%, 0.06),
-    0 2px 6px -2px hsla(352, 50%, 18%, 0.25),
-    0 4px 16px -4px hsla(220, 20%, 4%, 0.35) !important;
+    0 0 0 1px hsla(350, 30%, 30%, 0.15),
+    inset 0 1px 0 0 hsla(0, 0%, 100%, 0.05),
+    0 2px 6px -2px hsla(350, 35%, 20%, 0.20),
+    0 4px 16px -6px hsla(25, 18%, 6%, 0.28) !important;
   transition: transform 80ms ease-out, box-shadow 80ms ease-out !important;
 }
 
-/* ── Foundation — No atmosphere fog. Architecture, not decoration ── */
+/* ── Foundation — Soft warm ambient behind hero ── */
 .theme-foundation [data-fig-atmosphere]::before {
   display: none !important;
 }
 
-/* ── Foundation — Subtle oxblood ambient behind hero zone ── */
 .theme-foundation [data-fig-atmosphere] {
   position: relative;
 }
 .theme-foundation [data-fig-atmosphere]::after {
   content: '';
   position: absolute;
-  top: -30px;
-  left: 15%;
-  right: 15%;
-  height: 180px;
+  top: -40px;
+  left: 10%;
+  right: 10%;
+  height: 200px;
   background: radial-gradient(
-    ellipse at 50% 70%,
-    hsla(352, 45%, 35%, 0.06) 0%,
-    hsla(352, 35%, 30%, 0.02) 45%,
+    ellipse at 50% 65%,
+    hsla(350, 30%, 38%, 0.05) 0%,
+    hsla(350, 25%, 32%, 0.02) 45%,
     transparent 75%
   );
   pointer-events: none;
   z-index: 0;
 }
 
-/* ── Foundation — Progress bar: oxblood ── */
+/* ── Foundation — Progress bar: wine ── */
 .theme-foundation [role="progressbar"] [data-state] {
-  background: hsl(352, 55%, 36%) !important;
+  background: hsl(350, 40%, 38%) !important;
 }
 
-/* ── Foundation — CTA buttons: magnetic oxblood ── */
+/* ── Foundation — CTA buttons: warm wine ── */
 .theme-foundation .cta-primary {
   border-radius: 16px !important;
   box-shadow:
-    0 0 0 1px hsla(352, 40%, 30%, 0.12),
-    0 2px 8px -2px hsla(352, 45%, 20%, 0.25),
-    0 0 40px -12px hsla(352, 50%, 38%, 0.10) !important;
-  transition: transform 260ms ease-out,
-              box-shadow 300ms ease-out,
-              background-color 260ms ease-out !important;
+    0 0 0 1px hsla(350, 30%, 32%, 0.10),
+    0 2px 8px -2px hsla(350, 35%, 22%, 0.20),
+    0 0 40px -14px hsla(350, 38%, 40%, 0.08) !important;
+  transition: transform 280ms ease-out,
+              box-shadow 320ms ease-out,
+              background-color 280ms ease-out !important;
 }
 
 @media (hover: hover) and (pointer: fine) {
   .theme-foundation .cta-primary:hover {
     transform: translateY(-1px) !important;
     box-shadow:
-      0 0 0 1px hsla(352, 40%, 30%, 0.18),
-      0 4px 12px -2px hsla(352, 45%, 20%, 0.30),
-      0 0 56px -12px hsla(352, 50%, 40%, 0.15) !important;
+      0 0 0 1px hsla(350, 30%, 32%, 0.15),
+      0 4px 12px -2px hsla(350, 35%, 22%, 0.25),
+      0 0 48px -12px hsla(350, 38%, 42%, 0.12) !important;
   }
 }
 
 .theme-foundation .cta-primary:active {
-  transform: scale(0.97) !important;
+  transform: scale(0.975) !important;
   box-shadow:
-    0 0 0 1px hsla(352, 40%, 28%, 0.15),
-    0 1px 4px -1px hsla(352, 45%, 20%, 0.20) !important;
+    0 0 0 1px hsla(350, 30%, 30%, 0.12),
+    0 1px 4px -1px hsla(350, 35%, 22%, 0.16) !important;
 }
 
-/* ── Foundation — Welcome/returning card ── */
-.theme-foundation [data-fig-hero] .font-sans[style*="uppercase"] {
-  opacity: 0.40 !important;
-  letter-spacing: 0.15em !important;
-}
-
-/* ── Foundation — H1 title glow ── */
+/* ── Foundation — H1 title: warm cream ── */
 .theme-foundation .type-h1 {
-  color: hsl(30, 16%, 90%) !important;
-  letter-spacing: -0.02em !important;
+  color: hsl(32, 18%, 90%) !important;
+  letter-spacing: -0.015em !important;
 }
