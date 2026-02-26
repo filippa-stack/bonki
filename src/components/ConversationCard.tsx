@@ -64,7 +64,7 @@ export default function ConversationCard({ conversation, onClick, variant = 'def
     >
       {isCompleted && (
         <div style={{ position: 'absolute', top: '14px', right: '14px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '2px' }}>
-          <Check size={14} style={{ color: 'hsl(158, 32%, 14%)' }} strokeWidth={2.5} />
+          <Check size={14} style={{ color: 'hsl(var(--primary))' }} strokeWidth={2.5} />
           <span style={{ fontFamily: 'Inter, sans-serif', fontSize: '10px', color: 'var(--color-text-tertiary)', opacity: 0.5 }}>
             Gör om
           </span>
