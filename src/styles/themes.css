@@ -1,7 +1,7 @@
 /* ══════════════════════════════════════════════════════════════
    Theme Overrides — toggled via .theme-{name} on <html>
    Each theme only overrides the tokens that differ from :root.
-   Activate via ?theme=fired-earth | burgundy | ink | stilla | berry | midnight
+   Activate via ?theme=fired-earth | burgundy | ink | stilla | berry | midnight | light-header
    ══════════════════════════════════════════════════════════════ */
 
 /* ── 1. Fired Earth ─────────────────────────────────────────
@@ -164,4 +164,16 @@
   --ring: var(--primary);
   --color-accent: hsl(45, 85%, 50%);
   --color-accent-soft: hsl(45, 35%, 80%);
+}
+
+/* ── 7. Light Header ────────────────────────────────────────
+   Inverted header: warm background surface, dark forest text.
+   Same base palette as default but header flips to light. */
+.theme-light-header {
+  --session-header-bg: var(--surface-base);
+  --session-header-hover: var(--surface-raised);
+  --session-header-press: var(--surface-sunken);
+  --header-text: hsl(var(--primary));
+  --header-text-muted: hsl(var(--primary) / 0.6);
+  --header-border: 1px solid hsl(var(--neutral-300));
 }

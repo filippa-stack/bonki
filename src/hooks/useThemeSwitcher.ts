@@ -8,6 +8,7 @@ const VALID_THEMES = [
   'stilla',
   'berry',
   'midnight',
+  'light-header',
 ] as const;
 
 export type ThemeId = (typeof VALID_THEMES)[number] | null;

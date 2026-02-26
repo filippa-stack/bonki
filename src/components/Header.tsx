@@ -58,7 +58,7 @@ export default function Header({
           boxShadow: 'none',
           borderBottom: isImmersive
             ? (isDarkSurface ? '1px solid hsl(var(--primary) / 0.3)' : 'none')
-            : 'none',
+            : 'var(--header-border)',
         }}
       >
         {isImmersive ? (
@@ -155,7 +155,7 @@ export default function Header({
                   onPointerUp={(e) => { const svg = e.currentTarget.querySelector('svg'); if (svg) svg.style.opacity = '0.75'; }}
                   onPointerLeave={(e) => { const svg = e.currentTarget.querySelector('svg'); if (svg) svg.style.opacity = '0.75'; }}
                 >
-                  <ArrowLeft className="w-5 h-5" style={{ color: 'white', opacity: 0.75, transition: 'opacity 150ms ease' }} />
+                  <ArrowLeft className="w-5 h-5" style={{ color: 'var(--header-text-muted)', transition: 'opacity 150ms ease' }} />
                 </button>
               )}
               {!showBack && (
@@ -165,7 +165,7 @@ export default function Header({
                     fontFamily: 'var(--font-sans)',
                     fontSize: '13px',
                     fontWeight: 500,
-                    color: 'white',
+                    color: 'var(--header-text)',
                     opacity: 1.0,
                     letterSpacing: '0.04em',
                   }}
@@ -181,7 +181,7 @@ export default function Header({
             {title && (
               <h1
                 className="font-serif text-lg font-medium truncate absolute left-1/2 -translate-x-1/2 max-w-[50%] text-center pointer-events-none"
-                style={{ color: 'white', opacity: 0.90 }}
+                style={{ color: 'var(--header-text)', opacity: 0.90 }}
               >
                 {title}
               </h1>
@@ -196,7 +196,7 @@ export default function Header({
                     fontFamily: 'var(--font-sans)',
                     fontSize: '12px',
                     letterSpacing: '0.04em',
-                    color: 'white',
+                    color: 'var(--header-text-muted)',
                     opacity: 0.85,
                     cursor: 'pointer',
                     padding: '8px 4px',
@@ -233,7 +233,7 @@ export default function Header({
                   onPointerUp={(e) => { e.currentTarget.style.opacity = '0.70'; }}
                   onPointerLeave={(e) => { e.currentTarget.style.opacity = '0.70'; }}
                 >
-                  <Settings size={18} style={{ color: 'white', opacity: 0.70 }} />
+                  <Settings size={18} style={{ color: 'var(--header-text-muted)', opacity: 0.70 }} />
                 </button>
               )}
             </div>

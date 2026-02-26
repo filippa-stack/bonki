@@ -187,6 +187,9 @@ h1, h2, h3,
     --session-header-bg:    hsl(var(--primary));
     --session-header-hover: var(--cta-hover-v2);
     --session-header-press: var(--cta-active);
+    --header-text:          #FFFFFF;
+    --header-text-muted:    hsla(0, 0%, 100%, 0.75);
+    --header-border:        none;
 
     /* Dynamic overrides — set via useThemeVars hook at runtime */
     --page-bg: var(--color-bg);
