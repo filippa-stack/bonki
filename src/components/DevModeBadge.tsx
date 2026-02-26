@@ -33,6 +33,9 @@ const SURFACE_OPTIONS = [
   { value: 'sculpt', label: '🏛️ Sculpt' },
   { value: 'paper', label: '📄 Paper' },
   { value: 'invite', label: '✨ Invite' },
+  { value: 'invite-white', label: '⬜ Invite White' },
+  { value: 'invite-ivory', label: '🥛 Invite Ivory' },
+  { value: 'invite-tinted', label: '🌿 Invite Tinted' },
 ];
 
 const PAGES = [

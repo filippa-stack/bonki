@@ -273,3 +273,54 @@
   --radius-card: 1.125rem;
   --border-card: none;
 }
+
+/* ── D2. Invite White — pure white tiles, max contrast ────── */
+.surface-invite-white {
+  --neutral-50:  28 18% 88%;
+  --neutral-100: 0 0% 100%;
+  --neutral-200: 32 16% 93%;
+  --neutral-300: 28 10% 80%;
+
+  --shadow-card: 0 1px 2px hsla(28, 20%, 16%, 0.06),
+                 0 4px 14px -3px hsla(28, 22%, 18%, 0.10),
+                 0 12px 36px -8px hsla(28, 18%, 14%, 0.12);
+  --shadow-card-featured: 0 2px 6px hsla(28, 24%, 14%, 0.08),
+                          0 8px 28px -4px hsla(28, 24%, 16%, 0.14),
+                          0 20px 52px -10px hsla(28, 18%, 12%, 0.10);
+  --radius-card: 1.125rem;
+  --border-card: none;
+}
+
+/* ── D3. Invite Ivory — warm cream tiles, organic ─────────── */
+.surface-invite-ivory {
+  --neutral-50:  28 18% 88%;
+  --neutral-100: 40 35% 96%;
+  --neutral-200: 36 22% 93%;
+  --neutral-300: 28 10% 80%;
+
+  --shadow-card: 0 1px 2px hsla(28, 20%, 16%, 0.06),
+                 0 4px 14px -3px hsla(28, 22%, 18%, 0.10),
+                 0 12px 36px -8px hsla(28, 18%, 14%, 0.12);
+  --shadow-card-featured: 0 2px 6px hsla(28, 24%, 14%, 0.08),
+                          0 8px 28px -4px hsla(28, 24%, 16%, 0.14),
+                          0 20px 52px -10px hsla(28, 18%, 12%, 0.10);
+  --radius-card: 1.125rem;
+  --border-card: none;
+}
+
+/* ── D4. Invite Tinted — tiles with hint of primary ───────── */
+.surface-invite-tinted {
+  --neutral-50:  28 18% 88%;
+  --neutral-100: 158 12% 96%;
+  --neutral-200: 155 8% 93%;
+  --neutral-300: 28 10% 80%;
+
+  --shadow-card: 0 1px 2px hsla(158, 15%, 16%, 0.06),
+                 0 4px 14px -3px hsla(158, 18%, 18%, 0.10),
+                 0 12px 36px -8px hsla(158, 14%, 14%, 0.12);
+  --shadow-card-featured: 0 2px 6px hsla(158, 18%, 14%, 0.08),
+                          0 8px 28px -4px hsla(158, 20%, 16%, 0.14),
+                          0 20px 52px -10px hsla(158, 14%, 12%, 0.10);
+  --radius-card: 1.125rem;
+  --border-card: none;
+}
