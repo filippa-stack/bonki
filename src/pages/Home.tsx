@@ -303,34 +303,35 @@ export default function Home() {
                     data-fig-hero
                     style={{
                       borderRadius: '16px',
-                      padding: '26px 26px 24px',
+                      padding: '22px 24px',
                       background: 'var(--cta-bg)',
                       border: 'none',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'space-between',
-                      gap: '14px',
-                      transition: 'transform 240ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 300ms ease-out',
+                      gap: '12px',
+                      boxShadow: '0 2px 12px -2px hsla(22, 40%, 25%, 0.25), 0 8px 32px -8px hsla(278, 25%, 8%, 0.30)',
+                      transition: 'transform 200ms ease-out, box-shadow 200ms ease-out',
                       position: 'relative' as const,
                     }}
-                    onPointerDown={(e) => { (e.currentTarget as HTMLElement).style.transform = 'scale(0.98)'; }}
+                    onPointerDown={(e) => { (e.currentTarget as HTMLElement).style.transform = 'scale(0.985)'; }}
                     onPointerUp={(e) => { (e.currentTarget as HTMLElement).style.transform = ''; }}
                     onPointerLeave={(e) => { (e.currentTarget as HTMLElement).style.transform = ''; }}
                   >
                     <div className="flex-1 min-w-0">
-                      <p className="font-sans" style={{ fontSize: '10px', fontWeight: 500, letterSpacing: '0.12em', textTransform: 'uppercase' as const, color: 'var(--cta-text)', opacity: 0.45, marginBottom: '6px', lineHeight: 1 }}>
+                      <p className="font-sans" style={{ fontSize: '10px', fontWeight: 500, letterSpacing: '0.12em', textTransform: 'uppercase' as const, color: 'var(--cta-text)', opacity: 0.50, marginBottom: '6px', lineHeight: 1 }}>
                         Ni var mitt i
                       </p>
                       <p className="font-serif" style={{ fontSize: '18px', fontWeight: 600, lineHeight: 1.35, color: 'var(--cta-text)', textWrap: 'balance', hyphens: 'auto', maxWidth: '80%' } as React.CSSProperties}>
                         {card?.title || cardId}
                       </p>
                       {cat && (
-                        <p className="font-sans" style={{ fontSize: '12px', color: 'var(--cta-text)', opacity: 0.45, marginTop: '4px' }}>
+                        <p className="font-sans" style={{ fontSize: '12px', color: 'var(--accent-saffron)', opacity: 0.7, marginTop: '4px' }}>
                           {cat.title}
                         </p>
                       )}
                     </div>
-                    <span className="font-sans shrink-0 self-center group-hover:opacity-90" style={{ fontSize: '14px', fontWeight: 500, color: 'var(--cta-text)', opacity: 0.75, transition: 'opacity 200ms ease, transform 200ms ease' }}>
+                    <span className="font-sans shrink-0 self-center group-hover:opacity-90" style={{ fontSize: '14px', fontWeight: 500, color: 'var(--cta-text)', opacity: 0.85, transition: 'opacity 200ms ease, transform 200ms ease' }}>
                       Fortsätt<span style={{ marginLeft: '6px', display: 'inline-block', transition: 'transform 200ms ease' }} className="group-hover:translate-x-1">→</span>
                     </span>
                   </div>
