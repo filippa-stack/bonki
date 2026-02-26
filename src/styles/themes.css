@@ -1,0 +1,212 @@
+/* ══════════════════════════════════════════════════════════════
+   Theme Overrides — toggled via .theme-{name} on <html>
+   Each theme only overrides the tokens that differ from :root.
+   Activate via ?theme=fired-earth | burgundy | ink | stilla | berry | midnight
+   ══════════════════════════════════════════════════════════════ */
+
+/* ── 1. Fired Earth ─────────────────────────────────────────
+   Uploaded palette: Parchment / Deep Umber / Moss / Fired Clay / Amber Wash
+   Warm, earthy, artisanal. Clay accent replaces saffron. */
+.theme-fired-earth {
+  --neutral-50:  35 22% 94%;
+  --neutral-100: 34 20% 96%;
+  --neutral-200: 33 18% 91%;
+  --neutral-300: 30 14% 85%;
+
+  --primary: 152 28% 16%;                /* Moss */
+  --primary-foreground: 0 0% 100%;
+
+  --foreground: 22 20% 14%;              /* Deep Umber */
+  --text-primary: hsl(22, 20%, 14%);
+  --text-secondary: hsl(22, 12%, 38%);
+  --text-tertiary: hsl(25, 10%, 52%);
+
+  --accent-saffron: hsl(18, 65%, 42%);   /* Fired Clay */
+  --accent-saffron-muted: hsl(18, 45%, 65%);
+  --accent-text: hsl(18, 55%, 36%);
+
+  --cta-default: hsl(152, 28%, 16%);
+  --cta-hover-v2: hsl(152, 30%, 22%);
+  --cta-active: hsl(152, 25%, 12%);
+  --cta-bg: var(--cta-default);
+
+  --session-header-bg: hsl(152, 28%, 14%);
+  --session-header-hover: hsl(152, 28%, 19%);
+  --session-header-press: hsl(152, 25%, 11%);
+
+  --color-button-primary: hsl(152, 28%, 16%);
+  --color-accent: hsl(18, 65%, 42%);
+  --color-accent-soft: hsl(32, 45%, 88%);   /* Amber wash */
+}
+
+/* ── 2. Varm Burgundy ───────────────────────────────────────
+   Deep wine red primary. Intimate, modern, bold. */
+.theme-burgundy {
+  --neutral-50:  28 18% 95%;
+  --neutral-100: 26 16% 97%;
+  --neutral-200: 25 14% 92%;
+  --neutral-300: 22 10% 86%;
+
+  --primary: 348 45% 22%;                /* Deep burgundy */
+  --primary-foreground: 0 0% 100%;
+
+  --foreground: 348 20% 14%;
+  --text-primary: hsl(348, 20%, 14%);
+  --text-secondary: hsl(340, 10%, 40%);
+  --text-tertiary: hsl(335, 8%, 54%);
+
+  --accent-saffron: hsl(28, 80% ,52%);   /* Burnt orange accent */
+  --accent-saffron-muted: hsl(28, 55%, 70%);
+  --accent-text: hsl(28, 65%, 42%);
+
+  --cta-default: hsl(348, 45%, 22%);
+  --cta-hover-v2: hsl(348, 48%, 28%);
+  --cta-active: hsl(348, 40%, 17%);
+  --cta-bg: var(--cta-default);
+
+  --session-header-bg: hsl(348, 42%, 18%);
+  --session-header-hover: hsl(348, 42%, 24%);
+  --session-header-press: hsl(348, 38%, 14%);
+
+  --color-button-primary: hsl(348, 45%, 22%);
+  --color-accent: hsl(348, 55%, 30%);
+  --color-accent-soft: hsl(348, 25%, 75%);
+}
+
+/* ── 3. Jordat Bläck ────────────────────────────────────────
+   Dark warm brown primary. Editorial, gender-neutral, calm. */
+.theme-ink {
+  --neutral-50:  38 14% 95%;
+  --neutral-100: 36 12% 97%;
+  --neutral-200: 35 10% 92%;
+  --neutral-300: 32 8% 86%;
+
+  --primary: 25 18% 16%;                 /* Warm ink */
+  --primary-foreground: 0 0% 100%;
+
+  --foreground: 25 15% 12%;
+  --text-primary: hsl(25, 15%, 12%);
+  --text-secondary: hsl(25, 8%, 42%);
+  --text-tertiary: hsl(25, 6%, 56%);
+
+  --accent-saffron: hsl(42, 75%, 48%);   /* Warm gold */
+  --accent-saffron-muted: hsl(42, 50%, 68%);
+  --accent-text: hsl(42, 60%, 38%);
+
+  --cta-default: hsl(25, 18%, 16%);
+  --cta-hover-v2: hsl(25, 20%, 22%);
+  --cta-active: hsl(25, 16%, 12%);
+  --cta-bg: var(--cta-default);
+
+  --session-header-bg: hsl(25, 18%, 13%);
+  --session-header-hover: hsl(25, 18%, 19%);
+  --session-header-press: hsl(25, 16%, 10%);
+
+  --color-button-primary: hsl(25, 18%, 16%);
+  --color-accent: hsl(42, 75%, 48%);
+  --color-accent-soft: hsl(42, 40%, 78%);
+}
+
+/* ── 4. Stilla Djup ─────────────────────────────────────────
+   AI-suggested deep blue-grey. Introspective, nordic. */
+.theme-stilla {
+  --neutral-50:  220 12% 95%;
+  --neutral-100: 218 10% 97%;
+  --neutral-200: 215 8% 92%;
+  --neutral-300: 210 6% 86%;
+
+  --primary: 210 28% 18%;                /* Steel blue */
+  --primary-foreground: 0 0% 100%;
+
+  --foreground: 215 20% 14%;
+  --text-primary: hsl(215, 20%, 14%);
+  --text-secondary: hsl(210, 10%, 42%);
+  --text-tertiary: hsl(210, 8%, 56%);
+
+  --accent-saffron: hsl(32, 70%, 50%);   /* Warm amber contrast */
+  --accent-saffron-muted: hsl(32, 48%, 68%);
+  --accent-text: hsl(32, 56%, 40%);
+
+  --cta-default: hsl(210, 28%, 18%);
+  --cta-hover-v2: hsl(210, 30%, 24%);
+  --cta-active: hsl(210, 25%, 14%);
+  --cta-bg: var(--cta-default);
+
+  --session-header-bg: hsl(210, 28%, 15%);
+  --session-header-hover: hsl(210, 28%, 21%);
+  --session-header-press: hsl(210, 25%, 12%);
+
+  --color-button-primary: hsl(210, 28%, 18%);
+  --color-accent: hsl(32, 70%, 50%);
+  --color-accent-soft: hsl(210, 15%, 75%);
+}
+
+/* ── 5. Bold Berry ──────────────────────────────────────────
+   Playful but premium. Deep magenta with warm coral accent.
+   More daring — lively without losing sophistication. */
+.theme-berry {
+  --neutral-50:  320 8% 95%;
+  --neutral-100: 315 6% 97%;
+  --neutral-200: 310 5% 92%;
+  --neutral-300: 305 4% 86%;
+
+  --primary: 325 40% 24%;                /* Deep berry */
+  --primary-foreground: 0 0% 100%;
+
+  --foreground: 330 18% 14%;
+  --text-primary: hsl(330, 18%, 14%);
+  --text-secondary: hsl(320, 8%, 42%);
+  --text-tertiary: hsl(315, 6%, 56%);
+
+  --accent-saffron: hsl(12, 72%, 56%);   /* Warm coral */
+  --accent-saffron-muted: hsl(12, 50%, 72%);
+  --accent-text: hsl(12, 60%, 44%);
+
+  --cta-default: hsl(325, 40%, 24%);
+  --cta-hover-v2: hsl(325, 42%, 30%);
+  --cta-active: hsl(325, 36%, 19%);
+  --cta-bg: var(--cta-default);
+
+  --session-header-bg: hsl(325, 38%, 20%);
+  --session-header-hover: hsl(325, 38%, 26%);
+  --session-header-press: hsl(325, 35%, 16%);
+
+  --color-button-primary: hsl(325, 40%, 24%);
+  --color-accent: hsl(12, 72%, 56%);
+  --color-accent-soft: hsl(325, 20%, 78%);
+}
+
+/* ── 6. Midnight Gold ───────────────────────────────────────
+   Dramatic dark slate with rich gold accent.
+   Bold, luxurious, ceremonial. */
+.theme-midnight {
+  --neutral-50:  45 10% 94%;
+  --neutral-100: 42 8% 96%;
+  --neutral-200: 40 6% 91%;
+  --neutral-300: 38 5% 84%;
+
+  --primary: 220 20% 15%;                /* Near-black slate */
+  --primary-foreground: 45 50% 90%;       /* Warm gold text */
+
+  --foreground: 220 15% 12%;
+  --text-primary: hsl(220, 15%, 12%);
+  --text-secondary: hsl(35, 8%, 42%);
+  --text-tertiary: hsl(35, 6%, 56%);
+
+  --accent-saffron: hsl(45, 85%, 50%);   /* Rich gold */
+  --accent-saffron-muted: hsl(45, 55%, 68%);
+  --accent-text: hsl(45, 70%, 38%);
+
+  --cta-default: hsl(220, 20%, 15%);
+  --cta-hover-v2: hsl(220, 22%, 22%);
+  --cta-active: hsl(220, 18%, 11%);
+  --cta-bg: var(--cta-default);
+
+  --session-header-bg: hsl(220, 20%, 12%);
+  --session-header-hover: hsl(220, 20%, 18%);
+  --session-header-press: hsl(220, 18%, 9%);
+
+  --color-button-primary: hsl(220, 20%, 15%);
+  --color-accent: hsl(45, 85%, 50%);
+  --color-accent-soft: hsl(45, 35%, 80%);
+}

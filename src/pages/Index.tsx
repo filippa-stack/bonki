@@ -4,6 +4,7 @@ import { useCoupleSpaceContext } from '@/contexts/CoupleSpaceContext';
 import { usePartnerNotifications } from '@/hooks/usePartnerNotifications';
 import { useAuth } from '@/contexts/AuthContext';
 import { useDevState } from '@/contexts/DevStateContext';
+import { useThemeSwitcher } from '@/hooks/useThemeSwitcher';
 import { supabase } from '@/integrations/supabase/client';
 import Onboarding from '@/components/Onboarding';
 import Home from '@/pages/Home';
@@ -69,6 +70,7 @@ export default function Index() {
   const { space } = useCoupleSpaceContext();
   const { user } = useAuth();
   const devState = useDevState();
+  useThemeSwitcher();
 
   // Beta: bypass purchase gate — all testers have already paid externally
   const [hasPurchased, setHasPurchased] = useState(true);
