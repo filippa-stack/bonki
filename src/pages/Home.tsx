@@ -301,7 +301,7 @@ export default function Home() {
                     style={{
                       borderRadius: 'var(--radius-card, 12px)',
                       padding: '22px 20px',
-                      background: 'var(--surface-raised)',
+                      background: 'var(--cta-active)',
                       border: 'var(--border-card, none)',
                       display: 'flex',
                       alignItems: 'center',
@@ -313,10 +313,10 @@ export default function Home() {
                     }}
                   >
                     <div className="flex-1 min-w-0">
-                      <p className="font-sans" style={{ fontSize: '10px', fontWeight: 500, letterSpacing: '0.12em', textTransform: 'uppercase' as const, color: 'var(--accent-text)', opacity: 0.8, marginBottom: '4px', lineHeight: 1 }}>
+                      <p className="font-sans" style={{ fontSize: '10px', fontWeight: 500, letterSpacing: '0.12em', textTransform: 'uppercase' as const, color: 'hsl(36, 16%, 92%)', opacity: 0.45, marginBottom: '4px', lineHeight: 1 }}>
                         Ni var mitt i
                       </p>
-                      <p className="font-serif" style={{ fontSize: '18px', fontWeight: 600, lineHeight: 1.35, color: 'var(--color-text-primary)', textWrap: 'balance', hyphens: 'auto', maxWidth: '80%' } as React.CSSProperties}>
+                      <p className="font-serif" style={{ fontSize: '18px', fontWeight: 600, lineHeight: 1.35, color: 'hsl(36, 16%, 92%)', textWrap: 'balance', hyphens: 'auto', maxWidth: '80%' } as React.CSSProperties}>
                         {card?.title || cardId}
                       </p>
                       {cat && (
@@ -325,7 +325,7 @@ export default function Home() {
                         </p>
                       )}
                     </div>
-                    <ChevronRight data-chevron className="w-4 h-4 shrink-0 self-center" style={{ color: 'var(--accent-saffron)', opacity: 0.5, transition: 'transform 180ms ease-out' }} />
+                    <ChevronRight data-chevron className="w-4 h-4 shrink-0 self-center" style={{ color: 'hsl(36, 16%, 92%)', opacity: 0.5, transition: 'transform 180ms ease-out' }} />
                   </div>
                 </motion.div>
               );
