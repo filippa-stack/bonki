@@ -48,7 +48,7 @@ export default function BackgroundWatermark() {
 
   if (mode === 'hero') {
     return (
-      <div className="absolute top-0 left-0 right-0 pointer-events-none z-0 flex items-start justify-center pt-16" aria-hidden="true">
+      <div className="absolute top-0 left-0 right-0 pointer-events-none z-0 flex items-start justify-center pt-10" aria-hidden="true">
         <img
           src={bonkiLogo}
           alt=""
