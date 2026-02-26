@@ -47,6 +47,16 @@ export default function Header({
 
   const isImmersive = variant === 'immersive';
 
+  /*
+   * ┌─────────────────────────────────────────────────────┐
+   * │  🔒 LOCKED DESIGN — Header styling                  │
+   * │  Approved 2026-02-26. Default header uses            │
+   * │  --surface-base bg with muted text (--color-text-    │
+   * │  secondary). Immersive uses --page-bg + blur.        │
+   * │  Do NOT revert to --cta-active without approval.     │
+   * │  To unlock: remove this comment block.               │
+   * └─────────────────────────────────────────────────────┘
+   */
   return (
     <>
       <header

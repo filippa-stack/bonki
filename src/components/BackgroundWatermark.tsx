@@ -75,15 +75,23 @@ export default function BackgroundWatermark() {
     );
   }
 
+  /*
+   * ┌─────────────────────────────────────────────────────┐
+   * │  🔒 LOCKED DESIGN — heroAlt watermark               │
+   * │  Approved 2026-02-26. Do NOT change position,       │
+   * │  size, opacity or clip without explicit approval.    │
+   * │  To unlock: remove this comment block.               │
+   * └─────────────────────────────────────────────────────┘
+   */
   if (mode === 'heroAlt') {
     return (
       <div
         className="absolute inset-x-0 pointer-events-none z-[1] flex items-start justify-center overflow-hidden"
         style={{
-          top: '56px',          /* start below header so logo edge is hidden */
-          marginTop: '-44px',   /* pull visual position back up to match original top:12px */
-          paddingTop: '44px',   /* compensate so img stays in same visual spot */
-          clipPath: 'inset(44px 0 0 0)', /* clip the top 44px that would bleed into header */
+          top: '56px',
+          marginTop: '-44px',
+          paddingTop: '44px',
+          clipPath: 'inset(44px 0 0 0)',
           maskImage: 'linear-gradient(to bottom, black 50%, transparent 100%)',
           WebkitMaskImage: 'linear-gradient(to bottom, black 50%, transparent 100%)',
         }}
