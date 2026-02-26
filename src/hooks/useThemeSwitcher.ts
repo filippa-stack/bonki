@@ -12,6 +12,10 @@ const VALID_THEMES = [
   'umber',
   'ochre',
   'olive',
+  'indigo-earth',
+  'oxblood',
+  'plum',
+  'teal-noir',
 ] as const;
 
 const VALID_SURFACES = ['lift', 'sculpt', 'paper', 'invite', 'invite-white', 'invite-ivory', 'invite-tinted'] as const;
