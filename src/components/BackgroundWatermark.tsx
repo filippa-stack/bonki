@@ -50,7 +50,7 @@ export default function BackgroundWatermark() {
     return (
       <div
         className="absolute inset-x-0 pointer-events-none z-0 flex items-start justify-center"
-        style={{ top: '46px' }}
+        style={{ top: '28px' }}
         aria-hidden="true"
       >
         <img
