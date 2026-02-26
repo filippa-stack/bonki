@@ -26,6 +26,15 @@ export default function SavedConversations() {
             animate={{ opacity: 1 }}
             className="text-center py-24 px-4"
           >
+            {/* Decorative saffron dot */}
+            <div style={{
+              width: '6px',
+              height: '6px',
+              borderRadius: '50%',
+              backgroundColor: 'var(--accent-saffron)',
+              opacity: 0.4,
+              margin: '0 auto 20px',
+            }} />
             <p className="font-serif italic" style={{ fontSize: '18px', color: 'var(--accent-text)', opacity: 0.65, lineHeight: 1.5, marginBottom: '12px' }}>
               Här samlas era samtal.
             </p>

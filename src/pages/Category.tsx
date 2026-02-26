@@ -85,14 +85,14 @@ export default function Category() {
         {category.entryLine && (
           <motion.p
             className="text-center"
-            initial={{ opacity: 0, y: 6 }}
+            initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.05, ease: EASE }}
+            transition={{ duration: 0.7, delay: 0.1, ease: EASE }}
             style={{
-              marginTop: '24px',
+              marginTop: '32px',
               marginBottom: '48px',
               fontFamily: 'var(--font-serif)',
-              fontSize: 'clamp(20px, 5.5vw, 26px)',
+              fontSize: 'clamp(22px, 5.8vw, 28px)',
               fontStyle: 'normal',
               fontWeight: 400,
               lineHeight: 1.35,
@@ -103,7 +103,7 @@ export default function Category() {
               maxWidth: '85%',
               marginLeft: 'auto',
               marginRight: 'auto',
-              letterSpacing: '-0.01em',
+              letterSpacing: '-0.015em',
             } as React.CSSProperties}
           >
             {category.entryLine}

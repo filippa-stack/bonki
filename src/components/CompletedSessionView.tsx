@@ -191,8 +191,23 @@ export default function CompletedSessionView({
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
             className="text-center"
-            style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}
+            style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}
           >
+            {/* Ceremonial saffron line */}
+            <motion.div
+              initial={{ scaleX: 0 }}
+              animate={{ scaleX: 1 }}
+              transition={{ delay: 0.2, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+              style={{
+                width: '32px',
+                height: '2px',
+                borderRadius: '1px',
+                background: 'var(--accent-saffron)',
+                opacity: 0.5,
+                marginBottom: '8px',
+                transformOrigin: 'center',
+              }}
+            />
             <h2
               className="font-serif"
               style={{

@@ -97,7 +97,15 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center bg-background px-6" style={{ paddingTop: '36vh', paddingBottom: '24px' }}>
+    <div
+      className="min-h-screen flex flex-col items-center px-6"
+      style={{
+        paddingTop: '36vh',
+        paddingBottom: '24px',
+        backgroundColor: 'var(--surface-base)',
+        backgroundImage: 'radial-gradient(ellipse 80% 60% at 50% 30%, hsla(36, 20%, 80%, 0.12) 0%, transparent 70%)',
+      }}
+    >
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}

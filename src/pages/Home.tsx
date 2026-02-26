@@ -425,17 +425,22 @@ export default function Home() {
 
             {/* VI SOM BAS section header */}
             <div className="px-6" style={{ marginTop: '48px', marginBottom: '14px' }}>
-              <p className="section-divider" style={{
-                fontFamily: 'var(--font-sans)',
-                fontSize: '10px',
-                fontWeight: 600,
-                letterSpacing: '0.14em',
-                textTransform: 'uppercase',
-                color: 'var(--color-text-tertiary)',
-                opacity: 0.55,
-              }}>
-                VI SOM BAS
-              </p>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                <div style={{ flex: 1, height: '1px', background: 'linear-gradient(90deg, transparent, var(--text-ghost), transparent)', opacity: 0.3 }} />
+                <p style={{
+                  fontFamily: 'var(--font-sans)',
+                  fontSize: '10px',
+                  fontWeight: 600,
+                  letterSpacing: '0.14em',
+                  textTransform: 'uppercase',
+                  color: 'var(--color-text-tertiary)',
+                  opacity: 0.55,
+                  flexShrink: 0,
+                }}>
+                  VI SOM BAS
+                </p>
+                <div style={{ flex: 1, height: '1px', background: 'linear-gradient(90deg, transparent, var(--text-ghost), transparent)', opacity: 0.3 }} />
+              </div>
             </div>
 
             {/* Recommendation section */}
@@ -527,21 +532,26 @@ export default function Home() {
                    const someStarted = (completedCount > 0 || hasInProgressCards) && !allCompleted;
                   const sectionLabel = idToSection.get(category.id);
                   // Skip "VI SOM BAS" — already rendered above the recommended card
-                   const sectionHeader = (sectionLabel && sectionLabel !== 'VI SOM BAS') ? (() => {
+                    const sectionHeader = (sectionLabel && sectionLabel !== 'VI SOM BAS') ? (() => {
                      if (isFirstSection) isFirstSection = false;
                      return (
                        <div key={`section-${category.id}`} style={{ marginTop: '48px', marginBottom: '14px' }}>
-                         <p className="section-divider" style={{
-                           fontFamily: 'var(--font-sans)',
-                           fontSize: '10px',
-                           fontWeight: 600,
-                           letterSpacing: '0.14em',
-                           textTransform: 'uppercase',
-                           color: 'var(--color-text-tertiary)',
-                           opacity: 0.55,
-                         }}>
-                           {sectionLabel}
-                         </p>
+                         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                           <div style={{ flex: 1, height: '1px', background: 'linear-gradient(90deg, transparent, var(--text-ghost), transparent)', opacity: 0.3 }} />
+                           <p style={{
+                             fontFamily: 'var(--font-sans)',
+                             fontSize: '10px',
+                             fontWeight: 600,
+                             letterSpacing: '0.14em',
+                             textTransform: 'uppercase',
+                             color: 'var(--color-text-tertiary)',
+                             opacity: 0.55,
+                             flexShrink: 0,
+                           }}>
+                             {sectionLabel}
+                           </p>
+                           <div style={{ flex: 1, height: '1px', background: 'linear-gradient(90deg, transparent, var(--text-ghost), transparent)', opacity: 0.3 }} />
+                         </div>
                        </div>
                     );
                   })() : null;
@@ -638,7 +648,19 @@ export default function Home() {
                   const catCards = cards.filter(c => c.categoryId === cat.id);
                   return catCards.length > 0 && catCards.every(c => completedCardIds.includes(c.id));
                 }).length;
-                if (fullyCompletedCount === 0) return null;
+                if (fullyCompletedCount === 0) return (
+                  <div style={{ textAlign: 'center', marginTop: '40px', paddingBottom: '48px' }}>
+                    <p style={{
+                      fontFamily: 'var(--font-serif)',
+                      fontStyle: 'italic',
+                      fontSize: '14px',
+                      color: 'var(--accent-text)',
+                      opacity: 0.30,
+                    }}>
+                      Samtalet börjar här.
+                    </p>
+                  </div>
+                );
                 const isAllDone = fullyCompletedCount >= totalCategories;
                 return (
                   <div style={{ textAlign: 'center', marginTop: '32px', paddingBottom: '48px' }}>
@@ -652,6 +674,16 @@ export default function Home() {
                       {isAllDone
                         ? 'Ni har utforskat allt. Fortsätt prata.'
                         : `Ni har utforskat ${fullyCompletedCount} av ${totalCategories} områden.`}
+                    </p>
+                    <p style={{
+                      fontFamily: 'var(--font-serif)',
+                      fontStyle: 'italic',
+                      fontSize: '14px',
+                      color: 'var(--accent-text)',
+                      opacity: 0.35,
+                      marginTop: '16px',
+                    }}>
+                      Samtalet börjar här.
                     </p>
                   </div>
                 );

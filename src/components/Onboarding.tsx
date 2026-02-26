@@ -467,6 +467,23 @@ function Slide3() {
         Formulerat för att skapa klarhet, närhet och förståelse — i er takt.
       </motion.p>
 
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 0.15 }}
+        transition={{ delay: 0.3, duration: 1.2, ease: EASE }}
+        style={{
+          position: 'absolute',
+          bottom: '30%',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          width: '200px',
+          height: '200px',
+          borderRadius: '50%',
+          background: 'radial-gradient(circle, var(--accent-saffron) 0%, transparent 70%)',
+          filter: 'blur(60px)',
+          pointerEvents: 'none',
+        }}
+      />
       <motion.p
         initial={{ opacity: 0, y: 8 }}
         animate={{ opacity: 1, y: 0 }}
@@ -479,6 +496,8 @@ function Slide3() {
           textAlign: 'center',
           marginTop: '28px',
           letterSpacing: '-0.01em',
+          position: 'relative',
+          zIndex: 1,
         }}
       >
         Bara er.
