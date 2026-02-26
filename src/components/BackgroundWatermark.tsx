@@ -47,12 +47,13 @@ export default function BackgroundWatermark() {
   }
 
   if (mode === 'hero') {
+    // Logo fits fully between hero card bottom (~260px from top) and "VI SOM BAS" (~380px)
     return (
-      <div className="absolute top-14 left-0 right-0 h-[28vh] pointer-events-none z-0 flex items-end justify-center overflow-hidden" aria-hidden="true">
+      <div className="absolute top-[100px] left-0 right-0 h-[280px] pointer-events-none z-0 flex items-center justify-center" aria-hidden="true">
         <img
           src={bonkiLogo}
           alt=""
-          className="w-[70vw] h-[70vw] max-w-[420px] max-h-[420px] object-contain opacity-[0.05] select-none -mb-[30%]"
+          className="h-[220px] w-[220px] object-contain opacity-[0.045] select-none"
           draggable={false}
         />
       </div>
