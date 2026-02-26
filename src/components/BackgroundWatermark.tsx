@@ -1,4 +1,4 @@
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, useLocation } from 'react-router-dom';
 import bonkiLogo from '@/assets/bonki-logo.png';
 
 export type WatermarkMode = 'full' | 'behind' | 'hero' | 'heroAlt' | null;
@@ -21,6 +21,10 @@ export function useWatermarkMode(): WatermarkMode {
 
 export default function BackgroundWatermark() {
   const mode = useWatermarkMode();
+  const { pathname } = useLocation();
+
+  // Hide watermark inside sessions (/card/*)
+  if (pathname.startsWith('/card')) return null;
 
   if (mode === 'full') {
     return (
