@@ -625,7 +625,7 @@ export default function Home() {
                               width: '7px',
                               height: '7px',
                               borderRadius: '50%',
-                              backgroundColor: '#C4821D',
+                              backgroundColor: 'var(--accent-saffron)',
                               opacity: 0.70,
                             }} />
                           ) : null}
