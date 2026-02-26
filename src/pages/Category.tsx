@@ -213,7 +213,7 @@ function CardEntry({ card, index, isCompleted = false, isInProgress = false, onN
           borderRadius: '12px',
           boxShadow: isCompleted
             ? '0 1px 2px hsla(30, 15%, 30%, 0.03)'
-            : '0 1px 3px hsla(30, 20%, 30%, 0.06), 0 6px 24px -6px hsla(30, 18%, 28%, 0.09)',
+            : '0 4px 20px -4px hsla(30, 20%, 28%, 0.10), 0 12px 40px -10px hsla(30, 18%, 28%, 0.12)',
           transition: 'transform 200ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 260ms ease-out',
         }}
         onPointerDown={(e) => {
