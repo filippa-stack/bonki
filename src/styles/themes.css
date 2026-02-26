@@ -273,14 +273,16 @@
 }
 
 /* ── 10. Deep Fig ──────────────────────────────────────────
-   Apple dark-mode: layered darks. Warm copper CTA (not pomegranate).
-   Bone for text + accent labels. Rose fog as ambient atmosphere. */
+   Warm charcoal foundation (not purple). Copper CTA. Bone text.
+   Everything lives in the same warm temperature zone:
+   charcoal (20-30° hue) → copper (22°) → bone (36°) → rose fog (10°)
+   No cold tones. No dissonance. */
 .theme-deep-fig {
-  /* Foundation — three shades of fig */
-  --neutral-50:  278 16% 14%;     /* Canvas — deepest */
-  --neutral-100: 278 14% 19%;     /* Raised tiles */
-  --neutral-200: 278 12% 23%;     /* Hover elevation */
-  --neutral-300: 278 8% 26%;      /* Borders */
+  /* Foundation — warm charcoal, three layers */
+  --neutral-50:  25 10% 13%;      /* Canvas — deepest warm dark */
+  --neutral-100: 25 8% 18%;       /* Raised tiles */
+  --neutral-200: 25 7% 23%;       /* Hover / elevated */
+  --neutral-300: 25 6% 27%;       /* Borders */
 
   --background: var(--neutral-50);
   --foreground: 36 18% 90%;
@@ -291,55 +293,55 @@
   --popover: var(--neutral-100);
   --popover-foreground: 36 18% 90%;
 
-  /* Primary — Warm Copper (ember glow, not cold red) */
+  /* Primary — Warm Copper */
   --primary: 22 62% 48%;
   --primary-hover: 22 58% 54%;
   --primary-active: 22 65% 42%;
   --primary-foreground: 36 20% 96%;
 
-  --secondary: 278 12% 20%;
+  --secondary: 25 8% 20%;
   --secondary-foreground: 36 18% 90%;
 
-  --muted: 278 10% 20%;
-  --muted-foreground: 36 12% 55%;
+  --muted: 25 7% 20%;
+  --muted-foreground: 36 10% 50%;
 
-  --accent: 278 10% 22%;
+  --accent: 25 7% 22%;
   --accent-foreground: 36 18% 90%;
 
   --destructive: 0 55% 45%;
   --destructive-foreground: 36 18% 94%;
 
-  --border: 278 8% 22%;
-  --input: 278 10% 22%;
+  --border: 25 6% 22%;
+  --input: 25 7% 22%;
   --ring: var(--primary);
 
   /* Text — Bone spectrum */
   --text-primary:    hsl(36, 18%, 90%);
-  --text-secondary:  hsl(36, 12%, 62%);
-  --text-tertiary:   hsl(36, 10%, 45%);    /* Bone ghost, NOT fig — warmer */
-  --text-ghost:      hsl(278, 6%, 32%);
-  --text-accent:     hsl(22, 55%, 62%);    /* Warm copper glow for labels */
+  --text-secondary:  hsl(32, 12%, 58%);
+  --text-tertiary:   hsl(28, 8%, 42%);
+  --text-ghost:      hsl(25, 6%, 30%);
+  --text-accent:     hsl(22, 50%, 60%);
 
-  /* Accent — Rose-tinted bone for recommendation whisper */
-  --accent-saffron:       hsl(18, 45%, 60%);   /* Dusty copper */
-  --accent-saffron-muted: hsl(18, 30%, 50%);
-  --accent-text:          hsl(10, 30%, 72%);   /* Rose fog text */
+  /* Accent — muted copper / rose for whispers */
+  --accent-saffron:       hsl(18, 42%, 58%);
+  --accent-saffron-muted: hsl(18, 28%, 48%);
+  --accent-text:          hsl(10, 28%, 68%);   /* Rose fog text */
 
-  /* Layered surfaces */
-  --surface-base:   hsl(278, 16%, 14%);
-  --surface-raised: hsl(278, 14%, 19%);
-  --surface-sunken: hsl(278, 18%, 11%);
-  --surface-chrome: 278 18% 11%;
+  /* Layered surfaces — warm charcoal */
+  --surface-base:   hsl(25, 10%, 13%);
+  --surface-raised: hsl(25, 8%, 18%);
+  --surface-sunken: hsl(25, 12%, 10%);
+  --surface-chrome: 25 12% 10%;
 
   /* Header — sinks below canvas */
-  --session-header-bg:    hsl(278, 18%, 11%);
-  --session-header-hover: hsl(278, 14%, 16%);
-  --session-header-press: hsl(278, 20%, 9%);
+  --session-header-bg:    hsl(25, 12%, 10%);
+  --session-header-hover: hsl(25, 10%, 15%);
+  --session-header-press: hsl(25, 14%, 8%);
   --header-text:          hsl(36, 18%, 90%);
-  --header-text-muted:    hsl(36, 12%, 55%);
+  --header-text-muted:    hsl(32, 10%, 50%);
   --header-border:        none;
 
-  /* CTA — Warm Copper with depth */
+  /* CTA — Warm Copper */
   --cta-default: hsl(22, 62%, 48%);
   --cta-hover-v2: hsl(22, 58%, 54%);
   --cta-active:  hsl(22, 65%, 42%);
@@ -349,162 +351,180 @@
   /* Semantic */
   --color-bg: var(--surface-base);
   --color-bg-base: var(--surface-base);
-  --color-surface: hsl(278, 14%, 19%);
-  --color-surface-primary: hsl(278, 14%, 19%);
+  --color-surface: hsl(25, 8%, 18%);
+  --color-surface-primary: hsl(25, 8%, 18%);
   --color-text-primary: hsl(36, 18%, 90%);
-  --color-text-secondary: hsl(36, 12%, 62%);
-  --color-text-tertiary: hsl(36, 10%, 45%);
+  --color-text-secondary: hsl(32, 12%, 58%);
+  --color-text-tertiary: hsl(28, 8%, 42%);
   --color-accent: hsl(22, 62%, 48%);
-  --color-accent-soft: hsl(22, 35%, 50%);
-  --color-divider: hsl(278, 8%, 22%);
+  --color-accent-soft: hsl(22, 30%, 48%);
+  --color-divider: hsl(25, 6%, 22%);
 
   /* Notes */
-  --note-bg: 278 12% 17%;
-  --note-border: 278 8% 24%;
+  --note-bg: 25 8% 16%;
+  --note-border: 25 6% 24%;
   --note-text: 36 18% 90%;
-  --note-placeholder: hsl(278, 6%, 38%);
+  --note-placeholder: hsl(25, 5%, 36%);
 
-  /* Completion — copper at 65% */
-  --color-completion: hsl(22, 55%, 50%);
+  /* Completion — copper */
+  --color-completion: hsl(22, 50%, 50%);
 
-  /* Shadows */
-  --shadow-card: 0 1px 3px hsla(278, 30%, 4%, 0.30),
-                 0 4px 16px -4px hsla(278, 25%, 2%, 0.40);
-  --shadow-card-featured: 0 2px 8px hsla(278, 30%, 4%, 0.35),
-                          0 8px 32px -4px hsla(278, 25%, 2%, 0.50);
+  /* Shadows — warm-tinted */
+  --shadow-card: 0 1px 3px hsla(25, 20%, 4%, 0.30),
+                 0 4px 16px -4px hsla(25, 15%, 2%, 0.40);
+  --shadow-card-featured: 0 2px 8px hsla(25, 20%, 4%, 0.35),
+                          0 8px 32px -4px hsla(25, 15%, 2%, 0.50);
   --border-card: none;
 
   --card-l1-bg: var(--neutral-100);
-  --card-l1-border: 278 8% 24%;
+  --card-l1-border: 25 6% 24%;
   --card-l1-border-width: 1px;
 
   --dusty-rose-fog: hsl(10, 22%, 72%);
 }
 
-/* ── Deep Fig — Tiles ── */
+/* ── Deep Fig — Dark layered tiles ── */
 
 .theme-deep-fig .tile-door {
-  background: hsl(278, 14%, 19%) !important;
-  border: 1px solid hsl(278, 8%, 24%) !important;
+  background: hsl(25, 8%, 18%) !important;
+  border: 1px solid hsla(25, 6%, 28%, 0.5) !important;
   border-radius: 14px !important;
   box-shadow:
-    0 1px 2px hsla(278, 25%, 4%, 0.20),
-    0 4px 16px -6px hsla(278, 20%, 2%, 0.35) !important;
+    0 1px 2px hsla(25, 15%, 4%, 0.20),
+    0 4px 16px -6px hsla(25, 12%, 2%, 0.35) !important;
 }
 
 .theme-deep-fig .tile-door h3 {
-  color: hsl(36, 18%, 88%) !important;
+  color: hsl(36, 16%, 86%) !important;
 }
 
 .theme-deep-fig .tile-door p {
-  color: hsl(36, 10%, 56%) !important;
+  color: hsl(32, 10%, 52%) !important;
 }
 
 .theme-deep-fig .tile-door [data-chevron] {
-  color: hsl(36, 10%, 45%) !important;
-  opacity: 0.35 !important;
+  color: hsl(28, 8%, 40%) !important;
+  opacity: 0.4 !important;
 }
 
-/* Accent bar — warm copper whisper */
+/* Accent bar — warm copper */
 .theme-deep-fig .tile-door [data-accent-bar] {
-  background: hsl(22, 55%, 50%) !important;
-  opacity: 0.6 !important;
+  background: hsl(22, 50%, 50%) !important;
+  opacity: 0.55 !important;
 }
 
 /* Completion marks — copper */
 .theme-deep-fig [data-cat-index] svg {
-  color: hsl(22, 55%, 50%) !important;
-  opacity: 0.55 !important;
+  color: hsl(22, 50%, 50%) !important;
+  opacity: 0.50 !important;
 }
 
-/* Row bloom — warm copper glow on hover */
+/* Row bloom — warm ember glow on hover */
 .theme-deep-fig .row-bloom::before {
   background: radial-gradient(
-    ellipse at 30% 40%,
-    hsla(22, 40%, 45%, 0.07) 0%,
-    hsla(10, 20%, 40%, 0.03) 55%,
+    ellipse at 25% 40%,
+    hsla(22, 35%, 45%, 0.08) 0%,
+    hsla(25, 15%, 35%, 0.03) 55%,
     transparent 85%
   ) !important;
 }
 
 /* Header grain */
 .theme-deep-fig .header-textured::after {
-  opacity: 0.025 !important;
+  opacity: 0.02 !important;
 }
 
-/* Section dividers */
+/* Section dividers — warm bone */
 .theme-deep-fig .section-divider::after {
   background: linear-gradient(
     90deg,
-    hsla(36, 12%, 55%, 0.20) 0%,
-    hsla(36, 12%, 55%, 0) 100%
+    hsla(32, 10%, 45%, 0.20) 0%,
+    hsla(32, 10%, 45%, 0) 100%
   ) !important;
 }
 
-/* ── Deep Fig — CTA / Resume tile with depth ── */
+/* ── Deep Fig — Hero tile (resume/welcome) ── */
 
-/* The resume/welcome tile: gradient + inner light + glow shadow */
 .theme-deep-fig [data-fig-hero] {
-  background: linear-gradient(
-    165deg,
-    hsl(22, 62%, 50%) 0%,
-    hsl(22, 58%, 44%) 100%
-  ) !important;
+  background:
+    linear-gradient(
+      168deg,
+      hsl(20, 60%, 52%) 0%,
+      hsl(22, 62%, 46%) 45%,
+      hsl(24, 58%, 40%) 100%
+    ) !important;
   border: none !important;
+  border-top: 1px solid hsla(36, 40%, 80%, 0.12) !important;
+  border-radius: 18px !important;
   box-shadow:
-    0 0 0 1px hsla(22, 50%, 55%, 0.15),
-    0 2px 8px -2px hsla(22, 50%, 25%, 0.30),
-    0 8px 32px -4px hsla(278, 30%, 4%, 0.40),
-    inset 0 1px 0 0 hsla(36, 30%, 80%, 0.12) !important;
+    /* Ambient copper glow bleeding onto canvas */
+    0 0 60px -10px hsla(22, 65%, 45%, 0.20),
+    /* Depth shadow */
+    0 4px 16px -4px hsla(25, 30%, 10%, 0.40),
+    0 12px 40px -8px hsla(25, 25%, 6%, 0.45),
+    /* Inner top highlight — glass edge */
+    inset 0 1px 0 0 hsla(36, 40%, 85%, 0.14),
+    /* Inner bottom shadow — curvature */
+    inset 0 -1px 0 0 hsla(25, 40%, 20%, 0.20) !important;
 }
 
-/* Hover lift for hero */
+/* Hero hover — glow intensifies */
 @media (hover: hover) and (pointer: fine) {
   .theme-deep-fig [data-fig-hero]:hover {
     box-shadow:
-      0 0 0 1px hsla(22, 50%, 55%, 0.20),
-      0 4px 12px -2px hsla(22, 50%, 25%, 0.35),
-      0 16px 48px -8px hsla(278, 30%, 4%, 0.45),
-      0 0 48px -12px hsla(22, 60%, 48%, 0.15),
-      inset 0 1px 0 0 hsla(36, 30%, 80%, 0.15) !important;
+      0 0 80px -8px hsla(22, 65%, 45%, 0.28),
+      0 6px 20px -4px hsla(25, 30%, 10%, 0.40),
+      0 20px 56px -12px hsla(25, 25%, 6%, 0.50),
+      inset 0 1px 0 0 hsla(36, 40%, 85%, 0.18),
+      inset 0 -1px 0 0 hsla(25, 40%, 20%, 0.15) !important;
+    transform: translateY(-2px);
   }
 }
 
 /* ── Deep Fig — Tile hover ── */
 @media (hover: hover) and (pointer: fine) {
   .theme-deep-fig .tile-door:hover {
-    background: hsl(278, 13%, 22%) !important;
-    border-color: hsl(278, 8%, 28%) !important;
+    background: hsl(25, 7%, 22%) !important;
+    border-color: hsla(25, 6%, 32%, 0.5) !important;
     box-shadow:
-      0 2px 4px hsla(278, 25%, 4%, 0.25),
-      0 8px 24px -6px hsla(278, 20%, 2%, 0.40) !important;
+      0 2px 4px hsla(25, 15%, 4%, 0.25),
+      0 8px 24px -6px hsla(25, 12%, 2%, 0.40) !important;
   }
   .theme-deep-fig .tile-door:hover h3 {
-    color: hsl(36, 20%, 92%) !important;
+    color: hsl(36, 18%, 90%) !important;
   }
   .theme-deep-fig .tile-door:hover [data-chevron] {
-    color: hsl(22, 55%, 55%) !important;
-    opacity: 0.55 !important;
+    color: hsl(22, 50%, 55%) !important;
+    opacity: 0.5 !important;
   }
 }
 
-/* ── Deep Fig — Rose fog atmosphere behind hero zone ── */
+/* ── Deep Fig — Rose fog atmosphere ── */
 .theme-deep-fig [data-fig-atmosphere] {
   position: relative;
 }
 .theme-deep-fig [data-fig-atmosphere]::before {
   content: '';
   position: absolute;
-  top: -40px;
-  left: 10%;
-  right: 10%;
-  height: 200px;
+  top: -60px;
+  left: 5%;
+  right: 5%;
+  height: 260px;
   background: radial-gradient(
-    ellipse at 50% 60%,
-    hsla(10, 22%, 72%, 0.06) 0%,
-    hsla(10, 18%, 60%, 0.03) 40%,
-    transparent 70%
+    ellipse at 50% 55%,
+    hsla(10, 22%, 68%, 0.05) 0%,
+    hsla(22, 20%, 55%, 0.03) 35%,
+    transparent 65%
   );
   pointer-events: none;
   z-index: 0;
+  filter: blur(20px);
+}
+
+/* ── Deep Fig — Scrollbar ── */
+.theme-deep-fig ::-webkit-scrollbar-thumb {
+  background: hsl(25, 6%, 26%);
+}
+.theme-deep-fig ::-webkit-scrollbar-thumb:hover {
+  background: hsl(25, 8%, 32%);
 }
