@@ -29,6 +29,10 @@ const THEME_OPTIONS = [
   { value: 'umber', label: '🪵 Umber', color: '#4A3225' },
   { value: 'ochre', label: '🌾 Ochre', color: '#5C4018' },
   { value: 'olive', label: '🫒 Olive', color: '#3A4428' },
+  { value: 'indigo-earth', label: '💎 Indigo Earth', color: '#282050' },
+  { value: 'oxblood', label: '🩸 Oxblood', color: '#4A1218' },
+  { value: 'plum', label: '🍇 Plum', color: '#3E1850' },
+  { value: 'teal-noir', label: '🦚 Teal Noir', color: '#143840' },
 ];
 
 const SURFACE_OPTIONS = [

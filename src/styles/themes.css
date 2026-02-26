@@ -326,6 +326,151 @@
 }
 
 /* ══════════════════════════════════════════════════════════════
+   BOLD EARTH THEMES — daring but premium, with invite-ivory baked in
+   Each includes warm bg (88%), ivory tiles (96%), deep shadows
+   ══════════════════════════════════════════════════════════════ */
+
+/* ── 11. Indigo Earth — djupt indigoblått, koppar-accent ──── */
+.theme-indigo-earth {
+  --neutral-50:  28 18% 88%;
+  --neutral-100: 40 35% 96%;
+  --neutral-200: 36 22% 93%;
+  --neutral-300: 28 10% 80%;
+  --primary: 235 32% 22%;
+  --primary-foreground: 0 0% 100%;
+  --foreground: 235 18% 14%;
+  --text-primary: hsl(235, 18%, 14%);
+  --text-secondary: hsl(230, 10%, 42%);
+  --text-tertiary: hsl(228, 8%, 56%);
+  --accent-saffron: hsl(22, 72%, 52%);
+  --accent-saffron-muted: hsl(22, 48%, 68%);
+  --accent-text: hsl(22, 58%, 40%);
+  --cta-default: hsl(235, 32%, 22%);
+  --cta-hover-v2: hsl(235, 34%, 28%);
+  --cta-active: hsl(235, 28%, 17%);
+  --cta-bg: var(--cta-default);
+  --session-header-bg: hsl(235, 30%, 18%);
+  --session-header-hover: hsl(235, 30%, 24%);
+  --session-header-press: hsl(235, 28%, 14%);
+  --color-button-primary: hsl(235, 32%, 22%);
+  --color-accent: hsl(22, 72%, 52%);
+  --color-accent-soft: hsl(235, 18%, 78%);
+  --shadow-card: 0 1px 2px hsla(235, 20%, 14%, 0.06),
+                 0 4px 14px -3px hsla(235, 22%, 16%, 0.10),
+                 0 12px 36px -8px hsla(235, 18%, 12%, 0.12);
+  --shadow-card-featured: 0 2px 6px hsla(235, 24%, 12%, 0.08),
+                          0 8px 28px -4px hsla(235, 24%, 14%, 0.14),
+                          0 20px 52px -10px hsla(235, 18%, 10%, 0.10);
+  --radius-card: 1.125rem;
+  --border-card: none;
+}
+
+/* ── 12. Oxblood — blodrött, guld-accent, ceremoniellt ────── */
+.theme-oxblood {
+  --neutral-50:  28 18% 88%;
+  --neutral-100: 40 35% 96%;
+  --neutral-200: 36 22% 93%;
+  --neutral-300: 28 10% 80%;
+  --primary: 355 48% 20%;
+  --primary-foreground: 0 0% 100%;
+  --foreground: 355 22% 14%;
+  --text-primary: hsl(355, 22%, 14%);
+  --text-secondary: hsl(350, 10%, 42%);
+  --text-tertiary: hsl(348, 8%, 56%);
+  --accent-saffron: hsl(45, 78%, 48%);
+  --accent-saffron-muted: hsl(45, 50%, 68%);
+  --accent-text: hsl(45, 62%, 38%);
+  --cta-default: hsl(355, 48%, 20%);
+  --cta-hover-v2: hsl(355, 50%, 26%);
+  --cta-active: hsl(355, 44%, 16%);
+  --cta-bg: var(--cta-default);
+  --session-header-bg: hsl(355, 45%, 16%);
+  --session-header-hover: hsl(355, 45%, 22%);
+  --session-header-press: hsl(355, 42%, 13%);
+  --color-button-primary: hsl(355, 48%, 20%);
+  --color-accent: hsl(45, 78%, 48%);
+  --color-accent-soft: hsl(355, 20%, 78%);
+  --shadow-card: 0 1px 2px hsla(355, 18%, 14%, 0.06),
+                 0 4px 14px -3px hsla(355, 20%, 16%, 0.10),
+                 0 12px 36px -8px hsla(355, 16%, 12%, 0.12);
+  --shadow-card-featured: 0 2px 6px hsla(355, 22%, 12%, 0.08),
+                          0 8px 28px -4px hsla(355, 22%, 14%, 0.14),
+                          0 20px 52px -10px hsla(355, 16%, 10%, 0.10);
+  --radius-card: 1.125rem;
+  --border-card: none;
+}
+
+/* ── 13. Plum — djup plommon, rosé-guld accent ────────────── */
+.theme-plum {
+  --neutral-50:  28 18% 88%;
+  --neutral-100: 40 35% 96%;
+  --neutral-200: 36 22% 93%;
+  --neutral-300: 28 10% 80%;
+  --primary: 280 30% 22%;
+  --primary-foreground: 0 0% 100%;
+  --foreground: 278 18% 14%;
+  --text-primary: hsl(278, 18%, 14%);
+  --text-secondary: hsl(275, 8%, 42%);
+  --text-tertiary: hsl(272, 6%, 56%);
+  --accent-saffron: hsl(15, 60%, 55%);
+  --accent-saffron-muted: hsl(15, 40%, 70%);
+  --accent-text: hsl(15, 48%, 42%);
+  --cta-default: hsl(280, 30%, 22%);
+  --cta-hover-v2: hsl(280, 32%, 28%);
+  --cta-active: hsl(280, 26%, 17%);
+  --cta-bg: var(--cta-default);
+  --session-header-bg: hsl(280, 28%, 18%);
+  --session-header-hover: hsl(280, 28%, 24%);
+  --session-header-press: hsl(280, 25%, 14%);
+  --color-button-primary: hsl(280, 30%, 22%);
+  --color-accent: hsl(15, 60%, 55%);
+  --color-accent-soft: hsl(280, 16%, 78%);
+  --shadow-card: 0 1px 2px hsla(280, 16%, 14%, 0.06),
+                 0 4px 14px -3px hsla(280, 18%, 16%, 0.10),
+                 0 12px 36px -8px hsla(280, 14%, 12%, 0.12);
+  --shadow-card-featured: 0 2px 6px hsla(280, 20%, 12%, 0.08),
+                          0 8px 28px -4px hsla(280, 20%, 14%, 0.14),
+                          0 20px 52px -10px hsla(280, 14%, 10%, 0.10);
+  --radius-card: 1.125rem;
+  --border-card: none;
+}
+
+/* ── 14. Teal Noir — djup petrol, bränd sienna accent ─────── */
+.theme-teal-noir {
+  --neutral-50:  28 18% 88%;
+  --neutral-100: 40 35% 96%;
+  --neutral-200: 36 22% 93%;
+  --neutral-300: 28 10% 80%;
+  --primary: 190 40% 18%;
+  --primary-foreground: 0 0% 100%;
+  --foreground: 190 20% 12%;
+  --text-primary: hsl(190, 20%, 12%);
+  --text-secondary: hsl(188, 10%, 40%);
+  --text-tertiary: hsl(185, 8%, 54%);
+  --accent-saffron: hsl(18, 68%, 48%);
+  --accent-saffron-muted: hsl(18, 45%, 66%);
+  --accent-text: hsl(18, 55%, 38%);
+  --cta-default: hsl(190, 40%, 18%);
+  --cta-hover-v2: hsl(190, 42%, 24%);
+  --cta-active: hsl(190, 36%, 14%);
+  --cta-bg: var(--cta-default);
+  --session-header-bg: hsl(190, 38%, 15%);
+  --session-header-hover: hsl(190, 38%, 21%);
+  --session-header-press: hsl(190, 34%, 12%);
+  --color-button-primary: hsl(190, 40%, 18%);
+  --color-accent: hsl(18, 68%, 48%);
+  --color-accent-soft: hsl(190, 18%, 78%);
+  --shadow-card: 0 1px 2px hsla(190, 18%, 14%, 0.06),
+                 0 4px 14px -3px hsla(190, 20%, 16%, 0.10),
+                 0 12px 36px -8px hsla(190, 16%, 12%, 0.12);
+  --shadow-card-featured: 0 2px 6px hsla(190, 22%, 12%, 0.08),
+                          0 8px 28px -4px hsla(190, 22%, 14%, 0.14),
+                          0 20px 52px -10px hsla(190, 16%, 10%, 0.10);
+  --radius-card: 1.125rem;
+  --border-card: none;
+}
+
+/* ══════════════════════════════════════════════════════════════
    EARTH THEMES — warm alternatives to forest green
    Best paired with surface-invite variants
    ══════════════════════════════════════════════════════════════ */
