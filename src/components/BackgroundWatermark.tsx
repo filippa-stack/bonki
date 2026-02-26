@@ -46,15 +46,13 @@ export default function BackgroundWatermark() {
     );
   }
 
-  // Default: show hero watermark (also when explicitly set)
-  // Render for 'hero' mode or when no watermark param is set (default)
-  if (mode === 'hero' || mode === null) {
+  if (mode === 'hero') {
     return (
-      <div className="absolute top-[260px] left-0 right-0 h-[120px] pointer-events-none z-0 flex items-center justify-center" aria-hidden="true">
+      <div className="absolute top-14 left-0 right-0 h-[28vh] pointer-events-none z-0 flex items-end justify-center overflow-hidden" aria-hidden="true">
         <img
           src={bonkiLogo}
           alt=""
-          className="h-[100px] w-[100px] object-contain opacity-[0.045] select-none"
+          className="w-[70vw] h-[70vw] max-w-[420px] max-h-[420px] object-contain opacity-[0.05] select-none -mb-[30%]"
           draggable={false}
         />
       </div>
