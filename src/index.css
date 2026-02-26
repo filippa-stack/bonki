@@ -24,10 +24,10 @@ h1, h2, h3,
 @layer base {
   :root {
     /* ── Foundation neutrals (warm-paper scale) ── */
-    --neutral-50:  34 14% 92.5%;   /* Base bg — warm linen, deeper */
-    --neutral-100: 38 20% 98.5%;   /* Raised — near-white, lifts off bg */
-    --neutral-200: 36 18% 96%;     /* Notes, reflections, sunken areas */
-    --neutral-300: 36 12% 86%;     /* Borders, dividers */
+    --neutral-50:  30 12% 90%;       /* Base bg — warmer, deeper for contrast */
+    --neutral-100: 34 22% 97.5%;     /* Raised — luminous near-white tiles */
+    --neutral-200: 32 16% 94%;       /* Notes, reflections, sunken areas */
+    --neutral-300: 32 10% 84%;       /* Borders, dividers */
 
     /* Tailwind base tokens (HSL without hsl()) */
     --background: var(--neutral-50);
@@ -66,10 +66,14 @@ h1, h2, h3,
     --radius-pill:   0.875rem;  /* 14px */
     --radius-toast:  1.25rem;   /* 20px */
 
-    /* ── Standard shadow ── */
-    --shadow-card: none;
-    --shadow-card-featured: none;
-    --border-card: 1px solid rgba(0,0,0,0.04);
+    /* ── Elevated shadows — tiles float above the page ── */
+    --shadow-card: 0 2px 4px hsla(30, 18%, 14%, 0.05),
+                   0 8px 24px -4px hsla(30, 20%, 16%, 0.10),
+                   0 20px 52px -10px hsla(30, 14%, 10%, 0.12);
+    --shadow-card-featured: 0 3px 10px hsla(30, 22%, 12%, 0.08),
+                            0 14px 40px -4px hsla(30, 22%, 14%, 0.14),
+                            0 28px 72px -12px hsla(30, 16%, 8%, 0.10);
+    --border-card: none;
 
     /* Custom tokens */
     --surface-warm: var(--neutral-50);
