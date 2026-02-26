@@ -233,18 +233,18 @@
    Tiles in deep, rich tones against warm background.
    Light text. Like opening doors into dark rooms. Vogue cover. */
 .theme-dark-tiles {
-  --tile-bg-0: hsl(36, 45%, 82%);    /* warm saffron */
-  --tile-bg-1: hsl(34, 40%, 80%);
-  --tile-bg-2: hsl(38, 42%, 81%);
-  --tile-bg-3: hsl(32, 38%, 79%);
-  --tile-bg-4: hsl(40, 44%, 82%);
-  --tile-bg-5: hsl(35, 40%, 80%);
-  --tile-bg-6: hsl(37, 42%, 81%);
-  --tile-bg-7: hsl(33, 38%, 79%);
-  --tile-bg-8: hsl(39, 43%, 82%);
-  --tile-bg-9: hsl(36, 40%, 80%);
-  --tile-text-dark: hsl(158, 32%, 14%);
-  --tile-text-muted: hsl(158, 22%, 28%);
+  --tile-bg-0: hsl(38, 75%, 68%);    /* rich saffron */
+  --tile-bg-1: hsl(36, 70%, 66%);
+  --tile-bg-2: hsl(40, 72%, 67%);
+  --tile-bg-3: hsl(34, 68%, 65%);
+  --tile-bg-4: hsl(42, 74%, 68%);
+  --tile-bg-5: hsl(37, 70%, 66%);
+  --tile-bg-6: hsl(39, 72%, 67%);
+  --tile-bg-7: hsl(35, 68%, 65%);
+  --tile-bg-8: hsl(41, 73%, 68%);
+  --tile-bg-9: hsl(38, 70%, 66%);
+  --tile-text-dark: hsl(158, 35%, 12%);
+  --tile-text-muted: hsl(158, 25%, 24%);
 }
 
 /* Dark tiles — rich backgrounds */
