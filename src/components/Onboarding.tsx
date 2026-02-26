@@ -256,7 +256,7 @@ function Slide2() {
             letterSpacing: '-0.02em',
           }}
         >
-          Utforska i er takt.
+           Utforska tillsammans.
         </motion.h1>
 
         <motion.p
@@ -301,7 +301,7 @@ function Slide2() {
 /* ─── SLIDE MECHANICS: "Så funkar det." ─── */
 function SlideMechanics() {
   const steps = [
-    { num: '01', text: 'Välj ett tema. Ta samtalet i er takt.' },
+    { num: '01', text: 'Välj ett tema. Samtalet tar den tid ni ger det.' },
     { num: '02', text: 'Låt var och en tala till punkt.' },
     { num: '03', text: 'Anteckna det ni vill minnas.' },
   ];
