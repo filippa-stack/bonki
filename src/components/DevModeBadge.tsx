@@ -31,7 +31,8 @@ const SURFACE_OPTIONS = [
   { value: '', label: '⬜ Default' },
   { value: 'lift', label: '🔲 Lift' },
   { value: 'sculpt', label: '🏛️ Sculpt' },
-  { value: 'paper', label: '📄 Paper (clean white)' },
+  { value: 'paper', label: '📄 Paper' },
+  { value: 'invite', label: '✨ Invite' },
 ];
 
 const PAGES = [
