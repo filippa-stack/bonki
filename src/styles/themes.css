@@ -210,3 +210,34 @@
   --color-accent: hsl(45, 85%, 50%);
   --color-accent-soft: hsl(45, 35%, 80%);
 }
+
+/* ══════════════════════════════════════════════════════════════
+   SURFACE MODIFIERS — stackable on top of any color theme
+   Activate via ?surface=lift | sculpt
+   ══════════════════════════════════════════════════════════════ */
+
+/* ── A. Lift — deeper shadows + softer radius ───────────────── */
+.surface-lift {
+  --shadow-card: 0 2px 8px -2px hsla(30, 20%, 20%, 0.08),
+                 0 8px 28px -6px hsla(30, 18%, 25%, 0.12);
+  --shadow-card-featured: 0 4px 12px -2px hsla(30, 22%, 18%, 0.10),
+                          0 14px 40px -8px hsla(30, 20%, 22%, 0.14);
+  --radius-card: 1rem;
+  --border-card: none;
+}
+
+/* ── B. Sculpt — shadows + radius + more bg contrast + varied padding ── */
+.surface-sculpt {
+  --neutral-50:  34 14% 91%;
+  --neutral-100: 38 20% 99%;
+  --neutral-300: 34 10% 83%;
+
+  --shadow-card: 0 1px 4px hsla(30, 18%, 20%, 0.06),
+                 0 6px 20px -4px hsla(30, 20%, 22%, 0.10),
+                 0 16px 44px -10px hsla(30, 15%, 18%, 0.08);
+  --shadow-card-featured: 0 2px 8px hsla(30, 22%, 18%, 0.08),
+                          0 12px 36px -6px hsla(30, 22%, 20%, 0.14),
+                          0 24px 56px -12px hsla(30, 15%, 15%, 0.08);
+  --radius-card: 1.125rem;
+  --border-card: none;
+}

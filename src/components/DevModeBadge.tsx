@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useNavigate, useLocation, useSearchParams } from 'react-router-dom';
 import { useDevState } from '@/contexts/DevStateContext';
 import { isDevToolsEnabled } from '@/lib/devTools';
-import { VALID_THEMES } from '@/hooks/useThemeSwitcher';
+import { VALID_THEMES, VALID_SURFACES } from '@/hooks/useThemeSwitcher';
 import { ChevronUp, ChevronDown } from 'lucide-react';
 
 const DEV_STATES = [
@@ -25,6 +25,12 @@ const THEME_OPTIONS = [
   { value: 'stilla', label: '🌊 Stilla Djup', color: '#1E2D3F' },
   { value: 'berry', label: '🫐 Bold Berry', color: '#5C1A4A' },
   { value: 'midnight', label: '✨ Midnight Gold', color: '#1E2230' },
+];
+
+const SURFACE_OPTIONS = [
+  { value: '', label: '⬜ Default' },
+  { value: 'lift', label: '🔲 Lift (shadows + radius)' },
+  { value: 'sculpt', label: '🏛️ Sculpt (all-in-one)' },
 ];
 
 const PAGES = [
@@ -60,6 +66,7 @@ export default function DevModeBadge() {
 
   const currentDevState = devState ?? 'solo';
   const currentTheme = searchParams.get('theme') ?? '';
+  const currentSurface = searchParams.get('surface') ?? '';
 
   function navigateTo(path: string) {
     if (path.includes('devState=')) {
@@ -81,11 +88,14 @@ export default function DevModeBadge() {
   function switchTheme(theme: string) {
     const currentPath = location.pathname;
     const params = new URLSearchParams(searchParams);
-    if (theme) {
-      params.set('theme', theme);
-    } else {
-      params.delete('theme');
-    }
+    if (theme) { params.set('theme', theme); } else { params.delete('theme'); }
+    navigate(`${currentPath}?${params.toString()}`);
+  }
+
+  function switchSurface(surface: string) {
+    const currentPath = location.pathname;
+    const params = new URLSearchParams(searchParams);
+    if (surface) { params.set('surface', surface); } else { params.delete('surface'); }
     navigate(`${currentPath}?${params.toString()}`);
   }
 
@@ -110,6 +120,22 @@ export default function DevModeBadge() {
                   style={{ backgroundColor: t.color }}
                 />
                 <span className="truncate">{t.label}</span>
+              </button>
+            ))}
+          </div>
+
+          {/* Surface Modifier */}
+          <div className="border-t border-white/10 px-3 py-2 text-white/40 uppercase tracking-widest text-[9px]">Surface</div>
+          <div className="px-2 pb-2 flex flex-wrap gap-1">
+            {SURFACE_OPTIONS.map((s) => (
+              <button
+                key={s.value}
+                onClick={() => switchSurface(s.value)}
+                className={`px-2 py-1 rounded-md text-[10px] transition-colors ${
+                  currentSurface === s.value ? 'bg-white/20 text-white font-bold' : 'hover:bg-white/10 text-white/70'
+                }`}
+              >
+                {s.label}
               </button>
             ))}
           </div>
