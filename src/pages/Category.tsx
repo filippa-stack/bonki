@@ -265,6 +265,7 @@ function CardEntry({ card, index, isCompleted = false, isInProgress = false, onN
                 opacity: isCompleted ? 0.30 : 0.5,
                 display: 'block',
                 marginBottom: '2px',
+                textAlign: 'center',
               }}
             >
               {chapterNum}
@@ -277,6 +278,7 @@ function CardEntry({ card, index, isCompleted = false, isInProgress = false, onN
                 color: 'var(--text-primary)',
                 opacity: isCompleted ? 0.50 : 1,
                 lineHeight: 1.3,
+                textAlign: 'center',
               }}
             >
               {card.title}
@@ -290,6 +292,7 @@ function CardEntry({ card, index, isCompleted = false, isInProgress = false, onN
                   opacity: isCompleted ? 0.40 : 0.75,
                   lineHeight: 1.5,
                   marginTop: '4px',
+                  textAlign: 'center',
                 }}
               >
                 {card.subtitle}
