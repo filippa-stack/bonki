@@ -25,6 +25,10 @@ const THEME_OPTIONS = [
   { value: 'stilla', label: '🌊 Stilla Djup', color: '#1E2D3F' },
   { value: 'berry', label: '🫐 Bold Berry', color: '#5C1A4A' },
   { value: 'midnight', label: '✨ Midnight Gold', color: '#1E2230' },
+  { value: 'terracotta', label: '🧱 Terracotta', color: '#6B3020' },
+  { value: 'umber', label: '🪵 Umber', color: '#4A3225' },
+  { value: 'ochre', label: '🌾 Ochre', color: '#5C4018' },
+  { value: 'olive', label: '🫒 Olive', color: '#3A4428' },
 ];
 
 const SURFACE_OPTIONS = [

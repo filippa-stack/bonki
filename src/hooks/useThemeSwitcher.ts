@@ -8,6 +8,10 @@ const VALID_THEMES = [
   'stilla',
   'berry',
   'midnight',
+  'terracotta',
+  'umber',
+  'ochre',
+  'olive',
 ] as const;
 
 const VALID_SURFACES = ['lift', 'sculpt', 'paper', 'invite', 'invite-white', 'invite-ivory', 'invite-tinted'] as const;
