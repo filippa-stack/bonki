@@ -290,6 +290,7 @@ export default function Home() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.15, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
                   style={{ marginBottom: '24px' }}
+                  data-fig-atmosphere
                 >
                   <div
                     onClick={() => { markNavigated(); navigate(`/card/${cardId}`, { state: { resumed: true } }); }}
@@ -299,17 +300,19 @@ export default function Home() {
                       if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); navigate(`/card/${cardId}`, { state: { resumed: true } }); }
                     }}
                     className="cursor-pointer group"
+                    data-fig-hero
                     style={{
-                      borderRadius: '14px',
-                      padding: '20px 22px',
+                      borderRadius: '16px',
+                      padding: '22px 24px',
                       background: 'var(--cta-bg)',
                       border: 'none',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'space-between',
                       gap: '12px',
-                      boxShadow: '0 2px 12px -2px hsla(352, 30%, 20%, 0.20), 0 8px 32px -8px hsla(280, 25%, 8%, 0.25)',
+                      boxShadow: '0 2px 12px -2px hsla(22, 40%, 25%, 0.25), 0 8px 32px -8px hsla(278, 25%, 8%, 0.30)',
                       transition: 'transform 200ms ease-out, box-shadow 200ms ease-out',
+                      position: 'relative' as const,
                     }}
                     onPointerDown={(e) => { (e.currentTarget as HTMLElement).style.transform = 'scale(0.985)'; }}
                     onPointerUp={(e) => { (e.currentTarget as HTMLElement).style.transform = ''; }}
@@ -328,8 +331,8 @@ export default function Home() {
                         </p>
                       )}
                     </div>
-                    <span className="font-sans shrink-0 self-center" style={{ fontSize: '13px', fontWeight: 500, color: 'var(--cta-text)', opacity: 0.7, transform: 'translateY(1px)' }}>
-                      Fortsätt<span style={{ marginLeft: '4px' }}>→</span>
+                    <span className="font-sans shrink-0 self-center group-hover:opacity-90" style={{ fontSize: '14px', fontWeight: 500, color: 'var(--cta-text)', opacity: 0.85, transition: 'opacity 200ms ease, transform 200ms ease' }}>
+                      Fortsätt<span style={{ marginLeft: '6px', display: 'inline-block', transition: 'transform 200ms ease' }} className="group-hover:translate-x-1">→</span>
                     </span>
                   </div>
                 </motion.div>
@@ -352,12 +355,15 @@ export default function Home() {
                     transition={{ delay: 0.1, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
                     style={{ marginBottom: '24px' }}
                   >
-                    <div style={{
+                    <div
+                      data-fig-hero
+                      style={{
                       background: 'var(--cta-bg)',
-                      borderRadius: '14px',
-                      padding: '24px',
+                      borderRadius: '16px',
+                      padding: '26px 24px',
                       width: '100%',
-                      boxShadow: '0 2px 12px -2px hsla(352, 30%, 20%, 0.20), 0 8px 32px -8px hsla(280, 25%, 8%, 0.25)',
+                      boxShadow: '0 2px 12px -2px hsla(22, 40%, 25%, 0.25), 0 8px 32px -8px hsla(278, 25%, 8%, 0.30)',
+                      position: 'relative' as const,
                     }}>
                       <p style={{
                         fontFamily: 'var(--font-serif)',
