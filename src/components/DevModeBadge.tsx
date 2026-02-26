@@ -29,8 +29,9 @@ const THEME_OPTIONS = [
 
 const SURFACE_OPTIONS = [
   { value: '', label: '⬜ Default' },
-  { value: 'lift', label: '🔲 Lift (shadows + radius)' },
-  { value: 'sculpt', label: '🏛️ Sculpt (all-in-one)' },
+  { value: 'lift', label: '🔲 Lift' },
+  { value: 'sculpt', label: '🏛️ Sculpt' },
+  { value: 'paper', label: '📄 Paper (clean white)' },
 ];
 
 const PAGES = [
