@@ -54,7 +54,7 @@ export default function Header({
         style={{
           backgroundColor: isImmersive
             ? (isDarkSurface ? 'var(--session-header-bg)' : 'var(--surface-base)')
-            : 'hsl(var(--primary))',
+            : 'var(--cta-active)',
           boxShadow: 'none',
           borderBottom: isImmersive
             ? (isDarkSurface ? '1px solid hsl(158, 25%, 20%)' : 'none')
