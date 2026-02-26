@@ -53,7 +53,7 @@ export default function Header({
         className={`sticky top-0 z-10`}
         style={{
           backgroundColor: isImmersive
-            ? (isDarkSurface ? 'var(--session-header-bg)' : 'var(--surface-base)')
+            ? (isDarkSurface ? 'var(--cta-active)' : 'var(--surface-base)')
             : 'var(--cta-active)',
           boxShadow: 'none',
           borderBottom: isImmersive

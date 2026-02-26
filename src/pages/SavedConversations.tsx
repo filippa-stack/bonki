@@ -57,6 +57,17 @@ export default function SavedConversations() {
             ))}
           </div>
         )}
+
+        {/* Footer nav */}
+        <div style={{ marginTop: '40px', textAlign: 'center', paddingBottom: 'calc(24px + env(safe-area-inset-bottom, 0px))' }}>
+          <button
+            onClick={() => navigate('/')}
+            className="text-sm transition-opacity hover:opacity-70"
+            style={{ color: 'var(--color-text-tertiary)', opacity: 0.45, background: 'none', border: 'none', cursor: 'pointer' }}
+          >
+            ← Tillbaka till startsidan
+          </button>
+        </div>
       </div>
     </div>
   );

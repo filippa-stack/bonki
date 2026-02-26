@@ -391,18 +391,18 @@ export default function Home() {
                   style={{ marginBottom: '24px' }}
                 >
                   <div style={{
-                    background: 'var(--surface-raised)',
+                    background: 'var(--cta-active)',
                     borderRadius: '12px',
                     padding: '24px',
                     width: '100%',
-                    boxShadow: '0 1px 3px hsla(30, 15%, 25%, 0.04), 0 6px 24px -6px hsla(30, 18%, 28%, 0.07)',
+                    boxShadow: '0 2px 16px -4px hsla(30, 20%, 12%, 0.12), 0 1px 3px hsla(30, 15%, 10%, 0.08)',
                   }}>
                     <p style={{
                       fontFamily: 'var(--font-serif)',
                       fontStyle: 'italic',
                       fontSize: '14px',
                       fontWeight: 400,
-                      color: 'var(--accent-text)',
+                      color: 'var(--accent-saffron)',
                       opacity: 0.70,
                       lineHeight: 1.55,
                     }}>
@@ -412,7 +412,7 @@ export default function Home() {
                       fontFamily: 'var(--font-serif)',
                       fontSize: '18px',
                       fontWeight: 600,
-                      color: 'var(--color-text-primary)',
+                      color: 'hsl(36, 16%, 92%)',
                       lineHeight: 1.35,
                       marginTop: '12px',
                     }}>

@@ -145,6 +145,13 @@ export default function Category() {
               ? 'Ni har utforskat det här området.'
               : 'Välj ett samtal.'}
           </p>
+          <button
+            onClick={() => navigate('/')}
+            className="text-sm transition-opacity hover:opacity-70"
+            style={{ color: 'var(--color-text-tertiary)', opacity: 0.40, background: 'none', border: 'none', cursor: 'pointer', marginTop: '16px' }}
+          >
+            ← Tillbaka till startsidan
+          </button>
         </div>
       </div>
     </div>
