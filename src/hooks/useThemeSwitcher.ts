@@ -11,6 +11,7 @@ const VALID_THEMES = [
   'light-header',
   'tonal-tiles',
   'dark-tiles',
+  'deep-fig',
 ] as const;
 
 export type ThemeId = (typeof VALID_THEMES)[number] | null;

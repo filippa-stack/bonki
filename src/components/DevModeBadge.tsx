@@ -28,6 +28,7 @@ const THEME_OPTIONS = [
   { value: 'light-header', label: '☀️ Light Header', color: '#F5F1EC' },
   { value: 'tonal-tiles', label: '🎨 Tonal Wash', color: '#D4DDD6' },
   { value: 'dark-tiles', label: '🖤 Dark Tiles', color: '#1E3F32' },
+  { value: 'deep-fig', label: '🫐 Deep Fig', color: '#2B1E2F' },
 ];
 
 const PAGES = [
