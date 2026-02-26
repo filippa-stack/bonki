@@ -297,28 +297,26 @@ export default function Home() {
                     onKeyDown={(e) => {
                       if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); navigate(`/card/${cardId}`, { state: { resumed: true } }); }
                     }}
-                    className="cursor-pointer group"
+                    className="cursor-pointer tile-door row-bloom"
                     style={{
-                      borderRadius: '12px',
-                      padding: '18px 20px',
-                      background: 'var(--cta-active)',
-                      border: 'none',
+                      borderRadius: 'var(--radius-card, 12px)',
+                      padding: '22px 20px',
+                      background: 'var(--surface-raised)',
+                      border: 'var(--border-card, none)',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'space-between',
                       gap: '12px',
-                      boxShadow: '0 2px 16px -4px hsla(158, 30%, 12%, 0.15), 0 1px 3px hsla(158, 25%, 10%, 0.08)',
-                      transition: 'transform 200ms ease-out, box-shadow 200ms ease-out',
+                      boxShadow: 'var(--shadow-card-featured, 0 2px 16px -4px hsla(30, 20%, 12%, 0.12), 0 8px 32px -8px hsla(30, 18%, 25%, 0.10))',
+                      position: 'relative' as const,
+                      overflow: 'hidden',
                     }}
-                    onPointerDown={(e) => { (e.currentTarget as HTMLElement).style.transform = 'scale(0.985)'; }}
-                    onPointerUp={(e) => { (e.currentTarget as HTMLElement).style.transform = ''; }}
-                    onPointerLeave={(e) => { (e.currentTarget as HTMLElement).style.transform = ''; }}
                   >
                     <div className="flex-1 min-w-0">
-                      <p className="font-sans" style={{ fontSize: '10px', fontWeight: 500, letterSpacing: '0.12em', textTransform: 'uppercase' as const, color: 'hsl(36, 16%, 92%)', opacity: 0.45, marginBottom: '6px', lineHeight: 1 }}>
+                      <p className="font-sans" style={{ fontSize: '10px', fontWeight: 500, letterSpacing: '0.12em', textTransform: 'uppercase' as const, color: 'var(--accent-text)', opacity: 0.8, marginBottom: '4px', lineHeight: 1 }}>
                         Ni var mitt i
                       </p>
-                      <p className="font-serif" style={{ fontSize: '18px', fontWeight: 600, lineHeight: 1.35, color: 'hsl(36, 16%, 92%)', textWrap: 'balance', hyphens: 'auto', maxWidth: '80%' } as React.CSSProperties}>
+                      <p className="font-serif" style={{ fontSize: '18px', fontWeight: 600, lineHeight: 1.35, color: 'var(--color-text-primary)', textWrap: 'balance', hyphens: 'auto', maxWidth: '80%' } as React.CSSProperties}>
                         {card?.title || cardId}
                       </p>
                       {cat && (
@@ -327,9 +325,7 @@ export default function Home() {
                         </p>
                       )}
                     </div>
-                    <span className="font-sans shrink-0 self-center" style={{ fontSize: '13px', fontWeight: 500, color: 'hsl(36, 16%, 92%)', opacity: 0.7, transform: 'translateY(1px)' }}>
-                      Fortsätt<span style={{ marginLeft: '4px' }}>→</span>
-                    </span>
+                    <ChevronRight data-chevron className="w-4 h-4 shrink-0 self-center" style={{ color: 'var(--accent-saffron)', opacity: 0.5, transition: 'transform 180ms ease-out' }} />
                   </div>
                 </motion.div>
               );
