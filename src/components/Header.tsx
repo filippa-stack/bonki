@@ -166,8 +166,8 @@ export default function Header({
                     fontFamily: 'var(--font-sans)',
                     fontSize: '13px',
                     fontWeight: 500,
-                    color: 'white',
-                    opacity: 1.0,
+                    color: 'var(--cta-active)',
+                    opacity: 0.9,
                     letterSpacing: '0.04em',
                   }}
                   onClick={() => navigate('/', { replace: false })}
@@ -197,8 +197,8 @@ export default function Header({
                     fontFamily: 'var(--font-sans)',
                     fontSize: '12px',
                     letterSpacing: '0.04em',
-                    color: 'white',
-                    opacity: 0.85,
+                    color: 'var(--cta-active)',
+                    opacity: 0.75,
                     cursor: 'pointer',
                     padding: '8px 4px',
                     minHeight: '44px',
@@ -234,7 +234,7 @@ export default function Header({
                   onPointerUp={(e) => { e.currentTarget.style.opacity = '0.70'; }}
                   onPointerLeave={(e) => { e.currentTarget.style.opacity = '0.70'; }}
                 >
-                  <Settings size={18} style={{ color: 'white', opacity: 0.70 }} />
+                  <Settings size={18} style={{ color: 'var(--cta-active)', opacity: 0.60 }} />
                 </button>
               )}
             </div>
