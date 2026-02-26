@@ -142,7 +142,7 @@ export default function Header({
           </div>
         ) : (
           /* ── Default header layout ── */
-          <div className="header-textured relative flex items-center justify-between px-6" style={{ height: '2.5rem' }}>
+          <div className="header-textured relative flex items-center justify-between px-6" style={{ height: '2rem' }}>
             {/* Left */}
             <div className="flex items-center gap-2 flex-1 min-w-0">
               {showBack && (
