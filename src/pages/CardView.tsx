@@ -937,7 +937,7 @@ export default function CardView() {
   if (shouldShowStartScreen) {
     return (
       <motion.div
-        className="min-h-screen flex flex-col items-center justify-center px-6"
+        className="min-h-screen flex flex-col items-center justify-center px-6 pb-10"
         style={{
           backgroundColor: 'var(--surface-base)',
           position: 'relative',
@@ -1179,7 +1179,7 @@ export default function CardView() {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.25, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-          style={{ position: 'relative', zIndex: 2 }}
+          style={{ position: 'relative', zIndex: 2, marginBottom: '8px' }}
         >
           <button
             onClick={() => setShowStartScreen(false)}
