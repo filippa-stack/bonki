@@ -1179,12 +1179,18 @@ export default function CardView() {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.25, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-          style={{ position: 'relative', zIndex: 2, marginBottom: '8px' }}
+          style={{ position: 'relative', zIndex: 2, marginBottom: '4px', width: '100%', display: 'flex', justifyContent: 'center' }}
         >
           <button
             onClick={() => setShowStartScreen(false)}
             className="cta-primary"
-            style={{ width: '60vw', maxWidth: '280px' }}
+            style={{
+              width: '72vw',
+              maxWidth: '320px',
+              boxShadow: cardImageUrl
+                ? '0 4px 24px hsla(0,0%,0%,0.35), 0 0 0 1px hsla(0,0%,100%,0.08)'
+                : undefined,
+            }}
           >
             {uiText.readyButton}
           </button>
@@ -1201,7 +1207,7 @@ export default function CardView() {
             fontSize: '13px',
             color: cardImageUrl ? 'hsla(0,0%,100%,0.5)' : 'var(--accent-text)',
             textAlign: 'center',
-            marginTop: '24px',
+            marginTop: '16px',
             opacity: cardImageUrl ? 1 : 0.50,
           }}
         >
