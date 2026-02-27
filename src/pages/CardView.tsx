@@ -25,6 +25,7 @@ import { toast } from 'sonner';
 import { toastOnce, toastErrorOnce } from '@/lib/toastOnce';
 import { getProductForCard } from '@/data/products';
 import { getCompletionMessages, getUIText, type PronounMode } from '@/lib/pronouns';
+import { useCardImage } from '@/hooks/useCardImage';
 
 import Header from '@/components/Header';
 import SectionView, { type SectionViewHandle } from '@/components/SectionView';
@@ -137,6 +138,7 @@ export default function CardView() {
   const uiText = useMemo(() => getUIText(pronounMode), [pronounMode]);
   const effectiveSteps = useMemo(() => getCardStepOrder(card), [card]);
   const completionMessages = useMemo(() => getCompletionMessages(pronounMode, product?.ageLabel), [pronounMode, product?.ageLabel]);
+  const cardImageUrl = useCardImage(cardId);
 
   // Retained so the takeaway screen has a session ID after the session closes
   const [activeSessionId, setActiveSessionId] = useState<string | null>(
@@ -936,11 +938,43 @@ export default function CardView() {
     return (
       <motion.div
         className="min-h-screen flex flex-col items-center justify-center px-6"
-        style={{ backgroundColor: 'var(--surface-base)', position: 'relative' }}
+        style={{
+          backgroundColor: 'var(--surface-base)',
+          position: 'relative',
+          overflow: 'hidden',
+        }}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: EMOTION, ease: [...EASE] }}
       >
+        {/* Card illustration background */}
+        {cardImageUrl && (
+          <motion.div
+            initial={{ opacity: 0, scale: 1.05 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
+            style={{
+              position: 'absolute',
+              inset: 0,
+              backgroundImage: `url(${cardImageUrl})`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+              zIndex: 0,
+            }}
+          />
+        )}
+        {/* Gradient overlay for text readability */}
+        {cardImageUrl && (
+          <div
+            style={{
+              position: 'absolute',
+              inset: 0,
+              background: 'linear-gradient(to bottom, hsla(0,0%,0%,0.10) 0%, hsla(0,0%,0%,0.35) 40%, hsla(0,0%,0%,0.65) 70%, hsla(0,0%,0%,0.80) 100%)',
+              zIndex: 1,
+            }}
+          />
+        )}
+        {/* Back navigation */}
         {/* Back navigation */}
         <motion.button
           onClick={() => navigate(category ? `/category/${category.id}` : '/')}
@@ -957,11 +991,12 @@ export default function CardView() {
             alignItems: 'center',
             fontFamily: 'var(--font-sans)',
             fontSize: '13px',
-            color: 'var(--text-secondary)',
-            opacity: 0.55,
+            color: cardImageUrl ? 'hsla(0,0%,100%,0.8)' : 'var(--text-secondary)',
+            opacity: cardImageUrl ? 1 : 0.55,
             background: 'none',
             border: 'none',
             cursor: 'pointer',
+            zIndex: 2,
           }}
         >
           ← Tillbaka
@@ -973,12 +1008,13 @@ export default function CardView() {
           animate={{ opacity: 1 }}
           transition={{ delay: BEAT_1, duration: EMOTION, ease: [...EASE] }}
           style={{
+            position: 'relative', zIndex: 2,
             fontFamily: 'var(--font-sans)',
             fontSize: '10px',
             letterSpacing: '0.12em',
             textTransform: 'uppercase',
-            color: 'var(--text-tertiary)',
-            opacity: 0.45,
+            color: cardImageUrl ? 'hsla(0,0%,100%,0.6)' : 'var(--text-tertiary)',
+            opacity: cardImageUrl ? 1 : 0.45,
             marginBottom: '10px',
           }}
         >
@@ -992,13 +1028,15 @@ export default function CardView() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: BEAT_1, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
           style={{
+            position: 'relative', zIndex: 2,
             fontSize: 'clamp(26px, 7vw, 34px)',
             fontWeight: 700,
-            color: 'var(--text-primary)',
+            color: cardImageUrl ? 'hsla(0,0%,100%,0.95)' : 'var(--text-primary)',
             textAlign: 'center',
             lineHeight: 1.15,
             letterSpacing: '-0.01em',
             marginBottom: '40px',
+            textShadow: cardImageUrl ? '0 2px 12px hsla(0,0%,0%,0.3)' : 'none',
           }}
         >
           {card.title}
@@ -1010,6 +1048,7 @@ export default function CardView() {
           animate={{ opacity: 1 }}
           transition={{ delay: BEAT_2, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
           style={{
+            position: 'relative', zIndex: 2,
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
@@ -1033,14 +1072,14 @@ export default function CardView() {
           initial={{ opacity: 0, y: 6 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: BEAT_2, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-          style={{ textAlign: 'center', marginBottom: '8px' }}
+          style={{ textAlign: 'center', marginBottom: '8px', position: 'relative', zIndex: 2 }}
         >
           <p
             className="font-serif italic"
             style={{
               fontSize: '19px',
-              color: 'var(--text-primary)',
-              opacity: 0.75,
+              color: cardImageUrl ? 'hsla(0,0%,100%,0.85)' : 'var(--text-primary)',
+              opacity: cardImageUrl ? 1 : 0.75,
               textAlign: 'center',
               lineHeight: 1.5,
             }}
@@ -1054,12 +1093,12 @@ export default function CardView() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: BEAT_3, duration: EMOTION, ease: [...EASE] }}
-          style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '3px', marginBottom: '32px' }}
+          style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '3px', marginBottom: '32px', position: 'relative', zIndex: 2 }}
         >
-          <p style={{ fontFamily: 'var(--font-sans)', fontSize: '12px', color: 'var(--text-tertiary)', opacity: 0.55, textAlign: 'center' }}>
+          <p style={{ fontFamily: 'var(--font-sans)', fontSize: '12px', color: cardImageUrl ? 'hsla(0,0%,100%,0.6)' : 'var(--text-tertiary)', opacity: cardImageUrl ? 1 : 0.55, textAlign: 'center' }}>
             {uiText.talkTogether}
           </p>
-          <p style={{ fontFamily: 'var(--font-sans)', fontSize: '12px', color: 'var(--text-tertiary)', opacity: 0.55, textAlign: 'center' }}>
+          <p style={{ fontFamily: 'var(--font-sans)', fontSize: '12px', color: cardImageUrl ? 'hsla(0,0%,100%,0.6)' : 'var(--text-tertiary)', opacity: cardImageUrl ? 1 : 0.55, textAlign: 'center' }}>
             {uiText.notekeeper}
           </p>
         </motion.div>
@@ -1071,6 +1110,7 @@ export default function CardView() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: EMOTION, ease: [...EASE] }}
             style={{
+              position: 'relative', zIndex: 2,
               width: '100%',
               maxWidth: '360px',
               background: 'var(--surface-sunken)',
@@ -1131,6 +1171,7 @@ export default function CardView() {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.25, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+          style={{ position: 'relative', zIndex: 2 }}
         >
           <button
             onClick={() => setShowStartScreen(false)}
@@ -1148,11 +1189,12 @@ export default function CardView() {
           animate={{ opacity: 1 }}
           transition={{ delay: 0.40, duration: EMOTION, ease: [...EASE] }}
           style={{
+            position: 'relative', zIndex: 2,
             fontSize: '13px',
-            color: 'var(--accent-text)',
+            color: cardImageUrl ? 'hsla(0,0%,100%,0.5)' : 'var(--accent-text)',
             textAlign: 'center',
             marginTop: '24px',
-            opacity: 0.50,
+            opacity: cardImageUrl ? 1 : 0.50,
           }}
         >
           {uiText.safetyNote}
