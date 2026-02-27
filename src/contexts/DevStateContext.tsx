@@ -5,7 +5,7 @@ import type { DevState } from '@/hooks/useDevState';
 
 const VALID_STATES: DevState[] = [
   'solo', 'pairedIdle', 'pairedActive', 'proposalIncoming',
-  'waiting', 'completed', 'archiveEmpty', 'archiveWithHistory', 'browse',
+  'waiting', 'completed', 'archiveEmpty', 'archiveWithHistory', 'browse', 'library',
 ];
 
 const DevStateContext = createContext<DevState>(null);

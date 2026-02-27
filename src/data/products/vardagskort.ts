@@ -154,6 +154,8 @@ export const vardagskortProduct: ProductManifest = {
   tagline: 'Samtalskort om vardagslivet',
   description: 'Utforska vardagens rutiner och relationer',
   headerTitle: 'Vårt vardagsliv',
+  accentColor: 'hsl(82, 28%, 28%)',
+  accentColorMuted: 'hsl(82, 16%, 90%)',
   categories,
   cards,
 };

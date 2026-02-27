@@ -513,6 +513,8 @@ export const jagIMigProduct: ProductManifest = {
   tagline: 'Känslokort för barn',
   description: 'Utforska känslor inifrån och ut',
   headerTitle: 'Inifrån & ut',
+  accentColor: 'hsl(180, 30%, 22%)',
+  accentColorMuted: 'hsl(180, 18%, 90%)',
   categories,
   cards,
 };

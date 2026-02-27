@@ -9,6 +9,7 @@ import { supabase } from '@/integrations/supabase/client';
 import Onboarding from '@/components/Onboarding';
 import Home from '@/pages/Home';
 import PurchaseScreen from '@/components/PurchaseScreen';
+import ProductLibrary from '@/components/ProductLibrary';
 
 const PURCHASE_KEY_LEGACY = 'still-us-purchased';
 const PURCHASE_KEY_PREFIX = 'still-us-purchased-';
@@ -117,7 +118,12 @@ export default function Index() {
     }
   };
 
-  // Any devState bypasses onboarding & purchase gates
+  // devState=library → show product library lobby
+  if (devState === 'library') {
+    return <ProductLibrary />;
+  }
+
+  // Any other devState bypasses onboarding & purchase gates
   if (devState) {
     return <Home />;
   }
