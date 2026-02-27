@@ -1002,70 +1002,78 @@ export default function CardView() {
           ← Tillbaka
         </motion.button>
 
-        {/* Category name */}
-        <motion.span
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: BEAT_1, duration: EMOTION, ease: [...EASE] }}
-          style={{
-            position: 'relative', zIndex: 2,
-            fontFamily: 'var(--font-sans)',
-            fontSize: '10px',
-            letterSpacing: '0.12em',
-            textTransform: 'uppercase',
-            color: cardImageUrl ? 'hsla(0,0%,100%,0.6)' : 'var(--text-tertiary)',
-            opacity: cardImageUrl ? 1 : 0.45,
-            marginBottom: '10px',
-          }}
-        >
-          {category?.title}
-        </motion.span>
+        {/* Category name — hidden when illustration present */}
+        {!cardImageUrl && (
+          <motion.span
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: BEAT_1, duration: EMOTION, ease: [...EASE] }}
+            style={{
+              position: 'relative', zIndex: 2,
+              fontFamily: 'var(--font-sans)',
+              fontSize: '10px',
+              letterSpacing: '0.12em',
+              textTransform: 'uppercase',
+              color: 'var(--text-tertiary)',
+              opacity: 0.45,
+              marginBottom: '10px',
+            }}
+          >
+            {category?.title}
+          </motion.span>
+        )}
 
-        {/* Topic title */}
-        <motion.h1
-          className="font-serif"
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: BEAT_1, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-          style={{
-            position: 'relative', zIndex: 2,
-            fontSize: 'clamp(26px, 7vw, 34px)',
-            fontWeight: 700,
-            color: cardImageUrl ? 'hsla(0,0%,100%,0.95)' : 'var(--text-primary)',
-            textAlign: 'center',
-            lineHeight: 1.15,
-            letterSpacing: '-0.01em',
-            marginBottom: '40px',
-            textShadow: cardImageUrl ? '0 2px 12px hsla(0,0%,0%,0.3)' : 'none',
-          }}
-        >
-          {card.title}
-        </motion.h1>
+        {/* Topic title — hidden when illustration present (already in image) */}
+        {!cardImageUrl && (
+          <motion.h1
+            className="font-serif"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: BEAT_1, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+            style={{
+              position: 'relative', zIndex: 2,
+              fontSize: 'clamp(26px, 7vw, 34px)',
+              fontWeight: 700,
+              color: 'var(--text-primary)',
+              textAlign: 'center',
+              lineHeight: 1.15,
+              letterSpacing: '-0.01em',
+              marginBottom: '40px',
+            }}
+          >
+            {card.title}
+          </motion.h1>
+        )}
 
-        {/* Decorative dot divider */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: BEAT_2, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-          style={{
-            position: 'relative', zIndex: 2,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: '6px',
-            margin: '0 auto 36px',
-          }}
-        >
-          {[0, 1].map(i => (
-            <span key={i} style={{
-              width: '4px',
-              height: '4px',
-              borderRadius: '50%',
-              backgroundColor: 'var(--accent-saffron)',
-              opacity: 0.35,
-            }} />
-          ))}
-        </motion.div>
+        {/* Spacer to push content down when illustration is present */}
+        {cardImageUrl && <div style={{ flex: 1 }} />}
+
+        {/* Decorative dot divider — only without image */}
+        {!cardImageUrl && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: BEAT_2, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+            style={{
+              position: 'relative', zIndex: 2,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '6px',
+              margin: '0 auto 36px',
+            }}
+          >
+            {[0, 1].map(i => (
+              <span key={i} style={{
+                width: '4px',
+                height: '4px',
+                borderRadius: '50%',
+                backgroundColor: 'var(--accent-saffron)',
+                opacity: 0.35,
+              }} />
+            ))}
+          </motion.div>
+        )}
 
         {/* Instructions */}
         <motion.div
