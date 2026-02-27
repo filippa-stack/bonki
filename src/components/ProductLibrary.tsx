@@ -46,7 +46,7 @@ function Tile({ name, tagline, color, large, onClick }: TileProps) {
       style={{
         borderRadius: '20px',
         padding: large ? '28px 24px' : '20px 18px',
-        background: `linear-gradient(155deg, ${color}b3 0%, ${color}99 100%)`,
+        background: `linear-gradient(155deg, ${color}a6 0%, ${color}8c 100%)`,
         backdropFilter: 'blur(1px)',
         WebkitBackdropFilter: 'blur(1px)',
         position: 'relative',
@@ -94,7 +94,7 @@ function Tile({ name, tagline, color, large, onClick }: TileProps) {
             fontSize: large ? '26px' : '19px',
             fontWeight: 700,
             lineHeight: 1.2,
-            color: color,
+            color: 'hsla(0, 0%, 100%, 0.97)',
             marginBottom: '6px',
             letterSpacing: '-0.01em',
           }}
@@ -106,7 +106,7 @@ function Tile({ name, tagline, color, large, onClick }: TileProps) {
           style={{
             fontSize: large ? '13px' : '11.5px',
             fontWeight: 400,
-            color: color,
+            color: 'hsla(0, 0%, 100%, 0.65)',
             lineHeight: 1.5,
             maxWidth: '20ch',
             margin: '0 auto',
@@ -179,39 +179,12 @@ export default function ProductLibrary() {
             maxWidth: '130vw',
             height: 'auto',
             objectFit: 'contain',
-            opacity: 0.06,
+            opacity: 0.09,
             transform: 'translateY(8vh)',
           }}
         />
       </div>
 
-      {/* Overlay logo — renders ABOVE tiles so it shines through */}
-      <div
-        style={{
-          position: 'fixed',
-          inset: 0,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          pointerEvents: 'none',
-          zIndex: 10,
-          mixBlendMode: 'multiply',
-        }}
-      >
-        <img
-          src={bonkiLogo}
-          alt=""
-          style={{
-            width: '130vw',
-            maxWidth: '130vw',
-            height: 'auto',
-            objectFit: 'contain',
-            opacity: 0.12,
-            transform: 'translateY(8vh)',
-            filter: 'saturate(0)',
-          }}
-        />
-      </div>
 
       {/* Content */}
       <div style={{ position: 'relative', zIndex: 1 }}>
