@@ -8,6 +8,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useCoupleSpaceContext } from '@/contexts/CoupleSpaceContext';
 import { supabase } from '@/integrations/supabase/client';
 import { useOptimisticCompletions } from '@/contexts/OptimisticCompletionsContext';
+import { getProductForCard, allProducts } from '@/data/products';
 import Header from '@/components/Header';
 
 const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
@@ -62,6 +63,13 @@ export default function Category() {
   const category = categoryId ? getCategoryById(categoryId) : undefined;
   const cards = categoryId ? getCardsByCategory(categoryId) : [];
 
+  // Determine if this is a product category for back-navigation
+  const product = useMemo(() => {
+    if (!categoryId) return undefined;
+    return allProducts.find(p => p.categories.some(c => c.id === categoryId));
+  }, [categoryId]);
+  const backTo = product ? `/product/${product.slug}` : '/';
+
   if (!category) {
     return (
       <div className="min-h-screen" style={{ backgroundColor: 'var(--surface-base)' }}>
@@ -78,7 +86,7 @@ export default function Category() {
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: 'var(--surface-base)' }}>
-      <Header title={category?.title} showBack backTo="/" />
+      <Header title={category?.title} showBack backTo={backTo} />
 
       <div className="px-5 pt-4 pb-24 flex flex-col">
         {/* Editorial entry line */}
@@ -158,11 +166,11 @@ export default function Category() {
             </p>
           )}
           <button
-            onClick={() => navigate('/')}
+            onClick={() => navigate(backTo)}
             className="text-sm transition-opacity hover:opacity-70"
             style={{ color: 'var(--color-text-tertiary)', opacity: 0.40, background: 'none', border: 'none', cursor: 'pointer', marginTop: '16px' }}
           >
-            ← Tillbaka till startsidan
+            ← Tillbaka
           </button>
         </div>
       </div>
