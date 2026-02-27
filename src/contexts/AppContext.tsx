@@ -7,6 +7,7 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode, useCallback, useRef } from 'react';
 import { CoupleSpace, ConversationThread, Reflection, AppState, Category, Card, ReflectionsData, PrivateNote, SharedNote, TakeawayNote, SharedTakeaway } from '@/types';
 import { categories as initialCategories, cards as initialCards, CONTENT_VERSION } from '@/data/content';
+import { getAllProductCards, getAllProductCategories } from '@/data/products';
 import { useSettingsSync, SaveStatus } from '@/hooks/useSettingsSync';
 import { useAuth } from '@/contexts/AuthContext';
 import { useSiteSettings, SiteSettings } from '@/contexts/SiteSettingsContext';
@@ -354,8 +355,10 @@ export function AppProvider({ children }: { children: ReactNode }) {
   };
 
   const getCardsByCategory = (categoryId: string): Card[] => cards.filter((card) => card.categoryId === categoryId);
-  const getCardById = (cardId: string): Card | undefined => cards.find((card) => card.id === cardId);
-  const getCategoryById = (categoryId: string): Category | undefined => categories.find((cat) => cat.id === categoryId);
+  const getCardById = (cardId: string): Card | undefined =>
+    cards.find((card) => card.id === cardId) ?? getAllProductCards().find((card) => card.id === cardId);
+  const getCategoryById = (categoryId: string): Category | undefined =>
+    categories.find((cat) => cat.id === categoryId) ?? getAllProductCategories().find((cat) => cat.id === categoryId);
 
   const completeOnboarding = () => {
     setState((prev) => ({ ...prev, hasCompletedOnboarding: true }));

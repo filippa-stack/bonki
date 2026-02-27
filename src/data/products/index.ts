@@ -6,6 +6,7 @@ export { syskonkortProduct } from './syskonkort';
 export { sexualitetskortProduct } from './sexualitetskort';
 
 import type { ProductManifest } from '@/types/product';
+import type { Card, Category } from '@/types';
 import { jagIMigProduct } from './jag-i-mig';
 import { jagMedAndraProduct } from './jag-med-andra';
 import { jagIVarldenProduct } from './jag-i-varlden';
@@ -24,4 +25,19 @@ export const allProducts: ProductManifest[] = [
 
 export function getProductById(id: string): ProductManifest | undefined {
   return allProducts.find(p => p.id === id);
+}
+
+/** Find the product a card belongs to (by card ID) */
+export function getProductForCard(cardId: string): ProductManifest | undefined {
+  return allProducts.find(p => p.cards.some(c => c.id === cardId));
+}
+
+/** Get all product cards (flat) */
+export function getAllProductCards(): Card[] {
+  return allProducts.flatMap(p => p.cards);
+}
+
+/** Get all product categories (flat) */
+export function getAllProductCategories(): Category[] {
+  return allProducts.flatMap(p => p.categories);
 }

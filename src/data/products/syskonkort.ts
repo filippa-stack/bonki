@@ -340,6 +340,7 @@ export const syskonkortProduct: ProductManifest = {
   accentColor: 'hsl(215, 22%, 48%)',
   accentColorMuted: 'hsl(215, 16%, 90%)',
   secondaryAccent: 'hsl(15, 55%, 55%)',
+  pronounMode: 'du',
   categories,
   cards,
 };

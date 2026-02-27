@@ -23,6 +23,8 @@ import { useCoupleSpaceContext } from '@/contexts/CoupleSpaceContext';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { toastOnce, toastErrorOnce } from '@/lib/toastOnce';
+import { getProductForCard } from '@/data/products';
+import { getCompletionMessages, getUIText, type PronounMode } from '@/lib/pronouns';
 
 import Header from '@/components/Header';
 import SectionView, { type SectionViewHandle } from '@/components/SectionView';
@@ -47,18 +49,7 @@ import { useOptimisticCompletions } from '@/contexts/OptimisticCompletionsContex
 import { BEAT_1, BEAT_2, BEAT_3, EASE, PRESS, PAGE, EMOTION } from '@/lib/motion';
 import { RECOMMENDED_CATEGORY_ORDER } from '@/lib/recommendedOrder';
 
-const COMPLETION_MESSAGES = [
-  'Det här samtalet tillhör er.',
-  'Ni tog er tid för varandra.',
-  'Det ni just gjorde betyder något.',
-  'Varje samtal är ett val. Ni valde rätt.',
-  'Ni var här. Helt och hållet.',
-  'Tack för att ni stannade kvar.',
-  'Ni valde varandra igen.',
-  'Det här var bara för er.',
-  'Ni gav varandra hela rummet.',
-  'Det här är hur ni växer.',
-];
+// Completion messages are now in src/lib/pronouns.ts
 
 // ─────────────────────────────────────────────────────────────
 // Card view mode — the single source of truth for which surface mounts.
@@ -69,7 +60,21 @@ const COMPLETION_MESSAGES = [
 // ─────────────────────────────────────────────────────────────
 type CardViewMode = 'live' | 'archive' | 'completion';
 
-const STEP_ORDER = ['opening', 'reflective', 'scenario', 'exercise'] as const;
+const STILL_US_STEP_ORDER = ['opening', 'reflective', 'scenario', 'exercise'] as const;
+
+/**
+ * Derive the effective step order from a card's actual sections.
+ * Still Us cards always use the canonical 4-step order.
+ * Product cards use whatever sections they define.
+ */
+function getCardStepOrder(card: { sections: { type: string }[] } | undefined): readonly string[] {
+  if (!card) return STILL_US_STEP_ORDER;
+  // If card has all 4 canonical types, use Still Us order
+  const types = card.sections.map(s => s.type);
+  const hasAll4 = STILL_US_STEP_ORDER.every(t => types.includes(t));
+  if (hasAll4) return STILL_US_STEP_ORDER;
+  return types.length > 0 ? types : STILL_US_STEP_ORDER;
+}
 
 /**
  * Returns the effective prompt count for a section, matching SectionView's
@@ -80,12 +85,7 @@ function getEffectivePromptCount(section: { type: string; content?: string; prom
   return section.prompts?.length ?? (section.content ? 1 : 1);
 }
 
-const STEP_RITUAL_HINTS: Record<string, { together: string; solo: string }> = {
-  opening:    { together: 'Det finns inget rätt svar här. Bara ert.',  solo: 'Det finns inget rätt svar här. Bara ditt.' },
-  reflective: { together: 'Lyssna färdigt innan ni svarar.',          solo: 'Ta tid på dig innan du svarar.' },
-  scenario:   { together: 'Välj ett perspektiv — inte en skyldig.',   solo: 'Välj ett perspektiv — inte en skyldig.' },
-  exercise:   { together: 'Gör en liten sak ni faktiskt kan hålla.',  solo: 'Gör en liten sak du faktiskt kan hålla.' },
-};
+// Ritual hints are now in getUIText() from src/lib/pronouns.ts
 
 const STEP_CTA_KEYS: Record<string, string> = {
   opening: 'card_view.cta_opening',
@@ -129,6 +129,15 @@ export default function CardView() {
 
   const isActiveSession = !!(normalizedSession.sessionId && normalizedSession.cardId === cardId);
 
+  // ─── Product-aware card & step order ───
+  const card = cardId ? getCardById(cardId) : undefined;
+  const category = card ? getCategoryById(card.categoryId) : undefined;
+  const product = cardId ? getProductForCard(cardId) : undefined;
+  const pronounMode: PronounMode = product?.pronounMode ?? 'ni';
+  const uiText = useMemo(() => getUIText(pronounMode), [pronounMode]);
+  const effectiveSteps = useMemo(() => getCardStepOrder(card), [card]);
+  const completionMessages = useMemo(() => getCompletionMessages(pronounMode), [pronounMode]);
+
   // Retained so the takeaway screen has a session ID after the session closes
   const [activeSessionId, setActiveSessionId] = useState<string | null>(
     devState ? 'dev-session' : null
@@ -148,8 +157,8 @@ export default function CardView() {
     devState === 'completed' ? true : false
   );
   const completionHeadline = useMemo(
-    () => COMPLETION_MESSAGES[Math.floor(Math.random() * COMPLETION_MESSAGES.length)],
-    []
+    () => completionMessages[Math.floor(Math.random() * completionMessages.length)],
+    [completionMessages]
   );
   // Wrapper that also marks the card as optimistically completed
   const setShowCompletion = useCallback((val: boolean) => {
@@ -260,7 +269,7 @@ export default function CardView() {
       p_couple_space_id: space.id,
       p_category_id: card.categoryId,
       p_card_id: cardId,
-      p_step_count: STEP_ORDER.length,
+      p_step_count: effectiveSteps.length,
     });
     if (!error) {
       await normalizedSession.refetch();
@@ -312,7 +321,7 @@ export default function CardView() {
           p_couple_space_id: space.id,
           p_category_id: card.categoryId,
           p_card_id: cardId,
-          p_step_count: STEP_ORDER.length,
+          p_step_count: effectiveSteps.length,
         });
         if (error) {
           console.error('Session activation failed:', error);
@@ -342,7 +351,7 @@ export default function CardView() {
     const stepParam = searchParams.get('step');
     if (stepParam !== null) {
       const parsed = parseInt(stepParam, 10);
-      if (!isNaN(parsed) && parsed >= 0 && parsed < STEP_ORDER.length) return parsed;
+      if (!isNaN(parsed) && parsed >= 0 && parsed < effectiveSteps.length) return parsed;
     }
     return 0;
   })();
@@ -418,7 +427,7 @@ export default function CardView() {
     if (cardViewMode !== 'live') return;
     const card = cardId ? getCardById(cardId) : undefined;
     if (card && currentStepIndex >= 0) {
-      const currentSection = card.sections.find(s => s.type === STEP_ORDER[currentStepIndex]);
+      const currentSection = card.sections.find(s => s.type === effectiveSteps[currentStepIndex]);
       if (currentSection) saveConversation(card.id, currentSection.id, currentStepIndex);
     }
   }, [currentStepIndex, cardId, cardViewMode, getCardById, saveConversation]);
@@ -444,7 +453,7 @@ export default function CardView() {
 
     // DevState: advance locally without RPC
     if (devState) {
-      if (displayIndex >= STEP_ORDER.length - 1) {
+      if (displayIndex >= effectiveSteps.length - 1) {
         setShowCompletion(true);
       } else {
         setLocalStepIndex(displayIndex + 1);
@@ -469,7 +478,7 @@ export default function CardView() {
           p_couple_space_id: space.id,
           p_category_id: card.categoryId,
           p_card_id: cardId,
-          p_step_count: STEP_ORDER.length,
+          p_step_count: effectiveSteps.length,
         });
         if (!actErr) {
           const { data: freshState } = await supabase.rpc('get_active_session_state');
@@ -481,7 +490,7 @@ export default function CardView() {
 
       if (!sessionId) {
         if (isDevToolsEnabled()) console.warn('[step-complete] no session after retry — advancing locally');
-        if (displayIndex >= STEP_ORDER.length - 1) {
+        if (displayIndex >= effectiveSteps.length - 1) {
           setShowCompletion(true);
         } else {
           setLocalStepIndex(displayIndex + 1);
@@ -511,7 +520,7 @@ export default function CardView() {
     }
 
     // Always advance UI immediately
-    const isLastStep = displayIndex >= STEP_ORDER.length - 1;
+    const isLastStep = displayIndex >= effectiveSteps.length - 1;
 
     const isSessionInactive = (err: any) =>
       err?.message?.includes('session_not_active') || err?.code === 'P0001' && err?.message?.includes('session_not_active');
@@ -564,7 +573,7 @@ export default function CardView() {
       // If recovery failed or session is for a different card, redirect home
       navigate('/');
       toastOnce('session_ended', () =>
-        toast('Din session avslutades. Ni kan fortsätta härifrån.', {
+        toast(uiText.sessionEnded, {
           duration: 4000,
           style: {
             background: 'var(--surface-base)',
@@ -616,7 +625,7 @@ export default function CardView() {
         if (retryResult === 'session_inactive') {
           navigate('/');
           toastOnce('session_ended', () =>
-            toast('Din session avslutades. Ni kan fortsätta härifrån.', {
+            toast(uiText.sessionEnded, {
               duration: 4000,
               style: {
                 background: 'var(--surface-base)',
@@ -642,7 +651,7 @@ export default function CardView() {
   // ─── Archive "Next" handler ───
   const handleArchiveNext = (card: ReturnType<typeof getCardById>) => {
     if (!card) return;
-    if (archiveStepIndex < STEP_ORDER.length - 1) {
+    if (archiveStepIndex < effectiveSteps.length - 1) {
       const next = archiveStepIndex + 1;
       setArchiveStepIndex(next);
       navigate(`/card/${card.id}?from=archive&step=${next}`, { replace: true });
@@ -653,7 +662,7 @@ export default function CardView() {
 
   // ─── GÖR TILLSAMMANS one-time overlay ───
   const [showGorTillsammans, setShowGorTillsammans] = useState(false);
-  const preCardStageType = STEP_ORDER[currentStepIndex];
+  const preCardStageType = effectiveSteps[currentStepIndex];
   const preCardIsExercise = preCardStageType === 'exercise';
   useEffect(() => {
     const isLiveMode = cardViewMode === 'live';
@@ -665,8 +674,7 @@ export default function CardView() {
   }, [cardViewMode, preCardIsExercise]);
 
   // ─── Post-completion navigation (hooks before early return) ───
-  const card = cardId ? getCardById(cardId) : undefined;
-  const category = card ? getCategoryById(card.categoryId) : undefined;
+  // card and category are computed earlier (line ~133)
 
   const [completedCardIds, setCompletedCardIds] = useState<Set<string>>(new Set());
   useEffect(() => {
@@ -747,8 +755,8 @@ export default function CardView() {
             <button
               onClick={() => {
                 _setShowCompletion(false);
-                const lastStageIndex = STEP_ORDER.length - 1;
-                const lastSection = card.sections.find(s => s.type === STEP_ORDER[lastStageIndex]);
+                const lastStageIndex = effectiveSteps.length - 1;
+                const lastSection = card.sections.find(s => s.type === effectiveSteps[lastStageIndex]);
                 const lastPromptCount = getEffectivePromptCount(lastSection);
                 setLocalStepIndex(lastStageIndex);
                 setLocalPromptIndex(lastPromptCount - 1);
@@ -817,7 +825,7 @@ export default function CardView() {
               opacity: 0.50,
             }}
           >
-            Finns det något ni vill komma ihåg?
+            {uiText.takeawayPrompt}
           </motion.p>
 
           {/* Takeaway field */}
@@ -827,7 +835,7 @@ export default function CardView() {
             transition={{ delay: 0.4, duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
             className="max-w-md mx-auto"
           >
-            <CompletionTakeaway sessionId={activeSessionId} spaceId={space?.id ?? null} />
+            <CompletionTakeaway sessionId={activeSessionId} spaceId={space?.id ?? null} pronounMode={pronounMode} />
           </motion.div>
 
           {/* CTAs — cascading reveal */}
@@ -846,7 +854,7 @@ export default function CardView() {
                   fontWeight: 500,
                   color: 'var(--accent-text)',
                 }}>
-                  Ni har utforskat allt. För nu.
+                  {uiText.allExplored}
                 </p>
                 <p style={{
                   fontFamily: 'var(--font-sans)',
@@ -855,7 +863,7 @@ export default function CardView() {
                   opacity: 0.60,
                   marginTop: '8px',
                 }}>
-                  Korten öppnar sig igen när ni är redo.
+                  {uiText.allExploredSub}
                 </p>
               </div>
             ) : (
@@ -886,7 +894,7 @@ export default function CardView() {
                 className="font-sans"
                 style={{ fontSize: '13px', color: 'var(--text-secondary)', opacity: 0.55, background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline', textUnderlineOffset: '3px', marginTop: '20px' }}
               >
-                Se alla era anteckningar
+                {uiText.seeNotes}
               </button>
               <button
                 onClick={() => navigateWithFeedback('/')}
@@ -914,8 +922,8 @@ export default function CardView() {
   // ─────────────────────────────────────────────────────────────
   //  MODE: 'live' | 'archive' — conversation surface
   // ─────────────────────────────────────────────────────────────
-  const currentSection = card.sections.find(s => s.type === STEP_ORDER[currentStepIndex]);
-  const currentStageType = STEP_ORDER[currentStepIndex];
+  const currentSection = card.sections.find(s => s.type === effectiveSteps[currentStepIndex]);
+  const currentStageType = effectiveSteps[currentStepIndex];
   const isReflectionStep = currentStageType === 'opening' || currentStageType === 'reflective';
   const isLive = cardViewMode === 'live';
   const isExerciseStep = currentStageType === 'exercise';
@@ -1037,7 +1045,7 @@ export default function CardView() {
               lineHeight: 1.5,
             }}
           >
-            Läs frågorna högt för varandra.
+            {uiText.readAloud}
           </p>
         </motion.div>
 
@@ -1049,10 +1057,10 @@ export default function CardView() {
           style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '3px', marginBottom: '32px' }}
         >
           <p style={{ fontFamily: 'var(--font-sans)', fontSize: '12px', color: 'var(--text-tertiary)', opacity: 0.55, textAlign: 'center' }}>
-            Prata om frågorna tillsammans.
+            {uiText.talkTogether}
           </p>
           <p style={{ fontFamily: 'var(--font-sans)', fontSize: '12px', color: 'var(--text-tertiary)', opacity: 0.55, textAlign: 'center' }}>
-            En av er antecknar det ni vill minnas.
+            {uiText.notekeeper}
           </p>
         </motion.div>
 
@@ -1081,7 +1089,7 @@ export default function CardView() {
               marginBottom: '12px',
               lineHeight: 1.5,
             }}>
-              Det verkar som att ett tidigare samtal inte avslutades. Vill ni fortsätta det eller börja om?
+              {uiText.stalePrompt}
             </p>
             <div style={{ display: 'flex', gap: '8px', justifyContent: 'center' }}>
               <button
@@ -1129,7 +1137,7 @@ export default function CardView() {
             className="cta-primary"
             style={{ width: '60vw', maxWidth: '280px' }}
           >
-            Vi är redo
+            {uiText.readyButton}
           </button>
         </motion.div>
 
@@ -1147,7 +1155,7 @@ export default function CardView() {
             opacity: 0.50,
           }}
         >
-          Inget av det ni delar lämnar det här rummet.
+          {uiText.safetyNote}
         </motion.p>
       </motion.div>
     );
@@ -1312,7 +1320,7 @@ export default function CardView() {
                     } else if (currentStepIndex > 0) {
                       const prevStageIndex = currentStepIndex - 1;
                       const prevSection = card.sections.find(
-                        s => s.type === STEP_ORDER[prevStageIndex]
+                        s => s.type === effectiveSteps[prevStageIndex]
                       );
                       const prevPromptCount = getEffectivePromptCount(prevSection);
                       setLocalStepIndex(prevStageIndex);
@@ -1324,8 +1332,8 @@ export default function CardView() {
 
               {/* ── Ritual hint (live only) ── */}
               {isLive && (() => {
-                const stageKey = STEP_ORDER[currentStepIndex];
-                const hint = STEP_RITUAL_HINTS[stageKey];
+                const stageKey = effectiveSteps[currentStepIndex];
+                const hint = uiText.ritualHints[stageKey as keyof typeof uiText.ritualHints];
                 if (!hint) return null;
                 return (
                   <div style={{ marginTop: '16px', marginBottom: '0' }} className="text-center">
@@ -1343,7 +1351,7 @@ export default function CardView() {
               {isLive && cardId && (() => {
                 const sectionPromptCount = getEffectivePromptCount(currentSection);
                 const isLastPromptInStage = localPromptIndex >= sectionPromptCount - 1;
-                const isLastStage = currentStepIndex >= STEP_ORDER.length - 1;
+                const isLastStage = currentStepIndex >= effectiveSteps.length - 1;
 
                 return (
                   <motion.div
@@ -1373,7 +1381,7 @@ export default function CardView() {
                         } else if (currentStepIndex > 0) {
                           const prevStageIndex = currentStepIndex - 1;
                           const prevSection = card.sections.find(
-                            s => s.type === STEP_ORDER[prevStageIndex]
+                            s => s.type === effectiveSteps[prevStageIndex]
                           );
                           const prevPromptCount = getEffectivePromptCount(prevSection);
                           setLocalStepIndex(prevStageIndex);
@@ -1409,7 +1417,7 @@ export default function CardView() {
                       className="cta-primary gap-2"
                       style={{ width: '60%', margin: '0 auto' }}
                     >
-                      {currentStepIndex >= STEP_ORDER.length - 1 ? 'Klar' : 'Nästa'}
+                      {currentStepIndex >= effectiveSteps.length - 1 ? 'Klar' : 'Nästa'}
                       <ArrowRight className="w-4 h-4" />
                     </button>
                   </div>
@@ -1435,7 +1443,7 @@ export default function CardView() {
         <AlertDialogHeader>
           <AlertDialogTitle className="font-serif text-lg">Avsluta samtalet?</AlertDialogTitle>
           <AlertDialogDescription className="text-sm text-muted-foreground leading-relaxed pt-1">
-            Era svar sparas.
+            {uiText.leaveConfirmDesc}
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter className="mt-2">
@@ -1456,7 +1464,7 @@ export default function CardView() {
 /* ─── Inline takeaway for completion screen ─── */
 const TAKEAWAY_AUTOSAVE = 800;
 
-function CompletionTakeaway({ sessionId, spaceId }: { sessionId: string | null; spaceId: string | null }) {
+function CompletionTakeaway({ sessionId, spaceId, pronounMode = 'ni' }: { sessionId: string | null; spaceId: string | null; pronounMode?: PronounMode }) {
   const { user } = useAuth();
   const [text, setText] = useState('');
   const [rowId, setRowId] = useState<string | null>(null);
@@ -1497,7 +1505,7 @@ function CompletionTakeaway({ sessionId, spaceId }: { sessionId: string | null; 
         onChange={(e) => handleChange(e.target.value)}
         onFocus={() => setIsFocused(true)}
         onBlur={() => setIsFocused(false)}
-        placeholder="Skriv något ni vill bära med er."
+        placeholder={getUIText(pronounMode).takeawayPlaceholder}
         inputMode="text"
         autoCorrect="on"
         autoCapitalize="sentences"

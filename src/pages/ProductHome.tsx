@@ -137,7 +137,14 @@ export default function ProductHome() {
                 hidden: { opacity: 0, y: 16 },
                 visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] } },
               }}
-              className="rounded-xl px-5 py-4 cursor-pointer"
+              onClick={() => {
+                // Navigate to first card in category
+                const categoryCards = product.cards.filter(c => c.categoryId === cat.id);
+                if (categoryCards.length > 0) {
+                  navigate(`/card/${categoryCards[0].id}`);
+                }
+              }}
+              className="rounded-xl px-5 py-4 cursor-pointer active:scale-[0.98] transition-transform"
               style={{
                 backgroundColor: 'var(--tile-bg)',
                 boxShadow: `0 1px 2px 0 hsla(0,0%,0%,0.04), 0 4px 16px -4px hsla(0,0%,0%,0.08), 0 12px 40px -8px hsla(0,0%,0%,0.06)`,

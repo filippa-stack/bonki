@@ -156,6 +156,7 @@ export const sexualitetskortProduct: ProductManifest = {
   accentColor: 'hsl(330, 35%, 30%)',
   accentColorMuted: 'hsl(330, 22%, 90%)',
   secondaryAccent: 'hsl(25, 50%, 52%)',
+  pronounMode: 'du',
   categories,
   cards,
 };

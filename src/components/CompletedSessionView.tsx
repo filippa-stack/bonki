@@ -4,6 +4,8 @@
 // All session state must come from normalized tables.
 
 import { useState, useEffect, useMemo, useCallback } from 'react';
+import { getCompletionMessages } from '@/lib/pronouns';
+import { getProductForCard } from '@/data/products';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import FeedbackSheet from '@/components/FeedbackSheet';
@@ -14,19 +16,6 @@ import Header from '@/components/Header';
 import { BEAT_1, BEAT_2, BEAT_3, EASE, EMOTION } from '@/lib/motion';
 
 const STEP_LABELS = ['Kom igång', 'Gå djupare', 'Föreställ er', 'I verkligheten'];
-
-const COMPLETION_HEADLINES = [
-  'Ni tog er tid för varandra.',
-  'Samtalet är sparat.',
-  'Det här samtalet tillhör er.',
-  'Tack för att ni stannade kvar.',
-  'Det här var bara för er.',
-  'Ni valde varandra igen.',
-  'Varje samtal är ett val. Ni valde rätt.',
-  'Det ni just gjorde betyder något.',
-  'Ni gav varandra hela rummet.',
-  'Det här är hur ni växer.',
-];
 
 interface CompletedSessionViewProps {
   cardId: string;
@@ -68,9 +57,13 @@ export default function CompletedSessionView({
   const myName = 'Du';
   const partnerName = 'Din partner';
 
+  const product = getProductForCard(cardId);
+  const pronounMode = product?.pronounMode ?? 'ni';
+  const completionMessages = useMemo(() => getCompletionMessages(pronounMode), [pronounMode]);
+
   const headline = useMemo(() =>
-    COMPLETION_HEADLINES[Math.floor(Math.random() * COMPLETION_HEADLINES.length)],
-  []);
+    completionMessages[Math.floor(Math.random() * completionMessages.length)],
+  [completionMessages]);
 
   // Show feedback sheet 2s after content renders
   useEffect(() => {
