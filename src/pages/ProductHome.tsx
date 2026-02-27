@@ -85,11 +85,11 @@ export default function ProductHome() {
           Biblioteket
         </button>
 
-        {/* Product hero */}
+        {/* Product hero — mirrors Still Us: bg=cta-active, subtitle=accent-saffron */}
         <div
           className="rounded-2xl px-6 py-8 text-center"
           style={{
-            background: product.accentColor,
+            background: 'var(--cta-active)',
             boxShadow: `0 1px 2px 0 hsla(0,0%,0%,0.06), 0 4px 12px -2px hsla(0,0%,0%,0.12), 0 12px 32px -4px hsla(0,0%,0%,0.14), 0 28px 72px -8px hsla(0,0%,0%,0.10)`,
           }}
         >
@@ -101,7 +101,7 @@ export default function ProductHome() {
           </h1>
           <p
             className="font-serif"
-            style={{ fontSize: '14px', color: 'hsla(0,0%,100%,0.6)', lineHeight: 1.5 }}
+            style={{ fontSize: '14px', color: 'var(--accent-saffron)', opacity: 0.75, lineHeight: 1.5 }}
           >
             {product.description}
           </p>
