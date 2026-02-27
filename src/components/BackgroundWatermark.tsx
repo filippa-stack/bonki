@@ -22,9 +22,11 @@ export function useWatermarkMode(): WatermarkMode {
 export default function BackgroundWatermark() {
   const mode = useWatermarkMode();
   const { pathname } = useLocation();
+  const [searchParams] = useSearchParams();
 
-  // Hide watermark inside sessions (/card/*)
+  // Hide watermark inside sessions (/card/*) and on library page
   if (pathname.startsWith('/card')) return null;
+  if (searchParams.get('devState') === 'library') return null;
 
   if (mode === 'full') {
     return (
