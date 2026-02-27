@@ -516,6 +516,7 @@ export const jagIMigProduct: ProductManifest = {
   accentColor: 'hsl(350, 28%, 58%)',
   accentColorMuted: 'hsl(350, 22%, 92%)',
   secondaryAccent: 'hsl(42, 65%, 50%)',
+  pronounMode: 'du',
   categories,
   cards,
 };

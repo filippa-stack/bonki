@@ -157,6 +157,7 @@ export const vardagskortProduct: ProductManifest = {
   accentColor: 'hsl(28, 55%, 60%)',
   accentColorMuted: 'hsl(28, 35%, 90%)',
   secondaryAccent: 'hsl(260, 28%, 52%)',
+  pronounMode: 'du',
   categories,
   cards,
 };

@@ -644,6 +644,7 @@ export const jagMedAndraProduct: ProductManifest = {
   accentColor: 'hsl(145, 18%, 48%)',
   accentColorMuted: 'hsl(145, 14%, 90%)',
   secondaryAccent: 'hsl(18, 55%, 50%)',
+  pronounMode: 'du',
   categories,
   cards,
 };
