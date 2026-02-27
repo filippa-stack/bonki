@@ -1,54 +1,92 @@
+# Bonki Multi-Product App — Implementeringsplan
 
-# Välkomstskärm för nyligen ansluten partner
+## Övergripande mål
+Appen ska bli en "Bonki-app" med ett produktbibliotek där användare kan köpa och låsa upp olika kortlekar (produkter). Still Us är den första produkten — 6 till ska läggas till med samma struktur.
 
-## Vad som ändras
+## Grundprincip: Feature-flagga
+Biblioteksvyn aktiveras INTE för slutanvändare förrän vi explicit slår på den.
+- Befintlig routing (`/` → Still Us) fortsätter fungera som idag
+- Biblioteket byggs på en separat route (`/library` eller via `?view=library`)
+- Publiceringar påverkar bara Still Us tills vi är redo
 
-När Partner B (eller en ny partner) landar på startsidan och det gemensamma utrymmet saknar delade reflektioner och samtalshistorik, visas en välkomstskärm istället för den vanliga (tomma) startsidan. Om det redan finns aktivitet visas startsidan som vanligt.
+---
 
-## Vad som INTE ändras
-- Navigation och routes
-- Datamodeller
-- Befintliga komponenter byggs inte om
-- Design tokens (färger, typsnitt)
+## Fas 1: Datamodell & Content-arkitektur
 
-## Implementationsdetaljer
+### 1.1 Utöka products-tabellen
+- Lägg till kolumner: `description`, `tagline`, `price_sek`, `icon_emoji`, `color_accent`, `sort_order`, `content_version`
+- Infoga de 6 nya produkterna (med namn och metadata)
 
-### 1. Ny komponent: `WelcomePartner.tsx`
+### 1.2 Content-filstruktur
+- Flytta nuvarande `src/data/content.ts` → `src/data/products/still-us.ts`
+- Skapa `src/data/products/index.ts` som exporterar alla produkter
+- Skapa en content-fil per produkt (samma struktur: kategorier → kort → sektioner → prompts)
+- Behåll bakåtkompatibilitet: `src/data/content.ts` re-exporterar still-us för att inte bryta befintlig kod
 
-En enkel, emotionell välkomstskärm med:
-- Logotyp
-- Rubrik: t.ex. "Välkommen till ert gemensamma rum"
-- Kort text som förklarar att det här är ett utrymme för samtal och reflektioner tillsammans
-- **Primär knapp**: "Starta ert första samtal" -- navigerar till det rekommenderade startkortet (`/card/listening-presence`, dvs. det första kortet i första kategorin)
-- **Sekundär länk**: "Utforska samtalsområden" -- scrollar/navigerar till den vanliga startsidan
+### 1.3 Typsystem
+- Skapa `src/types/product.ts` med `ProductManifest`-typ (id, namn, slug, content, metadata)
+- Säkerställ att alla content-filer följer samma interface
 
-### 2. Ändringar i `src/pages/Index.tsx`
+---
 
-Logik för att avgöra om välkomstskärmen ska visas:
-- Kontrollera om `useCoupleSpace()` returnerar `userRole === 'partner_b'`
-- Kontrollera om det saknas samtalshistorik (`savedConversations.length === 0`) och inga delade reflektioner (`getAllSharedNotes()` är tomt) och inga utforskade kort (`journeyState?.exploredCardIds` är tomt eller saknas)
-- Om båda villkoren uppfylls: visa `WelcomePartner` istället för `Home`
-- Om användaren klickar "Utforska samtalsområden" eller avfärdar välkomsten, visa `Home` som vanligt (via lokal state `dismissed`)
+## Fas 2: Routing & produktkontext
 
-### 3. Nya översättningsnycklar i `src/i18n/sv.json`
+### 2.1 ProductContext
+- Ny context: `ProductProvider` som håller vald produkt-ID
+- Alla befintliga hooks (useApp, useNormalizedSession etc.) läser `productId` från context
+- Default: `still_us` om ingen produkt är vald (bakåtkompatibelt)
 
-Läggs till under en ny `"welcome_partner"` sektion:
-- `title`: "Välkommen till ert gemensamma rum"
-- `description`: "Det här är ett utrymme för samtal och reflektioner — för er, i er egen takt."
-- `start_first`: "Starta ert första samtal"
-- `explore`: "Utforska samtalsområden"
+### 2.2 Routing-uppdatering
+- Ny route: `/product/:productId` → Produktens startsida (Home)
+- Ny route: `/product/:productId/category/:categoryId`
+- Ny route: `/product/:productId/card/:cardId`
+- Befintliga routes (`/`, `/category/:id`, `/card/:id`) fortsätter fungera och antar `still_us`
+- Ingen breaking change för befintliga användare
 
-### Flöde
+### 2.3 Biblioteksvy (feature-flaggad)
+- Ny komponent: `ProductLibrary.tsx`
+- Tiles med produkter, köpstatus, elegant design
+- Aktiveras via `?view=library` eller en framtida config-toggle
+- Ska inte vara synlig i produktion förrän vi bestämmer oss
 
-```text
-Partner B loggar in -> JoinSpace -> redirect till /
-                                        |
-                              Index.tsx kollar:
-                              - role === partner_b?
-                              - inga samtal/reflektioner?
-                                        |
-                          JA: WelcomePartner visas
-                          NEJ: Home visas som vanligt
-```
+---
 
-Primärknappen navigerar till `/card/listening-presence` (första kortet). Sekundärknappen sätter `dismissed = true` och visar Home.
+## Fas 3: Köpflöde per produkt
+
+### 3.1 Utökad PurchaseScreen
+- Nuvarande PurchaseScreen generaliseras: tar emot `productId` och visar rätt pris/namn
+- Stripe-integration per produkt (engångsköp)
+- `user_product_access` används för att spåra vilka produkter en användare har
+
+### 3.2 Onboarding per produkt
+- Varje produkt kan ha sin egen onboarding-sekvens (eller dela en generisk)
+- Still Us behåller sin befintliga onboarding
+- Nya produkter får en kortare "produktintro" (2-3 slides)
+
+---
+
+## Fas 4: Biblioteksvyn live
+
+### 4.1 Byt default-route
+- `/` → ProductLibrary (biblioteket)
+- Still Us nås via `/product/still_us`
+- Användare som redan har Still Us landar direkt i biblioteket
+
+### 4.2 Polish
+- Animationer, övergångar mellan bibliotek och produkt
+- Sökning/filtrering om det blir många produkter
+- Badges: "Ny", "Populär", etc.
+
+---
+
+## Nuvarande status
+- [ ] Fas 1: Datamodell & Content — INTE PÅBÖRJAD
+- [ ] Fas 2: Routing & produktkontext — INTE PÅBÖRJAD
+- [ ] Fas 3: Köpflöde — INTE PÅBÖRJAD
+- [ ] Fas 4: Bibliotek live — INTE PÅBÖRJAD
+
+## Viktigt
+- Still Us får INTE påverkas av pågående arbete
+- Alla nya routes är additiva (inga breaking changes)
+- Publiceringar under byggtiden påverkar bara Still Us
+- Content-filer för nya produkter kan fyllas i parallellt
