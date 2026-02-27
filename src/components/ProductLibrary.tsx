@@ -63,9 +63,10 @@ function Tile({ name, tagline, color, large, onClick }: TileProps) {
         alignItems: 'center',
         textAlign: 'center',
         boxShadow: `
-          0 4px 12px -2px hsla(0, 0%, 0%, 0.18),
+          0 1px 2px 0 hsla(0, 0%, 0%, 0.06),
+          0 4px 12px -2px hsla(0, 0%, 0%, 0.12),
           0 12px 32px -4px hsla(0, 0%, 0%, 0.14),
-          0 24px 56px -8px hsla(0, 0%, 0%, 0.10)
+          0 28px 72px -8px hsla(0, 0%, 0%, 0.10)
         `,
         transition: 'box-shadow 0.4s ease',
       }}
