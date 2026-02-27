@@ -641,6 +641,8 @@ export const jagMedAndraProduct: ProductManifest = {
   tagline: 'Känslokort för tweens',
   description: 'Utforska relationer och sociala sammanhang',
   headerTitle: 'Tillsammans',
+  accentColor: 'hsl(32, 50%, 36%)',
+  accentColorMuted: 'hsl(32, 28%, 90%)',
   categories,
   cards,
 };

@@ -19,6 +19,7 @@ export type DevState =
   | 'archiveEmpty'
   | 'archiveWithHistory'
   | 'browse'
+  | 'library'
   | null;
 
 /** Mock data used by dev state overrides */
