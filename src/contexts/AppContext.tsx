@@ -354,7 +354,11 @@ export function AppProvider({ children }: { children: ReactNode }) {
     ));
   };
 
-  const getCardsByCategory = (categoryId: string): Card[] => cards.filter((card) => card.categoryId === categoryId);
+  const getCardsByCategory = (categoryId: string): Card[] => {
+    const localCards = cards.filter((card) => card.categoryId === categoryId);
+    if (localCards.length > 0) return localCards;
+    return getAllProductCards().filter((card) => card.categoryId === categoryId);
+  };
   const getCardById = (cardId: string): Card | undefined =>
     cards.find((card) => card.id === cardId) ?? getAllProductCards().find((card) => card.id === cardId);
   const getCategoryById = (categoryId: string): Category | undefined =>

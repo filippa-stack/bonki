@@ -138,11 +138,7 @@ export default function ProductHome() {
                 visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] } },
               }}
               onClick={() => {
-                // Navigate to first card in category
-                const categoryCards = product.cards.filter(c => c.categoryId === cat.id);
-                if (categoryCards.length > 0) {
-                  navigate(`/card/${categoryCards[0].id}`);
-                }
+                navigate(`/category/${cat.id}`);
               }}
               className="rounded-xl px-5 py-4 cursor-pointer active:scale-[0.98] transition-transform"
               style={{
