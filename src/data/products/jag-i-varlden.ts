@@ -93,8 +93,8 @@ export const jagIVarldenProduct: ProductManifest = {
   tagline: 'Samtal om identitet, ansvar och livet runt omkring oss.',
   description: 'Utforska dig själv i större sammanhang',
   headerTitle: 'Jag i sammanhang',
-  accentColor: 'hsl(55, 48%, 48%)',
-  accentColorMuted: 'hsl(55, 28%, 90%)',
+  accentColor: 'hsl(195, 40%, 22%)',
+  accentColorMuted: 'hsl(195, 25%, 90%)',
   categories,
   cards,
 };

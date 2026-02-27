@@ -154,8 +154,8 @@ export const vardagskortProduct: ProductManifest = {
   tagline: 'De små samtalen som får vardagen att fungera.',
   description: 'Utforska vardagens rutiner och relationer',
   headerTitle: 'Vårt vardagsliv',
-  accentColor: 'hsl(16, 52%, 55%)',
-  accentColorMuted: 'hsl(16, 32%, 90%)',
+  accentColor: 'hsl(28, 55%, 60%)',
+  accentColorMuted: 'hsl(28, 35%, 90%)',
   categories,
   cards,
 };
