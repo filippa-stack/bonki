@@ -35,6 +35,11 @@ interface TileProps {
   onClick?: () => void;
 }
 
+/** Convert 'hsl(h, s%, l%)' to 'hsla(h, s%, l%, a)' */
+function withAlpha(hsl: string, alpha: number): string {
+  return hsl.replace('hsl(', 'hsla(').replace(')', `, ${alpha})`);
+}
+
 function Tile({ name, tagline, color, large, onClick }: TileProps) {
   return (
     <motion.div
@@ -46,7 +51,7 @@ function Tile({ name, tagline, color, large, onClick }: TileProps) {
       style={{
         borderRadius: '20px',
         padding: large ? '28px 24px' : '20px 18px',
-        background: `linear-gradient(155deg, ${color}d9 0%, ${color}c4 100%)`,
+        background: `linear-gradient(155deg, ${withAlpha(color, 0.85)} 0%, ${withAlpha(color, 0.75)} 100%)`,
         backdropFilter: 'blur(1px)',
         WebkitBackdropFilter: 'blur(1px)',
         position: 'relative',
