@@ -31,6 +31,7 @@ export interface Card {
 export interface Category {
   id: string;
   title: string;
+  subtitle?: string;
   entryLine?: string;
   description: string;
   cardCount: number;

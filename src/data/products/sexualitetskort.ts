@@ -2,10 +2,10 @@ import type { ProductManifest } from '@/types/product';
 import type { Category, Card } from '@/types';
 
 const categories: Category[] = [
-  { id: 'sex-min-identitet', title: 'Min identitet', description: 'Könsidentitet, sexuell läggning, onani och kroppsideal', cardCount: 4 },
-  { id: 'sex-normer-och-paverkan', title: 'Normer & påverkan', description: 'Normer, pornografi, tabun och kärlek', cardCount: 4 },
-  { id: 'sex-relation-och-ansvar', title: 'Relation & ansvar', description: 'Samtycke, ansvar, misstag och konsekvenser', cardCount: 4 },
-  { id: 'sex-skydd-och-makt', title: 'Skydd & makt', description: 'Sexuella övergrepp och sex som hot', cardCount: 2 },
+  { id: 'sex-min-identitet', title: 'Min identitet', subtitle: 'Kropp, kön och den du är -- på ditt sätt.', description: 'Könsidentitet, sexuell läggning, onani och kroppsideal', cardCount: 4 },
+  { id: 'sex-normer-och-paverkan', title: 'Normer & påverkan', subtitle: 'Det som formar våra tankar om sex och relationer.', description: 'Normer, pornografi, tabun och kärlek', cardCount: 4 },
+  { id: 'sex-relation-och-ansvar', title: 'Relation & ansvar', subtitle: 'Samtycke, respekt och hur vi är med varandra.', description: 'Samtycke, ansvar, misstag och konsekvenser', cardCount: 4 },
+  { id: 'sex-skydd-och-makt', title: 'Skydd & makt', subtitle: 'Risker, gränser och att ta hand om sig själv.', description: 'Sexuella övergrepp och sex som hot', cardCount: 2 },
 ];
 
 const cards: Card[] = [
