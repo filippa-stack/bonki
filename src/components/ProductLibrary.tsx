@@ -46,7 +46,7 @@ function Tile({ name, tagline, color, large, onClick }: TileProps) {
       style={{
         borderRadius: '20px',
         padding: large ? '28px 24px' : '20px 18px',
-        background: `linear-gradient(155deg, ${color}cc 0%, ${color}99 100%)`,
+        background: `linear-gradient(155deg, ${color}80 0%, ${color}5c 100%)`,
         backdropFilter: 'blur(2px)',
         WebkitBackdropFilter: 'blur(2px)',
         position: 'relative',
