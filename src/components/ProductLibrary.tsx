@@ -159,7 +159,7 @@ export default function ProductLibrary() {
       className="min-h-screen flex flex-col relative"
       style={{ backgroundColor: 'var(--surface-base)' }}
     >
-      {/* Full-screen background logo — visible through semi-transparent tiles */}
+      {/* Background logo layer — behind content */}
       <div
         style={{
           position: 'fixed',
@@ -179,8 +179,36 @@ export default function ProductLibrary() {
             maxWidth: '130vw',
             height: 'auto',
             objectFit: 'contain',
-            opacity: 0.18,
+            opacity: 0.06,
             transform: 'translateY(8vh)',
+          }}
+        />
+      </div>
+
+      {/* Overlay logo — renders ABOVE tiles so it shines through */}
+      <div
+        style={{
+          position: 'fixed',
+          inset: 0,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          pointerEvents: 'none',
+          zIndex: 10,
+          mixBlendMode: 'soft-light',
+        }}
+      >
+        <img
+          src={bonkiLogo}
+          alt=""
+          style={{
+            width: '130vw',
+            maxWidth: '130vw',
+            height: 'auto',
+            objectFit: 'contain',
+            opacity: 0.35,
+            transform: 'translateY(8vh)',
+            filter: 'saturate(0.2)',
           }}
         />
       </div>
