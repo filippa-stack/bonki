@@ -337,8 +337,8 @@ export const syskonkortProduct: ProductManifest = {
   tagline: 'Om bandet som både skaver och håller.',
   description: 'Utforska syskonbandet och allt det innebär',
   headerTitle: 'Syskonband',
-  accentColor: 'hsl(280, 32%, 58%)',
-  accentColorMuted: 'hsl(280, 22%, 90%)',
+  accentColor: 'hsl(215, 22%, 48%)',
+  accentColorMuted: 'hsl(215, 16%, 90%)',
   categories,
   cards,
 };

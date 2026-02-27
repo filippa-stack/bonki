@@ -641,8 +641,8 @@ export const jagMedAndraProduct: ProductManifest = {
   tagline: 'Om vänskap, gränser och att vara en del av något större.',
   description: 'Utforska relationer och sociala sammanhang',
   headerTitle: 'Tillsammans',
-  accentColor: 'hsl(32, 62%, 58%)',
-  accentColorMuted: 'hsl(32, 38%, 90%)',
+  accentColor: 'hsl(145, 18%, 48%)',
+  accentColorMuted: 'hsl(145, 14%, 90%)',
   categories,
   cards,
 };

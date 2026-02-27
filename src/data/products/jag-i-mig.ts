@@ -513,8 +513,8 @@ export const jagIMigProduct: ProductManifest = {
   tagline: 'Ett rum för att förstå det som händer inuti.',
   description: 'Utforska känslor inifrån och ut',
   headerTitle: 'Inifrån & ut',
-  accentColor: 'hsl(195, 38%, 52%)',
-  accentColorMuted: 'hsl(195, 28%, 90%)',
+  accentColor: 'hsl(350, 28%, 58%)',
+  accentColorMuted: 'hsl(350, 22%, 92%)',
   categories,
   cards,
 };
