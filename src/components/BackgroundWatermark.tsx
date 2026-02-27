@@ -88,7 +88,7 @@ export default function BackgroundWatermark() {
       <div
         className="absolute inset-x-0 pointer-events-none z-[1] flex items-start justify-center overflow-hidden"
         style={{
-          top: '56px',
+          top: 'calc(56px + env(safe-area-inset-top, 0px))',
           marginTop: '-44px',
           paddingTop: '44px',
           clipPath: 'inset(44px 0 0 0)',
