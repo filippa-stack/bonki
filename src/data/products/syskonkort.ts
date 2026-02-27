@@ -339,6 +339,7 @@ export const syskonkortProduct: ProductManifest = {
   headerTitle: 'Syskonband',
   accentColor: 'hsl(215, 22%, 48%)',
   accentColorMuted: 'hsl(215, 16%, 90%)',
+  secondaryAccent: 'hsl(12, 45%, 62%)',
   categories,
   cards,
 };

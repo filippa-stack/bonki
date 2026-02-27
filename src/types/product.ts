@@ -9,6 +9,7 @@ export interface ProductManifest {
   headerTitle: string;
   accentColor: string;       // HSL string, e.g. 'hsl(158, 35%, 18%)'
   accentColorMuted: string;  // Lighter variant for backgrounds
+  secondaryAccent: string;   // Complementary accent (like saffron in Still Us)
   categories: Category[];
   cards: Card[];
 }

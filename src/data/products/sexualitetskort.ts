@@ -155,6 +155,7 @@ export const sexualitetskortProduct: ProductManifest = {
   headerTitle: 'Min kropp & min sexualitet',
   accentColor: 'hsl(330, 35%, 30%)',
   accentColorMuted: 'hsl(330, 22%, 90%)',
+  secondaryAccent: 'hsl(22, 40%, 58%)',
   categories,
   cards,
 };

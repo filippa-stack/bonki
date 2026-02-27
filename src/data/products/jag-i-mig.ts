@@ -515,6 +515,7 @@ export const jagIMigProduct: ProductManifest = {
   headerTitle: 'Inifrån & ut',
   accentColor: 'hsl(350, 28%, 58%)',
   accentColorMuted: 'hsl(350, 22%, 92%)',
+  secondaryAccent: 'hsl(42, 55%, 58%)',
   categories,
   cards,
 };

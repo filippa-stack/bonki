@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 import { allProducts } from '@/data/products';
 import bonkiLogo from '@/assets/bonki-logo.png';
 
@@ -160,6 +161,7 @@ function SectionLabel({ label, delay = 0 }: { label: string; delay?: number }) {
 }
 
 export default function ProductLibrary() {
+  const navigate = useNavigate();
   return (
     <div
       className="min-h-screen flex flex-col relative"
@@ -217,6 +219,7 @@ export default function ProductLibrary() {
             tagline={STILL_US_TAGLINE}
             color={STILL_US_COLOR}
             large
+            onClick={() => navigate('/')}
           />
         </motion.div>
 
@@ -240,6 +243,7 @@ export default function ProductLibrary() {
                 name={p.name}
                 tagline={p.tagline}
                 color={p.accentColor}
+                onClick={() => navigate(`/product/${p.slug}`)}
               />
             ))}
           </motion.div>
