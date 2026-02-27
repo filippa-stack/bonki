@@ -46,9 +46,9 @@ function Tile({ name, tagline, color, large, onClick }: TileProps) {
       style={{
         borderRadius: '20px',
         padding: large ? '28px 24px' : '20px 18px',
-        background: `linear-gradient(155deg, ${color}80 0%, ${color}5c 100%)`,
-        backdropFilter: 'blur(2px)',
-        WebkitBackdropFilter: 'blur(2px)',
+        background: `linear-gradient(155deg, ${color}4d 0%, ${color}33 100%)`,
+        backdropFilter: 'blur(1px)',
+        WebkitBackdropFilter: 'blur(1px)',
         position: 'relative',
         overflow: 'hidden',
         minHeight: large ? '130px' : '120px',
@@ -175,11 +175,12 @@ export default function ProductLibrary() {
           src={bonkiLogo}
           alt=""
           style={{
-            width: '120vw',
-            maxWidth: '120vw',
+            width: '130vw',
+            maxWidth: '130vw',
             height: 'auto',
             objectFit: 'contain',
-            opacity: 0.12,
+            opacity: 0.18,
+            transform: 'translateY(8vh)',
           }}
         />
       </div>
