@@ -10,7 +10,7 @@ const categories: Category[] = [
 
 const cards: Card[] = [
   // ── K1: Vår rytm ──
-  { id: 'vk-morgon', title: 'Morgon', categoryId: 'vk-var-rytm', sections: [{ id: 'vk-morgon-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
+  { id: 'vk-morgon', title: 'Morgon', subtitle: 'Starten på dagen -- rutiner, stress och vad som hjälper', categoryId: 'vk-var-rytm', sections: [{ id: 'vk-morgon-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
     'Berätta om din morgonrutin en vardag när du ska gå till förskolan eller skolan.',
     'Hur tänker du att ni kan göra morgonrutinen roligare?',
     'Om du inte hade någon vuxen hemma på morgonen, tror du att du skulle komma i tid till skolan?',
@@ -18,7 +18,7 @@ const cards: Card[] = [
     'Om du skulle väcka och få iväg dina vuxna till jobbet, vad skulle du göra? Vad skulle du göra annorlunda mot hur de gör när de väcker dig?',
     'Ibland är det bråttom på morgonen -- hur känns det?',
   ]}]},
-  { id: 'vk-rutiner', title: 'Rutiner', categoryId: 'vk-var-rytm', sections: [{ id: 'vk-rutiner-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
+  { id: 'vk-rutiner', title: 'Rutiner', subtitle: 'Varför struktur och vanor spelar roll -- och vilka rutiner barnet värdesätter', categoryId: 'vk-var-rytm', sections: [{ id: 'vk-rutiner-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
     'Varför tror du att de flesta människor mår bra av rutiner?',
     'Finns det rutiner som är särskilt viktiga? Vilka och varför?',
     'Ge exempel på en rutin du tycker är tråkig. Varför är den ändå bra?',
@@ -27,7 +27,7 @@ const cards: Card[] = [
     'Vad kan vara bra med att ha tråkigt?',
     'Vilka rutiner och traditioner tror du att du kommer ha i din familj när du blir vuxen?',
   ]}]},
-  { id: 'vk-skola', title: 'Skola', categoryId: 'vk-var-rytm', sections: [{ id: 'vk-skola-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
+  { id: 'vk-skola', title: 'Skola', subtitle: 'Barnets upplevelse av skolan -- det roliga, det svåra och vad det önskar vore annorlunda', categoryId: 'vk-var-rytm', sections: [{ id: 'vk-skola-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
     'Vad är ditt roligaste minne från skolan?',
     'Hur skulle du beskriva din skola för en ny elev?',
     'Finns det något du skulle vilja förändra med din skola? Varför?',
@@ -37,7 +37,7 @@ const cards: Card[] = [
     'Om du fick bestämma själv, hur skulle en skoldag se ut?',
     'Kan det vara jobbigt att lära sig något? Vad är det i så fall som gör att det känns jobbigt?',
   ]}]},
-  { id: 'vk-hur-var-din-dag', title: 'Hur var din dag', categoryId: 'vk-var-rytm', sections: [{ id: 'vk-hur-var-din-dag-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
+  { id: 'vk-hur-var-din-dag', title: 'Hur var din dag', subtitle: 'En öppen dörr in till barnets dag -- tankar, känslor och upplevelser', categoryId: 'vk-var-rytm', sections: [{ id: 'vk-hur-var-din-dag-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
     'Berätta om något som gjorde dig glad, stolt, nyfiken eller kanske arg eller ledsen idag.',
     'Om du kunde ändra något som hände idag, vad skulle det vara?',
     'Var idag bättre eller sämre än igår? Förklara varför!',
@@ -46,7 +46,7 @@ const cards: Card[] = [
     'Vilken superkraft hade du önskat att du hade haft just idag? Hur hade det gjort din dag annorlunda?',
     'Finns det något du önskar att du hade sagt till någon idag men inte sa? Det kan vara något du glömde, eller något du kanske inte vågade säga.',
   ]}]},
-  { id: 'vk-kvall', title: 'Kväll', categoryId: 'vk-var-rytm', sections: [{ id: 'vk-kvall-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
+  { id: 'vk-kvall', title: 'Kväll', subtitle: 'Nedvarvning och läggdags -- vad kroppen behöver och vad barnet tänker på', categoryId: 'vk-var-rytm', sections: [{ id: 'vk-kvall-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
     'Varför är det svårt att lägga sig, och svårt att stiga upp?',
     'Vad är skillnaden på att vara trött på morgonen och trött på kvällen?',
     'Har du något att säga till om när det gäller din tid att lägga dig?',
@@ -55,7 +55,7 @@ const cards: Card[] = [
     'Vad är mysigast på kvällen?',
     'Hur ser det ut där du sover? Vilka saker är viktigast när du ska sova?',
   ]}]},
-  { id: 'vk-sova', title: 'Sova', categoryId: 'vk-var-rytm', sections: [{ id: 'vk-sova-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
+  { id: 'vk-sova', title: 'Sova', subtitle: 'Sömn, drömmar och vad som gör natten trygg eller svår', categoryId: 'vk-var-rytm', sections: [{ id: 'vk-sova-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
     'Vad är viktigt för dig för att kunna somna -- t.ex. någon sak eller rutin?',
     'När är det svårt att sova? Vad gör du då?',
     'Varför är det viktigt med bra och tillräckligt med sömn?',
@@ -65,7 +65,7 @@ const cards: Card[] = [
     'Om din vän var mörkrädd, vad skulle du säga för att hjälpa? Vilket råd skulle du ge?',
     'Finns det något som dina vuxna kan göra för att hjälpa dig somna och sova bättre?',
   ]}]},
-  { id: 'vk-helg', title: 'Helg', categoryId: 'vk-var-rytm', sections: [{ id: 'vk-helg-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
+  { id: 'vk-helg', title: 'Helg', subtitle: 'Friare dagar -- vad som skiljer dem från vardagen och vad barnet önskar', categoryId: 'vk-var-rytm', sections: [{ id: 'vk-helg-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
     'Vad är skillnaden mellan en vardagsmorgon och en helgmorgon?',
     'Förutom skolan, vad är den största skillnaden på vardag och helg för dig? Varför tror du att det är skillnad?',
     'Finns det något du gör på helgen som du egentligen inte behöver göra, men som du mår bra av?',
@@ -74,7 +74,7 @@ const cards: Card[] = [
     'Om du fick välja själv, hur skulle en perfekt helg se ut?',
   ]}]},
   // ── K2: Vi hemma ──
-  { id: 'vk-mat', title: 'Mat', categoryId: 'vk-vi-hemma', sections: [{ id: 'vk-mat-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
+  { id: 'vk-mat', title: 'Mat', subtitle: 'Måltider i familjen -- vanor, traditioner och vem som bestämmer vad', categoryId: 'vk-vi-hemma', sections: [{ id: 'vk-mat-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
     'Vilken maträtt som dina vuxna gör tycker du minst om? Vilken maträtt skulle du rekommendera andra att prova?',
     'När kan ny mat kännas svår?',
     'Finns det någon mat som du från början inte tyckte om men nu älskar?',
@@ -83,7 +83,7 @@ const cards: Card[] = [
     'Vem bestämmer vad ni ska äta? Är du med och påverkar?',
     'Har ni någon särskild regel som gäller vid matbordet? Vad tycker du om den? Är det något du skulle vilja ändra?',
   ]}]},
-  { id: 'vk-hushall', title: 'Hushåll', categoryId: 'vk-vi-hemma', sections: [{ id: 'vk-hushall-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
+  { id: 'vk-hushall', title: 'Hushåll', subtitle: 'Att bidra hemma -- vad barnet tycker om, vad det klagar på och vad det lär sig', categoryId: 'vk-vi-hemma', sections: [{ id: 'vk-hushall-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
     'Vad är roligast att hjälpa till med hemma? Vad gör det roligt?',
     'Får du tillräckligt med beröm eller bekräftelse när du hjälper till hemma, tycker du?',
     'Vilket hushållsarbete klagar dina vuxna mest över?',
@@ -92,13 +92,13 @@ const cards: Card[] = [
     'Vilka rutiner eller regler skulle du vilja ha hemma för att allt ska bli lättare?',
     'Dina vuxna ger dig 500 kr att planera och handla mat för. Vad kommer du hem med?',
   ]}]},
-  { id: 'vk-syskon', title: 'Syskon', categoryId: 'vk-vi-hemma', sections: [{ id: 'vk-syskon-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
+  { id: 'vk-syskon', title: 'Syskon', subtitle: 'Hur det är att leva med syskon i vardagen -- det roliga och det jobbiga', categoryId: 'vk-vi-hemma', sections: [{ id: 'vk-syskon-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
     'Berätta vad du tycker är roligt med att ha syskon. Berätta vad som kan vara svårt med att ha syskon.',
     'Vad innebär det att vara plastsyskon eller bonussyskon? Känner du några?',
     'Varför tror du att syskon kan vara så olika? Är det konstigt?',
     'Tycker man om sina syskon på samma sätt som man tycker om sina vuxna, eller är det annorlunda?',
   ]}]},
-  { id: 'vk-underhallning', title: 'Underhållning', categoryId: 'vk-vi-hemma', sections: [{ id: 'vk-underhallning-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
+  { id: 'vk-underhallning', title: 'Underhållning', subtitle: 'Lek, skärmar och fritid -- vad barnet tycker om och hur familjen umgås', categoryId: 'vk-vi-hemma', sections: [{ id: 'vk-underhallning-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
     'Har din familj något favoritspel eller någon favoritlek?',
     'Tycker ni om samma saker?',
     'Vad tycker dina vuxna om för lekar eller spel som du inte tycker om?',
@@ -108,7 +108,7 @@ const cards: Card[] = [
     'En vuxen säger att dataspel, skärmar eller mobilen är bortkastad tid. Vad svarar du, utan att bara säga "nej, det är det inte"?',
   ]}]},
   // ── K3: Jag växer ──
-  { id: 'vk-aktiviteter', title: 'Aktiviteter', categoryId: 'vk-jag-vaxer', sections: [{ id: 'vk-aktiviteter-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
+  { id: 'vk-aktiviteter', title: 'Aktiviteter', subtitle: 'Hobbyer och fritidssysselsättningar -- vad barnet väljer och varför', categoryId: 'vk-jag-vaxer', sections: [{ id: 'vk-aktiviteter-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
     'Förutom sport, vad kan en hobby vara?',
     'Finns det någon aktivitet du älskar? Finns det en du vill prova men ännu inte har provat?',
     'Är det viktigt med aktiviteter eller hobbyer utanför skoltid? Varför?',
@@ -118,7 +118,7 @@ const cards: Card[] = [
     'Är det viktigt att ha en kompis med på sin aktivitet, eller kan det vara skönt att vara själv?',
     'Kan en hobby också vara något som du gör i skolan eller förskolan, eller måste det vara något helt annat?',
   ]}]},
-  { id: 'vk-tonar', title: 'Tonår', categoryId: 'vk-jag-vaxer', sections: [{ id: 'vk-tonar-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
+  { id: 'vk-tonar', title: 'Tonår', subtitle: 'Att växa upp -- vad som förändras, vad som är svårt och vad som blivit bättre', categoryId: 'vk-jag-vaxer', sections: [{ id: 'vk-tonar-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
     'Vad får du göra som dina kompisar inte får?',
     'Vad har blivit bättre i ditt liv jämfört med för tre år sedan?',
     'Om du skulle träffa ditt 8-åriga jag, vad skulle du uppmuntra lilla dig att göra?',
@@ -127,7 +127,7 @@ const cards: Card[] = [
     'Vad skulle du vilja ändra med din vardagsrutin?',
     'Vad har blivit lättare med att bli äldre? Vad har blivit svårare?',
   ]}]},
-  { id: 'vk-arbete', title: 'Arbete', categoryId: 'vk-jag-vaxer', sections: [{ id: 'vk-arbete-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
+  { id: 'vk-arbete', title: 'Arbete', subtitle: 'Barnets bild av de vuxnas jobb -- och vad det drömmer om att bli', categoryId: 'vk-jag-vaxer', sections: [{ id: 'vk-arbete-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
     'Vad skulle du säga om någon frågade vad dina vuxna gör när de arbetar?',
     'Hur vet du om dina vuxna tycker om sina jobb?',
     'Förutom att tjäna pengar, varför tror du att vuxna jobbar?',
@@ -137,7 +137,7 @@ const cards: Card[] = [
     'Har du träffat någon vuxen som har ett arbete du skulle vilja ha när du blir vuxen?',
   ]}]},
   // ── K4: Jag & andra ──
-  { id: 'vk-kompisar', title: 'Kompisar', categoryId: 'vk-jag-och-andra', sections: [{ id: 'vk-kompisar-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
+  { id: 'vk-kompisar', title: 'Kompisar', subtitle: 'Vänskaper i vardagen -- var, hur och med vem man umgås', categoryId: 'vk-jag-och-andra', sections: [{ id: 'vk-kompisar-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
     'Vilket föredrar du -- att besöka dina kompisar eller att de besöker dig? Varför?',
     'Är det skillnad på att komma hem till olika kompisar? Förklara!',
     'Tycker du mest om att umgås med kompisar i skolan eller efter skolan? Förklara!',
