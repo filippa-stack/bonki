@@ -67,6 +67,12 @@ const PAGES = [
   { path: '/category/category-10', label: '📂 Category 10' },
   { path: '/card/smallest-we', label: '🃏 Card: smallest-we' },
   { path: '/card/listening-presence', label: '🃏 Card: listening-presence' },
+  { path: '/product/jag-i-mig', label: '🎴 Jag i Mig' },
+  { path: '/product/jag-med-andra', label: '🎴 Jag med Andra' },
+  { path: '/product/jag-i-varlden', label: '🎴 Jag i Världen' },
+  { path: '/product/vardagskort', label: '🎴 Vardagskort' },
+  { path: '/product/syskonkort', label: '🎴 Syskonkort' },
+  { path: '/product/sexualitetskort', label: '🎴 Sexualitetskort' },
 ];
 
 export default function DevModeBadge() {
