@@ -2,9 +2,9 @@ import { motion } from 'framer-motion';
 import { allProducts } from '@/data/products';
 import bonkiLogo from '@/assets/bonki-logo.png';
 
-/** Still Us constants */
+/** Still Us constants — forest green, the app's primary color */
 const STILL_US_ID = 'still_us';
-const STILL_US_COLOR = 'hsl(158, 32%, 42%)';
+const STILL_US_COLOR = 'hsl(158, 35%, 18%)';
 const STILL_US_COLOR_MUTED = 'hsl(158, 18%, 90%)';
 const STILL_US_TAGLINE = 'Djupa samtal för par som vill förstå varandra bättre';
 
@@ -26,7 +26,7 @@ function ProductTile({ name, tagline, accentColor, index }: ProductTileProps) {
         borderRadius: '14px',
         padding: '22px 20px',
         backgroundColor: accentColor,
-        opacity: 0.82,
+        opacity: 0.72,
         position: 'relative',
         overflow: 'hidden',
       }}
@@ -124,11 +124,11 @@ export default function ProductLibrary() {
           src={bonkiLogo}
           alt=""
           style={{
-            width: '85vw',
-            maxWidth: '500px',
+            width: '100vw',
+            maxWidth: '100vw',
             height: 'auto',
             objectFit: 'contain',
-            opacity: 0.045,
+            opacity: 0.04,
           }}
         />
       </div>
