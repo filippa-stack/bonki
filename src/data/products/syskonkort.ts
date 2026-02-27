@@ -5,24 +5,28 @@ const categories: Category[] = [
   {
     id: 'sk-vi-blev-syskon',
     title: 'Vi blev syskon',
+    subtitle: 'Hur allt började -- och vad vi delar.',
     description: 'Att få ett syskon och de tidiga minnena',
     cardCount: 4,
   },
   {
     id: 'sk-vi-ar-olika',
     title: 'Vi är olika',
+    subtitle: 'Plats, personlighet och det som gör oss unika.',
     description: 'Unikhet, plats i syskonskaran och bonussyskon',
     cardCount: 3,
   },
   {
     id: 'sk-nar-det-skaver',
     title: 'När det skaver',
+    subtitle: 'Rättvisa, svartsjuka och bråk som formar relationen.',
     description: 'Konflikter, delande och rättvisa',
     cardCount: 5,
   },
   {
     id: 'sk-nar-livet-forandras',
     title: 'När livet förändras',
+    subtitle: 'Förlust, förändring och band som sträcker sig framåt.',
     description: 'Förlust och framtid',
     cardCount: 2,
   },

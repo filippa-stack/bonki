@@ -5,24 +5,28 @@ const categories: Category[] = [
   {
     id: 'jim-tryggheten-inuti',
     title: 'Tryggheten inuti',
+    subtitle: 'Det som får dig att känna dig säker -- även när det gungar.',
     description: 'Trygghet, ensamhet och stress',
     cardCount: 3,
   },
   {
     id: 'jim-kanslorna-jag-bar',
     title: 'Känslorna jag bär',
+    subtitle: 'De stora och små känslorna som rör sig genom dig.',
     description: 'Grundläggande känslor och hur de känns',
     cardCount: 5,
   },
   {
     id: 'jim-nar-det-gor-ont',
     title: 'När det gör ont',
+    subtitle: 'Svåra känslor som är jobbiga -- men viktiga att förstå.',
     description: 'Svårare känslor att förstå och hantera',
     cardCount: 7,
   },
   {
     id: 'jim-jag-som-helhet',
     title: 'Jag som helhet',
+    subtitle: 'Vem du är när allt hänger ihop.',
     description: 'Att förstå sig själv som en hel person',
     cardCount: 6,
   },

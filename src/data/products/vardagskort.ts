@@ -2,10 +2,10 @@ import type { ProductManifest } from '@/types/product';
 import type { Category, Card } from '@/types';
 
 const categories: Category[] = [
-  { id: 'vk-var-rytm', title: 'Vår rytm', description: 'Morgon, rutiner, skola och kvällar', cardCount: 7 },
-  { id: 'vk-vi-hemma', title: 'Vi hemma', description: 'Mat, hushåll och underhållning', cardCount: 4 },
-  { id: 'vk-jag-vaxer', title: 'Jag växer', description: 'Aktiviteter, tonår och arbete', cardCount: 3 },
-  { id: 'vk-jag-och-andra', title: 'Jag & andra', description: 'Kompisar och bekräftelse', cardCount: 1 },
+  { id: 'vk-var-rytm', title: 'Vår rytm', subtitle: 'Det som får dagarna att fungera -- från morgon till kväll.', description: 'Morgon, rutiner, skola och kvällar', cardCount: 7 },
+  { id: 'vk-vi-hemma', title: 'Vi hemma', subtitle: 'Hur vi lever, hjälper och har det tillsammans.', description: 'Mat, hushåll och underhållning', cardCount: 4 },
+  { id: 'vk-jag-vaxer', title: 'Jag växer', subtitle: 'När ansvar, frihet och framtid börjar ta plats.', description: 'Aktiviteter, tonår och arbete', cardCount: 3 },
+  { id: 'vk-jag-och-andra', title: 'Jag & andra', subtitle: 'Vänskap, bekräftelse och att hitta sin plats.', description: 'Kompisar och bekräftelse', cardCount: 1 },
 ];
 
 const cards: Card[] = [
