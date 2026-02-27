@@ -341,6 +341,7 @@ export const syskonkortProduct: ProductManifest = {
   accentColorMuted: 'hsl(215, 16%, 90%)',
   secondaryAccent: 'hsl(15, 55%, 55%)',
   pronounMode: 'du',
+  ageLabel: '6+',
   categories,
   cards,
 };
