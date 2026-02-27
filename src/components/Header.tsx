@@ -70,6 +70,7 @@ export default function Header({
             ? '1px solid var(--color-border-faint, hsla(158, 20%, 30%, 0.12))'
             : 'none',
           backdropFilter: isImmersive ? 'blur(12px)' : undefined,
+          paddingTop: 'env(safe-area-inset-top, 0px)',
         }}
       >
         {isImmersive ? (
