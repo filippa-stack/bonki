@@ -955,7 +955,7 @@ export default function CardView() {
             transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
             style={{
               position: 'absolute',
-              inset: 0,
+              inset: '-4px',
               backgroundImage: `url(${cardImageUrl})`,
               backgroundSize: 'cover',
               backgroundPosition: 'center',
