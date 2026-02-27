@@ -4,7 +4,7 @@ import bonkiLogo from '@/assets/bonki-logo.png';
 
 /** Still Us constants */
 const STILL_US_ID = 'still_us';
-const STILL_US_COLOR = 'hsl(158, 35%, 18%)';
+const STILL_US_COLOR = 'hsl(158, 32%, 42%)';
 const STILL_US_COLOR_MUTED = 'hsl(158, 18%, 90%)';
 const STILL_US_TAGLINE = 'Djupa samtal för par som vill förstå varandra bättre';
 
@@ -26,7 +26,7 @@ function ProductTile({ name, tagline, accentColor, index }: ProductTileProps) {
         borderRadius: '14px',
         padding: '22px 20px',
         backgroundColor: accentColor,
-        opacity: 0.88,
+        opacity: 0.82,
         position: 'relative',
         overflow: 'hidden',
       }}
@@ -142,12 +142,6 @@ export default function ProductLibrary() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
         >
-          <img
-            src={bonkiLogo}
-            alt="Bonki"
-            className="mx-auto mb-4"
-            style={{ width: '48px', height: '48px', objectFit: 'contain', opacity: 0.85 }}
-          />
           <h1
             className="type-h1"
             style={{ color: 'var(--text-primary)', marginBottom: '8px' }}

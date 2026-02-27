@@ -153,8 +153,8 @@ export const sexualitetskortProduct: ProductManifest = {
   tagline: 'Trygga samtal om kropp, relationer och gränser.',
   description: 'Utforska kropp, identitet och sexualitet',
   headerTitle: 'Min kropp & min sexualitet',
-  accentColor: 'hsl(280, 28%, 26%)',
-  accentColorMuted: 'hsl(280, 16%, 90%)',
+  accentColor: 'hsl(345, 48%, 42%)',
+  accentColorMuted: 'hsl(345, 28%, 90%)',
   categories,
   cards,
 };
