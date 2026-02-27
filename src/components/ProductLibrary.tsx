@@ -12,17 +12,17 @@ const childProducts = allProducts;
 const containerVariants = {
   hidden: {},
   visible: {
-    transition: { staggerChildren: 0.07, delayChildren: 0.2 },
+    transition: { staggerChildren: 0.08, delayChildren: 0.25 },
   },
 };
 
 const tileVariants = {
-  hidden: { opacity: 0, y: 18, scale: 0.97 },
+  hidden: { opacity: 0, y: 24, scale: 0.95 },
   visible: {
     opacity: 1,
     y: 0,
     scale: 1,
-    transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] as const },
+    transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] as const },
   },
 };
 
@@ -32,31 +32,37 @@ interface TileProps {
   tagline: string;
   color: string;
   large?: boolean;
+  onClick?: () => void;
 }
 
-function Tile({ name, tagline, color, large }: TileProps) {
+function Tile({ name, tagline, color, large, onClick }: TileProps) {
   return (
     <motion.div
       variants={tileVariants}
-      whileHover={{ scale: 1.025, y: -2 }}
-      whileTap={{ scale: 0.985 }}
+      whileHover={{ scale: 1.04, y: -4 }}
+      whileTap={{ scale: 0.975 }}
+      onClick={onClick}
       className="cursor-pointer"
       style={{
-        borderRadius: '18px',
-        padding: large ? '30px 26px' : '22px 20px',
-        background: `linear-gradient(155deg, ${color} 0%, ${color} 100%)`,
-        opacity: 0.6,
+        borderRadius: '20px',
+        padding: large ? '28px 24px' : '20px 18px',
+        background: `linear-gradient(155deg, ${color}cc 0%, ${color}99 100%)`,
+        backdropFilter: 'blur(2px)',
+        WebkitBackdropFilter: 'blur(2px)',
         position: 'relative',
         overflow: 'hidden',
-        minHeight: large ? '120px' : '105px',
+        minHeight: large ? '130px' : '120px',
         display: 'flex',
         flexDirection: 'column',
-        justifyContent: 'flex-end',
+        justifyContent: 'center',
+        alignItems: 'center',
+        textAlign: 'center',
         boxShadow: `
-          0 2px 8px -2px hsla(0, 0%, 0%, 0.12),
-          0 8px 24px -4px hsla(0, 0%, 0%, 0.10),
-          0 20px 48px -8px hsla(0, 0%, 0%, 0.08)
+          0 4px 12px -2px hsla(0, 0%, 0%, 0.18),
+          0 12px 32px -4px hsla(0, 0%, 0%, 0.14),
+          0 24px 56px -8px hsla(0, 0%, 0%, 0.10)
         `,
+        transition: 'box-shadow 0.4s ease',
       }}
     >
       {/* Glass highlight sweep */}
@@ -65,7 +71,7 @@ function Tile({ name, tagline, color, large }: TileProps) {
           position: 'absolute',
           inset: 0,
           background:
-            'linear-gradient(145deg, hsla(0,0%,100%,0.18) 0%, hsla(0,0%,100%,0.06) 35%, transparent 60%, hsla(0,0%,0%,0.04) 100%)',
+            'linear-gradient(145deg, hsla(0,0%,100%,0.22) 0%, hsla(0,0%,100%,0.08) 30%, transparent 55%, hsla(0,0%,0%,0.06) 100%)',
           pointerEvents: 'none',
         }}
       />
@@ -75,8 +81,8 @@ function Tile({ name, tagline, color, large }: TileProps) {
         style={{
           position: 'absolute',
           inset: 0,
-          borderRadius: '18px',
-          border: '1px solid hsla(0, 0%, 100%, 0.12)',
+          borderRadius: '20px',
+          border: '1px solid hsla(0, 0%, 100%, 0.18)',
           pointerEvents: 'none',
         }}
       />
@@ -85,11 +91,12 @@ function Tile({ name, tagline, color, large }: TileProps) {
         <h3
           className="font-serif"
           style={{
-            fontSize: large ? '24px' : '18px',
-            fontWeight: 600,
+            fontSize: large ? '26px' : '19px',
+            fontWeight: 700,
             lineHeight: 1.2,
-            color: 'hsla(0, 0%, 100%, 0.95)',
-            marginBottom: '5px',
+            color: 'hsla(0, 0%, 100%, 0.97)',
+            marginBottom: '6px',
+            letterSpacing: '-0.01em',
           }}
         >
           {name}
@@ -97,11 +104,12 @@ function Tile({ name, tagline, color, large }: TileProps) {
         <p
           className="font-serif"
           style={{
-            fontSize: large ? '13.5px' : '12px',
+            fontSize: large ? '13px' : '11.5px',
             fontWeight: 400,
-            color: 'hsla(0, 0%, 100%, 0.55)',
+            color: 'hsla(0, 0%, 100%, 0.6)',
             lineHeight: 1.5,
-            maxWidth: '22ch',
+            maxWidth: '20ch',
+            margin: '0 auto',
           }}
         >
           {tagline}
@@ -122,7 +130,7 @@ function SectionLabel({ label, delay = 0 }: { label: string; delay?: number }) {
         display: 'flex',
         alignItems: 'center',
         gap: '14px',
-        margin: '0 0 14px',
+        margin: '0 0 16px',
       }}
     >
       <div style={{ flex: 1, height: '1px', background: 'linear-gradient(90deg, transparent, hsla(30,8%,50%,0.2), transparent)' }} />
@@ -151,7 +159,7 @@ export default function ProductLibrary() {
       className="min-h-screen flex flex-col relative"
       style={{ backgroundColor: 'var(--surface-base)' }}
     >
-      {/* Full-screen background logo — strong enough to see through tiles */}
+      {/* Full-screen background logo — visible through semi-transparent tiles */}
       <div
         style={{
           position: 'fixed',
@@ -167,11 +175,11 @@ export default function ProductLibrary() {
           src={bonkiLogo}
           alt=""
           style={{
-            width: '110vw',
-            maxWidth: '110vw',
+            width: '120vw',
+            maxWidth: '120vw',
             height: 'auto',
             objectFit: 'contain',
-            opacity: 0.07,
+            opacity: 0.12,
           }}
         />
       </div>
@@ -231,7 +239,7 @@ export default function ProductLibrary() {
             style={{
               display: 'grid',
               gridTemplateColumns: 'repeat(2, 1fr)',
-              gap: '10px',
+              gap: '12px',
               paddingBottom: '32px',
             }}
           >
