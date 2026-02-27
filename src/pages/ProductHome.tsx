@@ -89,7 +89,7 @@ export default function ProductHome() {
         <div
           className="rounded-2xl px-6 py-8 text-center"
           style={{
-            background: `linear-gradient(155deg, ${product.accentColor} 0%, ${product.accentColor}dd 100%)`,
+            background: product.accentColor,
             boxShadow: `0 1px 2px 0 hsla(0,0%,0%,0.06), 0 4px 12px -2px hsla(0,0%,0%,0.12), 0 12px 32px -4px hsla(0,0%,0%,0.14), 0 28px 72px -8px hsla(0,0%,0%,0.10)`,
           }}
         >
