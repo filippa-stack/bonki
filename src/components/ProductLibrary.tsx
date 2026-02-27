@@ -46,7 +46,7 @@ function Tile({ name, tagline, color, large, onClick }: TileProps) {
       style={{
         borderRadius: '20px',
         padding: large ? '28px 24px' : '20px 18px',
-        background: `linear-gradient(155deg, ${color}a6 0%, ${color}8c 100%)`,
+        background: `linear-gradient(155deg, ${color}d9 0%, ${color}c4 100%)`,
         backdropFilter: 'blur(1px)',
         WebkitBackdropFilter: 'blur(1px)',
         position: 'relative',
@@ -94,7 +94,7 @@ function Tile({ name, tagline, color, large, onClick }: TileProps) {
             fontSize: large ? '26px' : '19px',
             fontWeight: 700,
             lineHeight: 1.2,
-            color: 'hsla(0, 0%, 100%, 0.97)',
+            color: 'hsla(0, 0%, 100%, 0.95)',
             marginBottom: '6px',
             letterSpacing: '-0.01em',
           }}
@@ -159,32 +159,15 @@ export default function ProductLibrary() {
       className="min-h-screen flex flex-col relative"
       style={{ backgroundColor: 'var(--surface-base)' }}
     >
-      {/* Background logo layer — behind content */}
-      <div
-        style={{
-          position: 'fixed',
-          inset: 0,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          pointerEvents: 'none',
-          zIndex: 0,
-        }}
-      >
-        <img
-          src={bonkiLogo}
-          alt=""
-          style={{
-            width: '130vw',
-            maxWidth: '130vw',
-            height: 'auto',
-            objectFit: 'contain',
-            opacity: 0.09,
-            transform: 'translateY(8vh)',
-          }}
-        />
+      {/* Background logo */}
+      <div style={{ position: 'fixed', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', pointerEvents: 'none', zIndex: 0 }}>
+        <img src={bonkiLogo} alt="" style={{ width: '130vw', maxWidth: '130vw', height: 'auto', objectFit: 'contain', opacity: 0.07, transform: 'translateY(8vh)' }} />
       </div>
 
+      {/* Overlay logo — shines through tiles */}
+      <div style={{ position: 'fixed', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', pointerEvents: 'none', zIndex: 10 }}>
+        <img src={bonkiLogo} alt="" style={{ width: '130vw', maxWidth: '130vw', height: 'auto', objectFit: 'contain', opacity: 0.045, transform: 'translateY(8vh)', filter: 'saturate(0)', maskImage: 'linear-gradient(to bottom, black 40%, transparent 90%)', WebkitMaskImage: 'linear-gradient(to bottom, black 40%, transparent 90%)' }} />
+      </div>
 
       {/* Content */}
       <div style={{ position: 'relative', zIndex: 1 }}>
