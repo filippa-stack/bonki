@@ -150,7 +150,7 @@ export const sexualitetskortProduct: ProductManifest = {
   id: 'sexualitetskort',
   name: 'Sexualitetskort',
   slug: 'sexualitetskort',
-  tagline: 'Samtalskort om kropp och sexualitet',
+  tagline: 'Trygga samtal om kropp, relationer och gränser.',
   description: 'Utforska kropp, identitet och sexualitet',
   headerTitle: 'Min kropp & min sexualitet',
   accentColor: 'hsl(280, 28%, 26%)',

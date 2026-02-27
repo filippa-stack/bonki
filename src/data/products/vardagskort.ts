@@ -151,7 +151,7 @@ export const vardagskortProduct: ProductManifest = {
   id: 'vardagskort',
   name: 'Vardagskort',
   slug: 'vardagskort',
-  tagline: 'Samtalskort om vardagslivet',
+  tagline: 'De små samtalen som får vardagen att fungera.',
   description: 'Utforska vardagens rutiner och relationer',
   headerTitle: 'Vårt vardagsliv',
   accentColor: 'hsl(82, 28%, 28%)',

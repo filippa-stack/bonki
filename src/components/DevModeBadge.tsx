@@ -15,6 +15,7 @@ const DEV_STATES = [
   { value: 'archiveEmpty', label: 'Archive Empty' },
   { value: 'archiveWithHistory', label: 'Archive w/ History' },
   { value: 'browse', label: 'Browse (all unlocked)' },
+  { value: 'library', label: '📚 Product Library' },
 ];
 
 const THEME_OPTIONS = [

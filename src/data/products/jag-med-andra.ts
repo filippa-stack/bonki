@@ -638,7 +638,7 @@ export const jagMedAndraProduct: ProductManifest = {
   id: 'jag_med_andra',
   name: 'Jag med Andra',
   slug: 'jag-med-andra',
-  tagline: 'Känslokort för tweens',
+  tagline: 'Om vänskap, gränser och att vara en del av något större.',
   description: 'Utforska relationer och sociala sammanhang',
   headerTitle: 'Tillsammans',
   accentColor: 'hsl(32, 50%, 36%)',
