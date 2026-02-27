@@ -46,7 +46,7 @@ function Tile({ name, tagline, color, large, onClick }: TileProps) {
       style={{
         borderRadius: '20px',
         padding: large ? '28px 24px' : '20px 18px',
-        background: `linear-gradient(155deg, ${color}4d 0%, ${color}33 100%)`,
+        background: `linear-gradient(155deg, ${color}b3 0%, ${color}99 100%)`,
         backdropFilter: 'blur(1px)',
         WebkitBackdropFilter: 'blur(1px)',
         position: 'relative',
@@ -195,7 +195,7 @@ export default function ProductLibrary() {
           justifyContent: 'center',
           pointerEvents: 'none',
           zIndex: 10,
-          mixBlendMode: 'soft-light',
+          mixBlendMode: 'multiply',
         }}
       >
         <img
@@ -206,9 +206,9 @@ export default function ProductLibrary() {
             maxWidth: '130vw',
             height: 'auto',
             objectFit: 'contain',
-            opacity: 0.35,
+            opacity: 0.12,
             transform: 'translateY(8vh)',
-            filter: 'saturate(0.2)',
+            filter: 'saturate(0)',
           }}
         />
       </div>
