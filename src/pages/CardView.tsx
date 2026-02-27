@@ -136,7 +136,7 @@ export default function CardView() {
   const pronounMode: PronounMode = product?.pronounMode ?? 'ni';
   const uiText = useMemo(() => getUIText(pronounMode), [pronounMode]);
   const effectiveSteps = useMemo(() => getCardStepOrder(card), [card]);
-  const completionMessages = useMemo(() => getCompletionMessages(pronounMode), [pronounMode]);
+  const completionMessages = useMemo(() => getCompletionMessages(pronounMode, product?.ageLabel), [pronounMode, product?.ageLabel]);
 
   // Retained so the takeaway screen has a session ID after the session closes
   const [activeSessionId, setActiveSessionId] = useState<string | null>(

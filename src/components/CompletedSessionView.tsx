@@ -59,7 +59,8 @@ export default function CompletedSessionView({
 
   const product = getProductForCard(cardId);
   const pronounMode = product?.pronounMode ?? 'ni';
-  const completionMessages = useMemo(() => getCompletionMessages(pronounMode), [pronounMode]);
+  const ageLabel = product?.ageLabel;
+  const completionMessages = useMemo(() => getCompletionMessages(pronounMode, ageLabel), [pronounMode, ageLabel]);
 
   const headline = useMemo(() =>
     completionMessages[Math.floor(Math.random() * completionMessages.length)],

@@ -31,8 +31,71 @@ const COMPLETION_MESSAGES_DU = [
   'Det här är hur du växer.',
 ];
 
-export function getCompletionMessages(mode: PronounMode): string[] {
-  return mode === 'du' ? COMPLETION_MESSAGES_DU : COMPLETION_MESSAGES_NI;
+/**
+ * Age-adapted completion messages.
+ * Young children (3+/6+) get simpler, warmer language.
+ * Teens (12+/13+) get slightly more mature phrasing.
+ */
+const COMPLETION_MESSAGES_YOUNG: string[] = [
+  'Bra pratat!',
+  'Tänk vad mycket du kan!',
+  'Det där var viktigt att prata om.',
+  'Du är modig som berättar.',
+  'Vad fint att ni pratade om det här.',
+  'Ni lyssnade på varandra. Det är stort.',
+  'Vilken bra fråga du ställde!',
+  'Tänk vad bra ni är på att prata.',
+  'Det var modigt.',
+  'Ni gjorde det tillsammans.',
+];
+
+const COMPLETION_MESSAGES_TWEEN: string[] = [
+  'Bra pratat.',
+  'Det ni just gjorde betyder något.',
+  'Tack för att du tog dig tid.',
+  'Det här samtalet var viktigt.',
+  'Ni vågade prata om det på riktigt.',
+  'Bra att ni lyssnade på varandra.',
+  'Det du sa var modigt.',
+  'Ni tog er tid. Det märks.',
+  'Det ni pratade om stannar kvar.',
+  'Starkt jobbat.',
+];
+
+const COMPLETION_MESSAGES_TEEN: string[] = [
+  'Bra att du tog dig tid för det här.',
+  'Det du just reflekterade över spelar roll.',
+  'Tack för att du stannade kvar i samtalet.',
+  'Det här var ditt. Ingen annans.',
+  'Du vågade tänka efter på riktigt.',
+  'Det tar mod att vara ärlig med sig själv.',
+  'Du gav dig själv utrymme. Det är starkt.',
+  'Varje samtal gör skillnad.',
+  'Det du kände just nu är värt att komma ihåg.',
+  'Du tog det på allvar. Det syns.',
+];
+
+export type AgeGroup = 'young' | 'tween' | 'teen' | 'adult';
+
+/** Map an ageLabel string to a semantic age group */
+export function getAgeGroup(ageLabel?: string): AgeGroup {
+  if (!ageLabel) return 'adult';
+  const num = parseInt(ageLabel.replace(/[^0-9]/g, ''), 10);
+  if (isNaN(num)) return 'adult';
+  if (num <= 5) return 'young';   // 3+
+  if (num <= 11) return 'tween';  // 6+
+  if (num <= 15) return 'teen';   // 12+, 13+
+  return 'adult';
+}
+
+export function getCompletionMessages(mode: PronounMode, ageLabel?: string): string[] {
+  const age = getAgeGroup(ageLabel);
+  switch (age) {
+    case 'young': return COMPLETION_MESSAGES_YOUNG;
+    case 'tween': return COMPLETION_MESSAGES_TWEEN;
+    case 'teen': return COMPLETION_MESSAGES_TEEN;
+    default: return mode === 'du' ? COMPLETION_MESSAGES_DU : COMPLETION_MESSAGES_NI;
+  }
 }
 
 /**

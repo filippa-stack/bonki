@@ -97,6 +97,7 @@ export const jagIVarldenProduct: ProductManifest = {
   accentColorMuted: 'hsl(195, 25%, 90%)',
   secondaryAccent: 'hsl(35, 72%, 48%)',
   pronounMode: 'du',
+  ageLabel: '12+',
   categories,
   cards,
 };
