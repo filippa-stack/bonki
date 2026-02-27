@@ -39,6 +39,7 @@ const cards: Card[] = [
   {
     id: 'jma-vanskap',
     title: 'Vänskap',
+    subtitle: 'Vad som gör en vänskap äkta -- och hur den kan förändras',
     categoryId: 'jma-att-hora-till',
     sections: [
       {
@@ -67,6 +68,7 @@ const cards: Card[] = [
   {
     id: 'jma-kontakt',
     title: 'Kontakt',
+    subtitle: 'Att läsa av hur någon mår -- och vad man gör med det man ser',
     categoryId: 'jma-att-hora-till',
     sections: [
       {
@@ -94,6 +96,7 @@ const cards: Card[] = [
   {
     id: 'jma-annorlunda',
     title: 'Annorlunda',
+    subtitle: 'Att vara sig själv när omgivningen vill att man ska passa in',
     categoryId: 'jma-att-hora-till',
     sections: [
       {
@@ -121,6 +124,7 @@ const cards: Card[] = [
   {
     id: 'jma-utanfor',
     title: 'Utanför',
+    subtitle: 'Känslan av att inte höra till -- och vad man kan göra för varandra',
     categoryId: 'jma-att-hora-till',
     sections: [
       {
@@ -148,6 +152,7 @@ const cards: Card[] = [
   {
     id: 'jma-duktig',
     title: 'Duktig',
+    subtitle: 'Vem presterar man egentligen för -- sig själv eller andra?',
     categoryId: 'jma-nar-vi-jamfor-oss',
     sections: [
       {
@@ -175,6 +180,7 @@ const cards: Card[] = [
   {
     id: 'jma-tavla',
     title: 'Tävla',
+    subtitle: 'Viljan att vinna -- och vad som händer när det inte går',
     categoryId: 'jma-nar-vi-jamfor-oss',
     sections: [
       {
@@ -203,6 +209,7 @@ const cards: Card[] = [
   {
     id: 'jma-utseende',
     title: 'Utseende',
+    subtitle: 'Hur vi ser på oss själva och varandra -- och vad yttre egentligen säger',
     categoryId: 'jma-nar-vi-jamfor-oss',
     sections: [
       {
@@ -230,6 +237,7 @@ const cards: Card[] = [
   {
     id: 'jma-avund',
     title: 'Avund',
+    subtitle: 'Att längta efter det någon annan har -- och vad som ligger bakom det',
     categoryId: 'jma-nar-vi-jamfor-oss',
     sections: [
       {
@@ -258,6 +266,7 @@ const cards: Card[] = [
   {
     id: 'jma-konflikt',
     title: 'Konflikt',
+    subtitle: 'Bråk som en del av relationer -- och hur man tar sig igenom dem',
     categoryId: 'jma-nar-det-skaver',
     sections: [
       {
@@ -287,6 +296,7 @@ const cards: Card[] = [
   {
     id: 'jma-misslyckas',
     title: 'Misslyckas',
+    subtitle: 'Känslan av att ha gjort bort sig -- och vad man egentligen lär sig av det',
     categoryId: 'jma-nar-det-skaver',
     sections: [
       {
@@ -316,6 +326,7 @@ const cards: Card[] = [
   {
     id: 'jma-kritik',
     title: 'Kritik',
+    subtitle: 'Att ge och ta emot återkoppling -- utan att det blir ett personangrepp',
     categoryId: 'jma-nar-det-skaver',
     sections: [
       {
@@ -344,6 +355,7 @@ const cards: Card[] = [
   {
     id: 'jma-skam',
     title: 'Skam',
+    subtitle: 'Känslan av att ha gjort fel inför andra -- och vad som egentligen triggar den',
     categoryId: 'jma-nar-det-skaver',
     sections: [
       {
@@ -371,6 +383,7 @@ const cards: Card[] = [
   {
     id: 'jma-skuld',
     title: 'Skuld',
+    subtitle: 'Att ha orsakat något som gick snett -- och vad ett äkta förlåt innebär',
     categoryId: 'jma-nar-det-skaver',
     sections: [
       {
@@ -400,6 +413,7 @@ const cards: Card[] = [
   {
     id: 'jma-stopp',
     title: 'Stopp',
+    subtitle: 'Att sätta och respektera gränser -- för sig själv och för andra',
     categoryId: 'jma-att-sta-stadig',
     sections: [
       {
@@ -428,6 +442,7 @@ const cards: Card[] = [
   {
     id: 'jma-integritet',
     title: 'Integritet',
+    subtitle: 'Att stå för det man tror på -- även när det är svårt',
     categoryId: 'jma-att-sta-stadig',
     sections: [
       {
@@ -455,6 +470,7 @@ const cards: Card[] = [
   {
     id: 'jma-modig',
     title: 'Modig',
+    subtitle: 'Att göra något svårt -- och att ibland vara modig nog att låta bli',
     categoryId: 'jma-att-sta-stadig',
     sections: [
       {
@@ -484,6 +500,7 @@ const cards: Card[] = [
   {
     id: 'jma-respekt',
     title: 'Respekt',
+    subtitle: 'Att behandla andra väl -- även när man tänker och tror olika',
     categoryId: 'jma-vi-i-varlden',
     sections: [
       {
@@ -510,6 +527,7 @@ const cards: Card[] = [
   {
     id: 'jma-lika-varde',
     title: 'Lika värde',
+    subtitle: 'Att alla människors åsikter och röster räknas lika mycket',
     categoryId: 'jma-vi-i-varlden',
     sections: [
       {
@@ -538,6 +556,7 @@ const cards: Card[] = [
   {
     id: 'jma-sanning',
     title: 'Sanning',
+    subtitle: 'Ärlighet och dess gränser -- när är det rätt att inte säga allt?',
     categoryId: 'jma-vi-i-varlden',
     sections: [
       {
@@ -566,6 +585,7 @@ const cards: Card[] = [
   {
     id: 'jma-acceptans',
     title: 'Acceptans',
+    subtitle: 'Att lära sig leva med saker man inte kan förändra',
     categoryId: 'jma-vi-i-varlden',
     sections: [
       {
@@ -593,6 +613,7 @@ const cards: Card[] = [
   {
     id: 'jma-kluringen',
     title: 'Kluringen',
+    subtitle: 'Ett tankeexperiment om vem man egentligen är -- när man möter sig själv',
     categoryId: 'jma-vi-i-varlden',
     sections: [
       {
