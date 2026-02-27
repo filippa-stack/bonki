@@ -94,7 +94,7 @@ function Tile({ name, tagline, color, large, onClick }: TileProps) {
             fontSize: large ? '26px' : '19px',
             fontWeight: 700,
             lineHeight: 1.2,
-            color: 'hsla(0, 0%, 100%, 0.97)',
+            color: color,
             marginBottom: '6px',
             letterSpacing: '-0.01em',
           }}
@@ -106,7 +106,7 @@ function Tile({ name, tagline, color, large, onClick }: TileProps) {
           style={{
             fontSize: large ? '13px' : '11.5px',
             fontWeight: 400,
-            color: 'hsla(0, 0%, 100%, 0.6)',
+            color: color,
             lineHeight: 1.5,
             maxWidth: '20ch',
             margin: '0 auto',
