@@ -22,6 +22,7 @@ import Index from "./pages/Index";
 
 import Category from "./pages/Category";
 import CardView from "./pages/CardView";
+import ProductHome from "./pages/ProductHome";
 
 import SharedSummary from "./pages/SharedSummary";
 import Login from "./pages/Login";
@@ -71,6 +72,7 @@ function ProtectedRoutes() {
             <Route path="/categories" element={<Navigate to="/" replace />} />
             <Route path="/category/:categoryId" element={<PageTransition><Category /></PageTransition>} />
             <Route path="/card/:cardId" element={<PageTransition><CardView /></PageTransition>} />
+            <Route path="/product/:slug" element={<PageTransition><ProductHome /></PageTransition>} />
             <Route path="/saved" element={<Navigate to="/shared" replace />} />
             <Route path="/shared" element={<PageTransition><SharedSummary /></PageTransition>} />
             <Route path="*" element={<NotFound />} />
