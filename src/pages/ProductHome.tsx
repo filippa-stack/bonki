@@ -1,9 +1,41 @@
 import { useParams, useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowLeft } from 'lucide-react';
-import { getProductById } from '@/data/products';
 import { allProducts } from '@/data/products';
 import { useThemeSwitcher } from '@/hooks/useThemeSwitcher';
+
+/**
+ * Injects product-specific CSS variables onto :root so the entire
+ * design system (buttons, accents, text) adapts to each product.
+ */
+function useProductTheme(primary: string, accent: string) {
+  useEffect(() => {
+    const root = document.documentElement;
+    // Parse HSL: 'hsl(350, 28%, 58%)' → '350, 28%, 58%'
+    const parseHSL = (hsl: string) => hsl.replace(/hsl\(([^)]+)\)/, '$1').trim();
+    const p = parseHSL(primary);
+    const a = parseHSL(accent);
+
+    // Primary → CTA buttons, session header
+    root.style.setProperty('--cta-default', `hsl(${p})`);
+    root.style.setProperty('--cta-hover-v2', primary);
+    root.style.setProperty('--cta-active', primary);
+    root.style.setProperty('--cta-bg', primary);
+    root.style.setProperty('--session-header-bg', primary);
+
+    // Accent → saffron-equivalent tokens
+    root.style.setProperty('--accent-saffron', `hsl(${a})`);
+    root.style.setProperty('--accent-text', `hsl(${a})`);
+
+    return () => {
+      // Clean up on unmount — restore defaults
+      ['--cta-default', '--cta-hover-v2', '--cta-active', '--cta-bg',
+       '--session-header-bg', '--accent-saffron', '--accent-text',
+      ].forEach((v) => root.style.removeProperty(v));
+    };
+  }, [primary, accent]);
+}
 
 export default function ProductHome() {
   const { slug } = useParams<{ slug: string }>();
@@ -11,6 +43,12 @@ export default function ProductHome() {
   useThemeSwitcher();
 
   const product = allProducts.find((p) => p.slug === slug);
+
+  // Always call hooks — use fallback values if product not found
+  useProductTheme(
+    product?.accentColor ?? 'hsl(158, 35%, 18%)',
+    product?.secondaryAccent ?? 'hsl(38, 88%, 46%)',
+  );
 
   if (!product) {
     return (
@@ -52,7 +90,7 @@ export default function ProductHome() {
           className="rounded-2xl px-6 py-8 text-center"
           style={{
             background: `linear-gradient(155deg, ${product.accentColor} 0%, ${product.accentColor}dd 100%)`,
-            boxShadow: `0 4px 12px -2px hsla(0,0%,0%,0.12), 0 12px 32px -4px hsla(0,0%,0%,0.14), 0 28px 72px -8px hsla(0,0%,0%,0.10)`,
+            boxShadow: `0 1px 2px 0 hsla(0,0%,0%,0.06), 0 4px 12px -2px hsla(0,0%,0%,0.12), 0 12px 32px -4px hsla(0,0%,0%,0.14), 0 28px 72px -8px hsla(0,0%,0%,0.10)`,
           }}
         >
           <h1
@@ -113,8 +151,8 @@ export default function ProductHome() {
                   fontWeight: 600,
                   letterSpacing: '0.08em',
                   textTransform: 'uppercase',
-                  color: product.accentColor,
-                  opacity: 0.7,
+                  color: 'var(--accent-text)',
+                  opacity: 0.8,
                   marginBottom: '4px',
                 }}
               >
@@ -148,7 +186,7 @@ export default function ProductHome() {
       >
         <p
           className="font-serif"
-          style={{ fontStyle: 'italic', fontSize: '14px', color: product.accentColor, opacity: 0.3 }}
+          style={{ fontStyle: 'italic', fontSize: '14px', color: 'var(--accent-text)', opacity: 0.4 }}
         >
           {product.tagline}
         </p>

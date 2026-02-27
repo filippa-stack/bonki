@@ -643,7 +643,7 @@ export const jagMedAndraProduct: ProductManifest = {
   headerTitle: 'Tillsammans',
   accentColor: 'hsl(145, 18%, 48%)',
   accentColorMuted: 'hsl(145, 14%, 90%)',
-  secondaryAccent: 'hsl(18, 45%, 55%)',
+  secondaryAccent: 'hsl(18, 55%, 50%)',
   categories,
   cards,
 };

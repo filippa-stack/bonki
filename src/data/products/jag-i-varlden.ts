@@ -95,7 +95,7 @@ export const jagIVarldenProduct: ProductManifest = {
   headerTitle: 'Jag i sammanhang',
   accentColor: 'hsl(195, 40%, 22%)',
   accentColorMuted: 'hsl(195, 25%, 90%)',
-  secondaryAccent: 'hsl(38, 50%, 60%)',
+  secondaryAccent: 'hsl(35, 72%, 48%)',
   categories,
   cards,
 };

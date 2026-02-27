@@ -156,7 +156,7 @@ export const vardagskortProduct: ProductManifest = {
   headerTitle: 'Vårt vardagsliv',
   accentColor: 'hsl(28, 55%, 60%)',
   accentColorMuted: 'hsl(28, 35%, 90%)',
-  secondaryAccent: 'hsl(265, 20%, 60%)',
+  secondaryAccent: 'hsl(260, 28%, 52%)',
   categories,
   cards,
 };
