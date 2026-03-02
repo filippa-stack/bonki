@@ -996,14 +996,16 @@ export default function CardView() {
                   objectFit: 'contain',
                 }}
               />
-              {/* Fade-to-background at bottom of illustration */}
+              {/* Soft oval shadow-mat under illustration */}
               <div style={{
                 position: 'absolute',
-                bottom: 0,
-                left: 0,
-                right: 0,
-                height: '40%',
-                background: 'linear-gradient(to bottom, transparent 0%, var(--surface-base) 100%)',
+                bottom: '-12px',
+                left: '10%',
+                right: '10%',
+                height: '48px',
+                borderRadius: '50%',
+                background: 'radial-gradient(ellipse at center, hsla(30, 15%, 25%, 0.08) 0%, transparent 70%)',
+                filter: 'blur(8px)',
                 pointerEvents: 'none',
               }} />
             </motion.div>
@@ -1080,8 +1082,8 @@ export default function CardView() {
               textTransform: 'uppercase',
               color: 'var(--text-tertiary)',
               textAlign: 'center',
-              marginBottom: '20px',
-              marginTop: '-8px',
+              marginBottom: '24px',
+              marginTop: '4px',
             }}
           >
             {card.title}
@@ -1113,7 +1115,7 @@ export default function CardView() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: BEAT_3, duration: EMOTION, ease: [...EASE] }}
-            style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '3px', marginBottom: '28px' }}
+            style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '3px', marginBottom: '44px' }}
           >
             <p style={{ fontFamily: 'var(--font-sans)', fontSize: '12px', color: 'var(--text-tertiary)', opacity: 0.55, textAlign: 'center' }}>
               {uiText.talkTogether}
@@ -1212,10 +1214,10 @@ export default function CardView() {
             transition={{ delay: 0.40, duration: EMOTION, ease: [...EASE] }}
             style={{
               fontSize: '13px',
-              color: 'var(--accent-text)',
+              color: 'var(--text-tertiary)',
               textAlign: 'center',
               marginTop: '16px',
-              opacity: 0.50,
+              opacity: 0.35,
             }}
           >
             {uiText.safetyNote}
