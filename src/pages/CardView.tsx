@@ -937,7 +937,7 @@ export default function CardView() {
   if (shouldShowStartScreen) {
     return (
       <motion.div
-        className="min-h-screen flex flex-col items-center px-6 pb-10"
+        className="min-h-screen flex flex-col"
         style={{
           backgroundColor: 'var(--surface-base)',
           position: 'relative',
@@ -974,212 +974,253 @@ export default function CardView() {
           ← Tillbaka
         </motion.button>
 
-        {/* Topic title — always visible */}
-        <motion.h1
-          className="font-serif"
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: BEAT_1, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-          style={{
-            position: 'relative', zIndex: 2,
-            fontSize: 'clamp(26px, 7vw, 34px)',
-            fontWeight: 700,
-            color: 'var(--text-primary)',
-            textAlign: 'center',
-            lineHeight: 1.15,
-            letterSpacing: '-0.01em',
-            marginTop: '72px',
-            marginBottom: cardImageUrl ? '24px' : '40px',
-          }}
-        >
-          {card.title}
-        </motion.h1>
+        {/* ── Hero zone: illustration takes center stage ── */}
+        <div style={{ flex: '1 1 auto', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: cardImageUrl ? '52vh' : '40vh', paddingTop: '56px' }}>
+          {cardImageUrl ? (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 1.0, ease: [0.22, 1, 0.36, 1] }}
+              style={{
+                position: 'relative',
+                width: '80vw',
+                maxWidth: '320px',
+              }}
+            >
+              <img
+                src={cardImageUrl}
+                alt={card.title}
+                style={{
+                  width: '100%',
+                  height: 'auto',
+                  objectFit: 'contain',
+                }}
+              />
+              {/* Fade-to-background at bottom of illustration */}
+              <div style={{
+                position: 'absolute',
+                bottom: 0,
+                left: 0,
+                right: 0,
+                height: '40%',
+                background: 'linear-gradient(to bottom, transparent 0%, var(--surface-base) 100%)',
+                pointerEvents: 'none',
+              }} />
+            </motion.div>
+          ) : (
+            <>
+              {/* Category label — only without image */}
+              <motion.span
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: BEAT_1, duration: EMOTION, ease: [...EASE] }}
+                style={{
+                  fontFamily: 'var(--font-sans)',
+                  fontSize: '10px',
+                  letterSpacing: '0.12em',
+                  textTransform: 'uppercase',
+                  color: 'var(--text-tertiary)',
+                  opacity: 0.45,
+                  marginBottom: '10px',
+                }}
+              >
+                {category?.title}
+              </motion.span>
 
-        {/* Card illustration — contained image, not background */}
+              {/* Large title — no-image variant */}
+              <motion.h1
+                className="font-serif"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: BEAT_1, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+                style={{
+                  fontSize: 'clamp(26px, 7vw, 34px)',
+                  fontWeight: 700,
+                  color: 'var(--text-primary)',
+                  textAlign: 'center',
+                  lineHeight: 1.15,
+                  letterSpacing: '-0.01em',
+                }}
+              >
+                {card.title}
+              </motion.h1>
+
+              {/* Decorative dots */}
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: BEAT_2, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                style={{
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  gap: '6px', marginTop: '36px',
+                }}
+              >
+                {[0, 1].map(i => (
+                  <span key={i} style={{
+                    width: '4px', height: '4px', borderRadius: '50%',
+                    backgroundColor: 'var(--accent-saffron)', opacity: 0.35,
+                  }} />
+                ))}
+              </motion.div>
+            </>
+          )}
+        </div>
+
+        {/* ── Caption title — with image variant (uppercase, small) ── */}
         {cardImageUrl && (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.97 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+          <motion.p
+            initial={{ opacity: 0, y: 6 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: BEAT_1, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
             style={{
-              position: 'relative', zIndex: 2,
-              width: '70vw',
-              maxWidth: '280px',
-              marginBottom: '32px',
+              fontFamily: 'var(--font-sans)',
+              fontSize: '11px',
+              fontWeight: 600,
+              letterSpacing: '0.14em',
+              textTransform: 'uppercase',
+              color: 'var(--text-tertiary)',
+              textAlign: 'center',
+              marginBottom: '20px',
+              marginTop: '-8px',
             }}
           >
-            <img
-              src={cardImageUrl}
-              alt={card.title}
-              style={{
-                width: '100%',
-                height: 'auto',
-                objectFit: 'contain',
-              }}
-            />
-          </motion.div>
+            {card.title}
+          </motion.p>
         )}
 
-        {/* Decorative dot divider */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: BEAT_2, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-          style={{
-            position: 'relative', zIndex: 2,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: '6px',
-            margin: '0 auto 36px',
-          }}
-        >
-          {[0, 1].map(i => (
-            <span key={i} style={{
-              width: '4px',
-              height: '4px',
-              borderRadius: '50%',
-              backgroundColor: 'var(--accent-saffron)',
-              opacity: 0.35,
-            }} />
-          ))}
-        </motion.div>
-
-        {/* Instructions */}
-        <motion.div
-          initial={{ opacity: 0, y: 6 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: BEAT_2, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-          style={{ textAlign: 'center', marginBottom: '8px', position: 'relative', zIndex: 2 }}
-        >
-          <p
+        {/* ── Bottom zone: instructions + CTA ── */}
+        <div style={{ flex: '0 0 auto', display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '0 24px', paddingBottom: 'calc(24px + env(safe-area-inset-bottom, 0px))' }}>
+          {/* Instructions */}
+          <motion.p
             className="font-serif italic"
+            initial={{ opacity: 0, y: 6 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: BEAT_2, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
             style={{
               fontSize: '19px',
               color: 'var(--text-primary)',
               opacity: 0.75,
               textAlign: 'center',
               lineHeight: 1.5,
+              marginBottom: '6px',
             }}
           >
             {uiText.readAloud}
-          </p>
-        </motion.div>
+          </motion.p>
 
-        {/* Mechanics */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: BEAT_3, duration: EMOTION, ease: [...EASE] }}
-          style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '3px', marginBottom: '32px', position: 'relative', zIndex: 2 }}
-        >
-          <p style={{ fontFamily: 'var(--font-sans)', fontSize: '12px', color: 'var(--text-tertiary)', opacity: 0.55, textAlign: 'center' }}>
-            {uiText.talkTogether}
-          </p>
-          <p style={{ fontFamily: 'var(--font-sans)', fontSize: '12px', color: 'var(--text-tertiary)', opacity: 0.55, textAlign: 'center' }}>
-            {uiText.notekeeper}
-          </p>
-        </motion.div>
-
-        {/* Orphan/stale session banner */}
-        {staleSession && (
+          {/* Mechanics */}
           <motion.div
-            initial={{ opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: EMOTION, ease: [...EASE] }}
-            style={{
-              position: 'relative', zIndex: 2,
-              width: '100%',
-              maxWidth: '360px',
-              background: 'var(--surface-sunken)',
-              borderBottom: '1px solid hsl(var(--neutral-300))',
-              borderRadius: '10px',
-              padding: '16px 20px',
-              marginBottom: '20px',
-              textAlign: 'center',
-              boxShadow: '0 1px 2px hsla(30, 15%, 25%, 0.04), 0 4px 16px -4px hsla(30, 18%, 28%, 0.06)',
-            }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: BEAT_3, duration: EMOTION, ease: [...EASE] }}
+            style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '3px', marginBottom: '28px' }}
           >
-            <p style={{
-              fontFamily: 'var(--font-sans)',
-              fontSize: '13px',
-              color: 'var(--text-primary)',
-              marginBottom: '12px',
-              lineHeight: 1.5,
-            }}>
-              {uiText.stalePrompt}
+            <p style={{ fontFamily: 'var(--font-sans)', fontSize: '12px', color: 'var(--text-tertiary)', opacity: 0.55, textAlign: 'center' }}>
+              {uiText.talkTogether}
             </p>
-            <div style={{ display: 'flex', gap: '8px', justifyContent: 'center' }}>
-              <button
-                onClick={() => { setStaleSession(false); setShowStartScreen(false); }}
-                style={{
-                  fontFamily: 'var(--font-sans)',
-                  fontSize: '13px',
-                  padding: '8px 16px',
-                  background: 'none',
-                  border: '1px solid hsl(var(--neutral-300))',
-                  borderRadius: '8px',
-                  cursor: 'pointer',
-                  color: 'var(--text-primary)',
-                }}
-              >
-                Fortsätt
-              </button>
-              <button
-                onClick={handleAbandonAndRestart}
-                style={{
-                  fontFamily: 'var(--font-sans)',
-                  fontSize: '13px',
-                  padding: '8px 16px',
-                  background: 'var(--text-primary)',
-                  color: 'var(--surface-base)',
-                  border: 'none',
-                  borderRadius: '8px',
-                  cursor: 'pointer',
-                }}
-              >
-                Börja om
-              </button>
-            </div>
+            <p style={{ fontFamily: 'var(--font-sans)', fontSize: '12px', color: 'var(--text-tertiary)', opacity: 0.55, textAlign: 'center' }}>
+              {uiText.notekeeper}
+            </p>
           </motion.div>
-        )}
 
-        {/* Start button */}
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.25, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-          style={{ position: 'relative', zIndex: 2, marginBottom: '4px', width: '100%', display: 'flex', justifyContent: 'center' }}
-        >
-          <button
-            onClick={() => setShowStartScreen(false)}
-            className="cta-primary"
+          {/* Orphan/stale session banner */}
+          {staleSession && (
+            <motion.div
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: EMOTION, ease: [...EASE] }}
+              style={{
+                width: '100%',
+                maxWidth: '360px',
+                background: 'var(--surface-sunken)',
+                borderBottom: '1px solid hsl(var(--neutral-300))',
+                borderRadius: '10px',
+                padding: '16px 20px',
+                marginBottom: '20px',
+                textAlign: 'center',
+                boxShadow: '0 1px 2px hsla(30, 15%, 25%, 0.04), 0 4px 16px -4px hsla(30, 18%, 28%, 0.06)',
+              }}
+            >
+              <p style={{
+                fontFamily: 'var(--font-sans)',
+                fontSize: '13px',
+                color: 'var(--text-primary)',
+                marginBottom: '12px',
+                lineHeight: 1.5,
+              }}>
+                {uiText.stalePrompt}
+              </p>
+              <div style={{ display: 'flex', gap: '8px', justifyContent: 'center' }}>
+                <button
+                  onClick={() => { setStaleSession(false); setShowStartScreen(false); }}
+                  style={{
+                    fontFamily: 'var(--font-sans)',
+                    fontSize: '13px',
+                    padding: '8px 16px',
+                    background: 'none',
+                    border: '1px solid hsl(var(--neutral-300))',
+                    borderRadius: '8px',
+                    cursor: 'pointer',
+                    color: 'var(--text-primary)',
+                  }}
+                >
+                  Fortsätt
+                </button>
+                <button
+                  onClick={handleAbandonAndRestart}
+                  style={{
+                    fontFamily: 'var(--font-sans)',
+                    fontSize: '13px',
+                    padding: '8px 16px',
+                    background: 'var(--text-primary)',
+                    color: 'var(--surface-base)',
+                    border: 'none',
+                    borderRadius: '8px',
+                    cursor: 'pointer',
+                  }}
+                >
+                  Börja om
+                </button>
+              </div>
+            </motion.div>
+          )}
+
+          {/* Start button */}
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.25, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+            style={{ marginBottom: '4px', width: '100%', display: 'flex', justifyContent: 'center' }}
+          >
+            <button
+              onClick={() => setShowStartScreen(false)}
+              className="cta-primary"
+              style={{
+                width: '72vw',
+                maxWidth: '320px',
+              }}
+            >
+              {uiText.readyButton}
+            </button>
+          </motion.div>
+
+          {/* Sub-text */}
+          <motion.p
+            className="font-serif italic"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.40, duration: EMOTION, ease: [...EASE] }}
             style={{
-              width: '72vw',
-              maxWidth: '320px',
+              fontSize: '13px',
+              color: 'var(--accent-text)',
+              textAlign: 'center',
+              marginTop: '16px',
+              opacity: 0.50,
             }}
           >
-            {uiText.readyButton}
-          </button>
-        </motion.div>
-
-        {/* Sub-text */}
-        <motion.p
-          className="font-serif italic"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.40, duration: EMOTION, ease: [...EASE] }}
-          style={{
-            position: 'relative', zIndex: 2,
-            fontSize: '13px',
-            color: 'var(--accent-text)',
-            textAlign: 'center',
-            marginTop: '16px',
-            opacity: 0.50,
-          }}
-        >
-          {uiText.safetyNote}
-        </motion.p>
+            {uiText.safetyNote}
+          </motion.p>
+        </div>
       </motion.div>
     );
   }
