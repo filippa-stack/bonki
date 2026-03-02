@@ -1373,8 +1373,8 @@ export default function CardView() {
                       color: 'var(--text-tertiary)',
                       opacity: 0.4,
                       textAlign: 'center',
-                      marginTop: effectiveSteps.length === 1 ? '28px' : '0',
-                      marginBottom: '-4px',
+                      marginTop: '40px',
+                      marginBottom: '0px',
                     }}
                   >
                     {localPromptIndex + 1} av {totalPrompts}
