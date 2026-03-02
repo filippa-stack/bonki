@@ -123,11 +123,13 @@ function PastelTile({ name, bg, ageLabel, onClick }: { name: string; bg: string;
       <h3
         className="font-serif"
         style={{
-          fontSize: '24px',
+          fontSize: '18px',
           fontWeight: 700,
-          lineHeight: 1.2,
+          lineHeight: 1.25,
           color: 'var(--text-primary)',
           letterSpacing: '-0.01em',
+          wordBreak: 'break-word',
+          hyphens: 'auto',
         }}
       >
         {name}
