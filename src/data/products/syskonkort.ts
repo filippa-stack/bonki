@@ -332,7 +332,7 @@ const cards: Card[] = [
 
 export const syskonkortProduct: ProductManifest = {
   id: 'syskonkort',
-  name: 'Syskonkort',
+  name: 'Syskon',
   slug: 'syskonkort',
   tagline: 'Om bandet som både skaver och håller.',
   description: 'Utforska syskonbandet och allt det innebär',
