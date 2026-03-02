@@ -2,149 +2,157 @@ import { useState, useEffect, useRef } from 'react';
 import JSZip from 'jszip';
 
 /**
- * Maps card IDs → filenames inside the zip.
- * Folder structure: ProductFolder/FILENAME_front.jpeg
+ * Which zip file a card image lives in.
+ * 'default' = /card-images.zip, 'jim' = /jim-illustrations.zip
  */
-const CARD_IMAGE_MAP: Record<string, { folder: string; file: string }> = {
-  // ── Jag i Mig ──
-  'jim-trygg':      { folder: 'Jag_i_Mig', file: 'TRYGG_front.jpeg' },
-  'jim-ensam':      { folder: 'Jag_i_Mig', file: 'ENSAM_front.jpeg' },
-  'jim-stress':     { folder: 'Jag_i_Mig', file: 'STRESS_front.jpeg' },
-  'jim-glad':       { folder: 'Jag_i_Mig', file: 'GLAD_front.jpeg' },
-  'jim-ledsen':     { folder: 'Jag_i_Mig', file: 'LEDSEN_front.jpeg' },
-  'jim-arg':        { folder: 'Jag_i_Mig', file: 'ARG_front.jpeg' },
-  'jim-radd':       { folder: 'Jag_i_Mig', file: 'RÄDD_front.jpeg' },
-  'jim-vild':       { folder: 'Jag_i_Mig', file: 'VILD_front.jpeg' },
-  'jim-besviken':   { folder: 'Jag_i_Mig', file: 'BESVIKEN_front.jpeg' },
-  'jim-acklad':     { folder: 'Jag_i_Mig', file: 'ÄCKLAD_front.jpeg' },
-  'jim-avsky':      { folder: 'Jag_i_Mig', file: 'AVSKY_front.jpeg' },
-  'jim-skam':       { folder: 'Jag_i_Mig', file: 'SKAM_front.jpeg' },
-  'jim-avundsjuk':  { folder: 'Jag_i_Mig', file: 'AVUNDSJUK_front.jpeg' },
-  'jim-svartsjuk':  { folder: 'Jag_i_Mig', file: 'SVARTSJUK_front.jpeg' },
-  'jim-utanfor':    { folder: 'Jag_i_Mig', file: 'UTANFÖR_front.jpeg' },
-  'jim-stolt':      { folder: 'Jag_i_Mig', file: 'STOLT_front.jpeg' },
-  'jim-bestamd':    { folder: 'Jag_i_Mig', file: 'BESTÄMD_front.jpeg' },
-  'jim-karlek':     { folder: 'Jag_i_Mig', file: 'KÄRLEK_front.jpeg' },
-  'jim-nyfiken':    { folder: 'Jag_i_Mig', file: 'NYFIKEN_front.jpeg' },
-  'jim-forvanad':   { folder: 'Jag_i_Mig', file: 'FÖRVÅNAD_front.jpeg' },
-  'jim-jag':        { folder: 'Jag_i_Mig', file: 'JAG_front.jpeg' },
+type ZipSource = 'default' | 'jim';
+
+/**
+ * Maps card IDs → zip source + path inside that zip.
+ */
+const CARD_IMAGE_MAP: Record<string, { zip: ZipSource; folder: string; file: string }> = {
+  // ── Jag i Mig (new illustrations) ──
+  'jim-trygg':      { zip: 'jim', folder: 'Känslokort1-illustrationer.png', file: 'trygg copy.png' },
+  'jim-ensam':      { zip: 'jim', folder: 'Känslokort1-illustrationer.png', file: 'ensamhet.png' },
+  'jim-stress':     { zip: 'jim', folder: 'Känslokort1-illustrationer.png', file: 'stress copy.png' },
+  'jim-glad':       { zip: 'jim', folder: 'Känslokort1-illustrationer.png', file: 'GLÄDJE copy.png' },
+  'jim-ledsen':     { zip: 'jim', folder: 'Känslokort1-illustrationer.png', file: 'ledsamhet copy.png' },
+  'jim-arg':        { zip: 'jim', folder: 'Känslokort1-illustrationer.png', file: 'monster copy.png' },
+  'jim-radd':       { zip: 'jim', folder: 'Känslokort1-illustrationer.png', file: 'rädsla copy.png' },
+  'jim-vild':       { zip: 'jim', folder: 'Känslokort1-illustrationer.png', file: 'vild copy.png' },
+  'jim-besviken':   { zip: 'jim', folder: 'Känslokort1-illustrationer.png', file: 'besviken.png' },
+  'jim-acklad':     { zip: 'jim', folder: 'Känslokort1-illustrationer.png', file: 'avsmak.png' },
+  'jim-avsky':      { zip: 'jim', folder: 'Känslokort1-illustrationer.png', file: 'avsky.png' },
+  'jim-skam':       { zip: 'jim', folder: 'Känslokort1-illustrationer.png', file: 'skam2 copy.png' },
+  'jim-avundsjuk':  { zip: 'jim', folder: 'Känslokort1-illustrationer.png', file: 'avundsjuka-3 copy.png' },
+  'jim-svartsjuk':  { zip: 'jim', folder: 'Känslokort1-illustrationer.png', file: 'svartsjuka copy.png' },
+  'jim-utanfor':    { zip: 'jim', folder: 'Känslokort1-illustrationer.png', file: 'utanförskap.png' },
+  'jim-stolt':      { zip: 'jim', folder: 'Känslokort1-illustrationer.png', file: 'stolthet copy.png' },
+  'jim-bestamd':    { zip: 'jim', folder: 'Känslokort1-illustrationer.png', file: 'bestämd copy.png' },
+  'jim-karlek':     { zip: 'jim', folder: 'Känslokort1-illustrationer.png', file: 'kär copy.png' },
+  'jim-nyfiken':    { zip: 'jim', folder: 'Känslokort1-illustrationer.png', file: 'nyfiken.png' },
+  'jim-forvanad':   { zip: 'jim', folder: 'Känslokort1-illustrationer.png', file: 'förvånad.png' },
+  'jim-jag':        { zip: 'jim', folder: 'Känslokort1-illustrationer.png', file: 'jag copy.png' },
 
   // ── Jag med Andra (Kanslokort folder) ──
-  'jma-vanskap':    { folder: 'Kanslokort', file: 'VÄNSKAP_front.jpeg' },
-  'jma-kontakt':    { folder: 'Kanslokort', file: 'KONTAKT_front.jpeg' },
-  'jma-annorlunda': { folder: 'Kanslokort', file: 'ANNORLUNDA_front.jpeg' },
-  'jma-utanfor':    { folder: 'Kanslokort', file: 'UTANFÖR_front.jpeg' },
-  'jma-duktig':     { folder: 'Kanslokort', file: 'DUKTIG_front.jpeg' },
-  'jma-tavla':      { folder: 'Kanslokort', file: 'TÄVLA_front.jpeg' },
-  'jma-utseende':   { folder: 'Kanslokort', file: 'UTSEENDE_front.jpeg' },
-  'jma-avund':      { folder: 'Kanslokort', file: 'AVUND_front.jpeg' },
-  'jma-konflikt':   { folder: 'Kanslokort', file: 'KONFLIKT_front.jpeg' },
-  'jma-misslyckas': { folder: 'Kanslokort', file: 'MISSLYCKAS_front.jpeg' },
-  'jma-kritik':     { folder: 'Kanslokort', file: 'KRITIK_front.jpeg' },
-  'jma-skam':       { folder: 'Kanslokort', file: 'SKAM_front.jpeg' },
-  'jma-skuld':      { folder: 'Kanslokort', file: 'SKULD_front.jpeg' },
-  'jma-stopp':      { folder: 'Kanslokort', file: 'STOPP_front.jpeg' },
-  'jma-integritet': { folder: 'Kanslokort', file: 'INTEGRITET_front.jpeg' },
-  'jma-modig':      { folder: 'Kanslokort', file: 'MODIG_front.jpeg' },
-  'jma-respekt':    { folder: 'Kanslokort', file: 'RESPEKT_front.jpeg' },
-  'jma-sanning':    { folder: 'Kanslokort', file: 'SANNING_front.jpeg' },
-  'jma-lika-varde': { folder: 'Kanslokort', file: 'LIKA_VÄRDE_front.jpeg' },
-  'jma-acceptans':  { folder: 'Kanslokort', file: 'ACCEPTANS_front.jpeg' },
-  'jma-kluringen':  { folder: 'Kanslokort', file: 'KLURINGEN_front.jpeg' },
+  'jma-vanskap':    { zip: 'default', folder: 'Kanslokort', file: 'VÄNSKAP_front.jpeg' },
+  'jma-kontakt':    { zip: 'default', folder: 'Kanslokort', file: 'KONTAKT_front.jpeg' },
+  'jma-annorlunda': { zip: 'default', folder: 'Kanslokort', file: 'ANNORLUNDA_front.jpeg' },
+  'jma-utanfor':    { zip: 'default', folder: 'Kanslokort', file: 'UTANFÖR_front.jpeg' },
+  'jma-duktig':     { zip: 'default', folder: 'Kanslokort', file: 'DUKTIG_front.jpeg' },
+  'jma-tavla':      { zip: 'default', folder: 'Kanslokort', file: 'TÄVLA_front.jpeg' },
+  'jma-utseende':   { zip: 'default', folder: 'Kanslokort', file: 'UTSEENDE_front.jpeg' },
+  'jma-avund':      { zip: 'default', folder: 'Kanslokort', file: 'AVUND_front.jpeg' },
+  'jma-konflikt':   { zip: 'default', folder: 'Kanslokort', file: 'KONFLIKT_front.jpeg' },
+  'jma-misslyckas': { zip: 'default', folder: 'Kanslokort', file: 'MISSLYCKAS_front.jpeg' },
+  'jma-kritik':     { zip: 'default', folder: 'Kanslokort', file: 'KRITIK_front.jpeg' },
+  'jma-skam':       { zip: 'default', folder: 'Kanslokort', file: 'SKAM_front.jpeg' },
+  'jma-skuld':      { zip: 'default', folder: 'Kanslokort', file: 'SKULD_front.jpeg' },
+  'jma-stopp':      { zip: 'default', folder: 'Kanslokort', file: 'STOPP_front.jpeg' },
+  'jma-integritet': { zip: 'default', folder: 'Kanslokort', file: 'INTEGRITET_front.jpeg' },
+  'jma-modig':      { zip: 'default', folder: 'Kanslokort', file: 'MODIG_front.jpeg' },
+  'jma-respekt':    { zip: 'default', folder: 'Kanslokort', file: 'RESPEKT_front.jpeg' },
+  'jma-sanning':    { zip: 'default', folder: 'Kanslokort', file: 'SANNING_front.jpeg' },
+  'jma-lika-varde': { zip: 'default', folder: 'Kanslokort', file: 'LIKA_VÄRDE_front.jpeg' },
+  'jma-acceptans':  { zip: 'default', folder: 'Kanslokort', file: 'ACCEPTANS_front.jpeg' },
+  'jma-kluringen':  { zip: 'default', folder: 'Kanslokort', file: 'KLURINGEN_front.jpeg' },
 
   // ── Jag i Världen ──
-  'jiv-halsa':        { folder: 'Jag_i_Varlden', file: 'HÄLSA_front.jpeg' },
-  'jiv-prestation':   { folder: 'Jag_i_Varlden', file: 'PRESTATION_front.jpeg' },
-  'jiv-bekraftelse':  { folder: 'Jag_i_Varlden', file: 'BEKRÄFTELSE_front.jpeg' },
-  'jiv-sjalvkansla':  { folder: 'Jag_i_Varlden', file: 'SJÄLVKÄNSLA_front.jpeg' },
-  'jiv-identitet':    { folder: 'Jag_i_Varlden', file: 'IDENTITET_front.jpeg' },
-  'jiv-roller':       { folder: 'Jag_i_Varlden', file: 'ROLLER_front.jpeg' },
-  'jiv-frihet':       { folder: 'Jag_i_Varlden', file: 'FRIHET_front.jpeg' },
-  'jiv-karlek':       { folder: 'Jag_i_Varlden', file: 'KÄRLEK_front.jpeg' },
-  'jiv-vanskap':      { folder: 'Jag_i_Varlden', file: 'VÄNSKAP_front.jpeg' },
-  'jiv-kommunikation':{ folder: 'Jag_i_Varlden', file: 'KOMMUNIKATION_front.jpeg' },
-  'jiv-konflikt':     { folder: 'Jag_i_Varlden', file: 'KONFLIKT_front.jpeg' },
-  'jiv-medkansla':    { folder: 'Jag_i_Varlden', file: 'MEDKÄNSLA_front.jpeg' },
-  'jiv-mobbning':     { folder: 'Jag_i_Varlden', file: 'MOBBNING_front.jpeg' },
-  'jiv-fordomar':     { folder: 'Jag_i_Varlden', file: 'FÖRDOMAR_front.jpeg' },
-  'jiv-social-media': { folder: 'Jag_i_Varlden', file: 'SOCIAL_MEDIA_front.jpeg' },
-  'jiv-psykisk-ohalsa':{ folder: 'Jag_i_Varlden', file: 'PSYKISK_OHÄLSA_front.jpeg' },
-  'jiv-sexualitet':   { folder: 'Jag_i_Varlden', file: 'SEXUALITET_front.jpeg' },
-  'jiv-moral-etik':   { folder: 'Jag_i_Varlden', file: 'MORAL_og_ETIK_front.jpeg' },
-  'jiv-aktivism':     { folder: 'Jag_i_Varlden', file: 'AKTIVISM_front.jpeg' },
-  'jiv-existens':     { folder: 'Jag_i_Varlden', file: 'EXISTENS_front.jpeg' },
+  'jiv-halsa':        { zip: 'default', folder: 'Jag_i_Varlden', file: 'HÄLSA_front.jpeg' },
+  'jiv-prestation':   { zip: 'default', folder: 'Jag_i_Varlden', file: 'PRESTATION_front.jpeg' },
+  'jiv-bekraftelse':  { zip: 'default', folder: 'Jag_i_Varlden', file: 'BEKRÄFTELSE_front.jpeg' },
+  'jiv-sjalvkansla':  { zip: 'default', folder: 'Jag_i_Varlden', file: 'SJÄLVKÄNSLA_front.jpeg' },
+  'jiv-identitet':    { zip: 'default', folder: 'Jag_i_Varlden', file: 'IDENTITET_front.jpeg' },
+  'jiv-roller':       { zip: 'default', folder: 'Jag_i_Varlden', file: 'ROLLER_front.jpeg' },
+  'jiv-frihet':       { zip: 'default', folder: 'Jag_i_Varlden', file: 'FRIHET_front.jpeg' },
+  'jiv-karlek':       { zip: 'default', folder: 'Jag_i_Varlden', file: 'KÄRLEK_front.jpeg' },
+  'jiv-vanskap':      { zip: 'default', folder: 'Jag_i_Varlden', file: 'VÄNSKAP_front.jpeg' },
+  'jiv-kommunikation':{ zip: 'default', folder: 'Jag_i_Varlden', file: 'KOMMUNIKATION_front.jpeg' },
+  'jiv-konflikt':     { zip: 'default', folder: 'Jag_i_Varlden', file: 'KONFLIKT_front.jpeg' },
+  'jiv-medkansla':    { zip: 'default', folder: 'Jag_i_Varlden', file: 'MEDKÄNSLA_front.jpeg' },
+  'jiv-mobbning':     { zip: 'default', folder: 'Jag_i_Varlden', file: 'MOBBNING_front.jpeg' },
+  'jiv-fordomar':     { zip: 'default', folder: 'Jag_i_Varlden', file: 'FÖRDOMAR_front.jpeg' },
+  'jiv-social-media': { zip: 'default', folder: 'Jag_i_Varlden', file: 'SOCIAL_MEDIA_front.jpeg' },
+  'jiv-psykisk-ohalsa':{ zip: 'default', folder: 'Jag_i_Varlden', file: 'PSYKISK_OHÄLSA_front.jpeg' },
+  'jiv-sexualitet':   { zip: 'default', folder: 'Jag_i_Varlden', file: 'SEXUALITET_front.jpeg' },
+  'jiv-moral-etik':   { zip: 'default', folder: 'Jag_i_Varlden', file: 'MORAL_og_ETIK_front.jpeg' },
+  'jiv-aktivism':     { zip: 'default', folder: 'Jag_i_Varlden', file: 'AKTIVISM_front.jpeg' },
+  'jiv-existens':     { zip: 'default', folder: 'Jag_i_Varlden', file: 'EXISTENS_front.jpeg' },
 
   // ── Vardagskort ──
-  'vk-morgon':         { folder: 'Vardagskort', file: 'MORGON_front.jpeg' },
-  'vk-rutiner':        { folder: 'Vardagskort', file: 'RUTINER_front.jpeg' },
-  'vk-skola':          { folder: 'Vardagskort', file: 'SKOLA_front.jpeg' },
-  'vk-hur-var-din-dag':{ folder: 'Vardagskort', file: 'HUR_VAR_DIN_DAG_front.jpeg' },
-  'vk-kvall':          { folder: 'Vardagskort', file: 'KVÄLL_front.jpeg' },
-  'vk-sova':           { folder: 'Vardagskort', file: 'SOVA_front.jpeg' },
-  'vk-helg':           { folder: 'Vardagskort', file: 'HELG_front.jpeg' },
-  'vk-mat':            { folder: 'Vardagskort', file: 'MAT_front.jpeg' },
-  'vk-hushall':        { folder: 'Vardagskort', file: 'HUSHÅLL_front.jpeg' },
-  'vk-syskon':         { folder: 'Vardagskort', file: 'SYSKON_front.jpeg' },
-  'vk-underhallning':  { folder: 'Vardagskort', file: 'UNDERHÅLLNING_front.jpeg' },
-  'vk-aktiviteter':    { folder: 'Vardagskort', file: 'AKTIVITETER_front.jpeg' },
-  'vk-tonar':          { folder: 'Vardagskort', file: 'TONÅR_front.jpeg' },
-  'vk-arbete':         { folder: 'Vardagskort', file: 'ARBETE_front.jpeg' },
-  'vk-kompisar':       { folder: 'Vardagskort', file: 'KOMPISAR_front.jpeg' },
+  'vk-morgon':         { zip: 'default', folder: 'Vardagskort', file: 'MORGON_front.jpeg' },
+  'vk-rutiner':        { zip: 'default', folder: 'Vardagskort', file: 'RUTINER_front.jpeg' },
+  'vk-skola':          { zip: 'default', folder: 'Vardagskort', file: 'SKOLA_front.jpeg' },
+  'vk-hur-var-din-dag':{ zip: 'default', folder: 'Vardagskort', file: 'HUR_VAR_DIN_DAG_front.jpeg' },
+  'vk-kvall':          { zip: 'default', folder: 'Vardagskort', file: 'KVÄLL_front.jpeg' },
+  'vk-sova':           { zip: 'default', folder: 'Vardagskort', file: 'SOVA_front.jpeg' },
+  'vk-helg':           { zip: 'default', folder: 'Vardagskort', file: 'HELG_front.jpeg' },
+  'vk-mat':            { zip: 'default', folder: 'Vardagskort', file: 'MAT_front.jpeg' },
+  'vk-hushall':        { zip: 'default', folder: 'Vardagskort', file: 'HUSHÅLL_front.jpeg' },
+  'vk-syskon':         { zip: 'default', folder: 'Vardagskort', file: 'SYSKON_front.jpeg' },
+  'vk-underhallning':  { zip: 'default', folder: 'Vardagskort', file: 'UNDERHÅLLNING_front.jpeg' },
+  'vk-aktiviteter':    { zip: 'default', folder: 'Vardagskort', file: 'AKTIVITETER_front.jpeg' },
+  'vk-tonar':          { zip: 'default', folder: 'Vardagskort', file: 'TONÅR_front.jpeg' },
+  'vk-arbete':         { zip: 'default', folder: 'Vardagskort', file: 'ARBETE_front.jpeg' },
+  'vk-kompisar':       { zip: 'default', folder: 'Vardagskort', file: 'KOMPISAR_front.jpeg' },
 
   // ── Sexualitetskort ──
-  'sex-konsidentitet':    { folder: 'Sexualitetskort', file: 'KÖNSIDENTITET_front.jpeg' },
-  'sex-sexuell-laggning': { folder: 'Sexualitetskort', file: 'SEXUELL_LÄGGNING_front.jpeg' },
-  'sex-onani':            { folder: 'Sexualitetskort', file: 'ONANI_front.jpeg' },
-  'sex-kroppsideal':      { folder: 'Sexualitetskort', file: 'KROPPSIDEAL_front.jpeg' },
-  'sex-normer':           { folder: 'Sexualitetskort', file: 'NORMER_front.jpeg' },
-  'sex-pornografi':       { folder: 'Sexualitetskort', file: 'PORNOGRAFI_front.jpeg' },
-  'sex-sexuella-tabun':   { folder: 'Sexualitetskort', file: 'SEXUELLA_TABUN_front.jpeg' },
-  'sex-sex-och-karlek':   { folder: 'Sexualitetskort', file: 'SEX_og_KÄRLEK_front.jpeg' },
-  'sex-samtycke':         { folder: 'Sexualitetskort', file: 'SAMTYCKE_front.jpeg' },
-  'sex-sex-och-ansvar':   { folder: 'Sexualitetskort', file: 'SEX_og_ANSVAR_front.jpeg' },
-  'sex-sexuella-misstag': { folder: 'Sexualitetskort', file: 'SEXUELLA_MISSTAG_front.jpeg' },
-  'sex-konsekvenser-av-sex':{ folder: 'Sexualitetskort', file: 'KONSEKVENSER_AV_SEX_front.jpeg' },
-  'sex-sexuella-overgrepp':{ folder: 'Sexualitetskort', file: 'SEXUELLA_ÖVERGREPP_front.jpeg' },
-  'sex-sex-som-hot':      { folder: 'Sexualitetskort', file: 'SEX_SOM_HOT_front.jpeg' },
+  'sex-konsidentitet':    { zip: 'default', folder: 'Sexualitetskort', file: 'KÖNSIDENTITET_front.jpeg' },
+  'sex-sexuell-laggning': { zip: 'default', folder: 'Sexualitetskort', file: 'SEXUELL_LÄGGNING_front.jpeg' },
+  'sex-onani':            { zip: 'default', folder: 'Sexualitetskort', file: 'ONANI_front.jpeg' },
+  'sex-kroppsideal':      { zip: 'default', folder: 'Sexualitetskort', file: 'KROPPSIDEAL_front.jpeg' },
+  'sex-normer':           { zip: 'default', folder: 'Sexualitetskort', file: 'NORMER_front.jpeg' },
+  'sex-pornografi':       { zip: 'default', folder: 'Sexualitetskort', file: 'PORNOGRAFI_front.jpeg' },
+  'sex-sexuella-tabun':   { zip: 'default', folder: 'Sexualitetskort', file: 'SEXUELLA_TABUN_front.jpeg' },
+  'sex-sex-och-karlek':   { zip: 'default', folder: 'Sexualitetskort', file: 'SEX_og_KÄRLEK_front.jpeg' },
+  'sex-samtycke':         { zip: 'default', folder: 'Sexualitetskort', file: 'SAMTYCKE_front.jpeg' },
+  'sex-sex-och-ansvar':   { zip: 'default', folder: 'Sexualitetskort', file: 'SEX_og_ANSVAR_front.jpeg' },
+  'sex-sexuella-misstag': { zip: 'default', folder: 'Sexualitetskort', file: 'SEXUELLA_MISSTAG_front.jpeg' },
+  'sex-konsekvenser-av-sex':{ zip: 'default', folder: 'Sexualitetskort', file: 'KONSEKVENSER_AV_SEX_front.jpeg' },
+  'sex-sexuella-overgrepp':{ zip: 'default', folder: 'Sexualitetskort', file: 'SEXUELLA_ÖVERGREPP_front.jpeg' },
+  'sex-sex-som-hot':      { zip: 'default', folder: 'Sexualitetskort', file: 'SEX_SOM_HOT_front.jpeg' },
 
   // ── Syskonkort ──
-  'sk-att-fa-ett-syskon':  { folder: 'Syskonkort', file: 'ATT_FÅ_ETT_SYSKON_front.jpeg' },
-  'sk-syskonminnen':       { folder: 'Syskonkort', file: 'SYSKONMINNEN_front.jpeg' },
-  'sk-syskonkunskap':      { folder: 'Syskonkort', file: 'SYSKONKUNSKAP_front.jpeg' },
-  'sk-vanskap':            { folder: 'Syskonkort', file: 'VÄNSKAP_front.jpeg' },
-  'sk-unik':               { folder: 'Syskonkort', file: 'UNIK_front.jpeg' },
-  'sk-aldst-mitten-yngst': { folder: 'Syskonkort', file: 'ÄLDST_MITTEN_front.jpeg' },
-  'sk-bonussyskon':        { folder: 'Syskonkort', file: 'BONUSSYSKON_front.jpeg' },
-  'sk-konflikt':           { folder: 'Syskonkort', file: 'KONFLIKT_front.jpeg' },
-  'sk-dela':               { folder: 'Syskonkort', file: 'DELA_front.jpeg' },
-  'sk-rattvisa':           { folder: 'Syskonkort', file: 'RÄTTVISA_front.jpeg' },
-  'sk-uppmarksamhet':      { folder: 'Syskonkort', file: 'UPPMÄRKSAMHET_front.jpeg' },
-  'sk-sjukdom':            { folder: 'Syskonkort', file: 'SJUKDOM_front.jpeg' },
-  'sk-forlora-ett-syskon': { folder: 'Syskonkort', file: 'FÖRLORA_ETT_SYSKON_front.jpeg' },
-  'sk-framtid':            { folder: 'Syskonkort', file: 'FRAMTID_front.jpeg' },
+  'sk-att-fa-ett-syskon':  { zip: 'default', folder: 'Syskonkort', file: 'ATT_FÅ_ETT_SYSKON_front.jpeg' },
+  'sk-syskonminnen':       { zip: 'default', folder: 'Syskonkort', file: 'SYSKONMINNEN_front.jpeg' },
+  'sk-syskonkunskap':      { zip: 'default', folder: 'Syskonkort', file: 'SYSKONKUNSKAP_front.jpeg' },
+  'sk-vanskap':            { zip: 'default', folder: 'Syskonkort', file: 'VÄNSKAP_front.jpeg' },
+  'sk-unik':               { zip: 'default', folder: 'Syskonkort', file: 'UNIK_front.jpeg' },
+  'sk-aldst-mitten-yngst': { zip: 'default', folder: 'Syskonkort', file: 'ÄLDST_MITTEN_front.jpeg' },
+  'sk-bonussyskon':        { zip: 'default', folder: 'Syskonkort', file: 'BONUSSYSKON_front.jpeg' },
+  'sk-konflikt':           { zip: 'default', folder: 'Syskonkort', file: 'KONFLIKT_front.jpeg' },
+  'sk-dela':               { zip: 'default', folder: 'Syskonkort', file: 'DELA_front.jpeg' },
+  'sk-rattvisa':           { zip: 'default', folder: 'Syskonkort', file: 'RÄTTVISA_front.jpeg' },
+  'sk-uppmarksamhet':      { zip: 'default', folder: 'Syskonkort', file: 'UPPMÄRKSAMHET_front.jpeg' },
+  'sk-sjukdom':            { zip: 'default', folder: 'Syskonkort', file: 'SJUKDOM_front.jpeg' },
+  'sk-forlora-ett-syskon': { zip: 'default', folder: 'Syskonkort', file: 'FÖRLORA_ETT_SYSKON_front.jpeg' },
+  'sk-framtid':            { zip: 'default', folder: 'Syskonkort', file: 'FRAMTID_front.jpeg' },
 };
 
-// Singleton: extracted blob URLs cached across hook instances
-let zipCache: Map<string, string> | null = null;
-let zipPromise: Promise<Map<string, string>> | null = null;
+// Singleton caches per zip source
+const zipCaches: Record<ZipSource, Map<string, string> | null> = { default: null, jim: null };
+const zipPromises: Record<ZipSource, Promise<Map<string, string>> | null> = { default: null, jim: null };
 
-async function loadZip(): Promise<Map<string, string>> {
-  if (zipCache) return zipCache;
-  if (zipPromise) return zipPromise;
+const ZIP_URLS: Record<ZipSource, string> = {
+  default: '/card-images.zip',
+  jim: '/jim-illustrations.zip',
+};
 
-  zipPromise = (async () => {
-    const res = await fetch('/card-images.zip');
+async function loadZip(source: ZipSource): Promise<Map<string, string>> {
+  if (zipCaches[source]) return zipCaches[source]!;
+  if (zipPromises[source]) return zipPromises[source]!;
+
+  zipPromises[source] = (async () => {
+    const res = await fetch(ZIP_URLS[source]);
     const buf = await res.arrayBuffer();
     const zip = await JSZip.loadAsync(buf);
     const map = new Map<string, string>();
 
-    // Build a lookup: normalised "folder/file" → zip entry
     const entries: { path: string; entry: JSZip.JSZipObject }[] = [];
     zip.forEach((path, entry) => {
       if (!entry.dir) entries.push({ path, entry });
     });
 
-    // Extract all images in parallel
     await Promise.all(
       entries.map(async ({ path, entry }) => {
         const blob = await entry.async('blob');
@@ -153,11 +161,11 @@ async function loadZip(): Promise<Map<string, string>> {
       })
     );
 
-    zipCache = map;
+    zipCaches[source] = map;
     return map;
   })();
 
-  return zipPromise;
+  return zipPromises[source]!;
 }
 
 /**
@@ -175,7 +183,7 @@ export function useCardImage(cardId: string | undefined): string | null {
 
     let cancelled = false;
 
-    loadZip().then((cache) => {
+    loadZip(mapping.zip).then((cache) => {
       if (cancelled) return;
 
       // Try exact path first, then search by filename
