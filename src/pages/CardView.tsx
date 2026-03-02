@@ -937,7 +937,7 @@ export default function CardView() {
   if (shouldShowStartScreen) {
     return (
       <motion.div
-        className="min-h-screen flex flex-col items-center justify-center px-6 pb-10"
+        className="min-h-screen flex flex-col items-center px-6 pb-10"
         style={{
           backgroundColor: 'var(--surface-base)',
           position: 'relative',
@@ -947,34 +947,6 @@ export default function CardView() {
         animate={{ opacity: 1 }}
         transition={{ duration: EMOTION, ease: [...EASE] }}
       >
-        {/* Card illustration background */}
-        {cardImageUrl && (
-          <motion.div
-            initial={{ opacity: 0, scale: 1.05 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
-            style={{
-              position: 'absolute',
-              inset: '-4px',
-              backgroundImage: `url(${cardImageUrl})`,
-              backgroundSize: 'cover',
-              backgroundPosition: 'center',
-              zIndex: 0,
-            }}
-          />
-        )}
-        {/* Gradient overlay for text readability */}
-        {cardImageUrl && (
-          <div
-            style={{
-              position: 'absolute',
-              inset: 0,
-              background: 'linear-gradient(to bottom, hsla(0,0%,0%,0.10) 0%, hsla(0,0%,0%,0.35) 40%, hsla(0,0%,0%,0.65) 70%, hsla(0,0%,0%,0.80) 100%)',
-              zIndex: 1,
-            }}
-          />
-        )}
-        {/* Back navigation */}
         {/* Back navigation */}
         <motion.button
           onClick={() => navigate(category ? `/category/${category.id}` : '/')}
@@ -991,8 +963,8 @@ export default function CardView() {
             alignItems: 'center',
             fontFamily: 'var(--font-sans)',
             fontSize: '13px',
-            color: cardImageUrl ? 'hsla(0,0%,100%,0.8)' : 'var(--text-secondary)',
-            opacity: cardImageUrl ? 1 : 0.55,
+            color: 'var(--text-secondary)',
+            opacity: 0.55,
             background: 'none',
             border: 'none',
             cursor: 'pointer',
@@ -1002,78 +974,76 @@ export default function CardView() {
           ← Tillbaka
         </motion.button>
 
-        {/* Category name — hidden when illustration present */}
-        {!cardImageUrl && (
-          <motion.span
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: BEAT_1, duration: EMOTION, ease: [...EASE] }}
-            style={{
-              position: 'relative', zIndex: 2,
-              fontFamily: 'var(--font-sans)',
-              fontSize: '10px',
-              letterSpacing: '0.12em',
-              textTransform: 'uppercase',
-              color: 'var(--text-tertiary)',
-              opacity: 0.45,
-              marginBottom: '10px',
-            }}
-          >
-            {category?.title}
-          </motion.span>
-        )}
+        {/* Topic title — always visible */}
+        <motion.h1
+          className="font-serif"
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: BEAT_1, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          style={{
+            position: 'relative', zIndex: 2,
+            fontSize: 'clamp(26px, 7vw, 34px)',
+            fontWeight: 700,
+            color: 'var(--text-primary)',
+            textAlign: 'center',
+            lineHeight: 1.15,
+            letterSpacing: '-0.01em',
+            marginTop: '72px',
+            marginBottom: cardImageUrl ? '24px' : '40px',
+          }}
+        >
+          {card.title}
+        </motion.h1>
 
-        {/* Topic title — hidden when illustration present (already in image) */}
-        {!cardImageUrl && (
-          <motion.h1
-            className="font-serif"
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: BEAT_1, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-            style={{
-              position: 'relative', zIndex: 2,
-              fontSize: 'clamp(26px, 7vw, 34px)',
-              fontWeight: 700,
-              color: 'var(--text-primary)',
-              textAlign: 'center',
-              lineHeight: 1.15,
-              letterSpacing: '-0.01em',
-              marginBottom: '40px',
-            }}
-          >
-            {card.title}
-          </motion.h1>
-        )}
-
-        {/* Spacer to push content down when illustration is present */}
-        {cardImageUrl && <div style={{ flex: 1 }} />}
-
-        {/* Decorative dot divider — only without image */}
-        {!cardImageUrl && (
+        {/* Card illustration — contained image, not background */}
+        {cardImageUrl && (
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: BEAT_2, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+            initial={{ opacity: 0, scale: 0.97 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
             style={{
               position: 'relative', zIndex: 2,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: '6px',
-              margin: '0 auto 36px',
+              width: '70vw',
+              maxWidth: '280px',
+              marginBottom: '32px',
             }}
           >
-            {[0, 1].map(i => (
-              <span key={i} style={{
-                width: '4px',
-                height: '4px',
-                borderRadius: '50%',
-                backgroundColor: 'var(--accent-saffron)',
-                opacity: 0.35,
-              }} />
-            ))}
+            <img
+              src={cardImageUrl}
+              alt={card.title}
+              style={{
+                width: '100%',
+                height: 'auto',
+                objectFit: 'contain',
+              }}
+            />
           </motion.div>
         )}
+
+        {/* Decorative dot divider */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: BEAT_2, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+          style={{
+            position: 'relative', zIndex: 2,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: '6px',
+            margin: '0 auto 36px',
+          }}
+        >
+          {[0, 1].map(i => (
+            <span key={i} style={{
+              width: '4px',
+              height: '4px',
+              borderRadius: '50%',
+              backgroundColor: 'var(--accent-saffron)',
+              opacity: 0.35,
+            }} />
+          ))}
+        </motion.div>
 
         {/* Instructions */}
         <motion.div
@@ -1086,8 +1056,8 @@ export default function CardView() {
             className="font-serif italic"
             style={{
               fontSize: '19px',
-              color: cardImageUrl ? 'hsla(0,0%,100%,0.85)' : 'var(--text-primary)',
-              opacity: cardImageUrl ? 1 : 0.75,
+              color: 'var(--text-primary)',
+              opacity: 0.75,
               textAlign: 'center',
               lineHeight: 1.5,
             }}
@@ -1103,10 +1073,10 @@ export default function CardView() {
           transition={{ delay: BEAT_3, duration: EMOTION, ease: [...EASE] }}
           style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '3px', marginBottom: '32px', position: 'relative', zIndex: 2 }}
         >
-          <p style={{ fontFamily: 'var(--font-sans)', fontSize: '12px', color: cardImageUrl ? 'hsla(0,0%,100%,0.6)' : 'var(--text-tertiary)', opacity: cardImageUrl ? 1 : 0.55, textAlign: 'center' }}>
+          <p style={{ fontFamily: 'var(--font-sans)', fontSize: '12px', color: 'var(--text-tertiary)', opacity: 0.55, textAlign: 'center' }}>
             {uiText.talkTogether}
           </p>
-          <p style={{ fontFamily: 'var(--font-sans)', fontSize: '12px', color: cardImageUrl ? 'hsla(0,0%,100%,0.6)' : 'var(--text-tertiary)', opacity: cardImageUrl ? 1 : 0.55, textAlign: 'center' }}>
+          <p style={{ fontFamily: 'var(--font-sans)', fontSize: '12px', color: 'var(--text-tertiary)', opacity: 0.55, textAlign: 'center' }}>
             {uiText.notekeeper}
           </p>
         </motion.div>
@@ -1187,9 +1157,6 @@ export default function CardView() {
             style={{
               width: '72vw',
               maxWidth: '320px',
-              boxShadow: cardImageUrl
-                ? '0 4px 24px hsla(0,0%,0%,0.35), 0 0 0 1px hsla(0,0%,100%,0.08)'
-                : undefined,
             }}
           >
             {uiText.readyButton}
@@ -1205,10 +1172,10 @@ export default function CardView() {
           style={{
             position: 'relative', zIndex: 2,
             fontSize: '13px',
-            color: cardImageUrl ? 'hsla(0,0%,100%,0.5)' : 'var(--accent-text)',
+            color: 'var(--accent-text)',
             textAlign: 'center',
             marginTop: '16px',
-            opacity: cardImageUrl ? 1 : 0.50,
+            opacity: 0.50,
           }}
         >
           {uiText.safetyNote}
