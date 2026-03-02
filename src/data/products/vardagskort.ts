@@ -149,7 +149,7 @@ const cards: Card[] = [
 
 export const vardagskortProduct: ProductManifest = {
   id: 'vardagskort',
-  name: 'Vardagskort',
+  name: 'Vardag',
   slug: 'vardagskort',
   tagline: 'De små samtalen som får vardagen att fungera.',
   description: 'Utforska vardagens rutiner och relationer',
