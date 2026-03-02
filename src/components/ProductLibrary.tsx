@@ -12,12 +12,12 @@ const STILL_US_TAGLINE = 'Djupa samtal för par som vill förstå varandra bätt
  * Warm, muted tones matching the reference mockup.
  */
 const PASTEL_COLORS: Record<string, string> = {
-  jag_i_mig: 'hsl(45, 30%, 90%)',        // warm cream
-  jag_med_andra: 'hsl(260, 25%, 90%)',    // soft lavender
-  jag_i_varlden: 'hsl(150, 30%, 90%)',    // pale mint
-  sexualitetskort: 'hsl(330, 25%, 90%)',  // blush pink
-  vardagskort: 'hsl(170, 25%, 88%)',      // sage
-  syskonkort: 'hsl(200, 25%, 88%)',       // dusty blue
+  jag_i_mig: 'hsl(45, 50%, 82%)',        // warm honey cream
+  jag_med_andra: 'hsl(260, 40%, 84%)',    // rich lavender
+  jag_i_varlden: 'hsl(160, 42%, 82%)',    // lush mint
+  sexualitetskort: 'hsl(330, 40%, 84%)',  // rosy pink
+  vardagskort: 'hsl(170, 38%, 80%)',      // deep sage
+  syskonkort: 'hsl(210, 40%, 82%)',       // sky blue
 };
 
 /* ── Stagger orchestration ── */
@@ -72,20 +72,26 @@ function SectionLabel({ label, delay = 0 }: { label: string; delay?: number }) {
   );
 }
 
-/** Pastel child-product tile — name + age badge, gradient bg */
+/** Pastel child-product tile — pillow-style with breathing animation */
 function PastelTile({ name, bg, ageLabel, onClick }: { name: string; bg: string; ageLabel?: string; onClick?: () => void }) {
-  const darkerBg = bg.replace(/(\d+)%\)$/, (_, l) => `${Math.max(Number(l) - 6, 70)}%)`);
+  const highlightBg = bg.replace(/(\d+)%\)$/, (_, l) => `${Math.min(Number(l) + 8, 97)}%)`);
+  const darkerBg = bg.replace(/(\d+)%\)$/, (_, l) => `${Math.max(Number(l) - 10, 68)}%)`);
+  const shadowColor = bg.replace(/hsl\(([^,]+),\s*([^,]+),\s*[^)]+\)/, 'hsla($1, $2, 50%, 0.25)');
 
   return (
     <motion.div
       variants={tileVariants}
-      whileHover={{ scale: 1.04, y: -3 }}
-      whileTap={{ scale: 0.97 }}
+      whileHover={{ scale: 1.05, y: -5 }}
+      whileTap={{ scale: 0.93 }}
       onClick={onClick}
       className="cursor-pointer"
       style={{
-        borderRadius: '22px',
-        background: `radial-gradient(ellipse at 40% 35%, ${bg} 0%, ${darkerBg} 100%)`,
+        borderRadius: '28px',
+        background: `
+          radial-gradient(ellipse at 30% 25%, ${highlightBg} 0%, transparent 60%),
+          radial-gradient(ellipse at 70% 75%, ${darkerBg} 0%, transparent 70%),
+          ${bg}
+        `,
         aspectRatio: '4 / 3',
         display: 'flex',
         alignItems: 'center',
@@ -94,10 +100,11 @@ function PastelTile({ name, bg, ageLabel, onClick }: { name: string; bg: string;
         padding: '16px',
         position: 'relative',
         boxShadow: `
-          0 1px 2px 0 hsla(0, 0%, 0%, 0.04),
-          0 4px 12px -2px hsla(0, 0%, 0%, 0.06),
-          0 8px 24px -4px hsla(0, 0%, 0%, 0.05)
+          0 2px 4px 0 ${shadowColor},
+          0 6px 16px -2px ${shadowColor},
+          0 14px 36px -6px ${shadowColor}
         `,
+        animation: 'tile-breathe 3.5s ease-in-out infinite',
       }}
     >
       {ageLabel && (
@@ -111,10 +118,10 @@ function PastelTile({ name, bg, ageLabel, onClick }: { name: string; bg: string;
             fontWeight: 700,
             letterSpacing: '0.04em',
             color: 'var(--text-primary)',
-            opacity: 0.35,
-            background: 'hsla(0, 0%, 100%, 0.5)',
-            borderRadius: '8px',
-            padding: '2px 7px',
+            opacity: 0.4,
+            background: 'hsla(0, 0%, 100%, 0.55)',
+            borderRadius: '10px',
+            padding: '2px 8px',
           }}
         >
           {ageLabel}
