@@ -107,9 +107,9 @@ function PastelTile({
         padding: '14px 12px',
         position: 'relative',
         boxShadow: `
-          0 1px 3px 0 ${shadowColor},
-          0 6px 20px -4px ${shadowColor},
-          0 16px 44px -8px ${shadowColor}
+          0 1px 2px 0 ${shadowColor},
+          0 4px 12px -2px ${shadowColor},
+          0 12px 32px -4px ${shadowColor}
         `,
       }}
     >
@@ -175,14 +175,14 @@ export default function ProductLibrary() {
       className="min-h-screen flex flex-col relative"
       style={{ backgroundColor: 'var(--surface-base)' }}
     >
-      {/* Background logo */}
+      {/* Background logo — subtle, upper half only */}
       <div style={{ position: 'fixed', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', pointerEvents: 'none', zIndex: 0 }}>
-        <img src={bonkiLogo} alt="" style={{ width: '130vw', maxWidth: '130vw', height: 'auto', objectFit: 'contain', opacity: 0.07, transform: 'translateY(8vh)' }} />
+        <img src={bonkiLogo} alt="" style={{ width: '130vw', maxWidth: '130vw', height: 'auto', objectFit: 'contain', opacity: 0.03, transform: 'translateY(8vh)', maskImage: 'linear-gradient(to bottom, black 30%, transparent 70%)', WebkitMaskImage: 'linear-gradient(to bottom, black 30%, transparent 70%)' }} />
       </div>
 
-      {/* Overlay logo */}
+      {/* Overlay logo — very subtle */}
       <div style={{ position: 'fixed', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', pointerEvents: 'none', zIndex: 10 }}>
-        <img src={bonkiLogo} alt="" style={{ width: '130vw', maxWidth: '130vw', height: 'auto', objectFit: 'contain', opacity: 0.045, transform: 'translateY(8vh)', filter: 'saturate(0)', maskImage: 'linear-gradient(to bottom, black 40%, transparent 90%)', WebkitMaskImage: 'linear-gradient(to bottom, black 40%, transparent 90%)' }} />
+        <img src={bonkiLogo} alt="" style={{ width: '130vw', maxWidth: '130vw', height: 'auto', objectFit: 'contain', opacity: 0.02, transform: 'translateY(8vh)', filter: 'saturate(0)', maskImage: 'linear-gradient(to bottom, black 30%, transparent 70%)', WebkitMaskImage: 'linear-gradient(to bottom, black 30%, transparent 70%)' }} />
       </div>
 
       {/* Content */}
@@ -218,7 +218,7 @@ export default function ProductLibrary() {
 
         {/* ── Still Us ── */}
         <motion.div
-          className="px-5 mt-4"
+          className="px-5 mt-4 mb-8"
           variants={containerVariants}
           initial="hidden"
           animate="visible"
@@ -269,16 +269,15 @@ export default function ProductLibrary() {
         </motion.div>
 
         {/* ── Emotionella resan (trio) ── */}
-        <div className="px-5 mt-6">
+        <div className="px-5">
           <AudienceLabel label="Barn & unga" delay={0.12} />
           <motion.div
             variants={containerVariants}
             initial="hidden"
             animate="visible"
-            style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}
+            style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '10px' }}
           >
-            {/* Jag i Mig — full width hero */}
-            {trio.filter(p => p.id === 'jag_i_mig').map(p => (
+            {trio.map(p => (
               <PastelTile
                 key={p.id}
                 name={p.name}
@@ -286,27 +285,13 @@ export default function ProductLibrary() {
                 ageLabel={p.ageLabel}
                 tagline={TAGLINES[p.id]}
                 onClick={() => navigate(`/product/${p.slug}`)}
-                aspectRatio="5 / 2"
+                aspectRatio="1 / 1"
               />
             ))}
-            {/* Jag med Andra + Jag i Världen */}
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '10px' }}>
-              {trio.filter(p => p.id !== 'jag_i_mig').map(p => (
-                <PastelTile
-                  key={p.id}
-                  name={p.name}
-                  bg={PASTEL_COLORS[p.id]!}
-                  ageLabel={p.ageLabel}
-                  tagline={TAGLINES[p.id]}
-                  onClick={() => navigate(`/product/${p.slug}`)}
-                  aspectRatio="1 / 1"
-                />
-              ))}
-            </div>
           </motion.div>
         </div>
 
-        {/* ── Samtalskort ── */}
+        {/* ── Hela familjen ── */}
         <div className="px-5 mt-6">
           <AudienceLabel label="Hela familjen" delay={0.20} />
           <motion.div
@@ -326,9 +311,8 @@ export default function ProductLibrary() {
                 name={p.name}
                 bg={PASTEL_COLORS[p.id]!}
                 ageLabel={p.ageLabel}
-                tagline={TAGLINES[p.id]}
                 onClick={() => navigate(`/product/${p.slug}`)}
-                aspectRatio="3 / 4"
+                aspectRatio="1 / 1"
               />
             ))}
           </motion.div>
