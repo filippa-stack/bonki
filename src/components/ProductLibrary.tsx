@@ -52,12 +52,13 @@ function AudienceLabel({ label, delay = 0 }: { label: string; delay?: number }) 
       style={{
         display: 'flex',
         alignItems: 'center',
-        gap: '12px',
+        justifyContent: 'center',
+        gap: '14px',
         marginBottom: '10px',
         marginTop: '4px',
       }}
     >
-      <div style={{ flex: 1, height: '1px', background: 'var(--color-text-tertiary)', opacity: 0.15 }} />
+      <div style={{ width: '48px', height: '1px', background: 'var(--color-text-tertiary)', opacity: 0.18 }} />
       <p
         className="font-sans"
         style={{
@@ -72,7 +73,7 @@ function AudienceLabel({ label, delay = 0 }: { label: string; delay?: number }) 
       >
         {label}
       </p>
-      <div style={{ flex: 1, height: '1px', background: 'var(--color-text-tertiary)', opacity: 0.15 }} />
+      <div style={{ width: '48px', height: '1px', background: 'var(--color-text-tertiary)', opacity: 0.18 }} />
     </motion.div>
   );
 }
