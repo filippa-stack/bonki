@@ -983,8 +983,8 @@ export default function CardView() {
               transition={{ duration: 1.0, ease: [0.22, 1, 0.36, 1] }}
               style={{
                 position: 'relative',
-                width: '80vw',
-                maxWidth: '320px',
+                width: '88vw',
+                maxWidth: '360px',
               }}
             >
               <img
@@ -1082,8 +1082,8 @@ export default function CardView() {
               textTransform: 'uppercase',
               color: 'var(--text-tertiary)',
               textAlign: 'center',
-              marginBottom: '24px',
-              marginTop: '4px',
+              marginBottom: '20px',
+              marginTop: '-4px',
             }}
           >
             {card.title}
