@@ -12,12 +12,12 @@ const STILL_US_TAGLINE = 'Djupa samtal för par som vill förstå varandra bätt
  * Warm, muted tones matching the reference mockup.
  */
 const PASTEL_COLORS: Record<string, string> = {
-  jag_i_mig: 'hsl(45, 50%, 82%)',        // warm honey cream
-  jag_med_andra: 'hsl(260, 40%, 84%)',    // rich lavender
-  jag_i_varlden: 'hsl(160, 42%, 82%)',    // lush mint
-  sexualitetskort: 'hsl(330, 40%, 84%)',  // rosy pink
-  vardagskort: 'hsl(170, 38%, 80%)',      // deep sage
-  syskonkort: 'hsl(210, 40%, 82%)',       // sky blue
+  jag_i_mig: 'hsl(45, 30%, 90%)',        // warm cream
+  jag_med_andra: 'hsl(260, 25%, 90%)',    // soft lavender
+  jag_i_varlden: 'hsl(150, 30%, 90%)',    // pale mint
+  sexualitetskort: 'hsl(330, 25%, 90%)',  // blush pink
+  vardagskort: 'hsl(170, 25%, 88%)',      // sage
+  syskonkort: 'hsl(200, 25%, 88%)',       // dusty blue
 };
 
 /* ── Stagger orchestration ── */
