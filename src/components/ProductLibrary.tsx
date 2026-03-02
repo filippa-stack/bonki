@@ -202,7 +202,7 @@ export default function ProductLibrary() {
               letterSpacing: '0.08em',
             }}
           >
-            Samtalskort som öppnar dörrar
+            Samtal som öppnar dörrar
           </p>
         </motion.div>
 
