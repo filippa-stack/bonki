@@ -84,7 +84,7 @@ export default function DevModeBadge() {
   const [open, setOpen] = useState(false);
 
   // Hide during screenshot capture
-  if (!isDevToolsEnabled() || searchParams.has('__sc_step')) return null;
+  if (searchParams.has('__sc_step')) return null;
 
   const currentDevState = devState ?? 'solo';
   const currentTheme = searchParams.get('theme') ?? '';
