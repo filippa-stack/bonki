@@ -1091,7 +1091,7 @@ export default function CardView() {
         )}
 
         {/* ── Bottom zone: instructions + CTA ── */}
-        <div style={{ flex: '0 0 auto', display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '0 24px', paddingBottom: 'calc(24px + env(safe-area-inset-bottom, 0px))' }}>
+        <div style={{ flex: '0 0 auto', display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '0 24px', paddingBottom: 'calc(32px + env(safe-area-inset-bottom, 0px))' }}>
           {/* Instructions */}
           <motion.p
             className="font-serif italic"
@@ -1115,7 +1115,7 @@ export default function CardView() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: BEAT_3, duration: EMOTION, ease: [...EASE] }}
-            style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '3px', marginBottom: '44px' }}
+            style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '3px', marginBottom: '48px' }}
           >
             <p style={{ fontFamily: 'var(--font-sans)', fontSize: '12px', color: 'var(--text-tertiary)', opacity: 0.55, textAlign: 'center' }}>
               {uiText.talkTogether}
