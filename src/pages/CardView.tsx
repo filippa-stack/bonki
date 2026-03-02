@@ -1271,8 +1271,8 @@ export default function CardView() {
         onLeaveSession={isLive ? () => setShowLeaveConfirm(true) : undefined}
       />
 
-      {/* Step progress — centered horizontal dots (live only) */}
-      {isLive && (
+      {/* Step progress — centered horizontal dots (live only, multi-step cards) */}
+      {isLive && effectiveSteps.length > 1 && (
         <motion.div
           style={{ paddingTop: '16px', marginTop: '20px' }}
           initial={!suppressEntryAnim ? { opacity: 0 } : false}
@@ -1331,8 +1331,8 @@ export default function CardView() {
               exit={{ opacity: 0, y: -8, transition: { duration: 0.15, ease: [0.4, 0, 1, 1] } }}
               transition={{ duration: 0.2, ease: [0.4, 0, 0.2, 1], delay: 0.1 }}
             >
-              {/* Stage label — archive mode only */}
-              {cardViewMode === 'archive' && (() => {
+              {/* Stage label — archive mode only, multi-step cards only */}
+              {cardViewMode === 'archive' && effectiveSteps.length > 1 && (() => {
                 const STAGE_LABELS: Record<number, string> = {
                   0: 'KOM IGÅNG',
                   1: 'GÅ DJUPARE',
@@ -1354,6 +1354,31 @@ export default function CardView() {
                   }}>
                     {label}
                   </p>
+                );
+              })()}
+
+              {/* Question counter — 1-step cards only (replaces progress bar) */}
+              {isLive && effectiveSteps.length === 1 && currentSection && (() => {
+                const totalPrompts = getEffectivePromptCount(currentSection);
+                if (totalPrompts <= 1) return null;
+                return (
+                  <motion.p
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: BEAT_1, duration: EMOTION, ease: [...EASE] }}
+                    style={{
+                      fontFamily: 'var(--font-sans)',
+                      fontSize: '11px',
+                      letterSpacing: '0.04em',
+                      color: 'var(--text-tertiary)',
+                      opacity: 0.4,
+                      textAlign: 'center',
+                      marginTop: effectiveSteps.length === 1 ? '28px' : '0',
+                      marginBottom: '-4px',
+                    }}
+                  >
+                    {localPromptIndex + 1} av {totalPrompts}
+                  </motion.p>
                 );
               })()}
 
