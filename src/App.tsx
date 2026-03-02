@@ -28,6 +28,7 @@ import SharedSummary from "./pages/SharedSummary";
 import Login from "./pages/Login";
 import NotFound from "./pages/NotFound";
 import ScreenshotExport from "./pages/ScreenshotExport";
+import AnalyticsDashboard from "./pages/AnalyticsDashboard";
 import { useCaptureController } from "@/hooks/useCaptureController";
 
 const queryClient = new QueryClient();
@@ -110,6 +111,8 @@ function AppRoutes() {
     <Routes>
       <Route path="/login" element={user ? <Navigate to="/" replace /> : <Login />} />
       <Route path="/screenshot-export" element={<ScreenshotExport />} />
+      <Route path="/analytics" element={<AnalyticsDashboard />} />
+      <Route path="/*" element={<ProtectedRoutes />} />
       <Route path="/*" element={<ProtectedRoutes />} />
     </Routes>
   );
