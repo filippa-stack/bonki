@@ -100,10 +100,11 @@ export default function DevModeBadge() {
   }
 
   function switchState(state: string) {
-    const currentPath = location.pathname;
+    // library devState only works on Index (/), so navigate there
+    const basePath = state === 'library' ? '/' : location.pathname;
     const params = new URLSearchParams(searchParams);
     params.set('devState', state);
-    navigate(`${currentPath}?${params.toString()}`);
+    navigate(`${basePath}?${params.toString()}`);
     setOpen(false);
   }
 
