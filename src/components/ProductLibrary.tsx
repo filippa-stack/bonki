@@ -72,8 +72,10 @@ function SectionLabel({ label, delay = 0 }: { label: string; delay?: number }) {
   );
 }
 
-/** Pastel child-product tile — name only, dark text on light bg */
-function PastelTile({ name, bg, onClick }: { name: string; bg: string; onClick?: () => void }) {
+/** Pastel child-product tile — name + age badge, gradient bg */
+function PastelTile({ name, bg, ageLabel, onClick }: { name: string; bg: string; ageLabel?: string; onClick?: () => void }) {
+  const darkerBg = bg.replace(/(\d+)%\)$/, (_, l) => `${Math.max(Number(l) - 6, 70)}%)`);
+
   return (
     <motion.div
       variants={tileVariants}
@@ -83,13 +85,14 @@ function PastelTile({ name, bg, onClick }: { name: string; bg: string; onClick?:
       className="cursor-pointer"
       style={{
         borderRadius: '22px',
-        background: bg,
-        aspectRatio: '1 / 1',
+        background: `radial-gradient(ellipse at 40% 35%, ${bg} 0%, ${darkerBg} 100%)`,
+        aspectRatio: '4 / 3',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
         textAlign: 'center',
-        padding: '12px',
+        padding: '16px',
+        position: 'relative',
         boxShadow: `
           0 1px 2px 0 hsla(0, 0%, 0%, 0.04),
           0 4px 12px -2px hsla(0, 0%, 0%, 0.06),
@@ -97,10 +100,30 @@ function PastelTile({ name, bg, onClick }: { name: string; bg: string; onClick?:
         `,
       }}
     >
+      {ageLabel && (
+        <span
+          className="font-sans"
+          style={{
+            position: 'absolute',
+            top: '10px',
+            right: '12px',
+            fontSize: '10px',
+            fontWeight: 700,
+            letterSpacing: '0.04em',
+            color: 'var(--text-primary)',
+            opacity: 0.35,
+            background: 'hsla(0, 0%, 100%, 0.5)',
+            borderRadius: '8px',
+            padding: '2px 7px',
+          }}
+        >
+          {ageLabel}
+        </span>
+      )}
       <h3
         className="font-serif"
         style={{
-          fontSize: '20px',
+          fontSize: '24px',
           fontWeight: 700,
           lineHeight: 1.2,
           color: 'var(--text-primary)',
@@ -213,7 +236,7 @@ export default function ProductLibrary() {
             style={{
               display: 'grid',
               gridTemplateColumns: 'repeat(2, 1fr)',
-              gap: '10px',
+              gap: '14px',
               paddingBottom: '32px',
             }}
           >
@@ -222,6 +245,7 @@ export default function ProductLibrary() {
                 key={p.id}
                 name={p.name}
                 bg={PASTEL_COLORS[p.id] ?? 'hsl(0, 0%, 92%)'}
+                ageLabel={p.ageLabel}
                 onClick={() => navigate(`/product/${p.slug}`)}
               />
             ))}
