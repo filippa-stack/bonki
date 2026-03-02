@@ -78,33 +78,34 @@ function AudienceLabel({ label, delay = 0 }: { label: string; delay?: number }) 
   );
 }
 
-/** Premium pastel tile */
+/** Premium pastel tile with radial inner glow */
 function PastelTile({
-  name, bg, ageLabel, tagline, onClick, aspectRatio = '4 / 3',
+  name, bg, ageLabel, tagline, onClick, aspectRatio = '4 / 3', isHero = false,
 }: {
   name: string; bg: string; ageLabel?: string; tagline?: string;
-  onClick?: () => void; aspectRatio?: string;
+  onClick?: () => void; aspectRatio?: string; isHero?: boolean;
 }) {
   const subtleDarker = bg.replace(/(\d+)%\)$/, (_, l) => `${Math.max(Number(l) - 3, 80)}%)`);
+  const glowCenter = bg.replace(/(\d+)%\)$/, (_, l) => `${Math.min(Number(l) + 5, 97)}%)`);
   const shadowColor = bg.replace(/hsl\(([^,]+),\s*([^,]+),\s*[^)]+\)/, 'hsla($1, $2, 45%, 0.18)');
 
   return (
     <motion.div
       variants={tileVariants}
-      whileHover={{ scale: 1.03, y: -3 }}
+      whileHover={{ scale: isHero ? 1.02 : 1.03, y: isHero ? -2 : -3 }}
       whileTap={{ scale: 0.97 }}
       onClick={onClick}
       className="cursor-pointer"
       style={{
         borderRadius: '20px',
-        background: `linear-gradient(165deg, ${bg} 0%, ${subtleDarker} 100%)`,
+        background: `radial-gradient(ellipse at 50% 40%, ${glowCenter} 0%, ${bg} 55%, ${subtleDarker} 100%)`,
         aspectRatio,
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
         textAlign: 'center',
-        padding: '14px 12px',
+        padding: isHero ? '20px 16px' : '14px 12px',
         position: 'relative',
         boxShadow: `
           0 1px 2px 0 ${shadowColor},
@@ -133,7 +134,7 @@ function PastelTile({
       <h3
         className="font-serif"
         style={{
-          fontSize: '17px',
+          fontSize: isHero ? '22px' : '17px',
           fontWeight: 700,
           lineHeight: 1.2,
           color: 'var(--text-primary)',
@@ -146,11 +147,11 @@ function PastelTile({
         <p
           className="font-serif"
           style={{
-            fontSize: '10px',
+            fontSize: isHero ? '12px' : '10px',
             fontWeight: 400,
             color: 'var(--text-primary)',
             opacity: 0.4,
-            marginTop: '3px',
+            marginTop: '4px',
             lineHeight: 1.3,
           }}
         >
@@ -229,16 +230,27 @@ export default function ProductLibrary() {
             className="cursor-pointer"
             style={{
               borderRadius: '18px',
-              padding: '24px 20px',
-              background: `linear-gradient(155deg, hsla(158, 35%, 18%, 0.92) 0%, hsla(158, 35%, 14%, 0.88) 100%)`,
+              padding: '28px 24px',
+              background: `radial-gradient(ellipse at 50% 35%, hsla(158, 40%, 22%, 0.95) 0%, hsla(158, 35%, 14%, 0.92) 100%)`,
               textAlign: 'center',
+              position: 'relative',
+              overflow: 'hidden',
               boxShadow: `
                 0 1px 2px 0 hsla(0, 0%, 0%, 0.06),
-                0 4px 12px -2px hsla(0, 0%, 0%, 0.12),
-                0 12px 32px -4px hsla(0, 0%, 0%, 0.14)
+                0 4px 14px -2px hsla(158, 35%, 20%, 0.18),
+                0 14px 36px -4px hsla(158, 35%, 15%, 0.16),
+                0 0 0 1px hsla(158, 30%, 40%, 0.08) inset
               `,
             }}
           >
+            {/* Subtle inner glow ring */}
+            <div style={{
+              position: 'absolute',
+              inset: 0,
+              borderRadius: '18px',
+              border: '1px solid hsla(158, 40%, 50%, 0.1)',
+              pointerEvents: 'none',
+            }} />
             <h2
               className="font-serif"
               style={{
@@ -272,18 +284,34 @@ export default function ProductLibrary() {
             variants={containerVariants}
             initial="hidden"
             animate="visible"
-            style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '10px' }}
+            style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}
           >
-            {trio.map(p => (
+            {/* Hero tile: Jag i Mig */}
+            {trio.filter(p => p.id === 'jag_i_mig').map(p => (
               <PastelTile
                 key={p.id}
                 name={p.name}
                 bg={PASTEL_COLORS[p.id]!}
                 ageLabel={p.ageLabel}
+                tagline={TAGLINES[p.id]}
                 onClick={() => navigate(`/product/${p.slug}`)}
-                aspectRatio="1 / 1"
+                aspectRatio="2.4 / 1"
+                isHero
               />
             ))}
+            {/* Remaining two */}
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '10px' }}>
+              {trio.filter(p => p.id !== 'jag_i_mig').map(p => (
+                <PastelTile
+                  key={p.id}
+                  name={p.name}
+                  bg={PASTEL_COLORS[p.id]!}
+                  ageLabel={p.ageLabel}
+                  onClick={() => navigate(`/product/${p.slug}`)}
+                  aspectRatio="1 / 1"
+                />
+              ))}
+            </div>
           </motion.div>
         </div>
 
