@@ -1,52 +1,29 @@
 import { useState, useEffect } from 'react';
+import { format } from 'date-fns';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { Navigate } from 'react-router-dom';
-import { BarChart3, Users, MessageSquare, BookmarkCheck, FileText, Clock, ArrowLeft } from 'lucide-react';
+import { BarChart3, Users, MessageSquare, BookmarkCheck, FileText, Clock, ArrowLeft, CalendarIcon } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { Button } from '@/components/ui/button';
+import { Calendar } from '@/components/ui/calendar';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { cn } from '@/lib/utils';
+
+const ADMIN_USER_ID = 'b29f4c84-0426-4b8f-9293-dccf9141a4b5';
 
 interface Analytics {
-  overview: {
-    totalSpaces: number;
-    totalSessions: number;
-    totalCompletions: number;
-    totalTakeaways: number;
-  };
-  sessions: {
-    byStatus: Record<string, number>;
-    avgDurationMinutes: number;
-  };
-  reflections: {
-    byState: Record<string, number>;
-    totalReflections: number;
-    uniqueUsers: number;
-  };
-  notes: {
-    byVisibility: Record<string, number>;
-    totalNotes: number;
-    uniqueUsers: number;
-    highlights: number;
-  };
-  bookmarks: {
-    total: number;
-    active: number;
-  };
+  overview: { totalSpaces: number; totalSessions: number; totalCompletions: number; totalTakeaways: number };
+  sessions: { byStatus: Record<string, number>; avgDurationMinutes: number };
+  reflections: { byState: Record<string, number>; totalReflections: number; uniqueUsers: number };
+  notes: { byVisibility: Record<string, number>; totalNotes: number; uniqueUsers: number; highlights: number };
+  bookmarks: { total: number; active: number };
   topCards: { cardId: string; visits: number }[];
   feedback: { id: string; response_text: string | null; submitted_at: string; session_id: string | null }[];
 }
 
-const statusLabels: Record<string, string> = {
-  active: 'Aktiva',
-  completed: 'Slutförda',
-  abandoned: 'Avbrutna',
-};
-
-const stateLabels: Record<string, string> = {
-  draft: 'Utkast',
-  ready: 'Redo',
-  revealed: 'Visade',
-  locked: 'Låsta',
-};
+const statusLabels: Record<string, string> = { active: 'Aktiva', completed: 'Slutförda', abandoned: 'Avbrutna' };
+const stateLabels: Record<string, string> = { draft: 'Utkast', ready: 'Redo', revealed: 'Visade', locked: 'Låsta' };
 
 function StatCard({ icon: Icon, label, value, sub }: { icon: any; label: string; value: string | number; sub?: string }) {
   return (
@@ -80,13 +57,19 @@ export default function AnalyticsDashboard() {
   const [data, setData] = useState<Analytics | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [fromDate, setFromDate] = useState<Date>(new Date('2026-02-27'));
 
   useEffect(() => {
-    if (!user) return;
+    if (!user || user.id !== ADMIN_USER_ID) return;
 
     const fetchAnalytics = async () => {
+      setLoading(true);
+      setError(null);
       try {
-        const { data: result, error: fnError } = await supabase.functions.invoke('get-analytics');
+        const dateStr = format(fromDate, 'yyyy-MM-dd');
+        const { data: result, error: fnError } = await supabase.functions.invoke(
+          `get-analytics?from=${dateStr}`
+        );
         if (fnError) throw fnError;
         setData(result as Analytics);
       } catch (err: any) {
@@ -97,10 +80,10 @@ export default function AnalyticsDashboard() {
     };
 
     fetchAnalytics();
-  }, [user]);
+  }, [user, fromDate]);
 
   if (authLoading) return null;
-  if (!user) return <Navigate to="/login" replace />;
+  if (!user || user.id !== ADMIN_USER_ID) return <Navigate to="/" replace />;
 
   return (
     <div className="min-h-screen page-bg">
@@ -109,7 +92,7 @@ export default function AnalyticsDashboard() {
           <button onClick={() => navigate('/')} className="p-2 -ml-2 rounded-full hover:bg-accent">
             <ArrowLeft className="w-5 h-5" />
           </button>
-          <div>
+          <div className="flex-1">
             <h1 className="text-base font-semibold text-foreground">Analytics Dashboard</h1>
             <p className="text-xs text-muted-foreground">Anonymiserad användardata</p>
           </div>
@@ -117,8 +100,30 @@ export default function AnalyticsDashboard() {
       </header>
 
       <main className="px-4 pb-12 max-w-2xl mx-auto">
+        {/* Date filter */}
+        <div className="mt-4 flex items-center gap-2">
+          <span className="text-xs text-muted-foreground">Från:</span>
+          <Popover>
+            <PopoverTrigger asChild>
+              <Button variant="outline" size="sm" className={cn("justify-start text-left font-normal gap-2")}>
+                <CalendarIcon className="w-3.5 h-3.5" />
+                {format(fromDate, 'yyyy-MM-dd')}
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-auto p-0" align="start">
+              <Calendar
+                mode="single"
+                selected={fromDate}
+                onSelect={(d) => d && setFromDate(d)}
+                initialFocus
+                className="p-3 pointer-events-auto"
+              />
+            </PopoverContent>
+          </Popover>
+        </div>
+
         {loading && (
-          <div className="pt-12 space-y-4">
+          <div className="pt-8 space-y-4">
             {[1, 2, 3].map(i => (
               <div key={i} className="h-20 rounded-xl bg-muted/20 animate-pulse" />
             ))}
@@ -126,14 +131,11 @@ export default function AnalyticsDashboard() {
         )}
 
         {error && (
-          <div className="mt-8 p-4 rounded-xl bg-destructive/10 text-destructive text-sm">
-            {error}
-          </div>
+          <div className="mt-8 p-4 rounded-xl bg-destructive/10 text-destructive text-sm">{error}</div>
         )}
 
         {data && (
           <>
-            {/* Overview */}
             <SectionTitle>Översikt</SectionTitle>
             <div className="grid grid-cols-2 gap-3">
               <StatCard icon={Users} label="Par (spaces)" value={data.overview.totalSpaces} />
@@ -142,7 +144,6 @@ export default function AnalyticsDashboard() {
               <StatCard icon={FileText} label="Takeaways" value={data.overview.totalTakeaways} />
             </div>
 
-            {/* Sessions */}
             <SectionTitle>Sessioner per status</SectionTitle>
             <div className="rounded-xl bg-card border border-border/50 p-4">
               {Object.entries(data.sessions.byStatus).map(([status, count]) => (
@@ -153,7 +154,6 @@ export default function AnalyticsDashboard() {
               )}
             </div>
 
-            {/* Reflections – anonymous */}
             <SectionTitle>Reflektioner (anonymiserat)</SectionTitle>
             <div className="grid grid-cols-2 gap-3 mb-3">
               <StatCard icon={MessageSquare} label="Totalt" value={data.reflections.totalReflections} />
@@ -165,7 +165,6 @@ export default function AnalyticsDashboard() {
               ))}
             </div>
 
-            {/* Notes – anonymous */}
             <SectionTitle>Anteckningar (anonymiserat)</SectionTitle>
             <div className="grid grid-cols-2 gap-3 mb-3">
               <StatCard icon={FileText} label="Totalt" value={data.notes.totalNotes} />
@@ -181,14 +180,12 @@ export default function AnalyticsDashboard() {
               ⚠️ Textinnehåll i privata anteckningar visas aldrig här – bara antal.
             </p>
 
-            {/* Bookmarks */}
             <SectionTitle>Bokmärken</SectionTitle>
             <div className="grid grid-cols-2 gap-3">
               <StatCard icon={BookmarkCheck} label="Totalt" value={data.bookmarks.total} />
               <StatCard icon={BookmarkCheck} label="Aktiva" value={data.bookmarks.active} />
             </div>
 
-            {/* Top cards */}
             {data.topCards.length > 0 && (
               <>
                 <SectionTitle>Populäraste kort (besök)</SectionTitle>
@@ -200,7 +197,6 @@ export default function AnalyticsDashboard() {
               </>
             )}
 
-            {/* Beta feedback – content IS shown here */}
             {data.feedback.length > 0 && (
               <>
                 <SectionTitle>Beta-feedback (senaste)</SectionTitle>
@@ -219,8 +215,8 @@ export default function AnalyticsDashboard() {
 
             <div className="mt-8 p-4 rounded-xl bg-accent/30 border border-border/30">
               <p className="text-xs text-muted-foreground leading-relaxed">
-                <strong>Integritetsnot:</strong> Detta dashboard visar enbart aggregerad, anonymiserad data. 
-                Inga personliga anteckningar, reflektionstexter eller identifierbar användarinformation exponeras. 
+                <strong>Integritetsnot:</strong> Detta dashboard visar enbart aggregerad, anonymiserad data.
+                Inga personliga anteckningar, reflektionstexter eller identifierbar användarinformation exponeras.
                 Beta-feedback visas då det skickas in explicit som feedback till oss.
               </p>
             </div>

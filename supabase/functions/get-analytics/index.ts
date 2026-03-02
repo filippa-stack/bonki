@@ -5,6 +5,8 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 }
 
+const ADMIN_USER_ID = 'b29f4c84-0426-4b8f-9293-dccf9141a4b5'
+
 Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders })
@@ -19,7 +21,6 @@ Deno.serve(async (req) => {
       })
     }
 
-    // Verify caller is authenticated
     const supabaseUser = createClient(
       Deno.env.get('SUPABASE_URL')!,
       Deno.env.get('SUPABASE_ANON_KEY')!,
@@ -33,13 +34,28 @@ Deno.serve(async (req) => {
       })
     }
 
-    // Use service role for aggregate queries
+    // Only allow admin user
+    if (user.id !== ADMIN_USER_ID) {
+      return new Response(JSON.stringify({ error: 'Forbidden' }), {
+        status: 403,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      })
+    }
+
+    // Parse optional date-from filter
+    const url = new URL(req.url)
+    const fromParam = url.searchParams.get('from')
+    const fromDate = fromParam || null // ISO date string e.g. "2026-02-27"
+
     const supabase = createClient(
       Deno.env.get('SUPABASE_URL')!,
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
     )
 
-    // Run all queries in parallel - NO private text content exposed
+    // Helper: apply date filter to a query builder
+    const applyFrom = (q: any, col = 'created_at') =>
+      fromDate ? q.gte(col, fromDate) : q
+
     const [
       spacesRes,
       sessionsRes,
@@ -51,35 +67,18 @@ Deno.serve(async (req) => {
       feedbackRes,
       visitsRes,
     ] = await Promise.all([
-      // Total spaces
-      supabase.from('couple_spaces').select('id', { count: 'exact', head: true }),
-
-      // Sessions by status
-      supabase.from('couple_sessions').select('status, started_at, ended_at'),
-
-      // Step completions count
-      supabase.from('couple_session_completions').select('id', { count: 'exact', head: true }),
-
-      // Reflections by state (NO text)
-      supabase.from('step_reflections').select('state, user_id'),
-
-      // Notes by visibility (NO content)
-      supabase.from('prompt_notes').select('visibility, user_id, is_highlight'),
-
-      // Bookmarks count
+      applyFrom(supabase.from('couple_spaces').select('id', { count: 'exact', head: true })),
+      applyFrom(supabase.from('couple_sessions').select('status, started_at, ended_at'), 'started_at'),
+      applyFrom(supabase.from('couple_session_completions').select('id', { count: 'exact', head: true }), 'completed_at'),
+      applyFrom(supabase.from('step_reflections').select('state, user_id'), 'updated_at'),
+      applyFrom(supabase.from('prompt_notes').select('visibility, user_id, is_highlight')),
       supabase.from('question_bookmarks').select('id, is_active', { count: 'exact' }),
-
-      // Takeaways count (NO content)
-      supabase.from('couple_takeaways').select('id', { count: 'exact', head: true }),
-
-      // Beta feedback - this IS meant to be read
-      supabase.from('beta_feedback').select('id, response_text, submitted_at, session_id').order('submitted_at', { ascending: false }).limit(50),
-
-      // Card visits
-      supabase.from('couple_card_visits').select('card_id, user_id'),
+      applyFrom(supabase.from('couple_takeaways').select('id', { count: 'exact', head: true })),
+      applyFrom(supabase.from('beta_feedback').select('id, response_text, submitted_at, session_id').order('submitted_at', { ascending: false }).limit(50), 'submitted_at'),
+      applyFrom(supabase.from('couple_card_visits').select('card_id, user_id'), 'last_visited_at'),
     ])
 
-    // Aggregate sessions by status
+    // Aggregate sessions
     const sessionsByStatus: Record<string, number> = {}
     let totalSessionDurationMinutes = 0
     let completedSessionCount = 0
@@ -88,7 +87,7 @@ Deno.serve(async (req) => {
         sessionsByStatus[s.status] = (sessionsByStatus[s.status] || 0) + 1
         if (s.status === 'completed' && s.ended_at && s.started_at) {
           const dur = (new Date(s.ended_at).getTime() - new Date(s.started_at).getTime()) / 60000
-          if (dur > 0 && dur < 600) { // sanity cap at 10h
+          if (dur > 0 && dur < 600) {
             totalSessionDurationMinutes += dur
             completedSessionCount++
           }
@@ -96,17 +95,12 @@ Deno.serve(async (req) => {
       }
     }
 
-    // Aggregate reflections by state
+    // Aggregate reflections
     const reflectionsByState: Record<string, number> = {}
     const uniqueReflectionUsers = new Set<string>()
     if (reflectionsRes.data) {
       for (const r of reflectionsRes.data) {
         reflectionsByState[r.state] = (reflectionsByState[r.state] || 0) + 1
-        if (r.state !== 'draft' || (reflectionsRes.data as any[]).some(
-          x => x.user_id === r.user_id && x.state !== 'draft'
-        )) {
-          // Count users who have at least submitted something
-        }
         uniqueReflectionUsers.add(r.user_id)
       }
     }
@@ -123,12 +117,11 @@ Deno.serve(async (req) => {
       }
     }
 
-    // Aggregate bookmarks
     const activeBookmarks = bookmarksRes.data
       ? (bookmarksRes.data as any[]).filter((b: any) => b.is_active).length
       : 0
 
-    // Aggregate card visits - top cards
+    // Top cards
     const cardVisitCounts: Record<string, number> = {}
     if (visitsRes.data) {
       for (const v of visitsRes.data) {
