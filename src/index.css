@@ -633,3 +633,9 @@ h1, h2, h3,
   65%  { box-shadow: 0 0 0 7px hsla(38,88%,46%,0); }
   100% { box-shadow: 0 0 0 0   hsla(38,88%,46%,0); }
 }
+
+/* ── Library tile breathing animation ── */
+@keyframes tile-breathe {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.015); }
+}
