@@ -2,6 +2,15 @@ import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { allProducts } from '@/data/products';
 import bonkiLogo from '@/assets/bonki-logo.png';
+import illustrationJagIMig from '@/assets/illustration-jag-i-mig.png';
+import illustrationJagMedAndra from '@/assets/illustration-jag-med-andra.png';
+import illustrationJagIVarlden from '@/assets/illustration-jag-i-varlden.png';
+
+const ILLUSTRATIONS: Record<string, string> = {
+  jag_i_mig: illustrationJagIMig,
+  jag_med_andra: illustrationJagMedAndra,
+  jag_i_varlden: illustrationJagIVarlden,
+};
 
 /**
  * Short taglines per product — shown below the title on each tile.
@@ -80,10 +89,10 @@ function AudienceLabel({ label, delay = 0 }: { label: string; delay?: number }) 
 
 /** Premium pastel tile with radial inner glow */
 function PastelTile({
-  name, bg, ageLabel, tagline, onClick, aspectRatio = '4 / 3', isHero = false,
+  name, bg, ageLabel, tagline, onClick, aspectRatio = '4 / 3', isHero = false, illustration,
 }: {
   name: string; bg: string; ageLabel?: string; tagline?: string;
-  onClick?: () => void; aspectRatio?: string; isHero?: boolean;
+  onClick?: () => void; aspectRatio?: string; isHero?: boolean; illustration?: string;
 }) {
   const subtleDarker = bg.replace(/(\d+)%\)$/, (_, l) => `${Math.max(Number(l) - 3, 80)}%)`);
   const glowCenter = bg.replace(/(\d+)%\)$/, (_, l) => `${Math.min(Number(l) + 5, 97)}%)`);
@@ -101,12 +110,13 @@ function PastelTile({
         background: `radial-gradient(ellipse at 50% 40%, ${glowCenter} 0%, ${bg} 55%, ${subtleDarker} 100%)`,
         aspectRatio,
         display: 'flex',
-        flexDirection: 'column',
+        flexDirection: isHero ? 'row' : 'column',
         alignItems: 'center',
-        justifyContent: 'center',
-        textAlign: 'center',
-        padding: isHero ? '20px 16px' : '14px 12px',
+        justifyContent: isHero ? 'flex-start' : 'center',
+        textAlign: isHero ? 'left' : 'center',
+        padding: isHero ? '0 24px 0 0' : '14px 12px',
         position: 'relative',
+        overflow: 'hidden',
         boxShadow: `
           0 1px 2px 0 ${shadowColor},
           0 4px 12px -2px ${shadowColor},
@@ -126,38 +136,65 @@ function PastelTile({
             letterSpacing: '0.06em',
             color: 'var(--text-primary)',
             opacity: 0.22,
+            zIndex: 2,
           }}
         >
           {ageLabel}
         </span>
       )}
-      <h3
-        className="font-serif"
-        style={{
-          fontSize: isHero ? '22px' : '17px',
-          fontWeight: 700,
-          lineHeight: 1.2,
-          color: 'var(--text-primary)',
-          letterSpacing: '-0.01em',
-        }}
-      >
-        {name}
-      </h3>
-      {tagline && (
-        <p
+      {/* Illustration */}
+      {illustration && (
+        <div style={{
+          flexShrink: 0,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          ...(isHero
+            ? { width: '100px', height: '100%', padding: '8px 0 8px 12px' }
+            : { width: '52px', height: '52px', marginBottom: '4px' }),
+        }}>
+          <img
+            src={illustration}
+            alt=""
+            style={{
+              width: '100%',
+              height: '100%',
+              objectFit: 'contain',
+              opacity: 0.85,
+              filter: 'drop-shadow(0 2px 6px hsla(0, 0%, 0%, 0.08))',
+            }}
+          />
+        </div>
+      )}
+      <div style={{ zIndex: 1, ...(isHero ? { flex: 1 } : {}) }}>
+        <h3
           className="font-serif"
           style={{
-            fontSize: isHero ? '12px' : '10px',
-            fontWeight: 400,
+            fontSize: isHero ? '22px' : '15px',
+            fontWeight: 700,
+            lineHeight: 1.2,
             color: 'var(--text-primary)',
-            opacity: 0.4,
-            marginTop: '4px',
-            lineHeight: 1.3,
+            letterSpacing: '-0.01em',
           }}
         >
-          {tagline}
-        </p>
-      )}
+          {name}
+        </h3>
+        {tagline && (
+          <p
+            className="font-serif"
+            style={{
+              fontSize: isHero ? '12px' : '10px',
+              fontWeight: 400,
+              color: 'var(--text-primary)',
+              opacity: 0.4,
+              marginTop: '4px',
+              lineHeight: 1.3,
+            }}
+          >
+            {tagline}
+          </p>
+        )}
+      </div>
     </motion.div>
   );
 }
@@ -294,6 +331,7 @@ export default function ProductLibrary() {
                 bg={PASTEL_COLORS[p.id]!}
                 ageLabel={p.ageLabel}
                 tagline={TAGLINES[p.id]}
+                illustration={ILLUSTRATIONS[p.id]}
                 onClick={() => navigate(`/product/${p.slug}`)}
                 aspectRatio="2.4 / 1"
                 isHero
@@ -307,6 +345,7 @@ export default function ProductLibrary() {
                   name={p.name}
                   bg={PASTEL_COLORS[p.id]!}
                   ageLabel={p.ageLabel}
+                  illustration={ILLUSTRATIONS[p.id]}
                   onClick={() => navigate(`/product/${p.slug}`)}
                   aspectRatio="1 / 1"
                 />
