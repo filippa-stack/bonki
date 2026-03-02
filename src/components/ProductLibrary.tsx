@@ -42,42 +42,28 @@ const tileVariants = {
   },
 };
 
-/** Poetic section header — warm, editorial feel */
-function SectionHeader({ title, subtitle, delay = 0 }: { title: string; subtitle?: string; delay?: number }) {
+/** Subtle audience label — centered divider feel */
+function AudienceLabel({ label, delay = 0 }: { label: string; delay?: number }) {
   return (
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ delay, duration: 0.6 }}
-      style={{ textAlign: 'center', marginBottom: '14px' }}
+      style={{ textAlign: 'center', marginBottom: '10px', marginTop: '4px' }}
     >
       <p
         className="font-sans"
         style={{
           fontSize: '10px',
-          fontWeight: 600,
-          letterSpacing: '0.14em',
+          fontWeight: 700,
+          letterSpacing: '0.18em',
           textTransform: 'uppercase',
           color: 'var(--color-text-tertiary)',
-          opacity: 0.4,
+          opacity: 0.5,
         }}
       >
-        {title}
+        {label}
       </p>
-      {subtitle && (
-        <p
-          className="font-serif"
-          style={{
-            fontSize: '12px',
-            fontStyle: 'italic',
-            color: 'var(--color-text-secondary)',
-            opacity: 0.45,
-            marginTop: '2px',
-          }}
-        >
-          {subtitle}
-        </p>
-      )}
     </motion.div>
   );
 }
@@ -193,7 +179,7 @@ export default function ProductLibrary() {
       <div style={{ position: 'relative', zIndex: 1 }}>
         {/* Hero */}
         <motion.div
-          className="pt-12 pb-1 px-6 text-center"
+          className="pt-8 pb-1 px-6 text-center"
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
@@ -222,12 +208,12 @@ export default function ProductLibrary() {
 
         {/* ── Still Us ── */}
         <motion.div
-          className="px-5 mt-6"
+          className="px-5 mt-4"
           variants={containerVariants}
           initial="hidden"
           animate="visible"
         >
-          <SectionHeader title="Vuxna" delay={0.08} />
+          <AudienceLabel label="Vuxna" delay={0.08} />
           <motion.div
             variants={tileVariants}
             whileHover={{ scale: 1.02, y: -2 }}
@@ -267,14 +253,14 @@ export default function ProductLibrary() {
                 fontStyle: 'italic',
               }}
             >
-              Djupa samtal för par som vill förstå varandra bättre
+              Förbli ett vi medan vi uppfostrar dem
             </p>
           </motion.div>
         </motion.div>
 
         {/* ── Emotionella resan (trio) ── */}
-        <div className="px-5 mt-8">
-          <SectionHeader title="Emotionella resan" subtitle="Inifrån och ut — i tre steg" delay={0.12} />
+        <div className="px-5 mt-6">
+          <AudienceLabel label="Barn & unga" delay={0.12} />
           <motion.div
             variants={containerVariants}
             initial="hidden"
@@ -311,8 +297,8 @@ export default function ProductLibrary() {
         </div>
 
         {/* ── Samtalskort ── */}
-        <div className="px-5 mt-8">
-          <SectionHeader title="Samtalskort" subtitle="Vardagsnära samtal för hela familjen" delay={0.20} />
+        <div className="px-5 mt-6">
+          <AudienceLabel label="Hela familjen" delay={0.20} />
           <motion.div
             variants={containerVariants}
             initial="hidden"
