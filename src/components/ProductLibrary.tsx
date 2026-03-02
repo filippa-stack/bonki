@@ -7,124 +7,36 @@ import bonkiLogo from '@/assets/bonki-logo.png';
 const STILL_US_COLOR = 'hsl(158, 35%, 18%)';
 const STILL_US_TAGLINE = 'Djupa samtal för par som vill förstå varandra bättre';
 
-const childProducts = allProducts;
+/**
+ * Pastel palette for child products – mapped by product id.
+ * Warm, muted tones matching the reference mockup.
+ */
+const PASTEL_COLORS: Record<string, string> = {
+  jag_i_mig: 'hsl(45, 30%, 90%)',        // warm cream
+  jag_med_andra: 'hsl(260, 25%, 90%)',    // soft lavender
+  jag_i_varlden: 'hsl(150, 30%, 90%)',    // pale mint
+  sexualitetskort: 'hsl(330, 25%, 90%)',  // blush pink
+  vardagskort: 'hsl(170, 25%, 88%)',      // sage
+  syskonkort: 'hsl(200, 25%, 88%)',       // dusty blue
+};
 
 /* ── Stagger orchestration ── */
 const containerVariants = {
   hidden: {},
   visible: {
-    transition: { staggerChildren: 0.08, delayChildren: 0.25 },
+    transition: { staggerChildren: 0.06, delayChildren: 0.2 },
   },
 };
 
 const tileVariants = {
-  hidden: { opacity: 0, y: 24, scale: 0.95 },
+  hidden: { opacity: 0, y: 20, scale: 0.96 },
   visible: {
     opacity: 1,
     y: 0,
     scale: 1,
-    transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] as const },
+    transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] as const },
   },
 };
-
-/* ── Tile ── */
-interface TileProps {
-  name: string;
-  tagline: string;
-  color: string;
-  large?: boolean;
-  onClick?: () => void;
-}
-
-/** Convert 'hsl(h, s%, l%)' to 'hsla(h, s%, l%, a)' */
-function withAlpha(hsl: string, alpha: number): string {
-  return hsl.replace('hsl(', 'hsla(').replace(')', `, ${alpha})`);
-}
-
-function Tile({ name, tagline, color, large, onClick }: TileProps) {
-  return (
-    <motion.div
-      variants={tileVariants}
-      whileHover={{ scale: 1.04, y: -4 }}
-      whileTap={{ scale: 0.975 }}
-      onClick={onClick}
-      className="cursor-pointer"
-      style={{
-        borderRadius: '20px',
-        padding: large ? '28px 24px' : '20px 18px',
-        background: `linear-gradient(155deg, ${withAlpha(color, 0.85)} 0%, ${withAlpha(color, 0.75)} 100%)`,
-        backdropFilter: 'blur(1px)',
-        WebkitBackdropFilter: 'blur(1px)',
-        position: 'relative',
-        overflow: 'hidden',
-        minHeight: large ? '130px' : '120px',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-        textAlign: 'center',
-        boxShadow: `
-          0 1px 2px 0 hsla(0, 0%, 0%, 0.06),
-          0 4px 12px -2px hsla(0, 0%, 0%, 0.12),
-          0 12px 32px -4px hsla(0, 0%, 0%, 0.14),
-          0 28px 72px -8px hsla(0, 0%, 0%, 0.10)
-        `,
-        transition: 'box-shadow 0.4s ease',
-      }}
-    >
-      {/* Glass highlight sweep */}
-      <div
-        style={{
-          position: 'absolute',
-          inset: 0,
-          background:
-            'linear-gradient(145deg, hsla(0,0%,100%,0.22) 0%, hsla(0,0%,100%,0.08) 30%, transparent 55%, hsla(0,0%,0%,0.06) 100%)',
-          pointerEvents: 'none',
-        }}
-      />
-
-      {/* Soft inner border */}
-      <div
-        style={{
-          position: 'absolute',
-          inset: 0,
-          borderRadius: '20px',
-          border: '1px solid hsla(0, 0%, 100%, 0.18)',
-          pointerEvents: 'none',
-        }}
-      />
-
-      <div style={{ position: 'relative', zIndex: 1 }}>
-        <h3
-          className="font-serif"
-          style={{
-            fontSize: large ? '26px' : '19px',
-            fontWeight: 700,
-            lineHeight: 1.2,
-            color: 'hsla(0, 0%, 100%, 0.95)',
-            marginBottom: '6px',
-            letterSpacing: '-0.01em',
-          }}
-        >
-          {name}
-        </h3>
-        <p
-          className="font-serif"
-          style={{
-            fontSize: large ? '13px' : '11.5px',
-            fontWeight: 400,
-            color: 'hsla(0, 0%, 100%, 0.65)',
-            lineHeight: 1.5,
-            maxWidth: '20ch',
-            margin: '0 auto',
-          }}
-        >
-          {tagline}
-        </p>
-      </div>
-    </motion.div>
-  );
-}
 
 /** Section divider */
 function SectionLabel({ label, delay = 0 }: { label: string; delay?: number }) {
@@ -160,8 +72,50 @@ function SectionLabel({ label, delay = 0 }: { label: string; delay?: number }) {
   );
 }
 
+/** Pastel child-product tile — name only, dark text on light bg */
+function PastelTile({ name, bg, onClick }: { name: string; bg: string; onClick?: () => void }) {
+  return (
+    <motion.div
+      variants={tileVariants}
+      whileHover={{ scale: 1.04, y: -3 }}
+      whileTap={{ scale: 0.97 }}
+      onClick={onClick}
+      className="cursor-pointer"
+      style={{
+        borderRadius: '22px',
+        background: bg,
+        aspectRatio: '1 / 1',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        textAlign: 'center',
+        padding: '12px',
+        boxShadow: `
+          0 1px 2px 0 hsla(0, 0%, 0%, 0.04),
+          0 4px 12px -2px hsla(0, 0%, 0%, 0.06),
+          0 8px 24px -4px hsla(0, 0%, 0%, 0.05)
+        `,
+      }}
+    >
+      <h3
+        className="font-serif"
+        style={{
+          fontSize: '20px',
+          fontWeight: 700,
+          lineHeight: 1.2,
+          color: 'var(--text-primary)',
+          letterSpacing: '-0.01em',
+        }}
+      >
+        {name}
+      </h3>
+    </motion.div>
+  );
+}
+
 export default function ProductLibrary() {
   const navigate = useNavigate();
+
   return (
     <div
       className="min-h-screen flex flex-col relative"
@@ -200,6 +154,8 @@ export default function ProductLibrary() {
               color: 'var(--color-text-secondary)',
               opacity: 0.65,
               lineHeight: 1.55,
+              textTransform: 'uppercase',
+              letterSpacing: '0.08em',
             }}
           >
             Samtalskort som öppnar dörrar
@@ -214,13 +170,37 @@ export default function ProductLibrary() {
           animate="visible"
         >
           <SectionLabel label="Vuxna" delay={0.08} />
-          <Tile
-            name="Still Us"
-            tagline={STILL_US_TAGLINE}
-            color={STILL_US_COLOR}
-            large
+          <motion.div
+            variants={tileVariants}
+            whileHover={{ scale: 1.03, y: -3 }}
+            whileTap={{ scale: 0.975 }}
             onClick={() => navigate('/')}
-          />
+            className="cursor-pointer"
+            style={{
+              borderRadius: '20px',
+              padding: '32px 24px',
+              background: `linear-gradient(155deg, hsla(158, 35%, 18%, 0.9) 0%, hsla(158, 35%, 15%, 0.85) 100%)`,
+              textAlign: 'center',
+              boxShadow: `
+                0 1px 2px 0 hsla(0, 0%, 0%, 0.06),
+                0 4px 12px -2px hsla(0, 0%, 0%, 0.12),
+                0 12px 32px -4px hsla(0, 0%, 0%, 0.14)
+              `,
+            }}
+          >
+            <h2
+              className="font-serif"
+              style={{
+                fontSize: '28px',
+                fontWeight: 700,
+                color: 'hsla(0, 0%, 100%, 0.95)',
+                letterSpacing: '0.04em',
+                textTransform: 'uppercase',
+              }}
+            >
+              Still Us
+            </h2>
+          </motion.div>
         </motion.div>
 
         {/* ── Barn & Unga ── */}
@@ -232,17 +212,16 @@ export default function ProductLibrary() {
             animate="visible"
             style={{
               display: 'grid',
-              gridTemplateColumns: 'repeat(2, 1fr)',
-              gap: '12px',
+              gridTemplateColumns: 'repeat(3, 1fr)',
+              gap: '10px',
               paddingBottom: '32px',
             }}
           >
-            {childProducts.map((p) => (
-              <Tile
+            {allProducts.map((p) => (
+              <PastelTile
                 key={p.id}
                 name={p.name}
-                tagline={p.tagline}
-                color={p.accentColor}
+                bg={PASTEL_COLORS[p.id] ?? 'hsl(0, 0%, 92%)'}
                 onClick={() => navigate(`/product/${p.slug}`)}
               />
             ))}
