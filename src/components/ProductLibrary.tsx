@@ -121,13 +121,10 @@ function PastelTile({
             top: '8px',
             right: '10px',
             fontSize: '9px',
-            fontWeight: 700,
-            letterSpacing: '0.04em',
+            fontWeight: 600,
+            letterSpacing: '0.06em',
             color: 'var(--text-primary)',
-            opacity: 0.35,
-            background: 'hsla(0, 0%, 100%, 0.5)',
-            borderRadius: '8px',
-            padding: '2px 6px',
+            opacity: 0.22,
           }}
         >
           {ageLabel}
@@ -283,7 +280,6 @@ export default function ProductLibrary() {
                 name={p.name}
                 bg={PASTEL_COLORS[p.id]!}
                 ageLabel={p.ageLabel}
-                tagline={TAGLINES[p.id]}
                 onClick={() => navigate(`/product/${p.slug}`)}
                 aspectRatio="1 / 1"
               />
@@ -292,7 +288,7 @@ export default function ProductLibrary() {
         </div>
 
         {/* ── Hela familjen ── */}
-        <div className="px-5 mt-6">
+        <div className="px-5 mt-8">
           <AudienceLabel label="Hela familjen" delay={0.20} />
           <motion.div
             variants={containerVariants}
@@ -331,7 +327,7 @@ export default function ProductLibrary() {
               fontStyle: 'italic',
               fontSize: '13px',
               color: 'var(--accent-text)',
-              opacity: 0.2,
+              opacity: 0.35,
             }}
           >
             Varje samtal räknas.
