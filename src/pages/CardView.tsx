@@ -1373,6 +1373,7 @@ export default function CardView() {
                       color: 'var(--text-tertiary)',
                       opacity: 0.4,
                       textAlign: 'center',
+                      width: '100%',
                       marginTop: '40px',
                       marginBottom: '0px',
                     }}
