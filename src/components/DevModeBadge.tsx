@@ -50,6 +50,7 @@ const SURFACE_OPTIONS = [
 
 const PAGES = [
   { path: '/', label: '🏠 Home' },
+  { path: '/analytics', label: '📊 Analytics Dashboard' },
   { path: '/login', label: '🔐 Login' },
   { path: '/saved', label: '💾 Saved Conversations' },
   { path: '/shared', label: '🤝 Shared Summary' },
