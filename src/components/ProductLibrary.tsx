@@ -73,7 +73,7 @@ function SectionLabel({ label, delay = 0 }: { label: string; delay?: number }) {
 }
 
 /** Pastel child-product tile — pillow-style with breathing animation */
-function PastelTile({ name, bg, ageLabel, onClick }: { name: string; bg: string; ageLabel?: string; onClick?: () => void }) {
+function PastelTile({ name, bg, ageLabel, onClick, aspectRatio = '4 / 3' }: { name: string; bg: string; ageLabel?: string; onClick?: () => void; aspectRatio?: string }) {
   const highlightBg = bg.replace(/(\d+)%\)$/, (_, l) => `${Math.min(Number(l) + 8, 97)}%)`);
   const darkerBg = bg.replace(/(\d+)%\)$/, (_, l) => `${Math.max(Number(l) - 10, 68)}%)`);
   const shadowColor = bg.replace(/hsl\(([^,]+),\s*([^,]+),\s*[^)]+\)/, 'hsla($1, $2, 50%, 0.25)');
@@ -92,7 +92,7 @@ function PastelTile({ name, bg, ageLabel, onClick }: { name: string; bg: string;
           radial-gradient(ellipse at 70% 75%, ${darkerBg} 0%, transparent 70%),
           ${bg}
         `,
-        aspectRatio: '4 / 3',
+        aspectRatio,
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
@@ -235,21 +235,56 @@ export default function ProductLibrary() {
           </motion.div>
         </motion.div>
 
-        {/* ── Barn & Unga ── */}
+        {/* ── Emotionella resan (trio) ── */}
         <div className="px-5 mt-10">
-          <SectionLabel label="Barn & Unga" delay={0.14} />
+          <SectionLabel label="Emotionella resan" delay={0.14} />
+          <motion.div
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+            style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}
+          >
+            {/* Jag i Mig — full width, the starting point */}
+            {allProducts.filter(p => p.id === 'jag_i_mig').map(p => (
+              <PastelTile
+                key={p.id}
+                name={p.name}
+                bg={PASTEL_COLORS[p.id] ?? 'hsl(0, 0%, 92%)'}
+                ageLabel={p.ageLabel}
+                onClick={() => navigate(`/product/${p.slug}`)}
+                aspectRatio="2 / 1"
+              />
+            ))}
+            {/* Jag med Andra + Jag i Världen — side by side */}
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '14px' }}>
+              {allProducts.filter(p => p.id === 'jag_med_andra' || p.id === 'jag_i_varlden').map(p => (
+                <PastelTile
+                  key={p.id}
+                  name={p.name}
+                  bg={PASTEL_COLORS[p.id] ?? 'hsl(0, 0%, 92%)'}
+                  ageLabel={p.ageLabel}
+                  onClick={() => navigate(`/product/${p.slug}`)}
+                />
+              ))}
+            </div>
+          </motion.div>
+        </div>
+
+        {/* ── Övriga samtalskort ── */}
+        <div className="px-5 mt-10">
+          <SectionLabel label="Samtalskort" delay={0.22} />
           <motion.div
             variants={containerVariants}
             initial="hidden"
             animate="visible"
             style={{
               display: 'grid',
-              gridTemplateColumns: 'repeat(2, 1fr)',
+              gridTemplateColumns: 'repeat(3, 1fr)',
               gap: '14px',
               paddingBottom: '32px',
             }}
           >
-            {allProducts.map((p) => (
+            {allProducts.filter(p => ['vardagskort', 'syskonkort', 'sexualitetskort'].includes(p.id)).map(p => (
               <PastelTile
                 key={p.id}
                 name={p.name}
