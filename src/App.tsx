@@ -111,7 +111,7 @@ function AppRoutes() {
     <Routes>
       <Route path="/login" element={user ? <Navigate to="/" replace /> : <Login />} />
       <Route path="/screenshot-export" element={<ScreenshotExport />} />
-      {import.meta.env.DEV && <Route path="/analytics" element={<AnalyticsDashboard />} />}
+      <Route path="/analytics" element={<AnalyticsDashboard />} />
       <Route path="/*" element={<ProtectedRoutes />} />
       <Route path="/*" element={<ProtectedRoutes />} />
     </Routes>
