@@ -42,15 +42,22 @@ const tileVariants = {
   },
 };
 
-/** Subtle audience label — centered divider feel */
+/** Audience label with flanking lines */
 function AudienceLabel({ label, delay = 0 }: { label: string; delay?: number }) {
   return (
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ delay, duration: 0.6 }}
-      style={{ textAlign: 'center', marginBottom: '10px', marginTop: '4px' }}
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: '12px',
+        marginBottom: '10px',
+        marginTop: '4px',
+      }}
     >
+      <div style={{ flex: 1, height: '1px', background: 'var(--color-text-tertiary)', opacity: 0.15 }} />
       <p
         className="font-sans"
         style={{
@@ -59,11 +66,13 @@ function AudienceLabel({ label, delay = 0 }: { label: string; delay?: number }) 
           letterSpacing: '0.18em',
           textTransform: 'uppercase',
           color: 'var(--color-text-tertiary)',
-          opacity: 0.5,
+          opacity: 0.55,
+          whiteSpace: 'nowrap',
         }}
       >
         {label}
       </p>
+      <div style={{ flex: 1, height: '1px', background: 'var(--color-text-tertiary)', opacity: 0.15 }} />
     </motion.div>
   );
 }
