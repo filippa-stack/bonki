@@ -14,9 +14,9 @@ const STILL_US_TAGLINE = 'Djupa samtal för par som vill förstå varandra bätt
 const PASTEL_COLORS: Record<string, string> = {
   jag_i_mig: 'hsl(45, 30%, 90%)',        // warm cream
   jag_med_andra: 'hsl(260, 25%, 90%)',    // soft lavender
-  jag_i_varlden: 'hsl(150, 30%, 90%)',    // pale mint
+  jag_i_varlden: 'hsl(185, 30%, 89%)',    // ocean teal
   sexualitetskort: 'hsl(330, 25%, 90%)',  // blush pink
-  vardagskort: 'hsl(170, 25%, 88%)',      // sage
+  vardagskort: 'hsl(140, 25%, 88%)',      // sage green
   syskonkort: 'hsl(200, 25%, 88%)',       // dusty blue
 };
 
