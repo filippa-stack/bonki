@@ -74,24 +74,19 @@ function SectionLabel({ label, delay = 0 }: { label: string; delay?: number }) {
 
 /** Pastel child-product tile — pillow-style with breathing animation */
 function PastelTile({ name, bg, ageLabel, onClick, aspectRatio = '4 / 3' }: { name: string; bg: string; ageLabel?: string; onClick?: () => void; aspectRatio?: string }) {
-  const highlightBg = bg.replace(/(\d+)%\)$/, (_, l) => `${Math.min(Number(l) + 8, 97)}%)`);
-  const darkerBg = bg.replace(/(\d+)%\)$/, (_, l) => `${Math.max(Number(l) - 10, 68)}%)`);
-  const shadowColor = bg.replace(/hsl\(([^,]+),\s*([^,]+),\s*[^)]+\)/, 'hsla($1, $2, 50%, 0.25)');
+  const subtleDarker = bg.replace(/(\d+)%\)$/, (_, l) => `${Math.max(Number(l) - 3, 80)}%)`);
+  const shadowColor = bg.replace(/hsl\(([^,]+),\s*([^,]+),\s*[^)]+\)/, 'hsla($1, $2, 45%, 0.18)');
 
   return (
     <motion.div
       variants={tileVariants}
-      whileHover={{ scale: 1.05, y: -5 }}
-      whileTap={{ scale: 0.93 }}
+      whileHover={{ scale: 1.04, y: -4 }}
+      whileTap={{ scale: 0.96 }}
       onClick={onClick}
       className="cursor-pointer"
       style={{
-        borderRadius: '28px',
-        background: `
-          radial-gradient(ellipse at 30% 25%, ${highlightBg} 0%, transparent 60%),
-          radial-gradient(ellipse at 70% 75%, ${darkerBg} 0%, transparent 70%),
-          ${bg}
-        `,
+        borderRadius: '24px',
+        background: `linear-gradient(165deg, ${bg} 0%, ${subtleDarker} 100%)`,
         aspectRatio,
         display: 'flex',
         alignItems: 'center',
@@ -100,11 +95,10 @@ function PastelTile({ name, bg, ageLabel, onClick, aspectRatio = '4 / 3' }: { na
         padding: '16px',
         position: 'relative',
         boxShadow: `
-          0 2px 4px 0 ${shadowColor},
-          0 6px 16px -2px ${shadowColor},
-          0 14px 36px -6px ${shadowColor}
+          0 1px 3px 0 ${shadowColor},
+          0 6px 20px -4px ${shadowColor},
+          0 16px 44px -8px ${shadowColor}
         `,
-        animation: 'tile-breathe 3.5s ease-in-out infinite',
       }}
     >
       {ageLabel && (
