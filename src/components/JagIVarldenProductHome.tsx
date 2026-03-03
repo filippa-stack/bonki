@@ -59,6 +59,34 @@ export default function JagIVarldenProductHome({ product }: { product: ProductMa
         />
       </motion.div>
 
+      {/* Second peacock — bottom-left, right-side up */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 1, delay: 0.3 }}
+        style={{
+          position: 'absolute',
+          bottom: '-80%',
+          left: '-40%',
+          width: '140%',
+          height: '130%',
+          zIndex: 0,
+          pointerEvents: 'none',
+        }}
+      >
+        <img
+          src={peacockImage}
+          alt=""
+          style={{
+            width: '100%',
+            height: '100%',
+            objectFit: 'contain',
+            objectPosition: 'left bottom',
+            opacity: 0.35,
+          }}
+        />
+      </motion.div>
+
       {/* Content — centered */}
       <div
         style={{
