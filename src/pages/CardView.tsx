@@ -27,6 +27,7 @@ import { getProductForCard } from '@/data/products';
 import { getCompletionMessages, getUIText, type PronounMode } from '@/lib/pronouns';
 import { useCardImage } from '@/hooks/useCardImage';
 import { useCardVisit } from '@/hooks/useCardVisit';
+import { useProductTheme } from '@/hooks/useProductTheme';
 
 import Header from '@/components/Header';
 import SectionView, { type SectionViewHandle } from '@/components/SectionView';
@@ -140,6 +141,13 @@ export default function CardView() {
   const effectiveSteps = useMemo(() => getCardStepOrder(card), [card]);
   const completionMessages = useMemo(() => getCompletionMessages(pronounMode, product?.ageLabel), [pronounMode, product?.ageLabel]);
   const cardImageUrl = useCardImage(cardId);
+
+  // Apply product theme (background + accent colors)
+  useProductTheme(
+    product?.accentColor ?? 'hsl(158, 35%, 18%)',
+    product?.secondaryAccent ?? 'hsl(38, 88%, 46%)',
+    product?.backgroundColor,
+  );
 
   // Track card visit for analytics
   const { recordVisit } = useCardVisit();

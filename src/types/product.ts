@@ -10,6 +10,8 @@ export interface ProductManifest {
   accentColor: string;       // HSL string, e.g. 'hsl(158, 35%, 18%)'
   accentColorMuted: string;  // Lighter variant for backgrounds
   secondaryAccent: string;   // Complementary accent (like saffron in Still Us)
+  /** Product page background color (hex), e.g. '#FFFDF8' */
+  backgroundColor: string;
   /** Pronoun mode: 'ni' for couple products, 'du' for solo products */
   pronounMode: 'du' | 'ni';
   /** Age label shown in UI, e.g. '3+', '6+', '13+' */

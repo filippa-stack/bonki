@@ -9,6 +9,7 @@ import { useCoupleSpaceContext } from '@/contexts/CoupleSpaceContext';
 import { supabase } from '@/integrations/supabase/client';
 import { useOptimisticCompletions } from '@/contexts/OptimisticCompletionsContext';
 import { getProductForCard, allProducts } from '@/data/products';
+import { useProductTheme } from '@/hooks/useProductTheme';
 import Header from '@/components/Header';
 
 const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
@@ -69,6 +70,13 @@ export default function Category() {
     return allProducts.find(p => p.categories.some(c => c.id === categoryId));
   }, [categoryId]);
   const backTo = product ? `/product/${product.slug}` : '/';
+
+  // Apply product theme (background + accent colors)
+  useProductTheme(
+    product?.accentColor ?? 'hsl(158, 35%, 18%)',
+    product?.secondaryAccent ?? 'hsl(38, 88%, 46%)',
+    product?.backgroundColor,
+  );
 
   if (!category) {
     return (
