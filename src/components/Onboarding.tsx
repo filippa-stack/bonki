@@ -1,13 +1,13 @@
 import { useState } from 'react';
 import { motion, AnimatePresence, PanInfo } from 'framer-motion';
-import { useTranslation } from 'react-i18next';
 import { useApp } from '@/contexts/AppContext';
 
 /** Apple-grade ease: slow start, confident finish */
 const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
+const LAST_SLIDE = 2;
+
 export default function Onboarding() {
-  const { t } = useTranslation();
   const [currentSlide, setCurrentSlide] = useState(0);
   const { completeOnboarding, initializeCoupleSpace } = useApp();
 
@@ -15,8 +15,6 @@ export default function Onboarding() {
     initializeCoupleSpace();
     completeOnboarding();
   };
-
-  const LAST_SLIDE = 3;
 
   const handleNext = () => {
     if (currentSlide < LAST_SLIDE) setCurrentSlide(currentSlide + 1);
@@ -60,10 +58,9 @@ export default function Onboarding() {
             onDragEnd={handleDragEnd}
           >
             <div className="flex-1 flex flex-col" style={{ position: 'relative' }}>
-              {currentSlide === 0 && <Slide1 />}
-              {currentSlide === 1 && <Slide2 />}
-              {currentSlide === 2 && <SlideMechanics />}
-              {currentSlide === 3 && <Slide3 />}
+              {currentSlide === 0 && <SlideWelcome />}
+              {currentSlide === 1 && <SlideHow />}
+              {currentSlide === 2 && <SlideReady />}
             </div>
           </motion.div>
         </AnimatePresence>
@@ -72,7 +69,7 @@ export default function Onboarding() {
         <div
           style={{
             paddingBottom: 'calc(32px + env(safe-area-inset-bottom, 0px))',
-            paddingTop: currentSlide < 2 ? '40px' : '24px',
+            paddingTop: '24px',
           }}
           className="flex flex-col items-center gap-5 px-6"
         >
@@ -97,7 +94,7 @@ export default function Onboarding() {
                 transition: 'transform 200ms ease-out, box-shadow 300ms ease-out',
               }}
             >
-              Kom igång
+              Utforska
             </button>
           ) : (
             <button
@@ -116,11 +113,11 @@ export default function Onboarding() {
 
           {/* Progress dots */}
           <div style={{ display: 'flex', gap: '4px', alignItems: 'center' }}>
-            {[0, 1, 2, 3].map((i) => (
+            {[0, 1, 2].map((i) => (
               <button
                 key={i}
                 onClick={() => setCurrentSlide(i)}
-                aria-label={t('onboarding.slide_label', { number: i + 1 })}
+                aria-label={`Slide ${i + 1}`}
                 style={{
                   background: 'none',
                   border: 'none',
@@ -179,17 +176,34 @@ export default function Onboarding() {
   );
 }
 
-/* ─── SLIDE 1: "Ett gemensamt rum." ─── */
-function Slide1() {
+/* ─── SLIDE 1: Welcome to Bonki ─── */
+function SlideWelcome() {
   return (
     <div className="flex-1 flex flex-col items-center justify-center" style={{ padding: '0 32px' }}>
+      <motion.p
+        initial={{ opacity: 0, y: 8 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.05, duration: 0.6, ease: EASE }}
+        style={{
+          fontFamily: 'var(--font-sans)',
+          fontSize: '11px',
+          letterSpacing: '0.12em',
+          textTransform: 'uppercase' as const,
+          color: 'var(--accent-saffron)',
+          marginBottom: '20px',
+          fontWeight: 600,
+        }}
+      >
+        Välkommen till
+      </motion.p>
+
       <motion.h1
         initial={{ opacity: 0, x: -16 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ delay: 0.1, duration: 0.7, ease: EASE }}
         style={{
           fontFamily: 'var(--font-serif)',
-          fontSize: '42px',
+          fontSize: '46px',
           fontWeight: 700,
           color: 'var(--color-text-primary)',
           lineHeight: 1.1,
@@ -197,7 +211,7 @@ function Slide1() {
           letterSpacing: '-0.02em',
         }}
       >
-        Ett gemensamt rum.
+        Bonki
       </motion.h1>
 
       <motion.p
@@ -212,9 +226,10 @@ function Slide1() {
           textAlign: 'center',
           marginTop: '20px',
           lineHeight: 1.6,
+          maxWidth: '280px',
         }}
       >
-        Still Us är skapat för er — ett utrymme att mötas i, mitt i vardagen.
+        Ett bibliotek av samtal — för par, barn och familjer.
       </motion.p>
 
       <motion.p
@@ -230,80 +245,18 @@ function Slide1() {
           marginTop: '16px',
         }}
       >
-        För samtal ni vill hålla levande.
+        Varje samtal räknas.
       </motion.p>
     </div>
   );
 }
 
-/* ─── SLIDE 2: "Utforska i er takt." ─── */
-function Slide2() {
-  return (
-    <div className="flex-1 flex flex-col items-center justify-center" style={{ position: 'relative', padding: '0 32px' }}>
-
-      <div style={{ position: 'relative', zIndex: 1, textAlign: 'center' }}>
-        <motion.h1
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.15, duration: 0.7, ease: EASE }}
-          style={{
-            fontFamily: 'var(--font-serif)',
-            fontSize: '36px',
-            fontWeight: 700,
-            color: 'var(--color-text-primary)',
-            textAlign: 'center',
-            lineHeight: 1.15,
-            letterSpacing: '-0.02em',
-          }}
-        >
-           Utforska tillsammans.
-        </motion.h1>
-
-        <motion.p
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.35, duration: 0.6, ease: EASE }}
-          style={{
-            fontFamily: 'var(--font-sans)',
-            fontSize: '15px',
-            color: 'var(--color-text-secondary)',
-            opacity: 0.75,
-            textAlign: 'center',
-            marginTop: '20px',
-            lineHeight: 1.6,
-          }}
-        >
-          Välj ett ämne. Läs frågorna högt.
-          <br />
-          Lyssna. Reflektera.
-        </motion.p>
-
-        <motion.p
-          initial={{ opacity: 0, y: 8 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.5, duration: 0.6, ease: EASE }}
-          style={{
-            fontFamily: 'var(--font-serif)',
-            fontStyle: 'italic',
-            fontSize: '17px',
-            color: 'var(--accent-text)',
-            textAlign: 'center',
-            marginTop: '16px',
-          }}
-        >
-          Det finns inget rätt sätt — bara ert.
-        </motion.p>
-      </div>
-    </div>
-  );
-}
-
-/* ─── SLIDE MECHANICS: "Så funkar det." ─── */
-function SlideMechanics() {
+/* ─── SLIDE 2: How it works ─── */
+function SlideHow() {
   const steps = [
-    { num: '01', text: 'Välj ett tema. Samtalet tar den tid ni ger det.' },
-    { num: '02', text: 'Låt var och en tala till punkt.' },
-    { num: '03', text: 'Anteckna det ni vill minnas.' },
+    { num: '01', text: 'Välj en samtalslek som passar er.' },
+    { num: '02', text: 'Läs frågorna högt, en i taget.' },
+    { num: '03', text: 'Lyssna. Reflektera. Inga rätta svar.' },
   ];
 
   return (
@@ -392,30 +345,14 @@ function SlideMechanics() {
           maxWidth: '260px',
         }}
       >
-        Pausa när det behövs. Återkom när det går.
-      </motion.p>
-
-      <motion.p
-        initial={{ opacity: 0, y: 6 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.9, duration: 0.6, ease: EASE }}
-        style={{
-          fontFamily: 'var(--font-serif)',
-          fontStyle: 'italic',
-          fontSize: '17px',
-          color: 'var(--accent-text)',
-          textAlign: 'center',
-          marginTop: '14px',
-        }}
-      >
-        Värdet ligger i reflektionen, inte i lösningen.
+        Pausa när det behövs. Återkom när det passar.
       </motion.p>
     </div>
   );
 }
 
-/* ─── SLIDE 3: "Omsorgsfullt utvecklat." ─── */
-function Slide3() {
+/* ─── SLIDE 3: Ready ─── */
+function SlideReady() {
   return (
     <div className="flex-1 flex flex-col items-center justify-center" style={{ padding: '0 32px' }}>
       <motion.h1
@@ -446,25 +383,10 @@ function Slide3() {
           textAlign: 'center',
           marginTop: '20px',
           lineHeight: 1.6,
+          maxWidth: '300px',
         }}
       >
-        Varje samtal bygger på psykologisk forskning om relationer och anknytning.
-      </motion.p>
-
-      <motion.p
-        initial={{ opacity: 0, y: 8 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.45, duration: 0.6, ease: EASE }}
-        style={{
-          fontFamily: 'var(--font-sans)',
-          fontSize: '15px',
-          color: 'hsl(36, 12%, 78%)',
-          textAlign: 'center',
-          marginTop: '10px',
-          lineHeight: 1.6,
-        }}
-      >
-        Formulerat för att skapa klarhet, närhet och förståelse — i er takt.
+        Varje samtalslek bygger på psykologisk forskning — om anknytning, känslor och relationer.
       </motion.p>
 
       <motion.div
@@ -487,7 +409,7 @@ function Slide3() {
       <motion.p
         initial={{ opacity: 0, y: 8 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.65, duration: 0.6, ease: EASE }}
+        transition={{ delay: 0.55, duration: 0.6, ease: EASE }}
         style={{
           fontFamily: 'var(--font-serif)',
           fontStyle: 'italic',
@@ -500,7 +422,7 @@ function Slide3() {
           zIndex: 1,
         }}
       >
-        Bara er.
+        Redo att börja?
       </motion.p>
     </div>
   );
