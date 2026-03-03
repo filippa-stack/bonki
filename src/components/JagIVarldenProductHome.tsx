@@ -172,11 +172,11 @@ export default function JagIVarldenProductHome({ product }: { product: ProductMa
                   backdropFilter: 'blur(16px)',
                   border: PILL_BORDER,
                   borderRadius: '28px',
-                  padding: `${paddings[index] || '18px'} 24px`,
+                  padding: `${paddings[index] || '18px'} 28px`,
                   textAlign: 'center',
                   cursor: 'pointer',
                   boxShadow: '0 4px 16px -4px hsla(140, 20%, 28%, 0.15), 0 1px 3px hsla(140, 20%, 28%, 0.1)',
-                  whiteSpace: 'nowrap' as const,
+                  whiteSpace: 'normal' as const,
                   width: widths[index] || '61%',
                 }}
               >
