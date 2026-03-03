@@ -19,6 +19,7 @@ const pillVariants = {
 };
 
 const FOREST_GREEN = 'hsl(158, 35%, 18%)';
+const PILL_BORDER = '2px solid hsla(55, 50%, 58%, 0.55)';
 
 export default function JagIMigProductHome({ product }: { product: ProductManifest }) {
   const navigate = useNavigate();
@@ -28,21 +29,19 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
       className="min-h-screen relative overflow-hidden"
       style={{ backgroundColor: 'var(--surface-base)' }}
     >
-      {/* Background illustration */}
+      {/* Background illustration — no fade, natural opacity */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 1 }}
         style={{
           position: 'absolute',
-          top: '-2%',
-          left: '-30%',
-          width: '115%',
-          height: '100%',
+          top: '-4%',
+          left: '-18%',
+          width: '110%',
+          height: '104%',
           zIndex: 0,
           pointerEvents: 'none',
-          maskImage: 'linear-gradient(to bottom, black 70%, transparent 95%)',
-          WebkitMaskImage: 'linear-gradient(to bottom, black 70%, transparent 95%)',
         }}
       >
         <img
@@ -53,12 +52,12 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
             height: '100%',
             objectFit: 'contain',
             objectPosition: 'left top',
-            opacity: 0.5,
+            opacity: 0.65,
           }}
         />
       </motion.div>
 
-      {/* Content — pills positioned right-of-center */}
+      {/* Content — pills centered-right */}
       <div
         style={{
           position: 'relative',
@@ -66,12 +65,12 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
           minHeight: '100vh',
           display: 'flex',
           flexDirection: 'column',
-          alignItems: 'flex-end',
+          alignItems: 'center',
           justifyContent: 'flex-start',
-          paddingTop: '10vh',
-          paddingRight: '5vw',
+          paddingTop: '8vh',
+          paddingRight: '8vw',
           paddingBottom: '48px',
-          paddingLeft: '28vw',
+          paddingLeft: '32vw',
         }}
       >
         <motion.div
@@ -82,28 +81,29 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-            gap: '7vh',
+            gap: '8vh',
             width: '100%',
           }}
         >
-          {/* Title pill */}
+          {/* Title pill — wide, generous padding */}
           <motion.div
             variants={pillVariants}
             style={{
               background: 'hsla(45, 40%, 96%, 0.92)',
               backdropFilter: 'blur(12px)',
-              border: '1.5px solid hsla(55, 45%, 62%, 0.5)',
+              border: PILL_BORDER,
               borderRadius: '16px',
-              padding: '24px 40px',
+              padding: '28px 0',
               textAlign: 'center',
               boxShadow: '0 2px 16px -2px hsla(45, 30%, 40%, 0.1)',
-              marginBottom: '2vh',
+              marginBottom: '1vh',
+              width: '100%',
             }}
           >
             <h1
               className="font-serif"
               style={{
-                fontSize: 'clamp(28px, 8vw, 40px)',
+                fontSize: 'clamp(30px, 9vw, 42px)',
                 fontWeight: 700,
                 color: FOREST_GREEN,
                 letterSpacing: '-0.01em',
@@ -114,7 +114,7 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
             </h1>
           </motion.div>
 
-          {/* Category pills */}
+          {/* Category pills — full width, 2px border */}
           {product.categories.map((cat) => (
             <motion.button
               key={cat.id}
@@ -125,19 +125,20 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
               style={{
                 background: 'hsla(45, 40%, 97%, 0.9)',
                 backdropFilter: 'blur(12px)',
-                border: '1.5px solid hsla(55, 45%, 62%, 0.45)',
+                border: PILL_BORDER,
                 borderRadius: '28px',
-                padding: '14px 28px',
+                padding: '14px 24px',
                 textAlign: 'center',
                 cursor: 'pointer',
                 boxShadow: '0 2px 10px -2px hsla(45, 30%, 40%, 0.08)',
                 whiteSpace: 'nowrap' as const,
+                width: '100%',
               }}
             >
               <span
                 className="font-serif"
                 style={{
-                  fontSize: 'clamp(16px, 4.5vw, 22px)',
+                  fontSize: 'clamp(17px, 5vw, 24px)',
                   fontWeight: 600,
                   color: FOREST_GREEN,
                 }}
