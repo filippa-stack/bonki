@@ -247,7 +247,7 @@ export default function ProductLibrary() {
               letterSpacing: '0.08em',
             }}
           >
-            Samtal som öppnar dörrar
+            Välj det samtal ni behöver just nu
           </p>
         </motion.div>
 
@@ -258,7 +258,7 @@ export default function ProductLibrary() {
           initial="hidden"
           animate="visible"
         >
-          <AudienceLabel label="Vuxna" delay={0.08} />
+          <AudienceLabel label="Ni två" delay={0.08} />
           <motion.div
             variants={tileVariants}
             whileHover={{ scale: 1.02, y: -2 }}
@@ -317,7 +317,7 @@ export default function ProductLibrary() {
 
         {/* ── Emotionella resan (trio) ── */}
         <div className="px-5">
-          <AudienceLabel label="Barn & unga" delay={0.12} />
+          <AudienceLabel label="Ert barn" delay={0.12} />
           <motion.div
             variants={containerVariants}
             initial="hidden"
@@ -343,7 +343,7 @@ export default function ProductLibrary() {
 
         {/* ── Hela familjen ── */}
         <div className="px-5 mt-8">
-          <AudienceLabel label="Hela familjen" delay={0.20} />
+          <AudienceLabel label="Er familj" delay={0.20} />
           <motion.div
             variants={containerVariants}
             initial="hidden"
