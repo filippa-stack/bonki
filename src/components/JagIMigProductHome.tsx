@@ -52,7 +52,7 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
             height: '100%',
             objectFit: 'contain',
             objectPosition: 'left top',
-            opacity: 0.9,
+            opacity: 0.35,
           }}
         />
       </motion.div>
