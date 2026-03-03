@@ -112,23 +112,26 @@ export default function ProductIntro({ productId, accentColor, onComplete }: Pro
               {slide.heading}
             </motion.h1>
 
-            <motion.p
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3, duration: 0.6, ease: EASE }}
-              style={{
-                fontFamily: 'var(--font-sans)',
-                fontSize: '15px',
-                color: 'var(--color-text-secondary)',
-                opacity: 0.75,
-                textAlign: 'center',
-                marginTop: '20px',
-                lineHeight: 1.6,
-                maxWidth: '280px',
-              }}
-            >
-              {slide.body}
-            </motion.p>
+            {slide.body.split('\n\n').map((paragraph, pi) => (
+              <motion.p
+                key={pi}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3 + pi * 0.1, duration: 0.6, ease: EASE }}
+                style={{
+                  fontFamily: 'var(--font-sans)',
+                  fontSize: '15px',
+                  color: 'var(--color-text-secondary)',
+                  opacity: 0.75,
+                  textAlign: 'center',
+                  marginTop: pi === 0 ? '20px' : '14px',
+                  lineHeight: 1.6,
+                  maxWidth: '300px',
+                }}
+              >
+                {paragraph}
+              </motion.p>
+            ))}
 
             {slide.signoff && (
               <motion.p
