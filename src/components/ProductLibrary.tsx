@@ -16,12 +16,12 @@ const ILLUSTRATIONS: Record<string, string> = {
  * Short taglines per product — shown below the title on each tile.
  */
 const TAGLINES: Record<string, string> = {
-  jag_i_mig: 'Förstå det som händer inuti',
-  jag_med_andra: 'Om vänskap, gränser och tillhörighet',
-  jag_i_varlden: 'Identitet, ansvar och världen runt dig',
+  jag_i_mig: 'Hjälp ditt barn hitta ord för det som känns',
+  jag_med_andra: 'När världen utanför börjar betyda allt',
+  jag_i_varlden: 'De stora frågorna, på riktigt',
   vardagskort: 'Små samtal som gör skillnad',
   syskonkort: 'Bandet som både skaver och håller',
-  sexualitetskort: 'Kropp, relationer och gränser',
+  sexualitetskort: 'Det svåra samtalet, utan att det behöver vara svårt',
 };
 
 const PASTEL_COLORS: Record<string, string> = {
@@ -333,6 +333,7 @@ export default function ProductLibrary() {
                 key={p.id}
                 name={p.name}
                 bg={PASTEL_COLORS[p.id]!}
+                tagline={TAGLINES[p.id]}
                 ageLabel={p.ageLabel}
                 onClick={() => navigate(`/product/${p.slug}`)}
                 aspectRatio="1 / 1"
