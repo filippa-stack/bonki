@@ -65,7 +65,7 @@ export default function JagMedAndraProductHome({ product }: { product: ProductMa
         transition={{ duration: 1, delay: 0.3 }}
         style={{
           position: 'absolute',
-          bottom: '-5%',
+          bottom: '8%',
           right: '-15%',
           width: '55%',
           zIndex: 0,
@@ -80,7 +80,7 @@ export default function JagMedAndraProductHome({ product }: { product: ProductMa
             height: '100%',
             objectFit: 'contain',
             opacity: 0.35,
-            transform: 'rotate(-15deg)',
+            transform: 'rotate(-30deg)',
           }}
         />
       </motion.div>
