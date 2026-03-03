@@ -1,5 +1,7 @@
-import { motion } from 'framer-motion';
+import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
+import { ChevronDown } from 'lucide-react';
 import { allProducts } from '@/data/products';
 import bonkiLogo from '@/assets/bonki-logo.png';
 import illustrationJagIMig from '@/assets/illustration-jag-i-mig.png';
@@ -92,6 +94,84 @@ function AudienceLabel({ label, delay = 0 }: { label: string; delay?: number }) 
       </p>
       <div style={{ width: '48px', height: '1px', background: 'var(--color-text-tertiary)', opacity: 0.18 }} />
     </motion.div>
+  );
+}
+
+/** Collapsible "Kommer snart" dropdown */
+function ComingSoonDropdown() {
+  const [open, setOpen] = useState(false);
+  return (
+    <div style={{ width: '100%', marginTop: '14px' }}>
+      <button
+        onClick={() => setOpen(v => !v)}
+        className="font-sans"
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: '6px',
+          width: '100%',
+          padding: '8px 0',
+          background: 'none',
+          border: 'none',
+          cursor: 'pointer',
+          fontSize: '9px',
+          fontWeight: 700,
+          letterSpacing: '0.16em',
+          textTransform: 'uppercase' as const,
+          color: 'var(--text-primary)',
+          opacity: 0.3,
+        }}
+      >
+        Kommer snart
+        <motion.span
+          animate={{ rotate: open ? 180 : 0 }}
+          transition={{ duration: 0.25 }}
+          style={{ display: 'inline-flex' }}
+        >
+          <ChevronDown size={12} />
+        </motion.span>
+      </button>
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: 'auto', opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+            style={{ overflow: 'hidden' }}
+          >
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1px', paddingTop: '4px' }}>
+              {COMING_SOON_PRODUCTS.map(p => (
+                <div
+                  key={p.name}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'baseline',
+                    gap: '8px',
+                    padding: '5px 4px',
+                    opacity: 0.35,
+                  }}
+                >
+                  <span
+                    className="font-serif"
+                    style={{ fontSize: '12px', fontWeight: 600, color: 'var(--text-primary)', whiteSpace: 'nowrap' }}
+                  >
+                    {p.name}
+                  </span>
+                  <span
+                    className="font-serif"
+                    style={{ fontSize: '10px', color: 'var(--text-primary)', opacity: 0.6, lineHeight: 1.3 }}
+                  >
+                    {p.tagline}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
   );
 }
 
@@ -322,71 +402,8 @@ export default function ProductLibrary() {
             </p>
           </motion.div>
 
-          {/* Coming soon Still products — compact list */}
-          <motion.div
-            variants={containerVariants}
-            initial="hidden"
-            animate="visible"
-            style={{
-              width: '100%',
-              marginTop: '14px',
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '1px',
-            }}
-          >
-            {COMING_SOON_PRODUCTS.map(p => (
-              <motion.div
-                key={p.name}
-                variants={tileVariants}
-                style={{
-                  display: 'flex',
-                  alignItems: 'baseline',
-                  gap: '8px',
-                  padding: '6px 4px',
-                  opacity: 0.35,
-                }}
-              >
-                <h3
-                  className="font-serif"
-                  style={{
-                    fontSize: '12px',
-                    fontWeight: 600,
-                    color: 'var(--text-primary)',
-                    whiteSpace: 'nowrap',
-                  }}
-                >
-                  {p.name}
-                </h3>
-                <span
-                  className="font-serif"
-                  style={{
-                    fontSize: '10px',
-                    color: 'var(--text-primary)',
-                    opacity: 0.6,
-                    lineHeight: 1.3,
-                  }}
-                >
-                  {p.tagline}
-                </span>
-              </motion.div>
-            ))}
-            <p
-              className="font-sans"
-              style={{
-                fontSize: '8px',
-                fontWeight: 600,
-                letterSpacing: '0.14em',
-                textTransform: 'uppercase',
-                color: 'var(--text-primary)',
-                opacity: 0.2,
-                marginTop: '4px',
-                textAlign: 'center',
-              }}
-            >
-              Kommer snart
-            </p>
-          </motion.div>
+          {/* Coming soon — collapsible */}
+          <ComingSoonDropdown />
         </motion.div>
 
         {/* ── Emotionella resan (trio) ── */}
