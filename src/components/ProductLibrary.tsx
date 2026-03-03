@@ -386,7 +386,7 @@ export default function ProductLibrary() {
               opacity: 0.35,
             }}
           >
-            Varje samtal räknas.
+            Utvecklat av psykolog med 20+ års klinisk erfarenhet.
           </p>
         </motion.div>
       </div>
