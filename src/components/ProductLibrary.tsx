@@ -310,7 +310,7 @@ export default function ProductLibrary() {
                 fontStyle: 'italic',
               }}
             >
-              Förbli ett vi medan vi uppfostrar dem
+              För samtalen som aldrig blir av
             </p>
           </motion.div>
         </motion.div>
