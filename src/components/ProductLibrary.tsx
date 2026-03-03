@@ -322,17 +322,17 @@ export default function ProductLibrary() {
             </p>
           </motion.div>
 
-          {/* Coming soon Still products */}
+          {/* Coming soon Still products — compact list */}
           <motion.div
             variants={containerVariants}
             initial="hidden"
             animate="visible"
             style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(2, 1fr)',
-              gap: '10px',
               width: '100%',
-              marginTop: '12px',
+              marginTop: '14px',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '1px',
             }}
           >
             {COMING_SOON_PRODUCTS.map(p => (
@@ -340,72 +340,52 @@ export default function ProductLibrary() {
                 key={p.name}
                 variants={tileVariants}
                 style={{
-                  borderRadius: '16px',
-                  padding: '16px 14px',
-                  background: 'hsla(158, 15%, 96%, 0.6)',
-                  position: 'relative',
-                  overflow: 'hidden',
-                  opacity: 0.7,
+                  display: 'flex',
+                  alignItems: 'baseline',
+                  gap: '8px',
+                  padding: '6px 4px',
+                  opacity: 0.35,
                 }}
               >
-                <span
-                  className="font-sans"
-                  style={{
-                    position: 'absolute',
-                    top: '8px',
-                    right: '10px',
-                    fontSize: '8px',
-                    fontWeight: 700,
-                    letterSpacing: '0.14em',
-                    textTransform: 'uppercase',
-                    color: 'var(--text-primary)',
-                    opacity: 0.25,
-                  }}
-                >
-                  Kommer snart
-                </span>
-                {p.audience && (
-                  <span
-                    className="font-sans"
-                    style={{
-                      fontSize: '8px',
-                      fontWeight: 600,
-                      letterSpacing: '0.06em',
-                      color: 'var(--text-primary)',
-                      opacity: 0.2,
-                    }}
-                  >
-                    {p.audience}
-                  </span>
-                )}
                 <h3
                   className="font-serif"
                   style={{
-                    fontSize: '14px',
-                    fontWeight: 700,
-                    lineHeight: 1.2,
+                    fontSize: '12px',
+                    fontWeight: 600,
                     color: 'var(--text-primary)',
-                    letterSpacing: '-0.01em',
-                    marginTop: p.audience ? '2px' : '0',
+                    whiteSpace: 'nowrap',
                   }}
                 >
                   {p.name}
                 </h3>
-                <p
+                <span
                   className="font-serif"
                   style={{
                     fontSize: '10px',
-                    fontWeight: 400,
                     color: 'var(--text-primary)',
-                    opacity: 0.4,
-                    marginTop: '4px',
+                    opacity: 0.6,
                     lineHeight: 1.3,
                   }}
                 >
                   {p.tagline}
-                </p>
+                </span>
               </motion.div>
             ))}
+            <p
+              className="font-sans"
+              style={{
+                fontSize: '8px',
+                fontWeight: 600,
+                letterSpacing: '0.14em',
+                textTransform: 'uppercase',
+                color: 'var(--text-primary)',
+                opacity: 0.2,
+                marginTop: '4px',
+                textAlign: 'center',
+              }}
+            >
+              Kommer snart
+            </p>
           </motion.div>
         </motion.div>
 
