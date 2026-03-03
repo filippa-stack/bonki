@@ -57,7 +57,7 @@ export default function AnalyticsDashboard() {
   const [data, setData] = useState<Analytics | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [fromDate, setFromDate] = useState<Date>(new Date('2026-02-27'));
+  const [fromDate, setFromDate] = useState<Date>(new Date('2026-02-01'));
 
   useEffect(() => {
     if (!user || user.id !== ADMIN_USER_ID) return;

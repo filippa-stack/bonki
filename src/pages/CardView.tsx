@@ -26,6 +26,7 @@ import { toastOnce, toastErrorOnce } from '@/lib/toastOnce';
 import { getProductForCard } from '@/data/products';
 import { getCompletionMessages, getUIText, type PronounMode } from '@/lib/pronouns';
 import { useCardImage } from '@/hooks/useCardImage';
+import { useCardVisit } from '@/hooks/useCardVisit';
 
 import Header from '@/components/Header';
 import SectionView, { type SectionViewHandle } from '@/components/SectionView';
@@ -140,7 +141,12 @@ export default function CardView() {
   const completionMessages = useMemo(() => getCompletionMessages(pronounMode, product?.ageLabel), [pronounMode, product?.ageLabel]);
   const cardImageUrl = useCardImage(cardId);
 
-  // Retained so the takeaway screen has a session ID after the session closes
+  // Track card visit for analytics
+  const { recordVisit } = useCardVisit();
+  useEffect(() => {
+    if (cardId) recordVisit(cardId);
+  }, [cardId, recordVisit]);
+
   const [activeSessionId, setActiveSessionId] = useState<string | null>(
     devState ? 'dev-session' : null
   );
