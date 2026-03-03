@@ -16,6 +16,8 @@ const DEV_STATES = [
   { value: 'archiveWithHistory', label: 'Archive w/ History' },
   { value: 'browse', label: 'Browse (all unlocked)' },
   { value: 'library', label: '📚 Product Library' },
+  { value: 'onboarding', label: '👋 Plattforms-onboarding' },
+  { value: 'productIntro', label: '🎴 Produkt-intro' },
 ];
 
 const THEME_OPTIONS = [

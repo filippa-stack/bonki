@@ -20,6 +20,8 @@ export type DevState =
   | 'archiveWithHistory'
   | 'browse'
   | 'library'
+  | 'onboarding'
+  | 'productIntro'
   | null;
 
 /** Mock data used by dev state overrides */
