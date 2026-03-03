@@ -253,7 +253,7 @@ export default function ProductLibrary() {
 
         {/* ── Still Us ── */}
         <motion.div
-          className="px-5 mt-4 mb-8"
+          className="px-5 mt-4 mb-8 flex justify-center"
           variants={containerVariants}
           initial="hidden"
           animate="visible"
@@ -266,6 +266,7 @@ export default function ProductLibrary() {
             onClick={() => navigate('/')}
             className="cursor-pointer"
             style={{
+              width: '75%',
               borderRadius: '18px',
               padding: '28px 24px',
               background: `radial-gradient(ellipse at 50% 35%, hsla(158, 40%, 22%, 0.95) 0%, hsla(158, 35%, 14%, 0.92) 100%)`,
