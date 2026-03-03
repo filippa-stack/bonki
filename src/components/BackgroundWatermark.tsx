@@ -107,7 +107,7 @@ export default function BackgroundWatermark() {
           style={{
             width: '96vw',
             maxWidth: '600px',
-            opacity: 0.03,
+            opacity: 0.04,
             filter: 'saturate(0.3)',
           }}
           draggable={false}
