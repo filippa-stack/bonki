@@ -37,10 +37,10 @@ export default function JagIVarldenProductHome({ product }: { product: ProductMa
         transition={{ duration: 1 }}
         style={{
           position: 'absolute',
-          top: '-15%',
-          left: '-30%',
-          width: '160%',
-          height: '140%',
+          top: '-10%',
+          right: '-30%',
+          width: '140%',
+          height: '130%',
           zIndex: 0,
           pointerEvents: 'none',
         }}
@@ -52,7 +52,7 @@ export default function JagIVarldenProductHome({ product }: { product: ProductMa
             width: '100%',
             height: '100%',
             objectFit: 'contain',
-            objectPosition: 'center top',
+            objectPosition: 'right top',
             opacity: 0.35,
           }}
         />
