@@ -19,8 +19,8 @@ const TAGLINES: Record<string, string> = {
   jag_i_mig: 'Hjälp ditt barn hitta ord för det som känns',
   jag_med_andra: 'När världen utanför börjar betyda allt',
   jag_i_varlden: 'De stora frågorna, på riktigt',
-  vardagskort: 'Små samtal som gör skillnad',
-  syskonkort: 'Bandet som både skaver och håller',
+  vardagskort: 'Bättre samtal runt middagsbordet',
+  syskonkort: 'Allt som finns mellan dem',
   sexualitetskort: 'Det svåra samtalet, utan att det behöver vara svårt',
 };
 
@@ -361,6 +361,7 @@ export default function ProductLibrary() {
                 key={p.id}
                 name={p.name}
                 bg={PASTEL_COLORS[p.id]!}
+                tagline={TAGLINES[p.id]}
                 ageLabel={p.ageLabel}
                 onClick={() => navigate(`/product/${p.slug}`)}
                 aspectRatio="1 / 1"
