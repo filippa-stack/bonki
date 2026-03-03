@@ -167,6 +167,7 @@ async function loadZip(source: ZipSource): Promise<Map<string, string>> {
     );
 
     zipCaches[source] = map;
+    
     return map;
   })();
 
@@ -191,14 +192,23 @@ export function useCardImage(cardId: string | undefined): string | null {
     loadZip(mapping.zip).then((cache) => {
       if (cancelled) return;
 
-      // Try exact path first, then search by filename
-      const exactPath = `${mapping.folder}/${mapping.file}`;
+      // Normalize Unicode (decomposed ↔ composed) for reliable matching
+      const norm = (s: string) => s.normalize('NFC');
+      const exactPath = mapping.folder
+        ? `${mapping.folder}/${mapping.file}`
+        : mapping.file;
       let blobUrl = cache.get(exactPath);
 
       if (!blobUrl) {
-        // Some zips add a root folder — search by suffix
+        const normFile = norm(mapping.file);
+        const normFolder = norm(mapping.folder);
         for (const [key, val] of cache) {
-          if (key.endsWith(`/${mapping.folder}/${mapping.file}`) || key.endsWith(`${mapping.file}`)) {
+          const normKey = norm(key);
+          if (
+            normKey.endsWith(`/${normFolder}/${normFile}`) ||
+            normKey.endsWith(`/${normFile}`) ||
+            normKey === normFile
+          ) {
             blobUrl = val;
             break;
           }
