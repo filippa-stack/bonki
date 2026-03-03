@@ -68,9 +68,9 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
           alignItems: 'center',
           justifyContent: 'flex-start',
           paddingTop: '12vh',
-          paddingRight: '6vw',
+          paddingRight: '16vw',
           paddingBottom: '48px',
-          paddingLeft: '6vw',
+          paddingLeft: '16vw',
         }}
       >
         <motion.div
