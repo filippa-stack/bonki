@@ -34,8 +34,16 @@ export default function ProductHome() {
     return (
       <ProductIntro
         productId={product.id}
-        accentColor={product.secondaryAccent}
+        accentColor={product.accentColor}
+        backgroundColor={product.backgroundColor}
+        freeCardId={product.freeCardId}
         onComplete={() => setShowIntro(false)}
+        onStartFreeCard={() => {
+          setShowIntro(false);
+          if (product.freeCardId) {
+            navigate(`/card/${product.freeCardId}`);
+          }
+        }}
       />
     );
   }

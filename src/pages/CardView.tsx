@@ -24,6 +24,8 @@ import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { toastOnce, toastErrorOnce } from '@/lib/toastOnce';
 import { getProductForCard } from '@/data/products';
+import { useProductAccess } from '@/hooks/useProductAccess';
+import ProductPaywall from '@/components/ProductPaywall';
 import { getCompletionMessages, getUIText, type PronounMode } from '@/lib/pronouns';
 import { useCardImage } from '@/hooks/useCardImage';
 import { useCardVisit } from '@/hooks/useCardVisit';
@@ -142,6 +144,11 @@ export default function CardView() {
   const effectiveSteps = useMemo(() => getCardStepOrder(card), [card]);
   const completionMessages = useMemo(() => getCompletionMessages(pronounMode, product?.ageLabel), [pronounMode, product?.ageLabel]);
   const cardImageUrl = useCardImage(cardId);
+
+  // ─── Paywall: check if user has access to this product ───
+  const isFreeCard = !!(product?.freeCardId && cardId === product.freeCardId);
+  const { hasAccess: hasProductAccess, loading: accessLoading } = useProductAccess(product?.id ?? '');
+  const needsPaywall = !isFreeCard && !hasProductAccess && !accessLoading && !!product;
 
   // Apply product theme (background + accent colors)
   useProductTheme(
@@ -744,6 +751,21 @@ export default function CardView() {
           <div className="h-6 w-40 rounded bg-muted/30 animate-pulse mx-auto" />
           <p className="text-sm text-muted-foreground">{t('card_view.not_found')}</p>
         </div>
+      </div>
+    );
+  }
+
+  // ─────────────────────────────────────────────────────────────
+  //  PAYWALL — non-free card without purchase
+  // ─────────────────────────────────────────────────────────────
+  if (needsPaywall && product) {
+    return (
+      <div className="min-h-screen" style={{ backgroundColor: product.backgroundColor ?? 'var(--surface-base)' }}>
+        <Header title={card.title} showBack />
+        <ProductPaywall
+          product={product}
+          onAccessGranted={() => window.location.reload()}
+        />
       </div>
     );
   }
