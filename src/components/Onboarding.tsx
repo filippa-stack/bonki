@@ -194,7 +194,7 @@ function SlideWelcome() {
           fontWeight: 600,
         }}
       >
-        V\u00e4lkommen till
+        {'V\u00e4lkommen till'}
       </motion.p>
 
       <motion.h1
@@ -229,7 +229,7 @@ function SlideWelcome() {
           maxWidth: '280px',
         }}
       >
-        Det b\u00e4sta samtalet du kommer ha idag v\u00e4ntar h\u00e4r.
+        {'Det b\u00e4sta samtalet du kommer ha idag v\u00e4ntar h\u00e4r.'}
       </motion.p>
 
       <motion.p
@@ -248,7 +248,7 @@ function SlideWelcome() {
           maxWidth: '280px',
         }}
       >
-        Inte det l\u00e4ngsta. Inte det sv\u00e5raste. Det mest \u00e4rliga.
+        {'Inte det l\u00e4ngsta. Inte det sv\u00e5raste. Det mest \u00e4rliga.'}
       </motion.p>
     </div>
   );
@@ -272,7 +272,7 @@ function SlideScope() {
           fontWeight: 600,
         }}
       >
-        Samtal som r\u00f6r sig
+        {'Samtal som r\u00f6r sig'}
       </motion.p>
 
       <motion.p
@@ -288,7 +288,7 @@ function SlideScope() {
           maxWidth: '300px',
         }}
       >
-        Bonki \u00e4r verktyg f\u00f6r familjer och par som vill n\u00e5 varandra {'\u2014'} p\u00e5 riktigt.
+        {'Bonki \u00e4r verktyg f\u00f6r familjer och par som vill n\u00e5 varandra \u2014 p\u00e5 riktigt.'}
       </motion.p>
 
       {/* Divider */}
@@ -322,7 +322,7 @@ function SlideScope() {
           maxWidth: '280px',
         }}
       >
-        Fr\u00e5n barnets f\u00f6rsta k\u00e4nslor till parrelationens sv\u00e5raste fr\u00e5gor. Varje kort \u00e4r byggt f\u00f6r att \u00f6ppna det som blivit tyst.
+        {'Fr\u00e5n barnets f\u00f6rsta k\u00e4nslor till parrelationens sv\u00e5raste fr\u00e5gor. Varje kort \u00e4r byggt f\u00f6r att \u00f6ppna det som blivit tyst.'}
       </motion.p>
     </div>
   );
@@ -347,7 +347,7 @@ function SlideInvitation() {
           maxWidth: '300px',
         }}
       >
-        V\u00e4lj det \u00e4mne som k\u00e4nns r\u00e4tt just nu & lyssna.
+        {'V\u00e4lj det \u00e4mne som k\u00e4nns r\u00e4tt just nu & lyssna.'}
       </motion.h1>
 
       <motion.p
@@ -364,7 +364,7 @@ function SlideInvitation() {
           maxWidth: '290px',
         }}
       >
-        Du hittar verktyg f\u00f6r barn, ton\u00e5ringar och par {'\u2014'} och varje produkt b\u00f6rjar med ett kort helt gratis.
+        {'Du hittar verktyg f\u00f6r barn, ton\u00e5ringar och par \u2014 och varje produkt b\u00f6rjar med ett kort helt gratis.'}
       </motion.p>
 
       <motion.div
@@ -402,7 +402,7 @@ function SlideInvitation() {
           zIndex: 1,
         }}
       >
-        Inget \u00e4r f\u00f6r sv\u00e5rt. Inget \u00e4r f\u00f6r litet. B\u00f6rja d\u00e4r ni \u00e4r.
+        {'Inget \u00e4r f\u00f6r sv\u00e5rt. Inget \u00e4r f\u00f6r litet. B\u00f6rja d\u00e4r ni \u00e4r.'}
       </motion.p>
     </div>
   );
