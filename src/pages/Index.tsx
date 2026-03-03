@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { useApp } from '@/contexts/AppContext';
 import { useCoupleSpaceContext } from '@/contexts/CoupleSpaceContext';
 import { usePartnerNotifications } from '@/hooks/usePartnerNotifications';
@@ -10,6 +11,8 @@ import Onboarding from '@/components/Onboarding';
 import Home from '@/pages/Home';
 import PurchaseScreen from '@/components/PurchaseScreen';
 import ProductLibrary from '@/components/ProductLibrary';
+import ProductIntro from '@/components/ProductIntro';
+import { allProducts } from '@/data/products';
 
 const PURCHASE_KEY_LEGACY = 'still-us-purchased';
 const PURCHASE_KEY_PREFIX = 'still-us-purchased-';
@@ -66,6 +69,21 @@ async function checkProductAccess(userId: string): Promise<boolean> {
   return !!data;
 }
 
+/** Dev-only: preview product intros with ?product=slug selector */
+function DevProductIntroPreview() {
+  const [searchParams] = useSearchParams();
+  const productSlug = searchParams.get('product');
+  const product = allProducts.find((p) => p.slug === productSlug) ?? allProducts[0];
+
+  return (
+    <ProductIntro
+      productId={product.id}
+      accentColor={product.secondaryAccent}
+      onComplete={() => {}}
+    />
+  );
+}
+
 export default function Index() {
   const { hasCompletedOnboarding } = useApp();
   const { space } = useCoupleSpaceContext();
@@ -117,6 +135,16 @@ export default function Index() {
       }).then(() => {});
     }
   };
+
+  // devState=onboarding → show platform onboarding preview
+  if (devState === 'onboarding') {
+    return <Onboarding />;
+  }
+
+  // devState=productIntro → show product intro preview (uses ?product= param, defaults to first product)
+  if (devState === 'productIntro') {
+    return <DevProductIntroPreview />;
+  }
 
   // devState=library → show product library lobby
   if (devState === 'library') {
