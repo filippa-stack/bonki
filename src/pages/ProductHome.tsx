@@ -1,8 +1,8 @@
 import { useParams, useNavigate } from 'react-router-dom';
-import { useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowLeft } from 'lucide-react';
 import { allProducts } from '@/data/products';
+import { useProductTheme } from '@/hooks/useProductTheme';
 import { useThemeSwitcher } from '@/hooks/useThemeSwitcher';
 import JagIMigProductHome from '@/components/JagIMigProductHome';
 import JagMedAndraProductHome from '@/components/JagMedAndraProductHome';
@@ -10,38 +10,6 @@ import JagIVarldenProductHome from '@/components/JagIVarldenProductHome';
 import SexualitetProductHome from '@/components/SexualitetProductHome';
 import VardagProductHome from '@/components/VardagProductHome';
 import SyskonProductHome from '@/components/SyskonProductHome';
-
-/**
- * Injects product-specific CSS variables onto :root so the entire
- * design system (buttons, accents, text) adapts to each product.
- */
-function useProductTheme(primary: string, accent: string) {
-  useEffect(() => {
-    const root = document.documentElement;
-    // Parse HSL: 'hsl(350, 28%, 58%)' → '350, 28%, 58%'
-    const parseHSL = (hsl: string) => hsl.replace(/hsl\(([^)]+)\)/, '$1').trim();
-    const p = parseHSL(primary);
-    const a = parseHSL(accent);
-
-    // Primary → CTA buttons, session header
-    root.style.setProperty('--cta-default', `hsl(${p})`);
-    root.style.setProperty('--cta-hover-v2', primary);
-    root.style.setProperty('--cta-active', primary);
-    root.style.setProperty('--cta-bg', primary);
-    root.style.setProperty('--session-header-bg', primary);
-
-    // Accent → saffron-equivalent tokens
-    root.style.setProperty('--accent-saffron', `hsl(${a})`);
-    root.style.setProperty('--accent-text', `hsl(${a})`);
-
-    return () => {
-      // Clean up on unmount — restore defaults
-      ['--cta-default', '--cta-hover-v2', '--cta-active', '--cta-bg',
-       '--session-header-bg', '--accent-saffron', '--accent-text',
-      ].forEach((v) => root.style.removeProperty(v));
-    };
-  }, [primary, accent]);
-}
 
 export default function ProductHome() {
   const { slug } = useParams<{ slug: string }>();
@@ -54,6 +22,7 @@ export default function ProductHome() {
   useProductTheme(
     product?.accentColor ?? 'hsl(158, 35%, 18%)',
     product?.secondaryAccent ?? 'hsl(38, 88%, 46%)',
+    product?.backgroundColor,
   );
 
   if (!product) {
