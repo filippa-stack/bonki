@@ -89,7 +89,7 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
           <motion.div
             variants={pillVariants}
             style={{
-              background: 'hsla(45, 40%, 96%, 0.92)',
+              background: '#FFFDF8',
               backdropFilter: 'blur(12px)',
               border: PILL_BORDER,
               borderRadius: '16px',
