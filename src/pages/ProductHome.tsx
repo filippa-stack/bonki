@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { ArrowLeft } from 'lucide-react';
 import { allProducts } from '@/data/products';
 import { useThemeSwitcher } from '@/hooks/useThemeSwitcher';
+import JagIMigProductHome from '@/components/JagIMigProductHome';
 
 /**
  * Injects product-specific CSS variables onto :root so the entire
@@ -65,6 +66,11 @@ export default function ProductHome() {
         </div>
       </div>
     );
+  }
+
+  // Custom layout for Jag i Mig
+  if (product.id === 'jag_i_mig') {
+    return <JagIMigProductHome product={product} />;
   }
 
   return (
