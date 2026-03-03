@@ -135,14 +135,14 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
               whileTap={{ scale: 0.97 }}
               onClick={() => navigate(`/category/${cat.id}`)}
               style={{
-                background: '#FFFDF8',
-                backdropFilter: 'blur(12px)',
+                background: 'rgba(255, 253, 248, 0.75)',
+                backdropFilter: 'blur(16px)',
                 border: PILL_BORDER,
                 borderRadius: '28px',
                 padding: '22px 24px',
                 textAlign: 'center',
                 cursor: 'pointer',
-                boxShadow: '0 2px 10px -2px hsla(45, 30%, 40%, 0.08)',
+                boxShadow: '0 4px 16px -4px hsla(30, 20%, 28%, 0.15), 0 1px 3px hsla(30, 20%, 28%, 0.1)',
                 whiteSpace: 'nowrap' as const,
                 width: '70%',
               }}
