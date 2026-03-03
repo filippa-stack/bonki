@@ -21,19 +21,6 @@ const pillVariants = {
 const FOREST_GREEN = 'hsl(158, 35%, 18%)';
 const PILL_BORDER = '2px solid hsla(55, 50%, 55%, 0.6)';
 
-const PILL_STYLE = {
-  background: 'hsla(45, 40%, 97%, 0.9)',
-  backdropFilter: 'blur(12px)',
-  border: PILL_BORDER,
-  borderRadius: '28px',
-  padding: '14px 24px',
-  textAlign: 'center' as const,
-  cursor: 'pointer',
-  boxShadow: '0 2px 10px -2px hsla(45, 30%, 40%, 0.08)',
-  whiteSpace: 'nowrap' as const,
-  width: '100%',
-};
-
 export default function JagIMigProductHome({ product }: { product: ProductManifest }) {
   const navigate = useNavigate();
 
@@ -42,17 +29,17 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
       className="min-h-screen relative overflow-hidden"
       style={{ backgroundColor: 'var(--surface-base)' }}
     >
-      {/* Baboon illustration — positioned in the RIGHT third */}
+      {/* Background illustration — natural, warm, large face */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 1 }}
         style={{
           position: 'absolute',
-          top: '0',
-          right: '-20%',
-          width: '90%',
-          height: '100%',
+          top: '7%',
+          left: '-22%',
+          width: '116%',
+          height: '108%',
           zIndex: 0,
           pointerEvents: 'none',
         }}
@@ -64,13 +51,13 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
             width: '100%',
             height: '100%',
             objectFit: 'contain',
-            objectPosition: 'right top',
-            opacity: 0.9,
+            objectPosition: 'left top',
+            opacity: 0.75,
           }}
         />
       </motion.div>
 
-      {/* Button column — aligned just left of baboon's eye, right-of-center */}
+      {/* Content — centered in right portion */}
       <div
         style={{
           position: 'relative',
@@ -78,12 +65,12 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
           minHeight: '100vh',
           display: 'flex',
           flexDirection: 'column',
-          alignItems: 'flex-start',
+          alignItems: 'center',
           justifyContent: 'flex-start',
-          paddingTop: '10vh',
-          paddingLeft: '28vw',
-          paddingRight: '30vw',
+          paddingTop: '12vh',
+          paddingRight: '6vw',
           paddingBottom: '48px',
+          paddingLeft: '26vw',
         }}
       >
         <motion.div
@@ -94,27 +81,29 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-            gap: '5vh',
+            gap: '7vh',
             width: '100%',
-            maxWidth: '220px',
           }}
         >
-          {/* Title pill — "Jag i mig" */}
+          {/* Title pill — wide, full available width */}
           <motion.div
             variants={pillVariants}
             style={{
-              ...PILL_STYLE,
+              background: 'hsla(45, 40%, 96%, 0.92)',
+              backdropFilter: 'blur(12px)',
+              border: PILL_BORDER,
               borderRadius: '16px',
-              padding: '22px 0',
+              padding: '26px 0',
+              textAlign: 'center',
               boxShadow: '0 2px 16px -2px hsla(45, 30%, 40%, 0.1)',
-              marginBottom: '1vh',
-              cursor: 'default',
+              marginBottom: '0.5vh',
+              width: '100%',
             }}
           >
             <h1
               className="font-serif"
               style={{
-                fontSize: 'clamp(28px, 8vw, 40px)',
+                fontSize: 'clamp(32px, 9vw, 44px)',
                 fontWeight: 700,
                 color: FOREST_GREEN,
                 letterSpacing: '-0.01em',
@@ -125,7 +114,7 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
             </h1>
           </motion.div>
 
-          {/* Category pills */}
+          {/* Category pills — wide, centered */}
           {product.categories.map((cat) => (
             <motion.button
               key={cat.id}
@@ -133,12 +122,23 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
               whileHover={{ scale: 1.04, y: -2 }}
               whileTap={{ scale: 0.97 }}
               onClick={() => navigate(`/category/${cat.id}`)}
-              style={PILL_STYLE}
+              style={{
+                background: 'hsla(45, 40%, 97%, 0.9)',
+                backdropFilter: 'blur(12px)',
+                border: PILL_BORDER,
+                borderRadius: '28px',
+                padding: '14px 24px',
+                textAlign: 'center',
+                cursor: 'pointer',
+                boxShadow: '0 2px 10px -2px hsla(45, 30%, 40%, 0.08)',
+                whiteSpace: 'nowrap' as const,
+                width: '90%',
+              }}
             >
               <span
                 className="font-serif"
                 style={{
-                  fontSize: 'clamp(16px, 4.5vw, 22px)',
+                  fontSize: 'clamp(18px, 5vw, 24px)',
                   fontWeight: 600,
                   color: FOREST_GREEN,
                 }}
