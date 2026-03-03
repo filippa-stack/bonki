@@ -321,36 +321,22 @@ export default function ProductLibrary() {
             variants={containerVariants}
             initial="hidden"
             animate="visible"
-            style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(3, 1fr)',
+              gap: '10px',
+            }}
           >
-            {/* Hero tile: Jag i Mig */}
-            {trio.filter(p => p.id === 'jag_i_mig').map(p => (
+            {trio.map(p => (
               <PastelTile
                 key={p.id}
                 name={p.name}
                 bg={PASTEL_COLORS[p.id]!}
                 ageLabel={p.ageLabel}
-                tagline={TAGLINES[p.id]}
-                illustration={ILLUSTRATIONS[p.id]}
                 onClick={() => navigate(`/product/${p.slug}`)}
-                aspectRatio="2.4 / 1"
-                isHero
+                aspectRatio="1 / 1"
               />
             ))}
-            {/* Remaining two */}
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '10px' }}>
-              {trio.filter(p => p.id !== 'jag_i_mig').map(p => (
-                <PastelTile
-                  key={p.id}
-                  name={p.name}
-                  bg={PASTEL_COLORS[p.id]!}
-                  ageLabel={p.ageLabel}
-                  illustration={ILLUSTRATIONS[p.id]}
-                  onClick={() => navigate(`/product/${p.slug}`)}
-                  aspectRatio="1 / 1"
-                />
-              ))}
-            </div>
           </motion.div>
         </div>
 
