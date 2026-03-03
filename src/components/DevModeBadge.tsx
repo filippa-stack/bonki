@@ -1,10 +1,9 @@
-import { useState } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useNavigate, useLocation, useSearchParams } from 'react-router-dom';
 import { useDevState } from '@/contexts/DevStateContext';
 import { isDevToolsEnabled, isDevAdmin } from '@/lib/devTools';
 import { useAuth } from '@/contexts/AuthContext';
-import { VALID_THEMES, VALID_SURFACES } from '@/hooks/useThemeSwitcher';
-import { ChevronUp, ChevronDown } from 'lucide-react';
+import { X } from 'lucide-react';
 
 const DEV_STATES = [
   { value: 'solo', label: 'Solo' },
@@ -87,8 +86,23 @@ export default function DevModeBadge() {
 
   const enabled = isDevToolsEnabled() && isDevAdmin(user?.id);
 
-  // Only show for dev admin with dev tools enabled
-  // Hide during screenshot capture
+  // Keyboard shortcut: backtick (`) toggles panel
+  const handleKeyDown = useCallback((e: KeyboardEvent) => {
+    // Ignore if user is typing in an input/textarea
+    const tag = (e.target as HTMLElement)?.tagName;
+    if (tag === 'INPUT' || tag === 'TEXTAREA' || (e.target as HTMLElement)?.isContentEditable) return;
+    if (e.key === '`') {
+      e.preventDefault();
+      setOpen(v => !v);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!enabled) return;
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [enabled, handleKeyDown]);
+
   if (!enabled || searchParams.has('__sc_step')) return null;
 
   const currentDevState = devState ?? 'solo';
@@ -105,7 +119,6 @@ export default function DevModeBadge() {
   }
 
   function switchState(state: string) {
-    // library devState only works on Index (/), so navigate there
     const basePath = state === 'library' ? '/' : location.pathname;
     const params = new URLSearchParams(searchParams);
     params.set('devState', state);
@@ -114,23 +127,45 @@ export default function DevModeBadge() {
   }
 
   function switchTheme(theme: string) {
-    const currentPath = location.pathname;
     const params = new URLSearchParams(searchParams);
     if (theme) { params.set('theme', theme); } else { params.delete('theme'); }
-    navigate(`${currentPath}?${params.toString()}`);
+    navigate(`${location.pathname}?${params.toString()}`);
   }
 
   function switchSurface(surface: string) {
-    const currentPath = location.pathname;
     const params = new URLSearchParams(searchParams);
     if (surface) { params.set('surface', surface); } else { params.delete('surface'); }
-    navigate(`${currentPath}?${params.toString()}`);
+    navigate(`${location.pathname}?${params.toString()}`);
   }
 
   return (
-    <div className="fixed bottom-3 left-3 z-[9999] select-none">
+    <>
+      {/* ── Tiny edge tab (left edge, vertically centered) ── */}
+      {!open && (
+        <div
+          onClick={() => setOpen(true)}
+          className="fixed left-0 top-1/2 -translate-y-1/2 z-[9999] cursor-pointer group"
+          title="Dev Tools (`)"
+        >
+          <div className="w-[3px] h-10 bg-white/20 group-hover:w-5 group-hover:bg-black/60 rounded-r-md transition-all duration-150 flex items-center justify-center overflow-hidden">
+            <span className="text-[8px] text-white/80 opacity-0 group-hover:opacity-100 transition-opacity font-mono whitespace-nowrap">
+              DEV
+            </span>
+          </div>
+        </div>
+      )}
+
+      {/* ── Panel ── */}
       {open && (
-        <div className="mb-2 w-64 max-h-[80vh] overflow-y-auto rounded-xl bg-black/80 backdrop-blur-md text-white/90 shadow-2xl border border-white/10 text-[11px] font-mono">
+        <div className="fixed left-3 top-3 bottom-3 z-[9999] w-64 overflow-y-auto rounded-xl bg-black/80 backdrop-blur-md text-white/90 shadow-2xl border border-white/10 text-[11px] font-mono select-none">
+          {/* Close bar */}
+          <div className="sticky top-0 bg-black/80 backdrop-blur-md flex items-center justify-between px-3 py-2 border-b border-white/10">
+            <span className="text-white/40 uppercase tracking-widest text-[9px]">Dev Tools</span>
+            <button onClick={() => setOpen(false)} className="text-white/40 hover:text-white transition-colors">
+              <X className="w-3.5 h-3.5" />
+            </button>
+          </div>
+
           {/* Theme Picker */}
           <div className="px-3 py-2 text-white/40 uppercase tracking-widest text-[9px]">Theme</div>
           <div className="px-2 pb-2 flex flex-wrap gap-1">
@@ -143,16 +178,13 @@ export default function DevModeBadge() {
                 }`}
                 title={t.label}
               >
-                <span
-                  className="w-3 h-3 rounded-full border border-white/20 flex-shrink-0"
-                  style={{ backgroundColor: t.color }}
-                />
+                <span className="w-3 h-3 rounded-full border border-white/20 flex-shrink-0" style={{ backgroundColor: t.color }} />
                 <span className="truncate">{t.label}</span>
               </button>
             ))}
           </div>
 
-          {/* Surface Modifier */}
+          {/* Surface */}
           <div className="border-t border-white/10 px-3 py-2 text-white/40 uppercase tracking-widest text-[9px]">Surface</div>
           <div className="px-2 pb-2 flex flex-wrap gap-1">
             {SURFACE_OPTIONS.map((s) => (
@@ -168,6 +200,7 @@ export default function DevModeBadge() {
             ))}
           </div>
 
+          {/* Dev State */}
           <div className="border-t border-white/10 px-3 py-2 text-white/40 uppercase tracking-widest text-[9px]">Dev State</div>
           {DEV_STATES.map((s) => (
             <button
@@ -179,6 +212,7 @@ export default function DevModeBadge() {
             </button>
           ))}
 
+          {/* Pages */}
           <div className="border-t border-white/10 mt-1 px-3 py-2 text-white/40 uppercase tracking-widest text-[9px]">Pages</div>
           {PAGES.map((p) => (
             <button
@@ -190,6 +224,7 @@ export default function DevModeBadge() {
             </button>
           ))}
 
+          {/* Disable */}
           <div className="border-t border-white/10 mt-1">
             <button
               onClick={() => {
@@ -207,14 +242,6 @@ export default function DevModeBadge() {
           </div>
         </div>
       )}
-
-      <button
-        onClick={() => setOpen((v) => !v)}
-        className="pointer-events-auto flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-mono tracking-wider bg-black/60 text-white/80 backdrop-blur-sm hover:bg-black/80 transition-colors"
-      >
-        DEV TOOLS{devState ? ` · ${devState}` : ''}{currentTheme ? ` · ${currentTheme}` : ''}
-        {open ? <ChevronDown className="w-3 h-3" /> : <ChevronUp className="w-3 h-3" />}
-      </button>
-    </div>
+    </>
   );
 }
