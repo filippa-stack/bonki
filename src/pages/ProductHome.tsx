@@ -7,6 +7,7 @@ import { useThemeSwitcher } from '@/hooks/useThemeSwitcher';
 import JagIMigProductHome from '@/components/JagIMigProductHome';
 import JagMedAndraProductHome from '@/components/JagMedAndraProductHome';
 import JagIVarldenProductHome from '@/components/JagIVarldenProductHome';
+import SexualitetProductHome from '@/components/SexualitetProductHome';
 
 /**
  * Injects product-specific CSS variables onto :root so the entire
@@ -83,6 +84,11 @@ export default function ProductHome() {
   // Custom layout for Jag i Världen
   if (product.id === 'jag_i_varlden') {
     return <JagIVarldenProductHome product={product} />;
+  }
+
+  // Custom layout for Sexualitet
+  if (product.id === 'sexualitetskort') {
+    return <SexualitetProductHome product={product} />;
   }
 
   return (
