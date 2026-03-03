@@ -5,7 +5,7 @@ import JSZip from 'jszip';
  * Which zip file a card image lives in.
  * 'default' = /card-images.zip, 'jim' = /jim-illustrations.zip
  */
-type ZipSource = 'default' | 'jim';
+type ZipSource = 'default' | 'jim' | 'jma';
 
 /**
  * Maps card IDs → zip source + path inside that zip.
@@ -34,28 +34,28 @@ const CARD_IMAGE_MAP: Record<string, { zip: ZipSource; folder: string; file: str
   'jim-forvanad':   { zip: 'jim', folder: 'Känslokort1-illustrationer.png', file: 'förvånad.png' },
   'jim-jag':        { zip: 'jim', folder: 'Känslokort1-illustrationer.png', file: 'jag copy.png' },
 
-  // ── Jag med Andra (Kanslokort folder) ──
-  'jma-vanskap':    { zip: 'default', folder: 'Kanslokort', file: 'VÄNSKAP_front.jpeg' },
-  'jma-kontakt':    { zip: 'default', folder: 'Kanslokort', file: 'KONTAKT_front.jpeg' },
-  'jma-annorlunda': { zip: 'default', folder: 'Kanslokort', file: 'ANNORLUNDA_front.jpeg' },
-  'jma-utanfor':    { zip: 'default', folder: 'Kanslokort', file: 'UTANFÖR_front.jpeg' },
-  'jma-duktig':     { zip: 'default', folder: 'Kanslokort', file: 'DUKTIG_front.jpeg' },
-  'jma-tavla':      { zip: 'default', folder: 'Kanslokort', file: 'TÄVLA_front.jpeg' },
-  'jma-utseende':   { zip: 'default', folder: 'Kanslokort', file: 'UTSEENDE_front.jpeg' },
-  'jma-avund':      { zip: 'default', folder: 'Kanslokort', file: 'AVUND_front.jpeg' },
-  'jma-konflikt':   { zip: 'default', folder: 'Kanslokort', file: 'KONFLIKT_front.jpeg' },
-  'jma-misslyckas': { zip: 'default', folder: 'Kanslokort', file: 'MISSLYCKAS_front.jpeg' },
-  'jma-kritik':     { zip: 'default', folder: 'Kanslokort', file: 'KRITIK_front.jpeg' },
-  'jma-skam':       { zip: 'default', folder: 'Kanslokort', file: 'SKAM_front.jpeg' },
-  'jma-skuld':      { zip: 'default', folder: 'Kanslokort', file: 'SKULD_front.jpeg' },
-  'jma-stopp':      { zip: 'default', folder: 'Kanslokort', file: 'STOPP_front.jpeg' },
-  'jma-integritet': { zip: 'default', folder: 'Kanslokort', file: 'INTEGRITET_front.jpeg' },
-  'jma-modig':      { zip: 'default', folder: 'Kanslokort', file: 'MODIG_front.jpeg' },
-  'jma-respekt':    { zip: 'default', folder: 'Kanslokort', file: 'RESPEKT_front.jpeg' },
-  'jma-sanning':    { zip: 'default', folder: 'Kanslokort', file: 'SANNING_front.jpeg' },
-  'jma-lika-varde': { zip: 'default', folder: 'Kanslokort', file: 'LIKA_VÄRDE_front.jpeg' },
-  'jma-acceptans':  { zip: 'default', folder: 'Kanslokort', file: 'ACCEPTANS_front.jpeg' },
-  'jma-kluringen':  { zip: 'default', folder: 'Kanslokort', file: 'KLURINGEN_front.jpeg' },
+  // ── Jag med Andra (new illustrations zip) ──
+  'jma-vanskap':    { zip: 'jma', folder: '', file: 'Vänskap.png' },
+  'jma-kontakt':    { zip: 'jma', folder: '', file: 'Kontakt.png' },
+  'jma-annorlunda': { zip: 'jma', folder: '', file: 'Annorlunda.png' },
+  'jma-utanfor':    { zip: 'jma', folder: '', file: 'Utanför.png' },
+  'jma-duktig':     { zip: 'jma', folder: '', file: 'Duktig.png' },
+  'jma-tavla':      { zip: 'jma', folder: '', file: 'Tävla.png' },
+  'jma-utseende':   { zip: 'jma', folder: '', file: 'Utseende.png' },
+  'jma-avund':      { zip: 'jma', folder: '', file: 'Avund.png' },
+  'jma-konflikt':   { zip: 'jma', folder: '', file: 'Konflikt.png' },
+  'jma-misslyckas': { zip: 'jma', folder: '', file: 'Misslyckas.png' },
+  'jma-kritik':     { zip: 'jma', folder: '', file: 'Kritik.png' },
+  'jma-skam':       { zip: 'jma', folder: '', file: 'Skam.png' },
+  'jma-skuld':      { zip: 'jma', folder: '', file: 'Skuld.png' },
+  'jma-stopp':      { zip: 'jma', folder: '', file: 'Stopp.png' },
+  'jma-integritet': { zip: 'jma', folder: '', file: 'Integritet.png' },
+  'jma-modig':      { zip: 'jma', folder: '', file: 'Modig.png' },
+  'jma-respekt':    { zip: 'jma', folder: '', file: 'Respekt.png' },
+  'jma-sanning':    { zip: 'jma', folder: '', file: 'Sanning.png' },
+  'jma-lika-varde': { zip: 'jma', folder: '', file: 'Lika värde.png' },
+  'jma-acceptans':  { zip: 'jma', folder: '', file: 'Acceptans.png' },
+  'jma-kluringen':  { zip: 'jma', folder: '', file: 'Kluringen.png' },
 
   // ── Jag i Världen ──
   'jiv-halsa':        { zip: 'default', folder: 'Jag_i_Varlden', file: 'HÄLSA_front.jpeg' },
@@ -130,12 +130,13 @@ const CARD_IMAGE_MAP: Record<string, { zip: ZipSource; folder: string; file: str
 };
 
 // Singleton caches per zip source
-const zipCaches: Record<ZipSource, Map<string, string> | null> = { default: null, jim: null };
-const zipPromises: Record<ZipSource, Promise<Map<string, string>> | null> = { default: null, jim: null };
+const zipCaches: Record<ZipSource, Map<string, string> | null> = { default: null, jim: null, jma: null };
+const zipPromises: Record<ZipSource, Promise<Map<string, string>> | null> = { default: null, jim: null, jma: null };
 
 const ZIP_URLS: Record<ZipSource, string> = {
   default: '/card-images.zip',
   jim: '/jim-illustrations.zip',
+  jma: '/jma-card-images.zip',
 };
 
 async function loadZip(source: ZipSource): Promise<Map<string, string>> {
