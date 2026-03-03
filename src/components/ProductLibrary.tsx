@@ -33,6 +33,14 @@ const PASTEL_COLORS: Record<string, string> = {
   syskonkort: 'hsl(204, 63%, 97%)',        // #F2F8FC
 };
 
+const COMING_SOON_PRODUCTS = [
+  { name: 'Still Fair', tagline: 'För allt som görs men aldrig syns', audience: 'Par' },
+  { name: 'Still Me', tagline: 'För den du var innan du blev vi', audience: 'Par' },
+  { name: 'Still Known', tagline: 'För den du tror att du känner', audience: 'Par' },
+  { name: 'Still Ready', tagline: 'För er — innan barnet förändrar allt', audience: 'Blivande föräldrar' },
+  { name: 'Still Ground', tagline: 'För det som händer efter bråket', audience: 'Par' },
+];
+
 /* ── Stagger orchestration ── */
 const containerVariants = {
   hidden: {},
@@ -312,6 +320,92 @@ export default function ProductLibrary() {
             >
               För samtalen som aldrig blir av
             </p>
+          </motion.div>
+
+          {/* Coming soon Still products */}
+          <motion.div
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(2, 1fr)',
+              gap: '10px',
+              width: '100%',
+              marginTop: '12px',
+            }}
+          >
+            {COMING_SOON_PRODUCTS.map(p => (
+              <motion.div
+                key={p.name}
+                variants={tileVariants}
+                style={{
+                  borderRadius: '16px',
+                  padding: '16px 14px',
+                  background: 'hsla(158, 15%, 96%, 0.6)',
+                  position: 'relative',
+                  overflow: 'hidden',
+                  opacity: 0.7,
+                }}
+              >
+                <span
+                  className="font-sans"
+                  style={{
+                    position: 'absolute',
+                    top: '8px',
+                    right: '10px',
+                    fontSize: '8px',
+                    fontWeight: 700,
+                    letterSpacing: '0.14em',
+                    textTransform: 'uppercase',
+                    color: 'var(--text-primary)',
+                    opacity: 0.25,
+                  }}
+                >
+                  Kommer snart
+                </span>
+                {p.audience && (
+                  <span
+                    className="font-sans"
+                    style={{
+                      fontSize: '8px',
+                      fontWeight: 600,
+                      letterSpacing: '0.06em',
+                      color: 'var(--text-primary)',
+                      opacity: 0.2,
+                    }}
+                  >
+                    {p.audience}
+                  </span>
+                )}
+                <h3
+                  className="font-serif"
+                  style={{
+                    fontSize: '14px',
+                    fontWeight: 700,
+                    lineHeight: 1.2,
+                    color: 'var(--text-primary)',
+                    letterSpacing: '-0.01em',
+                    marginTop: p.audience ? '2px' : '0',
+                  }}
+                >
+                  {p.name}
+                </h3>
+                <p
+                  className="font-serif"
+                  style={{
+                    fontSize: '10px',
+                    fontWeight: 400,
+                    color: 'var(--text-primary)',
+                    opacity: 0.4,
+                    marginTop: '4px',
+                    lineHeight: 1.3,
+                  }}
+                >
+                  {p.tagline}
+                </p>
+              </motion.div>
+            ))}
           </motion.div>
         </motion.div>
 
