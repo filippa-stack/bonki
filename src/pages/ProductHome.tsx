@@ -9,6 +9,7 @@ import JagMedAndraProductHome from '@/components/JagMedAndraProductHome';
 import JagIVarldenProductHome from '@/components/JagIVarldenProductHome';
 import SexualitetProductHome from '@/components/SexualitetProductHome';
 import VardagProductHome from '@/components/VardagProductHome';
+import SyskonProductHome from '@/components/SyskonProductHome';
 
 /**
  * Injects product-specific CSS variables onto :root so the entire
@@ -95,6 +96,11 @@ export default function ProductHome() {
   // Custom layout for Vardag
   if (product.id === 'vardagskort') {
     return <VardagProductHome product={product} />;
+  }
+
+  // Custom layout for Syskon
+  if (product.id === 'syskonkort') {
+    return <SyskonProductHome product={product} />;
   }
 
   return (
