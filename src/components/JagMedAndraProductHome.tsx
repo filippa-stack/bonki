@@ -131,7 +131,7 @@ export default function JagMedAndraProductHome({ product }: { product: ProductMa
             <h1
               className="font-serif"
               style={{
-                fontSize: 'clamp(32px, 9vw, 44px)',
+                fontSize: 'clamp(28px, 7.5vw, 38px)',
                 fontWeight: 700,
                 color: '#000000',
                 letterSpacing: '-0.01em',
