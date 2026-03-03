@@ -19,7 +19,7 @@ const pillVariants = {
 };
 
 const FOREST_GREEN = 'hsl(158, 35%, 18%)';
-const PILL_BORDER = '2px solid hsla(55, 50%, 55%, 0.6)';
+const PILL_BORDER = '2px solid #CDD625';
 
 export default function JagIMigProductHome({ product }: { product: ProductManifest }) {
   const navigate = useNavigate();
