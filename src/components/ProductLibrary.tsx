@@ -202,8 +202,8 @@ function PastelTile({
 export default function ProductLibrary() {
   const navigate = useNavigate();
 
-  const trio = allProducts.filter(p => ['jag_i_mig', 'jag_med_andra', 'jag_i_varlden'].includes(p.id));
-  const extras = allProducts.filter(p => ['vardagskort', 'syskonkort', 'sexualitetskort'].includes(p.id));
+  const trio = allProducts.filter(p => ['jag_i_mig', 'jag_med_andra', 'jag_i_varlden', 'sexualitetskort'].includes(p.id));
+  const extras = allProducts.filter(p => ['vardagskort', 'syskonkort'].includes(p.id));
 
   return (
     <div
