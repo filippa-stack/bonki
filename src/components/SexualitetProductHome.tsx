@@ -38,10 +38,11 @@ export default function SexualitetProductHome({ product }: { product: ProductMan
         transition={{ duration: 1 }}
         style={{
           position: 'absolute',
-          bottom: '-8%',
+          bottom: 'auto',
+          top: '-12%',
           right: '-15%',
-          width: '70%',
-          height: '60%',
+          width: '75%',
+          height: '80%',
           zIndex: 0,
           pointerEvents: 'none',
         }}
@@ -53,7 +54,7 @@ export default function SexualitetProductHome({ product }: { product: ProductMan
             width: '100%',
             height: '100%',
             objectFit: 'contain',
-            objectPosition: 'right bottom',
+            objectPosition: 'right top',
             opacity: 0.22,
           }}
         />
