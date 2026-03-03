@@ -8,6 +8,7 @@ import JagIMigProductHome from '@/components/JagIMigProductHome';
 import JagMedAndraProductHome from '@/components/JagMedAndraProductHome';
 import JagIVarldenProductHome from '@/components/JagIVarldenProductHome';
 import SexualitetProductHome from '@/components/SexualitetProductHome';
+import VardagProductHome from '@/components/VardagProductHome';
 
 /**
  * Injects product-specific CSS variables onto :root so the entire
@@ -89,6 +90,11 @@ export default function ProductHome() {
   // Custom layout for Sexualitet
   if (product.id === 'sexualitetskort') {
     return <SexualitetProductHome product={product} />;
+  }
+
+  // Custom layout for Vardag
+  if (product.id === 'vardagskort') {
+    return <VardagProductHome product={product} />;
   }
 
   return (
