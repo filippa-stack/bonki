@@ -78,7 +78,8 @@ function DevProductIntroPreview() {
   return (
     <ProductIntro
       productId={product.id}
-      accentColor={product.secondaryAccent}
+      accentColor={product.accentColor}
+      backgroundColor={product.backgroundColor}
       onComplete={() => {}}
     />
   );
