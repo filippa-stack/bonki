@@ -37,7 +37,7 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
         style={{
           position: 'absolute',
           top: '7%',
-          left: '-30%',
+          left: '-36%',
           width: '135%',
           height: '125%',
           zIndex: 0,
