@@ -31,44 +31,15 @@ export default function SexualitetProductHome({ product }: { product: ProductMan
       className="min-h-screen relative overflow-hidden"
       style={{ backgroundColor: BG_COLOR }}
     >
-      {/* Background illustration — top-right, faded */}
+      {/* Illustration — bottom-right */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 1 }}
         style={{
           position: 'absolute',
-          top: '-5%',
-          right: '-25%',
-          width: '80%',
-          height: '70%',
-          zIndex: 0,
-          pointerEvents: 'none',
-        }}
-      >
-        <img
-          src={illustrationImage}
-          alt=""
-          style={{
-            width: '100%',
-            height: '100%',
-            objectFit: 'contain',
-            objectPosition: 'right top',
-            opacity: 0.18,
-            transform: 'scaleX(-1)',
-          }}
-        />
-      </motion.div>
-
-      {/* Second illustration — bottom-left */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 1, delay: 0.3 }}
-        style={{
-          position: 'absolute',
           bottom: '-8%',
-          left: '-15%',
+          right: '-10%',
           width: '70%',
           height: '60%',
           zIndex: 0,
@@ -82,7 +53,7 @@ export default function SexualitetProductHome({ product }: { product: ProductMan
             width: '100%',
             height: '100%',
             objectFit: 'contain',
-            objectPosition: 'left bottom',
+            objectPosition: 'right bottom',
             opacity: 0.22,
           }}
         />
