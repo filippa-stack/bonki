@@ -3,7 +3,7 @@ import { useNavigate, useLocation, useSearchParams } from 'react-router-dom';
 import { useDevState } from '@/contexts/DevStateContext';
 import { isDevToolsEnabled, isDevAdmin } from '@/lib/devTools';
 import { useAuth } from '@/contexts/AuthContext';
-import { X } from 'lucide-react';
+import { ChevronUp, ChevronDown } from 'lucide-react';
 
 const DEV_STATES = [
   { value: 'solo', label: 'Solo' },
@@ -139,32 +139,9 @@ export default function DevModeBadge() {
   }
 
   return (
-    <>
-      {/* ── Tiny edge tab (left edge, vertically centered) ── */}
-      {!open && (
-        <div
-          onClick={() => setOpen(true)}
-          className="fixed left-0 top-1/2 -translate-y-1/2 z-[9999] cursor-pointer group"
-          title="Dev Tools (`)"
-        >
-          <div className="w-[3px] h-10 bg-white/20 group-hover:w-5 group-hover:bg-black/60 rounded-r-md transition-all duration-150 flex items-center justify-center overflow-hidden">
-            <span className="text-[8px] text-white/80 opacity-0 group-hover:opacity-100 transition-opacity font-mono whitespace-nowrap">
-              DEV
-            </span>
-          </div>
-        </div>
-      )}
-
-      {/* ── Panel ── */}
+    <div className="fixed bottom-3 left-3 z-[9999] select-none">
       {open && (
-        <div className="fixed left-3 top-3 bottom-3 z-[9999] w-64 overflow-y-auto rounded-xl bg-black/80 backdrop-blur-md text-white/90 shadow-2xl border border-white/10 text-[11px] font-mono select-none">
-          {/* Close bar */}
-          <div className="sticky top-0 bg-black/80 backdrop-blur-md flex items-center justify-between px-3 py-2 border-b border-white/10">
-            <span className="text-white/40 uppercase tracking-widest text-[9px]">Dev Tools</span>
-            <button onClick={() => setOpen(false)} className="text-white/40 hover:text-white transition-colors">
-              <X className="w-3.5 h-3.5" />
-            </button>
-          </div>
+        <div className="mb-2 w-64 max-h-[80vh] overflow-y-auto rounded-xl bg-black/80 backdrop-blur-md text-white/90 shadow-2xl border border-white/10 text-[11px] font-mono">
 
           {/* Theme Picker */}
           <div className="px-3 py-2 text-white/40 uppercase tracking-widest text-[9px]">Theme</div>
@@ -242,6 +219,14 @@ export default function DevModeBadge() {
           </div>
         </div>
       )}
-    </>
+
+      <button
+        onClick={() => setOpen((v) => !v)}
+        className="pointer-events-auto flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-mono tracking-wider bg-black/60 text-white/80 backdrop-blur-sm hover:bg-black/80 transition-colors"
+      >
+        DEV TOOLS{devState ? ` · ${devState}` : ''}{currentTheme ? ` · ${currentTheme}` : ''}
+        {open ? <ChevronDown className="w-3 h-3" /> : <ChevronUp className="w-3 h-3" />}
+      </button>
+    </div>
   );
 }
