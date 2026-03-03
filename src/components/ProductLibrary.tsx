@@ -418,7 +418,7 @@ export default function ProductLibrary() {
             animate="visible"
             style={{
               display: 'grid',
-              gridTemplateColumns: 'repeat(3, 1fr)',
+              gridTemplateColumns: 'repeat(2, 1fr)',
               gap: '10px',
             }}
           >
@@ -445,7 +445,7 @@ export default function ProductLibrary() {
             animate="visible"
             style={{
               display: 'grid',
-              gridTemplateColumns: 'repeat(3, 1fr)',
+              gridTemplateColumns: 'repeat(2, 1fr)',
               gap: '10px',
               paddingBottom: '24px',
             }}
