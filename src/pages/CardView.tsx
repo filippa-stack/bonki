@@ -43,6 +43,7 @@ import FeedbackSheet from '@/components/FeedbackSheet';
 import LockedReflectionDisplay from '@/components/LockedReflectionDisplay';
 
 import GorTillsammansOverlay, { hasSeenGorTillsammans } from '@/components/GorTillsammansOverlay';
+import IllustrationPeek from '@/components/IllustrationPeek';
 import { useDevState } from '@/contexts/DevStateContext';
 import { useNormalizedSessionContext } from '@/contexts/NormalizedSessionContext';
 import { isDevToolsEnabled } from '@/lib/devTools';
@@ -1287,7 +1288,12 @@ export default function CardView() {
         onLeaveSession={isLive ? () => setShowLeaveConfirm(true) : undefined}
       />
 
-      {/* Step progress — centered horizontal dots (live only, multi-step cards) */}
+      {/* Floating illustration peek — visible during live session after start screen */}
+      {isLive && !showStartScreen && cardImageUrl && card && (
+        <IllustrationPeek imageUrl={cardImageUrl} cardTitle={card.title} />
+      )}
+
+
       {isLive && effectiveSteps.length > 1 && (
         <motion.div
           style={{ paddingTop: '16px', marginTop: '20px' }}
