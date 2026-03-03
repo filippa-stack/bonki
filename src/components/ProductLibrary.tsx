@@ -77,22 +77,22 @@ function AudienceLabel({ label, delay = 0 }: { label: string; delay?: number }) 
         marginTop: '4px',
       }}
     >
-      <div style={{ width: '48px', height: '1px', background: 'var(--color-text-tertiary)', opacity: 0.18 }} />
+      <div style={{ width: '48px', height: '1px', background: 'var(--color-text-tertiary)', opacity: 0.35 }} />
       <p
         className="font-sans"
         style={{
-          fontSize: '10px',
+          fontSize: '11px',
           fontWeight: 700,
           letterSpacing: '0.18em',
           textTransform: 'uppercase',
           color: 'var(--color-text-tertiary)',
-          opacity: 0.55,
+          opacity: 0.8,
           whiteSpace: 'nowrap',
         }}
       >
         {label}
       </p>
-      <div style={{ width: '48px', height: '1px', background: 'var(--color-text-tertiary)', opacity: 0.18 }} />
+      <div style={{ width: '48px', height: '1px', background: 'var(--color-text-tertiary)', opacity: 0.35 }} />
     </motion.div>
   );
 }
@@ -115,12 +115,12 @@ function ComingSoonDropdown() {
           background: 'none',
           border: 'none',
           cursor: 'pointer',
-          fontSize: '9px',
+          fontSize: '10px',
           fontWeight: 700,
           letterSpacing: '0.16em',
           textTransform: 'uppercase' as const,
           color: 'var(--text-primary)',
-          opacity: 0.3,
+          opacity: 0.55,
         }}
       >
         Kommer snart
