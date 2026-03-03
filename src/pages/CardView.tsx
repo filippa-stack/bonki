@@ -989,7 +989,7 @@ export default function CardView() {
         </motion.button>
 
         {/* ── Hero zone: illustration takes center stage ── */}
-        <div style={{ flex: '1 1 auto', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: cardImageUrl ? '52vh' : '40vh', paddingTop: '56px' }}>
+        <div style={{ flex: '1 1 auto', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: cardImageUrl ? '44vh' : '40vh', paddingTop: '56px' }}>
           {cardImageUrl ? (
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
@@ -997,8 +997,8 @@ export default function CardView() {
               transition={{ duration: 1.0, ease: [0.22, 1, 0.36, 1] }}
               style={{
                 position: 'relative',
-                width: '88vw',
-                maxWidth: '360px',
+                width: '78vw',
+                maxWidth: '320px',
               }}
             >
               <img
@@ -1129,7 +1129,7 @@ export default function CardView() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: BEAT_3, duration: EMOTION, ease: [...EASE] }}
-            style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '3px', marginBottom: '48px' }}
+            style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '3px', marginBottom: '32px' }}
           >
             <p style={{ fontFamily: 'var(--font-sans)', fontSize: '12px', color: 'var(--text-tertiary)', opacity: 0.55, textAlign: 'center' }}>
               {uiText.talkTogether}
