@@ -129,6 +129,14 @@ const CARD_IMAGE_MAP: Record<string, { zip: ZipSource; folder: string; file: str
   'sk-framtid':            { zip: 'sk', folder: '', file: 'framtid.png' },
 };
 
+/**
+ * Standalone image overrides — used when an image is missing from its zip.
+ * Maps card ID → public URL path.
+ */
+const STANDALONE_IMAGES: Record<string, string> = {
+  'vk-kvall': '/card-images/vk-kvall.png',
+  'vk-sova': '/card-images/vk-sova.png',
+};
 // Singleton caches per zip source
 const zipCaches: Record<ZipSource, Map<string, string> | null> = { default: null, jim: null, jma: null, jiv: null, vk: null, sk: null, sex: null };
 const zipPromises: Record<ZipSource, Promise<Map<string, string>> | null> = { default: null, jim: null, jma: null, jiv: null, vk: null, sk: null, sex: null };
@@ -183,6 +191,14 @@ export function useCardImage(cardId: string | undefined): string | null {
 
   useEffect(() => {
     if (!cardId) return;
+
+    // Check standalone overrides first
+    const standalone = STANDALONE_IMAGES[cardId];
+    if (standalone) {
+      setUrl(standalone);
+      return;
+    }
+
     const mapping = CARD_IMAGE_MAP[cardId];
     if (!mapping) return;
 
