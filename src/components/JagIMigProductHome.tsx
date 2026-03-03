@@ -81,7 +81,7 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-            gap: '7vh',
+            gap: '3.5vh',
             width: '100%',
           }}
         >
@@ -92,11 +92,11 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
               background: '#FFFDF8',
               backdropFilter: 'blur(16px)',
               border: PILL_BORDER,
-              borderRadius: '16px',
+              borderRadius: '28px',
               padding: '26px 0',
               textAlign: 'center',
               boxShadow: '0 2px 16px -2px hsla(45, 30%, 40%, 0.1)',
-              marginBottom: '0.5vh',
+              marginBottom: '1vh',
               width: '100%',
             }}
           >
@@ -127,7 +127,10 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
           </motion.div>
 
           {/* Category pills — wide, centered */}
-          {product.categories.map((cat) => (
+          {product.categories.map((cat, index) => {
+            const widths = ['72%', '68%', '64%', '60%'];
+            const paddings = ['20px', '18px', '16px', '15px'];
+            return (
             <motion.button
               key={cat.id}
               variants={pillVariants}
@@ -139,12 +142,12 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
                 backdropFilter: 'blur(16px)',
                 border: PILL_BORDER,
                 borderRadius: '28px',
-                padding: '22px 24px',
+                padding: `${paddings[index] || '15px'} 24px`,
                 textAlign: 'center',
                 cursor: 'pointer',
                 boxShadow: '0 4px 16px -4px hsla(30, 20%, 28%, 0.15), 0 1px 3px hsla(30, 20%, 28%, 0.1)',
                 whiteSpace: 'nowrap' as const,
-                width: '70%',
+                width: widths[index] || '60%',
               }}
             >
               <span
@@ -158,7 +161,8 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
                 {cat.title}
               </span>
             </motion.button>
-          ))}
+            );
+          })}
         </motion.div>
       </div>
     </div>
