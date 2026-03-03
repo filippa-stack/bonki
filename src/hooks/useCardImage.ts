@@ -5,7 +5,7 @@ import JSZip from 'jszip';
  * Which zip file a card image lives in.
  * 'default' = /card-images.zip, 'jim' = /jim-illustrations.zip
  */
-type ZipSource = 'default' | 'jim' | 'jma' | 'jiv' | 'vk' | 'sk';
+type ZipSource = 'default' | 'jim' | 'jma' | 'jiv' | 'vk' | 'sk' | 'sex';
 
 /**
  * Maps card IDs → zip source + path inside that zip.
@@ -96,21 +96,21 @@ const CARD_IMAGE_MAP: Record<string, { zip: ZipSource; folder: string; file: str
   'vk-arbete':         { zip: 'vk', folder: '', file: 'Arbete.png' },
   'vk-kompisar':       { zip: 'vk', folder: '', file: 'Kompisar.png' },
 
-  // ── Sexualitetskort ──
-  'sex-konsidentitet':    { zip: 'default', folder: 'Sexualitetskort', file: 'KÖNSIDENTITET_front.jpeg' },
-  'sex-sexuell-laggning': { zip: 'default', folder: 'Sexualitetskort', file: 'SEXUELL_LÄGGNING_front.jpeg' },
-  'sex-onani':            { zip: 'default', folder: 'Sexualitetskort', file: 'ONANI_front.jpeg' },
-  'sex-kroppsideal':      { zip: 'default', folder: 'Sexualitetskort', file: 'KROPPSIDEAL_front.jpeg' },
-  'sex-normer':           { zip: 'default', folder: 'Sexualitetskort', file: 'NORMER_front.jpeg' },
-  'sex-pornografi':       { zip: 'default', folder: 'Sexualitetskort', file: 'PORNOGRAFI_front.jpeg' },
-  'sex-sexuella-tabun':   { zip: 'default', folder: 'Sexualitetskort', file: 'SEXUELLA_TABUN_front.jpeg' },
-  'sex-sex-och-karlek':   { zip: 'default', folder: 'Sexualitetskort', file: 'SEX_og_KÄRLEK_front.jpeg' },
-  'sex-samtycke':         { zip: 'default', folder: 'Sexualitetskort', file: 'SAMTYCKE_front.jpeg' },
-  'sex-sex-och-ansvar':   { zip: 'default', folder: 'Sexualitetskort', file: 'SEX_og_ANSVAR_front.jpeg' },
-  'sex-sexuella-misstag': { zip: 'default', folder: 'Sexualitetskort', file: 'SEXUELLA_MISSTAG_front.jpeg' },
-  'sex-konsekvenser-av-sex':{ zip: 'default', folder: 'Sexualitetskort', file: 'KONSEKVENSER_AV_SEX_front.jpeg' },
-  'sex-sexuella-overgrepp':{ zip: 'default', folder: 'Sexualitetskort', file: 'SEXUELLA_ÖVERGREPP_front.jpeg' },
-  'sex-sex-som-hot':      { zip: 'default', folder: 'Sexualitetskort', file: 'SEX_SOM_HOT_front.jpeg' },
+  // ── Sexualitetskort (new illustrations zip) ──
+  'sex-konsidentitet':    { zip: 'sex', folder: '', file: 'Könsidentitet.png' },
+  'sex-sexuell-laggning': { zip: 'sex', folder: '', file: 'Sexuell läggning.png' },
+  'sex-onani':            { zip: 'sex', folder: '', file: 'Onani.png' },
+  'sex-kroppsideal':      { zip: 'sex', folder: '', file: 'Kroppsideal.png' },
+  'sex-normer':           { zip: 'sex', folder: '', file: 'Normer.png' },
+  'sex-pornografi':       { zip: 'sex', folder: '', file: 'Pornografi.png' },
+  'sex-sexuella-tabun':   { zip: 'sex', folder: '', file: 'Sexuella tabun.png' },
+  'sex-sex-och-karlek':   { zip: 'sex', folder: '', file: 'Sex & kärlek.png' },
+  'sex-samtycke':         { zip: 'sex', folder: '', file: 'Samtycke.png' },
+  'sex-sex-och-ansvar':   { zip: 'sex', folder: '', file: 'Sex & ansvar.png' },
+  'sex-sexuella-misstag': { zip: 'sex', folder: '', file: 'Sexuella misstag.png' },
+  'sex-konsekvenser-av-sex':{ zip: 'sex', folder: '', file: 'Konsekvenser av sex.png' },
+  'sex-sexuella-overgrepp':{ zip: 'sex', folder: '', file: 'Sexuella övergrepp.png' },
+  'sex-sex-som-hot':      { zip: 'sex', folder: '', file: 'Sex som hot.png' },
 
   // ── Syskonkort (new illustrations zip) ──
   'sk-att-fa-ett-syskon':  { zip: 'sk', folder: '', file: 'Att få ett syskon.png' },
@@ -130,8 +130,8 @@ const CARD_IMAGE_MAP: Record<string, { zip: ZipSource; folder: string; file: str
 };
 
 // Singleton caches per zip source
-const zipCaches: Record<ZipSource, Map<string, string> | null> = { default: null, jim: null, jma: null, jiv: null, vk: null, sk: null };
-const zipPromises: Record<ZipSource, Promise<Map<string, string>> | null> = { default: null, jim: null, jma: null, jiv: null, vk: null, sk: null };
+const zipCaches: Record<ZipSource, Map<string, string> | null> = { default: null, jim: null, jma: null, jiv: null, vk: null, sk: null, sex: null };
+const zipPromises: Record<ZipSource, Promise<Map<string, string>> | null> = { default: null, jim: null, jma: null, jiv: null, vk: null, sk: null, sex: null };
 
 const ZIP_URLS: Record<ZipSource, string> = {
   default: '/card-images.zip',
@@ -140,6 +140,7 @@ const ZIP_URLS: Record<ZipSource, string> = {
   jiv: '/jiv-card-images.zip',
   vk: '/vk-card-images.zip',
   sk: '/sk-card-images.zip',
+  sex: '/sex-card-images.zip',
 };
 
 async function loadZip(source: ZipSource): Promise<Map<string, string>> {
