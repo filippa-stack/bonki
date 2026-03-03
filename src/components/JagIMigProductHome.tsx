@@ -18,7 +18,6 @@ const pillVariants = {
   },
 };
 
-/** Dark forest green matching the reference design */
 const FOREST_GREEN = 'hsl(158, 35%, 18%)';
 
 export default function JagIMigProductHome({ product }: { product: ProductManifest }) {
@@ -29,19 +28,21 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
       className="min-h-screen relative overflow-hidden"
       style={{ backgroundColor: 'var(--surface-base)' }}
     >
-      {/* Background illustration — large, left-bleeding, warm & natural */}
+      {/* Background illustration */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 1 }}
         style={{
           position: 'absolute',
-          top: '-5%',
-          left: '-25%',
-          width: '120%',
-          height: '105%',
+          top: '-2%',
+          left: '-30%',
+          width: '115%',
+          height: '100%',
           zIndex: 0,
           pointerEvents: 'none',
+          maskImage: 'linear-gradient(to bottom, black 70%, transparent 95%)',
+          WebkitMaskImage: 'linear-gradient(to bottom, black 70%, transparent 95%)',
         }}
       >
         <img
@@ -52,12 +53,12 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
             height: '100%',
             objectFit: 'contain',
             objectPosition: 'left top',
-            opacity: 0.7,
+            opacity: 0.5,
           }}
         />
       </motion.div>
 
-      {/* Content — pills offset to the right */}
+      {/* Content — pills positioned right-of-center */}
       <div
         style={{
           position: 'relative',
@@ -68,9 +69,9 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
           alignItems: 'flex-end',
           justifyContent: 'flex-start',
           paddingTop: '10vh',
-          paddingRight: '6vw',
+          paddingRight: '5vw',
           paddingBottom: '48px',
-          paddingLeft: '35vw',
+          paddingLeft: '28vw',
         }}
       >
         <motion.div
@@ -81,41 +82,39 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-            gap: '48px',
+            gap: '7vh',
             width: '100%',
-            maxWidth: '300px',
           }}
         >
-          {/* Title pill — single line, generous padding */}
+          {/* Title pill */}
           <motion.div
             variants={pillVariants}
             style={{
               background: 'hsla(45, 40%, 96%, 0.92)',
               backdropFilter: 'blur(12px)',
               border: '1.5px solid hsla(55, 45%, 62%, 0.5)',
-              borderRadius: '18px',
-              padding: '28px 52px',
+              borderRadius: '16px',
+              padding: '24px 40px',
               textAlign: 'center',
               boxShadow: '0 2px 16px -2px hsla(45, 30%, 40%, 0.1)',
-              marginBottom: '8px',
-              whiteSpace: 'nowrap' as const,
+              marginBottom: '2vh',
             }}
           >
             <h1
               className="font-serif"
               style={{
-                fontSize: '38px',
+                fontSize: 'clamp(28px, 8vw, 40px)',
                 fontWeight: 700,
                 color: FOREST_GREEN,
                 letterSpacing: '-0.01em',
                 whiteSpace: 'nowrap',
               }}
             >
-              {product.name}
+              Jag i mig
             </h1>
           </motion.div>
 
-          {/* Category pills — wide spacing, forest green text */}
+          {/* Category pills */}
           {product.categories.map((cat) => (
             <motion.button
               key={cat.id}
@@ -128,17 +127,17 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
                 backdropFilter: 'blur(12px)',
                 border: '1.5px solid hsla(55, 45%, 62%, 0.45)',
                 borderRadius: '28px',
-                padding: '16px 36px',
+                padding: '14px 28px',
                 textAlign: 'center',
                 cursor: 'pointer',
                 boxShadow: '0 2px 10px -2px hsla(45, 30%, 40%, 0.08)',
-                width: '100%',
+                whiteSpace: 'nowrap' as const,
               }}
             >
               <span
                 className="font-serif"
                 style={{
-                  fontSize: '20px',
+                  fontSize: 'clamp(16px, 4.5vw, 22px)',
                   fontWeight: 600,
                   color: FOREST_GREEN,
                 }}
