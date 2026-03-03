@@ -301,7 +301,7 @@ export default function ProductLibrary() {
     >
       {/* Background watermark */}
       <div style={{ position: 'fixed', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', pointerEvents: 'none', zIndex: 0 }}>
-        <img src={watermarkMamma} alt="" style={{ width: '90vw', maxWidth: '90vw', height: 'auto', objectFit: 'contain', opacity: 0.06, transform: 'translateY(5vh)' }} />
+        <img src={watermarkMamma} alt="" style={{ width: '90vw', maxWidth: '90vw', height: 'auto', objectFit: 'contain', opacity: 0.15, transform: 'translateY(5vh)' }} />
       </div>
 
       {/* Content */}
