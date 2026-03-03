@@ -97,36 +97,36 @@ const CARD_IMAGE_MAP: Record<string, { zip: ZipSource; folder: string; file: str
   'vk-kompisar':       { zip: 'vk', folder: '', file: 'Kompisar.png' },
 
   // ── Sexualitetskort (new illustrations zip) ──
-  'sex-konsidentitet':    { zip: 'sex', folder: '', file: 'Könsidentitet.png' },
-  'sex-sexuell-laggning': { zip: 'sex', folder: '', file: 'Sexuell läggning.png' },
-  'sex-onani':            { zip: 'sex', folder: '', file: 'Onani.png' },
-  'sex-kroppsideal':      { zip: 'sex', folder: '', file: 'Kroppsideal.png' },
-  'sex-normer':           { zip: 'sex', folder: '', file: 'Normer.png' },
-  'sex-pornografi':       { zip: 'sex', folder: '', file: 'Pornografi.png' },
-  'sex-sexuella-tabun':   { zip: 'sex', folder: '', file: 'Sexuella tabun.png' },
-  'sex-sex-och-karlek':   { zip: 'sex', folder: '', file: 'Sex & kärlek.png' },
-  'sex-samtycke':         { zip: 'sex', folder: '', file: 'Samtycke.png' },
-  'sex-sex-och-ansvar':   { zip: 'sex', folder: '', file: 'Sex & ansvar.png' },
-  'sex-sexuella-misstag': { zip: 'sex', folder: '', file: 'Sexuella misstag.png' },
-  'sex-konsekvenser-av-sex':{ zip: 'sex', folder: '', file: 'Konsekvenser av sex.png' },
-  'sex-sexuella-overgrepp':{ zip: 'sex', folder: '', file: 'Sexuella övergrepp.png' },
-  'sex-sex-som-hot':      { zip: 'sex', folder: '', file: 'Sex som hot.png' },
+  'sex-konsidentitet':    { zip: 'sex', folder: '', file: 'könsidentitet.png' },
+  'sex-sexuell-laggning': { zip: 'sex', folder: '', file: 'sexuell läggning.png' },
+  'sex-onani':            { zip: 'sex', folder: '', file: 'onani.png' },
+  'sex-kroppsideal':      { zip: 'sex', folder: '', file: 'kroppsideal.png' },
+  'sex-normer':           { zip: 'sex', folder: '', file: 'NORMER.png' },
+  'sex-pornografi':       { zip: 'sex', folder: '', file: 'porr.png' },
+  'sex-sexuella-tabun':   { zip: 'sex', folder: '', file: 'sexuellatabun.png' },
+  'sex-sex-och-karlek':   { zip: 'sex', folder: '', file: 'sexochkärlek.png' },
+  'sex-samtycke':         { zip: 'sex', folder: '', file: 'samtycke.png' },
+  'sex-sex-och-ansvar':   { zip: 'sex', folder: '', file: 'sex&ansvar.png' },
+  'sex-sexuella-misstag': { zip: 'sex', folder: '', file: 'sexuellamisstag.png' },
+  'sex-konsekvenser-av-sex':{ zip: 'sex', folder: '', file: 'konsekvenseravsex.png' },
+  'sex-sexuella-overgrepp':{ zip: 'sex', folder: '', file: 'sexuellaövergrepp.png' },
+  'sex-sex-som-hot':      { zip: 'sex', folder: '', file: 'sexsomhot.png' },
 
   // ── Syskonkort (new illustrations zip) ──
-  'sk-att-fa-ett-syskon':  { zip: 'sk', folder: '', file: 'Att få ett syskon.png' },
-  'sk-syskonminnen':       { zip: 'sk', folder: '', file: 'Syskonminnen.png' },
-  'sk-syskonkunskap':      { zip: 'sk', folder: '', file: 'Syskonkunskap.png' },
-  'sk-vanskap':            { zip: 'sk', folder: '', file: 'Vänskap.png' },
-  'sk-unik':               { zip: 'sk', folder: '', file: 'Unik.png' },
-  'sk-aldst-mitten-yngst': { zip: 'sk', folder: '', file: 'Äldst mitten yngst.png' },
-  'sk-bonussyskon':        { zip: 'sk', folder: '', file: 'Bonussyskon.png' },
-  'sk-konflikt':           { zip: 'sk', folder: '', file: 'Konflikt.png' },
-  'sk-dela':               { zip: 'sk', folder: '', file: 'Dela.png' },
-  'sk-rattvisa':           { zip: 'sk', folder: '', file: 'Rättvisa.png' },
-  'sk-uppmarksamhet':      { zip: 'sk', folder: '', file: 'Uppmärksamhet.png' },
-  'sk-sjukdom':            { zip: 'sk', folder: '', file: 'Sjukdom.png' },
-  'sk-forlora-ett-syskon': { zip: 'sk', folder: '', file: 'Förlora ett syskon.png' },
-  'sk-framtid':            { zip: 'sk', folder: '', file: 'Framtid.png' },
+  'sk-att-fa-ett-syskon':  { zip: 'sk', folder: '', file: 'ETTSYSKON.png' },
+  'sk-syskonminnen':       { zip: 'sk', folder: '', file: 'jämföra.png' },
+  'sk-syskonkunskap':      { zip: 'sk', folder: '', file: 'syskonkunskap.png' },
+  'sk-vanskap':            { zip: 'sk', folder: '', file: 'vänskap.png' },
+  'sk-unik':               { zip: 'sk', folder: '', file: 'unik.png' },
+  'sk-aldst-mitten-yngst': { zip: 'sk', folder: '', file: 'åldrar.png' },
+  'sk-bonussyskon':        { zip: 'sk', folder: '', file: 'bonussyskon.png' },
+  'sk-konflikt':           { zip: 'sk', folder: '', file: 'konflikt.png' },
+  'sk-dela':               { zip: 'sk', folder: '', file: 'dela.png' },
+  'sk-rattvisa':           { zip: 'sk', folder: '', file: 'rättvisa.png' },
+  'sk-uppmarksamhet':      { zip: 'sk', folder: '', file: 'uppmärksamhet.png' },
+  'sk-sjukdom':            { zip: 'sk', folder: '', file: 'sjuk.png' },
+  'sk-forlora-ett-syskon': { zip: 'sk', folder: '', file: 'förlora syskon.png' },
+  'sk-framtid':            { zip: 'sk', folder: '', file: 'framtid.png' },
 };
 
 // Singleton caches per zip source
@@ -167,7 +167,6 @@ async function loadZip(source: ZipSource): Promise<Map<string, string>> {
     );
 
     zipCaches[source] = map;
-    
     return map;
   })();
 
@@ -192,8 +191,8 @@ export function useCardImage(cardId: string | undefined): string | null {
     loadZip(mapping.zip).then((cache) => {
       if (cancelled) return;
 
-      // Normalize Unicode (decomposed ↔ composed) for reliable matching
-      const norm = (s: string) => s.normalize('NFC');
+      // Normalize Unicode (decomposed ↔ composed) + case-insensitive matching
+      const norm = (s: string) => s.normalize('NFC').toLowerCase();
       const exactPath = mapping.folder
         ? `${mapping.folder}/${mapping.file}`
         : mapping.file;
