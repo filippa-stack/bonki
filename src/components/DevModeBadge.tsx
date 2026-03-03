@@ -121,7 +121,8 @@ export default function DevModeBadge() {
   }
 
   function switchState(state: string) {
-    const basePath = state === 'library' ? '/' : location.pathname;
+    const rootStates = ['library', 'onboarding', 'productIntro'];
+    const basePath = rootStates.includes(state) ? '/' : location.pathname;
     const params = new URLSearchParams(searchParams);
     params.set('devState', state);
     navigate(`${basePath}?${params.toString()}`);
