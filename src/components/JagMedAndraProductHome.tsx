@@ -36,10 +36,10 @@ export default function JagMedAndraProductHome({ product }: { product: ProductMa
         transition={{ duration: 1 }}
         style={{
           position: 'absolute',
-          top: '7%',
-          left: '-42%',
-          width: '135%',
-          height: '125%',
+          top: '-8%',
+          left: '-20%',
+          width: '160%',
+          height: '130%',
           zIndex: 0,
           pointerEvents: 'none',
         }}
