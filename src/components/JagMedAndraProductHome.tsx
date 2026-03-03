@@ -66,7 +66,7 @@ export default function JagMedAndraProductHome({ product }: { product: ProductMa
         style={{
           position: 'absolute',
           bottom: '8%',
-          right: '-15%',
+          right: '-25%',
           width: '55%',
           zIndex: 0,
           pointerEvents: 'none',
