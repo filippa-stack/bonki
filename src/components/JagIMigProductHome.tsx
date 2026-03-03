@@ -36,10 +36,10 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
         transition={{ duration: 1 }}
         style={{
           position: 'absolute',
-          top: 0,
-          left: '-15%',
-          width: '115%',
-          height: '100%',
+          top: '2%',
+          left: '-18%',
+          width: '105%',
+          height: '105%',
           zIndex: 0,
           pointerEvents: 'none',
         }}
@@ -50,9 +50,9 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
           style={{
             width: '100%',
             height: '100%',
-            objectFit: 'cover',
-            objectPosition: '15% center',
-            opacity: 0.85,
+            objectFit: 'contain',
+            objectPosition: 'left top',
+            opacity: 0.9,
           }}
         />
       </motion.div>
@@ -67,10 +67,10 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
           flexDirection: 'column',
           alignItems: 'flex-end',
           justifyContent: 'flex-start',
-          paddingTop: '10vh',
-          paddingRight: '5vw',
+          paddingTop: '8vh',
+          paddingRight: '4vw',
           paddingBottom: '48px',
-          paddingLeft: '40vw',
+          paddingLeft: '38vw',
         }}
       >
         <motion.div
