@@ -41,8 +41,8 @@ export default function SexualitetProductHome({ product }: { product: ProductMan
           bottom: 'auto',
           top: '-2%',
           right: '-15%',
-          width: '75%',
-          height: '80%',
+          width: '110%',
+          height: '115%',
           zIndex: 0,
           pointerEvents: 'none',
         }}
