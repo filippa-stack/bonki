@@ -994,7 +994,7 @@ export default function CardView() {
         </motion.button>
 
         {/* ── Hero zone: illustration takes center stage ── */}
-        <div style={{ flex: '1 1 auto', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: WIDE_FLAT_CARDS.has(card.id) ? 'flex-end' : 'center', paddingTop: WIDE_FLAT_CARDS.has(card.id) ? '24px' : '56px' }}>
+        <div style={{ flex: '1 1 auto', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', paddingTop: '56px' }}>
           {cardImageUrl ? (
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
@@ -1004,7 +1004,6 @@ export default function CardView() {
                 position: 'relative',
                 width: WIDE_FLAT_CARDS.has(card.id) ? '92vw' : '78vw',
                 maxWidth: WIDE_FLAT_CARDS.has(card.id) ? '420px' : '320px',
-                ...(WIDE_FLAT_CARDS.has(card.id) ? { marginBottom: '-12vh' } : {}),
               }}
             >
               <img
@@ -1013,14 +1012,14 @@ export default function CardView() {
                 style={{
                   width: '100%',
                   height: 'auto',
-                  maxHeight: WIDE_FLAT_CARDS.has(card.id) ? '55vh' : '45vh',
+                  ...(WIDE_FLAT_CARDS.has(card.id) ? {} : { maxHeight: '45vh' }),
                   objectFit: 'contain',
                 }}
               />
               {/* Soft oval shadow-mat under illustration */}
               <div style={{
                 position: 'absolute',
-                bottom: WIDE_FLAT_CARDS.has(card.id) ? '6vh' : '-12px',
+                bottom: '-12px',
                 left: '10%',
                 right: '10%',
                 height: '48px',
@@ -1029,18 +1028,6 @@ export default function CardView() {
                 filter: 'blur(8px)',
                 pointerEvents: 'none',
               }} />
-              {/* Fade-out gradient for wide cards so bottom blends into text area */}
-              {WIDE_FLAT_CARDS.has(card.id) && (
-                <div style={{
-                  position: 'absolute',
-                  bottom: 0,
-                  left: 0,
-                  right: 0,
-                  height: '30%',
-                  background: `linear-gradient(to bottom, transparent, ${product?.backgroundColor || 'hsl(var(--background))'})`,
-                  pointerEvents: 'none',
-                }} />
-              )}
             </motion.div>
           ) : (
             <>
@@ -1117,8 +1104,6 @@ export default function CardView() {
               textAlign: 'center',
               marginBottom: '20px',
               marginTop: '24px',
-              position: 'relative',
-              zIndex: 2,
             }}
           >
             {card.title}
