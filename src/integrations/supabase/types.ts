@@ -576,18 +576,24 @@ export type Database = {
           id: string
           is_active: boolean
           name: string
+          price_sek: number | null
+          stripe_price_id: string | null
         }
         Insert: {
           created_at?: string
           id: string
           is_active?: boolean
           name: string
+          price_sek?: number | null
+          stripe_price_id?: string | null
         }
         Update: {
           created_at?: string
           id?: string
           is_active?: boolean
           name?: string
+          price_sek?: number | null
+          stripe_price_id?: string | null
         }
         Relationships: []
       }
