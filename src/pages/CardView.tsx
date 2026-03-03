@@ -1097,7 +1097,7 @@ export default function CardView() {
               color: 'var(--text-tertiary)',
               textAlign: 'center',
               marginBottom: '20px',
-              marginTop: '-4px',
+              marginTop: '12px',
             }}
           >
             {card.title}
