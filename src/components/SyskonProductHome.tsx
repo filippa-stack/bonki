@@ -41,7 +41,7 @@ export default function SyskonProductHome({ product }: { product: ProductManifes
         transition={{ duration: 1 }}
         style={{
           position: 'absolute',
-          top: '-10%',
+          top: '0%',
           right: '-25%',
           width: '130%',
           height: '135%',
