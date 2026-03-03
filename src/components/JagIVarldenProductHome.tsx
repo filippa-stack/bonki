@@ -158,8 +158,7 @@ export default function JagIVarldenProductHome({ product }: { product: ProductMa
 
           {/* Category pills */}
           {product.categories.map((cat, index) => {
-            const widths = ['74%', '70%', '67%', '64%', '61%'];
-            const paddings = ['20px', '19px', '18px', '18px', '18px'];
+            const widths = ['72%', '68%', '66%', '66%', '66%'];
             return (
               <motion.button
                 key={cat.id}
@@ -172,18 +171,19 @@ export default function JagIVarldenProductHome({ product }: { product: ProductMa
                   backdropFilter: 'blur(16px)',
                   border: PILL_BORDER,
                   borderRadius: '28px',
-                  padding: `${paddings[index] || '18px'} 28px`,
+                  padding: '16px 32px',
                   textAlign: 'center',
                   cursor: 'pointer',
                   boxShadow: '0 4px 16px -4px hsla(140, 20%, 28%, 0.15), 0 1px 3px hsla(140, 20%, 28%, 0.1)',
                   whiteSpace: 'normal' as const,
-                  width: widths[index] || '61%',
+                  width: widths[index] || '66%',
+                  lineHeight: 1.3,
                 }}
               >
                 <span
                   className="font-serif"
                   style={{
-                    fontSize: 'clamp(18px, 5vw, 24px)',
+                    fontSize: 'clamp(17px, 4.5vw, 22px)',
                     fontWeight: 400,
                     color: TEXT_COLOR,
                   }}
