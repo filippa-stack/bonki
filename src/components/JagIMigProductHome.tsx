@@ -135,7 +135,7 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
               whileTap={{ scale: 0.97 }}
               onClick={() => navigate(`/category/${cat.id}`)}
               style={{
-                background: 'rgba(255, 253, 248, 0.75)',
+                background: 'rgba(255, 253, 248, 0.88)',
                 backdropFilter: 'blur(16px)',
                 border: PILL_BORDER,
                 borderRadius: '28px',
