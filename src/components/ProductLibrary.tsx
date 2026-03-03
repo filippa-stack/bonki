@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { ChevronDown } from 'lucide-react';
 import { allProducts } from '@/data/products';
 import bonkiLogo from '@/assets/bonki-logo.png';
+import watermarkMamma from '@/assets/watermark-mamma.png';
 import illustrationJagIMig from '@/assets/illustration-jag-i-mig.png';
 import illustrationJagMedAndra from '@/assets/illustration-jag-med-andra.png';
 import illustrationJagIVarlden from '@/assets/illustration-jag-i-varlden.png';
@@ -298,14 +299,9 @@ export default function ProductLibrary() {
       className="min-h-screen flex flex-col relative"
       style={{ backgroundColor: 'var(--surface-base)' }}
     >
-      {/* Background logo — subtle, upper half only */}
+      {/* Background watermark */}
       <div style={{ position: 'fixed', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', pointerEvents: 'none', zIndex: 0 }}>
-        <img src={bonkiLogo} alt="" style={{ width: '130vw', maxWidth: '130vw', height: 'auto', objectFit: 'contain', opacity: 0.03, transform: 'translateY(8vh)', maskImage: 'linear-gradient(to bottom, black 30%, transparent 70%)', WebkitMaskImage: 'linear-gradient(to bottom, black 30%, transparent 70%)' }} />
-      </div>
-
-      {/* Overlay logo — very subtle */}
-      <div style={{ position: 'fixed', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', pointerEvents: 'none', zIndex: 10 }}>
-        <img src={bonkiLogo} alt="" style={{ width: '130vw', maxWidth: '130vw', height: 'auto', objectFit: 'contain', opacity: 0.02, transform: 'translateY(8vh)', filter: 'saturate(0)', maskImage: 'linear-gradient(to bottom, black 30%, transparent 70%)', WebkitMaskImage: 'linear-gradient(to bottom, black 30%, transparent 70%)' }} />
+        <img src={watermarkMamma} alt="" style={{ width: '90vw', maxWidth: '90vw', height: 'auto', objectFit: 'contain', opacity: 0.06, transform: 'translateY(5vh)' }} />
       </div>
 
       {/* Content */}
