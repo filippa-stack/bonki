@@ -312,7 +312,7 @@ export default function ProductLibrary() {
       <div style={{ position: 'relative', zIndex: 1 }}>
         {/* Hero */}
         <motion.div
-          className="pt-8 pb-1 px-6 text-center"
+          className="pt-5 pb-1 px-6 text-center"
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
@@ -341,7 +341,7 @@ export default function ProductLibrary() {
 
         {/* ── Still Us ── */}
         <motion.div
-          className="px-5 mt-4 mb-8 flex flex-col items-center"
+          className="px-5 mt-2 mb-4 flex flex-col items-center"
           variants={containerVariants}
           initial="hidden"
           animate="visible"
@@ -356,7 +356,7 @@ export default function ProductLibrary() {
             style={{
               width: '75%',
               borderRadius: '18px',
-              padding: '28px 24px',
+              padding: '20px 24px',
               background: `radial-gradient(ellipse at 50% 35%, hsla(158, 40%, 22%, 0.95) 0%, hsla(158, 35%, 14%, 0.92) 100%)`,
               textAlign: 'center',
               position: 'relative',
@@ -427,14 +427,14 @@ export default function ProductLibrary() {
                 tagline={TAGLINES[p.id]}
                 ageLabel={p.ageLabel}
                 onClick={() => navigate(`/product/${p.slug}`)}
-                aspectRatio="1 / 1"
+                aspectRatio="3 / 2"
               />
             ))}
           </motion.div>
         </div>
 
         {/* ── Hela familjen ── */}
-        <div className="px-5 mt-8">
+        <div className="px-5 mt-4">
           <AudienceLabel label="Er familj" delay={0.20} />
           <motion.div
             variants={containerVariants}
@@ -444,7 +444,7 @@ export default function ProductLibrary() {
               display: 'grid',
               gridTemplateColumns: 'repeat(2, 1fr)',
               gap: '10px',
-              paddingBottom: '24px',
+              paddingBottom: '12px',
             }}
           >
             {extras.map(p => (
@@ -455,7 +455,7 @@ export default function ProductLibrary() {
                 tagline={TAGLINES[p.id]}
                 ageLabel={p.ageLabel}
                 onClick={() => navigate(`/product/${p.slug}`)}
-                aspectRatio="1 / 1"
+                aspectRatio="3 / 2"
               />
             ))}
           </motion.div>
@@ -466,7 +466,7 @@ export default function ProductLibrary() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.8, duration: 0.6 }}
-          style={{ textAlign: 'center', paddingBottom: '48px' }}
+          style={{ textAlign: 'center', paddingBottom: '24px' }}
         >
           <p
             className="font-serif"
