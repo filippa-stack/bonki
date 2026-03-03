@@ -139,7 +139,7 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
                 className="font-serif"
                 style={{
                   fontSize: 'clamp(18px, 5vw, 24px)',
-                  fontWeight: 600,
+                  fontWeight: 400,
                   color: FOREST_GREEN,
                 }}
               >
