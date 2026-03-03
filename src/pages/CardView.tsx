@@ -98,9 +98,6 @@ const STEP_CTA_KEYS: Record<string, string> = {
   exercise: 'card_view.cta_exercise',
 };
 
-/** Cards with wide/flat illustrations that need more space on the start screen */
-const WIDE_FLAT_CARDS = new Set(['vk-morgon', 'vk-syskon', 'vk-mat', 'vk-hushall', 'vk-kompisar']);
-
 export default function CardView() {
   const { cardId } = useParams<{ cardId: string }>();
   const navigate = useNavigate();
@@ -1002,8 +999,8 @@ export default function CardView() {
               transition={{ duration: 1.0, ease: [0.22, 1, 0.36, 1] }}
               style={{
                 position: 'relative',
-                width: WIDE_FLAT_CARDS.has(card.id) ? '92vw' : '78vw',
-                maxWidth: WIDE_FLAT_CARDS.has(card.id) ? '420px' : '320px',
+                width: '78vw',
+                maxWidth: '320px',
               }}
             >
               <img
@@ -1012,7 +1009,7 @@ export default function CardView() {
                 style={{
                   width: '100%',
                   height: 'auto',
-                  ...(WIDE_FLAT_CARDS.has(card.id) ? {} : { maxHeight: '45vh' }),
+                  maxHeight: '45vh',
                   objectFit: 'contain',
                 }}
               />
