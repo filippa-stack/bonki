@@ -112,6 +112,18 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
             >
               Jag i mig
             </h1>
+            <p
+              className="font-serif"
+              style={{
+                fontSize: 'clamp(14px, 4vw, 18px)',
+                fontWeight: 400,
+                color: FOREST_GREEN,
+                opacity: 0.7,
+                marginTop: '6px',
+              }}
+            >
+              när känslor får ord
+            </p>
           </motion.div>
 
           {/* Category pills — wide, centered */}
