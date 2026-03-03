@@ -44,7 +44,7 @@ export default function VardagProductHome({ product }: { product: ProductManifes
           top: '-4%',
           right: '-25%',
           width: '130%',
-          height: '135%',
+          height: '155%',
           zIndex: 0,
           pointerEvents: 'none',
         }}
