@@ -70,7 +70,7 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
           paddingTop: '12vh',
           paddingRight: '6vw',
           paddingBottom: '48px',
-          paddingLeft: '26vw',
+          paddingLeft: '6vw',
         }}
       >
         <motion.div
