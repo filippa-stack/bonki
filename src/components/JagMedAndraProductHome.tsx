@@ -117,7 +117,7 @@ export default function JagMedAndraProductHome({ product }: { product: ProductMa
           <motion.div
             variants={pillVariants}
             style={{
-              background: '#FFFDF8',
+              background: 'rgba(252, 242, 249, 0.88)',
               backdropFilter: 'blur(16px)',
               border: PILL_BORDER,
               borderRadius: '28px',
@@ -133,7 +133,7 @@ export default function JagMedAndraProductHome({ product }: { product: ProductMa
               style={{
                 fontSize: 'clamp(32px, 9vw, 44px)',
                 fontWeight: 700,
-                color: DEEP_PURPLE,
+                color: '#000000',
                 letterSpacing: '-0.01em',
                 whiteSpace: 'nowrap',
               }}
@@ -145,7 +145,7 @@ export default function JagMedAndraProductHome({ product }: { product: ProductMa
               style={{
                 fontSize: 'clamp(14px, 4vw, 18px)',
                 fontWeight: 400,
-                color: DEEP_PURPLE,
+                color: '#000000',
                 opacity: 0.7,
                 marginTop: '6px',
               }}
@@ -166,7 +166,7 @@ export default function JagMedAndraProductHome({ product }: { product: ProductMa
                 whileTap={{ scale: 0.97 }}
                 onClick={() => navigate(`/category/${cat.id}`)}
                 style={{
-                  background: 'rgba(255, 253, 248, 0.88)',
+                  background: 'rgba(252, 242, 249, 0.88)',
                   backdropFilter: 'blur(16px)',
                   border: PILL_BORDER,
                   borderRadius: '28px',
@@ -183,7 +183,7 @@ export default function JagMedAndraProductHome({ product }: { product: ProductMa
                   style={{
                     fontSize: 'clamp(18px, 5vw, 24px)',
                     fontWeight: 400,
-                    color: DEEP_PURPLE,
+                    color: '#000000',
                   }}
                 >
                   {cat.title}
