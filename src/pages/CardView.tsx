@@ -1012,7 +1012,7 @@ export default function CardView() {
                 style={{
                   width: '100%',
                   height: 'auto',
-                  ...(WIDE_FLAT_CARDS.has(card.id) ? {} : { maxHeight: '45vh' }),
+                  maxHeight: WIDE_FLAT_CARDS.has(card.id) ? '35vh' : '45vh',
                   objectFit: 'contain',
                 }}
               />
