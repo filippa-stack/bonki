@@ -5,7 +5,7 @@ import JSZip from 'jszip';
  * Which zip file a card image lives in.
  * 'default' = /card-images.zip, 'jim' = /jim-illustrations.zip
  */
-type ZipSource = 'default' | 'jim' | 'jma';
+type ZipSource = 'default' | 'jim' | 'jma' | 'jiv';
 
 /**
  * Maps card IDs → zip source + path inside that zip.
@@ -57,27 +57,27 @@ const CARD_IMAGE_MAP: Record<string, { zip: ZipSource; folder: string; file: str
   'jma-acceptans':  { zip: 'jma', folder: '', file: 'Acceptans.png' },
   'jma-kluringen':  { zip: 'jma', folder: '', file: 'Kluringen.png' },
 
-  // ── Jag i Världen ──
-  'jiv-halsa':        { zip: 'default', folder: 'Jag_i_Varlden', file: 'HÄLSA_front.jpeg' },
-  'jiv-prestation':   { zip: 'default', folder: 'Jag_i_Varlden', file: 'PRESTATION_front.jpeg' },
-  'jiv-bekraftelse':  { zip: 'default', folder: 'Jag_i_Varlden', file: 'BEKRÄFTELSE_front.jpeg' },
-  'jiv-sjalvkansla':  { zip: 'default', folder: 'Jag_i_Varlden', file: 'SJÄLVKÄNSLA_front.jpeg' },
-  'jiv-identitet':    { zip: 'default', folder: 'Jag_i_Varlden', file: 'IDENTITET_front.jpeg' },
-  'jiv-roller':       { zip: 'default', folder: 'Jag_i_Varlden', file: 'ROLLER_front.jpeg' },
-  'jiv-frihet':       { zip: 'default', folder: 'Jag_i_Varlden', file: 'FRIHET_front.jpeg' },
-  'jiv-karlek':       { zip: 'default', folder: 'Jag_i_Varlden', file: 'KÄRLEK_front.jpeg' },
-  'jiv-vanskap':      { zip: 'default', folder: 'Jag_i_Varlden', file: 'VÄNSKAP_front.jpeg' },
-  'jiv-kommunikation':{ zip: 'default', folder: 'Jag_i_Varlden', file: 'KOMMUNIKATION_front.jpeg' },
-  'jiv-konflikt':     { zip: 'default', folder: 'Jag_i_Varlden', file: 'KONFLIKT_front.jpeg' },
-  'jiv-medkansla':    { zip: 'default', folder: 'Jag_i_Varlden', file: 'MEDKÄNSLA_front.jpeg' },
-  'jiv-mobbning':     { zip: 'default', folder: 'Jag_i_Varlden', file: 'MOBBNING_front.jpeg' },
-  'jiv-fordomar':     { zip: 'default', folder: 'Jag_i_Varlden', file: 'FÖRDOMAR_front.jpeg' },
-  'jiv-social-media': { zip: 'default', folder: 'Jag_i_Varlden', file: 'SOCIAL_MEDIA_front.jpeg' },
-  'jiv-psykisk-ohalsa':{ zip: 'default', folder: 'Jag_i_Varlden', file: 'PSYKISK_OHÄLSA_front.jpeg' },
-  'jiv-sexualitet':   { zip: 'default', folder: 'Jag_i_Varlden', file: 'SEXUALITET_front.jpeg' },
-  'jiv-moral-etik':   { zip: 'default', folder: 'Jag_i_Varlden', file: 'MORAL_og_ETIK_front.jpeg' },
-  'jiv-aktivism':     { zip: 'default', folder: 'Jag_i_Varlden', file: 'AKTIVISM_front.jpeg' },
-  'jiv-existens':     { zip: 'default', folder: 'Jag_i_Varlden', file: 'EXISTENS_front.jpeg' },
+  // ── Jag i Världen (new illustrations zip) ──
+  'jiv-halsa':        { zip: 'jiv', folder: '', file: 'Hälsa.png' },
+  'jiv-prestation':   { zip: 'jiv', folder: '', file: 'Prestation.png' },
+  'jiv-bekraftelse':  { zip: 'jiv', folder: '', file: 'Bekräftelse.png' },
+  'jiv-sjalvkansla':  { zip: 'jiv', folder: '', file: 'Självkänsla.png' },
+  'jiv-identitet':    { zip: 'jiv', folder: '', file: 'Identitet.png' },
+  'jiv-roller':       { zip: 'jiv', folder: '', file: 'Roller.png' },
+  'jiv-frihet':       { zip: 'jiv', folder: '', file: 'Frihet.png' },
+  'jiv-karlek':       { zip: 'jiv', folder: '', file: 'Kärlek.png' },
+  'jiv-vanskap':      { zip: 'jiv', folder: '', file: 'Vänskap.png' },
+  'jiv-kommunikation':{ zip: 'jiv', folder: '', file: 'Kommunikation.png' },
+  'jiv-konflikt':     { zip: 'jiv', folder: '', file: 'Konflikt.png' },
+  'jiv-medkansla':    { zip: 'jiv', folder: '', file: 'Medkänsla.png' },
+  'jiv-mobbning':     { zip: 'jiv', folder: '', file: 'Mobbning.png' },
+  'jiv-fordomar':     { zip: 'jiv', folder: '', file: 'Fördomar.png' },
+  'jiv-social-media': { zip: 'jiv', folder: '', file: 'Social media.png' },
+  'jiv-psykisk-ohalsa':{ zip: 'jiv', folder: '', file: 'Psykisk ohälsa.png' },
+  'jiv-sexualitet':   { zip: 'jiv', folder: '', file: 'Sexualitet.png' },
+  'jiv-moral-etik':   { zip: 'jiv', folder: '', file: 'Moral & etik.png' },
+  'jiv-aktivism':     { zip: 'jiv', folder: '', file: 'Aktivism.png' },
+  'jiv-existens':     { zip: 'jiv', folder: '', file: 'Existens.png' },
 
   // ── Vardagskort ──
   'vk-morgon':         { zip: 'default', folder: 'Vardagskort', file: 'MORGON_front.jpeg' },
@@ -130,13 +130,14 @@ const CARD_IMAGE_MAP: Record<string, { zip: ZipSource; folder: string; file: str
 };
 
 // Singleton caches per zip source
-const zipCaches: Record<ZipSource, Map<string, string> | null> = { default: null, jim: null, jma: null };
-const zipPromises: Record<ZipSource, Promise<Map<string, string>> | null> = { default: null, jim: null, jma: null };
+const zipCaches: Record<ZipSource, Map<string, string> | null> = { default: null, jim: null, jma: null, jiv: null };
+const zipPromises: Record<ZipSource, Promise<Map<string, string>> | null> = { default: null, jim: null, jma: null, jiv: null };
 
 const ZIP_URLS: Record<ZipSource, string> = {
   default: '/card-images.zip',
   jim: '/jim-illustrations.zip',
   jma: '/jma-card-images.zip',
+  jiv: '/jiv-card-images.zip',
 };
 
 async function loadZip(source: ZipSource): Promise<Map<string, string>> {
