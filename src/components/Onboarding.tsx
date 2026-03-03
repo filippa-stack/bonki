@@ -59,8 +59,8 @@ export default function Onboarding() {
           >
             <div className="flex-1 flex flex-col" style={{ position: 'relative' }}>
               {currentSlide === 0 && <SlideWelcome />}
-              {currentSlide === 1 && <SlideHow />}
-              {currentSlide === 2 && <SlideReady />}
+              {currentSlide === 1 && <SlideScope />}
+              {currentSlide === 2 && <SlideInvitation />}
             </div>
           </motion.div>
         </AnimatePresence>
@@ -94,7 +94,7 @@ export default function Onboarding() {
                 transition: 'transform 200ms ease-out, box-shadow 300ms ease-out',
               }}
             >
-              Utforska
+              Utforska biblioteket
             </button>
           ) : (
             <button
@@ -176,7 +176,7 @@ export default function Onboarding() {
   );
 }
 
-/* ─── SLIDE 1: Welcome to Bonki ─── */
+/* ─── SLIDE 1: The Recognition ─── */
 function SlideWelcome() {
   return (
     <div className="flex-1 flex flex-col items-center justify-center" style={{ padding: '0 32px' }}>
@@ -194,7 +194,7 @@ function SlideWelcome() {
           fontWeight: 600,
         }}
       >
-        Välkommen till
+        V\u00e4lkommen till
       </motion.p>
 
       <motion.h1
@@ -229,7 +229,7 @@ function SlideWelcome() {
           maxWidth: '280px',
         }}
       >
-        Ett bibliotek av samtal — för par, barn och familjer.
+        Det b\u00e4sta samtalet du kommer ha idag v\u00e4ntar h\u00e4r.
       </motion.p>
 
       <motion.p
@@ -239,26 +239,23 @@ function SlideWelcome() {
         style={{
           fontFamily: 'var(--font-serif)',
           fontStyle: 'italic',
-          fontSize: '17px',
-          color: 'var(--accent-text)',
+          fontSize: '15px',
+          color: 'var(--color-text-secondary)',
+          opacity: 0.55,
           textAlign: 'center',
-          marginTop: '16px',
+          marginTop: '12px',
+          lineHeight: 1.6,
+          maxWidth: '280px',
         }}
       >
-        Varje samtal räknas.
+        Inte det l\u00e4ngsta. Inte det sv\u00e5raste. Det mest \u00e4rliga.
       </motion.p>
     </div>
   );
 }
 
-/* ─── SLIDE 2: How it works ─── */
-function SlideHow() {
-  const steps = [
-    { num: '01', text: 'Välj en samtalslek som passar er.' },
-    { num: '02', text: 'Läs frågorna högt, en i taget.' },
-    { num: '03', text: 'Lyssna. Reflektera. Inga rätta svar.' },
-  ];
-
+/* ─── SLIDE 2: The Scope ─── */
+function SlideScope() {
   return (
     <div className="flex-1 flex flex-col items-center justify-center" style={{ padding: '0 32px' }}>
       <motion.p
@@ -271,88 +268,68 @@ function SlideHow() {
           letterSpacing: '0.12em',
           textTransform: 'uppercase' as const,
           color: 'var(--accent-saffron)',
-          marginBottom: '16px',
+          marginBottom: '20px',
           fontWeight: 600,
         }}
       >
-        Så funkar det
+        Samtal som r\u00f6r sig
       </motion.p>
 
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', maxWidth: '300px', width: '100%' }}>
-        {steps.map((step, i) => (
-          <motion.div
-            key={step.num}
-            initial={{ opacity: 0, x: -12 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.15 + i * 0.15, duration: 0.6, ease: EASE }}
-            style={{ display: 'flex', alignItems: 'baseline', gap: '14px' }}
-          >
-            <span
-              style={{
-                fontFamily: 'var(--font-serif)',
-                fontSize: '28px',
-                fontWeight: 700,
-                color: 'var(--color-text-primary)',
-                opacity: 0.08,
-                lineHeight: 1,
-                flexShrink: 0,
-                minWidth: '32px',
-              }}
-            >
-              {step.num}
-            </span>
-            <span
-              style={{
-                fontFamily: 'var(--font-sans)',
-                fontSize: '15px',
-                color: 'var(--color-text-primary)',
-                lineHeight: 1.55,
-              }}
-            >
-              {step.text}
-            </span>
-          </motion.div>
-        ))}
-      </div>
+      <motion.p
+        initial={{ opacity: 0, x: -10 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ delay: 0.15, duration: 0.6, ease: EASE }}
+        style={{
+          fontFamily: 'var(--font-sans)',
+          fontSize: '15px',
+          color: 'var(--color-text-primary)',
+          textAlign: 'center',
+          lineHeight: 1.65,
+          maxWidth: '300px',
+        }}
+      >
+        Bonki \u00e4r verktyg f\u00f6r familjer och par som vill n\u00e5 varandra {'\u2014'} p\u00e5 riktigt.
+      </motion.p>
 
       {/* Divider */}
       <motion.div
         initial={{ opacity: 0, scaleX: 0 }}
         animate={{ opacity: 1, scaleX: 1 }}
-        transition={{ delay: 0.65, duration: 0.7, ease: EASE }}
+        transition={{ delay: 0.4, duration: 0.7, ease: EASE }}
         style={{
           width: '40px',
           height: '1px',
           background: 'var(--color-text-primary)',
           opacity: 0.1,
-          marginTop: '28px',
+          marginTop: '24px',
           marginBottom: '24px',
           transformOrigin: 'center',
         }}
       />
 
       <motion.p
-        initial={{ opacity: 0, y: 6 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.75, duration: 0.6, ease: EASE }}
+        initial={{ opacity: 0, x: -8 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ delay: 0.5, duration: 0.6, ease: EASE }}
         style={{
-          fontFamily: 'var(--font-sans)',
-          fontSize: '14px',
+          fontFamily: 'var(--font-serif)',
+          fontStyle: 'italic',
+          fontSize: '15px',
           color: 'var(--color-text-secondary)',
           opacity: 0.65,
           textAlign: 'center',
           lineHeight: 1.65,
-          maxWidth: '260px',
+          maxWidth: '280px',
         }}
       >
-        Pausa när det behövs. Återkom när det passar.
+        Fr\u00e5n barnets f\u00f6rsta k\u00e4nslor till parrelationens sv\u00e5raste fr\u00e5gor. Varje kort \u00e4r byggt f\u00f6r att \u00f6ppna det som blivit tyst.
       </motion.p>
     </div>
   );
 }
 
-/* ─── SLIDE 3: Ready ─── */
-function SlideReady() {
+/* ─── SLIDE 3: The Invitation ─── */
+function SlideInvitation() {
   return (
     <div className="flex-1 flex flex-col items-center justify-center" style={{ padding: '0 32px' }}>
       <motion.h1
@@ -361,15 +338,16 @@ function SlideReady() {
         transition={{ delay: 0.1, duration: 0.7, ease: EASE }}
         style={{
           fontFamily: 'var(--font-serif)',
-          fontSize: '36px',
+          fontSize: '28px',
           fontWeight: 700,
           color: 'hsl(36, 16%, 92%)',
           textAlign: 'center',
-          lineHeight: 1.15,
+          lineHeight: 1.25,
           letterSpacing: '-0.02em',
+          maxWidth: '300px',
         }}
       >
-        Omsorgsfullt utvecklat.
+        V\u00e4lj det \u00e4mne som k\u00e4nns r\u00e4tt just nu & lyssna.
       </motion.h1>
 
       <motion.p
@@ -378,15 +356,15 @@ function SlideReady() {
         transition={{ delay: 0.3, duration: 0.65, ease: EASE }}
         style={{
           fontFamily: 'var(--font-sans)',
-          fontSize: '15px',
+          fontSize: '14px',
           color: 'hsl(36, 12%, 78%)',
           textAlign: 'center',
           marginTop: '20px',
-          lineHeight: 1.6,
-          maxWidth: '300px',
+          lineHeight: 1.65,
+          maxWidth: '290px',
         }}
       >
-        Varje samtalslek bygger på psykologisk forskning — om anknytning, känslor och relationer.
+        Du hittar verktyg f\u00f6r barn, ton\u00e5ringar och par {'\u2014'} och varje produkt b\u00f6rjar med ett kort helt gratis.
       </motion.p>
 
       <motion.div
@@ -406,6 +384,7 @@ function SlideReady() {
           pointerEvents: 'none',
         }}
       />
+
       <motion.p
         initial={{ opacity: 0, y: 8 }}
         animate={{ opacity: 1, y: 0 }}
@@ -413,16 +392,17 @@ function SlideReady() {
         style={{
           fontFamily: 'var(--font-serif)',
           fontStyle: 'italic',
-          fontSize: '20px',
-          color: 'var(--accent-saffron)',
+          fontSize: '15px',
+          color: 'hsl(36, 12%, 70%)',
           textAlign: 'center',
-          marginTop: '28px',
-          letterSpacing: '-0.01em',
+          marginTop: '24px',
+          lineHeight: 1.6,
+          maxWidth: '260px',
           position: 'relative',
           zIndex: 1,
         }}
       >
-        Redo att börja?
+        Inget \u00e4r f\u00f6r sv\u00e5rt. Inget \u00e4r f\u00f6r litet. B\u00f6rja d\u00e4r ni \u00e4r.
       </motion.p>
     </div>
   );
