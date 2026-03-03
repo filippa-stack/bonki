@@ -25,12 +25,12 @@ const TAGLINES: Record<string, string> = {
 };
 
 const PASTEL_COLORS: Record<string, string> = {
-  jag_i_mig: 'hsl(45, 30%, 90%)',
-  jag_med_andra: 'hsl(260, 25%, 90%)',
-  jag_i_varlden: 'hsl(185, 30%, 89%)',
-  sexualitetskort: 'hsl(330, 25%, 90%)',
-  vardagskort: 'hsl(140, 25%, 88%)',
-  syskonkort: 'hsl(200, 25%, 88%)',
+  jag_i_mig: 'hsl(43, 100%, 99%)',        // #FFFDF8
+  jag_med_andra: 'hsl(318, 63%, 97%)',     // #FCF2F9
+  jag_i_varlden: 'hsl(138, 100%, 97%)',    // #EEFFF3
+  sexualitetskort: 'hsl(318, 63%, 97%)',   // #FCF2F9
+  vardagskort: 'hsl(180, 63%, 97%)',       // #F2FCFC
+  syskonkort: 'hsl(204, 63%, 97%)',        // #F2F8FC
 };
 
 /* ── Stagger orchestration ── */
