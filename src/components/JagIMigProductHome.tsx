@@ -93,10 +93,10 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
               backdropFilter: 'blur(16px)',
               border: PILL_BORDER,
               borderRadius: '28px',
-              padding: '26px 0',
+              padding: '26px 16px',
               textAlign: 'center',
               boxShadow: '0 2px 16px -2px hsla(45, 30%, 40%, 0.1)',
-              marginBottom: '1vh',
+              marginBottom: '2vh',
               width: '100%',
             }}
           >
@@ -128,8 +128,8 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
 
           {/* Category pills — wide, centered */}
           {product.categories.map((cat, index) => {
-            const widths = ['72%', '68%', '64%', '60%'];
-            const paddings = ['20px', '18px', '16px', '15px'];
+            const widths = ['74%', '70%', '67%', '64%'];
+            const paddings = ['20px', '19px', '18px', '18px'];
             return (
             <motion.button
               key={cat.id}
