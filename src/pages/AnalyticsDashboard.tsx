@@ -13,7 +13,7 @@ import { cn } from '@/lib/utils';
 const ADMIN_USER_ID = 'b29f4c84-0426-4b8f-9293-dccf9141a4b5';
 
 interface Analytics {
-  overview: { totalSpaces: number; totalSessions: number; totalCompletions: number; totalTakeaways: number };
+  overview: { totalSpaces: number; totalSessions: number; totalCompletions: number; totalTakeaways: number; uniqueUsers: number };
   sessions: { byStatus: Record<string, number>; avgDurationMinutes: number };
   reflections: { byState: Record<string, number>; totalReflections: number; uniqueUsers: number };
   notes: { byVisibility: Record<string, number>; totalNotes: number; uniqueUsers: number; highlights: number };
@@ -138,6 +138,7 @@ export default function AnalyticsDashboard() {
           <>
             <SectionTitle>Översikt</SectionTitle>
             <div className="grid grid-cols-2 gap-3">
+              <StatCard icon={Users} label="Unika användare" value={data.overview.uniqueUsers} />
               <StatCard icon={Users} label="Par (spaces)" value={data.overview.totalSpaces} />
               <StatCard icon={BarChart3} label="Sessioner" value={data.overview.totalSessions} />
               <StatCard icon={Clock} label="Snittid / session" value={data.sessions.avgDurationMinutes > 0 ? `${data.sessions.avgDurationMinutes} min` : '–'} />
