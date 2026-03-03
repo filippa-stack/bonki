@@ -39,7 +39,7 @@ export default function SexualitetProductHome({ product }: { product: ProductMan
         style={{
           position: 'absolute',
           bottom: 'auto',
-          top: '-2%',
+          top: '-10%',
           right: '-25%',
           width: '130%',
           height: '135%',
