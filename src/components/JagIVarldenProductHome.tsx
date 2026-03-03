@@ -54,6 +54,7 @@ export default function JagIVarldenProductHome({ product }: { product: ProductMa
             objectFit: 'contain',
             objectPosition: 'right top',
             opacity: 0.35,
+            transform: 'rotate(180deg)',
           }}
         />
       </motion.div>
