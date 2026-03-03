@@ -139,12 +139,12 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
                 backdropFilter: 'blur(12px)',
                 border: PILL_BORDER,
                 borderRadius: '28px',
-                padding: '14px 24px',
+                padding: '22px 24px',
                 textAlign: 'center',
                 cursor: 'pointer',
                 boxShadow: '0 2px 10px -2px hsla(45, 30%, 40%, 0.08)',
                 whiteSpace: 'nowrap' as const,
-                width: '90%',
+                width: '70%',
               }}
             >
               <span
