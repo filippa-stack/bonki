@@ -3,19 +3,18 @@ import { useNavigate } from 'react-router-dom';
 import type { ProductManifest } from '@/types/product';
 import apaImage from '@/assets/apa-jag-i-mig.png';
 
-const EMOTION = 0.32;
 const EASE = [0.4, 0.0, 0.2, 1] as const;
 
 const containerVariants = {
   hidden: {},
-  visible: { transition: { staggerChildren: 0.08, delayChildren: 0.3 } },
+  visible: { transition: { staggerChildren: 0.1, delayChildren: 0.35 } },
 };
 
 const pillVariants = {
-  hidden: { opacity: 0, y: 16, scale: 0.95 },
+  hidden: { opacity: 0, y: 20, scale: 0.95 },
   visible: {
     opacity: 1, y: 0, scale: 1,
-    transition: { duration: 0.5, ease: EASE },
+    transition: { duration: 0.55, ease: EASE },
   },
 };
 
@@ -27,35 +26,36 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
       className="min-h-screen relative overflow-hidden"
       style={{ backgroundColor: 'var(--surface-base)' }}
     >
-      {/* Background illustration — left-aligned, full height */}
+      {/* Background illustration — large, left-bleeding, faded */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ duration: 0.8 }}
+        transition={{ duration: 1 }}
         style={{
           position: 'absolute',
-          inset: 0,
+          top: '2%',
+          left: '-20%',
+          width: '110%',
+          height: '96%',
           zIndex: 0,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'flex-start',
+          pointerEvents: 'none',
         }}
       >
         <img
           src={apaImage}
           alt=""
           style={{
-            height: '88vh',
-            width: 'auto',
+            width: '100%',
+            height: '100%',
             objectFit: 'contain',
-            objectPosition: 'left center',
-            transform: 'translateX(-8%)',
-            opacity: 0.85,
+            objectPosition: 'left top',
+            opacity: 0.45,
+            filter: 'saturate(0.7)',
           }}
         />
       </motion.div>
 
-      {/* Content overlay */}
+      {/* Content — pills offset to the right */}
       <div
         style={{
           position: 'relative',
@@ -63,10 +63,12 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
           minHeight: '100vh',
           display: 'flex',
           flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          padding: '80px 24px 48px',
-          gap: '20px',
+          alignItems: 'flex-end',
+          justifyContent: 'flex-start',
+          paddingTop: '12vh',
+          paddingRight: '8vw',
+          paddingBottom: '48px',
+          paddingLeft: '30vw',
         }}
       >
         <motion.div
@@ -77,12 +79,12 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-            gap: '18px',
+            gap: '28px',
             width: '100%',
-            maxWidth: '320px',
+            maxWidth: '280px',
           }}
         >
-          {/* Title pill */}
+          {/* Title pill — larger, more padding */}
           <motion.div
             variants={pillVariants}
             style={{
@@ -90,15 +92,16 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
               backdropFilter: 'blur(12px)',
               border: '1.5px solid hsla(55, 45%, 62%, 0.5)',
               borderRadius: '18px',
-              padding: '20px 36px',
+              padding: '26px 44px',
               textAlign: 'center',
-              boxShadow: '0 2px 12px -2px hsla(45, 30%, 40%, 0.1)',
+              boxShadow: '0 2px 16px -2px hsla(45, 30%, 40%, 0.1)',
+              marginBottom: '12px',
             }}
           >
             <h1
               className="font-serif"
               style={{
-                fontSize: '32px',
+                fontSize: '36px',
                 fontWeight: 700,
                 color: 'var(--text-primary)',
                 letterSpacing: '-0.01em',
@@ -108,12 +111,12 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
             </h1>
           </motion.div>
 
-          {/* Category pills */}
+          {/* Category pills — generous spacing */}
           {product.categories.map((cat) => (
             <motion.button
               key={cat.id}
               variants={pillVariants}
-              whileHover={{ scale: 1.03, y: -2 }}
+              whileHover={{ scale: 1.04, y: -2 }}
               whileTap={{ scale: 0.97 }}
               onClick={() => navigate(`/category/${cat.id}`)}
               style={{
@@ -121,18 +124,17 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
                 backdropFilter: 'blur(12px)',
                 border: '1.5px solid hsla(55, 45%, 62%, 0.45)',
                 borderRadius: '28px',
-                padding: '14px 32px',
+                padding: '15px 28px',
                 textAlign: 'center',
                 cursor: 'pointer',
                 boxShadow: '0 2px 10px -2px hsla(45, 30%, 40%, 0.08)',
-                width: 'auto',
-                minWidth: '200px',
+                width: '100%',
               }}
             >
               <span
                 className="font-serif"
                 style={{
-                  fontSize: '20px',
+                  fontSize: '19px',
                   fontWeight: 600,
                   color: 'var(--text-primary)',
                 }}
