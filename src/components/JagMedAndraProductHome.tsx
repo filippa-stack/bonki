@@ -65,7 +65,7 @@ export default function JagMedAndraProductHome({ product }: { product: ProductMa
         transition={{ duration: 1, delay: 0.3 }}
         style={{
           position: 'absolute',
-          bottom: '8%',
+          bottom: '2%',
           right: '-25%',
           width: '55%',
           zIndex: 0,
@@ -135,7 +135,7 @@ export default function JagMedAndraProductHome({ product }: { product: ProductMa
                 fontWeight: 700,
                 color: '#000000',
                 letterSpacing: '-0.01em',
-                whiteSpace: 'nowrap',
+                whiteSpace: 'normal',
               }}
             >
               Jag med andra
