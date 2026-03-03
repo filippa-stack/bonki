@@ -518,6 +518,7 @@ export const jagIMigProduct: ProductManifest = {
   secondaryAccent: 'hsl(72, 73%, 49%)',
   backgroundColor: '#FFFDF8',
   pronounMode: 'du',
+  freeCardId: 'jim-glad',
   ageLabel: '3+',
   categories,
   cards,

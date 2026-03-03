@@ -14,6 +14,8 @@ export interface ProductManifest {
   backgroundColor: string;
   /** Pronoun mode: 'ni' for couple products, 'du' for solo products */
   pronounMode: 'du' | 'ni';
+  /** Card ID that is free to play without purchase */
+  freeCardId?: string;
   /** Age label shown in UI, e.g. '3+', '6+', '13+' */
   ageLabel?: string;
   categories: Category[];

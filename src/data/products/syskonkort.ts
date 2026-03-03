@@ -342,6 +342,7 @@ export const syskonkortProduct: ProductManifest = {
   secondaryAccent: 'hsl(215, 80%, 33%)',
   backgroundColor: '#F2F8FC',
   pronounMode: 'du',
+  freeCardId: 'sk-syskonkunskap',
   ageLabel: '6+',
   categories,
   cards,
