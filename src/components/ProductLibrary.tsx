@@ -253,7 +253,7 @@ export default function ProductLibrary() {
 
         {/* ── Still Us ── */}
         <motion.div
-          className="px-5 mt-4 mb-8 flex justify-center"
+          className="px-5 mt-4 mb-8 flex flex-col items-center"
           variants={containerVariants}
           initial="hidden"
           animate="visible"
