@@ -80,7 +80,7 @@ export default function JagMedAndraProductHome({ product }: { product: ProductMa
             height: '100%',
             objectFit: 'contain',
             opacity: 0.35,
-            transform: 'rotate(15deg)',
+            transform: 'rotate(-15deg)',
           }}
         />
       </motion.div>
