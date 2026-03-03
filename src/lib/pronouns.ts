@@ -104,7 +104,7 @@ export function getCompletionMessages(mode: PronounMode, ageLabel?: string): str
 export function getUIText(mode: PronounMode) {
   if (mode === 'du') {
     return {
-      readAloud: 'Läs frågorna högt för dig själv.',
+      readAloud: 'Läs frågorna högt tillsammans.',
       talkTogether: 'Fundera på frågorna i lugn och ro.',
       notekeeper: 'Anteckna det du vill minnas.',
       readyButton: 'Jag är redo',
