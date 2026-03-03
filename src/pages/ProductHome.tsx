@@ -5,6 +5,7 @@ import { ArrowLeft } from 'lucide-react';
 import { allProducts } from '@/data/products';
 import { useThemeSwitcher } from '@/hooks/useThemeSwitcher';
 import JagIMigProductHome from '@/components/JagIMigProductHome';
+import JagMedAndraProductHome from '@/components/JagMedAndraProductHome';
 
 /**
  * Injects product-specific CSS variables onto :root so the entire
@@ -71,6 +72,11 @@ export default function ProductHome() {
   // Custom layout for Jag i Mig
   if (product.id === 'jag_i_mig') {
     return <JagIMigProductHome product={product} />;
+  }
+
+  // Custom layout for Jag med Andra
+  if (product.id === 'jag_med_andra') {
+    return <JagMedAndraProductHome product={product} />;
   }
 
   return (
