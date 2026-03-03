@@ -951,11 +951,12 @@ export default function CardView() {
   if (shouldShowStartScreen) {
     return (
       <motion.div
-        className="min-h-screen flex flex-col"
+        className="flex flex-col"
         style={{
           backgroundColor: 'var(--surface-base)',
           position: 'relative',
           overflow: 'hidden',
+          height: '100dvh',
         }}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -989,7 +990,7 @@ export default function CardView() {
         </motion.button>
 
         {/* ── Hero zone: illustration takes center stage ── */}
-        <div style={{ flex: '1 1 auto', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: cardImageUrl ? '44vh' : '40vh', paddingTop: '56px' }}>
+        <div style={{ flex: '1 1 auto', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', paddingTop: '56px' }}>
           {cardImageUrl ? (
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
@@ -1007,6 +1008,7 @@ export default function CardView() {
                 style={{
                   width: '100%',
                   height: 'auto',
+                  maxHeight: '45vh',
                   objectFit: 'contain',
                 }}
               />
