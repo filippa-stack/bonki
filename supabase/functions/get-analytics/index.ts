@@ -66,6 +66,7 @@ Deno.serve(async (req) => {
       takeawaysRes,
       feedbackRes,
       visitsRes,
+      membersRes,
     ] = await Promise.all([
       applyFrom(supabase.from('couple_spaces').select('id', { count: 'exact', head: true })),
       applyFrom(supabase.from('couple_sessions').select('status, started_at, ended_at'), 'started_at'),
@@ -76,6 +77,7 @@ Deno.serve(async (req) => {
       applyFrom(supabase.from('couple_takeaways').select('id', { count: 'exact', head: true })),
       applyFrom(supabase.from('beta_feedback').select('id, response_text, submitted_at, session_id').order('submitted_at', { ascending: false }).limit(50), 'submitted_at'),
       applyFrom(supabase.from('couple_card_visits').select('card_id, user_id'), 'last_visited_at'),
+      supabase.from('couple_members').select('user_id, status, left_at'),
     ])
 
     // Aggregate sessions
@@ -133,12 +135,23 @@ Deno.serve(async (req) => {
       .slice(0, 10)
       .map(([cardId, count]) => ({ cardId, visits: count }))
 
+    // Unique users
+    const uniqueActiveMembers = new Set<string>()
+    if (membersRes.data) {
+      for (const m of membersRes.data) {
+        if (m.status === 'active' && !m.left_at) {
+          uniqueActiveMembers.add(m.user_id)
+        }
+      }
+    }
+
     const analytics = {
       overview: {
         totalSpaces: spacesRes.count || 0,
         totalSessions: sessionsRes.data?.length || 0,
         totalCompletions: completionsRes.count || 0,
         totalTakeaways: takeawaysRes.count || 0,
+        uniqueUsers: uniqueActiveMembers.size,
       },
       sessions: {
         byStatus: sessionsByStatus,
