@@ -252,7 +252,7 @@ function CardEntry({ card, index, isCompleted = false, isInProgress = false, onN
             '0 4px 12px -4px hsla(30, 20%, 28%, 0.10), 0 12px 36px -8px hsla(30, 18%, 30%, 0.08)';
         }}
       >
-        <div className="flex items-start">
+        <div className="flex items-center">
           {/* In-progress dot */}
           {isInProgress && (
             <span
@@ -317,7 +317,7 @@ function CardEntry({ card, index, isCompleted = false, isInProgress = false, onN
           </div>
 
           {/* Right side: check + chevron */}
-          <div className="flex items-center gap-2 shrink-0 ml-3" style={{ marginTop: '4px' }}>
+          <div className="flex items-center gap-2 shrink-0 ml-3 self-center">
             {isCompleted && (
               <span style={{
                 fontFamily: 'var(--font-sans)',
