@@ -17,10 +17,13 @@ interface ProductIntroProps {
   productId: string;
   accentColor?: string;
   backgroundColor?: string;
+  freeCardId?: string;
+  freeCardTitle?: string;
   onComplete: () => void;
+  onStartFreeCard?: () => void;
 }
 
-export default function ProductIntro({ productId, accentColor, backgroundColor, onComplete }: ProductIntroProps) {
+export default function ProductIntro({ productId, accentColor, backgroundColor, freeCardId, freeCardTitle, onComplete, onStartFreeCard }: ProductIntroProps) {
   const introData = productIntros[productId];
   const [currentSlide, setCurrentSlide] = useState(0);
   const noIntro = !introData;
@@ -38,9 +41,18 @@ export default function ProductIntro({ productId, accentColor, backgroundColor, 
     onComplete();
   };
 
+  const handleLastSlideCta = () => {
+    markProductIntroSeen(productId);
+    if (freeCardId && onStartFreeCard) {
+      onStartFreeCard();
+    } else {
+      onComplete();
+    }
+  };
+
   const handleNext = () => {
     if (currentSlide < lastSlide) setCurrentSlide(currentSlide + 1);
-    else handleComplete();
+    else handleLastSlideCta();
   };
 
   const handleDragEnd = (_: unknown, info: PanInfo) => {
@@ -48,7 +60,7 @@ export default function ProductIntro({ productId, accentColor, backgroundColor, 
     const VEL = 300;
     if (info.offset.x < -SWIPE || info.velocity.x < -VEL) {
       if (currentSlide < lastSlide) setCurrentSlide(currentSlide + 1);
-      else handleComplete();
+      else handleLastSlideCta();
     }
     if (info.offset.x > SWIPE || info.velocity.x > VEL) {
       if (currentSlide > 0) setCurrentSlide(currentSlide - 1);
@@ -163,7 +175,7 @@ export default function ProductIntro({ productId, accentColor, backgroundColor, 
           className="flex flex-col items-center gap-5 px-6"
         >
           <button
-            onClick={currentSlide === lastSlide ? handleComplete : handleNext}
+            onClick={currentSlide === lastSlide ? handleLastSlideCta : handleNext}
             className="cta-primary"
             style={{
               width: '60%',
@@ -175,7 +187,9 @@ export default function ProductIntro({ productId, accentColor, backgroundColor, 
                 : '0 2px 12px -2px hsla(158, 30%, 15%, 0.18), 0 1px 3px hsla(158, 25%, 12%, 0.08)',
             }}
           >
-            {currentSlide === lastSlide ? introData.ctaLabel : 'Fortsätt'}
+            {currentSlide === lastSlide
+              ? (freeCardId && introData.freeCardCtaLabel ? introData.freeCardCtaLabel : introData.ctaLabel)
+              : 'Fortsätt'}
           </button>
 
           {/* Dots (only if multi-slide) */}

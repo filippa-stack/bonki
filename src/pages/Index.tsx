@@ -80,7 +80,9 @@ function DevProductIntroPreview() {
       productId={product.id}
       accentColor={product.accentColor}
       backgroundColor={product.backgroundColor}
+      freeCardId={product.freeCardId}
       onComplete={() => {}}
+      onStartFreeCard={() => {}}
     />
   );
 }

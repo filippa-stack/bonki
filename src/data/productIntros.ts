@@ -18,6 +18,8 @@ export interface ProductIntroData {
   slides: ProductIntroSlide[];
   /** CTA button text on last slide */
   ctaLabel: string;
+  /** CTA label for the free-card spotlight slide (auto-appended) */
+  freeCardCtaLabel?: string;
 }
 
 export const productIntros: Record<string, ProductIntroData> = {
@@ -49,6 +51,7 @@ export const productIntros: Record<string, ProductIntroData> = {
       },
     ],
     ctaLabel: 'Sätt igång',
+    freeCardCtaLabel: 'Börja med Glad',
   },
 
   jag_med_andra: {
@@ -61,6 +64,7 @@ export const productIntros: Record<string, ProductIntroData> = {
       },
     ],
     ctaLabel: 'Sätt igång',
+    freeCardCtaLabel: 'Börja med Vänskap',
   },
 
   jag_i_varlden: {
@@ -73,6 +77,7 @@ export const productIntros: Record<string, ProductIntroData> = {
       },
     ],
     ctaLabel: 'Sätt igång',
+    freeCardCtaLabel: 'Börja med Identitet',
   },
 
   vardagskort: {
@@ -85,6 +90,7 @@ export const productIntros: Record<string, ProductIntroData> = {
       },
     ],
     ctaLabel: 'Sätt igång',
+    freeCardCtaLabel: 'Börja med Hur var din dag',
   },
 
   syskonkort: {
@@ -96,6 +102,7 @@ export const productIntros: Record<string, ProductIntroData> = {
       },
     ],
     ctaLabel: 'Sätt igång',
+    freeCardCtaLabel: 'Börja med Syskonkunskap',
   },
 
   sexualitetskort: {
@@ -108,5 +115,6 @@ export const productIntros: Record<string, ProductIntroData> = {
       },
     ],
     ctaLabel: 'Sätt igång',
+    freeCardCtaLabel: 'Börja med Normer',
   },
 };
