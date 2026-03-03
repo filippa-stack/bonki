@@ -5,7 +5,7 @@ import JSZip from 'jszip';
  * Which zip file a card image lives in.
  * 'default' = /card-images.zip, 'jim' = /jim-illustrations.zip
  */
-type ZipSource = 'default' | 'jim' | 'jma' | 'jiv';
+type ZipSource = 'default' | 'jim' | 'jma' | 'jiv' | 'vk';
 
 /**
  * Maps card IDs → zip source + path inside that zip.
@@ -79,22 +79,22 @@ const CARD_IMAGE_MAP: Record<string, { zip: ZipSource; folder: string; file: str
   'jiv-aktivism':     { zip: 'jiv', folder: '', file: 'Aktivism.png' },
   'jiv-existens':     { zip: 'jiv', folder: '', file: 'Existens.png' },
 
-  // ── Vardagskort ──
-  'vk-morgon':         { zip: 'default', folder: 'Vardagskort', file: 'MORGON_front.jpeg' },
-  'vk-rutiner':        { zip: 'default', folder: 'Vardagskort', file: 'RUTINER_front.jpeg' },
-  'vk-skola':          { zip: 'default', folder: 'Vardagskort', file: 'SKOLA_front.jpeg' },
-  'vk-hur-var-din-dag':{ zip: 'default', folder: 'Vardagskort', file: 'HUR_VAR_DIN_DAG_front.jpeg' },
-  'vk-kvall':          { zip: 'default', folder: 'Vardagskort', file: 'KVÄLL_front.jpeg' },
-  'vk-sova':           { zip: 'default', folder: 'Vardagskort', file: 'SOVA_front.jpeg' },
-  'vk-helg':           { zip: 'default', folder: 'Vardagskort', file: 'HELG_front.jpeg' },
-  'vk-mat':            { zip: 'default', folder: 'Vardagskort', file: 'MAT_front.jpeg' },
-  'vk-hushall':        { zip: 'default', folder: 'Vardagskort', file: 'HUSHÅLL_front.jpeg' },
-  'vk-syskon':         { zip: 'default', folder: 'Vardagskort', file: 'SYSKON_front.jpeg' },
-  'vk-underhallning':  { zip: 'default', folder: 'Vardagskort', file: 'UNDERHÅLLNING_front.jpeg' },
-  'vk-aktiviteter':    { zip: 'default', folder: 'Vardagskort', file: 'AKTIVITETER_front.jpeg' },
-  'vk-tonar':          { zip: 'default', folder: 'Vardagskort', file: 'TONÅR_front.jpeg' },
-  'vk-arbete':         { zip: 'default', folder: 'Vardagskort', file: 'ARBETE_front.jpeg' },
-  'vk-kompisar':       { zip: 'default', folder: 'Vardagskort', file: 'KOMPISAR_front.jpeg' },
+  // ── Vardagskort (new illustrations zip) ──
+  'vk-morgon':         { zip: 'vk', folder: '', file: 'Morgon.png' },
+  'vk-rutiner':        { zip: 'vk', folder: '', file: 'Rutiner.png' },
+  'vk-skola':          { zip: 'vk', folder: '', file: 'Skola.png' },
+  'vk-hur-var-din-dag':{ zip: 'vk', folder: '', file: 'Hur var din dag.png' },
+  'vk-kvall':          { zip: 'vk', folder: '', file: 'Kväll.png' },
+  'vk-sova':           { zip: 'vk', folder: '', file: 'Sova.png' },
+  'vk-helg':           { zip: 'vk', folder: '', file: 'Helg.png' },
+  'vk-mat':            { zip: 'vk', folder: '', file: 'Mat.png' },
+  'vk-hushall':        { zip: 'vk', folder: '', file: 'Hushåll.png' },
+  'vk-syskon':         { zip: 'vk', folder: '', file: 'Syskon.png' },
+  'vk-underhallning':  { zip: 'vk', folder: '', file: 'Underhållning.png' },
+  'vk-aktiviteter':    { zip: 'vk', folder: '', file: 'Aktiviteter.png' },
+  'vk-tonar':          { zip: 'vk', folder: '', file: 'Tonår.png' },
+  'vk-arbete':         { zip: 'vk', folder: '', file: 'Arbete.png' },
+  'vk-kompisar':       { zip: 'vk', folder: '', file: 'Kompisar.png' },
 
   // ── Sexualitetskort ──
   'sex-konsidentitet':    { zip: 'default', folder: 'Sexualitetskort', file: 'KÖNSIDENTITET_front.jpeg' },
@@ -130,14 +130,15 @@ const CARD_IMAGE_MAP: Record<string, { zip: ZipSource; folder: string; file: str
 };
 
 // Singleton caches per zip source
-const zipCaches: Record<ZipSource, Map<string, string> | null> = { default: null, jim: null, jma: null, jiv: null };
-const zipPromises: Record<ZipSource, Promise<Map<string, string>> | null> = { default: null, jim: null, jma: null, jiv: null };
+const zipCaches: Record<ZipSource, Map<string, string> | null> = { default: null, jim: null, jma: null, jiv: null, vk: null };
+const zipPromises: Record<ZipSource, Promise<Map<string, string>> | null> = { default: null, jim: null, jma: null, jiv: null, vk: null };
 
 const ZIP_URLS: Record<ZipSource, string> = {
   default: '/card-images.zip',
   jim: '/jim-illustrations.zip',
   jma: '/jma-card-images.zip',
   jiv: '/jiv-card-images.zip',
+  vk: '/vk-card-images.zip',
 };
 
 async function loadZip(source: ZipSource): Promise<Map<string, string>> {
