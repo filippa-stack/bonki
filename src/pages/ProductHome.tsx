@@ -1,9 +1,11 @@
+import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ArrowLeft } from 'lucide-react';
 import { allProducts } from '@/data/products';
 import { useProductTheme } from '@/hooks/useProductTheme';
 import { useThemeSwitcher } from '@/hooks/useThemeSwitcher';
+import ProductIntro, { useProductIntroNeeded } from '@/components/ProductIntro';
 import JagIMigProductHome from '@/components/JagIMigProductHome';
 import JagMedAndraProductHome from '@/components/JagMedAndraProductHome';
 import JagIVarldenProductHome from '@/components/JagIVarldenProductHome';
@@ -24,6 +26,19 @@ export default function ProductHome() {
     product?.secondaryAccent ?? 'hsl(38, 88%, 46%)',
     product?.backgroundColor,
   );
+
+  const needsIntro = useProductIntroNeeded(product?.id ?? '');
+  const [showIntro, setShowIntro] = useState(needsIntro);
+
+  if (showIntro && product) {
+    return (
+      <ProductIntro
+        productId={product.id}
+        accentColor={product.secondaryAccent}
+        onComplete={() => setShowIntro(false)}
+      />
+    );
+  }
 
   if (!product) {
     return (
