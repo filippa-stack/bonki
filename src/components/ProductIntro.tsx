@@ -16,10 +16,11 @@ function markProductIntroSeen(productId: string): void {
 interface ProductIntroProps {
   productId: string;
   accentColor?: string;
+  backgroundColor?: string;
   onComplete: () => void;
 }
 
-export default function ProductIntro({ productId, accentColor, onComplete }: ProductIntroProps) {
+export default function ProductIntro({ productId, accentColor, backgroundColor, onComplete }: ProductIntroProps) {
   const introData = productIntros[productId];
   const [currentSlide, setCurrentSlide] = useState(0);
   const noIntro = !introData;
@@ -59,7 +60,7 @@ export default function ProductIntro({ productId, accentColor, onComplete }: Pro
   return (
     <div
       className="min-h-screen flex flex-col"
-      style={{ backgroundColor: 'var(--surface-base)' }}
+      style={{ backgroundColor: backgroundColor ?? 'var(--surface-base)' }}
     >
       <div className="flex-1 flex flex-col">
         <AnimatePresence mode="wait">
@@ -168,7 +169,10 @@ export default function ProductIntro({ productId, accentColor, onComplete }: Pro
               width: '60%',
               fontSize: '15px',
               letterSpacing: '0.02em',
-              boxShadow: '0 2px 12px -2px hsla(158, 30%, 15%, 0.18), 0 1px 3px hsla(158, 25%, 12%, 0.08)',
+              backgroundColor: accentColor ?? undefined,
+              boxShadow: accentColor
+                ? `0 2px 12px -2px ${accentColor}44, 0 1px 3px ${accentColor}22`
+                : '0 2px 12px -2px hsla(158, 30%, 15%, 0.18), 0 1px 3px hsla(158, 25%, 12%, 0.08)',
             }}
           >
             {currentSlide === lastSlide ? introData.ctaLabel : 'Fortsätt'}
@@ -198,7 +202,7 @@ export default function ProductIntro({ productId, accentColor, onComplete }: Pro
                       width: i === currentSlide ? '14px' : '5px',
                       height: '5px',
                       borderRadius: i === currentSlide ? '4px' : '50%',
-                      background: i === currentSlide ? 'var(--accent-saffron)' : 'var(--text-ghost)',
+                      background: i === currentSlide ? (accentColor ?? 'var(--accent-saffron)') : 'var(--text-ghost)',
                       opacity: i === currentSlide ? 1 : 0.3,
                       transition: 'width 0.4s cubic-bezier(0.22, 1, 0.36, 1), background 0.4s ease, opacity 0.4s ease',
                     }}
