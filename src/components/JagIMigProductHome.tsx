@@ -90,7 +90,7 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
             variants={pillVariants}
             style={{
               background: '#FFFDF8',
-              backdropFilter: 'blur(12px)',
+              backdropFilter: 'blur(16px)',
               border: PILL_BORDER,
               borderRadius: '16px',
               padding: '26px 0',
