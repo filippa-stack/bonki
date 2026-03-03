@@ -37,7 +37,7 @@ export default function JagIVarldenProductHome({ product }: { product: ProductMa
         transition={{ duration: 1 }}
         style={{
           position: 'absolute',
-          top: '-25%',
+          top: '-45%',
           right: '-40%',
           width: '140%',
           height: '130%',
