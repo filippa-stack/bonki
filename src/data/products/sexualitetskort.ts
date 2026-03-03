@@ -158,6 +158,7 @@ export const sexualitetskortProduct: ProductManifest = {
   secondaryAccent: 'hsl(354, 87%, 84%)',
   backgroundColor: '#FCF2F9',
   pronounMode: 'du',
+  freeCardId: 'sex-normer',
   ageLabel: '13+',
   categories,
   cards,

@@ -646,6 +646,7 @@ export const jagMedAndraProduct: ProductManifest = {
   secondaryAccent: 'hsl(280, 70%, 45%)',
   backgroundColor: '#FCF2F9',
   pronounMode: 'du',
+  freeCardId: 'jma-vanskap',
   ageLabel: '6+',
   categories,
   cards,

@@ -98,6 +98,7 @@ export const jagIVarldenProduct: ProductManifest = {
   secondaryAccent: 'hsl(130, 35%, 53%)',
   backgroundColor: '#EEFFF3',
   pronounMode: 'du',
+  freeCardId: 'jiv-identitet',
   ageLabel: '12+',
   categories,
   cards,
