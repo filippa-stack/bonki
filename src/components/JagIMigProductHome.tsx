@@ -36,10 +36,10 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
         transition={{ duration: 1 }}
         style={{
           position: 'absolute',
-          top: '7%',
-          left: '-22%',
-          width: '116%',
-          height: '108%',
+          top: 0,
+          left: '-15%',
+          width: '115%',
+          height: '100%',
           zIndex: 0,
           pointerEvents: 'none',
         }}
@@ -50,14 +50,14 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
           style={{
             width: '100%',
             height: '100%',
-            objectFit: 'contain',
-            objectPosition: 'left top',
-            opacity: 0.75,
+            objectFit: 'cover',
+            objectPosition: '15% center',
+            opacity: 0.85,
           }}
         />
       </motion.div>
 
-      {/* Content — centered in right portion */}
+      {/* Content — right-aligned pill stack */}
       <div
         style={{
           position: 'relative',
@@ -65,12 +65,12 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
           minHeight: '100vh',
           display: 'flex',
           flexDirection: 'column',
-          alignItems: 'center',
+          alignItems: 'flex-end',
           justifyContent: 'flex-start',
-          paddingTop: '12vh',
-          paddingRight: '6vw',
+          paddingTop: '10vh',
+          paddingRight: '5vw',
           paddingBottom: '48px',
-          paddingLeft: '26vw',
+          paddingLeft: '40vw',
         }}
       >
         <motion.div
