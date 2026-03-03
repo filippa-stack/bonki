@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { useNavigate, useLocation, useSearchParams } from 'react-router-dom';
 import { useDevState } from '@/contexts/DevStateContext';
-import { isDevToolsEnabled } from '@/lib/devTools';
+import { isDevToolsEnabled, isDevAdmin } from '@/lib/devTools';
+import { useAuth } from '@/contexts/AuthContext';
 import { VALID_THEMES, VALID_SURFACES } from '@/hooks/useThemeSwitcher';
 import { ChevronUp, ChevronDown } from 'lucide-react';
 
@@ -77,15 +78,16 @@ const PAGES = [
 ];
 
 export default function DevModeBadge() {
+  const { user } = useAuth();
   const devState = useDevState();
   const navigate = useNavigate();
   const location = useLocation();
   const [searchParams] = useSearchParams();
   const [open, setOpen] = useState(false);
 
-  const enabled = isDevToolsEnabled();
+  const enabled = isDevToolsEnabled() && isDevAdmin(user?.id);
 
-  // Only show when dev tools are explicitly enabled (?dev=1 or localStorage)
+  // Only show for dev admin with dev tools enabled
   // Hide during screenshot capture
   if (!enabled || searchParams.has('__sc_step')) return null;
 
