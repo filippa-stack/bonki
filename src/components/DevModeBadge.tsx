@@ -83,8 +83,11 @@ export default function DevModeBadge() {
   const [searchParams] = useSearchParams();
   const [open, setOpen] = useState(false);
 
+  const enabled = isDevToolsEnabled();
+
+  // Only show when dev tools are explicitly enabled (?dev=1 or localStorage)
   // Hide during screenshot capture
-  if (searchParams.has('__sc_step')) return null;
+  if (!enabled || searchParams.has('__sc_step')) return null;
 
   const currentDevState = devState ?? 'solo';
   const currentTheme = searchParams.get('theme') ?? '';
