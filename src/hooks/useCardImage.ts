@@ -5,7 +5,7 @@ import JSZip from 'jszip';
  * Which zip file a card image lives in.
  * 'default' = /card-images.zip, 'jim' = /jim-illustrations.zip
  */
-type ZipSource = 'default' | 'jim' | 'jma' | 'jiv' | 'vk';
+type ZipSource = 'default' | 'jim' | 'jma' | 'jiv' | 'vk' | 'sk';
 
 /**
  * Maps card IDs → zip source + path inside that zip.
@@ -112,26 +112,26 @@ const CARD_IMAGE_MAP: Record<string, { zip: ZipSource; folder: string; file: str
   'sex-sexuella-overgrepp':{ zip: 'default', folder: 'Sexualitetskort', file: 'SEXUELLA_ÖVERGREPP_front.jpeg' },
   'sex-sex-som-hot':      { zip: 'default', folder: 'Sexualitetskort', file: 'SEX_SOM_HOT_front.jpeg' },
 
-  // ── Syskonkort ──
-  'sk-att-fa-ett-syskon':  { zip: 'default', folder: 'Syskonkort', file: 'ATT_FÅ_ETT_SYSKON_front.jpeg' },
-  'sk-syskonminnen':       { zip: 'default', folder: 'Syskonkort', file: 'SYSKONMINNEN_front.jpeg' },
-  'sk-syskonkunskap':      { zip: 'default', folder: 'Syskonkort', file: 'SYSKONKUNSKAP_front.jpeg' },
-  'sk-vanskap':            { zip: 'default', folder: 'Syskonkort', file: 'VÄNSKAP_front.jpeg' },
-  'sk-unik':               { zip: 'default', folder: 'Syskonkort', file: 'UNIK_front.jpeg' },
-  'sk-aldst-mitten-yngst': { zip: 'default', folder: 'Syskonkort', file: 'ÄLDST_MITTEN_front.jpeg' },
-  'sk-bonussyskon':        { zip: 'default', folder: 'Syskonkort', file: 'BONUSSYSKON_front.jpeg' },
-  'sk-konflikt':           { zip: 'default', folder: 'Syskonkort', file: 'KONFLIKT_front.jpeg' },
-  'sk-dela':               { zip: 'default', folder: 'Syskonkort', file: 'DELA_front.jpeg' },
-  'sk-rattvisa':           { zip: 'default', folder: 'Syskonkort', file: 'RÄTTVISA_front.jpeg' },
-  'sk-uppmarksamhet':      { zip: 'default', folder: 'Syskonkort', file: 'UPPMÄRKSAMHET_front.jpeg' },
-  'sk-sjukdom':            { zip: 'default', folder: 'Syskonkort', file: 'SJUKDOM_front.jpeg' },
-  'sk-forlora-ett-syskon': { zip: 'default', folder: 'Syskonkort', file: 'FÖRLORA_ETT_SYSKON_front.jpeg' },
-  'sk-framtid':            { zip: 'default', folder: 'Syskonkort', file: 'FRAMTID_front.jpeg' },
+  // ── Syskonkort (new illustrations zip) ──
+  'sk-att-fa-ett-syskon':  { zip: 'sk', folder: '', file: 'Att få ett syskon.png' },
+  'sk-syskonminnen':       { zip: 'sk', folder: '', file: 'Syskonminnen.png' },
+  'sk-syskonkunskap':      { zip: 'sk', folder: '', file: 'Syskonkunskap.png' },
+  'sk-vanskap':            { zip: 'sk', folder: '', file: 'Vänskap.png' },
+  'sk-unik':               { zip: 'sk', folder: '', file: 'Unik.png' },
+  'sk-aldst-mitten-yngst': { zip: 'sk', folder: '', file: 'Äldst mitten yngst.png' },
+  'sk-bonussyskon':        { zip: 'sk', folder: '', file: 'Bonussyskon.png' },
+  'sk-konflikt':           { zip: 'sk', folder: '', file: 'Konflikt.png' },
+  'sk-dela':               { zip: 'sk', folder: '', file: 'Dela.png' },
+  'sk-rattvisa':           { zip: 'sk', folder: '', file: 'Rättvisa.png' },
+  'sk-uppmarksamhet':      { zip: 'sk', folder: '', file: 'Uppmärksamhet.png' },
+  'sk-sjukdom':            { zip: 'sk', folder: '', file: 'Sjukdom.png' },
+  'sk-forlora-ett-syskon': { zip: 'sk', folder: '', file: 'Förlora ett syskon.png' },
+  'sk-framtid':            { zip: 'sk', folder: '', file: 'Framtid.png' },
 };
 
 // Singleton caches per zip source
-const zipCaches: Record<ZipSource, Map<string, string> | null> = { default: null, jim: null, jma: null, jiv: null, vk: null };
-const zipPromises: Record<ZipSource, Promise<Map<string, string>> | null> = { default: null, jim: null, jma: null, jiv: null, vk: null };
+const zipCaches: Record<ZipSource, Map<string, string> | null> = { default: null, jim: null, jma: null, jiv: null, vk: null, sk: null };
+const zipPromises: Record<ZipSource, Promise<Map<string, string>> | null> = { default: null, jim: null, jma: null, jiv: null, vk: null, sk: null };
 
 const ZIP_URLS: Record<ZipSource, string> = {
   default: '/card-images.zip',
@@ -139,6 +139,7 @@ const ZIP_URLS: Record<ZipSource, string> = {
   jma: '/jma-card-images.zip',
   jiv: '/jiv-card-images.zip',
   vk: '/vk-card-images.zip',
+  sk: '/sk-card-images.zip',
 };
 
 async function loadZip(source: ZipSource): Promise<Map<string, string>> {
