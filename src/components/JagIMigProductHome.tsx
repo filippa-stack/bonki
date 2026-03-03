@@ -36,10 +36,10 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
         transition={{ duration: 1 }}
         style={{
           position: 'absolute',
-          top: '-2%',
-          left: '-12%',
-          width: '108%',
-          height: '104%',
+          top: '7%',
+          left: '-22%',
+          width: '116%',
+          height: '108%',
           zIndex: 0,
           pointerEvents: 'none',
         }}
