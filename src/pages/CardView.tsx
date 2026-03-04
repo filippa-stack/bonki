@@ -869,7 +869,7 @@ export default function CardView() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
             className="text-center max-w-md mx-auto"
-            style={{ marginBottom: '12px' }}
+            style={{ marginBottom: '28px' }}
           >
             <h2
               className="font-serif"
@@ -895,10 +895,9 @@ export default function CardView() {
             className="font-sans"
             style={{
               fontSize: '13px',
-              color: 'var(--text-tertiary)',
+              color: '#8A8078',
               textAlign: 'center',
-              marginBottom: '48px',
-              opacity: 0.50,
+              marginBottom: '28px',
             }}
           >
             {uiText.takeawayPrompt}
@@ -914,18 +913,17 @@ export default function CardView() {
             <CompletionTakeaway sessionId={activeSessionId} spaceId={space?.id ?? null} pronounMode={pronounMode} />
           </motion.div>
 
-          {/* Privacy reassurance — near the text field */}
+          {/* Privacy reassurance — below text field */}
           <motion.p
-            className="font-serif italic"
+            className="font-sans"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.5, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
             style={{
-              fontSize: '13px',
-              color: 'var(--text-tertiary)',
+              fontSize: '11px',
+              color: '#A09890',
               textAlign: 'center',
-              marginTop: '12px',
-              opacity: 0.35,
+              marginTop: '10px',
             }}
           >
             Inget ni skriver lämnar det här rummet.
@@ -940,21 +938,20 @@ export default function CardView() {
             style={{ paddingBottom: 'calc(24px + env(safe-area-inset-bottom, 0px))' }}
           >
             {postCompletionNav.type === 'all_complete' ? (
-              <div className="text-center" style={{ marginTop: '40px' }}>
+              <div className="text-center" style={{ marginTop: '48px' }}>
                 <p style={{
                   fontFamily: 'var(--font-serif)',
                   fontSize: '18px',
                   fontWeight: 500,
-                  color: 'var(--accent-text)',
+                  color: 'var(--color-text-primary)',
                 }}>
                   {uiText.allExplored}
                 </p>
                 <p style={{
                   fontFamily: 'var(--font-sans)',
                   fontSize: '13px',
-                  color: 'var(--text-tertiary)',
-                  opacity: 0.60,
-                  marginTop: '8px',
+                  color: '#8A8078',
+                  marginTop: '10px',
                 }}>
                   {uiText.allExploredSub}
                 </p>
@@ -964,7 +961,7 @@ export default function CardView() {
                 initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.65, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-                style={{ width: '100%', display: 'flex', justifyContent: 'center', marginTop: '40px' }}
+                style={{ width: '100%', display: 'flex', justifyContent: 'center', marginTop: '48px' }}
               >
                 <button
                   onClick={() => navigateWithFeedback(postCompletionNav.destination)}
@@ -987,7 +984,7 @@ export default function CardView() {
                   product && product.id !== 'still_us' ? `/diary/${product.id}` : '/shared'
                 )}
                 className="font-sans"
-                style={{ fontSize: '13px', color: 'var(--text-secondary)', opacity: 0.55, background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline', textUnderlineOffset: '3px', marginTop: '20px' }}
+                style={{ fontSize: '13px', color: '#8A8078', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline', textUnderlineOffset: '3px', marginTop: '24px' }}
               >
                 {product && product.id !== 'still_us' ? 'Vår dagbok' : uiText.seeNotes}
               </button>
@@ -1855,8 +1852,7 @@ function CompletionTakeaway({ sessionId, spaceId, pronounMode = 'ni' }: { sessio
           fontSize: '11px',
           letterSpacing: '0.08em',
           textTransform: 'uppercase',
-          color: 'var(--text-ghost)',
-          opacity: 0.55,
+          color: '#A09890',
           textAlign: 'center',
           marginBottom: '8px',
         }}

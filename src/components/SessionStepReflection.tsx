@@ -133,7 +133,7 @@ export default function SessionStepReflection({
           `}</style>
           <p
             className="type-meta"
-            style={{ color: 'var(--text-ghost)', opacity: 0.40, textAlign: 'center', marginTop: '6px', fontSize: '10px', letterSpacing: '0.08em' }}
+            style={{ color: '#A09890', textAlign: 'center', marginTop: '6px', fontSize: '10px', letterSpacing: '0.08em' }}
           >
             Valfritt
           </p>
