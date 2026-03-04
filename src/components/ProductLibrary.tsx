@@ -120,7 +120,7 @@ function ComingSoonDropdown() {
           fontWeight: 700,
           letterSpacing: '0.16em',
           textTransform: 'uppercase' as const,
-          color: 'var(--text-primary)',
+          color: 'var(--text-library)',
           opacity: 0.55,
         }}
       >
@@ -156,13 +156,13 @@ function ComingSoonDropdown() {
                 >
                   <span
                     className="font-serif"
-                    style={{ fontSize: '12px', fontWeight: 600, color: 'var(--text-primary)', whiteSpace: 'nowrap' }}
+                    style={{ fontSize: '12px', fontWeight: 600, color: 'var(--text-library)', whiteSpace: 'nowrap' }}
                   >
                     {p.name}
                   </span>
                   <span
                     className="font-serif"
-                    style={{ fontSize: '10px', color: 'var(--text-primary)', opacity: 0.6, lineHeight: 1.3 }}
+                    style={{ fontSize: '10px', color: 'var(--text-library)', opacity: 0.6, lineHeight: 1.3 }}
                   >
                     {p.tagline}
                   </span>
@@ -223,7 +223,7 @@ function PastelTile({
             fontSize: '9px',
             fontWeight: 600,
             letterSpacing: '0.06em',
-            color: 'var(--text-primary)',
+            color: 'var(--text-library)',
             opacity: 0.35,
             zIndex: 2,
           }}
@@ -262,7 +262,7 @@ function PastelTile({
             fontSize: isHero ? '22px' : '15px',
             fontWeight: 700,
             lineHeight: 1.2,
-            color: 'var(--text-primary)',
+            color: 'var(--text-library)',
             letterSpacing: '-0.01em',
           }}
         >
@@ -274,7 +274,7 @@ function PastelTile({
             style={{
               fontSize: isHero ? '12px' : '10px',
               fontWeight: 400,
-              color: 'var(--text-primary)',
+              color: 'var(--text-library)',
               opacity: 0.55,
               marginTop: '4px',
               lineHeight: 1.3,
@@ -297,7 +297,7 @@ export default function ProductLibrary() {
   return (
     <div
       className="min-h-screen flex flex-col relative"
-      style={{ backgroundColor: 'var(--surface-base)' }}
+      style={{ backgroundColor: 'var(--surface-library)' }}
     >
       {/* Background watermark */}
       <div style={{ position: 'fixed', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', pointerEvents: 'none', zIndex: 0 }}>
@@ -315,7 +315,7 @@ export default function ProductLibrary() {
         >
           <h1
             className="type-h1"
-            style={{ color: 'var(--text-primary)', marginBottom: '4px' }}
+            style={{ color: 'var(--text-library)', marginBottom: '4px' }}
           >
             Bonki
           </h1>
@@ -337,7 +337,7 @@ export default function ProductLibrary() {
 
         {/* ── Still Us ── */}
         <motion.div
-          className="px-5 mt-2 mb-4"
+          className="px-5 mt-6 mb-8"
           variants={containerVariants}
           initial="hidden"
           animate="visible"
@@ -469,7 +469,7 @@ export default function ProductLibrary() {
         </motion.div>
 
         {/* ── Emotionella resan (trio) ── */}
-        <div className="px-5">
+        <div className="px-5 mt-2">
           <AudienceLabel label="Ert barn" delay={0.12} />
           <motion.div
             variants={containerVariants}
@@ -496,7 +496,7 @@ export default function ProductLibrary() {
         </div>
 
         {/* ── Hela familjen ── */}
-        <div className="px-5 mt-4">
+        <div className="px-5 mt-8">
           <AudienceLabel label="Er familj" delay={0.20} />
           <motion.div
             variants={containerVariants}
