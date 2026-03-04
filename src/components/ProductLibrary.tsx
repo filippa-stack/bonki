@@ -470,7 +470,7 @@ export default function ProductLibrary() {
                 className="font-serif"
                 style={{
                   fontSize: '11px',
-                  color: 'var(--accent-saffron)',
+                  color: '#E8C4B4',
                   fontStyle: 'normal',
                   lineHeight: 1.4,
                   marginTop: '6px',
