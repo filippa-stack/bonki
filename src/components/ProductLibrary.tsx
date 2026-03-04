@@ -37,10 +37,10 @@ const PASTEL_COLORS: Record<string, string> = {
 };
 
 const ACCENT_COLORS: Record<string, string> = {
-  jag_i_mig: '#8A9A1B',
+  jag_i_mig: '#8A9A10',
   jag_med_andra: '#9825D6',
-  jag_i_varlden: '#3D8A4A',
-  sexualitetskort: '#C4707E',
+  jag_i_varlden: '#3D7A45',
+  sexualitetskort: '#B5646E',
   vardagskort: '#0F6B99',
   syskonkort: '#0F4E99',
 };
