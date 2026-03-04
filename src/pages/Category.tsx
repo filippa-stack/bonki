@@ -255,7 +255,7 @@ export default function Category() {
         }}>
           <p style={{
             fontFamily: 'var(--font-serif)',
-            fontStyle: 'italic',
+            fontStyle: 'normal',
             fontSize: '14px',
             color: styles?.cardTitleColor ?? 'var(--accent-saffron)',
             opacity: 0.55,
@@ -429,7 +429,7 @@ function CardEntry({ card, index, isCompleted = false, isInProgress = false, onN
               <p
                 style={{
                   fontFamily: 'var(--font-serif)',
-                  fontStyle: 'italic',
+                  fontStyle: 'normal',
                   fontSize: '14px',
                   color: subtitleColor,
                   opacity: isCompleted ? 0.45 : 0.75,
