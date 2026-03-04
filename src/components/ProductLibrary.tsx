@@ -454,15 +454,15 @@ export default function ProductLibrary() {
                   fontSize: '9px',
                   fontWeight: 400,
                   fontStyle: 'italic',
-                  color: 'hsla(14, 35%, 40%, 0.45)',
+                  color: 'hsla(38, 70%, 48%, 0.65)',
                   background: 'none',
                   border: 'none',
-                  borderBottom: '1px solid hsla(14, 35%, 40%, 0.2)',
+                  borderBottom: '1px solid hsla(38, 70%, 48%, 0.3)',
                   padding: '0 0 1px 0',
                   cursor: 'pointer',
                 }}
               >
-                Påminn mig
+                kommer snart – påminn
               </button>
             </motion.div>
           </div>
