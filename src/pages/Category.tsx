@@ -19,20 +19,44 @@ const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
 /**
  * Per-card opacity overrides for illustrations.
- * Darker/denser illustrations need lower opacity to match
- * the visual weight of lighter ones (Ledsen = benchmark at 0.08).
+ * Baseline is 0.12. Dense/dark illustrations get lower values,
+ * light/sparse ones get higher values — targeting uniform visual weight.
  */
 const CARD_ILLUSTRATION_OPACITY: Record<string, number> = {
-  // JIM — dense/dark illustrations need lower opacity
-  'jim-arg': 0.08,
-  'jim-vild': 0.10,
+  // JIM — dark ink-heavy illustrations
+  'jim-arg': 0.07,
+  'jim-vild': 0.08,
+  'jim-skam': 0.07,
+  'jim-avundsjuk': 0.07,
+  'jim-svartsjuk': 0.08,
+  'jim-avsky': 0.08,
+  'jim-acklad': 0.08,
+  // JIM — lighter/sparser
   'jim-radd': 0.14,
-  'jim-skam': 0.08,
-  'jim-avundsjuk': 0.08,
-  // JIV — dense illustrations
-  'jiv-frihet': 0.10,
-  'jiv-karlek': 0.10,
-  'jiv-vanskap': 0.10,
+  'jim-glad': 0.14,
+  'jim-trygg': 0.14,
+  'jim-nyfiken': 0.14,
+  // JIV — dense multi-color illustrations
+  'jiv-frihet': 0.09,
+  'jiv-karlek': 0.09,
+  'jiv-vanskap': 0.09,
+  'jiv-mobbning': 0.09,
+  'jiv-aktivism': 0.09,
+  // JIV — light/sparse
+  'jiv-identitet': 0.14,
+  'jiv-roller': 0.14,
+  // JMA — dense character illustrations
+  'jma-stopp': 0.09,
+  'jma-konflikt': 0.09,
+  'jma-skuld': 0.09,
+  'jma-skam': 0.09,
+  // SEX — dense illustrations
+  'sex-pornografi': 0.08,
+  'sex-sexuella-overgrepp': 0.08,
+  'sex-sex-som-hot': 0.08,
+  // SK — dense illustrations
+  'sk-konflikt': 0.09,
+  'sk-forlora-ett-syskon': 0.09,
 };
 
 /** Product-specific design tokens for card listings */
@@ -281,7 +305,7 @@ interface CardEntryProps {
 
 function CardEntry({ card, index, isCompleted = false, isInProgress = false, onNavigate, isLast = false, styles }: CardEntryProps) {
   const illustration = useCardImage(card.id);
-  const illustrationOpacity = CARD_ILLUSTRATION_OPACITY[card.id] ?? 0.15;
+  const illustrationOpacity = CARD_ILLUSTRATION_OPACITY[card.id] ?? 0.12;
 
   const cardBg = styles?.cardBg ?? '#FFFFFF';
   const titleColor = styles?.cardTitleColor ?? 'var(--text-primary)';
