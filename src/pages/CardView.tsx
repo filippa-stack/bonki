@@ -784,6 +784,25 @@ export default function CardView() {
       >
         <Header title="" variant="immersive" />
         <div className="px-6 pb-16 relative" style={{ paddingTop: '48px' }}>
+          {/* Card illustration watermark on completion screen */}
+          {product && product.id !== 'still_us' && cardImageUrl && (
+            <div
+              style={{
+                position: 'absolute',
+                bottom: 0,
+                right: 0,
+                width: '55%',
+                height: '45%',
+                backgroundImage: `url(${cardImageUrl})`,
+                backgroundSize: 'contain',
+                backgroundRepeat: 'no-repeat',
+                backgroundPosition: 'bottom right',
+                opacity: 0.055,
+                pointerEvents: 'none',
+                zIndex: 0,
+              }}
+            />
+          )}
           {/* Back arrow — same style as session question pages */}
           <motion.div
             initial={{ opacity: 0 }}
