@@ -286,7 +286,7 @@ export default function ProductLibrary() {
               backgroundSize: 'contain',
               backgroundRepeat: 'no-repeat',
               backgroundPosition: 'center',
-              opacity: 0.18,
+              opacity: 0.32,
             }}
           />
           <p
