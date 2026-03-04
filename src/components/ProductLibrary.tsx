@@ -431,7 +431,7 @@ export default function ProductLibrary() {
               style={{
                 borderRadius: '16px',
                 padding: '24px 16px 16px',
-                background: 'linear-gradient(135deg, #DBBAA8 0%, #C89A88 100%)',
+                background: 'linear-gradient(135deg, #9B7264 0%, #7A5545 100%)',
                 textAlign: 'center',
                 position: 'relative',
                 overflow: 'hidden',
@@ -441,7 +441,7 @@ export default function ProductLibrary() {
                 alignItems: 'center',
                 justifyContent: 'flex-start',
                 border: '1px solid rgba(255, 255, 255, 0.06)',
-                boxShadow: '0px 4px 16px rgba(44, 36, 32, 0.15), 0px 1px 3px rgba(44, 36, 32, 0.08)',
+                boxShadow: '0px 4px 16px rgba(20, 15, 10, 0.25), 0px 1px 3px rgba(20, 15, 10, 0.12)',
               }}
             >
               {/* Noise texture overlay */}
@@ -458,9 +458,9 @@ export default function ProductLibrary() {
               <h3
                 style={{
                   fontFamily: "'DM Serif Display', serif",
-                  fontSize: '22px',
+                  fontSize: '24px',
                   fontWeight: 400,
-                  color: '#7A5A4E',
+                  color: '#FAF3E8',
                   letterSpacing: '0.02em',
                 }}
               >
@@ -470,10 +470,10 @@ export default function ProductLibrary() {
                 className="font-serif"
                 style={{
                   fontSize: '11px',
-                  color: '#9A8578',
+                  color: 'var(--accent-saffron)',
                   fontStyle: 'normal',
                   lineHeight: 1.4,
-                  marginTop: '5px',
+                  marginTop: '6px',
                 }}
               >
                 För allt som görs<br />men aldrig syns
@@ -489,7 +489,7 @@ export default function ProductLibrary() {
                   fontSize: '11px',
                   fontWeight: 400,
                   fontStyle: 'normal',
-                  color: 'var(--accent-saffron)',
+                  color: '#D4B8AC',
                   background: 'none',
                   border: 'none',
                   padding: '0',
@@ -498,7 +498,7 @@ export default function ProductLibrary() {
                   borderBottom: '1px solid transparent',
                   transition: 'border-color 0.2s',
                 }}
-                onMouseEnter={e => (e.currentTarget.style.borderBottomColor = 'var(--accent-saffron)')}
+                onMouseEnter={e => (e.currentTarget.style.borderBottomColor = '#D4B8AC')}
                 onMouseLeave={e => (e.currentTarget.style.borderBottomColor = 'transparent')}
               >
                 kommer snart — påminn
