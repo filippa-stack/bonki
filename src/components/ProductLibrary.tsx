@@ -107,7 +107,6 @@ function AudienceLabel({ label, delay = 0 }: { label: string; delay?: number }) 
     >
       <div style={{ width: '48px', height: '1px', background: '#A09890', opacity: 0.2 }} />
       <p
-        className="font-sans"
         style={{
           fontSize: '10px',
           fontWeight: 600,
@@ -168,7 +167,6 @@ function PastelTile({
     >
       {ageLabel && (
         <span
-          className="font-sans"
           style={{
             position: 'absolute',
             top: '10px',
@@ -203,7 +201,7 @@ function PastelTile({
       <div style={{ zIndex: 1, ...(isHero ? { flex: 1 } : {}) }}>
         <h3
           style={{
-            fontFamily: "'DM Serif Display', serif",
+            fontFamily: "'Lato', sans-serif",
             fontSize: isHero ? '24px' : '22px',
             fontWeight: 400,
             lineHeight: 1.2,
@@ -215,7 +213,6 @@ function PastelTile({
         </h3>
         {tagline && (
           <p
-            className="font-serif"
             style={{
               fontSize: isHero ? '13px' : '11px',
               fontWeight: 400,
@@ -262,7 +259,6 @@ export default function ProductLibrary() {
             Bonki
           </h1>
           <p
-            className="font-serif"
             style={{
               fontSize: '13px',
               fontWeight: 400,
@@ -334,7 +330,7 @@ export default function ProductLibrary() {
               }} />
               <h2
                 style={{
-                  fontFamily: "'DM Serif Display', serif",
+                  fontFamily: "'Lato', sans-serif",
                   fontSize: '24px',
                   fontWeight: 400,
                   color: '#FAF3E8',
@@ -344,7 +340,6 @@ export default function ProductLibrary() {
                 Still Us
               </h2>
               <p
-                className="font-serif"
                 style={{
                   fontSize: '11px',
                   color: 'var(--accent-saffron)',
@@ -400,7 +395,7 @@ export default function ProductLibrary() {
               }} />
               <h3
                 style={{
-                  fontFamily: "'DM Serif Display', serif",
+                  fontFamily: "'Lato', sans-serif",
                   fontSize: '24px',
                   fontWeight: 400,
                   color: '#FAF3E8',
@@ -410,7 +405,6 @@ export default function ProductLibrary() {
                 Still Fair
               </h3>
               <p
-                className="font-serif"
                 style={{
                   fontSize: '11px',
                   color: '#E8C4B4',
@@ -422,7 +416,6 @@ export default function ProductLibrary() {
                 För allt som görs<br />men aldrig syns
               </p>
               <button
-                className="font-serif"
                 onClick={(e) => {
                   e.stopPropagation();
                   // TODO: implement reminder logic
@@ -523,7 +516,6 @@ export default function ProductLibrary() {
           style={{ textAlign: 'center', padding: '0 20px', paddingBottom: 'calc(40px + env(safe-area-inset-bottom, 0px))' }}
         >
           <p
-            className="font-serif"
             style={{
               fontStyle: 'normal',
               fontSize: '13px',
