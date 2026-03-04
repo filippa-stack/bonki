@@ -8,20 +8,11 @@ import watermarkMamma from '@/assets/watermark-mamma.png';
 import illustrationJagIMig from '@/assets/illustration-jag-i-mig.png';
 import illustrationJagMedAndra from '@/assets/illustration-jag-med-andra.png';
 import illustrationJagIVarlden from '@/assets/illustration-jag-i-varlden.png';
-import tileJagIMig from '@/assets/tile-jag-i-mig.png';
-import tileJagMedAndra from '@/assets/tile-jag-med-andra.png';
-import tileJagIVarlden from '@/assets/tile-jag-i-varlden.png';
 
 const ILLUSTRATIONS: Record<string, string> = {
   jag_i_mig: illustrationJagIMig,
   jag_med_andra: illustrationJagMedAndra,
   jag_i_varlden: illustrationJagIVarlden,
-};
-
-const TILE_WATERMARKS: Record<string, string> = {
-  jag_i_mig: tileJagIMig,
-  jag_med_andra: tileJagMedAndra,
-  jag_i_varlden: tileJagIVarlden,
 };
 
 /**
@@ -206,11 +197,11 @@ function ComingSoonDropdown() {
 
 /** Premium pastel tile with top-to-bottom light gradient */
 function PastelTile({
-  name, bg, ageLabel, tagline, onClick, aspectRatio = '4 / 3', isHero = false, illustration, accentColor, taglineColor, watermark,
+  name, bg, ageLabel, tagline, onClick, aspectRatio = '4 / 3', isHero = false, illustration, accentColor, taglineColor,
 }: {
   name: string; bg: string; ageLabel?: string; tagline?: string;
   onClick?: () => void; aspectRatio?: string; isHero?: boolean; illustration?: string;
-  accentColor?: string; taglineColor?: string; watermark?: string;
+  accentColor?: string; taglineColor?: string;
 }) {
   // Darken hex bg by ~4% for bottom gradient
   const darkenHex = (hex: string) => {
@@ -235,9 +226,9 @@ function PastelTile({
         aspectRatio,
         display: 'flex',
         flexDirection: isHero ? 'row' : 'column',
-        alignItems: watermark ? 'flex-start' : (isHero ? 'center' : 'center'),
+        alignItems: 'center',
         justifyContent: isHero ? 'flex-start' : 'flex-start',
-        textAlign: watermark ? 'left' : (isHero ? 'left' : 'center'),
+        textAlign: isHero ? 'left' : 'center',
         padding: isHero ? '16px 20px 16px 0' : '24px 16px 16px',
         position: 'relative',
         overflow: 'hidden',
@@ -245,20 +236,6 @@ function PastelTile({
         boxShadow: '0px 1px 3px rgba(44, 36, 32, 0.12), 0px 4px 8px rgba(44, 36, 32, 0.08)',
       }}
     >
-      {/* Tile watermark illustration */}
-      {watermark && (
-        <div style={{
-          position: 'absolute',
-          inset: 0,
-          backgroundImage: `url(${watermark})`,
-          backgroundSize: '65% auto',
-          backgroundRepeat: 'no-repeat',
-          backgroundPosition: 'right center',
-          opacity: 0.10,
-          pointerEvents: 'none',
-          zIndex: 0,
-        }} />
-      )}
       {ageLabel && (
         <span
           className="font-sans"
@@ -552,7 +529,6 @@ export default function ProductLibrary() {
                 ageLabel={p.ageLabel}
                 accentColor={ACCENT_COLORS[p.id]}
                 taglineColor={TAGLINE_COLORS[p.id]}
-                watermark={TILE_WATERMARKS[p.id]}
                 onClick={() => navigate(`/product/${p.slug}`)}
                 aspectRatio="3 / 2"
               />
