@@ -436,7 +436,7 @@ export default function ProductLibrary() {
                 className="font-serif"
                 style={{
                   fontSize: '10px',
-                  color: 'var(--accent-saffron)',
+                  color: 'hsla(38, 70%, 48%, 0.65)',
                   fontStyle: 'italic',
                   lineHeight: 1.35,
                 }}
