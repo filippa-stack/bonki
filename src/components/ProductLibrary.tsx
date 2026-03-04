@@ -45,14 +45,14 @@ const ACCENT_COLORS: Record<string, string> = {
   syskonkort: '#0F4E99',
 };
 
-/** Dark tones derived from each tile's background — warm, never black */
-const TITLE_COLORS: Record<string, string> = {
-  jag_i_mig: '#3D3528',
-  jag_med_andra: '#3A2838',
-  jag_i_varlden: '#1E3A28',
-  sexualitetskort: '#3A2838',
-  vardagskort: '#1A3A3A',
-  syskonkort: '#1A2E42',
+/** Darkened background tones for taglines — quiet, printed-on-paper feel */
+const TAGLINE_COLORS: Record<string, string> = {
+  jag_i_mig: '#8A8468',
+  jag_med_andra: '#7A6874',
+  jag_i_varlden: '#5A7A62',
+  sexualitetskort: '#7A6874',
+  vardagskort: '#5A7878',
+  syskonkort: '#5A6878',
 };
 
 const COMING_SOON_PRODUCTS = [
@@ -197,11 +197,11 @@ function ComingSoonDropdown() {
 
 /** Premium pastel tile with top-to-bottom light gradient */
 function PastelTile({
-  name, bg, ageLabel, tagline, onClick, aspectRatio = '4 / 3', isHero = false, illustration, accentColor, titleColor,
+  name, bg, ageLabel, tagline, onClick, aspectRatio = '4 / 3', isHero = false, illustration, accentColor, taglineColor,
 }: {
   name: string; bg: string; ageLabel?: string; tagline?: string;
   onClick?: () => void; aspectRatio?: string; isHero?: boolean; illustration?: string;
-  accentColor?: string; titleColor?: string;
+  accentColor?: string; taglineColor?: string;
 }) {
   // Darken hex bg by ~4% for bottom gradient
   const darkenHex = (hex: string) => {
@@ -285,7 +285,7 @@ function PastelTile({
             fontSize: isHero ? '24px' : '17px',
             fontWeight: 400,
             lineHeight: 1.2,
-            color: titleColor || 'var(--text-library)',
+            color: accentColor || 'var(--text-library)',
             letterSpacing: '-0.01em',
           }}
         >
@@ -298,7 +298,7 @@ function PastelTile({
               fontSize: isHero ? '13px' : '12px',
               fontWeight: 400,
               fontStyle: 'normal',
-              color: accentColor || '#8A8078',
+              color: taglineColor || '#8A8078',
               marginTop: '5px',
               lineHeight: 1.4,
             }}
@@ -528,7 +528,7 @@ export default function ProductLibrary() {
                 tagline={TAGLINES[p.id]}
                 ageLabel={p.ageLabel}
                 accentColor={ACCENT_COLORS[p.id]}
-                titleColor={TITLE_COLORS[p.id]}
+                taglineColor={TAGLINE_COLORS[p.id]}
                 onClick={() => navigate(`/product/${p.slug}`)}
                 aspectRatio="3 / 2"
               />
@@ -558,7 +558,7 @@ export default function ProductLibrary() {
                 tagline={TAGLINES[p.id]}
                 ageLabel={p.ageLabel}
                 accentColor={ACCENT_COLORS[p.id]}
-                titleColor={TITLE_COLORS[p.id]}
+                taglineColor={TAGLINE_COLORS[p.id]}
                 onClick={() => navigate(`/product/${p.slug}`)}
                 aspectRatio="3 / 2"
               />
