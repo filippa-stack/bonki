@@ -185,16 +185,14 @@ function ComingSoonDropdown() {
   );
 }
 
-/** Premium pastel tile with radial inner glow */
+/** Premium pastel tile with top-to-bottom light gradient */
 function PastelTile({
-  name, bg, ageLabel, tagline, onClick, aspectRatio = '4 / 3', isHero = false, illustration, accentColor,
+  name, bg, ageLabel, tagline, onClick, aspectRatio = '4 / 3', isHero = false, illustration,
 }: {
   name: string; bg: string; ageLabel?: string; tagline?: string;
-  onClick?: () => void; aspectRatio?: string; isHero?: boolean; illustration?: string; accentColor?: string;
+  onClick?: () => void; aspectRatio?: string; isHero?: boolean; illustration?: string;
 }) {
   const subtleDarker = bg.replace(/(\d+)%\)$/, (_, l) => `${Math.max(Number(l) - 3, 80)}%)`);
-  const glowCenter = bg.replace(/(\d+)%\)$/, (_, l) => `${Math.min(Number(l) + 5, 97)}%)`);
-  const gradientOverlay = `linear-gradient(135deg, hsla(0,0%,100%,0.06) 0%, hsla(0,0%,0%,0.03) 100%)`;
 
   return (
     <motion.div
@@ -205,46 +203,32 @@ function PastelTile({
       className="cursor-pointer"
       style={{
         borderRadius: '16px',
-        background: `${gradientOverlay}, radial-gradient(ellipse at 50% 40%, ${glowCenter} 0%, ${bg} 55%, ${subtleDarker} 100%)`,
+        background: `linear-gradient(180deg, ${bg} 0%, ${subtleDarker} 100%)`,
         aspectRatio,
         display: 'flex',
         flexDirection: isHero ? 'row' : 'column',
         alignItems: 'center',
         justifyContent: isHero ? 'flex-start' : 'center',
         textAlign: isHero ? 'left' : 'center',
-        padding: isHero ? '0 24px 0 0' : '14px 12px',
+        padding: isHero ? '16px 20px 16px 0' : '16px',
         position: 'relative',
         overflow: 'hidden',
-        border: '1px solid rgba(44, 36, 32, 0.06)',
-        boxShadow: '0px 2px 8px rgba(44, 36, 32, 0.08)',
+        border: '1px solid rgba(44, 36, 32, 0.05)',
+        boxShadow: '0px 3px 12px rgba(44, 36, 32, 0.07)',
       }}
     >
-      {/* Accent bar */}
-      {accentColor && (
-        <div style={{
-          position: 'absolute',
-          left: 0,
-          top: 0,
-          bottom: 0,
-          width: '3.5px',
-          background: accentColor,
-          opacity: 0.75,
-          borderRadius: '16px 0 0 16px',
-          zIndex: 2,
-        }} />
-      )}
       {ageLabel && (
         <span
           className="font-sans"
           style={{
             position: 'absolute',
-            top: '8px',
-            right: '10px',
+            top: '10px',
+            right: '12px',
             fontSize: '9px',
             fontWeight: 600,
             letterSpacing: '0.06em',
-            color: accentColor || 'var(--text-library)',
-            opacity: accentColor ? 0.85 : 0.35,
+            color: 'var(--text-library)',
+            opacity: 0.35,
             zIndex: 2,
           }}
         >
@@ -259,7 +243,7 @@ function PastelTile({
           alignItems: 'center',
           justifyContent: 'center',
           ...(isHero
-            ? { width: '100px', height: '100%', padding: '8px 0 8px 12px' }
+            ? { width: '100px', height: '100%', padding: '8px 0 8px 16px' }
             : { width: '52px', height: '52px', marginBottom: '4px' }),
         }}>
           <img
@@ -509,7 +493,6 @@ export default function ProductLibrary() {
                 bg={PASTEL_COLORS[p.id]!}
                 tagline={TAGLINES[p.id]}
                 ageLabel={p.ageLabel}
-                accentColor={ACCENT_COLORS[p.id]}
                 onClick={() => navigate(`/product/${p.slug}`)}
                 aspectRatio="3 / 2"
               />
@@ -538,7 +521,7 @@ export default function ProductLibrary() {
                 bg={PASTEL_COLORS[p.id]!}
                 tagline={TAGLINES[p.id]}
                 ageLabel={p.ageLabel}
-                accentColor={ACCENT_COLORS[p.id]}
+                
                 onClick={() => navigate(`/product/${p.slug}`)}
                 aspectRatio="3 / 2"
               />
