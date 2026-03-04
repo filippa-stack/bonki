@@ -39,8 +39,8 @@ const PASTEL_COLORS: Record<string, string> = {
 const ACCENT_COLORS: Record<string, string> = {
   jag_i_mig: '#8A9A1B',
   jag_med_andra: '#9825D6',
-  jag_i_varlden: '#84C289',
-  sexualitetskort: '#FBB1B8',
+  jag_i_varlden: '#3D8A4A',
+  sexualitetskort: '#C4707E',
   vardagskort: '#0F6B99',
   syskonkort: '#0F4E99',
 };
