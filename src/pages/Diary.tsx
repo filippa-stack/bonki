@@ -476,29 +476,6 @@ export default function Diary() {
       <div className="px-5 pb-16" style={{ paddingTop: '8px' }}>
         <div className="max-w-md mx-auto relative">
 
-          {/* ── Product illustration watermark ── */}
-          {illustration && !isEmpty && (
-            <div
-              style={{
-                position: 'absolute',
-                top: '-20px',
-                right: '-20px',
-                width: '200px',
-                height: '200px',
-                pointerEvents: 'none',
-                zIndex: 0,
-                opacity: 0.07,
-              }}
-              aria-hidden="true"
-            >
-              <img
-                src={illustration}
-                alt=""
-                draggable={false}
-                style={{ width: '100%', height: '100%', objectFit: 'contain' }}
-              />
-            </div>
-          )}
 
           {/* ── Page header ── */}
           <motion.div
