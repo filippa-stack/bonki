@@ -790,10 +790,10 @@ export default function CardView() {
             <div
               style={{
                 position: 'absolute',
-                bottom: 0,
-                right: 0,
-                width: '55%',
-                height: '45%',
+                bottom: '-10%',
+                right: '-15%',
+                width: '100%',
+                height: '85%',
                 backgroundImage: `url(${cardImageUrl})`,
                 backgroundSize: 'contain',
                 backgroundRepeat: 'no-repeat',
@@ -1355,13 +1355,13 @@ export default function CardView() {
         onLeaveSession={isLive ? () => setShowLeaveConfirm(true) : undefined}
       />
 
-      {/* Floating illustration peek — visible during live session after start screen */}
-      {isLive && !showStartScreen && cardImageUrl && card && (
+      {/* Floating illustration peek — visible during live session after start screen (Still Us only) */}
+      {isLive && !showStartScreen && cardImageUrl && card && product?.id === 'still_us' && (
         <IllustrationPeek imageUrl={cardImageUrl} cardTitle={card.title} />
       )}
 
 
-      {isLive && effectiveSteps.length > 1 && (
+      {isLive && effectiveSteps.length > 1 && product?.id === 'still_us' && (
         <motion.div
           style={{ paddingTop: '16px', marginTop: '20px' }}
           initial={!suppressEntryAnim ? { opacity: 0 } : false}
@@ -1378,15 +1378,15 @@ export default function CardView() {
 
       {/* Section content — centered, max 520px for readability */}
       <div className="px-6 relative" style={{ paddingTop: '8px', paddingBottom: 'calc(120px + env(safe-area-inset-bottom, 0px))' }}>
-        {/* Card illustration watermark — subtle background for new products */}
+        {/* Card illustration watermark — large background for new products */}
         {product && product.id !== 'still_us' && cardImageUrl && (
           <div
             style={{
               position: 'absolute',
-              bottom: 0,
-              right: 0,
-              width: '55%',
-              height: '45%',
+              bottom: '-10%',
+              right: '-15%',
+              width: '100%',
+              height: '85%',
               backgroundImage: `url(${cardImageUrl})`,
               backgroundSize: 'contain',
               backgroundRepeat: 'no-repeat',
@@ -1441,12 +1441,10 @@ export default function CardView() {
             >
               {/* Stage label — archive mode only, multi-step cards only */}
               {cardViewMode === 'archive' && effectiveSteps.length > 1 && (() => {
-                const STAGE_LABELS: Record<number, string> = {
-                  0: 'KOM IGÅNG',
-                  1: 'GÅ DJUPARE',
-                  2: 'FÖRESTÄLL ER',
-                  3: 'I VERKLIGHETEN',
-                };
+                const isKidsProduct = product && product.id !== 'still_us';
+                const STAGE_LABELS: Record<number, string> = isKidsProduct
+                  ? { 0: 'FRÅGOR', 1: 'I VERKLIGHETEN' }
+                  : { 0: 'KOM IGÅNG', 1: 'GÅ DJUPARE', 2: 'FÖRESTÄLL ER', 3: 'I VERKLIGHETEN' };
                 const label = STAGE_LABELS[currentStepIndex];
                 if (!label) return null;
                   return (
@@ -1465,30 +1463,126 @@ export default function CardView() {
                 );
               })()}
 
-              {/* Question counter — 1-step cards only (replaces progress bar) */}
-              {isLive && effectiveSteps.length === 1 && currentSection && (() => {
-                const totalPrompts = getEffectivePromptCount(currentSection);
-                if (totalPrompts <= 1) return null;
-                return (
-                  <motion.p
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: BEAT_1, duration: EMOTION, ease: [...EASE] }}
-                    style={{
-                      fontFamily: 'var(--font-sans)',
-                      fontSize: '11px',
-                      letterSpacing: '0.04em',
-                      color: 'var(--text-tertiary)',
-                      opacity: 0.4,
-                      textAlign: 'center',
-                      width: '100%',
-                      marginTop: '40px',
-                      marginBottom: '0px',
-                    }}
-                  >
-                    {localPromptIndex + 1} av {totalPrompts}
-                  </motion.p>
-                );
+              {/* Question counter — kids products (all flows) and 1-step Still Us cards */}
+              {isLive && currentSection && (() => {
+                const isKidsProduct = product && product.id !== 'still_us';
+                const isLastStepInMulti = effectiveSteps.length > 1 && currentStepIndex === effectiveSteps.length - 1;
+
+                // For kids multi-step: show "Fråga X av Y" on question steps, "I verkligheten" on last step
+                if (isKidsProduct && effectiveSteps.length > 1) {
+                  if (isLastStepInMulti) {
+                    return (
+                      <motion.p
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ delay: BEAT_1, duration: EMOTION, ease: [...EASE] }}
+                        style={{
+                          fontFamily: 'var(--font-sans)',
+                          fontSize: '11px',
+                          letterSpacing: '0.08em',
+                          textTransform: 'uppercase',
+                          color: 'var(--text-tertiary)',
+                          opacity: 0.4,
+                          textAlign: 'center',
+                          width: '100%',
+                          marginTop: '40px',
+                          marginBottom: '0px',
+                        }}
+                      >
+                        I verkligheten
+                      </motion.p>
+                    );
+                  }
+                  // Accumulate prompt count across all question steps (all except last)
+                  const questionSteps = effectiveSteps.slice(0, -1);
+                  let globalIndex = 0;
+                  let totalQuestionPrompts = 0;
+                  for (let si = 0; si < questionSteps.length; si++) {
+                    const sec = card?.sections.find(s => s.type === questionSteps[si]);
+                    const count = getEffectivePromptCount(sec);
+                    if (si < currentStepIndex) {
+                      globalIndex += count;
+                    } else if (si === currentStepIndex) {
+                      globalIndex += localPromptIndex;
+                    }
+                    totalQuestionPrompts += count;
+                  }
+                  if (totalQuestionPrompts <= 1) return null;
+                  return (
+                    <motion.p
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ delay: BEAT_1, duration: EMOTION, ease: [...EASE] }}
+                      style={{
+                        fontFamily: 'var(--font-sans)',
+                        fontSize: '11px',
+                        letterSpacing: '0.04em',
+                        color: 'var(--text-tertiary)',
+                        opacity: 0.4,
+                        textAlign: 'center',
+                        width: '100%',
+                        marginTop: '40px',
+                        marginBottom: '0px',
+                      }}
+                    >
+                      Fråga {globalIndex + 1} av {totalQuestionPrompts}
+                    </motion.p>
+                  );
+                }
+
+                // Kids 1-step or Still Us 1-step
+                if (isKidsProduct && effectiveSteps.length === 1) {
+                  const totalPrompts = getEffectivePromptCount(currentSection);
+                  if (totalPrompts <= 1) return null;
+                  return (
+                    <motion.p
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ delay: BEAT_1, duration: EMOTION, ease: [...EASE] }}
+                      style={{
+                        fontFamily: 'var(--font-sans)',
+                        fontSize: '11px',
+                        letterSpacing: '0.04em',
+                        color: 'var(--text-tertiary)',
+                        opacity: 0.4,
+                        textAlign: 'center',
+                        width: '100%',
+                        marginTop: '40px',
+                        marginBottom: '0px',
+                      }}
+                    >
+                      Fråga {localPromptIndex + 1} av {totalPrompts}
+                    </motion.p>
+                  );
+                }
+
+                // Still Us 1-step fallback
+                if (effectiveSteps.length === 1) {
+                  const totalPrompts = getEffectivePromptCount(currentSection);
+                  if (totalPrompts <= 1) return null;
+                  return (
+                    <motion.p
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ delay: BEAT_1, duration: EMOTION, ease: [...EASE] }}
+                      style={{
+                        fontFamily: 'var(--font-sans)',
+                        fontSize: '11px',
+                        letterSpacing: '0.04em',
+                        color: 'var(--text-tertiary)',
+                        opacity: 0.4,
+                        textAlign: 'center',
+                        width: '100%',
+                        marginTop: '40px',
+                        marginBottom: '0px',
+                      }}
+                    >
+                      {localPromptIndex + 1} av {totalPrompts}
+                    </motion.p>
+                  );
+                }
+
+                return null;
               })()}
 
               {/* Prompt content */}
