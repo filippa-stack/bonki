@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { allProducts } from '@/data/products';
-import bonkiLogo from '@/assets/bonki-logo.png';
+import watermarkMamma from '@/assets/watermark-mamma.png';
 import illustrationStillUs from '@/assets/illustration-still-us.png';
 import illustrationJagIMig from '@/assets/monster-jag-i-mig.png';
 import illustrationJagMedAndra from '@/assets/annorlunda-jag-med-andra.png';
@@ -239,20 +239,20 @@ export default function ProductLibrary() {
       className="min-h-screen flex flex-col relative"
       style={{ backgroundColor: 'var(--surface-library)' }}
     >
-      {/* Background watermark — Bonki logo */}
+      {/* Background watermark — mamma illustration */}
       <div
         style={{
           position: 'fixed',
-          top: '50%',
+          top: '0',
           left: '50%',
-          transform: 'translate(-50%, -50%)',
-          width: '70vw',
-          height: '70vw',
-          backgroundImage: `url(${bonkiLogo})`,
-          backgroundSize: 'contain',
+          transform: 'translateX(-50%)',
+          width: '100%',
+          height: '100%',
+          backgroundImage: `url(${watermarkMamma})`,
+          backgroundSize: 'cover',
           backgroundRepeat: 'no-repeat',
           backgroundPosition: 'center',
-          opacity: 0.04,
+          opacity: 0.08,
           pointerEvents: 'none',
           zIndex: 0,
         }}
