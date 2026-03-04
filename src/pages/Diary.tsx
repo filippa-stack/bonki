@@ -12,7 +12,7 @@ import { BEAT_1, BEAT_2, EASE, EMOTION } from '@/lib/motion';
 
 // Product illustrations
 import bonkiLogo from '@/assets/bonki-logo.png';
-import illustrationJagIMig from '@/assets/apa-jag-i-mig.png';
+import illustrationJagIMig from '@/assets/mirror-jag-i-mig.png';
 import illustrationJagMedAndra from '@/assets/annorlunda-jag-med-andra.png';
 import illustrationJagIVarlden from '@/assets/aktivism-jag-i-varlden.png';
 import illustrationSexualitet from '@/assets/illustration-sexualitet.png';
