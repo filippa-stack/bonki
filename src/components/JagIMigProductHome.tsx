@@ -18,7 +18,7 @@ const pillVariants = {
   },
 };
 
-const FOREST_GREEN = 'hsl(158, 35%, 18%)';
+const ACCENT_COLOR = '#8A9A10';
 
 export default function JagIMigProductHome({ product }: { product: ProductManifest }) {
   const navigate = useNavigate();
@@ -67,9 +67,9 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
           alignItems: 'center',
           justifyContent: 'flex-start',
           paddingTop: '12vh',
-          paddingRight: '16vw',
+          paddingRight: '10vw',
           paddingBottom: '48px',
-          paddingLeft: '16vw',
+          paddingLeft: '10vw',
         }}
       >
         <motion.div
@@ -80,7 +80,7 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-            gap: '3.5vh',
+            gap: '3vh',
             width: '100%',
           }}
         >
@@ -92,9 +92,9 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
             <h1
               style={{
                 fontFamily: "'DM Serif Display', var(--font-serif)",
-                fontSize: 'clamp(36px, 10vw, 48px)',
-                fontWeight: 400,
-                color: FOREST_GREEN,
+                fontSize: 'clamp(38px, 11vw, 52px)',
+                fontWeight: 700,
+                color: ACCENT_COLOR,
                 letterSpacing: '-0.01em',
                 whiteSpace: 'nowrap',
               }}
@@ -104,10 +104,12 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
             <p
               className="font-serif"
               style={{
-                fontSize: 'clamp(15px, 4.2vw, 19px)',
+                fontSize: 'clamp(16px, 4.5vw, 20px)',
                 fontWeight: 400,
-                color: 'var(--product-subtitle-color)',
+                color: '#2C2420',
+                opacity: 0.8,
                 marginTop: '8px',
+                textShadow: '0px 1px 3px rgba(255,255,255,0.8)',
               }}
             >
               när känslor får ord
@@ -115,41 +117,42 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
           </motion.div>
 
           {/* Category buttons */}
-          {product.categories.map((cat, index) => {
-            const widths = ['74%', '70%', '67%', '64%'];
-            return (
-              <motion.button
-                key={cat.id}
-                variants={pillVariants}
-                whileHover={{ scale: 1.04, y: -2 }}
-                whileTap={{ scale: 0.97 }}
-                onClick={() => navigate(`/category/${cat.id}`)}
+          {product.categories.map((cat) => (
+            <motion.button
+              key={cat.id}
+              variants={pillVariants}
+              whileHover={{ scale: 1.04, y: -2 }}
+              whileTap={{ scale: 0.97 }}
+              onClick={() => navigate(`/category/${cat.id}`)}
+              style={{
+                background: 'var(--product-button-bg)',
+                borderRadius: 'var(--product-button-radius)',
+                padding: '0 24px',
+                textAlign: 'center',
+                cursor: 'pointer',
+                border: 'none',
+                boxShadow: 'var(--product-button-shadow)',
+                whiteSpace: 'normal' as const,
+                width: '80%',
+                minHeight: '56px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                lineHeight: 1.3,
+              }}
+            >
+              <span
                 style={{
-                  background: 'var(--product-button-bg)',
-                  borderRadius: 'var(--product-button-radius)',
-                  padding: '14px 24px',
-                  textAlign: 'center',
-                  cursor: 'pointer',
-                  border: 'none',
-                  boxShadow: 'var(--product-button-shadow)',
-                  whiteSpace: 'normal' as const,
-                  width: widths[index] || '60%',
-                  lineHeight: 1.3,
+                  fontFamily: "'DM Serif Display', var(--font-serif)",
+                  fontSize: 'clamp(18px, 5vw, 24px)',
+                  fontWeight: 400,
+                  color: ACCENT_COLOR,
                 }}
               >
-                <span
-                  style={{
-                    fontFamily: "'DM Serif Display', var(--font-serif)",
-                    fontSize: 'clamp(18px, 5vw, 24px)',
-                    fontWeight: 400,
-                    color: FOREST_GREEN,
-                  }}
-                >
-                  {cat.title}
-                </span>
-              </motion.button>
-            );
-          })}
+                {cat.title}
+              </span>
+            </motion.button>
+          ))}
 
           {/* Diary link */}
           <motion.button
@@ -159,16 +162,16 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
               background: 'none',
               border: 'none',
               cursor: 'pointer',
-              marginTop: '1vh',
+              marginTop: '2vh',
               padding: '8px 16px',
             }}
           >
             <span
               className="font-serif"
               style={{
-                fontSize: 'clamp(14px, 3.8vw, 17px)',
-                color: FOREST_GREEN,
-                opacity: 0.55,
+                fontSize: 'clamp(16px, 4.2vw, 19px)',
+                color: ACCENT_COLOR,
+                opacity: 0.75,
                 textDecoration: 'underline',
                 textUnderlineOffset: '3px',
               }}

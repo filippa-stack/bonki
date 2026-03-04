@@ -19,7 +19,7 @@ const pillVariants = {
   },
 };
 
-const DEEP_PURPLE = '#9825D6';
+const ACCENT_COLOR = '#9825D6';
 
 export default function JagMedAndraProductHome({ product }: { product: ProductManifest }) {
   const navigate = useNavigate();
@@ -83,16 +83,16 @@ export default function JagMedAndraProductHome({ product }: { product: ProductMa
           alignItems: 'center',
           justifyContent: 'flex-start',
           paddingTop: '12vh',
-          paddingRight: '16vw',
+          paddingRight: '10vw',
           paddingBottom: '48px',
-          paddingLeft: '16vw',
+          paddingLeft: '10vw',
         }}
       >
         <motion.div
           variants={containerVariants}
           initial="hidden"
           animate="visible"
-          style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '3.5vh', width: '100%' }}
+          style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '3vh', width: '100%' }}
         >
           {/* Title */}
           <motion.div
@@ -102,9 +102,9 @@ export default function JagMedAndraProductHome({ product }: { product: ProductMa
             <h1
               style={{
                 fontFamily: "'DM Serif Display', var(--font-serif)",
-                fontSize: 'clamp(28px, 7.5vw, 38px)',
-                fontWeight: 400,
-                color: DEEP_PURPLE,
+                fontSize: 'clamp(34px, 9vw, 48px)',
+                fontWeight: 700,
+                color: ACCENT_COLOR,
                 letterSpacing: '-0.01em',
                 whiteSpace: 'normal',
               }}
@@ -114,10 +114,12 @@ export default function JagMedAndraProductHome({ product }: { product: ProductMa
             <p
               className="font-serif"
               style={{
-                fontSize: 'clamp(15px, 4.2vw, 19px)',
+                fontSize: 'clamp(16px, 4.5vw, 20px)',
                 fontWeight: 400,
-                color: 'var(--product-subtitle-color)',
+                color: '#2C2420',
+                opacity: 0.8,
                 marginTop: '8px',
+                textShadow: '0px 1px 3px rgba(255,255,255,0.8)',
               }}
             >
               starkare tillsammans
@@ -125,41 +127,42 @@ export default function JagMedAndraProductHome({ product }: { product: ProductMa
           </motion.div>
 
           {/* Category buttons */}
-          {product.categories.map((cat, index) => {
-            const widths = ['74%', '70%', '67%', '64%'];
-            return (
-              <motion.button
-                key={cat.id}
-                variants={pillVariants}
-                whileHover={{ scale: 1.04, y: -2 }}
-                whileTap={{ scale: 0.97 }}
-                onClick={() => navigate(`/category/${cat.id}`)}
+          {product.categories.map((cat) => (
+            <motion.button
+              key={cat.id}
+              variants={pillVariants}
+              whileHover={{ scale: 1.04, y: -2 }}
+              whileTap={{ scale: 0.97 }}
+              onClick={() => navigate(`/category/${cat.id}`)}
+              style={{
+                background: 'var(--product-button-bg)',
+                borderRadius: 'var(--product-button-radius)',
+                padding: '0 24px',
+                textAlign: 'center',
+                cursor: 'pointer',
+                border: 'none',
+                boxShadow: 'var(--product-button-shadow)',
+                whiteSpace: 'normal' as const,
+                width: '80%',
+                minHeight: '56px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                lineHeight: 1.3,
+              }}
+            >
+              <span
                 style={{
-                  background: 'var(--product-button-bg)',
-                  borderRadius: 'var(--product-button-radius)',
-                  padding: '14px 24px',
-                  textAlign: 'center',
-                  cursor: 'pointer',
-                  border: 'none',
-                  boxShadow: 'var(--product-button-shadow)',
-                  whiteSpace: 'normal' as const,
-                  width: widths[index] || '64%',
-                  lineHeight: 1.3,
+                  fontFamily: "'DM Serif Display', var(--font-serif)",
+                  fontSize: 'clamp(18px, 5vw, 24px)',
+                  fontWeight: 400,
+                  color: ACCENT_COLOR,
                 }}
               >
-                <span
-                  style={{
-                    fontFamily: "'DM Serif Display', var(--font-serif)",
-                    fontSize: 'clamp(18px, 5vw, 24px)',
-                    fontWeight: 400,
-                    color: DEEP_PURPLE,
-                  }}
-                >
-                  {cat.title}
-                </span>
-              </motion.button>
-            );
-          })}
+                {cat.title}
+              </span>
+            </motion.button>
+          ))}
 
           {/* Diary link */}
           <motion.button
@@ -169,16 +172,16 @@ export default function JagMedAndraProductHome({ product }: { product: ProductMa
               background: 'none',
               border: 'none',
               cursor: 'pointer',
-              marginTop: '1vh',
+              marginTop: '2vh',
               padding: '8px 16px',
             }}
           >
             <span
               className="font-serif"
               style={{
-                fontSize: 'clamp(14px, 3.8vw, 17px)',
-                color: DEEP_PURPLE,
-                opacity: 0.55,
+                fontSize: 'clamp(16px, 4.2vw, 19px)',
+                color: ACCENT_COLOR,
+                opacity: 0.75,
                 textDecoration: 'underline',
                 textUnderlineOffset: '3px',
               }}
