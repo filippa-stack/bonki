@@ -489,7 +489,7 @@ export default function ProductLibrary() {
                   fontSize: '11px',
                   fontWeight: 400,
                   fontStyle: 'normal',
-                  color: '#D4B8AC',
+                  color: 'var(--accent-saffron)',
                   background: 'none',
                   border: 'none',
                   padding: '0',
@@ -498,7 +498,7 @@ export default function ProductLibrary() {
                   borderBottom: '1px solid transparent',
                   transition: 'border-color 0.2s',
                 }}
-                onMouseEnter={e => (e.currentTarget.style.borderBottomColor = '#D4B8AC')}
+                onMouseEnter={e => (e.currentTarget.style.borderBottomColor = 'var(--accent-saffron)')}
                 onMouseLeave={e => (e.currentTarget.style.borderBottomColor = 'transparent')}
               >
                 kommer snart — påminn
