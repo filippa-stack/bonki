@@ -253,8 +253,7 @@ export default function ProductLibrary() {
           transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
         >
           <h1
-            className="type-h1"
-            style={{ color: 'var(--text-library)', marginBottom: '4px' }}
+            style={{ fontFamily: "'Bebas Neue', sans-serif", color: 'var(--text-library)', marginBottom: '4px', fontSize: '42px', letterSpacing: '0.04em' }}
           >
             Bonki
           </h1>
