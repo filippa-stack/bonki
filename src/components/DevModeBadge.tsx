@@ -51,6 +51,15 @@ const SURFACE_OPTIONS = [
   { value: 'invite-tinted', label: '🌿 Invite Tinted' },
 ];
 
+const DIARY_PRODUCTS = [
+  { value: 'jag_i_mig', label: '🐒 Jag i Mig' },
+  { value: 'jag_med_andra', label: '🐞 Jag med Andra' },
+  { value: 'jag_i_varlden', label: '🦚 Jag i Världen' },
+  { value: 'vardagskort', label: '🌿 Vardagskort' },
+  { value: 'syskonkort', label: '👫 Syskonkort' },
+  { value: 'sexualitetskort', label: '💜 Sexualitetskort' },
+];
+
 const PAGES = [
   { path: '/', label: '🏠 Home' },
   { path: '/analytics', label: '📊 Analytics Dashboard' },
@@ -117,6 +126,8 @@ export default function DevModeBadge() {
   const currentDevState = devState ?? 'solo';
   const currentTheme = searchParams.get('theme') ?? '';
   const currentSurface = searchParams.get('surface') ?? '';
+  const isDiaryRoute = location.pathname.startsWith('/diary/');
+  const currentDiaryProduct = isDiaryRoute ? location.pathname.split('/diary/')[1] : 'jag_i_mig';
 
   function navigateTo(path: string) {
     if (path.includes('devState=')) {
@@ -146,6 +157,11 @@ export default function DevModeBadge() {
     const params = new URLSearchParams(searchParams);
     if (surface) { params.set('surface', surface); } else { params.delete('surface'); }
     navigate(`${location.pathname}?${params.toString()}`);
+  }
+
+  function switchDiaryProduct(productId: string) {
+    const params = new URLSearchParams(searchParams);
+    navigate(`/diary/${productId}?${params.toString()}`);
   }
 
   return (
@@ -198,6 +214,26 @@ export default function DevModeBadge() {
               {s.value === currentDevState ? '▶ ' : '  '}{s.label}
             </button>
           ))}
+
+          {/* Diary Product Picker — only when on diary route */}
+          {isDiaryRoute && (
+            <>
+              <div className="border-t border-white/10 px-3 py-2 text-white/40 uppercase tracking-widest text-[9px]">Dagbok — Produkt</div>
+              <div className="px-2 pb-2 flex flex-wrap gap-1">
+                {DIARY_PRODUCTS.map((p) => (
+                  <button
+                    key={p.value}
+                    onClick={() => switchDiaryProduct(p.value)}
+                    className={`px-2 py-1 rounded-md text-[10px] transition-colors ${
+                      currentDiaryProduct === p.value ? 'bg-white/20 text-white font-bold' : 'hover:bg-white/10 text-white/70'
+                    }`}
+                  >
+                    {p.label}
+                  </button>
+                ))}
+              </div>
+            </>
+          )}
 
           {/* Pages */}
           <div className="border-t border-white/10 mt-1 px-3 py-2 text-white/40 uppercase tracking-widest text-[9px]">Pages</div>
