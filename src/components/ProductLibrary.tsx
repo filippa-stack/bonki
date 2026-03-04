@@ -48,12 +48,12 @@ const ILLUSTRATION_OPACITY: Record<string, number> = {
 };
 
 const ACCENT_COLORS: Record<string, string> = {
-  jag_i_mig: '#8A9A10',
-  jag_med_andra: '#9825D6',
-  jag_i_varlden: '#3D7A45',
-  sexualitetskort: '#B5646E',
-  vardagskort: '#0F6B99',
-  syskonkort: '#0F4E99',
+  jag_i_mig: '#6B6742',
+  jag_med_andra: '#5E4058',
+  jag_i_varlden: '#3A6B48',
+  sexualitetskort: '#6B4858',
+  vardagskort: '#2A5858',
+  syskonkort: '#2A3E68',
 };
 
 /** Darkened background tones for taglines — quiet, printed-on-paper feel */
