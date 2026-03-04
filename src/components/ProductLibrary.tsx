@@ -47,6 +47,11 @@ const ILLUSTRATION_OPACITY: Record<string, number> = {
   syskonkort: 0.10,
 };
 
+/** Per-product illustration backgroundSize overrides (default 'contain') */
+const ILLUSTRATION_SIZE: Record<string, string> = {
+  jag_med_andra: '80% auto',
+};
+
 const ACCENT_COLORS: Record<string, string> = {
   jag_i_mig: '#6B6742',
   jag_med_andra: '#5E4058',
@@ -122,11 +127,11 @@ function AudienceLabel({ label, delay = 0 }: { label: string; delay?: number }) 
 
 /** Premium pastel tile with top-to-bottom light gradient */
 function PastelTile({
-  name, bg, ageLabel, tagline, onClick, aspectRatio = '4 / 3', isHero = false, illustration, accentColor, taglineColor, illustrationOpacity = 0.10,
+  name, bg, ageLabel, tagline, onClick, aspectRatio = '4 / 3', isHero = false, illustration, accentColor, taglineColor, illustrationOpacity = 0.10, illustrationSize = 'contain',
 }: {
   name: string; bg: string; ageLabel?: string; tagline?: string;
   onClick?: () => void; aspectRatio?: string; isHero?: boolean; illustration?: string;
-  accentColor?: string; taglineColor?: string; illustrationOpacity?: number;
+  accentColor?: string; taglineColor?: string; illustrationOpacity?: number; illustrationSize?: string;
 }) {
   // Darken hex bg by ~4% for bottom gradient
   const darkenHex = (hex: string) => {
@@ -186,7 +191,7 @@ function PastelTile({
             position: 'absolute',
             inset: 0,
             backgroundImage: `url(${illustration})`,
-            backgroundSize: 'contain',
+            backgroundSize: illustrationSize,
             backgroundRepeat: 'no-repeat',
             backgroundPosition: 'center',
             opacity: illustrationOpacity,
@@ -469,6 +474,7 @@ export default function ProductLibrary() {
                 taglineColor={TAGLINE_COLORS[p.id]}
                 illustration={ILLUSTRATIONS[p.id]}
                 illustrationOpacity={ILLUSTRATION_OPACITY[p.id]}
+                illustrationSize={ILLUSTRATION_SIZE[p.id]}
                 onClick={() => navigate(`/product/${p.slug}`)}
                 aspectRatio="3 / 2"
               />
@@ -501,6 +507,7 @@ export default function ProductLibrary() {
                 taglineColor={TAGLINE_COLORS[p.id]}
                 illustration={ILLUSTRATIONS[p.id]}
                 illustrationOpacity={ILLUSTRATION_OPACITY[p.id]}
+                illustrationSize={ILLUSTRATION_SIZE[p.id]}
                 onClick={() => navigate(`/product/${p.slug}`)}
                 aspectRatio="3 / 2"
               />
