@@ -610,7 +610,7 @@ export default function ProductLibrary() {
               fontStyle: 'normal',
               fontSize: '13px',
               color: 'var(--accent-text)',
-              opacity: 0.35,
+              opacity: 0.55,
             }}
           >
             Utvecklat av psykolog med 20+ års klinisk erfarenhet.
