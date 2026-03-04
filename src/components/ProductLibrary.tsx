@@ -228,9 +228,9 @@ function PastelTile({
         aspectRatio,
         display: 'flex',
         flexDirection: isHero ? 'row' : 'column',
-        alignItems: 'center',
-        justifyContent: isHero ? 'flex-start' : 'flex-start',
-        textAlign: isHero ? 'left' : 'center',
+        alignItems: isHero ? 'center' : 'flex-start',
+        justifyContent: 'flex-start',
+        textAlign: 'left',
         padding: isHero ? '16px 20px 16px 0' : '24px 16px 16px',
         position: 'relative',
         overflow: 'hidden',
@@ -256,29 +256,21 @@ function PastelTile({
           {ageLabel}
         </span>
       )}
-      {/* Illustration */}
+      {/* Watermark illustration — ghosted on the right */}
       {illustration && (
-        <div style={{
-          flexShrink: 0,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          ...(isHero
-            ? { width: '100px', height: '100%', padding: '8px 0 8px 16px' }
-            : { width: '52px', height: '52px', marginBottom: '4px' }),
-        }}>
-          <img
-            src={illustration}
-            alt=""
-            style={{
-              width: '100%',
-              height: '100%',
-              objectFit: 'contain',
-              opacity: 0.85,
-              filter: 'drop-shadow(0 2px 6px hsla(0, 0%, 0%, 0.08))',
-            }}
-          />
-        </div>
+        <div
+          style={{
+            position: 'absolute',
+            inset: 0,
+            backgroundImage: `url(${illustration})`,
+            backgroundSize: '65% auto',
+            backgroundRepeat: 'no-repeat',
+            backgroundPosition: 'right center',
+            opacity: 0.10,
+            pointerEvents: 'none',
+            zIndex: 0,
+          }}
+        />
       )}
       <div style={{ zIndex: 1, ...(isHero ? { flex: 1 } : {}) }}>
         <h3
