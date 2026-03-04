@@ -224,7 +224,7 @@ function PastelTile({
             fontWeight: 600,
             letterSpacing: '0.06em',
             color: 'var(--text-primary)',
-            opacity: 0.22,
+            opacity: 0.35,
             zIndex: 2,
           }}
         >
@@ -275,7 +275,7 @@ function PastelTile({
               fontSize: isHero ? '12px' : '10px',
               fontWeight: 400,
               color: 'var(--text-primary)',
-              opacity: 0.4,
+              opacity: 0.55,
               marginTop: '4px',
               lineHeight: 1.3,
             }}
@@ -325,7 +325,7 @@ export default function ProductLibrary() {
               fontSize: '13px',
               fontWeight: 400,
               color: 'var(--color-text-secondary)',
-              opacity: 0.55,
+              opacity: 0.7,
               lineHeight: 1.5,
               textTransform: 'uppercase',
               letterSpacing: '0.08em',
@@ -398,8 +398,6 @@ export default function ProductLibrary() {
             </p>
           </motion.div>
 
-          {/* Coming soon — collapsible */}
-          <ComingSoonDropdown />
         </motion.div>
 
         {/* ── Emotionella resan (trio) ── */}
@@ -440,7 +438,7 @@ export default function ProductLibrary() {
               display: 'grid',
               gridTemplateColumns: 'repeat(2, 1fr)',
               gap: '10px',
-              paddingBottom: '12px',
+              paddingBottom: '32px',
             }}
           >
             {extras.map(p => (
