@@ -369,7 +369,7 @@ export default function ProductLibrary() {
               style={{
                 borderRadius: '16px',
                 padding: '20px 16px',
-                background: `linear-gradient(135deg, hsla(0,0%,100%,0.06) 0%, hsla(0,0%,0%,0.03) 100%), radial-gradient(ellipse at 50% 35%, hsla(158, 40%, 22%, 0.95) 0%, hsla(158, 35%, 14%, 0.92) 100%)`,
+                background: `linear-gradient(135deg, #35564A 0%, #243E34 100%)`,
                 textAlign: 'center',
                 position: 'relative',
                 overflow: 'hidden',
@@ -378,8 +378,8 @@ export default function ProductLibrary() {
                 flexDirection: 'column',
                 alignItems: 'center',
                 justifyContent: 'center',
-                border: '1px solid rgba(44, 36, 32, 0.06)',
-                boxShadow: '0px 2px 8px rgba(44, 36, 32, 0.08)',
+                border: '1px solid rgba(255, 255, 255, 0.06)',
+                boxShadow: '0px 4px 16px rgba(20, 30, 25, 0.25), 0px 1px 3px rgba(20, 30, 25, 0.12)',
               }}
             >
               {/* Noise texture overlay */}
@@ -387,7 +387,7 @@ export default function ProductLibrary() {
                 position: 'absolute',
                 inset: 0,
                 borderRadius: '16px',
-                opacity: 0.025,
+                opacity: 0.03,
                 backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")`,
                 backgroundSize: '128px 128px',
                 pointerEvents: 'none',
@@ -396,9 +396,9 @@ export default function ProductLibrary() {
               <h2
                 style={{
                   fontFamily: "'DM Serif Display', serif",
-                  fontSize: '22px',
+                  fontSize: '24px',
                   fontWeight: 400,
-                  color: 'hsla(0, 0%, 100%, 0.95)',
+                  color: '#FAF3E8',
                   letterSpacing: '0.02em',
                 }}
               >
@@ -407,10 +407,10 @@ export default function ProductLibrary() {
               <p
                 className="font-serif"
                 style={{
-                  fontSize: '10px',
+                  fontSize: '11px',
                   color: 'var(--accent-saffron)',
-                  marginTop: '4px',
-                  fontStyle: 'normal',
+                  marginTop: '6px',
+                  fontStyle: 'italic',
                 }}
               >
                 För samtalen som aldrig blir av
