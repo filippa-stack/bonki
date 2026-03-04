@@ -1656,7 +1656,7 @@ export default function CardView() {
                   isLive={isLive}
                   isReflectionStep={isReflectionStep}
                   isExerciseStep={isExerciseStep}
-                  showBackArrow={isLive && !(currentStepIndex === 0 && localPromptIndex === 0)}
+                  showBackArrow={isLive && (!(currentStepIndex === 0 && localPromptIndex === 0) || (!!product && product.id !== 'still_us'))}
                   onBack={isLive ? (() => {
                     if (localPromptIndex > 0) {
                       setLocalPromptIndex(localPromptIndex - 1);
@@ -1668,6 +1668,9 @@ export default function CardView() {
                       const prevPromptCount = getEffectivePromptCount(prevSection);
                       setLocalStepIndex(prevStageIndex);
                       setLocalPromptIndex(prevPromptCount - 1);
+                    } else {
+                      // First question — navigate back to category/product
+                      navigate(exitBackTo);
                     }
                   }) : undefined}
                 />
@@ -1731,7 +1734,11 @@ export default function CardView() {
                           setLocalStepIndex(prevStageIndex);
                           setLocalPromptIndex(prevPromptCount - 1);
                         } else {
-                          setShowLeaveConfirm(true);
+                          if (product && product.id !== 'still_us') {
+                            navigate(exitBackTo);
+                          } else {
+                            setShowLeaveConfirm(true);
+                          }
                         }
                       }}
                     />
