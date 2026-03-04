@@ -25,6 +25,7 @@ import CardView from "./pages/CardView";
 import ProductHome from "./pages/ProductHome";
 
 import SharedSummary from "./pages/SharedSummary";
+import Diary from "./pages/Diary";
 import Login from "./pages/Login";
 import NotFound from "./pages/NotFound";
 import ScreenshotExport from "./pages/ScreenshotExport";
@@ -76,6 +77,7 @@ function ProtectedRoutes() {
             <Route path="/product/:slug" element={<PageTransition><ProductHome /></PageTransition>} />
             <Route path="/saved" element={<Navigate to="/shared" replace />} />
             <Route path="/shared" element={<PageTransition><SharedSummary /></PageTransition>} />
+            <Route path="/diary/:productId" element={<PageTransition><Diary /></PageTransition>} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </AnimatePresence>

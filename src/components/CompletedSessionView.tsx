@@ -305,14 +305,18 @@ export default function CompletedSessionView({
             style={{ marginTop: '8px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '20px' }}
           >
             <button
-              onClick={() => navigate('/shared')}
+              onClick={() => navigate(
+                product && product.id !== 'still_us' ? `/diary/${product.id}` : '/shared'
+              )}
               className="font-sans"
               style={{ fontSize: '13px', color: 'var(--text-secondary)', opacity: 0.55, background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline', textUnderlineOffset: '3px' }}
             >
-              Se alla era anteckningar
+              {product && product.id !== 'still_us' ? 'Vår dagbok' : 'Se alla era anteckningar'}
             </button>
             <button
-              onClick={() => navigate('/')}
+              onClick={() => navigate(
+                product && product.id !== 'still_us' ? `/product/${product.slug}` : '/'
+              )}
               className="cta-primary"
             >
               Fortsätt utforska
