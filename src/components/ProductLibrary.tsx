@@ -47,7 +47,7 @@ const PASTEL_COLORS: Record<string, string> = {
 const ILLUSTRATION_OPACITY: Record<string, number> = {
   jag_i_varlden: 0.10,
   jag_i_mig: 0.075,
-  syskonkort: 0.07,
+  syskonkort: 0.10,
 };
 
 const ACCENT_COLORS: Record<string, string> = {
