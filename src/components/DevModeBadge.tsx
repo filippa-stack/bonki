@@ -18,6 +18,7 @@ const DEV_STATES = [
   { value: 'library', label: '📚 Product Library' },
   { value: 'onboarding', label: '👋 Plattforms-onboarding' },
   { value: 'productIntro', label: '🎴 Produkt-intro' },
+  { value: 'diary', label: '📖 Vår dagbok' },
 ];
 
 const THEME_OPTIONS = [
@@ -76,6 +77,12 @@ const PAGES = [
   { path: '/product/vardagskort', label: '🎴 Vardagskort' },
   { path: '/product/syskonkort', label: '🎴 Syskonkort' },
   { path: '/product/sexualitetskort', label: '🎴 Sexualitetskort' },
+  { path: '/diary/jag_i_mig', label: '📖 Dagbok: JIM' },
+  { path: '/diary/jag_med_andra', label: '📖 Dagbok: JMA' },
+  { path: '/diary/jag_i_varlden', label: '📖 Dagbok: JIV' },
+  { path: '/diary/vardagskort', label: '📖 Dagbok: VK' },
+  { path: '/diary/syskonkort', label: '📖 Dagbok: SK' },
+  { path: '/diary/sexualitetskort', label: '📖 Dagbok: SEX' },
 ];
 
 export default function DevModeBadge() {
@@ -121,7 +128,7 @@ export default function DevModeBadge() {
   }
 
   function switchState(state: string) {
-    const rootStates = ['library', 'onboarding', 'productIntro'];
+    const rootStates = ['library', 'onboarding', 'productIntro', 'diary'];
     const basePath = rootStates.includes(state) ? '/' : location.pathname;
     const params = new URLSearchParams(searchParams);
     params.set('devState', state);

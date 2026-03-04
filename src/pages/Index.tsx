@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, Navigate } from 'react-router-dom';
 import { useApp } from '@/contexts/AppContext';
 import { useCoupleSpaceContext } from '@/contexts/CoupleSpaceContext';
 import { usePartnerNotifications } from '@/hooks/usePartnerNotifications';
@@ -152,6 +152,12 @@ export default function Index() {
   // devState=library → show product library lobby
   if (devState === 'library') {
     return <ProductLibrary />;
+  }
+
+  // devState=diary → navigate to diary preview (defaults to jag_i_mig, use ?product= to override)
+  if (devState === 'diary') {
+    const productSlug = new URLSearchParams(window.location.search).get('product') || 'jag_i_mig';
+    return <Navigate to={`/diary/${productSlug}?devState=diary`} replace />;
   }
 
   // Any other devState bypasses onboarding & purchase gates
