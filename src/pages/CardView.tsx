@@ -719,7 +719,9 @@ export default function CardView() {
   const postCompletionNav = useMemo(() => {
     if (!category || !card) return { type: 'home' as const, destination: '/', label: '' };
 
-    const categoryCards = cards.filter(c => c.categoryId === category.id);
+    // Use product-specific cards if available, otherwise fall back to global cards
+    const productCards = product ? product.cards : cards;
+    const categoryCards = productCards.filter(c => c.categoryId === category.id);
     const effectiveCompleted = new Set(completedCardIds);
     effectiveCompleted.add(card.id);
 
@@ -731,7 +733,7 @@ export default function CardView() {
 
     for (const catId of getRecommendedCategoryOrder(card.id)) {
       if (catId === category.id) continue;
-      const catCards = cards.filter(c => c.categoryId === catId);
+      const catCards = productCards.filter(c => c.categoryId === catId);
       const hasIncomplete = catCards.some(c => !effectiveCompleted.has(c.id));
       if (hasIncomplete) {
         return { type: 'next_category' as const, destination: `/category/${catId}`, label: 'Nästa ämne' };
@@ -739,7 +741,7 @@ export default function CardView() {
     }
 
     return { type: 'all_complete' as const, destination: '/', label: '' };
-  }, [category, card, cards, completedCardIds]);
+  }, [category, card, cards, product, completedCardIds]);
 
   // ─────────────────────────────────────────────────────────────
   //  Early exit (card not found)
