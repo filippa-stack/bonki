@@ -28,12 +28,12 @@ const TAGLINES: Record<string, string> = {
 };
 
 const PASTEL_COLORS: Record<string, string> = {
-  jag_i_mig: 'hsl(43, 100%, 99%)',        // #FFFDF8
-  jag_med_andra: 'hsl(318, 63%, 97%)',     // #FCF2F9
-  jag_i_varlden: 'hsl(138, 100%, 97%)',    // #EEFFF3
-  sexualitetskort: 'hsl(318, 63%, 97%)',   // #FCF2F9
-  vardagskort: 'hsl(180, 63%, 97%)',       // #F2FCFC
-  syskonkort: 'hsl(204, 63%, 97%)',        // #F2F8FC
+  jag_i_mig: '#FFF8E8',
+  jag_med_andra: '#F8E8F4',
+  jag_i_varlden: '#E4F5EA',
+  sexualitetskort: '#F8E8EE',
+  vardagskort: '#E6F4F4',
+  syskonkort: '#E8F0F8',
 };
 
 const ACCENT_COLORS: Record<string, string> = {
@@ -203,7 +203,15 @@ function PastelTile({
   onClick?: () => void; aspectRatio?: string; isHero?: boolean; illustration?: string;
   accentColor?: string; titleColor?: string;
 }) {
-  const subtleDarker = bg.replace(/(\d+)%\)$/, (_, l) => `${Math.max(Number(l) - 3, 80)}%)`);
+  // Darken hex bg by ~4% for bottom gradient
+  const darkenHex = (hex: string) => {
+    const r = parseInt(hex.slice(1, 3), 16);
+    const g = parseInt(hex.slice(3, 5), 16);
+    const b = parseInt(hex.slice(5, 7), 16);
+    const d = 0.96;
+    return `rgb(${Math.round(r * d)}, ${Math.round(g * d)}, ${Math.round(b * d)})`;
+  };
+  const bottomColor = darkenHex(bg);
 
   return (
     <motion.div
@@ -214,7 +222,7 @@ function PastelTile({
       className="cursor-pointer"
       style={{
         borderRadius: '16px',
-        background: `linear-gradient(180deg, ${bg} 0%, ${subtleDarker} 100%)`,
+        background: `linear-gradient(180deg, ${bg} 0%, ${bottomColor} 100%)`,
         aspectRatio,
         display: 'flex',
         flexDirection: isHero ? 'row' : 'column',
@@ -225,7 +233,7 @@ function PastelTile({
         position: 'relative',
         overflow: 'hidden',
         border: '1px solid rgba(44, 36, 32, 0.05)',
-        boxShadow: '0px 3px 12px rgba(44, 36, 32, 0.07)',
+        boxShadow: '0px 4px 16px rgba(44, 36, 32, 0.12)',
       }}
     >
       {ageLabel && (
@@ -423,7 +431,7 @@ export default function ProductLibrary() {
               style={{
                 borderRadius: '16px',
                 padding: '20px 16px',
-                background: 'linear-gradient(135deg, #E0C4B8 0%, #D4AFA0 100%)',
+                background: 'linear-gradient(135deg, #DBBAA8 0%, #C89A88 100%)',
                 textAlign: 'center',
                 position: 'relative',
                 overflow: 'hidden',
@@ -432,10 +440,21 @@ export default function ProductLibrary() {
                 flexDirection: 'column',
                 alignItems: 'center',
                 justifyContent: 'center',
-                border: '1px solid rgba(44, 36, 32, 0.05)',
-                boxShadow: '0px 3px 12px rgba(44, 36, 32, 0.07)',
+                border: '1px solid rgba(255, 255, 255, 0.06)',
+                boxShadow: '0px 4px 16px rgba(44, 36, 32, 0.15), 0px 1px 3px rgba(44, 36, 32, 0.08)',
               }}
             >
+              {/* Noise texture overlay */}
+              <div style={{
+                position: 'absolute',
+                inset: 0,
+                borderRadius: '16px',
+                opacity: 0.03,
+                backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")`,
+                backgroundSize: '128px 128px',
+                pointerEvents: 'none',
+                mixBlendMode: 'overlay',
+              }} />
               <h3
                 style={{
                   fontFamily: "'DM Serif Display', serif",
