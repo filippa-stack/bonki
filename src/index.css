@@ -194,6 +194,20 @@ h1, h2, h3,
     --session-header-hover: #224233;
     --session-header-press: #162E24;
 
+    /* ── Product home tokens ── */
+    --product-title-color: var(--text-primary);
+    --product-subtitle-color: hsl(16, 15%, 15% / 0.7);  /* warm charcoal 70% */
+    --product-button-bg: hsl(0 0% 100% / 0.85);
+    --product-button-shadow: 0 2px 8px -2px hsla(30, 20%, 20%, 0.08),
+                             0 8px 24px -6px hsla(30, 18%, 16%, 0.06);
+    --product-button-radius: 12px;
+    --product-button-text: var(--product-title-color);
+
+    /* ── Completion screen tokens ── */
+    --completion-subtitle: hsl(30, 10%, 50%);     /* warm grey */
+    --completion-label: hsl(30, 8%, 62%);          /* muted tone */
+    --completion-link: hsl(30, 10%, 50%);
+
     /* Dynamic overrides — set via useThemeVars hook at runtime */
     --page-bg: var(--color-bg);
     --hero-title-color: var(--text-primary);

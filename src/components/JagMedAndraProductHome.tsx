@@ -20,7 +20,6 @@ const pillVariants = {
 };
 
 const DEEP_PURPLE = '#9825D6';
-const PILL_BORDER = '2px solid #9825D6';
 
 export default function JagMedAndraProductHome({ product }: { product: ProductManifest }) {
   const navigate = useNavigate();
@@ -28,7 +27,7 @@ export default function JagMedAndraProductHome({ product }: { product: ProductMa
   return (
     <div
       className="min-h-screen relative overflow-hidden"
-      style={{ backgroundColor: '#FCF2F9' }}
+      style={{ backgroundColor: 'var(--surface-base)' }}
     >
       {/* Background illustration — sloth */}
       <motion.div
@@ -48,17 +47,11 @@ export default function JagMedAndraProductHome({ product }: { product: ProductMa
         <img
           src={slothImage}
           alt=""
-          style={{
-            width: '100%',
-            height: '100%',
-            objectFit: 'contain',
-            objectPosition: 'left top',
-            opacity: 0.35,
-          }}
+          style={{ width: '100%', height: '100%', objectFit: 'contain', objectPosition: 'left top', opacity: 0.35 }}
         />
       </motion.div>
 
-      {/* Secondary illustration — nyckelpiga, bottom-right */}
+      {/* Secondary illustration — nyckelpiga */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -75,17 +68,11 @@ export default function JagMedAndraProductHome({ product }: { product: ProductMa
         <img
           src={nyckelpiganImage}
           alt=""
-          style={{
-            width: '100%',
-            height: '100%',
-            objectFit: 'contain',
-            opacity: 0.35,
-            transform: 'rotate(-30deg)',
-          }}
+          style={{ width: '100%', height: '100%', objectFit: 'contain', opacity: 0.35, transform: 'rotate(-30deg)' }}
         />
       </motion.div>
 
-      {/* Content — centered */}
+      {/* Content */}
       <div
         style={{
           position: 'relative',
@@ -105,28 +92,18 @@ export default function JagMedAndraProductHome({ product }: { product: ProductMa
           variants={containerVariants}
           initial="hidden"
           animate="visible"
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            gap: '3.5vh',
-            width: '100%',
-          }}
+          style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '3.5vh', width: '100%' }}
         >
-          {/* Title — plain heading */}
+          {/* Title */}
           <motion.div
             variants={pillVariants}
-            style={{
-              textAlign: 'center',
-              marginBottom: '2vh',
-              width: '100%',
-            }}
+            style={{ textAlign: 'center', marginBottom: '2vh', width: '100%' }}
           >
             <h1
-              className="font-serif"
               style={{
+                fontFamily: "'DM Serif Display', var(--font-serif)",
                 fontSize: 'clamp(28px, 7.5vw, 38px)',
-                fontWeight: 700,
+                fontWeight: 400,
                 color: DEEP_PURPLE,
                 letterSpacing: '-0.01em',
                 whiteSpace: 'normal',
@@ -139,8 +116,7 @@ export default function JagMedAndraProductHome({ product }: { product: ProductMa
               style={{
                 fontSize: 'clamp(15px, 4.2vw, 19px)',
                 fontWeight: 400,
-                color: '#2C2420',
-                opacity: 0.7,
+                color: 'var(--product-subtitle-color)',
                 marginTop: '8px',
               }}
             >
@@ -148,7 +124,7 @@ export default function JagMedAndraProductHome({ product }: { product: ProductMa
             </p>
           </motion.div>
 
-          {/* Category buttons — filled, soft */}
+          {/* Category buttons */}
           {product.categories.map((cat, index) => {
             const widths = ['74%', '70%', '67%', '64%'];
             return (
@@ -159,23 +135,23 @@ export default function JagMedAndraProductHome({ product }: { product: ProductMa
                 whileTap={{ scale: 0.97 }}
                 onClick={() => navigate(`/category/${cat.id}`)}
                 style={{
-                  background: 'rgba(255, 255, 255, 0.85)',
-                  borderRadius: '12px',
+                  background: 'var(--product-button-bg)',
+                  borderRadius: 'var(--product-button-radius)',
                   padding: '14px 24px',
                   textAlign: 'center',
                   cursor: 'pointer',
                   border: 'none',
-                  boxShadow: '0px 2px 6px rgba(0, 0, 0, 0.08)',
+                  boxShadow: 'var(--product-button-shadow)',
                   whiteSpace: 'normal' as const,
                   width: widths[index] || '64%',
                   lineHeight: 1.3,
                 }}
               >
                 <span
-                  className="font-serif"
                   style={{
+                    fontFamily: "'DM Serif Display', var(--font-serif)",
                     fontSize: 'clamp(18px, 5vw, 24px)',
-                    fontWeight: 500,
+                    fontWeight: 400,
                     color: DEEP_PURPLE,
                   }}
                 >

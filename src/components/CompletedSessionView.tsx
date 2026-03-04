@@ -139,7 +139,7 @@ export default function CompletedSessionView({
 
   if (loading) {
     return (
-      <div className="min-h-screen page-bg">
+      <div className="min-h-screen" style={{ backgroundColor: 'var(--surface-base)' }}>
         <Header title={cardTitle} showBack backTo={categoryId ? `/category/${categoryId}` : '/'} />
         <div className="px-6 pt-title-above pb-8">
           <div className="max-w-md mx-auto space-y-4">
@@ -154,7 +154,7 @@ export default function CompletedSessionView({
 
   if (!session) {
     return (
-      <div className="min-h-screen page-bg">
+      <div className="min-h-screen" style={{ backgroundColor: 'var(--surface-base)' }}>
         <Header title={cardTitle} showBack backTo={categoryId ? `/category/${categoryId}` : '/'} />
         <div className="px-6 pt-title-above pb-8 text-center max-w-md mx-auto space-y-8">
           <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>Ingen tidigare session hittades.</p>
@@ -173,7 +173,7 @@ export default function CompletedSessionView({
   }).filter(g => g.partnerRef || g.myRef);
 
   return (
-    <div className="min-h-screen page-bg">
+    <div className="min-h-screen" style={{ backgroundColor: 'var(--surface-base)' }}>
       <Header title={cardTitle} showBack backTo={categoryId ? `/category/${categoryId}` : '/'} />
 
       <div className="px-6 pb-8" style={{ paddingTop: '32px' }}>
@@ -203,8 +203,8 @@ export default function CompletedSessionView({
               }}
             />
             <h2
-              className="font-serif"
               style={{
+                fontFamily: "'DM Serif Display', var(--font-serif)",
                 fontSize: 'clamp(26px, 7vw, 34px)',
                 fontWeight: 400,
                 lineHeight: 1.2,
@@ -213,7 +213,7 @@ export default function CompletedSessionView({
             >
               {headline}
             </h2>
-            <p className="font-serif italic" style={{ fontSize: '15px', color: 'var(--text-tertiary)', opacity: 0.7 }}>
+            <p className="font-serif italic" style={{ fontSize: '15px', color: 'var(--completion-subtitle)', opacity: 0.7 }}>
               {formatSessionDate(session.startedAt)}
             </p>
           </motion.div>
@@ -244,8 +244,8 @@ export default function CompletedSessionView({
                       </p>
                       <div style={{
                         background: 'var(--surface-raised)',
-                        borderRadius: '12px',
-                        boxShadow: '0 1px 3px hsla(30, 15%, 25%, 0.04), 0 4px 16px -4px hsla(30, 18%, 28%, 0.06)',
+                        borderRadius: 'var(--product-button-radius)',
+                        boxShadow: 'var(--product-button-shadow)',
                       }}>
                         <p className="font-serif italic whitespace-pre-wrap" style={{ padding: '20px 24px', fontSize: '17px', lineHeight: 1.7, color: 'var(--text-primary)' }}>{group.partnerRef.text}</p>
                       </div>
@@ -262,8 +262,8 @@ export default function CompletedSessionView({
                       </p>
                       <div style={{
                         background: 'var(--surface-raised)',
-                        borderRadius: '12px',
-                        boxShadow: '0 1px 3px hsla(30, 15%, 25%, 0.04), 0 4px 16px -4px hsla(30, 18%, 28%, 0.06)',
+                        borderRadius: 'var(--product-button-radius)',
+                        boxShadow: 'var(--product-button-shadow)',
                       }}>
                         <p className="font-serif italic whitespace-pre-wrap" style={{ padding: '20px 24px', fontSize: '17px', lineHeight: 1.7, color: 'var(--text-primary)' }}>{group.myRef.text}</p>
                       </div>
@@ -286,7 +286,7 @@ export default function CompletedSessionView({
               transition={{ delay: BEAT_3, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
               style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}
             >
-              <p style={{ fontSize: '11px', letterSpacing: '0.06em', textTransform: 'uppercase', color: 'var(--text-tertiary)', opacity: 0.55 }}>Det ni tog med er</p>
+              <p style={{ fontSize: '11px', letterSpacing: '0.06em', textTransform: 'uppercase', color: 'var(--completion-label)', opacity: 0.55 }}>Det ni tog med er</p>
               <div style={{
                 background: 'hsl(36 20% 97% / 0.70)',
                 borderRadius: '12px',
@@ -309,7 +309,7 @@ export default function CompletedSessionView({
                 product && product.id !== 'still_us' ? `/diary/${product.id}` : '/shared'
               )}
               className="font-sans"
-              style={{ fontSize: '13px', color: 'var(--text-secondary)', opacity: 0.55, background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline', textUnderlineOffset: '3px' }}
+              style={{ fontSize: '13px', color: 'var(--completion-link)', opacity: 0.55, background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline', textUnderlineOffset: '3px' }}
             >
               {product && product.id !== 'still_us' ? 'Vår dagbok' : 'Se alla era anteckningar'}
             </button>
