@@ -1074,16 +1074,22 @@ export default function CardView() {
             style={{
               position: 'absolute',
               top: '22px',
-              width: '100%',
+              left: '50%',
+              transform: 'translateX(-50%)',
               textAlign: 'center',
               fontFamily: 'var(--font-sans)',
-              fontSize: '10px',
-              letterSpacing: '0.10em',
+              fontSize: '11px',
+              fontWeight: 600,
+              letterSpacing: '0.08em',
               textTransform: 'uppercase',
               color: 'var(--accent-text)',
-              opacity: 0.6,
+              opacity: 0.85,
               zIndex: 1,
               pointerEvents: 'none',
+              background: 'color-mix(in srgb, var(--accent-text) 10%, transparent)',
+              padding: '4px 14px',
+              borderRadius: '20px',
+              whiteSpace: 'nowrap',
             }}
           >
             Ditt gratis samtal
