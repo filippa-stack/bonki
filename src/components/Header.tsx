@@ -1,4 +1,4 @@
-import { ArrowLeft, Settings } from 'lucide-react';
+import { ArrowLeft, Settings, X } from 'lucide-react';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -127,26 +127,33 @@ export default function Header({
             {!title && <div className="flex-1 min-w-0" />}
 
             {/* RIGHT: leave session */}
-            <div className="flex items-center justify-end" style={{ minWidth: '100px' }}>
+            <div className="flex items-center justify-end" style={{ minWidth: '44px' }}>
               {onLeaveSession && (
                 <div style={{ minHeight: '44px', display: 'flex', alignItems: 'center' }}>
                   <button
                     onClick={onLeaveSession}
-                    className="font-sans whitespace-nowrap shrink-0"
+                    aria-label="Stäng samtalet"
                     style={{
-                      fontSize: '13px',
-                      color: isDarkSurface ? 'hsl(36, 20%, 88%)' : 'var(--color-text-secondary)',
-                      opacity: 0.50,
-                      fontWeight: 400,
+                      minHeight: '44px',
+                      minWidth: '44px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
                       background: 'none',
                       border: 'none',
                       cursor: 'pointer',
-                      transition: 'opacity 150ms ease',
+                      padding: '8px',
                     }}
-                    onMouseEnter={(e) => { e.currentTarget.style.opacity = '0.85'; }}
-                    onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.50'; }}
                   >
-                    Lämna samtalet
+                    <X
+                      size={20}
+                      strokeWidth={1.5}
+                      style={{
+                        color: isDarkSurface ? 'hsl(36, 20%, 88%)' : 'var(--color-text-secondary)',
+                        opacity: 0.50,
+                        transition: 'opacity 150ms ease',
+                      }}
+                    />
                   </button>
                 </div>
               )}

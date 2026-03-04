@@ -155,6 +155,7 @@ export default function CardView() {
     product?.accentColor ?? 'hsl(158, 35%, 18%)',
     product?.secondaryAccent ?? 'hsl(38, 88%, 46%)',
     product?.backgroundColor,
+    product?.ctaButtonColor,
   );
 
   // Track card visit for analytics
@@ -990,15 +991,6 @@ export default function CardView() {
               >
                 {product && product.id !== 'still_us' ? 'Vår dagbok' : uiText.seeNotes}
               </button>
-              <button
-                onClick={() => navigateWithFeedback(
-                  product && product.id !== 'still_us' ? `/product/${product.slug}` : '/'
-                )}
-                className="type-meta transition-opacity hover:opacity-60"
-                style={{ color: 'var(--text-tertiary)', opacity: 0.35 }}
-              >
-                Till startsidan
-              </button>
             </motion.div>
           </motion.div>
 
@@ -1417,18 +1409,28 @@ export default function CardView() {
 
       {/* Section content — centered, max 520px for readability */}
       <div className="px-6 relative" style={{ paddingTop: '8px', paddingBottom: 'calc(120px + env(safe-area-inset-bottom, 0px))' }}>
-        {/* Card illustration watermark — centered in lower half for new products */}
+        {/* Card illustration watermark — bottom-right, per-product sizing */}
         {product && product.id !== 'still_us' && cardImageUrl && (
           <div
             style={{
               position: 'fixed',
               bottom: 0,
-              left: 0,
               right: 0,
-              height: '60vh',
+              width: '65vw',
+              height: (() => {
+                const sizeMap: Record<string, string> = {
+                  jag_i_mig: '32vh',
+                  jag_med_andra: '35vh',
+                  jag_i_varlden: '30vh',
+                  sexualitetskort: '33vh',
+                  vardagskort: '38vh',
+                  syskonkort: '34vh',
+                };
+                return sizeMap[product.id] ?? '35vh';
+              })(),
               display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
+              alignItems: 'flex-end',
+              justifyContent: 'flex-end',
               pointerEvents: 'none',
               zIndex: 0,
             }}
@@ -1438,10 +1440,10 @@ export default function CardView() {
               alt=""
               draggable={false}
               style={{
-                width: '75vw',
-                maxWidth: '400px',
-                height: 'auto',
+                width: '100%',
+                height: '100%',
                 objectFit: 'contain',
+                objectPosition: 'right bottom',
                 opacity: 0.06,
                 filter: 'saturate(0.4)',
                 userSelect: 'none',
@@ -1764,7 +1766,7 @@ export default function CardView() {
                       className="cta-primary gap-2"
                       style={{ width: '60%', margin: '0 auto' }}
                     >
-                      {currentStepIndex >= effectiveSteps.length - 1 ? 'Klar' : 'Nästa'}
+                      {currentStepIndex >= effectiveSteps.length - 1 ? (product && product.id !== 'still_us' ? 'Vi är klara' : 'Klar') : 'Nästa'}
                       <ArrowRight className="w-4 h-4" />
                     </button>
                   </div>

@@ -158,6 +158,7 @@ export const vardagskortProduct: ProductManifest = {
   accentColorMuted: 'hsl(180, 25%, 90%)',
   secondaryAccent: 'hsl(200, 80%, 33%)',
   backgroundColor: '#F2FCFC',
+  ctaButtonColor: '#0F6B99',
   pronounMode: 'du',
   freeCardId: 'vk-hur-var-din-dag',
   ageLabel: '6+',

@@ -76,6 +76,7 @@ export default function Category() {
     product?.accentColor ?? 'hsl(158, 35%, 18%)',
     product?.secondaryAccent ?? 'hsl(38, 88%, 46%)',
     product?.backgroundColor,
+    product?.ctaButtonColor,
   );
 
   if (!category) {
