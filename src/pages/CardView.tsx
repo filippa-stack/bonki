@@ -4,23 +4,6 @@
 // All session state must come from normalized tables.
 
 import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
-
-// Product watermark illustrations for question screens
-import watermarkJagIMig from '@/assets/monster-jag-i-mig.png';
-import watermarkJagMedAndra from '@/assets/annorlunda-jag-med-andra.png';
-import watermarkJagIVarlden from '@/assets/aktivism-jag-i-varlden.png';
-import watermarkSexualitet from '@/assets/illustration-sexualitet.png';
-import watermarkVardag from '@/assets/illustration-vardag.png';
-import watermarkSyskon from '@/assets/illustration-syskon.png';
-
-const PRODUCT_WATERMARKS: Record<string, string> = {
-  jag_i_mig: watermarkJagIMig,
-  jag_med_andra: watermarkJagMedAndra,
-  jag_i_varlden: watermarkJagIVarlden,
-  sexualitetskort: watermarkSexualitet,
-  vardagskort: watermarkVardag,
-  syskonkort: watermarkSyskon,
-};
 import { useParams, useNavigate, useSearchParams, useLocation } from 'react-router-dom';
 import {
   AlertDialog,
@@ -1350,8 +1333,8 @@ export default function CardView() {
 
       {/* Section content — centered, max 520px for readability */}
       <div className="px-6 relative" style={{ paddingTop: '8px', paddingBottom: 'calc(120px + env(safe-area-inset-bottom, 0px))' }}>
-        {/* Product watermark illustration — subtle background for new products */}
-        {product && PRODUCT_WATERMARKS[product.id] && (
+        {/* Card illustration watermark — subtle background for new products */}
+        {product && product.id !== 'still_us' && cardImageUrl && (
           <div
             style={{
               position: 'absolute',
@@ -1359,7 +1342,7 @@ export default function CardView() {
               right: 0,
               width: '55%',
               height: '45%',
-              backgroundImage: `url(${PRODUCT_WATERMARKS[product.id]})`,
+              backgroundImage: `url(${cardImageUrl})`,
               backgroundSize: 'contain',
               backgroundRepeat: 'no-repeat',
               backgroundPosition: 'bottom right',
