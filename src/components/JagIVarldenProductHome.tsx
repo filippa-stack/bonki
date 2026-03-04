@@ -18,7 +18,7 @@ const pillVariants = {
   },
 };
 
-const TEXT_COLOR = 'hsl(158, 35%, 18%)';
+const ACCENT_COLOR = '#3D7A45';
 
 export default function JagIVarldenProductHome({ product }: { product: ProductManifest }) {
   const navigate = useNavigate();
@@ -28,7 +28,6 @@ export default function JagIVarldenProductHome({ product }: { product: ProductMa
       className="min-h-screen relative overflow-hidden"
       style={{ backgroundColor: 'var(--surface-base)' }}
     >
-      {/* Background illustration — peacock top */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -38,7 +37,6 @@ export default function JagIVarldenProductHome({ product }: { product: ProductMa
         <img src={peacockImage} alt="" style={{ width: '100%', height: '100%', objectFit: 'contain', objectPosition: 'right top', opacity: 0.35, transform: 'rotate(180deg)' }} />
       </motion.div>
 
-      {/* Second peacock — bottom-left */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -49,45 +47,46 @@ export default function JagIVarldenProductHome({ product }: { product: ProductMa
       </motion.div>
 
       {/* Content */}
-      <div style={{ position: 'relative', zIndex: 1, minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start', paddingTop: '12vh', paddingRight: '16vw', paddingBottom: '48px', paddingLeft: '16vw' }}>
-        <motion.div variants={containerVariants} initial="hidden" animate="visible" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '3.5vh', width: '100%' }}>
+      <div style={{ position: 'relative', zIndex: 1, minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start', paddingTop: '12vh', paddingRight: '10vw', paddingBottom: '48px', paddingLeft: '10vw' }}>
+        <motion.div variants={containerVariants} initial="hidden" animate="visible" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '3vh', width: '100%' }}>
           <motion.div variants={pillVariants} style={{ textAlign: 'center', marginBottom: '2vh', width: '100%' }}>
-            <h1 style={{ fontFamily: "'DM Serif Display', var(--font-serif)", fontSize: 'clamp(28px, 7.5vw, 38px)', fontWeight: 400, color: TEXT_COLOR, letterSpacing: '-0.01em', whiteSpace: 'nowrap' }}>
+            <h1 style={{ fontFamily: "'DM Serif Display', var(--font-serif)", fontSize: 'clamp(34px, 9vw, 48px)', fontWeight: 700, color: ACCENT_COLOR, letterSpacing: '-0.01em', whiteSpace: 'nowrap' }}>
               Jag i världen
             </h1>
-            <p className="font-serif" style={{ fontSize: 'clamp(15px, 4.2vw, 19px)', fontWeight: 400, color: 'var(--product-subtitle-color)', marginTop: '8px' }}>
+            <p className="font-serif" style={{ fontSize: 'clamp(16px, 4.5vw, 20px)', fontWeight: 400, color: '#2C2420', opacity: 0.8, marginTop: '8px', textShadow: '0px 1px 3px rgba(255,255,255,0.8)' }}>
               stärk identitet och mod
             </p>
           </motion.div>
 
-          {product.categories.map((cat, index) => {
-            const widths = ['72%', '68%', '66%', '66%', '66%'];
-            return (
-              <motion.button
-                key={cat.id}
-                variants={pillVariants}
-                whileHover={{ scale: 1.04, y: -2 }}
-                whileTap={{ scale: 0.97 }}
-                onClick={() => navigate(`/category/${cat.id}`)}
-                style={{
-                  background: 'var(--product-button-bg)',
-                  borderRadius: 'var(--product-button-radius)',
-                  padding: '14px 24px',
-                  textAlign: 'center',
-                  cursor: 'pointer',
-                  border: 'none',
-                  boxShadow: 'var(--product-button-shadow)',
-                  whiteSpace: 'normal' as const,
-                  width: widths[index] || '66%',
-                  lineHeight: 1.3,
-                }}
-              >
-                <span style={{ fontFamily: "'DM Serif Display', var(--font-serif)", fontSize: 'clamp(17px, 4.5vw, 22px)', fontWeight: 400, color: TEXT_COLOR }}>
-                  {cat.title}
-                </span>
-              </motion.button>
-            );
-          })}
+          {product.categories.map((cat) => (
+            <motion.button
+              key={cat.id}
+              variants={pillVariants}
+              whileHover={{ scale: 1.04, y: -2 }}
+              whileTap={{ scale: 0.97 }}
+              onClick={() => navigate(`/category/${cat.id}`)}
+              style={{
+                background: 'var(--product-button-bg)',
+                borderRadius: 'var(--product-button-radius)',
+                padding: '0 24px',
+                textAlign: 'center',
+                cursor: 'pointer',
+                border: 'none',
+                boxShadow: 'var(--product-button-shadow)',
+                whiteSpace: 'normal' as const,
+                width: '80%',
+                minHeight: '56px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                lineHeight: 1.3,
+              }}
+            >
+              <span style={{ fontFamily: "'DM Serif Display', var(--font-serif)", fontSize: 'clamp(18px, 5vw, 24px)', fontWeight: 400, color: ACCENT_COLOR }}>
+                {cat.title}
+              </span>
+            </motion.button>
+          ))}
 
           {/* Diary link */}
           <motion.button
@@ -97,16 +96,16 @@ export default function JagIVarldenProductHome({ product }: { product: ProductMa
               background: 'none',
               border: 'none',
               cursor: 'pointer',
-              marginTop: '1vh',
+              marginTop: '2vh',
               padding: '8px 16px',
             }}
           >
             <span
               className="font-serif"
               style={{
-                fontSize: 'clamp(14px, 3.8vw, 17px)',
-                color: TEXT_COLOR,
-                opacity: 0.55,
+                fontSize: 'clamp(16px, 4.2vw, 19px)',
+                color: ACCENT_COLOR,
+                opacity: 0.75,
                 textDecoration: 'underline',
                 textUnderlineOffset: '3px',
               }}
