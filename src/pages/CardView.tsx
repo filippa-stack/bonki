@@ -192,31 +192,32 @@ export default function CardView() {
     }
   }, [cardId, markCardCompleted]);
 
-  // ─── Feedback modal state ───
+  // ─── Feedback modal state (Still Us only) ───
+  const isStillUs = product?.id === 'still_us' || !product;
   const [feedbackDismissed, setFeedbackDismissed] = useState(false);
   const [showFeedback, setShowFeedback] = useState(false);
 
   useEffect(() => {
-    if (!showCompletion || feedbackDismissed) return;
+    if (!showCompletion || feedbackDismissed || !isStillUs) return;
     const timer = setTimeout(() => setShowFeedback(true), 2000);
     return () => clearTimeout(timer);
-  }, [showCompletion, feedbackDismissed]);
+  }, [showCompletion, feedbackDismissed, isStillUs]);
 
   const handleFeedbackDismiss = useCallback(() => {
     setShowFeedback(false);
     setFeedbackDismissed(true);
   }, []);
 
-  // Intercept navigation during completion: show feedback first if not yet seen
+  // Intercept navigation during completion: show feedback first if not yet seen (Still Us only)
   const navigateWithFeedback = useCallback((destination: string) => {
-    if (showCompletion && !feedbackDismissed && !showFeedback) {
+    if (isStillUs && showCompletion && !feedbackDismissed && !showFeedback) {
       setShowFeedback(true);
       // Store destination so we navigate after dismiss
       pendingNavRef.current = destination;
       return;
     }
     navigate(destination);
-  }, [showCompletion, feedbackDismissed, showFeedback, navigate]);
+  }, [isStillUs, showCompletion, feedbackDismissed, showFeedback, navigate]);
 
   const pendingNavRef = useRef<string | null>(null);
 
