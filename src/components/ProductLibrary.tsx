@@ -208,7 +208,7 @@ function PastelTile({
     const r = parseInt(hex.slice(1, 3), 16);
     const g = parseInt(hex.slice(3, 5), 16);
     const b = parseInt(hex.slice(5, 7), 16);
-    const d = 0.96;
+    const d = 0.91;
     return `rgb(${Math.round(r * d)}, ${Math.round(g * d)}, ${Math.round(b * d)})`;
   };
   const bottomColor = darkenHex(bg);
@@ -233,7 +233,7 @@ function PastelTile({
         position: 'relative',
         overflow: 'hidden',
         border: '1px solid rgba(44, 36, 32, 0.05)',
-        boxShadow: '0px 4px 16px rgba(44, 36, 32, 0.12)',
+        boxShadow: '0px 6px 20px rgba(44, 36, 32, 0.15), 0px 2px 4px rgba(44, 36, 32, 0.08)',
       }}
     >
       {ageLabel && (
