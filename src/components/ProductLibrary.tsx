@@ -36,6 +36,15 @@ const PASTEL_COLORS: Record<string, string> = {
   syskonkort: 'hsl(204, 63%, 97%)',        // #F2F8FC
 };
 
+const ACCENT_COLORS: Record<string, string> = {
+  jag_i_mig: '#CDD625',
+  jag_med_andra: '#9825D6',
+  jag_i_varlden: '#84C289',
+  sexualitetskort: '#FBB1B8',
+  vardagskort: '#0F6B99',
+  syskonkort: '#0F4E99',
+};
+
 const COMING_SOON_PRODUCTS = [
   { name: 'Still Fair', tagline: 'För allt som görs men aldrig syns', audience: 'Par' },
   { name: 'Still Me', tagline: 'För den du var innan du blev vi', audience: 'Par' },
@@ -178,10 +187,10 @@ function ComingSoonDropdown() {
 
 /** Premium pastel tile with radial inner glow */
 function PastelTile({
-  name, bg, ageLabel, tagline, onClick, aspectRatio = '4 / 3', isHero = false, illustration,
+  name, bg, ageLabel, tagline, onClick, aspectRatio = '4 / 3', isHero = false, illustration, accentColor,
 }: {
   name: string; bg: string; ageLabel?: string; tagline?: string;
-  onClick?: () => void; aspectRatio?: string; isHero?: boolean; illustration?: string;
+  onClick?: () => void; aspectRatio?: string; isHero?: boolean; illustration?: string; accentColor?: string;
 }) {
   const subtleDarker = bg.replace(/(\d+)%\)$/, (_, l) => `${Math.max(Number(l) - 3, 80)}%)`);
   const glowCenter = bg.replace(/(\d+)%\)$/, (_, l) => `${Math.min(Number(l) + 5, 97)}%)`);
@@ -210,6 +219,20 @@ function PastelTile({
         boxShadow: '0px 2px 8px rgba(44, 36, 32, 0.08)',
       }}
     >
+      {/* Accent bar */}
+      {accentColor && (
+        <div style={{
+          position: 'absolute',
+          left: 0,
+          top: 0,
+          bottom: 0,
+          width: '3.5px',
+          background: accentColor,
+          opacity: 0.75,
+          borderRadius: '16px 0 0 16px',
+          zIndex: 2,
+        }} />
+      )}
       {ageLabel && (
         <span
           className="font-sans"
@@ -220,8 +243,8 @@ function PastelTile({
             fontSize: '9px',
             fontWeight: 600,
             letterSpacing: '0.06em',
-            color: 'var(--text-library)',
-            opacity: 0.35,
+            color: accentColor || 'var(--text-library)',
+            opacity: accentColor ? 0.85 : 0.35,
             zIndex: 2,
           }}
         >
@@ -482,6 +505,7 @@ export default function ProductLibrary() {
                 bg={PASTEL_COLORS[p.id]!}
                 tagline={TAGLINES[p.id]}
                 ageLabel={p.ageLabel}
+                accentColor={ACCENT_COLORS[p.id]}
                 onClick={() => navigate(`/product/${p.slug}`)}
                 aspectRatio="3 / 2"
               />
@@ -510,6 +534,7 @@ export default function ProductLibrary() {
                 bg={PASTEL_COLORS[p.id]!}
                 tagline={TAGLINES[p.id]}
                 ageLabel={p.ageLabel}
+                accentColor={ACCENT_COLORS[p.id]}
                 onClick={() => navigate(`/product/${p.slug}`)}
                 aspectRatio="3 / 2"
               />
