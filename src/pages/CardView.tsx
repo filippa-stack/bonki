@@ -1390,8 +1390,8 @@ export default function CardView() {
         onLeaveSession={isLive ? () => setShowLeaveConfirm(true) : undefined}
       />
 
-      {/* Floating illustration peek — visible during live session after start screen (Still Us only) */}
-      {isLive && !showStartScreen && cardImageUrl && card && product?.id === 'still_us' && (
+      {/* Floating illustration peek — visible during sessions so children/couples can peek at the illustration */}
+      {!showStartScreen && cardImageUrl && card && (isLive || devState === 'browse') && (
         <IllustrationPeek imageUrl={cardImageUrl} cardTitle={card.title} />
       )}
 
