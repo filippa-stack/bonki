@@ -13,13 +13,7 @@ import { useProductTheme } from '@/hooks/useProductTheme';
 import { useCardImage } from '@/hooks/useCardImage';
 import Header from '@/components/Header';
 
-// Product watermark illustrations
-import illustrationJagIMig from '@/assets/monster-jag-i-mig.png';
-import illustrationJagMedAndra from '@/assets/annorlunda-jag-med-andra.png';
-import illustrationJagIVarlden from '@/assets/aktivism-jag-i-varlden.png';
-import illustrationSexualitet from '@/assets/illustration-sexualitet.png';
-import illustrationVardag from '@/assets/illustration-vardag.png';
-import illustrationSyskon from '@/assets/illustration-syskon.png';
+import bonkiLogo from '@/assets/bonki-logo.png';
 
 const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
@@ -28,43 +22,36 @@ const PRODUCT_STYLES: Record<string, {
   cardBg: string;
   cardTitleColor: string;
   cardSubtitleColor: string;
-  watermark: string;
 }> = {
   jag_i_mig: {
     cardBg: '#F5EDD2',
     cardTitleColor: '#8A9A10',
     cardSubtitleColor: '#6B6742',
-    watermark: illustrationJagIMig,
   },
   jag_med_andra: {
     cardBg: '#F0D9EA',
     cardTitleColor: '#9825D6',
     cardSubtitleColor: '#5E4058',
-    watermark: illustrationJagMedAndra,
   },
   jag_i_varlden: {
     cardBg: '#C8E6D0',
     cardTitleColor: '#3D7A45',
     cardSubtitleColor: '#3A6B48',
-    watermark: illustrationJagIVarlden,
   },
   sexualitetskort: {
     cardBg: '#F0D9E2',
     cardTitleColor: '#B5646E',
     cardSubtitleColor: '#6B4858',
-    watermark: illustrationSexualitet,
   },
   vardagskort: {
     cardBg: '#D2E8E8',
     cardTitleColor: '#0F6B99',
     cardSubtitleColor: '#2A5858',
-    watermark: illustrationVardag,
   },
   syskonkort: {
     cardBg: '#D6E2F0',
     cardTitleColor: '#0F4E99',
     cardSubtitleColor: '#2A3E68',
-    watermark: illustrationSyskon,
   },
 };
 
@@ -152,32 +139,30 @@ export default function Category() {
     <div className="min-h-screen relative" style={{ backgroundColor: '#FAF7F2' }}>
       <Header title={category?.title} showBack backTo={backTo} />
 
-      {/* Product watermark behind the card list */}
-      {styles?.watermark && (
-        <div
-          className="pointer-events-none select-none"
+      {/* BONKI logo watermark behind the card list */}
+      <div
+        className="pointer-events-none select-none"
+        style={{
+          position: 'fixed',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          zIndex: 0,
+          opacity: 0.04,
+        }}
+      >
+        <img
+          src={bonkiLogo}
+          alt=""
+          aria-hidden="true"
+          draggable={false}
           style={{
-            position: 'fixed',
-            top: '50%',
-            left: '50%',
-            transform: 'translate(-50%, -50%)',
-            zIndex: 0,
-            opacity: 0.07,
+            width: '50vw',
+            maxWidth: '280px',
+            objectFit: 'contain',
           }}
-        >
-          <img
-            src={styles.watermark}
-            alt=""
-            aria-hidden="true"
-            draggable={false}
-            style={{
-              width: '70vw',
-              maxWidth: '360px',
-              objectFit: 'contain',
-            }}
-          />
-        </div>
-      )}
+        />
+      </div>
 
       <div className="px-5 pt-4 pb-24 flex flex-col relative z-[1]">
         {/* Editorial entry line */}
