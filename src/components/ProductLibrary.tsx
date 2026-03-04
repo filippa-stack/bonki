@@ -45,6 +45,16 @@ const ACCENT_COLORS: Record<string, string> = {
   syskonkort: '#0F4E99',
 };
 
+/** Dark tones derived from each tile's background — warm, never black */
+const TITLE_COLORS: Record<string, string> = {
+  jag_i_mig: '#3D3528',
+  jag_med_andra: '#3A2838',
+  jag_i_varlden: '#1E3A28',
+  sexualitetskort: '#3A2838',
+  vardagskort: '#1A3A3A',
+  syskonkort: '#1A2E42',
+};
+
 const COMING_SOON_PRODUCTS = [
   { name: 'Still Fair', tagline: 'För allt som görs men aldrig syns', audience: 'Par' },
   { name: 'Still Me', tagline: 'För den du var innan du blev vi', audience: 'Par' },
@@ -187,10 +197,11 @@ function ComingSoonDropdown() {
 
 /** Premium pastel tile with top-to-bottom light gradient */
 function PastelTile({
-  name, bg, ageLabel, tagline, onClick, aspectRatio = '4 / 3', isHero = false, illustration,
+  name, bg, ageLabel, tagline, onClick, aspectRatio = '4 / 3', isHero = false, illustration, accentColor, titleColor,
 }: {
   name: string; bg: string; ageLabel?: string; tagline?: string;
   onClick?: () => void; aspectRatio?: string; isHero?: boolean; illustration?: string;
+  accentColor?: string; titleColor?: string;
 }) {
   const subtleDarker = bg.replace(/(\d+)%\)$/, (_, l) => `${Math.max(Number(l) - 3, 80)}%)`);
 
@@ -227,8 +238,8 @@ function PastelTile({
             fontSize: '9px',
             fontWeight: 600,
             letterSpacing: '0.06em',
-            color: 'var(--text-library)',
-            opacity: 0.35,
+            color: accentColor || 'var(--text-library)',
+            opacity: 0.6,
             zIndex: 2,
           }}
         >
@@ -266,7 +277,7 @@ function PastelTile({
             fontSize: isHero ? '24px' : '17px',
             fontWeight: 400,
             lineHeight: 1.2,
-            color: 'var(--text-library)',
+            color: titleColor || 'var(--text-library)',
             letterSpacing: '-0.01em',
           }}
         >
@@ -276,12 +287,12 @@ function PastelTile({
           <p
             className="font-serif"
             style={{
-              fontSize: isHero ? '12px' : '10.5px',
+              fontSize: isHero ? '13px' : '12px',
               fontWeight: 400,
               fontStyle: 'italic',
-              color: '#8A8078',
-              marginTop: '4px',
-              lineHeight: 1.3,
+              color: accentColor || '#8A8078',
+              marginTop: '5px',
+              lineHeight: 1.4,
             }}
           >
             {tagline}
@@ -493,6 +504,8 @@ export default function ProductLibrary() {
                 bg={PASTEL_COLORS[p.id]!}
                 tagline={TAGLINES[p.id]}
                 ageLabel={p.ageLabel}
+                accentColor={ACCENT_COLORS[p.id]}
+                titleColor={TITLE_COLORS[p.id]}
                 onClick={() => navigate(`/product/${p.slug}`)}
                 aspectRatio="3 / 2"
               />
@@ -521,7 +534,8 @@ export default function ProductLibrary() {
                 bg={PASTEL_COLORS[p.id]!}
                 tagline={TAGLINES[p.id]}
                 ageLabel={p.ageLabel}
-                
+                accentColor={ACCENT_COLORS[p.id]}
+                titleColor={TITLE_COLORS[p.id]}
                 onClick={() => navigate(`/product/${p.slug}`)}
                 aspectRatio="3 / 2"
               />
