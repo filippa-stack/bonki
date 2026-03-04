@@ -8,11 +8,13 @@ import watermarkMamma from '@/assets/watermark-mamma.png';
 import illustrationJagIMig from '@/assets/illustration-jag-i-mig.png';
 import illustrationJagMedAndra from '@/assets/illustration-jag-med-andra.png';
 import illustrationJagIVarlden from '@/assets/illustration-jag-i-varlden.png';
+import illustrationSexualitet from '@/assets/illustration-sexualitet.png';
 
 const ILLUSTRATIONS: Record<string, string> = {
   jag_i_mig: illustrationJagIMig,
   jag_med_andra: illustrationJagMedAndra,
   jag_i_varlden: illustrationJagIVarlden,
+  sexualitetskort: illustrationSexualitet,
 };
 
 /**
@@ -529,6 +531,7 @@ export default function ProductLibrary() {
                 ageLabel={p.ageLabel}
                 accentColor={ACCENT_COLORS[p.id]}
                 taglineColor={TAGLINE_COLORS[p.id]}
+                illustration={ILLUSTRATIONS[p.id]}
                 onClick={() => navigate(`/product/${p.slug}`)}
                 aspectRatio="3 / 2"
               />
@@ -559,6 +562,7 @@ export default function ProductLibrary() {
                 ageLabel={p.ageLabel}
                 accentColor={ACCENT_COLORS[p.id]}
                 taglineColor={TAGLINE_COLORS[p.id]}
+                illustration={ILLUSTRATIONS[p.id]}
                 onClick={() => navigate(`/product/${p.slug}`)}
                 aspectRatio="3 / 2"
               />
