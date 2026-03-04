@@ -141,7 +141,7 @@ export default function Category() {
           left: '50%',
           transform: 'translate(-50%, -50%)',
           zIndex: 0,
-          opacity: 0.04,
+          opacity: 0.025,
         }}
       >
         <img
