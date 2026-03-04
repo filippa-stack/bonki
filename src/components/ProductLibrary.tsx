@@ -387,7 +387,7 @@ export default function ProductLibrary() {
                 alignItems: 'center',
                 justifyContent: 'flex-start',
                 border: '1px solid rgba(255, 255, 255, 0.06)',
-                boxShadow: '0px 1px 3px rgba(44, 36, 32, 0.12), 0px 4px 8px rgba(44, 36, 32, 0.08)',
+                boxShadow: '0px 4px 16px rgba(44, 36, 32, 0.15), 0px 2px 4px rgba(44, 36, 32, 0.08)',
               }}
             >
               {/* Noise texture overlay */}
@@ -441,7 +441,7 @@ export default function ProductLibrary() {
                 alignItems: 'center',
                 justifyContent: 'flex-start',
                 border: '1px solid rgba(255, 255, 255, 0.06)',
-                boxShadow: '0px 1px 3px rgba(44, 36, 32, 0.12), 0px 4px 8px rgba(44, 36, 32, 0.08)',
+                boxShadow: '0px 4px 16px rgba(44, 36, 32, 0.15), 0px 2px 4px rgba(44, 36, 32, 0.08)',
               }}
             >
               {/* Noise texture overlay */}
