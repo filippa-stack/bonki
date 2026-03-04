@@ -485,7 +485,7 @@ export default function ProductLibrary() {
                   // TODO: implement reminder logic
                 }}
                 style={{
-                  marginTop: '8px',
+                  marginTop: 'auto',
                   fontSize: '11px',
                   fontWeight: 400,
                   fontStyle: 'normal',
