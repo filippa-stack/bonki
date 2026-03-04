@@ -22,6 +22,7 @@ export type DevState =
   | 'library'
   | 'onboarding'
   | 'productIntro'
+  | 'diary'
   | null;
 
 /** Mock data used by dev state overrides */
