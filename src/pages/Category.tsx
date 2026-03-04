@@ -203,7 +203,7 @@ interface CardEntryProps {
 }
 
 function CardEntry({ card, index, isCompleted = false, isInProgress = false, onNavigate, isLast = false }: CardEntryProps) {
-  const chapterNum = String(index + 1).padStart(2, '0');
+  
 
   return (
     <motion.div
@@ -272,21 +272,6 @@ function CardEntry({ card, index, isCompleted = false, isInProgress = false, onN
           )}
 
           <div className="flex-1 min-w-0">
-            {/* Chapter number */}
-            <span
-              style={{
-                fontFamily: 'var(--font-sans)',
-                fontSize: '10px',
-                letterSpacing: '0.08em',
-                color: 'var(--text-tertiary)',
-                opacity: isCompleted ? 0.30 : 0.5,
-                display: 'block',
-                marginBottom: '2px',
-                textAlign: 'center',
-              }}
-            >
-              {chapterNum}
-            </span>
             <h3
               className="font-serif"
               style={{
