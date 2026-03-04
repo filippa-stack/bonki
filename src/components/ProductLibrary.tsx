@@ -337,67 +337,150 @@ export default function ProductLibrary() {
 
         {/* ── Still Us ── */}
         <motion.div
-          className="px-5 mt-2 mb-4 flex flex-col items-center"
+          className="px-5 mt-2 mb-4"
           variants={containerVariants}
           initial="hidden"
           animate="visible"
         >
           <AudienceLabel label="Ni två" delay={0.08} />
-          <motion.div
-            variants={tileVariants}
-            whileHover={{ scale: 1.02, y: -2 }}
-            whileTap={{ scale: 0.98 }}
-            onClick={() => navigate('/')}
-            className="cursor-pointer"
-            style={{
-              width: '75%',
-              borderRadius: '18px',
-              padding: '20px 24px',
-              background: `radial-gradient(ellipse at 50% 35%, hsla(158, 40%, 22%, 0.95) 0%, hsla(158, 35%, 14%, 0.92) 100%)`,
-              textAlign: 'center',
-              position: 'relative',
-              overflow: 'hidden',
-              boxShadow: `
-                0 1px 2px 0 hsla(0, 0%, 0%, 0.06),
-                0 4px 14px -2px hsla(158, 35%, 20%, 0.18),
-                0 14px 36px -4px hsla(158, 35%, 15%, 0.16),
-                0 0 0 1px hsla(158, 30%, 40%, 0.08) inset
-              `,
-            }}
-          >
-            {/* Subtle inner glow ring */}
-            <div style={{
-              position: 'absolute',
-              inset: 0,
-              borderRadius: '18px',
-              border: '1px solid hsla(158, 40%, 50%, 0.1)',
-              pointerEvents: 'none',
-            }} />
-            <h2
-              className="font-serif"
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
+            {/* Still Us tile */}
+            <motion.div
+              variants={tileVariants}
+              whileHover={{ scale: 1.02, y: -2 }}
+              whileTap={{ scale: 0.97 }}
+              onClick={() => navigate('/')}
+              className="cursor-pointer"
               style={{
-                fontSize: '24px',
-                fontWeight: 700,
-                color: 'hsla(0, 0%, 100%, 0.95)',
-                letterSpacing: '0.04em',
-                textTransform: 'uppercase',
+                borderRadius: '18px',
+                padding: '20px 16px',
+                background: `radial-gradient(ellipse at 50% 35%, hsla(158, 40%, 22%, 0.95) 0%, hsla(158, 35%, 14%, 0.92) 100%)`,
+                textAlign: 'center',
+                position: 'relative',
+                overflow: 'hidden',
+                aspectRatio: '3 / 2',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+                boxShadow: `
+                  0 1px 2px 0 hsla(0, 0%, 0%, 0.06),
+                  0 4px 14px -2px hsla(158, 35%, 20%, 0.18),
+                  0 14px 36px -4px hsla(158, 35%, 15%, 0.16),
+                  0 0 0 1px hsla(158, 30%, 40%, 0.08) inset
+                `,
               }}
             >
-              Still Us
-            </h2>
-            <p
-              className="font-serif"
-              style={{
-                fontSize: '11px',
-                color: 'var(--accent-saffron, hsla(38, 80%, 55%, 0.7))',
-                marginTop: '4px',
-                fontStyle: 'italic',
-              }}
-            >
-              För samtalen som aldrig blir av
-            </p>
-          </motion.div>
+              <div style={{
+                position: 'absolute',
+                inset: 0,
+                borderRadius: '18px',
+                border: '1px solid hsla(158, 40%, 50%, 0.1)',
+                pointerEvents: 'none',
+              }} />
+              <h2
+                className="font-serif"
+                style={{
+                  fontSize: '20px',
+                  fontWeight: 700,
+                  color: 'hsla(0, 0%, 100%, 0.95)',
+                  letterSpacing: '0.04em',
+                  textTransform: 'uppercase',
+                }}
+              >
+                Still Us
+              </h2>
+              <p
+                className="font-serif"
+                style={{
+                  fontSize: '10px',
+                  color: 'hsla(38, 80%, 55%, 0.7)',
+                  marginTop: '4px',
+                  fontStyle: 'italic',
+                }}
+              >
+                För samtalen som aldrig blir av
+              </p>
+            </motion.div>
 
+            {/* Coming Soon — Still Fair */}
+            <motion.div
+              variants={tileVariants}
+              style={{
+                borderRadius: '18px',
+                padding: '16px 14px',
+                background: 'hsla(14, 40%, 66%, 0.18)',
+                textAlign: 'center',
+                position: 'relative',
+                overflow: 'hidden',
+                aspectRatio: '3 / 2',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+                border: '1px solid hsla(14, 40%, 66%, 0.2)',
+              }}
+            >
+              <span
+                className="font-sans"
+                style={{
+                  fontSize: '9px',
+                  fontWeight: 700,
+                  letterSpacing: '0.14em',
+                  textTransform: 'uppercase',
+                  color: 'hsla(14, 40%, 45%, 0.7)',
+                  marginBottom: '4px',
+                }}
+              >
+                Coming soon
+              </span>
+              <h3
+                className="font-serif"
+                style={{
+                  fontSize: '17px',
+                  fontWeight: 700,
+                  color: 'hsla(14, 35%, 35%, 0.8)',
+                  letterSpacing: '0.02em',
+                }}
+              >
+                Still Fair
+              </h3>
+              <p
+                className="font-serif"
+                style={{
+                  fontSize: '10px',
+                  color: 'hsla(14, 30%, 35%, 0.55)',
+                  marginTop: '3px',
+                  fontStyle: 'italic',
+                  lineHeight: 1.3,
+                }}
+              >
+                För allt som görs men aldrig syns
+              </p>
+              <button
+                className="font-sans"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  // TODO: implement reminder logic
+                }}
+                style={{
+                  marginTop: '8px',
+                  fontSize: '9px',
+                  fontWeight: 600,
+                  letterSpacing: '0.08em',
+                  textTransform: 'uppercase',
+                  color: 'hsla(14, 40%, 40%, 0.75)',
+                  background: 'hsla(14, 40%, 66%, 0.15)',
+                  border: '1px solid hsla(14, 40%, 50%, 0.2)',
+                  borderRadius: '20px',
+                  padding: '4px 12px',
+                  cursor: 'pointer',
+                }}
+              >
+                Påminn mig
+              </button>
+            </motion.div>
+          </div>
         </motion.div>
 
         {/* ── Emotionella resan (trio) ── */}
