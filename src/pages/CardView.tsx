@@ -963,14 +963,18 @@ export default function CardView() {
               style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px' }}
             >
               <button
-                onClick={() => navigateWithFeedback('/shared')}
+                onClick={() => navigateWithFeedback(
+                  product && product.id !== 'still_us' ? `/diary/${product.id}` : '/shared'
+                )}
                 className="font-sans"
                 style={{ fontSize: '13px', color: 'var(--text-secondary)', opacity: 0.55, background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline', textUnderlineOffset: '3px', marginTop: '20px' }}
               >
-                {uiText.seeNotes}
+                {product && product.id !== 'still_us' ? 'Vår dagbok' : uiText.seeNotes}
               </button>
               <button
-                onClick={() => navigateWithFeedback('/')}
+                onClick={() => navigateWithFeedback(
+                  product && product.id !== 'still_us' ? `/product/${product.slug}` : '/'
+                )}
                 className="type-meta transition-opacity hover:opacity-60"
                 style={{ color: 'var(--text-tertiary)', opacity: 0.35 }}
               >
