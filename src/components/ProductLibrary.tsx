@@ -412,7 +412,7 @@ export default function ProductLibrary() {
                 backgroundSize: '65% auto',
                 backgroundRepeat: 'no-repeat',
                 backgroundPosition: 'right center',
-                opacity: 0.08,
+                opacity: 0.12,
                 pointerEvents: 'none',
                 zIndex: 0,
               }} />
@@ -478,7 +478,7 @@ export default function ProductLibrary() {
                 backgroundSize: '65% auto',
                 backgroundRepeat: 'no-repeat',
                 backgroundPosition: 'right center',
-                opacity: 0.08,
+                opacity: 0.12,
                 pointerEvents: 'none',
                 zIndex: 0,
               }} />
