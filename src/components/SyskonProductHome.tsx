@@ -90,17 +90,11 @@ export default function SyskonProductHome({ product }: { product: ProductManifes
             width: '100%',
           }}
         >
-          {/* Title pill */}
+          {/* Title — plain heading */}
           <motion.div
             variants={pillVariants}
             style={{
-              background: 'rgba(242, 248, 252, 0.88)',
-              backdropFilter: 'blur(16px)',
-              border: PILL_BORDER,
-              borderRadius: '28px',
-              padding: '26px 16px',
               textAlign: 'center',
-              boxShadow: '0 2px 16px -2px hsla(215, 30%, 30%, 0.1)',
               marginBottom: '2vh',
               width: '100%',
             }}
@@ -120,51 +114,53 @@ export default function SyskonProductHome({ product }: { product: ProductManifes
             <p
               className="font-serif"
               style={{
-                fontSize: 'clamp(14px, 4vw, 18px)',
+                fontSize: 'clamp(15px, 4.2vw, 19px)',
                 fontWeight: 400,
-                color: TEXT_COLOR,
+                color: '#2C2420',
                 opacity: 0.7,
-                marginTop: '6px',
+                marginTop: '8px',
               }}
             >
               Band för livet
             </p>
           </motion.div>
 
-          {/* Category pills */}
-          {product.categories.map((cat, index) => (
-            <motion.button
-              key={cat.id}
-              variants={pillVariants}
-              whileHover={{ scale: 1.04, y: -2 }}
-              whileTap={{ scale: 0.97 }}
-              onClick={() => navigate(`/category/${cat.id}`)}
-              style={{
-                background: 'rgba(242, 248, 252, 0.88)',
-                backdropFilter: 'blur(16px)',
-                border: PILL_BORDER,
-                borderRadius: '28px',
-                padding: `${paddings[index] || '18px'} 32px`,
-                textAlign: 'center',
-                cursor: 'pointer',
-                boxShadow: '0 4px 16px -4px hsla(215, 20%, 28%, 0.15), 0 1px 3px hsla(215, 20%, 28%, 0.1)',
-                whiteSpace: 'normal' as const,
-                width: widths[index] || '64%',
-                lineHeight: 1.3,
-              }}
-            >
-              <span
-                className="font-serif"
+          {/* Category buttons — filled, soft */}
+          {product.categories.map((cat, index) => {
+            const widths = ['74%', '70%', '67%', '64%'];
+            return (
+              <motion.button
+                key={cat.id}
+                variants={pillVariants}
+                whileHover={{ scale: 1.04, y: -2 }}
+                whileTap={{ scale: 0.97 }}
+                onClick={() => navigate(`/category/${cat.id}`)}
                 style={{
-                  fontSize: 'clamp(17px, 4.5vw, 22px)',
-                  fontWeight: 400,
-                  color: TEXT_COLOR,
+                  background: 'rgba(255, 255, 255, 0.85)',
+                  borderRadius: '12px',
+                  padding: '14px 24px',
+                  textAlign: 'center',
+                  cursor: 'pointer',
+                  border: 'none',
+                  boxShadow: '0px 2px 6px rgba(0, 0, 0, 0.08)',
+                  whiteSpace: 'normal' as const,
+                  width: widths[index] || '64%',
+                  lineHeight: 1.3,
                 }}
               >
-                {cat.title}
-              </span>
-            </motion.button>
-          ))}
+                <span
+                  className="font-serif"
+                  style={{
+                    fontSize: 'clamp(17px, 4.5vw, 22px)',
+                    fontWeight: 500,
+                    color: TEXT_COLOR,
+                  }}
+                >
+                  {cat.title}
+                </span>
+              </motion.button>
+            );
+          })}
         </motion.div>
       </div>
     </div>
