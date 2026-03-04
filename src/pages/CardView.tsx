@@ -33,7 +33,7 @@ import { useProductTheme } from '@/hooks/useProductTheme';
 
 import Header from '@/components/Header';
 import SectionView, { type SectionViewHandle } from '@/components/SectionView';
-import StepProgressIndicator from '@/components/StepProgressIndicator';
+import StepProgressIndicator, { buildDynamicSteps } from '@/components/StepProgressIndicator';
 import SessionStepReflection from '@/components/SessionStepReflection';
 
 import StageInterstitial from '@/components/StageInterstitial';
@@ -142,6 +142,7 @@ export default function CardView() {
   const pronounMode: PronounMode = product?.pronounMode ?? 'ni';
   const uiText = useMemo(() => getUIText(pronounMode), [pronounMode]);
   const effectiveSteps = useMemo(() => getCardStepOrder(card), [card]);
+  const dynamicSteps = useMemo(() => buildDynamicSteps(effectiveSteps as string[]), [effectiveSteps]);
   const completionMessages = useMemo(() => getCompletionMessages(pronounMode, product?.ageLabel), [pronounMode, product?.ageLabel]);
   const cardImageUrl = useCardImage(cardId);
 
@@ -1400,6 +1401,7 @@ export default function CardView() {
             currentStepIndex={currentStepIndex}
             completedSteps={Array.from({ length: currentStepIndex }, (_, i) => i)}
             isTransitioning={showInterstitial}
+            steps={dynamicSteps}
           />
         </motion.div>
       )}

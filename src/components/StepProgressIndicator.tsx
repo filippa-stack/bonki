@@ -2,10 +2,11 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { EASE, EMOTION } from '@/lib/motion';
 
 export interface StageStep {
-  stage_key: 'oppnare' | 'tankevackare' | 'scenario' | 'teamwork';
+  stage_key: string;
   label: string;
 }
 
+/** Default 4-step Still Us sequence */
 export const STAGE_STEPS: StageStep[] = [
   { stage_key: 'oppnare',     label: 'Kom igång'        },
   { stage_key: 'tankevackare', label: 'Gå djupare'      },
@@ -20,11 +21,29 @@ export const SECTION_TYPE_TO_STAGE: Record<string, StageStep['stage_key']> = {
   exercise:   'teamwork',
 };
 
+/** Labels for non-Still-Us section types */
+const SECTION_LABELS: Record<string, string> = {
+  opening: 'Frågor',
+  scenario: 'I verkligheten',
+  reflective: 'Gå djupare',
+  exercise: 'I verkligheten',
+};
+
+/** Build dynamic steps from a card's actual section types */
+export function buildDynamicSteps(sectionTypes: string[]): StageStep[] {
+  return sectionTypes.map((type, i) => ({
+    stage_key: SECTION_TYPE_TO_STAGE[type] ?? type,
+    label: SECTION_LABELS[type] ?? `Del ${i + 1}`,
+  }));
+}
+
 interface StepProgressIndicatorProps {
   currentStepIndex: number;
   completedSteps: number[];
   isTransitioning?: boolean;
   className?: string;
+  /** Dynamic steps override. Falls back to STAGE_STEPS (Still Us). */
+  steps?: StageStep[];
 }
 
 export default function StepProgressIndicator({
@@ -32,8 +51,10 @@ export default function StepProgressIndicator({
   completedSteps,
   isTransitioning = false,
   className,
+  steps,
 }: StepProgressIndicatorProps) {
-  const currentLabel = STAGE_STEPS[currentStepIndex]?.label ?? '';
+  const activeSteps = steps ?? STAGE_STEPS;
+  const currentLabel = activeSteps[currentStepIndex]?.label ?? '';
 
   return (
     <div className={className} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
@@ -62,7 +83,7 @@ export default function StepProgressIndicator({
 
       {/* Horizontal dots */}
       <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '32px' }}>
-        {STAGE_STEPS.map((step, index) => {
+        {activeSteps.map((step, index) => {
           const isCompleted = completedSteps.includes(index) || index < currentStepIndex;
           const isCurrent = index === currentStepIndex;
 
