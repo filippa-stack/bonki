@@ -136,6 +136,7 @@ const CARD_IMAGE_MAP: Record<string, { zip: ZipSource; folder: string; file: str
 const STANDALONE_IMAGES: Record<string, string> = {
   'vk-kvall': '/card-images/vk-kvall.png',
   'vk-sova': '/card-images/vk-sova.png',
+  'jiv-identitet': '/card-images/jiv-identitet.png',
 };
 // Singleton caches per zip source
 const zipCaches: Record<ZipSource, Map<string, string> | null> = { default: null, jim: null, jma: null, jiv: null, vk: null, sk: null, sex: null };
