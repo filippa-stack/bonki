@@ -407,7 +407,7 @@ export default function ProductLibrary() {
               variants={tileVariants}
               style={{
                 borderRadius: '18px',
-                padding: '16px 14px',
+                padding: '20px 16px',
                 background: 'hsla(14, 40%, 66%, 0.18)',
                 textAlign: 'center',
                 position: 'relative',
@@ -423,12 +423,13 @@ export default function ProductLibrary() {
               <span
                 className="font-sans"
                 style={{
+                  position: 'absolute',
+                  top: '8px',
+                  right: '10px',
                   fontSize: '9px',
-                  fontWeight: 700,
-                  letterSpacing: '0.14em',
-                  textTransform: 'uppercase',
-                  color: 'hsla(14, 40%, 45%, 0.7)',
-                  marginBottom: '4px',
+                  fontWeight: 600,
+                  letterSpacing: '0.06em',
+                  color: 'hsla(14, 40%, 45%, 0.5)',
                 }}
               >
                 Kommer snart
@@ -436,10 +437,10 @@ export default function ProductLibrary() {
               <h3
                 className="font-serif"
                 style={{
-                  fontSize: '17px',
+                  fontSize: '20px',
                   fontWeight: 700,
-                  color: 'hsla(14, 35%, 35%, 0.8)',
-                  letterSpacing: '0.02em',
+                  color: 'hsla(14, 35%, 30%, 0.75)',
+                  letterSpacing: '0.04em',
                 }}
               >
                 Still Fair
@@ -449,9 +450,8 @@ export default function ProductLibrary() {
                 style={{
                   fontSize: '10px',
                   color: 'var(--accent-saffron)',
-                  marginTop: '3px',
+                  marginTop: '4px',
                   fontStyle: 'italic',
-                  lineHeight: 1.3,
                 }}
               >
                 För allt som görs men aldrig syns
