@@ -1406,28 +1406,18 @@ export default function CardView() {
 
       {/* Section content — centered, max 520px for readability */}
       <div className="px-6 relative" style={{ paddingTop: '8px', paddingBottom: 'calc(120px + env(safe-area-inset-bottom, 0px))' }}>
-        {/* Card illustration watermark — bottom-right, per-product sizing */}
+        {/* Card illustration watermark — centered, filling CTA-to-bottom */}
         {product && product.id !== 'still_us' && cardImageUrl && (
           <div
             style={{
               position: 'fixed',
               bottom: 0,
+              left: 0,
               right: 0,
-              width: '65vw',
-              height: (() => {
-                const sizeMap: Record<string, string> = {
-                  jag_i_mig: '32vh',
-                  jag_med_andra: '35vh',
-                  jag_i_varlden: '30vh',
-                  sexualitetskort: '33vh',
-                  vardagskort: '38vh',
-                  syskonkort: '34vh',
-                };
-                return sizeMap[product.id] ?? '35vh';
-              })(),
+              height: '55vh',
               display: 'flex',
-              alignItems: 'flex-end',
-              justifyContent: 'flex-end',
+              alignItems: 'center',
+              justifyContent: 'center',
               pointerEvents: 'none',
               zIndex: 0,
             }}
@@ -1437,10 +1427,10 @@ export default function CardView() {
               alt=""
               draggable={false}
               style={{
-                width: '100%',
-                height: '100%',
+                width: '75vw',
+                maxWidth: '400px',
+                height: 'auto',
                 objectFit: 'contain',
-                objectPosition: 'right bottom',
                 opacity: 0.06,
                 filter: 'saturate(0.4)',
                 userSelect: 'none',
