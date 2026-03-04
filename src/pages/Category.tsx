@@ -23,11 +23,11 @@ const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
  * the visual weight of lighter ones (Ledsen = benchmark at 0.08).
  */
 const CARD_ILLUSTRATION_OPACITY: Record<string, number> = {
-  'jim-arg': 0.05,
-  'jim-vild': 0.06,
-  'jim-radd': 0.10,
-  'jim-skam': 0.06,
-  'jim-avundsjuk': 0.06,
+  'jim-arg': 0.10,
+  'jim-vild': 0.12,
+  'jim-radd': 0.18,
+  'jim-skam': 0.10,
+  'jim-avundsjuk': 0.10,
 };
 
 /** Product-specific design tokens for card listings */
@@ -276,7 +276,7 @@ interface CardEntryProps {
 
 function CardEntry({ card, index, isCompleted = false, isInProgress = false, onNavigate, isLast = false, styles }: CardEntryProps) {
   const illustration = useCardImage(card.id);
-  const illustrationOpacity = CARD_ILLUSTRATION_OPACITY[card.id] ?? 0.08;
+  const illustrationOpacity = CARD_ILLUSTRATION_OPACITY[card.id] ?? 0.15;
 
   const cardBg = styles?.cardBg ?? '#FFFFFF';
   const titleColor = styles?.cardTitleColor ?? 'var(--text-primary)';
@@ -337,8 +337,8 @@ function CardEntry({ card, index, isCompleted = false, isInProgress = false, onN
               right: '16px',
               top: '50%',
               transform: 'translateY(-50%)',
-              height: '60px',
-              width: '60px',
+              height: '72px',
+              width: '72px',
               objectFit: 'contain',
               objectPosition: 'center',
               opacity: illustrationOpacity,
