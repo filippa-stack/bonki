@@ -336,13 +336,6 @@ export default function ProductLibrary() {
                 boxShadow: '0px 4px 16px rgba(44, 36, 32, 0.18), 0px 2px 4px rgba(44, 36, 32, 0.10)',
               }}
             >
-              <div style={{
-                position: 'absolute', inset: 0,
-                backgroundImage: `url(${illustrationStillUs})`,
-                backgroundSize: '75% auto', backgroundRepeat: 'no-repeat',
-                backgroundPosition: 'right center', opacity: 0.15,
-                pointerEvents: 'none',
-              }} />
               <h2 style={{
                 fontFamily: "'DM Serif Display', serif",
                 fontSize: '24px', fontWeight: 400,
@@ -365,7 +358,7 @@ export default function ProductLibrary() {
               style={{
                 borderRadius: '16px',
                 padding: '20px 16px 16px',
-                background: 'linear-gradient(135deg, #9B7264 0%, #7A5545 100%)',
+                background: 'linear-gradient(135deg, #7A4A6B 0%, #5C3650 100%)',
                 textAlign: 'left',
                 position: 'relative',
                 overflow: 'hidden',
@@ -377,13 +370,6 @@ export default function ProductLibrary() {
                 boxShadow: '0px 4px 16px rgba(44, 36, 32, 0.18), 0px 2px 4px rgba(44, 36, 32, 0.10)',
               }}
             >
-              <div style={{
-                position: 'absolute', inset: 0,
-                backgroundImage: `url(${illustrationStillUs})`,
-                backgroundSize: '75% auto', backgroundRepeat: 'no-repeat',
-                backgroundPosition: 'right center', opacity: 0.15,
-                pointerEvents: 'none',
-              }} />
               <h3 style={{
                 fontFamily: "'DM Serif Display', serif",
                 fontSize: '24px', fontWeight: 400,
@@ -393,7 +379,7 @@ export default function ProductLibrary() {
               </h3>
               <p style={{
                 fontFamily: "'Lato', sans-serif",
-                fontSize: '11px', color: '#E8C4B4',
+                fontSize: '11px', color: '#E8C4D4',
                 lineHeight: 1.4, marginTop: '4px', zIndex: 1,
               }}>
                 För allt som görs men aldrig syns
