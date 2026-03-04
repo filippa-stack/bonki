@@ -1,7 +1,8 @@
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import type { ProductManifest } from '@/types/product';
-import annorlundaImage from '@/assets/annorlunda-jag-med-andra.png';
+import slothImage from '@/assets/sloth-jag-med-andra.png';
+import nyckelpiganImage from '@/assets/nyckelpiga-jag-med-andra.png';
 
 const EASE = [0.4, 0.0, 0.2, 1] as const;
 
@@ -45,7 +46,7 @@ export default function JagMedAndraProductHome({ product }: { product: ProductMa
         }}
       >
         <img
-          src={annorlundaImage}
+          src={slothImage}
           alt=""
           style={{
             width: '100%',
@@ -57,6 +58,32 @@ export default function JagMedAndraProductHome({ product }: { product: ProductMa
         />
       </motion.div>
 
+      {/* Secondary illustration — nyckelpiga, bottom-right */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 1, delay: 0.3 }}
+        style={{
+          position: 'absolute',
+          bottom: '2%',
+          right: '-25%',
+          width: '55%',
+          zIndex: 0,
+          pointerEvents: 'none',
+        }}
+      >
+        <img
+          src={nyckelpiganImage}
+          alt=""
+          style={{
+            width: '100%',
+            height: '100%',
+            objectFit: 'contain',
+            opacity: 0.35,
+            transform: 'rotate(-30deg)',
+          }}
+        />
+      </motion.div>
 
       {/* Content — centered */}
       <div

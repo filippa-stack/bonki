@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import type { ProductManifest } from '@/types/product';
-import monsterImage from '@/assets/monster-jag-i-mig.png';
+import apaImage from '@/assets/apa-jag-i-mig.png';
 
 const EASE = [0.4, 0.0, 0.2, 1] as const;
 
@@ -45,7 +45,7 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
         }}
       >
         <img
-          src={monsterImage}
+          src={apaImage}
           alt=""
           style={{
             width: '100%',
