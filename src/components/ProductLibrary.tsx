@@ -396,10 +396,9 @@ export default function ProductLibrary() {
                   color: 'var(--accent-saffron)',
                   marginTop: '4px',
                   fontStyle: 'italic',
-                  letterSpacing: '0.04em',
                 }}
               >
-                still fair
+                För samtalen som aldrig blir av
               </p>
             </motion.div>
 
