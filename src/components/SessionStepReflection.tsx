@@ -14,6 +14,8 @@ interface SessionStepReflectionProps {
   onBack?: () => void;
   isReflectionStep?: boolean;
   isExerciseStep?: boolean;
+  /** Hide the note textarea + Valfritt label (used for new kid/family products) */
+  hideNoteField?: boolean;
 }
 
 export default function SessionStepReflection({
@@ -26,6 +28,7 @@ export default function SessionStepReflection({
   onBack,
   isReflectionStep = false,
   isExerciseStep = false,
+  hideNoteField = false,
 }: SessionStepReflectionProps) {
   const navigate = useNavigate();
   const reflectionStepIndex = stepIndex * 100 + promptIndex;
@@ -76,62 +79,66 @@ export default function SessionStepReflection({
   return (
     <motion.div
       className="reflection-field-wrapper"
-      style={{ marginTop: '20px', marginBottom: '4px' }}
+      style={{ marginTop: hideNoteField ? '32px' : '20px', marginBottom: '4px' }}
       initial={{ opacity: 0, y: 6 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: BEAT_2, duration: EMOTION, ease: [...EASE] }}
     >
-      <textarea
-        value={displayText}
-        onChange={(e) => handleChange(e.target.value)}
-        onFocus={() => setIsFocused(true)}
-        onBlur={() => setIsFocused(false)}
-        placeholder="Skriv något ni vill bära med er."
-        inputMode="text"
-        autoCorrect="on"
-        autoCapitalize="sentences"
-        spellCheck={true}
-        className="w-full resize-none focus:outline-none focus:ring-0 text-center"
-        style={{
-          height: isFocused || hasFill ? 'auto' : '80px',
-          minHeight: '80px',
-          maxHeight: '180px',
-          overflow: 'auto',
-          fontFamily: hasFill ? 'var(--font-sans)' : 'var(--font-serif)',
-          fontSize: hasFill ? '15px' : '17px',
-          lineHeight: 1.6,
-          color: 'var(--text-primary)',
-          backgroundColor: isFocused || hasFill
-            ? 'hsl(36 20% 97% / 0.80)'
-            : 'hsl(36 18% 96% / 0.50)',
-          border: 'none',
-          borderRadius: '12px',
-          padding: '22px 24px 20px 24px',
-          boxShadow: isFocused
-            ? 'inset 0 1px 0 var(--accent-saffron-muted), inset 0 -1px 0 var(--accent-saffron-muted), 0 0 0 4px hsla(38, 80%, 46%, 0.06)'
-            : 'inset 0 1px 3px hsla(30, 12%, 25%, 0.05), 0 1px 2px hsla(30, 15%, 25%, 0.03)',
-          transition: 'background-color 320ms ease, box-shadow 320ms ease, border-radius 200ms ease',
-        }}
-      />
-      <style>{`
-        .reflection-field-wrapper textarea::placeholder {
-          font-family: 'Cormorant Garamond', serif !important;
-          font-style: normal !important;
-          font-size: 16px !important;
-          color: var(--text-ghost) !important;
-          opacity: 0.70 !important;
-          transition: opacity 300ms ease !important;
-        }
-        .reflection-field-wrapper textarea:focus::placeholder {
-          opacity: 0 !important;
-        }
-      `}</style>
-      <p
-        className="type-meta"
-        style={{ color: 'var(--text-ghost)', opacity: 0.40, textAlign: 'center', marginTop: '6px', fontSize: '10px', letterSpacing: '0.08em' }}
-      >
-        Valfritt
-      </p>
+      {!hideNoteField && (
+        <>
+          <textarea
+            value={displayText}
+            onChange={(e) => handleChange(e.target.value)}
+            onFocus={() => setIsFocused(true)}
+            onBlur={() => setIsFocused(false)}
+            placeholder="Skriv något ni vill bära med er."
+            inputMode="text"
+            autoCorrect="on"
+            autoCapitalize="sentences"
+            spellCheck={true}
+            className="w-full resize-none focus:outline-none focus:ring-0 text-center"
+            style={{
+              height: isFocused || hasFill ? 'auto' : '80px',
+              minHeight: '80px',
+              maxHeight: '180px',
+              overflow: 'auto',
+              fontFamily: hasFill ? 'var(--font-sans)' : 'var(--font-serif)',
+              fontSize: hasFill ? '15px' : '17px',
+              lineHeight: 1.6,
+              color: 'var(--text-primary)',
+              backgroundColor: isFocused || hasFill
+                ? 'hsl(36 20% 97% / 0.80)'
+                : 'hsl(36 18% 96% / 0.50)',
+              border: 'none',
+              borderRadius: '12px',
+              padding: '22px 24px 20px 24px',
+              boxShadow: isFocused
+                ? 'inset 0 1px 0 var(--accent-saffron-muted), inset 0 -1px 0 var(--accent-saffron-muted), 0 0 0 4px hsla(38, 80%, 46%, 0.06)'
+                : 'inset 0 1px 3px hsla(30, 12%, 25%, 0.05), 0 1px 2px hsla(30, 15%, 25%, 0.03)',
+              transition: 'background-color 320ms ease, box-shadow 320ms ease, border-radius 200ms ease',
+            }}
+          />
+          <style>{`
+            .reflection-field-wrapper textarea::placeholder {
+              font-family: 'Cormorant Garamond', serif !important;
+              font-style: normal !important;
+              font-size: 16px !important;
+              color: var(--text-ghost) !important;
+              opacity: 0.70 !important;
+              transition: opacity 300ms ease !important;
+            }
+            .reflection-field-wrapper textarea:focus::placeholder {
+              opacity: 0 !important;
+            }
+          `}</style>
+          <p
+            className="type-meta"
+            style={{ color: 'var(--text-ghost)', opacity: 0.40, textAlign: 'center', marginTop: '6px', fontSize: '10px', letterSpacing: '0.08em' }}
+          >
+            Valfritt
+          </p>
+        </>
+      )}
 
       <div
         className="flex flex-col items-center"

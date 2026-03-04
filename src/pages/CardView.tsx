@@ -1504,6 +1504,7 @@ export default function CardView() {
                       isFirstVisit={false}
                       isReflectionStep={isReflectionStep}
                       isExerciseStep={isExerciseStep}
+                      hideNoteField={!!product && product.id !== 'still_us'}
                       onLocked={async () => {
                         if (isLastPromptInStage) {
                           await handleCompleteStep();
