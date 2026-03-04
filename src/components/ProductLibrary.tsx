@@ -42,6 +42,12 @@ const PASTEL_COLORS: Record<string, string> = {
   syskonkort: '#D6E2F0',
 };
 
+/** Per-product illustration opacity overrides (default 0.10) */
+const ILLUSTRATION_OPACITY: Record<string, number> = {
+  jag_i_varlden: 0.055,
+  jag_i_mig: 0.075,
+};
+
 const ACCENT_COLORS: Record<string, string> = {
   jag_i_mig: '#8A9A10',
   jag_med_andra: '#9825D6',
@@ -203,11 +209,11 @@ function ComingSoonDropdown() {
 
 /** Premium pastel tile with top-to-bottom light gradient */
 function PastelTile({
-  name, bg, ageLabel, tagline, onClick, aspectRatio = '4 / 3', isHero = false, illustration, accentColor, taglineColor,
+  name, bg, ageLabel, tagline, onClick, aspectRatio = '4 / 3', isHero = false, illustration, accentColor, taglineColor, illustrationOpacity = 0.10,
 }: {
   name: string; bg: string; ageLabel?: string; tagline?: string;
   onClick?: () => void; aspectRatio?: string; isHero?: boolean; illustration?: string;
-  accentColor?: string; taglineColor?: string;
+  accentColor?: string; taglineColor?: string; illustrationOpacity?: number;
 }) {
   // Darken hex bg by ~4% for bottom gradient
   const darkenHex = (hex: string) => {
@@ -270,7 +276,7 @@ function PastelTile({
             backgroundSize: '65% auto',
             backgroundRepeat: 'no-repeat',
             backgroundPosition: 'right center',
-            opacity: 0.10,
+            opacity: illustrationOpacity,
             pointerEvents: 'none',
             zIndex: 0,
           }}
@@ -528,6 +534,7 @@ export default function ProductLibrary() {
                 accentColor={ACCENT_COLORS[p.id]}
                 taglineColor={TAGLINE_COLORS[p.id]}
                 illustration={ILLUSTRATIONS[p.id]}
+                illustrationOpacity={ILLUSTRATION_OPACITY[p.id]}
                 onClick={() => navigate(`/product/${p.slug}`)}
                 aspectRatio="3 / 2"
               />
@@ -559,6 +566,7 @@ export default function ProductLibrary() {
                 accentColor={ACCENT_COLORS[p.id]}
                 taglineColor={TAGLINE_COLORS[p.id]}
                 illustration={ILLUSTRATIONS[p.id]}
+                illustrationOpacity={ILLUSTRATION_OPACITY[p.id]}
                 onClick={() => navigate(`/product/${p.slug}`)}
                 aspectRatio="3 / 2"
               />
@@ -571,7 +579,7 @@ export default function ProductLibrary() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.8, duration: 0.6 }}
-          style={{ textAlign: 'center', paddingBottom: '24px' }}
+          style={{ textAlign: 'center', paddingBottom: '40px' }}
         >
           <p
             className="font-serif"
