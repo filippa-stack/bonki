@@ -36,27 +36,27 @@ const PRODUCT_STYLES: Record<string, {
   cardTitleColor: string;
 }> = {
   jag_i_mig: {
-    cardBg: '#F5EDD2',
+    cardBg: '#F8F3E4',
     cardTitleColor: '#8A9A10',
   },
   jag_med_andra: {
-    cardBg: '#F4E4F0',
+    cardBg: '#F8F0F6',
     cardTitleColor: '#9825D6',
   },
   jag_i_varlden: {
-    cardBg: '#C8E6D0',
+    cardBg: '#E8F2EA',
     cardTitleColor: '#3D7A45',
   },
   sexualitetskort: {
-    cardBg: '#F0D9E2',
+    cardBg: '#F8EEF2',
     cardTitleColor: '#B5646E',
   },
   vardagskort: {
-    cardBg: '#D2E8E8',
+    cardBg: '#E8F2F2',
     cardTitleColor: '#0F6B99',
   },
   syskonkort: {
-    cardBg: '#D6E2F0',
+    cardBg: '#ECF0F6',
     cardTitleColor: '#0F4E99',
   },
 };
