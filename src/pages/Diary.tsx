@@ -557,20 +557,6 @@ export default function Diary() {
                 gap: '24px',
               }}
             >
-              {illustration && (
-                <img
-                  src={illustration}
-                  alt=""
-                  draggable={false}
-                  style={{
-                    width: '60vw',
-                    maxWidth: '280px',
-                    objectFit: 'contain',
-                    opacity: 0.17,
-                    userSelect: 'none',
-                  }}
-                />
-              )}
               <p
                 style={{
                   fontFamily: "'Lora', Georgia, serif",
