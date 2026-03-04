@@ -229,7 +229,7 @@ function PastelTile({
         alignItems: 'center',
         justifyContent: isHero ? 'flex-start' : 'center',
         textAlign: isHero ? 'left' : 'center',
-        padding: isHero ? '16px 20px 16px 0' : '16px',
+        padding: isHero ? '16px 20px 16px 0' : '24px 16px 16px',
         position: 'relative',
         overflow: 'hidden',
         border: '1px solid rgba(44, 36, 32, 0.05)',
