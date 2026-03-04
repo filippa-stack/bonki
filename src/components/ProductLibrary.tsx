@@ -242,7 +242,7 @@ export default function ProductLibrary() {
   return (
     <div
       className="min-h-screen flex flex-col relative"
-      style={{ backgroundColor: 'var(--surface-library)' }}
+      style={{ backgroundColor: 'var(--surface-library)', fontFamily: "'Lato', sans-serif" }}
     >
       {/* Background watermark removed */}
 
