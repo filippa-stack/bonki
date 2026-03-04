@@ -453,7 +453,7 @@ export default function ProductLibrary() {
                   marginTop: '4px',
                   fontSize: '9px',
                   fontWeight: 400,
-                  fontStyle: 'italic',
+                  fontStyle: 'normal',
                   color: 'hsla(38, 70%, 48%, 0.65)',
                   background: 'none',
                   border: 'none',
