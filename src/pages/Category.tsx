@@ -323,10 +323,10 @@ function CardEntry({ card, index, isCompleted = false, isInProgress = false, onN
               right: '16px',
               top: '50%',
               transform: 'translateY(-50%)',
-              height: '65%',
-              width: '25%',
+              height: '60px',
+              width: '60px',
               objectFit: 'contain',
-              objectPosition: 'right center',
+              objectPosition: 'center',
               opacity: 0.08,
             }}
           />
