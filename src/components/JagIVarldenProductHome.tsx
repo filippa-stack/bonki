@@ -115,17 +115,11 @@ export default function JagIVarldenProductHome({ product }: { product: ProductMa
             width: '100%',
           }}
         >
-          {/* Title pill */}
+          {/* Title — plain heading */}
           <motion.div
             variants={pillVariants}
             style={{
-              background: 'rgba(238, 255, 243, 0.88)',
-              backdropFilter: 'blur(16px)',
-              border: PILL_BORDER,
-              borderRadius: '28px',
-              padding: '26px 16px',
               textAlign: 'center',
-              boxShadow: '0 2px 16px -2px hsla(140, 30%, 40%, 0.1)',
               marginBottom: '2vh',
               width: '100%',
             }}
@@ -145,18 +139,18 @@ export default function JagIVarldenProductHome({ product }: { product: ProductMa
             <p
               className="font-serif"
               style={{
-                fontSize: 'clamp(14px, 4vw, 18px)',
+                fontSize: 'clamp(15px, 4.2vw, 19px)',
                 fontWeight: 400,
-                color: TEXT_COLOR,
+                color: '#2C2420',
                 opacity: 0.7,
-                marginTop: '6px',
+                marginTop: '8px',
               }}
             >
               stärk identitet och mod
             </p>
           </motion.div>
 
-          {/* Category pills */}
+          {/* Category buttons — filled, soft */}
           {product.categories.map((cat, index) => {
             const widths = ['72%', '68%', '66%', '66%', '66%'];
             return (
@@ -167,14 +161,13 @@ export default function JagIVarldenProductHome({ product }: { product: ProductMa
                 whileTap={{ scale: 0.97 }}
                 onClick={() => navigate(`/category/${cat.id}`)}
                 style={{
-                  background: 'rgba(238, 255, 243, 0.88)',
-                  backdropFilter: 'blur(16px)',
-                  border: PILL_BORDER,
-                  borderRadius: '28px',
-                  padding: '16px 32px',
+                  background: 'rgba(255, 255, 255, 0.85)',
+                  borderRadius: '12px',
+                  padding: '14px 24px',
                   textAlign: 'center',
                   cursor: 'pointer',
-                  boxShadow: '0 4px 16px -4px hsla(140, 20%, 28%, 0.15), 0 1px 3px hsla(140, 20%, 28%, 0.1)',
+                  border: 'none',
+                  boxShadow: '0px 2px 6px rgba(0, 0, 0, 0.08)',
                   whiteSpace: 'normal' as const,
                   width: widths[index] || '66%',
                   lineHeight: 1.3,
@@ -184,7 +177,7 @@ export default function JagIVarldenProductHome({ product }: { product: ProductMa
                   className="font-serif"
                   style={{
                     fontSize: 'clamp(17px, 4.5vw, 22px)',
-                    fontWeight: 400,
+                    fontWeight: 500,
                     color: TEXT_COLOR,
                   }}
                 >
