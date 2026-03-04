@@ -17,6 +17,19 @@ import bonkiLogo from '@/assets/bonki-logo.png';
 
 const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
+/**
+ * Per-card opacity overrides for illustrations.
+ * Darker/denser illustrations need lower opacity to match
+ * the visual weight of lighter ones (Ledsen = benchmark at 0.08).
+ */
+const CARD_ILLUSTRATION_OPACITY: Record<string, number> = {
+  'jim-arg': 0.05,
+  'jim-vild': 0.06,
+  'jim-radd': 0.10,
+  'jim-skam': 0.06,
+  'jim-avundsjuk': 0.06,
+};
+
 /** Product-specific design tokens for card listings */
 const PRODUCT_STYLES: Record<string, {
   cardBg: string;
@@ -263,6 +276,7 @@ interface CardEntryProps {
 
 function CardEntry({ card, index, isCompleted = false, isInProgress = false, onNavigate, isLast = false, styles }: CardEntryProps) {
   const illustration = useCardImage(card.id);
+  const illustrationOpacity = CARD_ILLUSTRATION_OPACITY[card.id] ?? 0.08;
 
   const cardBg = styles?.cardBg ?? '#FFFFFF';
   const titleColor = styles?.cardTitleColor ?? 'var(--text-primary)';
@@ -327,7 +341,7 @@ function CardEntry({ card, index, isCompleted = false, isInProgress = false, onN
               width: '60px',
               objectFit: 'contain',
               objectPosition: 'center',
-              opacity: 0.08,
+              opacity: illustrationOpacity,
             }}
           />
         )}
