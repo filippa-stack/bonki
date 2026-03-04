@@ -40,7 +40,7 @@ const PRODUCT_STYLES: Record<string, {
     cardTitleColor: '#8A9A10',
   },
   jag_med_andra: {
-    cardBg: '#F0D9EA',
+    cardBg: '#F4E4F0',
     cardTitleColor: '#9825D6',
   },
   jag_i_varlden: {

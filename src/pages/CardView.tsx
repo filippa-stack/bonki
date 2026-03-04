@@ -724,7 +724,7 @@ export default function CardView() {
     // Kids/family products: always navigate back to product homepage (free choice)
     if (product && product.id !== 'still_us') {
       const dest = `/product/${product.slug}`;
-      return { type: 'home' as const, destination: dest, label: 'Tillbaka' };
+      return { type: 'home' as const, destination: dest, label: 'Avsluta' };
     }
 
     // Still Us: recommend next card/category
@@ -802,15 +802,15 @@ export default function CardView() {
               style={{
                 position: 'fixed',
                 bottom: 0,
-                left: 0,
                 right: 0,
-                height: '60vh',
+                width: '50vw',
+                height: '35vh',
                 display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
+                alignItems: 'flex-end',
+                justifyContent: 'flex-end',
                 pointerEvents: 'none',
                 zIndex: 0,
-                padding: '16px 24px calc(16px + env(safe-area-inset-bottom, 0px)) 24px',
+                padding: '0 24px calc(16px + env(safe-area-inset-bottom, 0px)) 0',
               }}
             >
               <img
@@ -818,7 +818,7 @@ export default function CardView() {
                 alt=""
                 draggable={false}
                 style={{
-                  maxWidth: '85vw',
+                  maxWidth: '100%',
                   maxHeight: '100%',
                   objectFit: 'contain',
                   opacity: 0.06,
@@ -1420,15 +1420,15 @@ export default function CardView() {
             style={{
               position: 'fixed',
               bottom: 0,
-              left: 0,
               right: 0,
-              height: '55vh',
+              width: '50vw',
+              height: '30vh',
               display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
+              alignItems: 'flex-end',
+              justifyContent: 'flex-end',
               pointerEvents: 'none',
               zIndex: 0,
-              padding: '16px 24px calc(16px + env(safe-area-inset-bottom, 0px)) 24px',
+              padding: '0 24px calc(16px + env(safe-area-inset-bottom, 0px)) 0',
             }}
           >
             <img
@@ -1436,10 +1436,10 @@ export default function CardView() {
               alt=""
               draggable={false}
               style={{
-                maxWidth: '85vw',
+                maxWidth: '100%',
                 maxHeight: '100%',
                 objectFit: 'contain',
-                opacity: 0.06,
+                opacity: 0.05,
                 filter: 'saturate(0.4)',
                 userSelect: 'none',
               }}

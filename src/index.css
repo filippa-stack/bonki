@@ -62,7 +62,7 @@ h1, h2, h3,
 
     /* ── Semantic radius tokens ── */
     --radius-card:   1.25rem;   /* 20px */
-    --radius-button: 0.875rem;  /* 14px */
+    --radius-button: 0.75rem;  /* 12px */
     --radius-pill:   0.875rem;  /* 14px */
     --radius-toast:  1.25rem;   /* 20px */
 
