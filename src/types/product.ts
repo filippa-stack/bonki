@@ -12,6 +12,8 @@ export interface ProductManifest {
   secondaryAccent: string;   // Complementary accent (like saffron in Still Us)
   /** Product page background color (hex), e.g. '#FFFDF8' */
   backgroundColor: string;
+  /** Button color for session screens (hex), e.g. '#8A9A10' */
+  ctaButtonColor?: string;
   /** Pronoun mode: 'ni' for couple products, 'du' for solo products */
   pronounMode: 'du' | 'ni';
   /** Card ID that is free to play without purchase */

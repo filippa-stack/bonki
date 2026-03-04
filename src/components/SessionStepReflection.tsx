@@ -183,13 +183,7 @@ export default function SessionStepReflection({
             Vi pausar här — fortsätt en annan dag
           </button>
         ) : (
-          <button
-            onClick={() => navigate('/')}
-            className="type-meta text-center block mx-auto transition-opacity hover:opacity-60"
-            style={{ color: 'var(--text-tertiary)', opacity: 0.35, background: 'none', border: 'none', cursor: 'pointer', marginTop: '24px' }}
-          >
-            Till startsidan
-          </button>
+          null
         )}
       </div>
     </motion.div>

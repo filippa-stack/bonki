@@ -341,6 +341,7 @@ export const syskonkortProduct: ProductManifest = {
   accentColorMuted: 'hsl(215, 25%, 90%)',
   secondaryAccent: 'hsl(215, 80%, 33%)',
   backgroundColor: '#F2F8FC',
+  ctaButtonColor: '#0F4E99',
   pronounMode: 'du',
   freeCardId: 'sk-syskonkunskap',
   ageLabel: '6+',

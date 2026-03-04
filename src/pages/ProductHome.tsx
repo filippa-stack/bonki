@@ -25,6 +25,7 @@ export default function ProductHome() {
     product?.accentColor ?? 'hsl(158, 35%, 18%)',
     product?.secondaryAccent ?? 'hsl(38, 88%, 46%)',
     product?.backgroundColor,
+    product?.ctaButtonColor,
   );
 
   const needsIntro = useProductIntroNeeded(product?.id ?? '');

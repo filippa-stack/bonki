@@ -330,7 +330,7 @@ h1, h2, h3,
     margin: 0 auto;
     height: 48px;
     border-radius: var(--radius-button);
-    background-color: var(--cta-bg);
+    background-color: var(--cta-button-color, var(--cta-bg));
     color: var(--cta-text);
     font-family: var(--font-sans);
     font-size: 14px;
@@ -342,12 +342,12 @@ h1, h2, h3,
   }
 
   .cta-primary:hover:not(:disabled) {
-    background-color: var(--cta-hover-v2);
+    background-color: var(--cta-button-color, var(--cta-hover-v2));
   }
 
   .cta-primary:active:not(:disabled) {
     transform: scale(0.97);
-    background-color: var(--cta-active);
+    background-color: var(--cta-button-color, var(--cta-active));
   }
 
   .cta-primary:disabled {
