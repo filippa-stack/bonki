@@ -39,7 +39,7 @@ export const productIntros: Record<string, ProductIntroData> = {
     productId: 'jag_i_mig',
     slides: [
       {
-        heading: 'Välkommen till Jag i Mig',
+        heading: 'Välkommen till\nJag i Mig',
         body: 'Det här är ett samtal mellan dig och ditt barn om vem hen är - just nu, idag.\n\nInte den version som skyndar sig till skolan på morgonen. Inte den som svarar "bra" på hur var din dag. Utan den riktiga. Den som har en favoritkänsla, en hemlig rädsla, en dröm som ingen frågat om än.\n\nFrågorna här inne är enkla. Ditt enda jobb är att lyssna - inte rätta, inte förklara. Ditt barn vet mer om sig själv än du tror. De behöver bara bli frågade.',
         signoff: 'Välj ett kort. Hitta en lugn stund. Och låt samtalet ta er dit det vill.',
       },
@@ -52,7 +52,7 @@ export const productIntros: Record<string, ProductIntroData> = {
     productId: 'jag_med_andra',
     slides: [
       {
-        heading: 'Välkommen till Jag med Andra',
+        heading: 'Välkommen till\nJag med Andra',
         body: 'Ditt barn har börjat titta utåt. Kompisarna har blivit viktigare, blickarna fler, och frågor som förut var enkla - vem får vara med, vad är rättvist, vem bestämmer - har plötsligt blivit på riktigt.\n\nDet här är kort för den ålder där man börjar förstå att andra människor har en insida också. Att mod inte alltid syns. Att skam kan göra att man blir tyst. Att vänskap kräver mer än att bara vara i samma rum.\n\nFrågorna har inga rätta svar. De är till för att öppna det som sällan får plats i vardagen - mellan er, eller i en grupp. Det viktigaste är inte vad som sägs, utan att det får sägas.',
         signoff: 'Ni bestämmer tempot. Hoppa över det som inte passar. Stanna kvar där det blir intressant.',
       },
@@ -65,7 +65,7 @@ export const productIntros: Record<string, ProductIntroData> = {
     productId: 'jag_i_varlden',
     slides: [
       {
-        heading: 'Välkommen till Jag i Världen',
+        heading: 'Välkommen till\nJag i Världen',
         body: 'Du lever i en tid där alla har åsikter om vem du ska vara. Sociala medier, kompisar, vuxna, samhället - alla har en bild. Men vad tänker du?\n\nDet här är frågor om de stora sakerna. Identitet, rättvisa, mod, skam, kärlek, psykisk hälsa, vad det innebär att vara fri. De är inte till för att testa dig. De är till för att du ska få tänka högt - ensam, med en vän, med en förälder, i en grupp.\n\nDet finns inga rätta svar. Det finns bara dina.',
         signoff: 'Hoppa över det som inte känns aktuellt. Stanna vid det som gör att du tänker till.',
       },

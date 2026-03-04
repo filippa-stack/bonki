@@ -82,8 +82,8 @@ export default function ProductIntro({ productId, accentColor, backgroundColor, 
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.5, ease: EASE }}
-            className="flex-1 flex flex-col items-center justify-center"
-            style={{ padding: '0 32px' }}
+           className="flex-1 flex flex-col items-center justify-center"
+            style={{ padding: '0 32px', marginBottom: '-40px' }}
             drag="x"
             dragConstraints={{ left: 0, right: 0 }}
             dragElastic={0.15}
@@ -114,12 +114,13 @@ export default function ProductIntro({ productId, accentColor, backgroundColor, 
               transition={{ delay: 0.1, duration: 0.7, ease: EASE }}
               style={{
                 fontFamily: 'var(--font-serif)',
-                fontSize: '38px',
+                fontSize: 'clamp(28px, 7.5vw, 36px)',
                 fontWeight: 700,
                 color: 'var(--color-text-primary)',
                 textAlign: 'center',
-                lineHeight: 1.1,
+                lineHeight: 1.15,
                 letterSpacing: '-0.02em',
+                whiteSpace: 'pre-line',
               }}
             >
               {slide.heading}
@@ -157,7 +158,7 @@ export default function ProductIntro({ productId, accentColor, backgroundColor, 
                   fontSize: '17px',
                   color: accentColor ?? 'var(--accent-text)',
                   textAlign: 'center',
-                  marginTop: '16px',
+                  marginTop: '32px',
                 }}
               >
                 {slide.signoff}
