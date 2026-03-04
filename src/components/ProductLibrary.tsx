@@ -385,7 +385,6 @@ export default function ProductLibrary() {
                   fontWeight: 700,
                   color: 'hsla(0, 0%, 100%, 0.95)',
                   letterSpacing: '0.04em',
-                  textTransform: 'uppercase',
                 }}
               >
                 Still Us
@@ -397,9 +396,10 @@ export default function ProductLibrary() {
                   color: 'hsla(38, 80%, 55%, 0.7)',
                   marginTop: '4px',
                   fontStyle: 'italic',
+                  letterSpacing: '0.04em',
                 }}
               >
-                För samtalen som aldrig blir av
+                still fair
               </p>
             </motion.div>
 
