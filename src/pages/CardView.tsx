@@ -1031,6 +1031,31 @@ export default function CardView() {
           ← Tillbaka
         </motion.button>
 
+        {/* Free card label — only on the free card, new products only */}
+        {isFreeCard && product && product.id !== 'still_us' && (
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: BEAT_1, duration: EMOTION, ease: [...EASE] }}
+            style={{
+              position: 'absolute',
+              top: '22px',
+              width: '100%',
+              textAlign: 'center',
+              fontFamily: 'var(--font-sans)',
+              fontSize: '10px',
+              letterSpacing: '0.10em',
+              textTransform: 'uppercase',
+              color: 'var(--accent-text)',
+              opacity: 0.6,
+              zIndex: 1,
+              pointerEvents: 'none',
+            }}
+          >
+            Ditt gratis samtalskort
+          </motion.p>
+        )}
+
         {/* ── Hero zone: illustration takes center stage ── */}
         <div style={{ flex: '1 1 auto', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', paddingTop: '56px' }}>
           {cardImageUrl ? (
