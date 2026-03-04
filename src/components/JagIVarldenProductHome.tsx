@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import type { ProductManifest } from '@/types/product';
-import aktivismImage from '@/assets/aktivism-jag-i-varlden.png';
+import peacockImage from '@/assets/peacock-jag-i-varlden.png';
 
 const EASE = [0.4, 0.0, 0.2, 1] as const;
 
@@ -46,7 +46,7 @@ export default function JagIVarldenProductHome({ product }: { product: ProductMa
         }}
       >
         <img
-          src={aktivismImage}
+          src={peacockImage}
           alt=""
           style={{
             width: '100%',
@@ -75,7 +75,7 @@ export default function JagIVarldenProductHome({ product }: { product: ProductMa
         }}
       >
         <img
-          src={aktivismImage}
+          src={peacockImage}
           alt=""
           style={{
             width: '100%',
