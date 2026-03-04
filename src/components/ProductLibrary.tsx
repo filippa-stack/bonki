@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { ChevronDown } from 'lucide-react';
 import { allProducts } from '@/data/products';
 import bonkiLogo from '@/assets/bonki-logo.png';
+import illustrationStillUs from '@/assets/illustration-still-us.png';
 import watermarkMamma from '@/assets/watermark-mamma.png';
 import illustrationJagIMig from '@/assets/illustration-jag-i-mig.png';
 import illustrationJagMedAndra from '@/assets/illustration-jag-med-andra.png';
@@ -326,10 +327,7 @@ export default function ProductLibrary() {
       className="min-h-screen flex flex-col relative"
       style={{ backgroundColor: 'var(--surface-library)' }}
     >
-      {/* Background watermark */}
-      <div style={{ position: 'fixed', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', pointerEvents: 'none', zIndex: 0 }}>
-        <img src={watermarkMamma} alt="" style={{ width: '110vw', maxWidth: '110vw', height: 'auto', objectFit: 'contain', opacity: 0.08, transform: 'translateY(-12vh)' }} />
-      </div>
+      {/* Background watermark removed */}
 
       {/* Content */}
       <div style={{ position: 'relative', zIndex: 1 }}>
@@ -405,6 +403,18 @@ export default function ProductLibrary() {
                 pointerEvents: 'none',
                 mixBlendMode: 'overlay',
               }} />
+              {/* Watermark illustration */}
+              <div style={{
+                position: 'absolute',
+                inset: 0,
+                backgroundImage: `url(${illustrationStillUs})`,
+                backgroundSize: '65% auto',
+                backgroundRepeat: 'no-repeat',
+                backgroundPosition: 'right center',
+                opacity: 0.08,
+                pointerEvents: 'none',
+                zIndex: 0,
+              }} />
               <h2
                 style={{
                   fontFamily: "'DM Serif Display', serif",
@@ -458,6 +468,18 @@ export default function ProductLibrary() {
                 backgroundSize: '128px 128px',
                 pointerEvents: 'none',
                 mixBlendMode: 'overlay',
+              }} />
+              {/* Watermark illustration */}
+              <div style={{
+                position: 'absolute',
+                inset: 0,
+                backgroundImage: `url(${illustrationStillUs})`,
+                backgroundSize: '65% auto',
+                backgroundRepeat: 'no-repeat',
+                backgroundPosition: 'right center',
+                opacity: 0.08,
+                pointerEvents: 'none',
+                zIndex: 0,
               }} />
               <h3
                 style={{
