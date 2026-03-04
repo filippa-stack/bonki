@@ -45,7 +45,7 @@ const PASTEL_COLORS: Record<string, string> = {
 
 /** Per-product illustration opacity overrides (default 0.10) */
 const ILLUSTRATION_OPACITY: Record<string, number> = {
-  jag_i_varlden: 0.055,
+  jag_i_varlden: 0.10,
   jag_i_mig: 0.075,
   syskonkort: 0.07,
 };
