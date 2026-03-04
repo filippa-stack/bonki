@@ -27,6 +27,7 @@ export default function BackgroundWatermark() {
   // Hide watermark inside sessions (/card/*), library page, and product pages
   if (pathname.startsWith('/card')) return null;
   if (pathname.startsWith('/product')) return null;
+  if (pathname.startsWith('/diary')) return null;
   if (searchParams.get('devState') === 'library') return null;
 
   if (mode === 'full') {
