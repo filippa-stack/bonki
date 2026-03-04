@@ -895,7 +895,7 @@ export default function CardView() {
             className="font-sans"
             style={{
               fontSize: '13px',
-              color: '#8A8078',
+              color: 'var(--completion-subtitle)',
               textAlign: 'center',
               marginBottom: '28px',
             }}
@@ -921,7 +921,7 @@ export default function CardView() {
             transition={{ delay: 0.5, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
             style={{
               fontSize: '11px',
-              color: '#A09890',
+              color: 'var(--completion-label)',
               textAlign: 'center',
               marginTop: '10px',
             }}
@@ -940,17 +940,17 @@ export default function CardView() {
             {postCompletionNav.type === 'all_complete' ? (
               <div className="text-center" style={{ marginTop: '48px' }}>
                 <p style={{
-                  fontFamily: 'var(--font-serif)',
+                  fontFamily: "'DM Serif Display', var(--font-serif)",
                   fontSize: '18px',
-                  fontWeight: 500,
-                  color: 'var(--color-text-primary)',
+                  fontWeight: 400,
+                  color: 'var(--text-primary)',
                 }}>
                   {uiText.allExplored}
                 </p>
                 <p style={{
                   fontFamily: 'var(--font-sans)',
                   fontSize: '13px',
-                  color: '#8A8078',
+                  color: 'var(--completion-subtitle)',
                   marginTop: '10px',
                 }}>
                   {uiText.allExploredSub}
@@ -984,7 +984,7 @@ export default function CardView() {
                   product && product.id !== 'still_us' ? `/diary/${product.id}` : '/shared'
                 )}
                 className="font-sans"
-                style={{ fontSize: '13px', color: '#8A8078', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline', textUnderlineOffset: '3px', marginTop: '24px' }}
+                style={{ fontSize: '13px', color: 'var(--completion-link)', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline', textUnderlineOffset: '3px', marginTop: '24px' }}
               >
                 {product && product.id !== 'still_us' ? 'Vår dagbok' : uiText.seeNotes}
               </button>
@@ -1852,7 +1852,7 @@ function CompletionTakeaway({ sessionId, spaceId, pronounMode = 'ni' }: { sessio
           fontSize: '11px',
           letterSpacing: '0.08em',
           textTransform: 'uppercase',
-          color: '#A09890',
+          color: 'var(--completion-label)',
           textAlign: 'center',
           marginBottom: '8px',
         }}
