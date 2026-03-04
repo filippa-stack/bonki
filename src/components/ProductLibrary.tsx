@@ -464,16 +464,16 @@ export default function ProductLibrary() {
                   // TODO: implement reminder logic
                 }}
                 style={{
-                  marginTop: '8px',
-                  fontSize: '9px',
-                  fontWeight: 600,
-                  letterSpacing: '0.08em',
-                  textTransform: 'uppercase',
-                  color: 'hsla(14, 40%, 40%, 0.75)',
-                  background: 'hsla(14, 40%, 66%, 0.15)',
-                  border: '1px solid hsla(14, 40%, 50%, 0.2)',
-                  borderRadius: '20px',
-                  padding: '4px 12px',
+                  marginTop: '10px',
+                  fontSize: '10px',
+                  fontWeight: 400,
+                  fontStyle: 'italic',
+                  letterSpacing: '0.02em',
+                  color: 'hsla(38, 70%, 48%, 0.65)',
+                  background: 'none',
+                  border: 'none',
+                  borderBottom: '1px solid hsla(38, 70%, 48%, 0.3)',
+                  padding: '0 0 1px 0',
                   cursor: 'pointer',
                 }}
               >
