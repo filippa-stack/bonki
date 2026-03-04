@@ -242,21 +242,9 @@ export default function Category() {
             lineHeight: 1.5,
           }}>
             {allCompleted
-              ? 'Ni har utforskat det här området.'
-              : 'Välj ett samtal.'}
+              ? 'Ni har utforskat alla samtal här. Välkomna tillbaka när som helst.'
+              : 'Välj det som känns rätt just nu.'}
           </p>
-          {allCompleted && (
-            <p style={{
-              fontFamily: 'var(--font-sans)',
-              fontSize: '13px',
-              color: 'var(--color-text-secondary)',
-              opacity: 0.50,
-              lineHeight: 1.55,
-              marginTop: '6px',
-            }}>
-              Ni är alltid välkomna tillbaka hit.
-            </p>
-          )}
           <button
             onClick={() => navigate(backTo)}
             className="transition-opacity hover:opacity-70"
