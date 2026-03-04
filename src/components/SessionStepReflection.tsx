@@ -155,11 +155,11 @@ export default function SessionStepReflection({
           whileTap={{ scale: 0.98 }}
           transition={{ duration: 0.12 }}
         >
-          {submitting
-            ? 'Sparar…'
-            : isLastStep
-            ? 'Klar'
-            : 'Fortsätt'}
+           {submitting
+             ? 'Sparar…'
+             : isLastStep
+             ? 'Vi är klara'
+             : 'Nästa fråga'}
         </motion.button>
 
         {isExerciseStep ? (
