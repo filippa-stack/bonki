@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
+import { BookOpen } from 'lucide-react';
 import type { ProductManifest } from '@/types/product';
 import slothImage from '@/assets/sloth-jag-med-andra.png';
 import nyckelpiganImage from '@/assets/nyckelpiga-jag-med-andra.png';
@@ -164,30 +165,54 @@ export default function JagMedAndraProductHome({ product }: { product: ProductMa
             </motion.button>
           ))}
 
-          {/* Diary link */}
+          {/* Diary entrance */}
           <motion.button
             variants={pillVariants}
+            whileHover={{ scale: 1.02, y: -1 }}
+            whileTap={{ scale: 0.98 }}
             onClick={() => navigate(`/diary/${product.id}`)}
             style={{
-              background: 'none',
+              background: 'rgba(255, 255, 255, 0.55)',
               border: 'none',
               cursor: 'pointer',
-              marginTop: '2vh',
-              padding: '8px 16px',
+              marginTop: '4vh',
+              padding: '16px 28px',
+              borderRadius: '12px',
+              boxShadow: '0px 2px 8px rgba(44, 36, 32, 0.06)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '10px',
+              width: '70%',
             }}
           >
-            <span
-              className="font-serif"
-              style={{
-                fontSize: 'clamp(16px, 4.2vw, 19px)',
-                color: ACCENT_COLOR,
-                opacity: 0.75,
-                textDecoration: 'underline',
-                textUnderlineOffset: '3px',
-              }}
-            >
-              Vår dagbok
-            </span>
+            <BookOpen size={18} style={{ color: ACCENT_COLOR, opacity: 0.7, flexShrink: 0 }} />
+            <div style={{ textAlign: 'left' }}>
+              <span
+                style={{
+                  fontFamily: "'DM Serif Display', var(--font-serif)",
+                  fontSize: 'clamp(17px, 4.5vw, 20px)',
+                  fontWeight: 400,
+                  color: ACCENT_COLOR,
+                  lineHeight: 1.3,
+                }}
+              >
+                Vår dagbok
+              </span>
+              <p
+                className="font-serif"
+                style={{
+                  fontSize: '12px',
+                  color: '#8A8078',
+                  opacity: 0.8,
+                  marginTop: '2px',
+                  fontStyle: 'italic',
+                  lineHeight: 1.3,
+                }}
+              >
+                Era tankar, samlade
+              </p>
+            </div>
           </motion.button>
         </motion.div>
       </div>
