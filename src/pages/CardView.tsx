@@ -721,7 +721,13 @@ export default function CardView() {
   const postCompletionNav = useMemo(() => {
     if (!category || !card) return { type: 'home' as const, destination: '/', label: '' };
 
-    // Use product-specific cards if available, otherwise fall back to global cards
+    // Kids/family products: always navigate back to product homepage (free choice)
+    if (product && product.id !== 'still_us') {
+      const dest = `/product/${product.slug}`;
+      return { type: 'home' as const, destination: dest, label: 'Tillbaka' };
+    }
+
+    // Still Us: recommend next card/category
     const productCards = product ? product.cards : cards;
     const categoryCards = productCards.filter(c => c.categoryId === category.id);
     const effectiveCompleted = new Set(completedCardIds);
