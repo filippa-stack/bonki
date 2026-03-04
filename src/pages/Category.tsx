@@ -23,11 +23,16 @@ const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
  * the visual weight of lighter ones (Ledsen = benchmark at 0.08).
  */
 const CARD_ILLUSTRATION_OPACITY: Record<string, number> = {
-  'jim-arg': 0.10,
-  'jim-vild': 0.12,
-  'jim-radd': 0.18,
-  'jim-skam': 0.10,
-  'jim-avundsjuk': 0.10,
+  // JIM — dense/dark illustrations need lower opacity
+  'jim-arg': 0.08,
+  'jim-vild': 0.10,
+  'jim-radd': 0.14,
+  'jim-skam': 0.08,
+  'jim-avundsjuk': 0.08,
+  // JIV — dense illustrations
+  'jiv-frihet': 0.10,
+  'jiv-karlek': 0.10,
+  'jiv-vanskap': 0.10,
 };
 
 /** Product-specific design tokens for card listings */
