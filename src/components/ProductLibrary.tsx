@@ -289,7 +289,7 @@ function PastelTile({
             style={{
               fontSize: isHero ? '13px' : '12px',
               fontWeight: 400,
-              fontStyle: 'italic',
+              fontStyle: 'normal',
               color: accentColor || '#8A8078',
               marginTop: '5px',
               lineHeight: 1.4,
@@ -410,7 +410,7 @@ export default function ProductLibrary() {
                   fontSize: '10px',
                   color: 'var(--accent-saffron)',
                   marginTop: '4px',
-                  fontStyle: 'italic',
+                  fontStyle: 'normal',
                 }}
               >
                 För samtalen som aldrig blir av
@@ -453,7 +453,7 @@ export default function ProductLibrary() {
                 style={{
                   fontSize: '10px',
                   color: '#8A8078',
-                  fontStyle: 'italic',
+                  fontStyle: 'normal',
                   lineHeight: 1.35,
                 }}
               >
@@ -553,7 +553,7 @@ export default function ProductLibrary() {
           <p
             className="font-serif"
             style={{
-              fontStyle: 'italic',
+              fontStyle: 'normal',
               fontSize: '13px',
               color: 'var(--accent-text)',
               opacity: 0.35,
