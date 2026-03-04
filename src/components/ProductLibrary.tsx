@@ -227,7 +227,7 @@ function PastelTile({
         display: 'flex',
         flexDirection: isHero ? 'row' : 'column',
         alignItems: 'center',
-        justifyContent: isHero ? 'flex-start' : 'center',
+        justifyContent: isHero ? 'flex-start' : 'flex-start',
         textAlign: isHero ? 'left' : 'center',
         padding: isHero ? '16px 20px 16px 0' : '24px 16px 16px',
         position: 'relative',
