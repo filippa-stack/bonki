@@ -11,6 +11,7 @@ import Header from '@/components/Header';
 import { BEAT_1, BEAT_2, EASE, EMOTION } from '@/lib/motion';
 
 // Product illustrations
+import bonkiLogo from '@/assets/bonki-logo.png';
 import illustrationJagIMig from '@/assets/monster-jag-i-mig.png';
 import illustrationJagMedAndra from '@/assets/annorlunda-jag-med-andra.png';
 import illustrationJagIVarlden from '@/assets/aktivism-jag-i-varlden.png';
@@ -557,20 +558,17 @@ export default function Diary() {
                 gap: '24px',
               }}
             >
-              {illustration && (
-                <img
-                  src={illustration}
-                  alt=""
-                  draggable={false}
-                  style={{
-                    width: '60vw',
-                    maxWidth: '280px',
-                    objectFit: 'contain',
-                    opacity: 0.17,
-                    userSelect: 'none',
-                  }}
-                />
-              )}
+              <img
+                src={bonkiLogo}
+                alt="Bonki"
+                draggable={false}
+                style={{
+                  width: '120px',
+                  objectFit: 'contain',
+                  opacity: 0.15,
+                  userSelect: 'none',
+                }}
+              />
               <p
                 style={{
                   fontFamily: "'Lora', Georgia, serif",
