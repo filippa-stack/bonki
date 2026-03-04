@@ -91,12 +91,12 @@ function AudienceLabel({ label, delay = 0 }: { label: string; delay?: number }) 
       <p
         className="font-sans"
         style={{
-          fontSize: '11px',
-          fontWeight: 700,
-          letterSpacing: '0.18em',
-          textTransform: 'uppercase',
+          fontSize: '10px',
+          fontWeight: 600,
+          letterSpacing: '0.15em',
+          fontVariant: 'small-caps',
+          textTransform: 'lowercase',
           color: 'var(--color-text-tertiary)',
-          opacity: 0.8,
           whiteSpace: 'nowrap',
         }}
       >
@@ -277,10 +277,10 @@ function PastelTile({
       )}
       <div style={{ zIndex: 1, ...(isHero ? { flex: 1 } : {}) }}>
         <h3
-          className="font-serif"
           style={{
-            fontSize: isHero ? '22px' : '15px',
-            fontWeight: 700,
+            fontFamily: "'DM Serif Display', serif",
+            fontSize: isHero ? '24px' : '17px',
+            fontWeight: 400,
             lineHeight: 1.2,
             color: 'var(--text-library)',
             letterSpacing: '-0.01em',
@@ -292,10 +292,10 @@ function PastelTile({
           <p
             className="font-serif"
             style={{
-              fontSize: isHero ? '12px' : '10px',
+              fontSize: isHero ? '12px' : '10.5px',
               fontWeight: 400,
-              color: 'var(--text-library)',
-              opacity: 0.55,
+              fontStyle: 'italic',
+              color: '#8A8078',
               marginTop: '4px',
               lineHeight: 1.3,
             }}
@@ -395,12 +395,12 @@ export default function ProductLibrary() {
                 pointerEvents: 'none',
               }} />
               <h2
-                className="font-serif"
                 style={{
-                  fontSize: '20px',
-                  fontWeight: 700,
+                  fontFamily: "'DM Serif Display', serif",
+                  fontSize: '22px',
+                  fontWeight: 400,
                   color: 'hsla(0, 0%, 100%, 0.95)',
-                  letterSpacing: '0.04em',
+                  letterSpacing: '0.02em',
                 }}
               >
                 Still Us
@@ -439,12 +439,12 @@ export default function ProductLibrary() {
               }}
             >
               <h3
-                className="font-serif"
                 style={{
-                  fontSize: '20px',
-                  fontWeight: 700,
+                  fontFamily: "'DM Serif Display', serif",
+                  fontSize: '22px',
+                  fontWeight: 400,
                   color: 'hsla(14, 35%, 30%, 0.75)',
-                  letterSpacing: '0.04em',
+                  letterSpacing: '0.02em',
                 }}
               >
                 Still Fair
