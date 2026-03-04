@@ -282,7 +282,7 @@ function PastelTile({
         <h3
           style={{
             fontFamily: "'DM Serif Display', serif",
-            fontSize: isHero ? '24px' : '17px',
+            fontSize: isHero ? '24px' : '22px',
             fontWeight: 400,
             lineHeight: 1.2,
             color: accentColor || 'var(--text-library)',
@@ -295,7 +295,7 @@ function PastelTile({
           <p
             className="font-serif"
             style={{
-              fontSize: isHero ? '13px' : '12px',
+              fontSize: isHero ? '13px' : '11px',
               fontWeight: 400,
               fontStyle: 'normal',
               color: taglineColor || '#8A8078',
