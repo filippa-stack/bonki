@@ -1637,6 +1637,20 @@ function CompletionTakeaway({ sessionId, spaceId, pronounMode = 'ni' }: { sessio
 
   return (
     <div className="completion-takeaway-wrapper">
+      <p
+        className="font-sans"
+        style={{
+          fontSize: '11px',
+          letterSpacing: '0.08em',
+          textTransform: 'uppercase',
+          color: 'var(--text-ghost)',
+          opacity: 0.55,
+          textAlign: 'center',
+          marginBottom: '8px',
+        }}
+      >
+        Valfritt
+      </p>
       <textarea
         value={text}
         onChange={(e) => handleChange(e.target.value)}
