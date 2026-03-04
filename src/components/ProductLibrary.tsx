@@ -49,7 +49,12 @@ const ILLUSTRATION_OPACITY: Record<string, number> = {
 };
 
 const ILLUSTRATION_SIZE: Record<string, string> = {
+  jag_i_mig: '200% auto',
   jag_med_andra: '80% auto',
+};
+
+const ILLUSTRATION_POSITION: Record<string, string> = {
+  jag_i_mig: 'right bottom',
 };
 
 /** Restored strong accent colors for tile titles */
@@ -136,12 +141,12 @@ function AudienceLabel({ label, delay = 0 }: { label: string; delay?: number }) 
 /** Pastel tile — illustration as right-aligned feature, text left */
 function PastelTile({
   name, bg, ageLabel, tagline, onClick, illustration, accentColor, taglineColor,
-  illustrationOpacity = 0.25, illustrationSize = 'contain', wide = false,
+  illustrationOpacity = 0.25, illustrationSize = 'contain', illustrationPosition = 'right center', wide = false,
 }: {
   name: string; bg: string; ageLabel?: string; tagline?: string;
   onClick?: () => void; illustration?: string;
   accentColor?: string; taglineColor?: string; illustrationOpacity?: number;
-  illustrationSize?: string; wide?: boolean;
+  illustrationSize?: string; illustrationPosition?: string; wide?: boolean;
 }) {
   const darkenHex = (hex: string) => {
     const r = parseInt(hex.slice(1, 3), 16);
@@ -205,7 +210,7 @@ function PastelTile({
             backgroundImage: `url(${illustration})`,
             backgroundSize: illustrationSize,
             backgroundRepeat: 'no-repeat',
-            backgroundPosition: 'right center',
+            backgroundPosition: illustrationPosition,
             opacity: illustrationOpacity,
             pointerEvents: 'none',
             zIndex: 0,
@@ -440,6 +445,7 @@ export default function ProductLibrary() {
               illustration={ILLUSTRATIONS[jagIMig.id]}
               illustrationOpacity={ILLUSTRATION_OPACITY[jagIMig.id]}
               illustrationSize={ILLUSTRATION_SIZE[jagIMig.id]}
+              illustrationPosition={ILLUSTRATION_POSITION[jagIMig.id]}
               onClick={() => navigate(`/product/${jagIMig.slug}`)}
               wide
             />
