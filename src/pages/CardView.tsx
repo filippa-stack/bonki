@@ -803,6 +803,7 @@ export default function CardView() {
                 justifyContent: 'center',
                 pointerEvents: 'none',
                 zIndex: 0,
+                padding: '16px 24px calc(16px + env(safe-area-inset-bottom, 0px)) 24px',
               }}
             >
               <img
@@ -810,9 +811,8 @@ export default function CardView() {
                 alt=""
                 draggable={false}
                 style={{
-                  width: '75vw',
-                  maxWidth: '400px',
-                  height: 'auto',
+                  maxWidth: '85vw',
+                  maxHeight: '100%',
                   objectFit: 'contain',
                   opacity: 0.06,
                   filter: 'saturate(0.4)',
@@ -1406,7 +1406,7 @@ export default function CardView() {
 
       {/* Section content — centered, max 520px for readability */}
       <div className="px-6 relative" style={{ paddingTop: '8px', paddingBottom: 'calc(120px + env(safe-area-inset-bottom, 0px))' }}>
-        {/* Card illustration watermark — centered, filling CTA-to-bottom */}
+        {/* Card illustration watermark — centered, maximized within CTA-to-bottom zone */}
         {product && product.id !== 'still_us' && cardImageUrl && (
           <div
             style={{
@@ -1420,6 +1420,7 @@ export default function CardView() {
               justifyContent: 'center',
               pointerEvents: 'none',
               zIndex: 0,
+              padding: '16px 24px calc(16px + env(safe-area-inset-bottom, 0px)) 24px',
             }}
           >
             <img
@@ -1427,9 +1428,8 @@ export default function CardView() {
               alt=""
               draggable={false}
               style={{
-                width: '75vw',
-                maxWidth: '400px',
-                height: 'auto',
+                maxWidth: '85vw',
+                maxHeight: '100%',
                 objectFit: 'contain',
                 opacity: 0.06,
                 filter: 'saturate(0.4)',
