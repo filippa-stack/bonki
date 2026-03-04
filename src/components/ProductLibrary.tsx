@@ -10,6 +10,7 @@ import illustrationJagMedAndra from '@/assets/illustration-jag-med-andra.png';
 import illustrationJagIVarlden from '@/assets/illustration-jag-i-varlden.png';
 import illustrationSexualitet from '@/assets/illustration-sexualitet.png';
 import illustrationSyskon from '@/assets/illustration-syskon.png';
+import illustrationVardag from '@/assets/illustration-vardag.png';
 
 const ILLUSTRATIONS: Record<string, string> = {
   jag_i_mig: illustrationJagIMig,
@@ -17,6 +18,7 @@ const ILLUSTRATIONS: Record<string, string> = {
   jag_i_varlden: illustrationJagIVarlden,
   sexualitetskort: illustrationSexualitet,
   syskonkort: illustrationSyskon,
+  vardagskort: illustrationVardag,
 };
 
 /**
