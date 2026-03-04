@@ -142,7 +142,6 @@ export default function CardView() {
   const pronounMode: PronounMode = product?.pronounMode ?? 'ni';
   const uiText = useMemo(() => getUIText(pronounMode), [pronounMode]);
   const effectiveSteps = useMemo(() => getCardStepOrder(card), [card]);
-  const dynamicSteps = useMemo(() => buildDynamicSteps(effectiveSteps as string[]), [effectiveSteps]);
   const completionMessages = useMemo(() => getCompletionMessages(pronounMode, product?.ageLabel), [pronounMode, product?.ageLabel]);
   const cardImageUrl = useCardImage(cardId);
 
@@ -196,6 +195,7 @@ export default function CardView() {
 
   // ─── Feedback modal state (Still Us only) ───
   const isStillUs = product?.id === 'still_us' || !product;
+  const dynamicSteps = useMemo(() => buildDynamicSteps(effectiveSteps as string[], isStillUs), [effectiveSteps, isStillUs]);
   const [feedbackDismissed, setFeedbackDismissed] = useState(false);
   const [showFeedback, setShowFeedback] = useState(false);
 

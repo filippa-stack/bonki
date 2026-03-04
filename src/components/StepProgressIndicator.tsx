@@ -21,7 +21,7 @@ export const SECTION_TYPE_TO_STAGE: Record<string, StageStep['stage_key']> = {
   exercise:   'teamwork',
 };
 
-/** Labels for non-Still-Us section types */
+/** Labels for non-Still-Us section types (kids/family products) */
 const SECTION_LABELS: Record<string, string> = {
   opening: 'Frågor',
   scenario: 'I verkligheten',
@@ -29,11 +29,20 @@ const SECTION_LABELS: Record<string, string> = {
   exercise: 'I verkligheten',
 };
 
+/** Still Us canonical labels */
+const STILL_US_LABELS: Record<string, string> = {
+  opening: 'Kom igång',
+  reflective: 'Gå djupare',
+  scenario: 'Föreställ er',
+  exercise: 'I verkligheten',
+};
+
 /** Build dynamic steps from a card's actual section types */
-export function buildDynamicSteps(sectionTypes: string[]): StageStep[] {
+export function buildDynamicSteps(sectionTypes: string[], isStillUs = false): StageStep[] {
+  const labels = isStillUs ? STILL_US_LABELS : SECTION_LABELS;
   return sectionTypes.map((type, i) => ({
     stage_key: SECTION_TYPE_TO_STAGE[type] ?? type,
-    label: SECTION_LABELS[type] ?? `Del ${i + 1}`,
+    label: labels[type] ?? `Del ${i + 1}`,
   }));
 }
 
