@@ -563,9 +563,10 @@ export default function Diary() {
                 alt="Bonki"
                 draggable={false}
                 style={{
-                  width: '120px',
+                  width: '45vw',
+                  maxWidth: '220px',
                   objectFit: 'contain',
-                  opacity: 0.15,
+                  opacity: 0.18,
                   userSelect: 'none',
                 }}
               />
