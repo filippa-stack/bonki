@@ -410,7 +410,7 @@ export default function ProductLibrary() {
                   fontSize: '11px',
                   color: 'var(--accent-saffron)',
                   marginTop: '6px',
-                  fontStyle: 'italic',
+                  fontStyle: 'normal',
                 }}
               >
                 För samtalen som aldrig blir av
@@ -452,7 +452,7 @@ export default function ProductLibrary() {
                 style={{
                   fontSize: '11px',
                   color: '#9A8578',
-                  fontStyle: 'italic',
+                  fontStyle: 'normal',
                   lineHeight: 1.4,
                   marginTop: '5px',
                 }}
