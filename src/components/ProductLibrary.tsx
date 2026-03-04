@@ -124,6 +124,15 @@ function AudienceLabel({ label, delay = 0 }: { label: string; delay?: number }) 
   );
 }
 
+/*
+ * ┌─────────────────────────────────────────────────────┐
+ * │  🔒 LOCKED DESIGN — ProductLibrary                  │
+ * │  Approved 2026-03-04. Do NOT change layout, colors, │
+ * │  typography, spacing, opacity or illustrations       │
+ * │  without explicit approval.                         │
+ * │  To unlock: remove this comment block.               │
+ * └─────────────────────────────────────────────────────┘
+ */
 /** Pastel tile — illustration as right-aligned feature, text left */
 function PastelTile({
   name, bg, ageLabel, tagline, onClick, illustration, accentColor, taglineColor,
