@@ -789,20 +789,33 @@ export default function CardView() {
           {product && product.id !== 'still_us' && cardImageUrl && (
             <div
               style={{
-                position: 'absolute',
-                bottom: '-10%',
-                right: '-15%',
-                width: '100%',
-                height: '85%',
-                backgroundImage: `url(${cardImageUrl})`,
-                backgroundSize: 'contain',
-                backgroundRepeat: 'no-repeat',
-                backgroundPosition: 'bottom right',
-                opacity: 0.055,
+                position: 'fixed',
+                bottom: 0,
+                left: 0,
+                right: 0,
+                height: '60vh',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
                 pointerEvents: 'none',
                 zIndex: 0,
               }}
-            />
+            >
+              <img
+                src={cardImageUrl}
+                alt=""
+                draggable={false}
+                style={{
+                  width: '75vw',
+                  maxWidth: '400px',
+                  height: 'auto',
+                  objectFit: 'contain',
+                  opacity: 0.06,
+                  filter: 'saturate(0.4)',
+                  userSelect: 'none',
+                }}
+              />
+            </div>
           )}
           {/* Back arrow — same style as session question pages */}
           <motion.div
@@ -1378,24 +1391,37 @@ export default function CardView() {
 
       {/* Section content — centered, max 520px for readability */}
       <div className="px-6 relative" style={{ paddingTop: '8px', paddingBottom: 'calc(120px + env(safe-area-inset-bottom, 0px))' }}>
-        {/* Card illustration watermark — large background for new products */}
+        {/* Card illustration watermark — centered in lower half for new products */}
         {product && product.id !== 'still_us' && cardImageUrl && (
           <div
             style={{
-              position: 'absolute',
-              bottom: '-10%',
-              right: '-15%',
-              width: '100%',
-              height: '85%',
-              backgroundImage: `url(${cardImageUrl})`,
-              backgroundSize: 'contain',
-              backgroundRepeat: 'no-repeat',
-              backgroundPosition: 'bottom right',
-              opacity: 0.055,
+              position: 'fixed',
+              bottom: 0,
+              left: 0,
+              right: 0,
+              height: '60vh',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
               pointerEvents: 'none',
               zIndex: 0,
             }}
-          />
+          >
+            <img
+              src={cardImageUrl}
+              alt=""
+              draggable={false}
+              style={{
+                width: '75vw',
+                maxWidth: '400px',
+                height: 'auto',
+                objectFit: 'contain',
+                opacity: 0.06,
+                filter: 'saturate(0.4)',
+                userSelect: 'none',
+              }}
+            />
+          </div>
         )}
         <div className="max-w-[520px] mx-auto relative" style={{ zIndex: 1 }}>
         <AnimatePresence mode="wait">
