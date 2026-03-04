@@ -140,6 +140,9 @@ const STANDALONE_IMAGES: Record<string, string> = {
   'jiv-roller': '/card-images/jiv-roller.png',
   'jiv-mobbning': '/card-images/jiv-mobbning.png',
   'jiv-fordomar': '/card-images/jiv-fordomar.png',
+  'jiv-social-media': '/card-images/jiv-social-media.png',
+  'jiv-moral-etik': '/card-images/jiv-moral-etik.png',
+  'jiv-sexualitet': '/card-images/jiv-sexualitet.png',
 };
 // Singleton caches per zip source
 const zipCaches: Record<ZipSource, Map<string, string> | null> = { default: null, jim: null, jma: null, jiv: null, vk: null, sk: null, sex: null };
