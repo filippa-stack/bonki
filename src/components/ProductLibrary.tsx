@@ -83,11 +83,11 @@ function AudienceLabel({ label, delay = 0 }: { label: string; delay?: number }) 
         alignItems: 'center',
         justifyContent: 'center',
         gap: '14px',
-        marginBottom: '10px',
+        marginBottom: '16px',
         marginTop: '4px',
       }}
     >
-      <div style={{ width: '48px', height: '1px', background: 'var(--color-text-tertiary)', opacity: 0.35 }} />
+      <div style={{ width: '48px', height: '1px', background: '#A09890', opacity: 0.2 }} />
       <p
         className="font-sans"
         style={{
@@ -96,13 +96,13 @@ function AudienceLabel({ label, delay = 0 }: { label: string; delay?: number }) 
           letterSpacing: '0.15em',
           fontVariant: 'small-caps',
           textTransform: 'lowercase',
-          color: 'var(--color-text-tertiary)',
+          color: '#A09890',
           whiteSpace: 'nowrap',
         }}
       >
         {label}
       </p>
-      <div style={{ width: '48px', height: '1px', background: 'var(--color-text-tertiary)', opacity: 0.35 }} />
+      <div style={{ width: '48px', height: '1px', background: '#A09890', opacity: 0.2 }} />
     </motion.div>
   );
 }
@@ -321,7 +321,7 @@ export default function ProductLibrary() {
     >
       {/* Background watermark */}
       <div style={{ position: 'fixed', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', pointerEvents: 'none', zIndex: 0 }}>
-        <img src={watermarkMamma} alt="" style={{ width: '110vw', maxWidth: '110vw', height: 'auto', objectFit: 'contain', opacity: 0.75, transform: 'translateY(-12vh)' }} />
+        <img src={watermarkMamma} alt="" style={{ width: '110vw', maxWidth: '110vw', height: 'auto', objectFit: 'contain', opacity: 0.08, transform: 'translateY(-12vh)' }} />
       </div>
 
       {/* Content */}
@@ -357,7 +357,7 @@ export default function ProductLibrary() {
 
         {/* ── Still Us ── */}
         <motion.div
-          className="px-5 mt-6 mb-8"
+          className="px-5 mt-10 mb-10"
           variants={containerVariants}
           initial="hidden"
           animate="visible"
@@ -490,7 +490,7 @@ export default function ProductLibrary() {
         </motion.div>
 
         {/* ── Emotionella resan (trio) ── */}
-        <div className="px-5 mt-2">
+        <div className="px-5 mt-10">
           <AudienceLabel label="Ert barn" delay={0.12} />
           <motion.div
             variants={containerVariants}
@@ -518,7 +518,7 @@ export default function ProductLibrary() {
         </div>
 
         {/* ── Hela familjen ── */}
-        <div className="px-5 mt-8">
+        <div className="px-5 mt-10">
           <AudienceLabel label="Er familj" delay={0.20} />
           <motion.div
             variants={containerVariants}
