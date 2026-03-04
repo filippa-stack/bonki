@@ -185,7 +185,7 @@ function PastelTile({
 }) {
   const subtleDarker = bg.replace(/(\d+)%\)$/, (_, l) => `${Math.max(Number(l) - 3, 80)}%)`);
   const glowCenter = bg.replace(/(\d+)%\)$/, (_, l) => `${Math.min(Number(l) + 5, 97)}%)`);
-  const shadowColor = bg.replace(/hsl\(([^,]+),\s*([^,]+),\s*[^)]+\)/, 'hsla($1, $2, 45%, 0.18)');
+  const gradientOverlay = `linear-gradient(135deg, hsla(0,0%,100%,0.06) 0%, hsla(0,0%,0%,0.03) 100%)`;
 
   return (
     <motion.div
@@ -195,8 +195,8 @@ function PastelTile({
       onClick={onClick}
       className="cursor-pointer"
       style={{
-        borderRadius: '20px',
-        background: `radial-gradient(ellipse at 50% 40%, ${glowCenter} 0%, ${bg} 55%, ${subtleDarker} 100%)`,
+        borderRadius: '16px',
+        background: `${gradientOverlay}, radial-gradient(ellipse at 50% 40%, ${glowCenter} 0%, ${bg} 55%, ${subtleDarker} 100%)`,
         aspectRatio,
         display: 'flex',
         flexDirection: isHero ? 'row' : 'column',
@@ -206,11 +206,8 @@ function PastelTile({
         padding: isHero ? '0 24px 0 0' : '14px 12px',
         position: 'relative',
         overflow: 'hidden',
-        boxShadow: `
-          0 1px 2px 0 ${shadowColor},
-          0 4px 12px -2px ${shadowColor},
-          0 12px 32px -4px ${shadowColor}
-        `,
+        border: '1px solid rgba(44, 36, 32, 0.06)',
+        boxShadow: '0px 2px 8px rgba(44, 36, 32, 0.08)',
       }}
     >
       {ageLabel && (
@@ -352,9 +349,9 @@ export default function ProductLibrary() {
               onClick={() => navigate('/')}
               className="cursor-pointer"
               style={{
-                borderRadius: '18px',
+                borderRadius: '16px',
                 padding: '20px 16px',
-                background: `radial-gradient(ellipse at 50% 35%, hsla(158, 40%, 22%, 0.95) 0%, hsla(158, 35%, 14%, 0.92) 100%)`,
+                background: `linear-gradient(135deg, hsla(0,0%,100%,0.06) 0%, hsla(0,0%,0%,0.03) 100%), radial-gradient(ellipse at 50% 35%, hsla(158, 40%, 22%, 0.95) 0%, hsla(158, 35%, 14%, 0.92) 100%)`,
                 textAlign: 'center',
                 position: 'relative',
                 overflow: 'hidden',
@@ -363,12 +360,8 @@ export default function ProductLibrary() {
                 flexDirection: 'column',
                 alignItems: 'center',
                 justifyContent: 'center',
-                boxShadow: `
-                  0 1px 2px 0 hsla(0, 0%, 0%, 0.06),
-                  0 4px 14px -2px hsla(158, 35%, 20%, 0.18),
-                  0 14px 36px -4px hsla(158, 35%, 15%, 0.16),
-                  0 0 0 1px hsla(158, 30%, 40%, 0.08) inset
-                `,
+                border: '1px solid rgba(44, 36, 32, 0.06)',
+                boxShadow: '0px 2px 8px rgba(44, 36, 32, 0.08)',
               }}
             >
               <div style={{
@@ -406,9 +399,9 @@ export default function ProductLibrary() {
             <motion.div
               variants={tileVariants}
               style={{
-                borderRadius: '18px',
+                borderRadius: '16px',
                 padding: '20px 16px',
-                background: 'hsla(14, 40%, 66%, 0.18)',
+                background: 'linear-gradient(135deg, hsla(0,0%,100%,0.06) 0%, hsla(0,0%,0%,0.03) 100%), hsla(14, 40%, 66%, 0.18)',
                 textAlign: 'center',
                 position: 'relative',
                 overflow: 'hidden',
@@ -418,7 +411,8 @@ export default function ProductLibrary() {
                 alignItems: 'center',
                 justifyContent: 'center',
                 gap: '4px',
-                border: '1px solid hsla(14, 40%, 66%, 0.2)',
+                border: '1px solid rgba(44, 36, 32, 0.06)',
+                boxShadow: '0px 2px 8px rgba(44, 36, 32, 0.08)',
               }}
             >
               <h3
