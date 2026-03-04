@@ -53,7 +53,7 @@ import { isDevToolsEnabled } from '@/lib/devTools';
 import { useTogetherMode } from '@/hooks/useTogetherMode';
 import { useOptimisticCompletions } from '@/contexts/OptimisticCompletionsContext';
 import { BEAT_1, BEAT_2, BEAT_3, EASE, PRESS, PAGE, EMOTION } from '@/lib/motion';
-import { RECOMMENDED_CATEGORY_ORDER } from '@/lib/recommendedOrder';
+import { getRecommendedCategoryOrder } from '@/lib/recommendedOrder';
 
 // Completion messages are now in src/lib/pronouns.ts
 
@@ -729,7 +729,7 @@ export default function CardView() {
       return { type: 'next_card' as const, destination: `/card/${nextIncompleteInCategory.id}`, label: 'Nästa samtal' };
     }
 
-    for (const catId of RECOMMENDED_CATEGORY_ORDER) {
+    for (const catId of getRecommendedCategoryOrder(card.id)) {
       if (catId === category.id) continue;
       const catCards = cards.filter(c => c.categoryId === catId);
       const hasIncomplete = catCards.some(c => !effectiveCompleted.has(c.id));
