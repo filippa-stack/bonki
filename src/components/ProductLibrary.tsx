@@ -53,7 +53,7 @@ const ILLUSTRATION_SIZE: Record<string, string> = {
 };
 
 const ILLUSTRATION_POSITION: Record<string, string> = {
-  jag_i_mig: '85% center',
+  jag_i_mig: '75% 60%',
 };
 
 /** Restored strong accent colors for tile titles */
