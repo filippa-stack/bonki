@@ -1,11 +1,7 @@
-import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { ChevronDown } from 'lucide-react';
 import { allProducts } from '@/data/products';
-import bonkiLogo from '@/assets/bonki-logo.png';
 import illustrationStillUs from '@/assets/illustration-still-us.png';
-import watermarkMamma from '@/assets/watermark-mamma.png';
 import illustrationJagIMig from '@/assets/illustration-jag-i-mig.png';
 import illustrationJagMedAndra from '@/assets/illustration-jag-med-andra.png';
 import illustrationJagIVarlden from '@/assets/illustration-jag-i-varlden.png';
@@ -69,14 +65,6 @@ const TAGLINE_COLORS: Record<string, string> = {
   syskonkort: '#2A3E68',
 };
 
-const COMING_SOON_PRODUCTS = [
-  { name: 'Still Fair', tagline: 'För allt som görs men aldrig syns', audience: 'Par' },
-  { name: 'Still Me', tagline: 'För den du var innan du blev vi', audience: 'Par' },
-  { name: 'Still Known', tagline: 'För den du tror att du känner', audience: 'Par' },
-  { name: 'Still Ready', tagline: 'För er — innan barnet förändrar allt', audience: 'Blivande föräldrar' },
-  { name: 'Still Ground', tagline: 'För det som händer efter bråket', audience: 'Par' },
-];
-
 /* ── Stagger orchestration ── */
 const containerVariants = {
   hidden: {},
@@ -128,84 +116,6 @@ function AudienceLabel({ label, delay = 0 }: { label: string; delay?: number }) 
       </p>
       <div style={{ width: '48px', height: '1px', background: '#A09890', opacity: 0.2 }} />
     </motion.div>
-  );
-}
-
-/** Collapsible "Kommer snart" dropdown */
-function ComingSoonDropdown() {
-  const [open, setOpen] = useState(false);
-  return (
-    <div style={{ width: '100%', marginTop: '14px' }}>
-      <button
-        onClick={() => setOpen(v => !v)}
-        className="font-sans"
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          gap: '6px',
-          width: '100%',
-          padding: '8px 0',
-          background: 'none',
-          border: 'none',
-          cursor: 'pointer',
-          fontSize: '10px',
-          fontWeight: 700,
-          letterSpacing: '0.16em',
-          textTransform: 'uppercase' as const,
-          color: 'var(--text-library)',
-          opacity: 0.55,
-        }}
-      >
-        Kommer snart
-        <motion.span
-          animate={{ rotate: open ? 180 : 0 }}
-          transition={{ duration: 0.25 }}
-          style={{ display: 'inline-flex' }}
-        >
-          <ChevronDown size={12} />
-        </motion.span>
-      </button>
-      <AnimatePresence>
-        {open && (
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: 'auto', opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-            style={{ overflow: 'hidden' }}
-          >
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '1px', paddingTop: '4px' }}>
-              {COMING_SOON_PRODUCTS.map(p => (
-                <div
-                  key={p.name}
-                  style={{
-                    display: 'flex',
-                    alignItems: 'baseline',
-                    gap: '8px',
-                    padding: '5px 4px',
-                    opacity: 0.35,
-                  }}
-                >
-                  <span
-                    className="font-serif"
-                    style={{ fontSize: '12px', fontWeight: 600, color: 'var(--text-library)', whiteSpace: 'nowrap' }}
-                  >
-                    {p.name}
-                  </span>
-                  <span
-                    className="font-serif"
-                    style={{ fontSize: '10px', color: 'var(--text-library)', opacity: 0.6, lineHeight: 1.3 }}
-                  >
-                    {p.tagline}
-                  </span>
-                </div>
-              ))}
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </div>
   );
 }
 
@@ -363,7 +273,7 @@ export default function ProductLibrary() {
 
         {/* ── Still Us ── */}
         <motion.div
-          className="px-5 mt-10 mb-10"
+          className="px-5 mt-10"
           variants={containerVariants}
           initial="hidden"
           animate="visible"
@@ -375,7 +285,7 @@ export default function ProductLibrary() {
               variants={tileVariants}
               whileHover={{ scale: 1.02, y: -2 }}
               whileTap={{ scale: 0.97 }}
-              onClick={() => navigate('/')}
+              onClick={() => navigate('/product/still-us')}
               className="cursor-pointer"
               style={{
                 borderRadius: '13px',
@@ -602,7 +512,7 @@ export default function ProductLibrary() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.8, duration: 0.6 }}
-          style={{ textAlign: 'center', paddingBottom: '40px' }}
+          style={{ textAlign: 'center', padding: '0 20px', paddingBottom: 'calc(40px + env(safe-area-inset-bottom, 0px))' }}
         >
           <p
             className="font-serif"
