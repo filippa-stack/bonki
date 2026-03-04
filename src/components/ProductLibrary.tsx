@@ -376,7 +376,7 @@ export default function ProductLibrary() {
               className="cursor-pointer"
               style={{
                 borderRadius: '16px',
-                padding: '20px 16px',
+                padding: '24px 16px 16px',
                 background: `linear-gradient(135deg, #35564A 0%, #243E34 100%)`,
                 textAlign: 'center',
                 position: 'relative',
@@ -385,7 +385,7 @@ export default function ProductLibrary() {
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
-                justifyContent: 'center',
+                justifyContent: 'flex-start',
                 border: '1px solid rgba(255, 255, 255, 0.06)',
                 boxShadow: '0px 4px 16px rgba(20, 30, 25, 0.25), 0px 1px 3px rgba(20, 30, 25, 0.12)',
               }}
@@ -430,7 +430,7 @@ export default function ProductLibrary() {
               variants={tileVariants}
               style={{
                 borderRadius: '16px',
-                padding: '20px 16px',
+                padding: '24px 16px 16px',
                 background: 'linear-gradient(135deg, #DBBAA8 0%, #C89A88 100%)',
                 textAlign: 'center',
                 position: 'relative',
@@ -439,7 +439,7 @@ export default function ProductLibrary() {
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
-                justifyContent: 'center',
+                justifyContent: 'flex-start',
                 border: '1px solid rgba(255, 255, 255, 0.06)',
                 boxShadow: '0px 4px 16px rgba(44, 36, 32, 0.15), 0px 1px 3px rgba(44, 36, 32, 0.08)',
               }}
