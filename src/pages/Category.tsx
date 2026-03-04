@@ -1,18 +1,72 @@
 import { useState, useEffect, useMemo } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ChevronRight, Check } from 'lucide-react';
+import { ChevronLeft } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useApp } from '@/contexts/AppContext';
 import { useAuth } from '@/contexts/AuthContext';
 import { useCoupleSpaceContext } from '@/contexts/CoupleSpaceContext';
 import { supabase } from '@/integrations/supabase/client';
 import { useOptimisticCompletions } from '@/contexts/OptimisticCompletionsContext';
-import { getProductForCard, allProducts } from '@/data/products';
+import { allProducts } from '@/data/products';
 import { useProductTheme } from '@/hooks/useProductTheme';
+import { useCardImage } from '@/hooks/useCardImage';
 import Header from '@/components/Header';
 
+// Product watermark illustrations
+import illustrationJagIMig from '@/assets/monster-jag-i-mig.png';
+import illustrationJagMedAndra from '@/assets/annorlunda-jag-med-andra.png';
+import illustrationJagIVarlden from '@/assets/aktivism-jag-i-varlden.png';
+import illustrationSexualitet from '@/assets/illustration-sexualitet.png';
+import illustrationVardag from '@/assets/illustration-vardag.png';
+import illustrationSyskon from '@/assets/illustration-syskon.png';
+
 const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
+
+/** Product-specific design tokens for card listings */
+const PRODUCT_STYLES: Record<string, {
+  cardBg: string;
+  cardTitleColor: string;
+  cardSubtitleColor: string;
+  watermark: string;
+}> = {
+  jag_i_mig: {
+    cardBg: '#F5EDD2',
+    cardTitleColor: '#8A9A10',
+    cardSubtitleColor: '#6B6742',
+    watermark: illustrationJagIMig,
+  },
+  jag_med_andra: {
+    cardBg: '#F0D9EA',
+    cardTitleColor: '#9825D6',
+    cardSubtitleColor: '#5E4058',
+    watermark: illustrationJagMedAndra,
+  },
+  jag_i_varlden: {
+    cardBg: '#C8E6D0',
+    cardTitleColor: '#3D7A45',
+    cardSubtitleColor: '#3A6B48',
+    watermark: illustrationJagIVarlden,
+  },
+  sexualitetskort: {
+    cardBg: '#F0D9E2',
+    cardTitleColor: '#B5646E',
+    cardSubtitleColor: '#6B4858',
+    watermark: illustrationSexualitet,
+  },
+  vardagskort: {
+    cardBg: '#D2E8E8',
+    cardTitleColor: '#0F6B99',
+    cardSubtitleColor: '#2A5858',
+    watermark: illustrationVardag,
+  },
+  syskonkort: {
+    cardBg: '#D6E2F0',
+    cardTitleColor: '#0F4E99',
+    cardSubtitleColor: '#2A3E68',
+    watermark: illustrationSyskon,
+  },
+};
 
 export default function Category() {
   const { t } = useTranslation();
@@ -64,24 +118,25 @@ export default function Category() {
   const category = categoryId ? getCategoryById(categoryId) : undefined;
   const cards = categoryId ? getCardsByCategory(categoryId) : [];
 
-  // Determine if this is a product category for back-navigation
+  // Determine product for back-navigation and theming
   const product = useMemo(() => {
     if (!categoryId) return undefined;
     return allProducts.find(p => p.categories.some(c => c.id === categoryId));
   }, [categoryId]);
   const backTo = product ? `/product/${product.slug}` : '/';
+  const styles = product ? PRODUCT_STYLES[product.id] : undefined;
 
-  // Apply product theme (background + accent colors)
+  // Apply product theme
   useProductTheme(
     product?.accentColor ?? 'hsl(158, 35%, 18%)',
     product?.secondaryAccent ?? 'hsl(38, 88%, 46%)',
-    product?.backgroundColor,
+    '#FAF7F2', // Warm linen page background
     product?.ctaButtonColor,
   );
 
   if (!category) {
     return (
-      <div className="min-h-screen" style={{ backgroundColor: 'var(--surface-base)' }}>
+      <div className="min-h-screen" style={{ backgroundColor: '#FAF7F2' }}>
         <div className="h-14 border-b border-border" style={{ backgroundColor: 'var(--surface-raised)' }} />
         <div className="px-5 pt-12 space-y-4 max-w-md mx-auto text-center">
           <div className="h-6 w-40 rounded bg-muted/30 animate-pulse mx-auto" />
@@ -94,10 +149,37 @@ export default function Category() {
   const allCompleted = cards.length > 0 && cards.every(c => completedCardIds.includes(c.id));
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: 'var(--surface-base)' }}>
+    <div className="min-h-screen relative" style={{ backgroundColor: '#FAF7F2' }}>
       <Header title={category?.title} showBack backTo={backTo} />
 
-      <div className="px-5 pt-4 pb-24 flex flex-col">
+      {/* Product watermark behind the card list */}
+      {styles?.watermark && (
+        <div
+          className="pointer-events-none select-none"
+          style={{
+            position: 'fixed',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            zIndex: 0,
+            opacity: 0.07,
+          }}
+        >
+          <img
+            src={styles.watermark}
+            alt=""
+            aria-hidden="true"
+            draggable={false}
+            style={{
+              width: '70vw',
+              maxWidth: '360px',
+              objectFit: 'contain',
+            }}
+          />
+        </div>
+      )}
+
+      <div className="px-5 pt-4 pb-24 flex flex-col relative z-[1]">
         {/* Editorial entry line */}
         {category.entryLine && (
           <motion.p
@@ -113,7 +195,7 @@ export default function Category() {
               fontStyle: 'normal',
               fontWeight: 400,
               lineHeight: 1.35,
-              color: 'var(--accent-text)',
+              color: styles?.cardTitleColor ?? 'var(--accent-text)',
               textWrap: 'balance',
               hyphens: 'auto',
               display: 'block',
@@ -140,13 +222,14 @@ export default function Category() {
               isInProgress={isInProgress}
               onNavigate={() => navigate(`/card/${card.id}`)}
               isLast={index === cards.length - 1}
+              styles={styles}
             />
           );
         })}
 
         {/* Bottom anchor */}
         <div style={{
-          marginTop: '32px',
+          marginTop: '40px',
           textAlign: 'center',
           paddingBottom: 'calc(32px + env(safe-area-inset-bottom, 0px))',
         }}>
@@ -154,11 +237,11 @@ export default function Category() {
             fontFamily: 'var(--font-serif)',
             fontStyle: 'italic',
             fontSize: '14px',
-            color: 'var(--text-tertiary)',
-            opacity: 0.40,
+            color: styles?.cardTitleColor ?? 'var(--accent-saffron)',
+            opacity: 0.55,
             lineHeight: 1.5,
           }}>
-          {allCompleted
+            {allCompleted
               ? 'Ni har utforskat det här området.'
               : 'Välj ett samtal.'}
           </p>
@@ -176,10 +259,19 @@ export default function Category() {
           )}
           <button
             onClick={() => navigate(backTo)}
-            className="text-sm transition-opacity hover:opacity-70"
-            style={{ color: 'var(--color-text-tertiary)', opacity: 0.40, background: 'none', border: 'none', cursor: 'pointer', marginTop: '16px' }}
+            className="transition-opacity hover:opacity-70"
+            style={{
+              color: 'var(--color-text-tertiary)',
+              opacity: 0.40,
+              background: 'none',
+              border: 'none',
+              cursor: 'pointer',
+              marginTop: '16px',
+              padding: '8px',
+            }}
+            aria-label="Tillbaka"
           >
-            ← Tillbaka
+            <ChevronLeft size={20} strokeWidth={1.5} />
           </button>
         </div>
       </div>
@@ -187,7 +279,7 @@ export default function Category() {
   );
 }
 
-/* ─── Card Entry (tile-door pattern) ─── */
+/* ─── Card Entry (premium tile with illustration) ─── */
 
 interface CardEntryProps {
   card: {
@@ -200,17 +292,22 @@ interface CardEntryProps {
   isInProgress?: boolean;
   onNavigate: () => void;
   isLast?: boolean;
+  styles?: typeof PRODUCT_STYLES[string];
 }
 
-function CardEntry({ card, index, isCompleted = false, isInProgress = false, onNavigate, isLast = false }: CardEntryProps) {
-  
+function CardEntry({ card, index, isCompleted = false, isInProgress = false, onNavigate, isLast = false, styles }: CardEntryProps) {
+  const illustration = useCardImage(card.id);
+
+  const cardBg = styles?.cardBg ?? '#FFFFFF';
+  const titleColor = styles?.cardTitleColor ?? 'var(--text-primary)';
+  const subtitleColor = styles?.cardSubtitleColor ?? 'var(--text-secondary)';
 
   return (
     <motion.div
       initial={{ opacity: 0, y: 6 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: index * 0.06, duration: 0.5, ease: EASE }}
-      style={{ marginBottom: isLast ? '0' : '8px' }}
+      style={{ marginBottom: isLast ? '0' : '16px' }}
     >
       <div
         onClick={onNavigate}
@@ -220,21 +317,17 @@ function CardEntry({ card, index, isCompleted = false, isInProgress = false, onN
         onKeyDown={(e) => {
           if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onNavigate(); }
         }}
-        className="w-full cursor-pointer group"
+        className="w-full cursor-pointer group relative overflow-hidden"
         style={{
-          padding: '22px 20px',
-          background: isCompleted
-            ? 'var(--surface-raised)'
-            : 'var(--surface-raised)',
+          padding: '24px 20px',
+          background: `linear-gradient(180deg, ${cardBg} 0%, ${cardBg}E8 100%)`,
           border: 'none',
           borderRadius: '12px',
-          boxShadow: isCompleted
-            ? '0 1px 2px hsla(30, 15%, 30%, 0.03)'
-            : '0 4px 20px -4px hsla(30, 20%, 28%, 0.10), 0 12px 40px -10px hsla(30, 18%, 28%, 0.12)',
+          boxShadow: '0px 2px 6px rgba(44, 36, 32, 0.08), 0px 8px 24px -8px rgba(44, 36, 32, 0.06)',
           transition: 'transform 200ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 260ms ease-out',
+          minHeight: '100px',
         }}
         onPointerDown={(e) => {
-          if (isCompleted) return;
           const el = e.currentTarget;
           el.style.transform = 'scale(0.99)';
         }}
@@ -246,15 +339,53 @@ function CardEntry({ card, index, isCompleted = false, isInProgress = false, onN
           e.currentTarget.style.boxShadow = '';
         }}
         onPointerEnter={(e) => {
-          if (isCompleted) return;
           const el = e.currentTarget;
-          el.style.transform = 'translateY(-3px)';
+          el.style.transform = 'translateY(-2px)';
           el.style.boxShadow =
-            '0 4px 12px -4px hsla(30, 20%, 28%, 0.10), 0 12px 36px -8px hsla(30, 18%, 30%, 0.08)';
+            '0px 4px 12px rgba(44, 36, 32, 0.10), 0px 12px 36px -8px rgba(44, 36, 32, 0.08)';
         }}
       >
-        <div className="flex items-center">
-          {/* In-progress dot */}
+        {/* Card illustration watermark — right side */}
+        {illustration && (
+          <img
+            src={illustration}
+            alt=""
+            aria-hidden="true"
+            draggable={false}
+            className="pointer-events-none select-none absolute"
+            style={{
+              right: '12px',
+              top: '50%',
+              transform: 'translateY(-50%)',
+              height: '70%',
+              maxWidth: '30%',
+              objectFit: 'contain',
+              opacity: 0.09,
+            }}
+          />
+        )}
+
+        {/* Completion status — top right */}
+        {isCompleted && (
+          <span
+            className="absolute"
+            style={{
+              top: '10px',
+              right: '14px',
+              fontFamily: 'var(--font-sans)',
+              fontSize: '10px',
+              letterSpacing: '0.04em',
+              color: titleColor,
+              opacity: 0.5,
+              fontWeight: 500,
+            }}
+          >
+            Utforskad
+          </span>
+        )}
+
+        <div className="flex items-center relative z-[1]">
+          {/* In-progress dot — left edge */}
           {isInProgress && (
             <span
               style={{
@@ -262,66 +393,44 @@ function CardEntry({ card, index, isCompleted = false, isInProgress = false, onN
                 width: '8px',
                 height: '8px',
                 borderRadius: '50%',
-                backgroundColor: 'var(--accent-saffron)',
-                marginRight: '10px',
-                marginTop: '7px',
+                backgroundColor: titleColor,
+                marginRight: '12px',
                 flexShrink: 0,
                 animation: 'saffron-pulse 2.5s ease-in-out infinite',
               }}
             />
           )}
 
-          <div className="flex-1 min-w-0">
+          <div className="flex-1 min-w-0" style={{ paddingRight: illustration ? '20%' : '0' }}>
             <h3
-              className="font-serif"
               style={{
-                fontSize: '18px',
-                fontWeight: 600,
-                color: 'var(--text-primary)',
-                opacity: isCompleted ? 0.50 : 1,
+                fontFamily: "'DM Serif Display', var(--font-serif)",
+                fontSize: '20px',
+                fontWeight: 400,
+                color: titleColor,
+                opacity: isCompleted ? 0.60 : 1,
                 lineHeight: 1.3,
-                textAlign: 'center',
+                textAlign: 'left',
               }}
             >
               {card.title}
             </h3>
             {card.subtitle && (
               <p
-                className="font-serif"
                 style={{
+                  fontFamily: 'var(--font-serif)',
+                  fontStyle: 'italic',
                   fontSize: '14px',
-                  color: 'var(--text-secondary)',
-                  opacity: isCompleted ? 0.40 : 0.75,
-                  lineHeight: 1.5,
-                  marginTop: '4px',
-                  textAlign: 'center',
+                  color: subtitleColor,
+                  opacity: isCompleted ? 0.45 : 0.75,
+                  lineHeight: 1.4,
+                  marginTop: '6px',
+                  textAlign: 'left',
                 }}
               >
                 {card.subtitle}
               </p>
             )}
-          </div>
-
-          {/* Right side: check + chevron */}
-          <div className="flex items-center gap-2 shrink-0 ml-3 self-center">
-            {isCompleted && (
-              <span style={{
-                fontFamily: 'var(--font-sans)',
-                fontSize: '10px',
-                letterSpacing: '0.04em',
-                color: 'var(--cta-default)',
-                opacity: 0.55,
-                fontWeight: 500,
-              }}>
-                Avklarad
-              </span>
-            )}
-            <ChevronRight
-              size={16}
-              strokeWidth={1.5}
-              className="flex-shrink-0 transition-transform duration-150 group-hover:translate-x-0.5"
-              style={{ color: 'var(--accent-saffron)', opacity: 0.55 }}
-            />
           </div>
         </div>
       </div>
