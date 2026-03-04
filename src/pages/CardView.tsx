@@ -913,6 +913,23 @@ export default function CardView() {
             <CompletionTakeaway sessionId={activeSessionId} spaceId={space?.id ?? null} pronounMode={pronounMode} />
           </motion.div>
 
+          {/* Privacy reassurance — near the text field */}
+          <motion.p
+            className="font-serif italic"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.5, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+            style={{
+              fontSize: '13px',
+              color: 'var(--text-tertiary)',
+              textAlign: 'center',
+              marginTop: '12px',
+              opacity: 0.35,
+            }}
+          >
+            Inget ni skriver lämnar det här rummet.
+          </motion.p>
+
           {/* CTAs — cascading reveal */}
           <motion.div
             initial={{ opacity: 0 }}
@@ -1049,7 +1066,7 @@ export default function CardView() {
             zIndex: 2,
           }}
         >
-          ← Tillbaka
+          ←
         </motion.button>
 
         {/* Free card label — only on the free card, new products only */}
@@ -1073,7 +1090,7 @@ export default function CardView() {
               pointerEvents: 'none',
             }}
           >
-            Ditt gratis samtalskort
+            Ditt gratis samtal
           </motion.p>
         )}
 
@@ -1310,22 +1327,24 @@ export default function CardView() {
             </button>
           </motion.div>
 
-          {/* Sub-text */}
-          <motion.p
-            className="font-serif italic"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.40, duration: EMOTION, ease: [...EASE] }}
-            style={{
-              fontSize: '13px',
-              color: 'var(--text-tertiary)',
-              textAlign: 'center',
-              marginTop: '16px',
-              opacity: 0.35,
-            }}
-          >
-            {uiText.safetyNote}
-          </motion.p>
+          {/* Sub-text — safety note (only if non-empty) */}
+          {uiText.safetyNote && (
+            <motion.p
+              className="font-serif italic"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.40, duration: EMOTION, ease: [...EASE] }}
+              style={{
+                fontSize: '13px',
+                color: 'var(--text-tertiary)',
+                textAlign: 'center',
+                marginTop: '16px',
+                opacity: 0.35,
+              }}
+            >
+              {uiText.safetyNote}
+            </motion.p>
+          )}
         </div>
       </motion.div>
     );

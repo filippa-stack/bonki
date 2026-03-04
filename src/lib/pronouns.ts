@@ -106,9 +106,9 @@ export function getUIText(mode: PronounMode) {
     return {
       readAloud: 'Läs frågorna högt tillsammans.',
       talkTogether: 'Fundera på frågorna i lugn och ro.',
-      notekeeper: 'Anteckna det du vill minnas.',
+      notekeeper: 'Ta den tid ni behöver.',
       readyButton: 'Vi börjar',
-      safetyNote: 'Inget av det du skriver lämnar det här rummet.',
+      safetyNote: '',
       takeawayPlaceholder: 'Skriv något du vill bära med dig.',
       takeawayPrompt: 'Finns det något du vill komma ihåg?',
       seeNotes: 'Se alla dina anteckningar',
