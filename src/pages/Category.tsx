@@ -21,37 +21,30 @@ const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
 const PRODUCT_STYLES: Record<string, {
   cardBg: string;
   cardTitleColor: string;
-  cardSubtitleColor: string;
 }> = {
   jag_i_mig: {
     cardBg: '#F5EDD2',
     cardTitleColor: '#8A9A10',
-    cardSubtitleColor: '#6B6742',
   },
   jag_med_andra: {
     cardBg: '#F0D9EA',
     cardTitleColor: '#9825D6',
-    cardSubtitleColor: '#5E4058',
   },
   jag_i_varlden: {
     cardBg: '#C8E6D0',
     cardTitleColor: '#3D7A45',
-    cardSubtitleColor: '#3A6B48',
   },
   sexualitetskort: {
     cardBg: '#F0D9E2',
     cardTitleColor: '#B5646E',
-    cardSubtitleColor: '#6B4858',
   },
   vardagskort: {
     cardBg: '#D2E8E8',
     cardTitleColor: '#0F6B99',
-    cardSubtitleColor: '#2A5858',
   },
   syskonkort: {
     cardBg: '#D6E2F0',
     cardTitleColor: '#0F4E99',
-    cardSubtitleColor: '#2A3E68',
   },
 };
 
@@ -137,7 +130,7 @@ export default function Category() {
 
   return (
     <div className="min-h-screen relative" style={{ backgroundColor: '#FAF7F2' }}>
-      <Header title={category?.title} showBack backTo={backTo} />
+      <Header title={category?.title} titleColor={styles?.cardTitleColor} showBack backTo={backTo} />
 
       {/* BONKI logo watermark behind the card list */}
       <div
@@ -273,7 +266,7 @@ function CardEntry({ card, index, isCompleted = false, isInProgress = false, onN
 
   const cardBg = styles?.cardBg ?? '#FFFFFF';
   const titleColor = styles?.cardTitleColor ?? 'var(--text-primary)';
-  const subtitleColor = styles?.cardSubtitleColor ?? 'var(--text-secondary)';
+  const subtitleColor = '#8A8078';
 
   return (
     <motion.div
@@ -327,13 +320,14 @@ function CardEntry({ card, index, isCompleted = false, isInProgress = false, onN
             draggable={false}
             className="pointer-events-none select-none absolute"
             style={{
-              right: '12px',
+              right: '16px',
               top: '50%',
               transform: 'translateY(-50%)',
-              height: '70%',
-              maxWidth: '30%',
+              height: '65%',
+              width: '25%',
               objectFit: 'contain',
-              opacity: 0.09,
+              objectPosition: 'right center',
+              opacity: 0.08,
             }}
           />
         )}

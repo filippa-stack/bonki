@@ -9,6 +9,7 @@ import bonkiLogo from '@/assets/bonki-logo.png';
 
 interface HeaderProps {
   title?: string;
+  titleColor?: string;
   showBack?: boolean;
   backTo?: string;
   showSharedLink?: boolean;
@@ -22,6 +23,7 @@ interface HeaderProps {
 
 export default function Header({
   title,
+  titleColor,
   showBack = false,
   backTo,
   showSharedLink = false,
@@ -200,7 +202,7 @@ export default function Header({
             {title && (
               <h1
                 className="font-serif text-lg font-medium truncate absolute left-1/2 -translate-x-1/2 max-w-[50%] text-center pointer-events-none"
-                style={{ color: 'white', opacity: 0.90 }}
+                style={{ color: titleColor || 'white', opacity: 0.90 }}
               >
                 {title}
               </h1>
