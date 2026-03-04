@@ -178,7 +178,7 @@ export default function Header({
                     fontSize: '13px',
                     fontWeight: 500,
                     color: 'var(--color-text-secondary)',
-                    opacity: 0.5,
+                    opacity: 0.7,
                     letterSpacing: '0.04em',
                   }}
                   onClick={() => navigate('/', { replace: false })}
@@ -209,7 +209,7 @@ export default function Header({
                     fontSize: '12px',
                     letterSpacing: '0.04em',
                     color: 'var(--color-text-secondary)',
-                    opacity: 0.45,
+                    opacity: 0.6,
                     cursor: 'pointer',
                     padding: '8px 4px',
                     minHeight: '44px',
@@ -245,7 +245,7 @@ export default function Header({
                   onPointerUp={(e) => { e.currentTarget.style.opacity = '0.70'; }}
                   onPointerLeave={(e) => { e.currentTarget.style.opacity = '0.70'; }}
                 >
-                  <Settings size={18} style={{ color: 'var(--color-text-secondary)', opacity: 0.4 }} />
+                  <Settings size={18} style={{ color: 'var(--color-text-secondary)', opacity: 0.55 }} />
                 </button>
               )}
             </div>
