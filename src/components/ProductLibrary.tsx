@@ -28,12 +28,12 @@ const TAGLINES: Record<string, string> = {
 };
 
 const PASTEL_COLORS: Record<string, string> = {
-  jag_i_mig: '#FFF8E8',
-  jag_med_andra: '#F8E8F4',
-  jag_i_varlden: '#E4F5EA',
-  sexualitetskort: '#F8E8EE',
-  vardagskort: '#E6F4F4',
-  syskonkort: '#E8F0F8',
+  jag_i_mig: '#F5EDD2',
+  jag_med_andra: '#F0D9EA',
+  jag_i_varlden: '#D2ECDB',
+  sexualitetskort: '#F0D9E2',
+  vardagskort: '#D2E8E8',
+  syskonkort: '#D6E2F0',
 };
 
 const ACCENT_COLORS: Record<string, string> = {
@@ -47,12 +47,12 @@ const ACCENT_COLORS: Record<string, string> = {
 
 /** Darkened background tones for taglines — quiet, printed-on-paper feel */
 const TAGLINE_COLORS: Record<string, string> = {
-  jag_i_mig: '#8A8468',
-  jag_med_andra: '#7A6874',
-  jag_i_varlden: '#5A7A62',
-  sexualitetskort: '#7A6874',
-  vardagskort: '#5A7878',
-  syskonkort: '#5A6878',
+  jag_i_mig: '#6B6742',
+  jag_med_andra: '#5E4058',
+  jag_i_varlden: '#3A6B48',
+  sexualitetskort: '#6B4858',
+  vardagskort: '#2A5858',
+  syskonkort: '#2A3E68',
 };
 
 const COMING_SOON_PRODUCTS = [
