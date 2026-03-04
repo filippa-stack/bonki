@@ -49,11 +49,12 @@ const ILLUSTRATION_OPACITY: Record<string, number> = {
 };
 
 const ILLUSTRATION_SIZE: Record<string, string> = {
-  jag_med_andra: '80% auto',
+  jag_i_mig: '120% auto',
+  jag_med_andra: '70% auto',
 };
 
 const ILLUSTRATION_POSITION: Record<string, string> = {
-  jag_i_mig: '72% 65%',
+  jag_i_mig: '70% 55%',
 };
 
 /** Restored strong accent colors for tile titles */
