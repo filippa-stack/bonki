@@ -423,7 +423,7 @@ export default function ProductLibrary() {
               style={{
                 borderRadius: '16px',
                 padding: '20px 16px',
-                background: 'linear-gradient(135deg, hsla(0,0%,100%,0.06) 0%, hsla(0,0%,0%,0.03) 100%), hsla(14, 30%, 63%, 0.65)',
+                background: 'linear-gradient(135deg, #E0C4B8 0%, #D4AFA0 100%)',
                 textAlign: 'center',
                 position: 'relative',
                 overflow: 'hidden',
@@ -432,9 +432,8 @@ export default function ProductLibrary() {
                 flexDirection: 'column',
                 alignItems: 'center',
                 justifyContent: 'center',
-                gap: '4px',
-                border: '1px solid rgba(44, 36, 32, 0.06)',
-                boxShadow: '0px 2px 8px rgba(44, 36, 32, 0.08)',
+                border: '1px solid rgba(44, 36, 32, 0.05)',
+                boxShadow: '0px 3px 12px rgba(44, 36, 32, 0.07)',
               }}
             >
               <h3
@@ -442,7 +441,7 @@ export default function ProductLibrary() {
                   fontFamily: "'DM Serif Display', serif",
                   fontSize: '22px',
                   fontWeight: 400,
-                  color: 'hsla(14, 35%, 30%, 0.75)',
+                  color: '#7A5A4E',
                   letterSpacing: '0.02em',
                 }}
               >
@@ -451,10 +450,11 @@ export default function ProductLibrary() {
               <p
                 className="font-serif"
                 style={{
-                  fontSize: '10px',
-                  color: '#8A8078',
-                  fontStyle: 'normal',
-                  lineHeight: 1.35,
+                  fontSize: '11px',
+                  color: '#9A8578',
+                  fontStyle: 'italic',
+                  lineHeight: 1.4,
+                  marginTop: '5px',
                 }}
               >
                 För allt som görs<br />men aldrig syns
@@ -466,19 +466,23 @@ export default function ProductLibrary() {
                   // TODO: implement reminder logic
                 }}
                 style={{
-                  marginTop: '4px',
-                  fontSize: '9px',
+                  marginTop: '8px',
+                  fontSize: '11px',
                   fontWeight: 400,
                   fontStyle: 'normal',
-                  color: 'hsla(38, 70%, 48%, 0.65)',
+                  color: 'var(--accent-saffron)',
                   background: 'none',
                   border: 'none',
-                  borderBottom: '1px solid hsla(38, 70%, 48%, 0.3)',
-                  padding: '0 0 1px 0',
+                  padding: '0',
                   cursor: 'pointer',
+                  textDecoration: 'none',
+                  borderBottom: '1px solid transparent',
+                  transition: 'border-color 0.2s',
                 }}
+                onMouseEnter={e => (e.currentTarget.style.borderBottomColor = 'var(--accent-saffron)')}
+                onMouseLeave={e => (e.currentTarget.style.borderBottomColor = 'transparent')}
               >
-                kommer snart – påminn
+                kommer snart — påminn
               </button>
             </motion.div>
           </div>
