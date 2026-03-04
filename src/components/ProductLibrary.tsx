@@ -432,7 +432,7 @@ export default function ProductLibrary() {
                   marginBottom: '4px',
                 }}
               >
-                Coming soon
+                Kommer snart
               </span>
               <h3
                 className="font-serif"
