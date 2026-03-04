@@ -221,7 +221,7 @@ function PastelTile({
       onClick={onClick}
       className="cursor-pointer"
       style={{
-        borderRadius: '16px',
+        borderRadius: '13px',
         background: `linear-gradient(180deg, ${bg} 0%, ${bottomColor} 100%)`,
         aspectRatio,
         display: 'flex',
@@ -233,7 +233,7 @@ function PastelTile({
         position: 'relative',
         overflow: 'hidden',
         border: '1px solid rgba(44, 36, 32, 0.05)',
-        boxShadow: '0px 6px 20px rgba(44, 36, 32, 0.15), 0px 2px 4px rgba(44, 36, 32, 0.08)',
+        boxShadow: '0px 1px 3px rgba(44, 36, 32, 0.12), 0px 4px 8px rgba(44, 36, 32, 0.08)',
       }}
     >
       {ageLabel && (
@@ -375,7 +375,7 @@ export default function ProductLibrary() {
               onClick={() => navigate('/')}
               className="cursor-pointer"
               style={{
-                borderRadius: '16px',
+                borderRadius: '13px',
                 padding: '24px 16px 16px',
                 background: `linear-gradient(135deg, #35564A 0%, #243E34 100%)`,
                 textAlign: 'center',
@@ -387,14 +387,14 @@ export default function ProductLibrary() {
                 alignItems: 'center',
                 justifyContent: 'flex-start',
                 border: '1px solid rgba(255, 255, 255, 0.06)',
-                boxShadow: '0px 4px 16px rgba(20, 30, 25, 0.25), 0px 1px 3px rgba(20, 30, 25, 0.12)',
+                boxShadow: '0px 1px 3px rgba(44, 36, 32, 0.12), 0px 4px 8px rgba(44, 36, 32, 0.08)',
               }}
             >
               {/* Noise texture overlay */}
               <div style={{
                 position: 'absolute',
                 inset: 0,
-                borderRadius: '16px',
+                borderRadius: '13px',
                 opacity: 0.03,
                 backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")`,
                 backgroundSize: '128px 128px',
@@ -429,7 +429,7 @@ export default function ProductLibrary() {
             <motion.div
               variants={tileVariants}
               style={{
-                borderRadius: '16px',
+                borderRadius: '13px',
                 padding: '24px 16px 16px',
                 background: 'linear-gradient(135deg, #9B7264 0%, #7A5545 100%)',
                 textAlign: 'center',
@@ -441,14 +441,14 @@ export default function ProductLibrary() {
                 alignItems: 'center',
                 justifyContent: 'flex-start',
                 border: '1px solid rgba(255, 255, 255, 0.06)',
-                boxShadow: '0px 4px 16px rgba(20, 15, 10, 0.25), 0px 1px 3px rgba(20, 15, 10, 0.12)',
+                boxShadow: '0px 1px 3px rgba(44, 36, 32, 0.12), 0px 4px 8px rgba(44, 36, 32, 0.08)',
               }}
             >
               {/* Noise texture overlay */}
               <div style={{
                 position: 'absolute',
                 inset: 0,
-                borderRadius: '16px',
+                borderRadius: '13px',
                 opacity: 0.03,
                 backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")`,
                 backgroundSize: '128px 128px',
