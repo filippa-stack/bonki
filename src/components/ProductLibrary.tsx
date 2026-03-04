@@ -417,23 +417,10 @@ export default function ProductLibrary() {
                 flexDirection: 'column',
                 alignItems: 'center',
                 justifyContent: 'center',
+                gap: '4px',
                 border: '1px solid hsla(14, 40%, 66%, 0.2)',
               }}
             >
-              <span
-                className="font-sans"
-                style={{
-                  position: 'absolute',
-                  top: '8px',
-                  right: '10px',
-                  fontSize: '9px',
-                  fontWeight: 600,
-                  letterSpacing: '0.06em',
-                  color: 'hsla(14, 40%, 45%, 0.5)',
-                }}
-              >
-                Kommer snart
-              </span>
               <h3
                 className="font-serif"
                 style={{
@@ -450,28 +437,27 @@ export default function ProductLibrary() {
                 style={{
                   fontSize: '10px',
                   color: 'var(--accent-saffron)',
-                  marginTop: '4px',
                   fontStyle: 'italic',
+                  lineHeight: 1.35,
                 }}
               >
-                För allt som görs men aldrig syns
+                För allt som görs<br />men aldrig syns
               </p>
               <button
-                className="font-sans"
+                className="font-serif"
                 onClick={(e) => {
                   e.stopPropagation();
                   // TODO: implement reminder logic
                 }}
                 style={{
-                  marginTop: '10px',
-                  fontSize: '10px',
+                  marginTop: '4px',
+                  fontSize: '9px',
                   fontWeight: 400,
                   fontStyle: 'italic',
-                  letterSpacing: '0.02em',
-                  color: 'hsla(38, 70%, 48%, 0.65)',
+                  color: 'hsla(14, 35%, 40%, 0.45)',
                   background: 'none',
                   border: 'none',
-                  borderBottom: '1px solid hsla(38, 70%, 48%, 0.3)',
+                  borderBottom: '1px solid hsla(14, 35%, 40%, 0.2)',
                   padding: '0 0 1px 0',
                   cursor: 'pointer',
                 }}
