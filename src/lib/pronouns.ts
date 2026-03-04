@@ -122,7 +122,7 @@ export function getUIText(mode: PronounMode) {
       ritualHints: {
         opening:    { together: 'Det finns inget rätt svar här. Bara ert.',  solo: 'Det finns inget rätt svar här. Bara ert.' },
         reflective: { together: 'Ta tid på er innan ni svarar.',           solo: 'Ta tid på er innan ni svarar.' },
-        scenario:   { together: 'Välj ett perspektiv - inte en skyldig.',    solo: 'Välj ett perspektiv - inte en skyldig.' },
+        scenario:   { together: 'Tänk er in i situationen tillsammans.',    solo: 'Tänk dig in i situationen.' },
         exercise:   { together: 'Gör en liten sak ni faktiskt kan hålla.',   solo: 'Gör en liten sak ni faktiskt kan hålla.' },
       },
     };
