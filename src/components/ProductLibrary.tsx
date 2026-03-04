@@ -225,7 +225,7 @@ function PastelTile({
               color: taglineColor || '#8A8078',
               marginTop: '4px',
               lineHeight: 1.4,
-              maxWidth: wide ? '55%' : '85%',
+              maxWidth: wide ? '55%' : '75%',
             }}
           >
             {tagline}
@@ -286,7 +286,7 @@ export default function ProductLibrary() {
               backgroundSize: 'contain',
               backgroundRepeat: 'no-repeat',
               backgroundPosition: 'center',
-              opacity: 0.32,
+              opacity: 0.45,
             }}
           />
           <p
@@ -307,7 +307,7 @@ export default function ProductLibrary() {
 
         {/* ── Ni Två ── */}
         <motion.div
-          className="px-5 mt-8"
+          className="px-5 mt-5"
           variants={containerVariants}
           initial="hidden"
           animate="visible"
@@ -386,23 +386,23 @@ export default function ProductLibrary() {
               }}>
                 För allt som görs men aldrig syns
               </p>
-              <button
-                onClick={(e) => { e.stopPropagation(); }}
+              <span
                 style={{
-                  marginTop: '8px',
+                  marginTop: '10px',
                   fontFamily: "'Lato', sans-serif",
-                  fontSize: '10px', fontWeight: 400,
-                  color: 'var(--accent-saffron)',
-                  background: 'none', border: 'none', padding: '0',
-                  cursor: 'pointer', zIndex: 1,
-                  borderBottom: '1px solid transparent',
-                  transition: 'border-color 0.2s',
+                  fontSize: '9px',
+                  fontWeight: 600,
+                  letterSpacing: '0.08em',
+                  textTransform: 'uppercase',
+                  color: '#E8C4D4',
+                  background: 'rgba(255, 255, 255, 0.08)',
+                  padding: '3px 10px',
+                  borderRadius: '20px',
+                  zIndex: 1,
                 }}
-                onMouseEnter={e => (e.currentTarget.style.borderBottomColor = 'var(--accent-saffron)')}
-                onMouseLeave={e => (e.currentTarget.style.borderBottomColor = 'transparent')}
               >
-                kommer snart — påminn
-              </button>
+                Kommer snart
+              </span>
             </motion.div>
           </div>
         </motion.div>
@@ -521,13 +521,15 @@ export default function ProductLibrary() {
           transition={{ delay: 0.8, duration: 0.6 }}
           style={{ textAlign: 'center', padding: '0 20px', paddingBottom: 'calc(40px + env(safe-area-inset-bottom, 0px))' }}
         >
+          <div style={{ width: '32px', height: '1px', background: '#A09890', opacity: 0.2, margin: '0 auto 14px' }} />
           <p
             style={{
-              fontFamily: "'Lato', sans-serif",
-              fontStyle: 'normal',
+              fontFamily: "'DM Serif Display', serif",
+              fontStyle: 'italic',
               fontSize: '13px',
               color: 'var(--accent-text)',
-              opacity: 0.55,
+              opacity: 0.5,
+              lineHeight: 1.6,
             }}
           >
             Utvecklat av psykolog med 20+ års klinisk erfarenhet.
