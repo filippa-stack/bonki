@@ -1,9 +1,9 @@
-import { useState } from 'react';
-import { useTranslation } from 'react-i18next';
+import { useState, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Check, Lock, Sparkles } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
+import { useCardImage } from '@/hooks/useCardImage';
 import type { ProductManifest } from '@/types/product';
 
 const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
@@ -11,20 +11,37 @@ const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
 interface ProductPaywallProps {
   product: ProductManifest;
   onAccessGranted?: () => void;
+  /** The card ID that triggered the paywall — used for watermark */
+  cardId?: string;
 }
 
 /**
- * Per-product paywall screen.
- * Shows product name, price, benefits, and a Stripe checkout button.
- * Falls back gracefully when Stripe is not yet configured.
+ * Per-product paywall — warm editorial design matching product identity.
+ * Shows what the user experienced, what's waiting, and the price.
  */
-export default function ProductPaywall({ product, onAccessGranted }: ProductPaywallProps) {
-  const { t } = useTranslation();
+export default function ProductPaywall({ product, onAccessGranted, cardId }: ProductPaywallProps) {
+  const navigate = useNavigate();
   const { user } = useAuth();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const priceSek = 149; // Default; actual price comes from DB via checkout endpoint
+  const priceSek = 149;
+
+  // Card image for watermark
+  const watermarkUrl = useCardImage(cardId ?? null);
+
+  // Find the free card's title
+  const freeCard = useMemo(
+    () => product.cards.find(c => c.id === product.freeCardId),
+    [product]
+  );
+  const freeCardTitle = freeCard?.title ?? 'ditt första samtal';
+
+  // All card titles except the free one
+  const remainingCards = useMemo(
+    () => product.cards.filter(c => c.id !== product.freeCardId),
+    [product]
+  );
 
   const handlePurchase = async () => {
     if (!user) return;
@@ -67,7 +84,6 @@ export default function ProductPaywall({ product, onAccessGranted }: ProductPayw
         return;
       }
 
-      // Redirect to Stripe Checkout
       if (json.url) {
         window.location.href = json.url;
       }
@@ -79,78 +95,134 @@ export default function ProductPaywall({ product, onAccessGranted }: ProductPayw
     }
   };
 
-  const benefits = [
-    t('paywall.benefit_all_cards', 'Alla kort och samtalsämnen'),
-    t('paywall.benefit_reflections', 'Personliga reflektioner och minnen'),
-    t('paywall.benefit_forever', 'Tillgång för alltid — inga dolda kostnader'),
-  ];
-
   return (
     <div
-      className="min-h-[60vh] flex flex-col items-center justify-center px-6 py-12"
+      className="min-h-[80vh] relative flex flex-col px-6 py-12"
       style={{ backgroundColor: 'var(--surface-base)' }}
     >
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, ease: EASE }}
-        className="w-full max-w-sm text-center"
-      >
-        {/* Lock icon */}
+      {/* Watermark illustration */}
+      {watermarkUrl && (
+        <div
+          style={{
+            position: 'absolute',
+            bottom: 0,
+            right: 0,
+            width: '55%',
+            height: '45%',
+            backgroundImage: `url(${watermarkUrl})`,
+            backgroundSize: 'contain',
+            backgroundRepeat: 'no-repeat',
+            backgroundPosition: 'bottom right',
+            opacity: 0.055,
+            pointerEvents: 'none',
+            zIndex: 0,
+          }}
+        />
+      )}
+
+      <div className="max-w-sm mx-auto w-full relative" style={{ zIndex: 1 }}>
+        {/* Saffron ceremony line */}
         <motion.div
-          initial={{ scale: 0.8, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{ delay: 0.1, duration: 0.5, ease: EASE }}
-          className="flex justify-center mb-6"
+          initial={{ scaleX: 0 }}
+          animate={{ scaleX: 1 }}
+          transition={{ delay: 0.15, duration: 0.8, ease: EASE }}
+          style={{
+            width: '32px',
+            height: '2px',
+            borderRadius: '1px',
+            background: 'var(--accent-saffron)',
+            opacity: 0.5,
+            margin: '0 auto 20px',
+            transformOrigin: 'center',
+          }}
+        />
+
+        {/* Headline */}
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2, duration: 0.7, ease: EASE }}
+          className="text-center"
+          style={{ marginBottom: '32px' }}
         >
-          <div
-            className="w-16 h-16 rounded-full flex items-center justify-center"
-            style={{ backgroundColor: product.accentColorMuted }}
+          <h2
+            className="font-serif"
+            style={{
+              fontSize: 'clamp(22px, 5.5vw, 28px)',
+              fontWeight: 600,
+              color: 'var(--text-primary)',
+              lineHeight: 1.3,
+              textWrap: 'balance',
+            }}
           >
-            <Lock className="w-7 h-7" style={{ color: product.accentColor }} />
-          </div>
+            Det här var {freeCardTitle} — ett av {product.cards.length} samtalsämnen i {product.name}
+          </h2>
         </motion.div>
 
-        {/* Title */}
-        <h2
-          className="font-serif"
-          style={{
-            fontSize: '26px',
-            fontWeight: 600,
-            color: 'var(--color-text-primary)',
-            letterSpacing: '-0.01em',
-            lineHeight: 1.2,
-          }}
+        {/* Remaining topics */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.35, duration: 0.6, ease: EASE }}
+          style={{ marginBottom: '36px' }}
         >
-          {t('paywall.unlock', 'Lås upp')} {product.name}
-        </h2>
+          <p
+            className="font-sans"
+            style={{
+              fontSize: '10px',
+              letterSpacing: '0.10em',
+              textTransform: 'uppercase',
+              color: 'var(--text-tertiary)',
+              opacity: 0.55,
+              marginBottom: '14px',
+              textAlign: 'center',
+            }}
+          >
+            {remainingCards.length} samtalsämnen väntar
+          </p>
 
-        <p
-          style={{
-            fontFamily: 'var(--font-sans)',
-            fontSize: '14px',
-            color: 'var(--color-text-secondary)',
-            marginTop: '12px',
-            lineHeight: 1.6,
-          }}
-        >
-          {product.tagline}
-        </p>
+          <div
+            style={{
+              display: 'flex',
+              flexWrap: 'wrap',
+              justifyContent: 'center',
+              gap: '6px 10px',
+            }}
+          >
+            {remainingCards.map((card, i) => (
+              <motion.span
+                key={card.id}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.4 + i * 0.03, duration: 0.4 }}
+                className="font-serif"
+                style={{
+                  fontSize: '15px',
+                  color: 'var(--text-secondary)',
+                  lineHeight: 1.6,
+                }}
+              >
+                {card.title}{i < remainingCards.length - 1 ? ' ·' : ''}
+              </motion.span>
+            ))}
+          </div>
+        </motion.div>
 
         {/* Price */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 0.3, duration: 0.5 }}
-          style={{ marginTop: '28px' }}
+          transition={{ delay: 0.5, duration: 0.5 }}
+          className="text-center"
+          style={{ marginBottom: '28px' }}
         >
           <div className="flex items-baseline justify-center gap-1">
             <span
               className="font-serif"
               style={{
-                fontSize: '44px',
+                fontSize: '40px',
                 fontWeight: 700,
-                color: 'var(--color-text-primary)',
+                color: 'var(--text-primary)',
                 letterSpacing: '-0.03em',
                 lineHeight: 1,
               }}
@@ -162,7 +234,7 @@ export default function ProductPaywall({ product, onAccessGranted }: ProductPayw
                 fontFamily: 'var(--font-sans)',
                 fontSize: '16px',
                 fontWeight: 500,
-                color: 'var(--color-text-secondary)',
+                color: 'var(--text-secondary)',
               }}
             >
               kr
@@ -174,75 +246,31 @@ export default function ProductPaywall({ product, onAccessGranted }: ProductPayw
               fontSize: '11px',
               letterSpacing: '0.06em',
               textTransform: 'uppercase',
-              color: 'var(--color-text-tertiary)',
-              opacity: 0.6,
+              color: 'var(--text-tertiary)',
+              opacity: 0.55,
               marginTop: '6px',
             }}
           >
-            Engångsköp
+            Engångsköp · Tillgång för alltid
           </p>
-        </motion.div>
-
-        {/* Benefits */}
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4, duration: 0.5 }}
-          style={{
-            marginTop: '28px',
-            padding: '20px 24px',
-            borderRadius: 'var(--radius-card)',
-            backgroundColor: 'var(--surface-raised)',
-            boxShadow: '0 1px 2px hsla(30,15%,25%,0.04), 0 4px 16px -4px hsla(30,18%,28%,0.06)',
-          }}
-        >
-          <div className="flex flex-col gap-3">
-            {benefits.map((b, i) => (
-              <div key={i} className="flex items-center gap-3">
-                <div
-                  className="w-5 h-5 rounded-full flex items-center justify-center shrink-0"
-                  style={{ backgroundColor: product.accentColor }}
-                >
-                  <Check className="w-3 h-3 text-white" />
-                </div>
-                <p
-                  style={{
-                    fontFamily: 'var(--font-sans)',
-                    fontSize: '13px',
-                    color: 'var(--color-text-primary)',
-                    lineHeight: 1.5,
-                    textAlign: 'left',
-                  }}
-                >
-                  {b}
-                </p>
-              </div>
-            ))}
-          </div>
         </motion.div>
 
         {/* CTA */}
         <motion.div
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.55, duration: 0.5 }}
-          style={{ marginTop: '28px' }}
+          transition={{ delay: 0.6, duration: 0.5 }}
+          className="flex flex-col items-center"
         >
           <button
             onClick={handlePurchase}
             disabled={loading}
             className="cta-primary w-full max-w-[260px]"
-            style={{
-              boxShadow: `0 2px 12px -2px ${product.accentColor}33`,
-            }}
           >
             {loading ? (
               <span className="animate-pulse">Förbereder...</span>
             ) : (
-              <span className="inline-flex items-center gap-2">
-                <Sparkles className="w-4 h-4" />
-                Lås upp för {priceSek} kr
-              </span>
+              `Lås upp ${product.name}`
             )}
           </button>
 
@@ -263,16 +291,33 @@ export default function ProductPaywall({ product, onAccessGranted }: ProductPayw
             style={{
               fontFamily: 'var(--font-sans)',
               fontSize: '11px',
-              color: 'var(--color-text-tertiary)',
-              opacity: 0.5,
+              color: 'var(--text-tertiary)',
+              opacity: 0.45,
               marginTop: '14px',
-              lineHeight: 1.5,
             }}
           >
-            Säker betalning via Stripe · Ingen prenumeration
+            Säker betalning · Ingen prenumeration
           </p>
+
+          <button
+            onClick={() => navigate('/?devState=library')}
+            className="font-sans"
+            style={{
+              fontSize: '13px',
+              color: 'var(--text-secondary)',
+              opacity: 0.50,
+              background: 'none',
+              border: 'none',
+              cursor: 'pointer',
+              textDecoration: 'underline',
+              textUnderlineOffset: '3px',
+              marginTop: '24px',
+            }}
+          >
+            Tillbaka till biblioteket
+          </button>
         </motion.div>
-      </motion.div>
+      </div>
     </div>
   );
 }

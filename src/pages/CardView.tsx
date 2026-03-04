@@ -764,6 +764,7 @@ export default function CardView() {
         <Header title={card.title} showBack />
         <ProductPaywall
           product={product}
+          cardId={cardId}
           onAccessGranted={() => window.location.reload()}
         />
       </div>
