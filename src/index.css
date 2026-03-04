@@ -159,6 +159,8 @@ h1, h2, h3,
     --surface-base:   hsl(var(--neutral-50));
     --surface-raised: hsl(var(--neutral-100));
     --surface-sunken: hsl(var(--neutral-200));
+    --surface-library: hsl(37, 71%, 96%);       /* #FAF7F2 warm linen */
+    --text-library:    hsl(16, 15%, 15%);        /* #2C2420 warm charcoal */
 
     /* ── CTA pressed/hover states ── */
     --cta-default: hsl(158, 35%, 18%);
