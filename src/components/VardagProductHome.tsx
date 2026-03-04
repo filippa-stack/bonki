@@ -76,6 +76,32 @@ export default function VardagProductHome({ product }: { product: ProductManifes
               </motion.button>
             );
           })}
+
+          {/* Diary link */}
+          <motion.button
+            variants={pillVariants}
+            onClick={() => navigate(`/diary/${product.id}`)}
+            style={{
+              background: 'none',
+              border: 'none',
+              cursor: 'pointer',
+              marginTop: '1vh',
+              padding: '8px 16px',
+            }}
+          >
+            <span
+              className="font-serif"
+              style={{
+                fontSize: 'clamp(14px, 3.8vw, 17px)',
+                color: TEXT_COLOR,
+                opacity: 0.55,
+                textDecoration: 'underline',
+                textUnderlineOffset: '3px',
+              }}
+            >
+              Vår dagbok
+            </span>
+          </motion.button>
         </motion.div>
       </div>
     </div>
