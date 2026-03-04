@@ -37,7 +37,7 @@ const TAGLINES: Record<string, string> = {
 const PASTEL_COLORS: Record<string, string> = {
   jag_i_mig: '#F5EDD2',
   jag_med_andra: '#F0D9EA',
-  jag_i_varlden: '#D2ECDB',
+  jag_i_varlden: '#C8E6D0',
   sexualitetskort: '#F0D9E2',
   vardagskort: '#D2E8E8',
   syskonkort: '#D6E2F0',
@@ -47,6 +47,7 @@ const PASTEL_COLORS: Record<string, string> = {
 const ILLUSTRATION_OPACITY: Record<string, number> = {
   jag_i_varlden: 0.055,
   jag_i_mig: 0.075,
+  syskonkort: 0.07,
 };
 
 const ACCENT_COLORS: Record<string, string> = {
