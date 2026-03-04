@@ -559,14 +559,14 @@ export default function Diary() {
               }}
             >
               <img
-                src={bonkiLogo}
-                alt="Bonki"
+                src={PRODUCT_ILLUSTRATIONS[product.id] || bonkiLogo}
+                alt={product.name}
                 draggable={false}
                 style={{
                   width: '45vw',
                   maxWidth: '220px',
                   objectFit: 'contain',
-                  opacity: 0.18,
+                  opacity: 0.15,
                   userSelect: 'none',
                 }}
               />
