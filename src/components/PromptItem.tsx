@@ -195,33 +195,43 @@ export default function PromptItem({ prompt, index, sectionType, preamble }: Pro
           </motion.div>
         ) : (
           /* ── Default: centered question text with staggered entrance ── */
-          <motion.div
-            key={`question-${index}-${prompt.text.slice(0, 20)}`}
-            initial={{ opacity: 0, y: 14 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{
-              duration: 0.7,
-              delay: preamble ? 0.25 : 0,
-              ease: enterEase,
-            }}
-            className={`w-full text-center ${preamble ? 'mt-10' : ''}`}
-            style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}
-          >
-            {prompt.text.split('\n').filter(p => p.trim() !== '').map((para, i) => (
-              <p
-                key={i}
-                className="font-serif"
-                style={{
-                  fontSize: 'clamp(24px, 6vw, 32px)',
-                  textWrap: 'balance',
-                  textAlign: 'center',
-                  ...gravity,
+          /* Long scenario texts (>120 chars) switch to left-aligned, smaller type for readability */
+          (() => {
+            const isLongText = prompt.text.length > 120 && sectionType === 'scenario';
+            return (
+              <motion.div
+                key={`question-${index}-${prompt.text.slice(0, 20)}`}
+                initial={{ opacity: 0, y: 14 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{
+                  duration: 0.7,
+                  delay: preamble ? 0.25 : 0,
+                  ease: enterEase,
                 }}
+                className={`w-full ${isLongText ? 'text-left' : 'text-center'} ${preamble ? 'mt-10' : ''}`}
+                style={{ display: 'flex', flexDirection: 'column', gap: isLongText ? '12px' : '16px' }}
               >
-                {para}
-              </p>
-            ))}
-          </motion.div>
+                {prompt.text.split('\n').filter(p => p.trim() !== '').map((para, i) => (
+                  <p
+                    key={i}
+                    className="font-serif"
+                    style={{
+                      fontSize: isLongText
+                        ? 'clamp(18px, 4.2vw, 22px)'
+                        : 'clamp(24px, 6vw, 32px)',
+                      textWrap: isLongText ? 'pretty' : 'balance',
+                      textAlign: isLongText ? 'left' : 'center',
+                      ...gravity,
+                      lineHeight: isLongText ? 1.5 : gravity.lineHeight,
+                      fontWeight: isLongText ? 400 : gravity.fontWeight,
+                    }}
+                  >
+                    {para}
+                  </p>
+                ))}
+              </motion.div>
+            );
+          })()
         )}
       </div>
     </div>
