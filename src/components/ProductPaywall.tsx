@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useAuth } from '@/contexts/AuthContext';
@@ -24,8 +24,19 @@ export default function ProductPaywall({ product, onAccessGranted, cardId }: Pro
   const { user } = useAuth();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [priceSek, setPriceSek] = useState<number | null>(null);
 
-  const priceSek = 149;
+  // Fetch dynamic price from DB
+  useEffect(() => {
+    supabase
+      .from('products')
+      .select('price_sek')
+      .eq('id', product.id)
+      .single()
+      .then(({ data }) => {
+        setPriceSek(data?.price_sek ?? 195);
+      });
+  }, [product.id]);
 
   // Card image for watermark
   const watermarkUrl = useCardImage(cardId ?? null);
@@ -227,7 +238,7 @@ export default function ProductPaywall({ product, onAccessGranted, cardId }: Pro
                 lineHeight: 1,
               }}
             >
-              {priceSek}
+              {priceSek ?? '...'}
             </span>
             <span
               style={{
