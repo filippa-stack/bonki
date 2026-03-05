@@ -823,6 +823,7 @@ export default function CardView() {
                   objectFit: 'contain',
                   filter: 'saturate(0.4)',
                   userSelect: 'none',
+                  opacity: 0.04,
                   animation: 'completion-breathe 8s ease-in-out infinite',
                 }}
               />
@@ -1439,6 +1440,7 @@ export default function CardView() {
                 opacity: 0.05,
                 filter: 'saturate(0.4)',
                 userSelect: 'none',
+                animation: 'completion-breathe 8s ease-in-out infinite',
               }}
             />
           </div>
@@ -1623,7 +1625,7 @@ export default function CardView() {
                         marginBottom: '0px',
                       }}
                     >
-                      {localPromptIndex + 1} av {totalPrompts}
+                      Fråga {localPromptIndex + 1} av {totalPrompts}
                     </motion.p>
                   );
                 }
