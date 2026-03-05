@@ -1,8 +1,15 @@
 import { ReactNode, useState } from 'react';
 import { Check, Copy } from 'lucide-react';
+import { useLocation } from 'react-router-dom';
+
+const DESKTOP_ALLOWED_ROUTES = ['/analytics'];
 
 export default function MobileOnlyGate({ children }: { children: ReactNode }) {
   const [copied, setCopied] = useState(false);
+  const location = useLocation();
+
+  // Allow certain routes (like analytics) on desktop
+  const isDesktopAllowed = DESKTOP_ALLOWED_ROUTES.some(r => location.pathname.startsWith(r));
 
   const handleCopy = () => {
     navigator.clipboard.writeText(window.location.href).then(() => {
@@ -10,6 +17,10 @@ export default function MobileOnlyGate({ children }: { children: ReactNode }) {
       setTimeout(() => setCopied(false), 2000);
     });
   };
+
+  if (isDesktopAllowed) {
+    return <>{children}</>;
+  }
 
   return (
     <>
