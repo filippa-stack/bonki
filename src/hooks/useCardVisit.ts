@@ -25,12 +25,15 @@ export function useCardVisit() {
     // Upsert with GREATEST semantics so last_visited_at never decreases.
     // Handled by upsert_card_visit SECURITY DEFINER function.
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    await (supabase.rpc as any)('upsert_card_visit', {
+    const { error } = await (supabase.rpc as any)('upsert_card_visit', {
       p_couple_space_id: space.id,
       p_user_id: user.id,
       p_card_id: cardId,
       p_visited_at: now,
     });
+    if (error) {
+      console.error('[useCardVisit] upsert_card_visit failed:', error.message, { spaceId: space.id, userId: user.id, cardId });
+    }
   }, [user?.id, space?.id]);
 
   return { recordVisit };
