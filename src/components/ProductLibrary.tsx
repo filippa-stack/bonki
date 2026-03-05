@@ -187,11 +187,11 @@ function PastelTile({
             top: '10px',
             right: '12px',
             fontFamily: "'Lato', sans-serif",
-            fontSize: '9px',
+            fontSize: '10px',
             fontWeight: 700,
             letterSpacing: '0.06em',
             color: accentColor || 'var(--text-library)',
-            opacity: 0.5,
+            opacity: 0.65,
             zIndex: 2,
           }}
         >
