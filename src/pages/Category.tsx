@@ -410,10 +410,14 @@ function CardEntry({ card, index, isCompleted = false, isInProgress = false, onN
         className="w-full cursor-pointer group relative overflow-hidden"
         style={{
           padding: '24px 20px',
-          background: `linear-gradient(180deg, ${cardBg} 0%, ${cardBg}E8 100%)`,
+          background: isCompleted
+            ? `linear-gradient(180deg, ${cardBg}CC 0%, ${cardBg}AA 100%)`
+            : `linear-gradient(180deg, ${cardBg} 0%, ${cardBg}E8 100%)`,
           border: 'none',
           borderRadius: '12px',
-          boxShadow: isInProgress
+          boxShadow: isCompleted
+            ? '0px 1px 3px rgba(44, 36, 32, 0.04), 0px 4px 12px -4px rgba(44, 36, 32, 0.04)'
+            : isInProgress
             ? '0px 3px 10px rgba(44, 36, 32, 0.12), 0px 10px 32px -8px rgba(44, 36, 32, 0.10)'
             : '0px 2px 6px rgba(44, 36, 32, 0.08), 0px 8px 24px -8px rgba(44, 36, 32, 0.06)',
           transition: 'transform 200ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 260ms ease-out',
@@ -489,7 +493,7 @@ function CardEntry({ card, index, isCompleted = false, isInProgress = false, onN
                 backgroundColor: titleColor,
                 marginRight: '12px',
                 flexShrink: 0,
-                animation: 'saffron-pulse 2.5s ease-in-out infinite',
+                animation: 'saffron-pulse 2.0s ease-in-out infinite',
               }}
             />
           )}

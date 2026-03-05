@@ -1,6 +1,5 @@
 import { motion } from 'framer-motion';
-import { Button } from '@/components/ui/button';
-import { ArrowRight, Home } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 
 interface StageTransitionChoiceProps {
   onContinue: () => void;
@@ -14,29 +13,45 @@ export default function StageTransitionChoice({ onContinue, onStop }: StageTrans
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.15 }}
-      className="my-6 py-6 px-6 text-center max-w-sm mx-auto space-y-4"
+      className="my-6 py-6 px-6 text-center max-w-sm mx-auto"
+      style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px' }}
     >
-      <h2 className="text-lg font-serif text-foreground">
+      <h2
+        style={{
+          fontFamily: "'DM Serif Display', var(--font-serif)",
+          fontSize: '20px',
+          fontWeight: 400,
+          color: 'var(--text-primary)',
+          lineHeight: 1.3,
+        }}
+      >
         Vill ni fortsätta?
       </h2>
-      <div className="space-y-3 pt-2">
-        <Button
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '12px', width: '100%', paddingTop: '8px' }}>
+        <button
           onClick={onContinue}
-          size="lg"
-          className="w-full gap-2"
+          className="cta-primary"
+          style={{ maxWidth: '220px', width: '100%', gap: '8px' }}
         >
           Vidare
-          <ArrowRight className="w-4 h-4" />
-        </Button>
-        <Button
+          <ArrowRight size={16} />
+        </button>
+        <button
           onClick={onStop}
-          variant="outline"
-          size="lg"
-          className="w-full gap-2"
+          style={{
+            fontFamily: 'var(--font-sans)',
+            fontSize: '13px',
+            color: 'var(--text-secondary)',
+            opacity: 0.55,
+            background: 'none',
+            border: 'none',
+            cursor: 'pointer',
+            padding: '12px 20px',
+            minHeight: '44px',
+          }}
         >
-          <Home className="w-4 h-4" />
           Stanna här
-        </Button>
+        </button>
       </div>
     </motion.div>
   );

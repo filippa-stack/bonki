@@ -287,7 +287,7 @@ export default function ProductLibrary() {
           >
             Bonki
           </h1>
-          {/* Hero illustration — subtle emotional anchor */}
+          {/* Hero illustration — subtle emotional anchor with breathing */}
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -301,6 +301,7 @@ export default function ProductLibrary() {
               backgroundRepeat: 'no-repeat',
               backgroundPosition: 'center',
               opacity: 0.45,
+              animation: 'lobby-breathe 6s ease-in-out infinite',
             }}
           />
           <p
