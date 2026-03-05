@@ -79,7 +79,7 @@ const CARD_IMAGE_OVERRIDE: Record<string, string> = {
 const CARD_ILLUSTRATION_SCALE: Record<string, number> = {
   // JIM — calibrated for uniform perceived size across all tiles
   'jim-stolt': 1.10,
-  'jim-bestamd': 1.18,
+  'jim-bestamd': 1.25,
   'jim-karlek': 1.14,
   'jim-nyfiken': 1.05,
   'jim-forvanad': 1.00,
