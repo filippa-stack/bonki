@@ -93,6 +93,7 @@ export const productIntros: Record<string, ProductIntroData> = {
       {
         heading: 'Välkommen till Syskon',
         body: 'Syskon är de första människorna vi lär oss dela med, bråka med, längta efter och bli galna på - ibland allt på samma dag.\n\nDet här är frågor som hjälper er prata om det som finns mellan er. Inte bara de roliga minnena, utan också det som är svårt: orättvisor, jämförelser, känslan av att inte räcka till. Och det fina: den där kunskapen om varandra som ingen annan har.\n\nNi kan använda korten alla tillsammans, eller två och två. Ibland blir svaren överraskande. Det är meningen.',
+        signoff: 'Börja där det känns naturligt. Hoppa över det som inte passar. Stanna kvar i det som öppnar sig.',
       },
     ],
     ctaLabel: 'Sätt igång',

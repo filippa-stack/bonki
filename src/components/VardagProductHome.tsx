@@ -44,7 +44,7 @@ export default function VardagProductHome({ product }: { product: ProductManifes
             <h1 style={{ fontFamily: "'DM Serif Display', var(--font-serif)", fontSize: 'clamp(38px, 11vw, 52px)', fontWeight: 700, color: ACCENT_COLOR, letterSpacing: '-0.01em', whiteSpace: 'nowrap' }}>
               Vardag
             </h1>
-            <p className="font-serif" style={{ fontSize: 'clamp(16px, 4.5vw, 20px)', fontWeight: 400, color: '#2C2420', opacity: 0.8, marginTop: '8px', textShadow: '0px 1px 3px rgba(255,255,255,0.8)' }}>
+            <p className="font-serif" style={{ fontSize: 'clamp(16px, 4.5vw, 20px)', fontWeight: 400, color: '#2C2420', opacity: 0.8, marginTop: '8px', textShadow: '0px 1px 6px rgba(255,255,255,0.9), 0px 0px 20px rgba(255,255,255,0.4)' }}>
               Färre bråk, mer ro
             </p>
           </motion.div>
@@ -79,6 +79,24 @@ export default function VardagProductHome({ product }: { product: ProductManifes
             </motion.button>
           ))}
 
+          {/* Sign-off line */}
+          <motion.p
+            variants={pillVariants}
+            className="font-serif"
+            style={{
+              fontSize: 'clamp(14px, 3.8vw, 16px)',
+              fontStyle: 'italic',
+              color: ACCENT_COLOR,
+              opacity: 0.65,
+              textAlign: 'center',
+              lineHeight: 1.5,
+              marginTop: '1vh',
+              maxWidth: '85%',
+            }}
+          >
+            Välj det som känns rätt just nu.
+          </motion.p>
+
           {/* Diary entrance */}
           <motion.button
             variants={pillVariants}
@@ -89,7 +107,7 @@ export default function VardagProductHome({ product }: { product: ProductManifes
               background: 'rgba(255, 255, 255, 0.55)',
               border: 'none',
               cursor: 'pointer',
-              marginTop: '4vh',
+              marginTop: '2vh',
               padding: '16px 28px',
               borderRadius: '12px',
               boxShadow: '0px 2px 8px rgba(44, 36, 32, 0.06)',

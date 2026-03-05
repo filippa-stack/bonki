@@ -260,7 +260,7 @@ export default function Category() {
           left: '50%',
           transform: 'translate(-50%, -50%)',
           zIndex: 0,
-          opacity: 0.03,
+          opacity: 0.045,
         }}
       >
         <img
@@ -286,7 +286,7 @@ export default function Category() {
             transition={{ duration: 0.7, delay: 0.1, ease: EASE }}
             style={{
               marginTop: '32px',
-              marginBottom: '48px',
+              marginBottom: '52px',
               fontFamily: 'var(--font-serif)',
               fontSize: 'clamp(22px, 5.8vw, 28px)',
               fontStyle: 'normal',
@@ -413,7 +413,9 @@ function CardEntry({ card, index, isCompleted = false, isInProgress = false, onN
           background: `linear-gradient(180deg, ${cardBg} 0%, ${cardBg}E8 100%)`,
           border: 'none',
           borderRadius: '12px',
-          boxShadow: '0px 2px 6px rgba(44, 36, 32, 0.08), 0px 8px 24px -8px rgba(44, 36, 32, 0.06)',
+          boxShadow: isInProgress
+            ? '0px 3px 10px rgba(44, 36, 32, 0.12), 0px 10px 32px -8px rgba(44, 36, 32, 0.10)'
+            : '0px 2px 6px rgba(44, 36, 32, 0.08), 0px 8px 24px -8px rgba(44, 36, 32, 0.06)',
           transition: 'transform 200ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 260ms ease-out',
           minHeight: '100px',
         }}
@@ -464,10 +466,10 @@ function CardEntry({ card, index, isCompleted = false, isInProgress = false, onN
               top: '10px',
               right: '14px',
               fontFamily: 'var(--font-sans)',
-              fontSize: '10px',
+              fontSize: '11px',
               letterSpacing: '0.04em',
               color: titleColor,
-              opacity: 0.5,
+              opacity: 0.6,
               fontWeight: 500,
             }}
           >

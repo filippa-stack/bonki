@@ -33,9 +33,9 @@ export default function JagIVarldenProductHome({ product }: { product: ProductMa
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 1 }}
-        style={{ position: 'absolute', top: '-80%', right: '-40%', width: '140%', height: '130%', zIndex: 0, pointerEvents: 'none' }}
+        style={{ position: 'absolute', top: '-80%', right: '-40%', width: '140%', height: '130%', zIndex: 0, pointerEvents: 'none', opacity: 0.85 }}
       >
-        <img src={peacockImage} alt="" style={{ width: '100%', height: '100%', objectFit: 'contain', objectPosition: 'right top', opacity: 0.35, transform: 'rotate(180deg)' }} />
+        <img src={peacockImage} alt="" style={{ width: '100%', height: '100%', objectFit: 'contain', objectPosition: 'right top', opacity: 0.28, transform: 'rotate(180deg)' }} />
       </motion.div>
 
       <motion.div
@@ -44,7 +44,7 @@ export default function JagIVarldenProductHome({ product }: { product: ProductMa
         transition={{ duration: 1, delay: 0.3 }}
         style={{ position: 'absolute', bottom: '-12%', left: '-40%', width: '140%', height: '130%', zIndex: 0, pointerEvents: 'none' }}
       >
-        <img src={peacockImage} alt="" style={{ width: '100%', height: '100%', objectFit: 'contain', objectPosition: 'left bottom', opacity: 0.35 }} />
+        <img src={peacockImage} alt="" style={{ width: '100%', height: '100%', objectFit: 'contain', objectPosition: 'left bottom', opacity: 0.28 }} />
       </motion.div>
 
       {/* Content */}
@@ -54,7 +54,7 @@ export default function JagIVarldenProductHome({ product }: { product: ProductMa
             <h1 style={{ fontFamily: "'DM Serif Display', var(--font-serif)", fontSize: 'clamp(34px, 9vw, 48px)', fontWeight: 700, color: ACCENT_COLOR, letterSpacing: '-0.01em', whiteSpace: 'nowrap' }}>
               Jag i världen
             </h1>
-            <p className="font-serif" style={{ fontSize: 'clamp(16px, 4.5vw, 20px)', fontWeight: 400, color: '#2C2420', opacity: 0.8, marginTop: '8px', textShadow: '0px 1px 3px rgba(255,255,255,0.8)' }}>
+            <p className="font-serif" style={{ fontSize: 'clamp(16px, 4.5vw, 20px)', fontWeight: 400, color: '#2C2420', opacity: 0.8, marginTop: '8px', textShadow: '0px 1px 6px rgba(255,255,255,0.9), 0px 0px 20px rgba(255,255,255,0.4)' }}>
               stärk identitet och mod
             </p>
           </motion.div>
@@ -67,7 +67,9 @@ export default function JagIVarldenProductHome({ product }: { product: ProductMa
               whileTap={{ scale: 0.97 }}
               onClick={() => navigate(`/category/${cat.id}`)}
               style={{
-                background: 'var(--product-button-bg)',
+                background: 'hsla(0, 0%, 100%, 0.92)',
+                backdropFilter: 'blur(16px)',
+                WebkitBackdropFilter: 'blur(16px)',
                 borderRadius: 'var(--product-button-radius)',
                 padding: '0 24px',
                 textAlign: 'center',
@@ -89,6 +91,24 @@ export default function JagIVarldenProductHome({ product }: { product: ProductMa
             </motion.button>
           ))}
 
+          {/* Sign-off line */}
+          <motion.p
+            variants={pillVariants}
+            className="font-serif"
+            style={{
+              fontSize: 'clamp(14px, 3.8vw, 16px)',
+              fontStyle: 'italic',
+              color: ACCENT_COLOR,
+              opacity: 0.65,
+              textAlign: 'center',
+              lineHeight: 1.5,
+              marginTop: '1vh',
+              maxWidth: '85%',
+            }}
+          >
+            Välj det som känns rätt just nu.
+          </motion.p>
+
           {/* Diary entrance */}
           <motion.button
             variants={pillVariants}
@@ -99,7 +119,7 @@ export default function JagIVarldenProductHome({ product }: { product: ProductMa
               background: 'rgba(255, 255, 255, 0.55)',
               border: 'none',
               cursor: 'pointer',
-              marginTop: '4vh',
+              marginTop: '2vh',
               padding: '16px 28px',
               borderRadius: '12px',
               boxShadow: '0px 2px 8px rgba(44, 36, 32, 0.06)',
