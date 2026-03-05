@@ -14,6 +14,7 @@ import { useCardImage } from '@/hooks/useCardImage';
 import Header from '@/components/Header';
 
 import bonkiLogo from '@/assets/bonki-logo.png';
+import mirrorJagIMig from '@/assets/mirror-jag-i-mig.png';
 
 const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
@@ -36,6 +37,8 @@ const CARD_ILLUSTRATION_OPACITY: Record<string, number> = {
   'jim-glad': 0.14,
   'jim-trygg': 0.14,
   'jim-nyfiken': 0.14,
+  // JIM — special
+  'jim-jag': 0.18,
   // JIV — dense multi-color illustrations
   'jiv-frihet': 0.09,
   'jiv-karlek': 0.09,
@@ -57,6 +60,46 @@ const CARD_ILLUSTRATION_OPACITY: Record<string, number> = {
   // SK — dense illustrations
   'sk-konflikt': 0.09,
   'sk-forlora-ett-syskon': 0.09,
+};
+
+/**
+ * Per-card image source overrides — use a specific imported asset
+ * instead of the zip-extracted illustration.
+ */
+const CARD_IMAGE_OVERRIDE: Record<string, string> = {
+  'jim-jag': mirrorJagIMig,
+};
+
+/**
+ * Per-card visual scale multiplier for illustration thumbnails.
+ * Baseline is 1.0 (72×72). Illustrations with lots of negative space
+ * or small focal points get scaled up; dense/large ones get scaled down.
+ * Goal: uniform *perceived* size across all tiles.
+ */
+const CARD_ILLUSTRATION_SCALE: Record<string, number> = {
+  // JIM — small/sparse focal points → scale up
+  'jim-trygg': 1.15,
+  'jim-ensam': 1.05,
+  'jim-glad': 1.10,
+  'jim-radd': 1.10,
+  'jim-nyfiken': 1.15,
+  'jim-forvanad': 1.10,
+  'jim-jag': 1.20,
+  // JIM — dense/large → scale down
+  'jim-arg': 0.90,
+  'jim-vild': 0.92,
+  'jim-skam': 0.88,
+  'jim-avundsjuk': 0.88,
+  'jim-svartsjuk': 0.90,
+  'jim-avsky': 0.90,
+  'jim-acklad': 0.90,
+  'jim-stolt': 1.05,
+  'jim-bestamd': 1.05,
+  'jim-karlek': 1.05,
+  'jim-besviken': 1.00,
+  'jim-utanfor': 0.95,
+  'jim-ledsen': 1.00,
+  'jim-stress': 0.95,
 };
 
 /** Product-specific design tokens for card listings */
@@ -304,8 +347,11 @@ interface CardEntryProps {
 }
 
 function CardEntry({ card, index, isCompleted = false, isInProgress = false, onNavigate, isLast = false, styles }: CardEntryProps) {
-  const illustration = useCardImage(card.id);
+  const zipIllustration = useCardImage(card.id);
+  const illustration = CARD_IMAGE_OVERRIDE[card.id] ?? zipIllustration;
   const illustrationOpacity = CARD_ILLUSTRATION_OPACITY[card.id] ?? 0.12;
+  const illustrationScale = CARD_ILLUSTRATION_SCALE[card.id] ?? 1.0;
+  const size = Math.round(72 * illustrationScale);
 
   const cardBg = styles?.cardBg ?? '#FFFFFF';
   const titleColor = styles?.cardTitleColor ?? 'var(--text-primary)';
@@ -366,8 +412,8 @@ function CardEntry({ card, index, isCompleted = false, isInProgress = false, onN
               right: '16px',
               top: '50%',
               transform: 'translateY(-50%)',
-              height: '72px',
-              width: '72px',
+              height: `${size}px`,
+              width: `${size}px`,
               objectFit: 'contain',
               objectPosition: 'center',
               opacity: illustrationOpacity,
