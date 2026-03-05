@@ -2,7 +2,7 @@ import { ReactNode, useState } from 'react';
 import { Check, Copy } from 'lucide-react';
 import { useLocation } from 'react-router-dom';
 
-const DESKTOP_ALLOWED_ROUTES = ['/analytics'];
+const DESKTOP_ALLOWED_ROUTES = ['/analytics', '/login'];
 
 export default function MobileOnlyGate({ children }: { children: ReactNode }) {
   const [copied, setCopied] = useState(false);
