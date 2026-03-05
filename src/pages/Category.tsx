@@ -102,6 +102,38 @@ const CARD_ILLUSTRATION_SCALE: Record<string, number> = {
   'jim-stress': 0.95,
 };
 
+/**
+ * Per-card positional nudge (px) to optically harmonise illustration placement.
+ * x: positive = further right, negative = further left
+ * y: positive = further down, negative = further up
+ * Default is { x: 0, y: 0 }.
+ */
+const CARD_ILLUSTRATION_NUDGE: Record<string, { x: number; y: number }> = {
+  // JIM — bottom-heavy illustrations → nudge up
+  'jim-arg': { x: 0, y: -4 },
+  'jim-vild': { x: 0, y: -3 },
+  'jim-skam': { x: 0, y: -2 },
+  'jim-avundsjuk': { x: 0, y: -3 },
+  'jim-svartsjuk': { x: 0, y: -2 },
+  'jim-avsky': { x: 0, y: -3 },
+  'jim-acklad': { x: 0, y: -2 },
+  // JIM — top-heavy or narrow → nudge down / inward
+  'jim-jag': { x: -2, y: 2 },
+  'jim-trygg': { x: 0, y: 0 },
+  'jim-glad': { x: 0, y: 1 },
+  'jim-radd': { x: 0, y: 0 },
+  'jim-nyfiken': { x: -2, y: 1 },
+  'jim-forvanad': { x: 0, y: 0 },
+  'jim-stolt': { x: 0, y: 2 },
+  'jim-bestamd': { x: -2, y: 2 },
+  'jim-karlek': { x: 0, y: 1 },
+  'jim-ensam': { x: 0, y: 0 },
+  'jim-besviken': { x: 0, y: 0 },
+  'jim-utanfor': { x: 0, y: -1 },
+  'jim-ledsen': { x: 0, y: 0 },
+  'jim-stress': { x: 0, y: -1 },
+};
+
 /** Product-specific design tokens for card listings */
 const PRODUCT_STYLES: Record<string, {
   cardBg: string;
@@ -351,6 +383,7 @@ function CardEntry({ card, index, isCompleted = false, isInProgress = false, onN
   const illustration = CARD_IMAGE_OVERRIDE[card.id] ?? zipIllustration;
   const illustrationOpacity = CARD_ILLUSTRATION_OPACITY[card.id] ?? 0.12;
   const illustrationScale = CARD_ILLUSTRATION_SCALE[card.id] ?? 1.0;
+  const nudge = CARD_ILLUSTRATION_NUDGE[card.id] ?? { x: 0, y: 0 };
   const size = Math.round(72 * illustrationScale);
 
   const cardBg = styles?.cardBg ?? '#FFFFFF';
@@ -409,8 +442,8 @@ function CardEntry({ card, index, isCompleted = false, isInProgress = false, onN
             draggable={false}
             className="pointer-events-none select-none absolute"
             style={{
-              right: '16px',
-              top: '50%',
+              right: `${16 - nudge.x}px`,
+              top: `calc(50% + ${nudge.y}px)`,
               transform: 'translateY(-50%)',
               height: `${size}px`,
               width: `${size}px`,
