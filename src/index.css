@@ -7,7 +7,7 @@
   50% { opacity: 1; }
 }
 
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500&family=Lato:wght@400;600;700&display=swap');
 
 /* ── Balanced text wrapping for headings ── */
 h1, h2, h3,
@@ -654,6 +654,18 @@ h1, h2, h3,
 @keyframes tile-breathe {
   0%, 100% { transform: scale(1); }
   50% { transform: scale(1.015); }
+}
+
+/* ── Lobby watermark breathing — organic opacity oscillation ── */
+@keyframes lobby-breathe {
+  0%, 100% { opacity: 0.40; }
+  50% { opacity: 0.50; }
+}
+
+/* ── Completion watermark breathing ── */
+@keyframes completion-breathe {
+  0%, 100% { opacity: 0.04; }
+  50% { opacity: 0.08; }
 }
 
 /* ── Hide scrollbar utility ── */

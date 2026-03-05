@@ -821,9 +821,9 @@ export default function CardView() {
                   maxWidth: '100%',
                   maxHeight: '100%',
                   objectFit: 'contain',
-                  opacity: 0.06,
                   filter: 'saturate(0.4)',
                   userSelect: 'none',
+                  animation: 'completion-breathe 8s ease-in-out infinite',
                 }}
               />
             </div>
@@ -933,7 +933,7 @@ export default function CardView() {
               marginTop: '10px',
             }}
           >
-            Inget ni skriver lämnar det här rummet.
+            {pronounMode === 'du' ? 'Inget du skriver lämnar det här rummet.' : 'Inget ni skriver lämnar det här rummet.'}
           </motion.p>
 
           {/* CTAs — cascading reveal */}
@@ -1046,25 +1046,24 @@ export default function CardView() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: BEAT_2, duration: EMOTION }}
+          aria-label="Tillbaka"
           style={{
             position: 'absolute',
             top: '16px',
             left: '16px',
             minHeight: '44px',
-            minWidth: '88px',
+            minWidth: '44px',
             display: 'flex',
             alignItems: 'center',
-            fontFamily: 'var(--font-sans)',
-            fontSize: '13px',
-            color: 'var(--text-secondary)',
-            opacity: 0.55,
+            justifyContent: 'center',
             background: 'none',
             border: 'none',
             cursor: 'pointer',
             zIndex: 2,
+            padding: '12px',
           }}
         >
-          ←
+          <ArrowLeft size={20} style={{ color: 'var(--color-text-tertiary)', opacity: 0.50 }} />
         </motion.button>
 
         {/* Free card label — only on the free card, new products only */}
@@ -1088,7 +1087,7 @@ export default function CardView() {
               opacity: 0.85,
               zIndex: 1,
               pointerEvents: 'none',
-              background: 'color-mix(in srgb, var(--accent-text) 10%, transparent)',
+              background: 'hsla(38, 72%, 38%, 0.10)',
               padding: '4px 14px',
               borderRadius: '20px',
               whiteSpace: 'nowrap',
@@ -1121,18 +1120,23 @@ export default function CardView() {
                   objectFit: 'contain',
                 }}
               />
-              {/* Soft oval shadow-mat under illustration */}
-              <div style={{
-                position: 'absolute',
-                bottom: '-12px',
-                left: '10%',
-                right: '10%',
-                height: '48px',
-                borderRadius: '50%',
-                background: 'radial-gradient(ellipse at center, hsla(30, 15%, 25%, 0.08) 0%, transparent 70%)',
-                filter: 'blur(8px)',
-                pointerEvents: 'none',
-              }} />
+              {/* Soft oval shadow-mat under illustration — delayed entrance for grounding effect */}
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 1.2, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+                style={{
+                  position: 'absolute',
+                  bottom: '-12px',
+                  left: '10%',
+                  right: '10%',
+                  height: '48px',
+                  borderRadius: '50%',
+                  background: 'radial-gradient(ellipse at center, hsla(30, 15%, 25%, 0.08) 0%, transparent 70%)',
+                  filter: 'blur(8px)',
+                  pointerEvents: 'none',
+                }}
+              />
             </motion.div>
           ) : (
             <>
@@ -1478,7 +1482,7 @@ export default function CardView() {
               key={`${currentSection.id}-${localPromptIndex}`}
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -8, transition: { duration: 0.15, ease: [0.4, 0, 1, 1] } }}
+              exit={{ opacity: 0, y: -6, transition: { duration: 0.15, ease: [0.4, 0, 1, 1] } }}
               transition={{ duration: 0.2, ease: [0.4, 0, 0.2, 1], delay: 0.1 }}
             >
               {/* Stage label — archive mode only, multi-step cards only */}
