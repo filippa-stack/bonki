@@ -39,19 +39,8 @@ export default function BookmarkButton({
   const [showTooltip, setShowTooltip] = useState(false);
   const tooltipTimerRef = useRef<ReturnType<typeof setTimeout>>();
 
-  // Show one-time tooltip on first encounter
-  useEffect(() => {
-    if (localStorage.getItem(TOOLTIP_KEY) === 'true') return;
-    const timer = setTimeout(() => {
-      setShowTooltip(true);
-      localStorage.setItem(TOOLTIP_KEY, 'true');
-      tooltipTimerRef.current = setTimeout(() => setShowTooltip(false), 4000);
-    }, 1200);
-    return () => {
-      clearTimeout(timer);
-      if (tooltipTimerRef.current) clearTimeout(tooltipTimerRef.current);
-    };
-  }, []);
+  // Tooltip only shows on first bookmark tap, not auto
+
 
   const handleTap = async () => {
     setShowTooltip(false);

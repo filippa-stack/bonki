@@ -21,10 +21,19 @@ export default function ActiveSessionGuard({ children }: { children: React.React
   // In dev mode, never redirect — allow free navigation
   if (devState) return <>{children}</>;
 
-  // While loading normalized state, show neutral loader to prevent brief free navigation
+  // While loading normalized state, show branded breathing loader
   if (loading) return (
-    <div className="min-h-screen flex items-center justify-center bg-background">
-      <div className="h-6 w-6 rounded-full bg-muted animate-pulse" />
+    <div className="min-h-screen flex flex-col items-center justify-center" style={{ backgroundColor: 'var(--surface-base)' }}>
+      <div
+        className="rounded-full"
+        style={{
+          width: '28px',
+          height: '28px',
+          backgroundColor: 'var(--accent-saffron)',
+          opacity: 0.25,
+          animation: 'skeletonPulse 1.8s ease-in-out infinite',
+        }}
+      />
     </div>
   );
 

@@ -861,7 +861,7 @@ export default function CardView() {
                 size={20}
                 style={{
                   color: 'var(--color-text-tertiary)',
-                  opacity: 0.35,
+                  opacity: 0.50,
                 }}
               />
             </button>
@@ -1027,6 +1027,7 @@ export default function CardView() {
   if (shouldShowStartScreen) {
     return (
       <motion.div
+        key="start-screen"
         className="flex flex-col"
         style={{
           backgroundColor: 'var(--surface-base)',
@@ -1036,6 +1037,7 @@ export default function CardView() {
         }}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
         transition={{ duration: EMOTION, ease: [...EASE] }}
       >
         {/* Back navigation */}
@@ -1215,7 +1217,7 @@ export default function CardView() {
 
         {/* ── Bottom zone: instructions + CTA ── */}
         <div style={{ flex: '0 0 auto', display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '0 24px', paddingBottom: 'calc(32px + env(safe-area-inset-bottom, 0px))' }}>
-          {/* Instructions */}
+          {/* Instructions — consolidated to single line */}
           <motion.p
             className="font-serif italic"
             initial={{ opacity: 0, y: 6 }}
@@ -1227,26 +1229,11 @@ export default function CardView() {
               opacity: 0.75,
               textAlign: 'center',
               lineHeight: 1.5,
-              marginBottom: '6px',
+              marginBottom: '32px',
             }}
           >
             {uiText.readAloud}
           </motion.p>
-
-          {/* Mechanics */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: BEAT_3, duration: EMOTION, ease: [...EASE] }}
-            style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '3px', marginBottom: '32px' }}
-          >
-            <p style={{ fontFamily: 'var(--font-sans)', fontSize: '12px', color: 'var(--text-tertiary)', opacity: 0.55, textAlign: 'center' }}>
-              {uiText.talkTogether}
-            </p>
-            <p style={{ fontFamily: 'var(--font-sans)', fontSize: '12px', color: 'var(--text-tertiary)', opacity: 0.55, textAlign: 'center' }}>
-              {uiText.notekeeper}
-            </p>
-          </motion.div>
 
           {/* Orphan/stale session banner */}
           {staleSession && (
