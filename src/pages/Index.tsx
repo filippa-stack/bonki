@@ -58,17 +58,6 @@ async function migrateProductAccess(userId: string, paidAt: string) {
   }
 }
 
-/** Check user_product_access for purchase */
-async function checkProductAccess(userId: string): Promise<boolean> {
-  const { data } = await supabase
-    .from('user_product_access')
-    .select('id')
-    .eq('user_id', userId)
-    .eq('product_id', 'still_us')
-    .maybeSingle();
-  return !!data;
-}
-
 /** Dev-only: preview product intros with ?product=slug selector */
 function DevProductIntroPreview() {
   const [searchParams] = useSearchParams();
@@ -94,26 +83,7 @@ export default function Index() {
   const devState = useDevState();
   useThemeSwitcher();
 
-  // Beta: bypass purchase gate — all testers have already paid externally
-  const [hasPurchased, setHasPurchased] = useState(true);
   const migrationRan = useRef(false);
-
-  // Re-evaluate when space loads — check localStorage/paid_at + user_product_access
-  useEffect(() => {
-    if (hasPurchased) return;
-
-    // Sync check: localStorage / paid_at
-    if (space?.id && isSpacePaid(space.id, space.paid_at)) {
-      setHasPurchased(true);
-    }
-
-    // Async check: user_product_access
-    if (user?.id) {
-      checkProductAccess(user.id).then((has) => {
-        if (has) setHasPurchased(true);
-      });
-    }
-  }, [space?.id, space?.paid_at, user?.id, hasPurchased]);
 
   // One-time migration: paid_at → user_product_access
   useEffect(() => {
@@ -124,20 +94,6 @@ export default function Index() {
   }, [user?.id, space?.paid_at]);
 
   usePartnerNotifications();
-
-  const handlePurchaseComplete = () => {
-    markSpacePaid(space?.id);
-    setHasPurchased(true);
-    // Also write to user_product_access
-    if (user?.id) {
-      supabase.from('user_product_access').insert({
-        user_id: user.id,
-        product_id: 'still_us',
-        granted_at: new Date().toISOString(),
-        granted_via: 'purchase',
-      }).then(() => {});
-    }
-  };
 
   // devState=onboarding → show platform onboarding preview
   if (devState === 'onboarding') {
@@ -165,13 +121,12 @@ export default function Index() {
     return <Home />;
   }
 
+  // ── Normal production flow ──
   if (!hasCompletedOnboarding) {
     return <Onboarding />;
   }
 
-  if (!hasPurchased) {
-    return <PurchaseScreen onPurchaseComplete={handlePurchaseComplete} />;
-  }
-
-  return <Home />;
+  // After onboarding → ProductLibrary (the Lobby)
+  // Users choose their product from here.
+  return <ProductLibrary />;
 }

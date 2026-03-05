@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, Navigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ArrowLeft } from 'lucide-react';
 import { allProducts } from '@/data/products';
@@ -18,7 +18,8 @@ export default function ProductHome() {
   const navigate = useNavigate();
   useThemeSwitcher();
 
-  const product = allProducts.find((p) => p.slug === slug);
+  const isStillUs = slug === 'still-us';
+  const product = isStillUs ? undefined : allProducts.find((p) => p.slug === slug);
 
   // Always call hooks — use fallback values if product not found
   useProductTheme(
@@ -30,6 +31,11 @@ export default function ProductHome() {
 
   const needsIntro = useProductIntroNeeded(product?.id ?? '');
   const [showIntro, setShowIntro] = useState(needsIntro);
+
+  // Still Us uses the legacy Home — redirect there
+  if (isStillUs) {
+    return <Navigate to="/?devState=solo" replace />;
+  }
 
   if (showIntro && product) {
     return (

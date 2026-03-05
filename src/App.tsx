@@ -115,7 +115,6 @@ function AppRoutes() {
       <Route path="/screenshot-export" element={<ScreenshotExport />} />
       <Route path="/analytics" element={<AnalyticsDashboard />} />
       <Route path="/*" element={<ProtectedRoutes />} />
-      <Route path="/*" element={<ProtectedRoutes />} />
     </Routes>
   );
 }
