@@ -1,9 +1,11 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { isSpacePaid } from '@/pages/Index';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import { Check } from 'lucide-react';
 import { useCoupleSpaceContext } from '@/contexts/CoupleSpaceContext';
+import { useAuth } from '@/contexts/AuthContext';
+import { supabase } from '@/integrations/supabase/client';
 
 const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
@@ -14,8 +16,23 @@ interface PurchaseScreenProps {
 export default function PurchaseScreen({ onPurchaseComplete }: PurchaseScreenProps) {
   const { t } = useTranslation();
   const { space } = useCoupleSpaceContext();
+  const { user } = useAuth();
   const [processing, setProcessing] = useState(false);
   const [completed, setCompleted] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [priceSek, setPriceSek] = useState<number | null>(null);
+
+  // Fetch dynamic price
+  useEffect(() => {
+    supabase
+      .from('products')
+      .select('price_sek')
+      .eq('id', 'still_us')
+      .single()
+      .then(({ data }) => {
+        setPriceSek(data?.price_sek ?? 395);
+      });
+  }, []);
 
   // Edge-case guard: space is already paid
   if (isSpacePaid(space?.id, (space as any)?.paid_at)) {
@@ -42,11 +59,56 @@ export default function PurchaseScreen({ onPurchaseComplete }: PurchaseScreenPro
   }
 
   const handlePurchase = async () => {
+    if (!user) return;
     setProcessing(true);
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-    setCompleted(true);
-    await new Promise((resolve) => setTimeout(resolve, 1200));
-    onPurchaseComplete();
+    setError(null);
+
+    try {
+      const projectId = import.meta.env.VITE_SUPABASE_PROJECT_ID;
+      const { data: { session } } = await supabase.auth.getSession();
+
+      const res = await fetch(
+        `https://${projectId}.supabase.co/functions/v1/create-checkout`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${session?.access_token}`,
+          },
+          body: JSON.stringify({
+            productId: 'still_us',
+            successUrl: `${window.location.origin}/?purchase=success&product=still_us`,
+            cancelUrl: `${window.location.origin}/?purchase=cancel`,
+          }),
+        }
+      );
+
+      const json = await res.json();
+
+      if (json.error === 'already_purchased') {
+        setCompleted(true);
+        setTimeout(() => onPurchaseComplete(), 800);
+        return;
+      }
+
+      if (!res.ok) {
+        if (res.status === 503) {
+          setError('Betalning är inte konfigurerad ännu. Kontakta oss!');
+        } else {
+          setError(json.error || 'Något gick fel');
+        }
+        return;
+      }
+
+      if (json.url) {
+        window.location.href = json.url;
+      }
+    } catch (err) {
+      console.error('Purchase error:', err);
+      setError('Kunde inte starta betalningen');
+    } finally {
+      setProcessing(false);
+    }
   };
 
   const benefits = [
@@ -54,6 +116,8 @@ export default function PurchaseScreen({ onPurchaseComplete }: PurchaseScreenPro
     t('purchase.benefit_2', 'Dela utrymmet — båda har tillgång'),
     t('purchase.benefit_3', 'Ert privata utrymme — för alltid'),
   ];
+
+  const displayPrice = priceSek ?? '...';
 
   return (
     <div
@@ -116,7 +180,7 @@ export default function PurchaseScreen({ onPurchaseComplete }: PurchaseScreenPro
                 lineHeight: 1,
               }}
             >
-              295
+              {displayPrice}
             </span>
             <span
               style={{
@@ -216,9 +280,22 @@ export default function PurchaseScreen({ onPurchaseComplete }: PurchaseScreenPro
             ) : processing ? (
               <span className="animate-pulse">{t('purchase.processing', 'Behandlar...')}</span>
             ) : (
-              t('purchase.buy_button', 'Lås upp för 295 kr')
+              `Lås upp för ${displayPrice} kr`
             )}
           </button>
+
+          {error && (
+            <p
+              style={{
+                fontFamily: 'var(--font-sans)',
+                fontSize: '13px',
+                color: 'hsl(0, 60%, 50%)',
+                marginTop: '12px',
+              }}
+            >
+              {error}
+            </p>
+          )}
 
           <p
             style={{
