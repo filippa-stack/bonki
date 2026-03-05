@@ -300,7 +300,7 @@ export default function ProductLibrary() {
               backgroundSize: 'contain',
               backgroundRepeat: 'no-repeat',
               backgroundPosition: 'center',
-              opacity: 0.45,
+              opacity: 0.68,
               animation: 'lobby-breathe 6s ease-in-out infinite',
             }}
           />
