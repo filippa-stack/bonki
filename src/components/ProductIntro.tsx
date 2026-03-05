@@ -1,6 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence, PanInfo } from 'framer-motion';
 import { productIntros, ProductIntroData } from '@/data/productIntros';
+import { allProducts } from '@/data/products';
 
 const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
 const SEEN_KEY_PREFIX = 'bonki-product-intro-seen-';
@@ -28,6 +29,14 @@ export default function ProductIntro({ productId, accentColor, backgroundColor, 
   const [currentSlide, setCurrentSlide] = useState(0);
   const noIntro = !introData;
 
+  // Resolve free card title from product data if not passed as prop
+  const resolvedFreeCardTitle = useMemo(() => {
+    if (freeCardTitle) return freeCardTitle;
+    if (!freeCardId) return undefined;
+    const product = allProducts.find(p => p.id === productId);
+    return product?.cards.find(c => c.id === freeCardId)?.title;
+  }, [productId, freeCardId, freeCardTitle]);
+
   useEffect(() => {
     if (noIntro) onComplete();
   }, [noIntro, onComplete]);
@@ -35,6 +44,8 @@ export default function ProductIntro({ productId, accentColor, backgroundColor, 
   if (noIntro) return null;
 
   const lastSlide = introData.slides.length - 1;
+  const isLastSlide = currentSlide === lastSlide;
+  const hasFreeCard = !!(freeCardId && resolvedFreeCardTitle);
 
   const handleComplete = () => {
     markProductIntroSeen(productId);
@@ -147,18 +158,102 @@ export default function ProductIntro({ productId, accentColor, backgroundColor, 
               </motion.p>
             ))}
 
+            {/* ── Spotlight card preview — last slide only ── */}
+            {isLastSlide && hasFreeCard && (
+              <motion.div
+                initial={{ opacity: 0, y: 16, scale: 0.95 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                transition={{ delay: 0.5, duration: 0.8, ease: EASE }}
+                onClick={handleLastSlideCta}
+                className="cursor-pointer"
+                style={{
+                  marginTop: '28px',
+                  padding: '16px 28px',
+                  borderRadius: '14px',
+                  background: `linear-gradient(135deg, ${accentColor ?? 'var(--accent-saffron)'}18, ${accentColor ?? 'var(--accent-saffron)'}08)`,
+                  border: `1px solid ${accentColor ?? 'var(--accent-saffron)'}22`,
+                  boxShadow: `0 4px 24px -4px ${accentColor ?? 'var(--accent-saffron)'}20, 0 0 0 1px ${accentColor ?? 'var(--accent-saffron)'}08`,
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '14px',
+                  position: 'relative',
+                  overflow: 'hidden',
+                }}
+              >
+                {/* Decorative glow */}
+                <div
+                  style={{
+                    position: 'absolute',
+                    top: '50%',
+                    left: '50%',
+                    transform: 'translate(-50%, -50%)',
+                    width: '120px',
+                    height: '120px',
+                    borderRadius: '50%',
+                    background: `radial-gradient(circle, ${accentColor ?? 'var(--accent-saffron)'}15 0%, transparent 70%)`,
+                    pointerEvents: 'none',
+                  }}
+                />
+                {/* Mini card icon */}
+                <div
+                  style={{
+                    width: '36px',
+                    height: '44px',
+                    borderRadius: '6px',
+                    background: `linear-gradient(145deg, ${accentColor ?? 'var(--accent-saffron)'}30, ${accentColor ?? 'var(--accent-saffron)'}15)`,
+                    border: `1px solid ${accentColor ?? 'var(--accent-saffron)'}25`,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    flexShrink: 0,
+                    position: 'relative',
+                    zIndex: 1,
+                  }}
+                >
+                  <span style={{ fontSize: '16px', opacity: 0.7 }}>✦</span>
+                </div>
+                <div style={{ position: 'relative', zIndex: 1 }}>
+                  <p
+                    style={{
+                      fontFamily: 'var(--font-sans)',
+                      fontSize: '10px',
+                      fontWeight: 600,
+                      letterSpacing: '0.1em',
+                      textTransform: 'uppercase',
+                      color: accentColor ?? 'var(--accent-saffron)',
+                      opacity: 0.7,
+                      marginBottom: '3px',
+                    }}
+                  >
+                    Ert första samtal
+                  </p>
+                  <p
+                    style={{
+                      fontFamily: 'var(--font-serif)',
+                      fontSize: '19px',
+                      fontWeight: 700,
+                      color: 'var(--color-text-primary)',
+                      letterSpacing: '-0.01em',
+                    }}
+                  >
+                    {resolvedFreeCardTitle}
+                  </p>
+                </div>
+              </motion.div>
+            )}
+
             {slide.signoff && (
               <motion.p
                 initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.5, duration: 0.6, ease: EASE }}
+                transition={{ delay: isLastSlide && hasFreeCard ? 0.7 : 0.5, duration: 0.6, ease: EASE }}
                 style={{
                   fontFamily: 'var(--font-serif)',
                   fontStyle: 'italic',
                   fontSize: '17px',
                   color: accentColor ?? 'var(--accent-text)',
                   textAlign: 'center',
-                  marginTop: '32px',
+                  marginTop: isLastSlide && hasFreeCard ? '20px' : '32px',
                 }}
               >
                 {slide.signoff}
@@ -175,23 +270,31 @@ export default function ProductIntro({ productId, accentColor, backgroundColor, 
           }}
           className="flex flex-col items-center gap-5 px-6"
         >
-          <button
-            onClick={currentSlide === lastSlide ? handleLastSlideCta : handleNext}
+          <motion.button
+            onClick={isLastSlide ? handleLastSlideCta : handleNext}
             className="cta-primary"
+            initial={false}
+            animate={isLastSlide && hasFreeCard ? {
+              boxShadow: [
+                `0 2px 12px -2px ${accentColor ?? 'hsla(158, 30%, 15%, 0.18)'}`,
+                `0 4px 20px -2px ${accentColor ?? 'hsla(158, 30%, 15%, 0.18)'}55`,
+                `0 2px 12px -2px ${accentColor ?? 'hsla(158, 30%, 15%, 0.18)'}`,
+              ],
+            } : {}}
+            transition={isLastSlide && hasFreeCard ? {
+              boxShadow: { duration: 2.5, repeat: Infinity, ease: 'easeInOut' },
+            } : {}}
             style={{
               width: '60%',
               fontSize: '15px',
               letterSpacing: '0.02em',
               backgroundColor: accentColor ?? undefined,
-              boxShadow: accentColor
-                ? `0 2px 12px -2px ${accentColor}44, 0 1px 3px ${accentColor}22`
-                : '0 2px 12px -2px hsla(158, 30%, 15%, 0.18), 0 1px 3px hsla(158, 25%, 12%, 0.08)',
             }}
           >
-            {currentSlide === lastSlide
+            {isLastSlide
               ? (freeCardId && introData.freeCardCtaLabel ? introData.freeCardCtaLabel : introData.ctaLabel)
               : 'Fortsätt'}
-          </button>
+          </motion.button>
 
           {/* Dots (only if multi-slide) */}
           {introData.slides.length > 1 && (
