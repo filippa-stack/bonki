@@ -1,12 +1,16 @@
 import { motion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
+import type { PronounMode } from '@/lib/pronouns';
 
 interface StageTransitionChoiceProps {
   onContinue: () => void;
   onStop: () => void;
+  pronounMode?: PronounMode;
 }
 
-export default function StageTransitionChoice({ onContinue, onStop }: StageTransitionChoiceProps) {
+export default function StageTransitionChoice({ onContinue, onStop, pronounMode = 'ni' }: StageTransitionChoiceProps) {
+  const heading = pronounMode === 'du' ? 'Vill du fortsätta?' : 'Vill ni fortsätta?';
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -25,7 +29,7 @@ export default function StageTransitionChoice({ onContinue, onStop }: StageTrans
           lineHeight: 1.3,
         }}
       >
-        Vill ni fortsätta?
+        {heading}
       </h2>
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '12px', width: '100%', paddingTop: '8px' }}>
         <button

@@ -176,7 +176,7 @@ export default function Header({
                   onPointerUp={(e) => { const svg = e.currentTarget.querySelector('svg'); if (svg) svg.style.opacity = '0.75'; }}
                   onPointerLeave={(e) => { const svg = e.currentTarget.querySelector('svg'); if (svg) svg.style.opacity = '0.75'; }}
                 >
-                  <ArrowLeft className="w-5 h-5" style={{ color: 'white', opacity: 0.75, transition: 'opacity 150ms ease' }} />
+                  <ArrowLeft className="w-5 h-5" style={{ color: 'var(--color-text-secondary)', opacity: 0.65, transition: 'opacity 150ms ease' }} />
                 </button>
               )}
               {!showBack && (
@@ -202,7 +202,7 @@ export default function Header({
             {title && (
               <h1
                 className="font-serif text-lg font-medium truncate absolute left-1/2 -translate-x-1/2 max-w-[50%] text-center pointer-events-none"
-                style={{ color: titleColor || 'white', opacity: 0.90 }}
+                style={{ color: titleColor || 'var(--color-text-primary)', opacity: 0.90 }}
               >
                 {title}
               </h1>
