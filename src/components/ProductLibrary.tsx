@@ -293,14 +293,14 @@ export default function ProductLibrary() {
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.3, duration: 0.8 }}
             style={{
-              width: '120px',
-              height: '150px',
-              margin: '8px auto 12px',
+              width: '140px',
+              height: '170px',
+              margin: '4px auto 14px',
               backgroundImage: `url(${watermarkMamma})`,
               backgroundSize: 'contain',
               backgroundRepeat: 'no-repeat',
               backgroundPosition: 'center',
-              opacity: 0.68,
+              opacity: 0.65,
               animation: 'lobby-breathe 6s ease-in-out infinite',
             }}
           />
