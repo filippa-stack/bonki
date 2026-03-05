@@ -77,57 +77,59 @@ const CARD_IMAGE_OVERRIDE: Record<string, string> = {
  * Goal: uniform *perceived* size across all tiles.
  */
 const CARD_ILLUSTRATION_SCALE: Record<string, number> = {
-  // JIM — small/sparse focal points → scale up
-  'jim-trygg': 1.15,
-  'jim-ensam': 1.05,
-  'jim-glad': 1.10,
-  'jim-radd': 1.10,
-  'jim-nyfiken': 1.15,
-  'jim-forvanad': 1.10,
-  'jim-jag': 1.20,
-  // JIM — dense/large → scale down
-  'jim-arg': 0.90,
-  'jim-vild': 0.92,
-  'jim-skam': 0.88,
-  'jim-avundsjuk': 0.88,
-  'jim-svartsjuk': 0.90,
-  'jim-avsky': 0.90,
-  'jim-acklad': 0.90,
-  'jim-stolt': 1.20,
-  'jim-bestamd': 1.25,
-  'jim-karlek': 1.20,
+  // JIM — calibrated for uniform perceived size across all tiles
+  'jim-stolt': 1.10,
+  'jim-bestamd': 1.18,
+  'jim-karlek': 1.14,
+  'jim-nyfiken': 1.05,
+  'jim-forvanad': 1.00,
+  'jim-jag': 1.05,
+  'jim-trygg': 1.08,
+  'jim-ensam': 1.02,
+  'jim-glad': 1.04,
+  'jim-radd': 1.04,
+  'jim-arg': 0.92,
+  'jim-vild': 0.94,
+  'jim-skam': 0.90,
+  'jim-avundsjuk': 0.90,
+  'jim-svartsjuk': 0.92,
+  'jim-avsky': 0.92,
+  'jim-acklad': 0.92,
   'jim-besviken': 1.00,
-  'jim-utanfor': 0.95,
+  'jim-utanfor': 0.96,
   'jim-ledsen': 1.00,
-  'jim-stress': 0.95,
+  'jim-stress': 0.96,
 };
 
 /**
  * Per-card positional nudge (px) to optically harmonise illustration placement.
  * x: positive = further right, negative = further left
  * y: positive = further down, negative = further up
- * Default is { x: 0, y: 0 }.
+ * Calibrated so every illustration sits at the same optical anchor point
+ * relative to the text block, regardless of the illustration's internal
+ * composition or weight distribution.
  */
 const CARD_ILLUSTRATION_NUDGE: Record<string, { x: number; y: number }> = {
-  // JIM — bottom-heavy illustrations → nudge up
+  // JIM — dense/bottom-heavy → pull up, keep flush right
   'jim-arg': { x: 0, y: -4 },
   'jim-vild': { x: 0, y: -3 },
-  'jim-skam': { x: 0, y: -2 },
+  'jim-skam': { x: 0, y: -3 },
   'jim-avundsjuk': { x: 0, y: -3 },
   'jim-svartsjuk': { x: 0, y: -2 },
   'jim-avsky': { x: 0, y: -3 },
   'jim-acklad': { x: 0, y: -2 },
-  // JIM — top-heavy or narrow → nudge down / inward
-  'jim-jag': { x: -2, y: 2 },
-  'jim-trygg': { x: 0, y: 0 },
-  'jim-glad': { x: 0, y: 1 },
-  'jim-radd': { x: 0, y: 0 },
-  'jim-nyfiken': { x: -2, y: 1 },
+  // JIM — medium weight, mostly centered already
+  'jim-stolt': { x: 2, y: 0 },
+  'jim-bestamd': { x: 0, y: 0 },
+  'jim-karlek': { x: 0, y: 0 },
+  'jim-nyfiken': { x: 0, y: 0 },
   'jim-forvanad': { x: 0, y: 0 },
-  'jim-stolt': { x: 0, y: 2 },
-  'jim-bestamd': { x: -2, y: 2 },
-  'jim-karlek': { x: 0, y: 1 },
+  'jim-trygg': { x: 0, y: 0 },
+  'jim-glad': { x: 0, y: 0 },
+  'jim-radd': { x: 0, y: 0 },
   'jim-ensam': { x: 0, y: 0 },
+  // JIM — narrow/light → nudge slightly left for optical margin
+  'jim-jag': { x: -4, y: 0 },
   'jim-besviken': { x: 0, y: 0 },
   'jim-utanfor': { x: 0, y: -1 },
   'jim-ledsen': { x: 0, y: 0 },
