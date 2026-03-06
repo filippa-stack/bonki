@@ -163,6 +163,9 @@ export default function Login() {
                 <p className="text-sm" style={{ color: 'var(--color-text-secondary)', opacity: 0.75 }}>
                   {t('login.magic_link_sent_hint')}
                 </p>
+                <p className="text-xs mt-2" style={{ color: 'var(--color-text-tertiary)', opacity: 0.6 }}>
+                  {t('login.magic_link_spam_tip')}
+                </p>
                 <button
                   onClick={() => { setMagicLinkSent(false); setShowEmailForm(false); setEmail(''); }}
                   className="text-sm underline mt-2"
