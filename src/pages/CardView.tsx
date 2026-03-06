@@ -775,9 +775,10 @@ export default function CardView() {
   //  PAYWALL — non-free card without purchase
   // ─────────────────────────────────────────────────────────────
   if (needsPaywall && product) {
+    const paywallBackTo = isFromArchive ? '/shared' : (category ? `/category/${category.id}` : `/product/${product.slug}`);
     return (
       <div className="min-h-screen" style={{ backgroundColor: product.backgroundColor ?? 'var(--surface-base)' }}>
-        <Header title={card.title} showBack />
+        <Header title={card.title} showBack backTo={paywallBackTo} />
         <ProductPaywall
           product={product}
           cardId={cardId}
