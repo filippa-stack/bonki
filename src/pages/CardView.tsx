@@ -452,14 +452,17 @@ export default function CardView() {
   const existingConversation = cardId ? getConversationForCard(cardId) : undefined;
 
   // ─── Save conversation for local resume (live mode only) ───
+  // Save conversation for local resume (live mode only)
+  const getCardByIdRef = useRef(getCardById);
+  getCardByIdRef.current = getCardById;
   useEffect(() => {
     if (cardViewMode !== 'live') return;
-    const card = cardId ? getCardById(cardId) : undefined;
+    const card = cardId ? getCardByIdRef.current(cardId) : undefined;
     if (card && currentStepIndex >= 0) {
       const currentSection = card.sections.find(s => s.type === effectiveSteps[currentStepIndex]);
       if (currentSection) saveConversation(card.id, currentSection.id, currentStepIndex);
     }
-  }, [currentStepIndex, cardId, cardViewMode, getCardById, saveConversation]);
+  }, [currentStepIndex, cardId, cardViewMode, saveConversation, effectiveSteps]);
 
   // ─── Handle step completion / advance ───
   const pendingRetryRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -778,6 +781,7 @@ export default function CardView() {
         <ProductPaywall
           product={product}
           cardId={cardId}
+          currentCardTitle={card?.title}
           onAccessGranted={() => window.location.reload()}
         />
       </div>

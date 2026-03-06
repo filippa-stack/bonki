@@ -77,7 +77,7 @@ export default function Header({
       >
         {isImmersive ? (
           /* ── Immersive: proper three-column grid ── */
-          <div className="flex items-center px-4" style={{ height: '2.5rem' }}>
+          <div className="flex items-center px-4" style={{ height: '2.75rem' }}>
             {/* LEFT: back arrow or spacer */}
             <div className="flex items-center justify-start" style={{ minWidth: '64px' }}>
               {onImmersiveBack && (

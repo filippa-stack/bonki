@@ -32,7 +32,7 @@ export default function JagIVarldenProductHome({ product }: { product: ProductMa
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ duration: 1 }}
+        transition={{ duration: 0.4 }}
         style={{ position: 'absolute', top: '-80%', right: '-40%', width: '140%', height: '130%', zIndex: 0, pointerEvents: 'none', opacity: 0.85 }}
       >
         <img src={peacockImage} alt="" style={{ width: '100%', height: '100%', objectFit: 'contain', objectPosition: 'right top', opacity: 0.28, transform: 'rotate(180deg)' }} />
@@ -41,7 +41,7 @@ export default function JagIVarldenProductHome({ product }: { product: ProductMa
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ duration: 1, delay: 0.3 }}
+        transition={{ duration: 0.4, delay: 0.15 }}
         style={{ position: 'absolute', bottom: '-12%', left: '-40%', width: '140%', height: '130%', zIndex: 0, pointerEvents: 'none' }}
       >
         <img src={peacockImage} alt="" style={{ width: '100%', height: '100%', objectFit: 'contain', objectPosition: 'left bottom', opacity: 0.28 }} />

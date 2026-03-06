@@ -13,13 +13,15 @@ interface ProductPaywallProps {
   onAccessGranted?: () => void;
   /** The card ID that triggered the paywall — used for watermark */
   cardId?: string;
+  /** Title of the card the user actually clicked */
+  currentCardTitle?: string;
 }
 
 /**
  * Per-product paywall — warm editorial design matching product identity.
  * Shows what the user experienced, what's waiting, and the price.
  */
-export default function ProductPaywall({ product, onAccessGranted, cardId }: ProductPaywallProps) {
+export default function ProductPaywall({ product, onAccessGranted, cardId, currentCardTitle }: ProductPaywallProps) {
   const navigate = useNavigate();
   const { user } = useAuth();
   const [loading, setLoading] = useState(false);
@@ -166,7 +168,10 @@ export default function ProductPaywall({ product, onAccessGranted, cardId }: Pro
               textWrap: 'balance',
             }}
           >
-            Det här var {freeCardTitle} — ett av {product.cards.length} samtalsämnen i {product.name}
+            {currentCardTitle
+              ? <>{currentCardTitle} ingår i {product.name} — {product.cards.length} samtalsämnen</>
+              : <>Det här var {freeCardTitle} — ett av {product.cards.length} samtalsämnen i {product.name}</>
+            }
           </h2>
         </motion.div>
 

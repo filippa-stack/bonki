@@ -33,7 +33,7 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ duration: 1 }}
+        transition={{ duration: 0.4 }}
         style={{
           position: 'absolute',
           top: '7%',

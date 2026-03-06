@@ -34,7 +34,7 @@ export default function JagMedAndraProductHome({ product }: { product: ProductMa
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ duration: 1 }}
+        transition={{ duration: 0.4 }}
         style={{
           position: 'absolute',
           top: '-4%',
@@ -56,7 +56,7 @@ export default function JagMedAndraProductHome({ product }: { product: ProductMa
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ duration: 1, delay: 0.3 }}
+        transition={{ duration: 0.4, delay: 0.15 }}
         style={{
           position: 'absolute',
           bottom: '2%',
