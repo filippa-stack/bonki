@@ -3,7 +3,6 @@ import JSZip from 'jszip';
 
 /**
  * Which zip file a card image lives in.
- * 'default' = /card-images.zip, 'jim' = /jim-illustrations.zip
  */
 type ZipSource = 'default' | 'jim' | 'jma' | 'jiv' | 'vk' | 'sk' | 'sex';
 
@@ -34,7 +33,7 @@ const CARD_IMAGE_MAP: Record<string, { zip: ZipSource; folder: string; file: str
   'jim-forvanad':   { zip: 'jim', folder: 'Känslokort1-illustrationer.png', file: 'förvånad.png' },
   'jim-jag':        { zip: 'jim', folder: 'Känslokort1-illustrationer.png', file: 'jag copy.png' },
 
-  // ── Jag med Andra (new illustrations zip) ──
+  // ── Jag med Andra ──
   'jma-vanskap':    { zip: 'jma', folder: '', file: 'Vänskap.png' },
   'jma-kontakt':    { zip: 'jma', folder: '', file: 'Kontakt.png' },
   'jma-annorlunda': { zip: 'jma', folder: '', file: 'Annorlunda.png' },
@@ -57,7 +56,7 @@ const CARD_IMAGE_MAP: Record<string, { zip: ZipSource; folder: string; file: str
   'jma-acceptans':  { zip: 'jma', folder: '', file: 'Acceptans.png' },
   'jma-kluringen':  { zip: 'jma', folder: '', file: 'Kluringen.png' },
 
-  // ── Jag i Världen (new illustrations zip) ──
+  // ── Jag i Världen ──
   'jiv-halsa':        { zip: 'jiv', folder: '', file: 'Hälsa.png' },
   'jiv-prestation':   { zip: 'jiv', folder: '', file: 'Prestation.png' },
   'jiv-bekraftelse':  { zip: 'jiv', folder: '', file: 'Bekräftelse.png' },
@@ -79,7 +78,7 @@ const CARD_IMAGE_MAP: Record<string, { zip: ZipSource; folder: string; file: str
   'jiv-aktivism':     { zip: 'jiv', folder: '', file: 'Aktivism.png' },
   'jiv-existens':     { zip: 'jiv', folder: '', file: 'Existens.png' },
 
-  // ── Vardagskort (new illustrations zip) ──
+  // ── Vardagskort ──
   'vk-morgon':         { zip: 'vk', folder: '', file: 'Morgon.png' },
   'vk-rutiner':        { zip: 'vk', folder: '', file: 'Rutiner.png' },
   'vk-skola':          { zip: 'vk', folder: '', file: 'Skola.png' },
@@ -96,7 +95,7 @@ const CARD_IMAGE_MAP: Record<string, { zip: ZipSource; folder: string; file: str
   'vk-arbete':         { zip: 'vk', folder: '', file: 'Arbete.png' },
   'vk-kompisar':       { zip: 'vk', folder: '', file: 'Kompisar.png' },
 
-  // ── Sexualitetskort (new illustrations zip) ──
+  // ── Sexualitetskort ──
   'sex-konsidentitet':    { zip: 'sex', folder: '', file: 'könsidentitet.png' },
   'sex-sexuell-laggning': { zip: 'sex', folder: '', file: 'sexuell läggning.png' },
   'sex-onani':            { zip: 'sex', folder: '', file: 'onani.png' },
@@ -112,7 +111,7 @@ const CARD_IMAGE_MAP: Record<string, { zip: ZipSource; folder: string; file: str
   'sex-sexuella-overgrepp':{ zip: 'sex', folder: '', file: 'sexuellaövergrepp.png' },
   'sex-sex-som-hot':      { zip: 'sex', folder: '', file: 'sexsomhot.png' },
 
-  // ── Syskonkort (new illustrations zip) ──
+  // ── Syskonkort ──
   'sk-att-fa-ett-syskon':  { zip: 'sk', folder: '', file: 'ETTSYSKON.png' },
   'sk-syskonminnen':       { zip: 'sk', folder: '', file: 'jämföra.png' },
   'sk-syskonkunskap':      { zip: 'sk', folder: '', file: 'syskonkunskap.png' },
@@ -131,7 +130,6 @@ const CARD_IMAGE_MAP: Record<string, { zip: ZipSource; folder: string; file: str
 
 /**
  * Standalone image overrides — used when an image is missing from its zip.
- * Maps card ID → public URL path.
  */
 const STANDALONE_IMAGES: Record<string, string> = {
   'vk-kvall': '/card-images/vk-kvall.png',
@@ -144,9 +142,6 @@ const STANDALONE_IMAGES: Record<string, string> = {
   'jiv-moral-etik': '/card-images/jiv-moral-etik.png',
   'jiv-sexualitet': '/card-images/jiv-sexualitet.png',
 };
-// Singleton caches per zip source
-const zipCaches: Record<ZipSource, Map<string, string> | null> = { default: null, jim: null, jma: null, jiv: null, vk: null, sk: null, sex: null };
-const zipPromises: Record<ZipSource, Promise<Map<string, string>> | null> = { default: null, jim: null, jma: null, jiv: null, vk: null, sk: null, sex: null };
 
 const ZIP_URLS: Record<ZipSource, string> = {
   default: '/card-images.zip',
@@ -158,41 +153,98 @@ const ZIP_URLS: Record<ZipSource, string> = {
   sex: '/sex-card-images.zip',
 };
 
-async function loadZip(source: ZipSource): Promise<Map<string, string>> {
-  if (zipCaches[source]) return zipCaches[source]!;
-  if (zipPromises[source]) return zipPromises[source]!;
+// ── Lazy ZIP loading: parse header once, extract individual files on demand ──
 
-  zipPromises[source] = (async () => {
-    const res = await fetch(ZIP_URLS[source]);
-    const buf = await res.arrayBuffer();
-    const zip = await JSZip.loadAsync(buf);
-    const map = new Map<string, string>();
+/** Parsed JSZip instances, cached per source */
+const zipInstances: Record<ZipSource, JSZip | null> = { default: null, jim: null, jma: null, jiv: null, vk: null, sk: null, sex: null };
+const zipLoadPromises: Record<ZipSource, Promise<JSZip> | null> = { default: null, jim: null, jma: null, jiv: null, vk: null, sk: null, sex: null };
 
-    const entries: { path: string; entry: JSZip.JSZipObject }[] = [];
-    zip.forEach((path, entry) => {
-      if (!entry.dir) entries.push({ path, entry });
-    });
+/** Per-file blob URL cache */
+const fileCache = new Map<string, string>();
 
-    await Promise.all(
-      entries.map(async ({ path, entry }) => {
-        const blob = await entry.async('blob');
-        const url = URL.createObjectURL(blob);
-        map.set(path, url);
-      })
-    );
+/** Normalize Unicode + lowercase for matching */
+const norm = (s: string) => s.normalize('NFC').toLowerCase();
 
-    zipCaches[source] = map;
-    return map;
+async function getZipInstance(source: ZipSource): Promise<JSZip> {
+  if (zipInstances[source]) return zipInstances[source]!;
+  if (zipLoadPromises[source]) return zipLoadPromises[source]!;
+
+  zipLoadPromises[source] = (async () => {
+    try {
+      const res = await fetch(ZIP_URLS[source]);
+      if (!res.ok) throw new Error(`ZIP fetch failed: ${res.status}`);
+      const buf = await res.arrayBuffer();
+      const zip = await JSZip.loadAsync(buf);
+      zipInstances[source] = zip;
+      return zip;
+    } catch (err) {
+      // Clear promise so retry is possible
+      zipLoadPromises[source] = null;
+      throw err;
+    }
   })();
 
-  return zipPromises[source]!;
+  return zipLoadPromises[source]!;
+}
+
+/** Extract a single file from a ZIP — returns blob URL or null */
+async function extractSingleFile(source: ZipSource, folder: string, fileName: string): Promise<string | null> {
+  const cacheKey = `${source}/${folder}/${fileName}`;
+  if (fileCache.has(cacheKey)) return fileCache.get(cacheKey)!;
+
+  try {
+    const zip = await getZipInstance(source);
+
+    // Try exact path first
+    const exactPath = folder ? `${folder}/${fileName}` : fileName;
+    let entry = zip.file(exactPath);
+
+    // Fallback: Unicode-normalized + case-insensitive search
+    if (!entry) {
+      const normFile = norm(fileName);
+      const normFolder = norm(folder);
+      zip.forEach((path, zipEntry) => {
+        if (entry || zipEntry.dir) return;
+        const normPath = norm(path);
+        if (
+          normPath.endsWith(`/${normFolder}/${normFile}`) ||
+          normPath.endsWith(`/${normFile}`) ||
+          normPath === normFile
+        ) {
+          entry = zipEntry;
+        }
+      });
+    }
+
+    if (!entry) return null;
+
+    const blob = await entry.async('blob');
+    const url = URL.createObjectURL(blob);
+    fileCache.set(cacheKey, url);
+    return url;
+  } catch (err) {
+    console.warn(`[useCardImage] Failed to extract ${fileName} from ${source}:`, err);
+    return null;
+  }
 }
 
 /**
  * Returns a blob URL for the card's illustration, or null while loading / if not found.
  */
 export function useCardImage(cardId: string | undefined): string | null {
-  const [url, setUrl] = useState<string | null>(null);
+  const [url, setUrl] = useState<string | null>(() => {
+    if (!cardId) return null;
+    // Check standalone overrides synchronously
+    const standalone = STANDALONE_IMAGES[cardId];
+    if (standalone) return standalone;
+    // Check file cache synchronously
+    const mapping = CARD_IMAGE_MAP[cardId];
+    if (mapping) {
+      const cacheKey = `${mapping.zip}/${mapping.folder}/${mapping.file}`;
+      if (fileCache.has(cacheKey)) return fileCache.get(cacheKey)!;
+    }
+    return null;
+  });
   const cardIdRef = useRef(cardId);
   cardIdRef.current = cardId;
 
@@ -209,37 +261,18 @@ export function useCardImage(cardId: string | undefined): string | null {
     const mapping = CARD_IMAGE_MAP[cardId];
     if (!mapping) return;
 
+    // Check cache synchronously
+    const cacheKey = `${mapping.zip}/${mapping.folder}/${mapping.file}`;
+    if (fileCache.has(cacheKey)) {
+      setUrl(fileCache.get(cacheKey)!);
+      return;
+    }
+
     let cancelled = false;
 
-    loadZip(mapping.zip).then((cache) => {
-      if (cancelled) return;
-
-      // Normalize Unicode (decomposed ↔ composed) + case-insensitive matching
-      const norm = (s: string) => s.normalize('NFC').toLowerCase();
-      const exactPath = mapping.folder
-        ? `${mapping.folder}/${mapping.file}`
-        : mapping.file;
-      let blobUrl = cache.get(exactPath);
-
-      if (!blobUrl) {
-        const normFile = norm(mapping.file);
-        const normFolder = norm(mapping.folder);
-        for (const [key, val] of cache) {
-          const normKey = norm(key);
-          if (
-            normKey.endsWith(`/${normFolder}/${normFile}`) ||
-            normKey.endsWith(`/${normFile}`) ||
-            normKey === normFile
-          ) {
-            blobUrl = val;
-            break;
-          }
-        }
-      }
-
-      if (blobUrl && cardIdRef.current === cardId) {
-        setUrl(blobUrl);
-      }
+    extractSingleFile(mapping.zip, mapping.folder, mapping.file).then((blobUrl) => {
+      if (cancelled || cardIdRef.current !== cardId) return;
+      if (blobUrl) setUrl(blobUrl);
     });
 
     return () => { cancelled = true; };
@@ -252,3 +285,21 @@ export function useCardImage(cardId: string | undefined): string | null {
 export function hasCardImage(cardId: string): boolean {
   return cardId in CARD_IMAGE_MAP;
 }
+
+/**
+ * Preload a ZIP archive header (no file extraction).
+ * Call when navigating to a product home to warm the cache.
+ */
+export function preloadZip(source: ZipSource): void {
+  getZipInstance(source).catch(() => {});
+}
+
+/** Map product IDs to their ZIP source for preloading */
+export const PRODUCT_ZIP_MAP: Record<string, ZipSource> = {
+  jag_i_mig: 'jim',
+  jag_med_andra: 'jma',
+  jag_i_varlden: 'jiv',
+  vardagskort: 'vk',
+  syskonkort: 'sk',
+  sexualitetskort: 'sex',
+};

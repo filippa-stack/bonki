@@ -1,10 +1,11 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams, useNavigate, Navigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ArrowLeft } from 'lucide-react';
 import { allProducts } from '@/data/products';
 import { useProductTheme } from '@/hooks/useProductTheme';
 import { useThemeSwitcher } from '@/hooks/useThemeSwitcher';
+import { preloadZip, PRODUCT_ZIP_MAP } from '@/hooks/useCardImage';
 import ProductIntro, { useProductIntroNeeded } from '@/components/ProductIntro';
 import JagIMigProductHome from '@/components/JagIMigProductHome';
 import JagMedAndraProductHome from '@/components/JagMedAndraProductHome';
@@ -32,9 +33,16 @@ export default function ProductHome() {
   const needsIntro = useProductIntroNeeded(product?.id ?? '');
   const [showIntro, setShowIntro] = useState(needsIntro);
 
+  // Preload ZIP when entering a product home — so card images are fast later
+  useEffect(() => {
+    if (product?.id && PRODUCT_ZIP_MAP[product.id]) {
+      preloadZip(PRODUCT_ZIP_MAP[product.id]);
+    }
+  }, [product?.id]);
+
   // Still Us uses the legacy Home — redirect there
   if (isStillUs) {
-    return <Navigate to="/?devState=solo" replace />;
+    return <Navigate to="/" replace />;
   }
 
   if (showIntro && product) {
