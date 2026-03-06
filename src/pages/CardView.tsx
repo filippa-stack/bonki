@@ -297,6 +297,7 @@ export default function CardView() {
       p_category_id: card.categoryId,
       p_card_id: cardId,
       p_step_count: effectiveSteps.length,
+      p_product_id: product?.id ?? 'still_us',
     });
     if (!error) {
       await normalizedSession.refetch();
@@ -349,6 +350,7 @@ export default function CardView() {
           p_category_id: card.categoryId,
           p_card_id: cardId,
           p_step_count: effectiveSteps.length,
+          p_product_id: product?.id ?? 'still_us',
         });
         if (error) {
           console.error('Session activation failed:', error);

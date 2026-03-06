@@ -1,3 +1,4 @@
+import React from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { allProducts } from '@/data/products';
@@ -139,15 +140,15 @@ function AudienceLabel({ label, delay = 0 }: { label: string; delay?: number }) 
  * └─────────────────────────────────────────────────────┘
  */
 /** Pastel tile — illustration as right-aligned feature, text left */
-function PastelTile({
-  name, bg, ageLabel, tagline, onClick, illustration, accentColor, taglineColor,
-  illustrationOpacity = 0.25, illustrationSize = 'contain', illustrationPosition = 'right center', wide = false,
-}: {
+const PastelTile = React.forwardRef<HTMLDivElement, {
   name: string; bg: string; ageLabel?: string; tagline?: string;
   onClick?: () => void; illustration?: string;
   accentColor?: string; taglineColor?: string; illustrationOpacity?: number;
   illustrationSize?: string; illustrationPosition?: string; wide?: boolean;
-}) {
+}>(function PastelTile({
+  name, bg, ageLabel, tagline, onClick, illustration, accentColor, taglineColor,
+  illustrationOpacity = 0.25, illustrationSize = 'contain', illustrationPosition = 'right center', wide = false,
+}, ref) {
   const darkenHex = (hex: string) => {
     const r = parseInt(hex.slice(1, 3), 16);
     const g = parseInt(hex.slice(3, 5), 16);
@@ -248,7 +249,7 @@ function PastelTile({
       </div>
     </motion.div>
   );
-}
+});
 
 export default function ProductLibrary() {
   const navigate = useNavigate();

@@ -1096,15 +1096,26 @@ export type Database = {
         Args: { p_session_id: string }
         Returns: undefined
       }
-      activate_couple_session: {
-        Args: {
-          p_card_id: string
-          p_category_id: string
-          p_couple_space_id: string
-          p_step_count: number
-        }
-        Returns: string
-      }
+      activate_couple_session:
+        | {
+            Args: {
+              p_card_id: string
+              p_category_id: string
+              p_couple_space_id: string
+              p_step_count: number
+            }
+            Returns: string
+          }
+        | {
+            Args: {
+              p_card_id: string
+              p_category_id: string
+              p_couple_space_id: string
+              p_product_id?: string
+              p_step_count: number
+            }
+            Returns: string
+          }
       assert_one_active_session_per_space: {
         Args: { p_couple_space_id: string }
         Returns: undefined
