@@ -1,8 +1,5 @@
 project_id = "wcienwozdurwhswaarjy"
 
-[functions.join-couple-space]
-verify_jwt = false
-
 [functions.create-couple-space]
 verify_jwt = false
 
@@ -10,12 +7,6 @@ verify_jwt = false
 verify_jwt = false
 
 [functions.update-step-completion]
-verify_jwt = false
-
-[functions.leave-couple-space]
-verify_jwt = false
-
-[functions.leave-and-create-new-space]
 verify_jwt = false
 
 [functions.send-notification-email]
