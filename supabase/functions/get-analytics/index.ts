@@ -34,7 +34,6 @@ Deno.serve(async (req) => {
       })
     }
 
-    // Only allow admin user
     if (user.id !== ADMIN_USER_ID) {
       return new Response(JSON.stringify({ error: 'Forbidden' }), {
         status: 403,
@@ -42,19 +41,26 @@ Deno.serve(async (req) => {
       })
     }
 
-    // Parse optional date-from filter
     const url = new URL(req.url)
     const fromParam = url.searchParams.get('from')
-    const fromDate = fromParam || null // ISO date string e.g. "2026-02-27"
+    const fromDate = fromParam || null
+    const productFilter = url.searchParams.get('product') || null // 'still_us', 'kids', or null (all)
 
     const supabase = createClient(
       Deno.env.get('SUPABASE_URL')!,
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
     )
 
-    // Helper: apply date filter to a query builder
     const applyFrom = (q: any, col = 'created_at') =>
       fromDate ? q.gte(col, fromDate) : q
+
+    // Product filtering helper for tables with product_id column
+    const applyProduct = (q: any) => {
+      if (!productFilter) return q
+      if (productFilter === 'still_us') return q.eq('product_id', 'still_us')
+      if (productFilter === 'kids') return q.neq('product_id', 'still_us')
+      return q.eq('product_id', productFilter)
+    }
 
     const [
       spacesRes,
@@ -69,16 +75,24 @@ Deno.serve(async (req) => {
       membersRes,
     ] = await Promise.all([
       applyFrom(supabase.from('couple_spaces').select('id', { count: 'exact', head: true })),
-      applyFrom(supabase.from('couple_sessions').select('status, started_at, ended_at'), 'started_at'),
-      applyFrom(supabase.from('couple_session_completions').select('id', { count: 'exact', head: true }), 'completed_at'),
-      applyFrom(supabase.from('step_reflections').select('state, user_id'), 'updated_at'),
+      applyProduct(applyFrom(supabase.from('couple_sessions').select('id, status, started_at, ended_at, product_id'), 'started_at')),
+      applyFrom(supabase.from('couple_session_completions').select('id, session_id', { count: 'exact' }), 'completed_at'),
+      applyProduct(applyFrom(supabase.from('step_reflections').select('state, user_id, product_id'), 'updated_at')),
       applyFrom(supabase.from('prompt_notes').select('visibility, user_id, is_highlight')),
-      supabase.from('question_bookmarks').select('id, is_active', { count: 'exact' }),
-      applyFrom(supabase.from('couple_takeaways').select('id', { count: 'exact', head: true })),
+      applyProduct(supabase.from('question_bookmarks').select('id, is_active', { count: 'exact' })),
+      applyFrom(supabase.from('couple_takeaways').select('id, session_id', { count: 'exact' }), 'created_at'),
       applyFrom(supabase.from('beta_feedback').select('id, response_text, submitted_at, session_id').order('submitted_at', { ascending: false }).limit(50), 'submitted_at'),
       applyFrom(supabase.from('couple_card_visits').select('card_id, user_id'), 'last_visited_at'),
       supabase.from('couple_members').select('user_id, status, left_at'),
     ])
+
+    // Build set of session IDs matching product filter (for filtering completions/takeaways)
+    const filteredSessionIds = new Set<string>()
+    if (sessionsRes.data) {
+      for (const s of sessionsRes.data) {
+        filteredSessionIds.add(s.id)
+      }
+    }
 
     // Aggregate sessions
     const sessionsByStatus: Record<string, number> = {}
@@ -97,6 +111,26 @@ Deno.serve(async (req) => {
       }
     }
 
+    // Filter completions by session IDs
+    let filteredCompletionCount = 0
+    if (productFilter && completionsRes.data) {
+      for (const c of completionsRes.data as any[]) {
+        if (filteredSessionIds.has(c.session_id)) filteredCompletionCount++
+      }
+    } else {
+      filteredCompletionCount = completionsRes.count || (completionsRes.data as any[])?.length || 0
+    }
+
+    // Filter takeaways by session IDs
+    let filteredTakeawayCount = 0
+    if (productFilter && takeawaysRes.data) {
+      for (const t of takeawaysRes.data as any[]) {
+        if (filteredSessionIds.has(t.session_id)) filteredTakeawayCount++
+      }
+    } else {
+      filteredTakeawayCount = takeawaysRes.count || (takeawaysRes.data as any[])?.length || 0
+    }
+
     // Aggregate reflections
     const reflectionsByState: Record<string, number> = {}
     const uniqueReflectionUsers = new Set<string>()
@@ -107,7 +141,7 @@ Deno.serve(async (req) => {
       }
     }
 
-    // Aggregate notes
+    // Aggregate notes (no product_id on prompt_notes — show regardless)
     const notesByVisibility: Record<string, number> = {}
     const uniqueNoteUsers = new Set<string>()
     let highlightCount = 0
@@ -123,10 +157,16 @@ Deno.serve(async (req) => {
       ? (bookmarksRes.data as any[]).filter((b: any) => b.is_active).length
       : 0
 
-    // Top cards
+    // Top cards — filter by product using card_id prefix heuristic
+    const KIDS_PREFIXES = ['jim-', 'jma-', 'jiv-', 'vk-', 'sk-', 'sex-']
     const cardVisitCounts: Record<string, number> = {}
     if (visitsRes.data) {
       for (const v of visitsRes.data) {
+        if (productFilter) {
+          const isKidsCard = KIDS_PREFIXES.some(p => v.card_id.startsWith(p))
+          if (productFilter === 'still_us' && isKidsCard) continue
+          if (productFilter === 'kids' && !isKidsCard) continue
+        }
         cardVisitCounts[v.card_id] = (cardVisitCounts[v.card_id] || 0) + 1
       }
     }
@@ -149,8 +189,8 @@ Deno.serve(async (req) => {
       overview: {
         totalSpaces: spacesRes.count || 0,
         totalSessions: sessionsRes.data?.length || 0,
-        totalCompletions: completionsRes.count || 0,
-        totalTakeaways: takeawaysRes.count || 0,
+        totalCompletions: filteredCompletionCount,
+        totalTakeaways: filteredTakeawayCount,
         uniqueUsers: uniqueActiveMembers.size,
       },
       sessions: {

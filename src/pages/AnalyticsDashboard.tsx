@@ -58,6 +58,7 @@ export default function AnalyticsDashboard() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [fromDate, setFromDate] = useState<Date>(new Date('2026-02-01'));
+  const [productFilter, setProductFilter] = useState<string>('all');
 
   useEffect(() => {
     if (!user || user.id !== ADMIN_USER_ID) return;
@@ -67,8 +68,9 @@ export default function AnalyticsDashboard() {
       setError(null);
       try {
         const dateStr = format(fromDate, 'yyyy-MM-dd');
+        const productParam = productFilter !== 'all' ? `&product=${productFilter}` : '';
         const { data: result, error: fnError } = await supabase.functions.invoke(
-          `get-analytics?from=${dateStr}`
+          `get-analytics?from=${dateStr}${productParam}`
         );
         if (fnError) throw fnError;
         setData(result as Analytics);
@@ -80,7 +82,7 @@ export default function AnalyticsDashboard() {
     };
 
     fetchAnalytics();
-  }, [user, fromDate]);
+  }, [user, fromDate, productFilter]);
 
   if (authLoading) return null;
   if (!user || user.id !== ADMIN_USER_ID) return <Navigate to="/" replace />;
@@ -100,26 +102,48 @@ export default function AnalyticsDashboard() {
       </header>
 
       <main className="px-4 pb-12 max-w-2xl mx-auto">
-        {/* Date filter */}
-        <div className="mt-4 flex items-center gap-2">
-          <span className="text-xs text-muted-foreground">Från:</span>
-          <Popover>
-            <PopoverTrigger asChild>
-              <Button variant="outline" size="sm" className={cn("justify-start text-left font-normal gap-2")}>
-                <CalendarIcon className="w-3.5 h-3.5" />
-                {format(fromDate, 'yyyy-MM-dd')}
-              </Button>
-            </PopoverTrigger>
-            <PopoverContent className="w-auto p-0" align="start">
-              <Calendar
-                mode="single"
-                selected={fromDate}
-                onSelect={(d) => d && setFromDate(d)}
-                initialFocus
-                className="p-3 pointer-events-auto"
-              />
-            </PopoverContent>
-          </Popover>
+        {/* Filters */}
+        <div className="mt-4 flex items-center gap-4 flex-wrap">
+          <div className="flex items-center gap-2">
+            <span className="text-xs text-muted-foreground">Från:</span>
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button variant="outline" size="sm" className={cn("justify-start text-left font-normal gap-2")}>
+                  <CalendarIcon className="w-3.5 h-3.5" />
+                  {format(fromDate, 'yyyy-MM-dd')}
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-auto p-0" align="start">
+                <Calendar
+                  mode="single"
+                  selected={fromDate}
+                  onSelect={(d) => d && setFromDate(d)}
+                  initialFocus
+                  className="p-3 pointer-events-auto"
+                />
+              </PopoverContent>
+            </Popover>
+          </div>
+          <div className="flex items-center gap-1.5">
+            {[
+              { value: 'all', label: 'Alla' },
+              { value: 'still_us', label: 'Still Us' },
+              { value: 'kids', label: 'Barn' },
+            ].map(opt => (
+              <button
+                key={opt.value}
+                onClick={() => setProductFilter(opt.value)}
+                className={cn(
+                  "px-3 py-1.5 rounded-full text-xs font-medium transition-colors",
+                  productFilter === opt.value
+                    ? "bg-foreground text-background"
+                    : "bg-muted/50 text-muted-foreground hover:bg-muted"
+                )}
+              >
+                {opt.label}
+              </button>
+            ))}
+          </div>
         </div>
 
         {loading && (
