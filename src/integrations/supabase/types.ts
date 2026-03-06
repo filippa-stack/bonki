@@ -462,8 +462,6 @@ export type Database = {
         Row: {
           created_at: string
           id: string
-          invite_code: string
-          invite_token: string
           paid_at: string | null
           partner_a_name: string | null
           partner_b_name: string | null
@@ -471,8 +469,6 @@ export type Database = {
         Insert: {
           created_at?: string
           id?: string
-          invite_code: string
-          invite_token: string
           paid_at?: string | null
           partner_a_name?: string | null
           partner_b_name?: string | null
@@ -480,8 +476,6 @@ export type Database = {
         Update: {
           created_at?: string
           id?: string
-          invite_code?: string
-          invite_token?: string
           paid_at?: string | null
           partner_a_name?: string | null
           partner_b_name?: string | null
@@ -1141,13 +1135,6 @@ export type Database = {
         }[]
       }
       get_current_couple_space_id: { Args: never; Returns: string }
-      get_own_invite_info: {
-        Args: never
-        Returns: {
-          invite_code: string
-          invite_token: string
-        }[]
-      }
       get_user_couple_space_id: { Args: { _user_id: string }; Returns: string }
       is_couple_member: {
         Args: { _space_id: string; _user_id: string }
