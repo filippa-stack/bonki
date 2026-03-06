@@ -81,12 +81,10 @@ Deno.serve(async (req) => {
     }
 
     const spaceId = crypto.randomUUID();
-    const inviteCode = generateInviteCode();
-    const inviteToken = generateInviteToken();
 
     const { error: spaceInsertErr } = await adminClient
       .from("couple_spaces")
-      .insert({ id: spaceId, invite_code: inviteCode, invite_token: inviteToken });
+      .insert({ id: spaceId });
 
     if (spaceInsertErr) {
       console.error("Space insert error:", spaceInsertErr);
