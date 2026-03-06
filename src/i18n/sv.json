@@ -33,6 +33,7 @@
     "send_magic_link": "Skicka inloggningslänk",
     "magic_link_sent_title": "Kolla din e-post",
     "magic_link_sent_hint": "Vi har skickat en inloggningslänk till din e-postadress.",
+    "magic_link_spam_tip": "Hittar du den inte? Kolla skräpposten.",
     "back_to_login": "Tillbaka",
     "error_generic": "Något gick fel vid inloggningen",
     "error_start": "Kunde inte starta inloggningen",
