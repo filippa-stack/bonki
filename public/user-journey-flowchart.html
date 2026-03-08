@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Still Us – Användarresa (Live)</title>
+<title>Still Us – Live användarresa</title>
 <style>
   body { margin: 0; padding: 24px; background: #faf9f7; font-family: system-ui, sans-serif; }
   h1 { font-size: 20px; color: #1a1a1a; margin-bottom: 4px; }
@@ -15,156 +15,123 @@
 </style>
 </head>
 <body>
-<h1>Still Us – Publicerad användarresa</h1>
-<p class="sub">Genererad 2026-03-08 · Detaljerad steg-för-steg med friktionspunkter</p>
+<h1>Still Us – Live användarresa (publicerad version)</h1>
+<p class="sub">Baserad på screenshots 2026-02-27 · Enbart Still Us-produkten</p>
 
 <div class="legend">
-  <span><span class="dot" style="background:#c0392b"></span> Hård gate</span>
+  <span><span class="dot" style="background:#c0392b"></span> Hard gate</span>
   <span><span class="dot" style="background:#e67e22"></span> Friktionspunkt</span>
-  <span><span class="dot" style="background:#8e44ad"></span> Copy-mismatch</span>
   <span><span class="dot" style="background:#2980b9"></span> Beslutspunkt</span>
   <span><span class="dot" style="background:#27ae60"></span> Stark sektion</span>
 </div>
 
 <div class="mermaid">
 graph TD
-    subgraph LOGIN["STEG 1: LOGIN /login"]
-        L1["Skarm: 'Logga in'<br/>Ingen produktbeskrivning"]
+    subgraph LOGIN["STEG 1: LOGIN"]
+        L1["BONKI / Still Us<br/>'Sa vi forblir vi.'<br/>'Ert konto. Era samtal.'"]
         L2{"Acceptera villkor?"}
         L3{"Valj metod"}
         L4["Google OAuth"]
-        L5["Magic Link: Ange e-post"]
-        L6["Vanta pa mejl<br/>Svag bekraftelse: bara en bock-ikon"]
+        L5["Magic Link: Ange e-post<br/>'Hittar du den inte? Kolla skrapposten.'"]
         L1 --> L2
         L2 -->|Nej| L2
         L2 -->|Ja| L3
         L3 -->|Google| L4
         L3 -->|E-post| L5
-        L5 --> L6
     end
 
-    subgraph ONBOARDING["STEG 2: ONBOARDING 3 slides"]
-        O0["Slide 0: 'Valkommen till Bonki'<br/>'Det basta samtalet du kommer ha idag'<br/>'Inte det langsta. Det mest arliga.'"]
-        O1["Slide 1: 'Samtal som ror sig'<br/>'Bonki ar verktyg for familjer och par'<br/>'Fran barnets forsta kanslor till<br/>parrelationens svaraste fragor'"]
-        O2["Slide 2: Mork bakgrund<br/>'Valj det amne som kanns ratt just nu'<br/>'Verktyg for barn, tonaringar och par'<br/>CTA: 'Utforska biblioteket'"]
-        OSKIP["Hoppa over-lank<br/>Synlig pa slide 0-1"]
+    subgraph ONBOARDING["STEG 2: ONBOARDING 4 slides"]
+        O0["Slide 0: 'Ett gemensamt rum.'<br/>'Still Us ar skapat for er -- ett utrymme<br/>att motas i, mitt i vardagen.'<br/>'For samtal ni vill halla levande.'"]
+        O1["Slide 1: 'Utforska tillsammans.'<br/>'Valj ett amne. Las fragorna hogt.<br/>Lyssna. Reflektera.'<br/>'Det finns inget ratt satt -- bara ert.'"]
+        O2["Slide 2: 'SA FUNKAR DET'<br/>01 Valj ett tema. Samtalet tar den tid ni ger det.<br/>02 Lat var och en tala till punkt.<br/>03 Anteckna det ni vill minnas.<br/>'Pausa nar det behovs. Aterkom nar det gar.'<br/>'Vardet ligger i reflektionen, inte i losningen.'"]
+        O3["Slide 3 MORK: 'Omsorgsfullt utvecklat.'<br/>'Varje samtal bygger pa psykologisk<br/>forskning om relationer och anknytning.'<br/>'Formulerat for att skapa klarhet,<br/>narhet och forstaelse -- i er takt.'<br/>'Bara er.'<br/>CTA: 'Kom igang'"]
+        OSKIP["Hoppa over-lank<br/>Synlig pa slide 0-2"]
         O0 --> O1
         O1 --> O2
+        O2 --> O3
         O0 -.->|skip| OSKIP
         O1 -.->|skip| OSKIP
-    end
-
-    subgraph ONBOARDING_ISSUES["COPY-MISMATCH I LIVE"]
-        OI1["Sager 'Bonki' - produkten heter Still Us"]
-        OI2["Namner barn/familjer - live ar ENBART for par"]
-        OI3["'Utforska biblioteket' - det finns inget bibliotek"]
+        O2 -.->|skip| OSKIP
     end
 
     subgraph BG_ACTION["TYST BAKGRUNDSAKTION"]
-        BG["initializeCoupleSpace<br/>Skapar couple_space + couple_member<br/>Anvandaren vet inte om detta"]
+        BG["initializeCoupleSpace<br/>Skapar couple_space + couple_member"]
     end
 
-    subgraph PURCHASE["STEG 3: KOPSKARM PurchaseScreen"]
-        P1["Skarm: Betalvagg<br/>Pris: 395 kr fran DB<br/>Stripe Checkout"]
+    subgraph PURCHASE["STEG 3: KOPSKARM"]
+        P1["Betalvagg<br/>Pris: 395 kr<br/>Stripe Checkout"]
         P2{"Betala?"}
-        P3["Stripe redirect<br/>paid_at sparas i DB + localStorage"]
-        PBLOCK["HARD GATE<br/>Inget innehall synligt<br/>fore betalning"]
+        P3["Stripe redirect<br/>paid_at sparas"]
+        PBLOCK["HARD GATE<br/>Inget innehall<br/>fore betalning"]
         P1 --> P2
         P2 -->|Ja| P3
         P2 -->|Nej| PBLOCK
     end
 
     subgraph HOME_FIRST["STEG 4a: HOME - Forsta besoket"]
-        H1["Rubrik: 'Ert utrymme'"]
-        H2["Welcome-kort:<br/>'Det har ar er plats att<br/>utforska tillsammans.'<br/>'Valj ett amne och borja samtalet.'"]
-        H3["Sektionsheader: VI SOM BAS"]
-        H4["Rekommenderad kategori<br/>'01 - Rekommenderad start'<br/>Lyft med guldram"]
-        H5["8 ovriga kategorier<br/>Numrerade 02-09<br/>Grupperade i 3 sektioner"]
-        H6["Footer: 'Samtalet borjar har.'"]
-        H1 --> H2 --> H3 --> H4 --> H5 --> H6
+        H1["'Ert utrymme'"]
+        H2["Welcome-kort:<br/>'Det har ar er plats att<br/>utforska tillsammans.'"]
+        H3["Rekommenderad kategori<br/>'01 - Rekommenderad start'"]
+        H4["8 ovriga kategorier<br/>Grupperade i 3 sektioner"]
+        H1 --> H2 --> H3 --> H4
     end
 
     subgraph HOME_RETURN["STEG 4b: HOME - Aterbesok"]
-        HR1["'Vad kul att ni ar tillbaka.'<br/>'Vad vill ni utforska idag?'"]
-        HR2["Resume-banner om aktiv session:<br/>'Ni var mitt i Korttitel'"]
-        HR3["Statusikoner per kategori:<br/>Check = klar, Orange prick = paborjad"]
+        HR1["'Vad kul att ni ar tillbaka.'"]
+        HR2["Resume-banner om aktiv session"]
+        HR3["Statusikoner per kategori"]
     end
 
-    subgraph HOME_CHOICE["BESLUT: VALJ KATEGORI"]
-        HC{"Valj 1 av 9 kategorier"}
-        HC1["Emotionell Intimitet"]
-        HC2["Kommunikation"]
-        HC3["Foraldraskap"]
-        HC4["Individuella Behov"]
-        HC5["...5 till"]
-        HC --> HC1
-        HC --> HC2
-        HC --> HC3
-        HC --> HC4
-        HC --> HC5
-    end
-
-    subgraph CATEGORY["STEG 5: KATEGORISIDA /category/:id"]
-        C1["Rubrik: Kategorins titel"]
-        C2["Kortlista med:<br/>- Illustration thumbnail<br/>- Titel + subtitle<br/>- Completion-status"]
+    subgraph CATEGORY["STEG 5: KATEGORISIDA"]
+        C1["Kategorins titel"]
+        C2["Kortlista med illustration + status"]
         C3{"Valj kort"}
         C1 --> C2 --> C3
     end
 
-    subgraph SESSION["STEG 6: AKTIV SESSION /card/:id"]
-        S0["GorTillsammans-overlay<br/>'Gor det har tillsammans'<br/>Visas EN gang"]
-        S1["Starta samtal-knapp<br/>Skapar session i DB"]
-        S2["Steg 1: Las fragor hogt<br/>Markera som klar"]
-        S3["Reflektion: Tomt textfalt<br/>Valfritt men hog troskeln"]
-        S4["Stage-interstitial<br/>Overgang till nasta steg"]
-        S5["Steg 2-4: Samma monster<br/>Fragor - Klar - Reflektion"]
-        S0 --> S1 --> S2 --> S3 --> S4 --> S5
+    subgraph SESSION["STEG 6: AKTIV SESSION"]
+        S0["GorTillsammans-overlay<br/>'Gor det har tillsammans'"]
+        S1["Starta samtal"]
+        S2["Steg 1-4: Las fragor hogt<br/>Markera klar - Reflektion"]
+        S0 --> S1 --> S2
     end
 
     subgraph COMPLETE["STEG 7: AVSLUTAD SESSION"]
-        CO1["Slumpad headline:<br/>'Ni vagade. Det racker.'<br/>'Nagot forandrades just.'"]
-        CO2["Vista lasta reflektioner<br/>om bada skrev"]
-        CO3["Takeaway-sektion"]
-        CO4["CTA: Utforska fler amnen<br/>Tillbaka till Home"]
+        CO1["Slumpad headline"]
+        CO2["Lasta reflektioner"]
+        CO3["Takeaway"]
+        CO4["CTA: Utforska fler amnen"]
         CO1 --> CO2 --> CO3 --> CO4
     end
 
-    subgraph FEEDBACK["STEG 8: FEEDBACK 2s delay"]
-        F1["Bottom-sheet poppar upp<br/>automatiskt efter 2 sek"]
-        F2["TOMT textfalt<br/>Ingen fraga, ingen emoji<br/>Ingen ledning alls"]
-        F3["Dismiss: tappa utanfor"]
-        F4["Resultat: 83% skippar"]
-        F1 --> F2 --> F3
-        F2 -.-> F4
+    subgraph FEEDBACK["STEG 8: FEEDBACK"]
+        F1["Bottom-sheet efter 2s"]
+        F2["Tomt textfalt utan ledning"]
+        F1 --> F2
     end
 
     L4 --> ONBOARDING
-    L6 --> ONBOARDING
+    L5 --> ONBOARDING
     OSKIP --> BG
-    O2 -->|CTA| BG
+    O3 -->|Kom igang| BG
     BG --> PURCHASE
-    ONBOARDING_ISSUES -.->|Problem| ONBOARDING
     P3 --> HOME_FIRST
-    HOME_FIRST --> HOME_CHOICE
-    HOME_RETURN --> HOME_CHOICE
-    HOME_CHOICE --> CATEGORY
+    HOME_FIRST --> CATEGORY
+    HOME_RETURN --> CATEGORY
     CATEGORY --> SESSION
     SESSION --> COMPLETE
     COMPLETE --> FEEDBACK
-    COMPLETE --> HOME_RETURN
     CO4 --> HOME_RETURN
 
     classDef gate fill:#c0392b,color:#fff,stroke:#922b21
     classDef friction fill:#e67e22,color:#fff,stroke:#d35400
     classDef good fill:#27ae60,color:#fff,stroke:#1e8449
-    classDef mismatch fill:#8e44ad,color:#fff,stroke:#6c3483
     classDef decision fill:#2980b9,color:#fff,stroke:#1f618d
 
     class PBLOCK,L2 gate
-    class F4,L6,OI1,OI2,OI3 friction
-    class SESSION,COMPLETE good
-    class ONBOARDING_ISSUES mismatch
-    class HC,C3,L3,P2 decision
+    class F2,L5 friction
+    class SESSION,COMPLETE,ONBOARDING good
+    class P2,C3,L3 decision
 </div>
 
 <script type="module">
