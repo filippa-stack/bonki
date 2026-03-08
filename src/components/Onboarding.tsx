@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence, PanInfo } from 'framer-motion';
 import { useApp } from '@/contexts/AppContext';
+import { trackOnboardingEvent } from '@/lib/trackOnboarding';
 
 /** Apple-grade ease: slow start, confident finish */
 const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
