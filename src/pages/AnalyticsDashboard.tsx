@@ -65,7 +65,7 @@ export default function AnalyticsDashboard() {
   const [productFilter, setProductFilter] = useState<string>('all');
 
   useEffect(() => {
-    if (!user || user.id !== ADMIN_USER_ID) return;
+    if (!user || !ALLOWED_USER_IDS.includes(user.id)) return;
 
     const fetchAnalytics = async () => {
       setLoading(true);
@@ -89,7 +89,7 @@ export default function AnalyticsDashboard() {
   }, [user, fromDate, productFilter]);
 
   if (authLoading) return null;
-  if (!user || user.id !== ADMIN_USER_ID) return <Navigate to="/" replace />;
+  if (!user || !ALLOWED_USER_IDS.includes(user.id)) return <Navigate to="/" replace />;
 
   return (
     <div className="min-h-screen page-bg">
