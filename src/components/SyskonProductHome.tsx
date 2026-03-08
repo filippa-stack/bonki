@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { BookOpen } from 'lucide-react';
+import BackToLibraryButton from '@/components/BackToLibraryButton';
 import type { ProductManifest } from '@/types/product';
 import illustrationImage from '@/assets/illustration-syskon.png';
 
@@ -29,6 +30,7 @@ export default function SyskonProductHome({ product }: { product: ProductManifes
       className="min-h-screen relative overflow-hidden"
       style={{ backgroundColor: 'var(--surface-base)' }}
     >
+      <BackToLibraryButton color={ACCENT_COLOR} />
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}

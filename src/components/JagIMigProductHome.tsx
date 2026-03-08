@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { BookOpen } from 'lucide-react';
+import BackToLibraryButton from '@/components/BackToLibraryButton';
 import type { ProductManifest } from '@/types/product';
 import apaImage from '@/assets/apa-jag-i-mig.png';
 
@@ -29,6 +30,7 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
       className="min-h-screen relative overflow-hidden"
       style={{ backgroundColor: 'var(--surface-base)' }}
     >
+      <BackToLibraryButton color={ACCENT_COLOR} />
       {/* Background illustration */}
       <motion.div
         initial={{ opacity: 0 }}
