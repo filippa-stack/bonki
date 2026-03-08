@@ -51,8 +51,22 @@ Deno.serve(async (req) => {
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
     )
 
+    // Exclude admin spaces from all queries
+    const { data: adminMemberships } = await supabase
+      .from('couple_members')
+      .select('couple_space_id')
+      .eq('user_id', ADMIN_USER_ID)
+    const adminSpaceIds = (adminMemberships || []).map((m: any) => m.couple_space_id)
+
     const applyFrom = (q: any, col = 'created_at') =>
       fromDate ? q.gte(col, fromDate) : q
+
+    const excludeAdminSpaces = (q: any, col = 'couple_space_id') => {
+      for (const id of adminSpaceIds) {
+        q = q.neq(col, id)
+      }
+      return q
+    }
 
     // Product filtering helper for tables with product_id column
     const applyProduct = (q: any) => {
