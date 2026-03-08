@@ -10,7 +10,11 @@ import { Calendar } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { cn } from '@/lib/utils';
 
-const ADMIN_USER_ID = 'b29f4c84-0426-4b8f-9293-dccf9141a4b5';
+const ALLOWED_USER_IDS = [
+  'b29f4c84-0426-4b8f-9293-dccf9141a4b5',
+  '8105cd94-be94-473e-977a-883e461cfea8',
+  '999288dd-b73a-4829-9d0d-72a8b54b6385',
+];
 
 interface Analytics {
   overview: { totalSpaces: number; totalSessions: number; totalCompletions: number; totalTakeaways: number; uniqueUsers: number };
