@@ -97,7 +97,7 @@ export default function Onboarding() {
           {/* CTA button */}
           {currentSlide === LAST_SLIDE ? (
             <button
-              onClick={handleComplete}
+              onClick={handleCompleteCta}
               style={{
                 width: '60%',
                 maxWidth: '280px',
@@ -172,7 +172,7 @@ export default function Onboarding() {
           <div style={{ height: '20px', display: 'flex', alignItems: 'center' }}>
             {currentSlide < LAST_SLIDE && (
               <button
-                onClick={handleComplete}
+                onClick={handleSkip}
                 style={{
                   fontSize: '12px',
                   letterSpacing: '0.05em',
