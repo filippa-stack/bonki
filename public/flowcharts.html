@@ -19,13 +19,15 @@
   .toc {
     display: flex; gap: 10px; margin-top: 14px; flex-wrap: wrap;
   }
-  .toc a {
+  .toc a, .toc button {
     display: inline-block; padding: 7px 14px; border-radius: 8px;
     background: #fff; border: 1px solid #e5e2dd; text-decoration: none;
     font-size: 13px; font-weight: 500; color: #1a1a1a;
-    transition: background 0.15s, border-color 0.15s;
+    transition: background 0.15s, border-color 0.15s; cursor: pointer;
   }
-  .toc a:hover { background: #f0ede8; border-color: #ccc; }
+  .toc a:hover, .toc button:hover { background: #f0ede8; border-color: #ccc; }
+  .toc .dl { background: #2D4A3E; color: #fff; border-color: #2D4A3E; }
+  .toc .dl:hover { opacity: 0.85; }
 
   .section {
     padding: 32px 32px 48px;
@@ -55,8 +57,21 @@
   <nav class="toc">
     <a href="#still-us">Still Us (par)</a>
     <a href="#kids-family">Barn &amp; Familj (6 produkter)</a>
+    <button class="dl" onclick="downloadPage()">⬇ Ladda ned HTML</button>
   </nav>
 </div>
+
+<script>
+function downloadPage() {
+  const html = document.documentElement.outerHTML;
+  const blob = new Blob(['<!DOCTYPE html>\n' + html], { type: 'text/html' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'bonki-flowcharts.html';
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+</script>
 
 <!-- ─── STILL US ─── -->
 <div class="section" id="still-us">
