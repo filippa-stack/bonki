@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence, PanInfo } from 'framer-motion';
 import { useApp } from '@/contexts/AppContext';
+import { trackOnboardingEvent } from '@/lib/trackOnboarding';
 
 /** Apple-grade ease: slow start, confident finish */
 const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
@@ -10,15 +11,35 @@ const LAST_SLIDE = 2;
 export default function Onboarding() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const { completeOnboarding, initializeCoupleSpace } = useApp();
+  const trackedSlides = useRef(new Set<number>());
+
+  // Track slide views
+  useEffect(() => {
+    if (!trackedSlides.current.has(currentSlide)) {
+      trackedSlides.current.add(currentSlide);
+      const eventName = currentSlide === 0 ? 'onboarding_start' : `onboarding_slide_${currentSlide}`;
+      trackOnboardingEvent(eventName);
+    }
+  }, [currentSlide]);
 
   const handleComplete = () => {
     initializeCoupleSpace();
     completeOnboarding();
   };
 
+  const handleCompleteCta = () => {
+    trackOnboardingEvent('onboarding_complete', { last_slide: currentSlide });
+    handleComplete();
+  };
+
+  const handleSkip = () => {
+    trackOnboardingEvent('onboarding_skip', { last_slide: currentSlide });
+    handleComplete();
+  };
+
   const handleNext = () => {
     if (currentSlide < LAST_SLIDE) setCurrentSlide(currentSlide + 1);
-    else handleComplete();
+    else handleCompleteCta();
   };
 
   const handleDragEnd = (_: unknown, info: PanInfo) => {
@@ -26,7 +47,7 @@ export default function Onboarding() {
     const VELOCITY_THRESHOLD = 300;
     if (info.offset.x < -SWIPE_THRESHOLD || info.velocity.x < -VELOCITY_THRESHOLD) {
       if (currentSlide < LAST_SLIDE) setCurrentSlide(currentSlide + 1);
-      else handleComplete();
+      else handleCompleteCta();
     }
     if (info.offset.x > SWIPE_THRESHOLD || info.velocity.x > VELOCITY_THRESHOLD) {
       if (currentSlide > 0) setCurrentSlide(currentSlide - 1);
@@ -76,7 +97,7 @@ export default function Onboarding() {
           {/* CTA button */}
           {currentSlide === LAST_SLIDE ? (
             <button
-              onClick={handleComplete}
+              onClick={handleCompleteCta}
               style={{
                 width: '60%',
                 maxWidth: '280px',
@@ -151,7 +172,7 @@ export default function Onboarding() {
           <div style={{ height: '20px', display: 'flex', alignItems: 'center' }}>
             {currentSlide < LAST_SLIDE && (
               <button
-                onClick={handleComplete}
+                onClick={handleSkip}
                 style={{
                   fontSize: '12px',
                   letterSpacing: '0.05em',
