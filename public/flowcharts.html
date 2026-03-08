@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bonki – Alla användarresor</title>
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; padding: 0; background: #faf9f7; font-family: system-ui, -apple-system, sans-serif; color: #1a1a1a; }
+  
+  .header {
+    position: sticky; top: 0; z-index: 10;
+    background: #faf9f7; border-bottom: 1px solid #e5e2dd;
+    padding: 20px 32px 16px;
+  }
+  .header h1 { font-size: 22px; margin: 0 0 4px; font-weight: 700; }
+  .header p { font-size: 13px; color: #888; margin: 0; }
+
+  .toc {
+    display: flex; gap: 10px; margin-top: 14px; flex-wrap: wrap;
+  }
+  .toc a {
+    display: inline-block; padding: 7px 14px; border-radius: 8px;
+    background: #fff; border: 1px solid #e5e2dd; text-decoration: none;
+    font-size: 13px; font-weight: 500; color: #1a1a1a;
+    transition: background 0.15s, border-color 0.15s;
+  }
+  .toc a:hover { background: #f0ede8; border-color: #ccc; }
+
+  .section {
+    padding: 32px 32px 48px;
+    border-bottom: 1px solid #e5e2dd;
+  }
+  .section:last-child { border-bottom: none; }
+  .section h2 { font-size: 18px; margin: 0 0 4px; font-weight: 600; }
+  .section .sub { font-size: 13px; color: #888; margin: 0 0 20px; }
+
+  .legend { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 20px; font-size: 13px; }
+  .legend span { display: inline-flex; align-items: center; gap: 6px; }
+  .legend .dot { width: 12px; height: 12px; border-radius: 3px; display: inline-block; }
+
+  .mermaid { max-width: 100%; overflow-x: auto; }
+
+  @media print {
+    .header { position: static; }
+    .section { page-break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>Bonki – Infrastruktur &amp; användarresor</h1>
+  <p>Samlad vy over alla produktfloden · Uppdaterad 2026-03-08</p>
+  <nav class="toc">
+    <a href="#still-us">Still Us (par)</a>
+    <a href="#kids-family">Barn &amp; Familj (6 produkter)</a>
+  </nav>
+</div>
+
+<!-- ─── STILL US ─── -->
+<div class="section" id="still-us">
+  <h2>Still Us – Live användarresa</h2>
+  <p class="sub">Baserad på screenshots 2026-02-27 · Enbart Still Us-produkten</p>
+
+  <div class="legend">
+    <span><span class="dot" style="background:#c0392b"></span> Hard gate</span>
+    <span><span class="dot" style="background:#e67e22"></span> Friktionspunkt</span>
+    <span><span class="dot" style="background:#2980b9"></span> Beslutspunkt</span>
+    <span><span class="dot" style="background:#27ae60"></span> Stark sektion</span>
+  </div>
+
+  <div class="mermaid">
+graph TD
+    subgraph LOGIN["STEG 1: LOGIN"]
+        L1["BONKI / Still Us<br/>'Sa vi forblir vi.'<br/>'Ert konto. Era samtal.'"]
+        L2{"Acceptera villkor?"}
+        L3{"Valj metod"}
+        L4["Google OAuth"]
+        L5["Magic Link: Ange e-post<br/>'Hittar du den inte? Kolla skrapposten.'"]
+        L1 --> L2
+        L2 -->|Nej| L2
+        L2 -->|Ja| L3
+        L3 -->|Google| L4
+        L3 -->|E-post| L5
+    end
+
+    subgraph ONBOARDING["STEG 2: ONBOARDING 4 slides"]
+        O0["Slide 0: 'Ett gemensamt rum.'<br/>'Still Us ar skapat for er -- ett utrymme<br/>att motas i, mitt i vardagen.'<br/>'For samtal ni vill halla levande.'"]
+        O1["Slide 1: 'Utforska tillsammans.'<br/>'Valj ett amne. Las fragorna hogt.<br/>Lyssna. Reflektera.'<br/>'Det finns inget ratt satt -- bara ert.'"]
+        O2["Slide 2: 'SA FUNKAR DET'<br/>01 Valj ett tema. Samtalet tar den tid ni ger det.<br/>02 Lat var och en tala till punkt.<br/>03 Anteckna det ni vill minnas.<br/>'Pausa nar det behovs. Aterkom nar det gar.'<br/>'Vardet ligger i reflektionen, inte i losningen.'"]
+        O3["Slide 3 MORK: 'Omsorgsfullt utvecklat.'<br/>'Varje samtal bygger pa psykologisk<br/>forskning om relationer och anknytning.'<br/>'Formulerat for att skapa klarhet,<br/>narhet och forstaelse -- i er takt.'<br/>'Bara er.'<br/>CTA: 'Kom igang'"]
+        OSKIP["Hoppa over-lank<br/>Synlig pa slide 0-2"]
+        O0 --> O1
+        O1 --> O2
+        O2 --> O3
+        O0 -.->|skip| OSKIP
+        O1 -.->|skip| OSKIP
+        O2 -.->|skip| OSKIP
+    end
+
+    subgraph BG_ACTION["TYST BAKGRUNDSAKTION"]
+        BG["initializeCoupleSpace<br/>Skapar couple_space + couple_member"]
+    end
+
+    subgraph PURCHASE["STEG 3: KOPSKARM"]
+        P1["Betalvagg<br/>Pris: 395 kr<br/>Stripe Checkout"]
+        P2{"Betala?"}
+        P3["Stripe redirect<br/>paid_at sparas"]
+        PBLOCK["HARD GATE<br/>Inget innehall<br/>fore betalning"]
+        P1 --> P2
+        P2 -->|Ja| P3
+        P2 -->|Nej| PBLOCK
+    end
+
+    subgraph HOME_FIRST["STEG 4a: HOME - Forsta besoket"]
+        H1["'Ert utrymme'"]
+        H2["Welcome-kort:<br/>'Det har ar er plats att<br/>utforska tillsammans.'"]
+        H3["Rekommenderad kategori<br/>'01 - Rekommenderad start'"]
+        H4["8 ovriga kategorier<br/>Grupperade i 3 sektioner"]
+        H1 --> H2 --> H3 --> H4
+    end
+
+    subgraph HOME_RETURN["STEG 4b: HOME - Aterbesok"]
+        HR1["'Vad kul att ni ar tillbaka.'"]
+        HR2["Resume-banner om aktiv session"]
+        HR3["Statusikoner per kategori"]
+    end
+
+    subgraph CATEGORY["STEG 5: KATEGORISIDA"]
+        C1["Kategorins titel"]
+        C2["Kortlista med illustration + status"]
+        C3{"Valj kort"}
+        C1 --> C2 --> C3
+    end
+
+    subgraph SESSION["STEG 6: AKTIV SESSION"]
+        S0["GorTillsammans-overlay<br/>'Gor det har tillsammans'"]
+        S1["Starta samtal"]
+        S2["Steg 1-4: Las fragor hogt<br/>Markera klar - Reflektion"]
+        S0 --> S1 --> S2
+    end
+
+    subgraph COMPLETE["STEG 7: AVSLUTAD SESSION"]
+        CO1["Slumpad headline"]
+        CO2["Lasta reflektioner"]
+        CO3["Takeaway"]
+        CO4["CTA: Utforska fler amnen"]
+        CO1 --> CO2 --> CO3 --> CO4
+    end
+
+    subgraph FEEDBACK["STEG 8: FEEDBACK"]
+        F1["Bottom-sheet efter 2s"]
+        F2["Tomt textfalt utan ledning"]
+        F1 --> F2
+    end
+
+    L4 --> ONBOARDING
+    L5 --> ONBOARDING
+    OSKIP --> BG
+    O3 -->|Kom igang| BG
+    BG --> PURCHASE
+    P3 --> HOME_FIRST
+    HOME_FIRST --> CATEGORY
+    HOME_RETURN --> CATEGORY
+    CATEGORY --> SESSION
+    SESSION --> COMPLETE
+    COMPLETE --> FEEDBACK
+    CO4 --> HOME_RETURN
+
+    classDef gate fill:#c0392b,color:#fff,stroke:#922b21
+    classDef friction fill:#e67e22,color:#fff,stroke:#d35400
+    classDef good fill:#27ae60,color:#fff,stroke:#1e8449
+    classDef decision fill:#2980b9,color:#fff,stroke:#1f618d
+
+    class PBLOCK,L2 gate
+    class F2,L5 friction
+    class SESSION,COMPLETE,ONBOARDING good
+    class P2,C3,L3 decision
+  </div>
+</div>
+
+<!-- ─── KIDS & FAMILY ─── -->
+<div class="section" id="kids-family">
+  <h2>Barn &amp; Familj – Användarresa (6 nya produkter)</h2>
+  <p class="sub">Baserad på kodbas 2026-03-08 · Exkluderar Still Us</p>
+
+  <div class="legend">
+    <span><span class="dot" style="background:#c0392b"></span> Hard gate</span>
+    <span><span class="dot" style="background:#e67e22"></span> Friktionspunkt</span>
+    <span><span class="dot" style="background:#2980b9"></span> Beslutspunkt</span>
+    <span><span class="dot" style="background:#27ae60"></span> Stark sektion</span>
+    <span><span class="dot" style="background:#8e44ad"></span> Ny vs Still Us</span>
+  </div>
+
+  <div class="mermaid">
+graph TD
+    subgraph LOGIN["STEG 1: LOGIN"]
+        L1["BONKI<br/>'Sa vi forblir vi.'"]
+        L2{"Acceptera villkor?"}
+        L3{"Valj metod"}
+        L4["Google OAuth"]
+        L5["Magic Link"]
+        L1 --> L2
+        L2 -->|Nej| L2
+        L2 -->|Ja| L3
+        L3 -->|Google| L4
+        L3 -->|E-post| L5
+    end
+
+    subgraph ONBOARDING["STEG 2: PLATTFORM-ONBOARDING 3 slides"]
+        O0["Slide 0: Valkommen till Bonki<br/>'Det basta samtalet du<br/>kommer ha idag vantar har.'"]
+        O1["Slide 1: Samtal som ror sig<br/>'Bonki ar verktyg for familjer<br/>och par som vill na varandra.'"]
+        O2["Slide 2 DARK: Valj det amne<br/>som kanns ratt just nu.<br/>'Du hittar verktyg for barn,<br/>tonaringar och par.'<br/>CTA: 'Utforska biblioteket'"]
+        OSKIP["Hoppa over-lank<br/>Synlig pa slide 0-1"]
+        O0 --> O1
+        O1 --> O2
+        O0 -.->|skip| OSKIP
+        O1 -.->|skip| OSKIP
+    end
+
+    subgraph BG["TYST BAKGRUNDSAKTION"]
+        BG1["initializeCoupleSpace<br/>Skapar couple_space +<br/>couple_member"]
+    end
+
+    subgraph LIBRARY["STEG 3: PRODUKTBIBLIOTEK"]
+        LIB1["7 produktkort i lobbyn"]
+        LIB2["Varje kort: illustration +<br/>namn + tagline + alderslabel"]
+        LIB3{"Valj produkt"}
+        LIB1 --> LIB2 --> LIB3
+    end
+
+    subgraph INTRO["STEG 4: PRODUKT-INTRO forsta gangen"]
+        I1["Slide 1: Valkommen till<br/>PRODUKTNAMN<br/>Tematiserat i produktens fargskala"]
+        I2["Slide 2: CTA<br/>'Borja med GRATISKORT'"]
+        ISEEN["localStorage check:<br/>Visas bara forsta gangen"]
+        I1 --> I2
+    end
+
+    subgraph PRODUCT_HOME["STEG 5: PRODUKT-HEM"]
+        PH1["Produktnamn + tagline"]
+        PH2["Kategorier med kort"]
+        PH3["Gratiskort markerat<br/>Ovriga last"]
+        PH1 --> PH2 --> PH3
+    end
+
+    subgraph FREE_CARD["STEG 6a: GRATISKORT"]
+        FC1["Startskarm med illustration<br/>height: 100dvh, max 45vh bild"]
+        FC2["Session: 1 eller 2 steg<br/>Beroende pa scenarier"]
+        FC3["Fragor utan anteckningsfalt<br/>Fokus pa samtalet"]
+        FC4["Avslutningsskarm<br/>Valfri reflektion"]
+        FC1 --> FC2 --> FC3 --> FC4
+    end
+
+    subgraph PAYWALL["STEG 6b: BETALVAGG per produkt"]
+        PW1["Vad du upplevde +<br/>vad som vantar"]
+        PW2["Pris fran DB<br/>default 195 kr"]
+        PW3{"Betala?"}
+        PW4["Stripe Checkout<br/>user_product_access sparas"]
+        PWBLOCK["HARD GATE<br/>Last kort kraver kop"]
+        PW1 --> PW2 --> PW3
+        PW3 -->|Ja| PW4
+        PW3 -->|Nej| PWBLOCK
+    end
+
+    subgraph SESSION["STEG 7: AKTIV SESSION betalda kort"]
+        S1["Startskarm med illustration"]
+        S2A["1-steg: Fragelista<br/>Inga scenarier"]
+        S2B["2-steg: Kom igang + Ga djupare<br/>Med scenarier"]
+        S3["Fragor utan anteckningsfalt"]
+        S4["Avslutning + valfri reflektion<br/>Textfalt med 'Valfritt'-label"]
+        S1 --> S2A
+        S1 --> S2B
+        S2A --> S3
+        S2B --> S3
+        S3 --> S4
+    end
+
+    subgraph COMPLETE["STEG 8: AVSLUTAD"]
+        CO1["Tillbaka till produkt-hem<br/>Kort markerat som klart"]
+        CO2["Eller: Tillbaka till biblioteket"]
+    end
+
+    L4 --> ONBOARDING
+    L5 --> ONBOARDING
+    OSKIP --> BG
+    O2 -->|Utforska biblioteket| BG
+    BG --> LIBRARY
+    LIB3 -->|Forsta besok| INTRO
+    LIB3 -->|Aterbesok| PRODUCT_HOME
+    ISEEN --> PRODUCT_HOME
+    I2 -->|Borja med gratiskort| FREE_CARD
+    I2 -->|Skippa| PRODUCT_HOME
+    PRODUCT_HOME -->|Gratiskort| FREE_CARD
+    PRODUCT_HOME -->|Last kort| PAYWALL
+    FC4 -->|Fler kort| PAYWALL
+    FC4 -->|Tillbaka| PRODUCT_HOME
+    PW4 --> PRODUCT_HOME
+    PWBLOCK --> PRODUCT_HOME
+    PRODUCT_HOME -->|Betalat kort| SESSION
+    SESSION --> COMPLETE
+    CO1 --> PRODUCT_HOME
+    CO2 --> LIBRARY
+
+    classDef gate fill:#c0392b,color:#fff,stroke:#922b21
+    classDef friction fill:#e67e22,color:#fff,stroke:#d35400
+    classDef good fill:#27ae60,color:#fff,stroke:#1e8449
+    classDef decision fill:#2980b9,color:#fff,stroke:#1f618d
+    classDef newFeature fill:#8e44ad,color:#fff,stroke:#6c3483
+
+    class PWBLOCK gate
+    class L5 friction
+    class ONBOARDING,FREE_CARD,SESSION good
+    class PW3,LIB3,L3,L2 decision
+    class LIBRARY,INTRO,PRODUCT_HOME newFeature
+  </div>
+</div>
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true, theme: 'default', securityLevel: 'loose' });
+</script>
+</body>
+</html>
