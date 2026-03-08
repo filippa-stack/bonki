@@ -47,7 +47,7 @@ export default function Onboarding() {
     const VELOCITY_THRESHOLD = 300;
     if (info.offset.x < -SWIPE_THRESHOLD || info.velocity.x < -VELOCITY_THRESHOLD) {
       if (currentSlide < LAST_SLIDE) setCurrentSlide(currentSlide + 1);
-      else handleComplete();
+      else handleCompleteCta();
     }
     if (info.offset.x > SWIPE_THRESHOLD || info.velocity.x > VELOCITY_THRESHOLD) {
       if (currentSlide > 0) setCurrentSlide(currentSlide - 1);
