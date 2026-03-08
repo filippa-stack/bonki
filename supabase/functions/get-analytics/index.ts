@@ -38,7 +38,7 @@ Deno.serve(async (req) => {
       })
     }
 
-    if (user.id !== ADMIN_USER_ID) {
+    if (!EXCLUDED_USER_IDS.includes(user.id)) {
       return new Response(JSON.stringify({ error: 'Forbidden' }), {
         status: 403,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
