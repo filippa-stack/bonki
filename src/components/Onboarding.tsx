@@ -39,7 +39,7 @@ export default function Onboarding() {
 
   const handleNext = () => {
     if (currentSlide < LAST_SLIDE) setCurrentSlide(currentSlide + 1);
-    else handleComplete();
+    else handleCompleteCta();
   };
 
   const handleDragEnd = (_: unknown, info: PanInfo) => {
