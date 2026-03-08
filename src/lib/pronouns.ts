@@ -128,7 +128,7 @@ export function getUIText(mode: PronounMode) {
     };
   }
   return {
-    readAloud: 'Läs frågorna högt för varandra.',
+    readAloud: 'Sitt ner med din partner.\nLäs den första frågan högt.',
     talkTogether: 'Prata om frågorna tillsammans.',
     notekeeper: 'En av er antecknar det ni vill minnas.',
     readyButton: 'Vi är redo',
