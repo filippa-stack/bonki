@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { BookOpen } from 'lucide-react';
+import BackToLibraryButton from '@/components/BackToLibraryButton';
 import type { ProductManifest } from '@/types/product';
 import slothImage from '@/assets/sloth-jag-med-andra.png';
 import nyckelpiganImage from '@/assets/nyckelpiga-jag-med-andra.png';
@@ -30,6 +31,7 @@ export default function JagMedAndraProductHome({ product }: { product: ProductMa
       className="min-h-screen relative overflow-hidden"
       style={{ backgroundColor: 'var(--surface-base)' }}
     >
+      <BackToLibraryButton color={ACCENT_COLOR} />
       {/* Background illustration — sloth */}
       <motion.div
         initial={{ opacity: 0 }}
