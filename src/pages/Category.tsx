@@ -317,7 +317,11 @@ export default function Category() {
               index={index}
               isCompleted={isCompleted}
               isInProgress={isInProgress}
-              onNavigate={() => navigate(`/card/${card.id}`)}
+              onNavigate={() => {
+                // Still Us cards go to preview screen first; product cards go directly to session
+                const isStillUs = !product || product.id === 'still_us';
+                navigate(isStillUs ? `/preview/${card.id}` : `/card/${card.id}`);
+              }}
               isLast={index === cards.length - 1}
               styles={styles}
             />
