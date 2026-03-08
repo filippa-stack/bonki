@@ -10,7 +10,11 @@ import { Calendar } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { cn } from '@/lib/utils';
 
-const ADMIN_USER_ID = 'b29f4c84-0426-4b8f-9293-dccf9141a4b5';
+const ALLOWED_USER_IDS = [
+  'b29f4c84-0426-4b8f-9293-dccf9141a4b5',
+  '8105cd94-be94-473e-977a-883e461cfea8',
+  '999288dd-b73a-4829-9d0d-72a8b54b6385',
+];
 
 interface Analytics {
   overview: { totalSpaces: number; totalSessions: number; totalCompletions: number; totalTakeaways: number; uniqueUsers: number };
@@ -61,7 +65,7 @@ export default function AnalyticsDashboard() {
   const [productFilter, setProductFilter] = useState<string>('all');
 
   useEffect(() => {
-    if (!user || user.id !== ADMIN_USER_ID) return;
+    if (!user || !ALLOWED_USER_IDS.includes(user.id)) return;
 
     const fetchAnalytics = async () => {
       setLoading(true);
@@ -85,7 +89,7 @@ export default function AnalyticsDashboard() {
   }, [user, fromDate, productFilter]);
 
   if (authLoading) return null;
-  if (!user || user.id !== ADMIN_USER_ID) return <Navigate to="/" replace />;
+  if (!user || !ALLOWED_USER_IDS.includes(user.id)) return <Navigate to="/" replace />;
 
   return (
     <div className="min-h-screen page-bg">

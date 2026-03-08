@@ -5,7 +5,11 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 }
 
-const ADMIN_USER_ID = 'b29f4c84-0426-4b8f-9293-dccf9141a4b5'
+const EXCLUDED_USER_IDS = [
+  'b29f4c84-0426-4b8f-9293-dccf9141a4b5', // admin
+  '8105cd94-be94-473e-977a-883e461cfea8', // bernhard.emma@gmail.com
+  '999288dd-b73a-4829-9d0d-72a8b54b6385', // emma@bonkistudio.com
+]
 
 Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') {
@@ -34,7 +38,7 @@ Deno.serve(async (req) => {
       })
     }
 
-    if (user.id !== ADMIN_USER_ID) {
+    if (!EXCLUDED_USER_IDS.includes(user.id)) {
       return new Response(JSON.stringify({ error: 'Forbidden' }), {
         status: 403,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
@@ -51,18 +55,25 @@ Deno.serve(async (req) => {
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
     )
 
-    // Exclude admin spaces from all queries
-    const { data: adminMemberships } = await supabase
+    // Exclude team spaces from all queries
+    const { data: teamMemberships } = await supabase
       .from('couple_members')
       .select('couple_space_id')
-      .eq('user_id', ADMIN_USER_ID)
-    const adminSpaceIds = (adminMemberships || []).map((m: any) => m.couple_space_id)
+      .in('user_id', EXCLUDED_USER_IDS)
+    const excludedSpaceIds = (teamMemberships || []).map((m: any) => m.couple_space_id)
 
     const applyFrom = (q: any, col = 'created_at') =>
       fromDate ? q.gte(col, fromDate) : q
 
-    const excludeAdminSpaces = (q: any, col = 'couple_space_id') => {
-      for (const id of adminSpaceIds) {
+    const excludeTeam = (q: any, col = 'couple_space_id') => {
+      for (const id of excludedSpaceIds) {
+        q = q.neq(col, id)
+      }
+      return q
+    }
+
+    const excludeTeamUsers = (q: any, col = 'user_id') => {
+      for (const id of EXCLUDED_USER_IDS) {
         q = q.neq(col, id)
       }
       return q
@@ -88,16 +99,16 @@ Deno.serve(async (req) => {
       visitsRes,
       membersRes,
     ] = await Promise.all([
-      excludeAdminSpaces(applyFrom(supabase.from('couple_spaces').select('id', { count: 'exact', head: true })), 'id'),
-      applyProduct(excludeAdminSpaces(applyFrom(supabase.from('couple_sessions').select('id, status, started_at, ended_at, product_id'), 'started_at'))),
-      excludeAdminSpaces(applyFrom(supabase.from('couple_session_completions').select('id, session_id', { count: 'exact' }), 'completed_at')),
-      applyProduct(excludeAdminSpaces(applyFrom(supabase.from('step_reflections').select('state, user_id, product_id'), 'updated_at')).neq('user_id', ADMIN_USER_ID)),
-      excludeAdminSpaces(applyFrom(supabase.from('prompt_notes').select('visibility, user_id, is_highlight')).neq('user_id', ADMIN_USER_ID)),
-      applyProduct(excludeAdminSpaces(supabase.from('question_bookmarks').select('id, is_active', { count: 'exact' }))),
-      excludeAdminSpaces(applyFrom(supabase.from('couple_takeaways').select('id, session_id', { count: 'exact' }), 'created_at')),
-      excludeAdminSpaces(applyFrom(supabase.from('beta_feedback').select('id, response_text, submitted_at, session_id').order('submitted_at', { ascending: false }).limit(50), 'submitted_at')),
-      excludeAdminSpaces(applyFrom(supabase.from('couple_card_visits').select('card_id, user_id'), 'last_visited_at')).neq('user_id', ADMIN_USER_ID),
-      supabase.from('couple_members').select('user_id, status, left_at').neq('user_id', ADMIN_USER_ID),
+      excludeTeam(applyFrom(supabase.from('couple_spaces').select('id', { count: 'exact', head: true })), 'id'),
+      applyProduct(excludeTeam(applyFrom(supabase.from('couple_sessions').select('id, status, started_at, ended_at, product_id'), 'started_at'))),
+      excludeTeam(applyFrom(supabase.from('couple_session_completions').select('id, session_id', { count: 'exact' }), 'completed_at')),
+      excludeTeamUsers(applyProduct(excludeTeam(applyFrom(supabase.from('step_reflections').select('state, user_id, product_id'), 'updated_at')))),
+      excludeTeamUsers(excludeTeam(applyFrom(supabase.from('prompt_notes').select('visibility, user_id, is_highlight')))),
+      applyProduct(excludeTeam(supabase.from('question_bookmarks').select('id, is_active', { count: 'exact' }))),
+      excludeTeam(applyFrom(supabase.from('couple_takeaways').select('id, session_id', { count: 'exact' }), 'created_at')),
+      excludeTeam(applyFrom(supabase.from('beta_feedback').select('id, response_text, submitted_at, session_id').order('submitted_at', { ascending: false }).limit(50), 'submitted_at')),
+      excludeTeamUsers(excludeTeam(applyFrom(supabase.from('couple_card_visits').select('card_id, user_id'), 'last_visited_at'))),
+      excludeTeamUsers(supabase.from('couple_members').select('user_id, status, left_at')),
     ])
 
     // Build set of session IDs matching product filter (for filtering completions/takeaways)
