@@ -88,16 +88,16 @@ Deno.serve(async (req) => {
       visitsRes,
       membersRes,
     ] = await Promise.all([
-      applyFrom(supabase.from('couple_spaces').select('id', { count: 'exact', head: true })),
-      applyProduct(applyFrom(supabase.from('couple_sessions').select('id, status, started_at, ended_at, product_id'), 'started_at')),
-      applyFrom(supabase.from('couple_session_completions').select('id, session_id', { count: 'exact' }), 'completed_at'),
-      applyProduct(applyFrom(supabase.from('step_reflections').select('state, user_id, product_id'), 'updated_at')),
-      applyFrom(supabase.from('prompt_notes').select('visibility, user_id, is_highlight')),
-      applyProduct(supabase.from('question_bookmarks').select('id, is_active', { count: 'exact' })),
-      applyFrom(supabase.from('couple_takeaways').select('id, session_id', { count: 'exact' }), 'created_at'),
-      applyFrom(supabase.from('beta_feedback').select('id, response_text, submitted_at, session_id').order('submitted_at', { ascending: false }).limit(50), 'submitted_at'),
-      applyFrom(supabase.from('couple_card_visits').select('card_id, user_id'), 'last_visited_at'),
-      supabase.from('couple_members').select('user_id, status, left_at'),
+      excludeAdminSpaces(applyFrom(supabase.from('couple_spaces').select('id', { count: 'exact', head: true })), 'id'),
+      applyProduct(excludeAdminSpaces(applyFrom(supabase.from('couple_sessions').select('id, status, started_at, ended_at, product_id'), 'started_at'))),
+      excludeAdminSpaces(applyFrom(supabase.from('couple_session_completions').select('id, session_id', { count: 'exact' }), 'completed_at')),
+      applyProduct(excludeAdminSpaces(applyFrom(supabase.from('step_reflections').select('state, user_id, product_id'), 'updated_at')).neq('user_id', ADMIN_USER_ID)),
+      excludeAdminSpaces(applyFrom(supabase.from('prompt_notes').select('visibility, user_id, is_highlight')).neq('user_id', ADMIN_USER_ID)),
+      applyProduct(excludeAdminSpaces(supabase.from('question_bookmarks').select('id, is_active', { count: 'exact' }))),
+      excludeAdminSpaces(applyFrom(supabase.from('couple_takeaways').select('id, session_id', { count: 'exact' }), 'created_at')),
+      excludeAdminSpaces(applyFrom(supabase.from('beta_feedback').select('id, response_text, submitted_at, session_id').order('submitted_at', { ascending: false }).limit(50), 'submitted_at')),
+      excludeAdminSpaces(applyFrom(supabase.from('couple_card_visits').select('card_id, user_id'), 'last_visited_at')).neq('user_id', ADMIN_USER_ID),
+      supabase.from('couple_members').select('user_id, status, left_at').neq('user_id', ADMIN_USER_ID),
     ])
 
     // Build set of session IDs matching product filter (for filtering completions/takeaways)
