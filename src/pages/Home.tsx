@@ -15,6 +15,7 @@ import { ChevronDown, ChevronRight, Check } from 'lucide-react';
 import NotificationSettings from '@/components/NotificationSettings';
 
 import ReturnOverlay from '@/components/ReturnOverlay';
+import BackToLibraryButton from '@/components/BackToLibraryButton';
 import { useThemeVars } from '@/hooks/useThemeVars';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
@@ -229,7 +230,8 @@ export default function Home() {
   };
 
   return (
-    <div ref={scrollRef} className="min-h-screen flex flex-col overflow-y-auto" style={{ height: '100vh', backgroundColor: 'var(--surface-base)' }}>
+    <div ref={scrollRef} className="min-h-screen flex flex-col overflow-y-auto relative" style={{ height: '100vh', backgroundColor: 'var(--surface-base)' }}>
+      <BackToLibraryButton />
       {/* 7+ day return overlay */}
       <AnimatePresence>
         {showReturnOverlay && (
