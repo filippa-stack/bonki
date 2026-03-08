@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { allProducts } from '@/data/products';
@@ -253,6 +253,14 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
 
 export default function ProductLibrary() {
   const navigate = useNavigate();
+  const tracked = useRef(false);
+
+  useEffect(() => {
+    if (!tracked.current) {
+      tracked.current = true;
+      import('@/lib/trackOnboarding').then(m => m.trackOnboardingEvent('lobby_view'));
+    }
+  }, []);
 
   // Split products for layout
   const jagIMig = allProducts.find(p => p.id === 'jag_i_mig')!;
