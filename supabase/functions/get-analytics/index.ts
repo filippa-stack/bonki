@@ -87,6 +87,7 @@ Deno.serve(async (req) => {
       return q.eq('product_id', productFilter)
     }
 
+    // Use .range(0, 9999) on data-fetching queries to avoid the default 1000-row limit
     const [
       spacesRes,
       sessionsRes,
@@ -100,15 +101,15 @@ Deno.serve(async (req) => {
       membersRes,
     ] = await Promise.all([
       excludeTeam(applyFrom(supabase.from('couple_spaces').select('id', { count: 'exact', head: true })), 'id'),
-      applyProduct(excludeTeam(applyFrom(supabase.from('couple_sessions').select('id, status, started_at, ended_at, product_id'), 'started_at'))),
-      excludeTeam(applyFrom(supabase.from('couple_session_completions').select('id, session_id', { count: 'exact' }), 'completed_at')),
-      excludeTeamUsers(applyProduct(excludeTeam(applyFrom(supabase.from('step_reflections').select('state, user_id, product_id'), 'updated_at')))),
-      excludeTeamUsers(excludeTeam(applyFrom(supabase.from('prompt_notes').select('visibility, user_id, is_highlight')))),
-      applyProduct(excludeTeam(supabase.from('question_bookmarks').select('id, is_active', { count: 'exact' }))),
-      excludeTeam(applyFrom(supabase.from('couple_takeaways').select('id, session_id', { count: 'exact' }), 'created_at')),
+      applyProduct(excludeTeam(applyFrom(supabase.from('couple_sessions').select('id, status, started_at, ended_at, product_id'), 'started_at'))).range(0, 9999),
+      excludeTeam(applyFrom(supabase.from('couple_session_completions').select('id, session_id', { count: 'exact' }), 'completed_at')).range(0, 9999),
+      excludeTeamUsers(applyProduct(excludeTeam(applyFrom(supabase.from('step_reflections').select('state, user_id, product_id'), 'updated_at')))).range(0, 9999),
+      excludeTeamUsers(excludeTeam(applyFrom(supabase.from('prompt_notes').select('visibility, user_id, is_highlight')))).range(0, 9999),
+      applyProduct(excludeTeam(supabase.from('question_bookmarks').select('id, is_active', { count: 'exact' }))).range(0, 9999),
+      excludeTeam(applyFrom(supabase.from('couple_takeaways').select('id, session_id', { count: 'exact' }), 'created_at')).range(0, 9999),
       excludeTeam(applyFrom(supabase.from('beta_feedback').select('id, response_text, submitted_at, session_id').order('submitted_at', { ascending: false }).limit(50), 'submitted_at')),
-      excludeTeamUsers(excludeTeam(applyFrom(supabase.from('couple_card_visits').select('card_id, user_id'), 'last_visited_at'))),
-      excludeTeamUsers(supabase.from('couple_members').select('user_id, status, left_at')),
+      excludeTeamUsers(excludeTeam(applyFrom(supabase.from('couple_card_visits').select('card_id, user_id'), 'last_visited_at'))).range(0, 9999),
+      excludeTeamUsers(supabase.from('couple_members').select('user_id, status, left_at')).range(0, 9999),
     ])
 
     // Build set of session IDs matching product filter (for filtering completions/takeaways)
