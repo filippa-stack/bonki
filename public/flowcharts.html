@@ -57,8 +57,21 @@
   <nav class="toc">
     <a href="#still-us">Still Us (par)</a>
     <a href="#kids-family">Barn &amp; Familj (6 produkter)</a>
+    <button class="dl" onclick="downloadPage()">⬇ Ladda ned HTML</button>
   </nav>
 </div>
+
+<script>
+function downloadPage() {
+  const html = document.documentElement.outerHTML;
+  const blob = new Blob(['<!DOCTYPE html>\n' + html], { type: 'text/html' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'bonki-flowcharts.html';
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+</script>
 
 <!-- ─── STILL US ─── -->
 <div class="section" id="still-us">
