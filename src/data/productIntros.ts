@@ -29,10 +29,11 @@ export const productIntros: Record<string, ProductIntroData> = {
       {
         heading: 'V\u00e4lkommen till Still Us',
         body: 'Ni pratar varje dag. Om middagen, om schemat, om barnen. Men har ni ett s\u00e4tt att prata om det som \u00e4r sv\u00e5rt \u2014 innan det blir f\u00f6r sv\u00e5rt?\n\nStill Us bygger det som saknas i de flesta relationer: en gemensam infrastruktur f\u00f6r de samtal som annars aldrig blir av. Inte ett enstaka bra samtal, utan f\u00f6rm\u00e5gan att ha dem \u2014 om och om igen, \u00e4ven n\u00e4r det skaver.\n\nVarje kort \u00e4r sekvenserat. Ni b\u00f6rjar d\u00e4r det \u00e4r tryggt och r\u00f6r er gradvis mot det som betyder mest. Inget kan g\u00f6ras ensam. Allt kr\u00e4ver er b\u00e5da.',
-        signoff: 'Det h\u00e4r \u00e4r grunden som allt annat vilar p\u00e5. B\u00f6rja h\u00e4r.',
+        signoff: 'Ert f\u00f6rsta samtal v\u00e4ntar. Det \u00e4r gratis.',
       },
     ],
     ctaLabel: 'B\u00f6rja utforska',
+    freeCardCtaLabel: 'B\u00f6rja med Ert minsta "vi"',
   },
 
   jag_i_mig: {

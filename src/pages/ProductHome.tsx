@@ -14,6 +14,9 @@ import SexualitetProductHome from '@/components/SexualitetProductHome';
 import VardagProductHome from '@/components/VardagProductHome';
 import SyskonProductHome from '@/components/SyskonProductHome';
 
+/** Still Us free card ID */
+const STILL_US_FREE_CARD_ID = 'smallest-we';
+
 export default function ProductHome() {
   const { slug } = useParams<{ slug: string }>();
   const navigate = useNavigate();
@@ -30,7 +33,9 @@ export default function ProductHome() {
     product?.ctaButtonColor,
   );
 
-  const needsIntro = useProductIntroNeeded(product?.id ?? '');
+  const needsIntroStillUs = useProductIntroNeeded('still_us');
+  const needsIntroProduct = useProductIntroNeeded(product?.id ?? '');
+  const needsIntro = isStillUs ? needsIntroStillUs : needsIntroProduct;
   const [showIntro, setShowIntro] = useState(needsIntro);
 
   // Preload ZIP when entering a product home — so card images are fast later
@@ -40,8 +45,26 @@ export default function ProductHome() {
     }
   }, [product?.id]);
 
-  // Still Us uses the legacy Home — redirect there
+  // Still Us: show ProductIntro first, then redirect to legacy Home
   if (isStillUs) {
+    if (showIntro) {
+      return (
+        <ProductIntro
+          productId="still_us"
+          accentColor="hsl(158, 35%, 18%)"
+          backgroundColor="#FFFDF8"
+          freeCardId={STILL_US_FREE_CARD_ID}
+          onComplete={() => {
+            setShowIntro(false);
+            navigate('/', { replace: true });
+          }}
+          onStartFreeCard={() => {
+            setShowIntro(false);
+            navigate(`/card/${STILL_US_FREE_CARD_ID}`);
+          }}
+        />
+      );
+    }
     return <Navigate to="/" replace />;
   }
 
