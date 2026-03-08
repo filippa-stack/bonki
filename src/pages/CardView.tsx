@@ -1244,7 +1244,9 @@ export default function CardView() {
               marginBottom: '32px',
             }}
           >
-            {uiText.readAloud}
+            {uiText.readAloud.split('\n').map((line, i, arr) => (
+              <span key={i}>{line}{i < arr.length - 1 && <br />}</span>
+            ))}
           </motion.p>
 
           {/* Orphan/stale session banner */}
