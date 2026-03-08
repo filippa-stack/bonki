@@ -10,6 +10,7 @@ const LAST_SLIDE = 2;
 
 export default function Onboarding() {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const { completeOnboarding, initializeCoupleSpace } = useApp();
   const trackedSlides = useRef(new Set<number>());
 
   // Track slide views
@@ -21,12 +22,19 @@ export default function Onboarding() {
     }
   }, [currentSlide]);
 
-  const handleComplete = (source: 'cta' | 'skip' = 'cta') => {
-    trackOnboardingEvent(source === 'skip' ? 'onboarding_skip' : 'onboarding_complete', {
-      last_slide: currentSlide,
-    });
+  const handleComplete = () => {
     initializeCoupleSpace();
     completeOnboarding();
+  };
+
+  const handleCompleteCta = () => {
+    trackOnboardingEvent('onboarding_complete', { last_slide: currentSlide });
+    handleComplete();
+  };
+
+  const handleSkip = () => {
+    trackOnboardingEvent('onboarding_skip', { last_slide: currentSlide });
+    handleComplete();
   };
 
   const handleNext = () => {
