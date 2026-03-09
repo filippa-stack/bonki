@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Still Us — Full Color Palette</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@300;400;500&display=swap');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Inter', sans-serif; background: #FAF7F2; color: #2C2420; padding: 40px 24px 80px; max-width: 900px; margin: 0 auto; }
+  h1 { font-family: 'Cormorant Garamond', serif; font-size: 36px; font-weight: 600; margin-bottom: 8px; }
+  .subtitle { color: #6B6763; font-size: 13px; margin-bottom: 48px; }
+  h2 { font-family: 'Cormorant Garamond', serif; font-size: 24px; font-weight: 500; margin: 48px 0 20px; border-bottom: 1px solid #e0dbd5; padding-bottom: 8px; }
+  h3 { font-size: 14px; font-weight: 500; margin: 32px 0 12px; color: #6B6763; text-transform: uppercase; letter-spacing: 0.05em; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; }
+  .swatch { border-radius: 12px; overflow: hidden; background: white; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+  .swatch-color { height: 72px; display: flex; align-items: flex-end; padding: 6px 10px; }
+  .swatch-color span { font-size: 10px; font-weight: 500; padding: 2px 6px; border-radius: 4px; background: rgba(255,255,255,0.85); color: #333; }
+  .swatch-info { padding: 10px 12px; }
+  .swatch-name { font-size: 12px; font-weight: 500; color: #2C2420; }
+  .swatch-token { font-size: 10px; color: #8C8681; margin-top: 2px; font-family: monospace; }
+  .theme-section { margin: 56px 0 0; padding: 32px 24px; border-radius: 16px; background: white; box-shadow: 0 2px 12px rgba(0,0,0,0.05); }
+  .theme-section h2 { margin-top: 0; }
+  .row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+  .chip { height: 40px; min-width: 80px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 500; padding: 0 12px; }
+  .product-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 8px; align-items: center; }
+  .product-label { font-size: 12px; font-weight: 500; width: 120px; flex-shrink: 0; }
+  .download-btn { position: fixed; bottom: 24px; right: 24px; background: #1C3A2D; color: white; border: none; padding: 12px 24px; border-radius: 12px; font-size: 14px; font-weight: 500; cursor: pointer; box-shadow: 0 4px 16px rgba(0,0,0,0.15); }
+  .download-btn:hover { background: #224233; }
+  @media print { .download-btn { display: none; } body { padding: 20px; } }
+</style>
+</head>
+<body>
+
+<h1>Still Us — Color Palette</h1>
+<p class="subtitle">Complete design token reference · Generated 2026-03-09</p>
+
+<!-- ═══════════════ FOUNDATION NEUTRALS ═══════════════ -->
+<h2>Foundation Neutrals (Warm Paper Scale)</h2>
+<div class="grid">
+  <div class="swatch">
+    <div class="swatch-color" style="background: hsl(30, 12%, 90%)"><span>hsl(30,12%,90%)</span></div>
+    <div class="swatch-info"><div class="swatch-name">Base Background</div><div class="swatch-token">--neutral-50</div></div>
+  </div>
+  <div class="swatch">
+    <div class="swatch-color" style="background: hsl(34, 22%, 97.5%)"><span>hsl(34,22%,97.5%)</span></div>
+    <div class="swatch-info"><div class="swatch-name">Raised / Tiles</div><div class="swatch-token">--neutral-100</div></div>
+  </div>
+  <div class="swatch">
+    <div class="swatch-color" style="background: hsl(32, 16%, 94%)"><span>hsl(32,16%,94%)</span></div>
+    <div class="swatch-info"><div class="swatch-name">Sunken / Notes</div><div class="swatch-token">--neutral-200</div></div>
+  </div>
+  <div class="swatch">
+    <div class="swatch-color" style="background: hsl(32, 10%, 84%)"><span>hsl(32,10%,84%)</span></div>
+    <div class="swatch-info"><div class="swatch-name">Borders / Dividers</div><div class="swatch-token">--neutral-300</div></div>
+  </div>
+</div>
+
+<!-- ═══════════════ PRIMARY & CTA ═══════════════ -->
+<h2>Primary & CTA</h2>
+<div class="grid">
+  <div class="swatch">
+    <div class="swatch-color" style="background: hsl(158, 35%, 18%); color: white;"><span style="color:#333">hsl(158,35%,18%)</span></div>
+    <div class="swatch-info"><div class="swatch-name">Primary / CTA Default</div><div class="swatch-token">--primary · --cta-default</div></div>
+  </div>
+  <div class="swatch">
+    <div class="swatch-color" style="background: hsl(158, 38%, 23%)"><span>hsl(158,38%,23%)</span></div>
+    <div class="swatch-info"><div class="swatch-name">CTA Hover</div><div class="swatch-token">--cta-hover-v2</div></div>
+  </div>
+  <div class="swatch">
+    <div class="swatch-color" style="background: hsl(158, 32%, 14%)"><span>hsl(158,32%,14%)</span></div>
+    <div class="swatch-info"><div class="swatch-name">CTA Active / Pressed</div><div class="swatch-token">--cta-active</div></div>
+  </div>
+  <div class="swatch">
+    <div class="swatch-color" style="background: #1C3A2D"><span>#1C3A2D</span></div>
+    <div class="swatch-info"><div class="swatch-name">Session Header</div><div class="swatch-token">--session-header-bg</div></div>
+  </div>
+</div>
+
+<!-- ═══════════════ ACCENT / SAFFRON ═══════════════ -->
+<h2>Accent — Burnt Saffron</h2>
+<div class="grid">
+  <div class="swatch">
+    <div class="swatch-color" style="background: hsl(38, 88%, 46%)"><span>hsl(38,88%,46%)</span></div>
+    <div class="swatch-info"><div class="swatch-name">Saffron</div><div class="swatch-token">--accent-saffron</div></div>
+  </div>
+  <div class="swatch">
+    <div class="swatch-color" style="background: hsl(38, 60%, 72%)"><span>hsl(38,60%,72%)</span></div>
+    <div class="swatch-info"><div class="swatch-name">Saffron Muted</div><div class="swatch-token">--accent-saffron-muted</div></div>
+  </div>
+  <div class="swatch">
+    <div class="swatch-color" style="background: hsl(38, 72%, 38%)"><span>hsl(38,72%,38%)</span></div>
+    <div class="swatch-info"><div class="swatch-name">Accent Text</div><div class="swatch-token">--accent-text</div></div>
+  </div>
+  <div class="swatch">
+    <div class="swatch-color" style="background: #C1121F"><span>#C1121F</span></div>
+    <div class="swatch-info"><div class="swatch-name">Destructive / Accent</div><div class="swatch-token">--color-accent</div></div>
+  </div>
+</div>
+
+<!-- ═══════════════ TEXT HIERARCHY ═══════════════ -->
+<h2>Text Hierarchy</h2>
+<div class="grid">
+  <div class="swatch">
+    <div class="swatch-color" style="background: hsl(220, 25%, 18%)"><span>hsl(220,25%,18%)</span></div>
+    <div class="swatch-info"><div class="swatch-name">Primary Text</div><div class="swatch-token">--text-primary</div></div>
+  </div>
+  <div class="swatch">
+    <div class="swatch-color" style="background: hsl(30, 10%, 40%)"><span>hsl(30,10%,40%)</span></div>
+    <div class="swatch-info"><div class="swatch-name">Secondary Text</div><div class="swatch-token">--text-secondary</div></div>
+  </div>
+  <div class="swatch">
+    <div class="swatch-color" style="background: hsl(30, 8%, 56%)"><span>hsl(30,8%,56%)</span></div>
+    <div class="swatch-info"><div class="swatch-name">Tertiary Text</div><div class="swatch-token">--text-tertiary</div></div>
+  </div>
+  <div class="swatch">
+    <div class="swatch-color" style="background: hsl(30, 6%, 70%)"><span>hsl(30,6%,70%)</span></div>
+    <div class="swatch-info"><div class="swatch-name">Ghost / Placeholder</div><div class="swatch-token">--text-ghost</div></div>
+  </div>
+  <div class="swatch">
+    <div class="swatch-color" style="background: hsl(30, 3%, 10%)"><span style="color:white">hsl(30,3%,10%)</span></div>
+    <div class="swatch-info"><div class="swatch-name">Foreground</div><div class="swatch-token">--foreground</div></div>
+  </div>
+  <div class="swatch">
+    <div class="swatch-color" style="background: hsl(25, 4%, 40%)"><span>hsl(25,4%,40%)</span></div>
+    <div class="swatch-info"><div class="swatch-name">Muted Foreground</div><div class="swatch-token">--muted-foreground</div></div>
+  </div>
+</div>
+
+<!-- ═══════════════ SEMANTIC SURFACES ═══════════════ -->
+<h2>Semantic Surfaces</h2>
+<div class="grid">
+  <div class="swatch">
+    <div class="swatch-color" style="background: hsl(37, 71%, 96%)"><span>hsl(37,71%,96%)</span></div>
+    <div class="swatch-info"><div class="swatch-name">Library Linen</div><div class="swatch-token">--surface-library</div></div>
+  </div>
+  <div class="swatch">
+    <div class="swatch-color" style="background: hsl(16, 15%, 15%)"><span style="color:white">hsl(16,15%,15%)</span></div>
+    <div class="swatch-info"><div class="swatch-name">Library Text</div><div class="swatch-token">--text-library</div></div>
+  </div>
+  <div class="swatch">
+    <div class="swatch-color" style="background: hsl(30, 10%, 86%)"><span>hsl(30,10%,86%)</span></div>
+    <div class="swatch-info"><div class="swatch-name">Muted / Secondary</div><div class="swatch-token">--muted · --secondary</div></div>
+  </div>
+  <div class="swatch">
+    <div class="swatch-color" style="background: hsl(30, 5%, 43%)"><span>hsl(30,5%,43%)</span></div>
+    <div class="swatch-info"><div class="swatch-name">Gentle Text</div><div class="swatch-token">--text-gentle</div></div>
+  </div>
+</div>
+
+<!-- ═══════════════ CATEGORY IDENTITY ═══════════════ -->
+<h2>Category Identity Colors</h2>
+<div class="grid">
+  <div class="swatch">
+    <div class="swatch-color" style="background: hsl(30, 15%, 70%)"><span>hsl(30,15%,70%)</span></div>
+    <div class="swatch-info"><div class="swatch-name">Emotional</div><div class="swatch-token">--category-emotional</div></div>
+  </div>
+  <div class="swatch">
+    <div class="swatch-color" style="background: hsl(36, 20%, 75%)"><span>hsl(36,20%,75%)</span></div>
+    <div class="swatch-info"><div class="swatch-name">Fun</div><div class="swatch-token">--category-fun</div></div>
+  </div>
+  <div class="swatch">
+    <div class="swatch-color" style="background: hsl(30, 10%, 65%)"><span>hsl(30,10%,65%)</span></div>
+    <div class="swatch-info"><div class="swatch-name">Growth</div><div class="swatch-token">--category-growth</div></div>
+  </div>
+  <div class="swatch">
+    <div class="swatch-color" style="background: hsl(20, 12%, 68%)"><span>hsl(20,12%,68%)</span></div>
+    <div class="swatch-info"><div class="swatch-name">Intimacy</div><div class="swatch-token">--category-intimacy</div></div>
+  </div>
+  <div class="swatch">
+    <div class="swatch-color" style="background: hsl(30, 8%, 72%)"><span>hsl(30,8%,72%)</span></div>
+    <div class="swatch-info"><div class="swatch-name">Logistics</div><div class="swatch-token">--category-logistics</div></div>
+  </div>
+</div>
+
+<!-- ═══════════════ KIDS PRODUCT CTA COLORS ═══════════════ -->
+<h2>Kids Product CTA Buttons</h2>
+<div class="grid">
+  <div class="swatch">
+    <div class="swatch-color" style="background: #8A9A10"><span>#8A9A10</span></div>
+    <div class="swatch-info"><div class="swatch-name">Jag i Mig</div><div class="swatch-token">ctaButtonColor</div></div>
+  </div>
+  <div class="swatch">
+    <div class="swatch-color" style="background: #9825D6"><span style="color:white">#9825D6</span></div>
+    <div class="swatch-info"><div class="swatch-name">Jag med Andra</div><div class="swatch-token">ctaButtonColor</div></div>
+  </div>
+  <div class="swatch">
+    <div class="swatch-color" style="background: #3D7A45"><span>#3D7A45</span></div>
+    <div class="swatch-info"><div class="swatch-name">Jag i Världen</div><div class="swatch-token">ctaButtonColor</div></div>
+  </div>
+  <div class="swatch">
+    <div class="swatch-color" style="background: #B5646E"><span>#B5646E</span></div>
+    <div class="swatch-info"><div class="swatch-name">Sexualitet</div><div class="swatch-token">ctaButtonColor</div></div>
+  </div>
+  <div class="swatch">
+    <div class="swatch-color" style="background: #0F6B99"><span style="color:white">#0F6B99</span></div>
+    <div class="swatch-info"><div class="swatch-name">Vardag</div><div class="swatch-token">ctaButtonColor</div></div>
+  </div>
+  <div class="swatch">
+    <div class="swatch-color" style="background: #0F4E99"><span style="color:white">#0F4E99</span></div>
+    <div class="swatch-info"><div class="swatch-name">Syskon</div><div class="swatch-token">ctaButtonColor</div></div>
+  </div>
+</div>
+
+<!-- ═══════════════ KIDS PRODUCT BACKGROUNDS ═══════════════ -->
+<h2>Kids Product Backgrounds</h2>
+<div class="grid">
+  <div class="swatch">
+    <div class="swatch-color" style="background: #F5EDD2"><span>#F5EDD2</span></div>
+    <div class="swatch-info"><div class="swatch-name">Jag i Mig</div><div class="swatch-token">backgroundColor</div></div>
+  </div>
+  <div class="swatch">
+    <div class="swatch-color" style="background: #F0E6F6"><span>#F0E6F6</span></div>
+    <div class="swatch-info"><div class="swatch-name">Jag med Andra</div><div class="swatch-token">backgroundColor</div></div>
+  </div>
+  <div class="swatch">
+    <div class="swatch-color" style="background: #C8E6D0"><span>#C8E6D0</span></div>
+    <div class="swatch-info"><div class="swatch-name">Jag i Världen</div><div class="swatch-token">backgroundColor</div></div>
+  </div>
+  <div class="swatch">
+    <div class="swatch-color" style="background: #F5E1E4"><span>#F5E1E4</span></div>
+    <div class="swatch-info"><div class="swatch-name">Sexualitet</div><div class="swatch-token">backgroundColor</div></div>
+  </div>
+  <div class="swatch">
+    <div class="swatch-color" style="background: #DCF0FA"><span>#DCF0FA</span></div>
+    <div class="swatch-info"><div class="swatch-name">Vardag</div><div class="swatch-token">backgroundColor</div></div>
+  </div>
+  <div class="swatch">
+    <div class="swatch-color" style="background: #F2F8FC"><span>#F2F8FC</span></div>
+    <div class="swatch-info"><div class="swatch-name">Syskon</div><div class="swatch-token">backgroundColor</div></div>
+  </div>
+</div>
+
+<!-- ═══════════════ COMPLETION SCREEN ═══════════════ -->
+<h2>Completion Screen</h2>
+<div class="grid">
+  <div class="swatch">
+    <div class="swatch-color" style="background: hsl(30, 10%, 50%)"><span>hsl(30,10%,50%)</span></div>
+    <div class="swatch-info"><div class="swatch-name">Subtitle</div><div class="swatch-token">--completion-subtitle</div></div>
+  </div>
+  <div class="swatch">
+    <div class="swatch-color" style="background: hsl(30, 8%, 62%)"><span>hsl(30,8%,62%)</span></div>
+    <div class="swatch-info"><div class="swatch-name">Label</div><div class="swatch-token">--completion-label</div></div>
+  </div>
+  <div class="swatch">
+    <div class="swatch-color" style="background: hsl(30, 10%, 50%)"><span>hsl(30,10%,50%)</span></div>
+    <div class="swatch-info"><div class="swatch-name">Link</div><div class="swatch-token">--completion-link</div></div>
+  </div>
+</div>
+
+<!-- ═══════════════ INTERACTIVE STATES ═══════════════ -->
+<h2>Interactive States</h2>
+<div class="grid">
+  <div class="swatch">
+    <div class="swatch-color" style="background: hsl(0, 0%, 17%)"><span style="color:white">hsl(0,0%,17%)</span></div>
+    <div class="swatch-info"><div class="swatch-name">Active</div><div class="swatch-token">--state-active</div></div>
+  </div>
+  <div class="swatch">
+    <div class="swatch-color" style="background: hsl(0, 0%, 60%)"><span>hsl(0,0%,60%)</span></div>
+    <div class="swatch-info"><div class="swatch-name">Inactive</div><div class="swatch-token">--state-inactive</div></div>
+  </div>
+  <div class="swatch">
+    <div class="swatch-color" style="background: hsl(355, 86%, 30%)"><span style="color:white">hsl(355,86%,30%)</span></div>
+    <div class="swatch-info"><div class="swatch-name">Destructive</div><div class="swatch-token">--destructive</div></div>
+  </div>
+</div>
+
+<!-- ═══════════════ THEME VARIANTS ═══════════════ -->
+<div class="theme-section">
+<h2>Theme Variants — Primary + Accent pairs</h2>
+<p style="font-size:12px; color:#8C8681; margin-bottom:20px;">Activated via <code>?theme=name</code>. Each overrides the default forest-green primary.</p>
+
+<h3>Default</h3>
+<div class="row">
+  <div class="chip" style="background:hsl(158,35%,18%);color:white;">Primary hsl(158,35%,18%)</div>
+  <div class="chip" style="background:hsl(38,88%,46%);color:white;">Accent hsl(38,88%,46%)</div>
+</div>
+
+<h3>Fired Earth</h3>
+<div class="row">
+  <div class="chip" style="background:hsl(152,28%,16%);color:white;">Primary hsl(152,28%,16%)</div>
+  <div class="chip" style="background:hsl(18,65%,42%);color:white;">Accent hsl(18,65%,42%)</div>
+</div>
+
+<h3>Burgundy</h3>
+<div class="row">
+  <div class="chip" style="background:hsl(345,42%,20%);color:white;">Primary hsl(345,42%,20%)</div>
+  <div class="chip" style="background:hsl(18,50%,52%);color:white;">Accent hsl(18,50%,52%)</div>
+</div>
+
+<h3>Ink</h3>
+<div class="row">
+  <div class="chip" style="background:hsl(25,18%,16%);color:white;">Primary hsl(25,18%,16%)</div>
+  <div class="chip" style="background:hsl(42,75%,48%);color:white;">Accent hsl(42,75%,48%)</div>
+</div>
+
+<h3>Stilla</h3>
+<div class="row">
+  <div class="chip" style="background:hsl(210,28%,18%);color:white;">Primary hsl(210,28%,18%)</div>
+  <div class="chip" style="background:hsl(32,70%,50%);color:white;">Accent hsl(32,70%,50%)</div>
+</div>
+
+<h3>Berry</h3>
+<div class="row">
+  <div class="chip" style="background:hsl(325,40%,24%);color:white;">Primary hsl(325,40%,24%)</div>
+  <div class="chip" style="background:hsl(12,72%,56%);color:white;">Accent hsl(12,72%,56%)</div>
+</div>
+
+<h3>Midnight Gold</h3>
+<div class="row">
+  <div class="chip" style="background:hsl(220,20%,15%);color:white;">Primary hsl(220,20%,15%)</div>
+  <div class="chip" style="background:hsl(45,85%,50%);color:white;">Accent hsl(45,85%,50%)</div>
+</div>
+
+<h3>Terracotta</h3>
+<div class="row">
+  <div class="chip" style="background:hsl(14,42%,26%);color:white;">Primary hsl(14,42%,26%)</div>
+  <div class="chip" style="background:hsl(38,75%,50%);color:white;">Accent hsl(38,75%,50%)</div>
+</div>
+
+<h3>Umber</h3>
+<div class="row">
+  <div class="chip" style="background:hsl(25,35%,20%);color:white;">Primary hsl(25,35%,20%)</div>
+  <div class="chip" style="background:hsl(42,70%,50%);color:white;">Accent hsl(42,70%,50%)</div>
+</div>
+
+<h3>Ochre</h3>
+<div class="row">
+  <div class="chip" style="background:hsl(35,45%,24%);color:white;">Primary hsl(35,45%,24%)</div>
+  <div class="chip" style="background:hsl(10,55%,48%);color:white;">Accent hsl(10,55%,48%)</div>
+</div>
+
+<h3>Olive</h3>
+<div class="row">
+  <div class="chip" style="background:hsl(85,22%,22%);color:white;">Primary hsl(85,22%,22%)</div>
+  <div class="chip" style="background:hsl(28,65%,50%);color:white;">Accent hsl(28,65%,50%)</div>
+</div>
+
+<h3>Indigo Earth</h3>
+<div class="row">
+  <div class="chip" style="background:hsl(235,32%,22%);color:white;">Primary hsl(235,32%,22%)</div>
+  <div class="chip" style="background:hsl(22,72%,52%);color:white;">Accent hsl(22,72%,52%)</div>
+</div>
+
+<h3>Oxblood</h3>
+<div class="row">
+  <div class="chip" style="background:hsl(355,48%,20%);color:white;">Primary hsl(355,48%,20%)</div>
+  <div class="chip" style="background:hsl(45,78%,48%);color:white;">Accent hsl(45,78%,48%)</div>
+</div>
+
+<h3>Plum</h3>
+<div class="row">
+  <div class="chip" style="background:hsl(280,30%,22%);color:white;">Primary hsl(280,30%,22%)</div>
+  <div class="chip" style="background:hsl(15,60%,55%);color:white;">Accent hsl(15,60%,55%)</div>
+</div>
+
+<h3>Teal Noir</h3>
+<div class="row">
+  <div class="chip" style="background:hsl(190,40%,18%);color:white;">Primary hsl(190,40%,18%)</div>
+  <div class="chip" style="background:hsl(18,68%,48%);color:white;">Accent hsl(18,68%,48%)</div>
+</div>
+
+<h3>Deep Fig</h3>
+<div class="row">
+  <div class="chip" style="background:hsl(320,28%,18%);color:white;">Primary hsl(320,28%,18%)</div>
+  <div class="chip" style="background:hsl(32,55%,55%);color:white;">Accent hsl(32,55%,55%)</div>
+</div>
+</div>
+
+<!-- ═══════════════ TYPOGRAPHY ═══════════════ -->
+<div class="theme-section" style="margin-top:40px">
+<h2 style="margin-top:0">Typography</h2>
+<div style="margin-top:16px">
+  <p style="font-family:'Cormorant Garamond',serif; font-size:28px; font-weight:600; line-height:1.2; letter-spacing:-0.01em;">H1 — Cormorant Garamond 28px/600</p>
+  <p style="font-family:'Cormorant Garamond',serif; font-size:18px; font-weight:500; line-height:1.4; margin-top:12px;">H2 — Cormorant Garamond 18px/500</p>
+  <p style="font-family:'Inter',sans-serif; font-size:14px; font-weight:500; line-height:1.4; margin-top:12px;">H3 — Inter 14px/500</p>
+  <p style="font-family:'Inter',sans-serif; font-size:14px; font-weight:400; line-height:1.5; margin-top:12px;">Body — Inter 14px/400</p>
+  <p style="font-family:'Inter',sans-serif; font-size:11px; font-weight:400; line-height:1.4; margin-top:12px; color:#8C8681;">Meta — Inter 11px/400</p>
+</div>
+</div>
+
+<!-- ═══════════════ SPACING ═══════════════ -->
+<div class="theme-section" style="margin-top:40px">
+<h2 style="margin-top:0">Spacing (8px Grid)</h2>
+<div style="display:flex; gap:8px; align-items:flex-end; margin-top:16px; flex-wrap:wrap;">
+  <div style="text-align:center"><div style="width:40px;height:8px;background:hsl(158,35%,18%);border-radius:4px;"></div><span style="font-size:10px;color:#8C8681;">xs 8px</span></div>
+  <div style="text-align:center"><div style="width:40px;height:16px;background:hsl(158,35%,18%);border-radius:4px;"></div><span style="font-size:10px;color:#8C8681;">sm 16px</span></div>
+  <div style="text-align:center"><div style="width:40px;height:24px;background:hsl(158,35%,18%);border-radius:4px;"></div><span style="font-size:10px;color:#8C8681;">md 24px</span></div>
+  <div style="text-align:center"><div style="width:40px;height:32px;background:hsl(158,35%,18%);border-radius:4px;"></div><span style="font-size:10px;color:#8C8681;">lg 32px</span></div>
+  <div style="text-align:center"><div style="width:40px;height:48px;background:hsl(158,35%,18%);border-radius:4px;"></div><span style="font-size:10px;color:#8C8681;">xl 48px</span></div>
+</div>
+</div>
+
+<!-- ═══════════════ RADII ═══════════════ -->
+<div class="theme-section" style="margin-top:40px">
+<h2 style="margin-top:0">Border Radius</h2>
+<div style="display:flex; gap:16px; align-items:center; margin-top:16px; flex-wrap:wrap;">
+  <div style="text-align:center"><div style="width:64px;height:48px;border:2px solid hsl(158,35%,18%);border-radius:20px;"></div><span style="font-size:10px;color:#8C8681;">Card 20px</span></div>
+  <div style="text-align:center"><div style="width:64px;height:48px;border:2px solid hsl(158,35%,18%);border-radius:14px;"></div><span style="font-size:10px;color:#8C8681;">Pill 14px</span></div>
+  <div style="text-align:center"><div style="width:64px;height:48px;border:2px solid hsl(158,35%,18%);border-radius:12px;"></div><span style="font-size:10px;color:#8C8681;">Button 12px</span></div>
+</div>
+</div>
+
+<button class="download-btn" onclick="window.print()">⬇ Print / Save as PDF</button>
+
+</body>
+</html>
