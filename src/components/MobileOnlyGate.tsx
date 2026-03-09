@@ -1,15 +1,23 @@
 import { ReactNode, useState } from 'react';
 import { Check, Copy } from 'lucide-react';
 import { useLocation } from 'react-router-dom';
+import { useAuth } from '@/contexts/AuthContext';
 
 const DESKTOP_ALLOWED_ROUTES = ['/analytics', '/login', '/flowcharts.html', '/kids-family-journey-flowchart.html', '/user-journey-flowchart.html', '/color-palette.html'];
+
+const ADMIN_USER_IDS = [
+  'b29f4c84-0426-4b8f-9293-dccf9141a4b5',
+  '8105cd94-be94-473e-977a-883e461cfea8',
+  '999288dd-b73a-4829-9d0d-72a8b54b6385',
+];
 
 export default function MobileOnlyGate({ children }: { children: ReactNode }) {
   const [copied, setCopied] = useState(false);
   const location = useLocation();
+  const { user } = useAuth();
 
-  // Allow certain routes (like analytics) on desktop
   const isDesktopAllowed = DESKTOP_ALLOWED_ROUTES.some(r => location.pathname.startsWith(r));
+  const isAdmin = user && ADMIN_USER_IDS.includes(user.id);
 
   const handleCopy = () => {
     navigator.clipboard.writeText(window.location.href).then(() => {
@@ -18,7 +26,7 @@ export default function MobileOnlyGate({ children }: { children: ReactNode }) {
     });
   };
 
-  if (isDesktopAllowed) {
+  if (isDesktopAllowed || isAdmin) {
     return <>{children}</>;
   }
 
