@@ -31,6 +31,14 @@
 
   <body>
     <div id="root"></div>
+    <script>
+      // Unregister stale service workers in dev/preview to prevent reload loops
+      if ('serviceWorker' in navigator && (location.hostname.includes('lovableproject.com') || location.hostname === 'localhost')) {
+        navigator.serviceWorker.getRegistrations().then(function(registrations) {
+          registrations.forEach(function(r) { r.unregister(); });
+        });
+      }
+    </script>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
