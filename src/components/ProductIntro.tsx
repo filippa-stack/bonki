@@ -287,9 +287,9 @@ export default function ProductIntro({ productId, accentColor, backgroundColor, 
             initial={false}
             animate={isLastSlide && hasFreeCard ? {
               boxShadow: [
-                `0 2px 12px -2px ${accentColor ?? 'hsla(158, 30%, 15%, 0.18)'}`,
-                `0 4px 20px -2px ${accentColor ?? 'hsla(158, 30%, 15%, 0.18)'}55`,
-                `0 2px 12px -2px ${accentColor ?? 'hsla(158, 30%, 15%, 0.18)'}`,
+                '0 2px 12px -2px hsla(158, 30%, 15%, 0.18)',
+                '0 4px 20px -2px hsla(158, 30%, 15%, 0.32)',
+                '0 2px 12px -2px hsla(158, 30%, 15%, 0.18)',
               ],
             } : {}}
             transition={isLastSlide && hasFreeCard ? {
