@@ -622,6 +622,7 @@ export default function ProductLibrary() {
                   fontFamily: "'Lato', sans-serif",
                   fontSize: '12px', color: '#4A7A5E',
                   marginTop: '4px',
+                  lineHeight: 1.4,
                 }}>
                   Vi finns kvar
                 </p>
