@@ -363,42 +363,6 @@ export default function ProductLibrary() {
           </p>
         </motion.div>
 
-          {/* Tab navigation */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.2, duration: 0.5 }}
-            style={{
-              display: 'flex',
-              justifyContent: 'center',
-              gap: '8px',
-              marginTop: '16px',
-              marginBottom: '8px',
-            }}
-          >
-            {(['barn', 'par'] as const).map((tab) => (
-              <button
-                key={tab}
-                onClick={() => scrollTo(tab)}
-                style={{
-                  fontFamily: "'Lato', sans-serif",
-                  fontSize: '13px',
-                  fontWeight: activeTab === tab ? 700 : 400,
-                  letterSpacing: '0.04em',
-                  color: activeTab === tab ? 'var(--text-library)' : '#A09890',
-                  background: activeTab === tab ? 'rgba(44, 36, 32, 0.06)' : 'transparent',
-                  border: 'none',
-                  borderRadius: '20px',
-                  padding: '6px 18px',
-                  cursor: 'pointer',
-                  transition: 'all 0.2s ease',
-                }}
-              >
-                {tab === 'barn' ? 'Barn' : 'Par'}
-              </button>
-            ))}
-          </motion.div>
-
         {/* ── Barn — broken grid layout ── */}
         <div ref={barnRef} className="px-5 mt-3" style={{ scrollMarginTop: '8px' }}>
           <AudienceLabel label="Barn" subtitle="Samtalskort som hjälper er att nå det barnet inte säger själv" delay={0.08} />
