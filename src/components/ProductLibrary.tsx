@@ -461,7 +461,7 @@ export default function ProductLibrary() {
               fontStyle: 'italic',
               fontSize: '14px',
               color: 'var(--accent-saffron)',
-              opacity: 0.7,
+              opacity: 0.45,
               lineHeight: 1.6,
             }}
           >
