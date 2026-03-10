@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { allProducts } from '@/data/products';
+import { useAllProductAccess } from '@/hooks/useAllProductAccess';
 import watermarkMamma from '@/assets/watermark-mamma.png';
 
 import illustrationStillUs from '@/assets/illustration-still-us.png';
@@ -145,9 +146,11 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
   onClick?: () => void; illustration?: string;
   accentColor?: string; taglineColor?: string; illustrationOpacity?: number;
   illustrationSize?: string; illustrationPosition?: string; wide?: boolean;
+  showFreeBadge?: boolean;
 }>(function PastelTile({
   name, bg, ageLabel, tagline, onClick, illustration, accentColor, taglineColor,
   illustrationOpacity = 0.25, illustrationSize = 'contain', illustrationPosition = 'right center', wide = false,
+  showFreeBadge = false,
 }, ref) {
   const darkenHex = (hex: string) => {
     const r = parseInt(hex.slice(1, 3), 16);
@@ -246,6 +249,28 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
             {tagline}
           </p>
         )}
+        {showFreeBadge && (
+          <span
+            style={{
+              display: 'inline-block',
+              marginTop: '8px',
+              fontFamily: "'Lato', sans-serif",
+              fontSize: '9px',
+              fontWeight: 600,
+              letterSpacing: '0.08em',
+              textTransform: 'uppercase',
+              color: accentColor || 'var(--text-library)',
+              opacity: 0.55,
+              background: 'rgba(255, 255, 255, 0.45)',
+              padding: '3px 10px',
+              borderRadius: '20px',
+              backdropFilter: 'blur(4px)',
+              WebkitBackdropFilter: 'blur(4px)',
+            }}
+          >
+            Första kortet gratis
+          </span>
+        )}
       </div>
     </motion.div>
   );
@@ -254,6 +279,7 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
 export default function ProductLibrary() {
   const navigate = useNavigate();
   const tracked = useRef(false);
+  const { purchased } = useAllProductAccess();
   const [activeTab, setActiveTab] = useState<'barn' | 'par'>('barn');
   const barnRef = useRef<HTMLDivElement>(null);
   const parRef = useRef<HTMLDivElement>(null);
@@ -396,6 +422,7 @@ export default function ProductLibrary() {
               illustrationSize={ILLUSTRATION_SIZE[jagIMig.id]}
               illustrationPosition={ILLUSTRATION_POSITION[jagIMig.id]}
               onClick={() => navigate(`/product/${jagIMig.slug}`)}
+              showFreeBadge={!purchased.has(jagIMig.id)}
               wide
             />
             <PastelTile
@@ -409,6 +436,7 @@ export default function ProductLibrary() {
               illustrationOpacity={ILLUSTRATION_OPACITY[jagMedAndra.id]}
               illustrationSize={ILLUSTRATION_SIZE[jagMedAndra.id]}
               onClick={() => navigate(`/product/${jagMedAndra.slug}`)}
+              showFreeBadge={!purchased.has(jagMedAndra.id)}
             />
             <PastelTile
               name={jagIVarlden.name}
@@ -420,6 +448,7 @@ export default function ProductLibrary() {
               illustration={ILLUSTRATIONS[jagIVarlden.id]}
               illustrationOpacity={ILLUSTRATION_OPACITY[jagIVarlden.id]}
               onClick={() => navigate(`/product/${jagIVarlden.slug}`)}
+              showFreeBadge={!purchased.has(jagIVarlden.id)}
             />
             <PastelTile
               name={vardag.name}
@@ -431,6 +460,7 @@ export default function ProductLibrary() {
               illustration={ILLUSTRATIONS[vardag.id]}
               illustrationOpacity={ILLUSTRATION_OPACITY[vardag.id]}
               onClick={() => navigate(`/product/${vardag.slug}`)}
+              showFreeBadge={!purchased.has(vardag.id)}
             />
             <PastelTile
               name={syskon.name}
@@ -442,6 +472,7 @@ export default function ProductLibrary() {
               illustration={ILLUSTRATIONS[syskon.id]}
               illustrationOpacity={ILLUSTRATION_OPACITY[syskon.id]}
               onClick={() => navigate(`/product/${syskon.slug}`)}
+              showFreeBadge={!purchased.has(syskon.id)}
             />
             <PastelTile
               name={sexualitet.name}
@@ -453,6 +484,7 @@ export default function ProductLibrary() {
               illustration={ILLUSTRATIONS[sexualitet.id]}
               illustrationOpacity={ILLUSTRATION_OPACITY[sexualitet.id]}
               onClick={() => navigate(`/product/${sexualitet.slug}`)}
+              showFreeBadge={!purchased.has(sexualitet.id)}
               wide
             />
           </motion.div>
@@ -532,6 +564,26 @@ export default function ProductLibrary() {
               }}>
                 För samtalen som aldrig blir av
               </p>
+              {!purchased.has('still_us') && (
+                <span
+                  style={{
+                    marginTop: '8px',
+                    fontFamily: "'Lato', sans-serif",
+                    fontSize: '9px',
+                    fontWeight: 600,
+                    letterSpacing: '0.08em',
+                    textTransform: 'uppercase',
+                    color: 'var(--accent-saffron)',
+                    opacity: 0.7,
+                    background: 'rgba(255, 255, 255, 0.08)',
+                    padding: '3px 10px',
+                    borderRadius: '20px',
+                    zIndex: 1,
+                  }}
+                >
+                  Första kortet gratis
+                </span>
+              )}
             </motion.div>
 
             <motion.div
