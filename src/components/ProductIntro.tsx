@@ -94,10 +94,15 @@ export default function ProductIntro({ productId, accentColor, backgroundColor, 
 
   return (
     <div
-      className="min-h-screen flex flex-col"
-      style={{ backgroundColor: backgroundColor ?? 'var(--surface-base)' }}
+      style={{
+        backgroundColor: backgroundColor ?? 'var(--surface-base)',
+        height: '100dvh',
+        display: 'flex',
+        flexDirection: 'column',
+        overflow: 'hidden',
+      }}
     >
-      <div className="flex-1 flex flex-col">
+      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
         <AnimatePresence mode="wait">
           <motion.div
             key={currentSlide}
@@ -105,8 +110,18 @@ export default function ProductIntro({ productId, accentColor, backgroundColor, 
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.5, ease: EASE }}
-           className="flex-1 flex flex-col items-center justify-center"
-            style={{ padding: '0 32px', marginBottom: '-40px' }}
+            style={{
+              flex: 1,
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center',
+              padding: '0 32px',
+              overflowY: 'auto',
+              WebkitOverflowScrolling: 'touch',
+              paddingTop: '24px',
+              paddingBottom: '8px',
+            }}
             drag="x"
             dragConstraints={{ left: 0, right: 0 }}
             dragElastic={0.15}
