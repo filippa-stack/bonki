@@ -266,6 +266,7 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
               borderRadius: '20px',
               backdropFilter: 'blur(4px)',
               WebkitBackdropFilter: 'blur(4px)',
+              whiteSpace: 'nowrap',
             }}
           >
             Första kortet gratis
