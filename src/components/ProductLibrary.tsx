@@ -314,7 +314,7 @@ export default function ProductLibrary() {
 
         {/* ── Ert Barn — broken grid layout ── */}
         <div className="px-5 mt-5">
-          <AudienceLabel label="Ert barn" delay={0.08} />
+          <AudienceLabel label="Barn" delay={0.08} />
           <motion.div
             variants={containerVariants}
             initial="hidden"
