@@ -672,8 +672,8 @@ export default function ProductLibrary() {
                 justifyContent: 'flex-end',
                 border: '1px solid rgba(44, 36, 32, 0.05)',
                 boxShadow: '0px 2px 6px rgba(44, 36, 32, 0.10), 0px 8px 20px rgba(44, 36, 32, 0.08)',
-                opacity: 0.65,
-                filter: 'saturate(0.5)',
+                opacity: 0.85,
+                filter: 'saturate(0.7)',
               }}
             >
               {/* Illustration */}
@@ -701,8 +701,11 @@ export default function ProductLibrary() {
                 </h3>
                 <p style={{
                   fontFamily: "'Lato', sans-serif",
-                  fontSize: '12px', color: '#8A5A74',
+                  fontSize: '11px', color: '#8A5A74',
                   marginTop: '4px',
+                  lineHeight: 1.4,
+                  maxWidth: '65%',
+                  opacity: 0.85,
                 }}>
                   Ett kartläggningsverktyg som gör det osynliga arbetet i familjelivet synligt för båda
                 </p>
