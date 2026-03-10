@@ -469,23 +469,52 @@ export default function ProductLibrary() {
           transition={{ delay: 0.4, duration: 0.6 }}
           style={{
             textAlign: 'center',
-            padding: '32px 20px 0',
+            padding: '36px 28px 28px',
+            margin: '24px 20px 0',
+            borderRadius: '14px',
+            backgroundColor: 'rgba(44, 36, 32, 0.025)',
           }}
         >
-          <div style={{ width: '32px', height: '1px', background: '#A09890', opacity: 0.2, margin: '0 auto 16px' }} />
           <p
             style={{
               fontFamily: "'DM Serif Display', serif",
-              fontStyle: 'italic',
-              fontSize: '14px',
-              color: 'var(--accent-saffron)',
-              opacity: 0.45,
-              lineHeight: 1.6,
+              fontSize: '18px',
+              fontWeight: 400,
+              color: 'var(--text-library)',
+              lineHeight: 1.5,
+              marginBottom: '14px',
             }}
           >
             Barnens trygghet börjar med
             <br />
             deras vuxna
+          </p>
+          <p
+            style={{
+              fontFamily: "'DM Serif Display', serif",
+              fontStyle: 'italic',
+              fontSize: '13px',
+              fontWeight: 400,
+              color: 'var(--color-text-secondary)',
+              opacity: 0.6,
+              lineHeight: 1.6,
+              marginBottom: '6px',
+            }}
+          >
+            Så vi byggde verktyg för samtalen ni inte hinner ha med varandra.
+          </p>
+          <p
+            style={{
+              fontFamily: "'DM Serif Display', serif",
+              fontStyle: 'italic',
+              fontSize: '13px',
+              fontWeight: 400,
+              color: 'var(--color-text-secondary)',
+              opacity: 0.5,
+              lineHeight: 1.6,
+            }}
+          >
+            Samma psykologi. Samma precision. Nu för er.
           </p>
         </motion.div>
 
