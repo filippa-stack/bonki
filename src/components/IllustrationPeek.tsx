@@ -129,7 +129,7 @@ export default function IllustrationPeek({ imageUrl, cardTitle }: IllustrationPe
                 fontFamily: 'var(--font-serif)',
                 fontSize: '18px',
                 fontWeight: 600,
-                color: 'hsla(0, 0%, 100%, 0.85)',
+                color: 'hsla(30, 20%, 20%, 0.75)',
                 marginTop: '20px',
                 textAlign: 'center',
               }}
