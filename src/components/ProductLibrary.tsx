@@ -669,7 +669,7 @@ export default function ProductLibrary() {
               variants={tileVariants}
               whileHover={{ scale: 1.02, y: -2 }}
               whileTap={{ scale: 0.97 }}
-              onClick={() => navigate('/product/still-us')}
+              onClick={() => navigate('/?devState=solo')}
               className="cursor-pointer"
               style={{
                 borderRadius: '16px',
