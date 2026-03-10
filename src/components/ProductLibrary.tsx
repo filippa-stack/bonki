@@ -78,7 +78,18 @@ const TAGLINE_COLORS: Record<string, string> = {
   syskonkort: '#1A2E50',
 };
 
-/* ── Animation ── */
+/** Build badge text: "X ämnen · Y kr · Första gratis" */
+function buildBadgeText(product: { cards: unknown[]; id: string }): string {
+  const count = product.cards.length;
+  const prices: Record<string, number> = {
+    jag_i_mig: 195, jag_med_andra: 195, jag_i_varlden: 195,
+    vardagskort: 195, syskonkort: 195, sexualitetskort: 195,
+  };
+  const price = prices[product.id] ?? 195;
+  return `${count} ämnen · ${price} kr · Första gratis`;
+}
+
+
 const containerVariants = {
   hidden: {},
   visible: {
