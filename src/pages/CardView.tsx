@@ -140,6 +140,7 @@ export default function CardView() {
   const card = cardId ? getCardById(cardId) : undefined;
   const category = card ? getCategoryById(card.categoryId) : undefined;
   const product = cardId ? getProductForCard(cardId) : undefined;
+  const isStillUsCard = !product && !!card; // Legacy Still Us cards aren't in allProducts
   const pronounMode: PronounMode = product?.pronounMode ?? 'ni';
   const uiText = useMemo(() => getUIText(pronounMode), [pronounMode]);
   const effectiveSteps = useMemo(() => getCardStepOrder(card), [card]);
@@ -147,10 +148,14 @@ export default function CardView() {
   const cardImageUrl = useCardImage(cardId);
 
   // ─── Paywall: check if user has access to this product ───
-  const isFreeCard = !!(product?.freeCardId && cardId === product.freeCardId);
-  const { hasAccess: hasProductAccess, loading: accessLoading } = useProductAccess(product?.id ?? '');
+  const stillUsFreeCardId = 'smallest-we';
+  const isFreeCard = isStillUsCard
+    ? cardId === stillUsFreeCardId
+    : !!(product?.freeCardId && cardId === product.freeCardId);
+  const paywallProductId = product?.id ?? (isStillUsCard ? 'still_us' : '');
+  const { hasAccess: hasProductAccess, loading: accessLoading } = useProductAccess(paywallProductId);
   const [demoBypassed, setDemoBypassed] = useState(false);
-  const needsPaywall = !isFreeCard && !hasProductAccess && !accessLoading && !!product && !devState && !demoBypassed;
+  const needsPaywall = !isFreeCard && !hasProductAccess && !accessLoading && (!!product || isStillUsCard) && !devState && !demoBypassed;
 
   // Apply product theme (background + accent colors)
   useProductTheme(
