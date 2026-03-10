@@ -183,32 +183,31 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
     return `rgb(${Math.round(r * d)}, ${Math.round(g * d)}, ${Math.round(b * d)})`;
   };
 
-  return (
-    <motion.div
-      variants={tileVariants}
-      whileHover={{ scale: 1.03, y: -3 }}
-      whileTap={{ scale: 0.97 }}
-      onClick={onClick}
-      className="cursor-pointer"
-      style={{
-        borderRadius: '16px',
-        background: `linear-gradient(180deg, ${bg} 0%, ${darkenHex(bg)} 100%)`,
-        minHeight: wide ? '140px' : '150px',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'flex-start',
-        justifyContent: 'flex-end',
-        textAlign: 'left',
-        padding: wide ? '20px 20px 16px' : '0 16px',
-        paddingTop: wide ? undefined : '36px',
-        paddingBottom: wide ? undefined : '16px',
-        position: 'relative',
-        overflow: 'hidden',
-        border: '1px solid rgba(44, 36, 32, 0.05)',
-        boxShadow: '0px 2px 6px rgba(44, 36, 32, 0.10), 0px 8px 20px rgba(44, 36, 32, 0.08)',
-        gridColumn: wide ? 'span 2' : undefined,
-      }}
-    >
+    return (
+      <motion.div
+        variants={tileVariants}
+        whileHover={{ scale: 1.03, y: -3 }}
+        whileTap={{ scale: 0.97 }}
+        onClick={onClick}
+        className="cursor-pointer"
+        style={{
+          borderRadius: '16px',
+          background: `linear-gradient(180deg, ${bg} 0%, ${darkenHex(bg)} 100%)`,
+          minHeight: wide ? '140px' : '150px',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'flex-start',
+          justifyContent: 'flex-start',
+          textAlign: 'left',
+          padding: wide ? '20px 20px 16px' : '16px 16px 14px',
+          paddingTop: wide ? undefined : '36px',
+          position: 'relative',
+          overflow: 'hidden',
+          border: '1px solid rgba(44, 36, 32, 0.05)',
+          boxShadow: '0px 2px 6px rgba(44, 36, 32, 0.10), 0px 8px 20px rgba(44, 36, 32, 0.08)',
+          gridColumn: wide ? 'span 2' : undefined,
+        }}
+      >
       {ageLabel && (
         <span
           style={{
