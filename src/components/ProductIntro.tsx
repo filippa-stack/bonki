@@ -2,19 +2,20 @@ import { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence, PanInfo } from 'framer-motion';
 import { productIntros, ProductIntroData } from '@/data/productIntros';
 import { allProducts } from '@/data/products';
+import { Heart, User, Users, Globe, Flame, Sun, UserPlus, type LucideIcon } from 'lucide-react';
 
 const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
 const SEEN_KEY_PREFIX = 'bonki-product-intro-seen-';
 
-/** Product-specific icons for the Spotlight mini-card */
-const PRODUCT_SPOTLIGHT_ICON: Record<string, string> = {
-  still_us: '💛',
-  jag_i_mig: '🪞',
-  jag_med_andra: '🤝',
-  jag_i_varlden: '🌍',
-  sexualitetskort: '🔥',
-  vardagskort: '☀️',
-  syskonkort: '👫',
+/** Product-specific Lucide icons for the Spotlight mini-card */
+const PRODUCT_SPOTLIGHT_ICON: Record<string, LucideIcon> = {
+  still_us: Heart,
+  jag_i_mig: User,
+  jag_med_andra: Users,
+  jag_i_varlden: Globe,
+  sexualitetskort: Flame,
+  vardagskort: Sun,
+  syskonkort: UserPlus,
 };
 
 function hasSeenProductIntro(productId: string): boolean {
@@ -221,7 +222,12 @@ export default function ProductIntro({ productId, accentColor, backgroundColor, 
                     zIndex: 1,
                   }}
                 >
-                  <span style={{ fontSize: '16px', opacity: 0.7 }}>{PRODUCT_SPOTLIGHT_ICON[productId] ?? '✦'}</span>
+                  {(() => {
+                    const IconComp = PRODUCT_SPOTLIGHT_ICON[productId];
+                    return IconComp
+                      ? <IconComp size={16} className="opacity-70" />
+                      : <span style={{ fontSize: '16px', opacity: 0.7 }}>✦</span>;
+                  })()}
                 </div>
                 <div style={{ position: 'relative', zIndex: 1 }}>
                   <p
