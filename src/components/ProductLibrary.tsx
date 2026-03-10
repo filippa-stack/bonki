@@ -73,8 +73,8 @@ const TAGLINE_COLORS: Record<string, string> = {
   jag_med_andra: '#5E4058',
   jag_i_varlden: '#3A6B48',
   sexualitetskort: '#6B4858',
-  vardagskort: '#2A5858',
-  syskonkort: '#2A3E68',
+  vardagskort: '#1A4040',
+  syskonkort: '#1A2E50',
 };
 
 /* ── Animation ── */
