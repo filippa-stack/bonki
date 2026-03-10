@@ -461,7 +461,7 @@ export default function ProductLibrary() {
               fontStyle: 'italic',
               fontSize: '14px',
               color: 'var(--accent-saffron)',
-              opacity: 0.7,
+              opacity: 0.45,
               lineHeight: 1.6,
             }}
           >
@@ -536,8 +536,8 @@ export default function ProductLibrary() {
                 justifyContent: 'flex-start',
                 border: '1px solid rgba(255, 255, 255, 0.04)',
                 boxShadow: '0px 2px 8px rgba(44, 36, 32, 0.08)',
-                opacity: 0.45,
-                filter: 'saturate(0.3) blur(0.5px)',
+                opacity: 0.3,
+                filter: 'saturate(0.15) blur(0.7px)',
               }}
             >
               <h3 style={{
