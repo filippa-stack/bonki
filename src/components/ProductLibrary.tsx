@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { allProducts } from '@/data/products';
@@ -254,6 +254,15 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
 export default function ProductLibrary() {
   const navigate = useNavigate();
   const tracked = useRef(false);
+  const [activeTab, setActiveTab] = useState<'barn' | 'par'>('barn');
+  const barnRef = useRef<HTMLDivElement>(null);
+  const parRef = useRef<HTMLDivElement>(null);
+
+  const scrollTo = (tab: 'barn' | 'par') => {
+    setActiveTab(tab);
+    const ref = tab === 'barn' ? barnRef : parRef;
+    ref.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
 
   useEffect(() => {
     if (!tracked.current) {
@@ -312,8 +321,44 @@ export default function ProductLibrary() {
           </p>
         </motion.div>
 
-        {/* ── Ert Barn — broken grid layout ── */}
-        <div className="px-5 mt-5">
+          {/* Tab navigation */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.2, duration: 0.5 }}
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              gap: '8px',
+              marginTop: '16px',
+              marginBottom: '8px',
+            }}
+          >
+            {(['barn', 'par'] as const).map((tab) => (
+              <button
+                key={tab}
+                onClick={() => scrollTo(tab)}
+                style={{
+                  fontFamily: "'Lato', sans-serif",
+                  fontSize: '13px',
+                  fontWeight: activeTab === tab ? 700 : 400,
+                  letterSpacing: '0.04em',
+                  color: activeTab === tab ? 'var(--text-library)' : '#A09890',
+                  background: activeTab === tab ? 'rgba(44, 36, 32, 0.06)' : 'transparent',
+                  border: 'none',
+                  borderRadius: '20px',
+                  padding: '6px 18px',
+                  cursor: 'pointer',
+                  transition: 'all 0.2s ease',
+                }}
+              >
+                {tab === 'barn' ? 'Barn' : 'Par'}
+              </button>
+            ))}
+          </motion.div>
+
+        {/* ── Barn — broken grid layout ── */}
+        <div ref={barnRef} className="px-5 mt-3" style={{ scrollMarginTop: '8px' }}>
           <AudienceLabel label="Barn" delay={0.08} />
           <motion.div
             variants={containerVariants}
@@ -428,7 +473,9 @@ export default function ProductLibrary() {
 
         {/* ── Par ── */}
         <motion.div
+          ref={parRef}
           className="px-5 mt-5"
+          style={{ scrollMarginTop: '8px' }}
           variants={containerVariants}
           initial="hidden"
           animate="visible"
