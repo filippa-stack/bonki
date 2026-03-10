@@ -448,6 +448,7 @@ export default function ProductLibrary() {
               illustration={ILLUSTRATIONS[jagIVarlden.id]}
               illustrationOpacity={ILLUSTRATION_OPACITY[jagIVarlden.id]}
               onClick={() => navigate(`/product/${jagIVarlden.slug}`)}
+              showFreeBadge={!purchased.has(jagIVarlden.id)}
             />
             <PastelTile
               name={vardag.name}
