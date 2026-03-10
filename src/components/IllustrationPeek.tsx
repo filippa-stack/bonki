@@ -86,7 +86,7 @@ export default function IllustrationPeek({ imageUrl, cardTitle }: IllustrationPe
                 position: 'absolute',
                 top: 'calc(16px + env(safe-area-inset-top, 0px))',
                 right: '16px',
-                background: 'hsla(0, 0%, 100%, 0.12)',
+                background: 'hsla(30, 20%, 20%, 0.12)',
                 border: 'none',
                 borderRadius: '50%',
                 width: '36px',
