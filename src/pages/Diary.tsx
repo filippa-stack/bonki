@@ -295,7 +295,30 @@ export default function Diary() {
 
   // Fetch diary entries
   useEffect(() => {
-    if (!space || !product) { setLoading(false); return; }
+    if (!product) { setLoading(false); return; }
+
+    // Demo mode: read from localStorage
+    if (isDemoMode() && !space) {
+      try {
+        const key = `bonki-demo-diary-${product.id}`;
+        const stored = JSON.parse(localStorage.getItem(key) || '[]');
+        const result: DiaryEntry[] = stored.map((e: any) => ({
+          id: `demo-${e.cardId}-${e.date}`,
+          type: 'reflection' as const,
+          date: new Date(e.date),
+          cardId: e.cardId,
+          cardTitle: cardTitleMap.get(e.cardId) ?? e.cardId,
+          text: e.text,
+          topicLabel: cardTitleMap.get(e.cardId) ?? e.cardId,
+        }));
+        result.sort((a, b) => b.date.getTime() - a.date.getTime());
+        setEntries(result);
+      } catch {}
+      setLoading(false);
+      return;
+    }
+
+    if (!space) { setLoading(false); return; }
 
     let cancelled = false;
 
