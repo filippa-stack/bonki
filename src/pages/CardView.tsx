@@ -28,7 +28,7 @@ import { useProductAccess } from '@/hooks/useProductAccess';
 import ProductPaywall from '@/components/ProductPaywall';
 import { getCompletionMessages, getUIText, type PronounMode } from '@/lib/pronouns';
 import { useCardImage } from '@/hooks/useCardImage';
-import { isDemoMode } from '@/lib/demoMode';
+import { isDemoMode, isDemoParam } from '@/lib/demoMode';
 import { useCardVisit } from '@/hooks/useCardVisit';
 import { useProductTheme } from '@/hooks/useProductTheme';
 
@@ -786,7 +786,7 @@ export default function CardView() {
           cardId={cardId}
           currentCardTitle={card?.title}
           onAccessGranted={() => {
-            if (isDemoMode()) {
+            if (isDemoMode() || isDemoParam()) {
               setDemoBypassed(true);
             } else {
               window.location.reload();
