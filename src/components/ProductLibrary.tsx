@@ -181,7 +181,7 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
       style={{
         borderRadius: '16px',
         background: `linear-gradient(180deg, ${bg} 0%, ${darkenHex(bg)} 100%)`,
-        minHeight: wide ? '140px' : '120px',
+        minHeight: wide ? '140px' : '150px',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'flex-start',
