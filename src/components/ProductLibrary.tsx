@@ -145,9 +145,11 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
   onClick?: () => void; illustration?: string;
   accentColor?: string; taglineColor?: string; illustrationOpacity?: number;
   illustrationSize?: string; illustrationPosition?: string; wide?: boolean;
+  showFreeBadge?: boolean;
 }>(function PastelTile({
   name, bg, ageLabel, tagline, onClick, illustration, accentColor, taglineColor,
   illustrationOpacity = 0.25, illustrationSize = 'contain', illustrationPosition = 'right center', wide = false,
+  showFreeBadge = false,
 }, ref) {
   const darkenHex = (hex: string) => {
     const r = parseInt(hex.slice(1, 3), 16);
