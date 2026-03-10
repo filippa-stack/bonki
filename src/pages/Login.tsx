@@ -262,7 +262,22 @@ export default function Login() {
                 >
                   <Mail className="w-5 h-5" />
                   {t('login.continue_with_email')}
-                </button>
+               </button>
+               {isDemoParam() && (
+                 <button
+                   onClick={() => { enterDemoMode(); navigate('/', { replace: true }); }}
+                   className="w-full h-14 flex items-center justify-center gap-2 text-base font-medium rounded-xl"
+                   style={{
+                     color: 'var(--color-text-secondary)',
+                     border: '1px dashed rgba(0,0,0,0.15)',
+                     background: 'none',
+                     marginTop: '4px',
+                   }}
+                 >
+                   <Eye className="w-5 h-5" />
+                   Fortsätt utan konto (demo)
+                 </button>
+               )}
               </motion.div>
             )}
           </AnimatePresence>

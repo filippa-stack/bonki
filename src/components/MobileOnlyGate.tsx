@@ -31,8 +31,8 @@ export default function MobileOnlyGate({ children }: { children: ReactNode }) {
     return <>{children}</>;
   }
 
-  // Demo mode on desktop: wrap in a phone-sized frame
-  if (isDemoMode()) {
+  // Demo mode (param seen OR entered): show in phone frame on desktop
+  if (isDemoParam() || isDemoMode()) {
     return (
       <>
         {/* Desktop: phone simulator */}
