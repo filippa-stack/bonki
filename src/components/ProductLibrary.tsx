@@ -279,6 +279,7 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
 export default function ProductLibrary() {
   const navigate = useNavigate();
   const tracked = useRef(false);
+  const { purchased } = useAllProductAccess();
   const [activeTab, setActiveTab] = useState<'barn' | 'par'>('barn');
   const barnRef = useRef<HTMLDivElement>(null);
   const parRef = useRef<HTMLDivElement>(null);
