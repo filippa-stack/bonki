@@ -201,17 +201,22 @@ async function extractSingleFile(source: ZipSource, folder: string, fileName: st
     const exactPath = folder ? `${folder}/${fileName}` : fileName;
     let entry = zip.file(exactPath);
 
-    // Fallback: Unicode-normalized + case-insensitive search
+    // Fallback: Unicode-normalized + case-insensitive search, with space-stripped variant
     if (!entry) {
       const normFile = norm(fileName);
       const normFolder = norm(folder);
+      const strippedFile = stripSpaces(normFile);
       zip.forEach((path, zipEntry) => {
         if (entry || zipEntry.dir) return;
         const normPath = norm(path);
+        const strippedPath = stripSpaces(normPath);
         if (
           normPath.endsWith(`/${normFolder}/${normFile}`) ||
           normPath.endsWith(`/${normFile}`) ||
-          normPath === normFile
+          normPath === normFile ||
+          // Space-stripped fallback (e.g. "Hur var din dag.png" → "hurvardindag.png")
+          strippedPath.endsWith(`/${strippedFile}`) ||
+          strippedPath === strippedFile
         ) {
           entry = zipEntry;
         }
