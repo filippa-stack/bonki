@@ -933,7 +933,7 @@ export default function CardView() {
             transition={{ delay: 0.4, duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
             className="max-w-md mx-auto"
           >
-            <CompletionTakeaway sessionId={activeSessionId} spaceId={space?.id ?? null} pronounMode={pronounMode} />
+            <CompletionTakeaway sessionId={activeSessionId} spaceId={space?.id ?? null} pronounMode={pronounMode} cardId={cardId} productId={product?.id} />
           </motion.div>
 
           {/* Privacy reassurance — below text field */}
