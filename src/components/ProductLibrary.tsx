@@ -576,7 +576,7 @@ export default function ProductLibrary() {
                     textTransform: 'uppercase',
                     color: 'hsl(158, 35%, 28%)',
                     opacity: 0.65,
-                    background: 'rgba(255, 255, 255, 0.08)',
+                    background: 'rgba(44, 36, 32, 0.04)',
                     padding: '3px 10px',
                     borderRadius: '20px',
                     zIndex: 1,
