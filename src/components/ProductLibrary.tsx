@@ -722,6 +722,31 @@ export default function ProductLibrary() {
                 >
                   Kommer snart
                 </span>
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    if (!notifySignedUp && !notifyLoading) handleNotifyMe();
+                  }}
+                  disabled={notifySignedUp || notifyLoading}
+                  style={{
+                    display: 'block',
+                    marginTop: '10px',
+                    fontFamily: "'Lato', sans-serif",
+                    fontSize: '11px',
+                    fontWeight: 600,
+                    letterSpacing: '0.03em',
+                    color: notifySignedUp ? '#8A5A74' : '#fff',
+                    background: notifySignedUp ? 'rgba(107,58,88,0.1)' : '#6B3A58',
+                    border: 'none',
+                    borderRadius: '20px',
+                    padding: '7px 16px',
+                    cursor: notifySignedUp ? 'default' : 'pointer',
+                    opacity: notifyLoading ? 0.6 : 1,
+                    transition: 'all 200ms ease',
+                  }}
+                >
+                  {notifySignedUp ? '✓ Du blir meddelad' : 'Meddela mig'}
+                </button>
               </div>
             </motion.div>
           </div>
