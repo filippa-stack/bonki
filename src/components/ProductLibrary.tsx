@@ -270,7 +270,7 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
           <p
             style={{
               fontFamily: "'Lato', sans-serif",
-              fontSize: wide ? '12px' : '11px',
+              fontSize: '11px',
               fontWeight: 400,
               color: taglineColor || '#8A8078',
               marginTop: '4px',
