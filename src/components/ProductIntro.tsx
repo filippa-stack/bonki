@@ -6,6 +6,17 @@ import { allProducts } from '@/data/products';
 const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
 const SEEN_KEY_PREFIX = 'bonki-product-intro-seen-';
 
+/** Product-specific icons for the Spotlight mini-card */
+const PRODUCT_SPOTLIGHT_ICON: Record<string, string> = {
+  still_us: '💛',
+  jag_i_mig: '🪞',
+  jag_med_andra: '🤝',
+  jag_i_varlden: '🌍',
+  sexualitetskort: '🔥',
+  vardagskort: '☀️',
+  syskonkort: '👫',
+};
+
 function hasSeenProductIntro(productId: string): boolean {
   return localStorage.getItem(`${SEEN_KEY_PREFIX}${productId}`) === 'true';
 }
