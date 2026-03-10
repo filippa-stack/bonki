@@ -581,6 +581,16 @@ export default function ProductLibrary() {
                 }}>
                   Vi finns kvar
                 </p>
+                <p style={{
+                  fontFamily: "'Lato', sans-serif",
+                  fontSize: '11px', color: '#4A7A5E',
+                  marginTop: '4px',
+                  lineHeight: 1.4,
+                  maxWidth: '55%',
+                  opacity: 0.85,
+                }}>
+                  Ett strukturerat sätt att ta de svåra samtalen innan tystnaden växer sig för stor.
+                </p>
                 {!purchased.has('still_us') && (
                   <span
                     style={{
