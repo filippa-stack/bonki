@@ -16,6 +16,7 @@ import type { Json } from '@/integrations/supabase/types';
 
 export default function Login() {
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [termsAccepted, setTermsAccepted] = useState(false);
