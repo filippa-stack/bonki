@@ -136,7 +136,6 @@ function AudienceLabel({ label, subtitle, delay = 0 }: { label: string; subtitle
         <p
           style={{
             fontFamily: "'DM Serif Display', serif",
-            fontStyle: 'italic',
             fontSize: '14px',
             fontWeight: 400,
             color: 'var(--color-text-secondary)',
