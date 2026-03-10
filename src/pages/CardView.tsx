@@ -28,6 +28,7 @@ import { useProductAccess } from '@/hooks/useProductAccess';
 import ProductPaywall from '@/components/ProductPaywall';
 import { getCompletionMessages, getUIText, type PronounMode } from '@/lib/pronouns';
 import { useCardImage } from '@/hooks/useCardImage';
+import { isDemoMode } from '@/lib/demoMode';
 import { useCardVisit } from '@/hooks/useCardVisit';
 import { useProductTheme } from '@/hooks/useProductTheme';
 
@@ -148,7 +149,8 @@ export default function CardView() {
   // ─── Paywall: check if user has access to this product ───
   const isFreeCard = !!(product?.freeCardId && cardId === product.freeCardId);
   const { hasAccess: hasProductAccess, loading: accessLoading } = useProductAccess(product?.id ?? '');
-  const needsPaywall = !isFreeCard && !hasProductAccess && !accessLoading && !!product && !devState;
+  const [demoBypassed, setDemoBypassed] = useState(false);
+  const needsPaywall = !isFreeCard && !hasProductAccess && !accessLoading && !!product && !devState && !demoBypassed;
 
   // Apply product theme (background + accent colors)
   useProductTheme(
@@ -783,7 +785,13 @@ export default function CardView() {
           product={product}
           cardId={cardId}
           currentCardTitle={card?.title}
-          onAccessGranted={() => window.location.reload()}
+          onAccessGranted={() => {
+            if (isDemoMode()) {
+              setDemoBypassed(true);
+            } else {
+              window.location.reload();
+            }
+          }}
         />
       </div>
     );
