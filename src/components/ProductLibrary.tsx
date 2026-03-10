@@ -1,8 +1,11 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { allProducts } from '@/data/products';
 import { useAllProductAccess } from '@/hooks/useAllProductAccess';
+import { useAuth } from '@/contexts/AuthContext';
+import { supabase } from '@/integrations/supabase/client';
+import { toast } from '@/components/ui/sonner';
 import watermarkMamma from '@/assets/watermark-mamma.png';
 
 import illustrationStillUs from '@/assets/illustration-still-us-tile.png';
@@ -305,8 +308,48 @@ export default function ProductLibrary() {
   const navigate = useNavigate();
   const tracked = useRef(false);
   const { purchased } = useAllProductAccess();
+  const { user } = useAuth();
   const barnRef = useRef<HTMLDivElement>(null);
   const parRef = useRef<HTMLDivElement>(null);
+  const [notifySignedUp, setNotifySignedUp] = useState(false);
+  const [notifyLoading, setNotifyLoading] = useState(false);
+
+  // Check if user already signed up for Still Fair interest
+  useEffect(() => {
+    if (!user?.id) return;
+    supabase
+      .from('product_interest' as any)
+      .select('id')
+      .eq('product_id', 'still_fair')
+      .eq('user_id', user.id)
+      .maybeSingle()
+      .then(({ data }) => {
+        if (data) setNotifySignedUp(true);
+      });
+  }, [user?.id]);
+
+  const handleNotifyMe = async () => {
+    if (!user?.id) {
+      toast('Du behöver vara inloggad för att bli påmind');
+      return;
+    }
+    setNotifyLoading(true);
+    const { error } = await supabase
+      .from('product_interest' as any)
+      .insert({ product_id: 'still_fair', user_id: user.id } as any);
+    setNotifyLoading(false);
+    if (error?.code === '23505') {
+      // Already exists
+      setNotifySignedUp(true);
+      return;
+    }
+    if (error) {
+      toast('Något gick fel, försök igen');
+      return;
+    }
+    setNotifySignedUp(true);
+    toast('Vi meddelar dig när Still Fair lanseras!');
+  };
 
   useEffect(() => {
     if (!tracked.current) {
@@ -679,6 +722,31 @@ export default function ProductLibrary() {
                 >
                   Kommer snart
                 </span>
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    if (!notifySignedUp && !notifyLoading) handleNotifyMe();
+                  }}
+                  disabled={notifySignedUp || notifyLoading}
+                  style={{
+                    display: 'block',
+                    marginTop: '10px',
+                    fontFamily: "'Lato', sans-serif",
+                    fontSize: '11px',
+                    fontWeight: 600,
+                    letterSpacing: '0.03em',
+                    color: notifySignedUp ? '#8A5A74' : '#fff',
+                    background: notifySignedUp ? 'rgba(107,58,88,0.1)' : '#6B3A58',
+                    border: 'none',
+                    borderRadius: '20px',
+                    padding: '7px 16px',
+                    cursor: notifySignedUp ? 'default' : 'pointer',
+                    opacity: notifyLoading ? 0.6 : 1,
+                    transition: 'all 200ms ease',
+                  }}
+                >
+                  {notifySignedUp ? '✓ Du blir meddelad' : 'Meddela mig'}
+                </button>
               </div>
             </motion.div>
           </div>
