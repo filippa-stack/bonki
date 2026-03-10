@@ -473,7 +473,9 @@ export default function ProductLibrary() {
 
         {/* ── Par ── */}
         <motion.div
+          ref={parRef}
           className="px-5 mt-5"
+          style={{ scrollMarginTop: '8px' }}
           variants={containerVariants}
           initial="hidden"
           animate="visible"
