@@ -67,7 +67,7 @@ export default function IllustrationPeek({ imageUrl, cardTitle }: IllustrationPe
               position: 'fixed',
               inset: 0,
               zIndex: 9998,
-              background: 'hsla(30, 10%, 8%, 0.85)',
+              background: 'color-mix(in srgb, var(--surface-base, hsl(30, 10%, 8%)) 92%, transparent)',
               backdropFilter: 'blur(16px)',
               WebkitBackdropFilter: 'blur(16px)',
               display: 'flex',
