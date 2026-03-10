@@ -67,7 +67,7 @@ export default function IllustrationPeek({ imageUrl, cardTitle }: IllustrationPe
               position: 'fixed',
               inset: 0,
               zIndex: 9998,
-              background: 'hsla(30, 10%, 8%, 0.85)',
+              background: 'color-mix(in srgb, var(--surface-base, hsl(30, 10%, 8%)) 92%, transparent)',
               backdropFilter: 'blur(16px)',
               WebkitBackdropFilter: 'blur(16px)',
               display: 'flex',
@@ -86,7 +86,7 @@ export default function IllustrationPeek({ imageUrl, cardTitle }: IllustrationPe
                 position: 'absolute',
                 top: 'calc(16px + env(safe-area-inset-top, 0px))',
                 right: '16px',
-                background: 'hsla(0, 0%, 100%, 0.12)',
+                background: 'hsla(30, 20%, 20%, 0.12)',
                 border: 'none',
                 borderRadius: '50%',
                 width: '36px',
@@ -97,7 +97,7 @@ export default function IllustrationPeek({ imageUrl, cardTitle }: IllustrationPe
                 cursor: 'pointer',
               }}
             >
-              <X size={18} strokeWidth={1.5} color="hsla(0, 0%, 100%, 0.8)" />
+              <X size={18} strokeWidth={1.5} color="hsla(30, 20%, 20%, 0.7)" />
             </button>
 
             {/* Illustration */}
@@ -129,7 +129,7 @@ export default function IllustrationPeek({ imageUrl, cardTitle }: IllustrationPe
                 fontFamily: 'var(--font-serif)',
                 fontSize: '18px',
                 fontWeight: 600,
-                color: 'hsla(0, 0%, 100%, 0.85)',
+                color: 'hsla(30, 20%, 20%, 0.75)',
                 marginTop: '20px',
                 textAlign: 'center',
               }}
