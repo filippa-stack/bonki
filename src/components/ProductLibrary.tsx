@@ -471,6 +471,7 @@ export default function ProductLibrary() {
               illustration={ILLUSTRATIONS[syskon.id]}
               illustrationOpacity={ILLUSTRATION_OPACITY[syskon.id]}
               onClick={() => navigate(`/product/${syskon.slug}`)}
+              showFreeBadge={!purchased.has(syskon.id)}
             />
             <PastelTile
               name={sexualitet.name}
