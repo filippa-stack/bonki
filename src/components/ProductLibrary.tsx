@@ -307,6 +307,20 @@ export default function ProductLibrary() {
           </h1>
           <p
             style={{
+              fontFamily: "'DM Serif Display', serif",
+              fontStyle: 'italic',
+              fontSize: '12px',
+              fontWeight: 400,
+              color: 'var(--color-text-secondary)',
+              opacity: 0.5,
+              lineHeight: 1.5,
+              marginBottom: '6px',
+            }}
+          >
+            Samtalsverktyg utvecklade av psykolog
+          </p>
+          <p
+            style={{
               fontFamily: "'Lato', sans-serif",
               fontSize: '12px',
               fontWeight: 400,
