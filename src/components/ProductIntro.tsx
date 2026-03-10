@@ -2,13 +2,13 @@ import { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence, PanInfo } from 'framer-motion';
 import { productIntros, ProductIntroData } from '@/data/productIntros';
 import { allProducts } from '@/data/products';
-import { Heart, User, Users, Globe, Flame, Sun, UserPlus } from 'lucide-react';
+import { Heart, User, Users, Globe, Flame, Sun, UserPlus, type LucideIcon } from 'lucide-react';
 
 const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
 const SEEN_KEY_PREFIX = 'bonki-product-intro-seen-';
 
 /** Product-specific Lucide icons for the Spotlight mini-card */
-const PRODUCT_SPOTLIGHT_ICON: Record<string, React.ComponentType<{ size?: number; className?: string }>> = {
+const PRODUCT_SPOTLIGHT_ICON: Record<string, LucideIcon> = {
   still_us: Heart,
   jag_i_mig: User,
   jag_med_andra: Users,
