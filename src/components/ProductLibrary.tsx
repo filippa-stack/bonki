@@ -423,7 +423,7 @@ export default function ProductLibrary() {
 
         {/* ── Barn — broken grid layout ── */}
         <div ref={barnRef} className="px-5 mt-3" style={{ scrollMarginTop: '8px' }}>
-          <AudienceLabel label="Barn" delay={0.08} />
+          <AudienceLabel label="Barn" subtitle="Samtalskort som hjälper er att nå det barnet inte säger själv" delay={0.08} />
           <motion.div
             variants={containerVariants}
             initial="hidden"
