@@ -164,6 +164,8 @@ const fileCache = new Map<string, string>();
 
 /** Normalize Unicode + lowercase for matching */
 const norm = (s: string) => s.normalize('NFC').toLowerCase();
+/** Strip spaces for fuzzy filename matching */
+const stripSpaces = (s: string) => s.replace(/\s+/g, '');
 
 async function getZipInstance(source: ZipSource): Promise<JSZip> {
   if (zipInstances[source]) return zipInstances[source]!;
