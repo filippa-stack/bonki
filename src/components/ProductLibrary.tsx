@@ -254,6 +254,15 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
 export default function ProductLibrary() {
   const navigate = useNavigate();
   const tracked = useRef(false);
+  const [activeTab, setActiveTab] = useState<'barn' | 'par'>('barn');
+  const barnRef = useRef<HTMLDivElement>(null);
+  const parRef = useRef<HTMLDivElement>(null);
+
+  const scrollTo = (tab: 'barn' | 'par') => {
+    setActiveTab(tab);
+    const ref = tab === 'barn' ? barnRef : parRef;
+    ref.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
 
   useEffect(() => {
     if (!tracked.current) {
