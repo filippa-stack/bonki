@@ -600,7 +600,7 @@ export default function ProductLibrary() {
                     whiteSpace: 'nowrap',
                   }}
                 >
-                  9 ämnen · 395 kr · Första gratis
+                  184 frågor & övningar · 395 kr · Första gratis
                 </span>
               )}
             </motion.div>
