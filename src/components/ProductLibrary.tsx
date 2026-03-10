@@ -407,7 +407,7 @@ export default function ProductLibrary() {
           animate="visible"
         >
           <AudienceLabel label="Ni två" delay={0.20} />
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px', paddingBottom: '32px' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', paddingBottom: '32px' }}>
             <motion.div
               variants={tileVariants}
               whileHover={{ scale: 1.02, y: -2 }}
@@ -416,7 +416,7 @@ export default function ProductLibrary() {
               className="cursor-pointer"
               style={{
                 borderRadius: '16px',
-                padding: '24px 16px 16px',
+                padding: '24px 20px 16px',
                 background: 'linear-gradient(135deg, #35564A 0%, #243E34 100%)',
                 textAlign: 'center',
                 position: 'relative',
@@ -432,14 +432,14 @@ export default function ProductLibrary() {
             >
               <h2 style={{
                 fontFamily: "'DM Serif Display', serif",
-                fontSize: '24px', fontWeight: 400,
+                fontSize: '26px', fontWeight: 400,
                 color: '#FAF3E8', letterSpacing: '0.01em', zIndex: 1,
               }}>
                 Still Us
               </h2>
               <p style={{
                 fontFamily: "'Lato', sans-serif",
-                fontSize: '11px', color: 'var(--accent-saffron)',
+                fontSize: '13px', color: 'var(--accent-saffron)',
                 marginTop: '4px', zIndex: 1,
               }}>
                 För samtalen som aldrig blir av
@@ -450,7 +450,7 @@ export default function ProductLibrary() {
               variants={tileVariants}
               style={{
                 borderRadius: '16px',
-                padding: '24px 16px 16px',
+                padding: '24px 20px 16px',
                 background: 'linear-gradient(135deg, #7A4A6B 0%, #5C3650 100%)',
                 textAlign: 'center',
                 position: 'relative',
@@ -467,14 +467,14 @@ export default function ProductLibrary() {
             >
               <h3 style={{
                 fontFamily: "'DM Serif Display', serif",
-                fontSize: '24px', fontWeight: 400,
+                fontSize: '26px', fontWeight: 400,
                 color: '#FAF3E8', letterSpacing: '0.01em', zIndex: 1,
               }}>
                 Still Fair
               </h3>
               <p style={{
                 fontFamily: "'Lato', sans-serif",
-                fontSize: '11px', color: '#E8C4D4',
+                fontSize: '13px', color: '#E8C4D4',
                 lineHeight: 1.4, marginTop: '4px', zIndex: 1,
               }}>
                 För allt som görs men aldrig syns
