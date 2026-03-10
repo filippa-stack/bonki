@@ -302,9 +302,9 @@ export default function ProductLibrary() {
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.3, duration: 0.8 }}
             style={{
-              width: '160px',
-              height: '190px',
-              margin: '4px auto 8px',
+              width: '220px',
+              height: '260px',
+              margin: '0 auto 4px',
               backgroundImage: `url(${watermarkMamma})`,
               backgroundSize: 'contain',
               backgroundRepeat: 'no-repeat',
