@@ -27,8 +27,42 @@ export default function MobileOnlyGate({ children }: { children: ReactNode }) {
     });
   };
 
-  if (isDesktopAllowed || isAdmin || isDemoMode()) {
+  if (isDesktopAllowed || isAdmin) {
     return <>{children}</>;
+  }
+
+  // Demo mode on desktop: wrap in a phone-sized frame
+  if (isDemoMode()) {
+    return (
+      <>
+        {/* Desktop: phone simulator */}
+        <div className="hidden lg:flex min-h-screen items-center justify-center" style={{ backgroundColor: '#1a1a1a' }}>
+          <div className="flex flex-col items-center gap-4">
+            <span style={{ fontFamily: 'var(--font-sans)', fontSize: '13px', color: '#888', letterSpacing: '0.05em', textTransform: 'uppercase' }}>
+              Demo – mobilvy
+            </span>
+            <div
+              style={{
+                width: 390,
+                height: 844,
+                borderRadius: 40,
+                overflow: 'hidden',
+                boxShadow: '0 0 0 8px #333, 0 20px 60px rgba(0,0,0,0.5)',
+                position: 'relative',
+              }}
+            >
+              <div style={{ width: '100%', height: '100%', overflowY: 'auto' }}>
+                {children}
+              </div>
+            </div>
+          </div>
+        </div>
+        {/* Mobile: render normally */}
+        <div className="lg:hidden contents">
+          {children}
+        </div>
+      </>
+    );
   }
 
   return (
