@@ -556,13 +556,13 @@ export default function ProductLibrary() {
               <div
                 style={{
                   position: 'absolute',
-                  top: 0, right: 0, bottom: 0,
-                  width: '50%',
+                  top: '-10%', right: '-5%', bottom: '-10%',
+                  width: '55%',
                   backgroundImage: `url(${illustrationStillUs})`,
                   backgroundSize: 'contain',
                   backgroundRepeat: 'no-repeat',
-                  backgroundPosition: 'right center',
-                  opacity: 0.18,
+                  backgroundPosition: 'center center',
+                  opacity: 0.20,
                   pointerEvents: 'none',
                   zIndex: 0,
                 }}
