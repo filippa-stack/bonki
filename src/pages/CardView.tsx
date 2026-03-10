@@ -784,7 +784,13 @@ export default function CardView() {
           product={product}
           cardId={cardId}
           currentCardTitle={card?.title}
-          onAccessGranted={() => window.location.reload()}
+          onAccessGranted={() => {
+            if (isDemoMode()) {
+              setDemoBypassed(true);
+            } else {
+              window.location.reload();
+            }
+          }}
         />
       </div>
     );
