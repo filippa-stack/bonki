@@ -363,34 +363,6 @@ export default function ProductLibrary() {
               onClick={() => navigate(`/product/${jagIVarlden.slug}`)}
             />
             <PastelTile
-              name={sexualitet.name}
-              bg={PASTEL_COLORS[sexualitet.id]!}
-              tagline={TAGLINES[sexualitet.id]}
-              ageLabel={sexualitet.ageLabel}
-              accentColor={ACCENT_COLORS[sexualitet.id]}
-              taglineColor={TAGLINE_COLORS[sexualitet.id]}
-              illustration={ILLUSTRATIONS[sexualitet.id]}
-              illustrationOpacity={ILLUSTRATION_OPACITY[sexualitet.id]}
-              onClick={() => navigate(`/product/${sexualitet.slug}`)}
-              wide
-            />
-          </motion.div>
-        </div>
-
-        {/* ── Er Familj ── */}
-        <div className="px-5 mt-12">
-          <AudienceLabel label="Er familj" delay={0.12} />
-          <motion.div
-            variants={containerVariants}
-            initial="hidden"
-            animate="visible"
-            style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(2, 1fr)',
-              gap: '10px',
-            }}
-          >
-            <PastelTile
               name={vardag.name}
               bg={PASTEL_COLORS[vardag.id]!}
               tagline={TAGLINES[vardag.id]}
@@ -411,6 +383,18 @@ export default function ProductLibrary() {
               illustration={ILLUSTRATIONS[syskon.id]}
               illustrationOpacity={ILLUSTRATION_OPACITY[syskon.id]}
               onClick={() => navigate(`/product/${syskon.slug}`)}
+            />
+            <PastelTile
+              name={sexualitet.name}
+              bg={PASTEL_COLORS[sexualitet.id]!}
+              tagline={TAGLINES[sexualitet.id]}
+              ageLabel={sexualitet.ageLabel}
+              accentColor={ACCENT_COLORS[sexualitet.id]}
+              taglineColor={TAGLINE_COLORS[sexualitet.id]}
+              illustration={ILLUSTRATIONS[sexualitet.id]}
+              illustrationOpacity={ILLUSTRATION_OPACITY[sexualitet.id]}
+              onClick={() => navigate(`/product/${sexualitet.slug}`)}
+              wide
             />
           </motion.div>
         </div>
