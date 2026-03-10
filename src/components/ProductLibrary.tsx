@@ -64,8 +64,8 @@ const ACCENT_COLORS: Record<string, string> = {
   jag_med_andra: '#7A1BA8',
   jag_i_varlden: '#2D6B35',
   sexualitetskort: '#A04858',
-  vardagskort: '#0A5A80',
-  syskonkort: '#0F4E99',
+  vardagskort: '#0A4A6A',
+  syskonkort: '#0C3D7A',
 };
 
 const TAGLINE_COLORS: Record<string, string> = {
@@ -73,8 +73,8 @@ const TAGLINE_COLORS: Record<string, string> = {
   jag_med_andra: '#5E4058',
   jag_i_varlden: '#3A6B48',
   sexualitetskort: '#6B4858',
-  vardagskort: '#2A5858',
-  syskonkort: '#2A3E68',
+  vardagskort: '#1A4040',
+  syskonkort: '#1A2E50',
 };
 
 /* ── Animation ── */
