@@ -422,6 +422,7 @@ export default function ProductLibrary() {
               illustrationSize={ILLUSTRATION_SIZE[jagIMig.id]}
               illustrationPosition={ILLUSTRATION_POSITION[jagIMig.id]}
               onClick={() => navigate(`/product/${jagIMig.slug}`)}
+              showFreeBadge={!purchased.has(jagIMig.id)}
               wide
             />
             <PastelTile
