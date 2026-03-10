@@ -638,7 +638,7 @@ export default function ProductLibrary() {
                 style={{
                   position: 'absolute',
                   top: '5%', right: '2%', bottom: '5%',
-                  width: '45%',
+                  width: '40%',
                   backgroundImage: `url(${illustrationStillFair})`,
                   backgroundSize: 'contain',
                   backgroundRepeat: 'no-repeat',
