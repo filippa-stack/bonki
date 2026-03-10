@@ -597,9 +597,10 @@ export default function ProductLibrary() {
                     padding: '3px 10px',
                     borderRadius: '20px',
                     zIndex: 1,
+                    whiteSpace: 'nowrap',
                   }}
                 >
-                  Första kortet gratis
+                  9 ämnen · 395 kr · Första gratis
                 </span>
               )}
             </motion.div>
