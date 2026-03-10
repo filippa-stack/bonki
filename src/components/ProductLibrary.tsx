@@ -407,14 +407,14 @@ export default function ProductLibrary() {
           </p>
         </motion.div>
 
-        {/* Segment control */}
+        {/* Segment control with active state */}
         <motion.div
           initial={{ opacity: 0, y: 6 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.06, duration: 0.4 }}
           style={{
             display: 'flex',
-            margin: '16px auto 0',
+            margin: '16px auto 20px',
             width: 'fit-content',
             background: 'rgba(44, 36, 32, 0.04)',
             borderRadius: '10px',
@@ -423,35 +423,46 @@ export default function ProductLibrary() {
           }}
         >
           {[
-            { label: 'BARN', ref: barnRef },
-            { label: 'PAR', ref: parRef },
-          ].map(({ label, ref }) => (
+            { label: 'BARN', ref: barnRef, isDefault: true },
+            { label: 'PAR', ref: parRef, isDefault: false },
+          ].map(({ label, ref, isDefault }) => (
             <button
               key={label}
-              onClick={() => ref.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
+              onClick={() => {
+                ref.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                // Update active state visually
+                const parent = (document.getElementById('segment-control') as HTMLElement);
+                if (parent) {
+                  parent.querySelectorAll('button').forEach(btn => {
+                    btn.setAttribute('data-active', 'false');
+                  });
+                }
+                (document.querySelector(`[data-segment="${label}"]`) as HTMLElement)?.setAttribute('data-active', 'true');
+              }}
+              id="segment-control"
+              data-segment={label}
+              data-active={isDefault ? 'true' : 'false'}
               style={{
                 fontFamily: "'Lato', sans-serif",
                 fontSize: '9px',
                 fontWeight: 700,
                 letterSpacing: '0.12em',
                 color: 'var(--text-library)',
-                opacity: 0.6,
-                background: 'transparent',
+                background: isDefault ? 'rgba(255,255,255,0.7)' : 'transparent',
+                opacity: isDefault ? 1 : 0.5,
                 border: 'none',
                 borderRadius: '8px',
                 padding: '6px 20px',
                 cursor: 'pointer',
-                transition: 'all 150ms ease',
+                transition: 'all 200ms ease',
               }}
               onMouseDown={(e) => {
-                (e.currentTarget as HTMLButtonElement).style.background = 'rgba(255,255,255,0.7)';
-                (e.currentTarget as HTMLButtonElement).style.opacity = '1';
-              }}
-              onMouseUp={(e) => {
-                setTimeout(() => {
-                  (e.currentTarget as HTMLButtonElement).style.background = 'transparent';
-                  (e.currentTarget as HTMLButtonElement).style.opacity = '0.6';
-                }, 300);
+                const btn = e.currentTarget as HTMLButtonElement;
+                btn.style.background = 'rgba(255,255,255,0.7)';
+                btn.style.opacity = '1';
+                // Dim sibling
+                const sibling = btn.parentElement?.querySelector(`button:not([data-segment="${label}"])`) as HTMLElement;
+                if (sibling) { sibling.style.background = 'transparent'; sibling.style.opacity = '0.5'; }
               }}
             >
               {label}
@@ -460,8 +471,24 @@ export default function ProductLibrary() {
         </motion.div>
 
         {/* ── Barn — broken grid layout ── */}
-        <div ref={barnRef} className="px-5 mt-3" style={{ scrollMarginTop: '8px' }}>
-          <AudienceLabel label="Barn" subtitle="Samtalskort som hjälper er att nå det barnet inte säger själv" delay={0.08} />
+        <div ref={barnRef} className="px-5" style={{ scrollMarginTop: '8px' }}>
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.08, duration: 0.6 }}
+            style={{
+              fontFamily: "'DM Serif Display', serif",
+              fontSize: '14px',
+              fontWeight: 400,
+              color: 'var(--color-text-secondary)',
+              opacity: 0.55,
+              lineHeight: 1.5,
+              textAlign: 'center',
+              marginBottom: '16px',
+            }}
+          >
+            Samtalskort som hjälper er att nå det barnet inte säger själv
+          </motion.p>
           <motion.div
             variants={containerVariants}
             initial="hidden"
