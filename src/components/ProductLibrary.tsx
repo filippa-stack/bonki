@@ -360,15 +360,14 @@ export default function ProductLibrary() {
             style={{
               fontFamily: "'DM Serif Display', serif",
               fontStyle: 'italic',
-              fontSize: '12px',
+              fontSize: '14px',
               fontWeight: 400,
               color: 'var(--color-text-secondary)',
-              opacity: 0.5,
+              opacity: 0.55,
               lineHeight: 1.5,
-              marginBottom: '6px',
             }}
           >
-            Samtalsverktyg utvecklade av psykolog
+            Välj det samtal ni behöver just nu
           </p>
           <p
             style={{
