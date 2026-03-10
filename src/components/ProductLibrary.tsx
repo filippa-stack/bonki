@@ -564,6 +564,26 @@ export default function ProductLibrary() {
               }}>
                 För samtalen som aldrig blir av
               </p>
+              {!purchased.has('still_us') && (
+                <span
+                  style={{
+                    marginTop: '8px',
+                    fontFamily: "'Lato', sans-serif",
+                    fontSize: '9px',
+                    fontWeight: 600,
+                    letterSpacing: '0.08em',
+                    textTransform: 'uppercase',
+                    color: 'var(--accent-saffron)',
+                    opacity: 0.7,
+                    background: 'rgba(255, 255, 255, 0.08)',
+                    padding: '3px 10px',
+                    borderRadius: '20px',
+                    zIndex: 1,
+                  }}
+                >
+                  Första kortet gratis
+                </span>
+              )}
             </motion.div>
 
             <motion.div
