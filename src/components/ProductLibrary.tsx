@@ -304,8 +304,8 @@ export default function ProductLibrary() {
             style={{
               width: '220px',
               height: '260px',
-              margin: '0 auto 4px',
-              backgroundImage: `url(${bonkiLogo})`,
+              margin: '0 auto -6px',
+              backgroundImage: `url(${watermarkMamma})`,
               backgroundSize: 'contain',
               backgroundRepeat: 'no-repeat',
               backgroundPosition: 'center',
