@@ -199,7 +199,7 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
         alignItems: 'flex-start',
         justifyContent: 'flex-end',
         textAlign: 'left',
-        padding: wide ? '20px 20px' : '0 16px',
+        padding: wide ? '20px 20px 16px' : '0 16px',
         paddingTop: wide ? undefined : '36px',
         paddingBottom: wide ? undefined : '16px',
         position: 'relative',
