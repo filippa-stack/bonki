@@ -140,6 +140,7 @@ export default function CardView() {
   const card = cardId ? getCardById(cardId) : undefined;
   const category = card ? getCategoryById(card.categoryId) : undefined;
   const product = cardId ? getProductForCard(cardId) : undefined;
+  const isStillUsCard = !product && !!card; // Legacy Still Us cards aren't in allProducts
   const pronounMode: PronounMode = product?.pronounMode ?? 'ni';
   const uiText = useMemo(() => getUIText(pronounMode), [pronounMode]);
   const effectiveSteps = useMemo(() => getCardStepOrder(card), [card]);
@@ -147,10 +148,14 @@ export default function CardView() {
   const cardImageUrl = useCardImage(cardId);
 
   // ─── Paywall: check if user has access to this product ───
-  const isFreeCard = !!(product?.freeCardId && cardId === product.freeCardId);
-  const { hasAccess: hasProductAccess, loading: accessLoading } = useProductAccess(product?.id ?? '');
+  const stillUsFreeCardId = 'smallest-we';
+  const isFreeCard = isStillUsCard
+    ? cardId === stillUsFreeCardId
+    : !!(product?.freeCardId && cardId === product.freeCardId);
+  const paywallProductId = product?.id ?? (isStillUsCard ? 'still_us' : '');
+  const { hasAccess: hasProductAccess, loading: accessLoading } = useProductAccess(paywallProductId);
   const [demoBypassed, setDemoBypassed] = useState(false);
-  const needsPaywall = !isFreeCard && !hasProductAccess && !accessLoading && !!product && !devState && !demoBypassed;
+  const needsPaywall = !isFreeCard && !hasProductAccess && !accessLoading && (!!product || isStillUsCard) && !devState && !demoBypassed;
 
   // Apply product theme (background + accent colors)
   useProductTheme(
@@ -776,13 +781,30 @@ export default function CardView() {
   // ─────────────────────────────────────────────────────────────
   //  PAYWALL — non-free card without purchase
   // ─────────────────────────────────────────────────────────────
-  if (needsPaywall && product) {
-    const paywallBackTo = isFromArchive ? '/shared' : (category ? `/category/${category.id}` : `/product/${product.slug}`);
+  if (needsPaywall) {
+    // Build a synthetic ProductManifest for Still Us (legacy cards not in allProducts)
+    const effectiveProduct: import('@/types/product').ProductManifest = product ?? {
+      id: 'still_us',
+      name: 'Still Us',
+      slug: 'still-us',
+      tagline: 'De samtal som annars aldrig blir av',
+      description: 'Verktyg för att prata om det som är svårt — innan det blir för svårt.',
+      headerTitle: 'Still Us',
+      accentColor: 'hsl(158, 35%, 18%)',
+      accentColorMuted: 'hsl(158, 20%, 92%)',
+      secondaryAccent: 'hsl(38, 88%, 46%)',
+      backgroundColor: '#FFFDF8',
+      pronounMode: 'ni' as const,
+      freeCardId: stillUsFreeCardId,
+      categories: [],
+      cards: [],
+    };
+    const paywallBackTo = isFromArchive ? '/shared' : (category ? `/category/${category.id}` : `/product/${effectiveProduct.slug}`);
     return (
-      <div className="min-h-screen" style={{ backgroundColor: product.backgroundColor ?? 'var(--surface-base)' }}>
+      <div className="min-h-screen" style={{ backgroundColor: effectiveProduct.backgroundColor ?? 'var(--surface-base)' }}>
         <Header title={card.title} showBack backTo={paywallBackTo} />
         <ProductPaywall
-          product={product}
+          product={effectiveProduct}
           cardId={cardId}
           currentCardTitle={card?.title}
           onAccessGranted={() => {
