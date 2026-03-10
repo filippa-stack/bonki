@@ -560,7 +560,7 @@ export default function ProductLibrary() {
               </h2>
               <p style={{
                 fontFamily: "'Lato', sans-serif",
-                fontSize: '13px', color: 'var(--accent-saffron)',
+                fontSize: '13px', color: 'hsl(38, 60%, 42%)',
                 marginTop: '4px', zIndex: 1,
               }}>
                 Vi finns kvar
