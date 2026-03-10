@@ -28,6 +28,7 @@ import { useProductAccess } from '@/hooks/useProductAccess';
 import ProductPaywall from '@/components/ProductPaywall';
 import { getCompletionMessages, getUIText, type PronounMode } from '@/lib/pronouns';
 import { useCardImage } from '@/hooks/useCardImage';
+import { isDemoMode } from '@/lib/demoMode';
 import { useCardVisit } from '@/hooks/useCardVisit';
 import { useProductTheme } from '@/hooks/useProductTheme';
 
