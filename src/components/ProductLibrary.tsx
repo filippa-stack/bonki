@@ -704,7 +704,7 @@ export default function ProductLibrary() {
                   fontSize: '12px', color: '#8A5A74',
                   marginTop: '4px',
                 }}>
-                  Det vi inte ser
+                  Ett kartläggningsverktyg som gör det osynliga arbetet i familjelivet synligt för båda
                 </p>
                 <span
                   style={{
