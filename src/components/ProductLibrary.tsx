@@ -248,6 +248,28 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
             {tagline}
           </p>
         )}
+        {showFreeBadge && (
+          <span
+            style={{
+              display: 'inline-block',
+              marginTop: '8px',
+              fontFamily: "'Lato', sans-serif",
+              fontSize: '9px',
+              fontWeight: 600,
+              letterSpacing: '0.08em',
+              textTransform: 'uppercase',
+              color: accentColor || 'var(--text-library)',
+              opacity: 0.55,
+              background: 'rgba(255, 255, 255, 0.45)',
+              padding: '3px 10px',
+              borderRadius: '20px',
+              backdropFilter: 'blur(4px)',
+              WebkitBackdropFilter: 'blur(4px)',
+            }}
+          >
+            Första kortet gratis
+          </span>
+        )}
       </div>
     </motion.div>
   );
