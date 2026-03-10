@@ -786,7 +786,7 @@ export default function CardView() {
           cardId={cardId}
           currentCardTitle={card?.title}
           onAccessGranted={() => {
-            if (isDemoMode()) {
+            if (isDemoMode() || isDemoParam()) {
               setDemoBypassed(true);
             } else {
               window.location.reload();
