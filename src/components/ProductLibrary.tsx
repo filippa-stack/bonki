@@ -64,8 +64,8 @@ const ACCENT_COLORS: Record<string, string> = {
   jag_med_andra: '#7A1BA8',
   jag_i_varlden: '#2D6B35',
   sexualitetskort: '#A04858',
-  vardagskort: '#0A5A80',
-  syskonkort: '#0F4E99',
+  vardagskort: '#0A4A6A',
+  syskonkort: '#0C3D7A',
 };
 
 const TAGLINE_COLORS: Record<string, string> = {
