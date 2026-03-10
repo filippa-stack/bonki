@@ -296,23 +296,6 @@ export default function ProductLibrary() {
           >
             Bonki
           </h1>
-          {/* Hero illustration — subtle emotional anchor with breathing */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.3, duration: 0.8 }}
-            style={{
-              width: '220px',
-              height: '260px',
-              margin: '0 auto -6px',
-              backgroundImage: `url(${watermarkMamma})`,
-              backgroundSize: 'contain',
-              backgroundRepeat: 'no-repeat',
-              backgroundPosition: 'center',
-              opacity: 0.85,
-              animation: 'lobby-breathe 6s ease-in-out infinite',
-            }}
-          />
           <p
             style={{
               fontFamily: "'Lato', sans-serif",
