@@ -107,37 +107,46 @@ const tileVariants = {
   },
 };
 
-function AudienceLabel({ label, delay = 0 }: { label: string; delay?: number }) {
+function AudienceLabel({ label, subtitle, delay = 0 }: { label: string; subtitle?: string; delay?: number }) {
   return (
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ delay, duration: 0.6 }}
       style={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        gap: '14px',
+        textAlign: 'center',
         marginBottom: '16px',
         marginTop: '4px',
       }}
     >
-      <div style={{ width: '48px', height: '1px', background: '#A09890', opacity: 0.2 }} />
       <p
         style={{
           fontFamily: "'Lato', sans-serif",
           fontSize: '10px',
           fontWeight: 600,
           letterSpacing: '0.15em',
-          fontVariant: 'small-caps',
-          textTransform: 'lowercase',
+          textTransform: 'uppercase',
           color: '#A09890',
-          whiteSpace: 'nowrap',
+          marginBottom: subtitle ? '10px' : '0',
         }}
       >
         {label}
       </p>
-      <div style={{ width: '48px', height: '1px', background: '#A09890', opacity: 0.2 }} />
+      {subtitle && (
+        <p
+          style={{
+            fontFamily: "'DM Serif Display', serif",
+            fontStyle: 'italic',
+            fontSize: '14px',
+            fontWeight: 400,
+            color: 'var(--color-text-secondary)',
+            opacity: 0.55,
+            lineHeight: 1.5,
+          }}
+        >
+          {subtitle}
+        </p>
+      )}
     </motion.div>
   );
 }
