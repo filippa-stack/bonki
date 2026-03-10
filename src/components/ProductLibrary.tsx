@@ -534,9 +534,10 @@ export default function ProductLibrary() {
                 flexDirection: 'column',
                 alignItems: 'center',
                 justifyContent: 'flex-start',
-                border: '1px solid rgba(255, 255, 255, 0.06)',
-                boxShadow: '0px 4px 16px rgba(44, 36, 32, 0.18), 0px 2px 4px rgba(44, 36, 32, 0.10)',
-                opacity: 0.35,
+                border: '1px solid rgba(255, 255, 255, 0.04)',
+                boxShadow: '0px 2px 8px rgba(44, 36, 32, 0.08)',
+                opacity: 0.45,
+                filter: 'saturate(0.3) blur(0.5px)',
               }}
             >
               <h3 style={{
