@@ -269,7 +269,7 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
               whiteSpace: 'nowrap',
             }}
           >
-            Första kortet gratis
+            {badgeText}
           </span>
         )}
       </div>
