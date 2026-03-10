@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { BEAT_1, BEAT_2 } from '@/lib/motion';
 import { useTranslation } from 'react-i18next';
@@ -6,7 +7,8 @@ import { Button } from '@/components/ui/button';
 import { lovable } from '@/integrations/lovable/index';
 import { supabase } from '@/integrations/supabase/client';
 import { useSiteSettings } from '@/contexts/SiteSettingsContext';
-import { Loader2, Mail, ArrowLeft, CheckCircle } from 'lucide-react';
+import { Loader2, Mail, ArrowLeft, CheckCircle, Eye } from 'lucide-react';
+import { isDemoParam, enterDemoMode } from '@/lib/demoMode';
 
 import TermsConsent from '@/components/TermsConsent';
 import { TERMS_VERSION, PRIVACY_VERSION } from '@/lib/legal';
@@ -14,6 +16,7 @@ import type { Json } from '@/integrations/supabase/types';
 
 export default function Login() {
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [termsAccepted, setTermsAccepted] = useState(false);
@@ -259,7 +262,22 @@ export default function Login() {
                 >
                   <Mail className="w-5 h-5" />
                   {t('login.continue_with_email')}
-                </button>
+               </button>
+               {isDemoParam() && (
+                 <button
+                   onClick={() => { enterDemoMode(); navigate('/', { replace: true }); }}
+                   className="w-full h-14 flex items-center justify-center gap-2 text-base font-medium rounded-xl"
+                   style={{
+                     color: 'var(--color-text-secondary)',
+                     border: '1px dashed rgba(0,0,0,0.15)',
+                     background: 'none',
+                     marginTop: '4px',
+                   }}
+                 >
+                   <Eye className="w-5 h-5" />
+                   Fortsätt utan konto (demo)
+                 </button>
+               )}
               </motion.div>
             )}
           </AnimatePresence>

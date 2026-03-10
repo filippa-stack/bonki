@@ -2,7 +2,7 @@ import { ReactNode, useState } from 'react';
 import { Check, Copy } from 'lucide-react';
 import { useLocation } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
-import { isDemoMode } from '@/lib/demoMode';
+import { isDemoMode, isDemoParam } from '@/lib/demoMode';
 
 const DESKTOP_ALLOWED_ROUTES = ['/analytics', '/login', '/flowcharts.html', '/kids-family-journey-flowchart.html', '/user-journey-flowchart.html', '/color-palette.html'];
 
@@ -31,8 +31,8 @@ export default function MobileOnlyGate({ children }: { children: ReactNode }) {
     return <>{children}</>;
   }
 
-  // Demo mode on desktop: wrap in a phone-sized frame
-  if (isDemoMode()) {
+  // Demo mode (param seen OR entered): show in phone frame on desktop
+  if (isDemoParam() || isDemoMode()) {
     return (
       <>
         {/* Desktop: phone simulator */}
