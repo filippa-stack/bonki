@@ -97,7 +97,7 @@ export default function IllustrationPeek({ imageUrl, cardTitle }: IllustrationPe
                 cursor: 'pointer',
               }}
             >
-              <X size={18} strokeWidth={1.5} color="hsla(0, 0%, 100%, 0.8)" />
+              <X size={18} strokeWidth={1.5} color="hsla(30, 20%, 20%, 0.7)" />
             </button>
 
             {/* Illustration */}
