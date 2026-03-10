@@ -12,6 +12,7 @@ import illustrationJagIVarlden from '@/assets/aktivism-jag-i-varlden.png';
 import illustrationSexualitet from '@/assets/illustration-sexualitet.png';
 import illustrationSyskon from '@/assets/illustration-syskon.png';
 import illustrationVardag from '@/assets/illustration-vardag.png';
+import illustrationStillFair from '@/assets/illustration-still-fair.png';
 
 const ILLUSTRATIONS: Record<string, string> = {
   jag_i_mig: illustrationJagIMig,
