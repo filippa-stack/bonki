@@ -17,8 +17,9 @@ export default function MobileOnlyGate({ children }: { children: ReactNode }) {
   const location = useLocation();
   const { user } = useAuth();
 
-  const isDesktopAllowed = DESKTOP_ALLOWED_ROUTES.some(r => location.pathname.startsWith(r));
-  const isAdmin = user && ADMIN_USER_IDS.includes(user.id);
+  const demoActive = isDemoParam() || isDemoMode();
+  const isDesktopAllowed = !demoActive && DESKTOP_ALLOWED_ROUTES.some(r => location.pathname.startsWith(r));
+  const isAdmin = !demoActive && user && ADMIN_USER_IDS.includes(user.id);
 
   const handleCopy = () => {
     navigator.clipboard.writeText(window.location.href).then(() => {
