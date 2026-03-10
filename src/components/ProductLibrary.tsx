@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { allProducts } from '@/data/products';
-import watermarkMamma from '@/assets/watermark-mamma.png';
+import bonkiLogo from '@/assets/bonki-logo.png';
 
 import illustrationStillUs from '@/assets/illustration-still-us.png';
 import illustrationJagIMig from '@/assets/mirror-jag-i-mig.png';
