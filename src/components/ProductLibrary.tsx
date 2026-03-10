@@ -47,11 +47,11 @@ const PASTEL_COLORS: Record<string, string> = {
 /** Raised illustration opacities — illustrations are a feature, not a ghost */
 const ILLUSTRATION_OPACITY: Record<string, number> = {
   jag_i_mig: 0.22,
-  jag_med_andra: 0.28,
-  jag_i_varlden: 0.25,
+  jag_med_andra: 0.20,
+  jag_i_varlden: 0.18,
   sexualitetskort: 0.25,
-  vardagskort: 0.25,
-  syskonkort: 0.25,
+  vardagskort: 0.18,
+  syskonkort: 0.20,
 };
 
 const ILLUSTRATION_SIZE: Record<string, string> = {
@@ -407,14 +407,14 @@ export default function ProductLibrary() {
           </p>
         </motion.div>
 
-        {/* Segment control */}
+        {/* Segment control with active state */}
         <motion.div
           initial={{ opacity: 0, y: 6 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.06, duration: 0.4 }}
           style={{
             display: 'flex',
-            margin: '16px auto 0',
+            margin: '16px auto 20px',
             width: 'fit-content',
             background: 'rgba(44, 36, 32, 0.04)',
             borderRadius: '10px',
@@ -423,35 +423,46 @@ export default function ProductLibrary() {
           }}
         >
           {[
-            { label: 'BARN', ref: barnRef },
-            { label: 'PAR', ref: parRef },
-          ].map(({ label, ref }) => (
+            { label: 'BARN', ref: barnRef, isDefault: true },
+            { label: 'PAR', ref: parRef, isDefault: false },
+          ].map(({ label, ref, isDefault }) => (
             <button
               key={label}
-              onClick={() => ref.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
+              onClick={() => {
+                ref.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                // Update active state visually
+                const parent = (document.getElementById('segment-control') as HTMLElement);
+                if (parent) {
+                  parent.querySelectorAll('button').forEach(btn => {
+                    btn.setAttribute('data-active', 'false');
+                  });
+                }
+                (document.querySelector(`[data-segment="${label}"]`) as HTMLElement)?.setAttribute('data-active', 'true');
+              }}
+              id="segment-control"
+              data-segment={label}
+              data-active={isDefault ? 'true' : 'false'}
               style={{
                 fontFamily: "'Lato', sans-serif",
                 fontSize: '9px',
                 fontWeight: 700,
                 letterSpacing: '0.12em',
                 color: 'var(--text-library)',
-                opacity: 0.6,
-                background: 'transparent',
+                background: isDefault ? 'rgba(255,255,255,0.7)' : 'transparent',
+                opacity: isDefault ? 1 : 0.5,
                 border: 'none',
                 borderRadius: '8px',
                 padding: '6px 20px',
                 cursor: 'pointer',
-                transition: 'all 150ms ease',
+                transition: 'all 200ms ease',
               }}
               onMouseDown={(e) => {
-                (e.currentTarget as HTMLButtonElement).style.background = 'rgba(255,255,255,0.7)';
-                (e.currentTarget as HTMLButtonElement).style.opacity = '1';
-              }}
-              onMouseUp={(e) => {
-                setTimeout(() => {
-                  (e.currentTarget as HTMLButtonElement).style.background = 'transparent';
-                  (e.currentTarget as HTMLButtonElement).style.opacity = '0.6';
-                }, 300);
+                const btn = e.currentTarget as HTMLButtonElement;
+                btn.style.background = 'rgba(255,255,255,0.7)';
+                btn.style.opacity = '1';
+                // Dim sibling
+                const sibling = btn.parentElement?.querySelector(`button:not([data-segment="${label}"])`) as HTMLElement;
+                if (sibling) { sibling.style.background = 'transparent'; sibling.style.opacity = '0.5'; }
               }}
             >
               {label}
@@ -460,8 +471,24 @@ export default function ProductLibrary() {
         </motion.div>
 
         {/* ── Barn — broken grid layout ── */}
-        <div ref={barnRef} className="px-5 mt-3" style={{ scrollMarginTop: '8px' }}>
-          <AudienceLabel label="Barn" subtitle="Samtalskort som hjälper er att nå det barnet inte säger själv" delay={0.08} />
+        <div ref={barnRef} className="px-5" style={{ scrollMarginTop: '8px' }}>
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.08, duration: 0.6 }}
+            style={{
+              fontFamily: "'DM Serif Display', serif",
+              fontSize: '14px',
+              fontWeight: 400,
+              color: 'var(--color-text-secondary)',
+              opacity: 0.55,
+              lineHeight: 1.5,
+              textAlign: 'center',
+              marginBottom: '16px',
+            }}
+          >
+            Samtalskort som hjälper er att nå det barnet inte säger själv
+          </motion.p>
           <motion.div
             variants={containerVariants}
             initial="hidden"
@@ -558,71 +585,14 @@ export default function ProductLibrary() {
           </motion.div>
         </div>
 
-        {/* Diary callout — editorial whisper */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.35, duration: 0.6 }}
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '10px',
-            margin: '20px 28px 0',
-            padding: '14px 18px',
-            borderRadius: '12px',
-            backgroundColor: 'rgba(44, 36, 32, 0.025)',
-          }}
-        >
-          <div
-            style={{
-              width: '32px',
-              height: '32px',
-              borderRadius: '8px',
-              backgroundColor: 'rgba(44, 36, 32, 0.05)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              flexShrink: 0,
-              fontSize: '14px',
-              color: 'var(--text-library)',
-              opacity: 0.5,
-            }}
-          >
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20" />
-            </svg>
-          </div>
-          <div>
-            <p style={{
-              fontFamily: "'DM Serif Display', serif",
-              fontSize: '13px',
-              fontWeight: 400,
-              color: 'var(--text-library)',
-              lineHeight: 1.3,
-            }}>
-              Dagbok för varje barn
-            </p>
-            <p style={{
-              fontFamily: "'Lato', sans-serif",
-              fontSize: '10px',
-              fontWeight: 400,
-              color: 'var(--color-text-secondary)',
-              opacity: 0.6,
-              marginTop: '2px',
-              lineHeight: 1.4,
-            }}>
-              Spara varje samtal. Bygg ett minnesbibliotek.
-            </p>
-          </div>
-        </motion.div>
-        {/* Bridge phrase */}
+        {/* Bridge phrase — condensed with diary integrated */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.4, duration: 0.6 }}
           style={{
             textAlign: 'center',
-            padding: '36px 28px 28px',
+            padding: '28px 28px 24px',
             margin: '24px 20px 0',
             borderRadius: '14px',
             backgroundColor: 'rgba(44, 36, 32, 0.025)',
@@ -635,26 +605,10 @@ export default function ProductLibrary() {
               fontWeight: 400,
               color: 'var(--text-library)',
               lineHeight: 1.5,
-              marginBottom: '14px',
+              marginBottom: '8px',
             }}
           >
-            Barnens trygghet börjar med
-            <br />
-            deras vuxna
-          </p>
-          <p
-            style={{
-              fontFamily: "'DM Serif Display', serif",
-              fontStyle: 'italic',
-              fontSize: '13px',
-              fontWeight: 400,
-              color: 'var(--color-text-secondary)',
-              opacity: 0.6,
-              lineHeight: 1.6,
-              marginBottom: '6px',
-            }}
-          >
-            Så vi byggde verktyg för samtalen ni inte hinner ha med varandra.
+            Barnens trygghet börjar med deras vuxna
           </p>
           <p
             style={{
@@ -669,6 +623,32 @@ export default function ProductLibrary() {
           >
             Samma psykologi. Samma precision. Nu för er.
           </p>
+          {/* Diary whisper — integrated */}
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '6px',
+              marginTop: '16px',
+              paddingTop: '14px',
+              borderTop: '1px solid rgba(44, 36, 32, 0.06)',
+            }}
+          >
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" style={{ opacity: 0.35, color: 'var(--text-library)' }}>
+              <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20" />
+            </svg>
+            <p style={{
+              fontFamily: "'Lato', sans-serif",
+              fontSize: '10px',
+              fontWeight: 400,
+              color: 'var(--color-text-secondary)',
+              opacity: 0.5,
+              lineHeight: 1.4,
+            }}>
+              Dagbok för varje barn — spara varje samtal, bygg ett minnesbibliotek
+            </p>
+          </div>
         </motion.div>
 
         {/* ── Par ── */}
@@ -680,7 +660,7 @@ export default function ProductLibrary() {
           initial="hidden"
           animate="visible"
         >
-          <AudienceLabel label="Par" delay={0.20} />
+          
           <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', paddingBottom: '32px' }}>
             <motion.div
               variants={tileVariants}
@@ -811,14 +791,6 @@ export default function ProductLibrary() {
                 }}>
                   Still Fair
                 </h3>
-                <p style={{
-                  fontFamily: "'Lato', sans-serif",
-                  fontSize: '11px', color: '#8A5A74',
-                  marginTop: '4px',
-                  lineHeight: 1.4,
-                }}>
-                  Det vi inte ser
-                </p>
                 <p style={{
                   fontFamily: "'Lato', sans-serif",
                   fontSize: '11px', color: '#8A5A74',
