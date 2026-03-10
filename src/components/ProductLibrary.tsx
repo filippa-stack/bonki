@@ -637,13 +637,13 @@ export default function ProductLibrary() {
               <div
                 style={{
                   position: 'absolute',
-                  top: 0, right: 0, bottom: 0,
-                  width: '50%',
+                  top: '5%', right: '2%', bottom: '5%',
+                  width: '45%',
                   backgroundImage: `url(${illustrationStillFair})`,
                   backgroundSize: 'contain',
                   backgroundRepeat: 'no-repeat',
                   backgroundPosition: 'right center',
-                  opacity: 0.18,
+                  opacity: 0.22,
                   pointerEvents: 'none',
                   zIndex: 0,
                 }}
