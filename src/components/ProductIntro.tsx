@@ -41,6 +41,7 @@ export default function ProductIntro({ productId, accentColor, backgroundColor, 
   const introData = productIntros[productId];
   const [currentSlide, setCurrentSlide] = useState(0);
   const noIntro = !introData;
+  const freeCardImageUrl = useCardImage(freeCardId);
 
   // Resolve free card title from product data if not passed as prop
   const resolvedFreeCardTitle = useMemo(() => {
