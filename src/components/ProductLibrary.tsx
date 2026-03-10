@@ -554,7 +554,7 @@ export default function ProductLibrary() {
               <h2 style={{
                 fontFamily: "'DM Serif Display', serif",
                 fontSize: '26px', fontWeight: 400,
-                color: '#FAF3E8', letterSpacing: '0.01em', zIndex: 1,
+                color: 'hsl(158, 35%, 22%)', letterSpacing: '0.01em', zIndex: 1,
               }}>
                 Still Us
               </h2>
