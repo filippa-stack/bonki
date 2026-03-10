@@ -78,7 +78,18 @@ const TAGLINE_COLORS: Record<string, string> = {
   syskonkort: '#1A2E50',
 };
 
-/* ── Animation ── */
+/** Build badge text: "X ämnen · Y kr · Första gratis" */
+function buildBadgeText(product: { cards: unknown[]; id: string }): string {
+  const count = product.cards.length;
+  const prices: Record<string, number> = {
+    jag_i_mig: 195, jag_med_andra: 195, jag_i_varlden: 195,
+    vardagskort: 195, syskonkort: 195, sexualitetskort: 195,
+  };
+  const price = prices[product.id] ?? 195;
+  return `${count} ämnen · ${price} kr · Första gratis`;
+}
+
+
 const containerVariants = {
   hidden: {},
   visible: {
@@ -146,11 +157,11 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
   onClick?: () => void; illustration?: string;
   accentColor?: string; taglineColor?: string; illustrationOpacity?: number;
   illustrationSize?: string; illustrationPosition?: string; wide?: boolean;
-  showFreeBadge?: boolean;
+  showFreeBadge?: boolean; badgeText?: string;
 }>(function PastelTile({
   name, bg, ageLabel, tagline, onClick, illustration, accentColor, taglineColor,
   illustrationOpacity = 0.25, illustrationSize = 'contain', illustrationPosition = 'right center', wide = false,
-  showFreeBadge = false,
+  showFreeBadge = false, badgeText = 'Första kortet gratis',
 }, ref) {
   const darkenHex = (hex: string) => {
     const r = parseInt(hex.slice(1, 3), 16);
@@ -269,7 +280,7 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
               whiteSpace: 'nowrap',
             }}
           >
-            Första kortet gratis
+            {badgeText}
           </span>
         )}
       </div>
@@ -424,6 +435,7 @@ export default function ProductLibrary() {
               illustrationPosition={ILLUSTRATION_POSITION[jagIMig.id]}
               onClick={() => navigate(`/product/${jagIMig.slug}`)}
               showFreeBadge={!purchased.has(jagIMig.id)}
+              badgeText={buildBadgeText(jagIMig)}
               wide
             />
             <PastelTile
@@ -438,6 +450,7 @@ export default function ProductLibrary() {
               illustrationSize={ILLUSTRATION_SIZE[jagMedAndra.id]}
               onClick={() => navigate(`/product/${jagMedAndra.slug}`)}
               showFreeBadge={!purchased.has(jagMedAndra.id)}
+              badgeText={buildBadgeText(jagMedAndra)}
             />
             <PastelTile
               name={jagIVarlden.name}
@@ -450,6 +463,7 @@ export default function ProductLibrary() {
               illustrationOpacity={ILLUSTRATION_OPACITY[jagIVarlden.id]}
               onClick={() => navigate(`/product/${jagIVarlden.slug}`)}
               showFreeBadge={!purchased.has(jagIVarlden.id)}
+              badgeText={buildBadgeText(jagIVarlden)}
             />
             <PastelTile
               name={vardag.name}
@@ -462,6 +476,7 @@ export default function ProductLibrary() {
               illustrationOpacity={ILLUSTRATION_OPACITY[vardag.id]}
               onClick={() => navigate(`/product/${vardag.slug}`)}
               showFreeBadge={!purchased.has(vardag.id)}
+              badgeText={buildBadgeText(vardag)}
             />
             <PastelTile
               name={syskon.name}
@@ -474,6 +489,7 @@ export default function ProductLibrary() {
               illustrationOpacity={ILLUSTRATION_OPACITY[syskon.id]}
               onClick={() => navigate(`/product/${syskon.slug}`)}
               showFreeBadge={!purchased.has(syskon.id)}
+              badgeText={buildBadgeText(syskon)}
             />
             <PastelTile
               name={sexualitet.name}
@@ -486,6 +502,7 @@ export default function ProductLibrary() {
               illustrationOpacity={ILLUSTRATION_OPACITY[sexualitet.id]}
               onClick={() => navigate(`/product/${sexualitet.slug}`)}
               showFreeBadge={!purchased.has(sexualitet.id)}
+              badgeText={buildBadgeText(sexualitet)}
               wide
             />
           </motion.div>
@@ -580,9 +597,10 @@ export default function ProductLibrary() {
                     padding: '3px 10px',
                     borderRadius: '20px',
                     zIndex: 1,
+                    whiteSpace: 'nowrap',
                   }}
                 >
-                  Första kortet gratis
+                  9 ämnen · 395 kr · Första gratis
                 </span>
               )}
             </motion.div>
@@ -641,7 +659,6 @@ export default function ProductLibrary() {
             </motion.div>
           </div>
         </motion.div>
-
 
 
 
