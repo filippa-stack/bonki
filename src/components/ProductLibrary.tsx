@@ -107,37 +107,46 @@ const tileVariants = {
   },
 };
 
-function AudienceLabel({ label, delay = 0 }: { label: string; delay?: number }) {
+function AudienceLabel({ label, subtitle, delay = 0 }: { label: string; subtitle?: string; delay?: number }) {
   return (
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ delay, duration: 0.6 }}
       style={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        gap: '14px',
+        textAlign: 'center',
         marginBottom: '16px',
         marginTop: '4px',
       }}
     >
-      <div style={{ width: '48px', height: '1px', background: '#A09890', opacity: 0.2 }} />
       <p
         style={{
           fontFamily: "'Lato', sans-serif",
           fontSize: '10px',
           fontWeight: 600,
           letterSpacing: '0.15em',
-          fontVariant: 'small-caps',
-          textTransform: 'lowercase',
+          textTransform: 'uppercase',
           color: '#A09890',
-          whiteSpace: 'nowrap',
+          marginBottom: subtitle ? '10px' : '0',
         }}
       >
         {label}
       </p>
-      <div style={{ width: '48px', height: '1px', background: '#A09890', opacity: 0.2 }} />
+      {subtitle && (
+        <p
+          style={{
+            fontFamily: "'DM Serif Display', serif",
+            fontStyle: 'italic',
+            fontSize: '14px',
+            fontWeight: 400,
+            color: 'var(--color-text-secondary)',
+            opacity: 0.55,
+            lineHeight: 1.5,
+          }}
+        >
+          {subtitle}
+        </p>
+      )}
     </motion.div>
   );
 }
@@ -203,12 +212,19 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
             position: 'absolute',
             top: '10px',
             right: '12px',
+            width: '32px',
+            height: '32px',
+            borderRadius: '50%',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
             fontFamily: "'Lato', sans-serif",
             fontSize: '10px',
             fontWeight: 700,
-            letterSpacing: '0.06em',
+            letterSpacing: '0.02em',
             color: accentColor || 'var(--text-library)',
-            opacity: 0.65,
+            opacity: 0.7,
+            background: 'rgba(255, 255, 255, 0.45)',
             zIndex: 2,
           }}
         >
@@ -344,26 +360,11 @@ export default function ProductLibrary() {
             style={{
               fontFamily: "'DM Serif Display', serif",
               fontStyle: 'italic',
-              fontSize: '12px',
+              fontSize: '14px',
               fontWeight: 400,
               color: 'var(--color-text-secondary)',
-              opacity: 0.5,
+              opacity: 0.55,
               lineHeight: 1.5,
-              marginBottom: '6px',
-            }}
-          >
-            Samtalsverktyg utvecklade av psykolog
-          </p>
-          <p
-            style={{
-              fontFamily: "'Lato', sans-serif",
-              fontSize: '12px',
-              fontWeight: 400,
-              color: 'var(--color-text-secondary)',
-              opacity: 0.6,
-              lineHeight: 1.5,
-              textTransform: 'uppercase',
-              letterSpacing: '0.12em',
             }}
           >
             Välj det samtal ni behöver just nu
@@ -408,7 +409,7 @@ export default function ProductLibrary() {
 
         {/* ── Barn — broken grid layout ── */}
         <div ref={barnRef} className="px-5 mt-3" style={{ scrollMarginTop: '8px' }}>
-          <AudienceLabel label="Barn" delay={0.08} />
+          <AudienceLabel label="Barn" subtitle="Samtalskort som hjälper er att nå det barnet inte säger själv" delay={0.08} />
           <motion.div
             variants={containerVariants}
             initial="hidden"
