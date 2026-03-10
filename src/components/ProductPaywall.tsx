@@ -334,7 +334,7 @@ export default function ProductPaywall({ product, onAccessGranted, cardId, curre
             Tillbaka till biblioteket
           </button>
 
-          {isDemoMode() && (
+          {(isDemoMode() || isDemoParam()) && (
             <button
               onClick={() => onAccessGranted?.()}
               className="font-sans"
