@@ -148,7 +148,8 @@ export default function CardView() {
   // ─── Paywall: check if user has access to this product ───
   const isFreeCard = !!(product?.freeCardId && cardId === product.freeCardId);
   const { hasAccess: hasProductAccess, loading: accessLoading } = useProductAccess(product?.id ?? '');
-  const needsPaywall = !isFreeCard && !hasProductAccess && !accessLoading && !!product && !devState;
+  const [demoBypassed, setDemoBypassed] = useState(false);
+  const needsPaywall = !isFreeCard && !hasProductAccess && !accessLoading && !!product && !devState && !demoBypassed;
 
   // Apply product theme (background + accent colors)
   useProductTheme(
