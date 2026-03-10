@@ -24,10 +24,10 @@ const ILLUSTRATIONS: Record<string, string> = {
 
 const TAGLINES: Record<string, string> = {
   jag_i_mig: 'Hjälp ditt barn hitta ord för det som känns',
-  jag_med_andra: 'När världen utanför börjar betyda allt',
+  jag_med_andra: 'När omvärlden växer',
   jag_i_varlden: 'De stora frågorna, på riktigt',
-  vardagskort: 'Bättre samtal runt middagsbordet',
-  syskonkort: 'Allt som finns mellan dem',
+  vardagskort: 'Samtal runt middagsbordet',
+  syskonkort: 'Det som finns mellan dem',
   sexualitetskort: 'Det svåra samtalet, utan att det behöver vara svårt',
 };
 
@@ -181,7 +181,7 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
       style={{
         borderRadius: '16px',
         background: `linear-gradient(180deg, ${bg} 0%, ${darkenHex(bg)} 100%)`,
-        minHeight: wide ? '140px' : '120px',
+        minHeight: wide ? '140px' : '150px',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'flex-start',
@@ -264,7 +264,7 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
           <span
             style={{
               display: 'inline-block',
-              marginTop: '8px',
+              marginTop: '4px',
               fontFamily: "'Lato', sans-serif",
               fontSize: '8px',
               fontWeight: 600,
