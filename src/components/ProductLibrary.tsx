@@ -575,7 +575,7 @@ export default function ProductLibrary() {
                 fontSize: '13px', color: 'var(--accent-saffron)',
                 marginTop: '4px', zIndex: 1,
               }}>
-                För samtalen som aldrig blir av
+                Vi finns kvar
               </p>
               {!purchased.has('still_us') && (
                 <span
@@ -632,7 +632,7 @@ export default function ProductLibrary() {
                 fontSize: '13px', color: '#E8C4D4',
                 lineHeight: 1.4, marginTop: '4px', zIndex: 1,
               }}>
-                För allt som görs men aldrig syns
+                Det vi inte ser
               </p>
               <span
                 style={{
