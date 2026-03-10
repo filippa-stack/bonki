@@ -422,7 +422,7 @@ export default function ProductLibrary() {
           >
             Barnens trygghet börjar med
             <br />
-            de vuxnas relation
+            deras vuxna
           </p>
         </motion.div>
 
