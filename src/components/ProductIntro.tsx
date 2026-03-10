@@ -123,14 +123,6 @@ export default function ProductIntro({ productId, accentColor, backgroundColor, 
               paddingBottom: '8px',
             }}
             drag="x"
-            dragConstraints={{ left: 0, right: 0 }}
-            dragElastic={0.15}
-            onDragEnd={handleDragEnd}
-          >
-            drag="x"
-            dragConstraints={{ left: 0, right: 0 }}
-            dragElastic={0.15}
-            onDragEnd={handleDragEnd}
           >
             {slide.kicker && (
               <motion.p
