@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { useCardImage } from '@/hooks/useCardImage';
-import { isDemoMode } from '@/lib/demoMode';
+import { isDemoMode, isDemoParam } from '@/lib/demoMode';
 import type { ProductManifest } from '@/types/product';
 
 const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
