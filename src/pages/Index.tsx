@@ -122,10 +122,8 @@ export default function Index() {
     return <Home />;
   }
 
-  // ── Demo mode: skip all gates, show library ──
-  if (isDemoMode()) {
-    return <ProductLibrary />;
-  }
+  // ── Demo mode: follow normal production flow (no gate skipping) ──
+  // Demo users see the same flow as real users: onboarding → library
 
   // ── Normal production flow ──
   if (!hasCompletedOnboarding) {
