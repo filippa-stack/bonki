@@ -407,6 +407,58 @@ export default function ProductLibrary() {
           </p>
         </motion.div>
 
+        {/* Segment control */}
+        <motion.div
+          initial={{ opacity: 0, y: 6 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.06, duration: 0.4 }}
+          style={{
+            display: 'flex',
+            margin: '16px auto 0',
+            width: 'fit-content',
+            background: 'rgba(44, 36, 32, 0.04)',
+            borderRadius: '10px',
+            padding: '3px',
+            gap: '2px',
+          }}
+        >
+          {[
+            { label: 'BARN', ref: barnRef },
+            { label: 'PAR', ref: parRef },
+          ].map(({ label, ref }) => (
+            <button
+              key={label}
+              onClick={() => ref.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
+              style={{
+                fontFamily: "'Lato', sans-serif",
+                fontSize: '9px',
+                fontWeight: 700,
+                letterSpacing: '0.12em',
+                color: 'var(--text-library)',
+                opacity: 0.6,
+                background: 'transparent',
+                border: 'none',
+                borderRadius: '8px',
+                padding: '6px 20px',
+                cursor: 'pointer',
+                transition: 'all 150ms ease',
+              }}
+              onMouseDown={(e) => {
+                (e.currentTarget as HTMLButtonElement).style.background = 'rgba(255,255,255,0.7)';
+                (e.currentTarget as HTMLButtonElement).style.opacity = '1';
+              }}
+              onMouseUp={(e) => {
+                setTimeout(() => {
+                  (e.currentTarget as HTMLButtonElement).style.background = 'transparent';
+                  (e.currentTarget as HTMLButtonElement).style.opacity = '0.6';
+                }, 300);
+              }}
+            >
+              {label}
+            </button>
+          ))}
+        </motion.div>
+
         {/* ── Barn — broken grid layout ── */}
         <div ref={barnRef} className="px-5 mt-3" style={{ scrollMarginTop: '8px' }}>
           <AudienceLabel label="Barn" subtitle="Samtalskort som hjälper er att nå det barnet inte säger själv" delay={0.08} />
