@@ -410,10 +410,6 @@ export default function ProductLibrary() {
           <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', paddingBottom: '32px' }}>
             <motion.div
               variants={tileVariants}
-              whileHover={{ scale: 1.02, y: -2 }}
-              whileTap={{ scale: 0.97 }}
-              onClick={() => navigate('/product/still-us')}
-              className="cursor-pointer"
               style={{
                 borderRadius: '16px',
                 padding: '24px 20px 16px',
@@ -428,6 +424,7 @@ export default function ProductLibrary() {
                 justifyContent: 'flex-start',
                 border: '1px solid rgba(255, 255, 255, 0.06)',
                 boxShadow: '0px 4px 16px rgba(44, 36, 32, 0.18), 0px 2px 4px rgba(44, 36, 32, 0.10)',
+                opacity: 0.55,
               }}
             >
               <h2 style={{
@@ -444,6 +441,23 @@ export default function ProductLibrary() {
               }}>
                 För samtalen som aldrig blir av
               </p>
+              <span
+                style={{
+                  marginTop: '10px',
+                  fontFamily: "'Lato', sans-serif",
+                  fontSize: '9px',
+                  fontWeight: 600,
+                  letterSpacing: '0.08em',
+                  textTransform: 'uppercase',
+                  color: '#C8D4C0',
+                  background: 'rgba(255, 255, 255, 0.08)',
+                  padding: '3px 10px',
+                  borderRadius: '20px',
+                  zIndex: 1,
+                }}
+              >
+                Kommer snart
+              </span>
             </motion.div>
 
             <motion.div
