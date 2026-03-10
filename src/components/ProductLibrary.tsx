@@ -356,14 +356,13 @@ export default function ProductLibrary() {
           </p>
           <p
             style={{
-              fontFamily: "'Lato', sans-serif",
-              fontSize: '12px',
+              fontFamily: "'DM Serif Display', serif",
+              fontStyle: 'italic',
+              fontSize: '14px',
               fontWeight: 400,
               color: 'var(--color-text-secondary)',
-              opacity: 0.6,
+              opacity: 0.55,
               lineHeight: 1.5,
-              textTransform: 'uppercase',
-              letterSpacing: '0.12em',
             }}
           >
             Välj det samtal ni behöver just nu
