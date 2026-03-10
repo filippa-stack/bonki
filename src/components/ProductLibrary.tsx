@@ -12,6 +12,7 @@ import illustrationJagIVarlden from '@/assets/aktivism-jag-i-varlden.png';
 import illustrationSexualitet from '@/assets/illustration-sexualitet.png';
 import illustrationSyskon from '@/assets/illustration-syskon.png';
 import illustrationVardag from '@/assets/illustration-vardag.png';
+import illustrationStillFair from '@/assets/illustration-still-fair.png';
 
 const ILLUSTRATIONS: Record<string, string> = {
   jag_i_mig: illustrationJagIMig,
@@ -632,6 +633,21 @@ export default function ProductLibrary() {
                 filter: 'saturate(0.3)',
               }}
             >
+              {/* Illustration */}
+              <div
+                style={{
+                  position: 'absolute',
+                  top: 0, right: 0, bottom: 0,
+                  width: '50%',
+                  backgroundImage: `url(${illustrationStillFair})`,
+                  backgroundSize: 'contain',
+                  backgroundRepeat: 'no-repeat',
+                  backgroundPosition: 'right center',
+                  opacity: 0.18,
+                  pointerEvents: 'none',
+                  zIndex: 0,
+                }}
+              />
               <div style={{ zIndex: 1 }}>
                 <h3 style={{
                   fontFamily: "'DM Serif Display', serif",
