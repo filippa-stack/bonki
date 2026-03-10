@@ -57,7 +57,7 @@ function ProtectedRoutes() {
     );
   }
 
-  if (!user) {
+  if (!user && !isDemoMode()) {
     return <Navigate to="/login" replace />;
   }
 

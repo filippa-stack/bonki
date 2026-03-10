@@ -27,7 +27,7 @@ export default function MobileOnlyGate({ children }: { children: ReactNode }) {
     });
   };
 
-  if (isDesktopAllowed || isAdmin) {
+  if (isDesktopAllowed || isAdmin || isDemoMode()) {
     return <>{children}</>;
   }
 

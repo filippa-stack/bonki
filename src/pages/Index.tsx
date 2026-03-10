@@ -122,6 +122,11 @@ export default function Index() {
     return <Home />;
   }
 
+  // ── Demo mode: skip all gates, show library ──
+  if (isDemoMode()) {
+    return <ProductLibrary />;
+  }
+
   // ── Normal production flow ──
   if (!hasCompletedOnboarding) {
     return <Onboarding />;
