@@ -611,13 +611,14 @@ export default function ProductLibrary() {
                 }}
               />
               <div style={{ zIndex: 1 }}>
-                <h2 style={{
+                <h3 style={{
                   fontFamily: "'DM Serif Display', serif",
                   fontSize: '26px', fontWeight: 400,
+                  lineHeight: 1.15,
                   color: '#2A5040', letterSpacing: '-0.01em',
                 }}>
                   Still Us
-                </h2>
+                </h3>
                 <p style={{
                   fontFamily: "'Lato', sans-serif",
                   fontSize: '12px', color: '#4A7A5E',
@@ -640,14 +641,14 @@ export default function ProductLibrary() {
                   <span
                     style={{
                       display: 'inline-block',
-                      marginTop: '6px',
+                      marginTop: '4px',
                       fontFamily: "'Lato', sans-serif",
-                      fontSize: '9px',
+                      fontSize: '8px',
                       fontWeight: 600,
                       letterSpacing: '0.06em',
                       textTransform: 'uppercase',
                       color: '#1E3D30',
-                      opacity: 0.7,
+                      opacity: 0.55,
                       lineHeight: 1.4,
                     }}
                   >
@@ -696,16 +697,25 @@ export default function ProductLibrary() {
                 <h3 style={{
                   fontFamily: "'DM Serif Display', serif",
                   fontSize: '26px', fontWeight: 400,
+                  lineHeight: 1.15,
                   color: '#6B3A58', letterSpacing: '-0.01em',
                 }}>
                   Still Fair
                 </h3>
                 <p style={{
                   fontFamily: "'Lato', sans-serif",
+                  fontSize: '12px', color: '#8A5A74',
+                  marginTop: '4px',
+                  lineHeight: 1.4,
+                }}>
+                  Det vi inte ser
+                </p>
+                <p style={{
+                  fontFamily: "'Lato', sans-serif",
                   fontSize: '11px', color: '#8A5A74',
                   marginTop: '4px',
                   lineHeight: 1.4,
-                  maxWidth: '65%',
+                  maxWidth: '55%',
                   opacity: 0.85,
                 }}>
                   Ett kartläggningsverktyg som gör det osynliga arbetet i familjelivet synligt för båda
