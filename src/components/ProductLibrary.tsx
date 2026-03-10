@@ -312,14 +312,209 @@ export default function ProductLibrary() {
           </p>
         </motion.div>
 
+        {/* ── Ert Barn — broken grid layout ── */}
+        <div className="px-5 mt-5">
+          <AudienceLabel label="Ert barn" delay={0.08} />
+          <motion.div
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(2, 1fr)',
+              gap: '10px',
+            }}
+          >
+            <PastelTile
+              name={jagIMig.name}
+              bg={PASTEL_COLORS[jagIMig.id]!}
+              tagline={TAGLINES[jagIMig.id]}
+              ageLabel={jagIMig.ageLabel}
+              accentColor={ACCENT_COLORS[jagIMig.id]}
+              taglineColor={TAGLINE_COLORS[jagIMig.id]}
+              illustration={ILLUSTRATIONS[jagIMig.id]}
+              illustrationOpacity={ILLUSTRATION_OPACITY[jagIMig.id]}
+              illustrationSize={ILLUSTRATION_SIZE[jagIMig.id]}
+              illustrationPosition={ILLUSTRATION_POSITION[jagIMig.id]}
+              onClick={() => navigate(`/product/${jagIMig.slug}`)}
+              wide
+            />
+            <PastelTile
+              name={jagMedAndra.name}
+              bg={PASTEL_COLORS[jagMedAndra.id]!}
+              tagline={TAGLINES[jagMedAndra.id]}
+              ageLabel={jagMedAndra.ageLabel}
+              accentColor={ACCENT_COLORS[jagMedAndra.id]}
+              taglineColor={TAGLINE_COLORS[jagMedAndra.id]}
+              illustration={ILLUSTRATIONS[jagMedAndra.id]}
+              illustrationOpacity={ILLUSTRATION_OPACITY[jagMedAndra.id]}
+              illustrationSize={ILLUSTRATION_SIZE[jagMedAndra.id]}
+              onClick={() => navigate(`/product/${jagMedAndra.slug}`)}
+            />
+            <PastelTile
+              name={jagIVarlden.name}
+              bg={PASTEL_COLORS[jagIVarlden.id]!}
+              tagline={TAGLINES[jagIVarlden.id]}
+              ageLabel={jagIVarlden.ageLabel}
+              accentColor={ACCENT_COLORS[jagIVarlden.id]}
+              taglineColor={TAGLINE_COLORS[jagIVarlden.id]}
+              illustration={ILLUSTRATIONS[jagIVarlden.id]}
+              illustrationOpacity={ILLUSTRATION_OPACITY[jagIVarlden.id]}
+              onClick={() => navigate(`/product/${jagIVarlden.slug}`)}
+            />
+            <PastelTile
+              name={sexualitet.name}
+              bg={PASTEL_COLORS[sexualitet.id]!}
+              tagline={TAGLINES[sexualitet.id]}
+              ageLabel={sexualitet.ageLabel}
+              accentColor={ACCENT_COLORS[sexualitet.id]}
+              taglineColor={TAGLINE_COLORS[sexualitet.id]}
+              illustration={ILLUSTRATIONS[sexualitet.id]}
+              illustrationOpacity={ILLUSTRATION_OPACITY[sexualitet.id]}
+              onClick={() => navigate(`/product/${sexualitet.slug}`)}
+              wide
+            />
+          </motion.div>
+        </div>
+
+        {/* ── Er Familj ── */}
+        <div className="px-5 mt-12">
+          <AudienceLabel label="Er familj" delay={0.12} />
+          <motion.div
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(2, 1fr)',
+              gap: '10px',
+            }}
+          >
+            <PastelTile
+              name={vardag.name}
+              bg={PASTEL_COLORS[vardag.id]!}
+              tagline={TAGLINES[vardag.id]}
+              ageLabel={vardag.ageLabel}
+              accentColor={ACCENT_COLORS[vardag.id]}
+              taglineColor={TAGLINE_COLORS[vardag.id]}
+              illustration={ILLUSTRATIONS[vardag.id]}
+              illustrationOpacity={ILLUSTRATION_OPACITY[vardag.id]}
+              onClick={() => navigate(`/product/${vardag.slug}`)}
+            />
+            <PastelTile
+              name={syskon.name}
+              bg={PASTEL_COLORS[syskon.id]!}
+              tagline={TAGLINES[syskon.id]}
+              ageLabel={syskon.ageLabel}
+              accentColor={ACCENT_COLORS[syskon.id]}
+              taglineColor={TAGLINE_COLORS[syskon.id]}
+              illustration={ILLUSTRATIONS[syskon.id]}
+              illustrationOpacity={ILLUSTRATION_OPACITY[syskon.id]}
+              onClick={() => navigate(`/product/${syskon.slug}`)}
+            />
+          </motion.div>
+        </div>
+
         {/* ── Ni Två ── */}
         <motion.div
-          className="px-5 mt-5"
+          className="px-5 mt-12"
           variants={containerVariants}
           initial="hidden"
           animate="visible"
         >
-          <AudienceLabel label="Ni två" delay={0.08} />
+          <AudienceLabel label="Ni två" delay={0.20} />
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px', paddingBottom: '32px' }}>
+            <motion.div
+              variants={tileVariants}
+              whileHover={{ scale: 1.02, y: -2 }}
+              whileTap={{ scale: 0.97 }}
+              onClick={() => navigate('/product/still-us')}
+              className="cursor-pointer"
+              style={{
+                borderRadius: '16px',
+                padding: '24px 16px 16px',
+                background: 'linear-gradient(135deg, #35564A 0%, #243E34 100%)',
+                textAlign: 'center',
+                position: 'relative',
+                overflow: 'hidden',
+                minHeight: '120px',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'flex-start',
+                border: '1px solid rgba(255, 255, 255, 0.06)',
+                boxShadow: '0px 4px 16px rgba(44, 36, 32, 0.18), 0px 2px 4px rgba(44, 36, 32, 0.10)',
+              }}
+            >
+              <h2 style={{
+                fontFamily: "'DM Serif Display', serif",
+                fontSize: '24px', fontWeight: 400,
+                color: '#FAF3E8', letterSpacing: '0.01em', zIndex: 1,
+              }}>
+                Still Us
+              </h2>
+              <p style={{
+                fontFamily: "'Lato', sans-serif",
+                fontSize: '11px', color: 'var(--accent-saffron)',
+                marginTop: '4px', zIndex: 1,
+              }}>
+                För samtalen som aldrig blir av
+              </p>
+            </motion.div>
+
+            <motion.div
+              variants={tileVariants}
+              style={{
+                borderRadius: '16px',
+                padding: '24px 16px 16px',
+                background: 'linear-gradient(135deg, #7A4A6B 0%, #5C3650 100%)',
+                textAlign: 'center',
+                position: 'relative',
+                overflow: 'hidden',
+                minHeight: '120px',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'flex-start',
+                border: '1px solid rgba(255, 255, 255, 0.06)',
+                boxShadow: '0px 4px 16px rgba(44, 36, 32, 0.18), 0px 2px 4px rgba(44, 36, 32, 0.10)',
+                opacity: 0.55,
+              }}
+            >
+              <h3 style={{
+                fontFamily: "'DM Serif Display', serif",
+                fontSize: '24px', fontWeight: 400,
+                color: '#FAF3E8', letterSpacing: '0.01em', zIndex: 1,
+              }}>
+                Still Fair
+              </h3>
+              <p style={{
+                fontFamily: "'Lato', sans-serif",
+                fontSize: '11px', color: '#E8C4D4',
+                lineHeight: 1.4, marginTop: '4px', zIndex: 1,
+              }}>
+                För allt som görs men aldrig syns
+              </p>
+              <span
+                style={{
+                  marginTop: '10px',
+                  fontFamily: "'Lato', sans-serif",
+                  fontSize: '9px',
+                  fontWeight: 600,
+                  letterSpacing: '0.08em',
+                  textTransform: 'uppercase',
+                  color: '#E8C4D4',
+                  background: 'rgba(255, 255, 255, 0.08)',
+                  padding: '3px 10px',
+                  borderRadius: '20px',
+                  zIndex: 1,
+                }}
+              >
+                Kommer snart
+              </span>
+            </motion.div>
+          </div>
+        </motion.div>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
             {/* Still Us */}
             <motion.div
