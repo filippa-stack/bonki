@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { allProducts } from '@/data/products';
-import bonkiLogo from '@/assets/bonki-logo.png';
+import watermarkMamma from '@/assets/watermark-mamma.png';
 
 import illustrationStillUs from '@/assets/illustration-still-us.png';
 import illustrationJagIMig from '@/assets/mirror-jag-i-mig.png';
@@ -304,8 +304,8 @@ export default function ProductLibrary() {
             style={{
               width: '220px',
               height: '260px',
-              margin: '0 auto 4px',
-              backgroundImage: `url(${bonkiLogo})`,
+              margin: '0 auto -6px',
+              backgroundImage: `url(${watermarkMamma})`,
               backgroundSize: 'contain',
               backgroundRepeat: 'no-repeat',
               backgroundPosition: 'center',
@@ -394,6 +394,7 @@ export default function ProductLibrary() {
                 justifyContent: 'flex-start',
                 border: '1px solid rgba(255, 255, 255, 0.06)',
                 boxShadow: '0px 4px 16px rgba(44, 36, 32, 0.18), 0px 2px 4px rgba(44, 36, 32, 0.10)',
+                opacity: 0.55,
               }}
             >
               <h3 style={{
@@ -544,7 +545,7 @@ export default function ProductLibrary() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.8, duration: 0.6 }}
-          style={{ textAlign: 'center', padding: '0 20px', paddingBottom: 'calc(40px + env(safe-area-inset-bottom, 0px))' }}
+          style={{ textAlign: 'center', padding: '0 20px', marginTop: '24px', paddingBottom: 'calc(40px + env(safe-area-inset-bottom, 0px))' }}
         >
           <div style={{ width: '32px', height: '1px', background: '#A09890', opacity: 0.2, margin: '0 auto 14px' }} />
           <p
