@@ -223,12 +223,12 @@ export default function ProductIntro({ productId, accentColor, backgroundColor, 
                     pointerEvents: 'none',
                   }}
                 />
-                {/* Mini card icon */}
+                {/* Mini card illustration */}
                 <div
                   style={{
-                    width: '36px',
-                    height: '44px',
-                    borderRadius: '6px',
+                    width: '44px',
+                    height: '52px',
+                    borderRadius: '8px',
                     background: `linear-gradient(145deg, ${accentColor ?? 'var(--accent-saffron)'}30, ${accentColor ?? 'var(--accent-saffron)'}15)`,
                     border: `1px solid ${accentColor ?? 'var(--accent-saffron)'}25`,
                     display: 'flex',
@@ -237,9 +237,17 @@ export default function ProductIntro({ productId, accentColor, backgroundColor, 
                     flexShrink: 0,
                     position: 'relative',
                     zIndex: 1,
+                    overflow: 'hidden',
                   }}
                 >
-                  {(() => {
+                  {freeCardImageUrl ? (
+                    <img
+                      src={freeCardImageUrl}
+                      alt=""
+                      style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                      draggable={false}
+                    />
+                  ) : (() => {
                     const IconComp = PRODUCT_SPOTLIGHT_ICON[productId];
                     return IconComp
                       ? <IconComp size={16} className="opacity-70" />
