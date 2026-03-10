@@ -1829,42 +1829,234 @@ export default function CardView() {
 }
 
 /* ─── Inline takeaway for completion screen ─── */
-const TAKEAWAY_AUTOSAVE = 800;
 
-function CompletionTakeaway({ sessionId, spaceId, pronounMode = 'ni' }: { sessionId: string | null; spaceId: string | null; pronounMode?: PronounMode }) {
+type TakeawayPhase = 'writing' | 'sealing' | 'sealed';
+
+function CompletionTakeaway({ sessionId, spaceId, pronounMode = 'ni', cardId, productId }: {
+  sessionId: string | null;
+  spaceId: string | null;
+  pronounMode?: PronounMode;
+  cardId?: string;
+  productId?: string;
+}) {
   const { user } = useAuth();
   const [text, setText] = useState('');
   const [rowId, setRowId] = useState<string | null>(null);
-  const [status, setStatus] = useState<'idle' | 'saving' | 'saved'>('idle');
+  const [phase, setPhase] = useState<TakeawayPhase>('writing');
   const [isFocused, setIsFocused] = useState(false);
-  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const userId = user?.id;
+  const isDemo = isDemoMode();
 
   const hasFill = text.trim().length > 0;
 
-  const handleChange = useCallback((value: string) => {
-    setText(value);
-    setStatus('saving');
-    if (timerRef.current) clearTimeout(timerRef.current);
-    timerRef.current = setTimeout(async () => {
-      if (!sessionId || !userId || !spaceId) return;
-      if (rowId) {
-        await supabase.from('couple_takeaways').update({ content: value } as any).eq('id', rowId);
-      } else if (value.trim()) {
-        const { data } = await supabase
-          .from('couple_takeaways')
-          .insert({ session_id: sessionId, couple_space_id: spaceId, content: value, created_by: userId } as any)
-          .select('id')
-          .single();
-        if (data) setRowId(data.id);
-      }
-      setStatus('saved');
-      setTimeout(() => setStatus('idle'), 1500);
-    }, TAKEAWAY_AUTOSAVE);
+  const persistToDb = useCallback(async (value: string) => {
+    if (!sessionId || !userId || !spaceId) return;
+    if (rowId) {
+      await supabase.from('couple_takeaways').update({ content: value } as any).eq('id', rowId);
+    } else if (value.trim()) {
+      const { data } = await supabase
+        .from('couple_takeaways')
+        .insert({ session_id: sessionId, couple_space_id: spaceId, content: value, created_by: userId } as any)
+        .select('id')
+        .single();
+      if (data) setRowId(data.id);
+    }
   }, [sessionId, userId, spaceId, rowId]);
 
-  useEffect(() => { return () => { if (timerRef.current) clearTimeout(timerRef.current); }; }, []);
+  const persistToLocal = useCallback((value: string) => {
+    if (!productId || !cardId) return;
+    try {
+      const key = `bonki-demo-diary-${productId}`;
+      const existing = JSON.parse(localStorage.getItem(key) || '[]');
+      // Upsert by cardId
+      const idx = existing.findIndex((e: any) => e.cardId === cardId);
+      const entry = {
+        cardId,
+        text: value,
+        date: new Date().toISOString(),
+        type: 'reflection',
+      };
+      if (idx >= 0) existing[idx] = entry;
+      else existing.unshift(entry);
+      localStorage.setItem(key, JSON.stringify(existing));
+    } catch {}
+  }, [productId, cardId]);
 
+  const handleSave = useCallback(async () => {
+    if (!hasFill) return;
+    setPhase('sealing');
+
+    // Persist
+    if (isDemo) {
+      persistToLocal(text);
+    } else {
+      await persistToDb(text);
+    }
+
+    // Let sealing animation play
+    setTimeout(() => setPhase('sealed'), 1200);
+  }, [text, hasFill, isDemo, persistToDb, persistToLocal]);
+
+  if (phase === 'sealed') {
+    return (
+      <motion.div
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          gap: '16px',
+        }}
+      >
+        {/* Sealed card */}
+        <motion.div
+          initial={{ y: 8 }}
+          animate={{ y: 0 }}
+          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+          style={{
+            width: '100%',
+            background: 'hsl(36 25% 97% / 0.90)',
+            borderRadius: '16px',
+            padding: '28px 24px 24px',
+            position: 'relative',
+            overflow: 'hidden',
+            boxShadow: '0 4px 20px hsla(30, 15%, 25%, 0.08), inset 0 1px 0 hsla(36, 50%, 90%, 0.5)',
+          }}
+        >
+          {/* Decorative seal line */}
+          <motion.div
+            initial={{ scaleX: 0 }}
+            animate={{ scaleX: 1 }}
+            transition={{ delay: 0.2, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+            style={{
+              position: 'absolute',
+              top: 0,
+              left: '15%',
+              right: '15%',
+              height: '2px',
+              background: 'linear-gradient(90deg, transparent, var(--accent-saffron), transparent)',
+              opacity: 0.4,
+              transformOrigin: 'center',
+            }}
+          />
+
+          <p
+            style={{
+              fontFamily: "'Lora', 'Georgia', serif",
+              fontStyle: 'italic',
+              fontSize: '16px',
+              lineHeight: 1.7,
+              color: 'var(--text-primary)',
+              whiteSpace: 'pre-wrap',
+              textAlign: 'left',
+            }}
+          >
+            {text}
+          </p>
+
+          {/* Bottom seal decoration */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.5 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.4, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              marginTop: '20px',
+            }}
+          >
+            <div style={{
+              width: '24px',
+              height: '2px',
+              borderRadius: '1px',
+              background: 'var(--accent-saffron)',
+              opacity: 0.3,
+            }} />
+          </motion.div>
+        </motion.div>
+
+        {/* Confirmation text */}
+        <motion.p
+          initial={{ opacity: 0, y: 6 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.5, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+          className="font-sans"
+          style={{
+            fontSize: '13px',
+            color: 'var(--accent-saffron)',
+            textAlign: 'center',
+            opacity: 0.7,
+          }}
+        >
+          Sparad i er dagbok ✦
+        </motion.p>
+      </motion.div>
+    );
+  }
+
+  if (phase === 'sealing') {
+    return (
+      <motion.div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          gap: '12px',
+          padding: '40px 0',
+        }}
+      >
+        {/* Folding animation */}
+        <motion.div
+          initial={{ opacity: 1, scaleY: 1, borderRadius: '12px' }}
+          animate={{
+            opacity: [1, 0.8, 0.6],
+            scaleY: [1, 0.7, 0.3],
+            borderRadius: '16px',
+          }}
+          transition={{ duration: 1.0, ease: [0.22, 1, 0.36, 1] }}
+          style={{
+            width: '100%',
+            background: 'hsl(36 20% 97% / 0.85)',
+            padding: '20px 24px',
+            transformOrigin: 'center top',
+            overflow: 'hidden',
+          }}
+        >
+          <p
+            style={{
+              fontFamily: "'Lora', 'Georgia', serif",
+              fontStyle: 'italic',
+              fontSize: '15px',
+              lineHeight: 1.6,
+              color: 'var(--text-primary)',
+              opacity: 0.6,
+            }}
+          >
+            {text}
+          </p>
+        </motion.div>
+
+        {/* Saffron glow pulse */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.2 }}
+          animate={{ opacity: [0, 0.5, 0], scale: [0.2, 1.5, 2] }}
+          transition={{ duration: 1.2, ease: 'easeOut' }}
+          style={{
+            position: 'absolute',
+            width: '120px',
+            height: '120px',
+            borderRadius: '50%',
+            background: 'radial-gradient(circle, var(--accent-saffron) 0%, transparent 70%)',
+            pointerEvents: 'none',
+          }}
+        />
+      </motion.div>
+    );
+  }
+
+  // Phase: writing
   return (
     <div className="completion-takeaway-wrapper">
       <p
@@ -1882,7 +2074,7 @@ function CompletionTakeaway({ sessionId, spaceId, pronounMode = 'ni' }: { sessio
       </p>
       <textarea
         value={text}
-        onChange={(e) => handleChange(e.target.value)}
+        onChange={(e) => setText(e.target.value)}
         onFocus={() => setIsFocused(true)}
         onBlur={() => setIsFocused(false)}
         placeholder={getUIText(pronounMode).takeawayPlaceholder}
@@ -1929,9 +2121,40 @@ function CompletionTakeaway({ sessionId, spaceId, pronounMode = 'ni' }: { sessio
           opacity: 0 !important;
         }
       `}</style>
-      <span style={{ display: 'block', textAlign: 'center', fontSize: '10px', color: 'var(--text-ghost)', marginTop: '4px' }}>
-        {status === 'saving' ? 'Sparar…' : status === 'saved' ? 'Sparad' : '\u00A0'}
-      </span>
+
+      {/* Ceremonial save button — appears when text is entered */}
+      <AnimatePresence>
+        {hasFill && (
+          <motion.div
+            initial={{ opacity: 0, y: 8, height: 0, marginTop: 0 }}
+            animate={{ opacity: 1, y: 0, height: 'auto', marginTop: 16 }}
+            exit={{ opacity: 0, y: -4, height: 0, marginTop: 0 }}
+            transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+            style={{ display: 'flex', justifyContent: 'center', overflow: 'hidden' }}
+          >
+            <motion.button
+              onClick={handleSave}
+              whileTap={{ scale: 0.97 }}
+              className="font-sans"
+              style={{
+                padding: '12px 32px',
+                borderRadius: '28px',
+                border: '1px solid hsla(38, 60%, 55%, 0.25)',
+                background: 'linear-gradient(135deg, hsla(36, 30%, 96%, 0.9), hsla(36, 25%, 93%, 0.95))',
+                color: 'var(--accent-saffron)',
+                fontSize: '14px',
+                fontWeight: 500,
+                letterSpacing: '0.02em',
+                cursor: 'pointer',
+                boxShadow: '0 2px 12px hsla(38, 60%, 46%, 0.12), 0 1px 3px hsla(30, 20%, 30%, 0.06)',
+                transition: 'box-shadow 300ms ease, transform 300ms ease',
+              }}
+            >
+              Spara i dagboken ✦
+            </motion.button>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
