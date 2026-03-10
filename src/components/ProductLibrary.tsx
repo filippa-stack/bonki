@@ -459,6 +459,7 @@ export default function ProductLibrary() {
               illustration={ILLUSTRATIONS[vardag.id]}
               illustrationOpacity={ILLUSTRATION_OPACITY[vardag.id]}
               onClick={() => navigate(`/product/${vardag.slug}`)}
+              showFreeBadge={!purchased.has(vardag.id)}
             />
             <PastelTile
               name={syskon.name}
