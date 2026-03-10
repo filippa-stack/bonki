@@ -435,6 +435,7 @@ export default function ProductLibrary() {
               illustrationPosition={ILLUSTRATION_POSITION[jagIMig.id]}
               onClick={() => navigate(`/product/${jagIMig.slug}`)}
               showFreeBadge={!purchased.has(jagIMig.id)}
+              badgeText={buildBadgeText(jagIMig)}
               wide
             />
             <PastelTile
