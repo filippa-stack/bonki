@@ -483,6 +483,7 @@ export default function ProductLibrary() {
               illustration={ILLUSTRATIONS[sexualitet.id]}
               illustrationOpacity={ILLUSTRATION_OPACITY[sexualitet.id]}
               onClick={() => navigate(`/product/${sexualitet.slug}`)}
+              showFreeBadge={!purchased.has(sexualitet.id)}
               wide
             />
           </motion.div>
