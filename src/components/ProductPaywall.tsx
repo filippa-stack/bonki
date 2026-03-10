@@ -333,6 +333,26 @@ export default function ProductPaywall({ product, onAccessGranted, cardId, curre
           >
             Tillbaka till biblioteket
           </button>
+
+          {isDemoMode() && (
+            <button
+              onClick={() => onAccessGranted?.()}
+              className="font-sans"
+              style={{
+                fontSize: '12px',
+                color: 'var(--accent-saffron)',
+                opacity: 0.7,
+                background: 'none',
+                border: '1px dashed var(--accent-saffron)',
+                borderRadius: '8px',
+                cursor: 'pointer',
+                padding: '8px 20px',
+                marginTop: '16px',
+              }}
+            >
+              Fortsätt utan att köpa (demo)
+            </button>
+          )}
         </motion.div>
       </div>
     </div>
