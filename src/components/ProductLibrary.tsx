@@ -400,27 +400,35 @@ export default function ProductLibrary() {
         </div>
 
         {/* Bridge phrase */}
-        <motion.p
+        <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.4, duration: 0.6 }}
           style={{
-            fontFamily: "'DM Serif Display', serif",
-            fontStyle: 'italic',
-            fontSize: '13px',
-            color: 'var(--accent-text)',
-            opacity: 0.45,
             textAlign: 'center',
-            padding: '24px 20px 0',
-            lineHeight: 1.6,
+            padding: '32px 20px 0',
           }}
         >
-          Barnens trygghet börjar med deras vuxna
-        </motion.p>
+          <div style={{ width: '32px', height: '1px', background: '#A09890', opacity: 0.2, margin: '0 auto 16px' }} />
+          <p
+            style={{
+              fontFamily: "'DM Serif Display', serif",
+              fontStyle: 'italic',
+              fontSize: '14px',
+              color: 'var(--accent-saffron)',
+              opacity: 0.7,
+              lineHeight: 1.6,
+            }}
+          >
+            Barnens trygghet börjar med
+            <br />
+            de vuxnas relation
+          </p>
+        </motion.div>
 
-        {/* ── Ni Två ── */}
+        {/* ── Par ── */}
         <motion.div
-          className="px-5 mt-12"
+          className="px-5 mt-5"
           variants={containerVariants}
           initial="hidden"
           animate="visible"
