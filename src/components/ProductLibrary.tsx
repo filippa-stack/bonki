@@ -660,7 +660,7 @@ export default function ProductLibrary() {
           initial="hidden"
           animate="visible"
         >
-          <AudienceLabel label="Par" delay={0.20} />
+          
           <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', paddingBottom: '32px' }}>
             <motion.div
               variants={tileVariants}
