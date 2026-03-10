@@ -585,14 +585,14 @@ export default function ProductLibrary() {
                   <span
                     style={{
                       display: 'inline-block',
-                      marginTop: '4px',
+                      marginTop: '6px',
                       fontFamily: "'Lato', sans-serif",
-                      fontSize: '8px',
+                      fontSize: '9px',
                       fontWeight: 600,
                       letterSpacing: '0.06em',
                       textTransform: 'uppercase',
-                      color: '#2A5040',
-                      opacity: 0.55,
+                      color: '#1E3D30',
+                      opacity: 0.7,
                       lineHeight: 1.4,
                     }}
                   >
