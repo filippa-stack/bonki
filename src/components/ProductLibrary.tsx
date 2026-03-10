@@ -252,7 +252,7 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
           }}
         />
       )}
-      <div style={{ zIndex: 1 }}>
+      <div style={{ zIndex: 1, display: 'flex', flexDirection: 'column', flex: 1, width: '100%' }}>
         <h3
           style={{
             fontFamily: "'DM Serif Display', serif",
@@ -284,7 +284,8 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
           <span
             style={{
               display: 'inline-block',
-              marginTop: '4px',
+              marginTop: 'auto',
+              paddingTop: '6px',
               fontFamily: "'Lato', sans-serif",
               fontSize: '8px',
               fontWeight: 600,
@@ -293,6 +294,7 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
               color: accentColor || 'var(--text-library)',
               opacity: 0.55,
               lineHeight: 1.4,
+              whiteSpace: 'nowrap',
             }}
           >
             {badgeText}
