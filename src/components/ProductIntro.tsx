@@ -3,6 +3,7 @@ import { motion, AnimatePresence, PanInfo } from 'framer-motion';
 import { productIntros, ProductIntroData } from '@/data/productIntros';
 import { allProducts } from '@/data/products';
 import { Heart, User, Users, Globe, Flame, Sun, UserPlus, type LucideIcon } from 'lucide-react';
+import { useCardImage } from '@/hooks/useCardImage';
 
 const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
 const SEEN_KEY_PREFIX = 'bonki-product-intro-seen-';
