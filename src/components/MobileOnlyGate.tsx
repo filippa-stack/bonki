@@ -33,7 +33,7 @@ export default function MobileOnlyGate({ children }: { children: ReactNode }) {
   }
 
   // Demo mode (param seen OR entered): show in phone frame on desktop
-  if (isDemoParam() || isDemoMode()) {
+  if (demoActive) {
     return (
       <>
         {/* Desktop: phone simulator */}
