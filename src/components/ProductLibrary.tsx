@@ -299,8 +299,6 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
           >
             {badgeText}
           </span>
-            {badgeText}
-          </span>
         )}
       </div>
     </motion.div>
