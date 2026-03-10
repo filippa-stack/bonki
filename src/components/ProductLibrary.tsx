@@ -502,6 +502,7 @@ export default function ProductLibrary() {
               illustrationOpacity={ILLUSTRATION_OPACITY[sexualitet.id]}
               onClick={() => navigate(`/product/${sexualitet.slug}`)}
               showFreeBadge={!purchased.has(sexualitet.id)}
+              badgeText={buildBadgeText(sexualitet)}
               wide
             />
           </motion.div>
