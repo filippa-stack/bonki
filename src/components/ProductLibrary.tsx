@@ -369,19 +369,6 @@ export default function ProductLibrary() {
           >
             Välj det samtal ni behöver just nu
           </p>
-          <p
-            style={{
-              fontFamily: "'DM Serif Display', serif",
-              fontStyle: 'italic',
-              fontSize: '14px',
-              fontWeight: 400,
-              color: 'var(--color-text-secondary)',
-              opacity: 0.55,
-              lineHeight: 1.5,
-            }}
-          >
-            Välj det samtal ni behöver just nu
-          </p>
         </motion.div>
 
           {/* Tab navigation */}
