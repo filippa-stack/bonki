@@ -312,16 +312,118 @@ export default function ProductLibrary() {
           </p>
         </motion.div>
 
+        {/* ── Ert Barn — broken grid layout ── */}
+        <div className="px-5 mt-5">
+          <AudienceLabel label="Ert barn" delay={0.08} />
+          <motion.div
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(2, 1fr)',
+              gap: '10px',
+            }}
+          >
+            <PastelTile
+              name={jagIMig.name}
+              bg={PASTEL_COLORS[jagIMig.id]!}
+              tagline={TAGLINES[jagIMig.id]}
+              ageLabel={jagIMig.ageLabel}
+              accentColor={ACCENT_COLORS[jagIMig.id]}
+              taglineColor={TAGLINE_COLORS[jagIMig.id]}
+              illustration={ILLUSTRATIONS[jagIMig.id]}
+              illustrationOpacity={ILLUSTRATION_OPACITY[jagIMig.id]}
+              illustrationSize={ILLUSTRATION_SIZE[jagIMig.id]}
+              illustrationPosition={ILLUSTRATION_POSITION[jagIMig.id]}
+              onClick={() => navigate(`/product/${jagIMig.slug}`)}
+              wide
+            />
+            <PastelTile
+              name={jagMedAndra.name}
+              bg={PASTEL_COLORS[jagMedAndra.id]!}
+              tagline={TAGLINES[jagMedAndra.id]}
+              ageLabel={jagMedAndra.ageLabel}
+              accentColor={ACCENT_COLORS[jagMedAndra.id]}
+              taglineColor={TAGLINE_COLORS[jagMedAndra.id]}
+              illustration={ILLUSTRATIONS[jagMedAndra.id]}
+              illustrationOpacity={ILLUSTRATION_OPACITY[jagMedAndra.id]}
+              illustrationSize={ILLUSTRATION_SIZE[jagMedAndra.id]}
+              onClick={() => navigate(`/product/${jagMedAndra.slug}`)}
+            />
+            <PastelTile
+              name={jagIVarlden.name}
+              bg={PASTEL_COLORS[jagIVarlden.id]!}
+              tagline={TAGLINES[jagIVarlden.id]}
+              ageLabel={jagIVarlden.ageLabel}
+              accentColor={ACCENT_COLORS[jagIVarlden.id]}
+              taglineColor={TAGLINE_COLORS[jagIVarlden.id]}
+              illustration={ILLUSTRATIONS[jagIVarlden.id]}
+              illustrationOpacity={ILLUSTRATION_OPACITY[jagIVarlden.id]}
+              onClick={() => navigate(`/product/${jagIVarlden.slug}`)}
+            />
+            <PastelTile
+              name={sexualitet.name}
+              bg={PASTEL_COLORS[sexualitet.id]!}
+              tagline={TAGLINES[sexualitet.id]}
+              ageLabel={sexualitet.ageLabel}
+              accentColor={ACCENT_COLORS[sexualitet.id]}
+              taglineColor={TAGLINE_COLORS[sexualitet.id]}
+              illustration={ILLUSTRATIONS[sexualitet.id]}
+              illustrationOpacity={ILLUSTRATION_OPACITY[sexualitet.id]}
+              onClick={() => navigate(`/product/${sexualitet.slug}`)}
+              wide
+            />
+          </motion.div>
+        </div>
+
+        {/* ── Er Familj ── */}
+        <div className="px-5 mt-12">
+          <AudienceLabel label="Er familj" delay={0.12} />
+          <motion.div
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(2, 1fr)',
+              gap: '10px',
+            }}
+          >
+            <PastelTile
+              name={vardag.name}
+              bg={PASTEL_COLORS[vardag.id]!}
+              tagline={TAGLINES[vardag.id]}
+              ageLabel={vardag.ageLabel}
+              accentColor={ACCENT_COLORS[vardag.id]}
+              taglineColor={TAGLINE_COLORS[vardag.id]}
+              illustration={ILLUSTRATIONS[vardag.id]}
+              illustrationOpacity={ILLUSTRATION_OPACITY[vardag.id]}
+              onClick={() => navigate(`/product/${vardag.slug}`)}
+            />
+            <PastelTile
+              name={syskon.name}
+              bg={PASTEL_COLORS[syskon.id]!}
+              tagline={TAGLINES[syskon.id]}
+              ageLabel={syskon.ageLabel}
+              accentColor={ACCENT_COLORS[syskon.id]}
+              taglineColor={TAGLINE_COLORS[syskon.id]}
+              illustration={ILLUSTRATIONS[syskon.id]}
+              illustrationOpacity={ILLUSTRATION_OPACITY[syskon.id]}
+              onClick={() => navigate(`/product/${syskon.slug}`)}
+            />
+          </motion.div>
+        </div>
+
         {/* ── Ni Två ── */}
         <motion.div
-          className="px-5 mt-5"
+          className="px-5 mt-12"
           variants={containerVariants}
           initial="hidden"
           animate="visible"
         >
-          <AudienceLabel label="Ni två" delay={0.08} />
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
-            {/* Still Us */}
+          <AudienceLabel label="Ni två" delay={0.20} />
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px', paddingBottom: '32px' }}>
             <motion.div
               variants={tileVariants}
               whileHover={{ scale: 1.02, y: -2 }}
@@ -360,7 +462,6 @@ export default function ProductLibrary() {
               </p>
             </motion.div>
 
-            {/* Still Fair — coming soon */}
             <motion.div
               variants={tileVariants}
               style={{
@@ -415,113 +516,8 @@ export default function ProductLibrary() {
           </div>
         </motion.div>
 
-        {/* ── Ert Barn — broken grid layout ── */}
-        <div className="px-5 mt-12">
-          <AudienceLabel label="Ert barn" delay={0.12} />
-          <motion.div
-            variants={containerVariants}
-            initial="hidden"
-            animate="visible"
-            style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(2, 1fr)',
-              gap: '10px',
-            }}
-          >
-            {/* Jag i Mig — full width hero tile */}
-            <PastelTile
-              name={jagIMig.name}
-              bg={PASTEL_COLORS[jagIMig.id]!}
-              tagline={TAGLINES[jagIMig.id]}
-              ageLabel={jagIMig.ageLabel}
-              accentColor={ACCENT_COLORS[jagIMig.id]}
-              taglineColor={TAGLINE_COLORS[jagIMig.id]}
-              illustration={ILLUSTRATIONS[jagIMig.id]}
-              illustrationOpacity={ILLUSTRATION_OPACITY[jagIMig.id]}
-              illustrationSize={ILLUSTRATION_SIZE[jagIMig.id]}
-              illustrationPosition={ILLUSTRATION_POSITION[jagIMig.id]}
-              onClick={() => navigate(`/product/${jagIMig.slug}`)}
-              wide
-            />
-            {/* Jag med Andra — regular */}
-            <PastelTile
-              name={jagMedAndra.name}
-              bg={PASTEL_COLORS[jagMedAndra.id]!}
-              tagline={TAGLINES[jagMedAndra.id]}
-              ageLabel={jagMedAndra.ageLabel}
-              accentColor={ACCENT_COLORS[jagMedAndra.id]}
-              taglineColor={TAGLINE_COLORS[jagMedAndra.id]}
-              illustration={ILLUSTRATIONS[jagMedAndra.id]}
-              illustrationOpacity={ILLUSTRATION_OPACITY[jagMedAndra.id]}
-              illustrationSize={ILLUSTRATION_SIZE[jagMedAndra.id]}
-              onClick={() => navigate(`/product/${jagMedAndra.slug}`)}
-            />
-            {/* Jag i Världen — regular */}
-            <PastelTile
-              name={jagIVarlden.name}
-              bg={PASTEL_COLORS[jagIVarlden.id]!}
-              tagline={TAGLINES[jagIVarlden.id]}
-              ageLabel={jagIVarlden.ageLabel}
-              accentColor={ACCENT_COLORS[jagIVarlden.id]}
-              taglineColor={TAGLINE_COLORS[jagIVarlden.id]}
-              illustration={ILLUSTRATIONS[jagIVarlden.id]}
-              illustrationOpacity={ILLUSTRATION_OPACITY[jagIVarlden.id]}
-              onClick={() => navigate(`/product/${jagIVarlden.slug}`)}
-            />
-            {/* Sexualitet — full width */}
-            <PastelTile
-              name={sexualitet.name}
-              bg={PASTEL_COLORS[sexualitet.id]!}
-              tagline={TAGLINES[sexualitet.id]}
-              ageLabel={sexualitet.ageLabel}
-              accentColor={ACCENT_COLORS[sexualitet.id]}
-              taglineColor={TAGLINE_COLORS[sexualitet.id]}
-              illustration={ILLUSTRATIONS[sexualitet.id]}
-              illustrationOpacity={ILLUSTRATION_OPACITY[sexualitet.id]}
-              onClick={() => navigate(`/product/${sexualitet.slug}`)}
-              wide
-            />
-          </motion.div>
-        </div>
 
-        {/* ── Er Familj ── */}
-        <div className="px-5 mt-12">
-          <AudienceLabel label="Er familj" delay={0.20} />
-          <motion.div
-            variants={containerVariants}
-            initial="hidden"
-            animate="visible"
-            style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(2, 1fr)',
-              gap: '10px',
-              paddingBottom: '32px',
-            }}
-          >
-            <PastelTile
-              name={vardag.name}
-              bg={PASTEL_COLORS[vardag.id]!}
-              tagline={TAGLINES[vardag.id]}
-              ageLabel={vardag.ageLabel}
-              accentColor={ACCENT_COLORS[vardag.id]}
-              taglineColor={TAGLINE_COLORS[vardag.id]}
-              illustration={ILLUSTRATIONS[vardag.id]}
-              illustrationOpacity={ILLUSTRATION_OPACITY[vardag.id]}
-              onClick={() => navigate(`/product/${vardag.slug}`)}
-            />
-            <PastelTile
-              name={syskon.name}
-              bg={PASTEL_COLORS[syskon.id]!}
-              tagline={TAGLINES[syskon.id]}
-              ageLabel={syskon.ageLabel}
-              accentColor={ACCENT_COLORS[syskon.id]}
-              taglineColor={TAGLINE_COLORS[syskon.id]}
-              illustration={ILLUSTRATIONS[syskon.id]}
-              illustrationOpacity={ILLUSTRATION_OPACITY[syskon.id]}
-              onClick={() => navigate(`/product/${syskon.slug}`)}
-            />
-          </motion.div>
-        </div>
+
 
         {/* Sign-off */}
         <motion.div
