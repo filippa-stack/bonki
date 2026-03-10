@@ -56,11 +56,9 @@ export default function ProductHome() {
           freeCardId={STILL_US_FREE_CARD_ID}
           onComplete={() => {
             setShowIntro(false);
-            navigate('/', { replace: true });
           }}
           onStartFreeCard={() => {
-            setShowIntro(false);
-            navigate(`/card/${STILL_US_FREE_CARD_ID}`);
+            navigate(`/card/${STILL_US_FREE_CARD_ID}`, { replace: true });
           }}
         />
       );
