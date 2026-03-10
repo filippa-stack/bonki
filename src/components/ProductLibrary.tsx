@@ -279,7 +279,7 @@ export default function ProductLibrary() {
       <div style={{ position: 'relative', zIndex: 1 }}>
         {/* Hero — BONKI title + mamma illustration */}
         <motion.div
-          className="pt-8 pb-2 px-6 text-center"
+          className="pt-4 pb-2 px-6 text-center"
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
@@ -302,9 +302,9 @@ export default function ProductLibrary() {
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.3, duration: 0.8 }}
             style={{
-              width: '160px',
-              height: '190px',
-              margin: '4px auto 8px',
+              width: '220px',
+              height: '260px',
+              margin: '0 auto 4px',
               backgroundImage: `url(${watermarkMamma})`,
               backgroundSize: 'contain',
               backgroundRepeat: 'no-repeat',
