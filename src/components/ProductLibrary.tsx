@@ -270,7 +270,7 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
           <p
             style={{
               fontFamily: "'Lato', sans-serif",
-              fontSize: wide ? '12px' : '11px',
+              fontSize: '11px',
               fontWeight: 400,
               color: taglineColor || '#8A8078',
               marginTop: '4px',
@@ -621,7 +621,7 @@ export default function ProductLibrary() {
                 </h3>
                 <p style={{
                   fontFamily: "'Lato', sans-serif",
-                  fontSize: '12px', color: '#4A7A5E',
+                  fontSize: '11px', color: '#4A7A5E',
                   marginTop: '4px',
                   lineHeight: 1.4,
                 }}>
@@ -704,7 +704,7 @@ export default function ProductLibrary() {
                 </h3>
                 <p style={{
                   fontFamily: "'Lato', sans-serif",
-                  fontSize: '12px', color: '#8A5A74',
+                  fontSize: '11px', color: '#8A5A74',
                   marginTop: '4px',
                   lineHeight: 1.4,
                 }}>
