@@ -210,7 +210,7 @@ export default function ProductIntro({ productId, accentColor, backgroundColor, 
                     zIndex: 1,
                   }}
                 >
-                  <span style={{ fontSize: '16px', opacity: 0.7 }}>✦</span>
+                  <span style={{ fontSize: '16px', opacity: 0.7 }}>{PRODUCT_SPOTLIGHT_ICON[productId] ?? '✦'}</span>
                 </div>
                 <div style={{ position: 'relative', zIndex: 1 }}>
                   <p
