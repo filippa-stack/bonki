@@ -547,8 +547,8 @@ export default function ProductLibrary() {
                 flexDirection: 'column',
                 alignItems: 'center',
                 justifyContent: 'flex-start',
-                border: '1px solid rgba(255, 255, 255, 0.06)',
-                boxShadow: '0px 4px 16px rgba(44, 36, 32, 0.18), 0px 2px 4px rgba(44, 36, 32, 0.10)',
+                border: '1.5px solid hsla(158, 35%, 25%, 0.35)',
+                boxShadow: '0px 2px 8px rgba(44, 36, 32, 0.06)',
               }}
             >
               <h2 style={{
