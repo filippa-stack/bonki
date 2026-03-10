@@ -222,7 +222,12 @@ export default function ProductIntro({ productId, accentColor, backgroundColor, 
                     zIndex: 1,
                   }}
                 >
-                  <span style={{ fontSize: '16px', opacity: 0.7 }}>{PRODUCT_SPOTLIGHT_ICON[productId] ?? '✦'}</span>
+                  {(() => {
+                    const IconComp = PRODUCT_SPOTLIGHT_ICON[productId];
+                    return IconComp
+                      ? <IconComp size={16} className="opacity-70" />
+                      : <span style={{ fontSize: '16px', opacity: 0.7 }}>✦</span>;
+                  })()}
                 </div>
                 <div style={{ position: 'relative', zIndex: 1 }}>
                   <p
