@@ -506,6 +506,63 @@ export default function ProductLibrary() {
           </motion.div>
         </div>
 
+        {/* Diary callout — editorial whisper */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.35, duration: 0.6 }}
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '10px',
+            margin: '20px 28px 0',
+            padding: '14px 18px',
+            borderRadius: '12px',
+            backgroundColor: 'rgba(44, 36, 32, 0.025)',
+          }}
+        >
+          <div
+            style={{
+              width: '32px',
+              height: '32px',
+              borderRadius: '8px',
+              backgroundColor: 'rgba(44, 36, 32, 0.05)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              flexShrink: 0,
+              fontSize: '14px',
+              color: 'var(--text-library)',
+              opacity: 0.5,
+            }}
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20" />
+            </svg>
+          </div>
+          <div>
+            <p style={{
+              fontFamily: "'DM Serif Display', serif",
+              fontSize: '13px',
+              fontWeight: 400,
+              color: 'var(--text-library)',
+              lineHeight: 1.3,
+            }}>
+              Dagbok för varje barn
+            </p>
+            <p style={{
+              fontFamily: "'Lato', sans-serif",
+              fontSize: '10px',
+              fontWeight: 400,
+              color: 'var(--color-text-secondary)',
+              opacity: 0.6,
+              marginTop: '2px',
+              lineHeight: 1.4,
+            }}>
+              Spara varje samtal. Bygg ett minnesbibliotek.
+            </p>
+          </div>
+        </motion.div>
         {/* Bridge phrase */}
         <motion.div
           initial={{ opacity: 0 }}
