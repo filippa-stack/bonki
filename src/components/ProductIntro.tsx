@@ -2,19 +2,20 @@ import { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence, PanInfo } from 'framer-motion';
 import { productIntros, ProductIntroData } from '@/data/productIntros';
 import { allProducts } from '@/data/products';
+import { Heart, User, Users, Globe, Flame, Sun, UserPlus } from 'lucide-react';
 
 const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
 const SEEN_KEY_PREFIX = 'bonki-product-intro-seen-';
 
-/** Product-specific icons for the Spotlight mini-card */
-const PRODUCT_SPOTLIGHT_ICON: Record<string, string> = {
-  still_us: '💛',
-  jag_i_mig: '🪞',
-  jag_med_andra: '🤝',
-  jag_i_varlden: '🌍',
-  sexualitetskort: '🔥',
-  vardagskort: '☀️',
-  syskonkort: '👫',
+/** Product-specific Lucide icons for the Spotlight mini-card */
+const PRODUCT_SPOTLIGHT_ICON: Record<string, React.ComponentType<{ size?: number; className?: string }>> = {
+  still_us: Heart,
+  jag_i_mig: User,
+  jag_med_andra: Users,
+  jag_i_varlden: Globe,
+  sexualitetskort: Flame,
+  vardagskort: Sun,
+  syskonkort: UserPlus,
 };
 
 function hasSeenProductIntro(productId: string): boolean {
