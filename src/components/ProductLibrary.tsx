@@ -642,17 +642,6 @@ export default function ProductLibrary() {
           </div>
         </motion.div>
 
-/** Build badge text: "X ämnen · Y kr · Första gratis" */
-function buildBadgeText(product: { cards: unknown[]; id: string }): string {
-  const count = product.cards.length;
-  const prices: Record<string, number> = {
-    jag_i_mig: 195, jag_med_andra: 195, jag_i_varlden: 195,
-    vardagskort: 195, syskonkort: 195, sexualitetskort: 195,
-  };
-  const price = prices[product.id] ?? 195;
-  return `${count} ämnen · ${price} kr · Första gratis`;
-}
-
 
 
         {/* Sign-off */}
