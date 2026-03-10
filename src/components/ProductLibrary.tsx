@@ -450,6 +450,7 @@ export default function ProductLibrary() {
               illustrationSize={ILLUSTRATION_SIZE[jagMedAndra.id]}
               onClick={() => navigate(`/product/${jagMedAndra.slug}`)}
               showFreeBadge={!purchased.has(jagMedAndra.id)}
+              badgeText={buildBadgeText(jagMedAndra)}
             />
             <PastelTile
               name={jagIVarlden.name}
