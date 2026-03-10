@@ -6,6 +6,17 @@ import { allProducts } from '@/data/products';
 const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
 const SEEN_KEY_PREFIX = 'bonki-product-intro-seen-';
 
+/** Product-specific icons for the Spotlight mini-card */
+const PRODUCT_SPOTLIGHT_ICON: Record<string, string> = {
+  still_us: '💛',
+  jag_i_mig: '🪞',
+  jag_med_andra: '🤝',
+  jag_i_varlden: '🌍',
+  sexualitetskort: '🔥',
+  vardagskort: '☀️',
+  syskonkort: '👫',
+};
+
 function hasSeenProductIntro(productId: string): boolean {
   return localStorage.getItem(`${SEEN_KEY_PREFIX}${productId}`) === 'true';
 }
@@ -210,7 +221,7 @@ export default function ProductIntro({ productId, accentColor, backgroundColor, 
                     zIndex: 1,
                   }}
                 >
-                  <span style={{ fontSize: '16px', opacity: 0.7 }}>✦</span>
+                  <span style={{ fontSize: '16px', opacity: 0.7 }}>{PRODUCT_SPOTLIGHT_ICON[productId] ?? '✦'}</span>
                 </div>
                 <div style={{ position: 'relative', zIndex: 1 }}>
                   <p
@@ -276,9 +287,9 @@ export default function ProductIntro({ productId, accentColor, backgroundColor, 
             initial={false}
             animate={isLastSlide && hasFreeCard ? {
               boxShadow: [
-                `0 2px 12px -2px ${accentColor ?? 'hsla(158, 30%, 15%, 0.18)'}`,
-                `0 4px 20px -2px ${accentColor ?? 'hsla(158, 30%, 15%, 0.18)'}55`,
-                `0 2px 12px -2px ${accentColor ?? 'hsla(158, 30%, 15%, 0.18)'}`,
+                '0 2px 12px -2px hsla(158, 30%, 15%, 0.18)',
+                '0 4px 20px -2px hsla(158, 30%, 15%, 0.32)',
+                '0 2px 12px -2px hsla(158, 30%, 15%, 0.18)',
               ],
             } : {}}
             transition={isLastSlide && hasFreeCard ? {
