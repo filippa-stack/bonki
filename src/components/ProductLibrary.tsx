@@ -394,6 +394,7 @@ export default function ProductLibrary() {
                 justifyContent: 'flex-start',
                 border: '1px solid rgba(255, 255, 255, 0.06)',
                 boxShadow: '0px 4px 16px rgba(44, 36, 32, 0.18), 0px 2px 4px rgba(44, 36, 32, 0.10)',
+                opacity: 0.55,
               }}
             >
               <h3 style={{
