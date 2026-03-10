@@ -796,14 +796,6 @@ export default function ProductLibrary() {
                   fontSize: '11px', color: '#8A5A74',
                   marginTop: '4px',
                   lineHeight: 1.4,
-                }}>
-                  Det vi inte ser
-                </p>
-                <p style={{
-                  fontFamily: "'Lato', sans-serif",
-                  fontSize: '11px', color: '#8A5A74',
-                  marginTop: '4px',
-                  lineHeight: 1.4,
                   maxWidth: '55%',
                   opacity: 0.85,
                 }}>
