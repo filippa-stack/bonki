@@ -1095,21 +1095,18 @@ export default function CardView() {
               transform: 'translateX(-50%)',
               textAlign: 'center',
               fontFamily: 'var(--font-sans)',
-              fontSize: '11px',
-              fontWeight: 600,
-              letterSpacing: '0.08em',
+              fontSize: '10px',
+              fontWeight: 500,
+              letterSpacing: '0.06em',
               textTransform: 'uppercase',
-              color: 'var(--accent-text)',
-              opacity: 0.85,
+              color: 'var(--text-tertiary)',
+              opacity: 0.45,
               zIndex: 1,
               pointerEvents: 'none',
-              background: 'hsla(38, 72%, 38%, 0.10)',
-              padding: '4px 14px',
-              borderRadius: '20px',
               whiteSpace: 'nowrap',
             }}
           >
-            Ditt gratis samtal
+            Gratis samtal
           </motion.p>
         )}
 
