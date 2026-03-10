@@ -13,6 +13,7 @@ import PurchaseScreen from '@/components/PurchaseScreen';
 import ProductLibrary from '@/components/ProductLibrary';
 import ProductIntro from '@/components/ProductIntro';
 import { allProducts } from '@/data/products';
+import { isDemoMode } from '@/lib/demoMode';
 
 const PURCHASE_KEY_LEGACY = 'still-us-purchased';
 const PURCHASE_KEY_PREFIX = 'still-us-purchased-';
@@ -119,6 +120,11 @@ export default function Index() {
   // Any other devState bypasses onboarding & purchase gates
   if (devState) {
     return <Home />;
+  }
+
+  // ── Demo mode: skip all gates, show library ──
+  if (isDemoMode()) {
+    return <ProductLibrary />;
   }
 
   // ── Normal production flow ──

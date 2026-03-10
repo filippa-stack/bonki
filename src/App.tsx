@@ -10,6 +10,7 @@ import { DevStateProvider } from "@/contexts/DevStateContext";
 import ActiveSessionGuard from "@/components/ActiveSessionGuard";
 import InstallGuideBanner from "@/components/InstallGuideBanner";
 import DevModeBadge from "@/components/DevModeBadge";
+import { isDemoMode } from "@/lib/demoMode";
 import { SiteSettingsProvider } from "@/contexts/SiteSettingsContext";
 import { CoupleSpaceProvider } from "@/contexts/CoupleSpaceContext";
 import { NormalizedSessionProvider } from "@/contexts/NormalizedSessionContext";
@@ -56,7 +57,7 @@ function ProtectedRoutes() {
     );
   }
 
-  if (!user) {
+  if (!user && !isDemoMode()) {
     return <Navigate to="/login" replace />;
   }
 
