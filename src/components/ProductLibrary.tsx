@@ -264,7 +264,7 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
           <span
             style={{
               display: 'inline-block',
-              marginTop: '8px',
+              marginTop: '4px',
               fontFamily: "'Lato', sans-serif",
               fontSize: '8px',
               fontWeight: 600,
