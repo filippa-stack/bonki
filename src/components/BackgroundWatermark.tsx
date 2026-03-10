@@ -24,7 +24,8 @@ export default function BackgroundWatermark() {
   const { pathname } = useLocation();
   const [searchParams] = useSearchParams();
 
-  // Hide watermark inside sessions (/card/*), library page, and product pages
+  // Hide watermark inside sessions (/card/*), library page, product pages, and index (has its own watermark)
+  if (pathname === '/') return null;
   if (pathname.startsWith('/card')) return null;
   if (pathname.startsWith('/product')) return null;
   if (pathname.startsWith('/diary')) return null;
