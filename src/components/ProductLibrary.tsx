@@ -706,47 +706,54 @@ export default function ProductLibrary() {
                 }}>
                   Ett kartläggningsverktyg som gör det osynliga arbetet i familjelivet synligt för båda
                 </p>
-                <span
-                  style={{
-                    display: 'inline-block',
-                    marginTop: '4px',
-                    fontFamily: "'Lato', sans-serif",
-                    fontSize: '8px',
-                    fontWeight: 600,
-                    letterSpacing: '0.06em',
-                    textTransform: 'uppercase',
-                    color: '#6B3A58',
-                    opacity: 0.55,
-                    lineHeight: 1.4,
-                  }}
-                >
-                  Kommer snart
-                </span>
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    if (!notifySignedUp && !notifyLoading) handleNotifyMe();
-                  }}
-                  disabled={notifySignedUp || notifyLoading}
-                  style={{
-                    display: 'block',
-                    marginTop: '10px',
-                    fontFamily: "'Lato', sans-serif",
-                    fontSize: '11px',
-                    fontWeight: 600,
-                    letterSpacing: '0.03em',
-                    color: notifySignedUp ? '#8A5A74' : '#fff',
-                    background: notifySignedUp ? 'rgba(107,58,88,0.1)' : '#6B3A58',
-                    border: 'none',
-                    borderRadius: '20px',
-                    padding: '7px 16px',
-                    cursor: notifySignedUp ? 'default' : 'pointer',
-                    opacity: notifyLoading ? 0.6 : 1,
-                    transition: 'all 200ms ease',
-                  }}
-                >
-                  {notifySignedUp ? '✓ Du blir meddelad' : 'Meddela mig'}
-                </button>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginTop: '10px', flexWrap: 'wrap' }}>
+                  <span
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '4px',
+                      fontFamily: "'Lato', sans-serif",
+                      fontSize: '9px',
+                      fontWeight: 700,
+                      letterSpacing: '0.08em',
+                      textTransform: 'uppercase',
+                      color: '#6B3A58',
+                      background: 'rgba(107,58,88,0.10)',
+                      borderRadius: '20px',
+                      padding: '4px 10px',
+                      lineHeight: 1.4,
+                    }}
+                  >
+                    <span style={{ fontSize: '10px' }}>✦</span> Kommer snart
+                  </span>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      if (!notifySignedUp && !notifyLoading) handleNotifyMe();
+                    }}
+                    disabled={notifySignedUp || notifyLoading}
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '4px',
+                      fontFamily: "'Lato', sans-serif",
+                      fontSize: '10px',
+                      fontWeight: 600,
+                      letterSpacing: '0.02em',
+                      color: notifySignedUp ? '#6B3A58' : '#fff',
+                      background: notifySignedUp ? 'rgba(107,58,88,0.08)' : 'linear-gradient(135deg, #6B3A58 0%, #8A5A74 100%)',
+                      border: notifySignedUp ? '1px solid rgba(107,58,88,0.15)' : 'none',
+                      borderRadius: '20px',
+                      padding: notifySignedUp ? '4px 12px' : '5px 14px',
+                      cursor: notifySignedUp ? 'default' : 'pointer',
+                      opacity: notifyLoading ? 0.6 : 1,
+                      transition: 'all 200ms ease',
+                      boxShadow: notifySignedUp ? 'none' : '0 2px 8px rgba(107,58,88,0.25)',
+                    }}
+                  >
+                    {notifySignedUp ? '✓ Du blir meddelad' : '🔔 Meddela mig'}
+                  </button>
+                </div>
               </div>
             </motion.div>
           </div>
