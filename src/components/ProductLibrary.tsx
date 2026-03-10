@@ -643,7 +643,7 @@ export default function ProductLibrary() {
                   backgroundSize: 'contain',
                   backgroundRepeat: 'no-repeat',
                   backgroundPosition: 'right center',
-                  opacity: 0.22,
+                  opacity: 0.15,
                   pointerEvents: 'none',
                   zIndex: 0,
                 }}
