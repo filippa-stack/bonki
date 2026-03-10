@@ -5,7 +5,7 @@ import { allProducts } from '@/data/products';
 import { useAllProductAccess } from '@/hooks/useAllProductAccess';
 import watermarkMamma from '@/assets/watermark-mamma.png';
 
-import illustrationStillUs from '@/assets/illustration-still-us.png';
+import illustrationStillUs from '@/assets/illustration-still-us-tile.png';
 import illustrationJagIMig from '@/assets/mirror-jag-i-mig.png';
 import illustrationJagMedAndra from '@/assets/annorlunda-jag-med-andra.png';
 import illustrationJagIVarlden from '@/assets/aktivism-jag-i-varlden.png';
