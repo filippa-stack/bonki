@@ -562,7 +562,7 @@ export default function ProductLibrary() {
                   backgroundSize: 'contain',
                   backgroundRepeat: 'no-repeat',
                   backgroundPosition: 'center center',
-                  opacity: 0.20,
+                  opacity: 0.22,
                   pointerEvents: 'none',
                   zIndex: 0,
                 }}
