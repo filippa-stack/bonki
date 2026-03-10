@@ -542,7 +542,7 @@ export default function ProductLibrary() {
                 textAlign: 'left',
                 position: 'relative',
                 overflow: 'hidden',
-                minHeight: '120px',
+                minHeight: '160px',
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'flex-start',
