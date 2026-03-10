@@ -593,7 +593,7 @@ export default function ProductLibrary() {
               style={{
                 borderRadius: '16px',
                 padding: '24px 20px 16px',
-                background: 'linear-gradient(135deg, #7A4A6B 0%, #5C3650 100%)',
+                background: 'var(--surface-library, #FAF7F2)',
                 textAlign: 'center',
                 position: 'relative',
                 overflow: 'hidden',
@@ -602,22 +602,21 @@ export default function ProductLibrary() {
                 flexDirection: 'column',
                 alignItems: 'center',
                 justifyContent: 'flex-start',
-                border: '1px solid rgba(255, 255, 255, 0.04)',
-                boxShadow: '0px 2px 8px rgba(44, 36, 32, 0.08)',
-                opacity: 0.3,
-                filter: 'saturate(0.15) blur(0.7px)',
+                border: '1.5px solid hsla(330, 25%, 38%, 0.25)',
+                boxShadow: '0px 2px 8px rgba(44, 36, 32, 0.06)',
+                opacity: 0.45,
               }}
             >
               <h3 style={{
                 fontFamily: "'DM Serif Display', serif",
                 fontSize: '26px', fontWeight: 400,
-                color: '#FAF3E8', letterSpacing: '0.01em', zIndex: 1,
+                color: 'hsl(330, 25%, 35%)', letterSpacing: '0.01em', zIndex: 1,
               }}>
                 Still Fair
               </h3>
               <p style={{
                 fontFamily: "'Lato', sans-serif",
-                fontSize: '13px', color: '#E8C4D4',
+                fontSize: '13px', color: 'hsl(330, 20%, 45%)',
                 lineHeight: 1.4, marginTop: '4px', zIndex: 1,
               }}>
                 Det vi inte ser
