@@ -838,6 +838,7 @@ export default function ProductLibrary() {
           </motion.div>
         )}
         </AnimatePresence>
+        </motion.div>
 
         {/* Sign-off */}
         <motion.div
