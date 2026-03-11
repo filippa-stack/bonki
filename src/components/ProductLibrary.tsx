@@ -395,6 +395,19 @@ export default function ProductLibrary() {
           >
             BONKI
           </h1>
+          <p
+            className="font-serif italic"
+            style={{
+              fontSize: '14px',
+              color: 'var(--color-text-secondary)',
+              opacity: 0.55,
+              textAlign: 'center',
+              marginTop: '6px',
+              lineHeight: 1.5,
+            }}
+          >
+            Välj det samtal som behövs just nu
+          </p>
         </motion.div>
 
         {/* Segment control with active state */}
