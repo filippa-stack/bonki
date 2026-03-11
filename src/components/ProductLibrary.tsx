@@ -375,7 +375,7 @@ export default function ProductLibrary() {
         {/* Spacer — logo lives in header, content starts immediately */}
         <div style={{ height: '8px' }} />
 
-        {/* Segment control with active state */}
+        {/* Segment control — tab switcher */}
         <motion.div
           initial={{ opacity: 0, y: 6 }}
           animate={{ opacity: 1, y: 0 }}
@@ -385,31 +385,14 @@ export default function ProductLibrary() {
             margin: '16px auto 20px',
             width: 'fit-content',
             background: 'transparent',
-            borderRadius: '0',
             padding: '0',
             gap: '16px',
           }}
         >
-          {[
-            { label: 'BARN', ref: barnRef, isDefault: true },
-            { label: 'PAR', ref: parRef, isDefault: false },
-          ].map(({ label, ref, isDefault }) => (
+          {(['barn', 'par'] as const).map((tab) => (
             <button
-              key={label}
-              onClick={() => {
-                ref.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                // Update active state visually
-                const parent = (document.getElementById('segment-control') as HTMLElement);
-                if (parent) {
-                  parent.querySelectorAll('button').forEach(btn => {
-                    btn.setAttribute('data-active', 'false');
-                  });
-                }
-                (document.querySelector(`[data-segment="${label}"]`) as HTMLElement)?.setAttribute('data-active', 'true');
-              }}
-              id="segment-control"
-              data-segment={label}
-              data-active={isDefault ? 'true' : 'false'}
+              key={tab}
+              onClick={() => setActiveTab(tab)}
               style={{
                 fontFamily: "'Lato', sans-serif",
                 fontSize: '9px',
@@ -417,27 +400,21 @@ export default function ProductLibrary() {
                 letterSpacing: '0.12em',
                 color: '#1A1A2E',
                 background: 'transparent',
-                opacity: isDefault ? 1 : 0.45,
+                opacity: activeTab === tab ? 1 : 0.45,
                 border: 'none',
-                borderBottom: isDefault ? '2px solid #1A1A2E' : '2px solid transparent',
+                borderBottom: activeTab === tab ? '2px solid #1A1A2E' : '2px solid transparent',
                 borderRadius: '0',
                 padding: '6px 4px',
                 cursor: 'pointer',
                 transition: 'all 200ms ease',
               }}
-              onMouseDown={(e) => {
-                const btn = e.currentTarget as HTMLButtonElement;
-                btn.style.background = 'rgba(220, 154, 20, 0.15)';
-                btn.style.opacity = '1';
-                // Dim sibling
-                const sibling = btn.parentElement?.querySelector(`button:not([data-segment="${label}"])`) as HTMLElement;
-                if (sibling) { sibling.style.background = 'transparent'; sibling.style.opacity = '0.5'; }
-              }}
             >
-              {label}
+              {tab.toUpperCase()}
             </button>
           ))}
         </motion.div>
+
+        <AnimatePresence mode="wait">
 
         {/* ── Barn — broken grid layout ── */}
         <div ref={barnRef} className="px-5" style={{ scrollMarginTop: '8px' }}>
