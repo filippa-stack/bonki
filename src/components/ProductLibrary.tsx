@@ -416,8 +416,16 @@ export default function ProductLibrary() {
 
         <AnimatePresence mode="wait">
 
+        {activeTab === 'barn' && (
+          <motion.div
+            key="barn"
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -20 }}
+            transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+          >
         {/* ── Barn — broken grid layout ── */}
-        <div ref={barnRef} className="px-5" style={{ scrollMarginTop: '8px' }}>
+        <div className="px-5" style={{ scrollMarginTop: '8px' }}>
           <motion.p
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
