@@ -617,11 +617,38 @@ export default function ProductLibrary() {
           </motion.div>
         </div>
 
+        {/* Visual pause before diary */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.6, duration: 0.8 }}
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '12px',
+            margin: '28px 40px 8px',
+          }}
+        >
+          <div style={{ flex: 1, height: '1px', background: 'linear-gradient(90deg, transparent, hsla(30, 15%, 60%, 0.2))' }} />
+          <span style={{
+            fontFamily: "'Lato', sans-serif",
+            fontSize: '8px',
+            fontWeight: 700,
+            letterSpacing: '0.15em',
+            textTransform: 'uppercase' as const,
+            color: '#A09890',
+            opacity: 0.5,
+          }}>
+            Minnen
+          </span>
+          <div style={{ flex: 1, height: '1px', background: 'linear-gradient(90deg, hsla(30, 15%, 60%, 0.2), transparent)' }} />
+        </motion.div>
+
         {/* Diary — emotional anchor with visual mockup */}
         <motion.div
-          initial={{ opacity: 0, y: 10 }}
+          initial={{ opacity: 0, y: 14 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ delay: 0.65, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
           whileTap={{ scale: 0.98 }}
           onClick={() => navigate('/diary/jag_i_mig')}
           className="cursor-pointer"
