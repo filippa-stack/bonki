@@ -463,12 +463,12 @@ export default function ProductLibrary() {
 
         {/* Segment control — tab switcher */}
         <motion.div
-          initial={{ opacity: 0, y: 6 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.75, duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.5, duration: 0.4 }}
           style={{
             display: 'flex',
-            margin: '0 auto 28px',
+            margin: '0 auto 20px',
             width: 'fit-content',
             background: 'transparent',
             padding: '0',
