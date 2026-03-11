@@ -286,7 +286,7 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
               marginTop: 'auto',
               paddingTop: '6px',
               fontFamily: "'Lato', sans-serif",
-              fontSize: wide ? '8px' : '7px',
+              fontSize: wide ? '9px' : '8px',
               fontWeight: 600,
               letterSpacing: '0.06em',
               textTransform: 'uppercase',
