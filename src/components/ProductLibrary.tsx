@@ -1041,22 +1041,28 @@ export default function ProductLibrary() {
         </AnimatePresence>
         </motion.div>
 
-        {/* Sign-off */}
+        {/* Sign-off — elevated */}
         <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.8, duration: 0.6 }}
-          style={{ textAlign: 'center', padding: '0 20px', marginTop: '24px', paddingBottom: 'calc(40px + env(safe-area-inset-bottom, 0px))' }}
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1.0, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+          style={{ textAlign: 'center', padding: '0 28px', marginTop: '32px', paddingBottom: 'calc(48px + env(safe-area-inset-bottom, 0px))' }}
         >
-          <div style={{ width: '32px', height: '1px', background: '#A09890', opacity: 0.2, margin: '0 auto 14px' }} />
+          <div style={{
+            width: '40px',
+            height: '1px',
+            background: 'linear-gradient(90deg, transparent, hsla(30, 20%, 60%, 0.3), transparent)',
+            margin: '0 auto 18px',
+          }} />
           <p
             style={{
               fontFamily: "'DM Serif Display', serif",
               fontStyle: 'italic',
-              fontSize: '13px',
+              fontSize: '14px',
               color: 'var(--accent-text)',
-              opacity: 0.5,
-              lineHeight: 1.6,
+              opacity: 0.45,
+              lineHeight: 1.7,
+              letterSpacing: '-0.01em',
             }}
           >
             Utvecklat av psykolog med 20+ års klinisk erfarenhet.
