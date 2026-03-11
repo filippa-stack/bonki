@@ -373,128 +373,130 @@ export default function ProductLibrary() {
     >
       {/* Content */}
       <div style={{ position: 'relative', zIndex: 1 }}>
-        {/* Hero — BONKI title + mamma illustration */}
-        <motion.div
-          className="pt-4 pb-2 px-6 text-center"
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-          style={{ position: 'relative' }}
-        >
-          <h1
-            className="font-serif"
-            style={{
-              fontSize: '42px',
-              fontWeight: 700,
-              lineHeight: 1.1,
-              color: '#1A1A2E',
-              letterSpacing: '0.02em',
-              textAlign: 'center',
-              marginBottom: '0',
-            }}
-          >
-            BONKI
-          </h1>
-          <p
-            className="font-serif italic"
-            style={{
-              fontSize: '14px',
-              color: 'var(--color-text-secondary)',
-              opacity: 0.55,
-              textAlign: 'center',
-              marginTop: '6px',
-              lineHeight: 1.5,
-            }}
-          >
-            Välj det samtal som behövs just nu
-          </p>
-        </motion.div>
-
-        {/* Segment control with active state */}
-        <motion.div
-          initial={{ opacity: 0, y: 6 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.06, duration: 0.4 }}
+        {/* ── Dark Hero Zone ── */}
+        <div
           style={{
-            display: 'flex',
-            margin: '16px auto 20px',
-            width: 'fit-content',
-            background: '#1A1A2E',
-            borderRadius: '10px',
-            padding: '3px',
-            gap: '2px',
+            background: 'linear-gradient(180deg, #1A1A2E 0%, #1A1A2E 75%, transparent 100%)',
+            paddingTop: '48px',
+            paddingBottom: '56px',
+            marginBottom: '-20px',
           }}
         >
-          {[
-            { label: 'BARN', ref: barnRef, isDefault: true },
-            { label: 'PAR', ref: parRef, isDefault: false },
-          ].map(({ label, ref, isDefault }) => (
-            <button
-              key={label}
-              onClick={() => {
-                ref.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                // Update active state visually
-                const parent = (document.getElementById('segment-control') as HTMLElement);
-                if (parent) {
-                  parent.querySelectorAll('button').forEach(btn => {
-                    btn.setAttribute('data-active', 'false');
-                  });
-                }
-                (document.querySelector(`[data-segment="${label}"]`) as HTMLElement)?.setAttribute('data-active', 'true');
-              }}
-              id="segment-control"
-              data-segment={label}
-              data-active={isDefault ? 'true' : 'false'}
+          <motion.div
+            className="px-6 text-center"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          >
+            <h1
+              className="font-serif"
               style={{
-                fontFamily: "'Lato', sans-serif",
-                fontSize: '9px',
+                fontSize: '44px',
                 fontWeight: 700,
-                letterSpacing: '0.12em',
+                lineHeight: 1.1,
                 color: '#DC9A14',
-                background: isDefault ? 'rgba(220, 154, 20, 0.15)' : 'transparent',
-                opacity: isDefault ? 1 : 0.5,
-                border: 'none',
-                borderRadius: '8px',
-                padding: '6px 20px',
-                cursor: 'pointer',
-                transition: 'all 200ms ease',
-              }}
-              onMouseDown={(e) => {
-                const btn = e.currentTarget as HTMLButtonElement;
-                btn.style.background = 'rgba(220, 154, 20, 0.15)';
-                btn.style.opacity = '1';
-                // Dim sibling
-                const sibling = btn.parentElement?.querySelector(`button:not([data-segment="${label}"])`) as HTMLElement;
-                if (sibling) { sibling.style.background = 'transparent'; sibling.style.opacity = '0.5'; }
+                letterSpacing: '0.04em',
+                textAlign: 'center',
+                marginBottom: '0',
               }}
             >
-              {label}
-            </button>
-          ))}
-        </motion.div>
+              BONKI
+            </h1>
+            <p
+              className="font-serif italic"
+              style={{
+                fontSize: '15px',
+                color: 'hsla(36, 30%, 85%, 0.7)',
+                textAlign: 'center',
+                marginTop: '8px',
+                lineHeight: 1.5,
+              }}
+            >
+              Välj det samtal som behövs just nu
+            </p>
+          </motion.div>
 
-        {/* ── Barn — broken grid layout ── */}
-        <div ref={barnRef} className="px-5" style={{ scrollMarginTop: '8px' }}>
+          {/* Segment control */}
+          <motion.div
+            initial={{ opacity: 0, y: 6 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.06, duration: 0.4 }}
+            style={{
+              display: 'flex',
+              margin: '24px auto 0',
+              width: 'fit-content',
+              background: 'hsla(240, 20%, 95%, 0.08)',
+              borderRadius: '10px',
+              padding: '3px',
+              gap: '2px',
+              border: '1px solid hsla(240, 20%, 95%, 0.06)',
+            }}
+          >
+            {[
+              { label: 'BARN', ref: barnRef, isDefault: true },
+              { label: 'PAR', ref: parRef, isDefault: false },
+            ].map(({ label, ref, isDefault }) => (
+              <button
+                key={label}
+                onClick={() => {
+                  ref.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                  const parent = (document.getElementById('segment-control') as HTMLElement);
+                  if (parent) {
+                    parent.querySelectorAll('button').forEach(btn => {
+                      btn.setAttribute('data-active', 'false');
+                    });
+                  }
+                  (document.querySelector(`[data-segment="${label}"]`) as HTMLElement)?.setAttribute('data-active', 'true');
+                }}
+                id="segment-control"
+                data-segment={label}
+                data-active={isDefault ? 'true' : 'false'}
+                style={{
+                  fontFamily: "'Lato', sans-serif",
+                  fontSize: '9px',
+                  fontWeight: 700,
+                  letterSpacing: '0.12em',
+                  color: '#DC9A14',
+                  background: isDefault ? 'hsla(40, 75%, 55%, 0.12)' : 'transparent',
+                  opacity: isDefault ? 1 : 0.45,
+                  border: 'none',
+                  borderRadius: '8px',
+                  padding: '6px 20px',
+                  cursor: 'pointer',
+                  transition: 'all 200ms ease',
+                }}
+                onMouseDown={(e) => {
+                  const btn = e.currentTarget as HTMLButtonElement;
+                  btn.style.background = 'hsla(40, 75%, 55%, 0.12)';
+                  btn.style.opacity = '1';
+                  const sibling = btn.parentElement?.querySelector(`button:not([data-segment="${label}"])`) as HTMLElement;
+                  if (sibling) { sibling.style.background = 'transparent'; sibling.style.opacity = '0.45'; }
+                }}
+              >
+                {label}
+              </button>
+            ))}
+          </motion.div>
+        </div>
+
+        {/* ── Barn section ── */}
+        <div ref={barnRef} className="px-5" style={{ scrollMarginTop: '8px', paddingTop: '28px' }}>
+          {/* Editorial intro — no container, breathing whitespace */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.08, duration: 0.6 }}
-            style={{
-              textAlign: 'center',
-              padding: '28px 28px 24px',
-              margin: '0 0 16px',
-              borderRadius: '14px',
-              backgroundColor: 'rgba(44, 36, 32, 0.025)',
-            }}
+            style={{ textAlign: 'center', marginBottom: '24px', padding: '0 8px' }}
           >
+            <div style={{ width: '24px', height: '2px', background: '#1A1A2E', opacity: 0.15, margin: '0 auto 16px', borderRadius: '1px' }} />
             <p
               style={{
                 fontFamily: "'DM Serif Display', serif",
-                fontSize: '18px',
+                fontSize: '19px',
                 fontWeight: 400,
-                color: 'var(--text-library)',
-                lineHeight: 1.5,
-                marginBottom: '8px',
+                color: '#1A1A2E',
+                lineHeight: 1.45,
+                marginBottom: '10px',
               }}
             >
               Det ditt barn inte säger själv — börjar här
@@ -645,20 +647,19 @@ export default function ProductLibrary() {
           transition={{ delay: 0.4, duration: 0.6 }}
           style={{
             textAlign: 'center',
-            padding: '28px 28px 24px',
-            margin: '20px 20px 0',
-            borderRadius: '14px',
-            backgroundColor: 'rgba(44, 36, 32, 0.025)',
+            padding: '32px 28px 28px',
+            margin: '24px 20px 0',
           }}
         >
+          <div style={{ width: '24px', height: '2px', background: '#1A1A2E', opacity: 0.15, margin: '0 auto 16px', borderRadius: '1px' }} />
           <p
             style={{
               fontFamily: "'DM Serif Display', serif",
-              fontSize: '18px',
+              fontSize: '19px',
               fontWeight: 400,
-              color: 'var(--text-library)',
-              lineHeight: 1.5,
-              marginBottom: '8px',
+              color: '#1A1A2E',
+              lineHeight: 1.45,
+              marginBottom: '10px',
             }}
           >
             Barnens trygghet börjar med deras vuxna
@@ -883,21 +884,21 @@ export default function ProductLibrary() {
 
 
 
-        {/* Sign-off */}
+        {/* Sign-off — brand anchored */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.8, duration: 0.6 }}
-          style={{ textAlign: 'center', padding: '0 20px', marginTop: '24px', paddingBottom: 'calc(40px + env(safe-area-inset-bottom, 0px))' }}
+          style={{ textAlign: 'center', padding: '0 20px', marginTop: '32px', paddingBottom: 'calc(48px + env(safe-area-inset-bottom, 0px))' }}
         >
-          <div style={{ width: '32px', height: '1px', background: '#A09890', opacity: 0.2, margin: '0 auto 14px' }} />
+          <div style={{ width: '24px', height: '2px', background: '#1A1A2E', opacity: 0.12, margin: '0 auto 18px', borderRadius: '1px' }} />
           <p
             style={{
               fontFamily: "'DM Serif Display', serif",
               fontStyle: 'italic',
               fontSize: '13px',
-              color: 'var(--accent-text)',
-              opacity: 0.5,
+              color: '#1A1A2E',
+              opacity: 0.35,
               lineHeight: 1.6,
             }}
           >
