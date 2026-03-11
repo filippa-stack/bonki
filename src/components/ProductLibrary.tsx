@@ -395,18 +395,6 @@ export default function ProductLibrary() {
           >
             BONKI
           </h1>
-          <p
-            className="font-serif italic"
-            style={{
-              fontSize: '22px',
-              color: 'var(--text-library)',
-              opacity: 0.7,
-              textAlign: 'center',
-              marginTop: '4px',
-            }}
-          >
-            På riktigt.
-          </p>
         </motion.div>
 
         {/* Segment control with active state */}
