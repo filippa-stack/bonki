@@ -488,6 +488,9 @@ export default function ProductLibrary() {
             </button>
           ))}
         </motion.div>
+
+        {/* Extra breathing room before card */}
+        <div style={{ height: '36px' }} />
       </div>
 
       {/* ── Inset card — all content in a raised white surface ── */}
@@ -498,14 +501,24 @@ export default function ProductLibrary() {
           position: 'relative',
           zIndex: 1,
           flex: 1,
-          marginTop: '-4px',
           marginLeft: '5px',
           marginRight: '5px',
           boxShadow: '0 -4px 20px hsla(240, 27%, 8%, 0.3)',
         }}
       >
+        {/* Gold accent line — intentional bridge */}
+        <div
+          style={{
+            width: '40px',
+            height: '2px',
+            background: 'var(--canopy-subtitle)',
+            margin: '20px auto 0',
+            borderRadius: '1px',
+            opacity: 0.6,
+          }}
+        />
         {/* ── Barn — broken grid layout ── */}
-        <div ref={barnRef} className="px-5" style={{ scrollMarginTop: '8px', paddingTop: '28px' }}>
+        <div ref={barnRef} className="px-5" style={{ scrollMarginTop: '8px', paddingTop: '16px' }}>
           <motion.p
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
