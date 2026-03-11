@@ -419,10 +419,10 @@ export default function ProductLibrary() {
             display: 'flex',
             margin: '16px auto 20px',
             width: 'fit-content',
-            background: '#1A1A2E',
-            borderRadius: '10px',
-            padding: '3px',
-            gap: '2px',
+            background: 'transparent',
+            borderRadius: '0',
+            padding: '0',
+            gap: '16px',
           }}
         >
           {[
