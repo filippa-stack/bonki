@@ -978,7 +978,7 @@ export default function ProductLibrary() {
             <motion.div
               variants={tileVariants}
               style={{
-                borderRadius: '16px',
+                borderRadius: '20px',
                 padding: '24px 20px 18px',
                 background: 'linear-gradient(180deg, #EDDCE6 0%, #E0CCd8 100%)',
                 textAlign: 'left',
@@ -989,8 +989,8 @@ export default function ProductLibrary() {
                 flexDirection: 'column',
                 alignItems: 'flex-start',
                 justifyContent: 'flex-end',
-                border: '1px solid rgba(44, 36, 32, 0.05)',
-                boxShadow: '0px 2px 6px rgba(44, 36, 32, 0.10), 0px 8px 20px rgba(44, 36, 32, 0.08)',
+                border: '1px solid hsla(30, 15%, 80%, 0.3)',
+                boxShadow: '0 2px 6px hsla(30, 18%, 20%, 0.08), 0 10px 28px -6px hsla(30, 20%, 18%, 0.10)',
                 opacity: 0.85,
                 filter: 'saturate(0.7)',
               }}
