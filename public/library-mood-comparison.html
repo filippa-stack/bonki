@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bonki Library — Mood Comparison</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Serif+Display:ital@0;1&family=Lato:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Lato', sans-serif;
+    background: #1a1a1a;
+    color: #fff;
+    min-height: 100vh;
+    padding: 32px 16px;
+  }
+  h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 28px;
+    text-align: center;
+    margin-bottom: 8px;
+    color: #fff;
+  }
+  .subtitle {
+    text-align: center;
+    font-size: 13px;
+    color: rgba(255,255,255,0.5);
+    margin-bottom: 32px;
+  }
+  .tabs {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 28px;
+    flex-wrap: wrap;
+  }
+  .tab {
+    padding: 8px 20px;
+    border-radius: 10px;
+    border: 1px solid rgba(255,255,255,0.15);
+    background: transparent;
+    color: rgba(255,255,255,0.6);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    cursor: pointer;
+    transition: all 200ms;
+  }
+  .tab.active {
+    background: rgba(255,255,255,0.12);
+    color: #fff;
+    border-color: rgba(255,255,255,0.3);
+  }
+  .phone-frame {
+    width: 390px;
+    max-width: 100%;
+    margin: 0 auto;
+    border-radius: 40px;
+    overflow: hidden;
+    border: 3px solid rgba(255,255,255,0.1);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+  }
+  .screen {
+    min-height: 844px;
+    overflow-y: auto;
+    padding-bottom: 40px;
+  }
+  .variant-label {
+    text-align: center;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.4);
+    margin-bottom: 12px;
+  }
+  .variant-desc {
+    text-align: center;
+    font-size: 13px;
+    color: rgba(255,255,255,0.55);
+    max-width: 420px;
+    margin: 0 auto 20px;
+    line-height: 1.6;
+  }
+  .hidden { display: none; }
+
+  /* ── Shared tile styles ── */
+  .tile-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 10px; padding: 0 20px; }
+  .tile {
+    border-radius: 16px;
+    min-height: 150px;
+    padding: 36px 16px 14px;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+  }
+  .tile.wide { grid-column: span 2; min-height: 140px; padding: 36px 20px 16px; }
+  .tile h3 { font-family: 'DM Serif Display', serif; font-size: 19px; font-weight: 400; line-height: 1.15; letter-spacing: -0.01em; }
+  .tile.wide h3 { font-size: 26px; }
+  .tile .tagline { font-size: 11px; font-weight: 400; margin-top: 4px; line-height: 1.4; }
+  .tile .badge { font-size: 7px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; opacity: 0.55; margin-top: auto; padding-top: 6px; }
+
+  .hero-title { font-family: 'Bebas Neue', sans-serif; font-size: 48px; letter-spacing: 0.06em; text-align: center; margin-bottom: 4px; }
+  .hero-sub { font-family: 'DM Serif Display', serif; font-style: italic; font-size: 14px; font-weight: 400; text-align: center; opacity: 0.55; line-height: 1.5; }
+  .section-sub { font-family: 'DM Serif Display', serif; font-size: 14px; font-weight: 400; text-align: center; opacity: 0.55; line-height: 1.5; margin-bottom: 16px; }
+  .segment-bar { display: flex; width: fit-content; margin: 16px auto 20px; border-radius: 10px; padding: 3px; gap: 2px; }
+  .seg-btn { font-size: 9px; font-weight: 700; letter-spacing: 0.12em; border: none; border-radius: 8px; padding: 6px 20px; cursor: pointer; }
+
+  /* ── PAR section ── */
+  .par-tile {
+    border-radius: 16px;
+    padding: 24px 20px 18px;
+    text-align: left;
+    position: relative;
+    overflow: hidden;
+    min-height: 160px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+  }
+  .par-tile h3 { font-family: 'DM Serif Display', serif; font-size: 26px; font-weight: 400; line-height: 1.15; }
+  .par-tile .tagline { font-size: 11px; margin-top: 4px; line-height: 1.4; max-width: 55%; }
+
+  .bridge-box { text-align: center; padding: 28px 28px 24px; margin: 20px 20px 0; border-radius: 14px; }
+  .bridge-title { font-family: 'DM Serif Display', serif; font-size: 18px; font-weight: 400; line-height: 1.5; margin-bottom: 8px; }
+  .bridge-sub { font-family: 'DM Serif Display', serif; font-style: italic; font-size: 13px; opacity: 0.5; line-height: 1.6; }
+
+  .sign-off { text-align: center; padding: 0 20px; margin-top: 24px; }
+  .sign-off-line { width: 32px; height: 1px; margin: 0 auto 14px; opacity: 0.2; }
+  .sign-off-text { font-family: 'DM Serif Display', serif; font-style: italic; font-size: 13px; opacity: 0.5; line-height: 1.6; }
+</style>
+</head>
+<body>
+
+<h1>Bibliotek — Tonalitet</h1>
+<p class="subtitle">Tre riktningar att jämföra. Klicka för att växla.</p>
+
+<div class="tabs">
+  <button class="tab active" onclick="show('a')">A · Varm mörk</button>
+  <button class="tab" onclick="show('b')">B · Ljust men skarpare</button>
+  <button class="tab" onclick="show('c')">C · Delad ton</button>
+</div>
+
+<!-- ═══════════════ VARIANT A: Warm Dark ═══════════════ -->
+<div id="variant-a">
+  <p class="variant-label">Variant A — "Bränt papper"</p>
+  <p class="variant-desc">Hela biblioteket i varm espresso. Tiles glöder som upplysta fönster. Onboarding → bibliotek känns som ett enda rum.</p>
+  <div class="phone-frame">
+    <div class="screen" style="background: hsl(25, 15%, 12%);">
+      <div style="padding-top: 16px; padding-bottom: 8px;">
+        <div class="hero-title" style="color: rgba(255,255,255,0.9);">Bonki</div>
+        <div class="hero-sub" style="color: rgba(255,255,255,0.4);">Välj det samtal ni behöver just nu</div>
+      </div>
+      <div class="segment-bar" style="background: rgba(255,255,255,0.06);">
+        <button class="seg-btn" style="background: rgba(255,255,255,0.12); color: rgba(255,255,255,0.9);">BARN</button>
+        <button class="seg-btn" style="background: transparent; color: rgba(255,255,255,0.4);">PAR</button>
+      </div>
+      <div class="section-sub" style="color: rgba(255,255,255,0.35);">Samtalskort som hjälper er att nå det barnet inte säger själv</div>
+      <div class="tile-grid">
+        <div class="tile wide" style="background: linear-gradient(180deg, #F5EDD2 0%, #E0D8BD 100%); box-shadow: 0 4px 20px rgba(0,0,0,0.3);">
+          <h3 style="color: #6B6B10;">Jag i mig</h3>
+          <p class="tagline" style="color: #6B6742;">Hjälp ditt barn hitta ord för det som känns</p>
+          <span class="badge" style="color: #6B6B10;">6 ämnen · 195 kr · Första gratis</span>
+        </div>
+        <div class="tile" style="background: linear-gradient(180deg, #F0D9EA 0%, #DCC6D8 100%); box-shadow: 0 4px 20px rgba(0,0,0,0.3);">
+          <h3 style="color: #7A1BA8;">Jag med andra</h3>
+          <p class="tagline" style="color: #5E4058;">När omvärlden växer</p>
+          <span class="badge" style="color: #7A1BA8;">5 ämnen · 195 kr</span>
+        </div>
+        <div class="tile" style="background: linear-gradient(180deg, #C8E6D0 0%, #B5D3BC 100%); box-shadow: 0 4px 20px rgba(0,0,0,0.3);">
+          <h3 style="color: #2D6B35;">Jag i världen</h3>
+          <p class="tagline" style="color: #3A6B48;">De stora frågorna</p>
+          <span class="badge" style="color: #2D6B35;">7 ämnen · 195 kr</span>
+        </div>
+        <div class="tile" style="background: linear-gradient(180deg, #D2E8E8 0%, #BFD5D5 100%); box-shadow: 0 4px 20px rgba(0,0,0,0.3);">
+          <h3 style="color: #0A4A6A;">Vardagskort</h3>
+          <p class="tagline" style="color: #1A4040;">Samtal runt middagsbordet</p>
+          <span class="badge" style="color: #0A4A6A;">2 ämnen · 195 kr</span>
+        </div>
+        <div class="tile" style="background: linear-gradient(180deg, #D6E2F0 0%, #C3CFDD 100%); box-shadow: 0 4px 20px rgba(0,0,0,0.3);">
+          <h3 style="color: #0C3D7A;">Syskonkort</h3>
+          <p class="tagline" style="color: #1A2E50;">Det som finns mellan dem</p>
+          <span class="badge" style="color: #0C3D7A;">2 ämnen · 195 kr</span>
+        </div>
+        <div class="tile" style="background: linear-gradient(180deg, #F0D9E2 0%, #DDC6CF 100%); box-shadow: 0 4px 20px rgba(0,0,0,0.3);">
+          <h3 style="color: #A04858;">Sexualitet</h3>
+          <p class="tagline" style="color: #6B4858;">Det svåra samtalet</p>
+          <span class="badge" style="color: #A04858;">2 ämnen · 195 kr</span>
+        </div>
+      </div>
+      <div class="bridge-box" style="background: rgba(255,255,255,0.04);">
+        <div class="bridge-title" style="color: rgba(255,255,255,0.75);">Barnens trygghet börjar med deras vuxna</div>
+        <div class="bridge-sub" style="color: rgba(255,255,255,0.35);">Samma psykologi. Samma precision. Nu för er.</div>
+      </div>
+      <div style="padding: 20px 20px 0;">
+        <div class="par-tile" style="background: linear-gradient(180deg, #D6E8DE 0%, #CADBC4 100%); box-shadow: 0 4px 20px rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.08);">
+          <h3 style="color: #2A5040;">Still Us</h3>
+          <p class="tagline" style="color: #4A7A5E;">Vi finns kvar — ett strukturerat sätt att ta de svåra samtalen</p>
+        </div>
+      </div>
+      <div class="sign-off" style="padding-bottom: 48px;">
+        <div class="sign-off-line" style="background: rgba(255,255,255,0.3);"></div>
+        <div class="sign-off-text" style="color: #DC9A14;">Utvecklat av psykolog med 20+ års klinisk erfarenhet.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ VARIANT B: Light but Sharper ═══════════════ -->
+<div id="variant-b" class="hidden">
+  <p class="variant-label">Variant B — "Ljust men skarpare"</p>
+  <p class="variant-desc">Behåller den varma bakgrunden men höjer auktoriteten: DM Serif Display, tydligare hierarki, starkare kontrast. Mindre förändring, samma identitet.</p>
+  <div class="phone-frame">
+    <div class="screen" style="background: #FAF7F2;">
+      <div style="padding-top: 16px; padding-bottom: 8px;">
+        <div class="hero-title" style="color: #2C2420;">Bonki</div>
+        <div class="hero-sub" style="color: #2C2420;">Välj det samtal ni behöver just nu</div>
+      </div>
+      <div class="segment-bar" style="background: rgba(44,36,32,0.05);">
+        <button class="seg-btn" style="background: rgba(255,255,255,0.8); color: #2C2420;">BARN</button>
+        <button class="seg-btn" style="background: transparent; color: #2C2420; opacity: 0.4;">PAR</button>
+      </div>
+      <!-- Stronger intro text -->
+      <div style="padding: 0 24px 16px; text-align: center;">
+        <p style="font-family: 'DM Serif Display', serif; font-size: 15px; color: #2C2420; opacity: 0.5; line-height: 1.5;">
+          Samtalskort som hjälper er att nå det barnet inte säger själv
+        </p>
+      </div>
+      <div class="tile-grid">
+        <div class="tile wide" style="background: linear-gradient(180deg, #F5EDD2 0%, #E0D8BD 100%); box-shadow: 0 2px 6px rgba(44,36,32,0.10), 0 8px 20px rgba(44,36,32,0.08);">
+          <h3 style="color: #6B6B10;">Jag i mig</h3>
+          <p class="tagline" style="color: #6B6742;">Hjälp ditt barn hitta ord för det som känns</p>
+          <span class="badge" style="color: #6B6B10;">6 ämnen · 195 kr · Första gratis</span>
+        </div>
+        <div class="tile" style="background: linear-gradient(180deg, #F0D9EA 0%, #DCC6D8 100%); box-shadow: 0 2px 6px rgba(44,36,32,0.10), 0 8px 20px rgba(44,36,32,0.08);">
+          <h3 style="color: #7A1BA8;">Jag med andra</h3>
+          <p class="tagline" style="color: #5E4058;">När omvärlden växer</p>
+          <span class="badge" style="color: #7A1BA8;">5 ämnen · 195 kr</span>
+        </div>
+        <div class="tile" style="background: linear-gradient(180deg, #C8E6D0 0%, #B5D3BC 100%); box-shadow: 0 2px 6px rgba(44,36,32,0.10), 0 8px 20px rgba(44,36,32,0.08);">
+          <h3 style="color: #2D6B35;">Jag i världen</h3>
+          <p class="tagline" style="color: #3A6B48;">De stora frågorna</p>
+          <span class="badge" style="color: #2D6B35;">7 ämnen · 195 kr</span>
+        </div>
+        <div class="tile" style="background: linear-gradient(180deg, #D2E8E8 0%, #BFD5D5 100%); box-shadow: 0 2px 6px rgba(44,36,32,0.10), 0 8px 20px rgba(44,36,32,0.08);">
+          <h3 style="color: #0A4A6A;">Vardagskort</h3>
+          <p class="tagline" style="color: #1A4040;">Samtal runt middagsbordet</p>
+          <span class="badge" style="color: #0A4A6A;">2 ämnen · 195 kr</span>
+        </div>
+        <div class="tile" style="background: linear-gradient(180deg, #D6E2F0 0%, #C3CFDD 100%); box-shadow: 0 2px 6px rgba(44,36,32,0.10), 0 8px 20px rgba(44,36,32,0.08);">
+          <h3 style="color: #0C3D7A;">Syskonkort</h3>
+          <p class="tagline" style="color: #1A2E50;">Det som finns mellan dem</p>
+          <span class="badge" style="color: #0C3D7A;">2 ämnen · 195 kr</span>
+        </div>
+        <div class="tile" style="background: linear-gradient(180deg, #F0D9E2 0%, #DDC6CF 100%); box-shadow: 0 2px 6px rgba(44,36,32,0.10), 0 8px 20px rgba(44,36,32,0.08);">
+          <h3 style="color: #A04858;">Sexualitet</h3>
+          <p class="tagline" style="color: #6B4858;">Det svåra samtalet</p>
+          <span class="badge" style="color: #A04858;">2 ämnen · 195 kr</span>
+        </div>
+      </div>
+      <div class="bridge-box" style="background: rgba(44,36,32,0.025);">
+        <div class="bridge-title" style="color: #2C2420;">Barnens trygghet börjar med deras vuxna</div>
+        <div class="bridge-sub" style="color: #2C2420;">Samma psykologi. Samma precision. Nu för er.</div>
+      </div>
+      <div style="padding: 20px 20px 0;">
+        <div class="par-tile" style="background: linear-gradient(180deg, #D6E8DE 0%, #CADBC4 100%); box-shadow: 0 2px 6px rgba(44,36,32,0.10), 0 8px 20px rgba(44,36,32,0.08);">
+          <h3 style="color: #2A5040;">Still Us</h3>
+          <p class="tagline" style="color: #4A7A5E;">Vi finns kvar — ett strukturerat sätt att ta de svåra samtalen</p>
+        </div>
+      </div>
+      <div class="sign-off" style="padding-bottom: 48px;">
+        <div class="sign-off-line" style="background: #A09890;"></div>
+        <div class="sign-off-text" style="color: var(--accent-text, hsl(38, 72%, 38%));">Utvecklat av psykolog med 20+ års klinisk erfarenhet.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ VARIANT C: Split Tone ═══════════════ -->
+<div id="variant-c" class="hidden">
+  <p class="variant-label">Variant C — "Delad ton"</p>
+  <p class="variant-desc">Barn-sektionen behåller det ljusa, varma. Par-sektionen skiftar till varm mörk — sofistikerad och vuxen. Övergången sker naturligt vid bridge-frasen.</p>
+  <div class="phone-frame">
+    <div class="screen" style="background: #FAF7F2;">
+      <div style="padding-top: 16px; padding-bottom: 8px;">
+        <div class="hero-title" style="color: #2C2420;">Bonki</div>
+        <div class="hero-sub" style="color: #2C2420;">Välj det samtal ni behöver just nu</div>
+      </div>
+      <div class="segment-bar" style="background: rgba(44,36,32,0.05);">
+        <button class="seg-btn" style="background: rgba(255,255,255,0.8); color: #2C2420;">BARN</button>
+        <button class="seg-btn" style="background: transparent; color: #2C2420; opacity: 0.4;">PAR</button>
+      </div>
+      <div class="section-sub" style="color: #2C2420;">Samtalskort som hjälper er att nå det barnet inte säger själv</div>
+      <div class="tile-grid">
+        <div class="tile wide" style="background: linear-gradient(180deg, #F5EDD2 0%, #E0D8BD 100%); box-shadow: 0 2px 6px rgba(44,36,32,0.10), 0 8px 20px rgba(44,36,32,0.08);">
+          <h3 style="color: #6B6B10;">Jag i mig</h3>
+          <p class="tagline" style="color: #6B6742;">Hjälp ditt barn hitta ord för det som känns</p>
+          <span class="badge" style="color: #6B6B10;">6 ämnen · 195 kr · Första gratis</span>
+        </div>
+        <div class="tile" style="background: linear-gradient(180deg, #F0D9EA 0%, #DCC6D8 100%); box-shadow: 0 2px 6px rgba(44,36,32,0.10), 0 8px 20px rgba(44,36,32,0.08);">
+          <h3 style="color: #7A1BA8;">Jag med andra</h3>
+          <p class="tagline" style="color: #5E4058;">När omvärlden växer</p>
+          <span class="badge" style="color: #7A1BA8;">5 ämnen · 195 kr</span>
+        </div>
+        <div class="tile" style="background: linear-gradient(180deg, #C8E6D0 0%, #B5D3BC 100%); box-shadow: 0 2px 6px rgba(44,36,32,0.10), 0 8px 20px rgba(44,36,32,0.08);">
+          <h3 style="color: #2D6B35;">Jag i världen</h3>
+          <p class="tagline" style="color: #3A6B48;">De stora frågorna</p>
+          <span class="badge" style="color: #2D6B35;">7 ämnen · 195 kr</span>
+        </div>
+        <div class="tile" style="background: linear-gradient(180deg, #D2E8E8 0%, #BFD5D5 100%); box-shadow: 0 2px 6px rgba(44,36,32,0.10), 0 8px 20px rgba(44,36,32,0.08);">
+          <h3 style="color: #0A4A6A;">Vardagskort</h3>
+          <p class="tagline" style="color: #1A4040;">Samtal runt middagsbordet</p>
+          <span class="badge" style="color: #0A4A6A;">2 ämnen · 195 kr</span>
+        </div>
+        <div class="tile" style="background: linear-gradient(180deg, #D6E2F0 0%, #C3CFDD 100%); box-shadow: 0 2px 6px rgba(44,36,32,0.10), 0 8px 20px rgba(44,36,32,0.08);">
+          <h3 style="color: #0C3D7A;">Syskonkort</h3>
+          <p class="tagline" style="color: #1A2E50;">Det som finns mellan dem</p>
+          <span class="badge" style="color: #0C3D7A;">2 ämnen · 195 kr</span>
+        </div>
+        <div class="tile" style="background: linear-gradient(180deg, #F0D9E2 0%, #DDC6CF 100%); box-shadow: 0 2px 6px rgba(44,36,32,0.10), 0 8px 20px rgba(44,36,32,0.08);">
+          <h3 style="color: #A04858;">Sexualitet</h3>
+          <p class="tagline" style="color: #6B4858;">Det svåra samtalet</p>
+          <span class="badge" style="color: #A04858;">2 ämnen · 195 kr</span>
+        </div>
+      </div>
+
+      <!-- ── Transition zone: light → dark ── -->
+      <div style="background: linear-gradient(180deg, #FAF7F2 0%, hsl(25,15%,12%) 100%); padding: 1px 0;">
+        <div class="bridge-box" style="background: transparent; margin-top: 20px;">
+          <div class="bridge-title" style="color: rgba(255,255,255,0.8);">Barnens trygghet börjar med deras vuxna</div>
+          <div class="bridge-sub" style="color: rgba(255,255,255,0.4);">Samma psykologi. Samma precision. Nu för er.</div>
+        </div>
+      </div>
+
+      <!-- ── PAR section: dark ── -->
+      <div style="background: hsl(25, 15%, 12%); padding: 20px 20px 48px;">
+        <div class="par-tile" style="background: linear-gradient(180deg, #D6E8DE 0%, #CADBC4 100%); box-shadow: 0 4px 20px rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.08);">
+          <h3 style="color: #2A5040;">Still Us</h3>
+          <p class="tagline" style="color: #4A7A5E;">Vi finns kvar — ett strukturerat sätt att ta de svåra samtalen</p>
+        </div>
+        <div style="margin-top: 10px;">
+          <div class="par-tile" style="background: linear-gradient(180deg, #EDDCE6 0%, #E0CCD8 100%); box-shadow: 0 4px 20px rgba(0,0,0,0.3); opacity: 0.85; filter: saturate(0.7); min-height: 120px;">
+            <h3 style="color: #6B3A58;">Still Fair</h3>
+            <p class="tagline" style="color: #8A5A74;">Kommer snart</p>
+          </div>
+        </div>
+        <div class="sign-off" style="padding-bottom: 0; margin-top: 24px;">
+          <div class="sign-off-line" style="background: rgba(255,255,255,0.2);"></div>
+          <div class="sign-off-text" style="color: #DC9A14;">Utvecklat av psykolog med 20+ års klinisk erfarenhet.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function show(id) {
+  document.querySelectorAll('[id^="variant-"]').forEach(el => el.classList.add('hidden'));
+  document.getElementById('variant-' + id).classList.remove('hidden');
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  event.target.classList.add('active');
+}
+</script>
+</body>
+</html>
