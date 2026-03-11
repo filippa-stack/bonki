@@ -499,6 +499,8 @@ export default function ProductLibrary() {
           zIndex: 1,
           flex: 1,
           marginTop: '-4px',
+          marginLeft: '5px',
+          marginRight: '5px',
           boxShadow: '0 -4px 20px hsla(240, 27%, 8%, 0.3)',
         }}
       >
