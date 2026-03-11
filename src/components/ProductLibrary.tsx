@@ -373,28 +373,8 @@ export default function ProductLibrary() {
     >
       {/* Content */}
       <div style={{ position: 'relative', zIndex: 1 }}>
-        {/* Hero — tagline only (logo lives in header) */}
-        <motion.div
-          className="pt-4 pb-2 px-6 text-center"
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-          style={{ position: 'relative' }}
-        >
-          <p
-            className="font-serif italic"
-            style={{
-              fontSize: '14px',
-              color: 'var(--color-text-secondary)',
-              opacity: 0.55,
-              textAlign: 'center',
-              marginTop: '2px',
-              lineHeight: 1.5,
-            }}
-          >
-            Välj det samtal som behövs just nu
-          </p>
-        </motion.div>
+        {/* Spacer — logo lives in header, content starts immediately */}
+        <div style={{ height: '8px' }} />
 
         {/* Segment control with active state */}
         <motion.div
