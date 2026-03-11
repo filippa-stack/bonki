@@ -387,7 +387,7 @@ export default function ProductLibrary() {
               fontSize: '42px',
               fontWeight: 700,
               lineHeight: 1.1,
-              color: 'var(--text-library)',
+              color: '#1A1A2E',
               letterSpacing: '0.02em',
               textAlign: 'center',
               marginBottom: '0',
