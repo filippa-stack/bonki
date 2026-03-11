@@ -94,6 +94,12 @@ const PAGES = [
   { path: '/diary/sexualitetskort', label: '📖 Dagbok: SEX' },
 ];
 
+const EXTERNAL_TOOLS = [
+  { url: '/library-mood-comparison.html', label: '🎨 Library Mood Comparison' },
+  { url: '/flowcharts.html', label: '🗺️ Flowcharts' },
+  { url: '/wireframes.html', label: '📐 Wireframes' },
+];
+
 export default function DevModeBadge() {
   const { user } = useAuth();
   const devState = useDevState();
