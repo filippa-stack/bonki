@@ -964,7 +964,7 @@ export default function ProductLibrary() {
                       fontWeight: 600,
                       letterSpacing: '0.06em',
                       textTransform: 'uppercase',
-                      color: '#1E3D30',
+                      color: '#1E3340',
                       opacity: 0.55,
                       lineHeight: 1.4,
                     }}
