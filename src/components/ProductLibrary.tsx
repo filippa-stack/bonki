@@ -369,16 +369,15 @@ export default function ProductLibrary() {
   return (
     <div
       className="min-h-screen flex flex-col relative"
-      style={{ fontFamily: "'Lato', sans-serif" }}
+      style={{ background: 'var(--canopy-bg)', fontFamily: "'Lato', sans-serif" }}
     >
-      {/* ── Branded Canopy — midnight blue anchor from onboarding ── */}
+      {/* ── Crown — BONKI + segment on midnight blue ── */}
       <div
         style={{
-          background: 'var(--canopy-bg)',
           paddingTop: 'calc(env(safe-area-inset-top, 0px) + 28px)',
-          paddingBottom: '0',
+          paddingBottom: '24px',
           position: 'relative',
-          overflow: 'hidden',
+          zIndex: 2,
         }}
       >
         {/* Subtle radial glow */}
@@ -428,7 +427,7 @@ export default function ProductLibrary() {
           </p>
         </motion.div>
 
-        {/* Segment control — sits in the transition zone */}
+        {/* Segment control */}
         <motion.div
           initial={{ opacity: 0, y: 6 }}
           animate={{ opacity: 1, y: 0 }}
@@ -489,21 +488,22 @@ export default function ProductLibrary() {
             </button>
           ))}
         </motion.div>
-
-        {/* Gradient fade from canopy → library surface */}
-        <div
-          style={{
-            height: '80px',
-            background: 'linear-gradient(to bottom, var(--canopy-bg) 0%, var(--surface-library) 100%)',
-            marginTop: '10px',
-          }}
-        />
       </div>
 
-      {/* ── Library content on warm linen ── */}
-      <div style={{ backgroundColor: 'var(--surface-library)', position: 'relative', zIndex: 1, flex: 1 }}>
+      {/* ── Inset card — all content in a raised white surface ── */}
+      <div
+        style={{
+          backgroundColor: 'var(--surface-library)',
+          borderRadius: '24px 24px 0 0',
+          position: 'relative',
+          zIndex: 1,
+          flex: 1,
+          marginTop: '-4px',
+          boxShadow: '0 -4px 20px hsla(240, 27%, 8%, 0.3)',
+        }}
+      >
         {/* ── Barn — broken grid layout ── */}
-        <div ref={barnRef} className="px-5" style={{ scrollMarginTop: '8px' }}>
+        <div ref={barnRef} className="px-5" style={{ scrollMarginTop: '8px', paddingTop: '28px' }}>
           <motion.p
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -517,7 +517,6 @@ export default function ProductLibrary() {
               lineHeight: 1.5,
               textAlign: 'center',
               marginBottom: '20px',
-              marginTop: '-20px',
             }}
           >
             Det barnet inte säger själv — börjar här
