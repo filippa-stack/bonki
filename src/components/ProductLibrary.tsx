@@ -395,7 +395,7 @@ export default function ProductLibrary() {
           left: '50%',
           top: '0',
           transform: 'translateX(-50%)',
-          opacity: 0.04,
+          opacity: 0.07,
           filter: 'sepia(1) saturate(0.2) brightness(1.8) hue-rotate(-10deg)',
           pointerEvents: 'none',
           zIndex: 0,
@@ -404,59 +404,40 @@ export default function ProductLibrary() {
 
       {/* Content */}
       <div style={{ position: 'relative', zIndex: 1 }}>
-        {/* Hero zone — cinematic entrance */}
+        {/* Hero zone — compact cinematic */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 1.0, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
           style={{
             textAlign: 'center',
-            padding: '40px 32px 0',
+            padding: '24px 32px 0',
           }}
         >
-          {/* Micro-label */}
-          <motion.p
-            initial={{ opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2, duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
-            style={{
-              fontFamily: "'Lato', sans-serif",
-              fontSize: '0.6rem',
-              fontWeight: 600,
-              letterSpacing: '0.18em',
-              textTransform: 'uppercase',
-              color: 'var(--accent-text)',
-              opacity: 0.6,
-              marginBottom: '12px',
-            }}
-          >
-            Utvecklat av psykolog
-          </motion.p>
-
           <motion.h1
-            initial={{ opacity: 0, y: 14 }}
+            initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.35, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ delay: 0.15, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
             style={{
               fontFamily: "'DM Serif Display', serif",
-              fontSize: '36px',
+              fontSize: '34px',
               fontWeight: 400,
               color: '#1A1A2E',
               lineHeight: 1.15,
               letterSpacing: '-0.03em',
-              marginBottom: '10px',
+              marginBottom: '8px',
             }}
           >
             Bonki
           </motion.h1>
           <motion.p
-            initial={{ opacity: 0, y: 8 }}
+            initial={{ opacity: 0, y: 6 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5, duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
+            transition={{ delay: 0.3, duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
             style={{
               fontFamily: "'DM Serif Display', serif",
               fontStyle: 'italic',
-              fontSize: '15px',
+              fontSize: '14px',
               fontWeight: 400,
               color: 'var(--color-text-secondary)',
               opacity: 0.5,
@@ -471,23 +452,23 @@ export default function ProductLibrary() {
         <motion.div
           initial={{ scaleX: 0, opacity: 0 }}
           animate={{ scaleX: 1, opacity: 1 }}
-          transition={{ delay: 0.65, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ delay: 0.4, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
           style={{
-            width: '36px',
+            width: '32px',
             height: '1.5px',
-            backgroundColor: 'hsla(38, 88%, 46%, 0.35)',
-            margin: '20px auto 24px',
+            backgroundColor: 'hsla(38, 88%, 46%, 0.3)',
+            margin: '14px auto 18px',
           }}
         />
 
         {/* Segment control — tab switcher */}
         <motion.div
-          initial={{ opacity: 0, y: 6 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.75, duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.5, duration: 0.4 }}
           style={{
             display: 'flex',
-            margin: '0 auto 28px',
+            margin: '0 auto 20px',
             width: 'fit-content',
             background: 'transparent',
             padding: '0',
@@ -835,43 +816,28 @@ export default function ProductLibrary() {
             exit={{ opacity: 0, x: swipeDirection * -30 }}
             transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
           >
-        {/* Bridge phrase */}
+        {/* Bridge phrase — inline, no card */}
         <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
+          initial={{ opacity: 0, y: 6 }}
+          animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1, duration: 0.6 }}
           style={{
             textAlign: 'center',
-            padding: '28px 28px 24px',
-            margin: '0 20px 0',
-            borderRadius: '14px',
-            backgroundColor: 'rgba(44, 36, 32, 0.025)',
+            padding: '8px 28px 20px',
           }}
         >
           <p
             style={{
               fontFamily: "'DM Serif Display', serif",
-              fontSize: '18px',
-              fontWeight: 400,
-              color: 'var(--text-library)',
-              lineHeight: 1.5,
-              marginBottom: '8px',
-            }}
-          >
-            Barnens trygghet börjar med deras vuxna
-          </p>
-          <p
-            style={{
-              fontFamily: "'DM Serif Display', serif",
               fontStyle: 'italic',
-              fontSize: '13px',
+              fontSize: '15px',
               fontWeight: 400,
               color: 'var(--color-text-secondary)',
               opacity: 0.5,
               lineHeight: 1.6,
             }}
           >
-            Samma psykologi. Samma precision. Nu för er.
+            Barnens trygghet börjar med deras vuxna
           </p>
         </motion.div>
 
