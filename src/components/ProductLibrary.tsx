@@ -543,18 +543,19 @@ export default function ProductLibrary() {
         {/* ── Barn — broken grid layout ── */}
         <div className="px-5" style={{ scrollMarginTop: '8px' }}>
           <motion.p
-            initial={{ opacity: 0, y: 6 }}
+            initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ delay: 0.1, duration: 0.7, ease: [0.4, 0, 0.2, 1] }}
             style={{
               fontFamily: "'DM Serif Display', serif",
-              fontSize: '16px',
+              fontStyle: 'italic',
+              fontSize: '15px',
               fontWeight: 400,
               color: 'var(--color-text-secondary)',
-              opacity: 0.6,
-              lineHeight: 1.5,
+              opacity: 0.5,
+              lineHeight: 1.6,
               textAlign: 'center',
-              marginBottom: '20px',
+              marginBottom: '24px',
             }}
           >
             Det barnet inte säger själv — börjar här
@@ -566,7 +567,7 @@ export default function ProductLibrary() {
             style={{
               display: 'grid',
               gridTemplateColumns: 'repeat(2, 1fr)',
-              gap: '10px',
+              gap: '12px',
             }}
           >
             <PastelTile
