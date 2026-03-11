@@ -374,21 +374,82 @@ export default function ProductLibrary() {
   return (
     <div
       className="min-h-screen flex flex-col relative"
-      style={{ backgroundColor: 'var(--surface-library)', fontFamily: "'Lato', sans-serif" }}
+      style={{
+        background: `
+          radial-gradient(ellipse 120% 60% at 50% 0%, hsla(37, 60%, 92%, 0.6) 0%, transparent 50%),
+          radial-gradient(ellipse 80% 80% at 80% 100%, hsla(30, 40%, 90%, 0.3) 0%, transparent 50%),
+          var(--surface-library)
+        `,
+        fontFamily: "'Lato', sans-serif",
+      }}
     >
       {/* Content */}
       <div style={{ position: 'relative', zIndex: 1 }}>
-        {/* Spacer — logo lives in header, content starts immediately */}
-        <div style={{ height: '8px' }} />
+        {/* Hero zone — cinematic entrance */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+          style={{
+            textAlign: 'center',
+            padding: '32px 28px 8px',
+          }}
+        >
+          <motion.h1
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.15, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+            style={{
+              fontFamily: "'DM Serif Display', serif",
+              fontSize: '28px',
+              fontWeight: 400,
+              color: '#1A1A2E',
+              lineHeight: 1.2,
+              letterSpacing: '-0.02em',
+              marginBottom: '8px',
+            }}
+          >
+            Bonki
+          </motion.h1>
+          <motion.p
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.35, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+            style={{
+              fontFamily: "'DM Serif Display', serif",
+              fontStyle: 'italic',
+              fontSize: '15px',
+              fontWeight: 400,
+              color: 'var(--color-text-secondary)',
+              opacity: 0.55,
+              lineHeight: 1.6,
+            }}
+          >
+            Verktyg för samtalen som inte blir av
+          </motion.p>
+        </motion.div>
+
+        {/* Visual pause — editorial hairline */}
+        <motion.div
+          initial={{ scaleX: 0 }}
+          animate={{ scaleX: 1 }}
+          transition={{ delay: 0.5, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+          style={{
+            width: '40px',
+            height: '1px',
+            background: 'linear-gradient(90deg, transparent, hsla(30, 20%, 60%, 0.3), transparent)',
+            margin: '12px auto 20px',
+          }}
+        />
 
         {/* Segment control — tab switcher */}
         <motion.div
           initial={{ opacity: 0, y: 6 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.06, duration: 0.4 }}
+          transition={{ delay: 0.55, duration: 0.4 }}
           style={{
             display: 'flex',
-            margin: '16px auto 20px',
+            margin: '0 auto 24px',
             width: 'fit-content',
             background: 'transparent',
             padding: '0',
