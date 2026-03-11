@@ -95,6 +95,8 @@ const PAGES = [
 ];
 
 const EXTERNAL_TOOLS = [
+  { url: '/library-mockup-a.html', label: '🌙 Mockup A — Immersive Midnight' },
+  { url: '/library-mockup-b.html', label: '🌅 Mockup B — Warm Dusk' },
   { url: '/library-mood-comparison.html', label: '🎨 Library Mood Comparison' },
   { url: '/flowcharts.html', label: '🗺️ Flowcharts' },
   { url: '/wireframes.html', label: '📐 Wireframes' },
