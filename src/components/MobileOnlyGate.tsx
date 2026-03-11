@@ -1,4 +1,4 @@
-import { ReactNode, useState } from 'react';
+import { ReactNode, useState, useMemo } from 'react';
 import { Check, Copy } from 'lucide-react';
 import { useLocation } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
@@ -12,14 +12,30 @@ const ADMIN_USER_IDS = [
   '999288dd-b73a-4829-9d0d-72a8b54b6385',
 ];
 
+/** When inside the demo iframe, skip the gate entirely */
+function isInsideDemoFrame(): boolean {
+  if (typeof window === 'undefined') return false;
+  const params = new URLSearchParams(window.location.search);
+  return params.get('_frame') === '1';
+}
+
 export default function MobileOnlyGate({ children }: { children: ReactNode }) {
   const [copied, setCopied] = useState(false);
   const location = useLocation();
   const { user } = useAuth();
 
   const demoActive = isDemoParam() || isDemoMode();
+  const insideFrame = isInsideDemoFrame();
   const isDesktopAllowed = !demoActive && DESKTOP_ALLOWED_ROUTES.some(r => location.pathname.startsWith(r));
   const isAdmin = !demoActive && user && ADMIN_USER_IDS.includes(user.id);
+
+  // Build iframe URL: current path + existing params + _frame=1 + demo=1
+  const iframeSrc = useMemo(() => {
+    const params = new URLSearchParams(window.location.search);
+    params.set('_frame', '1');
+    params.set('demo', '1');
+    return `${location.pathname}?${params.toString()}`;
+  }, [location.pathname, location.search]);
 
   const handleCopy = () => {
     navigator.clipboard.writeText(window.location.href).then(() => {
@@ -28,15 +44,20 @@ export default function MobileOnlyGate({ children }: { children: ReactNode }) {
     });
   };
 
+  // Inside the demo iframe — render content directly (no gate)
+  if (insideFrame) {
+    return <>{children}</>;
+  }
+
   if (isDesktopAllowed || isAdmin) {
     return <>{children}</>;
   }
 
-  // Demo mode (param seen OR entered): show in phone frame on desktop
+  // Demo mode: show in phone-shaped iframe on desktop so media queries work naturally
   if (demoActive) {
     return (
       <>
-        {/* Desktop: phone simulator */}
+        {/* Desktop: phone simulator with iframe */}
         <div className="hidden lg:flex min-h-screen items-center justify-center" style={{ backgroundColor: '#1a1a1a' }}>
           <div className="flex flex-col items-center gap-4">
             <span style={{ fontFamily: 'var(--font-sans)', fontSize: '13px', color: '#888', letterSpacing: '0.05em', textTransform: 'uppercase' }}>
@@ -52,9 +73,16 @@ export default function MobileOnlyGate({ children }: { children: ReactNode }) {
                 position: 'relative',
               }}
             >
-              <div style={{ width: '100%', height: '100%', overflowY: 'auto' }}>
-                {children}
-              </div>
+              <iframe
+                src={iframeSrc}
+                title="Demo preview"
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  border: 'none',
+                  backgroundColor: '#1A1A2E',
+                }}
+              />
             </div>
           </div>
         </div>
