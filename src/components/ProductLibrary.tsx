@@ -899,7 +899,7 @@ export default function ProductLibrary() {
               style={{
                 borderRadius: '20px',
                 padding: '24px 20px 18px',
-                background: 'linear-gradient(180deg, #D6E8DE 0%, #CADBC4 100%)',
+                background: 'linear-gradient(180deg, #D4DDE0 0%, #C2CED4 100%)',
                 textAlign: 'left',
                 position: 'relative',
                 overflow: 'hidden',
@@ -932,13 +932,13 @@ export default function ProductLibrary() {
                   fontFamily: "'DM Serif Display', serif",
                   fontSize: '26px', fontWeight: 400,
                   lineHeight: 1.15,
-                  color: '#2A5040', letterSpacing: '-0.01em',
+                  color: '#2C4450', letterSpacing: '-0.01em',
                 }}>
                   Still Us
                 </h3>
                 <p style={{
                   fontFamily: "'Lato', sans-serif",
-                  fontSize: '11px', color: '#4A7A5E',
+                  fontSize: '11px', color: '#4A6E7A',
                   marginTop: '4px',
                   lineHeight: 1.4,
                 }}>
@@ -946,7 +946,7 @@ export default function ProductLibrary() {
                 </p>
                 <p style={{
                   fontFamily: "'Lato', sans-serif",
-                  fontSize: '11px', color: '#4A7A5E',
+                  fontSize: '11px', color: '#4A6E7A',
                   marginTop: '4px',
                   lineHeight: 1.4,
                   maxWidth: '55%',
@@ -964,7 +964,7 @@ export default function ProductLibrary() {
                       fontWeight: 600,
                       letterSpacing: '0.06em',
                       textTransform: 'uppercase',
-                      color: '#1E3D30',
+                      color: '#1E3340',
                       opacity: 0.55,
                       lineHeight: 1.4,
                     }}
