@@ -687,7 +687,7 @@ export default function ProductLibrary() {
         <motion.div
           initial={{ opacity: 0, y: 14 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.65, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ delay: 0.9, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
           whileTap={{ scale: 0.98 }}
           onClick={() => navigate('/diary/jag_i_mig')}
           className="cursor-pointer"
