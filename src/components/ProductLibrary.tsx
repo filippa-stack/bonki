@@ -398,7 +398,7 @@ export default function ProductLibrary() {
           {(['barn', 'par'] as const).map((tab) => (
             <button
               key={tab}
-              onClick={() => setActiveTab(tab)}
+              onClick={() => switchTab(tab)}
               style={{
                 fontFamily: "'Lato', sans-serif",
                 fontSize: '9px',
