@@ -845,7 +845,7 @@ export default function ProductLibrary() {
 
         {/* ── Par ── */}
         <motion.div
-          className="px-5 mt-5"
+          className="px-5 mt-3"
           variants={containerVariants}
           initial="hidden"
           animate="visible"
