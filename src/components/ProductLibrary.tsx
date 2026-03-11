@@ -404,59 +404,40 @@ export default function ProductLibrary() {
 
       {/* Content */}
       <div style={{ position: 'relative', zIndex: 1 }}>
-        {/* Hero zone — cinematic entrance */}
+        {/* Hero zone — compact cinematic */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 1.0, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
           style={{
             textAlign: 'center',
-            padding: '40px 32px 0',
+            padding: '24px 32px 0',
           }}
         >
-          {/* Micro-label */}
-          <motion.p
-            initial={{ opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2, duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
-            style={{
-              fontFamily: "'Lato', sans-serif",
-              fontSize: '0.6rem',
-              fontWeight: 600,
-              letterSpacing: '0.18em',
-              textTransform: 'uppercase',
-              color: 'var(--accent-text)',
-              opacity: 0.6,
-              marginBottom: '12px',
-            }}
-          >
-            Utvecklat av psykolog
-          </motion.p>
-
           <motion.h1
-            initial={{ opacity: 0, y: 14 }}
+            initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.35, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ delay: 0.15, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
             style={{
               fontFamily: "'DM Serif Display', serif",
-              fontSize: '36px',
+              fontSize: '34px',
               fontWeight: 400,
               color: '#1A1A2E',
               lineHeight: 1.15,
               letterSpacing: '-0.03em',
-              marginBottom: '10px',
+              marginBottom: '8px',
             }}
           >
             Bonki
           </motion.h1>
           <motion.p
-            initial={{ opacity: 0, y: 8 }}
+            initial={{ opacity: 0, y: 6 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5, duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
+            transition={{ delay: 0.3, duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
             style={{
               fontFamily: "'DM Serif Display', serif",
               fontStyle: 'italic',
-              fontSize: '15px',
+              fontSize: '14px',
               fontWeight: 400,
               color: 'var(--color-text-secondary)',
               opacity: 0.5,
