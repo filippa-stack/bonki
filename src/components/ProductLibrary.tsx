@@ -899,7 +899,7 @@ export default function ProductLibrary() {
               style={{
                 borderRadius: '20px',
                 padding: '24px 20px 18px',
-                background: 'linear-gradient(180deg, #D6E8DE 0%, #CADBC4 100%)',
+                background: 'linear-gradient(180deg, #D4DDE0 0%, #C2CED4 100%)',
                 textAlign: 'left',
                 position: 'relative',
                 overflow: 'hidden',
