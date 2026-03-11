@@ -884,21 +884,21 @@ export default function ProductLibrary() {
 
 
 
-        {/* Sign-off */}
+        {/* Sign-off — brand anchored */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.8, duration: 0.6 }}
-          style={{ textAlign: 'center', padding: '0 20px', marginTop: '24px', paddingBottom: 'calc(40px + env(safe-area-inset-bottom, 0px))' }}
+          style={{ textAlign: 'center', padding: '0 20px', marginTop: '32px', paddingBottom: 'calc(48px + env(safe-area-inset-bottom, 0px))' }}
         >
-          <div style={{ width: '32px', height: '1px', background: '#A09890', opacity: 0.2, margin: '0 auto 14px' }} />
+          <div style={{ width: '24px', height: '2px', background: '#1A1A2E', opacity: 0.12, margin: '0 auto 18px', borderRadius: '1px' }} />
           <p
             style={{
               fontFamily: "'DM Serif Display', serif",
               fontStyle: 'italic',
               fontSize: '13px',
-              color: 'var(--accent-text)',
-              opacity: 0.5,
+              color: '#1A1A2E',
+              opacity: 0.35,
               lineHeight: 1.6,
             }}
           >
