@@ -556,20 +556,26 @@ export default function ProductLibrary() {
           </motion.div>
         </div>
 
-        {/* Diary — emotional anchor */}
+        {/* Diary — emotional anchor with visual mockup */}
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+          whileTap={{ scale: 0.98 }}
+          onClick={() => navigate('/diary/jag_i_mig')}
+          className="cursor-pointer"
           style={{
-            margin: '24px 20px 8px',
-            padding: '20px 22px',
-            borderRadius: '14px',
-            backgroundColor: 'rgba(44, 36, 32, 0.025)',
+            margin: '24px 20px 16px',
+            padding: '24px 22px 20px',
+            borderRadius: '16px',
+            backgroundColor: 'rgba(44, 36, 32, 0.03)',
             textAlign: 'center',
+            position: 'relative',
+            overflow: 'hidden',
           }}
         >
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{ opacity: 0.35, color: 'var(--text-library)', margin: '0 auto 10px' }}>
+          {/* Title */}
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{ opacity: 0.35, color: 'var(--text-library)', margin: '0 auto 8px' }}>
             <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20" />
           </svg>
           <p style={{
@@ -578,21 +584,117 @@ export default function ProductLibrary() {
             fontWeight: 400,
             color: 'var(--text-library)',
             lineHeight: 1.5,
-            marginBottom: '6px',
+            marginBottom: '4px',
           }}>
             Dagboken
           </p>
           <p style={{
             fontFamily: "'DM Serif Display', serif",
             fontStyle: 'italic',
-            fontSize: '13px',
+            fontSize: '12px',
             fontWeight: 400,
             color: 'var(--color-text-secondary)',
-            opacity: 0.55,
-            lineHeight: 1.6,
+            opacity: 0.5,
+            lineHeight: 1.5,
+            marginBottom: '16px',
           }}>
-            Varje samtal sparas. Varje tanke samlas.<br />
-            Ett minnesbibliotek som växer med ert barn.
+            Varje samtal sparas. Varje tanke samlas.
+          </p>
+
+          {/* Visual mockup — stacked diary entries */}
+          <div style={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '6px',
+            maxWidth: '260px',
+            margin: '0 auto',
+          }}>
+            {[
+              { color: '#F5EDD2', accent: '#6B6742', title: 'Jag i Mig', date: '12 mar', text: '"Hon sa att hon ibland känner sig osynlig i skolan..."' },
+              { color: '#C8E6D0', accent: '#3A6B48', title: 'Jag i Världen', date: '8 mar', text: '"Vi pratade om mod — att våga säga ifrån"' },
+              { color: '#D6E2F0', accent: '#2A3E68', title: 'Syskon', date: '3 mar', text: '"De skrattade åt minnet av sommaren..."' },
+            ].map((entry, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.55 + i * 0.1, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '10px',
+                  padding: '10px 12px',
+                  borderRadius: '10px',
+                  backgroundColor: entry.color,
+                  opacity: 1 - i * 0.12,
+                  textAlign: 'left',
+                }}
+              >
+                <div style={{
+                  width: '4px',
+                  height: '28px',
+                  borderRadius: '2px',
+                  backgroundColor: entry.accent,
+                  opacity: 0.4,
+                  flexShrink: 0,
+                }} />
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2px' }}>
+                    <span style={{
+                      fontFamily: "'Lato', sans-serif",
+                      fontSize: '9px',
+                      fontWeight: 700,
+                      letterSpacing: '0.06em',
+                      textTransform: 'uppercase' as const,
+                      color: entry.accent,
+                    }}>
+                      {entry.title}
+                    </span>
+                    <span style={{
+                      fontFamily: "'Lato', sans-serif",
+                      fontSize: '8px',
+                      color: entry.accent,
+                      opacity: 0.5,
+                    }}>
+                      {entry.date}
+                    </span>
+                  </div>
+                  <p style={{
+                    fontFamily: "'DM Serif Display', serif",
+                    fontStyle: 'italic',
+                    fontSize: '11px',
+                    color: entry.accent,
+                    opacity: 0.7,
+                    lineHeight: 1.3,
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    whiteSpace: 'nowrap' as const,
+                  }}>
+                    {entry.text}
+                  </p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+
+          {/* Subtle fade at bottom suggesting more entries */}
+          <div style={{
+            height: '20px',
+            background: 'linear-gradient(to bottom, transparent, rgba(44, 36, 32, 0.02))',
+            marginTop: '4px',
+            borderRadius: '0 0 12px 12px',
+          }} />
+          <p style={{
+            fontFamily: "'Lato', sans-serif",
+            fontSize: '9px',
+            fontWeight: 600,
+            letterSpacing: '0.08em',
+            textTransform: 'uppercase' as const,
+            color: 'var(--text-library)',
+            opacity: 0.3,
+            marginTop: '4px',
+          }}>
+            Öppna dagboken →
           </p>
         </motion.div>
           </motion.div>
