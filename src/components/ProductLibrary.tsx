@@ -376,37 +376,75 @@ export default function ProductLibrary() {
       className="min-h-screen flex flex-col relative"
       style={{
         background: `
-          radial-gradient(ellipse 120% 60% at 50% 0%, hsla(37, 60%, 92%, 0.6) 0%, transparent 50%),
-          radial-gradient(ellipse 80% 80% at 80% 100%, hsla(30, 40%, 90%, 0.3) 0%, transparent 50%),
+          radial-gradient(ellipse 130% 50% at 50% -5%, hsla(37, 55%, 88%, 0.5) 0%, transparent 50%),
+          radial-gradient(ellipse 80% 70% at 85% 90%, hsla(30, 35%, 88%, 0.25) 0%, transparent 50%),
           var(--surface-library)
         `,
         fontFamily: "'Lato', sans-serif",
       }}
     >
+      {/* ── Background watermark — cinematic depth ── */}
+      <img
+        src={watermarkMamma}
+        alt=""
+        aria-hidden
+        style={{
+          position: 'absolute',
+          width: '300px',
+          height: '400px',
+          left: '50%',
+          top: '0',
+          transform: 'translateX(-50%)',
+          opacity: 0.04,
+          filter: 'sepia(1) saturate(0.2) brightness(1.8) hue-rotate(-10deg)',
+          pointerEvents: 'none',
+          zIndex: 0,
+        }}
+      />
+
       {/* Content */}
       <div style={{ position: 'relative', zIndex: 1 }}>
         {/* Hero zone — cinematic entrance */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 1.0, ease: [0.22, 1, 0.36, 1] }}
           style={{
             textAlign: 'center',
-            padding: '32px 28px 8px',
+            padding: '40px 32px 0',
           }}
         >
-          <motion.h1
-            initial={{ opacity: 0, y: 12 }}
+          {/* Micro-label */}
+          <motion.p
+            initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.15, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ delay: 0.2, duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
+            style={{
+              fontFamily: "'Lato', sans-serif",
+              fontSize: '0.6rem',
+              fontWeight: 600,
+              letterSpacing: '0.18em',
+              textTransform: 'uppercase',
+              color: 'var(--accent-text)',
+              opacity: 0.6,
+              marginBottom: '12px',
+            }}
+          >
+            Utvecklat av psykolog
+          </motion.p>
+
+          <motion.h1
+            initial={{ opacity: 0, y: 14 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.35, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
             style={{
               fontFamily: "'DM Serif Display', serif",
-              fontSize: '28px',
+              fontSize: '36px',
               fontWeight: 400,
               color: '#1A1A2E',
-              lineHeight: 1.2,
-              letterSpacing: '-0.02em',
-              marginBottom: '8px',
+              lineHeight: 1.15,
+              letterSpacing: '-0.03em',
+              marginBottom: '10px',
             }}
           >
             Bonki
@@ -414,14 +452,14 @@ export default function ProductLibrary() {
           <motion.p
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.35, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ delay: 0.5, duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
             style={{
               fontFamily: "'DM Serif Display', serif",
               fontStyle: 'italic',
               fontSize: '15px',
               fontWeight: 400,
               color: 'var(--color-text-secondary)',
-              opacity: 0.55,
+              opacity: 0.5,
               lineHeight: 1.6,
             }}
           >
@@ -429,16 +467,16 @@ export default function ProductLibrary() {
           </motion.p>
         </motion.div>
 
-        {/* Visual pause — editorial hairline */}
+        {/* Saffron accent divider — matching onboarding */}
         <motion.div
-          initial={{ scaleX: 0 }}
-          animate={{ scaleX: 1 }}
-          transition={{ delay: 0.5, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+          initial={{ scaleX: 0, opacity: 0 }}
+          animate={{ scaleX: 1, opacity: 1 }}
+          transition={{ delay: 0.65, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
           style={{
-            width: '40px',
-            height: '1px',
-            background: 'linear-gradient(90deg, transparent, hsla(30, 20%, 60%, 0.3), transparent)',
-            margin: '12px auto 20px',
+            width: '36px',
+            height: '1.5px',
+            backgroundColor: 'hsla(38, 88%, 46%, 0.35)',
+            margin: '20px auto 24px',
           }}
         />
 
@@ -446,14 +484,14 @@ export default function ProductLibrary() {
         <motion.div
           initial={{ opacity: 0, y: 6 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.55, duration: 0.4 }}
+          transition={{ delay: 0.75, duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
           style={{
             display: 'flex',
-            margin: '0 auto 24px',
+            margin: '0 auto 28px',
             width: 'fit-content',
             background: 'transparent',
             padding: '0',
-            gap: '16px',
+            gap: '20px',
           }}
         >
           {(['barn', 'par'] as const).map((tab) => (
@@ -464,16 +502,16 @@ export default function ProductLibrary() {
                 fontFamily: "'Lato', sans-serif",
                 fontSize: '9px',
                 fontWeight: 700,
-                letterSpacing: '0.12em',
+                letterSpacing: '0.14em',
                 color: '#1A1A2E',
                 background: 'transparent',
-                opacity: activeTab === tab ? 1 : 0.45,
+                opacity: activeTab === tab ? 1 : 0.35,
                 border: 'none',
                 borderBottom: activeTab === tab ? '2px solid #1A1A2E' : '2px solid transparent',
                 borderRadius: '0',
                 padding: '6px 4px',
                 cursor: 'pointer',
-                transition: 'all 200ms ease',
+                transition: 'all 260ms ease',
               }}
             >
               {tab.toUpperCase()}
