@@ -310,6 +310,12 @@ export default function ProductLibrary() {
   const { purchased } = useAllProductAccess();
   const { user } = useAuth();
   const [activeTab, setActiveTab] = useState<'barn' | 'par'>('barn');
+  const [swipeDirection, setSwipeDirection] = useState<1 | -1>(1);
+
+  const switchTab = (tab: 'barn' | 'par') => {
+    setSwipeDirection(tab === 'par' ? 1 : -1);
+    setActiveTab(tab);
+  };
   const [notifySignedUp, setNotifySignedUp] = useState(false);
   const [notifyLoading, setNotifyLoading] = useState(false);
 
