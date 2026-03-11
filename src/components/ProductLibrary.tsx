@@ -488,11 +488,13 @@ export default function ProductLibrary() {
                 background: 'transparent',
                 opacity: activeTab === tab ? 1 : 0.35,
                 border: 'none',
+                outline: 'none',
                 borderBottom: activeTab === tab ? '2px solid #1A1A2E' : '2px solid transparent',
                 borderRadius: '0',
                 padding: '6px 4px',
                 cursor: 'pointer',
                 transition: 'all 260ms ease',
+                WebkitTapHighlightColor: 'transparent',
               }}
             >
               {tab.toUpperCase()}
@@ -823,7 +825,7 @@ export default function ProductLibrary() {
           transition={{ delay: 0.1, duration: 0.6 }}
           style={{
             textAlign: 'center',
-            padding: '8px 28px 20px',
+            padding: '4px 28px 12px',
           }}
         >
           <p
@@ -843,7 +845,7 @@ export default function ProductLibrary() {
 
         {/* ── Par ── */}
         <motion.div
-          className="px-5 mt-5"
+          className="px-5 mt-3"
           variants={containerVariants}
           initial="hidden"
           animate="visible"
