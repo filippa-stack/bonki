@@ -382,28 +382,30 @@ export default function ProductLibrary() {
           style={{ position: 'relative' }}
         >
           <h1
+            className="font-serif"
             style={{
-              fontFamily: "'Bebas Neue', sans-serif",
+              fontSize: '42px',
+              fontWeight: 700,
+              lineHeight: 1.1,
               color: 'var(--text-library)',
-              marginBottom: '4px',
-              fontSize: '48px',
-              letterSpacing: '0.06em',
+              letterSpacing: '0.02em',
+              textAlign: 'center',
+              marginBottom: '0',
             }}
           >
-            Bonki
+            BONKI
           </h1>
           <p
+            className="font-serif italic"
             style={{
-              fontFamily: "'DM Serif Display', serif",
-              fontStyle: 'italic',
-              fontSize: '14px',
-              fontWeight: 400,
-              color: 'var(--color-text-secondary)',
-              opacity: 0.55,
-              lineHeight: 1.5,
+              fontSize: '22px',
+              color: 'var(--text-library)',
+              opacity: 0.7,
+              textAlign: 'center',
+              marginTop: '4px',
             }}
           >
-            Välj det samtal ni behöver just nu
+            På riktigt.
           </p>
         </motion.div>
 
