@@ -395,7 +395,7 @@ export default function ProductLibrary() {
           left: '50%',
           top: '0',
           transform: 'translateX(-50%)',
-          opacity: 0.04,
+          opacity: 0.07,
           filter: 'sepia(1) saturate(0.2) brightness(1.8) hue-rotate(-10deg)',
           pointerEvents: 'none',
           zIndex: 0,
