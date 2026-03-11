@@ -97,17 +97,17 @@ function buildBadgeText(product: { cards: unknown[]; id: string }): string {
 const containerVariants = {
   hidden: {},
   visible: {
-    transition: { staggerChildren: 0.06, delayChildren: 0.15 },
+    transition: { staggerChildren: 0.12, delayChildren: 0.35 },
   },
 };
 
 const tileVariants = {
-  hidden: { opacity: 0, y: 18, scale: 0.96 },
+  hidden: { opacity: 0, y: 24, scale: 0.94 },
   visible: {
     opacity: 1,
     y: 0,
     scale: 1,
-    transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] as const },
+    transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] as const },
   },
 };
 
