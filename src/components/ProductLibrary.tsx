@@ -932,7 +932,7 @@ export default function ProductLibrary() {
                   fontFamily: "'DM Serif Display', serif",
                   fontSize: '26px', fontWeight: 400,
                   lineHeight: 1.15,
-                  color: '#2A5040', letterSpacing: '-0.01em',
+                  color: '#2C4450', letterSpacing: '-0.01em',
                 }}>
                   Still Us
                 </h3>
