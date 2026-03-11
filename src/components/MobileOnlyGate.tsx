@@ -10,7 +10,6 @@ const ADMIN_USER_IDS = [
   'b29f4c84-0426-4b8f-9293-dccf9141a4b5',
   '8105cd94-be94-473e-977a-883e461cfea8',
   '999288dd-b73a-4829-9d0d-72a8b54b6385',
-  'c0293631-4eaa-43e2-9c1d-06fca430e2ca', // Sofia
 ];
 
 export default function MobileOnlyGate({ children }: { children: ReactNode }) {
