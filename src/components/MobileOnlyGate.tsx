@@ -31,7 +31,6 @@ export default function MobileOnlyGate({ children }: { children: ReactNode }) {
   // Build iframe URL: current path + existing params + _frame=1 + demo=1
   const iframeSrc = useMemo(() => {
     const params = new URLSearchParams(window.location.search);
-    params.set('_frame', '1');
     params.set('demo', '1');
     return `${location.pathname}?${params.toString()}`;
   }, [location.pathname, location.search]);
