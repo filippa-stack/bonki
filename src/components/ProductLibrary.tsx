@@ -567,16 +567,26 @@ export default function ProductLibrary() {
             Dagbok för varje barn — spara varje samtal, bygg ett minnesbibliotek
           </p>
         </motion.div>
+          </motion.div>
+        )}
 
-        {/* Bridge phrase — transition to par section */}
+        {activeTab === 'par' && (
+          <motion.div
+            key="par"
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: 20 }}
+            transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+          >
+        {/* Bridge phrase */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 0.4, duration: 0.6 }}
+          transition={{ delay: 0.1, duration: 0.6 }}
           style={{
             textAlign: 'center',
             padding: '28px 28px 24px',
-            margin: '20px 20px 0',
+            margin: '0 20px 0',
             borderRadius: '14px',
             backgroundColor: 'rgba(44, 36, 32, 0.025)',
           }}
@@ -610,9 +620,7 @@ export default function ProductLibrary() {
 
         {/* ── Par ── */}
         <motion.div
-          ref={parRef}
           className="px-5 mt-5"
-          style={{ scrollMarginTop: '8px' }}
           variants={containerVariants}
           initial="hidden"
           animate="visible"
