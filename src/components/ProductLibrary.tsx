@@ -452,12 +452,12 @@ export default function ProductLibrary() {
         <motion.div
           initial={{ scaleX: 0, opacity: 0 }}
           animate={{ scaleX: 1, opacity: 1 }}
-          transition={{ delay: 0.65, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ delay: 0.4, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
           style={{
-            width: '36px',
+            width: '32px',
             height: '1.5px',
-            backgroundColor: 'hsla(38, 88%, 46%, 0.35)',
-            margin: '20px auto 24px',
+            backgroundColor: 'hsla(38, 88%, 46%, 0.3)',
+            margin: '14px auto 18px',
           }}
         />
 
