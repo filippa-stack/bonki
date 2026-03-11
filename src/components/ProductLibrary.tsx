@@ -505,18 +505,18 @@ export default function ProductLibrary() {
         {/* ── Barn — broken grid layout ── */}
         <div className="px-5" style={{ scrollMarginTop: '8px' }}>
           <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.08, duration: 0.6 }}
+            initial={{ opacity: 0, y: 6 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
             style={{
               fontFamily: "'DM Serif Display', serif",
-              fontSize: '14px',
+              fontSize: '16px',
               fontWeight: 400,
               color: 'var(--color-text-secondary)',
-              opacity: 0.55,
+              opacity: 0.6,
               lineHeight: 1.5,
               textAlign: 'center',
-              marginBottom: '16px',
+              marginBottom: '20px',
             }}
           >
             Det barnet inte säger själv — börjar här
