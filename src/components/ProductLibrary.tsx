@@ -648,104 +648,136 @@ export default function ProductLibrary() {
             display: 'flex',
             alignItems: 'center',
             gap: '12px',
-            margin: '28px 40px 8px',
+            margin: '32px 40px 8px',
           }}
         >
-          <div style={{ flex: 1, height: '1px', background: 'linear-gradient(90deg, transparent, hsla(30, 15%, 60%, 0.2))' }} />
+          <div style={{ flex: 1, height: '1px', background: 'linear-gradient(90deg, transparent, hsla(38, 50%, 60%, 0.2))' }} />
           <span style={{
             fontFamily: "'Lato', sans-serif",
             fontSize: '8px',
             fontWeight: 700,
             letterSpacing: '0.15em',
             textTransform: 'uppercase' as const,
-            color: '#A09890',
-            opacity: 0.5,
+            color: 'var(--accent-text)',
+            opacity: 0.45,
           }}>
-            Minnen
+            ✦
           </span>
-          <div style={{ flex: 1, height: '1px', background: 'linear-gradient(90deg, hsla(30, 15%, 60%, 0.2), transparent)' }} />
+          <div style={{ flex: 1, height: '1px', background: 'linear-gradient(90deg, hsla(38, 50%, 60%, 0.2), transparent)' }} />
         </motion.div>
 
-        {/* Diary — emotional anchor with visual mockup */}
+        {/* Diary — magical emotional anchor */}
         <motion.div
-          initial={{ opacity: 0, y: 14 }}
+          initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.9, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ delay: 0.9, duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
           whileTap={{ scale: 0.98 }}
           onClick={() => navigate('/diary/jag_i_mig')}
           className="cursor-pointer"
           style={{
-            margin: '24px 20px 16px',
-            padding: '24px 22px 20px',
-            borderRadius: '16px',
-            backgroundColor: 'rgba(44, 36, 32, 0.03)',
+            margin: '16px 20px 16px',
+            padding: '28px 22px 22px',
+            borderRadius: '20px',
+            background: 'linear-gradient(180deg, hsla(30, 20%, 96%, 0.9) 0%, hsla(37, 30%, 93%, 0.7) 100%)',
             textAlign: 'center',
             position: 'relative',
             overflow: 'hidden',
+            boxShadow: '0 2px 8px hsla(30, 20%, 20%, 0.04), 0 12px 32px -8px hsla(30, 18%, 16%, 0.08)',
+            border: '1px solid hsla(30, 20%, 80%, 0.3)',
           }}
         >
-          {/* Title */}
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{ opacity: 0.35, color: 'var(--text-library)', margin: '0 auto 8px' }}>
-            <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20" />
-          </svg>
-          <p style={{
-            fontFamily: "'DM Serif Display', serif",
-            fontSize: '16px',
-            fontWeight: 400,
-            color: 'var(--text-library)',
-            lineHeight: 1.5,
-            marginBottom: '4px',
-          }}>
-            Dagboken
-          </p>
-          <p style={{
-            fontFamily: "'DM Serif Display', serif",
-            fontStyle: 'italic',
-            fontSize: '12px',
-            fontWeight: 400,
-            color: 'var(--color-text-secondary)',
-            opacity: 0.5,
-            lineHeight: 1.5,
-            marginBottom: '16px',
-          }}>
-            Varje samtal sparas. Varje tanke samlas.
-          </p>
+          {/* Ambient glow */}
+          <div style={{
+            position: 'absolute',
+            top: '-30%',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            width: '200px',
+            height: '200px',
+            borderRadius: '50%',
+            background: 'radial-gradient(circle, hsla(38, 70%, 70%, 0.08) 0%, transparent 70%)',
+            pointerEvents: 'none',
+          }} />
 
-          {/* Visual mockup — stacked diary entries */}
+          {/* Book icon with saffron tint */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 1.0, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{ color: 'var(--accent-text)', opacity: 0.4, margin: '0 auto 10px', display: 'block' }}>
+              <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20" />
+            </svg>
+          </motion.div>
+
+          <motion.p
+            initial={{ opacity: 0, y: 6 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1.05, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+            style={{
+              fontFamily: "'DM Serif Display', serif",
+              fontSize: '18px',
+              fontWeight: 400,
+              color: '#1A1A2E',
+              lineHeight: 1.4,
+              marginBottom: '4px',
+            }}
+          >
+            Dagboken
+          </motion.p>
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 1.15, duration: 0.6 }}
+            style={{
+              fontFamily: "'DM Serif Display', serif",
+              fontStyle: 'italic',
+              fontSize: '12px',
+              fontWeight: 400,
+              color: 'var(--accent-text)',
+              opacity: 0.55,
+              lineHeight: 1.5,
+              marginBottom: '20px',
+            }}
+          >
+            Varje samtal sparas. Varje tanke samlas.
+          </motion.p>
+
+          {/* Visual mockup — stacked diary entries with stagger */}
           <div style={{
             display: 'flex',
             flexDirection: 'column',
-            gap: '6px',
-            maxWidth: '260px',
+            gap: '8px',
+            maxWidth: '280px',
             margin: '0 auto',
           }}>
             {[
-              { color: '#F5EDD2', accent: '#6B6742', title: 'Jag i Mig', date: '12 mar', text: '"Hon sa att hon ibland känner sig osynlig i skolan..."' },
-              { color: '#C8E6D0', accent: '#3A6B48', title: 'Jag i Världen', date: '8 mar', text: '"Vi pratade om mod — att våga säga ifrån"' },
-              { color: '#D6E2F0', accent: '#2A3E68', title: 'Syskon', date: '3 mar', text: '"De skrattade åt minnet av sommaren..."' },
+              { color: 'hsla(45, 50%, 92%, 0.8)', accent: '#6B6742', title: 'Jag i Mig', date: '12 mar', text: '"Hon sa att hon ibland känner sig osynlig i skolan..."' },
+              { color: 'hsla(145, 30%, 89%, 0.8)', accent: '#3A6B48', title: 'Jag i Världen', date: '8 mar', text: '"Vi pratade om mod — att våga säga ifrån"' },
+              { color: 'hsla(215, 35%, 91%, 0.8)', accent: '#2A3E68', title: 'Syskon', date: '3 mar', text: '"De skrattade åt minnet av sommaren..."' },
             ].map((entry, i) => (
               <motion.div
                 key={i}
-                initial={{ opacity: 0, y: 8 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.55 + i * 0.1, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                initial={{ opacity: 0, y: 10, scale: 0.96 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                transition={{ delay: 1.2 + i * 0.12, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
                 style={{
                   display: 'flex',
                   alignItems: 'center',
                   gap: '10px',
-                  padding: '10px 12px',
-                  borderRadius: '10px',
+                  padding: '11px 14px',
+                  borderRadius: '12px',
                   backgroundColor: entry.color,
-                  opacity: 1 - i * 0.12,
                   textAlign: 'left',
+                  boxShadow: '0 1px 4px hsla(30, 15%, 25%, 0.04)',
                 }}
               >
                 <div style={{
-                  width: '4px',
-                  height: '28px',
+                  width: '3px',
+                  height: '26px',
                   borderRadius: '2px',
                   backgroundColor: entry.accent,
-                  opacity: 0.4,
+                  opacity: 0.35,
                   flexShrink: 0,
                 }} />
                 <div style={{ flex: 1, minWidth: 0 }}>
@@ -774,7 +806,7 @@ export default function ProductLibrary() {
                     fontStyle: 'italic',
                     fontSize: '11px',
                     color: entry.accent,
-                    opacity: 0.7,
+                    opacity: 0.65,
                     lineHeight: 1.3,
                     overflow: 'hidden',
                     textOverflow: 'ellipsis',
@@ -787,25 +819,31 @@ export default function ProductLibrary() {
             ))}
           </div>
 
-          {/* Subtle fade at bottom suggesting more entries */}
-          <div style={{
-            height: '20px',
-            background: 'linear-gradient(to bottom, transparent, rgba(44, 36, 32, 0.02))',
-            marginTop: '4px',
-            borderRadius: '0 0 12px 12px',
-          }} />
-          <p style={{
-            fontFamily: "'Lato', sans-serif",
-            fontSize: '9px',
-            fontWeight: 600,
-            letterSpacing: '0.08em',
-            textTransform: 'uppercase' as const,
-            color: 'var(--text-library)',
-            opacity: 0.3,
-            marginTop: '4px',
-          }}>
-            Öppna dagboken →
-          </p>
+          {/* Bottom fade + CTA */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 1.55, duration: 0.6 }}
+          >
+            <div style={{
+              height: '16px',
+              background: 'linear-gradient(to bottom, transparent, hsla(30, 20%, 93%, 0.5))',
+              marginTop: '6px',
+              borderRadius: '0 0 12px 12px',
+            }} />
+            <p style={{
+              fontFamily: "'Lato', sans-serif",
+              fontSize: '9px',
+              fontWeight: 600,
+              letterSpacing: '0.1em',
+              textTransform: 'uppercase' as const,
+              color: 'var(--accent-text)',
+              opacity: 0.4,
+              marginTop: '8px',
+            }}>
+              Öppna dagboken →
+            </p>
+          </motion.div>
         </motion.div>
           </motion.div>
         )}
