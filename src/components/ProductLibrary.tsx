@@ -490,7 +490,7 @@ export default function ProductLibrary() {
               marginBottom: '16px',
             }}
           >
-            Samtalskort som hjälper er att nå det barnet inte säger själv
+            Det ditt barn inte säger själv — börjar här
           </motion.p>
           <motion.div
             variants={containerVariants}
