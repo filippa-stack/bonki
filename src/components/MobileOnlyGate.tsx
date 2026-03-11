@@ -12,11 +12,10 @@ const ADMIN_USER_IDS = [
   '999288dd-b73a-4829-9d0d-72a8b54b6385',
 ];
 
-/** When inside the demo iframe, skip the gate entirely */
+/** When inside an iframe (demo simulator), skip the gate entirely */
 function isInsideDemoFrame(): boolean {
   if (typeof window === 'undefined') return false;
-  const params = new URLSearchParams(window.location.search);
-  return params.get('_frame') === '1';
+  try { return window.self !== window.top; } catch { return true; }
 }
 
 export default function MobileOnlyGate({ children }: { children: ReactNode }) {
@@ -32,7 +31,6 @@ export default function MobileOnlyGate({ children }: { children: ReactNode }) {
   // Build iframe URL: current path + existing params + _frame=1 + demo=1
   const iframeSrc = useMemo(() => {
     const params = new URLSearchParams(window.location.search);
-    params.set('_frame', '1');
     params.set('demo', '1');
     return `${location.pathname}?${params.toString()}`;
   }, [location.pathname, location.search]);
