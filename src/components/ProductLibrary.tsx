@@ -406,7 +406,7 @@ export default function ProductLibrary() {
             display: 'flex',
             margin: '16px auto 20px',
             width: 'fit-content',
-            background: 'rgba(44, 36, 32, 0.04)',
+            background: '#1A1A2E',
             borderRadius: '10px',
             padding: '3px',
             gap: '2px',
@@ -437,8 +437,8 @@ export default function ProductLibrary() {
                 fontSize: '9px',
                 fontWeight: 700,
                 letterSpacing: '0.12em',
-                color: 'var(--text-library)',
-                background: isDefault ? 'rgba(255,255,255,0.7)' : 'transparent',
+                color: '#DC9A14',
+                background: isDefault ? 'rgba(220, 154, 20, 0.15)' : 'transparent',
                 opacity: isDefault ? 1 : 0.5,
                 border: 'none',
                 borderRadius: '8px',
@@ -448,7 +448,7 @@ export default function ProductLibrary() {
               }}
               onMouseDown={(e) => {
                 const btn = e.currentTarget as HTMLButtonElement;
-                btn.style.background = 'rgba(255,255,255,0.7)';
+                btn.style.background = 'rgba(220, 154, 20, 0.15)';
                 btn.style.opacity = '1';
                 // Dim sibling
                 const sibling = btn.parentElement?.querySelector(`button:not([data-segment="${label}"])`) as HTMLElement;
