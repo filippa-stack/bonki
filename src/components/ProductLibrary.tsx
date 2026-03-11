@@ -406,7 +406,7 @@ export default function ProductLibrary() {
             display: 'flex',
             margin: '16px auto 20px',
             width: 'fit-content',
-            background: 'rgba(44, 36, 32, 0.04)',
+            background: '#1A1A2E',
             borderRadius: '10px',
             padding: '3px',
             gap: '2px',
