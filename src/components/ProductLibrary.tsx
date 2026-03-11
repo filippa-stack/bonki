@@ -475,41 +475,44 @@ export default function ProductLibrary() {
 
         {/* ── Barn — broken grid layout ── */}
         <div ref={barnRef} className="px-5" style={{ scrollMarginTop: '8px' }}>
-          <motion.p
+          <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.08, duration: 0.6 }}
             style={{
-              fontFamily: "'DM Serif Display', serif",
-              fontSize: '14px',
-              fontWeight: 400,
-              color: 'var(--color-text-secondary)',
-              opacity: 0.55,
-              lineHeight: 1.5,
               textAlign: 'center',
-              marginBottom: '16px',
+              padding: '28px 28px 24px',
+              margin: '0 0 16px',
+              borderRadius: '14px',
+              backgroundColor: 'rgba(44, 36, 32, 0.025)',
             }}
           >
-            Det ditt barn inte säger själv — börjar här
-          </motion.p>
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.12, duration: 0.6 }}
-            style={{
-              fontFamily: "'DM Serif Display', serif",
-              fontSize: '13px',
-              fontWeight: 400,
-              color: 'var(--color-text-secondary)',
-              opacity: 0.45,
-              lineHeight: 1.5,
-              textAlign: 'center',
-              marginBottom: '16px',
-              marginTop: '-8px',
-            }}
-          >
-            Sex samtalsverktyg som växer med ditt barn.<br />Från känslor i magen till frågor om världen.
-          </motion.p>
+            <p
+              style={{
+                fontFamily: "'DM Serif Display', serif",
+                fontSize: '18px',
+                fontWeight: 400,
+                color: 'var(--text-library)',
+                lineHeight: 1.5,
+                marginBottom: '8px',
+              }}
+            >
+              Det ditt barn inte säger själv — börjar här
+            </p>
+            <p
+              style={{
+                fontFamily: "'DM Serif Display', serif",
+                fontStyle: 'italic',
+                fontSize: '13px',
+                fontWeight: 400,
+                color: 'var(--color-text-secondary)',
+                opacity: 0.5,
+                lineHeight: 1.6,
+              }}
+            >
+              Sex samtalsverktyg som växer med ditt barn.<br />Från känslor i magen till frågor om världen.
+            </p>
+          </motion.div>
           <motion.div
             variants={containerVariants}
             initial="hidden"
