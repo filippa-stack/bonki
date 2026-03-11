@@ -373,7 +373,7 @@ export default function ProductLibrary() {
     >
       {/* Content */}
       <div style={{ position: 'relative', zIndex: 1 }}>
-        {/* Hero — BONKI title + mamma illustration */}
+        {/* Hero — tagline only (logo lives in header) */}
         <motion.div
           className="pt-4 pb-2 px-6 text-center"
           initial={{ opacity: 0, y: 10 }}
@@ -381,20 +381,6 @@ export default function ProductLibrary() {
           transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
           style={{ position: 'relative' }}
         >
-          <h1
-            className="font-serif"
-            style={{
-              fontSize: '42px',
-              fontWeight: 700,
-              lineHeight: 1.1,
-              color: '#1A1A2E',
-              letterSpacing: '0.02em',
-              textAlign: 'center',
-              marginBottom: '0',
-            }}
-          >
-            BONKI
-          </h1>
           <p
             className="font-serif italic"
             style={{
@@ -402,7 +388,7 @@ export default function ProductLibrary() {
               color: 'var(--color-text-secondary)',
               opacity: 0.55,
               textAlign: 'center',
-              marginTop: '6px',
+              marginTop: '2px',
               lineHeight: 1.5,
             }}
           >
