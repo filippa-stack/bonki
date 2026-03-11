@@ -419,10 +419,10 @@ export default function ProductLibrary() {
             display: 'flex',
             margin: '16px auto 20px',
             width: 'fit-content',
-            background: '#1A1A2E',
-            borderRadius: '10px',
-            padding: '3px',
-            gap: '2px',
+            background: 'transparent',
+            borderRadius: '0',
+            padding: '0',
+            gap: '16px',
           }}
         >
           {[
@@ -450,12 +450,13 @@ export default function ProductLibrary() {
                 fontSize: '9px',
                 fontWeight: 700,
                 letterSpacing: '0.12em',
-                color: '#DC9A14',
-                background: isDefault ? 'rgba(220, 154, 20, 0.15)' : 'transparent',
-                opacity: isDefault ? 1 : 0.5,
+                color: '#1A1A2E',
+                background: 'transparent',
+                opacity: isDefault ? 1 : 0.45,
                 border: 'none',
-                borderRadius: '8px',
-                padding: '6px 20px',
+                borderBottom: isDefault ? '2px solid #1A1A2E' : '2px solid transparent',
+                borderRadius: '0',
+                padding: '6px 4px',
                 cursor: 'pointer',
                 transition: 'all 200ms ease',
               }}
