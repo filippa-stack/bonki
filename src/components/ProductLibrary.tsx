@@ -448,7 +448,7 @@ export default function ProductLibrary() {
               }}
               onMouseDown={(e) => {
                 const btn = e.currentTarget as HTMLButtonElement;
-                btn.style.background = 'rgba(255,255,255,0.7)';
+                btn.style.background = 'rgba(220, 154, 20, 0.15)';
                 btn.style.opacity = '1';
                 // Dim sibling
                 const sibling = btn.parentElement?.querySelector(`button:not([data-segment="${label}"])`) as HTMLElement;
