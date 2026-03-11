@@ -253,6 +253,20 @@ export default function DevModeBadge() {
             </button>
           ))}
 
+          {/* External Tools */}
+          <div className="border-t border-white/10 mt-1 px-3 py-2 text-white/40 uppercase tracking-widest text-[9px]">Design Tools</div>
+          {EXTERNAL_TOOLS.map((t) => (
+            <a
+              key={t.url}
+              href={t.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block w-full text-left px-3 py-1.5 hover:bg-white/10 transition-colors text-white/70"
+            >
+              {t.label} ↗
+            </a>
+          ))}
+
           {/* Disable */}
           <div className="border-t border-white/10 mt-1">
             <button
