@@ -647,20 +647,19 @@ export default function ProductLibrary() {
           transition={{ delay: 0.4, duration: 0.6 }}
           style={{
             textAlign: 'center',
-            padding: '28px 28px 24px',
-            margin: '20px 20px 0',
-            borderRadius: '14px',
-            backgroundColor: 'rgba(44, 36, 32, 0.025)',
+            padding: '32px 28px 28px',
+            margin: '24px 20px 0',
           }}
         >
+          <div style={{ width: '24px', height: '2px', background: '#1A1A2E', opacity: 0.15, margin: '0 auto 16px', borderRadius: '1px' }} />
           <p
             style={{
               fontFamily: "'DM Serif Display', serif",
-              fontSize: '18px',
+              fontSize: '19px',
               fontWeight: 400,
-              color: 'var(--text-library)',
-              lineHeight: 1.5,
-              marginBottom: '8px',
+              color: '#1A1A2E',
+              lineHeight: 1.45,
+              marginBottom: '10px',
             }}
           >
             Barnens trygghet börjar med deras vuxna
