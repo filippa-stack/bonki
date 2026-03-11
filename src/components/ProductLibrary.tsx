@@ -369,23 +369,44 @@ export default function ProductLibrary() {
   return (
     <div
       className="min-h-screen flex flex-col relative"
-      style={{ backgroundColor: 'var(--surface-library)', fontFamily: "'Lato', sans-serif" }}
+      style={{ fontFamily: "'Lato', sans-serif" }}
     >
-      {/* Content */}
-      <div style={{ position: 'relative', zIndex: 1 }}>
-        {/* Hero — BONKI title + mamma illustration */}
+      {/* ── Branded Canopy — midnight blue anchor from onboarding ── */}
+      <div
+        style={{
+          background: 'var(--canopy-bg)',
+          paddingTop: 'calc(env(safe-area-inset-top, 0px) + 28px)',
+          paddingBottom: '0',
+          position: 'relative',
+          overflow: 'hidden',
+        }}
+      >
+        {/* Subtle radial glow */}
+        <div
+          style={{
+            position: 'absolute',
+            top: '-30%',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            width: '140%',
+            height: '160%',
+            background: 'radial-gradient(ellipse at 50% 30%, hsla(38, 60%, 40%, 0.06) 0%, transparent 60%)',
+            pointerEvents: 'none',
+          }}
+        />
+
         <motion.div
-          className="pt-4 pb-2 px-6 text-center"
+          className="px-6 text-center"
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-          style={{ position: 'relative' }}
+          style={{ position: 'relative', zIndex: 1 }}
         >
           <h1
             style={{
               fontFamily: "'Bebas Neue', sans-serif",
-              color: 'var(--text-library)',
-              marginBottom: '4px',
+              color: 'var(--canopy-text)',
+              marginBottom: '6px',
               fontSize: '48px',
               letterSpacing: '0.06em',
             }}
@@ -398,28 +419,30 @@ export default function ProductLibrary() {
               fontStyle: 'italic',
               fontSize: '14px',
               fontWeight: 400,
-              color: 'var(--color-text-secondary)',
-              opacity: 0.55,
+              color: 'var(--canopy-subtitle)',
+              opacity: 0.7,
               lineHeight: 1.5,
             }}
           >
-            Välj det samtal ni behöver just nu
+            Välj det samtal som behövs just nu
           </p>
         </motion.div>
 
-        {/* Segment control with active state */}
+        {/* Segment control — sits in the transition zone */}
         <motion.div
           initial={{ opacity: 0, y: 6 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.06, duration: 0.4 }}
           style={{
             display: 'flex',
-            margin: '16px auto 20px',
+            margin: '20px auto 0',
             width: 'fit-content',
-            background: 'rgba(44, 36, 32, 0.04)',
+            background: 'hsla(0, 0%, 100%, 0.08)',
             borderRadius: '10px',
             padding: '3px',
             gap: '2px',
+            position: 'relative',
+            zIndex: 2,
           }}
         >
           {[
@@ -430,7 +453,6 @@ export default function ProductLibrary() {
               key={label}
               onClick={() => {
                 ref.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                // Update active state visually
                 const parent = (document.getElementById('segment-control') as HTMLElement);
                 if (parent) {
                   parent.querySelectorAll('button').forEach(btn => {
@@ -447,9 +469,8 @@ export default function ProductLibrary() {
                 fontSize: '9px',
                 fontWeight: 700,
                 letterSpacing: '0.12em',
-                color: 'var(--text-library)',
-                background: isDefault ? 'rgba(255,255,255,0.7)' : 'transparent',
-                opacity: isDefault ? 1 : 0.5,
+                color: isDefault ? 'var(--canopy-subtitle)' : 'hsla(0, 0%, 100%, 0.4)',
+                background: isDefault ? 'hsla(0, 0%, 100%, 0.10)' : 'transparent',
                 border: 'none',
                 borderRadius: '8px',
                 padding: '6px 20px',
@@ -458,11 +479,10 @@ export default function ProductLibrary() {
               }}
               onMouseDown={(e) => {
                 const btn = e.currentTarget as HTMLButtonElement;
-                btn.style.background = 'rgba(255,255,255,0.7)';
-                btn.style.opacity = '1';
-                // Dim sibling
+                btn.style.background = 'hsla(0, 0%, 100%, 0.10)';
+                btn.style.color = 'var(--canopy-subtitle)';
                 const sibling = btn.parentElement?.querySelector(`button:not([data-segment="${label}"])`) as HTMLElement;
-                if (sibling) { sibling.style.background = 'transparent'; sibling.style.opacity = '0.5'; }
+                if (sibling) { sibling.style.background = 'transparent'; sibling.style.color = 'hsla(0, 0%, 100%, 0.4)'; }
               }}
             >
               {label}
@@ -470,6 +490,18 @@ export default function ProductLibrary() {
           ))}
         </motion.div>
 
+        {/* Gradient fade from canopy → library surface */}
+        <div
+          style={{
+            height: '80px',
+            background: 'linear-gradient(to bottom, var(--canopy-bg) 0%, var(--surface-library) 100%)',
+            marginTop: '10px',
+          }}
+        />
+      </div>
+
+      {/* ── Library content on warm linen ── */}
+      <div style={{ backgroundColor: 'var(--surface-library)', position: 'relative', zIndex: 1, flex: 1 }}>
         {/* ── Barn — broken grid layout ── */}
         <div ref={barnRef} className="px-5" style={{ scrollMarginTop: '8px' }}>
           <motion.p
@@ -478,16 +510,17 @@ export default function ProductLibrary() {
             transition={{ delay: 0.08, duration: 0.6 }}
             style={{
               fontFamily: "'DM Serif Display', serif",
-              fontSize: '14px',
+              fontSize: '15px',
               fontWeight: 400,
-              color: 'var(--color-text-secondary)',
-              opacity: 0.55,
+              color: 'var(--text-library)',
+              opacity: 0.5,
               lineHeight: 1.5,
               textAlign: 'center',
-              marginBottom: '16px',
+              marginBottom: '20px',
+              marginTop: '-20px',
             }}
           >
-            Samtalskort som hjälper er att nå det barnet inte säger själv
+            Det barnet inte säger själv — börjar här
           </motion.p>
           <motion.div
             variants={containerVariants}
