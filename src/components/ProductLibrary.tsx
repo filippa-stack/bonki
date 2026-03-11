@@ -556,32 +556,43 @@ export default function ProductLibrary() {
           </motion.div>
         </div>
 
-        {/* Diary whisper — natural conclusion to barn section */}
+        {/* Diary — emotional anchor */}
         <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.35, duration: 0.5 }}
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
           style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: '6px',
-            margin: '16px 20px 0',
-            padding: '12px 0',
+            margin: '24px 20px 8px',
+            padding: '20px 22px',
+            borderRadius: '14px',
+            backgroundColor: 'rgba(44, 36, 32, 0.025)',
+            textAlign: 'center',
           }}
         >
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" style={{ opacity: 0.30, color: 'var(--text-library)', flexShrink: 0 }}>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{ opacity: 0.35, color: 'var(--text-library)', margin: '0 auto 10px' }}>
             <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20" />
           </svg>
           <p style={{
-            fontFamily: "'Lato', sans-serif",
-            fontSize: '10px',
+            fontFamily: "'DM Serif Display', serif",
+            fontSize: '16px',
+            fontWeight: 400,
+            color: 'var(--text-library)',
+            lineHeight: 1.5,
+            marginBottom: '6px',
+          }}>
+            Dagboken
+          </p>
+          <p style={{
+            fontFamily: "'DM Serif Display', serif",
+            fontStyle: 'italic',
+            fontSize: '13px',
             fontWeight: 400,
             color: 'var(--color-text-secondary)',
-            opacity: 0.45,
-            lineHeight: 1.4,
+            opacity: 0.55,
+            lineHeight: 1.6,
           }}>
-            Dagbok för varje barn — spara varje samtal, bygg ett minnesbibliotek
+            Varje samtal sparas. Varje tanke samlas.<br />
+            Ett minnesbibliotek som växer med ert barn.
           </p>
         </motion.div>
           </motion.div>
