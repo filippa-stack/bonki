@@ -132,12 +132,6 @@ export default function Login() {
             className="font-serif italic"
             style={{ fontSize: '22px', color: 'var(--accent-text)', textAlign: 'center', marginTop: '4px' }}
           >
-            Still Us
-          </p>
-          <p
-            className="font-serif"
-            style={{ fontSize: '14px', color: 'var(--color-text-secondary)', opacity: 0.50, textAlign: 'center', marginTop: '10px', letterSpacing: '0.04em' }}
-          >
             På riktigt.
           </p>
         </motion.div>
