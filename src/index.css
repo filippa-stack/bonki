@@ -162,11 +162,6 @@ h1, h2, h3,
     --surface-library: hsl(37, 71%, 96%);       /* #FAF7F2 warm linen */
     --text-library:    hsl(16, 15%, 15%);        /* #2C2420 warm charcoal */
 
-    /* ── Branded canopy (onboarding anchor) ── */
-    --canopy-bg:       hsl(240, 27%, 14%);       /* #1A1A2E midnight blue */
-    --canopy-text:     hsl(0, 0%, 92%);          /* near-white on dark */
-    --canopy-subtitle: hsl(38, 72%, 56%);        /* warm saffron gold */
-
     /* ── CTA pressed/hover states ── */
     --cta-default: hsl(158, 35%, 18%);
     --cta-hover-v2: hsl(158, 38%, 23%);
