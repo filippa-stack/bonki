@@ -492,6 +492,24 @@ export default function ProductLibrary() {
           >
             Det ditt barn inte säger själv — börjar här
           </motion.p>
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.12, duration: 0.6 }}
+            style={{
+              fontFamily: "'DM Serif Display', serif",
+              fontSize: '13px',
+              fontWeight: 400,
+              color: 'var(--color-text-secondary)',
+              opacity: 0.45,
+              lineHeight: 1.5,
+              textAlign: 'center',
+              marginBottom: '16px',
+              marginTop: '-8px',
+            }}
+          >
+            Sex samtalsverktyg som växer med ditt barn.<br />Från känslor i magen till frågor om världen.
+          </motion.p>
           <motion.div
             variants={containerVariants}
             initial="hidden"
