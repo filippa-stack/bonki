@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mockup A — Immersive Midnight</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@400;500;600&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: #0F0F1A;
+    color: #E8E4DC;
+    min-height: 100vh;
+    max-width: 390px;
+    margin: 0 auto;
+    overflow-x: hidden;
+  }
+
+  .page {
+    min-height: 100vh;
+    background: 
+      radial-gradient(ellipse 80% 50% at 50% 0%, rgba(26, 26, 46, 1) 0%, transparent 70%),
+      radial-gradient(ellipse 60% 40% at 30% 60%, rgba(30, 20, 40, 0.4) 0%, transparent 60%),
+      linear-gradient(180deg, #0F0F1A 0%, #141420 40%, #18161E 100%);
+    padding-bottom: 60px;
+  }
+
+  /* Hero */
+  .hero {
+    padding: 56px 32px 40px;
+    text-align: center;
+    position: relative;
+  }
+
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(220, 154, 20, 0.3), transparent);
+  }
+
+  .logo {
+    font-family: 'DM Serif Display', serif;
+    font-size: 48px;
+    letter-spacing: 0.08em;
+    color: #DC9A14;
+    margin-bottom: 8px;
+    text-shadow: 0 0 60px rgba(220, 154, 20, 0.15);
+  }
+
+  .tagline {
+    font-family: 'DM Serif Display', serif;
+    font-style: italic;
+    font-size: 14px;
+    color: rgba(232, 228, 220, 0.45);
+    letter-spacing: 0.02em;
+  }
+
+  /* Segment */
+  .segment {
+    display: flex;
+    justify-content: center;
+    gap: 0;
+    margin: 32px auto 0;
+    position: relative;
+  }
+
+  .segment-btn {
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 10px 28px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: transparent;
+    color: rgba(232, 228, 220, 0.3);
+    position: relative;
+  }
+
+  .segment-btn.active {
+    color: #DC9A14;
+  }
+
+  .segment-btn.active::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 20px;
+    height: 2px;
+    background: #DC9A14;
+    border-radius: 1px;
+  }
+
+  /* Section intro */
+  .section-intro {
+    padding: 44px 32px 8px;
+    text-align: center;
+  }
+
+  .section-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 19px;
+    color: rgba(232, 228, 220, 0.9);
+    line-height: 1.35;
+    margin-bottom: 12px;
+  }
+
+  .section-sub {
+    font-family: 'DM Serif Display', serif;
+    font-style: italic;
+    font-size: 12.5px;
+    color: rgba(232, 228, 220, 0.35);
+    line-height: 1.6;
+    max-width: 280px;
+    margin: 0 auto;
+  }
+
+  /* Grid */
+  .grid-section {
+    padding: 28px 20px 0;
+  }
+
+  /* Hero tile — full width */
+  .tile-hero {
+    width: 100%;
+    border-radius: 16px;
+    padding: 28px 24px 24px;
+    margin-bottom: 14px;
+    position: relative;
+    overflow: hidden;
+    min-height: 140px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    background: linear-gradient(135deg, #2A2520 0%, #1E1A16 100%);
+    border: 1px solid rgba(220, 154, 20, 0.08);
+    box-shadow: 
+      0 4px 20px rgba(0, 0, 0, 0.4),
+      0 0 40px rgba(220, 154, 20, 0.03),
+      inset 0 1px 0 rgba(255, 255, 255, 0.03);
+  }
+
+  .tile-hero .tile-illus {
+    position: absolute;
+    top: -8px;
+    right: -5px;
+    width: 120px;
+    height: 120px;
+    opacity: 0.9;
+    border-radius: 12px;
+    background: linear-gradient(135deg, rgba(220, 180, 120, 0.15), rgba(180, 140, 80, 0.08));
+  }
+
+  /* Grid tiles */
+  .grid-2col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+
+  .tile {
+    border-radius: 14px;
+    padding: 20px 16px 16px;
+    position: relative;
+    overflow: hidden;
+    min-height: 160px;
+    display: flex;
+    flex-direction: column;
+    background: linear-gradient(160deg, #252220 0%, #1C1916 100%);
+    border: 1px solid rgba(255, 255, 255, 0.04);
+    box-shadow: 
+      0 4px 16px rgba(0, 0, 0, 0.3),
+      inset 0 1px 0 rgba(255, 255, 255, 0.03);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .tile:hover {
+    transform: translateY(-2px);
+    box-shadow: 
+      0 8px 24px rgba(0, 0, 0, 0.4),
+      0 0 30px rgba(220, 154, 20, 0.04),
+      inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  }
+
+  .tile-illus {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 56px;
+    height: 56px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, rgba(220, 180, 120, 0.12), rgba(180, 140, 80, 0.06));
+  }
+
+  .tile-age {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    font-size: 8px;
+    font-weight: 600;
+    color: rgba(220, 154, 20, 0.6);
+    background: rgba(220, 154, 20, 0.08);
+    padding: 2px 6px;
+    border-radius: 4px;
+    letter-spacing: 0.05em;
+    z-index: 2;
+  }
+
+  .tile-name {
+    font-family: 'DM Serif Display', serif;
+    font-size: 17px;
+    color: rgba(232, 228, 220, 0.9);
+    margin-bottom: 4px;
+    line-height: 1.2;
+  }
+
+  .tile-desc {
+    font-size: 11px;
+    color: rgba(232, 228, 220, 0.4);
+    line-height: 1.4;
+    margin-bottom: auto;
+  }
+
+  .tile-meta {
+    margin-top: 16px;
+    font-size: 8px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: rgba(220, 154, 20, 0.5);
+  }
+
+  /* Diary callout */
+  .diary-callout {
+    margin: 28px 20px 0;
+    padding: 20px 24px;
+    border-radius: 12px;
+    background: rgba(220, 154, 20, 0.04);
+    border: 1px solid rgba(220, 154, 20, 0.08);
+    text-align: center;
+  }
+
+  .diary-callout p {
+    font-family: 'DM Serif Display', serif;
+    font-style: italic;
+    font-size: 12px;
+    color: rgba(232, 228, 220, 0.4);
+    line-height: 1.5;
+  }
+
+  /* Bottom brand */
+  .bottom-brand {
+    margin-top: 48px;
+    text-align: center;
+    padding: 0 32px;
+  }
+
+  .bottom-brand .b-logo {
+    font-family: 'DM Serif Display', serif;
+    font-size: 16px;
+    letter-spacing: 0.12em;
+    color: rgba(220, 154, 20, 0.2);
+    margin-bottom: 6px;
+  }
+
+  .bottom-brand .b-sub {
+    font-size: 10px;
+    color: rgba(232, 228, 220, 0.15);
+    font-style: italic;
+  }
+
+  /* Label */
+  .mockup-label {
+    position: fixed;
+    top: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(220, 154, 20, 0.5);
+    background: rgba(0,0,0,0.6);
+    padding: 4px 12px;
+    border-radius: 20px;
+    z-index: 100;
+    backdrop-filter: blur(8px);
+  }
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="mockup-label">Mockup A — Immersive Midnight</div>
+
+  <div class="hero">
+    <div class="logo">BONKI</div>
+    <div class="tagline">Välj det samtal som behövs just nu</div>
+    <div class="segment">
+      <button class="segment-btn active">BARN</button>
+      <button class="segment-btn">PAR</button>
+    </div>
+  </div>
+
+  <div class="section-intro">
+    <div class="section-title">Det ditt barn inte säger själv<br>— börjar här</div>
+    <div class="section-sub">Sex samtalsverktyg som växer med ditt barn.<br>Från känslor i magen till frågor om världen.</div>
+  </div>
+
+  <div class="grid-section">
+    <!-- Hero tile -->
+    <div class="tile-hero">
+      <div class="tile-illus"></div>
+      <div class="tile-age">3+</div>
+      <div class="tile-name" style="font-size: 22px; margin-bottom: 6px;">Jag i Mig</div>
+      <div class="tile-desc">Hjälp ditt barn hitta ord för det som känns</div>
+      <div class="tile-meta">21 ämnen · 195 kr · Första gratis</div>
+    </div>
+
+    <!-- 2-col grid -->
+    <div class="grid-2col">
+      <div class="tile">
+        <div class="tile-age">6+</div>
+        <div class="tile-name">Jag med Andra</div>
+        <div class="tile-desc">När omvärlden växer</div>
+        <div class="tile-meta">21 ämnen · 195 kr · Första gratis</div>
+      </div>
+      <div class="tile">
+        <div class="tile-age">12+</div>
+        <div class="tile-name">Jag i Världen</div>
+        <div class="tile-desc">De stora frågorna</div>
+        <div class="tile-meta">20 ämnen · 195 kr · Första gratis</div>
+      </div>
+      <div class="tile">
+        <div class="tile-age">6+</div>
+        <div class="tile-name">Vardag</div>
+        <div class="tile-desc">Samtal runt middagsbordet</div>
+        <div class="tile-meta">14 ämnen · 195 kr · Första gratis</div>
+      </div>
+      <div class="tile">
+        <div class="tile-name">Syskon</div>
+        <div class="tile-desc">Det som finns mellan oss</div>
+        <div class="tile-meta">14 ämnen · 195 kr · Första gratis</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="diary-callout">
+    <p>📖 Er gemensamma dagbok sparar tankar och insikter från varje samtal.</p>
+  </div>
+
+  <div class="bottom-brand">
+    <div class="b-logo">BONKI</div>
+    <div class="b-sub">Samtal som stannar kvar</div>
+  </div>
+</div>
+</body>
+</html>
