@@ -816,43 +816,28 @@ export default function ProductLibrary() {
             exit={{ opacity: 0, x: swipeDirection * -30 }}
             transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
           >
-        {/* Bridge phrase */}
+        {/* Bridge phrase — inline, no card */}
         <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
+          initial={{ opacity: 0, y: 6 }}
+          animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1, duration: 0.6 }}
           style={{
             textAlign: 'center',
-            padding: '28px 28px 24px',
-            margin: '0 20px 0',
-            borderRadius: '14px',
-            backgroundColor: 'rgba(44, 36, 32, 0.025)',
+            padding: '8px 28px 20px',
           }}
         >
           <p
             style={{
               fontFamily: "'DM Serif Display', serif",
-              fontSize: '18px',
-              fontWeight: 400,
-              color: 'var(--text-library)',
-              lineHeight: 1.5,
-              marginBottom: '8px',
-            }}
-          >
-            Barnens trygghet börjar med deras vuxna
-          </p>
-          <p
-            style={{
-              fontFamily: "'DM Serif Display', serif",
               fontStyle: 'italic',
-              fontSize: '13px',
+              fontSize: '15px',
               fontWeight: 400,
               color: 'var(--color-text-secondary)',
               opacity: 0.5,
               lineHeight: 1.6,
             }}
           >
-            Samma psykologi. Samma precision. Nu för er.
+            Barnens trygghet börjar med deras vuxna
           </p>
         </motion.div>
 
