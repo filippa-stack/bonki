@@ -90,7 +90,7 @@ function buildBadgeText(product: { cards: unknown[]; id: string }): string {
     vardagskort: 195, syskonkort: 195, sexualitetskort: 195,
   };
   const price = prices[product.id] ?? 195;
-  return `${count} ämnen · ${price} kr · Första gratis`;
+  return `${count} ämnen · ${price} kr · 1a gratis`;
 }
 
 
