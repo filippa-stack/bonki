@@ -186,12 +186,12 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
     return (
       <motion.div
         variants={tileVariants}
-        whileHover={{ scale: 1.03, y: -3 }}
-        whileTap={{ scale: 0.97 }}
+        whileHover={{ scale: 1.025, y: -3 }}
+        whileTap={{ scale: 0.985 }}
         onClick={onClick}
         className="cursor-pointer"
         style={{
-          borderRadius: '16px',
+          borderRadius: '20px',
           background: `linear-gradient(180deg, ${bg} 0%, ${darkenHex(bg)} 100%)`,
           minHeight: wide ? '140px' : '150px',
           display: 'flex',
@@ -202,8 +202,8 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
           padding: wide ? '36px 20px 16px' : '36px 16px 14px',
           position: 'relative',
           overflow: 'hidden',
-          border: '1px solid rgba(44, 36, 32, 0.05)',
-          boxShadow: '0px 2px 6px rgba(44, 36, 32, 0.10), 0px 8px 20px rgba(44, 36, 32, 0.08)',
+          border: '1px solid hsla(30, 15%, 80%, 0.3)',
+          boxShadow: '0 2px 6px hsla(30, 18%, 20%, 0.08), 0 10px 28px -6px hsla(30, 20%, 18%, 0.10)',
           gridColumn: wide ? 'span 2' : undefined,
         }}
       >
