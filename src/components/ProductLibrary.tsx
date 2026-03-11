@@ -309,8 +309,7 @@ export default function ProductLibrary() {
   const tracked = useRef(false);
   const { purchased } = useAllProductAccess();
   const { user } = useAuth();
-  const barnRef = useRef<HTMLDivElement>(null);
-  const parRef = useRef<HTMLDivElement>(null);
+  const [activeTab, setActiveTab] = useState<'barn' | 'par'>('barn');
   const [notifySignedUp, setNotifySignedUp] = useState(false);
   const [notifyLoading, setNotifyLoading] = useState(false);
 
