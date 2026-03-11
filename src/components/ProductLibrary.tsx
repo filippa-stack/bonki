@@ -97,17 +97,17 @@ function buildBadgeText(product: { cards: unknown[]; id: string }): string {
 const containerVariants = {
   hidden: {},
   visible: {
-    transition: { staggerChildren: 0.06, delayChildren: 0.15 },
+    transition: { staggerChildren: 0.12, delayChildren: 0.35 },
   },
 };
 
 const tileVariants = {
-  hidden: { opacity: 0, y: 18, scale: 0.96 },
+  hidden: { opacity: 0, y: 24, scale: 0.94 },
   visible: {
     opacity: 1,
     y: 0,
     scale: 1,
-    transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] as const },
+    transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] as const },
   },
 };
 
@@ -374,21 +374,82 @@ export default function ProductLibrary() {
   return (
     <div
       className="min-h-screen flex flex-col relative"
-      style={{ backgroundColor: 'var(--surface-library)', fontFamily: "'Lato', sans-serif" }}
+      style={{
+        background: `
+          radial-gradient(ellipse 120% 60% at 50% 0%, hsla(37, 60%, 92%, 0.6) 0%, transparent 50%),
+          radial-gradient(ellipse 80% 80% at 80% 100%, hsla(30, 40%, 90%, 0.3) 0%, transparent 50%),
+          var(--surface-library)
+        `,
+        fontFamily: "'Lato', sans-serif",
+      }}
     >
       {/* Content */}
       <div style={{ position: 'relative', zIndex: 1 }}>
-        {/* Spacer — logo lives in header, content starts immediately */}
-        <div style={{ height: '8px' }} />
+        {/* Hero zone — cinematic entrance */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+          style={{
+            textAlign: 'center',
+            padding: '32px 28px 8px',
+          }}
+        >
+          <motion.h1
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.15, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+            style={{
+              fontFamily: "'DM Serif Display', serif",
+              fontSize: '28px',
+              fontWeight: 400,
+              color: '#1A1A2E',
+              lineHeight: 1.2,
+              letterSpacing: '-0.02em',
+              marginBottom: '8px',
+            }}
+          >
+            Bonki
+          </motion.h1>
+          <motion.p
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.35, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+            style={{
+              fontFamily: "'DM Serif Display', serif",
+              fontStyle: 'italic',
+              fontSize: '15px',
+              fontWeight: 400,
+              color: 'var(--color-text-secondary)',
+              opacity: 0.55,
+              lineHeight: 1.6,
+            }}
+          >
+            Verktyg för samtalen som inte blir av
+          </motion.p>
+        </motion.div>
+
+        {/* Visual pause — editorial hairline */}
+        <motion.div
+          initial={{ scaleX: 0 }}
+          animate={{ scaleX: 1 }}
+          transition={{ delay: 0.5, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+          style={{
+            width: '40px',
+            height: '1px',
+            background: 'linear-gradient(90deg, transparent, hsla(30, 20%, 60%, 0.3), transparent)',
+            margin: '12px auto 20px',
+          }}
+        />
 
         {/* Segment control — tab switcher */}
         <motion.div
           initial={{ opacity: 0, y: 6 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.06, duration: 0.4 }}
+          transition={{ delay: 0.55, duration: 0.4 }}
           style={{
             display: 'flex',
-            margin: '16px auto 20px',
+            margin: '0 auto 24px',
             width: 'fit-content',
             background: 'transparent',
             padding: '0',
@@ -444,18 +505,18 @@ export default function ProductLibrary() {
         {/* ── Barn — broken grid layout ── */}
         <div className="px-5" style={{ scrollMarginTop: '8px' }}>
           <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.08, duration: 0.6 }}
+            initial={{ opacity: 0, y: 6 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
             style={{
               fontFamily: "'DM Serif Display', serif",
-              fontSize: '14px',
+              fontSize: '16px',
               fontWeight: 400,
               color: 'var(--color-text-secondary)',
-              opacity: 0.55,
+              opacity: 0.6,
               lineHeight: 1.5,
               textAlign: 'center',
-              marginBottom: '16px',
+              marginBottom: '20px',
             }}
           >
             Det barnet inte säger själv — börjar här
@@ -556,11 +617,38 @@ export default function ProductLibrary() {
           </motion.div>
         </div>
 
+        {/* Visual pause before diary */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.6, duration: 0.8 }}
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '12px',
+            margin: '28px 40px 8px',
+          }}
+        >
+          <div style={{ flex: 1, height: '1px', background: 'linear-gradient(90deg, transparent, hsla(30, 15%, 60%, 0.2))' }} />
+          <span style={{
+            fontFamily: "'Lato', sans-serif",
+            fontSize: '8px',
+            fontWeight: 700,
+            letterSpacing: '0.15em',
+            textTransform: 'uppercase' as const,
+            color: '#A09890',
+            opacity: 0.5,
+          }}>
+            Minnen
+          </span>
+          <div style={{ flex: 1, height: '1px', background: 'linear-gradient(90deg, hsla(30, 15%, 60%, 0.2), transparent)' }} />
+        </motion.div>
+
         {/* Diary — emotional anchor with visual mockup */}
         <motion.div
-          initial={{ opacity: 0, y: 10 }}
+          initial={{ opacity: 0, y: 14 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ delay: 0.65, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
           whileTap={{ scale: 0.98 }}
           onClick={() => navigate('/diary/jag_i_mig')}
           className="cursor-pointer"
@@ -953,22 +1041,28 @@ export default function ProductLibrary() {
         </AnimatePresence>
         </motion.div>
 
-        {/* Sign-off */}
+        {/* Sign-off — elevated */}
         <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.8, duration: 0.6 }}
-          style={{ textAlign: 'center', padding: '0 20px', marginTop: '24px', paddingBottom: 'calc(40px + env(safe-area-inset-bottom, 0px))' }}
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1.0, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+          style={{ textAlign: 'center', padding: '0 28px', marginTop: '32px', paddingBottom: 'calc(48px + env(safe-area-inset-bottom, 0px))' }}
         >
-          <div style={{ width: '32px', height: '1px', background: '#A09890', opacity: 0.2, margin: '0 auto 14px' }} />
+          <div style={{
+            width: '40px',
+            height: '1px',
+            background: 'linear-gradient(90deg, transparent, hsla(30, 20%, 60%, 0.3), transparent)',
+            margin: '0 auto 18px',
+          }} />
           <p
             style={{
               fontFamily: "'DM Serif Display', serif",
               fontStyle: 'italic',
-              fontSize: '13px',
+              fontSize: '14px',
               color: 'var(--accent-text)',
-              opacity: 0.5,
-              lineHeight: 1.6,
+              opacity: 0.45,
+              lineHeight: 1.7,
+              letterSpacing: '-0.01em',
             }}
           >
             Utvecklat av psykolog med 20+ års klinisk erfarenhet.
