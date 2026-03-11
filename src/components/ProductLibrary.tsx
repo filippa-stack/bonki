@@ -488,11 +488,13 @@ export default function ProductLibrary() {
                 background: 'transparent',
                 opacity: activeTab === tab ? 1 : 0.35,
                 border: 'none',
+                outline: 'none',
                 borderBottom: activeTab === tab ? '2px solid #1A1A2E' : '2px solid transparent',
                 borderRadius: '0',
                 padding: '6px 4px',
                 cursor: 'pointer',
                 transition: 'all 260ms ease',
+                WebkitTapHighlightColor: 'transparent',
               }}
             >
               {tab.toUpperCase()}
