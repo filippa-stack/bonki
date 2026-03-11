@@ -889,15 +889,15 @@ export default function ProductLibrary() {
           animate="visible"
         >
           
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', paddingBottom: '32px' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', paddingBottom: '32px' }}>
             <motion.div
               variants={tileVariants}
               whileHover={{ scale: 1.02, y: -2 }}
-              whileTap={{ scale: 0.97 }}
+              whileTap={{ scale: 0.985 }}
               onClick={() => navigate('/product/still-us')}
               className="cursor-pointer"
               style={{
-                borderRadius: '16px',
+                borderRadius: '20px',
                 padding: '24px 20px 18px',
                 background: 'linear-gradient(180deg, #D6E8DE 0%, #CADBC4 100%)',
                 textAlign: 'left',
@@ -908,8 +908,8 @@ export default function ProductLibrary() {
                 flexDirection: 'column',
                 alignItems: 'flex-start',
                 justifyContent: 'flex-end',
-                border: '1px solid rgba(44, 36, 32, 0.05)',
-                boxShadow: '0px 2px 6px rgba(44, 36, 32, 0.10), 0px 8px 20px rgba(44, 36, 32, 0.08)',
+                border: '1px solid hsla(30, 15%, 80%, 0.3)',
+                boxShadow: '0 2px 6px hsla(30, 18%, 20%, 0.08), 0 10px 28px -6px hsla(30, 20%, 18%, 0.10)',
               }}
             >
               {/* Illustration */}
