@@ -48,6 +48,7 @@ import LockedReflectionDisplay from '@/components/LockedReflectionDisplay';
 
 import GorTillsammansOverlay, { hasSeenGorTillsammans } from '@/components/GorTillsammansOverlay';
 import IllustrationPeek from '@/components/IllustrationPeek';
+import { useVerdigrisTheme } from '@/components/VerdigrisAtmosphere';
 import { useDevState } from '@/contexts/DevStateContext';
 import { useNormalizedSessionContext } from '@/contexts/NormalizedSessionContext';
 import { isDevToolsEnabled } from '@/lib/devTools';
