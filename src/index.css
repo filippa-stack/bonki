@@ -147,12 +147,12 @@ h1, h2, h3,
     --text-secondary:  hsl(30, 10%, 40%);    /* Warm grey */
     --text-tertiary:   hsl(30, 8%, 56%);     /* Recedes */
     --text-ghost:      hsl(30, 6%, 70%);     /* Placeholders */
-    --text-accent:     hsl(38, 88%, 46%);    /* Burnt saffron — sparingly */
+    --text-accent:     hsl(41, 78%, 48%);    /* Saffron — sparingly */
 
     /* ── Accent tokens ── */
-    --accent-saffron:       hsl(38, 88%, 46%);
-    --accent-saffron-muted: hsl(38, 60%, 72%);
-    --accent-text:          hsl(38, 72%, 38%);  /* Darker amber for editorial text */
+    --accent-saffron:       hsl(41, 78%, 48%);
+    --accent-saffron-muted: hsl(41, 55%, 72%);
+    --accent-text:          hsl(41, 65%, 38%);  /* Darker saffron for editorial text */
     --color-text-tertiary:  var(--text-tertiary);
 
     /* ── Surface layering (mapped to foundation neutrals) ── */
