@@ -261,7 +261,7 @@ export default function CircadianMenu({
                 fontSize: '11px',
                 fontStyle: 'italic',
                 color: 'var(--text-secondary)',
-                opacity: 0.35,
+                opacity: 0.50,
                 whiteSpace: 'nowrap',
               }}
             >
