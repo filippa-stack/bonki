@@ -2299,9 +2299,6 @@ function CompletionTakeaway({ sessionId, spaceId, pronounMode = 'ni', cardId, pr
   }
 
   // Phase: writing — ceremonial invitation style
-  const [isNoteExpanded, setIsNoteExpanded] = useState(false);
-  const completionTextareaRef = useRef<HTMLTextAreaElement>(null);
-
   const handleNoteExpand = () => {
     setIsNoteExpanded(true);
     setTimeout(() => completionTextareaRef.current?.focus(), 320);
