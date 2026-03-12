@@ -379,7 +379,7 @@ export default function ProductLibrary() {
       style={{
         background: isDark
           ? '#1A1A2E'
-          : 'radial-gradient(ellipse 70% 60% at 50% 45%, #FFF4D1 0%, #FEF2C7 65%, #FBDFA8 100%)',
+          : '#DA9D1D',
         fontFamily: "'Lato', sans-serif",
         transition: 'background 600ms ease',
       }}
