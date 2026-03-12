@@ -111,7 +111,7 @@ function ProgressRing({ completed, total, size = 20 }: { completed: number; tota
             display: 'flex', alignItems: 'center', justifyContent: 'center',
           }}
         >
-          <Check size={11} style={{ color: HERITAGE_GOLD }} />
+          <Check size={9} style={{ color: HERITAGE_GOLD }} />
         </motion.div>
       )}
     </div>
