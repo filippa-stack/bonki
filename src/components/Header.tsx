@@ -186,8 +186,8 @@ export default function Header({
                     fontFamily: 'var(--font-sans)',
                     fontSize: '13px',
                     fontWeight: 500,
-                    color: 'var(--color-text-secondary)',
-                    opacity: 0.7,
+                    color: 'var(--accent-text, var(--color-text-secondary))',
+                    opacity: 0.85,
                     letterSpacing: '0.04em',
                   }}
                   onClick={() => navigate('/', { replace: false })}
