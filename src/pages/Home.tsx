@@ -413,7 +413,7 @@ export default function Home() {
             })()}
 
             {/* ── Circadian Menu — 9 progressive disclosure categories ── */}
-            <div className="px-6" style={{ marginTop: '40px', paddingBottom: '64px' }}>
+            <div className="px-6" style={{ marginTop: '20px', paddingBottom: '64px' }}>
               <CircadianMenu
                 categories={sortedCategories}
                 cards={cards}
