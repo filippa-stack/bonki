@@ -463,12 +463,16 @@ export default function ProductLibrary() {
           <div
             style={{
               display: 'flex',
-              background: isDark ? 'hsla(230, 35%, 18%, 0.6)' : 'hsla(30, 20%, 40%, 0.08)',
+              background: isDark ? 'hsla(230, 35%, 18%, 0.6)' : 'hsla(38, 40%, 60%, 0.25)',
+              backdropFilter: 'blur(12px)',
+              WebkitBackdropFilter: 'blur(12px)',
               borderRadius: '20px',
               padding: '3px',
               gap: '2px',
               position: 'relative',
               transition: 'background 400ms ease',
+              border: isDark ? 'none' : '0.5px solid hsla(38, 50%, 80%, 0.35)',
+              boxShadow: isDark ? 'none' : '0 2px 8px hsla(32, 40%, 25%, 0.08)',
             }}
           >
             {(['barn', 'par'] as const).map((tab) => (
