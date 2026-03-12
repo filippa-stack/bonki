@@ -1150,7 +1150,7 @@ export default function ProductLibrary() {
               fontFamily: "'DM Serif Display', serif",
               fontStyle: 'italic',
               fontSize: '14px',
-              color: activeTab === 'par' ? 'hsla(38, 60%, 60%, 0.5)' : 'var(--accent-text)',
+              color: isDark ? 'hsla(38, 60%, 60%, 0.5)' : 'var(--accent-text)',
               opacity: 0.45,
               lineHeight: 1.7,
               letterSpacing: '-0.01em',
