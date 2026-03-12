@@ -198,10 +198,12 @@ export default function CardView() {
   const [showCompletion, _setShowCompletion] = useState(
     devState === 'completed' ? true : false
   );
-  const completionHeadline = useMemo(
-    () => completionMessages[Math.floor(Math.random() * completionMessages.length)],
-    [completionMessages]
-  );
+  // Lock headline on first render to prevent flash when product resolves
+  const completionHeadlineRef = useRef<string | null>(null);
+  if (!completionHeadlineRef.current) {
+    completionHeadlineRef.current = completionMessages[Math.floor(Math.random() * completionMessages.length)];
+  }
+  const completionHeadline = completionHeadlineRef.current;
   // Wrapper that also marks the card as optimistically completed
   const setShowCompletion = useCallback((val: boolean) => {
     _setShowCompletion(val);
