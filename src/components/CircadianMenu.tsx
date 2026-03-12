@@ -390,7 +390,7 @@ export default function CircadianMenu({
                       {/* Progress ring */}
                       <div style={{ flexShrink: 0 }}>
                         {completedCount > 0 ? (
-                          <ProgressRing completed={completedCount} total={catCards.length} size={20} />
+                          <ProgressRing completed={completedCount} total={catCards.length} size={16} />
                         ) : null}
                       </div>
                     </div>
