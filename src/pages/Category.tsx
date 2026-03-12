@@ -325,7 +325,7 @@ function StillUsCategoryView({
       </motion.button>
 
       {/* Content */}
-      <div style={{ position: 'relative', zIndex: 1, minHeight: '100vh', display: 'flex', flexDirection: 'column', paddingTop: 'calc(env(safe-area-inset-top, 0px) + 56px)', paddingBottom: 'calc(80px + env(safe-area-inset-bottom, 0px))' }}>
+      <div style={{ position: 'relative', zIndex: 1, minHeight: '100vh', display: 'flex', flexDirection: 'column', justifyContent: 'center', paddingTop: 'calc(env(safe-area-inset-top, 0px) + 56px)', paddingBottom: 'calc(80px + env(safe-area-inset-bottom, 0px))' }}>
         {/* Category title */}
         <motion.div
           initial={{ opacity: 0, y: 12 }}
