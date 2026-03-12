@@ -287,15 +287,17 @@ export default function Home() {
                     }}
                     className="cursor-pointer tile-door row-bloom"
                     style={{
-                      borderRadius: 'var(--radius-card, 12px)',
-                      padding: '22px 20px',
-                      background: 'var(--cta-active)',
-                      border: 'var(--border-card, none)',
+                      borderRadius: '14px',
+                      padding: '20px 20px',
+                      background: 'rgba(58, 88, 97, 0.35)',
+                      backdropFilter: 'blur(14px)',
+                      WebkitBackdropFilter: 'blur(14px)',
+                      border: '1px solid rgba(218, 157, 29, 0.20)',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
                       gap: '12px',
-                      boxShadow: '0 4px 20px -4px hsla(158, 30%, 12%, 0.18), 0 10px 40px -10px hsla(158, 25%, 10%, 0.14)',
+                      boxShadow: '0 4px 20px -4px hsla(194, 30%, 12%, 0.15), 0 8px 32px -8px hsla(194, 25%, 10%, 0.10)',
                       position: 'relative' as const,
                       overflow: 'hidden',
                     }}
