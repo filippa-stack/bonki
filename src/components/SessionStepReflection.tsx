@@ -17,6 +17,8 @@ interface SessionStepReflectionProps {
   isExerciseStep?: boolean;
   /** Hide the note textarea + Valfritt label (used for new kid/family products) */
   hideNoteField?: boolean;
+  /** Custom label for the note trigger. When set, overrides hideNoteField and shows the feather with this label. */
+  noteFieldLabel?: string;
 }
 
 export default function SessionStepReflection({
@@ -30,9 +32,14 @@ export default function SessionStepReflection({
   isReflectionStep = false,
   isExerciseStep = false,
   hideNoteField = false,
+  noteFieldLabel,
 }: SessionStepReflectionProps) {
   const navigate = useNavigate();
   const reflectionStepIndex = stepIndex * 100 + promptIndex;
+
+  // If noteFieldLabel is provided, force the note field visible
+  const effectiveHideNoteField = noteFieldLabel ? false : hideNoteField;
+  const triggerLabel = noteFieldLabel || 'Fäst en tanke';
 
   const { loading, myReflection, setText, markReady } =
     useSessionReflections(sessionId, reflectionStepIndex);
@@ -87,7 +94,7 @@ export default function SessionStepReflection({
     <motion.div
       className="reflection-field-wrapper"
       style={{
-        marginTop: hideNoteField ? '32px' : '20px',
+        marginTop: effectiveHideNoteField ? '32px' : '20px',
         marginBottom: '4px',
         display: 'flex',
         flexDirection: 'column',
@@ -98,7 +105,7 @@ export default function SessionStepReflection({
       transition={{ duration: 0.28, ease: [...EASE] }}
     >
       {/* Expanded textarea — shows above the bottom zone when active */}
-      {!hideNoteField && isExpanded && (
+      {!effectiveHideNoteField && isExpanded && (
         <motion.div
           key="expanded"
           initial={{ opacity: 0, height: 0 }}
@@ -175,7 +182,7 @@ export default function SessionStepReflection({
         }}
       >
         {/* Collapsed trigger — poetic invitation */}
-        {!hideNoteField && !isExpanded && (
+        {!effectiveHideNoteField && !isExpanded && (
           <motion.button
             key="trigger"
             onClick={handleExpand}
@@ -211,12 +218,12 @@ export default function SessionStepReflection({
                 letterSpacing: '0.01em',
               }}
             >
-              Fäst en tanke
+              {triggerLabel}
             </span>
           </motion.button>
         )}
 
-        {isExpanded && !hideNoteField && (
+        {isExpanded && !effectiveHideNoteField && (
           <div style={{ height: '16px' }} />
         )}
 
