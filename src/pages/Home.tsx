@@ -297,6 +297,9 @@ export default function Home() {
               </p>
             </motion.div>
 
+            {/* Breathing room before sections */}
+            <div style={{ height: '12px' }} />
+
             {/* Resume banner — active session */}
             {(() => {
               // Prefer normalizedSession (always fresh) over snapshot for resume banner
