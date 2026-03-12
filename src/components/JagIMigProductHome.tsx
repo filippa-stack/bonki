@@ -7,6 +7,14 @@ import apaImage from '@/assets/apa-jag-i-mig.png';
 
 const EASE = [0.4, 0.0, 0.2, 1] as const;
 
+/** Unique fill colors per category tile */
+const TILE_COLORS: Record<string, { bg: string; text: string }> = {
+  'jim-tryggheten-inuti': { bg: 'rgba(168, 186, 104, 0.50)', text: '#5C6B12' },
+  'jim-kanslorna-jag-bar': { bg: 'rgba(205, 175, 119, 0.50)', text: '#7A5E1E' },
+  'jim-nar-det-gor-ont': { bg: 'rgba(189, 139, 130, 0.50)', text: '#7A3B30' },
+  'jim-jag-som-helhet': { bg: 'rgba(142, 170, 158, 0.50)', text: '#3A5C4C' },
+};
+
 const containerVariants = {
   hidden: {},
   visible: { transition: { staggerChildren: 0.1, delayChildren: 0.35 } },
