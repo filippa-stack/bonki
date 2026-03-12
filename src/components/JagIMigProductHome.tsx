@@ -128,7 +128,9 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
           </motion.div>
 
           {/* Category buttons */}
-          {product.categories.map((cat) => (
+          {product.categories.map((cat) => {
+            const tile = TILE_COLORS[cat.id] || { bg: 'var(--product-button-bg)', text: ACCENT_COLOR };
+            return (
             <motion.button
               key={cat.id}
               variants={pillVariants}
@@ -136,7 +138,7 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
               whileTap={{ scale: 0.97 }}
               onClick={() => navigate(`/category/${cat.id}`)}
               style={{
-                background: 'var(--product-button-bg)',
+                background: tile.bg,
                 borderRadius: 'var(--product-button-radius)',
                 padding: '0 24px',
                 textAlign: 'center',
@@ -150,6 +152,8 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
                 alignItems: 'center',
                 justifyContent: 'center',
                 lineHeight: 1.3,
+                backdropFilter: 'blur(8px)',
+                WebkitBackdropFilter: 'blur(8px)',
               }}
             >
               <span
@@ -157,12 +161,14 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
                   fontFamily: "'DM Serif Display', var(--font-serif)",
                   fontSize: 'clamp(18px, 5vw, 24px)',
                   fontWeight: 400,
-                  color: ACCENT_COLOR,
+                  color: tile.text,
                 }}
               >
                 {cat.title}
               </span>
             </motion.button>
+            );
+          }
           ))}
 
           {/* Sign-off line */}
