@@ -139,8 +139,9 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
                 letterSpacing: '-0.01em',
                 whiteSpace: 'nowrap',
                 textShadow: [
-                  '0 0 20px rgba(255, 255, 255, 0.9)',
-                  '0 0 40px rgba(255, 255, 255, 0.5)',
+                  '0 0 24px rgba(255, 255, 255, 1)',
+                  '0 0 48px rgba(255, 255, 255, 0.7)',
+                  '0 0 80px rgba(255, 255, 255, 0.4)',
                   '0 2px 4px rgba(0, 0, 0, 0.06)',
                 ].join(', '),
               }}
