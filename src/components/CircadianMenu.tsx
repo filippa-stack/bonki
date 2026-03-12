@@ -243,17 +243,6 @@ export default function CircadianMenu({
                 opacity: 0.10,
               }}
             />
-            <span
-              style={{
-                fontFamily: 'var(--font-serif)',
-                fontSize: '11px',
-                color: 'var(--text-secondary)',
-                opacity: 0.75,
-                whiteSpace: 'nowrap',
-              }}
-            >
-              {group.subtitle}
-            </span>
           </motion.div>
 
           {/* Category tiles with spine */}
