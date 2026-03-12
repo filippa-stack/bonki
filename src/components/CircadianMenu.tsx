@@ -281,8 +281,21 @@ export default function CircadianMenu({
             </span>
           </motion.div>
 
-          {/* Category tiles in this group */}
-          <div className="flex flex-col" style={{ gap: '7px' }}>
+          {/* Category tiles with spine */}
+          <div className="flex flex-col" style={{ gap: '7px', position: 'relative', paddingLeft: '16px' }}>
+            {/* Vertical spine */}
+            <div
+              style={{
+                position: 'absolute',
+                left: '5px',
+                top: '12px',
+                bottom: '12px',
+                width: '1.5px',
+                background: 'linear-gradient(180deg, var(--text-primary) 0%, transparent 100%)',
+                opacity: 0.10,
+                borderRadius: '1px',
+              }}
+            />
             {group.categories.map((category) => {
               const currentIndex = globalIndex++;
               const isExpanded = expandedId === category.id;
