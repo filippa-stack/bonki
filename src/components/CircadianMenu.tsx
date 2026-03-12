@@ -225,7 +225,7 @@ export default function CircadianMenu({
                             delay: 0.06 + cardIndex * 0.05,
                             ease: [...ENTER_EASE],
                           }}
-                          onClick={() => onNavigateToCard(card.id)}
+                          onClick={() => handleCardClick(card, category)}
                           className="w-full text-left"
                           style={{
                             display: 'flex',
