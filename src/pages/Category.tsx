@@ -499,8 +499,8 @@ function StillUsCategoryView({
               fontFamily: 'var(--font-serif)',
               fontStyle: 'italic',
               fontSize: '14px',
-              color,
-              opacity: 0.5,
+              color: 'var(--text-primary)',
+              opacity: 0.55,
               lineHeight: 1.5,
             }}
           >
