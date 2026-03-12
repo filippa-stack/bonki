@@ -2343,7 +2343,7 @@ function CompletionTakeaway({ sessionId, spaceId, pronounMode = 'ni', cardId, pr
                 letterSpacing: '0.01em',
               }}
             >
-              Fäst en tanke
+              Något ni vill bära med er
             </span>
           </motion.button>
         ) : (
