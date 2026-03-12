@@ -69,7 +69,7 @@ export default function JagMedAndraProductHome({ product }: { product: ProductMa
         <img
           src={slothImage}
           alt=""
-          style={{ width: '100%', height: '100%', objectFit: 'contain', objectPosition: 'left top', opacity: 0.35 }}
+          style={{ width: '100%', height: '100%', objectFit: 'contain', objectPosition: 'left top', opacity: 0.5 }}
         />
       </motion.div>
 
