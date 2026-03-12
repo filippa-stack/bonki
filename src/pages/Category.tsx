@@ -77,6 +77,12 @@ const CATEGORY_CARD_BG: Record<string, string> = {
   'jim-kanslorna-jag-bar': '#F2E8CF',
   'jim-nar-det-gor-ont': '#7A8A52',
   'jim-jag-som-helhet': '#E9EDC9',
+  // Jag med andra
+  'jma-att-hora-till': '#9825D6',
+  'jma-nar-vi-jamfor-oss': '#DEC9E9',
+  'jma-nar-det-skaver': '#5E178A',
+  'jma-att-sta-stadig': '#7B2CBF',
+  'jma-vi-i-varlden': '#E0B1F0',
 };
 
 /** Category-specific card title colors (matching homescreen tile text) */
@@ -85,6 +91,12 @@ const CATEGORY_TITLE_COLOR: Record<string, string> = {
   'jim-kanslorna-jag-bar': '#4A4820',
   'jim-nar-det-gor-ont': '#FFFDF5',
   'jim-jag-som-helhet': '#6B6530',
+  // Jag med andra
+  'jma-att-hora-till': '#FDF5FF',
+  'jma-nar-vi-jamfor-oss': '#4A2060',
+  'jma-nar-det-skaver': '#FDF5FF',
+  'jma-att-sta-stadig': '#FDF5FF',
+  'jma-vi-i-varlden': '#4A2060',
 };
 
 export default function Category() {
