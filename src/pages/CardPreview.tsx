@@ -134,8 +134,8 @@ export default function CardPreview() {
                     fontFamily: 'var(--font-serif)',
                     fontSize: '16px',
                     lineHeight: 1.7,
-                    color: 'var(--text-primary)',
-                    opacity: 0.80,
+                    color: categoryColor || 'var(--text-primary)',
+                    opacity: 0.70,
                   }}
                 >
                   {paragraph}
