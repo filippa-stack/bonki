@@ -133,7 +133,7 @@ export default function SessionFocusShell({ children, topSlot, ctaSlot, onExit }
         {children}
       </div>
 
-      {/* CTA zone — fades in after 5s delay */}
+      {/* CTA zone — always reserves space, fades in after 5s delay */}
       <div
         onClick={(e) => e.stopPropagation()}
         style={{
@@ -143,20 +143,13 @@ export default function SessionFocusShell({ children, topSlot, ctaSlot, onExit }
           flexDirection: 'column',
           alignItems: 'center',
           paddingBottom: 'calc(40px + env(safe-area-inset-bottom, 0px))',
+          opacity: showCta ? 1 : 0,
+          transform: showCta ? 'translateY(0)' : 'translateY(12px)',
+          transition: `opacity ${EMOTION * 2}s cubic-bezier(0.22, 1, 0.36, 1), transform ${EMOTION * 2}s cubic-bezier(0.22, 1, 0.36, 1)`,
+          pointerEvents: showCta ? 'auto' : 'none',
         }}
       >
-        <AnimatePresence>
-          {showCta && (
-            <motion.div
-              key="cta-reveal"
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: EMOTION * 2, ease: [...EASE] }}
-            >
-              {ctaSlot}
-            </motion.div>
-          )}
-        </AnimatePresence>
+        {ctaSlot}
       </div>
     </div>
   );
