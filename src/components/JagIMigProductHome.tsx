@@ -6,35 +6,31 @@ import apaImage from '@/assets/apa-jag-i-mig.png';
 
 const EASE = [0.4, 0.0, 0.2, 1] as const;
 
-/** Five-tone chartreuse palette */
+/** Five-tone chartreuse palette — solid, no gradients */
 const ORDERED_TILES = [
   {
     id: 'jim-tryggheten-inuti',
     // Electric Pear — The Hero
     bg: '#CDD625',
     text: '#3E4421',
-    gradient: 'linear-gradient(168deg, #d4de3a 0%, #c5ce20 100%)',
   },
   {
     id: 'jim-kanslorna-jag-bar',
     // Lemon Silk — The Highlight
     bg: '#F2F89B',
     text: '#3E4421',
-    gradient: 'linear-gradient(168deg, #f5faab 0%, #eef48e 100%)',
   },
   {
     id: 'jim-nar-det-gor-ont',
     // Sage Leaf — The Bridge
     bg: '#8A9A5B',
-    text: '#FFFDF5',
-    gradient: 'linear-gradient(168deg, #97a768 0%, #7e8e50 100%)',
+    text: '#F5F5E8',
   },
   {
     id: 'jim-jag-som-helhet',
     // Deep Moss — The Shadow
     bg: '#6B7213',
-    text: '#FFFDF5',
-    gradient: 'linear-gradient(168deg, #7a8220 0%, #5f660a 100%)',
+    text: '#F5F5E8',
   },
 ];
 
