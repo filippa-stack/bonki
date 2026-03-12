@@ -609,20 +609,14 @@ interface CardEntryProps {
   isLast?: boolean;
   styles?: typeof PRODUCT_STYLES[string];
   categoryBg?: string;
+  categoryId?: string;
 }
 
-function CardEntry({ card, index, isCompleted = false, isInProgress = false, onNavigate, isLast = false, styles, categoryBg }: CardEntryProps) {
+function CardEntry({ card, index, isCompleted = false, isInProgress = false, onNavigate, isLast = false, styles, categoryBg, categoryId }: CardEntryProps) {
   const zipIllustration = useCardImage(card.id);
   const illustration = CARD_IMAGE_OVERRIDE[card.id] ?? zipIllustration;
 
-  const titleColor = CATEGORY_TITLE_COLOR[card.id.replace(/-[^-]+$/, '-' + card.id.split('-').slice(0, 2).join('-'))]
-    ?? styles?.cardTitleColor ?? 'var(--text-primary)';
   const focalPoint = CARD_FOCAL_POINT[card.id] ?? 'center 35%';
-
-  // Derive category ID from card ID for color lookup
-  const categoryId = Object.keys(CATEGORY_CARD_BG).find(catId =>
-    card.id.startsWith(catId.replace(/^jim-/, 'jim-').split('-').slice(0, 2).join('-'))
-  );
   const catTitleColor = categoryId ? CATEGORY_TITLE_COLOR[categoryId] : undefined;
   const cardTitleColor = catTitleColor ?? '#FAF7F2';
 
