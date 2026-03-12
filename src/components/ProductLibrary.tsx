@@ -202,8 +202,8 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
           padding: wide ? '36px 20px 16px' : '36px 16px 14px',
           position: 'relative',
           overflow: 'hidden',
-          border: '0.5px solid hsla(38, 60%, 70%, 0.35)',
-          boxShadow: '0 2px 8px hsla(30, 40%, 20%, 0.08), 0 12px 40px -8px hsla(30, 50%, 15%, 0.18), 0 24px 56px -16px hsla(25, 45%, 12%, 0.12)',
+          border: '0.5px solid hsla(38, 50%, 80%, 0.4)',
+          boxShadow: '0 2px 6px hsla(32, 55%, 25%, 0.10), 0 10px 32px -6px hsla(30, 50%, 18%, 0.16), 0 20px 48px -12px hsla(28, 45%, 14%, 0.10)',
           gridColumn: wide ? 'span 2' : undefined,
         }}
       >
@@ -291,9 +291,10 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
               letterSpacing: '0.06em',
               textTransform: 'uppercase',
               color: accentColor || 'var(--text-library)',
-              opacity: 0.55,
+              opacity: 0.7,
               lineHeight: 1.4,
               whiteSpace: 'nowrap',
+              textShadow: '0 0 8px hsla(0, 0%, 100%, 0.6)',
             }}
           >
             {badgeText}
@@ -379,7 +380,7 @@ export default function ProductLibrary() {
       style={{
         background: isDark
           ? '#1A1A2E'
-          : '#E9B44C',
+          : 'radial-gradient(ellipse 75% 65% at 50% 40%, #FDF6E3 0%, #F0D078 40%, #E9B44C 75%, #D4A03A 100%)',
         fontFamily: "'Lato', sans-serif",
         transition: 'background 600ms ease',
       }}
@@ -462,12 +463,16 @@ export default function ProductLibrary() {
           <div
             style={{
               display: 'flex',
-              background: isDark ? 'hsla(230, 35%, 18%, 0.6)' : 'hsla(30, 20%, 40%, 0.08)',
+              background: isDark ? 'hsla(230, 35%, 18%, 0.6)' : 'hsla(38, 40%, 60%, 0.25)',
+              backdropFilter: 'blur(12px)',
+              WebkitBackdropFilter: 'blur(12px)',
               borderRadius: '20px',
               padding: '3px',
               gap: '2px',
               position: 'relative',
               transition: 'background 400ms ease',
+              border: isDark ? 'none' : '0.5px solid hsla(38, 50%, 80%, 0.35)',
+              boxShadow: isDark ? 'none' : '0 2px 8px hsla(32, 40%, 25%, 0.08)',
             }}
           >
             {(['barn', 'par'] as const).map((tab) => (
