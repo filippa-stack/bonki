@@ -155,54 +155,77 @@ export default function JagMedAndraProductHome({ product }: { product: ProductMa
             </p>
           </motion.div>
 
-          {/* Category buttons — glass tiles */}
-          {ORDERED_TILES.map((tile, index) => {
+          {/* Category tiles — glass with accent bar */}
+          {ORDERED_TILES.map((tile) => {
             const cat = product.categories.find((c) => c.id === tile.id);
             if (!cat) return null;
-
-            const isFirst = index === 0;
 
             return (
               <motion.button
                 key={cat.id}
                 variants={pillVariants}
-                whileHover={{ scale: 1.04, y: -3 }}
-                whileTap={{ scale: 0.975, y: 1 }}
+                whileHover={{ scale: 1.02, y: -2 }}
+                whileTap={{ scale: 0.985, y: 1 }}
                 onClick={() => navigate(`/category/${cat.id}`)}
                 style={{
-                  background: tile.bg,
-                  borderRadius: '20px',
-                  padding: '0 32px',
-                  textAlign: 'center',
+                  background: 'hsla(0, 0%, 100%, 0.55)',
+                  borderRadius: '16px',
+                  padding: '16px 20px 16px 0',
+                  textAlign: 'left',
                   cursor: 'pointer',
-                  border: '1px solid hsla(0, 0%, 100%, 0.45)',
-                  boxShadow: [
-                    '0 4px 20px hsla(0, 0%, 0%, 0.06)',
-                    '0 1px 3px hsla(0, 0%, 0%, 0.04)',
-                    `inset 0 1px 0 hsla(0, 0%, 100%, 0.5)`,
-                  ].join(', '),
-                  whiteSpace: 'normal' as const,
-                  width: '84%',
-                  minHeight: isFirst ? '72px' : '64px',
+                  border: '1px solid hsla(0, 0%, 100%, 0.6)',
+                  boxShadow: '0 4px 20px hsla(0, 0%, 0%, 0.05), 0 1px 3px hsla(0, 0%, 0%, 0.03)',
+                  width: '100%',
                   display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  lineHeight: 1.3,
-                  backdropFilter: 'blur(20px) saturate(1.3)',
-                  WebkitBackdropFilter: 'blur(20px) saturate(1.3)',
+                  alignItems: 'stretch',
+                  gap: '0',
+                  backdropFilter: 'blur(16px) saturate(1.2)',
+                  WebkitBackdropFilter: 'blur(16px) saturate(1.2)',
+                  overflow: 'hidden',
                 }}
               >
-                <span
+                {/* Accent bar */}
+                <div
                   style={{
-                    fontFamily: "'DM Serif Display', var(--font-serif)",
-                    fontSize: 'clamp(20px, 5.5vw, 26px)',
-                    fontWeight: 400,
-                    color: tile.text,
-                    textShadow: '0 1px 3px hsla(0, 0%, 100%, 0.6)',
+                    width: '4px',
+                    flexShrink: 0,
+                    borderRadius: '0 4px 4px 0',
+                    background: tile.accent,
+                    marginLeft: '0',
+                    marginRight: '16px',
+                    minHeight: '100%',
+                    alignSelf: 'stretch',
                   }}
-                >
-                  {cat.title}
-                </span>
+                />
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <span
+                    style={{
+                      fontFamily: "'DM Serif Display', var(--font-serif)",
+                      fontSize: 'clamp(18px, 5vw, 22px)',
+                      fontWeight: 600,
+                      color: tile.text,
+                      display: 'block',
+                      lineHeight: 1.25,
+                    }}
+                  >
+                    {cat.title}
+                  </span>
+                  {cat.subtitle && (
+                    <span
+                      className="font-serif"
+                      style={{
+                        fontSize: 'clamp(12px, 3.2vw, 14px)',
+                        color: 'hsl(30, 10%, 40%)',
+                        display: 'block',
+                        marginTop: '4px',
+                        lineHeight: 1.4,
+                        opacity: 0.75,
+                      }}
+                    >
+                      {cat.subtitle}
+                    </span>
+                  )}
+                </div>
               </motion.button>
             );
           })}
