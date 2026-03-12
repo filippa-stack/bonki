@@ -202,8 +202,8 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
           padding: wide ? '36px 20px 16px' : '36px 16px 14px',
           position: 'relative',
           overflow: 'hidden',
-          border: '1px solid hsla(37, 30%, 90%, 0.5)',
-          boxShadow: '0 0 0 0.5px hsla(0, 0%, 100%, 0.6), 0 4px 14px hsla(30, 50%, 22%, 0.10), 0 14px 30px -6px hsla(28, 55%, 20%, 0.14)',
+          border: '1px solid hsla(0, 0%, 100%, 0.40)',
+          boxShadow: '0 0 0 0.5px hsla(0, 0%, 100%, 0.35), 0 4px 16px hsla(28, 60%, 18%, 0.12), 0 16px 32px -6px hsla(25, 55%, 15%, 0.15)',
           gridColumn: wide ? 'span 2' : undefined,
         }}
       >
