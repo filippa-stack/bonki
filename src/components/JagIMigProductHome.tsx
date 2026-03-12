@@ -7,6 +7,14 @@ import apaImage from '@/assets/apa-jag-i-mig.png';
 
 const EASE = [0.4, 0.0, 0.2, 1] as const;
 
+/** Unique fill colors per category tile */
+const TILE_COLORS: Record<string, { bg: string; text: string }> = {
+  'jim-tryggheten-inuti': { bg: 'rgba(168, 186, 104, 0.50)', text: '#5C6B12' },
+  'jim-kanslorna-jag-bar': { bg: 'rgba(205, 175, 119, 0.50)', text: '#7A5E1E' },
+  'jim-nar-det-gor-ont': { bg: 'rgba(189, 139, 130, 0.50)', text: '#7A3B30' },
+  'jim-jag-som-helhet': { bg: 'rgba(142, 170, 158, 0.50)', text: '#3A5C4C' },
+};
+
 const containerVariants = {
   hidden: {},
   visible: { transition: { staggerChildren: 0.1, delayChildren: 0.35 } },
@@ -120,7 +128,9 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
           </motion.div>
 
           {/* Category buttons */}
-          {product.categories.map((cat) => (
+          {product.categories.map((cat) => {
+            const tile = TILE_COLORS[cat.id] || { bg: 'var(--product-button-bg)', text: ACCENT_COLOR };
+            return (
             <motion.button
               key={cat.id}
               variants={pillVariants}
@@ -128,7 +138,7 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
               whileTap={{ scale: 0.97 }}
               onClick={() => navigate(`/category/${cat.id}`)}
               style={{
-                background: 'var(--product-button-bg)',
+                background: tile.bg,
                 borderRadius: 'var(--product-button-radius)',
                 padding: '0 24px',
                 textAlign: 'center',
@@ -142,6 +152,8 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
                 alignItems: 'center',
                 justifyContent: 'center',
                 lineHeight: 1.3,
+                backdropFilter: 'blur(8px)',
+                WebkitBackdropFilter: 'blur(8px)',
               }}
             >
               <span
@@ -149,13 +161,14 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
                   fontFamily: "'DM Serif Display', var(--font-serif)",
                   fontSize: 'clamp(18px, 5vw, 24px)',
                   fontWeight: 400,
-                  color: ACCENT_COLOR,
+                  color: tile.text,
                 }}
               >
                 {cat.title}
               </span>
             </motion.button>
-          ))}
+            );
+          })}
 
           {/* Sign-off line */}
           <motion.p
