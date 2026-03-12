@@ -291,9 +291,10 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
               letterSpacing: '0.06em',
               textTransform: 'uppercase',
               color: accentColor || 'var(--text-library)',
-              opacity: 0.55,
+              opacity: 0.7,
               lineHeight: 1.4,
               whiteSpace: 'nowrap',
+              textShadow: '0 0 8px hsla(0, 0%, 100%, 0.6)',
             }}
           >
             {badgeText}
