@@ -315,35 +315,41 @@ export default function Home() {
                     className="cursor-pointer tile-door row-bloom"
                     style={{
                       borderRadius: '14px',
-                      padding: '14px 18px',
-                      background: 'rgba(58, 88, 97, 0.25)',
-                      backdropFilter: 'blur(14px)',
-                      WebkitBackdropFilter: 'blur(14px)',
-                      border: '1px solid rgba(218, 157, 29, 0.15)',
+                      padding: '0',
+                      background: 'rgba(162, 181, 169, 0.28)',
+                      backdropFilter: 'blur(12px)',
+                      WebkitBackdropFilter: 'blur(12px)',
+                      border: '1px solid rgba(218, 157, 29, 0.45)',
                       display: 'flex',
-                      alignItems: 'center',
-                      gap: '12px',
-                      boxShadow: '0 2px 12px -4px hsla(194, 30%, 12%, 0.12)',
+                      alignItems: 'stretch',
+                      gap: '0',
+                      boxShadow: '0 0 24px -4px rgba(218, 157, 29, 0.15)',
                       position: 'relative' as const,
                       overflow: 'hidden',
+                      cursor: 'pointer',
+                      transition: 'background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease',
                     }}
                   >
-                    <div className="flex-1 min-w-0" style={{ display: 'flex', flexDirection: 'column' }}>
-                      <p className="font-sans" style={{ fontSize: '10px', fontWeight: 500, letterSpacing: '0.10em', textTransform: 'uppercase' as const, color: 'hsl(36, 16%, 92%)', opacity: 0.55, marginBottom: '3px', lineHeight: 1 }}>
-                        Ni var mitt i
-                      </p>
-                      <p className="font-serif" style={{ fontSize: '16px', fontWeight: 600, lineHeight: 1.3, color: 'hsl(36, 16%, 92%)' }}>
-                        {card?.title || cardId}
-                      </p>
-                      {cat && (
-                        <p className="font-sans" style={{ fontSize: '11px', color: 'var(--accent-saffron)', opacity: 0.75, marginTop: '2px' }}>
-                          {cat.title}
+                    {/* Saffron accent bar — matching tile anatomy */}
+                    <div style={{ width: '4px', backgroundColor: 'var(--accent-saffron)', flexShrink: 0, borderRadius: '14px 0 0 14px' }} />
+                    <div style={{ flex: 1, display: 'flex', alignItems: 'center', gap: '14px', padding: '16px' }}>
+                      <div className="flex-1 min-w-0" style={{ display: 'flex', flexDirection: 'column' }}>
+                        <p className="font-sans" style={{ fontSize: '10px', fontWeight: 500, letterSpacing: '0.10em', textTransform: 'uppercase' as const, color: 'var(--accent-saffron)', opacity: 0.75, marginBottom: '3px', lineHeight: 1 }}>
+                          Ni var mitt i
                         </p>
-                      )}
+                        <p className="font-serif" style={{ fontSize: '16px', fontWeight: 600, lineHeight: 1.3, color: 'hsl(36, 16%, 92%)' }}>
+                          {card?.title || cardId}
+                        </p>
+                        {cat && (
+                          <p className="font-sans" style={{ fontSize: '11px', color: 'hsl(36, 16%, 92%)', opacity: 0.55, marginTop: '2px' }}>
+                            {cat.title}
+                          </p>
+                        )}
+                      </div>
+                      <span style={{ fontSize: '11px', color: 'var(--accent-saffron)', opacity: 0.7, fontFamily: 'var(--font-sans)', fontWeight: 500, letterSpacing: '0.02em', whiteSpace: 'nowrap' }}>
+                        Fortsätt →
+                      </span>
                     </div>
-                    <span style={{ fontSize: '12px', color: 'var(--accent-saffron)', opacity: 0.7, fontFamily: 'var(--font-sans)', fontWeight: 500, letterSpacing: '0.02em', whiteSpace: 'nowrap' }}>
-                      Fortsätt →
-                    </span>
                   </div>
                 </motion.div>
               );
