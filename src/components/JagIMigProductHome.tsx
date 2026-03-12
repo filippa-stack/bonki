@@ -115,7 +115,7 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
                 color: ACCENT_COLOR,
                 letterSpacing: '-0.01em',
                 whiteSpace: 'nowrap',
-                textShadow: `0 0 32px rgba(180, 160, 40, 0.3), 0 0 64px rgba(180, 160, 40, 0.12), 0 2px 4px rgba(0,0,0,0.06)`,
+                textShadow: 'none',
               }}
             >
               Jag i mig
@@ -128,7 +128,7 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
                 color: '#2C2420',
                 opacity: 0.75,
                 marginTop: '6px',
-                textShadow: '0px 1px 8px rgba(255,255,255,0.95), 0px 0px 24px rgba(255,255,255,0.5)',
+                textShadow: 'none',
               }}
             >
               när känslor får ord
@@ -152,24 +152,13 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
                 whileTap={{ scale: 0.965, y: 1 }}
                 onClick={() => navigate(`/category/${cat.id}`)}
                 style={{
-                  background: isDark
-                    ? `linear-gradient(170deg, ${tile.bg}f0 0%, ${tile.bg}d9 40%, ${tile.bg}c4 100%)`
-                    : `linear-gradient(170deg, rgba(255,255,255,0.85) 0%, ${tile.bg}e6 35%, ${tile.bg}d4 100%)`,
+                  background: tile.bg,
                   borderRadius: '22px',
                   padding: '0 32px',
                   textAlign: 'center',
                   cursor: 'pointer',
-                  border: isLightestTile
-                    ? '1.5px solid rgba(180, 170, 120, 0.3)'
-                    : isDark
-                      ? '1px solid rgba(255,255,255,0.3)'
-                      : '1.5px solid rgba(255,255,255,0.7)',
-                  boxShadow: [
-                    `0 6px 24px ${tile.glow}`,
-                    isLightestTile ? '0 3px 10px rgba(160,140,60,0.10)' : `0 2px 6px rgba(44, 36, 32, 0.08)`,
-                    `inset 0 2px 1px rgba(255,255,255,${isDark ? '0.35' : '0.8'})`,
-                    `inset 0 -3px 6px rgba(0,0,0,${isDark ? '0.08' : '0.03'})`,
-                  ].join(', '),
+                  border: 'none',
+                  boxShadow: '0 2px 6px rgba(44, 36, 32, 0.08)',
                   whiteSpace: 'normal' as const,
                   width: '84%',
                   minHeight: isFirst ? '76px' : '68px',
@@ -177,8 +166,6 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
                   alignItems: 'center',
                   justifyContent: 'center',
                   lineHeight: 1.3,
-                  backdropFilter: 'blur(24px) saturate(1.5)',
-                  WebkitBackdropFilter: 'blur(24px) saturate(1.5)',
                 }}
               >
                 <span
@@ -187,9 +174,7 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
                     fontSize: 'clamp(20px, 5.5vw, 26px)',
                     fontWeight: 400,
                     color: tile.text,
-                    textShadow: isDark
-                      ? '0 1px 3px rgba(0,0,0,0.2)'
-                      : '0 1px 2px rgba(255,255,255,0.8)',
+                    textShadow: 'none',
                   }}
                 >
                   {cat.title}
