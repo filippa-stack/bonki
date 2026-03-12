@@ -426,216 +426,18 @@ export default function Home() {
               );
             })()}
 
-            {/* VI SOM BAS section header */}
-            <div className="px-6" style={{ marginTop: '48px', marginBottom: '14px' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                <div style={{ flex: 1, height: '1px', background: 'linear-gradient(90deg, transparent, var(--text-ghost), transparent)', opacity: 0.3 }} />
-                <p style={{
-                  fontFamily: 'var(--font-sans)',
-                  fontSize: '10px',
-                  fontWeight: 600,
-                  letterSpacing: '0.14em',
-                  textTransform: 'uppercase',
-                  color: 'var(--color-text-tertiary)',
-                  opacity: 0.55,
-                  flexShrink: 0,
-                }}>
-                  VI SOM BAS
-                </p>
-                <div style={{ flex: 1, height: '1px', background: 'linear-gradient(90deg, transparent, var(--text-ghost), transparent)', opacity: 0.3 }} />
-              </div>
-            </div>
+            {/* ── Circadian Menu — 9 progressive disclosure categories ── */}
+            <div className="px-6" style={{ marginTop: '40px', paddingBottom: '64px' }}>
+              <CircadianMenu
+                categories={sortedCategories}
+                cards={cards}
+                completedCardIds={completedCardIds}
+                inProgressCardIds={inProgressCardIds}
+                onNavigateToCategory={(catId) => { markNavigated(); navigate(`/category/${catId}`); }}
+                onNavigateToCard={(cardId) => { markNavigated(); navigate(`/card/${cardId}`); }}
+              />
 
-            {/* Recommendation section */}
-            {recommendedCategory && (() => {
-              const recCat = recommendedCategory;
-              return (
-                <div className="px-6" style={{ marginBottom: '10px', marginTop: '0px' }}>
-               {(() => {
-                  const recIndex = sortedCategories.findIndex(c => c.id === recCat.id);
-                  const recAccent = getCategoryAccent(recIndex >= 0 ? recIndex : 0);
-                  return (
-                    <>
-                      <div
-
-                        onClick={() => { markNavigated(); navigate(`/category/${recCat.id}`); }}
-                        role="button"
-                        tabIndex={0}
-                        aria-label={recCat.title}
-                        onKeyDown={(e) => {
-                          if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); navigate(`/category/${recCat.id}`); }
-                        }}
-                        className="cursor-pointer tile-door row-bloom"
-                         style={{
-                          borderRadius: 'var(--radius-card, 12px)',
-                          padding: '28px 24px',
-                          minHeight: '48px',
-                          display: 'flex',
-                          flexDirection: 'column' as const,
-                          alignItems: 'center',
-                          textAlign: 'center' as const,
-                          gap: '4px',
-                          background: 'linear-gradient(135deg, hsl(36, 22%, 97%) 0%, hsl(38, 18%, 95%) 100%)',
-                          border: 'var(--border-card, none)',
-                          boxShadow: '0 4px 20px -4px hsla(30, 18%, 28%, 0.12), 0 12px 40px -10px hsla(30, 15%, 25%, 0.14)',
-                          position: 'relative' as const,
-                          overflow: 'hidden',
-                        }}
-                      >
-                        <p className="font-sans uppercase" style={{ fontSize: '10px', letterSpacing: '0.06em', color: 'var(--accent-text)', opacity: 0.8, marginBottom: '2px' }}>
-                          01 · Rekommenderad start
-                        </p>
-                        <h3 className="font-serif" style={{ color: 'var(--color-text-primary)', fontWeight: 600, fontSize: '18px', lineHeight: 1.35, textWrap: 'balance', marginTop: '2px' }}>
-                          {recCat.title}
-                        </h3>
-                        {recCat.entryLine && (
-                          <p className="font-serif" style={{ fontSize: '14px', fontWeight: 400, color: 'var(--color-text-secondary)', opacity: 0.80, lineHeight: 1.55, marginTop: '4px', letterSpacing: '0.005em' }}>
-                            {recCat.entryLine}
-                          </p>
-                        )}
-                      </div>
-                    </>
-                  );
-                })()}
-                </div>
-              );
-            })()}
-
-            {/* Categories */}
-            <div className="px-6" style={{ paddingBottom: '48px' }}>
-              <div className="flex flex-col" style={{ gap: '8px' }}>
-                {(() => {
-                  const SECTION_GROUPS: { label: string; ids: string[] }[] = [
-                    { label: 'VI SOM BAS', ids: ['emotional-intimacy', 'communication', 'category-8'] },
-                    { label: 'VI & OMVÄRLDEN', ids: ['parenting-together', 'individual-needs', 'category-9'] },
-                    { label: 'VI SOM VÄLJER VARANDRA', ids: ['category-6', 'daily-life', 'category-10'] },
-                  ];
-                  const sectionStartIds = new Set(SECTION_GROUPS.map(g => g.ids[0]));
-                  const idToSection = new Map<string, string>();
-                  SECTION_GROUPS.forEach(g => g.ids.forEach(id => { if (id === g.ids[0]) idToSection.set(id, g.label); }));
-
-                  const displayCategories = recommendedCategory ? sortedCategories.filter(c => c.id !== recommendedCategory.id) : sortedCategories;
-                  let isFirstSection = true;
-                  // Dynamic sequential numbering: recommended card is implicitly 01, rest starts from 02
-                  let displayNumber = recommendedCategory ? 2 : 1;
-
-                  return displayCategories.map((category, index) => {
-                  const globalIndex = sortedCategories.findIndex(c => c.id === category.id);
-                  const accent = getCategoryAccent(globalIndex >= 0 ? globalIndex : index);
-                  const currentDisplayNum = displayNumber++;
-
-                  const catCards = cards.filter((c) => c.categoryId === category.id);
-                  const completedCount = catCards.filter(c => completedCardIds.includes(c.id)).length;
-                  const allCompleted = completedCount === catCards.length && catCards.length > 0;
-                  const hasInProgressCards = catCards.some(c => inProgressCardIds.includes(c.id) && !completedCardIds.includes(c.id));
-                   const someStarted = (completedCount > 0 || hasInProgressCards) && !allCompleted;
-                  const sectionLabel = idToSection.get(category.id);
-                  // Skip "VI SOM BAS" — already rendered above the recommended card
-                    const sectionHeader = (sectionLabel && sectionLabel !== 'VI SOM BAS') ? (() => {
-                     if (isFirstSection) isFirstSection = false;
-                     return (
-                       <div key={`section-${category.id}`} style={{ marginTop: '48px', marginBottom: '14px' }}>
-                         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                           <div style={{ flex: 1, height: '1px', background: 'linear-gradient(90deg, transparent, var(--text-ghost), transparent)', opacity: 0.3 }} />
-                           <p style={{
-                             fontFamily: 'var(--font-sans)',
-                             fontSize: '10px',
-                             fontWeight: 600,
-                             letterSpacing: '0.14em',
-                             textTransform: 'uppercase',
-                             color: 'var(--color-text-tertiary)',
-                             opacity: 0.55,
-                             flexShrink: 0,
-                           }}>
-                             {sectionLabel}
-                           </p>
-                           <div style={{ flex: 1, height: '1px', background: 'linear-gradient(90deg, transparent, var(--text-ghost), transparent)', opacity: 0.3 }} />
-                         </div>
-                       </div>
-                    );
-                  })() : null;
-                  
-
-                    return (
-                    <React.Fragment key={category.id}>{sectionHeader}
-                    <motion.div
-                      key={category.id}
-                      initial={{ opacity: 0, y: 8 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 0.2 + index * 0.06, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-                    >
-                      <div
-                        onClick={() => { markNavigated(); navigate(`/category/${category.id}`); }}
-                        role="button"
-                        tabIndex={0}
-                        aria-label={category.title}
-                        onKeyDown={(e) => {
-                          if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); navigate(`/category/${category.id}`); }
-                        }}
-                        className="cursor-pointer tile-door row-bloom"
-                         style={{
-                          borderRadius: 'var(--radius-card, 12px)',
-                          padding: '28px 24px',
-                          minHeight: '72px',
-                          display: 'flex',
-                          flexDirection: 'column' as const,
-                          alignItems: 'center',
-                          textAlign: 'center' as const,
-                          gap: '4px',
-                          background: 'var(--surface-raised)',
-                          border: 'var(--border-card, none)',
-                          boxShadow: '0 4px 20px -4px hsla(30, 18%, 28%, 0.10), 0 12px 40px -10px hsla(30, 15%, 25%, 0.12)',
-                          position: 'relative' as const,
-                          overflow: 'hidden',
-                        }}
-                      >
-                        {/* Status indicator */}
-                        {allCompleted ? (
-                          <Check size={13} style={{ color: '#1E3D2F', opacity: 0.40, position: 'absolute', top: '14px', right: '14px' }} />
-                        ) : someStarted ? (
-                          <span style={{
-                            display: 'inline-block',
-                            width: '7px',
-                            height: '7px',
-                            borderRadius: '50%',
-                            backgroundColor: '#C4821D',
-                            opacity: 0.70,
-                            position: 'absolute',
-                            top: '14px',
-                            right: '14px',
-                          }} />
-                        ) : null}
-                        <p className="font-sans" style={{ fontSize: '10px', fontWeight: 500, letterSpacing: '0.12em', lineHeight: 1, color: 'var(--color-text-tertiary)', opacity: 0.55, marginBottom: '2px' }}>
-                          {String(currentDisplayNum).padStart(2, '0')}
-                        </p>
-                        <h3
-                          className="font-serif"
-                          style={{
-                            color: 'var(--color-text-primary)',
-                            fontWeight: 600,
-                            fontSize: '18px',
-                            lineHeight: 1.35,
-                            textWrap: 'balance',
-                            marginTop: '2px',
-                          }}
-                        >
-                          {category.title}
-                        </h3>
-                        {category.entryLine && (
-                          <p
-                            className="font-serif"
-                            style={{ fontSize: '14px', fontWeight: 400, color: 'var(--color-text-secondary)', opacity: 0.80, lineHeight: 1.55, marginTop: '4px', letterSpacing: '0.005em' }}
-                          >
-                            {category.entryLine}
-                          </p>
-                        )}
-                      </div>
-                    </motion.div>
-                    </React.Fragment>
-                  );
-                });
-                })()}
-              </div>
+              {/* Footer sentiment */}
               {(() => {
                 const totalCategories = sortedCategories.length;
                 const fullyCompletedCount = sortedCategories.filter(cat => {
@@ -643,7 +445,7 @@ export default function Home() {
                   return catCards.length > 0 && catCards.every(c => completedCardIds.includes(c.id));
                 }).length;
                 if (fullyCompletedCount === 0) return (
-                  <div style={{ textAlign: 'center', marginTop: '40px', paddingBottom: '48px' }}>
+                  <div style={{ textAlign: 'center', marginTop: '40px' }}>
                     <p style={{
                       fontFamily: 'var(--font-serif)',
                       fontStyle: 'italic',
@@ -657,7 +459,7 @@ export default function Home() {
                 );
                 const isAllDone = fullyCompletedCount >= totalCategories;
                 return (
-                  <div style={{ textAlign: 'center', marginTop: '32px', paddingBottom: '48px' }}>
+                  <div style={{ textAlign: 'center', marginTop: '32px' }}>
                     <p style={{
                       fontFamily: 'var(--font-sans)',
                       fontSize: '12px',
