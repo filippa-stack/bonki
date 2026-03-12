@@ -16,6 +16,7 @@ import NotificationSettings from '@/components/NotificationSettings';
 
 import ReturnOverlay from '@/components/ReturnOverlay';
 import BackToLibraryButton from '@/components/BackToLibraryButton';
+import CircadianMenu from '@/components/CircadianMenu';
 import { useThemeVars } from '@/hooks/useThemeVars';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
