@@ -16,7 +16,7 @@ import NotificationSettings from '@/components/NotificationSettings';
 
 import ReturnOverlay from '@/components/ReturnOverlay';
 import BackToLibraryButton from '@/components/BackToLibraryButton';
-import stillUsIllustration from '@/assets/illustration-still-us.png';
+import stillUsIllustration from '@/assets/illustration-still-us-home.png';
 import CircadianMenu from '@/components/CircadianMenu';
 import { useThemeVars } from '@/hooks/useThemeVars';
 import { supabase } from '@/integrations/supabase/client';
@@ -222,13 +222,13 @@ export default function Home() {
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ duration: 1.2, delay: 0.3 }}
+        transition={{ duration: 0.4 }}
         style={{
           position: 'absolute',
-          top: '5%',
-          right: '-30%',
-          width: '110%',
-          height: '90%',
+          top: '7%',
+          left: '-42%',
+          width: '135%',
+          height: '125%',
           zIndex: 0,
           pointerEvents: 'none',
         }}
@@ -240,8 +240,8 @@ export default function Home() {
             width: '100%',
             height: '100%',
             objectFit: 'contain',
-            objectPosition: 'right top',
-            opacity: 0.07,
+            objectPosition: 'left top',
+            opacity: 0.35,
           }}
         />
       </motion.div>
