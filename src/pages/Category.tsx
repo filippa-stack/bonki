@@ -87,10 +87,10 @@ const CATEGORY_CARD_BG: Record<string, string> = {
 
 /** Category-specific card title colors (matching homescreen tile text) */
 const CATEGORY_TITLE_COLOR: Record<string, string> = {
-  'jim-tryggheten-inuti': '#3A3D00',
-  'jim-kanslorna-jag-bar': '#3A3D00',
-  'jim-nar-det-gor-ont': '#3A3D00',
-  'jim-jag-som-helhet': '#3A3D00',
+  'jim-tryggheten-inuti': '#3E4421',
+  'jim-kanslorna-jag-bar': '#3E4421',
+  'jim-nar-det-gor-ont': '#FFFDF5',
+  'jim-jag-som-helhet': '#FFFDF5',
   // Jag med andra
   'jma-att-hora-till': 'hsl(263, 38%, 32%)',
   'jma-nar-vi-jamfor-oss': 'hsl(188, 40%, 22%)',
