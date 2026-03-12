@@ -681,7 +681,7 @@ function CardEntry({ card, index, isCompleted = false, isInProgress = false, onN
               aria-hidden="true"
               draggable={false}
               style={{
-                height: '150px',
+                height: `${Math.round(150 * illustrationScale)}px`,
                 maxWidth: '80%',
                 objectFit: 'contain',
                 objectPosition: 'center',
