@@ -708,10 +708,12 @@ function CardEntry({ card, index, isCompleted = false, isInProgress = false, onN
           <h3
             style={{
               fontFamily: "'DM Serif Display', var(--font-serif)",
-              fontSize: '30px', fontWeight: 400,
-              color: titleColor, opacity: isCompleted ? 0.55 : 1,
+              fontSize: '32px', fontWeight: 700,
+              color: '#FFFDF8',
+              opacity: isCompleted ? 0.60 : 1,
               lineHeight: 1.1,
-              textShadow: `0 1px 3px ${cardBg}CC, 0 2px 8px ${cardBg}AA, 0 0 20px ${cardBg}88`,
+              textShadow: '0 1px 2px rgba(0,0,0,0.5), 0 2px 8px rgba(0,0,0,0.35), 0 0 24px rgba(0,0,0,0.2)',
+              letterSpacing: '-0.01em',
             }}
           >
             {card.title}
