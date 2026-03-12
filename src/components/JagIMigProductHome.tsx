@@ -22,15 +22,17 @@ const ORDERED_TILES = [
   },
   {
     id: 'jim-nar-det-gor-ont',
-    // Sage Leaf — The Bridge
-    bg: '#8A9A5B',
-    text: '#F5F5E8',
+    // Sage Leaf — darker for contrast
+    bg: '#6B7A45',
+    text: '#FAFAF0',
+    dark: true,
   },
   {
     id: 'jim-jag-som-helhet',
     // Deep Moss — The Shadow
     bg: '#6B7213',
-    text: '#F5F5E8',
+    text: '#FAFAF0',
+    dark: true,
   },
 ];
 
