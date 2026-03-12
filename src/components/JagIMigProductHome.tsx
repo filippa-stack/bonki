@@ -8,10 +8,10 @@ const EASE = [0.4, 0.0, 0.2, 1] as const;
 
 /** Ordered tiles: bg, text color, dark flag, outer glow color */
 const ORDERED_TILES: { id: string; bg: string; text: string; dark: boolean; glow: string }[] = [
-  { id: 'jim-tryggheten-inuti', bg: 'hsla(64, 72%, 68%, 0.45)', text: 'hsl(64, 50%, 22%)', dark: false, glow: '' },
-  { id: 'jim-kanslorna-jag-bar', bg: 'hsla(64, 72%, 68%, 0.45)', text: 'hsl(64, 50%, 22%)', dark: false, glow: '' },
-  { id: 'jim-nar-det-gor-ont', bg: 'hsla(64, 72%, 68%, 0.45)', text: 'hsl(64, 50%, 22%)', dark: false, glow: '' },
-  { id: 'jim-jag-som-helhet', bg: 'hsla(64, 72%, 68%, 0.45)', text: 'hsl(64, 50%, 22%)', dark: false, glow: '' },
+  { id: 'jim-tryggheten-inuti', bg: 'hsla(64, 72%, 68%, 0.45)', text: 'hsl(64, 35%, 14%)', dark: false, glow: '' },
+  { id: 'jim-kanslorna-jag-bar', bg: 'hsla(64, 72%, 68%, 0.45)', text: 'hsl(64, 35%, 14%)', dark: false, glow: '' },
+  { id: 'jim-nar-det-gor-ont', bg: 'hsla(64, 72%, 68%, 0.45)', text: 'hsl(64, 35%, 14%)', dark: false, glow: '' },
+  { id: 'jim-jag-som-helhet', bg: 'hsla(64, 72%, 68%, 0.45)', text: 'hsl(64, 35%, 14%)', dark: false, glow: '' },
 ];
 const DIARY_COLOR = { bg: '#F2E8CF', text: '#7A7040' };
 
@@ -157,8 +157,8 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
                   padding: '0 32px',
                   textAlign: 'center',
                   cursor: 'pointer',
-                  border: 'none',
-                  boxShadow: '0 2px 6px rgba(44, 36, 32, 0.08)',
+                  border: '1px solid hsla(0, 0%, 100%, 0.50)',
+                  boxShadow: '0 4px 16px rgba(44, 36, 32, 0.08), 0 1px 3px rgba(44, 36, 32, 0.04), inset 0 1px 0 hsla(0, 0%, 100%, 0.45)',
                   whiteSpace: 'normal' as const,
                   width: '84%',
                   minHeight: isFirst ? '76px' : '68px',
@@ -174,7 +174,7 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
                     fontSize: 'clamp(20px, 5.5vw, 26px)',
                     fontWeight: 400,
                     color: tile.text,
-                    textShadow: 'none',
+                    textShadow: '0 1px 3px rgba(255, 255, 255, 0.7)',
                   }}
                 >
                   {cat.title}
