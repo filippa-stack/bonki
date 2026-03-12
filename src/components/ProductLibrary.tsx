@@ -993,9 +993,9 @@ export default function ProductLibrary() {
               style={{
                 borderRadius: '20px',
                 padding: '24px 20px 18px',
-                background: 'hsla(215, 38%, 28%, 0.30)',
-                backdropFilter: 'blur(24px)',
-                WebkitBackdropFilter: 'blur(24px)',
+                background: 'hsla(215, 38%, 28%, 0.18)',
+                backdropFilter: 'blur(40px)',
+                WebkitBackdropFilter: 'blur(40px)',
                 textAlign: 'left',
                 position: 'relative',
                 overflow: 'hidden',
@@ -1005,9 +1005,22 @@ export default function ProductLibrary() {
                 alignItems: 'flex-start',
                 justifyContent: 'flex-end',
                 border: '1px solid hsla(215, 35%, 55%, 0.12)',
-                boxShadow: '0 4px 24px hsla(230, 50%, 6%, 0.4), 0 1px 3px hsla(230, 40%, 10%, 0.25)',
+                boxShadow: 'inset 0 1px 0 0 hsla(0, 0%, 100%, 0.10), 0 4px 24px hsla(230, 50%, 6%, 0.4), 0 1px 3px hsla(230, 40%, 10%, 0.25)',
               }}
             >
+              {/* Spotlight backglow behind illustration */}
+              <div
+                style={{
+                  position: 'absolute',
+                  top: '15%', right: '8%',
+                  width: '45%', height: '70%',
+                  borderRadius: '50%',
+                  background: 'radial-gradient(ellipse, hsla(38, 65%, 55%, 0.12) 0%, hsla(210, 50%, 45%, 0.06) 50%, transparent 80%)',
+                  filter: 'blur(20px)',
+                  pointerEvents: 'none',
+                  zIndex: 0,
+                }}
+              />
               {/* Illustration */}
               <div
                 style={{
@@ -1018,13 +1031,13 @@ export default function ProductLibrary() {
                   backgroundSize: 'contain',
                   backgroundRepeat: 'no-repeat',
                   backgroundPosition: 'center center',
-                  opacity: 0.30,
+                  opacity: 0.35,
                   pointerEvents: 'none',
-                  zIndex: 0,
-                  filter: 'brightness(1.6) saturate(0.5)',
+                  zIndex: 1,
+                  filter: 'brightness(1.5) saturate(0.6) sepia(0.15)',
                 }}
               />
-              <div style={{ zIndex: 1 }}>
+              <div style={{ zIndex: 2 }}>
                 <h3 style={{
                   fontFamily: "'DM Serif Display', serif",
                   fontSize: '26px', fontWeight: 400,
