@@ -377,10 +377,14 @@ function StillUsCategoryView({
         />
 
         {/* Card tiles — glassmorphism */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', paddingLeft: '20px', paddingRight: '20px' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '7px', paddingLeft: '20px', paddingRight: '20px' }}>
           {cards.map((card, index) => {
             const isCompleted = completedCardIds.includes(card.id);
             const isInProgress = !isCompleted && inProgressCardIds.includes(card.id);
+            const fillDefault = CIRCADIAN_FILLS[category.id] || 'rgba(162, 181, 169, 0.28)';
+            const fillHover = CIRCADIAN_FILLS_HOVER[category.id] || 'rgba(162, 181, 169, 0.42)';
+            const borderDefault = `1px solid ${color}73`;
+            const borderGlow = `1px solid ${color}`;
 
             return (
               <motion.button
@@ -389,115 +393,127 @@ function StillUsCategoryView({
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.15 + index * 0.07, duration: 0.55, ease: EASE }}
                 onClick={() => navigate(`/preview/${card.id}`)}
+                whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.985 }}
                 className="w-full text-left"
                 style={{
                   display: 'flex',
-                  flexDirection: 'column',
-                  gap: '4px',
-                  padding: '20px 20px',
-                  background: isCompleted
-                    ? `hsla(194, 28%, 22%, 0.35)`
-                    : `hsla(194, 28%, 24%, 0.40)`,
-                  backdropFilter: 'blur(16px) saturate(1.1)',
-                  WebkitBackdropFilter: 'blur(16px) saturate(1.1)',
-                  border: isInProgress
-                    ? `1px solid ${color}`
-                    : `1px solid hsla(194, 28%, 50%, 0.25)`,
+                  alignItems: 'stretch',
+                  gap: '0',
+                  padding: '0',
+                  background: fillDefault,
+                  backdropFilter: 'blur(12px)',
+                  WebkitBackdropFilter: 'blur(12px)',
+                  border: isInProgress ? borderGlow : borderDefault,
                   borderRadius: '14px',
                   cursor: 'pointer',
-                  boxShadow: isInProgress
-                    ? `0 0 20px -4px ${color}40, 0 4px 16px -4px hsla(194, 28%, 10%, 0.25)`
-                    : '0 2px 12px -2px hsla(194, 28%, 8%, 0.20)',
                   transition: 'background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease',
-                  position: 'relative',
                   overflow: 'hidden',
+                  position: 'relative',
+                  boxShadow: isInProgress
+                    ? `0 0 16px -2px ${color}35, 0 0 32px -6px ${color}20`
+                    : 'none',
                 }}
                 onMouseEnter={(e) => {
                   const el = e.currentTarget;
-                  el.style.background = `hsla(194, 28%, 26%, 0.50)`;
-                  el.style.borderColor = color;
-                  el.style.boxShadow = `0 0 24px -4px ${color}50, 0 4px 20px -4px hsla(194, 28%, 10%, 0.30)`;
+                  el.style.background = fillHover;
+                  el.style.border = borderGlow;
+                  el.style.boxShadow = `0 0 24px -4px ${color}50, 0 0 48px -8px ${color}30`;
                 }}
                 onMouseLeave={(e) => {
                   const el = e.currentTarget;
-                  el.style.background = isCompleted ? `hsla(194, 28%, 22%, 0.35)` : `hsla(194, 28%, 24%, 0.40)`;
-                  el.style.borderColor = isInProgress ? color : `hsla(194, 28%, 50%, 0.25)`;
+                  el.style.background = fillDefault;
+                  el.style.border = isInProgress ? borderGlow : borderDefault;
                   el.style.boxShadow = isInProgress
-                    ? `0 0 20px -4px ${color}40, 0 4px 16px -4px hsla(194, 28%, 10%, 0.25)`
-                    : '0 2px 12px -2px hsla(194, 28%, 8%, 0.20)';
+                    ? `0 0 16px -2px ${color}35, 0 0 32px -6px ${color}20`
+                    : 'none';
                 }}
               >
-                {/* Accent bar */}
+                {/* Thick accent bar */}
                 <div
                   style={{
-                    position: 'absolute', left: 0, top: 0, bottom: 0,
-                    width: '3px', backgroundColor: color,
+                    width: '4px',
+                    alignSelf: 'stretch',
+                    backgroundColor: color,
+                    flexShrink: 0,
                     borderRadius: '14px 0 0 14px',
-                    opacity: isCompleted ? 0.4 : 0.8,
                   }}
                 />
 
-                <div style={{ paddingLeft: '8px' }}>
-                  <h3
-                    style={{
-                      fontFamily: "'DM Serif Display', var(--font-serif)",
-                      fontSize: '19px',
-                      fontWeight: 400,
-                      color: colorLight,
-                      opacity: isCompleted ? 0.55 : 1,
-                      lineHeight: 1.3,
-                      textShadow: `0 0 12px ${color}50, 0 1px 3px hsla(194, 28%, 8%, 0.25)`,
-                    }}
-                  >
-                    {card.title}
-                  </h3>
-                  {card.subtitle && (
-                    <p
+                {/* Card content */}
+                <div
+                  style={{
+                    flex: 1,
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '14px',
+                    padding: '16px',
+                  }}
+                >
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <h3
                       style={{
-                        fontFamily: 'var(--font-sans)',
-                        fontSize: '12.5px',
-                        fontWeight: 400,
-                        color: 'var(--text-primary)',
-                        opacity: isCompleted ? 0.40 : 0.65,
-                        lineHeight: 1.45,
-                        marginTop: '5px',
-                      }}
-                    >
-                      {card.subtitle}
-                    </p>
-                  )}
-
-                  {/* Status badge — below subtitle, quiet */}
-                  {isCompleted && (
-                    <span
-                      style={{
-                        display: 'inline-block',
-                        fontFamily: 'var(--font-sans)',
-                        fontSize: '9px',
+                        fontFamily: 'var(--font-serif)',
+                        fontSize: '18px',
                         fontWeight: 500,
-                        letterSpacing: '0.10em',
-                        textTransform: 'uppercase' as const,
-                        color: HERITAGE_GOLD,
-                        opacity: 0.50,
-                        marginTop: '8px',
+                        lineHeight: 1.3,
+                        color: 'var(--text-primary)',
                       }}
                     >
-                      ✦ Utforskad
-                    </span>
-                  )}
-                </div>
+                      {card.title}
+                    </h3>
+                    {card.subtitle && (
+                      <p
+                        style={{
+                          fontFamily: 'var(--font-sans)',
+                          fontSize: '12px',
+                          fontWeight: 400,
+                          color: colorLight,
+                          opacity: 1,
+                          lineHeight: 1.45,
+                          marginTop: '3px',
+                        }}
+                      >
+                        {card.subtitle}
+                      </p>
+                    )}
+                  </div>
 
-                {isInProgress && (
-                  <span
-                    style={{
-                      position: 'absolute', right: '16px', top: '50%', transform: 'translateY(-50%)',
-                      display: 'inline-block',
-                      width: '6px', height: '6px',
-                      borderRadius: '50%',
-                      backgroundColor: HERITAGE_GOLD,
-                      opacity: 0.7,
-                      animation: 'saffron-pulse 2.0s ease-in-out infinite',
+                  {/* Status */}
+                  <div style={{ flexShrink: 0 }}>
+                    {isCompleted && (
+                      <span
+                        style={{
+                          fontFamily: 'var(--font-sans)',
+                          fontSize: '9px',
+                          fontWeight: 500,
+                          letterSpacing: '0.10em',
+                          textTransform: 'uppercase' as const,
+                          color: HERITAGE_GOLD,
+                          opacity: 0.55,
+                        }}
+                      >
+                        Utforskad
+                      </span>
+                    )}
+                    {isInProgress && (
+                      <span
+                        style={{
+                          display: 'inline-block',
+                          width: '6px', height: '6px',
+                          borderRadius: '50%',
+                          backgroundColor: HERITAGE_GOLD,
+                          opacity: 0.7,
+                          animation: 'saffron-pulse 2.0s ease-in-out infinite',
+                        }}
+                      />
+                    )}
+                  </div>
+                </div>
+              </motion.button>
+            );
+          })}
+        </div>
                     }}
                   />
                 )}
