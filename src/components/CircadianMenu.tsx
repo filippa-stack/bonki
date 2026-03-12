@@ -421,7 +421,7 @@ export default function CircadianMenu({
                               fontFamily: 'var(--font-sans)',
                               fontSize: '14px',
                               color: HERITAGE_GOLD,
-                              opacity: 0.35,
+                              opacity: 0.25,
                               transform: isExpanded ? 'rotate(90deg)' : 'rotate(0deg)',
                               transition: 'transform 0.25s ease, opacity 0.25s ease',
                               display: 'inline-block',
