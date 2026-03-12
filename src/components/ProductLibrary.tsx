@@ -1067,16 +1067,16 @@ export default function ProductLibrary() {
               <div
                 style={{
                   position: 'absolute',
-                  top: '5%', right: '2%', bottom: '5%',
-                  width: '40%',
+                  top: '0%', right: '-2%', bottom: '0%',
+                  width: '50%',
                   backgroundImage: `url(${illustrationStillFair})`,
                   backgroundSize: 'contain',
                   backgroundRepeat: 'no-repeat',
                   backgroundPosition: 'right center',
-                  opacity: 0.12,
+                  opacity: 0.25,
                   pointerEvents: 'none',
                   zIndex: 0,
-                  filter: 'brightness(1.4) saturate(0.5)',
+                  filter: 'brightness(1.6) saturate(0.5)',
                 }}
               />
               <div style={{ zIndex: 1 }}>
