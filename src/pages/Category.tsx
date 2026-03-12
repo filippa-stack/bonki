@@ -610,9 +610,152 @@ function CardEntry({ card, index, isCompleted = false, isInProgress = false, onN
   const cardBg = categoryBg || styles?.cardBg || '#FFFFFF';
   const solidBg = categoryBg ? (styles?.cardBg || '#F8F3E4') : (styles?.cardBg || '#FFFFFF');
   const titleColor = styles?.cardTitleColor ?? 'var(--text-primary)';
-  // ① Subtitle uses same hue as title but softer
   const subtitleColor = titleColor;
-  const tileHeight = CARD_TILE_HEIGHT[card.id] ?? 270;
+  const focalPoint = CARD_FOCAL_POINT[card.id] ?? 'center 35%';
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 12, scale: 0.97 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
+      transition={{ delay: index * 0.07, duration: 0.55, ease: EASE }}
+      style={{ marginBottom: isLast ? '0' : '16px' }}
+    >
+      <div
+        onClick={onNavigate}
+        role="button"
+        tabIndex={0}
+        aria-label={card.title}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onNavigate(); }
+        }}
+        className="w-full cursor-pointer group relative overflow-hidden"
+        style={{
+          padding: '0',
+          background: categoryBg
+            ? categoryBg
+            : isCompleted
+              ? `linear-gradient(180deg, ${cardBg}CC 0%, ${cardBg}AA 100%)`
+              : `linear-gradient(180deg, ${cardBg} 0%, ${cardBg}E8 100%)`,
+          backdropFilter: categoryBg ? 'blur(16px)' : undefined,
+          WebkitBackdropFilter: categoryBg ? 'blur(16px)' : undefined,
+          border: 'none',
+          borderRadius: '20px',
+          boxShadow: isCompleted
+            ? '0px 1px 3px rgba(44, 36, 32, 0.04), 0px 4px 12px -4px rgba(44, 36, 32, 0.04)'
+            : '0px 4px 16px rgba(44, 36, 32, 0.08), 0px 12px 32px -8px rgba(44, 36, 32, 0.06)',
+          transition: 'transform 200ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 260ms ease-out',
+          height: '280px',
+          position: 'relative',
+        }}
+        onPointerDown={(e) => { e.currentTarget.style.transform = 'scale(0.985)'; }}
+        onPointerUp={(e) => { e.currentTarget.style.transform = ''; }}
+        onPointerLeave={(e) => { e.currentTarget.style.transform = ''; }}
+        onPointerEnter={(e) => {
+          e.currentTarget.style.transform = 'translateY(-3px) scale(1.01)';
+        }}
+      >
+        {/* Bold full-bleed illustration — cover with smart focal point */}
+        {illustration && (
+          <img
+            src={illustration}
+            alt=""
+            aria-hidden="true"
+            draggable={false}
+            className="pointer-events-none select-none"
+            style={{
+              position: 'absolute',
+              inset: 0,
+              width: '100%',
+              height: '100%',
+              objectFit: 'cover',
+              objectPosition: focalPoint,
+              opacity: isCompleted ? 0.25 : 1,
+              transition: 'opacity 300ms ease',
+              filter: isCompleted ? 'grayscale(0.3)' : 'none',
+            }}
+          />
+        )}
+
+        {/* Gradient scrim — long, soft fade for text legibility */}
+        <div
+          className="pointer-events-none"
+          style={{
+            position: 'absolute',
+            bottom: 0,
+            left: 0,
+            right: 0,
+            height: '60%',
+            background: `linear-gradient(180deg, transparent 0%, ${solidBg}30 20%, ${solidBg}80 42%, ${solidBg}CC 60%, ${solidBg}F0 78%, ${solidBg} 100%)`,
+            borderRadius: '0 0 20px 20px',
+            zIndex: 1,
+          }}
+        />
+
+        {/* Status badges */}
+        {isCompleted && (
+          <span
+            style={{
+              position: 'absolute', top: '12px', right: '16px', zIndex: 2,
+              fontFamily: 'var(--font-sans)', fontSize: '10px',
+              letterSpacing: '0.06em', textTransform: 'uppercase',
+              color: titleColor, opacity: 0.45, fontWeight: 500,
+            }}
+          >
+            Utforskad
+          </span>
+        )}
+        {isInProgress && (
+          <span
+            style={{
+              position: 'absolute', top: '12px', right: '16px', zIndex: 2,
+              display: 'inline-block', width: '8px', height: '8px',
+              borderRadius: '50%', backgroundColor: titleColor,
+              animation: 'saffron-pulse 2.0s ease-in-out infinite',
+            }}
+          />
+        )}
+
+        {/* Text — bottom-anchored */}
+        <div
+          style={{
+            position: 'absolute', bottom: 0, left: 0, right: 0, zIndex: 2,
+            padding: '0 24px 18px',
+          }}
+        >
+          <div
+            style={{
+              width: '24px', height: '2px', borderRadius: '1px',
+              backgroundColor: titleColor,
+              opacity: isCompleted ? 0.20 : 0.40,
+              marginBottom: '10px',
+            }}
+          />
+          <h3
+            style={{
+              fontFamily: "'DM Serif Display', var(--font-serif)",
+              fontSize: '26px', fontWeight: 400,
+              color: titleColor, opacity: isCompleted ? 0.55 : 1,
+              lineHeight: 1.2,
+            }}
+          >
+            {card.title}
+          </h3>
+          {card.subtitle && (
+            <p
+              style={{
+                fontFamily: 'var(--font-serif)', fontSize: '13px',
+                color: subtitleColor, opacity: isCompleted ? 0.30 : 0.50,
+                lineHeight: 1.45, marginTop: '5px',
+              }}
+            >
+              {card.subtitle}
+            </p>
+          )}
+        </div>
+      </div>
+    </motion.div>
+  );
+}
 
   return (
     <motion.div
