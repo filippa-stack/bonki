@@ -642,9 +642,13 @@ function CardEntry({ card, index, isCompleted = false, isInProgress = false, onN
         className="w-full cursor-pointer group relative overflow-hidden"
         style={{
           padding: '24px 20px',
-          background: isCompleted
-            ? `linear-gradient(180deg, ${cardBg}CC 0%, ${cardBg}AA 100%)`
-            : `linear-gradient(180deg, ${cardBg} 0%, ${cardBg}E8 100%)`,
+          background: categoryBg
+            ? categoryBg
+            : isCompleted
+              ? `linear-gradient(180deg, ${cardBg}CC 0%, ${cardBg}AA 100%)`
+              : `linear-gradient(180deg, ${cardBg} 0%, ${cardBg}E8 100%)`,
+          backdropFilter: categoryBg ? 'blur(16px)' : undefined,
+          WebkitBackdropFilter: categoryBg ? 'blur(16px)' : undefined,
           border: 'none',
           borderRadius: '12px',
           boxShadow: isCompleted
