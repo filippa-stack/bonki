@@ -81,34 +81,34 @@ const SECTION_GROUPS = [
 ];
 
 /** Gold progress ring SVG */
-function ProgressRing({ completed, total, size = 20 }: { completed: number; total: number; size?: number }) {
-  const radius = (size - 4) / 2;
+function ProgressRing({ completed, total, size = 16 }: { completed: number; total: number; size?: number }) {
+  const radius = (size - 3) / 2;
   const circumference = 2 * Math.PI * radius;
   const progress = total > 0 ? completed / total : 0;
   const strokeDashoffset = circumference * (1 - progress);
   const allDone = completed === total && total > 0;
 
   return (
-    <div style={{ position: 'relative', width: size, height: size, flexShrink: 0 }}>
+    <div style={{ position: 'relative', width: size, height: size, flexShrink: 0, opacity: 0.45 }}>
       <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} style={{ transform: 'rotate(-90deg)' }}>
         <circle
           cx={size / 2} cy={size / 2} r={radius}
           fill="none"
           stroke={HERITAGE_GOLD}
-          strokeWidth={2}
-          opacity={0.12}
+          strokeWidth={1.5}
+          opacity={0.15}
         />
         <motion.circle
           cx={size / 2} cy={size / 2} r={radius}
           fill="none"
           stroke={HERITAGE_GOLD}
-          strokeWidth={2}
+          strokeWidth={1.5}
           strokeLinecap="round"
           strokeDasharray={circumference}
           initial={{ strokeDashoffset: circumference }}
           animate={{ strokeDashoffset }}
           transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1], delay: 0.3 }}
-          opacity={0.65}
+          opacity={0.7}
         />
       </svg>
       {allDone && (

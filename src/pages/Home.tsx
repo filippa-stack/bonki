@@ -225,7 +225,7 @@ export default function Home() {
         transition={{ duration: 0.4 }}
         style={{
           position: 'absolute',
-          top: '7%',
+          top: '18%',
           left: '-42%',
           width: '135%',
           height: '125%',
@@ -290,7 +290,7 @@ export default function Home() {
                 opacity: 0.65,
                 lineHeight: 1.5,
               }}>
-                Börja där det känns rätt.
+                Följ ordningen — eller börja där det känns rätt.
               </p>
             </motion.div>
 
