@@ -100,10 +100,10 @@ const CATEGORY_CARD_BG: Record<string, string> = {
   'vk-jag-vaxer': '#0F6B99',
   'vk-jag-och-andra': '#073B54',
   // Syskon
-  'sk-vi-blev-syskon': '#D6E8F7',
-  'sk-vi-ar-olika': '#7AB3D9',
-  'sk-nar-det-skaver': '#0F4E99',
-  'sk-nar-livet-forandras': '#0A2E5C',
+  'sk-vi-blev-syskon': '#E0F2F1',
+  'sk-vi-ar-olika': '#E9B44C',
+  'sk-nar-det-skaver': '#4D908E',
+  'sk-nar-livet-forandras': '#274C5E',
 };
 
 /** Category-specific card title colors (matching homescreen tile text) */
@@ -135,8 +135,8 @@ const CATEGORY_TITLE_COLOR: Record<string, string> = {
   'vk-jag-vaxer': '#FAFAF0',
   'vk-jag-och-andra': '#FAFAF0',
   // Syskon
-  'sk-vi-blev-syskon': '#0A2E5C',
-  'sk-vi-ar-olika': '#0A2E5C',
+  'sk-vi-blev-syskon': '#274C5E',
+  'sk-vi-ar-olika': '#3A2E1A',
   'sk-nar-det-skaver': '#FAFAF0',
   'sk-nar-livet-forandras': '#FAFAF0',
 };
