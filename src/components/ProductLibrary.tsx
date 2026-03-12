@@ -1123,12 +1123,22 @@ export default function ProductLibrary() {
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 1.0, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-          style={{ textAlign: 'center', padding: '0 28px', marginTop: '32px', paddingBottom: 'calc(48px + env(safe-area-inset-bottom, 0px))' }}
+          style={{
+            textAlign: 'center',
+            padding: '0 28px',
+            marginTop: activeTab === 'par' ? '0' : '32px',
+            paddingTop: activeTab === 'par' ? '24px' : '0',
+            paddingBottom: 'calc(48px + env(safe-area-inset-bottom, 0px))',
+            background: activeTab === 'par' ? '#0A0A1A' : 'transparent',
+            margin: activeTab === 'par' ? '0 -20px' : undefined,
+          }}
         >
           <div style={{
             width: '40px',
             height: '1px',
-            background: 'linear-gradient(90deg, transparent, hsla(30, 20%, 60%, 0.3), transparent)',
+            background: activeTab === 'par'
+              ? 'linear-gradient(90deg, transparent, hsla(38, 60%, 50%, 0.2), transparent)'
+              : 'linear-gradient(90deg, transparent, hsla(30, 20%, 60%, 0.3), transparent)',
             margin: '0 auto 18px',
           }} />
           <p
@@ -1136,7 +1146,7 @@ export default function ProductLibrary() {
               fontFamily: "'DM Serif Display', serif",
               fontStyle: 'italic',
               fontSize: '14px',
-              color: 'var(--accent-text)',
+              color: activeTab === 'par' ? 'hsla(38, 60%, 60%, 0.5)' : 'var(--accent-text)',
               opacity: 0.45,
               lineHeight: 1.7,
               letterSpacing: '-0.01em',
