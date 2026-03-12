@@ -378,7 +378,7 @@ export default function ProductLibrary() {
       className="min-h-screen flex flex-col relative"
       style={{
         background: isDark
-          ? 'radial-gradient(ellipse 80% 70% at 50% 30%, #1A1A3E 0%, #10102A 45%, #0A0A1A 100%)'
+          ? 'radial-gradient(ellipse 80% 70% at 50% 30%, #12124A 0%, #0A0A3D 45%, #070720 100%)'
           : 'radial-gradient(ellipse 70% 60% at 50% 45%, #FFF4D1 0%, #FEF2C7 65%, #FBDFA8 100%)',
         fontFamily: "'Lato', sans-serif",
         transition: 'background 600ms ease',
@@ -482,7 +482,7 @@ export default function ProductLibrary() {
           <div
             style={{
               display: 'flex',
-              background: isDark ? 'hsla(220, 30%, 20%, 0.5)' : 'hsla(30, 20%, 40%, 0.08)',
+              background: isDark ? 'hsla(230, 35%, 18%, 0.6)' : 'hsla(30, 20%, 40%, 0.08)',
               borderRadius: '20px',
               padding: '3px',
               gap: '2px',
@@ -503,7 +503,7 @@ export default function ProductLibrary() {
                     ? (isDark ? '#F5EFE6' : '#1A1A2E')
                     : (isDark ? 'hsla(30, 20%, 85%, 0.4)' : 'hsla(30, 10%, 20%, 0.35)'),
                   background: activeTab === tab
-                    ? (isDark ? 'hsla(220, 30%, 30%, 0.6)' : 'hsla(0, 0%, 100%, 0.7)')
+                    ? (isDark ? 'hsla(230, 35%, 25%, 0.7)' : 'hsla(0, 0%, 100%, 0.7)')
                     : 'transparent',
                   border: 'none',
                   outline: 'none',
@@ -910,7 +910,7 @@ export default function ProductLibrary() {
           width: '300px',
           height: '300px',
           borderRadius: '50%',
-          background: 'radial-gradient(circle, hsla(230, 40%, 35%, 0.15) 0%, transparent 70%)',
+          background: 'radial-gradient(circle, hsla(230, 55%, 30%, 0.18) 0%, transparent 70%)',
           pointerEvents: 'none',
           zIndex: 0,
         }} />
@@ -962,7 +962,7 @@ export default function ProductLibrary() {
               style={{
                 borderRadius: '20px',
                 padding: '24px 20px 18px',
-                background: 'hsla(215, 20%, 28%, 0.35)',
+                background: 'hsla(215, 38%, 28%, 0.30)',
                 backdropFilter: 'blur(24px)',
                 WebkitBackdropFilter: 'blur(24px)',
                 textAlign: 'left',
@@ -973,8 +973,8 @@ export default function ProductLibrary() {
                 flexDirection: 'column',
                 alignItems: 'flex-start',
                 justifyContent: 'flex-end',
-                border: '1px solid hsla(215, 30%, 60%, 0.15)',
-                boxShadow: '0 4px 24px hsla(220, 40%, 8%, 0.35), 0 1px 3px hsla(220, 30%, 12%, 0.2)',
+                border: '1px solid hsla(215, 35%, 55%, 0.12)',
+                boxShadow: '0 4px 24px hsla(230, 50%, 6%, 0.4), 0 1px 3px hsla(230, 40%, 10%, 0.25)',
               }}
             >
               {/* Illustration */}
@@ -1047,7 +1047,7 @@ export default function ProductLibrary() {
               style={{
                 borderRadius: '20px',
                 padding: '24px 20px 18px',
-                background: 'hsla(215, 20%, 25%, 0.25)',
+                background: 'hsla(215, 38%, 25%, 0.22)',
                 backdropFilter: 'blur(24px)',
                 WebkitBackdropFilter: 'blur(24px)',
                 textAlign: 'left',
@@ -1058,8 +1058,8 @@ export default function ProductLibrary() {
                 flexDirection: 'column',
                 alignItems: 'flex-start',
                 justifyContent: 'flex-end',
-                border: '1px solid hsla(215, 30%, 55%, 0.10)',
-                boxShadow: '0 4px 24px hsla(220, 40%, 8%, 0.25), 0 1px 3px hsla(220, 30%, 12%, 0.15)',
+                border: '1px solid hsla(215, 35%, 50%, 0.08)',
+                boxShadow: '0 4px 24px hsla(230, 50%, 6%, 0.3), 0 1px 3px hsla(230, 40%, 10%, 0.18)',
                 opacity: 0.85,
               }}
             >
