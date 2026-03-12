@@ -44,7 +44,7 @@ export const CIRCADIAN_FILLS: Record<string, string> = {
   'category-10':        'rgba(49, 54, 88, 0.28)',
 };
 
-const CIRCADIAN_FILLS_HOVER: Record<string, string> = {
+export const CIRCADIAN_FILLS_HOVER: Record<string, string> = {
   'emotional-intimacy': 'rgba(162, 181, 169, 0.42)',
   'communication':      'rgba(107, 142, 125, 0.42)',
   'category-8':         'rgba(194, 138, 120, 0.42)',
