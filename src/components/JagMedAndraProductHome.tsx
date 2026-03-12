@@ -111,9 +111,9 @@ export default function JagMedAndraProductHome({ product }: { product: ProductMa
         transition={{ duration: 0.5, delay: 0.2, scale: { duration: 9, ease: 'easeInOut', repeat: Infinity, repeatType: 'reverse' } }}
         style={{
           position: 'absolute',
-          bottom: '-5%',
-          right: '-15%',
-          width: '50%',
+          bottom: '0%',
+          right: '-10%',
+          width: '42%',
           zIndex: 0,
           pointerEvents: 'none',
         }}
