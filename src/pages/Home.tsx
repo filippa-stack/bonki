@@ -225,7 +225,7 @@ export default function Home() {
         transition={{ duration: 0.4 }}
         style={{
           position: 'absolute',
-          top: '7%',
+          top: '18%',
           left: '-42%',
           width: '135%',
           height: '125%',
