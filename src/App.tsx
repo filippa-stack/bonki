@@ -70,21 +70,24 @@ function ProtectedRoutes() {
       
       <InstallGuideBanner />
       <ActiveSessionGuard>
-        <AnimatePresence mode="wait">
-          <Routes location={location} key={location.pathname}>
-            <Route path="/" element={<PageTransition><Index /></PageTransition>} />
-            
-            <Route path="/categories" element={<Navigate to="/" replace />} />
-            <Route path="/category/:categoryId" element={<PageTransition><Category /></PageTransition>} />
-            <Route path="/card/:cardId" element={<PageTransition><CardView /></PageTransition>} />
-            <Route path="/preview/:cardId" element={<PageTransition><CardPreview /></PageTransition>} />
-            <Route path="/product/:slug" element={<PageTransition><ProductHome /></PageTransition>} />
-            <Route path="/saved" element={<Navigate to="/shared" replace />} />
-            <Route path="/shared" element={<PageTransition><SharedSummary /></PageTransition>} />
-            <Route path="/diary/:productId" element={<PageTransition><Diary /></PageTransition>} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </AnimatePresence>
+        <div style={{ paddingBottom: 'calc(56px + env(safe-area-inset-bottom, 0px))' }}>
+          <AnimatePresence mode="wait">
+            <Routes location={location} key={location.pathname}>
+              <Route path="/" element={<PageTransition><Index /></PageTransition>} />
+              
+              <Route path="/categories" element={<Navigate to="/" replace />} />
+              <Route path="/category/:categoryId" element={<PageTransition><Category /></PageTransition>} />
+              <Route path="/card/:cardId" element={<PageTransition><CardView /></PageTransition>} />
+              <Route path="/preview/:cardId" element={<PageTransition><CardPreview /></PageTransition>} />
+              <Route path="/product/:slug" element={<PageTransition><ProductHome /></PageTransition>} />
+              <Route path="/saved" element={<Navigate to="/shared" replace />} />
+              <Route path="/shared" element={<PageTransition><SharedSummary /></PageTransition>} />
+              <Route path="/diary/:productId" element={<PageTransition><Diary /></PageTransition>} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </AnimatePresence>
+        </div>
+        <BottomNav />
       </ActiveSessionGuard>
     </AppProvider>
     </OptimisticCompletionsProvider>
