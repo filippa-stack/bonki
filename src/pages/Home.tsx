@@ -257,8 +257,8 @@ export default function Home() {
             objectFit: 'contain',
             objectPosition: 'center top',
             opacity: 0.32,
-            maskImage: 'linear-gradient(to bottom, rgba(0,0,0,0.4) 0%, rgba(0,0,0,1) 25%, rgba(0,0,0,0.9) 55%, rgba(0,0,0,0.4) 75%, rgba(0,0,0,0) 90%)',
-            WebkitMaskImage: 'linear-gradient(to bottom, rgba(0,0,0,0.4) 0%, rgba(0,0,0,1) 25%, rgba(0,0,0,0.9) 55%, rgba(0,0,0,0.4) 75%, rgba(0,0,0,0) 90%)',
+            maskImage: 'linear-gradient(to bottom, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.6) 20%, rgba(0,0,0,1) 35%, rgba(0,0,0,0.9) 55%, rgba(0,0,0,0.4) 75%, rgba(0,0,0,0) 90%)',
+            WebkitMaskImage: 'linear-gradient(to bottom, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.6) 20%, rgba(0,0,0,1) 35%, rgba(0,0,0,0.9) 55%, rgba(0,0,0,0.4) 75%, rgba(0,0,0,0) 90%)',
           }}
         />
       </motion.div>
