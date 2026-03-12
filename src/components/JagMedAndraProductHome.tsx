@@ -228,6 +228,8 @@ export default function JagMedAndraProductHome({ product }: { product: ProductMa
                         'inset 0 -2px 4px hsla(280, 40%, 30%, 0.06)',
                       ].join(', '),
                   whiteSpace: 'normal' as const,
+                  backdropFilter: 'blur(20px) saturate(1.3)',
+                  WebkitBackdropFilter: 'blur(20px) saturate(1.3)',
                   width: isHero ? '86%' : '82%',
                   minHeight: isHero ? '76px' : '66px',
                   display: 'flex',
