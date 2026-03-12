@@ -609,9 +609,10 @@ interface CardEntryProps {
   onNavigate: () => void;
   isLast?: boolean;
   styles?: typeof PRODUCT_STYLES[string];
+  categoryBg?: string;
 }
 
-function CardEntry({ card, index, isCompleted = false, isInProgress = false, onNavigate, isLast = false, styles }: CardEntryProps) {
+function CardEntry({ card, index, isCompleted = false, isInProgress = false, onNavigate, isLast = false, styles, categoryBg }: CardEntryProps) {
   const zipIllustration = useCardImage(card.id);
   const illustration = CARD_IMAGE_OVERRIDE[card.id] ?? zipIllustration;
   const illustrationOpacity = CARD_ILLUSTRATION_OPACITY[card.id] ?? 0.12;
@@ -619,7 +620,7 @@ function CardEntry({ card, index, isCompleted = false, isInProgress = false, onN
   const nudge = CARD_ILLUSTRATION_NUDGE[card.id] ?? { x: 0, y: 0 };
   const size = Math.round(72 * illustrationScale);
 
-  const cardBg = styles?.cardBg ?? '#FFFFFF';
+  const cardBg = categoryBg || styles?.cardBg || '#FFFFFF';
   const titleColor = styles?.cardTitleColor ?? 'var(--text-primary)';
   const subtitleColor = '#8A8078';
 
