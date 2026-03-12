@@ -2,6 +2,8 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { LayoutGrid, Home, BookOpen, MessageCircle } from 'lucide-react';
 import { useCurrentProduct } from '@/hooks/useCurrentProduct';
+import { useMemo } from 'react';
+import { getCategoryById } from '@/data/content';
 
 type NavItem = {
   id: string;
@@ -13,10 +15,37 @@ type NavItem = {
 
 export default function BottomNav() {
   const navigate = useNavigate();
-  const { pathname } = useLocation();
+  const { pathname, search } = useLocation();
   const product = useCurrentProduct();
 
+  // Detect Still Us context from route
+  const isStillUsContext = useMemo(() => {
+    if (product) return false;
+    // On legacy home with devState
+    if (pathname === '/' && search.includes('devState=')) return true;
+    // On a Still Us card (cards not in allProducts)
+    const cardMatch = pathname.match(/^\/card\/([^/]+)/);
+    if (cardMatch) return true;
+    // On a Still Us category
+    const catMatch = pathname.match(/^\/category\/([^/]+)/);
+    if (catMatch) {
+      const cat = getCategoryById(catMatch[1]);
+      return !!cat; // Still Us categories are in content.ts
+    }
+    // On /shared
+    if (pathname.startsWith('/shared')) return true;
+    return false;
+  }, [product, pathname, search]);
+
   const isChildProduct = product?.pronounMode === 'du';
+
+  const productHomePath = product
+    ? `/product/${product.slug}`
+    : isStillUsContext
+      ? '/?devState=solo'
+      : '/';
+
+  const productHomeLabel = product?.name ?? (isStillUsContext ? 'Still Us' : 'Produkt');
 
   const items: NavItem[] = [
     {
@@ -24,14 +53,16 @@ export default function BottomNav() {
       label: 'Biblioteket',
       icon: LayoutGrid,
       path: '/',
-      match: (p) => p === '/' || p === '',
+      match: (p) => p === '/' && !search.includes('devState='),
     },
     {
       id: 'product-home',
-      label: product?.name ?? 'Produkt',
+      label: productHomeLabel,
       icon: Home,
-      path: product ? `/product/${product.slug}` : '/',
-      match: (p) => !!product && p.startsWith(`/product/${product.slug}`),
+      path: productHomePath,
+      match: (p) =>
+        (!!product && p.startsWith(`/product/${product.slug}`)) ||
+        (isStillUsContext && p === '/' && search.includes('devState=')),
     },
     {
       id: 'contextual',
