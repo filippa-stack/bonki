@@ -40,6 +40,18 @@ export default function CircadianMenu({
   onNavigateToCard,
 }: CircadianMenuProps) {
   const [expandedId, setExpandedId] = useState<string | null>(null);
+  const [previewCard, setPreviewCard] = useState<Card | null>(null);
+  const [previewCategory, setPreviewCategory] = useState<Category | null>(null);
+  const [previewColor, setPreviewColor] = useState('#A2B5A9');
+  const [overlayOpen, setOverlayOpen] = useState(false);
+
+  const handleCardClick = (card: Card, category: Category) => {
+    const color = CIRCADIAN_COLORS[category.id] || '#A2B5A9';
+    setPreviewCard(card);
+    setPreviewCategory(category);
+    setPreviewColor(color);
+    setOverlayOpen(true);
+  };
 
   const categoryCards = useMemo(() => {
     const map = new Map<string, Card[]>();
