@@ -295,6 +295,17 @@ function StillUsCategoryView({
         />
       </motion.div>
 
+      {/* Scrim gradient behind tile zone — separates illustration from content */}
+      <div
+        aria-hidden="true"
+        style={{
+          position: 'absolute',
+          top: '35%', left: 0, right: 0, bottom: 0,
+          background: 'linear-gradient(to bottom, transparent 0%, hsla(194, 28%, 12%, 0.45) 25%, hsla(194, 28%, 12%, 0.65) 100%)',
+          zIndex: 0, pointerEvents: 'none',
+        }}
+      />
+
       {/* Back button */}
       <motion.button
         initial={{ opacity: 0 }}
@@ -304,7 +315,7 @@ function StillUsCategoryView({
         style={{
           position: 'absolute', top: 'calc(env(safe-area-inset-top, 0px) + 16px)', left: '16px',
           zIndex: 10, background: 'none', border: 'none', cursor: 'pointer',
-          color: 'var(--text-primary)', opacity: 0.5,
+          color: 'var(--text-primary)', opacity: 0.6,
           padding: '8px',
         }}
         aria-label="Tillbaka"
@@ -329,6 +340,7 @@ function StillUsCategoryView({
               color: 'var(--text-primary)',
               letterSpacing: '-0.01em',
               lineHeight: 1.2,
+              textShadow: '0 1px 8px hsla(194, 28%, 8%, 0.4)',
             }}
           >
             {category.title}
@@ -348,11 +360,12 @@ function StillUsCategoryView({
               fontWeight: 400,
               lineHeight: 1.45,
               color: 'var(--text-primary)',
-              opacity: 0.75,
+              opacity: 0.85,
               maxWidth: '80%',
               marginLeft: 'auto', marginRight: 'auto',
               marginBottom: '40px',
               textWrap: 'balance',
+              textShadow: '0 1px 6px hsla(194, 28%, 8%, 0.35)',
             } as React.CSSProperties}
           >
             {category.entryLine}
@@ -380,35 +393,35 @@ function StillUsCategoryView({
                   gap: '14px',
                   padding: '20px 20px',
                   background: isCompleted
-                    ? `${color}30`
-                    : `${color}40`,
-                  backdropFilter: 'blur(16px)',
-                  WebkitBackdropFilter: 'blur(16px)',
+                    ? `hsla(194, 28%, 18%, 0.55)`
+                    : `hsla(194, 28%, 20%, 0.60)`,
+                  backdropFilter: 'blur(20px) saturate(1.2)',
+                  WebkitBackdropFilter: 'blur(20px) saturate(1.2)',
                   border: isInProgress
                     ? `1px solid ${color}`
-                    : `1px solid ${color}50`,
+                    : `1px solid hsla(194, 28%, 50%, 0.25)`,
                   borderRadius: '14px',
                   cursor: 'pointer',
                   boxShadow: isInProgress
-                    ? `0 0 20px -4px ${color}40, 0 4px 16px -4px hsla(194, 28%, 10%, 0.15)`
-                    : '0 2px 8px -2px hsla(194, 28%, 10%, 0.12)',
+                    ? `0 0 20px -4px ${color}40, 0 4px 16px -4px hsla(194, 28%, 10%, 0.25)`
+                    : '0 2px 12px -2px hsla(194, 28%, 8%, 0.20)',
                   transition: 'background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease',
                   position: 'relative',
                   overflow: 'hidden',
                 }}
                 onMouseEnter={(e) => {
                   const el = e.currentTarget;
-                  el.style.background = `${color}55`;
+                  el.style.background = `hsla(194, 28%, 22%, 0.70)`;
                   el.style.borderColor = color;
-                  el.style.boxShadow = `0 0 24px -4px ${color}50, 0 4px 20px -4px hsla(194, 28%, 10%, 0.20)`;
+                  el.style.boxShadow = `0 0 24px -4px ${color}50, 0 4px 20px -4px hsla(194, 28%, 10%, 0.30)`;
                 }}
                 onMouseLeave={(e) => {
                   const el = e.currentTarget;
-                  el.style.background = isCompleted ? `${color}30` : `${color}40`;
-                  el.style.borderColor = isInProgress ? color : `${color}50`;
+                  el.style.background = isCompleted ? `hsla(194, 28%, 18%, 0.55)` : `hsla(194, 28%, 20%, 0.60)`;
+                  el.style.borderColor = isInProgress ? color : `hsla(194, 28%, 50%, 0.25)`;
                   el.style.boxShadow = isInProgress
-                    ? `0 0 20px -4px ${color}40, 0 4px 16px -4px hsla(194, 28%, 10%, 0.15)`
-                    : '0 2px 8px -2px hsla(194, 28%, 10%, 0.12)';
+                    ? `0 0 20px -4px ${color}40, 0 4px 16px -4px hsla(194, 28%, 10%, 0.25)`
+                    : '0 2px 12px -2px hsla(194, 28%, 8%, 0.20)';
                 }}
               >
                 {/* Accent bar */}
@@ -428,8 +441,9 @@ function StillUsCategoryView({
                       fontSize: '19px',
                       fontWeight: 400,
                       color: 'var(--text-primary)',
-                      opacity: isCompleted ? 0.55 : 1,
+                      opacity: isCompleted ? 0.6 : 1,
                       lineHeight: 1.3,
+                      textShadow: '0 1px 3px hsla(194, 28%, 8%, 0.25)',
                     }}
                   >
                     {card.title}
@@ -438,11 +452,11 @@ function StillUsCategoryView({
                     <p
                       style={{
                         fontFamily: 'var(--font-sans)',
-                        fontSize: '13px',
+                        fontSize: '12.5px',
                         fontWeight: 400,
                         color: 'var(--text-primary)',
-                        opacity: isCompleted ? 0.45 : 0.65,
-                        lineHeight: 1.4,
+                        opacity: isCompleted ? 0.40 : 0.55,
+                        lineHeight: 1.45,
                         marginTop: '4px',
                       }}
                     >
@@ -451,17 +465,17 @@ function StillUsCategoryView({
                   )}
                 </div>
 
-                {/* Status indicator */}
+                {/* Status indicator — small, quiet */}
                 {isCompleted && (
                   <span
                     style={{
                       fontFamily: 'var(--font-sans)',
-                      fontSize: '10px',
-                      fontWeight: 600,
-                      letterSpacing: '0.08em',
+                      fontSize: '9px',
+                      fontWeight: 500,
+                      letterSpacing: '0.10em',
                       textTransform: 'uppercase' as const,
                       color: HERITAGE_GOLD,
-                      opacity: 0.85,
+                      opacity: 0.55,
                       flexShrink: 0,
                     }}
                   >
@@ -492,7 +506,7 @@ function StillUsCategoryView({
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.6, duration: 0.5 }}
-          style={{ marginTop: '40px', textAlign: 'center' }}
+          style={{ marginTop: '40px', textAlign: 'center', paddingLeft: '24px', paddingRight: '24px' }}
         >
           <p
             style={{
@@ -500,8 +514,9 @@ function StillUsCategoryView({
               fontStyle: 'italic',
               fontSize: '14px',
               color: 'var(--text-primary)',
-              opacity: 0.55,
+              opacity: 0.70,
               lineHeight: 1.5,
+              textShadow: '0 1px 4px hsla(194, 28%, 8%, 0.30)',
             }}
           >
             {allCompleted
