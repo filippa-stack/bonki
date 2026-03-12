@@ -89,8 +89,8 @@ const CATEGORY_CARD_BG: Record<string, string> = {
 const CATEGORY_TITLE_COLOR: Record<string, string> = {
   'jim-tryggheten-inuti': '#3E4421',
   'jim-kanslorna-jag-bar': '#3E4421',
-  'jim-nar-det-gor-ont': '#FFFDF5',
-  'jim-jag-som-helhet': '#FFFDF5',
+  'jim-nar-det-gor-ont': '#FAFAF0',
+  'jim-jag-som-helhet': '#FAFAF0',
   // Jag med andra
   'jma-att-hora-till': 'hsl(263, 38%, 32%)',
   'jma-nar-vi-jamfor-oss': 'hsl(188, 40%, 22%)',
