@@ -79,6 +79,15 @@ const PRODUCT_STYLES: Record<string, {
   syskonkort: { cardBg: '#ECF0F6', cardTitleColor: '#0F4E99' },
 };
 
+/** Category-specific tile background colors (matching product homescreen tiles) */
+const CATEGORY_CARD_BG: Record<string, string> = {
+  // Jag i mig
+  'jim-tryggheten-inuti': 'rgba(168, 186, 104, 0.35)',
+  'jim-kanslorna-jag-bar': 'rgba(205, 175, 119, 0.35)',
+  'jim-nar-det-gor-ont': 'rgba(189, 139, 130, 0.35)',
+  'jim-jag-som-helhet': 'rgba(142, 170, 158, 0.35)',
+};
+
 export default function Category() {
   const { t } = useTranslation();
   const { categoryId } = useParams<{ categoryId: string }>();
