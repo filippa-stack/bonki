@@ -185,9 +185,13 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
                   padding: '0 32px',
                   textAlign: 'center',
                   cursor: 'pointer',
-                  border: isDark ? 'none' : '1px solid hsla(60, 60%, 90%, 0.60)',
+                  border: isDark ? '1px solid hsla(66, 40%, 35%, 0.40)' : '1px solid hsla(60, 60%, 90%, 0.60)',
                   boxShadow: isDark
-                    ? '0 4px 14px hsla(0, 0%, 0%, 0.10), 0 2px 4px hsla(0, 0%, 0%, 0.06)'
+                    ? [
+                        '0 6px 20px hsla(66, 40%, 10%, 0.18)',
+                        '0 2px 6px hsla(0, 0%, 0%, 0.08)',
+                        'inset 0 1px 0 hsla(66, 50%, 50%, 0.25)',
+                      ].join(', ')
                     : [
                         '0 6px 20px hsla(64, 50%, 40%, 0.10)',
                         '0 2px 6px hsla(0, 0%, 0%, 0.04)',
