@@ -90,7 +90,7 @@ export default function JagMedAndraProductHome({ product }: { product: ProductMa
         <img
           src={nyckelpiganImage}
           alt=""
-          style={{ width: '100%', height: '100%', objectFit: 'contain', opacity: 0.35, transform: 'rotate(-30deg)' }}
+          style={{ width: '100%', height: '100%', objectFit: 'contain', opacity: 0.45, transform: 'rotate(-30deg)' }}
         />
       </motion.div>
 
