@@ -898,7 +898,6 @@ export default function ProductLibrary() {
               padding: '0',
               minHeight: '60vh',
               position: 'relative',
-              overflow: 'hidden',
             }}
           >
 
