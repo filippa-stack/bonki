@@ -129,7 +129,7 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
 
           {/* Category buttons */}
           {product.categories.map((cat) => {
-            const tile = TILE_COLORS[cat.id] || { bg: 'var(--product-button-bg)', text: ACCENT_COLOR };
+            const tile = TILE_COLORS[cat.id] || { bg: 'var(--product-button-bg)', text: ACCENT_COLOR, border: 'rgba(138,154,16,0.25)' };
             return (
             <motion.button
               key={cat.id}
@@ -139,12 +139,12 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
               onClick={() => navigate(`/category/${cat.id}`)}
               style={{
                 background: tile.bg,
-                borderRadius: 'var(--product-button-radius)',
+                borderRadius: '16px',
                 padding: '0 24px',
                 textAlign: 'center',
                 cursor: 'pointer',
-                border: 'none',
-                boxShadow: 'var(--product-button-shadow)',
+                border: `1px solid ${tile.border}`,
+                boxShadow: `0 4px 24px -4px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.25)`,
                 whiteSpace: 'normal' as const,
                 width: '80%',
                 minHeight: '56px',
@@ -152,8 +152,8 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
                 alignItems: 'center',
                 justifyContent: 'center',
                 lineHeight: 1.3,
-                backdropFilter: 'blur(8px)',
-                WebkitBackdropFilter: 'blur(8px)',
+                backdropFilter: 'blur(16px)',
+                WebkitBackdropFilter: 'blur(16px)',
               }}
             >
               <span
