@@ -901,50 +901,6 @@ export default function ProductLibrary() {
               overflow: 'hidden',
             }}
           >
-        {/* ── Dynamic organic background shapes ── */}
-        <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none', zIndex: 0, overflow: 'hidden' }}>
-          <motion.div
-            animate={{ x: [0, 30, -20, 0], y: [0, -40, 20, 0], scale: [1, 1.08, 0.95, 1] }}
-            transition={{ duration: 25, ease: 'easeInOut', repeat: Infinity }}
-            style={{
-              position: 'absolute', top: '-15%', left: '-20%', width: '70%', height: '60%',
-              borderRadius: '50% 40% 60% 30%',
-              background: 'radial-gradient(ellipse, hsla(230, 50%, 22%, 0.25) 0%, transparent 70%)',
-            }}
-          />
-          <motion.div
-            animate={{ x: [0, -25, 15, 0], y: [0, 20, -15, 0], scale: [1, 1.05, 0.97, 1] }}
-            transition={{ duration: 30, ease: 'easeInOut', repeat: Infinity, delay: 3 }}
-            style={{
-              position: 'absolute', top: '-10%', right: '-15%', width: '65%', height: '55%',
-              borderRadius: '40% 50% 35% 55%',
-              background: 'radial-gradient(ellipse, hsla(38, 60%, 40%, 0.08) 0%, transparent 65%)',
-            }}
-          />
-          <motion.div
-            animate={{ x: [0, 20, -30, 0], y: [0, -20, 30, 0], scale: [1, 0.96, 1.06, 1] }}
-            transition={{ duration: 22, ease: 'easeInOut', repeat: Infinity, delay: 7 }}
-            style={{
-              position: 'absolute', bottom: '-20%', left: '10%', width: '80%', height: '50%',
-              borderRadius: '55% 35% 45% 50%',
-              background: 'radial-gradient(ellipse, hsla(240, 45%, 18%, 0.20) 0%, transparent 65%)',
-            }}
-          />
-        </div>
-
-        {/* Subtle ambient glow — theatrical spotlight */}
-        <div style={{
-          position: 'absolute',
-          top: '-20%',
-          left: '50%',
-          transform: 'translateX(-50%)',
-          width: '300px',
-          height: '300px',
-          borderRadius: '50%',
-          background: 'radial-gradient(circle, hsla(230, 55%, 30%, 0.18) 0%, transparent 70%)',
-          pointerEvents: 'none',
-          zIndex: 0,
-        }} />
 
         {/* Bridge phrase */}
         <motion.div
@@ -961,7 +917,7 @@ export default function ProductLibrary() {
           <p
             style={{
               fontFamily: "'DM Serif Display', serif",
-              fontStyle: 'italic',
+              fontStyle: 'normal',
               fontSize: '15px',
               fontWeight: 400,
               color: '#F5EFE6',
