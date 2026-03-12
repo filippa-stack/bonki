@@ -78,11 +78,11 @@ const CATEGORY_CARD_BG: Record<string, string> = {
   'jim-nar-det-gor-ont': '#6B7A45',
   'jim-jag-som-helhet': '#6B7213',
   // Jag med andra
-  'jma-att-hora-till': 'hsl(263, 48%, 62%)',
-  'jma-nar-vi-jamfor-oss': 'hsl(188, 32%, 46%)',
-  'jma-nar-det-skaver': 'hsl(0, 45%, 62%)',
-  'jma-att-sta-stadig': 'hsl(100, 24%, 44%)',
-  'jma-vi-i-varlden': 'hsl(33, 55%, 56%)',
+  'jma-att-hora-till': '#9825D6',
+  'jma-nar-vi-jamfor-oss': '#E2C2FF',
+  'jma-nar-det-skaver': '#BD7BEE',
+  'jma-att-sta-stadig': '#5A189A',
+  'jma-vi-i-varlden': '#240046',
 };
 
 /** Category-specific card title colors (matching homescreen tile text) */
