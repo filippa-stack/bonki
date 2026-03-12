@@ -246,14 +246,14 @@ export default function Home() {
 
         {mode !== 'loading' && (
           <>
-            {/* ZONE A — Identity */}
+            {/* ZONE A — Identity — compressed closer to header */}
             <motion.div
-              className="pt-12 px-6 text-center"
+              className="pt-6 px-6 text-center"
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
             >
-              <h1 className="type-h1" style={{ color: 'var(--text-primary)', marginBottom: '38px' }}>
+              <h1 className="type-h1" style={{ color: 'var(--text-primary)', marginBottom: '20px' }}>
                 Ert utrymme
               </h1>
             </motion.div>
@@ -276,7 +276,7 @@ export default function Home() {
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.15, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-                  style={{ marginBottom: '24px' }}
+                  style={{ marginBottom: '16px' }}
                 >
                   <div
                     onClick={() => { markNavigated(); navigate(`/card/${cardId}`, { state: { resumed: true } }); }}
@@ -287,15 +287,17 @@ export default function Home() {
                     }}
                     className="cursor-pointer tile-door row-bloom"
                     style={{
-                      borderRadius: 'var(--radius-card, 12px)',
-                      padding: '22px 20px',
-                      background: 'var(--cta-active)',
-                      border: 'var(--border-card, none)',
+                      borderRadius: '14px',
+                      padding: '20px 20px',
+                      background: 'rgba(58, 88, 97, 0.35)',
+                      backdropFilter: 'blur(14px)',
+                      WebkitBackdropFilter: 'blur(14px)',
+                      border: '1px solid rgba(218, 157, 29, 0.20)',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
                       gap: '12px',
-                      boxShadow: '0 4px 20px -4px hsla(158, 30%, 12%, 0.18), 0 10px 40px -10px hsla(158, 25%, 10%, 0.14)',
+                      boxShadow: '0 4px 20px -4px hsla(194, 30%, 12%, 0.15), 0 8px 32px -8px hsla(194, 25%, 10%, 0.10)',
                       position: 'relative' as const,
                       overflow: 'hidden',
                     }}
@@ -411,7 +413,7 @@ export default function Home() {
             })()}
 
             {/* ── Circadian Menu — 9 progressive disclosure categories ── */}
-            <div className="px-6" style={{ marginTop: '40px', paddingBottom: '64px' }}>
+            <div className="px-6" style={{ marginTop: '20px', paddingBottom: '64px' }}>
               <CircadianMenu
                 categories={sortedCategories}
                 cards={cards}

@@ -190,7 +190,7 @@ export default function CircadianMenu({
   let globalIndex = 0;
 
   return (
-    <div className="flex flex-col" style={{ gap: '10px', padding: '0 4px', position: 'relative' }}>
+    <div className="flex flex-col" style={{ gap: '6px', padding: '0 4px', position: 'relative' }}>
       {/* Ambient background glow — slow-moving radial gradient */}
       <div
         style={{
@@ -227,7 +227,7 @@ export default function CircadianMenu({
               ease: [...ENTER_EASE],
             }}
             style={{
-              padding: groupIdx === 0 ? '0 8px 10px' : '22px 8px 10px',
+              padding: groupIdx === 0 ? '0 8px 8px' : '32px 8px 8px',
               display: 'flex',
               alignItems: 'baseline',
               gap: '10px',
@@ -270,7 +270,7 @@ export default function CircadianMenu({
           </motion.div>
 
           {/* Category tiles in this group */}
-          <div className="flex flex-col" style={{ gap: '8px' }}>
+          <div className="flex flex-col" style={{ gap: '7px' }}>
             {group.categories.map((category) => {
               const currentIndex = globalIndex++;
               const isExpanded = expandedId === category.id;
@@ -366,22 +366,6 @@ export default function CircadianMenu({
                         padding: '16px',
                       }}
                     >
-                      {/* Number */}
-                      <span
-                        style={{
-                          fontFamily: 'var(--font-serif)',
-                          fontSize: '22px',
-                          fontWeight: 700,
-                          color: color,
-                          opacity: 0.85,
-                          width: '28px',
-                          textAlign: 'center',
-                          flexShrink: 0,
-                          lineHeight: 1,
-                        }}
-                      >
-                        {currentIndex + 1}
-                      </span>
 
                       {/* Title + subtitle */}
                       <div style={{ flex: 1, minWidth: 0 }}>
@@ -465,7 +449,7 @@ export default function CircadianMenu({
                       >
                         <div
                           style={{
-                            padding: '8px 12px 16px 52px',
+                            padding: '8px 12px 16px 28px',
                             display: 'flex',
                             flexDirection: 'column',
                             gap: '2px',
