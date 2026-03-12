@@ -384,10 +384,10 @@ export default function CircadianMenu({
                           <p
                             style={{
                               fontFamily: 'var(--font-serif)',
-                              fontSize: '12px',
+                              fontSize: '13px',
                               fontWeight: 400,
-                              color,
-                              opacity: 0.70,
+                              color: 'var(--text-primary)',
+                              opacity: 0.92,
                               lineHeight: 1.45,
                               marginTop: '2px',
                             }}
