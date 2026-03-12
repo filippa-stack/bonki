@@ -1,5 +1,6 @@
 import { useState, useEffect, useMemo } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { categories as stillUsCategories } from '@/data/content';
 import { motion } from 'framer-motion';
 import { ChevronLeft } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
@@ -222,7 +223,13 @@ export default function Category() {
     if (!categoryId) return undefined;
     return allProducts.find(p => p.categories.some(c => c.id === categoryId));
   }, [categoryId]);
-  const backTo = product ? `/product/${product.slug}` : '/';
+
+  // Still Us categories live in content.ts, not in allProducts
+  const isStillUsCategory = useMemo(() => {
+    return !!categoryId && stillUsCategories.some(c => c.id === categoryId);
+  }, [categoryId]);
+
+  const backTo = product ? `/product/${product.slug}` : isStillUsCategory ? '/?devState=solo' : '/';
   const styles = product ? PRODUCT_STYLES[product.id] : undefined;
 
   // Apply product theme
