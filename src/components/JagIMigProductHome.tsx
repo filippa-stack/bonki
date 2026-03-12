@@ -168,8 +168,7 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
               </span>
             </motion.button>
             );
-          }
-          ))}
+          })}
 
           {/* Sign-off line */}
           <motion.p
