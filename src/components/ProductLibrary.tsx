@@ -38,10 +38,10 @@ const TAGLINES: Record<string, string> = {
 const PASTEL_COLORS: Record<string, string> = {
   jag_i_mig: '#F5EDD2',
   jag_med_andra: '#F0D9EA',
-  jag_i_varlden: '#C8E6D0',
+  jag_i_varlden: '#D0EDDA',
   sexualitetskort: '#F0D9E2',
-  vardagskort: '#D2E8E8',
-  syskonkort: '#D6E2F0',
+  vardagskort: '#D6ECF0',
+  syskonkort: '#DAEAF6',
 };
 
 /** Raised illustration opacities — illustrations are a feature, not a ghost */
@@ -202,8 +202,8 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
           padding: wide ? '36px 20px 16px' : '36px 16px 14px',
           position: 'relative',
           overflow: 'hidden',
-          border: '1px solid hsla(37, 30%, 88%, 0.6)',
-          boxShadow: '0 0 0 1px hsla(0, 0%, 100%, 0.5), 0 2px 8px hsla(36, 40%, 30%, 0.10), 0 12px 32px -8px hsla(36, 35%, 25%, 0.12)',
+          border: '1px solid hsla(37, 30%, 90%, 0.5)',
+          boxShadow: '0 0 0 0.5px hsla(0, 0%, 100%, 0.6), 0 4px 12px hsla(30, 35%, 16%, 0.08), 0 16px 28px -8px hsla(30, 40%, 18%, 0.12)',
           gridColumn: wide ? 'span 2' : undefined,
         }}
       >
@@ -376,7 +376,7 @@ export default function ProductLibrary() {
       className="min-h-screen flex flex-col relative"
       style={{
         background: `
-          radial-gradient(ellipse 70% 60% at 50% 45%, #FFF4D1 0%, #FEEEB8 70%, #FDE5A0 100%)
+          radial-gradient(ellipse 70% 60% at 50% 45%, #FFF4D1 0%, #FEF2C7 65%, #FBDFA8 100%)
         `,
         fontFamily: "'Lato', sans-serif",
       }}
