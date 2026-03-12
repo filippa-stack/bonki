@@ -2084,6 +2084,8 @@ function CompletionTakeaway({ sessionId, spaceId, pronounMode = 'ni', cardId, pr
   const [rowId, setRowId] = useState<string | null>(null);
   const [phase, setPhase] = useState<TakeawayPhase>('writing');
   const [isFocused, setIsFocused] = useState(false);
+  const [isNoteExpanded, setIsNoteExpanded] = useState(false);
+  const completionTextareaRef = useRef<HTMLTextAreaElement>(null);
   const userId = user?.id;
   const isDemo = isDemoMode();
 
