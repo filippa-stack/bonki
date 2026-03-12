@@ -410,39 +410,11 @@ export default function CircadianMenu({
                         )}
                       </div>
 
-                      {/* Progress ring */}
+                      {/* Progress ring — single marker only */}
                       <div style={{ flexShrink: 0 }}>
-                        {hasInProgress && !allCompleted ? (
-                          <div style={{ position: 'relative' }}>
-                            <ProgressRing completed={completedCount} total={catCards.length} size={20} />
-                            <span
-                              style={{
-                                position: 'absolute',
-                                top: -2, right: -2,
-                                width: '6px', height: '6px',
-                                borderRadius: '50%',
-                                backgroundColor: HERITAGE_GOLD,
-                                // static dot, no pulse
-                              }}
-                            />
-                          </div>
-                        ) : completedCount > 0 ? (
+                        {completedCount > 0 ? (
                           <ProgressRing completed={completedCount} total={catCards.length} size={20} />
-                        ) : (
-                          <span
-                            style={{
-                              fontFamily: 'var(--font-sans)',
-                              fontSize: '14px',
-                              color: HERITAGE_GOLD,
-                              opacity: 0.25,
-                              transform: isExpanded ? 'rotate(90deg)' : 'rotate(0deg)',
-                              transition: 'transform 0.25s ease, opacity 0.25s ease',
-                              display: 'inline-block',
-                            }}
-                          >
-                            ›
-                          </span>
-                        )}
+                        ) : null}
                       </div>
                     </div>
                   </motion.button>
