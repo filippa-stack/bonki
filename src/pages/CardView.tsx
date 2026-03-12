@@ -48,6 +48,7 @@ import LockedReflectionDisplay from '@/components/LockedReflectionDisplay';
 
 import GorTillsammansOverlay, { hasSeenGorTillsammans } from '@/components/GorTillsammansOverlay';
 import IllustrationPeek from '@/components/IllustrationPeek';
+import { useVerdigrisTheme } from '@/components/VerdigrisAtmosphere';
 import { useDevState } from '@/contexts/DevStateContext';
 import { useNormalizedSessionContext } from '@/contexts/NormalizedSessionContext';
 import { isDevToolsEnabled } from '@/lib/devTools';
@@ -166,7 +167,9 @@ export default function CardView() {
     product?.ctaButtonColor,
   );
 
-  // Track card visit for analytics
+  // Apply Verdigris theme for Still Us cards
+  useVerdigrisTheme(isStillUsCard);
+
   const { recordVisit } = useCardVisit();
   useEffect(() => {
     if (cardId) recordVisit(cardId);
