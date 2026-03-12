@@ -31,15 +31,15 @@ const titleVariants = {
 
 const ACCENT_COLOR = '#9825D6';
 
-/** Ordered tiles: bg, text color, dark flag, outer glow color */
-const ORDERED_TILES: { id: string; bg: string; text: string; dark: boolean; glow: string }[] = [
-  { id: 'jma-att-hora-till', bg: '#9F7AEA', text: '#FFFDF8', dark: true, glow: 'rgba(159,122,234,0.22)' },
-  { id: 'jma-nar-vi-jamfor-oss', bg: '#5EB1BF', text: '#1A3A40', dark: false, glow: 'rgba(94,177,191,0.20)' },
-  { id: 'jma-nar-det-skaver', bg: '#F59292', text: '#5A2020', dark: false, glow: 'rgba(245,146,146,0.22)' },
-  { id: 'jma-att-sta-stadig', bg: '#7FB069', text: '#1E3314', dark: true, glow: 'rgba(127,176,105,0.20)' },
-  { id: 'jma-vi-i-varlden', bg: '#FFB347', text: '#4A2800', dark: false, glow: 'rgba(255,179,71,0.22)' },
+/** Ordered tiles — muted, sophisticated palette with glass morphism */
+const ORDERED_TILES: { id: string; bg: string; tint: string; text: string }[] = [
+  { id: 'jma-att-hora-till', bg: 'hsla(263, 60%, 68%, 0.38)', tint: 'hsla(263, 50%, 88%, 0.25)', text: 'hsl(263, 38%, 32%)' },
+  { id: 'jma-nar-vi-jamfor-oss', bg: 'hsla(188, 38%, 48%, 0.35)', tint: 'hsla(188, 30%, 85%, 0.22)', text: 'hsl(188, 40%, 22%)' },
+  { id: 'jma-nar-det-skaver', bg: 'hsla(0, 58%, 68%, 0.35)', tint: 'hsla(0, 40%, 88%, 0.22)', text: 'hsl(0, 35%, 28%)' },
+  { id: 'jma-att-sta-stadig', bg: 'hsla(100, 28%, 48%, 0.35)', tint: 'hsla(100, 22%, 86%, 0.22)', text: 'hsl(100, 30%, 20%)' },
+  { id: 'jma-vi-i-varlden', bg: 'hsla(33, 70%, 60%, 0.38)', tint: 'hsla(33, 50%, 88%, 0.25)', text: 'hsl(33, 50%, 22%)' },
 ];
-const DIARY_COLOR = { bg: '#DEC9E9', text: '#9825D6' };
+const DIARY_COLOR = { bg: 'hsla(280, 30%, 85%, 0.32)', text: 'hsl(280, 60%, 40%)' };
 
 export default function JagMedAndraProductHome({ product }: { product: ProductManifest }) {
   const navigate = useNavigate();
@@ -155,50 +155,41 @@ export default function JagMedAndraProductHome({ product }: { product: ProductMa
             </p>
           </motion.div>
 
-          {/* Category buttons — candy-like glass tiles */}
+          {/* Category buttons — glass tiles */}
           {ORDERED_TILES.map((tile, index) => {
             const cat = product.categories.find((c) => c.id === tile.id);
             if (!cat) return null;
 
-            const isDark = tile.dark;
             const isFirst = index === 0;
-            const isLightestTile = tile.id === 'jma-vi-i-varlden';
 
             return (
               <motion.button
                 key={cat.id}
                 variants={pillVariants}
-                whileHover={{ scale: 1.06, y: -4 }}
-                whileTap={{ scale: 0.965, y: 1 }}
+                whileHover={{ scale: 1.04, y: -3 }}
+                whileTap={{ scale: 0.975, y: 1 }}
                 onClick={() => navigate(`/category/${cat.id}`)}
                 style={{
-                  background: isDark
-                    ? `linear-gradient(170deg, ${tile.bg}f0 0%, ${tile.bg}d9 40%, ${tile.bg}c4 100%)`
-                    : `linear-gradient(170deg, rgba(255,255,255,0.85) 0%, ${tile.bg}e6 35%, ${tile.bg}d4 100%)`,
-                  borderRadius: '22px',
+                  background: tile.bg,
+                  borderRadius: '20px',
                   padding: '0 32px',
                   textAlign: 'center',
                   cursor: 'pointer',
-                  border: isLightestTile
-                    ? '1.5px solid rgba(160, 120, 180, 0.3)'
-                    : isDark
-                      ? '1px solid rgba(255,255,255,0.3)'
-                      : '1.5px solid rgba(255,255,255,0.7)',
+                  border: '1px solid hsla(0, 0%, 100%, 0.45)',
                   boxShadow: [
-                    `0 6px 24px ${tile.glow}`,
-                    isLightestTile ? '0 3px 10px rgba(140,80,160,0.10)' : '0 2px 6px rgba(44, 36, 32, 0.08)',
-                    `inset 0 2px 1px rgba(255,255,255,${isDark ? '0.35' : '0.8'})`,
-                    `inset 0 -3px 6px rgba(0,0,0,${isDark ? '0.08' : '0.03'})`,
+                    '0 4px 20px hsla(0, 0%, 0%, 0.06)',
+                    '0 1px 3px hsla(0, 0%, 0%, 0.04)',
+                    `inset 0 1px 0 hsla(0, 0%, 100%, 0.5)`,
                   ].join(', '),
                   whiteSpace: 'normal' as const,
                   width: '84%',
-                  minHeight: isFirst ? '76px' : '68px',
+                  minHeight: isFirst ? '72px' : '64px',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
                   lineHeight: 1.3,
-                  backdropFilter: 'blur(24px) saturate(1.5)',
-                  WebkitBackdropFilter: 'blur(24px) saturate(1.5)',
+                  backdropFilter: 'blur(20px) saturate(1.3)',
+                  WebkitBackdropFilter: 'blur(20px) saturate(1.3)',
                 }}
               >
                 <span
@@ -207,9 +198,7 @@ export default function JagMedAndraProductHome({ product }: { product: ProductMa
                     fontSize: 'clamp(20px, 5.5vw, 26px)',
                     fontWeight: 400,
                     color: tile.text,
-                    textShadow: isDark
-                      ? '0 1px 3px rgba(0,0,0,0.2)'
-                      : '0 1px 2px rgba(255,255,255,0.8)',
+                    textShadow: '0 1px 3px hsla(0, 0%, 100%, 0.6)',
                   }}
                 >
                   {cat.title}

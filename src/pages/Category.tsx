@@ -78,11 +78,11 @@ const CATEGORY_CARD_BG: Record<string, string> = {
   'jim-nar-det-gor-ont': '#7A8A52',
   'jim-jag-som-helhet': '#E9EDC9',
   // Jag med andra
-  'jma-att-hora-till': '#9F7AEA',
-  'jma-nar-vi-jamfor-oss': '#5EB1BF',
-  'jma-nar-det-skaver': '#F59292',
-  'jma-att-sta-stadig': '#7FB069',
-  'jma-vi-i-varlden': '#FFB347',
+  'jma-att-hora-till': 'hsl(263, 48%, 62%)',
+  'jma-nar-vi-jamfor-oss': 'hsl(188, 32%, 46%)',
+  'jma-nar-det-skaver': 'hsl(0, 45%, 62%)',
+  'jma-att-sta-stadig': 'hsl(100, 24%, 44%)',
+  'jma-vi-i-varlden': 'hsl(33, 55%, 56%)',
 };
 
 /** Category-specific card title colors (matching homescreen tile text) */
@@ -92,11 +92,11 @@ const CATEGORY_TITLE_COLOR: Record<string, string> = {
   'jim-nar-det-gor-ont': '#FFFDF5',
   'jim-jag-som-helhet': '#6B6530',
   // Jag med andra
-  'jma-att-hora-till': '#FFFDF8',
-  'jma-nar-vi-jamfor-oss': '#1A3A40',
-  'jma-nar-det-skaver': '#5A2020',
-  'jma-att-sta-stadig': '#1E3314',
-  'jma-vi-i-varlden': '#4A2800',
+  'jma-att-hora-till': 'hsl(263, 38%, 32%)',
+  'jma-nar-vi-jamfor-oss': 'hsl(188, 40%, 22%)',
+  'jma-nar-det-skaver': 'hsl(0, 35%, 28%)',
+  'jma-att-sta-stadig': 'hsl(100, 30%, 20%)',
+  'jma-vi-i-varlden': 'hsl(33, 50%, 22%)',
 };
 
 export default function Category() {
