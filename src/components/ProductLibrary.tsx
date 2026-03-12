@@ -376,9 +376,7 @@ export default function ProductLibrary() {
       className="min-h-screen flex flex-col relative"
       style={{
         background: `
-          radial-gradient(ellipse 130% 50% at 50% -5%, hsla(37, 55%, 88%, 0.5) 0%, transparent 50%),
-          radial-gradient(ellipse 80% 70% at 85% 90%, hsla(30, 35%, 88%, 0.25) 0%, transparent 50%),
-          var(--surface-library)
+          radial-gradient(ellipse 70% 60% at 50% 45%, #FEF2C7 0%, #FDE68A 80%, #FCDCA0 100%)
         `,
         fontFamily: "'Lato', sans-serif",
       }}
