@@ -910,7 +910,7 @@ export default function ProductLibrary() {
           width: '300px',
           height: '300px',
           borderRadius: '50%',
-          background: 'radial-gradient(circle, hsla(230, 40%, 35%, 0.15) 0%, transparent 70%)',
+          background: 'radial-gradient(circle, hsla(230, 55%, 30%, 0.18) 0%, transparent 70%)',
           pointerEvents: 'none',
           zIndex: 0,
         }} />
