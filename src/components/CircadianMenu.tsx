@@ -396,13 +396,13 @@ export default function CircadianMenu({
                         {!isExpanded && category.entryLine && (
                           <p
                             style={{
-                              fontFamily: 'var(--font-serif)',
-                              fontSize: '13px',
+                              fontFamily: 'var(--font-sans)',
+                              fontSize: '12px',
                               fontWeight: 400,
                               color: CIRCADIAN_COLORS_DARK[category.id] || color,
                               opacity: 1,
                               lineHeight: 1.45,
-                              marginTop: '2px',
+                              marginTop: '3px',
                             }}
                           >
                             {category.entryLine}
