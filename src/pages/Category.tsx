@@ -367,7 +367,7 @@ function StillUsCategoryView({
               marginLeft: 'auto', marginRight: 'auto',
               marginBottom: '40px',
               textWrap: 'balance',
-              textShadow: '0 1px 6px hsla(194, 28%, 8%, 0.35)',
+              textShadow: `0 0 14px ${color}60, 0 1px 6px hsla(194, 28%, 8%, 0.35)`,
             } as React.CSSProperties}
           >
             {category.entryLine}
