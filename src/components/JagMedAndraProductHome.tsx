@@ -121,7 +121,7 @@ export default function JagMedAndraProductHome({ product }: { product: ProductMa
         <img
           src={nyckelpiganImage}
           alt=""
-          style={{ width: '100%', height: '100%', objectFit: 'contain', opacity: 0.30, transform: 'rotate(-30deg)' }}
+          style={{ width: '100%', height: '100%', objectFit: 'contain', opacity: 0.28, transform: 'rotate(-18deg)' }}
         />
       </motion.div>
 
