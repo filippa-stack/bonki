@@ -503,7 +503,7 @@ export default function ProductLibrary() {
                     ? (isDark ? '#F5EFE6' : '#1A1A2E')
                     : (isDark ? 'hsla(30, 20%, 85%, 0.4)' : 'hsla(30, 10%, 20%, 0.35)'),
                   background: activeTab === tab
-                    ? (isDark ? 'hsla(220, 30%, 30%, 0.6)' : 'hsla(0, 0%, 100%, 0.7)')
+                    ? (isDark ? 'hsla(230, 35%, 25%, 0.7)' : 'hsla(0, 0%, 100%, 0.7)')
                     : 'transparent',
                   border: 'none',
                   outline: 'none',
