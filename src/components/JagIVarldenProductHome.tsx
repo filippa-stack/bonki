@@ -29,40 +29,40 @@ const titleVariants = {
 
 const ACCENT_COLOR = '#3D7A45';
 
-/** Five-tone juniper palette — solid, matching JIM/JMA design philosophy */
+/** Five-tone earthy palette — warm contrast with complementary terracotta */
 const ORDERED_TILES = [
   {
     id: 'jiv-min-vardag',
-    // Soft Pistachio — The Hero
+    // Pistachio — The Hero
     bg: '#84C289',
     text: '#FAFAF0',
     dark: true,
   },
   {
     id: 'jiv-vem-jag-ar',
-    // Winter Cream — The Light
-    bg: '#F2F5E1',
-    text: '#2D4F32',
+    // Sand Dune — The Light
+    bg: '#F5EFE6',
+    text: '#3D4A35',
     dark: false,
   },
   {
     id: 'jiv-jag-och-andra',
-    // Dewy Mint — The Highlight
-    bg: '#B5D9B9',
-    text: '#2D4F32',
-    dark: false,
-  },
-  {
-    id: 'jiv-jag-i-samhallet',
-    // Silver Fir — The Support
-    bg: '#5A8D60',
+    // Terracotta — The Contrast
+    bg: '#D9A07B',
     text: '#FAFAF0',
     dark: true,
   },
   {
+    id: 'jiv-jag-i-samhallet',
+    // Frosted Mint — The Highlight
+    bg: '#A3C7A7',
+    text: '#2D4F32',
+    dark: false,
+  },
+  {
     id: 'jiv-det-stora-sammanhanget',
-    // Deep Juniper — The Anchor
-    bg: '#2D4F32',
+    // Stone Grey — The Shadow
+    bg: '#5D6353',
     text: '#FAFAF0',
     dark: true,
   },
