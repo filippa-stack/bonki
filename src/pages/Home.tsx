@@ -330,14 +330,14 @@ export default function Home() {
                     }}
                   >
                     <div className="flex-1 min-w-0" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
-                      <p className="font-sans" style={{ fontSize: '10px', fontWeight: 500, letterSpacing: '0.12em', textTransform: 'uppercase' as const, color: 'hsl(36, 16%, 92%)', opacity: 0.45, marginBottom: '4px', lineHeight: 1 }}>
+                      <p className="font-sans" style={{ fontSize: '10px', fontWeight: 500, letterSpacing: '0.12em', textTransform: 'uppercase' as const, color: 'hsl(36, 16%, 92%)', opacity: 0.60, marginBottom: '4px', lineHeight: 1 }}>
                         Ni var mitt i
                       </p>
                       <p className="font-serif" style={{ fontSize: '18px', fontWeight: 600, lineHeight: 1.35, color: 'hsl(36, 16%, 92%)', textWrap: 'balance', hyphens: 'auto' } as React.CSSProperties}>
                         {card?.title || cardId}
                       </p>
                       {cat && (
-                        <p className="font-sans" style={{ fontSize: '12px', color: 'var(--accent-saffron)', opacity: 0.7, marginTop: '4px' }}>
+                        <p className="font-sans" style={{ fontSize: '12px', color: 'var(--accent-saffron)', opacity: 0.85, marginTop: '4px' }}>
                           {cat.title}
                         </p>
                       )}
@@ -464,7 +464,7 @@ export default function Home() {
                       fontStyle: 'italic',
                       fontSize: '14px',
                       color: 'var(--accent-text)',
-                      opacity: 0.30,
+                      opacity: 0.45,
                     }}>
                       Samtalet börjar här.
                     </p>
@@ -477,7 +477,7 @@ export default function Home() {
                       fontFamily: 'var(--font-sans)',
                       fontSize: '12px',
                       color: 'var(--color-text-tertiary)',
-                      opacity: isAllDone ? 0.55 : 0.45,
+                      opacity: isAllDone ? 0.65 : 0.55,
                       letterSpacing: '0.03em',
                     }}>
                       {isAllDone
@@ -489,8 +489,8 @@ export default function Home() {
                       fontStyle: 'italic',
                       fontSize: '14px',
                       color: 'var(--accent-text)',
-                      opacity: 0.35,
-                      marginTop: '16px',
+                       opacity: 0.50,
+                       marginTop: '16px',
                     }}>
                       Samtalet börjar här.
                     </p>

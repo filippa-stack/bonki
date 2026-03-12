@@ -241,7 +241,7 @@ export default function CircadianMenu({
                 letterSpacing: '0.06em',
                 textTransform: 'uppercase',
                 color: 'var(--text-primary)',
-                opacity: 0.50,
+                opacity: 0.65,
                 lineHeight: 1,
               }}
             >
@@ -261,7 +261,7 @@ export default function CircadianMenu({
                 fontSize: '11px',
                 fontStyle: 'italic',
                 color: 'var(--text-secondary)',
-                opacity: 0.35,
+                opacity: 0.50,
                 whiteSpace: 'nowrap',
               }}
             >
@@ -328,7 +328,7 @@ export default function CircadianMenu({
                       overflow: 'hidden',
                       position: 'relative',
                       boxShadow: breatheBoxShadow,
-                      ...(isNextSuggested ? { animation: 'breathe-glow 3.5s ease-in-out infinite' } : {}),
+                      // no pulsating animation
                     }}
                     onMouseEnter={(e) => {
                       const el = e.currentTarget as HTMLElement;
@@ -342,7 +342,7 @@ export default function CircadianMenu({
                       el.style.background = fillDefault;
                       el.style.border = isNextSuggested ? borderGlow : borderDefault;
                       el.style.boxShadow = isNextSuggested ? breatheBoxShadow : 'none';
-                      if (isNextSuggested) el.style.animation = 'breathe-glow 3.5s ease-in-out infinite';
+                      // no pulsating animation
                     }}
                   >
                     {/* Thick accent bar */}
@@ -389,7 +389,7 @@ export default function CircadianMenu({
                               fontWeight: 400,
                               fontStyle: 'italic',
                               color: 'var(--text-secondary)',
-                              opacity: 0.55,
+                              opacity: 0.65,
                               lineHeight: 1.45,
                               marginTop: '2px',
                             }}
@@ -411,7 +411,7 @@ export default function CircadianMenu({
                                 width: '6px', height: '6px',
                                 borderRadius: '50%',
                                 backgroundColor: HERITAGE_GOLD,
-                                animation: 'saffron-pulse 2.5s ease-in-out infinite',
+                                // static dot, no pulse
                               }}
                             />
                           </div>
@@ -512,7 +512,7 @@ export default function CircadianMenu({
                                     fontSize: '14px',
                                     fontWeight: 400,
                                     color: 'var(--text-primary)',
-                                    opacity: isCardCompleted ? 0.5 : 0.80,
+                                    opacity: isCardCompleted ? 0.55 : 0.90,
                                     lineHeight: 1.4,
                                     textDecoration: isCardCompleted ? 'line-through' : 'none',
                                     textDecorationColor: isCardCompleted ? `${color}40` : undefined,
