@@ -44,7 +44,7 @@ const CARD_IMAGE_OVERRIDE: Record<string, string> = {
 
 /** Per-card focal point for object-position when using cover */
 const CARD_FOCAL_POINT: Record<string, string> = {
-  'jim-besviken': 'center 5%', 'jim-acklad': 'center 35%',
+  'jim-besviken': 'center 75%', 'jim-acklad': 'center 35%',
   'jim-avsky': 'center 25%', 'jim-skam': 'center 35%',
   'jim-avundsjuk': 'center 30%', 'jim-svartsjuk': 'center 40%',
   'jim-utanfor': 'center 40%', 'jim-arg': 'center 30%',
