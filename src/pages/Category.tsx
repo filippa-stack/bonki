@@ -301,7 +301,7 @@ function StillUsCategoryView({
         style={{
           position: 'absolute',
           top: '35%', left: 0, right: 0, bottom: 0,
-          background: 'linear-gradient(to bottom, transparent 0%, hsla(194, 28%, 12%, 0.45) 25%, hsla(194, 28%, 12%, 0.65) 100%)',
+          background: 'linear-gradient(to bottom, transparent 0%, hsla(194, 28%, 14%, 0.20) 40%, hsla(194, 28%, 14%, 0.35) 100%)',
           zIndex: 0, pointerEvents: 'none',
         }}
       />
@@ -405,10 +405,10 @@ function StillUsCategoryView({
                   gap: '4px',
                   padding: '20px 20px',
                   background: isCompleted
-                    ? `hsla(194, 28%, 18%, 0.55)`
-                    : `hsla(194, 28%, 20%, 0.60)`,
-                  backdropFilter: 'blur(20px) saturate(1.2)',
-                  WebkitBackdropFilter: 'blur(20px) saturate(1.2)',
+                    ? `hsla(194, 28%, 22%, 0.35)`
+                    : `hsla(194, 28%, 24%, 0.40)`,
+                  backdropFilter: 'blur(16px) saturate(1.1)',
+                  WebkitBackdropFilter: 'blur(16px) saturate(1.1)',
                   border: isInProgress
                     ? `1px solid ${color}`
                     : `1px solid hsla(194, 28%, 50%, 0.25)`,
@@ -423,13 +423,13 @@ function StillUsCategoryView({
                 }}
                 onMouseEnter={(e) => {
                   const el = e.currentTarget;
-                  el.style.background = `hsla(194, 28%, 22%, 0.70)`;
+                  el.style.background = `hsla(194, 28%, 26%, 0.50)`;
                   el.style.borderColor = color;
                   el.style.boxShadow = `0 0 24px -4px ${color}50, 0 4px 20px -4px hsla(194, 28%, 10%, 0.30)`;
                 }}
                 onMouseLeave={(e) => {
                   const el = e.currentTarget;
-                  el.style.background = isCompleted ? `hsla(194, 28%, 18%, 0.55)` : `hsla(194, 28%, 20%, 0.60)`;
+                  el.style.background = isCompleted ? `hsla(194, 28%, 22%, 0.35)` : `hsla(194, 28%, 24%, 0.40)`;
                   el.style.borderColor = isInProgress ? color : `hsla(194, 28%, 50%, 0.25)`;
                   el.style.boxShadow = isInProgress
                     ? `0 0 20px -4px ${color}40, 0 4px 16px -4px hsla(194, 28%, 10%, 0.25)`
