@@ -174,9 +174,7 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
                     fontSize: 'clamp(20px, 5.5vw, 26px)',
                     fontWeight: 400,
                     color: tile.text,
-                    textShadow: isDark
-                      ? '0 1px 3px rgba(0,0,0,0.2)'
-                      : '0 1px 2px rgba(255,255,255,0.8)',
+                    textShadow: 'none',
                   }}
                 >
                   {cat.title}
