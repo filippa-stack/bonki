@@ -6,40 +6,40 @@ import apaImage from '@/assets/apa-jag-i-mig.png';
 
 const EASE = [0.4, 0.0, 0.2, 1] as const;
 
-/** Tiles in distinct shades of the accent color (#8A9A10 = hsl(66, 82%, 33%)) */
+/** Five-tone chartreuse palette */
 const ORDERED_TILES = [
   {
     id: 'jim-tryggheten-inuti',
-    // Lightest — warm, welcoming
-    bg: 'hsla(66, 65%, 72%, 0.55)',
-    text: 'hsl(66, 50%, 14%)',
-    gradient: 'linear-gradient(168deg, hsla(66, 68%, 78%, 0.58) 0%, hsla(66, 62%, 68%, 0.52) 100%)',
+    // Electric Pear — The Hero
+    bg: '#CDD625',
+    text: '#3E4421',
+    gradient: 'linear-gradient(168deg, #d4de3a 0%, #c5ce20 100%)',
   },
   {
     id: 'jim-kanslorna-jag-bar',
-    // Medium-light
-    bg: 'hsla(66, 68%, 62%, 0.55)',
-    text: 'hsl(66, 48%, 12%)',
-    gradient: 'linear-gradient(168deg, hsla(66, 72%, 70%, 0.58) 0%, hsla(66, 65%, 58%, 0.52) 100%)',
+    // Lemon Silk — The Highlight
+    bg: '#F2F89B',
+    text: '#3E4421',
+    gradient: 'linear-gradient(168deg, #f5faab 0%, #eef48e 100%)',
   },
   {
     id: 'jim-nar-det-gor-ont',
-    // Medium-deep
-    bg: 'hsla(66, 72%, 50%, 0.55)',
-    text: 'hsl(66, 45%, 10%)',
-    gradient: 'linear-gradient(168deg, hsla(66, 75%, 60%, 0.58) 0%, hsla(66, 70%, 46%, 0.52) 100%)',
+    // Sage Leaf — The Bridge
+    bg: '#8A9A5B',
+    text: '#FFFDF5',
+    gradient: 'linear-gradient(168deg, #97a768 0%, #7e8e50 100%)',
   },
   {
     id: 'jim-jag-som-helhet',
-    // Deepest — grounding
-    bg: 'hsla(66, 78%, 40%, 0.55)',
-    text: 'hsla(0, 0%, 100%, 0.95)',
-    gradient: 'linear-gradient(168deg, hsla(66, 80%, 50%, 0.58) 0%, hsla(66, 78%, 36%, 0.55) 100%)',
+    // Deep Moss — The Shadow
+    bg: '#6B7213',
+    text: '#FFFDF5',
+    gradient: 'linear-gradient(168deg, #7a8220 0%, #5f660a 100%)',
   },
 ];
 
 const ACCENT_COLOR = '#8A9A10';
-const DIARY_TEXT = 'hsl(66, 40%, 18%)';
+const DIARY_TEXT = '#3E4421';
 
 const containerVariants = {
   hidden: {},
@@ -245,8 +245,8 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
             whileTap={{ scale: 0.97 }}
             onClick={() => navigate(`/diary/${product.id}`)}
             style={{
-              background: 'hsla(58, 55%, 78%, 0.35)',
-              border: '1px solid hsla(60, 50%, 85%, 0.45)',
+              background: 'rgba(62, 68, 33, 0.12)',
+              border: '1px solid rgba(62, 68, 33, 0.18)',
               cursor: 'pointer',
               marginTop: '0.5vh',
               padding: '14px 24px',
