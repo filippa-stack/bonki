@@ -414,7 +414,7 @@ export default function CircadianMenu({
                             />
                           </div>
                         ) : completedCount > 0 ? (
-                          <ProgressRing completed={completedCount} total={catCards.length} size={24} />
+                          <ProgressRing completed={completedCount} total={catCards.length} size={20} />
                         ) : (
                           <span
                             style={{
