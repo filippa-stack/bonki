@@ -315,17 +315,19 @@ export default function Home() {
                     className="cursor-pointer tile-door row-bloom"
                     style={{
                       borderRadius: '14px',
-                      padding: '14px 18px',
-                      background: 'rgba(58, 88, 97, 0.25)',
-                      backdropFilter: 'blur(14px)',
-                      WebkitBackdropFilter: 'blur(14px)',
-                      border: '1px solid rgba(218, 157, 29, 0.15)',
+                      padding: '0',
+                      background: 'rgba(162, 181, 169, 0.28)',
+                      backdropFilter: 'blur(12px)',
+                      WebkitBackdropFilter: 'blur(12px)',
+                      border: '1px solid rgba(218, 157, 29, 0.45)',
                       display: 'flex',
-                      alignItems: 'center',
-                      gap: '12px',
-                      boxShadow: '0 2px 12px -4px hsla(194, 30%, 12%, 0.12)',
+                      alignItems: 'stretch',
+                      gap: '0',
+                      boxShadow: '0 0 24px -4px rgba(218, 157, 29, 0.15)',
                       position: 'relative' as const,
                       overflow: 'hidden',
+                      cursor: 'pointer',
+                      transition: 'background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease',
                     }}
                   >
                     <div className="flex-1 min-w-0" style={{ display: 'flex', flexDirection: 'column' }}>
