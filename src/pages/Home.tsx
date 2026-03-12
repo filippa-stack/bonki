@@ -281,7 +281,7 @@ export default function Home() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
             >
-              <h1 className="type-h1" style={{ color: 'var(--text-primary)', marginBottom: '6px' }}>
+              <h1 className="type-h1" style={{ color: '#F5EFE6', marginBottom: '6px' }}>
                 Ert utrymme
               </h1>
               <p style={{
