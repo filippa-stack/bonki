@@ -863,11 +863,8 @@ export default function ProductLibrary() {
             exit={{ opacity: 0, x: swipeDirection * -30 }}
             transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
             style={{
-              background: 'radial-gradient(ellipse 80% 70% at 50% 40%, #1A1A3E 0%, #10102A 55%, #0A0A1A 100%)',
-              margin: '0 -20px',
-              padding: '0 20px',
-              borderRadius: '28px 28px 0 0',
-              minHeight: '80vh',
+              padding: '0',
+              minHeight: '60vh',
               position: 'relative',
               overflow: 'hidden',
             }}
