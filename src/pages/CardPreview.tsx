@@ -178,14 +178,14 @@ export default function CardPreview() {
             style={{
               height: '52px',
               borderRadius: '14px',
-              background: 'hsl(41, 78%, 48%)',
+              background: categoryColor || 'hsl(41, 78%, 48%)',
               color: 'hsl(194, 30%, 12%)',
               fontFamily: 'var(--font-serif)',
               fontSize: '16px',
               fontWeight: 600,
               border: 'none',
               cursor: 'pointer',
-              boxShadow: '0 4px 20px -4px hsla(41, 60%, 30%, 0.35), 0 12px 40px -12px hsla(41, 50%, 25%, 0.20)',
+              boxShadow: `0 4px 20px -4px ${categoryColorBase || 'hsla(41, 60%, 30%)'}50, 0 12px 40px -12px ${categoryColorBase || 'hsla(41, 50%, 25%)'}30`,
               transition: 'transform 140ms cubic-bezier(0.4, 0, 0.2, 1)',
             }}
           >
