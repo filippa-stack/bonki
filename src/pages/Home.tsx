@@ -76,6 +76,7 @@ export default function Home() {
   const { t } = useTranslation();
   const navigate = useNavigate();
   useThemeVars();
+  useVerdigrisTheme(true);
   const {
     categories,
     getCardById,
