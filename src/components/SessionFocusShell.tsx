@@ -60,6 +60,22 @@ export default function SessionFocusShell({ children, topSlot, ctaSlot, onExit }
     >
       {/* Grain + light-leak from VerdigrisAtmosphere still active on body */}
 
+      {/* Always-visible top chrome (title/progress/back) */}
+      {topSlot && (
+        <div
+          onClick={(e) => e.stopPropagation()}
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            zIndex: 30,
+          }}
+        >
+          {topSlot}
+        </div>
+      )}
+
       {/* Close X — appears on tap */}
       <AnimatePresence>
         {showExit && (
