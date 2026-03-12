@@ -288,9 +288,10 @@ export default function Home() {
               <p style={{
                 fontFamily: 'var(--font-serif)',
                 fontSize: '15px',
-                color: 'var(--text-secondary)',
-                opacity: 0.65,
+                color: 'hsl(36, 16%, 88%)',
+                opacity: 0.75,
                 lineHeight: 1.5,
+                textShadow: '0 1px 8px hsla(194, 30%, 10%, 0.4)',
               }}>
                 Följ ordningen — eller börja där det känns rätt.
               </p>
