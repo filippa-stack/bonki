@@ -373,20 +373,6 @@ export default function CircadianMenu({
                       boxShadow: breatheBoxShadow,
                       // no pulsating animation
                     }}
-                    onMouseEnter={(e) => {
-                      const el = e.currentTarget as HTMLElement;
-                      el.style.background = fillHover;
-                      el.style.border = borderGlow;
-                      el.style.boxShadow = `0 0 24px -4px ${color}50, 0 0 48px -8px ${color}30`;
-                      el.style.animation = 'none';
-                    }}
-                    onMouseLeave={(e) => {
-                      const el = e.currentTarget as HTMLElement;
-                      el.style.background = fillDefault;
-                      el.style.border = isNextSuggested ? borderGlow : borderDefault;
-                      el.style.boxShadow = isNextSuggested ? breatheBoxShadow : 'none';
-                      // no pulsating animation
-                    }}
                   >
                     {/* Thick accent bar */}
                     <div
