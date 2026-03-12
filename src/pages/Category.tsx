@@ -615,9 +615,16 @@ function CardEntry({ card, index, isCompleted = false, isInProgress = false, onN
   const zipIllustration = useCardImage(card.id);
   const illustration = CARD_IMAGE_OVERRIDE[card.id] ?? zipIllustration;
 
-  const cardBg = categoryBg || styles?.cardBg || '#FFFFFF';
-  const titleColor = styles?.cardTitleColor ?? 'var(--text-primary)';
+  const titleColor = CATEGORY_TITLE_COLOR[card.id.replace(/-[^-]+$/, '-' + card.id.split('-').slice(0, 2).join('-'))]
+    ?? styles?.cardTitleColor ?? 'var(--text-primary)';
   const focalPoint = CARD_FOCAL_POINT[card.id] ?? 'center 35%';
+
+  // Derive category ID from card ID for color lookup
+  const categoryId = Object.keys(CATEGORY_CARD_BG).find(catId =>
+    card.id.startsWith(catId.replace(/^jim-/, 'jim-').split('-').slice(0, 2).join('-'))
+  );
+  const catTitleColor = categoryId ? CATEGORY_TITLE_COLOR[categoryId] : undefined;
+  const cardTitleColor = catTitleColor ?? '#FAF7F2';
 
   return (
     <motion.div
@@ -638,17 +645,20 @@ function CardEntry({ card, index, isCompleted = false, isInProgress = false, onN
         style={{
           padding: '0',
           background: categoryBg
-            ? categoryBg
-            : isCompleted
-              ? `linear-gradient(180deg, ${cardBg}CC 0%, ${cardBg}AA 100%)`
-              : `linear-gradient(180deg, ${cardBg} 0%, ${cardBg}E8 100%)`,
-          backdropFilter: categoryBg ? 'blur(16px)' : undefined,
-          WebkitBackdropFilter: categoryBg ? 'blur(16px)' : undefined,
-          border: 'none',
-          borderRadius: '20px',
-          boxShadow: isCompleted
-            ? '0px 1px 3px rgba(44, 36, 32, 0.04), 0px 4px 12px -4px rgba(44, 36, 32, 0.04)'
-            : '0px 4px 16px rgba(44, 36, 32, 0.08), 0px 12px 32px -8px rgba(44, 36, 32, 0.06)',
+            ? `linear-gradient(170deg, rgba(255,255,255,0.25) 0%, ${categoryBg}e6 35%, ${categoryBg}d4 100%)`
+            : `linear-gradient(170deg, rgba(255,255,255,0.3) 0%, ${styles?.cardBg || '#FFFFFF'}e6 35%, ${styles?.cardBg || '#FFFFFF'}cc 100%)`,
+          backdropFilter: 'blur(24px) saturate(1.5)',
+          WebkitBackdropFilter: 'blur(24px) saturate(1.5)',
+          border: categoryBg
+            ? '1.5px solid rgba(255,255,255,0.4)'
+            : '1.5px solid rgba(255,255,255,0.6)',
+          borderRadius: '22px',
+          boxShadow: [
+            `0 8px 28px rgba(44, 36, 32, 0.10)`,
+            `0 2px 8px rgba(44, 36, 32, 0.06)`,
+            `inset 0 2px 1px rgba(255,255,255,0.5)`,
+            `inset 0 -3px 6px rgba(0,0,0,0.04)`,
+          ].join(', '),
           transition: 'transform 200ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 260ms ease-out',
           height: '280px',
           position: 'relative',
@@ -658,9 +668,15 @@ function CardEntry({ card, index, isCompleted = false, isInProgress = false, onN
         onPointerLeave={(e) => { e.currentTarget.style.transform = ''; }}
         onPointerEnter={(e) => {
           e.currentTarget.style.transform = 'translateY(-3px) scale(1.01)';
+          e.currentTarget.style.boxShadow = [
+            '0 12px 36px rgba(44, 36, 32, 0.14)',
+            '0 4px 12px rgba(44, 36, 32, 0.08)',
+            'inset 0 2px 1px rgba(255,255,255,0.5)',
+            'inset 0 -3px 6px rgba(0,0,0,0.04)',
+          ].join(', ');
         }}
       >
-        {/* Full-bleed illustration — no gradient, no fade */}
+        {/* Full-bleed illustration — never blur or dim completed cards */}
         {illustration && (
           <img
             src={illustration}
@@ -675,38 +691,69 @@ function CardEntry({ card, index, isCompleted = false, isInProgress = false, onN
               height: '100%',
               objectFit: 'cover',
               objectPosition: focalPoint,
-              opacity: isCompleted ? 0.25 : 1,
-              transition: 'opacity 300ms ease',
-              filter: isCompleted ? 'grayscale(0.3)' : 'none',
+              opacity: 1,
             }}
           />
         )}
 
-        {/* Status badges */}
+        {/* Completion / in-progress markers — top-right, subtle */}
         {isCompleted && (
-          <span
+          <div
             style={{
-              position: 'absolute', top: '12px', right: '16px', zIndex: 2,
-              fontFamily: 'var(--font-sans)', fontSize: '10px',
-              letterSpacing: '0.06em', textTransform: 'uppercase',
-              color: titleColor, opacity: 0.45, fontWeight: 500,
+              position: 'absolute', top: '14px', right: '16px', zIndex: 2,
+              display: 'flex', alignItems: 'center', gap: '6px',
+              background: 'rgba(255,255,255,0.75)',
+              backdropFilter: 'blur(8px)',
+              WebkitBackdropFilter: 'blur(8px)',
+              borderRadius: '12px',
+              padding: '5px 10px 5px 8px',
+              border: '1px solid rgba(255,255,255,0.5)',
+              boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
             }}
           >
-            Utforskad
-          </span>
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+              <circle cx="7" cy="7" r="6" stroke="#6B7A3A" strokeWidth="1.5" opacity="0.6" />
+              <path d="M4 7l2.2 2.2 3.8-3.8" stroke="#6B7A3A" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" opacity="0.6" />
+            </svg>
+            <span style={{
+              fontFamily: 'var(--font-sans)', fontSize: '10px',
+              letterSpacing: '0.04em', textTransform: 'uppercase',
+              color: '#6B7A3A', fontWeight: 600, opacity: 0.8,
+            }}>
+              Utforskad
+            </span>
+          </div>
         )}
         {isInProgress && (
-          <span
+          <div
             style={{
-              position: 'absolute', top: '12px', right: '16px', zIndex: 2,
-              display: 'inline-block', width: '8px', height: '8px',
-              borderRadius: '50%', backgroundColor: titleColor,
-              animation: 'saffron-pulse 2.0s ease-in-out infinite',
+              position: 'absolute', top: '14px', right: '16px', zIndex: 2,
+              display: 'flex', alignItems: 'center', gap: '6px',
+              background: 'rgba(255,255,255,0.75)',
+              backdropFilter: 'blur(8px)',
+              WebkitBackdropFilter: 'blur(8px)',
+              borderRadius: '12px',
+              padding: '5px 10px 5px 8px',
+              border: '1px solid rgba(255,255,255,0.5)',
+              boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
             }}
-          />
+          >
+            <span style={{
+              display: 'inline-block', width: '8px', height: '8px',
+              borderRadius: '50%', backgroundColor: '#8A9A10',
+              animation: 'saffron-pulse 2.0s ease-in-out infinite',
+            }} />
+            <span style={{
+              fontFamily: 'var(--font-sans)', fontSize: '10px',
+              letterSpacing: '0.04em', textTransform: 'uppercase',
+              color: '#6B7A3A', fontWeight: 600, opacity: 0.8,
+            }}>
+              Påbörjad
+            </span>
+          </div>
         )}
 
-        {/* Title only — bold, bottom-left, with text shadow for legibility */}
+        {/* Title — uses category-matching color */}
         <div
           style={{
             position: 'absolute', bottom: 0, left: 0, right: 0, zIndex: 2,
@@ -717,10 +764,11 @@ function CardEntry({ card, index, isCompleted = false, isInProgress = false, onN
             style={{
               fontFamily: "'DM Serif Display', var(--font-serif)",
               fontSize: '32px', fontWeight: 700,
-              color: '#FAF7F2',
-              opacity: isCompleted ? 0.60 : 1,
+              color: cardTitleColor,
               lineHeight: 1.1,
-              textShadow: '0 1px 2px rgba(0,0,0,0.5), 0 2px 8px rgba(0,0,0,0.35), 0 0 24px rgba(0,0,0,0.2)',
+              textShadow: cardTitleColor === '#FFFDF5'
+                ? '0 1px 2px rgba(0,0,0,0.5), 0 2px 8px rgba(0,0,0,0.35), 0 0 24px rgba(0,0,0,0.2)'
+                : '0 1px 2px rgba(255,255,255,0.8), 0 0 12px rgba(255,255,255,0.4)',
               letterSpacing: '-0.01em',
             }}
           >
