@@ -85,10 +85,10 @@ export default function JagIVarldenProductHome({ product }: { product: ProductMa
         transition={{ duration: 0.6, scale: { duration: 8, ease: 'easeInOut', repeat: Infinity, repeatType: 'reverse' } }}
         style={{
           position: 'absolute',
-          top: '-8%',
-          right: '-20%',
+          top: '-80%',
+          right: '-40%',
           width: '140%',
-          height: '120%',
+          height: '130%',
           zIndex: 0,
           pointerEvents: 'none',
         }}
@@ -96,7 +96,7 @@ export default function JagIVarldenProductHome({ product }: { product: ProductMa
         <img
           src={peacockImage}
           alt=""
-          style={{ width: '100%', height: '100%', objectFit: 'contain', objectPosition: 'right top', opacity: 0.30, transform: 'rotate(180deg)' }}
+          style={{ width: '100%', height: '100%', objectFit: 'contain', objectPosition: 'right top', opacity: 0.28, transform: 'rotate(180deg)' }}
         />
       </motion.div>
 
@@ -107,9 +107,10 @@ export default function JagIVarldenProductHome({ product }: { product: ProductMa
         transition={{ duration: 0.5, delay: 0.2, scale: { duration: 9, ease: 'easeInOut', repeat: Infinity, repeatType: 'reverse' } }}
         style={{
           position: 'absolute',
-          bottom: '0%',
-          left: '-10%',
-          width: '42%',
+          bottom: '-12%',
+          left: '-40%',
+          width: '140%',
+          height: '130%',
           zIndex: 0,
           pointerEvents: 'none',
         }}
@@ -117,7 +118,7 @@ export default function JagIVarldenProductHome({ product }: { product: ProductMa
         <img
           src={peacockImage}
           alt=""
-          style={{ width: '100%', height: '100%', objectFit: 'contain', opacity: 0.25 }}
+          style={{ width: '100%', height: '100%', objectFit: 'contain', objectPosition: 'left bottom', opacity: 0.28 }}
         />
       </motion.div>
 
