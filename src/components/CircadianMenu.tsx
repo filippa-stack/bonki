@@ -411,7 +411,7 @@ export default function CircadianMenu({
                                 width: '6px', height: '6px',
                                 borderRadius: '50%',
                                 backgroundColor: HERITAGE_GOLD,
-                                animation: 'saffron-pulse 2.5s ease-in-out infinite',
+                                // static dot, no pulse
                               }}
                             />
                           </div>
