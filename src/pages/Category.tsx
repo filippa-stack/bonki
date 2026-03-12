@@ -233,6 +233,7 @@ export default function Category() {
             onNavigate={() => navigate(`/card/${card.id}`)}
             isLast={index === cards.length - 1}
             styles={styles}
+            categoryBg={categoryId ? CATEGORY_CARD_BG[categoryId] : undefined}
           />
         ))}
 
