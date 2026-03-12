@@ -347,8 +347,8 @@ function StillUsCategoryView({
               fontSize: 'clamp(16px, 4.5vw, 20px)',
               fontWeight: 400,
               lineHeight: 1.45,
-              color,
-              opacity: 0.85,
+              color: 'var(--text-primary)',
+              opacity: 0.75,
               maxWidth: '80%',
               marginLeft: 'auto', marginRight: 'auto',
               marginBottom: '40px',
@@ -380,10 +380,10 @@ function StillUsCategoryView({
                   gap: '14px',
                   padding: '20px 20px',
                   background: isCompleted
-                    ? `${color}18`
-                    : `${color}28`,
-                  backdropFilter: 'blur(12px)',
-                  WebkitBackdropFilter: 'blur(12px)',
+                    ? `${color}30`
+                    : `${color}40`,
+                  backdropFilter: 'blur(16px)',
+                  WebkitBackdropFilter: 'blur(16px)',
                   border: isInProgress
                     ? `1px solid ${color}`
                     : `1px solid ${color}50`,
@@ -398,13 +398,13 @@ function StillUsCategoryView({
                 }}
                 onMouseEnter={(e) => {
                   const el = e.currentTarget;
-                  el.style.background = `${color}40`;
+                  el.style.background = `${color}55`;
                   el.style.borderColor = color;
                   el.style.boxShadow = `0 0 24px -4px ${color}50, 0 4px 20px -4px hsla(194, 28%, 10%, 0.20)`;
                 }}
                 onMouseLeave={(e) => {
                   const el = e.currentTarget;
-                  el.style.background = isCompleted ? `${color}18` : `${color}28`;
+                  el.style.background = isCompleted ? `${color}30` : `${color}40`;
                   el.style.borderColor = isInProgress ? color : `${color}50`;
                   el.style.boxShadow = isInProgress
                     ? `0 0 20px -4px ${color}40, 0 4px 16px -4px hsla(194, 28%, 10%, 0.15)`
@@ -438,10 +438,10 @@ function StillUsCategoryView({
                     <p
                       style={{
                         fontFamily: 'var(--font-sans)',
-                        fontSize: '12px',
+                        fontSize: '13px',
                         fontWeight: 400,
-                        color: 'var(--text-secondary)',
-                        opacity: isCompleted ? 0.4 : 0.7,
+                        color: 'var(--text-primary)',
+                        opacity: isCompleted ? 0.45 : 0.65,
                         lineHeight: 1.4,
                         marginTop: '4px',
                       }}
@@ -457,11 +457,11 @@ function StillUsCategoryView({
                     style={{
                       fontFamily: 'var(--font-sans)',
                       fontSize: '10px',
-                      fontWeight: 500,
-                      letterSpacing: '0.06em',
+                      fontWeight: 600,
+                      letterSpacing: '0.08em',
                       textTransform: 'uppercase' as const,
                       color: HERITAGE_GOLD,
-                      opacity: 0.6,
+                      opacity: 0.85,
                       flexShrink: 0,
                     }}
                   >
@@ -499,8 +499,8 @@ function StillUsCategoryView({
               fontFamily: 'var(--font-serif)',
               fontStyle: 'italic',
               fontSize: '14px',
-              color,
-              opacity: 0.5,
+              color: 'var(--text-primary)',
+              opacity: 0.55,
               lineHeight: 1.5,
             }}
           >
