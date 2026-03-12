@@ -79,6 +79,15 @@ const PRODUCT_STYLES: Record<string, {
   syskonkort: { cardBg: '#ECF0F6', cardTitleColor: '#0F4E99' },
 };
 
+/** Category-specific tile background colors (matching product homescreen tiles) */
+const CATEGORY_CARD_BG: Record<string, string> = {
+  // Jag i mig
+  'jim-tryggheten-inuti': 'rgba(168, 186, 104, 0.35)',
+  'jim-kanslorna-jag-bar': 'rgba(205, 175, 119, 0.35)',
+  'jim-nar-det-gor-ont': 'rgba(189, 139, 130, 0.35)',
+  'jim-jag-som-helhet': 'rgba(142, 170, 158, 0.35)',
+};
+
 export default function Category() {
   const { t } = useTranslation();
   const { categoryId } = useParams<{ categoryId: string }>();
@@ -224,6 +233,7 @@ export default function Category() {
             onNavigate={() => navigate(`/card/${card.id}`)}
             isLast={index === cards.length - 1}
             styles={styles}
+            categoryBg={categoryId ? CATEGORY_CARD_BG[categoryId] : undefined}
           />
         ))}
 
@@ -599,9 +609,10 @@ interface CardEntryProps {
   onNavigate: () => void;
   isLast?: boolean;
   styles?: typeof PRODUCT_STYLES[string];
+  categoryBg?: string;
 }
 
-function CardEntry({ card, index, isCompleted = false, isInProgress = false, onNavigate, isLast = false, styles }: CardEntryProps) {
+function CardEntry({ card, index, isCompleted = false, isInProgress = false, onNavigate, isLast = false, styles, categoryBg }: CardEntryProps) {
   const zipIllustration = useCardImage(card.id);
   const illustration = CARD_IMAGE_OVERRIDE[card.id] ?? zipIllustration;
   const illustrationOpacity = CARD_ILLUSTRATION_OPACITY[card.id] ?? 0.12;
@@ -609,7 +620,7 @@ function CardEntry({ card, index, isCompleted = false, isInProgress = false, onN
   const nudge = CARD_ILLUSTRATION_NUDGE[card.id] ?? { x: 0, y: 0 };
   const size = Math.round(72 * illustrationScale);
 
-  const cardBg = styles?.cardBg ?? '#FFFFFF';
+  const cardBg = categoryBg || styles?.cardBg || '#FFFFFF';
   const titleColor = styles?.cardTitleColor ?? 'var(--text-primary)';
   const subtitleColor = '#8A8078';
 
@@ -631,9 +642,13 @@ function CardEntry({ card, index, isCompleted = false, isInProgress = false, onN
         className="w-full cursor-pointer group relative overflow-hidden"
         style={{
           padding: '24px 20px',
-          background: isCompleted
-            ? `linear-gradient(180deg, ${cardBg}CC 0%, ${cardBg}AA 100%)`
-            : `linear-gradient(180deg, ${cardBg} 0%, ${cardBg}E8 100%)`,
+          background: categoryBg
+            ? categoryBg
+            : isCompleted
+              ? `linear-gradient(180deg, ${cardBg}CC 0%, ${cardBg}AA 100%)`
+              : `linear-gradient(180deg, ${cardBg} 0%, ${cardBg}E8 100%)`,
+          backdropFilter: categoryBg ? 'blur(16px)' : undefined,
+          WebkitBackdropFilter: categoryBg ? 'blur(16px)' : undefined,
           border: 'none',
           borderRadius: '12px',
           boxShadow: isCompleted
