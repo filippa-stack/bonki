@@ -380,10 +380,10 @@ function StillUsCategoryView({
                   gap: '14px',
                   padding: '20px 20px',
                   background: isCompleted
-                    ? `${color}18`
-                    : `${color}28`,
-                  backdropFilter: 'blur(12px)',
-                  WebkitBackdropFilter: 'blur(12px)',
+                    ? `${color}30`
+                    : `${color}40`,
+                  backdropFilter: 'blur(16px)',
+                  WebkitBackdropFilter: 'blur(16px)',
                   border: isInProgress
                     ? `1px solid ${color}`
                     : `1px solid ${color}50`,
