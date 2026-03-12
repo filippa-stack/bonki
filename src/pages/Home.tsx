@@ -290,7 +290,7 @@ export default function Home() {
                 opacity: 0.65,
                 lineHeight: 1.5,
               }}>
-                Börja där det känns rätt.
+                Följ ordningen — eller börja där det känns rätt.
               </p>
             </motion.div>
 
