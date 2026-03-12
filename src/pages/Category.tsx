@@ -42,15 +42,19 @@ const CARD_IMAGE_OVERRIDE: Record<string, string> = {
   'jim-jag': mirrorJagIMig,
 };
 
-/** Per-card tile height — taller for spread-out illustrations, shorter for compact ones */
-const CARD_TILE_HEIGHT: Record<string, number> = {
-  'jim-acklad': 300, 'jim-avsky': 260, 'jim-besviken': 270,
-  'jim-avundsjuk': 290, 'jim-svartsjuk': 280, 'jim-utanfor': 290,
-  'jim-skam': 280, 'jim-arg': 260, 'jim-vild': 260,
-  'jim-stolt': 270, 'jim-bestamd': 280, 'jim-karlek': 270,
-  'jim-nyfiken': 260, 'jim-forvanad': 260, 'jim-jag': 270,
-  'jim-trygg': 270, 'jim-ensam': 270, 'jim-glad': 260,
-  'jim-radd': 270, 'jim-ledsen': 270, 'jim-stress': 260,
+/** Per-card focal point for object-position when using cover */
+const CARD_FOCAL_POINT: Record<string, string> = {
+  'jim-besviken': 'center 30%', 'jim-acklad': 'center 35%',
+  'jim-avsky': 'center 25%', 'jim-skam': 'center 35%',
+  'jim-avundsjuk': 'center 30%', 'jim-svartsjuk': 'center 40%',
+  'jim-utanfor': 'center 40%', 'jim-arg': 'center 30%',
+  'jim-vild': 'center 30%', 'jim-stolt': 'center 35%',
+  'jim-bestamd': 'center 35%', 'jim-karlek': 'center 35%',
+  'jim-nyfiken': 'center 30%', 'jim-forvanad': 'center 30%',
+  'jim-jag': 'center 35%', 'jim-trygg': 'center 35%',
+  'jim-ensam': 'center 35%', 'jim-glad': 'center 30%',
+  'jim-radd': 'center 30%', 'jim-ledsen': 'center 35%',
+  'jim-stress': 'center 30%',
 };
 
 /** Product-specific design tokens for card listings */
