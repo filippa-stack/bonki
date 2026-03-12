@@ -24,6 +24,15 @@ import { useAppMode } from '@/hooks/useAppMode';
 import { useNormalizedSessionContext } from '@/contexts/NormalizedSessionContext';
 // samtalsläge removed from UI — always defaults to Tillsammans
 import { useSpaceSnapshot } from '@/hooks/useSpaceSnapshot';
+import { useVerdigrisTheme } from '@/components/VerdigrisAtmosphere';
+import {
+  selectLastActivityAt,
+  selectExploredCardIds,
+  selectLastOpenedCardId,
+  selectLastCompletedCardId,
+  selectSuggestedNextCardId,
+} from '@/selectors/spaceSnapshotSelectors';
+import { categories as allCategories, cards as allCards } from '@/data/content';
 import {
   selectLastActivityAt,
   selectExploredCardIds,
