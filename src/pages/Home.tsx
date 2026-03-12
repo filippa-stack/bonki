@@ -24,6 +24,7 @@ import { useAppMode } from '@/hooks/useAppMode';
 import { useNormalizedSessionContext } from '@/contexts/NormalizedSessionContext';
 // samtalsläge removed from UI — always defaults to Tillsammans
 import { useSpaceSnapshot } from '@/hooks/useSpaceSnapshot';
+import { useVerdigrisTheme } from '@/components/VerdigrisAtmosphere';
 import {
   selectLastActivityAt,
   selectExploredCardIds,
@@ -75,6 +76,7 @@ export default function Home() {
   const { t } = useTranslation();
   const navigate = useNavigate();
   useThemeVars();
+  useVerdigrisTheme(true);
   const {
     categories,
     getCardById,

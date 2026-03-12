@@ -12,6 +12,7 @@ import Header from '@/components/Header';
 import ResumeBanner from '@/components/ResumeBanner';
 import { useNormalizedSessionContext } from '@/contexts/NormalizedSessionContext';
 import { useDevState } from '@/contexts/DevStateContext';
+import { useVerdigrisTheme } from '@/components/VerdigrisAtmosphere';
 
 import { RECOMMENDED_CATEGORY_ORDER } from '@/lib/recommendedOrder';
 
@@ -19,6 +20,7 @@ export default function Categories() {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { categories, cards } = useApp();
+  useVerdigrisTheme(true);
   const { user } = useAuth();
   const { space } = useCoupleSpaceContext();
   const { snapshot } = useSpaceSnapshot(user?.id ?? null, space?.id ?? null);
