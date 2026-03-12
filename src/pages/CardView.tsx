@@ -49,6 +49,7 @@ import LockedReflectionDisplay from '@/components/LockedReflectionDisplay';
 import GorTillsammansOverlay, { hasSeenGorTillsammans } from '@/components/GorTillsammansOverlay';
 import IllustrationPeek from '@/components/IllustrationPeek';
 import { useVerdigrisTheme } from '@/components/VerdigrisAtmosphere';
+import { CIRCADIAN_COLORS, CIRCADIAN_COLORS_LIGHT } from '@/components/CircadianMenu';
 import { useDevState } from '@/contexts/DevStateContext';
 import { useNormalizedSessionContext } from '@/contexts/NormalizedSessionContext';
 import { isDevToolsEnabled } from '@/lib/devTools';
@@ -169,6 +170,10 @@ export default function CardView() {
 
   // Apply Verdigris theme for Still Us cards
   useVerdigrisTheme(isStillUsCard);
+
+  // Category color for Still Us start screen text
+  const startScreenCategoryColor = card ? (CIRCADIAN_COLORS_LIGHT[card.categoryId] || CIRCADIAN_COLORS[card.categoryId]) : undefined;
+  const startScreenCategoryColorBase = card ? CIRCADIAN_COLORS[card.categoryId] : undefined;
 
   const { recordVisit } = useCardVisit();
   useEffect(() => {
@@ -1189,8 +1194,8 @@ export default function CardView() {
                   fontSize: '10px',
                   letterSpacing: '0.12em',
                   textTransform: 'uppercase',
-                  color: 'var(--text-tertiary)',
-                  opacity: 0.45,
+                  color: isStillUsCard ? (startScreenCategoryColor || 'var(--text-tertiary)') : 'var(--text-tertiary)',
+                  opacity: isStillUsCard ? 0.7 : 0.45,
                   marginBottom: '10px',
                 }}
               >
@@ -1206,7 +1211,7 @@ export default function CardView() {
                 style={{
                   fontSize: 'clamp(26px, 7vw, 34px)',
                   fontWeight: 700,
-                  color: 'var(--text-primary)',
+                  color: isStillUsCard ? (startScreenCategoryColor || 'var(--text-primary)') : 'var(--text-primary)',
                   textAlign: 'center',
                   lineHeight: 1.15,
                   letterSpacing: '-0.01em',
@@ -1228,7 +1233,7 @@ export default function CardView() {
                 {[0, 1].map(i => (
                   <span key={i} style={{
                     width: '4px', height: '4px', borderRadius: '50%',
-                    backgroundColor: 'var(--accent-saffron)', opacity: 0.35,
+                    backgroundColor: isStillUsCard ? (startScreenCategoryColor || 'var(--accent-saffron)') : 'var(--accent-saffron)', opacity: 0.35,
                   }} />
                 ))}
               </motion.div>
@@ -1268,8 +1273,8 @@ export default function CardView() {
             transition={{ delay: BEAT_2, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
             style={{
               fontSize: '19px',
-              color: 'var(--text-primary)',
-              opacity: 0.75,
+              color: isStillUsCard ? (startScreenCategoryColor || 'var(--text-primary)') : 'var(--text-primary)',
+              opacity: isStillUsCard ? 0.65 : 0.75,
               textAlign: 'center',
               lineHeight: 1.5,
               marginBottom: '32px',

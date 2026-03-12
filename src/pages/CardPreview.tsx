@@ -49,27 +49,36 @@ export default function CardPreview() {
 
   if (isStillUs) {
     return (
-      <div className="min-h-screen flex flex-col" style={{ backgroundColor: 'var(--surface-base)' }}>
+      <div
+        className="flex flex-col"
+        style={{
+          backgroundColor: 'var(--surface-base)',
+          height: '100dvh',
+          overflow: 'hidden',
+        }}
+      >
         {/* Back arrow */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.4 }}
           className="px-5 pt-14 pb-2"
+          style={{ flex: '0 0 auto' }}
         >
           <button
             onClick={() => navigate(`/category/${card.categoryId}`)}
             className="flex items-center gap-1 transition-opacity hover:opacity-70"
-            style={{ color: 'var(--text-primary)', opacity: 0.5 }}
+            style={{ color: categoryColor || 'var(--text-primary)', opacity: 0.5 }}
             aria-label="Tillbaka"
           >
             <ArrowLeft className="w-5 h-5" strokeWidth={1.5} />
           </button>
         </motion.div>
 
-        {/* Content */}
+        {/* Content — scrollable middle */}
         <motion.div
-          className="flex-1 px-6 pb-8"
+          className="px-6 overflow-y-auto"
+          style={{ flex: '1 1 auto', minHeight: 0 }}
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, ease: EASE, delay: 0.1 }}
@@ -114,7 +123,7 @@ export default function CardPreview() {
                 lineHeight: 1.5,
                 color: categoryColor || 'var(--text-secondary)',
                 opacity: 0.7,
-                marginBottom: '36px',
+                marginBottom: '28px',
               }}
             >
               {card.subtitle}
@@ -123,7 +132,7 @@ export default function CardPreview() {
 
           {/* Preview text */}
           {previewParagraphs ? (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', paddingBottom: '16px' }}>
               {previewParagraphs.map((paragraph, i) => (
                 <motion.p
                   key={i}
@@ -159,11 +168,10 @@ export default function CardPreview() {
           )}
         </motion.div>
 
-        {/* Sticky CTA */}
+        {/* Fixed CTA — always visible */}
         <div
           style={{
-            position: 'sticky',
-            bottom: 0,
+            flex: '0 0 auto',
             padding: '16px 24px',
             paddingBottom: 'calc(16px + env(safe-area-inset-bottom, 0px))',
             background: 'linear-gradient(0deg, var(--surface-base) 60%, transparent)',
@@ -178,14 +186,14 @@ export default function CardPreview() {
             style={{
               height: '52px',
               borderRadius: '14px',
-              background: categoryColor || 'hsl(41, 78%, 48%)',
+              background: 'hsl(41, 78%, 48%)',
               color: 'hsl(194, 30%, 12%)',
               fontFamily: 'var(--font-serif)',
               fontSize: '16px',
               fontWeight: 600,
               border: 'none',
               cursor: 'pointer',
-              boxShadow: `0 4px 20px -4px ${categoryColorBase || 'hsla(41, 60%, 30%)'}50, 0 12px 40px -12px ${categoryColorBase || 'hsla(41, 50%, 25%)'}30`,
+              boxShadow: '0 4px 20px -4px hsla(41, 60%, 30%, 0.35), 0 12px 40px -12px hsla(41, 50%, 25%, 0.20)',
               transition: 'transform 140ms cubic-bezier(0.4, 0, 0.2, 1)',
             }}
           >
