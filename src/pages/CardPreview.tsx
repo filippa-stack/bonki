@@ -112,7 +112,7 @@ export default function CardPreview() {
                 fontFamily: 'var(--font-serif)',
                 fontSize: '15px',
                 lineHeight: 1.5,
-                color: 'var(--text-secondary)',
+                color: categoryColor || 'var(--text-secondary)',
                 opacity: 0.7,
                 marginBottom: '36px',
               }}
