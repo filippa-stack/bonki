@@ -7,36 +7,50 @@ import TopicPreviewOverlay from '@/components/TopicPreviewOverlay';
 /**
  * Circadian color mapping — reflects psychological shift
  * from light/accessible to deep/reflective.
- * Updated for high-visibility with brighter, more distinct hues.
  */
 export const CIRCADIAN_COLORS: Record<string, string> = {
-  'emotional-intimacy': '#A8C4B0', // Bright desaturated Sage
+  'emotional-intimacy': '#A2B5A9', // Sage Green
   'communication':      '#6B8E7D', // Vitality Green
-  'category-8':         '#D4896E', // Vibrant earthy Terracotta
+  'category-8':         '#C28A78', // Warm Clay
   'individual-needs':   '#C5A37D', // Hearth Ochre
   'parenting-together': '#6F8191', // Steel Blue
   'category-9':         '#4A5D4E', // Deep Moss
   'category-6':         '#8E7C8F', // Dusky Orchid
   'daily-life':         '#3C5459', // Midnight Teal
-  'category-10':        '#4A50A0', // Luminous Twilight Navy
+  'category-10':        '#313658', // Twilight Navy
 };
 
 /**
- * Category glow shadows — each card emits light in its color.
+ * RGBA fills at 15% for glassmorphism tiles.
  */
-const categoryGlow = (color: string, intensity: number = 1) =>
-  `0 2px 8px -2px ${color}${Math.round(25 * intensity).toString(16).padStart(2, '0')}, ` +
-  `0 8px 24px -6px ${color}${Math.round(18 * intensity).toString(16).padStart(2, '0')}`;
+const CIRCADIAN_FILLS: Record<string, string> = {
+  'emotional-intimacy': 'rgba(162, 181, 169, 0.15)',
+  'communication':      'rgba(107, 142, 125, 0.15)',
+  'category-8':         'rgba(194, 138, 120, 0.15)',
+  'individual-needs':   'rgba(197, 163, 125, 0.15)',
+  'parenting-together': 'rgba(111, 129, 145, 0.15)',
+  'category-9':         'rgba(74, 93, 78, 0.15)',
+  'category-6':         'rgba(142, 124, 143, 0.15)',
+  'daily-life':         'rgba(60, 84, 89, 0.15)',
+  'category-10':        'rgba(49, 54, 88, 0.15)',
+};
 
-const categoryGlowHover = (color: string) =>
-  `0 4px 14px -2px ${color}${Math.round(38).toString(16).padStart(2, '0')}, ` +
-  `0 12px 32px -6px ${color}${Math.round(28).toString(16).padStart(2, '0')}`;
+const CIRCADIAN_FILLS_HOVER: Record<string, string> = {
+  'emotional-intimacy': 'rgba(162, 181, 169, 0.25)',
+  'communication':      'rgba(107, 142, 125, 0.25)',
+  'category-8':         'rgba(194, 138, 120, 0.25)',
+  'individual-needs':   'rgba(197, 163, 125, 0.25)',
+  'parenting-together': 'rgba(111, 129, 145, 0.25)',
+  'category-9':         'rgba(74, 93, 78, 0.25)',
+  'category-6':         'rgba(142, 124, 143, 0.25)',
+  'daily-life':         'rgba(60, 84, 89, 0.25)',
+  'category-10':        'rgba(49, 54, 88, 0.25)',
+};
+
+/** Heritage Gold for interactive indicators */
+const HERITAGE_GOLD = '#DA9D1D';
 
 const ENTER_EASE = [0.22, 1, 0.36, 1] as const;
-
-/** Deep Verdigris card background — slightly darker than canvas */
-const CARD_BG = 'hsl(194, 28%, 28%)';
-const CARD_BG_HOVER = 'hsl(194, 28%, 30%)';
 
 interface CircadianMenuProps {
   categories: Category[];
@@ -58,11 +72,11 @@ export default function CircadianMenu({
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [previewCard, setPreviewCard] = useState<Card | null>(null);
   const [previewCategory, setPreviewCategory] = useState<Category | null>(null);
-  const [previewColor, setPreviewColor] = useState('#A8C4B0');
+  const [previewColor, setPreviewColor] = useState('#A2B5A9');
   const [overlayOpen, setOverlayOpen] = useState(false);
 
   const handleCardClick = (card: Card, category: Category) => {
-    const color = CIRCADIAN_COLORS[category.id] || '#A8C4B0';
+    const color = CIRCADIAN_COLORS[category.id] || '#A2B5A9';
     setPreviewCard(card);
     setPreviewCategory(category);
     setPreviewColor(color);
@@ -86,13 +100,18 @@ export default function CircadianMenu({
       {categories.map((category, index) => {
         const isExpanded = expandedId === category.id;
         const isDimmed = expandedId !== null && !isExpanded;
-        const color = CIRCADIAN_COLORS[category.id] || '#A8C4B0';
+        const color = CIRCADIAN_COLORS[category.id] || '#A2B5A9';
+        const fillDefault = CIRCADIAN_FILLS[category.id] || 'rgba(162, 181, 169, 0.15)';
+        const fillHover = CIRCADIAN_FILLS_HOVER[category.id] || 'rgba(162, 181, 169, 0.25)';
         const catCards = categoryCards.get(category.id) || [];
         const completedCount = catCards.filter(c => completedCardIds.includes(c.id)).length;
         const allCompleted = completedCount === catCards.length && catCards.length > 0;
         const hasInProgress = catCards.some(c =>
           inProgressCardIds.includes(c.id) && !completedCardIds.includes(c.id)
         );
+
+        const borderDefault = `1px solid ${color}4D`; // 30% opacity
+        const borderGlow = `1px solid ${color}`;       // 100% opacity
 
         return (
           <motion.div
@@ -108,10 +127,10 @@ export default function CircadianMenu({
             }}
             style={{ position: 'relative' }}
           >
-            {/* Category card */}
+            {/* Category tile — glassmorphism */}
             <motion.button
               onClick={() => handleToggle(category.id)}
-              className="w-full text-left"
+              className="w-full text-left circadian-tile"
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.985 }}
               style={{
@@ -119,22 +138,28 @@ export default function CircadianMenu({
                 alignItems: 'stretch',
                 gap: '0',
                 padding: '0',
-                background: CARD_BG,
-                border: 'none',
+                background: fillDefault,
+                backdropFilter: 'blur(12px)',
+                WebkitBackdropFilter: 'blur(12px)',
+                border: borderDefault,
                 cursor: 'pointer',
                 borderRadius: '14px',
-                boxShadow: categoryGlow(color),
-                transition: 'box-shadow 0.35s ease, background-color 0.25s ease',
+                transition: 'background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease',
                 overflow: 'hidden',
                 position: 'relative',
+                boxShadow: 'none',
               }}
               onMouseEnter={(e) => {
-                (e.currentTarget as HTMLElement).style.boxShadow = categoryGlowHover(color);
-                (e.currentTarget as HTMLElement).style.backgroundColor = CARD_BG_HOVER;
+                const el = e.currentTarget as HTMLElement;
+                el.style.background = fillHover;
+                el.style.border = borderGlow;
+                el.style.boxShadow = `0 0 20px -4px ${color}40, 0 0 40px -8px ${color}25`;
               }}
               onMouseLeave={(e) => {
-                (e.currentTarget as HTMLElement).style.boxShadow = categoryGlow(color);
-                (e.currentTarget as HTMLElement).style.backgroundColor = CARD_BG;
+                const el = e.currentTarget as HTMLElement;
+                el.style.background = fillDefault;
+                el.style.border = borderDefault;
+                el.style.boxShadow = 'none';
               }}
             >
               {/* Thick accent bar — left edge */}
@@ -207,10 +232,10 @@ export default function CircadianMenu({
                   )}
                 </div>
 
-                {/* Status indicator */}
+                {/* Status indicator — Heritage Gold for interactive elements */}
                 <div style={{ flexShrink: 0, width: '20px', display: 'flex', justifyContent: 'center' }}>
                   {allCompleted ? (
-                    <Check size={14} style={{ color: color, opacity: 0.7 }} />
+                    <Check size={14} style={{ color: HERITAGE_GOLD, opacity: 0.85 }} />
                   ) : hasInProgress ? (
                     <span
                       style={{
@@ -218,21 +243,20 @@ export default function CircadianMenu({
                         width: '6px',
                         height: '6px',
                         borderRadius: '50%',
-                        backgroundColor: color,
-                        opacity: 0.7,
+                        backgroundColor: HERITAGE_GOLD,
+                        opacity: 0.8,
                         animation: 'saffron-pulse 2.5s ease-in-out infinite',
                       }}
                     />
                   ) : (
-                    /* Subtle chevron hint */
                     <span
                       style={{
                         fontFamily: 'var(--font-sans)',
-                        fontSize: '12px',
-                        color: 'var(--text-tertiary)',
-                        opacity: 0.35,
+                        fontSize: '14px',
+                        color: HERITAGE_GOLD,
+                        opacity: 0.4,
                         transform: isExpanded ? 'rotate(90deg)' : 'rotate(0deg)',
-                        transition: 'transform 0.25s ease',
+                        transition: 'transform 0.25s ease, opacity 0.25s ease',
                       }}
                     >
                       ›
@@ -304,16 +328,14 @@ export default function CircadianMenu({
                               height: '10px',
                               borderRadius: '50%',
                               border: `1.5px solid ${color}`,
-                              backgroundColor: isCardCompleted
-                                ? color
-                                : 'transparent',
+                              backgroundColor: isCardCompleted ? color : 'transparent',
                               opacity: isCardCompleted ? 0.8 : 0.45,
                               flexShrink: 0,
                               transition: 'all 0.2s ease',
                             }}
                           >
                             {isCardCompleted && (
-                              <Check size={6} style={{ color: CARD_BG }} />
+                              <Check size={6} style={{ color: 'var(--surface-base)' }} />
                             )}
                           </span>
 
@@ -326,18 +348,14 @@ export default function CircadianMenu({
                               color: 'var(--text-primary)',
                               opacity: isCardCompleted ? 0.5 : 0.80,
                               lineHeight: 1.4,
-                              textDecoration: isCardCompleted
-                                ? 'line-through'
-                                : 'none',
-                              textDecorationColor: isCardCompleted
-                                ? `${color}40`
-                                : undefined,
+                              textDecoration: isCardCompleted ? 'line-through' : 'none',
+                              textDecorationColor: isCardCompleted ? `${color}40` : undefined,
                             }}
                           >
                             {card.title}
                           </span>
 
-                          {/* In-progress dot */}
+                          {/* In-progress indicator — Heritage Gold */}
                           {isCardInProgress && (
                             <span
                               style={{
@@ -345,8 +363,8 @@ export default function CircadianMenu({
                                 width: '5px',
                                 height: '5px',
                                 borderRadius: '50%',
-                                backgroundColor: color,
-                                opacity: 0.6,
+                                backgroundColor: HERITAGE_GOLD,
+                                opacity: 0.7,
                                 marginLeft: 'auto',
                                 flexShrink: 0,
                               }}
@@ -356,7 +374,7 @@ export default function CircadianMenu({
                       );
                     })}
 
-                    {/* "Utforska" link to category page */}
+                    {/* "Utforska" link — Heritage Gold */}
                     <motion.button
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
@@ -375,8 +393,8 @@ export default function CircadianMenu({
                         fontWeight: 500,
                         letterSpacing: '0.06em',
                         textTransform: 'uppercase' as const,
-                        color: color,
-                        opacity: 0.6,
+                        color: HERITAGE_GOLD,
+                        opacity: 0.7,
                       }}
                     >
                       Utforska {category.title.toLowerCase()} →
