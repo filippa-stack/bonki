@@ -132,7 +132,7 @@ export default function JagIVarldenProductHome({ product }: { product: ProductMa
           flexDirection: 'column',
           alignItems: 'center',
           justifyContent: 'flex-start',
-          paddingTop: '14vh',
+          paddingTop: '10vh',
           paddingRight: '8vw',
           paddingBottom: '48px',
           paddingLeft: '8vw',
