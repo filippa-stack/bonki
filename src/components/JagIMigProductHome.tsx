@@ -195,7 +195,7 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
             whileTap={{ scale: 0.98 }}
             onClick={() => navigate(`/diary/${product.id}`)}
             style={{
-              background: 'rgba(255, 255, 255, 0.55)',
+              background: 'rgba(254, 250, 224, 0.55)',
               border: 'none',
               cursor: 'pointer',
               marginTop: '2vh',
