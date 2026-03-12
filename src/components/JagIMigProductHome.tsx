@@ -129,7 +129,7 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
 
           {/* Category buttons */}
           {product.categories.map((cat) => {
-            const tile = TILE_COLORS[cat.id] || { bg: 'var(--product-button-bg)', text: ACCENT_COLOR, border: 'rgba(138,154,16,0.25)' };
+            const tile = TILE_COLORS[cat.id] || { bg: 'rgba(255,255,255,0.55)', text: ACCENT_COLOR };
             return (
             <motion.button
               key={cat.id}
