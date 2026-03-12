@@ -251,28 +251,39 @@ export default function JagMedAndraProductHome({ product }: { product: ProductMa
           {/* Diary entrance */}
           <motion.button
             variants={pillVariants}
-            whileHover={{ scale: 1.03, y: -2 }}
-            whileTap={{ scale: 0.97 }}
+            whileHover={{ scale: 1.02, y: -2 }}
+            whileTap={{ scale: 0.985 }}
             onClick={() => navigate(`/diary/${product.id}`)}
             style={{
-              background: `${DIARY_COLOR.bg}88`,
-              border: '1px solid rgba(160, 120, 180, 0.18)',
+              background: DIARY_COLOR.bg,
+              border: '1px solid hsla(0, 0%, 100%, 0.5)',
               cursor: 'pointer',
               marginTop: '0.5vh',
-              padding: '14px 24px',
+              padding: '14px 20px 14px 0',
               borderRadius: '16px',
-              boxShadow: '0 2px 10px rgba(44, 36, 32, 0.05)',
+              boxShadow: '0 2px 12px hsla(0, 0%, 0%, 0.04)',
               display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: '10px',
-              width: '60%',
+              alignItems: 'stretch',
+              gap: '0',
+              width: '100%',
               backdropFilter: 'blur(16px)',
               WebkitBackdropFilter: 'blur(16px)',
+              overflow: 'hidden',
             }}
           >
-            <BookOpen size={16} style={{ color: DIARY_COLOR.text, opacity: 0.55, flexShrink: 0 }} />
-            <div style={{ textAlign: 'left' }}>
+            <div
+              style={{
+                width: '4px',
+                flexShrink: 0,
+                borderRadius: '0 4px 4px 0',
+                background: DIARY_COLOR.accent,
+                marginRight: '16px',
+                alignSelf: 'stretch',
+                opacity: 0.6,
+              }}
+            />
+            <BookOpen size={16} style={{ color: DIARY_COLOR.text, opacity: 0.5, flexShrink: 0, marginTop: '3px', marginRight: '10px' }} />
+            <div>
               <span
                 style={{
                   fontFamily: "'DM Serif Display', var(--font-serif)",
@@ -288,9 +299,9 @@ export default function JagMedAndraProductHome({ product }: { product: ProductMa
                 className="font-serif"
                 style={{
                   fontSize: '11px',
-                  color: '#8A8078',
+                  color: 'hsl(30, 10%, 50%)',
                   opacity: 0.65,
-                  marginTop: '1px',
+                  marginTop: '2px',
                   fontStyle: 'italic',
                   lineHeight: 1.3,
                 }}
