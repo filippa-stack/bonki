@@ -128,7 +128,7 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
                 color: '#2C2420',
                 opacity: 0.75,
                 marginTop: '6px',
-                textShadow: '0px 1px 8px rgba(255,255,255,0.95), 0px 0px 24px rgba(255,255,255,0.5)',
+                textShadow: 'none',
               }}
             >
               när känslor får ord
