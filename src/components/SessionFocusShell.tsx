@@ -5,6 +5,8 @@ import { EMOTION, EASE } from '@/lib/motion';
 
 interface SessionFocusShellProps {
   children: ReactNode;
+  /** Optional top chrome slot (title/progress/back) */
+  topSlot?: ReactNode;
   /** Heritage Gold CTA at bottom — rendered by parent, wrapped with delayed reveal */
   ctaSlot: ReactNode;
   onExit: () => void;
@@ -16,7 +18,7 @@ interface SessionFocusShellProps {
  * - No chrome — tap screen once to reveal a close X
  * - CTA fades in after 5-second reflection delay
  */
-export default function SessionFocusShell({ children, ctaSlot, onExit }: SessionFocusShellProps) {
+export default function SessionFocusShell({ children, topSlot, ctaSlot, onExit }: SessionFocusShellProps) {
   const [showExit, setShowExit] = useState(false);
   const [showCta, setShowCta] = useState(false);
   const exitTimerRef = useState<ReturnType<typeof setTimeout> | null>(null);
@@ -57,6 +59,22 @@ export default function SessionFocusShell({ children, ctaSlot, onExit }: Session
       }}
     >
       {/* Grain + light-leak from VerdigrisAtmosphere still active on body */}
+
+      {/* Always-visible top chrome (title/progress/back) */}
+      {topSlot && (
+        <div
+          onClick={(e) => e.stopPropagation()}
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            zIndex: 30,
+          }}
+        >
+          {topSlot}
+        </div>
+      )}
 
       {/* Close X — appears on tap */}
       <AnimatePresence>

@@ -1425,6 +1425,97 @@ export default function CardView() {
         <SessionFocusShell
           key={`focus-${currentStepIndex}-${localPromptIndex}`}
           onExit={() => setShowLeaveConfirm(true)}
+          topSlot={
+            <div
+              style={{
+                width: '100%',
+                paddingTop: 'calc(4px + env(safe-area-inset-top, 0px))',
+                paddingLeft: '12px',
+                paddingRight: '12px',
+              }}
+            >
+              <div
+                style={{
+                  display: 'grid',
+                  gridTemplateColumns: '44px 1fr 44px',
+                  alignItems: 'center',
+                  minHeight: '44px',
+                }}
+              >
+                <button
+                  onClick={() => setShowLeaveConfirm(true)}
+                  aria-label="Tillbaka"
+                  style={{
+                    width: '44px',
+                    height: '44px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    backgroundColor: 'var(--surface-raised)',
+                    border: '1px solid var(--border)',
+                    borderRadius: '999px',
+                    cursor: 'pointer',
+                  }}
+                >
+                  <ArrowLeft
+                    size={18}
+                    strokeWidth={1.8}
+                    style={{ color: 'var(--text-primary)', opacity: 0.92 }}
+                  />
+                </button>
+
+                <h1
+                  className="font-serif truncate text-center"
+                  style={{
+                    fontSize: '14px',
+                    color: 'var(--text-primary)',
+                    opacity: 0.95,
+                    letterSpacing: '0.01em',
+                  }}
+                >
+                  {card?.title ?? category?.title}
+                </h1>
+
+                <div style={{ width: '44px', height: '44px' }} />
+              </div>
+
+              {effectiveSteps.length > 1 && (
+                <div
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '8px',
+                    marginTop: '6px',
+                  }}
+                >
+                  {dynamicSteps.map((_, index) => {
+                    const isCompleted = index < currentStepIndex;
+                    const isCurrent = index === currentStepIndex;
+
+                    return (
+                      <span
+                        key={`focus-step-${index}`}
+                        style={{
+                          display: 'inline-block',
+                          width: isCurrent ? '18px' : '6px',
+                          height: '4px',
+                          borderRadius: isCurrent ? '3px' : '999px',
+                          backgroundColor: isCurrent
+                            ? 'var(--accent-saffron)'
+                            : isCompleted
+                              ? 'var(--cta-active)'
+                              : 'var(--text-ghost)',
+                          opacity: isCurrent ? 1 : isCompleted ? 0.35 : 0.28,
+                          transition: 'all 220ms cubic-bezier(0.22, 1, 0.36, 1)',
+                        }}
+                      />
+                    );
+                  })}
+                </div>
+              )}
+            </div>
+          }
           ctaSlot={
             <SessionStepReflection
               key={`${currentStepIndex}-${localPromptIndex}`}
