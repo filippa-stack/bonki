@@ -637,6 +637,43 @@ h1, h2, h3,
   mix-blend-mode: overlay;
 }
 
+/* ── Verdigris fine-grain noise texture ── */
+.verdigris-grain {
+  position: relative;
+}
+.verdigris-grain::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 180px 180px;
+  opacity: 0.035;
+  pointer-events: none;
+  z-index: 1;
+  mix-blend-mode: soft-light;
+}
+
+/* ── Verdigris light-leak atmosphere ── */
+.verdigris-lightleak {
+  position: relative;
+}
+.verdigris-lightleak::after {
+  content: '';
+  position: fixed;
+  top: -15%;
+  left: -20%;
+  width: 70%;
+  height: 60%;
+  background: radial-gradient(
+    ellipse at 30% 25%,
+    var(--lightleak-color, hsla(194, 30%, 55%, 0.12)) 0%,
+    hsla(194, 24%, 38%, 0) 70%
+  );
+  pointer-events: none;
+  z-index: 0;
+  filter: blur(60px);
+}
+
 /* ── Saffron pulse for in-progress dots ── */
 @keyframes saffron-pulse {
   0%, 100% { opacity: 1; transform: scale(1); }

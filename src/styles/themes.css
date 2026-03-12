@@ -617,3 +617,130 @@
   --color-accent: hsl(28, 65%, 50%);
   --color-accent-soft: hsl(85, 15%, 78%);
 }
+
+/* ══════════════════════════════════════════════════════════════
+   VERDIGRIS — Still Us global identity theme
+   Deep matte teal canvas, Heritage Gold accent, light text.
+   Dark-base theme: all surfaces are dark, text is light.
+   ══════════════════════════════════════════════════════════════ */
+.theme-verdigris {
+  /* Foundation — dark teal canvas */
+  --neutral-50:  194 24% 32%;        /* Base bg — deep verdigris */
+  --neutral-100: 194 20% 26%;        /* Raised surfaces — slightly darker */
+  --neutral-200: 194 18% 22%;        /* Sunken areas */
+  --neutral-300: 194 16% 42%;        /* Borders, dividers */
+
+  --background: var(--neutral-50);
+  --foreground: 42 20% 92%;
+
+  --card: var(--neutral-100);
+  --card-foreground: 42 20% 92%;
+
+  --primary: 41 78% 48%;             /* Heritage Gold */
+  --primary-foreground: 194 30% 14%;
+
+  --secondary: 194 18% 28%;
+  --secondary-foreground: 42 15% 88%;
+
+  --muted: 194 14% 30%;
+  --muted-foreground: 194 10% 62%;
+
+  --accent: 194 18% 28%;
+  --accent-foreground: 42 15% 88%;
+
+  --border: var(--neutral-300);
+  --input: var(--neutral-300);
+  --ring: 41 78% 48%;
+
+  /* Text hierarchy — light on dark */
+  --text-primary:   hsl(42, 20%, 92%);    /* Warm cream */
+  --text-secondary: hsl(194, 12%, 68%);   /* Muted teal-grey */
+  --text-tertiary:  hsl(194, 10%, 52%);   /* Receded */
+  --text-ghost:     hsl(194, 8%, 42%);    /* Placeholder */
+  --text-accent:    hsl(41, 78%, 56%);    /* Gold highlight */
+
+  /* Accent — Heritage Gold */
+  --accent-saffron:       hsl(41, 78%, 48%);
+  --accent-saffron-muted: hsl(41, 50%, 62%);
+  --accent-text:          hsl(41, 68%, 56%);
+
+  /* CTA — Heritage Gold buttons */
+  --cta-default:  hsl(41, 78%, 48%);
+  --cta-hover-v2: hsl(41, 82%, 54%);
+  --cta-active:   hsl(41, 72%, 42%);
+  --cta-bg:       var(--cta-default);
+  --cta-text:     hsl(194, 30%, 12%);     /* Dark text on gold */
+
+  /* Session header */
+  --session-header-bg:    hsl(194, 28%, 20%);
+  --session-header-hover: hsl(194, 28%, 26%);
+  --session-header-press: hsl(194, 24%, 16%);
+
+  --color-button-primary: hsl(41, 78%, 48%);
+  --color-button-text:    hsl(194, 30%, 12%);
+  --color-accent:         hsl(41, 78%, 48%);
+  --color-accent-soft:    hsl(194, 16%, 42%);
+
+  /* Semantic color overrides */
+  --color-bg-base:        hsl(194, 24%, 38%);
+  --color-text-primary:   var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-tertiary:  var(--text-tertiary);
+  --color-divider:        hsl(194, 16%, 46%);
+  --color-surface:        hsl(194, 20%, 26%);
+  --color-surface-primary: hsl(194, 20%, 26%);
+
+  /* Surfaces */
+  --surface-base:   hsl(194, 24%, 38%);   /* #4A707A */
+  --surface-raised: hsl(194, 22%, 32%);
+  --surface-sunken: hsl(194, 20%, 28%);
+  --surface-library: hsl(194, 24%, 38%);
+  --text-library:   hsl(42, 20%, 92%);
+
+  /* Note surfaces — dark variant */
+  --note-bg:    194 18% 28%;
+  --note-border: 194 14% 40%;
+  --note-text:  42 20% 90%;
+
+  /* Shadows — teal-tinted, deeper */
+  --shadow-card: 0 2px 6px hsla(194, 28%, 10%, 0.20),
+                 0 8px 28px -4px hsla(194, 24%, 8%, 0.25),
+                 0 18px 48px -10px hsla(194, 20%, 6%, 0.18);
+  --shadow-card-featured: 0 3px 10px hsla(194, 30%, 8%, 0.22),
+                          0 14px 40px -4px hsla(194, 26%, 6%, 0.28),
+                          0 28px 64px -12px hsla(194, 20%, 4%, 0.18);
+  --radius-card: 1.125rem;
+  --border-card: none;
+
+  /* Product home tokens */
+  --product-title-color: hsl(42, 20%, 92%);
+  --product-subtitle-color: hsl(194, 12%, 68%);
+  --product-button-bg: hsl(41, 78%, 48%);
+  --product-button-text: hsl(194, 30%, 12%);
+  --product-button-shadow: 0 4px 16px -4px hsla(41, 60%, 30%, 0.30);
+
+  /* Completion tokens */
+  --completion-subtitle: hsl(194, 12%, 64%);
+  --completion-label: hsl(194, 10%, 56%);
+  --completion-link: hsl(41, 68%, 56%);
+}
+  --primary: 85 22% 22%;
+  --primary-foreground: 0 0% 100%;
+  --foreground: 80 15% 14%;
+  --text-primary: hsl(80, 15%, 14%);
+  --text-secondary: hsl(80, 8%, 42%);
+  --text-tertiary: hsl(80, 6%, 56%);
+  --accent-saffron: hsl(28, 65%, 50%);
+  --accent-saffron-muted: hsl(28, 42%, 68%);
+  --accent-text: hsl(28, 50%, 40%);
+  --cta-default: hsl(85, 22%, 22%);
+  --cta-hover-v2: hsl(85, 24%, 28%);
+  --cta-active: hsl(85, 20%, 17%);
+  --cta-bg: var(--cta-default);
+  --session-header-bg: hsl(85, 20%, 18%);
+  --session-header-hover: hsl(85, 20%, 24%);
+  --session-header-press: hsl(85, 18%, 15%);
+  --color-button-primary: hsl(85, 22%, 22%);
+  --color-accent: hsl(28, 65%, 50%);
+  --color-accent-soft: hsl(85, 15%, 78%);
+}

@@ -17,6 +17,7 @@ const VALID_THEMES = [
   'plum',
   'teal-noir',
   'deep-fig',
+  'verdigris',
 ] as const;
 
 const VALID_SURFACES = ['lift', 'sculpt', 'paper', 'invite', 'invite-white', 'invite-ivory', 'invite-tinted'] as const;
