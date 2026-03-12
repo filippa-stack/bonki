@@ -16,6 +16,7 @@ import NotificationSettings from '@/components/NotificationSettings';
 
 import ReturnOverlay from '@/components/ReturnOverlay';
 import BackToLibraryButton from '@/components/BackToLibraryButton';
+import stillUsIllustration from '@/assets/illustration-still-us.png';
 import CircadianMenu from '@/components/CircadianMenu';
 import { useThemeVars } from '@/hooks/useThemeVars';
 import { supabase } from '@/integrations/supabase/client';
@@ -217,7 +218,33 @@ export default function Home() {
 
   return (
     <div ref={scrollRef} className="min-h-screen flex flex-col overflow-y-auto relative" style={{ height: '100vh', backgroundColor: 'var(--surface-base)' }}>
-      {/* BackToLibraryButton removed — footer nav handles library access */}
+      {/* Background illustration — Still Us identity */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 1.2, delay: 0.3 }}
+        style={{
+          position: 'absolute',
+          top: '5%',
+          right: '-30%',
+          width: '110%',
+          height: '90%',
+          zIndex: 0,
+          pointerEvents: 'none',
+        }}
+      >
+        <img
+          src={stillUsIllustration}
+          alt=""
+          style={{
+            width: '100%',
+            height: '100%',
+            objectFit: 'contain',
+            objectPosition: 'right top',
+            opacity: 0.07,
+          }}
+        />
+      </motion.div>
       {/* 7+ day return overlay */}
       <AnimatePresence>
         {showReturnOverlay && (
@@ -232,7 +259,7 @@ export default function Home() {
         )}
       </AnimatePresence>
 
-      <div className="flex-1">
+      <div className="flex-1" style={{ position: 'relative', zIndex: 1 }}>
         <div style={headerCompress}>
           <Header showSharedLink showSettings minimal />
         </div>
