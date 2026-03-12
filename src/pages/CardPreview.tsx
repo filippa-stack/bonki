@@ -173,7 +173,7 @@ export default function CardPreview() {
           style={{
             flex: '0 0 auto',
             padding: '16px 24px',
-            paddingBottom: 'calc(80px + env(safe-area-inset-bottom, 0px))',
+            paddingBottom: 'calc(88px + env(safe-area-inset-bottom, 0px))',
             background: 'linear-gradient(0deg, var(--surface-base) 60%, transparent)',
           }}
         >
