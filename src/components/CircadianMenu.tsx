@@ -255,7 +255,10 @@ export default function CircadianMenu({
               const borderDefault = `1px solid rgba(255, 255, 255, 0.12)`;
               const borderGlow = `1px solid rgba(255, 255, 255, 0.22)`;
 
-              const innerGlow = `inset 0 1px 0 0 rgba(255, 255, 255, 0.08), inset 0 0 12px 0 rgba(255, 255, 255, 0.03)`;
+              // Top-edge highlight — simulates overhead light hitting glass
+              const topEdgeHighlight = 'inset 0 1px 0 0 rgba(255, 255, 255, 0.13)';
+
+              const innerGlow = `${topEdgeHighlight}, inset 0 0 12px 0 rgba(255, 255, 255, 0.03)`;
               const breatheBoxShadow = isNextSuggested
                 ? `${innerGlow}, 0 0 16px -2px ${color}35, 0 0 32px -6px ${color}20`
                 : innerGlow;
