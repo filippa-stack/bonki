@@ -349,9 +349,14 @@ export default function CircadianMenu({
                     }}
                   />
                   <motion.div
-                    whileHover={{ scale: 1.02 }}
+                    whileHover={{ scale: 1.02, boxShadow: `0 0 24px -4px ${color}50, 0 0 48px -8px ${color}30` }}
                     whileTap={{ scale: 0.985 }}
-                    style={{ willChange: 'transform' }}
+                    transition={{ duration: 0.25, ease: [0.4, 0, 0.2, 1] }}
+                    style={{
+                      willChange: 'transform',
+                      borderRadius: '14px',
+                      boxShadow: breatheBoxShadow,
+                    }}
                   >
                   <button
                     onClick={() => handleToggle(category.id)}
@@ -367,11 +372,8 @@ export default function CircadianMenu({
                       border: isNextSuggested ? borderGlow : borderDefault,
                       cursor: 'pointer',
                       borderRadius: '14px',
-                      transition: 'background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease',
                       overflow: 'hidden',
                       position: 'relative',
-                      boxShadow: breatheBoxShadow,
-                      // no pulsating animation
                     }}
                   >
                     {/* Thick accent bar */}
