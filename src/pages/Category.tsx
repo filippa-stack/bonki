@@ -118,6 +118,27 @@ const CATEGORY_TITLE_COLOR: Record<string, string> = {
   'jma-nar-det-skaver': '#FAFAF0',
   'jma-att-sta-stadig': '#FAFAF0',
   'jma-vi-i-varlden': '#FAFAF0',
+  // Jag i världen
+  'jiv-min-vardag': '#FAFAF0',
+  'jiv-vem-jag-ar': '#3D4A35',
+  'jiv-jag-och-andra': '#FAFAF0',
+  'jiv-jag-i-samhallet': '#2D4F32',
+  'jiv-det-stora-sammanhanget': '#FAFAF0',
+  // Sexualitet
+  'sex-min-identitet': '#6B3A3F',
+  'sex-normer-och-paverkan': '#5A2A30',
+  'sex-relation-och-ansvar': '#FAFAF0',
+  'sex-skydd-och-makt': '#FAFAF0',
+  // Vardag
+  'vk-var-rytm': '#073B54',
+  'vk-vi-hemma': '#073B54',
+  'vk-jag-vaxer': '#FAFAF0',
+  'vk-jag-och-andra': '#FAFAF0',
+  // Syskon
+  'sk-vi-blev-syskon': '#0A2E5C',
+  'sk-vi-ar-olika': '#0A2E5C',
+  'sk-nar-det-skaver': '#FAFAF0',
+  'sk-nar-livet-forandras': '#FAFAF0',
 };
 
 export default function Category() {
