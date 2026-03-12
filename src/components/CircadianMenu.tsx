@@ -221,16 +221,6 @@ export default function CircadianMenu({
               gap: '10px',
             }}
           >
-            <span
-              style={{
-                width: '12px',
-                height: '1.5px',
-                background: HERITAGE_GOLD,
-                opacity: 0.5,
-                borderRadius: '1px',
-                flexShrink: 0,
-              }}
-            />
             <h2
               style={{
                 fontFamily: 'var(--font-serif)',
@@ -238,8 +228,8 @@ export default function CircadianMenu({
                 fontWeight: 600,
                 letterSpacing: '0.06em',
                 textTransform: 'uppercase',
-                color: 'var(--text-primary)',
-                opacity: 0.65,
+                color: HERITAGE_GOLD,
+                opacity: 0.55,
                 lineHeight: 1,
               }}
             >
@@ -249,27 +239,12 @@ export default function CircadianMenu({
               style={{
                 flex: 1,
                 height: '1px',
-                background: `linear-gradient(90deg, ${HERITAGE_GOLD}40 0%, transparent 100%)`,
-                opacity: 0.35,
+                background: `linear-gradient(90deg, ${HERITAGE_GOLD}30 0%, transparent 100%)`,
               }}
             />
           </motion.div>
 
-          {/* Category tiles with spine */}
-          <div className="flex flex-col" style={{ gap: '7px', position: 'relative', paddingLeft: '16px' }}>
-            {/* Vertical spine */}
-            <div
-              style={{
-                position: 'absolute',
-                left: '5px',
-                top: '12px',
-                bottom: '12px',
-                width: '1.5px',
-                background: 'linear-gradient(180deg, var(--text-primary) 0%, transparent 100%)',
-                opacity: 0.10,
-                borderRadius: '1px',
-              }}
-            />
+          <div className="flex flex-col" style={{ gap: '7px', position: 'relative' }}>
             {group.categories.map((category) => {
               const currentIndex = globalIndex++;
               const color = CIRCADIAN_COLORS[category.id] || '#A2B5A9';
@@ -297,21 +272,6 @@ export default function CircadianMenu({
                   }}
                   style={{ position: 'relative' }}
                 >
-                  {/* Spine node dot */}
-                  <div
-                    style={{
-                      position: 'absolute',
-                      left: '-13.5px',
-                      top: '50%',
-                      transform: 'translateY(-50%)',
-                      width: '5px',
-                      height: '5px',
-                      borderRadius: '50%',
-                      backgroundColor: color,
-                      opacity: allCompleted ? 0.6 : 0.25,
-                      zIndex: 2,
-                    }}
-                  />
                   <motion.button
                     onClick={() => onNavigateToCategory(category.id)}
                     className="w-full text-left circadian-tile"
