@@ -933,18 +933,6 @@ export default function ProductLibrary() {
         </div>
 
         {/* Subtle ambient glow — theatrical spotlight */}
-        <div style={{
-          position: 'absolute',
-          top: '-20%',
-          left: '50%',
-          transform: 'translateX(-50%)',
-          width: '300px',
-          height: '300px',
-          borderRadius: '50%',
-          background: 'radial-gradient(circle, hsla(230, 55%, 30%, 0.18) 0%, transparent 70%)',
-          pointerEvents: 'none',
-          zIndex: 0,
-        }} />
 
         {/* Bridge phrase */}
         <motion.div
