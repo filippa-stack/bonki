@@ -33,13 +33,13 @@ const ACCENT_COLOR = '#9825D6';
 
 /** Ordered tiles: bg, text color, dark flag, outer glow color */
 const ORDERED_TILES: { id: string; bg: string; text: string; dark: boolean; glow: string }[] = [
-  { id: 'jma-att-hora-till', bg: '#E0B1F0', text: '#4A2060', dark: false, glow: 'rgba(224,177,240,0.25)' },
-  { id: 'jma-nar-vi-jamfor-oss', bg: '#5E178A', text: '#FDF5FF', dark: true, glow: 'rgba(94,23,138,0.18)' },
-  { id: 'jma-nar-det-skaver', bg: '#7B2CBF', text: '#FDF5FF', dark: true, glow: 'rgba(123,44,191,0.18)' },
-  { id: 'jma-att-sta-stadig', bg: '#3C096C', text: '#FDF5FF', dark: true, glow: 'rgba(60,9,108,0.20)' },
-  { id: 'jma-vi-i-varlden', bg: '#DEC9E9', text: '#4A2060', dark: false, glow: 'rgba(200,180,220,0.22)' },
+  { id: 'jma-att-hora-till', bg: '#9F7AEA', text: '#FFFDF8', dark: true, glow: 'rgba(159,122,234,0.22)' },
+  { id: 'jma-nar-vi-jamfor-oss', bg: '#5EB1BF', text: '#1A3A40', dark: false, glow: 'rgba(94,177,191,0.20)' },
+  { id: 'jma-nar-det-skaver', bg: '#F59292', text: '#5A2020', dark: false, glow: 'rgba(245,146,146,0.22)' },
+  { id: 'jma-att-sta-stadig', bg: '#7FB069', text: '#1E3314', dark: true, glow: 'rgba(127,176,105,0.20)' },
+  { id: 'jma-vi-i-varlden', bg: '#FFB347', text: '#4A2800', dark: false, glow: 'rgba(255,179,71,0.22)' },
 ];
-const DIARY_COLOR = { bg: '#DEC9E9', text: '#5E178A' };
+const DIARY_COLOR = { bg: '#DEC9E9', text: '#9825D6' };
 
 export default function JagMedAndraProductHome({ product }: { product: ProductManifest }) {
   const navigate = useNavigate();
