@@ -35,23 +35,6 @@ import {
 } from '@/selectors/spaceSnapshotSelectors';
 import { categories as allCategories, cards as allCards } from '@/data/content';
 
-const CATEGORY_ACCENTS: Record<number, string> = {
-  0: 'hsl(158, 35%, 22%)',   // deep green
-  1: 'hsl(38, 70%, 48%)',    // amber
-  2: 'hsl(200, 30%, 38%)',   // slate blue
-  3: 'hsl(10, 40%, 42%)',    // warm terracotta
-  4: 'hsl(80, 25%, 35%)',    // olive
-  5: 'hsl(28, 50%, 40%)',    // burnt sienna
-  6: 'hsl(260, 20%, 40%)',   // muted plum
-  7: 'hsl(45, 55%, 42%)',    // dark gold
-  8: 'hsl(340, 30%, 40%)',   // dusty rose
-  9: 'hsl(170, 25%, 32%)',   // teal
-};
-
-function getCategoryAccent(index: number): string {
-  return CATEGORY_ACCENTS[index] ?? 'hsl(38, 70%, 48%)';
-}
-
 /** Collapsed "Notiser" row — expands inline on tap */
 function NotiserSection() {
   const [open, setOpen] = useState(false);
