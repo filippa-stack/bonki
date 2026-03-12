@@ -80,7 +80,7 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
         }}
         style={{
           position: 'absolute',
-          top: '-8%',
+          top: '2%',
           left: '-42%',
           width: '135%',
           height: '125%',
