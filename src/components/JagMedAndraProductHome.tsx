@@ -233,31 +233,36 @@ export default function JagMedAndraProductHome({ product }: { product: ProductMa
             whileTap={{ scale: 0.97 }}
             onClick={() => navigate(`/diary/${product.id}`)}
             style={{
-              background: `${DIARY_COLOR.bg}88`,
-              border: '1px solid rgba(160, 120, 180, 0.18)',
+              background: DIARY_COLOR.bg,
+              border: '1px solid hsla(0, 0%, 100%, 0.5)',
               cursor: 'pointer',
-              marginTop: '0.5vh',
-              padding: '14px 24px',
-              borderRadius: '16px',
-              boxShadow: '0 2px 10px rgba(44, 36, 32, 0.05)',
+              marginTop: '1vh',
+              padding: '16px 28px',
+              borderRadius: '20px',
+              boxShadow: [
+                '0 6px 20px hsla(280, 30%, 50%, 0.10)',
+                '0 2px 6px hsla(0, 0%, 0%, 0.04)',
+                'inset 0 1px 0 hsla(0, 0%, 100%, 0.6)',
+              ].join(', '),
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              gap: '10px',
-              width: '60%',
-              backdropFilter: 'blur(16px)',
-              WebkitBackdropFilter: 'blur(16px)',
+              gap: '12px',
+              width: '64%',
+              backdropFilter: 'blur(24px) saturate(1.4)',
+              WebkitBackdropFilter: 'blur(24px) saturate(1.4)',
             }}
           >
-            <BookOpen size={16} style={{ color: DIARY_COLOR.text, opacity: 0.55, flexShrink: 0 }} />
+            <BookOpen size={18} strokeWidth={1.8} style={{ color: DIARY_COLOR.text, opacity: 0.7, flexShrink: 0 }} />
             <div style={{ textAlign: 'left' }}>
               <span
                 style={{
                   fontFamily: "'DM Serif Display', var(--font-serif)",
-                  fontSize: 'clamp(15px, 4vw, 18px)',
-                  fontWeight: 400,
+                  fontSize: 'clamp(16px, 4.2vw, 19px)',
+                  fontWeight: 500,
                   color: DIARY_COLOR.text,
                   lineHeight: 1.3,
+                  letterSpacing: '0.01em',
                 }}
               >
                 Vår dagbok
@@ -265,10 +270,10 @@ export default function JagMedAndraProductHome({ product }: { product: ProductMa
               <p
                 className="font-serif"
                 style={{
-                  fontSize: '11px',
-                  color: '#8A8078',
-                  opacity: 0.65,
-                  marginTop: '1px',
+                  fontSize: '12px',
+                  color: 'hsl(280, 30%, 45%)',
+                  opacity: 0.75,
+                  marginTop: '2px',
                   fontStyle: 'italic',
                   lineHeight: 1.3,
                 }}
