@@ -351,6 +351,7 @@ export default function CircadianMenu({
                   <motion.button
                     onClick={() => handleToggle(category.id)}
                     className="w-full text-left circadian-tile"
+                    whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.985 }}
                     style={{
                       display: 'flex',
