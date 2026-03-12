@@ -38,7 +38,7 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
       className="min-h-screen relative overflow-hidden"
       style={{ backgroundColor: 'var(--surface-base)' }}
     >
-      <BackToLibraryButton color={ACCENT_COLOR} />
+      {/* BackToLibraryButton removed — navigation via bottom nav */}
       {/* Background illustration */}
       <motion.div
         initial={{ opacity: 0 }}

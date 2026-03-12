@@ -26,16 +26,16 @@ const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
  * Per-card opacity overrides for illustrations.
  */
 const CARD_ILLUSTRATION_OPACITY: Record<string, number> = {
-  'jim-arg': 0.07, 'jim-vild': 0.08, 'jim-skam': 0.07,
-  'jim-avundsjuk': 0.07, 'jim-svartsjuk': 0.08, 'jim-avsky': 0.08, 'jim-acklad': 0.08,
-  'jim-radd': 0.14, 'jim-glad': 0.14, 'jim-trygg': 0.14, 'jim-nyfiken': 0.14,
-  'jim-jag': 0.18,
-  'jiv-frihet': 0.09, 'jiv-karlek': 0.09, 'jiv-vanskap': 0.09,
-  'jiv-mobbning': 0.09, 'jiv-aktivism': 0.09,
-  'jiv-identitet': 0.14, 'jiv-roller': 0.14,
-  'jma-stopp': 0.09, 'jma-konflikt': 0.09, 'jma-skuld': 0.09, 'jma-skam': 0.09,
-  'sex-pornografi': 0.08, 'sex-sexuella-overgrepp': 0.08, 'sex-sex-som-hot': 0.08,
-  'sk-konflikt': 0.09, 'sk-forlora-ett-syskon': 0.09,
+  'jim-arg': 0.14, 'jim-vild': 0.15, 'jim-skam': 0.14,
+  'jim-avundsjuk': 0.14, 'jim-svartsjuk': 0.15, 'jim-avsky': 0.15, 'jim-acklad': 0.15,
+  'jim-radd': 0.22, 'jim-glad': 0.22, 'jim-trygg': 0.22, 'jim-nyfiken': 0.22,
+  'jim-jag': 0.25,
+  'jiv-frihet': 0.16, 'jiv-karlek': 0.16, 'jiv-vanskap': 0.16,
+  'jiv-mobbning': 0.16, 'jiv-aktivism': 0.16,
+  'jiv-identitet': 0.22, 'jiv-roller': 0.22,
+  'jma-stopp': 0.16, 'jma-konflikt': 0.16, 'jma-skuld': 0.16, 'jma-skam': 0.16,
+  'sex-pornografi': 0.15, 'sex-sexuella-overgrepp': 0.15, 'sex-sex-som-hot': 0.15,
+  'sk-konflikt': 0.16, 'sk-forlora-ett-syskon': 0.16,
 };
 
 const CARD_IMAGE_OVERRIDE: Record<string, string> = {
