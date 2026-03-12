@@ -98,7 +98,7 @@ function ProgressRing({ completed, total, size = 20 }: { completed: number; tota
           initial={{ strokeDashoffset: circumference }}
           animate={{ strokeDashoffset }}
           transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1], delay: 0.3 }}
-          opacity={0.85}
+          opacity={0.65}
         />
       </svg>
       {allDone && (
