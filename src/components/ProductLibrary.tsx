@@ -379,7 +379,7 @@ export default function ProductLibrary() {
       style={{
         background: isDark
           ? '#1A1A2E'
-          : '#DA9D1D',
+          : '#E9B44C',
         fontFamily: "'Lato', sans-serif",
         transition: 'background 600ms ease',
       }}
