@@ -69,7 +69,7 @@ const SECTION_GROUPS = [
 ];
 
 /** Gold progress ring SVG */
-function ProgressRing({ completed, total, size = 24 }: { completed: number; total: number; size?: number }) {
+function ProgressRing({ completed, total, size = 20 }: { completed: number; total: number; size?: number }) {
   const radius = (size - 4) / 2;
   const circumference = 2 * Math.PI * radius;
   const progress = total > 0 ? completed / total : 0;
@@ -85,7 +85,7 @@ function ProgressRing({ completed, total, size = 24 }: { completed: number; tota
           fill="none"
           stroke={HERITAGE_GOLD}
           strokeWidth={2}
-          opacity={0.15}
+          opacity={0.12}
         />
         {/* Progress arc */}
         <motion.circle
@@ -98,7 +98,7 @@ function ProgressRing({ completed, total, size = 24 }: { completed: number; tota
           initial={{ strokeDashoffset: circumference }}
           animate={{ strokeDashoffset }}
           transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1], delay: 0.3 }}
-          opacity={0.85}
+          opacity={0.65}
         />
       </svg>
       {allDone && (
@@ -111,7 +111,7 @@ function ProgressRing({ completed, total, size = 24 }: { completed: number; tota
             display: 'flex', alignItems: 'center', justifyContent: 'center',
           }}
         >
-          <Check size={11} style={{ color: HERITAGE_GOLD }} />
+          <Check size={9} style={{ color: HERITAGE_GOLD }} />
         </motion.div>
       )}
     </div>
@@ -259,7 +259,6 @@ export default function CircadianMenu({
               style={{
                 fontFamily: 'var(--font-serif)',
                 fontSize: '11px',
-                fontStyle: 'italic',
                 color: 'var(--text-secondary)',
                 opacity: 0.75,
                 whiteSpace: 'nowrap',
@@ -387,9 +386,8 @@ export default function CircadianMenu({
                               fontFamily: 'var(--font-serif)',
                               fontSize: '12px',
                               fontWeight: 400,
-                              fontStyle: 'italic',
-                              color: 'var(--text-primary)',
-                              opacity: 0.80,
+                              color,
+                              opacity: 0.70,
                               lineHeight: 1.45,
                               marginTop: '2px',
                             }}
@@ -403,7 +401,7 @@ export default function CircadianMenu({
                       <div style={{ flexShrink: 0 }}>
                         {hasInProgress && !allCompleted ? (
                           <div style={{ position: 'relative' }}>
-                            <ProgressRing completed={completedCount} total={catCards.length} size={24} />
+                            <ProgressRing completed={completedCount} total={catCards.length} size={20} />
                             <span
                               style={{
                                 position: 'absolute',
@@ -416,14 +414,14 @@ export default function CircadianMenu({
                             />
                           </div>
                         ) : completedCount > 0 ? (
-                          <ProgressRing completed={completedCount} total={catCards.length} size={24} />
+                          <ProgressRing completed={completedCount} total={catCards.length} size={20} />
                         ) : (
                           <span
                             style={{
                               fontFamily: 'var(--font-sans)',
                               fontSize: '14px',
                               color: HERITAGE_GOLD,
-                              opacity: 0.35,
+                              opacity: 0.25,
                               transform: isExpanded ? 'rotate(90deg)' : 'rotate(0deg)',
                               transition: 'transform 0.25s ease, opacity 0.25s ease',
                               display: 'inline-block',
