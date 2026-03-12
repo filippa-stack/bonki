@@ -135,7 +135,7 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
             <h1
               style={{
                 fontFamily: "'DM Serif Display', var(--font-serif)",
-                fontSize: 'clamp(40px, 12vw, 56px)',
+                fontSize: 'clamp(36px, 10vw, 50px)',
                 fontWeight: 700,
                 color: ACCENT_COLOR,
                 letterSpacing: '-0.01em',
