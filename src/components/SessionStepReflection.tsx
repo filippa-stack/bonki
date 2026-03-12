@@ -93,9 +93,9 @@ export default function SessionStepReflection({
         flexDirection: 'column',
         flexGrow: 1,
       }}
-      initial={{ opacity: 0, y: 6 }}
+      initial={{ opacity: 0, y: 4 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: BEAT_2, duration: EMOTION, ease: [...EASE] }}
+      transition={{ duration: 0.28, ease: [...EASE] }}
     >
       {/* Expanded textarea — shows above the bottom zone when active */}
       {!hideNoteField && isExpanded && (
