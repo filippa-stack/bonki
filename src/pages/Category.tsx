@@ -92,11 +92,11 @@ const CATEGORY_TITLE_COLOR: Record<string, string> = {
   'jim-nar-det-gor-ont': '#FFFDF5',
   'jim-jag-som-helhet': '#6B6530',
   // Jag med andra
-  'jma-att-hora-till': '#4A2060',
-  'jma-nar-vi-jamfor-oss': '#FDF5FF',
-  'jma-nar-det-skaver': '#FDF5FF',
-  'jma-att-sta-stadig': '#FDF5FF',
-  'jma-vi-i-varlden': '#4A2060',
+  'jma-att-hora-till': '#FFFDF8',
+  'jma-nar-vi-jamfor-oss': '#1A3A40',
+  'jma-nar-det-skaver': '#5A2020',
+  'jma-att-sta-stadig': '#1E3314',
+  'jma-vi-i-varlden': '#4A2800',
 };
 
 export default function Category() {
