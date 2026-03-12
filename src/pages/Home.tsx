@@ -330,7 +330,7 @@ export default function Home() {
                     }}
                   >
                     <div className="flex-1 min-w-0" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
-                      <p className="font-sans" style={{ fontSize: '10px', fontWeight: 500, letterSpacing: '0.12em', textTransform: 'uppercase' as const, color: 'hsl(36, 16%, 92%)', opacity: 0.45, marginBottom: '4px', lineHeight: 1 }}>
+                      <p className="font-sans" style={{ fontSize: '10px', fontWeight: 500, letterSpacing: '0.12em', textTransform: 'uppercase' as const, color: 'hsl(36, 16%, 92%)', opacity: 0.60, marginBottom: '4px', lineHeight: 1 }}>
                         Ni var mitt i
                       </p>
                       <p className="font-serif" style={{ fontSize: '18px', fontWeight: 600, lineHeight: 1.35, color: 'hsl(36, 16%, 92%)', textWrap: 'balance', hyphens: 'auto' } as React.CSSProperties}>
