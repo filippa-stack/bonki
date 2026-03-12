@@ -1014,7 +1014,7 @@ export default function ProductLibrary() {
                       fontWeight: 600,
                       letterSpacing: '0.06em',
                       textTransform: 'uppercase',
-                      color: 'hsla(38, 78%, 58%, 0.8)',
+                      color: '#E9B44C',
                       opacity: 0.8,
                       lineHeight: 1.4,
                     }}
