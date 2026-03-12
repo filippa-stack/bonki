@@ -457,11 +457,11 @@ function StillUsCategoryView({
                     style={{
                       fontFamily: 'var(--font-sans)',
                       fontSize: '10px',
-                      fontWeight: 500,
-                      letterSpacing: '0.06em',
+                      fontWeight: 600,
+                      letterSpacing: '0.08em',
                       textTransform: 'uppercase' as const,
                       color: HERITAGE_GOLD,
-                      opacity: 0.6,
+                      opacity: 0.85,
                       flexShrink: 0,
                     }}
                   >
