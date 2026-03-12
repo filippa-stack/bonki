@@ -202,8 +202,8 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
           padding: wide ? '36px 20px 16px' : '36px 16px 14px',
           position: 'relative',
           overflow: 'hidden',
-          border: '1px solid hsla(30, 15%, 80%, 0.3)',
-          boxShadow: '0 2px 6px hsla(30, 18%, 20%, 0.08), 0 10px 28px -6px hsla(30, 20%, 18%, 0.10)',
+          border: '1px solid hsla(37, 30%, 88%, 0.6)',
+          boxShadow: '0 0 0 1px hsla(0, 0%, 100%, 0.5), 0 2px 8px hsla(36, 40%, 30%, 0.10), 0 12px 32px -8px hsla(36, 35%, 25%, 0.12)',
           gridColumn: wide ? 'span 2' : undefined,
         }}
       >
@@ -376,7 +376,7 @@ export default function ProductLibrary() {
       className="min-h-screen flex flex-col relative"
       style={{
         background: `
-          radial-gradient(ellipse 70% 60% at 50% 45%, #FEF2C7 0%, #FDE68A 80%, #FCDCA0 100%)
+          radial-gradient(ellipse 70% 60% at 50% 45%, #FFF4D1 0%, #FEEEB8 70%, #FDE5A0 100%)
         `,
         fontFamily: "'Lato', sans-serif",
       }}
