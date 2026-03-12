@@ -89,10 +89,10 @@ export default function JagMedAndraProductHome({ product }: { product: ProductMa
         transition={{ duration: 0.6, scale: { duration: 8, ease: 'easeInOut', repeat: Infinity, repeatType: 'reverse' } }}
         style={{
           position: 'absolute',
-          top: '-4%',
-          left: '-40%',
-          width: '160%',
-          height: '130%',
+          top: '-8%',
+          left: '-20%',
+          width: '140%',
+          height: '120%',
           zIndex: 0,
           pointerEvents: 'none',
         }}
