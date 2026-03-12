@@ -18,7 +18,7 @@ interface SessionFocusShellProps {
  * - No chrome — tap screen once to reveal a close X
  * - CTA fades in after 5-second reflection delay
  */
-export default function SessionFocusShell({ children, ctaSlot, onExit }: SessionFocusShellProps) {
+export default function SessionFocusShell({ children, topSlot, ctaSlot, onExit }: SessionFocusShellProps) {
   const [showExit, setShowExit] = useState(false);
   const [showCta, setShowCta] = useState(false);
   const exitTimerRef = useState<ReturnType<typeof setTimeout> | null>(null);
