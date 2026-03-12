@@ -225,7 +225,7 @@ export default function Home() {
         transition={{ duration: 0.4 }}
         style={{
           position: 'absolute',
-          top: '-5%',
+          top: '-12%',
           left: '-25%',
           width: '150%',
           height: '110%',
@@ -240,8 +240,8 @@ export default function Home() {
             width: '100%',
             height: '100%',
             objectFit: 'contain',
-            objectPosition: 'left top',
-            opacity: 0.35,
+            objectPosition: 'center top',
+            opacity: 0.30,
           }}
         />
       </motion.div>
