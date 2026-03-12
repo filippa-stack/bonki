@@ -42,29 +42,15 @@ const CARD_IMAGE_OVERRIDE: Record<string, string> = {
   'jim-jag': mirrorJagIMig,
 };
 
-const CARD_ILLUSTRATION_SCALE: Record<string, number> = {
-  // Normalize perceived visual mass — boost compact illustrations, tame spread-out ones
-  'jim-stolt': 1.15, 'jim-bestamd': 1.30, 'jim-karlek': 1.20,
-  'jim-nyfiken': 1.10, 'jim-forvanad': 1.05, 'jim-jag': 1.10,
-  'jim-trygg': 1.15, 'jim-ensam': 1.10, 'jim-glad': 1.10,
-  'jim-radd': 1.10, 'jim-arg': 1.05, 'jim-vild': 1.05,
-  'jim-skam': 1.20, 'jim-avundsjuk': 1.45, 'jim-svartsjuk': 1.40,
-  'jim-avsky': 1.00, 'jim-acklad': 0.88, 'jim-besviken': 1.40,
-  'jim-utanfor': 0.85, 'jim-ledsen': 1.05, 'jim-stress': 1.05,
-};
-
-const CARD_ILLUSTRATION_NUDGE: Record<string, { x: number; y: number }> = {
-  'jim-arg': { x: 0, y: -4 }, 'jim-vild': { x: 0, y: -3 },
-  'jim-skam': { x: 0, y: -3 }, 'jim-avundsjuk': { x: 0, y: -3 },
-  'jim-svartsjuk': { x: 0, y: -2 }, 'jim-avsky': { x: 0, y: -3 },
-  'jim-acklad': { x: 0, y: -2 }, 'jim-stolt': { x: 2, y: 0 },
-  'jim-bestamd': { x: 0, y: 0 }, 'jim-karlek': { x: 0, y: 0 },
-  'jim-nyfiken': { x: 0, y: 0 }, 'jim-forvanad': { x: 0, y: 0 },
-  'jim-trygg': { x: 0, y: 0 }, 'jim-glad': { x: 0, y: 0 },
-  'jim-radd': { x: 0, y: 0 }, 'jim-ensam': { x: 0, y: 0 },
-  'jim-jag': { x: -4, y: 0 }, 'jim-besviken': { x: 0, y: 0 },
-  'jim-utanfor': { x: 0, y: -1 }, 'jim-ledsen': { x: 0, y: 0 },
-  'jim-stress': { x: 0, y: -1 },
+/** Per-card tile height — taller for spread-out illustrations, shorter for compact ones */
+const CARD_TILE_HEIGHT: Record<string, number> = {
+  'jim-acklad': 300, 'jim-avsky': 260, 'jim-besviken': 270,
+  'jim-avundsjuk': 290, 'jim-svartsjuk': 280, 'jim-utanfor': 290,
+  'jim-skam': 280, 'jim-arg': 260, 'jim-vild': 260,
+  'jim-stolt': 270, 'jim-bestamd': 280, 'jim-karlek': 270,
+  'jim-nyfiken': 260, 'jim-forvanad': 260, 'jim-jag': 270,
+  'jim-trygg': 270, 'jim-ensam': 270, 'jim-glad': 260,
+  'jim-radd': 270, 'jim-ledsen': 270, 'jim-stress': 260,
 };
 
 /** Product-specific design tokens for card listings */
@@ -618,10 +604,11 @@ function CardEntry({ card, index, isCompleted = false, isInProgress = false, onN
   const illustration = CARD_IMAGE_OVERRIDE[card.id] ?? zipIllustration;
 
   const cardBg = categoryBg || styles?.cardBg || '#FFFFFF';
-  // Solid color for gradient scrim
   const solidBg = categoryBg ? (styles?.cardBg || '#F8F3E4') : (styles?.cardBg || '#FFFFFF');
   const titleColor = styles?.cardTitleColor ?? 'var(--text-primary)';
-  const subtitleColor = '#8A8078';
+  // ① Subtitle uses same hue as title but softer
+  const subtitleColor = titleColor;
+  const tileHeight = CARD_TILE_HEIGHT[card.id] ?? 270;
 
   return (
     <motion.div
@@ -654,7 +641,8 @@ function CardEntry({ card, index, isCompleted = false, isInProgress = false, onN
             ? '0px 1px 3px rgba(44, 36, 32, 0.04), 0px 4px 12px -4px rgba(44, 36, 32, 0.04)'
             : '0px 4px 16px rgba(44, 36, 32, 0.08), 0px 12px 32px -8px rgba(44, 36, 32, 0.06)',
           transition: 'transform 200ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 260ms ease-out',
-          minHeight: '260px',
+          // ③ Dynamic tile height per card
+          height: `${tileHeight}px`,
           position: 'relative',
         }}
         onPointerDown={(e) => { e.currentTarget.style.transform = 'scale(0.985)'; }}
@@ -664,7 +652,7 @@ function CardEntry({ card, index, isCompleted = false, isInProgress = false, onN
           e.currentTarget.style.transform = 'translateY(-3px) scale(1.01)';
         }}
       >
-        {/* Illustration — contain keeps entire image visible */}
+        {/* ① Illustration — centered in upper 65% of tile */}
         {illustration && (
           <img
             src={illustration}
@@ -674,21 +662,21 @@ function CardEntry({ card, index, isCompleted = false, isInProgress = false, onN
             className="pointer-events-none select-none"
             style={{
               position: 'absolute',
-              top: '0',
+              top: '4%',
               left: '50%',
               transform: 'translateX(-50%)',
-              width: '92%',
-              height: '88%',
+              width: '88%',
+              height: '65%',
               objectFit: 'contain',
-              objectPosition: 'center top',
-              opacity: isCompleted ? 0.30 : 0.90,
+              objectPosition: 'center center',
+              opacity: isCompleted ? 0.30 : 0.88,
               transition: 'opacity 300ms ease',
               filter: isCompleted ? 'grayscale(0.3)' : 'none',
             }}
           />
         )}
 
-        {/* Gradient scrim for text legibility */}
+        {/* ② Softer, taller gradient scrim — starts higher with gentler curve */}
         <div
           className="pointer-events-none"
           style={{
@@ -696,8 +684,8 @@ function CardEntry({ card, index, isCompleted = false, isInProgress = false, onN
             bottom: 0,
             left: 0,
             right: 0,
-            height: '55%',
-            background: `linear-gradient(180deg, transparent 0%, ${solidBg}B3 45%, ${solidBg}F0 75%, ${solidBg} 100%)`,
+            height: '65%',
+            background: `linear-gradient(180deg, transparent 0%, ${solidBg}40 25%, ${solidBg}99 50%, ${solidBg}DD 70%, ${solidBg}F5 85%, ${solidBg} 100%)`,
             borderRadius: '0 0 20px 20px',
             zIndex: 1,
           }}
@@ -731,9 +719,20 @@ function CardEntry({ card, index, isCompleted = false, isInProgress = false, onN
         <div
           style={{
             position: 'absolute', bottom: 0, left: 0, right: 0, zIndex: 2,
-            padding: '0 24px 20px',
+            padding: '0 24px 18px',
           }}
         >
+          {/* ⑤ Thin accent line as visual anchor */}
+          <div
+            style={{
+              width: '24px',
+              height: '2px',
+              borderRadius: '1px',
+              backgroundColor: titleColor,
+              opacity: isCompleted ? 0.20 : 0.35,
+              marginBottom: '10px',
+            }}
+          />
           <h3
             style={{
               fontFamily: "'DM Serif Display', var(--font-serif)",
@@ -748,7 +747,8 @@ function CardEntry({ card, index, isCompleted = false, isInProgress = false, onN
             <p
               style={{
                 fontFamily: 'var(--font-serif)', fontSize: '13px',
-                color: subtitleColor, opacity: isCompleted ? 0.40 : 0.75,
+                // ④ Better subtitle contrast — same hue as title, lower opacity
+                color: subtitleColor, opacity: isCompleted ? 0.35 : 0.55,
                 lineHeight: 1.45, marginTop: '5px',
               }}
             >
