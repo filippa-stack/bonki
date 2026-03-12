@@ -225,7 +225,7 @@ export default function Home() {
         transition={{ duration: 0.4 }}
         style={{
           position: 'absolute',
-          top: '-12%',
+          top: '-8%',
           left: '-25%',
           width: '150%',
           height: '110%',
@@ -241,7 +241,9 @@ export default function Home() {
             height: '100%',
             objectFit: 'contain',
             objectPosition: 'center top',
-            opacity: 0.30,
+            opacity: 0.25,
+            maskImage: 'linear-gradient(to bottom, rgba(0,0,0,0.4) 0%, rgba(0,0,0,1) 25%, rgba(0,0,0,1) 70%, rgba(0,0,0,0) 100%)',
+            WebkitMaskImage: 'linear-gradient(to bottom, rgba(0,0,0,0.4) 0%, rgba(0,0,0,1) 25%, rgba(0,0,0,1) 70%, rgba(0,0,0,0) 100%)',
           }}
         />
       </motion.div>
