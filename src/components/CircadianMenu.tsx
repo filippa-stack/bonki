@@ -190,7 +190,7 @@ export default function CircadianMenu({
   let globalIndex = 0;
 
   return (
-    <div className="flex flex-col" style={{ gap: '10px', padding: '0 4px', position: 'relative' }}>
+    <div className="flex flex-col" style={{ gap: '6px', padding: '0 4px', position: 'relative' }}>
       {/* Ambient background glow — slow-moving radial gradient */}
       <div
         style={{
