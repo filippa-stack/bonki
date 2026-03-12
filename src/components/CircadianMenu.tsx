@@ -227,7 +227,7 @@ export default function CircadianMenu({
               ease: [...ENTER_EASE],
             }}
             style={{
-              padding: groupIdx === 0 ? '0 8px 10px' : '22px 8px 10px',
+              padding: groupIdx === 0 ? '0 8px 8px' : '32px 8px 8px',
               display: 'flex',
               alignItems: 'baseline',
               gap: '10px',
