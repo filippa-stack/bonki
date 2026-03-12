@@ -31,15 +31,15 @@ const titleVariants = {
 
 const ACCENT_COLOR = '#9825D6';
 
-/** Ordered tiles — muted, sophisticated palette with glass morphism */
-const ORDERED_TILES: { id: string; bg: string; tint: string; text: string }[] = [
-  { id: 'jma-att-hora-till', bg: 'hsla(263, 60%, 68%, 0.38)', tint: 'hsla(263, 50%, 88%, 0.25)', text: 'hsl(263, 38%, 32%)' },
-  { id: 'jma-nar-vi-jamfor-oss', bg: 'hsla(188, 38%, 48%, 0.35)', tint: 'hsla(188, 30%, 85%, 0.22)', text: 'hsl(188, 40%, 22%)' },
-  { id: 'jma-nar-det-skaver', bg: 'hsla(0, 58%, 68%, 0.35)', tint: 'hsla(0, 40%, 88%, 0.22)', text: 'hsl(0, 35%, 28%)' },
-  { id: 'jma-att-sta-stadig', bg: 'hsla(100, 28%, 48%, 0.35)', tint: 'hsla(100, 22%, 86%, 0.22)', text: 'hsl(100, 30%, 20%)' },
-  { id: 'jma-vi-i-varlden', bg: 'hsla(33, 70%, 60%, 0.38)', tint: 'hsla(33, 50%, 88%, 0.25)', text: 'hsl(33, 50%, 22%)' },
+/** Ordered tiles — accent bar color per category */
+const ORDERED_TILES: { id: string; accent: string; text: string }[] = [
+  { id: 'jma-att-hora-till', accent: 'hsl(263, 52%, 62%)', text: 'hsl(263, 35%, 30%)' },
+  { id: 'jma-nar-vi-jamfor-oss', accent: 'hsl(188, 35%, 45%)', text: 'hsl(188, 38%, 20%)' },
+  { id: 'jma-nar-det-skaver', accent: 'hsl(0, 48%, 62%)', text: 'hsl(0, 32%, 28%)' },
+  { id: 'jma-att-sta-stadig', accent: 'hsl(100, 28%, 44%)', text: 'hsl(100, 28%, 18%)' },
+  { id: 'jma-vi-i-varlden', accent: 'hsl(33, 55%, 54%)', text: 'hsl(33, 45%, 22%)' },
 ];
-const DIARY_COLOR = { bg: 'hsla(280, 30%, 85%, 0.32)', text: 'hsl(280, 60%, 40%)' };
+const DIARY_COLOR = { bg: 'hsla(280, 25%, 88%, 0.45)', accent: 'hsl(280, 40%, 62%)', text: 'hsl(280, 50%, 35%)' };
 
 export default function JagMedAndraProductHome({ product }: { product: ProductManifest }) {
   const navigate = useNavigate();
@@ -155,54 +155,77 @@ export default function JagMedAndraProductHome({ product }: { product: ProductMa
             </p>
           </motion.div>
 
-          {/* Category buttons — glass tiles */}
-          {ORDERED_TILES.map((tile, index) => {
+          {/* Category tiles — glass with accent bar */}
+          {ORDERED_TILES.map((tile) => {
             const cat = product.categories.find((c) => c.id === tile.id);
             if (!cat) return null;
-
-            const isFirst = index === 0;
 
             return (
               <motion.button
                 key={cat.id}
                 variants={pillVariants}
-                whileHover={{ scale: 1.04, y: -3 }}
-                whileTap={{ scale: 0.975, y: 1 }}
+                whileHover={{ scale: 1.02, y: -2 }}
+                whileTap={{ scale: 0.985, y: 1 }}
                 onClick={() => navigate(`/category/${cat.id}`)}
                 style={{
-                  background: tile.bg,
-                  borderRadius: '20px',
-                  padding: '0 32px',
-                  textAlign: 'center',
+                  background: 'hsla(0, 0%, 100%, 0.55)',
+                  borderRadius: '16px',
+                  padding: '16px 20px 16px 0',
+                  textAlign: 'left',
                   cursor: 'pointer',
-                  border: '1px solid hsla(0, 0%, 100%, 0.45)',
-                  boxShadow: [
-                    '0 4px 20px hsla(0, 0%, 0%, 0.06)',
-                    '0 1px 3px hsla(0, 0%, 0%, 0.04)',
-                    `inset 0 1px 0 hsla(0, 0%, 100%, 0.5)`,
-                  ].join(', '),
-                  whiteSpace: 'normal' as const,
-                  width: '84%',
-                  minHeight: isFirst ? '72px' : '64px',
+                  border: '1px solid hsla(0, 0%, 100%, 0.6)',
+                  boxShadow: '0 4px 20px hsla(0, 0%, 0%, 0.05), 0 1px 3px hsla(0, 0%, 0%, 0.03)',
+                  width: '100%',
                   display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  lineHeight: 1.3,
-                  backdropFilter: 'blur(20px) saturate(1.3)',
-                  WebkitBackdropFilter: 'blur(20px) saturate(1.3)',
+                  alignItems: 'stretch',
+                  gap: '0',
+                  backdropFilter: 'blur(16px) saturate(1.2)',
+                  WebkitBackdropFilter: 'blur(16px) saturate(1.2)',
+                  overflow: 'hidden',
                 }}
               >
-                <span
+                {/* Accent bar */}
+                <div
                   style={{
-                    fontFamily: "'DM Serif Display', var(--font-serif)",
-                    fontSize: 'clamp(20px, 5.5vw, 26px)',
-                    fontWeight: 400,
-                    color: tile.text,
-                    textShadow: '0 1px 3px hsla(0, 0%, 100%, 0.6)',
+                    width: '4px',
+                    flexShrink: 0,
+                    borderRadius: '0 4px 4px 0',
+                    background: tile.accent,
+                    marginLeft: '0',
+                    marginRight: '16px',
+                    minHeight: '100%',
+                    alignSelf: 'stretch',
                   }}
-                >
-                  {cat.title}
-                </span>
+                />
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <span
+                    style={{
+                      fontFamily: "'DM Serif Display', var(--font-serif)",
+                      fontSize: 'clamp(18px, 5vw, 22px)',
+                      fontWeight: 600,
+                      color: tile.text,
+                      display: 'block',
+                      lineHeight: 1.25,
+                    }}
+                  >
+                    {cat.title}
+                  </span>
+                  {cat.subtitle && (
+                    <span
+                      className="font-serif"
+                      style={{
+                        fontSize: 'clamp(12px, 3.2vw, 14px)',
+                        color: 'hsl(30, 10%, 40%)',
+                        display: 'block',
+                        marginTop: '4px',
+                        lineHeight: 1.4,
+                        opacity: 0.75,
+                      }}
+                    >
+                      {cat.subtitle}
+                    </span>
+                  )}
+                </div>
               </motion.button>
             );
           })}
@@ -228,28 +251,39 @@ export default function JagMedAndraProductHome({ product }: { product: ProductMa
           {/* Diary entrance */}
           <motion.button
             variants={pillVariants}
-            whileHover={{ scale: 1.03, y: -2 }}
-            whileTap={{ scale: 0.97 }}
+            whileHover={{ scale: 1.02, y: -2 }}
+            whileTap={{ scale: 0.985 }}
             onClick={() => navigate(`/diary/${product.id}`)}
             style={{
-              background: `${DIARY_COLOR.bg}88`,
-              border: '1px solid rgba(160, 120, 180, 0.18)',
+              background: DIARY_COLOR.bg,
+              border: '1px solid hsla(0, 0%, 100%, 0.5)',
               cursor: 'pointer',
               marginTop: '0.5vh',
-              padding: '14px 24px',
+              padding: '14px 20px 14px 0',
               borderRadius: '16px',
-              boxShadow: '0 2px 10px rgba(44, 36, 32, 0.05)',
+              boxShadow: '0 2px 12px hsla(0, 0%, 0%, 0.04)',
               display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: '10px',
-              width: '60%',
+              alignItems: 'stretch',
+              gap: '0',
+              width: '100%',
               backdropFilter: 'blur(16px)',
               WebkitBackdropFilter: 'blur(16px)',
+              overflow: 'hidden',
             }}
           >
-            <BookOpen size={16} style={{ color: DIARY_COLOR.text, opacity: 0.55, flexShrink: 0 }} />
-            <div style={{ textAlign: 'left' }}>
+            <div
+              style={{
+                width: '4px',
+                flexShrink: 0,
+                borderRadius: '0 4px 4px 0',
+                background: DIARY_COLOR.accent,
+                marginRight: '16px',
+                alignSelf: 'stretch',
+                opacity: 0.6,
+              }}
+            />
+            <BookOpen size={16} style={{ color: DIARY_COLOR.text, opacity: 0.5, flexShrink: 0, marginTop: '3px', marginRight: '10px' }} />
+            <div>
               <span
                 style={{
                   fontFamily: "'DM Serif Display', var(--font-serif)",
@@ -265,9 +299,9 @@ export default function JagMedAndraProductHome({ product }: { product: ProductMa
                 className="font-serif"
                 style={{
                   fontSize: '11px',
-                  color: '#8A8078',
+                  color: 'hsl(30, 10%, 50%)',
                   opacity: 0.65,
-                  marginTop: '1px',
+                  marginTop: '2px',
                   fontStyle: 'italic',
                   lineHeight: 1.3,
                 }}
