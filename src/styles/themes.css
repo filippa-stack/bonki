@@ -701,8 +701,8 @@
   --text-library:   hsl(38, 25%, 92%);
 
   /* Note surfaces — midnight variant */
-  --note-bg:    215 25% 18%;
-  --note-border: 215 20% 30%;
+  --note-bg:    192 40% 16%;
+  --note-border: 192 25% 28%;
   --note-text:  38 25% 90%;
 
   /* Shadows — midnight-tinted, deep */
