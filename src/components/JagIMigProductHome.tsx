@@ -136,11 +136,13 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
           </motion.div>
 
           {/* Category buttons — puffy candy-like glass tiles */}
-          {ORDERED_TILES.map((tile) => {
+          {ORDERED_TILES.map((tile, index) => {
             const cat = product.categories.find((c) => c.id === tile.id);
             if (!cat) return null;
 
             const isDark = tile.dark;
+            const isFirst = index === 0;
+            const isLightestTile = tile.id === 'jim-jag-som-helhet';
 
             return (
               <motion.button
@@ -157,21 +159,20 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
                   padding: '0 32px',
                   textAlign: 'center',
                   cursor: 'pointer',
-                  border: isDark
-                    ? '1px solid rgba(255,255,255,0.3)'
-                    : '1.5px solid rgba(255,255,255,0.7)',
+                  border: isLightestTile
+                    ? '1.5px solid rgba(180, 170, 120, 0.3)'
+                    : isDark
+                      ? '1px solid rgba(255,255,255,0.3)'
+                      : '1.5px solid rgba(255,255,255,0.7)',
                   boxShadow: [
-                    // Outer depth
                     `0 6px 24px ${tile.glow}`,
-                    `0 2px 6px rgba(44, 36, 32, 0.08)`,
-                    // Inner top highlight — the "puff"
+                    isLightestTile ? '0 3px 10px rgba(160,140,60,0.10)' : `0 2px 6px rgba(44, 36, 32, 0.08)`,
                     `inset 0 2px 1px rgba(255,255,255,${isDark ? '0.35' : '0.8'})`,
-                    // Inner bottom shadow — grounding
                     `inset 0 -3px 6px rgba(0,0,0,${isDark ? '0.08' : '0.03'})`,
                   ].join(', '),
                   whiteSpace: 'normal' as const,
                   width: '84%',
-                  minHeight: '68px',
+                  minHeight: isFirst ? '76px' : '68px',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
