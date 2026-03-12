@@ -706,12 +706,12 @@
   --note-text:  38 25% 90%;
 
   /* Shadows — midnight-tinted, deep */
-  --shadow-card: 0 2px 6px hsla(230, 40%, 6%, 0.30),
-                 0 8px 28px -4px hsla(230, 35%, 4%, 0.35),
-                 0 18px 48px -10px hsla(230, 30%, 3%, 0.25);
-  --shadow-card-featured: 0 3px 10px hsla(230, 40%, 5%, 0.35),
-                          0 14px 40px -4px hsla(230, 35%, 3%, 0.40),
-                          0 28px 64px -12px hsla(230, 30%, 2%, 0.25);
+  --shadow-card: 0 2px 6px hsla(192, 50%, 6%, 0.30),
+                 0 8px 28px -4px hsla(192, 45%, 4%, 0.35),
+                 0 18px 48px -10px hsla(192, 40%, 3%, 0.25);
+  --shadow-card-featured: 0 3px 10px hsla(192, 50%, 5%, 0.35),
+                          0 14px 40px -4px hsla(192, 45%, 3%, 0.40),
+                          0 28px 64px -12px hsla(192, 40%, 2%, 0.25);
   --radius-card: 1.125rem;
   --border-card: none;
 
