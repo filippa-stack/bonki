@@ -60,7 +60,7 @@ const CATEGORY_COLORS: Record<string, {
 };
 
 /* ── Motion ── */
-const EASE = [0.4, 0.0, 0.2, 1] as const;
+const EASE = [0.4, 0.0, 0.2, 1] as [number, number, number, number];
 
 const containerVariants = {
   hidden: {},
@@ -71,7 +71,7 @@ const itemVariants = {
   hidden: { opacity: 0, y: 18, scale: 0.97 },
   visible: {
     opacity: 1, y: 0, scale: 1,
-    transition: { duration: 0.55, ease: [...EASE] },
+    transition: { duration: 0.55, ease: EASE },
   },
 };
 
