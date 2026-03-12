@@ -270,7 +270,7 @@ export default function CircadianMenu({
           </motion.div>
 
           {/* Category tiles in this group */}
-          <div className="flex flex-col" style={{ gap: '8px' }}>
+          <div className="flex flex-col" style={{ gap: '7px' }}>
             {group.categories.map((category) => {
               const currentIndex = globalIndex++;
               const isExpanded = expandedId === category.id;
