@@ -79,7 +79,7 @@ export default function JagMedAndraProductHome({ product }: { product: ProductMa
       className="min-h-screen relative overflow-hidden"
       style={{ backgroundColor: 'var(--surface-base)' }}
     >
-      <BackToLibraryButton color={ACCENT_COLOR} />
+      
 
       {/* Background illustration — sloth (breathing) */}
       <motion.div
