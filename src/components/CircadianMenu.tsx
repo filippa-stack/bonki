@@ -389,7 +389,7 @@ export default function CircadianMenu({
                               fontWeight: 400,
                               fontStyle: 'italic',
                               color: 'var(--text-secondary)',
-                              opacity: 0.55,
+                              opacity: 0.65,
                               lineHeight: 1.45,
                               marginTop: '2px',
                             }}
