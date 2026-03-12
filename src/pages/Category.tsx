@@ -42,29 +42,15 @@ const CARD_IMAGE_OVERRIDE: Record<string, string> = {
   'jim-jag': mirrorJagIMig,
 };
 
-const CARD_ILLUSTRATION_SCALE: Record<string, number> = {
-  // Normalize perceived visual mass — boost compact illustrations, tame spread-out ones
-  'jim-stolt': 1.15, 'jim-bestamd': 1.30, 'jim-karlek': 1.20,
-  'jim-nyfiken': 1.10, 'jim-forvanad': 1.05, 'jim-jag': 1.10,
-  'jim-trygg': 1.15, 'jim-ensam': 1.10, 'jim-glad': 1.10,
-  'jim-radd': 1.10, 'jim-arg': 1.05, 'jim-vild': 1.05,
-  'jim-skam': 1.20, 'jim-avundsjuk': 1.45, 'jim-svartsjuk': 1.40,
-  'jim-avsky': 1.00, 'jim-acklad': 0.88, 'jim-besviken': 1.40,
-  'jim-utanfor': 0.85, 'jim-ledsen': 1.05, 'jim-stress': 1.05,
-};
-
-const CARD_ILLUSTRATION_NUDGE: Record<string, { x: number; y: number }> = {
-  'jim-arg': { x: 0, y: -4 }, 'jim-vild': { x: 0, y: -3 },
-  'jim-skam': { x: 0, y: -3 }, 'jim-avundsjuk': { x: 0, y: -3 },
-  'jim-svartsjuk': { x: 0, y: -2 }, 'jim-avsky': { x: 0, y: -3 },
-  'jim-acklad': { x: 0, y: -2 }, 'jim-stolt': { x: 2, y: 0 },
-  'jim-bestamd': { x: 0, y: 0 }, 'jim-karlek': { x: 0, y: 0 },
-  'jim-nyfiken': { x: 0, y: 0 }, 'jim-forvanad': { x: 0, y: 0 },
-  'jim-trygg': { x: 0, y: 0 }, 'jim-glad': { x: 0, y: 0 },
-  'jim-radd': { x: 0, y: 0 }, 'jim-ensam': { x: 0, y: 0 },
-  'jim-jag': { x: -4, y: 0 }, 'jim-besviken': { x: 0, y: 0 },
-  'jim-utanfor': { x: 0, y: -1 }, 'jim-ledsen': { x: 0, y: 0 },
-  'jim-stress': { x: 0, y: -1 },
+/** Per-card tile height — taller for spread-out illustrations, shorter for compact ones */
+const CARD_TILE_HEIGHT: Record<string, number> = {
+  'jim-acklad': 300, 'jim-avsky': 260, 'jim-besviken': 270,
+  'jim-avundsjuk': 290, 'jim-svartsjuk': 280, 'jim-utanfor': 290,
+  'jim-skam': 280, 'jim-arg': 260, 'jim-vild': 260,
+  'jim-stolt': 270, 'jim-bestamd': 280, 'jim-karlek': 270,
+  'jim-nyfiken': 260, 'jim-forvanad': 260, 'jim-jag': 270,
+  'jim-trygg': 270, 'jim-ensam': 270, 'jim-glad': 260,
+  'jim-radd': 270, 'jim-ledsen': 270, 'jim-stress': 260,
 };
 
 /** Product-specific design tokens for card listings */
