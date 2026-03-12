@@ -512,7 +512,7 @@ export default function CircadianMenu({
                                     fontSize: '14px',
                                     fontWeight: 400,
                                     color: 'var(--text-primary)',
-                                    opacity: isCardCompleted ? 0.5 : 0.80,
+                                    opacity: isCardCompleted ? 0.55 : 0.90,
                                     lineHeight: 1.4,
                                     textDecoration: isCardCompleted ? 'line-through' : 'none',
                                     textDecorationColor: isCardCompleted ? `${color}40` : undefined,

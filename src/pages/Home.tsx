@@ -489,8 +489,8 @@ export default function Home() {
                       fontStyle: 'italic',
                       fontSize: '14px',
                       color: 'var(--accent-text)',
-                      opacity: 0.35,
-                      marginTop: '16px',
+                       opacity: 0.50,
+                       marginTop: '16px',
                     }}>
                       Samtalet börjar här.
                     </p>
