@@ -72,7 +72,7 @@ const PRODUCT_STYLES: Record<string, {
 
 /** Category-specific tile background colors (matching product homescreen tiles) */
 const CATEGORY_CARD_BG: Record<string, string> = {
-  // Jag i mig — softened to avoid overpowering illustrations
+  // Jag i mig
   'jim-tryggheten-inuti': '#CDD625',
   'jim-kanslorna-jag-bar': '#F2F89B',
   'jim-nar-det-gor-ont': '#6B7A45',
@@ -83,6 +83,27 @@ const CATEGORY_CARD_BG: Record<string, string> = {
   'jma-nar-det-skaver': '#BD7BEE',
   'jma-att-sta-stadig': '#5A189A',
   'jma-vi-i-varlden': '#240046',
+  // Jag i världen
+  'jiv-min-vardag': '#84C289',
+  'jiv-vem-jag-ar': '#F5EFE6',
+  'jiv-jag-och-andra': '#D9A07B',
+  'jiv-jag-i-samhallet': '#A3C7A7',
+  'jiv-det-stora-sammanhanget': '#5D6353',
+  // Sexualitet
+  'sex-min-identitet': '#FFF2F3',
+  'sex-normer-och-paverkan': '#FBB1B8',
+  'sex-relation-och-ansvar': '#E87A84',
+  'sex-skydd-och-makt': '#AD5D65',
+  // Vardag
+  'vk-var-rytm': '#EBF7FF',
+  'vk-vi-hemma': '#99CCE6',
+  'vk-jag-vaxer': '#0F6B99',
+  'vk-jag-och-andra': '#073B54',
+  // Syskon
+  'sk-vi-blev-syskon': '#D6E8F7',
+  'sk-vi-ar-olika': '#7AB3D9',
+  'sk-nar-det-skaver': '#0F4E99',
+  'sk-nar-livet-forandras': '#0A2E5C',
 };
 
 /** Category-specific card title colors (matching homescreen tile text) */
