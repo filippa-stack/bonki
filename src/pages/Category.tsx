@@ -604,11 +604,162 @@ function CardEntry({ card, index, isCompleted = false, isInProgress = false, onN
   const illustration = CARD_IMAGE_OVERRIDE[card.id] ?? zipIllustration;
 
   const cardBg = categoryBg || styles?.cardBg || '#FFFFFF';
-  // Solid color for gradient scrim
   const solidBg = categoryBg ? (styles?.cardBg || '#F8F3E4') : (styles?.cardBg || '#FFFFFF');
   const titleColor = styles?.cardTitleColor ?? 'var(--text-primary)';
-  const subtitleColor = '#8A8078';
+  // ① Subtitle uses same hue as title but softer
+  const subtitleColor = titleColor;
+  const tileHeight = CARD_TILE_HEIGHT[card.id] ?? 270;
 
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 12, scale: 0.97 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
+      transition={{ delay: index * 0.07, duration: 0.55, ease: EASE }}
+      style={{ marginBottom: isLast ? '0' : '20px' }}
+    >
+      <div
+        onClick={onNavigate}
+        role="button"
+        tabIndex={0}
+        aria-label={card.title}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onNavigate(); }
+        }}
+        className="w-full cursor-pointer group relative overflow-hidden"
+        style={{
+          padding: '0',
+          background: categoryBg
+            ? categoryBg
+            : isCompleted
+              ? `linear-gradient(180deg, ${cardBg}CC 0%, ${cardBg}AA 100%)`
+              : `linear-gradient(180deg, ${cardBg} 0%, ${cardBg}E8 100%)`,
+          backdropFilter: categoryBg ? 'blur(16px)' : undefined,
+          WebkitBackdropFilter: categoryBg ? 'blur(16px)' : undefined,
+          border: 'none',
+          borderRadius: '20px',
+          boxShadow: isCompleted
+            ? '0px 1px 3px rgba(44, 36, 32, 0.04), 0px 4px 12px -4px rgba(44, 36, 32, 0.04)'
+            : '0px 4px 16px rgba(44, 36, 32, 0.08), 0px 12px 32px -8px rgba(44, 36, 32, 0.06)',
+          transition: 'transform 200ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 260ms ease-out',
+          // ③ Dynamic tile height per card
+          height: `${tileHeight}px`,
+          position: 'relative',
+        }}
+        onPointerDown={(e) => { e.currentTarget.style.transform = 'scale(0.985)'; }}
+        onPointerUp={(e) => { e.currentTarget.style.transform = ''; }}
+        onPointerLeave={(e) => { e.currentTarget.style.transform = ''; }}
+        onPointerEnter={(e) => {
+          e.currentTarget.style.transform = 'translateY(-3px) scale(1.01)';
+        }}
+      >
+        {/* ① Illustration — centered in upper 65% of tile */}
+        {illustration && (
+          <img
+            src={illustration}
+            alt=""
+            aria-hidden="true"
+            draggable={false}
+            className="pointer-events-none select-none"
+            style={{
+              position: 'absolute',
+              top: '4%',
+              left: '50%',
+              transform: 'translateX(-50%)',
+              width: '88%',
+              height: '65%',
+              objectFit: 'contain',
+              objectPosition: 'center center',
+              opacity: isCompleted ? 0.30 : 0.88,
+              transition: 'opacity 300ms ease',
+              filter: isCompleted ? 'grayscale(0.3)' : 'none',
+            }}
+          />
+        )}
+
+        {/* ② Softer, taller gradient scrim — starts higher with gentler curve */}
+        <div
+          className="pointer-events-none"
+          style={{
+            position: 'absolute',
+            bottom: 0,
+            left: 0,
+            right: 0,
+            height: '65%',
+            background: `linear-gradient(180deg, transparent 0%, ${solidBg}40 25%, ${solidBg}99 50%, ${solidBg}DD 70%, ${solidBg}F5 85%, ${solidBg} 100%)`,
+            borderRadius: '0 0 20px 20px',
+            zIndex: 1,
+          }}
+        />
+
+        {/* Status badges */}
+        {isCompleted && (
+          <span
+            style={{
+              position: 'absolute', top: '12px', right: '16px', zIndex: 2,
+              fontFamily: 'var(--font-sans)', fontSize: '10px',
+              letterSpacing: '0.06em', textTransform: 'uppercase',
+              color: titleColor, opacity: 0.45, fontWeight: 500,
+            }}
+          >
+            Utforskad
+          </span>
+        )}
+        {isInProgress && (
+          <span
+            style={{
+              position: 'absolute', top: '12px', right: '16px', zIndex: 2,
+              display: 'inline-block', width: '8px', height: '8px',
+              borderRadius: '50%', backgroundColor: titleColor,
+              animation: 'saffron-pulse 2.0s ease-in-out infinite',
+            }}
+          />
+        )}
+
+        {/* Text — bottom-anchored in gradient zone */}
+        <div
+          style={{
+            position: 'absolute', bottom: 0, left: 0, right: 0, zIndex: 2,
+            padding: '0 24px 18px',
+          }}
+        >
+          {/* ⑤ Thin accent line as visual anchor */}
+          <div
+            style={{
+              width: '24px',
+              height: '2px',
+              borderRadius: '1px',
+              backgroundColor: titleColor,
+              opacity: isCompleted ? 0.20 : 0.35,
+              marginBottom: '10px',
+            }}
+          />
+          <h3
+            style={{
+              fontFamily: "'DM Serif Display', var(--font-serif)",
+              fontSize: '24px', fontWeight: 400,
+              color: titleColor, opacity: isCompleted ? 0.55 : 1,
+              lineHeight: 1.2,
+            }}
+          >
+            {card.title}
+          </h3>
+          {card.subtitle && (
+            <p
+              style={{
+                fontFamily: 'var(--font-serif)', fontSize: '13px',
+                // ④ Better subtitle contrast — same hue as title, lower opacity
+                color: subtitleColor, opacity: isCompleted ? 0.35 : 0.55,
+                lineHeight: 1.45, marginTop: '5px',
+              }}
+            >
+              {card.subtitle}
+            </p>
+          )}
+        </div>
+      </div>
+    </motion.div>
+  );
+}
   return (
     <motion.div
       initial={{ opacity: 0, y: 12, scale: 0.97 }}
