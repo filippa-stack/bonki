@@ -415,8 +415,7 @@ export default function Home() {
                   }}>
                     <p style={{
                       fontFamily: 'var(--font-serif)',
-                      fontStyle: 'italic',
-                      fontSize: '14px',
+                       fontSize: '14px',
                       fontWeight: 400,
                       color: 'var(--accent-saffron)',
                       opacity: 0.70,
