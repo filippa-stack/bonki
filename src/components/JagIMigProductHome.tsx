@@ -115,7 +115,7 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
                 color: ACCENT_COLOR,
                 letterSpacing: '-0.01em',
                 whiteSpace: 'nowrap',
-                textShadow: `0 0 32px rgba(180, 160, 40, 0.3), 0 0 64px rgba(180, 160, 40, 0.12), 0 2px 4px rgba(0,0,0,0.06)`,
+                textShadow: 'none',
               }}
             >
               Jag i mig
