@@ -284,15 +284,19 @@ function StillUsCategoryView({
         animate={{ opacity: 1 }}
         transition={{ duration: 0.5 }}
         style={{
-          position: 'absolute', top: '5%', left: '-42%',
-          width: '135%', height: '125%',
+          position: 'absolute', top: '-8%', left: '-25%',
+          width: '150%', height: '110%',
           zIndex: 0, pointerEvents: 'none',
         }}
       >
         <img
           src={stillUsIllustration}
           alt=""
-          style={{ width: '100%', height: '100%', objectFit: 'contain', objectPosition: 'left top', opacity: 0.30 }}
+          style={{
+            width: '100%', height: '100%', objectFit: 'contain', objectPosition: 'center top', opacity: 0.30,
+            maskImage: 'linear-gradient(to bottom, rgba(0,0,0,0.4) 0%, rgba(0,0,0,1) 25%, rgba(0,0,0,1) 70%, rgba(0,0,0,0) 100%)',
+            WebkitMaskImage: 'linear-gradient(to bottom, rgba(0,0,0,0.4) 0%, rgba(0,0,0,1) 25%, rgba(0,0,0,1) 70%, rgba(0,0,0,0) 100%)',
+          }}
         />
       </motion.div>
 
