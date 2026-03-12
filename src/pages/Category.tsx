@@ -233,6 +233,7 @@ export default function Category() {
             isLast={index === cards.length - 1}
             styles={styles}
             categoryBg={categoryId ? CATEGORY_CARD_BG[categoryId] : undefined}
+            categoryId={categoryId}
           />
         ))}
 
