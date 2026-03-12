@@ -167,7 +167,9 @@ export default function CardView() {
     product?.ctaButtonColor,
   );
 
-  // Track card visit for analytics
+  // Apply Verdigris theme for Still Us cards
+  useVerdigrisTheme(isStillUsCard);
+
   const { recordVisit } = useCardVisit();
   useEffect(() => {
     if (cardId) recordVisit(cardId);
