@@ -217,6 +217,22 @@ export default function Home() {
 
   return (
     <div ref={scrollRef} className="min-h-screen flex flex-col overflow-y-auto relative" style={{ height: '100vh', backgroundColor: 'var(--surface-base)' }}>
+      {/* Saffron backlight — warm glow behind illustration */}
+      <div
+        style={{
+          position: 'absolute',
+          top: '5%',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          width: '280px',
+          height: '280px',
+          borderRadius: '50%',
+          background: 'radial-gradient(circle, hsla(38, 72%, 50%, 0.12) 0%, hsla(38, 60%, 45%, 0.04) 50%, transparent 75%)',
+          pointerEvents: 'none',
+          zIndex: 0,
+          filter: 'blur(30px)',
+        }}
+      />
       {/* Background illustration — Still Us identity */}
       <motion.div
         initial={{ opacity: 0 }}
