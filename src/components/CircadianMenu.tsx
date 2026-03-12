@@ -1,8 +1,7 @@
 import { useState, useMemo, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { Category, Card } from '@/types';
 import { Check } from 'lucide-react';
-import TopicPreviewOverlay from '@/components/TopicPreviewOverlay';
 
 /**
  * Circadian color mapping — reflects psychological shift
@@ -20,7 +19,7 @@ export const CIRCADIAN_COLORS: Record<string, string> = {
   'category-10':        '#313658',
 };
 
-/** Darker variants for subtitle text — higher contrast on glass tiles */
+/** Lighter variants for subtitle text — higher contrast on glass tiles */
 const CIRCADIAN_COLORS_DARK: Record<string, string> = {
   'emotional-intimacy': '#D0DDD5',
   'communication':      '#A8C7B5',
@@ -92,7 +91,6 @@ function ProgressRing({ completed, total, size = 20 }: { completed: number; tota
   return (
     <div style={{ position: 'relative', width: size, height: size, flexShrink: 0 }}>
       <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} style={{ transform: 'rotate(-90deg)' }}>
-        {/* Track */}
         <circle
           cx={size / 2} cy={size / 2} r={radius}
           fill="none"
@@ -100,7 +98,6 @@ function ProgressRing({ completed, total, size = 20 }: { completed: number; tota
           strokeWidth={2}
           opacity={0.12}
         />
-        {/* Progress arc */}
         <motion.circle
           cx={size / 2} cy={size / 2} r={radius}
           fill="none"
@@ -146,27 +143,13 @@ export default function CircadianMenu({
   completedCardIds,
   inProgressCardIds,
   onNavigateToCategory,
-  onNavigateToCard,
 }: CircadianMenuProps) {
-  const [expandedId, setExpandedId] = useState<string | null>(null);
-  const [previewCard, setPreviewCard] = useState<Card | null>(null);
-  const [previewCategory, setPreviewCategory] = useState<Category | null>(null);
-  const [previewColor, setPreviewColor] = useState('#A2B5A9');
-  const [overlayOpen, setOverlayOpen] = useState(false);
   const [hasEntered, setHasEntered] = useState(false);
 
   useEffect(() => {
     const timer = setTimeout(() => setHasEntered(true), 800);
     return () => clearTimeout(timer);
   }, []);
-
-  const handleCardClick = (card: Card, category: Category) => {
-    const color = CIRCADIAN_COLORS[category.id] || '#A2B5A9';
-    setPreviewCard(card);
-    setPreviewCategory(category);
-    setPreviewColor(color);
-    setOverlayOpen(true);
-  };
 
   const categoryCards = useMemo(() => {
     const map = new Map<string, Card[]>();
@@ -186,10 +169,6 @@ export default function CircadianMenu({
     return null;
   }, [categories, categoryCards, completedCardIds]);
 
-  const handleToggle = (categoryId: string) => {
-    setExpandedId(prev => prev === categoryId ? null : categoryId);
-  };
-
   // Build ordered groups from current categories
   const groups = useMemo(() => {
     return SECTION_GROUPS.map(group => ({
@@ -204,7 +183,7 @@ export default function CircadianMenu({
 
   return (
     <div className="flex flex-col" style={{ gap: '6px', padding: '0 4px', position: 'relative' }}>
-      {/* Ambient background glow — slow-moving radial gradient */}
+      {/* Ambient background glow */}
       <div
         style={{
           position: 'absolute',
@@ -221,10 +200,6 @@ export default function CircadianMenu({
           0% { transform: translate(0, 0) scale(1); }
           50% { transform: translate(8px, -12px) scale(1.03); }
           100% { transform: translate(-6px, 8px) scale(0.98); }
-        }
-        @keyframes breathe-glow {
-          0%, 100% { opacity: 0.4; }
-          50% { opacity: 1; }
         }
       `}</style>
 
@@ -298,23 +273,17 @@ export default function CircadianMenu({
             />
             {group.categories.map((category) => {
               const currentIndex = globalIndex++;
-              const isExpanded = expandedId === category.id;
-              const isDimmed = expandedId !== null && !isExpanded;
               const color = CIRCADIAN_COLORS[category.id] || '#A2B5A9';
               const fillDefault = CIRCADIAN_FILLS[category.id] || 'rgba(162, 181, 169, 0.28)';
               const fillHover = CIRCADIAN_FILLS_HOVER[category.id] || 'rgba(162, 181, 169, 0.42)';
               const catCards = categoryCards.get(category.id) || [];
               const completedCount = catCards.filter(c => completedCardIds.includes(c.id)).length;
               const allCompleted = completedCount === catCards.length && catCards.length > 0;
-              const hasInProgress = catCards.some(c =>
-                inProgressCardIds.includes(c.id) && !completedCardIds.includes(c.id)
-              );
               const isNextSuggested = category.id === nextSuggestedId && hasEntered;
 
               const borderDefault = `1px solid ${color}73`;
               const borderGlow = `1px solid ${color}`;
 
-              // Breathing glow for suggested next category
               const breatheBoxShadow = isNextSuggested
                 ? `0 0 16px -2px ${color}35, 0 0 32px -6px ${color}20`
                 : 'none';
@@ -323,12 +292,8 @@ export default function CircadianMenu({
                 <motion.div
                   key={category.id}
                   initial={{ opacity: 0, y: 18 }}
-                  animate={{
-                    opacity: isDimmed ? 0.20 : 1,
-                    y: 0,
-                  }}
+                  animate={{ opacity: 1, y: 0 }}
                   transition={{
-                    opacity: { duration: 0.35, ease: [0.4, 0, 0.2, 1] },
                     y: { duration: 0.65, delay: 0.12 + currentIndex * 0.06, ease: [...ENTER_EASE] },
                   }}
                   style={{ position: 'relative' }}
@@ -349,7 +314,7 @@ export default function CircadianMenu({
                     }}
                   />
                   <motion.button
-                    onClick={() => handleToggle(category.id)}
+                    onClick={() => onNavigateToCategory(category.id)}
                     className="w-full text-left circadian-tile"
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.985 }}
@@ -368,21 +333,18 @@ export default function CircadianMenu({
                       overflow: 'hidden',
                       position: 'relative',
                       boxShadow: breatheBoxShadow,
-                      // no pulsating animation
                     }}
                     onMouseEnter={(e) => {
                       const el = e.currentTarget as HTMLElement;
                       el.style.background = fillHover;
                       el.style.border = borderGlow;
                       el.style.boxShadow = `0 0 24px -4px ${color}50, 0 0 48px -8px ${color}30`;
-                      el.style.animation = 'none';
                     }}
                     onMouseLeave={(e) => {
                       const el = e.currentTarget as HTMLElement;
                       el.style.background = fillDefault;
                       el.style.border = isNextSuggested ? borderGlow : borderDefault;
                       el.style.boxShadow = isNextSuggested ? breatheBoxShadow : 'none';
-                      // no pulsating animation
                     }}
                   >
                     {/* Thick accent bar */}
@@ -406,22 +368,20 @@ export default function CircadianMenu({
                         padding: '16px',
                       }}
                     >
-
                       {/* Title + subtitle */}
                       <div style={{ flex: 1, minWidth: 0 }}>
                         <h3
                           style={{
                             fontFamily: 'var(--font-serif)',
                             fontSize: '18px',
-                            fontWeight: isExpanded ? 600 : 500,
+                            fontWeight: 500,
                             lineHeight: 1.3,
                             color: 'var(--text-primary)',
-                            transition: 'font-weight 0.2s ease',
                           }}
                         >
                           {category.title}
                         </h3>
-                        {!isExpanded && category.entryLine && (
+                        {category.entryLine && (
                           <p
                             style={{
                               fontFamily: 'var(--font-sans)',
@@ -438,7 +398,7 @@ export default function CircadianMenu({
                         )}
                       </div>
 
-                      {/* Progress ring — single marker only */}
+                      {/* Progress ring */}
                       <div style={{ flexShrink: 0 }}>
                         {completedCount > 0 ? (
                           <ProgressRing completed={completedCount} total={catCards.length} size={20} />
@@ -446,152 +406,12 @@ export default function CircadianMenu({
                       </div>
                     </div>
                   </motion.button>
-
-                  {/* Expanded sub-topics */}
-                  <AnimatePresence>
-                    {isExpanded && (
-                      <motion.div
-                        key={`expanded-${category.id}`}
-                        initial={{ height: 0, opacity: 0 }}
-                        animate={{ height: 'auto', opacity: 1 }}
-                        exit={{ height: 0, opacity: 0 }}
-                        transition={{ duration: 0.35, ease: [0.4, 0, 0.2, 1] }}
-                        style={{ overflow: 'hidden' }}
-                      >
-                        <div
-                          style={{
-                            padding: '8px 12px 16px 28px',
-                            display: 'flex',
-                            flexDirection: 'column',
-                            gap: '2px',
-                          }}
-                        >
-                          {catCards.map((card, cardIndex) => {
-                            const isCardCompleted = completedCardIds.includes(card.id);
-                            const isCardInProgress =
-                              inProgressCardIds.includes(card.id) && !isCardCompleted;
-
-                            return (
-                              <motion.button
-                                key={card.id}
-                                initial={{ opacity: 0, x: -8 }}
-                                animate={{ opacity: 1, x: 0 }}
-                                transition={{
-                                  duration: 0.3,
-                                  delay: 0.06 + cardIndex * 0.05,
-                                  ease: [...ENTER_EASE],
-                                }}
-                                onClick={() => handleCardClick(card, category)}
-                                className="w-full text-left"
-                                style={{
-                                  display: 'flex',
-                                  alignItems: 'center',
-                                  gap: '12px',
-                                  padding: '11px 10px',
-                                  background: 'transparent',
-                                  border: 'none',
-                                  cursor: 'pointer',
-                                  borderRadius: '8px',
-                                  transition: 'background-color 0.15s ease',
-                                }}
-                                whileHover={{ backgroundColor: 'hsla(194, 16%, 52%, 0.08)' }}
-                                whileTap={{ scale: 0.985 }}
-                              >
-                                <span
-                                  style={{
-                                    display: 'inline-flex',
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                    width: '10px',
-                                    height: '10px',
-                                    borderRadius: '50%',
-                                    border: `1.5px solid ${color}`,
-                                    backgroundColor: isCardCompleted ? color : 'transparent',
-                                    opacity: isCardCompleted ? 0.8 : 0.45,
-                                    flexShrink: 0,
-                                    transition: 'all 0.2s ease',
-                                  }}
-                                >
-                                  {isCardCompleted && (
-                                    <Check size={6} style={{ color: 'var(--surface-base)' }} />
-                                  )}
-                                </span>
-
-                                <span
-                                  style={{
-                                    fontFamily: 'var(--font-sans)',
-                                    fontSize: '14px',
-                                    fontWeight: 400,
-                                    color: 'var(--text-primary)',
-                                    opacity: isCardCompleted ? 0.55 : 0.90,
-                                    lineHeight: 1.4,
-                                    textDecoration: isCardCompleted ? 'line-through' : 'none',
-                                    textDecorationColor: isCardCompleted ? `${color}40` : undefined,
-                                  }}
-                                >
-                                  {card.title}
-                                </span>
-
-                                {isCardInProgress && (
-                                  <span
-                                    style={{
-                                      display: 'inline-block',
-                                      width: '5px',
-                                      height: '5px',
-                                      borderRadius: '50%',
-                                      backgroundColor: HERITAGE_GOLD,
-                                      opacity: 0.7,
-                                      marginLeft: 'auto',
-                                      flexShrink: 0,
-                                    }}
-                                  />
-                                )}
-                              </motion.button>
-                            );
-                          })}
-
-                          <motion.button
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            transition={{ delay: 0.15 + catCards.length * 0.05, duration: 0.3 }}
-                            onClick={() => onNavigateToCategory(category.id)}
-                            style={{
-                              display: 'flex',
-                              alignItems: 'center',
-                              gap: '8px',
-                              padding: '10px 10px 6px',
-                              background: 'transparent',
-                              border: 'none',
-                              cursor: 'pointer',
-                              fontFamily: 'var(--font-sans)',
-                              fontSize: '11px',
-                              fontWeight: 500,
-                              letterSpacing: '0.06em',
-                              textTransform: 'uppercase' as const,
-                              color: HERITAGE_GOLD,
-                              opacity: 0.7,
-                            }}
-                          >
-                            Utforska {category.title.toLowerCase()} →
-                          </motion.button>
-                        </div>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
                 </motion.div>
               );
             })}
           </div>
         </div>
       ))}
-
-      <TopicPreviewOverlay
-        card={previewCard}
-        category={previewCategory}
-        categoryColor={previewColor}
-        open={overlayOpen}
-        onClose={() => setOverlayOpen(false)}
-      />
     </div>
   );
 }

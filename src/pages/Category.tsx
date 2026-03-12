@@ -12,128 +12,57 @@ import { useOptimisticCompletions } from '@/contexts/OptimisticCompletionsContex
 import { allProducts } from '@/data/products';
 import { useProductTheme } from '@/hooks/useProductTheme';
 import { useCardImage } from '@/hooks/useCardImage';
+import { useVerdigrisTheme } from '@/components/VerdigrisAtmosphere';
+import { CIRCADIAN_COLORS } from '@/components/CircadianMenu';
 import Header from '@/components/Header';
 
 import bonkiLogo from '@/assets/bonki-logo.png';
 import mirrorJagIMig from '@/assets/mirror-jag-i-mig.png';
+import stillUsIllustration from '@/assets/illustration-still-us-home.png';
 
 const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
 /**
  * Per-card opacity overrides for illustrations.
- * Baseline is 0.12. Dense/dark illustrations get lower values,
- * light/sparse ones get higher values — targeting uniform visual weight.
  */
 const CARD_ILLUSTRATION_OPACITY: Record<string, number> = {
-  // JIM — dark ink-heavy illustrations
-  'jim-arg': 0.07,
-  'jim-vild': 0.08,
-  'jim-skam': 0.07,
-  'jim-avundsjuk': 0.07,
-  'jim-svartsjuk': 0.08,
-  'jim-avsky': 0.08,
-  'jim-acklad': 0.08,
-  // JIM — lighter/sparser
-  'jim-radd': 0.14,
-  'jim-glad': 0.14,
-  'jim-trygg': 0.14,
-  'jim-nyfiken': 0.14,
-  // JIM — special
+  'jim-arg': 0.07, 'jim-vild': 0.08, 'jim-skam': 0.07,
+  'jim-avundsjuk': 0.07, 'jim-svartsjuk': 0.08, 'jim-avsky': 0.08, 'jim-acklad': 0.08,
+  'jim-radd': 0.14, 'jim-glad': 0.14, 'jim-trygg': 0.14, 'jim-nyfiken': 0.14,
   'jim-jag': 0.18,
-  // JIV — dense multi-color illustrations
-  'jiv-frihet': 0.09,
-  'jiv-karlek': 0.09,
-  'jiv-vanskap': 0.09,
-  'jiv-mobbning': 0.09,
-  'jiv-aktivism': 0.09,
-  // JIV — light/sparse
-  'jiv-identitet': 0.14,
-  'jiv-roller': 0.14,
-  // JMA — dense character illustrations
-  'jma-stopp': 0.09,
-  'jma-konflikt': 0.09,
-  'jma-skuld': 0.09,
-  'jma-skam': 0.09,
-  // SEX — dense illustrations
-  'sex-pornografi': 0.08,
-  'sex-sexuella-overgrepp': 0.08,
-  'sex-sex-som-hot': 0.08,
-  // SK — dense illustrations
-  'sk-konflikt': 0.09,
-  'sk-forlora-ett-syskon': 0.09,
+  'jiv-frihet': 0.09, 'jiv-karlek': 0.09, 'jiv-vanskap': 0.09,
+  'jiv-mobbning': 0.09, 'jiv-aktivism': 0.09,
+  'jiv-identitet': 0.14, 'jiv-roller': 0.14,
+  'jma-stopp': 0.09, 'jma-konflikt': 0.09, 'jma-skuld': 0.09, 'jma-skam': 0.09,
+  'sex-pornografi': 0.08, 'sex-sexuella-overgrepp': 0.08, 'sex-sex-som-hot': 0.08,
+  'sk-konflikt': 0.09, 'sk-forlora-ett-syskon': 0.09,
 };
 
-/**
- * Per-card image source overrides — use a specific imported asset
- * instead of the zip-extracted illustration.
- */
 const CARD_IMAGE_OVERRIDE: Record<string, string> = {
   'jim-jag': mirrorJagIMig,
 };
 
-/**
- * Per-card visual scale multiplier for illustration thumbnails.
- * Baseline is 1.0 (72×72). Illustrations with lots of negative space
- * or small focal points get scaled up; dense/large ones get scaled down.
- * Goal: uniform *perceived* size across all tiles.
- */
 const CARD_ILLUSTRATION_SCALE: Record<string, number> = {
-  // JIM — calibrated for uniform perceived size across all tiles
-  'jim-stolt': 1.10,
-  'jim-bestamd': 1.25,
-  'jim-karlek': 1.14,
-  'jim-nyfiken': 1.05,
-  'jim-forvanad': 1.00,
-  'jim-jag': 1.05,
-  'jim-trygg': 1.08,
-  'jim-ensam': 1.02,
-  'jim-glad': 1.04,
-  'jim-radd': 1.04,
-  'jim-arg': 0.92,
-  'jim-vild': 0.94,
-  'jim-skam': 0.90,
-  'jim-avundsjuk': 0.90,
-  'jim-svartsjuk': 0.92,
-  'jim-avsky': 0.92,
-  'jim-acklad': 0.92,
-  'jim-besviken': 1.00,
-  'jim-utanfor': 0.96,
-  'jim-ledsen': 1.00,
-  'jim-stress': 0.96,
+  'jim-stolt': 1.10, 'jim-bestamd': 1.25, 'jim-karlek': 1.14,
+  'jim-nyfiken': 1.05, 'jim-forvanad': 1.00, 'jim-jag': 1.05,
+  'jim-trygg': 1.08, 'jim-ensam': 1.02, 'jim-glad': 1.04,
+  'jim-radd': 1.04, 'jim-arg': 0.92, 'jim-vild': 0.94,
+  'jim-skam': 0.90, 'jim-avundsjuk': 0.90, 'jim-svartsjuk': 0.92,
+  'jim-avsky': 0.92, 'jim-acklad': 0.92, 'jim-besviken': 1.00,
+  'jim-utanfor': 0.96, 'jim-ledsen': 1.00, 'jim-stress': 0.96,
 };
 
-/**
- * Per-card positional nudge (px) to optically harmonise illustration placement.
- * x: positive = further right, negative = further left
- * y: positive = further down, negative = further up
- * Calibrated so every illustration sits at the same optical anchor point
- * relative to the text block, regardless of the illustration's internal
- * composition or weight distribution.
- */
 const CARD_ILLUSTRATION_NUDGE: Record<string, { x: number; y: number }> = {
-  // JIM — dense/bottom-heavy → pull up, keep flush right
-  'jim-arg': { x: 0, y: -4 },
-  'jim-vild': { x: 0, y: -3 },
-  'jim-skam': { x: 0, y: -3 },
-  'jim-avundsjuk': { x: 0, y: -3 },
-  'jim-svartsjuk': { x: 0, y: -2 },
-  'jim-avsky': { x: 0, y: -3 },
-  'jim-acklad': { x: 0, y: -2 },
-  // JIM — medium weight, mostly centered already
-  'jim-stolt': { x: 2, y: 0 },
-  'jim-bestamd': { x: 0, y: 0 },
-  'jim-karlek': { x: 0, y: 0 },
-  'jim-nyfiken': { x: 0, y: 0 },
-  'jim-forvanad': { x: 0, y: 0 },
-  'jim-trygg': { x: 0, y: 0 },
-  'jim-glad': { x: 0, y: 0 },
-  'jim-radd': { x: 0, y: 0 },
-  'jim-ensam': { x: 0, y: 0 },
-  // JIM — narrow/light → nudge slightly left for optical margin
-  'jim-jag': { x: -4, y: 0 },
-  'jim-besviken': { x: 0, y: 0 },
-  'jim-utanfor': { x: 0, y: -1 },
-  'jim-ledsen': { x: 0, y: 0 },
+  'jim-arg': { x: 0, y: -4 }, 'jim-vild': { x: 0, y: -3 },
+  'jim-skam': { x: 0, y: -3 }, 'jim-avundsjuk': { x: 0, y: -3 },
+  'jim-svartsjuk': { x: 0, y: -2 }, 'jim-avsky': { x: 0, y: -3 },
+  'jim-acklad': { x: 0, y: -2 }, 'jim-stolt': { x: 2, y: 0 },
+  'jim-bestamd': { x: 0, y: 0 }, 'jim-karlek': { x: 0, y: 0 },
+  'jim-nyfiken': { x: 0, y: 0 }, 'jim-forvanad': { x: 0, y: 0 },
+  'jim-trygg': { x: 0, y: 0 }, 'jim-glad': { x: 0, y: 0 },
+  'jim-radd': { x: 0, y: 0 }, 'jim-ensam': { x: 0, y: 0 },
+  'jim-jag': { x: -4, y: 0 }, 'jim-besviken': { x: 0, y: 0 },
+  'jim-utanfor': { x: 0, y: -1 }, 'jim-ledsen': { x: 0, y: 0 },
   'jim-stress': { x: 0, y: -1 },
 };
 
@@ -142,30 +71,12 @@ const PRODUCT_STYLES: Record<string, {
   cardBg: string;
   cardTitleColor: string;
 }> = {
-  jag_i_mig: {
-    cardBg: '#F8F3E4',
-    cardTitleColor: '#8A9A10',
-  },
-  jag_med_andra: {
-    cardBg: '#F8F0F6',
-    cardTitleColor: '#9825D6',
-  },
-  jag_i_varlden: {
-    cardBg: '#E8F2EA',
-    cardTitleColor: '#3D7A45',
-  },
-  sexualitetskort: {
-    cardBg: '#F8EEF2',
-    cardTitleColor: '#B5646E',
-  },
-  vardagskort: {
-    cardBg: '#E8F2F2',
-    cardTitleColor: '#0F6B99',
-  },
-  syskonkort: {
-    cardBg: '#ECF0F6',
-    cardTitleColor: '#0F4E99',
-  },
+  jag_i_mig: { cardBg: '#F8F3E4', cardTitleColor: '#8A9A10' },
+  jag_med_andra: { cardBg: '#F8F0F6', cardTitleColor: '#9825D6' },
+  jag_i_varlden: { cardBg: '#E8F2EA', cardTitleColor: '#3D7A45' },
+  sexualitetskort: { cardBg: '#F8EEF2', cardTitleColor: '#B5646E' },
+  vardagskort: { cardBg: '#E8F2F2', cardTitleColor: '#0F6B99' },
+  syskonkort: { cardBg: '#ECF0F6', cardTitleColor: '#0F4E99' },
 };
 
 export default function Category() {
@@ -232,17 +143,23 @@ export default function Category() {
   const backTo = product ? `/product/${product.slug}` : isStillUsCategory ? '/?devState=solo' : '/';
   const styles = product ? PRODUCT_STYLES[product.id] : undefined;
 
-  // Apply product theme
+  // Apply product theme for non-Still Us products
   useProductTheme(
     product?.accentColor ?? 'hsl(158, 35%, 18%)',
     product?.secondaryAccent ?? 'hsl(38, 88%, 46%)',
-    '#FAF7F2', // Warm linen page background
+    isStillUsCategory ? undefined : '#FAF7F2',
     product?.ctaButtonColor,
   );
 
+  // Apply Verdigris theme for Still Us categories
+  useVerdigrisTheme(isStillUsCategory);
+
+  // Get circadian color for Still Us category
+  const circadianColor = categoryId ? CIRCADIAN_COLORS[categoryId] : undefined;
+
   if (!category) {
     return (
-      <div className="min-h-screen" style={{ backgroundColor: '#FAF7F2' }}>
+      <div className="min-h-screen" style={{ backgroundColor: isStillUsCategory ? 'var(--surface-base)' : '#FAF7F2' }}>
         <div className="h-14 border-b border-border" style={{ backgroundColor: 'var(--surface-raised)' }} />
         <div className="px-5 pt-12 space-y-4 max-w-md mx-auto text-center">
           <div className="h-6 w-40 rounded bg-muted/30 animate-pulse mx-auto" />
@@ -254,37 +171,35 @@ export default function Category() {
 
   const allCompleted = cards.length > 0 && cards.every(c => completedCardIds.includes(c.id));
 
+  // ── Still Us: Verdigris-themed category view ──
+  if (isStillUsCategory) {
+    return (
+      <StillUsCategoryView
+        category={category}
+        cards={cards}
+        completedCardIds={completedCardIds}
+        inProgressCardIds={inProgressCardIds}
+        allCompleted={allCompleted}
+        circadianColor={circadianColor}
+        backTo={backTo}
+        navigate={navigate}
+      />
+    );
+  }
+
+  // ── Product category view (non-Still Us) ──
   return (
     <div className="min-h-screen relative" style={{ backgroundColor: '#FAF7F2' }}>
       <Header title={category?.title} titleColor={styles?.cardTitleColor} showBack backTo={backTo} />
 
-      {/* BONKI logo watermark behind the card list */}
       <div
         className="pointer-events-none select-none"
-        style={{
-          position: 'fixed',
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
-          zIndex: 0,
-          opacity: 0.045,
-        }}
+        style={{ position: 'fixed', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', zIndex: 0, opacity: 0.045 }}
       >
-        <img
-          src={bonkiLogo}
-          alt=""
-          aria-hidden="true"
-          draggable={false}
-          style={{
-            width: '50vw',
-            maxWidth: '280px',
-            objectFit: 'contain',
-          }}
-        />
+        <img src={bonkiLogo} alt="" aria-hidden="true" draggable={false} style={{ width: '50vw', maxWidth: '280px', objectFit: 'contain' }} />
       </div>
 
       <div className="px-5 pt-4 pb-24 flex flex-col relative z-[1]">
-        {/* Editorial entry line */}
         {category.entryLine && (
           <motion.p
             className="text-center"
@@ -292,20 +207,12 @@ export default function Category() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.1, ease: EASE }}
             style={{
-              marginTop: '32px',
-              marginBottom: '52px',
-              fontFamily: 'var(--font-serif)',
-              fontSize: 'clamp(22px, 5.8vw, 28px)',
-              fontStyle: 'normal',
-              fontWeight: 400,
-              lineHeight: 1.35,
+              marginTop: '32px', marginBottom: '52px',
+              fontFamily: 'var(--font-serif)', fontSize: 'clamp(22px, 5.8vw, 28px)',
+              fontWeight: 400, lineHeight: 1.35,
               color: styles?.cardTitleColor ?? 'var(--accent-text)',
-              textWrap: 'balance',
-              hyphens: 'auto',
-              display: 'block',
-              maxWidth: '85%',
-              marginLeft: 'auto',
-              marginRight: 'auto',
+              textWrap: 'balance', hyphens: 'auto',
+              maxWidth: '85%', marginLeft: 'auto', marginRight: 'auto',
               letterSpacing: '-0.015em',
             } as React.CSSProperties}
           >
@@ -313,58 +220,27 @@ export default function Category() {
           </motion.p>
         )}
 
-        {/* Card list */}
-        {cards.map((card, index) => {
-          const isCompleted = completedCardIds.includes(card.id);
-          const isInProgress = !isCompleted && inProgressCardIds.includes(card.id);
-          return (
-            <CardEntry
-              key={card.id}
-              card={card}
-              index={index}
-              isCompleted={isCompleted}
-              isInProgress={isInProgress}
-              onNavigate={() => {
-                // Still Us cards go to preview screen first; product cards go directly to session
-                const isStillUs = !product || product.id === 'still_us';
-                navigate(isStillUs ? `/preview/${card.id}` : `/card/${card.id}`);
-              }}
-              isLast={index === cards.length - 1}
-              styles={styles}
-            />
-          );
-        })}
+        {cards.map((card, index) => (
+          <CardEntry
+            key={card.id}
+            card={card}
+            index={index}
+            isCompleted={completedCardIds.includes(card.id)}
+            isInProgress={!completedCardIds.includes(card.id) && inProgressCardIds.includes(card.id)}
+            onNavigate={() => navigate(`/card/${card.id}`)}
+            isLast={index === cards.length - 1}
+            styles={styles}
+          />
+        ))}
 
-        {/* Bottom anchor */}
-        <div style={{
-          marginTop: '40px',
-          textAlign: 'center',
-          paddingBottom: 'calc(32px + env(safe-area-inset-bottom, 0px))',
-        }}>
-          <p style={{
-            fontFamily: 'var(--font-serif)',
-            fontStyle: 'normal',
-            fontSize: '14px',
-            color: styles?.cardTitleColor ?? 'var(--accent-saffron)',
-            opacity: 0.55,
-            lineHeight: 1.5,
-          }}>
-            {allCompleted
-              ? 'Ni har utforskat alla samtal här. Välkomna tillbaka när som helst.'
-              : 'Välj det som känns rätt just nu.'}
+        <div style={{ marginTop: '40px', textAlign: 'center', paddingBottom: 'calc(32px + env(safe-area-inset-bottom, 0px))' }}>
+          <p style={{ fontFamily: 'var(--font-serif)', fontSize: '14px', color: styles?.cardTitleColor ?? 'var(--accent-saffron)', opacity: 0.55, lineHeight: 1.5 }}>
+            {allCompleted ? 'Ni har utforskat alla samtal här. Välkomna tillbaka när som helst.' : 'Välj det som känns rätt just nu.'}
           </p>
           <button
             onClick={() => navigate(backTo)}
             className="transition-opacity hover:opacity-70"
-            style={{
-              color: 'var(--color-text-tertiary)',
-              opacity: 0.40,
-              background: 'none',
-              border: 'none',
-              cursor: 'pointer',
-              marginTop: '16px',
-              padding: '8px',
-            }}
+            style={{ color: 'var(--color-text-tertiary)', opacity: 0.40, background: 'none', border: 'none', cursor: 'pointer', marginTop: '16px', padding: '8px' }}
             aria-label="Tillbaka"
           >
             <ChevronLeft size={20} strokeWidth={1.5} />
@@ -375,14 +251,279 @@ export default function Category() {
   );
 }
 
-/* ─── Card Entry (premium tile with illustration) ─── */
+/* ═══════════════════════════════════════════════════════════
+   Still Us — Verdigris-themed Category View
+   Matches homescreen quality: dark canvas, glassmorphism,
+   illustration background, editorial typography.
+   ═══════════════════════════════════════════════════════════ */
+
+interface StillUsCategoryViewProps {
+  category: { id: string; title: string; entryLine?: string; subtitle?: string };
+  cards: { id: string; title: string; subtitle?: string }[];
+  completedCardIds: string[];
+  inProgressCardIds: string[];
+  allCompleted: boolean;
+  circadianColor?: string;
+  backTo: string;
+  navigate: (path: string) => void;
+}
+
+function StillUsCategoryView({
+  category,
+  cards,
+  completedCardIds,
+  inProgressCardIds,
+  allCompleted,
+  circadianColor,
+  backTo,
+  navigate,
+}: StillUsCategoryViewProps) {
+  const color = circadianColor || '#A2B5A9';
+  const HERITAGE_GOLD = '#DA9D1D';
+
+  return (
+    <div className="min-h-screen relative overflow-hidden" style={{ backgroundColor: 'var(--surface-base)' }}>
+      {/* Background illustration */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5 }}
+        style={{
+          position: 'absolute', top: '5%', left: '-42%',
+          width: '135%', height: '125%',
+          zIndex: 0, pointerEvents: 'none',
+        }}
+      >
+        <img
+          src={stillUsIllustration}
+          alt=""
+          style={{ width: '100%', height: '100%', objectFit: 'contain', objectPosition: 'left top', opacity: 0.30 }}
+        />
+      </motion.div>
+
+      {/* Back button */}
+      <motion.button
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.2, duration: 0.4 }}
+        onClick={() => navigate(backTo)}
+        style={{
+          position: 'absolute', top: 'calc(env(safe-area-inset-top, 0px) + 16px)', left: '16px',
+          zIndex: 10, background: 'none', border: 'none', cursor: 'pointer',
+          color: 'var(--text-primary)', opacity: 0.5,
+          padding: '8px',
+        }}
+        aria-label="Tillbaka"
+      >
+        <ChevronLeft size={22} strokeWidth={1.5} />
+      </motion.button>
+
+      {/* Content */}
+      <div style={{ position: 'relative', zIndex: 1, minHeight: '100vh', display: 'flex', flexDirection: 'column', paddingTop: 'calc(env(safe-area-inset-top, 0px) + 56px)', paddingBottom: 'calc(80px + env(safe-area-inset-bottom, 0px))' }}>
+        {/* Category title */}
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, ease: EASE }}
+          style={{ textAlign: 'center', paddingLeft: '10vw', paddingRight: '10vw', marginBottom: '8px' }}
+        >
+          <h1
+            style={{
+              fontFamily: "'DM Serif Display', var(--font-serif)",
+              fontSize: 'clamp(28px, 8vw, 38px)',
+              fontWeight: 700,
+              color: 'var(--text-primary)',
+              letterSpacing: '-0.01em',
+              lineHeight: 1.2,
+            }}
+          >
+            {category.title}
+          </h1>
+        </motion.div>
+
+        {/* Entry line */}
+        {category.entryLine && (
+          <motion.p
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.1, ease: EASE }}
+            style={{
+              textAlign: 'center',
+              fontFamily: 'var(--font-serif)',
+              fontSize: 'clamp(16px, 4.5vw, 20px)',
+              fontWeight: 400,
+              lineHeight: 1.45,
+              color,
+              opacity: 0.85,
+              maxWidth: '80%',
+              marginLeft: 'auto', marginRight: 'auto',
+              marginBottom: '40px',
+              textWrap: 'balance',
+            } as React.CSSProperties}
+          >
+            {category.entryLine}
+          </motion.p>
+        )}
+
+        {/* Card tiles — glassmorphism */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', paddingLeft: '20px', paddingRight: '20px' }}>
+          {cards.map((card, index) => {
+            const isCompleted = completedCardIds.includes(card.id);
+            const isInProgress = !isCompleted && inProgressCardIds.includes(card.id);
+
+            return (
+              <motion.button
+                key={card.id}
+                initial={{ opacity: 0, y: 14 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.15 + index * 0.07, duration: 0.55, ease: EASE }}
+                onClick={() => navigate(`/preview/${card.id}`)}
+                whileTap={{ scale: 0.985 }}
+                className="w-full text-left"
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '14px',
+                  padding: '20px 20px',
+                  background: isCompleted
+                    ? `${color}18`
+                    : `${color}28`,
+                  backdropFilter: 'blur(12px)',
+                  WebkitBackdropFilter: 'blur(12px)',
+                  border: isInProgress
+                    ? `1px solid ${color}`
+                    : `1px solid ${color}50`,
+                  borderRadius: '14px',
+                  cursor: 'pointer',
+                  boxShadow: isInProgress
+                    ? `0 0 20px -4px ${color}40, 0 4px 16px -4px hsla(194, 28%, 10%, 0.15)`
+                    : '0 2px 8px -2px hsla(194, 28%, 10%, 0.12)',
+                  transition: 'background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease',
+                  position: 'relative',
+                  overflow: 'hidden',
+                }}
+                onMouseEnter={(e) => {
+                  const el = e.currentTarget;
+                  el.style.background = `${color}40`;
+                  el.style.borderColor = color;
+                  el.style.boxShadow = `0 0 24px -4px ${color}50, 0 4px 20px -4px hsla(194, 28%, 10%, 0.20)`;
+                }}
+                onMouseLeave={(e) => {
+                  const el = e.currentTarget;
+                  el.style.background = isCompleted ? `${color}18` : `${color}28`;
+                  el.style.borderColor = isInProgress ? color : `${color}50`;
+                  el.style.boxShadow = isInProgress
+                    ? `0 0 20px -4px ${color}40, 0 4px 16px -4px hsla(194, 28%, 10%, 0.15)`
+                    : '0 2px 8px -2px hsla(194, 28%, 10%, 0.12)';
+                }}
+              >
+                {/* Accent bar */}
+                <div
+                  style={{
+                    position: 'absolute', left: 0, top: 0, bottom: 0,
+                    width: '3px', backgroundColor: color,
+                    borderRadius: '14px 0 0 14px',
+                    opacity: isCompleted ? 0.4 : 0.8,
+                  }}
+                />
+
+                <div style={{ flex: 1, minWidth: 0, paddingLeft: '8px' }}>
+                  <h3
+                    style={{
+                      fontFamily: "'DM Serif Display', var(--font-serif)",
+                      fontSize: '19px',
+                      fontWeight: 400,
+                      color: 'var(--text-primary)',
+                      opacity: isCompleted ? 0.55 : 1,
+                      lineHeight: 1.3,
+                    }}
+                  >
+                    {card.title}
+                  </h3>
+                  {card.subtitle && (
+                    <p
+                      style={{
+                        fontFamily: 'var(--font-sans)',
+                        fontSize: '12px',
+                        fontWeight: 400,
+                        color: 'var(--text-secondary)',
+                        opacity: isCompleted ? 0.4 : 0.7,
+                        lineHeight: 1.4,
+                        marginTop: '4px',
+                      }}
+                    >
+                      {card.subtitle}
+                    </p>
+                  )}
+                </div>
+
+                {/* Status indicator */}
+                {isCompleted && (
+                  <span
+                    style={{
+                      fontFamily: 'var(--font-sans)',
+                      fontSize: '10px',
+                      fontWeight: 500,
+                      letterSpacing: '0.06em',
+                      textTransform: 'uppercase' as const,
+                      color: HERITAGE_GOLD,
+                      opacity: 0.6,
+                      flexShrink: 0,
+                    }}
+                  >
+                    Utforskad
+                  </span>
+                )}
+
+                {isInProgress && (
+                  <span
+                    style={{
+                      display: 'inline-block',
+                      width: '6px', height: '6px',
+                      borderRadius: '50%',
+                      backgroundColor: HERITAGE_GOLD,
+                      opacity: 0.7,
+                      flexShrink: 0,
+                      animation: 'saffron-pulse 2.0s ease-in-out infinite',
+                    }}
+                  />
+                )}
+              </motion.button>
+            );
+          })}
+        </div>
+
+        {/* Bottom sign-off */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.6, duration: 0.5 }}
+          style={{ marginTop: '40px', textAlign: 'center' }}
+        >
+          <p
+            style={{
+              fontFamily: 'var(--font-serif)',
+              fontStyle: 'italic',
+              fontSize: '14px',
+              color,
+              opacity: 0.5,
+              lineHeight: 1.5,
+            }}
+          >
+            {allCompleted
+              ? 'Ni har utforskat alla samtal här. Välkomna tillbaka när som helst.'
+              : 'Välj det som känns rätt just nu.'}
+          </p>
+        </motion.div>
+      </div>
+    </div>
+  );
+}
+
+/* ─── Card Entry (product tiles — non-Still Us) ─── */
 
 interface CardEntryProps {
-  card: {
-    id: string;
-    title: string;
-    subtitle?: string;
-  };
+  card: { id: string; title: string; subtitle?: string };
   index: number;
   isCompleted?: boolean;
   isInProgress?: boolean;
@@ -434,108 +575,44 @@ function CardEntry({ card, index, isCompleted = false, isInProgress = false, onN
           transition: 'transform 200ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 260ms ease-out',
           minHeight: '100px',
         }}
-        onPointerDown={(e) => {
-          const el = e.currentTarget;
-          el.style.transform = 'scale(0.99)';
-        }}
-        onPointerUp={(e) => {
-          e.currentTarget.style.transform = '';
-        }}
-        onPointerLeave={(e) => {
-          e.currentTarget.style.transform = '';
-          e.currentTarget.style.boxShadow = '';
-        }}
+        onPointerDown={(e) => { e.currentTarget.style.transform = 'scale(0.99)'; }}
+        onPointerUp={(e) => { e.currentTarget.style.transform = ''; }}
+        onPointerLeave={(e) => { e.currentTarget.style.transform = ''; e.currentTarget.style.boxShadow = ''; }}
         onPointerEnter={(e) => {
-          const el = e.currentTarget;
-          el.style.transform = 'translateY(-2px)';
-          el.style.boxShadow =
-            '0px 4px 12px rgba(44, 36, 32, 0.10), 0px 12px 36px -8px rgba(44, 36, 32, 0.08)';
+          e.currentTarget.style.transform = 'translateY(-2px)';
+          e.currentTarget.style.boxShadow = '0px 4px 12px rgba(44, 36, 32, 0.10), 0px 12px 36px -8px rgba(44, 36, 32, 0.08)';
         }}
       >
-        {/* Card illustration watermark — right side */}
         {illustration && (
           <img
-            src={illustration}
-            alt=""
-            aria-hidden="true"
-            draggable={false}
+            src={illustration} alt="" aria-hidden="true" draggable={false}
             className="pointer-events-none select-none absolute"
             style={{
-              right: `${16 - nudge.x}px`,
-              top: `calc(50% + ${nudge.y}px)`,
+              right: `${16 - nudge.x}px`, top: `calc(50% + ${nudge.y}px)`,
               transform: 'translateY(-50%)',
-              height: `${size}px`,
-              width: `${size}px`,
-              objectFit: 'contain',
-              objectPosition: 'center',
+              height: `${size}px`, width: `${size}px`,
+              objectFit: 'contain', objectPosition: 'center',
               opacity: illustrationOpacity,
             }}
           />
         )}
 
-        {/* Completion status — top right */}
         {isCompleted && (
-          <span
-            className="absolute"
-            style={{
-              top: '10px',
-              right: '14px',
-              fontFamily: 'var(--font-sans)',
-              fontSize: '11px',
-              letterSpacing: '0.04em',
-              color: titleColor,
-              opacity: 0.6,
-              fontWeight: 500,
-            }}
-          >
+          <span className="absolute" style={{ top: '10px', right: '14px', fontFamily: 'var(--font-sans)', fontSize: '11px', letterSpacing: '0.04em', color: titleColor, opacity: 0.6, fontWeight: 500 }}>
             Utforskad
           </span>
         )}
 
         <div className="flex items-center relative z-[1]">
-          {/* In-progress dot — left edge */}
           {isInProgress && (
-            <span
-              style={{
-                display: 'inline-block',
-                width: '8px',
-                height: '8px',
-                borderRadius: '50%',
-                backgroundColor: titleColor,
-                marginRight: '12px',
-                flexShrink: 0,
-                animation: 'saffron-pulse 2.0s ease-in-out infinite',
-              }}
-            />
+            <span style={{ display: 'inline-block', width: '8px', height: '8px', borderRadius: '50%', backgroundColor: titleColor, marginRight: '12px', flexShrink: 0, animation: 'saffron-pulse 2.0s ease-in-out infinite' }} />
           )}
-
           <div className="flex-1 min-w-0" style={{ paddingRight: illustration ? '20%' : '0' }}>
-            <h3
-              style={{
-                fontFamily: "'DM Serif Display', var(--font-serif)",
-                fontSize: '20px',
-                fontWeight: 400,
-                color: titleColor,
-                opacity: isCompleted ? 0.60 : 1,
-                lineHeight: 1.3,
-                textAlign: 'left',
-              }}
-            >
+            <h3 style={{ fontFamily: "'DM Serif Display', var(--font-serif)", fontSize: '20px', fontWeight: 400, color: titleColor, opacity: isCompleted ? 0.60 : 1, lineHeight: 1.3, textAlign: 'left' }}>
               {card.title}
             </h3>
             {card.subtitle && (
-              <p
-                style={{
-                  fontFamily: 'var(--font-serif)',
-                  fontStyle: 'normal',
-                  fontSize: '14px',
-                  color: subtitleColor,
-                  opacity: isCompleted ? 0.45 : 0.75,
-                  lineHeight: 1.4,
-                  marginTop: '6px',
-                  textAlign: 'left',
-                }}
-              >
+              <p style={{ fontFamily: 'var(--font-serif)', fontSize: '14px', color: subtitleColor, opacity: isCompleted ? 0.45 : 0.75, lineHeight: 1.4, marginTop: '6px', textAlign: 'left' }}>
                 {card.subtitle}
               </p>
             )}
