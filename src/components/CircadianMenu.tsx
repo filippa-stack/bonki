@@ -110,7 +110,6 @@ function ProgressRing({ completed, total, size = 16 }: { completed: number; tota
           transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1], delay: 0.3 }}
           opacity={0.7}
         />
-        />
       </svg>
       {allDone && (
         <motion.div
