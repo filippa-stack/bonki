@@ -489,12 +489,14 @@ export default function ProductLibrary() {
                 fontSize: '9px',
                 fontWeight: 700,
                 letterSpacing: '0.14em',
-                color: '#1A1A2E',
+                color: isDark ? '#F5EFE6' : '#1A1A2E',
                 background: 'transparent',
                 opacity: activeTab === tab ? 1 : 0.35,
                 border: 'none',
                 outline: 'none',
-                borderBottom: activeTab === tab ? '2px solid #1A1A2E' : '2px solid transparent',
+                borderBottom: activeTab === tab
+                  ? `2px solid ${isDark ? 'hsla(38, 78%, 55%, 0.8)' : '#1A1A2E'}`
+                  : '2px solid transparent',
                 borderRadius: '0',
                 padding: '6px 4px',
                 cursor: 'pointer',
