@@ -17,7 +17,7 @@ const VALID_THEMES = [
   'plum',
   'teal-noir',
   'deep-fig',
-  'verdigris',
+  // 'verdigris' is managed by useVerdigrisTheme, not URL params
 ] as const;
 
 const VALID_SURFACES = ['lift', 'sculpt', 'paper', 'invite', 'invite-white', 'invite-ivory', 'invite-tinted'] as const;
