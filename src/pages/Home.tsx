@@ -330,8 +330,8 @@ export default function Home() {
                       onClick={() => { markNavigated(); navigate(`/card/${cardId}`, { state: { resumed: true } }); }}
                       className="font-serif"
                       style={{
-                        fontSize: '13px',
-                        fontWeight: 500,
+                        fontSize: '14px',
+                        fontWeight: 600,
                         color: 'var(--accent-saffron)',
                         opacity: 0.7,
                         background: 'none',
