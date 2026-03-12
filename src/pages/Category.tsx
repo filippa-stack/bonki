@@ -608,9 +608,7 @@ function CardEntry({ card, index, isCompleted = false, isInProgress = false, onN
   const illustration = CARD_IMAGE_OVERRIDE[card.id] ?? zipIllustration;
 
   const cardBg = categoryBg || styles?.cardBg || '#FFFFFF';
-  const solidBg = categoryBg ? (styles?.cardBg || '#F8F3E4') : (styles?.cardBg || '#FFFFFF');
   const titleColor = styles?.cardTitleColor ?? 'var(--text-primary)';
-  const subtitleColor = titleColor;
   const focalPoint = CARD_FOCAL_POINT[card.id] ?? 'center 35%';
 
   return (
@@ -654,7 +652,7 @@ function CardEntry({ card, index, isCompleted = false, isInProgress = false, onN
           e.currentTarget.style.transform = 'translateY(-3px) scale(1.01)';
         }}
       >
-        {/* Bold full-bleed illustration — cover with smart focal point */}
+        {/* Full-bleed illustration — no gradient, no fade */}
         {illustration && (
           <img
             src={illustration}
@@ -675,21 +673,6 @@ function CardEntry({ card, index, isCompleted = false, isInProgress = false, onN
             }}
           />
         )}
-
-        {/* Gradient scrim — long, soft fade for text legibility */}
-        <div
-          className="pointer-events-none"
-          style={{
-            position: 'absolute',
-            bottom: 0,
-            left: 0,
-            right: 0,
-            height: '60%',
-            background: `linear-gradient(180deg, transparent 0%, ${solidBg}30 20%, ${solidBg}80 42%, ${solidBg}CC 60%, ${solidBg}F0 78%, ${solidBg} 100%)`,
-            borderRadius: '0 0 20px 20px',
-            zIndex: 1,
-          }}
-        />
 
         {/* Status badges */}
         {isCompleted && (
@@ -715,42 +698,24 @@ function CardEntry({ card, index, isCompleted = false, isInProgress = false, onN
           />
         )}
 
-        {/* Text — bottom-anchored */}
+        {/* Title only — bold, bottom-left, with text shadow for legibility */}
         <div
           style={{
             position: 'absolute', bottom: 0, left: 0, right: 0, zIndex: 2,
-            padding: '0 24px 18px',
+            padding: '0 24px 20px',
           }}
         >
-          <div
-            style={{
-              width: '24px', height: '2px', borderRadius: '1px',
-              backgroundColor: titleColor,
-              opacity: isCompleted ? 0.20 : 0.40,
-              marginBottom: '10px',
-            }}
-          />
           <h3
             style={{
               fontFamily: "'DM Serif Display', var(--font-serif)",
-              fontSize: '26px', fontWeight: 400,
+              fontSize: '30px', fontWeight: 400,
               color: titleColor, opacity: isCompleted ? 0.55 : 1,
-              lineHeight: 1.2,
+              lineHeight: 1.1,
+              textShadow: `0 1px 3px ${cardBg}CC, 0 2px 8px ${cardBg}AA, 0 0 20px ${cardBg}88`,
             }}
           >
             {card.title}
           </h3>
-          {card.subtitle && (
-            <p
-              style={{
-                fontFamily: 'var(--font-serif)', fontSize: '13px',
-                color: subtitleColor, opacity: isCompleted ? 0.30 : 0.50,
-                lineHeight: 1.45, marginTop: '5px',
-              }}
-            >
-              {card.subtitle}
-            </p>
-          )}
         </div>
       </div>
     </motion.div>
