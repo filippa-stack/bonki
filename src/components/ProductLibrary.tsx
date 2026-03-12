@@ -993,7 +993,7 @@ export default function ProductLibrary() {
               style={{
                 borderRadius: '20px',
                 padding: '24px 20px 18px',
-                background: 'hsla(215, 38%, 28%, 0.18)',
+                background: 'hsla(192, 58%, 21%, 0.55)',
                 backdropFilter: 'blur(40px)',
                 WebkitBackdropFilter: 'blur(40px)',
                 textAlign: 'left',
