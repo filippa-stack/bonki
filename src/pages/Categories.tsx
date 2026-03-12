@@ -20,6 +20,7 @@ export default function Categories() {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { categories, cards } = useApp();
+  useVerdigrisTheme(true);
   const { user } = useAuth();
   const { space } = useCoupleSpaceContext();
   const { snapshot } = useSpaceSnapshot(user?.id ?? null, space?.id ?? null);
