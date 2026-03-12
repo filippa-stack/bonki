@@ -951,8 +951,9 @@ export default function CardView() {
             transition={{ delay: 0.35, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
             className="font-sans"
             style={{
-              fontSize: '13px',
-              color: 'var(--completion-subtitle)',
+              fontSize: '14px',
+              color: 'var(--text-primary)',
+              opacity: 0.65,
               textAlign: 'center',
               marginBottom: '28px',
             }}
