@@ -987,10 +987,10 @@ export default function ProductLibrary() {
                   backgroundSize: 'contain',
                   backgroundRepeat: 'no-repeat',
                   backgroundPosition: 'center center',
-                  opacity: 0.15,
+                  opacity: 0.30,
                   pointerEvents: 'none',
                   zIndex: 0,
-                  filter: 'brightness(1.3) saturate(0.4) hue-rotate(-15deg)',
+                  filter: 'brightness(1.6) saturate(0.5)',
                 }}
               />
               <div style={{ zIndex: 1 }}>
