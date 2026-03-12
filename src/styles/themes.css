@@ -622,16 +622,16 @@
    VERDIGRIS — Still Us global identity theme
    Deep matte teal canvas, Heritage Gold accent, light text.
    Dark-base theme: all surfaces are dark, text is light.
-   "Intimate Midnight" — nocturnal, intimate, safe.
-   Base: #0A0A3D (Deep Abyss), Texture: #2D4263 (Steel Mist),
+   "Midnight Petrol Teal" — nocturnal, intimate, safe.
+   Base: #164A58 (Petrol Teal), Dark: #0D2B33 (Deep Petrol),
    Spark: #E9B44C (Burnt Saffron), Pulse: #1A1AE2 (Brand Pulse)
    ══════════════════════════════════════════════════════════════ */
 .theme-verdigris {
-  /* Foundation — deep midnight abyss */
-  --neutral-50:  235 35% 14%;          /* Base bg — #0A0A3D deep abyss */
-  --neutral-100: 215 30% 18%;          /* Raised surfaces — steel mist */
-  --neutral-200: 215 25% 15%;          /* Sunken areas */
-  --neutral-300: 215 22% 30%;          /* Borders, dividers */
+  /* Foundation — Midnight Petrol Teal */
+  --neutral-50:  192 58% 21%;            /* Base bg — #164A58 Petrol Teal */
+  --neutral-100: 192 50% 16%;            /* Raised surfaces */
+  --neutral-200: 192 55% 13%;            /* Sunken areas — #0D2B33 */
+  --neutral-300: 192 30% 30%;            /* Borders, dividers */
 
   --background: var(--neutral-50);
   --foreground: 38 25% 92%;
@@ -642,13 +642,13 @@
   --primary: 38 72% 60%;               /* Burnt Saffron #E9B44C */
   --primary-foreground: 235 35% 10%;
 
-  --secondary: 215 25% 22%;
+  --secondary: 192 35% 18%;
   --secondary-foreground: 38 20% 88%;
 
-  --muted: 220 20% 20%;
-  --muted-foreground: 220 12% 55%;
+  --muted: 192 25% 18%;
+  --muted-foreground: 192 15% 55%;
 
-  --accent: 215 25% 22%;
+  --accent: 192 35% 18%;
   --accent-foreground: 38 20% 88%;
 
   --border: var(--neutral-300);
@@ -657,9 +657,9 @@
 
   /* Text hierarchy — light on midnight */
   --text-primary:   hsl(38, 25%, 92%);    /* Warm cream */
-  --text-secondary: hsl(220, 15%, 65%);   /* Steel grey */
-  --text-tertiary:  hsl(220, 12%, 48%);   /* Receded */
-  --text-ghost:     hsl(220, 10%, 36%);   /* Placeholder */
+  --text-secondary: hsl(192, 20%, 60%);   /* Teal grey */
+  --text-tertiary:  hsl(192, 15%, 45%);   /* Receded */
+  --text-ghost:     hsl(192, 12%, 34%);   /* Placeholder */
   --text-accent:    hsl(38, 72%, 60%);    /* Burnt Saffron highlight */
 
   /* Accent — Burnt Saffron */
@@ -675,43 +675,43 @@
   --cta-text:     hsl(235, 35%, 8%);      /* Dark text on saffron */
 
   /* Session header — deep midnight */
-  --session-header-bg:    hsl(230, 30%, 15%);
-  --session-header-hover: hsl(230, 30%, 20%);
-  --session-header-press: hsl(230, 28%, 12%);
+  --session-header-bg:    hsl(192, 55%, 16%);
+  --session-header-hover: hsl(192, 50%, 20%);
+  --session-header-press: hsl(192, 55%, 13%);
 
   --color-button-primary: hsl(38, 72%, 60%);
   --color-button-text:    hsl(235, 35%, 8%);
   --color-accent:         hsl(38, 72%, 60%);
-  --color-accent-soft:    hsl(215, 20%, 35%);
+  --color-accent-soft:    hsl(192, 25%, 30%);
 
   /* Semantic color overrides */
-  --color-bg-base:        hsl(235, 35%, 14%);
+  --color-bg-base:        hsl(192, 58%, 21%);
   --color-text-primary:   var(--text-primary);
   --color-text-secondary: var(--text-secondary);
   --color-text-tertiary:  var(--text-tertiary);
-  --color-divider:        hsl(215, 20%, 30%);
-  --color-surface:        hsl(215, 30%, 18%);
-  --color-surface-primary: hsl(215, 30%, 18%);
+  --color-divider:        hsl(192, 25%, 28%);
+  --color-surface:        hsl(192, 50%, 16%);
+  --color-surface-primary: hsl(192, 50%, 16%);
 
-  /* Surfaces — midnight depth */
-  --surface-base:   hsl(235, 35%, 14%);   /* #0A0A3D Deep Abyss */
-  --surface-raised: hsl(215, 30%, 18%);   /* #2D4263 Steel Mist */
-  --surface-sunken: hsl(230, 28%, 12%);
-  --surface-library: hsl(235, 35%, 14%);
+  /* Surfaces — Petrol Teal depth */
+  --surface-base:   hsl(192, 58%, 21%);   /* #164A58 Petrol Teal */
+  --surface-raised: hsl(192, 50%, 16%);   /* Raised */
+  --surface-sunken: hsl(192, 55%, 13%);   /* #0D2B33 Deep Petrol */
+  --surface-library: hsl(192, 58%, 21%);
   --text-library:   hsl(38, 25%, 92%);
 
   /* Note surfaces — midnight variant */
-  --note-bg:    215 25% 18%;
-  --note-border: 215 20% 30%;
+  --note-bg:    192 40% 16%;
+  --note-border: 192 25% 28%;
   --note-text:  38 25% 90%;
 
   /* Shadows — midnight-tinted, deep */
-  --shadow-card: 0 2px 6px hsla(230, 40%, 6%, 0.30),
-                 0 8px 28px -4px hsla(230, 35%, 4%, 0.35),
-                 0 18px 48px -10px hsla(230, 30%, 3%, 0.25);
-  --shadow-card-featured: 0 3px 10px hsla(230, 40%, 5%, 0.35),
-                          0 14px 40px -4px hsla(230, 35%, 3%, 0.40),
-                          0 28px 64px -12px hsla(230, 30%, 2%, 0.25);
+  --shadow-card: 0 2px 6px hsla(192, 50%, 6%, 0.30),
+                 0 8px 28px -4px hsla(192, 45%, 4%, 0.35),
+                 0 18px 48px -10px hsla(192, 40%, 3%, 0.25);
+  --shadow-card-featured: 0 3px 10px hsla(192, 50%, 5%, 0.35),
+                          0 14px 40px -4px hsla(192, 45%, 3%, 0.40),
+                          0 28px 64px -12px hsla(192, 40%, 2%, 0.25);
   --radius-card: 1.125rem;
   --border-card: none;
 

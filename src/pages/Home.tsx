@@ -216,7 +216,7 @@ export default function Home() {
   };
 
   return (
-    <div ref={scrollRef} className="min-h-screen flex flex-col overflow-y-auto relative" style={{ height: '100vh', backgroundColor: 'var(--surface-base)' }}>
+    <div ref={scrollRef} className="min-h-screen flex flex-col overflow-y-auto relative" style={{ height: '100vh', background: 'linear-gradient(180deg, #164A58 0%, #0D2B33 100%)' }}>
       {/* Saffron backlight — warm glow behind illustration */}
       <div
         style={{
