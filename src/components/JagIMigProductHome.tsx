@@ -8,10 +8,10 @@ const EASE = [0.4, 0.0, 0.2, 1] as const;
 
 /** Ordered tiles: bg, text color, dark flag, outer glow color */
 const ORDERED_TILES: { id: string; bg: string; text: string; dark: boolean; glow: string }[] = [
-  { id: 'jim-tryggheten-inuti', bg: '#8A9114', text: '#FFFDF5', dark: true, glow: 'rgba(138,145,20,0.18)' },
-  { id: 'jim-kanslorna-jag-bar', bg: '#E9EDC9', text: '#4A4820', dark: false, glow: 'rgba(200,210,160,0.20)' },
-  { id: 'jim-nar-det-gor-ont', bg: '#606C38', text: '#FFFDF5', dark: true, glow: 'rgba(96,108,56,0.18)' },
-  { id: 'jim-jag-som-helhet', bg: '#FEFAE0', text: '#6B6530', dark: false, glow: 'rgba(200,185,100,0.30)' },
+  { id: 'jim-tryggheten-inuti', bg: '#FFC857', text: '#5C4400', dark: false, glow: 'rgba(255,200,87,0.22)' },
+  { id: 'jim-kanslorna-jag-bar', bg: '#499F68', text: '#FFFDF5', dark: true, glow: 'rgba(73,159,104,0.18)' },
+  { id: 'jim-nar-det-gor-ont', bg: '#F07167', text: '#FFFDF5', dark: true, glow: 'rgba(240,113,103,0.20)' },
+  { id: 'jim-jag-som-helhet', bg: '#5D5CDE', text: '#FFFDF5', dark: true, glow: 'rgba(93,92,222,0.20)' },
 ];
 const DIARY_COLOR = { bg: '#F2E8CF', text: '#7A7040' };
 
