@@ -1233,7 +1233,7 @@ export default function CardView() {
                 {[0, 1].map(i => (
                   <span key={i} style={{
                     width: '4px', height: '4px', borderRadius: '50%',
-                    backgroundColor: 'var(--accent-saffron)', opacity: 0.35,
+                    backgroundColor: isStillUsCard ? (startScreenCategoryColor || 'var(--accent-saffron)') : 'var(--accent-saffron)', opacity: 0.35,
                   }} />
                 ))}
               </motion.div>
