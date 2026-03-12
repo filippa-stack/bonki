@@ -804,7 +804,7 @@ export default function CardView() {
       headerTitle: 'Still Us',
       accentColor: 'hsl(158, 35%, 18%)',
       accentColorMuted: 'hsl(158, 20%, 92%)',
-      secondaryAccent: 'hsl(38, 88%, 46%)',
+      secondaryAccent: 'hsl(41, 78%, 48%)',
       backgroundColor: '#FFFDF8',
       pronounMode: 'ni' as const,
       freeCardId: stillUsFreeCardId,
