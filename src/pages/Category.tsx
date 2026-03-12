@@ -454,10 +454,10 @@ function StillUsCategoryView({
                       fontFamily: "'DM Serif Display', var(--font-serif)",
                       fontSize: '19px',
                       fontWeight: 400,
-                      color,
-                      opacity: isCompleted ? 0.55 : 0.95,
+                      color: colorLight,
+                      opacity: isCompleted ? 0.55 : 1,
                       lineHeight: 1.3,
-                      textShadow: '0 1px 3px hsla(194, 28%, 8%, 0.25)',
+                      textShadow: `0 0 12px ${color}50, 0 1px 3px hsla(194, 28%, 8%, 0.25)`,
                     }}
                   >
                     {card.title}
