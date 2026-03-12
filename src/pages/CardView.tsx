@@ -1189,8 +1189,8 @@ export default function CardView() {
                   fontSize: '10px',
                   letterSpacing: '0.12em',
                   textTransform: 'uppercase',
-                  color: 'var(--text-tertiary)',
-                  opacity: 0.45,
+                  color: isStillUsCard ? (startScreenCategoryColor || 'var(--text-tertiary)') : 'var(--text-tertiary)',
+                  opacity: isStillUsCard ? 0.7 : 0.45,
                   marginBottom: '10px',
                 }}
               >
