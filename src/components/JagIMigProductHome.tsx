@@ -6,44 +6,40 @@ import apaImage from '@/assets/apa-jag-i-mig.png';
 
 const EASE = [0.4, 0.0, 0.2, 1] as const;
 
-/**
- * Each tile has a unique hue shift within the citron family,
- * creating rhythm without breaking the color identity.
- * Warmer → cooler progression mirrors an emotional journey.
- */
+/** Tiles in distinct shades of the accent color (#8A9A10 = hsl(66, 82%, 33%)) */
 const ORDERED_TILES = [
   {
     id: 'jim-tryggheten-inuti',
-    // Warm citron — golden, inviting entry point
-    bg: 'hsla(58, 68%, 68%, 0.52)',
-    text: 'hsl(50, 45%, 12%)',
-    gradient: 'linear-gradient(168deg, hsla(55, 72%, 78%, 0.55) 0%, hsla(60, 68%, 65%, 0.48) 100%)',
+    // Lightest — warm, welcoming
+    bg: 'hsla(66, 65%, 72%, 0.55)',
+    text: 'hsl(66, 50%, 14%)',
+    gradient: 'linear-gradient(168deg, hsla(66, 68%, 78%, 0.58) 0%, hsla(66, 62%, 68%, 0.52) 100%)',
   },
   {
     id: 'jim-kanslorna-jag-bar',
-    // Yellow-green citron — fresh, growth
-    bg: 'hsla(64, 70%, 66%, 0.48)',
-    text: 'hsl(55, 42%, 12%)',
-    gradient: 'linear-gradient(168deg, hsla(60, 74%, 76%, 0.52) 0%, hsla(66, 68%, 63%, 0.45) 100%)',
+    // Medium-light
+    bg: 'hsla(66, 68%, 62%, 0.55)',
+    text: 'hsl(66, 48%, 12%)',
+    gradient: 'linear-gradient(168deg, hsla(66, 72%, 70%, 0.58) 0%, hsla(66, 65%, 58%, 0.52) 100%)',
   },
   {
     id: 'jim-nar-det-gor-ont',
-    // Slightly deeper, muted citron — more grounded
-    bg: 'hsla(68, 58%, 60%, 0.48)',
-    text: 'hsl(58, 40%, 12%)',
-    gradient: 'linear-gradient(168deg, hsla(64, 62%, 72%, 0.52) 0%, hsla(70, 55%, 57%, 0.45) 100%)',
+    // Medium-deep
+    bg: 'hsla(66, 72%, 50%, 0.55)',
+    text: 'hsl(66, 45%, 10%)',
+    gradient: 'linear-gradient(168deg, hsla(66, 75%, 60%, 0.58) 0%, hsla(66, 70%, 46%, 0.52) 100%)',
   },
   {
     id: 'jim-jag-som-helhet',
-    // Cool citron-sage — contemplative, whole
-    bg: 'hsla(74, 48%, 62%, 0.48)',
-    text: 'hsl(64, 38%, 12%)',
-    gradient: 'linear-gradient(168deg, hsla(70, 52%, 72%, 0.52) 0%, hsla(78, 45%, 58%, 0.45) 100%)',
+    // Deepest — grounding
+    bg: 'hsla(66, 78%, 40%, 0.55)',
+    text: 'hsla(0, 0%, 100%, 0.95)',
+    gradient: 'linear-gradient(168deg, hsla(66, 80%, 50%, 0.58) 0%, hsla(66, 78%, 36%, 0.55) 100%)',
   },
 ];
 
 const ACCENT_COLOR = '#8A9A10';
-const DIARY_TEXT = 'hsl(64, 40%, 18%)';
+const DIARY_TEXT = 'hsl(66, 40%, 18%)';
 
 const containerVariants = {
   hidden: {},
@@ -84,7 +80,7 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
         }}
         style={{
           position: 'absolute',
-          top: '7%',
+          top: '-8%',
           left: '-42%',
           width: '135%',
           height: '125%',
