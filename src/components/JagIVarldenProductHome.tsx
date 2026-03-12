@@ -210,19 +210,19 @@ export default function JagIVarldenProductHome({ product }: { product: ProductMa
                   textAlign: 'center',
                   cursor: 'pointer',
                   border: isDark
-                    ? '1px solid hsla(135, 40%, 45%, 0.40)'
-                    : '1px solid hsla(130, 40%, 85%, 0.60)',
+                    ? '1px solid hsla(30, 20%, 45%, 0.35)'
+                    : '1px solid hsla(35, 25%, 82%, 0.60)',
                   boxShadow: isDark
                     ? [
-                        '0 6px 20px hsla(140, 40%, 10%, 0.22)',
+                        '0 6px 20px hsla(30, 20%, 15%, 0.20)',
                         '0 2px 6px hsla(0, 0%, 0%, 0.10)',
-                        'inset 0 1px 0 hsla(135, 40%, 55%, 0.30)',
+                        'inset 0 1px 0 hsla(30, 25%, 55%, 0.25)',
                       ].join(', ')
                     : [
-                        '0 6px 20px hsla(130, 40%, 50%, 0.12)',
+                        '0 6px 20px hsla(35, 25%, 50%, 0.10)',
                         '0 2px 6px hsla(0, 0%, 0%, 0.04)',
-                        'inset 0 2px 1px hsla(130, 60%, 95%, 0.55)',
-                        'inset 0 -2px 4px hsla(135, 30%, 30%, 0.06)',
+                        'inset 0 2px 1px hsla(35, 30%, 95%, 0.55)',
+                        'inset 0 -2px 4px hsla(30, 20%, 30%, 0.06)',
                       ].join(', '),
                   whiteSpace: 'normal' as const,
                   backdropFilter: 'blur(20px) saturate(1.3)',
