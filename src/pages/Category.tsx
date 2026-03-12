@@ -13,7 +13,7 @@ import { allProducts } from '@/data/products';
 import { useProductTheme } from '@/hooks/useProductTheme';
 import { useCardImage } from '@/hooks/useCardImage';
 import { useVerdigrisTheme } from '@/components/VerdigrisAtmosphere';
-import { CIRCADIAN_COLORS } from '@/components/CircadianMenu';
+import { CIRCADIAN_COLORS, CIRCADIAN_COLORS_LIGHT } from '@/components/CircadianMenu';
 import Header from '@/components/Header';
 
 
