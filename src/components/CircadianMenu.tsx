@@ -366,22 +366,6 @@ export default function CircadianMenu({
                         padding: '16px',
                       }}
                     >
-                      {/* Number */}
-                      <span
-                        style={{
-                          fontFamily: 'var(--font-serif)',
-                          fontSize: '22px',
-                          fontWeight: 700,
-                          color: color,
-                          opacity: 0.85,
-                          width: '28px',
-                          textAlign: 'center',
-                          flexShrink: 0,
-                          lineHeight: 1,
-                        }}
-                      >
-                        {currentIndex + 1}
-                      </span>
 
                       {/* Title + subtitle */}
                       <div style={{ flex: 1, minWidth: 0 }}>
