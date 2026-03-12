@@ -42,15 +42,19 @@ const CARD_IMAGE_OVERRIDE: Record<string, string> = {
   'jim-jag': mirrorJagIMig,
 };
 
-/** Per-card tile height — taller for spread-out illustrations, shorter for compact ones */
-const CARD_TILE_HEIGHT: Record<string, number> = {
-  'jim-acklad': 300, 'jim-avsky': 260, 'jim-besviken': 270,
-  'jim-avundsjuk': 290, 'jim-svartsjuk': 280, 'jim-utanfor': 290,
-  'jim-skam': 280, 'jim-arg': 260, 'jim-vild': 260,
-  'jim-stolt': 270, 'jim-bestamd': 280, 'jim-karlek': 270,
-  'jim-nyfiken': 260, 'jim-forvanad': 260, 'jim-jag': 270,
-  'jim-trygg': 270, 'jim-ensam': 270, 'jim-glad': 260,
-  'jim-radd': 270, 'jim-ledsen': 270, 'jim-stress': 260,
+/** Per-card focal point for object-position when using cover */
+const CARD_FOCAL_POINT: Record<string, string> = {
+  'jim-besviken': 'center 30%', 'jim-acklad': 'center 35%',
+  'jim-avsky': 'center 25%', 'jim-skam': 'center 35%',
+  'jim-avundsjuk': 'center 30%', 'jim-svartsjuk': 'center 40%',
+  'jim-utanfor': 'center 40%', 'jim-arg': 'center 30%',
+  'jim-vild': 'center 30%', 'jim-stolt': 'center 35%',
+  'jim-bestamd': 'center 35%', 'jim-karlek': 'center 35%',
+  'jim-nyfiken': 'center 30%', 'jim-forvanad': 'center 30%',
+  'jim-jag': 'center 35%', 'jim-trygg': 'center 35%',
+  'jim-ensam': 'center 35%', 'jim-glad': 'center 30%',
+  'jim-radd': 'center 30%', 'jim-ledsen': 'center 35%',
+  'jim-stress': 'center 30%',
 };
 
 /** Product-specific design tokens for card listings */
@@ -606,16 +610,15 @@ function CardEntry({ card, index, isCompleted = false, isInProgress = false, onN
   const cardBg = categoryBg || styles?.cardBg || '#FFFFFF';
   const solidBg = categoryBg ? (styles?.cardBg || '#F8F3E4') : (styles?.cardBg || '#FFFFFF');
   const titleColor = styles?.cardTitleColor ?? 'var(--text-primary)';
-  // ① Subtitle uses same hue as title but softer
   const subtitleColor = titleColor;
-  const tileHeight = CARD_TILE_HEIGHT[card.id] ?? 270;
+  const focalPoint = CARD_FOCAL_POINT[card.id] ?? 'center 35%';
 
   return (
     <motion.div
       initial={{ opacity: 0, y: 12, scale: 0.97 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
       transition={{ delay: index * 0.07, duration: 0.55, ease: EASE }}
-      style={{ marginBottom: isLast ? '0' : '20px' }}
+      style={{ marginBottom: isLast ? '0' : '16px' }}
     >
       <div
         onClick={onNavigate}
@@ -641,8 +644,7 @@ function CardEntry({ card, index, isCompleted = false, isInProgress = false, onN
             ? '0px 1px 3px rgba(44, 36, 32, 0.04), 0px 4px 12px -4px rgba(44, 36, 32, 0.04)'
             : '0px 4px 16px rgba(44, 36, 32, 0.08), 0px 12px 32px -8px rgba(44, 36, 32, 0.06)',
           transition: 'transform 200ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 260ms ease-out',
-          // ③ Dynamic tile height per card
-          height: `${tileHeight}px`,
+          height: '280px',
           position: 'relative',
         }}
         onPointerDown={(e) => { e.currentTarget.style.transform = 'scale(0.985)'; }}
@@ -652,7 +654,7 @@ function CardEntry({ card, index, isCompleted = false, isInProgress = false, onN
           e.currentTarget.style.transform = 'translateY(-3px) scale(1.01)';
         }}
       >
-        {/* ① Illustration — centered in upper 65% of tile */}
+        {/* Bold full-bleed illustration — cover with smart focal point */}
         {illustration && (
           <img
             src={illustration}
@@ -662,21 +664,19 @@ function CardEntry({ card, index, isCompleted = false, isInProgress = false, onN
             className="pointer-events-none select-none"
             style={{
               position: 'absolute',
-              top: '4%',
-              left: '50%',
-              transform: 'translateX(-50%)',
-              width: '88%',
-              height: '65%',
-              objectFit: 'contain',
-              objectPosition: 'center center',
-              opacity: isCompleted ? 0.30 : 0.88,
+              inset: 0,
+              width: '100%',
+              height: '100%',
+              objectFit: 'cover',
+              objectPosition: focalPoint,
+              opacity: isCompleted ? 0.25 : 1,
               transition: 'opacity 300ms ease',
               filter: isCompleted ? 'grayscale(0.3)' : 'none',
             }}
           />
         )}
 
-        {/* ② Softer, taller gradient scrim — starts higher with gentler curve */}
+        {/* Gradient scrim — long, soft fade for text legibility */}
         <div
           className="pointer-events-none"
           style={{
@@ -684,8 +684,8 @@ function CardEntry({ card, index, isCompleted = false, isInProgress = false, onN
             bottom: 0,
             left: 0,
             right: 0,
-            height: '65%',
-            background: `linear-gradient(180deg, transparent 0%, ${solidBg}40 25%, ${solidBg}99 50%, ${solidBg}DD 70%, ${solidBg}F5 85%, ${solidBg} 100%)`,
+            height: '60%',
+            background: `linear-gradient(180deg, transparent 0%, ${solidBg}30 20%, ${solidBg}80 42%, ${solidBg}CC 60%, ${solidBg}F0 78%, ${solidBg} 100%)`,
             borderRadius: '0 0 20px 20px',
             zIndex: 1,
           }}
@@ -715,28 +715,25 @@ function CardEntry({ card, index, isCompleted = false, isInProgress = false, onN
           />
         )}
 
-        {/* Text — bottom-anchored in gradient zone */}
+        {/* Text — bottom-anchored */}
         <div
           style={{
             position: 'absolute', bottom: 0, left: 0, right: 0, zIndex: 2,
             padding: '0 24px 18px',
           }}
         >
-          {/* ⑤ Thin accent line as visual anchor */}
           <div
             style={{
-              width: '24px',
-              height: '2px',
-              borderRadius: '1px',
+              width: '24px', height: '2px', borderRadius: '1px',
               backgroundColor: titleColor,
-              opacity: isCompleted ? 0.20 : 0.35,
+              opacity: isCompleted ? 0.20 : 0.40,
               marginBottom: '10px',
             }}
           />
           <h3
             style={{
               fontFamily: "'DM Serif Display', var(--font-serif)",
-              fontSize: '24px', fontWeight: 400,
+              fontSize: '26px', fontWeight: 400,
               color: titleColor, opacity: isCompleted ? 0.55 : 1,
               lineHeight: 1.2,
             }}
@@ -747,8 +744,7 @@ function CardEntry({ card, index, isCompleted = false, isInProgress = false, onN
             <p
               style={{
                 fontFamily: 'var(--font-serif)', fontSize: '13px',
-                // ④ Better subtitle contrast — same hue as title, lower opacity
-                color: subtitleColor, opacity: isCompleted ? 0.35 : 0.55,
+                color: subtitleColor, opacity: isCompleted ? 0.30 : 0.50,
                 lineHeight: 1.45, marginTop: '5px',
               }}
             >
