@@ -20,6 +20,19 @@ export const CIRCADIAN_COLORS: Record<string, string> = {
   'category-10':        '#313658',
 };
 
+/** Darker variants for subtitle text — higher contrast on glass tiles */
+const CIRCADIAN_COLORS_DARK: Record<string, string> = {
+  'emotional-intimacy': '#D0DDD5',
+  'communication':      '#A8C7B5',
+  'category-8':         '#E0B8AA',
+  'individual-needs':   '#E0CAA8',
+  'parenting-together': '#A8B8C8',
+  'category-9':         '#8AAA92',
+  'category-6':         '#BCA8BD',
+  'daily-life':         '#7BA0A8',
+  'category-10':        '#7A80B0',
+};
+
 const CIRCADIAN_FILLS: Record<string, string> = {
   'emotional-intimacy': 'rgba(162, 181, 169, 0.28)',
   'communication':      'rgba(107, 142, 125, 0.28)',
