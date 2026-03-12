@@ -671,38 +671,25 @@ function CardEntry({ card, index, isCompleted = false, isInProgress = false, onN
               display: 'flex',
               justifyContent: 'center',
               alignItems: 'center',
-              paddingTop: '16px',
-              paddingBottom: '4px',
+              paddingTop: '12px',
+              paddingBottom: '0px',
             }}
           >
-            <div
+            <img
+              src={illustration}
+              alt=""
+              aria-hidden="true"
+              draggable={false}
               style={{
-                width: '120px',
-                height: '120px',
-                borderRadius: '50%',
-                overflow: 'hidden',
-                backgroundColor: 'rgba(255,255,255,0.25)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
+                height: '150px',
+                maxWidth: '80%',
+                objectFit: 'contain',
+                objectPosition: 'center',
+                opacity: isCompleted ? 0.45 : 0.92,
+                transition: 'opacity 300ms ease',
+                filter: isCompleted ? 'grayscale(0.3)' : 'none',
               }}
-            >
-              <img
-                src={illustration}
-                alt=""
-                aria-hidden="true"
-                draggable={false}
-                style={{
-                  width: `${Math.round(120 * illustrationScale)}px`,
-                  height: `${Math.round(120 * illustrationScale)}px`,
-                  objectFit: 'cover',
-                  objectPosition: 'center',
-                  opacity: isCompleted ? 0.45 : 0.90,
-                  transition: 'opacity 300ms ease',
-                  filter: isCompleted ? 'grayscale(0.3)' : 'none',
-                }}
-              />
-            </div>
+            />
           </div>
         )}
 
