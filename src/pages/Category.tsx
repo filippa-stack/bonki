@@ -377,7 +377,7 @@ function StillUsCategoryView({
         />
 
         {/* Card tiles — glassmorphism */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '0', paddingLeft: '20px', paddingRight: '20px', position: 'relative' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '0', paddingLeft: '16px', paddingRight: '20px', position: 'relative' }}>
           {cards.map((card, index) => {
             const isCompleted = completedCardIds.includes(card.id);
             const isInProgress = !isCompleted && inProgressCardIds.includes(card.id);
@@ -388,14 +388,14 @@ function StillUsCategoryView({
             const isLast = index === cards.length - 1;
 
             return (
-              <div key={card.id} style={{ display: 'flex', alignItems: 'stretch', gap: '0' }}>
+              <div key={card.id} style={{ display: 'flex', alignItems: 'stretch', gap: '12px' }}>
                 {/* Sequence spine — number + connecting line */}
                 <div
                   style={{
                     display: 'flex',
                     flexDirection: 'column',
                     alignItems: 'center',
-                    width: '28px',
+                    width: '20px',
                     flexShrink: 0,
                     position: 'relative',
                   }}
@@ -404,10 +404,10 @@ function StillUsCategoryView({
                   <span
                     style={{
                       fontFamily: 'var(--font-serif)',
-                      fontSize: '13px',
-                      fontWeight: 400,
-                      color,
-                      opacity: isCompleted ? 0.35 : 0.55,
+                      fontSize: '14px',
+                      fontWeight: 500,
+                      color: colorLight,
+                      opacity: isCompleted ? 0.30 : 0.50,
                       lineHeight: 1,
                       paddingTop: '18px',
                     }}
@@ -420,8 +420,8 @@ function StillUsCategoryView({
                       style={{
                         flex: 1,
                         width: '1px',
-                        background: `linear-gradient(180deg, ${color}40 0%, transparent 100%)`,
-                        marginTop: '6px',
+                        background: `linear-gradient(180deg, ${color}30 0%, transparent 100%)`,
+                        marginTop: '8px',
                       }}
                     />
                   )}
