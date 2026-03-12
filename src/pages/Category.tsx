@@ -296,16 +296,6 @@ function StillUsCategoryView({
         />
       </motion.div>
 
-      {/* Scrim gradient behind tile zone — separates illustration from content */}
-      <div
-        aria-hidden="true"
-        style={{
-          position: 'absolute',
-          top: '35%', left: 0, right: 0, bottom: 0,
-          background: 'linear-gradient(to bottom, transparent 0%, hsla(194, 28%, 14%, 0.20) 40%, hsla(194, 28%, 14%, 0.35) 100%)',
-          zIndex: 0, pointerEvents: 'none',
-        }}
-      />
 
       {/* Back button */}
       <motion.button
