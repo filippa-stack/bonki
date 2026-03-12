@@ -31,15 +31,15 @@ const titleVariants = {
 
 const ACCENT_COLOR = '#9825D6';
 
-/** Ordered tiles — muted, sophisticated palette with glass morphism */
-const ORDERED_TILES: { id: string; bg: string; tint: string; text: string }[] = [
-  { id: 'jma-att-hora-till', bg: 'hsla(263, 60%, 68%, 0.38)', tint: 'hsla(263, 50%, 88%, 0.25)', text: 'hsl(263, 38%, 32%)' },
-  { id: 'jma-nar-vi-jamfor-oss', bg: 'hsla(188, 38%, 48%, 0.35)', tint: 'hsla(188, 30%, 85%, 0.22)', text: 'hsl(188, 40%, 22%)' },
-  { id: 'jma-nar-det-skaver', bg: 'hsla(0, 58%, 68%, 0.35)', tint: 'hsla(0, 40%, 88%, 0.22)', text: 'hsl(0, 35%, 28%)' },
-  { id: 'jma-att-sta-stadig', bg: 'hsla(100, 28%, 48%, 0.35)', tint: 'hsla(100, 22%, 86%, 0.22)', text: 'hsl(100, 30%, 20%)' },
-  { id: 'jma-vi-i-varlden', bg: 'hsla(33, 70%, 60%, 0.38)', tint: 'hsla(33, 50%, 88%, 0.25)', text: 'hsl(33, 50%, 22%)' },
+/** Ordered tiles — frosted glass with tinted color, highly transparent to let sloth show */
+const ORDERED_TILES: { id: string; bg: string; text: string; shadow: string }[] = [
+  { id: 'jma-att-hora-till', bg: 'hsla(263, 55%, 72%, 0.22)', text: 'hsl(263, 50%, 28%)', shadow: 'hsla(263, 40%, 50%, 0.12)' },
+  { id: 'jma-nar-vi-jamfor-oss', bg: 'hsla(188, 40%, 55%, 0.22)', text: 'hsl(188, 50%, 20%)', shadow: 'hsla(188, 35%, 40%, 0.12)' },
+  { id: 'jma-nar-det-skaver', bg: 'hsla(0, 50%, 72%, 0.22)', text: 'hsl(0, 42%, 26%)', shadow: 'hsla(0, 40%, 50%, 0.12)' },
+  { id: 'jma-att-sta-stadig', bg: 'hsla(100, 30%, 52%, 0.22)', text: 'hsl(100, 38%, 18%)', shadow: 'hsla(100, 28%, 38%, 0.12)' },
+  { id: 'jma-vi-i-varlden', bg: 'hsla(33, 60%, 62%, 0.22)', text: 'hsl(33, 55%, 20%)', shadow: 'hsla(33, 45%, 45%, 0.12)' },
 ];
-const DIARY_COLOR = { bg: 'hsla(280, 30%, 85%, 0.32)', text: 'hsl(280, 60%, 40%)' };
+const DIARY_COLOR = { bg: 'hsla(280, 40%, 75%, 0.18)', text: 'hsl(280, 55%, 35%)' };
 
 export default function JagMedAndraProductHome({ product }: { product: ProductManifest }) {
   const navigate = useNavigate();
