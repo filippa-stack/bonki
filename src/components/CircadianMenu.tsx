@@ -328,7 +328,7 @@ export default function CircadianMenu({
                       overflow: 'hidden',
                       position: 'relative',
                       boxShadow: breatheBoxShadow,
-                      ...(isNextSuggested ? { animation: 'breathe-glow 3.5s ease-in-out infinite' } : {}),
+                      // no pulsating animation
                     }}
                     onMouseEnter={(e) => {
                       const el = e.currentTarget as HTMLElement;
