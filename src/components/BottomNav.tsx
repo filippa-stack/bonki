@@ -93,9 +93,7 @@ export default function BottomNav() {
 
       <div
         style={{
-          backgroundColor: 'hsl(var(--background))',
-          backdropFilter: 'none',
-          WebkitBackdropFilter: 'none',
+          backgroundColor: 'transparent',
         }}
       >
         <div className="flex items-stretch justify-around" style={{ height: '48px' }}>
