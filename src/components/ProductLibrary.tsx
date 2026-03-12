@@ -371,34 +371,39 @@ export default function ProductLibrary() {
   const vardag = allProducts.find(p => p.id === 'vardagskort')!;
   const syskon = allProducts.find(p => p.id === 'syskonkort')!;
 
+  const isDark = activeTab === 'par';
+
   return (
     <div
       className="min-h-screen flex flex-col relative"
       style={{
-        background: `
-          radial-gradient(ellipse 70% 60% at 50% 45%, #FFF4D1 0%, #FEF2C7 65%, #FBDFA8 100%)
-        `,
+        background: isDark
+          ? 'radial-gradient(ellipse 80% 70% at 50% 30%, #1A1A3E 0%, #10102A 45%, #0A0A1A 100%)'
+          : 'radial-gradient(ellipse 70% 60% at 50% 45%, #FFF4D1 0%, #FEF2C7 65%, #FBDFA8 100%)',
         fontFamily: "'Lato', sans-serif",
+        transition: 'background 600ms ease',
       }}
     >
-      {/* ── Background watermark — cinematic depth ── */}
-      <img
-        src={watermarkMamma}
-        alt=""
-        aria-hidden
-        style={{
-          position: 'absolute',
-          width: '300px',
-          height: '400px',
-          left: '50%',
-          top: '0',
-          transform: 'translateX(-50%)',
-          opacity: 0.07,
-          filter: 'sepia(1) saturate(0.2) brightness(1.8) hue-rotate(-10deg)',
-          pointerEvents: 'none',
-          zIndex: 0,
-        }}
-      />
+      {/* ── Background watermark — cinematic depth (barn only) ── */}
+      {!isDark && (
+        <img
+          src={watermarkMamma}
+          alt=""
+          aria-hidden
+          style={{
+            position: 'absolute',
+            width: '300px',
+            height: '400px',
+            left: '50%',
+            top: '0',
+            transform: 'translateX(-50%)',
+            opacity: 0.07,
+            filter: 'sepia(1) saturate(0.2) brightness(1.8) hue-rotate(-10deg)',
+            pointerEvents: 'none',
+            zIndex: 0,
+          }}
+        />
+      )}
 
       {/* Content */}
       <div style={{ position: 'relative', zIndex: 1 }}>
@@ -420,10 +425,11 @@ export default function ProductLibrary() {
               fontFamily: "'DM Serif Display', serif",
               fontSize: '34px',
               fontWeight: 400,
-              color: '#0A0A18',
+              color: isDark ? 'hsla(38, 78%, 55%, 0.95)' : '#0A0A18',
               lineHeight: 1.15,
               letterSpacing: '-0.03em',
               marginBottom: '8px',
+              transition: 'color 400ms ease',
             }}
           >
             Bonki
@@ -437,9 +443,10 @@ export default function ProductLibrary() {
               fontStyle: 'italic',
               fontSize: '14px',
               fontWeight: 400,
-              color: 'var(--color-text-secondary)',
-              opacity: 0.5,
+              color: isDark ? 'hsla(38, 50%, 65%, 0.5)' : 'var(--color-text-secondary)',
+              opacity: isDark ? 1 : 0.5,
               lineHeight: 1.6,
+              transition: 'color 400ms ease',
             }}
           >
             Verktyg för samtalen som inte blir av
@@ -454,7 +461,7 @@ export default function ProductLibrary() {
           style={{
             width: '32px',
             height: '1.5px',
-            backgroundColor: 'hsla(38, 88%, 46%, 0.3)',
+            backgroundColor: isDark ? 'hsla(38, 78%, 50%, 0.35)' : 'hsla(38, 88%, 46%, 0.3)',
             margin: '14px auto 18px',
           }}
         />
@@ -482,12 +489,14 @@ export default function ProductLibrary() {
                 fontSize: '9px',
                 fontWeight: 700,
                 letterSpacing: '0.14em',
-                color: '#1A1A2E',
+                color: isDark ? '#F5EFE6' : '#1A1A2E',
                 background: 'transparent',
                 opacity: activeTab === tab ? 1 : 0.35,
                 border: 'none',
                 outline: 'none',
-                borderBottom: activeTab === tab ? '2px solid #1A1A2E' : '2px solid transparent',
+                borderBottom: activeTab === tab
+                  ? `2px solid ${isDark ? 'hsla(38, 78%, 55%, 0.8)' : '#1A1A2E'}`
+                  : '2px solid transparent',
                 borderRadius: '0',
                 padding: '6px 4px',
                 cursor: 'pointer',
@@ -854,11 +863,8 @@ export default function ProductLibrary() {
             exit={{ opacity: 0, x: swipeDirection * -30 }}
             transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
             style={{
-              background: 'radial-gradient(ellipse 80% 70% at 50% 40%, #1A1A3E 0%, #10102A 55%, #0A0A1A 100%)',
-              margin: '0 -20px',
-              padding: '0 20px',
-              borderRadius: '28px 28px 0 0',
-              minHeight: '80vh',
+              padding: '0',
+              minHeight: '60vh',
               position: 'relative',
               overflow: 'hidden',
             }}
@@ -924,7 +930,7 @@ export default function ProductLibrary() {
               style={{
                 borderRadius: '20px',
                 padding: '24px 20px 18px',
-                background: 'hsla(0, 0%, 100%, 0.07)',
+                background: 'hsla(215, 20%, 28%, 0.35)',
                 backdropFilter: 'blur(24px)',
                 WebkitBackdropFilter: 'blur(24px)',
                 textAlign: 'left',
@@ -935,8 +941,8 @@ export default function ProductLibrary() {
                 flexDirection: 'column',
                 alignItems: 'flex-start',
                 justifyContent: 'flex-end',
-                border: '1px solid hsla(220, 60%, 80%, 0.15)',
-                boxShadow: '0 4px 24px hsla(230, 40%, 10%, 0.3), 0 1px 3px hsla(230, 30%, 15%, 0.2)',
+                border: '1px solid hsla(215, 30%, 60%, 0.15)',
+                boxShadow: '0 4px 24px hsla(220, 40%, 8%, 0.35), 0 1px 3px hsla(220, 30%, 12%, 0.2)',
               }}
             >
               {/* Illustration */}
@@ -949,10 +955,10 @@ export default function ProductLibrary() {
                   backgroundSize: 'contain',
                   backgroundRepeat: 'no-repeat',
                   backgroundPosition: 'center center',
-                  opacity: 0.18,
+                  opacity: 0.15,
                   pointerEvents: 'none',
                   zIndex: 0,
-                  filter: 'brightness(1.5) saturate(0.6)',
+                  filter: 'brightness(1.3) saturate(0.4) hue-rotate(-15deg)',
                 }}
               />
               <div style={{ zIndex: 1 }}>
@@ -1009,7 +1015,7 @@ export default function ProductLibrary() {
               style={{
                 borderRadius: '20px',
                 padding: '24px 20px 18px',
-                background: 'hsla(0, 0%, 100%, 0.05)',
+                background: 'hsla(215, 20%, 25%, 0.25)',
                 backdropFilter: 'blur(24px)',
                 WebkitBackdropFilter: 'blur(24px)',
                 textAlign: 'left',
@@ -1020,8 +1026,8 @@ export default function ProductLibrary() {
                 flexDirection: 'column',
                 alignItems: 'flex-start',
                 justifyContent: 'flex-end',
-                border: '1px solid hsla(220, 60%, 80%, 0.10)',
-                boxShadow: '0 4px 24px hsla(230, 40%, 10%, 0.25), 0 1px 3px hsla(230, 30%, 15%, 0.15)',
+                border: '1px solid hsla(215, 30%, 55%, 0.10)',
+                boxShadow: '0 4px 24px hsla(220, 40%, 8%, 0.25), 0 1px 3px hsla(220, 30%, 12%, 0.15)',
                 opacity: 0.85,
               }}
             >
@@ -1126,17 +1132,15 @@ export default function ProductLibrary() {
           style={{
             textAlign: 'center',
             padding: '0 28px',
-            marginTop: activeTab === 'par' ? '0' : '32px',
-            paddingTop: activeTab === 'par' ? '24px' : '0',
+            marginTop: isDark ? '0' : '32px',
+            paddingTop: isDark ? '24px' : '0',
             paddingBottom: 'calc(48px + env(safe-area-inset-bottom, 0px))',
-            background: activeTab === 'par' ? '#0A0A1A' : 'transparent',
-            margin: activeTab === 'par' ? '0 -20px' : undefined,
           }}
         >
           <div style={{
             width: '40px',
             height: '1px',
-            background: activeTab === 'par'
+            background: isDark
               ? 'linear-gradient(90deg, transparent, hsla(38, 60%, 50%, 0.2), transparent)'
               : 'linear-gradient(90deg, transparent, hsla(30, 20%, 60%, 0.3), transparent)',
             margin: '0 auto 18px',
@@ -1146,7 +1150,7 @@ export default function ProductLibrary() {
               fontFamily: "'DM Serif Display', serif",
               fontStyle: 'italic',
               fontSize: '14px',
-              color: activeTab === 'par' ? 'hsla(38, 60%, 60%, 0.5)' : 'var(--accent-text)',
+              color: isDark ? 'hsla(38, 60%, 60%, 0.5)' : 'var(--accent-text)',
               opacity: 0.45,
               lineHeight: 1.7,
               letterSpacing: '-0.01em',
