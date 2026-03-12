@@ -188,8 +188,8 @@ export default function JagMedAndraProductHome({ product }: { product: ProductMa
                   alignItems: 'center',
                   justifyContent: 'center',
                   lineHeight: 1.3,
-                  backdropFilter: 'blur(20px) saturate(1.3)',
-                  WebkitBackdropFilter: 'blur(20px) saturate(1.3)',
+                  backdropFilter: 'none',
+                  WebkitBackdropFilter: 'none',
                 }}
               >
                 <span
