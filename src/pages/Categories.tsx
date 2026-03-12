@@ -12,6 +12,7 @@ import Header from '@/components/Header';
 import ResumeBanner from '@/components/ResumeBanner';
 import { useNormalizedSessionContext } from '@/contexts/NormalizedSessionContext';
 import { useDevState } from '@/contexts/DevStateContext';
+import { useVerdigrisTheme } from '@/components/VerdigrisAtmosphere';
 
 import { RECOMMENDED_CATEGORY_ORDER } from '@/lib/recommendedOrder';
 
