@@ -962,7 +962,7 @@ export default function ProductLibrary() {
               style={{
                 borderRadius: '20px',
                 padding: '24px 20px 18px',
-                background: 'hsla(215, 20%, 28%, 0.35)',
+                background: 'hsla(215, 38%, 28%, 0.30)',
                 backdropFilter: 'blur(24px)',
                 WebkitBackdropFilter: 'blur(24px)',
                 textAlign: 'left',
@@ -973,8 +973,8 @@ export default function ProductLibrary() {
                 flexDirection: 'column',
                 alignItems: 'flex-start',
                 justifyContent: 'flex-end',
-                border: '1px solid hsla(215, 30%, 60%, 0.15)',
-                boxShadow: '0 4px 24px hsla(220, 40%, 8%, 0.35), 0 1px 3px hsla(220, 30%, 12%, 0.2)',
+                border: '1px solid hsla(215, 35%, 55%, 0.12)',
+                boxShadow: '0 4px 24px hsla(230, 50%, 6%, 0.4), 0 1px 3px hsla(230, 40%, 10%, 0.25)',
               }}
             >
               {/* Illustration */}
