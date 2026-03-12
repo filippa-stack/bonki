@@ -47,63 +47,73 @@ export default function BottomNav() {
 
   return (
     <nav
-      className="fixed bottom-0 left-0 right-0 z-40 border-t"
+      className="fixed bottom-0 left-0 right-0 z-40"
       style={{
-        backgroundColor: 'hsl(var(--background) / 0.92)',
-        backdropFilter: 'blur(16px)',
-        WebkitBackdropFilter: 'blur(16px)',
-        borderColor: 'hsl(var(--border))',
         paddingBottom: 'env(safe-area-inset-bottom, 0px)',
       }}
     >
-      <div className="flex items-stretch justify-around" style={{ height: '56px' }}>
-        {items.map((item) => {
-          const active = item.match(pathname);
-          const Icon = item.icon;
+      {/* Subtle top edge — replaces hard border */}
+      <div
+        style={{
+          height: '1px',
+          background: 'linear-gradient(90deg, transparent 8%, hsl(var(--border) / 0.35) 30%, hsl(var(--border) / 0.35) 70%, transparent 92%)',
+        }}
+      />
 
-          return (
-            <button
-              key={item.id}
-              onClick={() => navigate(item.path)}
-              className="relative flex flex-1 flex-col items-center justify-center gap-0.5 transition-colors"
-              style={{
-                color: active
-                  ? 'hsl(var(--primary))'
-                  : 'hsl(var(--muted-foreground))',
-                opacity: active ? 1 : 0.6,
-                background: 'none',
-                border: 'none',
-                cursor: 'pointer',
-                WebkitTapHighlightColor: 'transparent',
-              }}
-            >
-              {active && (
-                <motion.span
-                  layoutId="bottomnav-indicator"
-                  className="absolute top-0 left-1/2 -translate-x-1/2"
-                  style={{
-                    width: '24px',
-                    height: '2.5px',
-                    borderRadius: '2px',
-                    backgroundColor: 'hsl(var(--primary))',
-                  }}
-                  transition={{ type: 'spring', stiffness: 400, damping: 30 }}
-                />
-              )}
-              <Icon style={{ width: '20px', height: '20px' }} />
-              <span
+      <div
+        style={{
+          backgroundColor: 'hsl(var(--background) / 0.82)',
+          backdropFilter: 'saturate(1.4) blur(24px)',
+          WebkitBackdropFilter: 'saturate(1.4) blur(24px)',
+        }}
+      >
+        <div className="flex items-stretch justify-around" style={{ height: '48px' }}>
+          {items.map((item) => {
+            const active = item.match(pathname);
+            const Icon = item.icon;
+
+            return (
+              <motion.button
+                key={item.id}
+                onClick={() => navigate(item.path)}
+                whileTap={{ scale: 0.92 }}
+                transition={{ duration: 0.1 }}
+                className="relative flex flex-1 flex-col items-center justify-center gap-[3px]"
                 style={{
-                  fontSize: '10px',
-                  fontWeight: active ? 600 : 500,
-                  letterSpacing: '0.01em',
-                  lineHeight: 1,
+                  color: active
+                    ? 'hsl(var(--foreground))'
+                    : 'hsl(var(--muted-foreground))',
+                  opacity: active ? 0.85 : 0.38,
+                  background: 'none',
+                  border: 'none',
+                  cursor: 'pointer',
+                  WebkitTapHighlightColor: 'transparent',
+                  transition: 'opacity 300ms ease',
                 }}
               >
-                {item.label}
-              </span>
-            </button>
-          );
-        })}
+                <Icon
+                  style={{
+                    width: '18px',
+                    height: '18px',
+                    strokeWidth: active ? 1.8 : 1.4,
+                  }}
+                />
+                <span
+                  style={{
+                    fontFamily: 'var(--font-sans)',
+                    fontSize: '9px',
+                    fontWeight: active ? 600 : 400,
+                    letterSpacing: '0.04em',
+                    lineHeight: 1,
+                    textTransform: 'uppercase',
+                  }}
+                >
+                  {item.label}
+                </span>
+              </motion.button>
+            );
+          })}
+        </div>
       </div>
     </nav>
   );
