@@ -378,7 +378,7 @@ export default function ProductLibrary() {
       className="min-h-screen flex flex-col relative"
       style={{
         background: isDark
-          ? 'radial-gradient(ellipse 80% 70% at 50% 30%, #1A1A3E 0%, #10102A 45%, #0A0A1A 100%)'
+          ? 'radial-gradient(ellipse 80% 70% at 50% 30%, #12124A 0%, #0A0A3D 45%, #070720 100%)'
           : 'radial-gradient(ellipse 70% 60% at 50% 45%, #FFF4D1 0%, #FEF2C7 65%, #FBDFA8 100%)',
         fontFamily: "'Lato', sans-serif",
         transition: 'background 600ms ease',
