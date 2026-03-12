@@ -657,9 +657,9 @@
 
   /* Text hierarchy — light on midnight */
   --text-primary:   hsl(38, 25%, 92%);    /* Warm cream */
-  --text-secondary: hsl(220, 15%, 65%);   /* Steel grey */
-  --text-tertiary:  hsl(220, 12%, 48%);   /* Receded */
-  --text-ghost:     hsl(220, 10%, 36%);   /* Placeholder */
+  --text-secondary: hsl(192, 20%, 60%);   /* Teal grey */
+  --text-tertiary:  hsl(192, 15%, 45%);   /* Receded */
+  --text-ghost:     hsl(192, 12%, 34%);   /* Placeholder */
   --text-accent:    hsl(38, 72%, 60%);    /* Burnt Saffron highlight */
 
   /* Accent — Burnt Saffron */
