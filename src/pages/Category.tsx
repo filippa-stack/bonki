@@ -639,20 +639,13 @@ function CardEntry({ card, index, isCompleted = false, isInProgress = false, onN
         className="w-full cursor-pointer group relative overflow-hidden"
         style={{
           padding: '0',
-          background: categoryBg
-            ? `linear-gradient(170deg, rgba(255,255,255,0.25) 0%, ${categoryBg}e6 35%, ${categoryBg}d4 100%)`
-            : `linear-gradient(170deg, rgba(255,255,255,0.3) 0%, ${styles?.cardBg || '#FFFFFF'}e6 35%, ${styles?.cardBg || '#FFFFFF'}cc 100%)`,
-          backdropFilter: 'blur(24px) saturate(1.5)',
-          WebkitBackdropFilter: 'blur(24px) saturate(1.5)',
-          border: categoryBg
-            ? '1.5px solid rgba(255,255,255,0.4)'
-            : '1.5px solid rgba(255,255,255,0.6)',
+          background: categoryBg || styles?.cardBg || '#FFFFFF',
+          border: '1.5px solid rgba(255,255,255,0.35)',
           borderRadius: '22px',
           boxShadow: [
-            `0 8px 28px rgba(44, 36, 32, 0.10)`,
-            `0 2px 8px rgba(44, 36, 32, 0.06)`,
-            `inset 0 2px 1px rgba(255,255,255,0.5)`,
-            `inset 0 -3px 6px rgba(0,0,0,0.04)`,
+            '0 8px 28px rgba(44, 36, 32, 0.10)',
+            '0 2px 8px rgba(44, 36, 32, 0.06)',
+            'inset 0 1px 0 rgba(255,255,255,0.4)',
           ].join(', '),
           transition: 'transform 200ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 260ms ease-out',
           height: '280px',
