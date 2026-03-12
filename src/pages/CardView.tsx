@@ -1388,7 +1388,7 @@ export default function CardView() {
                 color: 'var(--text-tertiary)',
                 textAlign: 'center',
                 marginTop: '16px',
-                opacity: 0.35,
+                opacity: 0.55,
               }}
             >
               {uiText.safetyNote}
