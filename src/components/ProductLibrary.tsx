@@ -1015,7 +1015,7 @@ export default function ProductLibrary() {
               style={{
                 borderRadius: '20px',
                 padding: '24px 20px 18px',
-                background: 'hsla(0, 0%, 100%, 0.05)',
+                background: 'hsla(215, 20%, 25%, 0.25)',
                 backdropFilter: 'blur(24px)',
                 WebkitBackdropFilter: 'blur(24px)',
                 textAlign: 'left',
@@ -1026,8 +1026,8 @@ export default function ProductLibrary() {
                 flexDirection: 'column',
                 alignItems: 'flex-start',
                 justifyContent: 'flex-end',
-                border: '1px solid hsla(220, 60%, 80%, 0.10)',
-                boxShadow: '0 4px 24px hsla(230, 40%, 10%, 0.25), 0 1px 3px hsla(230, 30%, 15%, 0.15)',
+                border: '1px solid hsla(215, 30%, 55%, 0.10)',
+                boxShadow: '0 4px 24px hsla(220, 40%, 8%, 0.25), 0 1px 3px hsla(220, 30%, 12%, 0.15)',
                 opacity: 0.85,
               }}
             >
