@@ -319,6 +319,8 @@ export default function Home() {
                   ?? null;
                 if (!cardId) return null;
                 const card = getCardById(cardId);
+                // Only show resume link for Still Us cards (not child products)
+                if (!card) return null;
                 return (
                   <motion.div
                     initial={{ opacity: 0 }}
