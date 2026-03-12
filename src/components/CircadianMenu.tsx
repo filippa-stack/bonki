@@ -342,7 +342,7 @@ export default function CircadianMenu({
                       el.style.background = fillDefault;
                       el.style.border = isNextSuggested ? borderGlow : borderDefault;
                       el.style.boxShadow = isNextSuggested ? breatheBoxShadow : 'none';
-                      if (isNextSuggested) el.style.animation = 'breathe-glow 3.5s ease-in-out infinite';
+                      // no pulsating animation
                     }}
                   >
                     {/* Thick accent bar */}
