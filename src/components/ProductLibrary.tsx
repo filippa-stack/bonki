@@ -961,7 +961,7 @@ export default function ProductLibrary() {
           <p
             style={{
               fontFamily: "'DM Serif Display', serif",
-              fontStyle: 'italic',
+              fontStyle: 'normal',
               fontSize: '15px',
               fontWeight: 400,
               color: '#F5EFE6',
