@@ -7,20 +7,36 @@ import TopicPreviewOverlay from '@/components/TopicPreviewOverlay';
 /**
  * Circadian color mapping — reflects psychological shift
  * from light/accessible to deep/reflective.
+ * Updated for high-visibility with brighter, more distinct hues.
  */
 export const CIRCADIAN_COLORS: Record<string, string> = {
-  'emotional-intimacy': '#A2B5A9', // Morning Sage
+  'emotional-intimacy': '#A8C4B0', // Bright desaturated Sage
   'communication':      '#6B8E7D', // Vitality Green
-  'category-8':         '#C28A78', // Warm Clay
+  'category-8':         '#D4896E', // Vibrant earthy Terracotta
   'individual-needs':   '#C5A37D', // Hearth Ochre
   'parenting-together': '#6F8191', // Steel Blue
   'category-9':         '#4A5D4E', // Deep Moss
   'category-6':         '#8E7C8F', // Dusky Orchid
   'daily-life':         '#3C5459', // Midnight Teal
-  'category-10':        '#313658', // Twilight Navy
+  'category-10':        '#4A50A0', // Luminous Twilight Navy
 };
 
+/**
+ * Category glow shadows — each card emits light in its color.
+ */
+const categoryGlow = (color: string, intensity: number = 1) =>
+  `0 2px 8px -2px ${color}${Math.round(25 * intensity).toString(16).padStart(2, '0')}, ` +
+  `0 8px 24px -6px ${color}${Math.round(18 * intensity).toString(16).padStart(2, '0')}`;
+
+const categoryGlowHover = (color: string) =>
+  `0 4px 14px -2px ${color}${Math.round(38).toString(16).padStart(2, '0')}, ` +
+  `0 12px 32px -6px ${color}${Math.round(28).toString(16).padStart(2, '0')}`;
+
 const ENTER_EASE = [0.22, 1, 0.36, 1] as const;
+
+/** Deep Verdigris card background — slightly darker than canvas */
+const CARD_BG = 'hsl(194, 28%, 28%)';
+const CARD_BG_HOVER = 'hsl(194, 28%, 30%)';
 
 interface CircadianMenuProps {
   categories: Category[];
@@ -42,11 +58,11 @@ export default function CircadianMenu({
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [previewCard, setPreviewCard] = useState<Card | null>(null);
   const [previewCategory, setPreviewCategory] = useState<Category | null>(null);
-  const [previewColor, setPreviewColor] = useState('#A2B5A9');
+  const [previewColor, setPreviewColor] = useState('#A8C4B0');
   const [overlayOpen, setOverlayOpen] = useState(false);
 
   const handleCardClick = (card: Card, category: Category) => {
-    const color = CIRCADIAN_COLORS[category.id] || '#A2B5A9';
+    const color = CIRCADIAN_COLORS[category.id] || '#A8C4B0';
     setPreviewCard(card);
     setPreviewCategory(category);
     setPreviewColor(color);
@@ -66,11 +82,11 @@ export default function CircadianMenu({
   };
 
   return (
-    <div className="flex flex-col" style={{ gap: '2px' }}>
+    <div className="flex flex-col" style={{ gap: '10px', padding: '0 4px' }}>
       {categories.map((category, index) => {
         const isExpanded = expandedId === category.id;
         const isDimmed = expandedId !== null && !isExpanded;
-        const color = CIRCADIAN_COLORS[category.id] || '#A2B5A9';
+        const color = CIRCADIAN_COLORS[category.id] || '#A8C4B0';
         const catCards = categoryCards.get(category.id) || [];
         const completedCount = catCards.filter(c => completedCardIds.includes(c.id)).length;
         const allCompleted = completedCount === catCards.length && catCards.length > 0;
@@ -81,7 +97,7 @@ export default function CircadianMenu({
         return (
           <motion.div
             key={category.id}
-            initial={{ opacity: 0, y: 12 }}
+            initial={{ opacity: 0, y: 14 }}
             animate={{
               opacity: isDimmed ? 0.20 : 1,
               y: 0,
@@ -92,103 +108,139 @@ export default function CircadianMenu({
             }}
             style={{ position: 'relative' }}
           >
-            {/* Category row */}
-            <button
+            {/* Category card */}
+            <motion.button
               onClick={() => handleToggle(category.id)}
               className="w-full text-left"
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.985 }}
               style={{
                 display: 'flex',
-                alignItems: 'center',
-                gap: '16px',
-                padding: '18px 8px 18px 4px',
-                background: 'transparent',
+                alignItems: 'stretch',
+                gap: '0',
+                padding: '0',
+                background: CARD_BG,
                 border: 'none',
                 cursor: 'pointer',
-                borderBottom: isExpanded
-                  ? 'none'
-                  : `1px solid hsla(194, 16%, 52%, 0.12)`,
-                transition: 'border-color 0.3s ease',
+                borderRadius: '14px',
+                boxShadow: categoryGlow(color),
+                transition: 'box-shadow 0.35s ease, background-color 0.25s ease',
+                overflow: 'hidden',
+                position: 'relative',
+              }}
+              onMouseEnter={(e) => {
+                (e.currentTarget as HTMLElement).style.boxShadow = categoryGlowHover(color);
+                (e.currentTarget as HTMLElement).style.backgroundColor = CARD_BG_HOVER;
+              }}
+              onMouseLeave={(e) => {
+                (e.currentTarget as HTMLElement).style.boxShadow = categoryGlow(color);
+                (e.currentTarget as HTMLElement).style.backgroundColor = CARD_BG;
               }}
             >
-              {/* Circadian color accent line */}
+              {/* Thick accent bar — left edge */}
               <div
                 style={{
-                  width: '3px',
+                  width: '4px',
                   alignSelf: 'stretch',
-                  borderRadius: '2px',
                   backgroundColor: color,
-                  opacity: isExpanded ? 1 : 0.5,
-                  transition: 'opacity 0.3s ease',
                   flexShrink: 0,
+                  borderRadius: '14px 0 0 14px',
                 }}
               />
 
-              {/* Number */}
-              <span
+              {/* Card content */}
+              <div
                 style={{
-                  fontFamily: 'var(--font-sans)',
-                  fontSize: '10px',
-                  fontWeight: 500,
-                  letterSpacing: '0.08em',
-                  color: color,
-                  opacity: 0.7,
-                  width: '18px',
-                  flexShrink: 0,
+                  flex: 1,
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '14px',
+                  padding: '16px 16px 16px 16px',
                 }}
               >
-                {String(index + 1).padStart(2, '0')}
-              </span>
-
-              {/* Title + entry line */}
-              <div style={{ flex: 1, minWidth: 0 }}>
-                <h3
+                {/* Number in category color */}
+                <span
                   style={{
                     fontFamily: 'var(--font-serif)',
-                    fontSize: '18px',
-                    fontWeight: isExpanded ? 600 : 500,
-                    lineHeight: 1.3,
-                    color: 'var(--text-primary)',
-                    transition: 'font-weight 0.2s ease',
+                    fontSize: '22px',
+                    fontWeight: 700,
+                    color: color,
+                    opacity: 0.85,
+                    width: '28px',
+                    textAlign: 'center',
+                    flexShrink: 0,
+                    lineHeight: 1,
                   }}
                 >
-                  {category.title}
-                </h3>
-                {!isExpanded && category.entryLine && (
-                  <p
+                  {index + 1}
+                </span>
+
+                {/* Title + entry line */}
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <h3
                     style={{
                       fontFamily: 'var(--font-serif)',
-                      fontSize: '13px',
-                      fontWeight: 400,
-                      color: 'var(--text-secondary)',
-                      opacity: 0.7,
-                      lineHeight: 1.45,
-                      marginTop: '3px',
+                      fontSize: '18px',
+                      fontWeight: isExpanded ? 600 : 500,
+                      lineHeight: 1.3,
+                      color: 'var(--text-primary)',
+                      transition: 'font-weight 0.2s ease',
                     }}
                   >
-                    {category.entryLine}
-                  </p>
-                )}
-              </div>
+                    {category.title}
+                  </h3>
+                  {!isExpanded && category.entryLine && (
+                    <p
+                      style={{
+                        fontFamily: 'var(--font-serif)',
+                        fontSize: '12px',
+                        fontWeight: 400,
+                        fontStyle: 'italic',
+                        color: 'var(--text-secondary)',
+                        opacity: 0.65,
+                        lineHeight: 1.45,
+                        marginTop: '2px',
+                      }}
+                    >
+                      {category.entryLine}
+                    </p>
+                  )}
+                </div>
 
-              {/* Status indicator */}
-              <div style={{ flexShrink: 0, width: '20px', display: 'flex', justifyContent: 'center' }}>
-                {allCompleted ? (
-                  <Check size={14} style={{ color: color, opacity: 0.6 }} />
-                ) : hasInProgress ? (
-                  <span
-                    style={{
-                      display: 'inline-block',
-                      width: '6px',
-                      height: '6px',
-                      borderRadius: '50%',
-                      backgroundColor: color,
-                      opacity: 0.7,
-                      animation: 'saffron-pulse 2.5s ease-in-out infinite',
-                    }}
-                  />
-                ) : null}
+                {/* Status indicator */}
+                <div style={{ flexShrink: 0, width: '20px', display: 'flex', justifyContent: 'center' }}>
+                  {allCompleted ? (
+                    <Check size={14} style={{ color: color, opacity: 0.7 }} />
+                  ) : hasInProgress ? (
+                    <span
+                      style={{
+                        display: 'inline-block',
+                        width: '6px',
+                        height: '6px',
+                        borderRadius: '50%',
+                        backgroundColor: color,
+                        opacity: 0.7,
+                        animation: 'saffron-pulse 2.5s ease-in-out infinite',
+                      }}
+                    />
+                  ) : (
+                    /* Subtle chevron hint */
+                    <span
+                      style={{
+                        fontFamily: 'var(--font-sans)',
+                        fontSize: '12px',
+                        color: 'var(--text-tertiary)',
+                        opacity: 0.35,
+                        transform: isExpanded ? 'rotate(90deg)' : 'rotate(0deg)',
+                        transition: 'transform 0.25s ease',
+                      }}
+                    >
+                      ›
+                    </span>
+                  )}
+                </div>
               </div>
-            </button>
+            </motion.button>
 
             {/* Expanded sub-topics */}
             <AnimatePresence>
@@ -203,11 +255,10 @@ export default function CircadianMenu({
                 >
                   <div
                     style={{
-                      padding: '4px 8px 20px 28px',
+                      padding: '8px 12px 16px 52px',
                       display: 'flex',
                       flexDirection: 'column',
                       gap: '2px',
-                      borderBottom: `1px solid hsla(194, 16%, 52%, 0.12)`,
                     }}
                   >
                     {catCards.map((card, cardIndex) => {
@@ -231,7 +282,7 @@ export default function CircadianMenu({
                             display: 'flex',
                             alignItems: 'center',
                             gap: '12px',
-                            padding: '12px 8px',
+                            padding: '11px 10px',
                             background: 'transparent',
                             border: 'none',
                             cursor: 'pointer',
@@ -262,7 +313,7 @@ export default function CircadianMenu({
                             }}
                           >
                             {isCardCompleted && (
-                              <Check size={6} style={{ color: 'var(--surface-base)' }} />
+                              <Check size={6} style={{ color: CARD_BG }} />
                             )}
                           </span>
 
@@ -315,7 +366,7 @@ export default function CircadianMenu({
                         display: 'flex',
                         alignItems: 'center',
                         gap: '8px',
-                        padding: '10px 8px 6px',
+                        padding: '10px 10px 6px',
                         background: 'transparent',
                         border: 'none',
                         cursor: 'pointer',
