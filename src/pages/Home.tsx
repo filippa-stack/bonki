@@ -65,7 +65,6 @@ export default function Home() {
   const {
     categories,
     getCardById,
-    getCategoryById,
     cards,
   } = useApp();
   const { settings } = useSiteSettings();
