@@ -1058,7 +1058,7 @@ export default function CardView() {
   const isReflectionStep = currentStageType === 'opening' || currentStageType === 'reflective';
   const isLive = cardViewMode === 'live';
   const isExerciseStep = currentStageType === 'exercise';
-
+  const isStillUsFocusMode = isLive && (product?.id === 'still_us' || isStillUsCard);
 
   // ─── Session start screen — ritual before first question ───
   const shouldShowStartScreen = showStartScreen && isLive;
