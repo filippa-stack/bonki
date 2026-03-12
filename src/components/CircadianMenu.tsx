@@ -281,8 +281,21 @@ export default function CircadianMenu({
             </span>
           </motion.div>
 
-          {/* Category tiles in this group */}
-          <div className="flex flex-col" style={{ gap: '7px' }}>
+          {/* Category tiles with spine */}
+          <div className="flex flex-col" style={{ gap: '7px', position: 'relative', paddingLeft: '16px' }}>
+            {/* Vertical spine */}
+            <div
+              style={{
+                position: 'absolute',
+                left: '5px',
+                top: '12px',
+                bottom: '12px',
+                width: '1.5px',
+                background: 'linear-gradient(180deg, var(--text-primary) 0%, transparent 100%)',
+                opacity: 0.10,
+                borderRadius: '1px',
+              }}
+            />
             {group.categories.map((category) => {
               const currentIndex = globalIndex++;
               const isExpanded = expandedId === category.id;
@@ -320,6 +333,21 @@ export default function CircadianMenu({
                   }}
                   style={{ position: 'relative' }}
                 >
+                  {/* Spine node dot */}
+                  <div
+                    style={{
+                      position: 'absolute',
+                      left: '-13.5px',
+                      top: '50%',
+                      transform: 'translateY(-50%)',
+                      width: '5px',
+                      height: '5px',
+                      borderRadius: '50%',
+                      backgroundColor: color,
+                      opacity: allCompleted ? 0.6 : 0.25,
+                      zIndex: 2,
+                    }}
+                  />
                   <motion.button
                     onClick={() => handleToggle(category.id)}
                     className="w-full text-left circadian-tile"
@@ -396,13 +424,13 @@ export default function CircadianMenu({
                         {!isExpanded && category.entryLine && (
                           <p
                             style={{
-                              fontFamily: 'var(--font-serif)',
-                              fontSize: '13px',
+                              fontFamily: 'var(--font-sans)',
+                              fontSize: '12px',
                               fontWeight: 400,
                               color: CIRCADIAN_COLORS_DARK[category.id] || color,
                               opacity: 1,
                               lineHeight: 1.45,
-                              marginTop: '2px',
+                              marginTop: '3px',
                             }}
                           >
                             {category.entryLine}
@@ -410,39 +438,11 @@ export default function CircadianMenu({
                         )}
                       </div>
 
-                      {/* Progress ring */}
+                      {/* Progress ring — single marker only */}
                       <div style={{ flexShrink: 0 }}>
-                        {hasInProgress && !allCompleted ? (
-                          <div style={{ position: 'relative' }}>
-                            <ProgressRing completed={completedCount} total={catCards.length} size={20} />
-                            <span
-                              style={{
-                                position: 'absolute',
-                                top: -2, right: -2,
-                                width: '6px', height: '6px',
-                                borderRadius: '50%',
-                                backgroundColor: HERITAGE_GOLD,
-                                // static dot, no pulse
-                              }}
-                            />
-                          </div>
-                        ) : completedCount > 0 ? (
+                        {completedCount > 0 ? (
                           <ProgressRing completed={completedCount} total={catCards.length} size={20} />
-                        ) : (
-                          <span
-                            style={{
-                              fontFamily: 'var(--font-sans)',
-                              fontSize: '14px',
-                              color: HERITAGE_GOLD,
-                              opacity: 0.25,
-                              transform: isExpanded ? 'rotate(90deg)' : 'rotate(0deg)',
-                              transition: 'transform 0.25s ease, opacity 0.25s ease',
-                              display: 'inline-block',
-                            }}
-                          >
-                            ›
-                          </span>
-                        )}
+                        ) : null}
                       </div>
                     </div>
                   </motion.button>
