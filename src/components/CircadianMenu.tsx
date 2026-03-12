@@ -8,7 +8,7 @@ import TopicPreviewOverlay from '@/components/TopicPreviewOverlay';
  * Circadian color mapping — reflects psychological shift
  * from light/accessible to deep/reflective.
  */
-const CIRCADIAN_COLORS: Record<string, string> = {
+export const CIRCADIAN_COLORS: Record<string, string> = {
   'emotional-intimacy': '#A2B5A9', // Morning Sage
   'communication':      '#6B8E7D', // Vitality Green
   'category-8':         '#C28A78', // Warm Clay
