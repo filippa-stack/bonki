@@ -514,13 +514,6 @@ function StillUsCategoryView({
             );
           })}
         </div>
-                    }}
-                  />
-                )}
-              </motion.button>
-            );
-          })}
-        </div>
 
         {/* Bottom sign-off */}
         <motion.div
