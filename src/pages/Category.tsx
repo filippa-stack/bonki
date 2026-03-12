@@ -16,7 +16,7 @@ import { useVerdigrisTheme } from '@/components/VerdigrisAtmosphere';
 import { CIRCADIAN_COLORS } from '@/components/CircadianMenu';
 import Header from '@/components/Header';
 
-import bonkiLogo from '@/assets/bonki-logo.png';
+
 import mirrorJagIMig from '@/assets/mirror-jag-i-mig.png';
 import stillUsIllustration from '@/assets/illustration-still-us-home.png';
 

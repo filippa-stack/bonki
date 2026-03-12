@@ -136,7 +136,6 @@ const App = () => (
           <BrowserRouter>
             <DevStateProvider>
               <MobileOnlyGate>
-                <BackgroundWatermark />
                 <DevModeBadge />
                 <AppRoutes />
               </MobileOnlyGate>
