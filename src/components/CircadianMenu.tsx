@@ -401,7 +401,7 @@ export default function CircadianMenu({
                       <div style={{ flexShrink: 0 }}>
                         {hasInProgress && !allCompleted ? (
                           <div style={{ position: 'relative' }}>
-                            <ProgressRing completed={completedCount} total={catCards.length} size={24} />
+                            <ProgressRing completed={completedCount} total={catCards.length} size={20} />
                             <span
                               style={{
                                 position: 'absolute',
