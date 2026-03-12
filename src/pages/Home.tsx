@@ -246,14 +246,14 @@ export default function Home() {
 
         {mode !== 'loading' && (
           <>
-            {/* ZONE A — Identity */}
+            {/* ZONE A — Identity — compressed closer to header */}
             <motion.div
-              className="pt-12 px-6 text-center"
+              className="pt-6 px-6 text-center"
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
             >
-              <h1 className="type-h1" style={{ color: 'var(--text-primary)', marginBottom: '38px' }}>
+              <h1 className="type-h1" style={{ color: 'var(--text-primary)', marginBottom: '20px' }}>
                 Ert utrymme
               </h1>
             </motion.div>
