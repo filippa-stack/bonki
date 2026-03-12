@@ -8,52 +8,52 @@ import { Check } from 'lucide-react';
  * from light/accessible to deep/reflective.
  */
 export const CIRCADIAN_COLORS: Record<string, string> = {
-  'emotional-intimacy': '#A2B5A9',
-  'communication':      '#6B8E7D',
-  'category-8':         '#C28A78',
-  'individual-needs':   '#C5A37D',
-  'parenting-together': '#6F8191',
-  'category-9':         '#4A5D4E',
-  'category-6':         '#8E7C8F',
-  'daily-life':         '#3C5459',
-  'category-10':        '#313658',
+  'emotional-intimacy': '#7B9EAF',
+  'communication':      '#8DA4B0',
+  'category-8':         '#A0B2BA',
+  'individual-needs':   '#8B97AF',
+  'parenting-together': '#7A8EA6',
+  'category-9':         '#6D7E96',
+  'category-6':         '#6B7A94',
+  'daily-life':         '#5E6E88',
+  'category-10':        '#4F5F7D',
 };
 
 /** Lighter variants for text on dark backgrounds — higher contrast */
 export const CIRCADIAN_COLORS_LIGHT: Record<string, string> = {
-  'emotional-intimacy': '#D0DDD5',
-  'communication':      '#A8C7B5',
-  'category-8':         '#E0B8AA',
-  'individual-needs':   '#E0CAA8',
-  'parenting-together': '#A8B8C8',
-  'category-9':         '#8AAA92',
-  'category-6':         '#BCA8BD',
-  'daily-life':         '#7BA0A8',
-  'category-10':        '#7A80B0',
+  'emotional-intimacy': '#C8D8E0',
+  'communication':      '#B8CCD6',
+  'category-8':         '#D0DCE2',
+  'individual-needs':   '#BCC6D8',
+  'parenting-together': '#AEBDCE',
+  'category-9':         '#A0B0C4',
+  'category-6':         '#9AAABA',
+  'daily-life':         '#90A0B4',
+  'category-10':        '#8898AE',
 };
 
 export const CIRCADIAN_FILLS: Record<string, string> = {
-  'emotional-intimacy': 'rgba(162, 181, 169, 0.62)',
-  'communication':      'rgba(107, 142, 125, 0.62)',
-  'category-8':         'rgba(194, 138, 120, 0.62)',
-  'individual-needs':   'rgba(197, 163, 125, 0.62)',
-  'parenting-together': 'rgba(111, 129, 145, 0.62)',
-  'category-9':         'rgba(74, 93, 78, 0.62)',
-  'category-6':         'rgba(142, 124, 143, 0.62)',
-  'daily-life':         'rgba(60, 84, 89, 0.62)',
-  'category-10':        'rgba(49, 54, 88, 0.62)',
+  'emotional-intimacy': 'rgba(123, 158, 175, 0.55)',
+  'communication':      'rgba(141, 164, 176, 0.50)',
+  'category-8':         'rgba(160, 178, 186, 0.48)',
+  'individual-needs':   'rgba(139, 151, 175, 0.50)',
+  'parenting-together': 'rgba(122, 142, 166, 0.48)',
+  'category-9':         'rgba(109, 126, 150, 0.45)',
+  'category-6':         'rgba(107, 122, 148, 0.45)',
+  'daily-life':         'rgba(94, 110, 136, 0.42)',
+  'category-10':        'rgba(79, 95, 125, 0.40)',
 };
 
 export const CIRCADIAN_FILLS_HOVER: Record<string, string> = {
-  'emotional-intimacy': 'rgba(162, 181, 169, 0.78)',
-  'communication':      'rgba(107, 142, 125, 0.78)',
-  'category-8':         'rgba(194, 138, 120, 0.78)',
-  'individual-needs':   'rgba(197, 163, 125, 0.78)',
-  'parenting-together': 'rgba(111, 129, 145, 0.78)',
-  'category-9':         'rgba(74, 93, 78, 0.78)',
-  'category-6':         'rgba(142, 124, 143, 0.78)',
-  'daily-life':         'rgba(60, 84, 89, 0.78)',
-  'category-10':        'rgba(49, 54, 88, 0.78)',
+  'emotional-intimacy': 'rgba(123, 158, 175, 0.72)',
+  'communication':      'rgba(141, 164, 176, 0.68)',
+  'category-8':         'rgba(160, 178, 186, 0.65)',
+  'individual-needs':   'rgba(139, 151, 175, 0.68)',
+  'parenting-together': 'rgba(122, 142, 166, 0.65)',
+  'category-9':         'rgba(109, 126, 150, 0.62)',
+  'category-6':         'rgba(107, 122, 148, 0.62)',
+  'daily-life':         'rgba(94, 110, 136, 0.58)',
+  'category-10':        'rgba(79, 95, 125, 0.55)',
 };
 
 const HERITAGE_GOLD = '#DA9D1D';
@@ -65,17 +65,14 @@ const ENTER_EASE = [0.22, 1, 0.36, 1] as const;
 const SECTION_GROUPS = [
   {
     label: 'Grunden',
-    subtitle: 'Det ni bygger på',
     ids: ['emotional-intimacy', 'communication', 'category-8'],
   },
   {
     label: 'Det som formar er',
-    subtitle: 'Arv, olikheter och riktning',
     ids: ['individual-needs', 'parenting-together', 'category-9'],
   },
   {
     label: 'Djupet',
-    subtitle: 'Mod, närhet och det medvetna valet',
     ids: ['category-6', 'daily-life', 'category-10'],
   },
 ];
