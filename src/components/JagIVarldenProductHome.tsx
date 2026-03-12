@@ -241,7 +241,7 @@ export default function JagIVarldenProductHome({ product }: { product: ProductMa
                     fontSize: isHero ? 'clamp(21px, 5.8vw, 27px)' : 'clamp(19px, 5.2vw, 25px)',
                     fontWeight: 400,
                     color: tile.text,
-                    textShadow: isDark ? 'none' : '0 1px 4px hsla(130, 40%, 85%, 0.8)',
+                    textShadow: isDark ? 'none' : '0 1px 4px hsla(35, 30%, 85%, 0.8)',
                   }}
                 >
                   {cat.title}
