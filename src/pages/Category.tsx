@@ -135,8 +135,8 @@ const CATEGORY_TITLE_COLOR: Record<string, string> = {
   'vk-jag-vaxer': '#FAFAF0',
   'vk-jag-och-andra': '#FAFAF0',
   // Syskon
-  'sk-vi-blev-syskon': '#0A2E5C',
-  'sk-vi-ar-olika': '#0A2E5C',
+  'sk-vi-blev-syskon': '#274C5E',
+  'sk-vi-ar-olika': '#3A2E1A',
   'sk-nar-det-skaver': '#FAFAF0',
   'sk-nar-livet-forandras': '#FAFAF0',
 };
