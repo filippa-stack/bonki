@@ -65,17 +65,14 @@ const ENTER_EASE = [0.22, 1, 0.36, 1] as const;
 const SECTION_GROUPS = [
   {
     label: 'Grunden',
-    subtitle: 'Det ni bygger på',
     ids: ['emotional-intimacy', 'communication', 'category-8'],
   },
   {
     label: 'Det som formar er',
-    subtitle: 'Arv, olikheter och riktning',
     ids: ['individual-needs', 'parenting-together', 'category-9'],
   },
   {
     label: 'Djupet',
-    subtitle: 'Mod, närhet och det medvetna valet',
     ids: ['category-6', 'daily-life', 'category-10'],
   },
 ];
