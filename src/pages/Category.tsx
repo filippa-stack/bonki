@@ -372,6 +372,18 @@ function StillUsCategoryView({
           </motion.p>
         )}
 
+        {/* Ceremony separator */}
+        <motion.div
+          initial={{ scaleX: 0 }}
+          animate={{ scaleX: 1 }}
+          transition={{ delay: 0.2, duration: 0.8, ease: EASE }}
+          style={{
+            width: '28px', height: '2px', borderRadius: '1px',
+            background: 'var(--accent-saffron, #DA9D1D)',
+            opacity: 0.45, margin: '0 auto 28px', transformOrigin: 'center',
+          }}
+        />
+
         {/* Card tiles — glassmorphism */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', paddingLeft: '20px', paddingRight: '20px' }}>
           {cards.map((card, index) => {
@@ -389,8 +401,8 @@ function StillUsCategoryView({
                 className="w-full text-left"
                 style={{
                   display: 'flex',
-                  alignItems: 'center',
-                  gap: '14px',
+                  flexDirection: 'column',
+                  gap: '4px',
                   padding: '20px 20px',
                   background: isCompleted
                     ? `hsla(194, 28%, 18%, 0.55)`
@@ -434,14 +446,14 @@ function StillUsCategoryView({
                   }}
                 />
 
-                <div style={{ flex: 1, minWidth: 0, paddingLeft: '8px' }}>
+                <div style={{ paddingLeft: '8px' }}>
                   <h3
                     style={{
                       fontFamily: "'DM Serif Display', var(--font-serif)",
                       fontSize: '19px',
                       fontWeight: 400,
-                      color: 'var(--text-primary)',
-                      opacity: isCompleted ? 0.6 : 1,
+                      color,
+                      opacity: isCompleted ? 0.55 : 0.95,
                       lineHeight: 1.3,
                       textShadow: '0 1px 3px hsla(194, 28%, 8%, 0.25)',
                     }}
@@ -455,43 +467,44 @@ function StillUsCategoryView({
                         fontSize: '12.5px',
                         fontWeight: 400,
                         color: 'var(--text-primary)',
-                        opacity: isCompleted ? 0.40 : 0.55,
+                        opacity: isCompleted ? 0.40 : 0.65,
                         lineHeight: 1.45,
-                        marginTop: '4px',
+                        marginTop: '5px',
                       }}
                     >
                       {card.subtitle}
                     </p>
                   )}
-                </div>
 
-                {/* Status indicator — small, quiet */}
-                {isCompleted && (
-                  <span
-                    style={{
-                      fontFamily: 'var(--font-sans)',
-                      fontSize: '9px',
-                      fontWeight: 500,
-                      letterSpacing: '0.10em',
-                      textTransform: 'uppercase' as const,
-                      color: HERITAGE_GOLD,
-                      opacity: 0.55,
-                      flexShrink: 0,
-                    }}
-                  >
-                    Utforskad
-                  </span>
-                )}
+                  {/* Status badge — below subtitle, quiet */}
+                  {isCompleted && (
+                    <span
+                      style={{
+                        display: 'inline-block',
+                        fontFamily: 'var(--font-sans)',
+                        fontSize: '9px',
+                        fontWeight: 500,
+                        letterSpacing: '0.10em',
+                        textTransform: 'uppercase' as const,
+                        color: HERITAGE_GOLD,
+                        opacity: 0.50,
+                        marginTop: '8px',
+                      }}
+                    >
+                      ✦ Utforskad
+                    </span>
+                  )}
+                </div>
 
                 {isInProgress && (
                   <span
                     style={{
+                      position: 'absolute', right: '16px', top: '50%', transform: 'translateY(-50%)',
                       display: 'inline-block',
                       width: '6px', height: '6px',
                       borderRadius: '50%',
                       backgroundColor: HERITAGE_GOLD,
                       opacity: 0.7,
-                      flexShrink: 0,
                       animation: 'saffron-pulse 2.0s ease-in-out infinite',
                     }}
                   />
@@ -510,12 +523,12 @@ function StillUsCategoryView({
         >
           <p
             style={{
-              fontFamily: 'var(--font-serif)',
-              fontStyle: 'italic',
-              fontSize: '14px',
+              fontFamily: 'var(--font-sans)',
+              fontSize: '13px',
+              fontWeight: 400,
               color: 'var(--text-primary)',
-              opacity: 0.70,
-              lineHeight: 1.5,
+              opacity: 0.60,
+              lineHeight: 1.55,
               textShadow: '0 1px 4px hsla(194, 28%, 8%, 0.30)',
             }}
           >
