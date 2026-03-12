@@ -213,13 +213,13 @@ export default function JagMedAndraProductHome({ product }: { product: ProductMa
                   textAlign: 'center',
                   cursor: 'pointer',
                   border: isDark
-                    ? '1px solid hsla(280, 40%, 50%, 0.30)'
+                    ? '1px solid hsla(280, 40%, 55%, 0.40)'
                     : '1px solid hsla(280, 60%, 90%, 0.60)',
                   boxShadow: isDark
                     ? [
-                        '0 6px 20px hsla(280, 50%, 15%, 0.18)',
-                        '0 2px 6px hsla(0, 0%, 0%, 0.08)',
-                        'inset 0 1px 0 hsla(280, 50%, 60%, 0.25)',
+                        '0 6px 20px hsla(280, 50%, 10%, 0.22)',
+                        '0 2px 6px hsla(0, 0%, 0%, 0.10)',
+                        'inset 0 1px 0 hsla(280, 50%, 65%, 0.30)',
                       ].join(', ')
                     : [
                         '0 6px 20px hsla(280, 50%, 60%, 0.12)',
