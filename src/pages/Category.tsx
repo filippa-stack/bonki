@@ -337,7 +337,7 @@ function StillUsCategoryView({
               fontFamily: "'DM Serif Display', var(--font-serif)",
               fontSize: 'clamp(28px, 8vw, 38px)',
               fontWeight: 700,
-              color: 'var(--text-primary)',
+              color,
               letterSpacing: '-0.01em',
               lineHeight: 1.2,
               textShadow: '0 1px 8px hsla(194, 28%, 8%, 0.4)',
