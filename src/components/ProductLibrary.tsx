@@ -425,10 +425,11 @@ export default function ProductLibrary() {
               fontFamily: "'DM Serif Display', serif",
               fontSize: '34px',
               fontWeight: 400,
-              color: '#0A0A18',
+              color: isDark ? 'hsla(38, 78%, 55%, 0.95)' : '#0A0A18',
               lineHeight: 1.15,
               letterSpacing: '-0.03em',
               marginBottom: '8px',
+              transition: 'color 400ms ease',
             }}
           >
             Bonki
@@ -442,9 +443,10 @@ export default function ProductLibrary() {
               fontStyle: 'italic',
               fontSize: '14px',
               fontWeight: 400,
-              color: 'var(--color-text-secondary)',
-              opacity: 0.5,
+              color: isDark ? 'hsla(38, 50%, 65%, 0.5)' : 'var(--color-text-secondary)',
+              opacity: isDark ? 1 : 0.5,
               lineHeight: 1.6,
+              transition: 'color 400ms ease',
             }}
           >
             Verktyg för samtalen som inte blir av
@@ -459,7 +461,7 @@ export default function ProductLibrary() {
           style={{
             width: '32px',
             height: '1.5px',
-            backgroundColor: 'hsla(38, 88%, 46%, 0.3)',
+            backgroundColor: isDark ? 'hsla(38, 78%, 50%, 0.35)' : 'hsla(38, 88%, 46%, 0.3)',
             margin: '14px auto 18px',
           }}
         />
