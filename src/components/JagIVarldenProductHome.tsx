@@ -210,19 +210,19 @@ export default function JagIVarldenProductHome({ product }: { product: ProductMa
                   textAlign: 'center',
                   cursor: 'pointer',
                   border: isDark
-                    ? '1px solid hsla(135, 40%, 45%, 0.40)'
-                    : '1px solid hsla(130, 40%, 85%, 0.60)',
+                    ? '1px solid hsla(30, 20%, 45%, 0.35)'
+                    : '1px solid hsla(35, 25%, 82%, 0.60)',
                   boxShadow: isDark
                     ? [
-                        '0 6px 20px hsla(140, 40%, 10%, 0.22)',
+                        '0 6px 20px hsla(30, 20%, 15%, 0.20)',
                         '0 2px 6px hsla(0, 0%, 0%, 0.10)',
-                        'inset 0 1px 0 hsla(135, 40%, 55%, 0.30)',
+                        'inset 0 1px 0 hsla(30, 25%, 55%, 0.25)',
                       ].join(', ')
                     : [
-                        '0 6px 20px hsla(130, 40%, 50%, 0.12)',
+                        '0 6px 20px hsla(35, 25%, 50%, 0.10)',
                         '0 2px 6px hsla(0, 0%, 0%, 0.04)',
-                        'inset 0 2px 1px hsla(130, 60%, 95%, 0.55)',
-                        'inset 0 -2px 4px hsla(135, 30%, 30%, 0.06)',
+                        'inset 0 2px 1px hsla(35, 30%, 95%, 0.55)',
+                        'inset 0 -2px 4px hsla(30, 20%, 30%, 0.06)',
                       ].join(', '),
                   whiteSpace: 'normal' as const,
                   backdropFilter: 'blur(20px) saturate(1.3)',
@@ -241,7 +241,7 @@ export default function JagIVarldenProductHome({ product }: { product: ProductMa
                     fontSize: isHero ? 'clamp(21px, 5.8vw, 27px)' : 'clamp(19px, 5.2vw, 25px)',
                     fontWeight: 400,
                     color: tile.text,
-                    textShadow: isDark ? 'none' : '0 1px 4px hsla(130, 40%, 85%, 0.8)',
+                    textShadow: isDark ? 'none' : '0 1px 4px hsla(35, 30%, 85%, 0.8)',
                   }}
                 >
                   {cat.title}
@@ -276,15 +276,15 @@ export default function JagIVarldenProductHome({ product }: { product: ProductMa
             whileTap={{ scale: 0.97 }}
             onClick={() => navigate(`/diary/${product.id}`)}
             style={{
-              background: 'rgba(45, 79, 50, 0.10)',
-              border: '1px solid rgba(45, 79, 50, 0.15)',
+              background: 'rgba(93, 99, 83, 0.10)',
+              border: '1px solid rgba(93, 99, 83, 0.15)',
               cursor: 'pointer',
               marginTop: '0.5vh',
               padding: '14px 24px',
               borderRadius: '16px',
               boxShadow: [
-                '0 4px 14px hsla(135, 40%, 20%, 0.06)',
-                'inset 0 1px 0 hsla(130, 30%, 85%, 0.30)',
+                '0 4px 14px hsla(30, 20%, 25%, 0.06)',
+                'inset 0 1px 0 hsla(35, 25%, 88%, 0.30)',
               ].join(', '),
               display: 'flex',
               alignItems: 'center',
