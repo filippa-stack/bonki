@@ -384,26 +384,6 @@ export default function ProductLibrary() {
         transition: 'background 600ms ease',
       }}
     >
-      {/* ── Background watermark — cinematic depth (barn only) ── */}
-      {!isDark && (
-        <img
-          src={watermarkMamma}
-          alt=""
-          aria-hidden
-          style={{
-            position: 'absolute',
-            width: '300px',
-            height: '400px',
-            left: '50%',
-            top: '0',
-            transform: 'translateX(-50%)',
-            opacity: 0.07,
-            filter: 'sepia(1) saturate(0.2) brightness(1.8) hue-rotate(-10deg)',
-            pointerEvents: 'none',
-            zIndex: 0,
-          }}
-        />
-      )}
 
       {/* Content */}
       <div style={{ position: 'relative', zIndex: 1 }}>
