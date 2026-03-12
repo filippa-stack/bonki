@@ -6,27 +6,55 @@ import apaImage from '@/assets/apa-jag-i-mig.png';
 
 const EASE = [0.4, 0.0, 0.2, 1] as const;
 
-/** Ordered tiles: bg, text color, dark flag, outer glow color */
-const ORDERED_TILES: { id: string; bg: string; text: string; dark: boolean; glow: string }[] = [
-  { id: 'jim-tryggheten-inuti', bg: 'hsla(64, 72%, 68%, 0.45)', text: 'hsl(64, 35%, 14%)', dark: false, glow: '' },
-  { id: 'jim-kanslorna-jag-bar', bg: 'hsla(64, 72%, 68%, 0.45)', text: 'hsl(64, 35%, 14%)', dark: false, glow: '' },
-  { id: 'jim-nar-det-gor-ont', bg: 'hsla(64, 72%, 68%, 0.45)', text: 'hsl(64, 35%, 14%)', dark: false, glow: '' },
-  { id: 'jim-jag-som-helhet', bg: 'hsla(64, 72%, 68%, 0.45)', text: 'hsl(64, 35%, 14%)', dark: false, glow: '' },
+/**
+ * Each tile has a unique hue shift within the citron family,
+ * creating rhythm without breaking the color identity.
+ * Warmer → cooler progression mirrors an emotional journey.
+ */
+const ORDERED_TILES = [
+  {
+    id: 'jim-tryggheten-inuti',
+    // Warm citron — golden, inviting entry point
+    bg: 'hsla(58, 68%, 68%, 0.52)',
+    text: 'hsl(50, 45%, 12%)',
+    gradient: 'linear-gradient(168deg, hsla(55, 72%, 78%, 0.55) 0%, hsla(60, 68%, 65%, 0.48) 100%)',
+  },
+  {
+    id: 'jim-kanslorna-jag-bar',
+    // Yellow-green citron — fresh, growth
+    bg: 'hsla(64, 70%, 66%, 0.48)',
+    text: 'hsl(55, 42%, 12%)',
+    gradient: 'linear-gradient(168deg, hsla(60, 74%, 76%, 0.52) 0%, hsla(66, 68%, 63%, 0.45) 100%)',
+  },
+  {
+    id: 'jim-nar-det-gor-ont',
+    // Slightly deeper, muted citron — more grounded
+    bg: 'hsla(68, 58%, 60%, 0.48)',
+    text: 'hsl(58, 40%, 12%)',
+    gradient: 'linear-gradient(168deg, hsla(64, 62%, 72%, 0.52) 0%, hsla(70, 55%, 57%, 0.45) 100%)',
+  },
+  {
+    id: 'jim-jag-som-helhet',
+    // Cool citron-sage — contemplative, whole
+    bg: 'hsla(74, 48%, 62%, 0.48)',
+    text: 'hsl(64, 38%, 12%)',
+    gradient: 'linear-gradient(168deg, hsla(70, 52%, 72%, 0.52) 0%, hsla(78, 45%, 58%, 0.45) 100%)',
+  },
 ];
-const DIARY_COLOR = { bg: '#F2E8CF', text: '#7A7040' };
 
 const ACCENT_COLOR = '#8A9A10';
+const DIARY_TEXT = 'hsl(64, 40%, 18%)';
 
 const containerVariants = {
   hidden: {},
-  visible: { transition: { staggerChildren: 0.12, delayChildren: 0.35 } },
+  visible: { transition: { staggerChildren: 0.11, delayChildren: 0.4 } },
 };
 
 const pillVariants = {
-  hidden: { opacity: 0, y: 24, scale: 0.92 },
+  hidden: { opacity: 0, y: 26, scale: 0.93 },
   visible: {
     opacity: 1, y: 0, scale: 1,
-    transition: { duration: 0.6, ease: EASE },
+    transition: { duration: 0.65, ease: EASE },
   },
 };
 
@@ -34,7 +62,7 @@ const titleVariants = {
   hidden: { opacity: 0, y: 16 },
   visible: {
     opacity: 1, y: 0,
-    transition: { duration: 0.7, ease: EASE },
+    transition: { duration: 0.75, ease: EASE },
   },
 };
 
@@ -46,11 +74,14 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
       className="min-h-screen relative overflow-hidden"
       style={{ backgroundColor: 'var(--surface-base)' }}
     >
-      {/* Background illustration */}
+      {/* Background illustration — breathing */}
       <motion.div
         initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.5 }}
+        animate={{ opacity: 1, scale: [1, 1.012, 1] }}
+        transition={{
+          duration: 0.5,
+          scale: { duration: 9, ease: 'easeInOut', repeat: Infinity, repeatType: 'reverse' },
+        }}
         style={{
           position: 'absolute',
           top: '7%',
@@ -98,14 +129,14 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-            gap: '14px',
+            gap: '13px',
             width: '100%',
           }}
         >
-          {/* Title with warm golden glow */}
+          {/* Title — lifted with white halo for contrast against illustration */}
           <motion.div
             variants={titleVariants}
-            style={{ textAlign: 'center', marginBottom: '2.5vh', width: '100%' }}
+            style={{ textAlign: 'center', marginBottom: '3vh', width: '100%' }}
           >
             <h1
               style={{
@@ -115,7 +146,11 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
                 color: ACCENT_COLOR,
                 letterSpacing: '-0.01em',
                 whiteSpace: 'nowrap',
-                textShadow: 'none',
+                textShadow: [
+                  '0 0 20px rgba(255, 255, 255, 0.9)',
+                  '0 0 40px rgba(255, 255, 255, 0.5)',
+                  '0 2px 4px rgba(0, 0, 0, 0.06)',
+                ].join(', '),
               }}
             >
               Jag i mig
@@ -128,53 +163,58 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
                 color: '#2C2420',
                 opacity: 0.75,
                 marginTop: '6px',
-                textShadow: 'none',
+                textShadow: '0 0 16px rgba(255,255,255,0.95), 0 0 32px rgba(255,255,255,0.5)',
               }}
             >
               när känslor får ord
             </p>
           </motion.div>
 
-          {/* Category buttons — puffy candy-like glass tiles */}
+          {/* Category tiles — candy-glass with rhythm */}
           {ORDERED_TILES.map((tile, index) => {
             const cat = product.categories.find((c) => c.id === tile.id);
             if (!cat) return null;
 
-            const isDark = tile.dark;
-            const isFirst = index === 0;
-            const isLightestTile = tile.id === 'jim-jag-som-helhet';
+            const isHero = index === 0;
 
             return (
               <motion.button
                 key={cat.id}
                 variants={pillVariants}
-                whileHover={{ scale: 1.06, y: -4 }}
-                whileTap={{ scale: 0.965, y: 1 }}
+                whileHover={{ scale: 1.05, y: -3 }}
+                whileTap={{ scale: 0.975, y: 1 }}
                 onClick={() => navigate(`/category/${cat.id}`)}
                 style={{
-                  background: tile.bg,
+                  background: tile.gradient,
                   borderRadius: '22px',
                   padding: '0 32px',
                   textAlign: 'center',
                   cursor: 'pointer',
-                  border: '1px solid hsla(0, 0%, 100%, 0.50)',
-                  boxShadow: '0 4px 16px rgba(44, 36, 32, 0.08), 0 1px 3px rgba(44, 36, 32, 0.04), inset 0 1px 0 hsla(0, 0%, 100%, 0.45)',
+                  border: '1px solid hsla(60, 60%, 90%, 0.60)',
+                  boxShadow: [
+                    '0 6px 20px hsla(64, 50%, 40%, 0.10)',
+                    '0 2px 6px hsla(0, 0%, 0%, 0.04)',
+                    'inset 0 2px 1px hsla(60, 80%, 95%, 0.55)',
+                    'inset 0 -2px 4px hsla(64, 40%, 30%, 0.06)',
+                  ].join(', '),
                   whiteSpace: 'normal' as const,
-                  width: '84%',
-                  minHeight: isFirst ? '76px' : '68px',
+                  width: isHero ? '86%' : '82%',
+                  minHeight: isHero ? '76px' : '66px',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
                   lineHeight: 1.3,
+                  backdropFilter: 'blur(20px) saturate(1.3)',
+                  WebkitBackdropFilter: 'blur(20px) saturate(1.3)',
                 }}
               >
                 <span
                   style={{
                     fontFamily: "'DM Serif Display', var(--font-serif)",
-                    fontSize: 'clamp(20px, 5.5vw, 26px)',
+                    fontSize: isHero ? 'clamp(21px, 5.8vw, 27px)' : 'clamp(19px, 5.2vw, 25px)',
                     fontWeight: 400,
                     color: tile.text,
-                    textShadow: '0 1px 3px rgba(255, 255, 255, 0.7)',
+                    textShadow: '0 1px 4px hsla(60, 60%, 90%, 0.8), 0 0 12px hsla(60, 50%, 95%, 0.5)',
                   }}
                 >
                   {cat.title}
@@ -183,7 +223,7 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
             );
           })}
 
-          {/* Sign-off line — tighter to tiles */}
+          {/* Sign-off */}
           <motion.p
             variants={pillVariants}
             className="font-serif"
@@ -194,44 +234,48 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
               opacity: 0.6,
               textAlign: 'center',
               lineHeight: 1.5,
-              marginTop: '2vh',
+              marginTop: '2.5vh',
               maxWidth: '85%',
+              textShadow: '0 0 12px rgba(255,255,255,0.8)',
             }}
           >
             Välj det som känns rätt just nu.
           </motion.p>
 
-          {/* Diary entrance — soft, secondary, not dashed */}
+          {/* Diary entrance — harmonized with citron palette */}
           <motion.button
             variants={pillVariants}
             whileHover={{ scale: 1.03, y: -2 }}
             whileTap={{ scale: 0.97 }}
             onClick={() => navigate(`/diary/${product.id}`)}
             style={{
-              background: `${DIARY_COLOR.bg}88`,
-              border: '1px solid rgba(180, 160, 120, 0.18)',
+              background: 'hsla(58, 55%, 78%, 0.35)',
+              border: '1px solid hsla(60, 50%, 85%, 0.45)',
               cursor: 'pointer',
               marginTop: '0.5vh',
               padding: '14px 24px',
               borderRadius: '16px',
-              boxShadow: '0 2px 10px rgba(44, 36, 32, 0.05)',
+              boxShadow: [
+                '0 4px 14px hsla(64, 40%, 40%, 0.06)',
+                'inset 0 1px 0 hsla(60, 60%, 92%, 0.40)',
+              ].join(', '),
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               gap: '10px',
-              width: '60%',
+              width: '58%',
               backdropFilter: 'blur(16px)',
               WebkitBackdropFilter: 'blur(16px)',
             }}
           >
-            <BookOpen size={16} style={{ color: DIARY_COLOR.text, opacity: 0.55, flexShrink: 0 }} />
+            <BookOpen size={16} style={{ color: DIARY_TEXT, opacity: 0.50, flexShrink: 0 }} />
             <div style={{ textAlign: 'left' }}>
               <span
                 style={{
                   fontFamily: "'DM Serif Display', var(--font-serif)",
                   fontSize: 'clamp(15px, 4vw, 18px)',
                   fontWeight: 400,
-                  color: DIARY_COLOR.text,
+                  color: DIARY_TEXT,
                   lineHeight: 1.3,
                 }}
               >
@@ -241,7 +285,7 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
                 className="font-serif"
                 style={{
                   fontSize: '11px',
-                  color: '#8A8078',
+                  color: 'hsl(64, 25%, 35%)',
                   opacity: 0.65,
                   marginTop: '1px',
                   fontStyle: 'italic',
