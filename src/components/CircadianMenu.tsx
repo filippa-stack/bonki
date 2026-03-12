@@ -298,13 +298,13 @@ export default function CircadianMenu({
                       const el = e.currentTarget as HTMLElement;
                       el.style.background = fillHover;
                       el.style.border = borderGlow;
-                      el.style.boxShadow = `0 0 24px -4px ${color}50, 0 0 48px -8px ${color}30`;
+                      el.style.boxShadow = `${innerGlow}, 0 0 24px -4px ${color}50, 0 0 48px -8px ${color}30`;
                     }}
                     onMouseLeave={(e) => {
                       const el = e.currentTarget as HTMLElement;
                       el.style.background = fillDefault;
                       el.style.border = isNextSuggested ? borderGlow : borderDefault;
-                      el.style.boxShadow = isNextSuggested ? breatheBoxShadow : 'none';
+                      el.style.boxShadow = breatheBoxShadow;
                     }}
                   >
                     {/* Thick accent bar */}
