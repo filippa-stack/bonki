@@ -19,8 +19,8 @@ export const CIRCADIAN_COLORS: Record<string, string> = {
   'category-10':        '#313658',
 };
 
-/** Lighter variants for subtitle text — higher contrast on glass tiles */
-const CIRCADIAN_COLORS_DARK: Record<string, string> = {
+/** Lighter variants for text on dark backgrounds — higher contrast */
+export const CIRCADIAN_COLORS_LIGHT: Record<string, string> = {
   'emotional-intimacy': '#D0DDD5',
   'communication':      '#A8C7B5',
   'category-8':         '#E0B8AA',
@@ -387,7 +387,7 @@ export default function CircadianMenu({
                               fontFamily: 'var(--font-sans)',
                               fontSize: '12px',
                               fontWeight: 400,
-                              color: CIRCADIAN_COLORS_DARK[category.id] || color,
+                              color: CIRCADIAN_COLORS_LIGHT[category.id] || color,
                               opacity: 1,
                               lineHeight: 1.45,
                               marginTop: '3px',

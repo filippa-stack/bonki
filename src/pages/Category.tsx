@@ -13,7 +13,7 @@ import { allProducts } from '@/data/products';
 import { useProductTheme } from '@/hooks/useProductTheme';
 import { useCardImage } from '@/hooks/useCardImage';
 import { useVerdigrisTheme } from '@/components/VerdigrisAtmosphere';
-import { CIRCADIAN_COLORS } from '@/components/CircadianMenu';
+import { CIRCADIAN_COLORS, CIRCADIAN_COLORS_LIGHT } from '@/components/CircadianMenu';
 import Header from '@/components/Header';
 
 
@@ -273,6 +273,7 @@ function StillUsCategoryView({
   navigate,
 }: StillUsCategoryViewProps) {
   const color = circadianColor || '#A2B5A9';
+  const colorLight = CIRCADIAN_COLORS_LIGHT[category.id] || color;
   const HERITAGE_GOLD = '#DA9D1D';
 
   return (
@@ -337,10 +338,11 @@ function StillUsCategoryView({
               fontFamily: "'DM Serif Display', var(--font-serif)",
               fontSize: 'clamp(28px, 8vw, 38px)',
               fontWeight: 700,
-              color,
+              color: colorLight,
               letterSpacing: '-0.01em',
               lineHeight: 1.2,
-              textShadow: '0 1px 8px hsla(194, 28%, 8%, 0.4)',
+              textShadow: `0 0 20px ${color}80, 0 1px 8px hsla(194, 28%, 8%, 0.4)`,
+              filter: 'brightness(1.15)',
             }}
           >
             {category.title}
@@ -359,13 +361,13 @@ function StillUsCategoryView({
               fontSize: 'clamp(16px, 4.5vw, 20px)',
               fontWeight: 400,
               lineHeight: 1.45,
-              color,
-              opacity: 0.90,
+              color: colorLight,
+              opacity: 0.95,
               maxWidth: '80%',
               marginLeft: 'auto', marginRight: 'auto',
               marginBottom: '40px',
               textWrap: 'balance',
-              textShadow: '0 1px 6px hsla(194, 28%, 8%, 0.35)',
+              textShadow: `0 0 14px ${color}60, 0 1px 6px hsla(194, 28%, 8%, 0.35)`,
             } as React.CSSProperties}
           >
             {category.entryLine}
@@ -452,10 +454,10 @@ function StillUsCategoryView({
                       fontFamily: "'DM Serif Display', var(--font-serif)",
                       fontSize: '19px',
                       fontWeight: 400,
-                      color,
-                      opacity: isCompleted ? 0.55 : 0.95,
+                      color: colorLight,
+                      opacity: isCompleted ? 0.55 : 1,
                       lineHeight: 1.3,
-                      textShadow: '0 1px 3px hsla(194, 28%, 8%, 0.25)',
+                      textShadow: `0 0 12px ${color}50, 0 1px 3px hsla(194, 28%, 8%, 0.25)`,
                     }}
                   >
                     {card.title}
