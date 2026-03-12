@@ -38,10 +38,10 @@ const TAGLINES: Record<string, string> = {
 const PASTEL_COLORS: Record<string, string> = {
   jag_i_mig: '#F5EDD2',
   jag_med_andra: '#F0D9EA',
-  jag_i_varlden: '#C8E6D0',
+  jag_i_varlden: '#D0EDDA',
   sexualitetskort: '#F0D9E2',
-  vardagskort: '#D2E8E8',
-  syskonkort: '#D6E2F0',
+  vardagskort: '#D6ECF0',
+  syskonkort: '#DAEAF6',
 };
 
 /** Raised illustration opacities — illustrations are a feature, not a ghost */
