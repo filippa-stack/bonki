@@ -259,7 +259,7 @@ export default function Home() {
         )}
       </AnimatePresence>
 
-      <div className="flex-1">
+      <div className="flex-1" style={{ position: 'relative', zIndex: 1 }}>
         <div style={headerCompress}>
           <Header showSharedLink showSettings minimal />
         </div>
