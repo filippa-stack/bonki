@@ -140,8 +140,8 @@ export default function JagMedAndraProductHome({ product }: { product: ProductMa
       {/* Secondary illustration — nyckelpiga (breathing, offset phase) */}
       <motion.div
         initial={{ opacity: 0 }}
-        animate={{ opacity: 1, ...breathe }}
-        transition={{ duration: 0.5, delay: 0.2 }}
+        animate={{ opacity: 1, scale: [1, 1.012, 1] }}
+        transition={{ duration: 0.5, delay: 0.2, scale: { duration: 9, ease: 'easeInOut', repeat: Infinity, repeatType: 'reverse' } }}
         style={{
           position: 'absolute',
           bottom: '2%',
