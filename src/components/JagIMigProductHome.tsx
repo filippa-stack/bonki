@@ -171,7 +171,7 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
             if (!cat) return null;
 
             const isHero = index === 0;
-
+            const isDark = 'dark' in tile && tile.dark;
             return (
               <motion.button
                 key={cat.id}
