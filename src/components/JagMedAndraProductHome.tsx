@@ -175,11 +175,12 @@ export default function JagMedAndraProductHome({ product }: { product: ProductMa
                   padding: '0 32px',
                   textAlign: 'center',
                   cursor: 'pointer',
-                  border: '1px solid hsla(0, 0%, 100%, 0.45)',
+                  border: '1px solid hsla(0, 0%, 100%, 0.55)',
                   boxShadow: [
-                    '0 4px 20px hsla(0, 0%, 0%, 0.06)',
-                    '0 1px 3px hsla(0, 0%, 0%, 0.04)',
-                    `inset 0 1px 0 hsla(0, 0%, 100%, 0.5)`,
+                    `0 6px 24px ${tile.shadow}`,
+                    '0 2px 8px hsla(0, 0%, 0%, 0.05)',
+                    'inset 0 1px 0 hsla(0, 0%, 100%, 0.65)',
+                    'inset 0 -1px 0 hsla(0, 0%, 0%, 0.03)',
                   ].join(', '),
                   whiteSpace: 'normal' as const,
                   width: '84%',
@@ -188,17 +189,17 @@ export default function JagMedAndraProductHome({ product }: { product: ProductMa
                   alignItems: 'center',
                   justifyContent: 'center',
                   lineHeight: 1.3,
-                  backdropFilter: 'blur(20px) saturate(1.3)',
-                  WebkitBackdropFilter: 'blur(20px) saturate(1.3)',
+                  backdropFilter: 'blur(24px) saturate(1.4)',
+                  WebkitBackdropFilter: 'blur(24px) saturate(1.4)',
                 }}
               >
                 <span
                   style={{
                     fontFamily: "'DM Serif Display', var(--font-serif)",
                     fontSize: 'clamp(20px, 5.5vw, 26px)',
-                    fontWeight: 400,
+                    fontWeight: 500,
                     color: tile.text,
-                    textShadow: '0 1px 3px hsla(0, 0%, 100%, 0.6)',
+                    textShadow: '0 1px 4px hsla(0, 0%, 100%, 0.8), 0 0 12px hsla(0, 0%, 100%, 0.4)',
                   }}
                 >
                   {cat.title}
