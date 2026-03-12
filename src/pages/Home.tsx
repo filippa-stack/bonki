@@ -225,10 +225,10 @@ export default function Home() {
         transition={{ duration: 0.4 }}
         style={{
           position: 'absolute',
-          top: '2%',
-          left: '-42%',
-          width: '135%',
-          height: '125%',
+          top: '-5%',
+          left: '-25%',
+          width: '150%',
+          height: '110%',
           zIndex: 0,
           pointerEvents: 'none',
         }}
