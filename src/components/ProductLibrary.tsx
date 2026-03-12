@@ -420,7 +420,7 @@ export default function ProductLibrary() {
               fontFamily: "'DM Serif Display', serif",
               fontSize: '34px',
               fontWeight: 400,
-              color: '#111122',
+              color: '#0A0A18',
               lineHeight: 1.15,
               letterSpacing: '-0.03em',
               marginBottom: '8px',
