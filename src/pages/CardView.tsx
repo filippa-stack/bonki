@@ -40,7 +40,7 @@ import SessionStepReflection from '@/components/SessionStepReflection';
 import StageInterstitial from '@/components/StageInterstitial';
 import SessionFocusShell from '@/components/SessionFocusShell';
 
-import { ArrowRight, ArrowLeft } from 'lucide-react';
+import { ArrowRight, ArrowLeft, Feather } from 'lucide-react';
 
 import CompletedSessionView from '@/components/CompletedSessionView';
 import FeedbackSheet from '@/components/FeedbackSheet';
