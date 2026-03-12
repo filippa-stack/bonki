@@ -43,13 +43,14 @@ const CARD_IMAGE_OVERRIDE: Record<string, string> = {
 };
 
 const CARD_ILLUSTRATION_SCALE: Record<string, number> = {
-  'jim-stolt': 1.10, 'jim-bestamd': 1.25, 'jim-karlek': 1.14,
-  'jim-nyfiken': 1.05, 'jim-forvanad': 1.00, 'jim-jag': 1.05,
-  'jim-trygg': 1.08, 'jim-ensam': 1.02, 'jim-glad': 1.04,
-  'jim-radd': 1.04, 'jim-arg': 0.92, 'jim-vild': 0.94,
-  'jim-skam': 0.90, 'jim-avundsjuk': 0.90, 'jim-svartsjuk': 0.92,
-  'jim-avsky': 0.92, 'jim-acklad': 0.92, 'jim-besviken': 1.00,
-  'jim-utanfor': 0.96, 'jim-ledsen': 1.00, 'jim-stress': 0.96,
+  // Normalize perceived visual mass — boost compact illustrations, tame spread-out ones
+  'jim-stolt': 1.15, 'jim-bestamd': 1.30, 'jim-karlek': 1.20,
+  'jim-nyfiken': 1.10, 'jim-forvanad': 1.05, 'jim-jag': 1.10,
+  'jim-trygg': 1.15, 'jim-ensam': 1.10, 'jim-glad': 1.10,
+  'jim-radd': 1.10, 'jim-arg': 1.05, 'jim-vild': 1.05,
+  'jim-skam': 1.20, 'jim-avundsjuk': 1.20, 'jim-svartsjuk': 1.15,
+  'jim-avsky': 1.00, 'jim-acklad': 0.88, 'jim-besviken': 1.15,
+  'jim-utanfor': 0.85, 'jim-ledsen': 1.05, 'jim-stress': 1.05,
 };
 
 const CARD_ILLUSTRATION_NUDGE: Record<string, { x: number; y: number }> = {
