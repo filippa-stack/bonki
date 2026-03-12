@@ -85,7 +85,7 @@ function ProgressRing({ completed, total, size = 20 }: { completed: number; tota
           fill="none"
           stroke={HERITAGE_GOLD}
           strokeWidth={2}
-          opacity={0.15}
+          opacity={0.12}
         />
         {/* Progress arc */}
         <motion.circle
