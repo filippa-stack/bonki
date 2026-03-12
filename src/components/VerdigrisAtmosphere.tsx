@@ -30,10 +30,10 @@ export function useVerdigrisTheme(active: boolean = true, lightLeakColor?: strin
  * Maps category IDs to warm atmospheric glows.
  */
 export const CATEGORY_LIGHTLEAK_COLORS: Record<string, string> = {
-  'emotional-intimacy': 'hsla(194, 35%, 55%, 0.14)',   // cool teal
-  'communication':      'hsla(41, 50%, 50%, 0.10)',     // warm gold
-  'category-8':         'hsla(320, 25%, 45%, 0.10)',    // soft rose
-  'parenting-together': 'hsla(28, 40%, 48%, 0.10)',     // amber
-  'individual-needs':   'hsla(260, 20%, 48%, 0.10)',    // muted plum
-  'category-9':         'hsla(170, 30%, 45%, 0.12)',    // verdant
+  'emotional-intimacy': 'hsla(230, 40%, 30%, 0.14)',   // midnight indigo
+  'communication':      'hsla(38, 50%, 45%, 0.10)',     // warm saffron
+  'category-8':         'hsla(320, 25%, 35%, 0.10)',    // soft rose
+  'parenting-together': 'hsla(28, 40%, 40%, 0.10)',     // amber
+  'individual-needs':   'hsla(260, 25%, 38%, 0.10)',    // muted plum
+  'category-9':         'hsla(215, 30%, 35%, 0.12)',    // steel mist
 };
