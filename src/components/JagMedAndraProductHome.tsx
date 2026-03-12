@@ -31,15 +31,15 @@ const titleVariants = {
 
 const ACCENT_COLOR = '#9825D6';
 
-/** Ordered tiles — muted, sophisticated palette with glass morphism */
-const ORDERED_TILES: { id: string; bg: string; tint: string; text: string }[] = [
-  { id: 'jma-att-hora-till', bg: 'hsla(263, 60%, 68%, 0.38)', tint: 'hsla(263, 50%, 88%, 0.25)', text: 'hsl(263, 38%, 32%)' },
-  { id: 'jma-nar-vi-jamfor-oss', bg: 'hsla(188, 38%, 48%, 0.35)', tint: 'hsla(188, 30%, 85%, 0.22)', text: 'hsl(188, 40%, 22%)' },
-  { id: 'jma-nar-det-skaver', bg: 'hsla(0, 58%, 68%, 0.35)', tint: 'hsla(0, 40%, 88%, 0.22)', text: 'hsl(0, 35%, 28%)' },
-  { id: 'jma-att-sta-stadig', bg: 'hsla(100, 28%, 48%, 0.35)', tint: 'hsla(100, 22%, 86%, 0.22)', text: 'hsl(100, 30%, 20%)' },
-  { id: 'jma-vi-i-varlden', bg: 'hsla(33, 70%, 60%, 0.38)', tint: 'hsla(33, 50%, 88%, 0.25)', text: 'hsl(33, 50%, 22%)' },
+/** Ordered tiles — frosted glass with tinted color, highly transparent to let sloth show */
+const ORDERED_TILES: { id: string; bg: string; text: string; shadow: string }[] = [
+  { id: 'jma-att-hora-till', bg: 'hsla(263, 55%, 72%, 0.22)', text: 'hsl(263, 50%, 28%)', shadow: 'hsla(263, 40%, 50%, 0.12)' },
+  { id: 'jma-nar-vi-jamfor-oss', bg: 'hsla(188, 40%, 55%, 0.22)', text: 'hsl(188, 50%, 20%)', shadow: 'hsla(188, 35%, 40%, 0.12)' },
+  { id: 'jma-nar-det-skaver', bg: 'hsla(0, 50%, 72%, 0.22)', text: 'hsl(0, 42%, 26%)', shadow: 'hsla(0, 40%, 50%, 0.12)' },
+  { id: 'jma-att-sta-stadig', bg: 'hsla(100, 30%, 52%, 0.22)', text: 'hsl(100, 38%, 18%)', shadow: 'hsla(100, 28%, 38%, 0.12)' },
+  { id: 'jma-vi-i-varlden', bg: 'hsla(33, 60%, 62%, 0.22)', text: 'hsl(33, 55%, 20%)', shadow: 'hsla(33, 45%, 45%, 0.12)' },
 ];
-const DIARY_COLOR = { bg: 'hsla(280, 30%, 85%, 0.32)', text: 'hsl(280, 60%, 40%)' };
+const DIARY_COLOR = { bg: 'hsla(280, 40%, 75%, 0.18)', text: 'hsl(280, 55%, 35%)' };
 
 export default function JagMedAndraProductHome({ product }: { product: ProductManifest }) {
   const navigate = useNavigate();
@@ -69,7 +69,7 @@ export default function JagMedAndraProductHome({ product }: { product: ProductMa
         <img
           src={slothImage}
           alt=""
-          style={{ width: '100%', height: '100%', objectFit: 'contain', objectPosition: 'left top', opacity: 0.35 }}
+          style={{ width: '100%', height: '100%', objectFit: 'contain', objectPosition: 'left top', opacity: 0.5 }}
         />
       </motion.div>
 
@@ -90,7 +90,7 @@ export default function JagMedAndraProductHome({ product }: { product: ProductMa
         <img
           src={nyckelpiganImage}
           alt=""
-          style={{ width: '100%', height: '100%', objectFit: 'contain', opacity: 0.35, transform: 'rotate(-30deg)' }}
+          style={{ width: '100%', height: '100%', objectFit: 'contain', opacity: 0.45, transform: 'rotate(-30deg)' }}
         />
       </motion.div>
 
@@ -175,11 +175,12 @@ export default function JagMedAndraProductHome({ product }: { product: ProductMa
                   padding: '0 32px',
                   textAlign: 'center',
                   cursor: 'pointer',
-                  border: '1px solid hsla(0, 0%, 100%, 0.45)',
+                  border: '1px solid hsla(0, 0%, 100%, 0.55)',
                   boxShadow: [
-                    '0 4px 20px hsla(0, 0%, 0%, 0.06)',
-                    '0 1px 3px hsla(0, 0%, 0%, 0.04)',
-                    `inset 0 1px 0 hsla(0, 0%, 100%, 0.5)`,
+                    `0 6px 24px ${tile.shadow}`,
+                    '0 2px 8px hsla(0, 0%, 0%, 0.05)',
+                    'inset 0 1px 0 hsla(0, 0%, 100%, 0.65)',
+                    'inset 0 -1px 0 hsla(0, 0%, 0%, 0.03)',
                   ].join(', '),
                   whiteSpace: 'normal' as const,
                   width: '84%',
@@ -188,17 +189,17 @@ export default function JagMedAndraProductHome({ product }: { product: ProductMa
                   alignItems: 'center',
                   justifyContent: 'center',
                   lineHeight: 1.3,
-                  backdropFilter: 'blur(20px) saturate(1.3)',
-                  WebkitBackdropFilter: 'blur(20px) saturate(1.3)',
+                  backdropFilter: 'blur(24px) saturate(1.4)',
+                  WebkitBackdropFilter: 'blur(24px) saturate(1.4)',
                 }}
               >
                 <span
                   style={{
                     fontFamily: "'DM Serif Display', var(--font-serif)",
                     fontSize: 'clamp(20px, 5.5vw, 26px)',
-                    fontWeight: 400,
+                    fontWeight: 500,
                     color: tile.text,
-                    textShadow: '0 1px 3px hsla(0, 0%, 100%, 0.6)',
+                    textShadow: '0 1px 4px hsla(0, 0%, 100%, 0.8), 0 0 12px hsla(0, 0%, 100%, 0.4)',
                   }}
                 >
                   {cat.title}
@@ -232,31 +233,36 @@ export default function JagMedAndraProductHome({ product }: { product: ProductMa
             whileTap={{ scale: 0.97 }}
             onClick={() => navigate(`/diary/${product.id}`)}
             style={{
-              background: `${DIARY_COLOR.bg}88`,
-              border: '1px solid rgba(160, 120, 180, 0.18)',
+              background: DIARY_COLOR.bg,
+              border: '1px solid hsla(0, 0%, 100%, 0.5)',
               cursor: 'pointer',
-              marginTop: '0.5vh',
-              padding: '14px 24px',
-              borderRadius: '16px',
-              boxShadow: '0 2px 10px rgba(44, 36, 32, 0.05)',
+              marginTop: '1vh',
+              padding: '16px 28px',
+              borderRadius: '20px',
+              boxShadow: [
+                '0 6px 20px hsla(280, 30%, 50%, 0.10)',
+                '0 2px 6px hsla(0, 0%, 0%, 0.04)',
+                'inset 0 1px 0 hsla(0, 0%, 100%, 0.6)',
+              ].join(', '),
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              gap: '10px',
-              width: '60%',
-              backdropFilter: 'blur(16px)',
-              WebkitBackdropFilter: 'blur(16px)',
+              gap: '12px',
+              width: '64%',
+              backdropFilter: 'blur(24px) saturate(1.4)',
+              WebkitBackdropFilter: 'blur(24px) saturate(1.4)',
             }}
           >
-            <BookOpen size={16} style={{ color: DIARY_COLOR.text, opacity: 0.55, flexShrink: 0 }} />
+            <BookOpen size={18} strokeWidth={1.8} style={{ color: DIARY_COLOR.text, opacity: 0.7, flexShrink: 0 }} />
             <div style={{ textAlign: 'left' }}>
               <span
                 style={{
                   fontFamily: "'DM Serif Display', var(--font-serif)",
-                  fontSize: 'clamp(15px, 4vw, 18px)',
-                  fontWeight: 400,
+                  fontSize: 'clamp(16px, 4.2vw, 19px)',
+                  fontWeight: 500,
                   color: DIARY_COLOR.text,
                   lineHeight: 1.3,
+                  letterSpacing: '0.01em',
                 }}
               >
                 Vår dagbok
@@ -264,10 +270,10 @@ export default function JagMedAndraProductHome({ product }: { product: ProductMa
               <p
                 className="font-serif"
                 style={{
-                  fontSize: '11px',
-                  color: '#8A8078',
-                  opacity: 0.65,
-                  marginTop: '1px',
+                  fontSize: '12px',
+                  color: 'hsl(280, 30%, 45%)',
+                  opacity: 0.75,
+                  marginTop: '2px',
                   fontStyle: 'italic',
                   lineHeight: 1.3,
                 }}
