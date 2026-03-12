@@ -164,7 +164,7 @@ export default function CardView() {
   // For Still Us: use saffron as both primary + accent, Heritage Gold for CTA
   useProductTheme(
     isStillUsCard ? 'hsl(41, 78%, 48%)' : (product?.accentColor ?? 'hsl(158, 35%, 18%)'),
-    isStillUsCard ? 'hsl(38, 88%, 46%)' : (product?.secondaryAccent ?? 'hsl(38, 88%, 46%)'),
+    isStillUsCard ? 'hsl(41, 78%, 48%)' : (product?.secondaryAccent ?? 'hsl(38, 88%, 46%)'),
     isStillUsCard ? undefined : product?.backgroundColor,
     isStillUsCard ? 'hsl(41, 78%, 48%)' : product?.ctaButtonColor,
   );
