@@ -377,7 +377,7 @@ function StillUsCategoryView({
         />
 
         {/* Card tiles — glassmorphism */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '7px', paddingLeft: '20px', paddingRight: '20px' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '0', paddingLeft: '20px', paddingRight: '20px', position: 'relative' }}>
           {cards.map((card, index) => {
             const isCompleted = completedCardIds.includes(card.id);
             const isInProgress = !isCompleted && inProgressCardIds.includes(card.id);
@@ -385,9 +385,60 @@ function StillUsCategoryView({
             const fillHover = CIRCADIAN_FILLS_HOVER[category.id] || 'rgba(162, 181, 169, 0.42)';
             const borderDefault = `1px solid ${color}73`;
             const borderGlow = `1px solid ${color}`;
+            const isLast = index === cards.length - 1;
 
             return (
-              <motion.button
+              <div key={card.id} style={{ display: 'flex', alignItems: 'stretch', gap: '0' }}>
+                {/* Sequence spine — number + connecting line */}
+                <div
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    width: '28px',
+                    flexShrink: 0,
+                    position: 'relative',
+                  }}
+                >
+                  {/* Number */}
+                  <span
+                    style={{
+                      fontFamily: 'var(--font-serif)',
+                      fontSize: '13px',
+                      fontWeight: 400,
+                      color,
+                      opacity: isCompleted ? 0.35 : 0.55,
+                      lineHeight: 1,
+                      paddingTop: '18px',
+                    }}
+                  >
+                    {index + 1}
+                  </span>
+                  {/* Connecting line */}
+                  {!isLast && (
+                    <div
+                      style={{
+                        flex: 1,
+                        width: '1px',
+                        background: `linear-gradient(180deg, ${color}40 0%, transparent 100%)`,
+                        marginTop: '6px',
+                      }}
+                    />
+                  )}
+                </div>
+
+                {/* Tile */}
+                <motion.button
+                  initial={{ opacity: 0, y: 14 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.15 + index * 0.07, duration: 0.55, ease: EASE }}
+                  onClick={() => navigate(`/preview/${card.id}`)}
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.985 }}
+                  className="text-left"
+                  style={{
+                    flex: 1,
+                    marginBottom: isLast ? '0' : '7px',
                 key={card.id}
                 initial={{ opacity: 0, y: 14 }}
                 animate={{ opacity: 1, y: 0 }}
