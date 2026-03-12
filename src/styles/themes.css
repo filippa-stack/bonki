@@ -682,22 +682,22 @@
   --color-button-primary: hsl(38, 72%, 60%);
   --color-button-text:    hsl(235, 35%, 8%);
   --color-accent:         hsl(38, 72%, 60%);
-  --color-accent-soft:    hsl(215, 20%, 35%);
+  --color-accent-soft:    hsl(192, 25%, 30%);
 
   /* Semantic color overrides */
-  --color-bg-base:        hsl(235, 35%, 14%);
+  --color-bg-base:        hsl(192, 58%, 21%);
   --color-text-primary:   var(--text-primary);
   --color-text-secondary: var(--text-secondary);
   --color-text-tertiary:  var(--text-tertiary);
-  --color-divider:        hsl(215, 20%, 30%);
-  --color-surface:        hsl(215, 30%, 18%);
-  --color-surface-primary: hsl(215, 30%, 18%);
+  --color-divider:        hsl(192, 25%, 28%);
+  --color-surface:        hsl(192, 50%, 16%);
+  --color-surface-primary: hsl(192, 50%, 16%);
 
-  /* Surfaces — midnight depth */
-  --surface-base:   hsl(235, 35%, 14%);   /* #0A0A3D Deep Abyss */
-  --surface-raised: hsl(215, 30%, 18%);   /* #2D4263 Steel Mist */
-  --surface-sunken: hsl(230, 28%, 12%);
-  --surface-library: hsl(235, 35%, 14%);
+  /* Surfaces — Petrol Teal depth */
+  --surface-base:   hsl(192, 58%, 21%);   /* #164A58 Petrol Teal */
+  --surface-raised: hsl(192, 50%, 16%);   /* Raised */
+  --surface-sunken: hsl(192, 55%, 13%);   /* #0D2B33 Deep Petrol */
+  --surface-library: hsl(192, 58%, 21%);
   --text-library:   hsl(38, 25%, 92%);
 
   /* Note surfaces — midnight variant */
