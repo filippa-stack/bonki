@@ -853,15 +853,40 @@ export default function ProductLibrary() {
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: swipeDirection * -30 }}
             transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+            style={{
+              background: 'radial-gradient(ellipse 80% 70% at 50% 40%, #1A1A3E 0%, #10102A 55%, #0A0A1A 100%)',
+              margin: '0 -20px',
+              padding: '0 20px',
+              borderRadius: '28px 28px 0 0',
+              minHeight: '80vh',
+              position: 'relative',
+              overflow: 'hidden',
+            }}
           >
-        {/* Bridge phrase — inline, no card */}
+        {/* Subtle ambient glow — theatrical spotlight */}
+        <div style={{
+          position: 'absolute',
+          top: '-20%',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          width: '300px',
+          height: '300px',
+          borderRadius: '50%',
+          background: 'radial-gradient(circle, hsla(230, 40%, 35%, 0.15) 0%, transparent 70%)',
+          pointerEvents: 'none',
+          zIndex: 0,
+        }} />
+
+        {/* Bridge phrase */}
         <motion.div
           initial={{ opacity: 0, y: 6 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1, duration: 0.6 }}
           style={{
             textAlign: 'center',
-            padding: '4px 28px 12px',
+            padding: '28px 28px 12px',
+            position: 'relative',
+            zIndex: 1,
           }}
         >
           <p
@@ -870,8 +895,8 @@ export default function ProductLibrary() {
               fontStyle: 'italic',
               fontSize: '15px',
               fontWeight: 400,
-              color: 'var(--color-text-secondary)',
-              opacity: 0.5,
+              color: '#F5EFE6',
+              opacity: 0.6,
               lineHeight: 1.6,
             }}
           >
@@ -879,15 +904,17 @@ export default function ProductLibrary() {
           </p>
         </motion.div>
 
-        {/* ── Par ── */}
+        {/* ── Par tiles ── */}
         <motion.div
           className="px-5 mt-3"
           variants={containerVariants}
           initial="hidden"
           animate="visible"
+          style={{ position: 'relative', zIndex: 1 }}
         >
           
           <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', paddingBottom: '32px' }}>
+            {/* Still Us — glass tile */}
             <motion.div
               variants={tileVariants}
               whileHover={{ scale: 1.02, y: -2 }}
@@ -897,7 +924,9 @@ export default function ProductLibrary() {
               style={{
                 borderRadius: '20px',
                 padding: '24px 20px 18px',
-                background: 'linear-gradient(180deg, #D4DDE0 0%, #C2CED4 100%)',
+                background: 'hsla(0, 0%, 100%, 0.07)',
+                backdropFilter: 'blur(24px)',
+                WebkitBackdropFilter: 'blur(24px)',
                 textAlign: 'left',
                 position: 'relative',
                 overflow: 'hidden',
@@ -906,8 +935,8 @@ export default function ProductLibrary() {
                 flexDirection: 'column',
                 alignItems: 'flex-start',
                 justifyContent: 'flex-end',
-                border: '1px solid hsla(30, 15%, 80%, 0.3)',
-                boxShadow: '0 2px 6px hsla(30, 18%, 20%, 0.08), 0 10px 28px -6px hsla(30, 20%, 18%, 0.10)',
+                border: '1px solid hsla(220, 60%, 80%, 0.15)',
+                boxShadow: '0 4px 24px hsla(230, 40%, 10%, 0.3), 0 1px 3px hsla(230, 30%, 15%, 0.2)',
               }}
             >
               {/* Illustration */}
@@ -920,9 +949,10 @@ export default function ProductLibrary() {
                   backgroundSize: 'contain',
                   backgroundRepeat: 'no-repeat',
                   backgroundPosition: 'center center',
-                  opacity: 0.22,
+                  opacity: 0.18,
                   pointerEvents: 'none',
                   zIndex: 0,
+                  filter: 'brightness(1.5) saturate(0.6)',
                 }}
               />
               <div style={{ zIndex: 1 }}>
@@ -930,13 +960,13 @@ export default function ProductLibrary() {
                   fontFamily: "'DM Serif Display', serif",
                   fontSize: '26px', fontWeight: 400,
                   lineHeight: 1.15,
-                  color: '#2C4450', letterSpacing: '-0.01em',
+                  color: '#F5EFE6', letterSpacing: '-0.01em',
                 }}>
                   Still Us
                 </h3>
                 <p style={{
                   fontFamily: "'Lato', sans-serif",
-                  fontSize: '11px', color: '#4A6E7A',
+                  fontSize: '11px', color: '#A0A0B0',
                   marginTop: '4px',
                   lineHeight: 1.4,
                 }}>
@@ -944,7 +974,7 @@ export default function ProductLibrary() {
                 </p>
                 <p style={{
                   fontFamily: "'Lato', sans-serif",
-                  fontSize: '11px', color: '#4A6E7A',
+                  fontSize: '11px', color: '#A0A0B0',
                   marginTop: '4px',
                   lineHeight: 1.4,
                   maxWidth: '55%',
@@ -962,8 +992,8 @@ export default function ProductLibrary() {
                       fontWeight: 600,
                       letterSpacing: '0.06em',
                       textTransform: 'uppercase',
-                      color: '#1E3340',
-                      opacity: 0.55,
+                      color: 'hsla(38, 78%, 58%, 0.8)',
+                      opacity: 0.8,
                       lineHeight: 1.4,
                     }}
                   >
@@ -973,12 +1003,15 @@ export default function ProductLibrary() {
               </div>
             </motion.div>
 
+            {/* Still Fair — glass tile, coming soon */}
             <motion.div
               variants={tileVariants}
               style={{
                 borderRadius: '20px',
                 padding: '24px 20px 18px',
-                background: 'linear-gradient(180deg, #EDDCE6 0%, #E0CCd8 100%)',
+                background: 'hsla(0, 0%, 100%, 0.05)',
+                backdropFilter: 'blur(24px)',
+                WebkitBackdropFilter: 'blur(24px)',
                 textAlign: 'left',
                 position: 'relative',
                 overflow: 'hidden',
@@ -987,10 +1020,9 @@ export default function ProductLibrary() {
                 flexDirection: 'column',
                 alignItems: 'flex-start',
                 justifyContent: 'flex-end',
-                border: '1px solid hsla(30, 15%, 80%, 0.3)',
-                boxShadow: '0 2px 6px hsla(30, 18%, 20%, 0.08), 0 10px 28px -6px hsla(30, 20%, 18%, 0.10)',
+                border: '1px solid hsla(220, 60%, 80%, 0.10)',
+                boxShadow: '0 4px 24px hsla(230, 40%, 10%, 0.25), 0 1px 3px hsla(230, 30%, 15%, 0.15)',
                 opacity: 0.85,
-                filter: 'saturate(0.7)',
               }}
             >
               {/* Illustration */}
@@ -1003,9 +1035,10 @@ export default function ProductLibrary() {
                   backgroundSize: 'contain',
                   backgroundRepeat: 'no-repeat',
                   backgroundPosition: 'right center',
-                  opacity: 0.15,
+                  opacity: 0.12,
                   pointerEvents: 'none',
                   zIndex: 0,
+                  filter: 'brightness(1.4) saturate(0.5)',
                 }}
               />
               <div style={{ zIndex: 1 }}>
@@ -1013,17 +1046,18 @@ export default function ProductLibrary() {
                   fontFamily: "'DM Serif Display', serif",
                   fontSize: '26px', fontWeight: 400,
                   lineHeight: 1.15,
-                  color: '#6B3A58', letterSpacing: '-0.01em',
+                  color: '#F5EFE6', letterSpacing: '-0.01em',
+                  opacity: 0.8,
                 }}>
                   Still Fair
                 </h3>
                 <p style={{
                   fontFamily: "'Lato', sans-serif",
-                  fontSize: '11px', color: '#8A5A74',
+                  fontSize: '11px', color: '#A0A0B0',
                   marginTop: '4px',
                   lineHeight: 1.4,
                   maxWidth: '55%',
-                  opacity: 0.85,
+                  opacity: 0.75,
                 }}>
                   Ett kartläggningsverktyg som gör det osynliga arbetet i familjelivet synligt för båda
                 </p>
@@ -1038,8 +1072,8 @@ export default function ProductLibrary() {
                       fontWeight: 700,
                       letterSpacing: '0.08em',
                       textTransform: 'uppercase',
-                      color: '#6B3A58',
-                      background: 'rgba(107,58,88,0.10)',
+                      color: 'hsla(38, 78%, 58%, 0.9)',
+                      background: 'hsla(38, 70%, 50%, 0.10)',
                       borderRadius: '20px',
                       padding: '4px 10px',
                       lineHeight: 1.4,
@@ -1061,15 +1095,15 @@ export default function ProductLibrary() {
                       fontSize: '10px',
                       fontWeight: 600,
                       letterSpacing: '0.02em',
-                      color: notifySignedUp ? '#6B3A58' : '#fff',
-                      background: notifySignedUp ? 'rgba(107,58,88,0.08)' : 'linear-gradient(135deg, #6B3A58 0%, #8A5A74 100%)',
-                      border: notifySignedUp ? '1px solid rgba(107,58,88,0.15)' : 'none',
+                      color: notifySignedUp ? 'hsla(38, 78%, 58%, 0.8)' : '#0A0A1A',
+                      background: notifySignedUp ? 'hsla(38, 70%, 50%, 0.08)' : 'linear-gradient(135deg, hsla(38, 78%, 58%, 0.9) 0%, hsla(38, 65%, 50%, 0.85) 100%)',
+                      border: notifySignedUp ? '1px solid hsla(38, 70%, 50%, 0.15)' : 'none',
                       borderRadius: '20px',
                       padding: notifySignedUp ? '4px 12px' : '5px 14px',
                       cursor: notifySignedUp ? 'default' : 'pointer',
                       opacity: notifyLoading ? 0.6 : 1,
                       transition: 'all 200ms ease',
-                      boxShadow: notifySignedUp ? 'none' : '0 2px 8px rgba(107,58,88,0.25)',
+                      boxShadow: notifySignedUp ? 'none' : '0 2px 12px hsla(38, 70%, 40%, 0.3)',
                     }}
                   >
                     {notifySignedUp ? '✓ Du blir meddelad' : '🔔 Meddela mig'}
