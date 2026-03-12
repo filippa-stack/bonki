@@ -482,7 +482,7 @@ export default function ProductLibrary() {
           <div
             style={{
               display: 'flex',
-              background: isDark ? 'hsla(220, 30%, 20%, 0.5)' : 'hsla(30, 20%, 40%, 0.08)',
+              background: isDark ? 'hsla(230, 35%, 18%, 0.6)' : 'hsla(30, 20%, 40%, 0.08)',
               borderRadius: '20px',
               padding: '3px',
               gap: '2px',
