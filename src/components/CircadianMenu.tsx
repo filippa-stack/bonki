@@ -348,10 +348,14 @@ export default function CircadianMenu({
                       zIndex: 2,
                     }}
                   />
-                  <motion.button
+                  <motion.div
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.985 }}
+                    style={{ willChange: 'transform' }}
+                  >
+                  <button
                     onClick={() => handleToggle(category.id)}
                     className="w-full text-left circadian-tile"
-                    whileTap={{ scale: 0.985 }}
                     style={{
                       display: 'flex',
                       alignItems: 'stretch',
@@ -444,7 +448,8 @@ export default function CircadianMenu({
                         ) : null}
                       </div>
                     </div>
-                  </motion.button>
+                  </button>
+                  </motion.div>
 
                   {/* Expanded sub-topics */}
                   <AnimatePresence>
