@@ -1389,6 +1389,117 @@ export default function CardView() {
     setTimeout(() => navigate(exitBackTo), 300);
   };
 
+  // ─────────────────────────────────────────────────────────────
+  //  MODE: Still Us Focus — immersive, no chrome
+  // ─────────────────────────────────────────────────────────────
+  if (isStillUsFocusMode && currentSection) {
+    const sectionPromptCount = getEffectivePromptCount(currentSection);
+    const isLastPromptInStage = localPromptIndex >= sectionPromptCount - 1;
+    const isLastStage = currentStepIndex >= effectiveSteps.length - 1;
+
+    const handleFocusAdvance = async () => {
+      if (isLastPromptInStage) {
+        await handleCompleteStep();
+      } else {
+        setLocalPromptIndex(localPromptIndex + 1);
+      }
+    };
+
+    return (
+      <>
+        {_devDebug}
+        <SessionFocusShell
+          key={`focus-${currentStepIndex}-${localPromptIndex}`}
+          onExit={() => setShowLeaveConfirm(true)}
+          ctaSlot={
+            <SessionStepReflection
+              key={`${currentStepIndex}-${localPromptIndex}`}
+              sessionId={normalizedSession.sessionId}
+              stepIndex={currentStepIndex}
+              promptIndex={localPromptIndex}
+              isLastStep={isLastStage && isLastPromptInStage}
+              isFirstVisit={false}
+              isReflectionStep={isReflectionStep}
+              isExerciseStep={isExerciseStep}
+              hideNoteField={false}
+              onLocked={handleFocusAdvance}
+              onBack={() => {
+                if (localPromptIndex > 0) {
+                  setLocalPromptIndex(localPromptIndex - 1);
+                } else if (currentStepIndex > 0) {
+                  const prevStageIndex = currentStepIndex - 1;
+                  const prevSection = card.sections.find(
+                    s => s.type === effectiveSteps[prevStageIndex]
+                  );
+                  const prevPromptCount = getEffectivePromptCount(prevSection);
+                  setLocalStepIndex(prevStageIndex);
+                  setLocalPromptIndex(prevPromptCount - 1);
+                } else {
+                  setShowLeaveConfirm(true);
+                }
+              }}
+            />
+          }
+        >
+          {/* Centered question — gallery presentation */}
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={`focus-q-${currentSection.id}-${localPromptIndex}`}
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -8, transition: { duration: 0.15, ease: [0.4, 0, 1, 1] } }}
+              transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+              className="w-full text-center"
+            >
+              <SectionView
+                ref={sectionViewRef}
+                section={currentSection}
+                card={card}
+                promptIndex={localPromptIndex}
+                coupleSpaceId={space?.id ?? null}
+                sessionId={normalizedSession.sessionId ?? null}
+                cardId={cardId ?? null}
+                stageIndex={currentStepIndex}
+                isLive={true}
+                isReflectionStep={isReflectionStep}
+                isExerciseStep={isExerciseStep}
+                showBackArrow={false}
+              />
+            </motion.div>
+          </AnimatePresence>
+        </SessionFocusShell>
+
+        {/* Leave session confirmation */}
+        <AlertDialog open={showLeaveConfirm} onOpenChange={setShowLeaveConfirm}>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle className="font-serif text-lg">Avsluta samtalet?</AlertDialogTitle>
+              <AlertDialogDescription className="text-sm text-muted-foreground leading-relaxed pt-1">
+                {uiText.leaveConfirmDesc}
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter className="mt-2">
+              <AlertDialogCancel>Fortsätt</AlertDialogCancel>
+              <AlertDialogAction
+                onClick={() => navigate(exitBackTo)}
+                className="bg-destructive text-white hover:bg-destructive/90"
+              >
+                Avsluta
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+
+        {/* GÖR TILLSAMMANS one-time overlay */}
+        <AnimatePresence>
+          {showGorTillsammans && (
+            <GorTillsammansOverlay onDismiss={() => setShowGorTillsammans(false)} />
+          )}
+        </AnimatePresence>
+      </>
+    );
+  }
+
   return (
     <>
     {_devDebug}
