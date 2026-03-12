@@ -466,47 +466,79 @@ export default function ProductLibrary() {
           }}
         />
 
-        {/* Segment control — tab switcher */}
+        {/* Segment control — pill switcher with swipe affordance */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.5, duration: 0.4 }}
           style={{
             display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            gap: '10px',
             margin: '0 auto 20px',
-            width: 'fit-content',
-            background: 'transparent',
-            padding: '0',
-            gap: '20px',
           }}
         >
-          {(['barn', 'par'] as const).map((tab) => (
-            <button
-              key={tab}
-              onClick={() => switchTab(tab)}
-              style={{
-                fontFamily: "'Lato', sans-serif",
-                fontSize: '9px',
-                fontWeight: 700,
-                letterSpacing: '0.14em',
-                color: isDark ? '#F5EFE6' : '#1A1A2E',
-                background: 'transparent',
-                opacity: activeTab === tab ? 1 : 0.35,
-                border: 'none',
-                outline: 'none',
-                borderBottom: activeTab === tab
-                  ? `2px solid ${isDark ? 'hsla(38, 78%, 55%, 0.8)' : '#1A1A2E'}`
-                  : '2px solid transparent',
-                borderRadius: '0',
-                padding: '6px 4px',
-                cursor: 'pointer',
-                transition: 'all 260ms ease',
-                WebkitTapHighlightColor: 'transparent',
-              }}
-            >
-              {tab.toUpperCase()}
-            </button>
-          ))}
+          <div
+            style={{
+              display: 'flex',
+              background: isDark ? 'hsla(220, 30%, 20%, 0.5)' : 'hsla(30, 20%, 40%, 0.08)',
+              borderRadius: '20px',
+              padding: '3px',
+              gap: '2px',
+              position: 'relative',
+              transition: 'background 400ms ease',
+            }}
+          >
+            {(['barn', 'par'] as const).map((tab) => (
+              <button
+                key={tab}
+                onClick={() => switchTab(tab)}
+                style={{
+                  fontFamily: "'Lato', sans-serif",
+                  fontSize: '9px',
+                  fontWeight: 700,
+                  letterSpacing: '0.14em',
+                  color: activeTab === tab
+                    ? (isDark ? '#F5EFE6' : '#1A1A2E')
+                    : (isDark ? 'hsla(30, 20%, 85%, 0.4)' : 'hsla(30, 10%, 20%, 0.35)'),
+                  background: activeTab === tab
+                    ? (isDark ? 'hsla(220, 30%, 30%, 0.6)' : 'hsla(0, 0%, 100%, 0.7)')
+                    : 'transparent',
+                  border: 'none',
+                  outline: 'none',
+                  borderRadius: '17px',
+                  padding: '7px 18px',
+                  cursor: 'pointer',
+                  transition: 'all 260ms ease',
+                  WebkitTapHighlightColor: 'transparent',
+                  boxShadow: activeTab === tab
+                    ? (isDark ? '0 1px 4px hsla(220, 40%, 10%, 0.3)' : '0 1px 4px hsla(30, 20%, 20%, 0.08)')
+                    : 'none',
+                }}
+              >
+                {tab.toUpperCase()}
+              </button>
+            ))}
+          </div>
+
+          {/* Swipe hint — subtle arrow nudge on first view */}
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 1.5, duration: 0.8 }}
+            style={{
+              fontFamily: "'Lato', sans-serif",
+              fontSize: '8px',
+              fontWeight: 500,
+              letterSpacing: '0.08em',
+              color: isDark ? 'hsla(30, 20%, 80%, 0.3)' : 'hsla(30, 10%, 30%, 0.25)',
+              textTransform: 'uppercase',
+              transition: 'color 400ms ease',
+            }}
+          >
+            ← swipa →
+          </motion.p>
         </motion.div>
 
         <motion.div
