@@ -118,8 +118,8 @@ export default function JagMedAndraProductHome({ product }: { product: ProductMa
       {/* Background illustration — sloth (breathing) */}
       <motion.div
         initial={{ opacity: 0 }}
-        animate={{ opacity: 1, ...breathe }}
-        transition={{ duration: 0.6 }}
+        animate={{ opacity: 1, scale: [1, 1.015, 1] }}
+        transition={{ duration: 0.6, scale: { duration: 8, ease: 'easeInOut', repeat: Infinity, repeatType: 'reverse' } }}
         style={{
           position: 'absolute',
           top: '-4%',
