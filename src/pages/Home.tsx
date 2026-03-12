@@ -295,62 +295,49 @@ export default function Home() {
               }}>
                 Följ ordningen — eller börja där det känns rätt.
               </p>
+
+              {/* Resume link — integrated into identity zone */}
+              {(() => {
+                if (devState === 'browse') return null;
+                const cardId = resumeCardFromNormalized
+                  ?? snapshot?.sessions?.session?.card_id
+                  ?? null;
+                if (!cardId) return null;
+                const card = getCardById(cardId);
+                return (
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.3, duration: 0.6 }}
+                    style={{ marginTop: '14px' }}
+                  >
+                    <button
+                      onClick={() => { markNavigated(); navigate(`/card/${cardId}`, { state: { resumed: true } }); }}
+                      className="font-serif"
+                      style={{
+                        fontSize: '13px',
+                        fontWeight: 500,
+                        color: 'var(--accent-saffron)',
+                        opacity: 0.7,
+                        background: 'none',
+                        border: 'none',
+                        cursor: 'pointer',
+                        textDecoration: 'underline',
+                        textDecorationColor: 'hsla(36, 60%, 50%, 0.3)',
+                        textUnderlineOffset: '3px',
+                        padding: 0,
+                        letterSpacing: '0.01em',
+                      }}
+                    >
+                      Fortsätt med {card?.title || 'samtalet'} →
+                    </button>
+                  </motion.div>
+                );
+              })()}
             </motion.div>
 
-            {/* Breathing room before sections */}
-            <div style={{ height: '12px' }} />
-
-            {/* Resume banner — active session */}
-            {(() => {
-              // Prefer normalizedSession (always fresh) over snapshot for resume banner
-              if (devState === 'browse') return null; // simulate fresh user
-              const cardId = resumeCardFromNormalized
-                ?? snapshot?.sessions?.session?.card_id
-                ?? null;
-              if (!cardId) return null;
-              const card = getCardById(cardId);
-              const catId = normalizedSession.categoryId ?? snapshot?.sessions?.session?.category_id ?? null;
-              const cat = catId ? getCategoryById(catId) : null;
-
-              return (
-                <motion.div
-                  className="px-6"
-                  initial={{ opacity: 0, y: 6 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.15, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-                  style={{ marginBottom: '8px' }}
-                >
-                  <div
-                    onClick={() => { markNavigated(); navigate(`/card/${cardId}`, { state: { resumed: true } }); }}
-                    role="button"
-                    tabIndex={0}
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); navigate(`/card/${cardId}`, { state: { resumed: true } }); }
-                    }}
-                    className="cursor-pointer"
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      gap: '8px',
-                      padding: '10px 16px',
-                      background: 'none',
-                      cursor: 'pointer',
-                    }}
-                  >
-                    <span className="font-serif" style={{ fontSize: '14px', fontWeight: 500, color: 'var(--accent-saffron)', opacity: 0.85, lineHeight: 1.3 }}>
-                      Fortsätt med {card?.title || 'samtalet'}
-                    </span>
-                    <span style={{ fontSize: '13px', color: 'var(--accent-saffron)', opacity: 0.6 }}>→</span>
-                  </div>
-                </motion.div>
-              );
-            })()}
-
-            {/* Welcome / returning — no card needed; "Ert utrymme" + "Vad vill ni utforska idag?" already communicates the intent */}
-
             {/* ── Circadian Menu — 9 progressive disclosure categories ── */}
-            <div className="px-6" style={{ marginTop: '20px', paddingBottom: '64px' }}>
+            <div className="px-6" style={{ marginTop: '28px', paddingBottom: '64px' }}>
               <CircadianMenu
                 categories={sortedCategories}
                 cards={cards}
