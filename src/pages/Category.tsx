@@ -709,7 +709,7 @@ function CardEntry({ card, index, isCompleted = false, isInProgress = false, onN
             style={{
               fontFamily: "'DM Serif Display', var(--font-serif)",
               fontSize: '32px', fontWeight: 700,
-              color: '#FFFDF8',
+              color: '#FAF7F2',
               opacity: isCompleted ? 0.60 : 1,
               lineHeight: 1.1,
               textShadow: '0 1px 2px rgba(0,0,0,0.5), 0 2px 8px rgba(0,0,0,0.35), 0 0 24px rgba(0,0,0,0.2)',
