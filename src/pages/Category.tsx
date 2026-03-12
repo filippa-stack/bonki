@@ -16,7 +16,7 @@ import { useVerdigrisTheme } from '@/components/VerdigrisAtmosphere';
 import { CIRCADIAN_COLORS } from '@/components/CircadianMenu';
 import Header from '@/components/Header';
 
-import bonkiLogo from '@/assets/bonki-logo.png';
+
 import mirrorJagIMig from '@/assets/mirror-jag-i-mig.png';
 import stillUsIllustration from '@/assets/illustration-still-us-home.png';
 
@@ -192,12 +192,6 @@ export default function Category() {
     <div className="min-h-screen relative" style={{ backgroundColor: '#FAF7F2' }}>
       <Header title={category?.title} titleColor={styles?.cardTitleColor} showBack backTo={backTo} />
 
-      <div
-        className="pointer-events-none select-none"
-        style={{ position: 'fixed', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', zIndex: 0, opacity: 0.045 }}
-      >
-        <img src={bonkiLogo} alt="" aria-hidden="true" draggable={false} style={{ width: '50vw', maxWidth: '280px', objectFit: 'contain' }} />
-      </div>
 
       <div className="px-5 pt-4 pb-24 flex flex-col relative z-[1]">
         {category.entryLine && (

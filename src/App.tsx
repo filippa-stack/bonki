@@ -18,7 +18,7 @@ import { NormalizedSessionProvider } from "@/contexts/NormalizedSessionContext";
 import { OptimisticCompletionsProvider } from "@/contexts/OptimisticCompletionsContext";
 import PageTransition from "@/components/PageTransition";
 import MobileOnlyGate from "@/components/MobileOnlyGate";
-import BackgroundWatermark from "@/components/BackgroundWatermark";
+
 import Index from "./pages/Index";
 
 
@@ -136,7 +136,6 @@ const App = () => (
           <BrowserRouter>
             <DevStateProvider>
               <MobileOnlyGate>
-                <BackgroundWatermark />
                 <DevModeBadge />
                 <AppRoutes />
               </MobileOnlyGate>
