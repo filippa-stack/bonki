@@ -334,12 +334,8 @@ export default function Home() {
                       justifyContent: 'center',
                       gap: '8px',
                       padding: '10px 16px',
-                      borderRadius: '20px',
-                      background: 'rgba(218, 157, 29, 0.10)',
-                      backdropFilter: 'blur(8px)',
-                      WebkitBackdropFilter: 'blur(8px)',
+                      background: 'none',
                       cursor: 'pointer',
-                      transition: 'background 0.2s ease',
                     }}
                   >
                     <span className="font-serif" style={{ fontSize: '14px', fontWeight: 500, color: 'var(--accent-saffron)', opacity: 0.85, lineHeight: 1.3 }}>
