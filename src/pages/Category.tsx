@@ -377,7 +377,7 @@ function StillUsCategoryView({
         />
 
         {/* Card tiles — glassmorphism */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '7px', paddingLeft: '20px', paddingRight: '20px' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '0', paddingLeft: '20px', paddingRight: '20px', position: 'relative' }}>
           {cards.map((card, index) => {
             const isCompleted = completedCardIds.includes(card.id);
             const isInProgress = !isCompleted && inProgressCardIds.includes(card.id);
@@ -385,132 +385,174 @@ function StillUsCategoryView({
             const fillHover = CIRCADIAN_FILLS_HOVER[category.id] || 'rgba(162, 181, 169, 0.42)';
             const borderDefault = `1px solid ${color}73`;
             const borderGlow = `1px solid ${color}`;
+            const isLast = index === cards.length - 1;
 
             return (
-              <motion.button
-                key={card.id}
-                initial={{ opacity: 0, y: 14 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.15 + index * 0.07, duration: 0.55, ease: EASE }}
-                onClick={() => navigate(`/preview/${card.id}`)}
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.985 }}
-                className="w-full text-left"
-                style={{
-                  display: 'flex',
-                  alignItems: 'stretch',
-                  gap: '0',
-                  padding: '0',
-                  background: fillDefault,
-                  backdropFilter: 'blur(12px)',
-                  WebkitBackdropFilter: 'blur(12px)',
-                  border: isInProgress ? borderGlow : borderDefault,
-                  borderRadius: '14px',
-                  cursor: 'pointer',
-                  transition: 'background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease',
-                  overflow: 'hidden',
-                  position: 'relative',
-                  boxShadow: isInProgress
-                    ? `0 0 16px -2px ${color}35, 0 0 32px -6px ${color}20`
-                    : 'none',
-                }}
-                onMouseEnter={(e) => {
-                  const el = e.currentTarget;
-                  el.style.background = fillHover;
-                  el.style.border = borderGlow;
-                  el.style.boxShadow = `0 0 24px -4px ${color}50, 0 0 48px -8px ${color}30`;
-                }}
-                onMouseLeave={(e) => {
-                  const el = e.currentTarget;
-                  el.style.background = fillDefault;
-                  el.style.border = isInProgress ? borderGlow : borderDefault;
-                  el.style.boxShadow = isInProgress
-                    ? `0 0 16px -2px ${color}35, 0 0 32px -6px ${color}20`
-                    : 'none';
-                }}
-              >
-                {/* Thick accent bar */}
+              <div key={card.id} style={{ display: 'flex', alignItems: 'stretch', gap: '0' }}>
+                {/* Sequence spine — number + connecting line */}
                 <div
                   style={{
-                    width: '4px',
-                    alignSelf: 'stretch',
-                    backgroundColor: color,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    width: '28px',
                     flexShrink: 0,
-                    borderRadius: '14px 0 0 14px',
+                    position: 'relative',
                   }}
-                />
+                >
+                  {/* Number */}
+                  <span
+                    style={{
+                      fontFamily: 'var(--font-serif)',
+                      fontSize: '13px',
+                      fontWeight: 400,
+                      color,
+                      opacity: isCompleted ? 0.35 : 0.55,
+                      lineHeight: 1,
+                      paddingTop: '18px',
+                    }}
+                  >
+                    {index + 1}
+                  </span>
+                  {/* Connecting line */}
+                  {!isLast && (
+                    <div
+                      style={{
+                        flex: 1,
+                        width: '1px',
+                        background: `linear-gradient(180deg, ${color}40 0%, transparent 100%)`,
+                        marginTop: '6px',
+                      }}
+                    />
+                  )}
+                </div>
 
-                {/* Card content */}
-                <div
+                {/* Tile */}
+                <motion.button
+                  initial={{ opacity: 0, y: 14 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.15 + index * 0.07, duration: 0.55, ease: EASE }}
+                  onClick={() => navigate(`/preview/${card.id}`)}
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.985 }}
+                  className="text-left"
                   style={{
                     flex: 1,
                     display: 'flex',
-                    alignItems: 'center',
-                    gap: '14px',
-                    padding: '16px',
+                    alignItems: 'stretch',
+                    gap: '0',
+                    padding: '0',
+                    background: fillDefault,
+                    backdropFilter: 'blur(12px)',
+                    WebkitBackdropFilter: 'blur(12px)',
+                    border: isInProgress ? borderGlow : borderDefault,
+                    borderRadius: '14px',
+                    cursor: 'pointer',
+                    transition: 'background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease',
+                    overflow: 'hidden',
+                    position: 'relative',
+                    boxShadow: isInProgress
+                      ? `0 0 16px -2px ${color}35, 0 0 32px -6px ${color}20`
+                      : 'none',
+                  }}
+                  onMouseEnter={(e) => {
+                    const el = e.currentTarget;
+                    el.style.background = fillHover;
+                    el.style.border = borderGlow;
+                    el.style.boxShadow = `0 0 24px -4px ${color}50, 0 0 48px -8px ${color}30`;
+                  }}
+                  onMouseLeave={(e) => {
+                    const el = e.currentTarget;
+                    el.style.background = fillDefault;
+                    el.style.border = isInProgress ? borderGlow : borderDefault;
+                    el.style.boxShadow = isInProgress
+                      ? `0 0 16px -2px ${color}35, 0 0 32px -6px ${color}20`
+                      : 'none';
                   }}
                 >
-                  <div style={{ flex: 1, minWidth: 0 }}>
-                    <h3
-                      style={{
-                        fontFamily: 'var(--font-serif)',
-                        fontSize: '18px',
-                        fontWeight: 500,
-                        lineHeight: 1.3,
-                        color: 'var(--text-primary)',
-                      }}
-                    >
-                      {card.title}
-                    </h3>
-                    {card.subtitle && (
-                      <p
-                        style={{
-                          fontFamily: 'var(--font-sans)',
-                          fontSize: '12px',
-                          fontWeight: 400,
-                          color: colorLight,
-                          opacity: 1,
-                          lineHeight: 1.45,
-                          marginTop: '3px',
-                        }}
-                      >
-                        {card.subtitle}
-                      </p>
-                    )}
-                  </div>
+                  {/* Thick accent bar */}
+                  <div
+                    style={{
+                      width: '4px',
+                      alignSelf: 'stretch',
+                      backgroundColor: color,
+                      flexShrink: 0,
+                      borderRadius: '14px 0 0 14px',
+                    }}
+                  />
 
-                  {/* Status */}
-                  <div style={{ flexShrink: 0 }}>
-                    {isCompleted && (
-                      <span
+                  {/* Card content */}
+                  <div
+                    style={{
+                      flex: 1,
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '14px',
+                      padding: '16px',
+                    }}
+                  >
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                      <h3
                         style={{
-                          fontFamily: 'var(--font-sans)',
-                          fontSize: '9px',
+                          fontFamily: 'var(--font-serif)',
+                          fontSize: '18px',
                           fontWeight: 500,
-                          letterSpacing: '0.10em',
-                          textTransform: 'uppercase' as const,
-                          color: HERITAGE_GOLD,
-                          opacity: 0.55,
+                          lineHeight: 1.3,
+                          color: 'var(--text-primary)',
                         }}
                       >
-                        Utforskad
-                      </span>
-                    )}
-                    {isInProgress && (
-                      <span
-                        style={{
-                          display: 'inline-block',
-                          width: '6px', height: '6px',
-                          borderRadius: '50%',
-                          backgroundColor: HERITAGE_GOLD,
-                          opacity: 0.7,
-                          animation: 'saffron-pulse 2.0s ease-in-out infinite',
-                        }}
-                      />
-                    )}
+                        {card.title}
+                      </h3>
+                      {card.subtitle && (
+                        <p
+                          style={{
+                            fontFamily: 'var(--font-sans)',
+                            fontSize: '12px',
+                            fontWeight: 400,
+                            color: colorLight,
+                            opacity: 1,
+                            lineHeight: 1.45,
+                            marginTop: '3px',
+                          }}
+                        >
+                          {card.subtitle}
+                        </p>
+                      )}
+                    </div>
+
+                    {/* Status */}
+                    <div style={{ flexShrink: 0 }}>
+                      {isCompleted && (
+                        <span
+                          style={{
+                            fontFamily: 'var(--font-sans)',
+                            fontSize: '9px',
+                            fontWeight: 500,
+                            letterSpacing: '0.10em',
+                            textTransform: 'uppercase' as const,
+                            color: HERITAGE_GOLD,
+                            opacity: 0.55,
+                          }}
+                        >
+                          Utforskad
+                        </span>
+                      )}
+                      {isInProgress && (
+                        <span
+                          style={{
+                            display: 'inline-block',
+                            width: '6px', height: '6px',
+                            borderRadius: '50%',
+                            backgroundColor: HERITAGE_GOLD,
+                            opacity: 0.7,
+                            animation: 'saffron-pulse 2.0s ease-in-out infinite',
+                          }}
+                        />
+                      )}
+                    </div>
                   </div>
-                </div>
-              </motion.button>
+                </motion.button>
+              </div>
             );
           })}
         </div>
