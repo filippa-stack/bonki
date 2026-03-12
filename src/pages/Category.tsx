@@ -75,7 +75,7 @@ const CATEGORY_CARD_BG: Record<string, string> = {
   // Jag i mig — softened to avoid overpowering illustrations
   'jim-tryggheten-inuti': '#CDD625',
   'jim-kanslorna-jag-bar': '#F2F89B',
-  'jim-nar-det-gor-ont': '#8A9A5B',
+  'jim-nar-det-gor-ont': '#6B7A45',
   'jim-jag-som-helhet': '#6B7213',
   // Jag med andra
   'jma-att-hora-till': 'hsl(263, 48%, 62%)',
@@ -89,8 +89,8 @@ const CATEGORY_CARD_BG: Record<string, string> = {
 const CATEGORY_TITLE_COLOR: Record<string, string> = {
   'jim-tryggheten-inuti': '#3E4421',
   'jim-kanslorna-jag-bar': '#3E4421',
-  'jim-nar-det-gor-ont': '#FFFDF5',
-  'jim-jag-som-helhet': '#FFFDF5',
+  'jim-nar-det-gor-ont': '#FAFAF0',
+  'jim-jag-som-helhet': '#FAFAF0',
   // Jag med andra
   'jma-att-hora-till': 'hsl(263, 38%, 32%)',
   'jma-nar-vi-jamfor-oss': 'hsl(188, 40%, 22%)',

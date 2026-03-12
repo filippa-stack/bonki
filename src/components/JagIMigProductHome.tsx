@@ -22,19 +22,21 @@ const ORDERED_TILES = [
   },
   {
     id: 'jim-nar-det-gor-ont',
-    // Sage Leaf — The Bridge
-    bg: '#8A9A5B',
-    text: '#F5F5E8',
+    // Sage Leaf — darker for contrast
+    bg: '#6B7A45',
+    text: '#FAFAF0',
+    dark: true,
   },
   {
     id: 'jim-jag-som-helhet',
     // Deep Moss — The Shadow
     bg: '#6B7213',
-    text: '#F5F5E8',
+    text: '#FAFAF0',
+    dark: true,
   },
 ];
 
-const ACCENT_COLOR = '#8A9A10';
+const ACCENT_COLOR = '#6B7A10';
 const DIARY_TEXT = '#3E4421';
 
 const containerVariants = {
@@ -169,7 +171,7 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
             if (!cat) return null;
 
             const isHero = index === 0;
-
+            const isDark = 'dark' in tile && tile.dark;
             return (
               <motion.button
                 key={cat.id}
@@ -183,13 +185,15 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
                   padding: '0 32px',
                   textAlign: 'center',
                   cursor: 'pointer',
-                  border: '1px solid hsla(60, 60%, 90%, 0.60)',
-                  boxShadow: [
-                    '0 6px 20px hsla(64, 50%, 40%, 0.10)',
-                    '0 2px 6px hsla(0, 0%, 0%, 0.04)',
-                    'inset 0 2px 1px hsla(60, 80%, 95%, 0.55)',
-                    'inset 0 -2px 4px hsla(64, 40%, 30%, 0.06)',
-                  ].join(', '),
+                  border: isDark ? 'none' : '1px solid hsla(60, 60%, 90%, 0.60)',
+                  boxShadow: isDark
+                    ? '0 4px 14px hsla(0, 0%, 0%, 0.10), 0 2px 4px hsla(0, 0%, 0%, 0.06)'
+                    : [
+                        '0 6px 20px hsla(64, 50%, 40%, 0.10)',
+                        '0 2px 6px hsla(0, 0%, 0%, 0.04)',
+                        'inset 0 2px 1px hsla(60, 80%, 95%, 0.55)',
+                        'inset 0 -2px 4px hsla(64, 40%, 30%, 0.06)',
+                      ].join(', '),
                   whiteSpace: 'normal' as const,
                   width: isHero ? '86%' : '82%',
                   minHeight: isHero ? '76px' : '66px',
@@ -207,7 +211,7 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
                     fontSize: isHero ? 'clamp(21px, 5.8vw, 27px)' : 'clamp(19px, 5.2vw, 25px)',
                     fontWeight: 400,
                     color: tile.text,
-                    textShadow: '0 1px 4px hsla(60, 60%, 90%, 0.8), 0 0 12px hsla(60, 50%, 95%, 0.5)',
+                    textShadow: isDark ? 'none' : '0 1px 4px hsla(60, 60%, 90%, 0.8), 0 0 12px hsla(60, 50%, 95%, 0.5)',
                   }}
                 >
                   {cat.title}
