@@ -371,34 +371,39 @@ export default function ProductLibrary() {
   const vardag = allProducts.find(p => p.id === 'vardagskort')!;
   const syskon = allProducts.find(p => p.id === 'syskonkort')!;
 
+  const isDark = activeTab === 'par';
+
   return (
     <div
       className="min-h-screen flex flex-col relative"
       style={{
-        background: `
-          radial-gradient(ellipse 70% 60% at 50% 45%, #FFF4D1 0%, #FEF2C7 65%, #FBDFA8 100%)
-        `,
+        background: isDark
+          ? 'radial-gradient(ellipse 80% 70% at 50% 30%, #1A1A3E 0%, #10102A 45%, #0A0A1A 100%)'
+          : 'radial-gradient(ellipse 70% 60% at 50% 45%, #FFF4D1 0%, #FEF2C7 65%, #FBDFA8 100%)',
         fontFamily: "'Lato', sans-serif",
+        transition: 'background 600ms ease',
       }}
     >
-      {/* ── Background watermark — cinematic depth ── */}
-      <img
-        src={watermarkMamma}
-        alt=""
-        aria-hidden
-        style={{
-          position: 'absolute',
-          width: '300px',
-          height: '400px',
-          left: '50%',
-          top: '0',
-          transform: 'translateX(-50%)',
-          opacity: 0.07,
-          filter: 'sepia(1) saturate(0.2) brightness(1.8) hue-rotate(-10deg)',
-          pointerEvents: 'none',
-          zIndex: 0,
-        }}
-      />
+      {/* ── Background watermark — cinematic depth (barn only) ── */}
+      {!isDark && (
+        <img
+          src={watermarkMamma}
+          alt=""
+          aria-hidden
+          style={{
+            position: 'absolute',
+            width: '300px',
+            height: '400px',
+            left: '50%',
+            top: '0',
+            transform: 'translateX(-50%)',
+            opacity: 0.07,
+            filter: 'sepia(1) saturate(0.2) brightness(1.8) hue-rotate(-10deg)',
+            pointerEvents: 'none',
+            zIndex: 0,
+          }}
+        />
+      )}
 
       {/* Content */}
       <div style={{ position: 'relative', zIndex: 1 }}>
