@@ -301,7 +301,7 @@ function StillUsCategoryView({
         style={{
           position: 'absolute',
           top: '35%', left: 0, right: 0, bottom: 0,
-          background: 'linear-gradient(to bottom, transparent 0%, hsla(194, 28%, 12%, 0.45) 25%, hsla(194, 28%, 12%, 0.65) 100%)',
+          background: 'linear-gradient(to bottom, transparent 0%, hsla(194, 28%, 14%, 0.20) 40%, hsla(194, 28%, 14%, 0.35) 100%)',
           zIndex: 0, pointerEvents: 'none',
         }}
       />
