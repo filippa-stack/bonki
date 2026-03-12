@@ -110,7 +110,7 @@ export default function CircadianMenu({
           inProgressCardIds.includes(c.id) && !completedCardIds.includes(c.id)
         );
 
-        const borderDefault = `1px solid ${color}4D`; // 30% opacity
+        const borderDefault = `1px solid ${color}73`; // ~45% opacity
         const borderGlow = `1px solid ${color}`;       // 100% opacity
 
         return (
