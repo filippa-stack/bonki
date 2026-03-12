@@ -112,7 +112,7 @@ export default function CardPreview() {
                 fontFamily: 'var(--font-serif)',
                 fontSize: '15px',
                 lineHeight: 1.5,
-                color: 'var(--text-secondary)',
+                color: categoryColor || 'var(--text-secondary)',
                 opacity: 0.7,
                 marginBottom: '36px',
               }}
@@ -134,8 +134,8 @@ export default function CardPreview() {
                     fontFamily: 'var(--font-serif)',
                     fontSize: '16px',
                     lineHeight: 1.7,
-                    color: 'var(--text-primary)',
-                    opacity: 0.80,
+                    color: categoryColor || 'var(--text-primary)',
+                    opacity: 0.70,
                   }}
                 >
                   {paragraph}
@@ -149,8 +149,8 @@ export default function CardPreview() {
                   fontFamily: 'var(--font-serif)',
                   fontSize: '16px',
                   lineHeight: 1.7,
-                  color: 'var(--text-primary)',
-                  opacity: 0.65,
+                  color: categoryColor || 'var(--text-primary)',
+                  opacity: 0.60,
                 }}
               >
                 {card.subtitle}
