@@ -348,19 +348,10 @@ export default function CircadianMenu({
                       zIndex: 2,
                     }}
                   />
-                  <motion.div
-                    whileHover={{ scale: 1.02, boxShadow: `0 0 24px -4px ${color}50, 0 0 48px -8px ${color}30` }}
-                    whileTap={{ scale: 0.985 }}
-                    transition={{ duration: 0.25, ease: [0.4, 0, 0.2, 1] }}
-                    style={{
-                      willChange: 'transform',
-                      borderRadius: '14px',
-                      boxShadow: breatheBoxShadow,
-                    }}
-                  >
-                  <button
+                  <motion.button
                     onClick={() => handleToggle(category.id)}
                     className="w-full text-left circadian-tile"
+                    whileTap={{ scale: 0.985 }}
                     style={{
                       display: 'flex',
                       alignItems: 'stretch',
@@ -372,8 +363,25 @@ export default function CircadianMenu({
                       border: isNextSuggested ? borderGlow : borderDefault,
                       cursor: 'pointer',
                       borderRadius: '14px',
+                      transition: 'background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease',
                       overflow: 'hidden',
                       position: 'relative',
+                      boxShadow: breatheBoxShadow,
+                      // no pulsating animation
+                    }}
+                    onMouseEnter={(e) => {
+                      const el = e.currentTarget as HTMLElement;
+                      el.style.background = fillHover;
+                      el.style.border = borderGlow;
+                      el.style.boxShadow = `0 0 24px -4px ${color}50, 0 0 48px -8px ${color}30`;
+                      el.style.animation = 'none';
+                    }}
+                    onMouseLeave={(e) => {
+                      const el = e.currentTarget as HTMLElement;
+                      el.style.background = fillDefault;
+                      el.style.border = isNextSuggested ? borderGlow : borderDefault;
+                      el.style.boxShadow = isNextSuggested ? breatheBoxShadow : 'none';
+                      // no pulsating animation
                     }}
                   >
                     {/* Thick accent bar */}
@@ -436,8 +444,7 @@ export default function CircadianMenu({
                         ) : null}
                       </div>
                     </div>
-                  </button>
-                  </motion.div>
+                  </motion.button>
 
                   {/* Expanded sub-topics */}
                   <AnimatePresence>

@@ -714,11 +714,3 @@ h1, h2, h3,
 /* ── Hide scrollbar utility ── */
 .hide-scrollbar::-webkit-scrollbar { display: none; }
 .hide-scrollbar { scrollbar-width: none; -ms-overflow-style: none; }
-
-/* ── Circadian tile hover — pure CSS, no layout shift ── */
-.circadian-tile {
-  transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease, filter 0.3s ease;
-}
-.circadian-tile:hover {
-  filter: brightness(1.15);
-}
