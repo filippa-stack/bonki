@@ -40,7 +40,7 @@ import SessionStepReflection from '@/components/SessionStepReflection';
 import StageInterstitial from '@/components/StageInterstitial';
 import SessionFocusShell from '@/components/SessionFocusShell';
 
-import { ArrowRight, ArrowLeft } from 'lucide-react';
+import { ArrowRight, ArrowLeft, Feather } from 'lucide-react';
 
 import CompletedSessionView from '@/components/CompletedSessionView';
 import FeedbackSheet from '@/components/FeedbackSheet';
@@ -161,10 +161,10 @@ export default function CardView() {
   const needsPaywall = !isFreeCard && !hasProductAccess && !accessLoading && (!!product || isStillUsCard) && !devState && !demoBypassed;
 
   // Apply product theme (background + accent colors)
-  // For Still Us: skip overriding CTA — Verdigris theme provides Heritage Gold
+  // For Still Us: use saffron as both primary + accent, Heritage Gold for CTA
   useProductTheme(
-    product?.accentColor ?? 'hsl(158, 35%, 18%)',
-    product?.secondaryAccent ?? 'hsl(38, 88%, 46%)',
+    isStillUsCard ? 'hsl(41, 78%, 48%)' : (product?.accentColor ?? 'hsl(158, 35%, 18%)'),
+    isStillUsCard ? 'hsl(38, 88%, 46%)' : (product?.secondaryAccent ?? 'hsl(38, 88%, 46%)'),
     isStillUsCard ? undefined : product?.backgroundColor,
     isStillUsCard ? 'hsl(41, 78%, 48%)' : product?.ctaButtonColor,
   );
@@ -198,10 +198,12 @@ export default function CardView() {
   const [showCompletion, _setShowCompletion] = useState(
     devState === 'completed' ? true : false
   );
-  const completionHeadline = useMemo(
-    () => completionMessages[Math.floor(Math.random() * completionMessages.length)],
-    [completionMessages]
-  );
+  // Lock headline on first render to prevent flash when product resolves
+  const completionHeadlineRef = useRef<string | null>(null);
+  if (!completionHeadlineRef.current) {
+    completionHeadlineRef.current = completionMessages[Math.floor(Math.random() * completionMessages.length)];
+  }
+  const completionHeadline = completionHeadlineRef.current;
   // Wrapper that also marks the card as optimistically completed
   const setShowCompletion = useCallback((val: boolean) => {
     _setShowCompletion(val);
@@ -949,8 +951,9 @@ export default function CardView() {
             transition={{ delay: 0.35, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
             className="font-sans"
             style={{
-              fontSize: '13px',
-              color: 'var(--completion-subtitle)',
+              fontSize: '14px',
+              color: 'var(--text-primary)',
+              opacity: 0.65,
               textAlign: 'center',
               marginBottom: '28px',
             }}
@@ -976,7 +979,8 @@ export default function CardView() {
             transition={{ delay: 0.5, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
             style={{
               fontSize: '12px',
-              color: 'var(--completion-label)',
+              color: 'var(--text-secondary)',
+              opacity: 0.55,
               textAlign: 'center',
               marginTop: '10px',
             }}
@@ -2080,6 +2084,8 @@ function CompletionTakeaway({ sessionId, spaceId, pronounMode = 'ni', cardId, pr
   const [rowId, setRowId] = useState<string | null>(null);
   const [phase, setPhase] = useState<TakeawayPhase>('writing');
   const [isFocused, setIsFocused] = useState(false);
+  const [isNoteExpanded, setIsNoteExpanded] = useState(false);
+  const completionTextareaRef = useRef<HTMLTextAreaElement>(null);
   const userId = user?.id;
   const isDemo = isDemoMode();
 
@@ -2292,102 +2298,153 @@ function CompletionTakeaway({ sessionId, spaceId, pronounMode = 'ni', cardId, pr
     );
   }
 
-  // Phase: writing
-  return (
-    <div className="completion-takeaway-wrapper">
-      <p
-        className="font-sans"
-        style={{
-          fontSize: '11px',
-          letterSpacing: '0.08em',
-          textTransform: 'uppercase',
-          color: 'var(--completion-label)',
-          textAlign: 'center',
-          marginBottom: '8px',
-        }}
-      >
-        Valfritt
-      </p>
-      <textarea
-        value={text}
-        onChange={(e) => setText(e.target.value)}
-        onFocus={() => setIsFocused(true)}
-        onBlur={() => setIsFocused(false)}
-        placeholder={getUIText(pronounMode).takeawayPlaceholder}
-        inputMode="text"
-        autoCorrect="on"
-        autoCapitalize="sentences"
-        spellCheck={true}
-        enterKeyHint="done"
-        className={`w-full resize-none focus:outline-none focus:ring-0 ${hasFill ? 'text-left' : 'text-center'}`}
-        style={{
-          display: 'block',
-          width: '100%',
-          height: isFocused || hasFill ? 'auto' : '88px',
-          minHeight: '88px',
-          maxHeight: '240px',
-          overflow: 'auto',
-          backgroundColor: isFocused || hasFill
-            ? 'hsl(36 20% 97% / 0.85)'
-            : 'hsl(36 18% 96% / 0.50)',
-          border: 'none',
-          borderRadius: '12px',
-          padding: '20px 24px 16px 24px',
-          fontFamily: hasFill ? 'var(--font-sans)' : 'var(--font-serif)',
-          fontSize: hasFill ? '15px' : '17px',
-          lineHeight: 1.6,
-          color: 'var(--color-text-primary)',
-          boxShadow: isFocused
-            ? 'inset 0 1px 0 var(--accent-saffron-muted), inset 0 -1px 0 var(--accent-saffron-muted), 0 0 0 4px hsla(38, 80%, 46%, 0.06)'
-            : 'inset 0 1px 3px hsla(30, 12%, 25%, 0.05), 0 1px 2px hsla(30, 15%, 25%, 0.03)',
-          transition: 'background-color 320ms ease, box-shadow 320ms ease',
-        }}
-      />
-      <style>{`
-        .completion-takeaway-wrapper textarea::placeholder {
-          font-family: 'Cormorant Garamond', serif !important;
-          font-style: normal !important;
-          font-size: 16px !important;
-          color: var(--accent-text) !important;
-          opacity: 0.75 !important;
-          text-align: center !important;
-          transition: opacity 300ms ease !important;
-        }
-        .completion-takeaway-wrapper textarea:focus::placeholder {
-          opacity: 0 !important;
-        }
-      `}</style>
+  // Phase: writing — ceremonial invitation style
+  const handleNoteExpand = () => {
+    setIsNoteExpanded(true);
+    setTimeout(() => completionTextareaRef.current?.focus(), 320);
+  };
 
-      {/* Ceremonial save button — appears when text is entered */}
-      <AnimatePresence>
-        {hasFill && (
-          <motion.div
-            initial={{ opacity: 0, y: 8, height: 0, marginTop: 0 }}
-            animate={{ opacity: 1, y: 0, height: 'auto', marginTop: 16 }}
-            exit={{ opacity: 0, y: -4, height: 0, marginTop: 0 }}
-            transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-            style={{ display: 'flex', justifyContent: 'center', overflow: 'hidden' }}
+  return (
+    <div className="completion-takeaway-wrapper" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+      <AnimatePresence mode="wait">
+        {!isNoteExpanded && !hasFill ? (
+          /* ── Collapsed trigger — ceremonial invitation ── */
+          <motion.button
+            key="completion-trigger"
+            onClick={handleNoteExpand}
+            initial={{ opacity: 0, y: 4 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -4, transition: { duration: 0.2 } }}
+            transition={{ delay: 0.1, duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+            className="active:scale-[0.98]"
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '8px',
+              padding: '14px 24px',
+              background: 'none',
+              border: 'none',
+              cursor: 'pointer',
+            }}
           >
-            <motion.button
-              onClick={handleSave}
-              whileTap={{ scale: 0.97 }}
-              className="font-sans"
+            <Feather
+              size={15}
+              strokeWidth={1.5}
+              style={{ color: 'var(--text-primary)', opacity: 0.35 }}
+            />
+            <span
               style={{
-                padding: '12px 32px',
-                borderRadius: '28px',
-                border: '1px solid hsla(38, 60%, 55%, 0.25)',
-                background: 'linear-gradient(135deg, hsla(36, 30%, 96%, 0.9), hsla(36, 25%, 93%, 0.95))',
-                color: 'var(--accent-saffron)',
-                fontSize: '14px',
-                fontWeight: 500,
-                letterSpacing: '0.02em',
-                cursor: 'pointer',
-                boxShadow: '0 2px 12px hsla(38, 60%, 46%, 0.12), 0 1px 3px hsla(30, 20%, 30%, 0.06)',
-                transition: 'box-shadow 300ms ease, transform 300ms ease',
+                fontFamily: 'var(--font-serif)',
+                fontStyle: 'italic',
+                fontSize: '15px',
+                color: 'var(--text-primary)',
+                opacity: 0.40,
+                letterSpacing: '0.01em',
               }}
             >
-              Spara i dagboken ✦
-            </motion.button>
+              Fäst en tanke
+            </span>
+          </motion.button>
+        ) : (
+          /* ── Expanded — ceremonial textarea ── */
+          <motion.div
+            key="completion-expanded"
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+            style={{ width: '100%' }}
+          >
+            <div style={{ position: 'relative' }}>
+              {/* Feather watermark when empty */}
+              {!hasFill && !isFocused && (
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  style={{
+                    position: 'absolute',
+                    top: '22px',
+                    left: '20px',
+                    pointerEvents: 'none',
+                    zIndex: 1,
+                  }}
+                >
+                  <Feather
+                    size={14}
+                    strokeWidth={1.5}
+                    style={{ color: 'var(--text-primary)', opacity: 0.25 }}
+                  />
+                </motion.div>
+              )}
+              <textarea
+                ref={completionTextareaRef}
+                value={text}
+                onChange={(e) => setText(e.target.value)}
+                onFocus={() => setIsFocused(true)}
+                onBlur={() => setIsFocused(false)}
+                placeholder=""
+                inputMode="text"
+                autoCorrect="on"
+                autoCapitalize="sentences"
+                spellCheck={true}
+                className="w-full resize-none focus:outline-none focus:ring-0"
+                style={{
+                  height: 'auto',
+                  minHeight: '80px',
+                  maxHeight: '180px',
+                  overflow: 'auto',
+                  fontFamily: 'var(--font-serif)',
+                  fontSize: '16px',
+                  lineHeight: 1.7,
+                  color: 'var(--text-primary)',
+                  backgroundColor: isFocused || hasFill
+                    ? 'hsla(36, 20%, 97%, 0.12)'
+                    : 'hsla(36, 18%, 96%, 0.06)',
+                  border: 'none',
+                  borderRadius: '12px',
+                  padding: '20px 24px',
+                  textAlign: hasFill ? 'left' : 'center',
+                  boxShadow: isFocused
+                    ? '0 0 0 1px hsla(36, 20%, 80%, 0.15)'
+                    : 'none',
+                  transition: 'background-color 320ms ease, box-shadow 320ms ease',
+                }}
+              />
+            </div>
+
+            {/* Ceremonial save button — appears when text is entered */}
+            <AnimatePresence>
+              {hasFill && (
+                <motion.div
+                  initial={{ opacity: 0, y: 8, height: 0, marginTop: 0 }}
+                  animate={{ opacity: 1, y: 0, height: 'auto', marginTop: 16 }}
+                  exit={{ opacity: 0, y: -4, height: 0, marginTop: 0 }}
+                  transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+                  style={{ display: 'flex', justifyContent: 'center', overflow: 'hidden' }}
+                >
+                  <motion.button
+                    onClick={handleSave}
+                    whileTap={{ scale: 0.97 }}
+                    className="font-sans"
+                    style={{
+                      padding: '12px 32px',
+                      borderRadius: '28px',
+                      border: '1px solid hsla(38, 60%, 55%, 0.25)',
+                      background: 'hsla(36, 30%, 96%, 0.15)',
+                      color: 'var(--accent-saffron)',
+                      fontSize: '14px',
+                      fontWeight: 500,
+                      letterSpacing: '0.02em',
+                      cursor: 'pointer',
+                      boxShadow: '0 2px 12px hsla(38, 60%, 46%, 0.08)',
+                      transition: 'box-shadow 300ms ease, transform 300ms ease',
+                    }}
+                  >
+                    Spara i dagboken ✦
+                  </motion.button>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </motion.div>
         )}
       </AnimatePresence>
