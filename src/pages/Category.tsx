@@ -654,7 +654,8 @@ function CardEntry({ card, index, isCompleted = false, isInProgress = false, onN
             ? '0px 1px 3px rgba(44, 36, 32, 0.04), 0px 4px 12px -4px rgba(44, 36, 32, 0.04)'
             : '0px 4px 16px rgba(44, 36, 32, 0.08), 0px 12px 32px -8px rgba(44, 36, 32, 0.06)',
           transition: 'transform 200ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 260ms ease-out',
-          minHeight: '160px',
+          minHeight: '200px',
+          position: 'relative',
         }}
         onPointerDown={(e) => { e.currentTarget.style.transform = 'scale(0.985)'; }}
         onPointerUp={(e) => { e.currentTarget.style.transform = ''; }}
@@ -663,49 +664,45 @@ function CardEntry({ card, index, isCompleted = false, isInProgress = false, onN
           e.currentTarget.style.transform = 'translateY(-3px) scale(1.01)';
         }}
       >
-        {/* Large hero illustration */}
+        {/* Full-bleed background illustration */}
         {illustration && (
-          <div
+          <img
+            src={illustration}
+            alt=""
+            aria-hidden="true"
+            draggable={false}
             className="pointer-events-none select-none"
             style={{
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-              paddingTop: '12px',
-              paddingBottom: '0px',
+              position: 'absolute',
+              inset: 0,
+              width: '100%',
+              height: '100%',
+              objectFit: 'cover',
+              objectPosition: 'center',
+              opacity: isCompleted ? 0.25 : 0.55,
+              transition: 'opacity 300ms ease',
+              filter: isCompleted ? 'grayscale(0.3)' : 'none',
             }}
-          >
-            <img
-              src={illustration}
-              alt=""
-              aria-hidden="true"
-              draggable={false}
-              style={{
-                height: `${Math.round(150 * illustrationScale)}px`,
-                maxWidth: '80%',
-                objectFit: 'contain',
-                objectPosition: 'center',
-                opacity: isCompleted ? 0.45 : 0.92,
-                transition: 'opacity 300ms ease',
-                filter: isCompleted ? 'grayscale(0.3)' : 'none',
-              }}
-            />
-          </div>
+          />
         )}
 
-        {/* Text content below illustration */}
+        {/* Text overlay — bottom-aligned */}
         <div
           style={{
-            padding: illustration ? '8px 24px 20px' : '24px',
-            textAlign: 'center',
             position: 'relative',
+            zIndex: 1,
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'flex-end',
+            minHeight: '200px',
+            padding: '20px 24px',
           }}
         >
           {isCompleted && (
             <span
               style={{
                 position: 'absolute',
-                top: illustration ? '-4px' : '8px',
+                top: '12px',
                 right: '16px',
                 fontFamily: 'var(--font-sans)',
                 fontSize: '10px',
@@ -724,7 +721,7 @@ function CardEntry({ card, index, isCompleted = false, isInProgress = false, onN
             <span
               style={{
                 position: 'absolute',
-                top: illustration ? '-4px' : '8px',
+                top: '12px',
                 right: '16px',
                 display: 'inline-block',
                 width: '8px',
@@ -739,11 +736,12 @@ function CardEntry({ card, index, isCompleted = false, isInProgress = false, onN
           <h3
             style={{
               fontFamily: "'DM Serif Display', var(--font-serif)",
-              fontSize: '22px',
+              fontSize: '24px',
               fontWeight: 400,
               color: titleColor,
               opacity: isCompleted ? 0.55 : 1,
-              lineHeight: 1.3,
+              lineHeight: 1.2,
+              textShadow: `0 1px 8px ${cardBg}CC`,
             }}
           >
             {card.title}
@@ -757,9 +755,7 @@ function CardEntry({ card, index, isCompleted = false, isInProgress = false, onN
                 opacity: isCompleted ? 0.40 : 0.70,
                 lineHeight: 1.45,
                 marginTop: '6px',
-                maxWidth: '90%',
-                marginLeft: 'auto',
-                marginRight: 'auto',
+                textShadow: `0 1px 6px ${cardBg}`,
               }}
             >
               {card.subtitle}
