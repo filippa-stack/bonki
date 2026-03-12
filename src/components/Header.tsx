@@ -208,56 +208,8 @@ export default function Header({
               </h1>
             )}
 
-            {/* Right */}
-            <div className="flex items-center gap-2 sm:gap-3 min-w-0 flex-1 justify-end">
-              {showSharedLink && (
-                <button
-                  onClick={() => navigate('/shared')}
-                  style={{
-                    fontFamily: 'var(--font-sans)',
-                    fontSize: '12px',
-                    letterSpacing: '0.04em',
-                    color: 'var(--color-text-secondary)',
-                    opacity: 0.6,
-                    cursor: 'pointer',
-                    padding: '8px 4px',
-                    minHeight: '44px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    background: 'none',
-                    border: 'none',
-                    transition: 'opacity 150ms ease',
-                  }}
-                  aria-label={t('header.shared_space')}
-                  onPointerDown={(e) => { e.currentTarget.style.opacity = '1'; }}
-                  onPointerUp={(e) => { e.currentTarget.style.opacity = '0.85'; }}
-                  onPointerLeave={(e) => { e.currentTarget.style.opacity = '0.85'; }}
-                >
-                  Era samtal
-                </button>
-              )}
-              {showSettings && (
-                <button
-                  onClick={() => setShowLogoutSheet(true)}
-                  style={{
-                    background: 'none',
-                    border: 'none',
-                    cursor: 'pointer',
-                    padding: '8px 4px',
-                    minHeight: '44px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    transition: 'opacity 150ms ease',
-                  }}
-                  aria-label="Inställningar"
-                  onPointerDown={(e) => { e.currentTarget.style.opacity = '1'; }}
-                  onPointerUp={(e) => { e.currentTarget.style.opacity = '0.70'; }}
-                  onPointerLeave={(e) => { e.currentTarget.style.opacity = '0.70'; }}
-                >
-                  <Settings size={18} style={{ color: 'var(--color-text-secondary)', opacity: 0.55 }} />
-                </button>
-              )}
-            </div>
+            {/* Right spacer for balance */}
+            <div className="flex-1" />
           </div>
         )}
       </header>
