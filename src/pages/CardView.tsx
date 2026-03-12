@@ -38,6 +38,7 @@ import StepProgressIndicator, { buildDynamicSteps } from '@/components/StepProgr
 import SessionStepReflection from '@/components/SessionStepReflection';
 
 import StageInterstitial from '@/components/StageInterstitial';
+import SessionFocusShell from '@/components/SessionFocusShell';
 
 import { ArrowRight, ArrowLeft } from 'lucide-react';
 
