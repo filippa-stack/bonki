@@ -337,7 +337,7 @@ export default function Home() {
                         {card?.title || cardId}
                       </p>
                       {cat && (
-                        <p className="font-sans" style={{ fontSize: '12px', color: 'var(--accent-saffron)', opacity: 0.7, marginTop: '4px' }}>
+                        <p className="font-sans" style={{ fontSize: '12px', color: 'var(--accent-saffron)', opacity: 0.85, marginTop: '4px' }}>
                           {cat.title}
                         </p>
                       )}
