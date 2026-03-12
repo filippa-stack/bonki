@@ -315,33 +315,35 @@ export default function Home() {
                     className="cursor-pointer tile-door row-bloom"
                     style={{
                       borderRadius: '14px',
-                      padding: '20px 20px',
-                      background: 'rgba(58, 88, 97, 0.35)',
+                      padding: '14px 18px',
+                      background: 'rgba(58, 88, 97, 0.25)',
                       backdropFilter: 'blur(14px)',
                       WebkitBackdropFilter: 'blur(14px)',
-                      border: '1px solid rgba(218, 157, 29, 0.20)',
+                      border: '1px solid rgba(218, 157, 29, 0.15)',
                       display: 'flex',
                       alignItems: 'center',
-                      justifyContent: 'center',
                       gap: '12px',
-                      boxShadow: '0 4px 20px -4px hsla(194, 30%, 12%, 0.15), 0 8px 32px -8px hsla(194, 25%, 10%, 0.10)',
+                      boxShadow: '0 2px 12px -4px hsla(194, 30%, 12%, 0.12)',
                       position: 'relative' as const,
                       overflow: 'hidden',
                     }}
                   >
-                    <div className="flex-1 min-w-0" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
-                      <p className="font-sans" style={{ fontSize: '10px', fontWeight: 500, letterSpacing: '0.12em', textTransform: 'uppercase' as const, color: 'hsl(36, 16%, 92%)', opacity: 0.60, marginBottom: '4px', lineHeight: 1 }}>
+                    <div className="flex-1 min-w-0" style={{ display: 'flex', flexDirection: 'column' }}>
+                      <p className="font-sans" style={{ fontSize: '10px', fontWeight: 500, letterSpacing: '0.10em', textTransform: 'uppercase' as const, color: 'hsl(36, 16%, 92%)', opacity: 0.55, marginBottom: '3px', lineHeight: 1 }}>
                         Ni var mitt i
                       </p>
-                      <p className="font-serif" style={{ fontSize: '18px', fontWeight: 600, lineHeight: 1.35, color: 'hsl(36, 16%, 92%)', textWrap: 'balance', hyphens: 'auto' } as React.CSSProperties}>
+                      <p className="font-serif" style={{ fontSize: '16px', fontWeight: 600, lineHeight: 1.3, color: 'hsl(36, 16%, 92%)' }}>
                         {card?.title || cardId}
                       </p>
                       {cat && (
-                        <p className="font-sans" style={{ fontSize: '12px', color: 'var(--accent-saffron)', opacity: 0.85, marginTop: '4px' }}>
+                        <p className="font-sans" style={{ fontSize: '11px', color: 'var(--accent-saffron)', opacity: 0.75, marginTop: '2px' }}>
                           {cat.title}
                         </p>
                       )}
                     </div>
+                    <span style={{ fontSize: '12px', color: 'var(--accent-saffron)', opacity: 0.7, fontFamily: 'var(--font-sans)', fontWeight: 500, letterSpacing: '0.02em', whiteSpace: 'nowrap' }}>
+                      Fortsätt →
+                    </span>
                   </div>
                 </motion.div>
               );
