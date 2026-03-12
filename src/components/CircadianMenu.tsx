@@ -33,27 +33,27 @@ export const CIRCADIAN_COLORS_LIGHT: Record<string, string> = {
 };
 
 export const CIRCADIAN_FILLS: Record<string, string> = {
-  'emotional-intimacy': 'rgba(162, 181, 169, 0.28)',
-  'communication':      'rgba(107, 142, 125, 0.28)',
-  'category-8':         'rgba(194, 138, 120, 0.28)',
-  'individual-needs':   'rgba(197, 163, 125, 0.28)',
-  'parenting-together': 'rgba(111, 129, 145, 0.28)',
-  'category-9':         'rgba(74, 93, 78, 0.28)',
-  'category-6':         'rgba(142, 124, 143, 0.28)',
-  'daily-life':         'rgba(60, 84, 89, 0.28)',
-  'category-10':        'rgba(49, 54, 88, 0.28)',
+  'emotional-intimacy': 'rgba(162, 181, 169, 0.40)',
+  'communication':      'rgba(107, 142, 125, 0.40)',
+  'category-8':         'rgba(194, 138, 120, 0.40)',
+  'individual-needs':   'rgba(197, 163, 125, 0.40)',
+  'parenting-together': 'rgba(111, 129, 145, 0.40)',
+  'category-9':         'rgba(74, 93, 78, 0.40)',
+  'category-6':         'rgba(142, 124, 143, 0.40)',
+  'daily-life':         'rgba(60, 84, 89, 0.40)',
+  'category-10':        'rgba(49, 54, 88, 0.40)',
 };
 
 export const CIRCADIAN_FILLS_HOVER: Record<string, string> = {
-  'emotional-intimacy': 'rgba(162, 181, 169, 0.42)',
-  'communication':      'rgba(107, 142, 125, 0.42)',
-  'category-8':         'rgba(194, 138, 120, 0.42)',
-  'individual-needs':   'rgba(197, 163, 125, 0.42)',
-  'parenting-together': 'rgba(111, 129, 145, 0.42)',
-  'category-9':         'rgba(74, 93, 78, 0.42)',
-  'category-6':         'rgba(142, 124, 143, 0.42)',
-  'daily-life':         'rgba(60, 84, 89, 0.42)',
-  'category-10':        'rgba(49, 54, 88, 0.42)',
+  'emotional-intimacy': 'rgba(162, 181, 169, 0.55)',
+  'communication':      'rgba(107, 142, 125, 0.55)',
+  'category-8':         'rgba(194, 138, 120, 0.55)',
+  'individual-needs':   'rgba(197, 163, 125, 0.55)',
+  'parenting-together': 'rgba(111, 129, 145, 0.55)',
+  'category-9':         'rgba(74, 93, 78, 0.55)',
+  'category-6':         'rgba(142, 124, 143, 0.55)',
+  'daily-life':         'rgba(60, 84, 89, 0.55)',
+  'category-10':        'rgba(49, 54, 88, 0.55)',
 };
 
 const HERITAGE_GOLD = '#DA9D1D';
