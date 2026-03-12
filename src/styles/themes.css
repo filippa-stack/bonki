@@ -622,16 +622,16 @@
    VERDIGRIS — Still Us global identity theme
    Deep matte teal canvas, Heritage Gold accent, light text.
    Dark-base theme: all surfaces are dark, text is light.
-   "Intimate Midnight" — nocturnal, intimate, safe.
-   Base: #0A0A3D (Deep Abyss), Texture: #2D4263 (Steel Mist),
+   "Midnight Petrol Teal" — nocturnal, intimate, safe.
+   Base: #164A58 (Petrol Teal), Dark: #0D2B33 (Deep Petrol),
    Spark: #E9B44C (Burnt Saffron), Pulse: #1A1AE2 (Brand Pulse)
    ══════════════════════════════════════════════════════════════ */
 .theme-verdigris {
-  /* Foundation — deep midnight abyss */
-  --neutral-50:  235 35% 14%;          /* Base bg — #0A0A3D deep abyss */
-  --neutral-100: 215 30% 18%;          /* Raised surfaces — steel mist */
-  --neutral-200: 215 25% 15%;          /* Sunken areas */
-  --neutral-300: 215 22% 30%;          /* Borders, dividers */
+  /* Foundation — Midnight Petrol Teal */
+  --neutral-50:  192 58% 21%;            /* Base bg — #164A58 Petrol Teal */
+  --neutral-100: 192 50% 16%;            /* Raised surfaces */
+  --neutral-200: 192 55% 13%;            /* Sunken areas — #0D2B33 */
+  --neutral-300: 192 30% 30%;            /* Borders, dividers */
 
   --background: var(--neutral-50);
   --foreground: 38 25% 92%;
