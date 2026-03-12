@@ -423,7 +423,7 @@ function StillUsCategoryView({
                 }}
                 onMouseEnter={(e) => {
                   const el = e.currentTarget;
-                  el.style.background = `hsla(194, 28%, 22%, 0.70)`;
+                  el.style.background = `hsla(194, 28%, 26%, 0.50)`;
                   el.style.borderColor = color;
                   el.style.boxShadow = `0 0 24px -4px ${color}50, 0 4px 20px -4px hsla(194, 28%, 10%, 0.30)`;
                 }}
