@@ -86,130 +86,140 @@ export default function SessionStepReflection({
   return (
     <motion.div
       className="reflection-field-wrapper"
-      style={{ marginTop: hideNoteField ? '32px' : '20px', marginBottom: '4px' }}
+      style={{
+        marginTop: hideNoteField ? '32px' : '20px',
+        marginBottom: '4px',
+        display: 'flex',
+        flexDirection: 'column',
+        flexGrow: 1,
+      }}
       initial={{ opacity: 0, y: 6 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: BEAT_2, duration: EMOTION, ease: [...EASE] }}
     >
-      {!hideNoteField && (
-        <AnimatePresence mode="wait">
-          {!isExpanded ? (
-            /* ── Collapsed trigger — poetic invitation ── */
-            <motion.button
-              key="trigger"
-              onClick={handleExpand}
-              initial={{ opacity: 0, y: 4 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -4, transition: { duration: 0.2 } }}
-              transition={{ delay: 0.3, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-              className="w-full active:scale-[0.98]"
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                gap: '8px',
-                padding: '14px 20px',
-                background: 'none',
-                border: 'none',
-                cursor: 'pointer',
-                transition: 'opacity 200ms ease',
-              }}
-            >
-              <Feather
-                size={15}
-                strokeWidth={1.5}
-                style={{ color: 'var(--text-primary)', opacity: 0.35 }}
-              />
-              <span
+      {/* Expanded textarea — shows above the bottom zone when active */}
+      {!hideNoteField && isExpanded && (
+        <motion.div
+          key="expanded"
+          initial={{ opacity: 0, height: 0 }}
+          animate={{ opacity: 1, height: 'auto' }}
+          transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+        >
+          <div style={{ position: 'relative' }}>
+            {/* Feather watermark when empty */}
+            {!hasFill && !isFocused && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
                 style={{
-                  fontFamily: 'var(--font-serif)',
-                  fontStyle: 'italic',
-                  fontSize: '15px',
-                  color: 'var(--text-primary)',
-                  opacity: 0.40,
-                  letterSpacing: '0.01em',
+                  position: 'absolute',
+                  top: '22px',
+                  left: '20px',
+                  pointerEvents: 'none',
+                  zIndex: 1,
                 }}
               >
-                Fäst en tanke
-              </span>
-            </motion.button>
-          ) : (
-            /* ── Expanded — borderless ceremonial textarea ── */
-            <motion.div
-              key="expanded"
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: 'auto' }}
-              exit={{ opacity: 0, height: 0 }}
-              transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-            >
-              <div style={{ position: 'relative' }}>
-                {/* Feather watermark when empty */}
-                {!hasFill && !isFocused && (
-                  <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    style={{
-                      position: 'absolute',
-                      top: '22px',
-                      left: '20px',
-                      pointerEvents: 'none',
-                      zIndex: 1,
-                    }}
-                  >
-                    <Feather
-                      size={14}
-                      strokeWidth={1.5}
-                      style={{ color: 'var(--text-primary)', opacity: 0.25 }}
-                    />
-                  </motion.div>
-                )}
-                <textarea
-                  ref={textareaRef}
-                  value={displayText}
-                  onChange={(e) => handleChange(e.target.value)}
-                  onFocus={() => setIsFocused(true)}
-                  onBlur={() => setIsFocused(false)}
-                  placeholder=""
-                  inputMode="text"
-                  autoCorrect="on"
-                  autoCapitalize="sentences"
-                  spellCheck={true}
-                  className="w-full resize-none focus:outline-none focus:ring-0"
-                  style={{
-                    height: 'auto',
-                    minHeight: '80px',
-                    maxHeight: '180px',
-                    overflow: 'auto',
-                    fontFamily: 'var(--font-serif)',
-                    fontSize: '16px',
-                    lineHeight: 1.7,
-                    color: 'var(--text-primary)',
-                    backgroundColor: isFocused || hasFill
-                      ? 'hsla(36, 20%, 97%, 0.12)'
-                      : 'hsla(36, 18%, 96%, 0.06)',
-                    border: 'none',
-                    borderRadius: '12px',
-                    padding: '20px 24px',
-                    textAlign: 'center',
-                    boxShadow: isFocused
-                      ? '0 0 0 1px hsla(36, 20%, 80%, 0.15)'
-                      : 'none',
-                    transition: 'background-color 320ms ease, box-shadow 320ms ease',
-                  }}
+                <Feather
+                  size={14}
+                  strokeWidth={1.5}
+                  style={{ color: 'var(--text-primary)', opacity: 0.25 }}
                 />
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
+              </motion.div>
+            )}
+            <textarea
+              ref={textareaRef}
+              value={displayText}
+              onChange={(e) => handleChange(e.target.value)}
+              onFocus={() => setIsFocused(true)}
+              onBlur={() => setIsFocused(false)}
+              placeholder=""
+              inputMode="text"
+              autoCorrect="on"
+              autoCapitalize="sentences"
+              spellCheck={true}
+              className="w-full resize-none focus:outline-none focus:ring-0"
+              style={{
+                height: 'auto',
+                minHeight: '80px',
+                maxHeight: '180px',
+                overflow: 'auto',
+                fontFamily: 'var(--font-serif)',
+                fontSize: '16px',
+                lineHeight: 1.7,
+                color: 'var(--text-primary)',
+                backgroundColor: isFocused || hasFill
+                  ? 'hsla(36, 20%, 97%, 0.12)'
+                  : 'hsla(36, 18%, 96%, 0.06)',
+                border: 'none',
+                borderRadius: '12px',
+                padding: '20px 24px',
+                textAlign: 'center',
+                boxShadow: isFocused
+                  ? '0 0 0 1px hsla(36, 20%, 80%, 0.15)'
+                  : 'none',
+                transition: 'background-color 320ms ease, box-shadow 320ms ease',
+              }}
+            />
+          </div>
+        </motion.div>
       )}
 
+      {/* Spacer pushes bottom zone down */}
+      <div style={{ flexGrow: 1 }} />
+
+      {/* Bottom zone: trigger + CTA */}
       <div
         className="flex flex-col items-center"
         style={{
           paddingBottom: 'calc(16px + env(safe-area-inset-bottom, 0px))',
-          marginTop: '24px',
         }}
       >
+        {/* Collapsed trigger — poetic invitation */}
+        {!hideNoteField && !isExpanded && (
+          <motion.button
+            key="trigger"
+            onClick={handleExpand}
+            initial={{ opacity: 0, y: 4 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+            className="w-full active:scale-[0.98]"
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '8px',
+              padding: '14px 20px',
+              marginBottom: '16px',
+              background: 'none',
+              border: 'none',
+              cursor: 'pointer',
+              transition: 'opacity 200ms ease',
+            }}
+          >
+            <Feather
+              size={15}
+              strokeWidth={1.5}
+              style={{ color: 'var(--text-primary)', opacity: 0.35 }}
+            />
+            <span
+              style={{
+                fontFamily: 'var(--font-serif)',
+                fontStyle: 'italic',
+                fontSize: '15px',
+                color: 'var(--text-primary)',
+                opacity: 0.40,
+                letterSpacing: '0.01em',
+              }}
+            >
+              Fäst en tanke
+            </span>
+          </motion.button>
+        )}
+
+        {isExpanded && !hideNoteField && (
+          <div style={{ height: '16px' }} />
+        )}
+
         <motion.button
           onClick={handleAdvance}
           disabled={submitting}
@@ -245,9 +255,7 @@ export default function SessionStepReflection({
           >
             Vi pausar här — fortsätt en annan dag
           </button>
-        ) : (
-          null
-        )}
+        ) : null}
       </div>
     </motion.div>
   );

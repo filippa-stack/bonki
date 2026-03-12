@@ -161,11 +161,12 @@ export default function CardView() {
   const needsPaywall = !isFreeCard && !hasProductAccess && !accessLoading && (!!product || isStillUsCard) && !devState && !demoBypassed;
 
   // Apply product theme (background + accent colors)
+  // For Still Us: skip overriding CTA — Verdigris theme provides Heritage Gold
   useProductTheme(
     product?.accentColor ?? 'hsl(158, 35%, 18%)',
     product?.secondaryAccent ?? 'hsl(38, 88%, 46%)',
-    product?.backgroundColor,
-    product?.ctaButtonColor,
+    isStillUsCard ? undefined : product?.backgroundColor,
+    isStillUsCard ? 'hsl(41, 78%, 48%)' : product?.ctaButtonColor,
   );
 
   // Apply Verdigris theme for Still Us cards
