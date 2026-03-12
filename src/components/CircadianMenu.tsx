@@ -255,12 +255,13 @@ export default function CircadianMenu({
               const allCompleted = completedCount === catCards.length && catCards.length > 0;
               const isNextSuggested = category.id === nextSuggestedId && hasEntered;
 
-              const borderDefault = `1px solid ${color}73`;
-              const borderGlow = `1px solid ${color}`;
+              const borderDefault = `1px solid rgba(255, 255, 255, 0.12)`;
+              const borderGlow = `1px solid rgba(255, 255, 255, 0.22)`;
 
+              const innerGlow = `inset 0 1px 0 0 rgba(255, 255, 255, 0.08), inset 0 0 12px 0 rgba(255, 255, 255, 0.03)`;
               const breatheBoxShadow = isNextSuggested
-                ? `0 0 16px -2px ${color}35, 0 0 32px -6px ${color}20`
-                : 'none';
+                ? `${innerGlow}, 0 0 16px -2px ${color}35, 0 0 32px -6px ${color}20`
+                : innerGlow;
 
               return (
                 <motion.div
@@ -297,13 +298,13 @@ export default function CircadianMenu({
                       const el = e.currentTarget as HTMLElement;
                       el.style.background = fillHover;
                       el.style.border = borderGlow;
-                      el.style.boxShadow = `0 0 24px -4px ${color}50, 0 0 48px -8px ${color}30`;
+                      el.style.boxShadow = `${innerGlow}, 0 0 24px -4px ${color}50, 0 0 48px -8px ${color}30`;
                     }}
                     onMouseLeave={(e) => {
                       const el = e.currentTarget as HTMLElement;
                       el.style.background = fillDefault;
                       el.style.border = isNextSuggested ? borderGlow : borderDefault;
-                      el.style.boxShadow = isNextSuggested ? breatheBoxShadow : 'none';
+                      el.style.boxShadow = breatheBoxShadow;
                     }}
                   >
                     {/* Thick accent bar */}

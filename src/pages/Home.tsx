@@ -217,6 +217,22 @@ export default function Home() {
 
   return (
     <div ref={scrollRef} className="min-h-screen flex flex-col overflow-y-auto relative" style={{ height: '100vh', backgroundColor: 'var(--surface-base)' }}>
+      {/* Saffron backlight — warm glow behind illustration */}
+      <div
+        style={{
+          position: 'absolute',
+          top: '5%',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          width: '280px',
+          height: '280px',
+          borderRadius: '50%',
+          background: 'radial-gradient(circle, hsla(38, 72%, 50%, 0.12) 0%, hsla(38, 60%, 45%, 0.04) 50%, transparent 75%)',
+          pointerEvents: 'none',
+          zIndex: 0,
+          filter: 'blur(30px)',
+        }}
+      />
       {/* Background illustration — Still Us identity */}
       <motion.div
         initial={{ opacity: 0 }}
@@ -281,7 +297,7 @@ export default function Home() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
             >
-              <h1 className="type-h1" style={{ color: 'var(--text-primary)', marginBottom: '6px' }}>
+              <h1 className="type-h1" style={{ color: '#F5EFE6', marginBottom: '6px' }}>
                 Ert utrymme
               </h1>
               <p style={{
