@@ -448,7 +448,8 @@ export default function CircadianMenu({
                         ) : null}
                       </div>
                     </div>
-                  </motion.button>
+                  </button>
+                  </motion.div>
 
                   {/* Expanded sub-topics */}
                   <AnimatePresence>
