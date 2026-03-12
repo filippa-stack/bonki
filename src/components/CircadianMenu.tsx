@@ -241,7 +241,7 @@ export default function CircadianMenu({
                 letterSpacing: '0.06em',
                 textTransform: 'uppercase',
                 color: 'var(--text-primary)',
-                opacity: 0.50,
+                opacity: 0.65,
                 lineHeight: 1,
               }}
             >
