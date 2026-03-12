@@ -387,7 +387,7 @@ export default function CircadianMenu({
                               fontFamily: 'var(--font-sans)',
                               fontSize: '12px',
                               fontWeight: 400,
-                              color: CIRCADIAN_COLORS_DARK[category.id] || color,
+                              color: CIRCADIAN_COLORS_LIGHT[category.id] || color,
                               opacity: 1,
                               lineHeight: 1.45,
                               marginTop: '3px',
