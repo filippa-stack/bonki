@@ -933,9 +933,9 @@ export default function ProductLibrary() {
               style={{
                 borderRadius: '20px',
                 padding: '24px 20px 18px',
-                background: 'hsla(192, 58%, 21%, 0.70)',
-                backdropFilter: 'blur(24px)',
-                WebkitBackdropFilter: 'blur(24px)',
+                background: 'radial-gradient(circle at 60% 50%, #2A6F7D 0%, #164A58 100%)',
+                backdropFilter: 'blur(10px)',
+                WebkitBackdropFilter: 'blur(10px)',
                 textAlign: 'left',
                 position: 'relative',
                 overflow: 'hidden',
@@ -944,8 +944,8 @@ export default function ProductLibrary() {
                 flexDirection: 'column',
                 alignItems: 'flex-start',
                 justifyContent: 'flex-end',
-                border: '1px solid hsla(215, 35%, 55%, 0.12)',
-                boxShadow: 'inset 0 1px 0 0 hsla(0, 0%, 100%, 0.10), 0 4px 24px hsla(230, 50%, 6%, 0.4), 0 1px 3px hsla(230, 40%, 10%, 0.25)',
+                border: '1px solid hsla(192, 40%, 60%, 0.20)',
+                boxShadow: '0 15px 35px rgba(0, 0, 0, 0.4), 0 4px 12px rgba(0, 0, 0, 0.2), inset 0 1px 0 0 hsla(192, 50%, 70%, 0.12)',
               }}
             >
               {/* Spotlight backglow behind illustration */}
