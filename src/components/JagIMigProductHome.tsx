@@ -9,10 +9,10 @@ const EASE = [0.4, 0.0, 0.2, 1] as const;
 
 /** Unique fill colors per category tile */
 const TILE_COLORS: Record<string, { bg: string; text: string }> = {
-  'jim-tryggheten-inuti': { bg: 'rgba(168, 186, 104, 0.55)', text: '#5C6B12' },
-  'jim-kanslorna-jag-bar': { bg: 'rgba(205, 175, 119, 0.55)', text: '#7A5E1E' },
-  'jim-nar-det-gor-ont': { bg: 'rgba(189, 139, 130, 0.55)', text: '#7A3B30' },
-  'jim-jag-som-helhet': { bg: 'rgba(142, 170, 158, 0.55)', text: '#3A5C4C' },
+  'jim-tryggheten-inuti': { bg: '#8A9114', text: '#FFFDF5' },
+  'jim-kanslorna-jag-bar': { bg: '#F2E8CF', text: '#5C5A2E' },
+  'jim-nar-det-gor-ont': { bg: '#606C38', text: '#FFFDF5' },
+  'jim-jag-som-helhet': { bg: '#E9EDC9', text: '#3A5C4C' },
 };
 
 const containerVariants = {
