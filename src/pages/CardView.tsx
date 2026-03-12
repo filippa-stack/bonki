@@ -1273,8 +1273,8 @@ export default function CardView() {
             transition={{ delay: BEAT_2, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
             style={{
               fontSize: '19px',
-              color: 'var(--text-primary)',
-              opacity: 0.75,
+              color: isStillUsCard ? (startScreenCategoryColor || 'var(--text-primary)') : 'var(--text-primary)',
+              opacity: isStillUsCard ? 0.65 : 0.75,
               textAlign: 'center',
               lineHeight: 1.5,
               marginBottom: '32px',
