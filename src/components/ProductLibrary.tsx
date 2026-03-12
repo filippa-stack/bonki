@@ -65,12 +65,12 @@ const ILLUSTRATION_POSITION: Record<string, string> = {
 
 /** Restored strong accent colors for tile titles */
 const ACCENT_COLORS: Record<string, string> = {
-  jag_i_mig: '#6B6B10',
-  jag_med_andra: '#7A1BA8',
-  jag_i_varlden: '#2D6B35',
-  sexualitetskort: '#A04858',
-  vardagskort: '#0A4A6A',
-  syskonkort: '#0C3D7A',
+  jag_i_mig: '#555508',
+  jag_med_andra: '#6A0F96',
+  jag_i_varlden: '#1E5528',
+  sexualitetskort: '#8A3848',
+  vardagskort: '#063A58',
+  syskonkort: '#0A3268',
 };
 
 const TAGLINE_COLORS: Record<string, string> = {
