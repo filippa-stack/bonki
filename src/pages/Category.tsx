@@ -438,10 +438,10 @@ function StillUsCategoryView({
                     <p
                       style={{
                         fontFamily: 'var(--font-sans)',
-                        fontSize: '12px',
+                        fontSize: '13px',
                         fontWeight: 400,
-                        color: 'var(--text-secondary)',
-                        opacity: isCompleted ? 0.4 : 0.7,
+                        color: 'var(--text-primary)',
+                        opacity: isCompleted ? 0.45 : 0.65,
                         lineHeight: 1.4,
                         marginTop: '4px',
                       }}
