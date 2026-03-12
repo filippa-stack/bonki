@@ -342,7 +342,7 @@ function StillUsCategoryView({
               letterSpacing: '-0.01em',
               lineHeight: 1.2,
               textShadow: `0 0 20px ${color}80, 0 1px 8px hsla(194, 28%, 8%, 0.4)`,
-              filter: 'brightness(1.15)',
+              
             }}
           >
             {category.title}
