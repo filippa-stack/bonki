@@ -1,7 +1,6 @@
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { BookOpen } from 'lucide-react';
-import BackToLibraryButton from '@/components/BackToLibraryButton';
 import type { ProductManifest } from '@/types/product';
 import illustrationImage from '@/assets/illustration-sexualitet.png';
 
@@ -9,18 +8,59 @@ const EASE = [0.4, 0.0, 0.2, 1] as const;
 
 const containerVariants = {
   hidden: {},
-  visible: { transition: { staggerChildren: 0.1, delayChildren: 0.35 } },
+  visible: { transition: { staggerChildren: 0.11, delayChildren: 0.4 } },
 };
 
 const pillVariants = {
-  hidden: { opacity: 0, y: 20, scale: 0.95 },
+  hidden: { opacity: 0, y: 26, scale: 0.93 },
   visible: {
     opacity: 1, y: 0, scale: 1,
-    transition: { duration: 0.55, ease: EASE },
+    transition: { duration: 0.65, ease: EASE },
   },
 };
 
-const ACCENT_COLOR = '#B5646E';
+const titleVariants = {
+  hidden: { opacity: 0, y: 16 },
+  visible: {
+    opacity: 1, y: 0,
+    transition: { duration: 0.75, ease: EASE },
+  },
+};
+
+const ACCENT_COLOR = '#AD5D65';
+const DIARY_TEXT = '#6B3A3F';
+
+/** Four-tone rose palette — warm, escalating weight */
+const ORDERED_TILES = [
+  {
+    id: 'sex-min-identitet',
+    // Clarity & Light — pale skin-tone pink
+    bg: '#FFF2F3',
+    text: '#6B3A3F',
+    dark: false,
+  },
+  {
+    id: 'sex-normer-och-paverkan',
+    // Awareness — friendly blushing rose (hero)
+    bg: '#FBB1B8',
+    text: '#5A2A30',
+    dark: false,
+  },
+  {
+    id: 'sex-relation-och-ansvar',
+    // Warmth & Pulse — deeper fleshy rose
+    bg: '#E87A84',
+    text: '#FAFAF0',
+    dark: true,
+  },
+  {
+    id: 'sex-skydd-och-makt',
+    // Strength & Gravity — dried rose / clay anchor
+    bg: '#AD5D65',
+    text: '#FAFAF0',
+    dark: true,
+  },
+];
 
 export default function SexualitetProductHome({ product }: { product: ProductManifest }) {
   const navigate = useNavigate();
@@ -30,58 +70,148 @@ export default function SexualitetProductHome({ product }: { product: ProductMan
       className="min-h-screen relative overflow-hidden"
       style={{ backgroundColor: 'var(--surface-base)' }}
     >
-      <BackToLibraryButton color={ACCENT_COLOR} />
+      {/* Background illustration — preserved position */}
       <motion.div
         initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.4 }}
+        animate={{ opacity: 1, scale: [1, 1.012, 1] }}
+        transition={{
+          duration: 0.5,
+          scale: { duration: 9, ease: 'easeInOut', repeat: Infinity, repeatType: 'reverse' },
+        }}
         style={{ position: 'absolute', top: '-10%', right: '-25%', width: '130%', height: '135%', zIndex: 0, pointerEvents: 'none' }}
       >
         <img src={illustrationImage} alt="" style={{ width: '100%', height: '100%', objectFit: 'contain', objectPosition: 'right top', opacity: 0.22 }} />
       </motion.div>
 
-      <div style={{ position: 'relative', zIndex: 1, minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start', paddingTop: '12vh', paddingRight: '10vw', paddingBottom: '48px', paddingLeft: '10vw' }}>
-        <motion.div variants={containerVariants} initial="hidden" animate="visible" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '3vh', width: '100%' }}>
-          <motion.div variants={pillVariants} style={{ textAlign: 'center', marginBottom: '2vh', width: '100%' }}>
-            <h1 style={{ fontFamily: "'DM Serif Display', var(--font-serif)", fontSize: 'clamp(34px, 9vw, 48px)', fontWeight: 700, color: ACCENT_COLOR, letterSpacing: '-0.01em', whiteSpace: 'nowrap' }}>
+      {/* Content */}
+      <div
+        style={{
+          position: 'relative',
+          zIndex: 1,
+          minHeight: '100vh',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'flex-start',
+          paddingTop: '14vh',
+          paddingRight: '8vw',
+          paddingBottom: '48px',
+          paddingLeft: '8vw',
+        }}
+      >
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            gap: '13px',
+            width: '100%',
+          }}
+        >
+          {/* Title — white halo for contrast */}
+          <motion.div
+            variants={titleVariants}
+            style={{ textAlign: 'center', marginBottom: '3vh', width: '100%' }}
+          >
+            <h1
+              style={{
+                fontFamily: "'DM Serif Display', var(--font-serif)",
+                fontSize: 'clamp(36px, 10vw, 50px)',
+                fontWeight: 700,
+                color: ACCENT_COLOR,
+                letterSpacing: '-0.01em',
+                whiteSpace: 'nowrap',
+                textShadow: [
+                  '0 0 24px rgba(255, 255, 255, 1)',
+                  '0 0 48px rgba(255, 255, 255, 0.7)',
+                  '0 0 80px rgba(255, 255, 255, 0.4)',
+                  '0 2px 4px rgba(0, 0, 0, 0.06)',
+                ].join(', '),
+              }}
+            >
               Sexualitet
             </h1>
-            <p className="font-serif" style={{ fontSize: 'clamp(16px, 4.5vw, 20px)', fontWeight: 400, color: '#2C2420', opacity: 0.8, marginTop: '8px', textShadow: '0px 1px 6px rgba(255,255,255,0.9), 0px 0px 20px rgba(255,255,255,0.4)' }}>
+            <p
+              className="font-serif"
+              style={{
+                fontSize: 'clamp(16px, 4.5vw, 20px)',
+                fontWeight: 400,
+                color: '#2C2420',
+                opacity: 0.75,
+                marginTop: '6px',
+                textShadow: '0 0 16px rgba(255,255,255,0.95), 0 0 32px rgba(255,255,255,0.5)',
+              }}
+            >
               Närhet & respekt
             </p>
           </motion.div>
 
-          {product.categories.map((cat) => (
-            <motion.button
-              key={cat.id}
-              variants={pillVariants}
-              whileHover={{ scale: 1.04, y: -2 }}
-              whileTap={{ scale: 0.97 }}
-              onClick={() => navigate(`/category/${cat.id}`)}
-              style={{
-                background: 'var(--product-button-bg)',
-                borderRadius: 'var(--product-button-radius)',
-                padding: '0 24px',
-                textAlign: 'center',
-                cursor: 'pointer',
-                border: 'none',
-                boxShadow: 'var(--product-button-shadow)',
-                whiteSpace: 'normal' as const,
-                width: '80%',
-                minHeight: '56px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                lineHeight: 1.3,
-              }}
-            >
-              <span style={{ fontFamily: "'DM Serif Display', var(--font-serif)", fontSize: 'clamp(18px, 5vw, 24px)', fontWeight: 400, color: ACCENT_COLOR }}>
-                {cat.title}
-              </span>
-            </motion.button>
-          ))}
+          {/* Category tiles — solid, tactile, with rhythm */}
+          {ORDERED_TILES.map((tile, index) => {
+            const cat = product.categories.find((c) => c.id === tile.id);
+            if (!cat) return null;
 
-          {/* Sign-off line */}
+            const isHero = index === 0;
+            const isDark = tile.dark;
+
+            return (
+              <motion.button
+                key={cat.id}
+                variants={pillVariants}
+                whileHover={{ scale: 1.05, y: -3 }}
+                whileTap={{ scale: 0.975, y: 1 }}
+                onClick={() => navigate(`/category/${cat.id}`)}
+                style={{
+                  background: tile.bg,
+                  borderRadius: '22px',
+                  padding: '0 32px',
+                  textAlign: 'center',
+                  cursor: 'pointer',
+                  border: isDark
+                    ? '1px solid hsla(355, 25%, 45%, 0.35)'
+                    : '1px solid hsla(355, 30%, 85%, 0.60)',
+                  boxShadow: isDark
+                    ? [
+                        '0 6px 20px hsla(355, 25%, 20%, 0.22)',
+                        '0 2px 6px hsla(0, 0%, 0%, 0.10)',
+                        'inset 0 1px 0 hsla(355, 35%, 65%, 0.30)',
+                      ].join(', ')
+                    : [
+                        '0 6px 20px hsla(355, 30%, 50%, 0.10)',
+                        '0 2px 6px hsla(0, 0%, 0%, 0.04)',
+                        'inset 0 2px 1px hsla(355, 40%, 95%, 0.55)',
+                        'inset 0 -2px 4px hsla(355, 20%, 30%, 0.06)',
+                      ].join(', '),
+                  whiteSpace: 'normal' as const,
+                  backdropFilter: 'blur(20px) saturate(1.3)',
+                  WebkitBackdropFilter: 'blur(20px) saturate(1.3)',
+                  width: isHero ? '86%' : '82%',
+                  minHeight: isHero ? '76px' : '66px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  lineHeight: 1.3,
+                }}
+              >
+                <span
+                  style={{
+                    fontFamily: "'DM Serif Display', var(--font-serif)",
+                    fontSize: isHero ? 'clamp(21px, 5.8vw, 27px)' : 'clamp(19px, 5.2vw, 25px)',
+                    fontWeight: 400,
+                    color: tile.text,
+                    textShadow: isDark ? 'none' : '0 1px 4px hsla(355, 30%, 90%, 0.8)',
+                  }}
+                >
+                  {cat.title}
+                </span>
+              </motion.button>
+            );
+          })}
+
+          {/* Sign-off */}
           <motion.p
             variants={pillVariants}
             className="font-serif"
@@ -89,65 +219,128 @@ export default function SexualitetProductHome({ product }: { product: ProductMan
               fontSize: 'clamp(14px, 3.8vw, 16px)',
               fontStyle: 'italic',
               color: ACCENT_COLOR,
-              opacity: 0.65,
+              opacity: 0.6,
               textAlign: 'center',
               lineHeight: 1.5,
-              marginTop: '1vh',
+              marginTop: '2.5vh',
               maxWidth: '85%',
+              textShadow: '0 0 12px rgba(255,255,255,0.8)',
             }}
           >
             Välj det som känns rätt just nu.
           </motion.p>
 
-          {/* Diary entrance */}
-          <motion.button
+          {/* ✦ Diary entrance — ceremonial, magical */}
+          <motion.div
             variants={pillVariants}
-            whileHover={{ scale: 1.02, y: -1 }}
-            whileTap={{ scale: 0.98 }}
-            onClick={() => navigate(`/diary/${product.id}`)}
             style={{
-              background: 'rgba(255, 255, 255, 0.55)',
-              border: 'none',
-              cursor: 'pointer',
-              marginTop: '2vh',
-              padding: '16px 28px',
-              borderRadius: '12px',
-              boxShadow: '0px 2px 8px rgba(44, 36, 32, 0.06)',
               display: 'flex',
+              flexDirection: 'column',
               alignItems: 'center',
-              justifyContent: 'center',
-              gap: '10px',
-              width: '70%',
+              gap: '0px',
+              marginTop: '1.5vh',
+              width: '100%',
             }}
           >
-            <BookOpen size={18} style={{ color: ACCENT_COLOR, opacity: 0.7, flexShrink: 0 }} />
-            <div style={{ textAlign: 'left' }}>
-              <span
+            {/* Sparkle divider */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.5 }}
+              animate={{ opacity: [0.3, 0.6, 0.3], scale: 1 }}
+              transition={{ opacity: { duration: 3, repeat: Infinity, ease: 'easeInOut' }, scale: { duration: 0.8, delay: 1.2 } }}
+              style={{
+                fontSize: '14px',
+                color: ACCENT_COLOR,
+                letterSpacing: '8px',
+                marginBottom: '12px',
+                textAlign: 'center',
+              }}
+            >
+              ✦
+            </motion.div>
+
+            <motion.button
+              whileHover={{ scale: 1.04, y: -3 }}
+              whileTap={{ scale: 0.97 }}
+              onClick={() => navigate(`/diary/${product.id}`)}
+              style={{
+                position: 'relative',
+                background: 'transparent',
+                border: 'none',
+                cursor: 'pointer',
+                padding: '18px 28px',
+                borderRadius: '20px',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '6px',
+                width: '66%',
+                overflow: 'hidden',
+              }}
+            >
+              {/* Ambient glow behind */}
+              <motion.div
+                animate={{ opacity: [0.25, 0.45, 0.25], scale: [1, 1.08, 1] }}
+                transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
                 style={{
-                  fontFamily: "'DM Serif Display', var(--font-serif)",
-                  fontSize: 'clamp(17px, 4.5vw, 20px)',
-                  fontWeight: 400,
-                  color: ACCENT_COLOR,
-                  lineHeight: 1.3,
+                  position: 'absolute',
+                  inset: '-20%',
+                  background: `radial-gradient(ellipse at center, ${ACCENT_COLOR}22 0%, transparent 70%)`,
+                  borderRadius: '50%',
+                  pointerEvents: 'none',
                 }}
-              >
-                Vår dagbok
-              </span>
+              />
+
+              {/* Glass surface */}
+              <div
+                style={{
+                  position: 'absolute',
+                  inset: 0,
+                  borderRadius: '20px',
+                  background: 'rgba(173, 93, 101, 0.06)',
+                  border: '1px solid rgba(173, 93, 101, 0.10)',
+                  backdropFilter: 'blur(16px)',
+                  WebkitBackdropFilter: 'blur(16px)',
+                }}
+              />
+
+              {/* Content */}
+              <div style={{ position: 'relative', zIndex: 1, display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <motion.div
+                  animate={{ rotate: [0, -5, 0, 5, 0] }}
+                  transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
+                >
+                  <BookOpen size={18} style={{ color: DIARY_TEXT, opacity: 0.55, flexShrink: 0 }} />
+                </motion.div>
+                <span
+                  style={{
+                    fontFamily: "'DM Serif Display', var(--font-serif)",
+                    fontSize: 'clamp(17px, 4.5vw, 20px)',
+                    fontWeight: 400,
+                    color: DIARY_TEXT,
+                    lineHeight: 1.3,
+                  }}
+                >
+                  Vår dagbok
+                </span>
+              </div>
               <p
                 className="font-serif"
                 style={{
+                  position: 'relative',
+                  zIndex: 1,
                   fontSize: '12px',
-                  color: '#8A8078',
-                  opacity: 0.8,
-                  marginTop: '2px',
+                  color: 'hsl(355, 20%, 40%)',
+                  opacity: 0.7,
                   fontStyle: 'italic',
                   lineHeight: 1.3,
+                  letterSpacing: '0.02em',
                 }}
               >
-                Era tankar, samlade
+                Era tankar, samlade ✦
               </p>
-            </div>
-          </motion.button>
+            </motion.button>
+          </motion.div>
         </motion.div>
       </div>
     </div>
