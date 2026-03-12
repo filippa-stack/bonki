@@ -72,7 +72,7 @@ const PRODUCT_STYLES: Record<string, {
 
 /** Category-specific tile background colors (matching product homescreen tiles) */
 const CATEGORY_CARD_BG: Record<string, string> = {
-  // Jag i mig — softened to avoid overpowering illustrations
+  // Jag i mig
   'jim-tryggheten-inuti': '#CDD625',
   'jim-kanslorna-jag-bar': '#F2F89B',
   'jim-nar-det-gor-ont': '#6B7A45',
@@ -83,6 +83,27 @@ const CATEGORY_CARD_BG: Record<string, string> = {
   'jma-nar-det-skaver': '#BD7BEE',
   'jma-att-sta-stadig': '#5A189A',
   'jma-vi-i-varlden': '#240046',
+  // Jag i världen
+  'jiv-min-vardag': '#84C289',
+  'jiv-vem-jag-ar': '#F5EFE6',
+  'jiv-jag-och-andra': '#D9A07B',
+  'jiv-jag-i-samhallet': '#A3C7A7',
+  'jiv-det-stora-sammanhanget': '#5D6353',
+  // Sexualitet
+  'sex-min-identitet': '#FFF2F3',
+  'sex-normer-och-paverkan': '#FBB1B8',
+  'sex-relation-och-ansvar': '#E87A84',
+  'sex-skydd-och-makt': '#AD5D65',
+  // Vardag
+  'vk-var-rytm': '#EBF7FF',
+  'vk-vi-hemma': '#99CCE6',
+  'vk-jag-vaxer': '#0F6B99',
+  'vk-jag-och-andra': '#073B54',
+  // Syskon
+  'sk-vi-blev-syskon': '#D6E8F7',
+  'sk-vi-ar-olika': '#7AB3D9',
+  'sk-nar-det-skaver': '#0F4E99',
+  'sk-nar-livet-forandras': '#0A2E5C',
 };
 
 /** Category-specific card title colors (matching homescreen tile text) */
@@ -97,6 +118,27 @@ const CATEGORY_TITLE_COLOR: Record<string, string> = {
   'jma-nar-det-skaver': '#FAFAF0',
   'jma-att-sta-stadig': '#FAFAF0',
   'jma-vi-i-varlden': '#FAFAF0',
+  // Jag i världen
+  'jiv-min-vardag': '#FAFAF0',
+  'jiv-vem-jag-ar': '#3D4A35',
+  'jiv-jag-och-andra': '#FAFAF0',
+  'jiv-jag-i-samhallet': '#2D4F32',
+  'jiv-det-stora-sammanhanget': '#FAFAF0',
+  // Sexualitet
+  'sex-min-identitet': '#6B3A3F',
+  'sex-normer-och-paverkan': '#5A2A30',
+  'sex-relation-och-ansvar': '#FAFAF0',
+  'sex-skydd-och-makt': '#FAFAF0',
+  // Vardag
+  'vk-var-rytm': '#073B54',
+  'vk-vi-hemma': '#073B54',
+  'vk-jag-vaxer': '#FAFAF0',
+  'vk-jag-och-andra': '#FAFAF0',
+  // Syskon
+  'sk-vi-blev-syskon': '#0A2E5C',
+  'sk-vi-ar-olika': '#0A2E5C',
+  'sk-nar-det-skaver': '#FAFAF0',
+  'sk-nar-livet-forandras': '#FAFAF0',
 };
 
 export default function Category() {
@@ -766,7 +808,7 @@ function CardEntry({ card, index, isCompleted = false, isInProgress = false, onN
               fontSize: '32px', fontWeight: 700,
               color: cardTitleColor,
               lineHeight: 1.1,
-              textShadow: cardTitleColor === '#FFFDF5'
+              textShadow: (cardTitleColor === '#FAFAF0' || cardTitleColor === '#FFFDF5')
                 ? '0 1px 2px rgba(0,0,0,0.5), 0 2px 8px rgba(0,0,0,0.35), 0 0 24px rgba(0,0,0,0.2)'
                 : '0 1px 2px rgba(255,255,255,0.8), 0 0 12px rgba(255,255,255,0.4)',
               letterSpacing: '-0.01em',
