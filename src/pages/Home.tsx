@@ -280,9 +280,18 @@ export default function Home() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
             >
-              <h1 className="type-h1" style={{ color: 'var(--text-primary)', marginBottom: '20px' }}>
+              <h1 className="type-h1" style={{ color: 'var(--text-primary)', marginBottom: '6px' }}>
                 Ert utrymme
               </h1>
+              <p style={{
+                fontFamily: 'var(--font-serif)',
+                fontSize: '15px',
+                color: 'var(--text-secondary)',
+                opacity: 0.65,
+                lineHeight: 1.5,
+              }}>
+                Börja där det känns rätt.
+              </p>
             </motion.div>
 
             {/* Resume banner — active session */}
