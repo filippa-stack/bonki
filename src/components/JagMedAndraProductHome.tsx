@@ -111,9 +111,9 @@ export default function JagMedAndraProductHome({ product }: { product: ProductMa
         transition={{ duration: 0.5, delay: 0.2, scale: { duration: 9, ease: 'easeInOut', repeat: Infinity, repeatType: 'reverse' } }}
         style={{
           position: 'absolute',
-          bottom: '-5%',
-          right: '-15%',
-          width: '50%',
+          bottom: '0%',
+          right: '-10%',
+          width: '42%',
           zIndex: 0,
           pointerEvents: 'none',
         }}
@@ -121,7 +121,7 @@ export default function JagMedAndraProductHome({ product }: { product: ProductMa
         <img
           src={nyckelpiganImage}
           alt=""
-          style={{ width: '100%', height: '100%', objectFit: 'contain', opacity: 0.30, transform: 'rotate(-30deg)' }}
+          style={{ width: '100%', height: '100%', objectFit: 'contain', opacity: 0.28, transform: 'rotate(-18deg)' }}
         />
       </motion.div>
 
