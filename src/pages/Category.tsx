@@ -273,6 +273,7 @@ function StillUsCategoryView({
   navigate,
 }: StillUsCategoryViewProps) {
   const color = circadianColor || '#A2B5A9';
+  const colorLight = (categoryId && CIRCADIAN_COLORS_LIGHT[categoryId]) || color;
   const HERITAGE_GOLD = '#DA9D1D';
 
   return (
