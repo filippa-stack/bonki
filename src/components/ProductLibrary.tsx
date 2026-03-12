@@ -1132,11 +1132,9 @@ export default function ProductLibrary() {
           style={{
             textAlign: 'center',
             padding: '0 28px',
-            marginTop: activeTab === 'par' ? '0' : '32px',
-            paddingTop: activeTab === 'par' ? '24px' : '0',
+            marginTop: isDark ? '0' : '32px',
+            paddingTop: isDark ? '24px' : '0',
             paddingBottom: 'calc(48px + env(safe-area-inset-bottom, 0px))',
-            background: activeTab === 'par' ? '#0A0A1A' : 'transparent',
-            margin: activeTab === 'par' ? '0 -20px' : undefined,
           }}
         >
           <div style={{
