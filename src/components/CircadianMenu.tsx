@@ -337,6 +337,15 @@ export default function CircadianMenu({
           </motion.div>
         );
       })}
+
+      {/* Topic preview overlay + instruction bridge */}
+      <TopicPreviewOverlay
+        card={previewCard}
+        category={previewCategory}
+        categoryColor={previewColor}
+        open={overlayOpen}
+        onClose={() => setOverlayOpen(false)}
+      />
     </div>
   );
 }
