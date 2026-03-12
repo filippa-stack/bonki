@@ -1941,7 +1941,7 @@ export default function CardView() {
                   <div style={{ marginTop: '16px', marginBottom: '0' }} className="text-center">
                     <p
                       className="font-serif italic"
-                      style={{ fontSize: '14px', color: 'var(--accent-text)', opacity: 0.45, lineHeight: 1.5 }}
+                      style={{ fontSize: '14px', color: 'var(--accent-text)', opacity: 0.60, lineHeight: 1.5 }}
                     >
                       {isTogether ? hint.together : hint.solo}
                     </p>
