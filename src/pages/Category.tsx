@@ -404,7 +404,7 @@ function StillUsCategoryView({
                 }}
                 onMouseLeave={(e) => {
                   const el = e.currentTarget;
-                  el.style.background = isCompleted ? `${color}18` : `${color}28`;
+                  el.style.background = isCompleted ? `${color}30` : `${color}40`;
                   el.style.borderColor = isInProgress ? color : `${color}50`;
                   el.style.boxShadow = isInProgress
                     ? `0 0 20px -4px ${color}40, 0 4px 16px -4px hsla(194, 28%, 10%, 0.15)`
