@@ -1211,7 +1211,7 @@ export default function CardView() {
                 style={{
                   fontSize: 'clamp(26px, 7vw, 34px)',
                   fontWeight: 700,
-                  color: 'var(--text-primary)',
+                  color: isStillUsCard ? (startScreenCategoryColor || 'var(--text-primary)') : 'var(--text-primary)',
                   textAlign: 'center',
                   lineHeight: 1.15,
                   letterSpacing: '-0.01em',
