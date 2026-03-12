@@ -477,7 +477,7 @@ export default function Home() {
                       fontFamily: 'var(--font-sans)',
                       fontSize: '12px',
                       color: 'var(--color-text-tertiary)',
-                      opacity: isAllDone ? 0.55 : 0.45,
+                      opacity: isAllDone ? 0.65 : 0.55,
                       letterSpacing: '0.03em',
                     }}>
                       {isAllDone
