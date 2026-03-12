@@ -449,7 +449,7 @@ export default function CircadianMenu({
                       >
                         <div
                           style={{
-                            padding: '8px 12px 16px 52px',
+                            padding: '8px 12px 16px 28px',
                             display: 'flex',
                             flexDirection: 'column',
                             gap: '2px',
