@@ -11,7 +11,7 @@ const ORDERED_TILES: { id: string; bg: string; text: string; dark: boolean; glow
   { id: 'jim-tryggheten-inuti', bg: '#8A9114', text: '#FFFDF5', dark: true, glow: 'rgba(138,145,20,0.18)' },
   { id: 'jim-kanslorna-jag-bar', bg: '#E9EDC9', text: '#4A4820', dark: false, glow: 'rgba(200,210,160,0.20)' },
   { id: 'jim-nar-det-gor-ont', bg: '#606C38', text: '#FFFDF5', dark: true, glow: 'rgba(96,108,56,0.18)' },
-  { id: 'jim-jag-som-helhet', bg: '#FEFAE0', text: '#6B6530', dark: false, glow: 'rgba(220,210,150,0.25)' },
+  { id: 'jim-jag-som-helhet', bg: '#FEFAE0', text: '#6B6530', dark: false, glow: 'rgba(200,185,100,0.30)' },
 ];
 const DIARY_COLOR = { bg: '#F2E8CF', text: '#7A7040' };
 
