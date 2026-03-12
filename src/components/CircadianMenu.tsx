@@ -69,7 +69,7 @@ const SECTION_GROUPS = [
 ];
 
 /** Gold progress ring SVG */
-function ProgressRing({ completed, total, size = 24 }: { completed: number; total: number; size?: number }) {
+function ProgressRing({ completed, total, size = 20 }: { completed: number; total: number; size?: number }) {
   const radius = (size - 4) / 2;
   const circumference = 2 * Math.PI * radius;
   const progress = total > 0 ? completed / total : 0;
