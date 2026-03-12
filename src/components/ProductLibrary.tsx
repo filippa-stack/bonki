@@ -1140,7 +1140,7 @@ export default function ProductLibrary() {
           <div style={{
             width: '40px',
             height: '1px',
-            background: activeTab === 'par'
+            background: isDark
               ? 'linear-gradient(90deg, transparent, hsla(38, 60%, 50%, 0.2), transparent)'
               : 'linear-gradient(90deg, transparent, hsla(30, 20%, 60%, 0.3), transparent)',
             margin: '0 auto 18px',
