@@ -675,9 +675,9 @@
   --cta-text:     hsl(235, 35%, 8%);      /* Dark text on saffron */
 
   /* Session header — deep midnight */
-  --session-header-bg:    hsl(230, 30%, 15%);
-  --session-header-hover: hsl(230, 30%, 20%);
-  --session-header-press: hsl(230, 28%, 12%);
+  --session-header-bg:    hsl(192, 55%, 16%);
+  --session-header-hover: hsl(192, 50%, 20%);
+  --session-header-press: hsl(192, 55%, 13%);
 
   --color-button-primary: hsl(38, 72%, 60%);
   --color-button-text:    hsl(235, 35%, 8%);
