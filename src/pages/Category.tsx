@@ -48,8 +48,8 @@ const CARD_ILLUSTRATION_SCALE: Record<string, number> = {
   'jim-nyfiken': 1.10, 'jim-forvanad': 1.05, 'jim-jag': 1.10,
   'jim-trygg': 1.15, 'jim-ensam': 1.10, 'jim-glad': 1.10,
   'jim-radd': 1.10, 'jim-arg': 1.05, 'jim-vild': 1.05,
-  'jim-skam': 1.20, 'jim-avundsjuk': 1.20, 'jim-svartsjuk': 1.15,
-  'jim-avsky': 1.00, 'jim-acklad': 0.88, 'jim-besviken': 1.15,
+  'jim-skam': 1.20, 'jim-avundsjuk': 1.45, 'jim-svartsjuk': 1.40,
+  'jim-avsky': 1.00, 'jim-acklad': 0.88, 'jim-besviken': 1.40,
   'jim-utanfor': 0.85, 'jim-ledsen': 1.05, 'jim-stress': 1.05,
 };
 
