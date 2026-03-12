@@ -139,12 +139,12 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
               onClick={() => navigate(`/category/${cat.id}`)}
               style={{
                 background: tile.bg,
-                borderRadius: '16px',
+                borderRadius: '12px',
                 padding: '0 24px',
                 textAlign: 'center',
                 cursor: 'pointer',
-                border: `1px solid ${tile.border}`,
-                boxShadow: `0 4px 24px -4px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.25)`,
+                border: 'none',
+                boxShadow: '0px 2px 8px rgba(44, 36, 32, 0.06)',
                 whiteSpace: 'normal' as const,
                 width: '80%',
                 minHeight: '56px',
