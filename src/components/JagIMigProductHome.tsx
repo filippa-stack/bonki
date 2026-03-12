@@ -7,13 +7,14 @@ import apaImage from '@/assets/apa-jag-i-mig.png';
 
 const EASE = [0.4, 0.0, 0.2, 1] as const;
 
-/** Unique fill colors per category tile */
-const TILE_COLORS: Record<string, { bg: string; text: string }> = {
-  'jim-tryggheten-inuti': { bg: '#8A9114', text: '#FFFDF5' },
-  'jim-kanslorna-jag-bar': { bg: '#F2E8CF', text: '#5C5A2E' },
-  'jim-nar-det-gor-ont': { bg: '#606C38', text: '#FFFDF5' },
-  'jim-jag-som-helhet': { bg: '#E9EDC9', text: '#3A5C4C' },
-};
+/** Ordered tiles with glass-tinted colors */
+const ORDERED_TILES: { id: string; bg: string; text: string }[] = [
+  { id: 'jim-tryggheten-inuti', bg: '#8A9114', text: '#FFFDF5' },
+  { id: 'jim-kanslorna-jag-bar', bg: '#E9EDC9', text: '#5C5A2E' },
+  { id: 'jim-nar-det-gor-ont', bg: '#606C38', text: '#FFFDF5' },
+  { id: 'jim-jag-som-helhet', bg: '#FEFAE0', text: '#6B6530' },
+];
+const DIARY_COLOR = { bg: '#F2E8CF', text: '#7A7040' };
 
 const containerVariants = {
   hidden: {},
@@ -127,46 +128,51 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
             </p>
           </motion.div>
 
-          {/* Category buttons */}
-          {product.categories.map((cat) => {
-            const tile = TILE_COLORS[cat.id] || { bg: 'rgba(255,255,255,0.55)', text: ACCENT_COLOR };
+          {/* Category buttons — ordered */}
+          {ORDERED_TILES.map((tile) => {
+            const cat = product.categories.find((c) => c.id === tile.id);
+            if (!cat) return null;
             return (
-            <motion.button
-              key={cat.id}
-              variants={pillVariants}
-              whileHover={{ scale: 1.04, y: -2 }}
-              whileTap={{ scale: 0.97 }}
-              onClick={() => navigate(`/category/${cat.id}`)}
-              style={{
-                background: tile.bg,
-                borderRadius: '12px',
-                padding: '0 24px',
-                textAlign: 'center',
-                cursor: 'pointer',
-                border: 'none',
-                boxShadow: '0px 2px 8px rgba(44, 36, 32, 0.06), inset 0 1px 0 rgba(255,255,255,0.3)',
-                whiteSpace: 'normal' as const,
-                width: '80%',
-                minHeight: '60px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                lineHeight: 1.3,
-                backdropFilter: 'blur(16px)',
-                WebkitBackdropFilter: 'blur(16px)',
-              }}
-            >
-              <span
+              <motion.button
+                key={cat.id}
+                variants={pillVariants}
+                whileHover={{ scale: 1.06, y: -3 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={() => navigate(`/category/${cat.id}`)}
                 style={{
-                  fontFamily: "'DM Serif Display', var(--font-serif)",
-                  fontSize: 'clamp(18px, 5vw, 24px)',
-                  fontWeight: 400,
-                  color: tile.text,
+                  background: `${tile.bg}cc`,
+                  borderRadius: '16px',
+                  padding: '0 28px',
+                  textAlign: 'center',
+                  cursor: 'pointer',
+                  border: '1px solid rgba(255,255,255,0.45)',
+                  boxShadow:
+                    '0 4px 16px rgba(44, 36, 32, 0.10), 0 1px 3px rgba(44, 36, 32, 0.08), inset 0 1px 0 rgba(255,255,255,0.5), inset 0 -1px 0 rgba(0,0,0,0.04)',
+                  whiteSpace: 'normal' as const,
+                  width: '82%',
+                  minHeight: '64px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  lineHeight: 1.3,
+                  backdropFilter: 'blur(20px) saturate(1.4)',
+                  WebkitBackdropFilter: 'blur(20px) saturate(1.4)',
                 }}
               >
-                {cat.title}
-              </span>
-            </motion.button>
+                <span
+                  style={{
+                    fontFamily: "'DM Serif Display', var(--font-serif)",
+                    fontSize: 'clamp(19px, 5.2vw, 25px)',
+                    fontWeight: 400,
+                    color: tile.text,
+                    textShadow: tile.bg === '#8A9114' || tile.bg === '#606C38'
+                      ? '0 1px 2px rgba(0,0,0,0.15)'
+                      : '0 1px 2px rgba(255,255,255,0.6)',
+                  }}
+                >
+                  {cat.title}
+                </span>
+              </motion.button>
             );
           })}
 
@@ -191,32 +197,35 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
           {/* Diary entrance */}
           <motion.button
             variants={pillVariants}
-            whileHover={{ scale: 1.02, y: -1 }}
-            whileTap={{ scale: 0.98 }}
+            whileHover={{ scale: 1.04, y: -2 }}
+            whileTap={{ scale: 0.96 }}
             onClick={() => navigate(`/diary/${product.id}`)}
             style={{
-              background: 'rgba(254, 250, 224, 0.55)',
-              border: 'none',
+              background: `${DIARY_COLOR.bg}cc`,
+              border: '1px solid rgba(255,255,255,0.4)',
               cursor: 'pointer',
               marginTop: '2vh',
               padding: '16px 28px',
-              borderRadius: '12px',
-              boxShadow: '0px 2px 8px rgba(44, 36, 32, 0.06)',
+              borderRadius: '16px',
+              boxShadow:
+                '0 4px 16px rgba(44, 36, 32, 0.10), 0 1px 3px rgba(44, 36, 32, 0.08), inset 0 1px 0 rgba(255,255,255,0.5), inset 0 -1px 0 rgba(0,0,0,0.04)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               gap: '10px',
               width: '70%',
+              backdropFilter: 'blur(20px) saturate(1.4)',
+              WebkitBackdropFilter: 'blur(20px) saturate(1.4)',
             }}
           >
-            <BookOpen size={18} style={{ color: ACCENT_COLOR, opacity: 0.7, flexShrink: 0 }} />
+            <BookOpen size={18} style={{ color: DIARY_COLOR.text, opacity: 0.7, flexShrink: 0 }} />
             <div style={{ textAlign: 'left' }}>
               <span
                 style={{
                   fontFamily: "'DM Serif Display', var(--font-serif)",
                   fontSize: 'clamp(17px, 4.5vw, 20px)',
                   fontWeight: 400,
-                  color: ACCENT_COLOR,
+                  color: DIARY_COLOR.text,
                   lineHeight: 1.3,
                 }}
               >
