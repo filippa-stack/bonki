@@ -405,10 +405,10 @@ function StillUsCategoryView({
                   gap: '4px',
                   padding: '20px 20px',
                   background: isCompleted
-                    ? `hsla(194, 28%, 18%, 0.55)`
-                    : `hsla(194, 28%, 20%, 0.60)`,
-                  backdropFilter: 'blur(20px) saturate(1.2)',
-                  WebkitBackdropFilter: 'blur(20px) saturate(1.2)',
+                    ? `hsla(194, 28%, 22%, 0.35)`
+                    : `hsla(194, 28%, 24%, 0.40)`,
+                  backdropFilter: 'blur(16px) saturate(1.1)',
+                  WebkitBackdropFilter: 'blur(16px) saturate(1.1)',
                   border: isInProgress
                     ? `1px solid ${color}`
                     : `1px solid hsla(194, 28%, 50%, 0.25)`,
