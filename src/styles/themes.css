@@ -622,105 +622,108 @@
    VERDIGRIS — Still Us global identity theme
    Deep matte teal canvas, Heritage Gold accent, light text.
    Dark-base theme: all surfaces are dark, text is light.
+   "Intimate Midnight" — nocturnal, intimate, safe.
+   Base: #0A0A3D (Deep Abyss), Texture: #2D4263 (Steel Mist),
+   Spark: #E9B44C (Burnt Saffron), Pulse: #1A1AE2 (Brand Pulse)
    ══════════════════════════════════════════════════════════════ */
 .theme-verdigris {
-  /* Foundation — dark teal canvas */
-  --neutral-50:  194 24% 32%;        /* Base bg — deep verdigris */
-  --neutral-100: 194 20% 26%;        /* Raised surfaces — slightly darker */
-  --neutral-200: 194 18% 22%;        /* Sunken areas */
-  --neutral-300: 194 16% 42%;        /* Borders, dividers */
+  /* Foundation — deep midnight abyss */
+  --neutral-50:  235 35% 14%;          /* Base bg — #0A0A3D deep abyss */
+  --neutral-100: 215 30% 18%;          /* Raised surfaces — steel mist */
+  --neutral-200: 215 25% 15%;          /* Sunken areas */
+  --neutral-300: 215 22% 30%;          /* Borders, dividers */
 
   --background: var(--neutral-50);
-  --foreground: 42 20% 92%;
+  --foreground: 38 25% 92%;
 
   --card: var(--neutral-100);
-  --card-foreground: 42 20% 92%;
+  --card-foreground: 38 25% 92%;
 
-  --primary: 41 78% 48%;             /* Heritage Gold */
-  --primary-foreground: 194 30% 14%;
+  --primary: 38 72% 60%;               /* Burnt Saffron #E9B44C */
+  --primary-foreground: 235 35% 10%;
 
-  --secondary: 194 18% 28%;
-  --secondary-foreground: 42 15% 88%;
+  --secondary: 215 25% 22%;
+  --secondary-foreground: 38 20% 88%;
 
-  --muted: 194 14% 30%;
-  --muted-foreground: 194 10% 62%;
+  --muted: 220 20% 20%;
+  --muted-foreground: 220 12% 55%;
 
-  --accent: 194 18% 28%;
-  --accent-foreground: 42 15% 88%;
+  --accent: 215 25% 22%;
+  --accent-foreground: 38 20% 88%;
 
   --border: var(--neutral-300);
   --input: var(--neutral-300);
-  --ring: 41 78% 48%;
+  --ring: 38 72% 60%;
 
-  /* Text hierarchy — light on dark */
-  --text-primary:   hsl(42, 20%, 92%);    /* Warm cream */
-  --text-secondary: hsl(194, 12%, 68%);   /* Muted teal-grey */
-  --text-tertiary:  hsl(194, 10%, 52%);   /* Receded */
-  --text-ghost:     hsl(194, 8%, 42%);    /* Placeholder */
-  --text-accent:    hsl(41, 78%, 56%);    /* Gold highlight */
+  /* Text hierarchy — light on midnight */
+  --text-primary:   hsl(38, 25%, 92%);    /* Warm cream */
+  --text-secondary: hsl(220, 15%, 65%);   /* Steel grey */
+  --text-tertiary:  hsl(220, 12%, 48%);   /* Receded */
+  --text-ghost:     hsl(220, 10%, 36%);   /* Placeholder */
+  --text-accent:    hsl(38, 72%, 60%);    /* Burnt Saffron highlight */
 
-  /* Accent — Heritage Gold */
-  --accent-saffron:       hsl(41, 78%, 48%);
-  --accent-saffron-muted: hsl(41, 50%, 62%);
-  --accent-text:          hsl(41, 68%, 56%);
+  /* Accent — Burnt Saffron */
+  --accent-saffron:       hsl(38, 72%, 60%);
+  --accent-saffron-muted: hsl(38, 45%, 55%);
+  --accent-text:          hsl(38, 65%, 58%);
 
-  /* CTA — Heritage Gold buttons */
-  --cta-default:  hsl(41, 78%, 48%);
-  --cta-hover-v2: hsl(41, 82%, 54%);
-  --cta-active:   hsl(41, 72%, 42%);
+  /* CTA — Burnt Saffron buttons */
+  --cta-default:  hsl(38, 72%, 60%);
+  --cta-hover-v2: hsl(38, 78%, 65%);
+  --cta-active:   hsl(38, 65%, 50%);
   --cta-bg:       var(--cta-default);
-  --cta-text:     hsl(194, 30%, 12%);     /* Dark text on gold */
+  --cta-text:     hsl(235, 35%, 8%);      /* Dark text on saffron */
 
-  /* Session header */
-  --session-header-bg:    hsl(194, 28%, 20%);
-  --session-header-hover: hsl(194, 28%, 26%);
-  --session-header-press: hsl(194, 24%, 16%);
+  /* Session header — deep midnight */
+  --session-header-bg:    hsl(230, 30%, 15%);
+  --session-header-hover: hsl(230, 30%, 20%);
+  --session-header-press: hsl(230, 28%, 12%);
 
-  --color-button-primary: hsl(41, 78%, 48%);
-  --color-button-text:    hsl(194, 30%, 12%);
-  --color-accent:         hsl(41, 78%, 48%);
-  --color-accent-soft:    hsl(194, 16%, 42%);
+  --color-button-primary: hsl(38, 72%, 60%);
+  --color-button-text:    hsl(235, 35%, 8%);
+  --color-accent:         hsl(38, 72%, 60%);
+  --color-accent-soft:    hsl(215, 20%, 35%);
 
   /* Semantic color overrides */
-  --color-bg-base:        hsl(194, 24%, 38%);
+  --color-bg-base:        hsl(235, 35%, 14%);
   --color-text-primary:   var(--text-primary);
   --color-text-secondary: var(--text-secondary);
   --color-text-tertiary:  var(--text-tertiary);
-  --color-divider:        hsl(194, 16%, 46%);
-  --color-surface:        hsl(194, 20%, 26%);
-  --color-surface-primary: hsl(194, 20%, 26%);
+  --color-divider:        hsl(215, 20%, 30%);
+  --color-surface:        hsl(215, 30%, 18%);
+  --color-surface-primary: hsl(215, 30%, 18%);
 
-  /* Surfaces */
-  --surface-base:   hsl(194, 24%, 38%);   /* #4A707A */
-  --surface-raised: hsl(194, 22%, 32%);
-  --surface-sunken: hsl(194, 20%, 28%);
-  --surface-library: hsl(194, 24%, 38%);
-  --text-library:   hsl(42, 20%, 92%);
+  /* Surfaces — midnight depth */
+  --surface-base:   hsl(235, 35%, 14%);   /* #0A0A3D Deep Abyss */
+  --surface-raised: hsl(215, 30%, 18%);   /* #2D4263 Steel Mist */
+  --surface-sunken: hsl(230, 28%, 12%);
+  --surface-library: hsl(235, 35%, 14%);
+  --text-library:   hsl(38, 25%, 92%);
 
-  /* Note surfaces — dark variant */
-  --note-bg:    194 18% 28%;
-  --note-border: 194 14% 40%;
-  --note-text:  42 20% 90%;
+  /* Note surfaces — midnight variant */
+  --note-bg:    215 25% 18%;
+  --note-border: 215 20% 30%;
+  --note-text:  38 25% 90%;
 
-  /* Shadows — teal-tinted, deeper */
-  --shadow-card: 0 2px 6px hsla(194, 28%, 10%, 0.20),
-                 0 8px 28px -4px hsla(194, 24%, 8%, 0.25),
-                 0 18px 48px -10px hsla(194, 20%, 6%, 0.18);
-  --shadow-card-featured: 0 3px 10px hsla(194, 30%, 8%, 0.22),
-                          0 14px 40px -4px hsla(194, 26%, 6%, 0.28),
-                          0 28px 64px -12px hsla(194, 20%, 4%, 0.18);
+  /* Shadows — midnight-tinted, deep */
+  --shadow-card: 0 2px 6px hsla(230, 40%, 6%, 0.30),
+                 0 8px 28px -4px hsla(230, 35%, 4%, 0.35),
+                 0 18px 48px -10px hsla(230, 30%, 3%, 0.25);
+  --shadow-card-featured: 0 3px 10px hsla(230, 40%, 5%, 0.35),
+                          0 14px 40px -4px hsla(230, 35%, 3%, 0.40),
+                          0 28px 64px -12px hsla(230, 30%, 2%, 0.25);
   --radius-card: 1.125rem;
   --border-card: none;
 
   /* Product home tokens */
-  --product-title-color: hsl(42, 20%, 92%);
-  --product-subtitle-color: hsl(194, 12%, 68%);
-  --product-button-bg: hsl(41, 78%, 48%);
-  --product-button-text: hsl(194, 30%, 12%);
-  --product-button-shadow: 0 4px 16px -4px hsla(41, 60%, 30%, 0.30);
+  --product-title-color: hsl(38, 25%, 92%);
+  --product-subtitle-color: hsl(220, 15%, 65%);
+  --product-button-bg: hsl(38, 72%, 60%);
+  --product-button-text: hsl(235, 35%, 8%);
+  --product-button-shadow: 0 4px 16px -4px hsla(38, 60%, 30%, 0.35);
 
   /* Completion tokens */
-  --completion-subtitle: hsl(194, 12%, 64%);
-  --completion-label: hsl(194, 10%, 56%);
-  --completion-link: hsl(41, 68%, 56%);
+  --completion-subtitle: hsl(220, 15%, 60%);
+  --completion-label: hsl(220, 12%, 50%);
+  --completion-link: hsl(38, 65%, 58%);
 }
