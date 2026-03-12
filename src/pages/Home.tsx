@@ -33,14 +33,6 @@ import {
   selectSuggestedNextCardId,
 } from '@/selectors/spaceSnapshotSelectors';
 import { categories as allCategories, cards as allCards } from '@/data/content';
-import {
-  selectLastActivityAt,
-  selectExploredCardIds,
-  selectLastOpenedCardId,
-  selectLastCompletedCardId,
-  selectSuggestedNextCardId,
-} from '@/selectors/spaceSnapshotSelectors';
-import { categories as allCategories, cards as allCards } from '@/data/content';
 
 const CATEGORY_ACCENTS: Record<number, string> = {
   0: 'hsl(158, 35%, 22%)',   // deep green
