@@ -149,8 +149,8 @@ export default function CardPreview() {
                   fontFamily: 'var(--font-serif)',
                   fontSize: '16px',
                   lineHeight: 1.7,
-                  color: 'var(--text-primary)',
-                  opacity: 0.65,
+                  color: categoryColor || 'var(--text-primary)',
+                  opacity: 0.60,
                 }}
               >
                 {card.subtitle}
