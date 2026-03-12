@@ -171,6 +171,10 @@ export default function CardView() {
   // Apply Verdigris theme for Still Us cards
   useVerdigrisTheme(isStillUsCard);
 
+  // Category color for Still Us start screen text
+  const startScreenCategoryColor = card ? (CIRCADIAN_COLORS_LIGHT[card.categoryId] || CIRCADIAN_COLORS[card.categoryId]) : undefined;
+  const startScreenCategoryColorBase = card ? CIRCADIAN_COLORS[card.categoryId] : undefined;
+
   const { recordVisit } = useCardVisit();
   useEffect(() => {
     if (cardId) recordVisit(cardId);
