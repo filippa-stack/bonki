@@ -1,8 +1,8 @@
 import { useState, useMemo } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Category, Card } from '@/types';
 import { Check } from 'lucide-react';
+import TopicPreviewOverlay from '@/components/TopicPreviewOverlay';
 
 /**
  * Circadian color mapping — reflects psychological shift
