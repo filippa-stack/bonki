@@ -484,8 +484,7 @@ export default function Home() {
                     </p>
                     <p style={{
                       fontFamily: 'var(--font-serif)',
-                      fontStyle: 'italic',
-                      fontSize: '14px',
+                       fontSize: '14px',
                       color: 'var(--accent-text)',
                        opacity: 0.50,
                        marginTop: '16px',
