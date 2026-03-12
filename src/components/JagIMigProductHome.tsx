@@ -77,7 +77,7 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
           flexDirection: 'column',
           alignItems: 'center',
           justifyContent: 'flex-start',
-          paddingTop: '12vh',
+          paddingTop: '15vh',
           paddingRight: '10vw',
           paddingBottom: '48px',
           paddingLeft: '10vw',
