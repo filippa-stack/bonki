@@ -464,7 +464,7 @@ export default function Home() {
                       fontStyle: 'italic',
                       fontSize: '14px',
                       color: 'var(--accent-text)',
-                      opacity: 0.30,
+                      opacity: 0.45,
                     }}>
                       Samtalet börjar här.
                     </p>
