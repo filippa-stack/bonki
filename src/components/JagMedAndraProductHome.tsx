@@ -155,50 +155,41 @@ export default function JagMedAndraProductHome({ product }: { product: ProductMa
             </p>
           </motion.div>
 
-          {/* Category buttons — candy-like glass tiles */}
+          {/* Category buttons — glass tiles */}
           {ORDERED_TILES.map((tile, index) => {
             const cat = product.categories.find((c) => c.id === tile.id);
             if (!cat) return null;
 
-            const isDark = tile.dark;
             const isFirst = index === 0;
-            const isLightestTile = tile.id === 'jma-vi-i-varlden';
 
             return (
               <motion.button
                 key={cat.id}
                 variants={pillVariants}
-                whileHover={{ scale: 1.06, y: -4 }}
-                whileTap={{ scale: 0.965, y: 1 }}
+                whileHover={{ scale: 1.04, y: -3 }}
+                whileTap={{ scale: 0.975, y: 1 }}
                 onClick={() => navigate(`/category/${cat.id}`)}
                 style={{
-                  background: isDark
-                    ? `linear-gradient(170deg, ${tile.bg}f0 0%, ${tile.bg}d9 40%, ${tile.bg}c4 100%)`
-                    : `linear-gradient(170deg, rgba(255,255,255,0.85) 0%, ${tile.bg}e6 35%, ${tile.bg}d4 100%)`,
-                  borderRadius: '22px',
+                  background: tile.bg,
+                  borderRadius: '20px',
                   padding: '0 32px',
                   textAlign: 'center',
                   cursor: 'pointer',
-                  border: isLightestTile
-                    ? '1.5px solid rgba(160, 120, 180, 0.3)'
-                    : isDark
-                      ? '1px solid rgba(255,255,255,0.3)'
-                      : '1.5px solid rgba(255,255,255,0.7)',
+                  border: '1px solid hsla(0, 0%, 100%, 0.45)',
                   boxShadow: [
-                    `0 6px 24px ${tile.glow}`,
-                    isLightestTile ? '0 3px 10px rgba(140,80,160,0.10)' : '0 2px 6px rgba(44, 36, 32, 0.08)',
-                    `inset 0 2px 1px rgba(255,255,255,${isDark ? '0.35' : '0.8'})`,
-                    `inset 0 -3px 6px rgba(0,0,0,${isDark ? '0.08' : '0.03'})`,
+                    '0 4px 20px hsla(0, 0%, 0%, 0.06)',
+                    '0 1px 3px hsla(0, 0%, 0%, 0.04)',
+                    `inset 0 1px 0 hsla(0, 0%, 100%, 0.5)`,
                   ].join(', '),
                   whiteSpace: 'normal' as const,
                   width: '84%',
-                  minHeight: isFirst ? '76px' : '68px',
+                  minHeight: isFirst ? '72px' : '64px',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
                   lineHeight: 1.3,
-                  backdropFilter: 'blur(24px) saturate(1.5)',
-                  WebkitBackdropFilter: 'blur(24px) saturate(1.5)',
+                  backdropFilter: 'blur(20px) saturate(1.3)',
+                  WebkitBackdropFilter: 'blur(20px) saturate(1.3)',
                 }}
               >
                 <span
@@ -207,9 +198,7 @@ export default function JagMedAndraProductHome({ product }: { product: ProductMa
                     fontSize: 'clamp(20px, 5.5vw, 26px)',
                     fontWeight: 400,
                     color: tile.text,
-                    textShadow: isDark
-                      ? '0 1px 3px rgba(0,0,0,0.2)'
-                      : '0 1px 2px rgba(255,255,255,0.8)',
+                    textShadow: '0 1px 3px hsla(0, 0%, 100%, 0.6)',
                   }}
                 >
                   {cat.title}
