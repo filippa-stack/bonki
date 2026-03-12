@@ -1091,7 +1091,7 @@ export default function ProductLibrary() {
               style={{
                 borderRadius: '20px',
                 padding: '24px 20px 18px',
-                background: 'hsla(215, 38%, 25%, 0.65)',
+                background: 'hsla(327, 24%, 30%, 0.70)',
                 backdropFilter: 'blur(24px)',
                 WebkitBackdropFilter: 'blur(24px)',
                 textAlign: 'left',
