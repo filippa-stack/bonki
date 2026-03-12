@@ -615,21 +615,19 @@ interface CardEntryProps {
 function CardEntry({ card, index, isCompleted = false, isInProgress = false, onNavigate, isLast = false, styles, categoryBg }: CardEntryProps) {
   const zipIllustration = useCardImage(card.id);
   const illustration = CARD_IMAGE_OVERRIDE[card.id] ?? zipIllustration;
-  const illustrationOpacity = CARD_ILLUSTRATION_OPACITY[card.id] ?? 0.12;
   const illustrationScale = CARD_ILLUSTRATION_SCALE[card.id] ?? 1.0;
-  const nudge = CARD_ILLUSTRATION_NUDGE[card.id] ?? { x: 0, y: 0 };
-  const size = Math.round(72 * illustrationScale);
 
   const cardBg = categoryBg || styles?.cardBg || '#FFFFFF';
   const titleColor = styles?.cardTitleColor ?? 'var(--text-primary)';
   const subtitleColor = '#8A8078';
+  const illustrationSize = Math.round(130 * illustrationScale);
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 6 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: index * 0.06, duration: 0.5, ease: EASE }}
-      style={{ marginBottom: isLast ? '0' : '16px' }}
+      initial={{ opacity: 0, y: 12, scale: 0.97 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
+      transition={{ delay: index * 0.07, duration: 0.55, ease: EASE }}
+      style={{ marginBottom: isLast ? '0' : '20px' }}
     >
       <div
         onClick={onNavigate}
@@ -641,7 +639,7 @@ function CardEntry({ card, index, isCompleted = false, isInProgress = false, onN
         }}
         className="w-full cursor-pointer group relative overflow-hidden"
         style={{
-          padding: '24px 20px',
+          padding: '0',
           background: categoryBg
             ? categoryBg
             : isCompleted
@@ -650,57 +648,122 @@ function CardEntry({ card, index, isCompleted = false, isInProgress = false, onN
           backdropFilter: categoryBg ? 'blur(16px)' : undefined,
           WebkitBackdropFilter: categoryBg ? 'blur(16px)' : undefined,
           border: 'none',
-          borderRadius: '12px',
+          borderRadius: '20px',
           boxShadow: isCompleted
             ? '0px 1px 3px rgba(44, 36, 32, 0.04), 0px 4px 12px -4px rgba(44, 36, 32, 0.04)'
-            : isInProgress
-            ? '0px 3px 10px rgba(44, 36, 32, 0.12), 0px 10px 32px -8px rgba(44, 36, 32, 0.10)'
-            : '0px 2px 6px rgba(44, 36, 32, 0.08), 0px 8px 24px -8px rgba(44, 36, 32, 0.06)',
+            : '0px 4px 16px rgba(44, 36, 32, 0.08), 0px 12px 32px -8px rgba(44, 36, 32, 0.06)',
           transition: 'transform 200ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 260ms ease-out',
-          minHeight: '100px',
+          minHeight: '160px',
         }}
-        onPointerDown={(e) => { e.currentTarget.style.transform = 'scale(0.99)'; }}
+        onPointerDown={(e) => { e.currentTarget.style.transform = 'scale(0.985)'; }}
         onPointerUp={(e) => { e.currentTarget.style.transform = ''; }}
-        onPointerLeave={(e) => { e.currentTarget.style.transform = ''; e.currentTarget.style.boxShadow = ''; }}
+        onPointerLeave={(e) => { e.currentTarget.style.transform = ''; }}
         onPointerEnter={(e) => {
-          e.currentTarget.style.transform = 'translateY(-2px)';
-          e.currentTarget.style.boxShadow = '0px 4px 12px rgba(44, 36, 32, 0.10), 0px 12px 36px -8px rgba(44, 36, 32, 0.08)';
+          e.currentTarget.style.transform = 'translateY(-3px) scale(1.01)';
         }}
       >
+        {/* Large hero illustration */}
         {illustration && (
-          <img
-            src={illustration} alt="" aria-hidden="true" draggable={false}
-            className="pointer-events-none select-none absolute"
+          <div
+            className="pointer-events-none select-none"
             style={{
-              right: `${16 - nudge.x}px`, top: `calc(50% + ${nudge.y}px)`,
-              transform: 'translateY(-50%)',
-              height: `${size}px`, width: `${size}px`,
-              objectFit: 'contain', objectPosition: 'center',
-              opacity: illustrationOpacity,
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              paddingTop: '20px',
+              paddingBottom: '4px',
             }}
-          />
-        )}
-
-        {isCompleted && (
-          <span className="absolute" style={{ top: '10px', right: '14px', fontFamily: 'var(--font-sans)', fontSize: '11px', letterSpacing: '0.04em', color: titleColor, opacity: 0.6, fontWeight: 500 }}>
-            Utforskad
-          </span>
-        )}
-
-        <div className="flex items-center relative z-[1]">
-          {isInProgress && (
-            <span style={{ display: 'inline-block', width: '8px', height: '8px', borderRadius: '50%', backgroundColor: titleColor, marginRight: '12px', flexShrink: 0, animation: 'saffron-pulse 2.0s ease-in-out infinite' }} />
-          )}
-          <div className="flex-1 min-w-0" style={{ paddingRight: illustration ? '20%' : '0' }}>
-            <h3 style={{ fontFamily: "'DM Serif Display', var(--font-serif)", fontSize: '20px', fontWeight: 400, color: titleColor, opacity: isCompleted ? 0.60 : 1, lineHeight: 1.3, textAlign: 'left' }}>
-              {card.title}
-            </h3>
-            {card.subtitle && (
-              <p style={{ fontFamily: 'var(--font-serif)', fontSize: '14px', color: subtitleColor, opacity: isCompleted ? 0.45 : 0.75, lineHeight: 1.4, marginTop: '6px', textAlign: 'left' }}>
-                {card.subtitle}
-              </p>
-            )}
+          >
+            <img
+              src={illustration}
+              alt=""
+              aria-hidden="true"
+              draggable={false}
+              style={{
+                height: `${illustrationSize}px`,
+                width: `${illustrationSize}px`,
+                objectFit: 'contain',
+                objectPosition: 'center',
+                opacity: isCompleted ? 0.45 : 0.85,
+                transition: 'opacity 300ms ease',
+                filter: isCompleted ? 'grayscale(0.3)' : 'none',
+              }}
+            />
           </div>
+        )}
+
+        {/* Text content below illustration */}
+        <div
+          style={{
+            padding: illustration ? '8px 24px 20px' : '24px',
+            textAlign: 'center',
+            position: 'relative',
+          }}
+        >
+          {isCompleted && (
+            <span
+              style={{
+                position: 'absolute',
+                top: illustration ? '-4px' : '8px',
+                right: '16px',
+                fontFamily: 'var(--font-sans)',
+                fontSize: '10px',
+                letterSpacing: '0.06em',
+                textTransform: 'uppercase',
+                color: titleColor,
+                opacity: 0.45,
+                fontWeight: 500,
+              }}
+            >
+              Utforskad
+            </span>
+          )}
+
+          {isInProgress && (
+            <span
+              style={{
+                position: 'absolute',
+                top: illustration ? '-4px' : '8px',
+                right: '16px',
+                display: 'inline-block',
+                width: '8px',
+                height: '8px',
+                borderRadius: '50%',
+                backgroundColor: titleColor,
+                animation: 'saffron-pulse 2.0s ease-in-out infinite',
+              }}
+            />
+          )}
+
+          <h3
+            style={{
+              fontFamily: "'DM Serif Display', var(--font-serif)",
+              fontSize: '22px',
+              fontWeight: 400,
+              color: titleColor,
+              opacity: isCompleted ? 0.55 : 1,
+              lineHeight: 1.3,
+            }}
+          >
+            {card.title}
+          </h3>
+          {card.subtitle && (
+            <p
+              style={{
+                fontFamily: 'var(--font-serif)',
+                fontSize: '13px',
+                color: subtitleColor,
+                opacity: isCompleted ? 0.40 : 0.70,
+                lineHeight: 1.45,
+                marginTop: '6px',
+                maxWidth: '90%',
+                marginLeft: 'auto',
+                marginRight: 'auto',
+              }}
+            >
+              {card.subtitle}
+            </p>
+          )}
         </div>
       </div>
     </motion.div>
