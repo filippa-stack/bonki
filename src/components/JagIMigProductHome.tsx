@@ -7,13 +7,14 @@ import apaImage from '@/assets/apa-jag-i-mig.png';
 
 const EASE = [0.4, 0.0, 0.2, 1] as const;
 
-/** Unique fill colors per category tile */
-const TILE_COLORS: Record<string, { bg: string; text: string }> = {
-  'jim-tryggheten-inuti': { bg: '#8A9114', text: '#FFFDF5' },
-  'jim-kanslorna-jag-bar': { bg: '#F2E8CF', text: '#5C5A2E' },
-  'jim-nar-det-gor-ont': { bg: '#606C38', text: '#FFFDF5' },
-  'jim-jag-som-helhet': { bg: '#E9EDC9', text: '#3A5C4C' },
-};
+/** Ordered tiles with glass-tinted colors */
+const ORDERED_TILES: { id: string; bg: string; text: string }[] = [
+  { id: 'jim-tryggheten-inuti', bg: '#8A9114', text: '#FFFDF5' },
+  { id: 'jim-kanslorna-jag-bar', bg: '#E9EDC9', text: '#5C5A2E' },
+  { id: 'jim-nar-det-gor-ont', bg: '#606C38', text: '#FFFDF5' },
+  { id: 'jim-jag-som-helhet', bg: '#FEFAE0', text: '#6B6530' },
+];
+const DIARY_COLOR = { bg: '#F2E8CF', text: '#7A7040' };
 
 const containerVariants = {
   hidden: {},
