@@ -388,8 +388,8 @@ export default function CircadianMenu({
                               fontSize: '12px',
                               fontWeight: 400,
                               fontStyle: 'italic',
-                              color: 'var(--text-secondary)',
-                              opacity: 0.65,
+                              color: 'var(--text-primary)',
+                              opacity: 0.80,
                               lineHeight: 1.45,
                               marginTop: '2px',
                             }}
