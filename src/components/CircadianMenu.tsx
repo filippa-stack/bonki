@@ -1,14 +1,14 @@
 import { useState, useMemo } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Category, Card } from '@/types';
 import { Check } from 'lucide-react';
+import TopicPreviewOverlay from '@/components/TopicPreviewOverlay';
 
 /**
  * Circadian color mapping — reflects psychological shift
  * from light/accessible to deep/reflective.
  */
-const CIRCADIAN_COLORS: Record<string, string> = {
+export const CIRCADIAN_COLORS: Record<string, string> = {
   'emotional-intimacy': '#A2B5A9', // Morning Sage
   'communication':      '#6B8E7D', // Vitality Green
   'category-8':         '#C28A78', // Warm Clay
@@ -40,6 +40,18 @@ export default function CircadianMenu({
   onNavigateToCard,
 }: CircadianMenuProps) {
   const [expandedId, setExpandedId] = useState<string | null>(null);
+  const [previewCard, setPreviewCard] = useState<Card | null>(null);
+  const [previewCategory, setPreviewCategory] = useState<Category | null>(null);
+  const [previewColor, setPreviewColor] = useState('#A2B5A9');
+  const [overlayOpen, setOverlayOpen] = useState(false);
+
+  const handleCardClick = (card: Card, category: Category) => {
+    const color = CIRCADIAN_COLORS[category.id] || '#A2B5A9';
+    setPreviewCard(card);
+    setPreviewCategory(category);
+    setPreviewColor(color);
+    setOverlayOpen(true);
+  };
 
   const categoryCards = useMemo(() => {
     const map = new Map<string, Card[]>();
@@ -213,7 +225,7 @@ export default function CircadianMenu({
                             delay: 0.06 + cardIndex * 0.05,
                             ease: [...ENTER_EASE],
                           }}
-                          onClick={() => onNavigateToCard(card.id)}
+                          onClick={() => handleCardClick(card, category)}
                           className="w-full text-left"
                           style={{
                             display: 'flex',
@@ -325,6 +337,15 @@ export default function CircadianMenu({
           </motion.div>
         );
       })}
+
+      {/* Topic preview overlay + instruction bridge */}
+      <TopicPreviewOverlay
+        card={previewCard}
+        category={previewCategory}
+        categoryColor={previewColor}
+        open={overlayOpen}
+        onClose={() => setOverlayOpen(false)}
+      />
     </div>
   );
 }
