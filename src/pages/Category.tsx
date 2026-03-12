@@ -75,7 +75,7 @@ const CATEGORY_CARD_BG: Record<string, string> = {
   // Jag i mig — softened to avoid overpowering illustrations
   'jim-tryggheten-inuti': '#CDD625',
   'jim-kanslorna-jag-bar': '#F2F89B',
-  'jim-nar-det-gor-ont': '#8A9A5B',
+  'jim-nar-det-gor-ont': '#6B7A45',
   'jim-jag-som-helhet': '#6B7213',
   // Jag med andra
   'jma-att-hora-till': 'hsl(263, 48%, 62%)',
