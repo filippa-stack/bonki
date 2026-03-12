@@ -276,15 +276,15 @@ export default function JagIVarldenProductHome({ product }: { product: ProductMa
             whileTap={{ scale: 0.97 }}
             onClick={() => navigate(`/diary/${product.id}`)}
             style={{
-              background: 'rgba(45, 79, 50, 0.10)',
-              border: '1px solid rgba(45, 79, 50, 0.15)',
+              background: 'rgba(93, 99, 83, 0.10)',
+              border: '1px solid rgba(93, 99, 83, 0.15)',
               cursor: 'pointer',
               marginTop: '0.5vh',
               padding: '14px 24px',
               borderRadius: '16px',
               boxShadow: [
-                '0 4px 14px hsla(135, 40%, 20%, 0.06)',
-                'inset 0 1px 0 hsla(130, 30%, 85%, 0.30)',
+                '0 4px 14px hsla(30, 20%, 25%, 0.06)',
+                'inset 0 1px 0 hsla(35, 25%, 88%, 0.30)',
               ].join(', '),
               display: 'flex',
               alignItems: 'center',
