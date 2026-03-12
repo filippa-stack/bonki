@@ -460,8 +460,7 @@ export default function Home() {
                   <div style={{ textAlign: 'center', marginTop: '40px' }}>
                     <p style={{
                       fontFamily: 'var(--font-serif)',
-                      fontStyle: 'italic',
-                      fontSize: '14px',
+                       fontSize: '14px',
                       color: 'var(--accent-text)',
                       opacity: 0.45,
                     }}>
