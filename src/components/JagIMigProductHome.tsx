@@ -36,7 +36,7 @@ const ORDERED_TILES = [
   },
 ];
 
-const ACCENT_COLOR = '#8A9A10';
+const ACCENT_COLOR = '#6B7A10';
 const DIARY_TEXT = '#3E4421';
 
 const containerVariants = {
