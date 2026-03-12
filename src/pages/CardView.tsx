@@ -979,7 +979,8 @@ export default function CardView() {
             transition={{ delay: 0.5, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
             style={{
               fontSize: '12px',
-              color: 'var(--completion-label)',
+              color: 'var(--text-secondary)',
+              opacity: 0.55,
               textAlign: 'center',
               marginTop: '10px',
             }}
