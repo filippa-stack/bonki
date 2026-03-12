@@ -221,16 +221,6 @@ export default function CircadianMenu({
               gap: '10px',
             }}
           >
-            <span
-              style={{
-                width: '12px',
-                height: '1.5px',
-                background: HERITAGE_GOLD,
-                opacity: 0.5,
-                borderRadius: '1px',
-                flexShrink: 0,
-              }}
-            />
             <h2
               style={{
                 fontFamily: 'var(--font-serif)',
@@ -238,8 +228,8 @@ export default function CircadianMenu({
                 fontWeight: 600,
                 letterSpacing: '0.06em',
                 textTransform: 'uppercase',
-                color: 'var(--text-primary)',
-                opacity: 0.65,
+                color: HERITAGE_GOLD,
+                opacity: 0.55,
                 lineHeight: 1,
               }}
             >
@@ -249,8 +239,7 @@ export default function CircadianMenu({
               style={{
                 flex: 1,
                 height: '1px',
-                background: `linear-gradient(90deg, ${HERITAGE_GOLD}40 0%, transparent 100%)`,
-                opacity: 0.35,
+                background: `linear-gradient(90deg, ${HERITAGE_GOLD}30 0%, transparent 100%)`,
               }}
             />
           </motion.div>
