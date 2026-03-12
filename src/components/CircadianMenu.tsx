@@ -333,6 +333,21 @@ export default function CircadianMenu({
                   }}
                   style={{ position: 'relative' }}
                 >
+                  {/* Spine node dot */}
+                  <div
+                    style={{
+                      position: 'absolute',
+                      left: '-13.5px',
+                      top: '50%',
+                      transform: 'translateY(-50%)',
+                      width: '5px',
+                      height: '5px',
+                      borderRadius: '50%',
+                      backgroundColor: color,
+                      opacity: allCompleted ? 0.6 : 0.25,
+                      zIndex: 2,
+                    }}
+                  />
                   <motion.button
                     onClick={() => handleToggle(category.id)}
                     className="w-full text-left circadian-tile"
