@@ -132,7 +132,7 @@ export default function JagIVarldenProductHome({ product }: { product: ProductMa
           flexDirection: 'column',
           alignItems: 'center',
           justifyContent: 'flex-start',
-          paddingTop: '14vh',
+          paddingTop: '10vh',
           paddingRight: '8vw',
           paddingBottom: '48px',
           paddingLeft: '8vw',
@@ -212,7 +212,14 @@ export default function JagIVarldenProductHome({ product }: { product: ProductMa
                   border: isDark
                     ? '1px solid hsla(30, 20%, 45%, 0.35)'
                     : '1px solid hsla(35, 25%, 82%, 0.60)',
-                  boxShadow: isDark
+                  boxShadow: (isDark && isHero)
+                    ? [
+                        '0 8px 24px hsla(130, 30%, 20%, 0.28)',
+                        '0 3px 8px hsla(0, 0%, 0%, 0.12)',
+                        'inset 0 2px 1px hsla(130, 40%, 70%, 0.35)',
+                        'inset 0 -2px 4px hsla(130, 20%, 20%, 0.10)',
+                      ].join(', ')
+                    : isDark
                     ? [
                         '0 6px 20px hsla(30, 20%, 15%, 0.20)',
                         '0 2px 6px hsla(0, 0%, 0%, 0.10)',
