@@ -1556,7 +1556,7 @@ export default function CardView() {
       )}
 
 
-      {isLive && effectiveSteps.length > 1 && product?.id === 'still_us' && (
+      {isLive && effectiveSteps.length > 1 && isStillUsCard && (
         <motion.div
           style={{ paddingTop: '16px', marginTop: '20px' }}
           initial={!suppressEntryAnim ? { opacity: 0 } : false}
