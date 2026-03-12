@@ -335,7 +335,7 @@ export default function Home() {
                         fontSize: '14px',
                         fontWeight: 600,
                         color: 'var(--accent-saffron)',
-                        opacity: 0.7,
+                        opacity: 1,
                         background: 'none',
                         border: 'none',
                         cursor: 'pointer',
