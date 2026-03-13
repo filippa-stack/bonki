@@ -517,7 +517,7 @@ export const cards: Card[] = [
         title: 'Fördjupning',
         content: 'Utforska vad som döljs bakom fasaden.',
         prompts: [
-          'När väljer du att inte säga hur det faktiskt är i relationen — och vad gör det lättare att hålla tyst?',
+          'Vad gör det lättare att hålla tyst om hur det faktiskt är i relationen?',
           'Vad slutar du be om — eller säga rakt ut — när du inte känner dig trygg i dig själv?',
         ],
         anchors: [
