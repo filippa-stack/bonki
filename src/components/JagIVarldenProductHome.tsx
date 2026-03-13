@@ -34,36 +34,36 @@ const ACCENT_COLOR = '#3D7A45';
 const ORDERED_TILES = [
   {
     id: 'jiv-min-vardag',
-    // Pistachio — The Hero
-    bg: '#84C289',
-    text: '#FAFAF0',
-    dark: true,
+    // Blekt salviagrön
+    bg: '#CDE6D2',
+    text: '#2D4F32',
+    dark: false,
   },
   {
     id: 'jiv-vem-jag-ar',
-    // Sand Dune — The Light
-    bg: '#F5EFE6',
+    // Varm krämig off-white
+    bg: '#F7F2ED',
     text: '#3D4A35',
     dark: false,
   },
   {
     id: 'jiv-jag-och-andra',
-    // Terracotta — The Contrast
-    bg: '#D9A07B',
-    text: '#FAFAF0',
-    dark: true,
+    // Dämpad nude/sand
+    bg: '#E5D5C8',
+    text: '#3D4A35',
+    dark: false,
   },
   {
     id: 'jiv-jag-i-samhallet',
-    // Frosted Mint — The Highlight
-    bg: '#A3C7A7',
+    // Sval dämpad grönvinter
+    bg: '#BDD3C3',
     text: '#2D4F32',
     dark: false,
   },
   {
     id: 'jiv-det-stora-sammanhanget',
-    // Stone Grey — The Shadow
-    bg: '#5D6353',
+    // Mjuk rökig grågrön
+    bg: '#8B948D',
     text: '#FAFAF0',
     dark: true,
   },
