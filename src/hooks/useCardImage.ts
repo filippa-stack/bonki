@@ -154,6 +154,10 @@ const STANDALONE_IMAGES: Record<string, string> = {
   'jma-utanfor': '/card-images/jma-utanfor.png',
   'jma-duktig': '/card-images/jma-duktig.png',
   'jma-tavla': '/card-images/jma-tavla.png',
+  'jma-avund': '/card-images/jma-avund.png',
+  'jma-konflikt': '/card-images/jma-konflikt.png',
+  'jma-kritik': '/card-images/jma-kritik.png',
+  'jma-stopp': '/card-images/jma-stopp.png',
 };
 
 const ZIP_URLS: Record<ZipSource, string> = {
