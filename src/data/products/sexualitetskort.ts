@@ -33,9 +33,9 @@ const cards: Card[] = [
   ]}]},
   { id: 'sex-onani', title: 'Onani', subtitle: 'Att utforska sin kropp och sin sexualitet på egen hand', categoryId: 'sex-min-identitet', sections: [{ id: 'sex-onani-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
     'Vilka syften finns med att onanera?',
-    'Vad kan man lära sig av att onanera?',
-    'På vilka olika sätt kan det vara bra för hälsan att onanera?',
-    'Är det enbart privat att onanera, eller kan man göra det tillsammans med någon annan? I vilka sammanhang?',
+     'Vad kan en lära sig av att onanera?',
+     'På vilka olika sätt kan det vara bra för hälsan att onanera?',
+     'Är det enbart privat att onanera, eller kan en göra det tillsammans med någon annan? I vilka sammanhang?',
   ]}]},
   { id: 'sex-kroppsideal', title: 'Kroppsideal', subtitle: 'Hur ideal och förväntningar på kroppen påverkar hur vi ser på oss själva', categoryId: 'sex-min-identitet', sections: [{ id: 'sex-kroppsideal-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
     'Vad tror du folk menar när de pratar om en "normal" kropp? Finns det en sådan?',
