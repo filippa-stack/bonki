@@ -79,7 +79,7 @@ const cards: Card[] = [
   {
     id: 'jim-stress',
     title: 'Stress',
-    subtitle: 'Känslan av för mycket på en gång -- i kroppen och i vardagen',
+    subtitle: 'Känslan av för mycket på en gång – i kroppen och i vardagen',
     categoryId: 'jim-tryggheten-inuti',
     sections: [
       {
