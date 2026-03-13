@@ -85,9 +85,9 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
                   padding: '0 32px',
                   textAlign: 'center',
                   cursor: 'pointer',
-                  border: isNextCategory ? `1.5px solid ${SAFFRON}88` : '1px solid hsla(66, 25%, 65%, 0.20)',
+                  border: isNextCategory ? `2px solid ${SAFFRON}BB` : '1px solid hsla(66, 25%, 65%, 0.20)',
                   boxShadow: [
-                    isNextCategory ? `0 0 20px -4px ${SAFFRON}30` : '',
+                    isNextCategory ? `0 0 16px 0px ${SAFFRON}45, 0 0 32px -4px ${SAFFRON}25` : '',
                     '0 2px 8px hsla(66, 30%, 25%, 0.05)',
                     '0 1px 2px hsla(66, 25%, 30%, 0.03)',
                     'inset 0 1px 0 hsla(60, 30%, 92%, 0.35)',
