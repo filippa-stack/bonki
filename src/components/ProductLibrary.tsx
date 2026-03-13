@@ -694,19 +694,19 @@ export default function ProductLibrary() {
             margin: '32px 40px 8px',
           }}
         >
-          <div style={{ flex: 1, height: '1px', background: 'linear-gradient(90deg, transparent, hsla(38, 50%, 60%, 0.2))' }} />
+          <div style={{ flex: 1, height: '1px', background: 'linear-gradient(90deg, transparent, hsla(38, 60%, 55%, 0.25))' }} />
           <span style={{
             fontFamily: "'Lato', sans-serif",
             fontSize: '8px',
             fontWeight: 700,
             letterSpacing: '0.15em',
             textTransform: 'uppercase' as const,
-            color: 'var(--accent-text)',
-            opacity: 0.45,
+            color: '#E9B44C',
+            opacity: 0.5,
           }}>
             ✦
           </span>
-          <div style={{ flex: 1, height: '1px', background: 'linear-gradient(90deg, hsla(38, 50%, 60%, 0.2), transparent)' }} />
+          <div style={{ flex: 1, height: '1px', background: 'linear-gradient(90deg, hsla(38, 60%, 55%, 0.25), transparent)' }} />
         </motion.div>
 
         {/* Diary — magical emotional anchor */}
