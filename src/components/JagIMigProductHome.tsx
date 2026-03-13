@@ -126,7 +126,7 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
           justifyContent: 'flex-start',
           paddingTop: '14vh',
           paddingRight: '8vw',
-          paddingBottom: '48px',
+          paddingBottom: '120px',
           paddingLeft: '8vw',
         }}
       >
