@@ -5,7 +5,7 @@ const categories: Category[] = [
   {
     id: 'sk-vi-blev-syskon',
     title: 'Vi blev syskon',
-    subtitle: 'Hur allt började -- och vad vi delar.',
+    subtitle: 'Hur allt började – och vad vi delar.',
     description: 'Att få ett syskon och de tidiga minnena',
     cardCount: 4,
   },
@@ -100,7 +100,7 @@ const cards: Card[] = [
   {
     id: 'sk-vanskap',
     title: 'Vänskap',
-    subtitle: 'Syskons unika band -- en relation en inte väljer men kan vårda',
+    subtitle: 'Syskons unika band – en relation en inte väljer men kan vårda',
     categoryId: 'sk-vi-blev-syskon',
     sections: [
       {
@@ -121,7 +121,7 @@ const cards: Card[] = [
   {
     id: 'sk-unik',
     title: 'Unik',
-    subtitle: 'Vad som gör varje syskon till sin egen person -- likheter och olikheter',
+    subtitle: 'Vad som gör varje syskon till sin egen person – likheter och olikheter',
     categoryId: 'sk-vi-ar-olika',
     sections: [
       {
@@ -164,7 +164,7 @@ const cards: Card[] = [
   {
     id: 'sk-bonussyskon',
     title: 'Bonussyskon',
-    subtitle: 'Att få nya syskon via en ombildad familj -- möjligheter och utmaningar',
+    subtitle: 'Att få nya syskon via en ombildad familj – möjligheter och utmaningar',
     categoryId: 'sk-vi-ar-olika',
     sections: [
       {
@@ -186,7 +186,7 @@ const cards: Card[] = [
   {
     id: 'sk-konflikt',
     title: 'Konflikt',
-    subtitle: 'Bråk mellan syskon -- varför det händer och vad en lär sig av det',
+    subtitle: 'Bråk mellan syskon – varför det händer och vad en lär sig av det',
     categoryId: 'sk-nar-det-skaver',
     sections: [
       {
@@ -208,7 +208,7 @@ const cards: Card[] = [
   {
     id: 'sk-dela',
     title: 'Dela',
-    subtitle: 'Att dela saker, utrymme och tid -- och vad det tränar oss i',
+    subtitle: 'Att dela saker, utrymme och tid – och vad det tränar oss i',
     categoryId: 'sk-nar-det-skaver',
     sections: [
       {
@@ -228,7 +228,7 @@ const cards: Card[] = [
   {
     id: 'sk-rattvisa',
     title: 'Rättvisa',
-    subtitle: 'Känslan av att bli behandlad ojämlikt -- och vad rättvisa egentligen betyder i en familj',
+    subtitle: 'Känslan av att bli behandlad ojämlikt – och vad rättvisa egentligen betyder i en familj',
     categoryId: 'sk-nar-det-skaver',
     sections: [
       {
@@ -248,7 +248,7 @@ const cards: Card[] = [
   {
     id: 'sk-uppmarksamhet',
     title: 'Uppmärksamhet',
-    subtitle: 'Att dela på de vuxnas kärlek -- och vad som händer när det inte känns rättvist',
+    subtitle: 'Att dela på de vuxnas kärlek – och vad som händer när det inte känns rättvist',
     categoryId: 'sk-nar-det-skaver',
     sections: [
       {
@@ -268,7 +268,7 @@ const cards: Card[] = [
   {
     id: 'sk-sjukdom',
     title: 'Sjukdom',
-    subtitle: 'När ett syskon har en diagnos eller funktionsnedsättning -- hur påverkar det hela familjen?',
+    subtitle: 'När ett syskon har en diagnos eller funktionsnedsättning – hur påverkar det hela familjen?',
     categoryId: 'sk-nar-det-skaver',
     sections: [
       {

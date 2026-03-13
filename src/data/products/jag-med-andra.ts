@@ -5,7 +5,7 @@ const categories: Category[] = [
   {
     id: 'jma-att-hora-till',
     title: 'Att höra till',
-    subtitle: 'Hur det känns att vara med -- och ibland utanför.',
+    subtitle: 'Hur det känns att vara med – och ibland utanför.',
     description: 'Vänskap, kontakt och tillhörighet',
     cardCount: 4,
   },
@@ -44,7 +44,7 @@ const cards: Card[] = [
   {
     id: 'jma-vanskap',
     title: 'Vänskap',
-    subtitle: 'Vad som gör en vänskap äkta -- och hur den kan förändras',
+    subtitle: 'Vad som gör en vänskap äkta – och hur den kan förändras',
     categoryId: 'jma-att-hora-till',
     sections: [
       {
@@ -73,7 +73,7 @@ const cards: Card[] = [
   {
     id: 'jma-kontakt',
     title: 'Kontakt',
-    subtitle: 'Att läsa av hur någon mår -- och vad en gör med det en ser',
+    subtitle: 'Att läsa av hur någon mår – och vad en gör med det en ser',
     categoryId: 'jma-att-hora-till',
     sections: [
       {
@@ -129,7 +129,7 @@ const cards: Card[] = [
   {
     id: 'jma-utanfor',
     title: 'Utanför',
-    subtitle: 'Känslan av att inte höra till -- och vad en kan göra för varandra',
+    subtitle: 'Känslan av att inte höra till – och vad en kan göra för varandra',
     categoryId: 'jma-att-hora-till',
     sections: [
       {
@@ -157,7 +157,7 @@ const cards: Card[] = [
   {
     id: 'jma-duktig',
     title: 'Duktig',
-    subtitle: 'Vem presterar en egentligen för -- sig själv eller andra?',
+    subtitle: 'Vem presterar en egentligen för – sig själv eller andra?',
     categoryId: 'jma-nar-vi-jamfor-oss',
     sections: [
       {
@@ -167,7 +167,7 @@ const cards: Card[] = [
         content: '',
         prompts: [
           'Har du någon gång gjort något bra eller presterat väl mest för att göra någon annan glad? Hur kändes det jämfört med när du gör det för din egen skull?',
-          'Berätta om ett tillfälle när du var stolt över dig själv -- inte för att någon annan sa det, utan för att du själv kände det. Hur kändes det?',
+          'Berätta om ett tillfälle när du var stolt över dig själv – inte för att någon annan sa det, utan för att du själv kände det. Hur kändes det?',
           'Har du berättat för någon annan att du är stolt över dem eller att de gjort något bra? Vad hände och hur reagerade den personen?',
         ],
       },
@@ -185,7 +185,7 @@ const cards: Card[] = [
   {
     id: 'jma-tavla',
     title: 'Tävla',
-    subtitle: 'Viljan att vinna -- och vad som händer när det inte går',
+    subtitle: 'Viljan att vinna – och vad som händer när det inte går',
     categoryId: 'jma-nar-vi-jamfor-oss',
     sections: [
       {
@@ -214,7 +214,7 @@ const cards: Card[] = [
   {
     id: 'jma-utseende',
     title: 'Utseende',
-    subtitle: 'Hur vi ser på oss själva och varandra -- och vad yttre egentligen säger',
+    subtitle: 'Hur vi ser på oss själva och varandra – och vad yttre egentligen säger',
     categoryId: 'jma-nar-vi-jamfor-oss',
     sections: [
       {
@@ -242,7 +242,7 @@ const cards: Card[] = [
   {
     id: 'jma-avund',
     title: 'Avund',
-    subtitle: 'Att längta efter det någon annan har -- och vad som ligger bakom det',
+    subtitle: 'Att längta efter det någon annan har – och vad som ligger bakom det',
     categoryId: 'jma-nar-vi-jamfor-oss',
     sections: [
       {
@@ -271,7 +271,7 @@ const cards: Card[] = [
   {
     id: 'jma-konflikt',
     title: 'Konflikt',
-    subtitle: 'Bråk som en del av relationer -- och hur en tar sig igenom dem',
+    subtitle: 'Bråk som en del av relationer – och hur en tar sig igenom dem',
     categoryId: 'jma-nar-det-skaver',
     sections: [
       {
@@ -301,7 +301,7 @@ const cards: Card[] = [
   {
     id: 'jma-misslyckas',
     title: 'Misslyckas',
-    subtitle: 'Känslan av att ha gjort bort sig -- och vad en egentligen lär sig av det',
+    subtitle: 'Känslan av att ha gjort bort sig – och vad en egentligen lär sig av det',
     categoryId: 'jma-nar-det-skaver',
     sections: [
       {
@@ -331,7 +331,7 @@ const cards: Card[] = [
   {
     id: 'jma-kritik',
     title: 'Kritik',
-    subtitle: 'Att ge och ta emot återkoppling -- utan att det blir ett personangrepp',
+    subtitle: 'Att ge och ta emot återkoppling – utan att det blir ett personangrepp',
     categoryId: 'jma-nar-det-skaver',
     sections: [
       {
@@ -360,7 +360,7 @@ const cards: Card[] = [
   {
     id: 'jma-skam',
     title: 'Skam',
-    subtitle: 'Känslan av att ha gjort fel inför andra -- och vad som egentligen triggar den',
+    subtitle: 'Känslan av att ha gjort fel inför andra – och vad som egentligen triggar den',
     categoryId: 'jma-nar-det-skaver',
     sections: [
       {
@@ -388,7 +388,7 @@ const cards: Card[] = [
   {
     id: 'jma-skuld',
     title: 'Skuld',
-    subtitle: 'Att ha orsakat något som gick snett -- och vad ett äkta förlåt innebär',
+    subtitle: 'Att ha orsakat något som gick snett – och vad ett äkta förlåt innebär',
     categoryId: 'jma-nar-det-skaver',
     sections: [
       {
@@ -418,7 +418,7 @@ const cards: Card[] = [
   {
     id: 'jma-stopp',
     title: 'Stopp',
-    subtitle: 'Att sätta och respektera gränser -- för sig själv och för andra',
+    subtitle: 'Att sätta och respektera gränser – för sig själv och för andra',
     categoryId: 'jma-att-sta-stadig',
     sections: [
       {
@@ -447,7 +447,7 @@ const cards: Card[] = [
   {
     id: 'jma-integritet',
     title: 'Integritet',
-    subtitle: 'Att stå för det en tror på -- även när det är svårt',
+    subtitle: 'Att stå för det en tror på – även när det är svårt',
     categoryId: 'jma-att-sta-stadig',
     sections: [
       {
@@ -475,7 +475,7 @@ const cards: Card[] = [
   {
     id: 'jma-modig',
     title: 'Modig',
-    subtitle: 'Att göra något svårt -- och att ibland vara modig nog att låta bli',
+    subtitle: 'Att göra något svårt – och att ibland vara modig nog att låta bli',
     categoryId: 'jma-att-sta-stadig',
     sections: [
       {
@@ -505,7 +505,7 @@ const cards: Card[] = [
   {
     id: 'jma-respekt',
     title: 'Respekt',
-    subtitle: 'Att behandla andra väl -- även när en tänker och tror olika',
+    subtitle: 'Att behandla andra väl – även när en tänker och tror olika',
     categoryId: 'jma-vi-i-varlden',
     sections: [
       {
@@ -561,7 +561,7 @@ const cards: Card[] = [
   {
     id: 'jma-sanning',
     title: 'Sanning',
-    subtitle: 'Ärlighet och dess gränser -- när är det rätt att inte säga allt?',
+    subtitle: 'Ärlighet och dess gränser – när är det rätt att inte säga allt?',
     categoryId: 'jma-vi-i-varlden',
     sections: [
       {
@@ -618,7 +618,7 @@ const cards: Card[] = [
   {
     id: 'jma-kluringen',
     title: 'Kluringen',
-    subtitle: 'Ett tankeexperiment om vem en egentligen är -- när en möter sig själv',
+    subtitle: 'Ett tankeexperiment om vem en egentligen är – när en möter sig själv',
     categoryId: 'jma-vi-i-varlden',
     sections: [
       {

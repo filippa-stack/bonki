@@ -5,7 +5,7 @@ const categories: Category[] = [
   {
     id: 'jim-tryggheten-inuti',
     title: 'Tryggheten inuti',
-    subtitle: 'Det som får dig att känna dig säker -- även när det gungar.',
+    subtitle: 'Det som får dig att känna dig säker – även när det gungar.',
     description: 'Trygghet, ensamhet och stress',
     cardCount: 3,
   },
@@ -19,7 +19,7 @@ const categories: Category[] = [
   {
     id: 'jim-nar-det-gor-ont',
     title: 'När det gör ont',
-    subtitle: 'Svåra känslor som är jobbiga -- men viktiga att förstå.',
+    subtitle: 'Svåra känslor som är jobbiga – men viktiga att förstå.',
     description: 'Svårare känslor att förstå och hantera',
     cardCount: 7,
   },
@@ -79,7 +79,7 @@ const cards: Card[] = [
   {
     id: 'jim-stress',
     title: 'Stress',
-    subtitle: 'Känslan av för mycket på en gång -- i kroppen och i vardagen',
+    subtitle: 'Känslan av för mycket på en gång – i kroppen och i vardagen',
     categoryId: 'jim-tryggheten-inuti',
     sections: [
       {
@@ -103,7 +103,7 @@ const cards: Card[] = [
   {
     id: 'jim-glad',
     title: 'Glad',
-    subtitle: 'Vad som ger energi och glädje -- och hur en delar det',
+    subtitle: 'Vad som ger energi och glädje – och hur en delar det',
     categoryId: 'jim-kanslorna-jag-bar',
     sections: [
       {
@@ -126,7 +126,7 @@ const cards: Card[] = [
   {
     id: 'jim-ledsen',
     title: 'Ledsen',
-    subtitle: 'Att ha det tungt -- och hur en kan bära det tillsammans',
+    subtitle: 'Att ha det tungt – och hur en kan bära det tillsammans',
     categoryId: 'jim-kanslorna-jag-bar',
     sections: [
       {
@@ -150,7 +150,7 @@ const cards: Card[] = [
   {
     id: 'jim-arg',
     title: 'Arg',
-    subtitle: 'Ilska är en signal -- vad väcker den och vart tar den vägen?',
+    subtitle: 'Ilska är en signal – vad väcker den och vart tar den vägen?',
     categoryId: 'jim-kanslorna-jag-bar',
     sections: [
       {
@@ -219,7 +219,7 @@ const cards: Card[] = [
   {
     id: 'jim-besviken',
     title: 'Besviken',
-    subtitle: 'När något inte blev som en hoppades -- och hur det skiljer sig från ilska',
+    subtitle: 'När något inte blev som en hoppades – och hur det skiljer sig från ilska',
     categoryId: 'jim-nar-det-gor-ont',
     sections: [
       {
@@ -240,7 +240,7 @@ const cards: Card[] = [
   {
     id: 'jim-acklad',
     title: 'Äcklad',
-    subtitle: 'Känslan av avsmak -- varför den finns och vad den skyddar oss från',
+    subtitle: 'Känslan av avsmak – varför den finns och vad den skyddar oss från',
     categoryId: 'jim-nar-det-gor-ont',
     sections: [
       {
@@ -262,7 +262,7 @@ const cards: Card[] = [
   {
     id: 'jim-avsky',
     title: 'Avsky',
-    subtitle: 'En stark känsla av motvilja -- mot saker, situationer eller beteenden',
+    subtitle: 'En stark känsla av motvilja – mot saker, situationer eller beteenden',
     categoryId: 'jim-nar-det-gor-ont',
     sections: [
       {
@@ -284,7 +284,7 @@ const cards: Card[] = [
   {
     id: 'jim-skam',
     title: 'Skam',
-    subtitle: 'Känslan av att ha gjort fel -- eller tro att en själv är fel',
+    subtitle: 'Känslan av att ha gjort fel – eller tro att en själv är fel',
     categoryId: 'jim-nar-det-gor-ont',
     sections: [
       {
@@ -306,7 +306,7 @@ const cards: Card[] = [
   {
     id: 'jim-avundsjuk',
     title: 'Avundsjuk',
-    subtitle: 'Att vilja ha det någon annan har -- och vad det egentligen handlar om',
+    subtitle: 'Att vilja ha det någon annan har – och vad det egentligen handlar om',
     categoryId: 'jim-nar-det-gor-ont',
     sections: [
       {
@@ -351,7 +351,7 @@ const cards: Card[] = [
   {
     id: 'jim-utanfor',
     title: 'Utanför',
-    subtitle: 'Att inte få vara med -- och vad vi kan göra åt det',
+    subtitle: 'Att inte få vara med – och vad vi kan göra åt det',
     categoryId: 'jim-nar-det-gor-ont',
     sections: [
       {
@@ -441,7 +441,7 @@ const cards: Card[] = [
   {
     id: 'jim-nyfiken',
     title: 'Nyfiken',
-    subtitle: 'Lusten att lära sig mer -- och vad som händer när nyfikenheten tar över',
+    subtitle: 'Lusten att lära sig mer – och vad som händer när nyfikenheten tar över',
     categoryId: 'jim-jag-som-helhet',
     sections: [
       {
@@ -464,7 +464,7 @@ const cards: Card[] = [
   {
     id: 'jim-forvanad',
     title: 'Förvånad',
-    subtitle: 'Känslan när något oväntat händer -- bra eller dåligt',
+    subtitle: 'Känslan när något oväntat händer – bra eller dåligt',
     categoryId: 'jim-jag-som-helhet',
     sections: [
       {
@@ -498,7 +498,7 @@ const cards: Card[] = [
           'Hur mår du just nu, på riktigt?',
           'Vad är det bästa med dig?',
           'Vilken känsla gillar du mest?',
-          'Om du fick dela en känsla med någon du litar på, vilken känsla skulle det vara -- och vem skulle du dela den med?',
+          'Om du fick dela en känsla med någon du litar på, vilken känsla skulle det vara – och vem skulle du dela den med?',
           'Om en vän skulle beskriva dig, vad tror du den personen skulle säga?',
         ],
       },
