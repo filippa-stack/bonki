@@ -129,7 +129,7 @@ const cards: Card[] = [
   {
     id: 'jma-utanfor',
     title: 'Utanför',
-    subtitle: 'Känslan av att inte höra till -- och vad man kan göra för varandra',
+    subtitle: 'Känslan av att inte höra till -- och vad en kan göra för varandra',
     categoryId: 'jma-att-hora-till',
     sections: [
       {
