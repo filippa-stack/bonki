@@ -338,7 +338,7 @@ export default function Home() {
                     onClick={() => { markNavigated(); navigate(`/card/${cardId}`, { state: { resumed: true } }); }}
                     style={{
                       width: '100%',
-                      marginTop: '20px',
+                      marginTop: '48px',
                       padding: '18px 20px',
                       background: 'rgba(162, 181, 169, 0.18)',
                       backdropFilter: 'blur(24px) saturate(1.3)',
