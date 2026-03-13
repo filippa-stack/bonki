@@ -109,7 +109,7 @@ const cards: Card[] = [
     'Vilka saker kan hjälpa en att hålla sig trygg i sexuella situationer -- och vems ansvar är det egentligen att ingen far illa?',
     'Har en utomstående ansvar att ingripa om den uppfattar att någon är i riskzonen för att bli utsatt för ett sexuellt ofredande eller övergrepp?',
   ]}]},
-  { id: 'sex-sexuella-misstag', title: 'Sexuella misstag', subtitle: 'När sex inte går som planerat -- och hur man skiljer misstag från övergrepp', categoryId: 'sex-relation-och-ansvar', sections: [{ id: 'sex-sexuella-misstag-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
+  { id: 'sex-sexuella-misstag', title: 'Sexuella misstag', subtitle: 'När sex inte går som planerat -- och hur en skiljer misstag från övergrepp', categoryId: 'sex-relation-och-ansvar', sections: [{ id: 'sex-sexuella-misstag-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
     'Vad kan vara ett sexuellt misstag?',
     'När är riskerna större för att sexuella misstag begås?',
     'Vad finns det för risker med icke-verbala signaler?',
