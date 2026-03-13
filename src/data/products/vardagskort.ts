@@ -92,7 +92,7 @@ const cards: Card[] = [
     'Vilka rutiner eller regler skulle du vilja ha hemma för att allt ska bli lättare?',
     'Dina vuxna ger dig 500 kr att planera och handla mat för. Vad kommer du hem med?',
   ]}]},
-  { id: 'vk-syskon', title: 'Syskon', subtitle: 'Hur det är att leva med syskon i vardagen -- det roliga och det jobbiga', categoryId: 'vk-vi-hemma', sections: [{ id: 'vk-syskon-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
+  { id: 'vk-syskon', title: 'Syskon', subtitle: 'Hur det är att leva med syskon i vardagen – det roliga och det jobbiga', categoryId: 'vk-vi-hemma', sections: [{ id: 'vk-syskon-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
     'Berätta vad du tycker är roligt med att ha syskon. Berätta vad som kan vara svårt med att ha syskon.',
     'Vad innebär det att vara plastsyskon eller bonussyskon? Känner du några?',
     'Varför tror du att syskon kan vara så olika? Är det konstigt?',
