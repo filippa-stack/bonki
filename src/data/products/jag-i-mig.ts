@@ -351,7 +351,7 @@ const cards: Card[] = [
   {
     id: 'jim-utanfor',
     title: 'Utanför',
-    subtitle: 'Att inte få vara med -- och vad vi kan göra åt det',
+    subtitle: 'Att inte få vara med – och vad vi kan göra åt det',
     categoryId: 'jim-nar-det-gor-ont',
     sections: [
       {
