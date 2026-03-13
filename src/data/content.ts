@@ -83,7 +83,7 @@ export const cards: Card[] = [
         title: 'Början',
         content: 'Små saker som håller er nära.',
         prompts: [
-          'Om något litet mellan er tyst försvann, vad tror du att du skulle märka först?',
+          'Vad är det lilla mellan er som du skulle sakna mest — om det inte längre fanns?',
           'Vad är det som gör att ni känner er som ett par — bortom det praktiska ni delar?',
           'Vad har ni börjat göra tillsammans det senaste året — om än något litet — som ni inte riktigt planerade?',
         ],
@@ -132,7 +132,7 @@ export const cards: Card[] = [
         prompts: [
           'Hur ofta hamnar era samtal i det praktiska — och vad händer med allt det andra?',
           'Finns det ett läge ni brukar ha tillsammans — eller brukade ha — som du saknar när vardagen tar över?',
-          'Vad händer mellan er när ett samtal försöker bli något mer än praktiskt — men inte riktigt kommer dit?',
+          'Vad behöver ni från varandra för att ett samtal ska bli mer än praktiskt?',
         ],
       },
       {
@@ -517,7 +517,7 @@ export const cards: Card[] = [
         title: 'Fördjupning',
         content: 'Utforska vad som döljs bakom fasaden.',
         prompts: [
-          'När väljer du att inte säga hur det faktiskt är i relationen — och vad gör det lättare att hålla tyst?',
+          'Vad gör det lättare att hålla tyst om hur det faktiskt är i relationen?',
           'Vad slutar du be om — eller säga rakt ut — när du inte känner dig trygg i dig själv?',
         ],
         anchors: [
@@ -566,7 +566,7 @@ export const cards: Card[] = [
         title: 'Fördjupning',
         content: 'Fundera på rötterna till era reaktioner.',
         prompts: [
-          'Kan du skilja på om du reagerar på det som faktiskt händer — eller på något det påminner dig om?',
+          'Hur märker du — kanske först efteråt — om din reaktion handlade om det som hände eller om något äldre?',
           'När du reagerar utifrån din historia snarare än det som händer — gör ert sätt att hantera det bättre eller sämre?',
         ],
         anchors: [
@@ -860,7 +860,7 @@ export const cards: Card[] = [
         title: 'I vardagen',
         content: 'En av er vill satsa helhjärtat på något som under en tid tar mycket energi. Den andra stöttar, men oroar sig för balansen.',
         prompts: [
-          'Innan något stort och krävande börjar — hur brukar ni förbereda er som par, och vad glömmer ni oftast att prata om?',
+          'Hur brukar ni förbereda er som par inför något stort — och vad har ni i efterhand önskat att ni pratat om redan innan?',
         ],
       },
       {
@@ -973,7 +973,7 @@ export const cards: Card[] = [
         title: 'Början',
         content: 'Ibland märks förändringen inte förrän efteråt.',
         prompts: [
-          'Vad har ni slutat göra tillsammans under de senaste åren — något som bara tyst försvann?',
+          'Vad har ni slutat göra tillsammans under de senaste åren — något ni kanske inte la märke till förrän det redan var borta?',
           'Har det hänt nyligen att ni var tillsammans men du ändå kände dig ensam?',
           'När kände du senast att din partner valde dig — inte bara att du var där?',
         ],
@@ -989,7 +989,7 @@ export const cards: Card[] = [
         content: 'Utforska vad avstånd egentligen handlar om.',
         prompts: [
           'Växer distansen mellan er mer efter bråk — eller tyst, under perioder när ingenting är fel?',
-          'Vad brukar hända med avståndet mellan er om ingen av er tar upp det?',
+          'Vad har hänt med avståndet mellan er under perioder då ingen av er tagit upp det?',
         ],
       },
       {
