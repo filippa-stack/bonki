@@ -486,7 +486,7 @@ const cards: Card[] = [
   {
     id: 'jim-jag',
     title: 'Jag',
-    subtitle: 'En stund att stanna upp och reflektera över hur man mår just nu',
+    subtitle: 'En stund att stanna upp och reflektera över hur en mår just nu',
     categoryId: 'jim-jag-som-helhet',
     sections: [
       {
