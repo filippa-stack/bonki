@@ -65,7 +65,7 @@ const cards: Card[] = [
         title: 'I verkligheten',
         content: '',
         prompts: [
-          'En kompis slutar höra av sig och verkar inte vilja ses mer. Kan hen bestämma att ni inte är vänner längre? Hur kan man tänka om en vänskap som inte blev som man hoppats?',
+          'En kompis slutar höra av sig och verkar inte vilja ses mer. Kan hen bestämma att ni inte är vänner längre? Hur kan en tänka om en vänskap som inte blev som en hoppats?',
         ],
       },
     ],
