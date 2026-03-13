@@ -464,7 +464,7 @@ const cards: Card[] = [
   {
     id: 'jim-forvanad',
     title: 'Förvånad',
-    subtitle: 'Känslan när något oväntat händer -- bra eller dåligt',
+    subtitle: 'Känslan när något oväntat händer – bra eller dåligt',
     categoryId: 'jim-jag-som-helhet',
     sections: [
       {
