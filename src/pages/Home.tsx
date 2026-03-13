@@ -356,7 +356,7 @@ export default function Home() {
             </motion.div>
 
             {/* ── Circadian Menu — 9 progressive disclosure categories ── */}
-            <div className="px-6" style={{ marginTop: '52px', paddingBottom: '64px' }}>
+            <div className="px-6" style={{ marginTop: '72px', paddingBottom: '64px' }}>
               <CircadianMenu
                 categories={sortedCategories}
                 cards={cards}
