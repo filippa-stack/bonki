@@ -65,8 +65,11 @@ export default function StepProgressIndicator({
   isTransitioning = false,
   className,
   steps,
+  currentPromptIndex,
+  totalPromptsInStep,
 }: StepProgressIndicatorProps) {
   const activeSteps = steps ?? STAGE_STEPS;
+  const showCounter = currentPromptIndex !== undefined && totalPromptsInStep !== undefined && totalPromptsInStep > 0;
 
   return (
     <div className={className} style={{ width: '100%', padding: '0 24px' }}>
