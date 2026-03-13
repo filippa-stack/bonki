@@ -341,6 +341,7 @@ function StillUsCategoryView({
   const color = circadianColor || '#A2B5A9';
   const colorLight = CIRCADIAN_COLORS_LIGHT[category.id] || color;
   const HERITAGE_GOLD = '#DA9D1D';
+  const SAFFRON = '#DA9D1D';
 
   return (
     <div className="min-h-screen relative overflow-hidden" style={{ backgroundColor: 'var(--surface-base)' }}>
