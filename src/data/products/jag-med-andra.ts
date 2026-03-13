@@ -253,7 +253,7 @@ const cards: Card[] = [
         prompts: [
           'Har du känt avundsjuka någon gång? På vad eller vem?',
           'Varför tror du att vissa människor verkar viktigare för andra om de har mycket pengar eller saker? Stämmer det egentligen?',
-          'Tror du att man kan vara lycklig utan att ha mycket saker eller pengar? Vad är det i så fall som gör en lycklig?',
+          'Tror du att en kan vara lycklig utan att ha mycket saker eller pengar? Vad är det i så fall som gör en lycklig?',
         ],
       },
       {
