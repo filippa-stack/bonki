@@ -138,7 +138,7 @@ export default function JagMedAndraProductHome({ product }: { product: ProductMa
           flexDirection: 'column',
           alignItems: 'center',
           justifyContent: 'flex-start',
-          paddingTop: '14vh',
+          paddingTop: '10vh',
           paddingRight: '8vw',
           paddingBottom: '120px',
           paddingLeft: '8vw',
@@ -152,7 +152,7 @@ export default function JagMedAndraProductHome({ product }: { product: ProductMa
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-            gap: '13px',
+            gap: '10px',
             width: '100%',
           }}
         >
