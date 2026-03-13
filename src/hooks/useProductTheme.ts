@@ -36,6 +36,7 @@ export function useProductTheme(primary: string, accent: string, bgColor?: strin
       ['--cta-default', '--cta-hover-v2', '--cta-active', '--cta-bg',
        '--session-header-bg', '--accent-saffron', '--accent-text',
        '--surface-base', '--product-bg', '--cta-button-color',
+       '--question-cloud-tint', '--question-cloud-border',
       ].forEach((v) => root.style.removeProperty(v));
     };
   }, [primary, accent, bgColor, ctaButtonColor]);
