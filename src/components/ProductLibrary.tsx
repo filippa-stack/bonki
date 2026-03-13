@@ -673,6 +673,8 @@ export default function ProductLibrary() {
               onClick={() => navigate(`/product/${jagIMig.slug}`)}
               showFreeBadge={!purchased.has(jagIMig.id)}
               badgeText={buildBadgeText(jagIMig)}
+              completedCards={productCompletion[jagIMig.id]?.completed}
+              totalCards={productCompletion[jagIMig.id]?.total}
               wide
             />
             <PastelTile
@@ -688,6 +690,8 @@ export default function ProductLibrary() {
               onClick={() => navigate(`/product/${jagMedAndra.slug}`)}
               showFreeBadge={!purchased.has(jagMedAndra.id)}
               badgeText={buildBadgeText(jagMedAndra)}
+              completedCards={productCompletion[jagMedAndra.id]?.completed}
+              totalCards={productCompletion[jagMedAndra.id]?.total}
             />
             <PastelTile
               name={jagIVarlden.name}
@@ -701,6 +705,8 @@ export default function ProductLibrary() {
               onClick={() => navigate(`/product/${jagIVarlden.slug}`)}
               showFreeBadge={!purchased.has(jagIVarlden.id)}
               badgeText={buildBadgeText(jagIVarlden)}
+              completedCards={productCompletion[jagIVarlden.id]?.completed}
+              totalCards={productCompletion[jagIVarlden.id]?.total}
             />
             <PastelTile
               name={vardag.name}
@@ -714,6 +720,8 @@ export default function ProductLibrary() {
               onClick={() => navigate(`/product/${vardag.slug}`)}
               showFreeBadge={!purchased.has(vardag.id)}
               badgeText={buildBadgeText(vardag)}
+              completedCards={productCompletion[vardag.id]?.completed}
+              totalCards={productCompletion[vardag.id]?.total}
             />
             <PastelTile
               name={syskon.name}
@@ -727,6 +735,8 @@ export default function ProductLibrary() {
               onClick={() => navigate(`/product/${syskon.slug}`)}
               showFreeBadge={!purchased.has(syskon.id)}
               badgeText={buildBadgeText(syskon)}
+              completedCards={productCompletion[syskon.id]?.completed}
+              totalCards={productCompletion[syskon.id]?.total}
             />
             <PastelTile
               name={sexualitet.name}
@@ -740,6 +750,8 @@ export default function ProductLibrary() {
               onClick={() => navigate(`/product/${sexualitet.slug}`)}
               showFreeBadge={!purchased.has(sexualitet.id)}
               badgeText={buildBadgeText(sexualitet)}
+              completedCards={productCompletion[sexualitet.id]?.completed}
+              totalCards={productCompletion[sexualitet.id]?.total}
               wide
             />
           </motion.div>
