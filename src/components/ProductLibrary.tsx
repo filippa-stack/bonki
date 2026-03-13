@@ -272,7 +272,6 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
           {ageLabel}
         </span>
       ) : null}
-      )}
       {/* Illustration — right-aligned, visible */}
       {illustration && (
         <div
