@@ -205,10 +205,12 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
   accentColor?: string; taglineColor?: string; illustrationOpacity?: number;
   illustrationSize?: string; illustrationPosition?: string; wide?: boolean;
   showFreeBadge?: boolean; badgeText?: string;
+  completedCards?: number; totalCards?: number;
 }>(function PastelTile({
   name, bg, ageLabel, tagline, onClick, illustration, accentColor, taglineColor,
   illustrationOpacity = 0.25, illustrationSize = 'contain', illustrationPosition = 'right center', wide = false,
   showFreeBadge = false, badgeText = 'Första kortet gratis',
+  completedCards = 0, totalCards = 0,
 }, ref) {
   const darkenHex = (hex: string) => {
     const r = parseInt(hex.slice(1, 3), 16);
