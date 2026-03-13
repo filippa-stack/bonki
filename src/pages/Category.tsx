@@ -469,7 +469,7 @@ function StillUsCategoryView({
                 : 'none';
 
             return (
-              <div key={card.id} style={{ display: 'flex', alignItems: 'stretch', gap: '12px', opacity: isCompleted ? 0.6 : 1, transition: 'opacity 0.3s ease' }}>
+              <div key={card.id} style={{ display: 'flex', alignItems: 'stretch', gap: '12px', opacity: isCompleted ? 0.6 : 1, transition: 'opacity 0.3s ease', position: 'relative' }}>
                 {/* Sequence spine — number + connecting line */}
                 <div
                   style={{
@@ -510,7 +510,7 @@ function StillUsCategoryView({
 
                 {/* "Nästa" label for suggested card */}
                 {isNextSuggested && !allCompleted && (
-                  <div style={{ position: 'absolute', right: '24px', top: index === 0 ? '4px' : '-8px', zIndex: 2 }}>
+                  <div style={{ position: 'absolute', right: '24px', top: '4px', zIndex: 2 }}>
                     <span style={{
                       fontFamily: 'var(--font-sans)',
                       fontSize: '11px',
