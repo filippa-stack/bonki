@@ -360,7 +360,7 @@ const cards: Card[] = [
   {
     id: 'jma-skam',
     title: 'Skam',
-    subtitle: 'Känslan av att ha gjort fel inför andra -- och vad som egentligen triggar den',
+    subtitle: 'Känslan av att ha gjort fel inför andra – och vad som egentligen triggar den',
     categoryId: 'jma-nar-det-skaver',
     sections: [
       {
