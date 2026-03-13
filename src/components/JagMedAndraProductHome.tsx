@@ -5,6 +5,7 @@ import slothImage from '@/assets/sloth-jag-med-andra.png';
 import nyckelpiganImage from '@/assets/nyckelpiga-jag-med-andra.png';
 import ProductResumeBanner from '@/components/ProductResumeBanner';
 import DiaryEntrance from '@/components/DiaryEntrance';
+import ProductHomeBackButton from '@/components/ProductHomeBackButton';
 
 const EASE = [0.4, 0.0, 0.2, 1] as const;
 
