@@ -65,7 +65,7 @@ const cards: Card[] = [
     'Om din vän var mörkrädd, vad skulle du säga för att hjälpa? Vilket råd skulle du ge?',
     'Finns det något som dina vuxna kan göra för att hjälpa dig somna och sova bättre?',
   ]}]},
-  { id: 'vk-helg', title: 'Helg', subtitle: 'Friare dagar -- vad som skiljer dem från vardagen och vad barnet önskar', categoryId: 'vk-var-rytm', sections: [{ id: 'vk-helg-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
+  { id: 'vk-helg', title: 'Helg', subtitle: 'Friare dagar – vad som skiljer dem från vardagen och vad barnet önskar', categoryId: 'vk-var-rytm', sections: [{ id: 'vk-helg-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
     'Vad är skillnaden mellan en vardagsmorgon och en helgmorgon?',
     'Förutom skolan, vad är den största skillnaden på vardag och helg för dig? Varför tror du att det är skillnad?',
     'Finns det något du gör på helgen som du egentligen inte behöver göra, men som du mår bra av?',
