@@ -248,7 +248,7 @@ const cards: Card[] = [
   {
     id: 'sk-uppmarksamhet',
     title: 'Uppmärksamhet',
-    subtitle: 'Att dela på de vuxnas kärlek -- och vad som händer när det inte känns rättvist',
+    subtitle: 'Att dela på de vuxnas kärlek – och vad som händer när det inte känns rättvist',
     categoryId: 'sk-nar-det-skaver',
     sections: [
       {

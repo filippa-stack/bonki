@@ -137,7 +137,7 @@ const cards: Card[] = [
     'Har du träffat någon vuxen som har ett arbete du skulle vilja ha när du blir vuxen?',
   ]}]},
   // ── K4: Jag & andra ──
-  { id: 'vk-kompisar', title: 'Kompisar', subtitle: 'Vänskaper i vardagen -- var, hur och med vem en umgås', categoryId: 'vk-jag-och-andra', sections: [{ id: 'vk-kompisar-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
+  { id: 'vk-kompisar', title: 'Kompisar', subtitle: 'Vänskaper i vardagen – var, hur och med vem en umgås', categoryId: 'vk-jag-och-andra', sections: [{ id: 'vk-kompisar-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
     'Vilket föredrar du -- att besöka dina kompisar eller att de besöker dig? Varför?',
     'Är det skillnad på att komma hem till olika kompisar? Förklara!',
     'Tycker du mest om att umgås med kompisar i skolan eller efter skolan? Förklara!',
