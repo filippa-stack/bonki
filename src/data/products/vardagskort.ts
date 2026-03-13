@@ -14,7 +14,7 @@ const cards: Card[] = [
     'Berätta om din morgonrutin en vardag när du ska gå till förskolan eller skolan.',
     'Hur tänker du att ni kan göra morgonrutinen roligare?',
     'Om du inte hade någon vuxen hemma på morgonen, tror du att du skulle komma i tid till skolan?',
-    'Om du glömmer något hemma när du kommer till skolan -- vems ansvar är det, och vad gör du åt det?',
+    'Om du glömmer något hemma när du kommer till skolan – vems ansvar är det, och vad gör du åt det?',
     'Om du skulle väcka och få iväg dina vuxna till jobbet, vad skulle du göra? Vad skulle du göra annorlunda mot hur de gör när de väcker dig?',
     'Ibland är det bråttom på morgonen -- hur känns det?',
   ]}]},
