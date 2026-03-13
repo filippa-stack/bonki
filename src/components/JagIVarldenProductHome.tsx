@@ -221,27 +221,11 @@ export default function JagIVarldenProductHome({ product }: { product: ProductMa
                   textAlign: 'center',
                   cursor: 'pointer',
                   border: isDark
-                    ? '1px solid hsla(30, 20%, 45%, 0.35)'
-                    : '1px solid hsla(35, 25%, 82%, 0.60)',
-                  boxShadow: (isDark && isHero)
-                    ? [
-                        '0 8px 24px hsla(130, 30%, 20%, 0.28)',
-                        '0 3px 8px hsla(0, 0%, 0%, 0.12)',
-                        'inset 0 2px 1px hsla(130, 40%, 70%, 0.35)',
-                        'inset 0 -2px 4px hsla(130, 20%, 20%, 0.10)',
-                      ].join(', ')
-                    : isDark
-                    ? [
-                        '0 6px 20px hsla(30, 20%, 15%, 0.20)',
-                        '0 2px 6px hsla(0, 0%, 0%, 0.10)',
-                        'inset 0 1px 0 hsla(30, 25%, 55%, 0.25)',
-                      ].join(', ')
-                    : [
-                        '0 6px 20px hsla(35, 25%, 50%, 0.10)',
-                        '0 2px 6px hsla(0, 0%, 0%, 0.04)',
-                        'inset 0 2px 1px hsla(35, 30%, 95%, 0.55)',
-                        'inset 0 -2px 4px hsla(30, 20%, 30%, 0.06)',
-                      ].join(', '),
+                    ? '1px solid rgba(255, 255, 255, 0.18)'
+                    : '1px solid rgba(255, 255, 255, 0.5)',
+                  boxShadow: isDark
+                    ? '0 8px 20px hsla(140, 30%, 40%, 0.12)'
+                    : '0 8px 20px hsla(140, 30%, 60%, 0.12)',
                   whiteSpace: 'normal' as const,
                   backdropFilter: 'blur(20px) saturate(1.3)',
                   WebkitBackdropFilter: 'blur(20px) saturate(1.3)',
@@ -259,7 +243,6 @@ export default function JagIVarldenProductHome({ product }: { product: ProductMa
                     fontSize: isHero ? 'clamp(21px, 5.8vw, 27px)' : 'clamp(19px, 5.2vw, 25px)',
                     fontWeight: 400,
                     color: tile.text,
-                    textShadow: isDark ? 'none' : '0 1px 4px hsla(35, 30%, 85%, 0.8)',
                   }}
                 >
                   {cat.title}
