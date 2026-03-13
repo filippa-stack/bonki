@@ -334,57 +334,31 @@ export default function CardView() {
 
   // Volume 1: single-writer model, reflection surface always active
 
-  // ─── Auto-activate session when entering a card ───
-  // Always creates a new session. If another card's session is active, abandon it first.
-  const activatingRef = useRef(false);
+  // ─── Auto-abandon stale session for DIFFERENT card on mount ───
+  // Session creation is LAZY — only happens when user completes a step (handleCompleteStep).
+  // This keeps analytics clean: no abandoned sessions from browsing.
+  const abandonCheckedRef = useRef(false);
   useEffect(() => {
     if (devState || isFromArchive || showCompletion) return;
-    if (normalizedSession.loading || isActiveSession) return;
-    if (activatingRef.current) return;
+    if (normalizedSession.loading) return;
+    if (abandonCheckedRef.current) return;
     if (!space?.id || !cardId) return;
 
-    const card = getCardById(cardId);
-    if (!card) return;
+    // If there's an active session for a DIFFERENT card, abandon it so it doesn't block
+    const hasOtherSession = !!(normalizedSession.sessionId && normalizedSession.cardId !== cardId);
+    if (!hasOtherSession) return;
 
-    activatingRef.current = true;
+    abandonCheckedRef.current = true;
 
     (async () => {
-      try {
-        // If there's an active session for a DIFFERENT card, abandon it first
-        const didSwitch = !!(normalizedSession.sessionId && normalizedSession.cardId !== cardId);
-        if (didSwitch) {
-          if (isDevToolsEnabled()) console.log('[switch] abandon called', normalizedSession.sessionId);
-          const { error: abandonErr } = await supabase.rpc('abandon_active_session', {
-            p_session_id: normalizedSession.sessionId,
-          });
-
-          if (abandonErr) {
-            console.warn('abandon_active_session failed:', abandonErr.message);
-          }
-        }
-
-        if (isDevToolsEnabled()) console.log('[switch] activate called', cardId);
-        const { error } = await supabase.rpc('activate_couple_session', {
-          p_couple_space_id: space.id,
-          p_category_id: card.categoryId,
-          p_card_id: cardId,
-          p_step_count: effectiveSteps.length,
-          p_product_id: product?.id ?? 'still_us',
-        });
-        if (error) {
-          console.error('Session activation failed:', error);
-          toastErrorOnce('activate_session_fail', 'Kunde inte starta samtalet');
-        } else {
-          if (isDevToolsEnabled()) console.log('[switch] navigated to', `/card/${cardId}`, didSwitch ? '(switched)' : '(fresh)');
-          await normalizedSession.refetch();
-          // Silent switch — no toast needed
-        }
-      } finally {
-        activatingRef.current = false;
-      }
+      if (isDevToolsEnabled()) console.log('[lazy] abandon other session', normalizedSession.sessionId);
+      await supabase.rpc('abandon_active_session', {
+        p_session_id: normalizedSession.sessionId,
+      });
+      await normalizedSession.refetch();
     })();
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [devState, isFromArchive, showCompletion, normalizedSession.loading, isActiveSession, normalizedSession.sessionId, space?.id, cardId]);
+  }, [devState, isFromArchive, showCompletion, normalizedSession.loading, normalizedSession.sessionId, space?.id, cardId]);
 
   // ─── Single resolver ───
   const cardViewMode: CardViewMode = (() => {
