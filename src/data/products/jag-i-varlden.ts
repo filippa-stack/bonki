@@ -83,7 +83,7 @@ const cards: Card[] = [
   // ── K5: Det stora sammanhanget ──
   qsCard('jiv-existens', 'Existens', 'De stora frågorna om mening, liv och vad som händer efter döden', 'jiv-det-stora-sammanhanget',
     ['Om du inte fanns, hur hade världen sett annorlunda ut?','Vad tror du är meningen med dig och med oss människor?','Varför tror du att många människor tror på sådant vars existens inte kan bevisas?','Varför är tro så olika för olika människor?'],
-    'Din bror tror att när man dör händer ingenting. Då läggs man i en kista, ruttnar och återgår till naturen. Din syster tror att vi är en del av en plan. Den planen är inte nödvändigtvis gjord av en gud, men efter döden kommer vi säkert få veta vad det gick ut på, tror hon. Vad tror du?'),
+    'Din bror tror att när en dör händer ingenting. Då läggs en i en kista, ruttnar och återgår till naturen. Din syster tror att vi är en del av en plan. Den planen är inte nödvändigtvis gjord av en gud, men efter döden kommer vi säkert få veta vad det gick ut på, tror hon. Vad tror du?'),
 ];
 
 export const jagIVarldenProduct: ProductManifest = {
