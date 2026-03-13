@@ -4,6 +4,7 @@ import type { ProductManifest } from '@/types/product';
 import peacockImage from '@/assets/peacock-jag-i-varlden.png';
 import ProductResumeBanner from '@/components/ProductResumeBanner';
 import DiaryEntrance from '@/components/DiaryEntrance';
+import ProductHomeBackButton from '@/components/ProductHomeBackButton';
 
 const EASE = [0.4, 0.0, 0.2, 1] as const;
 
