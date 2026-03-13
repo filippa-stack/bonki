@@ -357,38 +357,8 @@ export default function ProductLibrary() {
   const tracked = useRef(false);
   const { purchased } = useAllProductAccess();
   const { user } = useAuth();
-  const { space } = useCoupleSpaceContext();
   const [activeTab, setActiveTab] = useState<'barn' | 'par'>('barn');
   const [swipeDirection, setSwipeDirection] = useState<1 | -1>(1);
-
-  // Fetch completed card IDs for progress indicators
-  const [completedCardIds, setCompletedCardIds] = useState<string[]>([]);
-  useEffect(() => {
-    if (!space?.id) return;
-    let cancelled = false;
-    supabase
-      .from('couple_sessions')
-      .select('card_id')
-      .eq('couple_space_id', space.id)
-      .eq('status', 'completed')
-      .then(({ data }) => {
-        if (!cancelled && data) {
-          setCompletedCardIds(data.map(s => s.card_id).filter(Boolean) as string[]);
-        }
-      });
-    return () => { cancelled = true; };
-  }, [space?.id]);
-
-  // Per-product completion counts
-  const productCompletion = useMemo(() => {
-    const map: Record<string, { completed: number; total: number }> = {};
-    for (const product of allProducts) {
-      const productCardIds = product.cards.map(c => c.id);
-      const completed = productCardIds.filter(id => completedCardIds.includes(id)).length;
-      map[product.id] = { completed, total: productCardIds.length };
-    }
-    return map;
-  }, [completedCardIds]);
 
   const switchTab = (tab: 'barn' | 'par') => {
     setSwipeDirection(tab === 'par' ? 1 : -1);
