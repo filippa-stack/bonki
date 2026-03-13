@@ -275,20 +275,25 @@ export default function Category() {
           </motion.p>
         )}
 
-        {cards.map((card, index) => (
-          <CardEntry
-            key={card.id}
-            card={card}
-            index={index}
-            isCompleted={completedCardIds.includes(card.id)}
-            isInProgress={!completedCardIds.includes(card.id) && inProgressCardIds.includes(card.id)}
-            onNavigate={() => navigate(`/card/${card.id}`)}
-            isLast={index === cards.length - 1}
-            styles={styles}
-            categoryBg={categoryId ? CATEGORY_CARD_BG[categoryId] : undefined}
-            categoryId={categoryId}
-          />
-        ))}
+        {cards.map((card, index) => {
+          const isCompleted = completedCardIds.includes(card.id);
+          const isNextSuggested = !isCompleted && cards.slice(0, index).every(c => completedCardIds.includes(c.id));
+          return (
+            <CardEntry
+              key={card.id}
+              card={card}
+              index={index}
+              isCompleted={isCompleted}
+              isInProgress={!isCompleted && inProgressCardIds.includes(card.id)}
+              isNextSuggested={isNextSuggested && !allCompleted}
+              onNavigate={() => navigate(`/card/${card.id}`)}
+              isLast={index === cards.length - 1}
+              styles={styles}
+              categoryBg={categoryId ? CATEGORY_CARD_BG[categoryId] : undefined}
+              categoryId={categoryId}
+            />
+          );
+        })}
 
         <div style={{ marginTop: '40px', textAlign: 'center', paddingBottom: 'calc(32px + env(safe-area-inset-bottom, 0px))' }}>
           <p style={{ fontFamily: 'var(--font-serif)', fontSize: '14px', color: styles?.cardTitleColor ?? 'var(--accent-saffron)', opacity: 0.55, lineHeight: 1.5 }}>
