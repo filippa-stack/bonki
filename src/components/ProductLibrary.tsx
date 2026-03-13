@@ -418,7 +418,7 @@ export default function ProductLibrary() {
               fontFamily: "'DM Serif Display', serif",
               fontSize: '34px',
               fontWeight: 400,
-              color: isDark ? 'hsla(38, 78%, 55%, 0.95)' : '#0A0A18',
+              color: isDark ? 'hsla(38, 78%, 55%, 0.95)' : '#E9B44C',
               lineHeight: 1.15,
               letterSpacing: '-0.03em',
               marginBottom: '8px',
