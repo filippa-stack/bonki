@@ -172,7 +172,7 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
   showFreeBadge?: boolean; badgeText?: string;
 }>(function PastelTile({
   name, bg, ageLabel, tagline, onClick, illustration, accentColor, taglineColor,
-  illustrationOpacity = 0.25, illustrationSize = 'contain', illustrationPosition = 'right center', wide = false,
+  illustrationOpacity = 0.32, illustrationSize = 'contain', illustrationPosition = 'right center', wide = false,
   showFreeBadge = false, badgeText = 'Första kortet gratis',
 }, ref) {
   const darkenHex = (hex: string) => {
@@ -202,8 +202,13 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
           padding: wide ? '36px 20px 16px' : '36px 16px 14px',
           position: 'relative',
           overflow: 'hidden',
-          border: '1px solid hsla(45, 70%, 92%, 0.5)',
-          boxShadow: 'inset 0 1px 0 0 hsla(45, 80%, 95%, 0.4), 0 2px 4px hsla(25, 60%, 30%, 0.06), 0 8px 24px -4px hsla(28, 55%, 22%, 0.10)',
+          border: '1px solid hsla(0, 0%, 100%, 0.35)',
+          boxShadow: [
+            '0 8px 32px -4px hsla(0, 0%, 0%, 0.22)',
+            '0 4px 12px hsla(0, 0%, 0%, 0.10)',
+            'inset 0 1px 0 0 hsla(0, 0%, 100%, 0.45)',
+            'inset 0 -2px 6px hsla(0, 0%, 0%, 0.04)',
+          ].join(', '),
           gridColumn: wide ? 'span 2' : undefined,
         }}
       >
@@ -267,11 +272,12 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
         <h3
           style={{
             fontFamily: "'DM Serif Display', serif",
-            fontSize: wide ? '26px' : '19px',
+            fontSize: wide ? '28px' : '21px',
             fontWeight: 400,
             lineHeight: 1.15,
             color: accentColor || 'var(--text-library)',
             letterSpacing: '-0.01em',
+            textShadow: '0 1px 3px hsla(0, 0%, 100%, 0.5)',
           }}
         >
           {name}
