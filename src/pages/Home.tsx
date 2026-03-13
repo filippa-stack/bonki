@@ -292,7 +292,7 @@ export default function Home() {
           <>
             {/* ZONE A — Identity — compressed closer to header */}
             <motion.div
-              className="pt-6 px-6 text-center"
+              className="pt-10 px-6 text-center"
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
