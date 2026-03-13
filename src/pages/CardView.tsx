@@ -944,34 +944,30 @@ export default function CardView() {
             </h2>
           </motion.div>
 
-          {/* Subtitle */}
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.35, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-            className="font-sans"
-            style={{
-              fontSize: '14px',
-              color: 'var(--text-primary)',
-              opacity: 0.65,
-              textAlign: 'center',
-              marginBottom: '28px',
-            }}
-          >
-            {uiText.takeawayPrompt}
-          </motion.p>
-
-          {/* Takeaway field */}
+          {/* Simple takeaway field — always visible, optional */}
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4, duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ delay: 0.35, duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
             className="max-w-md mx-auto"
+            style={{ width: '100%' }}
           >
-            <CompletionTakeaway sessionId={activeSessionId} spaceId={space?.id ?? null} pronounMode={pronounMode} cardId={cardId} productId={product?.id} />
+            <p
+              className="font-sans"
+              style={{
+                fontSize: '14px',
+                color: 'var(--text-primary)',
+                opacity: 0.50,
+                textAlign: 'center',
+                marginBottom: '12px',
+              }}
+            >
+              Något ni vill minnas?
+            </p>
+            <SimpleTakeaway sessionId={activeSessionId} spaceId={space?.id ?? null} cardId={cardId} productId={product?.id} />
           </motion.div>
 
-          {/* Privacy reassurance — below text field */}
+          {/* Privacy reassurance */}
           <motion.p
             className="font-sans"
             initial={{ opacity: 0 }}
@@ -988,7 +984,7 @@ export default function CardView() {
             {pronounMode === 'du' ? 'Inget du skriver lämnar det här rummet.' : 'Inget ni skriver lämnar det här rummet.'}
           </motion.p>
 
-          {/* CTAs — cascading reveal */}
+          {/* CTAs */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -997,7 +993,7 @@ export default function CardView() {
             style={{ paddingBottom: 'calc(72px + env(safe-area-inset-bottom, 0px))' }}
           >
             {postCompletionNav.type === 'all_complete' ? (
-              <div className="text-center" style={{ marginTop: '48px' }}>
+              <div className="text-center" style={{ marginTop: '32px' }}>
                 <p style={{
                   fontFamily: "'DM Serif Display', var(--font-serif)",
                   fontSize: '18px',
@@ -1016,8 +1012,24 @@ export default function CardView() {
                 </p>
                 <button
                   onClick={() => navigateWithFeedback(postCompletionNav.homeDest)}
-                  className="cta-primary"
-                  style={{ maxWidth: '220px', width: '100%', marginTop: '32px' }}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    width: '100%',
+                    maxWidth: '520px',
+                    height: '52px',
+                    borderRadius: '14px',
+                    backgroundColor: 'hsl(41, 78%, 48%)',
+                    color: 'hsl(30, 10%, 12%)',
+                    fontFamily: 'var(--font-sans)',
+                    fontSize: '15px',
+                    fontWeight: 600,
+                    letterSpacing: '0.01em',
+                    border: 'none',
+                    cursor: 'pointer',
+                    marginTop: '32px',
+                  }}
                 >
                   Avsluta
                 </button>
@@ -1027,13 +1039,29 @@ export default function CardView() {
                 initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.65, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-                style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px', marginTop: '48px' }}
+                style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px', marginTop: '32px' }}
               >
-                {/* Primary: Next card */}
+                {/* Primary: Next card — full-width saffron */}
                 <button
                   onClick={() => navigateWithFeedback(postCompletionNav.destination)}
-                  className="cta-primary"
-                  style={{ maxWidth: '220px', width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '6px',
+                    width: '100%',
+                    maxWidth: '520px',
+                    height: '52px',
+                    borderRadius: '14px',
+                    backgroundColor: 'hsl(41, 78%, 48%)',
+                    color: 'hsl(30, 10%, 12%)',
+                    fontFamily: 'var(--font-sans)',
+                    fontSize: '15px',
+                    fontWeight: 600,
+                    letterSpacing: '0.01em',
+                    border: 'none',
+                    cursor: 'pointer',
+                  }}
                 >
                   {postCompletionNav.label}
                   <ArrowRight size={16} style={{ opacity: 0.7 }} />
