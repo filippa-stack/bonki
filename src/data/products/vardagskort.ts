@@ -96,7 +96,7 @@ const cards: Card[] = [
     'Berätta vad du tycker är roligt med att ha syskon. Berätta vad som kan vara svårt med att ha syskon.',
     'Vad innebär det att vara plastsyskon eller bonussyskon? Känner du några?',
     'Varför tror du att syskon kan vara så olika? Är det konstigt?',
-    'Tycker man om sina syskon på samma sätt som man tycker om sina vuxna, eller är det annorlunda?',
+    'Tycker en om sina syskon på samma sätt som en tycker om sina vuxna, eller är det annorlunda?',
   ]}]},
   { id: 'vk-underhallning', title: 'Underhållning', subtitle: 'Lek, skärmar och fritid -- vad barnet tycker om och hur familjen umgås', categoryId: 'vk-vi-hemma', sections: [{ id: 'vk-underhallning-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
     'Har din familj något favoritspel eller någon favoritlek?',
