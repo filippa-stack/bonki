@@ -137,6 +137,7 @@ const SectionView = forwardRef<SectionViewHandle, SectionViewProps>(
           index={promptIndex}
           sectionType={section.type as 'opening' | 'reflective' | 'scenario' | 'exercise'}
           preamble={showPreamble ? section.content : undefined}
+          anchor={section.anchors?.find(a => a.promptIndex === (isExercise ? 0 : promptIndex))}
           highlightCount={0}
           privateNote={undefined}
           sharedNote={undefined}
