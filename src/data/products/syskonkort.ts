@@ -195,7 +195,7 @@ const cards: Card[] = [
         title: 'Frågor',
         content: '',
         prompts: [
-          'Hur skulle ditt syskon hjälpa dig om du blev allvarligt sjuk eller fick en diagnos?',
+          'Hur skulle ditt syskon kunna hjälpa dig om du blev allvarligt sjuk eller fick en diagnos?',
           'Hur skulle ditt liv bli annorlunda om ditt syskon hade en funktionsnedsättning?',
           'Vad tror du att du skulle kunna lära dig om dig själv genom att leva med ett syskon med någon sorts funktionsnedsättning?',
         ],
