@@ -13,8 +13,8 @@ const cards: Card[] = [
   { id: 'sex-konsidentitet', title: 'Könsidentitet', subtitle: 'Vem en är som kön – och vad som händer när det inte stämmer med omvärldens bild', categoryId: 'sex-min-identitet', sections: [{ id: 'sex-konsidentitet-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
     'När började du tänka på vilket kön du har?',
     'Har du någon gång behövt försvara din könsidentitet?',
-    'Hur tror du att en person som känner att deras könsidentitet inte stämmer med deras kropp kan ha det? Vad tror du att de behöver?',
-    'Vad innebär begreppen cis- och transperson?',
+    'Hur tror du att en person som känner att deras könsidentitet inte stämmer med deras kropp kan ha det? Vad tror du att den behöver?',
+    'Vad innebär begreppen cisperson och transperson?',
     'Vad är könsdysfori? Hur kan det påverka en person?',
     'Vad skulle du göra om omgivningen uppfattade din könstillhörighet annorlunda än du själv uppfattar den?',
     'Måste en vara man eller kvinna?',
@@ -129,7 +129,7 @@ const cards: Card[] = [
   // ── K4: Skydd & makt ──
   { id: 'sex-sexuella-overgrepp', title: 'Sexuella övergrepp', subtitle: 'Vad som räknas som ett övergrepp – och vart en vänder sig om det hänt', categoryId: 'sex-skydd-och-makt', sections: [{ id: 'sex-sexuella-overgrepp-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
     'Vad räknas som ett sexuellt övergrepp?',
-    'På vilka olika sätt kan sexuella övergrepp ske? Är det alltid fysiskt?',
+    'På vilka olika sätt kan sexuella övergrepp ske? Kan det vara annat än fysiskt?',
     'Hur vet en att en blivit utsatt för ofredande eller övergrepp? Vad är skillnaden mot en dålig upplevelse av sex?',
     'I vilka situationer kan en bli utsatt?',
     'Vem bestämmer om det är ett sexuellt övergrepp?',
