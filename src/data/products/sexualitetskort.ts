@@ -66,7 +66,7 @@ const cards: Card[] = [
     'Behöver en ha samtycke av sin partner för att titta på porr?',
     'Har du någon gång blivit ofrivilligt exponerad för pornografi? Hur reagerade du på det?',
     'Vad kan hända om barn tittar på pornografi? Förklara!',
-    'Kan man få ut något positivt av porr?',
+    'Kan en få ut något positivt av porr?',
   ]}]},
   { id: 'sex-sexuella-tabun', title: 'Sexuella tabun', subtitle: 'Det som sällan pratas om högt -- vad som är lagligt, etiskt och var gränserna går', categoryId: 'sex-normer-och-paverkan', sections: [{ id: 'sex-sexuella-tabun-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
     'Kan du ge exempel på sexuella tabun?',
