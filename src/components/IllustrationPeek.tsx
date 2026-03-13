@@ -26,7 +26,7 @@ export default function IllustrationPeek({ imageUrl, cardTitle }: IllustrationPe
         aria-label={`Visa illustration: ${cardTitle}`}
         style={{
           position: 'fixed',
-          bottom: 'calc(24px + env(safe-area-inset-bottom, 0px))',
+          bottom: 'calc(72px + env(safe-area-inset-bottom, 0px))',
           left: '20px',
           zIndex: 40,
           width: '52px',

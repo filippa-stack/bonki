@@ -1019,7 +1019,7 @@ export default function CardView() {
             animate={{ opacity: 1 }}
             transition={{ delay: 0.55, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
             className="max-w-md mx-auto flex flex-col items-center"
-            style={{ paddingBottom: 'calc(24px + env(safe-area-inset-bottom, 0px))' }}
+            style={{ paddingBottom: 'calc(72px + env(safe-area-inset-bottom, 0px))' }}
           >
             {postCompletionNav.type === 'all_complete' ? (
               <div className="text-center" style={{ marginTop: '48px' }}>
@@ -1326,7 +1326,7 @@ export default function CardView() {
         )}
 
         {/* ── Bottom zone: instructions + CTA ── */}
-        <div style={{ flex: '0 0 auto', display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '0 24px', paddingBottom: 'calc(32px + env(safe-area-inset-bottom, 0px))' }}>
+        <div style={{ flex: '0 0 auto', display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '0 24px', paddingBottom: 'calc(80px + env(safe-area-inset-bottom, 0px))' }}>
           {/* Instructions — consolidated to single line */}
           <motion.p
             className="font-serif italic"
@@ -1725,7 +1725,7 @@ export default function CardView() {
       )}
 
       {/* Section content — centered, max 520px for readability */}
-      <div className="px-6 relative" style={{ paddingTop: '8px', paddingBottom: 'calc(120px + env(safe-area-inset-bottom, 0px))' }}>
+      <div className="px-6 relative" style={{ paddingTop: '8px', paddingBottom: 'calc(140px + env(safe-area-inset-bottom, 0px))' }}>
         {/* Card illustration watermark — centered, maximized within CTA-to-bottom zone */}
         {product && product.id !== 'still_us' && cardImageUrl && (
           <div
