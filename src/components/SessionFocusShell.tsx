@@ -7,7 +7,7 @@ interface SessionFocusShellProps {
   children: ReactNode;
   /** Optional top chrome slot (title/progress/back) */
   topSlot?: ReactNode;
-  /** Heritage Gold CTA at bottom — rendered by parent, wrapped with delayed reveal */
+  /** Heritage Gold CTA at bottom — rendered by parent, always visible */
   ctaSlot: ReactNode;
   onExit: () => void;
 }
@@ -16,19 +16,11 @@ interface SessionFocusShellProps {
  * Immersive shell for Still Us live sessions.
  * - Full-screen verdigris canvas with slow breathing opacity
  * - No chrome — tap screen once to reveal a close X
- * - CTA fades in after 5-second reflection delay
+ * - CTA is always visible immediately (no delay)
  */
 export default function SessionFocusShell({ children, topSlot, ctaSlot, onExit }: SessionFocusShellProps) {
   const [showExit, setShowExit] = useState(false);
-  const [showCta, setShowCta] = useState(false);
   const exitTimerRef = useState<ReturnType<typeof setTimeout> | null>(null);
-
-  // 5-second delay before CTA appears
-  useEffect(() => {
-    setShowCta(false);
-    const timer = setTimeout(() => setShowCta(true), 5000);
-    return () => clearTimeout(timer);
-  }, []);
 
   // Tap anywhere to toggle exit button (auto-hide after 3s)
   const handleTap = useCallback(() => {
@@ -133,7 +125,7 @@ export default function SessionFocusShell({ children, topSlot, ctaSlot, onExit }
         {children}
       </div>
 
-      {/* CTA zone — always reserves space, fades in after 5s delay */}
+      {/* CTA zone — always visible, no delay */}
       <div
         onClick={(e) => e.stopPropagation()}
         style={{
@@ -143,10 +135,6 @@ export default function SessionFocusShell({ children, topSlot, ctaSlot, onExit }
           flexDirection: 'column',
           alignItems: 'center',
           paddingBottom: 'calc(88px + env(safe-area-inset-bottom, 0px))',
-          opacity: showCta ? 1 : 0,
-          transform: showCta ? 'translateY(0)' : 'translateY(12px)',
-          transition: `opacity ${EMOTION * 2}s cubic-bezier(0.22, 1, 0.36, 1), transform ${EMOTION * 2}s cubic-bezier(0.22, 1, 0.36, 1)`,
-          pointerEvents: showCta ? 'auto' : 'none',
         }}
       >
         {ctaSlot}
