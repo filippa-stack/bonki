@@ -1,13 +1,11 @@
-import React, { useEffect, useRef, useState, useMemo } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { allProducts } from '@/data/products';
 import { useAllProductAccess } from '@/hooks/useAllProductAccess';
 import { useAuth } from '@/contexts/AuthContext';
-import { useCoupleSpaceContext } from '@/contexts/CoupleSpaceContext';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/components/ui/sonner';
-import { Check } from 'lucide-react';
 import watermarkMamma from '@/assets/watermark-mamma.png';
 
 import illustrationStillUs from '@/assets/illustration-still-us-tile.png';
@@ -94,39 +92,6 @@ function buildBadgeText(product: { cards: unknown[]; id: string }): string {
   const price = prices[product.id] ?? 195;
   return `${count} ämnen · ${price} kr · 1a gratis`;
 }
-/** Product progress ring — matches Still Us CircadianMenu style */
-function ProductProgressRing({ completed, total, size = 18, color }: { completed: number; total: number; size?: number; color: string }) {
-  if (completed === 0) return null;
-  const radius = (size - 3) / 2;
-  const circumference = 2 * Math.PI * radius;
-  const progress = total > 0 ? completed / total : 0;
-  const strokeDashoffset = circumference * (1 - progress);
-  const allDone = completed === total && total > 0;
-
-  return (
-    <div style={{ position: 'absolute', top: '12px', right: '12px', width: size, height: size, zIndex: 3, opacity: 0.6 }}>
-      <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} style={{ transform: 'rotate(-90deg)' }}>
-        <circle cx={size / 2} cy={size / 2} r={radius} fill="none" stroke={color} strokeWidth={1.5} opacity={0.2} />
-        <motion.circle
-          cx={size / 2} cy={size / 2} r={radius} fill="none" stroke={color} strokeWidth={1.5} strokeLinecap="round"
-          strokeDasharray={circumference}
-          initial={{ strokeDashoffset: circumference }}
-          animate={{ strokeDashoffset }}
-          transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1], delay: 0.5 }}
-        />
-      </svg>
-      {allDone && (
-        <motion.div
-          initial={{ scale: 0 }} animate={{ scale: 1 }}
-          transition={{ delay: 1.0, type: 'spring', stiffness: 300 }}
-          style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-        >
-          <Check size={9} style={{ color }} />
-        </motion.div>
-      )}
-    </div>
-  );
-}
 
 
 const containerVariants = {
@@ -205,12 +170,10 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
   accentColor?: string; taglineColor?: string; illustrationOpacity?: number;
   illustrationSize?: string; illustrationPosition?: string; wide?: boolean;
   showFreeBadge?: boolean; badgeText?: string;
-  completedCards?: number; totalCards?: number;
 }>(function PastelTile({
   name, bg, ageLabel, tagline, onClick, illustration, accentColor, taglineColor,
   illustrationOpacity = 0.25, illustrationSize = 'contain', illustrationPosition = 'right center', wide = false,
   showFreeBadge = false, badgeText = 'Första kortet gratis',
-  completedCards = 0, totalCards = 0,
 }, ref) {
   const darkenHex = (hex: string) => {
     const r = parseInt(hex.slice(1, 3), 16);
@@ -244,10 +207,7 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
           gridColumn: wide ? 'span 2' : undefined,
         }}
       >
-      {/* Progress ring — replaces age label when there's progress */}
-      {completedCards > 0 ? (
-        <ProductProgressRing completed={completedCards} total={totalCards} color={accentColor || '#666'} />
-      ) : ageLabel ? (
+      {ageLabel && (
         <span
           style={{
             position: 'absolute',
@@ -271,7 +231,7 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
         >
           {ageLabel}
         </span>
-      ) : null}
+      )}
       {/* Illustration — right-aligned, visible */}
       {illustration && (
         <div
@@ -362,38 +322,8 @@ export default function ProductLibrary() {
   const tracked = useRef(false);
   const { purchased } = useAllProductAccess();
   const { user } = useAuth();
-  const { space } = useCoupleSpaceContext();
   const [activeTab, setActiveTab] = useState<'barn' | 'par'>('barn');
   const [swipeDirection, setSwipeDirection] = useState<1 | -1>(1);
-
-  // Fetch completed card IDs for progress indicators
-  const [completedCardIds, setCompletedCardIds] = useState<string[]>([]);
-  useEffect(() => {
-    if (!space?.id) return;
-    let cancelled = false;
-    supabase
-      .from('couple_sessions')
-      .select('card_id')
-      .eq('couple_space_id', space.id)
-      .eq('status', 'completed')
-      .then(({ data }) => {
-        if (!cancelled && data) {
-          setCompletedCardIds(data.map(s => s.card_id).filter(Boolean) as string[]);
-        }
-      });
-    return () => { cancelled = true; };
-  }, [space?.id]);
-
-  // Per-product completion counts
-  const productCompletion = useMemo(() => {
-    const map: Record<string, { completed: number; total: number }> = {};
-    for (const product of allProducts) {
-      const productCardIds = product.cards.map(c => c.id);
-      const completed = productCardIds.filter(id => completedCardIds.includes(id)).length;
-      map[product.id] = { completed, total: productCardIds.length };
-    }
-    return map;
-  }, [completedCardIds]);
 
   const switchTab = (tab: 'barn' | 'par') => {
     setSwipeDirection(tab === 'par' ? 1 : -1);
@@ -673,8 +603,6 @@ export default function ProductLibrary() {
               onClick={() => navigate(`/product/${jagIMig.slug}`)}
               showFreeBadge={!purchased.has(jagIMig.id)}
               badgeText={buildBadgeText(jagIMig)}
-              completedCards={productCompletion[jagIMig.id]?.completed}
-              totalCards={productCompletion[jagIMig.id]?.total}
               wide
             />
             <PastelTile
@@ -690,8 +618,6 @@ export default function ProductLibrary() {
               onClick={() => navigate(`/product/${jagMedAndra.slug}`)}
               showFreeBadge={!purchased.has(jagMedAndra.id)}
               badgeText={buildBadgeText(jagMedAndra)}
-              completedCards={productCompletion[jagMedAndra.id]?.completed}
-              totalCards={productCompletion[jagMedAndra.id]?.total}
             />
             <PastelTile
               name={jagIVarlden.name}
@@ -705,8 +631,6 @@ export default function ProductLibrary() {
               onClick={() => navigate(`/product/${jagIVarlden.slug}`)}
               showFreeBadge={!purchased.has(jagIVarlden.id)}
               badgeText={buildBadgeText(jagIVarlden)}
-              completedCards={productCompletion[jagIVarlden.id]?.completed}
-              totalCards={productCompletion[jagIVarlden.id]?.total}
             />
             <PastelTile
               name={vardag.name}
@@ -720,8 +644,6 @@ export default function ProductLibrary() {
               onClick={() => navigate(`/product/${vardag.slug}`)}
               showFreeBadge={!purchased.has(vardag.id)}
               badgeText={buildBadgeText(vardag)}
-              completedCards={productCompletion[vardag.id]?.completed}
-              totalCards={productCompletion[vardag.id]?.total}
             />
             <PastelTile
               name={syskon.name}
@@ -735,8 +657,6 @@ export default function ProductLibrary() {
               onClick={() => navigate(`/product/${syskon.slug}`)}
               showFreeBadge={!purchased.has(syskon.id)}
               badgeText={buildBadgeText(syskon)}
-              completedCards={productCompletion[syskon.id]?.completed}
-              totalCards={productCompletion[syskon.id]?.total}
             />
             <PastelTile
               name={sexualitet.name}
@@ -750,8 +670,6 @@ export default function ProductLibrary() {
               onClick={() => navigate(`/product/${sexualitet.slug}`)}
               showFreeBadge={!purchased.has(sexualitet.id)}
               badgeText={buildBadgeText(sexualitet)}
-              completedCards={productCompletion[sexualitet.id]?.completed}
-              totalCards={productCompletion[sexualitet.id]?.total}
               wide
             />
           </motion.div>
