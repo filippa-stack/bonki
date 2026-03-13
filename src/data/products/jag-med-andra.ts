@@ -398,7 +398,7 @@ const cards: Card[] = [
         content: '',
         prompts: [
           'När är det för sent att säga förlåt?',
-          'Kan man visa sitt förlåt istället för att säga det?',
+          'Kan en visa sitt förlåt istället för att säga det?',
           'Har du någon gång sagt förlåt utan att mena det? Varför?',
           'När har du känt att du har fått skulden för något du inte har gjort?',
         ],
