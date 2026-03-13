@@ -31,35 +31,30 @@ const titleVariants = {
 const ACCENT_COLOR = '#0F6B99';
 const DIARY_TEXT = '#073B54';
 
-/** Four-tone blue palette — fresh rhythm to deep trust */
 const ORDERED_TILES = [
   {
     id: 'vk-var-rytm',
-    // Flow & Clarity — icy pale blue
-    bg: '#EBF7FF',
+    bg: '#E6F4F4',
     text: '#073B54',
     dark: false,
   },
   {
     id: 'vk-vi-hemma',
-    // Softness & Safety — comfortable mid-tone blue
-    bg: '#99CCE6',
+    bg: '#D4E9EC',
     text: '#073B54',
     dark: false,
   },
   {
     id: 'vk-jag-vaxer',
-    // Momentum — hero, active strong blue
-    bg: '#0F6B99',
-    text: '#FAFAF0',
-    dark: true,
+    bg: '#B8D8E0',
+    text: '#073B54',
+    dark: false,
   },
   {
     id: 'vk-jag-och-andra',
-    // Stability & Trust — deep midnight navy
-    bg: '#073B54',
-    text: '#FAFAF0',
-    dark: true,
+    bg: '#9CBFC9',
+    text: '#073B54',
+    dark: false,
   },
 ];
 
