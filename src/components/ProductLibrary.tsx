@@ -1,11 +1,13 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { allProducts } from '@/data/products';
 import { useAllProductAccess } from '@/hooks/useAllProductAccess';
 import { useAuth } from '@/contexts/AuthContext';
+import { useCoupleSpaceContext } from '@/contexts/CoupleSpaceContext';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/components/ui/sonner';
+import { Check } from 'lucide-react';
 import watermarkMamma from '@/assets/watermark-mamma.png';
 
 import illustrationStillUs from '@/assets/illustration-still-us-tile.png';
