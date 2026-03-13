@@ -94,10 +94,10 @@ const CATEGORY_CARD_BG: Record<string, string> = {
   'sex-relation-och-ansvar': '#E87A84',
   'sex-skydd-och-makt': '#AD5D65',
   // Vardag
-  'vk-var-rytm': '#EBF7FF',
-  'vk-vi-hemma': '#99CCE6',
-  'vk-jag-vaxer': '#0F6B99',
-  'vk-jag-och-andra': '#073B54',
+  'vk-min-dag': '#EBF7FF',
+  'vk-var-rytm': '#99CCE6',
+  'vk-vi-hemma': '#0F6B99',
+  'vk-utanfor-hemmet': '#073B54',
   // Syskon
   'sk-vi-blev-syskon': '#E0F2F1',
   'sk-vi-ar-olika': '#E9B44C',
