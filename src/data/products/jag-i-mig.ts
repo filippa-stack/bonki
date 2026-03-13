@@ -185,7 +185,7 @@ const cards: Card[] = [
           'Hur känns det i kroppen att vara rädd?',
           'Vad kan du göra när något eller någon skrämmer dig?',
           'Vad vill du att andra ska göra när du är rädd?',
-          'Kan man vara rädd för något man inte kan se? Hur kan det vara så?',
+          'Kan en vara rädd för något en inte kan se? Hur kan det vara så?',
           'Vet du något som skrämmer någon annan men som du inte är rädd för?',
           'Vad är du rädd för?',
         ],
