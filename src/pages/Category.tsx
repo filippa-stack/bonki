@@ -245,6 +245,7 @@ export default function Category() {
     product?.secondaryAccent ?? 'hsl(38, 88%, 46%)',
     isStillUsCategory ? undefined : '#FAF7F2',
     product?.ctaButtonColor,
+    product?.pronounMode,
   );
 
   // Apply Verdigris theme for Still Us categories
