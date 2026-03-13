@@ -275,20 +275,25 @@ export default function Category() {
           </motion.p>
         )}
 
-        {cards.map((card, index) => (
-          <CardEntry
-            key={card.id}
-            card={card}
-            index={index}
-            isCompleted={completedCardIds.includes(card.id)}
-            isInProgress={!completedCardIds.includes(card.id) && inProgressCardIds.includes(card.id)}
-            onNavigate={() => navigate(`/card/${card.id}`)}
-            isLast={index === cards.length - 1}
-            styles={styles}
-            categoryBg={categoryId ? CATEGORY_CARD_BG[categoryId] : undefined}
-            categoryId={categoryId}
-          />
-        ))}
+        {cards.map((card, index) => {
+          const isCompleted = completedCardIds.includes(card.id);
+          const isNextSuggested = !isCompleted && cards.slice(0, index).every(c => completedCardIds.includes(c.id));
+          return (
+            <CardEntry
+              key={card.id}
+              card={card}
+              index={index}
+              isCompleted={isCompleted}
+              isInProgress={!isCompleted && inProgressCardIds.includes(card.id)}
+              isNextSuggested={isNextSuggested && !allCompleted}
+              onNavigate={() => navigate(`/card/${card.id}`)}
+              isLast={index === cards.length - 1}
+              styles={styles}
+              categoryBg={categoryId ? CATEGORY_CARD_BG[categoryId] : undefined}
+              categoryId={categoryId}
+            />
+          );
+        })}
 
         <div style={{ marginTop: '40px', textAlign: 'center', paddingBottom: 'calc(32px + env(safe-area-inset-bottom, 0px))' }}>
           <p style={{ fontFamily: 'var(--font-serif)', fontSize: '14px', color: styles?.cardTitleColor ?? 'var(--accent-saffron)', opacity: 0.55, lineHeight: 1.5 }}>
@@ -686,6 +691,7 @@ interface CardEntryProps {
   index: number;
   isCompleted?: boolean;
   isInProgress?: boolean;
+  isNextSuggested?: boolean;
   onNavigate: () => void;
   isLast?: boolean;
   styles?: typeof PRODUCT_STYLES[string];
@@ -693,7 +699,7 @@ interface CardEntryProps {
   categoryId?: string;
 }
 
-function CardEntry({ card, index, isCompleted = false, isInProgress = false, onNavigate, isLast = false, styles, categoryBg, categoryId }: CardEntryProps) {
+function CardEntry({ card, index, isCompleted = false, isInProgress = false, isNextSuggested = false, onNavigate, isLast = false, styles, categoryBg, categoryId }: CardEntryProps) {
   const zipIllustration = useCardImage(card.id);
   const illustration = CARD_IMAGE_OVERRIDE[card.id] ?? zipIllustration;
 
@@ -720,13 +726,14 @@ function CardEntry({ card, index, isCompleted = false, isInProgress = false, onN
         style={{
           padding: '0',
           background: categoryBg || styles?.cardBg || '#FFFFFF',
-          border: '1.5px solid rgba(255,255,255,0.35)',
+          border: isNextSuggested ? '1.5px solid rgba(218, 157, 29, 0.55)' : '1.5px solid rgba(255,255,255,0.35)',
           borderRadius: '22px',
           boxShadow: [
+            isNextSuggested ? '0 0 20px -4px rgba(218, 157, 29, 0.25)' : '',
             '0 8px 28px rgba(44, 36, 32, 0.10)',
             '0 2px 8px rgba(44, 36, 32, 0.06)',
             'inset 0 1px 0 rgba(255,255,255,0.4)',
-          ].join(', '),
+          ].filter(Boolean).join(', '),
           transition: 'transform 200ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 260ms ease-out',
           height: '280px',
           position: 'relative',
@@ -821,7 +828,30 @@ function CardEntry({ card, index, isCompleted = false, isInProgress = false, onN
           </div>
         )}
 
-        {/* Gradient scrim for text legibility */}
+        {/* "Nästa" label for suggested card */}
+        {isNextSuggested && (
+          <div
+            style={{
+              position: 'absolute', top: '14px', right: '16px', zIndex: 2,
+              display: 'flex', alignItems: 'center', gap: '6px',
+              background: 'rgba(218, 157, 29, 0.18)',
+              backdropFilter: 'blur(8px)',
+              WebkitBackdropFilter: 'blur(8px)',
+              borderRadius: '12px',
+              padding: '5px 10px',
+              border: '1px solid rgba(218, 157, 29, 0.35)',
+            }}
+          >
+            <span style={{
+              fontFamily: 'var(--font-sans)', fontSize: '10px',
+              letterSpacing: '0.06em', textTransform: 'uppercase',
+              color: '#DA9D1D', fontWeight: 600,
+            }}>
+              Nästa
+            </span>
+          </div>
+        )}
+
         <div
           aria-hidden="true"
           style={{
