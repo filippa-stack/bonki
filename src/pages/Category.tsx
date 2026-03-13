@@ -57,6 +57,7 @@ const CARD_FOCAL_POINT: Record<string, string> = {
   'jim-ensam': 'center 35%', 'jim-glad': 'center 30%',
   'jim-radd': 'center 30%', 'jim-ledsen': 'center 35%',
   'jim-stress': 'center 30%',
+  'sk-vanskap': 'center 20%',
 };
 
 /** Product-specific design tokens for card listings */
