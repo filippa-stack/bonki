@@ -118,7 +118,7 @@ const cards: Card[] = [
     'Är det viktigt att ha en kompis med på sin aktivitet, eller kan det vara skönt att vara själv?',
     'Kan en hobby också vara något som du gör i skolan eller förskolan, eller måste det vara något helt annat?',
   ]}]},
-  { id: 'vk-tonar', title: 'Tonår', subtitle: 'Att växa upp -- vad som förändras, vad som är svårt och vad som blivit bättre', categoryId: 'vk-jag-vaxer', sections: [{ id: 'vk-tonar-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
+  { id: 'vk-tonar', title: 'Tonår', subtitle: 'Att växa upp – vad som förändras, vad som är svårt och vad som blivit bättre', categoryId: 'vk-jag-vaxer', sections: [{ id: 'vk-tonar-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
     'Vad får du göra som dina kompisar inte får?',
     'Vad har blivit bättre i ditt liv jämfört med för tre år sedan?',
     'Om du skulle träffa ditt 8-åriga jag, vad skulle du uppmuntra lilla dig att göra?',
