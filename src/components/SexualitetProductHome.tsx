@@ -92,7 +92,7 @@ export default function SexualitetProductHome({ product }: { product: ProductMan
                 <span style={{ fontFamily: "'DM Serif Display', var(--font-serif)", fontSize: isHero ? 'clamp(22px, 6vw, 28px)' : 'clamp(19px, 5.2vw, 25px)', fontWeight: 400, color: tile.text }}>
                   {cat.title}
                 </span>
-                {catProgress && (
+                {catProgress && catProgress.completed > 0 && (
                   <CategoryProgressRing completed={catProgress.completed} total={catProgress.total} color={tile.text} />
                 )}
               </motion.button>
