@@ -243,6 +243,7 @@ export default function Category() {
         circadianColor={circadianColor}
         backTo={backTo}
         navigate={navigate}
+        isReturningUser={completedCardIds.length >= 1}
       />
     );
   }
