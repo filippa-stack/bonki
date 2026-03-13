@@ -536,7 +536,7 @@ export default function ProductLibrary() {
               fontSize: '8px',
               fontWeight: 500,
               letterSpacing: '0.08em',
-              color: isDark ? 'hsla(30, 20%, 80%, 0.3)' : 'hsla(30, 10%, 30%, 0.25)',
+              color: isDark ? 'hsla(30, 20%, 80%, 0.3)' : 'hsla(0, 0%, 100%, 0.3)',
               textTransform: 'uppercase',
               transition: 'color 400ms ease',
             }}
