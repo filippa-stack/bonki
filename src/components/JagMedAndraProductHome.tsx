@@ -35,37 +35,32 @@ const ACCENT_COLOR = '#9825D6';
 const ORDERED_TILES = [
   {
     id: 'jma-att-hora-till',
-    // Amethyst Prime — The Hero
-    bg: '#9825D6',
-    text: '#FAFAF0',
-    dark: true,
+    bg: '#F9EBEE',
+    text: '#4A2C3A',
+    dark: false,
   },
   {
     id: 'jma-nar-vi-jamfor-oss',
-    // Moonlit Mist — The Breath
-    bg: '#E2C2FF',
-    text: '#3A1560',
+    bg: '#F5DDE4',
+    text: '#4A2C3A',
     dark: false,
   },
   {
     id: 'jma-nar-det-skaver',
-    // Orchid Flare — The Mid-tone
-    bg: '#BD7BEE',
-    text: '#FAFAF0',
-    dark: true,
+    bg: '#EED0DB',
+    text: '#4A2C3A',
+    dark: false,
   },
   {
     id: 'jma-att-sta-stadig',
-    // Royal Deep — The Support
-    bg: '#5A189A',
-    text: '#FAFAF0',
-    dark: true,
+    bg: '#CDBABF',
+    text: '#3A1F2A',
+    dark: false,
   },
   {
     id: 'jma-vi-i-varlden',
-    // Abyssal Purple — The Anchor
-    bg: '#240046',
-    text: '#FAFAF0',
+    bg: '#AC98A0',
+    text: '#2A1520',
     dark: true,
   },
 ];
