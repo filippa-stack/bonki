@@ -5,7 +5,7 @@ const categories: Category[] = [
   {
     id: 'jma-att-hora-till',
     title: 'Att höra till',
-    subtitle: 'Hur det känns att vara med -- och ibland utanför.',
+    subtitle: 'Hur det känns att vara med – och ibland utanför.',
     description: 'Vänskap, kontakt och tillhörighet',
     cardCount: 4,
   },
