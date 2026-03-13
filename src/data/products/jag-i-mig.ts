@@ -91,7 +91,7 @@ const cards: Card[] = [
           'Varför tror du att människor blir stressade?',
           'Har du någon gång känt dig stressad?',
           'Hur känns stress i kroppen?',
-          'Vad brukar hjälpa dig när du känner dig stressad? Och hur kan man hjälpa en kompis som verkar stressad?',
+          'Vad brukar hjälpa dig när du känner dig stressad? Och hur kan en hjälpa en kompis som verkar stressad?',
           'Hur kan det bli problem av att känna för mycket stress?',
           'Vad kan barn känna sig stressade över? Är det annorlunda för vuxna, tror du?',
           'Känner du någon som ibland pratar om att de är stressade? Vad tror du gör dem stressade?',
