@@ -232,13 +232,6 @@ export default function CircadianMenu({
             >
               {group.label}
             </h2>
-            <span
-              style={{
-                flex: 1,
-                height: '1px',
-                background: `linear-gradient(90deg, ${HERITAGE_GOLD}30 0%, transparent 100%)`,
-              }}
-            />
           </motion.div>
 
           <div className="flex flex-col" style={{ gap: '7px', position: 'relative' }}>
