@@ -109,7 +109,7 @@ const cards: Card[] = [
         title: 'Frågor',
         content: '',
         prompts: [
-          'Hur kan en älska sitt syskon en dag och vara jätteirriterad på dem nästa?',
+          'Hur kan en älska sitt syskon en dag och vara jätteirriterad på det nästa?',
           'På vilket sätt är din vänskap med ditt syskon annorlunda jämfört med andra vänskaper?',
           'Bästa vänner kan ibland sluta vara bästa vänner och välja att inte längre umgås. Hur är det att inte kunna göra detta val med ett syskon?',
           'Vad kan du göra för att hjälpa dig själv när du saknar ett syskon?',
@@ -301,7 +301,7 @@ const cards: Card[] = [
         content: '',
         prompts: [
           'På vilket sätt är din vänskap med ditt syskon annorlunda jämfört med andra vänskaper?',
-          'Hur kan en älska sitt syskon en dag och vara jätteirriterad på dem nästa?',
+          'Hur kan en älska sitt syskon en dag och vara jätteirriterad på det nästa?',
           'Bästa vänner kan ibland sluta vara bästa vänner och välja att inte längre umgås. Hur är det att inte kunna göra detta val med ett syskon?',
           'Tror du att du och ditt syskon kommer att vara vänner när ni är vuxna? Varför? Varför inte?',
         ],
