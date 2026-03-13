@@ -7,7 +7,10 @@ import ProductResumeBanner from '@/components/ProductResumeBanner';
 
 const EASE = [0.4, 0.0, 0.2, 1] as const;
 
-/** Five-tone chartreuse palette — solid, no gradients */
+const ACCENT_COLOR = '#6B7A10';
+const DIARY_TEXT = '#3E4421';
+
+/** Four-tone chartreuse palette — soft pastels */
 const ORDERED_TILES = [
   {
     id: 'jim-tryggheten-inuti',
@@ -30,9 +33,6 @@ const ORDERED_TILES = [
     text: '#2A2E14',
   },
 ];
-
-const ACCENT_COLOR = '#6B7A10';
-const DIARY_TEXT = '#3E4421';
 
 const containerVariants = {
   hidden: {},
