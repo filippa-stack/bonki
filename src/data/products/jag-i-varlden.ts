@@ -49,7 +49,7 @@ const cards: Card[] = [
     ['Varför tror du att människan är naturligt programmerad att behöva vänner?','Är vänskap något en väljer eller något som bara uppstår?','Hur skulle du definiera en vän för livet? Vad krävs för en sådan relation?','Kan en ha olika typer av vänskapsrelationer? Hur kan de i så fall se ut?'],
     'En person har flera olika vänner. Vissa av dem är mer populära än andra. Några kan vara tråkiga, men finns alltid där. Är några vänner mer värda än andra? Kan en värdera vänskap? Förklara.'),
   // ── K3: Jag & andra ──
-  qsCard('jiv-kommunikation', 'Kommunikation', 'Hur vi förstår varandra -- och vad som händer när orden inte räcker', 'jiv-jag-och-andra',
+  qsCard('jiv-kommunikation', 'Kommunikation', 'Hur vi förstår varandra – och vad som händer när orden inte räcker', 'jiv-jag-och-andra',
     ['Hur skulle du tillbringa en dag om du inte kunde kommunicera med någon?','Om en upplever att det är svårt att kommunicera med någon, vad kan det bero på?','Finns det vissa kommunikationskanaler (sociala medier, IRL) som är mer lämpliga beroende på vad samtalet handlar om?','Berätta om en situation då du önskar att du hade kommunicerat annorlunda.'],
     'En person du känner säger aldrig någonting. Du brukar fråga hur hen mår och vad som händer men får aldrig några svar. Personen låter dig dock förstå på andra sätt hur hen har det. När kan en icke-verbal kommunikation vara till hjälp, och när kan den bli ett problem?'),
   qsCard('jiv-konflikt', 'Konflikt', 'Konflikter som en del av livet -- hur en hanterar dem och kommer vidare', 'jiv-jag-och-andra',
