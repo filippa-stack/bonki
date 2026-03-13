@@ -19,7 +19,7 @@ const categories: Category[] = [
   {
     id: 'jim-nar-det-gor-ont',
     title: 'När det gör ont',
-    subtitle: 'Svåra känslor som är jobbiga -- men viktiga att förstå.',
+    subtitle: 'Svåra känslor som är jobbiga – men viktiga att förstå.',
     description: 'Svårare känslor att förstå och hantera',
     cardCount: 7,
   },
