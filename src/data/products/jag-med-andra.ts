@@ -301,7 +301,7 @@ const cards: Card[] = [
   {
     id: 'jma-misslyckas',
     title: 'Misslyckas',
-    subtitle: 'Känslan av att ha gjort bort sig -- och vad man egentligen lär sig av det',
+    subtitle: 'Känslan av att ha gjort bort sig -- och vad en egentligen lär sig av det',
     categoryId: 'jma-nar-det-skaver',
     sections: [
       {
