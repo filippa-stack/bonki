@@ -164,7 +164,7 @@ const cards: Card[] = [
   {
     id: 'sk-bonussyskon',
     title: 'Bonussyskon',
-    subtitle: 'Att få nya syskon via en ombildad familj -- möjligheter och utmaningar',
+    subtitle: 'Att få nya syskon via en ombildad familj – möjligheter och utmaningar',
     categoryId: 'sk-vi-ar-olika',
     sections: [
       {
