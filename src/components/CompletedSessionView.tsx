@@ -62,10 +62,41 @@ export default function CompletedSessionView({
   const pronounMode = product?.pronounMode ?? 'ni';
   const ageLabel = product?.ageLabel;
   const completionMessages = useMemo(() => getCompletionMessages(pronounMode, ageLabel), [pronounMode, ageLabel]);
+  const isChildProduct = product && product.id !== 'still_us';
 
   const headline = useMemo(() =>
     completionMessages[Math.floor(Math.random() * completionMessages.length)],
   [completionMessages]);
+
+  // Compute next card for child products
+  const [completedCardIds, setCompletedCardIds] = useState<Set<string>>(new Set());
+  useEffect(() => {
+    if (!space?.id || !isChildProduct) return;
+    supabase
+      .from('couple_sessions')
+      .select('card_id')
+      .eq('couple_space_id', space.id)
+      .eq('status', 'completed')
+      .then(({ data }) => {
+        if (data) setCompletedCardIds(new Set(data.map(s => s.card_id).filter(Boolean) as string[]));
+      });
+  }, [space?.id, isChildProduct]);
+
+  const nextCardDest = useMemo(() => {
+    if (!isChildProduct || !product) return null;
+    const done = new Set(completedCardIds);
+    done.add(cardId);
+    // Search within same category first, then across categories
+    const sameCatCards = product.cards.filter(c => c.categoryId === categoryId);
+    const nextSameCat = sameCatCards.find(c => !done.has(c.id));
+    if (nextSameCat) return `/card/${nextSameCat.id}`;
+    for (const cat of product.categories) {
+      if (cat.id === categoryId) continue;
+      const next = product.cards.filter(c => c.categoryId === cat.id).find(c => !done.has(c.id));
+      if (next) return `/card/${next.id}`;
+    }
+    return null;
+  }, [isChildProduct, product, completedCardIds, cardId, categoryId]);
 
   // Show feedback sheet 2s after content renders
   useEffect(() => {
