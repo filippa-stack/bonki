@@ -205,6 +205,7 @@ export default function JagIVarldenProductHome({ product }: { product: ProductMa
             if (!cat) return null;
 
             const isHero = index === 0;
+            const isLast = index === ORDERED_TILES.length - 1;
             const isDark = tile.dark;
 
             return (
@@ -215,36 +216,36 @@ export default function JagIVarldenProductHome({ product }: { product: ProductMa
                 whileTap={{ scale: 0.975, y: 1 }}
                 onClick={() => navigate(`/category/${cat.id}`)}
                 style={{
-                  background: isHero
-                    ? `linear-gradient(180deg, ${tile.bg} 0%, ${tile.bg}d8 100%)`
-                    : `linear-gradient(180deg, ${tile.bg} 0%, ${tile.bg}e0 100%)`,
+                  background: tile.bg,
                   borderRadius: '20px',
-                  padding: '0 28px',
+                  padding: '0 24px',
                   textAlign: 'center',
                   cursor: 'pointer',
                   border: isHero
-                    ? '1.5px solid rgba(61, 122, 69, 0.18)'
+                    ? '1.5px solid rgba(61, 122, 69, 0.22)'
                     : isDark
-                    ? '1px solid rgba(255, 255, 255, 0.10)'
-                    : '1px solid rgba(61, 122, 69, 0.06)',
+                    ? '1px solid rgba(255, 255, 255, 0.12)'
+                    : '1px solid rgba(61, 122, 69, 0.10)',
                   boxShadow: isHero
                     ? [
-                        '0 6px 24px rgba(132, 194, 137, 0.20)',
-                        '0 2px 6px rgba(132, 194, 137, 0.10)',
-                        'inset 0 1px 0 rgba(255, 255, 255, 0.35)',
-                        'inset 0 -1px 2px rgba(61, 122, 69, 0.06)',
+                        '0 8px 28px rgba(61, 122, 69, 0.16)',
+                        '0 3px 8px rgba(61, 122, 69, 0.08)',
+                        'inset 0 2px 0 rgba(255, 255, 255, 0.50)',
+                        'inset 0 -2px 4px rgba(61, 122, 69, 0.08)',
                       ].join(', ')
                     : [
-                        '0 4px 15px rgba(132, 194, 137, 0.10)',
-                        '0 1px 3px rgba(132, 194, 137, 0.05)',
+                        '0 4px 16px rgba(61, 122, 69, 0.10)',
+                        '0 1px 4px rgba(61, 122, 69, 0.06)',
                         isDark
-                          ? 'inset 0 1px 0 rgba(255, 255, 255, 0.08)'
-                          : 'inset 0 1px 0 rgba(255, 255, 255, 0.30)',
-                        'inset 0 -1px 2px rgba(61, 122, 69, 0.04)',
+                          ? 'inset 0 1px 0 rgba(255, 255, 255, 0.12)'
+                          : 'inset 0 2px 0 rgba(255, 255, 255, 0.45)',
+                        isDark
+                          ? 'inset 0 -1px 3px rgba(0, 0, 0, 0.08)'
+                          : 'inset 0 -2px 4px rgba(61, 122, 69, 0.06)',
                       ].join(', '),
-                  whiteSpace: 'normal' as const,
+                  whiteSpace: isLast ? 'nowrap' as const : 'normal' as const,
                   width: '86%',
-                  minHeight: isHero ? '72px' : '62px',
+                  minHeight: isHero ? '72px' : '60px',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
@@ -255,9 +256,9 @@ export default function JagIVarldenProductHome({ product }: { product: ProductMa
                   style={{
                     fontFamily: "'DM Serif Display', var(--font-serif)",
                     fontSize: isHero
-                      ? 'clamp(21px, 5.8vw, 27px)'
-                      : index === ORDERED_TILES.length - 1
-                      ? 'clamp(17px, 4.6vw, 22px)'
+                      ? 'clamp(22px, 6vw, 28px)'
+                      : isLast
+                      ? 'clamp(16px, 4.2vw, 20px)'
                       : 'clamp(19px, 5.2vw, 25px)',
                     fontWeight: 400,
                     color: tile.text,
