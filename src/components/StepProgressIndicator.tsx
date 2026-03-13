@@ -103,8 +103,12 @@ export default function StepProgressIndicator({
                   : isCompleted
                     ? '#DA9D1D'
                     : 'rgba(255, 255, 255, 0.35)',
+                scale: index === justCompletedIndex ? [1, 1.1, 1] : 1,
               }}
-              transition={{ duration: EMOTION, ease: [...EASE] }}
+              transition={{
+                color: { duration: EMOTION, ease: [...EASE] },
+                scale: { duration: 0.4, ease: [0, 0, 0.2, 1] },
+              }}
               style={{
                 flex: 1,
                 textAlign: 'center',
