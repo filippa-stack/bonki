@@ -93,7 +93,7 @@ export default function JagMedAndraProductHome({ product }: { product: ProductMa
                 <span style={{ fontFamily: "'DM Serif Display', var(--font-serif)", fontSize: index === 0 ? 'clamp(21px, 5.8vw, 27px)' : 'clamp(19px, 5.2vw, 25px)', fontWeight: 400, color: tile.text }}>
                   {cat.title}
                 </span>
-                {catProgress && (
+                {catProgress && catProgress.completed > 0 && (
                   <CategoryProgressRing completed={catProgress.completed} total={catProgress.total} color={tile.text} />
                 )}
               </motion.button>
