@@ -743,24 +743,49 @@ export default function CardView() {
   }, [space?.id, cardViewMode]);
 
   const postCompletionNav = useMemo(() => {
-    if (!category || !card) return { type: 'home' as const, destination: '/', label: '' };
+    if (!category || !card) return { type: 'home' as const, destination: '/', label: '', homeDest: '/' };
 
-    // Kids/family products: always navigate back to product homepage (free choice)
-    if (product && product.id !== 'still_us') {
-      const dest = `/product/${product.slug}`;
-      return { type: 'home' as const, destination: dest, label: 'Avsluta' };
-    }
-
-    // Still Us: recommend next card/category
     const productCards = product ? product.cards : cards;
-    const categoryCards = productCards.filter(c => c.categoryId === category.id);
     const effectiveCompleted = new Set(completedCardIds);
     effectiveCompleted.add(card.id);
 
+    // Find next incomplete card in same category
+    const categoryCards = productCards.filter(c => c.categoryId === category.id);
     const nextIncompleteInCategory = categoryCards.find(c => !effectiveCompleted.has(c.id));
 
+    // Find next incomplete card in next category (for cross-category progression)
+    let nextCategoryCard: { destination: string; label: string } | null = null;
+    if (!nextIncompleteInCategory && product) {
+      const catOrder = product.categories.map(c => c.id);
+      for (const catId of catOrder) {
+        if (catId === category.id) continue;
+        const catCards = productCards.filter(c => c.categoryId === catId);
+        const next = catCards.find(c => !effectiveCompleted.has(c.id));
+        if (next) {
+          nextCategoryCard = { destination: `/card/${next.id}`, label: 'Nästa ämne' };
+          break;
+        }
+      }
+    }
+
+    const homeDest = product && product.id !== 'still_us'
+      ? `/product/${product.slug}`
+      : '/';
+
+    // Kids/family products: find next card, but always offer home as secondary
+    if (product && product.id !== 'still_us') {
+      if (nextIncompleteInCategory) {
+        return { type: 'next_card' as const, destination: `/card/${nextIncompleteInCategory.id}`, label: 'Nästa', homeDest };
+      }
+      if (nextCategoryCard) {
+        return { type: 'next_card' as const, destination: nextCategoryCard.destination, label: 'Nästa', homeDest };
+      }
+      return { type: 'all_complete' as const, destination: homeDest, label: 'Avsluta', homeDest };
+    }
+
+    // Still Us: recommend next card/category
     if (nextIncompleteInCategory) {
-      return { type: 'next_card' as const, destination: `/card/${nextIncompleteInCategory.id}`, label: 'Nästa samtal' };
+      return { type: 'next_card' as const, destination: `/card/${nextIncompleteInCategory.id}`, label: 'Nästa samtal', homeDest };
     }
 
     for (const catId of getRecommendedCategoryOrder(card.id)) {
@@ -768,11 +793,11 @@ export default function CardView() {
       const catCards = productCards.filter(c => c.categoryId === catId);
       const hasIncomplete = catCards.some(c => !effectiveCompleted.has(c.id));
       if (hasIncomplete) {
-        return { type: 'next_category' as const, destination: `/category/${catId}`, label: 'Nästa ämne' };
+        return { type: 'next_category' as const, destination: `/category/${catId}`, label: 'Nästa ämne', homeDest };
       }
     }
 
-    return { type: 'all_complete' as const, destination: '/', label: '' };
+    return { type: 'all_complete' as const, destination: '/', label: '', homeDest };
   }, [category, card, cards, product, completedCardIds]);
 
   // ─────────────────────────────────────────────────────────────
@@ -1014,21 +1039,49 @@ export default function CardView() {
                 }}>
                   {uiText.allExploredSub}
                 </p>
+                <button
+                  onClick={() => navigateWithFeedback(postCompletionNav.homeDest)}
+                  className="cta-primary"
+                  style={{ maxWidth: '220px', width: '100%', marginTop: '32px' }}
+                >
+                  Avsluta
+                </button>
               </div>
             ) : (
               <motion.div
                 initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.65, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-                style={{ width: '100%', display: 'flex', justifyContent: 'center', marginTop: '48px' }}
+                style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px', marginTop: '48px' }}
               >
+                {/* Primary: Next card */}
                 <button
                   onClick={() => navigateWithFeedback(postCompletionNav.destination)}
                   className="cta-primary"
-                  style={{ maxWidth: '220px', width: '100%' }}
+                  style={{ maxWidth: '220px', width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}
                 >
                   {postCompletionNav.label}
+                  <ArrowRight size={16} style={{ opacity: 0.7 }} />
                 </button>
+                {/* Secondary: Finish / go back to product home */}
+                {product && product.id !== 'still_us' && (
+                  <button
+                    onClick={() => navigateWithFeedback(postCompletionNav.homeDest)}
+                    className="font-sans"
+                    style={{
+                      fontSize: '13px',
+                      color: 'var(--completion-link)',
+                      background: 'none',
+                      border: 'none',
+                      cursor: 'pointer',
+                      textDecoration: 'underline',
+                      textUnderlineOffset: '3px',
+                      opacity: 0.55,
+                    }}
+                  >
+                    Avsluta
+                  </button>
+                )}
               </motion.div>
             )}
 
@@ -1043,7 +1096,7 @@ export default function CardView() {
                   product && product.id !== 'still_us' ? `/diary/${product.id}` : '/shared'
                 )}
                 className="font-sans"
-                style={{ fontSize: '13px', color: 'var(--completion-link)', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline', textUnderlineOffset: '3px', marginTop: '24px' }}
+                style={{ fontSize: '13px', color: 'var(--completion-link)', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline', textUnderlineOffset: '3px', marginTop: '24px', opacity: 0.4 }}
               >
                 {product && product.id !== 'still_us' ? 'Vår dagbok' : uiText.seeNotes}
               </button>

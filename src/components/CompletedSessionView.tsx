@@ -8,6 +8,7 @@ import { getCompletionMessages } from '@/lib/pronouns';
 import { getProductForCard } from '@/data/products';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { ArrowRight } from 'lucide-react';
 import FeedbackSheet from '@/components/FeedbackSheet';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
@@ -61,10 +62,41 @@ export default function CompletedSessionView({
   const pronounMode = product?.pronounMode ?? 'ni';
   const ageLabel = product?.ageLabel;
   const completionMessages = useMemo(() => getCompletionMessages(pronounMode, ageLabel), [pronounMode, ageLabel]);
+  const isChildProduct = product && product.id !== 'still_us';
 
   const headline = useMemo(() =>
     completionMessages[Math.floor(Math.random() * completionMessages.length)],
   [completionMessages]);
+
+  // Compute next card for child products
+  const [completedCardIds, setCompletedCardIds] = useState<Set<string>>(new Set());
+  useEffect(() => {
+    if (!space?.id || !isChildProduct) return;
+    supabase
+      .from('couple_sessions')
+      .select('card_id')
+      .eq('couple_space_id', space.id)
+      .eq('status', 'completed')
+      .then(({ data }) => {
+        if (data) setCompletedCardIds(new Set(data.map(s => s.card_id).filter(Boolean) as string[]));
+      });
+  }, [space?.id, isChildProduct]);
+
+  const nextCardDest = useMemo(() => {
+    if (!isChildProduct || !product) return null;
+    const done = new Set(completedCardIds);
+    done.add(cardId);
+    // Search within same category first, then across categories
+    const sameCatCards = product.cards.filter(c => c.categoryId === categoryId);
+    const nextSameCat = sameCatCards.find(c => !done.has(c.id));
+    if (nextSameCat) return `/card/${nextSameCat.id}`;
+    for (const cat of product.categories) {
+      if (cat.id === categoryId) continue;
+      const next = product.cards.filter(c => c.categoryId === cat.id).find(c => !done.has(c.id));
+      if (next) return `/card/${next.id}`;
+    }
+    return null;
+  }, [isChildProduct, product, completedCardIds, cardId, categoryId]);
 
   // Show feedback sheet 2s after content renders
   useEffect(() => {
@@ -302,24 +334,44 @@ export default function CompletedSessionView({
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: BEAT_3 + 0.06, duration: EMOTION, ease: [...EASE] }}
-            style={{ marginTop: '8px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '20px' }}
+            style={{ marginTop: '8px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px' }}
           >
+            {/* Primary: Next card (child products) or Fortsätt utforska */}
+            {isChildProduct && nextCardDest ? (
+              <>
+                <button
+                  onClick={() => navigate(nextCardDest)}
+                  className="cta-primary"
+                  style={{ display: 'flex', alignItems: 'center', gap: '6px' }}
+                >
+                  Nästa <ArrowRight size={16} style={{ opacity: 0.7 }} />
+                </button>
+                <button
+                  onClick={() => navigate(`/product/${product!.slug}`)}
+                  className="font-sans"
+                  style={{ fontSize: '13px', color: 'var(--completion-link)', opacity: 0.55, background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline', textUnderlineOffset: '3px' }}
+                >
+                  Avsluta
+                </button>
+              </>
+            ) : (
+              <button
+                onClick={() => navigate(
+                  isChildProduct ? `/product/${product!.slug}` : '/'
+                )}
+                className="cta-primary"
+              >
+                {isChildProduct ? 'Avsluta' : 'Fortsätt utforska'}
+              </button>
+            )}
             <button
               onClick={() => navigate(
-                product && product.id !== 'still_us' ? `/diary/${product.id}` : '/shared'
+                isChildProduct ? `/diary/${product!.id}` : '/shared'
               )}
               className="font-sans"
-              style={{ fontSize: '13px', color: 'var(--completion-link)', opacity: 0.55, background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline', textUnderlineOffset: '3px' }}
+              style={{ fontSize: '13px', color: 'var(--completion-link)', opacity: 0.4, background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline', textUnderlineOffset: '3px' }}
             >
-              {product && product.id !== 'still_us' ? 'Vår dagbok' : 'Se alla era anteckningar'}
-            </button>
-            <button
-              onClick={() => navigate(
-                product && product.id !== 'still_us' ? `/product/${product.slug}` : '/'
-              )}
-              className="cta-primary"
-            >
-              Fortsätt utforska
+              {isChildProduct ? 'Vår dagbok' : 'Se alla era anteckningar'}
             </button>
           </motion.div>
 
