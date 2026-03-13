@@ -14,23 +14,23 @@ const DIARY_TEXT = '#3E4421';
 const ORDERED_TILES = [
   {
     id: 'jim-tryggheten-inuti',
-    bg: '#E6E9A2',
-    text: ACCENT_COLOR,
+    bg: '#D9E0A3',
+    text: '#3E4124',
   },
   {
     id: 'jim-kanslorna-jag-bar',
-    bg: '#F4F6C1',
-    text: ACCENT_COLOR,
+    bg: '#F0F2C8',
+    text: '#3E4124',
   },
   {
     id: 'jim-nar-det-gor-ont',
     bg: '#A8AD82',
-    text: '#3E4421',
+    text: '#3E4124',
   },
   {
     id: 'jim-jag-som-helhet',
     bg: '#8E944F',
-    text: '#2A2E14',
+    text: '#3E4124',
   },
 ];
 
