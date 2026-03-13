@@ -37,7 +37,7 @@ const cards: Card[] = [
   {
     id: 'jim-trygg',
     title: 'Trygg',
-    subtitle: 'Vad som gör att man känner sig säker och omhändertagen',
+    subtitle: 'Vad som gör att en känner sig säker och omhändertagen',
     categoryId: 'jim-tryggheten-inuti',
     sections: [
       {
