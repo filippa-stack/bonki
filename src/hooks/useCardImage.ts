@@ -161,6 +161,8 @@ const STANDALONE_IMAGES: Record<string, string> = {
   'jma-integritet': '/card-images/jma-integritet.png',
   'jma-modig': '/card-images/jma-modig.png',
   'jma-respekt': '/card-images/jma-respekt.png',
+  'jma-acceptans': '/card-images/jma-acceptans.png',
+  'jma-kluringen': '/card-images/jma-kluringen.png',
 };
 
 const ZIP_URLS: Record<ZipSource, string> = {
