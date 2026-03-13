@@ -45,7 +45,7 @@ const cards: Card[] = [
   qsCard('jiv-karlek', 'Kärlek', 'Kärlekens många former – attraktion, förälskelse och hur det förändras', 'jiv-vem-jag-ar',
     ['Hur känns kärlek?','Hur kan kärlek se ut för olika personer?','Vad finns det för likheter och skillnader mellan vänskap och kärlek?','Varför behöver vi kärlek? Kan en leva utan kärlek och ändå må bra?','Är det skillnad på attraktion, förälskelse, att vara kär och kärlek? Hur vet en skillnaden?','Hur kan ens kärlek till en person förändras över tid?','Vad kan orsaka att en slutar älska någon?'],
     'Du förstår att en person gillar dig som mer än en vän, men du känner inte likadant. Vad kan du göra?'),
-  qsCard('jiv-vanskap', 'Vänskap', 'Vad som håller en vänskap levande -- och om alla vänskaper är lika värda', 'jiv-vem-jag-ar',
+  qsCard('jiv-vanskap', 'Vänskap', 'Vad som håller en vänskap levande – och om alla vänskaper är lika värda', 'jiv-vem-jag-ar',
     ['Varför tror du att människan är naturligt programmerad att behöva vänner?','Är vänskap något en väljer eller något som bara uppstår?','Hur skulle du definiera en vän för livet? Vad krävs för en sådan relation?','Kan en ha olika typer av vänskapsrelationer? Hur kan de i så fall se ut?'],
     'En person har flera olika vänner. Vissa av dem är mer populära än andra. Några kan vara tråkiga, men finns alltid där. Är några vänner mer värda än andra? Kan en värdera vänskap? Förklara.'),
   // ── K3: Jag & andra ──
