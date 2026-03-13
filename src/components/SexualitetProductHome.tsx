@@ -33,34 +33,10 @@ const DIARY_TEXT = '#6B3A3F';
 
 /** Four-tone rose palette — warm, escalating weight */
 const ORDERED_TILES = [
-  {
-    id: 'sex-min-identitet',
-    // Clarity & Light — pale skin-tone pink
-    bg: '#FFF2F3',
-    text: '#6B3A3F',
-    dark: false,
-  },
-  {
-    id: 'sex-normer-och-paverkan',
-    // Awareness — friendly blushing rose (hero)
-    bg: '#FBB1B8',
-    text: '#5A2A30',
-    dark: false,
-  },
-  {
-    id: 'sex-relation-och-ansvar',
-    // Warmth & Pulse — deeper fleshy rose
-    bg: '#E87A84',
-    text: '#FAFAF0',
-    dark: true,
-  },
-  {
-    id: 'sex-skydd-och-makt',
-    // Strength & Gravity — dried rose / clay anchor
-    bg: '#AD5D65',
-    text: '#FAFAF0',
-    dark: true,
-  },
+  { id: 'sex-min-identitet', bg: '#F9F2F5', text: '#6B3A3F', dark: false },
+  { id: 'sex-normer-och-paverkan', bg: '#EBC9C9', text: '#5A2A30', dark: false },
+  { id: 'sex-relation-och-ansvar', bg: '#D19898', text: '#3A1E1E', dark: false },
+  { id: 'sex-skydd-och-makt', bg: '#A66D6D', text: '#FAFAF0', dark: true },
 ];
 
 export default function SexualitetProductHome({ product }: { product: ProductManifest }) {
