@@ -18,6 +18,7 @@ import ReturnOverlay from '@/components/ReturnOverlay';
 import BackToLibraryButton from '@/components/BackToLibraryButton';
 import stillUsIllustration from '@/assets/illustration-still-us-home.png';
 import CircadianMenu from '@/components/CircadianMenu';
+import { buildDynamicSteps } from '@/components/StepProgressIndicator';
 import { useThemeVars } from '@/hooks/useThemeVars';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
