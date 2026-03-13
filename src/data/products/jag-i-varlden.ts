@@ -39,7 +39,7 @@ const cards: Card[] = [
   qsCard('jiv-roller', 'Roller', 'De roller vi tar på oss i olika sammanhang – och om vi alltid är oss själva', 'jiv-vem-jag-ar',
     ['Beskriv en situation då du vet att du går in i en roll.','Kan en vara på olika sätt i olika situationer och fortfarande vara sig själv?','Har du tilldelats en roll av någon eller några som inte känns rätt?','Kan du känna av när någon inte verkar vara sig själv? Hur märker du det?'],
     'Hemma är du den som pratar mest och ser till att det händer saker. Du har rätt mycket ansvar och anses duktig. I ditt kompisgäng är det dock du som får finna dig i andras beslut och du hänger mest på. Är du dig själv i båda situationerna? Varför tror du att dina roller har blivit så olika?'),
-  qsCard('jiv-frihet', 'Frihet', 'Vad frihet egentligen innebär -- och hur ansvar och frihet hänger ihop', 'jiv-vem-jag-ar',
+  qsCard('jiv-frihet', 'Frihet', 'Vad frihet egentligen innebär – och hur ansvar och frihet hänger ihop', 'jiv-vem-jag-ar',
     ['Vilken personlig frihet skulle du sakna mest om den togs ifrån dig?','Tycker du att frihet och ansvar hör ihop? På vilket sätt?','Berätta om en situation där du känt dig väldigt fri.','Vilka friheter tror du vuxna har?','Vilka begränsningar eller ofriheter tror du vuxna har som inte barn har?'],
     'Någon du känner får vara ute hur sent som helst, har ingen bestämd middagstid och har ett kort där pengar sätts in för att kunna köpa vad hen vill. Samma person blir aldrig hämtad, får ofta laga mat själv och får klara sig själv. Tror du att den här personen känner sig fri? Förklara.'),
   qsCard('jiv-karlek', 'Kärlek', 'Kärlekens många former -- attraktion, förälskelse och hur det förändras', 'jiv-vem-jag-ar',
