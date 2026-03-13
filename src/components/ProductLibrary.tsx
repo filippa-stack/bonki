@@ -916,8 +916,8 @@ export default function ProductLibrary() {
               fontStyle: 'normal',
               fontSize: '15px',
               fontWeight: 400,
-              color: '#F5EFE6',
-              opacity: 0.6,
+              color: '#E9B44C',
+              opacity: 0.7,
               lineHeight: 1.6,
             }}
           >
