@@ -150,7 +150,7 @@ const cards: Card[] = [
   {
     id: 'jim-arg',
     title: 'Arg',
-    subtitle: 'Ilska är en signal -- vad väcker den och vart tar den vägen?',
+    subtitle: 'Ilska är en signal – vad väcker den och vart tar den vägen?',
     categoryId: 'jim-kanslorna-jag-bar',
     sections: [
       {
