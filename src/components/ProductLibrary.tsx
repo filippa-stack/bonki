@@ -46,12 +46,12 @@ const PASTEL_COLORS: Record<string, string> = {
 
 /** Raised illustration opacities — illustrations are a feature, not a ghost */
 const ILLUSTRATION_OPACITY: Record<string, number> = {
-  jag_i_mig: 0.22,
-  jag_med_andra: 0.20,
-  jag_i_varlden: 0.18,
-  sexualitetskort: 0.25,
-  vardagskort: 0.18,
-  syskonkort: 0.20,
+  jag_i_mig: 0.35,
+  jag_med_andra: 0.32,
+  jag_i_varlden: 0.28,
+  sexualitetskort: 0.35,
+  vardagskort: 0.28,
+  syskonkort: 0.30,
 };
 
 const ILLUSTRATION_SIZE: Record<string, string> = {
@@ -241,15 +241,27 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
             right: 0,
             bottom: 0,
             width: wide ? '50%' : '65%',
-            backgroundImage: `url(${illustration})`,
-            backgroundSize: illustrationSize,
-            backgroundRepeat: 'no-repeat',
-            backgroundPosition: illustrationPosition,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
             opacity: illustrationOpacity,
             pointerEvents: 'none',
             zIndex: 0,
+            overflow: 'hidden',
           }}
-        />
+        >
+          <img
+            src={illustration}
+            alt=""
+            draggable={false}
+            style={{
+              width: '100%',
+              height: '100%',
+              objectFit: 'contain',
+              objectPosition: illustrationPosition,
+            }}
+          />
+        </div>
       )}
       <div style={{ zIndex: 1, display: 'flex', flexDirection: 'column', flex: 1, width: '100%' }}>
         <h3
