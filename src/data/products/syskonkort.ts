@@ -220,7 +220,7 @@ const cards: Card[] = [
           'Hur skulle det kännas att ha samma födelsedag som ditt syskon?',
           'Vad gör ditt syskon om du inte delar med dig till hen?',
           'Berätta om ett tillfälle då du och ditt syskon ville ha eller ville göra samma sak samtidigt. Hur löste ni det?',
-          'Vad tror du att du kan lära dig av att dela med dig till dina syskon?',
+          'Vad tror du att du kan lära dig av att dela med dig till ditt syskon?',
         ],
       },
     ],
