@@ -66,7 +66,9 @@ export default function Header({
         style={{
           backgroundColor: isImmersive
             ? 'var(--page-bg, var(--surface-base))'
-            : 'var(--surface-base)',
+            : minimal
+              ? 'transparent'
+              : 'var(--surface-base)',
           boxShadow: 'none',
           borderBottom: isImmersive
             ? '1px solid var(--color-border-faint, hsla(158, 20%, 30%, 0.12))'
