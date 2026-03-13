@@ -5,8 +5,8 @@ import type { ProductManifest } from '@/types/product';
 
 interface ProductResumeBannerProps {
   product: ProductManifest;
-  accentColor: string;
 }
+
 
 /**
  * Shows "Fortsätt med {cardTitle} →" when there's an active session
