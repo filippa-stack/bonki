@@ -944,34 +944,30 @@ export default function CardView() {
             </h2>
           </motion.div>
 
-          {/* Subtitle */}
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.35, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-            className="font-sans"
-            style={{
-              fontSize: '14px',
-              color: 'var(--text-primary)',
-              opacity: 0.65,
-              textAlign: 'center',
-              marginBottom: '28px',
-            }}
-          >
-            {uiText.takeawayPrompt}
-          </motion.p>
-
-          {/* Takeaway field */}
+          {/* Simple takeaway field — always visible, optional */}
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4, duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ delay: 0.35, duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
             className="max-w-md mx-auto"
+            style={{ width: '100%' }}
           >
-            <CompletionTakeaway sessionId={activeSessionId} spaceId={space?.id ?? null} pronounMode={pronounMode} cardId={cardId} productId={product?.id} />
+            <p
+              className="font-sans"
+              style={{
+                fontSize: '14px',
+                color: 'var(--text-primary)',
+                opacity: 0.50,
+                textAlign: 'center',
+                marginBottom: '12px',
+              }}
+            >
+              Något ni vill minnas?
+            </p>
+            <SimpleTakeaway sessionId={activeSessionId} spaceId={space?.id ?? null} cardId={cardId} productId={product?.id} />
           </motion.div>
 
-          {/* Privacy reassurance — below text field */}
+          {/* Privacy reassurance */}
           <motion.p
             className="font-sans"
             initial={{ opacity: 0 }}
@@ -988,7 +984,7 @@ export default function CardView() {
             {pronounMode === 'du' ? 'Inget du skriver lämnar det här rummet.' : 'Inget ni skriver lämnar det här rummet.'}
           </motion.p>
 
-          {/* CTAs — cascading reveal */}
+          {/* CTAs */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -997,7 +993,7 @@ export default function CardView() {
             style={{ paddingBottom: 'calc(72px + env(safe-area-inset-bottom, 0px))' }}
           >
             {postCompletionNav.type === 'all_complete' ? (
-              <div className="text-center" style={{ marginTop: '48px' }}>
+              <div className="text-center" style={{ marginTop: '32px' }}>
                 <p style={{
                   fontFamily: "'DM Serif Display', var(--font-serif)",
                   fontSize: '18px',
@@ -1016,8 +1012,24 @@ export default function CardView() {
                 </p>
                 <button
                   onClick={() => navigateWithFeedback(postCompletionNav.homeDest)}
-                  className="cta-primary"
-                  style={{ maxWidth: '220px', width: '100%', marginTop: '32px' }}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    width: '100%',
+                    maxWidth: '520px',
+                    height: '52px',
+                    borderRadius: '14px',
+                    backgroundColor: 'hsl(41, 78%, 48%)',
+                    color: 'hsl(30, 10%, 12%)',
+                    fontFamily: 'var(--font-sans)',
+                    fontSize: '15px',
+                    fontWeight: 600,
+                    letterSpacing: '0.01em',
+                    border: 'none',
+                    cursor: 'pointer',
+                    marginTop: '32px',
+                  }}
                 >
                   Avsluta
                 </button>
@@ -1027,13 +1039,29 @@ export default function CardView() {
                 initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.65, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-                style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px', marginTop: '48px' }}
+                style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px', marginTop: '32px' }}
               >
-                {/* Primary: Next card */}
+                {/* Primary: Next card — full-width saffron */}
                 <button
                   onClick={() => navigateWithFeedback(postCompletionNav.destination)}
-                  className="cta-primary"
-                  style={{ maxWidth: '220px', width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '6px',
+                    width: '100%',
+                    maxWidth: '520px',
+                    height: '52px',
+                    borderRadius: '14px',
+                    backgroundColor: 'hsl(41, 78%, 48%)',
+                    color: 'hsl(30, 10%, 12%)',
+                    fontFamily: 'var(--font-sans)',
+                    fontSize: '15px',
+                    fontWeight: 600,
+                    letterSpacing: '0.01em',
+                    border: 'none',
+                    cursor: 'pointer',
+                  }}
                 >
                   {postCompletionNav.label}
                   <ArrowRight size={16} style={{ opacity: 0.7 }} />
@@ -2132,26 +2160,21 @@ export default function CardView() {
   );
 }
 
-/* ─── Inline takeaway for completion screen ─── */
+/* ─── Simple takeaway for completion screen ─── */
 
-type TakeawayPhase = 'writing' | 'sealing' | 'sealed';
-
-function CompletionTakeaway({ sessionId, spaceId, pronounMode = 'ni', cardId, productId }: {
+function SimpleTakeaway({ sessionId, spaceId, cardId, productId }: {
   sessionId: string | null;
   spaceId: string | null;
-  pronounMode?: PronounMode;
   cardId?: string;
   productId?: string;
 }) {
   const { user } = useAuth();
   const [text, setText] = useState('');
   const [rowId, setRowId] = useState<string | null>(null);
-  const [phase, setPhase] = useState<TakeawayPhase>('writing');
   const [isFocused, setIsFocused] = useState(false);
-  const [isNoteExpanded, setIsNoteExpanded] = useState(false);
-  const completionTextareaRef = useRef<HTMLTextAreaElement>(null);
   const userId = user?.id;
   const isDemo = isDemoMode();
+  const debounceRef = useRef<ReturnType<typeof setTimeout>>();
 
   const hasFill = text.trim().length > 0;
 
@@ -2174,344 +2197,79 @@ function CompletionTakeaway({ sessionId, spaceId, pronounMode = 'ni', cardId, pr
     try {
       const key = `bonki-demo-diary-${productId}`;
       const existing = JSON.parse(localStorage.getItem(key) || '[]');
-      // Upsert by cardId
       const idx = existing.findIndex((e: any) => e.cardId === cardId);
-      const entry = {
-        cardId,
-        text: value,
-        date: new Date().toISOString(),
-        type: 'reflection',
-      };
+      const entry = { cardId, text: value, date: new Date().toISOString(), type: 'reflection' };
       if (idx >= 0) existing[idx] = entry;
       else existing.unshift(entry);
       localStorage.setItem(key, JSON.stringify(existing));
     } catch {}
   }, [productId, cardId]);
 
-  const handleSave = useCallback(async () => {
-    if (!hasFill) return;
-    setPhase('sealing');
-
-    // Persist
-    if (isDemo) {
-      persistToLocal(text);
-    } else {
-      await persistToDb(text);
-    }
-
-    // Let sealing animation play
-    setTimeout(() => setPhase('sealed'), 1200);
-  }, [text, hasFill, isDemo, persistToDb, persistToLocal]);
-
-  if (phase === 'sealed') {
-    return (
-      <motion.div
-        initial={{ opacity: 0, scale: 0.95 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          gap: '16px',
-        }}
-      >
-        {/* Sealed card */}
-        <motion.div
-          initial={{ y: 8 }}
-          animate={{ y: 0 }}
-          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-          style={{
-            width: '100%',
-            background: 'hsl(36 25% 97% / 0.90)',
-            borderRadius: '16px',
-            padding: '28px 24px 24px',
-            position: 'relative',
-            overflow: 'hidden',
-            boxShadow: '0 4px 20px hsla(30, 15%, 25%, 0.08), inset 0 1px 0 hsla(36, 50%, 90%, 0.5)',
-          }}
-        >
-          {/* Decorative seal line */}
-          <motion.div
-            initial={{ scaleX: 0 }}
-            animate={{ scaleX: 1 }}
-            transition={{ delay: 0.2, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-            style={{
-              position: 'absolute',
-              top: 0,
-              left: '15%',
-              right: '15%',
-              height: '2px',
-              background: 'linear-gradient(90deg, transparent, var(--accent-saffron), transparent)',
-              opacity: 0.4,
-              transformOrigin: 'center',
-            }}
-          />
-
-          <p
-            style={{
-              fontFamily: "'Lora', 'Georgia', serif",
-              fontStyle: 'italic',
-              fontSize: '16px',
-              lineHeight: 1.7,
-              color: 'var(--text-primary)',
-              whiteSpace: 'pre-wrap',
-              textAlign: 'left',
-            }}
-          >
-            {text}
-          </p>
-
-          {/* Bottom seal decoration */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.5 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.4, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-            style={{
-              display: 'flex',
-              justifyContent: 'center',
-              marginTop: '20px',
-            }}
-          >
-            <div style={{
-              width: '24px',
-              height: '2px',
-              borderRadius: '1px',
-              background: 'var(--accent-saffron)',
-              opacity: 0.3,
-            }} />
-          </motion.div>
-        </motion.div>
-
-        {/* Confirmation text */}
-        <motion.p
-          initial={{ opacity: 0, y: 6 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.5, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-          className="font-sans"
-          style={{
-            fontSize: '13px',
-            color: 'var(--accent-saffron)',
-            textAlign: 'center',
-            opacity: 0.7,
-          }}
-        >
-          Sparad i er dagbok ✦
-        </motion.p>
-      </motion.div>
-    );
-  }
-
-  if (phase === 'sealing') {
-    return (
-      <motion.div
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          gap: '12px',
-          padding: '40px 0',
-        }}
-      >
-        {/* Folding animation */}
-        <motion.div
-          initial={{ opacity: 1, scaleY: 1, borderRadius: '12px' }}
-          animate={{
-            opacity: [1, 0.8, 0.6],
-            scaleY: [1, 0.7, 0.3],
-            borderRadius: '16px',
-          }}
-          transition={{ duration: 1.0, ease: [0.22, 1, 0.36, 1] }}
-          style={{
-            width: '100%',
-            background: 'hsl(36 20% 97% / 0.85)',
-            padding: '20px 24px',
-            transformOrigin: 'center top',
-            overflow: 'hidden',
-          }}
-        >
-          <p
-            style={{
-              fontFamily: "'Lora', 'Georgia', serif",
-              fontStyle: 'italic',
-              fontSize: '15px',
-              lineHeight: 1.6,
-              color: 'var(--text-primary)',
-              opacity: 0.6,
-            }}
-          >
-            {text}
-          </p>
-        </motion.div>
-
-        {/* Saffron glow pulse */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.2 }}
-          animate={{ opacity: [0, 0.5, 0], scale: [0.2, 1.5, 2] }}
-          transition={{ duration: 1.2, ease: 'easeOut' }}
-          style={{
-            position: 'absolute',
-            width: '120px',
-            height: '120px',
-            borderRadius: '50%',
-            background: 'radial-gradient(circle, var(--accent-saffron) 0%, transparent 70%)',
-            pointerEvents: 'none',
-          }}
-        />
-      </motion.div>
-    );
-  }
-
-  // Phase: writing — ceremonial invitation style
-  const handleNoteExpand = () => {
-    setIsNoteExpanded(true);
-    setTimeout(() => completionTextareaRef.current?.focus(), 320);
+  const handleChange = (value: string) => {
+    setText(value);
+    // Auto-save with debounce
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+    debounceRef.current = setTimeout(() => {
+      if (value.trim()) {
+        if (isDemo) persistToLocal(value);
+        else persistToDb(value);
+      }
+    }, 1000);
   };
 
   return (
-    <div className="completion-takeaway-wrapper" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-      <AnimatePresence mode="wait">
-        {!isNoteExpanded && !hasFill ? (
-          /* ── Collapsed trigger — ceremonial invitation ── */
-          <motion.button
-            key="completion-trigger"
-            onClick={handleNoteExpand}
-            initial={{ opacity: 0, y: 4 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -4, transition: { duration: 0.2 } }}
-            transition={{ delay: 0.1, duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-            className="active:scale-[0.98]"
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: '8px',
-              padding: '14px 24px',
-              background: 'none',
-              border: 'none',
-              cursor: 'pointer',
-            }}
-          >
-            <Feather
-              size={15}
-              strokeWidth={1.5}
-              style={{ color: 'var(--text-primary)', opacity: 0.35 }}
-            />
-            <span
-              style={{
-                fontFamily: 'var(--font-serif)',
-                fontStyle: 'italic',
-                fontSize: '15px',
-                color: 'var(--text-primary)',
-                opacity: 0.40,
-                letterSpacing: '0.01em',
-              }}
-            >
-              Något ni vill bära med er
-            </span>
-          </motion.button>
-        ) : (
-          /* ── Expanded — ceremonial textarea ── */
-          <motion.div
-            key="completion-expanded"
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-            style={{ width: '100%' }}
-          >
-            <div style={{ position: 'relative' }}>
-              {/* Feather watermark when empty */}
-              {!hasFill && !isFocused && (
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  style={{
-                    position: 'absolute',
-                    top: '22px',
-                    left: '20px',
-                    pointerEvents: 'none',
-                    zIndex: 1,
-                  }}
-                >
-                  <Feather
-                    size={14}
-                    strokeWidth={1.5}
-                    style={{ color: 'var(--text-primary)', opacity: 0.25 }}
-                  />
-                </motion.div>
-              )}
-              <textarea
-                ref={completionTextareaRef}
-                value={text}
-                onChange={(e) => setText(e.target.value)}
-                onFocus={() => setIsFocused(true)}
-                onBlur={() => setIsFocused(false)}
-                placeholder=""
-                inputMode="text"
-                autoCorrect="on"
-                autoCapitalize="sentences"
-                spellCheck={true}
-                className="w-full resize-none focus:outline-none focus:ring-0"
-                style={{
-                  height: 'auto',
-                  minHeight: '80px',
-                  maxHeight: '180px',
-                  overflow: 'auto',
-                  fontFamily: 'var(--font-serif)',
-                  fontSize: '16px',
-                  lineHeight: 1.7,
-                  color: 'var(--text-primary)',
-                  backgroundColor: isFocused || hasFill
-                    ? 'hsla(36, 20%, 97%, 0.12)'
-                    : 'hsla(36, 18%, 96%, 0.06)',
-                  border: 'none',
-                  borderRadius: '12px',
-                  padding: '20px 24px',
-                  textAlign: hasFill ? 'left' : 'center',
-                  boxShadow: isFocused
-                    ? '0 0 0 1px hsla(36, 20%, 80%, 0.15)'
-                    : 'none',
-                  transition: 'background-color 320ms ease, box-shadow 320ms ease',
-                }}
-              />
-            </div>
-
-            {/* Ceremonial save button — appears when text is entered */}
-            <AnimatePresence>
-              {hasFill && (
-                <motion.div
-                  initial={{ opacity: 0, y: 8, height: 0, marginTop: 0 }}
-                  animate={{ opacity: 1, y: 0, height: 'auto', marginTop: 16 }}
-                  exit={{ opacity: 0, y: -4, height: 0, marginTop: 0 }}
-                  transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-                  style={{ display: 'flex', justifyContent: 'center', overflow: 'hidden' }}
-                >
-                  <motion.button
-                    onClick={handleSave}
-                    whileTap={{ scale: 0.97 }}
-                    className="font-sans"
-                    style={{
-                      padding: '12px 32px',
-                      borderRadius: '28px',
-                      border: '1px solid hsla(38, 60%, 55%, 0.25)',
-                      background: 'hsla(36, 30%, 96%, 0.15)',
-                      color: 'var(--accent-saffron)',
-                      fontSize: '14px',
-                      fontWeight: 500,
-                      letterSpacing: '0.02em',
-                      cursor: 'pointer',
-                      boxShadow: '0 2px 12px hsla(38, 60%, 46%, 0.08)',
-                      transition: 'box-shadow 300ms ease, transform 300ms ease',
-                    }}
-                  >
-                    Spara i dagboken ✦
-                  </motion.button>
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </motion.div>
-        )}
-      </AnimatePresence>
+    <div style={{ position: 'relative', width: '100%' }}>
+      {/* Feather watermark when empty */}
+      {!hasFill && !isFocused && (
+        <div
+          style={{
+            position: 'absolute',
+            top: '22px',
+            left: '20px',
+            pointerEvents: 'none',
+            zIndex: 1,
+          }}
+        >
+          <Feather
+            size={14}
+            strokeWidth={1.5}
+            style={{ color: 'var(--text-primary)', opacity: 0.25 }}
+          />
+        </div>
+      )}
+      <textarea
+        value={text}
+        onChange={(e) => handleChange(e.target.value)}
+        onFocus={() => setIsFocused(true)}
+        onBlur={() => setIsFocused(false)}
+        placeholder=""
+        inputMode="text"
+        autoCorrect="on"
+        autoCapitalize="sentences"
+        spellCheck={true}
+        className="w-full resize-none focus:outline-none focus:ring-0"
+        style={{
+          height: 'auto',
+          minHeight: '80px',
+          maxHeight: '180px',
+          overflow: 'auto',
+          fontFamily: 'var(--font-serif)',
+          fontSize: '16px',
+          lineHeight: 1.7,
+          color: 'var(--text-primary)',
+          backgroundColor: isFocused || hasFill
+            ? 'hsla(36, 20%, 97%, 0.12)'
+            : 'hsla(36, 18%, 96%, 0.06)',
+          border: 'none',
+          borderRadius: '12px',
+          padding: '20px 24px',
+          textAlign: hasFill ? 'left' : 'center',
+          boxShadow: isFocused
+            ? '0 0 0 1px hsla(36, 20%, 80%, 0.15)'
+            : 'none',
+          transition: 'background-color 320ms ease, box-shadow 320ms ease',
+        }}
+      />
     </div>
   );
 }
