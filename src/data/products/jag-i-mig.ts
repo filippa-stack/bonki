@@ -284,7 +284,7 @@ const cards: Card[] = [
   {
     id: 'jim-skam',
     title: 'Skam',
-    subtitle: 'Känslan av att ha gjort fel -- eller tro att man själv är fel',
+    subtitle: 'Känslan av att ha gjort fel -- eller tro att en själv är fel',
     categoryId: 'jim-nar-det-gor-ont',
     sections: [
       {
