@@ -58,7 +58,7 @@ const cards: Card[] = [
     'Måste en ha sex? Vem bestämmer det?',
     'Vad kan påverka ditt beslut att ha sex?',
   ]}]},
-  { id: 'sex-pornografi', title: 'Pornografi', subtitle: 'Vad pornografi är, hur realistisk den är -- och vad den kan göra med ens bild av sex', categoryId: 'sex-normer-och-paverkan', sections: [{ id: 'sex-pornografi-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
+  { id: 'sex-pornografi', title: 'Pornografi', subtitle: 'Vad pornografi är, hur realistisk den är – och vad den kan göra med ens bild av sex', categoryId: 'sex-normer-och-paverkan', sections: [{ id: 'sex-pornografi-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
     'Vad räknas som pornografi?',
     'Vad tror du kan vara skillnader mellan industriell porr och amatörporr?',
     'Hur realistisk tror du att pornografi är när det gäller sex i verkligheten? Vad kan det få för konsekvenser om en tror att det speglar verkligheten?',
