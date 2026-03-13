@@ -4,6 +4,7 @@ import type { ProductManifest } from '@/types/product';
 import apaImage from '@/assets/apa-jag-i-mig.png';
 import ProductResumeBanner from '@/components/ProductResumeBanner';
 import DiaryEntrance from '@/components/DiaryEntrance';
+import ProductHomeBackButton from '@/components/ProductHomeBackButton';
 
 const EASE = [0.4, 0.0, 0.2, 1] as const;
 
@@ -63,6 +64,8 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
       className="min-h-screen relative overflow-hidden"
       style={{ backgroundColor: 'var(--surface-base)' }}
     >
+      {/* Back button */}
+      <ProductHomeBackButton color={ACCENT_COLOR} />
       {/* Soft sun-glow — shared light logic with Still Us */}
       <div
         style={{

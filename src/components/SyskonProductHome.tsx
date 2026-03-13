@@ -4,6 +4,7 @@ import type { ProductManifest } from '@/types/product';
 import illustrationImage from '@/assets/illustration-syskon.png';
 import ProductResumeBanner from '@/components/ProductResumeBanner';
 import DiaryEntrance from '@/components/DiaryEntrance';
+import ProductHomeBackButton from '@/components/ProductHomeBackButton';
 
 const EASE = [0.4, 0.0, 0.2, 1] as const;
 
@@ -66,6 +67,8 @@ export default function SyskonProductHome({ product }: { product: ProductManifes
       className="min-h-screen relative overflow-hidden"
       style={{ backgroundColor: 'var(--surface-base)' }}
     >
+      {/* Back button */}
+      <ProductHomeBackButton color={ACCENT_COLOR} />
       {/* Soft sun-glow — shared light logic with Still Us */}
       <div
         style={{
