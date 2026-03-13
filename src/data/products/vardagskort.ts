@@ -119,7 +119,7 @@ const cards: Card[] = [
     'Vad skulle du vilja ändra med din vardagsrutin?',
     'Vad har blivit lättare med att bli äldre? Vad har blivit svårare?',
   ]}]},
-  { id: 'vk-arbete', title: 'Arbete', subtitle: 'Barnets bild av de vuxnas jobb – och vad det drömmer om att bli', categoryId: 'vk-jag-vaxer', sections: [{ id: 'vk-arbete-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
+  { id: 'vk-arbete', title: 'Arbete', subtitle: 'Barnets bild av de vuxnas jobb – och vad det drömmer om att bli', categoryId: 'vk-utanfor-hemmet', sections: [{ id: 'vk-arbete-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
     'Vad skulle du säga om någon frågade vad dina vuxna gör när de arbetar?',
     'Hur vet du om dina vuxna tycker om sina jobb?',
     'Förutom att tjäna pengar, varför tror du att vuxna jobbar?',
