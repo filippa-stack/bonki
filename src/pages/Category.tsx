@@ -323,6 +323,8 @@ interface StillUsCategoryViewProps {
   circadianColor?: string;
   backTo: string;
   navigate: (path: string) => void;
+  /** User has completed at least 1 session — skip CardPreview */
+  isReturningUser?: boolean;
 }
 
 function StillUsCategoryView({
