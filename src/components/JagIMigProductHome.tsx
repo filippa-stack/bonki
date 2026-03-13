@@ -11,29 +11,23 @@ const EASE = [0.4, 0.0, 0.2, 1] as const;
 const ORDERED_TILES = [
   {
     id: 'jim-tryggheten-inuti',
-    // Electric Pear — The Hero
-    bg: '#CDD625',
-    text: '#3E4421',
+    bg: '#E6E9A2',
+    text: ACCENT_COLOR,
   },
   {
     id: 'jim-kanslorna-jag-bar',
-    // Lemon Silk — The Highlight
-    bg: '#F2F89B',
-    text: '#3E4421',
+    bg: '#F4F6C1',
+    text: ACCENT_COLOR,
   },
   {
     id: 'jim-nar-det-gor-ont',
-    // Sage Leaf — darker for contrast
-    bg: '#6B7A45',
-    text: '#FAFAF0',
-    dark: true,
+    bg: '#A8AD82',
+    text: '#3E4421',
   },
   {
     id: 'jim-jag-som-helhet',
-    // Deep Moss — The Shadow
-    bg: '#6B7213',
-    text: '#FAFAF0',
-    dark: true,
+    bg: '#8E944F',
+    text: '#2A2E14',
   },
 ];
 
