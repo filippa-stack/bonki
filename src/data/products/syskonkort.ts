@@ -198,7 +198,7 @@ const cards: Card[] = [
           'Vad är det vanligaste du och ditt syskon bråkar om?',
           'Kan det finnas något bra med att bråka med ett syskon?',
           'Vad är det löjligaste, tramsigaste eller dummaste som du och ditt syskon har bråkat om?',
-          'Tror du att bråk med dina syskon har hjälpt dig att bli en bättre person eller familjemedlem?',
+          'Tror du att bråk med ditt syskon har hjälpt dig att bli en bättre person eller familjemedlem?',
           'Hur brukar du göra för att lösa en konflikt eller ett bråk med ditt syskon?',
           'Hur brukar konflikter mellan dig och ditt syskon sluta? Hur gör ni för att bli vänner igen?',
         ],
