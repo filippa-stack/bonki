@@ -61,7 +61,7 @@ const cards: Card[] = [
   { id: 'sex-pornografi', title: 'Pornografi', subtitle: 'Vad pornografi är, hur realistisk den är -- och vad den kan göra med ens bild av sex', categoryId: 'sex-normer-och-paverkan', sections: [{ id: 'sex-pornografi-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
     'Vad räknas som pornografi?',
     'Vad tror du kan vara skillnader mellan industriell porr och amatörporr?',
-    'Hur realistisk tror du att pornografi är när det gäller sex i verkligheten? Vad kan det få för konsekvenser om man tror att det speglar verkligheten?',
+    'Hur realistisk tror du att pornografi är när det gäller sex i verkligheten? Vad kan det få för konsekvenser om en tror att det speglar verkligheten?',
     'Finns det rätt och fel med att titta på porr?',
     'Behöver en ha samtycke av sin partner för att titta på porr?',
     'Har du någon gång blivit ofrivilligt exponerad för pornografi? Hur reagerade du på det?',
