@@ -132,7 +132,7 @@ export const cards: Card[] = [
         prompts: [
           'Hur ofta hamnar era samtal i det praktiska — och vad händer med allt det andra?',
           'Finns det ett läge ni brukar ha tillsammans — eller brukade ha — som du saknar när vardagen tar över?',
-          'Vad händer mellan er när ett samtal försöker bli något mer än praktiskt — men inte riktigt kommer dit?',
+          'Vad behöver ni från varandra för att ett samtal ska bli mer än praktiskt?',
         ],
       },
       {
