@@ -47,7 +47,7 @@ const cards: Card[] = [
     'På vilka sätt kan ens självbild påverka ens sexuella relationer?',
   ]}]},
   // ── K2: Normer & påverkan ──
-  { id: 'sex-normer', title: 'Normer', subtitle: 'Samhällets oskrivna regler om sex -- vad de är och varifrån de kommer', categoryId: 'sex-normer-och-paverkan', sections: [{ id: 'sex-normer-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
+  { id: 'sex-normer', title: 'Normer', subtitle: 'Samhällets oskrivna regler om sex – vad de är och varifrån de kommer', categoryId: 'sex-normer-och-paverkan', sections: [{ id: 'sex-normer-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
     'Vilka normer finns kring sexualitet?',
     'Hur tror du att Sverige skiljer sig från resten av världen när det gäller samhällets syn på sex och sexualitet?',
     'Vilka samhällsfaktorer kan påverka hur du ger uttryck för din sexualitet?',
