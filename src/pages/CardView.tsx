@@ -769,7 +769,7 @@ export default function CardView() {
     }
 
     const homeDest = product && product.id !== 'still_us'
-      ? `/product/${product.slug}`
+      ? `/category/${category.id}`
       : '/';
 
     // Kids/family products: find next card, but always offer home as secondary
