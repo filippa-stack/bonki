@@ -122,7 +122,7 @@ export default function SyskonProductHome({ product }: { product: ProductManifes
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-            gap: '13px',
+            gap: '10px',
             width: '100%',
           }}
         >
