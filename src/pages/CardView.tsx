@@ -2025,6 +2025,22 @@ export default function CardView() {
                 );
               })()}
 
+              {/* ── Scenario bottom encouragement (live only) ── */}
+              {isLive && effectiveSteps[currentStepIndex] === 'scenario' && (() => {
+                const bottomHint = uiText.ritualHints['scenarioBottom' as keyof typeof uiText.ritualHints];
+                if (!bottomHint) return null;
+                return (
+                  <div style={{ marginTop: '16px', marginBottom: '0' }} className="text-center">
+                    <p
+                      className="font-serif italic"
+                      style={{ fontSize: '14px', color: 'var(--accent-text)', opacity: 0.50, lineHeight: 1.5 }}
+                    >
+                      {isTogether ? bottomHint.together : bottomHint.solo}
+                    </p>
+                  </div>
+                );
+              })()}
+
               {/* ── MODE: live — session reflection (single writer) ── */}
               {isLive && cardId && (() => {
                 const sectionPromptCount = getEffectivePromptCount(currentSection);
