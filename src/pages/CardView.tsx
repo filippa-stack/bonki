@@ -1525,6 +1525,7 @@ export default function CardView() {
         <SessionFocusShell
           key={`focus-${currentStepIndex}-${localPromptIndex}`}
           onExit={() => setShowLeaveConfirm(true)}
+          onPause={() => navigate('/')}
           topSlot={
             <div
               style={{

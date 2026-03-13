@@ -10,6 +10,8 @@ interface SessionFocusShellProps {
   /** Heritage Gold CTA at bottom — rendered by parent, always visible */
   ctaSlot: ReactNode;
   onExit: () => void;
+  /** Pause — navigates home without abandoning the session */
+  onPause?: () => void;
 }
 
 /**
@@ -18,7 +20,7 @@ interface SessionFocusShellProps {
  * - No chrome — tap screen once to reveal a close X
  * - CTA is always visible immediately (no delay)
  */
-export default function SessionFocusShell({ children, topSlot, ctaSlot, onExit }: SessionFocusShellProps) {
+export default function SessionFocusShell({ children, topSlot, ctaSlot, onExit, onPause }: SessionFocusShellProps) {
   const [showExit, setShowExit] = useState(false);
   const exitTimerRef = useState<ReturnType<typeof setTimeout> | null>(null);
 
@@ -141,7 +143,7 @@ export default function SessionFocusShell({ children, topSlot, ctaSlot, onExit }
         <button
           onClick={(e) => {
             e.stopPropagation();
-            onExit();
+            (onPause ?? onExit)();
           }}
           style={{
             marginTop: '12px',
