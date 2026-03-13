@@ -1,9 +1,9 @@
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { BookOpen } from 'lucide-react';
 import type { ProductManifest } from '@/types/product';
 import peacockImage from '@/assets/peacock-jag-i-varlden.png';
 import ProductResumeBanner from '@/components/ProductResumeBanner';
+import DiaryEntrance from '@/components/DiaryEntrance';
 
 const EASE = [0.4, 0.0, 0.2, 1] as const;
 
