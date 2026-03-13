@@ -1725,7 +1725,7 @@ export default function CardView() {
       )}
 
       {/* Section content — centered, max 520px for readability */}
-      <div className="px-6 relative" style={{ paddingTop: '8px', paddingBottom: 'calc(120px + env(safe-area-inset-bottom, 0px))' }}>
+      <div className="px-6 relative" style={{ paddingTop: '8px', paddingBottom: 'calc(140px + env(safe-area-inset-bottom, 0px))' }}>
         {/* Card illustration watermark — centered, maximized within CTA-to-bottom zone */}
         {product && product.id !== 'still_us' && cardImageUrl && (
           <div
