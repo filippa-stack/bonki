@@ -11,6 +11,15 @@ const categories: Category[] = [
 const cards: Card[] = [
   // ── K1: Min dag ──
   { id: 'vk-hur-var-din-dag', title: 'Hur var din dag', subtitle: 'En öppen dörr in till barnets dag – tankar, känslor och upplevelser', categoryId: 'vk-min-dag', sections: [{ id: 'vk-hur-var-din-dag-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
+    'Berätta om något som gjorde dig glad, stolt, nyfiken eller kanske arg eller ledsen idag.',
+    'Om du kunde ändra något som hände idag, vad skulle det vara?',
+    'Var idag bättre eller sämre än igår? Förklara varför!',
+    'Vad såg du fram emot att komma hem till idag?',
+    'Vad tänkte du att du ville berätta för dem hemma om din dag?',
+    'Vilken superkraft hade du önskat att du hade haft just idag? Hur hade det gjort din dag annorlunda?',
+    'Finns det något du önskar att du hade sagt till någon idag men inte sa? Det kan vara något du glömde, eller något du kanske inte vågade säga.',
+  ]}]},
+  // ── K2: Vår rytm ──
   { id: 'vk-morgon', title: 'Morgon', subtitle: 'Starten på dagen – rutiner, stress och vad som hjälper', categoryId: 'vk-var-rytm', sections: [{ id: 'vk-morgon-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
     'Berätta om din morgonrutin en vardag när du ska gå till förskolan eller skolan.',
     'Hur tänker du att ni kan göra morgonrutinen roligare?',
@@ -38,7 +47,6 @@ const cards: Card[] = [
     'Om du fick bestämma själv, hur skulle en skoldag se ut?',
     'Kan det vara jobbigt att lära sig något? Vad är det i så fall som gör att det känns jobbigt?',
   ]}]},
-  // ── K2: Vår rytm ──
   { id: 'vk-kvall', title: 'Kväll', subtitle: 'Nedvarvning och läggdags – vad kroppen behöver och vad barnet tänker på', categoryId: 'vk-var-rytm', sections: [{ id: 'vk-kvall-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
     'Varför är det svårt att lägga sig, och svårt att stiga upp?',
     'Vad är skillnaden på att vara trött på morgonen och trött på kvällen?',
