@@ -1,3 +1,4 @@
+import { useRef, useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { EMOTION, EASE } from '@/lib/motion';
 
