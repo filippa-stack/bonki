@@ -590,7 +590,7 @@ const cards: Card[] = [
   {
     id: 'jma-acceptans',
     title: 'Acceptans',
-    subtitle: 'Att lära sig leva med saker man inte kan förändra',
+    subtitle: 'Att lära sig leva med saker en inte kan förändra',
     categoryId: 'jma-vi-i-varlden',
     sections: [
       {
