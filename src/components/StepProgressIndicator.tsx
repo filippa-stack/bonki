@@ -9,10 +9,10 @@ export interface StageStep {
 
 /** Default 4-step Still Us sequence */
 export const STAGE_STEPS: StageStep[] = [
-  { stage_key: 'oppnare',     label: 'Kom igång'        },
-  { stage_key: 'tankevackare', label: 'Gå djupare'      },
-  { stage_key: 'scenario',    label: 'Föreställ er'     },
-  { stage_key: 'teamwork',    label: 'I verkligheten'   },
+  { stage_key: 'oppnare',     label: 'Öppna'        },
+  { stage_key: 'tankevackare', label: 'Fördjupa'     },
+  { stage_key: 'scenario',    label: 'Scenario'     },
+  { stage_key: 'teamwork',    label: 'Tillsammans'  },
 ];
 
 export const SECTION_TYPE_TO_STAGE: Record<string, StageStep['stage_key']> = {
@@ -32,10 +32,10 @@ const SECTION_LABELS: Record<string, string> = {
 
 /** Still Us canonical labels */
 const STILL_US_LABELS: Record<string, string> = {
-  opening: 'Kom igång',
-  reflective: 'Gå djupare',
-  scenario: 'Föreställ er',
-  exercise: 'I verkligheten',
+  opening: 'Öppna',
+  reflective: 'Fördjupa',
+  scenario: 'Scenario',
+  exercise: 'Tillsammans',
 };
 
 /** Build dynamic steps from a card's actual section types */
