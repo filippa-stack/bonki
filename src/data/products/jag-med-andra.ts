@@ -111,7 +111,8 @@ const cards: Card[] = [
         content: '',
         prompts: [
           'Vad tror du det innebär att "vara sig själv"? Är det samma sak som att vara annorlunda?',
-          'Vad är det att vara annorlunda?',
+          'Vad är det som gör att du uppfattar någon som annorlunda?',
+          'Har du någon gång känt dig annorlunda? Vad gjorde att du kände så?',
           'Hur skulle du känna om någon tyckte att du skulle ändra dig?',
         ],
       },
