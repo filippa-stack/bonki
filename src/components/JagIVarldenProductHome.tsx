@@ -187,6 +187,7 @@ export default function JagIVarldenProductHome({ product }: { product: ProductMa
             >
               stärk identitet och mod
             </p>
+            <ProductResumeBanner product={product} accentColor={ACCENT_COLOR} />
           </motion.div>
 
           {/* Category tiles — solid, tactile, with rhythm */}

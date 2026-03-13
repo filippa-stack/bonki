@@ -148,6 +148,7 @@ export default function VardagProductHome({ product }: { product: ProductManifes
             >
               Färre bråk, mer ro
             </p>
+            <ProductResumeBanner product={product} accentColor={ACCENT_COLOR} />
           </motion.div>
 
           {/* Category tiles — solid, tactile, with rhythm */}

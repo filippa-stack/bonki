@@ -189,6 +189,7 @@ export default function JagMedAndraProductHome({ product }: { product: ProductMa
             >
               starkare tillsammans
             </p>
+            <ProductResumeBanner product={product} accentColor={ACCENT_COLOR} />
           </motion.div>
 
           {/* Category tiles — solid, tactile, with rhythm */}
