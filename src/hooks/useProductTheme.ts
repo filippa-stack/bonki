@@ -23,6 +23,9 @@ export function useProductTheme(primary: string, accent: string, bgColor?: strin
     if (bgColor) {
       root.style.setProperty('--surface-base', bgColor);
       root.style.setProperty('--product-bg', bgColor);
+      // Derive question cloud tint from product bg — subtle radial wash
+      root.style.setProperty('--question-cloud-tint', `${bgColor}99`);
+      root.style.setProperty('--question-cloud-border', `${bgColor}44`);
     }
 
     if (ctaButtonColor) {
@@ -33,6 +36,7 @@ export function useProductTheme(primary: string, accent: string, bgColor?: strin
       ['--cta-default', '--cta-hover-v2', '--cta-active', '--cta-bg',
        '--session-header-bg', '--accent-saffron', '--accent-text',
        '--surface-base', '--product-bg', '--cta-button-color',
+       '--question-cloud-tint', '--question-cloud-border',
       ].forEach((v) => root.style.removeProperty(v));
     };
   }, [primary, accent, bgColor, ctaButtonColor]);

@@ -197,23 +197,43 @@ export default function PromptItem({ prompt, index, sectionType, preamble, ancho
             </div>
           </motion.div>
         ) : (
-          /* ── Default: centered question text with staggered entrance ── */
+          /* ── Default: centered question text with organic frame ── */
           /* Long scenario texts (>120 chars) switch to left-aligned, smaller type for readability */
           (() => {
             const isLongText = prompt.text.length > 120 && sectionType === 'scenario';
             return (
               <motion.div
                 key={`question-${index}-${prompt.text.slice(0, 20)}`}
-                initial={{ opacity: 0, y: 14 }}
-                animate={{ opacity: 1, y: 0 }}
+                initial={{ opacity: 0, y: 14, scale: 0.97 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
                 transition={{
                   duration: 0.7,
                   delay: preamble ? 0.25 : 0,
                   ease: enterEase,
                 }}
-                className={`w-full ${isLongText ? 'text-left' : 'text-center'} ${preamble ? 'mt-10' : ''}`}
-                style={{ display: 'flex', flexDirection: 'column', gap: isLongText ? '12px' : '16px' }}
+                className={`w-full ${preamble ? 'mt-10' : ''}`}
+                style={{
+                  background: 'radial-gradient(ellipse at 50% 40%, var(--question-cloud-tint, hsla(30, 20%, 92%, 0.55)) 0%, transparent 75%)',
+                  borderRadius: '28px',
+                  padding: isLongText ? '28px 20px' : '36px 24px',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: isLongText ? 'flex-start' : 'center',
+                  gap: isLongText ? '12px' : '16px',
+                  position: 'relative',
+                }}
               >
+                {/* Soft border ring */}
+                <div
+                  aria-hidden
+                  style={{
+                    position: 'absolute',
+                    inset: 0,
+                    borderRadius: '28px',
+                    border: '1px solid var(--question-cloud-border, hsla(30, 15%, 70%, 0.18))',
+                    pointerEvents: 'none',
+                  }}
+                />
                 {prompt.text.split('\n').filter(p => p.trim() !== '').map((para, i) => (
                   <p
                     key={i}
