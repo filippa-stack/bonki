@@ -286,7 +286,11 @@ export function useCardImage(cardId: string | undefined): string | null {
 
     extractSingleFile(mapping.zip, mapping.folder, mapping.file).then((blobUrl) => {
       if (cancelled || cardIdRef.current !== cardId) return;
-      if (blobUrl) setUrl(blobUrl);
+      if (blobUrl) {
+        setUrl(blobUrl);
+      } else {
+        console.warn(`[useCardImage] ❌ IMAGE MISSING for card "${cardId}" — expected "${mapping.file}" in ${mapping.zip} zip`);
+      }
     });
 
     return () => { cancelled = true; };
