@@ -486,7 +486,7 @@ const cards: Card[] = [
         prompts: [
           'När har du varit modig?',
           'Hur kändes det?',
-          'Kan man vara modig för någon annans skull?',
+          'Kan en vara modig för någon annans skull?',
           'Kan mod ibland leda till något negativt? Ge ett exempel.',
         ],
       },
