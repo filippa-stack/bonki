@@ -1,5 +1,6 @@
-import { motion } from 'framer-motion';
-import { Prompt } from '@/types';
+import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Prompt, SituationalAnchor } from '@/types';
 import { EASE } from '@/lib/motion';
 
 interface PromptItemProps {
@@ -8,6 +9,7 @@ interface PromptItemProps {
   index: number;
   sectionType?: 'opening' | 'reflective' | 'scenario' | 'exercise';
   preamble?: string;
+  anchor?: SituationalAnchor;
   highlightCount: number;
   // Kept for interface compat — not rendered
   label?: string;
@@ -43,7 +45,8 @@ const DEPTH_GRAVITY: Record<string, React.CSSProperties> = {
  * Renders a single prompt — flat, read-only question text.
  * Unified presentation: all section types use centered question style.
  */
-export default function PromptItem({ prompt, index, sectionType, preamble }: PromptItemProps) {
+export default function PromptItem({ prompt, index, sectionType, preamble, anchor }: PromptItemProps) {
+  const [anchorOpen, setAnchorOpen] = useState(false);
   const gravity = DEPTH_GRAVITY[sectionType || 'opening'] || DEPTH_GRAVITY.opening;
   const isExercise = sectionType === 'exercise';
   const enterEase = [...EASE] as [number, number, number, number];
