@@ -691,6 +691,7 @@ interface CardEntryProps {
   index: number;
   isCompleted?: boolean;
   isInProgress?: boolean;
+  isNextSuggested?: boolean;
   onNavigate: () => void;
   isLast?: boolean;
   styles?: typeof PRODUCT_STYLES[string];
@@ -698,7 +699,7 @@ interface CardEntryProps {
   categoryId?: string;
 }
 
-function CardEntry({ card, index, isCompleted = false, isInProgress = false, onNavigate, isLast = false, styles, categoryBg, categoryId }: CardEntryProps) {
+function CardEntry({ card, index, isCompleted = false, isInProgress = false, isNextSuggested = false, onNavigate, isLast = false, styles, categoryBg, categoryId }: CardEntryProps) {
   const zipIllustration = useCardImage(card.id);
   const illustration = CARD_IMAGE_OVERRIDE[card.id] ?? zipIllustration;
 
