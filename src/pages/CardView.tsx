@@ -1257,6 +1257,27 @@ export default function CardView() {
                 {card.title}
               </motion.h1>
 
+              {/* Card subtitle */}
+              {card.subtitle && (
+                <motion.p
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: BEAT_1 + 0.1, duration: EMOTION, ease: [...EASE] }}
+                  style={{
+                    fontFamily: 'var(--font-serif)',
+                    fontStyle: 'italic',
+                    fontSize: '16px',
+                    color: isStillUsCard ? (startScreenCategoryColor || 'var(--text-primary)') : 'var(--text-primary)',
+                    opacity: 0.55,
+                    textAlign: 'center',
+                    marginTop: '10px',
+                    lineHeight: 1.4,
+                  }}
+                >
+                  {card.subtitle}
+                </motion.p>
+              )}
+
               {/* Decorative dots */}
               <motion.div
                 initial={{ opacity: 0 }}
