@@ -10,7 +10,7 @@ const categories: Category[] = [
 
 const cards: Card[] = [
   // ── K1: Min identitet ──
-  { id: 'sex-konsidentitet', title: 'Könsidentitet', subtitle: 'Vem man är som kön -- och vad som händer när det inte stämmer med omvärldens bild', categoryId: 'sex-min-identitet', sections: [{ id: 'sex-konsidentitet-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
+  { id: 'sex-konsidentitet', title: 'Könsidentitet', subtitle: 'Vem en är som kön -- och vad som händer när det inte stämmer med omvärldens bild', categoryId: 'sex-min-identitet', sections: [{ id: 'sex-konsidentitet-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
     'När började du tänka på vilket kön du har?',
     'Har du någon gång behövt försvara din könsidentitet?',
     'Hur tror du att en person som känner att deras könsidentitet inte stämmer med deras kropp kan ha det? Vad tror du att de behöver?',
