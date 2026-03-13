@@ -74,7 +74,7 @@ const cards: Card[] = [
     'Om du fick välja själv, hur skulle en perfekt helg se ut?',
   ]}]},
   // ── K2: Vi hemma ──
-  { id: 'vk-mat', title: 'Mat', subtitle: 'Måltider i familjen -- vanor, traditioner och vem som bestämmer vad', categoryId: 'vk-vi-hemma', sections: [{ id: 'vk-mat-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
+  { id: 'vk-mat', title: 'Mat', subtitle: 'Måltider i familjen – vanor, traditioner och vem som bestämmer vad', categoryId: 'vk-vi-hemma', sections: [{ id: 'vk-mat-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
     'Vilken maträtt som dina vuxna gör tycker du minst om? Vilken maträtt skulle du rekommendera andra att prova?',
     'När kan ny mat kännas svår?',
     'Finns det någon mat som du från början inte tyckte om men nu älskar?',
