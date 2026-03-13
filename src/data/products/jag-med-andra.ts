@@ -600,7 +600,7 @@ const cards: Card[] = [
         content: '',
         prompts: [
           'Vad betyder det att acceptera något?',
-          'Hur vet man skillnaden mellan saker man bör acceptera och saker man bör försöka förändra?',
+          'Hur vet en skillnaden mellan saker en bör acceptera och saker en bör försöka förändra?',
           'Hur känns det att behöva acceptera att någon inte tycker som du?',
         ],
       },
