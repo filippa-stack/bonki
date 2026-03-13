@@ -158,7 +158,7 @@ export default function SessionFocusShell({ children, topSlot, ctaSlot, onExit, 
             padding: '8px 16px',
           }}
         >
-          Pausa för ikväll
+          Pausa för idag
         </button>
       </div>
     </div>
