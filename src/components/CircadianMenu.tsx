@@ -293,10 +293,10 @@ export default function CircadianMenu({
                   <motion.button
                     onClick={() => onNavigateToCategory(category.id)}
                     className="w-full text-left circadian-tile"
-                    style={{ flex: 1 }}
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.985 }}
                     style={{
+                      flex: 1,
                       display: 'flex',
                       alignItems: 'stretch',
                       gap: '0',
