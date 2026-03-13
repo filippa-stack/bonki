@@ -58,7 +58,7 @@ const cards: Card[] = [
   qsCard('jiv-medkansla', 'Medkänsla', 'Förmågan att förstå andras situation och vilja hjälpa', 'jiv-jag-och-andra',
     ['Vilka handlingar, inte ord, visar medkänsla?','Beskriv likheterna mellan dig och en skolkamrat som utåt sett är väldigt olik dig.','Har en vän till dig blivit ledsen för något du inte skulle bli ledsen för? Vad var det och varför tror du hen blev ledsen?','Hur skulle du lära dina barn medkänsla?'],
     'Tänk dig att du blir satt i en situation du verkligen inte vill vara i. Kanske blir du tvungen att göra något du inte vill eller tvingad att säga något du inte vill. Utöver att du önskar att du slapp, vad hade du önskat att någon annan hade gjort för att hjälpa dig?'),
-  qsCard('jiv-mobbning', 'Mobbning', 'Vad mobbning är och inte är -- och vilket ansvar var och en har', 'jiv-jag-och-andra',
+  qsCard('jiv-mobbning', 'Mobbning', 'Vad mobbning är och inte är – och vilket ansvar var och en har', 'jiv-jag-och-andra',
     ['Vad är skillnaden mellan ett bråk och mobbning?','Hur tror du att mobbning har förändrats sedan dina vuxna var barn?','Kan du ge ett exempel på hur en vuxen kan bli mobbad?','Vad skulle ett barn respektive en vuxen kunna göra för att få hjälp om de blir mobbade?','Kan en vara mobbare utan att veta om det? Ge exempel.'],
     'Tänk dig att det finns elever i din klass som alltid är ensamma och saknar vänner. Ingen gör dem något direkt, men ingen inkluderar dem heller. Kan det räknas som mobbning? Vilket ansvar har du och klassen?'),
   qsCard('jiv-fordomar', 'Fördomar', 'Hur vi bedömer varandra -- och varför vi gör det utan att tänka på det', 'jiv-jag-och-andra',
