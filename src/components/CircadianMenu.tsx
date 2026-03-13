@@ -244,6 +244,7 @@ export default function CircadianMenu({
           <div className="flex flex-col" style={{ gap: '7px', position: 'relative' }}>
             {group.categories.map((category) => {
               const currentIndex = globalIndex++;
+              const sequenceNumber = currentIndex + 1;
               const color = CIRCADIAN_COLORS[category.id] || '#A2B5A9';
               const fillDefault = CIRCADIAN_FILLS[category.id] || 'rgba(162, 181, 169, 0.28)';
               const fillHover = CIRCADIAN_FILLS_HOVER[category.id] || 'rgba(162, 181, 169, 0.42)';
