@@ -162,7 +162,7 @@ export default function SyskonProductHome({ product }: { product: ProductManifes
             >
               Band för livet
             </p>
-            <ProductResumeBanner product={product} />
+            <ProductResumeBanner product={product} accentColor={ACCENT_COLOR} />
           </motion.div>
 
           {/* Category tiles — solid, tactile, with rhythm */}

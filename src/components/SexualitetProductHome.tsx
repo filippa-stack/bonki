@@ -162,7 +162,7 @@ export default function SexualitetProductHome({ product }: { product: ProductMan
             >
               Närhet & respekt
             </p>
-            <ProductResumeBanner product={product} />
+            <ProductResumeBanner product={product} accentColor={ACCENT_COLOR} />
           </motion.div>
 
           {/* Category tiles — solid, tactile, with rhythm */}
