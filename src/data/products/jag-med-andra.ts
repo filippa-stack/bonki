@@ -157,7 +157,7 @@ const cards: Card[] = [
   {
     id: 'jma-duktig',
     title: 'Duktig',
-    subtitle: 'Vem presterar man egentligen för -- sig själv eller andra?',
+    subtitle: 'Vem presterar en egentligen för -- sig själv eller andra?',
     categoryId: 'jma-nar-vi-jamfor-oss',
     sections: [
       {
