@@ -313,7 +313,7 @@ const cards: Card[] = [
           'När gjorde du något som du trodde skulle bli bra men som inte blev som du tänkte dig?',
           'Vad hade du velat göra annorlunda?',
           'När kan det vara bra att misslyckas?',
-          'Varför kan man känna sig misslyckad utan att ha misslyckats?',
+          'Varför kan en känna sig misslyckad utan att ha misslyckats?',
           'Vad tror du kan hjälpa dig att må bättre när du känner att du har misslyckats?',
         ],
       },
