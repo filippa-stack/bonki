@@ -141,6 +141,11 @@ const STANDALONE_IMAGES: Record<string, string> = {
   'jiv-social-media': '/card-images/jiv-social-media.png',
   'jiv-moral-etik': '/card-images/jiv-moral-etik.png',
   'jiv-sexualitet': '/card-images/jiv-sexualitet.png',
+  'jma-annorlunda': '/card-images/jma-annorlunda.png',
+  'jma-skuld': '/card-images/jma-skuld.png',
+  'jma-misslyckas': '/card-images/jma-misslyckas.png',
+  'jma-sanning': '/card-images/jma-sanning.png',
+  'jma-skam': '/card-images/jma-skam.png',
 };
 
 const ZIP_URLS: Record<ZipSource, string> = {
