@@ -72,6 +72,20 @@ export default function StepProgressIndicator({
   const activeSteps = steps ?? STAGE_STEPS;
   const showCounter = currentPromptIndex !== undefined && totalPromptsInStep !== undefined && totalPromptsInStep > 0;
 
+  // Track which step was just completed for pulse animation
+  const prevStepRef = useRef(currentStepIndex);
+  const [justCompletedIndex, setJustCompletedIndex] = useState<number | null>(null);
+
+  useEffect(() => {
+    if (currentStepIndex > prevStepRef.current) {
+      setJustCompletedIndex(prevStepRef.current);
+      const timer = setTimeout(() => setJustCompletedIndex(null), 450);
+      prevStepRef.current = currentStepIndex;
+      return () => clearTimeout(timer);
+    }
+    prevStepRef.current = currentStepIndex;
+  }, [currentStepIndex]);
+
   return (
     <div className={className} style={{ width: '100%', padding: '0 24px' }}>
       {/* Labels row */}
