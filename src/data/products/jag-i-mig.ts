@@ -219,7 +219,7 @@ const cards: Card[] = [
   {
     id: 'jim-besviken',
     title: 'Besviken',
-    subtitle: 'När något inte blev som man hoppades -- och hur det skiljer sig från ilska',
+    subtitle: 'När något inte blev som en hoppades -- och hur det skiljer sig från ilska',
     categoryId: 'jim-nar-det-gor-ont',
     sections: [
       {
