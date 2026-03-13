@@ -100,7 +100,7 @@ const cards: Card[] = [
   {
     id: 'sk-vanskap',
     title: 'Vänskap',
-    subtitle: 'Syskons unika band -- en relation en inte väljer men kan vårda',
+    subtitle: 'Syskons unika band – en relation en inte väljer men kan vårda',
     categoryId: 'sk-vi-blev-syskon',
     sections: [
       {
