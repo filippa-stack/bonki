@@ -56,7 +56,7 @@ const cards: Card[] = [
           'Varför tror du att din vän valde dig som vän?',
           'Varför valde du din vän?',
           'Har du blivit kompis med någon du inte tyckte om från början? Vad fick dig att ändra mening?',
-          'Behöver man ha många vänner eller räcker det med en?',
+          'Behöver en ha många vänner eller räcker det med en?',
         ],
       },
       {
