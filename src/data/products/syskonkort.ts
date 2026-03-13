@@ -121,7 +121,7 @@ const cards: Card[] = [
   {
     id: 'sk-unik',
     title: 'Unik',
-    subtitle: 'Vad som gör varje syskon till sin egen person -- likheter och olikheter',
+    subtitle: 'Vad som gör varje syskon till sin egen person – likheter och olikheter',
     categoryId: 'sk-vi-ar-olika',
     sections: [
       {
