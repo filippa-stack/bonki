@@ -53,7 +53,7 @@
 
 <div class="header">
   <h1>Bonki – Infrastruktur &amp; användarresor</h1>
-  <p>Samlad vy over alla produktfloden · Uppdaterad 2026-03-08</p>
+  <p>Samlad vy over alla produktfloden · Uppdaterad 2026-03-13</p>
   <nav class="toc">
     <a href="#still-us">Still Us (par)</a>
     <a href="#kids-family">Barn &amp; Familj (6 produkter)</a>
@@ -198,7 +198,7 @@ graph TD
 <!-- ─── KIDS & FAMILY ─── -->
 <div class="section" id="kids-family">
   <h2>Barn &amp; Familj – Användarresa (6 nya produkter)</h2>
-  <p class="sub">Baserad på kodbas 2026-03-08 · Exkluderar Still Us</p>
+  <p class="sub">Baserad på kodbas 2026-03-13 · Exkluderar Still Us</p>
 
   <div class="legend">
     <span><span class="dot" style="background:#c0392b"></span> Hard gate</span>
@@ -206,6 +206,7 @@ graph TD
     <span><span class="dot" style="background:#2980b9"></span> Beslutspunkt</span>
     <span><span class="dot" style="background:#27ae60"></span> Stark sektion</span>
     <span><span class="dot" style="background:#8e44ad"></span> Ny vs Still Us</span>
+    <span><span class="dot" style="background:#f39c12"></span> Progress &amp; Resume</span>
   </div>
 
   <div class="mermaid">
@@ -226,7 +227,7 @@ graph TD
     subgraph ONBOARDING["STEG 2: PLATTFORM-ONBOARDING 3 slides"]
         O0["Slide 0: Valkommen till Bonki<br/>'Det basta samtalet du<br/>kommer ha idag vantar har.'"]
         O1["Slide 1: Samtal som ror sig<br/>'Bonki ar verktyg for familjer<br/>och par som vill na varandra.'"]
-        O2["Slide 2 DARK: Valj det amne<br/>som kanns ratt just nu.<br/>'Du hittar verktyg for barn,<br/>tonaringar och par.'<br/>CTA: 'Utforska biblioteket'"]
+        O2["Slide 2 DARK: Valj det amne<br/>som kanns ratt just nu.<br/>CTA: 'Utforska biblioteket'"]
         OSKIP["Hoppa over-lank<br/>Synlig pa slide 0-1"]
         O0 --> O1
         O1 --> O2
@@ -239,28 +240,43 @@ graph TD
     end
 
     subgraph LIBRARY["STEG 3: PRODUKTBIBLIOTEK"]
-        LIB1["7 produktkort i lobbyn"]
-        LIB2["Varje kort: illustration +<br/>namn + tagline + alderslabel"]
+        LIB1["BARN / PAR flikar<br/>Horisontell swipe"]
+        LIB2["7 produktkort:<br/>illustration + namn +<br/>tagline + alderslabel"]
         LIB3{"Valj produkt"}
         LIB1 --> LIB2 --> LIB3
     end
 
     subgraph INTRO["STEG 4: PRODUKT-INTRO forsta gangen"]
         I1["Slide 1: Valkommen till<br/>PRODUKTNAMN<br/>Tematiserat i produktens fargskala"]
-        I2["Slide 2: CTA<br/>'Borja med GRATISKORT'"]
+        I2["Slide 2: Spotlight-sektion<br/>Minikort-preview + radial glow<br/>CTA: 'Borja med GRATISKORT'"]
         ISEEN["localStorage check:<br/>Visas bara forsta gangen"]
         I1 --> I2
     end
 
     subgraph PRODUCT_HOME["STEG 5: PRODUKT-HEM"]
-        PH1["Produktnamn + tagline"]
-        PH2["Kategorier med kort"]
-        PH3["Gratiskort markerat<br/>Ovriga last"]
-        PH1 --> PH2 --> PH3
+        PH1["Produktnamn + tagline +<br/>bakgrundsbild, opacitet 0.18-0.35"]
+        PH_RESUME{"Aktiv session?"}
+        PH_RESUME_YES["RESUME-KORT<br/>Glasmorfism + saffranskant<br/>Kort-titel + steg/frageprogress<br/>'FRAGOR · 3 / 6'<br/>Ett tryck = atergang till<br/>exakt fraga"]
+        PH2["Kategori-tiles m. progress-ring<br/>Nasta-kategori: saffrans-glow<br/>Ring visar 14d slutforanden"]
+        PH3["'Valj det som kanns ratt just nu.'"]
+        PH_DIARY["Var dagbok<br/>'Era tankar, samlade'"]
+        PH1 --> PH_RESUME
+        PH_RESUME -->|Ja| PH_RESUME_YES
+        PH_RESUME -->|Nej| PH2
+        PH_RESUME_YES --> PH2
+        PH2 --> PH3 --> PH_DIARY
+    end
+
+    subgraph CATEGORY_VIEW["STEG 5b: KATEGORISIDA"]
+        CV1["Kategori-titel + entryLine"]
+        CV2["Korttiles med illustration<br/>Bakgrund = kategori-specifik farg<br/>fran produkthemskarm"]
+        CV3["Statusbadge per kort:<br/>🔵 Nasta saffrans-glow<br/>⏳ Pabörjad pulsande punkt<br/>✓ Utforskad bock-ikon<br/>Inget = Tillganglig"]
+        CV4{"Valj kort"}
+        CV1 --> CV2 --> CV3 --> CV4
     end
 
     subgraph FREE_CARD["STEG 6a: GRATISKORT"]
-        FC1["Startskarm med illustration<br/>height: 100dvh, max 45vh bild"]
+        FC1["Atervandare: hoppar over<br/>CardPreview, direkt till<br/>sammanslagen startritual"]
         FC2["Session: 1 eller 2 steg<br/>Beroende pa scenarier"]
         FC3["Fragor utan anteckningsfalt<br/>Fokus pa samtalet"]
         FC4["Avslutningsskarm<br/>Valfri reflektion"]
@@ -268,32 +284,49 @@ graph TD
     end
 
     subgraph PAYWALL["STEG 6b: BETALVAGG per produkt"]
-        PW1["Vad du upplevde +<br/>vad som vantar"]
+        PW1["Redaktionell paywall<br/>Visar titeln pa last kort"]
         PW2["Pris fran DB<br/>default 195 kr"]
         PW3{"Betala?"}
         PW4["Stripe Checkout<br/>user_product_access sparas"]
-        PWBLOCK["HARD GATE<br/>Last kort kraver kop"]
+        PWBLOCK["HARD GATE<br/>Last kort kraver kop<br/>Inga las-ikoner i lobby"]
         PW1 --> PW2 --> PW3
         PW3 -->|Ja| PW4
         PW3 -->|Nej| PWBLOCK
     end
 
-    subgraph SESSION["STEG 7: AKTIV SESSION betalda kort"]
-        S1["Startskarm med illustration"]
-        S2A["1-steg: Fragelista<br/>Inga scenarier"]
-        S2B["2-steg: Kom igang + Ga djupare<br/>Med scenarier"]
+    subgraph SESSION["STEG 7: AKTIV SESSION"]
+        S1["Startskarm med illustration<br/>Atervandare: hoppar over"]
+        S2A["TYPE B 1-steg:<br/>JIM, VK, SK, SEX<br/>Fragelista, raknare '1 / 6'<br/>Ingen stegindikator"]
+        S2B["TYPE A 2-steg:<br/>JMA, JIV<br/>Steg 1: Fragor<br/>Steg 2: Scenario<br/>Stegindikator visas"]
         S3["Fragor utan anteckningsfalt"]
-        S4["Avslutning + valfri reflektion<br/>Textfalt med 'Valfritt'-label"]
+        S_PAUSE["PAUS<br/>'Pausa for idag'<br/>Sparar exakt position<br/>Session forblir 'active'"]
+        S4["Avslutning + valfri reflektion"]
         S1 --> S2A
         S1 --> S2B
         S2A --> S3
         S2B --> S3
         S3 --> S4
+        S3 -.->|Paus| S_PAUSE
     end
 
-    subgraph COMPLETE["STEG 8: AVSLUTAD"]
-        CO1["Tillbaka till produkt-hem<br/>Kort markerat som klart"]
-        CO2["Eller: Tillbaka till biblioteket"]
+    subgraph COMPLETE["STEG 8: AVSLUTAD SESSION"]
+        CO1["Headline + reflektion"]
+        CO2["Nasta CTA:<br/>'Nasta →' startar<br/>nasta ofardiga kort<br/>Prioriterar samma kategori"]
+        CO3["Diskret 'Avsluta'-lank<br/>Tillbaka till produkt-hem"]
+        CO1 --> CO2
+        CO1 --> CO3
+    end
+
+    subgraph PROGRESS["PROGRESSYSTEM"]
+        PR1["14-dagars utgaende<br/>slutforandemarkor"]
+        PR2["Progress-ring pa<br/>kategori-tiles visar<br/>andel slutforda"]
+        PR3["Nasta-logik: forsta<br/>ej-slutforda kort<br/>i forsta ofardiga kategori"]
+        PR4["Ring doljs nar<br/>0 kort avklarade"]
+        PR5["Saffrans-glow pa<br/>nasta kategori-tile"]
+        PR1 --> PR2
+        PR1 --> PR3
+        PR3 --> PR5
+        PR2 --> PR4
     end
 
     L4 --> ONBOARDING
@@ -306,28 +339,32 @@ graph TD
     ISEEN --> PRODUCT_HOME
     I2 -->|Borja med gratiskort| FREE_CARD
     I2 -->|Skippa| PRODUCT_HOME
-    PRODUCT_HOME -->|Gratiskort| FREE_CARD
-    PRODUCT_HOME -->|Last kort| PAYWALL
+    PRODUCT_HOME --> CATEGORY_VIEW
+    CATEGORY_VIEW -->|Gratiskort| FREE_CARD
+    CATEGORY_VIEW -->|Last kort| PAYWALL
     FC4 -->|Fler kort| PAYWALL
     FC4 -->|Tillbaka| PRODUCT_HOME
     PW4 --> PRODUCT_HOME
-    PWBLOCK --> PRODUCT_HOME
-    PRODUCT_HOME -->|Betalat kort| SESSION
+    PWBLOCK -->|Avbryt| CATEGORY_VIEW
+    CATEGORY_VIEW -->|Betalat kort| SESSION
+    S_PAUSE --> PRODUCT_HOME
     SESSION --> COMPLETE
-    CO1 --> PRODUCT_HOME
-    CO2 --> LIBRARY
+    CO2 -->|Nasta kort| SESSION
+    CO3 --> PRODUCT_HOME
 
     classDef gate fill:#c0392b,color:#fff,stroke:#922b21
     classDef friction fill:#e67e22,color:#fff,stroke:#d35400
     classDef good fill:#27ae60,color:#fff,stroke:#1e8449
     classDef decision fill:#2980b9,color:#fff,stroke:#1f618d
     classDef newFeature fill:#8e44ad,color:#fff,stroke:#6c3483
+    classDef progressNode fill:#f39c12,color:#fff,stroke:#d68910
 
     class PWBLOCK gate
     class L5 friction
     class ONBOARDING,FREE_CARD,SESSION good
-    class PW3,LIB3,L3,L2 decision
-    class LIBRARY,INTRO,PRODUCT_HOME newFeature
+    class PW3,LIB3,L3,L2,PH_RESUME decision
+    class LIBRARY,INTRO,PRODUCT_HOME,CATEGORY_VIEW newFeature
+    class PROGRESS,PH_RESUME_YES,PR1,PR2,PR3,PR4,PR5,S_PAUSE progressNode
   </div>
 </div>
 
