@@ -4,7 +4,7 @@ import { useEffect } from 'react';
  * Injects product-specific CSS variables onto :root so the entire
  * design system (buttons, accents, text, background) adapts to each product.
  */
-export function useProductTheme(primary: string, accent: string, bgColor?: string, ctaButtonColor?: string) {
+export function useProductTheme(primary: string, accent: string, bgColor?: string, ctaButtonColor?: string, pronounMode?: 'du' | 'ni') {
   useEffect(() => {
     const root = document.documentElement;
     const parseHSL = (hsl: string) => hsl.replace(/hsl\(([^)]+)\)/, '$1').trim();
