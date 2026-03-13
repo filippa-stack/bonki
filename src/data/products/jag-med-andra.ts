@@ -388,7 +388,7 @@ const cards: Card[] = [
   {
     id: 'jma-skuld',
     title: 'Skuld',
-    subtitle: 'Att ha orsakat något som gick snett -- och vad ett äkta förlåt innebär',
+    subtitle: 'Att ha orsakat något som gick snett – och vad ett äkta förlåt innebär',
     categoryId: 'jma-nar-det-skaver',
     sections: [
       {
