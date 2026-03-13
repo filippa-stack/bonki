@@ -91,16 +91,8 @@ export default function VardagProductHome({ product }: { product: ProductManifes
                 <span style={{ fontFamily: "'DM Serif Display', var(--font-serif)", fontSize: isHero ? 'clamp(22px, 6vw, 28px)' : 'clamp(19px, 5.2vw, 25px)', fontWeight: 400, color: tile.text }}>
                   {cat.title}
                 </span>
-                {catProgress && catProgress.completed > 0 && (
-                  <span style={{ position: 'absolute', right: '14px', top: '50%', transform: 'translateY(-50%)', display: 'flex', alignItems: 'center', gap: '4px' }}>
-                    {allDone ? (
-                      <Check size={14} strokeWidth={2} style={{ color: tile.text, opacity: 0.45 }} />
-                    ) : (
-                      <span style={{ fontFamily: 'var(--font-sans)', fontSize: '10px', fontWeight: 600, color: tile.text, opacity: 0.45, letterSpacing: '0.03em' }}>
-                        {catProgress.completed}/{catProgress.total}
-                      </span>
-                    )}
-                  </span>
+                {catProgress && (
+                  <CategoryProgressRing completed={catProgress.completed} total={catProgress.total} color={tile.text} />
                 )}
               </motion.button>
             );
