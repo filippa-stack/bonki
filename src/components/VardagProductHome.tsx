@@ -110,7 +110,7 @@ export default function VardagProductHome({ product }: { product: ProductManifes
           justifyContent: 'flex-start',
           paddingTop: '14vh',
           paddingRight: '8vw',
-          paddingBottom: '48px',
+          paddingBottom: '120px',
           paddingLeft: '8vw',
         }}
       >

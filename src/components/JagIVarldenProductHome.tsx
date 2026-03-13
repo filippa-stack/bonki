@@ -149,7 +149,7 @@ export default function JagIVarldenProductHome({ product }: { product: ProductMa
           justifyContent: 'flex-start',
           paddingTop: '10vh',
           paddingRight: '8vw',
-          paddingBottom: '48px',
+          paddingBottom: '120px',
           paddingLeft: '8vw',
         }}
       >
