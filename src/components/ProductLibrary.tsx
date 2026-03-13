@@ -436,7 +436,7 @@ export default function ProductLibrary() {
               fontStyle: 'italic',
               fontSize: '14px',
               fontWeight: 400,
-              color: isDark ? 'hsla(38, 50%, 65%, 0.5)' : 'var(--color-text-secondary)',
+              color: isDark ? 'hsla(38, 50%, 65%, 0.5)' : 'hsla(38, 78%, 55%, 0.7)',
               opacity: isDark ? 1 : 0.5,
               lineHeight: 1.6,
               transition: 'color 400ms ease',
