@@ -186,7 +186,7 @@ const cards: Card[] = [
   {
     id: 'sk-konflikt',
     title: 'Konflikt',
-    subtitle: 'Bråk mellan syskon -- varför det händer och vad en lär sig av det',
+    subtitle: 'Bråk mellan syskon – varför det händer och vad en lär sig av det',
     categoryId: 'sk-nar-det-skaver',
     sections: [
       {
