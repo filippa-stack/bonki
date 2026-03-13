@@ -53,6 +53,10 @@ interface StepProgressIndicatorProps {
   className?: string;
   /** Dynamic steps override. Falls back to STAGE_STEPS (Still Us). */
   steps?: StageStep[];
+  /** Current question index within step (0-based) */
+  currentPromptIndex?: number;
+  /** Total questions in current step */
+  totalPromptsInStep?: number;
 }
 
 export default function StepProgressIndicator({
@@ -61,8 +65,11 @@ export default function StepProgressIndicator({
   isTransitioning = false,
   className,
   steps,
+  currentPromptIndex,
+  totalPromptsInStep,
 }: StepProgressIndicatorProps) {
   const activeSteps = steps ?? STAGE_STEPS;
+  const showCounter = currentPromptIndex !== undefined && totalPromptsInStep !== undefined && totalPromptsInStep > 0;
 
   return (
     <div className={className} style={{ width: '100%', padding: '0 24px' }}>
@@ -146,6 +153,21 @@ export default function StepProgressIndicator({
           );
         })}
       </div>
+
+      {/* Question counter */}
+      {showCounter && (
+        <div style={{
+          textAlign: 'center',
+          marginTop: '6px',
+          fontFamily: 'var(--font-sans)',
+          fontSize: '12px',
+          fontWeight: 400,
+          color: 'rgba(255, 255, 255, 0.4)',
+          letterSpacing: '0.04em',
+        }}>
+          {currentPromptIndex + 1} / {totalPromptsInStep}
+        </div>
+      )}
     </div>
   );
 }

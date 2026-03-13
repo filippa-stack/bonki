@@ -1571,6 +1571,8 @@ export default function CardView() {
                     completedSteps={Array.from({ length: currentStepIndex }, (_, i) => i)}
                     isTransitioning={showInterstitial}
                     steps={dynamicSteps}
+                    currentPromptIndex={localPromptIndex}
+                    totalPromptsInStep={sectionPromptCount}
                   />
                 </div>
               )}
@@ -1719,6 +1721,8 @@ export default function CardView() {
             completedSteps={Array.from({ length: currentStepIndex }, (_, i) => i)}
             isTransitioning={showInterstitial}
             steps={dynamicSteps}
+            currentPromptIndex={localPromptIndex}
+            totalPromptsInStep={getEffectivePromptCount(currentSection)}
           />
         </motion.div>
       )}
