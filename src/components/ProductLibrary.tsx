@@ -46,12 +46,12 @@ const PASTEL_COLORS: Record<string, string> = {
 
 /** Raised illustration opacities — illustrations are a feature, not a ghost */
 const ILLUSTRATION_OPACITY: Record<string, number> = {
-  jag_i_mig: 0.22,
-  jag_med_andra: 0.20,
-  jag_i_varlden: 0.18,
-  sexualitetskort: 0.25,
-  vardagskort: 0.18,
-  syskonkort: 0.20,
+  jag_i_mig: 0.35,
+  jag_med_andra: 0.32,
+  jag_i_varlden: 0.28,
+  sexualitetskort: 0.35,
+  vardagskort: 0.28,
+  syskonkort: 0.30,
 };
 
 const ILLUSTRATION_SIZE: Record<string, string> = {
