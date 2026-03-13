@@ -44,7 +44,7 @@ const cards: Card[] = [
   {
     id: 'jma-vanskap',
     title: 'Vänskap',
-    subtitle: 'Vad som gör en vänskap äkta -- och hur den kan förändras',
+    subtitle: 'Vad som gör en vänskap äkta – och hur den kan förändras',
     categoryId: 'jma-att-hora-till',
     sections: [
       {
