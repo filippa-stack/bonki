@@ -336,7 +336,7 @@ export default function CircadianMenu({
                         display: 'flex',
                         alignItems: 'center',
                         gap: '14px',
-                        padding: '16px',
+                        padding: '20px 16px',
                       }}
                     >
                       {/* Title + subtitle */}
