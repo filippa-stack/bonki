@@ -79,7 +79,7 @@ const cards: Card[] = [
   {
     id: 'sk-syskonkunskap',
     title: 'Syskonkunskap',
-    subtitle: 'Hur väl känner man egentligen sitt syskon?',
+    subtitle: 'Hur väl känner en egentligen sitt syskon?',
     categoryId: 'sk-vi-blev-syskon',
     sections: [
       {
