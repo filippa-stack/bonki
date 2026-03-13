@@ -71,6 +71,20 @@ export default function VardagProductHome({ product }: { product: ProductManifes
       className="min-h-screen relative overflow-hidden"
       style={{ backgroundColor: 'var(--surface-base)' }}
     >
+      {/* Soft sun-glow — shared light logic with Still Us */}
+      <div
+        style={{
+          position: 'absolute',
+          top: '18%',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          width: '140%',
+          height: '60%',
+          background: 'radial-gradient(ellipse at center, hsla(41, 78%, 48%, 0.06) 0%, transparent 70%)',
+          pointerEvents: 'none',
+          zIndex: 0,
+        }}
+      />
       {/* Background illustration — preserved position */}
       <motion.div
         initial={{ opacity: 0 }}
@@ -244,14 +258,14 @@ export default function VardagProductHome({ product }: { product: ProductManifes
               width: '100%',
             }}
           >
-            {/* Sparkle divider */}
+            {/* Sparkle divider — Saffron golden thread (Bonki quality mark) */}
             <motion.div
               initial={{ opacity: 0, scale: 0.5 }}
               animate={{ opacity: [0.3, 0.6, 0.3], scale: 1 }}
               transition={{ opacity: { duration: 3, repeat: Infinity, ease: 'easeInOut' }, scale: { duration: 0.8, delay: 1.2 } }}
               style={{
                 fontSize: '14px',
-                color: ACCENT_COLOR,
+                color: 'var(--accent-saffron)',
                 letterSpacing: '8px',
                 marginBottom: '12px',
                 textAlign: 'center',
@@ -332,8 +346,8 @@ export default function VardagProductHome({ product }: { product: ProductManifes
                   position: 'relative',
                   zIndex: 1,
                   fontSize: '12px',
-                  color: 'hsl(200, 25%, 40%)',
-                  opacity: 0.7,
+                  color: 'var(--accent-saffron)',
+                  opacity: 0.55,
                   fontStyle: 'italic',
                   lineHeight: 1.3,
                   letterSpacing: '0.02em',
