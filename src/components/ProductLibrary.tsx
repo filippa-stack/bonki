@@ -5,9 +5,7 @@ import { allProducts } from '@/data/products';
 import { useAllProductAccess } from '@/hooks/useAllProductAccess';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
-import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/components/ui/sonner';
-import watermarkMamma from '@/assets/watermark-mamma.png';
 import watermarkMamma from '@/assets/watermark-mamma.png';
 
 import illustrationStillUs from '@/assets/illustration-still-us-tile.png';
