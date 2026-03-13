@@ -1189,10 +1189,10 @@ export default function ProductLibrary() {
           <p
             style={{
               fontFamily: "'DM Serif Display', serif",
-              fontStyle: 'italic',
+              fontStyle: 'normal',
               fontSize: '14px',
-              color: isDark ? 'hsla(38, 60%, 65%, 0.85)' : 'var(--accent-text)',
-              opacity: 0.75,
+              color: isDark ? 'hsla(38, 55%, 70%, 1)' : 'var(--accent-text)',
+              opacity: 0.9,
               lineHeight: 1.7,
               letterSpacing: '-0.01em',
             }}
