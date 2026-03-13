@@ -10,18 +10,18 @@ const categories: Category[] = [
 
 const cards: Card[] = [
   // ── K1: Min identitet ──
-  { id: 'sex-konsidentitet', title: 'Könsidentitet', subtitle: 'Vem man är som kön -- och vad som händer när det inte stämmer med omvärldens bild', categoryId: 'sex-min-identitet', sections: [{ id: 'sex-konsidentitet-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
+  { id: 'sex-konsidentitet', title: 'Könsidentitet', subtitle: 'Vem en är som kön -- och vad som händer när det inte stämmer med omvärldens bild', categoryId: 'sex-min-identitet', sections: [{ id: 'sex-konsidentitet-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
     'När började du tänka på vilket kön du har?',
     'Har du någon gång behövt försvara din könsidentitet?',
     'Hur tror du att en person som känner att deras könsidentitet inte stämmer med deras kropp kan ha det? Vad tror du att de behöver?',
     'Vad innebär begreppen cis- och transperson?',
     'Vad är könsdysfori? Hur kan det påverka en person?',
     'Vad skulle du göra om omgivningen uppfattade din könstillhörighet annorlunda än du själv uppfattar den?',
-    'Måste man vara man eller kvinna?',
+    'Måste en vara man eller kvinna?',
     'Vad betyder det att vara icke-binär?',
     'Vart kan du vända dig och vem kan du prata med om du upplever att din könsidentitet inte överensstämmer med ditt kroppsliga kön?',
   ]}]},
-  { id: 'sex-sexuell-laggning', title: 'Sexuell läggning', subtitle: 'Vem man attraheras av -- och hur man förstår och uttrycker det', categoryId: 'sex-min-identitet', sections: [{ id: 'sex-sexuell-laggning-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
+  { id: 'sex-sexuell-laggning', title: 'Sexuell läggning', subtitle: 'Vem en attraheras av -- och hur en förstår och uttrycker det', categoryId: 'sex-min-identitet', sections: [{ id: 'sex-sexuell-laggning-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
     'Har du någon gång funderat på din sexuella läggning?',
     'Hur vet en person om den är heterosexuell eller HBTQI?',
     'Tror du att ens sexuella läggning förblir densamma hela livet, eller kan den förändras?',
@@ -33,9 +33,9 @@ const cards: Card[] = [
   ]}]},
   { id: 'sex-onani', title: 'Onani', subtitle: 'Att utforska sin kropp och sin sexualitet på egen hand', categoryId: 'sex-min-identitet', sections: [{ id: 'sex-onani-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
     'Vilka syften finns med att onanera?',
-    'Vad kan man lära sig av att onanera?',
-    'På vilka olika sätt kan det vara bra för hälsan att onanera?',
-    'Är det enbart privat att onanera, eller kan man göra det tillsammans med någon annan? I vilka sammanhang?',
+     'Vad kan en lära sig av att onanera?',
+     'På vilka olika sätt kan det vara bra för hälsan att onanera?',
+     'Är det enbart privat att onanera, eller kan en göra det tillsammans med någon annan? I vilka sammanhang?',
   ]}]},
   { id: 'sex-kroppsideal', title: 'Kroppsideal', subtitle: 'Hur ideal och förväntningar på kroppen påverkar hur vi ser på oss själva', categoryId: 'sex-min-identitet', sections: [{ id: 'sex-kroppsideal-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
     'Vad tror du folk menar när de pratar om en "normal" kropp? Finns det en sådan?',
@@ -61,12 +61,12 @@ const cards: Card[] = [
   { id: 'sex-pornografi', title: 'Pornografi', subtitle: 'Vad pornografi är, hur realistisk den är -- och vad den kan göra med ens bild av sex', categoryId: 'sex-normer-och-paverkan', sections: [{ id: 'sex-pornografi-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
     'Vad räknas som pornografi?',
     'Vad tror du kan vara skillnader mellan industriell porr och amatörporr?',
-    'Hur realistisk tror du att pornografi är när det gäller sex i verkligheten? Vad kan det få för konsekvenser om man tror att det speglar verkligheten?',
+    'Hur realistisk tror du att pornografi är när det gäller sex i verkligheten? Vad kan det få för konsekvenser om en tror att det speglar verkligheten?',
     'Finns det rätt och fel med att titta på porr?',
     'Behöver en ha samtycke av sin partner för att titta på porr?',
     'Har du någon gång blivit ofrivilligt exponerad för pornografi? Hur reagerade du på det?',
     'Vad kan hända om barn tittar på pornografi? Förklara!',
-    'Kan man få ut något positivt av porr?',
+    'Kan en få ut något positivt av porr?',
   ]}]},
   { id: 'sex-sexuella-tabun', title: 'Sexuella tabun', subtitle: 'Det som sällan pratas om högt -- vad som är lagligt, etiskt och var gränserna går', categoryId: 'sex-normer-och-paverkan', sections: [{ id: 'sex-sexuella-tabun-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
     'Kan du ge exempel på sexuella tabun?',
@@ -109,7 +109,7 @@ const cards: Card[] = [
     'Vilka saker kan hjälpa en att hålla sig trygg i sexuella situationer -- och vems ansvar är det egentligen att ingen far illa?',
     'Har en utomstående ansvar att ingripa om den uppfattar att någon är i riskzonen för att bli utsatt för ett sexuellt ofredande eller övergrepp?',
   ]}]},
-  { id: 'sex-sexuella-misstag', title: 'Sexuella misstag', subtitle: 'När sex inte går som planerat -- och hur man skiljer misstag från övergrepp', categoryId: 'sex-relation-och-ansvar', sections: [{ id: 'sex-sexuella-misstag-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
+  { id: 'sex-sexuella-misstag', title: 'Sexuella misstag', subtitle: 'När sex inte går som planerat -- och hur en skiljer misstag från övergrepp', categoryId: 'sex-relation-och-ansvar', sections: [{ id: 'sex-sexuella-misstag-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
     'Vad kan vara ett sexuellt misstag?',
     'När är riskerna större för att sexuella misstag begås?',
     'Vad finns det för risker med icke-verbala signaler?',
@@ -118,7 +118,7 @@ const cards: Card[] = [
     'Måste en vara en ond eller illvillig person för att begå ett sexuellt övertramp?',
     'I vilka situationer kan en få nedsatt omdöme?',
   ]}]},
-  { id: 'sex-konsekvenser-av-sex', title: 'Konsekvenser av sex', subtitle: 'Vad man bör tänka på innan -- preventivmedel, sjukdomar och graviditet', categoryId: 'sex-relation-och-ansvar', sections: [{ id: 'sex-konsekvenser-av-sex-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
+  { id: 'sex-konsekvenser-av-sex', title: 'Konsekvenser av sex', subtitle: 'Vad en bör tänka på innan -- preventivmedel, sjukdomar och graviditet', categoryId: 'sex-relation-och-ansvar', sections: [{ id: 'sex-konsekvenser-av-sex-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
     'Vad kan vara viktigt att tänka på innan en ska ha sex med någon?',
     'Vilka konsekvenser kan det finnas av att ha sex?',
     'Varför kan det vara bra att använda preventivmedel?',
@@ -127,20 +127,20 @@ const cards: Card[] = [
     'Vad kan en göra om en inte har använt preventivmedel och får en könssjukdom eller blir ofrivilligt gravid? Vem kan en vända sig till och var kan en få hjälp?',
   ]}]},
   // ── K4: Skydd & makt ──
-  { id: 'sex-sexuella-overgrepp', title: 'Sexuella övergrepp', subtitle: 'Vad som räknas som ett övergrepp -- och vart man vänder sig om det hänt', categoryId: 'sex-skydd-och-makt', sections: [{ id: 'sex-sexuella-overgrepp-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
+  { id: 'sex-sexuella-overgrepp', title: 'Sexuella övergrepp', subtitle: 'Vad som räknas som ett övergrepp -- och vart en vänder sig om det hänt', categoryId: 'sex-skydd-och-makt', sections: [{ id: 'sex-sexuella-overgrepp-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
     'Vad räknas som ett sexuellt övergrepp?',
     'På vilka olika sätt kan sexuella övergrepp ske? Är det alltid fysiskt?',
-    'Hur vet man att man blivit utsatt för ofredande eller övergrepp? Vad är skillnaden mot en dålig upplevelse av sex?',
+    'Hur vet en att en blivit utsatt för ofredande eller övergrepp? Vad är skillnaden mot en dålig upplevelse av sex?',
     'I vilka situationer kan en bli utsatt?',
     'Vem bestämmer om det är ett sexuellt övergrepp?',
     'Vart kan du vända dig och vem kan du prata med om du har blivit utsatt för något som kändes fel?',
   ]}]},
-  { id: 'sex-sex-som-hot', title: 'Sex som hot', subtitle: 'När sex används som makt, kontroll eller hot -- och hur man skyddar sig', categoryId: 'sex-skydd-och-makt', sections: [{ id: 'sex-sex-som-hot-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
+  { id: 'sex-sex-som-hot', title: 'Sex som hot', subtitle: 'När sex används som makt, kontroll eller hot -- och hur en skyddar sig', categoryId: 'sex-skydd-och-makt', sections: [{ id: 'sex-sex-som-hot-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
     'Kan någon utnyttja sex för att få kontroll eller makt över en annan människa? Förklara!',
     'Vad innebär begreppen "grooming" och "sugar dating"? Hur kan de ta sig uttryck?',
     'På vilket sätt kan en hamna i en beroendeposition till någon en har sex med?',
     'Vad kan det finnas för risker med att dela eller skicka sexuellt innehåll på nätet?',
-    'Har du eller någon du känner upplevt att bli exponerad för sexuellt material online utan att ha velat det -- till exempel via automatiska meddelanden eller oönskade bilder? Hur kan man hantera det?',
+    'Har du eller någon du känner upplevt att bli exponerad för sexuellt material online utan att ha velat det -- till exempel via automatiska meddelanden eller oönskade bilder? Hur kan en hantera det?',
     'På vilka sätt kan en skydda sig från att bli exponerad för sexuellt material online utan att ha gett sitt samtycke?',
     'Vart kan en vända sig om en utsätts för hot eller spridning av falskt eller privat material, t.ex. text, film, bilder eller rykten?',
   ]}]},

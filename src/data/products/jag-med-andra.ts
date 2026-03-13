@@ -56,7 +56,7 @@ const cards: Card[] = [
           'Varför tror du att din vän valde dig som vän?',
           'Varför valde du din vän?',
           'Har du blivit kompis med någon du inte tyckte om från början? Vad fick dig att ändra mening?',
-          'Behöver man ha många vänner eller räcker det med en?',
+          'Behöver en ha många vänner eller räcker det med en?',
         ],
       },
       {
@@ -65,7 +65,7 @@ const cards: Card[] = [
         title: 'I verkligheten',
         content: '',
         prompts: [
-          'En kompis slutar höra av sig och verkar inte vilja ses mer. Kan hen bestämma att ni inte är vänner längre? Hur kan man tänka om en vänskap som inte blev som man hoppats?',
+          'En kompis slutar höra av sig och verkar inte vilja ses mer. Kan hen bestämma att ni inte är vänner längre? Hur kan en tänka om en vänskap som inte blev som en hoppats?',
         ],
       },
     ],
@@ -73,7 +73,7 @@ const cards: Card[] = [
   {
     id: 'jma-kontakt',
     title: 'Kontakt',
-    subtitle: 'Att läsa av hur någon mår -- och vad man gör med det man ser',
+    subtitle: 'Att läsa av hur någon mår -- och vad en gör med det en ser',
     categoryId: 'jma-att-hora-till',
     sections: [
       {
@@ -82,7 +82,7 @@ const cards: Card[] = [
         title: 'Frågor',
         content: '',
         prompts: [
-          'Kan man se på någon hur de mår, utan att de säger något? Vad brukar du titta på?',
+          'Kan en se på någon hur de mår, utan att de säger något? Vad brukar du titta på?',
           'Om någon säger att hen är glad men ser ledsen ut, vilket tror du stämmer?',
           'Om någons ord inte stämmer med det du ser, vad gör du då?',
         ],
@@ -101,7 +101,7 @@ const cards: Card[] = [
   {
     id: 'jma-annorlunda',
     title: 'Annorlunda',
-    subtitle: 'Att vara sig själv när omgivningen vill att man ska passa in',
+    subtitle: 'Att vara sig själv när omgivningen vill att en ska passa in',
     categoryId: 'jma-att-hora-till',
     sections: [
       {
@@ -129,7 +129,7 @@ const cards: Card[] = [
   {
     id: 'jma-utanfor',
     title: 'Utanför',
-    subtitle: 'Känslan av att inte höra till -- och vad man kan göra för varandra',
+    subtitle: 'Känslan av att inte höra till -- och vad en kan göra för varandra',
     categoryId: 'jma-att-hora-till',
     sections: [
       {
@@ -157,7 +157,7 @@ const cards: Card[] = [
   {
     id: 'jma-duktig',
     title: 'Duktig',
-    subtitle: 'Vem presterar man egentligen för -- sig själv eller andra?',
+    subtitle: 'Vem presterar en egentligen för -- sig själv eller andra?',
     categoryId: 'jma-nar-vi-jamfor-oss',
     sections: [
       {
@@ -196,7 +196,7 @@ const cards: Card[] = [
         prompts: [
           'Varför tror du att det för många känns viktigt att vinna eller vara bäst?',
           'Berätta när du vann något -- hur kändes det?',
-          'Vad kan man lära sig av att inte vinna?',
+          'Vad kan en lära sig av att inte vinna?',
           'Om du kom tvåa eller sist, vad önskar du att någon skulle säga till dig då?',
         ],
       },
@@ -253,7 +253,7 @@ const cards: Card[] = [
         prompts: [
           'Har du känt avundsjuka någon gång? På vad eller vem?',
           'Varför tror du att vissa människor verkar viktigare för andra om de har mycket pengar eller saker? Stämmer det egentligen?',
-          'Tror du att man kan vara lycklig utan att ha mycket saker eller pengar? Vad är det i så fall som gör en lycklig?',
+          'Tror du att en kan vara lycklig utan att ha mycket saker eller pengar? Vad är det i så fall som gör en lycklig?',
         ],
       },
       {
@@ -271,7 +271,7 @@ const cards: Card[] = [
   {
     id: 'jma-konflikt',
     title: 'Konflikt',
-    subtitle: 'Bråk som en del av relationer -- och hur man tar sig igenom dem',
+    subtitle: 'Bråk som en del av relationer -- och hur en tar sig igenom dem',
     categoryId: 'jma-nar-det-skaver',
     sections: [
       {
@@ -281,7 +281,7 @@ const cards: Card[] = [
         content: '',
         prompts: [
           'Vad kan vara början på en konflikt?',
-          'Kan det vara bra att bråka med någon man tycker om?',
+          'Kan det vara bra att bråka med någon en tycker om?',
           'Kan du komma ihåg en gång när en vuxen blev arg eller besviken på dig? Vad hände och hur upplevde du det?',
           'Tror du att den vuxne förstod varför du gjorde det du gjorde?',
           'Vad tror du att vuxna bråkar om?',
@@ -301,7 +301,7 @@ const cards: Card[] = [
   {
     id: 'jma-misslyckas',
     title: 'Misslyckas',
-    subtitle: 'Känslan av att ha gjort bort sig -- och vad man egentligen lär sig av det',
+    subtitle: 'Känslan av att ha gjort bort sig -- och vad en egentligen lär sig av det',
     categoryId: 'jma-nar-det-skaver',
     sections: [
       {
@@ -313,7 +313,7 @@ const cards: Card[] = [
           'När gjorde du något som du trodde skulle bli bra men som inte blev som du tänkte dig?',
           'Vad hade du velat göra annorlunda?',
           'När kan det vara bra att misslyckas?',
-          'Varför kan man känna sig misslyckad utan att ha misslyckats?',
+          'Varför kan en känna sig misslyckad utan att ha misslyckats?',
           'Vad tror du kan hjälpa dig att må bättre när du känner att du har misslyckats?',
         ],
       },
@@ -343,7 +343,7 @@ const cards: Card[] = [
           'Har du blivit kritiserad för något? Hur kändes det?',
           'När kan det vara bra att få kritik?',
           'Finns det ett sätt att ge kritik som hjälper, och ett sätt som skadar? Vad är skillnaden?',
-          'Hur tar man emot kritik för något man har gjort utan att känna sig kritiserad för den man är?',
+          'Hur tar en emot kritik för något en har gjort utan att känna sig kritiserad för den en är?',
         ],
       },
       {
@@ -398,7 +398,7 @@ const cards: Card[] = [
         content: '',
         prompts: [
           'När är det för sent att säga förlåt?',
-          'Kan man visa sitt förlåt istället för att säga det?',
+          'Kan en visa sitt förlåt istället för att säga det?',
           'Har du någon gång sagt förlåt utan att mena det? Varför?',
           'När har du känt att du har fått skulden för något du inte har gjort?',
         ],
@@ -429,8 +429,8 @@ const cards: Card[] = [
         prompts: [
           'När vet du att det är dags att säga stopp?',
           'När är det svårt att säga stopp?',
-          'Hur hjälper man någon annan att säga stopp?',
-          'Hur märker man att någon vill säga stopp utan att de har sagt stopp?',
+           'Hur hjälper en någon annan att säga stopp?',
+           'Hur märker en att någon vill säga stopp utan att de har sagt stopp?',
         ],
       },
       {
@@ -447,7 +447,7 @@ const cards: Card[] = [
   {
     id: 'jma-integritet',
     title: 'Integritet',
-    subtitle: 'Att stå för det man tror på -- även när det är svårt',
+    subtitle: 'Att stå för det en tror på -- även när det är svårt',
     categoryId: 'jma-att-sta-stadig',
     sections: [
       {
@@ -457,7 +457,7 @@ const cards: Card[] = [
         content: '',
         prompts: [
           'Vad betyder det att ha integritet?',
-          'När kan det vara svårt att säga nej eller vad man tycker?',
+          'När kan det vara svårt att säga nej eller vad en tycker?',
           'När kan det vara viktigt att stå upp för någon annan?',
         ],
       },
@@ -486,7 +486,7 @@ const cards: Card[] = [
         prompts: [
           'När har du varit modig?',
           'Hur kändes det?',
-          'Kan man vara modig för någon annans skull?',
+          'Kan en vara modig för någon annans skull?',
           'Kan mod ibland leda till något negativt? Ge ett exempel.',
         ],
       },
@@ -505,7 +505,7 @@ const cards: Card[] = [
   {
     id: 'jma-respekt',
     title: 'Respekt',
-    subtitle: 'Att behandla andra väl -- även när man tänker och tror olika',
+    subtitle: 'Att behandla andra väl -- även när en tänker och tror olika',
     categoryId: 'jma-vi-i-varlden',
     sections: [
       {
@@ -524,7 +524,7 @@ const cards: Card[] = [
         title: 'I verkligheten',
         content: '',
         prompts: [
-          'Två av dina kompisar tror på olika saker när det gäller religion. Kan man vara nära vänner trots det? Vad tror du kan göra det svårt, och vad kan hjälpa?',
+          'Två av dina kompisar tror på olika saker när det gäller religion. Kan en vara nära vänner trots det? Vad tror du kan göra det svårt, och vad kan hjälpa?',
         ],
       },
     ],
@@ -590,7 +590,7 @@ const cards: Card[] = [
   {
     id: 'jma-acceptans',
     title: 'Acceptans',
-    subtitle: 'Att lära sig leva med saker man inte kan förändra',
+    subtitle: 'Att lära sig leva med saker en inte kan förändra',
     categoryId: 'jma-vi-i-varlden',
     sections: [
       {
@@ -600,7 +600,7 @@ const cards: Card[] = [
         content: '',
         prompts: [
           'Vad betyder det att acceptera något?',
-          'Hur vet man skillnaden mellan saker man bör acceptera och saker man bör försöka förändra?',
+          'Hur vet en skillnaden mellan saker en bör acceptera och saker en bör försöka förändra?',
           'Hur känns det att behöva acceptera att någon inte tycker som du?',
         ],
       },
@@ -618,7 +618,7 @@ const cards: Card[] = [
   {
     id: 'jma-kluringen',
     title: 'Kluringen',
-    subtitle: 'Ett tankeexperiment om vem man egentligen är -- när man möter sig själv',
+    subtitle: 'Ett tankeexperiment om vem en egentligen är -- när en möter sig själv',
     categoryId: 'jma-vi-i-varlden',
     sections: [
       {

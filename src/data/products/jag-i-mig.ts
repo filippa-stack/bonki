@@ -37,7 +37,7 @@ const cards: Card[] = [
   {
     id: 'jim-trygg',
     title: 'Trygg',
-    subtitle: 'Vad som gör att man känner sig säker och omhändertagen',
+    subtitle: 'Vad som gör att en känner sig säker och omhändertagen',
     categoryId: 'jim-tryggheten-inuti',
     sections: [
       {
@@ -91,7 +91,7 @@ const cards: Card[] = [
           'Varför tror du att människor blir stressade?',
           'Har du någon gång känt dig stressad?',
           'Hur känns stress i kroppen?',
-          'Vad brukar hjälpa dig när du känner dig stressad? Och hur kan man hjälpa en kompis som verkar stressad?',
+          'Vad brukar hjälpa dig när du känner dig stressad? Och hur kan en hjälpa en kompis som verkar stressad?',
           'Hur kan det bli problem av att känna för mycket stress?',
           'Vad kan barn känna sig stressade över? Är det annorlunda för vuxna, tror du?',
           'Känner du någon som ibland pratar om att de är stressade? Vad tror du gör dem stressade?',
@@ -103,7 +103,7 @@ const cards: Card[] = [
   {
     id: 'jim-glad',
     title: 'Glad',
-    subtitle: 'Vad som ger energi och glädje -- och hur man delar det',
+    subtitle: 'Vad som ger energi och glädje -- och hur en delar det',
     categoryId: 'jim-kanslorna-jag-bar',
     sections: [
       {
@@ -115,7 +115,7 @@ const cards: Card[] = [
           'Hur känns det i kroppen att vara glad?',
           'Vad vill du göra när du är glad?',
           'När kan du bli glad för någon annans skull?',
-          'Har du någon gång låtsats vara glad fast du egentligen inte var det? Varför tror du att man gör så?',
+          'Har du någon gång låtsats vara glad fast du egentligen inte var det? Varför tror du att en gör så?',
           'Kan du bli glad av andras skratt?',
           'Hur kan du göra någon annan glad?',
           'När blev du senast riktigt glad för något?',
@@ -126,7 +126,7 @@ const cards: Card[] = [
   {
     id: 'jim-ledsen',
     title: 'Ledsen',
-    subtitle: 'Att ha det tungt -- och hur man kan bära det tillsammans',
+    subtitle: 'Att ha det tungt -- och hur en kan bära det tillsammans',
     categoryId: 'jim-kanslorna-jag-bar',
     sections: [
       {
@@ -185,7 +185,7 @@ const cards: Card[] = [
           'Hur känns det i kroppen att vara rädd?',
           'Vad kan du göra när något eller någon skrämmer dig?',
           'Vad vill du att andra ska göra när du är rädd?',
-          'Kan man vara rädd för något man inte kan se? Hur kan det vara så?',
+          'Kan en vara rädd för något en inte kan se? Hur kan det vara så?',
           'Vet du något som skrämmer någon annan men som du inte är rädd för?',
           'Vad är du rädd för?',
         ],
@@ -219,7 +219,7 @@ const cards: Card[] = [
   {
     id: 'jim-besviken',
     title: 'Besviken',
-    subtitle: 'När något inte blev som man hoppades -- och hur det skiljer sig från ilska',
+    subtitle: 'När något inte blev som en hoppades -- och hur det skiljer sig från ilska',
     categoryId: 'jim-nar-det-gor-ont',
     sections: [
       {
@@ -284,7 +284,7 @@ const cards: Card[] = [
   {
     id: 'jim-skam',
     title: 'Skam',
-    subtitle: 'Känslan av att ha gjort fel -- eller tro att man själv är fel',
+    subtitle: 'Känslan av att ha gjort fel -- eller tro att en själv är fel',
     categoryId: 'jim-nar-det-gor-ont',
     sections: [
       {
@@ -343,7 +343,7 @@ const cards: Card[] = [
           'Varför tror du att människor känner svartsjuka?',
           'Har du varit svartsjuk någon gång? Vad gjorde du då?',
           'När kan det bli problem av att känna svartsjuka?',
-          'Hur kan man dela på en persons uppmärksamhet och kärlek med andra? Vad hjälper dig att känna dig trygg ändå?',
+          'Hur kan en dela på en persons uppmärksamhet och kärlek med andra? Vad hjälper dig att känna dig trygg ändå?',
         ],
       },
     ],
@@ -361,9 +361,9 @@ const cards: Card[] = [
         content: '',
         prompts: [
           'Hur känns det att inte få vara med?',
-          'Varför tror du att det är viktigt att känna att man får vara med?',
+          'Varför tror du att det är viktigt att känna att en får vara med?',
           'Vad kan du göra för att ingen annan ska känna sig utanför?',
-          'Måste man leka med någon som behandlar en dåligt? Varför eller varför inte?',
+          'Måste en leka med någon som behandlar en dåligt? Varför eller varför inte?',
           'Hur kan du förklara varför någon inte fick vara med i leken?',
           'Hur kan du leka med någon även om ni tycker olika saker är kul?',
           'När har du känt dig utanför och vad gjorde du då?',
@@ -397,7 +397,7 @@ const cards: Card[] = [
   {
     id: 'jim-bestamd',
     title: 'Bestämd',
-    subtitle: 'Att veta vad man vill och våga stå för det',
+    subtitle: 'Att veta vad en vill och våga stå för det',
     categoryId: 'jim-jag-som-helhet',
     sections: [
       {
@@ -486,7 +486,7 @@ const cards: Card[] = [
   {
     id: 'jim-jag',
     title: 'Jag',
-    subtitle: 'En stund att stanna upp och reflektera över hur man mår just nu',
+    subtitle: 'En stund att stanna upp och reflektera över hur en mår just nu',
     categoryId: 'jim-jag-som-helhet',
     sections: [
       {

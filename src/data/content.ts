@@ -1064,7 +1064,7 @@ export const cards: Card[] = [
         id: 'scenario-22',
         type: 'scenario',
         title: 'I vardagen',
-        content: 'Relationen fungerar. Inget är trasigt. Ni samarbetar, delar ansvar och tar er igenom vardagen. Samtidigt finns en tyst insikt om att relationer också är något man kan lämna — även utan konflikt.',
+        content: 'Relationen fungerar. Inget är trasigt. Ni samarbetar, delar ansvar och tar er igenom vardagen. Samtidigt finns en tyst insikt om att relationer också är något en kan lämna — även utan konflikt.',
         prompts: [
           'Vad händer i dig när du påminner dig om att du inte stannar för att du måste — utan för att du vill?',
         ],
