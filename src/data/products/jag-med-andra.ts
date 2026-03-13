@@ -82,7 +82,7 @@ const cards: Card[] = [
         title: 'Frågor',
         content: '',
         prompts: [
-          'Kan man se på någon hur de mår, utan att de säger något? Vad brukar du titta på?',
+          'Kan en se på någon hur de mår, utan att de säger något? Vad brukar du titta på?',
           'Om någon säger att hen är glad men ser ledsen ut, vilket tror du stämmer?',
           'Om någons ord inte stämmer med det du ser, vad gör du då?',
         ],
