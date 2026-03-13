@@ -200,9 +200,6 @@ export default function JagMedAndraProductHome({ product }: { product: ProductMa
             const cat = product.categories.find((c) => c.id === tile.id);
             if (!cat) return null;
 
-            const isHero = index === 0;
-            const isDark = tile.dark;
-
             return (
               <motion.button
                 key={cat.id}
@@ -216,26 +213,15 @@ export default function JagMedAndraProductHome({ product }: { product: ProductMa
                   padding: '0 32px',
                   textAlign: 'center',
                   cursor: 'pointer',
-                  border: isDark
-                    ? '1px solid hsla(280, 40%, 55%, 0.40)'
-                    : '1px solid hsla(280, 60%, 90%, 0.60)',
-                  boxShadow: isDark
-                    ? [
-                        '0 6px 20px hsla(280, 50%, 10%, 0.22)',
-                        '0 2px 6px hsla(0, 0%, 0%, 0.10)',
-                        'inset 0 1px 0 hsla(280, 50%, 65%, 0.30)',
-                      ].join(', ')
-                    : [
-                        '0 6px 20px hsla(280, 50%, 60%, 0.12)',
-                        '0 2px 6px hsla(0, 0%, 0%, 0.04)',
-                        'inset 0 2px 1px hsla(280, 80%, 95%, 0.55)',
-                        'inset 0 -2px 4px hsla(280, 40%, 30%, 0.06)',
-                      ].join(', '),
+                  border: '1px solid hsla(345, 20%, 75%, 0.35)',
+                  boxShadow: [
+                    '0 4px 14px hsla(345, 20%, 40%, 0.10)',
+                    '0 1px 4px hsla(0, 0%, 0%, 0.04)',
+                    'inset 0 1px 0 hsla(345, 30%, 95%, 0.60)',
+                  ].join(', '),
                   whiteSpace: 'normal' as const,
-                  backdropFilter: 'blur(20px) saturate(1.3)',
-                  WebkitBackdropFilter: 'blur(20px) saturate(1.3)',
-                  width: isHero ? '86%' : '82%',
-                  minHeight: isHero ? '76px' : '66px',
+                  width: '84%',
+                  minHeight: index === 0 ? '72px' : '64px',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
@@ -245,10 +231,9 @@ export default function JagMedAndraProductHome({ product }: { product: ProductMa
                 <span
                   style={{
                     fontFamily: "'DM Serif Display', var(--font-serif)",
-                    fontSize: isHero ? 'clamp(21px, 5.8vw, 27px)' : 'clamp(19px, 5.2vw, 25px)',
+                    fontSize: index === 0 ? 'clamp(21px, 5.8vw, 27px)' : 'clamp(19px, 5.2vw, 25px)',
                     fontWeight: 400,
                     color: tile.text,
-                    textShadow: isDark ? 'none' : '0 1px 4px hsla(280, 60%, 90%, 0.8)',
                   }}
                 >
                   {cat.title}
