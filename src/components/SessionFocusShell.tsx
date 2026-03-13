@@ -143,7 +143,7 @@ export default function SessionFocusShell({ children, topSlot, ctaSlot, onExit, 
         <button
           onClick={(e) => {
             e.stopPropagation();
-            onExit();
+            (onPause ?? onExit)();
           }}
           style={{
             marginTop: '12px',
