@@ -247,7 +247,7 @@ export default function CircadianMenu({
               const isNextSuggested = category.id === nextSuggestedId && hasEntered;
 
               const borderDefault = `1px solid rgba(255, 255, 255, 0.12)`;
-              const borderGlow = `1px solid rgba(255, 255, 255, 0.22)`;
+              const borderGlow = isNextSuggested ? `1px solid rgba(255, 255, 255, 0.35)` : `1px solid rgba(255, 255, 255, 0.22)`;
 
               // Top-edge highlight — simulates overhead light hitting glass
               const topEdgeHighlight = 'inset 0 1px 0 0 rgba(255, 255, 255, 0.13)';
