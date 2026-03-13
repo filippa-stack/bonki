@@ -208,7 +208,7 @@ const cards: Card[] = [
   {
     id: 'sk-dela',
     title: 'Dela',
-    subtitle: 'Att dela saker, utrymme och tid -- och vad det tränar oss i',
+    subtitle: 'Att dela saker, utrymme och tid – och vad det tränar oss i',
     categoryId: 'sk-nar-det-skaver',
     sections: [
       {
