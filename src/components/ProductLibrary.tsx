@@ -241,15 +241,27 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
             right: 0,
             bottom: 0,
             width: wide ? '50%' : '65%',
-            backgroundImage: `url(${illustration})`,
-            backgroundSize: illustrationSize,
-            backgroundRepeat: 'no-repeat',
-            backgroundPosition: illustrationPosition,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
             opacity: illustrationOpacity,
             pointerEvents: 'none',
             zIndex: 0,
+            overflow: 'hidden',
           }}
-        />
+        >
+          <img
+            src={illustration}
+            alt=""
+            draggable={false}
+            style={{
+              width: '100%',
+              height: '100%',
+              objectFit: 'contain',
+              objectPosition: illustrationPosition,
+            }}
+          />
+        </div>
       )}
       <div style={{ zIndex: 1, display: 'flex', flexDirection: 'column', flex: 1, width: '100%' }}>
         <h3
