@@ -14,20 +14,20 @@ const categories: Category[] = [
     title: 'Vi är olika',
     subtitle: 'Plats, personlighet och det som gör oss unika.',
     description: 'Unikhet, plats i syskonskaran och bonussyskon',
-    cardCount: 3,
+    cardCount: 4,
   },
   {
-    id: 'sk-nar-det-skaver',
-    title: 'När det skaver',
-    subtitle: 'Rättvisa, svartsjuka och bråk som formar relationen.',
-    description: 'Konflikter, delande och rättvisa',
-    cardCount: 5,
+    id: 'sk-delat-utrymme',
+    title: 'Delat utrymme',
+    subtitle: 'Att dela saker, tid och uppmärksamhet — och vad det kräver.',
+    description: 'Dela, rättvisa och konflikter',
+    cardCount: 4,
   },
   {
-    id: 'sk-nar-livet-forandras',
-    title: 'När livet förändras',
-    subtitle: 'Förlust, förändring och band som sträcker sig framåt.',
-    description: 'Förlust och framtid',
+    id: 'sk-er-relation',
+    title: 'Er relation',
+    subtitle: 'Vänskapen som växer — och framtiden ni delar.',
+    description: 'Vänskap och framtid',
     cardCount: 2,
   },
 ];
@@ -57,26 +57,6 @@ const cards: Card[] = [
     ],
   },
   {
-    id: 'sk-syskonminnen',
-    title: 'Syskonminnen',
-    subtitle: 'De stunder och berättelser som bara ni syskon delar',
-    categoryId: 'sk-vi-blev-syskon',
-    sections: [
-      {
-        id: 'sk-syskonminnen-opening',
-        type: 'opening',
-        title: 'Frågor',
-        content: '',
-        prompts: [
-          'Beskriv ett favoritfoto där du och ditt syskon är tillsammans. Vad minns du av den stunden?',
-          'Har du och ditt syskon skapat några egna traditioner? Vilka är de och hur började de?',
-          'Vilket tror du är ditt syskons roligaste minne?',
-          'Minns du vad du tänkte och kände första gången du träffade ditt syskon?',
-        ],
-      },
-    ],
-  },
-  {
     id: 'sk-syskonkunskap',
     title: 'Syskonkunskap',
     subtitle: 'Hur väl känner en egentligen sitt syskon?',
@@ -98,6 +78,26 @@ const cards: Card[] = [
     ],
   },
   {
+    id: 'sk-syskonminnen',
+    title: 'Syskonminnen',
+    subtitle: 'De stunder och berättelser som bara ni syskon delar',
+    categoryId: 'sk-vi-blev-syskon',
+    sections: [
+      {
+        id: 'sk-syskonminnen-opening',
+        type: 'opening',
+        title: 'Frågor',
+        content: '',
+        prompts: [
+          'Beskriv ett favoritfoto där du och ditt syskon är tillsammans. Vad minns du av den stunden?',
+          'Har du och ditt syskon skapat några egna traditioner? Vilka är de och hur började de?',
+          'Vilket tror du är ditt syskons roligaste minne?',
+          'Minns du vad du tänkte och kände första gången du träffade ditt syskon?',
+        ],
+      },
+    ],
+  },
+  {
     id: 'sk-vanskap',
     title: 'Vänskap',
     subtitle: 'Syskons unika band – en relation en inte väljer men kan vårda',
@@ -112,11 +112,12 @@ const cards: Card[] = [
           'Hur kan en älska sitt syskon en dag och vara jätteirriterad på dem nästa?',
           'På vilket sätt är din vänskap med ditt syskon annorlunda jämfört med andra vänskaper?',
           'Bästa vänner kan ibland sluta vara bästa vänner och välja att inte längre umgås. Hur är det att inte kunna göra detta val med ett syskon?',
-          'Tror du att du och ditt syskon kommer att vara vänner när ni är vuxna? Varför? Varför inte?',
+          'Vad kan du göra för att hjälpa dig själv när du saknar ett syskon?',
         ],
       },
     ],
   },
+
   // ── K2: Vi är olika ──
   {
     id: 'sk-unik',
@@ -182,34 +183,32 @@ const cards: Card[] = [
       },
     ],
   },
-  // ── K3: När det skaver ──
   {
-    id: 'sk-konflikt',
-    title: 'Konflikt',
-    subtitle: 'Bråk mellan syskon – varför det händer och vad en lär sig av det',
-    categoryId: 'sk-nar-det-skaver',
+    id: 'sk-funktionsvariation',
+    title: 'Funktionsvariation',
+    subtitle: 'När ett syskon fungerar annorlunda – hur påverkar det hela familjen?',
+    categoryId: 'sk-vi-ar-olika',
     sections: [
       {
-        id: 'sk-konflikt-opening',
+        id: 'sk-funktionsvariation-opening',
         type: 'opening',
         title: 'Frågor',
         content: '',
         prompts: [
-          'Vad är det vanligaste du och ditt syskon bråkar om?',
-          'Kan det finnas något bra med att bråka med ett syskon?',
-          'Vad är det löjligaste, tramsigaste eller dummaste som du och ditt syskon har bråkat om?',
-          'Tror du att bråk med ditt syskon har hjälpt dig att bli en bättre person eller familjemedlem?',
-          'Hur brukar du göra för att lösa en konflikt eller ett bråk med ditt syskon?',
-          'Hur brukar konflikter mellan dig och ditt syskon sluta? Hur gör ni för att bli vänner igen?',
+          'Hur skulle ditt syskon hjälpa dig om du blev allvarligt sjuk eller fick en diagnos?',
+          'Hur skulle ditt liv bli annorlunda om ditt syskon hade en funktionsnedsättning?',
+          'Vad tror du att du skulle kunna lära dig om dig själv genom att leva med ett syskon med någon sorts funktionsnedsättning?',
         ],
       },
     ],
   },
+
+  // ── K3: Delat utrymme ──
   {
     id: 'sk-dela',
     title: 'Dela',
     subtitle: 'Att dela saker, utrymme och tid – och vad det tränar oss i',
-    categoryId: 'sk-nar-det-skaver',
+    categoryId: 'sk-delat-utrymme',
     sections: [
       {
         id: 'sk-dela-opening',
@@ -229,7 +228,7 @@ const cards: Card[] = [
     id: 'sk-rattvisa',
     title: 'Rättvisa',
     subtitle: 'Känslan av att bli behandlad ojämlikt – och vad rättvisa egentligen betyder i en familj',
-    categoryId: 'sk-nar-det-skaver',
+    categoryId: 'sk-delat-utrymme',
     sections: [
       {
         id: 'sk-rattvisa-opening',
@@ -249,7 +248,7 @@ const cards: Card[] = [
     id: 'sk-uppmarksamhet',
     title: 'Uppmärksamhet',
     subtitle: 'Att dela på de vuxnas kärlek – och vad som händer när det inte känns rättvist',
-    categoryId: 'sk-nar-det-skaver',
+    categoryId: 'sk-delat-utrymme',
     sections: [
       {
         id: 'sk-uppmarksamhet-opening',
@@ -266,42 +265,45 @@ const cards: Card[] = [
     ],
   },
   {
-    id: 'sk-sjukdom',
-    title: 'Sjukdom',
-    subtitle: 'När ett syskon har en diagnos eller funktionsnedsättning – hur påverkar det hela familjen?',
-    categoryId: 'sk-nar-det-skaver',
+    id: 'sk-konflikt',
+    title: 'Konflikt',
+    subtitle: 'Bråk mellan syskon – varför det händer och vad en lär sig av det',
+    categoryId: 'sk-delat-utrymme',
     sections: [
       {
-        id: 'sk-sjukdom-opening',
+        id: 'sk-konflikt-opening',
         type: 'opening',
         title: 'Frågor',
         content: '',
         prompts: [
-          'Hur skulle ditt syskon hjälpa dig om du blev allvarligt sjuk eller fick en diagnos?',
-          'Hur skulle ditt liv bli annorlunda om ditt syskon hade en funktionsnedsättning?',
-          'Vad tror du att du skulle kunna lära dig om dig själv genom att leva med ett syskon med någon sorts funktionsnedsättning?',
-          'Om du har ett syskon med en sjukdom eller funktionsnedsättning -- vill du berätta om hur det är?',
+          'Vad är det vanligaste du och ditt syskon bråkar om?',
+          'Kan det finnas något bra med att bråka med ett syskon?',
+          'Vad är det löjligaste, tramsigaste eller dummaste som du och ditt syskon har bråkat om?',
+          'Tror du att bråk med ditt syskon har hjälpt dig att bli en bättre person eller familjemedlem?',
+          'Hur brukar du göra för att lösa en konflikt eller ett bråk med ditt syskon?',
+          'Hur brukar konflikter mellan dig och ditt syskon sluta? Hur gör ni för att bli vänner igen?',
         ],
       },
     ],
   },
-  // ── K4: När livet förändras ──
+
+  // ── K4: Er relation ──
   {
-    id: 'sk-forlora-ett-syskon',
-    title: 'Förlora ett syskon',
-    subtitle: 'Sorgen och saknadet när ett syskon inte längre finns',
-    categoryId: 'sk-nar-livet-forandras',
+    id: 'sk-vanskap-relation',
+    title: 'Vänskap',
+    subtitle: 'Syskons unika band – en relation en inte väljer men kan vårda',
+    categoryId: 'sk-er-relation',
     sections: [
       {
-        id: 'sk-forlora-ett-syskon-opening',
+        id: 'sk-vanskap-relation-opening',
         type: 'opening',
         title: 'Frågor',
         content: '',
         prompts: [
-          'Hur skulle du trösta en vän som har förlorat ett syskon?',
-          'Om du tänker på ett syskon som inte längre finns hos dig -- vad hjälper dig att minnas hen?',
-          'Om du tänker på hur du vill bli ihågkommen av ditt syskon i framtiden – vad hoppas du att de minns om dig?',
-          'Vad kan du göra för att hjälpa dig själv att må bättre när du saknar ett syskon?',
+          'På vilket sätt är din vänskap med ditt syskon annorlunda jämfört med andra vänskaper?',
+          'Hur kan en älska sitt syskon en dag och vara jätteirriterad på dem nästa?',
+          'Bästa vänner kan ibland sluta vara bästa vänner och välja att inte längre umgås. Hur är det att inte kunna göra detta val med ett syskon?',
+          'Tror du att du och ditt syskon kommer att vara vänner när ni är vuxna? Varför? Varför inte?',
         ],
       },
     ],
@@ -310,7 +312,7 @@ const cards: Card[] = [
     id: 'sk-framtid',
     title: 'Framtid',
     subtitle: 'Hur syskonrelationen kan se ut när ni båda är vuxna och lever era egna liv',
-    categoryId: 'sk-nar-livet-forandras',
+    categoryId: 'sk-er-relation',
     sections: [
       {
         id: 'sk-framtid-opening',

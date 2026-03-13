@@ -16,8 +16,8 @@ const SAFFRON = '#DA9D1D';
 const ORDERED_TILES = [
   { id: 'sk-vi-blev-syskon', bg: '#E8F3F5', text: '#274C5E', dark: false },
   { id: 'sk-vi-ar-olika', bg: '#F5E9D3', text: '#3A2E1A', dark: false },
-  { id: 'sk-nar-det-skaver', bg: '#D4E2E0', text: '#274C5E', dark: false },
-  { id: 'sk-nar-livet-forandras', bg: '#C2D1D9', text: '#274C5E', dark: false },
+  { id: 'sk-delat-utrymme', bg: '#D4E2E0', text: '#274C5E', dark: false },
+  { id: 'sk-er-relation', bg: '#C2D1D9', text: '#274C5E', dark: false },
 ];
 
 const containerVariants = { hidden: {}, visible: { transition: { staggerChildren: 0.11, delayChildren: 0.4 } } };
