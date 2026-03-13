@@ -2094,6 +2094,18 @@ export default function CardView() {
                         }
                       }}
                     />
+                    <p
+                      style={{
+                        marginTop: '12px',
+                        fontFamily: 'var(--font-sans)',
+                        fontSize: '11px',
+                        fontStyle: 'italic',
+                        color: 'rgba(255, 255, 255, 0.25)',
+                        textAlign: 'center',
+                      }}
+                    >
+                      Ni kan pausa när som helst.
+                    </p>
                   </motion.div>
                 );
               })()}
