@@ -989,7 +989,7 @@ export const cards: Card[] = [
         content: 'Utforska vad avstånd egentligen handlar om.',
         prompts: [
           'Växer distansen mellan er mer efter bråk — eller tyst, under perioder när ingenting är fel?',
-          'Vad brukar hända med avståndet mellan er om ingen av er tar upp det?',
+          'Vad har hänt med avståndet mellan er under perioder då ingen av er tagit upp det?',
         ],
       },
       {
