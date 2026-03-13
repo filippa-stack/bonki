@@ -135,7 +135,7 @@ const cards: Card[] = [
     'Vem bestämmer om det är ett sexuellt övergrepp?',
     'Vart kan du vända dig och vem kan du prata med om du har blivit utsatt för något som kändes fel?',
   ]}]},
-  { id: 'sex-sex-som-hot', title: 'Sex som hot', subtitle: 'När sex används som makt, kontroll eller hot -- och hur man skyddar sig', categoryId: 'sex-skydd-och-makt', sections: [{ id: 'sex-sex-som-hot-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
+  { id: 'sex-sex-som-hot', title: 'Sex som hot', subtitle: 'När sex används som makt, kontroll eller hot -- och hur en skyddar sig', categoryId: 'sex-skydd-och-makt', sections: [{ id: 'sex-sex-som-hot-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
     'Kan någon utnyttja sex för att få kontroll eller makt över en annan människa? Förklara!',
     'Vad innebär begreppen "grooming" och "sugar dating"? Hur kan de ta sig uttryck?',
     'På vilket sätt kan en hamna i en beroendeposition till någon en har sex med?',
