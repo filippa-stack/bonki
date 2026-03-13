@@ -29,7 +29,7 @@ const cards: Card[] = [
   qsCard('jiv-bekraftelse', 'Bekräftelse', 'Behovet av att bli sedd och hörd – och när det kan gå för långt', 'jiv-min-vardag',
     ['På vilka sätt kan en person få bekräftelse från andra?','Varför är det så värdefullt att få bekräftelse för saker vi gör?','Är bekräftelse alltid något bra? Kan det skada?','På vilket sätt kan en bli beroende av bekräftelse? Vad tror du det beror på?','Vilken sorts bekräftelse betyder mest för dig?'],
     'Du har skrivit en lång uppsats om något som du bryr dig mycket om. Du har lagt ner väldigt många timmar på den och det känns lite utelämnat att visa den för andra. När du gör det, för läraren och dina vuxna, får du inte riktigt någon respons utöver "vad bra". Är det nog? Vad hade du behövt?'),
-  qsCard('jiv-sjalvkansla', 'Självkänsla', 'Att tro på sig själv -- skillnaden mellan självkänsla, självförtroende och egoism', 'jiv-min-vardag',
+  qsCard('jiv-sjalvkansla', 'Självkänsla', 'Att tro på sig själv – skillnaden mellan självkänsla, självförtroende och egoism', 'jiv-min-vardag',
     ['Är det viktigt att älska sig själv? Förklara.','Hur kan god självkänsla visa sig hos någon?','Kan en ha en låg självkänsla men ett bra självförtroende?','Vad skulle du ge en person med låg självkänsla för råd?','Vad är skillnaden mellan sund självkärlek och egoism?'],
     'En person du känner är alltid väldigt nöjd med sitt utseende och gillar att prata om det och lägger ofta upp bilder på sig själv. Personen tycker dock att det är jobbigt att uttrycka sina åsikter och blir osäker när någon frågar vad hen tycker om något. Hur kan det vara så?'),
   // ── K2: Vem jag är ──
