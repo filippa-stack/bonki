@@ -193,7 +193,7 @@ export default function JagMedAndraProductHome({ product }: { product: ProductMa
                 textShadow: '0 0 16px rgba(255,255,255,0.95), 0 0 32px rgba(255,255,255,0.5)',
               }}
             >
-              starkare tillsammans
+              Starkare tillsammans
             </p>
             <ProductResumeBanner product={product} accentColor={ACCENT_COLOR} />
           </motion.div>
