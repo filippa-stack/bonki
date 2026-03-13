@@ -618,7 +618,7 @@ const cards: Card[] = [
   {
     id: 'jma-kluringen',
     title: 'Kluringen',
-    subtitle: 'Ett tankeexperiment om vem man egentligen är -- när man möter sig själv',
+    subtitle: 'Ett tankeexperiment om vem en egentligen är -- när en möter sig själv',
     categoryId: 'jma-vi-i-varlden',
     sections: [
       {
