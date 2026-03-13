@@ -354,12 +354,12 @@ export default function CircadianMenu({
                         </h3>
                       </div>
 
-                      {/* Progress ring */}
-                      <div style={{ flexShrink: 0 }}>
-                        {completedCount > 0 ? (
+                      {/* Progress ring — only show when there's actual progress */}
+                      {completedCount > 0 && (
+                        <div style={{ flexShrink: 0 }}>
                           <ProgressRing completed={completedCount} total={catCards.length} size={16} />
-                        ) : null}
-                      </div>
+                        </div>
+                      )}
                     </div>
                   </motion.button>
                 </motion.div>
