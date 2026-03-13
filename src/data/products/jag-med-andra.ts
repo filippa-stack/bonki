@@ -343,7 +343,7 @@ const cards: Card[] = [
           'Har du blivit kritiserad för något? Hur kändes det?',
           'När kan det vara bra att få kritik?',
           'Finns det ett sätt att ge kritik som hjälper, och ett sätt som skadar? Vad är skillnaden?',
-          'Hur tar man emot kritik för något man har gjort utan att känna sig kritiserad för den man är?',
+          'Hur tar en emot kritik för något en har gjort utan att känna sig kritiserad för den en är?',
         ],
       },
       {
