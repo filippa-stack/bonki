@@ -215,22 +215,36 @@ export default function JagIVarldenProductHome({ product }: { product: ProductMa
                 whileTap={{ scale: 0.975, y: 1 }}
                 onClick={() => navigate(`/category/${cat.id}`)}
                 style={{
-                  background: tile.bg,
-                  borderRadius: '22px',
-                  padding: '0 32px',
+                  background: isHero
+                    ? `linear-gradient(180deg, ${tile.bg} 0%, ${tile.bg}d8 100%)`
+                    : `linear-gradient(180deg, ${tile.bg} 0%, ${tile.bg}e0 100%)`,
+                  borderRadius: '20px',
+                  padding: '0 28px',
                   textAlign: 'center',
                   cursor: 'pointer',
                   border: isHero
-                    ? '2px solid rgba(61, 122, 69, 0.15)'
+                    ? '1.5px solid rgba(61, 122, 69, 0.18)'
                     : isDark
                     ? '1px solid rgba(255, 255, 255, 0.10)'
-                    : '1px solid rgba(61, 122, 69, 0.08)',
+                    : '1px solid rgba(61, 122, 69, 0.06)',
                   boxShadow: isHero
-                    ? '0 6px 20px rgba(132, 194, 137, 0.18), 0 2px 6px rgba(132, 194, 137, 0.08)'
-                    : '0 4px 15px rgba(132, 194, 137, 0.10), 0 1px 3px rgba(132, 194, 137, 0.05)',
+                    ? [
+                        '0 6px 24px rgba(132, 194, 137, 0.20)',
+                        '0 2px 6px rgba(132, 194, 137, 0.10)',
+                        'inset 0 1px 0 rgba(255, 255, 255, 0.35)',
+                        'inset 0 -1px 2px rgba(61, 122, 69, 0.06)',
+                      ].join(', ')
+                    : [
+                        '0 4px 15px rgba(132, 194, 137, 0.10)',
+                        '0 1px 3px rgba(132, 194, 137, 0.05)',
+                        isDark
+                          ? 'inset 0 1px 0 rgba(255, 255, 255, 0.08)'
+                          : 'inset 0 1px 0 rgba(255, 255, 255, 0.30)',
+                        'inset 0 -1px 2px rgba(61, 122, 69, 0.04)',
+                      ].join(', '),
                   whiteSpace: 'normal' as const,
                   width: '86%',
-                  minHeight: isHero ? '72px' : '64px',
+                  minHeight: isHero ? '72px' : '62px',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
@@ -240,7 +254,11 @@ export default function JagIVarldenProductHome({ product }: { product: ProductMa
                 <span
                   style={{
                     fontFamily: "'DM Serif Display', var(--font-serif)",
-                    fontSize: isHero ? 'clamp(21px, 5.8vw, 27px)' : 'clamp(19px, 5.2vw, 25px)',
+                    fontSize: isHero
+                      ? 'clamp(21px, 5.8vw, 27px)'
+                      : index === ORDERED_TILES.length - 1
+                      ? 'clamp(17px, 4.6vw, 22px)'
+                      : 'clamp(19px, 5.2vw, 25px)',
                     fontWeight: 400,
                     color: tile.text,
                   }}
@@ -255,11 +273,11 @@ export default function JagIVarldenProductHome({ product }: { product: ProductMa
           <motion.div
             variants={pillVariants}
             style={{
-              width: '24px',
-              height: '2px',
+              width: '16px',
+              height: '1px',
               backgroundColor: ACCENT_COLOR,
-              opacity: 0.25,
-              borderRadius: '1px',
+              opacity: 0.20,
+              borderRadius: '0.5px',
               marginTop: '2.5vh',
               marginBottom: '0.5vh',
             }}
