@@ -103,7 +103,7 @@ const cards: Card[] = [
   {
     id: 'jim-glad',
     title: 'Glad',
-    subtitle: 'Vad som ger energi och glädje -- och hur en delar det',
+    subtitle: 'Vad som ger energi och glädje – och hur en delar det',
     categoryId: 'jim-kanslorna-jag-bar',
     sections: [
       {
