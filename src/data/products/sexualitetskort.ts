@@ -77,7 +77,7 @@ const cards: Card[] = [
     'Många sexuella sammanhang som involverar kinks brukar ha regler och "säkerhetsspärrar", till exempel safewords, för att minska risken för att någon far illa eller blir obekväm. Ofta diskuteras även utförandet innan en börjar. Kan det finnas fördelar med att göra så även i andra sexuella sammanhang?',
     'Kan en hjälpa vad en tänder på?',
   ]}]},
-  { id: 'sex-sex-och-karlek', title: 'Sex & kärlek', subtitle: 'Sambandet mellan sex och kärlek -- och alla de former de kan ta', categoryId: 'sex-normer-och-paverkan', sections: [{ id: 'sex-sex-och-karlek-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
+  { id: 'sex-sex-och-karlek', title: 'Sex & kärlek', subtitle: 'Sambandet mellan sex och kärlek – och alla de former de kan ta', categoryId: 'sex-normer-och-paverkan', sections: [{ id: 'sex-sex-och-karlek-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
     'Kan en ha en romantisk relation utan att ha sex? Hur då?',
     'Kan en ha sex med någon utan att vara romantiskt attraherad? Hur då?',
     'Vad är skillnaden mellan intimitet och sex?',
