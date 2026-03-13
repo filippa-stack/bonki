@@ -6,7 +6,7 @@ import KidsProductResumeBanner from '@/components/KidsProductResumeBanner';
 import DiaryEntrance from '@/components/DiaryEntrance';
 import ProductHomeBackButton from '@/components/ProductHomeBackButton';
 import { useKidsProductProgress } from '@/hooks/useKidsProductProgress';
-import { Check } from 'lucide-react';
+import CategoryProgressRing from '@/components/CategoryProgressRing';
 
 const EASE = [0.4, 0.0, 0.2, 1] as const;
 const ACCENT_COLOR = '#3D7A45';
@@ -97,16 +97,8 @@ export default function JagIVarldenProductHome({ product }: { product: ProductMa
                 <span style={{ fontFamily: "'DM Serif Display', var(--font-serif)", fontSize: isHero ? 'clamp(22px, 6vw, 28px)' : isLast ? 'clamp(16px, 4.2vw, 20px)' : 'clamp(19px, 5.2vw, 25px)', fontWeight: 400, color: tile.text }}>
                   {cat.title}
                 </span>
-                {catProgress && catProgress.completed > 0 && (
-                  <span style={{ position: 'absolute', right: '14px', top: '50%', transform: 'translateY(-50%)', display: 'flex', alignItems: 'center', gap: '4px' }}>
-                    {allDone ? (
-                      <Check size={14} strokeWidth={2} style={{ color: tile.text, opacity: 0.45 }} />
-                    ) : (
-                      <span style={{ fontFamily: 'var(--font-sans)', fontSize: '10px', fontWeight: 600, color: tile.text, opacity: 0.45, letterSpacing: '0.03em' }}>
-                        {catProgress.completed}/{catProgress.total}
-                      </span>
-                    )}
-                  </span>
+                {catProgress && (
+                  <CategoryProgressRing completed={catProgress.completed} total={catProgress.total} color={tile.text} />
                 )}
               </motion.button>
             );
