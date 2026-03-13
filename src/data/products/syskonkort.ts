@@ -228,7 +228,7 @@ const cards: Card[] = [
   {
     id: 'sk-rattvisa',
     title: 'Rättvisa',
-    subtitle: 'Känslan av att bli behandlad ojämlikt -- och vad rättvisa egentligen betyder i en familj',
+    subtitle: 'Känslan av att bli behandlad ojämlikt – och vad rättvisa egentligen betyder i en familj',
     categoryId: 'sk-nar-det-skaver',
     sections: [
       {
