@@ -16,19 +16,11 @@ interface SessionFocusShellProps {
  * Immersive shell for Still Us live sessions.
  * - Full-screen verdigris canvas with slow breathing opacity
  * - No chrome — tap screen once to reveal a close X
- * - CTA fades in after 5-second reflection delay
+ * - CTA is always visible immediately (no delay)
  */
 export default function SessionFocusShell({ children, topSlot, ctaSlot, onExit }: SessionFocusShellProps) {
   const [showExit, setShowExit] = useState(false);
-  const [showCta, setShowCta] = useState(false);
   const exitTimerRef = useState<ReturnType<typeof setTimeout> | null>(null);
-
-  // 5-second delay before CTA appears
-  useEffect(() => {
-    setShowCta(false);
-    const timer = setTimeout(() => setShowCta(true), 5000);
-    return () => clearTimeout(timer);
-  }, []);
 
   // Tap anywhere to toggle exit button (auto-hide after 3s)
   const handleTap = useCallback(() => {
