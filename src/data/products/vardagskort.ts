@@ -56,7 +56,7 @@ const cards: Card[] = [
     'Hur ser det ut där du sover? Vilka saker är viktigast när du ska sova?',
   ]}]},
   { id: 'vk-sova', title: 'Sova', subtitle: 'Sömn, drömmar och vad som gör natten trygg eller svår', categoryId: 'vk-var-rytm', sections: [{ id: 'vk-sova-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
-    'Vad är viktigt för dig för att kunna somna -- t.ex. någon sak eller rutin?',
+    'Vad är viktigt för dig för att kunna somna – som någon sak eller rutin?',
     'När är det svårt att sova? Vad gör du då?',
     'Varför är det viktigt med bra och tillräckligt med sömn?',
     'Berätta om en dröm du minns!',
