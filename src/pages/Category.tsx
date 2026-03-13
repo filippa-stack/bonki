@@ -16,6 +16,7 @@ import { useVerdigrisTheme } from '@/components/VerdigrisAtmosphere';
 import { CIRCADIAN_COLORS, CIRCADIAN_COLORS_LIGHT, CIRCADIAN_FILLS, CIRCADIAN_FILLS_HOVER } from '@/components/CircadianMenu';
 import Header from '@/components/Header';
 import CardStatusBadge from '@/components/CardStatusBadge';
+import { KIDS_PRODUCT_IDS } from '@/hooks/useKidsProductProgress';
 
 
 import mirrorJagIMig from '@/assets/mirror-jag-i-mig.png';
