@@ -180,8 +180,6 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
             const cat = product.categories.find((c) => c.id === tile.id);
             if (!cat) return null;
 
-            const isHero = index === 0;
-            const isDark = 'dark' in tile && tile.dark;
             return (
               <motion.button
                 key={cat.id}
@@ -213,10 +211,9 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
                 <span
                   style={{
                     fontFamily: "'DM Serif Display', var(--font-serif)",
-                    fontSize: isHero ? 'clamp(21px, 5.8vw, 27px)' : 'clamp(19px, 5.2vw, 25px)',
+                    fontSize: index === 0 ? 'clamp(21px, 5.8vw, 27px)' : 'clamp(19px, 5.2vw, 25px)',
                     fontWeight: 400,
                     color: tile.text,
-                    textShadow: isDark ? 'none' : '0 1px 4px hsla(60, 60%, 90%, 0.8), 0 0 12px hsla(60, 50%, 95%, 0.5)',
                   }}
                 >
                   {cat.title}
