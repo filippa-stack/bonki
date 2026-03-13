@@ -10,7 +10,7 @@ const categories: Category[] = [
 
 const cards: Card[] = [
   // ── K1: Vår rytm ──
-  { id: 'vk-morgon', title: 'Morgon', subtitle: 'Starten på dagen -- rutiner, stress och vad som hjälper', categoryId: 'vk-var-rytm', sections: [{ id: 'vk-morgon-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
+  { id: 'vk-morgon', title: 'Morgon', subtitle: 'Starten på dagen – rutiner, stress och vad som hjälper', categoryId: 'vk-var-rytm', sections: [{ id: 'vk-morgon-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
     'Berätta om din morgonrutin en vardag när du ska gå till förskolan eller skolan.',
     'Hur tänker du att ni kan göra morgonrutinen roligare?',
     'Om du inte hade någon vuxen hemma på morgonen, tror du att du skulle komma i tid till skolan?',
