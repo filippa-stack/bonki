@@ -31,35 +31,30 @@ const titleVariants = {
 const ACCENT_COLOR = '#4D908E';
 const DIARY_TEXT = '#274C5E';
 
-/** Four-tone organic palette — mint to deep sea */
 const ORDERED_TILES = [
   {
     id: 'sk-vi-blev-syskon',
-    // Freshness — light mint/teal
-    bg: '#E0F2F1',
+    bg: '#E8F3F5',
     text: '#274C5E',
     dark: false,
   },
   {
     id: 'sk-vi-ar-olika',
-    // Diversity — warm sunflower/ochre
-    bg: '#E9B44C',
+    bg: '#F5E9D3',
     text: '#3A2E1A',
     dark: false,
   },
   {
     id: 'sk-nar-det-skaver',
-    // Complexity — muted teal
-    bg: '#4D908E',
-    text: '#FAFAF0',
-    dark: true,
+    bg: '#D4E2E0',
+    text: '#274C5E',
+    dark: false,
   },
   {
     id: 'sk-nar-livet-forandras',
-    // Depth — deep sea blue/grey
-    bg: '#274C5E',
-    text: '#FAFAF0',
-    dark: true,
+    bg: '#C2D1D9',
+    text: '#274C5E',
+    dark: false,
   },
 ];
 
