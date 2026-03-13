@@ -215,28 +215,22 @@ export default function JagIVarldenProductHome({ product }: { product: ProductMa
                 whileTap={{ scale: 0.975, y: 1 }}
                 onClick={() => navigate(`/category/${cat.id}`)}
                 style={{
-                  background: isDark
-                    ? `linear-gradient(180deg, ${tile.bg} 0%, ${tile.bg}ee 100%)`
-                    : `linear-gradient(180deg, ${tile.bg}ff 0%, ${tile.bg}e8 100%)`,
+                  background: tile.bg,
                   borderRadius: '22px',
                   padding: '0 32px',
                   textAlign: 'center',
                   cursor: 'pointer',
-                  border: isDark
-                    ? '1px solid rgba(255, 255, 255, 0.12)'
-                    : '1px solid rgba(255, 255, 255, 0.55)',
-                  boxShadow: [
-                    '0 4px 15px rgba(132, 194, 137, 0.10)',
-                    '0 1px 3px rgba(132, 194, 137, 0.06)',
-                    isDark
-                      ? 'inset 0 1px 0 rgba(255, 255, 255, 0.08)'
-                      : 'inset 0 1px 0 rgba(255, 255, 255, 0.45)',
-                  ].join(', '),
+                  border: isHero
+                    ? '2px solid rgba(61, 122, 69, 0.15)'
+                    : isDark
+                    ? '1px solid rgba(255, 255, 255, 0.10)'
+                    : '1px solid rgba(61, 122, 69, 0.08)',
+                  boxShadow: isHero
+                    ? '0 6px 20px rgba(132, 194, 137, 0.18), 0 2px 6px rgba(132, 194, 137, 0.08)'
+                    : '0 4px 15px rgba(132, 194, 137, 0.10), 0 1px 3px rgba(132, 194, 137, 0.05)',
                   whiteSpace: 'normal' as const,
-                  backdropFilter: 'blur(8px) saturate(1.2)',
-                  WebkitBackdropFilter: 'blur(8px) saturate(1.2)',
-                  width: isHero ? '86%' : '82%',
-                  minHeight: isHero ? '76px' : '66px',
+                  width: '86%',
+                  minHeight: isHero ? '72px' : '64px',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
@@ -257,6 +251,20 @@ export default function JagIVarldenProductHome({ product }: { product: ProductMa
             );
           })}
 
+          {/* Separator */}
+          <motion.div
+            variants={pillVariants}
+            style={{
+              width: '24px',
+              height: '2px',
+              backgroundColor: ACCENT_COLOR,
+              opacity: 0.25,
+              borderRadius: '1px',
+              marginTop: '2.5vh',
+              marginBottom: '0.5vh',
+            }}
+          />
+
           {/* Sign-off */}
           <motion.p
             variants={pillVariants}
@@ -268,7 +276,6 @@ export default function JagIVarldenProductHome({ product }: { product: ProductMa
               opacity: 0.6,
               textAlign: 'center',
               lineHeight: 1.5,
-              marginTop: '2.5vh',
               maxWidth: '85%',
               textShadow: '0 0 12px rgba(255,255,255,0.8)',
             }}
