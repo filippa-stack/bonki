@@ -1516,38 +1516,13 @@ export default function CardView() {
               </div>
 
               {effectiveSteps.length > 1 && (
-                <div
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    gap: '8px',
-                    marginTop: '6px',
-                  }}
-                >
-                  {dynamicSteps.map((_, index) => {
-                    const isCompleted = index < currentStepIndex;
-                    const isCurrent = index === currentStepIndex;
-
-                    return (
-                      <span
-                        key={`focus-step-${index}`}
-                        style={{
-                          display: 'inline-block',
-                          width: isCurrent ? '18px' : '6px',
-                          height: '4px',
-                          borderRadius: isCurrent ? '3px' : '999px',
-                          backgroundColor: isCurrent
-                            ? 'var(--accent-saffron)'
-                            : isCompleted
-                              ? 'var(--cta-active)'
-                              : 'var(--text-ghost)',
-                          opacity: isCurrent ? 1 : isCompleted ? 0.35 : 0.28,
-                          transition: 'all 220ms cubic-bezier(0.22, 1, 0.36, 1)',
-                        }}
-                      />
-                    );
-                  })}
+                <div style={{ marginTop: '6px' }}>
+                  <StepProgressIndicator
+                    currentStepIndex={currentStepIndex}
+                    completedSteps={Array.from({ length: currentStepIndex }, (_, i) => i)}
+                    isTransitioning={showInterstitial}
+                    steps={dynamicSteps}
+                  />
                 </div>
               )}
             </div>
