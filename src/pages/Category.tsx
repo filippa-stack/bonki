@@ -828,7 +828,30 @@ function CardEntry({ card, index, isCompleted = false, isInProgress = false, isN
           </div>
         )}
 
-        {/* Gradient scrim for text legibility */}
+        {/* "Nästa" label for suggested card */}
+        {isNextSuggested && (
+          <div
+            style={{
+              position: 'absolute', top: '14px', right: '16px', zIndex: 2,
+              display: 'flex', alignItems: 'center', gap: '6px',
+              background: 'rgba(218, 157, 29, 0.18)',
+              backdropFilter: 'blur(8px)',
+              WebkitBackdropFilter: 'blur(8px)',
+              borderRadius: '12px',
+              padding: '5px 10px',
+              border: '1px solid rgba(218, 157, 29, 0.35)',
+            }}
+          >
+            <span style={{
+              fontFamily: 'var(--font-sans)', fontSize: '10px',
+              letterSpacing: '0.06em', textTransform: 'uppercase',
+              color: '#DA9D1D', fontWeight: 600,
+            }}>
+              Nästa
+            </span>
+          </div>
+        )}
+
         <div
           aria-hidden="true"
           style={{
