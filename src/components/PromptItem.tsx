@@ -213,7 +213,7 @@ export default function PromptItem({ prompt, index, sectionType, preamble, ancho
                 }}
                 className={`w-full ${preamble ? 'mt-10' : ''}`}
                 style={{
-                  background: 'radial-gradient(ellipse at 50% 40%, var(--question-cloud-tint, hsla(30, 20%, 92%, 0.55)) 0%, transparent 75%)',
+                  background: 'radial-gradient(ellipse at 50% 40%, var(--question-cloud-tint, transparent) 0%, transparent 75%)',
                   borderRadius: '28px',
                   padding: isLongText ? '28px 20px' : '36px 24px',
                   display: 'flex',
