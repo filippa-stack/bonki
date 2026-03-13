@@ -505,7 +505,7 @@ const cards: Card[] = [
   {
     id: 'jma-respekt',
     title: 'Respekt',
-    subtitle: 'Att behandla andra väl -- även när man tänker och tror olika',
+    subtitle: 'Att behandla andra väl -- även när en tänker och tror olika',
     categoryId: 'jma-vi-i-varlden',
     sections: [
       {
