@@ -514,20 +514,10 @@ function StillUsCategoryView({
                   )}
                 </div>
 
-                {/* "Nästa" label for suggested card */}
+                {/* Status badge — unified across all products */}
                 {isNextSuggested && !allCompleted && (
-                  <div style={{ position: 'absolute', right: '24px', top: '4px', zIndex: 2 }}>
-                    <span style={{
-                      fontFamily: 'var(--font-sans)',
-                      fontSize: '11px',
-                      fontWeight: 600,
-                      letterSpacing: '0.08em',
-                      textTransform: 'uppercase' as const,
-                      color: SAFFRON,
-                      opacity: 0.85,
-                    }}>
-                      Nästa
-                    </span>
+                  <div style={{ position: 'absolute', right: '8px', top: '10px', zIndex: 2 }}>
+                    <CardStatusBadge variant="next" mode="dark" />
                   </div>
                 )}
 
