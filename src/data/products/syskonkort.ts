@@ -300,7 +300,7 @@ const cards: Card[] = [
         prompts: [
           'Hur skulle du trösta en vän som har förlorat ett syskon?',
           'Om du tänker på ett syskon som inte längre finns hos dig -- vad hjälper dig att minnas hen?',
-          'Om du tänker på hur du vill bli ihågkommen av dina syskon i framtiden -- vad hoppas du att de minns om dig?',
+          'Om du tänker på hur du vill bli ihågkommen av ditt syskon i framtiden – vad hoppas du att de minns om dig?',
           'Vad kan du göra för att hjälpa dig själv att må bättre när du saknar ett syskon?',
         ],
       },
