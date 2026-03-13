@@ -273,11 +273,11 @@ export default function JagIVarldenProductHome({ product }: { product: ProductMa
           <motion.div
             variants={pillVariants}
             style={{
-              width: '24px',
-              height: '2px',
+              width: '16px',
+              height: '1px',
               backgroundColor: ACCENT_COLOR,
-              opacity: 0.25,
-              borderRadius: '1px',
+              opacity: 0.20,
+              borderRadius: '0.5px',
               marginTop: '2.5vh',
               marginBottom: '0.5vh',
             }}
