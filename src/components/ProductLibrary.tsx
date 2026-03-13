@@ -503,11 +503,11 @@ export default function ProductLibrary() {
                   fontSize: '9px',
                   fontWeight: 700,
                   letterSpacing: '0.14em',
-                  color: activeTab === tab
-                    ? (isDark ? '#F5EFE6' : '#1A1A2E')
-                    : (isDark ? 'hsla(30, 20%, 85%, 0.4)' : 'hsla(30, 10%, 20%, 0.35)'),
+                   color: activeTab === tab
+                    ? (isDark ? '#F5EFE6' : '#F5EFE6')
+                    : (isDark ? 'hsla(30, 20%, 85%, 0.4)' : 'hsla(0, 0%, 100%, 0.4)'),
                   background: activeTab === tab
-                    ? (isDark ? 'hsla(230, 35%, 25%, 0.7)' : 'hsla(0, 0%, 100%, 0.7)')
+                    ? (isDark ? 'hsla(230, 35%, 25%, 0.7)' : 'hsla(0, 0%, 100%, 0.18)')
                     : 'transparent',
                   border: 'none',
                   outline: 'none',
@@ -517,7 +517,7 @@ export default function ProductLibrary() {
                   transition: 'all 260ms ease',
                   WebkitTapHighlightColor: 'transparent',
                   boxShadow: activeTab === tab
-                    ? (isDark ? '0 1px 4px hsla(220, 40%, 10%, 0.3)' : '0 1px 4px hsla(30, 20%, 20%, 0.08)')
+                    ? (isDark ? '0 1px 4px hsla(220, 40%, 10%, 0.3)' : '0 1px 4px hsla(0, 0%, 0%, 0.15)')
                     : 'none',
                 }}
               >
