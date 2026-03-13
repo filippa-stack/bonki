@@ -36,32 +36,27 @@ const ORDERED_TILES = [
   {
     id: 'jma-att-hora-till',
     bg: '#F9EBEE',
-    text: '#4A2C3A',
-    dark: false,
+    text: ACCENT_COLOR,
   },
   {
     id: 'jma-nar-vi-jamfor-oss',
     bg: '#F5DDE4',
-    text: '#4A2C3A',
-    dark: false,
+    text: ACCENT_COLOR,
   },
   {
     id: 'jma-nar-det-skaver',
     bg: '#EED0DB',
-    text: '#4A2C3A',
-    dark: false,
+    text: ACCENT_COLOR,
   },
   {
     id: 'jma-att-sta-stadig',
     bg: '#CDBABF',
-    text: '#3A1F2A',
-    dark: false,
+    text: '#5A189A',
   },
   {
     id: 'jma-vi-i-varlden',
     bg: '#AC98A0',
-    text: '#2A1520',
-    dark: true,
+    text: '#3A0A5C',
   },
 ];
 
