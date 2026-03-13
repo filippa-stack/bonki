@@ -104,7 +104,51 @@ export default function SessionStepReflection({
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.28, ease: [...EASE] }}
     >
-      {/* Expanded textarea — shows above the bottom zone when active */}
+      {/* Note field — scrollable area, above the fixed CTA */}
+
+      {/* Collapsed trigger — poetic invitation */}
+      {!effectiveHideNoteField && !isExpanded && (
+        <motion.button
+          key="trigger"
+          onClick={handleExpand}
+          initial={{ opacity: 0, y: 4 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.06, duration: 0.32, ease: [0.22, 1, 0.36, 1] }}
+          className="w-full active:scale-[0.98]"
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: '8px',
+            padding: '14px 20px',
+            marginBottom: '16px',
+            background: 'none',
+            border: 'none',
+            cursor: 'pointer',
+            transition: 'opacity 200ms ease',
+          }}
+        >
+          <Feather
+            size={15}
+            strokeWidth={1.5}
+            style={{ color: 'var(--text-primary)', opacity: 0.35 }}
+          />
+          <span
+            style={{
+              fontFamily: 'var(--font-serif)',
+              fontStyle: 'italic',
+              fontSize: '15px',
+              color: 'var(--text-primary)',
+              opacity: 0.40,
+              letterSpacing: '0.01em',
+            }}
+          >
+            {triggerLabel}
+          </span>
+        </motion.button>
+      )}
+
+      {/* Expanded textarea */}
       {!effectiveHideNoteField && isExpanded && (
         <motion.div
           key="expanded"
@@ -171,75 +215,52 @@ export default function SessionStepReflection({
         </motion.div>
       )}
 
-      {/* Spacer pushes bottom zone down */}
+      {isExpanded && !effectiveHideNoteField && (
+        <div style={{ height: '16px' }} />
+      )}
+
+      {/* Spacer pushes CTA down */}
       <div style={{ flexGrow: 1 }} />
 
-      {/* Bottom zone: trigger + CTA */}
+      {/* Full-width fixed CTA button */}
       <div
         className="flex flex-col items-center"
         style={{
           paddingBottom: 'calc(16px + env(safe-area-inset-bottom, 0px))',
         }}
       >
-        {/* Collapsed trigger — poetic invitation */}
-        {!effectiveHideNoteField && !isExpanded && (
-          <motion.button
-            key="trigger"
-            onClick={handleExpand}
-            initial={{ opacity: 0, y: 4 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.06, duration: 0.32, ease: [0.22, 1, 0.36, 1] }}
-            className="w-full active:scale-[0.98]"
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: '8px',
-              padding: '14px 20px',
-              marginBottom: '16px',
-              background: 'none',
-              border: 'none',
-              cursor: 'pointer',
-              transition: 'opacity 200ms ease',
-            }}
-          >
-            <Feather
-              size={15}
-              strokeWidth={1.5}
-              style={{ color: 'var(--text-primary)', opacity: 0.35 }}
-            />
-            <span
-              style={{
-                fontFamily: 'var(--font-serif)',
-                fontStyle: 'italic',
-                fontSize: '15px',
-                color: 'var(--text-primary)',
-                opacity: 0.40,
-                letterSpacing: '0.01em',
-              }}
-            >
-              {triggerLabel}
-            </span>
-          </motion.button>
-        )}
-
-        {isExpanded && !effectiveHideNoteField && (
-          <div style={{ height: '16px' }} />
-        )}
-
         <motion.button
           onClick={handleAdvance}
           disabled={submitting}
-          className="cta-primary"
-          style={hadPriorTextRef.current ? { opacity: 0.80 } : undefined}
           whileTap={{ scale: 0.98 }}
           transition={{ duration: 0.12 }}
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            width: '100%',
+            maxWidth: '520px',
+            height: '52px',
+            borderRadius: '14px',
+            backgroundColor: 'hsl(41, 78%, 48%)',
+            color: 'hsl(30, 10%, 12%)',
+            fontFamily: 'var(--font-sans)',
+            fontSize: '15px',
+            fontWeight: 600,
+            letterSpacing: '0.01em',
+            border: 'none',
+            cursor: submitting ? 'default' : 'pointer',
+            boxShadow: 'none',
+            opacity: submitting ? 0.5 : (hadPriorTextRef.current ? 0.90 : 1),
+            transition: 'opacity 200ms ease, background-color 260ms ease-out',
+            padding: '0 24px',
+          }}
         >
-           {submitting
-             ? 'Sparar…'
-             : isLastStep
-             ? 'Vi är klara'
-             : 'Nästa fråga'}
+          {submitting
+            ? 'Sparar…'
+            : isLastStep
+            ? 'Vi är klara'
+            : 'Fortsätt'}
         </motion.button>
 
         {isExerciseStep ? (
