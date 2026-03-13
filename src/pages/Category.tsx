@@ -15,6 +15,7 @@ import { useCardImage } from '@/hooks/useCardImage';
 import { useVerdigrisTheme } from '@/components/VerdigrisAtmosphere';
 import { CIRCADIAN_COLORS, CIRCADIAN_COLORS_LIGHT, CIRCADIAN_FILLS, CIRCADIAN_FILLS_HOVER } from '@/components/CircadianMenu';
 import Header from '@/components/Header';
+import CardStatusBadge from '@/components/CardStatusBadge';
 
 
 import mirrorJagIMig from '@/assets/mirror-jag-i-mig.png';
@@ -513,20 +514,10 @@ function StillUsCategoryView({
                   )}
                 </div>
 
-                {/* "Nästa" label for suggested card */}
+                {/* Status badge — unified across all products */}
                 {isNextSuggested && !allCompleted && (
-                  <div style={{ position: 'absolute', right: '24px', top: '4px', zIndex: 2 }}>
-                    <span style={{
-                      fontFamily: 'var(--font-sans)',
-                      fontSize: '11px',
-                      fontWeight: 600,
-                      letterSpacing: '0.08em',
-                      textTransform: 'uppercase' as const,
-                      color: SAFFRON,
-                      opacity: 0.85,
-                    }}>
-                      Nästa
-                    </span>
+                  <div style={{ position: 'absolute', right: '8px', top: '10px', zIndex: 2 }}>
+                    <CardStatusBadge variant="next" mode="dark" />
                   </div>
                 )}
 
@@ -619,35 +610,10 @@ function StillUsCategoryView({
                       )}
                     </div>
 
-                    {/* Status */}
+                    {/* Status badge */}
                     <div style={{ flexShrink: 0 }}>
-                      {isCompleted && (
-                        <span
-                          style={{
-                            fontFamily: 'var(--font-sans)',
-                            fontSize: '9px',
-                            fontWeight: 500,
-                            letterSpacing: '0.10em',
-                            textTransform: 'uppercase' as const,
-                            color: HERITAGE_GOLD,
-                            opacity: 0.55,
-                          }}
-                        >
-                          Utforskad
-                        </span>
-                      )}
-                      {isInProgress && (
-                        <span
-                          style={{
-                            display: 'inline-block',
-                            width: '6px', height: '6px',
-                            borderRadius: '50%',
-                            backgroundColor: HERITAGE_GOLD,
-                            opacity: 0.7,
-                            animation: 'saffron-pulse 2.0s ease-in-out infinite',
-                          }}
-                        />
-                      )}
+                      {isCompleted && <CardStatusBadge variant="completed" mode="dark" />}
+                      {isInProgress && <CardStatusBadge variant="inProgress" mode="dark" />}
                     </div>
                   </div>
                 </motion.button>
@@ -771,86 +737,12 @@ function CardEntry({ card, index, isCompleted = false, isInProgress = false, isN
           />
         )}
 
-        {/* Completion / in-progress markers — top-right, subtle */}
-        {isCompleted && (
-          <div
-            style={{
-              position: 'absolute', top: '14px', right: '16px', zIndex: 2,
-              display: 'flex', alignItems: 'center', gap: '6px',
-              background: 'rgba(255,255,255,0.75)',
-              backdropFilter: 'blur(8px)',
-              WebkitBackdropFilter: 'blur(8px)',
-              borderRadius: '12px',
-              padding: '5px 10px 5px 8px',
-              border: '1px solid rgba(255,255,255,0.5)',
-              boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
-            }}
-          >
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-              <circle cx="7" cy="7" r="6" stroke="#6B7A3A" strokeWidth="1.5" opacity="0.6" />
-              <path d="M4 7l2.2 2.2 3.8-3.8" stroke="#6B7A3A" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" opacity="0.6" />
-            </svg>
-            <span style={{
-              fontFamily: 'var(--font-sans)', fontSize: '10px',
-              letterSpacing: '0.04em', textTransform: 'uppercase',
-              color: '#6B7A3A', fontWeight: 600, opacity: 0.8,
-            }}>
-              Utforskad
-            </span>
-          </div>
-        )}
-        {isInProgress && (
-          <div
-            style={{
-              position: 'absolute', top: '14px', right: '16px', zIndex: 2,
-              display: 'flex', alignItems: 'center', gap: '6px',
-              background: 'rgba(255,255,255,0.75)',
-              backdropFilter: 'blur(8px)',
-              WebkitBackdropFilter: 'blur(8px)',
-              borderRadius: '12px',
-              padding: '5px 10px 5px 8px',
-              border: '1px solid rgba(255,255,255,0.5)',
-              boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
-            }}
-          >
-            <span style={{
-              display: 'inline-block', width: '8px', height: '8px',
-              borderRadius: '50%', backgroundColor: '#8A9A10',
-              animation: 'saffron-pulse 2.0s ease-in-out infinite',
-            }} />
-            <span style={{
-              fontFamily: 'var(--font-sans)', fontSize: '10px',
-              letterSpacing: '0.04em', textTransform: 'uppercase',
-              color: '#6B7A3A', fontWeight: 600, opacity: 0.8,
-            }}>
-              Påbörjad
-            </span>
-          </div>
-        )}
-
-        {/* "Nästa" label for suggested card */}
-        {isNextSuggested && (
-          <div
-            style={{
-              position: 'absolute', top: '14px', right: '16px', zIndex: 2,
-              display: 'flex', alignItems: 'center', gap: '6px',
-              background: 'rgba(218, 157, 29, 0.18)',
-              backdropFilter: 'blur(8px)',
-              WebkitBackdropFilter: 'blur(8px)',
-              borderRadius: '12px',
-              padding: '5px 10px',
-              border: '1px solid rgba(218, 157, 29, 0.35)',
-            }}
-          >
-            <span style={{
-              fontFamily: 'var(--font-sans)', fontSize: '10px',
-              letterSpacing: '0.06em', textTransform: 'uppercase',
-              color: '#DA9D1D', fontWeight: 600,
-            }}>
-              Nästa
-            </span>
-          </div>
-        )}
+        {/* Status badge — unified across all products */}
+        <div style={{ position: 'absolute', top: '14px', right: '16px', zIndex: 2 }}>
+          {isCompleted && <CardStatusBadge variant="completed" mode="light" />}
+          {isInProgress && !isCompleted && <CardStatusBadge variant="inProgress" mode="light" />}
+          {isNextSuggested && !isCompleted && !isInProgress && <CardStatusBadge variant="next" mode="light" />}
+        </div>
 
         <div
           aria-hidden="true"
