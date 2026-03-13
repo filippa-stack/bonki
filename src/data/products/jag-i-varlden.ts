@@ -33,7 +33,7 @@ const cards: Card[] = [
     ['Är det viktigt att älska sig själv? Förklara.','Hur kan god självkänsla visa sig hos någon?','Kan en ha en låg självkänsla men ett bra självförtroende?','Vad skulle du ge en person med låg självkänsla för råd?','Vad är skillnaden mellan sund självkärlek och egoism?'],
     'En person du känner är alltid väldigt nöjd med sitt utseende och gillar att prata om det och lägger ofta upp bilder på sig själv. Personen tycker dock att det är jobbigt att uttrycka sina åsikter och blir osäker när någon frågar vad hen tycker om något. Hur kan det vara så?'),
   // ── K2: Vem jag är ──
-  qsCard('jiv-identitet', 'Identitet', 'Vem en är och vem en vill vara -- och hur det kan skilja sig åt', 'jiv-vem-jag-ar',
+  qsCard('jiv-identitet', 'Identitet', 'Vem en är och vem en vill vara – och hur det kan skilja sig åt', 'jiv-vem-jag-ar',
     ['På vilka sätt kan personer visa att de tillhör en speciell grupp?','Beskriv första gången du verkligen kände tillhörighet. Vad fick dig att känna så?','Uppfattar du dig själv på samma sätt som du vill att andra ska uppfatta dig?','Vilken del av din identitet önskar du fick mer utrymme?'],
     'Du har träffat nya kompisar och börjat klä dig annorlunda jämfört med tidigare. Finns det någonting i din identitet som förblir oförändrat trots att ditt yttre har förändrats? Berätta hur du tänker.'),
   qsCard('jiv-roller', 'Roller', 'De roller vi tar på oss i olika sammanhang -- och om vi alltid är oss själva', 'jiv-vem-jag-ar',
