@@ -271,7 +271,7 @@ const cards: Card[] = [
   {
     id: 'jma-konflikt',
     title: 'Konflikt',
-    subtitle: 'Bråk som en del av relationer -- och hur en tar sig igenom dem',
+    subtitle: 'Bråk som en del av relationer – och hur en tar sig igenom dem',
     categoryId: 'jma-nar-det-skaver',
     sections: [
       {
