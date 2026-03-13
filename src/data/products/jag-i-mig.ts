@@ -3,32 +3,25 @@ import type { Category, Card } from '@/types';
 
 const categories: Category[] = [
   {
-    id: 'jim-tryggheten-inuti',
-    title: 'Tryggheten inuti',
-    subtitle: 'Det som får dig att känna dig säker – även när det gungar.',
-    description: 'Trygghet, ensamhet och stress',
-    cardCount: 3,
-  },
-  {
-    id: 'jim-kanslorna-jag-bar',
-    title: 'Känslorna jag bär',
-    subtitle: 'De stora och små känslorna som rör sig genom dig.',
+    id: 'jim-mina-kanslor',
+    title: 'Mina känslor',
+    subtitle: 'De känslor som finns i dig – och hur de känns.',
     description: 'Grundläggande känslor och hur de känns',
-    cardCount: 5,
+    cardCount: 7,
   },
   {
-    id: 'jim-nar-det-gor-ont',
-    title: 'När det gör ont',
+    id: 'jim-starka-kanslor',
+    title: 'Starka känslor',
     subtitle: 'Svåra känslor som är jobbiga – men viktiga att förstå.',
     description: 'Svårare känslor att förstå och hantera',
     cardCount: 7,
   },
   {
-    id: 'jim-jag-som-helhet',
-    title: 'Jag som helhet',
+    id: 'jim-stora-kanslor',
+    title: 'Stora känslor',
     subtitle: 'Vem du är när allt hänger ihop.',
     description: 'Att förstå sig själv som en hel person',
-    cardCount: 6,
+    cardCount: 7,
   },
 ];
 
