@@ -130,7 +130,7 @@ const cards: Card[] = [
   { id: 'sex-sexuella-overgrepp', title: 'Sexuella övergrepp', subtitle: 'Vad som räknas som ett övergrepp -- och vart en vänder sig om det hänt', categoryId: 'sex-skydd-och-makt', sections: [{ id: 'sex-sexuella-overgrepp-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
     'Vad räknas som ett sexuellt övergrepp?',
     'På vilka olika sätt kan sexuella övergrepp ske? Är det alltid fysiskt?',
-    'Hur vet man att man blivit utsatt för ofredande eller övergrepp? Vad är skillnaden mot en dålig upplevelse av sex?',
+    'Hur vet en att en blivit utsatt för ofredande eller övergrepp? Vad är skillnaden mot en dålig upplevelse av sex?',
     'I vilka situationer kan en bli utsatt?',
     'Vem bestämmer om det är ett sexuellt övergrepp?',
     'Vart kan du vända dig och vem kan du prata med om du har blivit utsatt för något som kändes fel?',
