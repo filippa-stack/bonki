@@ -230,7 +230,7 @@ export default function PromptItem({ prompt, index, sectionType, preamble, ancho
                     position: 'absolute',
                     inset: 0,
                     borderRadius: '28px',
-                    border: '1px solid var(--question-cloud-border, hsla(30, 15%, 70%, 0.18))',
+                    border: '1px solid var(--question-cloud-border, transparent)',
                     pointerEvents: 'none',
                   }}
                 />
