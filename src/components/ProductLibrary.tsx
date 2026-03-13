@@ -386,13 +386,14 @@ export default function ProductLibrary() {
 
   const isDark = activeTab === 'par';
 
+  const libraryBg = isDark ? '#1A1A2E' : '#33656D';
+
   return (
     <div
       className="min-h-screen flex flex-col relative"
       style={{
-        background: isDark
-          ? '#1A1A2E'
-          : '#33656D',
+        background: libraryBg,
+        ['--surface-base' as string]: libraryBg,
         fontFamily: "'Lato', sans-serif",
         transition: 'background 600ms ease',
       }}
