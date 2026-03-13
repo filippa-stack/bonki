@@ -101,7 +101,7 @@ const cards: Card[] = [
   {
     id: 'jma-annorlunda',
     title: 'Annorlunda',
-    subtitle: 'Att vara sig själv när omgivningen vill att man ska passa in',
+    subtitle: 'Att vara sig själv när omgivningen vill att en ska passa in',
     categoryId: 'jma-att-hora-till',
     sections: [
       {
