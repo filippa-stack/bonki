@@ -5,7 +5,7 @@ const categories: Category[] = [
   {
     id: 'jim-tryggheten-inuti',
     title: 'Tryggheten inuti',
-    subtitle: 'Det som får dig att känna dig säker -- även när det gungar.',
+    subtitle: 'Det som får dig att känna dig säker – även när det gungar.',
     description: 'Trygghet, ensamhet och stress',
     cardCount: 3,
   },
