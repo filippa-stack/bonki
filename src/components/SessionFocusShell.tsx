@@ -7,7 +7,7 @@ interface SessionFocusShellProps {
   children: ReactNode;
   /** Optional top chrome slot (title/progress/back) */
   topSlot?: ReactNode;
-  /** Heritage Gold CTA at bottom — rendered by parent, wrapped with delayed reveal */
+  /** Heritage Gold CTA at bottom — rendered by parent, always visible */
   ctaSlot: ReactNode;
   onExit: () => void;
 }
