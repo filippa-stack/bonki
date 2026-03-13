@@ -34,25 +34,25 @@ const DIARY_TEXT = '#073B54';
 
 const ORDERED_TILES = [
   {
-    id: 'vk-var-rytm',
+    id: 'vk-min-dag',
     bg: '#E6F4F4',
     text: '#073B54',
     dark: false,
   },
   {
-    id: 'vk-vi-hemma',
+    id: 'vk-var-rytm',
     bg: '#D4E9EC',
     text: '#073B54',
     dark: false,
   },
   {
-    id: 'vk-jag-vaxer',
+    id: 'vk-vi-hemma',
     bg: '#B8D8E0',
     text: '#073B54',
     dark: false,
   },
   {
-    id: 'vk-jag-och-andra',
+    id: 'vk-utanfor-hemmet',
     bg: '#9CBFC9',
     text: '#073B54',
     dark: false,
@@ -158,7 +158,7 @@ export default function VardagProductHome({ product }: { product: ProductManifes
                 textShadow: '0 0 16px rgba(255,255,255,0.95), 0 0 32px rgba(255,255,255,0.5)',
               }}
             >
-              Färre bråk, mer ro
+              Hur vi har det
             </p>
             <ProductResumeBanner product={product} accentColor={ACCENT_COLOR} />
           </motion.div>

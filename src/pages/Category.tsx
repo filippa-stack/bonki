@@ -94,10 +94,10 @@ const CATEGORY_CARD_BG: Record<string, string> = {
   'sex-relation-och-ansvar': '#E87A84',
   'sex-skydd-och-makt': '#AD5D65',
   // Vardag
-  'vk-var-rytm': '#EBF7FF',
-  'vk-vi-hemma': '#99CCE6',
-  'vk-jag-vaxer': '#0F6B99',
-  'vk-jag-och-andra': '#073B54',
+  'vk-min-dag': '#EBF7FF',
+  'vk-var-rytm': '#99CCE6',
+  'vk-vi-hemma': '#0F6B99',
+  'vk-utanfor-hemmet': '#073B54',
   // Syskon
   'sk-vi-blev-syskon': '#E0F2F1',
   'sk-vi-ar-olika': '#E9B44C',
@@ -128,10 +128,10 @@ const CATEGORY_TITLE_COLOR: Record<string, string> = {
   'sex-relation-och-ansvar': '#FAFAF0',
   'sex-skydd-och-makt': '#FAFAF0',
   // Vardag
+  'vk-min-dag': '#073B54',
   'vk-var-rytm': '#073B54',
-  'vk-vi-hemma': '#073B54',
-  'vk-jag-vaxer': '#FAFAF0',
-  'vk-jag-och-andra': '#FAFAF0',
+  'vk-vi-hemma': '#FAFAF0',
+  'vk-utanfor-hemmet': '#FAFAF0',
   // Syskon
   'sk-vi-blev-syskon': '#274C5E',
   'sk-vi-ar-olika': '#3A2E1A',

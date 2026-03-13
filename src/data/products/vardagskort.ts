@@ -2,14 +2,24 @@ import type { ProductManifest } from '@/types/product';
 import type { Category, Card } from '@/types';
 
 const categories: Category[] = [
-  { id: 'vk-var-rytm', title: 'Vår rytm', subtitle: 'Det som får dagarna att fungera – från morgon till kväll.', description: 'Morgon, rutiner, skola och kvällar', cardCount: 7 },
-  { id: 'vk-vi-hemma', title: 'Vi hemma', subtitle: 'Hur vi lever, hjälper och har det tillsammans.', description: 'Mat, hushåll och underhållning', cardCount: 4 },
-  { id: 'vk-jag-vaxer', title: 'Jag växer', subtitle: 'När ansvar, frihet och framtid börjar ta plats.', description: 'Aktiviteter, tonår och arbete', cardCount: 3 },
-  { id: 'vk-jag-och-andra', title: 'Jag & andra', subtitle: 'Vänskap, bekräftelse och att hitta sin plats.', description: 'Kompisar och bekräftelse', cardCount: 1 },
+  { id: 'vk-min-dag', title: 'Min dag', subtitle: 'En öppen dörr in till barnets dag.', description: 'Hur var din dag?', cardCount: 1 },
+  { id: 'vk-var-rytm', title: 'Vår rytm', subtitle: 'Det som får dagarna att fungera – från morgon till kväll.', description: 'Morgon, rutiner, skola, kväll, sova och helg', cardCount: 6 },
+  { id: 'vk-vi-hemma', title: 'Vi hemma', subtitle: 'Hur vi lever, hjälper och har det tillsammans.', description: 'Mat, hushåll, syskon och underhållning', cardCount: 4 },
+  { id: 'vk-utanfor-hemmet', title: 'Utanför hemmet', subtitle: 'Aktiviteter, kompisar och att växa upp.', description: 'Aktiviteter, kompisar, tonår och arbete', cardCount: 4 },
 ];
 
 const cards: Card[] = [
-  // ── K1: Vår rytm ──
+  // ── K1: Min dag ──
+  { id: 'vk-hur-var-din-dag', title: 'Hur var din dag', subtitle: 'En öppen dörr in till barnets dag – tankar, känslor och upplevelser', categoryId: 'vk-min-dag', sections: [{ id: 'vk-hur-var-din-dag-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
+    'Berätta om något som gjorde dig glad, stolt, nyfiken eller kanske arg eller ledsen idag.',
+    'Om du kunde ändra något som hände idag, vad skulle det vara?',
+    'Var idag bättre eller sämre än igår? Förklara varför!',
+    'Vad såg du fram emot att komma hem till idag?',
+    'Vad tänkte du att du ville berätta för dem hemma om din dag?',
+    'Vilken superkraft hade du önskat att du hade haft just idag? Hur hade det gjort din dag annorlunda?',
+    'Finns det något du önskar att du hade sagt till någon idag men inte sa? Det kan vara något du glömde, eller något du kanske inte vågade säga.',
+  ]}]},
+  // ── K2: Vår rytm ──
   { id: 'vk-morgon', title: 'Morgon', subtitle: 'Starten på dagen – rutiner, stress och vad som hjälper', categoryId: 'vk-var-rytm', sections: [{ id: 'vk-morgon-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
     'Berätta om din morgonrutin en vardag när du ska gå till förskolan eller skolan.',
     'Hur tänker du att ni kan göra morgonrutinen roligare?',
@@ -27,7 +37,7 @@ const cards: Card[] = [
     'Vad kan vara bra med att ha tråkigt?',
     'Vilka rutiner och traditioner tror du att du kommer ha i din familj när du blir vuxen?',
   ]}]},
-  { id: 'vk-skola', title: 'Skola', subtitle: 'Barnets upplevelse av skolan – det roliga, det svåra och vad det önskar vore annorlunda', categoryId: 'vk-var-rytm', sections: [{ id: 'vk-skola-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
+  { id: 'vk-skola', title: 'Skola/Förskola', subtitle: 'Barnets upplevelse av skolan – det roliga, det svåra och vad det önskar vore annorlunda', categoryId: 'vk-var-rytm', sections: [{ id: 'vk-skola-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
     'Vad är ditt roligaste minne från skolan?',
     'Hur skulle du beskriva din skola för en ny elev?',
     'Finns det något du skulle vilja förändra med din skola? Varför?',
@@ -36,15 +46,6 @@ const cards: Card[] = [
     'Har dina vuxna också något som liknar läxor?',
     'Om du fick bestämma själv, hur skulle en skoldag se ut?',
     'Kan det vara jobbigt att lära sig något? Vad är det i så fall som gör att det känns jobbigt?',
-  ]}]},
-  { id: 'vk-hur-var-din-dag', title: 'Hur var din dag', subtitle: 'En öppen dörr in till barnets dag – tankar, känslor och upplevelser', categoryId: 'vk-var-rytm', sections: [{ id: 'vk-hur-var-din-dag-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
-    'Berätta om något som gjorde dig glad, stolt, nyfiken eller kanske arg eller ledsen idag.',
-    'Om du kunde ändra något som hände idag, vad skulle det vara?',
-    'Var idag bättre eller sämre än igår? Förklara varför!',
-    'Vad såg du fram emot att komma hem till idag?',
-    'Vad tänkte du att du ville berätta för dem hemma om din dag?',
-    'Vilken superkraft hade du önskat att du hade haft just idag? Hur hade det gjort din dag annorlunda?',
-    'Finns det något du önskar att du hade sagt till någon idag men inte sa? Det kan vara något du glömde, eller något du kanske inte vågade säga.',
   ]}]},
   { id: 'vk-kvall', title: 'Kväll', subtitle: 'Nedvarvning och läggdags – vad kroppen behöver och vad barnet tänker på', categoryId: 'vk-var-rytm', sections: [{ id: 'vk-kvall-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
     'Varför är det svårt att lägga sig, och svårt att stiga upp?',
@@ -106,8 +107,8 @@ const cards: Card[] = [
     'Om du fick bestämma själv, vad skulle du göra efter skolan?',
     'En vuxen säger att dataspel, skärmar eller mobilen är bortkastad tid. Vad svarar du, utan att bara säga "nej, det är det inte"?',
   ]}]},
-  // ── K3: Jag växer ──
-  { id: 'vk-aktiviteter', title: 'Aktiviteter', subtitle: 'Hobbyer och fritidssysselsättningar – vad barnet väljer och varför', categoryId: 'vk-jag-vaxer', sections: [{ id: 'vk-aktiviteter-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
+  // ── K4: Utanför hemmet ──
+  { id: 'vk-aktiviteter', title: 'Aktiviteter', subtitle: 'Hobbyer och fritidssysselsättningar – vad barnet väljer och varför', categoryId: 'vk-utanfor-hemmet', sections: [{ id: 'vk-aktiviteter-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
     'Förutom sport, vad kan en hobby vara?',
     'Finns det någon aktivitet du älskar? Finns det en du vill prova men ännu inte har provat?',
     'Är det viktigt med aktiviteter eller hobbyer utanför skoltid? Varför?',
@@ -117,7 +118,7 @@ const cards: Card[] = [
     'Är det viktigt att ha en kompis med på sin aktivitet, eller kan det vara skönt att vara själv?',
     'Kan en hobby också vara något som du gör i skolan eller förskolan, eller måste det vara något helt annat?',
   ]}]},
-  { id: 'vk-tonar', title: 'Tonår', subtitle: 'Att växa upp – vad som förändras, vad som är svårt och vad som blivit bättre', categoryId: 'vk-jag-vaxer', sections: [{ id: 'vk-tonar-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
+  { id: 'vk-tonar', title: 'Tonår', subtitle: 'Att växa upp – vad som förändras, vad som är svårt och vad som blivit bättre', categoryId: 'vk-utanfor-hemmet', sections: [{ id: 'vk-tonar-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
     'Vad får du göra som dina kompisar inte får?',
     'Vad har blivit bättre i ditt liv jämfört med för tre år sedan?',
     'Om du skulle träffa ditt 8-åriga jag, vad skulle du uppmuntra lilla dig att göra?',
@@ -126,7 +127,7 @@ const cards: Card[] = [
     'Vad skulle du vilja ändra med din vardagsrutin?',
     'Vad har blivit lättare med att bli äldre? Vad har blivit svårare?',
   ]}]},
-  { id: 'vk-arbete', title: 'Arbete', subtitle: 'Barnets bild av de vuxnas jobb – och vad det drömmer om att bli', categoryId: 'vk-jag-vaxer', sections: [{ id: 'vk-arbete-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
+  { id: 'vk-arbete', title: 'Arbete', subtitle: 'Barnets bild av de vuxnas jobb – och vad det drömmer om att bli', categoryId: 'vk-utanfor-hemmet', sections: [{ id: 'vk-arbete-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
     'Vad skulle du säga om någon frågade vad dina vuxna gör när de arbetar?',
     'Hur vet du om dina vuxna tycker om sina jobb?',
     'Förutom att tjäna pengar, varför tror du att vuxna jobbar?',
@@ -135,8 +136,7 @@ const cards: Card[] = [
     'Vilket jobb hade du önskat att dina vuxna hade?',
     'Har du träffat någon vuxen som har ett arbete du skulle vilja ha när du blir vuxen?',
   ]}]},
-  // ── K4: Jag & andra ──
-  { id: 'vk-kompisar', title: 'Kompisar', subtitle: 'Vänskaper i vardagen – var, hur och med vem en umgås', categoryId: 'vk-jag-och-andra', sections: [{ id: 'vk-kompisar-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
+  { id: 'vk-kompisar', title: 'Kompisar', subtitle: 'Vänskaper i vardagen – var, hur och med vem en umgås', categoryId: 'vk-utanfor-hemmet', sections: [{ id: 'vk-kompisar-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
     'Vilket föredrar du -- att besöka dina kompisar eller att de besöker dig? Varför?',
     'Är det skillnad på att komma hem till olika kompisar? Förklara!',
     'Tycker du mest om att umgås med kompisar i skolan eller efter skolan? Förklara!',
@@ -150,7 +150,7 @@ export const vardagskortProduct: ProductManifest = {
   id: 'vardagskort',
   name: 'Vardag',
   slug: 'vardagskort',
-  tagline: 'De små samtalen som får vardagen att fungera.',
+  tagline: 'Hur vi har det.',
   description: 'Utforska vardagens rutiner och relationer',
   headerTitle: 'Vårt vardagsliv',
   accentColor: 'hsl(200, 80%, 33%)',
