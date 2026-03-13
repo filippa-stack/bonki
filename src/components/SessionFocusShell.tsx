@@ -138,7 +138,11 @@ export default function SessionFocusShell({ children, topSlot, ctaSlot, onExit }
         }}
       >
         {ctaSlot}
-        <p
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            onExit();
+          }}
           style={{
             marginTop: '12px',
             fontFamily: 'var(--font-sans)',
@@ -146,10 +150,14 @@ export default function SessionFocusShell({ children, topSlot, ctaSlot, onExit }
             fontStyle: 'italic',
             color: 'rgba(255, 255, 255, 0.25)',
             textAlign: 'center',
+            background: 'none',
+            border: 'none',
+            cursor: 'pointer',
+            padding: '8px 16px',
           }}
         >
-          Ni kan pausa när som helst.
-        </p>
+          Pausa för ikväll
+        </button>
       </div>
     </div>
   );
