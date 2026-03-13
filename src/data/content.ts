@@ -973,7 +973,7 @@ export const cards: Card[] = [
         title: 'Början',
         content: 'Ibland märks förändringen inte förrän efteråt.',
         prompts: [
-          'Vad har ni slutat göra tillsammans under de senaste åren — något som bara tyst försvann?',
+          'Vad har ni slutat göra tillsammans under de senaste åren — något ni kanske inte la märke till förrän det redan var borta?',
           'Har det hänt nyligen att ni var tillsammans men du ändå kände dig ensam?',
           'När kände du senast att din partner valde dig — inte bara att du var där?',
         ],
