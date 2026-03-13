@@ -12,7 +12,7 @@ interface ProductResumeBannerProps {
  * Shows "Fortsätt med {cardTitle} →" when there's an active session
  * belonging to this product. Matches Still Us resume link design.
  */
-export default function ProductResumeBanner({ product, accentColor }: ProductResumeBannerProps) {
+export default function ProductResumeBanner({ product }: ProductResumeBannerProps) {
   const navigate = useNavigate();
   const { sessionId, cardId, loading } = useNormalizedSessionContext();
 
@@ -35,13 +35,13 @@ export default function ProductResumeBanner({ product, accentColor }: ProductRes
         style={{
           fontSize: '14px',
           fontWeight: 600,
-          color: accentColor,
+          color: 'var(--accent-saffron)',
           opacity: 1,
           background: 'none',
           border: 'none',
           cursor: 'pointer',
           textDecoration: 'underline',
-          textDecorationColor: `${accentColor}4D`,
+          textDecorationColor: 'hsla(41, 78%, 48%, 0.3)',
           textUnderlineOffset: '3px',
           padding: 0,
           letterSpacing: '0.01em',
