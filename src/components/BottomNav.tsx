@@ -124,7 +124,7 @@ export default function BottomNav() {
                   style={{
                     width: '18px',
                     height: '18px',
-                    strokeWidth: active ? 1.8 : 1.4,
+                    strokeWidth: 1.5,
                   }}
                 />
                 <span
