@@ -262,7 +262,7 @@ const cards: Card[] = [
   {
     id: 'jim-avsky',
     title: 'Avsky',
-    subtitle: 'En stark känsla av motvilja -- mot saker, situationer eller beteenden',
+    subtitle: 'En stark känsla av motvilja – mot saker, situationer eller beteenden',
     categoryId: 'jim-nar-det-gor-ont',
     sections: [
       {
