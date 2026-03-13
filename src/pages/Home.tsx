@@ -311,7 +311,7 @@ export default function Home() {
                 Följ ordningen — eller börja där det känns rätt.
               </p>
 
-              {/* Resume link — integrated into identity zone */}
+              {/* Resume card — prominent glassmorphism tile */}
               {(() => {
                 if (devState === 'browse') return null;
                 const cardId = resumeCardFromNormalized
@@ -319,38 +319,64 @@ export default function Home() {
                   ?? null;
                 if (!cardId) return null;
                 const card = getCardById(cardId);
-                // Only show resume link for Still Us cards (not child products)
                 if (!card) return null;
                 const stillUsCategoryIds = allCategories.map(c => c.id);
                 if (!stillUsCategoryIds.includes(card.categoryId)) return null;
+
+                // Build step label from card sections
+                const stepIndex = normalizedSession.currentStepIndex ?? 0;
+                const effectiveSteps = card.sections?.map((s: { type: string }) => s.type) ?? [];
+                const dynSteps = buildDynamicSteps(effectiveSteps, true);
+                const stepLabel = dynSteps[stepIndex]?.label ?? '';
+
                 return (
-                  <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 0.3, duration: 0.6 }}
-                    style={{ marginTop: '14px' }}
+                  <motion.button
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.3, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+                    onClick={() => { markNavigated(); navigate(`/card/${cardId}`, { state: { resumed: true } }); }}
+                    style={{
+                      width: '100%',
+                      marginTop: '20px',
+                      padding: '18px 20px',
+                      background: 'rgba(162, 181, 169, 0.18)',
+                      backdropFilter: 'blur(24px) saturate(1.3)',
+                      WebkitBackdropFilter: 'blur(24px) saturate(1.3)',
+                      border: '1px solid rgba(218, 157, 29, 0.5)',
+                      borderRadius: '14px',
+                      cursor: 'pointer',
+                      textAlign: 'left',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      gap: '6px',
+                      boxShadow: '0 0 20px -4px rgba(218, 157, 29, 0.15), inset 0 1px 0 0 rgba(255, 255, 255, 0.10)',
+                    }}
                   >
-                    <button
-                      onClick={() => { markNavigated(); navigate(`/card/${cardId}`, { state: { resumed: true } }); }}
-                      className="font-serif"
+                    <span
                       style={{
-                        fontSize: '14px',
-                        fontWeight: 600,
-                        color: 'var(--accent-saffron)',
-                        opacity: 1,
-                        background: 'none',
-                        border: 'none',
-                        cursor: 'pointer',
-                        textDecoration: 'underline',
-                        textDecorationColor: 'hsla(36, 60%, 50%, 0.3)',
-                        textUnderlineOffset: '3px',
-                        padding: 0,
-                        letterSpacing: '0.01em',
+                        fontFamily: 'var(--font-serif)',
+                        fontSize: '18px',
+                        fontWeight: 500,
+                        color: 'var(--text-primary)',
+                        lineHeight: 1.3,
                       }}
                     >
-                      Fortsätt med {card?.title || 'samtalet'} →
-                    </button>
-                  </motion.div>
+                      {card.title}
+                    </span>
+                    <span
+                      style={{
+                        fontFamily: 'var(--font-sans)',
+                        fontSize: '11px',
+                        fontWeight: 600,
+                        letterSpacing: '0.06em',
+                        textTransform: 'uppercase',
+                        color: 'var(--accent-saffron, #DA9D1D)',
+                        opacity: 0.85,
+                      }}
+                    >
+                      {stepLabel ? `${stepLabel} · ` : ''}Fortsätt →
+                    </span>
+                  </motion.button>
                 );
               })()}
             </motion.div>
