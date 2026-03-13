@@ -232,13 +232,6 @@ export default function CircadianMenu({
             >
               {group.label}
             </h2>
-            <span
-              style={{
-                flex: 1,
-                height: '1px',
-                background: `linear-gradient(90deg, ${HERITAGE_GOLD}30 0%, transparent 100%)`,
-              }}
-            />
           </motion.div>
 
           <div className="flex flex-col" style={{ gap: '7px', position: 'relative' }}>
@@ -343,7 +336,7 @@ export default function CircadianMenu({
                         display: 'flex',
                         alignItems: 'center',
                         gap: '14px',
-                        padding: '16px',
+                        padding: '20px 16px',
                       }}
                     >
                       {/* Title + subtitle */}
@@ -361,12 +354,12 @@ export default function CircadianMenu({
                         </h3>
                       </div>
 
-                      {/* Progress ring */}
-                      <div style={{ flexShrink: 0 }}>
-                        {completedCount > 0 ? (
+                      {/* Progress ring — only show when there's actual progress */}
+                      {completedCount > 0 && (
+                        <div style={{ flexShrink: 0 }}>
                           <ProgressRing completed={completedCount} total={catCards.length} size={16} />
-                        ) : null}
-                      </div>
+                        </div>
+                      )}
                     </div>
                   </motion.button>
                 </motion.div>
