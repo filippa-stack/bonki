@@ -1326,7 +1326,7 @@ export default function CardView() {
         )}
 
         {/* ── Bottom zone: instructions + CTA ── */}
-        <div style={{ flex: '0 0 auto', display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '0 24px', paddingBottom: 'calc(32px + env(safe-area-inset-bottom, 0px))' }}>
+        <div style={{ flex: '0 0 auto', display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '0 24px', paddingBottom: 'calc(80px + env(safe-area-inset-bottom, 0px))' }}>
           {/* Instructions — consolidated to single line */}
           <motion.p
             className="font-serif italic"
