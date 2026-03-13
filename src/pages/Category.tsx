@@ -336,6 +336,7 @@ function StillUsCategoryView({
   circadianColor,
   backTo,
   navigate,
+  isReturningUser = false,
 }: StillUsCategoryViewProps) {
   const color = circadianColor || '#A2B5A9';
   const colorLight = CIRCADIAN_COLORS_LIGHT[category.id] || color;
