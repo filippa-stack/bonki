@@ -254,7 +254,7 @@ export default function CircadianMenu({
 
               const innerGlow = `${topEdgeHighlight}, inset 0 0 12px 0 rgba(255, 255, 255, 0.03)`;
               const breatheBoxShadow = isNextSuggested
-                ? `${innerGlow}, 0 0 16px -2px ${color}35, 0 0 32px -6px ${color}20`
+                ? `${innerGlow}, 0 0 24px -2px ${color}55, 0 0 44px -6px ${color}35`
                 : innerGlow;
 
               return (
