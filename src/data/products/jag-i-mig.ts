@@ -306,7 +306,7 @@ const cards: Card[] = [
   {
     id: 'jim-avundsjuk',
     title: 'Avundsjuk',
-    subtitle: 'Att vilja ha det någon annan har -- och vad det egentligen handlar om',
+    subtitle: 'Att vilja ha det någon annan har – och vad det egentligen handlar om',
     categoryId: 'jim-nar-det-gor-ont',
     sections: [
       {
