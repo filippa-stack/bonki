@@ -795,6 +795,22 @@ function CardEntry({ card, index, isCompleted = false, isInProgress = false, onN
           </div>
         )}
 
+        {/* Gradient scrim for text legibility */}
+        <div
+          aria-hidden="true"
+          style={{
+            position: 'absolute',
+            bottom: 0, left: 0, right: 0,
+            height: '55%',
+            zIndex: 1,
+            pointerEvents: 'none',
+            background: (cardTitleColor === '#FAFAF0' || cardTitleColor === '#FFFDF5')
+              ? 'linear-gradient(to top, rgba(0,0,0,0.52) 0%, rgba(0,0,0,0.22) 50%, transparent 100%)'
+              : 'linear-gradient(to top, rgba(255,255,255,0.65) 0%, rgba(255,255,255,0.25) 50%, transparent 100%)',
+            borderRadius: '0 0 22px 22px',
+          }}
+        />
+
         {/* Title — uses category-matching color */}
         <div
           style={{
@@ -809,8 +825,8 @@ function CardEntry({ card, index, isCompleted = false, isInProgress = false, onN
               color: cardTitleColor,
               lineHeight: 1.1,
               textShadow: (cardTitleColor === '#FAFAF0' || cardTitleColor === '#FFFDF5')
-                ? '0 1px 2px rgba(0,0,0,0.5), 0 2px 8px rgba(0,0,0,0.35), 0 0 24px rgba(0,0,0,0.2)'
-                : '0 1px 2px rgba(255,255,255,0.8), 0 0 12px rgba(255,255,255,0.4)',
+                ? '0 1px 2px rgba(0,0,0,0.4), 0 2px 6px rgba(0,0,0,0.2)'
+                : '0 1px 2px rgba(255,255,255,0.6), 0 0 8px rgba(255,255,255,0.3)',
               letterSpacing: '-0.01em',
             }}
           >
