@@ -32,10 +32,10 @@ const SECTION_LABELS: Record<string, string> = {
 
 /** Still Us canonical labels */
 const STILL_US_LABELS: Record<string, string> = {
-  opening: 'Kom igång',
-  reflective: 'Gå djupare',
-  scenario: 'Föreställ er',
-  exercise: 'I verkligheten',
+  opening: 'Öppna',
+  reflective: 'Fördjupa',
+  scenario: 'Scenario',
+  exercise: 'Tillsammans',
 };
 
 /** Build dynamic steps from a card's actual section types */
