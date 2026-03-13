@@ -1039,21 +1039,49 @@ export default function CardView() {
                 }}>
                   {uiText.allExploredSub}
                 </p>
+                <button
+                  onClick={() => navigateWithFeedback(postCompletionNav.homeDest)}
+                  className="cta-primary"
+                  style={{ maxWidth: '220px', width: '100%', marginTop: '32px' }}
+                >
+                  Avsluta
+                </button>
               </div>
             ) : (
               <motion.div
                 initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.65, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-                style={{ width: '100%', display: 'flex', justifyContent: 'center', marginTop: '48px' }}
+                style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px', marginTop: '48px' }}
               >
+                {/* Primary: Next card */}
                 <button
                   onClick={() => navigateWithFeedback(postCompletionNav.destination)}
                   className="cta-primary"
-                  style={{ maxWidth: '220px', width: '100%' }}
+                  style={{ maxWidth: '220px', width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}
                 >
                   {postCompletionNav.label}
+                  <ArrowRight size={16} style={{ opacity: 0.7 }} />
                 </button>
+                {/* Secondary: Finish / go back to product home */}
+                {product && product.id !== 'still_us' && (
+                  <button
+                    onClick={() => navigateWithFeedback(postCompletionNav.homeDest)}
+                    className="font-sans"
+                    style={{
+                      fontSize: '13px',
+                      color: 'var(--completion-link)',
+                      background: 'none',
+                      border: 'none',
+                      cursor: 'pointer',
+                      textDecoration: 'underline',
+                      textUnderlineOffset: '3px',
+                      opacity: 0.55,
+                    }}
+                  >
+                    Avsluta
+                  </button>
+                )}
               </motion.div>
             )}
 
@@ -1068,7 +1096,7 @@ export default function CardView() {
                   product && product.id !== 'still_us' ? `/diary/${product.id}` : '/shared'
                 )}
                 className="font-sans"
-                style={{ fontSize: '13px', color: 'var(--completion-link)', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline', textUnderlineOffset: '3px', marginTop: '24px' }}
+                style={{ fontSize: '13px', color: 'var(--completion-link)', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline', textUnderlineOffset: '3px', marginTop: '24px', opacity: 0.4 }}
               >
                 {product && product.id !== 'still_us' ? 'Vår dagbok' : uiText.seeNotes}
               </button>
