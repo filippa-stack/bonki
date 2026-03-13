@@ -215,20 +215,26 @@ export default function JagIVarldenProductHome({ product }: { product: ProductMa
                 whileTap={{ scale: 0.975, y: 1 }}
                 onClick={() => navigate(`/category/${cat.id}`)}
                 style={{
-                  background: tile.bg,
+                  background: isDark
+                    ? `linear-gradient(180deg, ${tile.bg} 0%, ${tile.bg}ee 100%)`
+                    : `linear-gradient(180deg, ${tile.bg}ff 0%, ${tile.bg}e8 100%)`,
                   borderRadius: '22px',
                   padding: '0 32px',
                   textAlign: 'center',
                   cursor: 'pointer',
                   border: isDark
-                    ? '1px solid rgba(255, 255, 255, 0.18)'
-                    : '1px solid rgba(255, 255, 255, 0.5)',
-                  boxShadow: isDark
-                    ? '0 8px 20px hsla(140, 30%, 40%, 0.12)'
-                    : '0 8px 20px hsla(140, 30%, 60%, 0.12)',
+                    ? '1px solid rgba(255, 255, 255, 0.12)'
+                    : '1px solid rgba(255, 255, 255, 0.55)',
+                  boxShadow: [
+                    '0 4px 15px rgba(132, 194, 137, 0.10)',
+                    '0 1px 3px rgba(132, 194, 137, 0.06)',
+                    isDark
+                      ? 'inset 0 1px 0 rgba(255, 255, 255, 0.08)'
+                      : 'inset 0 1px 0 rgba(255, 255, 255, 0.45)',
+                  ].join(', '),
                   whiteSpace: 'normal' as const,
-                  backdropFilter: 'blur(20px) saturate(1.3)',
-                  WebkitBackdropFilter: 'blur(20px) saturate(1.3)',
+                  backdropFilter: 'blur(8px) saturate(1.2)',
+                  WebkitBackdropFilter: 'blur(8px) saturate(1.2)',
                   width: isHero ? '86%' : '82%',
                   minHeight: isHero ? '76px' : '66px',
                   display: 'flex',
