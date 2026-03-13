@@ -498,12 +498,13 @@ export default function CardView() {
     if (!sessionId) {
       const card = getCardById(cardId);
       if (space?.id && card) {
-        if (isDevToolsEnabled()) console.log('[step-complete] no sessionId — attempting activate');
+        if (isDevToolsEnabled()) console.log('[step-complete] no sessionId — lazy activate');
         const { error: actErr } = await supabase.rpc('activate_couple_session', {
           p_couple_space_id: space.id,
           p_category_id: card.categoryId,
           p_card_id: cardId,
           p_step_count: effectiveSteps.length,
+          p_product_id: product?.id ?? 'still_us',
         });
         if (!actErr) {
           const { data: freshState } = await supabase.rpc('get_active_session_state');
