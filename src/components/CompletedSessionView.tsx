@@ -334,24 +334,44 @@ export default function CompletedSessionView({
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: BEAT_3 + 0.06, duration: EMOTION, ease: [...EASE] }}
-            style={{ marginTop: '8px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '20px' }}
+            style={{ marginTop: '8px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px' }}
           >
+            {/* Primary: Next card (child products) or Fortsätt utforska */}
+            {isChildProduct && nextCardDest ? (
+              <>
+                <button
+                  onClick={() => navigate(nextCardDest)}
+                  className="cta-primary"
+                  style={{ display: 'flex', alignItems: 'center', gap: '6px' }}
+                >
+                  Nästa <ArrowRight size={16} style={{ opacity: 0.7 }} />
+                </button>
+                <button
+                  onClick={() => navigate(`/product/${product!.slug}`)}
+                  className="font-sans"
+                  style={{ fontSize: '13px', color: 'var(--completion-link)', opacity: 0.55, background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline', textUnderlineOffset: '3px' }}
+                >
+                  Avsluta
+                </button>
+              </>
+            ) : (
+              <button
+                onClick={() => navigate(
+                  isChildProduct ? `/product/${product!.slug}` : '/'
+                )}
+                className="cta-primary"
+              >
+                {isChildProduct ? 'Avsluta' : 'Fortsätt utforska'}
+              </button>
+            )}
             <button
               onClick={() => navigate(
-                product && product.id !== 'still_us' ? `/diary/${product.id}` : '/shared'
+                isChildProduct ? `/diary/${product!.id}` : '/shared'
               )}
               className="font-sans"
-              style={{ fontSize: '13px', color: 'var(--completion-link)', opacity: 0.55, background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline', textUnderlineOffset: '3px' }}
+              style={{ fontSize: '13px', color: 'var(--completion-link)', opacity: 0.4, background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline', textUnderlineOffset: '3px' }}
             >
-              {product && product.id !== 'still_us' ? 'Vår dagbok' : 'Se alla era anteckningar'}
-            </button>
-            <button
-              onClick={() => navigate(
-                product && product.id !== 'still_us' ? `/product/${product.slug}` : '/'
-              )}
-              className="cta-primary"
-            >
-              Fortsätt utforska
+              {isChildProduct ? 'Vår dagbok' : 'Se alla era anteckningar'}
             </button>
           </motion.div>
 
