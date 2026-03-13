@@ -100,7 +100,7 @@ const cards: Card[] = [
     'Kan en kringgå någons nej till samtycke utan att röra personen?',
     'Hur länge gäller ett samtycke? Kan en ta tillbaka sitt samtycke?',
   ]}]},
-  { id: 'sex-sex-och-ansvar', title: 'Sex & ansvar', subtitle: 'Vem ansvarar för vad i en sexuell situation -- och hur makt spelar in', categoryId: 'sex-relation-och-ansvar', sections: [{ id: 'sex-sex-och-ansvar-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
+  { id: 'sex-sex-och-ansvar', title: 'Sex & ansvar', subtitle: 'Vem ansvarar för vad i en sexuell situation – och hur makt spelar in', categoryId: 'sex-relation-och-ansvar', sections: [{ id: 'sex-sex-och-ansvar-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
     'Vad innebär det att ta ansvar i ett sexuellt sammanhang?',
     'Hur avgör en vem som har ansvar vid sex?',
     'Om du är äldre, mer erfaren, en auktoritet eller i maktposition -- vad innebär det för dig att ta ansvar i en sexuell situation med någon som befinner sig i motsatt position?',
