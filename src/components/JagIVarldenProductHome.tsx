@@ -34,37 +34,32 @@ const ACCENT_COLOR = '#3D7A45';
 const ORDERED_TILES = [
   {
     id: 'jiv-min-vardag',
-    // Blekt salviagrön
     bg: '#CDE6D2',
-    text: '#2D4F32',
+    text: '#3E4A40',
     dark: false,
   },
   {
     id: 'jiv-vem-jag-ar',
-    // Varm krämig off-white
     bg: '#F7F2ED',
-    text: '#3D4A35',
+    text: '#3E4A40',
     dark: false,
   },
   {
     id: 'jiv-jag-och-andra',
-    // Dämpad nude/sand
     bg: '#E5D5C8',
-    text: '#3D4A35',
+    text: '#3E4A40',
     dark: false,
   },
   {
     id: 'jiv-jag-i-samhallet',
-    // Sval dämpad grönvinter
     bg: '#BDD3C3',
-    text: '#2D4F32',
+    text: '#3E4A40',
     dark: false,
   },
   {
     id: 'jiv-det-stora-sammanhanget',
-    // Mjuk rökig grågrön
     bg: '#8B948D',
-    text: '#FAFAF0',
+    text: '#F5F2ED',
     dark: true,
   },
 ];
