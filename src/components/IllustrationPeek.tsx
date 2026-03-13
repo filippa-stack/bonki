@@ -87,7 +87,7 @@ export default function IllustrationPeek({ imageUrl, cardTitle }: IllustrationPe
                 position: 'absolute',
                 top: 'calc(16px + env(safe-area-inset-top, 0px))',
                 right: '16px',
-                background: 'hsla(30, 20%, 20%, 0.12)',
+                background: 'hsla(0, 0%, 50%, 0.12)',
                 border: 'none',
                 borderRadius: '50%',
                 width: '36px',
@@ -98,7 +98,7 @@ export default function IllustrationPeek({ imageUrl, cardTitle }: IllustrationPe
                 cursor: 'pointer',
               }}
             >
-              <X size={18} strokeWidth={1.5} color="hsla(30, 20%, 20%, 0.7)" />
+              <X size={18} strokeWidth={1.5} color="var(--text-tertiary, hsla(30, 20%, 20%, 0.7))" />
             </button>
 
             {/* Illustration */}
