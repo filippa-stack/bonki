@@ -258,14 +258,14 @@ export default function VardagProductHome({ product }: { product: ProductManifes
               width: '100%',
             }}
           >
-            {/* Sparkle divider */}
+            {/* Sparkle divider — Saffron golden thread (Bonki quality mark) */}
             <motion.div
               initial={{ opacity: 0, scale: 0.5 }}
               animate={{ opacity: [0.3, 0.6, 0.3], scale: 1 }}
               transition={{ opacity: { duration: 3, repeat: Infinity, ease: 'easeInOut' }, scale: { duration: 0.8, delay: 1.2 } }}
               style={{
                 fontSize: '14px',
-                color: ACCENT_COLOR,
+                color: 'var(--accent-saffron)',
                 letterSpacing: '8px',
                 marginBottom: '12px',
                 textAlign: 'center',
