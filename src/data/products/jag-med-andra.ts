@@ -524,7 +524,7 @@ const cards: Card[] = [
         title: 'I verkligheten',
         content: '',
         prompts: [
-          'Två av dina kompisar tror på olika saker när det gäller religion. Kan man vara nära vänner trots det? Vad tror du kan göra det svårt, och vad kan hjälpa?',
+          'Två av dina kompisar tror på olika saker när det gäller religion. Kan en vara nära vänner trots det? Vad tror du kan göra det svårt, och vad kan hjälpa?',
         ],
       },
     ],
