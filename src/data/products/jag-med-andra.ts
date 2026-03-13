@@ -281,7 +281,7 @@ const cards: Card[] = [
         content: '',
         prompts: [
           'Vad kan vara början på en konflikt?',
-          'Kan det vara bra att bråka med någon man tycker om?',
+          'Kan det vara bra att bråka med någon en tycker om?',
           'Kan du komma ihåg en gång när en vuxen blev arg eller besviken på dig? Vad hände och hur upplevde du det?',
           'Tror du att den vuxne förstod varför du gjorde det du gjorde?',
           'Vad tror du att vuxna bråkar om?',
