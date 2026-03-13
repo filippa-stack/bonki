@@ -243,6 +243,7 @@ export default function Category() {
         circadianColor={circadianColor}
         backTo={backTo}
         navigate={navigate}
+        isReturningUser={completedCardIds.length >= 1}
       />
     );
   }
@@ -322,6 +323,8 @@ interface StillUsCategoryViewProps {
   circadianColor?: string;
   backTo: string;
   navigate: (path: string) => void;
+  /** User has completed at least 1 session — skip CardPreview */
+  isReturningUser?: boolean;
 }
 
 function StillUsCategoryView({
@@ -333,6 +336,7 @@ function StillUsCategoryView({
   circadianColor,
   backTo,
   navigate,
+  isReturningUser = false,
 }: StillUsCategoryViewProps) {
   const color = circadianColor || '#A2B5A9';
   const colorLight = CIRCADIAN_COLORS_LIGHT[category.id] || color;
@@ -498,7 +502,7 @@ function StillUsCategoryView({
                   initial={{ opacity: 0, y: 14 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.15 + index * 0.07, duration: 0.55, ease: EASE }}
-                  onClick={() => navigate(`/preview/${card.id}`)}
+                  onClick={() => navigate(isReturningUser ? `/card/${card.id}` : `/preview/${card.id}`)}
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.985 }}
                   className="text-left"
