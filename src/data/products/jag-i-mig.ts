@@ -498,7 +498,7 @@ const cards: Card[] = [
           'Hur mår du just nu, på riktigt?',
           'Vad är det bästa med dig?',
           'Vilken känsla gillar du mest?',
-          'Om du fick dela en känsla med någon du litar på, vilken känsla skulle det vara -- och vem skulle du dela den med?',
+          'Om du fick dela en känsla med någon du litar på, vilken känsla skulle det vara – och vem skulle du dela den med?',
           'Om en vän skulle beskriva dig, vad tror du den personen skulle säga?',
         ],
       },
