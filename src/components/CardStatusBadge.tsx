@@ -73,6 +73,15 @@ export default function CardStatusBadge({ variant, mode = 'light' }: CardStatusB
 
   const c = config[variant];
 
+  if (variant === 'completed') {
+    return (
+      <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true" aria-label="Utforskad">
+        <circle cx="9" cy="9" r="8" stroke={c.textColor} strokeWidth="1.5" opacity="0.5" />
+        <path d="M5.5 9l2.5 2.5 4.5-4.5" stroke={c.textColor} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" opacity="0.6" />
+      </svg>
+    );
+  }
+
   return (
     <div
       style={{
@@ -84,13 +93,7 @@ export default function CardStatusBadge({ variant, mode = 'light' }: CardStatusB
         ...c.glassOverride,
       }}
     >
-      {/* Dot or checkmark */}
-      {variant === 'completed' ? (
-        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-          <circle cx="7" cy="7" r="6" stroke={c.textColor} strokeWidth="1.5" opacity="0.6" />
-          <path d="M4 7l2.2 2.2 3.8-3.8" stroke={c.textColor} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" opacity="0.6" />
-        </svg>
-      ) : c.showDot ? (
+      {c.showDot && (
         <span
           style={{
             display: 'inline-block',
@@ -102,9 +105,7 @@ export default function CardStatusBadge({ variant, mode = 'light' }: CardStatusB
             ...(c.dotPulse ? { animation: 'saffron-pulse 2.0s ease-in-out infinite' } : {}),
           }}
         />
-      ) : null}
-
-      {/* Label */}
+      )}
       <span
         style={{
           fontFamily: 'var(--font-sans)',
