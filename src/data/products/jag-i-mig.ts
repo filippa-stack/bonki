@@ -363,7 +363,7 @@ const cards: Card[] = [
           'Hur känns det att inte få vara med?',
           'Varför tror du att det är viktigt att känna att en får vara med?',
           'Vad kan du göra för att ingen annan ska känna sig utanför?',
-          'Måste man leka med någon som behandlar en dåligt? Varför eller varför inte?',
+          'Måste en leka med någon som behandlar en dåligt? Varför eller varför inte?',
           'Hur kan du förklara varför någon inte fick vara med i leken?',
           'Hur kan du leka med någon även om ni tycker olika saker är kul?',
           'När har du känt dig utanför och vad gjorde du då?',
