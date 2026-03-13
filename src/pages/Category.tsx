@@ -469,7 +469,7 @@ function StillUsCategoryView({
                 : 'none';
 
             return (
-              <div key={card.id} style={{ display: 'flex', alignItems: 'stretch', gap: '12px', opacity: isCompleted ? 0.6 : 1, transition: 'opacity 0.3s ease' }}>
+              <div key={card.id} style={{ display: 'flex', alignItems: 'stretch', gap: '12px', opacity: isCompleted ? 0.6 : 1, transition: 'opacity 0.3s ease', position: 'relative' }}>
                 {/* Sequence spine — number + connecting line */}
                 <div
                   style={{
