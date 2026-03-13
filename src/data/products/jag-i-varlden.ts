@@ -76,7 +76,7 @@ const cards: Card[] = [
     'Du befinner dig i en situation där någon du tycker om vill ha sex, men du är osäker på om du vill. Vad är viktigt att tänka på? Vad har du rätt att göra?'),
   qsCard('jiv-moral-etik', 'Moral & etik', 'Vad som är rätt och fel -- och vem som egentligen bestämmer det', 'jiv-jag-i-samhallet',
     ['Vad är skillnaden mellan moral och etik?','Vem bestämmer vad som är etiskt och moraliskt riktigt?','Var tror du att din moral kommer ifrån?','Vad är det som gör att något känns moraliskt fel? Eller moraliskt riktigt?','Ge ett exempel på när något kan vara moraliskt riktigt men fel enligt lagen.'],
-    'Hur skulle du reagera om en favoritlärare skickade en vänförfrågan till dig? Dina vuxna har glömt logga ut från sitt e-postkonto. Du ser ett mejl från din lärare med ditt namn i ämnesraden. Vad gör du?'),
+    'Dina vuxna har glömt logga ut från sitt e-postkonto. Du ser ett mejl från din lärare med ditt namn i ämnesraden. Vad gör du?'),
   qsCard('jiv-aktivism', 'Aktivism', 'Att vilja förändra världen -- och vad som faktiskt gör skillnad', 'jiv-jag-i-samhallet',
     ['Varför finns aktivism?','Om du ville protestera mot något, vad tror du skulle vara ett bra sätt att göra det på, som skulle märkas?','Kan få personer påverka stora system? Hur får en folk att lyssna?','Känner du till något stort i samhället som förändrats för att människor utövat aktivism?','Vad tycker du är orättvist och som du skulle vilja kämpa för att förändra?'],
     'En person skriker på hjälp i en miljö med många andra människor. Ingen ingriper. Alla tror att någon annan ska göra något. Varför tror du att det blir så?'),

@@ -99,8 +99,7 @@ const cards: Card[] = [
     'Tycker en om sina syskon på samma sätt som en tycker om sina vuxna, eller är det annorlunda?',
   ]}]},
   { id: 'vk-underhallning', title: 'Underhållning', subtitle: 'Lek, skärmar och fritid – vad barnet tycker om och hur familjen umgås', categoryId: 'vk-vi-hemma', sections: [{ id: 'vk-underhallning-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
-    'Har din familj något favoritspel eller någon favoritlek?',
-    'Tycker ni om samma saker?',
+    'Har din familj något favoritspel eller någon favoritlek? Tycker ni om samma saker?',
     'Vad tycker dina vuxna om för lekar eller spel som du inte tycker om?',
     'Har du eller din familj hittat på en lek eller ett spel någon gång? Berätta!',
     'Hade du någon favoritlek när du var yngre som du nu känner dig för stor för att leka? Varför tror du att det blir så?',
