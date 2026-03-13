@@ -244,10 +244,7 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
           gridColumn: wide ? 'span 2' : undefined,
         }}
       >
-      {/* Progress ring — replaces age label when there's progress */}
-      {completedCards > 0 ? (
-        <ProductProgressRing completed={completedCards} total={totalCards} color={accentColor || '#666'} />
-      ) : ageLabel ? (
+      {ageLabel && (
         <span
           style={{
             position: 'absolute',
@@ -271,7 +268,7 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
         >
           {ageLabel}
         </span>
-      ) : null}
+      )}
       {/* Illustration — right-aligned, visible */}
       {illustration && (
         <div
