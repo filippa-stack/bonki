@@ -11,25 +11,20 @@ const EASE = [0.4, 0.0, 0.2, 1] as const;
 const ACCENT_COLOR = '#6B7A10';
 const DIARY_TEXT = '#3E4421';
 
-/** Four-tone chartreuse palette — soft pastels */
+/** Three-tone chartreuse palette — soft pastels */
 const ORDERED_TILES = [
   {
-    id: 'jim-tryggheten-inuti',
+    id: 'jim-mina-kanslor',
     bg: '#D9E0A3',
     text: '#3E4124',
   },
   {
-    id: 'jim-kanslorna-jag-bar',
-    bg: '#F0F2C8',
-    text: '#3E4124',
-  },
-  {
-    id: 'jim-nar-det-gor-ont',
+    id: 'jim-starka-kanslor',
     bg: '#A8AD82',
     text: '#3E4124',
   },
   {
-    id: 'jim-jag-som-helhet',
+    id: 'jim-stora-kanslor',
     bg: '#8E944F',
     text: '#3E4124',
   },
