@@ -115,7 +115,7 @@ const cards: Card[] = [
           'Hur känns det i kroppen att vara glad?',
           'Vad vill du göra när du är glad?',
           'När kan du bli glad för någon annans skull?',
-          'Har du någon gång låtsats vara glad fast du egentligen inte var det? Varför tror du att man gör så?',
+          'Har du någon gång låtsats vara glad fast du egentligen inte var det? Varför tror du att en gör så?',
           'Kan du bli glad av andras skratt?',
           'Hur kan du göra någon annan glad?',
           'När blev du senast riktigt glad för något?',
