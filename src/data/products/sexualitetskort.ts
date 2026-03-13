@@ -140,7 +140,7 @@ const cards: Card[] = [
     'Vad innebär begreppen "grooming" och "sugar dating"? Hur kan de ta sig uttryck?',
     'På vilket sätt kan en hamna i en beroendeposition till någon en har sex med?',
     'Vad kan det finnas för risker med att dela eller skicka sexuellt innehåll på nätet?',
-    'Har du eller någon du känner upplevt att bli exponerad för sexuellt material online utan att ha velat det -- till exempel via automatiska meddelanden eller oönskade bilder? Hur kan man hantera det?',
+    'Har du eller någon du känner upplevt att bli exponerad för sexuellt material online utan att ha velat det -- till exempel via automatiska meddelanden eller oönskade bilder? Hur kan en hantera det?',
     'På vilka sätt kan en skydda sig från att bli exponerad för sexuellt material online utan att ha gett sitt samtycke?',
     'Vart kan en vända sig om en utsätts för hot eller spridning av falskt eller privat material, t.ex. text, film, bilder eller rykten?',
   ]}]},
