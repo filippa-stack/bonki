@@ -151,7 +151,11 @@ export default function Category() {
   const { optimisticCardIds } = useOptimisticCompletions();
 
   const [serverCompletedCardIds, setServerCompletedCardIds] = useState<string[]>([]);
+  const [serverCompletedWithDates, setServerCompletedWithDates] = useState<{ card_id: string; ended_at: string }[]>([]);
   const [inProgressCardIds, setInProgressCardIds] = useState<string[]>([]);
+
+  // Determine if this is a kids product category (uses 14-day expiry)
+  const isKidsProduct = !!product && KIDS_PRODUCT_IDS.includes(product.id);
 
   useEffect(() => {
     if (!space?.id) return;
@@ -159,12 +163,17 @@ export default function Category() {
 
     supabase
       .from('couple_sessions')
-      .select('card_id')
+      .select('card_id, ended_at')
       .eq('couple_space_id', space.id)
       .eq('status', 'completed')
       .then(({ data }) => {
         if (!cancelled && data) {
           setServerCompletedCardIds(data.map(s => s.card_id).filter(Boolean) as string[]);
+          setServerCompletedWithDates(
+            data
+              .filter(s => s.card_id && s.ended_at)
+              .map(s => ({ card_id: s.card_id!, ended_at: s.ended_at! }))
+          );
         }
       });
 
@@ -182,11 +191,38 @@ export default function Category() {
     return () => { cancelled = true; };
   }, [space?.id]);
 
+  // For kids products: apply 14-day expiry to completions
+  const FOURTEEN_DAYS_MS = 14 * 24 * 60 * 60 * 1000;
+
   const completedCardIds = useMemo(() => {
+    if (isKidsProduct) {
+      // Only count completions within last 14 days
+      const now = Date.now();
+      const seen = new Set<string>();
+      const result: string[] = [];
+      // Sort by ended_at desc to get most recent first
+      const sorted = [...serverCompletedWithDates].sort(
+        (a, b) => new Date(b.ended_at).getTime() - new Date(a.ended_at).getTime()
+      );
+      for (const s of sorted) {
+        if (seen.has(s.card_id)) continue;
+        seen.add(s.card_id);
+        const elapsed = now - new Date(s.ended_at).getTime();
+        if (elapsed < FOURTEEN_DAYS_MS) {
+          result.push(s.card_id);
+        }
+      }
+      // Add optimistic completions
+      optimisticCardIds.forEach(id => {
+        if (!result.includes(id)) result.push(id);
+      });
+      return result;
+    }
+    // Still Us: permanent completions
     const merged = new Set(serverCompletedCardIds);
     optimisticCardIds.forEach(id => merged.add(id));
     return Array.from(merged);
-  }, [serverCompletedCardIds, optimisticCardIds]);
+  }, [isKidsProduct, serverCompletedCardIds, serverCompletedWithDates, optimisticCardIds]);
 
   const category = categoryId ? getCategoryById(categoryId) : undefined;
   const cards = categoryId ? getCardsByCategory(categoryId) : [];
