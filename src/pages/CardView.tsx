@@ -1685,7 +1685,7 @@ export default function CardView() {
 
       {isLive && effectiveSteps.length > 1 && isStillUsCard && (
         <motion.div
-          style={{ paddingTop: '16px', marginTop: '20px' }}
+          style={{ paddingTop: '12px', marginTop: '12px' }}
           initial={!suppressEntryAnim ? { opacity: 0 } : false}
           animate={{ opacity: 1 }}
           transition={{ delay: !suppressEntryAnim ? BEAT_1 : 0, duration: BEAT_3, ease: EASE }}

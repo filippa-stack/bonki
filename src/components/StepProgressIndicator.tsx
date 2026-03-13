@@ -1,5 +1,5 @@
-import { motion, AnimatePresence } from 'framer-motion';
-import { EASE, EMOTION } from '@/lib/motion';
+import { motion } from 'framer-motion';
+import { EMOTION, EASE } from '@/lib/motion';
 
 export interface StageStep {
   stage_key: string;
@@ -63,35 +63,11 @@ export default function StepProgressIndicator({
   steps,
 }: StepProgressIndicatorProps) {
   const activeSteps = steps ?? STAGE_STEPS;
-  const currentLabel = activeSteps[currentStepIndex]?.label ?? '';
 
   return (
-    <div className={className} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-      {/* Stage label */}
-      <AnimatePresence mode="wait">
-        <motion.span
-          key={currentLabel}
-          initial={{ opacity: 0, y: 4 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -4 }}
-          transition={{ duration: EMOTION, ease: [...EASE] }}
-          style={{
-            fontFamily: 'var(--font-sans)',
-            fontSize: '10px',
-            letterSpacing: '0.09em',
-            textTransform: 'uppercase',
-            color: 'var(--text-tertiary)',
-            opacity: 0.38,
-            marginBottom: '6px',
-            textAlign: 'center',
-          }}
-        >
-          {currentLabel}
-        </motion.span>
-      </AnimatePresence>
-
-      {/* Horizontal dots */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '32px' }}>
+    <div className={className} style={{ width: '100%', padding: '0 24px' }}>
+      {/* Labels row */}
+      <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '6px' }}>
         {activeSteps.map((step, index) => {
           const isCompleted = completedSteps.includes(index) || index < currentStepIndex;
           const isCurrent = index === currentStepIndex;
@@ -100,22 +76,73 @@ export default function StepProgressIndicator({
             <motion.span
               key={step.stage_key}
               animate={{
-                width: isCurrent ? 20 : 6,
-                opacity: isCurrent ? 1 : isCompleted ? 0.30 : 0.12,
+                color: isCurrent
+                  ? 'hsl(41, 78%, 48%)'
+                  : isCompleted
+                    ? '#DA9D1D'
+                    : 'rgba(255, 255, 255, 0.35)',
               }}
               transition={{ duration: EMOTION, ease: [...EASE] }}
               style={{
-                display: 'inline-block',
-                height: '4px',
-                borderRadius: isCurrent ? '3px' : '50%',
-                backgroundColor: isCurrent
-                  ? 'var(--accent-saffron)'
-                  : isCompleted
-                    ? 'var(--cta-active)'
-                    : 'var(--text-ghost)',
-                transition: 'border-radius 0.3s ease, background-color 0.25s ease',
+                flex: 1,
+                textAlign: 'center',
+                fontFamily: 'var(--font-sans)',
+                fontSize: '11px',
+                fontWeight: isCurrent ? 600 : 400,
+                letterSpacing: '0.06em',
+                textTransform: 'uppercase',
+                lineHeight: 1,
+                whiteSpace: 'nowrap',
               }}
-            />
+            >
+              {step.label}
+            </motion.span>
+          );
+        })}
+      </div>
+
+      {/* Progress lines row */}
+      <div style={{ display: 'flex', gap: '3px' }}>
+        {activeSteps.map((step, index) => {
+          const isCompleted = completedSteps.includes(index) || index < currentStepIndex;
+          const isCurrent = index === currentStepIndex;
+
+          return (
+            <div
+              key={step.stage_key}
+              style={{
+                flex: 1,
+                height: '2px',
+                borderRadius: '1px',
+                position: 'relative',
+                overflow: 'hidden',
+                backgroundColor: isCurrent || isCompleted
+                  ? 'transparent'
+                  : 'rgba(255, 255, 255, 0.12)',
+                ...(!isCurrent && !isCompleted ? {
+                  backgroundImage: 'repeating-linear-gradient(90deg, rgba(255,255,255,0.18) 0, rgba(255,255,255,0.18) 3px, transparent 3px, transparent 7px)',
+                  backgroundColor: 'transparent',
+                } : {}),
+              }}
+            >
+              {(isCurrent || isCompleted) && (
+                <motion.div
+                  initial={false}
+                  animate={{ scaleX: isCompleted ? 1 : 0.5 }}
+                  transition={{ duration: EMOTION * 1.5, ease: [...EASE] }}
+                  style={{
+                    position: 'absolute',
+                    inset: 0,
+                    borderRadius: '1px',
+                    transformOrigin: 'left',
+                    backgroundColor: isCurrent
+                      ? 'hsl(41, 78%, 48%)'
+                      : '#DA9D1D',
+                    opacity: isCompleted ? 0.6 : 1,
+                  }}
+                />
+              )}
+            </div>
           );
         })}
       </div>
