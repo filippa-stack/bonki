@@ -68,8 +68,8 @@ const cards: Card[] = [
         title: 'Frågor',
         content: '',
         prompts: [
-          'Beskriv ett favoritfoto där du och dina syskon är tillsammans. Vad minns du av den stunden?',
-          'Har du och dina syskon skapat några egna traditioner? Vilka är de och hur började de?',
+          'Beskriv ett favoritfoto där du och ditt syskon är tillsammans. Vad minns du av den stunden?',
+          'Har du och ditt syskon skapat några egna traditioner? Vilka är de och hur började de?',
           'Vilket tror du är ditt syskons roligaste minne?',
           'Minns du vad du tänkte och kände första gången du träffade ditt syskon?',
         ],
