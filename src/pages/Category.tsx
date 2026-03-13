@@ -502,7 +502,7 @@ function StillUsCategoryView({
                   initial={{ opacity: 0, y: 14 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.15 + index * 0.07, duration: 0.55, ease: EASE }}
-                  onClick={() => navigate(`/preview/${card.id}`)}
+                  onClick={() => navigate(isReturningUser ? `/card/${card.id}` : `/preview/${card.id}`)}
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.985 }}
                   className="text-left"
