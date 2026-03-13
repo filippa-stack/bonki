@@ -134,6 +134,8 @@ const CARD_IMAGE_MAP: Record<string, { zip: ZipSource; folder: string; file: str
 const STANDALONE_IMAGES: Record<string, string> = {
   'vk-kvall': '/card-images/vk-kvall.png',
   'vk-sova': '/card-images/vk-sova.png',
+  'vk-hushall': '/card-images/vk-hushall.png',
+  'vk-morgon': '/card-images/vk-morgon.png',
   'jiv-identitet': '/card-images/jiv-identitet.png',
   'jiv-roller': '/card-images/jiv-roller.png',
   'jiv-mobbning': '/card-images/jiv-mobbning.png',
