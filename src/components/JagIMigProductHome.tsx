@@ -64,6 +64,8 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
       className="min-h-screen relative overflow-hidden"
       style={{ backgroundColor: 'var(--surface-base)' }}
     >
+      {/* Back button */}
+      <ProductHomeBackButton color={ACCENT_COLOR} />
       {/* Soft sun-glow — shared light logic with Still Us */}
       <div
         style={{

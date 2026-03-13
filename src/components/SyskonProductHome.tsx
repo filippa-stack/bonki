@@ -67,6 +67,8 @@ export default function SyskonProductHome({ product }: { product: ProductManifes
       className="min-h-screen relative overflow-hidden"
       style={{ backgroundColor: 'var(--surface-base)' }}
     >
+      {/* Back button */}
+      <ProductHomeBackButton color={ACCENT_COLOR} />
       {/* Soft sun-glow — shared light logic with Still Us */}
       <div
         style={{
