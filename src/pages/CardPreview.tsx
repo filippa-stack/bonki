@@ -130,6 +130,18 @@ export default function CardPreview() {
             </p>
           )}
 
+          {/* Estimated time */}
+          <p
+            style={{
+              fontSize: '12px',
+              color: 'rgba(255, 255, 255, 0.4)',
+              textAlign: 'center',
+              marginBottom: '20px',
+            }}
+          >
+            Cirka 5–10 min
+          </p>
+
           {/* Preview text */}
           {previewParagraphs ? (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', paddingBottom: '16px' }}>

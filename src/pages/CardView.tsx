@@ -1306,6 +1306,21 @@ export default function CardView() {
                 </motion.p>
               )}
 
+              {/* Estimated time */}
+              <motion.p
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: BEAT_1 + 0.2, duration: 0.5 }}
+                style={{
+                  fontSize: '12px',
+                  color: 'rgba(255, 255, 255, 0.4)',
+                  textAlign: 'center',
+                  marginTop: '12px',
+                }}
+              >
+                Cirka 5–10 min
+              </motion.p>
+
               {/* Decorative dots */}
               <motion.div
                 initial={{ opacity: 0 }}
