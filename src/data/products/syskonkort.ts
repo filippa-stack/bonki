@@ -130,8 +130,8 @@ const cards: Card[] = [
         title: 'Frågor',
         content: '',
         prompts: [
-          'Vilka likheter har du och dina syskon?',
-          'Vilka egenskaper har dina syskon som du inte har?',
+          'Vilka likheter har du och ditt syskon?',
+          'Vilka egenskaper har ditt syskon som du inte har?',
           'Om någon skulle beskriva dig och ditt syskon med tre ord vardera, vad skulle den personen säga?',
           'Beskriv en egenskap hos ditt syskon som du är stolt över.',
           'Finns det sätt som ni beter er lika, trots att ni är olika? Berätta!',
