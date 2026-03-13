@@ -185,7 +185,7 @@ const cards: Card[] = [
   {
     id: 'jma-tavla',
     title: 'Tävla',
-    subtitle: 'Viljan att vinna -- och vad som händer när det inte går',
+    subtitle: 'Viljan att vinna – och vad som händer när det inte går',
     categoryId: 'jma-nar-vi-jamfor-oss',
     sections: [
       {
