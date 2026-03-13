@@ -1,10 +1,10 @@
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { BookOpen } from 'lucide-react';
 import type { ProductManifest } from '@/types/product';
 import slothImage from '@/assets/sloth-jag-med-andra.png';
 import nyckelpiganImage from '@/assets/nyckelpiga-jag-med-andra.png';
 import ProductResumeBanner from '@/components/ProductResumeBanner';
+import DiaryEntrance from '@/components/DiaryEntrance';
 
 const EASE = [0.4, 0.0, 0.2, 1] as const;
 
@@ -261,117 +261,7 @@ export default function JagMedAndraProductHome({ product }: { product: ProductMa
             Välj det som känns rätt just nu.
           </motion.p>
 
-          {/* ✦ Diary entrance — ceremonial, magical */}
-          <motion.div
-            variants={pillVariants}
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              gap: '0px',
-              marginTop: '1.5vh',
-              width: '100%',
-            }}
-          >
-            {/* Sparkle divider — Saffron golden thread (Bonki quality mark) */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.5 }}
-              animate={{ opacity: [0.3, 0.6, 0.3], scale: 1 }}
-              transition={{ opacity: { duration: 3, repeat: Infinity, ease: 'easeInOut' }, scale: { duration: 0.8, delay: 1.2 } }}
-              style={{
-                fontSize: '14px',
-                color: 'var(--accent-saffron)',
-                letterSpacing: '8px',
-                marginBottom: '12px',
-                textAlign: 'center',
-              }}
-            >
-              ✦
-            </motion.div>
-
-            <motion.button
-              whileHover={{ scale: 1.04, y: -3 }}
-              whileTap={{ scale: 0.97 }}
-              onClick={() => navigate(`/diary/${product.id}`)}
-              style={{
-                position: 'relative',
-                background: 'transparent',
-                border: 'none',
-                cursor: 'pointer',
-                padding: '18px 28px',
-                borderRadius: '20px',
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center',
-                gap: '6px',
-                width: '66%',
-                overflow: 'hidden',
-              }}
-            >
-              {/* Ambient glow behind */}
-              <motion.div
-                animate={{ opacity: [0.25, 0.45, 0.25], scale: [1, 1.08, 1] }}
-                transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
-                style={{
-                  position: 'absolute',
-                  inset: '-20%',
-                  background: `radial-gradient(ellipse at center, ${ACCENT_COLOR}22 0%, transparent 70%)`,
-                  borderRadius: '50%',
-                  pointerEvents: 'none',
-                }}
-              />
-
-              {/* Glass surface */}
-              <div
-                style={{
-                  position: 'absolute',
-                  inset: 0,
-                  borderRadius: '20px',
-                  background: 'rgba(36, 0, 70, 0.06)',
-                  border: '1px solid rgba(36, 0, 70, 0.10)',
-                  backdropFilter: 'blur(16px)',
-                  WebkitBackdropFilter: 'blur(16px)',
-                }}
-              />
-
-              {/* Content */}
-              <div style={{ position: 'relative', zIndex: 1, display: 'flex', alignItems: 'center', gap: '10px' }}>
-                <motion.div
-                  animate={{ rotate: [0, -5, 0, 5, 0] }}
-                  transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
-                >
-                  <BookOpen size={18} style={{ color: DIARY_TEXT, opacity: 0.55, flexShrink: 0 }} />
-                </motion.div>
-                <span
-                  style={{
-                    fontFamily: "'DM Serif Display', var(--font-serif)",
-                    fontSize: 'clamp(17px, 4.5vw, 20px)',
-                    fontWeight: 400,
-                    color: DIARY_TEXT,
-                    lineHeight: 1.3,
-                  }}
-                >
-                  Vår dagbok
-                </span>
-              </div>
-              <p
-                className="font-serif"
-                style={{
-                  position: 'relative',
-                  zIndex: 1,
-                  fontSize: '12px',
-                  color: 'var(--accent-saffron)',
-                  opacity: 0.55,
-                  fontStyle: 'italic',
-                  lineHeight: 1.3,
-                  letterSpacing: '0.02em',
-                }}
-              >
-                Era tankar, samlade ✦
-              </p>
-            </motion.button>
-          </motion.div>
+          <DiaryEntrance productId={product.id} accentColor={ACCENT_COLOR} textColor={DIARY_TEXT} />
         </motion.div>
       </div>
     </div>
