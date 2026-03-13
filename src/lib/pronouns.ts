@@ -123,6 +123,7 @@ export function getUIText(mode: PronounMode) {
         opening:    { together: 'Det finns inget rätt svar här. Bara ert.',  solo: 'Det finns inget rätt svar här. Bara ert.' },
         reflective: { together: 'Ta tid på er innan ni svarar.',           solo: 'Ta tid på er innan ni svarar.' },
         scenario:   { together: 'Tänk er in i situationen tillsammans.',    solo: 'Tänk dig in i situationen.' },
+        scenarioBottom: { together: 'Det finns många sätt att göra, inget svar är rätt eller fel.', solo: 'Det finns många sätt att göra, inget svar är rätt eller fel.' },
         exercise:   { together: 'Gör en liten sak ni faktiskt kan hålla.',   solo: 'Gör en liten sak ni faktiskt kan hålla.' },
       },
     };
@@ -147,6 +148,7 @@ export function getUIText(mode: PronounMode) {
       opening:    { together: 'Det finns inget rätt svar här. Bara ert.',  solo: 'Det finns inget rätt svar här. Bara ditt.' },
       reflective: { together: 'Lyssna färdigt innan ni svarar.',          solo: 'Ta tid på dig innan du svarar.' },
       scenario:   { together: 'Välj ett perspektiv — inte en skyldig.',   solo: 'Välj ett perspektiv — inte en skyldig.' },
+      scenarioBottom: { together: 'Det finns många sätt att göra, inget svar är rätt eller fel.', solo: 'Det finns många sätt att göra, inget svar är rätt eller fel.' },
       exercise:   { together: 'Gör en liten sak ni faktiskt kan hålla.',  solo: 'Gör en liten sak du faktiskt kan hålla.' },
     },
   };

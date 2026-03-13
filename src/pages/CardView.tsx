@@ -1947,6 +1947,24 @@ export default function CardView() {
                 return null;
               })()}
 
+              {/* ── Ritual hint ABOVE prompt for scenario steps (live only) ── */}
+              {isLive && (() => {
+                const stageKey = effectiveSteps[currentStepIndex];
+                if (stageKey !== 'scenario') return null;
+                const hint = uiText.ritualHints[stageKey as keyof typeof uiText.ritualHints];
+                if (!hint) return null;
+                return (
+                  <div style={{ marginTop: '0', marginBottom: '16px' }} className="text-center">
+                    <p
+                      className="font-serif italic"
+                      style={{ fontSize: '14px', color: 'var(--accent-text)', opacity: 0.60, lineHeight: 1.5 }}
+                    >
+                      {isTogether ? hint.together : hint.solo}
+                    </p>
+                  </div>
+                );
+              })()}
+
               {/* Prompt content */}
               <motion.div
                 initial={isLive && !suppressEntryAnim ? { opacity: 0 } : false}
@@ -1989,9 +2007,10 @@ export default function CardView() {
                 />
               </motion.div>
 
-              {/* ── Ritual hint (live only) ── */}
+              {/* ── Ritual hint BELOW prompt for non-scenario steps (live only) ── */}
               {isLive && (() => {
                 const stageKey = effectiveSteps[currentStepIndex];
+                if (stageKey === 'scenario') return null; // already shown above
                 const hint = uiText.ritualHints[stageKey as keyof typeof uiText.ritualHints];
                 if (!hint) return null;
                 return (
@@ -2001,6 +2020,22 @@ export default function CardView() {
                       style={{ fontSize: '14px', color: 'var(--accent-text)', opacity: 0.60, lineHeight: 1.5 }}
                     >
                       {isTogether ? hint.together : hint.solo}
+                    </p>
+                  </div>
+                );
+              })()}
+
+              {/* ── Scenario bottom encouragement (live only) ── */}
+              {isLive && effectiveSteps[currentStepIndex] === 'scenario' && (() => {
+                const bottomHint = uiText.ritualHints['scenarioBottom' as keyof typeof uiText.ritualHints];
+                if (!bottomHint) return null;
+                return (
+                  <div style={{ marginTop: '16px', marginBottom: '0' }} className="text-center">
+                    <p
+                      className="font-serif italic"
+                      style={{ fontSize: '14px', color: 'var(--accent-text)', opacity: 0.50, lineHeight: 1.5 }}
+                    >
+                      {isTogether ? bottomHint.together : bottomHint.solo}
                     </p>
                   </div>
                 );
