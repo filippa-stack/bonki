@@ -176,7 +176,7 @@ const cards: Card[] = [
           'Vilka fördelar kan finnas med att ha bonussyskon?',
           'Om du har bonussyskon -- vad har varit svårast att vänja sig vid? Om du inte har det, vad tror du hade kunnat vara svårt?',
           'Om en vän berättade att hen skulle få bonussyskon, vad skulle du ge för råd?',
-          'Har du något gemensamt intresse eller tycker du om samma saker som dina bonussyskon?',
+          'Har du något gemensamt intresse eller tycker du om samma saker som ditt bonussyskon?',
           'Hur har det påverkat dig att ha bonussyskon?',
         ],
       },
