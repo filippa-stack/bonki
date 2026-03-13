@@ -78,6 +78,7 @@ const cards: Card[] = [
   { id: 'vk-mat', title: 'Mat', subtitle: 'Måltider i familjen – vanor, traditioner och vem som bestämmer vad', categoryId: 'vk-vi-hemma', sections: [{ id: 'vk-mat-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
     'Vilken maträtt som dina vuxna gör tycker du minst om? Vilken maträtt skulle du rekommendera andra att prova?',
     'När kan ny mat kännas svår?',
+    'När kan ny mat kännas spännande?',
     'Finns det någon mat som du från början inte tyckte om men nu älskar?',
     'Äter du och din familj någon måltid tillsammans?',
     'Har ni någon särskild mattradition i din familj? Berätta om en du tycker om.',
