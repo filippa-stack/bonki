@@ -26,6 +26,7 @@ export default function CardPreview() {
     product?.secondaryAccent ?? 'hsl(38, 88%, 46%)',
     product?.backgroundColor,
     product?.ctaButtonColor,
+    product?.pronounMode,
   );
 
   // Apply Verdigris for Still Us

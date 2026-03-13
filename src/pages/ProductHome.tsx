@@ -31,6 +31,7 @@ export default function ProductHome() {
     product?.secondaryAccent ?? 'hsl(38, 88%, 46%)',
     product?.backgroundColor,
     product?.ctaButtonColor,
+    product?.pronounMode,
   );
 
   const needsIntroStillUs = useProductIntroNeeded('still_us');

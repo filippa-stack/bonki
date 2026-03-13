@@ -167,6 +167,7 @@ export default function CardView() {
     isStillUsCard ? 'hsl(41, 78%, 48%)' : (product?.secondaryAccent ?? 'hsl(38, 88%, 46%)'),
     isStillUsCard ? undefined : product?.backgroundColor,
     isStillUsCard ? 'hsl(41, 78%, 48%)' : product?.ctaButtonColor,
+    product?.pronounMode,
   );
 
   // Apply Verdigris theme for Still Us cards
