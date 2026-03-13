@@ -61,7 +61,7 @@ const cards: Card[] = [
   qsCard('jiv-mobbning', 'Mobbning', 'Vad mobbning är och inte är – och vilket ansvar var och en har', 'jiv-jag-och-andra',
     ['Vad är skillnaden mellan ett bråk och mobbning?','Hur tror du att mobbning har förändrats sedan dina vuxna var barn?','Kan du ge ett exempel på hur en vuxen kan bli mobbad?','Vad skulle ett barn respektive en vuxen kunna göra för att få hjälp om de blir mobbade?','Kan en vara mobbare utan att veta om det? Ge exempel.'],
     'Tänk dig att det finns elever i din klass som alltid är ensamma och saknar vänner. Ingen gör dem något direkt, men ingen inkluderar dem heller. Kan det räknas som mobbning? Vilket ansvar har du och klassen?'),
-  qsCard('jiv-fordomar', 'Fördomar', 'Hur vi bedömer varandra -- och varför vi gör det utan att tänka på det', 'jiv-jag-och-andra',
+  qsCard('jiv-fordomar', 'Fördomar', 'Hur vi bedömer varandra – och varför vi gör det utan att tänka på det', 'jiv-jag-och-andra',
     ['Varför tror du att vi människor har fördomar om varandra?','Om någon träffade dig under endast en timme, vilken felaktig bedömning hade de kunnat göra om dig?','Berätta om ett tillfälle då du hade en fördom som visade sig inte stämma. Vad fick dig att ändra dig?','Hur kan du upptäcka fördomar som inte märks så tydligt hos andra?','Har någon påpekat att du har en fördom? Stämde det?'],
     'Du och ditt kompisgäng sitter och diskuterar fördomar. En påstår sig vara helt utan fördomar. Är det möjligt?'),
   // ── K4: Jag i samhället ──
