@@ -2,7 +2,7 @@ import type { ProductManifest } from '@/types/product';
 import type { Category, Card } from '@/types';
 
 const categories: Category[] = [
-  { id: 'jiv-min-vardag', title: 'Min vardag', subtitle: 'Det som formar dig varje dag -- inifrån och ut.', description: 'Hälsa, prestation, bekräftelse och självkänsla', cardCount: 4 },
+  { id: 'jiv-min-vardag', title: 'Min vardag', subtitle: 'Det som formar dig varje dag – inifrån och ut.', description: 'Hälsa, prestation, bekräftelse och självkänsla', cardCount: 4 },
   { id: 'jiv-vem-jag-ar', title: 'Vem jag är', subtitle: 'Identitet, frihet och relationer som speglar dig.', description: 'Identitet, roller, frihet, kärlek och vänskap', cardCount: 5 },
   { id: 'jiv-jag-och-andra', title: 'Jag & andra', subtitle: 'Hur vi pratar, bråkar och bryr oss om varandra.', description: 'Kommunikation, konflikt, medkänsla, mobbning och fördomar', cardCount: 5 },
   { id: 'jiv-jag-i-samhallet', title: 'Jag i samhället', subtitle: 'Normer, ansvar och frågor som påverkar oss alla.', description: 'Social media, psykisk ohälsa, sexualitet, moral och aktivism', cardCount: 5 },
