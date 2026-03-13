@@ -447,7 +447,7 @@ const cards: Card[] = [
   {
     id: 'jma-integritet',
     title: 'Integritet',
-    subtitle: 'Att stå för det man tror på -- även när det är svårt',
+    subtitle: 'Att stå för det en tror på -- även när det är svårt',
     categoryId: 'jma-att-sta-stadig',
     sections: [
       {
