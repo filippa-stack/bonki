@@ -71,7 +71,7 @@ const cards: Card[] = [
     'Förutom skolan, vad är den största skillnaden på vardag och helg för dig? Varför tror du att det är skillnad?',
     'Finns det något du gör på helgen som du egentligen inte behöver göra, men som du mår bra av?',
     'Om du var tvungen att gå i skolan en lördag, vilken veckodag skulle du vilja vara ledig på istället? Varför?',
-    'Du får bestämma en rutin eller regel på helgen som dina vuxna är tvungna att följa -- vad skulle det vara?',
+    'Du får bestämma en rutin eller regel på helgen som dina vuxna är tvungna att följa – vad skulle det vara?',
     'Om du fick välja själv, hur skulle en perfekt helg se ut?',
   ]}]},
   // ── K2: Vi hemma ──
