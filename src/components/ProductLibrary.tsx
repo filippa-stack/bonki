@@ -172,7 +172,7 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
   showFreeBadge?: boolean; badgeText?: string;
 }>(function PastelTile({
   name, bg, ageLabel, tagline, onClick, illustration, accentColor, taglineColor,
-  illustrationOpacity = 0.25, illustrationSize = 'contain', illustrationPosition = 'right center', wide = false,
+  illustrationOpacity = 0.32, illustrationSize = 'contain', illustrationPosition = 'right center', wide = false,
   showFreeBadge = false, badgeText = 'Första kortet gratis',
 }, ref) {
   const darkenHex = (hex: string) => {
