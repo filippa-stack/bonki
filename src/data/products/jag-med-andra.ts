@@ -331,7 +331,7 @@ const cards: Card[] = [
   {
     id: 'jma-kritik',
     title: 'Kritik',
-    subtitle: 'Att ge och ta emot återkoppling -- utan att det blir ett personangrepp',
+    subtitle: 'Att ge och ta emot återkoppling – utan att det blir ett personangrepp',
     categoryId: 'jma-nar-det-skaver',
     sections: [
       {
