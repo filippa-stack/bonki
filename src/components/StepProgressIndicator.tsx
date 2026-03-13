@@ -1,3 +1,4 @@
+import { useRef, useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { EMOTION, EASE } from '@/lib/motion';
 
@@ -71,6 +72,20 @@ export default function StepProgressIndicator({
   const activeSteps = steps ?? STAGE_STEPS;
   const showCounter = currentPromptIndex !== undefined && totalPromptsInStep !== undefined && totalPromptsInStep > 0;
 
+  // Track which step was just completed for pulse animation
+  const prevStepRef = useRef(currentStepIndex);
+  const [justCompletedIndex, setJustCompletedIndex] = useState<number | null>(null);
+
+  useEffect(() => {
+    if (currentStepIndex > prevStepRef.current) {
+      setJustCompletedIndex(prevStepRef.current);
+      const timer = setTimeout(() => setJustCompletedIndex(null), 450);
+      prevStepRef.current = currentStepIndex;
+      return () => clearTimeout(timer);
+    }
+    prevStepRef.current = currentStepIndex;
+  }, [currentStepIndex]);
+
   return (
     <div className={className} style={{ width: '100%', padding: '0 24px' }}>
       {/* Labels row */}
@@ -88,8 +103,12 @@ export default function StepProgressIndicator({
                   : isCompleted
                     ? '#DA9D1D'
                     : 'rgba(255, 255, 255, 0.35)',
+                scale: index === justCompletedIndex ? [1, 1.1, 1] : 1,
               }}
-              transition={{ duration: EMOTION, ease: [...EASE] }}
+              transition={{
+                color: { duration: EMOTION, ease: [...EASE] },
+                scale: { duration: 0.4, ease: [0, 0, 0.2, 1] },
+              }}
               style={{
                 flex: 1,
                 textAlign: 'center',
