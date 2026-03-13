@@ -37,7 +37,7 @@ const cards: Card[] = [
     'Om du fick bestämma själv, hur skulle en skoldag se ut?',
     'Kan det vara jobbigt att lära sig något? Vad är det i så fall som gör att det känns jobbigt?',
   ]}]},
-  { id: 'vk-hur-var-din-dag', title: 'Hur var din dag', subtitle: 'En öppen dörr in till barnets dag -- tankar, känslor och upplevelser', categoryId: 'vk-var-rytm', sections: [{ id: 'vk-hur-var-din-dag-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
+  { id: 'vk-hur-var-din-dag', title: 'Hur var din dag', subtitle: 'En öppen dörr in till barnets dag – tankar, känslor och upplevelser', categoryId: 'vk-var-rytm', sections: [{ id: 'vk-hur-var-din-dag-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
     'Berätta om något som gjorde dig glad, stolt, nyfiken eller kanske arg eller ledsen idag.',
     'Om du kunde ändra något som hände idag, vad skulle det vara?',
     'Var idag bättre eller sämre än igår? Förklara varför!',
