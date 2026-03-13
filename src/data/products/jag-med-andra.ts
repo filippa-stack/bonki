@@ -561,7 +561,7 @@ const cards: Card[] = [
   {
     id: 'jma-sanning',
     title: 'Sanning',
-    subtitle: 'Ärlighet och dess gränser -- när är det rätt att inte säga allt?',
+    subtitle: 'Ärlighet och dess gränser – när är det rätt att inte säga allt?',
     categoryId: 'jma-vi-i-varlden',
     sections: [
       {
