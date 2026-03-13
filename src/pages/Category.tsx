@@ -16,6 +16,7 @@ import { useVerdigrisTheme } from '@/components/VerdigrisAtmosphere';
 import { CIRCADIAN_COLORS, CIRCADIAN_COLORS_LIGHT, CIRCADIAN_FILLS, CIRCADIAN_FILLS_HOVER } from '@/components/CircadianMenu';
 import Header from '@/components/Header';
 import CardStatusBadge from '@/components/CardStatusBadge';
+import { KIDS_PRODUCT_IDS } from '@/hooks/useKidsProductProgress';
 
 
 import mirrorJagIMig from '@/assets/mirror-jag-i-mig.png';
@@ -150,7 +151,9 @@ export default function Category() {
   const { optimisticCardIds } = useOptimisticCompletions();
 
   const [serverCompletedCardIds, setServerCompletedCardIds] = useState<string[]>([]);
+  const [serverCompletedWithDates, setServerCompletedWithDates] = useState<{ card_id: string; ended_at: string }[]>([]);
   const [inProgressCardIds, setInProgressCardIds] = useState<string[]>([]);
+
 
   useEffect(() => {
     if (!space?.id) return;
@@ -158,12 +161,17 @@ export default function Category() {
 
     supabase
       .from('couple_sessions')
-      .select('card_id')
+      .select('card_id, ended_at')
       .eq('couple_space_id', space.id)
       .eq('status', 'completed')
       .then(({ data }) => {
         if (!cancelled && data) {
           setServerCompletedCardIds(data.map(s => s.card_id).filter(Boolean) as string[]);
+          setServerCompletedWithDates(
+            data
+              .filter(s => s.card_id && s.ended_at)
+              .map(s => ({ card_id: s.card_id!, ended_at: s.ended_at! }))
+          );
         }
       });
 
@@ -181,12 +189,6 @@ export default function Category() {
     return () => { cancelled = true; };
   }, [space?.id]);
 
-  const completedCardIds = useMemo(() => {
-    const merged = new Set(serverCompletedCardIds);
-    optimisticCardIds.forEach(id => merged.add(id));
-    return Array.from(merged);
-  }, [serverCompletedCardIds, optimisticCardIds]);
-
   const category = categoryId ? getCategoryById(categoryId) : undefined;
   const cards = categoryId ? getCardsByCategory(categoryId) : [];
 
@@ -196,10 +198,42 @@ export default function Category() {
     return allProducts.find(p => p.categories.some(c => c.id === categoryId));
   }, [categoryId]);
 
+  // Determine if this is a kids product category (uses 14-day expiry)
+  const isKidsProduct = !!product && KIDS_PRODUCT_IDS.includes(product.id);
+
   // Still Us categories live in content.ts, not in allProducts
   const isStillUsCategory = useMemo(() => {
     return !!categoryId && stillUsCategories.some(c => c.id === categoryId);
   }, [categoryId]);
+
+  // For kids products: apply 14-day expiry to completions
+  const FOURTEEN_DAYS_MS = 14 * 24 * 60 * 60 * 1000;
+
+  const completedCardIds = useMemo(() => {
+    if (isKidsProduct) {
+      const now = Date.now();
+      const seen = new Set<string>();
+      const result: string[] = [];
+      const sorted = [...serverCompletedWithDates].sort(
+        (a, b) => new Date(b.ended_at).getTime() - new Date(a.ended_at).getTime()
+      );
+      for (const s of sorted) {
+        if (seen.has(s.card_id)) continue;
+        seen.add(s.card_id);
+        const elapsed = now - new Date(s.ended_at).getTime();
+        if (elapsed < FOURTEEN_DAYS_MS) {
+          result.push(s.card_id);
+        }
+      }
+      optimisticCardIds.forEach(id => {
+        if (!result.includes(id)) result.push(id);
+      });
+      return result;
+    }
+    const merged = new Set(serverCompletedCardIds);
+    optimisticCardIds.forEach(id => merged.add(id));
+    return Array.from(merged);
+  }, [isKidsProduct, serverCompletedCardIds, serverCompletedWithDates, optimisticCardIds]);
 
   const backTo = product ? `/product/${product.slug}` : isStillUsCategory ? '/?devState=solo' : '/';
   const styles = product ? PRODUCT_STYLES[product.id] : undefined;
