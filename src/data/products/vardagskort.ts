@@ -9,7 +9,8 @@ const categories: Category[] = [
 ];
 
 const cards: Card[] = [
-  // ── K1: Vår rytm ──
+  // ── K1: Min dag ──
+  { id: 'vk-hur-var-din-dag', title: 'Hur var din dag', subtitle: 'En öppen dörr in till barnets dag – tankar, känslor och upplevelser', categoryId: 'vk-min-dag', sections: [{ id: 'vk-hur-var-din-dag-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
   { id: 'vk-morgon', title: 'Morgon', subtitle: 'Starten på dagen – rutiner, stress och vad som hjälper', categoryId: 'vk-var-rytm', sections: [{ id: 'vk-morgon-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
     'Berätta om din morgonrutin en vardag när du ska gå till förskolan eller skolan.',
     'Hur tänker du att ni kan göra morgonrutinen roligare?',
