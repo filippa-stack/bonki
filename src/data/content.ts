@@ -566,7 +566,7 @@ export const cards: Card[] = [
         title: 'Fördjupning',
         content: 'Fundera på rötterna till era reaktioner.',
         prompts: [
-          'Kan du skilja på om du reagerar på det som faktiskt händer — eller på något det påminner dig om?',
+          'Hur märker du — kanske först efteråt — om din reaktion handlade om det som hände eller om något äldre?',
           'När du reagerar utifrån din historia snarare än det som händer — gör ert sätt att hantera det bättre eller sämre?',
         ],
         anchors: [
