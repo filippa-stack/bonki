@@ -154,8 +154,6 @@ export default function Category() {
   const [serverCompletedWithDates, setServerCompletedWithDates] = useState<{ card_id: string; ended_at: string }[]>([]);
   const [inProgressCardIds, setInProgressCardIds] = useState<string[]>([]);
 
-  // Determine if this is a kids product category (uses 14-day expiry)
-  const isKidsProduct = !!product && KIDS_PRODUCT_IDS.includes(product.id);
 
   useEffect(() => {
     if (!space?.id) return;
