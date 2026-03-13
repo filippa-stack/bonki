@@ -42,7 +42,7 @@ const cards: Card[] = [
   qsCard('jiv-frihet', 'Frihet', 'Vad frihet egentligen innebär – och hur ansvar och frihet hänger ihop', 'jiv-vem-jag-ar',
     ['Vilken personlig frihet skulle du sakna mest om den togs ifrån dig?','Tycker du att frihet och ansvar hör ihop? På vilket sätt?','Berätta om en situation där du känt dig väldigt fri.','Vilka friheter tror du vuxna har?','Vilka begränsningar eller ofriheter tror du vuxna har som inte barn har?'],
     'Någon du känner får vara ute hur sent som helst, har ingen bestämd middagstid och har ett kort där pengar sätts in för att kunna köpa vad hen vill. Samma person blir aldrig hämtad, får ofta laga mat själv och får klara sig själv. Tror du att den här personen känner sig fri? Förklara.'),
-  qsCard('jiv-karlek', 'Kärlek', 'Kärlekens många former -- attraktion, förälskelse och hur det förändras', 'jiv-vem-jag-ar',
+  qsCard('jiv-karlek', 'Kärlek', 'Kärlekens många former – attraktion, förälskelse och hur det förändras', 'jiv-vem-jag-ar',
     ['Hur känns kärlek?','Hur kan kärlek se ut för olika personer?','Vad finns det för likheter och skillnader mellan vänskap och kärlek?','Varför behöver vi kärlek? Kan en leva utan kärlek och ändå må bra?','Är det skillnad på attraktion, förälskelse, att vara kär och kärlek? Hur vet en skillnaden?','Hur kan ens kärlek till en person förändras över tid?','Vad kan orsaka att en slutar älska någon?'],
     'Du förstår att en person gillar dig som mer än en vän, men du känner inte likadant. Vad kan du göra?'),
   qsCard('jiv-vanskap', 'Vänskap', 'Vad som håller en vänskap levande -- och om alla vänskaper är lika värda', 'jiv-vem-jag-ar',
