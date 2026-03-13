@@ -610,35 +610,10 @@ function StillUsCategoryView({
                       )}
                     </div>
 
-                    {/* Status */}
+                    {/* Status badge */}
                     <div style={{ flexShrink: 0 }}>
-                      {isCompleted && (
-                        <span
-                          style={{
-                            fontFamily: 'var(--font-sans)',
-                            fontSize: '9px',
-                            fontWeight: 500,
-                            letterSpacing: '0.10em',
-                            textTransform: 'uppercase' as const,
-                            color: HERITAGE_GOLD,
-                            opacity: 0.55,
-                          }}
-                        >
-                          Utforskad
-                        </span>
-                      )}
-                      {isInProgress && (
-                        <span
-                          style={{
-                            display: 'inline-block',
-                            width: '6px', height: '6px',
-                            borderRadius: '50%',
-                            backgroundColor: HERITAGE_GOLD,
-                            opacity: 0.7,
-                            animation: 'saffron-pulse 2.0s ease-in-out infinite',
-                          }}
-                        />
-                      )}
+                      {isCompleted && <CardStatusBadge variant="completed" mode="dark" />}
+                      {isInProgress && <CardStatusBadge variant="inProgress" mode="dark" />}
                     </div>
                   </div>
                 </motion.button>
