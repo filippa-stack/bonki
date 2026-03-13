@@ -98,7 +98,7 @@ const cards: Card[] = [
     'Varför tror du att syskon kan vara så olika? Är det konstigt?',
     'Tycker en om sina syskon på samma sätt som en tycker om sina vuxna, eller är det annorlunda?',
   ]}]},
-  { id: 'vk-underhallning', title: 'Underhållning', subtitle: 'Lek, skärmar och fritid -- vad barnet tycker om och hur familjen umgås', categoryId: 'vk-vi-hemma', sections: [{ id: 'vk-underhallning-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
+  { id: 'vk-underhallning', title: 'Underhållning', subtitle: 'Lek, skärmar och fritid – vad barnet tycker om och hur familjen umgås', categoryId: 'vk-vi-hemma', sections: [{ id: 'vk-underhallning-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
     'Har din familj något favoritspel eller någon favoritlek?',
     'Tycker ni om samma saker?',
     'Vad tycker dina vuxna om för lekar eller spel som du inte tycker om?',
