@@ -48,7 +48,7 @@ const cards: Card[] = [
     'Kan det vara jobbigt att lära sig något? Vad är det i så fall som gör att det känns jobbigt?',
   ]}]},
   { id: 'vk-kvall', title: 'Kväll', subtitle: 'Nedvarvning och läggdags – vad kroppen behöver och vad barnet tänker på', categoryId: 'vk-var-rytm', sections: [{ id: 'vk-kvall-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
-    'Varför är det svårt att lägga sig, och svårt att stiga upp?',
+    'Vad är svårast för dig – att lägga dig eller stiga upp?',
     'Vad är skillnaden på att vara trött på morgonen och trött på kvällen?',
     'Har du något att säga till om när det gäller din tid att lägga dig?',
     'Om du skulle natta dina föräldrar, hur skulle du göra? Vad skulle du göra om de började protestera?',
@@ -71,13 +71,14 @@ const cards: Card[] = [
     'Förutom skolan, vad är den största skillnaden på vardag och helg för dig? Varför tror du att det är skillnad?',
     'Finns det något du gör på helgen som du egentligen inte behöver göra, men som du mår bra av?',
     'Om du var tvungen att gå i skolan en lördag, vilken veckodag skulle du vilja vara ledig på istället? Varför?',
-    'Du får bestämma en rutin eller regel på helgen som dina vuxna är tvungna att följa -- vad skulle det vara?',
+    'Du får bestämma en rutin eller regel på helgen som dina vuxna är tvungna att följa – vad skulle det vara?',
     'Om du fick välja själv, hur skulle en perfekt helg se ut?',
   ]}]},
   // ── K2: Vi hemma ──
   { id: 'vk-mat', title: 'Mat', subtitle: 'Måltider i familjen – vanor, traditioner och vem som bestämmer vad', categoryId: 'vk-vi-hemma', sections: [{ id: 'vk-mat-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
     'Vilken maträtt som dina vuxna gör tycker du minst om? Vilken maträtt skulle du rekommendera andra att prova?',
     'När kan ny mat kännas svår?',
+    'När kan ny mat kännas spännande?',
     'Finns det någon mat som du från början inte tyckte om men nu älskar?',
     'Äter du och din familj någon måltid tillsammans?',
     'Har ni någon särskild mattradition i din familj? Berätta om en du tycker om.',
