@@ -74,50 +74,49 @@ export default function CardStatusBadge({ variant, mode = 'light' }: CardStatusB
   const c = config[variant];
 
   return (
-    <div
-      style={{
-        display: 'inline-flex',
-        alignItems: 'center',
-        gap: '6px',
-        borderRadius: '12px',
-        padding: '5px 10px 5px 8px',
-        ...c.glassOverride,
-      }}
-    >
-      {/* Dot or checkmark */}
-      {variant === 'completed' ? (
-        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-          <circle cx="7" cy="7" r="6" stroke={c.textColor} strokeWidth="1.5" opacity="0.6" />
-          <path d="M4 7l2.2 2.2 3.8-3.8" stroke={c.textColor} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" opacity="0.6" />
-        </svg>
-      ) : c.showDot ? (
-        <span
-          style={{
-            display: 'inline-block',
-            width: '7px',
-            height: '7px',
-            borderRadius: '50%',
-            backgroundColor: c.dotColor,
-            flexShrink: 0,
-            ...(c.dotPulse ? { animation: 'saffron-pulse 2.0s ease-in-out infinite' } : {}),
-          }}
-        />
-      ) : null}
-
-      {/* Label */}
-      <span
+    {variant === 'completed' ? (
+      <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true" aria-label="Utforskad">
+        <circle cx="9" cy="9" r="8" stroke={c.textColor} strokeWidth="1.5" opacity="0.5" />
+        <path d="M5.5 9l2.5 2.5 4.5-4.5" stroke={c.textColor} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" opacity="0.6" />
+      </svg>
+    ) : (
+      <div
         style={{
-          fontFamily: 'var(--font-sans)',
-          fontSize: '10px',
-          fontWeight: 600,
-          letterSpacing: '0.06em',
-          textTransform: 'uppercase',
-          color: c.textColor,
-          lineHeight: 1,
+          display: 'inline-flex',
+          alignItems: 'center',
+          gap: '6px',
+          borderRadius: '12px',
+          padding: '5px 10px 5px 8px',
+          ...c.glassOverride,
         }}
       >
-        {c.label}
-      </span>
-    </div>
+        {c.showDot && (
+          <span
+            style={{
+              display: 'inline-block',
+              width: '7px',
+              height: '7px',
+              borderRadius: '50%',
+              backgroundColor: c.dotColor,
+              flexShrink: 0,
+              ...(c.dotPulse ? { animation: 'saffron-pulse 2.0s ease-in-out infinite' } : {}),
+            }}
+          />
+        )}
+        <span
+          style={{
+            fontFamily: 'var(--font-sans)',
+            fontSize: '10px',
+            fontWeight: 600,
+            letterSpacing: '0.06em',
+            textTransform: 'uppercase',
+            color: c.textColor,
+            lineHeight: 1,
+          }}
+        >
+          {c.label}
+        </span>
+      </div>
+    )}
   );
 }
