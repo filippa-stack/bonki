@@ -47,7 +47,7 @@ const cards: Card[] = [
     'Du förstår att en person gillar dig som mer än en vän, men du känner inte likadant. Vad kan du göra?'),
   qsCard('jiv-vanskap', 'Vänskap', 'Vad som håller en vänskap levande -- och om alla vänskaper är lika värda', 'jiv-vem-jag-ar',
     ['Varför tror du att människan är naturligt programmerad att behöva vänner?','Är vänskap något en väljer eller något som bara uppstår?','Hur skulle du definiera en vän för livet? Vad krävs för en sådan relation?','Kan en ha olika typer av vänskapsrelationer? Hur kan de i så fall se ut?'],
-    'En person har flera olika vänner. Vissa av dem är mer populära än andra. Några kan vara tråkiga, men finns alltid där. Är några vänner mer värda än andra? Kan man värdera vänskap? Förklara.'),
+    'En person har flera olika vänner. Vissa av dem är mer populära än andra. Några kan vara tråkiga, men finns alltid där. Är några vänner mer värda än andra? Kan en värdera vänskap? Förklara.'),
   // ── K3: Jag & andra ──
   qsCard('jiv-kommunikation', 'Kommunikation', 'Hur vi förstår varandra -- och vad som händer när orden inte räcker', 'jiv-jag-och-andra',
     ['Hur skulle du tillbringa en dag om du inte kunde kommunicera med någon?','Om en upplever att det är svårt att kommunicera med någon, vad kan det bero på?','Finns det vissa kommunikationskanaler (sociala medier, IRL) som är mer lämpliga beroende på vad samtalet handlar om?','Berätta om en situation då du önskar att du hade kommunicerat annorlunda.'],
