@@ -272,11 +272,28 @@ export default function CircadianMenu({
                   transition={{
                     y: { duration: 0.65, delay: 0.12 + currentIndex * 0.06, ease: [...ENTER_EASE] },
                   }}
-                  style={{ position: 'relative' }}
+                  style={{ position: 'relative', display: 'flex', alignItems: 'center', gap: '10px' }}
                 >
+                  {/* Sequence number */}
+                  <span
+                    style={{
+                      fontFamily: 'var(--font-serif)',
+                      fontSize: '11px',
+                      fontWeight: 500,
+                      color: HERITAGE_GOLD,
+                      opacity: 0.3,
+                      width: '14px',
+                      textAlign: 'right',
+                      flexShrink: 0,
+                      letterSpacing: '0.02em',
+                    }}
+                  >
+                    {sequenceNumber}
+                  </span>
                   <motion.button
                     onClick={() => onNavigateToCategory(category.id)}
                     className="w-full text-left circadian-tile"
+                    style={{ flex: 1 }}
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.985 }}
                     style={{
