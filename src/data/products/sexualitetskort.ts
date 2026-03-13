@@ -88,7 +88,7 @@ const cards: Card[] = [
     'Hur påverkar media våra föreställningar om kärlek och sex?',
   ]}]},
   // ── K3: Relation & ansvar ──
-  { id: 'sex-samtycke', title: 'Samtycke', subtitle: 'Att sex kräver ett aktivt och frivilligt ja -- och vad som gäller när det är oklart', categoryId: 'sex-relation-och-ansvar', sections: [{ id: 'sex-samtycke-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
+  { id: 'sex-samtycke', title: 'Samtycke', subtitle: 'Att sex kräver ett aktivt och frivilligt ja – och vad som gäller när det är oklart', categoryId: 'sex-relation-och-ansvar', sections: [{ id: 'sex-samtycke-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
     'Vad innebär det att två personer samtycker till att ha sex?',
     'Vad räknas som att sända ut en sexuell signal?',
     'Kan en signalera samtycke på andra sätt än genom att säga ja eller nej?',
