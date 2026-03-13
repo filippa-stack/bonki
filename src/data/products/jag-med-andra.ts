@@ -214,7 +214,7 @@ const cards: Card[] = [
   {
     id: 'jma-utseende',
     title: 'Utseende',
-    subtitle: 'Hur vi ser på oss själva och varandra -- och vad yttre egentligen säger',
+    subtitle: 'Hur vi ser på oss själva och varandra – och vad yttre egentligen säger',
     categoryId: 'jma-nar-vi-jamfor-oss',
     sections: [
       {
