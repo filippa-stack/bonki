@@ -73,9 +73,9 @@ export default function JagMedAndraProductHome({ product }: { product: ProductMa
                   padding: '0 32px',
                   textAlign: 'center',
                   cursor: 'pointer',
-                  border: isNextCategory ? `1.5px solid ${SAFFRON}88` : '1px solid hsla(345, 20%, 75%, 0.35)',
+                  border: isNextCategory ? `2px solid ${SAFFRON}BB` : '1px solid hsla(345, 20%, 75%, 0.35)',
                   boxShadow: [
-                    isNextCategory ? `0 0 20px -4px ${SAFFRON}30` : '',
+                    isNextCategory ? `0 0 16px 0px ${SAFFRON}45, 0 0 32px -4px ${SAFFRON}25` : '',
                     '0 4px 14px hsla(345, 20%, 40%, 0.10)',
                     '0 1px 4px hsla(0, 0%, 0%, 0.04)',
                     'inset 0 1px 0 hsla(345, 30%, 95%, 0.60)',

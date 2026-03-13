@@ -76,10 +76,10 @@ export default function JagIVarldenProductHome({ product }: { product: ProductMa
                   textAlign: 'center',
                   cursor: 'pointer',
                   border: isNextCategory
-                    ? `1.5px solid ${SAFFRON}88`
+                    ? `2px solid ${SAFFRON}BB`
                     : isHero ? '1.5px solid rgba(61, 122, 69, 0.22)' : isDark ? '1px solid rgba(255, 255, 255, 0.12)' : '1px solid rgba(61, 122, 69, 0.10)',
                   boxShadow: [
-                    isNextCategory ? `0 0 20px -4px ${SAFFRON}30` : '',
+                    isNextCategory ? `0 0 16px 0px ${SAFFRON}45, 0 0 32px -4px ${SAFFRON}25` : '',
                     isHero
                       ? '0 8px 28px rgba(61, 122, 69, 0.16), 0 3px 8px rgba(61, 122, 69, 0.08), inset 0 2px 0 rgba(255, 255, 255, 0.50), inset 0 -2px 4px rgba(61, 122, 69, 0.08)'
                       : `0 4px 16px rgba(61, 122, 69, 0.10), 0 1px 4px rgba(61, 122, 69, 0.06), ${isDark ? 'inset 0 1px 0 rgba(255, 255, 255, 0.12), inset 0 -1px 3px rgba(0, 0, 0, 0.08)' : 'inset 0 2px 0 rgba(255, 255, 255, 0.45), inset 0 -2px 4px rgba(61, 122, 69, 0.06)'}`,
