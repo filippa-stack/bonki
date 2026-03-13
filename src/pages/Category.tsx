@@ -171,7 +171,7 @@ export default function Category() {
       .from('couple_sessions')
       .select('card_id')
       .eq('couple_space_id', space.id)
-      .in('status', ['active', 'abandoned', 'in_progress'])
+      .in('status', ['active', 'abandoned'])
       .then(({ data }) => {
         if (!cancelled && data) {
           setInProgressCardIds(data.map(s => s.card_id).filter(Boolean) as string[]);
