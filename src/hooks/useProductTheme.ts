@@ -23,9 +23,11 @@ export function useProductTheme(primary: string, accent: string, bgColor?: strin
     if (bgColor) {
       root.style.setProperty('--surface-base', bgColor);
       root.style.setProperty('--product-bg', bgColor);
-      // Derive question cloud tint from product bg — subtle radial wash
-      root.style.setProperty('--question-cloud-tint', `${bgColor}99`);
-      root.style.setProperty('--question-cloud-border', `${bgColor}44`);
+      // Question cloud only for kids products (pronounMode 'du')
+      if (pronounMode === 'du') {
+        root.style.setProperty('--question-cloud-tint', `${bgColor}99`);
+        root.style.setProperty('--question-cloud-border', `${bgColor}44`);
+      }
     }
 
     if (ctaButtonColor) {
