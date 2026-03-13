@@ -158,7 +158,7 @@ export default function VardagProductHome({ product }: { product: ProductManifes
                 textShadow: '0 0 16px rgba(255,255,255,0.95), 0 0 32px rgba(255,255,255,0.5)',
               }}
             >
-              Färre bråk, mer ro
+              Hur vi har det
             </p>
             <ProductResumeBanner product={product} accentColor={ACCENT_COLOR} />
           </motion.div>
