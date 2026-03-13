@@ -153,6 +153,21 @@ export default function StepProgressIndicator({
           );
         })}
       </div>
+
+      {/* Question counter */}
+      {showCounter && (
+        <div style={{
+          textAlign: 'center',
+          marginTop: '6px',
+          fontFamily: 'var(--font-sans)',
+          fontSize: '12px',
+          fontWeight: 400,
+          color: 'rgba(255, 255, 255, 0.4)',
+          letterSpacing: '0.04em',
+        }}>
+          {currentPromptIndex + 1} / {totalPromptsInStep}
+        </div>
+      )}
     </div>
   );
 }
