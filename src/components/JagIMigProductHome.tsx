@@ -164,6 +164,7 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
             >
               när känslor får ord
             </p>
+            <ProductResumeBanner product={product} accentColor={ACCENT_COLOR} />
           </motion.div>
 
           {/* Category tiles — candy-glass with rhythm */}
