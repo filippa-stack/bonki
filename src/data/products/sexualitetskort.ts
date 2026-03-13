@@ -21,7 +21,7 @@ const cards: Card[] = [
     'Vad betyder det att vara icke-binär?',
     'Vart kan du vända dig och vem kan du prata med om du upplever att din könsidentitet inte överensstämmer med ditt kroppsliga kön?',
   ]}]},
-  { id: 'sex-sexuell-laggning', title: 'Sexuell läggning', subtitle: 'Vem man attraheras av -- och hur man förstår och uttrycker det', categoryId: 'sex-min-identitet', sections: [{ id: 'sex-sexuell-laggning-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
+  { id: 'sex-sexuell-laggning', title: 'Sexuell läggning', subtitle: 'Vem en attraheras av -- och hur en förstår och uttrycker det', categoryId: 'sex-min-identitet', sections: [{ id: 'sex-sexuell-laggning-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
     'Har du någon gång funderat på din sexuella läggning?',
     'Hur vet en person om den är heterosexuell eller HBTQI?',
     'Tror du att ens sexuella läggning förblir densamma hela livet, eller kan den förändras?',
