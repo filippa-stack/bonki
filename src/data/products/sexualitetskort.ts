@@ -68,7 +68,7 @@ const cards: Card[] = [
     'Vad kan hända om barn tittar på pornografi? Förklara!',
     'Kan en få ut något positivt av porr?',
   ]}]},
-  { id: 'sex-sexuella-tabun', title: 'Sexuella tabun', subtitle: 'Det som sällan pratas om högt -- vad som är lagligt, etiskt och var gränserna går', categoryId: 'sex-normer-och-paverkan', sections: [{ id: 'sex-sexuella-tabun-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
+  { id: 'sex-sexuella-tabun', title: 'Sexuella tabun', subtitle: 'Det som sällan pratas om högt – vad som är lagligt, etiskt och var gränserna går', categoryId: 'sex-normer-och-paverkan', sections: [{ id: 'sex-sexuella-tabun-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
     'Kan du ge exempel på sexuella tabun?',
     'Vad är en kink respektive en fetisch?',
     'Kan du ge exempel på lagliga respektive olagliga tabun?',
