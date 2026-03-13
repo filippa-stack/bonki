@@ -48,7 +48,7 @@ const cards: Card[] = [
     'Kan det vara jobbigt att lära sig något? Vad är det i så fall som gör att det känns jobbigt?',
   ]}]},
   { id: 'vk-kvall', title: 'Kväll', subtitle: 'Nedvarvning och läggdags – vad kroppen behöver och vad barnet tänker på', categoryId: 'vk-var-rytm', sections: [{ id: 'vk-kvall-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
-    'Varför är det svårt att lägga sig, och svårt att stiga upp?',
+    'Vad är svårast för dig – att lägga dig eller stiga upp?',
     'Vad är skillnaden på att vara trött på morgonen och trött på kvällen?',
     'Har du något att säga till om när det gäller din tid att lägga dig?',
     'Om du skulle natta dina föräldrar, hur skulle du göra? Vad skulle du göra om de började protestera?',
