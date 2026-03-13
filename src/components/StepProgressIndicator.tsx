@@ -53,6 +53,10 @@ interface StepProgressIndicatorProps {
   className?: string;
   /** Dynamic steps override. Falls back to STAGE_STEPS (Still Us). */
   steps?: StageStep[];
+  /** Current question index within step (0-based) */
+  currentPromptIndex?: number;
+  /** Total questions in current step */
+  totalPromptsInStep?: number;
 }
 
 export default function StepProgressIndicator({
