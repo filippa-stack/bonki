@@ -860,7 +860,7 @@ export const cards: Card[] = [
         title: 'I vardagen',
         content: 'En av er vill satsa helhjärtat på något som under en tid tar mycket energi. Den andra stöttar, men oroar sig för balansen.',
         prompts: [
-          'Innan något stort och krävande börjar — hur brukar ni förbereda er som par, och vad glömmer ni oftast att prata om?',
+          'Hur brukar ni förbereda er som par inför något stort — och vad har ni i efterhand önskat att ni pratat om redan innan?',
         ],
       },
       {
