@@ -189,39 +189,6 @@ export default function Category() {
     return () => { cancelled = true; };
   }, [space?.id]);
 
-  // For kids products: apply 14-day expiry to completions
-  const FOURTEEN_DAYS_MS = 14 * 24 * 60 * 60 * 1000;
-
-  const completedCardIds = useMemo(() => {
-    if (isKidsProduct) {
-      // Only count completions within last 14 days
-      const now = Date.now();
-      const seen = new Set<string>();
-      const result: string[] = [];
-      // Sort by ended_at desc to get most recent first
-      const sorted = [...serverCompletedWithDates].sort(
-        (a, b) => new Date(b.ended_at).getTime() - new Date(a.ended_at).getTime()
-      );
-      for (const s of sorted) {
-        if (seen.has(s.card_id)) continue;
-        seen.add(s.card_id);
-        const elapsed = now - new Date(s.ended_at).getTime();
-        if (elapsed < FOURTEEN_DAYS_MS) {
-          result.push(s.card_id);
-        }
-      }
-      // Add optimistic completions
-      optimisticCardIds.forEach(id => {
-        if (!result.includes(id)) result.push(id);
-      });
-      return result;
-    }
-    // Still Us: permanent completions
-    const merged = new Set(serverCompletedCardIds);
-    optimisticCardIds.forEach(id => merged.add(id));
-    return Array.from(merged);
-  }, [isKidsProduct, serverCompletedCardIds, serverCompletedWithDates, optimisticCardIds]);
-
   const category = categoryId ? getCategoryById(categoryId) : undefined;
   const cards = categoryId ? getCardsByCategory(categoryId) : [];
 
@@ -238,6 +205,35 @@ export default function Category() {
   const isStillUsCategory = useMemo(() => {
     return !!categoryId && stillUsCategories.some(c => c.id === categoryId);
   }, [categoryId]);
+
+  // For kids products: apply 14-day expiry to completions
+  const FOURTEEN_DAYS_MS = 14 * 24 * 60 * 60 * 1000;
+
+  const completedCardIds = useMemo(() => {
+    if (isKidsProduct) {
+      const now = Date.now();
+      const seen = new Set<string>();
+      const result: string[] = [];
+      const sorted = [...serverCompletedWithDates].sort(
+        (a, b) => new Date(b.ended_at).getTime() - new Date(a.ended_at).getTime()
+      );
+      for (const s of sorted) {
+        if (seen.has(s.card_id)) continue;
+        seen.add(s.card_id);
+        const elapsed = now - new Date(s.ended_at).getTime();
+        if (elapsed < FOURTEEN_DAYS_MS) {
+          result.push(s.card_id);
+        }
+      }
+      optimisticCardIds.forEach(id => {
+        if (!result.includes(id)) result.push(id);
+      });
+      return result;
+    }
+    const merged = new Set(serverCompletedCardIds);
+    optimisticCardIds.forEach(id => merged.add(id));
+    return Array.from(merged);
+  }, [isKidsProduct, serverCompletedCardIds, serverCompletedWithDates, optimisticCardIds]);
 
   const backTo = product ? `/product/${product.slug}` : isStillUsCategory ? '/?devState=solo' : '/';
   const styles = product ? PRODUCT_STYLES[product.id] : undefined;
