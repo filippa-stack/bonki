@@ -242,7 +242,7 @@ const cards: Card[] = [
   {
     id: 'jma-avund',
     title: 'Avund',
-    subtitle: 'Att längta efter det någon annan har -- och vad som ligger bakom det',
+    subtitle: 'Att längta efter det någon annan har – och vad som ligger bakom det',
     categoryId: 'jma-nar-vi-jamfor-oss',
     sections: [
       {
