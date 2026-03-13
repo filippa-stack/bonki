@@ -475,7 +475,7 @@ const cards: Card[] = [
   {
     id: 'jma-modig',
     title: 'Modig',
-    subtitle: 'Att göra något svårt -- och att ibland vara modig nog att låta bli',
+    subtitle: 'Att göra något svårt – och att ibland vara modig nog att låta bli',
     categoryId: 'jma-att-sta-stadig',
     sections: [
       {
