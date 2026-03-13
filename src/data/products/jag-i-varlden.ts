@@ -26,7 +26,7 @@ const cards: Card[] = [
   qsCard('jiv-prestation', 'Prestation', 'Krav och förväntningar – varifrån de kommer och hur de påverkar', 'jiv-min-vardag',
     ['Beskriv ett tillfälle då du gjorde en särskild ansträngning för att slutföra något. Vad fick dig att inte ge upp?','Känner du att det är viktigt att bli "bäst" i allt du gör? Varför?','När kan ett misslyckande vara bra?','De krav du har på dig själv och din framtid – vet du om det är du själv eller någon annan som ställt dem?'],
     'Vuxna och lärare pratar ofta om att det är viktigt att engagera sig nu för att få en bra framtid. Om du blundar och tänker på din framtid -- hur vill du att den ska se ut?'),
-  qsCard('jiv-bekraftelse', 'Bekräftelse', 'Behovet av att bli sedd och hörd -- och när det kan gå för långt', 'jiv-min-vardag',
+  qsCard('jiv-bekraftelse', 'Bekräftelse', 'Behovet av att bli sedd och hörd – och när det kan gå för långt', 'jiv-min-vardag',
     ['På vilka sätt kan en person få bekräftelse från andra?','Varför är det så värdefullt att få bekräftelse för saker vi gör?','Är bekräftelse alltid något bra? Kan det skada?','På vilket sätt kan en bli beroende av bekräftelse? Vad tror du det beror på?','Vilken sorts bekräftelse betyder mest för dig?'],
     'Du har skrivit en lång uppsats om något som du bryr dig mycket om. Du har lagt ner väldigt många timmar på den och det känns lite utelämnat att visa den för andra. När du gör det, för läraren och dina vuxna, får du inte riktigt någon respons utöver "vad bra". Är det nog? Vad hade du behövt?'),
   qsCard('jiv-sjalvkansla', 'Självkänsla', 'Att tro på sig själv -- skillnaden mellan självkänsla, självförtroende och egoism', 'jiv-min-vardag',
