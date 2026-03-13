@@ -200,6 +200,7 @@ export default function SharedSummary() {
   const { getCardById, getCategoryById } = useApp();
   const { user } = useAuth();
   const { space } = useCoupleSpaceContext();
+  useVerdigrisTheme(true);
 
   const [entries, setEntries] = useState<CompletedEntry[]>([]);
   const [loading, setLoading] = useState(true);
