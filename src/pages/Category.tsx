@@ -451,14 +451,24 @@ function StillUsCategoryView({
           {cards.map((card, index) => {
             const isCompleted = completedCardIds.includes(card.id);
             const isInProgress = !isCompleted && inProgressCardIds.includes(card.id);
+            // First uncompleted card is the suggested next
+            const isNextSuggested = !isCompleted && cards.slice(0, index).every(c => completedCardIds.includes(c.id));
             const fillDefault = CIRCADIAN_FILLS[category.id] || 'rgba(162, 181, 169, 0.28)';
             const fillHover = CIRCADIAN_FILLS_HOVER[category.id] || 'rgba(162, 181, 169, 0.42)';
             const borderDefault = `1px solid ${color}73`;
             const borderGlow = `1px solid ${color}`;
+            const borderSuggested = `1px solid ${SAFFRON}88`;
             const isLast = index === cards.length - 1;
 
+            const activeBorder = isNextSuggested ? borderSuggested : isInProgress ? borderGlow : borderDefault;
+            const activeShadow = isNextSuggested
+              ? `0 0 20px -4px ${SAFFRON}40, 0 0 40px -8px ${SAFFRON}20`
+              : isInProgress
+                ? `0 0 16px -2px ${color}35, 0 0 32px -6px ${color}20`
+                : 'none';
+
             return (
-              <div key={card.id} style={{ display: 'flex', alignItems: 'stretch', gap: '12px' }}>
+              <div key={card.id} style={{ display: 'flex', alignItems: 'stretch', gap: '12px', opacity: isCompleted ? 0.6 : 1, transition: 'opacity 0.3s ease' }}>
                 {/* Sequence spine — number + connecting line */}
                 <div
                   style={{
@@ -497,6 +507,23 @@ function StillUsCategoryView({
                   )}
                 </div>
 
+                {/* "Nästa" label for suggested card */}
+                {isNextSuggested && !allCompleted && (
+                  <div style={{ position: 'absolute', right: '24px', top: index === 0 ? '4px' : '-8px', zIndex: 2 }}>
+                    <span style={{
+                      fontFamily: 'var(--font-sans)',
+                      fontSize: '11px',
+                      fontWeight: 600,
+                      letterSpacing: '0.08em',
+                      textTransform: 'uppercase' as const,
+                      color: SAFFRON,
+                      opacity: 0.85,
+                    }}>
+                      Nästa
+                    </span>
+                  </div>
+                )}
+
                 {/* Tile */}
                 <motion.button
                   initial={{ opacity: 0, y: 14 }}
@@ -515,15 +542,13 @@ function StillUsCategoryView({
                     background: fillDefault,
                     backdropFilter: 'blur(12px)',
                     WebkitBackdropFilter: 'blur(12px)',
-                    border: isInProgress ? borderGlow : borderDefault,
+                    border: activeBorder,
                     borderRadius: '14px',
                     cursor: 'pointer',
                     transition: 'background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease',
                     overflow: 'hidden',
                     position: 'relative',
-                    boxShadow: isInProgress
-                      ? `0 0 16px -2px ${color}35, 0 0 32px -6px ${color}20`
-                      : 'none',
+                    boxShadow: activeShadow,
                   }}
                   onMouseEnter={(e) => {
                     const el = e.currentTarget;
@@ -534,10 +559,8 @@ function StillUsCategoryView({
                   onMouseLeave={(e) => {
                     const el = e.currentTarget;
                     el.style.background = fillDefault;
-                    el.style.border = isInProgress ? borderGlow : borderDefault;
-                    el.style.boxShadow = isInProgress
-                      ? `0 0 16px -2px ${color}35, 0 0 32px -6px ${color}20`
-                      : 'none';
+                    el.style.border = activeBorder;
+                    el.style.boxShadow = activeShadow;
                   }}
                 >
                   {/* Thick accent bar */}
