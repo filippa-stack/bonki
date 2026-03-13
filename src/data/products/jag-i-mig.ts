@@ -240,7 +240,7 @@ const cards: Card[] = [
   {
     id: 'jim-acklad',
     title: 'Äcklad',
-    subtitle: 'Känslan av avsmak -- varför den finns och vad den skyddar oss från',
+    subtitle: 'Känslan av avsmak – varför den finns och vad den skyddar oss från',
     categoryId: 'jim-nar-det-gor-ont',
     sections: [
       {
