@@ -20,7 +20,7 @@ const qsCard = (id: string, title: string, subtitle: string, catId: string, ques
 
 const cards: Card[] = [
   // ── K1: Min vardag ──
-  qsCard('jiv-halsa', 'Hälsa', 'Vad hälsa egentligen innebär -- och när hälsofokus kan bli ett problem', 'jiv-min-vardag',
+  qsCard('jiv-halsa', 'Hälsa', 'Vad hälsa egentligen innebär – och när hälsofokus kan bli ett problem', 'jiv-min-vardag',
     ['Kan en se på en kropp att den är hälsosam? Berätta.','Tror du att överdriven hälsomedvetenhet kan bli ohälsosam? Vad kan det bero på?','Hälsa kan betyda olika saker för olika personer. Berätta om något du tycker är hälsosamt som någon du känner inte håller med om.','Finns det tillfällen då du har ansvar för någon annans hälsa? Ge exempel.'],
     'Tänk dig att några i din omgivning är väldigt fokuserade på träning och kost och förväntar sig att andra gör likadant. Hur påverkar det dig? Hur kan du förhålla dig till det?'),
   qsCard('jiv-prestation', 'Prestation', 'Krav och förväntningar -- varifrån de kommer och hur de påverkar', 'jiv-min-vardag',
