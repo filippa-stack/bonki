@@ -321,6 +321,8 @@ export default function Home() {
                 const card = getCardById(cardId);
                 // Only show resume link for Still Us cards (not child products)
                 if (!card) return null;
+                const stillUsCategoryIds = allCategories.map(c => c.id);
+                if (!stillUsCategoryIds.includes(card.categoryId)) return null;
                 return (
                   <motion.div
                     initial={{ opacity: 0 }}
