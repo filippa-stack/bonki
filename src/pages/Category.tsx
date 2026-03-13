@@ -231,6 +231,9 @@ export default function Category() {
     return allProducts.find(p => p.categories.some(c => c.id === categoryId));
   }, [categoryId]);
 
+  // Determine if this is a kids product category (uses 14-day expiry)
+  const isKidsProduct = !!product && KIDS_PRODUCT_IDS.includes(product.id);
+
   // Still Us categories live in content.ts, not in allProducts
   const isStillUsCategory = useMemo(() => {
     return !!categoryId && stillUsCategories.some(c => c.id === categoryId);
