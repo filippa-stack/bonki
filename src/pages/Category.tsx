@@ -510,7 +510,7 @@ function StillUsCategoryView({
 
                 {/* "Nästa" label for suggested card */}
                 {isNextSuggested && !allCompleted && (
-                  <div style={{ position: 'absolute', right: '24px', top: index === 0 ? '4px' : '-8px', zIndex: 2 }}>
+                  <div style={{ position: 'absolute', right: '24px', top: '4px', zIndex: 2 }}>
                     <span style={{
                       fontFamily: 'var(--font-sans)',
                       fontSize: '11px',
