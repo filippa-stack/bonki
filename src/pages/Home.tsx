@@ -240,10 +240,10 @@ export default function Home() {
         transition={{ duration: 0.4 }}
         style={{
           position: 'absolute',
-          top: '-8%',
-          left: '-25%',
-          width: '150%',
-          height: '110%',
+          top: '-5%',
+          left: '-20%',
+          width: '140%',
+          height: '115%',
           zIndex: 0,
           pointerEvents: 'none',
         }}
@@ -292,7 +292,7 @@ export default function Home() {
           <>
             {/* ZONE A — Identity — compressed closer to header */}
             <motion.div
-              className="pt-6 px-6 text-center"
+              className="pt-10 px-6 text-center"
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
@@ -356,7 +356,7 @@ export default function Home() {
             </motion.div>
 
             {/* ── Circadian Menu — 9 progressive disclosure categories ── */}
-            <div className="px-6" style={{ marginTop: '52px', paddingBottom: '64px' }}>
+            <div className="px-6" style={{ marginTop: '72px', paddingBottom: '64px' }}>
               <CircadianMenu
                 categories={sortedCategories}
                 cards={cards}
