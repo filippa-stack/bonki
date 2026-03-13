@@ -83,7 +83,7 @@ export const cards: Card[] = [
         title: 'Början',
         content: 'Små saker som håller er nära.',
         prompts: [
-          'Om något litet mellan er tyst försvann, vad tror du att du skulle märka först?',
+          'Vad är det lilla mellan er som du skulle sakna mest — om det inte längre fanns?',
           'Vad är det som gör att ni känner er som ett par — bortom det praktiska ni delar?',
           'Vad har ni börjat göra tillsammans det senaste året — om än något litet — som ni inte riktigt planerade?',
         ],
