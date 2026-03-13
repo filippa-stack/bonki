@@ -1208,8 +1208,9 @@ export default function CardView() {
               transition={{ duration: 1.0, ease: [0.22, 1, 0.36, 1] }}
               style={{
                 position: 'relative',
-                width: '78vw',
-                maxWidth: '320px',
+                width: '88vw',
+                maxWidth: '380px',
+                overflow: 'hidden',
               }}
             >
               <img
@@ -1218,8 +1219,11 @@ export default function CardView() {
                 style={{
                   width: '100%',
                   height: 'auto',
-                  maxHeight: '45vh',
+                  maxHeight: '52vh',
                   objectFit: 'contain',
+                  /* Clip top ~4% to hide stray text artifacts baked into some illustration files */
+                  clipPath: 'inset(4% 0 0 0)',
+                  marginTop: '-3%',
                 }}
               />
               {/* Soft oval shadow-mat under illustration — delayed entrance for grounding effect */}
