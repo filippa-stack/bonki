@@ -126,7 +126,7 @@ const cards: Card[] = [
   {
     id: 'jim-ledsen',
     title: 'Ledsen',
-    subtitle: 'Att ha det tungt -- och hur man kan bära det tillsammans',
+    subtitle: 'Att ha det tungt -- och hur en kan bära det tillsammans',
     categoryId: 'jim-kanslorna-jag-bar',
     sections: [
       {
