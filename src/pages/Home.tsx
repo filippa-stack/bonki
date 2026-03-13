@@ -321,6 +321,8 @@ export default function Home() {
                 const card = getCardById(cardId);
                 // Only show resume link for Still Us cards (not child products)
                 if (!card) return null;
+                const stillUsCategoryIds = allCategories.map(c => c.id);
+                if (!stillUsCategoryIds.includes(card.categoryId)) return null;
                 return (
                   <motion.div
                     initial={{ opacity: 0 }}
@@ -372,16 +374,16 @@ export default function Home() {
                   return catCards.length > 0 && catCards.every(c => completedCardIds.includes(c.id));
                 }).length;
                 if (fullyCompletedCount === 0) return (
-                  <div style={{ textAlign: 'center', marginTop: '40px' }}>
-                    <p style={{
-                      fontFamily: 'var(--font-serif)',
-                       fontSize: '14px',
-                      color: 'var(--accent-text)',
-                      opacity: 0.45,
-                    }}>
-                      Samtalet börjar här.
-                    </p>
-                  </div>
+                  <p style={{
+                    fontFamily: 'var(--font-serif)',
+                    fontSize: '14px',
+                    color: 'var(--accent-text)',
+                    opacity: 0.45,
+                    textAlign: 'center',
+                    marginTop: '40px',
+                  }}>
+                    Samtalet börjar här.
+                  </p>
                 );
                 const isAllDone = fullyCompletedCount >= totalCategories;
                 return (

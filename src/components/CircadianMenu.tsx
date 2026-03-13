@@ -244,6 +244,7 @@ export default function CircadianMenu({
           <div className="flex flex-col" style={{ gap: '7px', position: 'relative' }}>
             {group.categories.map((category) => {
               const currentIndex = globalIndex++;
+              const sequenceNumber = currentIndex + 1;
               const color = CIRCADIAN_COLORS[category.id] || '#A2B5A9';
               const fillDefault = CIRCADIAN_FILLS[category.id] || 'rgba(162, 181, 169, 0.28)';
               const fillHover = CIRCADIAN_FILLS_HOVER[category.id] || 'rgba(162, 181, 169, 0.42)';
@@ -271,14 +272,31 @@ export default function CircadianMenu({
                   transition={{
                     y: { duration: 0.65, delay: 0.12 + currentIndex * 0.06, ease: [...ENTER_EASE] },
                   }}
-                  style={{ position: 'relative' }}
+                  style={{ position: 'relative', display: 'flex', alignItems: 'center', gap: '10px' }}
                 >
+                  {/* Sequence number */}
+                  <span
+                    style={{
+                      fontFamily: 'var(--font-serif)',
+                      fontSize: '11px',
+                      fontWeight: 500,
+                      color: HERITAGE_GOLD,
+                      opacity: 0.3,
+                      width: '14px',
+                      textAlign: 'right',
+                      flexShrink: 0,
+                      letterSpacing: '0.02em',
+                    }}
+                  >
+                    {sequenceNumber}
+                  </span>
                   <motion.button
                     onClick={() => onNavigateToCategory(category.id)}
                     className="w-full text-left circadian-tile"
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.985 }}
                     style={{
+                      flex: 1,
                       display: 'flex',
                       alignItems: 'stretch',
                       gap: '0',
