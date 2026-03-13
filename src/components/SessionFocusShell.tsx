@@ -10,6 +10,8 @@ interface SessionFocusShellProps {
   /** Heritage Gold CTA at bottom — rendered by parent, always visible */
   ctaSlot: ReactNode;
   onExit: () => void;
+  /** Pause — navigates home without abandoning the session */
+  onPause?: () => void;
 }
 
 /**
