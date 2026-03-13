@@ -361,7 +361,7 @@ const cards: Card[] = [
         content: '',
         prompts: [
           'Hur känns det att inte få vara med?',
-          'Varför tror du att det är viktigt att känna att man får vara med?',
+          'Varför tror du att det är viktigt att känna att en får vara med?',
           'Vad kan du göra för att ingen annan ska känna sig utanför?',
           'Måste man leka med någon som behandlar en dåligt? Varför eller varför inte?',
           'Hur kan du förklara varför någon inte fick vara med i leken?',
