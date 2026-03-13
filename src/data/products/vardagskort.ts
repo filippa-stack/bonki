@@ -16,7 +16,7 @@ const cards: Card[] = [
     'Om du inte hade någon vuxen hemma på morgonen, tror du att du skulle komma i tid till skolan?',
     'Om du glömmer något hemma när du kommer till skolan – vems ansvar är det, och vad gör du åt det?',
     'Om du skulle väcka och få iväg dina vuxna till jobbet, vad skulle du göra? Vad skulle du göra annorlunda mot hur de gör när de väcker dig?',
-    'Ibland är det bråttom på morgonen -- hur känns det?',
+    'Ibland är det bråttom på morgonen – hur känns det?',
   ]}]},
   { id: 'vk-rutiner', title: 'Rutiner', subtitle: 'Varför struktur och vanor spelar roll -- och vilka rutiner barnet värdesätter', categoryId: 'vk-var-rytm', sections: [{ id: 'vk-rutiner-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
     'Varför tror du att de flesta människor mår bra av rutiner?',
