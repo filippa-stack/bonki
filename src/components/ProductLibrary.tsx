@@ -1191,8 +1191,8 @@ export default function ProductLibrary() {
               fontFamily: "'DM Serif Display', serif",
               fontStyle: 'italic',
               fontSize: '14px',
-              color: isDark ? 'hsla(38, 60%, 60%, 0.5)' : 'var(--accent-text)',
-              opacity: 0.45,
+              color: isDark ? 'hsla(38, 60%, 65%, 0.85)' : 'var(--accent-text)',
+              opacity: 0.75,
               lineHeight: 1.7,
               letterSpacing: '-0.01em',
             }}
