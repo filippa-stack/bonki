@@ -418,7 +418,7 @@ const cards: Card[] = [
   {
     id: 'jma-stopp',
     title: 'Stopp',
-    subtitle: 'Att sätta och respektera gränser -- för sig själv och för andra',
+    subtitle: 'Att sätta och respektera gränser – för sig själv och för andra',
     categoryId: 'jma-att-sta-stadig',
     sections: [
       {
