@@ -457,7 +457,7 @@ const cards: Card[] = [
         content: '',
         prompts: [
           'Vad betyder det att ha integritet?',
-          'När kan det vara svårt att säga nej eller vad man tycker?',
+          'När kan det vara svårt att säga nej eller vad en tycker?',
           'När kan det vara viktigt att stå upp för någon annan?',
         ],
       },
