@@ -4,6 +4,7 @@ import { BookOpen } from 'lucide-react';
 import type { ProductManifest } from '@/types/product';
 import slothImage from '@/assets/sloth-jag-med-andra.png';
 import nyckelpiganImage from '@/assets/nyckelpiga-jag-med-andra.png';
+import ProductResumeBanner from '@/components/ProductResumeBanner';
 
 const EASE = [0.4, 0.0, 0.2, 1] as const;
 
@@ -188,6 +189,7 @@ export default function JagMedAndraProductHome({ product }: { product: ProductMa
             >
               starkare tillsammans
             </p>
+            <ProductResumeBanner product={product} accentColor={ACCENT_COLOR} />
           </motion.div>
 
           {/* Category tiles — solid, tactile, with rhythm */}

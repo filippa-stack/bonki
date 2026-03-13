@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { BookOpen } from 'lucide-react';
 import type { ProductManifest } from '@/types/product';
 import apaImage from '@/assets/apa-jag-i-mig.png';
+import ProductResumeBanner from '@/components/ProductResumeBanner';
 
 const EASE = [0.4, 0.0, 0.2, 1] as const;
 
@@ -163,6 +164,7 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
             >
               när känslor får ord
             </p>
+            <ProductResumeBanner product={product} accentColor={ACCENT_COLOR} />
           </motion.div>
 
           {/* Category tiles — candy-glass with rhythm */}

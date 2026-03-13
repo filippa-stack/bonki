@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { BookOpen } from 'lucide-react';
 import type { ProductManifest } from '@/types/product';
 import peacockImage from '@/assets/peacock-jag-i-varlden.png';
+import ProductResumeBanner from '@/components/ProductResumeBanner';
 
 const EASE = [0.4, 0.0, 0.2, 1] as const;
 
@@ -186,6 +187,7 @@ export default function JagIVarldenProductHome({ product }: { product: ProductMa
             >
               stärk identitet och mod
             </p>
+            <ProductResumeBanner product={product} accentColor={ACCENT_COLOR} />
           </motion.div>
 
           {/* Category tiles — solid, tactile, with rhythm */}
