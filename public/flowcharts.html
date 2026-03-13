@@ -75,24 +75,26 @@ function downloadPage() {
 
 <!-- ─── STILL US ─── -->
 <div class="section" id="still-us">
+<div class="section" id="still-us">
   <h2>Still Us – Live användarresa</h2>
-  <p class="sub">Baserad på screenshots 2026-02-27 · Enbart Still Us-produkten</p>
+  <p class="sub">Baserad på kodbas 2026-03-13 · Enbart Still Us-produkten</p>
 
   <div class="legend">
     <span><span class="dot" style="background:#c0392b"></span> Hard gate</span>
     <span><span class="dot" style="background:#e67e22"></span> Friktionspunkt</span>
     <span><span class="dot" style="background:#2980b9"></span> Beslutspunkt</span>
     <span><span class="dot" style="background:#27ae60"></span> Stark sektion</span>
+    <span><span class="dot" style="background:#f39c12"></span> Resume &amp; Progress</span>
   </div>
 
   <div class="mermaid">
 graph TD
     subgraph LOGIN["STEG 1: LOGIN"]
-        L1["BONKI / Still Us<br/>'Sa vi forblir vi.'<br/>'Ert konto. Era samtal.'"]
+        L1["BONKI<br/>'Sa vi forblir vi.'<br/>'Ert konto. Era samtal.'"]
         L2{"Acceptera villkor?"}
         L3{"Valj metod"}
         L4["Google OAuth"]
-        L5["Magic Link: Ange e-post<br/>'Hittar du den inte? Kolla skrapposten.'"]
+        L5["Magic Link: Ange e-post<br/>'Hittar du den inte?<br/>Kolla skrapposten.'"]
         L1 --> L2
         L2 -->|Nej| L2
         L2 -->|Ja| L3
@@ -100,98 +102,126 @@ graph TD
         L3 -->|E-post| L5
     end
 
-    subgraph ONBOARDING["STEG 2: ONBOARDING 4 slides"]
-        O0["Slide 0: 'Ett gemensamt rum.'<br/>'Still Us ar skapat for er -- ett utrymme<br/>att motas i, mitt i vardagen.'<br/>'For samtal ni vill halla levande.'"]
-        O1["Slide 1: 'Utforska tillsammans.'<br/>'Valj ett amne. Las fragorna hogt.<br/>Lyssna. Reflektera.'<br/>'Det finns inget ratt satt -- bara ert.'"]
-        O2["Slide 2: 'SA FUNKAR DET'<br/>01 Valj ett tema. Samtalet tar den tid ni ger det.<br/>02 Lat var och en tala till punkt.<br/>03 Anteckna det ni vill minnas.<br/>'Pausa nar det behovs. Aterkom nar det gar.'<br/>'Vardet ligger i reflektionen, inte i losningen.'"]
-        O3["Slide 3 MORK: 'Omsorgsfullt utvecklat.'<br/>'Varje samtal bygger pa psykologisk<br/>forskning om relationer och anknytning.'<br/>'Formulerat for att skapa klarhet,<br/>narhet och forstaelse -- i er takt.'<br/>'Bara er.'<br/>CTA: 'Kom igang'"]
-        OSKIP["Hoppa over-lank<br/>Synlig pa slide 0-2"]
+    subgraph ONBOARDING["STEG 2: PLATTFORM-ONBOARDING 3 slides"]
+        O0["Slide 0: Valkommen till Bonki<br/>'Det basta samtalet du<br/>kommer ha idag vantar har.'"]
+        O1["Slide 1: Samtal som ror sig<br/>'Bonki ar verktyg for familjer<br/>och par som vill na varandra.'"]
+        O2["Slide 2 DARK:<br/>CTA: 'Utforska biblioteket'"]
+        OSKIP["Hoppa over-lank<br/>Synlig pa slide 0-1"]
         O0 --> O1
         O1 --> O2
-        O2 --> O3
         O0 -.->|skip| OSKIP
         O1 -.->|skip| OSKIP
-        O2 -.->|skip| OSKIP
     end
 
     subgraph BG_ACTION["TYST BAKGRUNDSAKTION"]
-        BG["initializeCoupleSpace<br/>Skapar couple_space + couple_member"]
+        BG["initializeCoupleSpace<br/>Skapar couple_space +<br/>couple_member"]
     end
 
-    subgraph PURCHASE["STEG 3: KOPSKARM"]
-        P1["Betalvagg<br/>Pris: 395 kr<br/>Stripe Checkout"]
-        P2{"Betala?"}
-        P3["Stripe redirect<br/>paid_at sparas"]
-        PBLOCK["HARD GATE<br/>Inget innehall<br/>fore betalning"]
-        P1 --> P2
-        P2 -->|Ja| P3
-        P2 -->|Nej| PBLOCK
+    subgraph LIBRARY["STEG 3: BIBLIOTEK"]
+        LIB1["BARN / PAR flikar<br/>Horisontell swipe"]
+        LIB2["Still Us-tile:<br/>blagraa/sage profil<br/>Illustration, opacitet 0.30"]
+        LIB3{"Valj Still Us"}
+        LIB1 --> LIB2 --> LIB3
     end
 
-    subgraph HOME_FIRST["STEG 4a: HOME - Forsta besoket"]
-        H1["'Ert utrymme'"]
-        H2["Welcome-kort:<br/>'Det har ar er plats att<br/>utforska tillsammans.'"]
-        H3["Rekommenderad kategori<br/>'01 - Rekommenderad start'"]
-        H4["8 ovriga kategorier<br/>Grupperade i 3 sektioner"]
-        H1 --> H2 --> H3 --> H4
+    subgraph INTRO["STEG 3b: PRODUKT-INTRO forsta gangen"]
+        I1["En slide: Redaktionell text<br/>'Ni pratar varje dag...<br/>men har ni ett satt att prata<br/>om det som ar svart?'<br/>CTA: 'Borja med Ert minsta vi'"]
+        ISEEN["localStorage check:<br/>Visas bara forsta gangen"]
     end
 
-    subgraph HOME_RETURN["STEG 4b: HOME - Aterbesok"]
-        HR1["'Vad kul att ni ar tillbaka.'"]
-        HR2["Resume-banner om aktiv session"]
-        HR3["Statusikoner per kategori"]
+    subgraph PURCHASE["STEG 4: BETALVAGG"]
+        P1["Redaktionell paywall<br/>Visar titeln pa last kort"]
+        P2["Pris: 395 kr<br/>Stripe Checkout"]
+        P3{"Betala?"}
+        P4["Stripe redirect<br/>paid_at sparas"]
+        PBLOCK["HARD GATE<br/>Inga las-ikoner i lobby<br/>Paywall triggas vid<br/>interaktion med last kort"]
+        P1 --> P2 --> P3
+        P3 -->|Ja| P4
+        P3 -->|Nej| PBLOCK
     end
 
-    subgraph CATEGORY["STEG 5: KATEGORISIDA"]
-        C1["Kategorins titel"]
-        C2["Kortlista med illustration + status"]
+    subgraph HOME["STEG 5: STILL US HEM"]
+        H1["'Ert utrymme'<br/>Illustration bakgrund<br/>Verdigris-tema"]
+        H_RESUME{"Aktiv session?"}
+        H_RESUME_YES["RESUME-KORT<br/>Glasmorfism + saffranskant<br/>Kort-titel + steg-etikett<br/>'FORDJUPA . Fortsatt'<br/>48px marginTop fran rubrik<br/>Ett tryck = atergang"]
+        H2["9 kategorier i 3x3 grid<br/>Diskret numrering<br/>24px blur, forstark mattnad<br/>Progress-ringar doljs nar tomma"]
+        H3["Situational anchors:<br/>Dolda tips under fragor<br/>Expanderas via punkt-ikon"]
+        H1 --> H_RESUME
+        H_RESUME -->|Ja| H_RESUME_YES
+        H_RESUME -->|Nej| H2
+        H_RESUME_YES --> H2
+        H2 --> H3
+    end
+
+    subgraph CATEGORY["STEG 6: KATEGORISIDA"]
+        C1["Kategori-titel + entryLine<br/>Verdigris glasmorfism-tiles"]
+        C2["Spine-numrering + accent-bar<br/>Statusbadge per kort:<br/>Nasta saffrans-glow<br/>Pabörjad pulsande punkt<br/>Utforskad bock-ikon"]
         C3{"Valj kort"}
+        C_FIRST["Forstagangare:<br/>CardPreview redaktionell<br/>forhandsvisning"]
+        C_RETURN["Atervandare hoppar over<br/>CardPreview, direkt till<br/>sammanslagen startritual"]
         C1 --> C2 --> C3
+        C3 -->|Forsta session| C_FIRST
+        C3 -->|Atervandare| C_RETURN
     end
 
-    subgraph SESSION["STEG 6: AKTIV SESSION"]
-        S0["GorTillsammans-overlay<br/>'Gor det har tillsammans'"]
-        S1["Starta samtal"]
-        S2["Steg 1-4: Las fragor hogt<br/>Markera klar - Reflektion"]
+    subgraph SESSION["STEG 7: AKTIV SESSION"]
+        S0["Startritual:<br/>'Sitt ner med din partner.<br/>Las forsta fragan hogt.'<br/>Tidsuppskattning: ca 5-10 min"]
+        S1["4-stegs-indikator:<br/>OPPNA . FORDJUPA .<br/>SCENARIO . TILLSAMMANS<br/>Frageraknare: '1 / 3'"]
+        S2["Fragor + Fasta en tanke<br/>Situational anchors<br/>Bokmrken borttagna"]
+        S3["Fixerad saffrans-CTA<br/>'Fortsatt' 52px hojd<br/>Visas omedelbart"]
+        S_PAUSE["PAUS<br/>'Pausa for idag'<br/>Sparar exakt position<br/>Session forblir 'active'<br/>Navigerar till hemskarm"]
+        S_BACK["Dampad tillbakapil<br/>Alltid synlig for<br/>saker utgang"]
         S0 --> S1 --> S2
+        S2 --> S3
+        S2 -.->|Paus| S_PAUSE
+        S2 -.-> S_BACK
     end
 
-    subgraph COMPLETE["STEG 7: AVSLUTAD SESSION"]
+    subgraph COMPLETE["STEG 8: AVSLUTAD SESSION"]
         CO1["Slumpad headline"]
         CO2["Lasta reflektioner"]
-        CO3["Takeaway"]
+        CO3["Takeaway-textfalt"]
         CO4["CTA: Utforska fler amnen"]
         CO1 --> CO2 --> CO3 --> CO4
     end
 
-    subgraph FEEDBACK["STEG 8: FEEDBACK"]
+    subgraph FEEDBACK["STEG 9: FEEDBACK"]
         F1["Bottom-sheet efter 2s"]
-        F2["Tomt textfalt utan ledning"]
+        F2["Textfalt for feedback"]
         F1 --> F2
     end
 
     L4 --> ONBOARDING
     L5 --> ONBOARDING
-    OSKIP --> BG
-    O3 -->|Kom igang| BG
-    BG --> PURCHASE
-    P3 --> HOME_FIRST
-    HOME_FIRST --> CATEGORY
-    HOME_RETURN --> CATEGORY
-    CATEGORY --> SESSION
+    OSKIP --> BG_ACTION
+    O2 -->|Utforska biblioteket| BG_ACTION
+    BG_ACTION --> LIBRARY
+    LIB3 -->|Forsta besok| INTRO
+    LIB3 -->|Aterbesok| HOME
+    ISEEN --> HOME
+    I1 -->|Borja med Ert minsta vi| CATEGORY
+    PBLOCK -->|Avbryt| CATEGORY
+    P4 --> HOME
+    HOME --> CATEGORY
+    C_FIRST --> SESSION
+    C_RETURN --> SESSION
+    CATEGORY -->|Last kort| PURCHASE
+    S_PAUSE --> HOME
     SESSION --> COMPLETE
     COMPLETE --> FEEDBACK
-    CO4 --> HOME_RETURN
+    CO4 --> HOME
 
     classDef gate fill:#c0392b,color:#fff,stroke:#922b21
     classDef friction fill:#e67e22,color:#fff,stroke:#d35400
     classDef good fill:#27ae60,color:#fff,stroke:#1e8449
     classDef decision fill:#2980b9,color:#fff,stroke:#1f618d
+    classDef progressNode fill:#f39c12,color:#fff,stroke:#d68910
 
     class PBLOCK,L2 gate
-    class F2,L5 friction
+    class L5 friction
     class SESSION,COMPLETE,ONBOARDING good
-    class P2,C3,L3 decision
+    class P3,C3,LIB3,L3,L2,H_RESUME decision
+    class H_RESUME_YES,S_PAUSE progressNode
   </div>
 </div>
 
