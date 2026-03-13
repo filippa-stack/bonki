@@ -6,7 +6,7 @@ import KidsProductResumeBanner from '@/components/KidsProductResumeBanner';
 import DiaryEntrance from '@/components/DiaryEntrance';
 import ProductHomeBackButton from '@/components/ProductHomeBackButton';
 import { useKidsProductProgress } from '@/hooks/useKidsProductProgress';
-import { Check } from 'lucide-react';
+import CategoryProgressRing from '@/components/CategoryProgressRing';
 
 const EASE = [0.4, 0.0, 0.2, 1] as const;
 const ACCENT_COLOR = '#0F6B99';
