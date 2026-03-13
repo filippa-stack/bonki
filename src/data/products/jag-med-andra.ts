@@ -167,7 +167,7 @@ const cards: Card[] = [
         content: '',
         prompts: [
           'Har du någon gång gjort något bra eller presterat väl mest för att göra någon annan glad? Hur kändes det jämfört med när du gör det för din egen skull?',
-          'Berätta om ett tillfälle när du var stolt över dig själv -- inte för att någon annan sa det, utan för att du själv kände det. Hur kändes det?',
+          'Berätta om ett tillfälle när du var stolt över dig själv – inte för att någon annan sa det, utan för att du själv kände det. Hur kändes det?',
           'Har du berättat för någon annan att du är stolt över dem eller att de gjort något bra? Vad hände och hur reagerade den personen?',
         ],
       },
