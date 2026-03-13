@@ -743,24 +743,49 @@ export default function CardView() {
   }, [space?.id, cardViewMode]);
 
   const postCompletionNav = useMemo(() => {
-    if (!category || !card) return { type: 'home' as const, destination: '/', label: '' };
+    if (!category || !card) return { type: 'home' as const, destination: '/', label: '', homeDest: '/' };
 
-    // Kids/family products: always navigate back to product homepage (free choice)
-    if (product && product.id !== 'still_us') {
-      const dest = `/product/${product.slug}`;
-      return { type: 'home' as const, destination: dest, label: 'Avsluta' };
-    }
-
-    // Still Us: recommend next card/category
     const productCards = product ? product.cards : cards;
-    const categoryCards = productCards.filter(c => c.categoryId === category.id);
     const effectiveCompleted = new Set(completedCardIds);
     effectiveCompleted.add(card.id);
 
+    // Find next incomplete card in same category
+    const categoryCards = productCards.filter(c => c.categoryId === category.id);
     const nextIncompleteInCategory = categoryCards.find(c => !effectiveCompleted.has(c.id));
 
+    // Find next incomplete card in next category (for cross-category progression)
+    let nextCategoryCard: { destination: string; label: string } | null = null;
+    if (!nextIncompleteInCategory && product) {
+      const catOrder = product.categories.map(c => c.id);
+      for (const catId of catOrder) {
+        if (catId === category.id) continue;
+        const catCards = productCards.filter(c => c.categoryId === catId);
+        const next = catCards.find(c => !effectiveCompleted.has(c.id));
+        if (next) {
+          nextCategoryCard = { destination: `/card/${next.id}`, label: 'Nästa ämne' };
+          break;
+        }
+      }
+    }
+
+    const homeDest = product && product.id !== 'still_us'
+      ? `/product/${product.slug}`
+      : '/';
+
+    // Kids/family products: find next card, but always offer home as secondary
+    if (product && product.id !== 'still_us') {
+      if (nextIncompleteInCategory) {
+        return { type: 'next_card' as const, destination: `/card/${nextIncompleteInCategory.id}`, label: 'Nästa', homeDest };
+      }
+      if (nextCategoryCard) {
+        return { type: 'next_card' as const, destination: nextCategoryCard.destination, label: 'Nästa', homeDest };
+      }
+      return { type: 'all_complete' as const, destination: homeDest, label: 'Avsluta', homeDest };
+    }
+
+    // Still Us: recommend next card/category
     if (nextIncompleteInCategory) {
-      return { type: 'next_card' as const, destination: `/card/${nextIncompleteInCategory.id}`, label: 'Nästa samtal' };
+      return { type: 'next_card' as const, destination: `/card/${nextIncompleteInCategory.id}`, label: 'Nästa samtal', homeDest };
     }
 
     for (const catId of getRecommendedCategoryOrder(card.id)) {
@@ -768,11 +793,11 @@ export default function CardView() {
       const catCards = productCards.filter(c => c.categoryId === catId);
       const hasIncomplete = catCards.some(c => !effectiveCompleted.has(c.id));
       if (hasIncomplete) {
-        return { type: 'next_category' as const, destination: `/category/${catId}`, label: 'Nästa ämne' };
+        return { type: 'next_category' as const, destination: `/category/${catId}`, label: 'Nästa ämne', homeDest };
       }
     }
 
-    return { type: 'all_complete' as const, destination: '/', label: '' };
+    return { type: 'all_complete' as const, destination: '/', label: '', homeDest };
   }, [category, card, cards, product, completedCardIds]);
 
   // ─────────────────────────────────────────────────────────────
