@@ -441,7 +441,7 @@ const cards: Card[] = [
   {
     id: 'jim-nyfiken',
     title: 'Nyfiken',
-    subtitle: 'Lusten att lära sig mer -- och vad som händer när nyfikenheten tar över',
+    subtitle: 'Lusten att lära sig mer – och vad som händer när nyfikenheten tar över',
     categoryId: 'jim-jag-som-helhet',
     sections: [
       {
