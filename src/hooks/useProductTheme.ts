@@ -41,5 +41,5 @@ export function useProductTheme(primary: string, accent: string, bgColor?: strin
        '--question-cloud-tint', '--question-cloud-border',
       ].forEach((v) => root.style.removeProperty(v));
     };
-  }, [primary, accent, bgColor, ctaButtonColor]);
+  }, [primary, accent, bgColor, ctaButtonColor, pronounMode]);
 }
