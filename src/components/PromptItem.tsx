@@ -1,5 +1,6 @@
-import { motion } from 'framer-motion';
-import { Prompt } from '@/types';
+import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Prompt, SituationalAnchor } from '@/types';
 import { EASE } from '@/lib/motion';
 
 interface PromptItemProps {
@@ -8,6 +9,7 @@ interface PromptItemProps {
   index: number;
   sectionType?: 'opening' | 'reflective' | 'scenario' | 'exercise';
   preamble?: string;
+  anchor?: SituationalAnchor;
   highlightCount: number;
   // Kept for interface compat — not rendered
   label?: string;
@@ -43,7 +45,8 @@ const DEPTH_GRAVITY: Record<string, React.CSSProperties> = {
  * Renders a single prompt — flat, read-only question text.
  * Unified presentation: all section types use centered question style.
  */
-export default function PromptItem({ prompt, index, sectionType, preamble }: PromptItemProps) {
+export default function PromptItem({ prompt, index, sectionType, preamble, anchor }: PromptItemProps) {
+  const [anchorOpen, setAnchorOpen] = useState(false);
   const gravity = DEPTH_GRAVITY[sectionType || 'opening'] || DEPTH_GRAVITY.opening;
   const isExercise = sectionType === 'exercise';
   const enterEase = [...EASE] as [number, number, number, number];
@@ -232,6 +235,78 @@ export default function PromptItem({ prompt, index, sectionType, preamble }: Pro
               </motion.div>
             );
           })()
+        )}
+
+        {/* ── Situational anchor — expandable normalizing text ── */}
+        {anchor && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5, delay: 0.4, ease: enterEase }}
+            style={{ marginTop: '24px', textAlign: 'center' }}
+          >
+            <button
+              onClick={() => setAnchorOpen(prev => !prev)}
+              aria-expanded={anchorOpen}
+              style={{
+                background: 'none',
+                border: 'none',
+                cursor: 'pointer',
+                padding: '8px 16px',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '6px',
+                color: 'var(--text-tertiary, var(--text-secondary))',
+                opacity: 0.5,
+                fontSize: '13px',
+                fontFamily: 'var(--font-sans)',
+                letterSpacing: '0.02em',
+                transition: 'opacity 0.2s ease',
+              }}
+              onMouseEnter={e => (e.currentTarget.style.opacity = '0.75')}
+              onMouseLeave={e => (e.currentTarget.style.opacity = '0.5')}
+            >
+              <span style={{
+                display: 'inline-block',
+                width: '16px',
+                height: '16px',
+                borderRadius: '50%',
+                border: '1.5px solid currentColor',
+                lineHeight: '14px',
+                textAlign: 'center',
+                fontSize: '11px',
+                fontWeight: 500,
+                flexShrink: 0,
+              }}>
+                {anchorOpen ? '−' : '·'}
+              </span>
+            </button>
+
+            <AnimatePresence>
+              {anchorOpen && (
+                <motion.p
+                  initial={{ opacity: 0, height: 0, marginTop: 0 }}
+                  animate={{ opacity: 1, height: 'auto', marginTop: 16 }}
+                  exit={{ opacity: 0, height: 0, marginTop: 0 }}
+                  transition={{ duration: 0.35, ease: enterEase }}
+                  className="font-serif"
+                  style={{
+                    fontSize: '15px',
+                    lineHeight: 1.6,
+                    color: 'var(--text-secondary)',
+                    opacity: 0.7,
+                    textAlign: 'center',
+                    textWrap: 'balance',
+                    maxWidth: '520px',
+                    margin: '0 auto',
+                    overflow: 'hidden',
+                  }}
+                >
+                  {anchor.text}
+                </motion.p>
+              )}
+            </AnimatePresence>
+          </motion.div>
         )}
       </div>
     </div>

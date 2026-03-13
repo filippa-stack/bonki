@@ -4,12 +4,20 @@ export interface Prompt {
   textColor?: string;
 }
 
+/** Situational anchor: expandable text under a specific question */
+export interface SituationalAnchor {
+  /** 0-based index of the prompt this anchor belongs to */
+  promptIndex: number;
+  text: string;
+}
+
 export interface Section {
   id: string;
   type: 'opening' | 'reflective' | 'scenario' | 'exercise';
   title: string;
   content: string;
   prompts?: (string | Prompt)[];
+  anchors?: SituationalAnchor[];
   color?: string;
   textColor?: string;
 }

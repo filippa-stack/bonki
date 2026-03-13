@@ -1,5 +1,5 @@
 import { forwardRef } from 'react';
-import { Section, Card, Prompt } from '@/types';
+import { Section, Card, Prompt, SituationalAnchor } from '@/types';
 import PromptItem from '@/components/PromptItem';
 import BookmarkButton from '@/components/BookmarkButton';
 import { ArrowLeft } from 'lucide-react';
@@ -137,6 +137,7 @@ const SectionView = forwardRef<SectionViewHandle, SectionViewProps>(
           index={promptIndex}
           sectionType={section.type as 'opening' | 'reflective' | 'scenario' | 'exercise'}
           preamble={showPreamble ? section.content : undefined}
+          anchor={section.anchors?.find(a => a.promptIndex === (isExercise ? 0 : promptIndex))}
           highlightCount={0}
           privateNote={undefined}
           sharedNote={undefined}
