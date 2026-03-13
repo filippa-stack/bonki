@@ -83,7 +83,7 @@ const cards: Card[] = [
     'Vem bestämmer vad ni ska äta? Är du med och påverkar?',
     'Har ni någon särskild regel som gäller vid matbordet? Vad tycker du om den? Är det något du skulle vilja ändra?',
   ]}]},
-  { id: 'vk-hushall', title: 'Hushåll', subtitle: 'Att bidra hemma -- vad barnet tycker om, vad det klagar på och vad det lär sig', categoryId: 'vk-vi-hemma', sections: [{ id: 'vk-hushall-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
+  { id: 'vk-hushall', title: 'Hushåll', subtitle: 'Att bidra hemma – vad barnet tycker om, vad det klagar på och vad det lär sig', categoryId: 'vk-vi-hemma', sections: [{ id: 'vk-hushall-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
     'Vad är roligast att hjälpa till med hemma? Vad gör det roligt?',
     'Får du tillräckligt med beröm eller bekräftelse när du hjälper till hemma, tycker du?',
     'Vilket hushållsarbete klagar dina vuxna mest över?',
