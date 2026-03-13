@@ -343,7 +343,7 @@ const cards: Card[] = [
           'Varför tror du att människor känner svartsjuka?',
           'Har du varit svartsjuk någon gång? Vad gjorde du då?',
           'När kan det bli problem av att känna svartsjuka?',
-          'Hur kan man dela på en persons uppmärksamhet och kärlek med andra? Vad hjälper dig att känna dig trygg ändå?',
+          'Hur kan en dela på en persons uppmärksamhet och kärlek med andra? Vad hjälper dig att känna dig trygg ändå?',
         ],
       },
     ],
