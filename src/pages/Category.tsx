@@ -726,13 +726,14 @@ function CardEntry({ card, index, isCompleted = false, isInProgress = false, isN
         style={{
           padding: '0',
           background: categoryBg || styles?.cardBg || '#FFFFFF',
-          border: '1.5px solid rgba(255,255,255,0.35)',
+          border: isNextSuggested ? '1.5px solid rgba(218, 157, 29, 0.55)' : '1.5px solid rgba(255,255,255,0.35)',
           borderRadius: '22px',
           boxShadow: [
+            isNextSuggested ? '0 0 20px -4px rgba(218, 157, 29, 0.25)' : '',
             '0 8px 28px rgba(44, 36, 32, 0.10)',
             '0 2px 8px rgba(44, 36, 32, 0.06)',
             'inset 0 1px 0 rgba(255,255,255,0.4)',
-          ].join(', '),
+          ].filter(Boolean).join(', '),
           transition: 'transform 200ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 260ms ease-out',
           height: '280px',
           position: 'relative',
