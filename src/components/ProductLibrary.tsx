@@ -482,7 +482,7 @@ export default function ProductLibrary() {
           <div
             style={{
               display: 'flex',
-              background: isDark ? 'hsla(230, 35%, 18%, 0.6)' : 'hsla(38, 40%, 60%, 0.25)',
+              background: isDark ? 'hsla(230, 35%, 18%, 0.6)' : 'hsla(0, 0%, 100%, 0.12)',
               backdropFilter: 'blur(12px)',
               WebkitBackdropFilter: 'blur(12px)',
               borderRadius: '20px',
@@ -490,8 +490,8 @@ export default function ProductLibrary() {
               gap: '2px',
               position: 'relative',
               transition: 'background 400ms ease',
-              border: isDark ? 'none' : '0.5px solid hsla(38, 50%, 80%, 0.35)',
-              boxShadow: isDark ? 'none' : '0 2px 8px hsla(32, 40%, 25%, 0.08)',
+              border: isDark ? 'none' : '0.5px solid hsla(0, 0%, 100%, 0.2)',
+              boxShadow: isDark ? 'none' : '0 2px 8px hsla(0, 0%, 0%, 0.12)',
             }}
           >
             {(['barn', 'par'] as const).map((tab) => (
@@ -503,11 +503,11 @@ export default function ProductLibrary() {
                   fontSize: '9px',
                   fontWeight: 700,
                   letterSpacing: '0.14em',
-                  color: activeTab === tab
-                    ? (isDark ? '#F5EFE6' : '#1A1A2E')
-                    : (isDark ? 'hsla(30, 20%, 85%, 0.4)' : 'hsla(30, 10%, 20%, 0.35)'),
+                   color: activeTab === tab
+                    ? (isDark ? '#F5EFE6' : '#F5EFE6')
+                    : (isDark ? 'hsla(30, 20%, 85%, 0.4)' : 'hsla(0, 0%, 100%, 0.4)'),
                   background: activeTab === tab
-                    ? (isDark ? 'hsla(230, 35%, 25%, 0.7)' : 'hsla(0, 0%, 100%, 0.7)')
+                    ? (isDark ? 'hsla(230, 35%, 25%, 0.7)' : 'hsla(0, 0%, 100%, 0.18)')
                     : 'transparent',
                   border: 'none',
                   outline: 'none',
@@ -517,7 +517,7 @@ export default function ProductLibrary() {
                   transition: 'all 260ms ease',
                   WebkitTapHighlightColor: 'transparent',
                   boxShadow: activeTab === tab
-                    ? (isDark ? '0 1px 4px hsla(220, 40%, 10%, 0.3)' : '0 1px 4px hsla(30, 20%, 20%, 0.08)')
+                    ? (isDark ? '0 1px 4px hsla(220, 40%, 10%, 0.3)' : '0 1px 4px hsla(0, 0%, 0%, 0.15)')
                     : 'none',
                 }}
               >
@@ -536,7 +536,7 @@ export default function ProductLibrary() {
               fontSize: '8px',
               fontWeight: 500,
               letterSpacing: '0.08em',
-              color: isDark ? 'hsla(30, 20%, 80%, 0.3)' : 'hsla(30, 10%, 30%, 0.25)',
+              color: isDark ? 'hsla(30, 20%, 80%, 0.3)' : 'hsla(0, 0%, 100%, 0.3)',
               textTransform: 'uppercase',
               transition: 'color 400ms ease',
             }}
@@ -694,19 +694,19 @@ export default function ProductLibrary() {
             margin: '32px 40px 8px',
           }}
         >
-          <div style={{ flex: 1, height: '1px', background: 'linear-gradient(90deg, transparent, hsla(38, 50%, 60%, 0.2))' }} />
+          <div style={{ flex: 1, height: '1px', background: 'linear-gradient(90deg, transparent, hsla(38, 60%, 55%, 0.25))' }} />
           <span style={{
             fontFamily: "'Lato', sans-serif",
             fontSize: '8px',
             fontWeight: 700,
             letterSpacing: '0.15em',
             textTransform: 'uppercase' as const,
-            color: 'var(--accent-text)',
-            opacity: 0.45,
+            color: '#E9B44C',
+            opacity: 0.5,
           }}>
             ✦
           </span>
-          <div style={{ flex: 1, height: '1px', background: 'linear-gradient(90deg, hsla(38, 50%, 60%, 0.2), transparent)' }} />
+          <div style={{ flex: 1, height: '1px', background: 'linear-gradient(90deg, hsla(38, 60%, 55%, 0.25), transparent)' }} />
         </motion.div>
 
         {/* Diary — magical emotional anchor */}
@@ -1198,7 +1198,7 @@ export default function ProductLibrary() {
               fontFamily: "'DM Serif Display', serif",
               fontStyle: 'normal',
               fontSize: '14px',
-              color: isDark ? 'hsla(38, 55%, 70%, 1)' : 'var(--accent-text)',
+              color: isDark ? 'hsla(38, 55%, 70%, 1)' : '#E9B44C',
               opacity: 0.9,
               lineHeight: 1.7,
               letterSpacing: '-0.01em',
