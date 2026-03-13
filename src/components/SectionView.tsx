@@ -1,5 +1,5 @@
 import { forwardRef } from 'react';
-import { Section, Card, Prompt } from '@/types';
+import { Section, Card, Prompt, SituationalAnchor } from '@/types';
 import PromptItem from '@/components/PromptItem';
 import BookmarkButton from '@/components/BookmarkButton';
 import { ArrowLeft } from 'lucide-react';
