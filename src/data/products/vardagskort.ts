@@ -27,7 +27,7 @@ const cards: Card[] = [
     'Vad kan vara bra med att ha tråkigt?',
     'Vilka rutiner och traditioner tror du att du kommer ha i din familj när du blir vuxen?',
   ]}]},
-  { id: 'vk-skola', title: 'Skola', subtitle: 'Barnets upplevelse av skolan -- det roliga, det svåra och vad det önskar vore annorlunda', categoryId: 'vk-var-rytm', sections: [{ id: 'vk-skola-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
+  { id: 'vk-skola', title: 'Skola', subtitle: 'Barnets upplevelse av skolan – det roliga, det svåra och vad det önskar vore annorlunda', categoryId: 'vk-var-rytm', sections: [{ id: 'vk-skola-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
     'Vad är ditt roligaste minne från skolan?',
     'Hur skulle du beskriva din skola för en ny elev?',
     'Finns det något du skulle vilja förändra med din skola? Varför?',
