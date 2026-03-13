@@ -397,7 +397,7 @@ const cards: Card[] = [
   {
     id: 'jim-bestamd',
     title: 'Bestämd',
-    subtitle: 'Att veta vad man vill och våga stå för det',
+    subtitle: 'Att veta vad en vill och våga stå för det',
     categoryId: 'jim-jag-som-helhet',
     sections: [
       {
