@@ -429,8 +429,8 @@ const cards: Card[] = [
         prompts: [
           'När vet du att det är dags att säga stopp?',
           'När är det svårt att säga stopp?',
-          'Hur hjälper man någon annan att säga stopp?',
-          'Hur märker man att någon vill säga stopp utan att de har sagt stopp?',
+           'Hur hjälper en någon annan att säga stopp?',
+           'Hur märker en att någon vill säga stopp utan att de har sagt stopp?',
         ],
       },
       {
