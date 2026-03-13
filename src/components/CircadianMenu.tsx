@@ -359,21 +359,6 @@ export default function CircadianMenu({
                         >
                           {category.title}
                         </h3>
-                        {category.entryLine && (
-                          <p
-                            style={{
-                              fontFamily: 'var(--font-sans)',
-                              fontSize: '12px',
-                              fontWeight: 400,
-                              color: CIRCADIAN_COLORS_LIGHT[category.id] || color,
-                              opacity: 1,
-                              lineHeight: 1.45,
-                              marginTop: '3px',
-                            }}
-                          >
-                            {category.entryLine}
-                          </p>
-                        )}
                       </div>
 
                       {/* Progress ring */}
