@@ -92,39 +92,6 @@ function buildBadgeText(product: { cards: unknown[]; id: string }): string {
   const price = prices[product.id] ?? 195;
   return `${count} ämnen · ${price} kr · 1a gratis`;
 }
-/** Product progress ring — matches Still Us CircadianMenu style */
-function ProductProgressRing({ completed, total, size = 18, color }: { completed: number; total: number; size?: number; color: string }) {
-  if (completed === 0) return null;
-  const radius = (size - 3) / 2;
-  const circumference = 2 * Math.PI * radius;
-  const progress = total > 0 ? completed / total : 0;
-  const strokeDashoffset = circumference * (1 - progress);
-  const allDone = completed === total && total > 0;
-
-  return (
-    <div style={{ position: 'absolute', top: '12px', right: '12px', width: size, height: size, zIndex: 3, opacity: 0.6 }}>
-      <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} style={{ transform: 'rotate(-90deg)' }}>
-        <circle cx={size / 2} cy={size / 2} r={radius} fill="none" stroke={color} strokeWidth={1.5} opacity={0.2} />
-        <motion.circle
-          cx={size / 2} cy={size / 2} r={radius} fill="none" stroke={color} strokeWidth={1.5} strokeLinecap="round"
-          strokeDasharray={circumference}
-          initial={{ strokeDashoffset: circumference }}
-          animate={{ strokeDashoffset }}
-          transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1], delay: 0.5 }}
-        />
-      </svg>
-      {allDone && (
-        <motion.div
-          initial={{ scale: 0 }} animate={{ scale: 1 }}
-          transition={{ delay: 1.0, type: 'spring', stiffness: 300 }}
-          style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-        >
-          <Check size={9} style={{ color }} />
-        </motion.div>
-      )}
-    </div>
-  );
-}
 
 
 const containerVariants = {
