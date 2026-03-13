@@ -73,7 +73,7 @@ const cards: Card[] = [
   {
     id: 'jma-kontakt',
     title: 'Kontakt',
-    subtitle: 'Att läsa av hur någon mår -- och vad en gör med det en ser',
+    subtitle: 'Att läsa av hur någon mår – och vad en gör med det en ser',
     categoryId: 'jma-att-hora-till',
     sections: [
       {
