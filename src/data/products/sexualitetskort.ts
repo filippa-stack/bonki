@@ -118,7 +118,7 @@ const cards: Card[] = [
     'Måste en vara en ond eller illvillig person för att begå ett sexuellt övertramp?',
     'I vilka situationer kan en få nedsatt omdöme?',
   ]}]},
-  { id: 'sex-konsekvenser-av-sex', title: 'Konsekvenser av sex', subtitle: 'Vad man bör tänka på innan -- preventivmedel, sjukdomar och graviditet', categoryId: 'sex-relation-och-ansvar', sections: [{ id: 'sex-konsekvenser-av-sex-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
+  { id: 'sex-konsekvenser-av-sex', title: 'Konsekvenser av sex', subtitle: 'Vad en bör tänka på innan -- preventivmedel, sjukdomar och graviditet', categoryId: 'sex-relation-och-ansvar', sections: [{ id: 'sex-konsekvenser-av-sex-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
     'Vad kan vara viktigt att tänka på innan en ska ha sex med någon?',
     'Vilka konsekvenser kan det finnas av att ha sex?',
     'Varför kan det vara bra att använda preventivmedel?',
