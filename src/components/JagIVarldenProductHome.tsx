@@ -251,6 +251,20 @@ export default function JagIVarldenProductHome({ product }: { product: ProductMa
             );
           })}
 
+          {/* Separator */}
+          <motion.div
+            variants={pillVariants}
+            style={{
+              width: '24px',
+              height: '2px',
+              backgroundColor: ACCENT_COLOR,
+              opacity: 0.25,
+              borderRadius: '1px',
+              marginTop: '2.5vh',
+              marginBottom: '0.5vh',
+            }}
+          />
+
           {/* Sign-off */}
           <motion.p
             variants={pillVariants}
@@ -262,7 +276,6 @@ export default function JagIVarldenProductHome({ product }: { product: ProductMa
               opacity: 0.6,
               textAlign: 'center',
               lineHeight: 1.5,
-              marginTop: '2.5vh',
               maxWidth: '85%',
               textShadow: '0 0 12px rgba(255,255,255,0.8)',
             }}
