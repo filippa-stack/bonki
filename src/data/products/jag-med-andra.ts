@@ -196,7 +196,7 @@ const cards: Card[] = [
         prompts: [
           'Varför tror du att det för många känns viktigt att vinna eller vara bäst?',
           'Berätta när du vann något -- hur kändes det?',
-          'Vad kan man lära sig av att inte vinna?',
+          'Vad kan en lära sig av att inte vinna?',
           'Om du kom tvåa eller sist, vad önskar du att någon skulle säga till dig då?',
         ],
       },
