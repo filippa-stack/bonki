@@ -17,7 +17,7 @@ const cards: Card[] = [
     'Vad innebär begreppen cis- och transperson?',
     'Vad är könsdysfori? Hur kan det påverka en person?',
     'Vad skulle du göra om omgivningen uppfattade din könstillhörighet annorlunda än du själv uppfattar den?',
-    'Måste man vara man eller kvinna?',
+    'Måste en vara man eller kvinna?',
     'Vad betyder det att vara icke-binär?',
     'Vart kan du vända dig och vem kan du prata med om du upplever att din könsidentitet inte överensstämmer med ditt kroppsliga kön?',
   ]}]},
