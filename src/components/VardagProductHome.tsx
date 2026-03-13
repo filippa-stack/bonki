@@ -177,30 +177,29 @@ export default function VardagProductHome({ product }: { product: ProductManifes
                 onClick={() => navigate(`/category/${cat.id}`)}
                 style={{
                   background: tile.bg,
-                  borderRadius: '22px',
-                  padding: '0 32px',
+                  borderRadius: '20px',
+                  padding: '0 24px',
                   textAlign: 'center',
                   cursor: 'pointer',
-                  border: isDark
-                    ? '1px solid hsla(200, 35%, 40%, 0.35)'
-                    : '1px solid hsla(200, 40%, 82%, 0.60)',
-                  boxShadow: isDark
+                  border: isHero
+                    ? '1.5px solid rgba(15, 107, 153, 0.18)'
+                    : '1px solid rgba(15, 107, 153, 0.08)',
+                  boxShadow: isHero
                     ? [
-                        '0 6px 20px hsla(200, 35%, 15%, 0.22)',
-                        '0 2px 6px hsla(0, 0%, 0%, 0.10)',
-                        'inset 0 1px 0 hsla(200, 40%, 55%, 0.30)',
+                        '0 8px 28px rgba(15, 107, 153, 0.14)',
+                        '0 3px 8px rgba(15, 107, 153, 0.07)',
+                        'inset 0 2px 0 rgba(255, 255, 255, 0.50)',
+                        'inset 0 -2px 4px rgba(15, 107, 153, 0.06)',
                       ].join(', ')
                     : [
-                        '0 6px 20px hsla(200, 35%, 50%, 0.10)',
-                        '0 2px 6px hsla(0, 0%, 0%, 0.04)',
-                        'inset 0 2px 1px hsla(200, 50%, 95%, 0.55)',
-                        'inset 0 -2px 4px hsla(200, 25%, 30%, 0.06)',
+                        '0 4px 16px rgba(15, 107, 153, 0.09)',
+                        '0 1px 4px rgba(15, 107, 153, 0.05)',
+                        'inset 0 2px 0 rgba(255, 255, 255, 0.45)',
+                        'inset 0 -2px 4px rgba(15, 107, 153, 0.05)',
                       ].join(', '),
                   whiteSpace: 'normal' as const,
-                  backdropFilter: 'blur(20px) saturate(1.3)',
-                  WebkitBackdropFilter: 'blur(20px) saturate(1.3)',
-                  width: isHero ? '86%' : '82%',
-                  minHeight: isHero ? '76px' : '66px',
+                  width: '86%',
+                  minHeight: isHero ? '72px' : '60px',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
@@ -210,10 +209,9 @@ export default function VardagProductHome({ product }: { product: ProductManifes
                 <span
                   style={{
                     fontFamily: "'DM Serif Display', var(--font-serif)",
-                    fontSize: isHero ? 'clamp(21px, 5.8vw, 27px)' : 'clamp(19px, 5.2vw, 25px)',
+                    fontSize: isHero ? 'clamp(22px, 6vw, 28px)' : 'clamp(19px, 5.2vw, 25px)',
                     fontWeight: 400,
                     color: tile.text,
-                    textShadow: isDark ? 'none' : '0 1px 4px hsla(200, 40%, 90%, 0.8)',
                   }}
                 >
                   {cat.title}
