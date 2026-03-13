@@ -18,7 +18,7 @@ const cards: Card[] = [
     'Om du skulle väcka och få iväg dina vuxna till jobbet, vad skulle du göra? Vad skulle du göra annorlunda mot hur de gör när de väcker dig?',
     'Ibland är det bråttom på morgonen – hur känns det?',
   ]}]},
-  { id: 'vk-rutiner', title: 'Rutiner', subtitle: 'Varför struktur och vanor spelar roll -- och vilka rutiner barnet värdesätter', categoryId: 'vk-var-rytm', sections: [{ id: 'vk-rutiner-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
+  { id: 'vk-rutiner', title: 'Rutiner', subtitle: 'Varför struktur och vanor spelar roll – och vilka rutiner barnet värdesätter', categoryId: 'vk-var-rytm', sections: [{ id: 'vk-rutiner-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
     'Varför tror du att de flesta människor mår bra av rutiner?',
     'Finns det rutiner som är särskilt viktiga? Vilka och varför?',
     'Ge exempel på en rutin du tycker är tråkig. Varför är den ändå bra?',
