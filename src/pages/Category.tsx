@@ -73,10 +73,9 @@ const PRODUCT_STYLES: Record<string, {
 /** Category-specific tile background colors (matching product homescreen tiles) */
 const CATEGORY_CARD_BG: Record<string, string> = {
   // Jag i mig
-  'jim-tryggheten-inuti': '#CDD625',
-  'jim-kanslorna-jag-bar': '#F2F89B',
-  'jim-nar-det-gor-ont': '#6B7A45',
-  'jim-jag-som-helhet': '#6B7213',
+  'jim-mina-kanslor': '#CDD625',
+  'jim-starka-kanslor': '#6B7A45',
+  'jim-stora-kanslor': '#6B7213',
   // Jag med andra
   'jma-att-hora-till': '#9825D6',
   'jma-nar-vi-jamfor-oss': '#E2C2FF',
@@ -108,10 +107,9 @@ const CATEGORY_CARD_BG: Record<string, string> = {
 
 /** Category-specific card title colors (matching homescreen tile text) */
 const CATEGORY_TITLE_COLOR: Record<string, string> = {
-  'jim-tryggheten-inuti': '#3E4421',
-  'jim-kanslorna-jag-bar': '#3E4421',
-  'jim-nar-det-gor-ont': '#FAFAF0',
-  'jim-jag-som-helhet': '#FAFAF0',
+  'jim-mina-kanslor': '#3E4421',
+  'jim-starka-kanslor': '#FAFAF0',
+  'jim-stora-kanslor': '#FAFAF0',
   // Jag med andra
   'jma-att-hora-till': '#FAFAF0',
   'jma-nar-vi-jamfor-oss': '#3A1560',
