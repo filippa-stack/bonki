@@ -14,23 +14,23 @@ const DIARY_TEXT = '#3E4421';
 const ORDERED_TILES = [
   {
     id: 'jim-tryggheten-inuti',
-    bg: '#E6E9A2',
-    text: ACCENT_COLOR,
+    bg: '#D9E0A3',
+    text: '#3E4124',
   },
   {
     id: 'jim-kanslorna-jag-bar',
-    bg: '#F4F6C1',
-    text: ACCENT_COLOR,
+    bg: '#F0F2C8',
+    text: '#3E4124',
   },
   {
     id: 'jim-nar-det-gor-ont',
     bg: '#A8AD82',
-    text: '#3E4421',
+    text: '#3E4124',
   },
   {
     id: 'jim-jag-som-helhet',
     bg: '#8E944F',
-    text: '#2A2E14',
+    text: '#3E4124',
   },
 ];
 
@@ -180,8 +180,6 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
             const cat = product.categories.find((c) => c.id === tile.id);
             if (!cat) return null;
 
-            const isHero = index === 0;
-            const isDark = 'dark' in tile && tile.dark;
             return (
               <motion.button
                 key={cat.id}
@@ -195,37 +193,27 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
                   padding: '0 32px',
                   textAlign: 'center',
                   cursor: 'pointer',
-                  border: isDark ? '1px solid hsla(66, 40%, 35%, 0.40)' : '1px solid hsla(60, 60%, 90%, 0.60)',
-                  boxShadow: isDark
-                    ? [
-                        '0 6px 20px hsla(66, 40%, 10%, 0.18)',
-                        '0 2px 6px hsla(0, 0%, 0%, 0.08)',
-                        'inset 0 1px 0 hsla(66, 50%, 50%, 0.25)',
-                      ].join(', ')
-                    : [
-                        '0 6px 20px hsla(64, 50%, 40%, 0.10)',
-                        '0 2px 6px hsla(0, 0%, 0%, 0.04)',
-                        'inset 0 2px 1px hsla(60, 80%, 95%, 0.55)',
-                        'inset 0 -2px 4px hsla(64, 40%, 30%, 0.06)',
-                      ].join(', '),
+                  border: '1px solid hsla(66, 30%, 70%, 0.30)',
+                  boxShadow: [
+                    '0 3px 10px hsla(66, 30%, 40%, 0.06)',
+                    '0 1px 3px hsla(66, 20%, 50%, 0.04)',
+                    'inset 0 1px 0 hsla(60, 40%, 95%, 0.45)',
+                  ].join(', '),
                   whiteSpace: 'normal' as const,
-                  width: isHero ? '86%' : '82%',
-                  minHeight: isHero ? '76px' : '66px',
+                  width: '84%',
+                  minHeight: index === 0 ? '72px' : '64px',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
                   lineHeight: 1.3,
-                  backdropFilter: 'blur(20px) saturate(1.3)',
-                  WebkitBackdropFilter: 'blur(20px) saturate(1.3)',
                 }}
               >
                 <span
                   style={{
                     fontFamily: "'DM Serif Display', var(--font-serif)",
-                    fontSize: isHero ? 'clamp(21px, 5.8vw, 27px)' : 'clamp(19px, 5.2vw, 25px)',
+                    fontSize: index === 0 ? 'clamp(21px, 5.8vw, 27px)' : 'clamp(19px, 5.2vw, 25px)',
                     fontWeight: 400,
                     color: tile.text,
-                    textShadow: isDark ? 'none' : '0 1px 4px hsla(60, 60%, 90%, 0.8), 0 0 12px hsla(60, 50%, 95%, 0.5)',
                   }}
                 >
                   {cat.title}
