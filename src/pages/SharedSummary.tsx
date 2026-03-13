@@ -11,6 +11,7 @@ import { ChevronRight } from 'lucide-react';
 import Header from '@/components/Header';
 import { RECOMMENDED_CATEGORY_ORDER } from '@/lib/recommendedOrder';
 import { EMOTION, BEAT_1 } from '@/lib/motion';
+import { useVerdigrisTheme } from '@/components/VerdigrisAtmosphere';
 import type { Prompt } from '@/types';
 
 const ease = [0.4, 0, 0.2, 1] as const;
@@ -199,6 +200,7 @@ export default function SharedSummary() {
   const { getCardById, getCategoryById } = useApp();
   const { user } = useAuth();
   const { space } = useCoupleSpaceContext();
+  useVerdigrisTheme(true);
 
   const [entries, setEntries] = useState<CompletedEntry[]>([]);
   const [loading, setLoading] = useState(true);
