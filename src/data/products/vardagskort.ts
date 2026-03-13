@@ -108,7 +108,7 @@ const cards: Card[] = [
     'En vuxen säger att dataspel, skärmar eller mobilen är bortkastad tid. Vad svarar du, utan att bara säga "nej, det är det inte"?',
   ]}]},
   // ── K3: Jag växer ──
-  { id: 'vk-aktiviteter', title: 'Aktiviteter', subtitle: 'Hobbyer och fritidssysselsättningar -- vad barnet väljer och varför', categoryId: 'vk-jag-vaxer', sections: [{ id: 'vk-aktiviteter-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
+  { id: 'vk-aktiviteter', title: 'Aktiviteter', subtitle: 'Hobbyer och fritidssysselsättningar – vad barnet väljer och varför', categoryId: 'vk-jag-vaxer', sections: [{ id: 'vk-aktiviteter-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
     'Förutom sport, vad kan en hobby vara?',
     'Finns det någon aktivitet du älskar? Finns det en du vill prova men ännu inte har provat?',
     'Är det viktigt med aktiviteter eller hobbyer utanför skoltid? Varför?',
