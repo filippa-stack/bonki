@@ -268,7 +268,7 @@ const cards: Card[] = [
   {
     id: 'sk-sjukdom',
     title: 'Sjukdom',
-    subtitle: 'När ett syskon har en diagnos eller funktionsnedsättning -- hur påverkar det hela familjen?',
+    subtitle: 'När ett syskon har en diagnos eller funktionsnedsättning – hur påverkar det hela familjen?',
     categoryId: 'sk-nar-det-skaver',
     sections: [
       {
