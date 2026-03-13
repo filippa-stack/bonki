@@ -205,6 +205,7 @@ export default function JagIVarldenProductHome({ product }: { product: ProductMa
             if (!cat) return null;
 
             const isHero = index === 0;
+            const isLast = index === ORDERED_TILES.length - 1;
             const isDark = tile.dark;
 
             return (
