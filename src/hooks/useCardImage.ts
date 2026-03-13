@@ -148,6 +148,7 @@ const STANDALONE_IMAGES: Record<string, string> = {
   'jma-misslyckas': '/card-images/jma-misslyckas.png',
   'jma-sanning': '/card-images/jma-sanning.png',
   'jma-skam': '/card-images/jma-skam.png',
+  'jma-lika-varde': '/card-images/jma-lika-varde.png',
 };
 
 const ZIP_URLS: Record<ZipSource, string> = {
