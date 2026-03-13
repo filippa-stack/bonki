@@ -115,20 +115,6 @@ const SectionView = forwardRef<SectionViewHandle, SectionViewProps>(
           </div>
         )}
 
-        {/* Bookmark button — top right, live sessions only */}
-        {isLive && coupleSpaceId && sessionId && cardId && stageIndex !== undefined && (
-          <div style={{ position: 'absolute', top: '12px', right: '0px', zIndex: 2 }}>
-            <BookmarkButton
-              coupleSpaceId={coupleSpaceId}
-              sessionId={sessionId}
-              cardId={cardId}
-              stageIndex={stageIndex}
-              promptIndex={promptIndex}
-              questionText={prompt.text}
-              isDarkBackground={isReflectionStep}
-            />
-          </div>
-        )}
 
         <PromptItem
           key={`${section.id}-${promptIndex}`}
