@@ -345,7 +345,7 @@ h1, h2, h3,
     width: 130px;
     height: 130px;
     aspect-ratio: 1 / 1;
-    background: linear-gradient(180deg, hsl(41, 80%, 56%) 0%, hsl(41, 78%, 48%) 40%, hsl(41, 70%, 38%) 100%);
+    border-radius: 22px;
     color: #1A1208;
     font-family: 'DM Serif Display', var(--font-serif);
     font-size: 17px;
