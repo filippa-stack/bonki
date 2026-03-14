@@ -1387,6 +1387,28 @@ export default function CardView() {
             ))}
           </motion.p>
 
+          {/* Time indication — kids products only */}
+          {pronounMode === 'du' && (
+            <motion.p
+              className="font-sans"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: BEAT_2 + 0.15, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+              style={{
+                fontSize: '13px',
+                fontWeight: 500,
+                color: 'var(--color-text-tertiary)',
+                opacity: 0.55,
+                textAlign: 'center',
+                marginTop: '-20px',
+                marginBottom: '28px',
+                letterSpacing: '0.02em',
+              }}
+            >
+              ⏱ 5–10 min
+            </motion.p>
+          )}
+
           {/* Orphan/stale session banner */}
           {staleSession && (
             <motion.div
