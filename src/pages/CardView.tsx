@@ -1999,8 +1999,8 @@ export default function CardView() {
                 return null;
               })()}
 
-              {/* ── Ritual hint ABOVE prompt for scenario steps (live only) ── */}
-              {isLive && (() => {
+              {/* ── Ritual hint ABOVE prompt for scenario steps (live only, not kids) ── */}
+              {isLive && pronounMode !== 'du' && (() => {
                 const stageKey = effectiveSteps[currentStepIndex];
                 if (stageKey !== 'scenario') return null;
                 const hint = uiText.ritualHints[stageKey as keyof typeof uiText.ritualHints];
@@ -2060,8 +2060,8 @@ export default function CardView() {
                 />
               </motion.div>
 
-              {/* ── Ritual hint BELOW prompt for non-scenario steps (live only) ── */}
-              {isLive && (() => {
+              {/* ── Ritual hint BELOW prompt for non-scenario steps (live only, not kids) ── */}
+              {isLive && pronounMode !== 'du' && (() => {
                 const stageKey = effectiveSteps[currentStepIndex];
                 if (stageKey === 'scenario') return null; // already shown above
                 const hint = uiText.ritualHints[stageKey as keyof typeof uiText.ritualHints];
@@ -2078,8 +2078,8 @@ export default function CardView() {
                 );
               })()}
 
-              {/* ── Scenario bottom encouragement (live only) ── */}
-              {isLive && effectiveSteps[currentStepIndex] === 'scenario' && (() => {
+              {/* ── Scenario bottom encouragement (live only, not kids) ── */}
+              {isLive && pronounMode !== 'du' && effectiveSteps[currentStepIndex] === 'scenario' && (() => {
                 const bottomHint = uiText.ritualHints['scenarioBottom' as keyof typeof uiText.ritualHints];
                 if (!bottomHint) return null;
                 return (
