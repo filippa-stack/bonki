@@ -2131,7 +2131,8 @@ export default function CardView() {
                           if (product && product.id !== 'still_us') {
                             navigate(exitBackTo);
                           } else {
-                            setShowLeaveConfirm(true);
+                            toast('Samtalet sparas – ni kan fortsätta när ni vill', { duration: 3000 });
+                            navigate(exitBackTo);
                           }
                         }
                       }}
