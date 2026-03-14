@@ -180,37 +180,6 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
                     lineHeight: 1.15,
                   }}
                 >
-                  {/* Shimmer layer — glossy edge light sweep */}
-                  <div
-                    style={{
-                      position: 'absolute',
-                      inset: 0,
-                      borderRadius: '24px',
-                      overflow: 'hidden',
-                      pointerEvents: 'none',
-                      zIndex: 0,
-                    }}
-                  >
-                    <div
-                      style={{
-                        position: 'absolute',
-                        top: '-50%',
-                        left: '-50%',
-                        width: '200%',
-                        height: '200%',
-                        background: `linear-gradient(
-                          115deg,
-                          transparent 30%,
-                          rgba(255, 255, 255, 0.12) 45%,
-                          rgba(255, 255, 255, 0.22) 50%,
-                          rgba(255, 255, 255, 0.12) 55%,
-                          transparent 70%
-                        )`,
-                        animation: 'jim-shimmer 7s ease-in-out infinite',
-                        animationDelay: `${index * 1.8}s`,
-                      }}
-                    />
-                  </div>
 
                   {/* Surface breathing texture */}
                   <div
