@@ -15,7 +15,7 @@ const SAFFRON = '#DA9D1D';
 
 const ORDERED_TILES = [
   { id: 'sk-vi-blev-syskon', bg: '#A8E0D0', text: '#104038', sub: 'När familjen växer' },
-  { id: 'sk-vi-ar-olika', bg: '#6EC0C8', text: '#0C3440', sub: 'Att vara egen fast vi hör ihop' },
+  { id: 'sk-vi-ar-olika', bg: '#E8C8A0', text: '#4A3418', sub: 'Att vara egen fast vi hör ihop' },
   { id: 'sk-delat-utrymme', bg: '#4A9EB0', text: '#082830', sub: 'När allting ska delas' },
   { id: 'sk-er-relation', bg: '#2E7078', text: '#F0F5F2', sub: 'Nära, svårt och allt däremellan' },
 ];

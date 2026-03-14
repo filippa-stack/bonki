@@ -16,7 +16,7 @@ const SAFFRON = '#DA9D1D';
 const ORDERED_TILES = [
   { id: 'vk-min-dag', bg: '#A8D8C0', text: '#143828', sub: 'Från morgon till kväll' },
   { id: 'vk-var-rytm', bg: '#70B8D0', text: '#0A2840', sub: 'Vanor och rutiner' },
-  { id: 'vk-vi-hemma', bg: '#5A9EA8', text: '#082A2C', sub: 'Allt som händer innanför dörren' },
+  { id: 'vk-vi-hemma', bg: '#D4C4A0', text: '#3A3018', sub: 'Allt som händer innanför dörren' },
   { id: 'vk-utanfor-hemmet', bg: '#387898', text: '#F0F4F6', sub: 'Det du möter där ute' },
 ];
 
