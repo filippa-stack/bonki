@@ -48,7 +48,9 @@ export default function SessionStepReflection({
   const [submitting, setSubmitting] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
+  const [saveIndicator, setSaveIndicator] = useState<'idle' | 'saved'>('idle');
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const saveTimeoutRef = useRef<ReturnType<typeof setTimeout>>();
 
   // Track whether the user had already written something when this mounted
   const hadPriorTextRef = useRef(false);
