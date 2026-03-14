@@ -208,7 +208,7 @@ export default function CircadianMenu({
             <motion.div
               variants={tileVariants}
               style={{
-                padding: groupIdx === 0 ? '0 4px 8px' : '16px 4px 8px',
+                padding: groupIdx === 0 ? '0 4px 8px' : '22px 4px 8px',
               }}
             >
               <h2
@@ -293,7 +293,7 @@ export default function CircadianMenu({
                         fontSize: '10px',
                         fontWeight: 500,
                         color: HERITAGE_GOLD,
-                        opacity: 0.3,
+                        opacity: 0.45,
                         lineHeight: 1,
                       }}
                     >
@@ -327,7 +327,7 @@ export default function CircadianMenu({
                         <ProgressRing
                           completed={completedCount}
                           total={catCards.length}
-                          size={allCompleted ? 20 : 18}
+                          size={allCompleted ? 18 : 14}
                         />
                       </span>
                     )}
