@@ -810,7 +810,7 @@ export default function ProductLibrary() {
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 1.0, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
           >
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{ color: 'var(--accent-text)', opacity: 0.4, margin: '0 auto 10px', display: 'block' }}>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{ color: '#E9B44C', opacity: 0.5, margin: '0 auto 10px', display: 'block' }}>
               <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20" />
             </svg>
           </motion.div>
