@@ -1090,7 +1090,7 @@ export default function ProductLibrary() {
               </div>
             </motion.div>
 
-            {/* Still Fair — glass tile, coming soon */}
+            {/* Still Fair — glass tile, coming soon — full opacity, desaturated */}
             <motion.div
               variants={tileVariants}
               style={{
@@ -1109,7 +1109,7 @@ export default function ProductLibrary() {
                 justifyContent: 'flex-end',
                 border: '1px solid hsla(215, 35%, 50%, 0.08)',
                 boxShadow: 'inset 0 1px 0 0 hsla(0, 0%, 100%, 0.08), 0 4px 24px hsla(230, 50%, 6%, 0.3), 0 1px 3px hsla(230, 40%, 10%, 0.18)',
-                opacity: 0.85,
+                filter: 'saturate(0.7)',
               }}
             >
               {/* Spotlight backglow behind illustration */}
