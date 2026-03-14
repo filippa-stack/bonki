@@ -6,7 +6,7 @@ export const CONTENT_VERSION = 9;
 export const categories: Category[] = [
   {
     id: 'emotional-intimacy',
-    title: 'Ni i er',
+    title: 'Ert minsta vi',
     entryLine: 'Bortom allt annat.',
     description: 'Identitet, tillhörighet och ert minsta vi',
     cardCount: 3,
