@@ -86,7 +86,10 @@ export default function SessionStepReflection({
 
   const handleExpand = () => {
     setIsExpanded(true);
-    setTimeout(() => textareaRef.current?.focus(), 320);
+    setTimeout(() => {
+      textareaRef.current?.focus();
+      textareaRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }, 320);
   };
 
   const handleAdvance = async () => {
