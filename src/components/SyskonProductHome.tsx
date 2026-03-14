@@ -14,10 +14,10 @@ const DIARY_TEXT = '#274C5E';
 const SAFFRON = '#DA9D1D';
 
 const ORDERED_TILES = [
-  { id: 'sk-vi-blev-syskon', bg: '#D4EEF0', text: '#1A4A58', sub: 'När familjen växer' },
-  { id: 'sk-vi-ar-olika', bg: '#A8D8D0', text: '#1A4A44', sub: 'Att vara egen fast vi hör ihop' },
-  { id: 'sk-delat-utrymme', bg: '#78B8B4', text: '#0E3A38', sub: 'När allting ska delas' },
-  { id: 'sk-er-relation', bg: '#4E9494', text: '#F0F5F4', sub: 'Nära, svårt och allt däremellan' },
+  { id: 'sk-vi-blev-syskon', bg: '#D6F0EC', text: '#1A4A50', sub: 'När familjen växer' },
+  { id: 'sk-vi-ar-olika', bg: '#A4D4CC', text: '#144040', sub: 'Att vara egen fast vi hör ihop' },
+  { id: 'sk-delat-utrymme', bg: '#6AB0A8', text: '#0C2E2E', sub: 'När allting ska delas' },
+  { id: 'sk-er-relation', bg: '#3D8078', text: '#F0F5F2', sub: 'Nära, svårt och allt däremellan' },
 ];
 
 const containerVariants = { hidden: {}, visible: { transition: { staggerChildren: 0.11, delayChildren: 0.4 } } };
