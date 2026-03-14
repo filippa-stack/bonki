@@ -41,7 +41,7 @@ export const categories: Category[] = [
   },
   {
     id: 'category-9',
-    title: 'Dit ni är på väg',
+    title: 'Vad ni står för',
     entryLine: 'Riktning, värderingar, mod.',
     description: 'Värderingar under press och drömmar som kräver mod',
     cardCount: 2,
