@@ -333,12 +333,12 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
         }}
       />
 
-      {/* Text content — anchored to bottom */}
+      {/* Text content — anchored to bottom, single secondary line */}
       <div style={{ 
         position: 'absolute', 
         bottom: 0, left: 0, right: 0, 
         zIndex: 2,
-        padding: wide ? '0 20px 16px' : '0 16px 14px',
+        padding: wide ? '0 20px 20px' : '0 16px 18px',
       }}>
         <h3
           style={{
@@ -348,46 +348,25 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
             lineHeight: 1.15,
             color: accentColor || 'var(--text-library)',
             letterSpacing: '-0.01em',
-            textShadow: `0 1px 6px ${bg}, 0 0 16px ${bg}, 0 0 32px ${bg}`,
+            textShadow: `0 1px 6px ${bgRgba(1)}, 0 0 16px ${bgRgba(0.9)}, 0 0 32px ${bgRgba(0.8)}`,
           }}
         >
           {name}
         </h3>
-        {tagline && (
-          <p
-            style={{
-              fontFamily: "'Lato', sans-serif",
-              fontSize: '11.5px',
-              fontWeight: 400,
-              color: taglineColor || '#8A8078',
-              marginTop: '3px',
-              lineHeight: 1.4,
-              textShadow: `0 0 10px ${bg}, 0 0 20px ${bg}`,
-            }}
-          >
-            {tagline}
-          </p>
-        )}
-        {showFreeBadge && (
-          <span
-            style={{
-              display: 'inline-block',
-              marginTop: '6px',
-              fontFamily: "'Lato', sans-serif",
-              fontSize: wide ? '9px' : '8px',
-              fontWeight: 600,
-              letterSpacing: '0.06em',
-              textTransform: 'uppercase',
-              color: accentColor || 'var(--text-library)',
-              opacity: 0.8,
-              lineHeight: 1.4,
-              whiteSpace: 'nowrap',
-              textShadow: `0 0 10px ${bg}, 0 0 20px ${bg}`,
-            }}
-          >
-            {badgeText}
-          </span>
-        )}
+        {/* Single secondary line: tagline + count merged */}
+        <p
+          style={{
+            fontFamily: "'Lato', sans-serif",
+            fontSize: '11px',
+            fontWeight: 400,
+            color: taglineColor || '#8A8078',
+            marginTop: '4px',
+            lineHeight: 1.4,
+            textShadow: `0 0 10px ${bgRgba(1)}, 0 0 20px ${bgRgba(0.8)}`,
+          }}
+        >
+          {tagline}{showFreeBadge ? ` · ✦ 1a gratis` : ''}
+        </p>
       </div>
     </motion.div>
   );
