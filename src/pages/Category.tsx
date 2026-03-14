@@ -404,8 +404,8 @@ function StillUsCategoryView({
           alt=""
           style={{
             width: '100%', height: '100%', objectFit: 'contain', objectPosition: 'center top', opacity: 0.30,
-            maskImage: 'linear-gradient(to bottom, rgba(0,0,0,0.4) 0%, rgba(0,0,0,1) 25%, rgba(0,0,0,1) 70%, rgba(0,0,0,0) 100%)',
-            WebkitMaskImage: 'linear-gradient(to bottom, rgba(0,0,0,0.4) 0%, rgba(0,0,0,1) 25%, rgba(0,0,0,1) 70%, rgba(0,0,0,0) 100%)',
+            maskImage: 'linear-gradient(to bottom, rgba(0,0,0,0.4) 0%, rgba(0,0,0,1) 25%, rgba(0,0,0,1) 60%, rgba(0,0,0,0) 78%)',
+            WebkitMaskImage: 'linear-gradient(to bottom, rgba(0,0,0,0.4) 0%, rgba(0,0,0,1) 25%, rgba(0,0,0,1) 60%, rgba(0,0,0,0) 78%)',
           }}
         />
       </motion.div>
@@ -544,28 +544,11 @@ function StillUsCategoryView({
                   ].filter(Boolean).join(', '),
                   display: 'flex',
                   alignItems: 'center',
-                  gap: '16px',
+                  gap: '0',
                   overflow: 'hidden',
                   opacity: isCompleted ? 0.6 : 1,
                 }}
               >
-                {/* Sequence number */}
-                <span
-                  style={{
-                    fontFamily: "'DM Serif Display', var(--font-serif)",
-                    fontSize: '28px',
-                    fontWeight: 400,
-                    color: HERITAGE_GOLD,
-                    opacity: 0.55,
-                    lineHeight: 1,
-                    flexShrink: 0,
-                    width: '32px',
-                    textAlign: 'center',
-                  }}
-                >
-                  {index + 1}
-                </span>
-
                 {/* Text content */}
                 <div style={{ flex: 1, minWidth: 0 }}>
                   <span
