@@ -14,10 +14,10 @@ const DIARY_TEXT = '#274C5E';
 const SAFFRON = '#DA9D1D';
 
 const ORDERED_TILES = [
-  { id: 'sk-vi-blev-syskon', bg: '#E8F3F5', text: '#274C5E', dark: false },
-  { id: 'sk-vi-ar-olika', bg: '#F5E9D3', text: '#3A2E1A', dark: false },
-  { id: 'sk-delat-utrymme', bg: '#D4E2E0', text: '#274C5E', dark: false },
-  { id: 'sk-er-relation', bg: '#C2D1D9', text: '#274C5E', dark: false },
+  { id: 'sk-vi-blev-syskon', bg: '#E8F3F5', text: '#274C5E' },
+  { id: 'sk-vi-ar-olika', bg: '#F5E9D3', text: '#3A2E1A' },
+  { id: 'sk-delat-utrymme', bg: '#D4E2E0', text: '#274C5E' },
+  { id: 'sk-er-relation', bg: '#C2D1D9', text: '#274C5E' },
 ];
 
 const containerVariants = { hidden: {}, visible: { transition: { staggerChildren: 0.11, delayChildren: 0.4 } } };
@@ -36,9 +36,9 @@ export default function SyskonProductHome({ product }: { product: ProductManifes
         <img src={illustrationImage} alt="" style={{ width: '100%', height: '100%', objectFit: 'contain', objectPosition: 'right top', opacity: 0.28 }} />
       </motion.div>
 
-      <div style={{ position: 'relative', zIndex: 1, minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start', paddingTop: '14vh', paddingRight: '6vw', paddingBottom: '120px', paddingLeft: '6vw' }}>
+      <div style={{ position: 'relative', zIndex: 1, minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start', paddingTop: '13vh', paddingRight: '5vw', paddingBottom: '120px', paddingLeft: '5vw' }}>
         <motion.div variants={containerVariants} initial="hidden" animate="visible" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px', width: '100%' }}>
-          <motion.div variants={titleVariants} style={{ textAlign: 'center', marginBottom: '3vh', width: '100%' }}>
+          <motion.div variants={titleVariants} style={{ textAlign: 'center', marginBottom: '2.5vh', width: '100%' }}>
             <h1 style={{ fontFamily: "'DM Serif Display', var(--font-serif)", fontSize: 'clamp(38px, 11vw, 52px)', fontWeight: 700, color: ACCENT_COLOR, letterSpacing: '-0.01em', whiteSpace: 'nowrap', textShadow: ['0 0 24px rgba(255, 255, 255, 1)', '0 0 48px rgba(255, 255, 255, 0.7)', '0 0 80px rgba(255, 255, 255, 0.4)', '0 2px 4px rgba(0, 0, 0, 0.06)'].join(', ') }}>
               Syskon
             </h1>
@@ -48,8 +48,8 @@ export default function SyskonProductHome({ product }: { product: ProductManifes
             <KidsProductResumeBanner product={product} progress={progress} accentColor={ACCENT_COLOR} />
           </motion.div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', width: '100%' }}>
-            {ORDERED_TILES.map((tile, index) => {
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px', width: '100%' }}>
+            {ORDERED_TILES.map((tile) => {
               const cat = product.categories.find((c) => c.id === tile.id);
               if (!cat) return null;
               const catProgress = progress.categoryProgress[cat.id];
@@ -59,34 +59,41 @@ export default function SyskonProductHome({ product }: { product: ProductManifes
                 <motion.button
                   key={cat.id}
                   variants={pillVariants}
-                  whileHover={{ scale: 1.05, y: -3 }}
-                  whileTap={{ scale: 0.94, y: 2 }}
+                  whileHover={{ scale: 1.04, y: -3 }}
+                  whileTap={{ scale: 0.93, y: 3 }}
                   onClick={() => navigate(`/category/${cat.id}`)}
                   style={{
                     background: tile.bg,
-                    borderRadius: '24px',
-                    padding: '20px 14px',
+                    borderRadius: '22px',
+                    padding: '24px 16px',
                     textAlign: 'center',
                     cursor: 'pointer',
                     aspectRatio: '1 / 1',
                     border: isNextCategory
                       ? `2.5px solid ${SAFFRON}CC`
-                      : '1.5px solid rgba(77, 144, 142, 0.16)',
+                      : '1px solid rgba(77, 144, 142, 0.12)',
                     boxShadow: [
                       isNextCategory ? `0 0 18px 0px ${SAFFRON}50, 0 0 36px -4px ${SAFFRON}30` : '',
-                      '0 8px 24px rgba(77, 144, 142, 0.16)',
-                      '0 3px 8px rgba(77, 144, 142, 0.08)',
-                      'inset 0 2px 0 rgba(255, 255, 255, 0.60)',
-                      'inset 0 -3px 6px rgba(77, 144, 142, 0.08)',
+                      '0 10px 28px rgba(39, 76, 94, 0.14)',
+                      '0 4px 10px rgba(39, 76, 94, 0.07)',
+                      '0 1px 3px rgba(0, 0, 0, 0.04)',
+                      'inset 0 2px 0 rgba(255, 255, 255, 0.65)',
+                      'inset 0 -3px 8px rgba(39, 76, 94, 0.07)',
                     ].filter(Boolean).join(', '),
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    lineHeight: 1.2,
+                    lineHeight: 1.15,
                     position: 'relative',
                   }}
                 >
-                  <span style={{ fontFamily: "'DM Serif Display', var(--font-serif)", fontSize: 'clamp(19px, 5.2vw, 24px)', fontWeight: 400, color: tile.text }}>
+                  <span style={{
+                    fontFamily: "'DM Serif Display', var(--font-serif)",
+                    fontSize: 'clamp(17px, 4.8vw, 22px)',
+                    fontWeight: 400,
+                    color: tile.text,
+                    padding: '0 2px',
+                  }}>
                     {cat.title}
                   </span>
                   {catProgress && catProgress.completed > 0 && (
