@@ -857,9 +857,9 @@ export default function ProductLibrary() {
             margin: '0 auto',
           }}>
             {[
-              { color: 'hsla(45, 50%, 92%, 0.8)', accent: '#6B6742', title: 'Jag i Mig', date: '12 mar', text: '"Hon sa att hon ibland känner sig osynlig i skolan..."' },
-              { color: 'hsla(145, 30%, 89%, 0.8)', accent: '#3A6B48', title: 'Jag i Världen', date: '8 mar', text: '"Vi pratade om mod — att våga säga ifrån"' },
-              { color: 'hsla(215, 35%, 91%, 0.8)', accent: '#2A3E68', title: 'Syskon', date: '3 mar', text: '"De skrattade åt minnet av sommaren..."' },
+              { color: 'hsla(45, 50%, 92%, 0.15)', accent: '#C4B882', title: 'Jag i Mig', date: '12 mar', text: '"Hon sa att hon ibland känner sig osynlig i skolan..."' },
+              { color: 'hsla(145, 30%, 89%, 0.12)', accent: '#7DB88A', title: 'Jag i Världen', date: '8 mar', text: '"Vi pratade om mod — att våga säga ifrån"' },
+              { color: 'hsla(215, 35%, 91%, 0.12)', accent: '#8AA0C8', title: 'Syskon', date: '3 mar', text: '"De skrattade åt minnet av sommaren..."' },
             ].map((entry, i) => (
               <motion.div
                 key={i}
