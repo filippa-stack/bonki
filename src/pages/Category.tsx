@@ -544,7 +544,7 @@ function StillUsCategoryView({
                   ].filter(Boolean).join(', '),
                   display: 'flex',
                   alignItems: 'center',
-                  gap: '16px',
+                  gap: '0',
                   overflow: 'hidden',
                   opacity: isCompleted ? 0.6 : 1,
                 }}
