@@ -800,7 +800,7 @@ export default function ProductLibrary() {
             width: '200px',
             height: '200px',
             borderRadius: '50%',
-            background: 'radial-gradient(circle, hsla(38, 70%, 70%, 0.08) 0%, transparent 70%)',
+            background: 'radial-gradient(circle, hsla(38, 70%, 70%, 0.12) 0%, transparent 70%)',
             pointerEvents: 'none',
           }} />
 
