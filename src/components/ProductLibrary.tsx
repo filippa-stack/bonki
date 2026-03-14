@@ -124,20 +124,32 @@ function buildBadgeText(product: { cards: unknown[]; id: string }): string {
 }
 
 
+/** Detect return visit for faster animations */
+const IS_RETURN_VISIT = (() => {
+  try {
+    const key = 'bonki_library_visited';
+    const visited = sessionStorage.getItem(key);
+    sessionStorage.setItem(key, '1');
+    return !!visited;
+  } catch { return false; }
+})();
+
+const ANIM_SPEED = IS_RETURN_VISIT ? 0.5 : 1;
+
 const containerVariants = {
   hidden: {},
   visible: {
-    transition: { staggerChildren: 0.14, delayChildren: 0.45 },
+    transition: { staggerChildren: 0.08 * ANIM_SPEED, delayChildren: 0.25 * ANIM_SPEED },
   },
 };
 
 const tileVariants = {
-  hidden: { opacity: 0, y: 28, scale: 0.93 },
+  hidden: { opacity: 0, y: 20 * ANIM_SPEED, scale: 0.95 },
   visible: {
     opacity: 1,
     y: 0,
     scale: 1,
-    transition: { duration: 0.75, ease: [0.22, 1, 0.36, 1] as const },
+    transition: { duration: 0.55 * ANIM_SPEED, ease: [0.22, 1, 0.36, 1] as const },
   },
 };
 
