@@ -101,7 +101,7 @@ export default function DiaryEntrance({ productId, accentColor, textColor }: Dia
                 fontSize: 'clamp(10px, 2.8vw, 12px)',
                 fontWeight: 500,
                 color: textColor,
-                opacity: 0.5,
+                opacity: 0.7,
                 lineHeight: 1.3,
               }}
             >
