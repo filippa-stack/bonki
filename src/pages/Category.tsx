@@ -404,8 +404,8 @@ function StillUsCategoryView({
           alt=""
           style={{
             width: '100%', height: '100%', objectFit: 'contain', objectPosition: 'center top', opacity: 0.30,
-            maskImage: 'linear-gradient(to bottom, rgba(0,0,0,0.4) 0%, rgba(0,0,0,1) 25%, rgba(0,0,0,1) 70%, rgba(0,0,0,0) 100%)',
-            WebkitMaskImage: 'linear-gradient(to bottom, rgba(0,0,0,0.4) 0%, rgba(0,0,0,1) 25%, rgba(0,0,0,1) 70%, rgba(0,0,0,0) 100%)',
+            maskImage: 'linear-gradient(to bottom, rgba(0,0,0,0.4) 0%, rgba(0,0,0,1) 25%, rgba(0,0,0,1) 60%, rgba(0,0,0,0) 78%)',
+            WebkitMaskImage: 'linear-gradient(to bottom, rgba(0,0,0,0.4) 0%, rgba(0,0,0,1) 25%, rgba(0,0,0,1) 60%, rgba(0,0,0,0) 78%)',
           }}
         />
       </motion.div>
