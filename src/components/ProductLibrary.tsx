@@ -164,7 +164,7 @@ function AudienceLabel({ label, subtitle, delay = 0 }: { label: string; subtitle
  * │  To unlock: remove this comment block.               │
  * └─────────────────────────────────────────────────────┘
  */
-/** Pastel tile — illustration as right-aligned feature, text left */
+/** Portal tile — full-bleed illustration with bottom text overlay */
 const PastelTile = React.forwardRef<HTMLDivElement, {
   name: string; bg: string; ageLabel?: string; tagline?: string;
   onClick?: () => void; illustration?: string;
@@ -173,7 +173,7 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
   showFreeBadge?: boolean; badgeText?: string;
 }>(function PastelTile({
   name, bg, ageLabel, tagline, onClick, illustration, accentColor, taglineColor,
-  illustrationOpacity = 0.32, illustrationSize = 'contain', illustrationPosition = 'right center', wide = false,
+  illustrationOpacity = 0.92, illustrationSize, illustrationPosition = 'center 40%', wide = false,
   showFreeBadge = false, badgeText = 'Första kortet gratis',
 }, ref) {
   /** Derive a tinted shadow color from the tile bg */
@@ -181,7 +181,6 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
     const r = parseInt(hex.slice(1, 3), 16);
     const g = parseInt(hex.slice(3, 5), 16);
     const b = parseInt(hex.slice(5, 7), 16);
-    // Darken by 40% for shadow tint
     return `rgba(${Math.round(r * 0.6)}, ${Math.round(g * 0.6)}, ${Math.round(b * 0.6)}, ${alpha})`;
   };
 
@@ -193,29 +192,45 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
         onClick={onClick}
         className="cursor-pointer"
         style={{
-          borderRadius: '20px',
-          backgroundImage: `linear-gradient(135deg, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0) 50%, rgba(0,0,0,0.04) 100%)`,
+          borderRadius: '22px',
           backgroundColor: bg,
-          minHeight: wide ? '140px' : '150px',
+          minHeight: wide ? '160px' : '180px',
           display: 'flex',
           flexDirection: 'column',
-          alignItems: 'flex-start',
-          justifyContent: 'flex-start',
-          textAlign: 'left',
-          padding: wide ? '36px 20px 16px' : '36px 16px 14px',
           position: 'relative',
           overflow: 'hidden',
-          border: '1px solid hsla(0, 0%, 100%, 0.30)',
+          border: '1.5px solid rgba(255, 255, 255, 0.35)',
           boxShadow: [
-            `0 10px 28px ${toShadowColor(bg, 0.22)}`,
-            `0 4px 10px ${toShadowColor(bg, 0.14)}`,
-            '0 1px 3px rgba(0, 0, 0, 0.06)',
-            'inset 0 3px 6px rgba(255, 255, 255, 0.5)',
-            `inset 0 -4px 10px ${toShadowColor(bg, 0.12)}`,
+            `0 10px 28px ${toShadowColor(bg, 0.25)}`,
+            `0 4px 10px ${toShadowColor(bg, 0.16)}`,
+            '0 1px 3px rgba(0, 0, 0, 0.08)',
+            'inset 0 2px 4px rgba(255, 255, 255, 0.4)',
+            `inset 0 -3px 8px ${toShadowColor(bg, 0.10)}`,
           ].join(', '),
           gridColumn: wide ? 'span 2' : undefined,
         }}
       >
+      {/* Full-bleed illustration */}
+      {illustration && (
+        <img
+          src={illustration}
+          alt=""
+          draggable={false}
+          style={{
+            position: 'absolute',
+            inset: 0,
+            width: '100%',
+            height: '100%',
+            objectFit: 'cover',
+            objectPosition: illustrationPosition,
+            opacity: illustrationOpacity,
+            pointerEvents: 'none',
+            zIndex: 0,
+          }}
+        />
+      )}
+
+      {/* Age label badge */}
       {ageLabel && (
         <span
           style={{
@@ -233,46 +248,37 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
             fontWeight: 700,
             letterSpacing: '0.02em',
             color: accentColor || 'var(--text-library)',
-            opacity: 0.7,
-            background: 'rgba(255, 255, 255, 0.45)',
-            zIndex: 2,
+            background: 'rgba(255, 255, 255, 0.65)',
+            backdropFilter: 'blur(8px)',
+            WebkitBackdropFilter: 'blur(8px)',
+            zIndex: 3,
           }}
         >
           {ageLabel}
         </span>
       )}
-      {/* Illustration — portal-style, covering the tile */}
-      {illustration && (
-        <div
-          style={{
-            position: 'absolute',
-            top: 0,
-            right: 0,
-            bottom: 0,
-            left: wide ? '40%' : '25%',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            opacity: illustrationOpacity,
-            pointerEvents: 'none',
-            zIndex: 0,
-            overflow: 'hidden',
-          }}
-        >
-          <img
-            src={illustration}
-            alt=""
-            draggable={false}
-            style={{
-              width: '100%',
-              height: '100%',
-              objectFit: 'contain',
-              objectPosition: illustrationPosition,
-            }}
-          />
-        </div>
-      )}
-      <div style={{ zIndex: 1, display: 'flex', flexDirection: 'column', flex: 1, width: '100%' }}>
+
+      {/* Bottom gradient scrim for text legibility */}
+      <div
+        aria-hidden="true"
+        style={{
+          position: 'absolute',
+          bottom: 0, left: 0, right: 0,
+          height: '70%',
+          zIndex: 1,
+          pointerEvents: 'none',
+          background: `linear-gradient(to top, ${bg} 0%, ${bg}CC 30%, ${bg}66 55%, transparent 100%)`,
+          borderRadius: '0 0 22px 22px',
+        }}
+      />
+
+      {/* Text content — anchored to bottom */}
+      <div style={{ 
+        position: 'absolute', 
+        bottom: 0, left: 0, right: 0, 
+        zIndex: 2,
+        padding: wide ? '0 20px 16px' : '0 16px 14px',
+      }}>
         <h3
           style={{
             fontFamily: "'DM Serif Display', serif",
@@ -281,7 +287,7 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
             lineHeight: 1.15,
             color: accentColor || 'var(--text-library)',
             letterSpacing: '-0.01em',
-            textShadow: `0 1px 4px hsla(0, 0%, 100%, 0.7), 0 0 12px hsla(0, 0%, 100%, 0.4)`,
+            textShadow: `0 1px 4px ${bg}, 0 0 12px ${bg}`,
           }}
         >
           {name}
@@ -293,9 +299,9 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
               fontSize: '11px',
               fontWeight: 400,
               color: taglineColor || '#8A8078',
-              marginTop: '4px',
+              marginTop: '3px',
               lineHeight: 1.4,
-              maxWidth: wide ? '55%' : '75%',
+              textShadow: `0 0 8px ${bg}`,
             }}
           >
             {tagline}
@@ -305,18 +311,17 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
           <span
             style={{
               display: 'inline-block',
-              marginTop: 'auto',
-              paddingTop: '6px',
+              marginTop: '6px',
               fontFamily: "'Lato', sans-serif",
               fontSize: wide ? '9px' : '8px',
               fontWeight: 600,
               letterSpacing: '0.06em',
               textTransform: 'uppercase',
               color: accentColor || 'var(--text-library)',
-              opacity: 0.7,
+              opacity: 0.8,
               lineHeight: 1.4,
               whiteSpace: 'nowrap',
-              textShadow: '0 0 8px hsla(0, 0%, 100%, 0.6)',
+              textShadow: `0 0 8px ${bg}`,
             }}
           >
             {badgeText}
