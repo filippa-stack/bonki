@@ -175,24 +175,26 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
   illustrationOpacity = 0.32, illustrationSize = 'contain', illustrationPosition = 'right center', wide = false,
   showFreeBadge = false, badgeText = 'Första kortet gratis',
 }, ref) {
-  const darkenHex = (hex: string) => {
+  /** Derive a tinted shadow color from the tile bg */
+  const toShadowColor = (hex: string, alpha: number) => {
     const r = parseInt(hex.slice(1, 3), 16);
     const g = parseInt(hex.slice(3, 5), 16);
     const b = parseInt(hex.slice(5, 7), 16);
-    const d = 0.94;
-    return `rgb(${Math.round(r * d)}, ${Math.round(g * d)}, ${Math.round(b * d)})`;
+    // Darken by 40% for shadow tint
+    return `rgba(${Math.round(r * 0.6)}, ${Math.round(g * 0.6)}, ${Math.round(b * 0.6)}, ${alpha})`;
   };
 
     return (
       <motion.div
         variants={tileVariants}
         whileHover={{ scale: 1.025, y: -3 }}
-        whileTap={{ scale: 0.985 }}
+        whileTap={{ scale: 0.94, y: 3 }}
         onClick={onClick}
         className="cursor-pointer"
         style={{
           borderRadius: '20px',
-          background: `linear-gradient(180deg, ${bg} 0%, ${darkenHex(bg)} 100%)`,
+          backgroundImage: `linear-gradient(135deg, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0) 50%, rgba(0,0,0,0.04) 100%)`,
+          backgroundColor: bg,
           minHeight: wide ? '140px' : '150px',
           display: 'flex',
           flexDirection: 'column',
@@ -202,12 +204,13 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
           padding: wide ? '36px 20px 16px' : '36px 16px 14px',
           position: 'relative',
           overflow: 'hidden',
-          border: '1px solid hsla(0, 0%, 100%, 0.35)',
+          border: '1px solid hsla(0, 0%, 100%, 0.30)',
           boxShadow: [
-            '0 8px 32px -4px hsla(0, 0%, 0%, 0.22)',
-            '0 4px 12px hsla(0, 0%, 0%, 0.10)',
-            'inset 0 1px 0 0 hsla(0, 0%, 100%, 0.45)',
-            'inset 0 -2px 6px hsla(0, 0%, 0%, 0.04)',
+            `0 10px 28px ${toShadowColor(bg, 0.22)}`,
+            `0 4px 10px ${toShadowColor(bg, 0.14)}`,
+            '0 1px 3px rgba(0, 0, 0, 0.06)',
+            'inset 0 3px 6px rgba(255, 255, 255, 0.5)',
+            `inset 0 -4px 10px ${toShadowColor(bg, 0.12)}`,
           ].join(', '),
           gridColumn: wide ? 'span 2' : undefined,
         }}
