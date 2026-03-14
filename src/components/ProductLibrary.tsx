@@ -44,6 +44,14 @@ const PASTEL_COLORS: Record<string, string> = {
   syskonkort: '#DAEAF6',
 };
 
+/** Helper: hex → rgba */
+function hexToRgba(hex: string, alpha: number): string {
+  const r = parseInt(hex.slice(1, 3), 16);
+  const g = parseInt(hex.slice(3, 5), 16);
+  const b = parseInt(hex.slice(5, 7), 16);
+  return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+}
+
 /** Hero-level illustration opacities — individually calibrated */
 const ILLUSTRATION_OPACITY: Record<string, number> = {
   jag_i_mig: 0.92,
@@ -54,14 +62,14 @@ const ILLUSTRATION_OPACITY: Record<string, number> = {
   syskonkort: 0.88,
 };
 
-/** Per-product illustration placement — individually tuned */
+/** Per-product illustration placement — individually tuned to each motif's center of gravity */
 const ILLUSTRATION_POSITION: Record<string, string> = {
-  jag_i_mig: 'center 55%',
-  jag_med_andra: 'center 20%',
-  jag_i_varlden: 'center 20%',
+  jag_i_mig: 'center 45%',
+  jag_med_andra: 'center 25%',
+  jag_i_varlden: 'center 15%',
   sexualitetskort: 'center 30%',
-  vardagskort: 'center 20%',
-  syskonkort: 'center 20%',
+  vardagskort: 'center 25%',
+  syskonkort: 'center 25%',
 };
 
 /** Per-product object-fit mode */
@@ -76,31 +84,32 @@ const ILLUSTRATION_FIT: Record<string, string> = {
 
 /** Per-product illustration container bounds — {top, left, right, bottom} as % */
 const ILLUSTRATION_BOUNDS: Record<string, { top: string; left: string; right: string; bottom: string }> = {
-  jag_i_mig: { top: '-10%', left: '0%', right: '0%', bottom: '15%' },
-  jag_med_andra: { top: '-5%', left: '-3%', right: '-3%', bottom: '28%' },
-  jag_i_varlden: { top: '-25%', left: '-15%', right: '-15%', bottom: '10%' },
-  sexualitetskort: { top: '-5%', left: '5%', right: '0%', bottom: '25%' },
-  vardagskort: { top: '-5%', left: '-3%', right: '-3%', bottom: '28%' },
-  syskonkort: { top: '-5%', left: '0%', right: '0%', bottom: '28%' },
+  jag_i_mig: { top: '-8%', left: '-2%', right: '-2%', bottom: '18%' },
+  jag_med_andra: { top: '-8%', left: '-5%', right: '-5%', bottom: '22%' },
+  jag_i_varlden: { top: '-20%', left: '-12%', right: '-12%', bottom: '12%' },
+  sexualitetskort: { top: '-5%', left: '3%', right: '-2%', bottom: '20%' },
+  vardagskort: { top: '-5%', left: '-5%', right: '-5%', bottom: '22%' },
+  syskonkort: { top: '-5%', left: '-2%', right: '-2%', bottom: '22%' },
 };
 
-/** Restored strong accent colors for tile titles */
+/** Darkened accent colors for WCAG AA compliance on pastel backgrounds */
 const ACCENT_COLORS: Record<string, string> = {
-  jag_i_mig: '#555508',
-  jag_med_andra: '#6A0F96',
-  jag_i_varlden: '#1E5528',
-  sexualitetskort: '#8A3848',
-  vardagskort: '#063A58',
-  syskonkort: '#0A3268',
+  jag_i_mig: '#3D3D06',
+  jag_med_andra: '#520C78',
+  jag_i_varlden: '#14401E',
+  sexualitetskort: '#6E2838',
+  vardagskort: '#042C44',
+  syskonkort: '#082654',
 };
 
+/** Darkened tagline colors for better readability */
 const TAGLINE_COLORS: Record<string, string> = {
-  jag_i_mig: '#6B6742',
-  jag_med_andra: '#5E4058',
-  jag_i_varlden: '#3A6B48',
-  sexualitetskort: '#6B4858',
-  vardagskort: '#1A4040',
-  syskonkort: '#1A2E50',
+  jag_i_mig: '#524E30',
+  jag_med_andra: '#4A3048',
+  jag_i_varlden: '#2A5438',
+  sexualitetskort: '#5A3848',
+  vardagskort: '#143434',
+  syskonkort: '#162844',
 };
 
 /** Build badge text: "X ämnen · Y kr · Första gratis" */
@@ -115,20 +124,32 @@ function buildBadgeText(product: { cards: unknown[]; id: string }): string {
 }
 
 
+/** Detect return visit for faster animations */
+const IS_RETURN_VISIT = (() => {
+  try {
+    const key = 'bonki_library_visited';
+    const visited = sessionStorage.getItem(key);
+    sessionStorage.setItem(key, '1');
+    return !!visited;
+  } catch { return false; }
+})();
+
+const ANIM_SPEED = IS_RETURN_VISIT ? 0.5 : 1;
+
 const containerVariants = {
   hidden: {},
   visible: {
-    transition: { staggerChildren: 0.14, delayChildren: 0.45 },
+    transition: { staggerChildren: 0.08 * ANIM_SPEED, delayChildren: 0.25 * ANIM_SPEED },
   },
 };
 
 const tileVariants = {
-  hidden: { opacity: 0, y: 28, scale: 0.93 },
+  hidden: { opacity: 0, y: 20 * ANIM_SPEED, scale: 0.95 },
   visible: {
     opacity: 1,
     y: 0,
     scale: 1,
-    transition: { duration: 0.75, ease: [0.22, 1, 0.36, 1] as const },
+    transition: { duration: 0.55 * ANIM_SPEED, ease: [0.22, 1, 0.36, 1] as const },
   },
 };
 
@@ -190,11 +211,11 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
   onClick?: () => void; illustration?: string; productId?: string;
   accentColor?: string; taglineColor?: string; illustrationOpacity?: number;
   illustrationSize?: string; illustrationPosition?: string; wide?: boolean;
-  showFreeBadge?: boolean; badgeText?: string;
+  showFreeBadge?: boolean; badgeText?: string; ageCount?: number;
 }>(function PastelTile({
   name, bg, ageLabel, tagline, onClick, illustration, productId, accentColor, taglineColor,
   illustrationOpacity = 0.78, illustrationSize, illustrationPosition = 'center 30%', wide = false,
-  showFreeBadge = false, badgeText = 'Första kortet gratis',
+  showFreeBadge = false, badgeText = 'Första kortet gratis', ageCount,
 }, ref) {
   const toShadowColor = (hex: string, alpha: number) => {
     const r = parseInt(hex.slice(1, 3), 16);
@@ -202,6 +223,12 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
     const b = parseInt(hex.slice(5, 7), 16);
     return `rgba(${Math.round(r * 0.5)}, ${Math.round(g * 0.5)}, ${Math.round(b * 0.5)}, ${alpha})`;
   };
+
+  // Parse bg hex for robust rgba scrim
+  const bgR = parseInt(bg.slice(1, 3), 16);
+  const bgG = parseInt(bg.slice(3, 5), 16);
+  const bgB = parseInt(bg.slice(5, 7), 16);
+  const bgRgba = (a: number) => `rgba(${bgR}, ${bgG}, ${bgB}, ${a})`;
 
     return (
       <motion.div
@@ -214,7 +241,7 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
           borderRadius: '22px',
           backgroundImage: `linear-gradient(135deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0) 50%, rgba(0,0,0,0.06) 100%)`,
           backgroundColor: bg,
-          minHeight: wide ? '180px' : '210px',
+          minHeight: wide ? '240px' : '210px',
           display: 'flex',
           flexDirection: 'column',
           position: 'relative',
@@ -263,35 +290,36 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
         );
       })()}
 
-      {/* Age label badge */}
+      {/* Age label badge — enlarged for readability */}
       {ageLabel && (
         <span
           style={{
             position: 'absolute',
             top: '10px',
             right: '12px',
-            width: '32px',
-            height: '32px',
+            width: '38px',
+            height: '38px',
             borderRadius: '50%',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             fontFamily: "'Lato', sans-serif",
-            fontSize: '10px',
+            fontSize: '11px',
             fontWeight: 700,
             letterSpacing: '0.02em',
             color: accentColor || 'var(--text-library)',
-            background: 'rgba(255, 255, 255, 0.60)',
-            backdropFilter: 'blur(8px)',
-            WebkitBackdropFilter: 'blur(8px)',
+            background: 'rgba(255, 255, 255, 0.65)',
+            backdropFilter: 'blur(10px)',
+            WebkitBackdropFilter: 'blur(10px)',
             zIndex: 3,
+            boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
           }}
         >
           {ageLabel}
         </span>
       )}
 
-      {/* Bottom gradient scrim — strong for text protection */}
+      {/* Bottom gradient scrim — rgba-based for robustness */}
       <div
         aria-hidden="true"
         style={{
@@ -300,17 +328,17 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
           height: '65%',
           zIndex: 1,
           pointerEvents: 'none',
-          background: `linear-gradient(to top, ${bg} 0%, ${bg}EE 25%, ${bg}99 50%, ${bg}33 70%, transparent 100%)`,
+          background: `linear-gradient(to top, ${bgRgba(1)} 0%, ${bgRgba(0.93)} 25%, ${bgRgba(0.6)} 50%, ${bgRgba(0.2)} 70%, transparent 100%)`,
           borderRadius: '0 0 22px 22px',
         }}
       />
 
-      {/* Text content — anchored to bottom */}
+      {/* Text content — anchored to bottom, single secondary line */}
       <div style={{ 
         position: 'absolute', 
         bottom: 0, left: 0, right: 0, 
         zIndex: 2,
-        padding: wide ? '0 20px 16px' : '0 16px 14px',
+        padding: wide ? '0 20px 20px' : '0 16px 18px',
       }}>
         <h3
           style={{
@@ -320,46 +348,25 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
             lineHeight: 1.15,
             color: accentColor || 'var(--text-library)',
             letterSpacing: '-0.01em',
-            textShadow: `0 1px 6px ${bg}, 0 0 16px ${bg}, 0 0 32px ${bg}`,
+            textShadow: `0 1px 6px ${bgRgba(1)}, 0 0 16px ${bgRgba(0.9)}, 0 0 32px ${bgRgba(0.8)}`,
           }}
         >
           {name}
         </h3>
-        {tagline && (
-          <p
-            style={{
-              fontFamily: "'Lato', sans-serif",
-              fontSize: '11.5px',
-              fontWeight: 400,
-              color: taglineColor || '#8A8078',
-              marginTop: '3px',
-              lineHeight: 1.4,
-              textShadow: `0 0 10px ${bg}, 0 0 20px ${bg}`,
-            }}
-          >
-            {tagline}
-          </p>
-        )}
-        {showFreeBadge && (
-          <span
-            style={{
-              display: 'inline-block',
-              marginTop: '6px',
-              fontFamily: "'Lato', sans-serif",
-              fontSize: wide ? '9px' : '8px',
-              fontWeight: 600,
-              letterSpacing: '0.06em',
-              textTransform: 'uppercase',
-              color: accentColor || 'var(--text-library)',
-              opacity: 0.8,
-              lineHeight: 1.4,
-              whiteSpace: 'nowrap',
-              textShadow: `0 0 10px ${bg}, 0 0 20px ${bg}`,
-            }}
-          >
-            {badgeText}
-          </span>
-        )}
+        {/* Single secondary line: tagline + count merged */}
+        <p
+          style={{
+            fontFamily: "'Lato', sans-serif",
+            fontSize: '11px',
+            fontWeight: 400,
+            color: taglineColor || '#8A8078',
+            marginTop: '4px',
+            lineHeight: 1.4,
+            textShadow: `0 0 10px ${bgRgba(1)}, 0 0 20px ${bgRgba(0.8)}`,
+          }}
+        >
+          {tagline}{showFreeBadge ? ` · ✦ 1a gratis` : ''}
+        </p>
       </div>
     </motion.div>
   );
@@ -568,22 +575,25 @@ export default function ProductLibrary() {
           </div>
 
           {/* Swipe hint — subtle arrow nudge on first view */}
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1.5, duration: 0.8 }}
-            style={{
-              fontFamily: "'Lato', sans-serif",
-              fontSize: '8px',
-              fontWeight: 500,
-              letterSpacing: '0.08em',
-              color: isDark ? 'hsla(30, 20%, 80%, 0.3)' : 'hsla(0, 0%, 100%, 0.3)',
-              textTransform: 'uppercase',
-              transition: 'color 400ms ease',
-            }}
-          >
-            ← swipa →
-          </motion.p>
+          {/* Swipe hint — only on first visit */}
+          {!IS_RETURN_VISIT && (
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 1.5 * ANIM_SPEED, duration: 0.8 }}
+              style={{
+                fontFamily: "'Lato', sans-serif",
+                fontSize: '8px',
+                fontWeight: 500,
+                letterSpacing: '0.08em',
+                color: isDark ? 'hsla(30, 20%, 80%, 0.3)' : 'hsla(0, 0%, 100%, 0.3)',
+                textTransform: 'uppercase',
+                transition: 'color 400ms ease',
+              }}
+            >
+              ← swipa →
+            </motion.p>
+          )}
         </motion.div>
 
         <motion.div
@@ -634,7 +644,7 @@ export default function ProductLibrary() {
             style={{
               display: 'grid',
               gridTemplateColumns: 'repeat(2, 1fr)',
-              gap: '12px',
+              gap: '16px',
             }}
           >
             <PastelTile
@@ -763,20 +773,22 @@ export default function ProductLibrary() {
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.9, duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ delay: 0.9 * ANIM_SPEED, duration: 0.9 * ANIM_SPEED, ease: [0.22, 1, 0.36, 1] }}
           whileTap={{ scale: 0.98 }}
           onClick={() => navigate('/diary/jag_i_mig')}
           className="cursor-pointer"
           style={{
-            margin: '16px 20px 16px',
+            margin: '20px 20px 16px',
             padding: '28px 22px 22px',
             borderRadius: '20px',
-            background: 'linear-gradient(180deg, hsla(30, 20%, 96%, 0.9) 0%, hsla(37, 30%, 93%, 0.7) 100%)',
+            background: 'linear-gradient(180deg, hsla(185, 25%, 30%, 0.35) 0%, hsla(185, 20%, 25%, 0.25) 100%)',
+            backdropFilter: 'blur(16px)',
+            WebkitBackdropFilter: 'blur(16px)',
             textAlign: 'center',
             position: 'relative',
             overflow: 'hidden',
-            boxShadow: '0 2px 8px hsla(30, 20%, 20%, 0.04), 0 12px 32px -8px hsla(30, 18%, 16%, 0.08)',
-            border: '1px solid hsla(30, 20%, 80%, 0.3)',
+            boxShadow: '0 2px 8px hsla(185, 20%, 10%, 0.08), 0 12px 32px -8px hsla(185, 18%, 8%, 0.12)',
+            border: '1px solid hsla(185, 30%, 50%, 0.12)',
           }}
         >
           {/* Ambient glow */}
@@ -788,7 +800,7 @@ export default function ProductLibrary() {
             width: '200px',
             height: '200px',
             borderRadius: '50%',
-            background: 'radial-gradient(circle, hsla(38, 70%, 70%, 0.08) 0%, transparent 70%)',
+            background: 'radial-gradient(circle, hsla(38, 70%, 70%, 0.12) 0%, transparent 70%)',
             pointerEvents: 'none',
           }} />
 
@@ -798,7 +810,7 @@ export default function ProductLibrary() {
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 1.0, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
           >
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{ color: 'var(--accent-text)', opacity: 0.4, margin: '0 auto 10px', display: 'block' }}>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{ color: '#E9B44C', opacity: 0.5, margin: '0 auto 10px', display: 'block' }}>
               <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20" />
             </svg>
           </motion.div>
@@ -811,7 +823,7 @@ export default function ProductLibrary() {
               fontFamily: "'DM Serif Display', serif",
               fontSize: '18px',
               fontWeight: 400,
-              color: '#1A1A2E',
+              color: '#F5EFE6',
               lineHeight: 1.4,
               marginBottom: '4px',
             }}
@@ -827,7 +839,7 @@ export default function ProductLibrary() {
               fontStyle: 'italic',
               fontSize: '12px',
               fontWeight: 400,
-              color: 'var(--accent-text)',
+               color: '#E9B44C',
               opacity: 0.55,
               lineHeight: 1.5,
               marginBottom: '20px',
@@ -845,9 +857,9 @@ export default function ProductLibrary() {
             margin: '0 auto',
           }}>
             {[
-              { color: 'hsla(45, 50%, 92%, 0.8)', accent: '#6B6742', title: 'Jag i Mig', date: '12 mar', text: '"Hon sa att hon ibland känner sig osynlig i skolan..."' },
-              { color: 'hsla(145, 30%, 89%, 0.8)', accent: '#3A6B48', title: 'Jag i Världen', date: '8 mar', text: '"Vi pratade om mod — att våga säga ifrån"' },
-              { color: 'hsla(215, 35%, 91%, 0.8)', accent: '#2A3E68', title: 'Syskon', date: '3 mar', text: '"De skrattade åt minnet av sommaren..."' },
+              { color: 'hsla(45, 50%, 92%, 0.15)', accent: '#C4B882', title: 'Jag i Mig', date: '12 mar', text: '"Hon sa att hon ibland känner sig osynlig i skolan..."' },
+              { color: 'hsla(145, 30%, 89%, 0.12)', accent: '#7DB88A', title: 'Jag i Världen', date: '8 mar', text: '"Vi pratade om mod — att våga säga ifrån"' },
+              { color: 'hsla(215, 35%, 91%, 0.12)', accent: '#8AA0C8', title: 'Syskon', date: '3 mar', text: '"De skrattade åt minnet av sommaren..."' },
             ].map((entry, i) => (
               <motion.div
                 key={i}
@@ -920,7 +932,7 @@ export default function ProductLibrary() {
           >
             <div style={{
               height: '16px',
-              background: 'linear-gradient(to bottom, transparent, hsla(30, 20%, 93%, 0.5))',
+              background: 'linear-gradient(to bottom, transparent, hsla(185, 20%, 25%, 0.3))',
               marginTop: '6px',
               borderRadius: '0 0 12px 12px',
             }} />
@@ -930,7 +942,7 @@ export default function ProductLibrary() {
               fontWeight: 600,
               letterSpacing: '0.1em',
               textTransform: 'uppercase' as const,
-              color: 'var(--accent-text)',
+              color: '#E9B44C',
               opacity: 0.4,
               marginTop: '8px',
             }}>
@@ -991,7 +1003,7 @@ export default function ProductLibrary() {
           style={{ position: 'relative', zIndex: 1 }}
         >
           
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', paddingBottom: '32px' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', paddingBottom: '32px' }}>
             {/* Still Us — glass tile */}
             <motion.div
               variants={tileVariants}
