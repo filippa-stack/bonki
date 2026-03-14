@@ -30,6 +30,8 @@ interface SectionViewProps {
   onBack?: () => void;
   /** Whether the back arrow should be shown (hidden at stage 0, prompt 0) */
   showBackArrow?: boolean;
+  /** Faint illustration watermark URL for kids products */
+  backgroundImageUrl?: string | null;
 }
 
 const normalizePrompt = (prompt: string | Prompt): Prompt => {
