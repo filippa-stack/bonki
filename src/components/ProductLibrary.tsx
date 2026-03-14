@@ -280,7 +280,7 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
             lineHeight: 1.15,
             color: accentColor || 'var(--text-library)',
             letterSpacing: '-0.01em',
-            textShadow: '0 1px 3px hsla(0, 0%, 100%, 0.5)',
+            textShadow: `0 1px 4px hsla(0, 0%, 100%, 0.7), 0 0 12px hsla(0, 0%, 100%, 0.4)`,
           }}
         >
           {name}
