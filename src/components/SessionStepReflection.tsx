@@ -48,7 +48,9 @@ export default function SessionStepReflection({
   const [submitting, setSubmitting] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
+  const [saveIndicator, setSaveIndicator] = useState<'idle' | 'saved'>('idle');
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const saveTimeoutRef = useRef<ReturnType<typeof setTimeout>>();
 
   // Track whether the user had already written something when this mounted
   const hadPriorTextRef = useRef(false);
@@ -71,11 +73,23 @@ export default function SessionStepReflection({
   const handleChange = (value: string) => {
     setLocalText(value);
     setText(value);
+    // Show save indicator after typing pause
+    setSaveIndicator('idle');
+    if (saveTimeoutRef.current) clearTimeout(saveTimeoutRef.current);
+    if (value.trim()) {
+      saveTimeoutRef.current = setTimeout(() => {
+        setSaveIndicator('saved');
+        setTimeout(() => setSaveIndicator('idle'), 2500);
+      }, 800);
+    }
   };
 
   const handleExpand = () => {
     setIsExpanded(true);
-    setTimeout(() => textareaRef.current?.focus(), 320);
+    setTimeout(() => {
+      textareaRef.current?.focus();
+      textareaRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }, 320);
   };
 
   const handleAdvance = async () => {
@@ -183,7 +197,7 @@ export default function SessionStepReflection({
               onChange={(e) => handleChange(e.target.value)}
               onFocus={() => setIsFocused(true)}
               onBlur={() => setIsFocused(false)}
-              placeholder=""
+              placeholder="Skriv här…"
               inputMode="text"
               autoCorrect="on"
               autoCapitalize="sentences"
@@ -201,7 +215,7 @@ export default function SessionStepReflection({
                 backgroundColor: isFocused || hasFill
                   ? 'hsla(36, 20%, 97%, 0.12)'
                   : 'hsla(36, 18%, 96%, 0.06)',
-                border: 'none',
+                border: '1px solid hsla(36, 20%, 80%, 0.18)',
                 borderRadius: '12px',
                 padding: '20px 24px',
                 textAlign: 'center',
@@ -212,6 +226,28 @@ export default function SessionStepReflection({
               }}
             />
           </div>
+          {/* Save indicator */}
+          <AnimatePresence>
+            {saveIndicator === 'saved' && (
+              <motion.p
+                initial={{ opacity: 0, y: -4 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.25 }}
+                style={{
+                  fontFamily: 'var(--font-sans)',
+                  fontSize: '11px',
+                  color: 'var(--text-secondary)',
+                  opacity: 0.55,
+                  textAlign: 'center',
+                  marginTop: '8px',
+                  letterSpacing: '0.02em',
+                }}
+              >
+                ✓ Sparad
+              </motion.p>
+            )}
+          </AnimatePresence>
         </motion.div>
       )}
 

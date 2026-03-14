@@ -1,4 +1,4 @@
-import { ArrowLeft, Settings, X } from 'lucide-react';
+import { ArrowLeft, X } from 'lucide-react';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -13,6 +13,7 @@ interface HeaderProps {
   showBack?: boolean;
   backTo?: string;
   showSharedLink?: boolean;
+  /** @deprecated No longer rendered */
   showSettings?: boolean;
   minimal?: boolean;
   variant?: 'default' | 'immersive';
