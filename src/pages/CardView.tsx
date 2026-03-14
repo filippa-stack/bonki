@@ -1999,8 +1999,8 @@ export default function CardView() {
                 return null;
               })()}
 
-              {/* ── Ritual hint ABOVE prompt for scenario steps (live only) ── */}
-              {isLive && (() => {
+              {/* ── Ritual hint ABOVE prompt for scenario steps (live only, not kids) ── */}
+              {isLive && pronounMode !== 'du' && (() => {
                 const stageKey = effectiveSteps[currentStepIndex];
                 if (stageKey !== 'scenario') return null;
                 const hint = uiText.ritualHints[stageKey as keyof typeof uiText.ritualHints];
