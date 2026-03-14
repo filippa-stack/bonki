@@ -44,14 +44,14 @@ const PASTEL_COLORS: Record<string, string> = {
   syskonkort: '#DAEAF6',
 };
 
-/** Raised illustration opacities — illustrations are a feature, not a ghost */
+/** Portal-level illustration opacities — illustrations ARE the tile */
 const ILLUSTRATION_OPACITY: Record<string, number> = {
-  jag_i_mig: 0.35,
-  jag_med_andra: 0.32,
-  jag_i_varlden: 0.28,
-  sexualitetskort: 0.35,
-  vardagskort: 0.28,
-  syskonkort: 0.30,
+  jag_i_mig: 0.65,
+  jag_med_andra: 0.60,
+  jag_i_varlden: 0.55,
+  sexualitetskort: 0.65,
+  vardagskort: 0.55,
+  syskonkort: 0.58,
 };
 
 const ILLUSTRATION_SIZE: Record<string, string> = {
@@ -240,7 +240,7 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
           {ageLabel}
         </span>
       )}
-      {/* Illustration — right-aligned, visible */}
+      {/* Illustration — portal-style, covering the tile */}
       {illustration && (
         <div
           style={{
@@ -248,7 +248,7 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
             top: 0,
             right: 0,
             bottom: 0,
-            width: wide ? '50%' : '65%',
+            left: wide ? '40%' : '25%',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
@@ -280,7 +280,7 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
             lineHeight: 1.15,
             color: accentColor || 'var(--text-library)',
             letterSpacing: '-0.01em',
-            textShadow: '0 1px 3px hsla(0, 0%, 100%, 0.5)',
+            textShadow: `0 1px 4px hsla(0, 0%, 100%, 0.7), 0 0 12px hsla(0, 0%, 100%, 0.4)`,
           }}
         >
           {name}
