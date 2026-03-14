@@ -1,14 +1,13 @@
 /**
  * KidsProductResumeBanner — Glassmorphism resume card for kids product home screens.
  *
- * Shows topic title, current step/question position, and navigates directly
- * back into the session on tap.
+ * Shows topic title and navigates directly back into the session on tap.
+ * All kids products use a single-step session (all prompts flattened).
  */
 
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import type { ProductManifest } from '@/types/product';
-import { isTypeAProduct } from '@/hooks/useKidsProductProgress';
 import type { KidsProductProgress } from '@/hooks/useKidsProductProgress';
 
 interface KidsProductResumeBannerProps {
@@ -22,25 +21,9 @@ export default function KidsProductResumeBanner({ product, progress, accentColor
 
   if (progress.loading || !progress.activeSession) return null;
 
-  const { cardId, currentStepIndex } = progress.activeSession;
+  const { cardId } = progress.activeSession;
   const card = product.cards.find(c => c.id === cardId);
   if (!card) return null;
-
-  // Build step label
-  const isTypeA = isTypeAProduct(product.id);
-  const sections = card.sections || [];
-
-  let stepLabel = '';
-  if (isTypeA && sections.length >= 2) {
-    const currentSection = sections[currentStepIndex];
-    if (currentSection) {
-      stepLabel = currentSection.type === 'scenario' ? 'I verkligheten' : 'Frågor';
-    }
-  }
-
-  // Count questions in current section
-  const currentSection = sections[currentStepIndex];
-  const questionCount = currentSection?.prompts?.length ?? 0;
 
   return (
     <motion.button
@@ -87,7 +70,7 @@ export default function KidsProductResumeBanner({ product, progress, accentColor
           opacity: 0.9,
         }}
       >
-        {stepLabel ? `${stepLabel} · ` : ''}Fortsätt →
+        Fortsätt →
       </span>
     </motion.button>
   );

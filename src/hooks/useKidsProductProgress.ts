@@ -20,11 +20,12 @@ export const KIDS_PRODUCT_IDS = [
   'vardagskort', 'syskonkort', 'sexualitetskort',
 ];
 
-/** Type A products have 2-step sessions (questions + scenario) */
-export const TYPE_A_PRODUCTS = ['jag_med_andra', 'jag_i_varlden'];
+/** @deprecated All kids products now use 1-step sessions (prompts flattened) */
+export const TYPE_A_PRODUCTS: string[] = [];
 
-export function isTypeAProduct(productId: string): boolean {
-  return TYPE_A_PRODUCTS.includes(productId);
+/** @deprecated No longer relevant — all kids products use 1-step sessions */
+export function isTypeAProduct(_productId: string): boolean {
+  return false;
 }
 
 export interface KidsProductProgress {

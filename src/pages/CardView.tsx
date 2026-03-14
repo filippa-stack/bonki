@@ -2026,7 +2026,7 @@ export default function CardView() {
 
               {/* ── MODE: live — session reflection (single writer) ── */}
               {isLive && cardId && (() => {
-                const sectionPromptCount = getEffectivePromptCount(currentSection);
+                const sectionPromptCount = flatPromptMap ? totalFlatPrompts : getEffectivePromptCount(currentSection);
                 const isLastPromptInStage = localPromptIndex >= sectionPromptCount - 1;
                 const isLastStage = currentStepIndex >= effectiveSteps.length - 1;
 
@@ -2035,6 +2035,17 @@ export default function CardView() {
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ delay: BEAT_2, duration: BEAT_3, ease: EASE }}
+                    style={isKidsProduct ? {
+                      position: 'fixed',
+                      bottom: 0,
+                      left: 0,
+                      right: 0,
+                      zIndex: 20,
+                      background: 'linear-gradient(to top, var(--surface-base) 80%, transparent)',
+                      paddingTop: '20px',
+                      paddingLeft: '24px',
+                      paddingRight: '24px',
+                    } : undefined}
                   >
                     <SessionStepReflection
                       key={`${currentStepIndex}-${localPromptIndex}`}
@@ -2046,7 +2057,7 @@ export default function CardView() {
                       isReflectionStep={isReflectionStep}
                       isExerciseStep={isExerciseStep}
                       hideNoteField={false}
-                      noteFieldLabel={!!product && product.id !== 'still_us' ? 'Skriv något ni vill minnas' : undefined}
+                      noteFieldLabel={isKidsProduct ? 'Skriv något ni vill minnas' : undefined}
                       onLocked={async () => {
                         if (isLastPromptInStage) {
                           await handleCompleteStep();
@@ -2066,7 +2077,7 @@ export default function CardView() {
                           setLocalStepIndex(prevStageIndex);
                           setLocalPromptIndex(prevPromptCount - 1);
                         } else {
-                          if (product && product.id !== 'still_us') {
+                          if (isKidsProduct) {
                             navigate(exitBackTo);
                           } else {
                             toast('Samtalet sparas – ni kan fortsätta när ni vill', { duration: 3000 });
@@ -2075,18 +2086,20 @@ export default function CardView() {
                         }
                       }}
                     />
-                    <p
-                      style={{
-                        marginTop: '12px',
-                        fontFamily: 'var(--font-sans)',
-                        fontSize: '11px',
-                        fontStyle: 'italic',
-                        color: 'rgba(255, 255, 255, 0.25)',
-                        textAlign: 'center',
-                      }}
-                    >
-                      Ni kan pausa när som helst.
-                    </p>
+                    {!isKidsProduct && (
+                      <p
+                        style={{
+                          marginTop: '12px',
+                          fontFamily: 'var(--font-sans)',
+                          fontSize: '11px',
+                          fontStyle: 'italic',
+                          color: 'rgba(255, 255, 255, 0.25)',
+                          textAlign: 'center',
+                        }}
+                      >
+                        Ni kan pausa när som helst.
+                      </p>
+                    )}
                   </motion.div>
                 );
               })()}
