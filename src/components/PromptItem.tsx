@@ -226,20 +226,24 @@ export default function PromptItem({ prompt, index, sectionType, preamble, ancho
                   overflow: 'hidden',
                 }}
               >
-                {/* Faint illustration watermark — kids products */}
+                {/* Illustration watermark — sits below question text, gentle presence */}
                 {backgroundImageUrl && (
                   <div
                     aria-hidden
                     style={{
                       position: 'absolute',
-                      inset: 0,
+                      bottom: '-12px',
+                      left: '50%',
+                      transform: 'translateX(-50%)',
+                      width: '55%',
+                      height: '55%',
                       backgroundImage: `url(${backgroundImageUrl})`,
-                      backgroundSize: '75%',
-                      backgroundPosition: 'center 42%',
+                      backgroundSize: 'contain',
+                      backgroundPosition: 'center bottom',
                       backgroundRepeat: 'no-repeat',
-                      opacity: 0.10,
+                      opacity: 0.09,
                       pointerEvents: 'none',
-                      filter: 'saturate(0.35) brightness(1.1)',
+                      filter: 'saturate(0.4) brightness(1.05)',
                     }}
                   />
                 )}
