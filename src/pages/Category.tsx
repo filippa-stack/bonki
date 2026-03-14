@@ -24,6 +24,16 @@ import stillUsIllustration from '@/assets/illustration-still-us-home.png';
 
 const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
+/** Detect if a hex color is "light" (luminance > 0.5) — used for scrim direction */
+function isLightColor(hex: string): boolean {
+  const c = hex.replace('#', '');
+  const r = parseInt(c.substring(0, 2), 16) / 255;
+  const g = parseInt(c.substring(2, 4), 16) / 255;
+  const b = parseInt(c.substring(4, 6), 16) / 255;
+  const luminance = 0.299 * r + 0.587 * g + 0.114 * b;
+  return luminance > 0.6;
+}
+
 /**
  * Per-card opacity overrides for illustrations.
  */
@@ -73,42 +83,42 @@ const PRODUCT_STYLES: Record<string, {
   syskonkort: { cardBg: '#ECF0F6', cardTitleColor: '#0F4E99' },
 };
 
-/** Category-specific tile background colors (matching product homescreen tiles) */
+/** Category-specific tile background colors (synced with product homescreen tiles) */
 const CATEGORY_CARD_BG: Record<string, string> = {
   // Jag i mig
   'jim-mina-kanslor': '#D9E0A3',
   'jim-starka-kanslor': '#A8AD82',
   'jim-stora-kanslor': '#8E944F',
   // Jag med andra
-  'jma-att-hora-till': '#F9EBEE',
-  'jma-nar-vi-jamfor-oss': '#F5DDE4',
-  'jma-nar-det-skaver': '#EED0DB',
-  'jma-att-sta-stadig': '#CDBABF',
-  'jma-vi-i-varlden': '#AC98A0',
+  'jma-att-hora-till': '#F8E4EC',
+  'jma-nar-vi-jamfor-oss': '#E8C8F0',
+  'jma-nar-det-skaver': '#F2D0C0',
+  'jma-att-sta-stadig': '#C8A8D8',
+  'jma-vi-i-varlden': '#7E5C8E',
   // Jag i världen
-  'jiv-min-vardag': '#CDE6D2',
-  'jiv-vem-jag-ar': '#F7F2ED',
-  'jiv-jag-och-andra': '#E5D5C8',
-  'jiv-jag-i-samhallet': '#BDD3C3',
-  'jiv-det-stora-sammanhanget': '#8B948D',
+  'jiv-min-vardag': '#C2E6C8',
+  'jiv-vem-jag-ar': '#F5EBD8',
+  'jiv-jag-och-andra': '#D8C0AE',
+  'jiv-jag-i-samhallet': '#A8CEB0',
+  'jiv-det-stora-sammanhanget': '#5E7A62',
   // Sexualitet
-  'sex-min-identitet': '#F9F2F5',
-  'sex-normer-och-paverkan': '#EBC9C9',
-  'sex-relation-och-ansvar': '#D19898',
-  'sex-skydd-och-makt': '#A66D6D',
+  'sex-min-identitet': '#F5E0EC',
+  'sex-normer-och-paverkan': '#E8B8B8',
+  'sex-relation-och-ansvar': '#C88888',
+  'sex-skydd-och-makt': '#8E5558',
   // Vardag
-  'vk-min-dag': '#E6F4F4',
-  'vk-var-rytm': '#D4E9EC',
-  'vk-vi-hemma': '#B8D8E0',
-  'vk-utanfor-hemmet': '#9CBFC9',
+  'vk-min-dag': '#D5F0E8',
+  'vk-var-rytm': '#C0DBF0',
+  'vk-vi-hemma': '#F0DFC0',
+  'vk-utanfor-hemmet': '#8BB8D0',
   // Syskon
-  'sk-vi-blev-syskon': '#E8F3F5',
-  'sk-vi-ar-olika': '#F5E9D3',
-  'sk-nar-det-skaver': '#D4E2E0',
-  'sk-nar-livet-forandras': '#C2D1D9',
+  'sk-vi-blev-syskon': '#D8F0F2',
+  'sk-vi-ar-olika': '#F0DEB8',
+  'sk-delat-utrymme': '#B8D8D0',
+  'sk-er-relation': '#7AACB0',
 };
 
-/** Category-specific card title colors (matching homescreen tile text) */
+/** Category-specific card title colors (synced with homescreen tile text) */
 const CATEGORY_TITLE_COLOR: Record<string, string> = {
   // Jag i mig
   'jim-mina-kanslor': '#3E4124',
@@ -116,31 +126,31 @@ const CATEGORY_TITLE_COLOR: Record<string, string> = {
   'jim-stora-kanslor': '#3E4124',
   // Jag med andra
   'jma-att-hora-till': '#9825D6',
-  'jma-nar-vi-jamfor-oss': '#9825D6',
-  'jma-nar-det-skaver': '#9825D6',
-  'jma-att-sta-stadig': '#5A189A',
-  'jma-vi-i-varlden': '#3A0A5C',
+  'jma-nar-vi-jamfor-oss': '#7B1FA2',
+  'jma-nar-det-skaver': '#8E3A1A',
+  'jma-att-sta-stadig': '#4A148C',
+  'jma-vi-i-varlden': '#F5F0F8',
   // Jag i världen
-  'jiv-min-vardag': '#3E4A40',
-  'jiv-vem-jag-ar': '#3E4A40',
-  'jiv-jag-och-andra': '#3E4A40',
-  'jiv-jag-i-samhallet': '#3E4A40',
-  'jiv-det-stora-sammanhanget': '#F5F2ED',
+  'jiv-min-vardag': '#2A4A2E',
+  'jiv-vem-jag-ar': '#4A3A20',
+  'jiv-jag-och-andra': '#3E2E1E',
+  'jiv-jag-i-samhallet': '#1E3A24',
+  'jiv-det-stora-sammanhanget': '#F0EDE8',
   // Sexualitet
   'sex-min-identitet': '#6B3A3F',
   'sex-normer-och-paverkan': '#5A2A30',
   'sex-relation-och-ansvar': '#3A1E1E',
-  'sex-skydd-och-makt': '#FAFAF0',
+  'sex-skydd-och-makt': '#FAF5F0',
   // Vardag
   'vk-min-dag': '#073B54',
   'vk-var-rytm': '#073B54',
-  'vk-vi-hemma': '#073B54',
-  'vk-utanfor-hemmet': '#073B54',
+  'vk-vi-hemma': '#4A3518',
+  'vk-utanfor-hemmet': '#0A2E40',
   // Syskon
-  'sk-vi-blev-syskon': '#274C5E',
+  'sk-vi-blev-syskon': '#1A4A58',
   'sk-vi-ar-olika': '#3A2E1A',
-  'sk-nar-det-skaver': '#274C5E',
-  'sk-nar-livet-forandras': '#274C5E',
+  'sk-delat-utrymme': '#1A4A44',
+  'sk-er-relation': '#0E2E38',
 };
 
 export default function Category() {
@@ -722,7 +732,7 @@ function CardEntry({ card, index, isCompleted = false, isInProgress = false, isN
             height: '55%',
             zIndex: 1,
             pointerEvents: 'none',
-            background: (cardTitleColor === '#FAFAF0' || cardTitleColor === '#FFFDF5')
+          background: isLightColor(cardTitleColor)
               ? 'linear-gradient(to top, rgba(0,0,0,0.52) 0%, rgba(0,0,0,0.22) 50%, transparent 100%)'
               : 'linear-gradient(to top, rgba(255,255,255,0.65) 0%, rgba(255,255,255,0.25) 50%, transparent 100%)',
             borderRadius: '0 0 22px 22px',
@@ -742,7 +752,7 @@ function CardEntry({ card, index, isCompleted = false, isInProgress = false, isN
               fontSize: '32px', fontWeight: 700,
               color: cardTitleColor,
               lineHeight: 1.1,
-              textShadow: (cardTitleColor === '#FAFAF0' || cardTitleColor === '#FFFDF5')
+              textShadow: isLightColor(cardTitleColor)
                 ? '0 1px 2px rgba(0,0,0,0.4), 0 2px 6px rgba(0,0,0,0.2)'
                 : '0 1px 2px rgba(255,255,255,0.6), 0 0 8px rgba(255,255,255,0.3)',
               letterSpacing: '-0.01em',
