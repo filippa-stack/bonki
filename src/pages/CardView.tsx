@@ -146,7 +146,27 @@ export default function CardView() {
   const isStillUsCard = !product && !!card; // Legacy Still Us cards aren't in allProducts
   const pronounMode: PronounMode = product?.pronounMode ?? 'ni';
   const uiText = useMemo(() => getUIText(pronounMode), [pronounMode]);
-  const effectiveSteps = useMemo(() => getCardStepOrder(card), [card]);
+  const effectiveSteps = useMemo(() => {
+    // Kids/family products: always 1 step (all prompts flattened into one sequence)
+    if (product && product.id !== 'still_us' && card?.sections.length) {
+      return [card.sections[0].type] as readonly string[];
+    }
+    return getCardStepOrder(card);
+  }, [card, product]);
+  const isKidsProduct = !!(product && product.id !== 'still_us');
+  // Flatten all section prompts into one sequence for kids products with multiple sections
+  const flatPromptMap = useMemo(() => {
+    if (!isKidsProduct || !card || card.sections.length <= 1) return null;
+    const map: { section: (typeof card.sections)[0]; promptIndexInSection: number }[] = [];
+    for (const section of card.sections) {
+      const count = getEffectivePromptCount(section);
+      for (let i = 0; i < count; i++) {
+        map.push({ section, promptIndexInSection: i });
+      }
+    }
+    return map;
+  }, [isKidsProduct, card]);
+  const totalFlatPrompts = flatPromptMap?.length ?? 0;
   const completionMessages = useMemo(() => getCompletionMessages(pronounMode, product?.ageLabel), [pronounMode, product?.ageLabel]);
   const cardImageUrl = useCardImage(cardId);
 
