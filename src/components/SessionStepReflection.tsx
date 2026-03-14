@@ -229,12 +229,31 @@ export default function SessionStepReflection({
           paddingBottom: 'calc(16px + env(safe-area-inset-bottom, 0px))',
         }}
       >
-        <button
+        <motion.button
           onClick={handleAdvance}
           disabled={submitting}
-          className="cta-primary"
+          whileTap={{ scale: 0.98 }}
+          transition={{ duration: 0.12 }}
           style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            width: '100%',
+            maxWidth: '520px',
+            height: '52px',
+            borderRadius: '14px',
+            backgroundColor: 'hsl(41, 78%, 48%)',
+            color: 'hsl(30, 10%, 12%)',
+            fontFamily: 'var(--font-sans)',
+            fontSize: '15px',
+            fontWeight: 600,
+            letterSpacing: '0.01em',
+            border: 'none',
+            cursor: submitting ? 'default' : 'pointer',
+            boxShadow: 'none',
             opacity: submitting ? 0.5 : (hadPriorTextRef.current ? 0.90 : 1),
+            transition: 'opacity 200ms ease, background-color 260ms ease-out',
+            padding: '0 24px',
           }}
         >
           {submitting
@@ -242,7 +261,7 @@ export default function SessionStepReflection({
             : isLastStep
             ? 'Vi är klara'
             : 'Fortsätt'}
-        </button>
+        </motion.button>
 
         {isExerciseStep ? (
           <button

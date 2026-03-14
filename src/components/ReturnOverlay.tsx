@@ -23,7 +23,7 @@ export default function ReturnOverlay({ onResume, onStartNew, onBrowse }: Return
             <button className="cta-primary" onClick={onResume}>
               Fortsätt där vi var
             </button>
-            <button className="cta-secondary" onClick={onStartNew}>
+            <button className="cta-primary" style={{ backgroundColor: 'transparent', color: 'var(--color-text-primary)', border: '1px solid hsl(var(--border))' }} onClick={onStartNew}>
               Börja något nytt
             </button>
           </div>

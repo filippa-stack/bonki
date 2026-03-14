@@ -266,6 +266,11 @@ export default function PurchaseScreen({ onPurchaseComplete }: PurchaseScreenPro
             onClick={handlePurchase}
             disabled={processing || completed}
             className="cta-primary"
+            style={{
+              width: '100%',
+              maxWidth: '280px',
+              boxShadow: '0 2px 12px -2px hsla(158, 30%, 15%, 0.18), 0 1px 3px hsla(158, 25%, 12%, 0.08)',
+            }}
           >
             {completed ? (
               <span style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>

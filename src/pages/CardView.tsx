@@ -2171,7 +2171,8 @@ export default function CardView() {
                   <div style={{ display: 'flex', justifyContent: 'center', marginTop: '16px' }}>
                     <button
                       onClick={() => handleArchiveNext(card)}
-                      className="cta-primary"
+                      className="cta-primary gap-2"
+                      style={{ width: '60%', margin: '0 auto' }}
                     >
                       {currentStepIndex >= effectiveSteps.length - 1 ? (product && product.id !== 'still_us' ? 'Vi är klara' : 'Klar') : 'Nästa'}
                       <ArrowRight className="w-4 h-4" />

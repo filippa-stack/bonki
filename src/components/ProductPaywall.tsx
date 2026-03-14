@@ -282,7 +282,7 @@ export default function ProductPaywall({ product, onAccessGranted, cardId, curre
           <button
             onClick={handlePurchase}
             disabled={loading}
-            className="cta-primary"
+            className="cta-primary w-full max-w-[260px]"
           >
             {loading ? (
               <span className="animate-pulse">Förbereder...</span>

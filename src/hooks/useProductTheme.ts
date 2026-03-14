@@ -1,55 +1,6 @@
 import { useEffect } from 'react';
 
 /**
- * Parse an HSL string like "hsl(200, 80%, 33%)" into { h, s, l } numbers.
- */
-function parseHSLValues(hsl: string): { h: number; s: number; l: number } | null {
-  const match = hsl.match(/(\d+),\s*(\d+)%?,\s*(\d+)%?/);
-  if (!match) return null;
-  return { h: parseInt(match[1]), s: parseInt(match[2]), l: parseInt(match[3]) };
-}
-
-/**
- * Generate CTA gradient & shadow variables from a product accent color.
- * Normalises any accent into a refined, tactile gradient that never
- * overpowers the content — caps saturation and controls lightness
- * so every product gets a rich but calm button.
- */
-function setCTAVarsFromAccent(root: HTMLElement, accent: string) {
-  const parsed = parseHSLValues(accent);
-  if (!parsed) return;
-  const { h, s, l } = parsed;
-
-  // Normalise for whispered pill: moderate saturation, mid lightness
-  const ns = Math.min(s, 60);
-  const nl = Math.max(42, Math.min(l, 54));
-
-  // Warm shift for bottom tone
-  const warmHue = h > 300 ? h - 8 : h > 180 ? h - 4 : h + 4;
-
-  // Translucent gradient stops (diary-style whisper)
-  root.style.setProperty('--cta-grad-top', `hsla(${h}, ${ns}%, ${nl}%, 0.14)`);
-  root.style.setProperty('--cta-grad-mid', `hsla(${h}, ${ns}%, ${nl}%, 0.08)`);
-  root.style.setProperty('--cta-grad-bot', `hsla(${warmHue}, ${Math.max(ns - 5, 20)}%, ${nl - 8}%, 0.04)`);
-
-  // Border: subtle accent tint
-  root.style.setProperty('--cta-border', `hsla(${h}, ${ns}%, ${nl}%, 0.25)`);
-
-  // Ink: warm dark text
-  root.style.setProperty('--cta-ink', `hsl(${warmHue}, ${Math.min(ns, 25)}%, 18%)`);
-
-  // Shadows: soft colored glow for depth without loudness
-  root.style.setProperty('--cta-shadow', `hsla(${warmHue}, ${ns}%, ${nl - 5}%, 0.16)`);
-  root.style.setProperty('--cta-shadow-sm', `hsla(${warmHue}, ${ns}%, ${nl}%, 0.08)`);
-  root.style.setProperty('--cta-inner-shadow', `hsla(${warmHue}, ${Math.max(ns - 10, 15)}%, ${nl - 14}%, 0.08)`);
-}
-
-const CTA_VARS = [
-  '--cta-grad-top', '--cta-grad-mid', '--cta-grad-bot', '--cta-border',
-  '--cta-ink', '--cta-shadow', '--cta-shadow-sm', '--cta-inner-shadow',
-];
-
-/**
  * Injects product-specific CSS variables onto :root so the entire
  * design system (buttons, accents, text, background) adapts to each product.
  */
@@ -69,9 +20,6 @@ export function useProductTheme(primary: string, accent: string, bgColor?: strin
     root.style.setProperty('--accent-saffron', `hsl(${a})`);
     root.style.setProperty('--accent-text', `hsl(${a})`);
 
-    // CTA gradient derived from primary (accentColor) — always refined
-    setCTAVarsFromAccent(root, primary);
-
     if (bgColor) {
       root.style.setProperty('--surface-base', bgColor);
       root.style.setProperty('--product-bg', bgColor);
@@ -83,6 +31,7 @@ export function useProductTheme(primary: string, accent: string, bgColor?: strin
         // A: Radial accent glow on page background
         root.style.setProperty('--kids-bg-glow', `radial-gradient(ellipse at 50% 35%, hsla(${p}, 0.06) 0%, transparent 70%)`);
         // E: Warmer question text color derived from accent
+        // Extract hue from primary HSL string (format: "H, S%, L%")
         const hue = p.split(',')[0]?.trim() ?? '215';
         root.style.setProperty('--kids-question-color', `hsl(${hue}, 35%, 22%)`);
         // C: Badge accent
@@ -103,7 +52,6 @@ export function useProductTheme(primary: string, accent: string, bgColor?: strin
        '--question-cloud-tint', '--question-cloud-border',
        '--kids-bg-glow', '--kids-question-color',
        '--kids-counter-bg', '--kids-counter-color', '--kids-counter-border',
-       ...CTA_VARS,
       ].forEach((v) => root.style.removeProperty(v));
     };
   }, [primary, accent, bgColor, ctaButtonColor, pronounMode]);

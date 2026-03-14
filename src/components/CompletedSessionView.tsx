@@ -342,6 +342,7 @@ export default function CompletedSessionView({
                 <button
                   onClick={() => navigate(nextCardDest)}
                   className="cta-primary"
+                  style={{ display: 'flex', alignItems: 'center', gap: '6px' }}
                 >
                   Nästa <ArrowRight size={16} style={{ opacity: 0.7 }} />
                 </button>
