@@ -2,8 +2,11 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { LayoutGrid, Home, BookOpen, MessageCircle } from 'lucide-react';
 import { useCurrentProduct } from '@/hooks/useCurrentProduct';
-import { useMemo } from 'react';
+import { useMemo, useEffect } from 'react';
 import { getCategoryById } from '@/data/content';
+import { allProducts } from '@/data/products';
+
+const LAST_PRODUCT_KEY = 'bonki_last_product_slug';
 
 type NavItem = {
   id: string;
@@ -18,34 +21,52 @@ export default function BottomNav() {
   const { pathname, search } = useLocation();
   const product = useCurrentProduct();
 
+  // Persist last visited product
+  useEffect(() => {
+    if (product) {
+      try { localStorage.setItem(LAST_PRODUCT_KEY, product.slug); } catch {}
+    }
+  }, [product]);
+
   // Detect Still Us context from route
   const isStillUsContext = useMemo(() => {
     if (product) return false;
-    // On legacy home with devState
     if (pathname === '/' && search.includes('devState=')) return true;
-    // On a Still Us card (cards not in allProducts)
     const cardMatch = pathname.match(/^\/card\/([^/]+)/);
     if (cardMatch) return true;
-    // On a Still Us category
     const catMatch = pathname.match(/^\/category\/([^/]+)/);
     if (catMatch) {
       const cat = getCategoryById(catMatch[1]);
-      return !!cat; // Still Us categories are in content.ts
+      return !!cat;
     }
-    // On /shared
     if (pathname.startsWith('/shared')) return true;
     return false;
   }, [product, pathname, search]);
 
   const isChildProduct = product?.pronounMode === 'du';
 
+  // Resolve last product from localStorage when no current product context
+  const lastProduct = useMemo(() => {
+    if (product || isStillUsContext) return null;
+    try {
+      const slug = localStorage.getItem(LAST_PRODUCT_KEY);
+      if (!slug) return null;
+      return allProducts.find(p => p.slug === slug) ?? null;
+    } catch {
+      return null;
+    }
+  }, [product, isStillUsContext]);
+
   const productHomePath = product
     ? `/product/${product.slug}`
     : isStillUsContext
       ? '/?devState=solo'
-      : '/';
+      : lastProduct
+        ? `/product/${lastProduct.slug}`
+        : null;
 
-  const productHomeLabel = product?.name ?? (isStillUsContext ? 'Still Us' : 'Produkt');
+  const productHomeLabel = product?.name
+    ?? (isStillUsContext ? 'Still Us' : lastProduct?.name ?? null);
 
   const items: NavItem[] = [
     {
@@ -55,15 +76,17 @@ export default function BottomNav() {
       path: '/',
       match: (p) => p === '/' && !search.includes('devState='),
     },
-    {
+    // Only show product tab if there's a valid destination
+    ...(productHomePath && productHomeLabel ? [{
       id: 'product-home',
       label: productHomeLabel,
       icon: Home,
       path: productHomePath,
-      match: (p) =>
+      match: (p: string) =>
         (!!product && p.startsWith(`/product/${product.slug}`)) ||
-        (isStillUsContext && p === '/' && search.includes('devState=')),
-    },
+        (isStillUsContext && p === '/' && search.includes('devState=')) ||
+        (!product && !isStillUsContext && !!lastProduct && p.startsWith(`/product/${lastProduct.slug}`)),
+    }] : []),
     {
       id: 'contextual',
       label: isChildProduct ? 'Dagbok' : 'Era samtal',
