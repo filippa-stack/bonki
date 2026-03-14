@@ -13,6 +13,7 @@ interface HeaderProps {
   showBack?: boolean;
   backTo?: string;
   showSharedLink?: boolean;
+  /** @deprecated No longer rendered */
   showSettings?: boolean;
   minimal?: boolean;
   variant?: 'default' | 'immersive';
