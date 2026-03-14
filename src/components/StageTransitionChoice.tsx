@@ -35,7 +35,6 @@ export default function StageTransitionChoice({ onContinue, onStop, pronounMode 
         <button
           onClick={onContinue}
           className="cta-primary"
-          style={{ maxWidth: '220px', width: '100%', gap: '8px' }}
         >
           Vidare
           <ArrowRight size={16} />

@@ -327,9 +327,6 @@ export default function ProductIntro({ productId, accentColor, backgroundColor, 
               boxShadow: { duration: 2.5, repeat: Infinity, ease: 'easeInOut' },
             } : {}}
             style={{
-              width: '60%',
-              fontSize: '15px',
-              letterSpacing: '0.02em',
               backgroundColor: accentColor ?? undefined,
             }}
           >
