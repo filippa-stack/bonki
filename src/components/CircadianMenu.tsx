@@ -8,18 +8,18 @@ import { Check } from 'lucide-react';
  * Each color is a rich, matte tone that feels "leather-bound premium".
  */
 export const CIRCADIAN_COLORS: Record<string, string> = {
-  'emotional-intimacy': '#3A5045',
-  'communication':      '#2E4A3E',
-  'category-8':         '#4A3832',
-  'individual-needs':   '#4A3D2E',
-  'parenting-together': '#2E3A44',
-  'category-9':         '#2A3A2E',
-  'category-6':         '#3E3240',
-  'daily-life':         '#1E3438',
-  'category-10':        '#262A42',
+  'emotional-intimacy': '#A2B5A9',
+  'communication':      '#6B8E7D',
+  'category-8':         '#C28A78',
+  'individual-needs':   '#C5A37D',
+  'parenting-together': '#6F8191',
+  'category-9':         '#4A5D4E',
+  'category-6':         '#8E7C8F',
+  'daily-life':         '#3C5459',
+  'category-10':        '#313658',
 };
 
-/** Text colors — warm, high-contrast for dark backgrounds */
+/** Lighter variants for text on dark backgrounds — higher contrast */
 export const CIRCADIAN_COLORS_LIGHT: Record<string, string> = {
   'emotional-intimacy': '#D0DDD5',
   'communication':      '#A8C7B5',
@@ -32,9 +32,30 @@ export const CIRCADIAN_COLORS_LIGHT: Record<string, string> = {
   'category-10':        '#7A80B0',
 };
 
-// Keep these exports for backward compatibility
-export const CIRCADIAN_FILLS: Record<string, string> = CIRCADIAN_COLORS;
-export const CIRCADIAN_FILLS_HOVER: Record<string, string> = CIRCADIAN_COLORS;
+/** Luminous glassmorphic fill for tiles */
+export const CIRCADIAN_FILLS: Record<string, string> = {
+  'emotional-intimacy': 'rgba(162, 181, 169, 0.62)',
+  'communication':      'rgba(107, 142, 125, 0.62)',
+  'category-8':         'rgba(194, 138, 120, 0.62)',
+  'individual-needs':   'rgba(197, 163, 125, 0.62)',
+  'parenting-together': 'rgba(111, 129, 145, 0.62)',
+  'category-9':         'rgba(74, 93, 78, 0.62)',
+  'category-6':         'rgba(142, 124, 143, 0.62)',
+  'daily-life':         'rgba(60, 84, 89, 0.62)',
+  'category-10':        'rgba(49, 54, 88, 0.62)',
+};
+
+export const CIRCADIAN_FILLS_HOVER: Record<string, string> = {
+  'emotional-intimacy': 'rgba(162, 181, 169, 0.78)',
+  'communication':      'rgba(107, 142, 125, 0.78)',
+  'category-8':         'rgba(194, 138, 120, 0.78)',
+  'individual-needs':   'rgba(197, 163, 125, 0.78)',
+  'parenting-together': 'rgba(111, 129, 145, 0.78)',
+  'category-9':         'rgba(74, 93, 78, 0.78)',
+  'category-6':         'rgba(142, 124, 143, 0.78)',
+  'daily-life':         'rgba(60, 84, 89, 0.78)',
+  'category-10':        'rgba(49, 54, 88, 0.78)',
+};
 
 const HERITAGE_GOLD = '#DA9D1D';
 const ENTER_EASE = [0.22, 1, 0.36, 1] as const;
@@ -211,14 +232,15 @@ export default function CircadianMenu({
               style={{
                 display: 'grid',
                 gridTemplateColumns: '1fr 1fr 1fr',
-                gap: '8px',
+                gap: '6px',
               }}
             >
               {group.categories.map((category) => {
                 const currentIndex = globalIndex++;
                 const sequenceNumber = currentIndex + 1;
-                const tileBg = CIRCADIAN_COLORS[category.id] || '#3A5045';
+                const tileFill = CIRCADIAN_FILLS[category.id] || 'rgba(162, 181, 169, 0.62)';
                 const tileText = CIRCADIAN_COLORS_LIGHT[category.id] || '#D0DDD5';
+                const tileColor = CIRCADIAN_COLORS[category.id] || '#A2B5A9';
                 const catCards = categoryCards.get(category.id) || [];
                 const completedCount = catCards.filter(c => completedCardIds.includes(c.id)).length;
                 const allCompleted = completedCount === catCards.length && catCards.length > 0;
@@ -233,22 +255,24 @@ export default function CircadianMenu({
                     onClick={() => onNavigateToCategory(category.id)}
                     style={{
                       position: 'relative',
-                      background: tileBg,
-                      borderRadius: '20px',
-                      padding: '16px 10px 14px',
+                      background: tileFill,
+                      backdropFilter: 'blur(24px) saturate(1.3)',
+                      WebkitBackdropFilter: 'blur(24px) saturate(1.3)',
+                      borderRadius: '22px',
+                      padding: '18px 10px 16px',
                       textAlign: 'center',
                       cursor: 'pointer',
                       aspectRatio: '1 / 1',
                       border: isNextSuggested
                         ? `2px solid ${HERITAGE_GOLD}88`
-                        : '1px solid rgba(255, 255, 255, 0.08)',
+                        : `1px solid rgba(255, 255, 255, 0.15)`,
                       boxShadow: [
-                        isNextSuggested ? `0 0 18px 0px ${HERITAGE_GOLD}40, 0 0 36px -4px ${HERITAGE_GOLD}25` : '',
-                        '0 8px 24px rgba(0, 0, 0, 0.35)',
-                        '0 3px 8px rgba(0, 0, 0, 0.2)',
-                        '0 1px 3px rgba(0, 0, 0, 0.15)',
-                        'inset 0 1.5px 0 rgba(255, 255, 255, 0.12)',
-                        'inset 0 -2px 6px rgba(0, 0, 0, 0.15)',
+                        isNextSuggested ? `0 0 20px 0px ${HERITAGE_GOLD}40, 0 0 40px -4px ${HERITAGE_GOLD}25` : '',
+                        '0 10px 28px rgba(0, 0, 0, 0.25)',
+                        '0 4px 10px rgba(0, 0, 0, 0.15)',
+                        '0 1px 3px rgba(0, 0, 0, 0.1)',
+                        'inset 0 1.5px 0 rgba(255, 255, 255, 0.18)',
+                        `inset 0 -3px 8px ${tileColor}30`,
                       ].filter(Boolean).join(', '),
                       display: 'flex',
                       flexDirection: 'column',
@@ -280,7 +304,7 @@ export default function CircadianMenu({
                     <span
                       style={{
                         fontFamily: "'DM Serif Display', var(--font-serif)",
-                        fontSize: 'clamp(14px, 3.8vw, 17px)',
+                        fontSize: 'clamp(15px, 4.2vw, 18px)',
                         fontWeight: 400,
                         color: tileText,
                         padding: '0 2px',
