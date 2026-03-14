@@ -1852,96 +1852,11 @@ export default function CardView() {
                 );
               })()}
 
-              {/* Question counter — kids products (all flows) and 1-step Still Us cards */}
+              {/* Question counter — kids products and 1-step Still Us cards */}
               {isLive && currentSection && (() => {
-                const isKidsProduct = product && product.id !== 'still_us';
-                const isLastStepInMulti = effectiveSteps.length > 1 && currentStepIndex === effectiveSteps.length - 1;
-
-                // For kids multi-step: show "Fråga X av Y" on question steps, "I verkligheten" on last step
-                if (isKidsProduct && effectiveSteps.length > 1) {
-                  if (isLastStepInMulti) {
-                    return (
-                      <motion.p
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ delay: BEAT_1, duration: EMOTION, ease: [...EASE] }}
-                        style={{
-                          fontFamily: 'var(--font-sans)',
-                          fontSize: '11px',
-                          letterSpacing: '0.08em',
-                          textTransform: 'uppercase',
-                          color: 'var(--text-tertiary)',
-                          opacity: 0.4,
-                          textAlign: 'center',
-                          width: '100%',
-                          marginTop: '40px',
-                          marginBottom: '0px',
-                        }}
-                      >
-                        I verkligheten
-                      </motion.p>
-                    );
-                  }
-                  // Accumulate prompt count across all question steps (all except last)
-                  const questionSteps = effectiveSteps.slice(0, -1);
-                  let globalIndex = 0;
-                  let totalQuestionPrompts = 0;
-                  for (let si = 0; si < questionSteps.length; si++) {
-                    const sec = card?.sections.find(s => s.type === questionSteps[si]);
-                    const count = getEffectivePromptCount(sec);
-                    if (si < currentStepIndex) {
-                      globalIndex += count;
-                    } else if (si === currentStepIndex) {
-                      globalIndex += localPromptIndex;
-                    }
-                    totalQuestionPrompts += count;
-                  }
-                  if (totalQuestionPrompts <= 1) return null;
-                  return (
-                    <motion.div
-                      initial={{ opacity: 0, y: 4 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: BEAT_1, duration: EMOTION, ease: [...EASE] }}
-                      style={{
-                        display: 'flex',
-                        justifyContent: 'center',
-                        width: '100%',
-                        marginTop: '40px',
-                        marginBottom: '0px',
-                      }}
-                    >
-                      <span
-                        style={{
-                          display: 'inline-flex',
-                          alignItems: 'center',
-                          gap: '6px',
-                          fontFamily: 'var(--font-sans)',
-                          fontSize: '11px',
-                          fontWeight: 600,
-                          letterSpacing: '0.04em',
-                          color: 'var(--kids-counter-color, var(--text-tertiary))',
-                          background: 'var(--kids-counter-bg, transparent)',
-                          border: '1px solid var(--kids-counter-border, transparent)',
-                          borderRadius: '20px',
-                          padding: '5px 14px 5px 10px',
-                        }}
-                      >
-                        <span style={{
-                          width: '6px',
-                          height: '6px',
-                          borderRadius: '50%',
-                          backgroundColor: 'var(--kids-counter-color, var(--text-tertiary))',
-                          opacity: 0.6,
-                        }} />
-                        {globalIndex + 1} av {totalQuestionPrompts}
-                      </span>
-                    </motion.div>
-                  );
-                }
-
-                // Kids 1-step or Still Us 1-step
-                if (isKidsProduct && effectiveSteps.length === 1) {
-                  const totalPrompts = getEffectivePromptCount(currentSection);
+                // Kids products: unified counter across all sections
+                if (isKidsProduct) {
+                  const totalPrompts = flatPromptMap ? totalFlatPrompts : getEffectivePromptCount(currentSection);
                   if (totalPrompts <= 1) return null;
                   return (
                     <motion.div
