@@ -1,5 +1,4 @@
-import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { Prompt, SituationalAnchor } from '@/types';
 import { EASE } from '@/lib/motion';
 
@@ -48,7 +47,6 @@ const DEPTH_GRAVITY: Record<string, React.CSSProperties> = {
  * Unified presentation: all section types use centered question style.
  */
 export default function PromptItem({ prompt, index, sectionType, preamble, anchor, backgroundImageUrl }: PromptItemProps) {
-  const [anchorOpen, setAnchorOpen] = useState(false);
   const gravity = DEPTH_GRAVITY[sectionType || 'opening'] || DEPTH_GRAVITY.opening;
   const isExercise = sectionType === 'exercise';
   const enterEase = [...EASE] as [number, number, number, number];
@@ -226,20 +224,24 @@ export default function PromptItem({ prompt, index, sectionType, preamble, ancho
                   overflow: 'hidden',
                 }}
               >
-                {/* Faint illustration watermark — kids products */}
+                {/* Illustration watermark — sits below question text, gentle presence */}
                 {backgroundImageUrl && (
                   <div
                     aria-hidden
                     style={{
                       position: 'absolute',
-                      inset: 0,
+                      bottom: '-12px',
+                      left: '50%',
+                      transform: 'translateX(-50%)',
+                      width: '55%',
+                      height: '55%',
                       backgroundImage: `url(${backgroundImageUrl})`,
-                      backgroundSize: '75%',
-                      backgroundPosition: 'center 42%',
+                      backgroundSize: 'contain',
+                      backgroundPosition: 'center bottom',
                       backgroundRepeat: 'no-repeat',
-                      opacity: 0.10,
+                      opacity: 0.09,
                       pointerEvents: 'none',
-                      filter: 'saturate(0.35) brightness(1.1)',
+                      filter: 'saturate(0.4) brightness(1.05)',
                     }}
                   />
                 )}
@@ -266,76 +268,27 @@ export default function PromptItem({ prompt, index, sectionType, preamble, ancho
           })()
         )}
 
-        {/* ── Situational anchor — expandable normalizing text ── */}
+        {/* ── Situational anchor — shown directly as gentle encouragement ── */}
         {anchor && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5, delay: 0.4, ease: enterEase }}
-            style={{ marginTop: '24px', textAlign: 'center' }}
+          <motion.p
+            initial={{ opacity: 0, y: 6 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.5, ease: enterEase }}
+            className="font-serif"
+            style={{
+              fontSize: '14px',
+              lineHeight: 1.55,
+              color: 'var(--accent-text, var(--text-secondary))',
+              opacity: 0.55,
+              textAlign: 'center',
+              textWrap: 'balance',
+              maxWidth: '480px',
+              margin: '20px auto 0',
+              fontStyle: 'italic',
+            }}
           >
-            <button
-              onClick={() => setAnchorOpen(prev => !prev)}
-              aria-expanded={anchorOpen}
-              style={{
-                background: 'none',
-                border: 'none',
-                cursor: 'pointer',
-                padding: '8px 16px',
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '6px',
-                color: 'var(--text-tertiary, var(--text-secondary))',
-                opacity: 0.5,
-                fontSize: '13px',
-                fontFamily: 'var(--font-sans)',
-                letterSpacing: '0.02em',
-                transition: 'opacity 0.2s ease',
-              }}
-              onMouseEnter={e => (e.currentTarget.style.opacity = '0.75')}
-              onMouseLeave={e => (e.currentTarget.style.opacity = '0.5')}
-            >
-              <span style={{
-                display: 'inline-block',
-                width: '16px',
-                height: '16px',
-                borderRadius: '50%',
-                border: '1.5px solid currentColor',
-                lineHeight: '14px',
-                textAlign: 'center',
-                fontSize: '11px',
-                fontWeight: 500,
-                flexShrink: 0,
-              }}>
-                {anchorOpen ? '−' : '·'}
-              </span>
-            </button>
-
-            <AnimatePresence>
-              {anchorOpen && (
-                <motion.p
-                  initial={{ opacity: 0, height: 0, marginTop: 0 }}
-                  animate={{ opacity: 1, height: 'auto', marginTop: 16 }}
-                  exit={{ opacity: 0, height: 0, marginTop: 0 }}
-                  transition={{ duration: 0.35, ease: enterEase }}
-                  className="font-serif"
-                  style={{
-                    fontSize: '15px',
-                    lineHeight: 1.6,
-                    color: 'var(--text-secondary)',
-                    opacity: 0.7,
-                    textAlign: 'center',
-                    textWrap: 'balance',
-                    maxWidth: '520px',
-                    margin: '0 auto',
-                    overflow: 'hidden',
-                  }}
-                >
-                  {anchor.text}
-                </motion.p>
-              )}
-            </AnimatePresence>
-          </motion.div>
+            {anchor.text}
+          </motion.p>
         )}
       </div>
     </div>

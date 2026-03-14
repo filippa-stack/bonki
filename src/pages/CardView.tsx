@@ -1770,39 +1770,7 @@ export default function CardView() {
 
       {/* Section content — centered, max 520px for readability */}
       <div className="px-6 relative" style={{ paddingTop: '8px', paddingBottom: 'calc(140px + env(safe-area-inset-bottom, 0px))' }}>
-        {/* Card illustration watermark — centered, maximized within CTA-to-bottom zone */}
-        {product && product.id !== 'still_us' && cardImageUrl && (
-          <div
-            style={{
-              position: 'fixed',
-              bottom: 0,
-              right: 0,
-              width: '55vw',
-              height: '32vh',
-              display: 'flex',
-              alignItems: 'flex-end',
-              justifyContent: 'flex-end',
-              pointerEvents: 'none',
-              zIndex: 0,
-              padding: '0 20px calc(16px + env(safe-area-inset-bottom, 0px)) 0',
-            }}
-          >
-            <img
-              src={cardImageUrl}
-              alt=""
-              draggable={false}
-              style={{
-                maxWidth: '100%',
-                maxHeight: '100%',
-                objectFit: 'contain',
-                opacity: 0.08,
-                filter: 'saturate(0.3) brightness(1.05)',
-                userSelect: 'none',
-                animation: 'completion-breathe 8s ease-in-out infinite',
-              }}
-            />
-          </div>
-        )}
+        {/* Single illustration is rendered inside PromptItem — no corner watermark */}
         <div className="max-w-[520px] mx-auto relative" style={{ zIndex: 1 }}>
         <AnimatePresence mode="wait">
           {!currentSection && (
