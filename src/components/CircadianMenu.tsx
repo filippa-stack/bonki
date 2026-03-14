@@ -8,18 +8,18 @@ import { Check } from 'lucide-react';
  * Each color is a rich, matte tone that feels "leather-bound premium".
  */
 export const CIRCADIAN_COLORS: Record<string, string> = {
-  'emotional-intimacy': '#3A5045',
-  'communication':      '#2E4A3E',
-  'category-8':         '#4A3832',
-  'individual-needs':   '#4A3D2E',
-  'parenting-together': '#2E3A44',
-  'category-9':         '#2A3A2E',
-  'category-6':         '#3E3240',
-  'daily-life':         '#1E3438',
-  'category-10':        '#262A42',
+  'emotional-intimacy': '#A2B5A9',
+  'communication':      '#6B8E7D',
+  'category-8':         '#C28A78',
+  'individual-needs':   '#C5A37D',
+  'parenting-together': '#6F8191',
+  'category-9':         '#4A5D4E',
+  'category-6':         '#8E7C8F',
+  'daily-life':         '#3C5459',
+  'category-10':        '#313658',
 };
 
-/** Text colors — warm, high-contrast for dark backgrounds */
+/** Lighter variants for text on dark backgrounds — higher contrast */
 export const CIRCADIAN_COLORS_LIGHT: Record<string, string> = {
   'emotional-intimacy': '#D0DDD5',
   'communication':      '#A8C7B5',
@@ -32,9 +32,30 @@ export const CIRCADIAN_COLORS_LIGHT: Record<string, string> = {
   'category-10':        '#7A80B0',
 };
 
-// Keep these exports for backward compatibility
-export const CIRCADIAN_FILLS: Record<string, string> = CIRCADIAN_COLORS;
-export const CIRCADIAN_FILLS_HOVER: Record<string, string> = CIRCADIAN_COLORS;
+/** Luminous glassmorphic fill for tiles */
+export const CIRCADIAN_FILLS: Record<string, string> = {
+  'emotional-intimacy': 'rgba(162, 181, 169, 0.62)',
+  'communication':      'rgba(107, 142, 125, 0.62)',
+  'category-8':         'rgba(194, 138, 120, 0.62)',
+  'individual-needs':   'rgba(197, 163, 125, 0.62)',
+  'parenting-together': 'rgba(111, 129, 145, 0.62)',
+  'category-9':         'rgba(74, 93, 78, 0.62)',
+  'category-6':         'rgba(142, 124, 143, 0.62)',
+  'daily-life':         'rgba(60, 84, 89, 0.62)',
+  'category-10':        'rgba(49, 54, 88, 0.62)',
+};
+
+export const CIRCADIAN_FILLS_HOVER: Record<string, string> = {
+  'emotional-intimacy': 'rgba(162, 181, 169, 0.78)',
+  'communication':      'rgba(107, 142, 125, 0.78)',
+  'category-8':         'rgba(194, 138, 120, 0.78)',
+  'individual-needs':   'rgba(197, 163, 125, 0.78)',
+  'parenting-together': 'rgba(111, 129, 145, 0.78)',
+  'category-9':         'rgba(74, 93, 78, 0.78)',
+  'category-6':         'rgba(142, 124, 143, 0.78)',
+  'daily-life':         'rgba(60, 84, 89, 0.78)',
+  'category-10':        'rgba(49, 54, 88, 0.78)',
+};
 
 const HERITAGE_GOLD = '#DA9D1D';
 const ENTER_EASE = [0.22, 1, 0.36, 1] as const;
