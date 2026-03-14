@@ -44,24 +44,24 @@ const PASTEL_COLORS: Record<string, string> = {
   syskonkort: '#DAEAF6',
 };
 
-/** Portal-level illustration opacities */
+/** High-presence illustration opacities — characters as heroes */
 const ILLUSTRATION_OPACITY: Record<string, number> = {
-  jag_i_mig: 0.92,
-  jag_med_andra: 0.92,
-  jag_i_varlden: 0.88,
-  sexualitetskort: 0.92,
-  vardagskort: 0.88,
-  syskonkort: 0.90,
+  jag_i_mig: 0.82,
+  jag_med_andra: 0.78,
+  jag_i_varlden: 0.75,
+  sexualitetskort: 0.80,
+  vardagskort: 0.75,
+  syskonkort: 0.78,
 };
 
-/** Focal points for cover-fit illustrations */
+/** Focal points for contain-fit illustrations */
 const ILLUSTRATION_POSITION: Record<string, string> = {
-  jag_i_mig: 'center 45%',
-  jag_med_andra: 'center 40%',
-  jag_i_varlden: 'center 40%',
-  sexualitetskort: 'center 45%',
-  vardagskort: 'center 40%',
-  syskonkort: 'center 35%',
+  jag_i_mig: 'right 65%',
+  jag_med_andra: 'right center',
+  jag_i_varlden: 'right center',
+  sexualitetskort: 'right center',
+  vardagskort: 'right center',
+  syskonkort: 'right center',
 };
 
 /** Restored strong accent colors for tile titles */
@@ -164,7 +164,7 @@ function AudienceLabel({ label, subtitle, delay = 0 }: { label: string; subtitle
  * │  To unlock: remove this comment block.               │
  * └─────────────────────────────────────────────────────┘
  */
-/** Portal tile — full-bleed illustration with bottom text overlay */
+/** Portal tile — prominent illustration with strong bottom text */
 const PastelTile = React.forwardRef<HTMLDivElement, {
   name: string; bg: string; ageLabel?: string; tagline?: string;
   onClick?: () => void; illustration?: string;
@@ -173,15 +173,14 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
   showFreeBadge?: boolean; badgeText?: string;
 }>(function PastelTile({
   name, bg, ageLabel, tagline, onClick, illustration, accentColor, taglineColor,
-  illustrationOpacity = 0.92, illustrationSize, illustrationPosition = 'center 40%', wide = false,
+  illustrationOpacity = 0.78, illustrationSize, illustrationPosition = 'right center', wide = false,
   showFreeBadge = false, badgeText = 'Första kortet gratis',
 }, ref) {
-  /** Derive a tinted shadow color from the tile bg */
   const toShadowColor = (hex: string, alpha: number) => {
     const r = parseInt(hex.slice(1, 3), 16);
     const g = parseInt(hex.slice(3, 5), 16);
     const b = parseInt(hex.slice(5, 7), 16);
-    return `rgba(${Math.round(r * 0.6)}, ${Math.round(g * 0.6)}, ${Math.round(b * 0.6)}, ${alpha})`;
+    return `rgba(${Math.round(r * 0.5)}, ${Math.round(g * 0.5)}, ${Math.round(b * 0.5)}, ${alpha})`;
   };
 
     return (
@@ -193,41 +192,50 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
         className="cursor-pointer"
         style={{
           borderRadius: '22px',
+          backgroundImage: `linear-gradient(135deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0) 50%, rgba(0,0,0,0.06) 100%)`,
           backgroundColor: bg,
-          minHeight: wide ? '160px' : '180px',
+          minHeight: wide ? '170px' : '200px',
           display: 'flex',
           flexDirection: 'column',
           position: 'relative',
           overflow: 'hidden',
-          border: '1.5px solid rgba(255, 255, 255, 0.35)',
+          border: '1.5px solid rgba(255, 255, 255, 0.30)',
           boxShadow: [
-            `0 10px 28px ${toShadowColor(bg, 0.25)}`,
-            `0 4px 10px ${toShadowColor(bg, 0.16)}`,
+            `0 12px 32px ${toShadowColor(bg, 0.30)}`,
+            `0 4px 12px ${toShadowColor(bg, 0.18)}`,
             '0 1px 3px rgba(0, 0, 0, 0.08)',
-            'inset 0 2px 4px rgba(255, 255, 255, 0.4)',
-            `inset 0 -3px 8px ${toShadowColor(bg, 0.10)}`,
+            'inset 0 3px 6px rgba(255, 255, 255, 0.45)',
+            `inset 0 -4px 10px ${toShadowColor(bg, 0.12)}`,
           ].join(', '),
           gridColumn: wide ? 'span 2' : undefined,
         }}
       >
-      {/* Full-bleed illustration */}
+      {/* Illustration — large, contained, right-anchored hero */}
       {illustration && (
-        <img
-          src={illustration}
-          alt=""
-          draggable={false}
+        <div
           style={{
             position: 'absolute',
-            inset: 0,
-            width: '100%',
-            height: '100%',
-            objectFit: 'cover',
-            objectPosition: illustrationPosition,
-            opacity: illustrationOpacity,
+            top: wide ? '-10%' : '-5%',
+            right: wide ? '-5%' : '-8%',
+            bottom: wide ? '25%' : '30%',
+            width: wide ? '55%' : '80%',
             pointerEvents: 'none',
             zIndex: 0,
           }}
-        />
+        >
+          <img
+            src={illustration}
+            alt=""
+            draggable={false}
+            style={{
+              width: '100%',
+              height: '100%',
+              objectFit: 'contain',
+              objectPosition: illustrationPosition,
+              opacity: illustrationOpacity,
+            }}
+          />
+        </div>
       )}
 
       {/* Age label badge */}
@@ -248,7 +256,7 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
             fontWeight: 700,
             letterSpacing: '0.02em',
             color: accentColor || 'var(--text-library)',
-            background: 'rgba(255, 255, 255, 0.65)',
+            background: 'rgba(255, 255, 255, 0.60)',
             backdropFilter: 'blur(8px)',
             WebkitBackdropFilter: 'blur(8px)',
             zIndex: 3,
@@ -258,16 +266,16 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
         </span>
       )}
 
-      {/* Bottom gradient scrim for text legibility */}
+      {/* Bottom gradient scrim — strong for text protection */}
       <div
         aria-hidden="true"
         style={{
           position: 'absolute',
           bottom: 0, left: 0, right: 0,
-          height: '70%',
+          height: '65%',
           zIndex: 1,
           pointerEvents: 'none',
-          background: `linear-gradient(to top, ${bg} 0%, ${bg}CC 30%, ${bg}66 55%, transparent 100%)`,
+          background: `linear-gradient(to top, ${bg} 0%, ${bg}EE 25%, ${bg}99 50%, ${bg}33 70%, transparent 100%)`,
           borderRadius: '0 0 22px 22px',
         }}
       />
@@ -282,12 +290,12 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
         <h3
           style={{
             fontFamily: "'DM Serif Display', serif",
-            fontSize: wide ? '28px' : '21px',
+            fontSize: wide ? '28px' : '22px',
             fontWeight: 400,
             lineHeight: 1.15,
             color: accentColor || 'var(--text-library)',
             letterSpacing: '-0.01em',
-            textShadow: `0 1px 4px ${bg}, 0 0 12px ${bg}`,
+            textShadow: `0 1px 6px ${bg}, 0 0 16px ${bg}, 0 0 32px ${bg}`,
           }}
         >
           {name}
@@ -296,12 +304,12 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
           <p
             style={{
               fontFamily: "'Lato', sans-serif",
-              fontSize: '11px',
+              fontSize: '11.5px',
               fontWeight: 400,
               color: taglineColor || '#8A8078',
               marginTop: '3px',
               lineHeight: 1.4,
-              textShadow: `0 0 8px ${bg}`,
+              textShadow: `0 0 10px ${bg}, 0 0 20px ${bg}`,
             }}
           >
             {tagline}
@@ -321,7 +329,7 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
               opacity: 0.8,
               lineHeight: 1.4,
               whiteSpace: 'nowrap',
-              textShadow: `0 0 8px ${bg}`,
+              textShadow: `0 0 10px ${bg}, 0 0 20px ${bg}`,
             }}
           >
             {badgeText}
@@ -331,7 +339,6 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
     </motion.div>
   );
 });
-
 export default function ProductLibrary() {
   const navigate = useNavigate();
   const tracked = useRef(false);
