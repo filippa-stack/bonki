@@ -1227,7 +1227,7 @@ export default function ProductLibrary() {
             textAlign: 'center',
             padding: '0 28px',
             marginTop: isDark ? '0' : '32px',
-            paddingTop: isDark ? '24px' : '0',
+            paddingTop: isDark ? '8px' : '0',
             paddingBottom: 'calc(48px + env(safe-area-inset-bottom, 0px))',
           }}
         >
