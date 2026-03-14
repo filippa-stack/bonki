@@ -211,7 +211,7 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
   onClick?: () => void; illustration?: string; productId?: string;
   accentColor?: string; taglineColor?: string; illustrationOpacity?: number;
   illustrationSize?: string; illustrationPosition?: string; wide?: boolean;
-  showFreeBadge?: boolean; badgeText?: string;
+  showFreeBadge?: boolean; badgeText?: string; ageCount?: number;
 }>(function PastelTile({
   name, bg, ageLabel, tagline, onClick, illustration, productId, accentColor, taglineColor,
   illustrationOpacity = 0.78, illustrationSize, illustrationPosition = 'center 30%', wide = false,
