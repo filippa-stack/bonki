@@ -630,7 +630,7 @@ export default function ProductLibrary() {
               taglineColor={TAGLINE_COLORS[jagMedAndra.id]}
               illustration={ILLUSTRATIONS[jagMedAndra.id]}
               illustrationOpacity={ILLUSTRATION_OPACITY[jagMedAndra.id]}
-              illustrationSize={ILLUSTRATION_SIZE[jagMedAndra.id]}
+              
               onClick={() => navigate(`/product/${jagMedAndra.slug}`)}
               showFreeBadge={!purchased.has(jagMedAndra.id)}
               badgeText={buildBadgeText(jagMedAndra)}
