@@ -319,7 +319,7 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
         </span>
       )}
 
-      {/* Bottom gradient scrim — strong for text protection */}
+      {/* Bottom gradient scrim — rgba-based for robustness */}
       <div
         aria-hidden="true"
         style={{
@@ -328,7 +328,7 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
           height: '65%',
           zIndex: 1,
           pointerEvents: 'none',
-          background: `linear-gradient(to top, ${bg} 0%, ${bg}EE 25%, ${bg}99 50%, ${bg}33 70%, transparent 100%)`,
+          background: `linear-gradient(to top, ${bgRgba(1)} 0%, ${bgRgba(0.93)} 25%, ${bgRgba(0.6)} 50%, ${bgRgba(0.2)} 70%, transparent 100%)`,
           borderRadius: '0 0 22px 22px',
         }}
       />
