@@ -123,7 +123,7 @@ export default function BottomNav() {
 
       <div
         style={{
-          backgroundColor: 'hsla(var(--background) / 0.65)',
+          backgroundColor: 'color-mix(in srgb, var(--surface-base, hsl(var(--background))) 75%, transparent)',
           backdropFilter: 'blur(20px)',
           WebkitBackdropFilter: 'blur(20px)',
         }}
