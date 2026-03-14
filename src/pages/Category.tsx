@@ -108,7 +108,7 @@ const CATEGORY_CARD_BG: Record<string, string> = {
   'sk-er-relation': '#7AACB0',
 };
 
-/** Category-specific card title colors (matching homescreen tile text) */
+/** Category-specific card title colors (synced with homescreen tile text) */
 const CATEGORY_TITLE_COLOR: Record<string, string> = {
   // Jag i mig
   'jim-mina-kanslor': '#3E4124',
@@ -116,31 +116,31 @@ const CATEGORY_TITLE_COLOR: Record<string, string> = {
   'jim-stora-kanslor': '#3E4124',
   // Jag med andra
   'jma-att-hora-till': '#9825D6',
-  'jma-nar-vi-jamfor-oss': '#9825D6',
-  'jma-nar-det-skaver': '#9825D6',
-  'jma-att-sta-stadig': '#5A189A',
-  'jma-vi-i-varlden': '#3A0A5C',
+  'jma-nar-vi-jamfor-oss': '#7B1FA2',
+  'jma-nar-det-skaver': '#8E3A1A',
+  'jma-att-sta-stadig': '#4A148C',
+  'jma-vi-i-varlden': '#F5F0F8',
   // Jag i världen
-  'jiv-min-vardag': '#3E4A40',
-  'jiv-vem-jag-ar': '#3E4A40',
-  'jiv-jag-och-andra': '#3E4A40',
-  'jiv-jag-i-samhallet': '#3E4A40',
-  'jiv-det-stora-sammanhanget': '#F5F2ED',
+  'jiv-min-vardag': '#2A4A2E',
+  'jiv-vem-jag-ar': '#4A3A20',
+  'jiv-jag-och-andra': '#3E2E1E',
+  'jiv-jag-i-samhallet': '#1E3A24',
+  'jiv-det-stora-sammanhanget': '#F0EDE8',
   // Sexualitet
   'sex-min-identitet': '#6B3A3F',
   'sex-normer-och-paverkan': '#5A2A30',
   'sex-relation-och-ansvar': '#3A1E1E',
-  'sex-skydd-och-makt': '#FAFAF0',
+  'sex-skydd-och-makt': '#FAF5F0',
   // Vardag
   'vk-min-dag': '#073B54',
   'vk-var-rytm': '#073B54',
-  'vk-vi-hemma': '#073B54',
-  'vk-utanfor-hemmet': '#073B54',
+  'vk-vi-hemma': '#4A3518',
+  'vk-utanfor-hemmet': '#0A2E40',
   // Syskon
-  'sk-vi-blev-syskon': '#274C5E',
+  'sk-vi-blev-syskon': '#1A4A58',
   'sk-vi-ar-olika': '#3A2E1A',
-  'sk-nar-det-skaver': '#274C5E',
-  'sk-nar-livet-forandras': '#274C5E',
+  'sk-delat-utrymme': '#1A4A44',
+  'sk-er-relation': '#0E2E38',
 };
 
 export default function Category() {
