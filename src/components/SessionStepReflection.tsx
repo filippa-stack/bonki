@@ -73,6 +73,15 @@ export default function SessionStepReflection({
   const handleChange = (value: string) => {
     setLocalText(value);
     setText(value);
+    // Show save indicator after typing pause
+    setSaveIndicator('idle');
+    if (saveTimeoutRef.current) clearTimeout(saveTimeoutRef.current);
+    if (value.trim()) {
+      saveTimeoutRef.current = setTimeout(() => {
+        setSaveIndicator('saved');
+        setTimeout(() => setSaveIndicator('idle'), 2500);
+      }, 800);
+    }
   };
 
   const handleExpand = () => {
