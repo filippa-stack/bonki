@@ -79,8 +79,9 @@ export default function JagMedAndraProductHome({ product }: { product: ProductMa
                     padding: '20px 16px',
                     textAlign: 'center',
                     cursor: 'pointer',
-                    aspectRatio: '1 / 1',
-                    ...(isLastOdd ? { gridColumn: '1 / -1', justifySelf: 'center', width: '65%' } : {}),
+                    ...(isLastOdd
+                      ? { gridColumn: '1 / -1', justifySelf: 'center', width: '65%', padding: '22px 20px' }
+                      : { aspectRatio: '1 / 1' }),
                     border: isNextCategory
                       ? `2.5px solid ${SAFFRON}CC`
                       : isDark ? '1px solid rgba(255, 255, 255, 0.12)' : '1px solid hsla(345, 20%, 75%, 0.25)',
