@@ -742,7 +742,7 @@ function CardEntry({ card, index, isCompleted = false, isInProgress = false, isN
               fontSize: '32px', fontWeight: 700,
               color: cardTitleColor,
               lineHeight: 1.1,
-              textShadow: (cardTitleColor === '#FAFAF0' || cardTitleColor === '#FFFDF5')
+              textShadow: isLightColor(cardTitleColor)
                 ? '0 1px 2px rgba(0,0,0,0.4), 0 2px 6px rgba(0,0,0,0.2)'
                 : '0 1px 2px rgba(255,255,255,0.6), 0 0 8px rgba(255,255,255,0.3)',
               letterSpacing: '-0.01em',
