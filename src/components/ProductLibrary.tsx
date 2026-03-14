@@ -44,7 +44,7 @@ const PASTEL_COLORS: Record<string, string> = {
   syskonkort: '#DAEAF6',
 };
 
-/** Hero-level illustration opacities */
+/** Hero-level illustration opacities — individually calibrated */
 const ILLUSTRATION_OPACITY: Record<string, number> = {
   jag_i_mig: 0.92,
   jag_med_andra: 0.88,
@@ -54,14 +54,24 @@ const ILLUSTRATION_OPACITY: Record<string, number> = {
   syskonkort: 0.88,
 };
 
-/** Focal points for illustrations */
+/** Per-product illustration placement — individually tuned */
 const ILLUSTRATION_POSITION: Record<string, string> = {
-  jag_i_mig: 'center 30%',
-  jag_med_andra: 'center 35%',
-  jag_i_varlden: 'center 35%',
-  sexualitetskort: 'center 40%',
-  vardagskort: 'center 30%',
-  syskonkort: 'center 30%',
+  jag_i_mig: 'center bottom',
+  jag_med_andra: 'center 25%',
+  jag_i_varlden: 'center 30%',
+  sexualitetskort: 'center 35%',
+  vardagskort: 'center 25%',
+  syskonkort: 'center 25%',
+};
+
+/** Per-product illustration container bounds — {top, left, right, bottom} as % */
+const ILLUSTRATION_BOUNDS: Record<string, { top: string; left: string; right: string; bottom: string }> = {
+  jag_i_mig: { top: '-8%', left: '25%', right: '-8%', bottom: '18%' },
+  jag_med_andra: { top: '-15%', left: '-8%', right: '-8%', bottom: '22%' },
+  jag_i_varlden: { top: '-10%', left: '0%', right: '0%', bottom: '22%' },
+  sexualitetskort: { top: '-10%', left: '5%', right: '-5%', bottom: '20%' },
+  vardagskort: { top: '-15%', left: '-10%', right: '-10%', bottom: '25%' },
+  syskonkort: { top: '-12%', left: '-8%', right: '-8%', bottom: '22%' },
 };
 
 /** Restored strong accent colors for tile titles */
@@ -167,13 +177,13 @@ function AudienceLabel({ label, subtitle, delay = 0 }: { label: string; subtitle
 /** Portal tile — prominent illustration with strong bottom text */
 const PastelTile = React.forwardRef<HTMLDivElement, {
   name: string; bg: string; ageLabel?: string; tagline?: string;
-  onClick?: () => void; illustration?: string;
+  onClick?: () => void; illustration?: string; productId?: string;
   accentColor?: string; taglineColor?: string; illustrationOpacity?: number;
   illustrationSize?: string; illustrationPosition?: string; wide?: boolean;
   showFreeBadge?: boolean; badgeText?: string;
 }>(function PastelTile({
-  name, bg, ageLabel, tagline, onClick, illustration, accentColor, taglineColor,
-  illustrationOpacity = 0.78, illustrationSize, illustrationPosition = 'right center', wide = false,
+  name, bg, ageLabel, tagline, onClick, illustration, productId, accentColor, taglineColor,
+  illustrationOpacity = 0.78, illustrationSize, illustrationPosition = 'center 30%', wide = false,
   showFreeBadge = false, badgeText = 'Första kortet gratis',
 }, ref) {
   const toShadowColor = (hex: string, alpha: number) => {
@@ -210,33 +220,38 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
           gridColumn: wide ? 'span 2' : undefined,
         }}
       >
-      {/* Illustration — centered hero, filling the tile */}
-      {illustration && (
-        <div
-          style={{
-            position: 'absolute',
-            top: '-12%',
-            left: wide ? '20%' : '-5%',
-            right: wide ? '-5%' : '-5%',
-            bottom: '22%',
-            pointerEvents: 'none',
-            zIndex: 0,
-          }}
-        >
-          <img
-            src={illustration}
-            alt=""
-            draggable={false}
+      {/* Illustration — individually calibrated hero */}
+      {illustration && (() => {
+        const bounds = productId ? ILLUSTRATION_BOUNDS[productId] : undefined;
+        const defaultBounds = { top: '-12%', left: '-5%', right: '-5%', bottom: '22%' };
+        const b = bounds || defaultBounds;
+        return (
+          <div
             style={{
-              width: '100%',
-              height: '100%',
-              objectFit: 'contain',
-              objectPosition: illustrationPosition,
-              opacity: illustrationOpacity,
+              position: 'absolute',
+              top: b.top,
+              left: b.left,
+              right: b.right,
+              bottom: b.bottom,
+              pointerEvents: 'none',
+              zIndex: 0,
             }}
-          />
-        </div>
-      )}
+          >
+            <img
+              src={illustration}
+              alt=""
+              draggable={false}
+              style={{
+                width: '100%',
+                height: '100%',
+                objectFit: 'contain',
+                objectPosition: illustrationPosition,
+                opacity: illustrationOpacity,
+              }}
+            />
+          </div>
+        );
+      })()}
 
       {/* Age label badge */}
       {ageLabel && (
@@ -615,13 +630,13 @@ export default function ProductLibrary() {
             <PastelTile
               name={jagIMig.name}
               bg={PASTEL_COLORS[jagIMig.id]!}
+              productId={jagIMig.id}
               tagline={TAGLINES[jagIMig.id]}
               ageLabel={jagIMig.ageLabel}
               accentColor={ACCENT_COLORS[jagIMig.id]}
               taglineColor={TAGLINE_COLORS[jagIMig.id]}
               illustration={ILLUSTRATIONS[jagIMig.id]}
               illustrationOpacity={ILLUSTRATION_OPACITY[jagIMig.id]}
-              
               illustrationPosition={ILLUSTRATION_POSITION[jagIMig.id]}
               onClick={() => navigate(`/product/${jagIMig.slug}`)}
               showFreeBadge={!purchased.has(jagIMig.id)}
@@ -631,13 +646,14 @@ export default function ProductLibrary() {
             <PastelTile
               name={jagMedAndra.name}
               bg={PASTEL_COLORS[jagMedAndra.id]!}
+              productId={jagMedAndra.id}
               tagline={TAGLINES[jagMedAndra.id]}
               ageLabel={jagMedAndra.ageLabel}
               accentColor={ACCENT_COLORS[jagMedAndra.id]}
               taglineColor={TAGLINE_COLORS[jagMedAndra.id]}
               illustration={ILLUSTRATIONS[jagMedAndra.id]}
               illustrationOpacity={ILLUSTRATION_OPACITY[jagMedAndra.id]}
-              
+              illustrationPosition={ILLUSTRATION_POSITION[jagMedAndra.id]}
               onClick={() => navigate(`/product/${jagMedAndra.slug}`)}
               showFreeBadge={!purchased.has(jagMedAndra.id)}
               badgeText={buildBadgeText(jagMedAndra)}
@@ -645,12 +661,14 @@ export default function ProductLibrary() {
             <PastelTile
               name={jagIVarlden.name}
               bg={PASTEL_COLORS[jagIVarlden.id]!}
+              productId={jagIVarlden.id}
               tagline={TAGLINES[jagIVarlden.id]}
               ageLabel={jagIVarlden.ageLabel}
               accentColor={ACCENT_COLORS[jagIVarlden.id]}
               taglineColor={TAGLINE_COLORS[jagIVarlden.id]}
               illustration={ILLUSTRATIONS[jagIVarlden.id]}
               illustrationOpacity={ILLUSTRATION_OPACITY[jagIVarlden.id]}
+              illustrationPosition={ILLUSTRATION_POSITION[jagIVarlden.id]}
               onClick={() => navigate(`/product/${jagIVarlden.slug}`)}
               showFreeBadge={!purchased.has(jagIVarlden.id)}
               badgeText={buildBadgeText(jagIVarlden)}
@@ -658,12 +676,14 @@ export default function ProductLibrary() {
             <PastelTile
               name={vardag.name}
               bg={PASTEL_COLORS[vardag.id]!}
+              productId={vardag.id}
               tagline={TAGLINES[vardag.id]}
               ageLabel={vardag.ageLabel}
               accentColor={ACCENT_COLORS[vardag.id]}
               taglineColor={TAGLINE_COLORS[vardag.id]}
               illustration={ILLUSTRATIONS[vardag.id]}
               illustrationOpacity={ILLUSTRATION_OPACITY[vardag.id]}
+              illustrationPosition={ILLUSTRATION_POSITION[vardag.id]}
               onClick={() => navigate(`/product/${vardag.slug}`)}
               showFreeBadge={!purchased.has(vardag.id)}
               badgeText={buildBadgeText(vardag)}
@@ -671,12 +691,14 @@ export default function ProductLibrary() {
             <PastelTile
               name={syskon.name}
               bg={PASTEL_COLORS[syskon.id]!}
+              productId={syskon.id}
               tagline={TAGLINES[syskon.id]}
               ageLabel={syskon.ageLabel}
               accentColor={ACCENT_COLORS[syskon.id]}
               taglineColor={TAGLINE_COLORS[syskon.id]}
               illustration={ILLUSTRATIONS[syskon.id]}
               illustrationOpacity={ILLUSTRATION_OPACITY[syskon.id]}
+              illustrationPosition={ILLUSTRATION_POSITION[syskon.id]}
               onClick={() => navigate(`/product/${syskon.slug}`)}
               showFreeBadge={!purchased.has(syskon.id)}
               badgeText={buildBadgeText(syskon)}
@@ -684,12 +706,14 @@ export default function ProductLibrary() {
             <PastelTile
               name={sexualitet.name}
               bg={PASTEL_COLORS[sexualitet.id]!}
+              productId={sexualitet.id}
               tagline={TAGLINES[sexualitet.id]}
               ageLabel={sexualitet.ageLabel}
               accentColor={ACCENT_COLORS[sexualitet.id]}
               taglineColor={TAGLINE_COLORS[sexualitet.id]}
               illustration={ILLUSTRATIONS[sexualitet.id]}
               illustrationOpacity={ILLUSTRATION_OPACITY[sexualitet.id]}
+              illustrationPosition={ILLUSTRATION_POSITION[sexualitet.id]}
               onClick={() => navigate(`/product/${sexualitet.slug}`)}
               showFreeBadge={!purchased.has(sexualitet.id)}
               badgeText={buildBadgeText(sexualitet)}
