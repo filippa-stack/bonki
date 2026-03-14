@@ -327,11 +327,11 @@ export default function CardView() {
 
   // ─── Auto-show completion when session disappears post-lock ───
   useEffect(() => {
-    if (isFromArchive) return;
+    if (isFromArchive || devState) return;
     if (activeSessionId && !normalizedSession.sessionId && !normalizedSession.loading && !showCompletion) {
       setShowCompletion(true);
     }
-  }, [activeSessionId, normalizedSession.sessionId, normalizedSession.loading, isFromArchive, showCompletion]);
+  }, [activeSessionId, normalizedSession.sessionId, normalizedSession.loading, isFromArchive, showCompletion, devState]);
 
   // Volume 1: single-writer model, reflection surface always active
 
