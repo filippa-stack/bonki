@@ -942,7 +942,7 @@ export default function ProductLibrary() {
               fontWeight: 600,
               letterSpacing: '0.1em',
               textTransform: 'uppercase' as const,
-              color: 'var(--accent-text)',
+              color: '#E9B44C',
               opacity: 0.4,
               marginTop: '8px',
             }}>
