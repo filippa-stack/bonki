@@ -14,10 +14,10 @@ const DIARY_TEXT = '#073B54';
 const SAFFRON = '#DA9D1D';
 
 const ORDERED_TILES = [
-  { id: 'vk-min-dag', bg: '#D5F0E8', text: '#073B54', sub: 'Från morgon till kväll' },
-  { id: 'vk-var-rytm', bg: '#C0DBF0', text: '#073B54', sub: 'Vanor och rutiner' },
-  { id: 'vk-vi-hemma', bg: '#B8D0C8', text: '#1A3E38', sub: 'Allt som händer innanför dörren' },
-  { id: 'vk-utanfor-hemmet', bg: '#8BB8D0', text: '#0A2E40', sub: 'Det du möter där ute' },
+  { id: 'vk-min-dag', bg: '#D0E8D8', text: '#1A4038', sub: 'Från morgon till kväll' },
+  { id: 'vk-var-rytm', bg: '#A8C8D8', text: '#0E3048', sub: 'Vanor och rutiner' },
+  { id: 'vk-vi-hemma', bg: '#8AB0A8', text: '#0E3230', sub: 'Allt som händer innanför dörren' },
+  { id: 'vk-utanfor-hemmet', bg: '#5888A0', text: '#F0F4F6', sub: 'Det du möter där ute' },
 ];
 
 const containerVariants = { hidden: {}, visible: { transition: { staggerChildren: 0.11, delayChildren: 0.4 } } };
