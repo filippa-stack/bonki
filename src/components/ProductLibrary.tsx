@@ -630,13 +630,13 @@ export default function ProductLibrary() {
             <PastelTile
               name={jagIMig.name}
               bg={PASTEL_COLORS[jagIMig.id]!}
+              productId={jagIMig.id}
               tagline={TAGLINES[jagIMig.id]}
               ageLabel={jagIMig.ageLabel}
               accentColor={ACCENT_COLORS[jagIMig.id]}
               taglineColor={TAGLINE_COLORS[jagIMig.id]}
               illustration={ILLUSTRATIONS[jagIMig.id]}
               illustrationOpacity={ILLUSTRATION_OPACITY[jagIMig.id]}
-              
               illustrationPosition={ILLUSTRATION_POSITION[jagIMig.id]}
               onClick={() => navigate(`/product/${jagIMig.slug}`)}
               showFreeBadge={!purchased.has(jagIMig.id)}
@@ -646,13 +646,14 @@ export default function ProductLibrary() {
             <PastelTile
               name={jagMedAndra.name}
               bg={PASTEL_COLORS[jagMedAndra.id]!}
+              productId={jagMedAndra.id}
               tagline={TAGLINES[jagMedAndra.id]}
               ageLabel={jagMedAndra.ageLabel}
               accentColor={ACCENT_COLORS[jagMedAndra.id]}
               taglineColor={TAGLINE_COLORS[jagMedAndra.id]}
               illustration={ILLUSTRATIONS[jagMedAndra.id]}
               illustrationOpacity={ILLUSTRATION_OPACITY[jagMedAndra.id]}
-              
+              illustrationPosition={ILLUSTRATION_POSITION[jagMedAndra.id]}
               onClick={() => navigate(`/product/${jagMedAndra.slug}`)}
               showFreeBadge={!purchased.has(jagMedAndra.id)}
               badgeText={buildBadgeText(jagMedAndra)}
@@ -660,12 +661,14 @@ export default function ProductLibrary() {
             <PastelTile
               name={jagIVarlden.name}
               bg={PASTEL_COLORS[jagIVarlden.id]!}
+              productId={jagIVarlden.id}
               tagline={TAGLINES[jagIVarlden.id]}
               ageLabel={jagIVarlden.ageLabel}
               accentColor={ACCENT_COLORS[jagIVarlden.id]}
               taglineColor={TAGLINE_COLORS[jagIVarlden.id]}
               illustration={ILLUSTRATIONS[jagIVarlden.id]}
               illustrationOpacity={ILLUSTRATION_OPACITY[jagIVarlden.id]}
+              illustrationPosition={ILLUSTRATION_POSITION[jagIVarlden.id]}
               onClick={() => navigate(`/product/${jagIVarlden.slug}`)}
               showFreeBadge={!purchased.has(jagIVarlden.id)}
               badgeText={buildBadgeText(jagIVarlden)}
@@ -673,12 +676,14 @@ export default function ProductLibrary() {
             <PastelTile
               name={vardag.name}
               bg={PASTEL_COLORS[vardag.id]!}
+              productId={vardag.id}
               tagline={TAGLINES[vardag.id]}
               ageLabel={vardag.ageLabel}
               accentColor={ACCENT_COLORS[vardag.id]}
               taglineColor={TAGLINE_COLORS[vardag.id]}
               illustration={ILLUSTRATIONS[vardag.id]}
               illustrationOpacity={ILLUSTRATION_OPACITY[vardag.id]}
+              illustrationPosition={ILLUSTRATION_POSITION[vardag.id]}
               onClick={() => navigate(`/product/${vardag.slug}`)}
               showFreeBadge={!purchased.has(vardag.id)}
               badgeText={buildBadgeText(vardag)}
@@ -686,12 +691,14 @@ export default function ProductLibrary() {
             <PastelTile
               name={syskon.name}
               bg={PASTEL_COLORS[syskon.id]!}
+              productId={syskon.id}
               tagline={TAGLINES[syskon.id]}
               ageLabel={syskon.ageLabel}
               accentColor={ACCENT_COLORS[syskon.id]}
               taglineColor={TAGLINE_COLORS[syskon.id]}
               illustration={ILLUSTRATIONS[syskon.id]}
               illustrationOpacity={ILLUSTRATION_OPACITY[syskon.id]}
+              illustrationPosition={ILLUSTRATION_POSITION[syskon.id]}
               onClick={() => navigate(`/product/${syskon.slug}`)}
               showFreeBadge={!purchased.has(syskon.id)}
               badgeText={buildBadgeText(syskon)}
@@ -699,12 +706,14 @@ export default function ProductLibrary() {
             <PastelTile
               name={sexualitet.name}
               bg={PASTEL_COLORS[sexualitet.id]!}
+              productId={sexualitet.id}
               tagline={TAGLINES[sexualitet.id]}
               ageLabel={sexualitet.ageLabel}
               accentColor={ACCENT_COLORS[sexualitet.id]}
               taglineColor={TAGLINE_COLORS[sexualitet.id]}
               illustration={ILLUSTRATIONS[sexualitet.id]}
               illustrationOpacity={ILLUSTRATION_OPACITY[sexualitet.id]}
+              illustrationPosition={ILLUSTRATION_POSITION[sexualitet.id]}
               onClick={() => navigate(`/product/${sexualitet.slug}`)}
               showFreeBadge={!purchased.has(sexualitet.id)}
               badgeText={buildBadgeText(sexualitet)}
