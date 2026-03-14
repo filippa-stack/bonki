@@ -11,26 +11,31 @@ function parseHSLValues(hsl: string): { h: number; s: number; l: number } | null
 
 /**
  * Generate CTA gradient & shadow variables from a product accent color.
- * Creates a 3-stop vertical gradient (light → base → dark) and matching shadows.
+ * Normalises any accent into a refined, tactile gradient that never
+ * overpowers the content — caps saturation and controls lightness
+ * so every product gets a rich but calm button.
  */
 function setCTAVarsFromAccent(root: HTMLElement, accent: string) {
   const parsed = parseHSLValues(accent);
   if (!parsed) return;
   const { h, s, l } = parsed;
 
-  // 3-stop gradient: lighter top, base mid, darker bottom
-  root.style.setProperty('--cta-grad-top', `hsl(${h}, ${Math.min(s + 5, 100)}%, ${Math.min(l + 12, 90)}%)`);
-  root.style.setProperty('--cta-grad-mid', `hsl(${h}, ${s}%, ${l}%)`);
-  root.style.setProperty('--cta-grad-bot', `hsl(${h}, ${Math.max(s - 5, 0)}%, ${Math.max(l - 10, 10)}%)`);
+  // Normalise: cap saturation at 65%, clamp lightness to 38-52% for mid-tone
+  const ns = Math.min(s, 65);
+  const nl = Math.max(38, Math.min(l, 52));
 
-  // Ink: dark version of the hue for contrast
-  const inkL = l > 50 ? 12 : 95; // dark ink on light bg, light ink on dark bg
-  root.style.setProperty('--cta-ink', `hsl(${h}, ${Math.min(s, 30)}%, ${inkL}%)`);
+  // 3-stop gradient: warm highlight top → base mid → deep bottom
+  root.style.setProperty('--cta-grad-top', `hsl(${h}, ${ns + 5}%, ${nl + 14}%)`);
+  root.style.setProperty('--cta-grad-mid', `hsl(${h}, ${ns}%, ${nl}%)`);
+  root.style.setProperty('--cta-grad-bot', `hsl(${h}, ${Math.max(ns - 8, 20)}%, ${nl - 12}%)`);
 
-  // Shadows: semi-transparent accent
-  root.style.setProperty('--cta-shadow', `hsla(${h}, ${s}%, ${l}%, 0.40)`);
-  root.style.setProperty('--cta-shadow-sm', `hsla(${h}, ${s}%, ${l}%, 0.22)`);
-  root.style.setProperty('--cta-inner-shadow', `hsla(${h}, ${Math.max(s - 10, 0)}%, ${Math.max(l - 20, 5)}%, 0.25)`);
+  // Ink: always dark — warm desaturated version of hue
+  root.style.setProperty('--cta-ink', `hsl(${h}, ${Math.min(ns, 25)}%, 12%)`);
+
+  // Shadows: use normalised values for consistent glow intensity
+  root.style.setProperty('--cta-shadow', `hsla(${h}, ${ns}%, ${nl}%, 0.38)`);
+  root.style.setProperty('--cta-shadow-sm', `hsla(${h}, ${ns}%, ${nl}%, 0.20)`);
+  root.style.setProperty('--cta-inner-shadow', `hsla(${h}, ${Math.max(ns - 15, 15)}%, ${nl - 18}%, 0.25)`);
 }
 
 const CTA_VARS = [
