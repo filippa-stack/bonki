@@ -1,5 +1,4 @@
-import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { Prompt, SituationalAnchor } from '@/types';
 import { EASE } from '@/lib/motion';
 
