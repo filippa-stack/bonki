@@ -575,22 +575,25 @@ export default function ProductLibrary() {
           </div>
 
           {/* Swipe hint — subtle arrow nudge on first view */}
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1.5, duration: 0.8 }}
-            style={{
-              fontFamily: "'Lato', sans-serif",
-              fontSize: '8px',
-              fontWeight: 500,
-              letterSpacing: '0.08em',
-              color: isDark ? 'hsla(30, 20%, 80%, 0.3)' : 'hsla(0, 0%, 100%, 0.3)',
-              textTransform: 'uppercase',
-              transition: 'color 400ms ease',
-            }}
-          >
-            ← swipa →
-          </motion.p>
+          {/* Swipe hint — only on first visit */}
+          {!IS_RETURN_VISIT && (
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 1.5 * ANIM_SPEED, duration: 0.8 }}
+              style={{
+                fontFamily: "'Lato', sans-serif",
+                fontSize: '8px',
+                fontWeight: 500,
+                letterSpacing: '0.08em',
+                color: isDark ? 'hsla(30, 20%, 80%, 0.3)' : 'hsla(0, 0%, 100%, 0.3)',
+                textTransform: 'uppercase',
+                transition: 'color 400ms ease',
+              }}
+            >
+              ← swipa →
+            </motion.p>
+          )}
         </motion.div>
 
         <motion.div
