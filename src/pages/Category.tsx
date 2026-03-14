@@ -24,6 +24,16 @@ import stillUsIllustration from '@/assets/illustration-still-us-home.png';
 
 const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
+/** Detect if a hex color is "light" (luminance > 0.5) — used for scrim direction */
+function isLightColor(hex: string): boolean {
+  const c = hex.replace('#', '');
+  const r = parseInt(c.substring(0, 2), 16) / 255;
+  const g = parseInt(c.substring(2, 4), 16) / 255;
+  const b = parseInt(c.substring(4, 6), 16) / 255;
+  const luminance = 0.299 * r + 0.587 * g + 0.114 * b;
+  return luminance > 0.6;
+}
+
 /**
  * Per-card opacity overrides for illustrations.
  */
