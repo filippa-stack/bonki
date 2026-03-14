@@ -48,7 +48,7 @@ export default function SyskonProductHome({ product }: { product: ProductManifes
             <KidsProductResumeBanner product={product} progress={progress} accentColor={ACCENT_COLOR} />
           </motion.div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', width: '92%' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '14px', width: '100%' }}>
             {ORDERED_TILES.map((tile, index) => {
               const cat = product.categories.find((c) => c.id === tile.id);
               if (!cat) return null;
