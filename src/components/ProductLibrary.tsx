@@ -823,7 +823,7 @@ export default function ProductLibrary() {
               fontFamily: "'DM Serif Display', serif",
               fontSize: '18px',
               fontWeight: 400,
-              color: '#1A1A2E',
+              color: '#F5EFE6',
               lineHeight: 1.4,
               marginBottom: '4px',
             }}
