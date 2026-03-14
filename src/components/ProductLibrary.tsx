@@ -644,7 +644,7 @@ export default function ProductLibrary() {
             style={{
               display: 'grid',
               gridTemplateColumns: 'repeat(2, 1fr)',
-              gap: '12px',
+              gap: '16px',
             }}
           >
             <PastelTile
