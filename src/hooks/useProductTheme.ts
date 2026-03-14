@@ -20,26 +20,28 @@ function setCTAVarsFromAccent(root: HTMLElement, accent: string) {
   if (!parsed) return;
   const { h, s, l } = parsed;
 
-  // Normalise: cap saturation at 60%, clamp lightness to 42-54% for a warm mid-tone
+  // Normalise for whispered pill: moderate saturation, mid lightness
   const ns = Math.min(s, 60);
   const nl = Math.max(42, Math.min(l, 54));
 
-  // Warm shift: nudge hue slightly toward warm (reduce if > 180, increase if < 180)
-  // This prevents cold/angry gradients in reds/pinks/blues
+  // Warm shift for bottom tone
   const warmHue = h > 300 ? h - 8 : h > 180 ? h - 4 : h + 4;
 
-  // 3-stop gradient: bright warm top → rich mid → warm deep bottom
-  root.style.setProperty('--cta-grad-top', `hsl(${h}, ${Math.min(ns + 10, 70)}%, ${nl + 14}%)`);
-  root.style.setProperty('--cta-grad-mid', `hsl(${h}, ${ns}%, ${nl}%)`);
-  root.style.setProperty('--cta-grad-bot', `hsl(${warmHue}, ${Math.max(ns - 5, 20)}%, ${nl - 10}%)`);
+  // Translucent gradient stops (diary-style whisper)
+  root.style.setProperty('--cta-grad-top', `hsla(${h}, ${ns}%, ${nl}%, 0.14)`);
+  root.style.setProperty('--cta-grad-mid', `hsla(${h}, ${ns}%, ${nl}%, 0.08)`);
+  root.style.setProperty('--cta-grad-bot', `hsla(${warmHue}, ${Math.max(ns - 5, 20)}%, ${nl - 8}%, 0.04)`);
 
-  // Ink: warm dark — always readable
-  root.style.setProperty('--cta-ink', `hsl(${warmHue}, ${Math.min(ns, 20)}%, 14%)`);
+  // Border: subtle accent tint
+  root.style.setProperty('--cta-border', `hsla(${h}, ${ns}%, ${nl}%, 0.25)`);
 
-  // Shadows: warm-shifted for cohesion
-  root.style.setProperty('--cta-shadow', `hsla(${warmHue}, ${ns}%, ${nl - 5}%, 0.35)`);
-  root.style.setProperty('--cta-shadow-sm', `hsla(${warmHue}, ${ns}%, ${nl}%, 0.18)`);
-  root.style.setProperty('--cta-inner-shadow', `hsla(${warmHue}, ${Math.max(ns - 10, 15)}%, ${nl - 16}%, 0.22)`);
+  // Ink: warm dark text
+  root.style.setProperty('--cta-ink', `hsl(${warmHue}, ${Math.min(ns, 25)}%, 18%)`);
+
+  // Shadows: soft colored glow for depth without loudness
+  root.style.setProperty('--cta-shadow', `hsla(${warmHue}, ${ns}%, ${nl - 5}%, 0.16)`);
+  root.style.setProperty('--cta-shadow-sm', `hsla(${warmHue}, ${ns}%, ${nl}%, 0.08)`);
+  root.style.setProperty('--cta-inner-shadow', `hsla(${warmHue}, ${Math.max(ns - 10, 15)}%, ${nl - 14}%, 0.08)`);
 }
 
 const CTA_VARS = [
