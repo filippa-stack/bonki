@@ -932,7 +932,7 @@ export default function ProductLibrary() {
           >
             <div style={{
               height: '16px',
-              background: 'linear-gradient(to bottom, transparent, hsla(30, 20%, 93%, 0.5))',
+              background: 'linear-gradient(to bottom, transparent, hsla(185, 20%, 25%, 0.3))',
               marginTop: '6px',
               borderRadius: '0 0 12px 12px',
             }} />
