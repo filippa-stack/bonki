@@ -98,7 +98,7 @@ export default function VardagProductHome({ product }: { product: ProductManifes
                   <span style={{
                     fontFamily: "'DM Serif Display', var(--font-serif)",
                     fontSize: 'clamp(17px, 4.8vw, 22px)',
-                    fontWeight: 400,
+                    fontWeight: 700,
                     color: tile.text,
                     padding: '0 2px',
                   }}>
