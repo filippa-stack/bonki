@@ -36,7 +36,7 @@ export default function SyskonProductHome({ product }: { product: ProductManifes
         <img src={illustrationImage} alt="" style={{ width: '100%', height: '100%', objectFit: 'contain', objectPosition: 'right top', opacity: 0.18 }} />
       </motion.div>
 
-      <div style={{ position: 'relative', zIndex: 1, minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start', paddingTop: '10vh', paddingRight: '8vw', paddingBottom: '120px', paddingLeft: '8vw' }}>
+      <div style={{ position: 'relative', zIndex: 1, minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start', paddingTop: '14vh', paddingRight: '6vw', paddingBottom: '120px', paddingLeft: '6vw' }}>
         <motion.div variants={containerVariants} initial="hidden" animate="visible" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px', width: '100%' }}>
           <motion.div variants={titleVariants} style={{ textAlign: 'center', marginBottom: '3vh', width: '100%' }}>
             <h1 style={{ fontFamily: "'DM Serif Display', var(--font-serif)", fontSize: 'clamp(38px, 11vw, 52px)', fontWeight: 700, color: ACCENT_COLOR, letterSpacing: '-0.01em', whiteSpace: 'nowrap', textShadow: ['0 0 24px rgba(255, 255, 255, 1)', '0 0 48px rgba(255, 255, 255, 0.7)', '0 0 80px rgba(255, 255, 255, 0.4)', '0 2px 4px rgba(0, 0, 0, 0.06)'].join(', ') }}>
@@ -48,7 +48,7 @@ export default function SyskonProductHome({ product }: { product: ProductManifes
             <KidsProductResumeBanner product={product} progress={progress} accentColor={ACCENT_COLOR} />
           </motion.div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', width: '92%' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '14px', width: '100%' }}>
             {ORDERED_TILES.map((tile, index) => {
               const cat = product.categories.find((c) => c.id === tile.id);
               if (!cat) return null;
