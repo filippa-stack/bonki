@@ -56,17 +56,17 @@ const ILLUSTRATION_OPACITY: Record<string, number> = {
 
 /** Per-product illustration placement — individually tuned */
 const ILLUSTRATION_POSITION: Record<string, string> = {
-  jag_i_mig: 'center 30%',
+  jag_i_mig: 'center 55%',
   jag_med_andra: 'center 20%',
-  jag_i_varlden: 'center 25%',
+  jag_i_varlden: 'center 20%',
   sexualitetskort: 'center 30%',
   vardagskort: 'center 20%',
   syskonkort: 'center 20%',
 };
 
-/** Per-product object-fit mode — 'contain' shows full image */
+/** Per-product object-fit mode */
 const ILLUSTRATION_FIT: Record<string, string> = {
-  jag_i_mig: 'contain',
+  jag_i_mig: 'cover',
   jag_med_andra: 'contain',
   jag_i_varlden: 'contain',
   sexualitetskort: 'contain',
@@ -76,9 +76,9 @@ const ILLUSTRATION_FIT: Record<string, string> = {
 
 /** Per-product illustration container bounds — {top, left, right, bottom} as % */
 const ILLUSTRATION_BOUNDS: Record<string, { top: string; left: string; right: string; bottom: string }> = {
-  jag_i_mig: { top: '-20%', left: '-15%', right: '-15%', bottom: '10%' },
+  jag_i_mig: { top: '-10%', left: '0%', right: '0%', bottom: '15%' },
   jag_med_andra: { top: '-5%', left: '-3%', right: '-3%', bottom: '28%' },
-  jag_i_varlden: { top: '-15%', left: '-10%', right: '-10%', bottom: '15%' },
+  jag_i_varlden: { top: '-25%', left: '-15%', right: '-15%', bottom: '10%' },
   sexualitetskort: { top: '-5%', left: '5%', right: '0%', bottom: '25%' },
   vardagskort: { top: '-5%', left: '-3%', right: '-3%', bottom: '28%' },
   syskonkort: { top: '-5%', left: '0%', right: '0%', bottom: '28%' },
