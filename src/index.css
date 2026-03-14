@@ -333,7 +333,7 @@ h1, h2, h3,
     transition: all var(--transition-calm);
   }
 
-  /* ── Primary CTA — Bonki signature "memory card" button ── */
+  /* ── Primary CTA — Bonki "lying memory card" button ── */
   .cta-primary {
     display: inline-flex;
     align-items: center;
@@ -341,10 +341,7 @@ h1, h2, h3,
     width: auto;
     max-width: none;
     margin: 0 auto;
-    padding: 0;
-    width: 130px;
-    height: 130px;
-    aspect-ratio: 1 / 1;
+    padding: 16px 44px;
     border-radius: 22px;
     background: linear-gradient(180deg, hsl(41, 80%, 56%) 0%, hsl(41, 78%, 48%) 40%, hsl(41, 70%, 38%) 100%);
     color: #1A1208;
