@@ -33,7 +33,7 @@ export default function SyskonProductHome({ product }: { product: ProductManifes
       <ProductHomeBackButton color={ACCENT_COLOR} />
       <div style={{ position: 'absolute', top: '18%', left: '50%', transform: 'translateX(-50%)', width: '140%', height: '60%', background: 'radial-gradient(ellipse at center, hsla(41, 78%, 48%, 0.06) 0%, transparent 70%)', pointerEvents: 'none', zIndex: 0 }} />
       <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1, scale: [1, 1.012, 1] }} transition={{ duration: 0.5, scale: { duration: 9, ease: 'easeInOut', repeat: Infinity, repeatType: 'reverse' } }} style={{ position: 'absolute', top: '0%', right: '-25%', width: '130%', height: '135%', zIndex: 0, pointerEvents: 'none' }}>
-        <img src={illustrationImage} alt="" style={{ width: '100%', height: '100%', objectFit: 'contain', objectPosition: 'right top', opacity: 0.18 }} />
+        <img src={illustrationImage} alt="" style={{ width: '100%', height: '100%', objectFit: 'contain', objectPosition: 'right top', opacity: 0.28 }} />
       </motion.div>
 
       <div style={{ position: 'relative', zIndex: 1, minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start', paddingTop: '14vh', paddingRight: '6vw', paddingBottom: '120px', paddingLeft: '6vw' }}>
@@ -48,7 +48,7 @@ export default function SyskonProductHome({ product }: { product: ProductManifes
             <KidsProductResumeBanner product={product} progress={progress} accentColor={ACCENT_COLOR} />
           </motion.div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '14px', width: '100%' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', width: '100%' }}>
             {ORDERED_TILES.map((tile, index) => {
               const cat = product.categories.find((c) => c.id === tile.id);
               if (!cat) return null;
@@ -64,29 +64,29 @@ export default function SyskonProductHome({ product }: { product: ProductManifes
                   onClick={() => navigate(`/category/${cat.id}`)}
                   style={{
                     background: tile.bg,
-                    borderRadius: '22px',
-                    padding: '16px 12px',
+                    borderRadius: '24px',
+                    padding: '20px 14px',
                     textAlign: 'center',
                     cursor: 'pointer',
                     aspectRatio: '1 / 1',
                     border: isNextCategory
-                      ? `2px solid ${SAFFRON}BB`
-                      : '1.5px solid rgba(77, 144, 142, 0.14)',
+                      ? `2.5px solid ${SAFFRON}CC`
+                      : '1.5px solid rgba(77, 144, 142, 0.16)',
                     boxShadow: [
-                      isNextCategory ? `0 0 16px 0px ${SAFFRON}45, 0 0 32px -4px ${SAFFRON}25` : '',
-                      '0 6px 20px rgba(77, 144, 142, 0.14)',
-                      '0 2px 6px rgba(77, 144, 142, 0.07)',
-                      'inset 0 2px 0 rgba(255, 255, 255, 0.55)',
-                      'inset 0 -2px 4px rgba(77, 144, 142, 0.06)',
+                      isNextCategory ? `0 0 18px 0px ${SAFFRON}50, 0 0 36px -4px ${SAFFRON}30` : '',
+                      '0 8px 24px rgba(77, 144, 142, 0.16)',
+                      '0 3px 8px rgba(77, 144, 142, 0.08)',
+                      'inset 0 2px 0 rgba(255, 255, 255, 0.60)',
+                      'inset 0 -3px 6px rgba(77, 144, 142, 0.08)',
                     ].filter(Boolean).join(', '),
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    lineHeight: 1.25,
+                    lineHeight: 1.2,
                     position: 'relative',
                   }}
                 >
-                  <span style={{ fontFamily: "'DM Serif Display', var(--font-serif)", fontSize: 'clamp(18px, 5vw, 23px)', fontWeight: 400, color: tile.text }}>
+                  <span style={{ fontFamily: "'DM Serif Display', var(--font-serif)", fontSize: 'clamp(19px, 5.2vw, 24px)', fontWeight: 400, color: tile.text }}>
                     {cat.title}
                   </span>
                   {catProgress && catProgress.completed > 0 && (
