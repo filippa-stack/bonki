@@ -490,174 +490,133 @@ function StillUsCategoryView({
           }}
         />
 
-        {/* Card tiles — glassmorphism */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '0', paddingLeft: '16px', paddingRight: '20px', position: 'relative' }}>
+        {/* Card tiles — signature glassmorphic grid */}
+        <motion.div
+          initial="hidden"
+          animate="visible"
+          variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.07, delayChildren: 0.2 } } }}
+          style={{
+            display: 'grid',
+            gridTemplateColumns: cards.length <= 2 ? '1fr 1fr' : '1fr 1fr 1fr',
+            gap: '4px',
+            paddingLeft: '8px',
+            paddingRight: '8px',
+          }}
+        >
           {cards.map((card, index) => {
             const isCompleted = completedCardIds.includes(card.id);
             const isInProgress = !isCompleted && inProgressCardIds.includes(card.id);
-            // First uncompleted card is the suggested next
             const isNextSuggested = !isCompleted && cards.slice(0, index).every(c => completedCardIds.includes(c.id));
-            const fillDefault = CIRCADIAN_FILLS[category.id] || 'rgba(162, 181, 169, 0.28)';
-            const fillHover = CIRCADIAN_FILLS_HOVER[category.id] || 'rgba(162, 181, 169, 0.42)';
-            const borderDefault = `1px solid ${color}73`;
-            const borderGlow = `1px solid ${color}`;
-            const borderSuggested = `1px solid ${SAFFRON}88`;
-            const isLast = index === cards.length - 1;
-
-            const activeBorder = isNextSuggested ? borderSuggested : isInProgress ? borderGlow : borderDefault;
-            const activeShadow = isNextSuggested
-              ? `0 0 20px -4px ${SAFFRON}40, 0 0 40px -8px ${SAFFRON}20`
-              : isInProgress
-                ? `0 0 16px -2px ${color}35, 0 0 32px -6px ${color}20`
-                : 'none';
+            const tileFill = CIRCADIAN_FILLS[category.id] || 'rgba(162, 181, 169, 0.62)';
+            const tileText = CIRCADIAN_COLORS_LIGHT[category.id] || '#D0DDD5';
+            const tileColor = CIRCADIAN_COLORS[category.id] || '#A2B5A9';
 
             return (
-              <div key={card.id} style={{ display: 'flex', alignItems: 'stretch', gap: '12px', opacity: isCompleted ? 0.6 : 1, transition: 'opacity 0.3s ease', position: 'relative' }}>
-                {/* Sequence spine — number + connecting line */}
-                <div
+              <motion.button
+                key={card.id}
+                variants={{
+                  hidden: { opacity: 0, y: 22, scale: 0.94 },
+                  visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.55, ease: EASE } },
+                }}
+                whileHover={{ scale: 1.04, y: -3 }}
+                whileTap={{ scale: 0.93, y: 3 }}
+                onClick={() => navigate(isReturningUser ? `/card/${card.id}` : `/preview/${card.id}`)}
+                style={{
+                  position: 'relative',
+                  background: tileFill,
+                  backdropFilter: 'blur(24px) saturate(1.3)',
+                  WebkitBackdropFilter: 'blur(24px) saturate(1.3)',
+                  borderRadius: '22px',
+                  padding: '18px 10px 16px',
+                  textAlign: 'center',
+                  cursor: 'pointer',
+                  aspectRatio: '1 / 1',
+                  border: isNextSuggested && !allCompleted
+                    ? `2px solid ${SAFFRON}88`
+                    : `1px solid rgba(255, 255, 255, 0.15)`,
+                  boxShadow: [
+                    isNextSuggested && !allCompleted ? `0 0 20px 0px ${SAFFRON}40, 0 0 40px -4px ${SAFFRON}25` : '',
+                    '0 10px 28px rgba(0, 0, 0, 0.25)',
+                    '0 4px 10px rgba(0, 0, 0, 0.15)',
+                    '0 1px 3px rgba(0, 0, 0, 0.1)',
+                    'inset 0 1.5px 0 rgba(255, 255, 255, 0.25)',
+                    `inset 0 -3px 8px ${tileColor}25`,
+                  ].filter(Boolean).join(', '),
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '4px',
+                  lineHeight: 1.15,
+                  overflow: 'hidden',
+                  opacity: isCompleted ? 0.65 : 1,
+                }}
+              >
+                {/* Sequence number */}
+                <span
                   style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    width: '20px',
-                    flexShrink: 0,
-                    position: 'relative',
+                    position: 'absolute',
+                    top: '8px',
+                    left: '10px',
+                    fontFamily: 'var(--font-serif)',
+                    fontSize: '10px',
+                    fontWeight: 500,
+                    color: HERITAGE_GOLD,
+                    opacity: 0.45,
+                    lineHeight: 1,
                   }}
                 >
-                  {/* Number */}
-                  <span
-                    style={{
-                      fontFamily: 'var(--font-serif)',
-                      fontSize: '14px',
-                      fontWeight: 500,
-                      color: colorLight,
-                      opacity: isCompleted ? 0.30 : 0.50,
-                      lineHeight: 1,
-                      paddingTop: '18px',
-                    }}
-                  >
-                    {index + 1}
-                  </span>
-                  {/* Connecting line */}
-                  {!isLast && (
-                    <div
-                      style={{
-                        flex: 1,
-                        width: '1px',
-                        background: `linear-gradient(180deg, ${color}30 0%, transparent 100%)`,
-                        marginTop: '8px',
-                      }}
-                    />
-                  )}
-                </div>
+                  {index + 1}
+                </span>
 
-                {/* Status badge — unified across all products */}
+                {/* Status badge */}
                 {isNextSuggested && !allCompleted && (
-                  <div style={{ position: 'absolute', right: '8px', top: '10px', zIndex: 2 }}>
+                  <div style={{ position: 'absolute', top: '6px', right: '6px', zIndex: 2 }}>
                     <CardStatusBadge variant="next" mode="dark" />
                   </div>
                 )}
 
-                {/* Tile */}
-                <motion.button
-                  initial={{ opacity: 0, y: 14 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.15 + index * 0.07, duration: 0.55, ease: EASE }}
-                  onClick={() => navigate(isReturningUser ? `/card/${card.id}` : `/preview/${card.id}`)}
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.985 }}
-                  className="text-left"
+                {/* Title */}
+                <span
                   style={{
-                    flex: 1,
-                    display: 'flex',
-                    alignItems: 'stretch',
-                    gap: '0',
-                    padding: '0',
-                    background: fillDefault,
-                    backdropFilter: 'blur(12px)',
-                    WebkitBackdropFilter: 'blur(12px)',
-                    border: activeBorder,
-                    borderRadius: '14px',
-                    cursor: 'pointer',
-                    transition: 'background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease',
-                    overflow: 'hidden',
-                    position: 'relative',
-                    boxShadow: activeShadow,
-                  }}
-                  onMouseEnter={(e) => {
-                    const el = e.currentTarget;
-                    el.style.background = fillHover;
-                    el.style.border = borderGlow;
-                    el.style.boxShadow = `0 0 24px -4px ${color}50, 0 0 48px -8px ${color}30`;
-                  }}
-                  onMouseLeave={(e) => {
-                    const el = e.currentTarget;
-                    el.style.background = fillDefault;
-                    el.style.border = activeBorder;
-                    el.style.boxShadow = activeShadow;
+                    fontFamily: "'DM Serif Display', var(--font-serif)",
+                    fontSize: 'clamp(15px, 4.2vw, 18px)',
+                    fontWeight: 400,
+                    color: tileText,
+                    padding: '0 2px',
+                    lineHeight: 1.2,
                   }}
                 >
-                  {/* Thick accent bar */}
-                  <div
-                    style={{
-                      width: '4px',
-                      alignSelf: 'stretch',
-                      backgroundColor: color,
-                      flexShrink: 0,
-                      borderRadius: '14px 0 0 14px',
-                    }}
-                  />
+                  {card.title}
+                </span>
 
-                  {/* Card content */}
-                  <div
+                {/* Subtitle */}
+                {card.subtitle && (
+                  <span
                     style={{
-                      flex: 1,
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '14px',
-                      padding: '16px',
+                      fontFamily: 'var(--font-sans)',
+                      fontSize: '9px',
+                      fontWeight: 400,
+                      color: tileText,
+                      opacity: 0.65,
+                      lineHeight: 1.3,
+                      padding: '0 4px',
                     }}
                   >
-                    <div style={{ flex: 1, minWidth: 0 }}>
-                      <h3
-                        style={{
-                          fontFamily: 'var(--font-serif)',
-                          fontSize: '18px',
-                          fontWeight: 500,
-                          lineHeight: 1.3,
-                          color: 'var(--text-primary)',
-                        }}
-                      >
-                        {card.title}
-                      </h3>
-                      {card.subtitle && (
-                        <p
-                          style={{
-                            fontFamily: 'var(--font-sans)',
-                            fontSize: '12px',
-                            fontWeight: 400,
-                            color: colorLight,
-                            opacity: 1,
-                            lineHeight: 1.45,
-                            marginTop: '3px',
-                          }}
-                        >
-                          {card.subtitle}
-                        </p>
-                      )}
-                    </div>
+                    {card.subtitle}
+                  </span>
+                )}
 
-                    {/* Status badge */}
-                    <div style={{ flexShrink: 0 }}>
-                      {isCompleted && <CardStatusBadge variant="completed" mode="dark" />}
-                      {isInProgress && <CardStatusBadge variant="inProgress" mode="dark" />}
-                    </div>
-                  </div>
-                </motion.button>
-              </div>
+                {/* Completed indicator */}
+                {isCompleted && (
+                  <span style={{ position: 'absolute', bottom: '8px', left: '50%', transform: 'translateX(-50%)' }}>
+                    <CardStatusBadge variant="completed" mode="dark" />
+                  </span>
+                )}
+              </motion.button>
             );
           })}
-        </div>
+        </motion.div>
 
         {/* Bottom sign-off */}
         <motion.div
