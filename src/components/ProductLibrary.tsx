@@ -839,7 +839,7 @@ export default function ProductLibrary() {
               fontStyle: 'italic',
               fontSize: '12px',
               fontWeight: 400,
-              color: 'var(--accent-text)',
+               color: '#E9B44C',
               opacity: 0.55,
               lineHeight: 1.5,
               marginBottom: '20px',
