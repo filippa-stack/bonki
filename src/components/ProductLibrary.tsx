@@ -44,24 +44,24 @@ const PASTEL_COLORS: Record<string, string> = {
   syskonkort: '#DAEAF6',
 };
 
-/** High-presence illustration opacities — characters as heroes */
+/** Hero-level illustration opacities */
 const ILLUSTRATION_OPACITY: Record<string, number> = {
-  jag_i_mig: 0.82,
-  jag_med_andra: 0.78,
-  jag_i_varlden: 0.75,
-  sexualitetskort: 0.80,
-  vardagskort: 0.75,
-  syskonkort: 0.78,
+  jag_i_mig: 0.92,
+  jag_med_andra: 0.88,
+  jag_i_varlden: 0.85,
+  sexualitetskort: 0.90,
+  vardagskort: 0.85,
+  syskonkort: 0.88,
 };
 
-/** Focal points for contain-fit illustrations */
+/** Focal points for illustrations */
 const ILLUSTRATION_POSITION: Record<string, string> = {
-  jag_i_mig: 'right 65%',
-  jag_med_andra: 'right center',
-  jag_i_varlden: 'right center',
-  sexualitetskort: 'right center',
-  vardagskort: 'right center',
-  syskonkort: 'right center',
+  jag_i_mig: 'center 30%',
+  jag_med_andra: 'center 35%',
+  jag_i_varlden: 'center 35%',
+  sexualitetskort: 'center 40%',
+  vardagskort: 'center 30%',
+  syskonkort: 'center 30%',
 };
 
 /** Restored strong accent colors for tile titles */
