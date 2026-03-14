@@ -1143,8 +1143,11 @@ export default function CardView() {
   // ─────────────────────────────────────────────────────────────
   //  MODE: 'live' | 'archive' — conversation surface
   // ─────────────────────────────────────────────────────────────
-  const currentSection = card.sections.find(s => s.type === effectiveSteps[currentStepIndex]);
-  const currentStageType = effectiveSteps[currentStepIndex];
+  const rawSection = card.sections.find(s => s.type === effectiveSteps[currentStepIndex]);
+  const resolvedFlatEntry = flatPromptMap?.[localPromptIndex];
+  const currentSection = resolvedFlatEntry?.section ?? rawSection;
+  const resolvedPromptIndex = resolvedFlatEntry ? resolvedFlatEntry.promptIndexInSection : localPromptIndex;
+  const currentStageType = currentSection?.type ?? effectiveSteps[currentStepIndex];
   const isReflectionStep = currentStageType === 'opening' || currentStageType === 'reflective';
   const isLive = cardViewMode === 'live';
   const isExerciseStep = currentStageType === 'exercise';
