@@ -65,7 +65,6 @@ export function useProductTheme(primary: string, accent: string, bgColor?: strin
 
     // CTA gradient derived from primary (accentColor) — always refined
     setCTAVarsFromAccent(root, primary);
-    setCTAVarsFromAccent(root, accent);
 
     if (bgColor) {
       root.style.setProperty('--surface-base', bgColor);
