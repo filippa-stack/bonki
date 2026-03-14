@@ -210,15 +210,15 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
           gridColumn: wide ? 'span 2' : undefined,
         }}
       >
-      {/* Illustration — large, contained, right-anchored hero */}
+      {/* Illustration — centered hero, filling the tile */}
       {illustration && (
         <div
           style={{
             position: 'absolute',
-            top: wide ? '-10%' : '-5%',
-            right: wide ? '-5%' : '-8%',
-            bottom: wide ? '25%' : '30%',
-            width: wide ? '55%' : '80%',
+            top: '-12%',
+            left: wide ? '20%' : '-5%',
+            right: wide ? '-5%' : '-5%',
+            bottom: '22%',
             pointerEvents: 'none',
             zIndex: 0,
           }}
