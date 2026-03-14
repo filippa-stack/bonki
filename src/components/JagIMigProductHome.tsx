@@ -237,7 +237,7 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
                     {tile.sub}
                   </span>
                   {catProgress && catProgress.completed > 0 && (
-                    <div style={{ position: 'relative', zIndex: 1 }}>
+                    <div style={{ position: 'absolute', bottom: '10px', right: '10px', zIndex: 1 }}>
                       <CategoryProgressRing completed={catProgress.completed} total={catProgress.total} color={tile.text} />
                     </div>
                   )}
