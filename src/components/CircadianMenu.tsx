@@ -32,29 +32,29 @@ export const CIRCADIAN_COLORS_LIGHT: Record<string, string> = {
   'category-10':        '#7A80B0',
 };
 
-/** Luminous glassmorphic fill for tiles */
+/** Luminous glassmorphic fill for tiles — high opacity to glow against dark bg */
 export const CIRCADIAN_FILLS: Record<string, string> = {
-  'emotional-intimacy': 'rgba(162, 181, 169, 0.62)',
-  'communication':      'rgba(107, 142, 125, 0.62)',
-  'category-8':         'rgba(194, 138, 120, 0.62)',
-  'individual-needs':   'rgba(197, 163, 125, 0.62)',
-  'parenting-together': 'rgba(111, 129, 145, 0.62)',
-  'category-9':         'rgba(74, 93, 78, 0.62)',
-  'category-6':         'rgba(142, 124, 143, 0.62)',
-  'daily-life':         'rgba(60, 84, 89, 0.62)',
-  'category-10':        'rgba(49, 54, 88, 0.62)',
+  'emotional-intimacy': 'rgba(162, 181, 169, 0.82)',
+  'communication':      'rgba(107, 142, 125, 0.80)',
+  'category-8':         'rgba(194, 138, 120, 0.80)',
+  'individual-needs':   'rgba(197, 163, 125, 0.80)',
+  'parenting-together': 'rgba(111, 129, 145, 0.80)',
+  'category-9':         'rgba(74, 93, 78, 0.82)',
+  'category-6':         'rgba(142, 124, 143, 0.80)',
+  'daily-life':         'rgba(60, 84, 89, 0.82)',
+  'category-10':        'rgba(49, 54, 88, 0.82)',
 };
 
 export const CIRCADIAN_FILLS_HOVER: Record<string, string> = {
-  'emotional-intimacy': 'rgba(162, 181, 169, 0.78)',
-  'communication':      'rgba(107, 142, 125, 0.78)',
-  'category-8':         'rgba(194, 138, 120, 0.78)',
-  'individual-needs':   'rgba(197, 163, 125, 0.78)',
-  'parenting-together': 'rgba(111, 129, 145, 0.78)',
-  'category-9':         'rgba(74, 93, 78, 0.78)',
-  'category-6':         'rgba(142, 124, 143, 0.78)',
-  'daily-life':         'rgba(60, 84, 89, 0.78)',
-  'category-10':        'rgba(49, 54, 88, 0.78)',
+  'emotional-intimacy': 'rgba(162, 181, 169, 0.92)',
+  'communication':      'rgba(107, 142, 125, 0.90)',
+  'category-8':         'rgba(194, 138, 120, 0.90)',
+  'individual-needs':   'rgba(197, 163, 125, 0.90)',
+  'parenting-together': 'rgba(111, 129, 145, 0.90)',
+  'category-9':         'rgba(74, 93, 78, 0.92)',
+  'category-6':         'rgba(142, 124, 143, 0.90)',
+  'daily-life':         'rgba(60, 84, 89, 0.92)',
+  'category-10':        'rgba(49, 54, 88, 0.92)',
 };
 
 const HERITAGE_GOLD = '#DA9D1D';
@@ -271,8 +271,8 @@ export default function CircadianMenu({
                         '0 10px 28px rgba(0, 0, 0, 0.25)',
                         '0 4px 10px rgba(0, 0, 0, 0.15)',
                         '0 1px 3px rgba(0, 0, 0, 0.1)',
-                        'inset 0 1.5px 0 rgba(255, 255, 255, 0.18)',
-                        `inset 0 -3px 8px ${tileColor}30`,
+                        'inset 0 1.5px 0 rgba(255, 255, 255, 0.25)',
+                        `inset 0 -3px 8px ${tileColor}25`,
                       ].filter(Boolean).join(', '),
                       display: 'flex',
                       flexDirection: 'column',
