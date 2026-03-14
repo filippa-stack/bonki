@@ -28,7 +28,7 @@ const categories: Category[] = [
     title: 'Er relation',
     subtitle: 'Vänskapen som växer — och framtiden ni delar.',
     description: 'Vänskap och framtid',
-    cardCount: 3,
+    cardCount: 2,
   },
 ];
 
