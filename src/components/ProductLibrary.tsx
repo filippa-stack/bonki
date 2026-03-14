@@ -614,7 +614,7 @@ export default function ProductLibrary() {
               taglineColor={TAGLINE_COLORS[jagIMig.id]}
               illustration={ILLUSTRATIONS[jagIMig.id]}
               illustrationOpacity={ILLUSTRATION_OPACITY[jagIMig.id]}
-              illustrationSize={ILLUSTRATION_SIZE[jagIMig.id]}
+              
               illustrationPosition={ILLUSTRATION_POSITION[jagIMig.id]}
               onClick={() => navigate(`/product/${jagIMig.slug}`)}
               showFreeBadge={!purchased.has(jagIMig.id)}
