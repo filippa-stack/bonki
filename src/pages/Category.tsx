@@ -722,7 +722,7 @@ function CardEntry({ card, index, isCompleted = false, isInProgress = false, isN
             height: '55%',
             zIndex: 1,
             pointerEvents: 'none',
-            background: (cardTitleColor === '#FAFAF0' || cardTitleColor === '#FFFDF5')
+          background: isLightColor(cardTitleColor)
               ? 'linear-gradient(to top, rgba(0,0,0,0.52) 0%, rgba(0,0,0,0.22) 50%, transparent 100%)'
               : 'linear-gradient(to top, rgba(255,255,255,0.65) 0%, rgba(255,255,255,0.25) 50%, transparent 100%)',
             borderRadius: '0 0 22px 22px',
