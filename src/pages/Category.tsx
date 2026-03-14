@@ -73,39 +73,39 @@ const PRODUCT_STYLES: Record<string, {
   syskonkort: { cardBg: '#ECF0F6', cardTitleColor: '#0F4E99' },
 };
 
-/** Category-specific tile background colors (matching product homescreen tiles) */
+/** Category-specific tile background colors (synced with product homescreen tiles) */
 const CATEGORY_CARD_BG: Record<string, string> = {
   // Jag i mig
   'jim-mina-kanslor': '#D9E0A3',
   'jim-starka-kanslor': '#A8AD82',
   'jim-stora-kanslor': '#8E944F',
   // Jag med andra
-  'jma-att-hora-till': '#F9EBEE',
-  'jma-nar-vi-jamfor-oss': '#F5DDE4',
-  'jma-nar-det-skaver': '#EED0DB',
-  'jma-att-sta-stadig': '#CDBABF',
-  'jma-vi-i-varlden': '#AC98A0',
+  'jma-att-hora-till': '#F8E4EC',
+  'jma-nar-vi-jamfor-oss': '#E8C8F0',
+  'jma-nar-det-skaver': '#F2D0C0',
+  'jma-att-sta-stadig': '#C8A8D8',
+  'jma-vi-i-varlden': '#7E5C8E',
   // Jag i världen
-  'jiv-min-vardag': '#CDE6D2',
-  'jiv-vem-jag-ar': '#F7F2ED',
-  'jiv-jag-och-andra': '#E5D5C8',
-  'jiv-jag-i-samhallet': '#BDD3C3',
-  'jiv-det-stora-sammanhanget': '#8B948D',
+  'jiv-min-vardag': '#C2E6C8',
+  'jiv-vem-jag-ar': '#F5EBD8',
+  'jiv-jag-och-andra': '#D8C0AE',
+  'jiv-jag-i-samhallet': '#A8CEB0',
+  'jiv-det-stora-sammanhanget': '#5E7A62',
   // Sexualitet
-  'sex-min-identitet': '#F9F2F5',
-  'sex-normer-och-paverkan': '#EBC9C9',
-  'sex-relation-och-ansvar': '#D19898',
-  'sex-skydd-och-makt': '#A66D6D',
+  'sex-min-identitet': '#F5E0EC',
+  'sex-normer-och-paverkan': '#E8B8B8',
+  'sex-relation-och-ansvar': '#C88888',
+  'sex-skydd-och-makt': '#8E5558',
   // Vardag
-  'vk-min-dag': '#E6F4F4',
-  'vk-var-rytm': '#D4E9EC',
-  'vk-vi-hemma': '#B8D8E0',
-  'vk-utanfor-hemmet': '#9CBFC9',
+  'vk-min-dag': '#D5F0E8',
+  'vk-var-rytm': '#C0DBF0',
+  'vk-vi-hemma': '#F0DFC0',
+  'vk-utanfor-hemmet': '#8BB8D0',
   // Syskon
-  'sk-vi-blev-syskon': '#E8F3F5',
-  'sk-vi-ar-olika': '#F5E9D3',
-  'sk-nar-det-skaver': '#D4E2E0',
-  'sk-nar-livet-forandras': '#C2D1D9',
+  'sk-vi-blev-syskon': '#D8F0F2',
+  'sk-vi-ar-olika': '#F0DEB8',
+  'sk-delat-utrymme': '#B8D8D0',
+  'sk-er-relation': '#7AACB0',
 };
 
 /** Category-specific card title colors (matching homescreen tile text) */
