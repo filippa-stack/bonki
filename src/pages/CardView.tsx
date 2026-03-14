@@ -1915,24 +1915,44 @@ export default function CardView() {
                   }
                   if (totalQuestionPrompts <= 1) return null;
                   return (
-                    <motion.p
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
+                    <motion.div
+                      initial={{ opacity: 0, y: 4 }}
+                      animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: BEAT_1, duration: EMOTION, ease: [...EASE] }}
                       style={{
-                        fontFamily: 'var(--font-sans)',
-                        fontSize: '11px',
-                        letterSpacing: '0.04em',
-                        color: 'var(--text-tertiary)',
-                        opacity: 0.4,
-                        textAlign: 'center',
+                        display: 'flex',
+                        justifyContent: 'center',
                         width: '100%',
                         marginTop: '40px',
                         marginBottom: '0px',
                       }}
                     >
-                      Fråga {globalIndex + 1} av {totalQuestionPrompts}
-                    </motion.p>
+                      <span
+                        style={{
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: '6px',
+                          fontFamily: 'var(--font-sans)',
+                          fontSize: '11px',
+                          fontWeight: 600,
+                          letterSpacing: '0.04em',
+                          color: 'var(--kids-counter-color, var(--text-tertiary))',
+                          background: 'var(--kids-counter-bg, transparent)',
+                          border: '1px solid var(--kids-counter-border, transparent)',
+                          borderRadius: '20px',
+                          padding: '5px 14px 5px 10px',
+                        }}
+                      >
+                        <span style={{
+                          width: '6px',
+                          height: '6px',
+                          borderRadius: '50%',
+                          backgroundColor: 'var(--kids-counter-color, var(--text-tertiary))',
+                          opacity: 0.6,
+                        }} />
+                        {globalIndex + 1} av {totalQuestionPrompts}
+                      </span>
+                    </motion.div>
                   );
                 }
 
