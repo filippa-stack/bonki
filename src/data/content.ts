@@ -34,7 +34,7 @@ export const categories: Category[] = [
   },
   {
     id: 'individual-needs',
-    title: 'Det ni bär med er',
+    title: 'Arvet ni delar',
     entryLine: 'Arvet som formar ert hem.',
     description: 'Släkt, traditioner och förväntningar',
     cardCount: 2,
