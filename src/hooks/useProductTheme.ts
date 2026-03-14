@@ -25,8 +25,9 @@ export function useProductTheme(primary: string, accent: string, bgColor?: strin
       root.style.setProperty('--product-bg', bgColor);
       // Question cloud only for kids products (pronounMode 'du')
       if (pronounMode === 'du') {
-        root.style.setProperty('--question-cloud-tint', `${bgColor}99`);
-        root.style.setProperty('--question-cloud-border', `${bgColor}44`);
+        // Use accent color (primary) for visible cloud against light backgrounds
+        root.style.setProperty('--question-cloud-tint', `hsla(${p}, 0.07)`);
+        root.style.setProperty('--question-cloud-border', `hsla(${p}, 0.10)`);
       }
     }
 
