@@ -407,7 +407,7 @@ export default function Home() {
                     color: 'var(--accent-text)',
                     opacity: 0.45,
                     textAlign: 'center',
-                    marginTop: '40px',
+                    marginTop: '24px',
                   }}>
                     Samtalet börjar här.
                   </p>
