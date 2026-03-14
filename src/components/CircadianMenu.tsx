@@ -208,7 +208,7 @@ export default function CircadianMenu({
             <motion.div
               variants={tileVariants}
               style={{
-                padding: groupIdx === 0 ? '0 4px 8px' : '16px 4px 8px',
+                padding: groupIdx === 0 ? '0 4px 8px' : '22px 4px 8px',
               }}
             >
               <h2
