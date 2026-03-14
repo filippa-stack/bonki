@@ -333,7 +333,7 @@ h1, h2, h3,
     transition: all var(--transition-calm);
   }
 
-  /* ── Primary CTA — Bonki "lying memory card" button ── */
+  /* ── Primary CTA — Whispered memory-card pill ── */
   .cta-primary {
     display: inline-flex;
     align-items: center;
@@ -343,44 +343,44 @@ h1, h2, h3,
     margin: 0 auto;
     padding: 16px 44px;
     border-radius: 22px;
-    background: linear-gradient(180deg,
-      var(--cta-grad-top, hsl(41, 80%, 56%)) 0%,
-      var(--cta-grad-mid, hsl(41, 78%, 48%)) 40%,
-      var(--cta-grad-bot, hsl(41, 70%, 38%)) 100%);
-    color: var(--cta-ink, #1A1208);
+    background: linear-gradient(168deg,
+      var(--cta-grad-top, hsla(41, 78%, 48%, 0.14)) 0%,
+      var(--cta-grad-mid, hsla(41, 78%, 48%, 0.08)) 50%,
+      var(--cta-grad-bot, hsla(41, 78%, 48%, 0.04)) 100%);
+    color: var(--cta-ink, hsl(30, 10%, 18%));
     font-family: 'DM Serif Display', var(--font-serif);
     font-size: 17px;
     font-weight: 400;
     letter-spacing: 0.01em;
-    border: 1px solid rgba(255, 255, 255, 0.18);
+    border: 1.5px solid var(--cta-border, hsla(41, 78%, 48%, 0.25));
     cursor: pointer;
     text-shadow: none;
     box-shadow:
-      0 12px 32px -4px var(--cta-shadow, rgba(218, 157, 29, 0.40)),
-      0 4px 12px var(--cta-shadow-sm, rgba(218, 157, 29, 0.22)),
-      0 1px 3px rgba(0, 0, 0, 0.12),
-      inset 0 2px 0 rgba(255, 255, 255, 0.45),
-      inset 0 -4px 10px var(--cta-inner-shadow, rgba(140, 90, 10, 0.25));
+      0 6px 20px -4px var(--cta-shadow, hsla(41, 60%, 40%, 0.16)),
+      0 2px 6px var(--cta-shadow-sm, hsla(41, 60%, 40%, 0.08)),
+      0 1px 2px rgba(0, 0, 0, 0.04),
+      inset 0 1.5px 0 rgba(255, 255, 255, 0.55),
+      inset 0 -2px 6px var(--cta-inner-shadow, hsla(41, 50%, 35%, 0.08));
     transition: transform 120ms cubic-bezier(0.4, 0, 0.2, 1), box-shadow 200ms ease-out;
   }
 
   .cta-primary:hover:not(:disabled) {
-    transform: scale(1.04) translateY(-3px);
+    transform: scale(1.03) translateY(-2px);
     box-shadow:
-      0 16px 40px -4px var(--cta-shadow, rgba(218, 157, 29, 0.50)),
-      0 6px 16px var(--cta-shadow-sm, rgba(218, 157, 29, 0.28)),
-      0 1px 3px rgba(0, 0, 0, 0.12),
-      inset 0 2px 0 rgba(255, 255, 255, 0.50),
-      inset 0 -4px 10px var(--cta-inner-shadow, rgba(140, 90, 10, 0.25));
+      0 10px 28px -4px var(--cta-shadow, hsla(41, 60%, 40%, 0.22)),
+      0 4px 10px var(--cta-shadow-sm, hsla(41, 60%, 40%, 0.12)),
+      0 1px 2px rgba(0, 0, 0, 0.04),
+      inset 0 1.5px 0 rgba(255, 255, 255, 0.60),
+      inset 0 -2px 6px var(--cta-inner-shadow, hsla(41, 50%, 35%, 0.10));
   }
 
   .cta-primary:active:not(:disabled) {
-    transform: scale(0.93) translateY(3px);
+    transform: scale(0.96) translateY(2px);
     box-shadow:
-      0 4px 12px var(--cta-shadow-sm, rgba(218, 157, 29, 0.22)),
-      0 2px 6px var(--cta-shadow-sm, rgba(218, 157, 29, 0.12)),
-      inset 0 1px 0 rgba(255, 255, 255, 0.25),
-      inset 0 -2px 6px var(--cta-inner-shadow, rgba(140, 90, 10, 0.30));
+      0 2px 8px var(--cta-shadow-sm, hsla(41, 60%, 40%, 0.10)),
+      0 1px 3px rgba(0, 0, 0, 0.04),
+      inset 0 1px 0 rgba(255, 255, 255, 0.40),
+      inset 0 -1px 4px var(--cta-inner-shadow, hsla(41, 50%, 35%, 0.12));
   }
 
   .cta-primary:disabled {
