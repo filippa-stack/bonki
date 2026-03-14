@@ -260,7 +260,7 @@ export default function PromptItem({ prompt, index, sectionType, preamble, ancho
                       width: '100%',
                       display: 'flex',
                       justifyContent: 'center',
-                      marginTop: '8px',
+                      marginTop: '4px',
                     }}
                   >
                     <img
@@ -268,11 +268,11 @@ export default function PromptItem({ prompt, index, sectionType, preamble, ancho
                       alt=""
                       draggable={false}
                       style={{
-                        width: 'clamp(100px, 38vw, 160px)',
+                        width: 'clamp(90px, 34vw, 140px)',
                         height: 'auto',
                         objectFit: 'contain',
-                        opacity: 0.18,
-                        filter: 'saturate(0.5) brightness(1.05)',
+                        opacity: 0.22,
+                        filter: 'saturate(0.7) brightness(1.02)',
                         userSelect: 'none',
                         pointerEvents: 'none',
                       }}
