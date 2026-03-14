@@ -290,28 +290,29 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
         );
       })()}
 
-      {/* Age label badge */}
+      {/* Age label badge — enlarged for readability */}
       {ageLabel && (
         <span
           style={{
             position: 'absolute',
             top: '10px',
             right: '12px',
-            width: '32px',
-            height: '32px',
+            width: '38px',
+            height: '38px',
             borderRadius: '50%',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             fontFamily: "'Lato', sans-serif",
-            fontSize: '10px',
+            fontSize: '11px',
             fontWeight: 700,
             letterSpacing: '0.02em',
             color: accentColor || 'var(--text-library)',
-            background: 'rgba(255, 255, 255, 0.60)',
-            backdropFilter: 'blur(8px)',
-            WebkitBackdropFilter: 'blur(8px)',
+            background: 'rgba(255, 255, 255, 0.65)',
+            backdropFilter: 'blur(10px)',
+            WebkitBackdropFilter: 'blur(10px)',
             zIndex: 3,
+            boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
           }}
         >
           {ageLabel}
