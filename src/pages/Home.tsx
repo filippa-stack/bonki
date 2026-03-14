@@ -414,7 +414,7 @@ export default function Home() {
                 );
                 const isAllDone = fullyCompletedCount >= totalCategories;
                 return (
-                  <div style={{ textAlign: 'center', marginTop: '32px' }}>
+                  <div style={{ textAlign: 'center', marginTop: '20px' }}>
                     <p style={{
                       fontFamily: 'var(--font-sans)',
                       fontSize: '12px',
