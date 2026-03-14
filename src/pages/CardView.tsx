@@ -1670,6 +1670,7 @@ export default function CardView() {
                 isReflectionStep={isReflectionStep}
                 isExerciseStep={isExerciseStep}
                 showBackArrow={false}
+                backgroundImageUrl={pronounMode === 'du' ? cardImageUrl : null}
               />
             </motion.div>
           </AnimatePresence>
@@ -2029,6 +2030,7 @@ export default function CardView() {
                   isLive={isLive}
                   isReflectionStep={isReflectionStep}
                   isExerciseStep={isExerciseStep}
+                  backgroundImageUrl={pronounMode === 'du' ? cardImageUrl : null}
                   showBackArrow={isLive && (!(currentStepIndex === 0 && localPromptIndex === 0) || (!!product && product.id !== 'still_us'))}
                   onBack={isLive ? (() => {
                     if (localPromptIndex > 0) {
