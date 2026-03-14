@@ -214,8 +214,8 @@ export default function PromptItem({ prompt, index, sectionType, preamble, ancho
                 className={`w-full ${preamble ? 'mt-10' : ''}`}
                 style={{
                   background: 'radial-gradient(ellipse at 50% 40%, var(--question-cloud-tint, transparent) 0%, transparent 75%)',
-                  borderRadius: '28px',
-                  padding: isLongText ? '28px 20px' : '36px 24px',
+                  borderRadius: '42% 58% 55% 45% / 56% 44% 56% 44%',
+                  padding: isLongText ? '32px 24px' : '40px 28px',
                   display: 'flex',
                   flexDirection: 'column',
                   alignItems: isLongText ? 'flex-start' : 'center',
@@ -223,14 +223,14 @@ export default function PromptItem({ prompt, index, sectionType, preamble, ancho
                   position: 'relative',
                 }}
               >
-                {/* Soft border ring */}
+                {/* Organic blob border */}
                 <div
                   aria-hidden
                   style={{
                     position: 'absolute',
-                    inset: 0,
-                    borderRadius: '28px',
-                    border: '1px solid var(--question-cloud-border, transparent)',
+                    inset: '-2px',
+                    borderRadius: '42% 58% 55% 45% / 56% 44% 56% 44%',
+                    border: '1.5px solid var(--question-cloud-border, transparent)',
                     pointerEvents: 'none',
                   }}
                 />
