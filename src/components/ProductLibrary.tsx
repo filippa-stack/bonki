@@ -1003,7 +1003,7 @@ export default function ProductLibrary() {
           style={{ position: 'relative', zIndex: 1 }}
         >
           
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', paddingBottom: '32px' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', paddingBottom: '32px' }}>
             {/* Still Us — glass tile */}
             <motion.div
               variants={tileVariants}
