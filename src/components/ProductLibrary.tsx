@@ -56,7 +56,7 @@ const ILLUSTRATION_OPACITY: Record<string, number> = {
 
 /** Per-product illustration placement — individually tuned */
 const ILLUSTRATION_POSITION: Record<string, string> = {
-  jag_i_mig: 'right 20%',
+  jag_i_mig: 'center 15%',
   jag_med_andra: 'center 20%',
   jag_i_varlden: 'center 15%',
   sexualitetskort: 'center 30%',
