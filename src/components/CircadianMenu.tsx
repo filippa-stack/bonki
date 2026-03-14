@@ -219,7 +219,7 @@ export default function CircadianMenu({
                   letterSpacing: '0.08em',
                   textTransform: 'uppercase',
                   color: HERITAGE_GOLD,
-                  opacity: 0.5,
+                  opacity: 0.35,
                   lineHeight: 1,
                 }}
               >
@@ -232,7 +232,7 @@ export default function CircadianMenu({
               style={{
                 display: 'grid',
                 gridTemplateColumns: '1fr 1fr 1fr',
-                gap: '6px',
+                gap: '5px',
               }}
             >
               {group.categories.map((category) => {
