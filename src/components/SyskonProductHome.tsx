@@ -48,55 +48,54 @@ export default function SyskonProductHome({ product }: { product: ProductManifes
             <KidsProductResumeBanner product={product} progress={progress} accentColor={ACCENT_COLOR} />
           </motion.div>
 
-          {ORDERED_TILES.map((tile, index) => {
-            const cat = product.categories.find((c) => c.id === tile.id);
-            if (!cat) return null;
-            const catProgress = progress.categoryProgress[cat.id];
-            const isNextCategory = progress.nextSuggestedCategoryId === cat.id;
-            const allDone = catProgress?.allDone ?? false;
-            const isHero = index === 0;
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', width: '92%' }}>
+            {ORDERED_TILES.map((tile, index) => {
+              const cat = product.categories.find((c) => c.id === tile.id);
+              if (!cat) return null;
+              const catProgress = progress.categoryProgress[cat.id];
+              const isNextCategory = progress.nextSuggestedCategoryId === cat.id;
 
-            return (
-              <motion.button
-                key={cat.id}
-                variants={pillVariants}
-                whileHover={{ scale: 1.04, y: -4 }}
-                whileTap={{ scale: 0.95, y: 2 }}
-                onClick={() => navigate(`/category/${cat.id}`)}
-                style={{
-                  background: tile.bg,
-                  borderRadius: '24px',
-                  padding: '0 24px',
-                  textAlign: 'center',
-                  cursor: 'pointer',
-                  border: isNextCategory
-                    ? `2px solid ${SAFFRON}BB`
-                    : isHero ? '1.5px solid rgba(77, 144, 142, 0.20)' : '1.5px solid rgba(77, 144, 142, 0.10)',
-                  boxShadow: [
-                    isNextCategory ? `0 0 16px 0px ${SAFFRON}45, 0 0 32px -4px ${SAFFRON}25` : '',
-                    isHero
-                      ? '0 8px 24px rgba(77, 144, 142, 0.16), 0 3px 8px rgba(77, 144, 142, 0.08), inset 0 2px 0 rgba(255, 255, 255, 0.55), inset 0 -2px 4px rgba(77, 144, 142, 0.06)'
-                      : '0 6px 20px rgba(77, 144, 142, 0.12), 0 2px 6px rgba(77, 144, 142, 0.06), inset 0 2px 0 rgba(255, 255, 255, 0.50), inset 0 -2px 4px rgba(77, 144, 142, 0.05)',
-                  ].filter(Boolean).join(', '),
-                  whiteSpace: 'normal' as const,
-                  width: '88%',
-                  minHeight: isHero ? '96px' : '84px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  lineHeight: 1.3,
-                  position: 'relative',
-                }}
-              >
-                <span style={{ fontFamily: "'DM Serif Display', var(--font-serif)", fontSize: isHero ? 'clamp(22px, 6vw, 28px)' : 'clamp(19px, 5.2vw, 25px)', fontWeight: 400, color: tile.text }}>
-                  {cat.title}
-                </span>
-                {catProgress && catProgress.completed > 0 && (
-                  <CategoryProgressRing completed={catProgress.completed} total={catProgress.total} color={tile.text} />
-                )}
-              </motion.button>
-            );
-          })}
+              return (
+                <motion.button
+                  key={cat.id}
+                  variants={pillVariants}
+                  whileHover={{ scale: 1.05, y: -3 }}
+                  whileTap={{ scale: 0.94, y: 2 }}
+                  onClick={() => navigate(`/category/${cat.id}`)}
+                  style={{
+                    background: tile.bg,
+                    borderRadius: '22px',
+                    padding: '16px 12px',
+                    textAlign: 'center',
+                    cursor: 'pointer',
+                    aspectRatio: '1 / 1',
+                    border: isNextCategory
+                      ? `2px solid ${SAFFRON}BB`
+                      : '1.5px solid rgba(77, 144, 142, 0.14)',
+                    boxShadow: [
+                      isNextCategory ? `0 0 16px 0px ${SAFFRON}45, 0 0 32px -4px ${SAFFRON}25` : '',
+                      '0 6px 20px rgba(77, 144, 142, 0.14)',
+                      '0 2px 6px rgba(77, 144, 142, 0.07)',
+                      'inset 0 2px 0 rgba(255, 255, 255, 0.55)',
+                      'inset 0 -2px 4px rgba(77, 144, 142, 0.06)',
+                    ].filter(Boolean).join(', '),
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    lineHeight: 1.25,
+                    position: 'relative',
+                  }}
+                >
+                  <span style={{ fontFamily: "'DM Serif Display', var(--font-serif)", fontSize: 'clamp(18px, 5vw, 23px)', fontWeight: 400, color: tile.text }}>
+                    {cat.title}
+                  </span>
+                  {catProgress && catProgress.completed > 0 && (
+                    <CategoryProgressRing completed={catProgress.completed} total={catProgress.total} color={tile.text} />
+                  )}
+                </motion.button>
+              );
+            })}
+          </div>
 
           <motion.p variants={pillVariants} className="font-serif" style={{ fontSize: 'clamp(14px, 3.8vw, 16px)', fontStyle: 'italic', color: ACCENT_COLOR, opacity: 0.6, textAlign: 'center', lineHeight: 1.5, marginTop: '2.5vh', maxWidth: '85%', textShadow: '0 0 12px rgba(255,255,255,0.8)' }}>
             Välj det som känns rätt just nu.
