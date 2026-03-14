@@ -47,7 +47,7 @@ const DEPTH_GRAVITY: Record<string, React.CSSProperties> = {
  * Renders a single prompt — flat, read-only question text.
  * Unified presentation: all section types use centered question style.
  */
-export default function PromptItem({ prompt, index, sectionType, preamble, anchor }: PromptItemProps) {
+export default function PromptItem({ prompt, index, sectionType, preamble, anchor, backgroundImageUrl }: PromptItemProps) {
   const [anchorOpen, setAnchorOpen] = useState(false);
   const gravity = DEPTH_GRAVITY[sectionType || 'opening'] || DEPTH_GRAVITY.opening;
   const isExercise = sectionType === 'exercise';
