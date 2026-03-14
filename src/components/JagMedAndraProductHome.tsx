@@ -15,9 +15,9 @@ const DIARY_TEXT = '#240046';
 const SAFFRON = '#DA9D1D';
 
 const ORDERED_TILES = [
-  { id: 'jma-att-hora-till', bg: '#F8E4EC', text: ACCENT_COLOR, sub: 'Var hör jag hemma?' },
+  { id: 'jma-att-hora-till', bg: '#F8E4EC', text: '#7B1FA2', sub: 'Var hör jag hemma?' },
   { id: 'jma-nar-vi-jamfor-oss', bg: '#E8C8F0', text: '#7B1FA2', sub: 'Vad det gör med oss' },
-  { id: 'jma-nar-det-skaver', bg: '#F2D0C0', text: '#8E3A1A', sub: 'När vi sårar varandra' },
+  { id: 'jma-nar-det-skaver', bg: '#E8C0D0', text: '#6A1B5E', sub: 'När vi sårar varandra' },
   { id: 'jma-att-sta-stadig', bg: '#C8A8D8', text: '#4A148C', sub: 'Din egen grund' },
   { id: 'jma-vi-i-varlden', bg: '#7E5C8E', text: '#F5F0F8', sub: 'Utanför oss själva' },
 ];
