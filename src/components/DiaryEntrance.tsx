@@ -14,9 +14,7 @@ const pillVariants = {
 
 interface DiaryEntranceProps {
   productId: string;
-  /** Accent color for the warm glow (hex) */
   accentColor: string;
-  /** Dark text color for the diary (hex) */
   textColor: string;
 }
 
@@ -35,29 +33,9 @@ export default function DiaryEntrance({ productId, accentColor, textColor }: Dia
         width: '100%',
       }}
     >
-      {/* Sparkle divider */}
-      <motion.div
-        initial={{ opacity: 0, scale: 0.5 }}
-        animate={{ opacity: [0.3, 0.6, 0.3], scale: 1 }}
-        transition={{
-          opacity: { duration: 3, repeat: Infinity, ease: 'easeInOut' },
-          scale: { duration: 0.8, delay: 1.2 },
-        }}
-        style={{
-          fontSize: '14px',
-          color: 'var(--accent-saffron)',
-          letterSpacing: '8px',
-          marginBottom: '14px',
-          textAlign: 'center',
-        }}
-      >
-        ✦
-      </motion.div>
-
-      {/* The diary — warm, tactile, like an object */}
       <motion.button
         whileHover={{ scale: 1.03, y: -2 }}
-        whileTap={{ scale: 0.975 }}
+        whileTap={{ scale: 0.96 }}
         onClick={() => navigate(`/diary/${productId}`)}
         style={{
           position: 'relative',
@@ -67,97 +45,80 @@ export default function DiaryEntrance({ productId, accentColor, textColor }: Dia
           padding: 0,
           width: '72%',
           overflow: 'hidden',
-          borderRadius: '16px',
+          borderRadius: '20px',
         }}
       >
-        {/* Warm paper surface */}
         <div
           style={{
             position: 'relative',
-            borderRadius: '16px',
-            background: 'linear-gradient(168deg, #FDF8F0 0%, #F5EFE4 50%, #EDE6D8 100%)',
-            border: '1px solid hsla(36, 30%, 78%, 0.45)',
+            borderRadius: '20px',
+            background: `linear-gradient(168deg, ${accentColor}12 0%, ${accentColor}08 50%, ${accentColor}04 100%)`,
+            border: `1.5px solid ${accentColor}30`,
             boxShadow: [
-              '0 2px 8px hsla(36, 25%, 45%, 0.08)',
-              '0 1px 2px hsla(36, 20%, 40%, 0.05)',
-              'inset 0 1px 0 hsla(40, 40%, 96%, 0.7)',
+              `0 4px 16px ${accentColor}18`,
+              `0 1px 3px ${accentColor}10`,
+              `inset 0 1px 0 rgba(255, 255, 255, 0.6)`,
             ].join(', '),
-            padding: '20px 24px 18px',
+            padding: '16px 20px 14px',
             display: 'flex',
-            flexDirection: 'column' as const,
             alignItems: 'center',
-            gap: '8px',
+            gap: '12px',
           }}
         >
-          {/* Spine accent — left edge, like a book binding */}
-          <div
-            style={{
-              position: 'absolute',
-              left: 0,
-              top: '12px',
-              bottom: '12px',
-              width: '3px',
-              borderRadius: '0 2px 2px 0',
-              background: `linear-gradient(180deg, ${accentColor}55 0%, ${accentColor}22 100%)`,
-            }}
-          />
-
-          {/* Ambient warmth */}
+          {/* Book icon — larger, colored */}
           <motion.div
-            animate={{ opacity: [0.15, 0.30, 0.15] }}
-            transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
+            animate={{ rotate: [0, -5, 0, 5, 0] }}
+            transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
             style={{
-              position: 'absolute',
-              inset: '-30%',
-              background: `radial-gradient(ellipse at 50% 30%, hsla(41, 78%, 48%, 0.08) 0%, transparent 65%)`,
-              borderRadius: '50%',
-              pointerEvents: 'none',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              width: '38px',
+              height: '38px',
+              borderRadius: '12px',
+              background: `${accentColor}18`,
+              flexShrink: 0,
             }}
-          />
+          >
+            <BookOpen size={22} strokeWidth={1.5} style={{ color: accentColor }} />
+          </motion.div>
 
-          {/* Title row */}
-          <div style={{
-            position: 'relative',
-            zIndex: 1,
-            display: 'flex',
-            alignItems: 'center',
-            gap: '10px',
-          }}>
-            <motion.div
-              animate={{ rotate: [0, -4, 0, 4, 0] }}
-              transition={{ duration: 7, repeat: Infinity, ease: 'easeInOut' }}
-            >
-              <BookOpen size={17} style={{ color: textColor, opacity: 0.50, flexShrink: 0 }} />
-            </motion.div>
+          {/* Text */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '2px', textAlign: 'left' }}>
             <span
               style={{
                 fontFamily: "'DM Serif Display', var(--font-serif)",
-                fontSize: 'clamp(17px, 4.5vw, 20px)',
+                fontSize: 'clamp(16px, 4.2vw, 19px)',
                 fontWeight: 400,
                 color: textColor,
-                lineHeight: 1.3,
+                lineHeight: 1.2,
               }}
             >
               Vår dagbok
             </span>
+            <span
+              style={{
+                fontSize: 'clamp(10px, 2.8vw, 12px)',
+                fontWeight: 500,
+                color: textColor,
+                opacity: 0.5,
+                lineHeight: 1.3,
+              }}
+            >
+              Samlade tankar & minnen
+            </span>
           </div>
 
-          {/* Poetic subtitle */}
-          <p
-            className="font-serif"
-            style={{
-              position: 'relative',
-              zIndex: 1,
-              fontSize: '12px',
-              color: 'var(--accent-saffron)',
-              opacity: 0.65,
-              fontStyle: 'italic',
-              lineHeight: 1.3,
-              letterSpacing: '0.03em',
-            }}
-          >
-            Era tankar, samlade ✦
-          </p>
+          {/* Subtle chevron */}
+          <div style={{
+            marginLeft: 'auto',
+            color: accentColor,
+            opacity: 0.4,
+            fontSize: '16px',
+            fontWeight: 300,
+          }}>
+            ›
+          </div>
         </div>
       </motion.button>
     </motion.div>
