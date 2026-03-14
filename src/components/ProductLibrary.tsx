@@ -44,6 +44,14 @@ const PASTEL_COLORS: Record<string, string> = {
   syskonkort: '#DAEAF6',
 };
 
+/** Helper: hex → rgba */
+function hexToRgba(hex: string, alpha: number): string {
+  const r = parseInt(hex.slice(1, 3), 16);
+  const g = parseInt(hex.slice(3, 5), 16);
+  const b = parseInt(hex.slice(5, 7), 16);
+  return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+}
+
 /** Hero-level illustration opacities — individually calibrated */
 const ILLUSTRATION_OPACITY: Record<string, number> = {
   jag_i_mig: 0.92,
@@ -54,14 +62,14 @@ const ILLUSTRATION_OPACITY: Record<string, number> = {
   syskonkort: 0.88,
 };
 
-/** Per-product illustration placement — individually tuned */
+/** Per-product illustration placement — individually tuned to each motif's center of gravity */
 const ILLUSTRATION_POSITION: Record<string, string> = {
-  jag_i_mig: 'center 55%',
-  jag_med_andra: 'center 20%',
-  jag_i_varlden: 'center 20%',
+  jag_i_mig: 'center 45%',
+  jag_med_andra: 'center 25%',
+  jag_i_varlden: 'center 15%',
   sexualitetskort: 'center 30%',
-  vardagskort: 'center 20%',
-  syskonkort: 'center 20%',
+  vardagskort: 'center 25%',
+  syskonkort: 'center 25%',
 };
 
 /** Per-product object-fit mode */
@@ -76,31 +84,32 @@ const ILLUSTRATION_FIT: Record<string, string> = {
 
 /** Per-product illustration container bounds — {top, left, right, bottom} as % */
 const ILLUSTRATION_BOUNDS: Record<string, { top: string; left: string; right: string; bottom: string }> = {
-  jag_i_mig: { top: '-10%', left: '0%', right: '0%', bottom: '15%' },
-  jag_med_andra: { top: '-5%', left: '-3%', right: '-3%', bottom: '28%' },
-  jag_i_varlden: { top: '-25%', left: '-15%', right: '-15%', bottom: '10%' },
-  sexualitetskort: { top: '-5%', left: '5%', right: '0%', bottom: '25%' },
-  vardagskort: { top: '-5%', left: '-3%', right: '-3%', bottom: '28%' },
-  syskonkort: { top: '-5%', left: '0%', right: '0%', bottom: '28%' },
+  jag_i_mig: { top: '-8%', left: '-2%', right: '-2%', bottom: '18%' },
+  jag_med_andra: { top: '-8%', left: '-5%', right: '-5%', bottom: '22%' },
+  jag_i_varlden: { top: '-20%', left: '-12%', right: '-12%', bottom: '12%' },
+  sexualitetskort: { top: '-5%', left: '3%', right: '-2%', bottom: '20%' },
+  vardagskort: { top: '-5%', left: '-5%', right: '-5%', bottom: '22%' },
+  syskonkort: { top: '-5%', left: '-2%', right: '-2%', bottom: '22%' },
 };
 
-/** Restored strong accent colors for tile titles */
+/** Darkened accent colors for WCAG AA compliance on pastel backgrounds */
 const ACCENT_COLORS: Record<string, string> = {
-  jag_i_mig: '#555508',
-  jag_med_andra: '#6A0F96',
-  jag_i_varlden: '#1E5528',
-  sexualitetskort: '#8A3848',
-  vardagskort: '#063A58',
-  syskonkort: '#0A3268',
+  jag_i_mig: '#3D3D06',
+  jag_med_andra: '#520C78',
+  jag_i_varlden: '#14401E',
+  sexualitetskort: '#6E2838',
+  vardagskort: '#042C44',
+  syskonkort: '#082654',
 };
 
+/** Darkened tagline colors for better readability */
 const TAGLINE_COLORS: Record<string, string> = {
-  jag_i_mig: '#6B6742',
-  jag_med_andra: '#5E4058',
-  jag_i_varlden: '#3A6B48',
-  sexualitetskort: '#6B4858',
-  vardagskort: '#1A4040',
-  syskonkort: '#1A2E50',
+  jag_i_mig: '#524E30',
+  jag_med_andra: '#4A3048',
+  jag_i_varlden: '#2A5438',
+  sexualitetskort: '#5A3848',
+  vardagskort: '#143434',
+  syskonkort: '#162844',
 };
 
 /** Build badge text: "X ämnen · Y kr · Första gratis" */
