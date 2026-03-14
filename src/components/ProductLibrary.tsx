@@ -224,6 +224,12 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
     return `rgba(${Math.round(r * 0.5)}, ${Math.round(g * 0.5)}, ${Math.round(b * 0.5)}, ${alpha})`;
   };
 
+  // Parse bg hex for robust rgba scrim
+  const bgR = parseInt(bg.slice(1, 3), 16);
+  const bgG = parseInt(bg.slice(3, 5), 16);
+  const bgB = parseInt(bg.slice(5, 7), 16);
+  const bgRgba = (a: number) => `rgba(${bgR}, ${bgG}, ${bgB}, ${a})`;
+
     return (
       <motion.div
         variants={tileVariants}
