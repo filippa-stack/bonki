@@ -773,20 +773,22 @@ export default function ProductLibrary() {
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.9, duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ delay: 0.9 * ANIM_SPEED, duration: 0.9 * ANIM_SPEED, ease: [0.22, 1, 0.36, 1] }}
           whileTap={{ scale: 0.98 }}
           onClick={() => navigate('/diary/jag_i_mig')}
           className="cursor-pointer"
           style={{
-            margin: '16px 20px 16px',
+            margin: '20px 20px 16px',
             padding: '28px 22px 22px',
             borderRadius: '20px',
-            background: 'linear-gradient(180deg, hsla(30, 20%, 96%, 0.9) 0%, hsla(37, 30%, 93%, 0.7) 100%)',
+            background: 'linear-gradient(180deg, hsla(185, 25%, 30%, 0.35) 0%, hsla(185, 20%, 25%, 0.25) 100%)',
+            backdropFilter: 'blur(16px)',
+            WebkitBackdropFilter: 'blur(16px)',
             textAlign: 'center',
             position: 'relative',
             overflow: 'hidden',
-            boxShadow: '0 2px 8px hsla(30, 20%, 20%, 0.04), 0 12px 32px -8px hsla(30, 18%, 16%, 0.08)',
-            border: '1px solid hsla(30, 20%, 80%, 0.3)',
+            boxShadow: '0 2px 8px hsla(185, 20%, 10%, 0.08), 0 12px 32px -8px hsla(185, 18%, 8%, 0.12)',
+            border: '1px solid hsla(185, 30%, 50%, 0.12)',
           }}
         >
           {/* Ambient glow */}
