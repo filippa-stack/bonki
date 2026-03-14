@@ -14,11 +14,11 @@ const DIARY_TEXT = '#2D4F32';
 const SAFFRON = '#DA9D1D';
 
 const ORDERED_TILES = [
-  { id: 'jiv-min-vardag', bg: '#C2E0C0', text: '#2A4A2E', sub: 'Det som fyller dina dagar' },
-  { id: 'jiv-vem-jag-ar', bg: '#D4DCA8', text: '#3A4E20', sub: 'Det som förändras just nu' },
-  { id: 'jiv-jag-och-andra', bg: '#8EAE82', text: '#1E3820', sub: 'Hur vi påverkar varandra' },
-  { id: 'jiv-jag-i-samhallet', bg: '#608868', text: '#F0EDE8', sub: 'Normer, rättvisa och din röst' },
-  { id: 'jiv-det-stora-sammanhanget', bg: '#3E5E42', text: '#F0EDE8', sub: 'Bortom det du ser' },
+  { id: 'jiv-min-vardag', bg: '#A0D0A0', text: '#1E3E1E', sub: 'Det som fyller dina dagar' },
+  { id: 'jiv-vem-jag-ar', bg: '#C0CC80', text: '#2E3E14', sub: 'Det som förändras just nu' },
+  { id: 'jiv-jag-och-andra', bg: '#6EA868', text: '#142E12', sub: 'Hur vi påverkar varandra' },
+  { id: 'jiv-jag-i-samhallet', bg: '#488050', text: '#F0EDE8', sub: 'Normer, rättvisa och din röst' },
+  { id: 'jiv-det-stora-sammanhanget', bg: '#2E5434', text: '#F0EDE8', sub: 'Bortom det du ser' },
 ];
 
 const containerVariants = { hidden: {}, visible: { transition: { staggerChildren: 0.11, delayChildren: 0.4 } } };
