@@ -45,7 +45,7 @@ function setCTAVarsFromAccent(root: HTMLElement, accent: string) {
 }
 
 const CTA_VARS = [
-  '--cta-grad-top', '--cta-grad-mid', '--cta-grad-bot',
+  '--cta-grad-top', '--cta-grad-mid', '--cta-grad-bot', '--cta-border',
   '--cta-ink', '--cta-shadow', '--cta-shadow-sm', '--cta-inner-shadow',
 ];
 
