@@ -1004,162 +1004,204 @@ export default function ProductLibrary() {
         >
           
           <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', paddingBottom: '16px' }}>
-            {/* Still Us — glass tile — taller, 2 text levels max, illustration protected */}
+            {/* Still Us — portal tile matching BARN ceramic style */}
             <motion.div
               variants={tileVariants}
-              whileHover={{ scale: 1.02, y: -2 }}
-              whileTap={{ scale: 0.985 }}
+              whileHover={{ scale: 1.025, y: -3 }}
+              whileTap={{ scale: 0.94, y: 3 }}
               onClick={() => navigate('/product/still-us')}
               className="cursor-pointer"
               style={{
-                borderRadius: '20px',
-                padding: '24px 20px 20px',
-                background: 'radial-gradient(circle at 60% 50%, #2A6F7D 0%, #164A58 100%)',
-                backdropFilter: 'blur(10px)',
-                WebkitBackdropFilter: 'blur(10px)',
-                textAlign: 'left',
-                position: 'relative',
-                overflow: 'hidden',
-                minHeight: '200px',
+                borderRadius: '22px',
+                backgroundImage: 'linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0) 50%, rgba(0,0,0,0.12) 100%)',
+                backgroundColor: '#1E5A68',
+                minHeight: '220px',
                 display: 'flex',
                 flexDirection: 'column',
-                alignItems: 'flex-start',
-                justifyContent: 'flex-end',
-                border: '1px solid hsla(192, 40%, 60%, 0.20)',
-                boxShadow: '0 15px 35px rgba(0, 0, 0, 0.4), 0 4px 12px rgba(0, 0, 0, 0.2), inset 0 1px 0 0 hsla(192, 50%, 70%, 0.12)',
+                position: 'relative',
+                overflow: 'hidden',
+                border: '1.5px solid rgba(255, 255, 255, 0.15)',
+                boxShadow: [
+                  '0 12px 32px rgba(15, 45, 52, 0.40)',
+                  '0 4px 12px rgba(15, 45, 52, 0.25)',
+                  '0 1px 3px rgba(0, 0, 0, 0.08)',
+                  'inset 0 3px 6px rgba(255, 255, 255, 0.12)',
+                  'inset 0 -4px 10px rgba(15, 45, 52, 0.20)',
+                ].join(', '),
               }}
             >
-              {/* Spotlight backglow behind illustration */}
+              {/* Illustration — <img> tag like BARN tiles */}
               <div
                 style={{
                   position: 'absolute',
-                  top: '15%', right: '8%',
-                  width: '45%', height: '70%',
-                  borderRadius: '50%',
-                  background: 'radial-gradient(ellipse, hsla(38, 65%, 55%, 0.12) 0%, hsla(210, 50%, 45%, 0.06) 50%, transparent 80%)',
-                  filter: 'blur(20px)',
+                  top: '-8%',
+                  left: '15%',
+                  right: '-5%',
+                  bottom: '20%',
                   pointerEvents: 'none',
                   zIndex: 0,
                 }}
-              />
-              {/* Illustration — narrower to protect text */}
-              <div
-                style={{
-                  position: 'absolute',
-                  top: '-10%', right: '-2%', bottom: '-10%',
-                  width: '42%',
-                  backgroundImage: `url(${illustrationStillUs})`,
-                  backgroundSize: 'contain',
-                  backgroundRepeat: 'no-repeat',
-                  backgroundPosition: 'center center',
-                  opacity: 0.30,
-                  pointerEvents: 'none',
-                  zIndex: 1,
-                  filter: 'brightness(1.5) saturate(0.6) sepia(0.15)',
-                }}
-              />
-              {/* Text scrim — protects text from illustration */}
+              >
+                <img
+                  src={illustrationStillUs}
+                  alt=""
+                  draggable={false}
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'contain' as React.CSSProperties['objectFit'],
+                    objectPosition: 'center 30%',
+                    opacity: 0.85,
+                  }}
+                />
+              </div>
+
+              {/* Bottom gradient scrim — rgba-based like BARN */}
               <div
                 aria-hidden="true"
                 style={{
                   position: 'absolute',
-                  bottom: 0, left: 0, right: '40%', top: 0,
-                  background: 'linear-gradient(to right, rgba(22, 74, 88, 0.6) 0%, rgba(22, 74, 88, 0.3) 70%, transparent 100%)',
-                  pointerEvents: 'none',
+                  bottom: 0, left: 0, right: 0,
+                  height: '65%',
                   zIndex: 1,
+                  pointerEvents: 'none',
+                  background: `linear-gradient(to top, rgba(30, 90, 104, 1) 0%, rgba(30, 90, 104, 0.93) 25%, rgba(30, 90, 104, 0.6) 50%, rgba(30, 90, 104, 0.2) 70%, transparent 100%)`,
+                  borderRadius: '0 0 22px 22px',
                 }}
               />
-              <div style={{ zIndex: 2, maxWidth: '62%' }}>
-                <h3 style={{
-                  fontFamily: "'DM Serif Display', serif",
-                  fontSize: '26px', fontWeight: 400,
-                  lineHeight: 1.15,
-                  color: '#F5EFE6', letterSpacing: '-0.01em',
-                }}>
+
+              {/* Text content — anchored to bottom like BARN */}
+              <div style={{
+                position: 'absolute',
+                bottom: 0, left: 0, right: 0,
+                zIndex: 2,
+                padding: '0 20px 20px',
+              }}>
+                <h3
+                  style={{
+                    fontFamily: "'DM Serif Display', serif",
+                    fontSize: '28px',
+                    fontWeight: 700,
+                    lineHeight: 1.15,
+                    color: '#F5EFE6',
+                    letterSpacing: '-0.01em',
+                    textShadow: '0 1px 6px rgba(30, 90, 104, 1), 0 0 16px rgba(30, 90, 104, 0.9), 0 0 32px rgba(30, 90, 104, 0.8)',
+                  }}
+                >
                   Still Us
                 </h3>
-                {/* Single secondary line: tagline + price merged */}
-                <p style={{
-                  fontFamily: "'Lato', sans-serif",
-                  fontSize: '11px', color: '#B8C0C8',
-                  marginTop: '6px',
-                  lineHeight: 1.5,
-                }}>
+                <p
+                  style={{
+                    fontFamily: "'Lato', sans-serif",
+                    fontSize: '11px',
+                    fontWeight: 400,
+                    color: 'hsla(192, 20%, 75%, 0.9)',
+                    marginTop: '4px',
+                    lineHeight: 1.4,
+                    textShadow: '0 0 10px rgba(30, 90, 104, 1), 0 0 20px rgba(30, 90, 104, 0.8)',
+                  }}
+                >
                   Vi finns kvar{!purchased.has('still_us') ? ' · 184 frågor · ✦ 1a gratis' : ''}
                 </p>
               </div>
             </motion.div>
 
-            {/* Still Fair — glass tile, coming soon — full opacity, desaturated */}
+            {/* Still Fair — portal tile matching BARN ceramic style, desaturated */}
             <motion.div
               variants={tileVariants}
               style={{
-                borderRadius: '20px',
-                padding: '24px 20px 18px',
-                background: 'hsla(327, 24%, 30%, 0.70)',
-                backdropFilter: 'blur(24px)',
-                WebkitBackdropFilter: 'blur(24px)',
-                textAlign: 'left',
-                position: 'relative',
-                overflow: 'hidden',
-                minHeight: '120px',
+                borderRadius: '22px',
+                backgroundImage: 'linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0) 50%, rgba(0,0,0,0.12) 100%)',
+                backgroundColor: 'hsl(327, 24%, 28%)',
+                minHeight: '180px',
                 display: 'flex',
                 flexDirection: 'column',
-                alignItems: 'flex-start',
-                justifyContent: 'flex-end',
-                border: '1px solid hsla(215, 35%, 50%, 0.08)',
-                boxShadow: 'inset 0 1px 0 0 hsla(0, 0%, 100%, 0.08), 0 4px 24px hsla(230, 50%, 6%, 0.3), 0 1px 3px hsla(230, 40%, 10%, 0.18)',
+                position: 'relative',
+                overflow: 'hidden',
+                border: '1.5px solid rgba(255, 255, 255, 0.10)',
+                boxShadow: [
+                  '0 12px 32px rgba(60, 30, 50, 0.35)',
+                  '0 4px 12px rgba(60, 30, 50, 0.20)',
+                  '0 1px 3px rgba(0, 0, 0, 0.08)',
+                  'inset 0 3px 6px rgba(255, 255, 255, 0.08)',
+                  'inset 0 -4px 10px rgba(60, 30, 50, 0.15)',
+                ].join(', '),
                 filter: 'saturate(0.7)',
               }}
             >
-              {/* Spotlight backglow behind illustration */}
+              {/* Illustration — <img> tag like BARN tiles */}
               <div
                 style={{
                   position: 'absolute',
-                  top: '10%', right: '10%',
-                  width: '40%', height: '80%',
-                  borderRadius: '50%',
-                  background: 'radial-gradient(ellipse, hsla(200, 50%, 50%, 0.08) 0%, hsla(38, 50%, 50%, 0.05) 50%, transparent 80%)',
-                  filter: 'blur(18px)',
+                  top: '-5%',
+                  left: '20%',
+                  right: '-5%',
+                  bottom: '18%',
                   pointerEvents: 'none',
                   zIndex: 0,
                 }}
-              />
-              {/* Illustration */}
+              >
+                <img
+                  src={illustrationStillFair}
+                  alt=""
+                  draggable={false}
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'contain' as React.CSSProperties['objectFit'],
+                    objectPosition: 'center 30%',
+                    opacity: 0.75,
+                  }}
+                />
+              </div>
+
+              {/* Bottom gradient scrim */}
               <div
+                aria-hidden="true"
                 style={{
                   position: 'absolute',
-                  top: '0%', right: '-2%', bottom: '0%',
-                  width: '50%',
-                  backgroundImage: `url(${illustrationStillFair})`,
-                  backgroundSize: 'contain',
-                  backgroundRepeat: 'no-repeat',
-                  backgroundPosition: 'right center',
-                  opacity: 0.28,
-                  pointerEvents: 'none',
+                  bottom: 0, left: 0, right: 0,
+                  height: '65%',
                   zIndex: 1,
-                  filter: 'brightness(1.5) saturate(0.6) sepia(0.15)',
+                  pointerEvents: 'none',
+                  background: `linear-gradient(to top, hsl(327, 24%, 28%) 0%, hsla(327, 24%, 28%, 0.93) 25%, hsla(327, 24%, 28%, 0.6) 50%, hsla(327, 24%, 28%, 0.2) 70%, transparent 100%)`,
+                  borderRadius: '0 0 22px 22px',
                 }}
               />
-              <div style={{ zIndex: 2 }}>
-                <h3 style={{
-                  fontFamily: "'DM Serif Display', serif",
-                  fontSize: '26px', fontWeight: 400,
-                  lineHeight: 1.15,
-                  color: '#F5EFE6', letterSpacing: '-0.01em',
-                  opacity: 0.8,
-                }}>
+
+              {/* Text content — anchored to bottom */}
+              <div style={{
+                position: 'absolute',
+                bottom: 0, left: 0, right: 0,
+                zIndex: 2,
+                padding: '0 20px 18px',
+              }}>
+                <h3
+                  style={{
+                    fontFamily: "'DM Serif Display', serif",
+                    fontSize: '26px',
+                    fontWeight: 700,
+                    lineHeight: 1.15,
+                    color: '#F5EFE6',
+                    letterSpacing: '-0.01em',
+                    opacity: 0.85,
+                    textShadow: '0 1px 6px hsl(327, 24%, 28%), 0 0 16px hsla(327, 24%, 28%, 0.9)',
+                  }}
+                >
                   Still Fair
                 </h3>
-                <p style={{
-                  fontFamily: "'Lato', sans-serif",
-                  fontSize: '11px', color: '#A0A0B0',
-                  marginTop: '4px',
-                  lineHeight: 1.4,
-                  maxWidth: '55%',
-                  opacity: 0.75,
-                }}>
-                  Ett kartläggningsverktyg som gör det osynliga arbetet i familjelivet synligt för båda
+                <p
+                  style={{
+                    fontFamily: "'Lato', sans-serif",
+                    fontSize: '11px',
+                    fontWeight: 400,
+                    color: 'hsla(327, 15%, 75%, 0.85)',
+                    marginTop: '4px',
+                    lineHeight: 1.4,
+                    textShadow: '0 0 10px hsl(327, 24%, 28%), 0 0 20px hsla(327, 24%, 28%, 0.8)',
+                  }}
+                >
+                  Det osynliga arbetet, synligt för båda
                 </p>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginTop: '10px', flexWrap: 'wrap' }}>
                   <span
