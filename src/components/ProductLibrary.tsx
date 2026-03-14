@@ -241,7 +241,7 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
           borderRadius: '22px',
           backgroundImage: `linear-gradient(135deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0) 50%, rgba(0,0,0,0.06) 100%)`,
           backgroundColor: bg,
-          minHeight: wide ? '180px' : '210px',
+          minHeight: wide ? '240px' : '210px',
           display: 'flex',
           flexDirection: 'column',
           position: 'relative',
