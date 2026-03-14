@@ -76,25 +76,26 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
               <motion.button
                 key={cat.id}
                 variants={pillVariants}
-                whileHover={{ scale: 1.05, y: -3 }}
-                whileTap={{ scale: 0.975, y: 1 }}
+                whileHover={{ scale: 1.04, y: -4 }}
+                whileTap={{ scale: 0.95, y: 2 }}
                 onClick={() => navigate(`/category/${cat.id}`)}
                 style={{
                   background: tile.bg,
-                  borderRadius: '22px',
+                  borderRadius: '24px',
                   padding: '0 32px',
                   textAlign: 'center',
                   cursor: 'pointer',
-                  border: isNextCategory ? `2px solid ${SAFFRON}BB` : '1px solid hsla(66, 25%, 65%, 0.20)',
+                  border: isNextCategory ? `2px solid ${SAFFRON}BB` : '1.5px solid hsla(66, 25%, 65%, 0.25)',
                   boxShadow: [
                     isNextCategory ? `0 0 16px 0px ${SAFFRON}45, 0 0 32px -4px ${SAFFRON}25` : '',
-                    '0 2px 8px hsla(66, 30%, 25%, 0.05)',
-                    '0 1px 2px hsla(66, 25%, 30%, 0.03)',
-                    'inset 0 1px 0 hsla(60, 30%, 92%, 0.35)',
+                    '0 6px 20px hsla(66, 30%, 25%, 0.10)',
+                    '0 2px 6px hsla(66, 25%, 30%, 0.06)',
+                    'inset 0 2px 0 hsla(60, 40%, 96%, 0.55)',
+                    'inset 0 -2px 4px hsla(66, 25%, 30%, 0.06)',
                   ].filter(Boolean).join(', '),
                   whiteSpace: 'normal' as const,
-                  width: '84%',
-                  minHeight: index === 0 ? '72px' : '64px',
+                  width: '88%',
+                  minHeight: index === 0 ? '96px' : '84px',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',

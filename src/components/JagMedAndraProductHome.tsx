@@ -64,25 +64,26 @@ export default function JagMedAndraProductHome({ product }: { product: ProductMa
               <motion.button
                 key={cat.id}
                 variants={pillVariants}
-                whileHover={{ scale: 1.05, y: -3 }}
-                whileTap={{ scale: 0.975, y: 1 }}
+                whileHover={{ scale: 1.04, y: -4 }}
+                whileTap={{ scale: 0.95, y: 2 }}
                 onClick={() => navigate(`/category/${cat.id}`)}
                 style={{
                   background: tile.bg,
-                  borderRadius: '22px',
+                  borderRadius: '24px',
                   padding: '0 32px',
                   textAlign: 'center',
                   cursor: 'pointer',
-                  border: isNextCategory ? `2px solid ${SAFFRON}BB` : '1px solid hsla(345, 20%, 75%, 0.35)',
+                  border: isNextCategory ? `2px solid ${SAFFRON}BB` : '1.5px solid hsla(345, 20%, 75%, 0.35)',
                   boxShadow: [
                     isNextCategory ? `0 0 16px 0px ${SAFFRON}45, 0 0 32px -4px ${SAFFRON}25` : '',
-                    '0 4px 14px hsla(345, 20%, 40%, 0.10)',
-                    '0 1px 4px hsla(0, 0%, 0%, 0.04)',
-                    'inset 0 1px 0 hsla(345, 30%, 95%, 0.60)',
+                    '0 6px 20px hsla(345, 20%, 40%, 0.14)',
+                    '0 2px 6px hsla(0, 0%, 0%, 0.05)',
+                    'inset 0 2px 0 hsla(345, 30%, 97%, 0.60)',
+                    'inset 0 -2px 4px hsla(345, 20%, 40%, 0.06)',
                   ].filter(Boolean).join(', '),
                   whiteSpace: 'normal' as const,
-                  width: '84%',
-                  minHeight: index === 0 ? '72px' : '64px',
+                  width: '88%',
+                  minHeight: index === 0 ? '96px' : '84px',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',

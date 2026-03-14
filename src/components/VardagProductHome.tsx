@@ -60,27 +60,27 @@ export default function VardagProductHome({ product }: { product: ProductManifes
               <motion.button
                 key={cat.id}
                 variants={pillVariants}
-                whileHover={{ scale: 1.05, y: -3 }}
-                whileTap={{ scale: 0.975, y: 1 }}
+                whileHover={{ scale: 1.04, y: -4 }}
+                whileTap={{ scale: 0.95, y: 2 }}
                 onClick={() => navigate(`/category/${cat.id}`)}
                 style={{
                   background: tile.bg,
-                  borderRadius: '20px',
+                  borderRadius: '24px',
                   padding: '0 24px',
                   textAlign: 'center',
                   cursor: 'pointer',
                   border: isNextCategory
                     ? `2px solid ${SAFFRON}BB`
-                    : isHero ? '1.5px solid rgba(15, 107, 153, 0.18)' : '1px solid rgba(15, 107, 153, 0.08)',
+                    : isHero ? '1.5px solid rgba(15, 107, 153, 0.20)' : '1.5px solid rgba(15, 107, 153, 0.10)',
                   boxShadow: [
                     isNextCategory ? `0 0 16px 0px ${SAFFRON}45, 0 0 32px -4px ${SAFFRON}25` : '',
                     isHero
-                      ? '0 8px 28px rgba(15, 107, 153, 0.14), 0 3px 8px rgba(15, 107, 153, 0.07), inset 0 2px 0 rgba(255, 255, 255, 0.50), inset 0 -2px 4px rgba(15, 107, 153, 0.06)'
-                      : '0 4px 16px rgba(15, 107, 153, 0.09), 0 1px 4px rgba(15, 107, 153, 0.05), inset 0 2px 0 rgba(255, 255, 255, 0.45), inset 0 -2px 4px rgba(15, 107, 153, 0.05)',
+                      ? '0 8px 24px rgba(15, 107, 153, 0.16), 0 3px 8px rgba(15, 107, 153, 0.08), inset 0 2px 0 rgba(255, 255, 255, 0.55), inset 0 -2px 4px rgba(15, 107, 153, 0.06)'
+                      : '0 6px 20px rgba(15, 107, 153, 0.12), 0 2px 6px rgba(15, 107, 153, 0.06), inset 0 2px 0 rgba(255, 255, 255, 0.50), inset 0 -2px 4px rgba(15, 107, 153, 0.05)',
                   ].filter(Boolean).join(', '),
                   whiteSpace: 'normal' as const,
-                  width: '86%',
-                  minHeight: isHero ? '72px' : '60px',
+                  width: '88%',
+                  minHeight: isHero ? '96px' : '84px',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
