@@ -78,8 +78,9 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
                     padding: '20px 16px',
                     textAlign: 'center',
                     cursor: 'pointer',
-                    aspectRatio: '1 / 1',
-                    ...(isLastOdd ? { gridColumn: '1 / -1', justifySelf: 'center', width: '65%' } : {}),
+                    ...(isLastOdd
+                      ? { gridColumn: '1 / -1', justifySelf: 'center', width: '65%', padding: '22px 20px' }
+                      : { aspectRatio: '1 / 1' }),
                     border: isNextCategory
                       ? `2.5px solid ${SAFFRON}CC`
                       : '1px solid hsla(66, 25%, 65%, 0.18)',
