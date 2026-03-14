@@ -15,11 +15,11 @@ const DIARY_TEXT = '#240046';
 const SAFFRON = '#DA9D1D';
 
 const ORDERED_TILES = [
-  { id: 'jma-att-hora-till', bg: '#F9EBEE', text: ACCENT_COLOR },
-  { id: 'jma-nar-vi-jamfor-oss', bg: '#F5DDE4', text: ACCENT_COLOR },
-  { id: 'jma-nar-det-skaver', bg: '#EED0DB', text: ACCENT_COLOR },
-  { id: 'jma-att-sta-stadig', bg: '#CDBABF', text: '#5A189A' },
-  { id: 'jma-vi-i-varlden', bg: '#AC98A0', text: '#3A0A5C' },
+  { id: 'jma-att-hora-till', bg: '#F8E4EC', text: ACCENT_COLOR, sub: 'Att vara med' },
+  { id: 'jma-nar-vi-jamfor-oss', bg: '#E8C8F0', text: '#7B1FA2', sub: 'Press & prestation' },
+  { id: 'jma-nar-det-skaver', bg: '#F2D0C0', text: '#8E3A1A', sub: 'Bråk & misstag' },
+  { id: 'jma-att-sta-stadig', bg: '#C8A8D8', text: '#4A148C', sub: 'Gränser & mod' },
+  { id: 'jma-vi-i-varlden', bg: '#7E5C8E', text: '#F5F0F8', sub: 'Respekt & sanning' },
 ];
 
 const containerVariants = { hidden: {}, visible: { transition: { staggerChildren: 0.11, delayChildren: 0.4 } } };
@@ -42,7 +42,6 @@ export default function JagMedAndraProductHome({ product }: { product: ProductMa
       </motion.div>
 
       <div style={{ position: 'relative', zIndex: 1, height: '100vh', display: 'flex', flexDirection: 'column', paddingTop: '8vh', paddingRight: '5vw', paddingBottom: '80px', paddingLeft: '5vw' }}>
-        {/* Title */}
         <motion.div variants={containerVariants} initial="hidden" animate="visible" style={{ textAlign: 'center', width: '100%' }}>
           <motion.div variants={titleVariants}>
             <h1 style={{ fontFamily: "'DM Serif Display', var(--font-serif)", fontSize: 'clamp(36px, 10vw, 50px)', fontWeight: 700, color: ACCENT_COLOR, letterSpacing: '-0.01em', whiteSpace: 'nowrap', textShadow: ['0 0 24px rgba(255, 255, 255, 1)', '0 0 48px rgba(255, 255, 255, 0.7)', '0 0 80px rgba(255, 255, 255, 0.4)', '0 2px 4px rgba(0, 0, 0, 0.06)'].join(', ') }}>
@@ -55,10 +54,8 @@ export default function JagMedAndraProductHome({ product }: { product: ProductMa
           </motion.div>
         </motion.div>
 
-        {/* Spacer — illustration breathing room */}
         <div style={{ flex: 1 }} />
 
-        {/* Grid + Diary — anchored at bottom with fixed gap */}
         <motion.div variants={containerVariants} initial="hidden" animate="visible" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px', width: '100%' }}>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px', width: '100%' }}>
             {ORDERED_TILES.map((tile, index) => {
@@ -67,6 +64,7 @@ export default function JagMedAndraProductHome({ product }: { product: ProductMa
               const catProgress = progress.categoryProgress[cat.id];
               const isNextCategory = progress.nextSuggestedCategoryId === cat.id;
               const isLastOdd = index === ORDERED_TILES.length - 1 && ORDERED_TILES.length % 2 === 1;
+              const isDark = tile.bg === '#7E5C8E';
 
               return (
                 <motion.button
@@ -78,26 +76,28 @@ export default function JagMedAndraProductHome({ product }: { product: ProductMa
                   style={{
                     background: tile.bg,
                     borderRadius: '22px',
-                    padding: isLastOdd ? '20px 24px' : '24px 16px',
+                    padding: '20px 16px',
                     textAlign: 'center',
                     cursor: 'pointer',
-                    aspectRatio: isLastOdd ? 'auto' : '1 / 1',
-                    minHeight: isLastOdd ? '72px' : undefined,
-                    gridColumn: isLastOdd ? '1 / -1' : undefined,
+                    aspectRatio: '1 / 1',
+                    ...(isLastOdd ? { gridColumn: '1 / -1', justifySelf: 'center', width: 'calc(50% - 5px)' } : {}),
                     border: isNextCategory
                       ? `2.5px solid ${SAFFRON}CC`
-                      : '1px solid hsla(345, 20%, 75%, 0.25)',
+                      : isDark ? '1px solid rgba(255, 255, 255, 0.12)' : '1px solid hsla(345, 20%, 75%, 0.25)',
                     boxShadow: [
                       isNextCategory ? `0 0 18px 0px ${SAFFRON}50, 0 0 36px -4px ${SAFFRON}30` : '',
                       '0 10px 28px hsla(345, 20%, 40%, 0.14)',
                       '0 4px 10px hsla(345, 20%, 40%, 0.07)',
                       '0 1px 3px rgba(0, 0, 0, 0.04)',
-                      'inset 0 2px 0 hsla(345, 30%, 97%, 0.65)',
-                      'inset 0 -3px 8px hsla(345, 20%, 40%, 0.06)',
+                      isDark
+                        ? 'inset 0 2px 0 rgba(255, 255, 255, 0.15), inset 0 -3px 8px rgba(0, 0, 0, 0.10)'
+                        : 'inset 0 2px 0 hsla(345, 30%, 97%, 0.65), inset 0 -3px 8px hsla(345, 20%, 40%, 0.06)',
                     ].filter(Boolean).join(', '),
                     display: 'flex',
+                    flexDirection: 'column',
                     alignItems: 'center',
                     justifyContent: 'center',
+                    gap: '6px',
                     lineHeight: 1.15,
                     position: 'relative',
                   }}
@@ -110,6 +110,17 @@ export default function JagMedAndraProductHome({ product }: { product: ProductMa
                     padding: '0 2px',
                   }}>
                     {cat.title}
+                  </span>
+                  <span style={{
+                    fontSize: 'clamp(10px, 2.8vw, 12px)',
+                    fontWeight: 500,
+                    color: tile.text,
+                    opacity: isDark ? 0.7 : 0.55,
+                    letterSpacing: '0.02em',
+                    lineHeight: 1.3,
+                    padding: '0 4px',
+                  }}>
+                    {tile.sub}
                   </span>
                   {catProgress && catProgress.completed > 0 && (
                     <CategoryProgressRing completed={catProgress.completed} total={catProgress.total} color={tile.text} />

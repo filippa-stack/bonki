@@ -15,9 +15,9 @@ const DIARY_TEXT = '#3E4421';
 const SAFFRON = '#DA9D1D';
 
 const ORDERED_TILES = [
-  { id: 'jim-mina-kanslor', bg: '#D9E0A3', text: '#3E4124' },
-  { id: 'jim-starka-kanslor', bg: '#A8AD82', text: '#3E4124' },
-  { id: 'jim-stora-kanslor', bg: '#8E944F', text: '#3E4124' },
+  { id: 'jim-mina-kanslor', bg: '#D9E0A3', text: '#3E4124', sub: 'Känslor som finns i dig' },
+  { id: 'jim-starka-kanslor', bg: '#A8AD82', text: '#3E4124', sub: 'Svåra men viktiga' },
+  { id: 'jim-stora-kanslor', bg: '#8E944F', text: '#3E4124', sub: 'Vem du är på riktigt' },
 ];
 
 const containerVariants = { hidden: {}, visible: { transition: { staggerChildren: 0.11, delayChildren: 0.4 } } };
@@ -42,7 +42,6 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
       </motion.div>
 
       <div style={{ position: 'relative', zIndex: 1, height: '100vh', display: 'flex', flexDirection: 'column', paddingTop: '8vh', paddingRight: '5vw', paddingBottom: '80px', paddingLeft: '5vw' }}>
-        {/* Title — fixed at top */}
         <motion.div variants={containerVariants} initial="hidden" animate="visible" style={{ textAlign: 'center', width: '100%' }}>
           <motion.div variants={titleVariants}>
             <h1 style={{ fontFamily: "'DM Serif Display', var(--font-serif)", fontSize: 'clamp(36px, 10vw, 50px)', fontWeight: 700, color: ACCENT_COLOR, letterSpacing: '-0.01em', whiteSpace: 'nowrap', textShadow: ['0 0 24px rgba(255, 255, 255, 1)', '0 0 48px rgba(255, 255, 255, 0.7)', '0 0 80px rgba(255, 255, 255, 0.4)', '0 2px 4px rgba(0, 0, 0, 0.06)'].join(', ') }}>
@@ -55,10 +54,8 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
           </motion.div>
         </motion.div>
 
-        {/* Spacer — illustration breathing room */}
         <div style={{ flex: 1 }} />
 
-        {/* Grid + Diary — anchored at bottom with fixed gap */}
         <motion.div variants={containerVariants} initial="hidden" animate="visible" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px', width: '100%' }}>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px', width: '100%' }}>
             {ORDERED_TILES.map((tile, index) => {
@@ -78,12 +75,11 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
                   style={{
                     background: tile.bg,
                     borderRadius: '22px',
-                    padding: isLastOdd ? '20px 24px' : '24px 16px',
+                    padding: '20px 16px',
                     textAlign: 'center',
                     cursor: 'pointer',
-                    aspectRatio: isLastOdd ? 'auto' : '1 / 1',
-                    minHeight: isLastOdd ? '72px' : undefined,
-                    gridColumn: isLastOdd ? '1 / -1' : undefined,
+                    aspectRatio: '1 / 1',
+                    ...(isLastOdd ? { gridColumn: '1 / -1', justifySelf: 'center', width: 'calc(50% - 5px)' } : {}),
                     border: isNextCategory
                       ? `2.5px solid ${SAFFRON}CC`
                       : '1px solid hsla(66, 25%, 65%, 0.18)',
@@ -96,8 +92,10 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
                       'inset 0 -3px 8px hsla(66, 25%, 30%, 0.06)',
                     ].filter(Boolean).join(', '),
                     display: 'flex',
+                    flexDirection: 'column',
                     alignItems: 'center',
                     justifyContent: 'center',
+                    gap: '6px',
                     lineHeight: 1.15,
                     position: 'relative',
                   }}
@@ -110,6 +108,17 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
                     padding: '0 2px',
                   }}>
                     {cat.title}
+                  </span>
+                  <span style={{
+                    fontSize: 'clamp(10px, 2.8vw, 12px)',
+                    fontWeight: 500,
+                    color: tile.text,
+                    opacity: 0.55,
+                    letterSpacing: '0.02em',
+                    lineHeight: 1.3,
+                    padding: '0 4px',
+                  }}>
+                    {tile.sub}
                   </span>
                   {catProgress && catProgress.completed > 0 && (
                     <CategoryProgressRing completed={catProgress.completed} total={catProgress.total} color={tile.text} />

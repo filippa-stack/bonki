@@ -14,11 +14,11 @@ const DIARY_TEXT = '#2D4F32';
 const SAFFRON = '#DA9D1D';
 
 const ORDERED_TILES = [
-  { id: 'jiv-min-vardag', bg: '#CDE6D2', text: '#3E4A40' },
-  { id: 'jiv-vem-jag-ar', bg: '#F7F2ED', text: '#3E4A40' },
-  { id: 'jiv-jag-och-andra', bg: '#E5D5C8', text: '#3E4A40' },
-  { id: 'jiv-jag-i-samhallet', bg: '#BDD3C3', text: '#3E4A40' },
-  { id: 'jiv-det-stora-sammanhanget', bg: '#8B948D', text: '#F5F2ED' },
+  { id: 'jiv-min-vardag', bg: '#C2E6C8', text: '#2A4A2E', sub: 'Hälsa & självkänsla' },
+  { id: 'jiv-vem-jag-ar', bg: '#F5EBD8', text: '#4A3A20', sub: 'Identitet & frihet' },
+  { id: 'jiv-jag-och-andra', bg: '#D8C0AE', text: '#3E2E1E', sub: 'Prata & förstå' },
+  { id: 'jiv-jag-i-samhallet', bg: '#A8CEB0', text: '#1E3A24', sub: 'Normer & ansvar' },
+  { id: 'jiv-det-stora-sammanhanget', bg: '#5E7A62', text: '#F0EDE8', sub: 'Mening & existens' },
 ];
 
 const containerVariants = { hidden: {}, visible: { transition: { staggerChildren: 0.11, delayChildren: 0.4 } } };
@@ -41,7 +41,6 @@ export default function JagIVarldenProductHome({ product }: { product: ProductMa
       </motion.div>
 
       <div style={{ position: 'relative', zIndex: 1, height: '100vh', display: 'flex', flexDirection: 'column', paddingTop: '8vh', paddingRight: '5vw', paddingBottom: '80px', paddingLeft: '5vw' }}>
-        {/* Title */}
         <motion.div variants={containerVariants} initial="hidden" animate="visible" style={{ textAlign: 'center', width: '100%' }}>
           <motion.div variants={titleVariants}>
             <h1 style={{ fontFamily: "'DM Serif Display', var(--font-serif)", fontSize: 'clamp(36px, 10vw, 50px)', fontWeight: 700, color: ACCENT_COLOR, letterSpacing: '-0.01em', whiteSpace: 'nowrap', textShadow: ['0 0 24px rgba(255, 255, 255, 1)', '0 0 48px rgba(255, 255, 255, 0.7)', '0 0 80px rgba(255, 255, 255, 0.4)', '0 2px 4px rgba(0, 0, 0, 0.06)'].join(', ') }}>
@@ -54,10 +53,8 @@ export default function JagIVarldenProductHome({ product }: { product: ProductMa
           </motion.div>
         </motion.div>
 
-        {/* Spacer */}
         <div style={{ flex: 1 }} />
 
-        {/* Grid + Diary */}
         <motion.div variants={containerVariants} initial="hidden" animate="visible" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px', width: '100%' }}>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px', width: '100%' }}>
             {ORDERED_TILES.map((tile, index) => {
@@ -66,7 +63,7 @@ export default function JagIVarldenProductHome({ product }: { product: ProductMa
               const catProgress = progress.categoryProgress[cat.id];
               const isNextCategory = progress.nextSuggestedCategoryId === cat.id;
               const isLastOdd = index === ORDERED_TILES.length - 1 && ORDERED_TILES.length % 2 === 1;
-              const isDark = tile.bg === '#8B948D';
+              const isDark = tile.bg === '#5E7A62';
 
               return (
                 <motion.button
@@ -78,12 +75,11 @@ export default function JagIVarldenProductHome({ product }: { product: ProductMa
                   style={{
                     background: tile.bg,
                     borderRadius: '22px',
-                    padding: isLastOdd ? '20px 24px' : '24px 16px',
+                    padding: '20px 16px',
                     textAlign: 'center',
                     cursor: 'pointer',
-                    aspectRatio: isLastOdd ? 'auto' : '1 / 1',
-                    minHeight: isLastOdd ? '72px' : undefined,
-                    gridColumn: isLastOdd ? '1 / -1' : undefined,
+                    aspectRatio: '1 / 1',
+                    ...(isLastOdd ? { gridColumn: '1 / -1', justifySelf: 'center', width: 'calc(50% - 5px)' } : {}),
                     border: isNextCategory
                       ? `2.5px solid ${SAFFRON}CC`
                       : isDark ? '1px solid rgba(255, 255, 255, 0.12)' : '1px solid rgba(61, 122, 69, 0.12)',
@@ -97,20 +93,33 @@ export default function JagIVarldenProductHome({ product }: { product: ProductMa
                         : 'inset 0 2px 0 rgba(255, 255, 255, 0.65), inset 0 -3px 8px rgba(61, 122, 69, 0.06)',
                     ].filter(Boolean).join(', '),
                     display: 'flex',
+                    flexDirection: 'column',
                     alignItems: 'center',
                     justifyContent: 'center',
+                    gap: '6px',
                     lineHeight: 1.15,
                     position: 'relative',
                   }}
                 >
                   <span style={{
                     fontFamily: "'DM Serif Display', var(--font-serif)",
-                    fontSize: isLastOdd ? 'clamp(15px, 4vw, 19px)' : 'clamp(17px, 4.8vw, 22px)',
+                    fontSize: 'clamp(17px, 4.8vw, 22px)',
                     fontWeight: 400,
                     color: tile.text,
                     padding: '0 2px',
                   }}>
                     {cat.title}
+                  </span>
+                  <span style={{
+                    fontSize: 'clamp(10px, 2.8vw, 12px)',
+                    fontWeight: 500,
+                    color: tile.text,
+                    opacity: isDark ? 0.7 : 0.55,
+                    letterSpacing: '0.02em',
+                    lineHeight: 1.3,
+                    padding: '0 4px',
+                  }}>
+                    {tile.sub}
                   </span>
                   {catProgress && catProgress.completed > 0 && (
                     <CategoryProgressRing completed={catProgress.completed} total={catProgress.total} color={tile.text} />
