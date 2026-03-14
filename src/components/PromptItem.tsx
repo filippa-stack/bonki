@@ -271,8 +271,8 @@ export default function PromptItem({ prompt, index, sectionType, preamble, ancho
                         width: 'clamp(90px, 34vw, 140px)',
                         height: 'auto',
                         objectFit: 'contain',
-                        opacity: 0.38,
-                        filter: 'saturate(0.85) brightness(1.0)',
+                        opacity: 0.35,
+                        filter: 'saturate(1.0) brightness(1.05)',
                         userSelect: 'none',
                         pointerEvents: 'none',
                       }}
