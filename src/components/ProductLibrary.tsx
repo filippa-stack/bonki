@@ -316,7 +316,7 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
           style={{
             fontFamily: "'DM Serif Display', serif",
             fontSize: wide ? '28px' : '22px',
-            fontWeight: 400,
+            fontWeight: 700,
             lineHeight: 1.15,
             color: accentColor || 'var(--text-library)',
             letterSpacing: '-0.01em',
