@@ -79,7 +79,7 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
                     textAlign: 'center',
                     cursor: 'pointer',
                     aspectRatio: '1 / 1',
-                    ...(isLastOdd ? { gridColumn: '1 / -1', justifySelf: 'center', width: 'calc(50% - 5px)' } : {}),
+                    ...(isLastOdd ? { gridColumn: '1 / -1', justifySelf: 'center', width: '65%' } : {}),
                     border: isNextCategory
                       ? `2.5px solid ${SAFFRON}CC`
                       : '1px solid hsla(66, 25%, 65%, 0.18)',
