@@ -197,7 +197,7 @@ export default function SessionStepReflection({
               onChange={(e) => handleChange(e.target.value)}
               onFocus={() => setIsFocused(true)}
               onBlur={() => setIsFocused(false)}
-              placeholder=""
+              placeholder="Skriv här…"
               inputMode="text"
               autoCorrect="on"
               autoCapitalize="sentences"
@@ -215,7 +215,7 @@ export default function SessionStepReflection({
                 backgroundColor: isFocused || hasFill
                   ? 'hsla(36, 20%, 97%, 0.12)'
                   : 'hsla(36, 18%, 96%, 0.06)',
-                border: 'none',
+                border: '1px solid hsla(36, 20%, 80%, 0.18)',
                 borderRadius: '12px',
                 padding: '20px 24px',
                 textAlign: 'center',
@@ -226,6 +226,28 @@ export default function SessionStepReflection({
               }}
             />
           </div>
+          {/* Save indicator */}
+          <AnimatePresence>
+            {saveIndicator === 'saved' && (
+              <motion.p
+                initial={{ opacity: 0, y: -4 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.25 }}
+                style={{
+                  fontFamily: 'var(--font-sans)',
+                  fontSize: '11px',
+                  color: 'var(--text-secondary)',
+                  opacity: 0.55,
+                  textAlign: 'center',
+                  marginTop: '8px',
+                  letterSpacing: '0.02em',
+                }}
+              >
+                ✓ Sparad
+              </motion.p>
+            )}
+          </AnimatePresence>
         </motion.div>
       )}
 
