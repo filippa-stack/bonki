@@ -101,6 +101,8 @@ export default function PromptItem({ prompt, index, sectionType, preamble, ancho
     );
   };
 
+  const hasIllustration = !!backgroundImageUrl;
+
   return (
     <div
       className="rounded-card overflow-hidden"
@@ -197,8 +199,7 @@ export default function PromptItem({ prompt, index, sectionType, preamble, ancho
             </div>
           </motion.div>
         ) : (
-          /* ── Default: centered question text with organic frame ── */
-          /* Long scenario texts (>120 chars) switch to left-aligned, smaller type for readability */
+          /* ── Default: centered question text with soft cushion ── */
           (() => {
             const isLongText = prompt.text.length > 120 && sectionType === 'scenario';
             return (
@@ -213,38 +214,21 @@ export default function PromptItem({ prompt, index, sectionType, preamble, ancho
                 }}
                 className={`w-full ${preamble ? 'mt-10' : ''}`}
                 style={{
-                  background: 'radial-gradient(ellipse at 50% 40%, var(--question-cloud-tint, transparent) 0%, transparent 75%)',
+                  /* Soft accent cushion behind question */
+                  background: hasIllustration
+                    ? 'radial-gradient(ellipse 90% 70% at 50% 38%, var(--question-cloud-tint, hsla(200, 20%, 50%, 0.06)) 0%, transparent 100%)'
+                    : 'radial-gradient(ellipse at 50% 40%, var(--question-cloud-tint, transparent) 0%, transparent 75%)',
                   borderRadius: '28px',
-                  padding: isLongText ? '28px 20px' : '36px 24px',
+                  padding: isLongText ? '28px 20px 20px' : '32px 20px 16px',
                   display: 'flex',
                   flexDirection: 'column',
                   alignItems: isLongText ? 'flex-start' : 'center',
-                  gap: isLongText ? '12px' : '16px',
+                  gap: isLongText ? '12px' : '8px',
                   position: 'relative',
-                  overflow: 'hidden',
+                  overflow: 'visible',
                 }}
               >
-                {/* Illustration watermark — sits below question text, gentle presence */}
-                {backgroundImageUrl && (
-                  <div
-                    aria-hidden
-                    style={{
-                      position: 'absolute',
-                      bottom: '-12px',
-                      left: '50%',
-                      transform: 'translateX(-50%)',
-                      width: '55%',
-                      height: '55%',
-                      backgroundImage: `url(${backgroundImageUrl})`,
-                      backgroundSize: 'contain',
-                      backgroundPosition: 'center bottom',
-                      backgroundRepeat: 'no-repeat',
-                      opacity: 0.09,
-                      pointerEvents: 'none',
-                      filter: 'saturate(0.4) brightness(1.05)',
-                    }}
-                  />
-                )}
+                {/* Question text */}
                 {prompt.text.split('\n').filter(p => p.trim() !== '').map((para, i) => (
                   <p
                     key={i}
@@ -258,18 +242,50 @@ export default function PromptItem({ prompt, index, sectionType, preamble, ancho
                       ...gravity,
                       lineHeight: isLongText ? 1.5 : gravity.lineHeight,
                       fontWeight: isLongText ? 400 : gravity.fontWeight,
+                      position: 'relative',
+                      zIndex: 1,
                     }}
                   >
                     {para}
                   </p>
                 ))}
+
+                {/* Illustration — visible companion below the question */}
+                {backgroundImageUrl && (
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.92 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.8, delay: 0.3, ease: enterEase }}
+                    style={{
+                      width: '100%',
+                      display: 'flex',
+                      justifyContent: 'center',
+                      marginTop: '8px',
+                    }}
+                  >
+                    <img
+                      src={backgroundImageUrl}
+                      alt=""
+                      draggable={false}
+                      style={{
+                        width: 'clamp(100px, 38vw, 160px)',
+                        height: 'auto',
+                        objectFit: 'contain',
+                        opacity: 0.18,
+                        filter: 'saturate(0.5) brightness(1.05)',
+                        userSelect: 'none',
+                        pointerEvents: 'none',
+                      }}
+                    />
+                  </motion.div>
+                )}
               </motion.div>
             );
           })()
         )}
 
-        {/* ── Situational anchor — shown directly as gentle encouragement ── */}
-        {anchor && (
+        {/* Anchor text hidden for kids products (which have illustrations) */}
+        {anchor && !hasIllustration && (
           <motion.p
             initial={{ opacity: 0, y: 6 }}
             animate={{ opacity: 1, y: 0 }}
