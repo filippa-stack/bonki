@@ -755,6 +755,12 @@ h1, h2, h3,
   50% { transform: scale(1.015); }
 }
 
+/* ── Kids tile edge-highlight breathing ── */
+@keyframes edge-highlight-breathe {
+  0%, 100% { opacity: 0.45; }
+  50% { opacity: 0.75; }
+}
+
 /* ── Lobby watermark breathing — organic opacity oscillation ── */
 @keyframes lobby-breathe {
   0%, 100% { opacity: 0.40; }
