@@ -15,9 +15,9 @@ const SAFFRON = '#DA9D1D';
 
 const ORDERED_TILES = [
   { id: 'jiv-min-vardag', bg: '#C2E6C8', text: '#2A4A2E', sub: 'Det som fyller dina dagar' },
-  { id: 'jiv-vem-jag-ar', bg: '#F5EBD8', text: '#4A3A20', sub: 'Det som förändras just nu' },
-  { id: 'jiv-jag-och-andra', bg: '#D8C0AE', text: '#3E2E1E', sub: 'Hur vi påverkar varandra' },
-  { id: 'jiv-jag-i-samhallet', bg: '#A8CEB0', text: '#1E3A24', sub: 'Normer, rättvisa och din röst' },
+  { id: 'jiv-vem-jag-ar', bg: '#D8E8C0', text: '#3A4E28', sub: 'Det som förändras just nu' },
+  { id: 'jiv-jag-och-andra', bg: '#A8CEB0', text: '#1E3A24', sub: 'Hur vi påverkar varandra' },
+  { id: 'jiv-jag-i-samhallet', bg: '#7EAE88', text: '#1A3020', sub: 'Normer, rättvisa och din röst' },
   { id: 'jiv-det-stora-sammanhanget', bg: '#5E7A62', text: '#F0EDE8', sub: 'Bortom det du ser' },
 ];
 
