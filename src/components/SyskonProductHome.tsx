@@ -67,7 +67,8 @@ export default function SyskonProductHome({ product }: { product: ProductManifes
                   whileTap={{ scale: 0.94, y: 3 }}
                   onClick={() => navigate(`/category/${cat.id}`)}
                   style={{
-                    background: tile.bg,
+                    backgroundImage: `linear-gradient(135deg, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0) 50%, rgba(0,0,0,0.04) 100%)`,
+                    backgroundColor: tile.bg,
                     borderRadius: '22px',
                     padding: '20px 16px',
                     textAlign: 'center',
@@ -78,11 +79,11 @@ export default function SyskonProductHome({ product }: { product: ProductManifes
                       : '1px solid rgba(77, 144, 142, 0.12)',
                     boxShadow: [
                       isNextCategory ? `0 0 18px 0px ${SAFFRON}50, 0 0 36px -4px ${SAFFRON}30` : '',
-                      '0 10px 28px rgba(39, 76, 94, 0.14)',
-                      '0 4px 10px rgba(39, 76, 94, 0.07)',
-                      '0 1px 3px rgba(0, 0, 0, 0.04)',
-                      'inset 0 2px 0 rgba(255, 255, 255, 0.65)',
-                      'inset 0 -3px 8px rgba(39, 76, 94, 0.07)',
+                      '0 10px 28px rgba(39, 76, 94, 0.16)',
+                      '0 4px 10px rgba(39, 76, 94, 0.09)',
+                      '0 1px 3px rgba(0, 0, 0, 0.05)',
+                      'inset 0 3px 6px rgba(255, 255, 255, 0.5)',
+                      'inset 0 -4px 10px rgba(39, 76, 94, 0.10)',
                     ].filter(Boolean).join(', '),
                     display: 'flex',
                     flexDirection: 'column',
