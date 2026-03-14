@@ -553,13 +553,13 @@ function StillUsCategoryView({
                 <span
                   style={{
                     fontFamily: "'DM Serif Display', var(--font-serif)",
-                    fontSize: '24px',
+                    fontSize: '28px',
                     fontWeight: 400,
                     color: HERITAGE_GOLD,
-                    opacity: 0.35,
+                    opacity: 0.55,
                     lineHeight: 1,
                     flexShrink: 0,
-                    width: '28px',
+                    width: '32px',
                     textAlign: 'center',
                   }}
                 >
@@ -573,7 +573,7 @@ function StillUsCategoryView({
                       fontFamily: "'DM Serif Display', var(--font-serif)",
                       fontSize: 'clamp(19px, 5vw, 22px)',
                       fontWeight: 400,
-                      color: tileText,
+                      color: '#F5EFE6',
                       lineHeight: 1.25,
                       display: 'block',
                     }}
@@ -584,13 +584,13 @@ function StillUsCategoryView({
                     <span
                       style={{
                         fontFamily: 'var(--font-sans)',
-                        fontSize: '12px',
+                        fontSize: '13px',
                         fontWeight: 400,
-                        color: tileText,
-                        opacity: 0.6,
+                        color: '#F5EFE6',
+                        opacity: 0.75,
                         lineHeight: 1.4,
                         display: 'block',
-                        marginTop: '4px',
+                        marginTop: '5px',
                       }}
                     >
                       {card.subtitle}
