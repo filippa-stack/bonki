@@ -232,7 +232,7 @@ export default function CircadianMenu({
               style={{
                 display: 'grid',
                 gridTemplateColumns: '1fr 1fr 1fr',
-                gap: '5px',
+                gap: '4px',
               }}
             >
               {group.categories.map((category) => {
