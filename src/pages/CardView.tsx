@@ -1670,6 +1670,7 @@ export default function CardView() {
                 isReflectionStep={isReflectionStep}
                 isExerciseStep={isExerciseStep}
                 showBackArrow={false}
+                backgroundImageUrl={pronounMode === 'du' ? cardImageUrl : null}
               />
             </motion.div>
           </AnimatePresence>
