@@ -93,7 +93,6 @@ export default function GorTillsammansOverlay({ onDismiss }: Props) {
         <button
           onClick={handleDismiss}
           className="cta-primary"
-          style={{ width: '60vw', maxWidth: '280px' }}
         >
           Vi förstår
         </button>

@@ -181,7 +181,6 @@ export default function FeedbackSheet({ sessionId, coupleSpaceId, show, onDismis
                 className="cta-primary"
                 style={{
                   opacity: submitting ? 0.6 : 1,
-                  width: '100%',
                 }}
               >
                 Skicka
