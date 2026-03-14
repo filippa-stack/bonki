@@ -20,7 +20,7 @@ export const categories: Category[] = [
   },
   {
     id: 'category-8',
-    title: 'Att hålla kvar varandra',
+    title: 'Hur ni bär varandra',
     entryLine: 'Även när det vore enklare att släppa.',
     description: 'Enighet, utrymme och sårbarhet',
     cardCount: 3,
