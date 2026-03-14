@@ -293,7 +293,7 @@ export default function Home() {
           <>
             {/* ZONE A — Identity — compressed closer to header */}
             <motion.div
-              className="pt-14 px-6 text-center"
+              className="pt-8 px-6 text-center"
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
@@ -383,7 +383,7 @@ export default function Home() {
             </motion.div>
 
             {/* ── Circadian Menu — 9 progressive disclosure categories ── */}
-            <div className="px-2" style={{ marginTop: '72px', paddingBottom: '64px' }}>
+            <div className="px-2" style={{ marginTop: '40px', paddingBottom: '32px' }}>
               <CircadianMenu
                 categories={sortedCategories}
                 cards={cards}
@@ -407,14 +407,14 @@ export default function Home() {
                     color: 'var(--accent-text)',
                     opacity: 0.45,
                     textAlign: 'center',
-                    marginTop: '40px',
+                    marginTop: '24px',
                   }}>
                     Samtalet börjar här.
                   </p>
                 );
                 const isAllDone = fullyCompletedCount >= totalCategories;
                 return (
-                  <div style={{ textAlign: 'center', marginTop: '32px' }}>
+                  <div style={{ textAlign: 'center', marginTop: '20px' }}>
                     <p style={{
                       fontFamily: 'var(--font-sans)',
                       fontSize: '12px',
