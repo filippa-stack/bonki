@@ -1733,7 +1733,7 @@ export default function CardView() {
         variant="immersive"
         isDarkSurface={isReflectionStep || currentStageType === 'scenario' || isExerciseStep}
         onImmersiveBack={isLive ? undefined : () => navigate(exitBackTo)}
-        onLeaveSession={isLive ? () => setShowLeaveConfirm(true) : undefined}
+        onLeaveSession={isLive ? () => { toast('Samtalet sparas – ni kan fortsätta när ni vill', { duration: 3000 }); navigate(exitBackTo); } : undefined}
       />
 
       {/* Floating illustration peek — kids/family products only */}
@@ -2131,7 +2131,8 @@ export default function CardView() {
                           if (product && product.id !== 'still_us') {
                             navigate(exitBackTo);
                           } else {
-                            setShowLeaveConfirm(true);
+                            toast('Samtalet sparas – ni kan fortsätta när ni vill', { duration: 3000 });
+                            navigate(exitBackTo);
                           }
                         }
                       }}
@@ -2194,26 +2195,6 @@ export default function CardView() {
       )}
     </AnimatePresence>
 
-    {/* Leave session confirmation */}
-    <AlertDialog open={showLeaveConfirm} onOpenChange={setShowLeaveConfirm}>
-      <AlertDialogContent>
-        <AlertDialogHeader>
-          <AlertDialogTitle className="font-serif text-lg">Avsluta samtalet?</AlertDialogTitle>
-          <AlertDialogDescription className="text-sm text-muted-foreground leading-relaxed pt-1">
-            {uiText.leaveConfirmDesc}
-          </AlertDialogDescription>
-        </AlertDialogHeader>
-        <AlertDialogFooter className="mt-2">
-          <AlertDialogCancel>Fortsätt</AlertDialogCancel>
-          <AlertDialogAction
-            onClick={() => navigate(exitBackTo)}
-            className="bg-destructive text-white hover:bg-destructive/90"
-          >
-            Avsluta
-          </AlertDialogAction>
-        </AlertDialogFooter>
-      </AlertDialogContent>
-    </AlertDialog>
     </>
   );
 }
