@@ -490,17 +490,17 @@ function StillUsCategoryView({
           }}
         />
 
-        {/* Card tiles — signature glassmorphic grid */}
+        {/* Card tiles — large vertical memory cards */}
         <motion.div
           initial="hidden"
           animate="visible"
-          variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.07, delayChildren: 0.2 } } }}
+          variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.09, delayChildren: 0.2 } } }}
           style={{
-            display: 'grid',
-            gridTemplateColumns: cards.length <= 2 ? '1fr 1fr' : '1fr 1fr 1fr',
-            gap: '4px',
-            paddingLeft: '8px',
-            paddingRight: '8px',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '12px',
+            paddingLeft: '20px',
+            paddingRight: '20px',
           }}
         >
           {cards.map((card, index) => {
@@ -518,19 +518,19 @@ function StillUsCategoryView({
                   hidden: { opacity: 0, y: 22, scale: 0.94 },
                   visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.55, ease: EASE } },
                 }}
-                whileHover={{ scale: 1.04, y: -3 }}
-                whileTap={{ scale: 0.93, y: 3 }}
+                whileHover={{ scale: 1.02, y: -2 }}
+                whileTap={{ scale: 0.97, y: 2 }}
                 onClick={() => navigate(isReturningUser ? `/card/${card.id}` : `/preview/${card.id}`)}
                 style={{
                   position: 'relative',
+                  width: '100%',
                   background: tileFill,
                   backdropFilter: 'blur(24px) saturate(1.3)',
                   WebkitBackdropFilter: 'blur(24px) saturate(1.3)',
-                  borderRadius: '22px',
-                  padding: '18px 10px 16px',
-                  textAlign: 'center',
+                  borderRadius: '24px',
+                  padding: '28px 24px',
+                  textAlign: 'left',
                   cursor: 'pointer',
-                  aspectRatio: '1 / 1',
                   border: isNextSuggested && !allCompleted
                     ? `2px solid ${SAFFRON}88`
                     : `1px solid rgba(255, 255, 255, 0.15)`,
@@ -543,76 +543,67 @@ function StillUsCategoryView({
                     `inset 0 -3px 8px ${tileColor}25`,
                   ].filter(Boolean).join(', '),
                   display: 'flex',
-                  flexDirection: 'column',
                   alignItems: 'center',
-                  justifyContent: 'center',
-                  gap: '4px',
-                  lineHeight: 1.15,
+                  gap: '16px',
                   overflow: 'hidden',
-                  opacity: isCompleted ? 0.65 : 1,
+                  opacity: isCompleted ? 0.6 : 1,
                 }}
               >
                 {/* Sequence number */}
                 <span
                   style={{
-                    position: 'absolute',
-                    top: '8px',
-                    left: '10px',
-                    fontFamily: 'var(--font-serif)',
-                    fontSize: '10px',
-                    fontWeight: 500,
+                    fontFamily: "'DM Serif Display', var(--font-serif)",
+                    fontSize: '24px',
+                    fontWeight: 400,
                     color: HERITAGE_GOLD,
-                    opacity: 0.45,
+                    opacity: 0.35,
                     lineHeight: 1,
+                    flexShrink: 0,
+                    width: '28px',
+                    textAlign: 'center',
                   }}
                 >
                   {index + 1}
                 </span>
 
-                {/* Status badge */}
-                {isNextSuggested && !allCompleted && (
-                  <div style={{ position: 'absolute', top: '6px', right: '6px', zIndex: 2 }}>
-                    <CardStatusBadge variant="next" mode="dark" />
-                  </div>
-                )}
-
-                {/* Title */}
-                <span
-                  style={{
-                    fontFamily: "'DM Serif Display', var(--font-serif)",
-                    fontSize: 'clamp(15px, 4.2vw, 18px)',
-                    fontWeight: 400,
-                    color: tileText,
-                    padding: '0 2px',
-                    lineHeight: 1.2,
-                  }}
-                >
-                  {card.title}
-                </span>
-
-                {/* Subtitle */}
-                {card.subtitle && (
+                {/* Text content */}
+                <div style={{ flex: 1, minWidth: 0 }}>
                   <span
                     style={{
-                      fontFamily: 'var(--font-sans)',
-                      fontSize: '9px',
+                      fontFamily: "'DM Serif Display', var(--font-serif)",
+                      fontSize: 'clamp(19px, 5vw, 22px)',
                       fontWeight: 400,
                       color: tileText,
-                      opacity: 0.65,
-                      lineHeight: 1.3,
-                      padding: '0 4px',
+                      lineHeight: 1.25,
+                      display: 'block',
                     }}
                   >
-                    {card.subtitle}
+                    {card.title}
                   </span>
-                )}
+                  {card.subtitle && (
+                    <span
+                      style={{
+                        fontFamily: 'var(--font-sans)',
+                        fontSize: '12px',
+                        fontWeight: 400,
+                        color: tileText,
+                        opacity: 0.6,
+                        lineHeight: 1.4,
+                        display: 'block',
+                        marginTop: '4px',
+                      }}
+                    >
+                      {card.subtitle}
+                    </span>
+                  )}
+                </div>
 
-                {/* Completed indicator */}
-                {isCompleted && (
-                  <span style={{ position: 'absolute', bottom: '8px', left: '50%', transform: 'translateX(-50%)' }}>
-                    <CardStatusBadge variant="completed" mode="dark" />
-                  </span>
-                )}
+                {/* Status */}
+                <div style={{ flexShrink: 0 }}>
+                  {isCompleted && <CardStatusBadge variant="completed" mode="dark" />}
+                  {isInProgress && <CardStatusBadge variant="inProgress" mode="dark" />}
+                  {isNextSuggested && !allCompleted && <CardStatusBadge variant="next" mode="dark" />}
+                </div>
               </motion.button>
             );
           })}
