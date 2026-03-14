@@ -41,9 +41,9 @@ export default function JagMedAndraProductHome({ product }: { product: ProductMa
         <img src={nyckelpiganImage} alt="" style={{ width: '100%', height: '100%', objectFit: 'contain', opacity: 0.28, transform: 'rotate(-18deg)' }} />
       </motion.div>
 
-      <div style={{ position: 'relative', zIndex: 1, minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start', paddingTop: '15vh', paddingRight: '5vw', paddingBottom: '120px', paddingLeft: '5vw' }}>
+      <div style={{ position: 'relative', zIndex: 1, minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start', paddingTop: '8vh', paddingRight: '5vw', paddingBottom: '120px', paddingLeft: '5vw' }}>
         <motion.div variants={containerVariants} initial="hidden" animate="visible" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px', width: '100%' }}>
-          <motion.div variants={titleVariants} style={{ textAlign: 'center', marginBottom: '2.5vh', width: '100%' }}>
+          <motion.div variants={titleVariants} style={{ textAlign: 'center', marginBottom: '1.5vh', width: '100%' }}>
             <h1 style={{ fontFamily: "'DM Serif Display', var(--font-serif)", fontSize: 'clamp(36px, 10vw, 50px)', fontWeight: 700, color: ACCENT_COLOR, letterSpacing: '-0.01em', whiteSpace: 'nowrap', textShadow: ['0 0 24px rgba(255, 255, 255, 1)', '0 0 48px rgba(255, 255, 255, 0.7)', '0 0 80px rgba(255, 255, 255, 0.4)', '0 2px 4px rgba(0, 0, 0, 0.06)'].join(', ') }}>
               Jag med andra
             </h1>
@@ -112,9 +112,6 @@ export default function JagMedAndraProductHome({ product }: { product: ProductMa
             })}
           </div>
 
-          <motion.p variants={pillVariants} className="font-serif" style={{ fontSize: 'clamp(14px, 3.8vw, 16px)', fontStyle: 'italic', color: ACCENT_COLOR, opacity: 0.6, textAlign: 'center', lineHeight: 1.5, marginTop: '2.5vh', maxWidth: '85%', textShadow: '0 0 12px rgba(255,255,255,0.8)' }}>
-            Välj det som känns rätt just nu.
-          </motion.p>
 
           <DiaryEntrance productId={product.id} accentColor={ACCENT_COLOR} textColor={DIARY_TEXT} />
         </motion.div>
