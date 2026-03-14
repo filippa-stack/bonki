@@ -2195,26 +2195,6 @@ export default function CardView() {
       )}
     </AnimatePresence>
 
-    {/* Leave session confirmation */}
-    <AlertDialog open={showLeaveConfirm} onOpenChange={setShowLeaveConfirm}>
-      <AlertDialogContent>
-        <AlertDialogHeader>
-          <AlertDialogTitle className="font-serif text-lg">Avsluta samtalet?</AlertDialogTitle>
-          <AlertDialogDescription className="text-sm text-muted-foreground leading-relaxed pt-1">
-            {uiText.leaveConfirmDesc}
-          </AlertDialogDescription>
-        </AlertDialogHeader>
-        <AlertDialogFooter className="mt-2">
-          <AlertDialogCancel>Fortsätt</AlertDialogCancel>
-          <AlertDialogAction
-            onClick={() => navigate(exitBackTo)}
-            className="bg-destructive text-white hover:bg-destructive/90"
-          >
-            Avsluta
-          </AlertDialogAction>
-        </AlertDialogFooter>
-      </AlertDialogContent>
-    </AlertDialog>
     </>
   );
 }
