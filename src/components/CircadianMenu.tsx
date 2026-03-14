@@ -238,9 +238,9 @@ export default function CircadianMenu({
               {group.categories.map((category) => {
                 const currentIndex = globalIndex++;
                 const sequenceNumber = currentIndex + 1;
-                const tileBg = CIRCADIAN_COLORS[category.id] || '#3A5045';
+                const tileFill = CIRCADIAN_FILLS[category.id] || 'rgba(162, 181, 169, 0.62)';
                 const tileText = CIRCADIAN_COLORS_LIGHT[category.id] || '#D0DDD5';
-                const catCards = categoryCards.get(category.id) || [];
+                const tileColor = CIRCADIAN_COLORS[category.id] || '#A2B5A9';
                 const completedCount = catCards.filter(c => completedCardIds.includes(c.id)).length;
                 const allCompleted = completedCount === catCards.length && catCards.length > 0;
                 const isNextSuggested = category.id === nextSuggestedId && hasEntered;
