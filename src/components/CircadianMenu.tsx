@@ -110,11 +110,13 @@ const containerVariants = {
   visible: { transition: { staggerChildren: 0.06, delayChildren: 0.15 } },
 };
 
+const EASE_ARRAY = [0.22, 1, 0.36, 1] as const;
+
 const tileVariants = {
   hidden: { opacity: 0, y: 22, scale: 0.94 },
   visible: {
     opacity: 1, y: 0, scale: 1,
-    transition: { duration: 0.55, ease: ENTER_EASE as unknown as number[] },
+    transition: { duration: 0.55, ease: EASE_ARRAY },
   },
 };
 
