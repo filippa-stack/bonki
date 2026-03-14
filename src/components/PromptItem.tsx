@@ -11,6 +11,8 @@ interface PromptItemProps {
   preamble?: string;
   anchor?: SituationalAnchor;
   highlightCount: number;
+  /** Faint illustration watermark behind question (kids products) */
+  backgroundImageUrl?: string | null;
   // Kept for interface compat — not rendered
   label?: string;
   expanded?: boolean;
