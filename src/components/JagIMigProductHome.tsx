@@ -48,7 +48,7 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
         initial={{ opacity: 0 }}
         animate={{ opacity: 1, scale: [1, 1.012, 1] }}
         transition={{ duration: 0.5, scale: { duration: 9, ease: 'easeInOut', repeat: Infinity, repeatType: 'reverse' } }}
-        style={{ position: 'absolute', top: '2%', left: '-42%', width: '135%', height: '125%', zIndex: 0, pointerEvents: 'none' }}
+        style={{ position: 'absolute', top: '-12%', left: '-42%', width: '135%', height: '115%', zIndex: 0, pointerEvents: 'none' }}
       >
         <img src={apaImage} alt="" style={{ width: '100%', height: '100%', objectFit: 'contain', objectPosition: 'left top', opacity: 0.35 }} />
       </motion.div>
