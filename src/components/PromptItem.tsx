@@ -241,7 +241,7 @@ export default function PromptItem({ prompt, index, sectionType, preamble, ancho
                       filter: 'saturate(0.4)',
                     }}
                   />
-                )
+                )}
                 {prompt.text.split('\n').filter(p => p.trim() !== '').map((para, i) => (
                   <p
                     key={i}
