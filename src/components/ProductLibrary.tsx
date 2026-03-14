@@ -177,13 +177,13 @@ function AudienceLabel({ label, subtitle, delay = 0 }: { label: string; subtitle
 /** Portal tile — prominent illustration with strong bottom text */
 const PastelTile = React.forwardRef<HTMLDivElement, {
   name: string; bg: string; ageLabel?: string; tagline?: string;
-  onClick?: () => void; illustration?: string;
+  onClick?: () => void; illustration?: string; productId?: string;
   accentColor?: string; taglineColor?: string; illustrationOpacity?: number;
   illustrationSize?: string; illustrationPosition?: string; wide?: boolean;
   showFreeBadge?: boolean; badgeText?: string;
 }>(function PastelTile({
-  name, bg, ageLabel, tagline, onClick, illustration, accentColor, taglineColor,
-  illustrationOpacity = 0.78, illustrationSize, illustrationPosition = 'right center', wide = false,
+  name, bg, ageLabel, tagline, onClick, illustration, productId, accentColor, taglineColor,
+  illustrationOpacity = 0.78, illustrationSize, illustrationPosition = 'center 30%', wide = false,
   showFreeBadge = false, badgeText = 'Första kortet gratis',
 }, ref) {
   const toShadowColor = (hex: string, alpha: number) => {
