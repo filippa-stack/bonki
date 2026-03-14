@@ -94,10 +94,6 @@ export default function SyskonProductHome({ product }: { product: ProductManifes
                     position: 'relative',
                   }}
                 >
-                  {/* Inner glow */}
-                  <div style={{ position: 'absolute', inset: 0, borderRadius: '22px', background: 'radial-gradient(ellipse at 50% 45%, rgba(255,255,255,0.25) 0%, transparent 65%)', pointerEvents: 'none' }} />
-                  {/* Breathing edge highlight */}
-                  <div style={{ position: 'absolute', top: 0, left: '12%', right: '12%', height: '2px', borderRadius: '1px', background: 'rgba(255,255,255,0.6)', animation: 'edge-highlight-breathe 7s ease-in-out infinite', pointerEvents: 'none' }} />
                   <span style={{
                     fontFamily: "'DM Serif Display', var(--font-serif)",
                     fontSize: 'clamp(17px, 4.8vw, 22px)',
