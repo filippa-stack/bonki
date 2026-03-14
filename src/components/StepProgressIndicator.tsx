@@ -10,9 +10,9 @@ export interface StageStep {
 /** Default 4-step Still Us sequence */
 export const STAGE_STEPS: StageStep[] = [
   { stage_key: 'oppnare',     label: 'Öppna'        },
-  { stage_key: 'tankevackare', label: 'Fördjupa'     },
-  { stage_key: 'scenario',    label: 'Scenario'     },
-  { stage_key: 'teamwork',    label: 'Tillsammans'  },
+  { stage_key: 'tankevackare', label: 'Vänd'         },
+  { stage_key: 'scenario',    label: 'Tänk om'      },
+  { stage_key: 'teamwork',    label: 'Gör'           },
 ];
 
 export const SECTION_TYPE_TO_STAGE: Record<string, StageStep['stage_key']> = {
