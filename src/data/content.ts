@@ -27,7 +27,7 @@ export const categories: Category[] = [
   },
   {
     id: 'parenting-together',
-    title: 'När ni tycker olika',
+    title: 'Det som skaver',
     entryLine: 'Vad olikheterna säger om er.',
     description: 'Uppfostran, gränser och värderingar',
     cardCount: 3,
