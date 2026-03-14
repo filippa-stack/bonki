@@ -351,30 +351,8 @@ export default function TopicPreviewOverlay({
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.7, duration: 0.5, ease: [...EASE] }}
                     onClick={handleReady}
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.97 }}
-                    style={{
-                      fontFamily: 'var(--font-sans)',
-                      fontSize: '15px',
-                      fontWeight: 500,
-                      letterSpacing: '0.02em',
-                      color: 'hsl(194, 30%, 12%)',
-                      backgroundColor: 'hsl(41, 78%, 48%)',
-                      border: 'none',
-                      borderRadius: '28px',
-                      padding: '16px 52px',
-                      cursor: 'pointer',
-                      boxShadow:
-                        '0 4px 20px -4px hsla(41, 60%, 30%, 0.35), ' +
-                        '0 12px 40px -12px hsla(41, 50%, 25%, 0.20)',
-                      transition: 'background-color 0.2s ease, box-shadow 0.2s ease',
-                    }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.backgroundColor = 'hsl(41, 82%, 54%)';
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.backgroundColor = 'hsl(41, 78%, 48%)';
-                    }}
+                    className="cta-primary"
+                    style={{ width: '72vw', maxWidth: '320px' }}
                   >
                     Vi är redo
                   </motion.button>
