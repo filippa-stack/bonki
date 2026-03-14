@@ -1733,7 +1733,7 @@ export default function CardView() {
         variant="immersive"
         isDarkSurface={isReflectionStep || currentStageType === 'scenario' || isExerciseStep}
         onImmersiveBack={isLive ? undefined : () => navigate(exitBackTo)}
-        onLeaveSession={isLive ? () => setShowLeaveConfirm(true) : undefined}
+        onLeaveSession={isLive ? () => { toast('Samtalet sparas – ni kan fortsätta när ni vill', { duration: 3000 }); navigate(exitBackTo); } : undefined}
       />
 
       {/* Floating illustration peek — kids/family products only */}
