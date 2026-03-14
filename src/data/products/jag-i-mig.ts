@@ -502,7 +502,7 @@ export const jagIMigProduct: ProductManifest = {
   id: 'jag_i_mig',
   name: 'Jag i Mig',
   slug: 'jag-i-mig',
-  tagline: 'Ett rum för att förstå det som händer inuti.',
+  tagline: 'När känslor får ord.',
   description: 'Utforska känslor inifrån och ut',
   headerTitle: 'Inifrån & ut',
   accentColor: 'hsl(350, 28%, 58%)',

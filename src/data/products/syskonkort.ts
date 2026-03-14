@@ -316,7 +316,7 @@ export const syskonkortProduct: ProductManifest = {
   id: 'syskonkort',
   name: 'Syskon',
   slug: 'syskonkort',
-  tagline: 'Om bandet som både skaver och håller.',
+  tagline: 'Band för livet.',
   description: 'Utforska syskonbandet och allt det innebär',
   headerTitle: 'Syskonband',
   accentColor: 'hsl(215, 80%, 33%)',

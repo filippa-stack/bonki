@@ -27,12 +27,12 @@ const ILLUSTRATIONS: Record<string, string> = {
 };
 
 const TAGLINES: Record<string, string> = {
-  jag_i_mig: 'Hjälp ditt barn hitta ord för det som känns',
-  jag_med_andra: 'När omvärlden växer',
+  jag_i_mig: 'När känslor får ord',
+  jag_med_andra: 'Det svåra och det trygga',
   jag_i_varlden: 'De stora frågorna',
-  vardagskort: 'Samtal runt middagsbordet',
-  syskonkort: 'Det som finns mellan dem',
-  sexualitetskort: 'Det svåra samtalet, utan att det behöver vara svårt',
+  vardagskort: 'Det vanliga, på djupet',
+  syskonkort: 'Band för livet',
+  sexualitetskort: 'Kropp, gränser och identitet',
 };
 
 const PASTEL_COLORS: Record<string, string> = {

@@ -90,7 +90,7 @@ export const jagIVarldenProduct: ProductManifest = {
   id: 'jag_i_varlden',
   name: 'Jag i Världen',
   slug: 'jag-i-varlden',
-  tagline: 'Samtal om identitet, ansvar och livet runt omkring oss.',
+  tagline: 'De stora frågorna.',
   description: 'Utforska dig själv i större sammanhang',
   headerTitle: 'Jag i sammanhang',
   accentColor: 'hsl(130, 35%, 53%)',
