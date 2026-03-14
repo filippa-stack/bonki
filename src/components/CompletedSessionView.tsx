@@ -240,7 +240,7 @@ export default function CompletedSessionView({
                 fontSize: 'clamp(26px, 7vw, 34px)',
                 fontWeight: 400,
                 lineHeight: 1.2,
-                color: 'var(--accent-saffron)',
+                color: 'hsl(41, 78%, 38%)',
               }}
             >
               {headline}
