@@ -2060,8 +2060,8 @@ export default function CardView() {
                 />
               </motion.div>
 
-              {/* ── Ritual hint BELOW prompt for non-scenario steps (live only) ── */}
-              {isLive && (() => {
+              {/* ── Ritual hint BELOW prompt for non-scenario steps (live only, not kids) ── */}
+              {isLive && pronounMode !== 'du' && (() => {
                 const stageKey = effectiveSteps[currentStepIndex];
                 if (stageKey === 'scenario') return null; // already shown above
                 const hint = uiText.ritualHints[stageKey as keyof typeof uiText.ritualHints];
