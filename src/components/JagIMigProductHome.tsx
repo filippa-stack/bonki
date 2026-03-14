@@ -17,7 +17,7 @@ const SAFFRON = '#DA9D1D';
 const ORDERED_TILES = [
   { id: 'jim-mina-kanslor', bg: '#D9E0A3', text: '#3E4124', sub: 'Att känna igen dem' },
   { id: 'jim-starka-kanslor', bg: '#A8AD82', text: '#3E4124', sub: 'När det blir mycket' },
-  { id: 'jim-stora-kanslor', bg: '#8E944F', text: '#3E4124', sub: 'Känslor med många lager' },
+  { id: 'jim-stora-kanslor', bg: '#8E944F', text: '#1E2210', sub: 'Känslor med många lager' },
 ];
 
 const containerVariants = { hidden: {}, visible: { transition: { staggerChildren: 0.11, delayChildren: 0.4 } } };
