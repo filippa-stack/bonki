@@ -1235,7 +1235,7 @@ export default function ProductLibrary() {
             width: '40px',
             height: '1px',
             background: isDark
-              ? 'linear-gradient(90deg, transparent, hsla(38, 60%, 50%, 0.2), transparent)'
+              ? 'linear-gradient(90deg, transparent, hsla(38, 60%, 50%, 0.35), transparent)'
               : 'linear-gradient(90deg, transparent, hsla(30, 20%, 60%, 0.3), transparent)',
             margin: '0 auto 18px',
           }} />
