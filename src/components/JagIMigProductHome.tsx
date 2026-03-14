@@ -48,12 +48,12 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
         initial={{ opacity: 0 }}
         animate={{ opacity: 1, scale: [1, 1.012, 1] }}
         transition={{ duration: 0.5, scale: { duration: 9, ease: 'easeInOut', repeat: Infinity, repeatType: 'reverse' } }}
-        style={{ position: 'absolute', top: '-12%', left: '-42%', width: '135%', height: '115%', zIndex: 0, pointerEvents: 'none' }}
+        style={{ position: 'absolute', top: '2%', left: '-42%', width: '135%', height: '125%', zIndex: 0, pointerEvents: 'none' }}
       >
         <img src={apaImage} alt="" style={{ width: '100%', height: '100%', objectFit: 'contain', objectPosition: 'left top', opacity: 0.35 }} />
       </motion.div>
 
-      <div style={{ position: 'relative', zIndex: 1, minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start', paddingTop: '8vh', paddingRight: '5vw', paddingBottom: '120px', paddingLeft: '5vw' }}>
+      <div style={{ position: 'relative', zIndex: 1, minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start', paddingTop: '14vh', paddingRight: '5vw', paddingBottom: '120px', paddingLeft: '5vw' }}>
         <motion.div variants={containerVariants} initial="hidden" animate="visible" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px', width: '100%' }}>
           <motion.div variants={titleVariants} style={{ textAlign: 'center', marginBottom: '1.5vh', width: '100%' }}>
             <h1 style={{ fontFamily: "'DM Serif Display', var(--font-serif)", fontSize: 'clamp(36px, 10vw, 50px)', fontWeight: 700, color: ACCENT_COLOR, letterSpacing: '-0.01em', whiteSpace: 'nowrap', textShadow: ['0 0 24px rgba(255, 255, 255, 1)', '0 0 48px rgba(255, 255, 255, 0.7)', '0 0 80px rgba(255, 255, 255, 0.4)', '0 2px 4px rgba(0, 0, 0, 0.06)'].join(', ') }}>
