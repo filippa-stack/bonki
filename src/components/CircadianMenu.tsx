@@ -327,7 +327,7 @@ export default function CircadianMenu({
                         <ProgressRing
                           completed={completedCount}
                           total={catCards.length}
-                          size={allCompleted ? 20 : 18}
+                          size={allCompleted ? 18 : 14}
                         />
                       </span>
                     )}
