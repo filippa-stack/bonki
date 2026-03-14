@@ -550,9 +550,6 @@ function StillUsCategoryView({
                 }}
               >
                 {/* Text content */}
-                <div style={{ flex: 1, minWidth: 0, paddingRight: '16px' }}>
-
-                {/* Text content */}
                 <div style={{ flex: 1, minWidth: 0 }}>
                   <span
                     style={{
