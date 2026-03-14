@@ -237,7 +237,7 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
                     {tile.sub}
                   </span>
                   {catProgress && catProgress.completed > 0 && (
-                    <div style={{ position: 'relative', zIndex: 1 }}>
+                    <div style={{ position: 'absolute', bottom: '10px', right: '10px', zIndex: 1 }}>
                       <CategoryProgressRing completed={catProgress.completed} total={catProgress.total} color={tile.text} />
                     </div>
                   )}
@@ -268,23 +268,18 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
               <div
                 style={{
                   position: 'relative',
-                  borderRadius: '22px',
-                  // Paper/book-cover texture
-                  background: `linear-gradient(168deg, ${ACCENT_COLOR}14 0%, ${ACCENT_COLOR}08 50%, ${ACCENT_COLOR}04 100%)`,
-                  border: `1.5px solid ${ACCENT_COLOR}30`,
+                  borderRadius: '24px',
+                  background: `linear-gradient(180deg, #E8ECC0 0%, ${darken('#D9E0A3', 0.06)} 100%)`,
+                  border: `1px solid ${lighten('#D9E0A3', 0.25)}`,
                   boxShadow: [
-                    // Outer drop shadows
-                    `0 8px 24px -4px ${ACCENT_COLOR}30`,
-                    `0 3px 8px ${ACCENT_COLOR}18`,
-                    `0 1px 3px rgba(0,0,0,0.06)`,
-                    // Top highlight bevel
-                    `inset 0 2px 0 rgba(255, 255, 255, 0.55)`,
-                    `inset 2px 0 0 rgba(255, 255, 255, 0.2)`,
-                    // Bottom shadow bevel
-                    `inset 0 -3px 0 ${ACCENT_COLOR}18`,
-                    `inset -2px 0 0 ${ACCENT_COLOR}10`,
-                    // Inner surface shadow
-                    `inset 0 1px 4px ${ACCENT_COLOR}12`,
+                    `0 14px 36px -6px ${darken('#8E944F', 0.5)}88`,
+                    `0 6px 14px -2px ${darken('#8E944F', 0.3)}66`,
+                    `0 2px 4px ${darken('#8E944F', 0.3)}44`,
+                    `inset 0 3px 0 0 ${lighten('#D9E0A3', 0.55)}`,
+                    `inset 3px 0 0 0 ${lighten('#D9E0A3', 0.35)}88`,
+                    `inset 0 -4px 0 0 ${darken('#D9E0A3', 0.3)}88`,
+                    `inset -3px 0 0 0 ${darken('#D9E0A3', 0.15)}66`,
+                    `inset 0 2px 6px ${darken('#D9E0A3', 0.2)}33`,
                   ].join(', '),
                   padding: '16px 20px 14px',
                   display: 'flex',
@@ -293,6 +288,20 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
                   overflow: 'hidden',
                 }}
               >
+                {/* Glossy bevel top arc */}
+                <div
+                  style={{
+                    position: 'absolute',
+                    top: 0,
+                    left: '10%',
+                    right: '10%',
+                    height: '45%',
+                    borderRadius: '24px 24px 50% 50%',
+                    background: 'linear-gradient(180deg, rgba(255,255,255,0.18) 0%, transparent 100%)',
+                    pointerEvents: 'none',
+                    zIndex: 0,
+                  }}
+                />
 
                 {/* Book icon */}
                 <motion.div
@@ -322,7 +331,7 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
                     fontWeight: 400,
                     color: DIARY_TEXT,
                     lineHeight: 1.2,
-                    textShadow: '0 1px 2px rgba(255,255,255,0.3)',
+                    textShadow: '0 1px 2px rgba(255,255,255,0.4)',
                   }}>
                     Vår dagbok
                   </span>
