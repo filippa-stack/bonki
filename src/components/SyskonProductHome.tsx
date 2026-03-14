@@ -64,7 +64,7 @@ export default function SyskonProductHome({ product }: { product: ProductManifes
                   key={cat.id}
                   variants={pillVariants}
                   whileHover={{ scale: 1.04, y: -3 }}
-                  whileTap={{ scale: 0.93, y: 3 }}
+                  whileTap={{ scale: 0.94, y: 3 }}
                   onClick={() => navigate(`/category/${cat.id}`)}
                   style={{
                     background: tile.bg,
