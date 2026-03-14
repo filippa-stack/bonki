@@ -43,7 +43,7 @@ export default function VardagProductHome({ product }: { product: ProductManifes
               Vardag
             </h1>
             <p className="font-serif" style={{ fontSize: 'clamp(16px, 4.5vw, 20px)', fontWeight: 400, color: '#2C2420', opacity: 0.75, marginTop: '6px', textShadow: '0 0 16px rgba(255,255,255,0.95), 0 0 32px rgba(255,255,255,0.5)' }}>
-              Hur vi har det
+              Det vanliga, på djupet
             </p>
             <KidsProductResumeBanner product={product} progress={progress} accentColor={ACCENT_COLOR} />
           </motion.div>
