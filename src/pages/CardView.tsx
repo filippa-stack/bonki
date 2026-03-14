@@ -2041,10 +2041,11 @@ export default function CardView() {
                       left: 0,
                       right: 0,
                       zIndex: 20,
-                      background: 'linear-gradient(to top, var(--surface-base) 80%, transparent)',
+                      background: 'linear-gradient(to top, var(--surface-base) 70%, hsla(var(--background) / 0.85) 90%, transparent)',
                       paddingTop: '20px',
                       paddingLeft: '24px',
                       paddingRight: '24px',
+                      paddingBottom: 'calc(56px + env(safe-area-inset-bottom, 0px))',
                     } : undefined}
                   >
                     <SessionStepReflection
