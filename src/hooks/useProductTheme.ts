@@ -63,7 +63,8 @@ export function useProductTheme(primary: string, accent: string, bgColor?: strin
     root.style.setProperty('--accent-saffron', `hsl(${a})`);
     root.style.setProperty('--accent-text', `hsl(${a})`);
 
-    // Set CTA button colors from accent
+    // CTA gradient derived from primary (accentColor) — always refined
+    setCTAVarsFromAccent(root, primary);
     setCTAVarsFromAccent(root, accent);
 
     if (bgColor) {
