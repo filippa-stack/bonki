@@ -1961,7 +1961,7 @@ export default function CardView() {
                   initialFocusNoteIndex={null}
                   focusPromptIndex={null}
                   disableShare={isActiveSession}
-                  promptIndex={isLive ? localPromptIndex : undefined}
+                  promptIndex={isLive ? resolvedPromptIndex : undefined}
                   coupleSpaceId={space?.id ?? null}
                   sessionId={normalizedSession.sessionId ?? null}
                   cardId={cardId ?? null}
