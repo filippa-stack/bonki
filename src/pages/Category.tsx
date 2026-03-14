@@ -549,22 +549,8 @@ function StillUsCategoryView({
                   opacity: isCompleted ? 0.6 : 1,
                 }}
               >
-                {/* Sequence number */}
-                <span
-                  style={{
-                    fontFamily: "'DM Serif Display', var(--font-serif)",
-                    fontSize: '28px',
-                    fontWeight: 400,
-                    color: HERITAGE_GOLD,
-                    opacity: 0.55,
-                    lineHeight: 1,
-                    flexShrink: 0,
-                    width: '32px',
-                    textAlign: 'center',
-                  }}
-                >
-                  {index + 1}
-                </span>
+                {/* Text content */}
+                <div style={{ flex: 1, minWidth: 0, paddingRight: '16px' }}>
 
                 {/* Text content */}
                 <div style={{ flex: 1, minWidth: 0 }}>
