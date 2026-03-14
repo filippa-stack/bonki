@@ -293,7 +293,7 @@ export default function CircadianMenu({
                         fontSize: '10px',
                         fontWeight: 500,
                         color: HERITAGE_GOLD,
-                        opacity: 0.3,
+                        opacity: 0.45,
                         lineHeight: 1,
                       }}
                     >
