@@ -33,9 +33,9 @@ const SECTION_LABELS: Record<string, string> = {
 /** Still Us canonical labels */
 const STILL_US_LABELS: Record<string, string> = {
   opening: 'Öppna',
-  reflective: 'Fördjupa',
-  scenario: 'Scenario',
-  exercise: 'Tillsammans',
+  reflective: 'Vänd',
+  scenario: 'Tänk om',
+  exercise: 'Gör',
 };
 
 /** Build dynamic steps from a card's actual section types */
