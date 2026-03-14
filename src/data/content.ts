@@ -48,7 +48,7 @@ export const categories: Category[] = [
   },
   {
     id: 'category-6',
-    title: 'Trygghet & mod',
+    title: 'Vad ni satsar på',
     entryLine: 'Gemensamma ramar och risker.',
     description: 'Risk, ekonomi och vad som är värt att satsa på',
     cardCount: 2,
