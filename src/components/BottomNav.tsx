@@ -68,6 +68,10 @@ export default function BottomNav() {
   const productHomeLabel = product?.name
     ?? (isStillUsContext ? 'Still Us' : lastProduct?.name ?? null);
 
+  // On the library page with no product context, hide the contextual tab
+  const isOnLibrary = pathname === '/' && !search.includes('devState=');
+  const showContextualTab = !isOnLibrary && (!!product || isStillUsContext);
+
   const items: NavItem[] = [
     {
       id: 'library',
@@ -87,16 +91,17 @@ export default function BottomNav() {
         (isStillUsContext && p === '/' && search.includes('devState=')) ||
         (!product && !isStillUsContext && !!lastProduct && p.startsWith(`/product/${lastProduct.slug}`)),
     }] : []),
-    {
+    // Contextual tab only within a product context
+    ...(showContextualTab ? [{
       id: 'contextual',
       label: isChildProduct ? 'Dagbok' : 'Era samtal',
       icon: isChildProduct ? BookOpen : MessageCircle,
       path: isChildProduct && product ? `/diary/${product.id}` : '/shared',
-      match: (p) =>
+      match: (p: string) =>
         isChildProduct
           ? p.startsWith('/diary')
           : p.startsWith('/shared'),
-    },
+    }] : []),
   ];
 
   return (
