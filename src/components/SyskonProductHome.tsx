@@ -14,10 +14,10 @@ const DIARY_TEXT = '#274C5E';
 const SAFFRON = '#DA9D1D';
 
 const ORDERED_TILES = [
-  { id: 'sk-vi-blev-syskon', bg: '#E8F3F5', text: '#274C5E' },
-  { id: 'sk-vi-ar-olika', bg: '#F5E9D3', text: '#3A2E1A' },
-  { id: 'sk-delat-utrymme', bg: '#D4E2E0', text: '#274C5E' },
-  { id: 'sk-er-relation', bg: '#C2D1D9', text: '#274C5E' },
+  { id: 'sk-vi-blev-syskon', bg: '#D8F0F2', text: '#1A4A58', sub: 'Hur allt började' },
+  { id: 'sk-vi-ar-olika', bg: '#F0DEB8', text: '#3A2E1A', sub: 'Det som gör oss unika' },
+  { id: 'sk-delat-utrymme', bg: '#B8D8D0', text: '#1A4A44', sub: 'Dela & bråka' },
+  { id: 'sk-er-relation', bg: '#7AACB0', text: '#0E2E38', sub: 'Band för livet' },
 ];
 
 const containerVariants = { hidden: {}, visible: { transition: { staggerChildren: 0.11, delayChildren: 0.4 } } };
@@ -37,7 +37,6 @@ export default function SyskonProductHome({ product }: { product: ProductManifes
       </motion.div>
 
       <div style={{ position: 'relative', zIndex: 1, height: '100vh', display: 'flex', flexDirection: 'column', paddingTop: '8vh', paddingRight: '5vw', paddingBottom: '80px', paddingLeft: '5vw' }}>
-        {/* Title */}
         <motion.div variants={containerVariants} initial="hidden" animate="visible" style={{ textAlign: 'center', width: '100%' }}>
           <motion.div variants={titleVariants}>
             <h1 style={{ fontFamily: "'DM Serif Display', var(--font-serif)", fontSize: 'clamp(38px, 11vw, 52px)', fontWeight: 700, color: ACCENT_COLOR, letterSpacing: '-0.01em', whiteSpace: 'nowrap', textShadow: ['0 0 24px rgba(255, 255, 255, 1)', '0 0 48px rgba(255, 255, 255, 0.7)', '0 0 80px rgba(255, 255, 255, 0.4)', '0 2px 4px rgba(0, 0, 0, 0.06)'].join(', ') }}>
@@ -50,10 +49,8 @@ export default function SyskonProductHome({ product }: { product: ProductManifes
           </motion.div>
         </motion.div>
 
-        {/* Spacer */}
         <div style={{ flex: 1 }} />
 
-        {/* Grid + Diary */}
         <motion.div variants={containerVariants} initial="hidden" animate="visible" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px', width: '100%' }}>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px', width: '100%' }}>
             {ORDERED_TILES.map((tile) => {
@@ -72,7 +69,7 @@ export default function SyskonProductHome({ product }: { product: ProductManifes
                   style={{
                     background: tile.bg,
                     borderRadius: '22px',
-                    padding: '24px 16px',
+                    padding: '20px 16px',
                     textAlign: 'center',
                     cursor: 'pointer',
                     aspectRatio: '1 / 1',
@@ -88,8 +85,10 @@ export default function SyskonProductHome({ product }: { product: ProductManifes
                       'inset 0 -3px 8px rgba(39, 76, 94, 0.07)',
                     ].filter(Boolean).join(', '),
                     display: 'flex',
+                    flexDirection: 'column',
                     alignItems: 'center',
                     justifyContent: 'center',
+                    gap: '6px',
                     lineHeight: 1.15,
                     position: 'relative',
                   }}
@@ -102,6 +101,17 @@ export default function SyskonProductHome({ product }: { product: ProductManifes
                     padding: '0 2px',
                   }}>
                     {cat.title}
+                  </span>
+                  <span style={{
+                    fontSize: 'clamp(10px, 2.8vw, 12px)',
+                    fontWeight: 500,
+                    color: tile.text,
+                    opacity: 0.55,
+                    letterSpacing: '0.02em',
+                    lineHeight: 1.3,
+                    padding: '0 4px',
+                  }}>
+                    {tile.sub}
                   </span>
                   {catProgress && catProgress.completed > 0 && (
                     <CategoryProgressRing completed={catProgress.completed} total={catProgress.total} color={tile.text} />
