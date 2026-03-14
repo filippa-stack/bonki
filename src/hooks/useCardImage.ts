@@ -116,6 +116,7 @@ const CARD_IMAGE_MAP: Record<string, { zip: ZipSource; folder: string; file: str
   'sk-syskonminnen':       { zip: 'sk', folder: '', file: 'jämföra.png' },
   'sk-syskonkunskap':      { zip: 'sk', folder: '', file: 'syskonkunskap.png' },
   'sk-vanskap':            { zip: 'sk', folder: '', file: 'vänskap.png' },
+  'sk-vanskap-relation':   { zip: 'sk', folder: '', file: 'vänskap.png' },
   'sk-unik':               { zip: 'sk', folder: '', file: 'unik.png' },
   'sk-aldst-mitten-yngst': { zip: 'sk', folder: '', file: 'åldrar.png' },
   'sk-bonussyskon':        { zip: 'sk', folder: '', file: 'bonussyskon.png' },
