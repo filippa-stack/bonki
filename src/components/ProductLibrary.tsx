@@ -220,32 +220,38 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
           gridColumn: wide ? 'span 2' : undefined,
         }}
       >
-      {/* Illustration — centered hero, filling the tile */}
-      {illustration && (
-        <div
-          style={{
-            position: 'absolute',
-            top: '-12%',
-            left: wide ? '20%' : '-5%',
-            right: wide ? '-5%' : '-5%',
-            bottom: '22%',
-            pointerEvents: 'none',
-            zIndex: 0,
-          }}
-        >
-          <img
-            src={illustration}
-            alt=""
-            draggable={false}
+      {/* Illustration — individually calibrated hero */}
+      {illustration && (() => {
+        const bounds = productId ? ILLUSTRATION_BOUNDS[productId] : undefined;
+        const defaultBounds = { top: '-12%', left: '-5%', right: '-5%', bottom: '22%' };
+        const b = bounds || defaultBounds;
+        return (
+          <div
             style={{
-              width: '100%',
-              height: '100%',
-              objectFit: 'contain',
-              objectPosition: illustrationPosition,
-              opacity: illustrationOpacity,
+              position: 'absolute',
+              top: b.top,
+              left: b.left,
+              right: b.right,
+              bottom: b.bottom,
+              pointerEvents: 'none',
+              zIndex: 0,
             }}
-          />
-        </div>
+          >
+            <img
+              src={illustration}
+              alt=""
+              draggable={false}
+              style={{
+                width: '100%',
+                height: '100%',
+                objectFit: 'contain',
+                objectPosition: illustrationPosition,
+                opacity: illustrationOpacity,
+              }}
+            />
+          </div>
+        );
+      })()}
       )}
 
       {/* Age label badge */}
