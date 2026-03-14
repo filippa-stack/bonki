@@ -68,7 +68,8 @@ export default function SexualitetProductHome({ product }: { product: ProductMan
                   whileTap={{ scale: 0.94, y: 3 }}
                   onClick={() => navigate(`/category/${cat.id}`)}
                   style={{
-                    background: tile.bg,
+                    backgroundImage: `linear-gradient(135deg, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0) 50%, rgba(0,0,0,0.04) 100%)`,
+                    backgroundColor: tile.bg,
                     borderRadius: '22px',
                     padding: '20px 16px',
                     textAlign: 'center',
@@ -79,12 +80,12 @@ export default function SexualitetProductHome({ product }: { product: ProductMan
                       : isDark ? '1px solid rgba(255, 255, 255, 0.12)' : '1px solid rgba(166, 109, 109, 0.12)',
                     boxShadow: [
                       isNextCategory ? `0 0 18px 0px ${SAFFRON}50, 0 0 36px -4px ${SAFFRON}30` : '',
-                      '0 10px 28px rgba(166, 109, 109, 0.14)',
-                      '0 4px 10px rgba(166, 109, 109, 0.07)',
-                      '0 1px 3px rgba(0, 0, 0, 0.04)',
+                      '0 10px 28px rgba(166, 109, 109, 0.16)',
+                      '0 4px 10px rgba(166, 109, 109, 0.09)',
+                      '0 1px 3px rgba(0, 0, 0, 0.05)',
                       isDark
-                        ? 'inset 0 2px 0 rgba(255, 255, 255, 0.15), inset 0 -3px 8px rgba(0, 0, 0, 0.10)'
-                        : 'inset 0 2px 0 rgba(255, 255, 255, 0.65), inset 0 -3px 8px rgba(166, 109, 109, 0.06)',
+                        ? 'inset 0 3px 6px rgba(255, 255, 255, 0.2), inset 0 -4px 10px rgba(0, 0, 0, 0.14)'
+                        : 'inset 0 3px 6px rgba(255, 255, 255, 0.5), inset 0 -4px 10px rgba(166, 109, 109, 0.10)',
                     ].filter(Boolean).join(', '),
                     display: 'flex',
                     flexDirection: 'column',
@@ -95,10 +96,6 @@ export default function SexualitetProductHome({ product }: { product: ProductMan
                     position: 'relative',
                   }}
                 >
-                  {/* Inner glow */}
-                  <div style={{ position: 'absolute', inset: 0, borderRadius: '22px', background: 'radial-gradient(ellipse at 50% 45%, rgba(255,255,255,0.25) 0%, transparent 65%)', pointerEvents: 'none' }} />
-                  {/* Breathing edge highlight */}
-                  <div style={{ position: 'absolute', top: 0, left: '12%', right: '12%', height: '2px', borderRadius: '1px', background: isDark ? 'rgba(255,255,255,0.35)' : 'rgba(255,255,255,0.6)', animation: 'edge-highlight-breathe 7s ease-in-out infinite', pointerEvents: 'none' }} />
                   <span style={{
                     fontFamily: "'DM Serif Display', var(--font-serif)",
                     fontSize: 'clamp(17px, 4.8vw, 22px)',
