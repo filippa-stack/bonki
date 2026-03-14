@@ -47,7 +47,6 @@ const DEPTH_GRAVITY: Record<string, React.CSSProperties> = {
  * Unified presentation: all section types use centered question style.
  */
 export default function PromptItem({ prompt, index, sectionType, preamble, anchor, backgroundImageUrl }: PromptItemProps) {
-  const [anchorOpen, setAnchorOpen] = useState(false);
   const gravity = DEPTH_GRAVITY[sectionType || 'opening'] || DEPTH_GRAVITY.opening;
   const isExercise = sectionType === 'exercise';
   const enterEase = [...EASE] as [number, number, number, number];
