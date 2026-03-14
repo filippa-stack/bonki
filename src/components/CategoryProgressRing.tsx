@@ -23,7 +23,7 @@ export default function CategoryProgressRing({ completed, total, color, size = 2
   const allDone = total > 0 && completed === total;
 
   return (
-    <span style={{ position: 'absolute', right: '14px', top: '50%', transform: 'translateY(-50%)', display: 'flex', alignItems: 'center', justifyContent: 'center', width: size, height: size }}>
+    <span style={{ position: 'absolute', right: '10px', top: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', width: size, height: size }}>
       <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} style={{ transform: 'rotate(-90deg)' }}>
         {/* Background track */}
         <circle
