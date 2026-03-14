@@ -15,11 +15,11 @@ const DIARY_TEXT = '#240046';
 const SAFFRON = '#DA9D1D';
 
 const ORDERED_TILES = [
-  { id: 'jma-att-hora-till', bg: '#F0C8D8', text: '#7B1FA2', sub: 'Var hör jag hemma?' },
-  { id: 'jma-nar-vi-jamfor-oss', bg: '#D8A0E8', text: '#6A18A0', sub: 'Vad det gör med oss' },
-  { id: 'jma-nar-det-skaver', bg: '#D898B8', text: '#5A1050', sub: 'När vi sårar varandra' },
-  { id: 'jma-att-sta-stadig', bg: '#A878C8', text: '#3A0E70', sub: 'Din egen grund' },
-  { id: 'jma-vi-i-varlden', bg: '#684888', text: '#F5F0F8', sub: 'Utanför oss själva' },
+  { id: 'jma-att-hora-till', bg: '#F8E4EC', text: '#7B1FA2', sub: 'Var hör jag hemma?' },
+  { id: 'jma-nar-vi-jamfor-oss', bg: '#E8C8F0', text: '#7B1FA2', sub: 'Vad det gör med oss' },
+  { id: 'jma-nar-det-skaver', bg: '#E8C0D0', text: '#6A1B5E', sub: 'När vi sårar varandra' },
+  { id: 'jma-att-sta-stadig', bg: '#C8A8D8', text: '#4A148C', sub: 'Din egen grund' },
+  { id: 'jma-vi-i-varlden', bg: '#7E5C8E', text: '#F5F0F8', sub: 'Utanför oss själva' },
 ];
 
 const containerVariants = { hidden: {}, visible: { transition: { staggerChildren: 0.11, delayChildren: 0.4 } } };
@@ -81,7 +81,7 @@ export default function JagMedAndraProductHome({ product }: { product: ProductMa
                     textAlign: 'center',
                     cursor: 'pointer',
                     ...(isLastOdd
-                      ? { gridColumn: '1 / -1', justifySelf: 'center', width: '65%', aspectRatio: '5 / 3', padding: '22px 20px' }
+                      ? { gridColumn: '1 / -1', justifySelf: 'center', width: '65%', padding: '22px 20px' }
                       : { aspectRatio: '1 / 1' }),
                     border: isNextCategory
                       ? `2.5px solid ${SAFFRON}CC`

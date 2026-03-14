@@ -52,11 +52,11 @@ export default function DiaryEntrance({ productId, accentColor, textColor }: Dia
           style={{
             position: 'relative',
             borderRadius: '20px',
-            background: `linear-gradient(168deg, ${accentColor}28 0%, ${accentColor}18 50%, ${accentColor}0C 100%)`,
-            border: `1.5px solid ${accentColor}50`,
+            background: `linear-gradient(168deg, ${accentColor}12 0%, ${accentColor}08 50%, ${accentColor}04 100%)`,
+            border: `1.5px solid ${accentColor}30`,
             boxShadow: [
-              `0 4px 16px ${accentColor}28`,
-              `0 1px 3px ${accentColor}18`,
+              `0 4px 16px ${accentColor}18`,
+              `0 1px 3px ${accentColor}10`,
               `inset 0 1px 0 rgba(255, 255, 255, 0.6)`,
             ].join(', '),
             padding: '16px 20px 14px',
@@ -101,7 +101,7 @@ export default function DiaryEntrance({ productId, accentColor, textColor }: Dia
                 fontSize: 'clamp(10px, 2.8vw, 12px)',
                 fontWeight: 500,
                 color: textColor,
-                opacity: 0.7,
+                opacity: 0.5,
                 lineHeight: 1.3,
               }}
             >
