@@ -7,7 +7,7 @@ const categories: Category[] = [
     title: 'Vi blev syskon',
     subtitle: 'Hur allt började – och vad vi delar.',
     description: 'Att få ett syskon och de tidiga minnena',
-    cardCount: 4,
+    cardCount: 3,
   },
   {
     id: 'sk-vi-ar-olika',
