@@ -115,7 +115,7 @@ export default function JagIVarldenProductHome({ product }: { product: ProductMa
                     fontSize: 'clamp(10px, 2.8vw, 12px)',
                     fontWeight: 500,
                     color: tile.text,
-                    opacity: isDark ? 0.7 : 0.55,
+                    opacity: isDark ? 0.7 : 0.65,
                     letterSpacing: '0.02em',
                     lineHeight: 1.3,
                     padding: '0 4px',
