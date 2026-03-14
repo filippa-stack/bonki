@@ -215,7 +215,7 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
 }>(function PastelTile({
   name, bg, ageLabel, tagline, onClick, illustration, productId, accentColor, taglineColor,
   illustrationOpacity = 0.78, illustrationSize, illustrationPosition = 'center 30%', wide = false,
-  showFreeBadge = false, badgeText = 'Första kortet gratis',
+  showFreeBadge = false, badgeText = 'Första kortet gratis', ageCount,
 }, ref) {
   const toShadowColor = (hex: string, alpha: number) => {
     const r = parseInt(hex.slice(1, 3), 16);
