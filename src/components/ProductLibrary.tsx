@@ -44,24 +44,24 @@ const PASTEL_COLORS: Record<string, string> = {
   syskonkort: '#DAEAF6',
 };
 
-/** High-presence illustration opacities — characters as heroes */
+/** Hero-level illustration opacities */
 const ILLUSTRATION_OPACITY: Record<string, number> = {
-  jag_i_mig: 0.82,
-  jag_med_andra: 0.78,
-  jag_i_varlden: 0.75,
-  sexualitetskort: 0.80,
-  vardagskort: 0.75,
-  syskonkort: 0.78,
+  jag_i_mig: 0.92,
+  jag_med_andra: 0.88,
+  jag_i_varlden: 0.85,
+  sexualitetskort: 0.90,
+  vardagskort: 0.85,
+  syskonkort: 0.88,
 };
 
-/** Focal points for contain-fit illustrations */
+/** Focal points for illustrations */
 const ILLUSTRATION_POSITION: Record<string, string> = {
-  jag_i_mig: 'right 65%',
-  jag_med_andra: 'right center',
-  jag_i_varlden: 'right center',
-  sexualitetskort: 'right center',
-  vardagskort: 'right center',
-  syskonkort: 'right center',
+  jag_i_mig: 'center 30%',
+  jag_med_andra: 'center 35%',
+  jag_i_varlden: 'center 35%',
+  sexualitetskort: 'center 40%',
+  vardagskort: 'center 30%',
+  syskonkort: 'center 30%',
 };
 
 /** Restored strong accent colors for tile titles */
@@ -194,7 +194,7 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
           borderRadius: '22px',
           backgroundImage: `linear-gradient(135deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0) 50%, rgba(0,0,0,0.06) 100%)`,
           backgroundColor: bg,
-          minHeight: wide ? '170px' : '200px',
+          minHeight: wide ? '180px' : '210px',
           display: 'flex',
           flexDirection: 'column',
           position: 'relative',
@@ -210,15 +210,15 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
           gridColumn: wide ? 'span 2' : undefined,
         }}
       >
-      {/* Illustration — large, contained, right-anchored hero */}
+      {/* Illustration — centered hero, filling the tile */}
       {illustration && (
         <div
           style={{
             position: 'absolute',
-            top: wide ? '-10%' : '-5%',
-            right: wide ? '-5%' : '-8%',
-            bottom: wide ? '25%' : '30%',
-            width: wide ? '55%' : '80%',
+            top: '-12%',
+            left: wide ? '20%' : '-5%',
+            right: wide ? '-5%' : '-5%',
+            bottom: '22%',
             pointerEvents: 'none',
             zIndex: 0,
           }}
