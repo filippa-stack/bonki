@@ -1777,14 +1777,14 @@ export default function CardView() {
               position: 'fixed',
               bottom: 0,
               right: 0,
-              width: '50vw',
-              height: '30vh',
+              width: '55vw',
+              height: '32vh',
               display: 'flex',
               alignItems: 'flex-end',
               justifyContent: 'flex-end',
               pointerEvents: 'none',
               zIndex: 0,
-              padding: '0 24px calc(16px + env(safe-area-inset-bottom, 0px)) 0',
+              padding: '0 20px calc(16px + env(safe-area-inset-bottom, 0px)) 0',
             }}
           >
             <img
@@ -1795,8 +1795,8 @@ export default function CardView() {
                 maxWidth: '100%',
                 maxHeight: '100%',
                 objectFit: 'contain',
-                opacity: 0.05,
-                filter: 'saturate(0.4)',
+                opacity: 0.08,
+                filter: 'saturate(0.3) brightness(1.05)',
                 userSelect: 'none',
                 animation: 'completion-breathe 8s ease-in-out infinite',
               }}
