@@ -219,7 +219,7 @@ export default function CircadianMenu({
                   letterSpacing: '0.08em',
                   textTransform: 'uppercase',
                   color: HERITAGE_GOLD,
-                  opacity: 0.5,
+                  opacity: 0.35,
                   lineHeight: 1,
                 }}
               >
