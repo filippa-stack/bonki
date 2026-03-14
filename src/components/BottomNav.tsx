@@ -57,6 +57,17 @@ export default function BottomNav() {
     }
   }, [product, isStillUsContext]);
 
+  const productHomePath = product
+    ? `/product/${product.slug}`
+    : isStillUsContext
+      ? '/?devState=solo'
+      : lastProduct
+        ? `/product/${lastProduct.slug}`
+        : null;
+
+  const productHomeLabel = product?.name
+    ?? (isStillUsContext ? 'Still Us' : lastProduct?.name ?? null);
+
   // On the library page with no product context, hide the contextual tab
   const isOnLibrary = pathname === '/' && !search.includes('devState=');
   const showContextualTab = !isOnLibrary && (!!product || isStillUsContext);
