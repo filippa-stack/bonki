@@ -56,22 +56,22 @@ const ILLUSTRATION_OPACITY: Record<string, number> = {
 
 /** Per-product illustration placement — individually tuned */
 const ILLUSTRATION_POSITION: Record<string, string> = {
-  jag_i_mig: 'center bottom',
-  jag_med_andra: 'center 25%',
-  jag_i_varlden: 'center 30%',
-  sexualitetskort: 'center 35%',
-  vardagskort: 'center 25%',
-  syskonkort: 'center 25%',
+  jag_i_mig: 'right 20%',
+  jag_med_andra: 'center 20%',
+  jag_i_varlden: 'center 15%',
+  sexualitetskort: 'center 30%',
+  vardagskort: 'center 20%',
+  syskonkort: 'center 20%',
 };
 
 /** Per-product illustration container bounds — {top, left, right, bottom} as % */
 const ILLUSTRATION_BOUNDS: Record<string, { top: string; left: string; right: string; bottom: string }> = {
-  jag_i_mig: { top: '-8%', left: '25%', right: '-8%', bottom: '18%' },
-  jag_med_andra: { top: '-15%', left: '-8%', right: '-8%', bottom: '22%' },
-  jag_i_varlden: { top: '-10%', left: '0%', right: '0%', bottom: '22%' },
-  sexualitetskort: { top: '-10%', left: '5%', right: '-5%', bottom: '20%' },
-  vardagskort: { top: '-15%', left: '-10%', right: '-10%', bottom: '25%' },
-  syskonkort: { top: '-12%', left: '-8%', right: '-8%', bottom: '22%' },
+  jag_i_mig: { top: '-5%', left: '30%', right: '-5%', bottom: '25%' },
+  jag_med_andra: { top: '-5%', left: '-3%', right: '-3%', bottom: '28%' },
+  jag_i_varlden: { top: '-5%', left: '5%', right: '5%', bottom: '28%' },
+  sexualitetskort: { top: '-5%', left: '5%', right: '0%', bottom: '25%' },
+  vardagskort: { top: '-5%', left: '-3%', right: '-3%', bottom: '28%' },
+  syskonkort: { top: '-5%', left: '0%', right: '0%', bottom: '28%' },
 };
 
 /** Restored strong accent colors for tile titles */
