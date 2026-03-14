@@ -4,22 +4,22 @@ import { Category, Card } from '@/types';
 import { Check } from 'lucide-react';
 
 /**
- * Circadian color mapping — reflects psychological shift
- * from light/accessible to deep/reflective.
+ * Circadian color mapping — solid tile backgrounds for dark tactile tiles.
+ * Each color is a rich, matte tone that feels "leather-bound premium".
  */
 export const CIRCADIAN_COLORS: Record<string, string> = {
-  'emotional-intimacy': '#A2B5A9',
-  'communication':      '#6B8E7D',
-  'category-8':         '#C28A78',
-  'individual-needs':   '#C5A37D',
-  'parenting-together': '#6F8191',
-  'category-9':         '#4A5D4E',
-  'category-6':         '#8E7C8F',
-  'daily-life':         '#3C5459',
-  'category-10':        '#313658',
+  'emotional-intimacy': '#3A5045',
+  'communication':      '#2E4A3E',
+  'category-8':         '#4A3832',
+  'individual-needs':   '#4A3D2E',
+  'parenting-together': '#2E3A44',
+  'category-9':         '#2A3A2E',
+  'category-6':         '#3E3240',
+  'daily-life':         '#1E3438',
+  'category-10':        '#262A42',
 };
 
-/** Lighter variants for text on dark backgrounds — higher contrast */
+/** Text colors — warm, high-contrast for dark backgrounds */
 export const CIRCADIAN_COLORS_LIGHT: Record<string, string> = {
   'emotional-intimacy': '#D0DDD5',
   'communication':      '#A8C7B5',
@@ -32,29 +32,9 @@ export const CIRCADIAN_COLORS_LIGHT: Record<string, string> = {
   'category-10':        '#7A80B0',
 };
 
-export const CIRCADIAN_FILLS: Record<string, string> = {
-  'emotional-intimacy': 'rgba(162, 181, 169, 0.62)',
-  'communication':      'rgba(107, 142, 125, 0.62)',
-  'category-8':         'rgba(194, 138, 120, 0.62)',
-  'individual-needs':   'rgba(197, 163, 125, 0.62)',
-  'parenting-together': 'rgba(111, 129, 145, 0.62)',
-  'category-9':         'rgba(74, 93, 78, 0.62)',
-  'category-6':         'rgba(142, 124, 143, 0.62)',
-  'daily-life':         'rgba(60, 84, 89, 0.62)',
-  'category-10':        'rgba(49, 54, 88, 0.62)',
-};
-
-export const CIRCADIAN_FILLS_HOVER: Record<string, string> = {
-  'emotional-intimacy': 'rgba(162, 181, 169, 0.78)',
-  'communication':      'rgba(107, 142, 125, 0.78)',
-  'category-8':         'rgba(194, 138, 120, 0.78)',
-  'individual-needs':   'rgba(197, 163, 125, 0.78)',
-  'parenting-together': 'rgba(111, 129, 145, 0.78)',
-  'category-9':         'rgba(74, 93, 78, 0.78)',
-  'category-6':         'rgba(142, 124, 143, 0.78)',
-  'daily-life':         'rgba(60, 84, 89, 0.78)',
-  'category-10':        'rgba(49, 54, 88, 0.78)',
-};
+// Keep these exports for backward compatibility
+export const CIRCADIAN_FILLS: Record<string, string> = CIRCADIAN_COLORS;
+export const CIRCADIAN_FILLS_HOVER: Record<string, string> = CIRCADIAN_COLORS;
 
 const HERITAGE_GOLD = '#DA9D1D';
 const ENTER_EASE = [0.22, 1, 0.36, 1] as const;
@@ -78,7 +58,7 @@ const SECTION_GROUPS = [
 ];
 
 /** Gold progress ring SVG */
-function ProgressRing({ completed, total, size = 16 }: { completed: number; total: number; size?: number }) {
+function ProgressRing({ completed, total, size = 22 }: { completed: number; total: number; size?: number }) {
   const radius = (size - 3) / 2;
   const circumference = 2 * Math.PI * radius;
   const progress = total > 0 ? completed / total : 0;
@@ -86,26 +66,26 @@ function ProgressRing({ completed, total, size = 16 }: { completed: number; tota
   const allDone = completed === total && total > 0;
 
   return (
-    <div style={{ position: 'relative', width: size, height: size, flexShrink: 0, opacity: 0.45 }}>
+    <div style={{ position: 'relative', width: size, height: size, flexShrink: 0 }}>
       <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} style={{ transform: 'rotate(-90deg)' }}>
         <circle
           cx={size / 2} cy={size / 2} r={radius}
           fill="none"
           stroke={HERITAGE_GOLD}
-          strokeWidth={1.5}
+          strokeWidth={2}
           opacity={0.15}
         />
         <motion.circle
           cx={size / 2} cy={size / 2} r={radius}
           fill="none"
           stroke={HERITAGE_GOLD}
-          strokeWidth={1.5}
+          strokeWidth={2}
           strokeLinecap="round"
           strokeDasharray={circumference}
           initial={{ strokeDashoffset: circumference }}
           animate={{ strokeDashoffset }}
-          transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1], delay: 0.3 }}
-          opacity={0.7}
+          transition={{ duration: 1.2, ease: [...ENTER_EASE], delay: 0.3 }}
+          opacity={0.6}
         />
       </svg>
       {allDone && (
@@ -118,12 +98,27 @@ function ProgressRing({ completed, total, size = 16 }: { completed: number; tota
             display: 'flex', alignItems: 'center', justifyContent: 'center',
           }}
         >
-          <Check size={9} style={{ color: HERITAGE_GOLD }} />
+          <Check size={10} style={{ color: HERITAGE_GOLD }} />
         </motion.div>
       )}
     </div>
   );
 }
+
+const containerVariants = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.06, delayChildren: 0.15 } },
+};
+
+const EASE_ARRAY = [0.22, 1, 0.36, 1] as const;
+
+const tileVariants = {
+  hidden: { opacity: 0, y: 22, scale: 0.94 },
+  visible: {
+    opacity: 1, y: 0, scale: 1,
+    transition: { duration: 0.55, ease: EASE_ARRAY },
+  },
+};
 
 interface CircadianMenuProps {
   categories: Category[];
@@ -138,7 +133,6 @@ export default function CircadianMenu({
   categories,
   cards,
   completedCardIds,
-  inProgressCardIds,
   onNavigateToCategory,
 }: CircadianMenuProps) {
   const [hasEntered, setHasEntered] = useState(false);
@@ -179,195 +173,147 @@ export default function CircadianMenu({
   let globalIndex = 0;
 
   return (
-    <div className="flex flex-col" style={{ gap: '6px', padding: '0 4px', position: 'relative' }}>
-      {/* Ambient background glow */}
-      <div
-        style={{
-          position: 'absolute',
-          inset: '-60px -40px',
-          background: 'radial-gradient(ellipse 80% 50% at 30% 20%, rgba(162, 181, 169, 0.08) 0%, transparent 70%), radial-gradient(ellipse 60% 40% at 70% 80%, rgba(49, 54, 88, 0.06) 0%, transparent 70%)',
-          animation: 'ambient-drift 20s ease-in-out infinite alternate',
-          pointerEvents: 'none',
-          zIndex: 0,
-        }}
-      />
-
-      <style>{`
-        @keyframes ambient-drift {
-          0% { transform: translate(0, 0) scale(1); }
-          50% { transform: translate(8px, -12px) scale(1.03); }
-          100% { transform: translate(-6px, 8px) scale(0.98); }
-        }
-      `}</style>
-
-      {groups.map((group, groupIdx) => (
-        <div key={group.label} style={{ position: 'relative', zIndex: 1 }}>
-          {/* Section header */}
-          <motion.div
-            initial={{ opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{
-              duration: 0.6,
-              delay: 0.1 + groupIdx * 0.15,
-              ease: [...ENTER_EASE],
-            }}
-            style={{
-              padding: groupIdx === 0 ? '0 8px 8px' : '32px 8px 8px',
-              display: 'flex',
-              alignItems: 'baseline',
-              gap: '10px',
-            }}
-          >
-            <h2
+    <motion.div
+      variants={containerVariants}
+      initial="hidden"
+      animate="visible"
+      className="flex flex-col"
+      style={{ gap: '8px', position: 'relative' }}
+    >
+      {groups.map((group, groupIdx) => {
+        return (
+          <div key={group.label}>
+            {/* Section header */}
+            <motion.div
+              variants={tileVariants}
               style={{
-                fontFamily: 'var(--font-serif)',
-                fontSize: '13px',
-                fontWeight: 600,
-                letterSpacing: '0.06em',
-                textTransform: 'uppercase',
-                color: HERITAGE_GOLD,
-                opacity: 0.55,
-                lineHeight: 1,
+                padding: groupIdx === 0 ? '0 4px 10px' : '24px 4px 10px',
               }}
             >
-              {group.label}
-            </h2>
-          </motion.div>
+              <h2
+                style={{
+                  fontFamily: 'var(--font-serif)',
+                  fontSize: '12px',
+                  fontWeight: 600,
+                  letterSpacing: '0.08em',
+                  textTransform: 'uppercase',
+                  color: HERITAGE_GOLD,
+                  opacity: 0.5,
+                  lineHeight: 1,
+                }}
+              >
+                {group.label}
+              </h2>
+            </motion.div>
 
-          <div className="flex flex-col" style={{ gap: '7px', position: 'relative' }}>
-            {group.categories.map((category) => {
-              const currentIndex = globalIndex++;
-              const sequenceNumber = currentIndex + 1;
-              const color = CIRCADIAN_COLORS[category.id] || '#A2B5A9';
-              const fillDefault = CIRCADIAN_FILLS[category.id] || 'rgba(162, 181, 169, 0.28)';
-              const fillHover = CIRCADIAN_FILLS_HOVER[category.id] || 'rgba(162, 181, 169, 0.42)';
-              const catCards = categoryCards.get(category.id) || [];
-              const completedCount = catCards.filter(c => completedCardIds.includes(c.id)).length;
-              const allCompleted = completedCount === catCards.length && catCards.length > 0;
-              const isNextSuggested = category.id === nextSuggestedId && hasEntered;
+            {/* 3-column tile grid */}
+            <div
+              style={{
+                display: 'grid',
+                gridTemplateColumns: '1fr 1fr 1fr',
+                gap: '8px',
+              }}
+            >
+              {group.categories.map((category) => {
+                const currentIndex = globalIndex++;
+                const sequenceNumber = currentIndex + 1;
+                const tileBg = CIRCADIAN_COLORS[category.id] || '#3A5045';
+                const tileText = CIRCADIAN_COLORS_LIGHT[category.id] || '#D0DDD5';
+                const catCards = categoryCards.get(category.id) || [];
+                const completedCount = catCards.filter(c => completedCardIds.includes(c.id)).length;
+                const allCompleted = completedCount === catCards.length && catCards.length > 0;
+                const isNextSuggested = category.id === nextSuggestedId && hasEntered;
 
-              const borderDefault = `1px solid rgba(255, 255, 255, 0.12)`;
-              const borderGlow = isNextSuggested ? `1px solid rgba(255, 255, 255, 0.35)` : `1px solid rgba(255, 255, 255, 0.22)`;
-
-              // Top-edge highlight — simulates overhead light hitting glass
-              const topEdgeHighlight = 'inset 0 1px 0 0 rgba(255, 255, 255, 0.13)';
-
-              const innerGlow = `${topEdgeHighlight}, inset 0 0 12px 0 rgba(255, 255, 255, 0.03)`;
-              const breatheBoxShadow = isNextSuggested
-                ? `${innerGlow}, 0 0 24px -2px ${color}55, 0 0 44px -6px ${color}35`
-                : innerGlow;
-
-              return (
-                <motion.div
-                  key={category.id}
-                  initial={{ opacity: 0, y: 18 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{
-                    y: { duration: 0.65, delay: 0.12 + currentIndex * 0.06, ease: [...ENTER_EASE] },
-                  }}
-                  style={{ position: 'relative', display: 'flex', alignItems: 'center', gap: '10px' }}
-                >
-                  {/* Sequence number */}
-                  <span
-                    style={{
-                      fontFamily: 'var(--font-serif)',
-                      fontSize: '11px',
-                      fontWeight: 500,
-                      color: HERITAGE_GOLD,
-                      opacity: 0.3,
-                      width: '14px',
-                      textAlign: 'right',
-                      flexShrink: 0,
-                      letterSpacing: '0.02em',
-                    }}
-                  >
-                    {sequenceNumber}
-                  </span>
+                return (
                   <motion.button
+                    key={category.id}
+                    variants={tileVariants}
+                    whileHover={{ scale: 1.04, y: -3 }}
+                    whileTap={{ scale: 0.93, y: 3 }}
                     onClick={() => onNavigateToCategory(category.id)}
-                    className="w-full text-left circadian-tile"
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.985 }}
                     style={{
-                      flex: 1,
-                      display: 'flex',
-                      alignItems: 'stretch',
-                      gap: '0',
-                      padding: '0',
-                      background: fillDefault,
-                      backdropFilter: 'blur(24px) saturate(1.3)',
-                      WebkitBackdropFilter: 'blur(24px) saturate(1.3)',
-                      border: isNextSuggested ? borderGlow : borderDefault,
-                      cursor: 'pointer',
-                      borderRadius: '14px',
-                      transition: 'background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease',
-                      overflow: 'hidden',
                       position: 'relative',
-                      boxShadow: breatheBoxShadow,
-                    }}
-                    onMouseEnter={(e) => {
-                      const el = e.currentTarget as HTMLElement;
-                      el.style.background = fillHover;
-                      el.style.border = borderGlow;
-                      el.style.boxShadow = `${innerGlow}, 0 0 24px -4px ${color}50, 0 0 48px -8px ${color}30`;
-                    }}
-                    onMouseLeave={(e) => {
-                      const el = e.currentTarget as HTMLElement;
-                      el.style.background = fillDefault;
-                      el.style.border = isNextSuggested ? borderGlow : borderDefault;
-                      el.style.boxShadow = breatheBoxShadow;
+                      background: tileBg,
+                      borderRadius: '20px',
+                      padding: '16px 10px 14px',
+                      textAlign: 'center',
+                      cursor: 'pointer',
+                      aspectRatio: '1 / 1',
+                      border: isNextSuggested
+                        ? `2px solid ${HERITAGE_GOLD}88`
+                        : '1px solid rgba(255, 255, 255, 0.08)',
+                      boxShadow: [
+                        isNextSuggested ? `0 0 18px 0px ${HERITAGE_GOLD}40, 0 0 36px -4px ${HERITAGE_GOLD}25` : '',
+                        '0 8px 24px rgba(0, 0, 0, 0.35)',
+                        '0 3px 8px rgba(0, 0, 0, 0.2)',
+                        '0 1px 3px rgba(0, 0, 0, 0.15)',
+                        'inset 0 1.5px 0 rgba(255, 255, 255, 0.12)',
+                        'inset 0 -2px 6px rgba(0, 0, 0, 0.15)',
+                      ].filter(Boolean).join(', '),
+                      display: 'flex',
+                      flexDirection: 'column',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: '4px',
+                      lineHeight: 1.15,
+                      overflow: 'hidden',
                     }}
                   >
-                    {/* Thick accent bar */}
-                    <div
+                    {/* Sequence number — subtle gold top-left */}
+                    <span
                       style={{
-                        width: '4px',
-                        alignSelf: 'stretch',
-                        backgroundColor: color,
-                        flexShrink: 0,
-                        borderRadius: '14px 0 0 14px',
-                      }}
-                    />
-
-                    {/* Card content */}
-                    <div
-                      style={{
-                        flex: 1,
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '14px',
-                        padding: '20px 16px',
+                        position: 'absolute',
+                        top: '8px',
+                        left: '10px',
+                        fontFamily: 'var(--font-serif)',
+                        fontSize: '10px',
+                        fontWeight: 500,
+                        color: HERITAGE_GOLD,
+                        opacity: 0.3,
+                        lineHeight: 1,
                       }}
                     >
-                      {/* Title + subtitle */}
-                      <div style={{ flex: 1, minWidth: 0 }}>
-                        <h3
-                          style={{
-                            fontFamily: 'var(--font-serif)',
-                            fontSize: '18px',
-                            fontWeight: 500,
-                            lineHeight: 1.3,
-                            color: 'var(--text-primary)',
-                          }}
-                        >
-                          {category.title}
-                        </h3>
-                      </div>
+                      {sequenceNumber}
+                    </span>
 
-                      {/* Progress ring — show when there's progress; always show for completed */}
-                      {(completedCount > 0 || allCompleted) && (
-                        <div style={{ flexShrink: 0, opacity: allCompleted ? 0.7 : 0.45 }}>
-                          <ProgressRing completed={completedCount} total={catCards.length} size={allCompleted ? 18 : 16} />
-                        </div>
-                      )}
-                    </div>
+                    {/* Title */}
+                    <span
+                      style={{
+                        fontFamily: "'DM Serif Display', var(--font-serif)",
+                        fontSize: 'clamp(14px, 3.8vw, 17px)',
+                        fontWeight: 400,
+                        color: tileText,
+                        padding: '0 2px',
+                        lineHeight: 1.2,
+                      }}
+                    >
+                      {category.title}
+                    </span>
+
+                    {/* Progress ring — bottom center */}
+                    {completedCount > 0 && (
+                      <span
+                        style={{
+                          position: 'absolute',
+                          bottom: '8px',
+                          left: '50%',
+                          transform: 'translateX(-50%)',
+                        }}
+                      >
+                        <ProgressRing
+                          completed={completedCount}
+                          total={catCards.length}
+                          size={allCompleted ? 20 : 18}
+                        />
+                      </span>
+                    )}
                   </motion.button>
-                </motion.div>
-              );
-            })}
+                );
+              })}
+            </div>
           </div>
-        </div>
-      ))}
-    </div>
+        );
+      })}
+    </motion.div>
   );
 }
