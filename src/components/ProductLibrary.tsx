@@ -44,14 +44,14 @@ const PASTEL_COLORS: Record<string, string> = {
   syskonkort: '#DAEAF6',
 };
 
-/** Raised illustration opacities — illustrations are a feature, not a ghost */
+/** Portal-level illustration opacities — illustrations ARE the tile */
 const ILLUSTRATION_OPACITY: Record<string, number> = {
-  jag_i_mig: 0.35,
-  jag_med_andra: 0.32,
-  jag_i_varlden: 0.28,
-  sexualitetskort: 0.35,
-  vardagskort: 0.28,
-  syskonkort: 0.30,
+  jag_i_mig: 0.65,
+  jag_med_andra: 0.60,
+  jag_i_varlden: 0.55,
+  sexualitetskort: 0.65,
+  vardagskort: 0.55,
+  syskonkort: 0.58,
 };
 
 const ILLUSTRATION_SIZE: Record<string, string> = {
