@@ -7,7 +7,7 @@ const categories: Category[] = [
     title: 'Vi blev syskon',
     subtitle: 'Hur allt började – och vad vi delar.',
     description: 'Att få ett syskon och de tidiga minnena',
-    cardCount: 4,
+    cardCount: 3,
   },
   {
     id: 'sk-vi-ar-olika',
@@ -28,7 +28,7 @@ const categories: Category[] = [
     title: 'Er relation',
     subtitle: 'Vänskapen som växer — och framtiden ni delar.',
     description: 'Vänskap och framtid',
-    cardCount: 2,
+    cardCount: 3,
   },
 ];
 
@@ -93,26 +93,6 @@ const cards: Card[] = [
           'Har du och ditt syskon skapat några egna traditioner? Vilka är de och hur började de?',
           'Vilket tror du är ditt syskons roligaste minne?',
           'Minns du vad du tänkte och kände första gången du träffade ditt syskon?',
-        ],
-      },
-    ],
-  },
-  {
-    id: 'sk-vanskap',
-    title: 'Vänskap',
-    subtitle: 'Syskons unika band – en relation en inte väljer men kan vårda',
-    categoryId: 'sk-vi-blev-syskon',
-    sections: [
-      {
-        id: 'sk-vanskap-opening',
-        type: 'opening',
-        title: 'Frågor',
-        content: '',
-        prompts: [
-          'Hur kan en älska sitt syskon en dag och vara jätteirriterad på det nästa?',
-          'På vilket sätt är din vänskap med ditt syskon annorlunda jämfört med andra vänskaper?',
-          'Bästa vänner kan ibland sluta vara bästa vänner och välja att inte längre umgås. Hur är det att inte kunna göra detta val med ett syskon?',
-          'Vad kan du göra för att hjälpa dig själv när du saknar ett syskon?',
         ],
       },
     ],
