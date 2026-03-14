@@ -23,11 +23,21 @@ export function useProductTheme(primary: string, accent: string, bgColor?: strin
     if (bgColor) {
       root.style.setProperty('--surface-base', bgColor);
       root.style.setProperty('--product-bg', bgColor);
-      // Question cloud only for kids products (pronounMode 'du')
+      // Kids product enhancements
       if (pronounMode === 'du') {
-        // Use accent color (primary) for visible cloud against light backgrounds
+        // D: Soft accent cushion behind question
         root.style.setProperty('--question-cloud-tint', `hsla(${p}, 0.07)`);
         root.style.setProperty('--question-cloud-border', `hsla(${p}, 0.10)`);
+        // A: Radial accent glow on page background
+        root.style.setProperty('--kids-bg-glow', `radial-gradient(ellipse at 50% 35%, hsla(${p}, 0.06) 0%, transparent 70%)`);
+        // E: Warmer question text color derived from accent
+        // Extract hue from primary HSL string (format: "H, S%, L%")
+        const hue = p.split(',')[0]?.trim() ?? '215';
+        root.style.setProperty('--kids-question-color', `hsl(${hue}, 35%, 22%)`);
+        // C: Badge accent
+        root.style.setProperty('--kids-counter-bg', `hsla(${p}, 0.09)`);
+        root.style.setProperty('--kids-counter-color', `hsla(${p}, 0.70)`);
+        root.style.setProperty('--kids-counter-border', `hsla(${p}, 0.15)`);
       }
     }
 
@@ -40,6 +50,8 @@ export function useProductTheme(primary: string, accent: string, bgColor?: strin
        '--session-header-bg', '--accent-saffron', '--accent-text',
        '--surface-base', '--product-bg', '--cta-button-color',
        '--question-cloud-tint', '--question-cloud-border',
+       '--kids-bg-glow', '--kids-question-color',
+       '--kids-counter-bg', '--kids-counter-color', '--kids-counter-border',
       ].forEach((v) => root.style.removeProperty(v));
     };
   }, [primary, accent, bgColor, ctaButtonColor, pronounMode]);

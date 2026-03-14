@@ -37,10 +37,10 @@ interface PromptItemProps {
  * No layout changes, only weight/tone/rhythm.
  */
 const DEPTH_GRAVITY: Record<string, React.CSSProperties> = {
-  opening:    { fontWeight: 700, color: 'var(--text-primary)', lineHeight: 1.35 },
-  reflective: { fontWeight: 600, color: 'var(--text-primary)', lineHeight: 1.38, letterSpacing: '-0.005em' },
-  scenario:   { fontWeight: 500, color: 'var(--text-primary)', lineHeight: 1.40, fontStyle: 'italic' as const },
-  exercise:   { fontWeight: 700, color: 'var(--text-primary)', lineHeight: 1.30 },
+  opening:    { fontWeight: 700, color: 'var(--kids-question-color, var(--text-primary))', lineHeight: 1.35 },
+  reflective: { fontWeight: 600, color: 'var(--kids-question-color, var(--text-primary))', lineHeight: 1.38, letterSpacing: '-0.005em' },
+  scenario:   { fontWeight: 500, color: 'var(--kids-question-color, var(--text-primary))', lineHeight: 1.40, fontStyle: 'italic' as const },
+  exercise:   { fontWeight: 700, color: 'var(--kids-question-color, var(--text-primary))', lineHeight: 1.30 },
 };
 
 /**
@@ -215,6 +215,7 @@ export default function PromptItem({ prompt, index, sectionType, preamble, ancho
                 }}
                 className={`w-full ${preamble ? 'mt-10' : ''}`}
                 style={{
+                  background: 'radial-gradient(ellipse at 50% 40%, var(--question-cloud-tint, transparent) 0%, transparent 75%)',
                   borderRadius: '28px',
                   padding: isLongText ? '28px 20px' : '36px 24px',
                   display: 'flex',
@@ -233,12 +234,12 @@ export default function PromptItem({ prompt, index, sectionType, preamble, ancho
                       position: 'absolute',
                       inset: 0,
                       backgroundImage: `url(${backgroundImageUrl})`,
-                      backgroundSize: '65%',
-                      backgroundPosition: 'center 45%',
+                      backgroundSize: '75%',
+                      backgroundPosition: 'center 42%',
                       backgroundRepeat: 'no-repeat',
-                      opacity: 0.06,
+                      opacity: 0.10,
                       pointerEvents: 'none',
-                      filter: 'saturate(0.4)',
+                      filter: 'saturate(0.35) brightness(1.1)',
                     }}
                   />
                 )}
