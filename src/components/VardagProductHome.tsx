@@ -104,9 +104,6 @@ export default function VardagProductHome({ product }: { product: ProductManifes
             })}
           </div>
 
-          <motion.p variants={pillVariants} className="font-serif" style={{ fontSize: 'clamp(14px, 3.8vw, 16px)', fontStyle: 'italic', color: ACCENT_COLOR, opacity: 0.6, textAlign: 'center', lineHeight: 1.5, marginTop: '2.5vh', maxWidth: '85%', textShadow: '0 0 12px rgba(255,255,255,0.8)' }}>
-            Välj det som känns rätt just nu.
-          </motion.p>
 
           <DiaryEntrance productId={product.id} accentColor={ACCENT_COLOR} textColor={DIARY_TEXT} />
         </motion.div>
