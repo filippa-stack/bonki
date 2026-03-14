@@ -31,6 +31,8 @@ export default function BottomNav() {
   // Detect Still Us context from route
   const isStillUsContext = useMemo(() => {
     if (product) return false;
+    // Still Us product intro page
+    if (pathname.startsWith('/product/still-us')) return true;
     if (pathname === '/' && search.includes('devState=')) return true;
     const cardMatch = pathname.match(/^\/card\/([^/]+)/);
     if (cardMatch) return true;
