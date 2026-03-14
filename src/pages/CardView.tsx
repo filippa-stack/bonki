@@ -1481,7 +1481,7 @@ export default function CardView() {
             <button
               onClick={() => setShowStartScreen(false)}
               className="cta-primary"
-              style={{}}
+              
             >
               {uiText.readyButton}
             </button>
