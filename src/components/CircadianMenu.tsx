@@ -241,6 +241,7 @@ export default function CircadianMenu({
                 const tileFill = CIRCADIAN_FILLS[category.id] || 'rgba(162, 181, 169, 0.62)';
                 const tileText = CIRCADIAN_COLORS_LIGHT[category.id] || '#D0DDD5';
                 const tileColor = CIRCADIAN_COLORS[category.id] || '#A2B5A9';
+                const catCards = categoryCards.get(category.id) || [];
                 const completedCount = catCards.filter(c => completedCardIds.includes(c.id)).length;
                 const allCompleted = completedCount === catCards.length && catCards.length > 0;
                 const isNextSuggested = category.id === nextSuggestedId && hasEntered;
@@ -254,22 +255,24 @@ export default function CircadianMenu({
                     onClick={() => onNavigateToCategory(category.id)}
                     style={{
                       position: 'relative',
-                      background: tileBg,
-                      borderRadius: '20px',
-                      padding: '16px 10px 14px',
+                      background: tileFill,
+                      backdropFilter: 'blur(24px) saturate(1.3)',
+                      WebkitBackdropFilter: 'blur(24px) saturate(1.3)',
+                      borderRadius: '22px',
+                      padding: '18px 10px 16px',
                       textAlign: 'center',
                       cursor: 'pointer',
                       aspectRatio: '1 / 1',
                       border: isNextSuggested
                         ? `2px solid ${HERITAGE_GOLD}88`
-                        : '1px solid rgba(255, 255, 255, 0.08)',
+                        : `1px solid rgba(255, 255, 255, 0.15)`,
                       boxShadow: [
-                        isNextSuggested ? `0 0 18px 0px ${HERITAGE_GOLD}40, 0 0 36px -4px ${HERITAGE_GOLD}25` : '',
-                        '0 8px 24px rgba(0, 0, 0, 0.35)',
-                        '0 3px 8px rgba(0, 0, 0, 0.2)',
-                        '0 1px 3px rgba(0, 0, 0, 0.15)',
-                        'inset 0 1.5px 0 rgba(255, 255, 255, 0.12)',
-                        'inset 0 -2px 6px rgba(0, 0, 0, 0.15)',
+                        isNextSuggested ? `0 0 20px 0px ${HERITAGE_GOLD}40, 0 0 40px -4px ${HERITAGE_GOLD}25` : '',
+                        '0 10px 28px rgba(0, 0, 0, 0.25)',
+                        '0 4px 10px rgba(0, 0, 0, 0.15)',
+                        '0 1px 3px rgba(0, 0, 0, 0.1)',
+                        'inset 0 1.5px 0 rgba(255, 255, 255, 0.18)',
+                        `inset 0 -3px 8px ${tileColor}30`,
                       ].filter(Boolean).join(', '),
                       display: 'flex',
                       flexDirection: 'column',
