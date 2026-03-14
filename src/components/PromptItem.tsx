@@ -37,10 +37,10 @@ interface PromptItemProps {
  * No layout changes, only weight/tone/rhythm.
  */
 const DEPTH_GRAVITY: Record<string, React.CSSProperties> = {
-  opening:    { fontWeight: 700, color: 'var(--text-primary)', lineHeight: 1.35 },
-  reflective: { fontWeight: 600, color: 'var(--text-primary)', lineHeight: 1.38, letterSpacing: '-0.005em' },
-  scenario:   { fontWeight: 500, color: 'var(--text-primary)', lineHeight: 1.40, fontStyle: 'italic' as const },
-  exercise:   { fontWeight: 700, color: 'var(--text-primary)', lineHeight: 1.30 },
+  opening:    { fontWeight: 700, color: 'var(--kids-question-color, var(--text-primary))', lineHeight: 1.35 },
+  reflective: { fontWeight: 600, color: 'var(--kids-question-color, var(--text-primary))', lineHeight: 1.38, letterSpacing: '-0.005em' },
+  scenario:   { fontWeight: 500, color: 'var(--kids-question-color, var(--text-primary))', lineHeight: 1.40, fontStyle: 'italic' as const },
+  exercise:   { fontWeight: 700, color: 'var(--kids-question-color, var(--text-primary))', lineHeight: 1.30 },
 };
 
 /**
