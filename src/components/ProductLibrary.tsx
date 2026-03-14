@@ -1003,8 +1003,8 @@ export default function ProductLibrary() {
           style={{ position: 'relative', zIndex: 1 }}
         >
           
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', paddingBottom: '32px' }}>
-            {/* Still Us — glass tile */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', paddingBottom: '16px' }}>
+            {/* Still Us — glass tile — taller, 2 text levels max, illustration protected */}
             <motion.div
               variants={tileVariants}
               whileHover={{ scale: 1.02, y: -2 }}
@@ -1013,14 +1013,14 @@ export default function ProductLibrary() {
               className="cursor-pointer"
               style={{
                 borderRadius: '20px',
-                padding: '24px 20px 18px',
+                padding: '24px 20px 20px',
                 background: 'radial-gradient(circle at 60% 50%, #2A6F7D 0%, #164A58 100%)',
                 backdropFilter: 'blur(10px)',
                 WebkitBackdropFilter: 'blur(10px)',
                 textAlign: 'left',
                 position: 'relative',
                 overflow: 'hidden',
-                minHeight: '160px',
+                minHeight: '200px',
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'flex-start',
@@ -1042,23 +1042,34 @@ export default function ProductLibrary() {
                   zIndex: 0,
                 }}
               />
-              {/* Illustration */}
+              {/* Illustration — narrower to protect text */}
               <div
                 style={{
                   position: 'absolute',
-                  top: '-10%', right: '-5%', bottom: '-10%',
-                  width: '55%',
+                  top: '-10%', right: '-2%', bottom: '-10%',
+                  width: '42%',
                   backgroundImage: `url(${illustrationStillUs})`,
                   backgroundSize: 'contain',
                   backgroundRepeat: 'no-repeat',
                   backgroundPosition: 'center center',
-                  opacity: 0.35,
+                  opacity: 0.30,
                   pointerEvents: 'none',
                   zIndex: 1,
                   filter: 'brightness(1.5) saturate(0.6) sepia(0.15)',
                 }}
               />
-              <div style={{ zIndex: 2 }}>
+              {/* Text scrim — protects text from illustration */}
+              <div
+                aria-hidden="true"
+                style={{
+                  position: 'absolute',
+                  bottom: 0, left: 0, right: '40%', top: 0,
+                  background: 'linear-gradient(to right, rgba(22, 74, 88, 0.6) 0%, rgba(22, 74, 88, 0.3) 70%, transparent 100%)',
+                  pointerEvents: 'none',
+                  zIndex: 1,
+                }}
+              />
+              <div style={{ zIndex: 2, maxWidth: '62%' }}>
                 <h3 style={{
                   fontFamily: "'DM Serif Display', serif",
                   fontSize: '26px', fontWeight: 400,
@@ -1067,42 +1078,15 @@ export default function ProductLibrary() {
                 }}>
                   Still Us
                 </h3>
+                {/* Single secondary line: tagline + price merged */}
                 <p style={{
                   fontFamily: "'Lato', sans-serif",
-                  fontSize: '11px', color: '#A0A0B0',
-                  marginTop: '4px',
-                  lineHeight: 1.4,
+                  fontSize: '11px', color: '#B8C0C8',
+                  marginTop: '6px',
+                  lineHeight: 1.5,
                 }}>
-                  Vi finns kvar
+                  Vi finns kvar{!purchased.has('still_us') ? ' · 184 frågor · ✦ 1a gratis' : ''}
                 </p>
-                <p style={{
-                  fontFamily: "'Lato', sans-serif",
-                  fontSize: '11px', color: '#A0A0B0',
-                  marginTop: '4px',
-                  lineHeight: 1.4,
-                  maxWidth: '55%',
-                  opacity: 0.85,
-                }}>
-                  Ett strukturerat sätt att ta de svåra samtalen innan tystnaden växer sig för stor.
-                </p>
-                {!purchased.has('still_us') && (
-                  <span
-                    style={{
-                      display: 'inline-block',
-                      marginTop: '4px',
-                      fontFamily: "'Lato', sans-serif",
-                      fontSize: '8px',
-                      fontWeight: 600,
-                      letterSpacing: '0.06em',
-                      textTransform: 'uppercase',
-                      color: '#E9B44C',
-                      opacity: 0.8,
-                      lineHeight: 1.4,
-                    }}
-                  >
-                    184 frågor & övningar · 395 kr · Första gratis
-                  </span>
-                )}
               </div>
             </motion.div>
 
