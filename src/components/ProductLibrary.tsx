@@ -240,7 +240,7 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
           {ageLabel}
         </span>
       )}
-      {/* Illustration — right-aligned, visible */}
+      {/* Illustration — portal-style, covering the tile */}
       {illustration && (
         <div
           style={{
@@ -248,7 +248,7 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
             top: 0,
             right: 0,
             bottom: 0,
-            width: wide ? '50%' : '65%',
+            left: wide ? '40%' : '25%',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
