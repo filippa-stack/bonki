@@ -215,27 +215,33 @@ export default function PromptItem({ prompt, index, sectionType, preamble, ancho
                 }}
                 className={`w-full ${preamble ? 'mt-10' : ''}`}
                 style={{
-                  background: 'radial-gradient(ellipse at 50% 40%, var(--question-cloud-tint, transparent) 0%, transparent 75%)',
-                  borderRadius: '42% 58% 55% 45% / 56% 44% 56% 44%',
-                  padding: isLongText ? '32px 24px' : '40px 28px',
+                  borderRadius: '28px',
+                  padding: isLongText ? '28px 20px' : '36px 24px',
                   display: 'flex',
                   flexDirection: 'column',
                   alignItems: isLongText ? 'flex-start' : 'center',
                   gap: isLongText ? '12px' : '16px',
                   position: 'relative',
+                  overflow: 'hidden',
                 }}
               >
-                {/* Organic blob border */}
-                <div
-                  aria-hidden
-                  style={{
-                    position: 'absolute',
-                    inset: '-2px',
-                    borderRadius: '42% 58% 55% 45% / 56% 44% 56% 44%',
-                    border: '1.5px solid var(--question-cloud-border, transparent)',
-                    pointerEvents: 'none',
-                  }}
-                />
+                {/* Faint illustration watermark — kids products */}
+                {backgroundImageUrl && (
+                  <div
+                    aria-hidden
+                    style={{
+                      position: 'absolute',
+                      inset: 0,
+                      backgroundImage: `url(${backgroundImageUrl})`,
+                      backgroundSize: '65%',
+                      backgroundPosition: 'center 45%',
+                      backgroundRepeat: 'no-repeat',
+                      opacity: 0.06,
+                      pointerEvents: 'none',
+                      filter: 'saturate(0.4)',
+                    }}
+                  />
+                )
                 {prompt.text.split('\n').filter(p => p.trim() !== '').map((para, i) => (
                   <p
                     key={i}
