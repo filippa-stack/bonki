@@ -1481,15 +1481,7 @@ export default function CardView() {
             <button
               onClick={() => setShowStartScreen(false)}
               className="cta-primary"
-              style={{
-                width: '72vw',
-                maxWidth: '320px',
-                ...(isStillUsCard ? {
-                  backgroundColor: 'hsl(41, 78%, 48%)',
-                  color: 'hsl(194, 30%, 12%)',
-                  boxShadow: '0 4px 20px -4px hsla(41, 60%, 30%, 0.35), 0 12px 40px -12px hsla(41, 50%, 25%, 0.20)',
-                } : {}),
-              }}
+              
             >
               {uiText.readyButton}
             </button>
