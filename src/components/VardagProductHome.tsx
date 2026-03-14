@@ -36,9 +36,10 @@ export default function VardagProductHome({ product }: { product: ProductManifes
         <img src={illustrationImage} alt="" style={{ width: '100%', height: '100%', objectFit: 'contain', objectPosition: 'right top', opacity: 0.22 }} />
       </motion.div>
 
-      <div style={{ position: 'relative', zIndex: 1, minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start', paddingTop: '8vh', paddingRight: '5vw', paddingBottom: '80px', paddingLeft: '5vw' }}>
-        <motion.div variants={containerVariants} initial="hidden" animate="visible" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px', width: '100%' }}>
-          <motion.div variants={titleVariants} style={{ textAlign: 'center', marginBottom: '1.5vh', width: '100%' }}>
+      <div style={{ position: 'relative', zIndex: 1, height: '100vh', display: 'flex', flexDirection: 'column', paddingTop: '8vh', paddingRight: '5vw', paddingBottom: '80px', paddingLeft: '5vw' }}>
+        {/* Title */}
+        <motion.div variants={containerVariants} initial="hidden" animate="visible" style={{ textAlign: 'center', width: '100%' }}>
+          <motion.div variants={titleVariants}>
             <h1 style={{ fontFamily: "'DM Serif Display', var(--font-serif)", fontSize: 'clamp(38px, 11vw, 52px)', fontWeight: 700, color: ACCENT_COLOR, letterSpacing: '-0.01em', whiteSpace: 'nowrap', textShadow: ['0 0 24px rgba(255, 255, 255, 1)', '0 0 48px rgba(255, 255, 255, 0.7)', '0 0 80px rgba(255, 255, 255, 0.4)', '0 2px 4px rgba(0, 0, 0, 0.06)'].join(', ') }}>
               Vardag
             </h1>
@@ -47,9 +48,14 @@ export default function VardagProductHome({ product }: { product: ProductManifes
             </p>
             <KidsProductResumeBanner product={product} progress={progress} accentColor={ACCENT_COLOR} />
           </motion.div>
+        </motion.div>
 
-          {/* Tiles — pushed down to reveal illustration */}
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px', width: '100%', marginTop: '4vh' }}>
+        {/* Spacer */}
+        <div style={{ flex: 1 }} />
+
+        {/* Grid + Diary */}
+        <motion.div variants={containerVariants} initial="hidden" animate="visible" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px', width: '100%' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px', width: '100%' }}>
             {ORDERED_TILES.map((tile) => {
               const cat = product.categories.find((c) => c.id === tile.id);
               if (!cat) return null;
@@ -104,12 +110,9 @@ export default function VardagProductHome({ product }: { product: ProductManifes
               );
             })}
           </div>
-        </motion.div>
 
-        {/* Diary — pinned above bottom nav */}
-        <div style={{ marginTop: 'auto' }}>
           <DiaryEntrance productId={product.id} accentColor={ACCENT_COLOR} textColor={DIARY_TEXT} />
-        </div>
+        </motion.div>
       </div>
     </div>
   );
