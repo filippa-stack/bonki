@@ -252,7 +252,6 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
           </div>
         );
       })()}
-      )}
 
       {/* Age label badge */}
       {ageLabel && (
