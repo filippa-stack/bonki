@@ -2078,8 +2078,8 @@ export default function CardView() {
                 );
               })()}
 
-              {/* ── Scenario bottom encouragement (live only) ── */}
-              {isLive && effectiveSteps[currentStepIndex] === 'scenario' && (() => {
+              {/* ── Scenario bottom encouragement (live only, not kids) ── */}
+              {isLive && pronounMode !== 'du' && effectiveSteps[currentStepIndex] === 'scenario' && (() => {
                 const bottomHint = uiText.ritualHints['scenarioBottom' as keyof typeof uiText.ritualHints];
                 if (!bottomHint) return null;
                 return (
