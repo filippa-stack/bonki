@@ -121,8 +121,7 @@ export default function VardagProductHome({ product }: { product: ProductManifes
               );
             })}
           </div>
-
-          <DiaryEntrance productId={product.id} accentColor={ACCENT_COLOR} textColor={DIARY_TEXT} />
+        </motion.div>
         </motion.div>
       </div>
     </div>
