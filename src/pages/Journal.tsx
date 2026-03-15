@@ -283,6 +283,8 @@ export default function Journal() {
   const [sessions, setSessions] = useState<CompletedSession[] | null>(null);
   const [takeaways, setTakeaways] = useState<any[] | null>(null);
   const [reflections, setReflections] = useState<any[] | null>(null);
+  const [pausedSessions, setPausedSessions] = useState<PausedSession[]>([]);
+  const [bookmarks, setBookmarks] = useState<Bookmark[]>([]);
   const [activeFilters, setActiveFilters] = useState<Set<FilterChip>>(new Set(['barn', 'par']));
   const [parExpanded, setParExpanded] = useState(false);
 
