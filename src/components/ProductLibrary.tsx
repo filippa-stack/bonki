@@ -6,6 +6,7 @@ import { useAllProductAccess } from '@/hooks/useAllProductAccess';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/components/ui/sonner';
+import LibraryResumeBanner from '@/components/LibraryResumeBanner';
 import watermarkMamma from '@/assets/watermark-mamma.png';
 
 import illustrationStillUs from '@/assets/illustration-still-us-tile.png';
@@ -372,12 +373,18 @@ export default function ProductLibrary() {
   const tracked = useRef(false);
   const { purchased } = useAllProductAccess();
   const { user } = useAuth();
+  const TAB_KEY = 'bonki-library-tab';
   const [activeTab, setActiveTab] = useState<'barn' | 'par'>(() => {
-    const saved = localStorage.getItem('bonki-initial-tab');
-    if (saved === 'par' || saved === 'barn') {
+    // 1. Check onboarding redirect
+    const initial = localStorage.getItem('bonki-initial-tab');
+    if (initial === 'par' || initial === 'barn') {
       localStorage.removeItem('bonki-initial-tab');
-      return saved;
+      localStorage.setItem(TAB_KEY, initial);
+      return initial;
     }
+    // 2. Remember last selection
+    const saved = localStorage.getItem(TAB_KEY);
+    if (saved === 'par' || saved === 'barn') return saved;
     return 'barn';
   });
   const [swipeDirection, setSwipeDirection] = useState<1 | -1>(1);
@@ -385,6 +392,7 @@ export default function ProductLibrary() {
   const switchTab = (tab: 'barn' | 'par') => {
     setSwipeDirection(tab === 'par' ? 1 : -1);
     setActiveTab(tab);
+    try { localStorage.setItem(TAB_KEY, tab); } catch {}
   };
   const [notifySignedUp, setNotifySignedUp] = useState(false);
   const [notifyLoading, setNotifyLoading] = useState(false);
@@ -517,7 +525,7 @@ export default function ProductLibrary() {
           }}
         />
 
-        {/* Segment control — pill switcher with swipe affordance */}
+        {/* World switcher — prominent BARN/PAR toggle */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -527,57 +535,55 @@ export default function ProductLibrary() {
             flexDirection: 'column',
             alignItems: 'center',
             gap: '10px',
-            margin: '0 auto 20px',
+            margin: '0 auto 12px',
           }}
         >
           <div
             style={{
               display: 'flex',
-              background: isDark ? 'hsla(230, 35%, 18%, 0.6)' : 'hsla(0, 0%, 100%, 0.12)',
-              backdropFilter: 'blur(12px)',
-              WebkitBackdropFilter: 'blur(12px)',
-              borderRadius: '20px',
-              padding: '3px',
-              gap: '2px',
+              background: 'hsla(230, 35%, 18%, 0.7)',
+              backdropFilter: 'blur(14px)',
+              WebkitBackdropFilter: 'blur(14px)',
+              borderRadius: '24px',
+              padding: '4px',
+              gap: '3px',
               position: 'relative',
-              transition: 'background 400ms ease',
-              border: isDark ? 'none' : '0.5px solid hsla(0, 0%, 100%, 0.2)',
-              boxShadow: isDark ? 'none' : '0 2px 8px hsla(0, 0%, 0%, 0.12)',
+              border: '1px solid hsla(38, 50%, 50%, 0.1)',
+              boxShadow: '0 4px 16px hsla(230, 40%, 8%, 0.4)',
             }}
           >
-            {(['barn', 'par'] as const).map((tab) => (
-              <button
-                key={tab}
-                onClick={() => switchTab(tab)}
-                style={{
-                  fontFamily: "'Lato', sans-serif",
-                  fontSize: '9px',
-                  fontWeight: 700,
-                  letterSpacing: '0.14em',
-                   color: activeTab === tab
-                    ? (isDark ? '#F5EFE6' : '#F5EFE6')
-                    : (isDark ? 'hsla(30, 20%, 85%, 0.4)' : 'hsla(0, 0%, 100%, 0.4)'),
-                  background: activeTab === tab
-                    ? (isDark ? 'hsla(230, 35%, 25%, 0.7)' : 'hsla(0, 0%, 100%, 0.18)')
-                    : 'transparent',
-                  border: 'none',
-                  outline: 'none',
-                  borderRadius: '17px',
-                  padding: '7px 18px',
-                  cursor: 'pointer',
-                  transition: 'all 260ms ease',
-                  WebkitTapHighlightColor: 'transparent',
-                  boxShadow: activeTab === tab
-                    ? (isDark ? '0 1px 4px hsla(220, 40%, 10%, 0.3)' : '0 1px 4px hsla(0, 0%, 0%, 0.15)')
-                    : 'none',
-                }}
-              >
-                {tab.toUpperCase()}
-              </button>
-            ))}
+            {(['barn', 'par'] as const).map((tab) => {
+              const isActive = activeTab === tab;
+              const labels = { barn: 'BARN & FAMILJ', par: 'PAR' };
+              return (
+                <button
+                  key={tab}
+                  onClick={() => switchTab(tab)}
+                  style={{
+                    fontFamily: "'Lato', sans-serif",
+                    fontSize: '10px',
+                    fontWeight: 700,
+                    letterSpacing: '0.12em',
+                    color: isActive ? '#FDF6E3' : 'hsla(30, 20%, 85%, 0.35)',
+                    background: isActive
+                      ? 'linear-gradient(135deg, hsla(38, 60%, 45%, 0.25) 0%, hsla(230, 30%, 22%, 0.8) 100%)'
+                      : 'transparent',
+                    border: isActive ? '1px solid hsla(38, 60%, 50%, 0.2)' : '1px solid transparent',
+                    outline: 'none',
+                    borderRadius: '20px',
+                    padding: '9px 24px',
+                    cursor: 'pointer',
+                    transition: 'all 280ms ease',
+                    WebkitTapHighlightColor: 'transparent',
+                    boxShadow: isActive ? '0 2px 8px hsla(38, 50%, 30%, 0.2)' : 'none',
+                  }}
+                >
+                  {labels[tab]}
+                </button>
+              );
+            })}
           </div>
 
-          {/* Swipe hint — subtle arrow nudge on first view */}
           {/* Swipe hint — only on first visit */}
           {!IS_RETURN_VISIT && (
             <motion.p
@@ -589,15 +595,19 @@ export default function ProductLibrary() {
                 fontSize: '8px',
                 fontWeight: 500,
                 letterSpacing: '0.08em',
-                color: isDark ? 'hsla(30, 20%, 80%, 0.3)' : 'hsla(0, 0%, 100%, 0.3)',
+                color: 'hsla(30, 20%, 80%, 0.25)',
                 textTransform: 'uppercase',
-                transition: 'color 400ms ease',
               }}
             >
               ← swipa →
             </motion.p>
           )}
         </motion.div>
+
+        {/* Resume banner — returning user hook */}
+        <div className="px-5">
+          <LibraryResumeBanner />
+        </div>
 
         <motion.div
           key="swipe-container"
