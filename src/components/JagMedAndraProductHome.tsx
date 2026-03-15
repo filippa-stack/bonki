@@ -10,8 +10,8 @@ import { useKidsProductProgress } from '@/hooks/useKidsProductProgress';
 import CategoryProgressRing from '@/components/CategoryProgressRing';
 
 const EASE = [0.4, 0.0, 0.2, 1] as const;
-const ACCENT_COLOR = '#9825D6';
-const DIARY_TEXT = '#240046';
+const ACCENT_COLOR = '#C77AE8';
+const DIARY_TEXT = '#FDF6E3';
 const SAFFRON = '#DA9D1D';
 
 const ORDERED_TILES = [
@@ -32,8 +32,8 @@ export default function JagMedAndraProductHome({ product }: { product: ProductMa
 
   return (
     <div className="min-h-screen relative overflow-hidden" style={{ backgroundColor: 'var(--surface-base)' }}>
-      <ProductHomeBackButton color={ACCENT_COLOR} />
-      <div style={{ position: 'absolute', top: '18%', left: '50%', transform: 'translateX(-50%)', width: '140%', height: '60%', background: 'radial-gradient(ellipse at center, hsla(41, 78%, 48%, 0.06) 0%, transparent 70%)', pointerEvents: 'none', zIndex: 0 }} />
+      <ProductHomeBackButton color="#FDF6E3" />
+      <div style={{ position: 'absolute', top: '18%', left: '50%', transform: 'translateX(-50%)', width: '140%', height: '60%', background: 'radial-gradient(ellipse at center, hsla(41, 78%, 48%, 0.10) 0%, transparent 70%)', pointerEvents: 'none', zIndex: 0 }} />
       <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1, scale: [1, 1.015, 1] }} transition={{ duration: 0.6, scale: { duration: 8, ease: 'easeInOut', repeat: Infinity, repeatType: 'reverse' } }} style={{ position: 'absolute', top: '-12%', left: '-24%', width: '140%', height: '110%', zIndex: 0, pointerEvents: 'none' }}>
         <img src={slothImage} alt="" style={{ width: '100%', height: '100%', objectFit: 'contain', objectPosition: 'left top', opacity: 0.32 }} />
       </motion.div>
@@ -44,10 +44,10 @@ export default function JagMedAndraProductHome({ product }: { product: ProductMa
       <div style={{ position: 'relative', zIndex: 1, height: '100vh', display: 'flex', flexDirection: 'column', paddingTop: '8vh', paddingRight: '5vw', paddingBottom: '80px', paddingLeft: '5vw' }}>
         <motion.div variants={containerVariants} initial="hidden" animate="visible" style={{ textAlign: 'center', width: '100%' }}>
           <motion.div variants={titleVariants}>
-            <h1 style={{ fontFamily: "'DM Serif Display', var(--font-serif)", fontSize: 'clamp(36px, 10vw, 50px)', fontWeight: 700, color: ACCENT_COLOR, letterSpacing: '-0.01em', whiteSpace: 'nowrap', textShadow: ['0 0 24px rgba(255, 255, 255, 1)', '0 0 48px rgba(255, 255, 255, 0.7)', '0 0 80px rgba(255, 255, 255, 0.4)', '0 2px 4px rgba(0, 0, 0, 0.06)'].join(', ') }}>
+            <h1 style={{ fontFamily: "'DM Serif Display', var(--font-serif)", fontSize: 'clamp(36px, 10vw, 50px)', fontWeight: 700, color: '#FDF6E3', letterSpacing: '-0.01em', whiteSpace: 'nowrap', textShadow: '0 2px 12px rgba(0,0,0,0.4), 0 0 40px rgba(90,26,128,0.5)' }}>
               Jag med andra
             </h1>
-            <p className="font-serif" style={{ fontSize: 'clamp(16px, 4.5vw, 20px)', fontWeight: 400, color: '#2C2420', opacity: 0.85, marginTop: '6px', textShadow: '0 0 16px rgba(255,255,255,0.95), 0 0 32px rgba(255,255,255,0.5)' }}>
+            <p className="font-serif" style={{ fontSize: 'clamp(16px, 4.5vw, 20px)', fontWeight: 400, color: ACCENT_COLOR, opacity: 0.9, marginTop: '6px', textShadow: '0 1px 8px rgba(0,0,0,0.3)' }}>
               Det svåra och det trygga
             </p>
             <KidsProductResumeBanner product={product} progress={progress} accentColor={ACCENT_COLOR} />

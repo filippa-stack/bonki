@@ -322,7 +322,7 @@ export const syskonkortProduct: ProductManifest = {
   accentColor: 'hsl(179, 54%, 31%)',
   accentColorMuted: 'hsl(179, 25%, 88%)',
   secondaryAccent: 'hsl(179, 54%, 31%)',
-  backgroundColor: '#FDF6E3',
+  backgroundColor: '#0A2826',
   ctaButtonColor: '#247A78',
   pronounMode: 'du',
   freeCardId: 'sk-syskonkunskap',

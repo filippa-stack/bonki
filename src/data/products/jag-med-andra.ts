@@ -644,7 +644,7 @@ export const jagMedAndraProduct: ProductManifest = {
   accentColor: 'hsl(277, 62%, 48%)',
   accentColorMuted: 'hsl(277, 30%, 88%)',
   secondaryAccent: 'hsl(277, 62%, 48%)',
-  backgroundColor: '#FDF6E3',
+  backgroundColor: '#1E0A30',
   ctaButtonColor: '#8B2FC6',
   pronounMode: 'du',
   freeCardId: 'jma-vanskap',
