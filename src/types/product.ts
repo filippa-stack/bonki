@@ -20,6 +20,8 @@ export interface ProductManifest {
   freeCardId?: string;
   /** Age label shown in UI, e.g. '3+', '6+', '13+' */
   ageLabel?: string;
+  /** Short paywall description — one sentence about the product's emotional territory */
+  paywallDescription?: string;
   categories: Category[];
   cards: Card[];
 }

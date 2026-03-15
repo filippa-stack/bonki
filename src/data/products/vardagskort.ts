@@ -162,6 +162,7 @@ export const vardagskortProduct: ProductManifest = {
   pronounMode: 'du',
   freeCardId: 'vk-hur-var-din-dag',
   ageLabel: '6+',
+  paywallDescription: 'Lås upp alla samtal om vardagen, rutiner och det som händer hemma.',
   categories,
   cards,
 };

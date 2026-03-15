@@ -649,6 +649,7 @@ export const jagMedAndraProduct: ProductManifest = {
   pronounMode: 'du',
   freeCardId: 'jma-vanskap',
   ageLabel: '6+',
+  paywallDescription: 'Lås upp alla samtal om vänskap, gränser och att vara tillsammans.',
   categories,
   cards,
 };

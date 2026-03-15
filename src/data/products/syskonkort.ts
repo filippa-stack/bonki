@@ -327,6 +327,7 @@ export const syskonkortProduct: ProductManifest = {
   pronounMode: 'du',
   freeCardId: 'sk-syskonkunskap',
   ageLabel: '6+',
+  paywallDescription: 'Lås upp alla samtal om syskon, rättvisa och att dela.',
   categories,
   cards,
 };

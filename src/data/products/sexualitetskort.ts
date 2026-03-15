@@ -161,6 +161,7 @@ export const sexualitetskortProduct: ProductManifest = {
   pronounMode: 'du',
   freeCardId: 'sex-normer',
   ageLabel: '13+',
+  paywallDescription: 'Lås upp alla samtal om kroppen, gränser och relationer.',
   categories,
   cards,
 };
