@@ -142,17 +142,17 @@ h1, h2, h3,
     /* Card styling */
     --card-shadow: var(--shadow-card);
 
-    /* ── Text hierarchy tokens (no opacity — absolute values) ── */
-    --text-primary:    hsl(220, 25%, 18%);   /* Midnight ink */
-    --text-secondary:  hsl(30, 10%, 40%);    /* Warm grey */
-    --text-tertiary:   hsl(30, 8%, 56%);     /* Recedes */
-    --text-ghost:      hsl(30, 6%, 70%);     /* Placeholders */
-    --text-accent:     hsl(41, 78%, 48%);    /* Saffron — sparingly */
+    /* ── Text hierarchy tokens (Bark + Driftwood scale) ── */
+    --text-primary:    hsl(20, 16%, 15%);    /* Bark #2C2420 */
+    --text-secondary:  hsl(29, 13%, 37%);    /* Driftwood #6B5E52 */
+    --text-tertiary:   hsl(29, 10%, 52%);    /* Light Driftwood */
+    --text-ghost:      hsl(29, 8%, 66%);     /* Placeholders */
+    --text-accent:     hsl(40, 78%, 61%);    /* Saffron Flame #E9B44C */
 
-    /* ── Accent tokens ── */
-    --accent-saffron:       hsl(41, 78%, 48%);
-    --accent-saffron-muted: hsl(41, 55%, 72%);
-    --accent-text:          hsl(41, 65%, 38%);  /* Darker saffron for editorial text */
+    /* ── Accent tokens (Saffron warmth) ── */
+    --accent-saffron:       hsl(40, 78%, 61%);   /* Saffron Flame #E9B44C */
+    --accent-saffron-muted: hsl(40, 55%, 72%);
+    --accent-text:          hsl(40, 64%, 53%);   /* Deep Saffron #D4A03A */
     --color-text-tertiary:  var(--text-tertiary);
 
     /* ── Surface layering (mapped to foundation neutrals) ── */
