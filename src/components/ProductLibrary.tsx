@@ -441,9 +441,9 @@ export default function ProductLibrary() {
   const vardag = allProducts.find(p => p.id === 'vardagskort')!;
   const syskon = allProducts.find(p => p.id === 'syskonkort')!;
 
-  const isDark = activeTab === 'par';
+  const isDark = true; // Both tabs now use Midnight Ink
 
-  const libraryBg = isDark ? '#1A1A2E' : '#33656D';
+  const libraryBg = '#1A1A2E';
 
   return (
     <div
