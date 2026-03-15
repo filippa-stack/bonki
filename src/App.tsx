@@ -28,6 +28,7 @@ import CardPreview from "./pages/CardPreview";
 import ProductHome from "./pages/ProductHome";
 
 import SharedSummary from "./pages/SharedSummary";
+import Journal from "./pages/Journal";
 import Diary from "./pages/Diary";
 import Login from "./pages/Login";
 import NotFound from "./pages/NotFound";
