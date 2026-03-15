@@ -18,6 +18,9 @@ import { allProducts } from '@/data/products';
 const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
 const STILL_US_ID = 'still_us';
 
+const STILL_US_STEP_NAMES = ['Öppna', 'Vänd', 'Tänk om', 'Gör'];
+const FOURTEEN_DAYS_MS = 14 * 24 * 60 * 60 * 1000;
+
 type FilterChip = 'barn' | 'par';
 
 interface CompletedSession {
@@ -26,6 +29,23 @@ interface CompletedSession {
   product_id: string;
   ended_at: string | null;
   category_id: string | null;
+}
+
+interface PausedSession {
+  id: string;
+  card_id: string | null;
+  product_id: string;
+  category_id: string | null;
+  started_at: string;
+  last_activity_at: string;
+  currentStepIndex: number;
+}
+
+interface Bookmark {
+  id: string;
+  card_id: string;
+  product_id: string;
+  question_text: string;
 }
 
 interface NoteEntry {
@@ -263,6 +283,8 @@ export default function Journal() {
   const [sessions, setSessions] = useState<CompletedSession[] | null>(null);
   const [takeaways, setTakeaways] = useState<any[] | null>(null);
   const [reflections, setReflections] = useState<any[] | null>(null);
+  const [pausedSessions, setPausedSessions] = useState<PausedSession[]>([]);
+  const [bookmarks, setBookmarks] = useState<Bookmark[]>([]);
   const [activeFilters, setActiveFilters] = useState<Set<FilterChip>>(new Set(['barn', 'par']));
   const [parExpanded, setParExpanded] = useState(false);
 
@@ -272,6 +294,8 @@ export default function Journal() {
       setSessions([]);
       setTakeaways([]);
       setReflections([]);
+      setPausedSessions([]);
+      setBookmarks([]);
       return;
     }
     let cancelled = false;
@@ -300,6 +324,57 @@ export default function Journal() {
       .neq('text', '')
       .order('updated_at', { ascending: false })
       .then(({ data }) => { if (!cancelled) setReflections(data ?? []); });
+
+    // Paused/active sessions (not completed)
+    supabase
+      .from('couple_sessions')
+      .select('id, card_id, product_id, category_id, started_at, last_activity_at')
+      .eq('couple_space_id', space.id)
+      .eq('status', 'active')
+      .order('last_activity_at', { ascending: false })
+      .then(async ({ data }) => {
+        if (cancelled || !data) { setPausedSessions([]); return; }
+        const now = Date.now();
+        const valid = data.filter(s => {
+          // Kids sessions expire after 14 days
+          if (s.product_id !== STILL_US_ID) {
+            const elapsed = now - new Date(s.last_activity_at).getTime();
+            if (elapsed > FOURTEEN_DAYS_MS) return false;
+          }
+          return true;
+        });
+        // Get current step index for each session
+        const sessionsWithStep: PausedSession[] = [];
+        for (const s of valid) {
+          // Find max completed step
+          const { data: completions } = await supabase
+            .from('couple_session_completions')
+            .select('step_index')
+            .eq('session_id', s.id)
+            .order('step_index', { ascending: false })
+            .limit(1);
+          const maxStep = completions?.[0]?.step_index ?? -1;
+          sessionsWithStep.push({
+            id: s.id,
+            card_id: s.card_id,
+            product_id: s.product_id,
+            category_id: s.category_id,
+            started_at: s.started_at,
+            last_activity_at: s.last_activity_at,
+            currentStepIndex: maxStep + 1,
+          });
+        }
+        if (!cancelled) setPausedSessions(sessionsWithStep);
+      });
+
+    // Bookmarked questions
+    supabase
+      .from('question_bookmarks')
+      .select('id, card_id, product_id, question_text')
+      .eq('couple_space_id', space.id)
+      .eq('is_active', true)
+      .order('bookmarked_at', { ascending: false })
+      .then(({ data }) => { if (!cancelled) setBookmarks(data ?? []); });
 
     return () => { cancelled = true; };
   }, [space?.id]);
@@ -451,6 +526,22 @@ export default function Journal() {
   }, [filteredSessions]);
 
   const showParPrivacy = activeFilters.has('barn') && activeFilters.has('par') && stillUsSessions.length > 0;
+
+  // Filtered paused sessions
+  const filteredPaused = useMemo(() => {
+    return pausedSessions.filter(s => {
+      const isPar = s.product_id === STILL_US_ID;
+      return isPar ? activeFilters.has('par') : activeFilters.has('barn');
+    });
+  }, [pausedSessions, activeFilters]);
+
+  // Filtered bookmarks
+  const filteredBookmarks = useMemo(() => {
+    return bookmarks.filter(b => {
+      const isPar = b.product_id === STILL_US_ID;
+      return isPar ? activeFilters.has('par') : activeFilters.has('barn');
+    });
+  }, [bookmarks, activeFilters]);
 
   const toggleFilter = (chip: FilterChip) => {
     setActiveFilters(prev => {
@@ -638,8 +729,107 @@ export default function Journal() {
             </div>
           ))}
 
+          {/* ── Paused Sessions ── */}
+          {filteredPaused.length > 0 && (
+            <div>
+              <p style={{
+                margin: '40px 0 12px 16px', fontSize: '12px', fontWeight: 600,
+                letterSpacing: '2px', color: DRIFTWOOD, lineHeight: 1, textTransform: 'uppercase',
+              }}>
+                Samtal ni inte avslutat
+              </p>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', padding: '0 16px' }}>
+                {filteredPaused.map(s => {
+                  const cardName = s.card_id ? getCardTitle(s.card_id) : 'Okänt samtal';
+                  const catName = getCategoryName(s.category_id, s.card_id ?? '');
+                  const stepName = s.product_id === STILL_US_ID
+                    ? (STILL_US_STEP_NAMES[s.currentStepIndex] ?? `Steg ${s.currentStepIndex + 1}`)
+                    : `Fråga ${s.currentStepIndex + 1}`;
+
+                  return (
+                    <button
+                      key={s.id}
+                      onClick={() => s.card_id && navigate(`/card/${s.card_id}`)}
+                      style={{
+                        width: '100%', backgroundColor: DEEP_DUSK, borderRadius: '16px',
+                        padding: '16px', cursor: 'pointer',
+                        borderTop: 'none', borderRight: 'none', borderBottom: 'none',
+                        borderLeft: `3px solid ${getProductColor(s.product_id)}`,
+                        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+                        textAlign: 'left', WebkitTapHighlightColor: 'transparent',
+                      }}
+                    >
+                      <div style={{ minWidth: 0 }}>
+                        <span style={{
+                          fontSize: '17px', fontWeight: 600, color: LANTERN_GLOW,
+                          display: 'block', lineHeight: 1.3,
+                        }}>
+                          {cardName}
+                        </span>
+                        <span style={{
+                          fontSize: '13px', color: DRIFTWOOD, display: 'block', marginTop: '4px',
+                        }}>
+                          Pausad vid {stepName} · {catName}
+                        </span>
+                      </div>
+                      <span style={{ fontSize: '15px', color: DEEP_SAFFRON, flexShrink: 0, marginLeft: '12px' }}>
+                        Fortsätt
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+
+          {/* ── Bookmarked Questions ── */}
+          {filteredBookmarks.length > 0 && (
+            <div>
+              <p style={{
+                margin: '40px 0 12px 16px', fontSize: '12px', fontWeight: 600,
+                letterSpacing: '2px', color: DRIFTWOOD, lineHeight: 1, textTransform: 'uppercase',
+              }}>
+                Frågor ni velat återvända till
+              </p>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', padding: '0 16px' }}>
+                {filteredBookmarks.map(b => {
+                  const cardName = getCardTitle(b.card_id);
+                  const catName = getCategoryName(null, b.card_id);
+
+                  return (
+                    <button
+                      key={b.id}
+                      onClick={() => navigate(`/card/${b.card_id}`)}
+                      style={{
+                        width: '100%', backgroundColor: DEEP_DUSK, borderRadius: '16px',
+                        padding: '16px', border: 'none', cursor: 'pointer',
+                        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+                        textAlign: 'left', WebkitTapHighlightColor: 'transparent',
+                      }}
+                    >
+                      <div style={{ minWidth: 0, flex: 1 }}>
+                        <span style={{
+                          fontSize: '17px', color: LANTERN_GLOW,
+                          display: 'block', lineHeight: 1.4,
+                        }}>
+                          {b.question_text}
+                        </span>
+                        <span style={{
+                          fontSize: '13px', color: DRIFTWOOD, display: 'block', marginTop: '8px',
+                        }}>
+                          {cardName} · {catName}
+                        </span>
+                      </div>
+                      <ChevronRight size={18} strokeWidth={1.5} style={{ color: DRIFTWOOD, flexShrink: 0, marginLeft: '8px' }} />
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+
           {/* Bottom spacer */}
-          <div style={{ height: '24px' }} />
+          <div style={{ height: '120px' }} />
         </div>
       )}
     </div>
