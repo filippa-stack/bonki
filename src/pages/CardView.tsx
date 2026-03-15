@@ -3146,9 +3146,9 @@ function SimpleTakeaway({ sessionId, spaceId, cardId, productId, stillUsMode }: 
           fontFamily: 'var(--font-serif)',
           fontSize: '16px',
           lineHeight: 1.7,
-          color: stillUsMode ? BARK : 'var(--text-primary)',
+          color: stillUsMode ? BARK_T : 'var(--text-primary)',
           backgroundColor: stillUsMode
-            ? (isFocused || hasFill ? EMBER_GLOW : 'hsla(36, 40%, 92%, 0.12)')
+            ? (isFocused || hasFill ? EMBER_GLOW_T : 'hsla(36, 40%, 92%, 0.12)')
             : (isFocused || hasFill ? 'hsla(36, 20%, 97%, 0.12)' : 'hsla(36, 18%, 96%, 0.06)'),
           border: 'none',
           borderRadius: '12px',
