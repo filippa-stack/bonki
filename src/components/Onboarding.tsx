@@ -206,7 +206,7 @@ export default function Onboarding() {
               letterSpacing: '-0.01em',
             }}
           >
-            Börja med barnen
+            Med barnen
           </span>
           <span
             style={{
