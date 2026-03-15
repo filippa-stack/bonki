@@ -465,6 +465,34 @@ export default function CardView() {
   const [showLeaveConfirm, setShowLeaveConfirm] = useState(false);
   const sectionViewRef = useRef<SectionViewHandle>(null);
 
+  // ─── Kids session note state ───
+  const kidsNoteStepIndex = currentStepIndex * 100 + localPromptIndex;
+  const kidsNoteSession = useSessionReflections(
+    isKidsProduct ? (normalizedSession.sessionId ?? null) : null,
+    kidsNoteStepIndex
+  );
+  const [kidsNoteExpanded, setKidsNoteExpanded] = useState(false);
+  const [kidsNoteLocalText, setKidsNoteLocalText] = useState('');
+  const kidsNoteInteractedRef = useRef(false);
+  const kidsNoteTextareaRef = useRef<HTMLTextAreaElement>(null);
+
+  // Reset note UI when prompt changes
+  useEffect(() => {
+    setKidsNoteExpanded(false);
+  }, [localPromptIndex]);
+
+  // Sync saved note text from DB
+  useEffect(() => {
+    if (!kidsNoteSession.loading && kidsNoteSession.myReflection?.text) {
+      setKidsNoteLocalText(kidsNoteSession.myReflection.text);
+      setKidsNoteExpanded(true);
+    } else if (!kidsNoteSession.loading) {
+      setKidsNoteLocalText('');
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [kidsNoteSession.loading, kidsNoteStepIndex]);
+
+
   const existingConversation = cardId ? getConversationForCard(cardId) : undefined;
 
   // ─── Save conversation for local resume (live mode only) ───
