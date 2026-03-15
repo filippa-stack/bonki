@@ -261,6 +261,7 @@ export default function CircadianMenu({
                 const catCards = categoryCards.get(category.id) || [];
                 const completedCount = catCards.filter(c => completedCardIds.includes(c.id)).length;
                 const allCompleted = completedCount === catCards.length && catCards.length > 0;
+                const tileColor = TILE_COLORS[category.id] || { bg: EMBER_MID, text: LANTERN_GLOW };
                 const isNextSuggested = category.id === nextSuggestedId && hasEntered;
 
                 return (
