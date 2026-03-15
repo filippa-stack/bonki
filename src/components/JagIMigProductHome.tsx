@@ -125,8 +125,8 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
                     fontSize: '10px',
                     fontWeight: 600,
                     letterSpacing: '0.04em',
-                    color: catProgress.completed > 0 ? '#E9B44C' : tile.text,
-                    opacity: catProgress.completed > 0 ? 0.85 : 0.3,
+                    color: catProgress.completed > 0 ? '#E9B44C' : '#FFFDF8',
+                    opacity: catProgress.completed > 0 ? 0.9 : 0.4,
                     whiteSpace: 'nowrap',
                   }}>
                     {catProgress.completed} av {catProgress.total}
