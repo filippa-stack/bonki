@@ -1946,6 +1946,26 @@ export default function CardView() {
     const sectionPromptCount = getEffectivePromptCount(currentSection);
     const isLastPromptInStage = localPromptIndex >= sectionPromptCount - 1;
     const isLastStage = currentStepIndex >= effectiveSteps.length - 1;
+    const currentStageKey = effectiveSteps[currentStepIndex];
+
+    // Progress bar: fraction within current step
+    const progressFraction = sectionPromptCount > 0
+      ? (localPromptIndex + 1) / sectionPromptCount
+      : 0;
+
+    // CTA labels per step transition
+    const getStillUsCtaLabel = (): string => {
+      if (!isLastPromptInStage) return 'Fortsätt';
+      switch (currentStageKey) {
+        case 'opening': return 'Vänd perspektivet →';
+        case 'reflective': return 'Tänk om... →';
+        case 'scenario': return 'Gör något tillsammans →';
+        default: return 'Vi är klara';
+      }
+    };
+
+    // Note trigger: after step 2 (scenario+), show pencil only
+    const isAfterStep2 = currentStepIndex >= 2;
 
     const handleFocusAdvance = async () => {
       if (isLastPromptInStage) {
@@ -1955,6 +1975,26 @@ export default function CardView() {
       }
     };
 
+    const handleFocusBack = () => {
+      if (localPromptIndex > 0) {
+        setLocalPromptIndex(localPromptIndex - 1);
+      } else if (currentStepIndex > 0) {
+        const prevStageIndex = currentStepIndex - 1;
+        const prevSection = card.sections.find(
+          s => s.type === effectiveSteps[prevStageIndex]
+        );
+        const prevPromptCount = getEffectivePromptCount(prevSection);
+        setLocalStepIndex(prevStageIndex);
+        setLocalPromptIndex(prevPromptCount - 1);
+      } else {
+        setShowLeaveConfirm(true);
+      }
+    };
+
+    const MIDNIGHT_INK_LOCAL = '#1A1A2E';
+    const LANTERN_GLOW_LOCAL = '#FDF6E3';
+    const DEEP_SAFFRON_LOCAL = '#D4A03A';
+
     return (
       <>
         {_devDebug}
@@ -1962,72 +2002,91 @@ export default function CardView() {
           key={`focus-${currentStepIndex}-${localPromptIndex}`}
           onExit={() => setShowLeaveConfirm(true)}
           onPause={() => navigate('/')}
+          showExitDialog={showLeaveConfirm}
+          onExitDialogClose={() => setShowLeaveConfirm(false)}
+          onExitConfirm={() => navigate(exitBackTo)}
           topSlot={
-            <div
-              style={{
-                width: '100%',
-                paddingTop: 'calc(4px + env(safe-area-inset-top, 0px))',
-                paddingLeft: '12px',
-                paddingRight: '12px',
-              }}
-            >
-              <div
-                style={{
-                  display: 'grid',
-                  gridTemplateColumns: '44px 1fr 44px',
-                  alignItems: 'center',
-                  minHeight: '44px',
-                }}
-              >
+            <div style={{
+              width: '100%',
+              backgroundColor: MIDNIGHT_INK_LOCAL,
+              paddingTop: 'env(safe-area-inset-top, 0px)',
+            }}>
+              {/* Nav bar — 52px */}
+              <div style={{
+                height: '52px',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                alignItems: 'center',
+                position: 'relative',
+                paddingLeft: '48px',
+                paddingRight: '48px',
+              }}>
+                {/* Back arrow */}
                 <button
                   onClick={() => setShowLeaveConfirm(true)}
                   aria-label="Tillbaka"
                   style={{
-                    width: '44px',
-                    height: '44px',
+                    position: 'absolute',
+                    left: '8px',
+                    top: '50%',
+                    transform: 'translateY(-50%)',
+                    minHeight: '44px',
+                    minWidth: '44px',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    backgroundColor: 'var(--surface-raised)',
-                    border: '1px solid var(--border)',
-                    borderRadius: '999px',
+                    background: 'none',
+                    border: 'none',
                     cursor: 'pointer',
                   }}
                 >
                   <ArrowLeft
                     size={18}
                     strokeWidth={1.8}
-                    style={{ color: 'var(--text-primary)', opacity: 0.92 }}
+                    style={{ color: LANTERN_GLOW_LOCAL, opacity: 0.5 }}
                   />
                 </button>
 
-                <h1
-                  className="font-serif truncate text-center"
-                  style={{
-                    fontSize: '14px',
-                    color: 'var(--text-primary)',
-                    opacity: 0.95,
-                    letterSpacing: '0.01em',
-                  }}
-                >
-                  {card?.title ?? category?.title}
-                </h1>
+                {/* Card name */}
+                <span style={{
+                  fontFamily: 'var(--font-sans)',
+                  fontSize: '13px',
+                  color: LANTERN_GLOW_LOCAL,
+                  opacity: 0.85,
+                  textAlign: 'center',
+                  lineHeight: 1.2,
+                  marginBottom: '4px',
+                }}>
+                  {card?.title}
+                </span>
 
-                <div style={{ width: '44px', height: '44px' }} />
+                {/* Step labels */}
+                <StepProgressIndicator
+                  currentStepIndex={currentStepIndex}
+                  completedSteps={Array.from({ length: currentStepIndex }, (_, i) => i)}
+                  isTransitioning={showInterstitial}
+                  steps={dynamicSteps}
+                  stillUsMode={true}
+                />
               </div>
 
-              {effectiveSteps.length > 1 && (
-                <div style={{ marginTop: '6px' }}>
-                  <StepProgressIndicator
-                    currentStepIndex={currentStepIndex}
-                    completedSteps={Array.from({ length: currentStepIndex }, (_, i) => i)}
-                    isTransitioning={showInterstitial}
-                    steps={dynamicSteps}
-                    currentPromptIndex={localPromptIndex}
-                    totalPromptsInStep={sectionPromptCount}
-                  />
-                </div>
-              )}
+              {/* Progress bar — full width, 2px */}
+              <div style={{
+                width: '100%',
+                height: '2px',
+                backgroundColor: 'rgba(255,255,255,0.08)',
+              }}>
+                <motion.div
+                  initial={false}
+                  animate={{ width: `${progressFraction * 100}%` }}
+                  transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
+                  style={{
+                    height: '100%',
+                    backgroundColor: DEEP_SAFFRON_LOCAL,
+                  }}
+                />
+              </div>
             </div>
           }
           ctaSlot={
@@ -2041,33 +2100,24 @@ export default function CardView() {
               isReflectionStep={isReflectionStep}
               isExerciseStep={isExerciseStep}
               hideNoteField={false}
+              stillUsMode={true}
+              ctaLabel={getStillUsCtaLabel()}
+              pauseLabel="Pausa för idag"
+              compactNoteTrigger={isAfterStep2}
+              onPause={() => navigate('/')}
               onLocked={handleFocusAdvance}
-              onBack={() => {
-                if (localPromptIndex > 0) {
-                  setLocalPromptIndex(localPromptIndex - 1);
-                } else if (currentStepIndex > 0) {
-                  const prevStageIndex = currentStepIndex - 1;
-                  const prevSection = card.sections.find(
-                    s => s.type === effectiveSteps[prevStageIndex]
-                  );
-                  const prevPromptCount = getEffectivePromptCount(prevSection);
-                  setLocalStepIndex(prevStageIndex);
-                  setLocalPromptIndex(prevPromptCount - 1);
-                } else {
-                  setShowLeaveConfirm(true);
-                }
-              }}
+              onBack={handleFocusBack}
             />
           }
         >
-          {/* Centered question — gallery presentation */}
+          {/* Centered question — crossfade */}
           <AnimatePresence mode="wait">
             <motion.div
               key={`focus-q-${currentSection.id}-${localPromptIndex}`}
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -8, transition: { duration: 0.15, ease: [0.4, 0, 1, 1] } }}
-              transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0, transition: { duration: 0.15 } }}
+              transition={{ duration: 0.15 }}
               className="w-full text-center"
             >
               <SectionView
@@ -2083,32 +2133,10 @@ export default function CardView() {
                 isReflectionStep={isReflectionStep}
                 isExerciseStep={isExerciseStep}
                 showBackArrow={false}
-                backgroundImageUrl={pronounMode === 'du' ? cardImageUrl : null}
               />
             </motion.div>
           </AnimatePresence>
         </SessionFocusShell>
-
-        {/* Leave session confirmation */}
-        <AlertDialog open={showLeaveConfirm} onOpenChange={setShowLeaveConfirm}>
-          <AlertDialogContent>
-            <AlertDialogHeader>
-              <AlertDialogTitle className="font-serif text-lg">Avsluta samtalet?</AlertDialogTitle>
-              <AlertDialogDescription className="text-sm text-muted-foreground leading-relaxed pt-1">
-                {uiText.leaveConfirmDesc}
-              </AlertDialogDescription>
-            </AlertDialogHeader>
-            <AlertDialogFooter className="mt-2">
-              <AlertDialogCancel>Fortsätt</AlertDialogCancel>
-              <AlertDialogAction
-                onClick={() => navigate(exitBackTo)}
-                className="bg-destructive text-white hover:bg-destructive/90"
-              >
-                Avsluta
-              </AlertDialogAction>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialog>
 
         {/* GÖR TILLSAMMANS one-time overlay */}
         <AnimatePresence>
