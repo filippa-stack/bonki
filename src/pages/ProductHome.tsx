@@ -32,6 +32,7 @@ export default function ProductHome() {
     product?.backgroundColor,
     product?.ctaButtonColor,
     product?.pronounMode,
+    product,
   );
 
   const needsIntroStillUs = useProductIntroNeeded('still_us');
