@@ -97,20 +97,10 @@ export default function Home() {
     return result;
   }, [sortedCategories]);
 
-  // Resume card data (paused session)
-  const resumeCardId = devState === 'browse' ? null : (normalizedSession.sessionId ? normalizedSession.cardId : null);
-  const resumeCard = resumeCardId ? getCardById(resumeCardId) : null;
+  // Resume: delegate to UnifiedResumeBanner (reads from NormalizedSessionContext)
+  const hasResumeSession = devState !== 'browse' && !!normalizedSession.sessionId && !!normalizedSession.cardId;
+  const resumeCard = hasResumeSession ? getCardById(normalizedSession.cardId!) : null;
   const isStillUsResume = resumeCard ? allCategories.some(c => c.id === resumeCard.categoryId) : false;
-
-  // Step label for resume card
-  const resumeStepLabel = useMemo(() => {
-    if (!resumeCard || !isStillUsResume) return '';
-    const stepIndex = normalizedSession.currentStepIndex ?? 0;
-    const effectiveSteps = resumeCard.sections?.map((s: { type: string }) => s.type) ?? [];
-    const dynSteps = buildDynamicSteps(effectiveSteps, true);
-    const step = dynSteps[stepIndex];
-    return step?.label ?? '';
-  }, [resumeCard, isStillUsResume, normalizedSession.currentStepIndex]);
 
   // Next conversation: first uncompleted card in sequence
   const nextCard = useMemo(() => {
