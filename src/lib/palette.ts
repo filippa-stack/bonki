@@ -16,6 +16,11 @@ export const BONKI_ORANGE = '#E85D2C';
 export const BARK = '#2C2420';
 export const DRIFTWOOD = '#6B5E52';
 
+// ── Still Us tokens ──
+export const EMBER_NIGHT = '#2E2233';
+export const EMBER_MID = '#473454';
+export const EMBER_GLOW = '#F5E8CC';
+
 // ── Per-product tile colors ──
 export interface ProductTileColors {
   tileLight: string;
@@ -53,5 +58,10 @@ export const productTileColors: Record<string, ProductTileColors> = {
     tileLight: '#A3434B',
     tileMid: '#6A2A30',
     tileDeep: '#4A1A20',
+  },
+  still_us: {
+    tileLight: '#D4A03A',
+    tileMid: '#473454',
+    tileDeep: '#2E2233',
   },
 };
