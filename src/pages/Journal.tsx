@@ -513,7 +513,7 @@ export default function Journal() {
   const filteredSessions = useMemo(() => {
     if (!sessions) return [];
     return sessions.filter(s => {
-      const isPar = s.product_id === STILL_US_ID;
+      const isPar = effectiveIsPar(s.product_id, s.card_id);
       if (isPar) return activeFilters.has('par');
       return activeFilters.has('barn');
     });
