@@ -256,7 +256,7 @@ export default function Onboarding() {
               letterSpacing: '-0.01em',
             }}
           >
-            Börja som par
+            Som par
           </span>
           <span
             style={{
@@ -266,7 +266,7 @@ export default function Onboarding() {
               color: 'hsla(44, 86%, 94%, 0.45)',
             }}
           >
-            Samtal för er relation — Still Us
+            Samtal för er relation
           </span>
         </button>
       </motion.div>
