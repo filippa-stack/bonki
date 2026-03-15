@@ -14,10 +14,10 @@ const DIARY_TEXT = '#6B3A3F';
 const SAFFRON = '#DA9D1D';
 
 const ORDERED_TILES = [
-  { id: 'sex-min-identitet', bg: '#F5E0EC', text: '#6B3A3F', sub: 'Vem du är och blir' },
-  { id: 'sex-normer-och-paverkan', bg: '#E8B8B8', text: '#5A2A30', sub: 'Det som formar oss' },
-  { id: 'sex-relation-och-ansvar', bg: '#C88888', text: '#3A1E1E', sub: 'Att ta hand om sig själv och andra' },
-  { id: 'sex-skydd-och-makt', bg: '#8E5558', text: '#FAF5F0', sub: 'Gränser och rättigheter' },
+  { id: 'sex-min-identitet', bg: '#6A2A30', text: '#FDF6E3', sub: 'Vem du är och blir' },
+  { id: 'sex-normer-och-paverkan', bg: '#4A1A20', text: '#FDF6E3', sub: 'Det som formar oss' },
+  { id: 'sex-relation-och-ansvar', bg: '#5A2228', text: '#FDF6E3', sub: 'Att ta hand om sig själv och andra' },
+  { id: 'sex-skydd-och-makt', bg: '#3A1218', text: '#FDF6E3', sub: 'Gränser och rättigheter' },
 ];
 
 const containerVariants = { hidden: {}, visible: { transition: { staggerChildren: 0.11, delayChildren: 0.4 } } };

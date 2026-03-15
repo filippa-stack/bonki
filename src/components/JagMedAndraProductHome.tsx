@@ -15,11 +15,11 @@ const DIARY_TEXT = '#240046';
 const SAFFRON = '#DA9D1D';
 
 const ORDERED_TILES = [
-  { id: 'jma-att-hora-till', bg: '#F8E4EC', text: '#7B1FA2', sub: 'Var hör jag hemma?' },
-  { id: 'jma-nar-vi-jamfor-oss', bg: '#E8C8F0', text: '#7B1FA2', sub: 'Vad det gör med oss' },
-  { id: 'jma-nar-det-skaver', bg: '#E8C0D0', text: '#6A1B5E', sub: 'När vi sårar varandra' },
-  { id: 'jma-att-sta-stadig', bg: '#C8A8D8', text: '#4A148C', sub: 'Din egen grund' },
-  { id: 'jma-vi-i-varlden', bg: '#7E5C8E', text: '#F5F0F8', sub: 'Utanför oss själva' },
+  { id: 'jma-att-hora-till', bg: '#5A1A80', text: '#FDF6E3', sub: 'Var hör jag hemma?' },
+  { id: 'jma-nar-vi-jamfor-oss', bg: '#4A1268', text: '#FDF6E3', sub: 'Vad det gör med oss' },
+  { id: 'jma-nar-det-skaver', bg: '#6A2090', text: '#FDF6E3', sub: 'När vi sårar varandra' },
+  { id: 'jma-att-sta-stadig', bg: '#3A0E58', text: '#FDF6E3', sub: 'Din egen grund' },
+  { id: 'jma-vi-i-varlden', bg: '#2A0840', text: '#FDF6E3', sub: 'Utanför oss själva' },
 ];
 
 const containerVariants = { hidden: {}, visible: { transition: { staggerChildren: 0.11, delayChildren: 0.4 } } };
