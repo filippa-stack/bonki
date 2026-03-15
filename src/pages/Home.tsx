@@ -306,7 +306,7 @@ export default function Home() {
                       Från {nextCardCategory.title}
                     </span>
                   )}
-                </button>
+                </motion.button>
               ) : null}
             </motion.div>
 
