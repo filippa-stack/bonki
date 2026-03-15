@@ -118,8 +118,8 @@ h1, h2, h3,
     --category-logistics: 29 15% 62%;      /* Neutral warm */
 
     /* Interactive states */
-    --state-active: 0 0% 17%;
-    --state-inactive: 0 0% 60%;
+    --state-active: 20 16% 15%;             /* Bark */
+    --state-inactive: 29 10% 55%;           /* Driftwood-light */
 
     /* Typography */
     --font-serif: 'Cormorant Garamond', Georgia, serif;
