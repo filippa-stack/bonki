@@ -138,6 +138,10 @@ export default function BottomNav() {
     ];
   }, [isInsideProduct, isOnLibrary, product, isStillUsContext, lastProduct, productHomePath, productHomeLabel, isChildProduct, search]);
 
+  // Hide BottomNav during card session flow (intro + session + completion)
+  const isInCardSession = pathname.startsWith('/card/');
+  if (isInCardSession) return null;
+
   return (
     <nav
       className="fixed bottom-0 left-0 right-0 z-40"
