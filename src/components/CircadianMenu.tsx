@@ -104,53 +104,6 @@ const SECTION_GROUPS = [
   },
 ];
 
-/** Gold progress ring SVG */
-function ProgressRing({ completed, total, size = 22 }: { completed: number; total: number; size?: number }) {
-  const radius = (size - 3) / 2;
-  const circumference = 2 * Math.PI * radius;
-  const progress = total > 0 ? completed / total : 0;
-  const strokeDashoffset = circumference * (1 - progress);
-  const allDone = completed === total && total > 0;
-
-  return (
-    <div style={{ position: 'relative', width: size, height: size, flexShrink: 0 }}>
-      <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} style={{ transform: 'rotate(-90deg)' }}>
-        <circle
-          cx={size / 2} cy={size / 2} r={radius}
-          fill="none"
-          stroke={SAFFRON}
-          strokeWidth={2}
-          opacity={0.15}
-        />
-        <motion.circle
-          cx={size / 2} cy={size / 2} r={radius}
-          fill="none"
-          stroke={SAFFRON}
-          strokeWidth={2}
-          strokeLinecap="round"
-          strokeDasharray={circumference}
-          initial={{ strokeDashoffset: circumference }}
-          animate={{ strokeDashoffset }}
-          transition={{ duration: 1.2, ease: [...ENTER_EASE], delay: 0.3 }}
-          opacity={0.6}
-        />
-      </svg>
-      {allDone && (
-        <motion.div
-          initial={{ scale: 0 }}
-          animate={{ scale: 1 }}
-          transition={{ delay: 0.8, type: 'spring', stiffness: 300 }}
-          style={{
-            position: 'absolute', inset: 0,
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-          }}
-        >
-          <Check size={10} style={{ color: SAFFRON }} />
-        </motion.div>
-      )}
-    </div>
-  );
-}
 
 const containerVariants = {
   hidden: {},
