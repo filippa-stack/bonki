@@ -39,12 +39,14 @@ export default function NextConversationCard({ product, progress }: NextConversa
     <motion.button
       initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
+      whileTap={{ scale: 0.94, y: 3 }}
       transition={{ duration: 0.5, ease: EASE }}
       onClick={() => navigate(`/card/${card.id}`)}
       style={{
         width: '100%',
-        background: tileMid,
-        borderRadius: '16px',
+        backgroundImage: `linear-gradient(160deg, ${tileMid} 0%, ${tileMid} 100%)`,
+        borderRadius: '22px',
+        border: `1.5px solid rgba(255, 255, 255, 0.30)`,
         borderLeft: `3px solid ${tileLight}`,
         padding: '16px',
         textAlign: 'left',
@@ -52,11 +54,12 @@ export default function NextConversationCard({ product, progress }: NextConversa
         display: 'flex',
         flexDirection: 'column',
         gap: '4px',
-        border: 'none',
-        borderLeftWidth: '3px',
-        borderLeftStyle: 'solid',
-        borderLeftColor: tileLight,
         marginTop: '24px',
+        boxShadow: `
+          0 12px 32px rgba(0, 0, 0, 0.30),
+          inset 0 3px 6px rgba(255, 255, 255, 0.45),
+          inset 0 -4px 10px rgba(0, 0, 0, 0.14)
+        `,
       }}
     >
       <span style={{

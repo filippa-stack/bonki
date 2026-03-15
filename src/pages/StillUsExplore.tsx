@@ -204,19 +204,18 @@ export default function StillUsExplore() {
                         const cardLocked = isLocked && card.id !== 'smallest-we'; // free card exception
 
                         return (
-                          <button
+                          <motion.button
                             key={card.id}
+                            whileTap={{ scale: 0.94, y: 3 }}
                             onClick={() => navigate(`/card/${card.id}`)}
                             style={{
                               width: '100%',
                               minHeight: '100px',
                               padding: '16px',
-                              background: EMBER_MID,
-                              borderLeft: isNext ? `2px solid ${DEEP_SAFFRON}` : '2px solid transparent',
-                              borderTop: 'none',
-                              borderRight: 'none',
-                              borderBottom: 'none',
-                              borderRadius: '16px',
+                              backgroundImage: `linear-gradient(160deg, ${EMBER_MID} 0%, ${EMBER_MID} 100%)`,
+                              border: `1.5px solid rgba(255, 255, 255, 0.30)`,
+                              borderLeft: isNext ? `3px solid ${DEEP_SAFFRON}` : `1.5px solid rgba(255, 255, 255, 0.30)`,
+                              borderRadius: '22px',
                               cursor: 'pointer',
                               textAlign: 'left',
                               position: 'relative',
@@ -224,6 +223,11 @@ export default function StillUsExplore() {
                               flexDirection: 'column',
                               justifyContent: 'center',
                               gap: '4px',
+                              boxShadow: `
+                                0 12px 32px rgba(0, 0, 0, 0.30),
+                                inset 0 3px 6px rgba(255, 255, 255, 0.45),
+                                inset 0 -4px 10px rgba(0, 0, 0, 0.14)
+                              `,
                             }}
                           >
                             {/* Status badge — top right */}
