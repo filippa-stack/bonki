@@ -64,7 +64,7 @@ export default function ProductHome() {
         />
       );
     }
-    return <Navigate to="/?devState=solo" replace />;
+    return <Navigate to="/?product=still-us" replace />;
   }
 
   if (showIntro && product) {
