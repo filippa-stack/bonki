@@ -56,79 +56,85 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
 
         <div style={{ flex: 1 }} />
 
-        <motion.div variants={containerVariants} initial="hidden" animate="visible" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px', width: '100%' }}>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px', width: '100%' }}>
-            {ORDERED_TILES.map((tile, index) => {
-              const cat = product.categories.find((c) => c.id === tile.id);
-              if (!cat) return null;
-              const catProgress = progress.categoryProgress[cat.id];
-              const isNextCategory = progress.nextSuggestedCategoryId === cat.id;
-              const isLastOdd = index === ORDERED_TILES.length - 1 && ORDERED_TILES.length % 2 === 1;
+        <motion.div variants={containerVariants} initial="hidden" animate="visible" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '12px', width: '100%' }}>
+          {ORDERED_TILES.map((tile) => {
+            const cat = product.categories.find((c) => c.id === tile.id);
+            if (!cat) return null;
+            const catProgress = progress.categoryProgress[cat.id];
+            const isNextCategory = progress.nextSuggestedCategoryId === cat.id;
 
-              return (
-                <motion.button
-                  key={cat.id}
-                  variants={pillVariants}
-                  whileHover={{ scale: 1.04, y: -3 }}
-                  whileTap={{ scale: 0.94, y: 3 }}
-                  onClick={() => navigate(`/category/${cat.id}`)}
-                  style={{
-                    backgroundImage: `linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0) 50%, rgba(0,0,0,0.08) 100%)`,
-                    backgroundColor: tile.bg,
-                    borderRadius: '22px',
-                    padding: '20px 16px',
-                    textAlign: 'center',
-                    cursor: 'pointer',
-                    ...(isLastOdd
-                      ? { gridColumn: '1 / -1', justifySelf: 'center', width: '65%', padding: '22px 20px', minHeight: '120px' }
-                      : { aspectRatio: '1 / 1' }),
-                    border: isNextCategory
-                      ? `2.5px solid ${SAFFRON}CC`
-                      : '1px solid rgba(255, 255, 255, 0.12)',
-                    boxShadow: [
-                      isNextCategory ? `0 0 18px 0px ${SAFFRON}50, 0 0 36px -4px ${SAFFRON}30` : '',
-                      '0 10px 28px rgba(0, 0, 0, 0.25)',
-                      '0 4px 10px rgba(0, 0, 0, 0.15)',
-                      '0 1px 3px rgba(0, 0, 0, 0.08)',
-                      'inset 0 3px 6px rgba(255, 255, 255, 0.15)',
-                      'inset 0 -4px 10px rgba(0, 0, 0, 0.14)',
-                    ].filter(Boolean).join(', '),
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    gap: '6px',
-                    lineHeight: 1.15,
-                    position: 'relative',
-                  }}
-                >
+            return (
+              <motion.button
+                key={cat.id}
+                variants={pillVariants}
+                whileHover={{ scale: 1.03, y: -2 }}
+                whileTap={{ scale: 0.96, y: 2 }}
+                onClick={() => navigate(`/category/${cat.id}`)}
+                style={{
+                  backgroundImage: `linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0) 50%, rgba(0,0,0,0.08) 100%)`,
+                  backgroundColor: tile.bg,
+                  borderRadius: '22px',
+                  padding: '22px 24px',
+                  textAlign: 'left',
+                  cursor: 'pointer',
+                  width: '100%',
+                  minHeight: '88px',
+                  border: isNextCategory
+                    ? `2.5px solid ${SAFFRON}CC`
+                    : '1px solid rgba(255, 255, 255, 0.12)',
+                  boxShadow: [
+                    isNextCategory ? `0 0 18px 0px ${SAFFRON}50, 0 0 36px -4px ${SAFFRON}30` : '',
+                    '0 10px 28px rgba(0, 0, 0, 0.25)',
+                    '0 4px 10px rgba(0, 0, 0, 0.15)',
+                    '0 1px 3px rgba(0, 0, 0, 0.08)',
+                    'inset 0 3px 6px rgba(255, 255, 255, 0.15)',
+                    'inset 0 -4px 10px rgba(0, 0, 0, 0.14)',
+                  ].filter(Boolean).join(', '),
+                  display: 'flex',
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  gap: '12px',
+                  lineHeight: 1.15,
+                  position: 'relative',
+                }}
+              >
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
                   <span style={{
                     fontFamily: "'DM Serif Display', var(--font-serif)",
-                    fontSize: 'clamp(17px, 4.8vw, 22px)',
+                    fontSize: 'clamp(19px, 5vw, 24px)',
                     fontWeight: 700,
                     color: tile.text,
-                    padding: '0 2px',
                   }}>
                     {cat.title}
                   </span>
                   <span style={{
-                    fontSize: 'clamp(10px, 2.8vw, 12px)',
+                    fontSize: 'clamp(11px, 3vw, 13px)',
                     fontWeight: 500,
                     color: tile.text,
-                    opacity: 0.85,
+                    opacity: 0.75,
                     letterSpacing: '0.02em',
                     lineHeight: 1.3,
-                    padding: '0 4px',
                   }}>
                     {tile.sub}
                   </span>
-                  {catProgress && (
-                    <CategoryProgressRing completed={catProgress.completed} total={catProgress.total} color={tile.text} />
-                  )}
-                </motion.button>
-              );
-            })}
-          </div>
+                </div>
+                {catProgress && (
+                  <span style={{
+                    flexShrink: 0,
+                    fontSize: '10px',
+                    fontWeight: 600,
+                    letterSpacing: '0.04em',
+                    color: catProgress.completed > 0 ? '#E9B44C' : tile.text,
+                    opacity: catProgress.completed > 0 ? 0.85 : 0.3,
+                    whiteSpace: 'nowrap',
+                  }}>
+                    {catProgress.completed} av {catProgress.total}
+                  </span>
+                )}
+              </motion.button>
+            );
+          })}
         </motion.div>
       </div>
     </div>
