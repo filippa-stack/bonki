@@ -223,7 +223,7 @@ export default function Home() {
   const DEEP_SAFFRON = '#D4A03A';
 
   return (
-    <div ref={scrollRef} className="min-h-screen flex flex-col overflow-y-auto relative" style={{ height: '100vh', backgroundColor: MIDNIGHT_INK }}>
+    <div ref={scrollRef} className="min-h-screen flex flex-col overflow-y-auto relative" style={{ height: '100vh', backgroundColor: '#2E2233' }}>
       {/* Background illustration — max 20% opacity */}
       <motion.div
         initial={{ opacity: 0 }}
