@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { allProducts } from '@/data/products';
 import { useAllProductAccess } from '@/hooks/useAllProductAccess';
 import { useAuth } from '@/contexts/AuthContext';
+import { useCoupleSpaceContext } from '@/contexts/CoupleSpaceContext';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/components/ui/sonner';
 import LibraryResumeBanner from '@/components/LibraryResumeBanner';
