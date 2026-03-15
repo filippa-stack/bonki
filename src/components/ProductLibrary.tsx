@@ -474,6 +474,26 @@ export default function ProductLibrary() {
     }
   }, []);
 
+  // Fetch active sessions across all products for resume indicators
+  const { space } = useCoupleSpaceContext();
+  const [activeProductIds, setActiveProductIds] = useState<Set<string>>(new Set());
+  useEffect(() => {
+    if (!space?.id) return;
+    let cancelled = false;
+    supabase
+      .from('couple_sessions')
+      .select('product_id, last_activity_at')
+      .eq('couple_space_id', space.id)
+      .eq('status', 'active')
+      .order('last_activity_at', { ascending: false })
+      .then(({ data }) => {
+        if (!cancelled && data) {
+          setActiveProductIds(new Set(data.map(s => s.product_id)));
+        }
+      });
+    return () => { cancelled = true; };
+  }, [space?.id]);
+
   // Split products for layout
   const jagIMig = allProducts.find(p => p.id === 'jag_i_mig')!;
   const jagMedAndra = allProducts.find(p => p.id === 'jag_med_andra')!;
@@ -481,6 +501,16 @@ export default function ProductLibrary() {
   const sexualitet = allProducts.find(p => p.id === 'sexualitetskort')!;
   const vardag = allProducts.find(p => p.id === 'vardagskort')!;
   const syskon = allProducts.find(p => p.id === 'syskonkort')!;
+
+  // Default kids product order
+  const defaultKidsOrder = [jagIMig, jagMedAndra, jagIVarlden, vardag, syskon, sexualitet];
+
+  // Smart ordering: products with active sessions first
+  const sortedKidsProducts = useMemo(() => {
+    const active = defaultKidsOrder.filter(p => activeProductIds.has(p.id));
+    const inactive = defaultKidsOrder.filter(p => !activeProductIds.has(p.id));
+    return [...active, ...inactive];
+  }, [activeProductIds]);
 
   const isDark = true; // Both tabs now use Midnight Ink
 
