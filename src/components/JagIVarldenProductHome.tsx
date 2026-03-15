@@ -3,14 +3,14 @@ import { useNavigate } from 'react-router-dom';
 import type { ProductManifest } from '@/types/product';
 import peacockImage from '@/assets/peacock-jag-i-varlden.png';
 import KidsProductResumeBanner from '@/components/KidsProductResumeBanner';
-import DiaryEntrance from '@/components/DiaryEntrance';
+
 import ProductHomeBackButton from '@/components/ProductHomeBackButton';
 import { useKidsProductProgress } from '@/hooks/useKidsProductProgress';
 import CategoryProgressRing from '@/components/CategoryProgressRing';
 
 const EASE = [0.4, 0.0, 0.2, 1] as const;
 const ACCENT_COLOR = '#6ABF78';
-const DIARY_TEXT = '#FDF6E3';
+
 const SAFFRON = '#DA9D1D';
 
 const ORDERED_TILES = [
@@ -128,8 +128,6 @@ export default function JagIVarldenProductHome({ product }: { product: ProductMa
               );
             })}
           </div>
-
-          <DiaryEntrance productId={product.id} accentColor={ACCENT_COLOR} textColor={DIARY_TEXT} />
         </motion.div>
       </div>
     </div>

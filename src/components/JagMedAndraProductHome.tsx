@@ -4,14 +4,14 @@ import type { ProductManifest } from '@/types/product';
 import slothImage from '@/assets/sloth-jag-med-andra.png';
 import nyckelpiganImage from '@/assets/nyckelpiga-jag-med-andra.png';
 import KidsProductResumeBanner from '@/components/KidsProductResumeBanner';
-import DiaryEntrance from '@/components/DiaryEntrance';
+
 import ProductHomeBackButton from '@/components/ProductHomeBackButton';
 import { useKidsProductProgress } from '@/hooks/useKidsProductProgress';
 import CategoryProgressRing from '@/components/CategoryProgressRing';
 
 const EASE = [0.4, 0.0, 0.2, 1] as const;
 const ACCENT_COLOR = '#C77AE8';
-const DIARY_TEXT = '#FDF6E3';
+
 const SAFFRON = '#DA9D1D';
 
 const ORDERED_TILES = [
@@ -129,8 +129,6 @@ export default function JagMedAndraProductHome({ product }: { product: ProductMa
               );
             })}
           </div>
-
-          <DiaryEntrance productId={product.id} accentColor={ACCENT_COLOR} textColor={DIARY_TEXT} />
         </motion.div>
       </div>
     </div>
