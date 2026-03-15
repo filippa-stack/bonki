@@ -79,7 +79,7 @@ h1, h2, h3,
     --surface-warm: var(--neutral-50);
     --surface-elevated: var(--neutral-100);
     --surface-chrome: 0 0% 100%;
-    --text-gentle: 30 5% 43%;
+    --text-gentle: 29 13% 37%;            /* Driftwood */
     --divider: var(--neutral-300);
 
     /* Card hierarchy */
