@@ -640,6 +640,24 @@ export default function ProductLibrary() {
           >
             Det barnet inte säger själv — börjar här
           </motion.p>
+          {/* Single free-trial mention */}
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.2, duration: 0.5 }}
+            style={{
+              fontFamily: "'Lato', sans-serif",
+              fontSize: '10px',
+              fontWeight: 500,
+              letterSpacing: '0.06em',
+              color: 'hsla(38, 78%, 60%, 0.45)',
+              textAlign: 'center',
+              marginBottom: '20px',
+              marginTop: '-16px',
+            }}
+          >
+            ✦ Första kortet i varje produkt är gratis
+          </motion.p>
           <motion.div
             variants={containerVariants}
             initial="hidden"
