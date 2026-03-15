@@ -508,7 +508,7 @@ export const jagIMigProduct: ProductManifest = {
   accentColor: 'hsl(70, 82%, 27%)',
   accentColorMuted: 'hsl(70, 40%, 85%)',
   secondaryAccent: 'hsl(70, 82%, 27%)',
-  backgroundColor: '#FDF6E3',
+  backgroundColor: '#2A3508',
   ctaButtonColor: '#657514',
   pronounMode: 'du',
   freeCardId: 'jim-glad',

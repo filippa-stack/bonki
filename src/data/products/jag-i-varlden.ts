@@ -96,7 +96,7 @@ export const jagIVarldenProduct: ProductManifest = {
   accentColor: 'hsl(132, 65%, 30%)',
   accentColorMuted: 'hsl(132, 30%, 88%)',
   secondaryAccent: 'hsl(132, 65%, 30%)',
-  backgroundColor: '#FDF6E3',
+  backgroundColor: '#0E2414',
   ctaButtonColor: '#2D6E3A',
   pronounMode: 'du',
   freeCardId: 'jiv-identitet',
