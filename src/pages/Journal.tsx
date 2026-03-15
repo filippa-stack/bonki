@@ -551,7 +551,7 @@ export default function Journal() {
   // Filtered bookmarks
   const filteredBookmarks = useMemo(() => {
     return bookmarks.filter(b => {
-      const isPar = b.product_id === STILL_US_ID;
+      const isPar = effectiveIsPar(b.product_id, b.card_id);
       return isPar ? activeFilters.has('par') : activeFilters.has('barn');
     });
   }, [bookmarks, activeFilters]);
