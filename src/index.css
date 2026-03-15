@@ -23,15 +23,15 @@ h1, h2, h3,
 
 @layer base {
   :root {
-    /* ── Foundation neutrals (warm-paper scale) ── */
-    --neutral-50:  30 12% 90%;       /* Base bg — warmer, deeper for contrast */
-    --neutral-100: 34 22% 97.5%;     /* Raised — luminous near-white tiles */
-    --neutral-200: 32 16% 94%;       /* Notes, reflections, sunken areas */
-    --neutral-300: 32 10% 84%;       /* Borders, dividers */
+    /* ── Foundation neutrals (Evighetsskogen warm-paper scale) ── */
+    --neutral-50:  46 64% 89%;       /* Parchment #F5EDD2 — base bg */
+    --neutral-100: 43 50% 98%;       /* Warm White #FFFDF8 — raised tiles */
+    --neutral-200: 44 86% 94%;       /* Lantern Glow #FDF6E3 — notes, sunken */
+    --neutral-300: 40 25% 82%;       /* Warm border — aged paper edge */
 
     /* Tailwind base tokens (HSL without hsl()) */
     --background: var(--neutral-50);
-    --foreground: 30 3% 10%;              /* #1C1B1A */
+    --foreground: 20 16% 15%;              /* Bark #2C2420 */
 
     --card: var(--neutral-100);           /* Warm near-white (was #E3DCD4) */
     --card-foreground: 30 3% 10%;
