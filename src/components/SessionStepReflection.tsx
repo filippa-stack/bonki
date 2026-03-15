@@ -1,9 +1,10 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Feather } from 'lucide-react';
+import { Pencil } from 'lucide-react';
 import { useSessionReflections } from '@/hooks/useSessionReflections';
 import { BEAT_2, EMOTION, EASE } from '@/lib/motion';
+import { EMBER_GLOW, DRIFTWOOD, DEEP_SAFFRON, MIDNIGHT_INK } from '@/lib/palette';
 
 interface SessionStepReflectionProps {
   sessionId?: string | null;
@@ -19,6 +20,16 @@ interface SessionStepReflectionProps {
   hideNoteField?: boolean;
   /** Custom label for the note trigger. When set, overrides hideNoteField and shows the feather with this label. */
   noteFieldLabel?: string;
+  /** Custom CTA label override */
+  ctaLabel?: string;
+  /** Custom pause label override */
+  pauseLabel?: string;
+  /** Still Us mode — uses ember palette */
+  stillUsMode?: boolean;
+  /** Show only pencil icon (no text label) for note trigger */
+  compactNoteTrigger?: boolean;
+  /** Called when user taps pause */
+  onPause?: () => void;
 }
 
 export default function SessionStepReflection({
@@ -33,6 +44,11 @@ export default function SessionStepReflection({
   isExerciseStep = false,
   hideNoteField = false,
   noteFieldLabel,
+  ctaLabel,
+  pauseLabel,
+  stillUsMode = false,
+  compactNoteTrigger = false,
+  onPause,
 }: SessionStepReflectionProps) {
   const navigate = useNavigate();
   const reflectionStepIndex = stepIndex * 100 + promptIndex;
@@ -73,7 +89,6 @@ export default function SessionStepReflection({
   const handleChange = (value: string) => {
     setLocalText(value);
     setText(value);
-    // Show save indicator after typing pause
     setSaveIndicator('idle');
     if (saveTimeoutRef.current) clearTimeout(saveTimeoutRef.current);
     if (value.trim()) {
@@ -104,23 +119,33 @@ export default function SessionStepReflection({
 
   const hasFill = displayText.trim().length > 0;
 
+  // Resolve CTA text
+  const resolvedCtaLabel = ctaLabel
+    ?? (submitting ? 'Sparar…' : isLastStep ? 'Vi är klara' : 'Fortsätt');
+
+  // Still Us palette
+  const noteBg = stillUsMode ? EMBER_GLOW : 'hsla(36, 20%, 97%, 0.12)';
+  const noteBgFocused = stillUsMode ? EMBER_GLOW : 'hsla(36, 20%, 97%, 0.12)';
+  const noteTextColor = stillUsMode ? MIDNIGHT_INK : 'var(--text-primary)';
+  const noteBorder = stillUsMode ? `1px solid ${DRIFTWOOD}33` : '1px solid hsla(36, 20%, 80%, 0.18)';
+  const ctaBg = stillUsMode ? DEEP_SAFFRON : 'hsl(41, 78%, 48%)';
+  const ctaTextColor = stillUsMode ? MIDNIGHT_INK : 'hsl(30, 10%, 12%)';
+  const triggerColor = stillUsMode ? DRIFTWOOD : 'var(--text-primary)';
+
   return (
     <motion.div
       className="reflection-field-wrapper"
       style={{
-        marginTop: effectiveHideNoteField ? '32px' : '20px',
-        marginBottom: '4px',
+        width: '100%',
+        maxWidth: '520px',
         display: 'flex',
         flexDirection: 'column',
-        flexGrow: 1,
       }}
       initial={{ opacity: 0, y: 4 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.28, ease: [...EASE] }}
     >
-      {/* Note field — scrollable area, above the fixed CTA */}
-
-      {/* Collapsed trigger — poetic invitation */}
+      {/* Note field — above the CTA */}
       {!effectiveHideNoteField && !isExpanded && (
         <motion.button
           key="trigger"
@@ -135,30 +160,31 @@ export default function SessionStepReflection({
             justifyContent: 'center',
             gap: '8px',
             padding: '14px 20px',
-            marginBottom: '16px',
+            marginBottom: stillUsMode ? '80px' : '16px',
             background: 'none',
             border: 'none',
             cursor: 'pointer',
             transition: 'opacity 200ms ease',
           }}
         >
-          <Feather
-            size={15}
+          <Pencil
+            size={compactNoteTrigger ? 16 : 15}
             strokeWidth={1.5}
-            style={{ color: 'var(--text-primary)', opacity: 0.35 }}
+            style={{ color: triggerColor, opacity: 0.35 }}
           />
-          <span
-            style={{
-              fontFamily: 'var(--font-serif)',
-              fontStyle: 'italic',
-              fontSize: '15px',
-              color: 'var(--text-primary)',
-              opacity: 0.40,
-              letterSpacing: '0.01em',
-            }}
-          >
-            {triggerLabel}
-          </span>
+          {!compactNoteTrigger && (
+            <span
+              style={{
+                fontFamily: 'var(--font-sans)',
+                fontSize: '14px',
+                color: triggerColor,
+                opacity: 0.40,
+                letterSpacing: '0.01em',
+              }}
+            >
+              {triggerLabel}
+            </span>
+          )}
         </motion.button>
       )}
 
@@ -169,9 +195,10 @@ export default function SessionStepReflection({
           initial={{ opacity: 0, height: 0 }}
           animate={{ opacity: 1, height: 'auto' }}
           transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+          style={{ marginBottom: '16px' }}
         >
           <div style={{ position: 'relative' }}>
-            {/* Feather watermark when empty */}
+            {/* Pencil watermark when empty */}
             {!hasFill && !isFocused && (
               <motion.div
                 initial={{ opacity: 0 }}
@@ -184,10 +211,10 @@ export default function SessionStepReflection({
                   zIndex: 1,
                 }}
               >
-                <Feather
+                <Pencil
                   size={14}
                   strokeWidth={1.5}
-                  style={{ color: 'var(--text-primary)', opacity: 0.25 }}
+                  style={{ color: triggerColor, opacity: 0.25 }}
                 />
               </motion.div>
             )}
@@ -211,11 +238,9 @@ export default function SessionStepReflection({
                 fontFamily: 'var(--font-serif)',
                 fontSize: '16px',
                 lineHeight: 1.7,
-                color: 'var(--text-primary)',
-                backgroundColor: isFocused || hasFill
-                  ? 'hsla(36, 20%, 97%, 0.12)'
-                  : 'hsla(36, 18%, 96%, 0.06)',
-                border: '1px solid hsla(36, 20%, 80%, 0.18)',
+                color: noteTextColor,
+                backgroundColor: isFocused || hasFill ? noteBgFocused : noteBg,
+                border: noteBorder,
                 borderRadius: '12px',
                 padding: '20px 24px',
                 textAlign: 'center',
@@ -237,7 +262,7 @@ export default function SessionStepReflection({
                 style={{
                   fontFamily: 'var(--font-sans)',
                   fontSize: '11px',
-                  color: 'var(--text-secondary)',
+                  color: stillUsMode ? DRIFTWOOD : 'var(--text-secondary)',
                   opacity: 0.55,
                   textAlign: 'center',
                   marginTop: '8px',
@@ -248,79 +273,77 @@ export default function SessionStepReflection({
               </motion.p>
             )}
           </AnimatePresence>
+          {/* Privacy line */}
+          {stillUsMode && (
+            <p style={{
+              fontFamily: 'var(--font-sans)',
+              fontStyle: 'italic',
+              fontSize: '12px',
+              color: DRIFTWOOD,
+              textAlign: 'center',
+              marginTop: '8px',
+              opacity: 0.6,
+            }}>
+              Inget ni skriver lämnar det här rummet.
+            </p>
+          )}
         </motion.div>
       )}
 
-      {isExpanded && !effectiveHideNoteField && (
-        <div style={{ height: '16px' }} />
-      )}
+      {/* Spacer when note not expanded in still us mode */}
+      {stillUsMode && effectiveHideNoteField && <div style={{ height: '80px' }} />}
 
-      {/* Spacer pushes CTA down */}
-      <div style={{ flexGrow: 1 }} />
-
-      {/* Full-width fixed CTA button */}
-      <div
-        className="flex flex-col items-center"
+      {/* Full-width CTA button */}
+      <motion.button
+        onClick={handleAdvance}
+        disabled={submitting}
+        whileTap={{ scale: 0.98 }}
+        transition={{ duration: 0.12 }}
         style={{
-          paddingBottom: 'calc(16px + env(safe-area-inset-bottom, 0px))',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          width: '100%',
+          height: '52px',
+          borderRadius: '14px',
+          backgroundColor: ctaBg,
+          color: ctaTextColor,
+          fontFamily: 'var(--font-sans)',
+          fontSize: stillUsMode ? '17px' : '15px',
+          fontWeight: 600,
+          letterSpacing: '0.01em',
+          border: 'none',
+          cursor: submitting ? 'default' : 'pointer',
+          boxShadow: 'none',
+          opacity: submitting ? 0.5 : (hadPriorTextRef.current ? 0.90 : 1),
+          transition: 'opacity 200ms ease, background-color 260ms ease-out',
         }}
       >
-        <motion.button
-          onClick={handleAdvance}
-          disabled={submitting}
-          whileTap={{ scale: 0.98 }}
-          transition={{ duration: 0.12 }}
+        {submitting ? 'Sparar…' : resolvedCtaLabel}
+      </motion.button>
+
+      {/* Pause button */}
+      {(stillUsMode || isExerciseStep) && (
+        <button
+          onClick={() => (onPause ?? (() => navigate('/')))()}
           style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
+            display: 'block',
             width: '100%',
-            maxWidth: '520px',
-            height: '52px',
-            borderRadius: '14px',
-            backgroundColor: 'hsl(41, 78%, 48%)',
-            color: 'hsl(30, 10%, 12%)',
-            fontFamily: 'var(--font-sans)',
-            fontSize: '15px',
-            fontWeight: 600,
-            letterSpacing: '0.01em',
+            minHeight: '44px',
+            marginTop: '12px',
+            background: 'none',
             border: 'none',
-            cursor: submitting ? 'default' : 'pointer',
-            boxShadow: 'none',
-            opacity: submitting ? 0.5 : (hadPriorTextRef.current ? 0.90 : 1),
-            transition: 'opacity 200ms ease, background-color 260ms ease-out',
-            padding: '0 24px',
+            cursor: 'pointer',
+            fontFamily: 'var(--font-sans)',
+            fontSize: stillUsMode ? '14px' : '13px',
+            color: stillUsMode ? DRIFTWOOD : 'var(--text-secondary)',
+            opacity: stillUsMode ? 0.55 : 0.50,
+            textAlign: 'center',
           }}
         >
-          {submitting
-            ? 'Sparar…'
-            : isLastStep
-            ? 'Vi är klara'
-            : 'Fortsätt'}
-        </motion.button>
-
-        {isExerciseStep ? (
-          <button
-            onClick={() => navigate('/')}
-            style={{
-              display: 'block',
-              width: '100%',
-              minHeight: '44px',
-              marginTop: '24px',
-              background: 'none',
-              border: 'none',
-              cursor: 'pointer',
-              fontFamily: 'var(--font-sans)',
-              fontSize: '13px',
-              color: 'var(--text-secondary)',
-              opacity: 0.50,
-              textAlign: 'center',
-            }}
-          >
-            Vi pausar här — fortsätt en annan dag
-          </button>
-        ) : null}
-      </div>
+          {pauseLabel ?? 'Pausa för idag'}
+        </button>
+      )}
     </motion.div>
   );
 }
