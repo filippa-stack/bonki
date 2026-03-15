@@ -729,8 +729,107 @@ export default function Journal() {
             </div>
           ))}
 
+          {/* ── Paused Sessions ── */}
+          {filteredPaused.length > 0 && (
+            <div>
+              <p style={{
+                margin: '40px 0 12px 16px', fontSize: '12px', fontWeight: 600,
+                letterSpacing: '2px', color: DRIFTWOOD, lineHeight: 1, textTransform: 'uppercase',
+              }}>
+                Samtal ni inte avslutat
+              </p>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', padding: '0 16px' }}>
+                {filteredPaused.map(s => {
+                  const cardName = s.card_id ? getCardTitle(s.card_id) : 'Okänt samtal';
+                  const catName = getCategoryName(s.category_id, s.card_id ?? '');
+                  const stepName = s.product_id === STILL_US_ID
+                    ? (STILL_US_STEP_NAMES[s.currentStepIndex] ?? `Steg ${s.currentStepIndex + 1}`)
+                    : `Fråga ${s.currentStepIndex + 1}`;
+
+                  return (
+                    <button
+                      key={s.id}
+                      onClick={() => s.card_id && navigate(`/card/${s.card_id}`)}
+                      style={{
+                        width: '100%', backgroundColor: DEEP_DUSK, borderRadius: '16px',
+                        borderLeft: `3px solid ${getProductColor(s.product_id)}`,
+                        padding: '16px', border: 'none', cursor: 'pointer',
+                        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+                        textAlign: 'left', WebkitTapHighlightColor: 'transparent',
+                        // Re-apply left border since border:none overrides
+                      }}
+                    >
+                      <div style={{ minWidth: 0 }}>
+                        <span style={{
+                          fontSize: '17px', fontWeight: 600, color: LANTERN_GLOW,
+                          display: 'block', lineHeight: 1.3,
+                        }}>
+                          {cardName}
+                        </span>
+                        <span style={{
+                          fontSize: '13px', color: DRIFTWOOD, display: 'block', marginTop: '4px',
+                        }}>
+                          Pausad vid {stepName} · {catName}
+                        </span>
+                      </div>
+                      <span style={{ fontSize: '15px', color: DEEP_SAFFRON, flexShrink: 0, marginLeft: '12px' }}>
+                        Fortsätt
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+
+          {/* ── Bookmarked Questions ── */}
+          {filteredBookmarks.length > 0 && (
+            <div>
+              <p style={{
+                margin: '40px 0 12px 16px', fontSize: '12px', fontWeight: 600,
+                letterSpacing: '2px', color: DRIFTWOOD, lineHeight: 1, textTransform: 'uppercase',
+              }}>
+                Frågor ni velat återvända till
+              </p>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', padding: '0 16px' }}>
+                {filteredBookmarks.map(b => {
+                  const cardName = getCardTitle(b.card_id);
+                  const catName = getCategoryName(null, b.card_id);
+
+                  return (
+                    <button
+                      key={b.id}
+                      onClick={() => navigate(`/card/${b.card_id}`)}
+                      style={{
+                        width: '100%', backgroundColor: DEEP_DUSK, borderRadius: '16px',
+                        padding: '16px', border: 'none', cursor: 'pointer',
+                        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+                        textAlign: 'left', WebkitTapHighlightColor: 'transparent',
+                      }}
+                    >
+                      <div style={{ minWidth: 0, flex: 1 }}>
+                        <span style={{
+                          fontSize: '17px', color: LANTERN_GLOW,
+                          display: 'block', lineHeight: 1.4,
+                        }}>
+                          {b.question_text}
+                        </span>
+                        <span style={{
+                          fontSize: '13px', color: DRIFTWOOD, display: 'block', marginTop: '8px',
+                        }}>
+                          {cardName} · {catName}
+                        </span>
+                      </div>
+                      <ChevronRight size={18} strokeWidth={1.5} style={{ color: DRIFTWOOD, flexShrink: 0, marginLeft: '8px' }} />
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+
           {/* Bottom spacer */}
-          <div style={{ height: '24px' }} />
+          <div style={{ height: '120px' }} />
         </div>
       )}
     </div>
