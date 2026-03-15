@@ -361,7 +361,7 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
             textShadow: `0 0 10px ${bgRgba(1)}, 0 0 20px ${bgRgba(0.8)}`,
           }}
         >
-          {tagline}{showFreeBadge ? ` · ✦ 1a gratis` : ''}
+          {tagline}
         </p>
       </div>
     </motion.div>
