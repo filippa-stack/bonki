@@ -767,6 +767,110 @@ export default function ProductLibrary() {
           </motion.div>
         </div>
 
+        {/* ── Still Us cross-discovery — visible on BARN tab ── */}
+        <div className="px-5" style={{ marginTop: '28px' }}>
+          <div style={{
+            borderTop: '1px solid hsla(38, 50%, 50%, 0.12)',
+            paddingTop: '16px',
+          }}>
+            <p style={{
+              fontFamily: "'Lato', sans-serif",
+              fontSize: '12px',
+              fontWeight: 600,
+              letterSpacing: '1.5px',
+              textTransform: 'uppercase',
+              color: '#6B5E52',
+              marginBottom: '12px',
+            }}>
+              För er som par
+            </p>
+            <motion.div
+              variants={tileVariants}
+              initial="hidden"
+              animate="visible"
+              whileHover={{ scale: 1.015, y: -2 }}
+              whileTap={{ scale: 0.97, y: 2 }}
+              onClick={() => navigate('/product/still-us')}
+              className="cursor-pointer"
+              style={{
+                borderRadius: '22px',
+                backgroundColor: '#2E2233',
+                minHeight: '140px',
+                display: 'flex',
+                flexDirection: 'column',
+                position: 'relative',
+                overflow: 'hidden',
+                border: '1.5px solid rgba(255, 255, 255, 0.15)',
+                boxShadow: '0 8px 24px rgba(0, 0, 0, 0.3)',
+              }}
+            >
+              {/* Illustration */}
+              <div style={{
+                position: 'absolute',
+                top: '-15%',
+                right: '-8%',
+                width: '55%',
+                height: '130%',
+                pointerEvents: 'none',
+                zIndex: 0,
+              }}>
+                <img
+                  src={illustrationStillUs}
+                  alt=""
+                  draggable={false}
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'contain',
+                    objectPosition: 'center 30%',
+                    opacity: 0.55,
+                  }}
+                />
+              </div>
+
+              {/* Bottom gradient scrim */}
+              <div
+                aria-hidden="true"
+                style={{
+                  position: 'absolute',
+                  bottom: 0, left: 0, right: 0,
+                  height: '60%',
+                  zIndex: 1,
+                  pointerEvents: 'none',
+                  background: 'linear-gradient(to top, rgba(46, 34, 51, 1) 0%, rgba(46, 34, 51, 0.7) 50%, transparent 100%)',
+                  borderRadius: '0 0 22px 22px',
+                }}
+              />
+
+              <div style={{
+                position: 'absolute',
+                bottom: 0, left: 0, right: 0,
+                zIndex: 2,
+                padding: '0 18px 16px',
+              }}>
+                <h3 style={{
+                  fontFamily: "'DM Serif Display', serif",
+                  fontSize: '22px',
+                  fontWeight: 700,
+                  color: '#FDF6E3',
+                  lineHeight: 1.15,
+                  textShadow: '0 2px 8px rgba(46, 34, 51, 1)',
+                }}>
+                  Still Us
+                </h3>
+                <p style={{
+                  fontFamily: "'Lato', sans-serif",
+                  fontSize: '11px',
+                  color: 'hsla(38, 55%, 65%, 0.7)',
+                  marginTop: '4px',
+                }}>
+                  22 samtal för er relation
+                </p>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+
         {/* Dagboken — compact return-loop hook */}
         <motion.div
           initial={{ opacity: 0, y: 12 }}

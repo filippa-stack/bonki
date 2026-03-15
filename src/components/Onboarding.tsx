@@ -142,7 +142,6 @@ export default function Onboarding() {
           }}
         />
 
-        {/* Prompt — action-oriented, not feature-listing */}
         <motion.p
           {...fadeUp(0.75)}
           style={{
@@ -154,7 +153,7 @@ export default function Onboarding() {
             margin: 0,
           }}
         >
-          Vad vill du börja med?
+          Var vill ni börja?
         </motion.p>
       </div>
 
@@ -207,7 +206,7 @@ export default function Onboarding() {
               letterSpacing: '-0.01em',
             }}
           >
-            Börja med barnen
+            Med barnen
           </span>
           <span
             style={{
@@ -257,7 +256,7 @@ export default function Onboarding() {
               letterSpacing: '-0.01em',
             }}
           >
-            Börja som par
+            Som par
           </span>
           <span
             style={{
@@ -267,7 +266,7 @@ export default function Onboarding() {
               color: 'hsla(44, 86%, 94%, 0.45)',
             }}
           >
-            Samtal för er relation — Still Us
+            Samtal för er relation
           </span>
         </button>
       </motion.div>
