@@ -173,7 +173,7 @@ function NoteEntryCard({ entry, navigate }: { entry: NoteEntry; navigate: (p: st
       style={{
         backgroundColor: DEEP_DUSK,
         borderRadius: '16px',
-        borderLeft: `3px solid ${getProductColor(entry.productId)}`,
+        borderLeft: `3px solid ${getProductColor(entry.productId, entry.cardId)}`,
         padding: '16px',
       }}
     >
