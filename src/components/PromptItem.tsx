@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import { Prompt, SituationalAnchor } from '@/types';
 import { EASE } from '@/lib/motion';
+import { EMBER_GLOW, DRIFTWOOD, BARK } from '@/lib/palette';
 
 interface PromptItemProps {
   prompt: Prompt;
@@ -12,6 +13,8 @@ interface PromptItemProps {
   highlightCount: number;
   /** Faint illustration watermark behind question (kids products) */
   backgroundImageUrl?: string | null;
+  /** Still Us ember mode for exercise card */
+  stillUsMode?: boolean;
   // Kept for interface compat — not rendered
   label?: string;
   expanded?: boolean;
@@ -46,7 +49,7 @@ const DEPTH_GRAVITY: Record<string, React.CSSProperties> = {
  * Renders a single prompt — flat, read-only question text.
  * Unified presentation: all section types use centered question style.
  */
-export default function PromptItem({ prompt, index, sectionType, preamble, anchor, backgroundImageUrl }: PromptItemProps) {
+export default function PromptItem({ prompt, index, sectionType, preamble, anchor, backgroundImageUrl, stillUsMode }: PromptItemProps) {
   const gravity = DEPTH_GRAVITY[sectionType || 'opening'] || DEPTH_GRAVITY.opening;
   const isExercise = sectionType === 'exercise';
   const enterEase = [...EASE] as [number, number, number, number];
