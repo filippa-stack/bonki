@@ -181,8 +181,8 @@ export default function BottomNav() {
                 style={{
                   color: active
                     ? '#E85D2C'
-                    : (isStillUsContext ? '#6B5E52' : 'hsl(var(--muted-foreground))'),
-                  opacity: active ? 1 : (isStillUsContext ? 0.6 : 0.38),
+                    : (isStillUsContext ? 'rgba(245, 232, 204, 0.50)' : 'hsl(var(--muted-foreground))'),
+                  opacity: active ? 1 : (isStillUsContext ? 1 : 0.38),
                   background: 'none',
                   border: 'none',
                   cursor: 'pointer',
