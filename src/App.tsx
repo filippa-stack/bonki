@@ -26,6 +26,7 @@ import Category from "./pages/Category";
 import CardView from "./pages/CardView";
 import CardPreview from "./pages/CardPreview";
 import ProductHome from "./pages/ProductHome";
+import StillUsExplore from "./pages/StillUsExplore";
 
 import SharedSummary from "./pages/SharedSummary";
 import Journal from "./pages/Journal";
