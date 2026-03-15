@@ -2133,6 +2133,7 @@ export default function CardView() {
                 isReflectionStep={isReflectionStep}
                 isExerciseStep={isExerciseStep}
                 showBackArrow={false}
+                stillUsMode={true}
               />
             </motion.div>
           </AnimatePresence>
