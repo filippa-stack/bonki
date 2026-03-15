@@ -350,7 +350,7 @@ export default function Journal() {
         const now = Date.now();
         const valid = data.filter(s => {
           // Kids sessions expire after 14 days
-          if (s.product_id !== STILL_US_ID) {
+          if (!effectiveIsPar(s.product_id, s.card_id)) {
             const elapsed = now - new Date(s.last_activity_at).getTime();
             if (elapsed > FOURTEEN_DAYS_MS) return false;
           }
