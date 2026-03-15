@@ -143,8 +143,59 @@ export default function PromptItem({ prompt, index, sectionType, preamble, ancho
           </motion.div>
         )}
 
-        {isExercise ? (
-          /* ── Teamwork: left-aligned assignment block ── */
+        {isExercise && stillUsMode ? (
+          /* ── Still Us GÖR: Ember Glow action card ── */
+          <motion.div
+            key={`exercise-su-${index}-${prompt.text.slice(0, 20)}`}
+            initial={{ opacity: 0, y: 14 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.65, ease: enterEase }}
+            style={{
+              backgroundColor: EMBER_GLOW,
+              borderRadius: '16px',
+              padding: '20px',
+              width: '100%',
+            }}
+          >
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.4, delay: 0.15, ease: enterEase }}
+              style={{
+                fontFamily: 'var(--font-sans)',
+                fontSize: '11px',
+                textTransform: 'uppercase',
+                letterSpacing: '0.12em',
+                color: DRIFTWOOD,
+                marginBottom: '14px',
+              }}
+            >
+              Gör tillsammans
+            </motion.p>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+              {prompt.text.split('\n').filter(p => p.trim() !== '').map((para, i) => (
+                <motion.p
+                  key={i}
+                  initial={{ opacity: 0, y: 6 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.2 + i * 0.06, ease: enterEase }}
+                  className="font-serif"
+                  style={{
+                    fontSize: i === 0 ? '20px' : '15px',
+                    fontWeight: i === 0 ? 600 : 400,
+                    color: BARK,
+                    lineHeight: 1.4,
+                    textAlign: 'left',
+                    textWrap: 'pretty',
+                  }}
+                >
+                  {para}
+                </motion.p>
+              ))}
+            </div>
+          </motion.div>
+        ) : isExercise ? (
+          /* ── Default Teamwork: left-aligned assignment block ── */
           <motion.div
             key={`exercise-${index}-${prompt.text.slice(0, 20)}`}
             initial={{ opacity: 0, y: 14 }}
