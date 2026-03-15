@@ -18,6 +18,19 @@ import { allProducts } from '@/data/products';
 const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
 const STILL_US_ID = 'still_us';
 
+/** Determine the effective product type using card_id as source of truth */
+function isKidsCard(cardId: string | null): boolean {
+  if (!cardId) return false;
+  // Check if the card belongs to any kids product manifest
+  return allProducts.some(p => p.cards.some(c => c.id === cardId));
+}
+
+function effectiveIsPar(productId: string, cardId: string | null): boolean {
+  // Card-level check takes priority over potentially stale product_id
+  if (cardId && isKidsCard(cardId)) return false;
+  return productId === STILL_US_ID;
+}
+
 const STILL_US_STEP_NAMES = ['Öppna', 'Vänd', 'Tänk om', 'Gör'];
 const FOURTEEN_DAYS_MS = 14 * 24 * 60 * 60 * 1000;
 
@@ -146,8 +159,8 @@ function monthLabel(dateStr: string): string {
   return `${SWEDISH_MONTHS[d.getMonth()].toUpperCase()} ${d.getFullYear()}`;
 }
 
-function getProductColor(productId: string): string {
-  return productId === STILL_US_ID ? DEEP_SAFFRON : SAFFRON_FLAME;
+function getProductColor(productId: string, cardId?: string): string {
+  return effectiveIsPar(productId, cardId ?? null) ? DEEP_SAFFRON : SAFFRON_FLAME;
 }
 
 // ─── Note Entry Card ───
@@ -160,7 +173,7 @@ function NoteEntryCard({ entry, navigate }: { entry: NoteEntry; navigate: (p: st
       style={{
         backgroundColor: DEEP_DUSK,
         borderRadius: '16px',
-        borderLeft: `3px solid ${getProductColor(entry.productId)}`,
+        borderLeft: `3px solid ${getProductColor(entry.productId, entry.cardId)}`,
         padding: '16px',
       }}
     >
@@ -337,7 +350,7 @@ export default function Journal() {
         const now = Date.now();
         const valid = data.filter(s => {
           // Kids sessions expire after 14 days
-          if (s.product_id !== STILL_US_ID) {
+          if (!effectiveIsPar(s.product_id, s.card_id)) {
             const elapsed = now - new Date(s.last_activity_at).getTime();
             if (elapsed > FOURTEEN_DAYS_MS) return false;
           }
@@ -384,7 +397,7 @@ export default function Journal() {
 
   const stillUsSessions = useMemo(() => {
     if (!sessions) return [];
-    return sessions.filter(s => s.product_id === STILL_US_ID);
+    return sessions.filter(s => effectiveIsPar(s.product_id, s.card_id));
   }, [sessions]);
 
   // Build session lookup
@@ -464,7 +477,7 @@ export default function Journal() {
   const visibleItems = useMemo(() => {
     const bothActive = activeFilters.has('barn') && activeFilters.has('par');
     return allTimelineItems.filter(item => {
-      const isPar = item.productId === STILL_US_ID;
+      const isPar = effectiveIsPar(item.productId, item.cardId);
       if (isPar) {
         if (!activeFilters.has('par')) return false;
         // When both active, par entries hidden behind privacy row (unless expanded)
@@ -500,7 +513,7 @@ export default function Journal() {
   const filteredSessions = useMemo(() => {
     if (!sessions) return [];
     return sessions.filter(s => {
-      const isPar = s.product_id === STILL_US_ID;
+      const isPar = effectiveIsPar(s.product_id, s.card_id);
       if (isPar) return activeFilters.has('par');
       return activeFilters.has('barn');
     });
@@ -530,7 +543,7 @@ export default function Journal() {
   // Filtered paused sessions
   const filteredPaused = useMemo(() => {
     return pausedSessions.filter(s => {
-      const isPar = s.product_id === STILL_US_ID;
+      const isPar = effectiveIsPar(s.product_id, s.card_id);
       return isPar ? activeFilters.has('par') : activeFilters.has('barn');
     });
   }, [pausedSessions, activeFilters]);
@@ -538,7 +551,7 @@ export default function Journal() {
   // Filtered bookmarks
   const filteredBookmarks = useMemo(() => {
     return bookmarks.filter(b => {
-      const isPar = b.product_id === STILL_US_ID;
+      const isPar = effectiveIsPar(b.product_id, b.card_id);
       return isPar ? activeFilters.has('par') : activeFilters.has('barn');
     });
   }, [bookmarks, activeFilters]);
@@ -742,7 +755,7 @@ export default function Journal() {
                 {filteredPaused.map(s => {
                   const cardName = s.card_id ? getCardTitle(s.card_id) : 'Okänt samtal';
                   const catName = getCategoryName(s.category_id, s.card_id ?? '');
-                  const stepName = s.product_id === STILL_US_ID
+                  const stepName = effectiveIsPar(s.product_id, s.card_id)
                     ? (STILL_US_STEP_NAMES[s.currentStepIndex] ?? `Steg ${s.currentStepIndex + 1}`)
                     : `Fråga ${s.currentStepIndex + 1}`;
 
@@ -754,7 +767,7 @@ export default function Journal() {
                         width: '100%', backgroundColor: DEEP_DUSK, borderRadius: '16px',
                         padding: '16px', cursor: 'pointer',
                         borderTop: 'none', borderRight: 'none', borderBottom: 'none',
-                        borderLeft: `3px solid ${getProductColor(s.product_id)}`,
+                        borderLeft: `3px solid ${getProductColor(s.product_id, s.card_id)}`,
                         display: 'flex', alignItems: 'center', justifyContent: 'space-between',
                         textAlign: 'left', WebkitTapHighlightColor: 'transparent',
                       }}
