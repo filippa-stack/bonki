@@ -272,7 +272,7 @@ export default function CircadianMenu({
                     onClick={() => onNavigateToCategory(category.id)}
                     style={{
                       position: 'relative',
-                      background: group.tileBg,
+                      background: tileColor.bg,
                       borderRadius: '12px',
                       padding: '14px 8px 14px',
                       textAlign: 'center',
@@ -280,7 +280,7 @@ export default function CircadianMenu({
                       height: '110px',
                       border: isNextSuggested
                         ? `2px solid ${DEEP_SAFFRON}88`
-                        : group.tileBg === DEEP_SAFFRON
+                        : tileColor.text === BARK
                           ? '1px solid rgba(0, 0, 0, 0.08)'
                           : '1px solid rgba(255, 255, 255, 0.08)',
                       boxShadow: [
@@ -303,7 +303,7 @@ export default function CircadianMenu({
                         fontFamily: "'DM Serif Display', var(--font-serif)",
                         fontSize: 'clamp(14px, 3.8vw, 17px)',
                         fontWeight: 400,
-                        color: group.tileText,
+                        color: tileColor.text,
                         padding: '0 2px',
                         lineHeight: 1.2,
                       }}
