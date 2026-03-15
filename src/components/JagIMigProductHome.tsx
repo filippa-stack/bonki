@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import type { ProductManifest } from '@/types/product';
 import apaImage from '@/assets/apa-jag-i-mig.png';
 import UnifiedResumeBanner from '@/components/UnifiedResumeBanner';
+import NextConversationCard from '@/components/NextConversationCard';
 
 import ProductHomeBackButton from '@/components/ProductHomeBackButton';
 import { useKidsProductProgress } from '@/hooks/useKidsProductProgress';
@@ -51,10 +52,18 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
               När känslor får ord
             </p>
             <UnifiedResumeBanner product={product} kidsProgress={progress} accentColor={ACCENT_COLOR} />
+            <NextConversationCard product={product} progress={progress} />
           </motion.div>
         </motion.div>
 
         <div style={{ flex: 1, minHeight: '16px', maxHeight: 'clamp(40px, 12vh, 120px)' }} />
+
+        {/* Category section label */}
+        <div style={{ textAlign: 'left', marginBottom: '12px', paddingLeft: '4px' }}>
+          <span style={{ fontFamily: 'var(--font-sans)', fontSize: '12px', fontWeight: 600, color: '#6B5E52', textTransform: 'uppercase', letterSpacing: '1.5px' }}>
+            Alla kategorier
+          </span>
+        </div>
 
         <motion.div variants={containerVariants} initial="hidden" animate="visible" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '12px', width: '100%' }}>
           {ORDERED_TILES.map((tile) => {
