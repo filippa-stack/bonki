@@ -131,6 +131,7 @@ const SectionView = forwardRef<SectionViewHandle, SectionViewProps>(
           anchor={backgroundImageUrl ? undefined : section.anchors?.find(a => a.promptIndex === (isExercise ? 0 : promptIndex))}
           highlightCount={0}
           backgroundImageUrl={backgroundImageUrl}
+          stillUsMode={stillUsMode}
           privateNote={undefined}
           sharedNote={undefined}
           onPromptChange={() => {}}
