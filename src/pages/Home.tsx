@@ -201,58 +201,12 @@ export default function Home() {
             </motion.div>
 
             {/* ── 1. Resume Card (conditional) ── */}
-            {isStillUsResume && resumeCard && (
-              <motion.button
-                initial={{ opacity: 0, y: 12 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-                onClick={() => navigate(`/card/${resumeCard.id}`, { state: { resumed: true } })}
-                style={{
-                  width: '100%',
-                  marginTop: '24px',
-                  padding: '18px 20px',
-                  background: DEEP_DUSK,
-                  borderLeft: `3px solid ${DEEP_SAFFRON}`,
-                  borderTop: 'none',
-                  borderRight: 'none',
-                  borderBottom: 'none',
-                  borderRadius: '16px',
-                  cursor: 'pointer',
-                  textAlign: 'left',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  gap: '6px',
-                }}
-              >
-                <span style={{
-                  fontFamily: 'var(--font-sans)',
-                  fontSize: '12px',
-                  fontWeight: 600,
-                  letterSpacing: '1.5px',
-                  textTransform: 'uppercase',
-                  color: DRIFTWOOD,
-                }}>
-                  Fortsätt ert samtal
-                </span>
-                <span style={{
-                  fontFamily: "'DM Serif Display', var(--font-serif)",
-                  fontSize: '18px',
-                  fontWeight: 500,
-                  color: LANTERN_GLOW,
-                  lineHeight: 1.3,
-                }}>
-                  {resumeCard.title}
-                </span>
-                {resumeStepLabel && (
-                  <span style={{
-                    fontFamily: 'var(--font-sans)',
-                    fontSize: '13px',
-                    color: DRIFTWOOD,
-                  }}>
-                    {resumeStepLabel}
-                  </span>
-                )}
-              </motion.button>
+            {isStillUsResume && (
+              <UnifiedResumeBanner
+                accentColor={DEEP_SAFFRON}
+                isStillUs
+                getCardById={getCardById}
+              />
             )}
 
             {/* ── 2. Next Conversation Card ── */}
