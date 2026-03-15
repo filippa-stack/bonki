@@ -37,6 +37,7 @@ import Header from '@/components/Header';
 import SectionView, { type SectionViewHandle } from '@/components/SectionView';
 import StepProgressIndicator, { buildDynamicSteps } from '@/components/StepProgressIndicator';
 import SessionStepReflection from '@/components/SessionStepReflection';
+import { useSessionReflections } from '@/hooks/useSessionReflections';
 
 import StageInterstitial from '@/components/StageInterstitial';
 import SessionFocusShell from '@/components/SessionFocusShell';
