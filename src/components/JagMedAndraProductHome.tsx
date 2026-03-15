@@ -15,9 +15,9 @@ const ACCENT_COLOR = '#C77AE8';
 const SAFFRON = '#DA9D1D';
 
 const ORDERED_TILES = [
-  { id: 'jma-att-hora-till', bg: '#5A1A80', text: '#FDF6E3', sub: 'Var hör jag hemma?' },
-  { id: 'jma-nar-vi-jamfor-oss', bg: '#4A1268', text: '#FDF6E3', sub: 'Vad det gör med oss' },
-  { id: 'jma-nar-det-skaver', bg: '#6A2090', text: '#FDF6E3', sub: 'När vi sårar varandra' },
+  { id: 'jma-att-hora-till', bg: '#6E2498', text: '#FDF6E3', sub: 'Var hör jag hemma?' },
+  { id: 'jma-nar-vi-jamfor-oss', bg: '#5A1A80', text: '#FDF6E3', sub: 'Vad det gör med oss' },
+  { id: 'jma-nar-det-skaver', bg: '#4A1268', text: '#FDF6E3', sub: 'När vi sårar varandra' },
   { id: 'jma-att-sta-stadig', bg: '#3A0E58', text: '#FDF6E3', sub: 'Din egen grund' },
   { id: 'jma-vi-i-varlden', bg: '#2A0840', text: '#FDF6E3', sub: 'Utanför oss själva' },
 ];

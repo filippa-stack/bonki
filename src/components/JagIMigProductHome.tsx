@@ -15,9 +15,9 @@ const ACCENT_COLOR = '#A8B84C';
 const SAFFRON = '#DA9D1D';
 
 const ORDERED_TILES = [
-  { id: 'jim-mina-kanslor', bg: '#4A5A0A', text: '#FDF6E3', sub: 'Att känna igen dem' },
+  { id: 'jim-mina-kanslor', bg: '#566A10', text: '#FDF6E3', sub: 'Att känna igen dem' },
   { id: 'jim-starka-kanslor', bg: '#3E4A12', text: '#FDF6E3', sub: 'När det blir mycket' },
-  { id: 'jim-stora-kanslor', bg: '#2E3808', text: '#FDF6E3', sub: 'Känslor med många lager' },
+  { id: 'jim-stora-kanslor', bg: '#2A3406', text: '#FDF6E3', sub: 'Känslor med många lager' },
 ];
 
 const containerVariants = { hidden: {}, visible: { transition: { staggerChildren: 0.11, delayChildren: 0.4 } } };
