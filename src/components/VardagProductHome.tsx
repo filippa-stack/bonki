@@ -14,10 +14,10 @@ const DIARY_TEXT = '#073B54';
 const SAFFRON = '#DA9D1D';
 
 const ORDERED_TILES = [
-  { id: 'vk-min-dag', bg: '#D5F0E8', text: '#073B54', sub: 'Från morgon till kväll' },
-  { id: 'vk-var-rytm', bg: '#C0DBF0', text: '#073B54', sub: 'Vanor och rutiner' },
-  { id: 'vk-vi-hemma', bg: '#F0DFC0', text: '#4A3518', sub: 'Allt som händer innanför dörren' },
-  { id: 'vk-utanfor-hemmet', bg: '#8BB8D0', text: '#0A2E40', sub: 'Det du möter där ute' },
+  { id: 'vk-min-dag', bg: '#0A4A6A', text: '#FDF6E3', sub: 'Från morgon till kväll' },
+  { id: 'vk-var-rytm', bg: '#063450', text: '#FDF6E3', sub: 'Vanor och rutiner' },
+  { id: 'vk-vi-hemma', bg: '#0E5878', text: '#FDF6E3', sub: 'Allt som händer innanför dörren' },
+  { id: 'vk-utanfor-hemmet', bg: '#042840', text: '#FDF6E3', sub: 'Det du möter där ute' },
 ];
 
 const containerVariants = { hidden: {}, visible: { transition: { staggerChildren: 0.11, delayChildren: 0.4 } } };
@@ -58,7 +58,6 @@ export default function VardagProductHome({ product }: { product: ProductManifes
               if (!cat) return null;
               const catProgress = progress.categoryProgress[cat.id];
               const isNextCategory = progress.nextSuggestedCategoryId === cat.id;
-              const isDark = tile.bg === '#8BB8D0';
 
               return (
                 <motion.button
@@ -68,7 +67,7 @@ export default function VardagProductHome({ product }: { product: ProductManifes
                   whileTap={{ scale: 0.94, y: 3 }}
                   onClick={() => navigate(`/category/${cat.id}`)}
                   style={{
-                    backgroundImage: `linear-gradient(135deg, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0) 50%, rgba(0,0,0,0.04) 100%)`,
+                    backgroundImage: `linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0) 50%, rgba(0,0,0,0.08) 100%)`,
                     backgroundColor: tile.bg,
                     borderRadius: '22px',
                     padding: '20px 16px',
@@ -77,14 +76,14 @@ export default function VardagProductHome({ product }: { product: ProductManifes
                     aspectRatio: '1 / 1',
                     border: isNextCategory
                       ? `2.5px solid ${SAFFRON}CC`
-                      : '1px solid rgba(15, 107, 153, 0.12)',
+                      : '1px solid rgba(255, 255, 255, 0.12)',
                     boxShadow: [
                       isNextCategory ? `0 0 18px 0px ${SAFFRON}50, 0 0 36px -4px ${SAFFRON}30` : '',
-                      '0 10px 28px rgba(15, 107, 153, 0.16)',
-                      '0 4px 10px rgba(15, 107, 153, 0.09)',
-                      '0 1px 3px rgba(0, 0, 0, 0.05)',
-                      'inset 0 3px 6px rgba(255, 255, 255, 0.5)',
-                      'inset 0 -4px 10px rgba(15, 107, 153, 0.10)',
+                      '0 10px 28px rgba(0, 0, 0, 0.25)',
+                      '0 4px 10px rgba(0, 0, 0, 0.15)',
+                      '0 1px 3px rgba(0, 0, 0, 0.08)',
+                      'inset 0 3px 6px rgba(255, 255, 255, 0.15)',
+                      'inset 0 -4px 10px rgba(0, 0, 0, 0.14)',
                     ].filter(Boolean).join(', '),
                     display: 'flex',
                     flexDirection: 'column',

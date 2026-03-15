@@ -15,9 +15,9 @@ const DIARY_TEXT = '#3E4421';
 const SAFFRON = '#DA9D1D';
 
 const ORDERED_TILES = [
-  { id: 'jim-mina-kanslor', bg: '#D9E0A3', text: '#3E4124', sub: 'Att känna igen dem' },
-  { id: 'jim-starka-kanslor', bg: '#A8AD82', text: '#3E4124', sub: 'När det blir mycket' },
-  { id: 'jim-stora-kanslor', bg: '#8E944F', text: '#1E2210', sub: 'Känslor med många lager' },
+  { id: 'jim-mina-kanslor', bg: '#4A5A0A', text: '#FDF6E3', sub: 'Att känna igen dem' },
+  { id: 'jim-starka-kanslor', bg: '#3E4A12', text: '#FDF6E3', sub: 'När det blir mycket' },
+  { id: 'jim-stora-kanslor', bg: '#2E3808', text: '#FDF6E3', sub: 'Känslor med många lager' },
 ];
 
 const containerVariants = { hidden: {}, visible: { transition: { staggerChildren: 0.11, delayChildren: 0.4 } } };
@@ -73,8 +73,7 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
                   whileTap={{ scale: 0.94, y: 3 }}
                   onClick={() => navigate(`/category/${cat.id}`)}
                   style={{
-                    background: `linear-gradient(135deg, ${tile.bg}FF 0%, ${tile.bg} 100%)`,
-                    backgroundImage: `linear-gradient(135deg, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0) 50%, rgba(0,0,0,0.04) 100%)`,
+                    backgroundImage: `linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0) 50%, rgba(0,0,0,0.08) 100%)`,
                     backgroundColor: tile.bg,
                     borderRadius: '22px',
                     padding: '20px 16px',
@@ -85,14 +84,14 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
                       : { aspectRatio: '1 / 1' }),
                     border: isNextCategory
                       ? `2.5px solid ${SAFFRON}CC`
-                      : '1px solid hsla(66, 25%, 65%, 0.18)',
+                      : '1px solid rgba(255, 255, 255, 0.12)',
                     boxShadow: [
                       isNextCategory ? `0 0 18px 0px ${SAFFRON}50, 0 0 36px -4px ${SAFFRON}30` : '',
-                      '0 10px 28px hsla(66, 30%, 25%, 0.14)',
-                      '0 4px 10px hsla(66, 25%, 30%, 0.08)',
-                      '0 1px 3px rgba(0, 0, 0, 0.05)',
-                      'inset 0 3px 6px rgba(255, 255, 255, 0.5)',
-                      'inset 0 -4px 10px hsla(66, 25%, 20%, 0.10)',
+                      '0 10px 28px rgba(0, 0, 0, 0.25)',
+                      '0 4px 10px rgba(0, 0, 0, 0.15)',
+                      '0 1px 3px rgba(0, 0, 0, 0.08)',
+                      'inset 0 3px 6px rgba(255, 255, 255, 0.15)',
+                      'inset 0 -4px 10px rgba(0, 0, 0, 0.14)',
                     ].filter(Boolean).join(', '),
                     display: 'flex',
                     flexDirection: 'column',
