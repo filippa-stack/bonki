@@ -32,7 +32,7 @@ export default function BottomNav() {
   const isStillUsContext = useMemo(() => {
     if (product) return false;
     if (pathname.startsWith('/product/still-us')) return true;
-    if (pathname === '/' && search.includes('devState=')) return true;
+    if (pathname === '/' && (search.includes('devState=') || search.includes('product=still-us'))) return true;
     const cardMatch = pathname.match(/^\/card\/([^/]+)/);
     if (cardMatch) return true;
     const catMatch = pathname.match(/^\/category\/([^/]+)/);
