@@ -3123,7 +3123,7 @@ function SimpleTakeaway({ sessionId, spaceId, cardId, productId, stillUsMode }: 
           <Feather
             size={14}
             strokeWidth={1.5}
-            style={{ color: stillUsMode ? DRIFTWOOD : 'var(--text-primary)', opacity: 0.25 }}
+            style={{ color: stillUsMode ? DRIFTWOOD_T : 'var(--text-primary)', opacity: 0.25 }}
           />
         </div>
       )}
