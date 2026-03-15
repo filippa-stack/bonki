@@ -35,13 +35,14 @@ const TAGLINES: Record<string, string> = {
   sexualitetskort: 'Kropp, gränser och identitet',
 };
 
-const PASTEL_COLORS: Record<string, string> = {
-  jag_i_mig: '#F5EDD2',
-  jag_med_andra: '#F0D9EA',
-  jag_i_varlden: '#D0EDDA',
-  sexualitetskort: '#F0D9E2',
-  vardagskort: '#D6ECF0',
-  syskonkort: '#DAEAF6',
+/** Creature-color tile backgrounds — dark/mid values from master palette */
+const TILE_COLORS: Record<string, string> = {
+  jag_i_mig: '#3A4210',       // Lichen deep
+  jag_med_andra: '#4A1870',   // Wild Violet deep
+  jag_i_varlden: '#1A4022',   // Deep Canopy deep
+  sexualitetskort: '#6A1F18', // Ember Red deep
+  vardagskort: '#0F3D58',     // River Blue deep
+  syskonkort: '#144544',      // Twin Teal deep
 };
 
 /** Helper: hex → rgba */
@@ -92,35 +93,30 @@ const ILLUSTRATION_BOUNDS: Record<string, { top: string; left: string; right: st
   syskonkort: { top: '-5%', left: '-2%', right: '-2%', bottom: '22%' },
 };
 
-/** Darkened accent colors for WCAG AA compliance on pastel backgrounds */
+/** Light title colors for dark creature-color tiles — Lantern Glow variants */
 const ACCENT_COLORS: Record<string, string> = {
-  jag_i_mig: '#3D3D06',
-  jag_med_andra: '#520C78',
-  jag_i_varlden: '#14401E',
-  sexualitetskort: '#6E2838',
-  vardagskort: '#042C44',
-  syskonkort: '#082654',
+  jag_i_mig: '#FDF6E3',
+  jag_med_andra: '#FDF6E3',
+  jag_i_varlden: '#FDF6E3',
+  sexualitetskort: '#FDF6E3',
+  vardagskort: '#FDF6E3',
+  syskonkort: '#FDF6E3',
 };
 
-/** Darkened tagline colors for better readability */
+/** Light tagline colors for dark tiles */
 const TAGLINE_COLORS: Record<string, string> = {
-  jag_i_mig: '#524E30',
-  jag_med_andra: '#4A3048',
-  jag_i_varlden: '#2A5438',
-  sexualitetskort: '#5A3848',
-  vardagskort: '#143434',
-  syskonkort: '#162844',
+  jag_i_mig: 'hsla(46, 60%, 85%, 0.75)',
+  jag_med_andra: 'hsla(280, 40%, 85%, 0.75)',
+  jag_i_varlden: 'hsla(140, 35%, 80%, 0.75)',
+  sexualitetskort: 'hsla(5, 50%, 82%, 0.75)',
+  vardagskort: 'hsla(205, 45%, 82%, 0.75)',
+  syskonkort: 'hsla(178, 40%, 80%, 0.75)',
 };
 
-/** Build badge text: "X ämnen · Y kr · Första gratis" */
+/** Build badge text: "X ämnen" — no pricing on individual tiles */
 function buildBadgeText(product: { cards: unknown[]; id: string }): string {
   const count = product.cards.length;
-  const prices: Record<string, number> = {
-    jag_i_mig: 195, jag_med_andra: 195, jag_i_varlden: 195,
-    vardagskort: 195, syskonkort: 195, sexualitetskort: 195,
-  };
-  const price = prices[product.id] ?? 195;
-  return `${count} ämnen · ${price} kr · 1a gratis`;
+  return `${count} ämnen`;
 }
 
 
@@ -307,8 +303,8 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
             fontSize: '11px',
             fontWeight: 700,
             letterSpacing: '0.02em',
-            color: accentColor || 'var(--text-library)',
-            background: 'rgba(255, 255, 255, 0.65)',
+            color: '#2C2420',
+            background: 'rgba(255, 255, 255, 0.75)',
             backdropFilter: 'blur(10px)',
             WebkitBackdropFilter: 'blur(10px)',
             zIndex: 3,
@@ -365,7 +361,7 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
             textShadow: `0 0 10px ${bgRgba(1)}, 0 0 20px ${bgRgba(0.8)}`,
           }}
         >
-          {tagline}{showFreeBadge ? ` · ✦ 1a gratis` : ''}
+          {tagline}
         </p>
       </div>
     </motion.div>
@@ -445,9 +441,9 @@ export default function ProductLibrary() {
   const vardag = allProducts.find(p => p.id === 'vardagskort')!;
   const syskon = allProducts.find(p => p.id === 'syskonkort')!;
 
-  const isDark = activeTab === 'par';
+  const isDark = true; // Both tabs now use Midnight Ink
 
-  const libraryBg = isDark ? '#1A1A2E' : '#33656D';
+  const libraryBg = '#1A1A2E';
 
   return (
     <div
@@ -644,6 +640,24 @@ export default function ProductLibrary() {
           >
             Det barnet inte säger själv — börjar här
           </motion.p>
+          {/* Single free-trial mention */}
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.2, duration: 0.5 }}
+            style={{
+              fontFamily: "'Lato', sans-serif",
+              fontSize: '10px',
+              fontWeight: 500,
+              letterSpacing: '0.06em',
+              color: 'hsla(38, 78%, 60%, 0.45)',
+              textAlign: 'center',
+              marginBottom: '20px',
+              marginTop: '-16px',
+            }}
+          >
+            ✦ Första kortet i varje produkt är gratis
+          </motion.p>
           <motion.div
             variants={containerVariants}
             initial="hidden"
@@ -656,7 +670,7 @@ export default function ProductLibrary() {
           >
             <PastelTile
               name={jagIMig.name}
-              bg={PASTEL_COLORS[jagIMig.id]!}
+              bg={TILE_COLORS[jagIMig.id]!}
               productId={jagIMig.id}
               tagline={TAGLINES[jagIMig.id]}
               ageLabel={jagIMig.ageLabel}
@@ -666,13 +680,12 @@ export default function ProductLibrary() {
               illustrationOpacity={ILLUSTRATION_OPACITY[jagIMig.id]}
               illustrationPosition={ILLUSTRATION_POSITION[jagIMig.id]}
               onClick={() => navigate(`/product/${jagIMig.slug}`)}
-              showFreeBadge={!purchased.has(jagIMig.id)}
               badgeText={buildBadgeText(jagIMig)}
               wide
             />
             <PastelTile
               name={jagMedAndra.name}
-              bg={PASTEL_COLORS[jagMedAndra.id]!}
+              bg={TILE_COLORS[jagMedAndra.id]!}
               productId={jagMedAndra.id}
               tagline={TAGLINES[jagMedAndra.id]}
               ageLabel={jagMedAndra.ageLabel}
@@ -682,12 +695,11 @@ export default function ProductLibrary() {
               illustrationOpacity={ILLUSTRATION_OPACITY[jagMedAndra.id]}
               illustrationPosition={ILLUSTRATION_POSITION[jagMedAndra.id]}
               onClick={() => navigate(`/product/${jagMedAndra.slug}`)}
-              showFreeBadge={!purchased.has(jagMedAndra.id)}
               badgeText={buildBadgeText(jagMedAndra)}
             />
             <PastelTile
               name={jagIVarlden.name}
-              bg={PASTEL_COLORS[jagIVarlden.id]!}
+              bg={TILE_COLORS[jagIVarlden.id]!}
               productId={jagIVarlden.id}
               tagline={TAGLINES[jagIVarlden.id]}
               ageLabel={jagIVarlden.ageLabel}
@@ -697,12 +709,11 @@ export default function ProductLibrary() {
               illustrationOpacity={ILLUSTRATION_OPACITY[jagIVarlden.id]}
               illustrationPosition={ILLUSTRATION_POSITION[jagIVarlden.id]}
               onClick={() => navigate(`/product/${jagIVarlden.slug}`)}
-              showFreeBadge={!purchased.has(jagIVarlden.id)}
               badgeText={buildBadgeText(jagIVarlden)}
             />
             <PastelTile
               name={vardag.name}
-              bg={PASTEL_COLORS[vardag.id]!}
+              bg={TILE_COLORS[vardag.id]!}
               productId={vardag.id}
               tagline={TAGLINES[vardag.id]}
               ageLabel={vardag.ageLabel}
@@ -712,12 +723,11 @@ export default function ProductLibrary() {
               illustrationOpacity={ILLUSTRATION_OPACITY[vardag.id]}
               illustrationPosition={ILLUSTRATION_POSITION[vardag.id]}
               onClick={() => navigate(`/product/${vardag.slug}`)}
-              showFreeBadge={!purchased.has(vardag.id)}
               badgeText={buildBadgeText(vardag)}
             />
             <PastelTile
               name={syskon.name}
-              bg={PASTEL_COLORS[syskon.id]!}
+              bg={TILE_COLORS[syskon.id]!}
               productId={syskon.id}
               tagline={TAGLINES[syskon.id]}
               ageLabel={syskon.ageLabel}
@@ -727,12 +737,11 @@ export default function ProductLibrary() {
               illustrationOpacity={ILLUSTRATION_OPACITY[syskon.id]}
               illustrationPosition={ILLUSTRATION_POSITION[syskon.id]}
               onClick={() => navigate(`/product/${syskon.slug}`)}
-              showFreeBadge={!purchased.has(syskon.id)}
               badgeText={buildBadgeText(syskon)}
             />
             <PastelTile
               name={sexualitet.name}
-              bg={PASTEL_COLORS[sexualitet.id]!}
+              bg={TILE_COLORS[sexualitet.id]!}
               productId={sexualitet.id}
               tagline={TAGLINES[sexualitet.id]}
               ageLabel={sexualitet.ageLabel}
@@ -742,220 +751,63 @@ export default function ProductLibrary() {
               illustrationOpacity={ILLUSTRATION_OPACITY[sexualitet.id]}
               illustrationPosition={ILLUSTRATION_POSITION[sexualitet.id]}
               onClick={() => navigate(`/product/${sexualitet.slug}`)}
-              showFreeBadge={!purchased.has(sexualitet.id)}
               badgeText={buildBadgeText(sexualitet)}
               wide
             />
           </motion.div>
         </div>
 
-        {/* Visual pause before diary */}
+        {/* Dagboken — compact return-loop hook */}
         <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.8, duration: 0.9 }}
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '12px',
-            margin: '32px 40px 8px',
-          }}
-        >
-          <div style={{ flex: 1, height: '1px', background: 'linear-gradient(90deg, transparent, hsla(38, 60%, 55%, 0.25))' }} />
-          <span style={{
-            fontFamily: "'Lato', sans-serif",
-            fontSize: '8px',
-            fontWeight: 700,
-            letterSpacing: '0.15em',
-            textTransform: 'uppercase' as const,
-            color: '#E9B44C',
-            opacity: 0.5,
-          }}>
-            ✦
-          </span>
-          <div style={{ flex: 1, height: '1px', background: 'linear-gradient(90deg, hsla(38, 60%, 55%, 0.25), transparent)' }} />
-        </motion.div>
-
-        {/* Diary — magical emotional anchor */}
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
+          initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.9 * ANIM_SPEED, duration: 0.9 * ANIM_SPEED, ease: [0.22, 1, 0.36, 1] }}
-          whileTap={{ scale: 0.98 }}
+          transition={{ delay: 0.7 * ANIM_SPEED, duration: 0.7 * ANIM_SPEED, ease: [0.22, 1, 0.36, 1] }}
+          whileTap={{ scale: 0.97 }}
           onClick={() => navigate('/diary/jag_i_mig')}
           className="cursor-pointer"
           style={{
-            margin: '20px 20px 16px',
-            padding: '28px 22px 22px',
-            borderRadius: '20px',
-            background: 'linear-gradient(180deg, hsla(185, 25%, 30%, 0.35) 0%, hsla(185, 20%, 25%, 0.25) 100%)',
-            backdropFilter: 'blur(16px)',
-            WebkitBackdropFilter: 'blur(16px)',
-            textAlign: 'center',
-            position: 'relative',
-            overflow: 'hidden',
-            boxShadow: '0 2px 8px hsla(185, 20%, 10%, 0.08), 0 12px 32px -8px hsla(185, 18%, 8%, 0.12)',
-            border: '1px solid hsla(185, 30%, 50%, 0.12)',
+            margin: '28px 20px 16px',
+            padding: '16px 20px',
+            borderRadius: '16px',
+            background: 'hsla(230, 30%, 16%, 0.6)',
+            border: '1px solid hsla(38, 60%, 50%, 0.12)',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '14px',
           }}
         >
-          {/* Ambient glow */}
-          <div style={{
-            position: 'absolute',
-            top: '-30%',
-            left: '50%',
-            transform: 'translateX(-50%)',
-            width: '200px',
-            height: '200px',
-            borderRadius: '50%',
-            background: 'radial-gradient(circle, hsla(38, 70%, 70%, 0.12) 0%, transparent 70%)',
-            pointerEvents: 'none',
-          }} />
-
-          {/* Book icon with saffron tint */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 1.0, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-          >
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{ color: '#E9B44C', opacity: 0.5, margin: '0 auto 10px', display: 'block' }}>
-              <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20" />
-            </svg>
-          </motion.div>
-
-          <motion.p
-            initial={{ opacity: 0, y: 6 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 1.05, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-            style={{
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{ color: '#E9B44C', opacity: 0.6, flexShrink: 0 }}>
+            <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20" />
+          </svg>
+          <div style={{ flex: 1 }}>
+            <p style={{
               fontFamily: "'DM Serif Display', serif",
-              fontSize: '18px',
+              fontSize: '15px',
               fontWeight: 400,
-              color: '#F5EFE6',
-              lineHeight: 1.4,
-              marginBottom: '4px',
-            }}
-          >
-            Dagboken
-          </motion.p>
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1.15, duration: 0.6 }}
-            style={{
-              fontFamily: "'DM Serif Display', serif",
-              fontStyle: 'italic',
-              fontSize: '12px',
-              fontWeight: 400,
-               color: '#E9B44C',
-              opacity: 0.55,
-              lineHeight: 1.5,
-              marginBottom: '20px',
-            }}
-          >
-            Varje samtal sparas. Varje tanke samlas.
-          </motion.p>
-
-          {/* Visual mockup — stacked diary entries with stagger */}
-          <div style={{
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '8px',
-            maxWidth: '280px',
-            margin: '0 auto',
-          }}>
-            {[
-              { color: 'hsla(45, 50%, 92%, 0.15)', accent: '#C4B882', title: 'Jag i Mig', date: '12 mar', text: '"Hon sa att hon ibland känner sig osynlig i skolan..."' },
-              { color: 'hsla(145, 30%, 89%, 0.12)', accent: '#7DB88A', title: 'Jag i Världen', date: '8 mar', text: '"Vi pratade om mod — att våga säga ifrån"' },
-              { color: 'hsla(215, 35%, 91%, 0.12)', accent: '#8AA0C8', title: 'Syskon', date: '3 mar', text: '"De skrattade åt minnet av sommaren..."' },
-            ].map((entry, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 10, scale: 0.96 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                transition={{ delay: 1.2 + i * 0.12, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '10px',
-                  padding: '11px 14px',
-                  borderRadius: '12px',
-                  backgroundColor: entry.color,
-                  textAlign: 'left',
-                  boxShadow: '0 1px 4px hsla(30, 15%, 25%, 0.04)',
-                }}
-              >
-                <div style={{
-                  width: '3px',
-                  height: '26px',
-                  borderRadius: '2px',
-                  backgroundColor: entry.accent,
-                  opacity: 0.35,
-                  flexShrink: 0,
-                }} />
-                <div style={{ flex: 1, minWidth: 0 }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2px' }}>
-                    <span style={{
-                      fontFamily: "'Lato', sans-serif",
-                      fontSize: '9px',
-                      fontWeight: 700,
-                      letterSpacing: '0.06em',
-                      textTransform: 'uppercase' as const,
-                      color: entry.accent,
-                    }}>
-                      {entry.title}
-                    </span>
-                    <span style={{
-                      fontFamily: "'Lato', sans-serif",
-                      fontSize: '8px',
-                      color: entry.accent,
-                      opacity: 0.5,
-                    }}>
-                      {entry.date}
-                    </span>
-                  </div>
-                  <p style={{
-                    fontFamily: "'DM Serif Display', serif",
-                    fontStyle: 'italic',
-                    fontSize: '11px',
-                    color: entry.accent,
-                    opacity: 0.65,
-                    lineHeight: 1.3,
-                    overflow: 'hidden',
-                    textOverflow: 'ellipsis',
-                    whiteSpace: 'nowrap' as const,
-                  }}>
-                    {entry.text}
-                  </p>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-
-          {/* Bottom fade + CTA */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1.55, duration: 0.6 }}
-          >
-            <div style={{
-              height: '16px',
-              background: 'linear-gradient(to bottom, transparent, hsla(185, 20%, 25%, 0.3))',
-              marginTop: '6px',
-              borderRadius: '0 0 12px 12px',
-            }} />
+              color: '#FDF6E3',
+              lineHeight: 1.3,
+            }}>
+              Dagboken
+            </p>
             <p style={{
               fontFamily: "'Lato', sans-serif",
-              fontSize: '9px',
-              fontWeight: 600,
-              letterSpacing: '0.1em',
-              textTransform: 'uppercase' as const,
-              color: '#E9B44C',
-              opacity: 0.4,
-              marginTop: '8px',
+              fontSize: '10px',
+              color: 'hsla(38, 50%, 65%, 0.5)',
+              marginTop: '2px',
             }}>
-              Öppna dagboken →
+              Varje samtal sparas
             </p>
-          </motion.div>
+          </div>
+          <span style={{
+            fontFamily: "'Lato', sans-serif",
+            fontSize: '10px',
+            fontWeight: 600,
+            letterSpacing: '0.06em',
+            color: '#E9B44C',
+            opacity: 0.4,
+          }}>
+            →
+          </span>
         </motion.div>
           </motion.div>
         )}
@@ -1108,7 +960,7 @@ export default function ProductLibrary() {
                     textShadow: '0 0 10px rgba(30, 90, 104, 1), 0 0 20px rgba(30, 90, 104, 0.8)',
                   }}
                 >
-                  Vi finns kvar{!purchased.has('still_us') ? ' · 184 frågor · ✦ 1a gratis' : ''}
+                  Vi finns kvar · 184 frågor
                 </p>
               </div>
             </motion.div>
