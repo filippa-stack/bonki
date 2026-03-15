@@ -110,9 +110,9 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
                   </span>
                   <span style={{
                     fontSize: 'clamp(11px, 3vw, 13px)',
-                    fontWeight: 500,
-                    color: tile.text,
-                    opacity: 0.75,
+                    fontWeight: 600,
+                    color: '#FFFDF8',
+                    opacity: 0.9,
                     letterSpacing: '0.02em',
                     lineHeight: 1.3,
                   }}>
