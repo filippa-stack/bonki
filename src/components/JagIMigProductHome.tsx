@@ -11,7 +11,7 @@ import CategoryProgressRing from '@/components/CategoryProgressRing';
 const EASE = [0.4, 0.0, 0.2, 1] as const;
 
 const ACCENT_COLOR = '#A8B84C';
-const DIARY_TEXT = '#FDF6E3';
+
 const SAFFRON = '#DA9D1D';
 
 const ORDERED_TILES = [
