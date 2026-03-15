@@ -2,7 +2,7 @@ import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import type { ProductManifest } from '@/types/product';
 import apaImage from '@/assets/apa-jag-i-mig.png';
-import KidsProductResumeBanner from '@/components/KidsProductResumeBanner';
+import UnifiedResumeBanner from '@/components/UnifiedResumeBanner';
 
 import ProductHomeBackButton from '@/components/ProductHomeBackButton';
 import { useKidsProductProgress } from '@/hooks/useKidsProductProgress';
