@@ -3064,6 +3064,9 @@ function SimpleTakeaway({ sessionId, spaceId, cardId, productId, stillUsMode }: 
   const isDemo = isDemoMode();
   const debounceRef = useRef<ReturnType<typeof setTimeout>>();
 
+  const DRIFTWOOD_T = '#6B5E52';
+  const BARK_T = '#2C2420';
+  const EMBER_GLOW_T = '#F5E8CC';
   const hasFill = text.trim().length > 0;
 
   const persistToDb = useCallback(async (value: string) => {
