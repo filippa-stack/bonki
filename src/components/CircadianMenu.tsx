@@ -62,6 +62,7 @@ const MIDNIGHT_INK = '#1A1A2E';
 const LANTERN_GLOW = '#FDF6E3';
 const DRIFTWOOD = '#6B5E52';
 const SAFFRON = '#E9B44C';
+const BARK = '#2C2420';
 
 const ENTER_EASE = [0.22, 1, 0.36, 1] as const;
 
@@ -69,24 +70,37 @@ const ENTER_EASE = [0.22, 1, 0.36, 1] as const;
  * Section groupings — depth progression with tile colors.
  * GRUNDEN = Saffron (warm entry), DET SOM FORMAR ER = Ember Mid, DJUPET = Ember Night
  */
+/**
+ * Per-tile color overrides: each tile gets its own bg + text color
+ * to create the warm-to-deep amber gradient across sections.
+ */
+const TILE_COLORS: Record<string, { bg: string; text: string }> = {
+  // GRUNDEN — bright saffron, dark text
+  'emotional-intimacy': { bg: '#E8B44C', text: BARK },   // Ert minsta vi
+  'communication':      { bg: '#D8A141', text: BARK },   // Vardagen mellan er
+  'category-8':         { bg: '#E0B550', text: BARK },   // Hur ni bär varandra
+  // DET SOM FORMAR ER — rich amber, transition point
+  'individual-needs':   { bg: '#B7872D', text: BARK },           // Arvet ni delar
+  'parenting-together': { bg: '#976820', text: LANTERN_GLOW },   // Det som skaver
+  'category-9':         { bg: '#B28931', text: BARK },           // Vad ni står för
+  // DJUPET — dark bronze-amber, light text
+  'category-6':         { bg: '#845D1A', text: LANTERN_GLOW },   // Vad ni satsar på
+  'daily-life':         { bg: '#7A5B1D', text: LANTERN_GLOW },   // Nära varandra
+  'category-10':        { bg: '#704B14', text: LANTERN_GLOW },   // Att välja varandra
+};
+
 const SECTION_GROUPS = [
   {
     label: 'Grunden',
     ids: ['emotional-intimacy', 'communication', 'category-8'],
-    tileBg: DEEP_SAFFRON,
-    tileText: MIDNIGHT_INK,
   },
   {
     label: 'Det som formar er',
     ids: ['individual-needs', 'parenting-together', 'category-9'],
-    tileBg: EMBER_MID,
-    tileText: LANTERN_GLOW,
   },
   {
     label: 'Djupet',
     ids: ['category-6', 'daily-life', 'category-10'],
-    tileBg: EMBER_NIGHT,
-    tileText: LANTERN_GLOW,
   },
 ];
 
@@ -247,6 +261,7 @@ export default function CircadianMenu({
                 const catCards = categoryCards.get(category.id) || [];
                 const completedCount = catCards.filter(c => completedCardIds.includes(c.id)).length;
                 const allCompleted = completedCount === catCards.length && catCards.length > 0;
+                const tileColor = TILE_COLORS[category.id] || { bg: EMBER_MID, text: LANTERN_GLOW };
                 const isNextSuggested = category.id === nextSuggestedId && hasEntered;
 
                 return (
@@ -258,7 +273,7 @@ export default function CircadianMenu({
                     onClick={() => onNavigateToCategory(category.id)}
                     style={{
                       position: 'relative',
-                      background: group.tileBg,
+                      background: tileColor.bg,
                       borderRadius: '12px',
                       padding: '14px 8px 14px',
                       textAlign: 'center',
@@ -266,7 +281,7 @@ export default function CircadianMenu({
                       height: '110px',
                       border: isNextSuggested
                         ? `2px solid ${DEEP_SAFFRON}88`
-                        : group.tileBg === DEEP_SAFFRON
+                        : tileColor.text === BARK
                           ? '1px solid rgba(0, 0, 0, 0.08)'
                           : '1px solid rgba(255, 255, 255, 0.08)',
                       boxShadow: [
@@ -289,7 +304,7 @@ export default function CircadianMenu({
                         fontFamily: "'DM Serif Display', var(--font-serif)",
                         fontSize: 'clamp(14px, 3.8vw, 17px)',
                         fontWeight: 400,
-                        color: group.tileText,
+                        color: tileColor.text,
                         padding: '0 2px',
                         lineHeight: 1.2,
                       }}
