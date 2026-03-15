@@ -49,7 +49,7 @@ export default function SyskonProductHome({ product }: { product: ProductManifes
           </motion.div>
         </motion.div>
 
-        <div style={{ flex: 1, minHeight: '16px' }} />
+        <div style={{ flex: 1, minHeight: '16px', maxHeight: 'clamp(40px, 12vh, 120px)' }} />
 
         <motion.div variants={containerVariants} initial="hidden" animate="visible" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px', width: '100%' }}>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px', width: '100%' }}>

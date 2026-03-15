@@ -54,7 +54,7 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
           </motion.div>
         </motion.div>
 
-        <div style={{ flex: 1, minHeight: '16px' }} />
+        <div style={{ flex: 1, minHeight: '16px', maxHeight: 'clamp(40px, 12vh, 120px)' }} />
 
         <motion.div variants={containerVariants} initial="hidden" animate="visible" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '12px', width: '100%' }}>
           {ORDERED_TILES.map((tile) => {
