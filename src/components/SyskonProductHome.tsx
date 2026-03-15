@@ -122,7 +122,6 @@ export default function SyskonProductHome({ product }: { product: ProductManifes
             })}
           </div>
         </motion.div>
-        </motion.div>
       </div>
     </div>
   );

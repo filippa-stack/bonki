@@ -129,7 +129,6 @@ export default function JagIVarldenProductHome({ product }: { product: ProductMa
             })}
           </div>
         </motion.div>
-        </motion.div>
       </div>
     </div>
   );

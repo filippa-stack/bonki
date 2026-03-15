@@ -130,7 +130,6 @@ export default function JagMedAndraProductHome({ product }: { product: ProductMa
             })}
           </div>
         </motion.div>
-        </motion.div>
       </div>
     </div>
   );

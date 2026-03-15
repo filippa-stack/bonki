@@ -122,7 +122,6 @@ export default function SexualitetProductHome({ product }: { product: ProductMan
             })}
           </div>
         </motion.div>
-        </motion.div>
       </div>
     </div>
   );

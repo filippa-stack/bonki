@@ -122,7 +122,6 @@ export default function VardagProductHome({ product }: { product: ProductManifes
             })}
           </div>
         </motion.div>
-        </motion.div>
       </div>
     </div>
   );
