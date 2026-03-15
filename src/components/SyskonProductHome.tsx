@@ -76,13 +76,13 @@ export default function SyskonProductHome({ product }: { product: ProductManifes
                     aspectRatio: '1 / 1',
                     border: isNextCategory
                       ? `2.5px solid ${SAFFRON}CC`
-                      : '1px solid rgba(255, 255, 255, 0.12)',
+                      : '1.5px solid rgba(255, 255, 255, 0.30)',
                     boxShadow: [
                       isNextCategory ? `0 0 18px 0px ${SAFFRON}50, 0 0 36px -4px ${SAFFRON}30` : '',
-                      '0 10px 28px rgba(0, 0, 0, 0.25)',
-                      '0 4px 10px rgba(0, 0, 0, 0.15)',
+                      '0 12px 32px rgba(0, 0, 0, 0.30)',
+                      '0 4px 12px rgba(0, 0, 0, 0.18)',
                       '0 1px 3px rgba(0, 0, 0, 0.08)',
-                      'inset 0 3px 6px rgba(255, 255, 255, 0.15)',
+                      'inset 0 3px 6px rgba(255, 255, 255, 0.45)',
                       'inset 0 -4px 10px rgba(0, 0, 0, 0.14)',
                     ].filter(Boolean).join(', '),
                     display: 'flex',

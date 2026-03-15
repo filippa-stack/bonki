@@ -235,15 +235,15 @@ export default function CircadianMenu({
                       height: '110px',
                       borderLeft: isNextSuggested
                         ? `2px solid ${DEEP_SAFFRON}`
-                        : '1px solid rgba(255, 255, 255, 0.12)',
-                      borderTop: '1px solid rgba(255, 255, 255, 0.12)',
-                      borderRight: '1px solid rgba(255, 255, 255, 0.12)',
-                      borderBottom: '1px solid rgba(255, 255, 255, 0.12)',
+                        : '1.5px solid rgba(255, 255, 255, 0.30)',
+                      borderTop: '1.5px solid rgba(255, 255, 255, 0.30)',
+                      borderRight: '1.5px solid rgba(255, 255, 255, 0.30)',
+                      borderBottom: '1.5px solid rgba(255, 255, 255, 0.30)',
                       boxShadow: [
-                        '0 10px 28px rgba(0, 0, 0, 0.25)',
-                        '0 4px 10px rgba(0, 0, 0, 0.15)',
+                        '0 12px 32px rgba(0, 0, 0, 0.30)',
+                        '0 4px 12px rgba(0, 0, 0, 0.18)',
                         '0 1px 3px rgba(0, 0, 0, 0.08)',
-                        'inset 0 3px 6px rgba(255, 255, 255, 0.15)',
+                        'inset 0 3px 6px rgba(255, 255, 255, 0.45)',
                         'inset 0 -4px 10px rgba(0, 0, 0, 0.14)',
                       ].join(', '),
                       display: 'flex',
