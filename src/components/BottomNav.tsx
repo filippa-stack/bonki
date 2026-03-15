@@ -153,15 +153,17 @@ export default function BottomNav() {
       <div
         style={{
           height: '1px',
-          background: 'linear-gradient(90deg, transparent 8%, hsl(var(--border) / 0.35) 30%, hsl(var(--border) / 0.35) 70%, transparent 92%)',
+          background: isStillUsContext
+            ? 'linear-gradient(90deg, transparent 8%, rgba(255,255,255,0.08) 30%, rgba(255,255,255,0.08) 70%, transparent 92%)'
+            : 'linear-gradient(90deg, transparent 8%, hsl(var(--border) / 0.35) 30%, hsl(var(--border) / 0.35) 70%, transparent 92%)',
         }}
       />
 
       <div
         style={{
-          backgroundColor: 'color-mix(in srgb, var(--surface-base, hsl(var(--background))) 75%, transparent)',
-          backdropFilter: 'blur(20px)',
-          WebkitBackdropFilter: 'blur(20px)',
+          backgroundColor: isStillUsContext ? '#2E2233' : 'color-mix(in srgb, var(--surface-base, hsl(var(--background))) 75%, transparent)',
+          backdropFilter: isStillUsContext ? 'none' : 'blur(20px)',
+          WebkitBackdropFilter: isStillUsContext ? 'none' : 'blur(20px)',
         }}
       >
         <div className="flex items-stretch justify-around" style={{ height: '48px' }}>
@@ -178,9 +180,9 @@ export default function BottomNav() {
                 className="relative flex flex-1 flex-col items-center justify-center gap-[3px]"
                 style={{
                   color: active
-                    ? 'hsl(var(--foreground))'
-                    : 'hsl(var(--muted-foreground))',
-                  opacity: active ? 0.85 : 0.38,
+                    ? (isStillUsContext ? '#E85D2C' : 'hsl(var(--foreground))')
+                    : (isStillUsContext ? '#6B5E52' : 'hsl(var(--muted-foreground))'),
+                  opacity: active ? (isStillUsContext ? 1 : 0.85) : (isStillUsContext ? 0.6 : 0.38),
                   background: 'none',
                   border: 'none',
                   cursor: 'pointer',
