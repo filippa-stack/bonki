@@ -79,8 +79,8 @@ export default function JagIVarldenProductHome({ product }: { product: ProductMa
                     textAlign: 'center',
                     cursor: 'pointer',
                     ...(isLastOdd
-                      ? { gridColumn: '1 / -1', justifySelf: 'center', width: '65%', padding: '22px 20px', minHeight: '100px' }
-                      : {}),
+                      ? { gridColumn: '1 / -1', justifySelf: 'center', width: '65%', padding: '22px 20px', minHeight: '120px' }
+                      : { aspectRatio: '1 / 1' }),
                     border: isNextCategory
                       ? `2.5px solid ${SAFFRON}CC`
                       : '1px solid rgba(255, 255, 255, 0.12)',
