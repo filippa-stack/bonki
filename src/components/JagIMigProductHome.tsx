@@ -30,7 +30,7 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
 
   return (
     <div className="min-h-screen relative overflow-hidden" style={{ backgroundColor: 'var(--surface-base)' }}>
-      <ProductHomeBackButton color={ACCENT_COLOR} />
+      <ProductHomeBackButton color="#FDF6E3" />
       <div style={{ position: 'absolute', top: '18%', left: '50%', transform: 'translateX(-50%)', width: '140%', height: '60%', background: 'radial-gradient(ellipse at center, hsla(41, 78%, 48%, 0.06) 0%, transparent 70%)', pointerEvents: 'none', zIndex: 0 }} />
       <motion.div
         initial={{ opacity: 0 }}
