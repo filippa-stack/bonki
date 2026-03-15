@@ -53,7 +53,7 @@
 
 <div class="header">
   <h1>Bonki – Infrastruktur &amp; användarresor</h1>
-  <p>Samlad vy over alla produktfloden · Uppdaterad 2026-03-13</p>
+  <p>Samlad vy over alla produktfloden · Uppdaterad 2026-03-15</p>
   <nav class="toc">
     <a href="#still-us">Still Us (par)</a>
     <a href="#kids-family">Barn &amp; Familj (6 produkter)</a>
@@ -77,7 +77,7 @@ function downloadPage() {
 <div class="section" id="still-us">
 <div class="section" id="still-us">
   <h2>Still Us – Live användarresa</h2>
-  <p class="sub">Baserad på kodbas 2026-03-13 · Enbart Still Us-produkten</p>
+  <p class="sub">Baserad på kodbas 2026-03-15 · Enbart Still Us-produkten</p>
 
   <div class="legend">
     <span><span class="dot" style="background:#c0392b"></span> Hard gate</span>
@@ -85,6 +85,7 @@ function downloadPage() {
     <span><span class="dot" style="background:#2980b9"></span> Beslutspunkt</span>
     <span><span class="dot" style="background:#27ae60"></span> Stark sektion</span>
     <span><span class="dot" style="background:#f39c12"></span> Resume &amp; Progress</span>
+    <span><span class="dot" style="background:#34495e"></span> Navigation</span>
   </div>
 
   <div class="mermaid">
@@ -102,23 +103,22 @@ graph TD
         L3 -->|E-post| L5
     end
 
-    subgraph ONBOARDING["STEG 2: PLATTFORM-ONBOARDING 3 slides"]
-        O0["Slide 0: Valkommen till Bonki<br/>'Det basta samtalet du<br/>kommer ha idag vantar har.'"]
-        O1["Slide 1: Samtal som ror sig<br/>'Bonki ar verktyg for familjer<br/>och par som vill na varandra.'"]
-        O2["Slide 2 DARK:<br/>CTA: 'Utforska biblioteket'"]
-        OSKIP["Hoppa over-lank<br/>Synlig pa slide 0-1"]
-        O0 --> O1
+    subgraph ONBOARDING["STEG 2: PLATTFORM-ONBOARDING 1 skarm"]
+        O1["Midnight Ink bakgrund<br/>Saffrans-glow + illustration<br/>'Utvecklat av psykolog'<br/>'Verktyg for samtalen<br/>som inte blir av.'<br/>'Vad vill du borja med?'"]
+        O2{"Binart val"}
+        O2A["'Borja med barnen'<br/>Samtalskort for barn 3-18 ar"]
+        O2B["'Borja som par'<br/>Samtal for er relation"]
         O1 --> O2
-        O0 -.->|skip| OSKIP
-        O1 -.->|skip| OSKIP
+        O2 -->|Barn| O2A
+        O2 -->|Par| O2B
     end
 
     subgraph BG_ACTION["TYST BAKGRUNDSAKTION"]
-        BG["initializeCoupleSpace<br/>Skapar couple_space +<br/>couple_member"]
+        BG["initializeCoupleSpace<br/>Skapar couple_space +<br/>couple_member<br/>Sparar val till localStorage<br/>bonki-initial-tab"]
     end
 
     subgraph LIBRARY["STEG 3: BIBLIOTEK"]
-        LIB1["BARN / PAR flikar<br/>Horisontell swipe"]
+        LIB1["BARN / PAR flikar<br/>Initialt val fran onboarding<br/>Horisontell swipe"]
         LIB2["Still Us-tile:<br/>blagraa/sage profil<br/>Illustration, opacitet 0.30"]
         LIB3{"Valj Still Us"}
         LIB1 --> LIB2 --> LIB3
@@ -167,7 +167,7 @@ graph TD
     subgraph SESSION["STEG 7: AKTIV SESSION"]
         S0["Startritual:<br/>'Sitt ner med din partner.<br/>Las forsta fragan hogt.'<br/>Tidsuppskattning: ca 5-10 min"]
         S1["4-stegs-indikator:<br/>OPPNA . FORDJUPA .<br/>SCENARIO . TILLSAMMANS<br/>Frageraknare: '1 / 3'"]
-        S2["Fragor + Fasta en tanke<br/>Situational anchors<br/>Bokmrken borttagna"]
+        S2["Fragor + Fasta en tanke<br/>Situational anchors"]
         S3["Fixerad saffrans-CTA<br/>'Fortsatt' 52px hojd<br/>Visas omedelbart"]
         S_PAUSE["PAUS<br/>'Pausa for idag'<br/>Sparar exakt position<br/>Session forblir 'active'<br/>Navigerar till hemskarm"]
         S_BACK["Dampad tillbakapil<br/>Alltid synlig for<br/>saker utgang"]
@@ -191,10 +191,30 @@ graph TD
         F1 --> F2
     end
 
+    subgraph BOTTOMNAV["PLATTFORMS-NAVIGATION"]
+        BN1["2-flikar, fast i botten<br/>Midnight Ink bakgrund"]
+        BN2["BIBLIOTEKET<br/>House-ikon, atergar till /"]
+        BN3["ERA SAMTAL<br/>MessageCircle-ikon, /journal"]
+        BN4["Dold under aktiva sessioner<br/>card/ routes"]
+        BN1 --> BN2
+        BN1 --> BN3
+        BN1 -.-> BN4
+    end
+
+    subgraph JOURNAL["ERA SAMTAL journal"]
+        J1["Midnight Ink bakgrund<br/>Plattformsniva-yta"]
+        J2["Filterchips: BARN / PAR<br/>Togglar innehallstyper"]
+        J3["Pulse Card:<br/>Totalt antal samtal<br/>Startmanad + senaste aktivitet"]
+        J4["Par Privacy Row:<br/>Kollapsar Still Us-poster<br/>nar bada filter ar aktiva"]
+        J5["Kronologisk tidslinje<br/>Grupperad per manad<br/>Anteckningskort + checkmarks"]
+        J1 --> J2 --> J3
+        J3 --> J4 --> J5
+    end
+
     L4 --> ONBOARDING
     L5 --> ONBOARDING
-    OSKIP --> BG_ACTION
-    O2 -->|Utforska biblioteket| BG_ACTION
+    O2A --> BG_ACTION
+    O2B --> BG_ACTION
     BG_ACTION --> LIBRARY
     LIB3 -->|Forsta besok| INTRO
     LIB3 -->|Aterbesok| HOME
@@ -210,25 +230,29 @@ graph TD
     SESSION --> COMPLETE
     COMPLETE --> FEEDBACK
     CO4 --> HOME
+    BN2 --> LIBRARY
+    BN3 --> JOURNAL
 
     classDef gate fill:#c0392b,color:#fff,stroke:#922b21
     classDef friction fill:#e67e22,color:#fff,stroke:#d35400
     classDef good fill:#27ae60,color:#fff,stroke:#1e8449
     classDef decision fill:#2980b9,color:#fff,stroke:#1f618d
     classDef progressNode fill:#f39c12,color:#fff,stroke:#d68910
+    classDef navNode fill:#34495e,color:#fff,stroke:#2c3e50
 
     class PBLOCK,L2 gate
     class L5 friction
     class SESSION,COMPLETE,ONBOARDING good
-    class P3,C3,LIB3,L3,L2,H_RESUME decision
+    class P3,C3,LIB3,L3,L2,H_RESUME,O2 decision
     class H_RESUME_YES,S_PAUSE progressNode
+    class BOTTOMNAV,BN1,BN2,BN3,BN4,JOURNAL,J1,J2,J3,J4,J5 navNode
   </div>
 </div>
 
 <!-- ─── KIDS & FAMILY ─── -->
 <div class="section" id="kids-family">
   <h2>Barn &amp; Familj – Användarresa (6 nya produkter)</h2>
-  <p class="sub">Baserad på kodbas 2026-03-13 · Exkluderar Still Us</p>
+  <p class="sub">Baserad på kodbas 2026-03-15 · Exkluderar Still Us</p>
 
   <div class="legend">
     <span><span class="dot" style="background:#c0392b"></span> Hard gate</span>
@@ -237,6 +261,7 @@ graph TD
     <span><span class="dot" style="background:#27ae60"></span> Stark sektion</span>
     <span><span class="dot" style="background:#8e44ad"></span> Ny vs Still Us</span>
     <span><span class="dot" style="background:#f39c12"></span> Progress &amp; Resume</span>
+    <span><span class="dot" style="background:#34495e"></span> Navigation</span>
   </div>
 
   <div class="mermaid">
@@ -254,23 +279,22 @@ graph TD
         L3 -->|E-post| L5
     end
 
-    subgraph ONBOARDING["STEG 2: PLATTFORM-ONBOARDING 3 slides"]
-        O0["Slide 0: Valkommen till Bonki<br/>'Det basta samtalet du<br/>kommer ha idag vantar har.'"]
-        O1["Slide 1: Samtal som ror sig<br/>'Bonki ar verktyg for familjer<br/>och par som vill na varandra.'"]
-        O2["Slide 2 DARK: Valj det amne<br/>som kanns ratt just nu.<br/>CTA: 'Utforska biblioteket'"]
-        OSKIP["Hoppa over-lank<br/>Synlig pa slide 0-1"]
-        O0 --> O1
+    subgraph ONBOARDING["STEG 2: PLATTFORM-ONBOARDING 1 skarm"]
+        O1["Midnight Ink bakgrund<br/>Saffrans-glow + illustration<br/>'Verktyg for samtalen<br/>som inte blir av.'<br/>'Vad vill du borja med?'"]
+        O2{"Binart val"}
+        O2A["'Borja med barnen'<br/>Samtalskort for barn 3-18 ar"]
+        O2B["'Borja som par'<br/>Samtal for er relation"]
         O1 --> O2
-        O0 -.->|skip| OSKIP
-        O1 -.->|skip| OSKIP
+        O2 -->|Barn| O2A
+        O2 -->|Par| O2B
     end
 
     subgraph BG["TYST BAKGRUNDSAKTION"]
-        BG1["initializeCoupleSpace<br/>Skapar couple_space +<br/>couple_member"]
+        BG1["initializeCoupleSpace<br/>Skapar couple_space +<br/>couple_member<br/>Sparar val till localStorage<br/>bonki-initial-tab"]
     end
 
     subgraph LIBRARY["STEG 3: PRODUKTBIBLIOTEK"]
-        LIB1["BARN / PAR flikar<br/>Horisontell swipe"]
+        LIB1["BARN / PAR flikar<br/>Initialt val fran onboarding<br/>Horisontell swipe"]
         LIB2["7 produktkort:<br/>illustration + namn +<br/>tagline + alderslabel"]
         LIB3{"Valj produkt"}
         LIB1 --> LIB2 --> LIB3
@@ -300,7 +324,7 @@ graph TD
     subgraph CATEGORY_VIEW["STEG 5b: KATEGORISIDA"]
         CV1["Kategori-titel + entryLine"]
         CV2["Korttiles med illustration<br/>Bakgrund = kategori-specifik farg<br/>fran produkthemskarm"]
-        CV3["Statusbadge per kort:<br/>🔵 Nasta saffrans-glow<br/>⏳ Pabörjad pulsande punkt<br/>✓ Utforskad bock-ikon<br/>Inget = Tillganglig"]
+        CV3["Statusbadge per kort:<br/>Nasta saffrans-glow<br/>Pabörjad pulsande punkt<br/>Utforskad bock-ikon<br/>Inget = Tillganglig"]
         CV4{"Valj kort"}
         CV1 --> CV2 --> CV3 --> CV4
     end
@@ -341,7 +365,7 @@ graph TD
 
     subgraph COMPLETE["STEG 8: AVSLUTAD SESSION"]
         CO1["Headline + reflektion"]
-        CO2["Nasta CTA:<br/>'Nasta →' startar<br/>nasta ofardiga kort<br/>Prioriterar samma kategori"]
+        CO2["Nasta CTA:<br/>'Nasta' startar<br/>nasta ofardiga kort<br/>Prioriterar samma kategori"]
         CO3["Diskret 'Avsluta'-lank<br/>Tillbaka till produkt-hem"]
         CO1 --> CO2
         CO1 --> CO3
@@ -359,10 +383,30 @@ graph TD
         PR2 --> PR4
     end
 
+    subgraph BOTTOMNAV["PLATTFORMS-NAVIGATION"]
+        BN1["2-flikar, fast i botten<br/>Midnight Ink bakgrund"]
+        BN2["BIBLIOTEKET<br/>House-ikon, atergar till /"]
+        BN3["ERA SAMTAL<br/>MessageCircle-ikon, /journal"]
+        BN4["Dold under aktiva sessioner<br/>card/ routes"]
+        BN1 --> BN2
+        BN1 --> BN3
+        BN1 -.-> BN4
+    end
+
+    subgraph JOURNAL["ERA SAMTAL journal"]
+        J1["Midnight Ink bakgrund<br/>Plattformsniva-yta"]
+        J2["Filterchips: BARN / PAR<br/>Togglar innehallstyper"]
+        J3["Pulse Card:<br/>Totalt antal samtal<br/>Startmanad + senaste aktivitet"]
+        J4["Par Privacy Row:<br/>Kollapsar Still Us-poster<br/>nar bada filter ar aktiva"]
+        J5["Kronologisk tidslinje<br/>Grupperad per manad<br/>Anteckningskort + checkmarks"]
+        J1 --> J2 --> J3
+        J3 --> J4 --> J5
+    end
+
     L4 --> ONBOARDING
     L5 --> ONBOARDING
-    OSKIP --> BG
-    O2 -->|Utforska biblioteket| BG
+    O2A --> BG
+    O2B --> BG
     BG --> LIBRARY
     LIB3 -->|Forsta besok| INTRO
     LIB3 -->|Aterbesok| PRODUCT_HOME
@@ -381,6 +425,8 @@ graph TD
     SESSION --> COMPLETE
     CO2 -->|Nasta kort| SESSION
     CO3 --> PRODUCT_HOME
+    BN2 --> LIBRARY
+    BN3 --> JOURNAL
 
     classDef gate fill:#c0392b,color:#fff,stroke:#922b21
     classDef friction fill:#e67e22,color:#fff,stroke:#d35400
@@ -388,13 +434,15 @@ graph TD
     classDef decision fill:#2980b9,color:#fff,stroke:#1f618d
     classDef newFeature fill:#8e44ad,color:#fff,stroke:#6c3483
     classDef progressNode fill:#f39c12,color:#fff,stroke:#d68910
+    classDef navNode fill:#34495e,color:#fff,stroke:#2c3e50
 
     class PWBLOCK gate
     class L5 friction
     class ONBOARDING,FREE_CARD,SESSION good
-    class PW3,LIB3,L3,L2,PH_RESUME decision
+    class PW3,LIB3,L3,L2,PH_RESUME,O2 decision
     class LIBRARY,INTRO,PRODUCT_HOME,CATEGORY_VIEW newFeature
     class PROGRESS,PH_RESUME_YES,PR1,PR2,PR3,PR4,PR5,S_PAUSE progressNode
+    class BOTTOMNAV,BN1,BN2,BN3,BN4,JOURNAL,J1,J2,J3,J4,J5 navNode
   </div>
 </div>
 
