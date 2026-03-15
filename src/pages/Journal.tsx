@@ -477,7 +477,7 @@ export default function Journal() {
   const visibleItems = useMemo(() => {
     const bothActive = activeFilters.has('barn') && activeFilters.has('par');
     return allTimelineItems.filter(item => {
-      const isPar = item.productId === STILL_US_ID;
+      const isPar = effectiveIsPar(item.productId, item.cardId);
       if (isPar) {
         if (!activeFilters.has('par')) return false;
         // When both active, par entries hidden behind privacy row (unless expanded)
