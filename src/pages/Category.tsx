@@ -85,72 +85,72 @@ const PRODUCT_STYLES: Record<string, {
 
 /** Category-specific tile background colors (synced with product homescreen tiles) */
 const CATEGORY_CARD_BG: Record<string, string> = {
-  // Jag i mig
-  'jim-mina-kanslor': '#D9E0A3',
-  'jim-starka-kanslor': '#A8AD82',
-  'jim-stora-kanslor': '#8E944F',
-  // Jag med andra
-  'jma-att-hora-till': '#F8E4EC',
-  'jma-nar-vi-jamfor-oss': '#E8C8F0',
-  'jma-nar-det-skaver': '#F2D0C0',
-  'jma-att-sta-stadig': '#C8A8D8',
-  'jma-vi-i-varlden': '#7E5C8E',
-  // Jag i världen
-  'jiv-min-vardag': '#C2E6C8',
-  'jiv-vem-jag-ar': '#F5EBD8',
-  'jiv-jag-och-andra': '#D8C0AE',
-  'jiv-jag-i-samhallet': '#A8CEB0',
-  'jiv-det-stora-sammanhanget': '#5E7A62',
-  // Sexualitet
-  'sex-min-identitet': '#F5E0EC',
-  'sex-normer-och-paverkan': '#E8B8B8',
-  'sex-relation-och-ansvar': '#C88888',
-  'sex-skydd-och-makt': '#8E5558',
-  // Vardag
-  'vk-min-dag': '#D5F0E8',
-  'vk-var-rytm': '#C0DBF0',
-  'vk-vi-hemma': '#F0DFC0',
-  'vk-utanfor-hemmet': '#8BB8D0',
-  // Syskon
-  'sk-vi-blev-syskon': '#D8F0F2',
-  'sk-vi-ar-olika': '#F0DEB8',
-  'sk-delat-utrymme': '#B8D8D0',
-  'sk-er-relation': '#7AACB0',
+  // Jag i mig — Lichen deep
+  'jim-mina-kanslor': '#4A5A0A',
+  'jim-starka-kanslor': '#3E4A12',
+  'jim-stora-kanslor': '#2E3808',
+  // Jag med andra — Wild Violet deep
+  'jma-att-hora-till': '#5A1A80',
+  'jma-nar-vi-jamfor-oss': '#4A1268',
+  'jma-nar-det-skaver': '#6A2090',
+  'jma-att-sta-stadig': '#3A0E58',
+  'jma-vi-i-varlden': '#2A0840',
+  // Jag i världen — Deep Canopy deep
+  'jiv-min-vardag': '#1A4A24',
+  'jiv-vem-jag-ar': '#2A3A1E',
+  'jiv-jag-och-andra': '#224A2C',
+  'jiv-jag-i-samhallet': '#1E3E20',
+  'jiv-det-stora-sammanhanget': '#143418',
+  // Sexualitet — Ember Red deep
+  'sex-min-identitet': '#6A2A30',
+  'sex-normer-och-paverkan': '#4A1A20',
+  'sex-relation-och-ansvar': '#5A2228',
+  'sex-skydd-och-makt': '#3A1218',
+  // Vardag — River Blue deep
+  'vk-min-dag': '#0A4A6A',
+  'vk-var-rytm': '#063450',
+  'vk-vi-hemma': '#0E5878',
+  'vk-utanfor-hemmet': '#042840',
+  // Syskon — Twin Teal deep
+  'sk-vi-blev-syskon': '#1A5A58',
+  'sk-vi-ar-olika': '#0E4442',
+  'sk-delat-utrymme': '#185250',
+  'sk-er-relation': '#0A3634',
 };
 
-/** Category-specific card title colors (synced with homescreen tile text) */
+/** Light title colors for dark creature-color tiles — Lantern Glow */
 const CATEGORY_TITLE_COLOR: Record<string, string> = {
   // Jag i mig
-  'jim-mina-kanslor': '#3E4124',
-  'jim-starka-kanslor': '#3E4124',
-  'jim-stora-kanslor': '#3E4124',
+  'jim-mina-kanslor': '#FDF6E3',
+  'jim-starka-kanslor': '#FDF6E3',
+  'jim-stora-kanslor': '#FDF6E3',
   // Jag med andra
-  'jma-att-hora-till': '#9825D6',
-  'jma-nar-vi-jamfor-oss': '#7B1FA2',
-  'jma-nar-det-skaver': '#8E3A1A',
-  'jma-att-sta-stadig': '#4A148C',
-  'jma-vi-i-varlden': '#F5F0F8',
+  'jma-att-hora-till': '#FDF6E3',
+  'jma-nar-vi-jamfor-oss': '#FDF6E3',
+  'jma-nar-det-skaver': '#FDF6E3',
+  'jma-att-sta-stadig': '#FDF6E3',
+  'jma-vi-i-varlden': '#FDF6E3',
   // Jag i världen
-  'jiv-min-vardag': '#2A4A2E',
-  'jiv-vem-jag-ar': '#4A3A20',
-  'jiv-jag-och-andra': '#3E2E1E',
-  'jiv-jag-i-samhallet': '#1E3A24',
-  'jiv-det-stora-sammanhanget': '#F0EDE8',
+  'jiv-min-vardag': '#FDF6E3',
+  'jiv-vem-jag-ar': '#FDF6E3',
+  'jiv-jag-och-andra': '#FDF6E3',
+  'jiv-jag-i-samhallet': '#FDF6E3',
+  'jiv-det-stora-sammanhanget': '#FDF6E3',
   // Sexualitet
-  'sex-min-identitet': '#6B3A3F',
-  'sex-normer-och-paverkan': '#5A2A30',
-  'sex-relation-och-ansvar': '#3A1E1E',
-  'sex-skydd-och-makt': '#FAF5F0',
+  'sex-min-identitet': '#FDF6E3',
+  'sex-normer-och-paverkan': '#FDF6E3',
+  'sex-relation-och-ansvar': '#FDF6E3',
+  'sex-skydd-och-makt': '#FDF6E3',
   // Vardag
-  'vk-min-dag': '#073B54',
-  'vk-var-rytm': '#073B54',
-  'vk-vi-hemma': '#4A3518',
-  'vk-utanfor-hemmet': '#0A2E40',
+  'vk-min-dag': '#FDF6E3',
+  'vk-var-rytm': '#FDF6E3',
+  'vk-vi-hemma': '#FDF6E3',
+  'vk-utanfor-hemmet': '#FDF6E3',
   // Syskon
-  'sk-vi-blev-syskon': '#1A4A58',
-  'sk-vi-ar-olika': '#3A2E1A',
-  'sk-delat-utrymme': '#1A4A44',
-  'sk-er-relation': '#0E2E38',
+  'sk-vi-blev-syskon': '#FDF6E3',
+  'sk-vi-ar-olika': '#FDF6E3',
+  'sk-delat-utrymme': '#FDF6E3',
+  'sk-er-relation': '#FDF6E3',
 };
 
 export default function Category() {
