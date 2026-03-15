@@ -294,6 +294,8 @@ export default function Journal() {
       setSessions([]);
       setTakeaways([]);
       setReflections([]);
+      setPausedSessions([]);
+      setBookmarks([]);
       return;
     }
     let cancelled = false;
