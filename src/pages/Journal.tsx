@@ -755,7 +755,7 @@ export default function Journal() {
                 {filteredPaused.map(s => {
                   const cardName = s.card_id ? getCardTitle(s.card_id) : 'Okänt samtal';
                   const catName = getCategoryName(s.category_id, s.card_id ?? '');
-                  const stepName = s.product_id === STILL_US_ID
+                  const stepName = effectiveIsPar(s.product_id, s.card_id)
                     ? (STILL_US_STEP_NAMES[s.currentStepIndex] ?? `Steg ${s.currentStepIndex + 1}`)
                     : `Fråga ${s.currentStepIndex + 1}`;
 
