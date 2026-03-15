@@ -69,24 +69,37 @@ const ENTER_EASE = [0.22, 1, 0.36, 1] as const;
  * Section groupings — depth progression with tile colors.
  * GRUNDEN = Saffron (warm entry), DET SOM FORMAR ER = Ember Mid, DJUPET = Ember Night
  */
+/**
+ * Per-tile color overrides: each tile gets its own bg + text color
+ * to create the warm-to-deep amber gradient across sections.
+ */
+const TILE_COLORS: Record<string, { bg: string; text: string }> = {
+  // GRUNDEN — bright saffron, dark text
+  'emotional-intimacy': { bg: '#E8B44C', text: BARK },   // Ert minsta vi
+  'communication':      { bg: '#D8A141', text: BARK },   // Vardagen mellan er
+  'category-8':         { bg: '#E0B550', text: BARK },   // Hur ni bär varandra
+  // DET SOM FORMAR ER — rich amber, transition point
+  'individual-needs':   { bg: '#B7872D', text: BARK },           // Arvet ni delar
+  'parenting-together': { bg: '#976820', text: LANTERN_GLOW },   // Det som skaver
+  'category-9':         { bg: '#B28931', text: BARK },           // Vad ni står för
+  // DJUPET — dark bronze-amber, light text
+  'category-6':         { bg: '#845D1A', text: LANTERN_GLOW },   // Vad ni satsar på
+  'daily-life':         { bg: '#7A5B1D', text: LANTERN_GLOW },   // Nära varandra
+  'category-10':        { bg: '#704B14', text: LANTERN_GLOW },   // Att välja varandra
+};
+
 const SECTION_GROUPS = [
   {
     label: 'Grunden',
     ids: ['emotional-intimacy', 'communication', 'category-8'],
-    tileBg: DEEP_SAFFRON,
-    tileText: MIDNIGHT_INK,
   },
   {
     label: 'Det som formar er',
     ids: ['individual-needs', 'parenting-together', 'category-9'],
-    tileBg: EMBER_MID,
-    tileText: LANTERN_GLOW,
   },
   {
     label: 'Djupet',
     ids: ['category-6', 'daily-life', 'category-10'],
-    tileBg: EMBER_NIGHT,
-    tileText: LANTERN_GLOW,
   },
 ];
 
