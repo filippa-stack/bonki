@@ -58,7 +58,14 @@ interface StepProgressIndicatorProps {
   currentPromptIndex?: number;
   /** Total questions in current step */
   totalPromptsInStep?: number;
+  /** Use Still Us ember design (underline labels, no progress bars) */
+  stillUsMode?: boolean;
 }
+
+// Still Us palette tokens
+const DEEP_SAFFRON = '#D4A03A';
+const LANTERN_GLOW = '#FDF6E3';
+const DRIFTWOOD = '#6B5E52';
 
 export default function StepProgressIndicator({
   currentStepIndex,
@@ -68,9 +75,9 @@ export default function StepProgressIndicator({
   steps,
   currentPromptIndex,
   totalPromptsInStep,
+  stillUsMode = false,
 }: StepProgressIndicatorProps) {
   const activeSteps = steps ?? STAGE_STEPS;
-  const showCounter = currentPromptIndex !== undefined && totalPromptsInStep !== undefined && totalPromptsInStep > 0;
 
   // Track which step was just completed for pulse animation
   const prevStepRef = useRef(currentStepIndex);
@@ -85,6 +92,57 @@ export default function StepProgressIndicator({
     }
     prevStepRef.current = currentStepIndex;
   }, [currentStepIndex]);
+
+  // ── Still Us mode: labels with underline, no progress bars, no counter ──
+  if (stillUsMode) {
+    return (
+      <div className={className} style={{ width: '100%' }}>
+        <div style={{ display: 'flex', justifyContent: 'center', gap: '24px' }}>
+          {activeSteps.map((step, index) => {
+            const isCompleted = completedSteps.includes(index) || index < currentStepIndex;
+            const isCurrent = index === currentStepIndex;
+
+            return (
+              <motion.span
+                key={step.stage_key}
+                animate={{
+                  color: isCurrent
+                    ? DEEP_SAFFRON
+                    : isCompleted
+                      ? LANTERN_GLOW
+                      : DRIFTWOOD,
+                  scale: index === justCompletedIndex ? [1, 1.08, 1] : 1,
+                }}
+                transition={{
+                  color: { duration: 0.2, ease: [...EASE] },
+                  scale: { duration: 0.4, ease: [0, 0, 0.2, 1] },
+                }}
+                style={{
+                  fontFamily: 'var(--font-sans)',
+                  fontSize: '12px',
+                  fontWeight: isCurrent ? 600 : 400,
+                  letterSpacing: '0.06em',
+                  textTransform: 'uppercase',
+                  lineHeight: 1,
+                  whiteSpace: 'nowrap',
+                  paddingBottom: '6px',
+                  borderBottom: isCurrent
+                    ? `2px solid ${DEEP_SAFFRON}`
+                    : '2px solid transparent',
+                  transition: 'border-color 200ms ease',
+                }}
+              >
+                {step.label}
+              </motion.span>
+            );
+          })}
+        </div>
+      </div>
+    );
+  }
+
+  // ── Default mode (kids products etc.) ──
+  const showCounter = currentPromptIndex !== undefined && totalPromptsInStep !== undefined && totalPromptsInStep > 0;
 
   return (
     <div className={className} style={{ width: '100%', padding: '0 24px' }}>
@@ -145,10 +203,6 @@ export default function StepProgressIndicator({
                 backgroundColor: isCurrent || isCompleted
                   ? 'transparent'
                   : 'rgba(255, 255, 255, 0.12)',
-                ...(!isCurrent && !isCompleted ? {
-                  backgroundImage: 'repeating-linear-gradient(90deg, rgba(255,255,255,0.18) 0, rgba(255,255,255,0.18) 3px, transparent 3px, transparent 7px)',
-                  backgroundColor: 'transparent',
-                } : {}),
               }}
             >
               {(isCurrent || isCompleted) && (

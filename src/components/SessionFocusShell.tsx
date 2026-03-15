@@ -1,118 +1,58 @@
-import { useState, useEffect, useCallback, ReactNode } from 'react';
+import { ReactNode } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X } from 'lucide-react';
-import { EMOTION, EASE } from '@/lib/motion';
+import { EASE } from '@/lib/motion';
+import { EMBER_NIGHT, EMBER_GLOW, DEEP_SAFFRON, DRIFTWOOD, BARK, MIDNIGHT_INK } from '@/lib/palette';
 
 interface SessionFocusShellProps {
   children: ReactNode;
-  /** Optional top chrome slot (title/progress/back) */
+  /** Top chrome slot (nav bar) */
   topSlot?: ReactNode;
-  /** Heritage Gold CTA at bottom — rendered by parent, always visible */
+  /** CTA at bottom — rendered by parent */
   ctaSlot: ReactNode;
   onExit: () => void;
-  /** Pause — navigates home without abandoning the session */
+  /** Pause — navigates home */
   onPause?: () => void;
+  /** Show the exit confirmation dialog */
+  showExitDialog?: boolean;
+  onExitDialogClose?: () => void;
+  onExitConfirm?: () => void;
 }
 
 /**
  * Immersive shell for Still Us live sessions.
- * - Full-screen verdigris canvas with slow breathing opacity
- * - No chrome — tap screen once to reveal a close X
- * - CTA is always visible immediately (no delay)
+ * Ember Night bg, no tab bar, exit via dialog.
  */
-export default function SessionFocusShell({ children, topSlot, ctaSlot, onExit, onPause }: SessionFocusShellProps) {
-  const [showExit, setShowExit] = useState(false);
-  const exitTimerRef = useState<ReturnType<typeof setTimeout> | null>(null);
-
-  // Tap anywhere to toggle exit button (auto-hide after 3s)
-  const handleTap = useCallback(() => {
-    if (showExit) {
-      setShowExit(false);
-      return;
-    }
-    setShowExit(true);
-    const timer = setTimeout(() => setShowExit(false), 3000);
-    if (exitTimerRef[0]) clearTimeout(exitTimerRef[0]);
-    exitTimerRef[0] = timer;
-  }, [showExit]);
-
+export default function SessionFocusShell({
+  children,
+  topSlot,
+  ctaSlot,
+  onExit,
+  onPause,
+  showExitDialog = false,
+  onExitDialogClose,
+  onExitConfirm,
+}: SessionFocusShellProps) {
   return (
     <div
-      onClick={handleTap}
       style={{
         position: 'fixed',
         inset: 0,
         zIndex: 10,
-        backgroundColor: 'var(--surface-base)',
-        animation: 'session-focus-breathe 8s ease-in-out infinite',
+        backgroundColor: EMBER_NIGHT,
         display: 'flex',
         flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
         overflow: 'hidden',
       }}
     >
-      {/* Grain + light-leak from VerdigrisAtmosphere still active on body */}
-
-      {/* Always-visible top chrome (title/progress/back) */}
+      {/* Top chrome — nav bar */}
       {topSlot && (
-        <div
-          onClick={(e) => e.stopPropagation()}
-          style={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            right: 0,
-            zIndex: 30,
-          }}
-        >
+        <div style={{ flex: '0 0 auto', zIndex: 30 }}>
           {topSlot}
         </div>
       )}
 
-      {/* Close X — appears on tap */}
-      <AnimatePresence>
-        {showExit && (
-          <motion.button
-            key="exit-x"
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.8 }}
-            transition={{ duration: 0.2, ease: [...EASE] }}
-            onClick={(e) => {
-              e.stopPropagation();
-              onExit();
-            }}
-            aria-label="Stäng"
-            style={{
-              position: 'absolute',
-              top: 'calc(16px + env(safe-area-inset-top, 0px))',
-              right: '16px',
-              width: '40px',
-              height: '40px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              background: 'none',
-              border: 'none',
-              cursor: 'pointer',
-              zIndex: 20,
-            }}
-          >
-            <X
-              size={18}
-              style={{
-                color: 'var(--text-tertiary)',
-                opacity: 0.5,
-              }}
-            />
-          </motion.button>
-        )}
-      </AnimatePresence>
-
       {/* Centered question content */}
       <div
-        onClick={(e) => e.stopPropagation()}
         style={{
           flex: '1 1 auto',
           display: 'flex',
@@ -121,46 +61,114 @@ export default function SessionFocusShell({ children, topSlot, ctaSlot, onExit, 
           justifyContent: 'center',
           width: '100%',
           maxWidth: '520px',
-          padding: '0 32px',
+          padding: '0 24px',
+          margin: '0 auto',
+          overflow: 'hidden',
         }}
       >
         {children}
       </div>
 
-      {/* CTA zone — always visible, no delay */}
+      {/* CTA zone */}
       <div
-        onClick={(e) => e.stopPropagation()}
         style={{
           flex: '0 0 auto',
           width: '100%',
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
-          paddingBottom: 'calc(88px + env(safe-area-inset-bottom, 0px))',
+          padding: '0 24px',
+          paddingBottom: 'calc(24px + env(safe-area-inset-bottom, 0px))',
         }}
       >
         {ctaSlot}
-        <button
-          onClick={(e) => {
-            e.stopPropagation();
-            (onPause ?? onExit)();
-          }}
-          style={{
-            marginTop: '12px',
-            fontFamily: 'var(--font-sans)',
-            fontSize: '11px',
-            fontStyle: 'italic',
-            color: 'rgba(255, 255, 255, 0.25)',
-            textAlign: 'center',
-            background: 'none',
-            border: 'none',
-            cursor: 'pointer',
-            padding: '8px 16px',
-          }}
-        >
-          Pausa för idag
-        </button>
       </div>
+
+      {/* Exit dialog — Ember Glow modal */}
+      <AnimatePresence>
+        {showExitDialog && (
+          <motion.div
+            key="exit-overlay"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2, ease: [...EASE] }}
+            style={{
+              position: 'fixed',
+              inset: 0,
+              zIndex: 100,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              backgroundColor: 'rgba(0, 0, 0, 0.5)',
+            }}
+            onClick={onExitDialogClose}
+          >
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              transition={{ duration: 0.2, ease: [...EASE] }}
+              onClick={(e) => e.stopPropagation()}
+              style={{
+                backgroundColor: EMBER_GLOW,
+                borderRadius: '16px',
+                padding: '32px 28px 24px',
+                width: 'calc(100% - 48px)',
+                maxWidth: '340px',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                gap: '20px',
+              }}
+            >
+              <p style={{
+                fontFamily: 'var(--font-serif)',
+                fontSize: '20px',
+                fontWeight: 600,
+                color: BARK,
+                textAlign: 'center',
+              }}>
+                Vill ni avsluta?
+              </p>
+
+              <button
+                onClick={onExitConfirm}
+                style={{
+                  width: '100%',
+                  height: '48px',
+                  borderRadius: '12px',
+                  backgroundColor: DEEP_SAFFRON,
+                  border: 'none',
+                  cursor: 'pointer',
+                  fontFamily: 'var(--font-sans)',
+                  fontSize: '15px',
+                  fontWeight: 600,
+                  color: MIDNIGHT_INK,
+                }}
+              >
+                Ja, pausa
+              </button>
+
+              <button
+                onClick={onExitDialogClose}
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  cursor: 'pointer',
+                  fontFamily: 'var(--font-sans)',
+                  fontSize: '14px',
+                  fontWeight: 400,
+                  color: DRIFTWOOD,
+                  padding: '4px 8px',
+                }}
+              >
+                Fortsätt
+              </button>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
