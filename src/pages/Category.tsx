@@ -264,12 +264,8 @@ function KidsProductCategoryView({
   const tileColor = PRODUCT_TILE_COLOR[product.id] ?? '#657514';
 
   const handleCardTap = (cardId: string) => {
-    const isFreeCard = cardId === product.freeCardId;
-    if (isFreeCard || hasAccess) {
-      navigate(`/card/${cardId}`);
-    } else {
-      navigate(`/product/${product.slug}/purchase`);
-    }
+    // Always navigate to card — CardView handles paywall for locked cards
+    navigate(`/card/${cardId}`);
   };
 
   return (
