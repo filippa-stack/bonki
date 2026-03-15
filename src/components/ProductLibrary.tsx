@@ -316,6 +316,38 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
         </span>
       )}
 
+      {/* Resume indicator — saffron dot + "Fortsätt" */}
+      {hasActiveSession && (
+        <div
+          style={{
+            position: 'absolute',
+            top: ageLabel ? '54px' : '10px',
+            right: '14px',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            gap: '3px',
+            zIndex: 4,
+          }}
+        >
+          <div style={{
+            width: '8px',
+            height: '8px',
+            borderRadius: '50%',
+            backgroundColor: '#D4A03A',
+            boxShadow: '0 0 6px rgba(212, 160, 58, 0.5)',
+          }} />
+          <span style={{
+            fontFamily: "'Lato', sans-serif",
+            fontSize: '11px',
+            fontWeight: 500,
+            color: '#6B5E52',
+          }}>
+            Fortsätt
+          </span>
+        </div>
+      )}
+
       {/* Bottom gradient scrim — rgba-based for robustness */}
       <div
         aria-hidden="true"
