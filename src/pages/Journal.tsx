@@ -18,6 +18,9 @@ import { allProducts } from '@/data/products';
 const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
 const STILL_US_ID = 'still_us';
 
+const STILL_US_STEP_NAMES = ['Öppna', 'Vänd', 'Tänk om', 'Gör'];
+const FOURTEEN_DAYS_MS = 14 * 24 * 60 * 60 * 1000;
+
 type FilterChip = 'barn' | 'par';
 
 interface CompletedSession {
@@ -26,6 +29,23 @@ interface CompletedSession {
   product_id: string;
   ended_at: string | null;
   category_id: string | null;
+}
+
+interface PausedSession {
+  id: string;
+  card_id: string | null;
+  product_id: string;
+  category_id: string | null;
+  started_at: string;
+  last_activity_at: string;
+  currentStepIndex: number;
+}
+
+interface Bookmark {
+  id: string;
+  card_id: string;
+  product_id: string;
+  question_text: string;
 }
 
 interface NoteEntry {
