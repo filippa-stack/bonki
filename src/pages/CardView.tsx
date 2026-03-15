@@ -832,23 +832,19 @@ export default function CardView() {
       categories: [],
       cards: [],
     };
-    const paywallBackTo = isFromArchive ? '/shared' : (category ? `/category/${category.id}` : `/product/${effectiveProduct.slug}`);
     return (
-      <div className="min-h-screen" style={{ backgroundColor: effectiveProduct.backgroundColor ?? 'var(--surface-base)' }}>
-        <Header title={card.title} showBack backTo={paywallBackTo} />
-        <ProductPaywall
-          product={effectiveProduct}
-          cardId={cardId}
-          currentCardTitle={card?.title}
-          onAccessGranted={() => {
-            if (isDemoMode() || isDemoParam()) {
-              setDemoBypassed(true);
-            } else {
-              window.location.reload();
-            }
-          }}
-        />
-      </div>
+      <ProductPaywall
+        product={effectiveProduct}
+        cardId={cardId}
+        currentCardTitle={card?.title}
+        onAccessGranted={() => {
+          if (isDemoMode() || isDemoParam()) {
+            setDemoBypassed(true);
+          } else {
+            window.location.reload();
+          }
+        }}
+      />
     );
   }
 
