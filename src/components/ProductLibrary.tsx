@@ -93,24 +93,24 @@ const ILLUSTRATION_BOUNDS: Record<string, { top: string; left: string; right: st
   syskonkort: { top: '-5%', left: '-2%', right: '-2%', bottom: '22%' },
 };
 
-/** Darkened accent colors for WCAG AA compliance on pastel backgrounds */
+/** Light title colors for dark creature-color tiles — Lantern Glow variants */
 const ACCENT_COLORS: Record<string, string> = {
-  jag_i_mig: '#3D3D06',
-  jag_med_andra: '#520C78',
-  jag_i_varlden: '#14401E',
-  sexualitetskort: '#6E2838',
-  vardagskort: '#042C44',
-  syskonkort: '#082654',
+  jag_i_mig: '#FDF6E3',
+  jag_med_andra: '#FDF6E3',
+  jag_i_varlden: '#FDF6E3',
+  sexualitetskort: '#FDF6E3',
+  vardagskort: '#FDF6E3',
+  syskonkort: '#FDF6E3',
 };
 
-/** Darkened tagline colors for better readability */
+/** Light tagline colors for dark tiles */
 const TAGLINE_COLORS: Record<string, string> = {
-  jag_i_mig: '#524E30',
-  jag_med_andra: '#4A3048',
-  jag_i_varlden: '#2A5438',
-  sexualitetskort: '#5A3848',
-  vardagskort: '#143434',
-  syskonkort: '#162844',
+  jag_i_mig: 'hsla(46, 60%, 85%, 0.75)',
+  jag_med_andra: 'hsla(280, 40%, 85%, 0.75)',
+  jag_i_varlden: 'hsla(140, 35%, 80%, 0.75)',
+  sexualitetskort: 'hsla(5, 50%, 82%, 0.75)',
+  vardagskort: 'hsla(205, 45%, 82%, 0.75)',
+  syskonkort: 'hsla(178, 40%, 80%, 0.75)',
 };
 
 /** Build badge text: "X ämnen · Y kr · Första gratis" */
