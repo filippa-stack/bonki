@@ -309,6 +309,28 @@ export default function Home() {
               }}>
                 Följ ordningen — eller börja där det känns rätt.
               </p>
+              {(() => {
+                const totalCats = sortedCategories.length;
+                const doneCats = sortedCategories.filter(cat => {
+                  const catCards = cards.filter(c => c.categoryId === cat.id);
+                  return catCards.length > 0 && catCards.every(c => completedCardIds.includes(c.id));
+                }).length;
+                if (doneCats === 0) return null;
+                return (
+                  <p style={{
+                    fontFamily: 'var(--font-sans)',
+                    fontSize: '12px',
+                    color: DRIFTWOOD,
+                    opacity: 0.55,
+                    letterSpacing: '0.03em',
+                    marginTop: '8px',
+                  }}>
+                    {doneCats >= totalCats
+                      ? 'Ni har utforskat allt. Fortsätt prata.'
+                      : `Ni har utforskat ${doneCats} av ${totalCats} områden.`}
+                  </p>
+                );
+              })()}
 
               {/* Resume banner — Deep Dusk bg, 3px left Deep Saffron */}
               {(() => {
