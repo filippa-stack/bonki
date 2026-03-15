@@ -1153,6 +1153,246 @@ export default function CardView() {
   // ─── Session start screen — ritual before first question ───
   const shouldShowStartScreen = showStartScreen && isLive;
 
+  // ── Kids product intro screen — product-colored, illustration-forward ──
+  if (shouldShowStartScreen && isKidsProduct && product) {
+    const MIDNIGHT_INK = '#1A1A2E';
+    const LANTERN_GLOW = '#FDF6E3';
+    const DRIFTWOOD = '#6B5E52';
+    const BONKI_ORANGE = '#E85D2C';
+    const SAFFRON = '#E9B44C';
+
+    const PRODUCT_TILE_COLOR: Record<string, string> = {
+      jag_i_mig: '#657514',
+      jag_med_andra: '#8B2FC6',
+      jag_i_varlden: '#2D6E3A',
+      vardagskort: '#0E6B99',
+      syskonkort: '#247A78',
+      sexualitetskort: '#A3434B',
+    };
+    const tileBg = PRODUCT_TILE_COLOR[product.id] ?? '#657514';
+
+    const questionHook = card.questionHook ?? QUESTION_HOOKS[card.id];
+    const totalPrompts = card.sections.reduce((sum, s) => sum + (s.prompts?.length ?? 1), 0);
+    const minMinutes = Math.max(5, Math.floor(totalPrompts * 1.5));
+    const maxMinutes = Math.min(minMinutes + 5, Math.ceil(totalPrompts * 2.5));
+    const timeEstimate = `${minMinutes}–${maxMinutes} min`;
+
+    return (
+      <motion.div
+        key="start-screen-kids"
+        style={{
+          position: 'fixed',
+          inset: 0,
+          backgroundColor: tileBg,
+          display: 'flex',
+          flexDirection: 'column',
+          overflow: 'hidden',
+          zIndex: 50,
+        }}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: EMOTION, ease: [...EASE] }}
+      >
+        {/* Back arrow */}
+        <motion.button
+          onClick={() => navigate(category ? `/category/${category.id}` : `/product/${product.slug}`)}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: BEAT_1, duration: EMOTION }}
+          aria-label="Tillbaka"
+          style={{
+            position: 'absolute',
+            top: 'calc(env(safe-area-inset-top, 0px) + 16px)',
+            left: '16px',
+            minHeight: '44px',
+            minWidth: '44px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            background: 'none',
+            border: 'none',
+            cursor: 'pointer',
+            zIndex: 2,
+            padding: '12px',
+          }}
+        >
+          <ArrowLeft size={20} style={{ color: LANTERN_GLOW }} />
+        </motion.button>
+
+        {/* Illustration */}
+        <div style={{ flex: '1 1 auto', display: 'flex', alignItems: 'center', justifyContent: 'center', paddingTop: 'calc(env(safe-area-inset-top, 0px) + 56px)', paddingLeft: '24px', paddingRight: '24px' }}>
+          {cardImageUrl ? (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 1.0, ease: [0.22, 1, 0.36, 1] }}
+              style={{
+                width: '100%',
+                maxHeight: '40vh',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              <img
+                src={cardImageUrl}
+                alt={card.title}
+                style={{
+                  maxWidth: '100%',
+                  maxHeight: '40vh',
+                  objectFit: 'contain',
+                  clipPath: 'inset(4% 0 0 0)',
+                  marginTop: '-3%',
+                }}
+              />
+            </motion.div>
+          ) : (
+            <div style={{ height: '40vh' }} />
+          )}
+        </div>
+
+        {/* Bottom zone */}
+        <div style={{ flex: '0 0 auto', display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '0 24px', paddingBottom: 'calc(32px + env(safe-area-inset-bottom, 0px))' }}>
+          {/* Card label */}
+          <motion.p
+            initial={{ opacity: 0, y: 6 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: BEAT_1, duration: 0.6, ease: [...EASE] }}
+            style={{
+              fontFamily: 'var(--font-sans)',
+              fontSize: '14px',
+              fontWeight: 400,
+              letterSpacing: '1.5px',
+              textTransform: 'uppercase',
+              color: LANTERN_GLOW,
+              textAlign: 'center',
+              marginBottom: '8px',
+            }}
+          >
+            {card.title}
+          </motion.p>
+
+          {/* Question hook */}
+          {questionHook && (
+            <motion.p
+              initial={{ opacity: 0, y: 6 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: BEAT_1 + 0.1, duration: 0.6, ease: [...EASE] }}
+              style={{
+                fontFamily: 'var(--font-serif)',
+                fontSize: '18px',
+                fontWeight: 400,
+                color: SAFFRON,
+                textAlign: 'center',
+                lineHeight: 1.4,
+                maxWidth: '90%',
+              }}
+            >
+              {questionHook}
+            </motion.p>
+          )}
+
+          {/* Practical info */}
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: BEAT_2, duration: 0.5 }}
+            style={{
+              fontFamily: 'var(--font-sans)',
+              fontSize: '13px',
+              fontWeight: 400,
+              color: DRIFTWOOD,
+              textAlign: 'center',
+              marginTop: '12px',
+              marginBottom: '32px',
+            }}
+          >
+            Läs frågorna högt tillsammans · {timeEstimate}
+          </motion.p>
+
+          {/* Stale session banner */}
+          {staleSession && (
+            <motion.div
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: EMOTION, ease: [...EASE] }}
+              style={{
+                width: '100%',
+                maxWidth: '360px',
+                background: 'rgba(0,0,0,0.3)',
+                borderRadius: '10px',
+                padding: '16px 20px',
+                marginBottom: '20px',
+                textAlign: 'center',
+              }}
+            >
+              <p style={{ fontFamily: 'var(--font-sans)', fontSize: '13px', color: LANTERN_GLOW, marginBottom: '12px', lineHeight: 1.5 }}>
+                {uiText.stalePrompt}
+              </p>
+              <div style={{ display: 'flex', gap: '8px', justifyContent: 'center' }}>
+                <button
+                  onClick={() => { setStaleSession(false); setShowStartScreen(false); }}
+                  style={{
+                    fontFamily: 'var(--font-sans)', fontSize: '13px', padding: '8px 16px',
+                    background: 'none', border: `1px solid ${DRIFTWOOD}`, borderRadius: '8px',
+                    cursor: 'pointer', color: LANTERN_GLOW,
+                  }}
+                >
+                  Fortsätt
+                </button>
+                <button
+                  onClick={handleAbandonAndRestart}
+                  style={{
+                    fontFamily: 'var(--font-sans)', fontSize: '13px', padding: '8px 16px',
+                    background: LANTERN_GLOW, color: MIDNIGHT_INK, border: 'none',
+                    borderRadius: '8px', cursor: 'pointer',
+                  }}
+                >
+                  Börja om
+                </button>
+              </div>
+            </motion.div>
+          )}
+
+          {/* CTA */}
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.25, duration: 0.5, ease: [...EASE] }}
+            style={{ width: '100%', maxWidth: '360px' }}
+          >
+            <button
+              onClick={() => setShowStartScreen(false)}
+              style={{
+                width: '100%',
+                height: '56px',
+                borderRadius: '14px',
+                backgroundColor: BONKI_ORANGE,
+                border: 'none',
+                cursor: 'pointer',
+                fontFamily: 'var(--font-sans)',
+                fontSize: '17px',
+                fontWeight: 600,
+                color: MIDNIGHT_INK,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                transition: 'transform 150ms ease',
+              }}
+              onPointerDown={(e) => { e.currentTarget.style.transform = 'scale(0.97)'; }}
+              onPointerUp={(e) => { e.currentTarget.style.transform = ''; }}
+              onPointerLeave={(e) => { e.currentTarget.style.transform = ''; }}
+            >
+              Vi börjar
+            </button>
+          </motion.div>
+        </div>
+      </motion.div>
+    );
+  }
+
+  // ── Still Us start screen — original design ──
   if (shouldShowStartScreen) {
     return (
       <motion.div
@@ -1245,12 +1485,10 @@ export default function CardView() {
                   height: 'auto',
                   maxHeight: '52vh',
                   objectFit: 'contain',
-                  /* Clip top ~4% to hide stray text artifacts baked into some illustration files */
                   clipPath: 'inset(4% 0 0 0)',
                   marginTop: '-3%',
                 }}
               />
-              {/* Soft oval shadow-mat under illustration — delayed entrance for grounding effect */}
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -1270,7 +1508,6 @@ export default function CardView() {
             </motion.div>
           ) : (
             <>
-              {/* Category label — only without image */}
               <motion.span
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -1288,7 +1525,6 @@ export default function CardView() {
                 {category?.title}
               </motion.span>
 
-              {/* Large title — no-image variant */}
               <motion.h1
                 className="font-serif"
                 initial={{ opacity: 0, y: 10 }}
@@ -1306,7 +1542,6 @@ export default function CardView() {
                 {card.title}
               </motion.h1>
 
-              {/* Card subtitle */}
               {card.subtitle && (
                 <motion.p
                   initial={{ opacity: 0 }}
@@ -1327,7 +1562,6 @@ export default function CardView() {
                 </motion.p>
               )}
 
-              {/* Estimated time */}
               <motion.p
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -1342,7 +1576,6 @@ export default function CardView() {
                 Cirka 5–10 min
               </motion.p>
 
-              {/* Decorative dots */}
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -1387,7 +1620,6 @@ export default function CardView() {
 
         {/* ── Bottom zone: instructions + CTA ── */}
         <div style={{ flex: '0 0 auto', display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '0 24px', paddingBottom: 'calc(80px + env(safe-area-inset-bottom, 0px))' }}>
-          {/* Instructions — consolidated to single line */}
           <motion.p
             className="font-serif italic"
             initial={{ opacity: 0, y: 6 }}
@@ -1501,7 +1733,6 @@ export default function CardView() {
             <button
               onClick={() => setShowStartScreen(false)}
               className="cta-primary"
-              
             >
               {uiText.readyButton}
             </button>
