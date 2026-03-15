@@ -885,12 +885,12 @@ export default function ProductLibrary() {
               flexDirection: 'column',
               position: 'relative',
               overflow: 'hidden',
-              border: '1.5px solid rgba(255, 255, 255, 0.15)',
+              border: '1.5px solid rgba(255, 255, 255, 0.30)',
               boxShadow: [
-                '0 16px 48px rgba(15, 45, 52, 0.45)',
-                '0 6px 16px rgba(15, 45, 52, 0.30)',
+                '0 16px 48px rgba(0, 0, 0, 0.35)',
+                '0 6px 16px rgba(0, 0, 0, 0.25)',
                 '0 1px 3px rgba(0, 0, 0, 0.08)',
-                'inset 0 3px 6px rgba(255, 255, 255, 0.12)',
+                'inset 0 3px 6px rgba(255, 255, 255, 0.45)',
                 'inset 0 -4px 10px rgba(15, 45, 52, 0.20)',
               ].join(', '),
             }}
