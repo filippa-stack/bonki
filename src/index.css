@@ -173,15 +173,15 @@ h1, h2, h3,
     --color-surface: hsl(var(--neutral-100));
     --color-surface-primary: hsl(var(--neutral-100));
     --color-surface-secondary: hsl(var(--neutral-100));
-    --color-cta: hsl(158, 35%, 18%);
+    --color-cta: hsl(16, 80%, 54%);            /* Bonki Orange */
     --color-ink: var(--text-primary);
     --color-secondary: var(--text-secondary);
-    --color-accent: #C1121F;
-    --color-accent-soft: #6D4C6D;
+    --color-accent: #E85D2C;                    /* Bonki Orange */
+    --color-accent-soft: hsl(40, 64%, 53%);     /* Deep Saffron */
     --color-text-primary: var(--text-primary);
     --color-text-secondary: var(--text-secondary);
-    --color-button-primary: hsl(158, 35%, 18%);
-    --color-button-text: #FFFFFF;
+    --color-button-primary: hsl(16, 80%, 54%);  /* Bonki Orange */
+    --color-button-text: #1A1A2E;               /* Midnight Ink on Orange */
     --color-divider: hsl(var(--neutral-300));
 
     /* ── CTA canonical tokens ── */
