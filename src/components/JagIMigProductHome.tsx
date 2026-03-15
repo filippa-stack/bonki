@@ -15,9 +15,9 @@ const ACCENT_COLOR = '#A8B84C';
 const SAFFRON = '#DA9D1D';
 
 const ORDERED_TILES = [
-  { id: 'jim-mina-kanslor', bg: '#4A5A0A', text: '#FDF6E3', sub: 'Att känna igen dem' },
+  { id: 'jim-mina-kanslor', bg: '#566A10', text: '#FDF6E3', sub: 'Att känna igen dem' },
   { id: 'jim-starka-kanslor', bg: '#3E4A12', text: '#FDF6E3', sub: 'När det blir mycket' },
-  { id: 'jim-stora-kanslor', bg: '#2E3808', text: '#FDF6E3', sub: 'Känslor med många lager' },
+  { id: 'jim-stora-kanslor', bg: '#2A3406', text: '#FDF6E3', sub: 'Känslor med många lager' },
 ];
 
 const containerVariants = { hidden: {}, visible: { transition: { staggerChildren: 0.11, delayChildren: 0.4 } } };
@@ -110,9 +110,9 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
                   </span>
                   <span style={{
                     fontSize: 'clamp(11px, 3vw, 13px)',
-                    fontWeight: 500,
-                    color: tile.text,
-                    opacity: 0.75,
+                    fontWeight: 600,
+                    color: '#FFFDF8',
+                    opacity: 0.9,
                     letterSpacing: '0.02em',
                     lineHeight: 1.3,
                   }}>
@@ -125,8 +125,8 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
                     fontSize: '10px',
                     fontWeight: 600,
                     letterSpacing: '0.04em',
-                    color: catProgress.completed > 0 ? '#E9B44C' : tile.text,
-                    opacity: catProgress.completed > 0 ? 0.85 : 0.3,
+                    color: catProgress.completed > 0 ? '#E9B44C' : '#FFFDF8',
+                    opacity: catProgress.completed > 0 ? 0.9 : 0.4,
                     whiteSpace: 'nowrap',
                   }}>
                     {catProgress.completed} av {catProgress.total}

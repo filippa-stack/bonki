@@ -14,10 +14,10 @@ const ACCENT_COLOR = '#D88A90';
 const SAFFRON = '#DA9D1D';
 
 const ORDERED_TILES = [
-  { id: 'sex-min-identitet', bg: '#6A2A30', text: '#FDF6E3', sub: 'Vem du är och blir' },
-  { id: 'sex-normer-och-paverkan', bg: '#4A1A20', text: '#FDF6E3', sub: 'Det som formar oss' },
-  { id: 'sex-relation-och-ansvar', bg: '#5A2228', text: '#FDF6E3', sub: 'Att ta hand om sig själv och andra' },
-  { id: 'sex-skydd-och-makt', bg: '#3A1218', text: '#FDF6E3', sub: 'Gränser och rättigheter' },
+  { id: 'sex-min-identitet', bg: '#7A3238', text: '#FDF6E3', sub: 'Vem du är och blir' },
+  { id: 'sex-normer-och-paverkan', bg: '#5E242A', text: '#FDF6E3', sub: 'Det som formar oss' },
+  { id: 'sex-relation-och-ansvar', bg: '#4A1A20', text: '#FDF6E3', sub: 'Att ta hand om sig själv och andra' },
+  { id: 'sex-skydd-och-makt', bg: '#381018', text: '#FDF6E3', sub: 'Gränser och rättigheter' },
 ];
 
 const containerVariants = { hidden: {}, visible: { transition: { staggerChildren: 0.11, delayChildren: 0.4 } } };
@@ -105,9 +105,9 @@ export default function SexualitetProductHome({ product }: { product: ProductMan
                   </span>
                   <span style={{
                     fontSize: 'clamp(10px, 2.8vw, 12px)',
-                    fontWeight: 500,
-                    color: tile.text,
-                    opacity: 0.85,
+                    fontWeight: 600,
+                    color: '#FFFDF8',
+                    opacity: 0.9,
                     letterSpacing: '0.02em',
                     lineHeight: 1.3,
                     padding: '0 4px',

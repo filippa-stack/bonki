@@ -14,11 +14,11 @@ const ACCENT_COLOR = '#6ABF78';
 const SAFFRON = '#DA9D1D';
 
 const ORDERED_TILES = [
-  { id: 'jiv-min-vardag', bg: '#1A4A24', text: '#FDF6E3', sub: 'Det som fyller dina dagar' },
-  { id: 'jiv-vem-jag-ar', bg: '#2A3A1E', text: '#FDF6E3', sub: 'Det som förändras just nu' },
-  { id: 'jiv-jag-och-andra', bg: '#224A2C', text: '#FDF6E3', sub: 'Hur vi påverkar varandra' },
-  { id: 'jiv-jag-i-samhallet', bg: '#1E3E20', text: '#FDF6E3', sub: 'Normer, rättvisa och din röst' },
-  { id: 'jiv-det-stora-sammanhanget', bg: '#143418', text: '#FDF6E3', sub: 'Bortom det du ser' },
+  { id: 'jiv-min-vardag', bg: '#26602E', text: '#FDF6E3', sub: 'Det som fyller dina dagar' },
+  { id: 'jiv-vem-jag-ar', bg: '#1E5026', text: '#FDF6E3', sub: 'Det som förändras just nu' },
+  { id: 'jiv-jag-och-andra', bg: '#1A4420', text: '#FDF6E3', sub: 'Hur vi påverkar varandra' },
+  { id: 'jiv-jag-i-samhallet', bg: '#14381A', text: '#FDF6E3', sub: 'Normer, rättvisa och din röst' },
+  { id: 'jiv-det-stora-sammanhanget', bg: '#0E2C12', text: '#FDF6E3', sub: 'Bortom det du ser' },
 ];
 
 const containerVariants = { hidden: {}, visible: { transition: { staggerChildren: 0.11, delayChildren: 0.4 } } };
@@ -112,9 +112,9 @@ export default function JagIVarldenProductHome({ product }: { product: ProductMa
                   </span>
                   <span style={{
                     fontSize: 'clamp(10px, 2.8vw, 12px)',
-                    fontWeight: 500,
-                    color: tile.text,
-                    opacity: 0.85,
+                    fontWeight: 600,
+                    color: '#FFFDF8',
+                    opacity: 0.9,
                     letterSpacing: '0.02em',
                     lineHeight: 1.3,
                     padding: '0 4px',

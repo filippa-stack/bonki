@@ -22,8 +22,8 @@ export default function CategoryProgressRing({ completed, total, color }: Catego
       fontSize: '10px',
       fontWeight: 600,
       letterSpacing: '0.04em',
-      color: completed > 0 ? SAFFRON : color,
-      opacity: completed > 0 ? 0.85 : 0.3,
+      color: completed > 0 ? SAFFRON : '#FFFDF8',
+      opacity: completed > 0 ? 0.9 : 0.4,
       whiteSpace: 'nowrap',
     }}>
       {completed} av {total}

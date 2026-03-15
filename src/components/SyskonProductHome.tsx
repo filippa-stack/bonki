@@ -14,9 +14,9 @@ const ACCENT_COLOR = '#6ABFBD';
 const SAFFRON = '#DA9D1D';
 
 const ORDERED_TILES = [
-  { id: 'sk-vi-blev-syskon', bg: '#1A5A58', text: '#FDF6E3', sub: 'När familjen växer' },
-  { id: 'sk-vi-ar-olika', bg: '#0E4442', text: '#FDF6E3', sub: 'Att vara egen fast vi hör ihop' },
-  { id: 'sk-delat-utrymme', bg: '#185250', text: '#FDF6E3', sub: 'När allting ska delas' },
+  { id: 'sk-vi-blev-syskon', bg: '#1E6664', text: '#FDF6E3', sub: 'När familjen växer' },
+  { id: 'sk-vi-ar-olika', bg: '#165452', text: '#FDF6E3', sub: 'Att vara egen fast vi hör ihop' },
+  { id: 'sk-delat-utrymme', bg: '#0E4442', text: '#FDF6E3', sub: 'När allting ska delas' },
   { id: 'sk-er-relation', bg: '#0A3634', text: '#FDF6E3', sub: 'Nära, svårt och allt däremellan' },
 ];
 
@@ -105,9 +105,9 @@ export default function SyskonProductHome({ product }: { product: ProductManifes
                   </span>
                   <span style={{
                     fontSize: 'clamp(10px, 2.8vw, 12px)',
-                    fontWeight: 500,
-                    color: tile.text,
-                    opacity: 0.85,
+                    fontWeight: 600,
+                    color: '#FFFDF8',
+                    opacity: 0.9,
                     letterSpacing: '0.02em',
                     lineHeight: 1.3,
                     padding: '0 4px',
