@@ -45,8 +45,8 @@ h1, h2, h3,
     --secondary: 30 10% 88%;
     --secondary-foreground: 30 3% 10%;
 
-    --muted: 30 10% 86%;
-    --muted-foreground: 25 4% 40%;        /* #6B6763 */
+    --muted: 40 20% 86%;
+    --muted-foreground: 29 13% 37%;       /* Driftwood #6B5E52 */
 
     --accent: 30 10% 86%;
     --accent-foreground: 30 3% 10%;
