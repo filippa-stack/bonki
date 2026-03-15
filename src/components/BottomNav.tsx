@@ -180,9 +180,9 @@ export default function BottomNav() {
                 className="relative flex flex-1 flex-col items-center justify-center gap-[3px]"
                 style={{
                   color: active
-                    ? (isStillUsContext ? '#E85D2C' : 'hsl(var(--foreground))')
+                    ? '#E85D2C'
                     : (isStillUsContext ? '#6B5E52' : 'hsl(var(--muted-foreground))'),
-                  opacity: active ? (isStillUsContext ? 1 : 0.85) : (isStillUsContext ? 0.6 : 0.38),
+                  opacity: active ? 1 : (isStillUsContext ? 0.6 : 0.38),
                   background: 'none',
                   border: 'none',
                   cursor: 'pointer',
