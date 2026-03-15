@@ -67,7 +67,7 @@ export default function SyskonProductHome({ product }: { product: ProductManifes
                   whileTap={{ scale: 0.94, y: 3 }}
                   onClick={() => navigate(`/category/${cat.id}`)}
                   style={{
-                    backgroundImage: `linear-gradient(135deg, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0) 50%, rgba(0,0,0,0.04) 100%)`,
+                    backgroundImage: `linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0) 50%, rgba(0,0,0,0.08) 100%)`,
                     backgroundColor: tile.bg,
                     borderRadius: '22px',
                     padding: '20px 16px',
@@ -76,14 +76,14 @@ export default function SyskonProductHome({ product }: { product: ProductManifes
                     aspectRatio: '1 / 1',
                     border: isNextCategory
                       ? `2.5px solid ${SAFFRON}CC`
-                      : '1px solid rgba(77, 144, 142, 0.12)',
+                      : '1px solid rgba(255, 255, 255, 0.12)',
                     boxShadow: [
                       isNextCategory ? `0 0 18px 0px ${SAFFRON}50, 0 0 36px -4px ${SAFFRON}30` : '',
-                      '0 10px 28px rgba(39, 76, 94, 0.16)',
-                      '0 4px 10px rgba(39, 76, 94, 0.09)',
-                      '0 1px 3px rgba(0, 0, 0, 0.05)',
-                      'inset 0 3px 6px rgba(255, 255, 255, 0.5)',
-                      'inset 0 -4px 10px rgba(39, 76, 94, 0.10)',
+                      '0 10px 28px rgba(0, 0, 0, 0.25)',
+                      '0 4px 10px rgba(0, 0, 0, 0.15)',
+                      '0 1px 3px rgba(0, 0, 0, 0.08)',
+                      'inset 0 3px 6px rgba(255, 255, 255, 0.15)',
+                      'inset 0 -4px 10px rgba(0, 0, 0, 0.14)',
                     ].filter(Boolean).join(', '),
                     display: 'flex',
                     flexDirection: 'column',
