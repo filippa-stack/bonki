@@ -18,6 +18,19 @@ import { allProducts } from '@/data/products';
 const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
 const STILL_US_ID = 'still_us';
 
+/** Determine the effective product type using card_id as source of truth */
+function isKidsCard(cardId: string | null): boolean {
+  if (!cardId) return false;
+  // Check if the card belongs to any kids product manifest
+  return allProducts.some(p => p.cards.some(c => c.id === cardId));
+}
+
+function effectiveIsPar(productId: string, cardId: string | null): boolean {
+  // Card-level check takes priority over potentially stale product_id
+  if (cardId && isKidsCard(cardId)) return false;
+  return productId === STILL_US_ID;
+}
+
 const STILL_US_STEP_NAMES = ['Öppna', 'Vänd', 'Tänk om', 'Gör'];
 const FOURTEEN_DAYS_MS = 14 * 24 * 60 * 60 * 1000;
 
