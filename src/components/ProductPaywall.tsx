@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useAuth } from '@/contexts/AuthContext';
@@ -9,18 +9,27 @@ import type { ProductManifest } from '@/types/product';
 
 const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
+/** Midnight Ink */
+const MIDNIGHT_INK = '#1A1A2E';
+/** Lantern Glow */
+const LANTERN_GLOW = '#FDF6E3';
+/** Driftwood */
+const DRIFTWOOD = '#6B5E52';
+/** Bonki Orange */
+const BONKI_ORANGE = '#E85D2C';
+
 interface ProductPaywallProps {
   product: ProductManifest;
   onAccessGranted?: () => void;
-  /** The card ID that triggered the paywall — used for watermark */
+  /** The card ID that triggered the paywall */
   cardId?: string;
   /** Title of the card the user actually clicked */
   currentCardTitle?: string;
 }
 
 /**
- * Per-product paywall — warm editorial design matching product identity.
- * Shows what the user experienced, what's waiting, and the price.
+ * Full-screen paywall — Midnight Ink bg, card illustration,
+ * product context, price, and CTA.
  */
 export default function ProductPaywall({ product, onAccessGranted, cardId, currentCardTitle }: ProductPaywallProps) {
   const navigate = useNavigate();
@@ -28,6 +37,9 @@ export default function ProductPaywall({ product, onAccessGranted, cardId, curre
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [priceSek, setPriceSek] = useState<number | null>(null);
+
+  // Dev bypass via long-press on price line
+  const longPressTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // Fetch dynamic price from DB
   useEffect(() => {
@@ -41,21 +53,21 @@ export default function ProductPaywall({ product, onAccessGranted, cardId, curre
       });
   }, [product.id]);
 
-  // Card image for watermark
-  const watermarkUrl = useCardImage(cardId ?? null);
+  // Card illustration
+  const illustrationUrl = useCardImage(cardId ?? null);
 
-  // Find the free card's title
-  const freeCard = useMemo(
-    () => product.cards.find(c => c.id === product.freeCardId),
-    [product]
-  );
-  const freeCardTitle = freeCard?.title ?? 'ditt första samtal';
+  const cardTitle = currentCardTitle ?? 'Detta kort';
+  const totalCards = product.cards.length;
+  const valueDescription = product.paywallDescription ?? `Lås upp alla ${totalCards} samtalsämnen i ${product.name}.`;
 
-  // All card titles except the free one
-  const remainingCards = useMemo(
-    () => product.cards.filter(c => c.id !== product.freeCardId),
-    [product]
-  );
+  // Back navigation — go to the category this card belongs to
+  const backTo = (() => {
+    if (cardId) {
+      const card = product.cards.find(c => c.id === cardId);
+      if (card) return `/category/${card.categoryId}`;
+    }
+    return `/product/${product.slug}`;
+  })();
 
   const handlePurchase = async () => {
     if (!user) return;
@@ -109,252 +121,214 @@ export default function ProductPaywall({ product, onAccessGranted, cardId, curre
     }
   };
 
+  // Hidden dev bypass: long-press on price line (3s)
+  const handlePricePressStart = () => {
+    if (isDemoMode() || isDemoParam()) {
+      longPressTimer.current = setTimeout(() => {
+        onAccessGranted?.();
+      }, 3000);
+    }
+  };
+  const handlePricePressEnd = () => {
+    if (longPressTimer.current) {
+      clearTimeout(longPressTimer.current);
+      longPressTimer.current = null;
+    }
+  };
+
   return (
     <div
-      className="min-h-[80vh] relative flex flex-col px-6 py-12"
-      style={{ backgroundColor: 'var(--surface-base)' }}
+      style={{
+        position: 'fixed',
+        inset: 0,
+        backgroundColor: MIDNIGHT_INK,
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: '24px',
+        zIndex: 50,
+      }}
     >
-      {/* Watermark illustration */}
-      {watermarkUrl && (
-        <div
-          style={{
-            position: 'absolute',
-            bottom: 0,
-            right: 0,
-            width: '55%',
-            height: '45%',
-            backgroundImage: `url(${watermarkUrl})`,
-            backgroundSize: 'contain',
-            backgroundRepeat: 'no-repeat',
-            backgroundPosition: 'bottom right',
-            opacity: 0.055,
-            pointerEvents: 'none',
-            zIndex: 0,
-          }}
-        />
-      )}
-
-      <div className="max-w-sm mx-auto w-full relative" style={{ zIndex: 1 }}>
-        {/* Saffron ceremony line */}
-        <motion.div
-          initial={{ scaleX: 0 }}
-          animate={{ scaleX: 1 }}
-          transition={{ delay: 0.15, duration: 0.8, ease: EASE }}
-          style={{
-            width: '32px',
-            height: '2px',
-            borderRadius: '1px',
-            background: 'var(--accent-saffron)',
-            opacity: 0.5,
-            margin: '0 auto 20px',
-            transformOrigin: 'center',
-          }}
-        />
-
-        {/* Headline */}
-        <motion.div
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2, duration: 0.7, ease: EASE }}
-          className="text-center"
-          style={{ marginBottom: '32px' }}
-        >
-          <h2
-            className="font-serif"
-            style={{
-              fontSize: 'clamp(22px, 5.5vw, 28px)',
-              fontWeight: 600,
-              color: 'var(--text-primary)',
-              lineHeight: 1.3,
-              textWrap: 'balance',
-            }}
-          >
-            {currentCardTitle
-              ? <>{currentCardTitle} ingår i {product.name} — {product.cards.length} samtalsämnen</>
-              : <>Det här var {freeCardTitle} — ett av {product.cards.length} samtalsämnen i {product.name}</>
-            }
-          </h2>
-        </motion.div>
-
-        {/* Remaining topics */}
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.35, duration: 0.6, ease: EASE }}
-          style={{ marginBottom: '36px' }}
-        >
-          <p
-            className="font-sans"
-            style={{
-              fontSize: '10px',
-              letterSpacing: '0.10em',
-              textTransform: 'uppercase',
-              color: 'var(--text-tertiary)',
-              opacity: 0.55,
-              marginBottom: '14px',
-              textAlign: 'center',
-            }}
-          >
-            {remainingCards.length} samtalsämnen väntar
-          </p>
-
+      <motion.div
+        initial={{ opacity: 0, y: 16 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, ease: EASE }}
+        style={{
+          width: '100%',
+          maxWidth: '360px',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+        }}
+      >
+        {/* 1. Card Illustration */}
+        {illustrationUrl && (
           <div
             style={{
-              display: 'flex',
-              flexWrap: 'wrap',
-              justifyContent: 'center',
-              gap: '6px 10px',
+              width: '100%',
+              maxHeight: '35vh',
+              borderRadius: '16px',
+              overflow: 'hidden',
+              marginBottom: '16px',
             }}
           >
-            {remainingCards.map((card, i) => (
-              <motion.span
-                key={card.id}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.4 + i * 0.03, duration: 0.4 }}
-                className="font-serif"
-                style={{
-                  fontSize: '15px',
-                  color: 'var(--text-secondary)',
-                  lineHeight: 1.6,
-                }}
-              >
-                {card.title}{i < remainingCards.length - 1 ? ' ·' : ''}
-              </motion.span>
-            ))}
+            <img
+              src={illustrationUrl}
+              alt={cardTitle}
+              style={{
+                width: '100%',
+                height: '100%',
+                maxHeight: '35vh',
+                objectFit: 'cover',
+                objectPosition: 'center 35%',
+                display: 'block',
+              }}
+            />
           </div>
-        </motion.div>
+        )}
 
-        {/* Price */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.5, duration: 0.5 }}
-          className="text-center"
-          style={{ marginBottom: '28px' }}
+        {/* 2. Card Name + Context */}
+        <h2
+          style={{
+            fontFamily: "'DM Serif Display', var(--font-serif)",
+            fontSize: '24px',
+            fontWeight: 700,
+            color: LANTERN_GLOW,
+            textAlign: 'center',
+            margin: 0,
+            lineHeight: 1.25,
+          }}
         >
-          <div className="flex items-baseline justify-center gap-1">
-            <span
-              className="font-serif"
-              style={{
-                fontSize: '40px',
-                fontWeight: 700,
-                color: 'var(--text-primary)',
-                letterSpacing: '-0.03em',
-                lineHeight: 1,
-              }}
-            >
-              {priceSek ?? '...'}
-            </span>
-            <span
-              style={{
-                fontFamily: 'var(--font-sans)',
-                fontSize: '16px',
-                fontWeight: 500,
-                color: 'var(--text-secondary)',
-              }}
-            >
-              kr
-            </span>
-          </div>
-          <p
-            style={{
-              fontFamily: 'var(--font-sans)',
-              fontSize: '11px',
-              letterSpacing: '0.06em',
-              textTransform: 'uppercase',
-              color: 'var(--text-tertiary)',
-              opacity: 0.55,
-              marginTop: '6px',
-            }}
-          >
-            Engångsköp · Tillgång för alltid
-          </p>
-        </motion.div>
-
-        {/* CTA */}
-        <motion.div
-          initial={{ opacity: 0, y: 8 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.6, duration: 0.5 }}
-          className="flex flex-col items-center"
+          {cardTitle}
+        </h2>
+        <p
+          style={{
+            fontFamily: 'var(--font-sans)',
+            fontSize: '13px',
+            fontWeight: 400,
+            color: DRIFTWOOD,
+            textAlign: 'center',
+            marginTop: '8px',
+          }}
         >
-          <button
-            onClick={handlePurchase}
-            disabled={loading}
-            className="cta-primary w-full max-w-[260px]"
-          >
-            {loading ? (
-              <span className="animate-pulse">Förbereder...</span>
-            ) : (
-              `Lås upp ${product.name}`
-            )}
-          </button>
+          Ingår i {product.name} · {totalCards} samtalsämnen
+        </p>
 
-          {error && (
-            <p
-              style={{
-                fontFamily: 'var(--font-sans)',
-                fontSize: '13px',
-                color: 'hsl(0, 60%, 50%)',
-                marginTop: '12px',
-              }}
-            >
-              {error}
-            </p>
+        {/* 3. Value Line */}
+        <p
+          style={{
+            fontFamily: 'var(--font-sans)',
+            fontSize: '16px',
+            fontWeight: 400,
+            color: LANTERN_GLOW,
+            textAlign: 'center',
+            marginTop: '24px',
+            lineHeight: 1.5,
+            maxWidth: '90%',
+          }}
+        >
+          {valueDescription}
+        </p>
+
+        {/* 4. Price Line — long-press for dev bypass */}
+        <p
+          onPointerDown={handlePricePressStart}
+          onPointerUp={handlePricePressEnd}
+          onPointerLeave={handlePricePressEnd}
+          style={{
+            fontFamily: 'var(--font-sans)',
+            fontSize: '14px',
+            fontWeight: 400,
+            color: DRIFTWOOD,
+            textAlign: 'center',
+            marginTop: '16px',
+            userSelect: 'none',
+          }}
+        >
+          {priceSek ?? '...'} kr · Engångsköp · Tillgång för alltid
+        </p>
+
+        {/* 5. Primary CTA */}
+        <button
+          onClick={handlePurchase}
+          disabled={loading}
+          style={{
+            width: '100%',
+            height: '56px',
+            borderRadius: '14px',
+            backgroundColor: BONKI_ORANGE,
+            border: 'none',
+            cursor: loading ? 'wait' : 'pointer',
+            marginTop: '32px',
+            fontFamily: 'var(--font-sans)',
+            fontSize: '17px',
+            fontWeight: 600,
+            color: MIDNIGHT_INK,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            opacity: loading ? 0.7 : 1,
+            transition: 'opacity 200ms ease, transform 150ms ease',
+          }}
+          onPointerDown={(e) => { if (!loading) e.currentTarget.style.transform = 'scale(0.97)'; }}
+          onPointerUp={(e) => { e.currentTarget.style.transform = ''; }}
+          onPointerLeave={(e) => { e.currentTarget.style.transform = ''; }}
+        >
+          {loading ? (
+            <span style={{ opacity: 0.8 }}>Förbereder...</span>
+          ) : (
+            `Lås upp ${product.name}`
           )}
+        </button>
 
+        {error && (
           <p
             style={{
               fontFamily: 'var(--font-sans)',
-              fontSize: '11px',
-              color: 'var(--text-tertiary)',
-              opacity: 0.45,
-              marginTop: '14px',
-            }}
-          >
-            Säker betalning · Ingen prenumeration
-          </p>
-
-          <button
-            onClick={() => navigate('/?devState=library')}
-            className="font-sans"
-            style={{
               fontSize: '13px',
-              color: 'var(--text-secondary)',
-              opacity: 0.50,
-              background: 'none',
-              border: 'none',
-              cursor: 'pointer',
-              textDecoration: 'underline',
-              textUnderlineOffset: '3px',
-              marginTop: '24px',
+              color: 'hsl(0, 60%, 60%)',
+              textAlign: 'center',
+              marginTop: '12px',
             }}
           >
-            Tillbaka till biblioteket
-          </button>
+            {error}
+          </p>
+        )}
 
-          {(isDemoMode() || isDemoParam()) && (
-            <button
-              onClick={() => onAccessGranted?.()}
-              className="font-sans"
-              style={{
-                fontSize: '12px',
-                color: 'var(--accent-saffron)',
-                opacity: 0.7,
-                background: 'none',
-                border: '1px dashed var(--accent-saffron)',
-                borderRadius: '8px',
-                cursor: 'pointer',
-                padding: '8px 20px',
-                marginTop: '16px',
-              }}
-            >
-              Fortsätt utan att köpa (demo)
-            </button>
-          )}
-        </motion.div>
-      </div>
+        {/* 6. Trust Line */}
+        <p
+          style={{
+            fontFamily: 'var(--font-sans)',
+            fontSize: '12px',
+            fontWeight: 400,
+            color: DRIFTWOOD,
+            textAlign: 'center',
+            marginTop: '12px',
+          }}
+        >
+          Säker betalning · Ingen prenumeration
+        </p>
+
+        {/* 7. Dismiss */}
+        <button
+          onClick={() => navigate(backTo)}
+          style={{
+            background: 'none',
+            border: 'none',
+            cursor: 'pointer',
+            fontFamily: 'var(--font-sans)',
+            fontSize: '14px',
+            fontWeight: 400,
+            color: DRIFTWOOD,
+            textAlign: 'center',
+            marginTop: '24px',
+            padding: '8px 16px',
+          }}
+        >
+          Tillbaka
+        </button>
+      </motion.div>
     </div>
   );
 }
