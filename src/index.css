@@ -34,7 +34,7 @@ h1, h2, h3,
     --foreground: 20 16% 15%;              /* Bark #2C2420 */
 
     --card: var(--neutral-100);           /* Warm near-white (was #E3DCD4) */
-    --card-foreground: 30 3% 10%;
+    --card-foreground: 20 16% 15%;          /* Bark */
 
     --popover: 0 0% 100%;
     --popover-foreground: 30 3% 10%;
