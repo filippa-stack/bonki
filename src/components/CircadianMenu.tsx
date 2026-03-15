@@ -226,27 +226,26 @@ export default function CircadianMenu({
                     onClick={() => onNavigateToCategory(category.id)}
                     style={{
                       position: 'relative',
-                      background: tileColor.bg,
-                      borderRadius: '12px',
+                      backgroundImage: 'linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0) 50%, rgba(0,0,0,0.08) 100%)',
+                      backgroundColor: tileColor.bg,
+                      borderRadius: '16px',
                       padding: '14px 8px 14px',
                       textAlign: 'center',
                       cursor: 'pointer',
                       height: '110px',
                       borderLeft: isNextSuggested
                         ? `2px solid ${DEEP_SAFFRON}`
-                        : tileColor.text === BARK
-                          ? '1px solid rgba(0, 0, 0, 0.08)'
-                          : '1px solid rgba(255, 255, 255, 0.08)',
-                      borderTop: tileColor.text === BARK
-                        ? '1px solid rgba(0, 0, 0, 0.08)'
-                        : '1px solid rgba(255, 255, 255, 0.08)',
-                      borderRight: tileColor.text === BARK
-                        ? '1px solid rgba(0, 0, 0, 0.08)'
-                        : '1px solid rgba(255, 255, 255, 0.08)',
-                      borderBottom: tileColor.text === BARK
-                        ? '1px solid rgba(0, 0, 0, 0.08)'
-                        : '1px solid rgba(255, 255, 255, 0.08)',
-                      boxShadow: '0 4px 16px rgba(0, 0, 0, 0.2), 0 1px 3px rgba(0, 0, 0, 0.1)',
+                        : '1px solid rgba(255, 255, 255, 0.12)',
+                      borderTop: '1px solid rgba(255, 255, 255, 0.12)',
+                      borderRight: '1px solid rgba(255, 255, 255, 0.12)',
+                      borderBottom: '1px solid rgba(255, 255, 255, 0.12)',
+                      boxShadow: [
+                        '0 10px 28px rgba(0, 0, 0, 0.25)',
+                        '0 4px 10px rgba(0, 0, 0, 0.15)',
+                        '0 1px 3px rgba(0, 0, 0, 0.08)',
+                        'inset 0 3px 6px rgba(255, 255, 255, 0.15)',
+                        'inset 0 -4px 10px rgba(0, 0, 0, 0.14)',
+                      ].join(', '),
                       display: 'flex',
                       flexDirection: 'column',
                       alignItems: 'center',
