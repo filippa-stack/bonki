@@ -23,40 +23,40 @@ h1, h2, h3,
 
 @layer base {
   :root {
-    /* ── Foundation neutrals (warm-paper scale) ── */
-    --neutral-50:  30 12% 90%;       /* Base bg — warmer, deeper for contrast */
-    --neutral-100: 34 22% 97.5%;     /* Raised — luminous near-white tiles */
-    --neutral-200: 32 16% 94%;       /* Notes, reflections, sunken areas */
-    --neutral-300: 32 10% 84%;       /* Borders, dividers */
+    /* ── Foundation neutrals (Evighetsskogen warm-paper scale) ── */
+    --neutral-50:  46 64% 89%;       /* Parchment #F5EDD2 — base bg */
+    --neutral-100: 43 50% 98%;       /* Warm White #FFFDF8 — raised tiles */
+    --neutral-200: 44 86% 94%;       /* Lantern Glow #FDF6E3 — notes, sunken */
+    --neutral-300: 40 25% 82%;       /* Warm border — aged paper edge */
 
     /* Tailwind base tokens (HSL without hsl()) */
     --background: var(--neutral-50);
-    --foreground: 30 3% 10%;              /* #1C1B1A */
+    --foreground: 20 16% 15%;              /* Bark #2C2420 */
 
     --card: var(--neutral-100);           /* Warm near-white (was #E3DCD4) */
-    --card-foreground: 30 3% 10%;
+    --card-foreground: 20 16% 15%;          /* Bark */
 
     --popover: 0 0% 100%;
-    --popover-foreground: 30 3% 10%;
+    --popover-foreground: 20 16% 15%;
 
-    --primary: 158 35% 18%;               /* Forest green — matches header */
+    --primary: 240 27% 14%;               /* Midnight Ink #1A1A2E */
     --primary-foreground: 0 0% 100%;
 
     --secondary: 30 10% 88%;
-    --secondary-foreground: 30 3% 10%;
+    --secondary-foreground: 20 16% 15%;
 
-    --muted: 30 10% 86%;
-    --muted-foreground: 25 4% 40%;        /* #6B6763 */
+    --muted: 40 20% 86%;
+    --muted-foreground: 29 13% 37%;       /* Driftwood #6B5E52 */
 
     --accent: 30 10% 86%;
-    --accent-foreground: 30 3% 10%;
+    --accent-foreground: 20 16% 15%;
 
-    --destructive: 355 86% 30%;           /* #C1121F mapped */
+    --destructive: 355 42% 45%;           /* Ember Red #A3434B */
     --destructive-foreground: 0 0% 100%;
 
     --border: var(--neutral-300);
     --input: var(--neutral-300);
-    --ring: 150 32% 18%;
+    --ring: 240 27% 14%;                  /* Midnight Ink */
 
     --radius: 1.25rem;
 
@@ -79,7 +79,7 @@ h1, h2, h3,
     --surface-warm: var(--neutral-50);
     --surface-elevated: var(--neutral-100);
     --surface-chrome: 0 0% 100%;
-    --text-gentle: 30 5% 43%;
+    --text-gentle: 29 13% 37%;            /* Driftwood */
     --divider: var(--neutral-300);
 
     /* Card hierarchy */
@@ -107,19 +107,19 @@ h1, h2, h3,
     /* Note surfaces */
     --note-bg: hsl(var(--neutral-200));
     --note-border: hsl(var(--neutral-300));
-    --note-text: 30 3% 10%;
-    --note-placeholder: #8C8681;
+    --note-text: 20 16% 15%;                /* Bark */
+    --note-placeholder: #6B5E52;           /* Driftwood */
 
     /* Category colors — neutral, no teal */
-    --category-emotional: 30 15% 70%;
-    --category-fun: 36 20% 75%;
-    --category-growth: 30 10% 65%;
-    --category-intimacy: 20 12% 68%;
-    --category-logistics: 30 8% 72%;
+    --category-emotional: 40 55% 65%;      /* Saffron-warm */
+    --category-fun: 40 65% 70%;            /* Lighter saffron */
+    --category-growth: 29 20% 55%;         /* Driftwood-adjacent */
+    --category-intimacy: 20 25% 58%;       /* Bark-warm */
+    --category-logistics: 29 15% 62%;      /* Neutral warm */
 
     /* Interactive states */
-    --state-active: 0 0% 17%;
-    --state-inactive: 0 0% 60%;
+    --state-active: 20 16% 15%;             /* Bark */
+    --state-inactive: 29 10% 55%;           /* Driftwood-light */
 
     /* Typography */
     --font-serif: 'Cormorant Garamond', Georgia, serif;
@@ -142,30 +142,30 @@ h1, h2, h3,
     /* Card styling */
     --card-shadow: var(--shadow-card);
 
-    /* ── Text hierarchy tokens (no opacity — absolute values) ── */
-    --text-primary:    hsl(220, 25%, 18%);   /* Midnight ink */
-    --text-secondary:  hsl(30, 10%, 40%);    /* Warm grey */
-    --text-tertiary:   hsl(30, 8%, 56%);     /* Recedes */
-    --text-ghost:      hsl(30, 6%, 70%);     /* Placeholders */
-    --text-accent:     hsl(41, 78%, 48%);    /* Saffron — sparingly */
+    /* ── Text hierarchy tokens (Bark + Driftwood scale) ── */
+    --text-primary:    hsl(20, 16%, 15%);    /* Bark #2C2420 */
+    --text-secondary:  hsl(29, 13%, 37%);    /* Driftwood #6B5E52 */
+    --text-tertiary:   hsl(29, 10%, 52%);    /* Light Driftwood */
+    --text-ghost:      hsl(29, 8%, 66%);     /* Placeholders */
+    --text-accent:     hsl(40, 78%, 61%);    /* Saffron Flame #E9B44C */
 
-    /* ── Accent tokens ── */
-    --accent-saffron:       hsl(41, 78%, 48%);
-    --accent-saffron-muted: hsl(41, 55%, 72%);
-    --accent-text:          hsl(41, 65%, 38%);  /* Darker saffron for editorial text */
+    /* ── Accent tokens (Saffron warmth) ── */
+    --accent-saffron:       hsl(40, 78%, 61%);   /* Saffron Flame #E9B44C */
+    --accent-saffron-muted: hsl(40, 55%, 72%);
+    --accent-text:          hsl(40, 64%, 53%);   /* Deep Saffron #D4A03A */
     --color-text-tertiary:  var(--text-tertiary);
 
     /* ── Surface layering (mapped to foundation neutrals) ── */
     --surface-base:   hsl(var(--neutral-50));
     --surface-raised: hsl(var(--neutral-100));
     --surface-sunken: hsl(var(--neutral-200));
-    --surface-library: hsl(37, 71%, 96%);       /* #FAF7F2 warm linen */
-    --text-library:    hsl(16, 15%, 15%);        /* #2C2420 warm charcoal */
+    --surface-library: hsl(44, 86%, 94%);       /* Lantern Glow #FDF6E3 */
+    --text-library:    hsl(20, 16%, 15%);        /* Bark #2C2420 */
 
-    /* ── CTA pressed/hover states ── */
-    --cta-default: hsl(158, 35%, 18%);
-    --cta-hover-v2: hsl(158, 38%, 23%);
-    --cta-active:  hsl(158, 32%, 14%);
+    /* ── CTA pressed/hover states (Bonki Orange #E85D2C) ── */
+    --cta-default: hsl(16, 80%, 54%);
+    --cta-hover-v2: hsl(16, 82%, 48%);
+    --cta-active:  hsl(16, 78%, 42%);
 
     /* ── Semantic color tokens ── */
     --color-bg: var(--surface-base);
@@ -173,26 +173,26 @@ h1, h2, h3,
     --color-surface: hsl(var(--neutral-100));
     --color-surface-primary: hsl(var(--neutral-100));
     --color-surface-secondary: hsl(var(--neutral-100));
-    --color-cta: hsl(158, 35%, 18%);
+    --color-cta: hsl(16, 80%, 54%);            /* Bonki Orange */
     --color-ink: var(--text-primary);
     --color-secondary: var(--text-secondary);
-    --color-accent: #C1121F;
-    --color-accent-soft: #6D4C6D;
+    --color-accent: #E85D2C;                    /* Bonki Orange */
+    --color-accent-soft: hsl(40, 64%, 53%);     /* Deep Saffron */
     --color-text-primary: var(--text-primary);
     --color-text-secondary: var(--text-secondary);
-    --color-button-primary: hsl(158, 35%, 18%);
-    --color-button-text: #FFFFFF;
+    --color-button-primary: hsl(16, 80%, 54%);  /* Bonki Orange */
+    --color-button-text: #1A1A2E;               /* Midnight Ink on Orange */
     --color-divider: hsl(var(--neutral-300));
 
     /* ── CTA canonical tokens ── */
     --cta-bg:    var(--cta-default);
-    --cta-text:  #FFFFFF;
+    --cta-text:  #1A1A2E;                       /* Midnight Ink */
     --cta-hover: var(--cta-hover-v2);
 
-    /* ── Session containment header tokens ── */
-    --session-header-bg:    #1C3A2D;
-    --session-header-hover: #224233;
-    --session-header-press: #162E24;
+    /* ── Session containment header tokens (Midnight Ink) ── */
+    --session-header-bg:    #1A1A2E;
+    --session-header-hover: #2A2D3A;            /* Deep Dusk */
+    --session-header-press: #141425;
 
     /* ── Product home tokens ── */
     --product-title-color: var(--text-primary);
@@ -204,16 +204,16 @@ h1, h2, h3,
     --product-button-text: var(--product-title-color);
 
     /* ── Completion screen tokens ── */
-    --completion-subtitle: hsl(30, 10%, 50%);     /* warm grey */
-    --completion-label: hsl(30, 8%, 62%);          /* muted tone */
-    --completion-link: hsl(30, 10%, 50%);
+    --completion-subtitle: hsl(29, 13%, 37%);     /* Driftwood */
+    --completion-label: hsl(29, 10%, 52%);         /* Light Driftwood */
+    --completion-link: hsl(29, 13%, 37%);
 
     /* Dynamic overrides — set via useThemeVars hook at runtime */
     --page-bg: var(--color-bg);
     --hero-title-color: var(--text-primary);
     --hero-subtitle-color: var(--text-secondary);
     --btn-primary-bg: var(--color-cta);
-    --btn-primary-text: #FFFFFF;
+    --btn-primary-text: #1A1A2E;                  /* Midnight Ink */
   }
 }
 
@@ -343,8 +343,8 @@ h1, h2, h3,
     margin: 0 auto;
     padding: 16px 44px;
     border-radius: 22px;
-    background: linear-gradient(180deg, hsl(41, 80%, 56%) 0%, hsl(41, 78%, 48%) 40%, hsl(41, 70%, 38%) 100%);
-    color: #1A1208;
+    background: linear-gradient(180deg, hsl(16, 82%, 60%) 0%, hsl(16, 80%, 54%) 40%, hsl(16, 76%, 44%) 100%);
+    color: #1A1A2E;
     font-family: 'DM Serif Display', var(--font-serif);
     font-size: 17px;
     font-weight: 400;
@@ -353,31 +353,31 @@ h1, h2, h3,
     cursor: pointer;
     text-shadow: none;
     box-shadow:
-      0 12px 32px -4px rgba(218, 157, 29, 0.40),
-      0 4px 12px rgba(218, 157, 29, 0.22),
+      0 12px 32px -4px rgba(232, 93, 44, 0.40),
+      0 4px 12px rgba(232, 93, 44, 0.22),
       0 1px 3px rgba(0, 0, 0, 0.12),
       inset 0 2px 0 rgba(255, 255, 255, 0.45),
-      inset 0 -4px 10px rgba(140, 90, 10, 0.25);
+      inset 0 -4px 10px rgba(160, 50, 20, 0.25);
     transition: transform 120ms cubic-bezier(0.4, 0, 0.2, 1), box-shadow 200ms ease-out;
   }
 
   .cta-primary:hover:not(:disabled) {
     transform: scale(1.04) translateY(-3px);
     box-shadow:
-      0 16px 40px -4px rgba(218, 157, 29, 0.50),
-      0 6px 16px rgba(218, 157, 29, 0.28),
+      0 16px 40px -4px rgba(232, 93, 44, 0.50),
+      0 6px 16px rgba(232, 93, 44, 0.28),
       0 1px 3px rgba(0, 0, 0, 0.12),
       inset 0 2px 0 rgba(255, 255, 255, 0.50),
-      inset 0 -4px 10px rgba(140, 90, 10, 0.25);
+      inset 0 -4px 10px rgba(160, 50, 20, 0.25);
   }
 
   .cta-primary:active:not(:disabled) {
     transform: scale(0.93) translateY(3px);
     box-shadow:
-      0 4px 12px rgba(218, 157, 29, 0.22),
-      0 2px 6px rgba(218, 157, 29, 0.12),
+      0 4px 12px rgba(232, 93, 44, 0.22),
+      0 2px 6px rgba(232, 93, 44, 0.12),
       inset 0 1px 0 rgba(255, 255, 255, 0.25),
-      inset 0 -2px 6px rgba(140, 90, 10, 0.30);
+      inset 0 -2px 6px rgba(160, 50, 20, 0.30);
   }
 
   .cta-primary:disabled {
@@ -561,7 +561,7 @@ h1, h2, h3,
   }
 
   .reflection-field-wrapper:focus-within textarea {
-    border-bottom-color: #C4821D;
+    border-bottom-color: #D4A03A;           /* Deep Saffron */
   }
 
   /* Hero typography — driven by useThemeVars */
