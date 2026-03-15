@@ -111,11 +111,11 @@ h1, h2, h3,
     --note-placeholder: #8C8681;
 
     /* Category colors — neutral, no teal */
-    --category-emotional: 30 15% 70%;
-    --category-fun: 36 20% 75%;
-    --category-growth: 30 10% 65%;
-    --category-intimacy: 20 12% 68%;
-    --category-logistics: 30 8% 72%;
+    --category-emotional: 40 55% 65%;      /* Saffron-warm */
+    --category-fun: 40 65% 70%;            /* Lighter saffron */
+    --category-growth: 29 20% 55%;         /* Driftwood-adjacent */
+    --category-intimacy: 20 25% 58%;       /* Bark-warm */
+    --category-logistics: 29 15% 62%;      /* Neutral warm */
 
     /* Interactive states */
     --state-active: 0 0% 17%;
