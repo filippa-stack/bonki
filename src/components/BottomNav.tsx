@@ -23,8 +23,8 @@ const items: NavItem[] = [
     id: 'journal',
     label: 'Era samtal',
     icon: MessageCircle,
-    path: '/shared',
-    match: (p) => p.startsWith('/shared') || p.startsWith('/diary'),
+    path: '/journal',
+    match: (p) => p.startsWith('/journal'),
   },
 ];
 
