@@ -1567,14 +1567,25 @@ export default function CardView() {
     );
   }
 
-  // ── Still Us start screen — original design ──
+  // ── Still Us threshold screen — single unified gate ──
   if (shouldShowStartScreen) {
+    const EMBER_NIGHT_T = '#2E2233';
+    const LANTERN_GLOW_T = '#FDF6E3';
+    const DRIFTWOOD_T = '#6B5E52';
+    const MIDNIGHT_INK_T = '#1A1A2E';
+    const BONKI_ORANGE_T = '#E85D2C';
+
+    const hookText = card.questionHook ?? card.subtitle ?? '';
+    const totalPrompts = card.sections.reduce((sum, s) => sum + (s.prompts?.length ?? 1), 0);
+    const minMinutes = Math.max(5, Math.floor(totalPrompts * 1.5));
+    const maxMinutes = Math.min(minMinutes + 5, Math.ceil(totalPrompts * 2.5));
+
     return (
       <motion.div
-        key="start-screen"
+        key="threshold-screen"
         className="flex flex-col"
         style={{
-          backgroundColor: 'var(--surface-base)',
+          backgroundColor: EMBER_NIGHT_T,
           position: 'relative',
           overflow: 'hidden',
           height: '100dvh',
@@ -1584,7 +1595,7 @@ export default function CardView() {
         exit={{ opacity: 0 }}
         transition={{ duration: EMOTION, ease: [...EASE] }}
       >
-        {/* Back navigation */}
+        {/* Back arrow — Lantern Glow */}
         <motion.button
           onClick={() => navigate(category ? `/category/${category.id}` : '/')}
           initial={{ opacity: 0 }}
@@ -1607,235 +1618,123 @@ export default function CardView() {
             padding: '12px',
           }}
         >
-          <ArrowLeft size={20} style={{ color: 'var(--color-text-tertiary)', opacity: 0.50 }} />
+          <ArrowLeft size={20} style={{ color: LANTERN_GLOW_T, opacity: 0.60 }} />
         </motion.button>
 
-        {/* Free card label — only on the free card, new products only */}
-        {isFreeCard && product && product.id !== 'still_us' && (
-          <motion.p
+        {/* Centered content */}
+        <div style={{
+          flex: '1 1 auto',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          padding: '0 24px',
+          gap: '0',
+        }}>
+          {/* 1. Category */}
+          <motion.span
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: BEAT_1, duration: EMOTION, ease: [...EASE] }}
             style={{
-              position: 'absolute',
-              top: '22px',
-              left: '50%',
-              transform: 'translateX(-50%)',
-              textAlign: 'center',
               fontFamily: 'var(--font-sans)',
-              fontSize: '10px',
-              fontWeight: 500,
-              letterSpacing: '0.06em',
+              fontSize: '12px',
+              letterSpacing: '0.10em',
               textTransform: 'uppercase',
-              color: 'var(--text-tertiary)',
-              opacity: 0.45,
-              zIndex: 1,
-              pointerEvents: 'none',
-              whiteSpace: 'nowrap',
+              color: DRIFTWOOD_T,
+              marginBottom: '10px',
             }}
           >
-            Gratis samtal
-          </motion.p>
-        )}
+            {category?.title}
+          </motion.span>
 
-        {/* ── Hero zone: illustration takes center stage ── */}
-        <div style={{ flex: '1 1 auto', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', paddingTop: '56px' }}>
-          {cardImageUrl ? (
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 1.0, ease: [0.22, 1, 0.36, 1] }}
-              style={{
-                position: 'relative',
-                width: '88vw',
-                maxWidth: '380px',
-                overflow: 'hidden',
-              }}
-            >
-              <img
-                src={cardImageUrl}
-                alt={card.title}
-                style={{
-                  width: '100%',
-                  height: 'auto',
-                  maxHeight: '52vh',
-                  objectFit: 'contain',
-                  clipPath: 'inset(4% 0 0 0)',
-                  marginTop: '-3%',
-                }}
-              />
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 1.2, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-                style={{
-                  position: 'absolute',
-                  bottom: '-12px',
-                  left: '10%',
-                  right: '10%',
-                  height: '48px',
-                  borderRadius: '50%',
-                  background: 'radial-gradient(ellipse at center, hsla(30, 15%, 25%, 0.08) 0%, transparent 70%)',
-                  filter: 'blur(8px)',
-                  pointerEvents: 'none',
-                }}
-              />
-            </motion.div>
-          ) : (
-            <>
-              <motion.span
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: BEAT_1, duration: EMOTION, ease: [...EASE] }}
-                style={{
-                  fontFamily: 'var(--font-sans)',
-                  fontSize: '10px',
-                  letterSpacing: '0.12em',
-                  textTransform: 'uppercase',
-                  color: isStillUsCard ? (startScreenCategoryColor || 'var(--text-tertiary)') : 'var(--text-tertiary)',
-                  opacity: isStillUsCard ? 0.7 : 0.45,
-                  marginBottom: '10px',
-                }}
-              >
-                {category?.title}
-              </motion.span>
-
-              <motion.h1
-                className="font-serif"
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: BEAT_1, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-                style={{
-                  fontSize: 'clamp(26px, 7vw, 34px)',
-                  fontWeight: 700,
-                  color: isStillUsCard ? (startScreenCategoryColor || 'var(--text-primary)') : 'var(--text-primary)',
-                  textAlign: 'center',
-                  lineHeight: 1.15,
-                  letterSpacing: '-0.01em',
-                }}
-              >
-                {card.title}
-              </motion.h1>
-
-              {card.subtitle && (
-                <motion.p
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: BEAT_1 + 0.1, duration: EMOTION, ease: [...EASE] }}
-                  style={{
-                    fontFamily: 'var(--font-serif)',
-                    fontStyle: 'italic',
-                    fontSize: '16px',
-                    color: isStillUsCard ? (startScreenCategoryColor || 'var(--text-primary)') : 'var(--text-primary)',
-                    opacity: 0.55,
-                    textAlign: 'center',
-                    marginTop: '10px',
-                    lineHeight: 1.4,
-                  }}
-                >
-                  {card.subtitle}
-                </motion.p>
-              )}
-
-              <motion.p
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: BEAT_1 + 0.2, duration: 0.5 }}
-                style={{
-                  fontSize: '12px',
-                  color: 'rgba(255, 255, 255, 0.4)',
-                  textAlign: 'center',
-                  marginTop: '12px',
-                }}
-              >
-                Cirka 5–10 min
-              </motion.p>
-
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: BEAT_2, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-                style={{
-                  display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  gap: '6px', marginTop: '36px',
-                }}
-              >
-                {[0, 1].map(i => (
-                  <span key={i} style={{
-                    width: '4px', height: '4px', borderRadius: '50%',
-                    backgroundColor: isStillUsCard ? (startScreenCategoryColor || 'var(--accent-saffron)') : 'var(--accent-saffron)', opacity: 0.35,
-                  }} />
-                ))}
-              </motion.div>
-            </>
-          )}
-        </div>
-
-        {/* ── Caption title — with image variant (uppercase, small) ── */}
-        {cardImageUrl && (
-          <motion.p
-            initial={{ opacity: 0, y: 6 }}
+          {/* 2. Card name */}
+          <motion.h1
+            className="font-serif"
+            initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: BEAT_1, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ delay: BEAT_1, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
             style={{
-              fontFamily: 'var(--font-sans)',
-              fontSize: '11px',
+              fontSize: '28px',
               fontWeight: 600,
-              letterSpacing: '0.14em',
-              textTransform: 'uppercase',
-              color: 'var(--text-tertiary)',
+              color: LANTERN_GLOW_T,
               textAlign: 'center',
-              marginBottom: '20px',
-              marginTop: '24px',
+              lineHeight: 1.15,
+              letterSpacing: '-0.01em',
             }}
           >
             {card.title}
-          </motion.p>
-        )}
+          </motion.h1>
 
-        {/* ── Bottom zone: instructions + CTA ── */}
-        <div style={{ flex: '0 0 auto', display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '0 24px', paddingBottom: 'calc(80px + env(safe-area-inset-bottom, 0px))' }}>
-          <motion.p
-            className="font-serif italic"
-            initial={{ opacity: 0, y: 6 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: BEAT_2, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-            style={{
-              fontSize: '19px',
-              color: isStillUsCard ? (startScreenCategoryColor || 'var(--text-primary)') : 'var(--text-primary)',
-              opacity: isStillUsCard ? 0.65 : 0.75,
-              textAlign: 'center',
-              lineHeight: 1.5,
-              marginBottom: '32px',
-            }}
-          >
-            {uiText.readAloud.split('\n').map((line, i, arr) => (
-              <span key={i}>{line}{i < arr.length - 1 && <br />}</span>
-            ))}
-          </motion.p>
-
-          {/* Time indication — kids products only */}
-          {pronounMode === 'du' && (
+          {/* 3. Hook */}
+          {hookText && (
             <motion.p
-              className="font-sans"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: BEAT_2 + 0.15, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+              initial={{ opacity: 0, y: 6 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: BEAT_1 + 0.1, duration: EMOTION, ease: [...EASE] }}
               style={{
-                fontSize: '13px',
-                fontWeight: 500,
-                color: 'var(--color-text-tertiary)',
-                opacity: 0.55,
+                fontFamily: 'var(--font-serif)',
+                fontSize: '16px',
+                color: LANTERN_GLOW_T,
+                opacity: 0.70,
                 textAlign: 'center',
-                marginTop: '-20px',
-                marginBottom: '28px',
-                letterSpacing: '0.02em',
+                marginTop: '12px',
+                lineHeight: 1.45,
+                maxWidth: '320px',
+                display: '-webkit-box',
+                WebkitLineClamp: 3,
+                WebkitBoxOrient: 'vertical',
+                overflow: 'hidden',
               }}
             >
-              ⏱ 5–10 min
+              {hookText}
             </motion.p>
           )}
 
+          {/* 4. Info line */}
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: BEAT_2, duration: 0.5 }}
+            style={{
+              fontFamily: 'var(--font-sans)',
+              fontSize: '13px',
+              color: DRIFTWOOD_T,
+              textAlign: 'center',
+              marginTop: '16px',
+            }}
+          >
+            Cirka {minMinutes}–{maxMinutes} min · Läs frågorna högt
+          </motion.p>
+
+          {/* 5. Privacy */}
+          <motion.p
+            className="font-serif"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: BEAT_2 + 0.1, duration: EMOTION, ease: [...EASE] }}
+            style={{
+              fontSize: '12px',
+              fontStyle: 'italic',
+              color: DRIFTWOOD_T,
+              textAlign: 'center',
+              marginTop: '12px',
+              opacity: 0.7,
+            }}
+          >
+            Inget av det ni delar lämnar det här rummet.
+          </motion.p>
+        </div>
+
+        {/* Bottom zone: stale banner + CTA */}
+        <div style={{
+          flex: '0 0 auto',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          padding: '0 24px',
+          paddingBottom: 'calc(80px + env(safe-area-inset-bottom, 0px))',
+        }}>
           {/* Orphan/stale session banner */}
           {staleSession && (
             <motion.div
@@ -1845,21 +1744,21 @@ export default function CardView() {
               style={{
                 width: '100%',
                 maxWidth: '360px',
-                background: 'var(--surface-sunken)',
-                borderBottom: '1px solid hsl(var(--neutral-300))',
+                background: 'hsla(276, 20%, 25%, 0.6)',
+                border: '1px solid hsla(276, 15%, 40%, 0.3)',
                 borderRadius: '10px',
                 padding: '16px 20px',
                 marginBottom: '20px',
                 textAlign: 'center',
-                boxShadow: '0 1px 2px hsla(30, 15%, 25%, 0.04), 0 4px 16px -4px hsla(30, 18%, 28%, 0.06)',
               }}
             >
               <p style={{
                 fontFamily: 'var(--font-sans)',
                 fontSize: '13px',
-                color: 'var(--text-primary)',
+                color: LANTERN_GLOW_T,
                 marginBottom: '12px',
                 lineHeight: 1.5,
+                opacity: 0.8,
               }}>
                 {uiText.stalePrompt}
               </p>
@@ -1871,10 +1770,10 @@ export default function CardView() {
                     fontSize: '13px',
                     padding: '8px 16px',
                     background: 'none',
-                    border: '1px solid hsl(var(--neutral-300))',
+                    border: `1px solid ${DRIFTWOOD_T}`,
                     borderRadius: '8px',
                     cursor: 'pointer',
-                    color: 'var(--text-primary)',
+                    color: LANTERN_GLOW_T,
                   }}
                 >
                   Fortsätt
@@ -1885,8 +1784,8 @@ export default function CardView() {
                     fontFamily: 'var(--font-sans)',
                     fontSize: '13px',
                     padding: '8px 16px',
-                    background: 'var(--text-primary)',
-                    color: 'var(--surface-base)',
+                    background: LANTERN_GLOW_T,
+                    color: EMBER_NIGHT_T,
                     border: 'none',
                     borderRadius: '8px',
                     cursor: 'pointer',
@@ -1898,7 +1797,7 @@ export default function CardView() {
             </motion.div>
           )}
 
-          {/* Start button */}
+          {/* 6. CTA — Bonki Orange */}
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
@@ -1907,30 +1806,23 @@ export default function CardView() {
           >
             <button
               onClick={() => setShowStartScreen(false)}
-              className="cta-primary"
-            >
-              {uiText.readyButton}
-            </button>
-          </motion.div>
-
-          {/* Sub-text — safety note (only if non-empty) */}
-          {uiText.safetyNote && (
-            <motion.p
-              className="font-serif italic"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.40, duration: EMOTION, ease: [...EASE] }}
               style={{
-                fontSize: '13px',
-                color: 'var(--text-tertiary)',
-                textAlign: 'center',
-                marginTop: '16px',
-                opacity: 0.55,
+                width: '100%',
+                maxWidth: '520px',
+                height: '52px',
+                borderRadius: '14px',
+                backgroundColor: BONKI_ORANGE_T,
+                color: MIDNIGHT_INK_T,
+                fontFamily: 'var(--font-sans)',
+                fontSize: '17px',
+                fontWeight: 600,
+                border: 'none',
+                cursor: 'pointer',
               }}
             >
-              {uiText.safetyNote}
-            </motion.p>
-          )}
+              Vi är redo
+            </button>
+          </motion.div>
         </div>
       </motion.div>
     );
