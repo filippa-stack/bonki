@@ -204,16 +204,16 @@ h1, h2, h3,
     --product-button-text: var(--product-title-color);
 
     /* ── Completion screen tokens ── */
-    --completion-subtitle: hsl(30, 10%, 50%);     /* warm grey */
-    --completion-label: hsl(30, 8%, 62%);          /* muted tone */
-    --completion-link: hsl(30, 10%, 50%);
+    --completion-subtitle: hsl(29, 13%, 37%);     /* Driftwood */
+    --completion-label: hsl(29, 10%, 52%);         /* Light Driftwood */
+    --completion-link: hsl(29, 13%, 37%);
 
     /* Dynamic overrides — set via useThemeVars hook at runtime */
     --page-bg: var(--color-bg);
     --hero-title-color: var(--text-primary);
     --hero-subtitle-color: var(--text-secondary);
     --btn-primary-bg: var(--color-cta);
-    --btn-primary-text: #FFFFFF;
+    --btn-primary-text: #1A1A2E;                  /* Midnight Ink */
   }
 }
 
