@@ -120,8 +120,16 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
                   </span>
                 </div>
                 {catProgress && (
-                  <span style={{ position: 'relative', flexShrink: 0 }}>
-                    <CategoryProgressRing completed={catProgress.completed} total={catProgress.total} color={tile.text} />
+                  <span style={{
+                    flexShrink: 0,
+                    fontSize: '10px',
+                    fontWeight: 600,
+                    letterSpacing: '0.04em',
+                    color: catProgress.completed > 0 ? '#E9B44C' : tile.text,
+                    opacity: catProgress.completed > 0 ? 0.85 : 0.3,
+                    whiteSpace: 'nowrap',
+                  }}>
+                    {catProgress.completed} av {catProgress.total}
                   </span>
                 )}
               </motion.button>
