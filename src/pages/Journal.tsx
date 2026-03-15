@@ -325,6 +325,57 @@ export default function Journal() {
       .order('updated_at', { ascending: false })
       .then(({ data }) => { if (!cancelled) setReflections(data ?? []); });
 
+    // Paused/active sessions (not completed)
+    supabase
+      .from('couple_sessions')
+      .select('id, card_id, product_id, category_id, started_at, last_activity_at')
+      .eq('couple_space_id', space.id)
+      .eq('status', 'active')
+      .order('last_activity_at', { ascending: false })
+      .then(async ({ data }) => {
+        if (cancelled || !data) { setPausedSessions([]); return; }
+        const now = Date.now();
+        const valid = data.filter(s => {
+          // Kids sessions expire after 14 days
+          if (s.product_id !== STILL_US_ID) {
+            const elapsed = now - new Date(s.last_activity_at).getTime();
+            if (elapsed > FOURTEEN_DAYS_MS) return false;
+          }
+          return true;
+        });
+        // Get current step index for each session
+        const sessionsWithStep: PausedSession[] = [];
+        for (const s of valid) {
+          // Find max completed step
+          const { data: completions } = await supabase
+            .from('couple_session_completions')
+            .select('step_index')
+            .eq('session_id', s.id)
+            .order('step_index', { ascending: false })
+            .limit(1);
+          const maxStep = completions?.[0]?.step_index ?? -1;
+          sessionsWithStep.push({
+            id: s.id,
+            card_id: s.card_id,
+            product_id: s.product_id,
+            category_id: s.category_id,
+            started_at: s.started_at,
+            last_activity_at: s.last_activity_at,
+            currentStepIndex: maxStep + 1,
+          });
+        }
+        if (!cancelled) setPausedSessions(sessionsWithStep);
+      });
+
+    // Bookmarked questions
+    supabase
+      .from('question_bookmarks')
+      .select('id, card_id, product_id, question_text')
+      .eq('couple_space_id', space.id)
+      .eq('is_active', true)
+      .order('bookmarked_at', { ascending: false })
+      .then(({ data }) => { if (!cancelled) setBookmarks(data ?? []); });
+
     return () => { cancelled = true; };
   }, [space?.id]);
 
