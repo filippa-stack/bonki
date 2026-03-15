@@ -474,7 +474,7 @@ function KidsCardTile({ card, index, isCompleted, isNextSuggested, tileColor, on
             right: 0,
             height: '45%',
             background: 'linear-gradient(to top, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.2) 55%, transparent 100%)',
-            borderRadius: '0 0 16px 16px',
+            borderRadius: '0 0 22px 22px',
             pointerEvents: 'none',
             zIndex: 1,
           }}
