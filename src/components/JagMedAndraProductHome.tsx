@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import type { ProductManifest } from '@/types/product';
 import slothImage from '@/assets/sloth-jag-med-andra.png';
 import nyckelpiganImage from '@/assets/nyckelpiga-jag-med-andra.png';
-import KidsProductResumeBanner from '@/components/KidsProductResumeBanner';
+import UnifiedResumeBanner from '@/components/UnifiedResumeBanner';
 
 import ProductHomeBackButton from '@/components/ProductHomeBackButton';
 import { useKidsProductProgress } from '@/hooks/useKidsProductProgress';
