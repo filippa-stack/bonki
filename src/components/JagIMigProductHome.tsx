@@ -2,7 +2,7 @@ import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import type { ProductManifest } from '@/types/product';
 import apaImage from '@/assets/apa-jag-i-mig.png';
-import KidsProductResumeBanner from '@/components/KidsProductResumeBanner';
+import UnifiedResumeBanner from '@/components/UnifiedResumeBanner';
 
 import ProductHomeBackButton from '@/components/ProductHomeBackButton';
 import { useKidsProductProgress } from '@/hooks/useKidsProductProgress';
@@ -50,7 +50,7 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
             <p className="font-serif" style={{ fontSize: 'clamp(16px, 4.5vw, 20px)', fontWeight: 400, color: ACCENT_COLOR, opacity: 0.9, marginTop: '6px', textShadow: '0 1px 8px rgba(0,0,0,0.3)' }}>
               När känslor får ord
             </p>
-            <KidsProductResumeBanner product={product} progress={progress} accentColor={ACCENT_COLOR} />
+            <UnifiedResumeBanner product={product} kidsProgress={progress} accentColor={ACCENT_COLOR} />
           </motion.div>
         </motion.div>
 
