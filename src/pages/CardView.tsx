@@ -1078,17 +1078,27 @@ export default function CardView() {
   //  MODE: 'completion' — Still Us — takeaway ritual
   // ─────────────────────────────────────────────────────────────
   if (cardViewMode === 'completion') {
+    // Still Us completion: Ember Night bg, fixed headline, Ember Glow takeaway
+    const EMBER_NIGHT = '#2E2233';
+    const DEEP_SAFFRON = '#D4A03A';
+    const DRIFTWOOD = '#6B5E52';
+    const MIDNIGHT_INK = '#1A1A2E';
+    const BARK = '#2C2420';
+    const EMBER_GLOW = '#F5E8CC';
+    const categoryName = category?.title ?? 'kategorin';
+    const homeDest = postCompletionNav.homeDest;
+
     return (
       <motion.div
         className="min-h-screen"
-        style={{ backgroundColor: 'var(--surface-base)' }}
+        style={{ backgroundColor: EMBER_NIGHT }}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+        transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
       >
         <Header title="" variant="immersive" />
         <div className="px-6 pb-16 relative" style={{ paddingTop: '48px' }}>
-          {/* Back arrow — same style as session question pages */}
+          {/* Back arrow */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -1117,44 +1127,36 @@ export default function CardView() {
                 padding: '12px',
               }}
             >
-              <ArrowLeft
-                size={20}
-                style={{
-                  color: 'var(--color-text-tertiary)',
-                  opacity: 0.50,
-                }}
-              />
+              <ArrowLeft size={20} style={{ color: DRIFTWOOD, opacity: 0.50 }} />
             </button>
           </motion.div>
 
-          {/* Spacer instead of dots */}
           <div style={{ height: '24px' }} />
 
-          {/* Heading */}
+          {/* 1. Fixed headline */}
           <motion.div
             initial={{ opacity: 0, y: 14 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
             className="text-center max-w-md mx-auto"
-            style={{ marginBottom: '28px' }}
+            style={{ marginBottom: '32px' }}
           >
             <h2
               className="font-serif"
               style={{
-                fontSize: 'clamp(30px, 8vw, 38px)',
+                fontSize: '26px',
                 fontWeight: 600,
-                color: 'var(--accent-saffron)',
+                color: DEEP_SAFFRON,
                 textAlign: 'center',
-                lineHeight: 1.15,
-                letterSpacing: '-0.015em',
+                lineHeight: 1.2,
                 textWrap: 'balance',
               }}
             >
-              {completionHeadline}
+              Varje samtal är ett val. Ni valde rätt.
             </h2>
           </motion.div>
 
-          {/* Simple takeaway field — always visible, optional */}
+          {/* 2. Note nudge — "Något ni vill minnas?" → Ember Glow input */}
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
@@ -1166,18 +1168,17 @@ export default function CardView() {
               className="font-sans"
               style={{
                 fontSize: '14px',
-                color: 'var(--text-primary)',
-                opacity: 0.50,
+                color: DRIFTWOOD,
                 textAlign: 'center',
                 marginBottom: '12px',
               }}
             >
               Något ni vill minnas?
             </p>
-            <SimpleTakeaway sessionId={activeSessionId} spaceId={space?.id ?? null} cardId={cardId} productId={product?.id} />
+            <SimpleTakeaway sessionId={activeSessionId} spaceId={space?.id ?? null} cardId={cardId} productId={product?.id} stillUsMode />
           </motion.div>
 
-          {/* Privacy reassurance */}
+          {/* Privacy */}
           <motion.p
             className="font-sans"
             initial={{ opacity: 0 }}
@@ -1185,7 +1186,8 @@ export default function CardView() {
             transition={{ delay: 0.5, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
             style={{
               fontSize: '12px',
-              color: 'var(--text-secondary)',
+              fontStyle: 'italic',
+              color: DRIFTWOOD,
               opacity: 0.55,
               textAlign: 'center',
               marginTop: '10px',
@@ -1194,63 +1196,40 @@ export default function CardView() {
             Inget ni skriver lämnar det här rummet.
           </motion.p>
 
-          {/* CTAs */}
+          {/* 3–5. CTAs */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.55, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
             className="max-w-md mx-auto flex flex-col items-center"
-            style={{ paddingBottom: 'calc(72px + env(safe-area-inset-bottom, 0px))' }}
+            style={{ paddingBottom: 'calc(72px + env(safe-area-inset-bottom, 0px))', marginTop: '48px' }}
           >
             {postCompletionNav.type === 'all_complete' ? (
-              <div className="text-center" style={{ marginTop: '32px' }}>
-                <p style={{
-                  fontFamily: "'DM Serif Display', var(--font-serif)",
-                  fontSize: '18px',
-                  fontWeight: 400,
-                  color: 'var(--text-primary)',
-                }}>
-                  {uiText.allExplored}
-                </p>
-                <p style={{
+              /* All done — go home */
+              <button
+                onClick={() => navigateWithFeedback(homeDest)}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  width: '100%',
+                  maxWidth: '520px',
+                  height: '52px',
+                  borderRadius: '14px',
+                  backgroundColor: DEEP_SAFFRON,
+                  color: MIDNIGHT_INK,
                   fontFamily: 'var(--font-sans)',
-                  fontSize: '13px',
-                  color: 'var(--completion-subtitle)',
-                  marginTop: '10px',
-                }}>
-                  {uiText.allExploredSub}
-                </p>
-                <button
-                  onClick={() => navigateWithFeedback(postCompletionNav.homeDest)}
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    width: '100%',
-                    maxWidth: '520px',
-                    height: '52px',
-                    borderRadius: '14px',
-                    backgroundColor: 'hsl(41, 78%, 48%)',
-                    color: 'hsl(30, 10%, 12%)',
-                    fontFamily: 'var(--font-sans)',
-                    fontSize: '15px',
-                    fontWeight: 600,
-                    letterSpacing: '0.01em',
-                    border: 'none',
-                    cursor: 'pointer',
-                    marginTop: '32px',
-                  }}
-                >
-                  Avsluta
-                </button>
-              </div>
-            ) : (
-              <motion.div
-                initial={{ opacity: 0, y: 8 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.65, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-                style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px', marginTop: '32px' }}
+                  fontSize: '17px',
+                  fontWeight: 600,
+                  border: 'none',
+                  cursor: 'pointer',
+                }}
               >
+                Tillbaka till Ert utrymme
+              </button>
+            ) : (
+              <>
+                {/* Primary: Nästa samtal → */}
                 <button
                   onClick={() => navigateWithFeedback(postCompletionNav.destination)}
                   style={{
@@ -1262,34 +1241,60 @@ export default function CardView() {
                     maxWidth: '520px',
                     height: '52px',
                     borderRadius: '14px',
-                    backgroundColor: 'hsl(41, 78%, 48%)',
-                    color: 'hsl(30, 10%, 12%)',
+                    backgroundColor: DEEP_SAFFRON,
+                    color: MIDNIGHT_INK,
                     fontFamily: 'var(--font-sans)',
-                    fontSize: '15px',
+                    fontSize: '17px',
                     fontWeight: 600,
-                    letterSpacing: '0.01em',
                     border: 'none',
                     cursor: 'pointer',
                   }}
                 >
-                  {postCompletionNav.label}
-                  <ArrowRight size={16} style={{ opacity: 0.7 }} />
+                  Nästa samtal <ArrowRight size={16} style={{ opacity: 0.7 }} />
                 </button>
-              </motion.div>
+
+                {/* 4. Secondary: Tillbaka till [Cat] */}
+                <button
+                  onClick={() => navigateWithFeedback(homeDest)}
+                  className="font-sans"
+                  style={{
+                    fontSize: '14px',
+                    color: DRIFTWOOD,
+                    background: 'none',
+                    border: 'none',
+                    cursor: 'pointer',
+                    marginTop: '16px',
+                    textAlign: 'center',
+                  }}
+                >
+                  Tillbaka till {categoryName}
+                </button>
+              </>
             )}
 
+            {/* 5. Journal link */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.75, duration: EMOTION }}
-              style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px' }}
+              style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}
             >
               <button
                 onClick={() => navigateWithFeedback('/shared')}
                 className="font-sans"
-                style={{ fontSize: '13px', color: 'var(--completion-link)', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline', textUnderlineOffset: '3px', marginTop: '24px', opacity: 0.4 }}
+                style={{
+                  fontSize: '13px',
+                  color: DRIFTWOOD,
+                  background: 'none',
+                  border: 'none',
+                  cursor: 'pointer',
+                  textDecoration: 'underline',
+                  textUnderlineOffset: '3px',
+                  marginTop: '24px',
+                  opacity: 0.5,
+                }}
               >
-                {uiText.seeNotes}
+                Se alla era anteckningar
               </button>
             </motion.div>
           </motion.div>
@@ -3044,11 +3049,12 @@ function KidsCompletionNote({ sessionId, spaceId, cardId, productId }: {
 
 /* ─── Simple takeaway for completion screen ─── */
 
-function SimpleTakeaway({ sessionId, spaceId, cardId, productId }: {
+function SimpleTakeaway({ sessionId, spaceId, cardId, productId, stillUsMode }: {
   sessionId: string | null;
   spaceId: string | null;
   cardId?: string;
   productId?: string;
+  stillUsMode?: boolean;
 }) {
   const { user } = useAuth();
   const [text, setText] = useState('');
@@ -3058,6 +3064,9 @@ function SimpleTakeaway({ sessionId, spaceId, cardId, productId }: {
   const isDemo = isDemoMode();
   const debounceRef = useRef<ReturnType<typeof setTimeout>>();
 
+  const DRIFTWOOD_T = '#6B5E52';
+  const BARK_T = '#2C2420';
+  const EMBER_GLOW_T = '#F5E8CC';
   const hasFill = text.trim().length > 0;
 
   const persistToDb = useCallback(async (value: string) => {
@@ -3089,7 +3098,6 @@ function SimpleTakeaway({ sessionId, spaceId, cardId, productId }: {
 
   const handleChange = (value: string) => {
     setText(value);
-    // Auto-save with debounce
     if (debounceRef.current) clearTimeout(debounceRef.current);
     debounceRef.current = setTimeout(() => {
       if (value.trim()) {
@@ -3115,7 +3123,7 @@ function SimpleTakeaway({ sessionId, spaceId, cardId, productId }: {
           <Feather
             size={14}
             strokeWidth={1.5}
-            style={{ color: 'var(--text-primary)', opacity: 0.25 }}
+            style={{ color: stillUsMode ? DRIFTWOOD_T : 'var(--text-primary)', opacity: 0.25 }}
           />
         </div>
       )}
@@ -3138,16 +3146,18 @@ function SimpleTakeaway({ sessionId, spaceId, cardId, productId }: {
           fontFamily: 'var(--font-serif)',
           fontSize: '16px',
           lineHeight: 1.7,
-          color: 'var(--text-primary)',
-          backgroundColor: isFocused || hasFill
-            ? 'hsla(36, 20%, 97%, 0.12)'
-            : 'hsla(36, 18%, 96%, 0.06)',
+          color: stillUsMode ? BARK_T : 'var(--text-primary)',
+          backgroundColor: stillUsMode
+            ? (isFocused || hasFill ? EMBER_GLOW_T : 'hsla(36, 40%, 92%, 0.12)')
+            : (isFocused || hasFill ? 'hsla(36, 20%, 97%, 0.12)' : 'hsla(36, 18%, 96%, 0.06)'),
           border: 'none',
           borderRadius: '12px',
           padding: '20px 24px',
           textAlign: hasFill ? 'left' : 'center',
           boxShadow: isFocused
-            ? '0 0 0 1px hsla(36, 20%, 80%, 0.15)'
+            ? stillUsMode
+              ? `0 0 0 1px hsla(36, 40%, 80%, 0.25)`
+              : '0 0 0 1px hsla(36, 20%, 80%, 0.15)'
             : 'none',
           transition: 'background-color 320ms ease, box-shadow 320ms ease',
         }}
