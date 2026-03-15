@@ -736,97 +736,30 @@ export default function ProductLibrary() {
             initial="hidden"
             animate="visible"
             style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(2, 1fr)',
+              display: 'flex',
+              flexDirection: 'column',
               gap: '16px',
             }}
           >
-            <PastelTile
-              name={jagIMig.name}
-              bg={TILE_COLORS[jagIMig.id]!}
-              productId={jagIMig.id}
-              tagline={TAGLINES[jagIMig.id]}
-              ageLabel={jagIMig.ageLabel}
-              accentColor={ACCENT_COLORS[jagIMig.id]}
-              taglineColor={TAGLINE_COLORS[jagIMig.id]}
-              illustration={ILLUSTRATIONS[jagIMig.id]}
-              illustrationOpacity={ILLUSTRATION_OPACITY[jagIMig.id]}
-              illustrationPosition={ILLUSTRATION_POSITION[jagIMig.id]}
-              onClick={() => navigate(`/product/${jagIMig.slug}`)}
-              badgeText={buildBadgeText(jagIMig)}
-              wide
-            />
-            <PastelTile
-              name={jagMedAndra.name}
-              bg={TILE_COLORS[jagMedAndra.id]!}
-              productId={jagMedAndra.id}
-              tagline={TAGLINES[jagMedAndra.id]}
-              ageLabel={jagMedAndra.ageLabel}
-              accentColor={ACCENT_COLORS[jagMedAndra.id]}
-              taglineColor={TAGLINE_COLORS[jagMedAndra.id]}
-              illustration={ILLUSTRATIONS[jagMedAndra.id]}
-              illustrationOpacity={ILLUSTRATION_OPACITY[jagMedAndra.id]}
-              illustrationPosition={ILLUSTRATION_POSITION[jagMedAndra.id]}
-              onClick={() => navigate(`/product/${jagMedAndra.slug}`)}
-              badgeText={buildBadgeText(jagMedAndra)}
-            />
-            <PastelTile
-              name={jagIVarlden.name}
-              bg={TILE_COLORS[jagIVarlden.id]!}
-              productId={jagIVarlden.id}
-              tagline={TAGLINES[jagIVarlden.id]}
-              ageLabel={jagIVarlden.ageLabel}
-              accentColor={ACCENT_COLORS[jagIVarlden.id]}
-              taglineColor={TAGLINE_COLORS[jagIVarlden.id]}
-              illustration={ILLUSTRATIONS[jagIVarlden.id]}
-              illustrationOpacity={ILLUSTRATION_OPACITY[jagIVarlden.id]}
-              illustrationPosition={ILLUSTRATION_POSITION[jagIVarlden.id]}
-              onClick={() => navigate(`/product/${jagIVarlden.slug}`)}
-              badgeText={buildBadgeText(jagIVarlden)}
-            />
-            <PastelTile
-              name={vardag.name}
-              bg={TILE_COLORS[vardag.id]!}
-              productId={vardag.id}
-              tagline={TAGLINES[vardag.id]}
-              ageLabel={vardag.ageLabel}
-              accentColor={ACCENT_COLORS[vardag.id]}
-              taglineColor={TAGLINE_COLORS[vardag.id]}
-              illustration={ILLUSTRATIONS[vardag.id]}
-              illustrationOpacity={ILLUSTRATION_OPACITY[vardag.id]}
-              illustrationPosition={ILLUSTRATION_POSITION[vardag.id]}
-              onClick={() => navigate(`/product/${vardag.slug}`)}
-              badgeText={buildBadgeText(vardag)}
-            />
-            <PastelTile
-              name={syskon.name}
-              bg={TILE_COLORS[syskon.id]!}
-              productId={syskon.id}
-              tagline={TAGLINES[syskon.id]}
-              ageLabel={syskon.ageLabel}
-              accentColor={ACCENT_COLORS[syskon.id]}
-              taglineColor={TAGLINE_COLORS[syskon.id]}
-              illustration={ILLUSTRATIONS[syskon.id]}
-              illustrationOpacity={ILLUSTRATION_OPACITY[syskon.id]}
-              illustrationPosition={ILLUSTRATION_POSITION[syskon.id]}
-              onClick={() => navigate(`/product/${syskon.slug}`)}
-              badgeText={buildBadgeText(syskon)}
-            />
-            <PastelTile
-              name={sexualitet.name}
-              bg={TILE_COLORS[sexualitet.id]!}
-              productId={sexualitet.id}
-              tagline={TAGLINES[sexualitet.id]}
-              ageLabel={sexualitet.ageLabel}
-              accentColor={ACCENT_COLORS[sexualitet.id]}
-              taglineColor={TAGLINE_COLORS[sexualitet.id]}
-              illustration={ILLUSTRATIONS[sexualitet.id]}
-              illustrationOpacity={ILLUSTRATION_OPACITY[sexualitet.id]}
-              illustrationPosition={ILLUSTRATION_POSITION[sexualitet.id]}
-              onClick={() => navigate(`/product/${sexualitet.slug}`)}
-              badgeText={buildBadgeText(sexualitet)}
-              wide
-            />
+            {sortedKidsProducts.map((product) => (
+              <PastelTile
+                key={product.id}
+                name={product.name}
+                bg={TILE_COLORS[product.id]!}
+                productId={product.id}
+                tagline={TAGLINES[product.id]}
+                ageLabel={product.ageLabel}
+                accentColor={ACCENT_COLORS[product.id]}
+                taglineColor={TAGLINE_COLORS[product.id]}
+                illustration={ILLUSTRATIONS[product.id]}
+                illustrationOpacity={ILLUSTRATION_OPACITY[product.id]}
+                illustrationPosition={ILLUSTRATION_POSITION[product.id]}
+                onClick={() => navigate(`/product/${product.slug}`)}
+                badgeText={buildBadgeText(product)}
+                hasActiveSession={activeProductIds.has(product.id)}
+                wide
+              />
+            ))}
           </motion.div>
         </div>
 
