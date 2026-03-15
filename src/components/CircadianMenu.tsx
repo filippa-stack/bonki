@@ -317,21 +317,23 @@ export default function CircadianMenu({
                       {category.title}
                     </span>
 
-                    {/* Progress ring — bottom center */}
-                    {completedCount > 0 && (
+                    {/* Completed checkmark — top right */}
+                    {allCompleted && (
                       <span
                         style={{
                           position: 'absolute',
-                          bottom: '6px',
-                          left: '50%',
-                          transform: 'translateX(-50%)',
+                          top: '8px',
+                          right: '8px',
+                          width: '18px',
+                          height: '18px',
+                          borderRadius: '50%',
+                          background: DEEP_SAFFRON,
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
                         }}
                       >
-                        <ProgressRing
-                          completed={completedCount}
-                          total={catCards.length}
-                          size={allCompleted ? 18 : 14}
-                        />
+                        <Check size={10} style={{ color: '#fff' }} />
                       </span>
                     )}
                   </motion.button>

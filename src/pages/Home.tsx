@@ -413,51 +413,6 @@ export default function Home() {
                 onNavigateToCard={(cardId) => { markNavigated(); navigate(`/card/${cardId}`); }}
               />
 
-              {/* Footer sentiment */}
-              {(() => {
-                const totalCategories = sortedCategories.length;
-                const fullyCompletedCount = sortedCategories.filter(cat => {
-                  const catCards = cards.filter(c => c.categoryId === cat.id);
-                  return catCards.length > 0 && catCards.every(c => completedCardIds.includes(c.id));
-                }).length;
-                if (fullyCompletedCount === 0) return (
-                  <p style={{
-                    fontFamily: 'var(--font-serif)',
-                    fontSize: '14px',
-                    color: DRIFTWOOD,
-                    opacity: 0.55,
-                    textAlign: 'center',
-                    marginTop: '24px',
-                  }}>
-                    Samtalet börjar här.
-                  </p>
-                );
-                const isAllDone = fullyCompletedCount >= totalCategories;
-                return (
-                  <div style={{ textAlign: 'center', marginTop: '20px' }}>
-                    <p style={{
-                      fontFamily: 'var(--font-sans)',
-                      fontSize: '12px',
-                      color: DRIFTWOOD,
-                      opacity: 0.55,
-                      letterSpacing: '0.03em',
-                    }}>
-                      {isAllDone
-                        ? 'Ni har utforskat allt. Fortsätt prata.'
-                        : `Ni har utforskat ${fullyCompletedCount} av ${totalCategories} områden.`}
-                    </p>
-                    <p style={{
-                      fontFamily: 'var(--font-serif)',
-                      fontSize: '14px',
-                      color: DRIFTWOOD,
-                      opacity: 0.50,
-                      marginTop: '16px',
-                    }}>
-                      Samtalet börjar här.
-                    </p>
-                  </div>
-                );
-              })()}
             </div>
           </>
         )}
