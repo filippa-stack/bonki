@@ -543,7 +543,7 @@ export default function Journal() {
   // Filtered paused sessions
   const filteredPaused = useMemo(() => {
     return pausedSessions.filter(s => {
-      const isPar = s.product_id === STILL_US_ID;
+      const isPar = effectiveIsPar(s.product_id, s.card_id);
       return isPar ? activeFilters.has('par') : activeFilters.has('barn');
     });
   }, [pausedSessions, activeFilters]);
