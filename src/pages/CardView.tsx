@@ -1979,6 +1979,338 @@ export default function CardView() {
     );
   }
 
+  // ─────────────────────────────────────────────────────────────
+  //  MODE: Kids product live session — the warm clearing
+  // ─────────────────────────────────────────────────────────────
+  if (isKidsProduct && isLive && currentSection) {
+    const LANTERN_GLOW = '#FDF6E3';
+    const MIDNIGHT_INK = '#1A1A2E';
+    const SAFFRON = '#E9B44C';
+    const PARCHMENT = '#F5EDD2';
+    const BARK = '#2C2420';
+    const DRIFTWOOD = '#6B5E52';
+
+    const totalPrompts = flatPromptMap ? totalFlatPrompts : getEffectivePromptCount(currentSection);
+    const progressFraction = totalPrompts > 0 ? (localPromptIndex + 1) / totalPrompts : 0;
+    const isLastPrompt = localPromptIndex >= totalPrompts - 1;
+
+    // Extract current question text
+    const rawPrompts = currentSection.prompts?.length
+      ? currentSection.prompts
+      : (currentSection.content ? [currentSection.content] : ['']);
+    const currentPromptRaw = rawPrompts[resolvedPromptIndex] ?? rawPrompts[0];
+    const questionText = typeof currentPromptRaw === 'string'
+      ? currentPromptRaw
+      : (currentPromptRaw as any)?.text ?? '';
+
+    const handleKidsAdvance = async () => {
+      if (isLastPrompt) {
+        await handleCompleteStep();
+      } else {
+        setLocalPromptIndex(localPromptIndex + 1);
+      }
+    };
+
+    // Note nudge: show full text for first 2 prompts, then just icon unless interacted
+    const showFullNudge = localPromptIndex <= 1 || kidsNoteInteractedRef.current;
+
+    return (
+      <>
+        <div style={{
+          position: 'fixed',
+          inset: 0,
+          backgroundColor: LANTERN_GLOW,
+          display: 'flex',
+          flexDirection: 'column',
+          zIndex: 10,
+        }}>
+          {/* ── Header bar ── */}
+          <div style={{
+            flex: '0 0 auto',
+            height: '56px',
+            marginTop: 'env(safe-area-inset-top, 0px)',
+            backgroundColor: MIDNIGHT_INK,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            paddingLeft: '16px',
+            paddingRight: '4px',
+          }}>
+            <span style={{
+              fontFamily: 'var(--font-sans)',
+              fontSize: '15px',
+              fontWeight: 400,
+              color: LANTERN_GLOW,
+            }}>
+              {card.title}
+            </span>
+            <button
+              onClick={() => setShowLeaveConfirm(true)}
+              aria-label="Stäng"
+              style={{
+                minHeight: '44px',
+                minWidth: '44px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                background: 'none',
+                border: 'none',
+                cursor: 'pointer',
+              }}
+            >
+              <X size={20} style={{ color: LANTERN_GLOW }} />
+            </button>
+          </div>
+
+          {/* ── Progress bar ── */}
+          <div style={{
+            width: '100%',
+            height: '3px',
+            backgroundColor: PARCHMENT,
+          }}>
+            <div style={{
+              width: `${progressFraction * 100}%`,
+              height: '100%',
+              backgroundColor: SAFFRON,
+              transition: 'width 300ms ease',
+            }} />
+          </div>
+
+          {/* ── Content area ── */}
+          <div style={{
+            flex: '1 1 auto',
+            display: 'flex',
+            flexDirection: 'column',
+            position: 'relative',
+            overflow: 'hidden',
+          }}>
+            {/* Creature companion — 48px circle */}
+            {cardImageUrl && (
+              <div style={{
+                position: 'absolute',
+                top: '16px',
+                left: '16px',
+                width: '48px',
+                height: '48px',
+                borderRadius: '50%',
+                overflow: 'hidden',
+                boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
+                zIndex: 2,
+                flexShrink: 0,
+              }}>
+                <img
+                  src={cardImageUrl}
+                  alt=""
+                  draggable={false}
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'cover',
+                  }}
+                />
+              </div>
+            )}
+
+            {/* Question text — centered and dominant */}
+            <div style={{
+              flex: '1 1 auto',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              padding: '80px 24px 0',
+            }}>
+              <AnimatePresence mode="wait">
+                <motion.p
+                  key={`kids-q-${localPromptIndex}`}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.15, ease: [0.22, 1, 0.36, 1] }}
+                  className="font-serif"
+                  style={{
+                    fontSize: '24px',
+                    fontWeight: 600,
+                    color: BARK,
+                    textAlign: 'center',
+                    lineHeight: 1.35,
+                    maxWidth: 'calc(100vw - 48px)',
+                    textWrap: 'balance',
+                  }}
+                >
+                  {questionText}
+                </motion.p>
+              </AnimatePresence>
+            </div>
+
+            {/* Note nudge — near bottom of content area */}
+            <div style={{
+              flex: '0 0 auto',
+              padding: '0 24px',
+              marginBottom: '16px',
+            }}>
+              {!kidsNoteExpanded ? (
+                <button
+                  onClick={() => {
+                    setKidsNoteExpanded(true);
+                    kidsNoteInteractedRef.current = true;
+                    setTimeout(() => kidsNoteTextareaRef.current?.focus(), 150);
+                  }}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '6px',
+                    width: '100%',
+                    padding: '12px',
+                    background: 'none',
+                    border: 'none',
+                    cursor: 'pointer',
+                  }}
+                >
+                  <Pencil size={showFullNudge ? 14 : 12} style={{ color: DRIFTWOOD, opacity: 0.6 }} />
+                  {showFullNudge && (
+                    <span style={{
+                      fontFamily: 'var(--font-sans)',
+                      fontSize: '14px',
+                      fontWeight: 400,
+                      color: DRIFTWOOD,
+                    }}>
+                      Skriv något ni vill minnas
+                    </span>
+                  )}
+                </button>
+              ) : (
+                <motion.div
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: 'auto' }}
+                  transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
+                >
+                  <p style={{
+                    fontFamily: 'var(--font-serif)',
+                    fontSize: '12px',
+                    fontStyle: 'italic',
+                    color: DRIFTWOOD,
+                    textAlign: 'center',
+                    marginBottom: '8px',
+                  }}>
+                    Inget du skriver lämnar det här rummet.
+                  </p>
+                  <div style={{ position: 'relative' }}>
+                    <textarea
+                      ref={kidsNoteTextareaRef}
+                      value={kidsNoteLocalText}
+                      onChange={(e) => {
+                        setKidsNoteLocalText(e.target.value);
+                        kidsNoteSession.setText(e.target.value);
+                      }}
+                      placeholder="Skriv här…"
+                      autoCorrect="on"
+                      autoCapitalize="sentences"
+                      className="w-full resize-none focus:outline-none focus:ring-0"
+                      style={{
+                        minHeight: '72px',
+                        maxHeight: '120px',
+                        fontFamily: 'var(--font-serif)',
+                        fontSize: '15px',
+                        lineHeight: 1.6,
+                        color: BARK,
+                        backgroundColor: PARCHMENT,
+                        border: 'none',
+                        borderRadius: '12px',
+                        padding: '16px',
+                        overflow: 'auto',
+                      }}
+                    />
+                    <button
+                      onClick={() => setKidsNoteExpanded(false)}
+                      aria-label="Stäng anteckning"
+                      style={{
+                        position: 'absolute',
+                        top: '8px',
+                        right: '8px',
+                        background: 'none',
+                        border: 'none',
+                        cursor: 'pointer',
+                        padding: '4px',
+                      }}
+                    >
+                      <ChevronDown size={16} style={{ color: DRIFTWOOD, opacity: 0.5 }} />
+                    </button>
+                  </div>
+                </motion.div>
+              )}
+            </div>
+          </div>
+
+          {/* ── Advance button — fixed at bottom ── */}
+          <div style={{
+            flex: '0 0 auto',
+            padding: '0 24px',
+            paddingBottom: 'calc(16px + env(safe-area-inset-bottom, 0px))',
+          }}>
+            <motion.button
+              onClick={handleKidsAdvance}
+              whileTap={{ scale: 0.97 }}
+              style={{
+                width: '100%',
+                height: '56px',
+                borderRadius: '14px',
+                backgroundColor: SAFFRON,
+                border: 'none',
+                cursor: 'pointer',
+                fontFamily: 'var(--font-sans)',
+                fontSize: '17px',
+                fontWeight: 600,
+                color: MIDNIGHT_INK,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              {isLastPrompt ? 'Avsluta samtalet' : 'Fortsätt'}
+            </motion.button>
+          </div>
+        </div>
+
+        {/* ── Exit confirmation dialog ── */}
+        <AlertDialog open={showLeaveConfirm} onOpenChange={setShowLeaveConfirm}>
+          <AlertDialogContent style={{
+            backgroundColor: PARCHMENT,
+            borderRadius: '16px',
+            border: 'none',
+          }}>
+            <AlertDialogHeader>
+              <AlertDialogTitle style={{
+                fontFamily: 'var(--font-serif)',
+                fontSize: '18px',
+                color: BARK,
+              }}>
+                Vill du avsluta samtalet?
+              </AlertDialogTitle>
+            </AlertDialogHeader>
+            <AlertDialogFooter style={{ marginTop: '16px' }}>
+              <AlertDialogCancel style={{
+                color: BARK,
+                borderColor: DRIFTWOOD + '40',
+              }}>
+                Nej, fortsätt
+              </AlertDialogCancel>
+              <AlertDialogAction
+                onClick={() => navigate(exitBackTo)}
+                style={{
+                  backgroundColor: BARK,
+                  color: PARCHMENT,
+                }}
+              >
+                Ja, avsluta
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+      </>
+    );
+  }
+
   return (
     <>
     {_devDebug}
