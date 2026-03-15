@@ -757,213 +757,57 @@ export default function ProductLibrary() {
           </motion.div>
         </div>
 
-        {/* Visual pause before diary */}
+        {/* Dagboken — compact return-loop hook */}
         <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.8, duration: 0.9 }}
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '12px',
-            margin: '32px 40px 8px',
-          }}
-        >
-          <div style={{ flex: 1, height: '1px', background: 'linear-gradient(90deg, transparent, hsla(38, 60%, 55%, 0.25))' }} />
-          <span style={{
-            fontFamily: "'Lato', sans-serif",
-            fontSize: '8px',
-            fontWeight: 700,
-            letterSpacing: '0.15em',
-            textTransform: 'uppercase' as const,
-            color: '#E9B44C',
-            opacity: 0.5,
-          }}>
-            ✦
-          </span>
-          <div style={{ flex: 1, height: '1px', background: 'linear-gradient(90deg, hsla(38, 60%, 55%, 0.25), transparent)' }} />
-        </motion.div>
-
-        {/* Diary — magical emotional anchor */}
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
+          initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.9 * ANIM_SPEED, duration: 0.9 * ANIM_SPEED, ease: [0.22, 1, 0.36, 1] }}
-          whileTap={{ scale: 0.98 }}
+          transition={{ delay: 0.7 * ANIM_SPEED, duration: 0.7 * ANIM_SPEED, ease: [0.22, 1, 0.36, 1] }}
+          whileTap={{ scale: 0.97 }}
           onClick={() => navigate('/diary/jag_i_mig')}
           className="cursor-pointer"
           style={{
-            margin: '20px 20px 16px',
-            padding: '28px 22px 22px',
-            borderRadius: '20px',
-            background: 'linear-gradient(180deg, hsla(185, 25%, 30%, 0.35) 0%, hsla(185, 20%, 25%, 0.25) 100%)',
-            backdropFilter: 'blur(16px)',
-            WebkitBackdropFilter: 'blur(16px)',
-            textAlign: 'center',
-            position: 'relative',
-            overflow: 'hidden',
-            boxShadow: '0 2px 8px hsla(185, 20%, 10%, 0.08), 0 12px 32px -8px hsla(185, 18%, 8%, 0.12)',
-            border: '1px solid hsla(185, 30%, 50%, 0.12)',
+            margin: '28px 20px 16px',
+            padding: '16px 20px',
+            borderRadius: '16px',
+            background: 'hsla(230, 30%, 16%, 0.6)',
+            border: '1px solid hsla(38, 60%, 50%, 0.12)',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '14px',
           }}
         >
-          {/* Ambient glow */}
-          <div style={{
-            position: 'absolute',
-            top: '-30%',
-            left: '50%',
-            transform: 'translateX(-50%)',
-            width: '200px',
-            height: '200px',
-            borderRadius: '50%',
-            background: 'radial-gradient(circle, hsla(38, 70%, 70%, 0.12) 0%, transparent 70%)',
-            pointerEvents: 'none',
-          }} />
-
-          {/* Book icon with saffron tint */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 1.0, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-          >
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{ color: '#E9B44C', opacity: 0.5, margin: '0 auto 10px', display: 'block' }}>
-              <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20" />
-            </svg>
-          </motion.div>
-
-          <motion.p
-            initial={{ opacity: 0, y: 6 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 1.05, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-            style={{
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{ color: '#E9B44C', opacity: 0.6, flexShrink: 0 }}>
+            <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20" />
+          </svg>
+          <div style={{ flex: 1 }}>
+            <p style={{
               fontFamily: "'DM Serif Display', serif",
-              fontSize: '18px',
+              fontSize: '15px',
               fontWeight: 400,
-              color: '#F5EFE6',
-              lineHeight: 1.4,
-              marginBottom: '4px',
-            }}
-          >
-            Dagboken
-          </motion.p>
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1.15, duration: 0.6 }}
-            style={{
-              fontFamily: "'DM Serif Display', serif",
-              fontStyle: 'italic',
-              fontSize: '12px',
-              fontWeight: 400,
-               color: '#E9B44C',
-              opacity: 0.55,
-              lineHeight: 1.5,
-              marginBottom: '20px',
-            }}
-          >
-            Varje samtal sparas. Varje tanke samlas.
-          </motion.p>
-
-          {/* Visual mockup — stacked diary entries with stagger */}
-          <div style={{
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '8px',
-            maxWidth: '280px',
-            margin: '0 auto',
-          }}>
-            {[
-              { color: 'hsla(45, 50%, 92%, 0.15)', accent: '#C4B882', title: 'Jag i Mig', date: '12 mar', text: '"Hon sa att hon ibland känner sig osynlig i skolan..."' },
-              { color: 'hsla(145, 30%, 89%, 0.12)', accent: '#7DB88A', title: 'Jag i Världen', date: '8 mar', text: '"Vi pratade om mod — att våga säga ifrån"' },
-              { color: 'hsla(215, 35%, 91%, 0.12)', accent: '#8AA0C8', title: 'Syskon', date: '3 mar', text: '"De skrattade åt minnet av sommaren..."' },
-            ].map((entry, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 10, scale: 0.96 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                transition={{ delay: 1.2 + i * 0.12, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '10px',
-                  padding: '11px 14px',
-                  borderRadius: '12px',
-                  backgroundColor: entry.color,
-                  textAlign: 'left',
-                  boxShadow: '0 1px 4px hsla(30, 15%, 25%, 0.04)',
-                }}
-              >
-                <div style={{
-                  width: '3px',
-                  height: '26px',
-                  borderRadius: '2px',
-                  backgroundColor: entry.accent,
-                  opacity: 0.35,
-                  flexShrink: 0,
-                }} />
-                <div style={{ flex: 1, minWidth: 0 }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2px' }}>
-                    <span style={{
-                      fontFamily: "'Lato', sans-serif",
-                      fontSize: '9px',
-                      fontWeight: 700,
-                      letterSpacing: '0.06em',
-                      textTransform: 'uppercase' as const,
-                      color: entry.accent,
-                    }}>
-                      {entry.title}
-                    </span>
-                    <span style={{
-                      fontFamily: "'Lato', sans-serif",
-                      fontSize: '8px',
-                      color: entry.accent,
-                      opacity: 0.5,
-                    }}>
-                      {entry.date}
-                    </span>
-                  </div>
-                  <p style={{
-                    fontFamily: "'DM Serif Display', serif",
-                    fontStyle: 'italic',
-                    fontSize: '11px',
-                    color: entry.accent,
-                    opacity: 0.65,
-                    lineHeight: 1.3,
-                    overflow: 'hidden',
-                    textOverflow: 'ellipsis',
-                    whiteSpace: 'nowrap' as const,
-                  }}>
-                    {entry.text}
-                  </p>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-
-          {/* Bottom fade + CTA */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1.55, duration: 0.6 }}
-          >
-            <div style={{
-              height: '16px',
-              background: 'linear-gradient(to bottom, transparent, hsla(185, 20%, 25%, 0.3))',
-              marginTop: '6px',
-              borderRadius: '0 0 12px 12px',
-            }} />
+              color: '#FDF6E3',
+              lineHeight: 1.3,
+            }}>
+              Dagboken
+            </p>
             <p style={{
               fontFamily: "'Lato', sans-serif",
-              fontSize: '9px',
-              fontWeight: 600,
-              letterSpacing: '0.1em',
-              textTransform: 'uppercase' as const,
-              color: '#E9B44C',
-              opacity: 0.4,
-              marginTop: '8px',
+              fontSize: '10px',
+              color: 'hsla(38, 50%, 65%, 0.5)',
+              marginTop: '2px',
             }}>
-              Öppna dagboken →
+              Varje samtal sparas
             </p>
-          </motion.div>
+          </div>
+          <span style={{
+            fontFamily: "'Lato', sans-serif",
+            fontSize: '10px',
+            fontWeight: 600,
+            letterSpacing: '0.06em',
+            color: '#E9B44C',
+            opacity: 0.4,
+          }}>
+            →
+          </span>
         </motion.div>
           </motion.div>
         )}
