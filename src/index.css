@@ -159,13 +159,13 @@ h1, h2, h3,
     --surface-base:   hsl(var(--neutral-50));
     --surface-raised: hsl(var(--neutral-100));
     --surface-sunken: hsl(var(--neutral-200));
-    --surface-library: hsl(37, 71%, 96%);       /* #FAF7F2 warm linen */
-    --text-library:    hsl(16, 15%, 15%);        /* #2C2420 warm charcoal */
+    --surface-library: hsl(44, 86%, 94%);       /* Lantern Glow #FDF6E3 */
+    --text-library:    hsl(20, 16%, 15%);        /* Bark #2C2420 */
 
-    /* ── CTA pressed/hover states ── */
-    --cta-default: hsl(158, 35%, 18%);
-    --cta-hover-v2: hsl(158, 38%, 23%);
-    --cta-active:  hsl(158, 32%, 14%);
+    /* ── CTA pressed/hover states (Bonki Orange #E85D2C) ── */
+    --cta-default: hsl(16, 80%, 54%);
+    --cta-hover-v2: hsl(16, 82%, 48%);
+    --cta-active:  hsl(16, 78%, 42%);
 
     /* ── Semantic color tokens ── */
     --color-bg: var(--surface-base);
