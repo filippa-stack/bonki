@@ -13,8 +13,8 @@ import {
   DEEP_DUSK,
   DEEP_SAFFRON,
 } from '@/lib/palette';
-import { categories as stillUsCategories } from '@/data/content';
-import { allProducts, getProductForCard } from '@/data/products';
+import { cards as stillUsCards } from '@/data/content';
+import { allProducts } from '@/data/products';
 
 const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
