@@ -960,7 +960,7 @@ export default function ProductLibrary() {
                     textShadow: '0 0 10px rgba(30, 90, 104, 1), 0 0 20px rgba(30, 90, 104, 0.8)',
                   }}
                 >
-                  Vi finns kvar{!purchased.has('still_us') ? ' · 184 frågor · ✦ 1a gratis' : ''}
+                  Vi finns kvar · 184 frågor
                 </p>
               </div>
             </motion.div>
