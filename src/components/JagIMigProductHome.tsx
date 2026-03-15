@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import type { ProductManifest } from '@/types/product';
 import apaImage from '@/assets/apa-jag-i-mig.png';
 import KidsProductResumeBanner from '@/components/KidsProductResumeBanner';
-import DiaryEntrance from '@/components/DiaryEntrance';
+
 import ProductHomeBackButton from '@/components/ProductHomeBackButton';
 import { useKidsProductProgress } from '@/hooks/useKidsProductProgress';
 import CategoryProgressRing from '@/components/CategoryProgressRing';
