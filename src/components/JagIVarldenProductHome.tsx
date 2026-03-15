@@ -53,7 +53,7 @@ export default function JagIVarldenProductHome({ product }: { product: ProductMa
           </motion.div>
         </motion.div>
 
-        <div style={{ flex: 1 }} />
+        <div style={{ flex: 1, minHeight: '16px' }} />
 
         <motion.div variants={containerVariants} initial="hidden" animate="visible" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px', width: '100%' }}>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px', width: '100%' }}>
