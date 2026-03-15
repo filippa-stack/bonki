@@ -561,7 +561,7 @@ h1, h2, h3,
   }
 
   .reflection-field-wrapper:focus-within textarea {
-    border-bottom-color: #C4821D;
+    border-bottom-color: #D4A03A;           /* Deep Saffron */
   }
 
   /* Hero typography — driven by useThemeVars */
