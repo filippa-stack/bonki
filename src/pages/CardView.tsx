@@ -1960,7 +1960,7 @@ export default function CardView() {
         case 'opening': return 'Vänd perspektivet →';
         case 'reflective': return 'Tänk om... →';
         case 'scenario': return 'Gör något tillsammans →';
-        default: return 'Vi är klara';
+        default: return 'Vi är klara.';
       }
     };
 
@@ -2133,6 +2133,7 @@ export default function CardView() {
                 isReflectionStep={isReflectionStep}
                 isExerciseStep={isExerciseStep}
                 showBackArrow={false}
+                stillUsMode={true}
               />
             </motion.div>
           </AnimatePresence>

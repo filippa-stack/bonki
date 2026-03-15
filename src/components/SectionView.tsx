@@ -32,6 +32,8 @@ interface SectionViewProps {
   showBackArrow?: boolean;
   /** Faint illustration watermark URL for kids products */
   backgroundImageUrl?: string | null;
+  /** Still Us ember mode for exercise card */
+  stillUsMode?: boolean;
 }
 
 const normalizePrompt = (prompt: string | Prompt): Prompt => {
@@ -47,7 +49,7 @@ const normalizePrompt = (prompt: string | Prompt): Prompt => {
  * CardView passes only the section matching current_step_index.
  */
 const SectionView = forwardRef<SectionViewHandle, SectionViewProps>(
-  function SectionView({ section, promptIndex = 0, coupleSpaceId, sessionId, cardId, stageIndex, isLive, isReflectionStep, isExerciseStep, onBack, showBackArrow = false, backgroundImageUrl }, ref) {
+  function SectionView({ section, promptIndex = 0, coupleSpaceId, sessionId, cardId, stageIndex, isLive, isReflectionStep, isExerciseStep, onBack, showBackArrow = false, backgroundImageUrl, stillUsMode }, ref) {
     // If section has no prompts but has content, treat content as the prompt
     const hasExplicitPrompts = !!(section.prompts && section.prompts.length > 0);
     const isExercise = section.type === 'exercise';
@@ -129,6 +131,7 @@ const SectionView = forwardRef<SectionViewHandle, SectionViewProps>(
           anchor={backgroundImageUrl ? undefined : section.anchors?.find(a => a.promptIndex === (isExercise ? 0 : promptIndex))}
           highlightCount={0}
           backgroundImageUrl={backgroundImageUrl}
+          stillUsMode={stillUsMode}
           privateNote={undefined}
           sharedNote={undefined}
           onPromptChange={() => {}}
