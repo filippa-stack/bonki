@@ -63,7 +63,6 @@ export default function JagIVarldenProductHome({ product }: { product: ProductMa
               const catProgress = progress.categoryProgress[cat.id];
               const isNextCategory = progress.nextSuggestedCategoryId === cat.id;
               const isLastOdd = index === ORDERED_TILES.length - 1 && ORDERED_TILES.length % 2 === 1;
-              const isDark = tile.bg === '#5E7A62';
 
               return (
                 <motion.button
@@ -73,7 +72,7 @@ export default function JagIVarldenProductHome({ product }: { product: ProductMa
                   whileTap={{ scale: 0.94, y: 3 }}
                   onClick={() => navigate(`/category/${cat.id}`)}
                   style={{
-                    backgroundImage: `linear-gradient(135deg, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0) 50%, rgba(0,0,0,0.04) 100%)`,
+                    backgroundImage: `linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0) 50%, rgba(0,0,0,0.08) 100%)`,
                     backgroundColor: tile.bg,
                     borderRadius: '22px',
                     padding: '20px 16px',
@@ -84,15 +83,14 @@ export default function JagIVarldenProductHome({ product }: { product: ProductMa
                       : { aspectRatio: '1 / 1' }),
                     border: isNextCategory
                       ? `2.5px solid ${SAFFRON}CC`
-                      : isDark ? '1px solid rgba(255, 255, 255, 0.12)' : '1px solid rgba(61, 122, 69, 0.12)',
+                      : '1px solid rgba(255, 255, 255, 0.12)',
                     boxShadow: [
                       isNextCategory ? `0 0 18px 0px ${SAFFRON}50, 0 0 36px -4px ${SAFFRON}30` : '',
-                      '0 10px 28px rgba(61, 122, 69, 0.16)',
-                      '0 4px 10px rgba(61, 122, 69, 0.09)',
-                      '0 1px 3px rgba(0, 0, 0, 0.05)',
-                      isDark
-                        ? 'inset 0 3px 6px rgba(255, 255, 255, 0.2), inset 0 -4px 10px rgba(0, 0, 0, 0.14)'
-                        : 'inset 0 3px 6px rgba(255, 255, 255, 0.5), inset 0 -4px 10px rgba(61, 122, 69, 0.10)',
+                      '0 10px 28px rgba(0, 0, 0, 0.25)',
+                      '0 4px 10px rgba(0, 0, 0, 0.15)',
+                      '0 1px 3px rgba(0, 0, 0, 0.08)',
+                      'inset 0 3px 6px rgba(255, 255, 255, 0.15)',
+                      'inset 0 -4px 10px rgba(0, 0, 0, 0.14)',
                     ].filter(Boolean).join(', '),
                     display: 'flex',
                     flexDirection: 'column',

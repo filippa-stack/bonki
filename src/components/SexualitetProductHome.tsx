@@ -58,7 +58,6 @@ export default function SexualitetProductHome({ product }: { product: ProductMan
               if (!cat) return null;
               const catProgress = progress.categoryProgress[cat.id];
               const isNextCategory = progress.nextSuggestedCategoryId === cat.id;
-              const isDark = tile.bg === '#8E5558';
 
               return (
                 <motion.button
@@ -68,7 +67,7 @@ export default function SexualitetProductHome({ product }: { product: ProductMan
                   whileTap={{ scale: 0.94, y: 3 }}
                   onClick={() => navigate(`/category/${cat.id}`)}
                   style={{
-                    backgroundImage: `linear-gradient(135deg, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0) 50%, rgba(0,0,0,0.04) 100%)`,
+                    backgroundImage: `linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0) 50%, rgba(0,0,0,0.08) 100%)`,
                     backgroundColor: tile.bg,
                     borderRadius: '22px',
                     padding: '20px 16px',
@@ -77,15 +76,14 @@ export default function SexualitetProductHome({ product }: { product: ProductMan
                     aspectRatio: '1 / 1',
                     border: isNextCategory
                       ? `2.5px solid ${SAFFRON}CC`
-                      : isDark ? '1px solid rgba(255, 255, 255, 0.12)' : '1px solid rgba(166, 109, 109, 0.12)',
+                      : '1px solid rgba(255, 255, 255, 0.12)',
                     boxShadow: [
                       isNextCategory ? `0 0 18px 0px ${SAFFRON}50, 0 0 36px -4px ${SAFFRON}30` : '',
-                      '0 10px 28px rgba(166, 109, 109, 0.16)',
-                      '0 4px 10px rgba(166, 109, 109, 0.09)',
-                      '0 1px 3px rgba(0, 0, 0, 0.05)',
-                      isDark
-                        ? 'inset 0 3px 6px rgba(255, 255, 255, 0.2), inset 0 -4px 10px rgba(0, 0, 0, 0.14)'
-                        : 'inset 0 3px 6px rgba(255, 255, 255, 0.5), inset 0 -4px 10px rgba(166, 109, 109, 0.10)',
+                      '0 10px 28px rgba(0, 0, 0, 0.25)',
+                      '0 4px 10px rgba(0, 0, 0, 0.15)',
+                      '0 1px 3px rgba(0, 0, 0, 0.08)',
+                      'inset 0 3px 6px rgba(255, 255, 255, 0.15)',
+                      'inset 0 -4px 10px rgba(0, 0, 0, 0.14)',
                     ].filter(Boolean).join(', '),
                     display: 'flex',
                     flexDirection: 'column',
