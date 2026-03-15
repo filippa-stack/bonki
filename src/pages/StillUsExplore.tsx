@@ -282,7 +282,7 @@ export default function StillUsExplore() {
                                 {card.subtitle}
                               </span>
                             )}
-                          </button>
+                          </motion.button>
                         );
                       })}
                     </div>
