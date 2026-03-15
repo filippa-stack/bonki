@@ -10,8 +10,8 @@ import { useKidsProductProgress } from '@/hooks/useKidsProductProgress';
 import CategoryProgressRing from '@/components/CategoryProgressRing';
 
 const EASE = [0.4, 0.0, 0.2, 1] as const;
-const ACCENT_COLOR = '#9825D6';
-const DIARY_TEXT = '#240046';
+const ACCENT_COLOR = '#C77AE8';
+const DIARY_TEXT = '#FDF6E3';
 const SAFFRON = '#DA9D1D';
 
 const ORDERED_TILES = [
