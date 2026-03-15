@@ -51,7 +51,7 @@ h1, h2, h3,
     --accent: 30 10% 86%;
     --accent-foreground: 30 3% 10%;
 
-    --destructive: 355 86% 30%;           /* #C1121F mapped */
+    --destructive: 355 42% 45%;           /* Ember Red #A3434B */
     --destructive-foreground: 0 0% 100%;
 
     --border: var(--neutral-300);
