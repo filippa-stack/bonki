@@ -3043,11 +3043,12 @@ function KidsCompletionNote({ sessionId, spaceId, cardId, productId }: {
 
 /* ─── Simple takeaway for completion screen ─── */
 
-function SimpleTakeaway({ sessionId, spaceId, cardId, productId }: {
+function SimpleTakeaway({ sessionId, spaceId, cardId, productId, stillUsMode }: {
   sessionId: string | null;
   spaceId: string | null;
   cardId?: string;
   productId?: string;
+  stillUsMode?: boolean;
 }) {
   const { user } = useAuth();
   const [text, setText] = useState('');
@@ -3088,7 +3089,6 @@ function SimpleTakeaway({ sessionId, spaceId, cardId, productId }: {
 
   const handleChange = (value: string) => {
     setText(value);
-    // Auto-save with debounce
     if (debounceRef.current) clearTimeout(debounceRef.current);
     debounceRef.current = setTimeout(() => {
       if (value.trim()) {
@@ -3114,7 +3114,7 @@ function SimpleTakeaway({ sessionId, spaceId, cardId, productId }: {
           <Feather
             size={14}
             strokeWidth={1.5}
-            style={{ color: 'var(--text-primary)', opacity: 0.25 }}
+            style={{ color: stillUsMode ? DRIFTWOOD : 'var(--text-primary)', opacity: 0.25 }}
           />
         </div>
       )}
@@ -3137,16 +3137,18 @@ function SimpleTakeaway({ sessionId, spaceId, cardId, productId }: {
           fontFamily: 'var(--font-serif)',
           fontSize: '16px',
           lineHeight: 1.7,
-          color: 'var(--text-primary)',
-          backgroundColor: isFocused || hasFill
-            ? 'hsla(36, 20%, 97%, 0.12)'
-            : 'hsla(36, 18%, 96%, 0.06)',
+          color: stillUsMode ? BARK : 'var(--text-primary)',
+          backgroundColor: stillUsMode
+            ? (isFocused || hasFill ? EMBER_GLOW : 'hsla(36, 40%, 92%, 0.12)')
+            : (isFocused || hasFill ? 'hsla(36, 20%, 97%, 0.12)' : 'hsla(36, 18%, 96%, 0.06)'),
           border: 'none',
           borderRadius: '12px',
           padding: '20px 24px',
           textAlign: hasFill ? 'left' : 'center',
           boxShadow: isFocused
-            ? '0 0 0 1px hsla(36, 20%, 80%, 0.15)'
+            ? stillUsMode
+              ? `0 0 0 1px hsla(36, 40%, 80%, 0.25)`
+              : '0 0 0 1px hsla(36, 20%, 80%, 0.15)'
             : 'none',
           transition: 'background-color 320ms ease, box-shadow 320ms ease',
         }}
