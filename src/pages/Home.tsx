@@ -17,7 +17,7 @@ import { useAppMode } from '@/hooks/useAppMode';
 import { useNormalizedSessionContext } from '@/contexts/NormalizedSessionContext';
 import { useSpaceSnapshot } from '@/hooks/useSpaceSnapshot';
 import { useVerdigrisTheme } from '@/components/VerdigrisAtmosphere';
-import { buildDynamicSteps } from '@/components/StepProgressIndicator';
+import UnifiedResumeBanner from '@/components/UnifiedResumeBanner';
 import { categories as allCategories, cards as allCards } from '@/data/content';
 import stillUsIllustration from '@/assets/illustration-still-us-home.png';
 
