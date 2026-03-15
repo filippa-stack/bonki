@@ -752,11 +752,11 @@ export default function Journal() {
                       onClick={() => s.card_id && navigate(`/card/${s.card_id}`)}
                       style={{
                         width: '100%', backgroundColor: DEEP_DUSK, borderRadius: '16px',
+                        padding: '16px', cursor: 'pointer',
+                        borderTop: 'none', borderRight: 'none', borderBottom: 'none',
                         borderLeft: `3px solid ${getProductColor(s.product_id)}`,
-                        padding: '16px', border: 'none', cursor: 'pointer',
                         display: 'flex', alignItems: 'center', justifyContent: 'space-between',
                         textAlign: 'left', WebkitTapHighlightColor: 'transparent',
-                        // Re-apply left border since border:none overrides
                       }}
                     >
                       <div style={{ minWidth: 0 }}>
