@@ -130,6 +130,12 @@ export default function Index() {
     return <Onboarding />;
   }
 
+  // Still Us legacy: ?product=still-us routes to the original Home view
+  const searchParams = new URLSearchParams(window.location.search);
+  if (searchParams.get('product') === 'still-us') {
+    return <Home />;
+  }
+
   // After onboarding → ProductLibrary (the Lobby)
   // Users choose their product from here.
   return <ProductLibrary />;
