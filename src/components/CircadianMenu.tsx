@@ -62,6 +62,7 @@ const MIDNIGHT_INK = '#1A1A2E';
 const LANTERN_GLOW = '#FDF6E3';
 const DRIFTWOOD = '#6B5E52';
 const SAFFRON = '#E9B44C';
+const BARK = '#2C2420';
 
 const ENTER_EASE = [0.22, 1, 0.36, 1] as const;
 
