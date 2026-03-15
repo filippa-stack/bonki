@@ -504,8 +504,13 @@ function KidsCardTile({ card, index, isCompleted, isNextSuggested, tileColor, on
 
 
 /* ═══════════════════════════════════════════════════════════
-   Still Us — Verdigris-themed Category View
+   Still Us — Ember-themed Category Detail View
+   BG: Ember Night, cards: Ember Mid, text: Lantern Glow / Driftwood
    ═══════════════════════════════════════════════════════════ */
+
+const EMBER_NIGHT = '#2E2233';
+const EMBER_MID = '#473454';
+const DEEP_SAFFRON = '#D4A03A';
 
 interface StillUsCategoryViewProps {
   category: { id: string; title: string; entryLine?: string; subtitle?: string };
@@ -525,242 +530,196 @@ function StillUsCategoryView({
   completedCardIds,
   inProgressCardIds,
   allCompleted,
-  circadianColor,
   backTo,
   navigate,
   isReturningUser = false,
 }: StillUsCategoryViewProps) {
-  const color = circadianColor || '#A2B5A9';
-  const colorLight = CIRCADIAN_COLORS_LIGHT[category.id] || color;
-  const HERITAGE_GOLD = '#DA9D1D';
-  const STILL_US_SAFFRON = '#DA9D1D';
+  const completedCount = cards.filter(c => completedCardIds.includes(c.id)).length;
 
   return (
-    <div className="min-h-screen relative overflow-hidden" style={{ backgroundColor: 'var(--surface-base)' }}>
-      {/* Background illustration */}
+    <div className="min-h-screen" style={{ backgroundColor: EMBER_NIGHT }}>
+      {/* Header */}
+      <motion.div
+        initial={{ opacity: 0, y: -8 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, ease: EASE }}
+        style={{
+          paddingTop: 'calc(env(safe-area-inset-top, 0px) + 16px)',
+          paddingBottom: '12px',
+          paddingLeft: '16px',
+          paddingRight: '16px',
+        }}
+      >
+        {/* Back arrow */}
+        <button
+          onClick={() => navigate(backTo)}
+          style={{
+            background: 'none',
+            border: 'none',
+            cursor: 'pointer',
+            color: LANTERN_GLOW,
+            padding: '4px',
+            marginBottom: '12px',
+          }}
+          aria-label="Tillbaka"
+        >
+          <ChevronLeft size={22} strokeWidth={1.5} />
+        </button>
+
+        {/* Category name */}
+        <h1
+          style={{
+            fontFamily: "'DM Serif Display', var(--font-serif)",
+            fontSize: '22px',
+            fontWeight: 600,
+            color: LANTERN_GLOW,
+            textAlign: 'center',
+            margin: 0,
+            lineHeight: 1.3,
+          }}
+        >
+          {category.title}
+        </h1>
+
+        {/* Subtitle */}
+        {category.entryLine && (
+          <p
+            style={{
+              fontFamily: 'var(--font-serif)',
+              fontSize: '14px',
+              color: DRIFTWOOD,
+              textAlign: 'center',
+              marginTop: '6px',
+              lineHeight: 1.4,
+            }}
+          >
+            {category.entryLine}
+          </p>
+        )}
+
+        {/* Progress */}
+        <p
+          style={{
+            fontFamily: 'var(--font-sans)',
+            fontSize: '13px',
+            fontWeight: 400,
+            color: DRIFTWOOD,
+            textAlign: 'center',
+            marginTop: '6px',
+          }}
+        >
+          {completedCount} av {cards.length} samtal utforskade
+        </p>
+      </motion.div>
+
+      {/* Card list */}
+      <div
+        style={{
+          padding: '8px 16px',
+          paddingBottom: 'calc(80px + env(safe-area-inset-bottom, 0px))',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '12px',
+        }}
+      >
+        {cards.map((card, index) => {
+          const isCompleted = completedCardIds.includes(card.id);
+          const isInProgress = !isCompleted && inProgressCardIds.includes(card.id);
+          const isNextSuggested = !isCompleted && !allCompleted && cards.slice(0, index).every(c => completedCardIds.includes(c.id));
+
+          return (
+            <motion.button
+              key={card.id}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: index * 0.06, duration: 0.5, ease: EASE }}
+              whileTap={{ scale: 0.97 }}
+              onClick={() => navigate(isReturningUser ? `/card/${card.id}` : `/preview/${card.id}`)}
+              style={{
+                position: 'relative',
+                width: '100%',
+                minHeight: '120px',
+                background: EMBER_MID,
+                borderRadius: '16px',
+                padding: '20px 24px',
+                textAlign: 'left',
+                cursor: 'pointer',
+                border: 'none',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '12px',
+                borderLeft: isNextSuggested && !allCompleted
+                  ? `2px solid ${DEEP_SAFFRON}`
+                  : '2px solid transparent',
+                boxShadow: '0 4px 16px rgba(0, 0, 0, 0.2)',
+              }}
+            >
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <span
+                  style={{
+                    fontFamily: "'DM Serif Display', var(--font-serif)",
+                    fontSize: '20px',
+                    fontWeight: 400,
+                    color: LANTERN_GLOW,
+                    lineHeight: 1.25,
+                    display: 'block',
+                  }}
+                >
+                  {card.title}
+                </span>
+                {card.subtitle && (
+                  <span
+                    style={{
+                      fontFamily: 'var(--font-sans)',
+                      fontSize: '14px',
+                      fontWeight: 400,
+                      color: DRIFTWOOD,
+                      lineHeight: 1.4,
+                      display: 'block',
+                      marginTop: '5px',
+                    }}
+                  >
+                    {card.subtitle}
+                  </span>
+                )}
+              </div>
+
+              {/* Status indicators */}
+              <div style={{ flexShrink: 0 }}>
+                {isCompleted && (
+                  <Check
+                    size={24}
+                    strokeWidth={2}
+                    style={{ color: SAFFRON }}
+                  />
+                )}
+              </div>
+            </motion.button>
+          );
+        })}
+      </div>
+
+      {/* Permission line */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ duration: 0.5 }}
-        style={{
-          position: 'absolute', top: '-8%', left: '-25%',
-          width: '150%', height: '110%',
-          zIndex: 0, pointerEvents: 'none',
-        }}
+        transition={{ delay: 0.5, duration: 0.5 }}
+        style={{ textAlign: 'center', padding: '0 24px 32px' }}
       >
-        <img
-          src={stillUsIllustration}
-          alt=""
+        <p
+          className="font-serif"
           style={{
-            width: '100%', height: '100%', objectFit: 'contain', objectPosition: 'center top', opacity: 0.30,
-            maskImage: 'linear-gradient(to bottom, rgba(0,0,0,0.4) 0%, rgba(0,0,0,1) 25%, rgba(0,0,0,1) 60%, rgba(0,0,0,0) 78%)',
-            WebkitMaskImage: 'linear-gradient(to bottom, rgba(0,0,0,0.4) 0%, rgba(0,0,0,1) 25%, rgba(0,0,0,1) 60%, rgba(0,0,0,0) 78%)',
+            fontSize: '14px',
+            fontStyle: 'italic',
+            color: DRIFTWOOD,
+            opacity: 0.7,
           }}
-        />
+        >
+          {allCompleted
+            ? 'Ni har utforskat alla samtal här.'
+            : 'Välj det som känns rätt just nu.'}
+        </p>
       </motion.div>
-
-      {/* Back button */}
-      <motion.button
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.2, duration: 0.4 }}
-        onClick={() => navigate(backTo)}
-        style={{
-          position: 'absolute', top: 'calc(env(safe-area-inset-top, 0px) + 16px)', left: '16px',
-          zIndex: 10, background: 'none', border: 'none', cursor: 'pointer',
-          color: 'var(--text-primary)', opacity: 0.6,
-          padding: '8px',
-        }}
-        aria-label="Tillbaka"
-      >
-        <ChevronLeft size={22} strokeWidth={1.5} />
-      </motion.button>
-
-      {/* Content */}
-      <div style={{ position: 'relative', zIndex: 1, minHeight: '100vh', display: 'flex', flexDirection: 'column', justifyContent: 'center', paddingTop: 'calc(env(safe-area-inset-top, 0px) + 56px)', paddingBottom: 'calc(80px + env(safe-area-inset-bottom, 0px))' }}>
-        {/* Category title */}
-        <motion.div
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, ease: EASE }}
-          style={{ textAlign: 'center', paddingLeft: '10vw', paddingRight: '10vw', marginBottom: '8px' }}
-        >
-          <h1
-            style={{
-              fontFamily: "'DM Serif Display', var(--font-serif)",
-              fontSize: 'clamp(28px, 8vw, 38px)',
-              fontWeight: 700,
-              color: colorLight,
-              letterSpacing: '-0.01em',
-              lineHeight: 1.2,
-              textShadow: `0 0 20px ${color}80, 0 1px 8px hsla(194, 28%, 8%, 0.4)`,
-            }}
-          >
-            {category.title}
-          </h1>
-        </motion.div>
-
-        {/* Entry line */}
-        {category.entryLine && (
-          <motion.p
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.1, ease: EASE }}
-            style={{
-              textAlign: 'center',
-              fontFamily: 'var(--font-serif)',
-              fontSize: 'clamp(16px, 4.5vw, 20px)',
-              fontWeight: 400,
-              lineHeight: 1.45,
-              color: colorLight,
-              opacity: 0.95,
-              maxWidth: '80%',
-              marginLeft: 'auto', marginRight: 'auto',
-              marginBottom: '40px',
-              textWrap: 'balance',
-              textShadow: `0 0 14px ${color}60, 0 1px 6px hsla(194, 28%, 8%, 0.35)`,
-            } as React.CSSProperties}
-          >
-            {category.entryLine}
-          </motion.p>
-        )}
-
-        {/* Ceremony separator */}
-        <motion.div
-          initial={{ scaleX: 0 }}
-          animate={{ scaleX: 1 }}
-          transition={{ delay: 0.2, duration: 0.8, ease: EASE }}
-          style={{
-            width: '28px', height: '2px', borderRadius: '1px',
-            background: 'var(--accent-saffron, #DA9D1D)',
-            opacity: 0.45, margin: '0 auto 28px', transformOrigin: 'center',
-          }}
-        />
-
-        {/* Card tiles */}
-        <motion.div
-          initial="hidden"
-          animate="visible"
-          variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.09, delayChildren: 0.2 } } }}
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '12px',
-            paddingLeft: '20px',
-            paddingRight: '20px',
-          }}
-        >
-          {cards.map((card, index) => {
-            const isCompleted = completedCardIds.includes(card.id);
-            const isInProgress = !isCompleted && inProgressCardIds.includes(card.id);
-            const isNextSuggested = !isCompleted && cards.slice(0, index).every(c => completedCardIds.includes(c.id));
-            const tileFill = CIRCADIAN_FILLS[category.id] || 'rgba(162, 181, 169, 0.62)';
-            const tileText = CIRCADIAN_COLORS_LIGHT[category.id] || '#D0DDD5';
-            const tileColor = CIRCADIAN_COLORS[category.id] || '#A2B5A9';
-
-            return (
-              <motion.button
-                key={card.id}
-                variants={{
-                  hidden: { opacity: 0, y: 22, scale: 0.94 },
-                  visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.55, ease: EASE } },
-                }}
-                whileHover={{ scale: 1.02, y: -2 }}
-                whileTap={{ scale: 0.97, y: 2 }}
-                onClick={() => navigate(isReturningUser ? `/card/${card.id}` : `/preview/${card.id}`)}
-                style={{
-                  position: 'relative',
-                  width: '100%',
-                  background: tileFill,
-                  backdropFilter: 'blur(24px) saturate(1.3)',
-                  WebkitBackdropFilter: 'blur(24px) saturate(1.3)',
-                  borderRadius: '24px',
-                  padding: '28px 24px',
-                  textAlign: 'left',
-                  cursor: 'pointer',
-                  border: isNextSuggested && !allCompleted
-                    ? `2px solid ${STILL_US_SAFFRON}88`
-                    : `1px solid rgba(255, 255, 255, 0.15)`,
-                  boxShadow: [
-                    isNextSuggested && !allCompleted ? `0 0 20px 0px ${STILL_US_SAFFRON}40, 0 0 40px -4px ${STILL_US_SAFFRON}25` : '',
-                    '0 10px 28px rgba(0, 0, 0, 0.25)',
-                    '0 4px 10px rgba(0, 0, 0, 0.15)',
-                    '0 1px 3px rgba(0, 0, 0, 0.1)',
-                    'inset 0 1.5px 0 rgba(255, 255, 255, 0.25)',
-                    `inset 0 -3px 8px ${tileColor}25`,
-                  ].filter(Boolean).join(', '),
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '0',
-                  overflow: 'hidden',
-                  opacity: isCompleted ? 0.6 : 1,
-                }}
-              >
-                <div style={{ flex: 1, minWidth: 0 }}>
-                  <span
-                    style={{
-                      fontFamily: "'DM Serif Display', var(--font-serif)",
-                      fontSize: 'clamp(19px, 5vw, 22px)',
-                      fontWeight: 400,
-                      color: '#F5EFE6',
-                      lineHeight: 1.25,
-                      display: 'block',
-                    }}
-                  >
-                    {card.title}
-                  </span>
-                  {card.subtitle && (
-                    <span
-                      style={{
-                        fontFamily: 'var(--font-sans)',
-                        fontSize: '13px',
-                        fontWeight: 400,
-                        color: '#F5EFE6',
-                        opacity: 0.75,
-                        lineHeight: 1.4,
-                        display: 'block',
-                        marginTop: '5px',
-                      }}
-                    >
-                      {card.subtitle}
-                    </span>
-                  )}
-                </div>
-
-                <div style={{ flexShrink: 0 }}>
-                  {isCompleted && <CardStatusBadge variant="completed" mode="dark" />}
-                  {isInProgress && <CardStatusBadge variant="inProgress" mode="dark" />}
-                  {isNextSuggested && !allCompleted && <CardStatusBadge variant="next" mode="dark" />}
-                </div>
-              </motion.button>
-            );
-          })}
-        </motion.div>
-
-        {/* Bottom sign-off */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.6, duration: 0.5 }}
-          style={{ marginTop: '40px', textAlign: 'center', paddingLeft: '24px', paddingRight: '24px' }}
-        >
-          <p
-            style={{
-              fontFamily: 'var(--font-sans)',
-              fontSize: '13px',
-              fontWeight: 400,
-              color: 'var(--text-primary)',
-              opacity: 0.60,
-              lineHeight: 1.55,
-              textShadow: '0 1px 4px hsla(194, 28%, 8%, 0.30)',
-            }}
-          >
-            {allCompleted
-              ? 'Ni har utforskat alla samtal här. Välkomna tillbaka när som helst.'
-              : 'Välj det som känns rätt just nu.'}
-          </p>
-        </motion.div>
-      </div>
     </div>
   );
 }

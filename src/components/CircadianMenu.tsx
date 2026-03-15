@@ -4,8 +4,7 @@ import { Category, Card } from '@/types';
 import { Check } from 'lucide-react';
 
 /**
- * Circadian color mapping — solid tile backgrounds for dark tactile tiles.
- * Each color is a rich, matte tone that feels "leather-bound premium".
+ * Circadian color mapping — kept for category view compatibility.
  */
 export const CIRCADIAN_COLORS: Record<string, string> = {
   'emotional-intimacy': '#A2B5A9',
@@ -19,7 +18,6 @@ export const CIRCADIAN_COLORS: Record<string, string> = {
   'category-10':        '#313658',
 };
 
-/** Lighter variants for text on dark backgrounds — higher contrast */
 export const CIRCADIAN_COLORS_LIGHT: Record<string, string> = {
   'emotional-intimacy': '#D0DDD5',
   'communication':      '#A8C7B5',
@@ -32,7 +30,6 @@ export const CIRCADIAN_COLORS_LIGHT: Record<string, string> = {
   'category-10':        '#7A80B0',
 };
 
-/** Luminous glassmorphic fill for tiles — high opacity to glow against dark bg */
 export const CIRCADIAN_FILLS: Record<string, string> = {
   'emotional-intimacy': 'rgba(162, 181, 169, 0.82)',
   'communication':      'rgba(107, 142, 125, 0.80)',
@@ -57,24 +54,39 @@ export const CIRCADIAN_FILLS_HOVER: Record<string, string> = {
   'category-10':        'rgba(49, 54, 88, 0.92)',
 };
 
-const HERITAGE_GOLD = '#DA9D1D';
+/* ── Still Us Home palette ── */
+const DEEP_SAFFRON = '#D4A03A';
+const EMBER_MID = '#473454';
+const EMBER_NIGHT = '#2E2233';
+const MIDNIGHT_INK = '#1A1A2E';
+const LANTERN_GLOW = '#FDF6E3';
+const DRIFTWOOD = '#6B5E52';
+const SAFFRON = '#E9B44C';
+
 const ENTER_EASE = [0.22, 1, 0.36, 1] as const;
 
 /**
- * Section groupings with editorial headers
+ * Section groupings — depth progression with tile colors.
+ * GRUNDEN = Saffron (warm entry), DET SOM FORMAR ER = Ember Mid, DJUPET = Ember Night
  */
 const SECTION_GROUPS = [
   {
     label: 'Grunden',
     ids: ['emotional-intimacy', 'communication', 'category-8'],
+    tileBg: DEEP_SAFFRON,
+    tileText: MIDNIGHT_INK,
   },
   {
     label: 'Det som formar er',
     ids: ['individual-needs', 'parenting-together', 'category-9'],
+    tileBg: EMBER_MID,
+    tileText: LANTERN_GLOW,
   },
   {
     label: 'Djupet',
     ids: ['category-6', 'daily-life', 'category-10'],
+    tileBg: EMBER_NIGHT,
+    tileText: LANTERN_GLOW,
   },
 ];
 
@@ -92,14 +104,14 @@ function ProgressRing({ completed, total, size = 22 }: { completed: number; tota
         <circle
           cx={size / 2} cy={size / 2} r={radius}
           fill="none"
-          stroke={HERITAGE_GOLD}
+          stroke={SAFFRON}
           strokeWidth={2}
           opacity={0.15}
         />
         <motion.circle
           cx={size / 2} cy={size / 2} r={radius}
           fill="none"
-          stroke={HERITAGE_GOLD}
+          stroke={SAFFRON}
           strokeWidth={2}
           strokeLinecap="round"
           strokeDasharray={circumference}
@@ -119,7 +131,7 @@ function ProgressRing({ completed, total, size = 22 }: { completed: number; tota
             display: 'flex', alignItems: 'center', justifyContent: 'center',
           }}
         >
-          <Check size={10} style={{ color: HERITAGE_GOLD }} />
+          <Check size={10} style={{ color: SAFFRON }} />
         </motion.div>
       )}
     </div>
@@ -171,7 +183,6 @@ export default function CircadianMenu({
     return map;
   }, [categories, cards]);
 
-  // Determine the "next suggested" category (first non-completed)
   const nextSuggestedId = useMemo(() => {
     for (const cat of categories) {
       const catCards = categoryCards.get(cat.id) || [];
@@ -181,7 +192,6 @@ export default function CircadianMenu({
     return null;
   }, [categories, categoryCards, completedCardIds]);
 
-  // Build ordered groups from current categories
   const groups = useMemo(() => {
     return SECTION_GROUPS.map(group => ({
       ...group,
@@ -190,8 +200,6 @@ export default function CircadianMenu({
         .filter(Boolean) as Category[],
     })).filter(g => g.categories.length > 0);
   }, [categories]);
-
-  let globalIndex = 0;
 
   return (
     <motion.div
@@ -204,7 +212,7 @@ export default function CircadianMenu({
       {groups.map((group, groupIdx) => {
         return (
           <div key={group.label}>
-            {/* Section header */}
+            {/* Section header — 12px uppercase Driftwood */}
             <motion.div
               variants={tileVariants}
               style={{
@@ -213,13 +221,13 @@ export default function CircadianMenu({
             >
               <h2
                 style={{
-                  fontFamily: 'var(--font-serif)',
+                  fontFamily: 'var(--font-sans)',
                   fontSize: '12px',
                   fontWeight: 600,
                   letterSpacing: '0.08em',
                   textTransform: 'uppercase',
-                  color: HERITAGE_GOLD,
-                  opacity: 0.35,
+                  color: DRIFTWOOD,
+                  opacity: 0.65,
                   lineHeight: 1,
                 }}
               >
@@ -236,11 +244,6 @@ export default function CircadianMenu({
               }}
             >
               {group.categories.map((category) => {
-                const currentIndex = globalIndex++;
-                const sequenceNumber = currentIndex + 1;
-                const tileFill = CIRCADIAN_FILLS[category.id] || 'rgba(162, 181, 169, 0.62)';
-                const tileText = CIRCADIAN_COLORS_LIGHT[category.id] || '#D0DDD5';
-                const tileColor = CIRCADIAN_COLORS[category.id] || '#A2B5A9';
                 const catCards = categoryCards.get(category.id) || [];
                 const completedCount = catCards.filter(c => completedCardIds.includes(c.id)).length;
                 const allCompleted = completedCount === catCards.length && catCards.length > 0;
@@ -255,24 +258,21 @@ export default function CircadianMenu({
                     onClick={() => onNavigateToCategory(category.id)}
                     style={{
                       position: 'relative',
-                      background: tileFill,
-                      backdropFilter: 'blur(24px) saturate(1.3)',
-                      WebkitBackdropFilter: 'blur(24px) saturate(1.3)',
-                      borderRadius: '22px',
-                      padding: '18px 10px 16px',
+                      background: group.tileBg,
+                      borderRadius: '12px',
+                      padding: '14px 8px 14px',
                       textAlign: 'center',
                       cursor: 'pointer',
-                      aspectRatio: '1 / 1',
+                      height: '110px',
                       border: isNextSuggested
-                        ? `2px solid ${HERITAGE_GOLD}88`
-                        : `1px solid rgba(255, 255, 255, 0.15)`,
+                        ? `2px solid ${DEEP_SAFFRON}88`
+                        : group.tileBg === DEEP_SAFFRON
+                          ? '1px solid rgba(0, 0, 0, 0.08)'
+                          : '1px solid rgba(255, 255, 255, 0.08)',
                       boxShadow: [
-                        isNextSuggested ? `0 0 20px 0px ${HERITAGE_GOLD}40, 0 0 40px -4px ${HERITAGE_GOLD}25` : '',
-                        '0 10px 28px rgba(0, 0, 0, 0.25)',
-                        '0 4px 10px rgba(0, 0, 0, 0.15)',
+                        isNextSuggested ? `0 0 16px 0px ${DEEP_SAFFRON}40` : '',
+                        '0 4px 16px rgba(0, 0, 0, 0.2)',
                         '0 1px 3px rgba(0, 0, 0, 0.1)',
-                        'inset 0 1.5px 0 rgba(255, 255, 255, 0.25)',
-                        `inset 0 -3px 8px ${tileColor}25`,
                       ].filter(Boolean).join(', '),
                       display: 'flex',
                       flexDirection: 'column',
@@ -283,30 +283,13 @@ export default function CircadianMenu({
                       overflow: 'hidden',
                     }}
                   >
-                    {/* Sequence number — subtle gold top-left */}
-                    <span
-                      style={{
-                        position: 'absolute',
-                        top: '8px',
-                        left: '10px',
-                        fontFamily: 'var(--font-serif)',
-                        fontSize: '10px',
-                        fontWeight: 500,
-                        color: HERITAGE_GOLD,
-                        opacity: 0.45,
-                        lineHeight: 1,
-                      }}
-                    >
-                      {sequenceNumber}
-                    </span>
-
                     {/* Title */}
                     <span
                       style={{
                         fontFamily: "'DM Serif Display', var(--font-serif)",
-                        fontSize: 'clamp(15px, 4.2vw, 18px)',
+                        fontSize: 'clamp(14px, 3.8vw, 17px)',
                         fontWeight: 400,
-                        color: tileText,
+                        color: group.tileText,
                         padding: '0 2px',
                         lineHeight: 1.2,
                       }}
@@ -319,7 +302,7 @@ export default function CircadianMenu({
                       <span
                         style={{
                           position: 'absolute',
-                          bottom: '8px',
+                          bottom: '6px',
                           left: '50%',
                           transform: 'translateX(-50%)',
                         }}
