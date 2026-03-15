@@ -397,7 +397,7 @@ export default function Journal() {
 
   const stillUsSessions = useMemo(() => {
     if (!sessions) return [];
-    return sessions.filter(s => s.product_id === STILL_US_ID);
+    return sessions.filter(s => effectiveIsPar(s.product_id, s.card_id));
   }, [sessions]);
 
   // Build session lookup
