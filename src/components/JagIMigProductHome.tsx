@@ -122,7 +122,7 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
                   }}>
                     {tile.sub}
                   </span>
-                  {catProgress && catProgress.completed > 0 && (
+                  {catProgress && (
                     <CategoryProgressRing completed={catProgress.completed} total={catProgress.total} color={tile.text} />
                   )}
                 </motion.button>
