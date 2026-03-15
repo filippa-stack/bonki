@@ -2880,6 +2880,138 @@ export default function CardView() {
   );
 }
 
+/* ─── Kids completion note — opt-in nudge ─── */
+
+function KidsCompletionNote({ sessionId, spaceId, cardId, productId }: {
+  sessionId: string | null;
+  spaceId: string | null;
+  cardId?: string;
+  productId?: string;
+}) {
+  const BARK = '#2C2420';
+  const DRIFTWOOD = '#6B5E52';
+  const PARCHMENT = '#F5EDD2';
+
+  const [expanded, setExpanded] = useState(false);
+  const [text, setText] = useState('');
+  const [rowId, setRowId] = useState<string | null>(null);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const { user } = useAuth();
+  const isDemo = isDemoMode();
+  const debounceRef = useRef<ReturnType<typeof setTimeout>>();
+
+  const persistToDb = useCallback(async (value: string) => {
+    if (!sessionId || !user?.id || !spaceId) return;
+    if (rowId) {
+      await supabase.from('couple_takeaways').update({ content: value } as any).eq('id', rowId);
+    } else if (value.trim()) {
+      const { data } = await supabase
+        .from('couple_takeaways')
+        .insert({ session_id: sessionId, couple_space_id: spaceId, content: value, created_by: user.id } as any)
+        .select('id')
+        .single();
+      if (data) setRowId(data.id);
+    }
+  }, [sessionId, user?.id, spaceId, rowId]);
+
+  const persistToLocal = useCallback((value: string) => {
+    if (!productId || !cardId) return;
+    try {
+      const key = `bonki-demo-diary-${productId}`;
+      const existing = JSON.parse(localStorage.getItem(key) || '[]');
+      const idx = existing.findIndex((e: any) => e.cardId === cardId);
+      const entry = { cardId, text: value, date: new Date().toISOString(), type: 'reflection' };
+      if (idx >= 0) existing[idx] = entry;
+      else existing.unshift(entry);
+      localStorage.setItem(key, JSON.stringify(existing));
+    } catch {}
+  }, [productId, cardId]);
+
+  const handleChange = (value: string) => {
+    setText(value);
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+    debounceRef.current = setTimeout(() => {
+      if (value.trim()) {
+        if (isDemo) persistToLocal(value);
+        else persistToDb(value);
+      }
+    }, 1000);
+  };
+
+  if (!expanded) {
+    return (
+      <button
+        onClick={() => {
+          setExpanded(true);
+          setTimeout(() => textareaRef.current?.focus(), 150);
+        }}
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: '6px',
+          width: '100%',
+          padding: '12px',
+          background: 'none',
+          border: 'none',
+          cursor: 'pointer',
+        }}
+      >
+        <Pencil size={14} style={{ color: DRIFTWOOD, opacity: 0.6 }} />
+        <span style={{
+          fontFamily: 'var(--font-sans)',
+          fontSize: '14px',
+          fontWeight: 400,
+          color: DRIFTWOOD,
+        }}>
+          Vill ni skriva något om samtalet?
+        </span>
+      </button>
+    );
+  }
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, height: 0 }}
+      animate={{ opacity: 1, height: 'auto' }}
+      transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
+    >
+      <p style={{
+        fontFamily: 'var(--font-serif)',
+        fontSize: '12px',
+        fontStyle: 'italic',
+        color: DRIFTWOOD,
+        textAlign: 'center',
+        marginBottom: '8px',
+      }}>
+        Inget du skriver lämnar det här rummet.
+      </p>
+      <textarea
+        ref={textareaRef}
+        value={text}
+        onChange={(e) => handleChange(e.target.value)}
+        placeholder="Skriv här…"
+        autoCorrect="on"
+        autoCapitalize="sentences"
+        className="w-full resize-none focus:outline-none focus:ring-0"
+        style={{
+          minHeight: '80px',
+          maxHeight: '140px',
+          fontFamily: 'var(--font-serif)',
+          fontSize: '15px',
+          lineHeight: 1.6,
+          color: BARK,
+          backgroundColor: PARCHMENT,
+          border: 'none',
+          borderRadius: '12px',
+          padding: '16px',
+          overflow: 'auto',
+        }}
+      />
+    </motion.div>
+  );
+}
+
 /* ─── Simple takeaway for completion screen ─── */
 
 function SimpleTakeaway({ sessionId, spaceId, cardId, productId }: {
