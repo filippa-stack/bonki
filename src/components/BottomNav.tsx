@@ -83,7 +83,7 @@ export default function BottomNav() {
           label: 'Biblioteket',
           icon: LayoutGrid,
           path: '/',
-          match: (p) => p === '/' && !search.includes('devState='),
+          match: (p) => p === '/' && !search.includes('devState=') && !search.includes('product='),
         },
       ];
 
@@ -119,7 +119,7 @@ export default function BottomNav() {
         label: 'Biblioteket',
         icon: LayoutGrid,
         path: '/',
-        match: (p) => p === '/' && !search.includes('devState='),
+        match: (p) => p === '/' && !search.includes('devState=') && !search.includes('product='),
       },
       {
         id: 'diary',
