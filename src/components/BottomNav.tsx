@@ -95,7 +95,7 @@ export default function BottomNav() {
           path: productHomePath,
           match: (p: string) =>
             (!!product && p.startsWith(`/product/${product.slug}`)) ||
-            (isStillUsContext && p === '/' && search.includes('devState=')) ||
+            (isStillUsContext && p === '/' && (search.includes('devState=') || search.includes('product=still-us'))) ||
             (!product && !isStillUsContext && !!lastProduct && p.startsWith(`/product/${lastProduct.slug}`)),
         });
       }
