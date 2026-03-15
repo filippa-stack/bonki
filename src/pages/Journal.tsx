@@ -159,8 +159,8 @@ function monthLabel(dateStr: string): string {
   return `${SWEDISH_MONTHS[d.getMonth()].toUpperCase()} ${d.getFullYear()}`;
 }
 
-function getProductColor(productId: string): string {
-  return productId === STILL_US_ID ? DEEP_SAFFRON : SAFFRON_FLAME;
+function getProductColor(productId: string, cardId?: string): string {
+  return effectiveIsPar(productId, cardId ?? null) ? DEEP_SAFFRON : SAFFRON_FLAME;
 }
 
 // ─── Note Entry Card ───
