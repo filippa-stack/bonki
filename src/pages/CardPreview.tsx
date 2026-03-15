@@ -27,6 +27,7 @@ export default function CardPreview() {
     product?.backgroundColor,
     product?.ctaButtonColor,
     product?.pronounMode,
+    product,
   );
 
   // Apply Verdigris for Still Us

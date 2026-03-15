@@ -190,6 +190,7 @@ export default function CardView() {
     isStillUsCard ? undefined : product?.backgroundColor,
     isStillUsCard ? 'hsl(41, 78%, 48%)' : product?.ctaButtonColor,
     product?.pronounMode,
+    isStillUsCard ? undefined : product,
   );
 
   // Apply Verdigris theme for Still Us cards

@@ -14,6 +14,12 @@ export interface ProductManifest {
   backgroundColor: string;
   /** Button color for session screens (hex), e.g. '#8A9A10' */
   ctaButtonColor?: string;
+  /** Primary creature color at full lightness (hex) */
+  tileLight?: string;
+  /** Darker variant for category tiles (hex) */
+  tileMid?: string;
+  /** Deepest variant for category tiles (hex) */
+  tileDeep?: string;
   /** Pronoun mode: 'ni' for couple products, 'du' for solo products */
   pronounMode: 'du' | 'ni';
   /** Card ID that is free to play without purchase */

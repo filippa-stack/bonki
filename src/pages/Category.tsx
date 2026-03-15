@@ -160,6 +160,7 @@ export default function Category() {
     isStillUsCategory ? undefined : '#FAF7F2',
     product?.ctaButtonColor,
     product?.pronounMode,
+    product,
   );
 
   useVerdigrisTheme(isStillUsCategory);
