@@ -1,6 +1,6 @@
 import { useNavigate, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { LayoutGrid, Home, BookOpen, MessageCircle } from 'lucide-react';
+import { LayoutGrid, Home, BookOpen, MessageCircle, User } from 'lucide-react';
 import { useCurrentProduct } from '@/hooks/useCurrentProduct';
 import { useMemo, useEffect } from 'react';
 import { getCategoryById } from '@/data/content';
@@ -31,7 +31,6 @@ export default function BottomNav() {
   // Detect Still Us context from route
   const isStillUsContext = useMemo(() => {
     if (product) return false;
-    // Still Us product intro page
     if (pathname.startsWith('/product/still-us')) return true;
     if (pathname === '/' && search.includes('devState=')) return true;
     const cardMatch = pathname.match(/^\/card\/([^/]+)/);
@@ -70,41 +69,74 @@ export default function BottomNav() {
   const productHomeLabel = product?.name
     ?? (isStillUsContext ? 'Still Us' : lastProduct?.name ?? null);
 
-  // On the library page with no product context, hide the contextual tab
+  // On the library page with no product context
   const isOnLibrary = pathname === '/' && !search.includes('devState=');
-  const showContextualTab = !isOnLibrary && (!!product || isStillUsContext);
+  const isInsideProduct = !!product || isStillUsContext;
 
-  const items: NavItem[] = [
-    {
-      id: 'library',
-      label: 'Biblioteket',
-      icon: LayoutGrid,
-      path: '/',
-      match: (p) => p === '/' && !search.includes('devState='),
-    },
-    // Only show product tab if there's a valid destination
-    ...(productHomePath && productHomeLabel ? [{
-      id: 'product-home',
-      label: productHomeLabel,
-      icon: Home,
-      path: productHomePath,
-      match: (p: string) =>
-        (!!product && p.startsWith(`/product/${product.slug}`)) ||
-        (isStillUsContext && p === '/' && search.includes('devState=')) ||
-        (!product && !isStillUsContext && !!lastProduct && p.startsWith(`/product/${lastProduct.slug}`)),
-    }] : []),
-    // Contextual tab only within a product context
-    ...(showContextualTab ? [{
-      id: 'contextual',
-      label: isChildProduct ? 'Dagbok' : 'Era samtal',
-      icon: isChildProduct ? BookOpen : MessageCircle,
-      path: isChildProduct && product ? `/diary/${product.id}` : '/shared',
-      match: (p: string) =>
-        isChildProduct
-          ? p.startsWith('/diary')
-          : p.startsWith('/shared'),
-    }] : []),
-  ];
+  // Build items based on context
+  const items: NavItem[] = useMemo(() => {
+    if (isInsideProduct) {
+      // Inside a product: Biblioteket | Product | Dagbok/Era samtal
+      const result: NavItem[] = [
+        {
+          id: 'library',
+          label: 'Biblioteket',
+          icon: LayoutGrid,
+          path: '/',
+          match: (p) => p === '/' && !search.includes('devState='),
+        },
+      ];
+
+      if (productHomePath && productHomeLabel) {
+        result.push({
+          id: 'product-home',
+          label: productHomeLabel,
+          icon: Home,
+          path: productHomePath,
+          match: (p: string) =>
+            (!!product && p.startsWith(`/product/${product.slug}`)) ||
+            (isStillUsContext && p === '/' && search.includes('devState=')) ||
+            (!product && !isStillUsContext && !!lastProduct && p.startsWith(`/product/${lastProduct.slug}`)),
+        });
+      }
+
+      result.push({
+        id: 'contextual',
+        label: isChildProduct ? 'Dagbok' : 'Era samtal',
+        icon: isChildProduct ? BookOpen : MessageCircle,
+        path: isChildProduct && product ? `/diary/${product.id}` : '/shared',
+        match: (p: string) =>
+          isChildProduct ? p.startsWith('/diary') : p.startsWith('/shared'),
+      });
+
+      return result;
+    }
+
+    // Library view: Biblioteket | Dagbok | Profil
+    return [
+      {
+        id: 'library',
+        label: 'Biblioteket',
+        icon: LayoutGrid,
+        path: '/',
+        match: (p) => p === '/' && !search.includes('devState='),
+      },
+      {
+        id: 'diary',
+        label: 'Dagbok',
+        icon: BookOpen,
+        path: '/diary/jag_i_mig',
+        match: (p) => p.startsWith('/diary'),
+      },
+      {
+        id: 'profile',
+        label: 'Profil',
+        icon: User,
+        path: '/login',
+        match: (p) => p === '/login',
+      },
+    ];
+  }, [isInsideProduct, isOnLibrary, product, isStillUsContext, lastProduct, productHomePath, productHomeLabel, isChildProduct, search]);
 
   return (
     <nav
@@ -113,7 +145,7 @@ export default function BottomNav() {
         paddingBottom: 'env(safe-area-inset-bottom, 0px)',
       }}
     >
-      {/* Subtle top edge — replaces hard border */}
+      {/* Subtle top edge */}
       <div
         style={{
           height: '1px',
