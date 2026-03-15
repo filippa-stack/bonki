@@ -4,7 +4,7 @@ import type { ProductManifest } from '@/types/product';
 import slothImage from '@/assets/sloth-jag-med-andra.png';
 import nyckelpiganImage from '@/assets/nyckelpiga-jag-med-andra.png';
 import KidsProductResumeBanner from '@/components/KidsProductResumeBanner';
-import DiaryEntrance from '@/components/DiaryEntrance';
+
 import ProductHomeBackButton from '@/components/ProductHomeBackButton';
 import { useKidsProductProgress } from '@/hooks/useKidsProductProgress';
 import CategoryProgressRing from '@/components/CategoryProgressRing';
