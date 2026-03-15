@@ -364,11 +364,11 @@ h1, h2, h3,
   .cta-primary:hover:not(:disabled) {
     transform: scale(1.04) translateY(-3px);
     box-shadow:
-      0 16px 40px -4px rgba(218, 157, 29, 0.50),
-      0 6px 16px rgba(218, 157, 29, 0.28),
+      0 16px 40px -4px rgba(232, 93, 44, 0.50),
+      0 6px 16px rgba(232, 93, 44, 0.28),
       0 1px 3px rgba(0, 0, 0, 0.12),
       inset 0 2px 0 rgba(255, 255, 255, 0.50),
-      inset 0 -4px 10px rgba(140, 90, 10, 0.25);
+      inset 0 -4px 10px rgba(160, 50, 20, 0.25);
   }
 
   .cta-primary:active:not(:disabled) {
