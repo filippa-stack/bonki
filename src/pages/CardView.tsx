@@ -1079,6 +1079,12 @@ export default function CardView() {
   // ─────────────────────────────────────────────────────────────
   if (cardViewMode === 'completion') {
     // Still Us completion: Ember Night bg, fixed headline, Ember Glow takeaway
+    const EMBER_NIGHT = '#2E2233';
+    const DEEP_SAFFRON = '#D4A03A';
+    const DRIFTWOOD = '#6B5E52';
+    const MIDNIGHT_INK = '#1A1A2E';
+    const BARK = '#2C2420';
+    const EMBER_GLOW = '#F5E8CC';
     const categoryName = category?.title ?? 'kategorin';
     const homeDest = postCompletionNav.homeDest;
 
