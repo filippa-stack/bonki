@@ -403,15 +403,23 @@ function KidsCardTile({ card, index, isCompleted, isNextSuggested, tileColor, on
           height: '75vh',
           maxHeight: '640px',
           minHeight: '420px',
-          borderRadius: '16px',
+          borderRadius: '22px',
           overflow: 'hidden',
           cursor: 'pointer',
           display: 'block',
-          background: tileColor,
-          border: isNextSuggested ? `2px solid ${SAFFRON}` : 'none',
-          boxShadow: isNextSuggested
-            ? `0 0 12px rgba(233, 180, 76, 0.3)`
-            : '0 4px 20px rgba(0, 0, 0, 0.3)',
+          backgroundImage: 'linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0) 50%, rgba(0,0,0,0.08) 100%)',
+          backgroundColor: tileColor,
+          border: isNextSuggested
+            ? `2.5px solid ${SAFFRON}CC`
+            : '1.5px solid rgba(255, 255, 255, 0.30)',
+          boxShadow: [
+            isNextSuggested ? `0 0 18px 0px ${SAFFRON}50, 0 0 36px -4px ${SAFFRON}30` : '',
+            '0 12px 32px rgba(0, 0, 0, 0.30)',
+            '0 4px 12px rgba(0, 0, 0, 0.18)',
+            '0 1px 3px rgba(0, 0, 0, 0.08)',
+            'inset 0 3px 6px rgba(255, 255, 255, 0.45)',
+            'inset 0 -4px 10px rgba(0, 0, 0, 0.14)',
+          ].filter(Boolean).join(', '),
           padding: 0,
           textAlign: 'left',
         }}
@@ -466,7 +474,7 @@ function KidsCardTile({ card, index, isCompleted, isNextSuggested, tileColor, on
             right: 0,
             height: '45%',
             background: 'linear-gradient(to top, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.2) 55%, transparent 100%)',
-            borderRadius: '0 0 16px 16px',
+            borderRadius: '0 0 22px 22px',
             pointerEvents: 'none',
             zIndex: 1,
           }}
