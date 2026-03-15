@@ -136,6 +136,18 @@ export default function Index() {
     return <Home />;
   }
 
+  // Par first visit: route directly to Still Us home, then clear the flag
+  const initialTab = localStorage.getItem('bonki-initial-tab');
+  if (initialTab === 'par') {
+    // Don't clear yet — ProductLibrary reads it for default tab.
+    // But route to Still Us home on first post-onboarding visit.
+    const parFirstVisitKey = 'bonki-par-first-visit-done';
+    if (!sessionStorage.getItem(parFirstVisitKey)) {
+      sessionStorage.setItem(parFirstVisitKey, '1');
+      return <Home />;
+    }
+  }
+
   // After onboarding → ProductLibrary (the Lobby)
   // Users choose their product from here.
   return <ProductLibrary />;
