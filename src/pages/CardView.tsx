@@ -42,7 +42,7 @@ import { useSessionReflections } from '@/hooks/useSessionReflections';
 import StageInterstitial from '@/components/StageInterstitial';
 import SessionFocusShell from '@/components/SessionFocusShell';
 
-import { ArrowRight, ArrowLeft, Feather } from 'lucide-react';
+import { ArrowRight, ArrowLeft, Feather, X, Pencil, ChevronDown } from 'lucide-react';
 
 import CompletedSessionView from '@/components/CompletedSessionView';
 import FeedbackSheet from '@/components/FeedbackSheet';
