@@ -130,7 +130,6 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
             })}
           </div>
         </motion.div>
-        </motion.div>
       </div>
     </div>
   );
