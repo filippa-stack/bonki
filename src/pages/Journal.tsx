@@ -767,7 +767,7 @@ export default function Journal() {
                         width: '100%', backgroundColor: DEEP_DUSK, borderRadius: '16px',
                         padding: '16px', cursor: 'pointer',
                         borderTop: 'none', borderRight: 'none', borderBottom: 'none',
-                        borderLeft: `3px solid ${getProductColor(s.product_id)}`,
+                        borderLeft: `3px solid ${getProductColor(s.product_id, s.card_id)}`,
                         display: 'flex', alignItems: 'center', justifyContent: 'space-between',
                         textAlign: 'left', WebkitTapHighlightColor: 'transparent',
                       }}
