@@ -41,7 +41,7 @@ export default function JagMedAndraProductHome({ product }: { product: ProductMa
         <img src={nyckelpiganImage} alt="" style={{ width: '100%', height: '100%', objectFit: 'contain', opacity: 0.28, transform: 'rotate(-18deg)' }} />
       </motion.div>
 
-      <div style={{ position: 'relative', zIndex: 1, height: '100vh', display: 'flex', flexDirection: 'column', paddingTop: '8vh', paddingRight: '5vw', paddingBottom: '80px', paddingLeft: '5vw' }}>
+      <div style={{ position: 'relative', zIndex: 1, minHeight: '100vh', display: 'flex', flexDirection: 'column', paddingTop: 'clamp(24px, 6vh, 64px)', paddingRight: '5vw', paddingBottom: '80px', paddingLeft: '5vw' }}>
         <motion.div variants={containerVariants} initial="hidden" animate="visible" style={{ textAlign: 'center', width: '100%' }}>
           <motion.div variants={titleVariants}>
             <h1 style={{ fontFamily: "'DM Serif Display', var(--font-serif)", fontSize: 'clamp(36px, 10vw, 50px)', fontWeight: 700, color: '#FDF6E3', letterSpacing: '-0.01em', whiteSpace: 'nowrap', textShadow: '0 2px 12px rgba(0,0,0,0.4), 0 0 40px rgba(90,26,128,0.5)' }}>
@@ -54,7 +54,7 @@ export default function JagMedAndraProductHome({ product }: { product: ProductMa
           </motion.div>
         </motion.div>
 
-        <div style={{ flex: 1 }} />
+        <div style={{ flex: 1, minHeight: '16px' }} />
 
         <motion.div variants={containerVariants} initial="hidden" animate="visible" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px', width: '100%' }}>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px', width: '100%' }}>
@@ -80,8 +80,8 @@ export default function JagMedAndraProductHome({ product }: { product: ProductMa
                     textAlign: 'center',
                     cursor: 'pointer',
                     ...(isLastOdd
-                      ? { gridColumn: '1 / -1', justifySelf: 'center', width: '65%', padding: '22px 20px', minHeight: '120px' }
-                      : { aspectRatio: '1 / 1' }),
+                      ? { gridColumn: '1 / -1', justifySelf: 'center', width: '65%', padding: '22px 20px', minHeight: '100px' }
+                      : {}),
                     border: isNextCategory
                       ? `2.5px solid ${SAFFRON}CC`
                       : '1px solid rgba(255, 255, 255, 0.12)',
