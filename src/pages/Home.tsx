@@ -417,7 +417,7 @@ export default function Home() {
               style={{ marginTop: '32px', textAlign: 'center' }}
             >
               <button
-                onClick={() => navigate('/categories', { state: { product: 'still-us' } })}
+                onClick={() => navigate('/still-us/explore')}
                 style={{
                   background: 'none',
                   border: 'none',
