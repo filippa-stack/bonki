@@ -142,7 +142,6 @@ export default function Onboarding() {
           }}
         />
 
-        {/* Prompt — action-oriented, not feature-listing */}
         <motion.p
           {...fadeUp(0.75)}
           style={{
@@ -154,7 +153,7 @@ export default function Onboarding() {
             margin: 0,
           }}
         >
-          Vad vill du börja med?
+          Var vill ni börja?
         </motion.p>
       </div>
 
