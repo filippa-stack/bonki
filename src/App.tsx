@@ -28,6 +28,7 @@ import CardPreview from "./pages/CardPreview";
 import ProductHome from "./pages/ProductHome";
 
 import SharedSummary from "./pages/SharedSummary";
+import Journal from "./pages/Journal";
 import Diary from "./pages/Diary";
 import Login from "./pages/Login";
 import NotFound from "./pages/NotFound";
@@ -80,8 +81,9 @@ function ProtectedRoutes() {
               <Route path="/card/:cardId" element={<PageTransition><CardView /></PageTransition>} />
               <Route path="/preview/:cardId" element={<PageTransition><CardPreview /></PageTransition>} />
               <Route path="/product/:slug" element={<PageTransition><ProductHome /></PageTransition>} />
-              <Route path="/saved" element={<Navigate to="/shared" replace />} />
+              <Route path="/saved" element={<Navigate to="/journal" replace />} />
               <Route path="/shared" element={<PageTransition><SharedSummary /></PageTransition>} />
+              <Route path="/journal" element={<PageTransition><Journal /></PageTransition>} />
               <Route path="/diary/:productId" element={<PageTransition><Diary /></PageTransition>} />
               <Route path="*" element={<NotFound />} />
             </Routes>
