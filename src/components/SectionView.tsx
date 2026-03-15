@@ -49,7 +49,7 @@ const normalizePrompt = (prompt: string | Prompt): Prompt => {
  * CardView passes only the section matching current_step_index.
  */
 const SectionView = forwardRef<SectionViewHandle, SectionViewProps>(
-  function SectionView({ section, promptIndex = 0, coupleSpaceId, sessionId, cardId, stageIndex, isLive, isReflectionStep, isExerciseStep, onBack, showBackArrow = false, backgroundImageUrl }, ref) {
+  function SectionView({ section, promptIndex = 0, coupleSpaceId, sessionId, cardId, stageIndex, isLive, isReflectionStep, isExerciseStep, onBack, showBackArrow = false, backgroundImageUrl, stillUsMode }, ref) {
     // If section has no prompts but has content, treat content as the prompt
     const hasExplicitPrompts = !!(section.prompts && section.prompts.length > 0);
     const isExercise = section.type === 'exercise';
