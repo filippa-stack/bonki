@@ -104,53 +104,6 @@ const SECTION_GROUPS = [
   },
 ];
 
-/** Gold progress ring SVG */
-function ProgressRing({ completed, total, size = 22 }: { completed: number; total: number; size?: number }) {
-  const radius = (size - 3) / 2;
-  const circumference = 2 * Math.PI * radius;
-  const progress = total > 0 ? completed / total : 0;
-  const strokeDashoffset = circumference * (1 - progress);
-  const allDone = completed === total && total > 0;
-
-  return (
-    <div style={{ position: 'relative', width: size, height: size, flexShrink: 0 }}>
-      <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} style={{ transform: 'rotate(-90deg)' }}>
-        <circle
-          cx={size / 2} cy={size / 2} r={radius}
-          fill="none"
-          stroke={SAFFRON}
-          strokeWidth={2}
-          opacity={0.15}
-        />
-        <motion.circle
-          cx={size / 2} cy={size / 2} r={radius}
-          fill="none"
-          stroke={SAFFRON}
-          strokeWidth={2}
-          strokeLinecap="round"
-          strokeDasharray={circumference}
-          initial={{ strokeDashoffset: circumference }}
-          animate={{ strokeDashoffset }}
-          transition={{ duration: 1.2, ease: [...ENTER_EASE], delay: 0.3 }}
-          opacity={0.6}
-        />
-      </svg>
-      {allDone && (
-        <motion.div
-          initial={{ scale: 0 }}
-          animate={{ scale: 1 }}
-          transition={{ delay: 0.8, type: 'spring', stiffness: 300 }}
-          style={{
-            position: 'absolute', inset: 0,
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-          }}
-        >
-          <Check size={10} style={{ color: SAFFRON }} />
-        </motion.div>
-      )}
-    </div>
-  );
-}
 
 const containerVariants = {
   hidden: {},
@@ -279,16 +232,21 @@ export default function CircadianMenu({
                       textAlign: 'center',
                       cursor: 'pointer',
                       height: '110px',
-                      border: isNextSuggested
-                        ? `2px solid ${DEEP_SAFFRON}88`
+                      borderLeft: isNextSuggested
+                        ? `2px solid ${DEEP_SAFFRON}`
                         : tileColor.text === BARK
                           ? '1px solid rgba(0, 0, 0, 0.08)'
                           : '1px solid rgba(255, 255, 255, 0.08)',
-                      boxShadow: [
-                        isNextSuggested ? `0 0 16px 0px ${DEEP_SAFFRON}40` : '',
-                        '0 4px 16px rgba(0, 0, 0, 0.2)',
-                        '0 1px 3px rgba(0, 0, 0, 0.1)',
-                      ].filter(Boolean).join(', '),
+                      borderTop: tileColor.text === BARK
+                        ? '1px solid rgba(0, 0, 0, 0.08)'
+                        : '1px solid rgba(255, 255, 255, 0.08)',
+                      borderRight: tileColor.text === BARK
+                        ? '1px solid rgba(0, 0, 0, 0.08)'
+                        : '1px solid rgba(255, 255, 255, 0.08)',
+                      borderBottom: tileColor.text === BARK
+                        ? '1px solid rgba(0, 0, 0, 0.08)'
+                        : '1px solid rgba(255, 255, 255, 0.08)',
+                      boxShadow: '0 4px 16px rgba(0, 0, 0, 0.2), 0 1px 3px rgba(0, 0, 0, 0.1)',
                       display: 'flex',
                       flexDirection: 'column',
                       alignItems: 'center',
@@ -312,21 +270,23 @@ export default function CircadianMenu({
                       {category.title}
                     </span>
 
-                    {/* Progress ring — bottom center */}
-                    {completedCount > 0 && (
+                    {/* Completed checkmark — top right */}
+                    {allCompleted && (
                       <span
                         style={{
                           position: 'absolute',
-                          bottom: '6px',
-                          left: '50%',
-                          transform: 'translateX(-50%)',
+                          top: '8px',
+                          right: '8px',
+                          width: '18px',
+                          height: '18px',
+                          borderRadius: '50%',
+                          background: DEEP_SAFFRON,
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
                         }}
                       >
-                        <ProgressRing
-                          completed={completedCount}
-                          total={catCards.length}
-                          size={allCompleted ? 18 : 14}
-                        />
+                        <Check size={10} style={{ color: '#fff' }} />
                       </span>
                     )}
                   </motion.button>
