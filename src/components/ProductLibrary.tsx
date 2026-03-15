@@ -376,7 +376,14 @@ export default function ProductLibrary() {
   const tracked = useRef(false);
   const { purchased } = useAllProductAccess();
   const { user } = useAuth();
-  const [activeTab, setActiveTab] = useState<'barn' | 'par'>('barn');
+  const [activeTab, setActiveTab] = useState<'barn' | 'par'>(() => {
+    const saved = localStorage.getItem('bonki-initial-tab');
+    if (saved === 'par' || saved === 'barn') {
+      localStorage.removeItem('bonki-initial-tab');
+      return saved;
+    }
+    return 'barn';
+  });
   const [swipeDirection, setSwipeDirection] = useState<1 | -1>(1);
 
   const switchTab = (tab: 'barn' | 'par') => {
