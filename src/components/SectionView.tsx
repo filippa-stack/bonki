@@ -32,6 +32,8 @@ interface SectionViewProps {
   showBackArrow?: boolean;
   /** Faint illustration watermark URL for kids products */
   backgroundImageUrl?: string | null;
+  /** Still Us ember mode for exercise card */
+  stillUsMode?: boolean;
 }
 
 const normalizePrompt = (prompt: string | Prompt): Prompt => {
