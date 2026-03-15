@@ -279,16 +279,21 @@ export default function CircadianMenu({
                       textAlign: 'center',
                       cursor: 'pointer',
                       height: '110px',
-                      border: isNextSuggested
-                        ? `2px solid ${DEEP_SAFFRON}88`
+                      borderLeft: isNextSuggested
+                        ? `2px solid ${DEEP_SAFFRON}`
                         : tileColor.text === BARK
                           ? '1px solid rgba(0, 0, 0, 0.08)'
                           : '1px solid rgba(255, 255, 255, 0.08)',
-                      boxShadow: [
-                        isNextSuggested ? `0 0 16px 0px ${DEEP_SAFFRON}40` : '',
-                        '0 4px 16px rgba(0, 0, 0, 0.2)',
-                        '0 1px 3px rgba(0, 0, 0, 0.1)',
-                      ].filter(Boolean).join(', '),
+                      borderTop: tileColor.text === BARK
+                        ? '1px solid rgba(0, 0, 0, 0.08)'
+                        : '1px solid rgba(255, 255, 255, 0.08)',
+                      borderRight: tileColor.text === BARK
+                        ? '1px solid rgba(0, 0, 0, 0.08)'
+                        : '1px solid rgba(255, 255, 255, 0.08)',
+                      borderBottom: tileColor.text === BARK
+                        ? '1px solid rgba(0, 0, 0, 0.08)'
+                        : '1px solid rgba(255, 255, 255, 0.08)',
+                      boxShadow: '0 4px 16px rgba(0, 0, 0, 0.2), 0 1px 3px rgba(0, 0, 0, 0.1)',
                       display: 'flex',
                       flexDirection: 'column',
                       alignItems: 'center',
