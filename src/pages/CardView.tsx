@@ -4,6 +4,7 @@
 // All session state must come from normalized tables.
 
 import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
+import { QUESTION_HOOKS } from '@/data/questionHooks';
 import { useParams, useNavigate, useSearchParams, useLocation } from 'react-router-dom';
 import {
   AlertDialog,
