@@ -34,6 +34,8 @@ export interface Card {
   borderColor?: string;
   emptyStateTitle?: string;
   emptyStateDescription?: string;
+  /** Preview hook sentence for the card intro screen — read aloud with a child */
+  questionHook?: string;
 }
 
 export interface Category {
