@@ -826,14 +826,14 @@ export default function ProductLibrary() {
             }}
           >
 
-        {/* Bridge phrase — tightened spacing */}
+        {/* Bridge phrase — contextual for parents coming from BARN */}
         <motion.div
           initial={{ opacity: 0, y: 6 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1, duration: 0.6 }}
           style={{
             textAlign: 'center',
-            padding: '8px 28px 8px',
+            padding: '4px 32px 20px',
             position: 'relative',
             zIndex: 1,
           }}
@@ -841,159 +841,259 @@ export default function ProductLibrary() {
           <p
             style={{
               fontFamily: "'DM Serif Display', serif",
-              fontStyle: 'normal',
-              fontSize: '15px',
+              fontStyle: 'italic',
+              fontSize: '14px',
               fontWeight: 400,
-              color: '#E9B44C',
-              opacity: 0.7,
+              color: 'hsla(38, 55%, 65%, 0.55)',
               lineHeight: 1.6,
             }}
           >
-            Barnens trygghet börjar med deras vuxna
+            Du tar hand om samtalen med barnen — här tar ni hand om era egna
           </p>
         </motion.div>
 
-        {/* ── Par tiles ── */}
+        {/* ── Still Us — immersive hero card ── */}
         <motion.div
-          className="px-5 mt-3"
+          className="px-5"
           variants={containerVariants}
           initial="hidden"
           animate="visible"
           style={{ position: 'relative', zIndex: 1 }}
         >
-          
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', paddingBottom: '16px' }}>
-            {/* Still Us — portal tile matching BARN ceramic style */}
-            <motion.div
-              variants={tileVariants}
-              whileHover={{ scale: 1.025, y: -3 }}
-              whileTap={{ scale: 0.94, y: 3 }}
-              onClick={() => navigate('/product/still-us')}
-              className="cursor-pointer"
+          <motion.div
+            variants={tileVariants}
+            whileHover={{ scale: 1.015, y: -2 }}
+            whileTap={{ scale: 0.97, y: 2 }}
+            onClick={() => navigate('/product/still-us')}
+            className="cursor-pointer"
+            style={{
+              borderRadius: '22px',
+              backgroundImage: 'linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0) 50%, rgba(0,0,0,0.12) 100%)',
+              backgroundColor: '#1E5A68',
+              minHeight: '340px',
+              display: 'flex',
+              flexDirection: 'column',
+              position: 'relative',
+              overflow: 'hidden',
+              border: '1.5px solid rgba(255, 255, 255, 0.15)',
+              boxShadow: [
+                '0 16px 48px rgba(15, 45, 52, 0.45)',
+                '0 6px 16px rgba(15, 45, 52, 0.30)',
+                '0 1px 3px rgba(0, 0, 0, 0.08)',
+                'inset 0 3px 6px rgba(255, 255, 255, 0.12)',
+                'inset 0 -4px 10px rgba(15, 45, 52, 0.20)',
+              ].join(', '),
+            }}
+          >
+            {/* Illustration — large hero */}
+            <div
               style={{
-                borderRadius: '22px',
-                backgroundImage: 'linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0) 50%, rgba(0,0,0,0.12) 100%)',
-                backgroundColor: '#1E5A68',
-                minHeight: '220px',
-                display: 'flex',
-                flexDirection: 'column',
-                position: 'relative',
-                overflow: 'hidden',
-                border: '1.5px solid rgba(255, 255, 255, 0.15)',
-                boxShadow: [
-                  '0 12px 32px rgba(15, 45, 52, 0.40)',
-                  '0 4px 12px rgba(15, 45, 52, 0.25)',
-                  '0 1px 3px rgba(0, 0, 0, 0.08)',
-                  'inset 0 3px 6px rgba(255, 255, 255, 0.12)',
-                  'inset 0 -4px 10px rgba(15, 45, 52, 0.20)',
-                ].join(', '),
+                position: 'absolute',
+                top: '-12%',
+                left: '10%',
+                right: '-8%',
+                bottom: '30%',
+                pointerEvents: 'none',
+                zIndex: 0,
               }}
             >
-              {/* Illustration — <img> tag like BARN tiles */}
-              <div
+              <img
+                src={illustrationStillUs}
+                alt=""
+                draggable={false}
                 style={{
-                  position: 'absolute',
-                  top: '-8%',
-                  left: '15%',
-                  right: '-5%',
-                  bottom: '20%',
-                  pointerEvents: 'none',
-                  zIndex: 0,
-                }}
-              >
-                <img
-                  src={illustrationStillUs}
-                  alt=""
-                  draggable={false}
-                  style={{
-                    width: '100%',
-                    height: '100%',
-                    objectFit: 'contain' as React.CSSProperties['objectFit'],
-                    objectPosition: 'center 30%',
-                    opacity: 0.85,
-                  }}
-                />
-              </div>
-
-              {/* Bottom gradient scrim — rgba-based like BARN */}
-              <div
-                aria-hidden="true"
-                style={{
-                  position: 'absolute',
-                  bottom: 0, left: 0, right: 0,
-                  height: '65%',
-                  zIndex: 1,
-                  pointerEvents: 'none',
-                  background: `linear-gradient(to top, rgba(30, 90, 104, 1) 0%, rgba(30, 90, 104, 0.93) 25%, rgba(30, 90, 104, 0.6) 50%, rgba(30, 90, 104, 0.2) 70%, transparent 100%)`,
-                  borderRadius: '0 0 22px 22px',
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'contain',
+                  objectPosition: 'center 25%',
+                  opacity: 0.9,
                 }}
               />
+            </div>
 
-              {/* Text content — anchored to bottom like BARN */}
-              <div style={{
+            {/* Extended gradient scrim for text legibility */}
+            <div
+              aria-hidden="true"
+              style={{
                 position: 'absolute',
                 bottom: 0, left: 0, right: 0,
-                zIndex: 2,
-                padding: '0 20px 20px',
+                height: '70%',
+                zIndex: 1,
+                pointerEvents: 'none',
+                background: `linear-gradient(to top, rgba(30, 90, 104, 1) 0%, rgba(30, 90, 104, 0.97) 20%, rgba(30, 90, 104, 0.85) 40%, rgba(30, 90, 104, 0.4) 65%, transparent 100%)`,
+                borderRadius: '0 0 22px 22px',
+              }}
+            />
+
+            {/* Text content — rich bottom section */}
+            <div style={{
+              position: 'absolute',
+              bottom: 0, left: 0, right: 0,
+              zIndex: 2,
+              padding: '0 22px 22px',
+            }}>
+              <h3
+                style={{
+                  fontFamily: "'DM Serif Display', serif",
+                  fontSize: '32px',
+                  fontWeight: 700,
+                  lineHeight: 1.1,
+                  color: '#FDF6E3',
+                  letterSpacing: '-0.02em',
+                  textShadow: '0 2px 8px rgba(30, 90, 104, 1), 0 0 20px rgba(30, 90, 104, 0.9)',
+                }}
+              >
+                Still Us
+              </h3>
+
+              {/* Emotional hook */}
+              <p
+                style={{
+                  fontFamily: "'DM Serif Display', serif",
+                  fontStyle: 'italic',
+                  fontSize: '14px',
+                  fontWeight: 400,
+                  color: 'hsla(38, 78%, 60%, 0.85)',
+                  marginTop: '6px',
+                  lineHeight: 1.4,
+                  textShadow: '0 0 12px rgba(30, 90, 104, 1)',
+                }}
+              >
+                22 samtal för er som vill stanna kvar
+              </p>
+
+              {/* Session format + credential — trust signals */}
+              <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px',
+                marginTop: '12px',
+                flexWrap: 'wrap',
               }}>
-                <h3
-                  style={{
-                    fontFamily: "'DM Serif Display', serif",
-                    fontSize: '28px',
-                    fontWeight: 700,
-                    lineHeight: 1.15,
-                    color: '#F5EFE6',
-                    letterSpacing: '-0.01em',
-                    textShadow: '0 1px 6px rgba(30, 90, 104, 1), 0 0 16px rgba(30, 90, 104, 0.9), 0 0 32px rgba(30, 90, 104, 0.8)',
-                  }}
-                >
-                  Still Us
-                </h3>
-                <p
+                <span style={{
+                  fontFamily: "'Lato', sans-serif",
+                  fontSize: '10px',
+                  fontWeight: 600,
+                  letterSpacing: '0.04em',
+                  color: 'hsla(192, 25%, 80%, 0.7)',
+                  background: 'hsla(192, 20%, 50%, 0.12)',
+                  borderRadius: '12px',
+                  padding: '4px 10px',
+                }}>
+                  ca 20 min per samtal
+                </span>
+                <span style={{
+                  fontFamily: "'Lato', sans-serif",
+                  fontSize: '10px',
+                  fontWeight: 600,
+                  letterSpacing: '0.04em',
+                  color: 'hsla(192, 25%, 80%, 0.7)',
+                  background: 'hsla(192, 20%, 50%, 0.12)',
+                  borderRadius: '12px',
+                  padding: '4px 10px',
+                }}>
+                  ✦ 1a gratis
+                </span>
+              </div>
+
+              {/* CTA button */}
+              <div
+                style={{
+                  marginTop: '16px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                }}
+              >
+                <span
                   style={{
                     fontFamily: "'Lato', sans-serif",
-                    fontSize: '11px',
-                    fontWeight: 400,
-                    color: 'hsla(192, 20%, 75%, 0.9)',
-                    marginTop: '4px',
-                    lineHeight: 1.4,
-                    textShadow: '0 0 10px rgba(30, 90, 104, 1), 0 0 20px rgba(30, 90, 104, 0.8)',
+                    fontSize: '13px',
+                    fontWeight: 700,
+                    letterSpacing: '0.02em',
+                    color: '#1A1A2E',
+                    background: 'linear-gradient(135deg, hsla(38, 78%, 58%, 0.95) 0%, hsla(38, 65%, 50%, 0.9) 100%)',
+                    borderRadius: '14px',
+                    padding: '10px 22px',
+                    boxShadow: '0 4px 16px hsla(38, 70%, 40%, 0.3)',
                   }}
                 >
-                  Vi finns kvar · 184 frågor
-                </p>
+                  Öppna Still Us
+                </span>
+                {/* Credential — integrated trust signal */}
+                <span style={{
+                  fontFamily: "'Lato', sans-serif",
+                  fontSize: '8px',
+                  fontWeight: 500,
+                  letterSpacing: '0.06em',
+                  textTransform: 'uppercase' as const,
+                  color: 'hsla(192, 20%, 70%, 0.45)',
+                  textAlign: 'right',
+                  lineHeight: 1.4,
+                  maxWidth: '120px',
+                }}>
+                  Utvecklat av psykolog · 20+ års erfarenhet
+                </span>
               </div>
-            </motion.div>
+            </div>
+          </motion.div>
 
-            {/* Still Fair — portal tile matching BARN ceramic style, desaturated */}
+          {/* ── Coming soon section ── */}
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5, duration: 0.6 }}
+            style={{ marginTop: '28px' }}
+          >
+            {/* Section label */}
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '10px',
+              marginBottom: '14px',
+              padding: '0 4px',
+            }}>
+              <div style={{ flex: 1, height: '1px', background: 'linear-gradient(90deg, transparent, hsla(38, 60%, 50%, 0.15))' }} />
+              <span style={{
+                fontFamily: "'Lato', sans-serif",
+                fontSize: '8px',
+                fontWeight: 700,
+                letterSpacing: '0.14em',
+                textTransform: 'uppercase' as const,
+                color: 'hsla(38, 55%, 60%, 0.4)',
+              }}>
+                Kommer snart
+              </span>
+              <div style={{ flex: 1, height: '1px', background: 'linear-gradient(90deg, hsla(38, 60%, 50%, 0.15), transparent)' }} />
+            </div>
+
+            {/* Still Fair — compact coming-soon card */}
             <motion.div
               variants={tileVariants}
               style={{
-                borderRadius: '22px',
-                backgroundImage: 'linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0) 50%, rgba(0,0,0,0.12) 100%)',
-                backgroundColor: 'hsl(327, 24%, 28%)',
-                minHeight: '180px',
+                borderRadius: '18px',
+                backgroundImage: 'linear-gradient(135deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0) 50%, rgba(0,0,0,0.08) 100%)',
+                backgroundColor: 'hsl(327, 24%, 22%)',
+                minHeight: '140px',
                 display: 'flex',
                 flexDirection: 'column',
                 position: 'relative',
                 overflow: 'hidden',
-                border: '1.5px solid rgba(255, 255, 255, 0.10)',
+                border: '1px solid rgba(255, 255, 255, 0.08)',
                 boxShadow: [
-                  '0 12px 32px rgba(60, 30, 50, 0.35)',
-                  '0 4px 12px rgba(60, 30, 50, 0.20)',
-                  '0 1px 3px rgba(0, 0, 0, 0.08)',
-                  'inset 0 3px 6px rgba(255, 255, 255, 0.08)',
-                  'inset 0 -4px 10px rgba(60, 30, 50, 0.15)',
+                  '0 8px 24px rgba(60, 30, 50, 0.25)',
+                  '0 2px 8px rgba(60, 30, 50, 0.15)',
+                  'inset 0 2px 4px rgba(255, 255, 255, 0.06)',
                 ].join(', '),
-                filter: 'saturate(0.7)',
+                filter: 'saturate(0.65)',
               }}
             >
-              {/* Illustration — <img> tag like BARN tiles */}
+              {/* Illustration */}
               <div
                 style={{
                   position: 'absolute',
                   top: '-5%',
-                  left: '20%',
+                  left: '25%',
                   right: '-5%',
                   bottom: '18%',
                   pointerEvents: 'none',
@@ -1007,9 +1107,9 @@ export default function ProductLibrary() {
                   style={{
                     width: '100%',
                     height: '100%',
-                    objectFit: 'contain' as React.CSSProperties['objectFit'],
+                    objectFit: 'contain',
                     objectPosition: 'center 30%',
-                    opacity: 0.75,
+                    opacity: 0.6,
                   }}
                 />
               </div>
@@ -1023,28 +1123,28 @@ export default function ProductLibrary() {
                   height: '65%',
                   zIndex: 1,
                   pointerEvents: 'none',
-                  background: `linear-gradient(to top, hsl(327, 24%, 28%) 0%, hsla(327, 24%, 28%, 0.93) 25%, hsla(327, 24%, 28%, 0.6) 50%, hsla(327, 24%, 28%, 0.2) 70%, transparent 100%)`,
-                  borderRadius: '0 0 22px 22px',
+                  background: `linear-gradient(to top, hsl(327, 24%, 22%) 0%, hsla(327, 24%, 22%, 0.93) 25%, hsla(327, 24%, 22%, 0.5) 55%, transparent 100%)`,
+                  borderRadius: '0 0 18px 18px',
                 }}
               />
 
-              {/* Text content — anchored to bottom */}
+              {/* Text content */}
               <div style={{
                 position: 'absolute',
                 bottom: 0, left: 0, right: 0,
                 zIndex: 2,
-                padding: '0 20px 18px',
+                padding: '0 18px 16px',
               }}>
                 <h3
                   style={{
                     fontFamily: "'DM Serif Display', serif",
-                    fontSize: '26px',
+                    fontSize: '22px',
                     fontWeight: 700,
                     lineHeight: 1.15,
                     color: '#F5EFE6',
                     letterSpacing: '-0.01em',
-                    opacity: 0.85,
-                    textShadow: '0 1px 6px hsl(327, 24%, 28%), 0 0 16px hsla(327, 24%, 28%, 0.9)',
+                    opacity: 0.8,
+                    textShadow: '0 1px 6px hsl(327, 24%, 22%), 0 0 16px hsla(327, 24%, 22%, 0.9)',
                   }}
                 >
                   Still Fair
@@ -1054,34 +1154,15 @@ export default function ProductLibrary() {
                     fontFamily: "'Lato', sans-serif",
                     fontSize: '11px',
                     fontWeight: 400,
-                    color: 'hsla(327, 15%, 75%, 0.85)',
-                    marginTop: '4px',
+                    color: 'hsla(327, 15%, 75%, 0.7)',
+                    marginTop: '3px',
                     lineHeight: 1.4,
-                    textShadow: '0 0 10px hsl(327, 24%, 28%), 0 0 20px hsla(327, 24%, 28%, 0.8)',
+                    textShadow: '0 0 10px hsl(327, 24%, 22%)',
                   }}
                 >
                   Det osynliga arbetet, synligt för båda
                 </p>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginTop: '10px', flexWrap: 'wrap' }}>
-                  <span
-                    style={{
-                      display: 'inline-flex',
-                      alignItems: 'center',
-                      gap: '4px',
-                      fontFamily: "'Lato', sans-serif",
-                      fontSize: '9px',
-                      fontWeight: 700,
-                      letterSpacing: '0.08em',
-                      textTransform: 'uppercase',
-                      color: 'hsla(38, 78%, 58%, 0.9)',
-                      background: 'hsla(38, 70%, 50%, 0.10)',
-                      borderRadius: '20px',
-                      padding: '4px 10px',
-                      lineHeight: 1.4,
-                    }}
-                  >
-                    <span style={{ fontSize: '10px' }}>✦</span> Kommer snart
-                  </span>
+                <div style={{ marginTop: '8px' }}>
                   <button
                     onClick={(e) => {
                       e.stopPropagation();
@@ -1096,15 +1177,15 @@ export default function ProductLibrary() {
                       fontSize: '10px',
                       fontWeight: 600,
                       letterSpacing: '0.02em',
-                      color: notifySignedUp ? 'hsla(38, 78%, 58%, 0.8)' : '#0A0A1A',
-                      background: notifySignedUp ? 'hsla(38, 70%, 50%, 0.08)' : 'linear-gradient(135deg, hsla(38, 78%, 58%, 0.9) 0%, hsla(38, 65%, 50%, 0.85) 100%)',
-                      border: notifySignedUp ? '1px solid hsla(38, 70%, 50%, 0.15)' : 'none',
-                      borderRadius: '20px',
-                      padding: notifySignedUp ? '4px 12px' : '5px 14px',
+                      color: notifySignedUp ? 'hsla(38, 78%, 58%, 0.7)' : '#0A0A1A',
+                      background: notifySignedUp ? 'hsla(38, 70%, 50%, 0.08)' : 'linear-gradient(135deg, hsla(38, 78%, 58%, 0.85) 0%, hsla(38, 65%, 50%, 0.8) 100%)',
+                      border: notifySignedUp ? '1px solid hsla(38, 70%, 50%, 0.12)' : 'none',
+                      borderRadius: '14px',
+                      padding: notifySignedUp ? '4px 12px' : '6px 14px',
                       cursor: notifySignedUp ? 'default' : 'pointer',
                       opacity: notifyLoading ? 0.6 : 1,
                       transition: 'all 200ms ease',
-                      boxShadow: notifySignedUp ? 'none' : '0 2px 12px hsla(38, 70%, 40%, 0.3)',
+                      boxShadow: notifySignedUp ? 'none' : '0 2px 10px hsla(38, 70%, 40%, 0.25)',
                     }}
                   >
                     {notifySignedUp ? '✓ Du blir meddelad' : '🔔 Meddela mig'}
@@ -1112,48 +1193,15 @@ export default function ProductLibrary() {
                 </div>
               </div>
             </motion.div>
-          </div>
+          </motion.div>
         </motion.div>
           </motion.div>
         )}
         </AnimatePresence>
         </motion.div>
 
-        {/* Sign-off — elevated */}
-        <motion.div
-          initial={{ opacity: 0, y: 8 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1.0, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-          style={{
-            textAlign: 'center',
-            padding: '0 28px',
-            marginTop: isDark ? '0' : '32px',
-            paddingTop: isDark ? '8px' : '0',
-            paddingBottom: 'calc(48px + env(safe-area-inset-bottom, 0px))',
-          }}
-        >
-          <div style={{
-            width: '40px',
-            height: '1px',
-            background: isDark
-              ? 'linear-gradient(90deg, transparent, hsla(38, 60%, 50%, 0.35), transparent)'
-              : 'linear-gradient(90deg, transparent, hsla(30, 20%, 60%, 0.3), transparent)',
-            margin: '0 auto 18px',
-          }} />
-          <p
-            style={{
-              fontFamily: "'DM Serif Display', serif",
-              fontStyle: 'normal',
-              fontSize: '14px',
-              color: isDark ? 'hsla(38, 55%, 70%, 1)' : '#E9B44C',
-              opacity: 0.9,
-              lineHeight: 1.7,
-              letterSpacing: '-0.01em',
-            }}
-          >
-            Utvecklat av psykolog med 20+ års klinisk erfarenhet.
-          </p>
-        </motion.div>
+        {/* Bottom safe-area spacing */}
+        <div style={{ paddingBottom: 'calc(48px + env(safe-area-inset-bottom, 0px))' }} />
       </div>
     </div>
   );
