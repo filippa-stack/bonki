@@ -216,25 +216,15 @@ export default function Home() {
     opacity: 1 - scrollP * 0.08,
   };
 
+  const MIDNIGHT_INK = '#1A1A2E';
+  const LANTERN_GLOW = '#FDF6E3';
+  const DRIFTWOOD = '#6B5E52';
+  const DEEP_DUSK = '#2A2D3A';
+  const DEEP_SAFFRON = '#D4A03A';
+
   return (
-    <div ref={scrollRef} className="min-h-screen flex flex-col overflow-y-auto relative" style={{ height: '100vh', background: 'linear-gradient(180deg, #164A58 0%, #0D2B33 100%)' }}>
-      {/* Saffron backlight — warm glow behind illustration */}
-      <div
-        style={{
-          position: 'absolute',
-          top: '5%',
-          left: '50%',
-          transform: 'translateX(-50%)',
-          width: '280px',
-          height: '280px',
-          borderRadius: '50%',
-          background: 'radial-gradient(circle, hsla(38, 72%, 50%, 0.12) 0%, hsla(38, 60%, 45%, 0.04) 50%, transparent 75%)',
-          pointerEvents: 'none',
-          zIndex: 0,
-          filter: 'blur(30px)',
-        }}
-      />
-      {/* Background illustration — Still Us identity */}
+    <div ref={scrollRef} className="min-h-screen flex flex-col overflow-y-auto relative" style={{ height: '100vh', backgroundColor: MIDNIGHT_INK }}>
+      {/* Background illustration — max 20% opacity */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -257,12 +247,13 @@ export default function Home() {
             height: '100%',
             objectFit: 'contain',
             objectPosition: 'center top',
-            opacity: 0.32,
+            opacity: 0.20,
             maskImage: 'linear-gradient(to bottom, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.6) 20%, rgba(0,0,0,1) 35%, rgba(0,0,0,0.9) 52%, rgba(0,0,0,0.3) 68%, rgba(0,0,0,0) 82%)',
             WebkitMaskImage: 'linear-gradient(to bottom, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.6) 20%, rgba(0,0,0,1) 35%, rgba(0,0,0,0.9) 52%, rgba(0,0,0,0.3) 68%, rgba(0,0,0,0) 82%)',
           }}
         />
       </motion.div>
+
       {/* 7+ day return overlay */}
       <AnimatePresence>
         {showReturnOverlay && (
@@ -291,28 +282,35 @@ export default function Home() {
 
         {mode !== 'loading' && (
           <>
-            {/* ZONE A — Identity — compressed closer to header */}
+            {/* ZONE A — Identity */}
             <motion.div
               className="pt-8 px-6 text-center"
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
             >
-              <h1 className="type-h1" style={{ color: '#F5EFE6', marginBottom: '6px' }}>
+              <h1
+                style={{
+                  fontFamily: "'DM Serif Display', var(--font-serif)",
+                  fontSize: '28px',
+                  fontWeight: 600,
+                  color: LANTERN_GLOW,
+                  marginBottom: '6px',
+                  lineHeight: 1.2,
+                }}
+              >
                 Ert utrymme
               </h1>
               <p style={{
-                fontFamily: 'var(--font-serif)',
-                fontSize: '15px',
-                color: 'hsl(36, 16%, 88%)',
-                opacity: 0.75,
+                fontFamily: 'var(--font-sans)',
+                fontSize: '14px',
+                color: DRIFTWOOD,
                 lineHeight: 1.5,
-                textShadow: '0 1px 8px hsla(194, 30%, 10%, 0.4)',
               }}>
                 Följ ordningen — eller börja där det känns rätt.
               </p>
 
-              {/* Resume card — prominent glassmorphism tile */}
+              {/* Resume banner — Deep Dusk bg, 3px left Deep Saffron */}
               {(() => {
                 if (devState === 'browse') return null;
                 const cardId = resumeCardFromNormalized
@@ -324,7 +322,6 @@ export default function Home() {
                 const stillUsCategoryIds = allCategories.map(c => c.id);
                 if (!stillUsCategoryIds.includes(card.categoryId)) return null;
 
-                // Build step label from card sections
                 const stepIndex = normalizedSession.currentStepIndex ?? 0;
                 const effectiveSteps = card.sections?.map((s: { type: string }) => s.type) ?? [];
                 const dynSteps = buildDynamicSteps(effectiveSteps, true);
@@ -340,17 +337,18 @@ export default function Home() {
                       width: '100%',
                       marginTop: '48px',
                       padding: '18px 20px',
-                      background: 'rgba(162, 181, 169, 0.18)',
-                      backdropFilter: 'blur(24px) saturate(1.3)',
-                      WebkitBackdropFilter: 'blur(24px) saturate(1.3)',
-                      border: '1px solid rgba(218, 157, 29, 0.5)',
+                      background: DEEP_DUSK,
+                      borderLeft: `3px solid ${DEEP_SAFFRON}`,
+                      borderTop: 'none',
+                      borderRight: 'none',
+                      borderBottom: 'none',
                       borderRadius: '14px',
                       cursor: 'pointer',
                       textAlign: 'left',
                       display: 'flex',
                       flexDirection: 'column',
                       gap: '6px',
-                      boxShadow: '0 0 20px -4px rgba(218, 157, 29, 0.15), inset 0 1px 0 0 rgba(255, 255, 255, 0.10)',
+                      boxShadow: '0 4px 16px rgba(0, 0, 0, 0.2)',
                     }}
                   >
                     <span
@@ -358,7 +356,7 @@ export default function Home() {
                         fontFamily: 'var(--font-serif)',
                         fontSize: '18px',
                         fontWeight: 500,
-                        color: 'var(--text-primary)',
+                        color: LANTERN_GLOW,
                         lineHeight: 1.3,
                       }}
                     >
@@ -371,7 +369,7 @@ export default function Home() {
                         fontWeight: 600,
                         letterSpacing: '0.06em',
                         textTransform: 'uppercase',
-                        color: 'var(--accent-saffron, #DA9D1D)',
+                        color: DEEP_SAFFRON,
                         opacity: 0.85,
                       }}
                     >
@@ -382,7 +380,7 @@ export default function Home() {
               })()}
             </motion.div>
 
-            {/* ── Circadian Menu — 9 progressive disclosure categories ── */}
+            {/* ── Circadian Menu — 9 depth-based tiles ── */}
             <div className="px-2" style={{ marginTop: '62px', paddingBottom: '32px' }}>
               <CircadianMenu
                 categories={sortedCategories}
@@ -404,8 +402,8 @@ export default function Home() {
                   <p style={{
                     fontFamily: 'var(--font-serif)',
                     fontSize: '14px',
-                    color: 'var(--accent-text)',
-                    opacity: 0.45,
+                    color: DRIFTWOOD,
+                    opacity: 0.55,
                     textAlign: 'center',
                     marginTop: '24px',
                   }}>
@@ -418,8 +416,8 @@ export default function Home() {
                     <p style={{
                       fontFamily: 'var(--font-sans)',
                       fontSize: '12px',
-                      color: 'var(--color-text-tertiary)',
-                      opacity: isAllDone ? 0.65 : 0.55,
+                      color: DRIFTWOOD,
+                      opacity: 0.55,
                       letterSpacing: '0.03em',
                     }}>
                       {isAllDone
@@ -428,10 +426,10 @@ export default function Home() {
                     </p>
                     <p style={{
                       fontFamily: 'var(--font-serif)',
-                       fontSize: '14px',
-                      color: 'var(--accent-text)',
-                       opacity: 0.50,
-                       marginTop: '16px',
+                      fontSize: '14px',
+                      color: DRIFTWOOD,
+                      opacity: 0.50,
+                      marginTop: '16px',
                     }}>
                       Samtalet börjar här.
                     </p>
