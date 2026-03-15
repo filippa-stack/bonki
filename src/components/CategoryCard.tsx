@@ -25,14 +25,25 @@ export default function CategoryCard({
 
   return (
     <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.15 }}
+      initial={{ opacity: 0, y: 12 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+      whileHover={{ scale: 1.025, y: -2 }}
+      whileTap={{ scale: 0.96, y: 2 }}
       onClick={onClick}
-      className="w-full text-left cursor-pointer rounded-card p-6 transition-opacity hover:opacity-80 relative overflow-hidden"
+      className="w-full text-left cursor-pointer p-6 relative overflow-hidden"
       style={{
+        backgroundImage: 'linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0) 50%, rgba(0,0,0,0.08) 100%)',
         backgroundColor: 'var(--color-surface)',
-        border: 'var(--border-card)',
+        borderRadius: '22px',
+        border: '1px solid rgba(255, 255, 255, 0.12)',
+        boxShadow: [
+          '0 10px 28px rgba(0, 0, 0, 0.25)',
+          '0 4px 10px rgba(0, 0, 0, 0.15)',
+          '0 1px 3px rgba(0, 0, 0, 0.08)',
+          'inset 0 3px 6px rgba(255, 255, 255, 0.15)',
+          'inset 0 -4px 10px rgba(0, 0, 0, 0.14)',
+        ].join(', '),
         ...(isBehindMode ? { opacity: 0.85, backdropFilter: 'blur(2px)' } : {}),
       }}
     >
