@@ -879,7 +879,202 @@ export default function CardView() {
   }
 
   // ─────────────────────────────────────────────────────────────
-  //  MODE: 'completion' — session just finished, takeaway ritual
+  //  MODE: 'completion' — kids products — quiet recognition
+  // ─────────────────────────────────────────────────────────────
+  if (cardViewMode === 'completion' && isKidsProduct) {
+    const LANTERN_GLOW = '#FDF6E3';
+    const SAFFRON = '#E9B44C';
+    const BARK = '#2C2420';
+    const DRIFTWOOD = '#6B5E52';
+    const PARCHMENT = '#F5EDD2';
+    const MIDNIGHT_INK = '#1A1A2E';
+
+    const categoryName = category?.title ?? '';
+    const hasNextCard = postCompletionNav.type === 'next_card' || postCompletionNav.type === 'next_category';
+    const categoryDest = postCompletionNav.homeDest;
+
+    return (
+      <motion.div
+        style={{
+          position: 'fixed',
+          inset: 0,
+          backgroundColor: LANTERN_GLOW,
+          zIndex: 10,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          overflow: 'auto',
+        }}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+      >
+        {/* Content block — vertically centered */}
+        <div style={{
+          flex: '1 1 auto',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          width: '100%',
+          maxWidth: '400px',
+          padding: '0 24px',
+        }}>
+          {/* 1. Completion mark — creature circle + saffron ring */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.85 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.25, ease: [0, 0, 0.2, 1] }}
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              marginBottom: '24px',
+            }}
+          >
+            {/* Ring + creature */}
+            <div style={{
+              width: '64px',
+              height: '64px',
+              borderRadius: '50%',
+              border: `2px solid ${SAFFRON}`,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}>
+              {cardImageUrl ? (
+                <img
+                  src={cardImageUrl}
+                  alt=""
+                  draggable={false}
+                  style={{
+                    width: '56px',
+                    height: '56px',
+                    borderRadius: '50%',
+                    objectFit: 'cover',
+                  }}
+                />
+              ) : (
+                <div style={{
+                  width: '56px',
+                  height: '56px',
+                  borderRadius: '50%',
+                  backgroundColor: PARCHMENT,
+                }} />
+              )}
+            </div>
+            {/* Card name */}
+            <p style={{
+              fontFamily: 'var(--font-sans)',
+              fontSize: '14px',
+              fontWeight: 400,
+              letterSpacing: '1.5px',
+              textTransform: 'uppercase',
+              color: BARK,
+              textAlign: 'center',
+              marginTop: '12px',
+            }}>
+              {card.title}
+            </p>
+          </motion.div>
+
+          {/* 2. Affirmation */}
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.1, duration: 0.3 }}
+            className="font-serif"
+            style={{
+              fontSize: '24px',
+              fontWeight: 600,
+              color: BARK,
+              textAlign: 'center',
+              lineHeight: 1.3,
+              marginBottom: '32px',
+            }}
+          >
+            Ni pratade om {card.title}.
+          </motion.p>
+
+          {/* 3. Note nudge */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.2, duration: 0.3 }}
+            style={{ width: '100%', marginBottom: '40px' }}
+          >
+            <KidsCompletionNote
+              sessionId={activeSessionId}
+              spaceId={space?.id ?? null}
+              cardId={cardId}
+              productId={product?.id}
+            />
+          </motion.div>
+
+          {/* 4. Primary CTA */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.3, duration: 0.3 }}
+            style={{ width: '100%' }}
+          >
+            <button
+              onClick={() => navigateWithFeedback(
+                hasNextCard ? postCompletionNav.destination : categoryDest
+              )}
+              style={{
+                width: '100%',
+                height: '56px',
+                borderRadius: '14px',
+                backgroundColor: SAFFRON,
+                border: 'none',
+                cursor: 'pointer',
+                fontFamily: 'var(--font-sans)',
+                fontSize: '17px',
+                fontWeight: 600,
+                color: MIDNIGHT_INK,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '6px',
+              }}
+            >
+              {hasNextCard ? (
+                <>Nästa samtal <ArrowRight size={16} style={{ opacity: 0.7 }} /></>
+              ) : (
+                `Tillbaka till ${categoryName}`
+              )}
+            </button>
+
+            {/* 5. Secondary link — only when primary = "Nästa samtal" */}
+            {hasNextCard && (
+              <button
+                onClick={() => navigateWithFeedback(categoryDest)}
+                style={{
+                  display: 'block',
+                  width: '100%',
+                  marginTop: '16px',
+                  background: 'none',
+                  border: 'none',
+                  cursor: 'pointer',
+                  fontFamily: 'var(--font-sans)',
+                  fontSize: '14px',
+                  fontWeight: 400,
+                  color: DRIFTWOOD,
+                  textAlign: 'center',
+                }}
+              >
+                Tillbaka till {categoryName}
+              </button>
+            )}
+          </motion.div>
+        </div>
+      </motion.div>
+    );
+  }
+
+  // ─────────────────────────────────────────────────────────────
+  //  MODE: 'completion' — Still Us — takeaway ritual
   // ─────────────────────────────────────────────────────────────
   if (cardViewMode === 'completion') {
     return (
@@ -892,39 +1087,6 @@ export default function CardView() {
       >
         <Header title="" variant="immersive" />
         <div className="px-6 pb-16 relative" style={{ paddingTop: '48px' }}>
-          {/* Card illustration watermark on completion screen */}
-          {product && product.id !== 'still_us' && cardImageUrl && (
-            <div
-              style={{
-                position: 'fixed',
-                bottom: 0,
-                right: 0,
-                width: '50vw',
-                height: '35vh',
-                display: 'flex',
-                alignItems: 'flex-end',
-                justifyContent: 'flex-end',
-                pointerEvents: 'none',
-                zIndex: 0,
-                padding: '0 24px calc(16px + env(safe-area-inset-bottom, 0px)) 0',
-              }}
-            >
-              <img
-                src={cardImageUrl}
-                alt=""
-                draggable={false}
-                style={{
-                  maxWidth: '100%',
-                  maxHeight: '100%',
-                  objectFit: 'contain',
-                  filter: 'saturate(0.4)',
-                  userSelect: 'none',
-                  opacity: 0.04,
-                  animation: 'completion-breathe 8s ease-in-out infinite',
-                }}
-              />
-            </div>
-          )}
           {/* Back arrow — same style as session question pages */}
           <motion.div
             initial={{ opacity: 0 }}
@@ -1028,7 +1190,7 @@ export default function CardView() {
               marginTop: '10px',
             }}
           >
-            {pronounMode === 'du' ? 'Inget du skriver lämnar det här rummet.' : 'Inget ni skriver lämnar det här rummet.'}
+            Inget ni skriver lämnar det här rummet.
           </motion.p>
 
           {/* CTAs */}
@@ -1088,7 +1250,6 @@ export default function CardView() {
                 transition={{ delay: 0.65, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
                 style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px', marginTop: '32px' }}
               >
-                {/* Primary: Next card — full-width saffron */}
                 <button
                   onClick={() => navigateWithFeedback(postCompletionNav.destination)}
                   style={{
@@ -1113,25 +1274,6 @@ export default function CardView() {
                   {postCompletionNav.label}
                   <ArrowRight size={16} style={{ opacity: 0.7 }} />
                 </button>
-                {/* Secondary: Finish / go back to product home */}
-                {product && product.id !== 'still_us' && (
-                  <button
-                    onClick={() => navigateWithFeedback(postCompletionNav.homeDest)}
-                    className="font-sans"
-                    style={{
-                      fontSize: '13px',
-                      color: 'var(--completion-link)',
-                      background: 'none',
-                      border: 'none',
-                      cursor: 'pointer',
-                      textDecoration: 'underline',
-                      textUnderlineOffset: '3px',
-                      opacity: 0.55,
-                    }}
-                  >
-                    Avsluta
-                  </button>
-                )}
               </motion.div>
             )}
 
@@ -1142,13 +1284,11 @@ export default function CardView() {
               style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px' }}
             >
               <button
-                onClick={() => navigateWithFeedback(
-                  product && product.id !== 'still_us' ? `/diary/${product.id}` : '/shared'
-                )}
+                onClick={() => navigateWithFeedback('/shared')}
                 className="font-sans"
                 style={{ fontSize: '13px', color: 'var(--completion-link)', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline', textUnderlineOffset: '3px', marginTop: '24px', opacity: 0.4 }}
               >
-                {product && product.id !== 'still_us' ? 'Vår dagbok' : uiText.seeNotes}
+                {uiText.seeNotes}
               </button>
             </motion.div>
           </motion.div>
