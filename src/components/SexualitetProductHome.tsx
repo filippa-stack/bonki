@@ -45,7 +45,7 @@ export default function SexualitetProductHome({ product }: { product: ProductMan
             <p className="font-serif" style={{ fontSize: 'clamp(16px, 4.5vw, 20px)', fontWeight: 400, color: ACCENT_COLOR, opacity: 0.9, marginTop: '6px', textShadow: '0 1px 8px rgba(0,0,0,0.3)' }}>
               Kropp, gränser och identitet
             </p>
-            <KidsProductResumeBanner product={product} progress={progress} accentColor={ACCENT_COLOR} />
+            <UnifiedResumeBanner product={product} kidsProgress={progress} accentColor={ACCENT_COLOR} />
           </motion.div>
         </motion.div>
 
