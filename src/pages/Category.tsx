@@ -644,14 +644,19 @@ function StillUsCategoryView({
                 padding: '20px 24px',
                 textAlign: 'left',
                 cursor: 'pointer',
-                border: 'none',
+                border: isNextSuggested && !allCompleted
+                  ? `1.5px solid ${DEEP_SAFFRON}`
+                  : '1.5px solid rgba(255, 255, 255, 0.30)',
                 display: 'flex',
                 alignItems: 'center',
                 gap: '12px',
-                borderLeft: isNextSuggested && !allCompleted
-                  ? `2px solid ${DEEP_SAFFRON}`
-                  : '2px solid transparent',
-                boxShadow: '0 4px 16px rgba(0, 0, 0, 0.2)',
+                boxShadow: [
+                  '0 12px 32px rgba(0, 0, 0, 0.30)',
+                  '0 4px 12px rgba(0, 0, 0, 0.18)',
+                  '0 1px 3px rgba(0, 0, 0, 0.08)',
+                  'inset 0 3px 6px rgba(255, 255, 255, 0.45)',
+                  'inset 0 -4px 10px rgba(0, 0, 0, 0.14)',
+                ].join(', '),
               }}
             >
               <div style={{ flex: 1, minWidth: 0 }}>
