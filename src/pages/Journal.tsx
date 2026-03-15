@@ -37,9 +37,8 @@ const SWEDISH_MONTHS = [
 
 function getCardTitle(cardId: string): string | null {
   // Check Still Us cards
-  for (const cat of stillUsCategories) {
-    // We need to import cards from content — use a simple lookup
-  }
+  const suCard = stillUsCards.find(c => c.id === cardId);
+  if (suCard) return suCard.title;
   // Check kids product cards
   for (const prod of allProducts) {
     const card = prod.cards.find(c => c.id === cardId);
