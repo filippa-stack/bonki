@@ -869,6 +869,7 @@ export default function ProductLibrary() {
               </div>
             </motion.div>
           </div>
+        </div>
 
         {/* Dagboken — compact return-loop hook */}
         <motion.div
