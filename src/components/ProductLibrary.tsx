@@ -113,15 +113,10 @@ const TAGLINE_COLORS: Record<string, string> = {
   syskonkort: 'hsla(178, 40%, 80%, 0.75)',
 };
 
-/** Build badge text: "X ämnen · Y kr · Första gratis" */
+/** Build badge text: "X ämnen" — no pricing on individual tiles */
 function buildBadgeText(product: { cards: unknown[]; id: string }): string {
   const count = product.cards.length;
-  const prices: Record<string, number> = {
-    jag_i_mig: 195, jag_med_andra: 195, jag_i_varlden: 195,
-    vardagskort: 195, syskonkort: 195, sexualitetskort: 195,
-  };
-  const price = prices[product.id] ?? 195;
-  return `${count} ämnen · ${price} kr · 1a gratis`;
+  return `${count} ämnen`;
 }
 
 
