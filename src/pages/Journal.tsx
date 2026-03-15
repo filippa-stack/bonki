@@ -527,6 +527,22 @@ export default function Journal() {
 
   const showParPrivacy = activeFilters.has('barn') && activeFilters.has('par') && stillUsSessions.length > 0;
 
+  // Filtered paused sessions
+  const filteredPaused = useMemo(() => {
+    return pausedSessions.filter(s => {
+      const isPar = s.product_id === STILL_US_ID;
+      return isPar ? activeFilters.has('par') : activeFilters.has('barn');
+    });
+  }, [pausedSessions, activeFilters]);
+
+  // Filtered bookmarks
+  const filteredBookmarks = useMemo(() => {
+    return bookmarks.filter(b => {
+      const isPar = b.product_id === STILL_US_ID;
+      return isPar ? activeFilters.has('par') : activeFilters.has('barn');
+    });
+  }, [bookmarks, activeFilters]);
+
   const toggleFilter = (chip: FilterChip) => {
     setActiveFilters(prev => {
       if (prev.has(chip) && prev.size === 1) return prev;
