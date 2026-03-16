@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import type { ProductManifest } from '@/types/product';
 import creatureImage from '@/assets/creature-sal.png';
+import creatureImage2 from '@/assets/creature-sal2.png';
 import UnifiedResumeBanner from '@/components/UnifiedResumeBanner';
 import NextConversationCard from '@/components/NextConversationCard';
 import ProductHomeBackButton from '@/components/ProductHomeBackButton';
