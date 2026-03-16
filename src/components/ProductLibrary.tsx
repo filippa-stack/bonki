@@ -224,20 +224,21 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
       onClick={onClick}
       className="cursor-pointer"
       style={{
-        borderRadius: '16px',
+        borderRadius: '22px',
         backgroundColor: bg,
-        height: '260px',
+        height: '240px',
         display: 'flex',
         position: 'relative',
         overflow: 'hidden',
+        backgroundImage: 'linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0) 50%, rgba(0,0,0,0.08) 100%)',
         border: '1.5px solid rgba(255, 255, 255, 0.30)',
         boxShadow: [
-          `0 16px 40px ${toShadowColor(bg, 0.35)}`,
-          `0 6px 16px ${toShadowColor(bg, 0.22)}`,
+          `0 16px 40px ${toShadowColor(bg, 0.4)}`,
+          `0 6px 16px ${toShadowColor(bg, 0.25)}`,
           '0 1px 3px rgba(0, 0, 0, 0.10)',
-          `0 0 60px ${toShadowColor(bg, 0.15)}`,
+          `0 0 72px ${toShadowColor(bg, 0.18)}`,
           'inset 0 3px 6px rgba(255, 255, 255, 0.45)',
-          `inset 0 -4px 10px ${toShadowColor(bg, 0.12)}`,
+          `inset 0 -4px 10px ${toShadowColor(bg, 0.14)}`,
         ].join(', '),
       }}
     >
@@ -254,15 +255,15 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
           }}
         />
       )}
-      {/* Illustration — right-aligned, bleeds off edge */}
+      {/* Illustration — right-aligned, bleeds off edge dramatically */}
       {illustration && (
         <div
           style={{
             position: 'absolute',
-            top: offset?.top ?? '-10%',
-            right: offset?.right ?? '-10%',
-            bottom: offset?.bottom ?? '-8%',
-            width: scale?.width ?? '62%',
+            top: offset?.top ?? '-15%',
+            right: offset?.right ?? '-12%',
+            bottom: offset?.bottom ?? '-10%',
+            width: scale?.width ?? '70%',
             pointerEvents: 'none',
             zIndex: 0,
           }}
@@ -282,16 +283,16 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
         </div>
       )}
 
-      {/* Horizontal gradient scrim — solid left, fading to transparent right */}
+      {/* Horizontal gradient scrim — text anchor left */}
       <div
         aria-hidden="true"
         style={{
           position: 'absolute',
           top: 0, left: 0, bottom: 0,
-          width: '65%',
+          width: '55%',
           zIndex: 1,
           pointerEvents: 'none',
-          background: `linear-gradient(to right, ${bgRgba(1)} 0%, ${bgRgba(0.85)} 35%, ${bgRgba(0.3)} 60%, transparent 100%)`,
+          background: `linear-gradient(to right, ${bgRgba(1)} 0%, ${bgRgba(0.9)} 30%, ${bgRgba(0.4)} 65%, transparent 100%)`,
         }}
       />
 
