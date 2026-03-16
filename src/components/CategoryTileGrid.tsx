@@ -13,14 +13,20 @@ const SAFFRON = '#E9B44C';
 const LANTERN = '#FDF6E3';
 const SUBTITLE_COLOR = '#998F82';
 
-/** Per-tile crop/opacity values for the creature illustration */
-const TILE_CREATURE_STYLES = [
+/** Default per-tile crop/opacity — used as fallback */
+const DEFAULT_TILE_CREATURE_STYLES: CreatureTileStyle[] = [
   { scale: 1.3, objectPosition: '25% 15%', opacity: 0.95 },
   { scale: 1.15, objectPosition: '75% 20%', opacity: 0.8 },
   { scale: 1.8, objectPosition: '50% 10%', opacity: 0.6 },
   { scale: 0.65, objectPosition: '50% 55%', opacity: 0.35 },
   { scale: 0.85, objectPosition: '80% 40%', opacity: 0.2 },
 ];
+
+export interface CreatureTileStyle {
+  scale: number;
+  objectPosition: string;
+  opacity: number;
+}
 
 const containerVariants = {
   hidden: {},
