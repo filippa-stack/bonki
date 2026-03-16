@@ -555,7 +555,7 @@ export default function ProductLibrary() {
             transition={{ delay: 0.3, duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
             style={{
               fontFamily: "'DM Serif Display', serif",
-              fontStyle: 'italic',
+              fontStyle: 'normal',
               fontSize: '14px',
               fontWeight: 400,
               color: isDark ? 'hsla(38, 50%, 65%, 0.5)' : 'hsla(38, 78%, 55%, 0.7)',
