@@ -840,24 +840,7 @@ export default function ProductLibrary() {
         </motion.div>
 
         <div className="px-5" style={{ scrollMarginTop: '8px' }}>
-          {/* Single free-trial mention */}
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.2, duration: 0.5 }}
-            style={{
-              fontFamily: "var(--font-body)",
-              fontSize: '10px',
-              fontWeight: 500,
-              letterSpacing: '0.06em',
-              color: '#998F82',
-              textAlign: 'center',
-              marginBottom: '20px',
-              marginTop: '-16px',
-            }}
-          >
-            ✦ Första kortet i varje produkt är gratis
-          </motion.p>
+          {/* Free-trial mention removed — now shown per-tile */}
           <LibraryResumeCard activeTab="barn" />
           <div style={{ height: '24px' }} />
           <motion.div
