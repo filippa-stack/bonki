@@ -47,16 +47,16 @@ export default function NextConversationCard({ product, progress }: NextConversa
     <motion.button
       initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
+      whileHover={{ scale: 1.03, y: -2 }}
       whileTap={{ scale: 0.94, y: 3 }}
       transition={{ duration: 0.5, ease: EASE }}
       onClick={() => navigate(`/card/${card.id}`)}
       style={{
         width: '100%',
-        background: `linear-gradient(135deg, ${hexToRgba(tileMid, 0.70)} 0%, ${hexToRgba(tileMid, 0.50)} 100%)`,
-        backdropFilter: 'blur(16px)',
-        WebkitBackdropFilter: 'blur(16px)',
-        borderRadius: '16px',
-        border: `1px solid ${hexToRgba(tileLight, 0.45)}`,
+        backgroundImage: 'linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0) 50%, rgba(0,0,0,0.08) 100%)',
+        backgroundColor: tileMid,
+        borderRadius: '22px',
+        border: `2px solid ${hexToRgba(tileLight, 0.45)}`,
         padding: '16px',
         textAlign: 'left',
         cursor: 'pointer',
@@ -66,6 +66,13 @@ export default function NextConversationCard({ product, progress }: NextConversa
         marginTop: '16px',
         position: 'relative',
         overflow: 'hidden',
+        boxShadow: [
+          '0 12px 32px rgba(0, 0, 0, 0.30)',
+          '0 4px 12px rgba(0, 0, 0, 0.18)',
+          '0 1px 3px rgba(0, 0, 0, 0.08)',
+          'inset 0 3px 6px rgba(255, 255, 255, 0.45)',
+          'inset 0 -4px 10px rgba(0, 0, 0, 0.14)',
+        ].join(', '),
       }}
     >
       {/* Card illustration — bleeds out on the right */}
