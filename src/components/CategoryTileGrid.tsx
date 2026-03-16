@@ -237,7 +237,7 @@ function CategoryTile({
   );
 }
 
-export default function CategoryTileGrid({ product, progress, tiles, creatureImage, creatureTileStyles }: CategoryTileGridProps) {
+export default function CategoryTileGrid({ product, progress, tiles, creatureImage, creatureTileStyles, tileImages }: CategoryTileGridProps) {
   const total = tiles.length;
   const isOdd = total % 2 !== 0;
   const styles = creatureTileStyles || DEFAULT_TILE_CREATURE_STYLES;
