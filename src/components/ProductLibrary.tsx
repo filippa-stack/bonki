@@ -635,6 +635,7 @@ export default function ProductLibrary() {
               opacity: isDark ? 1 : 0.5,
               lineHeight: 1.6,
               transition: 'color 400ms ease',
+              textShadow: '0 1px 12px hsla(230, 25%, 10%, 0.6)',
             }}
           >
             Verktyg för samtalen som inte blir av
