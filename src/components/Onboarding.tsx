@@ -210,7 +210,7 @@ export default function Onboarding() {
           </span>
           <span
             style={{
-              fontFamily: 'var(--font-sans)',
+              fontFamily: 'var(--font-body)',
               fontSize: '0.78rem',
               fontWeight: 300,
               color: 'hsla(44, 86%, 94%, 0.45)',
