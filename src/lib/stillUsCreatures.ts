@@ -95,10 +95,10 @@ export const STILL_US_CREATURES: Record<string, StillUsCreature> = {
     objectPosition: '50% 15%',
     tileOpacity: 0.36,
     headerOpacity: 0.36,
-    tileRight: '-8%',
+    tileRight: '-2%',
     tileHeight: '220%',
     tileScale: 1.05,
-    tileTop: '70%',            // Owl: push down aggressively to show eyes
+    tileTop: '75%',            // Owl: push down further + left to show eyes
   },
   'category-9': {               // Dit ni är på väg → Lejon  (Det som formar er)
     src: creatureLejon,
