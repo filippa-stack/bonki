@@ -18,6 +18,7 @@ import UnifiedResumeBanner from '@/components/UnifiedResumeBanner';
 import ProductHomeBackButton from '@/components/ProductHomeBackButton';
 import { categories as allCategories, cards as allCards } from '@/data/content';
 import stillUsIllustration from '@/assets/illustration-still-us-home.png';
+import { STILL_US_CREATURES } from '@/lib/stillUsCreatures';
 
 /* ── Color tokens ── */
 const MIDNIGHT_INK = '#1A1A2E';
