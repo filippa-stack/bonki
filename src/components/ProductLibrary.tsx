@@ -947,7 +947,8 @@ export default function ProductLibrary() {
         >
           <p
             style={{
-              fontFamily: "'DM Serif Display', serif",
+              fontFamily: "var(--font-display)",
+              fontVariationSettings: "'opsz' 15",
               fontStyle: 'normal',
               fontSize: '14px',
               fontWeight: 400,
