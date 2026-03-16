@@ -555,7 +555,7 @@ function StillUsCategoryView({
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, ease: EASE }}
         style={{
-          position: 'relative', zIndex: 1,
+          position: 'relative',
           paddingTop: 'calc(env(safe-area-inset-top, 0px) + 16px)',
           paddingBottom: '12px',
           paddingLeft: '16px',
