@@ -115,7 +115,7 @@ export const STILL_US_CREATURES: Record<string, StillUsCreature> = {
     headerOpacity: 0.38,
     tileRight: '-2%',
     tileHeight: '160%',
-    tileScale: 1.05,
+    tileScale: 1.15,           // Deer is thin/light — scale up
   },
   'category-10': {              // Att välja varandra → Örn  (Djupet)
     src: creatureOrn,
