@@ -957,6 +957,7 @@ export default function ProductLibrary() {
           </span>
         </motion.div>
         </div>
+
         {/* Bottom safe-area spacing */}
         <div style={{ paddingBottom: 'calc(48px + env(safe-area-inset-bottom, 0px))' }} />
       </div>
