@@ -67,6 +67,7 @@ function CategoryTile({
   total,
   isOddLast,
   creatureImage,
+  creatureStyle,
 }: {
   tile: TileConfig;
   product: ProductManifest;
@@ -75,6 +76,7 @@ function CategoryTile({
   total: number;
   isOddLast: boolean;
   creatureImage?: string;
+  creatureStyle: CreatureTileStyle;
 }) {
   const navigate = useNavigate();
   const cat = product.categories.find((c) => c.id === tile.id);
@@ -95,7 +97,6 @@ function CategoryTile({
 
   const ariaLabel = `${cat.title}: ${tile.sub}. ${completed} av ${totalCards} utforskade.`;
 
-  const creatureStyle = TILE_CREATURE_STYLES[Math.min(index, TILE_CREATURE_STYLES.length - 1)];
 
   return (
     <motion.button
