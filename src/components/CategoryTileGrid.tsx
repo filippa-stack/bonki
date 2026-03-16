@@ -69,6 +69,7 @@ function CategoryTile({
   total,
   isOddLast,
   creatureImage,
+  tileImage,
   creatureStyle,
 }: {
   tile: TileConfig;
@@ -78,6 +79,7 @@ function CategoryTile({
   total: number;
   isOddLast: boolean;
   creatureImage?: string;
+  tileImage?: string;
   creatureStyle: CreatureTileStyle;
 }) {
   const navigate = useNavigate();
