@@ -6,7 +6,7 @@ import { useOptimisticCompletions } from '@/contexts/OptimisticCompletionsContex
 import { useApp } from '@/contexts/AppContext';
 import { useAuth } from '@/contexts/AuthContext';
 import { useCoupleSpaceContext } from '@/contexts/CoupleSpaceContext';
-import { ArrowLeft, Check, ChevronDown } from 'lucide-react';
+import { Check, ChevronDown } from 'lucide-react';
 import { useThemeVars } from '@/hooks/useThemeVars';
 import { supabase } from '@/integrations/supabase/client';
 import { useDevState } from '@/contexts/DevStateContext';
@@ -15,6 +15,7 @@ import { useNormalizedSessionContext } from '@/contexts/NormalizedSessionContext
 import { useSpaceSnapshot } from '@/hooks/useSpaceSnapshot';
 import { useVerdigrisTheme } from '@/components/VerdigrisAtmosphere';
 import UnifiedResumeBanner from '@/components/UnifiedResumeBanner';
+import ProductHomeBackButton from '@/components/ProductHomeBackButton';
 import { categories as allCategories, cards as allCards } from '@/data/content';
 import stillUsIllustration from '@/assets/illustration-still-us-home.png';
 
@@ -26,7 +27,9 @@ const DRIFTWOOD = '#6B5E52';
 const DEEP_SAFFRON = '#D4A03A';
 const EMBER_MID = '#473454';
 
-const EASE = [0.22, 1, 0.36, 1] as const;
+const EASE = [0.4, 0.0, 0.2, 1] as const;
+const containerVariants = { hidden: {}, visible: { transition: { staggerChildren: 0.11, delayChildren: 0.35 } } };
+const titleVariants = { hidden: { opacity: 0, y: 16 }, visible: { opacity: 1, y: 0, transition: { duration: 0.75, ease: EASE } } };
 
 /* ── Layer definitions ── */
 const LAYERS: {
