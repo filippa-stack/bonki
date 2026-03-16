@@ -379,15 +379,15 @@ export default function Home() {
                     padding: '22px 22px',
                     borderRadius: '22px',
                     overflow: 'hidden',
-                    background: `linear-gradient(135deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.04) 40%, transparent 60%, rgba(0,0,0,0.10) 100%), ${EMBER_MID}`,
-                    border: `1.5px solid rgba(255, 255, 255, 0.35)`,
+                    background: `linear-gradient(135deg, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0.06) 35%, transparent 55%, rgba(0,0,0,0.10) 100%), ${EMBER_MID}`,
+                    border: `1.5px solid rgba(255, 255, 255, 0.38)`,
                     borderLeft: `3.5px solid ${DEEP_SAFFRON}`,
                     cursor: 'pointer',
                     textAlign: 'left',
                     display: 'flex',
                     flexDirection: 'column',
                     gap: '5px',
-                    boxShadow: `0 6px 20px rgba(0,0,0,0.30), 0 12px 40px rgba(0,0,0,0.20), inset 0 1px 3px rgba(255,255,255,0.25), inset 0 -1px 3px rgba(0,0,0,0.20), 0 0 32px ${DEEP_SAFFRON}22, 0 2px 60px ${DEEP_SAFFRON}10`,
+                    boxShadow: `0 6px 20px rgba(0,0,0,0.30), 0 12px 40px rgba(0,0,0,0.20), inset 0 2px 4px rgba(255,255,255,0.28), inset 0 -1px 3px rgba(0,0,0,0.20), 0 0 32px ${DEEP_SAFFRON}22, 0 2px 60px ${DEEP_SAFFRON}10`,
                   }}
                 >
                   <span style={{
