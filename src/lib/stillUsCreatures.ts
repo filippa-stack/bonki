@@ -97,7 +97,7 @@ export const STILL_US_CREATURES: Record<string, StillUsCreature> = {
     headerOpacity: 0.36,
     tileRight: '-3%',
     tileHeight: '160%',
-    tileScale: 0.95,           // Lion is visually large — scale down slightly
+    tileScale: 0.88,           // Lion is visually large+dense — scale down more
   },
   'category-6': {               // Trygghet & mod → Elefant  (Djupet)
     src: creatureElefant,
