@@ -20,10 +20,10 @@ const ORDERED_TILES = [
 
 // Turtle: face is small relative to shell. Increase scale on tile 0, focus on face.
 const CREATURE_TILE_STYLES: CreatureTileStyle[] = [
-  { scale: 1.4, objectPosition: '40% 10%', opacity: 0.95 },
-  { scale: 1.15, objectPosition: '60% 20%', opacity: 0.8 },
-  { scale: 1.8, objectPosition: '55% 8%', opacity: 0.6 },
-  { scale: 0.65, objectPosition: '50% 50%', opacity: 0.35 },
+  { scale: 1.4, objectPosition: '40% 10%', opacity: 0.45 },
+  { scale: 1.15, objectPosition: '60% 20%', opacity: 0.35 },
+  { scale: 1.8, objectPosition: '55% 8%', opacity: 0.25 },
+  { scale: 0.65, objectPosition: '50% 50%', opacity: 0.18 },
 ];
 
 const containerVariants = { hidden: {}, visible: { transition: { staggerChildren: 0.11, delayChildren: 0.4 } } };
