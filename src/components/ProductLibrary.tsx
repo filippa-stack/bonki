@@ -712,7 +712,7 @@ export default function ProductLibrary() {
               className="cursor-pointer"
               style={{
                 borderRadius: '22px',
-                backgroundImage: 'linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0) 50%, rgba(0,0,0,0.12) 100%)',
+                backgroundImage: 'linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0) 50%, rgba(0,0,0,0.08) 100%)',
                 backgroundColor: '#2E2233',
                 height: '240px',
                 display: 'flex',
@@ -721,21 +721,33 @@ export default function ProductLibrary() {
                 overflow: 'hidden',
                 border: '2px solid rgba(255, 255, 255, 0.45)',
                 boxShadow: [
-                  '0 1px 3px hsla(30, 15%, 25%, 0.05)',
-                  '0 6px 24px -6px hsla(30, 18%, 28%, 0.08)',
-                  '0 16px 48px -12px hsla(30, 12%, 25%, 0.05)',
+                  '0 16px 40px rgba(23, 17, 26, 0.4)',
+                  '0 6px 16px rgba(23, 17, 26, 0.25)',
+                  '0 1px 3px rgba(0, 0, 0, 0.10)',
+                  '0 0 72px rgba(23, 17, 26, 0.18)',
                   'inset 0 3px 6px rgba(255, 255, 255, 0.45)',
-                  'inset 0 -4px 10px rgba(46, 34, 51, 0.24)',
+                  'inset 0 -4px 10px rgba(23, 17, 26, 0.14)',
                 ].join(', '),
               }}
             >
-              {/* Illustration — right-aligned, matching kids tiles */}
+              {/* Inner warmth glow — saffron-tinted radial for life */}
+              <div
+                aria-hidden="true"
+                style={{
+                  position: 'absolute',
+                  inset: 0,
+                  zIndex: 0,
+                  pointerEvents: 'none',
+                  background: 'radial-gradient(ellipse 80% 90% at 65% 50%, rgba(212, 160, 58, 0.18) 0%, rgba(212, 160, 58, 0.06) 40%, transparent 70%)',
+                }}
+              />
+              {/* Illustration — right-aligned, oversized like kids tiles */}
               <div style={{
                 position: 'absolute',
-                top: '-35%',
-                right: '-12%',
-                bottom: '-30%',
-                width: '70%',
+                top: '-45%',
+                right: '-15%',
+                bottom: '-40%',
+                width: '85%',
                 pointerEvents: 'none',
                 zIndex: 0,
               }}>
@@ -748,7 +760,8 @@ export default function ProductLibrary() {
                     height: '100%',
                     objectFit: 'contain',
                     objectPosition: 'right bottom',
-                    opacity: 0.9,
+                    opacity: 0.95,
+                    filter: 'brightness(1.1) saturate(1.1)',
                   }}
                 />
               </div>
