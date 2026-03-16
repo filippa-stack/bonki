@@ -377,16 +377,17 @@ export default function Home() {
                   style={{
                     width: '100%',
                     padding: '18px 20px',
-                    background: `linear-gradient(135deg, rgba(255,255,255,0.10) 0%, transparent 50%, rgba(0,0,0,0.06) 100%), ${EMBER_MID}`,
                     borderRadius: '22px',
-                    border: '1.5px solid rgba(255, 255, 255, 0.18)',
+                    overflow: 'hidden',
+                    background: `linear-gradient(135deg, rgba(255,255,255,0.12) 0%, transparent 50%, rgba(0,0,0,0.08) 100%), ${EMBER_MID}`,
+                    border: '1.5px solid rgba(255, 255, 255, 0.30)',
                     borderLeft: `3px solid ${DEEP_SAFFRON}`,
                     cursor: 'pointer',
                     textAlign: 'left',
                     display: 'flex',
                     flexDirection: 'column',
                     gap: '4px',
-                    boxShadow: `0 10px 30px rgba(0,0,0,0.30), inset 0 1px 3px rgba(255,255,255,0.15), 0 0 0 1px rgba(255,255,255,0.05)`,
+                    boxShadow: `0 4px 16px rgba(0,0,0,0.25), 0 8px 32px rgba(0,0,0,0.15), inset 0 1px 2px rgba(255,255,255,0.20), inset 0 -1px 2px rgba(0,0,0,0.15), 0 0 24px ${DEEP_SAFFRON}18`,
                   }}
                 >
                   <span style={{
@@ -395,7 +396,8 @@ export default function Home() {
                     fontWeight: 600,
                     letterSpacing: '1.5px',
                     textTransform: 'uppercase',
-                    color: DRIFTWOOD,
+                    color: DEEP_SAFFRON,
+                    opacity: 0.85,
                   }}>
                     Ert nästa samtal
                   </span>
@@ -413,7 +415,7 @@ export default function Home() {
                     <span style={{
                       fontFamily: 'var(--font-body)',
                       fontSize: '13px',
-                      color: DRIFTWOOD,
+                      color: `${LANTERN_GLOW}70`,
                       marginTop: '2px',
                     }}>
                       {nextCardCategory.title}
