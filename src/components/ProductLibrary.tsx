@@ -528,20 +528,32 @@ export default function ProductLibrary() {
 
       {/* ── Bold creature illustrations — hero-level, full color ── */}
       <div aria-hidden="true" style={{ position: 'absolute', inset: 0, overflow: 'hidden', pointerEvents: 'none', zIndex: 0 }}>
+        {/* Radial saffron glow — atmospheric warmth behind title */}
+        <div style={{
+          position: 'absolute',
+          top: '-20px',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          width: '120vw',
+          height: '340px',
+          background: 'radial-gradient(ellipse 55% 60% at 50% 35%, hsla(38, 78%, 48%, 0.14) 0%, hsla(38, 78%, 48%, 0.06) 45%, transparent 100%)',
+          zIndex: 0,
+        }} />
         {/* Girl — top left, sitting on the edge */}
         <motion.img
           src={creatureGirl}
           alt=""
           draggable={false}
           initial={{ opacity: 0, y: 15 }}
-          animate={{ opacity: 0.40, y: 0 }}
+          animate={{ opacity: 0.58, y: 0 }}
           transition={{ delay: 0.4, duration: 1.6, ease: [0.22, 1, 0.36, 1] }}
           style={{
             position: 'absolute',
-            top: '8px',
-            left: '-8px',
-            width: '160px',
+            top: '4px',
+            left: '-12px',
+            width: '170px',
             height: 'auto',
+            filter: 'brightness(1.15) saturate(0.9)',
           }}
         />
         {/* Lion — top right, bold and forward-facing */}
@@ -550,14 +562,15 @@ export default function ProductLibrary() {
           alt=""
           draggable={false}
           initial={{ opacity: 0, y: 15 }}
-          animate={{ opacity: 0.38, y: 0 }}
+          animate={{ opacity: 0.55, y: 0 }}
           transition={{ delay: 0.6, duration: 1.6, ease: [0.22, 1, 0.36, 1] }}
           style={{
             position: 'absolute',
-            top: '15px',
-            right: '-30px',
-            width: '260px',
+            top: '8px',
+            right: '-35px',
+            width: '270px',
             height: 'auto',
+            filter: 'brightness(1.1) saturate(0.85)',
           }}
         />
         {/* Hero gradient scrim — ensures title legibility over creatures */}
@@ -566,11 +579,11 @@ export default function ProductLibrary() {
           top: 0,
           left: 0,
           right: 0,
-          height: '320px',
+          height: '360px',
           background: `linear-gradient(180deg, 
             hsla(230, 25%, 10%, 0.0) 0%, 
-            hsla(230, 25%, 10%, 0.5) 35%,
-            hsla(230, 25%, 10%, 0.85) 60%,
+            hsla(230, 25%, 10%, 0.35) 30%,
+            hsla(230, 25%, 10%, 0.75) 55%,
             ${libraryBg} 100%)`,
           zIndex: 1,
         }} />
