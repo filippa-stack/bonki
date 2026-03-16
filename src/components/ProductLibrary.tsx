@@ -523,6 +523,48 @@ export default function ProductLibrary() {
       }}
     >
 
+      {/* ── Atmospheric creature illustrations — ghostly silhouettes ── */}
+      <div aria-hidden="true" style={{ position: 'absolute', inset: 0, overflow: 'hidden', pointerEvents: 'none', zIndex: 0 }}>
+        {/* Trio — right side, between hero and middle tiles */}
+        <motion.img
+          src={creaturesTrio}
+          alt=""
+          draggable={false}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 0.12 }}
+          transition={{ delay: 0.8, duration: 2.0, ease: [0.22, 1, 0.36, 1] }}
+          style={{
+            position: 'absolute',
+            top: '220px',
+            right: '-40px',
+            width: '320px',
+            height: 'auto',
+            filter: 'brightness(3.5) saturate(0)',
+            transform: 'rotate(3deg)',
+            mixBlendMode: 'screen',
+          }}
+        />
+        {/* Lion + girl — lower left, watching from below */}
+        <motion.img
+          src={creatureLionGirl}
+          alt=""
+          draggable={false}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 0.10 }}
+          transition={{ delay: 1.3, duration: 2.0, ease: [0.22, 1, 0.36, 1] }}
+          style={{
+            position: 'absolute',
+            top: '880px',
+            left: '-30px',
+            width: '260px',
+            height: 'auto',
+            filter: 'brightness(3.5) saturate(0)',
+            transform: 'rotate(-2deg)',
+            mixBlendMode: 'screen',
+          }}
+        />
+      </div>
+
       {/* Content */}
       <div style={{ position: 'relative', zIndex: 1 }}>
         {/* Hero zone — compact cinematic */}
@@ -691,48 +733,7 @@ export default function ProductLibrary() {
             transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
           >
         {/* ── Barn — broken grid layout ── */}
-        <div className="px-5" style={{ scrollMarginTop: '8px', position: 'relative' }}>
-          {/* Atmospheric creature illustrations */}
-          <motion.img
-            src={creaturesTrio}
-            alt=""
-            aria-hidden="true"
-            draggable={false}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 0.07 }}
-            transition={{ delay: 0.8, duration: 1.8, ease: [0.22, 1, 0.36, 1] }}
-            style={{
-              position: 'absolute',
-              top: '-40px',
-              right: '-45px',
-              width: '220px',
-              height: 'auto',
-              pointerEvents: 'none',
-              zIndex: 0,
-              filter: 'saturate(0.3) brightness(1.6)',
-              transform: 'rotate(5deg)',
-            }}
-          />
-          <motion.img
-            src={creatureLionGirl}
-            alt=""
-            aria-hidden="true"
-            draggable={false}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 0.06 }}
-            transition={{ delay: 1.2, duration: 1.8, ease: [0.22, 1, 0.36, 1] }}
-            style={{
-              position: 'absolute',
-              bottom: '120px',
-              left: '-30px',
-              width: '200px',
-              height: 'auto',
-              pointerEvents: 'none',
-              zIndex: 0,
-              filter: 'saturate(0.25) brightness(1.5)',
-              transform: 'rotate(-3deg)',
-            }}
-          />
+        <div className="px-5" style={{ scrollMarginTop: '8px' }}>
           <motion.p
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
