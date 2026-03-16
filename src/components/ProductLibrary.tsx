@@ -397,12 +397,23 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
           >
             {tagline}
           </p>
-        )}
-      </div>
-    </motion.div>
-  );
-});
-export default function ProductLibrary() {
+          )}
+          {/* Free badge marker */}
+          <p
+            style={{
+              fontFamily: "var(--font-body)",
+              fontSize: '10px',
+              fontWeight: 500,
+              letterSpacing: '0.04em',
+              color: taglineColor || 'hsla(38, 50%, 75%, 0.55)',
+              opacity: 0.7,
+              marginTop: '6px',
+              textShadow: `0 0 10px ${bgRgba(0.8)}`,
+            }}
+          >
+            ✦ Första kortet gratis
+          </p>
+        </div>
   const navigate = useNavigate();
   const tracked = useRef(false);
   const { purchased } = useAllProductAccess();
