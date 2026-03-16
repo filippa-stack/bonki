@@ -678,7 +678,7 @@ export default function ProductLibrary() {
             flexDirection: 'column',
             alignItems: 'center',
             gap: '10px',
-            margin: '0 auto 12px',
+            margin: '0 auto 20px',
           }}
         >
           <div
