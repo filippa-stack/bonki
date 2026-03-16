@@ -125,7 +125,7 @@ export const STILL_US_CREATURES: Record<string, StillUsCreature> = {
     objectPosition: '50% 20%',
     tileOpacity: 0.38,
     headerOpacity: 0.38,
-    tileRight: '-8%',
+    tileRight: '-2%',
     tileHeight: '220%',
     tileScale: 1.2,
     tileTop: '55%',            // Deer: tall/thin, slight push
