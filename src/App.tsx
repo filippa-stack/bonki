@@ -72,7 +72,7 @@ function ProtectedRoutes() {
       
       <InstallGuideBanner />
       <ActiveSessionGuard>
-        <div style={{ paddingBottom: 'calc(56px + env(safe-area-inset-bottom, 0px))' }}>
+        <div style={{ minHeight: '100vh', background: 'transparent' }}>
           <AnimatePresence mode="wait">
             <Routes location={location} key={location.pathname}>
               <Route path="/" element={<PageTransition><Index /></PageTransition>} />

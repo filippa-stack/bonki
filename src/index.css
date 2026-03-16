@@ -233,11 +233,16 @@ h1, h2, h3,
     @apply bg-background text-foreground font-sans;
     font-family: var(--font-body);
     padding-bottom: env(safe-area-inset-bottom, 0px);
-    background-color: var(--surface-base);
+    background-color: hsl(var(--primary));
     color: var(--text-primary);
     font-size: 16px;
     line-height: 1.5;
     letter-spacing: 0;
+  }
+
+  #root {
+    min-height: 100vh;
+    background-color: hsl(var(--primary));
   }
 
   h1, h2, h3, h4 {
