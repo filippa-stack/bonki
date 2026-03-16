@@ -260,7 +260,7 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col relative" style={{ backgroundColor: MIDNIGHT_INK }}>
+    <div className="min-h-screen relative overflow-hidden" style={{ backgroundColor: EMBER_NIGHT }}>
 
       {/* ── Atmospheric radial glow behind hero ── */}
       <div
@@ -303,7 +303,7 @@ export default function Home() {
             objectPosition: '50% 25%',
           }}
         />
-        {/* Extended scrim with smooth blend into Ember Night */}
+        {/* Extended scrim blending into Ember Night */}
         <div style={{
           position: 'absolute',
           bottom: 0,
@@ -317,7 +317,7 @@ export default function Home() {
 
       <ProductHomeBackButton color={LANTERN_GLOW} />
 
-      {/* ── Content layer — on top of hero ── */}
+      {/* ── Content layer ── */}
       <div style={{
         position: 'relative',
         zIndex: 1,
@@ -327,10 +327,10 @@ export default function Home() {
         paddingTop: 'clamp(28px, 8vh, 80px)',
         paddingLeft: '5vw',
         paddingRight: '5vw',
-        paddingBottom: '80px',
+        paddingBottom: '120px',
       }}>
 
-        {/* ── Title block with staggered reveal ── */}
+        {/* ── Title with staggered reveal ── */}
         <motion.div variants={containerVariants} initial="hidden" animate="visible" style={{ textAlign: 'center', width: '100%' }}>
           <motion.div variants={titleVariants}>
             <h1 style={{
@@ -355,24 +355,18 @@ export default function Home() {
             }}>
               Följ ordningen — eller börja där det känns rätt.
             </p>
+          </motion.div>
+        </motion.div>
 
-            {/* Spacer before action zone */}
-            <div style={{ height: 'clamp(40px, 10vh, 80px)' }} />
+        {/* Spacer between title and action zone */}
+        <div style={{ height: 'clamp(40px, 10vh, 80px)' }} />
 
-      {/* ── Content area — Ember Night territory ── */}
-      <div style={{ position: 'relative', zIndex: 1, backgroundColor: EMBER_NIGHT, flex: 1 }}>
-
-        {mode === 'loading' && (
-          <div className="px-4 pt-4">
-            <div style={{ height: '80px', borderRadius: '16px', background: 'rgba(255,255,255,0.05)' }} className="animate-pulse" />
-          </div>
-        )}
-
-        {mode !== 'loading' && (
-          <div style={{ paddingBottom: '120px' }}>
-
-            {/* ── 2. RESUME / NEXT CARD ── */}
-            <div className="px-4" style={{ marginTop: '-8px' }}>
+        {/* ── Resume / Next card ── */}
+        {mode === 'loading' ? (
+          <div style={{ height: '80px', borderRadius: '22px', background: 'rgba(255,255,255,0.05)' }} className="animate-pulse" />
+        ) : (
+          <>
+            <div style={{ paddingLeft: '3vw', paddingRight: '3vw' }}>
               {isStillUsResume ? (
                 <UnifiedResumeBanner
                   accentColor={DEEP_SAFFRON}
@@ -388,17 +382,17 @@ export default function Home() {
                   onClick={() => navigate(`/card/${nextCard.id}`)}
                   style={{
                     width: '100%',
-                    padding: '16px 18px',
-                    background: `linear-gradient(135deg, rgba(255,255,255,0.08) 0%, transparent 50%, rgba(0,0,0,0.06) 100%), ${EMBER_MID}`,
-                    borderRadius: '16px',
-                    border: '1.5px solid rgba(255, 255, 255, 0.15)',
+                    padding: '18px 20px',
+                    background: `linear-gradient(135deg, rgba(255,255,255,0.10) 0%, transparent 50%, rgba(0,0,0,0.06) 100%), ${EMBER_MID}`,
+                    borderRadius: '22px',
+                    border: '1.5px solid rgba(255, 255, 255, 0.18)',
                     borderLeft: `3px solid ${DEEP_SAFFRON}`,
                     cursor: 'pointer',
                     textAlign: 'left',
                     display: 'flex',
                     flexDirection: 'column',
                     gap: '4px',
-                    boxShadow: '0 8px 24px rgba(0,0,0,0.25), inset 0 1px 3px rgba(255,255,255,0.15)',
+                    boxShadow: `0 10px 30px rgba(0,0,0,0.30), inset 0 1px 3px rgba(255,255,255,0.15), 0 0 0 1px rgba(255,255,255,0.05)`,
                   }}
                 >
                   <span style={{
@@ -440,7 +434,7 @@ export default function Home() {
                   style={{
                     padding: '20px',
                     background: EMBER_MID,
-                    borderRadius: '16px',
+                    borderRadius: '22px',
                     textAlign: 'center',
                   }}
                 >
@@ -459,17 +453,15 @@ export default function Home() {
               )}
             </div>
 
-            {/* ── 4. ACCORDION LAYERS ── */}
+            {/* ── Accordion layers ── */}
             {LAYERS.map((layer, layerIndex) => {
               const layerCats = layer.categoryIds
                 .map(id => allCategories.find(c => c.id === id))
                 .filter(Boolean) as typeof allCategories;
 
-              // Summary stats for collapsed state
               const layerCompleted = layerCats.filter(c => isCategoryCompleted(c.id)).length;
               const layerTotal = layerCats.length;
               const allLayerDone = layerCompleted === layerTotal;
-              // Auto-expand the layer that contains the next recommended category
               const containsNext = layerCats.some(c => c.id === nextCategoryId);
 
               return (
@@ -495,7 +487,7 @@ export default function Home() {
                         style={{
                           width: '100%',
                           padding: '14px 16px',
-                          borderRadius: '12px',
+                          borderRadius: '14px',
                           backgroundColor: completed ? `${EMBER_MID}80` : EMBER_MID,
                           border: isRecommended
                             ? `1.5px solid ${DEEP_SAFFRON}50`
@@ -509,7 +501,6 @@ export default function Home() {
                           boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
                         }}
                       >
-                        {/* Completed badge or position indicator */}
                         {completed ? (
                           <div style={{
                             width: '24px',
@@ -563,7 +554,7 @@ export default function Home() {
                 </AccordionLayer>
               );
             })}
-          </div>
+          </>
         )}
       </div>
     </div>
