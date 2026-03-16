@@ -876,7 +876,7 @@ export default function ProductLibrary() {
               color: '#FDF6E3',
               lineHeight: 1.3,
             }}>
-              Dagboken
+              Era samtal
             </p>
             <p style={{
               fontFamily: "'Lato', sans-serif",
