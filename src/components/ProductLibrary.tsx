@@ -378,7 +378,7 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
         {tagline && (
           <p
             style={{
-              fontFamily: "'Lato', sans-serif",
+              fontFamily: "var(--font-body)",
               fontSize: '14px',
               fontWeight: 400,
               color: taglineColor || '#FDF6E3',
