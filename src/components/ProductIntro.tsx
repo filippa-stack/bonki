@@ -1,23 +1,20 @@
 import { useState, useEffect, useMemo } from 'react';
-import { motion, AnimatePresence, PanInfo } from 'framer-motion';
-import { productIntros, ProductIntroData } from '@/data/productIntros';
+import { motion, AnimatePresence } from 'framer-motion';
+import { productIntros } from '@/data/productIntros';
 import { allProducts } from '@/data/products';
-import { Heart, User, Users, Globe, Flame, Sun, UserPlus, type LucideIcon } from 'lucide-react';
 import { useCardImage } from '@/hooks/useCardImage';
+import { LANTERN_GLOW, DRIFTWOOD, MIDNIGHT_INK, BONKI_ORANGE, DEEP_SAFFRON } from '@/lib/palette';
+
+// ── Illustration imports (same as product homes) ──
+import apaImage from '@/assets/apa-jag-i-mig.png';
+import slothImage from '@/assets/sloth-jag-med-andra.png';
+import peacockImage from '@/assets/peacock-jag-i-varlden.png';
+import illustrationVardag from '@/assets/illustration-vardag.png';
+import illustrationSyskon from '@/assets/illustration-syskon.png';
+import illustrationSexualitet from '@/assets/illustration-sexualitet.png';
 
 const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
 const SEEN_KEY_PREFIX = 'bonki-product-intro-seen-';
-
-/** Product-specific Lucide icons for the Spotlight mini-card */
-const PRODUCT_SPOTLIGHT_ICON: Record<string, LucideIcon> = {
-  still_us: Heart,
-  jag_i_mig: User,
-  jag_med_andra: Users,
-  jag_i_varlden: Globe,
-  sexualitetskort: Flame,
-  vardagskort: Sun,
-  syskonkort: UserPlus,
-};
 
 function hasSeenProductIntro(productId: string): boolean {
   return localStorage.getItem(`${SEEN_KEY_PREFIX}${productId}`) === 'true';
@@ -26,6 +23,26 @@ function hasSeenProductIntro(productId: string): boolean {
 function markProductIntroSeen(productId: string): void {
   localStorage.setItem(`${SEEN_KEY_PREFIX}${productId}`, 'true');
 }
+
+/** Per-product creature illustration */
+const PRODUCT_ILLUSTRATION: Record<string, string> = {
+  jag_i_mig: apaImage,
+  jag_med_andra: slothImage,
+  jag_i_varlden: peacockImage,
+  vardagskort: illustrationVardag,
+  syskonkort: illustrationSyskon,
+  sexualitetskort: illustrationSexualitet,
+};
+
+/** One-sentence intro per product */
+const SHORT_INTROS: Record<string, string> = {
+  jag_i_mig: 'Kort som hjälper ert barn sätta ord på det som känns.',
+  jag_med_andra: 'Frågor om det svåra och det trygga i att vara med andra.',
+  jag_i_varlden: 'De stora frågorna om vem jag är och vart världen är på väg.',
+  vardagskort: 'Kort för alla de små sakerna som bygger en familj.',
+  syskonkort: 'Frågor som hjälper er prata om det som finns mellan er.',
+  sexualitetskort: 'Om kropp, samtycke, normer och identitet — utan att moralisera.',
+};
 
 interface ProductIntroProps {
   productId: string;
@@ -37,36 +54,54 @@ interface ProductIntroProps {
   onStartFreeCard?: () => void;
 }
 
-export default function ProductIntro({ productId, accentColor, backgroundColor, freeCardId, freeCardTitle, onComplete, onStartFreeCard }: ProductIntroProps) {
+export default function ProductIntro({
+  productId,
+  accentColor,
+  backgroundColor,
+  freeCardId,
+  freeCardTitle,
+  onComplete,
+  onStartFreeCard,
+}: ProductIntroProps) {
   const introData = productIntros[productId];
-  const [currentSlide, setCurrentSlide] = useState(0);
-  const noIntro = !introData;
+  const [expanded, setExpanded] = useState(false);
   const freeCardImageUrl = useCardImage(freeCardId);
 
-  // Resolve free card title from product data if not passed as prop
+  const product = useMemo(() => allProducts.find((p) => p.id === productId), [productId]);
+
   const resolvedFreeCardTitle = useMemo(() => {
     if (freeCardTitle) return freeCardTitle;
     if (!freeCardId) return undefined;
-    const product = allProducts.find(p => p.id === productId);
-    return product?.cards.find(c => c.id === freeCardId)?.title;
-  }, [productId, freeCardId, freeCardTitle]);
+    return product?.cards.find((c) => c.id === freeCardId)?.title;
+  }, [productId, freeCardId, freeCardTitle, product]);
 
+  /** Find the category name for the free card */
+  const freeCardCategoryName = useMemo(() => {
+    if (!freeCardId || !product) return undefined;
+    const card = product.cards.find((c) => c.id === freeCardId);
+    if (!card) return undefined;
+    return product.categories.find((cat) => cat.id === card.categoryId)?.title;
+  }, [freeCardId, product]);
+
+  const noIntro = !introData;
   useEffect(() => {
     if (noIntro) onComplete();
   }, [noIntro, onComplete]);
-
   if (noIntro) return null;
 
-  const lastSlide = introData.slides.length - 1;
-  const isLastSlide = currentSlide === lastSlide;
-  const hasFreeCard = !!(freeCardId && resolvedFreeCardTitle);
+  const bgColor = backgroundColor ?? product?.backgroundColor ?? MIDNIGHT_INK;
+  const creatureImage = PRODUCT_ILLUSTRATION[productId];
+  const shortIntro = SHORT_INTROS[productId] ?? '';
+  const isSexualitet = productId === 'sexualitetskort';
 
-  const handleComplete = () => {
-    markProductIntroSeen(productId);
-    onComplete();
-  };
+  // Full body text from productIntros data
+  const fullBodyText = introData.slides.map((s) => s.body).join('\n\n');
+  // Include signoff in expanded text (except for sexualitet which shows it separately)
+  const signoffText = !isSexualitet
+    ? introData.slides.map((s) => s.signoff).filter(Boolean).join('\n\n')
+    : '';
 
-  const handleLastSlideCta = () => {
+  const handleCta = () => {
     markProductIntroSeen(productId);
     if (freeCardId && onStartFreeCard) {
       onStartFreeCard();
@@ -75,325 +110,352 @@ export default function ProductIntro({ productId, accentColor, backgroundColor, 
     }
   };
 
-  const handleNext = () => {
-    if (currentSlide < lastSlide) setCurrentSlide(currentSlide + 1);
-    else handleLastSlideCta();
-  };
-
-  const handleDragEnd = (_: unknown, info: PanInfo) => {
-    const SWIPE = 50;
-    const VEL = 300;
-    if (info.offset.x < -SWIPE || info.velocity.x < -VEL) {
-      if (currentSlide < lastSlide) setCurrentSlide(currentSlide + 1);
-      else handleLastSlideCta();
-    }
-    if (info.offset.x > SWIPE || info.velocity.x > VEL) {
-      if (currentSlide > 0) setCurrentSlide(currentSlide - 1);
-    }
-  };
-
-  const slide = introData.slides[currentSlide];
+  // Sexualitet safety signoff
+  const sexSafetyLine = isSexualitet
+    ? introData.slides[0]?.signoff
+    : null;
 
   return (
     <div
       style={{
-        backgroundColor: backgroundColor ?? 'var(--surface-base)',
+        backgroundColor: bgColor,
         height: '100dvh',
         display: 'flex',
         flexDirection: 'column',
-        overflow: 'hidden',
+        overflow: expanded ? 'auto' : 'hidden',
+        position: 'relative',
       }}
     >
-      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={currentSlide}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.5, ease: EASE }}
+      {/* ── 1. Illustration zone — atmospheric creature backdrop ── */}
+      {creatureImage && (
+        <motion.div
+          initial={{ opacity: 0, scale: 1.05 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 1.2, ease: EASE }}
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: '-10%',
+            right: '-10%',
+            height: '42%',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'flex-start',
+            overflow: 'hidden',
+            pointerEvents: 'none',
+            zIndex: 0,
+          }}
+        >
+          <img
+            src={creatureImage}
+            alt=""
+            aria-hidden
             style={{
-              flex: 1,
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              justifyContent: 'center',
-              padding: '0 32px',
-              overflowY: 'auto',
-              WebkitOverflowScrolling: 'touch',
-              paddingTop: '24px',
-              paddingBottom: '8px',
+              width: '100%',
+              height: '100%',
+              objectFit: 'cover',
+              objectPosition: 'center 30%',
+              opacity: 0.28,
+              filter: 'brightness(1.1) saturate(0.9)',
             }}
-            drag="x"
-            dragConstraints={{ left: 0, right: 0 }}
-            dragElastic={0.15}
-            onDragEnd={handleDragEnd}
+          />
+          {/* Bottom fade into bg */}
+          <div
+            style={{
+              position: 'absolute',
+              bottom: 0,
+              left: 0,
+              right: 0,
+              height: '50%',
+              background: `linear-gradient(to top, ${bgColor} 0%, transparent 100%)`,
+              pointerEvents: 'none',
+            }}
+          />
+        </motion.div>
+      )}
+
+      {/* ── Content area ── */}
+      <div
+        style={{
+          position: 'relative',
+          zIndex: 1,
+          flex: 1,
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'flex-end',
+          padding: '0 28px',
+          paddingTop: 'max(44px, env(safe-area-inset-top, 44px))',
+        }}
+      >
+        {/* Spacer to push content below illustration zone */}
+        <div style={{ flex: '0 0 30%' }} />
+
+        {/* 2. Welcome header */}
+        <motion.h1
+          initial={{ opacity: 0, y: 14 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2, duration: 0.7, ease: EASE }}
+          style={{
+            fontFamily: 'var(--font-serif)',
+            fontSize: '28px',
+            fontWeight: 600,
+            color: LANTERN_GLOW,
+            textAlign: 'center',
+            lineHeight: 1.2,
+            letterSpacing: '-0.02em',
+            margin: 0,
+          }}
+        >
+          Välkommen till{'\n'}
+          {product?.name ?? productId}
+        </motion.h1>
+
+        {/* Subtitle / tagline */}
+        {product?.tagline && (
+          <motion.p
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.35, duration: 0.6, ease: EASE }}
+            style={{
+              fontFamily: 'var(--font-sans)',
+              fontSize: '15px',
+              color: DRIFTWOOD,
+              textAlign: 'center',
+              marginTop: '4px',
+              margin: '4px 0 0',
+            }}
           >
-            {slide.kicker && (
-              <motion.p
-                initial={{ opacity: 0, y: 8 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.05, duration: 0.6, ease: EASE }}
-                style={{
-                  fontFamily: 'var(--font-sans)',
-                  fontSize: '11px',
-                  letterSpacing: '0.12em',
-                  textTransform: 'uppercase',
-                  color: accentColor ?? 'var(--accent-saffron)',
-                  marginBottom: '16px',
-                  fontWeight: 600,
-                }}
-              >
-                {slide.kicker}
-              </motion.p>
-            )}
+            {product.tagline}
+          </motion.p>
+        )}
 
-            <motion.h1
-              initial={{ opacity: 0, y: 14 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1, duration: 0.7, ease: EASE }}
-              style={{
-                fontFamily: 'var(--font-serif)',
-                fontSize: 'clamp(28px, 7.5vw, 36px)',
-                fontWeight: 700,
-                color: 'var(--color-text-primary)',
-                textAlign: 'center',
-                lineHeight: 1.15,
-                letterSpacing: '-0.02em',
-                whiteSpace: 'pre-line',
-              }}
-            >
-              {slide.heading}
-            </motion.h1>
+        {/* 3. Short intro — one sentence */}
+        <motion.p
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.45, duration: 0.6, ease: EASE }}
+          style={{
+            fontFamily: 'var(--font-sans)',
+            fontSize: '15px',
+            color: `${LANTERN_GLOW}D9`, // 85% opacity
+            textAlign: 'center',
+            lineHeight: 1.55,
+            marginTop: '8px',
+            margin: '8px 0 0',
+          }}
+        >
+          {shortIntro}
+        </motion.p>
 
-            {slide.body.split('\n\n').map((paragraph, pi) => (
-              <motion.p
-                key={pi}
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.3 + pi * 0.1, duration: 0.6, ease: EASE }}
-                style={{
-                  fontFamily: 'var(--font-sans)',
-                  fontSize: '15px',
-                  color: 'var(--color-text-secondary)',
-                  opacity: 0.75,
-                  textAlign: 'center',
-                  marginTop: pi === 0 ? '20px' : '14px',
-                  lineHeight: 1.6,
-                  maxWidth: '300px',
-                }}
-              >
-                {paragraph}
-              </motion.p>
-            ))}
+        {/* 4. "Läs mer" expandable */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.55, duration: 0.5, ease: EASE }}
+          style={{ textAlign: 'center', marginTop: '4px' }}
+        >
+          <button
+            onClick={() => setExpanded(!expanded)}
+            style={{
+              background: 'none',
+              border: 'none',
+              fontFamily: 'var(--font-sans)',
+              fontSize: '13px',
+              color: DRIFTWOOD,
+              cursor: 'pointer',
+              padding: '6px 12px',
+            }}
+          >
+            {expanded ? 'Visa mindre' : `Läs mer om ${product?.name ?? 'produkten'}`}
+          </button>
 
-            {/* ── Spotlight card preview — last slide only ── */}
-            {isLastSlide && hasFreeCard && (
+          <AnimatePresence>
+            {expanded && (
               <motion.div
-                initial={{ opacity: 0, y: 16, scale: 0.95 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                transition={{ delay: 0.5, duration: 0.8, ease: EASE }}
-                onClick={handleLastSlideCta}
-                className="cursor-pointer"
-                style={{
-                  marginTop: '28px',
-                  padding: '16px 28px',
-                  borderRadius: '14px',
-                  background: `linear-gradient(135deg, ${accentColor ?? 'var(--accent-saffron)'}18, ${accentColor ?? 'var(--accent-saffron)'}08)`,
-                  border: `1px solid ${accentColor ?? 'var(--accent-saffron)'}22`,
-                  boxShadow: `0 4px 24px -4px ${accentColor ?? 'var(--accent-saffron)'}20, 0 0 0 1px ${accentColor ?? 'var(--accent-saffron)'}08`,
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '14px',
-                  position: 'relative',
-                  overflow: 'hidden',
-                }}
+                initial={{ height: 0, opacity: 0 }}
+                animate={{ height: 'auto', opacity: 1 }}
+                exit={{ height: 0, opacity: 0 }}
+                transition={{ duration: 0.4, ease: EASE }}
+                style={{ overflow: 'hidden' }}
               >
-                {/* Decorative glow */}
-                <div
-                  style={{
-                    position: 'absolute',
-                    top: '50%',
-                    left: '50%',
-                    transform: 'translate(-50%, -50%)',
-                    width: '120px',
-                    height: '120px',
-                    borderRadius: '50%',
-                    background: `radial-gradient(circle, ${accentColor ?? 'var(--accent-saffron)'}15 0%, transparent 70%)`,
-                    pointerEvents: 'none',
-                  }}
-                />
-                {/* Mini card illustration */}
-                <div
-                  style={{
-                    width: '44px',
-                    height: '52px',
-                    borderRadius: '8px',
-                    background: `linear-gradient(145deg, ${accentColor ?? 'var(--accent-saffron)'}30, ${accentColor ?? 'var(--accent-saffron)'}15)`,
-                    border: `1px solid ${accentColor ?? 'var(--accent-saffron)'}25`,
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    flexShrink: 0,
-                    position: 'relative',
-                    zIndex: 1,
-                    overflow: 'hidden',
-                  }}
-                >
-                  {freeCardImageUrl ? (
-                    <img
-                      src={freeCardImageUrl}
-                      alt=""
-                      style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                      draggable={false}
-                    />
-                  ) : (() => {
-                    const IconComp = PRODUCT_SPOTLIGHT_ICON[productId];
-                    return IconComp
-                      ? <IconComp size={16} className="opacity-70" />
-                      : <span style={{ fontSize: '16px', opacity: 0.7 }}>✦</span>;
-                  })()}
-                </div>
-                <div style={{ position: 'relative', zIndex: 1 }}>
-                  <p
-                    style={{
-                      fontFamily: 'var(--font-sans)',
-                      fontSize: '10px',
-                      fontWeight: 600,
-                      letterSpacing: '0.1em',
-                      textTransform: 'uppercase',
-                      color: accentColor ?? 'var(--accent-saffron)',
-                      opacity: 0.7,
-                      marginBottom: '3px',
-                    }}
-                  >
-                    Ert första samtal
-                  </p>
-                  <p
-                    style={{
-                      fontFamily: 'var(--font-serif)',
-                      fontSize: '19px',
-                      fontWeight: 700,
-                      color: 'var(--color-text-primary)',
-                      letterSpacing: '-0.01em',
-                    }}
-                  >
-                    {resolvedFreeCardTitle}
-                  </p>
+                <div style={{ padding: '8px 4px 16px' }}>
+                  {fullBodyText.split('\n\n').map((para, i) => (
+                    <p
+                      key={i}
+                      style={{
+                        fontFamily: 'var(--font-sans)',
+                        fontSize: '14px',
+                        color: `${LANTERN_GLOW}CC`, // 80% opacity
+                        textAlign: 'center',
+                        lineHeight: 1.6,
+                        marginTop: i === 0 ? 0 : '12px',
+                        margin: i === 0 ? '0' : '12px 0 0',
+                      }}
+                    >
+                      {para}
+                    </p>
+                  ))}
+                  {signoffText && (
+                    <p
+                      style={{
+                        fontFamily: 'var(--font-serif)',
+                        fontStyle: 'italic',
+                        fontSize: '14px',
+                        color: `${LANTERN_GLOW}CC`,
+                        textAlign: 'center',
+                        marginTop: '16px',
+                      }}
+                    >
+                      {signoffText}
+                    </p>
+                  )}
                 </div>
               </motion.div>
             )}
+          </AnimatePresence>
+        </motion.div>
 
-            {slide.signoff && (
-              <motion.p
-                initial={{ opacity: 0, y: 8 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: isLastSlide && hasFreeCard ? 0.7 : 0.5, duration: 0.6, ease: EASE }}
-                style={{
-                  fontFamily: 'var(--font-serif)',
-                  fontStyle: 'italic',
-                  fontSize: '17px',
-                  color: accentColor ?? 'var(--accent-text)',
-                  textAlign: 'center',
-                  marginTop: isLastSlide && hasFreeCard ? '20px' : '32px',
-                }}
-              >
-                {slide.signoff}
-              </motion.p>
-            )}
-          </motion.div>
-        </AnimatePresence>
-
-        {/* Bottom controls */}
-        <div
-          style={{
-            paddingBottom: 'calc(32px + env(safe-area-inset-bottom, 0px))',
-            paddingTop: '24px',
-          }}
-          className="flex flex-col items-center gap-5 px-6"
-        >
-          <motion.button
-            onClick={isLastSlide ? handleLastSlideCta : handleNext}
-            className="cta-primary"
-            initial={false}
-            animate={isLastSlide && hasFreeCard ? {
-              boxShadow: [
-                '0 2px 12px -2px hsla(158, 30%, 15%, 0.18)',
-                '0 4px 20px -2px hsla(158, 30%, 15%, 0.32)',
-                '0 2px 12px -2px hsla(158, 30%, 15%, 0.18)',
-              ],
-            } : {}}
-            transition={isLastSlide && hasFreeCard ? {
-              boxShadow: { duration: 2.5, repeat: Infinity, ease: 'easeInOut' },
-            } : {}}
+        {/* 5. First card preview */}
+        {resolvedFreeCardTitle && (
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.6, duration: 0.7, ease: EASE }}
             style={{
-              width: '60%',
-              fontSize: '15px',
-              letterSpacing: '0.02em',
-              backgroundColor: accentColor ?? undefined,
+              display: 'flex',
+              alignItems: 'center',
+              gap: '14px',
+              marginTop: '24px',
+              padding: '0 4px',
+              justifyContent: 'center',
             }}
           >
-            {isLastSlide
-              ? (freeCardId && introData.freeCardCtaLabel ? introData.freeCardCtaLabel : introData.ctaLabel)
-              : 'Fortsätt'}
-          </motion.button>
-
-          {/* Dots (only if multi-slide) */}
-          {introData.slides.length > 1 && (
-            <div style={{ display: 'flex', gap: '4px', alignItems: 'center' }}>
-              {introData.slides.map((_, i) => (
-                <button
-                  key={i}
-                  onClick={() => setCurrentSlide(i)}
-                  aria-label={`Slide ${i + 1}`}
-                  style={{
-                    background: 'none',
-                    border: 'none',
-                    padding: '14px 8px',
-                    cursor: 'pointer',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}
-                >
-                  <span
-                    style={{
-                      display: 'block',
-                      width: i === currentSlide ? '14px' : '5px',
-                      height: '5px',
-                      borderRadius: i === currentSlide ? '4px' : '50%',
-                      background: i === currentSlide ? (accentColor ?? 'var(--accent-saffron)') : 'var(--text-ghost)',
-                      opacity: i === currentSlide ? 1 : 0.3,
-                      transition: 'width 0.4s cubic-bezier(0.22, 1, 0.36, 1), background 0.4s ease, opacity 0.4s ease',
-                    }}
-                  />
-                </button>
-              ))}
+            {/* Card mini illustration */}
+            <div
+              style={{
+                width: '44px',
+                height: '52px',
+                borderRadius: '8px',
+                background: `linear-gradient(145deg, ${accentColor ?? 'var(--accent-saffron)'}30, ${accentColor ?? 'var(--accent-saffron)'}15)`,
+                border: `1px solid ${accentColor ?? 'var(--accent-saffron)'}25`,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                flexShrink: 0,
+                overflow: 'hidden',
+              }}
+            >
+              {freeCardImageUrl ? (
+                <img
+                  src={freeCardImageUrl}
+                  alt=""
+                  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                  draggable={false}
+                />
+              ) : (
+                <span style={{ fontSize: '16px', opacity: 0.7 }}>✦</span>
+              )}
             </div>
-          )}
 
-          {/* Skip */}
-          <div style={{ height: '20px', display: 'flex', alignItems: 'center' }}>
-            {currentSlide < lastSlide && (
-              <button
-                onClick={handleComplete}
+            <div>
+              <p
                 style={{
-                  fontSize: '12px',
-                  letterSpacing: '0.05em',
-                  textTransform: 'uppercase',
-                  color: 'var(--color-text-tertiary)',
-                  opacity: 0.45,
-                  background: 'none',
-                  border: 'none',
-                  cursor: 'pointer',
                   fontFamily: 'var(--font-sans)',
+                  fontSize: '11px',
+                  fontWeight: 600,
+                  letterSpacing: '1.5px',
+                  textTransform: 'uppercase',
+                  color: DRIFTWOOD,
+                  marginBottom: '3px',
                 }}
               >
-                Hoppa över
-              </button>
-            )}
-          </div>
-        </div>
+                Ert första samtal
+              </p>
+              <p
+                style={{
+                  fontFamily: 'var(--font-serif)',
+                  fontSize: '22px',
+                  fontWeight: 600,
+                  color: DEEP_SAFFRON,
+                  letterSpacing: '-0.01em',
+                  lineHeight: 1.2,
+                }}
+              >
+                {resolvedFreeCardTitle}
+              </p>
+              {freeCardCategoryName && (
+                <p
+                  style={{
+                    fontFamily: 'var(--font-sans)',
+                    fontSize: '13px',
+                    color: DRIFTWOOD,
+                    marginTop: '2px',
+                  }}
+                >
+                  Från {freeCardCategoryName}
+                </p>
+              )}
+            </div>
+          </motion.div>
+        )}
+
+        {/* 6. CTA Button */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.75, duration: 0.6, ease: EASE }}
+          style={{
+            marginTop: '24px',
+            paddingBottom: 'calc(24px + env(safe-area-inset-bottom, 0px))',
+          }}
+        >
+          <button
+            onClick={handleCta}
+            style={{
+              width: '100%',
+              height: '56px',
+              backgroundColor: BONKI_ORANGE,
+              border: 'none',
+              borderRadius: '14px',
+              cursor: 'pointer',
+              fontFamily: 'var(--font-sans)',
+              fontSize: '17px',
+              fontWeight: 600,
+              color: MIDNIGHT_INK,
+              transition: 'opacity 150ms ease, transform 140ms cubic-bezier(0.4, 0, 0.2, 1)',
+            }}
+            onMouseDown={(e) => {
+              e.currentTarget.style.transform = 'scale(0.97)';
+            }}
+            onMouseUp={(e) => {
+              e.currentTarget.style.transform = 'scale(1)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = 'scale(1)';
+            }}
+          >
+            {resolvedFreeCardTitle
+              ? `Börja med ${resolvedFreeCardTitle}`
+              : introData.ctaLabel}
+          </button>
+
+          {/* 7. Sexualitet safety line */}
+          {sexSafetyLine && (
+            <p
+              style={{
+                fontFamily: 'var(--font-sans)',
+                fontStyle: 'italic',
+                fontSize: '13px',
+                color: DEEP_SAFFRON,
+                textAlign: 'center',
+                marginTop: '12px',
+                lineHeight: 1.5,
+              }}
+            >
+              {sexSafetyLine}
+            </p>
+          )}
+        </motion.div>
       </div>
     </div>
   );
