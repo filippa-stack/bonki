@@ -72,7 +72,7 @@ export default function VardagProductHome({ product }: { product: ProductManifes
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.6 }}
-        style={{ position: 'absolute', top: '-8vh', left: '-5vw', right: '-5vw', height: '58vh', zIndex: 0, pointerEvents: 'none' }}
+        style={{ position: 'absolute', top: '-14vh', left: '-5vw', right: '-5vw', height: '62vh', zIndex: 0, pointerEvents: 'none' }}
       >
         <img src={heroImage} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: '50% 0%' }} />
         {/* Extended 85% scrim with extra mid-stop for smooth blend */}
