@@ -258,7 +258,7 @@ export default function CircadianMenu({
                     {/* Title */}
                     <span
                       style={{
-                        fontFamily: "'DM Serif Display', var(--font-serif)",
+                        fontFamily: "var(--font-display)",
                         fontSize: 'clamp(14px, 3.8vw, 17px)',
                         fontWeight: 400,
                         color: tileColor.text,

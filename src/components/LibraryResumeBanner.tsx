@@ -129,7 +129,7 @@ export default function LibraryResumeBanner() {
         </p>
       </div>
       <span style={{
-        fontFamily: "'Lato', sans-serif",
+        fontFamily: "var(--font-body)",
         fontSize: '10px',
         fontWeight: 700,
         letterSpacing: '0.04em',
