@@ -116,7 +116,7 @@ export default function LibraryResumeBanner() {
           Fortsätt där ni slutade
         </p>
         <p style={{
-          fontFamily: "'DM Serif Display', serif",
+          fontFamily: "var(--font-display)",
           fontSize: '15px',
           fontWeight: 400,
           color: '#FDF6E3',
