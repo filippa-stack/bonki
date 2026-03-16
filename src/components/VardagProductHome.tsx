@@ -44,8 +44,8 @@ export default function VardagProductHome({ product }: { product: ProductManifes
       >
         <img src={creatureImage} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: '50% 20%' }} />
         <div style={{
-          position: 'absolute', bottom: 0, left: 0, right: 0, height: '60%',
-          background: 'linear-gradient(to top, #1A1A2E 0%, rgba(10,74,106,0.7) 40%, transparent 100%)',
+          position: 'absolute', bottom: 0, left: 0, right: 0, height: '70%',
+          background: 'linear-gradient(to top, #1A1A2E 0%, rgba(26,26,46,0.95) 25%, rgba(10,74,106,0.7) 55%, transparent 100%)',
           pointerEvents: 'none',
         }} />
       </motion.div>
