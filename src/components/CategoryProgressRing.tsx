@@ -1,6 +1,6 @@
 /**
  * CategoryProgressRing — text-only counter showing "n av m" completion.
- * Always visible. Uses Saffron when progress exists, subtle tile color when empty.
+ * Positioned bottom-left of tile. Uses Saffron when progress exists.
  */
 
 const SAFFRON = '#E9B44C';
@@ -12,18 +12,16 @@ interface CategoryProgressRingProps {
   size?: number;
 }
 
-export default function CategoryProgressRing({ completed, total, color }: CategoryProgressRingProps) {
+export default function CategoryProgressRing({ completed, total }: CategoryProgressRingProps) {
   return (
     <span style={{
       position: 'absolute',
-      bottom: '10px',
-      left: '50%',
-      transform: 'translateX(-50%)',
-      fontSize: '10px',
+      bottom: '12px',
+      left: '14px',
+      fontSize: '11px',
       fontWeight: 600,
       letterSpacing: '0.04em',
-      color: completed > 0 ? SAFFRON : '#FFFDF8',
-      opacity: completed > 0 ? 0.9 : 0.4,
+      color: completed > 0 ? SAFFRON : `#FDF6E380`, // Lantern Glow at 50%
       whiteSpace: 'nowrap',
     }}>
       {completed} av {total}
