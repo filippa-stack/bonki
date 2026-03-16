@@ -236,6 +236,19 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
         ].join(', '),
       }}
     >
+      {/* Inner warmth glow — JIV only */}
+      {productId === 'jag_i_varlden' && (
+        <div
+          aria-hidden="true"
+          style={{
+            position: 'absolute',
+            inset: 0,
+            zIndex: 0,
+            pointerEvents: 'none',
+            background: 'radial-gradient(ellipse 70% 80% at 60% 50%, rgba(58, 133, 72, 0.35) 0%, transparent 70%)',
+          }}
+        />
+      )}
       {/* Illustration — right-aligned, bleeds off edge */}
       {illustration && (
         <div
