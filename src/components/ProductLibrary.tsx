@@ -897,7 +897,7 @@ export default function ProductLibrary() {
               Era samtal
             </p>
             <p style={{
-              fontFamily: "'Lato', sans-serif",
+              fontFamily: "var(--font-body)",
               fontSize: '10px',
               color: 'hsla(38, 50%, 65%, 0.5)',
               marginTop: '2px',
