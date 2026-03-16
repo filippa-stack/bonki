@@ -49,6 +49,8 @@ interface CategoryTileGridProps {
   tiles: TileConfig[];
   creatureImage?: string;
   creatureTileStyles?: CreatureTileStyle[];
+  /** Per-tile image overrides (index-matched to tiles). Takes priority over creatureImage. */
+  tileImages?: (string | undefined)[];
 }
 
 function hexToRgb(hex: string): string {
@@ -67,6 +69,7 @@ function CategoryTile({
   total,
   isOddLast,
   creatureImage,
+  tileImage,
   creatureStyle,
 }: {
   tile: TileConfig;
@@ -76,6 +79,7 @@ function CategoryTile({
   total: number;
   isOddLast: boolean;
   creatureImage?: string;
+  tileImage?: string;
   creatureStyle: CreatureTileStyle;
 }) {
   const navigate = useNavigate();
@@ -133,8 +137,8 @@ function CategoryTile({
         ...(isOddLast ? { gridColumn: '1 / -1' } : {}),
       }}
     >
-      {/* Creature illustration layer (z-index 1) */}
-      {creatureImage && (
+      {/* Tile illustration layer (z-index 1) — per-tile image or shared creature */}
+      {(tileImage || creatureImage) && (
         <div
           style={{
             position: 'absolute',
@@ -147,7 +151,7 @@ function CategoryTile({
           }}
         >
           <img
-            src={creatureImage}
+            src={tileImage || creatureImage}
             alt=""
             aria-hidden="true"
             style={{
@@ -235,7 +239,7 @@ function CategoryTile({
   );
 }
 
-export default function CategoryTileGrid({ product, progress, tiles, creatureImage, creatureTileStyles }: CategoryTileGridProps) {
+export default function CategoryTileGrid({ product, progress, tiles, creatureImage, creatureTileStyles, tileImages }: CategoryTileGridProps) {
   const total = tiles.length;
   const isOdd = total % 2 !== 0;
   const styles = creatureTileStyles || DEFAULT_TILE_CREATURE_STYLES;
@@ -263,6 +267,7 @@ export default function CategoryTileGrid({ product, progress, tiles, creatureIma
           total={total}
           isOddLast={isOdd && index === total - 1}
           creatureImage={creatureImage}
+          tileImage={tileImages?.[index]}
           creatureStyle={styles[Math.min(index, styles.length - 1)]}
         />
       ))}

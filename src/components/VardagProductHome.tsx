@@ -1,12 +1,18 @@
 import { motion } from 'framer-motion';
 import type { ProductManifest } from '@/types/product';
-import creatureImage from '@/assets/creature-turtle.png';
+import heroImage from '@/assets/illustration-vardag.png';
 import UnifiedResumeBanner from '@/components/UnifiedResumeBanner';
 import NextConversationCard from '@/components/NextConversationCard';
 import ProductHomeBackButton from '@/components/ProductHomeBackButton';
 import { useKidsProductProgress } from '@/hooks/useKidsProductProgress';
 import CategoryTileGrid from '@/components/CategoryTileGrid';
 import type { CreatureTileStyle } from '@/components/CategoryTileGrid';
+
+// Card images — first card of each category
+import imgMorgon from '/card-images/vk-morgon.png';
+import imgHushall from '/card-images/vk-hushall.png';
+import imgKvall from '/card-images/vk-kvall.png';
+import imgSova from '/card-images/vk-sova.png';
 
 const EASE = [0.4, 0.0, 0.2, 1] as const;
 const ACCENT_COLOR = '#4DA8D4';
@@ -18,12 +24,20 @@ const ORDERED_TILES = [
   { id: 'vk-utanfor-hemmet', bg: '#042C44', sub: 'Det du möter där ute' },
 ];
 
-// Turtle: face is small relative to shell. Increase scale on tile 0, focus on face.
+// Per-tile card images (first card per category). undefined = no image.
+const TILE_IMAGES: (string | undefined)[] = [
+  imgMorgon,   // Min dag — use morgon as representative
+  imgKvall,    // Vår rytm
+  imgHushall,  // Vi hemma
+  imgSova,     // Utanför hemmet
+];
+
+// Very dimmed tile styles for card images
 const CREATURE_TILE_STYLES: CreatureTileStyle[] = [
-  { scale: 1.4, objectPosition: '40% 10%', opacity: 0.45 },
-  { scale: 1.15, objectPosition: '60% 20%', opacity: 0.35 },
-  { scale: 1.8, objectPosition: '55% 8%', opacity: 0.25 },
-  { scale: 0.65, objectPosition: '50% 50%', opacity: 0.18 },
+  { scale: 1.3, objectPosition: '50% 20%', opacity: 0.12 },
+  { scale: 1.2, objectPosition: '50% 25%', opacity: 0.10 },
+  { scale: 1.3, objectPosition: '50% 20%', opacity: 0.10 },
+  { scale: 1.2, objectPosition: '50% 30%', opacity: 0.08 },
 ];
 
 const containerVariants = { hidden: {}, visible: { transition: { staggerChildren: 0.11, delayChildren: 0.4 } } };
@@ -42,7 +56,7 @@ export default function VardagProductHome({ product }: { product: ProductManifes
         transition={{ duration: 0.6 }}
         style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '45vh', zIndex: 0, pointerEvents: 'none' }}
       >
-        <img src={creatureImage} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: '50% 20%' }} />
+        <img src={heroImage} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: '50% 10%' }} />
         <div style={{
           position: 'absolute', bottom: 0, left: 0, right: 0, height: '70%',
           background: 'linear-gradient(to top, #1A1A2E 0%, rgba(26,26,46,0.95) 25%, rgba(10,74,106,0.7) 55%, transparent 100%)',
@@ -64,9 +78,15 @@ export default function VardagProductHome({ product }: { product: ProductManifes
           </motion.div>
         </motion.div>
 
-        <div style={{ flex: 1, minHeight: '16px', maxHeight: 'clamp(40px, 12vh, 120px)' }} />
+        <div style={{ flex: 1, minHeight: '24px', maxHeight: 'clamp(40px, 12vh, 120px)' }} />
 
-        <CategoryTileGrid product={product} progress={progress} tiles={ORDERED_TILES} creatureImage={creatureImage} creatureTileStyles={CREATURE_TILE_STYLES} />
+        <CategoryTileGrid
+          product={product}
+          progress={progress}
+          tiles={ORDERED_TILES}
+          tileImages={TILE_IMAGES}
+          creatureTileStyles={CREATURE_TILE_STYLES}
+        />
       </div>
     </div>
   );
