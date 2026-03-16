@@ -124,7 +124,7 @@ export default function SexualitetProductHome({ product }: { product: ProductMan
           product={product}
           progress={progress}
           tiles={ORDERED_TILES}
-          creatureImage={creatureImage}
+          tileImages={tileImages}
           creatureTileStyles={CREATURE_TILE_STYLES}
         />
       </div>
