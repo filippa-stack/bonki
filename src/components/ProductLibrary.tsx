@@ -55,44 +55,34 @@ function hexToRgba(hex: string, alpha: number): string {
   return `rgba(${r}, ${g}, ${b}, ${alpha})`;
 }
 
+/** Per-product illustration scale — controls how much of the tile the character fills */
+const ILLUSTRATION_SCALE: Record<string, { width: string; height: string }> = {
+  jag_i_mig: { width: '65%', height: '130%' },
+  jag_med_andra: { width: '62%', height: '125%' },
+  jag_i_varlden: { width: '60%', height: '125%' },
+  sexualitetskort: { width: '62%', height: '125%' },
+  vardagskort: { width: '62%', height: '125%' },
+  syskonkort: { width: '62%', height: '125%' },
+};
+
+/** Per-product vertical offset — negative pulls character up above tile top */
+const ILLUSTRATION_OFFSET: Record<string, { top: string; right: string; bottom: string }> = {
+  jag_i_mig: { top: '-12%', right: '-10%', bottom: '-10%' },
+  jag_med_andra: { top: '-10%', right: '-8%', bottom: '-8%' },
+  jag_i_varlden: { top: '-8%', right: '-8%', bottom: '-8%' },
+  sexualitetskort: { top: '-10%', right: '-10%', bottom: '-8%' },
+  vardagskort: { top: '-10%', right: '-8%', bottom: '-8%' },
+  syskonkort: { top: '-10%', right: '-8%', bottom: '-8%' },
+};
+
 /** Hero-level illustration opacities — individually calibrated */
 const ILLUSTRATION_OPACITY: Record<string, number> = {
-  jag_i_mig: 0.90,
-  jag_med_andra: 0.88,
+  jag_i_mig: 0.92,
+  jag_med_andra: 0.90,
   jag_i_varlden: 0.90,
-  sexualitetskort: 0.88,
-  vardagskort: 0.85,
-  syskonkort: 0.88,
-};
-
-/** Per-product illustration placement — individually tuned to each motif's center of gravity */
-const ILLUSTRATION_POSITION: Record<string, string> = {
-  jag_i_mig: 'center 30%',
-  jag_med_andra: 'center 35%',
-  jag_i_varlden: 'center 30%',
-  sexualitetskort: 'center 25%',
-  vardagskort: 'center 30%',
-  syskonkort: 'center 35%',
-};
-
-/** Per-product object-fit mode */
-const ILLUSTRATION_FIT: Record<string, string> = {
-  jag_i_mig: 'contain',
-  jag_med_andra: 'contain',
-  jag_i_varlden: 'contain',
-  sexualitetskort: 'contain',
-  vardagskort: 'contain',
-  syskonkort: 'contain',
-};
-
-/** Per-product illustration container bounds — {top, left, right, bottom} as % */
-const ILLUSTRATION_BOUNDS: Record<string, { top: string; left: string; right: string; bottom: string }> = {
-  jag_i_mig: { top: '-5%', left: '-2%', right: '-2%', bottom: '22%' },
-  jag_med_andra: { top: '-8%', left: '-5%', right: '-5%', bottom: '20%' },
-  jag_i_varlden: { top: '-5%', left: '-2%', right: '-2%', bottom: '22%' },
-  sexualitetskort: { top: '-5%', left: '-2%', right: '-2%', bottom: '20%' },
-  vardagskort: { top: '-5%', left: '-5%', right: '-5%', bottom: '20%' },
-  syskonkort: { top: '-5%', left: '-2%', right: '-2%', bottom: '22%' },
+  sexualitetskort: 0.90,
+  vardagskort: 0.88,
+  syskonkort: 0.90,
 };
 
 /** Light title colors for dark creature-color tiles — Lantern Glow variants */
