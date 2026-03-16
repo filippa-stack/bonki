@@ -1116,7 +1116,8 @@ export default function ProductLibrary() {
               >
                 <span
                   style={{
-                    fontFamily: "'Lato', sans-serif",
+                    fontFamily: "var(--font-display)",
+                    fontVariationSettings: "'opsz' 17",
                     fontSize: '13px',
                     fontWeight: 700,
                     letterSpacing: '0.02em',
