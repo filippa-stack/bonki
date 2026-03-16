@@ -22,6 +22,10 @@ export interface StillUsCreature {
   tileOpacity: number;
   /** Opacity for category view header */
   headerOpacity: number;
+  /** Right offset for tile placement (default: '-5%') */
+  tileRight?: string;
+  /** Height multiplier for tile placement (default: '160%') */
+  tileHeight?: string;
 }
 
 /**
@@ -31,56 +35,74 @@ export interface StillUsCreature {
 export const STILL_US_CREATURES: Record<string, StillUsCreature> = {
   'emotional-intimacy': {       // Ni i er → Säl  (Grunden)
     src: creatureSal,
-    objectPosition: '65% 30%',
-    tileOpacity: 0.28,
+    objectPosition: '50% 30%',
+    tileOpacity: 0.26,
     headerOpacity: 0.30,
+    tileRight: '0%',
+    tileHeight: '140%',
   },
   'communication': {            // Vardagen mellan er → Apa  (Grunden)
     src: creatureApa,
-    objectPosition: '55% 15%',
+    objectPosition: '45% 20%',
     tileOpacity: 0.24,
     headerOpacity: 0.28,
+    tileRight: '-2%',
+    tileHeight: '150%',
   },
   'category-8': {               // Att hålla kvar varandra → Panda  (Grunden)
     src: creaturePanda,
-    objectPosition: '55% 10%',
+    objectPosition: '50% 15%',
     tileOpacity: 0.28,
     headerOpacity: 0.30,
+    tileRight: '0%',
+    tileHeight: '140%',
   },
   'individual-needs': {         // När ni tycker olika → Sköldpadda  (Det som formar er)
     src: creatureTurtle,
-    objectPosition: '60% 20%',
+    objectPosition: '50% 25%',
     tileOpacity: 0.35,
     headerOpacity: 0.35,
+    tileRight: '0%',
+    tileHeight: '135%',
   },
   'parenting-together': {       // Det ni bär med er → Uggla  (Det som formar er)
     src: creatureUggla,
-    objectPosition: '55% 10%',
+    objectPosition: '50% 15%',
     tileOpacity: 0.35,
     headerOpacity: 0.35,
+    tileRight: '-2%',
+    tileHeight: '145%',
   },
   'category-9': {               // Dit ni är på väg → Lejon  (Det som formar er)
     src: creatureLejon,
-    objectPosition: '55% 15%',
+    objectPosition: '50% 20%',
     tileOpacity: 0.35,
     headerOpacity: 0.35,
+    tileRight: '-3%',
+    tileHeight: '150%',
   },
   'category-6': {               // Trygghet & mod → Elefant  (Djupet)
     src: creatureElefant,
-    objectPosition: '55% 20%',
+    objectPosition: '50% 25%',
     tileOpacity: 0.38,
     headerOpacity: 0.38,
+    tileRight: '0%',
+    tileHeight: '135%',
   },
   'daily-life': {               // Nära varandra → Rådjur  (Djupet)
     src: creatureRadjur,
-    objectPosition: '60% 15%',
+    objectPosition: '50% 20%',
     tileOpacity: 0.38,
     headerOpacity: 0.38,
+    tileRight: '-2%',
+    tileHeight: '145%',
   },
   'category-10': {              // Att välja varandra → Örn  (Djupet)
     src: creatureOrn,
-    objectPosition: '55% 10%',
+    objectPosition: '50% 15%',
     tileOpacity: 0.38,
     headerOpacity: 0.38,
+    tileRight: '-3%',
+    tileHeight: '150%',
   },
 };
