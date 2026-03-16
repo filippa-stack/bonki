@@ -154,13 +154,13 @@ export default function LibraryResumeCard({ activeTab }: LibraryResumeCardProps)
 
   return (
     <button
-      onClick={() => navigate(`/card/${resume.cardId}`, { state: { resumed: true } })}
+      onClick={() => navigate(`/card/${display.cardId}`, { state: { resumed: true } })}
       style={{
         width: 'calc(100% - 32px)',
         margin: '16px 16px 0',
         padding: '16px',
         background: DEEP_DUSK,
-        borderLeft: `3px solid ${resume.accentColor}`,
+        borderLeft: `3px solid ${display.accentColor}`,
         borderTop: 'none',
         borderRight: 'none',
         borderBottom: 'none',
@@ -184,7 +184,7 @@ export default function LibraryResumeCard({ activeTab }: LibraryResumeCardProps)
           whiteSpace: 'nowrap',
           margin: 0,
         }}>
-          {resume.productName} · {resume.cardTitle}
+          {display.productName} · {display.cardTitle}
         </p>
         <p style={{
           fontFamily: "var(--font-body)",
@@ -195,7 +195,7 @@ export default function LibraryResumeCard({ activeTab }: LibraryResumeCardProps)
           marginTop: '4px',
           margin: '4px 0 0',
         }}>
-          {resume.stepLabel}
+          {display.stepLabel}
         </p>
       </div>
       <span style={{
