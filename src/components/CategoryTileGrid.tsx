@@ -107,7 +107,7 @@ function CategoryTile({
           : { aspectRatio: '0.7' }),
       }}
     >
-      {/* Illustration layer */}
+      {/* Illustration layer (z-index 1) */}
       {imageUrl ? (
         <img
           src={imageUrl}
@@ -120,6 +120,7 @@ function CategoryTile({
             height: '100%',
             objectFit: 'cover',
             objectPosition: 'center 30%',
+            zIndex: 1,
           }}
         />
       ) : (
@@ -128,24 +129,26 @@ function CategoryTile({
             position: 'absolute',
             inset: 0,
             background: `radial-gradient(circle at 55% 35%, rgba(${creatureRgb}, 0.3), transparent 55%)`,
+            zIndex: 1,
           }}
         />
       )}
 
-      {/* Gradient shield */}
+      {/* Gradient shield (z-index 2) */}
       <div
         style={{
           position: 'absolute',
           bottom: 0,
           left: 0,
           right: 0,
-          height: '60%',
-          background: `linear-gradient(0deg, rgba(${shieldRgb}, 0.95) 0%, rgba(${shieldRgb}, 0.7) 40%, transparent 100%)`,
+          height: '55%',
+          background: `linear-gradient(to top, rgba(${shieldRgb}, 0.97) 0%, rgba(${shieldRgb}, 0.88) 25%, rgba(${shieldRgb}, 0.45) 60%, transparent 100%)`,
           pointerEvents: 'none',
+          zIndex: 2,
         }}
       />
 
-      {/* Text overlay */}
+      {/* Text overlay (z-index 3) */}
       <div
         style={{
           position: 'absolute',
@@ -153,6 +156,7 @@ function CategoryTile({
           left: 0,
           right: 0,
           padding: '14px',
+          zIndex: 3,
         }}
       >
         <span
