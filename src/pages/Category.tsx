@@ -742,6 +742,50 @@ function StillUsCategoryView({
             : 'Välj det som känns rätt just nu.'}
         </p>
       </motion.div>
+
+      {/* Creature illustration — placed BELOW tiles, filling remaining space */}
+      {STILL_US_CREATURES[category.id] && (() => {
+        const c = STILL_US_CREATURES[category.id];
+        return (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.8, delay: 0.3 }}
+            style={{
+              width: 'calc(100% + 10vw)',
+              marginLeft: '-5vw',
+              height: '45vh',
+              position: 'relative',
+              pointerEvents: 'none',
+              marginTop: '-16px',
+            }}
+          >
+            {/* Scrim to blend into background above */}
+            <div style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              right: 0,
+              height: '40%',
+              background: `linear-gradient(to bottom, ${EMBER_NIGHT} 0%, transparent 100%)`,
+              zIndex: 1,
+              pointerEvents: 'none',
+            }} />
+            <img
+              src={c.src}
+              alt=""
+              style={{
+                width: '100%',
+                height: '100%',
+                objectFit: 'contain',
+                objectPosition: '50% 100%',
+                opacity: 0.22,
+                filter: 'saturate(0.2) brightness(1.3)',
+              }}
+            />
+          </motion.div>
+        );
+      })()}
     </div>
   );
 }
