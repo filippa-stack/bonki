@@ -50,80 +50,80 @@ export const STILL_US_CREATURES: Record<string, StillUsCreature> = {
     objectPosition: '50% 30%',
     tileOpacity: 0.35,
     headerOpacity: 0.35,
-    tileRight: '0%',
-    tileHeight: '160%',
-    tileScale: 1.0,
+    tileRight: '-5%',
+    tileHeight: '220%',
+    tileScale: 1.1,            // Seal: round body, moderate density
   },
   'communication': {            // Vardagen mellan er → Apa  (Grunden)
     src: creatureApa,
     objectPosition: '45% 20%',
     tileOpacity: 0.35,
     headerOpacity: 0.35,
-    tileRight: '-2%',
-    tileHeight: '160%',
-    tileScale: 1.0,            // Apa: dense body — keep at baseline
+    tileRight: '-8%',
+    tileHeight: '220%',
+    tileScale: 1.05,           // Apa: dense body — slight boost
   },
   'category-8': {               // Att hålla kvar varandra → Panda  (Grunden)
     src: creaturePanda,
     objectPosition: '50% 15%',
     tileOpacity: 0.36,
     headerOpacity: 0.35,
-    tileRight: '0%',
-    tileHeight: '160%',
-    tileScale: 1.05,
+    tileRight: '-5%',
+    tileHeight: '220%',
+    tileScale: 1.1,            // Panda: round, medium density
   },
   'individual-needs': {         // När ni tycker olika → Sköldpadda  (Det som formar er)
     src: creatureTurtle,
     objectPosition: '50% 25%',
     tileOpacity: 0.38,
     headerOpacity: 0.38,
-    tileRight: '0%',
-    tileHeight: '160%',
-    tileScale: 1.18,           // Turtle is compact — scale up more
+    tileRight: '-5%',
+    tileHeight: '220%',
+    tileScale: 1.25,           // Turtle is compact — scale up aggressively
   },
   'parenting-together': {       // Det ni bär med er → Uggla  (Det som formar er)
     src: creatureUggla,
     objectPosition: '50% 15%',
     tileOpacity: 0.36,
     headerOpacity: 0.36,
-    tileRight: '-2%',
-    tileHeight: '160%',
-    tileScale: 1.0,
+    tileRight: '-8%',
+    tileHeight: '220%',
+    tileScale: 1.05,           // Owl: wide wings fill space naturally
   },
   'category-9': {               // Dit ni är på väg → Lejon  (Det som formar er)
     src: creatureLejon,
     objectPosition: '50% 20%',
     tileOpacity: 0.36,
     headerOpacity: 0.36,
-    tileRight: '-3%',
-    tileHeight: '160%',
-    tileScale: 0.88,           // Lion is visually large+dense — scale down more
+    tileRight: '-8%',
+    tileHeight: '220%',
+    tileScale: 0.95,           // Lion is visually large+dense — scale down slightly
   },
   'category-6': {               // Trygghet & mod → Elefant  (Djupet)
     src: creatureElefant,
     objectPosition: '50% 25%',
     tileOpacity: 0.38,
     headerOpacity: 0.38,
-    tileRight: '0%',
-    tileHeight: '160%',
-    tileScale: 0.85,           // Elephant is very dense — scale down further
+    tileRight: '-5%',
+    tileHeight: '220%',
+    tileScale: 0.9,            // Elephant is very dense — scale down
   },
   'daily-life': {               // Nära varandra → Rådjur  (Djupet)
     src: creatureRadjur,
     objectPosition: '50% 20%',
     tileOpacity: 0.38,
     headerOpacity: 0.38,
-    tileRight: '-2%',
-    tileHeight: '160%',
-    tileScale: 1.15,           // Deer is thin/light — scale up
+    tileRight: '-8%',
+    tileHeight: '220%',
+    tileScale: 1.2,            // Deer is thin/light — scale up
   },
   'category-10': {              // Att välja varandra → Örn  (Djupet)
     src: creatureOrn,
     objectPosition: '50% 15%',
     tileOpacity: 0.36,
     headerOpacity: 0.36,
-    tileRight: '-3%',
-    tileHeight: '160%',
-    tileScale: 1.08,           // Eagle has wide negative space — scale up
+    tileRight: '-8%',
+    tileHeight: '220%',
+    tileScale: 1.15,           // Eagle has wide negative space — scale up
   },
 };
