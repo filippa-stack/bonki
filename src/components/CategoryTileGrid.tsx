@@ -49,6 +49,8 @@ interface CategoryTileGridProps {
   tiles: TileConfig[];
   creatureImage?: string;
   creatureTileStyles?: CreatureTileStyle[];
+  /** Per-tile image overrides (index-matched to tiles). Takes priority over creatureImage. */
+  tileImages?: (string | undefined)[];
 }
 
 function hexToRgb(hex: string): string {
