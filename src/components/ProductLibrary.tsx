@@ -222,7 +222,7 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
       style={{
         borderRadius: '16px',
         backgroundColor: bg,
-        height: '200px',
+        height: '240px',
         display: 'flex',
         position: 'relative',
         overflow: 'hidden',
