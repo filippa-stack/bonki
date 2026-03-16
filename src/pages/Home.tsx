@@ -225,7 +225,7 @@ export default function Home() {
                   textAlign: 'center',
                 }}>
                   <p style={{
-                    fontFamily: "'DM Serif Display', var(--font-serif)",
+                    fontFamily: "var(--font-display)",
                     fontSize: '18px',
                     color: LANTERN_GLOW,
                     marginBottom: '6px',
