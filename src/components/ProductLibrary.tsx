@@ -1042,7 +1042,8 @@ export default function ProductLibrary() {
             }}>
               <h3
                 style={{
-                  fontFamily: "'DM Serif Display', serif",
+                  fontFamily: "var(--font-display)",
+                  fontVariationSettings: "'opsz' 24",
                   fontSize: '32px',
                   fontWeight: 700,
                   lineHeight: 1.1,
