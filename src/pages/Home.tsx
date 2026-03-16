@@ -533,16 +533,16 @@ export default function Home() {
                             alt=""
                             style={{
                               position: 'absolute',
-                              right: '-8%',
+                              right: '-10%',
                               top: '50%',
                               transform: 'translateY(-50%)',
-                              height: '140%',
+                              height: '200%',
                               width: 'auto',
                               objectFit: 'contain',
                               objectPosition: STILL_US_CREATURES[cat.id].objectPosition,
                               opacity: STILL_US_CREATURES[cat.id].tileOpacity,
                               pointerEvents: 'none',
-                              filter: 'saturate(0.3) brightness(1.1)',
+                              filter: 'saturate(0.25) brightness(1.15)',
                             }}
                           />
                         )}
