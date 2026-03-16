@@ -657,80 +657,8 @@ export default function ProductLibrary() {
         </div>
 
         <div>
-        {/* ── Barn — broken grid layout ── */}
-        <div className="px-5" style={{ scrollMarginTop: '8px' }}>
-          <motion.p
-            initial={{ opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1, duration: 0.7, ease: [0.4, 0, 0.2, 1] }}
-            style={{
-              fontFamily: "var(--font-display)",
-              fontVariationSettings: "'opsz' 15",
-              fontStyle: 'normal',
-              fontSize: '15px',
-              fontWeight: 400,
-              color: '#E9B44C',
-              opacity: 0.7,
-              lineHeight: 1.6,
-              textAlign: 'center',
-              marginBottom: '24px',
-            }}
-          >
-            Det barnet inte säger själv — börjar här
-          </motion.p>
-          {/* Single free-trial mention */}
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.2, duration: 0.5 }}
-            style={{
-              fontFamily: "var(--font-body)",
-              fontSize: '10px',
-              fontWeight: 500,
-              letterSpacing: '0.06em',
-              color: '#998F82',
-              textAlign: 'center',
-              marginBottom: '20px',
-              marginTop: '-16px',
-            }}
-          >
-            ✦ Första kortet i varje produkt är gratis
-          </motion.p>
-          <LibraryResumeCard activeTab="barn" />
-          <div style={{ height: '24px' }} />
-          <motion.div
-            variants={containerVariants}
-            initial="hidden"
-            animate="visible"
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '20px',
-            }}
-          >
-            {sortedKidsProducts.map((product) => (
-              <PastelTile
-                key={product.id}
-                name={product.name}
-                bg={TILE_COLORS[product.id]!}
-                productId={product.id}
-                tagline={TAGLINES[product.id]}
-                ageLabel={product.ageLabel}
-                accentColor={ACCENT_COLORS[product.id]}
-                taglineColor={TAGLINE_COLORS[product.id]}
-                illustration={ILLUSTRATIONS[product.id]}
-                illustrationOpacity={ILLUSTRATION_OPACITY[product.id]}
-                onClick={() => navigate(`/product/${product.slug}`)}
-                badgeText={buildBadgeText(product)}
-                hasActiveSession={activeProductIds.has(product.id)}
-                wide
-              />
-            ))}
-          </motion.div>
-        </div>
-
-        {/* ── Still Us cross-discovery — visible on BARN tab ── */}
-        <div className="px-5" style={{ marginTop: '28px' }}>
+        {/* ── Still Us cross-discovery ── */}
+        <div className="px-5" style={{ marginTop: '0px' }}>
           <div style={{
             borderTop: '1px solid hsla(38, 50%, 50%, 0.12)',
             paddingTop: '16px',
@@ -832,6 +760,78 @@ export default function ProductLibrary() {
               </div>
             </motion.div>
           </div>
+        </div>
+
+        {/* ── Barn — broken grid layout ── */}
+        <div className="px-5" style={{ scrollMarginTop: '8px', marginTop: '28px' }}>
+          <motion.p
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1, duration: 0.7, ease: [0.4, 0, 0.2, 1] }}
+            style={{
+              fontFamily: "var(--font-display)",
+              fontVariationSettings: "'opsz' 15",
+              fontStyle: 'normal',
+              fontSize: '15px',
+              fontWeight: 400,
+              color: '#E9B44C',
+              opacity: 0.7,
+              lineHeight: 1.6,
+              textAlign: 'center',
+              marginBottom: '24px',
+            }}
+          >
+            Det barnet inte säger själv — börjar här
+          </motion.p>
+          {/* Single free-trial mention */}
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.2, duration: 0.5 }}
+            style={{
+              fontFamily: "var(--font-body)",
+              fontSize: '10px',
+              fontWeight: 500,
+              letterSpacing: '0.06em',
+              color: '#998F82',
+              textAlign: 'center',
+              marginBottom: '20px',
+              marginTop: '-16px',
+            }}
+          >
+            ✦ Första kortet i varje produkt är gratis
+          </motion.p>
+          <LibraryResumeCard activeTab="barn" />
+          <div style={{ height: '24px' }} />
+          <motion.div
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '20px',
+            }}
+          >
+            {sortedKidsProducts.map((product) => (
+              <PastelTile
+                key={product.id}
+                name={product.name}
+                bg={TILE_COLORS[product.id]!}
+                productId={product.id}
+                tagline={TAGLINES[product.id]}
+                ageLabel={product.ageLabel}
+                accentColor={ACCENT_COLORS[product.id]}
+                taglineColor={TAGLINE_COLORS[product.id]}
+                illustration={ILLUSTRATIONS[product.id]}
+                illustrationOpacity={ILLUSTRATION_OPACITY[product.id]}
+                onClick={() => navigate(`/product/${product.slug}`)}
+                badgeText={buildBadgeText(product)}
+                hasActiveSession={activeProductIds.has(product.id)}
+                wide
+              />
+            ))}
+          </motion.div>
         </div>
 
         {/* Era samtal — compact return-loop hook */}
