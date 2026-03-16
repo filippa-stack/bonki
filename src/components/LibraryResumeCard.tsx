@@ -43,6 +43,8 @@ export default function LibraryResumeCard({ activeTab }: LibraryResumeCardProps)
       : { productName: 'Still Us', cardTitle: 'Att lyssna på riktigt', cardId: 'su-kommunikation-1', stepLabel: 'Pausad vid VÄND · Fråga 1 av 3', accentColor: DEEP_SAFFRON }
     : null;
 
+  console.log('[LibraryResumeCard]', { devState, activeTab, devMock: !!devMock });
+
   useEffect(() => {
     if (devMock) return; // skip fetch when dev mock active
     if (!space?.id) {
