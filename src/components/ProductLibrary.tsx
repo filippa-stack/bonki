@@ -1080,7 +1080,7 @@ export default function ProductLibrary() {
                 flexWrap: 'wrap',
               }}>
                 <span style={{
-                  fontFamily: "'Lato', sans-serif",
+                  fontFamily: "var(--font-body)",
                   fontSize: '10px',
                   fontWeight: 600,
                   letterSpacing: '0.04em',
