@@ -699,7 +699,7 @@ export default function ProductLibrary() {
                 borderRadius: '22px',
                 backgroundImage: 'linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0) 50%, rgba(0,0,0,0.12) 100%)',
                 backgroundColor: '#2E2233',
-                minHeight: '140px',
+                height: '240px',
                 display: 'flex',
                 flexDirection: 'column',
                 position: 'relative',
@@ -714,13 +714,13 @@ export default function ProductLibrary() {
                 ].join(', '),
               }}
             >
-              {/* Illustration */}
+              {/* Illustration — right-aligned, matching kids tiles */}
               <div style={{
                 position: 'absolute',
-                top: '-15%',
-                right: '-8%',
-                width: '55%',
-                height: '130%',
+                top: '-35%',
+                right: '-12%',
+                bottom: '-30%',
+                width: '70%',
                 pointerEvents: 'none',
                 zIndex: 0,
               }}>
@@ -732,48 +732,57 @@ export default function ProductLibrary() {
                     width: '100%',
                     height: '100%',
                     objectFit: 'contain',
-                    objectPosition: 'center 30%',
-                    opacity: 0.55,
+                    objectPosition: 'right bottom',
+                    opacity: 0.9,
                   }}
                 />
               </div>
 
-              {/* Bottom gradient scrim */}
+              {/* Horizontal gradient scrim — text anchor left */}
               <div
                 aria-hidden="true"
                 style={{
                   position: 'absolute',
-                  bottom: 0, left: 0, right: 0,
-                  height: '60%',
+                  top: 0, left: 0, bottom: 0,
+                  width: '55%',
                   zIndex: 1,
                   pointerEvents: 'none',
-                  background: 'linear-gradient(to top, rgba(46, 34, 51, 1) 0%, rgba(46, 34, 51, 0.72) 50%, transparent 100%)',
-                  borderRadius: '0 0 22px 22px',
+                  background: `linear-gradient(to right, rgba(46, 34, 51, 1) 0%, rgba(46, 34, 51, 0.9) 30%, rgba(46, 34, 51, 0.4) 65%, transparent 100%)`,
                 }}
               />
 
+              {/* Text — left-aligned, lower-third emphasis */}
               <div style={{
                 position: 'absolute',
-                bottom: 0, left: 0, right: 0,
+                left: 0, bottom: 0, top: 0,
+                width: '55%',
                 zIndex: 2,
-                padding: '0 18px 16px',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'flex-end',
+                padding: '20px',
+                paddingBottom: '24px',
               }}>
                 <h3 style={{
                   fontFamily: "var(--font-display)",
                   fontVariationSettings: "'opsz' 24",
-                  fontSize: '22px',
-                  fontWeight: 700,
+                  fontSize: '28px',
+                  fontWeight: 600,
                   color: '#FDF6E3',
                   lineHeight: 1.15,
-                  textShadow: '0 2px 8px rgba(71, 52, 84, 1)',
+                  letterSpacing: '-0.01em',
+                  textShadow: '0 1px 6px rgba(46, 34, 51, 0.8), 0 0 16px rgba(46, 34, 51, 0.6)',
                 }}>
                   Still Us
                 </h3>
                 <p style={{
                   fontFamily: "var(--font-body)",
-                  fontSize: '11px',
-                  color: 'hsla(38, 55%, 65%, 0.7)',
+                  fontSize: '14px',
+                  fontWeight: 400,
+                  color: 'hsla(38, 55%, 75%, 0.8)',
                   marginTop: '4px',
+                  lineHeight: 1.4,
+                  textShadow: '0 0 10px rgba(46, 34, 51, 0.8)',
                 }}>
                   22 samtal för er relation
                 </p>
