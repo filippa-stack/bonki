@@ -43,7 +43,7 @@ const LAYERS: {
   {
     label: 'Grunden',
     categoryIds: ['emotional-intimacy', 'communication', 'category-8'],
-    tileBg: '#5A3F6B',       // Warm purple — lightest layer
+    tileBg: '#4F3660',       // Warm purple — lightest layer, toned down for cohesion
     tileText: LANTERN_GLOW,
     progressColor: DEEP_SAFFRON,
   },
