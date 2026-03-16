@@ -13,6 +13,9 @@ import {
   BONKI_ORANGE,
 } from '@/lib/palette';
 
+/** Warm neutral for readable secondary text on dark backgrounds (4.7:1 on Midnight Ink) */
+const READABLE_SECONDARY = '#998F82';
+
 const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
 interface ProductPaywallProps {
