@@ -1075,7 +1075,7 @@ export default function ProductLibrary() {
                 '0 6px 16px rgba(0, 0, 0, 0.25)',
                 '0 1px 3px rgba(0, 0, 0, 0.08)',
                 'inset 0 3px 6px rgba(255, 255, 255, 0.45)',
-                'inset 0 -4px 10px rgba(15, 45, 52, 0.20)',
+                'inset 0 -4px 10px rgba(46, 34, 51, 0.24)',
               ].join(', '),
             }}
           >
