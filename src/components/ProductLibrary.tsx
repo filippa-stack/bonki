@@ -814,6 +814,8 @@ export default function ProductLibrary() {
           >
             ✦ Första kortet i varje produkt är gratis
           </motion.p>
+          <LibraryResumeCard activeTab="barn" />
+          <div style={{ height: '24px' }} />
           <motion.div
             variants={containerVariants}
             initial="hidden"
