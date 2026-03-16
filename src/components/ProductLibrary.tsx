@@ -154,7 +154,7 @@ function AudienceLabel({ label, subtitle, delay = 0 }: { label: string; subtitle
     >
       <p
         style={{
-          fontFamily: "'Lato', sans-serif",
+          fontFamily: "var(--font-body)",
           fontSize: '10px',
           fontWeight: 600,
           letterSpacing: '0.15em',
