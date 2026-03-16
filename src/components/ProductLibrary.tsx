@@ -871,7 +871,7 @@ export default function ProductLibrary() {
               className="cursor-pointer"
               style={{
                 borderRadius: '22px',
-                backgroundColor: '#473454',
+                backgroundColor: '#2E2233',
                 minHeight: '140px',
                 display: 'flex',
                 flexDirection: 'column',
@@ -1063,7 +1063,7 @@ export default function ProductLibrary() {
             style={{
               borderRadius: '22px',
               backgroundImage: 'linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0) 50%, rgba(0,0,0,0.12) 100%)',
-              backgroundColor: '#1E5A68',
+              backgroundColor: '#2E2233',
               minHeight: '340px',
               display: 'flex',
               flexDirection: 'column',
