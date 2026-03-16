@@ -123,8 +123,8 @@ function CategoryTile({
         borderLeft: isFirst ? `3px solid ${SAFFRON}` : 'none',
         padding: 0,
         ...(isOddLast
-          ? { gridColumn: '1 / -1', height: '200px' }
-          : { aspectRatio: '0.72' }),
+      ? { gridColumn: '1 / -1', height: '170px' }
+          : { aspectRatio: '0.7' }),
       }}
     >
       {/* Illustration layer */}
