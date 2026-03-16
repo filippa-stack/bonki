@@ -819,10 +819,10 @@ export default function ProductLibrary() {
         </div>
 
         {/* ── Barn & Familj section anchor ── */}
-        <div className="px-5" style={{ marginTop: '28px' }}>
+        <div className="px-5" style={{ marginTop: '36px' }}>
           <div style={{
             borderTop: '1px solid hsla(38, 50%, 50%, 0.12)',
-            paddingTop: '16px',
+            paddingTop: '20px',
           }}>
             <p style={{
               fontFamily: "var(--font-body)",
@@ -831,7 +831,7 @@ export default function ProductLibrary() {
               letterSpacing: '1.5px',
               textTransform: 'uppercase',
               color: '#6B5E52',
-              marginBottom: '12px',
+              marginBottom: '16px',
             }}>
               Barn & Familj
             </p>
