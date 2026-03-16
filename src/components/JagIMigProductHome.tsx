@@ -59,7 +59,7 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
 
         {/* Category section label */}
         <div style={{ textAlign: 'left', marginBottom: '12px', paddingLeft: '4px' }}>
-          <span style={{ fontFamily: 'var(--font-sans)', fontSize: '12px', fontWeight: 600, color: LABEL_COLOR, textTransform: 'uppercase', letterSpacing: '2px' }}>
+          <span style={{ fontFamily: 'var(--font-body)', fontSize: '12px', fontWeight: 600, color: LABEL_COLOR, textTransform: 'uppercase', letterSpacing: '2px' }}>
             Alla kategorier
           </span>
         </div>
