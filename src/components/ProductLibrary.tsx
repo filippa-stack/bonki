@@ -799,9 +799,10 @@ export default function ProductLibrary() {
               fontFamily: "var(--font-display)",
               fontVariationSettings: "'opsz' 15",
               fontStyle: 'normal',
-              fontSize: '14px',
+              fontSize: '15px',
               fontWeight: 400,
-              color: 'hsla(38, 55%, 65%, 0.55)',
+              color: '#E9B44C',
+              opacity: 0.7,
               lineHeight: 1.6,
             }}
           >
