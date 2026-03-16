@@ -10,15 +10,14 @@ import { useKidsProductProgress } from '@/hooks/useKidsProductProgress';
 import CategoryProgressRing from '@/components/CategoryProgressRing';
 
 const EASE = [0.4, 0.0, 0.2, 1] as const;
-
 const ACCENT_COLOR = '#A8B84C';
-
 const SAFFRON = '#DA9D1D';
+const LABEL_COLOR = '#998F82';
 
 const ORDERED_TILES = [
-  { id: 'jim-mina-kanslor', bg: '#566A10', text: '#FDF6E3', sub: 'Att känna igen dem' },
-  { id: 'jim-starka-kanslor', bg: '#3E4A12', text: '#FDF6E3', sub: 'När det blir mycket' },
-  { id: 'jim-stora-kanslor', bg: '#2A3406', text: '#FDF6E3', sub: 'Känslor med många lager' },
+  { id: 'jim-mina-kanslor', bg: '#566A10', sub: 'Att känna igen dem' },
+  { id: 'jim-starka-kanslor', bg: '#3E4A12', sub: 'När det blir mycket' },
+  { id: 'jim-stora-kanslor', bg: '#2A3406', sub: 'Känslor med många lager' },
 ];
 
 const containerVariants = { hidden: {}, visible: { transition: { staggerChildren: 0.11, delayChildren: 0.4 } } };
@@ -58,12 +57,9 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
 
         <div style={{ flex: 1, minHeight: '16px', maxHeight: 'clamp(40px, 12vh, 120px)' }} />
 
-        {/* Gradient scrim above label */}
-        <div style={{ height: '40px', background: `linear-gradient(to bottom, transparent, ${product.tileDeep ?? '#3E4A12'})`, marginLeft: '-5vw', marginRight: '-5vw', pointerEvents: 'none' }} />
-
-        {/* Category section label — on solid dark surface */}
-        <div style={{ textAlign: 'left', marginBottom: '12px', paddingLeft: '4px', background: product.tileDeep ?? '#3E4A12', marginLeft: '-5vw', marginRight: '-5vw', paddingTop: '0', paddingBottom: '0', paddingRight: '5vw', paddingBlockStart: '0' }}>
-          <span style={{ fontFamily: 'var(--font-sans)', fontSize: '12px', fontWeight: 600, color: '#998F82', textTransform: 'uppercase', letterSpacing: '2px', paddingLeft: '16px' }}>
+        {/* Category section label */}
+        <div style={{ textAlign: 'left', marginBottom: '12px', paddingLeft: '4px' }}>
+          <span style={{ fontFamily: 'var(--font-sans)', fontSize: '12px', fontWeight: 600, color: LABEL_COLOR, textTransform: 'uppercase', letterSpacing: '2px' }}>
             Alla kategorier
           </span>
         </div>
@@ -90,7 +86,7 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
                   textAlign: 'left',
                   cursor: 'pointer',
                   width: '100%',
-                  minHeight: '130px',
+                  minHeight: '88px',
                   border: isNextCategory
                     ? `2.5px solid ${SAFFRON}CC`
                     : '1.5px solid rgba(255, 255, 255, 0.30)',
@@ -103,37 +99,44 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
                     'inset 0 -4px 10px rgba(0, 0, 0, 0.14)',
                   ].filter(Boolean).join(', '),
                   display: 'flex',
-                  flexDirection: 'column',
-                  justifyContent: 'flex-end',
-                  gap: '4px',
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  gap: '12px',
                   lineHeight: 1.15,
                   position: 'relative',
                 }}
               >
-                <span style={{
-                  fontFamily: "'DM Serif Display', var(--font-serif)",
-                  fontSize: '15px',
-                  fontWeight: 600,
-                  color: '#FDF6E3',
-                }}>
-                  {cat.title}
-                </span>
-                <span style={{
-                  fontSize: '12px',
-                  fontWeight: 400,
-                  color: `#FDF6E3B3`, // 70% opacity
-                  letterSpacing: '0.02em',
-                  lineHeight: 1.3,
-                  overflow: 'hidden',
-                  textOverflow: 'ellipsis',
-                  display: '-webkit-box',
-                  WebkitLineClamp: 2,
-                  WebkitBoxOrient: 'vertical',
-                }}>
-                  {tile.sub}
-                </span>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                  <span style={{
+                    fontFamily: "'DM Serif Display', var(--font-serif)",
+                    fontSize: '15px',
+                    fontWeight: 600,
+                    color: '#FDF6E3',
+                  }}>
+                    {cat.title}
+                  </span>
+                  <span style={{
+                    fontSize: '12px',
+                    fontWeight: 400,
+                    color: '#FDF6E3B3',
+                    letterSpacing: '0.02em',
+                    lineHeight: 1.3,
+                  }}>
+                    {tile.sub}
+                  </span>
+                </div>
                 {catProgress && (
-                  <CategoryProgressRing completed={catProgress.completed} total={catProgress.total} color={tile.text} />
+                  <span style={{
+                    flexShrink: 0,
+                    fontSize: '11px',
+                    fontWeight: 600,
+                    letterSpacing: '0.04em',
+                    color: catProgress.completed > 0 ? '#E9B44C' : '#FDF6E380',
+                    whiteSpace: 'nowrap',
+                  }}>
+                    {catProgress.completed} av {catProgress.total}
+                  </span>
                 )}
               </motion.button>
             );

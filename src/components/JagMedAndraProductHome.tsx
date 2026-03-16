@@ -12,15 +12,15 @@ import CategoryProgressRing from '@/components/CategoryProgressRing';
 
 const EASE = [0.4, 0.0, 0.2, 1] as const;
 const ACCENT_COLOR = '#C77AE8';
-
 const SAFFRON = '#DA9D1D';
+const LABEL_COLOR = '#998F82';
 
 const ORDERED_TILES = [
-  { id: 'jma-att-hora-till', bg: '#6E2498', text: '#FDF6E3', sub: 'Var hör jag hemma?' },
-  { id: 'jma-nar-vi-jamfor-oss', bg: '#5A1A80', text: '#FDF6E3', sub: 'Vad det gör med oss' },
-  { id: 'jma-nar-det-skaver', bg: '#4A1268', text: '#FDF6E3', sub: 'När vi sårar varandra' },
-  { id: 'jma-att-sta-stadig', bg: '#3A0E58', text: '#FDF6E3', sub: 'Din egen grund' },
-  { id: 'jma-vi-i-varlden', bg: '#2A0840', text: '#FDF6E3', sub: 'Utanför oss själva' },
+  { id: 'jma-att-hora-till', bg: '#6E2498', sub: 'Var hör jag hemma?' },
+  { id: 'jma-nar-vi-jamfor-oss', bg: '#5A1A80', sub: 'Vad det gör med oss' },
+  { id: 'jma-nar-det-skaver', bg: '#4A1268', sub: 'När vi sårar varandra' },
+  { id: 'jma-att-sta-stadig', bg: '#3A0E58', sub: 'Din egen grund' },
+  { id: 'jma-vi-i-varlden', bg: '#2A0840', sub: 'Utanför oss själva' },
 ];
 
 const containerVariants = { hidden: {}, visible: { transition: { staggerChildren: 0.11, delayChildren: 0.4 } } };
@@ -60,7 +60,7 @@ export default function JagMedAndraProductHome({ product }: { product: ProductMa
 
         {/* Category section label */}
         <div style={{ textAlign: 'left', marginBottom: '12px', paddingLeft: '4px' }}>
-          <span style={{ fontFamily: 'var(--font-sans)', fontSize: '12px', fontWeight: 600, color: '#6B5E52', textTransform: 'uppercase', letterSpacing: '1.5px' }}>
+          <span style={{ fontFamily: 'var(--font-sans)', fontSize: '12px', fontWeight: 600, color: LABEL_COLOR, textTransform: 'uppercase', letterSpacing: '2px' }}>
             Alla kategorier
           </span>
         </div>
@@ -85,12 +85,12 @@ export default function JagMedAndraProductHome({ product }: { product: ProductMa
                     backgroundImage: `linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0) 50%, rgba(0,0,0,0.08) 100%)`,
                     backgroundColor: tile.bg,
                     borderRadius: '22px',
-                    padding: '20px 16px',
-                    textAlign: 'center',
+                    padding: '14px',
+                    textAlign: 'left',
                     cursor: 'pointer',
                     ...(isLastOdd
-                      ? { gridColumn: '1 / -1', justifySelf: 'center', width: '65%', padding: '22px 20px', minHeight: '120px' }
-                      : { aspectRatio: '1 / 1' }),
+                      ? { gridColumn: '1 / -1', justifySelf: 'center', width: '65%', minHeight: '130px' }
+                      : { aspectRatio: '1 / 1', minHeight: '130px' }),
                     border: isNextCategory
                       ? `2.5px solid ${SAFFRON}CC`
                       : '1.5px solid rgba(255, 255, 255, 0.30)',
@@ -104,35 +104,37 @@ export default function JagMedAndraProductHome({ product }: { product: ProductMa
                     ].filter(Boolean).join(', '),
                     display: 'flex',
                     flexDirection: 'column',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    gap: '6px',
+                    justifyContent: 'flex-end',
+                    gap: '4px',
                     lineHeight: 1.15,
                     position: 'relative',
+                    paddingBottom: '32px',
                   }}
                 >
                   <span style={{
                     fontFamily: "'DM Serif Display', var(--font-serif)",
-                    fontSize: 'clamp(17px, 4.8vw, 22px)',
-                    fontWeight: 700,
-                    color: tile.text,
-                    padding: '0 2px',
+                    fontSize: '15px',
+                    fontWeight: 600,
+                    color: '#FDF6E3',
                   }}>
                     {cat.title}
                   </span>
                   <span style={{
-                    fontSize: 'clamp(10px, 2.8vw, 12px)',
-                    fontWeight: 600,
-                    color: '#FFFDF8',
-                    opacity: 0.9,
+                    fontSize: '12px',
+                    fontWeight: 400,
+                    color: '#FDF6E3B3',
                     letterSpacing: '0.02em',
                     lineHeight: 1.3,
-                    padding: '0 4px',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    display: '-webkit-box',
+                    WebkitLineClamp: 2,
+                    WebkitBoxOrient: 'vertical',
                   }}>
                     {tile.sub}
                   </span>
                   {catProgress && (
-                    <CategoryProgressRing completed={catProgress.completed} total={catProgress.total} color={tile.text} />
+                    <CategoryProgressRing completed={catProgress.completed} total={catProgress.total} color="#FDF6E3" />
                   )}
                 </motion.button>
               );
