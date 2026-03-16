@@ -122,7 +122,7 @@ export default function SyskonProductHome({ product }: { product: ProductManifes
           product={product}
           progress={progress}
           tiles={ORDERED_TILES}
-          tileImages={TILE_IMAGES}
+          tileImages={tileImages}
           creatureTileStyles={CREATURE_TILE_STYLES}
         />
       </div>
