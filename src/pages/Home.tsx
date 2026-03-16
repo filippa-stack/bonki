@@ -18,6 +18,7 @@ import UnifiedResumeBanner from '@/components/UnifiedResumeBanner';
 import ProductHomeBackButton from '@/components/ProductHomeBackButton';
 import { categories as allCategories, cards as allCards } from '@/data/content';
 import stillUsIllustration from '@/assets/illustration-still-us-home.png';
+import { STILL_US_CREATURES } from '@/lib/stillUsCreatures';
 
 /* ── Color tokens ── */
 const MIDNIGHT_INK = '#1A1A2E';
@@ -504,6 +505,27 @@ export default function Home() {
                             : '0 4px 16px rgba(0,0,0,0.25), 0 8px 32px rgba(0,0,0,0.15), inset 0 1px 2px rgba(255,255,255,0.20), inset 0 -1px 2px rgba(0,0,0,0.15)',
                         }}
                       >
+                        {/* Creature illustration — dimmed atmospheric texture */}
+                        {STILL_US_CREATURES[cat.id] && (
+                          <img
+                            src={STILL_US_CREATURES[cat.id].src}
+                            alt=""
+                            style={{
+                              position: 'absolute',
+                              right: '-5%',
+                              top: '50%',
+                              transform: 'translateY(-50%)',
+                              height: '120%',
+                              width: 'auto',
+                              objectFit: 'contain',
+                              objectPosition: STILL_US_CREATURES[cat.id].objectPosition,
+                              opacity: STILL_US_CREATURES[cat.id].tileOpacity,
+                              pointerEvents: 'none',
+                              filter: 'saturate(0.4)',
+                            }}
+                          />
+                        )}
+
                         {/* Saffron accent bar for recommended */}
                         {isRecommended && (
                           <div style={{

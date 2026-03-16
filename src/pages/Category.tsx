@@ -21,6 +21,7 @@ import { KIDS_PRODUCT_IDS } from '@/hooks/useKidsProductProgress';
 
 import mirrorJagIMig from '@/assets/mirror-jag-i-mig.png';
 import stillUsIllustration from '@/assets/illustration-still-us-home.png';
+import { STILL_US_CREATURES } from '@/lib/stillUsCreatures';
 
 const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
@@ -670,6 +671,27 @@ function StillUsCategoryView({
                 ].join(', '),
               }}
             >
+              {/* Creature illustration — dimmed texture */}
+              {STILL_US_CREATURES[category.id] && (
+                <img
+                  src={STILL_US_CREATURES[category.id].src}
+                  alt=""
+                  style={{
+                    position: 'absolute',
+                    right: '-3%',
+                    top: '50%',
+                    transform: 'translateY(-50%)',
+                    height: '130%',
+                    width: 'auto',
+                    objectFit: 'contain',
+                    objectPosition: STILL_US_CREATURES[category.id].objectPosition,
+                    opacity: STILL_US_CREATURES[category.id].headerOpacity,
+                    pointerEvents: 'none',
+                    filter: 'saturate(0.4)',
+                  }}
+                />
+              )}
+
               <div style={{ flex: 1, minWidth: 0 }}>
                 <span
                   style={{
