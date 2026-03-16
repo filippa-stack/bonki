@@ -600,7 +600,7 @@ export default function ProductLibrary() {
           transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
           style={{
             textAlign: 'center',
-            padding: '24px 32px 0',
+            padding: '48px 32px 0',
           }}
         >
           <motion.h1
