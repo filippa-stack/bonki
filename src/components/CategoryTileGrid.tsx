@@ -148,7 +148,7 @@ function CategoryTile({
         }}
       />
 
-      {/* Text overlay */}
+      {/* Text overlay (z-index 3) */}
       <div
         style={{
           position: 'absolute',
@@ -156,6 +156,7 @@ function CategoryTile({
           left: 0,
           right: 0,
           padding: '14px',
+          zIndex: 3,
         }}
       >
         <span
