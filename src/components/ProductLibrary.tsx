@@ -338,7 +338,7 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
             boxShadow: '0 0 6px rgba(212, 160, 58, 0.5)',
           }} />
           <span style={{
-            fontFamily: "'Lato', sans-serif",
+            fontFamily: "var(--font-body)",
             fontSize: '11px',
             fontWeight: 500,
             color: '#FDF6E3',
