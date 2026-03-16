@@ -610,13 +610,14 @@ export default function ProductLibrary() {
             style={{
               fontFamily: "var(--font-display)",
               fontVariationSettings: "'opsz' 36",
-              fontSize: '34px',
+              fontSize: '42px',
               fontWeight: 400,
               color: isDark ? 'hsla(38, 78%, 55%, 0.95)' : '#E9B44C',
-              lineHeight: 1.15,
+              lineHeight: 1.1,
               letterSpacing: '-0.03em',
-              marginBottom: '8px',
+              marginBottom: '10px',
               transition: 'color 400ms ease',
+              textShadow: `0 2px 20px hsla(230, 25%, 10%, 0.8), 0 0 40px hsla(230, 25%, 10%, 0.4)`,
             }}
           >
             Bonki
