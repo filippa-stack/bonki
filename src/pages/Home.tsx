@@ -1,7 +1,7 @@
 import { RECOMMENDED_CATEGORY_ORDER } from '@/lib/recommendedOrder';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import React, { useMemo, useState, useEffect, useRef } from 'react';
+import { useMemo, useState, useEffect } from 'react';
 import { useOptimisticCompletions } from '@/contexts/OptimisticCompletionsContext';
 import { useApp } from '@/contexts/AppContext';
 import { useAuth } from '@/contexts/AuthContext';
