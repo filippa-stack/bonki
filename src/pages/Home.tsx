@@ -376,18 +376,18 @@ export default function Home() {
                   onClick={() => navigate(`/card/${nextCard.id}`)}
                   style={{
                     width: '100%',
-                    padding: '18px 20px',
+                    padding: '22px 22px',
                     borderRadius: '22px',
                     overflow: 'hidden',
-                    background: `linear-gradient(135deg, rgba(255,255,255,0.12) 0%, transparent 50%, rgba(0,0,0,0.08) 100%), ${EMBER_MID}`,
-                    border: '1.5px solid rgba(255, 255, 255, 0.30)',
-                    borderLeft: `3px solid ${DEEP_SAFFRON}`,
+                    background: `linear-gradient(135deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.04) 40%, transparent 60%, rgba(0,0,0,0.10) 100%), ${EMBER_MID}`,
+                    border: `1.5px solid rgba(255, 255, 255, 0.35)`,
+                    borderLeft: `3.5px solid ${DEEP_SAFFRON}`,
                     cursor: 'pointer',
                     textAlign: 'left',
                     display: 'flex',
                     flexDirection: 'column',
-                    gap: '4px',
-                    boxShadow: `0 4px 16px rgba(0,0,0,0.25), 0 8px 32px rgba(0,0,0,0.15), inset 0 1px 2px rgba(255,255,255,0.20), inset 0 -1px 2px rgba(0,0,0,0.15), 0 0 24px ${DEEP_SAFFRON}18`,
+                    gap: '5px',
+                    boxShadow: `0 6px 20px rgba(0,0,0,0.30), 0 12px 40px rgba(0,0,0,0.20), inset 0 1px 3px rgba(255,255,255,0.25), inset 0 -1px 3px rgba(0,0,0,0.20), 0 0 32px ${DEEP_SAFFRON}22, 0 2px 60px ${DEEP_SAFFRON}10`,
                   }}
                 >
                   <span style={{
@@ -449,6 +449,9 @@ export default function Home() {
               )}
             </div>
 
+            {/* Breathing room between action and exploration */}
+            <div style={{ height: '16px' }} />
+
             {/* ── Accordion layers ── */}
             {LAYERS.map((layer, layerIndex) => {
               const layerCats = layer.categoryIds
@@ -489,7 +492,7 @@ export default function Home() {
                           overflow: 'hidden',
                           background: `linear-gradient(135deg, rgba(255,255,255,0.12) 0%, transparent 50%, rgba(0,0,0,0.08) 100%), ${completed ? `${bg}90` : bg}`,
                           border: isRecommended
-                            ? `1.5px solid rgba(212, 160, 58, 0.40)`
+                            ? `1.5px solid rgba(212, 160, 58, 0.50)`
                             : '1.5px solid rgba(255, 255, 255, 0.25)',
                           cursor: 'pointer',
                           textAlign: 'left',
@@ -497,7 +500,7 @@ export default function Home() {
                           alignItems: 'center',
                           gap: '14px',
                           boxShadow: isRecommended
-                            ? `0 4px 16px rgba(0,0,0,0.25), 0 8px 32px rgba(0,0,0,0.15), inset 0 1px 2px rgba(255,255,255,0.20), inset 0 -1px 2px rgba(0,0,0,0.15), 0 0 28px ${DEEP_SAFFRON}20, 0 0 0 1px ${DEEP_SAFFRON}18`
+                            ? `0 4px 16px rgba(0,0,0,0.25), 0 8px 32px rgba(0,0,0,0.15), inset 0 1px 2px rgba(255,255,255,0.20), inset 0 -1px 2px rgba(0,0,0,0.15), 0 0 36px ${DEEP_SAFFRON}30, 0 0 0 1px ${DEEP_SAFFRON}25, 0 4px 50px ${DEEP_SAFFRON}18`
                             : '0 4px 16px rgba(0,0,0,0.25), 0 8px 32px rgba(0,0,0,0.15), inset 0 1px 2px rgba(255,255,255,0.20), inset 0 -1px 2px rgba(0,0,0,0.15)',
                         }}
                       >
@@ -506,12 +509,12 @@ export default function Home() {
                           <div style={{
                             position: 'absolute',
                             left: 0,
-                            top: '20%',
-                            bottom: '20%',
-                            width: '3px',
+                            top: '15%',
+                            bottom: '15%',
+                            width: '3.5px',
                             borderRadius: '0 2px 2px 0',
                             backgroundColor: DEEP_SAFFRON,
-                            boxShadow: `0 0 12px ${DEEP_SAFFRON}60`,
+                            boxShadow: `0 0 16px ${DEEP_SAFFRON}80, 0 0 4px ${DEEP_SAFFRON}`,
                           }} />
                         )}
 
