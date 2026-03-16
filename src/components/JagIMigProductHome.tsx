@@ -82,7 +82,7 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
       </motion.div>
 
       {/* ── Content ── */}
-      <div style={{ position: 'relative', zIndex: 1, minHeight: '100vh', display: 'flex', flexDirection: 'column', paddingTop: 'clamp(44px, 14vh, 120px)', paddingRight: '5vw', paddingBottom: '80px', paddingLeft: '5vw' }}>
+      <div style={{ position: 'relative', zIndex: 1, minHeight: '100vh', display: 'flex', flexDirection: 'column', paddingTop: 'clamp(28px, 8vh, 80px)', paddingRight: '5vw', paddingBottom: '80px', paddingLeft: '5vw' }}>
         <motion.div variants={containerVariants} initial="hidden" animate="visible" style={{ textAlign: 'center', width: '100%' }}>
           <motion.div variants={titleVariants}>
             <h1 style={{
@@ -107,6 +107,7 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
             }}>
               När känslor får ord
             </p>
+            <div style={{ height: 'clamp(40px, 10vh, 80px)' }} />
             <UnifiedResumeBanner product={product} kidsProgress={progress} accentColor={ACCENT_COLOR} />
             <NextConversationCard product={product} progress={progress} />
           </motion.div>
