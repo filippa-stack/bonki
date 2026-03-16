@@ -703,7 +703,7 @@ export default function ProductLibrary() {
               fontSize: '10px',
               fontWeight: 500,
               letterSpacing: '0.06em',
-              color: 'hsla(38, 78%, 60%, 0.45)',
+              color: '#998F82',
               textAlign: 'center',
               marginBottom: '20px',
               marginTop: '-16px',
@@ -846,7 +846,7 @@ export default function ProductLibrary() {
           </div>
         </div>
 
-        {/* Dagboken — compact return-loop hook */}
+        {/* Era samtal — compact return-loop hook */}
         <motion.div
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
@@ -876,7 +876,7 @@ export default function ProductLibrary() {
               color: '#FDF6E3',
               lineHeight: 1.3,
             }}>
-              Dagboken
+              Era samtal
             </p>
             <p style={{
               fontFamily: "'Lato', sans-serif",
