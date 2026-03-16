@@ -10,6 +10,7 @@ import { useCoupleSpaceContext } from '@/contexts/CoupleSpaceContext';
 import { getProductById } from '@/data/products';
 import { KIDS_PRODUCT_IDS } from '@/hooks/useKidsProductProgress';
 import { buildDynamicSteps } from '@/components/StepProgressIndicator';
+import { useDevState } from '@/contexts/DevStateContext';
 
 const DEEP_DUSK = '#2A2D3A';
 const LANTERN_GLOW = '#FDF6E3';
