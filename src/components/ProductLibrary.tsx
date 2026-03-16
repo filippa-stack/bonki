@@ -414,6 +414,10 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
             ✦ Första kortet gratis
           </p>
         </div>
+    </motion.div>
+  );
+});
+export default function ProductLibrary() {
   const navigate = useNavigate();
   const tracked = useRef(false);
   const { purchased } = useAllProductAccess();
