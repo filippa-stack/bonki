@@ -107,6 +107,7 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
             }}>
               När känslor får ord
             </p>
+            <div style={{ height: 'clamp(40px, 10vh, 80px)' }} />
             <UnifiedResumeBanner product={product} kidsProgress={progress} accentColor={ACCENT_COLOR} />
             <NextConversationCard product={product} progress={progress} />
           </motion.div>
