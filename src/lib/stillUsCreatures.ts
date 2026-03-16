@@ -58,7 +58,7 @@ export const STILL_US_CREATURES: Record<string, StillUsCreature> = {
     tileRight: '-40%',
     tileHeight: '220%',
     tileScale: 1.1,
-    tileTop: '93%',
+    tileTop: '103%',
   },
   'communication': {            // Vardagen mellan er → Apa  (Grunden)
     src: creatureApa,
@@ -75,7 +75,7 @@ export const STILL_US_CREATURES: Record<string, StillUsCreature> = {
     objectPosition: '50% 15%',
     tileOpacity: 0.36,
     headerOpacity: 0.35,
-    tileRight: '-5%',
+    tileRight: '0%',
     tileHeight: '220%',
     tileScale: 1.1,
     tileTop: '70%',            // Panda: push down aggressively to show eyes
