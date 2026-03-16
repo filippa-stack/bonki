@@ -249,7 +249,7 @@ export default function Onboarding() {
         >
           <span
             style={{
-              fontFamily: '"DM Serif Display", var(--font-serif), serif',
+              fontFamily: 'var(--font-display)',
               fontSize: '1.05rem',
               fontWeight: 400,
               color: '#FDF6E3',
