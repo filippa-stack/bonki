@@ -120,6 +120,7 @@ export default function NextConversationCard({ product, progress }: NextConversa
         letterSpacing: '1.5px',
         position: 'relative',
         zIndex: 2,
+        textShadow: '0 1px 4px rgba(0,0,0,0.5)',
       }}>
         Nästa samtal
       </span>
@@ -133,6 +134,7 @@ export default function NextConversationCard({ product, progress }: NextConversa
         lineHeight: 1.3,
         position: 'relative',
         zIndex: 2,
+        textShadow: '0 1px 6px rgba(0,0,0,0.6)',
       }}>
         {card.title}
       </span>
@@ -141,10 +143,11 @@ export default function NextConversationCard({ product, progress }: NextConversa
         <span style={{
           fontFamily: 'var(--font-sans)',
           fontSize: '13px',
-          fontWeight: 400,
-          color: DRIFTWOOD,
+          fontWeight: 500,
+          color: '#C8BFB4',
           position: 'relative',
           zIndex: 2,
+          textShadow: '0 1px 4px rgba(0,0,0,0.5)',
         }}>
           Från {category.title}
         </span>
