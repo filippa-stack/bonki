@@ -871,7 +871,7 @@ export default function ProductLibrary() {
               className="cursor-pointer"
               style={{
                 borderRadius: '22px',
-                backgroundColor: '#473454',
+                backgroundColor: '#2E2233',
                 minHeight: '140px',
                 display: 'flex',
                 flexDirection: 'column',
