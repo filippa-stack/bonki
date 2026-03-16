@@ -1,15 +1,12 @@
 import { RECOMMENDED_CATEGORY_ORDER } from '@/lib/recommendedOrder';
-
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import React, { useMemo, useState, useEffect } from 'react';
+import React, { useMemo, useState, useEffect, useRef } from 'react';
 import { useOptimisticCompletions } from '@/contexts/OptimisticCompletionsContext';
-import { useTranslation } from 'react-i18next';
 import { useApp } from '@/contexts/AppContext';
 import { useAuth } from '@/contexts/AuthContext';
 import { useCoupleSpaceContext } from '@/contexts/CoupleSpaceContext';
-import Header from '@/components/Header';
-import { Check, ChevronRight } from 'lucide-react';
+import { ArrowLeft, Check } from 'lucide-react';
 import { useThemeVars } from '@/hooks/useThemeVars';
 import { supabase } from '@/integrations/supabase/client';
 import { useDevState } from '@/contexts/DevStateContext';
@@ -23,14 +20,44 @@ import stillUsIllustration from '@/assets/illustration-still-us-home.png';
 
 /* ── Color tokens ── */
 const MIDNIGHT_INK = '#1A1A2E';
+const EMBER_NIGHT = '#2E2233';
 const LANTERN_GLOW = '#FDF6E3';
 const DRIFTWOOD = '#6B5E52';
-const DEEP_DUSK = '#2A2D3A';
 const DEEP_SAFFRON = '#D4A03A';
 const EMBER_MID = '#473454';
 
+const EASE = [0.22, 1, 0.36, 1] as const;
+
+/* ── Layer definitions ── */
+const LAYERS = [
+  {
+    label: 'GRUNDEN',
+    categoryIds: ['emotional-intimacy', 'communication', 'category-8'],
+    tileBg: DEEP_SAFFRON,
+    tileText: MIDNIGHT_INK,
+    progressText: MIDNIGHT_INK,
+    isGold: true,
+  },
+  {
+    label: 'DET SOM FORMAR ER',
+    categoryIds: ['individual-needs', 'parenting-together', 'category-9'],
+    tileBg: EMBER_MID,
+    tileText: LANTERN_GLOW,
+    progressText: LANTERN_GLOW,
+    isGold: false,
+  },
+  {
+    label: 'DJUPET',
+    categoryIds: ['category-6', 'daily-life', 'category-10'],
+    tileBg: EMBER_NIGHT,
+    tileText: LANTERN_GLOW,
+    progressText: LANTERN_GLOW,
+    isGold: false,
+    hasBorder: true,
+  },
+] as const;
+
 export default function Home() {
-  const { t } = useTranslation();
   const navigate = useNavigate();
   useThemeVars();
   useVerdigrisTheme(true);
@@ -45,12 +72,10 @@ export default function Home() {
 
   const { optimisticCardIds } = useOptimisticCompletions();
   const [serverCompletedCardIds, setServerCompletedCardIds] = useState<string[]>([]);
-  const [lastCompletedSession, setLastCompletedSession] = useState<{ card_id: string; ended_at: string } | null>(null);
 
   useEffect(() => {
     if (!space?.id) return;
     let cancelled = false;
-    // Fetch completed
     supabase
       .from('couple_sessions')
       .select('card_id, ended_at')
@@ -61,15 +86,11 @@ export default function Home() {
       .then(({ data }) => {
         if (!cancelled && data) {
           setServerCompletedCardIds(data.map(s => s.card_id).filter(Boolean) as string[]);
-          if (data.length > 0 && data[0].card_id) {
-            setLastCompletedSession({ card_id: data[0].card_id, ended_at: data[0].ended_at ?? '' });
-          }
         }
       });
     return () => { cancelled = true; };
   }, [space?.id]);
 
-  // Merge server + optimistic completions
   const completedCardIds = useMemo(() => {
     if (devState === 'browse') return [];
     const merged = new Set(serverCompletedCardIds);
@@ -77,7 +98,6 @@ export default function Home() {
     return Array.from(merged);
   }, [serverCompletedCardIds, optimisticCardIds, devState]);
 
-  // Sorted categories by recommended order
   const sortedCategories = useMemo(() => {
     const orderMap = new Map<string, number>(RECOMMENDED_CATEGORY_ORDER.map((id, i) => [id, i]));
     return [...categories].sort((a, b) => {
@@ -87,7 +107,6 @@ export default function Home() {
     });
   }, [categories]);
 
-  // All Still Us cards in recommended order
   const orderedCards = useMemo(() => {
     const result: typeof allCards = [];
     for (const cat of sortedCategories) {
@@ -97,12 +116,12 @@ export default function Home() {
     return result;
   }, [sortedCategories]);
 
-  // Resume: delegate to UnifiedResumeBanner (reads from NormalizedSessionContext)
+  // Resume
   const hasResumeSession = devState !== 'browse' && !!normalizedSession.sessionId && !!normalizedSession.cardId;
   const resumeCard = hasResumeSession ? getCardById(normalizedSession.cardId!) : null;
   const isStillUsResume = resumeCard ? allCategories.some(c => c.id === resumeCard.categoryId) : false;
 
-  // Next conversation: first uncompleted card in sequence
+  // Next conversation
   const nextCard = useMemo(() => {
     return orderedCards.find(c => !completedCardIds.includes(c.id)) ?? null;
   }, [orderedCards, completedCardIds]);
@@ -112,160 +131,190 @@ export default function Home() {
     return allCategories.find(c => c.id === nextCard.categoryId) ?? null;
   }, [nextCard]);
 
-  const allCompleted = orderedCards.length > 0 && !nextCard;
+  // Per-category progress
+  const categoryProgress = useMemo(() => {
+    const map: Record<string, { completed: number; total: number }> = {};
+    for (const cat of allCategories) {
+      const catCards = allCards.filter(c => c.categoryId === cat.id);
+      const completed = catCards.filter(c => completedCardIds.includes(c.id)).length;
+      map[cat.id] = { completed, total: catCards.length };
+    }
+    return map;
+  }, [completedCardIds]);
 
-  // Last completed card info
-  const lastCompletedCard = lastCompletedSession ? getCardById(lastCompletedSession.card_id) : null;
-  const lastCompletedRelativeDate = useMemo(() => {
-    if (!lastCompletedSession?.ended_at) return '';
-    const diff = Date.now() - new Date(lastCompletedSession.ended_at).getTime();
-    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-    if (days === 0) return 'idag';
-    if (days === 1) return 'igår';
-    if (days < 7) return `${days} dagar sedan`;
-    if (days < 30) return `${Math.floor(days / 7)} veckor sedan`;
-    return `${Math.floor(days / 30)} månader sedan`;
-  }, [lastCompletedSession]);
+  // Recommended next category
+  const nextCategoryId = nextCard ? nextCard.categoryId : null;
+
+  // Is category fully completed?
+  const isCategoryCompleted = (catId: string) => {
+    const p = categoryProgress[catId];
+    return p && p.total > 0 && p.completed >= p.total;
+  };
 
   return (
     <div className="min-h-screen flex flex-col relative" style={{ backgroundColor: MIDNIGHT_INK }}>
-      {/* Background illustration — max 20vh */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.4 }}
-        style={{
-          position: 'absolute',
-          top: 0,
-          left: '-10%',
-          width: '120%',
-          height: '20vh',
-          zIndex: 0,
-          pointerEvents: 'none',
-          overflow: 'hidden',
-        }}
-      >
-        <img
-          src={stillUsIllustration}
-          alt=""
+
+      {/* ── 1. ILLUSTRATION ZONE ── */}
+      <div style={{ position: 'relative', minHeight: '30vh', overflow: 'hidden' }}>
+        {/* Illustration */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.8 }}
           style={{
-            width: '100%',
-            height: '100%',
-            objectFit: 'cover',
-            objectPosition: 'center top',
-            opacity: 0.18,
-            maskImage: 'linear-gradient(to bottom, rgba(0,0,0,0.6) 0%, rgba(0,0,0,1) 40%, rgba(0,0,0,0) 100%)',
-            WebkitMaskImage: 'linear-gradient(to bottom, rgba(0,0,0,0.6) 0%, rgba(0,0,0,1) 40%, rgba(0,0,0,0) 100%)',
+            position: 'absolute',
+            inset: 0,
+            zIndex: 0,
+            pointerEvents: 'none',
+          }}
+        >
+          <img
+            src={stillUsIllustration}
+            alt=""
+            style={{
+              width: '100%',
+              height: '100%',
+              objectFit: 'cover',
+              objectPosition: 'center 30%',
+              opacity: 0.35,
+            }}
+          />
+          {/* Bottom fade into Ember Night */}
+          <div style={{
+            position: 'absolute',
+            bottom: 0,
+            left: 0,
+            right: 0,
+            height: '70%',
+            background: `linear-gradient(to top, ${EMBER_NIGHT} 0%, ${EMBER_NIGHT}E6 25%, ${EMBER_NIGHT}80 50%, transparent 100%)`,
+            pointerEvents: 'none',
+          }} />
+        </motion.div>
+
+        {/* Warm glow */}
+        <div
+          aria-hidden="true"
+          style={{
+            position: 'absolute',
+            top: '20%',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            width: '80vw',
+            height: '60%',
+            background: `radial-gradient(ellipse 50% 50% at 50% 50%, ${DEEP_SAFFRON}14 0%, transparent 100%)`,
+            pointerEvents: 'none',
+            zIndex: 0,
           }}
         />
-      </motion.div>
 
-      <div className="flex-1 relative" style={{ zIndex: 1 }}>
-        <Header showSharedLink showSettings minimal />
+        {/* Back arrow */}
+        <motion.button
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.2, duration: 0.4 }}
+          onClick={() => navigate('/')}
+          style={{
+            position: 'absolute',
+            top: '16px',
+            left: '16px',
+            zIndex: 10,
+            background: 'none',
+            border: 'none',
+            cursor: 'pointer',
+            padding: '8px',
+            WebkitTapHighlightColor: 'transparent',
+          }}
+        >
+          <ArrowLeft size={22} color={LANTERN_GLOW} strokeWidth={1.5} />
+        </motion.button>
+
+        {/* Title & subtitle — inside the illustration zone */}
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.15, duration: 0.7, ease: EASE }}
+          style={{
+            position: 'relative',
+            zIndex: 2,
+            textAlign: 'center',
+            paddingTop: 'clamp(60px, 15vh, 120px)',
+            paddingBottom: '24px',
+          }}
+        >
+          <h1
+            style={{
+              fontFamily: "var(--font-display)",
+              fontVariationSettings: "'opsz' 28",
+              fontSize: '28px',
+              fontWeight: 600,
+              color: LANTERN_GLOW,
+              lineHeight: 1.2,
+              textShadow: `0 2px 20px ${EMBER_NIGHT}, 0 0 40px ${EMBER_NIGHT}`,
+            }}
+          >
+            Ert utrymme
+          </h1>
+          <p style={{
+            fontFamily: 'var(--font-body)',
+            fontSize: '14px',
+            color: DRIFTWOOD,
+            lineHeight: 1.5,
+            marginTop: '6px',
+            textShadow: `0 1px 12px ${EMBER_NIGHT}`,
+          }}>
+            Följ ordningen — eller börja där det känns rätt.
+          </p>
+        </motion.div>
+      </div>
+
+      {/* ── 3. BACKGROUND TRANSITION — Midnight Ink → Ember Night ── */}
+      {/* The illustration zone already fades into Ember Night at the bottom */}
+
+      {/* ── Content area — Ember Night territory ── */}
+      <div style={{ position: 'relative', zIndex: 1, backgroundColor: EMBER_NIGHT, flex: 1 }}>
 
         {mode === 'loading' && (
-          <div className="px-6 pt-8 pb-16">
-            <div className="h-14 rounded-2xl bg-white/5 animate-pulse" />
+          <div className="px-4 pt-4">
+            <div style={{ height: '80px', borderRadius: '16px', background: 'rgba(255,255,255,0.05)' }} className="animate-pulse" />
           </div>
         )}
 
         {mode !== 'loading' && (
-          <div className="px-4 pb-32">
-            {/* ── Zone A: Identity ── */}
-            <motion.div
-              className="pt-8 text-center"
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-            >
-              <h1
-                style={{
-                  fontFamily: "var(--font-display)",
-                  fontVariationSettings: "'opsz' 28",
-                  fontSize: '28px',
-                  fontWeight: 600,
-                  color: LANTERN_GLOW,
-                  marginBottom: '6px',
-                  lineHeight: 1.2,
-                }}
-              >
-                Ert utrymme
-              </h1>
-              <p style={{
-                fontFamily: 'var(--font-sans)',
-                fontSize: '14px',
-                color: DRIFTWOOD,
-                lineHeight: 1.5,
-              }}>
-                Följ ordningen — eller börja där det känns rätt.
-              </p>
-            </motion.div>
+          <div style={{ paddingBottom: '120px' }}>
 
-            {/* ── 1. Resume Card (conditional) ── */}
-            {isStillUsResume && (
-              <UnifiedResumeBanner
-                accentColor={DEEP_SAFFRON}
-                isStillUs
-                getCardById={getCardById}
-              />
-            )}
-
-            {/* ── 2. Next Conversation Card ── */}
-            <motion.div
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: isStillUsResume ? 0.35 : 0.25, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-              style={{ marginTop: '24px' }}
-            >
-              {allCompleted ? (
-                <div style={{
-                  padding: '24px 20px',
-                  background: EMBER_MID,
-                  borderRadius: '16px',
-                  textAlign: 'center',
-                }}>
-                  <p style={{
-                    fontFamily: "var(--font-display)",
-                    fontSize: '18px',
-                    color: LANTERN_GLOW,
-                    marginBottom: '6px',
-                  }}>
-                    Ni har utforskat alla samtal
-                  </p>
-                  <p style={{
-                    fontFamily: 'var(--font-sans)',
-                    fontSize: '13px',
-                    color: DRIFTWOOD,
-                  }}>
-                    Fortsätt prata — eller börja om.
-                  </p>
-                </div>
+            {/* ── 2. RESUME / NEXT CARD ── */}
+            <div className="px-4" style={{ marginTop: '-8px' }}>
+              {isStillUsResume ? (
+                <UnifiedResumeBanner
+                  accentColor={DEEP_SAFFRON}
+                  isStillUs
+                  getCardById={getCardById}
+                />
               ) : nextCard ? (
                 <motion.button
-                  whileTap={{ scale: 0.94, y: 3 }}
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.25, duration: 0.6, ease: EASE }}
+                  whileTap={{ scale: 0.96, y: 2 }}
                   onClick={() => navigate(`/card/${nextCard.id}`)}
                   style={{
                     width: '100%',
-                    padding: '20px',
-                    backgroundImage: `linear-gradient(160deg, ${EMBER_MID} 0%, ${EMBER_MID} 100%)`,
-                    borderRadius: '22px',
-                    border: `1.5px solid rgba(255, 255, 255, 0.30)`,
+                    padding: '16px 18px',
+                    background: `linear-gradient(135deg, rgba(255,255,255,0.08) 0%, transparent 50%, rgba(0,0,0,0.06) 100%), ${EMBER_MID}`,
+                    borderRadius: '16px',
+                    border: '1.5px solid rgba(255, 255, 255, 0.15)',
                     borderLeft: `3px solid ${DEEP_SAFFRON}`,
                     cursor: 'pointer',
                     textAlign: 'left',
                     display: 'flex',
                     flexDirection: 'column',
-                    gap: '6px',
-                    boxShadow: `
-                      0 12px 32px rgba(0, 0, 0, 0.30),
-                      inset 0 3px 6px rgba(255, 255, 255, 0.45),
-                      inset 0 -4px 10px rgba(0, 0, 0, 0.14)
-                    `,
+                    gap: '4px',
+                    boxShadow: '0 8px 24px rgba(0,0,0,0.25), inset 0 1px 3px rgba(255,255,255,0.15)',
                   }}
                 >
                   <span style={{
-                    fontFamily: 'var(--font-sans)',
-                    fontSize: '12px',
+                    fontFamily: 'var(--font-body)',
+                    fontSize: '11px',
                     fontWeight: 600,
                     letterSpacing: '1.5px',
                     textTransform: 'uppercase',
@@ -275,6 +324,7 @@ export default function Home() {
                   </span>
                   <span style={{
                     fontFamily: "var(--font-display)",
+                    fontVariationSettings: "'opsz' 20",
                     fontSize: '20px',
                     fontWeight: 500,
                     color: LANTERN_GLOW,
@@ -282,107 +332,172 @@ export default function Home() {
                   }}>
                     {nextCard.title}
                   </span>
-                  {nextCard.subtitle && (
-                    <span style={{
-                      fontFamily: 'var(--font-sans)',
-                      fontSize: '14px',
-                      color: LANTERN_GLOW,
-                      opacity: 0.8,
-                      lineHeight: 1.4,
-                      display: '-webkit-box',
-                      WebkitLineClamp: 2,
-                      WebkitBoxOrient: 'vertical',
-                      overflow: 'hidden',
-                    }}>
-                      {nextCard.subtitle}
-                    </span>
-                  )}
                   {nextCardCategory && (
                     <span style={{
-                      fontFamily: 'var(--font-sans)',
-                      fontSize: '12px',
+                      fontFamily: 'var(--font-body)',
+                      fontSize: '13px',
                       color: DRIFTWOOD,
                       marginTop: '2px',
                     }}>
-                      Från {nextCardCategory.title}
+                      {nextCardCategory.title}
                     </span>
                   )}
                 </motion.button>
-              ) : null}
-            </motion.div>
-
-            {/* ── 3. Last Completed ── */}
-            {lastCompletedCard && (
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.5, duration: 0.5 }}
-                style={{
-                  marginTop: '16px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '10px',
-                  paddingLeft: '4px',
-                }}
-              >
-                <div style={{
-                  width: '20px',
-                  height: '20px',
-                  borderRadius: '50%',
-                  backgroundColor: DEEP_SAFFRON,
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  flexShrink: 0,
-                }}>
-                  <Check size={12} color={MIDNIGHT_INK} strokeWidth={3} />
-                </div>
-                <span style={{
-                  fontFamily: 'var(--font-sans)',
-                  fontSize: '14px',
-                  color: DRIFTWOOD,
-                }}>
-                  {lastCompletedCard.title}
-                </span>
-                {lastCompletedRelativeDate && (
-                  <span style={{
-                    fontFamily: 'var(--font-sans)',
-                    fontSize: '12px',
-                    color: DRIFTWOOD,
-                    opacity: 0.6,
-                    marginLeft: 'auto',
+              ) : (
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.25, duration: 0.5 }}
+                  style={{
+                    padding: '20px',
+                    background: EMBER_MID,
+                    borderRadius: '16px',
+                    textAlign: 'center',
+                  }}
+                >
+                  <p style={{
+                    fontFamily: "var(--font-display)",
+                    fontSize: '18px',
+                    color: LANTERN_GLOW,
+                    marginBottom: '4px',
                   }}>
-                    {lastCompletedRelativeDate}
-                  </span>
-                )}
-              </motion.div>
-            )}
+                    Ni har utforskat alla samtal
+                  </p>
+                  <p style={{ fontFamily: 'var(--font-body)', fontSize: '13px', color: DRIFTWOOD }}>
+                    Fortsätt prata — eller börja om.
+                  </p>
+                </motion.div>
+              )}
+            </div>
 
-            {/* ── 4. Explore Link ── */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.6, duration: 0.5 }}
-              style={{ marginTop: '32px', textAlign: 'center' }}
-            >
-              <button
-                onClick={() => navigate('/still-us/explore')}
-                style={{
-                  background: 'none',
-                  border: 'none',
-                  cursor: 'pointer',
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '4px',
-                  fontFamily: 'var(--font-sans)',
-                  fontSize: '14px',
-                  color: DRIFTWOOD,
-                }}
-              >
-                Utforska alla ämnen
-                <ChevronRight size={16} color={DRIFTWOOD} />
-              </button>
-            </motion.div>
+            {/* ── 4. CATEGORY TILE GRID — 3 layers ── */}
+            {LAYERS.map((layer, layerIndex) => {
+              const layerCats = layer.categoryIds
+                .map(id => allCategories.find(c => c.id === id))
+                .filter(Boolean) as typeof allCategories;
+
+              return (
+                <motion.div
+                  key={layer.label}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.3 + layerIndex * 0.12, duration: 0.6, ease: EASE }}
+                >
+                  {/* Section header */}
+                  <p style={{
+                    fontFamily: 'var(--font-body)',
+                    fontSize: '12px',
+                    fontWeight: 600,
+                    letterSpacing: '2px',
+                    textTransform: 'uppercase',
+                    color: DRIFTWOOD,
+                    paddingLeft: '20px',
+                    marginTop: '32px',
+                    marginBottom: '12px',
+                  }}>
+                    {layer.label}
+                  </p>
+
+                  {/* Horizontal scroll row */}
+                  <div
+                    style={{
+                      display: 'flex',
+                      gap: '10px',
+                      overflowX: 'auto',
+                      paddingLeft: '16px',
+                      paddingRight: '16px',
+                      paddingBottom: '4px',
+                      scrollbarWidth: 'none',
+                      WebkitOverflowScrolling: 'touch',
+                    }}
+                    className="hide-scrollbar"
+                  >
+                    {layerCats.map((cat) => {
+                      const progress = categoryProgress[cat.id];
+                      const isRecommended = cat.id === nextCategoryId;
+                      const isCompleted = isCategoryCompleted(cat.id);
+
+                      return (
+                        <motion.button
+                          key={cat.id}
+                          whileTap={{ scale: 0.95 }}
+                          onClick={() => navigate(`/category/${cat.id}`)}
+                          style={{
+                            flex: '0 0 calc(33vw - 12px)',
+                            minWidth: '110px',
+                            height: '110px',
+                            borderRadius: '12px',
+                            backgroundColor: layer.tileBg,
+                            border: layer.hasBorder
+                              ? `1px solid ${DRIFTWOOD}40`
+                              : isRecommended && !layer.isGold
+                                ? `1px solid rgba(255,255,255,0.15)`
+                                : '1px solid rgba(255,255,255,0.08)',
+                            borderLeft: isRecommended && !layer.isGold
+                              ? `2px solid ${DEEP_SAFFRON}`
+                              : undefined,
+                            cursor: 'pointer',
+                            textAlign: 'left',
+                            padding: '12px',
+                            display: 'flex',
+                            flexDirection: 'column',
+                            justifyContent: 'flex-end',
+                            position: 'relative',
+                            overflow: 'hidden',
+                            boxShadow: layer.isGold
+                              ? `0 4px 16px rgba(212, 160, 58, 0.2), 0 1px 4px rgba(0,0,0,0.1)`
+                              : '0 4px 12px rgba(0,0,0,0.15)',
+                          }}
+                        >
+                          {/* Completed badge */}
+                          {isCompleted && (
+                            <div style={{
+                              position: 'absolute',
+                              top: '8px',
+                              right: '8px',
+                              width: '20px',
+                              height: '20px',
+                              borderRadius: '50%',
+                              backgroundColor: DEEP_SAFFRON,
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                            }}>
+                              <Check size={12} color={MIDNIGHT_INK} strokeWidth={3} />
+                            </div>
+                          )}
+
+                          <span style={{
+                            fontFamily: "var(--font-display)",
+                            fontVariationSettings: "'opsz' 15",
+                            fontSize: '15px',
+                            fontWeight: 600,
+                            color: layer.tileText,
+                            lineHeight: 1.2,
+                            display: 'block',
+                          }}>
+                            {cat.title}
+                          </span>
+
+                          {progress && progress.total > 0 && (
+                            <span style={{
+                              fontFamily: 'var(--font-body)',
+                              fontSize: '12px',
+                              color: layer.progressText,
+                              opacity: 0.7,
+                              marginTop: '4px',
+                              display: 'block',
+                            }}>
+                              {progress.completed} av {progress.total}
+                            </span>
+                          )}
+                        </motion.button>
+                      );
+                    })}
+                  </div>
+                </motion.div>
+              );
+            })}
           </div>
         )}
       </div>
