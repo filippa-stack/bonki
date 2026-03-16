@@ -34,8 +34,17 @@ export default function LibraryResumeCard({ activeTab }: LibraryResumeCardProps)
   const navigate = useNavigate();
   const { space } = useCoupleSpaceContext();
   const [resume, setResume] = useState<ResumeData | null>(null);
+  const devState = useDevState();
+
+  // Dev mock: show a fake resume card when devState is active
+  const devMock: ResumeData | null = devState === 'library' || devState === 'pairedActive'
+    ? activeTab === 'barn'
+      ? { productName: 'Jag med Andra', cardTitle: 'Att vara duktig', cardId: 'jma-duktig', stepLabel: 'Pausad vid FRÅGA 2 AV 5', accentColor: SAFFRON_FLAME }
+      : { productName: 'Still Us', cardTitle: 'Att lyssna på riktigt', cardId: 'su-kommunikation-1', stepLabel: 'Pausad vid VÄND · Fråga 1 av 3', accentColor: DEEP_SAFFRON }
+    : null;
 
   useEffect(() => {
+    if (devMock) return; // skip fetch when dev mock active
     if (!space?.id) {
       setResume(null);
       return;
