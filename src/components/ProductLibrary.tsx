@@ -527,51 +527,65 @@ export default function ProductLibrary() {
 
       {/* ── Bold creature illustrations — hero-level, full color ── */}
       <div aria-hidden="true" style={{ position: 'absolute', inset: 0, overflow: 'hidden', pointerEvents: 'none', zIndex: 0 }}>
-        {/* Girl — top left */}
+        {/* Girl — top left, sitting on the edge */}
         <motion.img
           src={creatureGirl}
           alt=""
           draggable={false}
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 0.30, x: 0 }}
-          transition={{ delay: 0.3, duration: 1.4, ease: [0.22, 1, 0.36, 1] }}
+          initial={{ opacity: 0, y: 15 }}
+          animate={{ opacity: 0.40, y: 0 }}
+          transition={{ delay: 0.4, duration: 1.6, ease: [0.22, 1, 0.36, 1] }}
           style={{
             position: 'absolute',
-            top: '-10px',
-            left: '10px',
-            width: '140px',
+            top: '8px',
+            left: '-8px',
+            width: '160px',
             height: 'auto',
           }}
         />
-        {/* Lion — top right, next to girl */}
+        {/* Lion — top right, bold and forward-facing */}
         <motion.img
           src={creatureLionSolo}
           alt=""
           draggable={false}
-          initial={{ opacity: 0, x: 20 }}
-          animate={{ opacity: 0.30, x: 0 }}
-          transition={{ delay: 0.5, duration: 1.4, ease: [0.22, 1, 0.36, 1] }}
+          initial={{ opacity: 0, y: 15 }}
+          animate={{ opacity: 0.38, y: 0 }}
+          transition={{ delay: 0.6, duration: 1.6, ease: [0.22, 1, 0.36, 1] }}
           style={{
             position: 'absolute',
-            top: '20px',
-            left: '130px',
-            width: '220px',
+            top: '15px',
+            right: '-30px',
+            width: '260px',
             height: 'auto',
           }}
         />
-        {/* Trio — bottom zone */}
+        {/* Hero gradient scrim — ensures title legibility over creatures */}
+        <div style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          height: '320px',
+          background: `linear-gradient(180deg, 
+            hsla(230, 25%, 10%, 0.0) 0%, 
+            hsla(230, 25%, 10%, 0.5) 35%,
+            hsla(230, 25%, 10%, 0.85) 60%,
+            ${libraryBg} 100%)`,
+          zIndex: 1,
+        }} />
+        {/* Trio — bottom zone, watching from below */}
         <motion.img
           src={creaturesTrio}
           alt=""
           draggable={false}
           initial={{ opacity: 0 }}
-          animate={{ opacity: 0.25 }}
-          transition={{ delay: 0.7, duration: 1.4, ease: [0.22, 1, 0.36, 1] }}
+          animate={{ opacity: 0.18 }}
+          transition={{ delay: 1.0, duration: 1.8, ease: [0.22, 1, 0.36, 1] }}
           style={{
             position: 'absolute',
-            bottom: '-40px',
-            left: '-70px',
-            width: '420px',
+            bottom: '-60px',
+            left: '-80px',
+            width: '460px',
             height: 'auto',
           }}
         />
