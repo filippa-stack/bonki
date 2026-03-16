@@ -16,21 +16,23 @@ import creatureGirl from '@/assets/creature-girl.png';
 import creatureLionSolo from '@/assets/creature-lion-solo.png';
 
 import illustrationStillUs from '@/assets/illustration-still-us-tile.png';
-import illustrationJagIMig from '@/assets/illustration-jag-i-mig.png';
-import illustrationJagMedAndra from '@/assets/illustration-jag-med-andra.png';
-import illustrationJagIVarlden from '@/assets/illustration-jag-i-varlden.png';
-import illustrationSexualitet from '@/assets/illustration-sexualitet.png';
-import illustrationSyskon from '@/assets/illustration-syskon.png';
-import illustrationVardag from '@/assets/illustration-vardag.png';
 import illustrationStillFair from '@/assets/illustration-still-fair.png';
 
-const ILLUSTRATIONS: Record<string, string> = {
-  jag_i_mig: illustrationJagIMig,
-  jag_med_andra: illustrationJagMedAndra,
-  jag_i_varlden: illustrationJagIVarlden,
-  sexualitetskort: illustrationSexualitet,
-  syskonkort: illustrationSyskon,
-  vardagskort: illustrationVardag,
+// Creature illustrations per product (atmospheric right-side)
+import creatureLejon from '@/assets/creature-lejon.png';
+import creatureUggla from '@/assets/creature-uggla.png';
+import creatureOrn from '@/assets/creature-orn.png';
+import creatureTurtle from '@/assets/creature-turtle.png';
+import creatureSal from '@/assets/creature-sal.png';
+import creatureRadjur from '@/assets/creature-radjur.png';
+
+const CREATURE_ILLUSTRATIONS: Record<string, string> = {
+  jag_i_mig: creatureLejon,
+  jag_med_andra: creatureUggla,
+  jag_i_varlden: creatureOrn,
+  vardagskort: creatureTurtle,
+  syskonkort: creatureSal,
+  sexualitetskort: creatureRadjur,
 };
 
 const TAGLINES: Record<string, string> = {
@@ -60,34 +62,14 @@ function hexToRgba(hex: string, alpha: number): string {
   return `rgba(${r}, ${g}, ${b}, ${alpha})`;
 }
 
-/** Per-product illustration scale — oversized for dramatic portal feel */
-const ILLUSTRATION_SCALE: Record<string, { width: string; height: string }> = {
-  jag_i_mig: { width: '95%', height: '200%' },
-  jag_med_andra: { width: '95%', height: '195%' },
-  jag_i_varlden: { width: '95%', height: '195%' },
-  sexualitetskort: { width: '92%', height: '190%' },
-  vardagskort: { width: '92%', height: '190%' },
-  syskonkort: { width: '92%', height: '188%' },
-};
-
-/** Per-product vertical offset — characters burst out of tile boundaries */
-const ILLUSTRATION_OFFSET: Record<string, { top: string; right: string; bottom: string }> = {
-  jag_i_mig: { top: '-40%', right: '-15%', bottom: '-35%' },
-  jag_med_andra: { top: '-38%', right: '-12%', bottom: '-32%' },
-  jag_i_varlden: { top: '-35%', right: '-12%', bottom: '-32%' },
-  sexualitetskort: { top: '-38%', right: '-15%', bottom: '-30%' },
-  vardagskort: { top: '-38%', right: '-12%', bottom: '-32%' },
-  syskonkort: { top: '-38%', right: '-12%', bottom: '-30%' },
-};
-
-/** Hero-level illustration opacities — near full for maximum impact */
-const ILLUSTRATION_OPACITY: Record<string, number> = {
-  jag_i_mig: 0.97,
-  jag_med_andra: 0.95,
-  jag_i_varlden: 0.95,
-  sexualitetskort: 0.95,
-  vardagskort: 0.93,
-  syskonkort: 0.95,
+/** Per-creature object-position for optical balance */
+const CREATURE_POSITION: Record<string, string> = {
+  jag_i_mig: '60% 35%',        // Lejon — wide, show face
+  jag_med_andra: '65% 45%',    // Uggla — default, centered
+  jag_i_varlden: '75% 50%',    // Örn — tall narrow bird, more horizontal area
+  vardagskort: '60% 40%',      // Sköldpadda — compact, show more
+  syskonkort: '65% 30%',       // Säl — wide, crop from right
+  sexualitetskort: '70% 45%',  // Rådjur — tall, gentle shift right
 };
 
 /** Light title colors for dark creature-color tiles — Lantern Glow variants */
@@ -188,135 +170,106 @@ function AudienceLabel({ label, subtitle, delay = 0 }: { label: string; subtitle
   );
 }
 
-/** Portal tile — illustration bleeds right, text anchored left */
+/** Atmospheric tile — creature emerges from right shadow, text anchored left */
 const PastelTile = React.forwardRef<HTMLDivElement, {
   name: string; bg: string; ageLabel?: string; tagline?: string;
-  onClick?: () => void; illustration?: string; productId?: string;
-  accentColor?: string; taglineColor?: string; illustrationOpacity?: number;
-  illustrationSize?: string; illustrationPosition?: string; wide?: boolean;
-  showFreeBadge?: boolean; badgeText?: string; ageCount?: number;
+  onClick?: () => void; productId?: string;
+  accentColor?: string; taglineColor?: string; wide?: boolean;
+  showFreeBadge?: boolean; badgeText?: string;
   hasActiveSession?: boolean;
 }>(function PastelTile({
-  name, bg, ageLabel, tagline, onClick, illustration, productId, accentColor, taglineColor,
-  illustrationOpacity = 0.90, wide = false,
+  name, bg, ageLabel, tagline, onClick, productId, accentColor, taglineColor,
+  wide = false,
   hasActiveSession = false,
 }) {
-  const toShadowColor = (hex: string, alpha: number) => {
-    const r = parseInt(hex.slice(1, 3), 16);
-    const g = parseInt(hex.slice(3, 5), 16);
-    const b = parseInt(hex.slice(5, 7), 16);
-    return `rgba(${Math.round(r * 0.5)}, ${Math.round(g * 0.5)}, ${Math.round(b * 0.5)}, ${alpha})`;
-  };
-
   const bgR = parseInt(bg.slice(1, 3), 16);
   const bgG = parseInt(bg.slice(3, 5), 16);
   const bgB = parseInt(bg.slice(5, 7), 16);
   const bgRgba = (a: number) => `rgba(${bgR}, ${bgG}, ${bgB}, ${a})`;
 
-  const scale = productId ? ILLUSTRATION_SCALE[productId] : undefined;
-  const offset = productId ? ILLUSTRATION_OFFSET[productId] : undefined;
-  const opacity = productId ? ILLUSTRATION_OPACITY[productId] ?? illustrationOpacity : illustrationOpacity;
+  const creature = productId ? CREATURE_ILLUSTRATIONS[productId] : undefined;
+  const creaturePos = productId ? CREATURE_POSITION[productId] ?? '65% 45%' : '65% 45%';
 
   return (
     <motion.div
       variants={tileVariants}
-      whileHover={{ scale: 1.025, y: -3 }}
-      whileTap={{ scale: 0.94, y: 3 }}
+      whileHover={{ scale: 1.02, y: -2 }}
+      whileTap={{ scale: 0.96, y: 2 }}
       onClick={onClick}
       className="cursor-pointer"
       style={{
-        borderRadius: '22px',
+        borderRadius: '16px',
         backgroundColor: bg,
-        height: '240px',
+        height: '140px',
         display: 'flex',
         position: 'relative',
         overflow: 'hidden',
-        backgroundImage: 'linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0) 50%, rgba(0,0,0,0.08) 100%)',
-        border: '1.5px solid rgba(255, 255, 255, 0.30)',
+        border: '1.5px solid rgba(255, 255, 255, 0.18)',
         boxShadow: [
-          `0 16px 40px ${toShadowColor(bg, 0.4)}`,
-          `0 6px 16px ${toShadowColor(bg, 0.25)}`,
-          '0 1px 3px rgba(0, 0, 0, 0.10)',
-          `0 0 72px ${toShadowColor(bg, 0.18)}`,
-          'inset 0 3px 6px rgba(255, 255, 255, 0.45)',
-          `inset 0 -4px 10px ${toShadowColor(bg, 0.14)}`,
+          `0 8px 24px ${bgRgba(0.35)}`,
+          `0 2px 8px rgba(0, 0, 0, 0.12)`,
+          `inset 0 1px 3px rgba(255, 255, 255, 0.20)`,
         ].join(', '),
       }}
     >
-      {/* Inner warmth glow — JIV only */}
-      {productId === 'jag_i_varlden' && (
-        <div
-          aria-hidden="true"
-          style={{
-            position: 'absolute',
-            inset: 0,
-            zIndex: 0,
-            pointerEvents: 'none',
-            background: 'radial-gradient(ellipse 70% 80% at 60% 50%, rgba(58, 133, 72, 0.35) 0%, transparent 70%)',
-          }}
-        />
-      )}
-      {/* Illustration — right-aligned, bleeds off edge dramatically */}
-      {illustration && (
+      {/* Creature illustration — right 40%, atmospheric */}
+      {creature && (
         <div
           style={{
             position: 'absolute',
-            top: offset?.top ?? '-15%',
-            right: offset?.right ?? '-12%',
-            bottom: offset?.bottom ?? '-10%',
-            width: scale?.width ?? '70%',
+            top: 0, right: 0, bottom: 0,
+            width: '40%',
             pointerEvents: 'none',
             zIndex: 0,
+            overflow: 'hidden',
           }}
         >
           <img
-            src={illustration}
+            src={creature}
             alt=""
             draggable={false}
             style={{
               width: '100%',
               height: '100%',
-              objectFit: 'contain',
-              objectPosition: 'right bottom',
-              opacity,
+              objectFit: 'cover',
+              objectPosition: creaturePos,
+              opacity: 0.5,
+            }}
+          />
+          {/* Gradient fade — creature emerges from shadow */}
+          <div
+            aria-hidden="true"
+            style={{
+              position: 'absolute',
+              top: 0, left: 0, bottom: 0,
+              width: '100%',
+              background: `linear-gradient(to right, ${bgRgba(1)} 0%, transparent 100%)`,
+              pointerEvents: 'none',
             }}
           />
         </div>
       )}
 
-      {/* Horizontal gradient scrim — text anchor left */}
-      <div
-        aria-hidden="true"
-        style={{
-          position: 'absolute',
-          top: 0, left: 0, bottom: 0,
-          width: '55%',
-          zIndex: 1,
-          pointerEvents: 'none',
-          background: `linear-gradient(to right, ${bgRgba(1)} 0%, ${bgRgba(0.9)} 30%, ${bgRgba(0.4)} 65%, transparent 100%)`,
-        }}
-      />
-
-      {/* Age badge — Parchment circle, top-right */}
+      {/* Age badge — top-right */}
       {ageLabel && (
         <span
           style={{
             position: 'absolute',
-            top: '12px',
-            right: '12px',
-            width: '32px',
-            height: '32px',
+            top: '10px',
+            right: '10px',
+            width: '30px',
+            height: '30px',
             borderRadius: '50%',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             fontFamily: "var(--font-body)",
-            fontSize: '12px',
+            fontSize: '11px',
             fontWeight: 600,
             color: '#2C2420',
             background: '#F5EDD2',
             zIndex: 3,
-            boxShadow: '0 2px 8px rgba(0,0,0,0.12)',
+            boxShadow: '0 2px 6px rgba(0,0,0,0.15)',
           }}
         >
           {ageLabel}
@@ -328,25 +281,25 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
         <div
           style={{
             position: 'absolute',
-            top: ageLabel ? '50px' : '12px',
-            right: '14px',
+            top: ageLabel ? '46px' : '10px',
+            right: '12px',
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-            gap: '3px',
+            gap: '2px',
             zIndex: 4,
           }}
         >
           <div style={{
-            width: '8px',
-            height: '8px',
+            width: '7px',
+            height: '7px',
             borderRadius: '50%',
             backgroundColor: '#D4A03A',
             boxShadow: '0 0 6px rgba(212, 160, 58, 0.5)',
           }} />
           <span style={{
             fontFamily: "var(--font-body)",
-            fontSize: '11px',
+            fontSize: '10px',
             fontWeight: 500,
             color: '#FDF6E3',
             opacity: 0.7,
@@ -356,28 +309,26 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
         </div>
       )}
 
-      {/* Text — left-aligned, lower-third emphasis */}
+      {/* Text — left 60%, vertically centered */}
       <div style={{
-        position: 'absolute',
-        left: 0, bottom: 0, top: 0,
-        width: '55%',
+        position: 'relative',
+        width: '60%',
         zIndex: 2,
         display: 'flex',
         flexDirection: 'column',
-        justifyContent: 'flex-end',
-        padding: '20px',
-        paddingBottom: '24px',
+        justifyContent: 'center',
+        padding: '16px 0 16px 20px',
       }}>
         <h3
           style={{
             fontFamily: "var(--font-display)",
-            fontVariationSettings: "'opsz' 24",
-            fontSize: '28px',
+            fontVariationSettings: "'opsz' 22",
+            fontSize: '22px',
             fontWeight: 600,
             lineHeight: 1.15,
             color: accentColor || '#FDF6E3',
             letterSpacing: '-0.01em',
-            textShadow: `0 1px 6px ${bgRgba(0.8)}, 0 0 16px ${bgRgba(0.6)}`,
+            textShadow: `0 1px 4px ${bgRgba(0.5)}`,
           }}
         >
           {name}
@@ -386,13 +337,12 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
           <p
             style={{
               fontFamily: "var(--font-body)",
-              fontSize: '14px',
-              fontWeight: 400,
-              color: taglineColor || '#FDF6E3',
-              opacity: 0.8,
+              fontSize: '13px',
+              fontWeight: 500,
+              color: '#C8BFB4',
               marginTop: '4px',
               lineHeight: 1.4,
-              textShadow: `0 0 10px ${bgRgba(0.8)}`,
+              textShadow: `0 1px 4px ${bgRgba(0.5)}`,
             }}
           >
             {tagline}
@@ -836,8 +786,6 @@ export default function ProductLibrary() {
                 ageLabel={product.ageLabel}
                 accentColor={ACCENT_COLORS[product.id]}
                 taglineColor={TAGLINE_COLORS[product.id]}
-                illustration={ILLUSTRATIONS[product.id]}
-                illustrationOpacity={ILLUSTRATION_OPACITY[product.id]}
                 onClick={() => navigate(`/product/${product.slug}`)}
                 badgeText={buildBadgeText(product)}
                 hasActiveSession={activeProductIds.has(product.id)}
