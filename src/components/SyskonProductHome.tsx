@@ -43,6 +43,12 @@ const titleVariants = { hidden: { opacity: 0, y: 16 }, visible: { opacity: 1, y:
 export default function SyskonProductHome({ product }: { product: ProductManifest }) {
   const progress = useKidsProductProgress(product);
 
+  // Load first card image per category dynamically from zip
+  const img0 = useCardImage(FIRST_CARD_IDS[0]);
+  const img1 = useCardImage(FIRST_CARD_IDS[1]);
+  const img2 = useCardImage(FIRST_CARD_IDS[2]);
+  const img3 = useCardImage(FIRST_CARD_IDS[3]);
+  const tileImages = [img0 ?? undefined, img1 ?? undefined, img2 ?? undefined, img3 ?? undefined];
   return (
     <div className="min-h-screen relative overflow-hidden" style={{ backgroundColor: BG }}>
       <ProductHomeBackButton color="#FDF6E3" />
