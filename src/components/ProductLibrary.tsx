@@ -840,7 +840,8 @@ export default function ProductLibrary() {
                 padding: '0 18px 16px',
               }}>
                 <h3 style={{
-                  fontFamily: "'DM Serif Display', serif",
+                  fontFamily: "var(--font-display)",
+                  fontVariationSettings: "'opsz' 24",
                   fontSize: '22px',
                   fontWeight: 700,
                   color: '#FDF6E3',
