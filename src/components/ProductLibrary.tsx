@@ -9,6 +9,8 @@ import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/components/ui/sonner';
 import LibraryResumeBanner from '@/components/LibraryResumeBanner';
 import watermarkMamma from '@/assets/watermark-mamma.png';
+import creaturesTrio from '@/assets/creatures-trio.png';
+import creatureLionGirl from '@/assets/creature-lion-girl.png';
 
 import illustrationStillUs from '@/assets/illustration-still-us-tile.png';
 import illustrationJagIMig from '@/assets/mirror-jag-i-mig.png';
@@ -689,7 +691,48 @@ export default function ProductLibrary() {
             transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
           >
         {/* ── Barn — broken grid layout ── */}
-        <div className="px-5" style={{ scrollMarginTop: '8px' }}>
+        <div className="px-5" style={{ scrollMarginTop: '8px', position: 'relative' }}>
+          {/* Atmospheric creature illustrations */}
+          <motion.img
+            src={creaturesTrio}
+            alt=""
+            aria-hidden="true"
+            draggable={false}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 0.07 }}
+            transition={{ delay: 0.8, duration: 1.8, ease: [0.22, 1, 0.36, 1] }}
+            style={{
+              position: 'absolute',
+              top: '-40px',
+              right: '-45px',
+              width: '220px',
+              height: 'auto',
+              pointerEvents: 'none',
+              zIndex: 0,
+              filter: 'saturate(0.3) brightness(1.6)',
+              transform: 'rotate(5deg)',
+            }}
+          />
+          <motion.img
+            src={creatureLionGirl}
+            alt=""
+            aria-hidden="true"
+            draggable={false}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 0.06 }}
+            transition={{ delay: 1.2, duration: 1.8, ease: [0.22, 1, 0.36, 1] }}
+            style={{
+              position: 'absolute',
+              bottom: '120px',
+              left: '-30px',
+              width: '200px',
+              height: 'auto',
+              pointerEvents: 'none',
+              zIndex: 0,
+              filter: 'saturate(0.25) brightness(1.5)',
+              transform: 'rotate(-3deg)',
+            }}
+          />
           <motion.p
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
