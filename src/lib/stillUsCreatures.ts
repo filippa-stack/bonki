@@ -61,7 +61,7 @@ export const STILL_US_CREATURES: Record<string, StillUsCreature> = {
     headerOpacity: 0.35,
     tileRight: '-2%',
     tileHeight: '160%',
-    tileScale: 1.15,          // Apa has lots of negative space — scale up
+    tileScale: 1.0,            // Apa: dense body — keep at baseline
   },
   'category-8': {               // Att hålla kvar varandra → Panda  (Grunden)
     src: creaturePanda,
@@ -79,7 +79,7 @@ export const STILL_US_CREATURES: Record<string, StillUsCreature> = {
     headerOpacity: 0.38,
     tileRight: '0%',
     tileHeight: '160%',
-    tileScale: 1.1,            // Turtle is compact — scale up slightly
+    tileScale: 1.18,           // Turtle is compact — scale up more
   },
   'parenting-together': {       // Det ni bär med er → Uggla  (Det som formar er)
     src: creatureUggla,
@@ -97,7 +97,7 @@ export const STILL_US_CREATURES: Record<string, StillUsCreature> = {
     headerOpacity: 0.36,
     tileRight: '-3%',
     tileHeight: '160%',
-    tileScale: 0.95,           // Lion is visually large — scale down slightly
+    tileScale: 0.88,           // Lion is visually large+dense — scale down more
   },
   'category-6': {               // Trygghet & mod → Elefant  (Djupet)
     src: creatureElefant,
@@ -106,7 +106,7 @@ export const STILL_US_CREATURES: Record<string, StillUsCreature> = {
     headerOpacity: 0.38,
     tileRight: '0%',
     tileHeight: '160%',
-    tileScale: 0.92,           // Elephant is dense — scale down
+    tileScale: 0.85,           // Elephant is very dense — scale down further
   },
   'daily-life': {               // Nära varandra → Rådjur  (Djupet)
     src: creatureRadjur,
@@ -115,7 +115,7 @@ export const STILL_US_CREATURES: Record<string, StillUsCreature> = {
     headerOpacity: 0.38,
     tileRight: '-2%',
     tileHeight: '160%',
-    tileScale: 1.05,
+    tileScale: 1.15,           // Deer is thin/light — scale up
   },
   'category-10': {              // Att välja varandra → Örn  (Djupet)
     src: creatureOrn,
