@@ -12,11 +12,11 @@ const EASE = [0.4, 0.0, 0.2, 1] as const;
 const ACCENT_COLOR = '#C77AE8';
 
 const ORDERED_TILES = [
-  { id: 'jma-att-hora-till', bg: '#6E2498', sub: 'Var hör jag hemma?' },
-  { id: 'jma-nar-vi-jamfor-oss', bg: '#5A1A80', sub: 'Vad det gör med oss' },
-  { id: 'jma-nar-det-skaver', bg: '#4A1268', sub: 'När vi sårar varandra' },
-  { id: 'jma-att-sta-stadig', bg: '#3A0E58', sub: 'Din egen grund' },
-  { id: 'jma-vi-i-varlden', bg: '#2A0840', sub: 'Utanför oss själva' },
+  { id: 'jma-att-hora-till', bg: '#5A1A80', sub: 'Var hör jag hemma?' },
+  { id: 'jma-nar-vi-jamfor-oss', bg: '#4A1268', sub: 'Vad det gör med oss' },
+  { id: 'jma-nar-det-skaver', bg: '#3A0E58', sub: 'När vi sårar varandra' },
+  { id: 'jma-att-sta-stadig', bg: '#2E0A48', sub: 'Din egen grund' },
+  { id: 'jma-vi-i-varlden', bg: '#241040', sub: 'Utanför oss själva' },
 ];
 
 const containerVariants = { hidden: {}, visible: { transition: { staggerChildren: 0.11, delayChildren: 0.4 } } };

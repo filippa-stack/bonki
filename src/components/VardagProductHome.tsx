@@ -11,10 +11,10 @@ const EASE = [0.4, 0.0, 0.2, 1] as const;
 const ACCENT_COLOR = '#4DA8D4';
 
 const ORDERED_TILES = [
-  { id: 'vk-min-dag', bg: '#10607E', sub: 'Från morgon till kväll' },
-  { id: 'vk-var-rytm', bg: '#0A4E68', sub: 'Vanor och rutiner' },
-  { id: 'vk-vi-hemma', bg: '#063C52', sub: 'Allt som händer innanför dörren' },
-  { id: 'vk-utanfor-hemmet', bg: '#042A3C', sub: 'Det du möter där ute' },
+  { id: 'vk-min-dag', bg: '#0E6B99', sub: 'Från morgon till kväll' },
+  { id: 'vk-var-rytm', bg: '#0A4A6A', sub: 'Vanor och rutiner' },
+  { id: 'vk-vi-hemma', bg: '#063450', sub: 'Allt som händer innanför dörren' },
+  { id: 'vk-utanfor-hemmet', bg: '#042C44', sub: 'Det du möter där ute' },
 ];
 
 const containerVariants = { hidden: {}, visible: { transition: { staggerChildren: 0.11, delayChildren: 0.4 } } };

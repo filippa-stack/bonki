@@ -11,10 +11,10 @@ const EASE = [0.4, 0.0, 0.2, 1] as const;
 const ACCENT_COLOR = '#D88A90';
 
 const ORDERED_TILES = [
-  { id: 'sex-min-identitet', bg: '#7A3238', sub: 'Vem du är och blir' },
-  { id: 'sex-normer-och-paverkan', bg: '#5E242A', sub: 'Det som formar oss' },
+  { id: 'sex-min-identitet', bg: '#A3434B', sub: 'Vem du är och blir' },
+  { id: 'sex-normer-och-paverkan', bg: '#6A2A30', sub: 'Det som formar oss' },
   { id: 'sex-relation-och-ansvar', bg: '#4A1A20', sub: 'Att ta hand om sig själv och andra' },
-  { id: 'sex-skydd-och-makt', bg: '#381018', sub: 'Gränser och rättigheter' },
+  { id: 'sex-skydd-och-makt', bg: '#3A1218', sub: 'Gränser och rättigheter' },
 ];
 
 const containerVariants = { hidden: {}, visible: { transition: { staggerChildren: 0.11, delayChildren: 0.4 } } };

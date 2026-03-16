@@ -11,10 +11,10 @@ const EASE = [0.4, 0.0, 0.2, 1] as const;
 const ACCENT_COLOR = '#6ABFBD';
 
 const ORDERED_TILES = [
-  { id: 'sk-vi-blev-syskon', bg: '#1E6664', sub: 'När familjen växer' },
-  { id: 'sk-vi-ar-olika', bg: '#165452', sub: 'Att vara egen fast vi hör ihop' },
+  { id: 'sk-vi-blev-syskon', bg: '#247A78', sub: 'När familjen växer' },
+  { id: 'sk-vi-ar-olika', bg: '#1A5A58', sub: 'Att vara egen fast vi hör ihop' },
   { id: 'sk-delat-utrymme', bg: '#0E4442', sub: 'När allting ska delas' },
-  { id: 'sk-er-relation', bg: '#0A3634', sub: 'Nära, svårt och allt däremellan' },
+  { id: 'sk-er-relation', bg: '#0A3432', sub: 'Nära, svårt och allt däremellan' },
 ];
 
 const containerVariants = { hidden: {}, visible: { transition: { staggerChildren: 0.11, delayChildren: 0.4 } } };

@@ -11,11 +11,11 @@ const EASE = [0.4, 0.0, 0.2, 1] as const;
 const ACCENT_COLOR = '#6ABF78';
 
 const ORDERED_TILES = [
-  { id: 'jiv-min-vardag', bg: '#26602E', sub: 'Det som fyller dina dagar' },
-  { id: 'jiv-vem-jag-ar', bg: '#1E5026', sub: 'Det som förändras just nu' },
-  { id: 'jiv-jag-och-andra', bg: '#1A4420', sub: 'Hur vi påverkar varandra' },
-  { id: 'jiv-jag-i-samhallet', bg: '#14381A', sub: 'Normer, rättvisa och din röst' },
-  { id: 'jiv-det-stora-sammanhanget', bg: '#0E2C12', sub: 'Bortom det du ser' },
+  { id: 'jiv-min-vardag', bg: '#2D6E3A', sub: 'Det som fyller dina dagar' },
+  { id: 'jiv-vem-jag-ar', bg: '#1A4A24', sub: 'Det som förändras just nu' },
+  { id: 'jiv-jag-och-andra', bg: '#2A3A1E', sub: 'Hur vi påverkar varandra' },
+  { id: 'jiv-jag-i-samhallet', bg: '#1E2E16', sub: 'Normer, rättvisa och din röst' },
+  { id: 'jiv-det-stora-sammanhanget', bg: '#162210', sub: 'Bortom det du ser' },
 ];
 
 const containerVariants = { hidden: {}, visible: { transition: { staggerChildren: 0.11, delayChildren: 0.4 } } };

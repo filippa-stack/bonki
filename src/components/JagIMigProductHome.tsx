@@ -11,9 +11,9 @@ const EASE = [0.4, 0.0, 0.2, 1] as const;
 const ACCENT_COLOR = '#A8B84C';
 
 const ORDERED_TILES = [
-  { id: 'jim-mina-kanslor', bg: '#566A10', sub: 'Att känna igen dem' },
-  { id: 'jim-starka-kanslor', bg: '#3E4A12', sub: 'När det blir mycket' },
-  { id: 'jim-stora-kanslor', bg: '#2A3406', sub: 'Känslor med många lager' },
+  { id: 'jim-mina-kanslor', bg: '#657514', sub: 'Att känna igen dem' },
+  { id: 'jim-starka-kanslor', bg: '#4A5A0A', sub: 'När det blir mycket' },
+  { id: 'jim-stora-kanslor', bg: '#3E4A12', sub: 'Känslor med många lager' },
 ];
 
 const containerVariants = { hidden: {}, visible: { transition: { staggerChildren: 0.11, delayChildren: 0.4 } } };
