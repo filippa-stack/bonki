@@ -131,12 +131,12 @@ const containerVariants = {
 };
 
 const tileVariants = {
-  hidden: { opacity: 0, y: 20 * ANIM_SPEED, scale: 0.95 },
+  hidden: { opacity: 0, y: 40 * ANIM_SPEED, scale: 0.88 },
   visible: {
     opacity: 1,
     y: 0,
     scale: 1,
-    transition: { duration: 0.55 * ANIM_SPEED, ease: [0.22, 1, 0.36, 1] as const },
+    transition: { duration: 0.7 * ANIM_SPEED, ease: [0.22, 1, 0.36, 1] as const },
   },
 };
 
