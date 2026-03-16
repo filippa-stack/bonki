@@ -422,45 +422,11 @@ export default function ProductLibrary() {
   const tracked = useRef(false);
   const { purchased } = useAllProductAccess();
   const { user } = useAuth();
+  // Still Fair interest tracking (kept for future use)
   const [notifySignedUp, setNotifySignedUp] = useState(false);
   const [notifyLoading, setNotifyLoading] = useState(false);
-
-  // Check if user already signed up for Still Fair interest
-  useEffect(() => {
-    if (!user?.id) return;
-    supabase
-      .from('product_interest' as any)
-      .select('id')
-      .eq('product_id', 'still_fair')
-      .eq('user_id', user.id)
-      .maybeSingle()
-      .then(({ data }) => {
-        if (data) setNotifySignedUp(true);
-      });
-  }, [user?.id]);
-
-  const handleNotifyMe = async () => {
-    if (!user?.id) {
-      toast('Du behöver vara inloggad för att bli påmind');
-      return;
-    }
-    setNotifyLoading(true);
-    const { error } = await supabase
-      .from('product_interest' as any)
-      .insert({ product_id: 'still_fair', user_id: user.id } as any);
-    setNotifyLoading(false);
-    if (error?.code === '23505') {
-      // Already exists
-      setNotifySignedUp(true);
-      return;
-    }
-    if (error) {
-      toast('Något gick fel, försök igen');
-      return;
-    }
-    setNotifySignedUp(true);
-    toast('Vi meddelar dig när Still Fair lanseras!');
-  };
+  const handleNotifyMe = async () => {};
+  void notifySignedUp; void notifyLoading; void handleNotifyMe;
 
   useEffect(() => {
     if (!tracked.current) {
