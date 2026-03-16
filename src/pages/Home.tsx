@@ -26,45 +26,40 @@ const LANTERN_GLOW = '#FDF6E3';
 const DRIFTWOOD = '#6B5E52';
 const DEEP_SAFFRON = '#D4A03A';
 const EMBER_MID = '#473454';
+const EMBER_DEEP = '#3A2844';
 
 const EASE = [0.4, 0.0, 0.2, 1] as const;
 const containerVariants = { hidden: {}, visible: { transition: { staggerChildren: 0.11, delayChildren: 0.35 } } };
 const titleVariants = { hidden: { opacity: 0, y: 16 }, visible: { opacity: 1, y: 0, transition: { duration: 0.75, ease: EASE } } };
 
-/* ── Layer definitions ── */
+/* ── Layer definitions — depth-graded tile colors ── */
 const LAYERS: {
   label: string;
   categoryIds: string[];
   tileBg: string;
   tileText: string;
-  progressText: string;
-  isGold: boolean;
-  hasBorder?: boolean;
+  progressColor: string;
 }[] = [
   {
-    label: 'GRUNDEN',
+    label: 'Grunden',
     categoryIds: ['emotional-intimacy', 'communication', 'category-8'],
-    tileBg: DEEP_SAFFRON,
-    tileText: MIDNIGHT_INK,
-    progressText: MIDNIGHT_INK,
-    isGold: true,
+    tileBg: '#5A3F6B',       // Warm purple — lightest layer
+    tileText: LANTERN_GLOW,
+    progressColor: DEEP_SAFFRON,
   },
   {
-    label: 'DET SOM FORMAR ER',
+    label: 'Det som formar er',
     categoryIds: ['individual-needs', 'parenting-together', 'category-9'],
-    tileBg: EMBER_MID,
+    tileBg: EMBER_MID,       // Mid depth
     tileText: LANTERN_GLOW,
-    progressText: LANTERN_GLOW,
-    isGold: false,
+    progressColor: DEEP_SAFFRON,
   },
   {
-    label: 'DJUPET',
+    label: 'Djupet',
     categoryIds: ['category-6', 'daily-life', 'category-10'],
-    tileBg: EMBER_NIGHT,
+    tileBg: EMBER_DEEP,      // Deepest
     tileText: LANTERN_GLOW,
-    progressText: LANTERN_GLOW,
-    isGold: false,
-    hasBorder: true,
+    progressColor: DEEP_SAFFRON,
   },
 ];
 
