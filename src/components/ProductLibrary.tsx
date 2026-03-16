@@ -626,7 +626,7 @@ export default function ProductLibrary() {
             width: '32px',
             height: '1.5px',
             backgroundColor: 'hsla(38, 78%, 50%, 0.35)',
-            margin: '20px auto 28px',
+            margin: '24px auto 32px',
           }}
         />
 
