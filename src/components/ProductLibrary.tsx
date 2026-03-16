@@ -846,7 +846,7 @@ export default function ProductLibrary() {
           </div>
         </div>
 
-        {/* Dagboken — compact return-loop hook */}
+        {/* Era samtal — compact return-loop hook */}
         <motion.div
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
