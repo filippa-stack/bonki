@@ -50,7 +50,7 @@ const items: NavItem[] = [
   {
     id: 'journal',
     label: 'Era samtal',
-    icon: MessageCircle,
+    icon: BookOpen,
     path: '/journal',
     match: (p) => p.startsWith('/journal'),
   },
