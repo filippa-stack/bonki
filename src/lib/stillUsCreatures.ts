@@ -37,6 +37,11 @@ export interface StillUsCreature {
    * despite different built-in padding/negative space.
    */
   tileScale?: number;
+  /**
+   * Vertical anchor point (default: '50%').
+   * Increase above 50% to push the image down, revealing more of the head/eyes.
+   */
+  tileTop?: string;
 }
 
 /**
