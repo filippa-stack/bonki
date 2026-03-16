@@ -877,77 +877,79 @@ export default function ProductLibrary() {
               onClick={() => navigate('/product/still-us')}
               className="cursor-pointer"
               style={{
-                borderRadius: '22px',
+                borderRadius: '16px',
                 backgroundColor: '#2E2233',
-                minHeight: '140px',
+                height: '140px',
                 display: 'flex',
-                flexDirection: 'column',
                 position: 'relative',
                 overflow: 'hidden',
-                border: '1.5px solid rgba(255, 255, 255, 0.15)',
-                boxShadow: '0 8px 24px rgba(0, 0, 0, 0.3)',
+                border: '1.5px solid rgba(255, 255, 255, 0.18)',
+                boxShadow: '0 8px 24px rgba(0, 0, 0, 0.3), inset 0 1px 3px rgba(255, 255, 255, 0.15)',
               }}
             >
-              {/* Illustration */}
+              {/* Creature — atmospheric right 40% */}
               <div style={{
                 position: 'absolute',
-                top: '-15%',
-                right: '-8%',
-                width: '55%',
-                height: '130%',
+                top: 0, right: 0, bottom: 0,
+                width: '40%',
                 pointerEvents: 'none',
                 zIndex: 0,
+                overflow: 'hidden',
               }}>
                 <img
-                  src={illustrationStillUs}
+                  src={creatureSalStillUs}
                   alt=""
                   draggable={false}
                   style={{
                     width: '100%',
                     height: '100%',
-                    objectFit: 'contain',
-                    objectPosition: 'center 30%',
-                    opacity: 0.55,
+                    objectFit: 'cover',
+                    objectPosition: '55% 35%',
+                    opacity: 0.5,
+                  }}
+                />
+                {/* Gradient fade from tile bg */}
+                <div
+                  aria-hidden="true"
+                  style={{
+                    position: 'absolute',
+                    top: 0, left: 0, bottom: 0,
+                    width: '100%',
+                    background: 'linear-gradient(to right, rgba(46, 34, 51, 1) 0%, transparent 100%)',
+                    pointerEvents: 'none',
                   }}
                 />
               </div>
 
-              {/* Bottom gradient scrim */}
-              <div
-                aria-hidden="true"
-                style={{
-                  position: 'absolute',
-                  bottom: 0, left: 0, right: 0,
-                  height: '60%',
-                  zIndex: 1,
-                  pointerEvents: 'none',
-                  background: 'linear-gradient(to top, rgba(46, 34, 51, 1) 0%, rgba(46, 34, 51, 0.72) 50%, transparent 100%)',
-                  borderRadius: '0 0 22px 22px',
-                }}
-              />
-
+              {/* Text — left 60%, vertically centered */}
               <div style={{
-                position: 'absolute',
-                bottom: 0, left: 0, right: 0,
+                position: 'relative',
+                width: '60%',
                 zIndex: 2,
-                padding: '0 18px 16px',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                padding: '16px 0 16px 20px',
               }}>
                 <h3 style={{
                   fontFamily: "var(--font-display)",
-                  fontVariationSettings: "'opsz' 24",
+                  fontVariationSettings: "'opsz' 22",
                   fontSize: '22px',
-                  fontWeight: 700,
+                  fontWeight: 600,
                   color: '#FDF6E3',
                   lineHeight: 1.15,
-                  textShadow: '0 2px 8px rgba(71, 52, 84, 1)',
+                  textShadow: '0 1px 4px rgba(46, 34, 51, 0.5)',
                 }}>
                   Still Us
                 </h3>
                 <p style={{
                   fontFamily: "var(--font-body)",
-                  fontSize: '11px',
-                  color: 'hsla(38, 55%, 65%, 0.7)',
+                  fontSize: '13px',
+                  fontWeight: 500,
+                  color: '#C8BFB4',
                   marginTop: '4px',
+                  lineHeight: 1.4,
+                  textShadow: '0 1px 4px rgba(46, 34, 51, 0.5)',
                 }}>
                   22 samtal för er relation
                 </p>
