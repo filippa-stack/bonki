@@ -6,6 +6,7 @@ import NextConversationCard from '@/components/NextConversationCard';
 import ProductHomeBackButton from '@/components/ProductHomeBackButton';
 import { useKidsProductProgress } from '@/hooks/useKidsProductProgress';
 import CategoryTileGrid from '@/components/CategoryTileGrid';
+import type { CreatureTileStyle } from '@/components/CategoryTileGrid';
 
 const EASE = [0.4, 0.0, 0.2, 1] as const;
 const ACCENT_COLOR = '#A8B84C';
@@ -14,6 +15,13 @@ const ORDERED_TILES = [
   { id: 'jim-mina-kanslor', bg: '#657514', sub: 'Att känna igen dem' },
   { id: 'jim-starka-kanslor', bg: '#4A5A0A', sub: 'När det blir mycket' },
   { id: 'jim-stora-kanslor', bg: '#3E4A12', sub: 'Känslor med många lager' },
+];
+
+// Lion: golden hood + blue eyes are focal. Tile 0 & 2 should show eyes.
+const CREATURE_TILE_STYLES: CreatureTileStyle[] = [
+  { scale: 1.4, objectPosition: '45% 10%', opacity: 0.95 },
+  { scale: 1.15, objectPosition: '70% 15%', opacity: 0.8 },
+  { scale: 1.8, objectPosition: '45% 8%', opacity: 0.55 },
 ];
 
 const containerVariants = { hidden: {}, visible: { transition: { staggerChildren: 0.11, delayChildren: 0.4 } } };
@@ -26,15 +34,13 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
     <div className="min-h-screen relative overflow-hidden" style={{ backgroundColor: '#1A1A2E' }}>
       <ProductHomeBackButton color="#FDF6E3" />
 
-      {/* Creature illustration — top 45% */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.6 }}
         style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '45vh', zIndex: 0, pointerEvents: 'none' }}
       >
-        <img src={creatureImage} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: '50% 20%' }} />
-        {/* Bottom gradient fade into product color then Midnight */}
+        <img src={creatureImage} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: '50% 15%' }} />
         <div style={{
           position: 'absolute', bottom: 0, left: 0, right: 0, height: '60%',
           background: 'linear-gradient(to top, #1A1A2E 0%, rgba(62,74,18,0.7) 40%, transparent 100%)',
@@ -58,7 +64,7 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
 
         <div style={{ flex: 1, minHeight: '16px', maxHeight: 'clamp(40px, 12vh, 120px)' }} />
 
-        <CategoryTileGrid product={product} progress={progress} tiles={ORDERED_TILES} creatureImage={creatureImage} />
+        <CategoryTileGrid product={product} progress={progress} tiles={ORDERED_TILES} creatureImage={creatureImage} creatureTileStyles={CREATURE_TILE_STYLES} />
       </div>
     </div>
   );

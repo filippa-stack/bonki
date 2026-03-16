@@ -6,6 +6,7 @@ import NextConversationCard from '@/components/NextConversationCard';
 import ProductHomeBackButton from '@/components/ProductHomeBackButton';
 import { useKidsProductProgress } from '@/hooks/useKidsProductProgress';
 import CategoryTileGrid from '@/components/CategoryTileGrid';
+import type { CreatureTileStyle } from '@/components/CategoryTileGrid';
 
 const EASE = [0.4, 0.0, 0.2, 1] as const;
 const ACCENT_COLOR = '#6ABFBD';
@@ -15,6 +16,14 @@ const ORDERED_TILES = [
   { id: 'sk-vi-ar-olika', bg: '#1A5A58', sub: 'Att vara egen fast vi hör ihop' },
   { id: 'sk-delat-utrymme', bg: '#0E4442', sub: 'När allting ska delas' },
   { id: 'sk-er-relation', bg: '#0A3432', sub: 'Nära, svårt och allt däremellan' },
+];
+
+// Seal: scarf gives personality on tile 0. Whiskers/nose close-up on tile 2.
+const CREATURE_TILE_STYLES: CreatureTileStyle[] = [
+  { scale: 1.3, objectPosition: '45% 10%', opacity: 0.95 },
+  { scale: 1.15, objectPosition: '30% 15%', opacity: 0.8 },
+  { scale: 1.8, objectPosition: '40% 5%', opacity: 0.6 },
+  { scale: 0.65, objectPosition: '50% 50%', opacity: 0.35 },
 ];
 
 const containerVariants = { hidden: {}, visible: { transition: { staggerChildren: 0.11, delayChildren: 0.4 } } };
@@ -33,7 +42,7 @@ export default function SyskonProductHome({ product }: { product: ProductManifes
         transition={{ duration: 0.6 }}
         style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '45vh', zIndex: 0, pointerEvents: 'none' }}
       >
-        <img src={creatureImage} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: '50% 25%' }} />
+        <img src={creatureImage} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: '50% 20%' }} />
         <div style={{
           position: 'absolute', bottom: 0, left: 0, right: 0, height: '60%',
           background: 'linear-gradient(to top, #1A1A2E 0%, rgba(14,68,66,0.7) 40%, transparent 100%)',
@@ -57,7 +66,7 @@ export default function SyskonProductHome({ product }: { product: ProductManifes
 
         <div style={{ flex: 1, minHeight: '16px', maxHeight: 'clamp(40px, 12vh, 120px)' }} />
 
-        <CategoryTileGrid product={product} progress={progress} tiles={ORDERED_TILES} creatureImage={creatureImage} />
+        <CategoryTileGrid product={product} progress={progress} tiles={ORDERED_TILES} creatureImage={creatureImage} creatureTileStyles={CREATURE_TILE_STYLES} />
       </div>
     </div>
   );
