@@ -78,7 +78,7 @@ export const STILL_US_CREATURES: Record<string, StillUsCreature> = {
     tileRight: '-5%',
     tileHeight: '220%',
     tileScale: 1.1,
-    tileTop: '58%',            // Panda: round face, moderate push
+    tileTop: '63%',            // Panda: push down more to show eyes
   },
   'individual-needs': {         // När ni tycker olika → Sköldpadda  (Det som formar er)
     src: creatureTurtle,
@@ -98,7 +98,7 @@ export const STILL_US_CREATURES: Record<string, StillUsCreature> = {
     tileRight: '-8%',
     tileHeight: '220%',
     tileScale: 1.05,
-    tileTop: '58%',            // Owl: big round eyes at top, push down
+    tileTop: '63%',            // Owl: push down more to show eyes
   },
   'category-9': {               // Dit ni är på väg → Lejon  (Det som formar er)
     src: creatureLejon,
