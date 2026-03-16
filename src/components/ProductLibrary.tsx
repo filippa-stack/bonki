@@ -62,31 +62,31 @@ function hexToRgba(hex: string, alpha: number): string {
 
 /** Per-product illustration scale — large enough for dramatic presence */
 const ILLUSTRATION_SCALE: Record<string, { width: string; height: string }> = {
-  jag_i_mig: { width: '75%', height: '160%' },
-  jag_med_andra: { width: '75%', height: '160%' },
-  jag_i_varlden: { width: '75%', height: '160%' },
-  sexualitetskort: { width: '70%', height: '155%' },
-  vardagskort: { width: '70%', height: '155%' },
-  syskonkort: { width: '70%', height: '155%' },
+  jag_i_mig: { width: '80%', height: '180%' },
+  jag_med_andra: { width: '80%', height: '180%' },
+  jag_i_varlden: { width: '80%', height: '180%' },
+  sexualitetskort: { width: '75%', height: '175%' },
+  vardagskort: { width: '75%', height: '175%' },
+  syskonkort: { width: '75%', height: '175%' },
 };
 
-/** Per-product vertical offset — characters anchored right, visibly present */
+/** Per-product offset — characters visible and dramatic, bleeding right */
 const ILLUSTRATION_OFFSET: Record<string, { top: string; right: string; bottom: string }> = {
-  jag_i_mig: { top: '-20%', right: '-8%', bottom: '-20%' },
-  jag_med_andra: { top: '-20%', right: '-5%', bottom: '-20%' },
-  jag_i_varlden: { top: '-18%', right: '-5%', bottom: '-18%' },
-  sexualitetskort: { top: '-20%', right: '-5%', bottom: '-18%' },
-  vardagskort: { top: '-20%', right: '-5%', bottom: '-18%' },
-  syskonkort: { top: '-20%', right: '-5%', bottom: '-18%' },
+  jag_i_mig: { top: '-25%', right: '-2%', bottom: '-25%' },
+  jag_med_andra: { top: '-25%', right: '0%', bottom: '-25%' },
+  jag_i_varlden: { top: '-22%', right: '0%', bottom: '-22%' },
+  sexualitetskort: { top: '-25%', right: '0%', bottom: '-20%' },
+  vardagskort: { top: '-25%', right: '0%', bottom: '-20%' },
+  syskonkort: { top: '-25%', right: '0%', bottom: '-20%' },
 };
 
-/** Hero-level illustration opacities — high for dramatic impact */
+/** Illustration opacities — high for dramatic impact, tuned per visual density */
 const ILLUSTRATION_OPACITY: Record<string, number> = {
-  jag_i_mig: 0.85,
+  jag_i_mig: 0.88,
   jag_med_andra: 0.85,
-  jag_i_varlden: 0.85,
+  jag_i_varlden: 0.88,
   sexualitetskort: 0.85,
-  vardagskort: 0.82,
+  vardagskort: 0.85,
   syskonkort: 0.85,
 };
 
