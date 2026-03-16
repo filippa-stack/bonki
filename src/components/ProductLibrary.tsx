@@ -55,14 +55,14 @@ function hexToRgba(hex: string, alpha: number): string {
   return `rgba(${r}, ${g}, ${b}, ${alpha})`;
 }
 
-/** Per-product illustration scale — controls how much of the tile the character fills */
+/** Per-product illustration scale — oversized for dramatic portal feel */
 const ILLUSTRATION_SCALE: Record<string, { width: string; height: string }> = {
-  jag_i_mig: { width: '65%', height: '130%' },
-  jag_med_andra: { width: '62%', height: '125%' },
-  jag_i_varlden: { width: '60%', height: '125%' },
-  sexualitetskort: { width: '62%', height: '125%' },
-  vardagskort: { width: '62%', height: '125%' },
-  syskonkort: { width: '62%', height: '125%' },
+  jag_i_mig: { width: '78%', height: '155%' },
+  jag_med_andra: { width: '74%', height: '150%' },
+  jag_i_varlden: { width: '72%', height: '148%' },
+  sexualitetskort: { width: '74%', height: '148%' },
+  vardagskort: { width: '74%', height: '150%' },
+  syskonkort: { width: '74%', height: '148%' },
 };
 
 /** Per-product vertical offset — negative pulls character up above tile top */
