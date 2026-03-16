@@ -791,13 +791,13 @@ export default function ProductLibrary() {
                 boxShadow: '0 8px 24px rgba(0, 0, 0, 0.3)',
               }}
             >
-              {/* Illustration */}
+              {/* Illustration — right-biased, cinematic overflow */}
               <div style={{
                 position: 'absolute',
-                top: '-15%',
-                right: '-8%',
-                width: '55%',
-                height: '130%',
+                top: '-12%',
+                right: '-15%',
+                bottom: '-10%',
+                width: '62%',
                 pointerEvents: 'none',
                 zIndex: 0,
               }}>
@@ -809,23 +809,21 @@ export default function ProductLibrary() {
                     width: '100%',
                     height: '100%',
                     objectFit: 'contain',
-                    objectPosition: 'center 30%',
-                    opacity: 0.55,
+                    objectPosition: 'right bottom',
+                    opacity: 0.65,
                   }}
                 />
               </div>
 
-              {/* Bottom gradient scrim */}
+              {/* Gradient shield — left-to-right atmosphere */}
               <div
                 aria-hidden="true"
                 style={{
                   position: 'absolute',
-                  bottom: 0, left: 0, right: 0,
-                  height: '60%',
+                  inset: 0,
                   zIndex: 1,
                   pointerEvents: 'none',
-                  background: 'linear-gradient(to top, rgba(46, 34, 51, 1) 0%, rgba(46, 34, 51, 0.7) 50%, transparent 100%)',
-                  borderRadius: '0 0 22px 22px',
+                  background: 'linear-gradient(to right, rgba(46, 34, 51, 1) 0%, rgba(46, 34, 51, 0.95) 35%, rgba(46, 34, 51, 0.40) 55%, rgba(46, 34, 51, 0.05) 75%, transparent 100%)',
                 }}
               />
 
