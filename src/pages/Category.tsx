@@ -678,16 +678,16 @@ function StillUsCategoryView({
                   alt=""
                   style={{
                     position: 'absolute',
-                    right: '-3%',
+                    right: '-6%',
                     top: '50%',
                     transform: 'translateY(-50%)',
-                    height: '130%',
+                    height: '150%',
                     width: 'auto',
                     objectFit: 'contain',
                     objectPosition: STILL_US_CREATURES[category.id].objectPosition,
                     opacity: STILL_US_CREATURES[category.id].headerOpacity,
                     pointerEvents: 'none',
-                    filter: 'saturate(0.4)',
+                    filter: 'saturate(0.3) brightness(1.1)',
                   }}
                 />
               )}

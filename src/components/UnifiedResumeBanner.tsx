@@ -3,7 +3,7 @@
  *
  * Displays when a paused/active session exists for this product.
  * Consistent styling: Deep Dusk background, product accent left border,
- * card name + step progress info.
+ * card name + step progress info + creature illustration.
  */
 
 import { motion } from 'framer-motion';
@@ -18,6 +18,7 @@ import {
   LANTERN_GLOW,
   DRIFTWOOD,
 } from '@/lib/palette';
+import { STILL_US_CREATURES } from '@/lib/stillUsCreatures';
 
 /* ── Types ── */
 
@@ -47,6 +48,7 @@ export default function UnifiedResumeBanner({
   // ── Resolve session data ──
   let cardId: string | null = null;
   let cardTitle: string | null = null;
+  let categoryId: string | null = null;
   let progressLabel = '';
 
   if (isStillUs) {
@@ -56,6 +58,7 @@ export default function UnifiedResumeBanner({
     const card = getCardById?.(cardId);
     if (!card) return null;
     cardTitle = card.title;
+    categoryId = card.categoryId ?? normalizedSession.categoryId ?? null;
 
     // Build step label
     const stepIndex = normalizedSession.currentStepIndex ?? 0;
@@ -89,6 +92,8 @@ export default function UnifiedResumeBanner({
     return null;
   }
 
+  const creature = categoryId ? STILL_US_CREATURES[categoryId] : null;
+
   return (
     <motion.button
       initial={{ opacity: 0, y: 10 }}
@@ -99,6 +104,8 @@ export default function UnifiedResumeBanner({
         width: '100%',
         marginTop: '24px',
         padding: '16px',
+        position: 'relative',
+        overflow: 'hidden',
         background: DEEP_DUSK,
         borderLeft: `3px solid ${isStillUs ? DEEP_SAFFRON : accentColor}`,
         borderTop: 'none',
@@ -112,6 +119,27 @@ export default function UnifiedResumeBanner({
         gap: '5px',
       }}
     >
+      {/* Creature illustration */}
+      {creature && (
+        <img
+          src={creature.src}
+          alt=""
+          style={{
+            position: 'absolute',
+            right: '-8%',
+            top: '50%',
+            transform: 'translateY(-50%)',
+            height: '160%',
+            width: 'auto',
+            objectFit: 'contain',
+            objectPosition: creature.objectPosition,
+            opacity: 0.10,
+            pointerEvents: 'none',
+            filter: 'saturate(0.3) brightness(1.1)',
+          }}
+        />
+      )}
+
       {/* Line 1: Label */}
       <span style={{
         fontFamily: 'var(--font-sans)',
@@ -120,6 +148,8 @@ export default function UnifiedResumeBanner({
         letterSpacing: '1.5px',
         textTransform: 'uppercase',
         color: DRIFTWOOD,
+        position: 'relative',
+        zIndex: 1,
       }}>
         Fortsätt ert samtal
       </span>
@@ -131,6 +161,8 @@ export default function UnifiedResumeBanner({
         fontWeight: 500,
         color: LANTERN_GLOW,
         lineHeight: 1.3,
+        position: 'relative',
+        zIndex: 1,
       }}>
         {cardTitle}
       </span>
@@ -141,6 +173,8 @@ export default function UnifiedResumeBanner({
           fontFamily: 'var(--font-sans)',
           fontSize: '13px',
           color: DRIFTWOOD,
+          position: 'relative',
+          zIndex: 1,
         }}>
           {progressLabel}
         </span>

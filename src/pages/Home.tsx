@@ -377,6 +377,7 @@ export default function Home() {
                   onClick={() => navigate(`/card/${nextCard.id}`)}
                   style={{
                     width: '100%',
+                    position: 'relative',
                     padding: '22px 22px',
                     borderRadius: '22px',
                     overflow: 'hidden',
@@ -391,6 +392,26 @@ export default function Home() {
                     boxShadow: `0 6px 20px rgba(0,0,0,0.30), 0 12px 40px rgba(0,0,0,0.20), inset 0 2px 4px rgba(255,255,255,0.28), inset 0 -1px 3px rgba(0,0,0,0.20), 0 0 32px ${DEEP_SAFFRON}22, 0 2px 60px ${DEEP_SAFFRON}10`,
                   }}
                 >
+                  {/* Creature for the next card's category */}
+                  {nextCard.categoryId && STILL_US_CREATURES[nextCard.categoryId] && (
+                    <img
+                      src={STILL_US_CREATURES[nextCard.categoryId].src}
+                      alt=""
+                      style={{
+                        position: 'absolute',
+                        right: '-8%',
+                        top: '50%',
+                        transform: 'translateY(-50%)',
+                        height: '160%',
+                        width: 'auto',
+                        objectFit: 'contain',
+                        objectPosition: STILL_US_CREATURES[nextCard.categoryId].objectPosition,
+                        opacity: 0.12,
+                        pointerEvents: 'none',
+                        filter: 'saturate(0.3) brightness(1.1)',
+                      }}
+                    />
+                  )}
                   <span style={{
                     fontFamily: 'var(--font-body)',
                     fontSize: '11px',
@@ -512,16 +533,16 @@ export default function Home() {
                             alt=""
                             style={{
                               position: 'absolute',
-                              right: '-5%',
+                              right: '-8%',
                               top: '50%',
                               transform: 'translateY(-50%)',
-                              height: '120%',
+                              height: '140%',
                               width: 'auto',
                               objectFit: 'contain',
                               objectPosition: STILL_US_CREATURES[cat.id].objectPosition,
                               opacity: STILL_US_CREATURES[cat.id].tileOpacity,
                               pointerEvents: 'none',
-                              filter: 'saturate(0.4)',
+                              filter: 'saturate(0.3) brightness(1.1)',
                             }}
                           />
                         )}
