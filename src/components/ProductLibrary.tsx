@@ -682,6 +682,7 @@ export default function ProductLibrary() {
               color: '#E9B44C',
               opacity: 0.7,
               lineHeight: 1.6,
+              textAlign: 'center',
               marginBottom: '16px',
             }}>
               Du tar hand om samtalen med barnen — nu är det er tur
