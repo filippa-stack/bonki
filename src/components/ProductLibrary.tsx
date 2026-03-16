@@ -55,24 +55,24 @@ function hexToRgba(hex: string, alpha: number): string {
   return `rgba(${r}, ${g}, ${b}, ${alpha})`;
 }
 
-/** Per-product illustration scale — controls how much of the tile the character fills */
+/** Per-product illustration scale — 65-80% height, 55-65% width for cinematic crop */
 const ILLUSTRATION_SCALE: Record<string, { width: string; height: string }> = {
-  jag_i_mig: { width: '65%', height: '130%' },
-  jag_med_andra: { width: '62%', height: '125%' },
-  jag_i_varlden: { width: '60%', height: '125%' },
-  sexualitetskort: { width: '62%', height: '125%' },
-  vardagskort: { width: '62%', height: '125%' },
-  syskonkort: { width: '62%', height: '125%' },
+  jag_i_mig: { width: '65%', height: '140%' },
+  jag_med_andra: { width: '62%', height: '135%' },
+  jag_i_varlden: { width: '60%', height: '135%' },
+  sexualitetskort: { width: '62%', height: '135%' },
+  vardagskort: { width: '62%', height: '135%' },
+  syskonkort: { width: '62%', height: '135%' },
 };
 
-/** Per-product vertical offset — negative pulls character up above tile top */
+/** Per-product overflow offsets — 10-20% right bleed, 5-10% top/bottom */
 const ILLUSTRATION_OFFSET: Record<string, { top: string; right: string; bottom: string }> = {
-  jag_i_mig: { top: '-12%', right: '-10%', bottom: '-10%' },
-  jag_med_andra: { top: '-10%', right: '-8%', bottom: '-8%' },
-  jag_i_varlden: { top: '-8%', right: '-8%', bottom: '-8%' },
-  sexualitetskort: { top: '-10%', right: '-10%', bottom: '-8%' },
-  vardagskort: { top: '-10%', right: '-8%', bottom: '-8%' },
-  syskonkort: { top: '-10%', right: '-8%', bottom: '-8%' },
+  jag_i_mig: { top: '-15%', right: '-18%', bottom: '-12%' },
+  jag_med_andra: { top: '-12%', right: '-15%', bottom: '-10%' },
+  jag_i_varlden: { top: '-10%', right: '-15%', bottom: '-10%' },
+  sexualitetskort: { top: '-12%', right: '-18%', bottom: '-10%' },
+  vardagskort: { top: '-12%', right: '-15%', bottom: '-10%' },
+  syskonkort: { top: '-12%', right: '-15%', bottom: '-10%' },
 };
 
 /** Hero-level illustration opacities — individually calibrated */
