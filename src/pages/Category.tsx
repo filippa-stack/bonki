@@ -715,29 +715,6 @@ function StillUsCategoryView({
                 ].join(', '),
               }}
             >
-              {/* Creature illustration — subtle texture for card tiles */}
-              {STILL_US_CREATURES[category.id] && (() => {
-                const c = STILL_US_CREATURES[category.id];
-                return (
-                  <img
-                    src={c.src}
-                    alt=""
-                    style={{
-                      position: 'absolute',
-                      right: '-15%',
-                      top: c.tileTop ?? '50%',
-                      transform: `translateY(-50%) scale(${c.tileScale ?? 1})`,
-                      height: '160%',
-                      width: 'auto',
-                      objectFit: 'contain',
-                      objectPosition: c.objectPosition,
-                      opacity: 0.18,
-                      pointerEvents: 'none',
-                      filter: 'saturate(0.15) brightness(1.2)',
-                    }}
-                  />
-                );
-              })()}
 
               <div style={{ flex: 1, minWidth: 0 }}>
                 <span
