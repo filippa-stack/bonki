@@ -399,10 +399,10 @@ export default function Home() {
                       alt=""
                       style={{
                         position: 'absolute',
-                        right: '-10%',
+                        right: STILL_US_CREATURES[nextCard.categoryId].tileRight ?? '0%',
                         top: '50%',
                         transform: 'translateY(-50%)',
-                        height: '220%',
+                        height: STILL_US_CREATURES[nextCard.categoryId].tileHeight ?? '140%',
                         width: 'auto',
                         objectFit: 'contain',
                         objectPosition: STILL_US_CREATURES[nextCard.categoryId].objectPosition,
