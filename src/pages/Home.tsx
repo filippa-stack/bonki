@@ -393,25 +393,29 @@ export default function Home() {
                   }}
                 >
                   {/* Creature for the next card's category */}
-                  {nextCard.categoryId && STILL_US_CREATURES[nextCard.categoryId] && (
-                    <img
-                      src={STILL_US_CREATURES[nextCard.categoryId].src}
-                      alt=""
-                      style={{
-                        position: 'absolute',
-                        right: STILL_US_CREATURES[nextCard.categoryId].tileRight ?? '0%',
-                        top: '50%',
-                        transform: 'translateY(-50%)',
-                        height: STILL_US_CREATURES[nextCard.categoryId].tileHeight ?? '140%',
-                        width: 'auto',
-                        objectFit: 'contain',
-                        objectPosition: STILL_US_CREATURES[nextCard.categoryId].objectPosition,
-                        opacity: 0.15,
-                        pointerEvents: 'none',
-                        filter: 'saturate(0.25) brightness(1.15)',
-                      }}
-                    />
-                  )}
+                  {nextCard.categoryId && STILL_US_CREATURES[nextCard.categoryId] && (() => {
+                    const c = STILL_US_CREATURES[nextCard.categoryId];
+                    const scale = c.tileScale ?? 1;
+                    return (
+                      <img
+                        src={c.src}
+                        alt=""
+                        style={{
+                          position: 'absolute',
+                          right: c.tileRight ?? '0%',
+                          top: '50%',
+                          transform: `translateY(-50%) scale(${scale})`,
+                          height: c.tileHeight ?? '160%',
+                          width: 'auto',
+                          objectFit: 'contain',
+                          objectPosition: c.objectPosition,
+                          opacity: 0.15,
+                          pointerEvents: 'none',
+                          filter: 'saturate(0.25) brightness(1.15)',
+                        }}
+                      />
+                    );
+                  })()}
                   <span style={{
                     fontFamily: 'var(--font-body)',
                     fontSize: '11px',
