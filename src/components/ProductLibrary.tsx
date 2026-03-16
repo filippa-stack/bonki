@@ -1048,6 +1048,8 @@ export default function ProductLibrary() {
             Du tar hand om samtalen med barnen — här tar ni hand om era egna
           </p>
         </motion.div>
+        <LibraryResumeCard activeTab="par" />
+        <div style={{ height: '24px' }} />
 
         {/* ── Still Us — immersive hero card ── */}
         <motion.div
