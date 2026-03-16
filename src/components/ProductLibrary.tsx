@@ -348,11 +348,11 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
         </div>
       )}
 
-      {/* Text — left-aligned, lower-third emphasis */}
+      {/* Text — left 40%, lower-third emphasis */}
       <div style={{
         position: 'absolute',
         left: 0, bottom: 0, top: 0,
-        width: '55%',
+        width: '45%',
         zIndex: 2,
         display: 'flex',
         flexDirection: 'column',
