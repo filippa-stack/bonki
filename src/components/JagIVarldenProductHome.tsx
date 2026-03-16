@@ -115,7 +115,7 @@ export default function JagIVarldenProductHome({ product }: { product: ProductMa
               De stora frågorna
             </p>
             {/* Spacer — pushes action cards below hero face zone */}
-            <div style={{ height: 'clamp(40px, 10vh, 80px)' }} />
+            <div style={{ height: 'clamp(56px, 14vh, 100px)' }} />
             <UnifiedResumeBanner product={product} kidsProgress={progress} accentColor={ACCENT_COLOR} />
             <NextConversationCard product={product} progress={progress} />
           </motion.div>
