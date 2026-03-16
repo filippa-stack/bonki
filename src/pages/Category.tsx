@@ -671,6 +671,7 @@ function StillUsCategoryView({
       {/* Card list */}
       <div
         style={{
+          position: 'relative', zIndex: 1,
           padding: '8px 16px',
           paddingBottom: 'calc(80px + env(safe-area-inset-bottom, 0px))',
           display: 'flex',
