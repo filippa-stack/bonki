@@ -528,20 +528,32 @@ export default function ProductLibrary() {
 
       {/* ── Bold creature illustrations — hero-level, full color ── */}
       <div aria-hidden="true" style={{ position: 'absolute', inset: 0, overflow: 'hidden', pointerEvents: 'none', zIndex: 0 }}>
+        {/* Radial saffron glow — atmospheric warmth behind title */}
+        <div style={{
+          position: 'absolute',
+          top: '-20px',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          width: '120vw',
+          height: '340px',
+          background: 'radial-gradient(ellipse 55% 60% at 50% 35%, hsla(38, 78%, 48%, 0.14) 0%, hsla(38, 78%, 48%, 0.06) 45%, transparent 100%)',
+          zIndex: 0,
+        }} />
         {/* Girl — top left, sitting on the edge */}
         <motion.img
           src={creatureGirl}
           alt=""
           draggable={false}
           initial={{ opacity: 0, y: 15 }}
-          animate={{ opacity: 0.40, y: 0 }}
+          animate={{ opacity: 0.58, y: 0 }}
           transition={{ delay: 0.4, duration: 1.6, ease: [0.22, 1, 0.36, 1] }}
           style={{
             position: 'absolute',
-            top: '8px',
-            left: '-8px',
-            width: '160px',
+            top: '4px',
+            left: '-12px',
+            width: '170px',
             height: 'auto',
+            filter: 'brightness(1.15) saturate(0.9)',
           }}
         />
         {/* Lion — top right, bold and forward-facing */}
@@ -550,14 +562,15 @@ export default function ProductLibrary() {
           alt=""
           draggable={false}
           initial={{ opacity: 0, y: 15 }}
-          animate={{ opacity: 0.38, y: 0 }}
+          animate={{ opacity: 0.55, y: 0 }}
           transition={{ delay: 0.6, duration: 1.6, ease: [0.22, 1, 0.36, 1] }}
           style={{
             position: 'absolute',
-            top: '15px',
-            right: '-30px',
-            width: '260px',
+            top: '8px',
+            right: '-35px',
+            width: '270px',
             height: 'auto',
+            filter: 'brightness(1.1) saturate(0.85)',
           }}
         />
         {/* Hero gradient scrim — ensures title legibility over creatures */}
@@ -566,11 +579,11 @@ export default function ProductLibrary() {
           top: 0,
           left: 0,
           right: 0,
-          height: '320px',
+          height: '360px',
           background: `linear-gradient(180deg, 
             hsla(230, 25%, 10%, 0.0) 0%, 
-            hsla(230, 25%, 10%, 0.5) 35%,
-            hsla(230, 25%, 10%, 0.85) 60%,
+            hsla(230, 25%, 10%, 0.35) 30%,
+            hsla(230, 25%, 10%, 0.75) 55%,
             ${libraryBg} 100%)`,
           zIndex: 1,
         }} />
@@ -601,7 +614,7 @@ export default function ProductLibrary() {
           transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
           style={{
             textAlign: 'center',
-            padding: '48px 32px 0',
+            padding: '56px 32px 0',
           }}
         >
           <motion.h1
@@ -611,14 +624,14 @@ export default function ProductLibrary() {
             style={{
               fontFamily: "var(--font-display)",
               fontVariationSettings: "'opsz' 36",
-              fontSize: '42px',
+              fontSize: '44px',
               fontWeight: 400,
-              color: isDark ? 'hsla(38, 78%, 55%, 0.95)' : '#E9B44C',
+              color: 'hsla(38, 78%, 58%, 1)',
               lineHeight: 1.1,
               letterSpacing: '-0.03em',
-              marginBottom: '10px',
+              marginBottom: '12px',
               transition: 'color 400ms ease',
-              textShadow: `0 2px 20px hsla(230, 25%, 10%, 0.8), 0 0 40px hsla(230, 25%, 10%, 0.4)`,
+              textShadow: '0 0 30px hsla(38, 78%, 48%, 0.35), 0 2px 24px hsla(230, 25%, 10%, 0.9), 0 0 60px hsla(230, 25%, 10%, 0.5)',
             }}
           >
             Bonki
@@ -632,18 +645,17 @@ export default function ProductLibrary() {
               fontStyle: 'normal',
               fontSize: '14px',
               fontWeight: 400,
-              color: isDark ? 'hsla(38, 50%, 65%, 0.5)' : 'hsla(38, 78%, 55%, 0.7)',
-              opacity: isDark ? 1 : 0.5,
+              color: 'hsla(38, 50%, 65%, 0.5)',
               lineHeight: 1.6,
               transition: 'color 400ms ease',
-              textShadow: '0 1px 12px hsla(230, 25%, 10%, 0.6)',
+              textShadow: '0 1px 16px hsla(230, 25%, 10%, 0.8)',
             }}
           >
             Verktyg för samtalen som inte blir av
           </motion.p>
         </motion.div>
 
-        {/* Saffron accent divider — matching onboarding */}
+        {/* Saffron accent divider */}
         <motion.div
           initial={{ scaleX: 0, opacity: 0 }}
           animate={{ scaleX: 1, opacity: 1 }}
@@ -651,8 +663,8 @@ export default function ProductLibrary() {
           style={{
             width: '32px',
             height: '1.5px',
-            backgroundColor: isDark ? 'hsla(38, 78%, 50%, 0.35)' : 'hsla(38, 88%, 46%, 0.3)',
-            margin: '14px auto 18px',
+            backgroundColor: 'hsla(38, 78%, 50%, 0.35)',
+            margin: '20px auto 28px',
           }}
         />
 
@@ -666,7 +678,7 @@ export default function ProductLibrary() {
             flexDirection: 'column',
             alignItems: 'center',
             gap: '10px',
-            margin: '0 auto 12px',
+            margin: '0 auto 20px',
           }}
         >
           <div
