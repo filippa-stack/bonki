@@ -523,40 +523,44 @@ export default function ProductLibrary() {
       }}
     >
 
-      {/* ── Atmospheric creature illustrations — page-level, behind everything ── */}
+      {/* ── Atmospheric creature illustrations — ghostly silhouettes ── */}
       <div aria-hidden="true" style={{ position: 'absolute', inset: 0, overflow: 'hidden', pointerEvents: 'none', zIndex: 0 }}>
+        {/* Trio — upper right, peeking between first tiles */}
         <motion.img
           src={creaturesTrio}
           alt=""
           draggable={false}
           initial={{ opacity: 0 }}
-          animate={{ opacity: 0.04 }}
-          transition={{ delay: 1.0, duration: 2.5, ease: [0.22, 1, 0.36, 1] }}
+          animate={{ opacity: 0.09 }}
+          transition={{ delay: 0.8, duration: 2.0, ease: [0.22, 1, 0.36, 1] }}
           style={{
             position: 'absolute',
-            top: '320px',
-            right: '-30px',
-            width: '260px',
+            top: '140px',
+            right: '-35px',
+            width: '300px',
             height: 'auto',
-            filter: 'brightness(2.5) saturate(0.1)',
-            transform: 'rotate(4deg)',
+            filter: 'brightness(3) saturate(0)',
+            transform: 'rotate(3deg)',
+            mixBlendMode: 'screen',
           }}
         />
+        {/* Lion + girl — lower left, watching from below */}
         <motion.img
           src={creatureLionGirl}
           alt=""
           draggable={false}
           initial={{ opacity: 0 }}
-          animate={{ opacity: 0.045 }}
-          transition={{ delay: 1.5, duration: 2.5, ease: [0.22, 1, 0.36, 1] }}
+          animate={{ opacity: 0.08 }}
+          transition={{ delay: 1.3, duration: 2.0, ease: [0.22, 1, 0.36, 1] }}
           style={{
             position: 'absolute',
-            top: '920px',
-            left: '-20px',
-            width: '220px',
+            top: '850px',
+            left: '-25px',
+            width: '250px',
             height: 'auto',
-            filter: 'brightness(2.2) saturate(0.1)',
+            filter: 'brightness(3) saturate(0)',
             transform: 'rotate(-2deg)',
+            mixBlendMode: 'screen',
           }}
         />
       </div>
