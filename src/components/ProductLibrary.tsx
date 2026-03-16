@@ -887,7 +887,8 @@ export default function ProductLibrary() {
           </svg>
           <div style={{ flex: 1 }}>
             <p style={{
-              fontFamily: "'DM Serif Display', serif",
+              fontFamily: "var(--font-display)",
+              fontVariationSettings: "'opsz' 16",
               fontSize: '15px',
               fontWeight: 400,
               color: '#FDF6E3',
