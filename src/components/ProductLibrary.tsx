@@ -277,7 +277,7 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
               width: '100%',
               height: '100%',
               objectFit: 'contain',
-              objectPosition: 'right bottom',
+              objectPosition: 'center bottom',
               opacity,
             }}
           />
