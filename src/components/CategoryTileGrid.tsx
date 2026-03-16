@@ -163,15 +163,15 @@ function CategoryTile({
         </div>
       )}
 
-      {/* Gradient shield (z-index 2) */}
+      {/* Gradient shield (z-index 2) — 65% height for strong text readability */}
       <div
         style={{
           position: 'absolute',
           bottom: 0,
           left: 0,
           right: 0,
-          height: '55%',
-          background: `linear-gradient(to top, rgba(${shieldRgb}, 0.97) 0%, rgba(${shieldRgb}, 0.88) 25%, rgba(${shieldRgb}, 0.45) 60%, transparent 100%)`,
+          height: '65%',
+          background: `linear-gradient(to top, rgba(${shieldRgb}, 0.98) 0%, rgba(${shieldRgb}, 0.92) 30%, rgba(${shieldRgb}, 0.55) 65%, transparent 100%)`,
           pointerEvents: 'none',
           zIndex: 2,
         }}
