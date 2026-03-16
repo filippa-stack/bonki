@@ -541,7 +541,7 @@ export default function Home() {
                               style={{
                                 position: 'absolute',
                                 right: c.tileRight ?? '0%',
-                                top: '50%',
+                                top: c.tileTop ?? '50%',
                                 transform: `translateY(-50%) scale(${scale})`,
                                 height: c.tileHeight ?? '160%',
                                 width: 'auto',

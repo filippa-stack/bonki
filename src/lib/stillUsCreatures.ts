@@ -57,7 +57,8 @@ export const STILL_US_CREATURES: Record<string, StillUsCreature> = {
     headerOpacity: 0.35,
     tileRight: '-5%',
     tileHeight: '220%',
-    tileScale: 1.1,            // Seal: round body, moderate density
+    tileScale: 1.1,
+    tileTop: '58%',            // Seal: push down to show round face
   },
   'communication': {            // Vardagen mellan er → Apa  (Grunden)
     src: creatureApa,
@@ -66,7 +67,8 @@ export const STILL_US_CREATURES: Record<string, StillUsCreature> = {
     headerOpacity: 0.35,
     tileRight: '-8%',
     tileHeight: '220%',
-    tileScale: 1.05,           // Apa: dense body — slight boost
+    tileScale: 1.05,
+    tileTop: '60%',            // Monkey: eyes high on head, push down more
   },
   'category-8': {               // Att hålla kvar varandra → Panda  (Grunden)
     src: creaturePanda,
@@ -75,7 +77,8 @@ export const STILL_US_CREATURES: Record<string, StillUsCreature> = {
     headerOpacity: 0.35,
     tileRight: '-5%',
     tileHeight: '220%',
-    tileScale: 1.1,            // Panda: round, medium density
+    tileScale: 1.1,
+    tileTop: '58%',            // Panda: round face, moderate push
   },
   'individual-needs': {         // När ni tycker olika → Sköldpadda  (Det som formar er)
     src: creatureTurtle,
@@ -84,7 +87,8 @@ export const STILL_US_CREATURES: Record<string, StillUsCreature> = {
     headerOpacity: 0.38,
     tileRight: '-5%',
     tileHeight: '220%',
-    tileScale: 1.25,           // Turtle is compact — scale up aggressively
+    tileScale: 1.25,
+    tileTop: '58%',            // Turtle: small head, push down to reveal eyes
   },
   'parenting-together': {       // Det ni bär med er → Uggla  (Det som formar er)
     src: creatureUggla,
@@ -93,7 +97,8 @@ export const STILL_US_CREATURES: Record<string, StillUsCreature> = {
     headerOpacity: 0.36,
     tileRight: '-8%',
     tileHeight: '220%',
-    tileScale: 1.05,           // Owl: wide wings fill space naturally
+    tileScale: 1.05,
+    tileTop: '58%',            // Owl: big round eyes at top, push down
   },
   'category-9': {               // Dit ni är på väg → Lejon  (Det som formar er)
     src: creatureLejon,
@@ -102,7 +107,8 @@ export const STILL_US_CREATURES: Record<string, StillUsCreature> = {
     headerOpacity: 0.36,
     tileRight: '-8%',
     tileHeight: '220%',
-    tileScale: 0.95,           // Lion is visually large+dense — scale down slightly
+    tileScale: 0.95,
+    tileTop: '55%',            // Lion: face visible, slight push
   },
   'category-6': {               // Trygghet & mod → Elefant  (Djupet)
     src: creatureElefant,
@@ -111,7 +117,8 @@ export const STILL_US_CREATURES: Record<string, StillUsCreature> = {
     headerOpacity: 0.38,
     tileRight: '-5%',
     tileHeight: '220%',
-    tileScale: 0.9,            // Elephant is very dense — scale down
+    tileScale: 0.9,
+    tileTop: '55%',            // Elephant: eyes mid-head, slight push
   },
   'daily-life': {               // Nära varandra → Rådjur  (Djupet)
     src: creatureRadjur,
@@ -120,7 +127,8 @@ export const STILL_US_CREATURES: Record<string, StillUsCreature> = {
     headerOpacity: 0.38,
     tileRight: '-8%',
     tileHeight: '220%',
-    tileScale: 1.2,            // Deer is thin/light — scale up
+    tileScale: 1.2,
+    tileTop: '55%',            // Deer: tall/thin, slight push
   },
   'category-10': {              // Att välja varandra → Örn  (Djupet)
     src: creatureOrn,
@@ -129,6 +137,7 @@ export const STILL_US_CREATURES: Record<string, StillUsCreature> = {
     headerOpacity: 0.36,
     tileRight: '-8%',
     tileHeight: '220%',
-    tileScale: 1.15,           // Eagle has wide negative space — scale up
+    tileScale: 1.15,
+    tileTop: '55%',            // Eagle: head at top, slight push
   },
 };

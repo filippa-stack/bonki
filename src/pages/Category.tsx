@@ -682,7 +682,7 @@ function StillUsCategoryView({
                     style={{
                       position: 'absolute',
                       right: '-8%',
-                      top: '50%',
+                      top: c.tileTop ?? '50%',
                       transform: `translateY(-50%) scale(${scale})`,
                       height: '200%',
                       width: 'auto',
