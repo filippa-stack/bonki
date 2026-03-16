@@ -135,8 +135,8 @@ function CategoryTile({
         ...(isOddLast ? { gridColumn: '1 / -1' } : {}),
       }}
     >
-      {/* Creature illustration layer (z-index 1) */}
-      {creatureImage && (
+      {/* Tile illustration layer (z-index 1) — per-tile image or shared creature */}
+      {(tileImage || creatureImage) && (
         <div
           style={{
             position: 'absolute',
