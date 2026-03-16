@@ -33,11 +33,11 @@ const FIRST_CARD_IDS = [
 
 // Per-tile illustration calibration — vivid card art with individually tuned opacity
 const CREATURE_TILE_STYLES: CreatureTileStyle[] = [
-  { scale: 1.15, objectPosition: '50% 15%', opacity: 0.65 },
-  { scale: 1.15, objectPosition: '50% 20%', opacity: 0.55 },
-  { scale: 1.1,  objectPosition: '50% 18%', opacity: 0.50 },
-  { scale: 1.1,  objectPosition: '50% 22%', opacity: 0.45 },
-  { scale: 1.1,  objectPosition: '50% 18%', opacity: 0.40 },
+  { scale: 1.15, objectPosition: '50% 15%', opacity: 0.45 },
+  { scale: 1.15, objectPosition: '50% 20%', opacity: 0.38 },
+  { scale: 1.1,  objectPosition: '50% 18%', opacity: 0.32 },
+  { scale: 1.1,  objectPosition: '50% 22%', opacity: 0.28 },
+  { scale: 1.1,  objectPosition: '50% 18%', opacity: 0.25 },
 ];
 
 const containerVariants = { hidden: {}, visible: { transition: { staggerChildren: 0.11, delayChildren: 0.4 } } };
@@ -115,7 +115,7 @@ export default function JagMedAndraProductHome({ product }: { product: ProductMa
               Det svåra och det trygga
             </p>
             {/* Spacer — pushes action cards below hero face zone */}
-            <div style={{ height: 'clamp(40px, 10vh, 80px)' }} />
+            <div style={{ height: 'clamp(56px, 14vh, 100px)' }} />
             <UnifiedResumeBanner product={product} kidsProgress={progress} accentColor={ACCENT_COLOR} />
             <NextConversationCard product={product} progress={progress} />
           </motion.div>
