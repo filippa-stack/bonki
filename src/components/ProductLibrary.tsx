@@ -810,25 +810,6 @@ export default function ProductLibrary() {
         </motion.div>
 
         <div className="px-5" style={{ scrollMarginTop: '8px' }}>
-          <motion.p
-            initial={{ opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1, duration: 0.7, ease: [0.4, 0, 0.2, 1] }}
-            style={{
-              fontFamily: "var(--font-display)",
-              fontVariationSettings: "'opsz' 15",
-              fontStyle: 'normal',
-              fontSize: '15px',
-              fontWeight: 400,
-              color: '#E9B44C',
-              opacity: 0.7,
-              lineHeight: 1.6,
-              textAlign: 'center',
-              marginBottom: '24px',
-            }}
-          >
-            Det barnet inte säger själv — börjar här
-          </motion.p>
           {/* Single free-trial mention */}
           <motion.p
             initial={{ opacity: 0 }}
