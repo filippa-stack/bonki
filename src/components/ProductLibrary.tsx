@@ -840,6 +840,8 @@ export default function ProductLibrary() {
                 ageLabel={product.ageLabel}
                 accentColor={ACCENT_COLORS[product.id]}
                 taglineColor={TAGLINE_COLORS[product.id]}
+                illustration={ILLUSTRATIONS[product.id]}
+                illustrationOpacity={ILLUSTRATION_OPACITY[product.id]}
                 onClick={() => navigate(`/product/${product.slug}`)}
                 badgeText={buildBadgeText(product)}
                 hasActiveSession={activeProductIds.has(product.id)}
