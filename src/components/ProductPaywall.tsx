@@ -266,7 +266,7 @@ export default function ProductPaywall({ product, onAccessGranted, cardId, curre
                 fontFamily: 'var(--font-sans)',
                 fontSize: '14px',
                 fontWeight: 400,
-                color: DRIFTWOOD,
+                color: READABLE_SECONDARY,
                 textAlign: 'center',
                 marginTop: '16px',
                 userSelect: 'none',
