@@ -525,21 +525,21 @@ export default function ProductLibrary() {
 
       {/* ── Atmospheric creature illustrations — ghostly silhouettes ── */}
       <div aria-hidden="true" style={{ position: 'absolute', inset: 0, overflow: 'hidden', pointerEvents: 'none', zIndex: 0 }}>
-        {/* Trio — upper right, peeking between first tiles */}
+        {/* Trio — right side, between hero and middle tiles */}
         <motion.img
           src={creaturesTrio}
           alt=""
           draggable={false}
           initial={{ opacity: 0 }}
-          animate={{ opacity: 0.09 }}
+          animate={{ opacity: 0.12 }}
           transition={{ delay: 0.8, duration: 2.0, ease: [0.22, 1, 0.36, 1] }}
           style={{
             position: 'absolute',
-            top: '140px',
-            right: '-35px',
-            width: '300px',
+            top: '220px',
+            right: '-40px',
+            width: '320px',
             height: 'auto',
-            filter: 'brightness(3) saturate(0)',
+            filter: 'brightness(3.5) saturate(0)',
             transform: 'rotate(3deg)',
             mixBlendMode: 'screen',
           }}
@@ -550,15 +550,15 @@ export default function ProductLibrary() {
           alt=""
           draggable={false}
           initial={{ opacity: 0 }}
-          animate={{ opacity: 0.08 }}
+          animate={{ opacity: 0.10 }}
           transition={{ delay: 1.3, duration: 2.0, ease: [0.22, 1, 0.36, 1] }}
           style={{
             position: 'absolute',
-            top: '850px',
-            left: '-25px',
-            width: '250px',
+            top: '880px',
+            left: '-30px',
+            width: '260px',
             height: 'auto',
-            filter: 'brightness(3) saturate(0)',
+            filter: 'brightness(3.5) saturate(0)',
             transform: 'rotate(-2deg)',
             mixBlendMode: 'screen',
           }}
