@@ -105,7 +105,8 @@ export default function SyskonProductHome({ product }: { product: ProductManifes
                   }}
                 >
                   <span style={{
-                    fontFamily: "'DM Serif Display', var(--font-serif)",
+                    fontFamily: "var(--font-display)",
+                    fontVariationSettings: "'opsz' 15",
                     fontSize: '15px',
                     fontWeight: 600,
                     color: '#FDF6E3',
