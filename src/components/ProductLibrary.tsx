@@ -697,14 +697,21 @@ export default function ProductLibrary() {
               className="cursor-pointer"
               style={{
                 borderRadius: '22px',
+                backgroundImage: 'linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0) 50%, rgba(0,0,0,0.12) 100%)',
                 backgroundColor: '#2E2233',
                 minHeight: '140px',
                 display: 'flex',
                 flexDirection: 'column',
                 position: 'relative',
                 overflow: 'hidden',
-                border: '1.5px solid rgba(255, 255, 255, 0.15)',
-                boxShadow: '0 8px 24px rgba(0, 0, 0, 0.3)',
+                border: '2px solid rgba(255, 255, 255, 0.45)',
+                boxShadow: [
+                  '0 1px 3px hsla(30, 15%, 25%, 0.05)',
+                  '0 6px 24px -6px hsla(30, 18%, 28%, 0.08)',
+                  '0 16px 48px -12px hsla(30, 12%, 25%, 0.05)',
+                  'inset 0 3px 6px rgba(255, 255, 255, 0.45)',
+                  'inset 0 -4px 10px rgba(46, 34, 51, 0.24)',
+                ].join(', '),
               }}
             >
               {/* Illustration */}
