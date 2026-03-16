@@ -37,9 +37,9 @@ const TILE_IMAGES: (string | undefined)[] = [
 // Optically calibrated per-tile — denser motifs get lower opacity
 const CREATURE_TILE_STYLES: CreatureTileStyle[] = [
   { scale: 1.25, objectPosition: '50% 20%', opacity: 0.22 },  // Morgon – warm, detailed
-  { scale: 1.15, objectPosition: '50% 25%', opacity: 0.18 },  // Kväll – moody, moderate
-  { scale: 1.3,  objectPosition: '50% 20%', opacity: 0.20 },  // Hushåll – busy, slightly lower
-  { scale: 1.2,  objectPosition: '50% 30%', opacity: 0.16 },  // Sova – soft, thinnest lines
+  { scale: 1.15, objectPosition: '50% 25%', opacity: 0.18 },  // Kväll – moderate
+  { scale: 1.3,  objectPosition: '50% 20%', opacity: 0.28 },  // Hushåll – boosted for balance
+  { scale: 1.2,  objectPosition: '50% 30%', opacity: 0.24 },  // Sova – boosted for balance
 ];
 
 const containerVariants = { hidden: {}, visible: { transition: { staggerChildren: 0.11, delayChildren: 0.4 } } };
@@ -106,7 +106,7 @@ export default function VardagProductHome({ product }: { product: ProductManifes
               color: ACCENT_COLOR,
               opacity: 0.9,
               marginTop: '6px',
-              textShadow: `0 1px 10px rgba(0,0,0,0.4), 0 0 40px ${BG}`,
+              textShadow: `0 1px 12px rgba(0,0,0,0.7), 0 0 30px ${BG}, 0 0 60px ${BG}, 0 4px 24px ${BG}`,
             }}>
               Det vanliga, på djupet
             </p>
