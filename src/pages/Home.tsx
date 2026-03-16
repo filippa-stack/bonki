@@ -29,7 +29,15 @@ const EMBER_MID = '#473454';
 const EASE = [0.22, 1, 0.36, 1] as const;
 
 /* ── Layer definitions ── */
-const LAYERS = [
+const LAYERS: {
+  label: string;
+  categoryIds: string[];
+  tileBg: string;
+  tileText: string;
+  progressText: string;
+  isGold: boolean;
+  hasBorder?: boolean;
+}[] = [
   {
     label: 'GRUNDEN',
     categoryIds: ['emotional-intimacy', 'communication', 'category-8'],
@@ -55,7 +63,7 @@ const LAYERS = [
     isGold: false,
     hasBorder: true,
   },
-] as const;
+];
 
 export default function Home() {
   const navigate = useNavigate();
