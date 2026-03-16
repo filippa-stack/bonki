@@ -18,22 +18,25 @@ import creatureLionSolo from '@/assets/creature-lion-solo.png';
 import illustrationStillUs from '@/assets/illustration-still-us-tile.png';
 import illustrationStillFair from '@/assets/illustration-still-fair.png';
 
-// Creature illustrations per product (atmospheric right-side)
-import creatureLejon from '@/assets/creature-lejon.png';
-import creatureUggla from '@/assets/creature-uggla.png';
-import creatureOrn from '@/assets/creature-orn.png';
-import creatureTurtle from '@/assets/creature-turtle.png';
-import creatureSal from '@/assets/creature-sal.png';
-import creatureRadjur from '@/assets/creature-radjur.png';
+// Kids product illustrations (full portal style)
+import illustrationJagIMig from '@/assets/illustration-jag-i-mig.png';
+import illustrationJagMedAndra from '@/assets/illustration-jag-med-andra.png';
+import illustrationJagIVarlden from '@/assets/illustration-jag-i-varlden.png';
+import illustrationSexualitet from '@/assets/illustration-sexualitet.png';
+import illustrationSyskon from '@/assets/illustration-syskon.png';
+import illustrationVardag from '@/assets/illustration-vardag.png';
 
-const CREATURE_ILLUSTRATIONS: Record<string, string> = {
-  jag_i_mig: creatureLejon,
-  jag_med_andra: creatureUggla,
-  jag_i_varlden: creatureOrn,
-  vardagskort: creatureTurtle,
-  syskonkort: creatureSal,
-  sexualitetskort: creatureRadjur,
+const ILLUSTRATIONS: Record<string, string> = {
+  jag_i_mig: illustrationJagIMig,
+  jag_med_andra: illustrationJagMedAndra,
+  jag_i_varlden: illustrationJagIVarlden,
+  sexualitetskort: illustrationSexualitet,
+  syskonkort: illustrationSyskon,
+  vardagskort: illustrationVardag,
 };
+
+// Still Us creature (atmospheric right-side approach)
+import creatureSalStillUs from '@/assets/creature-sal-still-us.png';
 
 const TAGLINES: Record<string, string> = {
   jag_i_mig: 'När känslor får ord',
@@ -62,14 +65,34 @@ function hexToRgba(hex: string, alpha: number): string {
   return `rgba(${r}, ${g}, ${b}, ${alpha})`;
 }
 
-/** Per-creature object-position for optical balance */
-const CREATURE_POSITION: Record<string, string> = {
-  jag_i_mig: '60% 35%',        // Lejon — wide, show face
-  jag_med_andra: '65% 45%',    // Uggla — default, centered
-  jag_i_varlden: '75% 50%',    // Örn — tall narrow bird, more horizontal area
-  vardagskort: '60% 40%',      // Sköldpadda — compact, show more
-  syskonkort: '65% 30%',       // Säl — wide, crop from right
-  sexualitetskort: '70% 45%',  // Rådjur — tall, gentle shift right
+/** Per-product illustration scale — oversized for dramatic portal feel */
+const ILLUSTRATION_SCALE: Record<string, { width: string; height: string }> = {
+  jag_i_mig: { width: '95%', height: '200%' },
+  jag_med_andra: { width: '95%', height: '195%' },
+  jag_i_varlden: { width: '95%', height: '195%' },
+  sexualitetskort: { width: '92%', height: '190%' },
+  vardagskort: { width: '92%', height: '190%' },
+  syskonkort: { width: '92%', height: '188%' },
+};
+
+/** Per-product vertical offset — characters burst out of tile boundaries */
+const ILLUSTRATION_OFFSET: Record<string, { top: string; right: string; bottom: string }> = {
+  jag_i_mig: { top: '-40%', right: '-15%', bottom: '-35%' },
+  jag_med_andra: { top: '-38%', right: '-12%', bottom: '-32%' },
+  jag_i_varlden: { top: '-35%', right: '-12%', bottom: '-32%' },
+  sexualitetskort: { top: '-38%', right: '-15%', bottom: '-30%' },
+  vardagskort: { top: '-38%', right: '-12%', bottom: '-32%' },
+  syskonkort: { top: '-38%', right: '-12%', bottom: '-30%' },
+};
+
+/** Hero-level illustration opacities — near full for maximum impact */
+const ILLUSTRATION_OPACITY: Record<string, number> = {
+  jag_i_mig: 0.97,
+  jag_med_andra: 0.95,
+  jag_i_varlden: 0.95,
+  sexualitetskort: 0.95,
+  vardagskort: 0.93,
+  syskonkort: 0.95,
 };
 
 /** Light title colors for dark creature-color tiles — Lantern Glow variants */
