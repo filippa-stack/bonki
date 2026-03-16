@@ -677,27 +677,7 @@ export default function ProductLibrary() {
           <LibraryResumeBanner />
         </div>
 
-        <motion.div
-          key="swipe-container"
-          drag="x"
-          dragConstraints={{ left: 0, right: 0 }}
-          dragElastic={0.15}
-          onDragEnd={(_e, info) => {
-            if (info.offset.x < -50 && activeTab === 'barn') switchTab('par');
-            if (info.offset.x > 50 && activeTab === 'par') switchTab('barn');
-          }}
-          style={{ touchAction: 'pan-y' }}
-        >
-        <AnimatePresence mode="wait">
-
-        {activeTab === 'barn' && (
-          <motion.div
-            key="barn"
-            initial={{ opacity: 0, x: swipeDirection * 30 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: swipeDirection * -30 }}
-            transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-          >
+        <div>
         {/* ── Barn — broken grid layout ── */}
         <div className="px-5" style={{ scrollMarginTop: '8px' }}>
           <motion.p
