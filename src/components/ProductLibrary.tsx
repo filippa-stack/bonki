@@ -1,7 +1,6 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { ChevronRight, MessageCircle } from 'lucide-react';
 import { allProducts } from '@/data/products';
 import { useAllProductAccess } from '@/hooks/useAllProductAccess';
 import { useAuth } from '@/contexts/AuthContext';
@@ -9,7 +8,7 @@ import { useCoupleSpaceContext } from '@/contexts/CoupleSpaceContext';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/components/ui/sonner';
 import LibraryResumeBanner from '@/components/LibraryResumeBanner';
-import { productTileColors } from '@/lib/palette';
+import watermarkMamma from '@/assets/watermark-mamma.png';
 
 import illustrationStillUs from '@/assets/illustration-still-us-tile.png';
 import illustrationJagIMig from '@/assets/mirror-jag-i-mig.png';
@@ -38,12 +37,78 @@ const TAGLINES: Record<string, string> = {
   sexualitetskort: 'Kropp, gränser och identitet',
 };
 
-/** hex → rgba */
+/** Creature-color tile backgrounds — dark/mid values from master palette */
+const TILE_COLORS: Record<string, string> = {
+  jag_i_mig: '#3A4210',       // Lichen deep
+  jag_med_andra: '#4A1870',   // Wild Violet deep
+  jag_i_varlden: '#1F4D2A',   // Deep Canopy deep (lifted +10% brightness)
+  sexualitetskort: '#6A1F18', // Ember Red deep
+  vardagskort: '#0F3D58',     // River Blue deep
+  syskonkort: '#144544',      // Twin Teal deep
+};
+
+/** Helper: hex → rgba */
 function hexToRgba(hex: string, alpha: number): string {
   const r = parseInt(hex.slice(1, 3), 16);
   const g = parseInt(hex.slice(3, 5), 16);
   const b = parseInt(hex.slice(5, 7), 16);
   return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+}
+
+/** Per-product illustration scale — controls how much of the tile the character fills */
+const ILLUSTRATION_SCALE: Record<string, { width: string; height: string }> = {
+  jag_i_mig: { width: '65%', height: '130%' },
+  jag_med_andra: { width: '62%', height: '125%' },
+  jag_i_varlden: { width: '60%', height: '125%' },
+  sexualitetskort: { width: '62%', height: '125%' },
+  vardagskort: { width: '62%', height: '125%' },
+  syskonkort: { width: '62%', height: '125%' },
+};
+
+/** Per-product vertical offset — negative pulls character up above tile top */
+const ILLUSTRATION_OFFSET: Record<string, { top: string; right: string; bottom: string }> = {
+  jag_i_mig: { top: '-12%', right: '-10%', bottom: '-10%' },
+  jag_med_andra: { top: '-10%', right: '-8%', bottom: '-8%' },
+  jag_i_varlden: { top: '-8%', right: '-8%', bottom: '-8%' },
+  sexualitetskort: { top: '-10%', right: '-10%', bottom: '-8%' },
+  vardagskort: { top: '-10%', right: '-8%', bottom: '-8%' },
+  syskonkort: { top: '-10%', right: '-8%', bottom: '-8%' },
+};
+
+/** Hero-level illustration opacities — individually calibrated */
+const ILLUSTRATION_OPACITY: Record<string, number> = {
+  jag_i_mig: 0.92,
+  jag_med_andra: 0.90,
+  jag_i_varlden: 0.90,
+  sexualitetskort: 0.90,
+  vardagskort: 0.88,
+  syskonkort: 0.90,
+};
+
+/** Light title colors for dark creature-color tiles — Lantern Glow variants */
+const ACCENT_COLORS: Record<string, string> = {
+  jag_i_mig: '#FDF6E3',
+  jag_med_andra: '#FDF6E3',
+  jag_i_varlden: '#FDF6E3',
+  sexualitetskort: '#FDF6E3',
+  vardagskort: '#FDF6E3',
+  syskonkort: '#FDF6E3',
+};
+
+/** Light tagline colors for dark tiles */
+const TAGLINE_COLORS: Record<string, string> = {
+  jag_i_mig: 'hsla(46, 60%, 85%, 0.75)',
+  jag_med_andra: 'hsla(280, 40%, 85%, 0.75)',
+  jag_i_varlden: 'hsla(140, 35%, 80%, 0.75)',
+  sexualitetskort: 'hsla(5, 50%, 82%, 0.75)',
+  vardagskort: 'hsla(205, 45%, 82%, 0.75)',
+  syskonkort: 'hsla(178, 40%, 80%, 0.75)',
+};
+
+/** Build badge text: "X ämnen" — no pricing on individual tiles */
+function buildBadgeText(product: { cards: unknown[]; id: string }): string {
+  const count = product.cards.length;
+  return `${count} ämnen`;
 }
 
 /** Detect return visit for faster animations */
@@ -75,39 +140,124 @@ const tileVariants = {
   },
 };
 
-/* ── Kids product tile ── */
-function KidsTile({
-  name, productId, tagline, ageLabel, illustration, onClick, hasActiveSession,
-}: {
-  name: string; productId: string; tagline?: string; ageLabel?: string;
-  illustration?: string; onClick?: () => void; hasActiveSession?: boolean;
+function AudienceLabel({ label, subtitle, delay = 0 }: { label: string; subtitle?: string; delay?: number }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ delay, duration: 0.6 }}
+      style={{
+        textAlign: 'center',
+        marginBottom: '16px',
+        marginTop: '4px',
+      }}
+    >
+      <p
+        style={{
+          fontFamily: "'Lato', sans-serif",
+          fontSize: '10px',
+          fontWeight: 600,
+          letterSpacing: '0.15em',
+          textTransform: 'uppercase',
+          color: '#A09890',
+          marginBottom: subtitle ? '10px' : '0',
+        }}
+      >
+        {label}
+      </p>
+      {subtitle && (
+        <p
+          style={{
+            fontFamily: "'DM Serif Display', serif",
+            fontSize: '14px',
+            fontWeight: 400,
+            color: 'var(--color-text-secondary)',
+            opacity: 0.55,
+            lineHeight: 1.5,
+          }}
+        >
+          {subtitle}
+        </p>
+      )}
+    </motion.div>
+  );
+}
+
+/** Portal tile — illustration bleeds right, text anchored left */
+const PastelTile = React.forwardRef<HTMLDivElement, {
+  name: string; bg: string; ageLabel?: string; tagline?: string;
+  onClick?: () => void; illustration?: string; productId?: string;
+  accentColor?: string; taglineColor?: string; illustrationOpacity?: number;
+  illustrationSize?: string; illustrationPosition?: string; wide?: boolean;
+  showFreeBadge?: boolean; badgeText?: string; ageCount?: number;
+  hasActiveSession?: boolean;
+}>(function PastelTile({
+  name, bg, ageLabel, tagline, onClick, illustration, productId, accentColor, taglineColor,
+  illustrationOpacity = 0.90, wide = false,
+  hasActiveSession = false,
 }) {
-  const colors = productTileColors[productId];
-  if (!colors) return null;
-  const { tileDeep, tileMid, tileLight } = colors;
+  const toShadowColor = (hex: string, alpha: number) => {
+    const r = parseInt(hex.slice(1, 3), 16);
+    const g = parseInt(hex.slice(3, 5), 16);
+    const b = parseInt(hex.slice(5, 7), 16);
+    return `rgba(${Math.round(r * 0.5)}, ${Math.round(g * 0.5)}, ${Math.round(b * 0.5)}, ${alpha})`;
+  };
+
+  const bgR = parseInt(bg.slice(1, 3), 16);
+  const bgG = parseInt(bg.slice(3, 5), 16);
+  const bgB = parseInt(bg.slice(5, 7), 16);
+  const bgRgba = (a: number) => `rgba(${bgR}, ${bgG}, ${bgB}, ${a})`;
+
+  const scale = productId ? ILLUSTRATION_SCALE[productId] : undefined;
+  const offset = productId ? ILLUSTRATION_OFFSET[productId] : undefined;
+  const opacity = productId ? ILLUSTRATION_OPACITY[productId] ?? illustrationOpacity : illustrationOpacity;
 
   return (
     <motion.div
       variants={tileVariants}
-      whileTap={{ scale: 0.98 }}
+      whileHover={{ scale: 1.025, y: -3 }}
+      whileTap={{ scale: 0.94, y: 3 }}
       onClick={onClick}
       className="cursor-pointer"
       style={{
-        position: 'relative',
         borderRadius: '16px',
+        backgroundColor: bg,
+        height: '200px',
+        display: 'flex',
+        position: 'relative',
         overflow: 'hidden',
-        minHeight: '148px',
-        background: `linear-gradient(135deg, ${tileDeep} 0%, ${tileMid}cc 100%)`,
-        transition: 'transform 180ms ease',
+        border: '1.5px solid rgba(255, 255, 255, 0.30)',
+        boxShadow: [
+          `0 12px 32px ${toShadowColor(bg, 0.30)}`,
+          `0 4px 12px ${toShadowColor(bg, 0.18)}`,
+          '0 1px 3px rgba(0, 0, 0, 0.08)',
+          'inset 0 3px 6px rgba(255, 255, 255, 0.45)',
+          `inset 0 -4px 10px ${toShadowColor(bg, 0.12)}`,
+        ].join(', '),
       }}
     >
-      {/* Illustration — right 55% */}
+      {/* Inner warmth glow — JIV only */}
+      {productId === 'jag_i_varlden' && (
+        <div
+          aria-hidden="true"
+          style={{
+            position: 'absolute',
+            inset: 0,
+            zIndex: 0,
+            pointerEvents: 'none',
+            background: 'radial-gradient(ellipse 70% 80% at 60% 50%, rgba(58, 133, 72, 0.35) 0%, transparent 70%)',
+          }}
+        />
+      )}
+      {/* Illustration — right-aligned, bleeds off edge */}
       {illustration && (
         <div
           style={{
             position: 'absolute',
-            top: 0, right: 0, bottom: 0,
-            width: '55%',
+            top: offset?.top ?? '-10%',
+            right: offset?.right ?? '-10%',
+            bottom: offset?.bottom ?? '-8%',
+            width: scale?.width ?? '62%',
             pointerEvents: 'none',
             zIndex: 0,
           }}
@@ -119,39 +269,47 @@ function KidsTile({
             style={{
               width: '100%',
               height: '100%',
-              objectFit: 'cover',
-              objectPosition: 'center',
-            }}
-          />
-          {/* Left-to-right gradient overlay on illustration */}
-          <div
-            aria-hidden="true"
-            style={{
-              position: 'absolute',
-              inset: 0,
-              background: `linear-gradient(to right, ${hexToRgba(tileDeep, 1)} 0%, ${hexToRgba(tileDeep, 0)} 60%)`,
+              objectFit: 'contain',
+              objectPosition: 'right bottom',
+              opacity,
             }}
           />
         </div>
       )}
 
-      {/* Age badge — top-right */}
+      {/* Horizontal gradient scrim — solid left, fading to transparent right */}
+      <div
+        aria-hidden="true"
+        style={{
+          position: 'absolute',
+          top: 0, left: 0, bottom: 0,
+          width: '65%',
+          zIndex: 1,
+          pointerEvents: 'none',
+          background: `linear-gradient(to right, ${bgRgba(1)} 0%, ${bgRgba(0.95)} 40%, ${bgRgba(0.6)} 70%, transparent 100%)`,
+        }}
+      />
+
+      {/* Age badge — Parchment circle, top-right */}
       {ageLabel && (
         <span
           style={{
             position: 'absolute',
-            top: '14px',
-            right: '14px',
-            zIndex: 3,
-            background: 'rgba(0,0,0,0.35)',
-            backdropFilter: 'blur(8px)',
-            WebkitBackdropFilter: 'blur(8px)',
-            borderRadius: '20px',
-            padding: '3px 10px',
+            top: '12px',
+            right: '12px',
+            width: '32px',
+            height: '32px',
+            borderRadius: '50%',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
             fontFamily: "'Lato', sans-serif",
             fontSize: '12px',
             fontWeight: 600,
-            color: '#FDF6E3',
+            color: '#2C2420',
+            background: '#F5EDD2',
+            zIndex: 3,
+            boxShadow: '0 2px 8px rgba(0,0,0,0.12)',
           }}
         >
           {ageLabel}
@@ -163,7 +321,7 @@ function KidsTile({
         <div
           style={{
             position: 'absolute',
-            top: ageLabel ? '46px' : '14px',
+            top: ageLabel ? '50px' : '12px',
             right: '14px',
             display: 'flex',
             flexDirection: 'column',
@@ -173,274 +331,69 @@ function KidsTile({
           }}
         >
           <div style={{
-            width: '8px', height: '8px', borderRadius: '50%',
+            width: '8px',
+            height: '8px',
+            borderRadius: '50%',
             backgroundColor: '#D4A03A',
             boxShadow: '0 0 6px rgba(212, 160, 58, 0.5)',
           }} />
           <span style={{
             fontFamily: "'Lato', sans-serif",
-            fontSize: '11px', fontWeight: 500,
-            color: '#FDF6E3', opacity: 0.7,
-          }}>Fortsätt</span>
+            fontSize: '11px',
+            fontWeight: 500,
+            color: '#FDF6E3',
+            opacity: 0.7,
+          }}>
+            Fortsätt
+          </span>
         </div>
       )}
 
-      {/* Text — bottom-left, justify-end */}
+      {/* Text — left-aligned, lower-third emphasis */}
       <div style={{
-        position: 'relative',
+        position: 'absolute',
+        left: 0, bottom: 0, top: 0,
+        width: '55%',
         zIndex: 2,
-        minHeight: '148px',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'flex-end',
         padding: '20px',
-        maxWidth: '55%',
+        paddingBottom: '24px',
       }}>
-        <h3 style={{
-          fontFamily: "'DM Serif Display', serif",
-          fontSize: '26px',
-          fontWeight: 600,
-          lineHeight: 1.15,
-          color: '#FDF6E3',
-          textShadow: '0px 2px 12px rgba(0,0,0,0.5)',
-        }}>
+        <h3
+          style={{
+            fontFamily: "'DM Serif Display', serif",
+            fontSize: '24px',
+            fontWeight: 600,
+            lineHeight: 1.15,
+            color: accentColor || '#FDF6E3',
+            letterSpacing: '-0.01em',
+            textShadow: `0 1px 6px ${bgRgba(0.8)}, 0 0 16px ${bgRgba(0.6)}`,
+          }}
+        >
           {name}
         </h3>
         {tagline && (
-          <p style={{
-            fontFamily: "'Lato', sans-serif",
-            fontSize: '14px',
-            fontWeight: 400,
-            color: 'rgba(253, 246, 227, 0.75)',
-            marginTop: '4px',
-            lineHeight: 1.4,
-            maxWidth: '110%', /* allow subtitle slightly wider */
-            textShadow: '0px 1px 6px rgba(0,0,0,0.4)',
-          }}>
+          <p
+            style={{
+              fontFamily: "'Lato', sans-serif",
+              fontSize: '14px',
+              fontWeight: 400,
+              color: taglineColor || '#FDF6E3',
+              opacity: 0.8,
+              marginTop: '4px',
+              lineHeight: 1.4,
+              textShadow: `0 0 10px ${bgRgba(0.8)}`,
+            }}
+          >
             {tagline}
           </p>
         )}
       </div>
-
-      {/* Bottom accent — 2px gradient */}
-      <div
-        aria-hidden="true"
-        style={{
-          position: 'absolute',
-          bottom: 0, left: 0, right: 0,
-          height: '2px',
-          background: `linear-gradient(90deg, ${tileLight}66, transparent)`,
-          zIndex: 3,
-        }}
-      />
     </motion.div>
   );
-}
-
-/* ── Still Us tile (PAR view) ── */
-function StillUsTile({ onClick }: { onClick?: () => void }) {
-  return (
-    <motion.div
-      variants={tileVariants}
-      whileTap={{ scale: 0.98 }}
-      onClick={onClick}
-      className="cursor-pointer"
-      style={{
-        position: 'relative',
-        borderRadius: '16px',
-        overflow: 'hidden',
-        minHeight: '170px',
-        background: 'linear-gradient(145deg, #2E2233 0%, #473454 50%, #2E2233 100%)',
-        transition: 'transform 180ms ease',
-      }}
-    >
-      {/* Illustration — right 45% */}
-      <div
-        style={{
-          position: 'absolute',
-          top: 0, right: 0, bottom: 0,
-          width: '45%',
-          pointerEvents: 'none',
-          zIndex: 0,
-        }}
-      >
-        <img
-          src={illustrationStillUs}
-          alt=""
-          draggable={false}
-          style={{
-            width: '100%',
-            height: '100%',
-            objectFit: 'cover',
-            objectPosition: 'center',
-            opacity: 0.85,
-          }}
-        />
-        {/* Gradient overlay */}
-        <div
-          aria-hidden="true"
-          style={{
-            position: 'absolute',
-            inset: 0,
-            background: `linear-gradient(to right, rgba(46, 34, 51, 1) 0%, rgba(46, 34, 51, 0) 60%)`,
-          }}
-        />
-      </div>
-
-      {/* Text — bottom-left */}
-      <div style={{
-        position: 'relative',
-        zIndex: 2,
-        minHeight: '170px',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'flex-end',
-        padding: '20px',
-        maxWidth: '55%',
-      }}>
-        {/* Deep Saffron accent bar */}
-        <div style={{
-          width: '28px',
-          height: '3px',
-          borderRadius: '2px',
-          background: '#D4A03A',
-          opacity: 0.7,
-          marginBottom: '10px',
-        }} />
-        <h3 style={{
-          fontFamily: "'DM Serif Display', serif",
-          fontSize: '28px',
-          fontWeight: 600,
-          lineHeight: 1.15,
-          color: '#FDF6E3',
-          textShadow: '0px 2px 12px rgba(0,0,0,0.5)',
-        }}>
-          Still Us
-        </h3>
-        <p style={{
-          fontFamily: "'Lato', sans-serif",
-          fontSize: '14px',
-          fontWeight: 400,
-          color: 'rgba(212, 160, 58, 0.8)',
-          marginTop: '4px',
-          lineHeight: 1.4,
-          textShadow: '0px 1px 6px rgba(0,0,0,0.4)',
-        }}>
-          22 samtal för er relation
-        </p>
-      </div>
-
-      {/* Bottom accent — Deep Saffron */}
-      <div
-        aria-hidden="true"
-        style={{
-          position: 'absolute',
-          bottom: 0, left: 0, right: 0,
-          height: '2px',
-          background: 'linear-gradient(90deg, #D4A03A44, transparent)',
-          zIndex: 3,
-        }}
-      />
-    </motion.div>
-  );
-}
-
-/* ── Coming soon tile ── */
-function ComingSoonTile({ name, illustration }: { name: string; illustration?: string }) {
-  return (
-    <motion.div
-      variants={tileVariants}
-      style={{
-        borderRadius: '14px',
-        border: '1px dashed rgba(107, 94, 82, 0.2)',
-        padding: '16px 20px',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        minHeight: '60px',
-      }}
-    >
-      <span style={{
-        fontFamily: "'DM Serif Display', serif",
-        fontSize: '17px',
-        fontWeight: 600,
-        color: 'rgba(107, 94, 82, 0.5)',
-      }}>
-        {name}
-      </span>
-      <span style={{
-        fontFamily: "'Lato', sans-serif",
-        fontSize: '11px',
-        fontWeight: 600,
-        letterSpacing: '1px',
-        color: 'rgba(107, 94, 82, 0.35)',
-        textTransform: 'uppercase',
-      }}>
-        KOMMER SNART
-      </span>
-    </motion.div>
-  );
-}
-
-/* ── Era samtal card ── */
-function EraSamtalCard({ onClick }: { onClick?: () => void }) {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 12 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: 0.7 * ANIM_SPEED, duration: 0.7 * ANIM_SPEED, ease: [0.22, 1, 0.36, 1] }}
-      whileTap={{ scale: 0.98 }}
-      onClick={onClick}
-      className="cursor-pointer"
-      style={{
-        borderRadius: '12px',
-        background: '#2A2D3A',
-        padding: '14px 16px',
-        display: 'flex',
-        alignItems: 'center',
-        gap: '14px',
-        transition: 'transform 180ms ease',
-      }}
-    >
-      {/* Icon container */}
-      <div style={{
-        width: '36px',
-        height: '36px',
-        borderRadius: '10px',
-        background: '#1A1A2E',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        flexShrink: 0,
-      }}>
-        <MessageCircle size={16} color="#6B5E52" />
-      </div>
-      {/* Text */}
-      <div style={{ flex: 1 }}>
-        <p style={{
-          fontFamily: "'DM Serif Display', serif",
-          fontSize: '15px',
-          fontWeight: 600,
-          color: '#FDF6E3',
-          lineHeight: 1.3,
-        }}>
-          Era samtal
-        </p>
-        <p style={{
-          fontFamily: "'Lato', sans-serif",
-          fontSize: '12px',
-          color: '#6B5E52',
-          marginTop: '2px',
-        }}>
-          Varje samtal sparas
-        </p>
-      </div>
-      {/* Chevron */}
-      <ChevronRight size={16} color="#6B5E52" />
-    </motion.div>
-  );
-}
-
+});
 export default function ProductLibrary() {
   const navigate = useNavigate();
   const tracked = useRef(false);
@@ -448,12 +401,14 @@ export default function ProductLibrary() {
   const { user } = useAuth();
   const TAB_KEY = 'bonki-library-tab';
   const [activeTab, setActiveTab] = useState<'barn' | 'par'>(() => {
+    // 1. Check onboarding redirect
     const initial = localStorage.getItem('bonki-initial-tab');
     if (initial === 'par' || initial === 'barn') {
       localStorage.removeItem('bonki-initial-tab');
       localStorage.setItem(TAB_KEY, initial);
       return initial;
     }
+    // 2. Remember last selection
     const saved = localStorage.getItem(TAB_KEY);
     if (saved === 'par' || saved === 'barn') return saved;
     return 'barn';
@@ -468,6 +423,7 @@ export default function ProductLibrary() {
   const [notifySignedUp, setNotifySignedUp] = useState(false);
   const [notifyLoading, setNotifyLoading] = useState(false);
 
+  // Check if user already signed up for Still Fair interest
   useEffect(() => {
     if (!user?.id) return;
     supabase
@@ -492,6 +448,7 @@ export default function ProductLibrary() {
       .insert({ product_id: 'still_fair', user_id: user.id } as any);
     setNotifyLoading(false);
     if (error?.code === '23505') {
+      // Already exists
       setNotifySignedUp(true);
       return;
     }
@@ -510,6 +467,7 @@ export default function ProductLibrary() {
     }
   }, []);
 
+  // Fetch active sessions across all products for resume indicators
   const { space } = useCoupleSpaceContext();
   const [activeProductIds, setActiveProductIds] = useState<Set<string>>(new Set());
   useEffect(() => {
@@ -529,6 +487,7 @@ export default function ProductLibrary() {
     return () => { cancelled = true; };
   }, [space?.id]);
 
+  // Split products for layout
   const jagIMig = allProducts.find(p => p.id === 'jag_i_mig')!;
   const jagMedAndra = allProducts.find(p => p.id === 'jag_med_andra')!;
   const jagIVarlden = allProducts.find(p => p.id === 'jag_i_varlden')!;
@@ -536,13 +495,17 @@ export default function ProductLibrary() {
   const vardag = allProducts.find(p => p.id === 'vardagskort')!;
   const syskon = allProducts.find(p => p.id === 'syskonkort')!;
 
+  // Default kids product order
   const defaultKidsOrder = [jagIMig, jagMedAndra, jagIVarlden, vardag, syskon, sexualitet];
 
+  // Smart ordering: products with active sessions first
   const sortedKidsProducts = useMemo(() => {
     const active = defaultKidsOrder.filter(p => activeProductIds.has(p.id));
     const inactive = defaultKidsOrder.filter(p => !activeProductIds.has(p.id));
     return [...active, ...inactive];
   }, [activeProductIds]);
+
+  const isDark = true; // Both tabs now use Midnight Ink
 
   const libraryBg = '#1A1A2E';
 
@@ -551,16 +514,23 @@ export default function ProductLibrary() {
       className="min-h-screen flex flex-col relative"
       style={{
         background: libraryBg,
+        ['--surface-base' as string]: libraryBg,
         fontFamily: "'Lato', sans-serif",
+        transition: 'background 600ms ease',
       }}
     >
+
+      {/* Content */}
       <div style={{ position: 'relative', zIndex: 1 }}>
-        {/* Hero zone */}
+        {/* Hero zone — compact cinematic */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-          style={{ textAlign: 'center', padding: '24px 32px 0' }}
+          style={{
+            textAlign: 'center',
+            padding: '24px 32px 0',
+          }}
         >
           <motion.h1
             initial={{ opacity: 0, y: 12 }}
@@ -570,10 +540,11 @@ export default function ProductLibrary() {
               fontFamily: "'DM Serif Display', serif",
               fontSize: '34px',
               fontWeight: 400,
-              color: 'hsla(38, 78%, 55%, 0.95)',
+              color: isDark ? 'hsla(38, 78%, 55%, 0.95)' : '#E9B44C',
               lineHeight: 1.15,
               letterSpacing: '-0.03em',
               marginBottom: '8px',
+              transition: 'color 400ms ease',
             }}
           >
             Bonki
@@ -587,15 +558,17 @@ export default function ProductLibrary() {
               fontStyle: 'italic',
               fontSize: '14px',
               fontWeight: 400,
-              color: 'hsla(38, 50%, 65%, 0.5)',
+              color: isDark ? 'hsla(38, 50%, 65%, 0.5)' : 'hsla(38, 78%, 55%, 0.7)',
+              opacity: isDark ? 1 : 0.5,
               lineHeight: 1.6,
+              transition: 'color 400ms ease',
             }}
           >
             Verktyg för samtalen som inte blir av
           </motion.p>
         </motion.div>
 
-        {/* Saffron accent divider */}
+        {/* Saffron accent divider — matching onboarding */}
         <motion.div
           initial={{ scaleX: 0, opacity: 0 }}
           animate={{ scaleX: 1, opacity: 1 }}
@@ -603,12 +576,12 @@ export default function ProductLibrary() {
           style={{
             width: '32px',
             height: '1.5px',
-            backgroundColor: 'hsla(38, 78%, 50%, 0.35)',
+            backgroundColor: isDark ? 'hsla(38, 78%, 50%, 0.35)' : 'hsla(38, 88%, 46%, 0.3)',
             margin: '14px auto 18px',
           }}
         />
 
-        {/* BARN/PAR toggle */}
+        {/* World switcher — prominent BARN/PAR toggle */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -621,17 +594,20 @@ export default function ProductLibrary() {
             margin: '0 auto 12px',
           }}
         >
-          <div style={{
-            display: 'flex',
-            background: 'hsla(230, 35%, 18%, 0.7)',
-            backdropFilter: 'blur(14px)',
-            WebkitBackdropFilter: 'blur(14px)',
-            borderRadius: '24px',
-            padding: '4px',
-            gap: '3px',
-            border: '1px solid hsla(38, 50%, 50%, 0.1)',
-            boxShadow: '0 4px 16px hsla(230, 40%, 8%, 0.4)',
-          }}>
+          <div
+            style={{
+              display: 'flex',
+              background: 'hsla(230, 35%, 18%, 0.7)',
+              backdropFilter: 'blur(14px)',
+              WebkitBackdropFilter: 'blur(14px)',
+              borderRadius: '24px',
+              padding: '4px',
+              gap: '3px',
+              position: 'relative',
+              border: '1px solid hsla(38, 50%, 50%, 0.1)',
+              boxShadow: '0 4px 16px hsla(230, 40%, 8%, 0.4)',
+            }}
+          >
             {(['barn', 'par'] as const).map((tab) => {
               const isActive = activeTab === tab;
               const labels = { barn: 'BARN & FAMILJ', par: 'PAR' };
@@ -663,6 +639,8 @@ export default function ProductLibrary() {
               );
             })}
           </div>
+
+          {/* Swipe hint — only on first visit */}
           {!IS_RETURN_VISIT && (
             <motion.p
               initial={{ opacity: 0 }}
@@ -682,7 +660,7 @@ export default function ProductLibrary() {
           )}
         </motion.div>
 
-        {/* Resume banner */}
+        {/* Resume banner — returning user hook */}
         <div className="px-5">
           <LibraryResumeBanner />
         </div>
@@ -698,165 +676,633 @@ export default function ProductLibrary() {
           }}
           style={{ touchAction: 'pan-y' }}
         >
-          <AnimatePresence mode="wait">
+        <AnimatePresence mode="wait">
 
-            {activeTab === 'barn' && (
-              <motion.div
-                key="barn"
-                initial={{ opacity: 0, x: swipeDirection * 30 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: swipeDirection * -30 }}
-                transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-              >
-                <div className="px-4">
-                  {/* Freemium line */}
-                  <motion.p
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 0.2, duration: 0.5 }}
-                    style={{
-                      fontFamily: "'Lato', sans-serif",
-                      fontSize: '12px',
-                      fontWeight: 500,
-                      color: 'rgba(212, 160, 58, 0.7)',
-                      textAlign: 'center',
-                      marginBottom: '20px',
-                    }}
-                  >
-                    ✦ Första kortet i varje produkt är gratis
-                  </motion.p>
+        {activeTab === 'barn' && (
+          <motion.div
+            key="barn"
+            initial={{ opacity: 0, x: swipeDirection * 30 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: swipeDirection * -30 }}
+            transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+          >
+        {/* ── Barn — broken grid layout ── */}
+        <div className="px-5" style={{ scrollMarginTop: '8px' }}>
+          <motion.p
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1, duration: 0.7, ease: [0.4, 0, 0.2, 1] }}
+            style={{
+              fontFamily: "'DM Serif Display', serif",
+              fontStyle: 'normal',
+              fontSize: '15px',
+              fontWeight: 400,
+              color: '#E9B44C',
+              opacity: 0.7,
+              lineHeight: 1.6,
+              textAlign: 'center',
+              marginBottom: '24px',
+            }}
+          >
+            Det barnet inte säger själv — börjar här
+          </motion.p>
+          {/* Single free-trial mention */}
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.2, duration: 0.5 }}
+            style={{
+              fontFamily: "'Lato', sans-serif",
+              fontSize: '10px',
+              fontWeight: 500,
+              letterSpacing: '0.06em',
+              color: '#998F82',
+              textAlign: 'center',
+              marginBottom: '20px',
+              marginTop: '-16px',
+            }}
+          >
+            ✦ Första kortet i varje produkt är gratis
+          </motion.p>
+          <motion.div
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '16px',
+            }}
+          >
+            {sortedKidsProducts.map((product) => (
+              <PastelTile
+                key={product.id}
+                name={product.name}
+                bg={TILE_COLORS[product.id]!}
+                productId={product.id}
+                tagline={TAGLINES[product.id]}
+                ageLabel={product.ageLabel}
+                accentColor={ACCENT_COLORS[product.id]}
+                taglineColor={TAGLINE_COLORS[product.id]}
+                illustration={ILLUSTRATIONS[product.id]}
+                illustrationOpacity={ILLUSTRATION_OPACITY[product.id]}
+                onClick={() => navigate(`/product/${product.slug}`)}
+                badgeText={buildBadgeText(product)}
+                hasActiveSession={activeProductIds.has(product.id)}
+                wide
+              />
+            ))}
+          </motion.div>
+        </div>
 
-                  {/* Kids tiles */}
-                  <motion.div
-                    variants={containerVariants}
-                    initial="hidden"
-                    animate="visible"
-                    style={{
-                      display: 'flex',
-                      flexDirection: 'column',
-                      gap: '14px',
-                    }}
-                  >
-                    {sortedKidsProducts.map((product) => (
-                      <KidsTile
-                        key={product.id}
-                        name={product.name}
-                        productId={product.id}
-                        tagline={TAGLINES[product.id]}
-                        ageLabel={product.ageLabel}
-                        illustration={ILLUSTRATIONS[product.id]}
-                        onClick={() => navigate(`/product/${product.slug}`)}
-                        hasActiveSession={activeProductIds.has(product.id)}
-                      />
-                    ))}
-                  </motion.div>
-                </div>
+        {/* ── Still Us cross-discovery — visible on BARN tab ── */}
+        <div className="px-5" style={{ marginTop: '28px' }}>
+          <div style={{
+            borderTop: '1px solid hsla(38, 50%, 50%, 0.12)',
+            paddingTop: '16px',
+          }}>
+            <p style={{
+              fontFamily: "'Lato', sans-serif",
+              fontSize: '12px',
+              fontWeight: 600,
+              letterSpacing: '1.5px',
+              textTransform: 'uppercase',
+              color: '#6B5E52',
+              marginBottom: '12px',
+            }}>
+              För er som par
+            </p>
+            <motion.div
+              variants={tileVariants}
+              initial="hidden"
+              animate="visible"
+              whileHover={{ scale: 1.015, y: -2 }}
+              whileTap={{ scale: 0.97, y: 2 }}
+              onClick={() => navigate('/product/still-us')}
+              className="cursor-pointer"
+              style={{
+                borderRadius: '22px',
+                backgroundColor: '#2E2233',
+                minHeight: '140px',
+                display: 'flex',
+                flexDirection: 'column',
+                position: 'relative',
+                overflow: 'hidden',
+                border: '1.5px solid rgba(255, 255, 255, 0.15)',
+                boxShadow: '0 8px 24px rgba(0, 0, 0, 0.3)',
+              }}
+            >
+              {/* Illustration */}
+              <div style={{
+                position: 'absolute',
+                top: '-15%',
+                right: '-8%',
+                width: '55%',
+                height: '130%',
+                pointerEvents: 'none',
+                zIndex: 0,
+              }}>
+                <img
+                  src={illustrationStillUs}
+                  alt=""
+                  draggable={false}
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'contain',
+                    objectPosition: 'center 30%',
+                    opacity: 0.55,
+                  }}
+                />
+              </div>
 
-                {/* Still Us cross-discovery on BARN tab */}
-                <div className="px-4" style={{ marginTop: '28px' }}>
-                  <div style={{
-                    borderTop: '1px solid hsla(38, 50%, 50%, 0.12)',
-                    paddingTop: '16px',
-                  }}>
-                    <p style={{
-                      fontFamily: "'Lato', sans-serif",
-                      fontSize: '12px',
-                      fontWeight: 600,
-                      letterSpacing: '1.5px',
-                      textTransform: 'uppercase',
-                      color: '#6B5E52',
-                      marginBottom: '12px',
-                    }}>
-                      För er som par
-                    </p>
-                    <StillUsTile onClick={() => navigate('/product/still-us')} />
-                  </div>
-                </div>
+              {/* Bottom gradient scrim */}
+              <div
+                aria-hidden="true"
+                style={{
+                  position: 'absolute',
+                  bottom: 0, left: 0, right: 0,
+                  height: '60%',
+                  zIndex: 1,
+                  pointerEvents: 'none',
+                  background: 'linear-gradient(to top, rgba(46, 34, 51, 1) 0%, rgba(46, 34, 51, 0.7) 50%, transparent 100%)',
+                  borderRadius: '0 0 22px 22px',
+                }}
+              />
 
-                {/* Era samtal */}
-                <div className="px-4" style={{ marginTop: '28px', marginBottom: '16px' }}>
-                  <EraSamtalCard onClick={() => navigate('/diary/jag_i_mig')} />
-                </div>
-              </motion.div>
-            )}
+              <div style={{
+                position: 'absolute',
+                bottom: 0, left: 0, right: 0,
+                zIndex: 2,
+                padding: '0 18px 16px',
+              }}>
+                <h3 style={{
+                  fontFamily: "'DM Serif Display', serif",
+                  fontSize: '22px',
+                  fontWeight: 700,
+                  color: '#FDF6E3',
+                  lineHeight: 1.15,
+                  textShadow: '0 2px 8px rgba(46, 34, 51, 1)',
+                }}>
+                  Still Us
+                </h3>
+                <p style={{
+                  fontFamily: "'Lato', sans-serif",
+                  fontSize: '11px',
+                  color: 'hsla(38, 55%, 65%, 0.7)',
+                  marginTop: '4px',
+                }}>
+                  22 samtal för er relation
+                </p>
+              </div>
+            </motion.div>
+          </div>
+        </div>
 
-            {activeTab === 'par' && (
-              <motion.div
-                key="par"
-                initial={{ opacity: 0, x: swipeDirection * 30 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: swipeDirection * -30 }}
-                transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-                style={{ minHeight: '60vh' }}
-              >
-                {/* Bridge phrase */}
-                <motion.div
-                  initial={{ opacity: 0, y: 6 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.1, duration: 0.6 }}
-                  style={{ textAlign: 'center', padding: '4px 32px 20px' }}
-                >
-                  <p style={{
-                    fontFamily: "'DM Serif Display', serif",
-                    fontStyle: 'italic',
-                    fontSize: '14px',
-                    fontWeight: 400,
-                    color: 'hsla(38, 55%, 65%, 0.55)',
-                    lineHeight: 1.6,
-                  }}>
-                    Du tar hand om samtalen med barnen — här tar ni hand om era egna
-                  </p>
-                </motion.div>
+        {/* Era samtal — compact return-loop hook */}
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.7 * ANIM_SPEED, duration: 0.7 * ANIM_SPEED, ease: [0.22, 1, 0.36, 1] }}
+          whileTap={{ scale: 0.97 }}
+          onClick={() => navigate('/diary/jag_i_mig')}
+          className="cursor-pointer"
+          style={{
+            margin: '28px 20px 16px',
+            padding: '16px 20px',
+            borderRadius: '16px',
+            background: 'hsla(230, 30%, 16%, 0.6)',
+            border: '1px solid hsla(38, 60%, 50%, 0.12)',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '14px',
+          }}
+        >
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{ color: '#E9B44C', opacity: 0.6, flexShrink: 0 }}>
+            <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20" />
+          </svg>
+          <div style={{ flex: 1 }}>
+            <p style={{
+              fontFamily: "'DM Serif Display', serif",
+              fontSize: '15px',
+              fontWeight: 400,
+              color: '#FDF6E3',
+              lineHeight: 1.3,
+            }}>
+              Era samtal
+            </p>
+            <p style={{
+              fontFamily: "'Lato', sans-serif",
+              fontSize: '10px',
+              color: 'hsla(38, 50%, 65%, 0.5)',
+              marginTop: '2px',
+            }}>
+              Varje samtal sparas
+            </p>
+          </div>
+          <span style={{
+            fontFamily: "'Lato', sans-serif",
+            fontSize: '10px',
+            fontWeight: 600,
+            letterSpacing: '0.06em',
+            color: '#E9B44C',
+            opacity: 0.4,
+          }}>
+            →
+          </span>
+        </motion.div>
+          </motion.div>
+        )}
 
-                <motion.div
-                  className="px-4"
-                  variants={containerVariants}
-                  initial="hidden"
-                  animate="visible"
-                  style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}
-                >
-                  {/* Still Us tile */}
-                  <StillUsTile onClick={() => navigate('/product/still-us')} />
+        {activeTab === 'par' && (
+          <motion.div
+            key="par"
+            initial={{ opacity: 0, x: swipeDirection * 30 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: swipeDirection * -30 }}
+            transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+            style={{
+              padding: '0',
+              minHeight: '60vh',
+              position: 'relative',
+            }}
+          >
 
-                  {/* Coming soon — Still Fair */}
-                  <div style={{ marginTop: '14px' }}>
-                    {/* Section label */}
-                    <div style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '10px',
-                      marginBottom: '14px',
-                      padding: '0 4px',
-                    }}>
-                      <div style={{ flex: 1, height: '1px', background: 'linear-gradient(90deg, transparent, hsla(38, 60%, 50%, 0.15))' }} />
-                      <span style={{
-                        fontFamily: "'Lato', sans-serif",
-                        fontSize: '8px',
-                        fontWeight: 700,
-                        letterSpacing: '0.14em',
-                        textTransform: 'uppercase' as const,
-                        color: 'hsla(38, 55%, 60%, 0.4)',
-                      }}>
-                        Kommer snart
-                      </span>
-                      <div style={{ flex: 1, height: '1px', background: 'linear-gradient(90deg, hsla(38, 60%, 50%, 0.15), transparent)' }} />
-                    </div>
-
-                    <ComingSoonTile name="Still Fair" />
-                  </div>
-                </motion.div>
-
-                {/* Era samtal on PAR tab */}
-                <div className="px-4" style={{ marginTop: '28px', marginBottom: '16px' }}>
-                  <EraSamtalCard onClick={() => navigate('/diary/jag_i_mig')} />
-                </div>
-              </motion.div>
-            )}
-
-          </AnimatePresence>
+        {/* Bridge phrase — contextual for parents coming from BARN */}
+        <motion.div
+          initial={{ opacity: 0, y: 6 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1, duration: 0.6 }}
+          style={{
+            textAlign: 'center',
+            padding: '4px 32px 20px',
+            position: 'relative',
+            zIndex: 1,
+          }}
+        >
+          <p
+            style={{
+              fontFamily: "'DM Serif Display', serif",
+              fontStyle: 'italic',
+              fontSize: '14px',
+              fontWeight: 400,
+              color: 'hsla(38, 55%, 65%, 0.55)',
+              lineHeight: 1.6,
+            }}
+          >
+            Du tar hand om samtalen med barnen — här tar ni hand om era egna
+          </p>
         </motion.div>
 
-        {/* Bottom safe-area */}
+        {/* ── Still Us — immersive hero card ── */}
+        <motion.div
+          className="px-5"
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+          style={{ position: 'relative', zIndex: 1 }}
+        >
+          <motion.div
+            variants={tileVariants}
+            whileHover={{ scale: 1.015, y: -2 }}
+            whileTap={{ scale: 0.97, y: 2 }}
+            onClick={() => navigate('/product/still-us')}
+            className="cursor-pointer"
+            style={{
+              borderRadius: '22px',
+              backgroundImage: 'linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0) 50%, rgba(0,0,0,0.12) 100%)',
+              backgroundColor: '#1E5A68',
+              minHeight: '340px',
+              display: 'flex',
+              flexDirection: 'column',
+              position: 'relative',
+              overflow: 'hidden',
+              border: '1.5px solid rgba(255, 255, 255, 0.30)',
+              boxShadow: [
+                '0 16px 48px rgba(0, 0, 0, 0.35)',
+                '0 6px 16px rgba(0, 0, 0, 0.25)',
+                '0 1px 3px rgba(0, 0, 0, 0.08)',
+                'inset 0 3px 6px rgba(255, 255, 255, 0.45)',
+                'inset 0 -4px 10px rgba(15, 45, 52, 0.20)',
+              ].join(', '),
+            }}
+          >
+            {/* Illustration — large hero */}
+            <div
+              style={{
+                position: 'absolute',
+                top: '-12%',
+                left: '10%',
+                right: '-8%',
+                bottom: '30%',
+                pointerEvents: 'none',
+                zIndex: 0,
+              }}
+            >
+              <img
+                src={illustrationStillUs}
+                alt=""
+                draggable={false}
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'contain',
+                  objectPosition: 'center 25%',
+                  opacity: 0.9,
+                }}
+              />
+            </div>
+
+            {/* Extended gradient scrim for text legibility */}
+            <div
+              aria-hidden="true"
+              style={{
+                position: 'absolute',
+                bottom: 0, left: 0, right: 0,
+                height: '70%',
+                zIndex: 1,
+                pointerEvents: 'none',
+                background: `linear-gradient(to top, rgba(30, 90, 104, 1) 0%, rgba(30, 90, 104, 0.97) 20%, rgba(30, 90, 104, 0.85) 40%, rgba(30, 90, 104, 0.4) 65%, transparent 100%)`,
+                borderRadius: '0 0 22px 22px',
+              }}
+            />
+
+            {/* Text content — rich bottom section */}
+            <div style={{
+              position: 'absolute',
+              bottom: 0, left: 0, right: 0,
+              zIndex: 2,
+              padding: '0 22px 22px',
+            }}>
+              <h3
+                style={{
+                  fontFamily: "'DM Serif Display', serif",
+                  fontSize: '32px',
+                  fontWeight: 700,
+                  lineHeight: 1.1,
+                  color: '#FDF6E3',
+                  letterSpacing: '-0.02em',
+                  textShadow: '0 2px 8px rgba(30, 90, 104, 1), 0 0 20px rgba(30, 90, 104, 0.9)',
+                }}
+              >
+                Still Us
+              </h3>
+
+              {/* Emotional hook */}
+              <p
+                style={{
+                  fontFamily: "'DM Serif Display', serif",
+                  fontStyle: 'italic',
+                  fontSize: '14px',
+                  fontWeight: 400,
+                  color: 'hsla(38, 78%, 60%, 0.85)',
+                  marginTop: '6px',
+                  lineHeight: 1.4,
+                  textShadow: '0 0 12px rgba(30, 90, 104, 1)',
+                }}
+              >
+                22 samtal för er som vill stanna kvar
+              </p>
+
+              {/* Session format + credential — trust signals */}
+              <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px',
+                marginTop: '12px',
+                flexWrap: 'wrap',
+              }}>
+                <span style={{
+                  fontFamily: "'Lato', sans-serif",
+                  fontSize: '10px',
+                  fontWeight: 600,
+                  letterSpacing: '0.04em',
+                  color: 'hsla(192, 25%, 80%, 0.7)',
+                  background: 'hsla(192, 20%, 50%, 0.12)',
+                  borderRadius: '12px',
+                  padding: '4px 10px',
+                }}>
+                  ca 20 min per samtal
+                </span>
+                <span style={{
+                  fontFamily: "'Lato', sans-serif",
+                  fontSize: '10px',
+                  fontWeight: 600,
+                  letterSpacing: '0.04em',
+                  color: 'hsla(192, 25%, 80%, 0.7)',
+                  background: 'hsla(192, 20%, 50%, 0.12)',
+                  borderRadius: '12px',
+                  padding: '4px 10px',
+                }}>
+                  ✦ 1a gratis
+                </span>
+              </div>
+
+              {/* CTA button */}
+              <div
+                style={{
+                  marginTop: '16px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                }}
+              >
+                <span
+                  style={{
+                    fontFamily: "'Lato', sans-serif",
+                    fontSize: '13px',
+                    fontWeight: 700,
+                    letterSpacing: '0.02em',
+                    color: '#1A1A2E',
+                    background: 'linear-gradient(135deg, hsla(38, 78%, 58%, 0.95) 0%, hsla(38, 65%, 50%, 0.9) 100%)',
+                    borderRadius: '14px',
+                    padding: '10px 22px',
+                    boxShadow: '0 4px 16px hsla(38, 70%, 40%, 0.3)',
+                  }}
+                >
+                  Öppna Still Us
+                </span>
+                {/* Credential — integrated trust signal */}
+                <span style={{
+                  fontFamily: "'Lato', sans-serif",
+                  fontSize: '8px',
+                  fontWeight: 500,
+                  letterSpacing: '0.06em',
+                  textTransform: 'uppercase' as const,
+                  color: 'hsla(192, 20%, 70%, 0.45)',
+                  textAlign: 'right',
+                  lineHeight: 1.4,
+                  maxWidth: '120px',
+                }}>
+                  Utvecklat av psykolog · 20+ års erfarenhet
+                </span>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* ── Coming soon section ── */}
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5, duration: 0.6 }}
+            style={{ marginTop: '28px' }}
+          >
+            {/* Section label */}
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '10px',
+              marginBottom: '14px',
+              padding: '0 4px',
+            }}>
+              <div style={{ flex: 1, height: '1px', background: 'linear-gradient(90deg, transparent, hsla(38, 60%, 50%, 0.15))' }} />
+              <span style={{
+                fontFamily: "'Lato', sans-serif",
+                fontSize: '8px',
+                fontWeight: 700,
+                letterSpacing: '0.14em',
+                textTransform: 'uppercase' as const,
+                color: 'hsla(38, 55%, 60%, 0.4)',
+              }}>
+                Kommer snart
+              </span>
+              <div style={{ flex: 1, height: '1px', background: 'linear-gradient(90deg, hsla(38, 60%, 50%, 0.15), transparent)' }} />
+            </div>
+
+            {/* Still Fair — compact coming-soon card */}
+            <motion.div
+              variants={tileVariants}
+              style={{
+                borderRadius: '18px',
+                backgroundImage: 'linear-gradient(135deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0) 50%, rgba(0,0,0,0.08) 100%)',
+                backgroundColor: 'hsl(327, 24%, 22%)',
+                minHeight: '140px',
+                display: 'flex',
+                flexDirection: 'column',
+                position: 'relative',
+                overflow: 'hidden',
+                border: '1px solid rgba(255, 255, 255, 0.08)',
+                boxShadow: [
+                  '0 8px 24px rgba(60, 30, 50, 0.25)',
+                  '0 2px 8px rgba(60, 30, 50, 0.15)',
+                  'inset 0 2px 4px rgba(255, 255, 255, 0.06)',
+                ].join(', '),
+                filter: 'saturate(0.65)',
+              }}
+            >
+              {/* Illustration */}
+              <div
+                style={{
+                  position: 'absolute',
+                  top: '-5%',
+                  left: '25%',
+                  right: '-5%',
+                  bottom: '18%',
+                  pointerEvents: 'none',
+                  zIndex: 0,
+                }}
+              >
+                <img
+                  src={illustrationStillFair}
+                  alt=""
+                  draggable={false}
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'contain',
+                    objectPosition: 'center 30%',
+                    opacity: 0.6,
+                  }}
+                />
+              </div>
+
+              {/* Bottom gradient scrim */}
+              <div
+                aria-hidden="true"
+                style={{
+                  position: 'absolute',
+                  bottom: 0, left: 0, right: 0,
+                  height: '65%',
+                  zIndex: 1,
+                  pointerEvents: 'none',
+                  background: `linear-gradient(to top, hsl(327, 24%, 22%) 0%, hsla(327, 24%, 22%, 0.93) 25%, hsla(327, 24%, 22%, 0.5) 55%, transparent 100%)`,
+                  borderRadius: '0 0 18px 18px',
+                }}
+              />
+
+              {/* Text content */}
+              <div style={{
+                position: 'absolute',
+                bottom: 0, left: 0, right: 0,
+                zIndex: 2,
+                padding: '0 18px 16px',
+              }}>
+                <h3
+                  style={{
+                    fontFamily: "'DM Serif Display', serif",
+                    fontSize: '22px',
+                    fontWeight: 700,
+                    lineHeight: 1.15,
+                    color: '#F5EFE6',
+                    letterSpacing: '-0.01em',
+                    opacity: 0.8,
+                    textShadow: '0 1px 6px hsl(327, 24%, 22%), 0 0 16px hsla(327, 24%, 22%, 0.9)',
+                  }}
+                >
+                  Still Fair
+                </h3>
+                <p
+                  style={{
+                    fontFamily: "'Lato', sans-serif",
+                    fontSize: '11px',
+                    fontWeight: 400,
+                    color: 'hsla(327, 15%, 75%, 0.7)',
+                    marginTop: '3px',
+                    lineHeight: 1.4,
+                    textShadow: '0 0 10px hsl(327, 24%, 22%)',
+                  }}
+                >
+                  Det osynliga arbetet, synligt för båda
+                </p>
+                <div style={{ marginTop: '8px' }}>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      if (!notifySignedUp && !notifyLoading) handleNotifyMe();
+                    }}
+                    disabled={notifySignedUp || notifyLoading}
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '4px',
+                      fontFamily: "'Lato', sans-serif",
+                      fontSize: '10px',
+                      fontWeight: 600,
+                      letterSpacing: '0.02em',
+                      color: notifySignedUp ? 'hsla(38, 78%, 58%, 0.7)' : '#0A0A1A',
+                      background: notifySignedUp ? 'hsla(38, 70%, 50%, 0.08)' : 'linear-gradient(135deg, hsla(38, 78%, 58%, 0.85) 0%, hsla(38, 65%, 50%, 0.8) 100%)',
+                      border: notifySignedUp ? '1px solid hsla(38, 70%, 50%, 0.12)' : 'none',
+                      borderRadius: '14px',
+                      padding: notifySignedUp ? '4px 12px' : '6px 14px',
+                      cursor: notifySignedUp ? 'default' : 'pointer',
+                      opacity: notifyLoading ? 0.6 : 1,
+                      transition: 'all 200ms ease',
+                      boxShadow: notifySignedUp ? 'none' : '0 2px 10px hsla(38, 70%, 40%, 0.25)',
+                    }}
+                  >
+                    {notifySignedUp ? '✓ Du blir meddelad' : '🔔 Meddela mig'}
+                  </button>
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        </motion.div>
+          </motion.div>
+        )}
+        </AnimatePresence>
+        </motion.div>
+
+        {/* Bottom safe-area spacing */}
         <div style={{ paddingBottom: 'calc(48px + env(safe-area-inset-bottom, 0px))' }} />
       </div>
     </div>
