@@ -106,7 +106,7 @@ export default function VardagProductHome({ product }: { product: ProductManifes
               color: ACCENT_COLOR,
               opacity: 0.9,
               marginTop: '6px',
-              textShadow: `0 1px 10px rgba(0,0,0,0.4), 0 0 40px ${BG}`,
+              textShadow: `0 1px 12px rgba(0,0,0,0.7), 0 0 30px ${BG}, 0 0 60px ${BG}, 0 4px 24px ${BG}`,
             }}>
               Det vanliga, på djupet
             </p>
