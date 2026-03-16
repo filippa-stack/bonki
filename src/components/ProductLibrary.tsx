@@ -57,27 +57,27 @@ function hexToRgba(hex: string, alpha: number): string {
 
 /** Hero-level illustration opacities — individually calibrated */
 const ILLUSTRATION_OPACITY: Record<string, number> = {
-  jag_i_mig: 0.92,
+  jag_i_mig: 0.90,
   jag_med_andra: 0.88,
-  jag_i_varlden: 0.85,
-  sexualitetskort: 0.90,
+  jag_i_varlden: 0.90,
+  sexualitetskort: 0.88,
   vardagskort: 0.85,
   syskonkort: 0.88,
 };
 
 /** Per-product illustration placement — individually tuned to each motif's center of gravity */
 const ILLUSTRATION_POSITION: Record<string, string> = {
-  jag_i_mig: 'center 45%',
-  jag_med_andra: 'center 25%',
-  jag_i_varlden: 'center 15%',
-  sexualitetskort: 'center 30%',
-  vardagskort: 'center 25%',
-  syskonkort: 'center 25%',
+  jag_i_mig: 'center 30%',
+  jag_med_andra: 'center 35%',
+  jag_i_varlden: 'center 30%',
+  sexualitetskort: 'center 25%',
+  vardagskort: 'center 30%',
+  syskonkort: 'center 35%',
 };
 
 /** Per-product object-fit mode */
 const ILLUSTRATION_FIT: Record<string, string> = {
-  jag_i_mig: 'cover',
+  jag_i_mig: 'contain',
   jag_med_andra: 'contain',
   jag_i_varlden: 'contain',
   sexualitetskort: 'contain',
@@ -87,11 +87,11 @@ const ILLUSTRATION_FIT: Record<string, string> = {
 
 /** Per-product illustration container bounds — {top, left, right, bottom} as % */
 const ILLUSTRATION_BOUNDS: Record<string, { top: string; left: string; right: string; bottom: string }> = {
-  jag_i_mig: { top: '-8%', left: '5%', right: '-2%', bottom: '18%' },
-  jag_med_andra: { top: '-8%', left: '-5%', right: '-5%', bottom: '22%' },
-  jag_i_varlden: { top: '-20%', left: '-12%', right: '-12%', bottom: '12%' },
-  sexualitetskort: { top: '-5%', left: '3%', right: '-2%', bottom: '20%' },
-  vardagskort: { top: '-5%', left: '-5%', right: '-5%', bottom: '22%' },
+  jag_i_mig: { top: '-5%', left: '-2%', right: '-2%', bottom: '22%' },
+  jag_med_andra: { top: '-8%', left: '-5%', right: '-5%', bottom: '20%' },
+  jag_i_varlden: { top: '-5%', left: '-2%', right: '-2%', bottom: '22%' },
+  sexualitetskort: { top: '-5%', left: '-2%', right: '-2%', bottom: '20%' },
+  vardagskort: { top: '-5%', left: '-5%', right: '-5%', bottom: '20%' },
   syskonkort: { top: '-5%', left: '-2%', right: '-2%', bottom: '22%' },
 };
 
