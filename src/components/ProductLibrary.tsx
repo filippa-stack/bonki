@@ -8,6 +8,7 @@ import { useCoupleSpaceContext } from '@/contexts/CoupleSpaceContext';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/components/ui/sonner';
 import LibraryResumeBanner from '@/components/LibraryResumeBanner';
+import LibraryResumeCard from '@/components/LibraryResumeCard';
 import watermarkMamma from '@/assets/watermark-mamma.png';
 import creaturesTrio from '@/assets/creatures-trio.png';
 import creatureLionGirl from '@/assets/creature-lion-girl.png';
@@ -813,6 +814,8 @@ export default function ProductLibrary() {
           >
             ✦ Första kortet i varje produkt är gratis
           </motion.p>
+          <LibraryResumeCard activeTab="barn" />
+          <div style={{ height: '24px' }} />
           <motion.div
             variants={containerVariants}
             initial="hidden"
@@ -1045,6 +1048,8 @@ export default function ProductLibrary() {
             Du tar hand om samtalen med barnen — här tar ni hand om era egna
           </p>
         </motion.div>
+        <LibraryResumeCard activeTab="par" />
+        <div style={{ height: '24px' }} />
 
         {/* ── Still Us — immersive hero card ── */}
         <motion.div
