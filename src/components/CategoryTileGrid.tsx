@@ -87,8 +87,6 @@ function CategoryTile({
   const isDeep = index >= total - 2 && total > 2;
   const nameOpacity = isDeep ? 0.85 : 1;
   const subOpacity = isDeep ? 0.7 : 1;
-  const dotDimOpacities = [0.4, 0.35, 0.3, 0.25, 0.2];
-  const dotDimOpacity = dotDimOpacities[Math.min(index, dotDimOpacities.length - 1)];
 
   const shieldRgb = hexToRgb(tile.bg);
 
