@@ -226,15 +226,16 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
       style={{
         borderRadius: '16px',
         backgroundColor: bg,
-        height: '240px',
+        height: '260px',
         display: 'flex',
         position: 'relative',
         overflow: 'hidden',
         border: '1.5px solid rgba(255, 255, 255, 0.30)',
         boxShadow: [
-          `0 12px 32px ${toShadowColor(bg, 0.30)}`,
-          `0 4px 12px ${toShadowColor(bg, 0.18)}`,
-          '0 1px 3px rgba(0, 0, 0, 0.08)',
+          `0 16px 40px ${toShadowColor(bg, 0.35)}`,
+          `0 6px 16px ${toShadowColor(bg, 0.22)}`,
+          '0 1px 3px rgba(0, 0, 0, 0.10)',
+          `0 0 60px ${toShadowColor(bg, 0.15)}`,
           'inset 0 3px 6px rgba(255, 255, 255, 0.45)',
           `inset 0 -4px 10px ${toShadowColor(bg, 0.12)}`,
         ].join(', '),
@@ -527,51 +528,65 @@ export default function ProductLibrary() {
 
       {/* ── Bold creature illustrations — hero-level, full color ── */}
       <div aria-hidden="true" style={{ position: 'absolute', inset: 0, overflow: 'hidden', pointerEvents: 'none', zIndex: 0 }}>
-        {/* Girl — top left */}
+        {/* Girl — top left, sitting on the edge */}
         <motion.img
           src={creatureGirl}
           alt=""
           draggable={false}
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 0.30, x: 0 }}
-          transition={{ delay: 0.3, duration: 1.4, ease: [0.22, 1, 0.36, 1] }}
+          initial={{ opacity: 0, y: 15 }}
+          animate={{ opacity: 0.40, y: 0 }}
+          transition={{ delay: 0.4, duration: 1.6, ease: [0.22, 1, 0.36, 1] }}
           style={{
             position: 'absolute',
-            top: '-10px',
-            left: '10px',
-            width: '140px',
+            top: '8px',
+            left: '-8px',
+            width: '160px',
             height: 'auto',
           }}
         />
-        {/* Lion — top right, next to girl */}
+        {/* Lion — top right, bold and forward-facing */}
         <motion.img
           src={creatureLionSolo}
           alt=""
           draggable={false}
-          initial={{ opacity: 0, x: 20 }}
-          animate={{ opacity: 0.30, x: 0 }}
-          transition={{ delay: 0.5, duration: 1.4, ease: [0.22, 1, 0.36, 1] }}
+          initial={{ opacity: 0, y: 15 }}
+          animate={{ opacity: 0.38, y: 0 }}
+          transition={{ delay: 0.6, duration: 1.6, ease: [0.22, 1, 0.36, 1] }}
           style={{
             position: 'absolute',
-            top: '20px',
-            left: '130px',
-            width: '220px',
+            top: '15px',
+            right: '-30px',
+            width: '260px',
             height: 'auto',
           }}
         />
-        {/* Trio — bottom zone */}
+        {/* Hero gradient scrim — ensures title legibility over creatures */}
+        <div style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          height: '320px',
+          background: `linear-gradient(180deg, 
+            hsla(230, 25%, 10%, 0.0) 0%, 
+            hsla(230, 25%, 10%, 0.5) 35%,
+            hsla(230, 25%, 10%, 0.85) 60%,
+            ${libraryBg} 100%)`,
+          zIndex: 1,
+        }} />
+        {/* Trio — bottom zone, watching from below */}
         <motion.img
           src={creaturesTrio}
           alt=""
           draggable={false}
           initial={{ opacity: 0 }}
-          animate={{ opacity: 0.25 }}
-          transition={{ delay: 0.7, duration: 1.4, ease: [0.22, 1, 0.36, 1] }}
+          animate={{ opacity: 0.18 }}
+          transition={{ delay: 1.0, duration: 1.8, ease: [0.22, 1, 0.36, 1] }}
           style={{
             position: 'absolute',
-            bottom: '-40px',
-            left: '-70px',
-            width: '420px',
+            bottom: '-60px',
+            left: '-80px',
+            width: '460px',
             height: 'auto',
           }}
         />
@@ -586,7 +601,7 @@ export default function ProductLibrary() {
           transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
           style={{
             textAlign: 'center',
-            padding: '24px 32px 0',
+            padding: '48px 32px 0',
           }}
         >
           <motion.h1
@@ -596,13 +611,14 @@ export default function ProductLibrary() {
             style={{
               fontFamily: "var(--font-display)",
               fontVariationSettings: "'opsz' 36",
-              fontSize: '34px',
+              fontSize: '42px',
               fontWeight: 400,
               color: isDark ? 'hsla(38, 78%, 55%, 0.95)' : '#E9B44C',
-              lineHeight: 1.15,
+              lineHeight: 1.1,
               letterSpacing: '-0.03em',
-              marginBottom: '8px',
+              marginBottom: '10px',
               transition: 'color 400ms ease',
+              textShadow: `0 2px 20px hsla(230, 25%, 10%, 0.8), 0 0 40px hsla(230, 25%, 10%, 0.4)`,
             }}
           >
             Bonki
@@ -620,6 +636,7 @@ export default function ProductLibrary() {
               opacity: isDark ? 1 : 0.5,
               lineHeight: 1.6,
               transition: 'color 400ms ease',
+              textShadow: '0 1px 12px hsla(230, 25%, 10%, 0.6)',
             }}
           >
             Verktyg för samtalen som inte blir av
@@ -790,7 +807,7 @@ export default function ProductLibrary() {
             style={{
               display: 'flex',
               flexDirection: 'column',
-              gap: '16px',
+              gap: '20px',
             }}
           >
             {sortedKidsProducts.map((product) => (
