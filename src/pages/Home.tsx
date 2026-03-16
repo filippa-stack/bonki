@@ -180,7 +180,8 @@ export default function Home() {
             >
               <h1
                 style={{
-                  fontFamily: "'DM Serif Display', var(--font-serif)",
+                  fontFamily: "var(--font-display)",
+                  fontVariationSettings: "'opsz' 28",
                   fontSize: '28px',
                   fontWeight: 600,
                   color: LANTERN_GLOW,
