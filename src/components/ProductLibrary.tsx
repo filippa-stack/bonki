@@ -15,9 +15,9 @@ import creatureGirl from '@/assets/creature-girl.png';
 import creatureLionSolo from '@/assets/creature-lion-solo.png';
 
 import illustrationStillUs from '@/assets/illustration-still-us-tile.png';
-import illustrationJagIMig from '@/assets/mirror-jag-i-mig.png';
-import illustrationJagMedAndra from '@/assets/annorlunda-jag-med-andra.png';
-import illustrationJagIVarlden from '@/assets/aktivism-jag-i-varlden.png';
+import illustrationJagIMig from '@/assets/illustration-jag-i-mig.png';
+import illustrationJagMedAndra from '@/assets/illustration-jag-med-andra.png';
+import illustrationJagIVarlden from '@/assets/illustration-jag-i-varlden.png';
 import illustrationSexualitet from '@/assets/illustration-sexualitet.png';
 import illustrationSyskon from '@/assets/illustration-syskon.png';
 import illustrationVardag from '@/assets/illustration-vardag.png';
