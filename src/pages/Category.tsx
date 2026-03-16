@@ -649,6 +649,7 @@ function StillUsCategoryView({
               onClick={() => navigate(isReturningUser ? `/card/${card.id}` : `/preview/${card.id}`)}
               style={{
                 position: 'relative',
+                overflow: 'hidden',
                 width: '100%',
                 minHeight: '120px',
                 background: EMBER_MID,
