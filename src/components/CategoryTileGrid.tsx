@@ -98,13 +98,18 @@ function CategoryTile({
 
   const catProgress = progress.categoryProgress[cat.id];
   const isFirst = index === 0;
-  const depth = getTileDepthColors(index, total, product);
-  const shieldRgb = hexToRgb(depth.shieldColor);
+  const isDeep = index >= total - 2 && total > 2; // last 2 tiles are "deep"
+  const nameOpacity = isDeep ? 0.85 : 1;
+  const subOpacity = isDeep ? 0.7 : 1;
+  const dotDimOpacity = isDeep ? 0.1 : 0.2;
+
+  const shieldRgb = hexToRgb(tile.bg);
   const creatureRgb = hexToRgb(product.tileLight || '#333');
 
-  // Progress dots
   const completed = catProgress?.completed ?? 0;
   const totalCards = catProgress?.total ?? 0;
+
+  const ariaLabel = `${cat.title}: ${tile.sub}. ${completed} av ${totalCards} utforskade.`;
 
   return (
     <motion.button
@@ -112,13 +117,14 @@ function CategoryTile({
       whileHover={{ scale: 1.03, y: -2 }}
       whileTap={{ scale: 0.96, y: 2 }}
       onClick={() => navigate(`/category/${cat.id}`)}
+      aria-label={ariaLabel}
       style={{
         position: 'relative',
         overflow: 'hidden',
         borderRadius: '16px',
         cursor: 'pointer',
         textAlign: 'left',
-        backgroundColor: depth.bg,
+        backgroundColor: tile.bg,
         border: 'none',
         borderLeft: isFirst ? `3px solid ${SAFFRON}` : 'none',
         padding: 0,
@@ -143,7 +149,6 @@ function CategoryTile({
           }}
         />
       ) : (
-        /* Fallback: radial gradient with creature color */
         <div
           style={{
             position: 'absolute',
@@ -173,7 +178,7 @@ function CategoryTile({
           bottom: 0,
           left: 0,
           right: 0,
-          padding: '16px 14px 14px',
+          padding: '14px',
         }}
       >
         <span
@@ -183,7 +188,7 @@ function CategoryTile({
             fontSize: '17px',
             fontWeight: 600,
             color: LANTERN,
-            opacity: depth.nameOpacity,
+            opacity: nameOpacity,
             lineHeight: 1.2,
             display: 'block',
           }}
@@ -195,7 +200,7 @@ function CategoryTile({
             fontSize: '12px',
             fontWeight: 400,
             color: SUBTITLE_COLOR,
-            opacity: depth.subOpacity,
+            opacity: subOpacity,
             lineHeight: 1.3,
             marginTop: '3px',
             display: 'block',
@@ -207,22 +212,18 @@ function CategoryTile({
         {/* Progress dots */}
         {totalCards > 0 && (
           <div style={{ display: 'flex', flexDirection: 'row', gap: '4px', marginTop: '8px' }}>
-            {Array.from({ length: totalCards }).map((_, dotIdx) => {
-              // Depth-based opacity for incomplete dots
-              const baseOpacity = index === 0 ? 0.4 : index === total - 1 ? 0.15 : 0.25;
-              return (
-                <div
-                  key={dotIdx}
-                  style={{
-                    width: '5px',
-                    height: '5px',
-                    borderRadius: '50%',
-                    backgroundColor: dotIdx < completed ? SAFFRON : LANTERN,
-                    opacity: dotIdx < completed ? 1 : baseOpacity,
-                  }}
-                />
-              );
-            })}
+            {Array.from({ length: totalCards }).map((_, dotIdx) => (
+              <div
+                key={dotIdx}
+                style={{
+                  width: '5px',
+                  height: '5px',
+                  borderRadius: '50%',
+                  backgroundColor: dotIdx < completed ? SAFFRON : `rgba(253, 246, 227, ${dotDimOpacity})`,
+                  ...(dotIdx < completed ? {} : {}),
+                }}
+              />
+            ))}
           </div>
         )}
       </div>
