@@ -10,6 +10,7 @@ import { useCoupleSpaceContext } from '@/contexts/CoupleSpaceContext';
 import { getProductById } from '@/data/products';
 import { KIDS_PRODUCT_IDS } from '@/hooks/useKidsProductProgress';
 import { buildDynamicSteps } from '@/components/StepProgressIndicator';
+import { useDevState } from '@/contexts/DevStateContext';
 
 const DEEP_DUSK = '#2A2D3A';
 const LANTERN_GLOW = '#FDF6E3';
@@ -27,14 +28,25 @@ interface ResumeData {
 
 interface LibraryResumeCardProps {
   activeTab: 'barn' | 'par';
+  forceMock?: boolean;
 }
 
-export default function LibraryResumeCard({ activeTab }: LibraryResumeCardProps) {
+export default function LibraryResumeCard({ activeTab, forceMock }: LibraryResumeCardProps) {
   const navigate = useNavigate();
   const { space } = useCoupleSpaceContext();
   const [resume, setResume] = useState<ResumeData | null>(null);
+  const devState = useDevState();
+
+  // Dev mock: show a fake resume card when devState is active or forceMock is true
+  const showMock = forceMock || devState === 'library' || devState === 'pairedActive';
+  const devMock: ResumeData | null = showMock
+    ? activeTab === 'barn'
+      ? { productName: 'Jag med Andra', cardTitle: 'Att vara duktig', cardId: 'jma-duktig', stepLabel: 'Pausad vid FRÅGA 2 AV 5', accentColor: SAFFRON_FLAME }
+      : { productName: 'Still Us', cardTitle: 'Att lyssna på riktigt', cardId: 'su-kommunikation-1', stepLabel: 'Pausad vid VÄND · Fråga 1 av 3', accentColor: DEEP_SAFFRON }
+    : null;
 
   useEffect(() => {
+    if (devMock) return; // skip fetch when dev mock active
     if (!space?.id) {
       setResume(null);
       return;
@@ -139,17 +151,18 @@ export default function LibraryResumeCard({ activeTab }: LibraryResumeCardProps)
     return () => { cancelled = true; };
   }, [space?.id, activeTab]);
 
-  if (!resume) return null;
+  const display = devMock || resume;
+  if (!display) return null;
 
   return (
     <button
-      onClick={() => navigate(`/card/${resume.cardId}`, { state: { resumed: true } })}
+      onClick={() => navigate(`/card/${display.cardId}`, { state: { resumed: true } })}
       style={{
         width: 'calc(100% - 32px)',
         margin: '16px 16px 0',
         padding: '16px',
         background: DEEP_DUSK,
-        borderLeft: `3px solid ${resume.accentColor}`,
+        borderLeft: `3px solid ${display.accentColor}`,
         borderTop: 'none',
         borderRight: 'none',
         borderBottom: 'none',
@@ -173,7 +186,7 @@ export default function LibraryResumeCard({ activeTab }: LibraryResumeCardProps)
           whiteSpace: 'nowrap',
           margin: 0,
         }}>
-          {resume.productName} · {resume.cardTitle}
+          {display.productName} · {display.cardTitle}
         </p>
         <p style={{
           fontFamily: "var(--font-body)",
@@ -184,7 +197,7 @@ export default function LibraryResumeCard({ activeTab }: LibraryResumeCardProps)
           marginTop: '4px',
           margin: '4px 0 0',
         }}>
-          {resume.stepLabel}
+          {display.stepLabel}
         </p>
       </div>
       <span style={{
