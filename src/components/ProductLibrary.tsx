@@ -851,7 +851,7 @@ export default function ProductLibrary() {
                   Still Us
                 </h3>
                 <p style={{
-                  fontFamily: "'Lato', sans-serif",
+                  fontFamily: "var(--font-body)",
                   fontSize: '11px',
                   color: 'hsla(38, 55%, 65%, 0.7)',
                   marginTop: '4px',
