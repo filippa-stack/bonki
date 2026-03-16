@@ -493,7 +493,8 @@ function KidsCardTile({ card, index, isCompleted, isNextSuggested, tileColor, on
         >
           <h3
             style={{
-              fontFamily: "'DM Serif Display', var(--font-serif)",
+              fontFamily: "var(--font-display)",
+              fontVariationSettings: "'opsz' 28",
               fontSize: '28px',
               fontWeight: 700,
               color: LANTERN_GLOW,
