@@ -16,15 +16,13 @@ import creatureGirl from '@/assets/creature-girl.png';
 import creatureLionSolo from '@/assets/creature-lion-solo.png';
 
 import illustrationStillUs from '@/assets/illustration-still-us-tile.png';
-import illustrationStillFair from '@/assets/illustration-still-fair.png';
-
-// Kids product illustrations (full portal style)
 import illustrationJagIMig from '@/assets/illustration-jag-i-mig.png';
 import illustrationJagMedAndra from '@/assets/illustration-jag-med-andra.png';
 import illustrationJagIVarlden from '@/assets/illustration-jag-i-varlden.png';
 import illustrationSexualitet from '@/assets/illustration-sexualitet.png';
 import illustrationSyskon from '@/assets/illustration-syskon.png';
 import illustrationVardag from '@/assets/illustration-vardag.png';
+import illustrationStillFair from '@/assets/illustration-still-fair.png';
 
 const ILLUSTRATIONS: Record<string, string> = {
   jag_i_mig: illustrationJagIMig,
@@ -34,9 +32,6 @@ const ILLUSTRATIONS: Record<string, string> = {
   syskonkort: illustrationSyskon,
   vardagskort: illustrationVardag,
 };
-
-// Still Us creature (atmospheric right-side approach)
-import creatureSalStillUs from '@/assets/creature-sal-still-us.png';
 
 const TAGLINES: Record<string, string> = {
   jag_i_mig: 'När känslor får ord',
@@ -198,7 +193,8 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
   name: string; bg: string; ageLabel?: string; tagline?: string;
   onClick?: () => void; illustration?: string; productId?: string;
   accentColor?: string; taglineColor?: string; illustrationOpacity?: number;
-  wide?: boolean; showFreeBadge?: boolean; badgeText?: string;
+  illustrationSize?: string; illustrationPosition?: string; wide?: boolean;
+  showFreeBadge?: boolean; badgeText?: string; ageCount?: number;
   hasActiveSession?: boolean;
 }>(function PastelTile({
   name, bg, ageLabel, tagline, onClick, illustration, productId, accentColor, taglineColor,
@@ -877,79 +873,77 @@ export default function ProductLibrary() {
               onClick={() => navigate('/product/still-us')}
               className="cursor-pointer"
               style={{
-                borderRadius: '16px',
+                borderRadius: '22px',
                 backgroundColor: '#2E2233',
-                height: '140px',
+                minHeight: '140px',
                 display: 'flex',
+                flexDirection: 'column',
                 position: 'relative',
                 overflow: 'hidden',
-                border: '1.5px solid rgba(255, 255, 255, 0.18)',
-                boxShadow: '0 8px 24px rgba(0, 0, 0, 0.3), inset 0 1px 3px rgba(255, 255, 255, 0.15)',
+                border: '1.5px solid rgba(255, 255, 255, 0.15)',
+                boxShadow: '0 8px 24px rgba(0, 0, 0, 0.3)',
               }}
             >
-              {/* Creature — atmospheric right 40% */}
+              {/* Illustration */}
               <div style={{
                 position: 'absolute',
-                top: 0, right: 0, bottom: 0,
-                width: '40%',
+                top: '-15%',
+                right: '-8%',
+                width: '55%',
+                height: '130%',
                 pointerEvents: 'none',
                 zIndex: 0,
-                overflow: 'hidden',
               }}>
                 <img
-                  src={creatureSalStillUs}
+                  src={illustrationStillUs}
                   alt=""
                   draggable={false}
                   style={{
                     width: '100%',
                     height: '100%',
-                    objectFit: 'cover',
-                    objectPosition: '55% 35%',
-                    opacity: 0.5,
-                  }}
-                />
-                {/* Gradient fade from tile bg */}
-                <div
-                  aria-hidden="true"
-                  style={{
-                    position: 'absolute',
-                    top: 0, left: 0, bottom: 0,
-                    width: '100%',
-                    background: 'linear-gradient(to right, rgba(46, 34, 51, 1) 0%, transparent 100%)',
-                    pointerEvents: 'none',
+                    objectFit: 'contain',
+                    objectPosition: 'center 30%',
+                    opacity: 0.55,
                   }}
                 />
               </div>
 
-              {/* Text — left 60%, vertically centered */}
+              {/* Bottom gradient scrim */}
+              <div
+                aria-hidden="true"
+                style={{
+                  position: 'absolute',
+                  bottom: 0, left: 0, right: 0,
+                  height: '60%',
+                  zIndex: 1,
+                  pointerEvents: 'none',
+                  background: 'linear-gradient(to top, rgba(46, 34, 51, 1) 0%, rgba(46, 34, 51, 0.72) 50%, transparent 100%)',
+                  borderRadius: '0 0 22px 22px',
+                }}
+              />
+
               <div style={{
-                position: 'relative',
-                width: '60%',
+                position: 'absolute',
+                bottom: 0, left: 0, right: 0,
                 zIndex: 2,
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'center',
-                padding: '16px 0 16px 20px',
+                padding: '0 18px 16px',
               }}>
                 <h3 style={{
                   fontFamily: "var(--font-display)",
-                  fontVariationSettings: "'opsz' 22",
+                  fontVariationSettings: "'opsz' 24",
                   fontSize: '22px',
-                  fontWeight: 600,
+                  fontWeight: 700,
                   color: '#FDF6E3',
                   lineHeight: 1.15,
-                  textShadow: '0 1px 4px rgba(46, 34, 51, 0.5)',
+                  textShadow: '0 2px 8px rgba(71, 52, 84, 1)',
                 }}>
                   Still Us
                 </h3>
                 <p style={{
                   fontFamily: "var(--font-body)",
-                  fontSize: '13px',
-                  fontWeight: 500,
-                  color: '#C8BFB4',
+                  fontSize: '11px',
+                  color: 'hsla(38, 55%, 65%, 0.7)',
                   marginTop: '4px',
-                  lineHeight: 1.4,
-                  textShadow: '0 1px 4px rgba(46, 34, 51, 0.5)',
                 }}>
                   22 samtal för er relation
                 </p>
@@ -1072,167 +1066,177 @@ export default function ProductLibrary() {
             onClick={() => navigate('/product/still-us')}
             className="cursor-pointer"
             style={{
-              borderRadius: '16px',
+              borderRadius: '22px',
+              backgroundImage: 'linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0) 50%, rgba(0,0,0,0.12) 100%)',
               backgroundColor: '#2E2233',
-              height: '140px',
+              minHeight: '340px',
               display: 'flex',
+              flexDirection: 'column',
               position: 'relative',
               overflow: 'hidden',
-              border: '1.5px solid rgba(255, 255, 255, 0.18)',
-              boxShadow: '0 8px 24px rgba(0, 0, 0, 0.3), inset 0 1px 3px rgba(255, 255, 255, 0.15)',
+              border: '1.5px solid rgba(255, 255, 255, 0.30)',
+              boxShadow: [
+                '0 16px 48px rgba(0, 0, 0, 0.35)',
+                '0 6px 16px rgba(0, 0, 0, 0.25)',
+                '0 1px 3px rgba(0, 0, 0, 0.08)',
+                'inset 0 3px 6px rgba(255, 255, 255, 0.45)',
+                'inset 0 -4px 10px rgba(46, 34, 51, 0.24)',
+              ].join(', '),
             }}
           >
-            {/* Creature — atmospheric right 40% */}
-            <div style={{
-              position: 'absolute',
-              top: 0, right: 0, bottom: 0,
-              width: '40%',
-              pointerEvents: 'none',
-              zIndex: 0,
-              overflow: 'hidden',
-            }}>
+            {/* Illustration — large hero */}
+            <div
+              style={{
+                position: 'absolute',
+                top: '-12%',
+                left: '10%',
+                right: '-8%',
+                bottom: '30%',
+                pointerEvents: 'none',
+                zIndex: 0,
+              }}
+            >
               <img
-                src={creatureSalStillUs}
+                src={illustrationStillUs}
                 alt=""
                 draggable={false}
                 style={{
                   width: '100%',
                   height: '100%',
-                  objectFit: 'cover',
-                  objectPosition: '55% 35%',
-                  opacity: 0.5,
-                }}
-              />
-              {/* Gradient fade from tile bg */}
-              <div
-                aria-hidden="true"
-                style={{
-                  position: 'absolute',
-                  top: 0, left: 0, bottom: 0,
-                  width: '100%',
-                  background: 'linear-gradient(to right, rgba(46, 34, 51, 1) 0%, transparent 100%)',
-                  pointerEvents: 'none',
+                  objectFit: 'contain',
+                  objectPosition: 'center 25%',
+                  opacity: 0.9,
                 }}
               />
             </div>
 
-            {/* Text — left 60%, vertically centered */}
+            {/* Extended gradient scrim for text legibility */}
+            <div
+              aria-hidden="true"
+              style={{
+                position: 'absolute',
+                bottom: 0, left: 0, right: 0,
+                height: '70%',
+                zIndex: 1,
+                pointerEvents: 'none',
+                background: `linear-gradient(to top, rgba(46, 34, 51, 1) 0%, rgba(46, 34, 51, 0.97) 20%, rgba(46, 34, 51, 0.86) 40%, rgba(46, 34, 51, 0.42) 65%, transparent 100%)`,
+                borderRadius: '0 0 22px 22px',
+              }}
+            />
+
+            {/* Text content — rich bottom section */}
             <div style={{
-              position: 'relative',
-              width: '60%',
+              position: 'absolute',
+              bottom: 0, left: 0, right: 0,
               zIndex: 2,
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'center',
-              padding: '16px 0 16px 20px',
+              padding: '0 22px 22px',
             }}>
               <h3
                 style={{
                   fontFamily: "var(--font-display)",
-                  fontVariationSettings: "'opsz' 22",
-                  fontSize: '22px',
-                  fontWeight: 600,
-                  lineHeight: 1.15,
+                  fontVariationSettings: "'opsz' 24",
+                  fontSize: '32px',
+                  fontWeight: 700,
+                  lineHeight: 1.1,
                   color: '#FDF6E3',
-                  letterSpacing: '-0.01em',
-                  textShadow: '0 1px 4px rgba(46, 34, 51, 0.5)',
+                  letterSpacing: '-0.02em',
+                  textShadow: '0 2px 8px rgba(30, 90, 104, 1), 0 0 20px rgba(30, 90, 104, 0.9)',
                 }}
               >
                 Still Us
               </h3>
 
+              {/* Emotional hook */}
               <p
                 style={{
                   fontFamily: "var(--font-body)",
-                  fontSize: '13px',
-                  fontWeight: 500,
-                  color: '#C8BFB4',
-                  marginTop: '4px',
+                  fontStyle: 'normal',
+                  fontSize: '14px',
+                  fontWeight: 400,
+                  color: 'hsla(38, 78%, 60%, 0.85)',
+                  marginTop: '6px',
                   lineHeight: 1.4,
-                  textShadow: '0 1px 4px rgba(46, 34, 51, 0.5)',
+                  textShadow: '0 0 12px rgba(30, 90, 104, 1)',
                 }}
               >
                 22 samtal för er som vill stanna kvar
               </p>
 
-              {/* Session format badges */}
+              {/* Session format + credential — trust signals */}
               <div style={{
                 display: 'flex',
                 alignItems: 'center',
-                gap: '6px',
-                marginTop: '10px',
+                gap: '8px',
+                marginTop: '12px',
                 flexWrap: 'wrap',
               }}>
                 <span style={{
                   fontFamily: "var(--font-body)",
-                  fontSize: '9px',
+                  fontSize: '10px',
                   fontWeight: 600,
                   letterSpacing: '0.04em',
                   color: 'hsla(192, 25%, 80%, 0.7)',
                   background: 'hsla(192, 20%, 50%, 0.12)',
-                  borderRadius: '10px',
-                  padding: '3px 8px',
+                  borderRadius: '12px',
+                  padding: '4px 10px',
                 }}>
                   ca 20 min per samtal
                 </span>
                 <span style={{
                   fontFamily: "var(--font-body)",
-                  fontSize: '9px',
+                  fontSize: '10px',
                   fontWeight: 600,
                   letterSpacing: '0.04em',
                   color: 'hsla(192, 25%, 80%, 0.7)',
                   background: 'hsla(192, 20%, 50%, 0.12)',
-                  borderRadius: '10px',
-                  padding: '3px 8px',
+                  borderRadius: '12px',
+                  padding: '4px 10px',
                 }}>
                   ✦ 1a gratis
                 </span>
               </div>
-            </div>
-          </motion.div>
 
-          {/* CTA below tile */}
-          <motion.div
-            variants={tileVariants}
-            style={{
-              marginTop: '12px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              padding: '0 4px',
-            }}
-          >
-            <span
-              onClick={() => navigate('/product/still-us')}
-              className="cursor-pointer"
-              style={{
-                fontFamily: "var(--font-display)",
-                fontVariationSettings: "'opsz' 17",
-                fontSize: '13px',
-                fontWeight: 700,
-                letterSpacing: '0.02em',
-                color: '#1A1A2E',
-                background: 'linear-gradient(135deg, hsla(38, 78%, 58%, 0.95) 0%, hsla(38, 65%, 50%, 0.9) 100%)',
-                borderRadius: '14px',
-                padding: '10px 22px',
-                boxShadow: '0 4px 16px hsla(38, 70%, 40%, 0.3)',
-              }}
-            >
-              Öppna Still Us
-            </span>
-            <span style={{
-              fontFamily: "var(--font-body)",
-              fontSize: '8px',
-              fontWeight: 500,
-              letterSpacing: '0.06em',
-              textTransform: 'uppercase' as const,
-              color: 'hsla(192, 20%, 70%, 0.45)',
-              textAlign: 'right',
-              lineHeight: 1.4,
-              maxWidth: '120px',
-            }}>
-              Utvecklat av psykolog · 20+ års erfarenhet
-            </span>
+              {/* CTA button */}
+              <div
+                style={{
+                  marginTop: '16px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                }}
+              >
+                <span
+                  style={{
+                    fontFamily: "var(--font-display)",
+                    fontVariationSettings: "'opsz' 17",
+                    fontSize: '13px',
+                    fontWeight: 700,
+                    letterSpacing: '0.02em',
+                    color: '#1A1A2E',
+                    background: 'linear-gradient(135deg, hsla(38, 78%, 58%, 0.95) 0%, hsla(38, 65%, 50%, 0.9) 100%)',
+                    borderRadius: '14px',
+                    padding: '10px 22px',
+                    boxShadow: '0 4px 16px hsla(38, 70%, 40%, 0.3)',
+                  }}
+                >
+                  Öppna Still Us
+                </span>
+                {/* Credential — integrated trust signal */}
+                <span style={{
+                  fontFamily: "var(--font-body)",
+                  fontSize: '8px',
+                  fontWeight: 500,
+                  letterSpacing: '0.06em',
+                  textTransform: 'uppercase' as const,
+                  color: 'hsla(192, 20%, 70%, 0.45)',
+                  textAlign: 'right',
+                  lineHeight: 1.4,
+                  maxWidth: '120px',
+                }}>
+                  Utvecklat av psykolog · 20+ års erfarenhet
+                </span>
+              </div>
+            </div>
           </motion.div>
 
           {/* ── Coming soon section ── */}
