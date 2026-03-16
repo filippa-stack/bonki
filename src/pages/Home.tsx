@@ -449,6 +449,9 @@ export default function Home() {
               )}
             </div>
 
+            {/* Breathing room between action and exploration */}
+            <div style={{ height: '16px' }} />
+
             {/* ── Accordion layers ── */}
             {LAYERS.map((layer, layerIndex) => {
               const layerCats = layer.categoryIds
