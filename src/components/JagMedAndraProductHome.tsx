@@ -31,13 +31,13 @@ const FIRST_CARD_IDS = [
   'jma-respekt',   // Vi i världen
 ];
 
-// Card images — vivid illustrations, higher opacity
+// Per-tile illustration calibration — vivid card art with individually tuned opacity
 const CREATURE_TILE_STYLES: CreatureTileStyle[] = [
-  { scale: 1.1, objectPosition: '50% 20%', opacity: 0.6 },
-  { scale: 1.1, objectPosition: '50% 20%', opacity: 0.55 },
-  { scale: 1.1, objectPosition: '50% 15%', opacity: 0.5 },
-  { scale: 1.1, objectPosition: '50% 25%', opacity: 0.45 },
-  { scale: 1.1, objectPosition: '50% 20%', opacity: 0.4 },
+  { scale: 1.15, objectPosition: '50% 15%', opacity: 0.65 },
+  { scale: 1.15, objectPosition: '50% 20%', opacity: 0.55 },
+  { scale: 1.1,  objectPosition: '50% 18%', opacity: 0.50 },
+  { scale: 1.1,  objectPosition: '50% 22%', opacity: 0.45 },
+  { scale: 1.1,  objectPosition: '50% 18%', opacity: 0.40 },
 ];
 
 const containerVariants = { hidden: {}, visible: { transition: { staggerChildren: 0.11, delayChildren: 0.4 } } };
@@ -61,12 +61,12 @@ export default function JagMedAndraProductHome({ product }: { product: ProductMa
       <div
         style={{
           position: 'absolute',
-          top: '-5vh',
+          top: '-8vh',
           left: '50%',
           transform: 'translateX(-50%)',
-          width: '140vw',
-          height: '55vh',
-          background: `radial-gradient(ellipse 60% 50% at 50% 45%, ${TILE_LIGHT}30 0%, ${TILE_LIGHT}10 50%, transparent 100%)`,
+          width: '160vw',
+          height: '60vh',
+          background: `radial-gradient(ellipse 65% 55% at 50% 40%, ${TILE_LIGHT}35 0%, ${TILE_LIGHT}15 45%, transparent 100%)`,
           pointerEvents: 'none',
           zIndex: 0,
         }}
@@ -79,10 +79,11 @@ export default function JagMedAndraProductHome({ product }: { product: ProductMa
         transition={{ duration: 0.6 }}
         style={{ position: 'absolute', top: '-8vh', left: '-5vw', right: '-5vw', height: '65vh', zIndex: 0, pointerEvents: 'none' }}
       >
-        <img src={heroImage} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: '50% 10%' }} />
+        <img src={heroImage} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: '50% 8%' }} />
+        {/* Multi-stop scrim: product color mid-blend, then Midnight Ink */}
         <div style={{
-          position: 'absolute', bottom: 0, left: 0, right: 0, height: '85%',
-          background: `linear-gradient(to top, ${BG} 0%, ${BG}F2 18%, rgba(26,26,46,0.85) 35%, rgba(139,47,198,0.4) 60%, rgba(139,47,198,0.1) 80%, transparent 100%)`,
+          position: 'absolute', bottom: 0, left: 0, right: 0, height: '88%',
+          background: `linear-gradient(to top, ${BG} 0%, ${BG}F5 15%, rgba(26,26,46,0.88) 30%, rgba(90,26,128,0.45) 55%, rgba(139,47,198,0.15) 75%, transparent 100%)`,
           pointerEvents: 'none',
         }} />
       </motion.div>
@@ -113,6 +114,8 @@ export default function JagMedAndraProductHome({ product }: { product: ProductMa
             }}>
               Det svåra och det trygga
             </p>
+            {/* Spacer — pushes action cards below hero face zone */}
+            <div style={{ height: 'clamp(40px, 10vh, 80px)' }} />
             <UnifiedResumeBanner product={product} kidsProgress={progress} accentColor={ACCENT_COLOR} />
             <NextConversationCard product={product} progress={progress} />
           </motion.div>
