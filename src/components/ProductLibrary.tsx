@@ -814,8 +814,43 @@ export default function ProductLibrary() {
                 }}>
                   22 samtal för er som vill stanna kvar
                 </p>
+                {/* Trust signal badges */}
+                <div style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  marginTop: '8px',
+                  flexWrap: 'wrap',
+                }}>
+                  <span style={{
+                    fontFamily: "var(--font-body)",
+                    fontSize: '10px',
+                    fontWeight: 500,
+                    letterSpacing: '0.04em',
+                    color: 'hsla(38, 40%, 80%, 0.65)',
+                    background: 'hsla(38, 20%, 50%, 0.1)',
+                    borderRadius: '12px',
+                    padding: '3px 10px',
+                  }}>
+                    ca 20 min per samtal
+                  </span>
+                  <span style={{
+                    fontFamily: "var(--font-body)",
+                    fontSize: '10px',
+                    fontWeight: 500,
+                    letterSpacing: '0.04em',
+                    color: 'hsla(38, 40%, 80%, 0.65)',
+                    background: 'hsla(38, 20%, 50%, 0.1)',
+                    borderRadius: '12px',
+                    padding: '3px 10px',
+                  }}>
+                    ✦ 1a gratis
+                  </span>
+                </div>
               </div>
             </motion.div>
+          </div>
+        </div>
           </div>
         </div>
 
