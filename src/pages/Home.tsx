@@ -63,7 +63,7 @@ const LAYERS: {
   },
 ];
 
-/** Expandable layer accordion */
+/** Expandable layer accordion — warm editorial style */
 function AccordionLayer({
   label, completedCount, totalCount, allDone, defaultOpen, delay, children,
 }: {
@@ -82,7 +82,7 @@ function AccordionLayer({
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ delay, duration: 0.5, ease: EASE }}
-      style={{ marginTop: '24px', paddingLeft: '16px', paddingRight: '16px' }}
+      style={{ marginTop: '28px', paddingLeft: '4px', paddingRight: '4px' }}
     >
       <button
         onClick={() => setOpen(o => !o)}
@@ -91,7 +91,7 @@ function AccordionLayer({
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          padding: '0 4px 10px',
+          padding: '0 8px 12px',
           background: 'none',
           border: 'none',
           cursor: 'pointer',
@@ -100,12 +100,12 @@ function AccordionLayer({
       >
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
           <span style={{
-            fontFamily: 'var(--font-body)',
-            fontSize: '12px',
-            fontWeight: 600,
-            letterSpacing: '2px',
-            textTransform: 'uppercase',
-            color: DRIFTWOOD,
+            fontFamily: 'var(--font-display)',
+            fontVariationSettings: "'opsz' 14",
+            fontSize: '14px',
+            fontWeight: 500,
+            letterSpacing: '0.5px',
+            color: allDone ? DEEP_SAFFRON : `${LANTERN_GLOW}90`,
           }}>
             {label}
           </span>
@@ -128,8 +128,7 @@ function AccordionLayer({
             <span style={{
               fontFamily: 'var(--font-body)',
               fontSize: '11px',
-              color: DRIFTWOOD,
-              opacity: 0.7,
+              color: `${LANTERN_GLOW}50`,
             }}>
               {completedCount} av {totalCount}
             </span>
@@ -138,7 +137,7 @@ function AccordionLayer({
             animate={{ rotate: open ? 180 : 0 }}
             transition={{ duration: 0.25 }}
           >
-            <ChevronDown size={16} color={DRIFTWOOD} />
+            <ChevronDown size={14} color={`${LANTERN_GLOW}60`} />
           </motion.div>
         </div>
       </button>
@@ -152,7 +151,7 @@ function AccordionLayer({
         transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
         style={{ overflow: 'hidden' }}
       >
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', paddingBottom: '4px' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', paddingBottom: '4px' }}>
           {children}
         </div>
       </motion.div>
