@@ -363,7 +363,8 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
       }}>
         <h3
           style={{
-            fontFamily: "'DM Serif Display', serif",
+            fontFamily: "var(--font-display)",
+            fontVariationSettings: "'opsz' 24",
             fontSize: '28px',
             fontWeight: 600,
             lineHeight: 1.15,
