@@ -61,7 +61,7 @@ export const STILL_US_CREATURES: Record<string, StillUsCreature> = {
     headerOpacity: 0.35,
     tileRight: '-2%',
     tileHeight: '160%',
-    tileScale: 1.15,          // Apa has lots of negative space — scale up
+    tileScale: 1.0,            // Apa: dense body — keep at baseline
   },
   'category-8': {               // Att hålla kvar varandra → Panda  (Grunden)
     src: creaturePanda,
