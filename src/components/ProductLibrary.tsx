@@ -523,6 +523,44 @@ export default function ProductLibrary() {
       }}
     >
 
+      {/* ── Atmospheric creature illustrations — page-level, behind everything ── */}
+      <div aria-hidden="true" style={{ position: 'absolute', inset: 0, overflow: 'hidden', pointerEvents: 'none', zIndex: 0 }}>
+        <motion.img
+          src={creaturesTrio}
+          alt=""
+          draggable={false}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 0.04 }}
+          transition={{ delay: 1.0, duration: 2.5, ease: [0.22, 1, 0.36, 1] }}
+          style={{
+            position: 'absolute',
+            top: '320px',
+            right: '-30px',
+            width: '260px',
+            height: 'auto',
+            filter: 'brightness(2.5) saturate(0.1)',
+            transform: 'rotate(4deg)',
+          }}
+        />
+        <motion.img
+          src={creatureLionGirl}
+          alt=""
+          draggable={false}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 0.045 }}
+          transition={{ delay: 1.5, duration: 2.5, ease: [0.22, 1, 0.36, 1] }}
+          style={{
+            position: 'absolute',
+            top: '920px',
+            left: '-20px',
+            width: '220px',
+            height: 'auto',
+            filter: 'brightness(2.2) saturate(0.1)',
+            transform: 'rotate(-2deg)',
+          }}
+        />
+      </div>
+
       {/* Content */}
       <div style={{ position: 'relative', zIndex: 1 }}>
         {/* Hero zone — compact cinematic */}
