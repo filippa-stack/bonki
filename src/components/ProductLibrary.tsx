@@ -286,7 +286,7 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
           width: '65%',
           zIndex: 1,
           pointerEvents: 'none',
-          background: `linear-gradient(to right, ${bgRgba(1)} 0%, ${bgRgba(0.95)} 40%, ${bgRgba(0.6)} 70%, transparent 100%)`,
+          background: `linear-gradient(to right, ${bgRgba(1)} 0%, ${bgRgba(0.85)} 35%, ${bgRgba(0.3)} 60%, transparent 100%)`,
         }}
       />
 
