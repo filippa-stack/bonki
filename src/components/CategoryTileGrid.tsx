@@ -114,25 +114,25 @@ function CategoryTile({
         backgroundImage: 'linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0) 50%, rgba(0,0,0,0.08) 100%)',
         backgroundColor: tile.bg,
         border: isFirst ? `2px solid ${SAFFRON}` : '1.5px solid rgba(255, 255, 255, 0.25)',
-        ...(isFirst ? { boxShadow: [
-          `0 0 12px rgba(233, 180, 76, 0.35)`,
-          '0 12px 32px rgba(0, 0, 0, 0.30)',
-          '0 4px 12px rgba(0, 0, 0, 0.18)',
-          '0 1px 3px rgba(0, 0, 0, 0.08)',
-          'inset 0 3px 6px rgba(255, 255, 255, 0.45)',
-          'inset 0 -4px 10px rgba(0, 0, 0, 0.14)',
-        ].join(', ') } : {}),
-        boxShadow: [
-          '0 12px 32px rgba(0, 0, 0, 0.30)',
-          '0 4px 12px rgba(0, 0, 0, 0.18)',
-          '0 1px 3px rgba(0, 0, 0, 0.08)',
-          'inset 0 3px 6px rgba(255, 255, 255, 0.45)',
-          'inset 0 -4px 10px rgba(0, 0, 0, 0.14)',
-        ].join(', '),
+        boxShadow: isFirst
+          ? [
+              '0 0 16px rgba(233, 180, 76, 0.45)',
+              '0 0 4px rgba(233, 180, 76, 0.25)',
+              '0 12px 32px rgba(0, 0, 0, 0.30)',
+              '0 4px 12px rgba(0, 0, 0, 0.18)',
+              'inset 0 3px 6px rgba(255, 255, 255, 0.45)',
+              'inset 0 -4px 10px rgba(0, 0, 0, 0.14)',
+            ].join(', ')
+          : [
+              '0 12px 32px rgba(0, 0, 0, 0.30)',
+              '0 4px 12px rgba(0, 0, 0, 0.18)',
+              '0 1px 3px rgba(0, 0, 0, 0.08)',
+              'inset 0 3px 6px rgba(255, 255, 255, 0.45)',
+              'inset 0 -4px 10px rgba(0, 0, 0, 0.14)',
+            ].join(', '),
         padding: 0,
-        ...(isOddLast
-          ? { gridColumn: '1 / -1', height: '170px' }
-          : { aspectRatio: '0.7' }),
+        aspectRatio: isOddLast ? '2 / 0.7' : '0.7',
+        ...(isOddLast ? { gridColumn: '1 / -1' } : {}),
       }}
     >
       {/* Creature illustration layer (z-index 1) */}
