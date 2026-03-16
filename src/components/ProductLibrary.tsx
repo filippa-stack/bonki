@@ -1262,7 +1262,7 @@ export default function ProductLibrary() {
                 </h3>
                 <p
                   style={{
-                    fontFamily: "'Lato', sans-serif",
+                    fontFamily: "var(--font-body)",
                     fontSize: '11px',
                     fontWeight: 400,
                     color: 'hsla(327, 15%, 75%, 0.7)',
