@@ -262,121 +262,102 @@ export default function Home() {
   return (
     <div className="min-h-screen flex flex-col relative" style={{ backgroundColor: MIDNIGHT_INK }}>
 
-      {/* ── 1. ILLUSTRATION ZONE ── */}
-      <div style={{ position: 'relative', minHeight: '30vh', overflow: 'hidden' }}>
-        {/* Illustration */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.8 }}
-          style={{
-            position: 'absolute',
-            inset: 0,
-            zIndex: 0,
-            pointerEvents: 'none',
-          }}
-        >
-          <img
-            src={stillUsIllustration}
-            alt=""
-            style={{
-              width: '100%',
-              height: '100%',
-              objectFit: 'cover',
-              objectPosition: 'center 30%',
-              opacity: 0.35,
-            }}
-          />
-          {/* Bottom fade into Ember Night */}
-          <div style={{
-            position: 'absolute',
-            bottom: 0,
-            left: 0,
-            right: 0,
-            height: '70%',
-            background: `linear-gradient(to top, ${EMBER_NIGHT} 0%, ${EMBER_NIGHT}E6 25%, ${EMBER_NIGHT}80 50%, transparent 100%)`,
-            pointerEvents: 'none',
-          }} />
-        </motion.div>
+      {/* ── Atmospheric radial glow behind hero ── */}
+      <div
+        aria-hidden="true"
+        style={{
+          position: 'absolute',
+          top: '-5vh',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          width: '140vw',
+          height: '55vh',
+          background: `radial-gradient(ellipse 60% 50% at 50% 45%, ${EMBER_MID}30 0%, ${DEEP_SAFFRON}10 50%, transparent 100%)`,
+          pointerEvents: 'none',
+          zIndex: 0,
+        }}
+      />
 
-        {/* Warm glow */}
-        <div
-          aria-hidden="true"
+      {/* ── Hero illustration — bleeding, dramatic ── */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.6 }}
+        style={{
+          position: 'absolute',
+          top: '-8vh',
+          left: '-5vw',
+          right: '-5vw',
+          height: '65vh',
+          zIndex: 0,
+          pointerEvents: 'none',
+        }}
+      >
+        <img
+          src={stillUsIllustration}
+          alt=""
           style={{
-            position: 'absolute',
-            top: '20%',
-            left: '50%',
-            transform: 'translateX(-50%)',
-            width: '80vw',
-            height: '60%',
-            background: `radial-gradient(ellipse 50% 50% at 50% 50%, ${DEEP_SAFFRON}14 0%, transparent 100%)`,
-            pointerEvents: 'none',
-            zIndex: 0,
+            width: '100%',
+            height: '100%',
+            objectFit: 'cover',
+            objectPosition: '50% 25%',
           }}
         />
+        {/* Extended scrim with smooth blend into Ember Night */}
+        <div style={{
+          position: 'absolute',
+          bottom: 0,
+          left: 0,
+          right: 0,
+          height: '85%',
+          background: `linear-gradient(to top, ${EMBER_NIGHT} 0%, ${EMBER_NIGHT}F2 18%, rgba(46,34,51,0.85) 35%, rgba(71,52,84,0.4) 60%, rgba(71,52,84,0.1) 80%, transparent 100%)`,
+          pointerEvents: 'none',
+        }} />
+      </motion.div>
 
-        {/* Back arrow */}
-        <motion.button
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.2, duration: 0.4 }}
-          onClick={() => navigate('/')}
-          style={{
-            position: 'absolute',
-            top: '16px',
-            left: '16px',
-            zIndex: 10,
-            background: 'none',
-            border: 'none',
-            cursor: 'pointer',
-            padding: '8px',
-            WebkitTapHighlightColor: 'transparent',
-          }}
-        >
-          <ArrowLeft size={22} color={LANTERN_GLOW} strokeWidth={1.5} />
-        </motion.button>
+      <ProductHomeBackButton color={LANTERN_GLOW} />
 
-        {/* Title & subtitle — inside the illustration zone */}
-        <motion.div
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.15, duration: 0.7, ease: EASE }}
-          style={{
-            position: 'relative',
-            zIndex: 2,
-            textAlign: 'center',
-            paddingTop: 'clamp(60px, 15vh, 120px)',
-            paddingBottom: '24px',
-          }}
-        >
-          <h1
-            style={{
+      {/* ── Content layer — on top of hero ── */}
+      <div style={{
+        position: 'relative',
+        zIndex: 1,
+        minHeight: '100vh',
+        display: 'flex',
+        flexDirection: 'column',
+        paddingTop: 'clamp(28px, 8vh, 80px)',
+        paddingLeft: '5vw',
+        paddingRight: '5vw',
+        paddingBottom: '80px',
+      }}>
+
+        {/* ── Title block with staggered reveal ── */}
+        <motion.div variants={containerVariants} initial="hidden" animate="visible" style={{ textAlign: 'center', width: '100%' }}>
+          <motion.div variants={titleVariants}>
+            <h1 style={{
               fontFamily: "var(--font-display)",
-              fontVariationSettings: "'opsz' 28",
-              fontSize: '28px',
-              fontWeight: 600,
+              fontSize: 'clamp(34px, 10vw, 50px)',
+              fontWeight: 700,
               color: LANTERN_GLOW,
-              lineHeight: 1.2,
-              textShadow: `0 2px 20px ${EMBER_NIGHT}, 0 0 40px ${EMBER_NIGHT}`,
-            }}
-          >
-            Ert utrymme
-          </h1>
-          <p style={{
-            fontFamily: 'var(--font-body)',
-            fontSize: '14px',
-            color: DRIFTWOOD,
-            lineHeight: 1.5,
-            marginTop: '6px',
-            textShadow: `0 1px 12px ${EMBER_NIGHT}`,
-          }}>
-            Följ ordningen — eller börja där det känns rätt.
-          </p>
-        </motion.div>
-      </div>
+              letterSpacing: '-0.02em',
+              lineHeight: 1.15,
+              textShadow: `0 2px 20px rgba(0,0,0,0.7), 0 0 60px ${EMBER_NIGHT}, 0 0 120px ${EMBER_NIGHT}`,
+              fontVariationSettings: "'opsz' 36",
+            }}>
+              Ert utrymme
+            </h1>
+            <p className="font-serif" style={{
+              fontSize: 'clamp(15px, 4vw, 19px)',
+              fontWeight: 400,
+              color: DEEP_SAFFRON,
+              opacity: 0.9,
+              marginTop: '6px',
+              textShadow: `0 1px 16px rgba(0,0,0,0.8), 0 0 40px ${EMBER_NIGHT}`,
+            }}>
+              Följ ordningen — eller börja där det känns rätt.
+            </p>
 
-      {/* ── 3. BACKGROUND TRANSITION — Midnight Ink → Ember Night ── */}
-      {/* The illustration zone already fades into Ember Night at the bottom */}
+            {/* Spacer before action zone */}
+            <div style={{ height: 'clamp(40px, 10vh, 80px)' }} />
 
       {/* ── Content area — Ember Night territory ── */}
       <div style={{ position: 'relative', zIndex: 1, backgroundColor: EMBER_NIGHT, flex: 1 }}>
