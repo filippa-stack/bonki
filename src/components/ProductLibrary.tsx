@@ -523,44 +523,38 @@ export default function ProductLibrary() {
       }}
     >
 
-      {/* ── Atmospheric creature illustrations — ghostly silhouettes ── */}
+      {/* ── Bold creature illustrations — hero-level, full color ── */}
       <div aria-hidden="true" style={{ position: 'absolute', inset: 0, overflow: 'hidden', pointerEvents: 'none', zIndex: 0 }}>
-        {/* Trio — right side, between hero and middle tiles */}
-        <motion.img
-          src={creaturesTrio}
-          alt=""
-          draggable={false}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 0.12 }}
-          transition={{ delay: 0.8, duration: 2.0, ease: [0.22, 1, 0.36, 1] }}
-          style={{
-            position: 'absolute',
-            top: '220px',
-            right: '-40px',
-            width: '320px',
-            height: 'auto',
-            filter: 'brightness(3.5) saturate(0)',
-            transform: 'rotate(3deg)',
-            mixBlendMode: 'screen',
-          }}
-        />
-        {/* Lion + girl — lower left, watching from below */}
+        {/* Lion + girl — top, covering hero zone */}
         <motion.img
           src={creatureLionGirl}
           alt=""
           draggable={false}
           initial={{ opacity: 0 }}
-          animate={{ opacity: 0.10 }}
-          transition={{ delay: 1.3, duration: 2.0, ease: [0.22, 1, 0.36, 1] }}
+          animate={{ opacity: 0.28 }}
+          transition={{ delay: 0.4, duration: 1.4, ease: [0.22, 1, 0.36, 1] }}
           style={{
             position: 'absolute',
-            top: '880px',
-            left: '-30px',
-            width: '260px',
+            top: '-60px',
+            right: '-80px',
+            width: '420px',
             height: 'auto',
-            filter: 'brightness(3.5) saturate(0)',
-            transform: 'rotate(-2deg)',
-            mixBlendMode: 'screen',
+          }}
+        />
+        {/* Trio — lower section */}
+        <motion.img
+          src={creaturesTrio}
+          alt=""
+          draggable={false}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 0.22 }}
+          transition={{ delay: 0.8, duration: 1.4, ease: [0.22, 1, 0.36, 1] }}
+          style={{
+            position: 'absolute',
+            top: '780px',
+            left: '-60px',
+            width: '380px',
+            height: 'auto',
           }}
         />
       </div>
