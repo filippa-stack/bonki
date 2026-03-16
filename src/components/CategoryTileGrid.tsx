@@ -35,32 +35,6 @@ interface CategoryTileGridProps {
   tiles: TileConfig[];
 }
 
-/**
- * Compute depth-based colors for each tile position.
- * First = brightest (tileLight), middle = tileMid, last = tileDeep/near-midnight.
- */
-function getTileDepthColors(
-  index: number,
-  total: number,
-  product: ProductManifest
-): { bg: string; shieldColor: string; nameOpacity: number; subOpacity: number } {
-  const tileLight = product.tileLight || product.ctaButtonColor || '#333';
-  const tileMid = product.tileMid || tileLight;
-  const tileDeep = product.tileDeep || tileMid;
-
-  if (index === 0) {
-    return { bg: tileLight, shieldColor: tileMid, nameOpacity: 1, subOpacity: 1 };
-  }
-  if (index === total - 1 && total > 2) {
-    return { bg: tileDeep, shieldColor: '#1A1A2E', nameOpacity: 0.85, subOpacity: 0.7 };
-  }
-  // Interpolate middle tiles
-  const t = total <= 2 ? 1 : index / (total - 1);
-  if (t < 0.5) {
-    return { bg: tileMid, shieldColor: tileDeep, nameOpacity: 1, subOpacity: 0.9 };
-  }
-  return { bg: tileDeep, shieldColor: '#1A1A2E', nameOpacity: 0.9, subOpacity: 0.8 };
-}
 
 function hexToRgb(hex: string): string {
   const h = hex.replace('#', '');
