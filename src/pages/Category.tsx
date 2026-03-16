@@ -21,6 +21,7 @@ import { KIDS_PRODUCT_IDS } from '@/hooks/useKidsProductProgress';
 
 import mirrorJagIMig from '@/assets/mirror-jag-i-mig.png';
 import stillUsIllustration from '@/assets/illustration-still-us-home.png';
+import { STILL_US_CREATURES } from '@/lib/stillUsCreatures';
 
 const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
