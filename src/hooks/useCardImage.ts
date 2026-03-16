@@ -158,7 +158,7 @@ const STANDALONE_IMAGES: Record<string, string> = {
   'jma-avund': '/card-images/jma-avund.png',
   'jma-konflikt': '/card-images/jma-konflikt.png',
   'jma-kritik': '/card-images/jma-kritik.png',
-  'jma-stopp': '/card-images/jma-stopp.png',
+  
   'jma-integritet': '/card-images/jma-integritet.png',
   'jma-modig': '/card-images/jma-modig.png',
   'jma-respekt': '/card-images/jma-respekt.png',
