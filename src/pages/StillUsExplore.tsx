@@ -115,7 +115,8 @@ export default function StillUsExplore() {
           <ChevronLeft size={24} color={LANTERN_GLOW} />
         </button>
         <h1 style={{
-          fontFamily: "'DM Serif Display', var(--font-serif)",
+          fontFamily: "var(--font-display)",
+          fontVariationSettings: "'opsz' 24",
           fontSize: '22px',
           fontWeight: 600,
           color: LANTERN_GLOW,
