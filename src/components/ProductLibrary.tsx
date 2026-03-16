@@ -37,14 +37,14 @@ const TAGLINES: Record<string, string> = {
   sexualitetskort: 'Kropp, gränser och identitet',
 };
 
-/** Creature-color tile backgrounds — dark/mid values from master palette */
+/** Creature-color tile backgrounds — Tile Mid values for rich gradient atmosphere */
 const TILE_COLORS: Record<string, string> = {
-  jag_i_mig: '#3A4210',       // Lichen deep
-  jag_med_andra: '#4A1870',   // Wild Violet deep
-  jag_i_varlden: '#1F4D2A',   // Deep Canopy deep (lifted +10% brightness)
-  sexualitetskort: '#6A1F18', // Ember Red deep
-  vardagskort: '#0F3D58',     // River Blue deep
-  syskonkort: '#144544',      // Twin Teal deep
+  jag_i_mig: '#4A5A0A',       // Lichen Tile Mid
+  jag_med_andra: '#5A1A80',   // Violet Tile Mid
+  jag_i_varlden: '#1A4A24',   // Canopy Tile Mid
+  sexualitetskort: '#6A2A30', // Ember Tile Mid
+  vardagskort: '#0A4A6A',     // River Tile Mid
+  syskonkort: '#1A5A58',      // Teal Tile Mid
 };
 
 /** Helper: hex → rgba */
