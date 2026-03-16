@@ -11,6 +11,8 @@ import LibraryResumeBanner from '@/components/LibraryResumeBanner';
 import watermarkMamma from '@/assets/watermark-mamma.png';
 import creaturesTrio from '@/assets/creatures-trio.png';
 import creatureLionGirl from '@/assets/creature-lion-girl.png';
+import creatureGirl from '@/assets/creature-girl.png';
+import creatureLionSolo from '@/assets/creature-lion-solo.png';
 
 import illustrationStillUs from '@/assets/illustration-still-us-tile.png';
 import illustrationJagIMig from '@/assets/mirror-jag-i-mig.png';
