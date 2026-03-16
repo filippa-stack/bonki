@@ -8,6 +8,7 @@ import ProductHomeBackButton from '@/components/ProductHomeBackButton';
 import { useKidsProductProgress } from '@/hooks/useKidsProductProgress';
 import CategoryTileGrid from '@/components/CategoryTileGrid';
 import type { CreatureTileStyle } from '@/components/CategoryTileGrid';
+import { useCardImage } from '@/hooks/useCardImage';
 
 const EASE = [0.4, 0.0, 0.2, 1] as const;
 const BG = '#1A1A2E';
@@ -29,11 +30,26 @@ const CREATURE_TILE_STYLES: CreatureTileStyle[] = [
   { scale: 0.65, objectPosition: '50% 50%', opacity: 0.18 },
 ];
 
+// First card per category — used as tile illustrations
+const FIRST_CARD_IDS = [
+  'sex-konsidentitet',     // Min identitet
+  'sex-normer',            // Normer & påverkan
+  'sex-samtycke',          // Relation & ansvar
+  'sex-sexuella-overgrepp',// Skydd & makt
+];
+
 const containerVariants = { hidden: {}, visible: { transition: { staggerChildren: 0.11, delayChildren: 0.4 } } };
 const titleVariants = { hidden: { opacity: 0, y: 16 }, visible: { opacity: 1, y: 0, transition: { duration: 0.75, ease: EASE } } };
 
 export default function SexualitetProductHome({ product }: { product: ProductManifest }) {
   const progress = useKidsProductProgress(product);
+
+  // Load first card image per category dynamically from zip
+  const img0 = useCardImage(FIRST_CARD_IDS[0]);
+  const img1 = useCardImage(FIRST_CARD_IDS[1]);
+  const img2 = useCardImage(FIRST_CARD_IDS[2]);
+  const img3 = useCardImage(FIRST_CARD_IDS[3]);
+  const tileImages = [img0 ?? undefined, img1 ?? undefined, img2 ?? undefined, img3 ?? undefined];
 
   return (
     <div className="min-h-screen relative overflow-hidden" style={{ backgroundColor: BG }}>
@@ -108,7 +124,7 @@ export default function SexualitetProductHome({ product }: { product: ProductMan
           product={product}
           progress={progress}
           tiles={ORDERED_TILES}
-          creatureImage={creatureImage}
+          tileImages={tileImages}
           creatureTileStyles={CREATURE_TILE_STYLES}
         />
       </div>
