@@ -21,11 +21,11 @@ const ORDERED_TILES = [
 
 // Owl: enormous eyes dominate. Tile 2 (scale 1.8) = JUST the eyes.
 const CREATURE_TILE_STYLES: CreatureTileStyle[] = [
-  { scale: 1.3, objectPosition: '50% 10%', opacity: 0.95 },
-  { scale: 1.15, objectPosition: '65% 15%', opacity: 0.8 },
-  { scale: 1.8, objectPosition: '50% 5%', opacity: 0.6 },
-  { scale: 0.65, objectPosition: '50% 50%', opacity: 0.35 },
-  { scale: 0.85, objectPosition: '75% 35%', opacity: 0.2 },
+  { scale: 1.3, objectPosition: '50% 10%', opacity: 0.45 },
+  { scale: 1.15, objectPosition: '65% 15%', opacity: 0.35 },
+  { scale: 1.8, objectPosition: '50% 5%', opacity: 0.25 },
+  { scale: 0.65, objectPosition: '50% 50%', opacity: 0.18 },
+  { scale: 0.85, objectPosition: '75% 35%', opacity: 0.12 },
 ];
 
 const containerVariants = { hidden: {}, visible: { transition: { staggerChildren: 0.11, delayChildren: 0.4 } } };
@@ -46,8 +46,8 @@ export default function JagMedAndraProductHome({ product }: { product: ProductMa
       >
         <img src={creatureImage} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: '50% 15%' }} />
         <div style={{
-          position: 'absolute', bottom: 0, left: 0, right: 0, height: '60%',
-          background: 'linear-gradient(to top, #1A1A2E 0%, rgba(58,14,88,0.7) 40%, transparent 100%)',
+          position: 'absolute', bottom: 0, left: 0, right: 0, height: '70%',
+          background: 'linear-gradient(to top, #1A1A2E 0%, rgba(26,26,46,0.95) 25%, rgba(58,14,88,0.7) 55%, transparent 100%)',
           pointerEvents: 'none',
         }} />
       </motion.div>

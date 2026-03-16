@@ -13,13 +13,13 @@ const SAFFRON = '#E9B44C';
 const LANTERN = '#FDF6E3';
 const SUBTITLE_COLOR = '#998F82';
 
-/** Default per-tile crop/opacity — used as fallback */
+/** Default per-tile crop/opacity — subtle atmospheric wash, NOT dominant */
 const DEFAULT_TILE_CREATURE_STYLES: CreatureTileStyle[] = [
-  { scale: 1.3, objectPosition: '25% 15%', opacity: 0.95 },
-  { scale: 1.15, objectPosition: '75% 20%', opacity: 0.8 },
-  { scale: 1.8, objectPosition: '50% 10%', opacity: 0.6 },
-  { scale: 0.65, objectPosition: '50% 55%', opacity: 0.35 },
-  { scale: 0.85, objectPosition: '80% 40%', opacity: 0.2 },
+  { scale: 1.3, objectPosition: '25% 15%', opacity: 0.45 },
+  { scale: 1.15, objectPosition: '75% 20%', opacity: 0.35 },
+  { scale: 1.8, objectPosition: '50% 10%', opacity: 0.25 },
+  { scale: 0.65, objectPosition: '50% 55%', opacity: 0.18 },
+  { scale: 0.85, objectPosition: '80% 40%', opacity: 0.12 },
 ];
 
 export interface CreatureTileStyle {
@@ -87,7 +87,7 @@ function CategoryTile({
   const isDeep = index >= total - 2 && total > 2;
   const nameOpacity = isDeep ? 0.85 : 1;
   const subOpacity = isDeep ? 0.7 : 1;
-  const dotDimOpacities = [0.25, 0.2, 0.15, 0.1, 0.06];
+  const dotDimOpacities = [0.4, 0.35, 0.3, 0.25, 0.2];
   const dotDimOpacity = dotDimOpacities[Math.min(index, dotDimOpacities.length - 1)];
 
   const shieldRgb = hexToRgb(tile.bg);
@@ -113,7 +113,15 @@ function CategoryTile({
         textAlign: 'left',
         backgroundImage: 'linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0) 50%, rgba(0,0,0,0.08) 100%)',
         backgroundColor: tile.bg,
-        border: isFirst ? `2px solid ${SAFFRON}` : '1.5px solid rgba(255, 255, 255, 0.30)',
+        border: isFirst ? `2px solid ${SAFFRON}` : '1.5px solid rgba(255, 255, 255, 0.25)',
+        ...(isFirst ? { boxShadow: [
+          `0 0 12px rgba(233, 180, 76, 0.35)`,
+          '0 12px 32px rgba(0, 0, 0, 0.30)',
+          '0 4px 12px rgba(0, 0, 0, 0.18)',
+          '0 1px 3px rgba(0, 0, 0, 0.08)',
+          'inset 0 3px 6px rgba(255, 255, 255, 0.45)',
+          'inset 0 -4px 10px rgba(0, 0, 0, 0.14)',
+        ].join(', ') } : {}),
         boxShadow: [
           '0 12px 32px rgba(0, 0, 0, 0.30)',
           '0 4px 12px rgba(0, 0, 0, 0.18)',
@@ -155,15 +163,15 @@ function CategoryTile({
         </div>
       )}
 
-      {/* Gradient shield (z-index 2) */}
+      {/* Gradient shield (z-index 2) — 65% height for strong text readability */}
       <div
         style={{
           position: 'absolute',
           bottom: 0,
           left: 0,
           right: 0,
-          height: '55%',
-          background: `linear-gradient(to top, rgba(${shieldRgb}, 0.97) 0%, rgba(${shieldRgb}, 0.88) 25%, rgba(${shieldRgb}, 0.45) 60%, transparent 100%)`,
+          height: '65%',
+          background: `linear-gradient(to top, rgba(${shieldRgb}, 0.98) 0%, rgba(${shieldRgb}, 0.92) 30%, rgba(${shieldRgb}, 0.55) 65%, transparent 100%)`,
           pointerEvents: 'none',
           zIndex: 2,
         }}

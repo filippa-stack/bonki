@@ -19,9 +19,9 @@ const ORDERED_TILES = [
 
 // Lion: golden hood + blue eyes are focal. Tile 0 & 2 should show eyes.
 const CREATURE_TILE_STYLES: CreatureTileStyle[] = [
-  { scale: 1.4, objectPosition: '45% 10%', opacity: 0.95 },
-  { scale: 1.15, objectPosition: '70% 15%', opacity: 0.8 },
-  { scale: 1.8, objectPosition: '45% 8%', opacity: 0.55 },
+  { scale: 1.4, objectPosition: '45% 10%', opacity: 0.45 },
+  { scale: 1.15, objectPosition: '70% 15%', opacity: 0.32 },
+  { scale: 1.8, objectPosition: '45% 8%', opacity: 0.22 },
 ];
 
 const containerVariants = { hidden: {}, visible: { transition: { staggerChildren: 0.11, delayChildren: 0.4 } } };
@@ -42,8 +42,8 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
       >
         <img src={creatureImage} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: '50% 15%' }} />
         <div style={{
-          position: 'absolute', bottom: 0, left: 0, right: 0, height: '60%',
-          background: 'linear-gradient(to top, #1A1A2E 0%, rgba(62,74,18,0.7) 40%, transparent 100%)',
+          position: 'absolute', bottom: 0, left: 0, right: 0, height: '70%',
+          background: 'linear-gradient(to top, #1A1A2E 0%, rgba(26,26,46,0.95) 25%, rgba(62,74,18,0.7) 55%, transparent 100%)',
           pointerEvents: 'none',
         }} />
       </motion.div>

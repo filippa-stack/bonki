@@ -20,10 +20,10 @@ const ORDERED_TILES = [
 
 // Deer: huge dark eyes and ears. Tile 0 = face-dominant. Tile 1 ears extending.
 const CREATURE_TILE_STYLES: CreatureTileStyle[] = [
-  { scale: 1.3, objectPosition: '50% 8%', opacity: 0.95 },
-  { scale: 1.15, objectPosition: '70% 5%', opacity: 0.8 },
-  { scale: 1.8, objectPosition: '50% 10%', opacity: 0.6 },
-  { scale: 0.65, objectPosition: '50% 50%', opacity: 0.35 },
+  { scale: 1.3, objectPosition: '50% 8%', opacity: 0.45 },
+  { scale: 1.15, objectPosition: '70% 5%', opacity: 0.35 },
+  { scale: 1.8, objectPosition: '50% 10%', opacity: 0.25 },
+  { scale: 0.65, objectPosition: '50% 50%', opacity: 0.18 },
 ];
 
 const containerVariants = { hidden: {}, visible: { transition: { staggerChildren: 0.11, delayChildren: 0.4 } } };
@@ -44,8 +44,8 @@ export default function SexualitetProductHome({ product }: { product: ProductMan
       >
         <img src={creatureImage} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: '50% 10%' }} />
         <div style={{
-          position: 'absolute', bottom: 0, left: 0, right: 0, height: '60%',
-          background: 'linear-gradient(to top, #1A1A2E 0%, rgba(74,26,32,0.7) 40%, transparent 100%)',
+          position: 'absolute', bottom: 0, left: 0, right: 0, height: '70%',
+          background: 'linear-gradient(to top, #1A1A2E 0%, rgba(26,26,46,0.95) 25%, rgba(74,26,32,0.7) 55%, transparent 100%)',
           pointerEvents: 'none',
         }} />
       </motion.div>
