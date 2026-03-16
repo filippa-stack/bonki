@@ -165,15 +165,15 @@ function CategoryTile({
         </div>
       )}
 
-      {/* Gradient shield (z-index 2) — 65% height for strong text readability */}
+      {/* Gradient shield (z-index 2) — 75% height for strong text readability */}
       <div
         style={{
           position: 'absolute',
           bottom: 0,
           left: 0,
           right: 0,
-          height: '65%',
-          background: `linear-gradient(to top, rgba(${shieldRgb}, 0.98) 0%, rgba(${shieldRgb}, 0.92) 30%, rgba(${shieldRgb}, 0.55) 65%, transparent 100%)`,
+          height: '75%',
+          background: `linear-gradient(to top, rgba(${shieldRgb}, 1) 0%, rgba(${shieldRgb}, 0.97) 25%, rgba(${shieldRgb}, 0.85) 45%, rgba(${shieldRgb}, 0.45) 70%, transparent 100%)`,
           pointerEvents: 'none',
           zIndex: 2,
         }}
@@ -200,6 +200,7 @@ function CategoryTile({
             opacity: nameOpacity,
             lineHeight: 1.2,
             display: 'block',
+            textShadow: '0 1px 4px rgba(0,0,0,0.5)',
           }}
         >
           {cat.title}
@@ -207,12 +208,13 @@ function CategoryTile({
         <span
           style={{
             fontSize: '12px',
-            fontWeight: 400,
-            color: SUBTITLE_COLOR,
+            fontWeight: 500,
+            color: '#C8BFB4',
             opacity: subOpacity,
             lineHeight: 1.3,
             marginTop: '3px',
             display: 'block',
+            textShadow: '0 1px 3px rgba(0,0,0,0.4)',
           }}
         >
           {tile.sub}
@@ -229,6 +231,7 @@ function CategoryTile({
               marginTop: '6px',
               display: 'block',
               letterSpacing: '0.02em',
+              textShadow: '0 1px 2px rgba(0,0,0,0.3)',
             }}
           >
             {completed} av {totalCards}
