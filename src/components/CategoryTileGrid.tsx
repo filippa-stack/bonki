@@ -265,6 +265,7 @@ export default function CategoryTileGrid({ product, progress, tiles, creatureIma
           total={total}
           isOddLast={isOdd && index === total - 1}
           creatureImage={creatureImage}
+          tileImage={tileImages?.[index]}
           creatureStyle={styles[Math.min(index, styles.length - 1)]}
         />
       ))}
