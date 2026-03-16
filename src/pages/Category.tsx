@@ -548,13 +548,57 @@ function StillUsCategoryView({
   const completedCount = cards.filter(c => completedCardIds.includes(c.id)).length;
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: EMBER_NIGHT }}>
+    <div className="min-h-screen relative overflow-hidden" style={{ backgroundColor: EMBER_NIGHT }}>
+      {/* Page-level creature background — like kids product homescreens */}
+      {STILL_US_CREATURES[category.id] && (() => {
+        const c = STILL_US_CREATURES[category.id];
+        return (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.8 }}
+            style={{
+              position: 'absolute',
+              bottom: 0,
+              left: '-5vw',
+              right: '-5vw',
+              height: '55vh',
+              zIndex: 0,
+              pointerEvents: 'none',
+            }}
+          >
+            <img
+              src={c.src}
+              alt=""
+              style={{
+                width: '100%',
+                height: '100%',
+                objectFit: 'contain',
+                objectPosition: '50% 100%',
+                opacity: 0.22,
+                filter: 'saturate(0.2) brightness(1.3)',
+              }}
+            />
+            {/* Scrim to blend creature into background */}
+            <div style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              right: 0,
+              height: '50%',
+              background: `linear-gradient(to bottom, ${EMBER_NIGHT} 0%, transparent 100%)`,
+              pointerEvents: 'none',
+            }} />
+          </motion.div>
+        );
+      })()}
       {/* Header */}
       <motion.div
         initial={{ opacity: 0, y: -8 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, ease: EASE }}
         style={{
+          position: 'relative', zIndex: 1,
           paddingTop: 'calc(env(safe-area-inset-top, 0px) + 16px)',
           paddingBottom: '12px',
           paddingLeft: '16px',
@@ -627,6 +671,7 @@ function StillUsCategoryView({
       {/* Card list */}
       <div
         style={{
+          position: 'relative', zIndex: 1,
           padding: '8px 16px',
           paddingBottom: 'calc(80px + env(safe-area-inset-bottom, 0px))',
           display: 'flex',
@@ -672,29 +717,6 @@ function StillUsCategoryView({
                 ].join(', '),
               }}
             >
-              {/* Creature illustration — subtle texture for card tiles */}
-              {STILL_US_CREATURES[category.id] && (() => {
-                const c = STILL_US_CREATURES[category.id];
-                return (
-                  <img
-                    src={c.src}
-                    alt=""
-                    style={{
-                      position: 'absolute',
-                      right: '-15%',
-                      top: c.tileTop ?? '50%',
-                      transform: `translateY(-50%) scale(${c.tileScale ?? 1})`,
-                      height: '160%',
-                      width: 'auto',
-                      objectFit: 'contain',
-                      objectPosition: c.objectPosition,
-                      opacity: 0.18,
-                      pointerEvents: 'none',
-                      filter: 'saturate(0.15) brightness(1.2)',
-                    }}
-                  />
-                );
-              })()}
 
               <div style={{ flex: 1, minWidth: 0 }}>
                 <span
