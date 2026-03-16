@@ -303,7 +303,7 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            fontFamily: "'Lato', sans-serif",
+            fontFamily: "var(--font-body)",
             fontSize: '12px',
             fontWeight: 600,
             color: '#2C2420',
