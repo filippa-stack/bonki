@@ -474,6 +474,7 @@ export default function Home() {
                     const progress = categoryProgress[cat.id];
                     const isRecommended = cat.id === nextCategoryId;
                     const completed = isCategoryCompleted(cat.id);
+                    const bg = layer.tileBg;
 
                     return (
                       <motion.button
@@ -483,44 +484,59 @@ export default function Home() {
                         style={{
                           position: 'relative',
                           width: '100%',
-                          padding: '14px 16px',
+                          padding: '16px 18px',
                           borderRadius: '22px',
                           overflow: 'hidden',
-                          background: `linear-gradient(135deg, rgba(255,255,255,0.12) 0%, transparent 50%, rgba(0,0,0,0.08) 100%), ${completed ? `${EMBER_MID}80` : EMBER_MID}`,
+                          background: `linear-gradient(135deg, rgba(255,255,255,0.12) 0%, transparent 50%, rgba(0,0,0,0.08) 100%), ${completed ? `${bg}90` : bg}`,
                           border: isRecommended
-                            ? `1.5px solid rgba(212, 160, 58, 0.35)`
-                            : '1.5px solid rgba(255, 255, 255, 0.30)',
-                          borderLeft: isRecommended ? `3px solid ${DEEP_SAFFRON}` : undefined,
+                            ? `1.5px solid rgba(212, 160, 58, 0.40)`
+                            : '1.5px solid rgba(255, 255, 255, 0.25)',
                           cursor: 'pointer',
                           textAlign: 'left',
                           display: 'flex',
                           alignItems: 'center',
-                          gap: '12px',
+                          gap: '14px',
                           boxShadow: isRecommended
-                            ? `0 4px 16px rgba(0,0,0,0.25), 0 8px 32px rgba(0,0,0,0.15), inset 0 1px 2px rgba(255,255,255,0.20), inset 0 -1px 2px rgba(0,0,0,0.15), 0 0 20px ${DEEP_SAFFRON}15`
+                            ? `0 4px 16px rgba(0,0,0,0.25), 0 8px 32px rgba(0,0,0,0.15), inset 0 1px 2px rgba(255,255,255,0.20), inset 0 -1px 2px rgba(0,0,0,0.15), 0 0 28px ${DEEP_SAFFRON}20, 0 0 0 1px ${DEEP_SAFFRON}18`
                             : '0 4px 16px rgba(0,0,0,0.25), 0 8px 32px rgba(0,0,0,0.15), inset 0 1px 2px rgba(255,255,255,0.20), inset 0 -1px 2px rgba(0,0,0,0.15)',
                         }}
                       >
+                        {/* Saffron accent bar for recommended */}
+                        {isRecommended && (
+                          <div style={{
+                            position: 'absolute',
+                            left: 0,
+                            top: '20%',
+                            bottom: '20%',
+                            width: '3px',
+                            borderRadius: '0 2px 2px 0',
+                            backgroundColor: DEEP_SAFFRON,
+                            boxShadow: `0 0 12px ${DEEP_SAFFRON}60`,
+                          }} />
+                        )}
+
                         {completed ? (
                           <div style={{
-                            width: '24px',
-                            height: '24px',
+                            width: '26px',
+                            height: '26px',
                             borderRadius: '50%',
                             backgroundColor: DEEP_SAFFRON,
                             display: 'flex',
                             alignItems: 'center',
                             justifyContent: 'center',
                             flexShrink: 0,
+                            boxShadow: `0 0 10px ${DEEP_SAFFRON}40`,
                           }}>
                             <Check size={14} color={MIDNIGHT_INK} strokeWidth={3} />
                           </div>
                         ) : (
                           <div style={{
-                            width: '24px',
-                            height: '24px',
+                            width: '26px',
+                            height: '26px',
                             borderRadius: '50%',
-                            border: `1.5px solid ${isRecommended ? DEEP_SAFFRON : DRIFTWOOD}40`,
+                            border: `1.5px solid ${isRecommended ? `${DEEP_SAFFRON}80` : 'rgba(255,255,255,0.20)'}`,
                             flexShrink: 0,
+                            background: isRecommended ? `${DEEP_SAFFRON}10` : 'transparent',
                           }} />
                         )}
 
@@ -530,7 +546,7 @@ export default function Home() {
                             fontVariationSettings: "'opsz' 16",
                             fontSize: '16px',
                             fontWeight: 500,
-                            color: completed ? `${LANTERN_GLOW}90` : LANTERN_GLOW,
+                            color: completed ? `${LANTERN_GLOW}80` : LANTERN_GLOW,
                             lineHeight: 1.3,
                             display: 'block',
                           }}>
@@ -540,8 +556,8 @@ export default function Home() {
                             <span style={{
                               fontFamily: 'var(--font-body)',
                               fontSize: '12px',
-                              color: DRIFTWOOD,
-                              marginTop: '2px',
+                              color: progress.completed > 0 ? `${DEEP_SAFFRON}C0` : `${LANTERN_GLOW}40`,
+                              marginTop: '3px',
                               display: 'block',
                             }}>
                               {progress.completed} av {progress.total} samtal
