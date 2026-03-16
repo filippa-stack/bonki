@@ -57,7 +57,7 @@ export default function SexualitetProductHome({ product }: { product: ProductMan
 
         <div style={{ flex: 1, minHeight: '16px', maxHeight: 'clamp(40px, 12vh, 120px)' }} />
 
-        <CategoryTileGrid product={product} progress={progress} tiles={ORDERED_TILES} />
+        <CategoryTileGrid product={product} progress={progress} tiles={ORDERED_TILES} creatureImage={creatureImage} />
       </div>
     </div>
   );
