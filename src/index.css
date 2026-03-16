@@ -122,8 +122,10 @@ h1, h2, h3,
     --state-inactive: 29 10% 55%;           /* Driftwood-light */
 
     /* Typography */
-    --font-serif: 'Cormorant Garamond', Georgia, serif;
-    --font-sans: 'Inter', -apple-system, sans-serif;
+    --font-display: 'Fraunces', Georgia, serif;
+    --font-body: 'Nunito', 'Segoe UI', sans-serif;
+    --font-serif: var(--font-display);
+    --font-sans: var(--font-body);
 
     /* Spacing rhythm — LOCKED to 8px grid: 8, 16, 24, 32, 48 only */
     --space-xs:     0.5rem;    /* 8px */
