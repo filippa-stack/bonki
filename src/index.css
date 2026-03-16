@@ -258,47 +258,49 @@ h1, h2, h3,
   /* No additional font sizes allowed outside these five tiers. */
 
   .type-h1 {
-    font-family: var(--font-serif);
+    font-family: var(--font-display);
     font-size: 28px;
     font-weight: 600;
     line-height: 1.2;
     letter-spacing: -0.01em;
+    font-variation-settings: 'opsz' 28;
   }
 
   .type-h2 {
-    font-family: var(--font-serif);
+    font-family: var(--font-display);
     font-size: 18px;
     font-weight: 500;
     line-height: 1.4;
+    font-variation-settings: 'opsz' 18;
   }
 
   .type-h3 {
-    font-family: var(--font-sans);
+    font-family: var(--font-body);
     font-size: 14px;
     font-weight: 500;
     line-height: 1.4;
   }
 
   .type-body {
-    font-family: var(--font-sans);
+    font-family: var(--font-body);
     font-size: 14px;
     font-weight: 400;
     line-height: 1.5;
   }
 
   .type-meta {
-    font-family: var(--font-sans);
+    font-family: var(--font-body);
     font-size: 11px;
     font-weight: 400;
     line-height: 1.4;
   }
 
   /* Legacy aliases — map to locked tiers */
-  .text-display { font-family: var(--font-serif); font-size: 28px; font-weight: 600; line-height: 1.2; letter-spacing: -0.01em; }
-  .text-heading { font-family: var(--font-serif); font-size: 28px; font-weight: 600; line-height: 1.2; letter-spacing: -0.01em; }
-  .text-subheading { font-family: var(--font-serif); font-size: 18px; font-weight: 500; line-height: 1.4; }
-  .text-body { font-family: var(--font-sans); font-size: 14px; font-weight: 400; line-height: 1.5; }
-  .text-meta { font-family: var(--font-sans); font-size: 11px; font-weight: 400; line-height: 1.4; }
+  .text-display { font-family: var(--font-display); font-size: 28px; font-weight: 600; line-height: 1.2; letter-spacing: -0.01em; font-variation-settings: 'opsz' 28; }
+  .text-heading { font-family: var(--font-display); font-size: 28px; font-weight: 600; line-height: 1.2; letter-spacing: -0.01em; font-variation-settings: 'opsz' 28; }
+  .text-subheading { font-family: var(--font-display); font-size: 18px; font-weight: 500; line-height: 1.4; font-variation-settings: 'opsz' 18; }
+  .text-body { font-family: var(--font-body); font-size: 14px; font-weight: 400; line-height: 1.5; }
+  .text-meta { font-family: var(--font-body); font-size: 11px; font-weight: 400; line-height: 1.4; }
 
   .text-gentle {
     @apply text-muted-foreground;
