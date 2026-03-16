@@ -6,7 +6,7 @@ import { useOptimisticCompletions } from '@/contexts/OptimisticCompletionsContex
 import { useApp } from '@/contexts/AppContext';
 import { useAuth } from '@/contexts/AuthContext';
 import { useCoupleSpaceContext } from '@/contexts/CoupleSpaceContext';
-import { ArrowLeft, Check, ChevronDown } from 'lucide-react';
+import { Check, ChevronDown } from 'lucide-react';
 import { useThemeVars } from '@/hooks/useThemeVars';
 import { supabase } from '@/integrations/supabase/client';
 import { useDevState } from '@/contexts/DevStateContext';
@@ -15,6 +15,7 @@ import { useNormalizedSessionContext } from '@/contexts/NormalizedSessionContext
 import { useSpaceSnapshot } from '@/hooks/useSpaceSnapshot';
 import { useVerdigrisTheme } from '@/components/VerdigrisAtmosphere';
 import UnifiedResumeBanner from '@/components/UnifiedResumeBanner';
+import ProductHomeBackButton from '@/components/ProductHomeBackButton';
 import { categories as allCategories, cards as allCards } from '@/data/content';
 import stillUsIllustration from '@/assets/illustration-still-us-home.png';
 
@@ -26,7 +27,9 @@ const DRIFTWOOD = '#6B5E52';
 const DEEP_SAFFRON = '#D4A03A';
 const EMBER_MID = '#473454';
 
-const EASE = [0.22, 1, 0.36, 1] as const;
+const EASE = [0.4, 0.0, 0.2, 1] as const;
+const containerVariants = { hidden: {}, visible: { transition: { staggerChildren: 0.11, delayChildren: 0.35 } } };
+const titleVariants = { hidden: { opacity: 0, y: 16 }, visible: { opacity: 1, y: 0, transition: { duration: 0.75, ease: EASE } } };
 
 /* ── Layer definitions ── */
 const LAYERS: {
@@ -257,138 +260,113 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col relative" style={{ backgroundColor: MIDNIGHT_INK }}>
+    <div className="min-h-screen relative overflow-hidden" style={{ backgroundColor: EMBER_NIGHT }}>
 
-      {/* ── 1. ILLUSTRATION ZONE ── */}
-      <div style={{ position: 'relative', minHeight: '30vh', overflow: 'hidden' }}>
-        {/* Illustration */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.8 }}
-          style={{
-            position: 'absolute',
-            inset: 0,
-            zIndex: 0,
-            pointerEvents: 'none',
-          }}
-        >
-          <img
-            src={stillUsIllustration}
-            alt=""
-            style={{
-              width: '100%',
-              height: '100%',
-              objectFit: 'cover',
-              objectPosition: 'center 30%',
-              opacity: 0.35,
-            }}
-          />
-          {/* Bottom fade into Ember Night */}
-          <div style={{
-            position: 'absolute',
-            bottom: 0,
-            left: 0,
-            right: 0,
-            height: '70%',
-            background: `linear-gradient(to top, ${EMBER_NIGHT} 0%, ${EMBER_NIGHT}E6 25%, ${EMBER_NIGHT}80 50%, transparent 100%)`,
-            pointerEvents: 'none',
-          }} />
-        </motion.div>
+      {/* ── Atmospheric radial glow behind hero ── */}
+      <div
+        aria-hidden="true"
+        style={{
+          position: 'absolute',
+          top: '-5vh',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          width: '140vw',
+          height: '55vh',
+          background: `radial-gradient(ellipse 60% 50% at 50% 45%, ${EMBER_MID}30 0%, ${DEEP_SAFFRON}10 50%, transparent 100%)`,
+          pointerEvents: 'none',
+          zIndex: 0,
+        }}
+      />
 
-        {/* Warm glow */}
-        <div
-          aria-hidden="true"
+      {/* ── Hero illustration — bleeding, dramatic ── */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.6 }}
+        style={{
+          position: 'absolute',
+          top: '-8vh',
+          left: '-5vw',
+          right: '-5vw',
+          height: '65vh',
+          zIndex: 0,
+          pointerEvents: 'none',
+        }}
+      >
+        <img
+          src={stillUsIllustration}
+          alt=""
           style={{
-            position: 'absolute',
-            top: '20%',
-            left: '50%',
-            transform: 'translateX(-50%)',
-            width: '80vw',
-            height: '60%',
-            background: `radial-gradient(ellipse 50% 50% at 50% 50%, ${DEEP_SAFFRON}14 0%, transparent 100%)`,
-            pointerEvents: 'none',
-            zIndex: 0,
+            width: '100%',
+            height: '100%',
+            objectFit: 'cover',
+            objectPosition: '50% 25%',
           }}
         />
+        {/* Extended scrim blending into Ember Night */}
+        <div style={{
+          position: 'absolute',
+          bottom: 0,
+          left: 0,
+          right: 0,
+          height: '85%',
+          background: `linear-gradient(to top, ${EMBER_NIGHT} 0%, ${EMBER_NIGHT}F2 18%, rgba(46,34,51,0.85) 35%, rgba(71,52,84,0.4) 60%, rgba(71,52,84,0.1) 80%, transparent 100%)`,
+          pointerEvents: 'none',
+        }} />
+      </motion.div>
 
-        {/* Back arrow */}
-        <motion.button
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.2, duration: 0.4 }}
-          onClick={() => navigate('/')}
-          style={{
-            position: 'absolute',
-            top: '16px',
-            left: '16px',
-            zIndex: 10,
-            background: 'none',
-            border: 'none',
-            cursor: 'pointer',
-            padding: '8px',
-            WebkitTapHighlightColor: 'transparent',
-          }}
-        >
-          <ArrowLeft size={22} color={LANTERN_GLOW} strokeWidth={1.5} />
-        </motion.button>
+      <ProductHomeBackButton color={LANTERN_GLOW} />
 
-        {/* Title & subtitle — inside the illustration zone */}
-        <motion.div
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.15, duration: 0.7, ease: EASE }}
-          style={{
-            position: 'relative',
-            zIndex: 2,
-            textAlign: 'center',
-            paddingTop: 'clamp(60px, 15vh, 120px)',
-            paddingBottom: '24px',
-          }}
-        >
-          <h1
-            style={{
+      {/* ── Content layer ── */}
+      <div style={{
+        position: 'relative',
+        zIndex: 1,
+        minHeight: '100vh',
+        display: 'flex',
+        flexDirection: 'column',
+        paddingTop: 'clamp(28px, 8vh, 80px)',
+        paddingLeft: '5vw',
+        paddingRight: '5vw',
+        paddingBottom: '120px',
+      }}>
+
+        {/* ── Title with staggered reveal ── */}
+        <motion.div variants={containerVariants} initial="hidden" animate="visible" style={{ textAlign: 'center', width: '100%' }}>
+          <motion.div variants={titleVariants}>
+            <h1 style={{
               fontFamily: "var(--font-display)",
-              fontVariationSettings: "'opsz' 28",
-              fontSize: '28px',
-              fontWeight: 600,
+              fontSize: 'clamp(34px, 10vw, 50px)',
+              fontWeight: 700,
               color: LANTERN_GLOW,
-              lineHeight: 1.2,
-              textShadow: `0 2px 20px ${EMBER_NIGHT}, 0 0 40px ${EMBER_NIGHT}`,
-            }}
-          >
-            Ert utrymme
-          </h1>
-          <p style={{
-            fontFamily: 'var(--font-body)',
-            fontSize: '14px',
-            color: DRIFTWOOD,
-            lineHeight: 1.5,
-            marginTop: '6px',
-            textShadow: `0 1px 12px ${EMBER_NIGHT}`,
-          }}>
-            Följ ordningen — eller börja där det känns rätt.
-          </p>
+              letterSpacing: '-0.02em',
+              lineHeight: 1.15,
+              textShadow: `0 2px 20px rgba(0,0,0,0.7), 0 0 60px ${EMBER_NIGHT}, 0 0 120px ${EMBER_NIGHT}`,
+              fontVariationSettings: "'opsz' 36",
+            }}>
+              Ert utrymme
+            </h1>
+            <p className="font-serif" style={{
+              fontSize: 'clamp(15px, 4vw, 19px)',
+              fontWeight: 400,
+              color: DEEP_SAFFRON,
+              opacity: 0.9,
+              marginTop: '6px',
+              textShadow: `0 1px 16px rgba(0,0,0,0.8), 0 0 40px ${EMBER_NIGHT}`,
+            }}>
+              Följ ordningen — eller börja där det känns rätt.
+            </p>
+          </motion.div>
         </motion.div>
-      </div>
 
-      {/* ── 3. BACKGROUND TRANSITION — Midnight Ink → Ember Night ── */}
-      {/* The illustration zone already fades into Ember Night at the bottom */}
+        {/* Spacer between title and action zone */}
+        <div style={{ height: 'clamp(40px, 10vh, 80px)' }} />
 
-      {/* ── Content area — Ember Night territory ── */}
-      <div style={{ position: 'relative', zIndex: 1, backgroundColor: EMBER_NIGHT, flex: 1 }}>
-
-        {mode === 'loading' && (
-          <div className="px-4 pt-4">
-            <div style={{ height: '80px', borderRadius: '16px', background: 'rgba(255,255,255,0.05)' }} className="animate-pulse" />
-          </div>
-        )}
-
-        {mode !== 'loading' && (
-          <div style={{ paddingBottom: '120px' }}>
-
-            {/* ── 2. RESUME / NEXT CARD ── */}
-            <div className="px-4" style={{ marginTop: '-8px' }}>
+        {/* ── Resume / Next card ── */}
+        {mode === 'loading' ? (
+          <div style={{ height: '80px', borderRadius: '22px', background: 'rgba(255,255,255,0.05)' }} className="animate-pulse" />
+        ) : (
+          <>
+            <div style={{ paddingLeft: '3vw', paddingRight: '3vw' }}>
               {isStillUsResume ? (
                 <UnifiedResumeBanner
                   accentColor={DEEP_SAFFRON}
@@ -404,17 +382,17 @@ export default function Home() {
                   onClick={() => navigate(`/card/${nextCard.id}`)}
                   style={{
                     width: '100%',
-                    padding: '16px 18px',
-                    background: `linear-gradient(135deg, rgba(255,255,255,0.08) 0%, transparent 50%, rgba(0,0,0,0.06) 100%), ${EMBER_MID}`,
-                    borderRadius: '16px',
-                    border: '1.5px solid rgba(255, 255, 255, 0.15)',
+                    padding: '18px 20px',
+                    background: `linear-gradient(135deg, rgba(255,255,255,0.10) 0%, transparent 50%, rgba(0,0,0,0.06) 100%), ${EMBER_MID}`,
+                    borderRadius: '22px',
+                    border: '1.5px solid rgba(255, 255, 255, 0.18)',
                     borderLeft: `3px solid ${DEEP_SAFFRON}`,
                     cursor: 'pointer',
                     textAlign: 'left',
                     display: 'flex',
                     flexDirection: 'column',
                     gap: '4px',
-                    boxShadow: '0 8px 24px rgba(0,0,0,0.25), inset 0 1px 3px rgba(255,255,255,0.15)',
+                    boxShadow: `0 10px 30px rgba(0,0,0,0.30), inset 0 1px 3px rgba(255,255,255,0.15), 0 0 0 1px rgba(255,255,255,0.05)`,
                   }}
                 >
                   <span style={{
@@ -456,7 +434,7 @@ export default function Home() {
                   style={{
                     padding: '20px',
                     background: EMBER_MID,
-                    borderRadius: '16px',
+                    borderRadius: '22px',
                     textAlign: 'center',
                   }}
                 >
@@ -475,17 +453,15 @@ export default function Home() {
               )}
             </div>
 
-            {/* ── 4. ACCORDION LAYERS ── */}
+            {/* ── Accordion layers ── */}
             {LAYERS.map((layer, layerIndex) => {
               const layerCats = layer.categoryIds
                 .map(id => allCategories.find(c => c.id === id))
                 .filter(Boolean) as typeof allCategories;
 
-              // Summary stats for collapsed state
               const layerCompleted = layerCats.filter(c => isCategoryCompleted(c.id)).length;
               const layerTotal = layerCats.length;
               const allLayerDone = layerCompleted === layerTotal;
-              // Auto-expand the layer that contains the next recommended category
               const containsNext = layerCats.some(c => c.id === nextCategoryId);
 
               return (
@@ -511,7 +487,7 @@ export default function Home() {
                         style={{
                           width: '100%',
                           padding: '14px 16px',
-                          borderRadius: '12px',
+                          borderRadius: '14px',
                           backgroundColor: completed ? `${EMBER_MID}80` : EMBER_MID,
                           border: isRecommended
                             ? `1.5px solid ${DEEP_SAFFRON}50`
@@ -525,7 +501,6 @@ export default function Home() {
                           boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
                         }}
                       >
-                        {/* Completed badge or position indicator */}
                         {completed ? (
                           <div style={{
                             width: '24px',
@@ -579,7 +554,7 @@ export default function Home() {
                 </AccordionLayer>
               );
             })}
-          </div>
+          </>
         )}
       </div>
     </div>
