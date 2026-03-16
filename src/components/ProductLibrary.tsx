@@ -1114,7 +1114,7 @@ export default function ProductLibrary() {
                 height: '70%',
                 zIndex: 1,
                 pointerEvents: 'none',
-                background: `linear-gradient(to top, rgba(30, 90, 104, 1) 0%, rgba(30, 90, 104, 0.97) 20%, rgba(30, 90, 104, 0.85) 40%, rgba(30, 90, 104, 0.4) 65%, transparent 100%)`,
+                background: `linear-gradient(to top, rgba(46, 34, 51, 1) 0%, rgba(46, 34, 51, 0.97) 20%, rgba(46, 34, 51, 0.86) 40%, rgba(46, 34, 51, 0.42) 65%, transparent 100%)`,
                 borderRadius: '0 0 22px 22px',
               }}
             />
