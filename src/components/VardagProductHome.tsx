@@ -38,8 +38,8 @@ const TILE_IMAGES: (string | undefined)[] = [
 const CREATURE_TILE_STYLES: CreatureTileStyle[] = [
   { scale: 1.25, objectPosition: '50% 20%', opacity: 0.22 },  // Morgon – warm, detailed
   { scale: 1.15, objectPosition: '50% 25%', opacity: 0.18 },  // Kväll – moderate
-  { scale: 1.3,  objectPosition: '50% 20%', opacity: 0.28 },  // Hushåll – boosted for balance
-  { scale: 1.2,  objectPosition: '50% 30%', opacity: 0.24 },  // Sova – boosted for balance
+  { scale: 1.3,  objectPosition: '50% 20%', opacity: 0.35 },  // Hushåll – punchy
+  { scale: 1.2,  objectPosition: '50% 30%', opacity: 0.32 },  // Sova – punchy
 ];
 
 const containerVariants = { hidden: {}, visible: { transition: { staggerChildren: 0.11, delayChildren: 0.4 } } };
