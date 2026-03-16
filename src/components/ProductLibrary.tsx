@@ -277,16 +277,15 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
         </div>
       )}
 
-      {/* Horizontal gradient scrim — solid left, fading to transparent right */}
+      {/* Gradient shield — full-width, 5-stop atmosphere fade */}
       <div
         aria-hidden="true"
         style={{
           position: 'absolute',
-          top: 0, left: 0, bottom: 0,
-          width: '65%',
+          inset: 0,
           zIndex: 1,
           pointerEvents: 'none',
-          background: `linear-gradient(to right, ${bgRgba(1)} 0%, ${bgRgba(0.95)} 40%, ${bgRgba(0.6)} 70%, transparent 100%)`,
+          background: `linear-gradient(to right, ${bgRgba(1)} 0%, ${bgRgba(0.95)} 35%, ${bgRgba(0.40)} 55%, ${bgRgba(0.05)} 75%, transparent 100%)`,
         }}
       />
 
