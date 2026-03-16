@@ -6,6 +6,7 @@ import NextConversationCard from '@/components/NextConversationCard';
 import ProductHomeBackButton from '@/components/ProductHomeBackButton';
 import { useKidsProductProgress } from '@/hooks/useKidsProductProgress';
 import CategoryTileGrid from '@/components/CategoryTileGrid';
+import type { CreatureTileStyle } from '@/components/CategoryTileGrid';
 
 const EASE = [0.4, 0.0, 0.2, 1] as const;
 const ACCENT_COLOR = '#6ABF78';
@@ -16,6 +17,15 @@ const ORDERED_TILES = [
   { id: 'jiv-jag-och-andra', bg: '#2A3A1E', sub: 'Hur vi påverkar varandra' },
   { id: 'jiv-jag-i-samhallet', bg: '#1E2E16', sub: 'Normer, rättvisa och din röst' },
   { id: 'jiv-det-stora-sammanhanget', bg: '#162210', sub: 'Bortom det du ser' },
+];
+
+// Eagle: sharp profile and beak. Tile 0 = full head, tile 1 = body/feathers.
+const CREATURE_TILE_STYLES: CreatureTileStyle[] = [
+  { scale: 1.3, objectPosition: '55% 10%', opacity: 0.95 },
+  { scale: 1.15, objectPosition: '40% 60%', opacity: 0.8 },
+  { scale: 1.8, objectPosition: '60% 5%', opacity: 0.6 },
+  { scale: 0.65, objectPosition: '50% 50%', opacity: 0.35 },
+  { scale: 0.85, objectPosition: '80% 40%', opacity: 0.2 },
 ];
 
 const containerVariants = { hidden: {}, visible: { transition: { staggerChildren: 0.11, delayChildren: 0.4 } } };
@@ -34,7 +44,7 @@ export default function JagIVarldenProductHome({ product }: { product: ProductMa
         transition={{ duration: 0.6 }}
         style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '45vh', zIndex: 0, pointerEvents: 'none' }}
       >
-        <img src={creatureImage} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: '45% 20%' }} />
+        <img src={creatureImage} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: '55% 15%' }} />
         <div style={{
           position: 'absolute', bottom: 0, left: 0, right: 0, height: '60%',
           background: 'linear-gradient(to top, #1A1A2E 0%, rgba(26,74,36,0.7) 40%, transparent 100%)',
@@ -58,7 +68,7 @@ export default function JagIVarldenProductHome({ product }: { product: ProductMa
 
         <div style={{ flex: 1, minHeight: '16px', maxHeight: 'clamp(40px, 12vh, 120px)' }} />
 
-        <CategoryTileGrid product={product} progress={progress} tiles={ORDERED_TILES} creatureImage={creatureImage} />
+        <CategoryTileGrid product={product} progress={progress} tiles={ORDERED_TILES} creatureImage={creatureImage} creatureTileStyles={CREATURE_TILE_STYLES} />
       </div>
     </div>
   );

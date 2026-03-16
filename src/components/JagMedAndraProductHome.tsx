@@ -6,6 +6,7 @@ import NextConversationCard from '@/components/NextConversationCard';
 import ProductHomeBackButton from '@/components/ProductHomeBackButton';
 import { useKidsProductProgress } from '@/hooks/useKidsProductProgress';
 import CategoryTileGrid from '@/components/CategoryTileGrid';
+import type { CreatureTileStyle } from '@/components/CategoryTileGrid';
 
 const EASE = [0.4, 0.0, 0.2, 1] as const;
 const ACCENT_COLOR = '#C77AE8';
@@ -16,6 +17,15 @@ const ORDERED_TILES = [
   { id: 'jma-nar-det-skaver', bg: '#3A0E58', sub: 'När vi sårar varandra' },
   { id: 'jma-att-sta-stadig', bg: '#2E0A48', sub: 'Din egen grund' },
   { id: 'jma-vi-i-varlden', bg: '#241040', sub: 'Utanför oss själva' },
+];
+
+// Owl: enormous eyes dominate. Tile 2 (scale 1.8) = JUST the eyes.
+const CREATURE_TILE_STYLES: CreatureTileStyle[] = [
+  { scale: 1.3, objectPosition: '50% 10%', opacity: 0.95 },
+  { scale: 1.15, objectPosition: '65% 15%', opacity: 0.8 },
+  { scale: 1.8, objectPosition: '50% 5%', opacity: 0.6 },
+  { scale: 0.65, objectPosition: '50% 50%', opacity: 0.35 },
+  { scale: 0.85, objectPosition: '75% 35%', opacity: 0.2 },
 ];
 
 const containerVariants = { hidden: {}, visible: { transition: { staggerChildren: 0.11, delayChildren: 0.4 } } };
@@ -34,7 +44,7 @@ export default function JagMedAndraProductHome({ product }: { product: ProductMa
         transition={{ duration: 0.6 }}
         style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '45vh', zIndex: 0, pointerEvents: 'none' }}
       >
-        <img src={creatureImage} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: '50% 25%' }} />
+        <img src={creatureImage} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: '50% 15%' }} />
         <div style={{
           position: 'absolute', bottom: 0, left: 0, right: 0, height: '60%',
           background: 'linear-gradient(to top, #1A1A2E 0%, rgba(58,14,88,0.7) 40%, transparent 100%)',
@@ -58,7 +68,7 @@ export default function JagMedAndraProductHome({ product }: { product: ProductMa
 
         <div style={{ flex: 1, minHeight: '16px', maxHeight: 'clamp(40px, 12vh, 120px)' }} />
 
-        <CategoryTileGrid product={product} progress={progress} tiles={ORDERED_TILES} creatureImage={creatureImage} />
+        <CategoryTileGrid product={product} progress={progress} tiles={ORDERED_TILES} creatureImage={creatureImage} creatureTileStyles={CREATURE_TILE_STYLES} />
       </div>
     </div>
   );

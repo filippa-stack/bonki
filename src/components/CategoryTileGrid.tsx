@@ -13,14 +13,20 @@ const SAFFRON = '#E9B44C';
 const LANTERN = '#FDF6E3';
 const SUBTITLE_COLOR = '#998F82';
 
-/** Per-tile crop/opacity values for the creature illustration */
-const TILE_CREATURE_STYLES = [
+/** Default per-tile crop/opacity — used as fallback */
+const DEFAULT_TILE_CREATURE_STYLES: CreatureTileStyle[] = [
   { scale: 1.3, objectPosition: '25% 15%', opacity: 0.95 },
   { scale: 1.15, objectPosition: '75% 20%', opacity: 0.8 },
   { scale: 1.8, objectPosition: '50% 10%', opacity: 0.6 },
   { scale: 0.65, objectPosition: '50% 55%', opacity: 0.35 },
   { scale: 0.85, objectPosition: '80% 40%', opacity: 0.2 },
 ];
+
+export interface CreatureTileStyle {
+  scale: number;
+  objectPosition: string;
+  opacity: number;
+}
 
 const containerVariants = {
   hidden: {},
@@ -42,6 +48,7 @@ interface CategoryTileGridProps {
   progress: KidsProductProgress;
   tiles: TileConfig[];
   creatureImage?: string;
+  creatureTileStyles?: CreatureTileStyle[];
 }
 
 function hexToRgb(hex: string): string {
@@ -60,6 +67,7 @@ function CategoryTile({
   total,
   isOddLast,
   creatureImage,
+  creatureStyle,
 }: {
   tile: TileConfig;
   product: ProductManifest;
@@ -68,6 +76,7 @@ function CategoryTile({
   total: number;
   isOddLast: boolean;
   creatureImage?: string;
+  creatureStyle: CreatureTileStyle;
 }) {
   const navigate = useNavigate();
   const cat = product.categories.find((c) => c.id === tile.id);
@@ -88,7 +97,6 @@ function CategoryTile({
 
   const ariaLabel = `${cat.title}: ${tile.sub}. ${completed} av ${totalCards} utforskade.`;
 
-  const creatureStyle = TILE_CREATURE_STYLES[Math.min(index, TILE_CREATURE_STYLES.length - 1)];
 
   return (
     <motion.button
@@ -214,9 +222,10 @@ function CategoryTile({
   );
 }
 
-export default function CategoryTileGrid({ product, progress, tiles, creatureImage }: CategoryTileGridProps) {
+export default function CategoryTileGrid({ product, progress, tiles, creatureImage, creatureTileStyles }: CategoryTileGridProps) {
   const total = tiles.length;
   const isOdd = total % 2 !== 0;
+  const styles = creatureTileStyles || DEFAULT_TILE_CREATURE_STYLES;
 
   return (
     <motion.div
@@ -241,6 +250,7 @@ export default function CategoryTileGrid({ product, progress, tiles, creatureIma
           total={total}
           isOddLast={isOdd && index === total - 1}
           creatureImage={creatureImage}
+          creatureStyle={styles[Math.min(index, styles.length - 1)]}
         />
       ))}
     </motion.div>

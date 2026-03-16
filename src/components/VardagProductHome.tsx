@@ -6,6 +6,7 @@ import NextConversationCard from '@/components/NextConversationCard';
 import ProductHomeBackButton from '@/components/ProductHomeBackButton';
 import { useKidsProductProgress } from '@/hooks/useKidsProductProgress';
 import CategoryTileGrid from '@/components/CategoryTileGrid';
+import type { CreatureTileStyle } from '@/components/CategoryTileGrid';
 
 const EASE = [0.4, 0.0, 0.2, 1] as const;
 const ACCENT_COLOR = '#4DA8D4';
@@ -15,6 +16,14 @@ const ORDERED_TILES = [
   { id: 'vk-var-rytm', bg: '#0A4A6A', sub: 'Vanor och rutiner' },
   { id: 'vk-vi-hemma', bg: '#063450', sub: 'Allt som händer innanför dörren' },
   { id: 'vk-utanfor-hemmet', bg: '#042C44', sub: 'Det du möter där ute' },
+];
+
+// Turtle: face is small relative to shell. Increase scale on tile 0, focus on face.
+const CREATURE_TILE_STYLES: CreatureTileStyle[] = [
+  { scale: 1.4, objectPosition: '40% 10%', opacity: 0.95 },
+  { scale: 1.15, objectPosition: '60% 20%', opacity: 0.8 },
+  { scale: 1.8, objectPosition: '55% 8%', opacity: 0.6 },
+  { scale: 0.65, objectPosition: '50% 50%', opacity: 0.35 },
 ];
 
 const containerVariants = { hidden: {}, visible: { transition: { staggerChildren: 0.11, delayChildren: 0.4 } } };
@@ -33,7 +42,7 @@ export default function VardagProductHome({ product }: { product: ProductManifes
         transition={{ duration: 0.6 }}
         style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '45vh', zIndex: 0, pointerEvents: 'none' }}
       >
-        <img src={creatureImage} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: '50% 30%' }} />
+        <img src={creatureImage} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: '50% 20%' }} />
         <div style={{
           position: 'absolute', bottom: 0, left: 0, right: 0, height: '60%',
           background: 'linear-gradient(to top, #1A1A2E 0%, rgba(10,74,106,0.7) 40%, transparent 100%)',
@@ -57,7 +66,7 @@ export default function VardagProductHome({ product }: { product: ProductManifes
 
         <div style={{ flex: 1, minHeight: '16px', maxHeight: 'clamp(40px, 12vh, 120px)' }} />
 
-        <CategoryTileGrid product={product} progress={progress} tiles={ORDERED_TILES} creatureImage={creatureImage} />
+        <CategoryTileGrid product={product} progress={progress} tiles={ORDERED_TILES} creatureImage={creatureImage} creatureTileStyles={CREATURE_TILE_STYLES} />
       </div>
     </div>
   );
