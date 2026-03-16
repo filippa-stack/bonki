@@ -765,7 +765,7 @@ export default function ProductLibrary() {
             paddingTop: '16px',
           }}>
             <p style={{
-              fontFamily: "'Lato', sans-serif",
+              fontFamily: "var(--font-body)",
               fontSize: '12px',
               fontWeight: 600,
               letterSpacing: '1.5px',
