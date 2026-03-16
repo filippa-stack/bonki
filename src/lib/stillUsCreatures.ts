@@ -22,6 +22,10 @@ export interface StillUsCreature {
   tileOpacity: number;
   /** Opacity for category view header */
   headerOpacity: number;
+  /** Right offset for tile placement (default: '-5%') */
+  tileRight?: string;
+  /** Height multiplier for tile placement (default: '160%') */
+  tileHeight?: string;
 }
 
 /**
