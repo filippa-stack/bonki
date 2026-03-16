@@ -149,7 +149,8 @@ export default function LibraryResumeCard({ activeTab }: LibraryResumeCardProps)
     return () => { cancelled = true; };
   }, [space?.id, activeTab]);
 
-  if (!resume) return null;
+  const display = devMock || resume;
+  if (!display) return null;
 
   return (
     <button
