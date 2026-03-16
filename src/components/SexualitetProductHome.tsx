@@ -20,10 +20,10 @@ const ORDERED_TILES = [
 
 // Deer: huge dark eyes and ears. Tile 0 = face-dominant. Tile 1 ears extending.
 const CREATURE_TILE_STYLES: CreatureTileStyle[] = [
-  { scale: 1.3, objectPosition: '50% 8%', opacity: 0.95 },
-  { scale: 1.15, objectPosition: '70% 5%', opacity: 0.8 },
-  { scale: 1.8, objectPosition: '50% 10%', opacity: 0.6 },
-  { scale: 0.65, objectPosition: '50% 50%', opacity: 0.35 },
+  { scale: 1.3, objectPosition: '50% 8%', opacity: 0.45 },
+  { scale: 1.15, objectPosition: '70% 5%', opacity: 0.35 },
+  { scale: 1.8, objectPosition: '50% 10%', opacity: 0.25 },
+  { scale: 0.65, objectPosition: '50% 50%', opacity: 0.18 },
 ];
 
 const containerVariants = { hidden: {}, visible: { transition: { staggerChildren: 0.11, delayChildren: 0.4 } } };
