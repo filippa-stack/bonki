@@ -3,10 +3,31 @@ import { motion } from 'framer-motion';
 import { House, MessageCircle } from 'lucide-react';
 import { MIDNIGHT_INK, LANTERN_GLOW, DRIFTWOOD } from '@/lib/palette';
 
+/** Two small circles leaning toward each other — Still Us icon */
+function StillUsIcon({ style }: { style?: React.CSSProperties }) {
+  return (
+    <svg
+      width="22"
+      height="22"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      style={style}
+    >
+      <circle cx="9" cy="12" r="4.5" />
+      <circle cx="15" cy="12" r="4.5" />
+    </svg>
+  );
+}
+
 type NavItem = {
   id: string;
   label: string;
-  icon: typeof House;
+  icon?: typeof House;
+  customIcon?: React.FC<{ style?: React.CSSProperties }>;
   path: string;
   match: (pathname: string, search: string) => boolean;
 };
@@ -17,7 +38,14 @@ const items: NavItem[] = [
     label: 'Biblioteket',
     icon: House,
     path: '/',
-    match: (p, s) => !p.startsWith('/shared') && !p.startsWith('/diary'),
+    match: (p) => p === '/' || (p.startsWith('/product/') && p !== '/product/still-us'),
+  },
+  {
+    id: 'still-us',
+    label: 'Still Us',
+    customIcon: StillUsIcon,
+    path: '/product/still-us',
+    match: (p) => p === '/product/still-us',
   },
   {
     id: 'journal',
@@ -63,13 +91,22 @@ export default function BottomNav() {
                   gap: '2px',
                 }}
               >
-                <Icon
-                  style={{
-                    width: '22px',
-                    height: '22px',
-                    strokeWidth: 1.5,
-                  }}
-                />
+                {item.customIcon ? (
+                  <item.customIcon
+                    style={{
+                      width: '22px',
+                      height: '22px',
+                    }}
+                  />
+                ) : Icon ? (
+                  <Icon
+                    style={{
+                      width: '22px',
+                      height: '22px',
+                      strokeWidth: 1.5,
+                    }}
+                  />
+                ) : null}
                 <span
                   style={{
                     fontSize: '10px',
