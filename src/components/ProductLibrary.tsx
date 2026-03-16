@@ -1285,11 +1285,8 @@ export default function ProductLibrary() {
               </div>
             </motion.div>
           </motion.div>
-        </motion.div>
-          </motion.div>
-        )}
-        </AnimatePresence>
-        </motion.div>
+        </div>
+        </div>
 
         {/* Bottom safe-area spacing */}
         <div style={{ paddingBottom: 'calc(48px + env(safe-area-inset-bottom, 0px))' }} />
