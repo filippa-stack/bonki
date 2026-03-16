@@ -55,7 +55,7 @@ export const STILL_US_CREATURES: Record<string, StillUsCreature> = {
     objectPosition: '50% 30%',
     tileOpacity: 0.35,
     headerOpacity: 0.35,
-    tileRight: '-5%',
+    tileRight: '-15%',
     tileHeight: '220%',
     tileScale: 1.1,
     tileTop: '58%',            // Seal: push down to show round face
