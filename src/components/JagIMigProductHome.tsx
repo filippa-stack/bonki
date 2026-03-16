@@ -73,10 +73,10 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
         style={{ position: 'absolute', top: '-8vh', left: '-5vw', right: '-5vw', height: '65vh', zIndex: 0, pointerEvents: 'none' }}
       >
         <img src={heroImage} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: '50% 15%' }} />
-        {/* Soft bottom fade into BG */}
+        {/* Extended scrim with smooth blend */}
         <div style={{
-          position: 'absolute', bottom: '-2px', left: '-20%', right: '-20%', height: '50%',
-          background: `linear-gradient(to top, ${BG} 0%, ${BG}E6 30%, ${BG}80 60%, transparent 100%)`,
+          position: 'absolute', bottom: 0, left: 0, right: 0, height: '85%',
+          background: `linear-gradient(to top, ${BG} 0%, ${BG}F2 18%, rgba(26,26,46,0.85) 35%, rgba(101,117,20,0.4) 60%, rgba(101,117,20,0.1) 80%, transparent 100%)`,
           pointerEvents: 'none',
         }} />
       </motion.div>
