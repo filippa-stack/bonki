@@ -50,7 +50,7 @@ export default function NextConversationCard({ product, progress }: NextConversa
       onClick={() => navigate(`/card/${card.id}`)}
       style={{
         width: '100%',
-        background: `linear-gradient(135deg, ${hexToRgba(tileMid, 0.55)} 0%, ${hexToRgba(tileMid, 0.40)} 100%)`,
+        background: `linear-gradient(135deg, ${hexToRgba(tileMid, 0.70)} 0%, ${hexToRgba(tileMid, 0.50)} 100%)`,
         backdropFilter: 'blur(16px)',
         WebkitBackdropFilter: 'blur(16px)',
         borderRadius: '16px',
