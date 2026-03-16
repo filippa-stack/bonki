@@ -106,7 +106,7 @@ export const STILL_US_CREATURES: Record<string, StillUsCreature> = {
     headerOpacity: 0.38,
     tileRight: '0%',
     tileHeight: '160%',
-    tileScale: 0.92,           // Elephant is dense — scale down
+    tileScale: 0.85,           // Elephant is very dense — scale down further
   },
   'daily-life': {               // Nära varandra → Rådjur  (Djupet)
     src: creatureRadjur,
