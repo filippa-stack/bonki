@@ -71,8 +71,6 @@ export default function JagIVarldenProductHome({ product }: { product: ProductMa
               if (!cat) return null;
               const catProgress = progress.categoryProgress[cat.id];
               const isNextCategory = progress.nextSuggestedCategoryId === cat.id;
-              const isLastOdd = index === ORDERED_TILES.length - 1 && ORDERED_TILES.length % 2 === 1;
-
               return (
                 <motion.button
                   key={cat.id}
@@ -87,9 +85,8 @@ export default function JagIVarldenProductHome({ product }: { product: ProductMa
                     padding: '14px',
                     textAlign: 'left',
                     cursor: 'pointer',
-                    ...(isLastOdd
-                      ? { gridColumn: '1 / -1', justifySelf: 'center', width: '65%', minHeight: '130px' }
-                      : { aspectRatio: '1 / 1', minHeight: '130px' }),
+                    aspectRatio: '1 / 1',
+                    minHeight: '130px',
                     border: isNextCategory
                       ? `2.5px solid ${SAFFRON}CC`
                       : '1.5px solid rgba(255, 255, 255, 0.30)',
