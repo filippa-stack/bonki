@@ -162,7 +162,7 @@ function AccordionLayer({
 export default function Home() {
   const navigate = useNavigate();
   useThemeVars();
-  useVerdigrisTheme(true);
+  // Don't apply verdigris theme — Still Us home uses Ember Night, not teal
   const { categories, getCardById, cards } = useApp();
   const { user } = useAuth();
   const { space } = useCoupleSpaceContext();
