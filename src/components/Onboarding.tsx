@@ -145,7 +145,7 @@ export default function Onboarding() {
         <motion.p
           {...fadeUp(0.75)}
           style={{
-            fontFamily: 'var(--font-sans)',
+            fontFamily: 'var(--font-body)',
             fontSize: '0.92rem',
             fontWeight: 300,
             lineHeight: 1.6,
