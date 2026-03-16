@@ -671,6 +671,27 @@ function StillUsCategoryView({
                 ].join(', '),
               }}
             >
+              {/* Creature illustration — dimmed texture */}
+              {STILL_US_CREATURES[category.id] && (
+                <img
+                  src={STILL_US_CREATURES[category.id].src}
+                  alt=""
+                  style={{
+                    position: 'absolute',
+                    right: '-3%',
+                    top: '50%',
+                    transform: 'translateY(-50%)',
+                    height: '130%',
+                    width: 'auto',
+                    objectFit: 'contain',
+                    objectPosition: STILL_US_CREATURES[category.id].objectPosition,
+                    opacity: STILL_US_CREATURES[category.id].headerOpacity,
+                    pointerEvents: 'none',
+                    filter: 'saturate(0.4)',
+                  }}
+                />
+              )}
+
               <div style={{ flex: 1, minWidth: 0 }}>
                 <span
                   style={{
