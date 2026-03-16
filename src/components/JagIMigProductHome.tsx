@@ -19,9 +19,9 @@ const ORDERED_TILES = [
 
 // Lion: golden hood + blue eyes are focal. Tile 0 & 2 should show eyes.
 const CREATURE_TILE_STYLES: CreatureTileStyle[] = [
-  { scale: 1.4, objectPosition: '45% 10%', opacity: 0.95 },
-  { scale: 1.15, objectPosition: '70% 15%', opacity: 0.8 },
-  { scale: 1.8, objectPosition: '45% 8%', opacity: 0.55 },
+  { scale: 1.4, objectPosition: '45% 10%', opacity: 0.45 },
+  { scale: 1.15, objectPosition: '70% 15%', opacity: 0.32 },
+  { scale: 1.8, objectPosition: '45% 8%', opacity: 0.22 },
 ];
 
 const containerVariants = { hidden: {}, visible: { transition: { staggerChildren: 0.11, delayChildren: 0.4 } } };
