@@ -2,6 +2,11 @@
  * Still Us category → creature mapping.
  * Each category has a spirit animal that appears as a dimmed
  * atmospheric texture on tiles and category headers.
+ *
+ * `tileScale` is an individual optical-balance multiplier per animal.
+ * Because each illustration has different amounts of built-in padding
+ * and negative space, a uniform size makes some look huge and others
+ * tiny. Tune tileScale per animal so they *feel* the same size.
  */
 import creatureSal from '@/assets/creature-sal-still-us.png';
 import creatureUggla from '@/assets/creature-uggla.png';
@@ -22,15 +27,22 @@ export interface StillUsCreature {
   tileOpacity: number;
   /** Opacity for category view header */
   headerOpacity: number;
-  /** Right offset for tile placement (default: '-5%') */
+  /** Right offset for tile placement (default: '0%') */
   tileRight?: string;
-  /** Height multiplier for tile placement (default: '160%') */
+  /** Base height for tile placement — uniform across all animals */
   tileHeight?: string;
+  /**
+   * Per-animal optical scale multiplier (default: 1).
+   * Tune this to make every animal *appear* the same visual weight
+   * despite different built-in padding/negative space.
+   */
+  tileScale?: number;
 }
 
 /**
  * Category ID → creature config
  * Opacities are individually calibrated per image density.
+ * tileScale is individually tuned so all animals look the same size.
  */
 export const STILL_US_CREATURES: Record<string, StillUsCreature> = {
   'emotional-intimacy': {       // Ni i er → Säl  (Grunden)
@@ -40,6 +52,7 @@ export const STILL_US_CREATURES: Record<string, StillUsCreature> = {
     headerOpacity: 0.35,
     tileRight: '0%',
     tileHeight: '160%',
+    tileScale: 1.0,
   },
   'communication': {            // Vardagen mellan er → Apa  (Grunden)
     src: creatureApa,
@@ -47,7 +60,8 @@ export const STILL_US_CREATURES: Record<string, StillUsCreature> = {
     tileOpacity: 0.35,
     headerOpacity: 0.35,
     tileRight: '-2%',
-    tileHeight: '170%',
+    tileHeight: '160%',
+    tileScale: 1.15,          // Apa has lots of negative space — scale up
   },
   'category-8': {               // Att hålla kvar varandra → Panda  (Grunden)
     src: creaturePanda,
@@ -55,7 +69,8 @@ export const STILL_US_CREATURES: Record<string, StillUsCreature> = {
     tileOpacity: 0.36,
     headerOpacity: 0.35,
     tileRight: '0%',
-    tileHeight: '155%',
+    tileHeight: '160%',
+    tileScale: 1.05,
   },
   'individual-needs': {         // När ni tycker olika → Sköldpadda  (Det som formar er)
     src: creatureTurtle,
@@ -63,7 +78,8 @@ export const STILL_US_CREATURES: Record<string, StillUsCreature> = {
     tileOpacity: 0.38,
     headerOpacity: 0.38,
     tileRight: '0%',
-    tileHeight: '155%',
+    tileHeight: '160%',
+    tileScale: 1.1,            // Turtle is compact — scale up slightly
   },
   'parenting-together': {       // Det ni bär med er → Uggla  (Det som formar er)
     src: creatureUggla,
@@ -71,7 +87,8 @@ export const STILL_US_CREATURES: Record<string, StillUsCreature> = {
     tileOpacity: 0.36,
     headerOpacity: 0.36,
     tileRight: '-2%',
-    tileHeight: '165%',
+    tileHeight: '160%',
+    tileScale: 1.0,
   },
   'category-9': {               // Dit ni är på väg → Lejon  (Det som formar er)
     src: creatureLejon,
@@ -79,7 +96,8 @@ export const STILL_US_CREATURES: Record<string, StillUsCreature> = {
     tileOpacity: 0.36,
     headerOpacity: 0.36,
     tileRight: '-3%',
-    tileHeight: '165%',
+    tileHeight: '160%',
+    tileScale: 0.95,           // Lion is visually large — scale down slightly
   },
   'category-6': {               // Trygghet & mod → Elefant  (Djupet)
     src: creatureElefant,
@@ -87,7 +105,8 @@ export const STILL_US_CREATURES: Record<string, StillUsCreature> = {
     tileOpacity: 0.38,
     headerOpacity: 0.38,
     tileRight: '0%',
-    tileHeight: '155%',
+    tileHeight: '160%',
+    tileScale: 0.92,           // Elephant is dense — scale down
   },
   'daily-life': {               // Nära varandra → Rådjur  (Djupet)
     src: creatureRadjur,
@@ -95,7 +114,8 @@ export const STILL_US_CREATURES: Record<string, StillUsCreature> = {
     tileOpacity: 0.38,
     headerOpacity: 0.38,
     tileRight: '-2%',
-    tileHeight: '165%',
+    tileHeight: '160%',
+    tileScale: 1.05,
   },
   'category-10': {              // Att välja varandra → Örn  (Djupet)
     src: creatureOrn,
@@ -103,6 +123,7 @@ export const STILL_US_CREATURES: Record<string, StillUsCreature> = {
     tileOpacity: 0.36,
     headerOpacity: 0.36,
     tileRight: '-3%',
-    tileHeight: '165%',
+    tileHeight: '160%',
+    tileScale: 1.08,           // Eagle has wide negative space — scale up
   },
 };
