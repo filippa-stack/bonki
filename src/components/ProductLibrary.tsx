@@ -817,8 +817,6 @@ export default function ProductLibrary() {
             </motion.div>
           </div>
         </div>
-          </div>
-        </div>
 
         {/* ── Barn & Familj section anchor ── */}
         <div className="px-5" style={{ marginTop: '28px' }}>
