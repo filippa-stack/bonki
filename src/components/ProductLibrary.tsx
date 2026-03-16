@@ -827,27 +827,36 @@ export default function ProductLibrary() {
                 }}
               />
 
+              {/* Text — left-anchored on solid gradient zone */}
               <div style={{
                 position: 'absolute',
-                bottom: 0, left: 0, right: 0,
+                left: 0, bottom: 0, top: 0,
+                width: '45%',
                 zIndex: 2,
-                padding: '0 18px 16px',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'flex-end',
+                padding: '20px',
+                paddingBottom: '20px',
               }}>
                 <h3 style={{
                   fontFamily: "'DM Serif Display', serif",
-                  fontSize: '22px',
-                  fontWeight: 700,
+                  fontSize: '24px',
+                  fontWeight: 600,
                   color: '#FDF6E3',
                   lineHeight: 1.15,
-                  textShadow: '0 2px 8px rgba(46, 34, 51, 1)',
+                  textShadow: '0 1px 6px rgba(46, 34, 51, 0.8)',
                 }}>
                   Still Us
                 </h3>
                 <p style={{
                   fontFamily: "'Lato', sans-serif",
-                  fontSize: '11px',
-                  color: 'hsla(38, 55%, 65%, 0.7)',
+                  fontSize: '13px',
+                  color: '#FDF6E3',
+                  opacity: 0.8,
                   marginTop: '4px',
+                  lineHeight: 1.4,
+                  textShadow: '0 0 10px rgba(46, 34, 51, 0.8)',
                 }}>
                   22 samtal för er relation
                 </p>
