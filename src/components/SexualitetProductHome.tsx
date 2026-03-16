@@ -24,10 +24,10 @@ const ORDERED_TILES = [
 
 // Deer: huge dark eyes and ears. Tile 0 = face-dominant. Tile 1 ears extending.
 const CREATURE_TILE_STYLES: CreatureTileStyle[] = [
-  { scale: 1.3, objectPosition: '50% 8%', opacity: 0.45 },
-  { scale: 1.15, objectPosition: '70% 5%', opacity: 0.35 },
-  { scale: 1.8, objectPosition: '50% 10%', opacity: 0.25 },
-  { scale: 0.65, objectPosition: '50% 50%', opacity: 0.18 },
+  { scale: 1.1, objectPosition: '50% 20%', opacity: 0.6 },
+  { scale: 1.1, objectPosition: '50% 20%', opacity: 0.55 },
+  { scale: 1.1, objectPosition: '50% 15%', opacity: 0.5 },
+  { scale: 1.1, objectPosition: '50% 25%', opacity: 0.45 },
 ];
 
 // First card per category — used as tile illustrations

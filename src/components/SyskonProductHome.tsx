@@ -31,10 +31,10 @@ const FIRST_CARD_IDS = [
 
 // Optically calibrated per-tile
 const CREATURE_TILE_STYLES: CreatureTileStyle[] = [
-  { scale: 1.3, objectPosition: '45% 10%', opacity: 0.25 },
-  { scale: 1.15, objectPosition: '55% 15%', opacity: 0.20 },
-  { scale: 1.5, objectPosition: '40% 5%', opacity: 0.22 },
-  { scale: 0.9, objectPosition: '50% 40%', opacity: 0.18 },
+  { scale: 1.1, objectPosition: '50% 20%', opacity: 0.6 },
+  { scale: 1.1, objectPosition: '50% 20%', opacity: 0.55 },
+  { scale: 1.1, objectPosition: '50% 15%', opacity: 0.5 },
+  { scale: 1.1, objectPosition: '50% 25%', opacity: 0.45 },
 ];
 
 const containerVariants = { hidden: {}, visible: { transition: { staggerChildren: 0.11, delayChildren: 0.4 } } };
