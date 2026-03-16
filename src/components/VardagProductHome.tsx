@@ -47,7 +47,7 @@ export default function VardagProductHome({ product }: { product: ProductManifes
   const progress = useKidsProductProgress(product);
 
   return (
-    <div className="min-h-screen relative overflow-hidden" style={{ backgroundColor: '#1A1A2E' }}>
+    <div className="min-h-screen relative overflow-hidden" style={{ backgroundColor: '#062030' }}>
       <ProductHomeBackButton color="#FDF6E3" />
 
       <motion.div
