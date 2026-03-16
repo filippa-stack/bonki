@@ -133,7 +133,7 @@ function CategoryTile({
               'inset 0 -4px 10px rgba(0, 0, 0, 0.14)',
             ].join(', '),
         padding: 0,
-        aspectRatio: isOddLast ? '2 / 0.7' : '0.7',
+        aspectRatio: isOddLast ? '2 / 1' : '1 / 1',
         ...(isOddLast ? { gridColumn: '1 / -1' } : {}),
       }}
     >
