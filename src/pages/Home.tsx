@@ -26,49 +26,44 @@ const LANTERN_GLOW = '#FDF6E3';
 const DRIFTWOOD = '#6B5E52';
 const DEEP_SAFFRON = '#D4A03A';
 const EMBER_MID = '#473454';
+const EMBER_DEEP = '#3A2844';
 
 const EASE = [0.4, 0.0, 0.2, 1] as const;
 const containerVariants = { hidden: {}, visible: { transition: { staggerChildren: 0.11, delayChildren: 0.35 } } };
 const titleVariants = { hidden: { opacity: 0, y: 16 }, visible: { opacity: 1, y: 0, transition: { duration: 0.75, ease: EASE } } };
 
-/* ── Layer definitions ── */
+/* ── Layer definitions — depth-graded tile colors ── */
 const LAYERS: {
   label: string;
   categoryIds: string[];
   tileBg: string;
   tileText: string;
-  progressText: string;
-  isGold: boolean;
-  hasBorder?: boolean;
+  progressColor: string;
 }[] = [
   {
-    label: 'GRUNDEN',
+    label: 'Grunden',
     categoryIds: ['emotional-intimacy', 'communication', 'category-8'],
-    tileBg: DEEP_SAFFRON,
-    tileText: MIDNIGHT_INK,
-    progressText: MIDNIGHT_INK,
-    isGold: true,
+    tileBg: '#5A3F6B',       // Warm purple — lightest layer
+    tileText: LANTERN_GLOW,
+    progressColor: DEEP_SAFFRON,
   },
   {
-    label: 'DET SOM FORMAR ER',
+    label: 'Det som formar er',
     categoryIds: ['individual-needs', 'parenting-together', 'category-9'],
-    tileBg: EMBER_MID,
+    tileBg: EMBER_MID,       // Mid depth
     tileText: LANTERN_GLOW,
-    progressText: LANTERN_GLOW,
-    isGold: false,
+    progressColor: DEEP_SAFFRON,
   },
   {
-    label: 'DJUPET',
+    label: 'Djupet',
     categoryIds: ['category-6', 'daily-life', 'category-10'],
-    tileBg: EMBER_NIGHT,
+    tileBg: EMBER_DEEP,      // Deepest
     tileText: LANTERN_GLOW,
-    progressText: LANTERN_GLOW,
-    isGold: false,
-    hasBorder: true,
+    progressColor: DEEP_SAFFRON,
   },
 ];
 
-/** Expandable layer accordion */
+/** Expandable layer accordion — warm editorial style */
 function AccordionLayer({
   label, completedCount, totalCount, allDone, defaultOpen, delay, children,
 }: {
@@ -87,7 +82,7 @@ function AccordionLayer({
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ delay, duration: 0.5, ease: EASE }}
-      style={{ marginTop: '24px', paddingLeft: '16px', paddingRight: '16px' }}
+      style={{ marginTop: '28px', paddingLeft: '4px', paddingRight: '4px' }}
     >
       <button
         onClick={() => setOpen(o => !o)}
@@ -96,7 +91,7 @@ function AccordionLayer({
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          padding: '0 4px 10px',
+          padding: '0 8px 12px',
           background: 'none',
           border: 'none',
           cursor: 'pointer',
@@ -105,12 +100,12 @@ function AccordionLayer({
       >
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
           <span style={{
-            fontFamily: 'var(--font-body)',
-            fontSize: '12px',
-            fontWeight: 600,
-            letterSpacing: '2px',
-            textTransform: 'uppercase',
-            color: DRIFTWOOD,
+            fontFamily: 'var(--font-display)',
+            fontVariationSettings: "'opsz' 14",
+            fontSize: '14px',
+            fontWeight: 500,
+            letterSpacing: '0.5px',
+            color: allDone ? DEEP_SAFFRON : `${LANTERN_GLOW}90`,
           }}>
             {label}
           </span>
@@ -133,8 +128,7 @@ function AccordionLayer({
             <span style={{
               fontFamily: 'var(--font-body)',
               fontSize: '11px',
-              color: DRIFTWOOD,
-              opacity: 0.7,
+              color: `${LANTERN_GLOW}50`,
             }}>
               {completedCount} av {totalCount}
             </span>
@@ -143,7 +137,7 @@ function AccordionLayer({
             animate={{ rotate: open ? 180 : 0 }}
             transition={{ duration: 0.25 }}
           >
-            <ChevronDown size={16} color={DRIFTWOOD} />
+            <ChevronDown size={14} color={`${LANTERN_GLOW}60`} />
           </motion.div>
         </div>
       </button>
@@ -157,7 +151,7 @@ function AccordionLayer({
         transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
         style={{ overflow: 'hidden' }}
       >
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', paddingBottom: '4px' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', paddingBottom: '4px' }}>
           {children}
         </div>
       </motion.div>
@@ -383,16 +377,17 @@ export default function Home() {
                   style={{
                     width: '100%',
                     padding: '18px 20px',
-                    background: `linear-gradient(135deg, rgba(255,255,255,0.10) 0%, transparent 50%, rgba(0,0,0,0.06) 100%), ${EMBER_MID}`,
                     borderRadius: '22px',
-                    border: '1.5px solid rgba(255, 255, 255, 0.18)',
+                    overflow: 'hidden',
+                    background: `linear-gradient(135deg, rgba(255,255,255,0.12) 0%, transparent 50%, rgba(0,0,0,0.08) 100%), ${EMBER_MID}`,
+                    border: '1.5px solid rgba(255, 255, 255, 0.30)',
                     borderLeft: `3px solid ${DEEP_SAFFRON}`,
                     cursor: 'pointer',
                     textAlign: 'left',
                     display: 'flex',
                     flexDirection: 'column',
                     gap: '4px',
-                    boxShadow: `0 10px 30px rgba(0,0,0,0.30), inset 0 1px 3px rgba(255,255,255,0.15), 0 0 0 1px rgba(255,255,255,0.05)`,
+                    boxShadow: `0 4px 16px rgba(0,0,0,0.25), 0 8px 32px rgba(0,0,0,0.15), inset 0 1px 2px rgba(255,255,255,0.20), inset 0 -1px 2px rgba(0,0,0,0.15), 0 0 24px ${DEEP_SAFFRON}18`,
                   }}
                 >
                   <span style={{
@@ -401,7 +396,8 @@ export default function Home() {
                     fontWeight: 600,
                     letterSpacing: '1.5px',
                     textTransform: 'uppercase',
-                    color: DRIFTWOOD,
+                    color: DEEP_SAFFRON,
+                    opacity: 0.85,
                   }}>
                     Ert nästa samtal
                   </span>
@@ -419,7 +415,7 @@ export default function Home() {
                     <span style={{
                       fontFamily: 'var(--font-body)',
                       fontSize: '13px',
-                      color: DRIFTWOOD,
+                      color: `${LANTERN_GLOW}70`,
                       marginTop: '2px',
                     }}>
                       {nextCardCategory.title}
@@ -478,6 +474,7 @@ export default function Home() {
                     const progress = categoryProgress[cat.id];
                     const isRecommended = cat.id === nextCategoryId;
                     const completed = isCategoryCompleted(cat.id);
+                    const bg = layer.tileBg;
 
                     return (
                       <motion.button
@@ -487,44 +484,59 @@ export default function Home() {
                         style={{
                           position: 'relative',
                           width: '100%',
-                          padding: '14px 16px',
+                          padding: '16px 18px',
                           borderRadius: '22px',
                           overflow: 'hidden',
-                          background: `linear-gradient(135deg, rgba(255,255,255,0.12) 0%, transparent 50%, rgba(0,0,0,0.08) 100%), ${completed ? `${EMBER_MID}80` : EMBER_MID}`,
+                          background: `linear-gradient(135deg, rgba(255,255,255,0.12) 0%, transparent 50%, rgba(0,0,0,0.08) 100%), ${completed ? `${bg}90` : bg}`,
                           border: isRecommended
-                            ? `1.5px solid rgba(212, 160, 58, 0.35)`
-                            : '1.5px solid rgba(255, 255, 255, 0.30)',
-                          borderLeft: isRecommended ? `3px solid ${DEEP_SAFFRON}` : undefined,
+                            ? `1.5px solid rgba(212, 160, 58, 0.40)`
+                            : '1.5px solid rgba(255, 255, 255, 0.25)',
                           cursor: 'pointer',
                           textAlign: 'left',
                           display: 'flex',
                           alignItems: 'center',
-                          gap: '12px',
+                          gap: '14px',
                           boxShadow: isRecommended
-                            ? `0 4px 16px rgba(0,0,0,0.25), 0 8px 32px rgba(0,0,0,0.15), inset 0 1px 2px rgba(255,255,255,0.20), inset 0 -1px 2px rgba(0,0,0,0.15), 0 0 20px ${DEEP_SAFFRON}15`
+                            ? `0 4px 16px rgba(0,0,0,0.25), 0 8px 32px rgba(0,0,0,0.15), inset 0 1px 2px rgba(255,255,255,0.20), inset 0 -1px 2px rgba(0,0,0,0.15), 0 0 28px ${DEEP_SAFFRON}20, 0 0 0 1px ${DEEP_SAFFRON}18`
                             : '0 4px 16px rgba(0,0,0,0.25), 0 8px 32px rgba(0,0,0,0.15), inset 0 1px 2px rgba(255,255,255,0.20), inset 0 -1px 2px rgba(0,0,0,0.15)',
                         }}
                       >
+                        {/* Saffron accent bar for recommended */}
+                        {isRecommended && (
+                          <div style={{
+                            position: 'absolute',
+                            left: 0,
+                            top: '20%',
+                            bottom: '20%',
+                            width: '3px',
+                            borderRadius: '0 2px 2px 0',
+                            backgroundColor: DEEP_SAFFRON,
+                            boxShadow: `0 0 12px ${DEEP_SAFFRON}60`,
+                          }} />
+                        )}
+
                         {completed ? (
                           <div style={{
-                            width: '24px',
-                            height: '24px',
+                            width: '26px',
+                            height: '26px',
                             borderRadius: '50%',
                             backgroundColor: DEEP_SAFFRON,
                             display: 'flex',
                             alignItems: 'center',
                             justifyContent: 'center',
                             flexShrink: 0,
+                            boxShadow: `0 0 10px ${DEEP_SAFFRON}40`,
                           }}>
                             <Check size={14} color={MIDNIGHT_INK} strokeWidth={3} />
                           </div>
                         ) : (
                           <div style={{
-                            width: '24px',
-                            height: '24px',
+                            width: '26px',
+                            height: '26px',
                             borderRadius: '50%',
-                            border: `1.5px solid ${isRecommended ? DEEP_SAFFRON : DRIFTWOOD}40`,
+                            border: `1.5px solid ${isRecommended ? `${DEEP_SAFFRON}80` : 'rgba(255,255,255,0.20)'}`,
                             flexShrink: 0,
+                            background: isRecommended ? `${DEEP_SAFFRON}10` : 'transparent',
                           }} />
                         )}
 
@@ -534,7 +546,7 @@ export default function Home() {
                             fontVariationSettings: "'opsz' 16",
                             fontSize: '16px',
                             fontWeight: 500,
-                            color: completed ? `${LANTERN_GLOW}90` : LANTERN_GLOW,
+                            color: completed ? `${LANTERN_GLOW}80` : LANTERN_GLOW,
                             lineHeight: 1.3,
                             display: 'block',
                           }}>
@@ -544,8 +556,8 @@ export default function Home() {
                             <span style={{
                               fontFamily: 'var(--font-body)',
                               fontSize: '12px',
-                              color: DRIFTWOOD,
-                              marginTop: '2px',
+                              color: progress.completed > 0 ? `${DEEP_SAFFRON}C0` : `${LANTERN_GLOW}40`,
+                              marginTop: '3px',
                               display: 'block',
                             }}>
                               {progress.completed} av {progress.total} samtal
