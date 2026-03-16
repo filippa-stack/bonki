@@ -339,10 +339,10 @@ export default function CompletedSessionView({
             style={{ marginTop: '8px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px' }}
           >
             {/* Primary: Next card (child products) or Fortsätt utforska */}
-            {isChildProduct && nextCardDest ? (
+            {isChildProduct && nextDest ? (
               <>
                 <button
-                  onClick={() => navigate(nextCardDest)}
+                  onClick={() => navigate(nextDest)}
                   className="cta-primary"
                   style={{ display: 'flex', alignItems: 'center', gap: '6px' }}
                 >
