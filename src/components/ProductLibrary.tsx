@@ -842,7 +842,7 @@ export default function ProductLibrary() {
                   fontWeight: 700,
                   color: '#FDF6E3',
                   lineHeight: 1.15,
-                  textShadow: '0 2px 8px rgba(46, 34, 51, 1)',
+                  textShadow: '0 2px 8px rgba(71, 52, 84, 1)',
                 }}>
                   Still Us
                 </h3>
