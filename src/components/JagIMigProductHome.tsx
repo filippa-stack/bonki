@@ -70,28 +70,9 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.6 }}
-        style={{
-          position: 'absolute',
-          top: '-2vh',
-          left: '50%',
-          transform: 'translateX(-50%)',
-          width: '75vw',
-          maxWidth: '320px',
-          height: '42vh',
-          zIndex: 0,
-          pointerEvents: 'none',
-        }}
+        style={{ position: 'absolute', top: '-8vh', left: '-5vw', right: '-5vw', height: '65vh', zIndex: 0, pointerEvents: 'none' }}
       >
-        <img
-          src={heroImage}
-          alt=""
-          style={{
-            width: '100%',
-            height: '100%',
-            objectFit: 'contain',
-            objectPosition: '50% 0%',
-          }}
-        />
+        <img src={heroImage} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: '50% 15%' }} />
         {/* Soft bottom fade into BG */}
         <div style={{
           position: 'absolute', bottom: '-2px', left: '-20%', right: '-20%', height: '50%',
