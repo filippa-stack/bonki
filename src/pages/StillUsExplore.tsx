@@ -259,7 +259,7 @@ export default function StillUsExplore() {
                             )}
 
                             <span style={{
-                              fontFamily: "'DM Serif Display', var(--font-serif)",
+                              fontFamily: "var(--font-display)",
                               fontSize: '18px',
                               fontWeight: 500,
                               color: LANTERN_GLOW,

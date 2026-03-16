@@ -274,7 +274,7 @@ export default function Home() {
                     Ert nästa samtal
                   </span>
                   <span style={{
-                    fontFamily: "'DM Serif Display', var(--font-serif)",
+                    fontFamily: "var(--font-display)",
                     fontSize: '20px',
                     fontWeight: 500,
                     color: LANTERN_GLOW,

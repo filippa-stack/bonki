@@ -640,7 +640,8 @@ export default function Journal() {
             style={{ textAlign: 'center', padding: '0 32px' }}
           >
             <p style={{
-              fontFamily: "'DM Serif Display', var(--font-serif)",
+              fontFamily: "var(--font-display)",
+              fontVariationSettings: "'opsz' 20",
               fontSize: '20px', color: LANTERN_GLOW, margin: 0, lineHeight: 1.3,
             }}>
               Det finns inget här ännu.
