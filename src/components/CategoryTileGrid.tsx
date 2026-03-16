@@ -1,18 +1,26 @@
 /**
  * CategoryTileGrid — Illustration-backed category tiles for kids product home screens.
- * 2-column grid, portrait aspect ratio, gradient shield over image, progress dots.
+ * 2-column grid, portrait aspect ratio, gradient shield over creature image, progress dots.
  */
 
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import type { ProductManifest } from '@/types/product';
 import type { KidsProductProgress } from '@/hooks/useKidsProductProgress';
-import { useCardImage } from '@/hooks/useCardImage';
 
 const EASE = [0.4, 0.0, 0.2, 1] as const;
 const SAFFRON = '#E9B44C';
 const LANTERN = '#FDF6E3';
 const SUBTITLE_COLOR = '#998F82';
+
+/** Per-tile crop/opacity values for the creature illustration */
+const TILE_CREATURE_STYLES = [
+  { scale: 1.3, objectPosition: '25% 15%', opacity: 0.95 },
+  { scale: 1.15, objectPosition: '75% 20%', opacity: 0.8 },
+  { scale: 1.8, objectPosition: '50% 10%', opacity: 0.6 },
+  { scale: 0.65, objectPosition: '50% 55%', opacity: 0.35 },
+  { scale: 0.85, objectPosition: '80% 40%', opacity: 0.2 },
+];
 
 const containerVariants = {
   hidden: {},
@@ -24,17 +32,17 @@ const tileVariants = {
 };
 
 export interface TileConfig {
-  id: string;       // category ID
-  bg: string;       // tile background color
-  sub: string;      // subtitle text
+  id: string;
+  bg: string;
+  sub: string;
 }
 
 interface CategoryTileGridProps {
   product: ProductManifest;
   progress: KidsProductProgress;
   tiles: TileConfig[];
+  creatureImage?: string;
 }
-
 
 function hexToRgb(hex: string): string {
   const h = hex.replace('#', '');
@@ -44,47 +52,43 @@ function hexToRgb(hex: string): string {
   return `${r},${g},${b}`;
 }
 
-/** Individual tile — needs its own hook call for useCardImage */
 function CategoryTile({
   tile,
   product,
   progress,
   index,
   total,
-  isLast,
   isOddLast,
+  creatureImage,
 }: {
   tile: TileConfig;
   product: ProductManifest;
   progress: KidsProductProgress;
   index: number;
   total: number;
-  isLast: boolean;
   isOddLast: boolean;
+  creatureImage?: string;
 }) {
   const navigate = useNavigate();
   const cat = product.categories.find((c) => c.id === tile.id);
   if (!cat) return null;
 
-  // Get first card in this category for illustration
-  const firstCard = product.cards.find((c) => c.categoryId === cat.id);
-  const imageUrl = useCardImage(firstCard?.id);
-
   const catProgress = progress.categoryProgress[cat.id];
   const isFirst = index === 0;
-  const isDeep = index >= total - 2 && total > 2; // last 2 tiles are "deep"
+  const isDeep = index >= total - 2 && total > 2;
   const nameOpacity = isDeep ? 0.85 : 1;
   const subOpacity = isDeep ? 0.7 : 1;
   const dotDimOpacities = [0.25, 0.2, 0.15, 0.1, 0.06];
   const dotDimOpacity = dotDimOpacities[Math.min(index, dotDimOpacities.length - 1)];
 
   const shieldRgb = hexToRgb(tile.bg);
-  const creatureRgb = hexToRgb(product.tileLight || '#333');
 
   const completed = catProgress?.completed ?? 0;
   const totalCards = catProgress?.total ?? 0;
 
   const ariaLabel = `${cat.title}: ${tile.sub}. ${completed} av ${totalCards} utforskade.`;
+
+  const creatureStyle = TILE_CREATURE_STYLES[Math.min(index, TILE_CREATURE_STYLES.length - 1)];
 
   return (
     <motion.button
@@ -104,35 +108,36 @@ function CategoryTile({
         borderLeft: isFirst ? `3px solid ${SAFFRON}` : 'none',
         padding: 0,
         ...(isOddLast
-      ? { gridColumn: '1 / -1', height: '170px' }
+          ? { gridColumn: '1 / -1', height: '170px' }
           : { aspectRatio: '0.7' }),
       }}
     >
-      {/* Illustration layer (z-index 1) */}
-      {imageUrl ? (
-        <img
-          src={imageUrl}
-          alt=""
-          aria-hidden="true"
-          style={{
-            position: 'absolute',
-            inset: 0,
-            width: '100%',
-            height: '100%',
-            objectFit: 'cover',
-            objectPosition: 'center 30%',
-            zIndex: 1,
-          }}
-        />
-      ) : (
+      {/* Creature illustration layer (z-index 1) */}
+      {creatureImage && (
         <div
           style={{
             position: 'absolute',
             inset: 0,
-            background: `radial-gradient(circle at 55% 35%, rgba(${creatureRgb}, 0.3), transparent 55%)`,
+            overflow: 'hidden',
+            transform: `scale(${creatureStyle.scale})`,
+            transformOrigin: 'center center',
             zIndex: 1,
+            pointerEvents: 'none',
           }}
-        />
+        >
+          <img
+            src={creatureImage}
+            alt=""
+            aria-hidden="true"
+            style={{
+              width: '100%',
+              height: '100%',
+              objectFit: 'cover',
+              objectPosition: creatureStyle.objectPosition,
+              opacity: creatureStyle.opacity,
+            }}
+          />
+        </div>
       )}
 
       {/* Gradient shield (z-index 2) */}
@@ -199,7 +204,6 @@ function CategoryTile({
                   height: '5px',
                   borderRadius: '50%',
                   backgroundColor: dotIdx < completed ? SAFFRON : `rgba(253, 246, 227, ${dotDimOpacity})`,
-                  ...(dotIdx < completed ? {} : {}),
                 }}
               />
             ))}
@@ -210,7 +214,7 @@ function CategoryTile({
   );
 }
 
-export default function CategoryTileGrid({ product, progress, tiles }: CategoryTileGridProps) {
+export default function CategoryTileGrid({ product, progress, tiles, creatureImage }: CategoryTileGridProps) {
   const total = tiles.length;
   const isOdd = total % 2 !== 0;
 
@@ -235,8 +239,8 @@ export default function CategoryTileGrid({ product, progress, tiles }: CategoryT
           progress={progress}
           index={index}
           total={total}
-          isLast={index === total - 1}
           isOddLast={isOdd && index === total - 1}
+          creatureImage={creatureImage}
         />
       ))}
     </motion.div>
