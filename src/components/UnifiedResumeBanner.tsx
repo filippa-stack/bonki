@@ -126,10 +126,10 @@ export default function UnifiedResumeBanner({
           alt=""
           style={{
             position: 'absolute',
-            right: '-8%',
+            right: creature.tileRight ?? '0%',
             top: '50%',
             transform: 'translateY(-50%)',
-            height: '160%',
+            height: creature.tileHeight ?? '140%',
             width: 'auto',
             objectFit: 'contain',
             objectPosition: creature.objectPosition,
