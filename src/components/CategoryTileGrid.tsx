@@ -75,7 +75,8 @@ function CategoryTile({
   const isDeep = index >= total - 2 && total > 2; // last 2 tiles are "deep"
   const nameOpacity = isDeep ? 0.85 : 1;
   const subOpacity = isDeep ? 0.7 : 1;
-  const dotDimOpacity = isDeep ? 0.1 : 0.2;
+  const dotDimOpacities = [0.25, 0.2, 0.15, 0.1, 0.06];
+  const dotDimOpacity = dotDimOpacities[Math.min(index, dotDimOpacities.length - 1)];
 
   const shieldRgb = hexToRgb(tile.bg);
   const creatureRgb = hexToRgb(product.tileLight || '#333');
