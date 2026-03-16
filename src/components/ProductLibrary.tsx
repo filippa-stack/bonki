@@ -61,22 +61,22 @@ function hexToRgba(hex: string, alpha: number): string {
 
 /** Per-product illustration scale — oversized for dramatic portal feel */
 const ILLUSTRATION_SCALE: Record<string, { width: string; height: string }> = {
-  jag_i_mig: { width: '78%', height: '155%' },
-  jag_med_andra: { width: '74%', height: '150%' },
-  jag_i_varlden: { width: '72%', height: '148%' },
-  sexualitetskort: { width: '74%', height: '148%' },
-  vardagskort: { width: '74%', height: '150%' },
-  syskonkort: { width: '74%', height: '148%' },
+  jag_i_mig: { width: '88%', height: '170%' },
+  jag_med_andra: { width: '82%', height: '165%' },
+  jag_i_varlden: { width: '80%', height: '160%' },
+  sexualitetskort: { width: '82%', height: '165%' },
+  vardagskort: { width: '82%', height: '165%' },
+  syskonkort: { width: '82%', height: '162%' },
 };
 
 /** Per-product vertical offset — characters burst out of tile boundaries */
 const ILLUSTRATION_OFFSET: Record<string, { top: string; right: string; bottom: string }> = {
-  jag_i_mig: { top: '-25%', right: '-18%', bottom: '-20%' },
-  jag_med_andra: { top: '-22%', right: '-15%', bottom: '-18%' },
-  jag_i_varlden: { top: '-20%', right: '-15%', bottom: '-18%' },
-  sexualitetskort: { top: '-22%', right: '-18%', bottom: '-16%' },
-  vardagskort: { top: '-22%', right: '-15%', bottom: '-18%' },
-  syskonkort: { top: '-22%', right: '-15%', bottom: '-18%' },
+  jag_i_mig: { top: '-30%', right: '-22%', bottom: '-25%' },
+  jag_med_andra: { top: '-28%', right: '-18%', bottom: '-22%' },
+  jag_i_varlden: { top: '-25%', right: '-18%', bottom: '-22%' },
+  sexualitetskort: { top: '-28%', right: '-22%', bottom: '-20%' },
+  vardagskort: { top: '-28%', right: '-18%', bottom: '-22%' },
+  syskonkort: { top: '-28%', right: '-18%', bottom: '-22%' },
 };
 
 /** Hero-level illustration opacities — near full for maximum impact */
@@ -224,20 +224,21 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
       onClick={onClick}
       className="cursor-pointer"
       style={{
-        borderRadius: '16px',
+        borderRadius: '22px',
         backgroundColor: bg,
-        height: '260px',
+        height: '240px',
         display: 'flex',
         position: 'relative',
         overflow: 'hidden',
+        backgroundImage: 'linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0) 50%, rgba(0,0,0,0.08) 100%)',
         border: '1.5px solid rgba(255, 255, 255, 0.30)',
         boxShadow: [
-          `0 16px 40px ${toShadowColor(bg, 0.35)}`,
-          `0 6px 16px ${toShadowColor(bg, 0.22)}`,
+          `0 16px 40px ${toShadowColor(bg, 0.4)}`,
+          `0 6px 16px ${toShadowColor(bg, 0.25)}`,
           '0 1px 3px rgba(0, 0, 0, 0.10)',
-          `0 0 60px ${toShadowColor(bg, 0.15)}`,
+          `0 0 72px ${toShadowColor(bg, 0.18)}`,
           'inset 0 3px 6px rgba(255, 255, 255, 0.45)',
-          `inset 0 -4px 10px ${toShadowColor(bg, 0.12)}`,
+          `inset 0 -4px 10px ${toShadowColor(bg, 0.14)}`,
         ].join(', '),
       }}
     >
@@ -254,15 +255,15 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
           }}
         />
       )}
-      {/* Illustration — right-aligned, bleeds off edge */}
+      {/* Illustration — right-aligned, bleeds off edge dramatically */}
       {illustration && (
         <div
           style={{
             position: 'absolute',
-            top: offset?.top ?? '-10%',
-            right: offset?.right ?? '-10%',
-            bottom: offset?.bottom ?? '-8%',
-            width: scale?.width ?? '62%',
+            top: offset?.top ?? '-15%',
+            right: offset?.right ?? '-12%',
+            bottom: offset?.bottom ?? '-10%',
+            width: scale?.width ?? '70%',
             pointerEvents: 'none',
             zIndex: 0,
           }}
@@ -282,16 +283,16 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
         </div>
       )}
 
-      {/* Horizontal gradient scrim — solid left, fading to transparent right */}
+      {/* Horizontal gradient scrim — text anchor left */}
       <div
         aria-hidden="true"
         style={{
           position: 'absolute',
           top: 0, left: 0, bottom: 0,
-          width: '65%',
+          width: '55%',
           zIndex: 1,
           pointerEvents: 'none',
-          background: `linear-gradient(to right, ${bgRgba(1)} 0%, ${bgRgba(0.85)} 35%, ${bgRgba(0.3)} 60%, transparent 100%)`,
+          background: `linear-gradient(to right, ${bgRgba(1)} 0%, ${bgRgba(0.9)} 30%, ${bgRgba(0.4)} 65%, transparent 100%)`,
         }}
       />
 
