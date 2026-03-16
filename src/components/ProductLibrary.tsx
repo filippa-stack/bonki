@@ -618,7 +618,7 @@ export default function ProductLibrary() {
                   key={tab}
                   onClick={() => switchTab(tab)}
                   style={{
-                    fontFamily: "'Lato', sans-serif",
+                    fontFamily: "var(--font-body)",
                     fontSize: '10px',
                     fontWeight: 700,
                     letterSpacing: '0.12em',
