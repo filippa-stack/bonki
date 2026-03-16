@@ -15,7 +15,9 @@ import imgKvall from '/card-images/vk-kvall.png';
 import imgSova from '/card-images/vk-sova.png';
 
 const EASE = [0.4, 0.0, 0.2, 1] as const;
+const BG = '#062030';
 const ACCENT_COLOR = '#4DA8D4';
+const TILE_LIGHT = '#0E6B99';
 
 const ORDERED_TILES = [
   { id: 'vk-min-dag', bg: '#0E6B99', sub: 'Från morgon till kväll' },
@@ -24,20 +26,20 @@ const ORDERED_TILES = [
   { id: 'vk-utanfor-hemmet', bg: '#042C44', sub: 'Det du möter där ute' },
 ];
 
-// Per-tile card images (first card per category). undefined = no image.
+// Per-tile card images (first card per category)
 const TILE_IMAGES: (string | undefined)[] = [
-  imgMorgon,   // Min dag — use morgon as representative
+  imgMorgon,   // Min dag
   imgKvall,    // Vår rytm
   imgHushall,  // Vi hemma
   imgSova,     // Utanför hemmet
 ];
 
-// Very dimmed tile styles for card images
+// Optically calibrated per-tile — denser motifs get lower opacity
 const CREATURE_TILE_STYLES: CreatureTileStyle[] = [
-  { scale: 1.3, objectPosition: '50% 20%', opacity: 0.12 },
-  { scale: 1.2, objectPosition: '50% 25%', opacity: 0.10 },
-  { scale: 1.3, objectPosition: '50% 20%', opacity: 0.10 },
-  { scale: 1.2, objectPosition: '50% 30%', opacity: 0.08 },
+  { scale: 1.25, objectPosition: '50% 20%', opacity: 0.22 },  // Morgon – warm, detailed
+  { scale: 1.15, objectPosition: '50% 25%', opacity: 0.18 },  // Kväll – moody, moderate
+  { scale: 1.3,  objectPosition: '50% 20%', opacity: 0.20 },  // Hushåll – busy, slightly lower
+  { scale: 1.2,  objectPosition: '50% 30%', opacity: 0.16 },  // Sova – soft, thinnest lines
 ];
 
 const containerVariants = { hidden: {}, visible: { transition: { staggerChildren: 0.11, delayChildren: 0.4 } } };
@@ -47,9 +49,25 @@ export default function VardagProductHome({ product }: { product: ProductManifes
   const progress = useKidsProductProgress(product);
 
   return (
-    <div className="min-h-screen relative overflow-hidden" style={{ backgroundColor: '#062030' }}>
+    <div className="min-h-screen relative overflow-hidden" style={{ backgroundColor: BG }}>
       <ProductHomeBackButton color="#FDF6E3" />
 
+      {/* ── Atmospheric radial glow behind hero ── */}
+      <div
+        style={{
+          position: 'absolute',
+          top: '-10vh',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          width: '120vw',
+          height: '60vh',
+          background: `radial-gradient(ellipse 70% 55% at 50% 40%, ${TILE_LIGHT}26 0%, transparent 100%)`,
+          pointerEvents: 'none',
+          zIndex: 0,
+        }}
+      />
+
+      {/* ── Hero illustration ── */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -57,20 +75,39 @@ export default function VardagProductHome({ product }: { product: ProductManifes
         style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '45vh', zIndex: 0, pointerEvents: 'none' }}
       >
         <img src={heroImage} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: '50% 10%' }} />
+        {/* Extended 80% scrim with extra mid-stop for smooth blend */}
         <div style={{
-          position: 'absolute', bottom: 0, left: 0, right: 0, height: '70%',
-          background: 'linear-gradient(to top, #062030 0%, rgba(6,32,48,0.95) 25%, rgba(10,74,106,0.7) 55%, transparent 100%)',
+          position: 'absolute', bottom: 0, left: 0, right: 0, height: '80%',
+          background: `linear-gradient(to top, ${BG} 0%, ${BG}F2 20%, rgba(6,32,48,0.85) 40%, rgba(10,74,106,0.5) 65%, rgba(10,74,106,0.15) 85%, transparent 100%)`,
           pointerEvents: 'none',
         }} />
       </motion.div>
 
+      {/* ── Content ── */}
       <div style={{ position: 'relative', zIndex: 1, minHeight: '100vh', display: 'flex', flexDirection: 'column', paddingTop: 'clamp(24px, 6vh, 64px)', paddingRight: '5vw', paddingBottom: '80px', paddingLeft: '5vw' }}>
         <motion.div variants={containerVariants} initial="hidden" animate="visible" style={{ textAlign: 'center', width: '100%' }}>
           <motion.div variants={titleVariants}>
-            <h1 style={{ fontFamily: "var(--font-display)", fontSize: 'clamp(36px, 10vw, 50px)', fontWeight: 700, color: '#FDF6E3', letterSpacing: '-0.01em', whiteSpace: 'nowrap', textShadow: '0 2px 12px rgba(0,0,0,0.4), 0 0 40px rgba(10,74,106,0.5)', fontVariationSettings: "'opsz' 36" }}>
+            {/* Title with vignette-like text shadow for readability */}
+            <h1 style={{
+              fontFamily: "var(--font-display)",
+              fontSize: 'clamp(36px, 10vw, 50px)',
+              fontWeight: 700,
+              color: '#FDF6E3',
+              letterSpacing: '-0.01em',
+              whiteSpace: 'nowrap',
+              textShadow: `0 2px 16px rgba(0,0,0,0.6), 0 0 60px ${BG}, 0 0 120px ${BG}`,
+              fontVariationSettings: "'opsz' 36",
+            }}>
               Vardag
             </h1>
-            <p className="font-serif" style={{ fontSize: 'clamp(16px, 4.5vw, 20px)', fontWeight: 400, color: ACCENT_COLOR, opacity: 0.9, marginTop: '6px', textShadow: '0 1px 8px rgba(0,0,0,0.3)' }}>
+            <p className="font-serif" style={{
+              fontSize: 'clamp(16px, 4.5vw, 20px)',
+              fontWeight: 400,
+              color: ACCENT_COLOR,
+              opacity: 0.9,
+              marginTop: '6px',
+              textShadow: `0 1px 10px rgba(0,0,0,0.4), 0 0 40px ${BG}`,
+            }}>
               Det vanliga, på djupet
             </p>
             <UnifiedResumeBanner product={product} kidsProgress={progress} accentColor={ACCENT_COLOR} />
@@ -78,7 +115,8 @@ export default function VardagProductHome({ product }: { product: ProductManifes
           </motion.div>
         </motion.div>
 
-        <div style={{ flex: 1, minHeight: '24px', maxHeight: 'clamp(40px, 12vh, 120px)' }} />
+        {/* Generous breathing room between action zone and grid */}
+        <div style={{ flex: 1, minHeight: '32px', maxHeight: 'clamp(48px, 14vh, 130px)' }} />
 
         <CategoryTileGrid
           product={product}
