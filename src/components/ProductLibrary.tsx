@@ -407,27 +407,6 @@ export default function ProductLibrary() {
   const tracked = useRef(false);
   const { purchased } = useAllProductAccess();
   const { user } = useAuth();
-  const TAB_KEY = 'bonki-library-tab';
-  const [activeTab, setActiveTab] = useState<'barn' | 'par'>(() => {
-    // 1. Check onboarding redirect
-    const initial = localStorage.getItem('bonki-initial-tab');
-    if (initial === 'par' || initial === 'barn') {
-      localStorage.removeItem('bonki-initial-tab');
-      localStorage.setItem(TAB_KEY, initial);
-      return initial;
-    }
-    // 2. Remember last selection
-    const saved = localStorage.getItem(TAB_KEY);
-    if (saved === 'par' || saved === 'barn') return saved;
-    return 'barn';
-  });
-  const [swipeDirection, setSwipeDirection] = useState<1 | -1>(1);
-
-  const switchTab = (tab: 'barn' | 'par') => {
-    setSwipeDirection(tab === 'par' ? 1 : -1);
-    setActiveTab(tab);
-    try { localStorage.setItem(TAB_KEY, tab); } catch {}
-  };
   const [notifySignedUp, setNotifySignedUp] = useState(false);
   const [notifyLoading, setNotifyLoading] = useState(false);
 
@@ -670,111 +649,14 @@ export default function ProductLibrary() {
           }}
         />
 
-        {/* World switcher — prominent BARN/PAR toggle */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.5, duration: 0.4 }}
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            gap: '10px',
-            margin: '0 auto 20px',
-          }}
-        >
-          <div
-            style={{
-              display: 'flex',
-              background: 'hsla(230, 35%, 18%, 0.7)',
-              backdropFilter: 'blur(14px)',
-              WebkitBackdropFilter: 'blur(14px)',
-              borderRadius: '24px',
-              padding: '4px',
-              gap: '3px',
-              position: 'relative',
-              border: '1px solid hsla(38, 50%, 50%, 0.1)',
-              boxShadow: '0 4px 16px hsla(230, 40%, 8%, 0.4)',
-            }}
-          >
-            {(['barn', 'par'] as const).map((tab) => {
-              const isActive = activeTab === tab;
-              const labels = { barn: 'BARN & FAMILJ', par: 'PAR' };
-              return (
-                <button
-                  key={tab}
-                  onClick={() => switchTab(tab)}
-                  style={{
-                    fontFamily: "var(--font-body)",
-                    fontSize: '10px',
-                    fontWeight: 700,
-                    letterSpacing: '0.12em',
-                    color: isActive ? '#FDF6E3' : 'hsla(30, 20%, 85%, 0.35)',
-                    background: isActive
-                      ? 'linear-gradient(135deg, hsla(38, 60%, 45%, 0.25) 0%, hsla(230, 30%, 22%, 0.8) 100%)'
-                      : 'transparent',
-                    border: isActive ? '1px solid hsla(38, 60%, 50%, 0.2)' : '1px solid transparent',
-                    outline: 'none',
-                    borderRadius: '20px',
-                    padding: '9px 24px',
-                    cursor: 'pointer',
-                    transition: 'all 280ms ease',
-                    WebkitTapHighlightColor: 'transparent',
-                    boxShadow: isActive ? '0 2px 8px hsla(38, 50%, 30%, 0.2)' : 'none',
-                  }}
-                >
-                  {labels[tab]}
-                </button>
-              );
-            })}
-          </div>
-
-          {/* Swipe hint — only on first visit */}
-          {!IS_RETURN_VISIT && (
-            <motion.p
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 1.5 * ANIM_SPEED, duration: 0.8 }}
-              style={{
-                fontFamily: "var(--font-body)",
-                fontSize: '8px',
-                fontWeight: 500,
-                letterSpacing: '0.08em',
-                color: 'hsla(30, 20%, 80%, 0.25)',
-                textTransform: 'uppercase',
-              }}
-            >
-              ← swipa →
-            </motion.p>
-          )}
-        </motion.div>
+        
 
         {/* Resume banner — returning user hook */}
         <div className="px-5">
           <LibraryResumeBanner />
         </div>
 
-        <motion.div
-          key="swipe-container"
-          drag="x"
-          dragConstraints={{ left: 0, right: 0 }}
-          dragElastic={0.15}
-          onDragEnd={(_e, info) => {
-            if (info.offset.x < -50 && activeTab === 'barn') switchTab('par');
-            if (info.offset.x > 50 && activeTab === 'par') switchTab('barn');
-          }}
-          style={{ touchAction: 'pan-y' }}
-        >
-        <AnimatePresence mode="wait">
-
-        {activeTab === 'barn' && (
-          <motion.div
-            key="barn"
-            initial={{ opacity: 0, x: swipeDirection * 30 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: swipeDirection * -30 }}
-            transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-          >
+        <div>
         {/* ── Barn — broken grid layout ── */}
         <div className="px-5" style={{ scrollMarginTop: '8px' }}>
           <motion.p
@@ -1005,22 +887,8 @@ export default function ProductLibrary() {
             →
           </span>
         </motion.div>
-          </motion.div>
-        )}
 
-        {activeTab === 'par' && (
-          <motion.div
-            key="par"
-            initial={{ opacity: 0, x: swipeDirection * 30 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: swipeDirection * -30 }}
-            transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-            style={{
-              padding: '0',
-              minHeight: '60vh',
-              position: 'relative',
-            }}
-          >
+        <div style={{ position: 'relative' }}>
 
         {/* Bridge phrase — contextual for parents coming from BARN */}
         <motion.div
@@ -1397,10 +1265,8 @@ export default function ProductLibrary() {
             </motion.div>
           </motion.div>
         </motion.div>
-          </motion.div>
-        )}
-        </AnimatePresence>
-        </motion.div>
+        </div>
+        </div>
 
         {/* Bottom safe-area spacing */}
         <div style={{ paddingBottom: 'calc(48px + env(safe-area-inset-bottom, 0px))' }} />
