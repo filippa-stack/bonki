@@ -112,8 +112,7 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
           </motion.div>
         </motion.div>
 
-        {/* Generous breathing room */}
-        <div style={{ flex: 1, minHeight: '32px', maxHeight: 'clamp(48px, 14vh, 130px)' }} />
+        <div style={{ height: '24px' }} />
 
         <CategoryTileGrid
           product={product}
