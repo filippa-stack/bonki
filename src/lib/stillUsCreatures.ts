@@ -65,7 +65,7 @@ export const STILL_US_CREATURES: Record<string, StillUsCreature> = {
     objectPosition: '45% 20%',
     tileOpacity: 0.35,
     headerOpacity: 0.35,
-    tileRight: '-8%',
+    tileRight: '-2%',
     tileHeight: '220%',
     tileScale: 1.05,
     tileTop: '60%',            // Monkey: eyes high on head, push down more
