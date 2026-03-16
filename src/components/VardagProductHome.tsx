@@ -72,13 +72,13 @@ export default function VardagProductHome({ product }: { product: ProductManifes
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.6 }}
-        style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '45vh', zIndex: 0, pointerEvents: 'none' }}
+        style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '50vh', zIndex: 0, pointerEvents: 'none' }}
       >
         <img src={heroImage} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: '50% 0%' }} />
-        {/* Extended 80% scrim with extra mid-stop for smooth blend */}
+        {/* Extended 85% scrim with extra mid-stop for smooth blend */}
         <div style={{
-          position: 'absolute', bottom: 0, left: 0, right: 0, height: '80%',
-          background: `linear-gradient(to top, ${BG} 0%, ${BG}F2 20%, rgba(6,32,48,0.85) 40%, rgba(10,74,106,0.5) 65%, rgba(10,74,106,0.15) 85%, transparent 100%)`,
+          position: 'absolute', bottom: 0, left: 0, right: 0, height: '85%',
+          background: `linear-gradient(to top, ${BG} 0%, ${BG}F2 18%, rgba(6,32,48,0.85) 35%, rgba(10,74,106,0.5) 60%, rgba(10,74,106,0.15) 80%, transparent 100%)`,
           pointerEvents: 'none',
         }} />
       </motion.div>
