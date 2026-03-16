@@ -699,7 +699,7 @@ export default function ProductLibrary() {
                 borderRadius: '22px',
                 backgroundImage: 'linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0) 50%, rgba(0,0,0,0.12) 100%)',
                 backgroundColor: '#2E2233',
-                minHeight: '140px',
+                height: '240px',
                 display: 'flex',
                 flexDirection: 'column',
                 position: 'relative',
