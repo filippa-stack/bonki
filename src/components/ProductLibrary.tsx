@@ -516,7 +516,7 @@ export default function ProductLibrary() {
       style={{
         background: libraryBg,
         ['--surface-base' as string]: libraryBg,
-        fontFamily: "'Lato', sans-serif",
+        fontFamily: "var(--font-body)",
         transition: 'background 600ms ease',
       }}
     >
