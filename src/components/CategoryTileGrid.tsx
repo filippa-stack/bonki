@@ -113,7 +113,15 @@ function CategoryTile({
         textAlign: 'left',
         backgroundImage: 'linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0) 50%, rgba(0,0,0,0.08) 100%)',
         backgroundColor: tile.bg,
-        border: isFirst ? `2px solid ${SAFFRON}` : '1.5px solid rgba(255, 255, 255, 0.30)',
+        border: isFirst ? `2px solid ${SAFFRON}` : '1.5px solid rgba(255, 255, 255, 0.25)',
+        ...(isFirst ? { boxShadow: [
+          `0 0 12px rgba(233, 180, 76, 0.35)`,
+          '0 12px 32px rgba(0, 0, 0, 0.30)',
+          '0 4px 12px rgba(0, 0, 0, 0.18)',
+          '0 1px 3px rgba(0, 0, 0, 0.08)',
+          'inset 0 3px 6px rgba(255, 255, 255, 0.45)',
+          'inset 0 -4px 10px rgba(0, 0, 0, 0.14)',
+        ].join(', ') } : {}),
         boxShadow: [
           '0 12px 32px rgba(0, 0, 0, 0.30)',
           '0 4px 12px rgba(0, 0, 0, 0.18)',
