@@ -649,7 +649,7 @@ export default function ProductLibrary() {
               animate={{ opacity: 1 }}
               transition={{ delay: 1.5 * ANIM_SPEED, duration: 0.8 }}
               style={{
-                fontFamily: "'Lato', sans-serif",
+                fontFamily: "var(--font-body)",
                 fontSize: '8px',
                 fontWeight: 500,
                 letterSpacing: '0.08em',
