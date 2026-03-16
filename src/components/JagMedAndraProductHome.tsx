@@ -33,11 +33,11 @@ const FIRST_CARD_IDS = [
 
 // Per-tile illustration calibration — vivid card art with individually tuned opacity
 const CREATURE_TILE_STYLES: CreatureTileStyle[] = [
-  { scale: 1.15, objectPosition: '50% 15%', opacity: 0.65 },
-  { scale: 1.15, objectPosition: '50% 20%', opacity: 0.55 },
-  { scale: 1.1,  objectPosition: '50% 18%', opacity: 0.50 },
-  { scale: 1.1,  objectPosition: '50% 22%', opacity: 0.45 },
-  { scale: 1.1,  objectPosition: '50% 18%', opacity: 0.40 },
+  { scale: 1.15, objectPosition: '50% 15%', opacity: 0.45 },
+  { scale: 1.15, objectPosition: '50% 20%', opacity: 0.38 },
+  { scale: 1.1,  objectPosition: '50% 18%', opacity: 0.32 },
+  { scale: 1.1,  objectPosition: '50% 22%', opacity: 0.28 },
+  { scale: 1.1,  objectPosition: '50% 18%', opacity: 0.25 },
 ];
 
 const containerVariants = { hidden: {}, visible: { transition: { staggerChildren: 0.11, delayChildren: 0.4 } } };
