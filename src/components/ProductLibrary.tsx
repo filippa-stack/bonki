@@ -75,14 +75,14 @@ const ILLUSTRATION_OFFSET: Record<string, { top: string; right: string; bottom: 
   syskonkort: { top: '-22%', right: '-15%', bottom: '-18%' },
 };
 
-/** Hero-level illustration opacities — individually calibrated */
+/** Hero-level illustration opacities — near full for maximum impact */
 const ILLUSTRATION_OPACITY: Record<string, number> = {
-  jag_i_mig: 0.92,
-  jag_med_andra: 0.90,
-  jag_i_varlden: 0.90,
-  sexualitetskort: 0.90,
-  vardagskort: 0.88,
-  syskonkort: 0.90,
+  jag_i_mig: 0.97,
+  jag_med_andra: 0.95,
+  jag_i_varlden: 0.95,
+  sexualitetskort: 0.95,
+  vardagskort: 0.93,
+  syskonkort: 0.95,
 };
 
 /** Light title colors for dark creature-color tiles — Lantern Glow variants */
