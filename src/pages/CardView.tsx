@@ -708,7 +708,7 @@ export default function CardView() {
               style: {
                 background: 'var(--surface-base)',
                 color: 'var(--color-text-primary)',
-                fontFamily: 'Inter, sans-serif',
+                fontFamily: 'var(--font-body)',
                 fontSize: '14px',
               },
             })
