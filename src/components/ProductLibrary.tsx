@@ -61,22 +61,22 @@ function hexToRgba(hex: string, alpha: number): string {
 
 /** Per-product illustration scale — oversized for dramatic portal feel */
 const ILLUSTRATION_SCALE: Record<string, { width: string; height: string }> = {
-  jag_i_mig: { width: '78%', height: '155%' },
-  jag_med_andra: { width: '74%', height: '150%' },
-  jag_i_varlden: { width: '72%', height: '148%' },
-  sexualitetskort: { width: '74%', height: '148%' },
-  vardagskort: { width: '74%', height: '150%' },
-  syskonkort: { width: '74%', height: '148%' },
+  jag_i_mig: { width: '88%', height: '170%' },
+  jag_med_andra: { width: '82%', height: '165%' },
+  jag_i_varlden: { width: '80%', height: '160%' },
+  sexualitetskort: { width: '82%', height: '165%' },
+  vardagskort: { width: '82%', height: '165%' },
+  syskonkort: { width: '82%', height: '162%' },
 };
 
 /** Per-product vertical offset — characters burst out of tile boundaries */
 const ILLUSTRATION_OFFSET: Record<string, { top: string; right: string; bottom: string }> = {
-  jag_i_mig: { top: '-25%', right: '-18%', bottom: '-20%' },
-  jag_med_andra: { top: '-22%', right: '-15%', bottom: '-18%' },
-  jag_i_varlden: { top: '-20%', right: '-15%', bottom: '-18%' },
-  sexualitetskort: { top: '-22%', right: '-18%', bottom: '-16%' },
-  vardagskort: { top: '-22%', right: '-15%', bottom: '-18%' },
-  syskonkort: { top: '-22%', right: '-15%', bottom: '-18%' },
+  jag_i_mig: { top: '-30%', right: '-22%', bottom: '-25%' },
+  jag_med_andra: { top: '-28%', right: '-18%', bottom: '-22%' },
+  jag_i_varlden: { top: '-25%', right: '-18%', bottom: '-22%' },
+  sexualitetskort: { top: '-28%', right: '-22%', bottom: '-20%' },
+  vardagskort: { top: '-28%', right: '-18%', bottom: '-22%' },
+  syskonkort: { top: '-28%', right: '-18%', bottom: '-22%' },
 };
 
 /** Hero-level illustration opacities — near full for maximum impact */
