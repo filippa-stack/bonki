@@ -814,7 +814,7 @@ export default function ProductLibrary() {
           >
             ✦ Första kortet i varje produkt är gratis
           </motion.p>
-          <LibraryResumeCard activeTab="barn" />
+          <LibraryResumeCard activeTab="barn" forceMock />
           <div style={{ height: '24px' }} />
           <motion.div
             variants={containerVariants}
