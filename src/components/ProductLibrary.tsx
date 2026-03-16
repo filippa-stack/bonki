@@ -1165,7 +1165,7 @@ export default function ProductLibrary() {
             }}>
               <div style={{ flex: 1, height: '1px', background: 'linear-gradient(90deg, transparent, hsla(38, 60%, 50%, 0.15))' }} />
               <span style={{
-                fontFamily: "'Lato', sans-serif",
+                fontFamily: "var(--font-body)",
                 fontSize: '8px',
                 fontWeight: 700,
                 letterSpacing: '0.14em',
