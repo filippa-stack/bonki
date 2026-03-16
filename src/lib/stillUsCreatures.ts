@@ -88,7 +88,7 @@ export const STILL_US_CREATURES: Record<string, StillUsCreature> = {
     tileRight: '0%',
     tileHeight: '220%',
     tileScale: 1.25,
-    tileTop: '65%',            // Turtle: push down + left to show eyes
+    tileTop: '72%',            // Turtle: push down further to show eyes
   },
   'parenting-together': {       // Det ni bär med er → Uggla  (Det som formar er)
     src: creatureUggla,
