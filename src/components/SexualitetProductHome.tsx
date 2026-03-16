@@ -30,6 +30,14 @@ const CREATURE_TILE_STYLES: CreatureTileStyle[] = [
   { scale: 0.65, objectPosition: '50% 50%', opacity: 0.18 },
 ];
 
+// First card per category — used as tile illustrations
+const FIRST_CARD_IDS = [
+  'sex-konsidentitet',     // Min identitet
+  'sex-normer',            // Normer & påverkan
+  'sex-samtycke',          // Relation & ansvar
+  'sex-sexuella-overgrepp',// Skydd & makt
+];
+
 const containerVariants = { hidden: {}, visible: { transition: { staggerChildren: 0.11, delayChildren: 0.4 } } };
 const titleVariants = { hidden: { opacity: 0, y: 16 }, visible: { opacity: 1, y: 0, transition: { duration: 0.75, ease: EASE } } };
 
