@@ -703,7 +703,7 @@ export default function ProductLibrary() {
               fontSize: '10px',
               fontWeight: 500,
               letterSpacing: '0.06em',
-              color: 'hsla(38, 78%, 60%, 0.45)',
+              color: '#998F82',
               textAlign: 'center',
               marginBottom: '20px',
               marginTop: '-16px',
