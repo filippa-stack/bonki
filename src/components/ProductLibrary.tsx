@@ -55,44 +55,34 @@ function hexToRgba(hex: string, alpha: number): string {
   return `rgba(${r}, ${g}, ${b}, ${alpha})`;
 }
 
+/** Per-product illustration scale — controls how much of the tile the character fills */
+const ILLUSTRATION_SCALE: Record<string, { width: string; height: string }> = {
+  jag_i_mig: { width: '65%', height: '130%' },
+  jag_med_andra: { width: '62%', height: '125%' },
+  jag_i_varlden: { width: '60%', height: '125%' },
+  sexualitetskort: { width: '62%', height: '125%' },
+  vardagskort: { width: '62%', height: '125%' },
+  syskonkort: { width: '62%', height: '125%' },
+};
+
+/** Per-product vertical offset — negative pulls character up above tile top */
+const ILLUSTRATION_OFFSET: Record<string, { top: string; right: string; bottom: string }> = {
+  jag_i_mig: { top: '-12%', right: '-10%', bottom: '-10%' },
+  jag_med_andra: { top: '-10%', right: '-8%', bottom: '-8%' },
+  jag_i_varlden: { top: '-8%', right: '-8%', bottom: '-8%' },
+  sexualitetskort: { top: '-10%', right: '-10%', bottom: '-8%' },
+  vardagskort: { top: '-10%', right: '-8%', bottom: '-8%' },
+  syskonkort: { top: '-10%', right: '-8%', bottom: '-8%' },
+};
+
 /** Hero-level illustration opacities — individually calibrated */
 const ILLUSTRATION_OPACITY: Record<string, number> = {
-  jag_i_mig: 0.90,
-  jag_med_andra: 0.88,
+  jag_i_mig: 0.92,
+  jag_med_andra: 0.90,
   jag_i_varlden: 0.90,
-  sexualitetskort: 0.88,
-  vardagskort: 0.85,
-  syskonkort: 0.88,
-};
-
-/** Per-product illustration placement — individually tuned to each motif's center of gravity */
-const ILLUSTRATION_POSITION: Record<string, string> = {
-  jag_i_mig: 'center 30%',
-  jag_med_andra: 'center 35%',
-  jag_i_varlden: 'center 30%',
-  sexualitetskort: 'center 25%',
-  vardagskort: 'center 30%',
-  syskonkort: 'center 35%',
-};
-
-/** Per-product object-fit mode */
-const ILLUSTRATION_FIT: Record<string, string> = {
-  jag_i_mig: 'contain',
-  jag_med_andra: 'contain',
-  jag_i_varlden: 'contain',
-  sexualitetskort: 'contain',
-  vardagskort: 'contain',
-  syskonkort: 'contain',
-};
-
-/** Per-product illustration container bounds — {top, left, right, bottom} as % */
-const ILLUSTRATION_BOUNDS: Record<string, { top: string; left: string; right: string; bottom: string }> = {
-  jag_i_mig: { top: '-5%', left: '-2%', right: '-2%', bottom: '22%' },
-  jag_med_andra: { top: '-8%', left: '-5%', right: '-5%', bottom: '20%' },
-  jag_i_varlden: { top: '-5%', left: '-2%', right: '-2%', bottom: '22%' },
-  sexualitetskort: { top: '-5%', left: '-2%', right: '-2%', bottom: '20%' },
-  vardagskort: { top: '-5%', left: '-5%', right: '-5%', bottom: '20%' },
-  syskonkort: { top: '-5%', left: '-2%', right: '-2%', bottom: '22%' },
+  sexualitetskort: 0.90,
+  vardagskort: 0.88,
+  syskonkort: 0.90,
 };
 
 /** Light title colors for dark creature-color tiles — Lantern Glow variants */
@@ -193,16 +183,7 @@ function AudienceLabel({ label, subtitle, delay = 0 }: { label: string; subtitle
   );
 }
 
-/*
- * ┌─────────────────────────────────────────────────────┐
- * │  🔒 LOCKED DESIGN — ProductLibrary                  │
- * │  Approved 2026-03-04. Do NOT change layout, colors, │
- * │  typography, spacing, opacity or illustrations       │
- * │  without explicit approval.                         │
- * │  To unlock: remove this comment block.               │
- * └─────────────────────────────────────────────────────┘
- */
-/** Portal tile — prominent illustration with strong bottom text */
+/** Portal tile — illustration bleeds right, text anchored left */
 const PastelTile = React.forwardRef<HTMLDivElement, {
   name: string; bg: string; ageLabel?: string; tagline?: string;
   onClick?: () => void; illustration?: string; productId?: string;
@@ -212,9 +193,9 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
   hasActiveSession?: boolean;
 }>(function PastelTile({
   name, bg, ageLabel, tagline, onClick, illustration, productId, accentColor, taglineColor,
-  illustrationOpacity = 0.78, illustrationSize, illustrationPosition = 'center 30%', wide = false,
-  showFreeBadge = false, badgeText = 'Första kortet gratis', ageCount, hasActiveSession = false,
-}, ref) {
+  illustrationOpacity = 0.90, wide = false,
+  hasActiveSession = false,
+}) {
   const toShadowColor = (hex: string, alpha: number) => {
     const r = parseInt(hex.slice(1, 3), 16);
     const g = parseInt(hex.slice(3, 5), 16);
@@ -222,107 +203,112 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
     return `rgba(${Math.round(r * 0.5)}, ${Math.round(g * 0.5)}, ${Math.round(b * 0.5)}, ${alpha})`;
   };
 
-  // Parse bg hex for robust rgba scrim
   const bgR = parseInt(bg.slice(1, 3), 16);
   const bgG = parseInt(bg.slice(3, 5), 16);
   const bgB = parseInt(bg.slice(5, 7), 16);
   const bgRgba = (a: number) => `rgba(${bgR}, ${bgG}, ${bgB}, ${a})`;
 
-    return (
-      <motion.div
-        variants={tileVariants}
-        whileHover={{ scale: 1.025, y: -3 }}
-        whileTap={{ scale: 0.94, y: 3 }}
-        onClick={onClick}
-        className="cursor-pointer"
-        style={{
-          borderRadius: '22px',
-          backgroundImage: `linear-gradient(135deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0) 50%, rgba(0,0,0,0.06) 100%)`,
-          backgroundColor: bg,
-          minHeight: wide ? '240px' : '210px',
-          display: 'flex',
-          flexDirection: 'column',
-          position: 'relative',
-          overflow: 'hidden',
-          border: '1.5px solid rgba(255, 255, 255, 0.30)',
-          boxShadow: [
-            `0 12px 32px ${toShadowColor(bg, 0.30)}`,
-            `0 4px 12px ${toShadowColor(bg, 0.18)}`,
-            '0 1px 3px rgba(0, 0, 0, 0.08)',
-            'inset 0 3px 6px rgba(255, 255, 255, 0.45)',
-            `inset 0 -4px 10px ${toShadowColor(bg, 0.12)}`,
-          ].join(', '),
-          gridColumn: wide ? 'span 2' : undefined,
-        }}
-      >
-      {/* Illustration — individually calibrated hero */}
-      {illustration && (() => {
-        const bounds = productId ? ILLUSTRATION_BOUNDS[productId] : undefined;
-        const defaultBounds = { top: '-12%', left: '-5%', right: '-5%', bottom: '22%' };
-        const b = bounds || defaultBounds;
-        return (
-          <div
-            style={{
-              position: 'absolute',
-              top: b.top,
-              left: b.left,
-              right: b.right,
-              bottom: b.bottom,
-              pointerEvents: 'none',
-              zIndex: 0,
-            }}
-          >
-            <img
-              src={illustration}
-              alt=""
-              draggable={false}
-              style={{
-                width: '100%',
-                height: '100%',
-                objectFit: (productId && ILLUSTRATION_FIT[productId] || 'contain') as React.CSSProperties['objectFit'],
-                objectPosition: illustrationPosition,
-                opacity: illustrationOpacity,
-              }}
-            />
-          </div>
-        );
-      })()}
+  const scale = productId ? ILLUSTRATION_SCALE[productId] : undefined;
+  const offset = productId ? ILLUSTRATION_OFFSET[productId] : undefined;
+  const opacity = productId ? ILLUSTRATION_OPACITY[productId] ?? illustrationOpacity : illustrationOpacity;
 
-      {/* Age label badge — enlarged for readability */}
+  return (
+    <motion.div
+      variants={tileVariants}
+      whileHover={{ scale: 1.025, y: -3 }}
+      whileTap={{ scale: 0.94, y: 3 }}
+      onClick={onClick}
+      className="cursor-pointer"
+      style={{
+        borderRadius: '16px',
+        backgroundColor: bg,
+        height: '200px',
+        display: 'flex',
+        position: 'relative',
+        overflow: 'hidden',
+        border: '1.5px solid rgba(255, 255, 255, 0.30)',
+        boxShadow: [
+          `0 12px 32px ${toShadowColor(bg, 0.30)}`,
+          `0 4px 12px ${toShadowColor(bg, 0.18)}`,
+          '0 1px 3px rgba(0, 0, 0, 0.08)',
+          'inset 0 3px 6px rgba(255, 255, 255, 0.45)',
+          `inset 0 -4px 10px ${toShadowColor(bg, 0.12)}`,
+        ].join(', '),
+      }}
+    >
+      {/* Illustration — right-aligned, bleeds off edge */}
+      {illustration && (
+        <div
+          style={{
+            position: 'absolute',
+            top: offset?.top ?? '-10%',
+            right: offset?.right ?? '-10%',
+            bottom: offset?.bottom ?? '-8%',
+            width: scale?.width ?? '62%',
+            pointerEvents: 'none',
+            zIndex: 0,
+          }}
+        >
+          <img
+            src={illustration}
+            alt=""
+            draggable={false}
+            style={{
+              width: '100%',
+              height: '100%',
+              objectFit: 'contain',
+              objectPosition: 'right bottom',
+              opacity,
+            }}
+          />
+        </div>
+      )}
+
+      {/* Horizontal gradient scrim — solid left, fading to transparent right */}
+      <div
+        aria-hidden="true"
+        style={{
+          position: 'absolute',
+          top: 0, left: 0, bottom: 0,
+          width: '65%',
+          zIndex: 1,
+          pointerEvents: 'none',
+          background: `linear-gradient(to right, ${bgRgba(1)} 0%, ${bgRgba(0.95)} 40%, ${bgRgba(0.6)} 70%, transparent 100%)`,
+        }}
+      />
+
+      {/* Age badge — Parchment circle, top-right */}
       {ageLabel && (
         <span
           style={{
             position: 'absolute',
-            top: '10px',
+            top: '12px',
             right: '12px',
-            width: '38px',
-            height: '38px',
+            width: '32px',
+            height: '32px',
             borderRadius: '50%',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             fontFamily: "'Lato', sans-serif",
-            fontSize: '11px',
-            fontWeight: 700,
-            letterSpacing: '0.02em',
+            fontSize: '12px',
+            fontWeight: 600,
             color: '#2C2420',
-            background: 'rgba(255, 255, 255, 0.75)',
-            backdropFilter: 'blur(10px)',
-            WebkitBackdropFilter: 'blur(10px)',
+            background: '#F5EDD2',
             zIndex: 3,
-            boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
+            boxShadow: '0 2px 8px rgba(0,0,0,0.12)',
           }}
         >
           {ageLabel}
         </span>
       )}
 
-      {/* Resume indicator — saffron dot + "Fortsätt" */}
+      {/* Resume indicator */}
       {hasActiveSession && (
         <div
           style={{
             position: 'absolute',
-            top: ageLabel ? '54px' : '10px',
+            top: ageLabel ? '50px' : '12px',
             right: '14px',
             display: 'flex',
             flexDirection: 'column',
@@ -342,61 +328,55 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
             fontFamily: "'Lato', sans-serif",
             fontSize: '11px',
             fontWeight: 500,
-            color: '#6B5E52',
+            color: '#FDF6E3',
+            opacity: 0.7,
           }}>
             Fortsätt
           </span>
         </div>
       )}
 
-      {/* Bottom gradient scrim — rgba-based for robustness */}
-      <div
-        aria-hidden="true"
-        style={{
-          position: 'absolute',
-          bottom: 0, left: 0, right: 0,
-          height: '65%',
-          zIndex: 1,
-          pointerEvents: 'none',
-          background: `linear-gradient(to top, ${bgRgba(1)} 0%, ${bgRgba(0.93)} 25%, ${bgRgba(0.6)} 50%, ${bgRgba(0.2)} 70%, transparent 100%)`,
-          borderRadius: '0 0 22px 22px',
-        }}
-      />
-
-      {/* Text content — anchored to bottom, single secondary line */}
-      <div style={{ 
-        position: 'absolute', 
-        bottom: 0, left: 0, right: 0, 
+      {/* Text — left-aligned, lower-third emphasis */}
+      <div style={{
+        position: 'absolute',
+        left: 0, bottom: 0, top: 0,
+        width: '55%',
         zIndex: 2,
-        padding: wide ? '0 20px 20px' : '0 16px 18px',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'flex-end',
+        padding: '20px',
+        paddingBottom: '24px',
       }}>
         <h3
           style={{
             fontFamily: "'DM Serif Display', serif",
-            fontSize: wide ? '28px' : '22px',
-            fontWeight: 700,
+            fontSize: '24px',
+            fontWeight: 600,
             lineHeight: 1.15,
-            color: accentColor || 'var(--text-library)',
+            color: accentColor || '#FDF6E3',
             letterSpacing: '-0.01em',
-            textShadow: `0 1px 6px ${bgRgba(1)}, 0 0 16px ${bgRgba(0.9)}, 0 0 32px ${bgRgba(0.8)}`,
+            textShadow: `0 1px 6px ${bgRgba(0.8)}, 0 0 16px ${bgRgba(0.6)}`,
           }}
         >
           {name}
         </h3>
-        {/* Single secondary line: tagline + count merged */}
-        <p
-          style={{
-            fontFamily: "'Lato', sans-serif",
-            fontSize: '11px',
-            fontWeight: 400,
-            color: taglineColor || '#8A8078',
-            marginTop: '4px',
-            lineHeight: 1.4,
-            textShadow: `0 0 10px ${bgRgba(1)}, 0 0 20px ${bgRgba(0.8)}`,
-          }}
-        >
-          {tagline}
-        </p>
+        {tagline && (
+          <p
+            style={{
+              fontFamily: "'Lato', sans-serif",
+              fontSize: '14px',
+              fontWeight: 400,
+              color: taglineColor || '#FDF6E3',
+              opacity: 0.8,
+              marginTop: '4px',
+              lineHeight: 1.4,
+              textShadow: `0 0 10px ${bgRgba(0.8)}`,
+            }}
+          >
+            {tagline}
+          </p>
+        )}
       </div>
     </motion.div>
   );
@@ -753,7 +733,6 @@ export default function ProductLibrary() {
                 taglineColor={TAGLINE_COLORS[product.id]}
                 illustration={ILLUSTRATIONS[product.id]}
                 illustrationOpacity={ILLUSTRATION_OPACITY[product.id]}
-                illustrationPosition={ILLUSTRATION_POSITION[product.id]}
                 onClick={() => navigate(`/product/${product.slug}`)}
                 badgeText={buildBadgeText(product)}
                 hasActiveSession={activeProductIds.has(product.id)}
