@@ -105,7 +105,7 @@ export default function LibraryResumeBanner() {
       }} />
       <div style={{ flex: 1, minWidth: 0 }}>
         <p style={{
-          fontFamily: "'Lato', sans-serif",
+          fontFamily: "var(--font-body)",
           fontSize: '9px',
           fontWeight: 600,
           letterSpacing: '0.1em',
@@ -116,7 +116,7 @@ export default function LibraryResumeBanner() {
           Fortsätt där ni slutade
         </p>
         <p style={{
-          fontFamily: "'DM Serif Display', serif",
+          fontFamily: "var(--font-display)",
           fontSize: '15px',
           fontWeight: 400,
           color: '#FDF6E3',
@@ -129,7 +129,7 @@ export default function LibraryResumeBanner() {
         </p>
       </div>
       <span style={{
-        fontFamily: "'Lato', sans-serif",
+        fontFamily: "var(--font-body)",
         fontSize: '10px',
         fontWeight: 700,
         letterSpacing: '0.04em',

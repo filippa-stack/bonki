@@ -154,7 +154,7 @@ function AudienceLabel({ label, subtitle, delay = 0 }: { label: string; subtitle
     >
       <p
         style={{
-          fontFamily: "'Lato', sans-serif",
+          fontFamily: "var(--font-body)",
           fontSize: '10px',
           fontWeight: 600,
           letterSpacing: '0.15em',
@@ -168,7 +168,7 @@ function AudienceLabel({ label, subtitle, delay = 0 }: { label: string; subtitle
       {subtitle && (
         <p
           style={{
-            fontFamily: "'DM Serif Display', serif",
+            fontFamily: "var(--font-display)",
             fontSize: '14px',
             fontWeight: 400,
             color: 'var(--color-text-secondary)',
@@ -303,7 +303,7 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            fontFamily: "'Lato', sans-serif",
+            fontFamily: "var(--font-body)",
             fontSize: '12px',
             fontWeight: 600,
             color: '#2C2420',
@@ -338,7 +338,7 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
             boxShadow: '0 0 6px rgba(212, 160, 58, 0.5)',
           }} />
           <span style={{
-            fontFamily: "'Lato', sans-serif",
+            fontFamily: "var(--font-body)",
             fontSize: '11px',
             fontWeight: 500,
             color: '#FDF6E3',
@@ -363,7 +363,8 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
       }}>
         <h3
           style={{
-            fontFamily: "'DM Serif Display', serif",
+            fontFamily: "var(--font-display)",
+            fontVariationSettings: "'opsz' 24",
             fontSize: '28px',
             fontWeight: 600,
             lineHeight: 1.15,
@@ -377,7 +378,7 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
         {tagline && (
           <p
             style={{
-              fontFamily: "'Lato', sans-serif",
+              fontFamily: "var(--font-body)",
               fontSize: '14px',
               fontWeight: 400,
               color: taglineColor || '#FDF6E3',
@@ -515,7 +516,7 @@ export default function ProductLibrary() {
       style={{
         background: libraryBg,
         ['--surface-base' as string]: libraryBg,
-        fontFamily: "'Lato', sans-serif",
+        fontFamily: "var(--font-body)",
         transition: 'background 600ms ease',
       }}
     >
@@ -537,7 +538,8 @@ export default function ProductLibrary() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.15, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
             style={{
-              fontFamily: "'DM Serif Display', serif",
+              fontFamily: "var(--font-display)",
+              fontVariationSettings: "'opsz' 36",
               fontSize: '34px',
               fontWeight: 400,
               color: isDark ? 'hsla(38, 78%, 55%, 0.95)' : '#E9B44C',
@@ -554,7 +556,7 @@ export default function ProductLibrary() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3, duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
             style={{
-              fontFamily: "'DM Serif Display', serif",
+              fontFamily: "var(--font-body)",
               fontStyle: 'normal',
               fontSize: '14px',
               fontWeight: 400,
@@ -616,7 +618,7 @@ export default function ProductLibrary() {
                   key={tab}
                   onClick={() => switchTab(tab)}
                   style={{
-                    fontFamily: "'Lato', sans-serif",
+                    fontFamily: "var(--font-body)",
                     fontSize: '10px',
                     fontWeight: 700,
                     letterSpacing: '0.12em',
@@ -647,7 +649,7 @@ export default function ProductLibrary() {
               animate={{ opacity: 1 }}
               transition={{ delay: 1.5 * ANIM_SPEED, duration: 0.8 }}
               style={{
-                fontFamily: "'Lato', sans-serif",
+                fontFamily: "var(--font-body)",
                 fontSize: '8px',
                 fontWeight: 500,
                 letterSpacing: '0.08em',
@@ -693,7 +695,8 @@ export default function ProductLibrary() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1, duration: 0.7, ease: [0.4, 0, 0.2, 1] }}
             style={{
-              fontFamily: "'DM Serif Display', serif",
+              fontFamily: "var(--font-display)",
+              fontVariationSettings: "'opsz' 15",
               fontStyle: 'normal',
               fontSize: '15px',
               fontWeight: 400,
@@ -712,7 +715,7 @@ export default function ProductLibrary() {
             animate={{ opacity: 1 }}
             transition={{ delay: 0.2, duration: 0.5 }}
             style={{
-              fontFamily: "'Lato', sans-serif",
+              fontFamily: "var(--font-body)",
               fontSize: '10px',
               fontWeight: 500,
               letterSpacing: '0.06em',
@@ -762,7 +765,7 @@ export default function ProductLibrary() {
             paddingTop: '16px',
           }}>
             <p style={{
-              fontFamily: "'Lato', sans-serif",
+              fontFamily: "var(--font-body)",
               fontSize: '12px',
               fontWeight: 600,
               letterSpacing: '1.5px',
@@ -837,7 +840,8 @@ export default function ProductLibrary() {
                 padding: '0 18px 16px',
               }}>
                 <h3 style={{
-                  fontFamily: "'DM Serif Display', serif",
+                  fontFamily: "var(--font-display)",
+                  fontVariationSettings: "'opsz' 24",
                   fontSize: '22px',
                   fontWeight: 700,
                   color: '#FDF6E3',
@@ -847,7 +851,7 @@ export default function ProductLibrary() {
                   Still Us
                 </h3>
                 <p style={{
-                  fontFamily: "'Lato', sans-serif",
+                  fontFamily: "var(--font-body)",
                   fontSize: '11px',
                   color: 'hsla(38, 55%, 65%, 0.7)',
                   marginTop: '4px',
@@ -883,7 +887,8 @@ export default function ProductLibrary() {
           </svg>
           <div style={{ flex: 1 }}>
             <p style={{
-              fontFamily: "'DM Serif Display', serif",
+              fontFamily: "var(--font-display)",
+              fontVariationSettings: "'opsz' 16",
               fontSize: '15px',
               fontWeight: 400,
               color: '#FDF6E3',
@@ -892,7 +897,7 @@ export default function ProductLibrary() {
               Era samtal
             </p>
             <p style={{
-              fontFamily: "'Lato', sans-serif",
+              fontFamily: "var(--font-body)",
               fontSize: '10px',
               color: 'hsla(38, 50%, 65%, 0.5)',
               marginTop: '2px',
@@ -901,7 +906,7 @@ export default function ProductLibrary() {
             </p>
           </div>
           <span style={{
-            fontFamily: "'Lato', sans-serif",
+            fontFamily: "var(--font-body)",
             fontSize: '10px',
             fontWeight: 600,
             letterSpacing: '0.06em',
@@ -942,7 +947,8 @@ export default function ProductLibrary() {
         >
           <p
             style={{
-              fontFamily: "'DM Serif Display', serif",
+              fontFamily: "var(--font-display)",
+              fontVariationSettings: "'opsz' 15",
               fontStyle: 'normal',
               fontSize: '14px',
               fontWeight: 400,
@@ -1036,7 +1042,8 @@ export default function ProductLibrary() {
             }}>
               <h3
                 style={{
-                  fontFamily: "'DM Serif Display', serif",
+                  fontFamily: "var(--font-display)",
+                  fontVariationSettings: "'opsz' 24",
                   fontSize: '32px',
                   fontWeight: 700,
                   lineHeight: 1.1,
@@ -1051,7 +1058,7 @@ export default function ProductLibrary() {
               {/* Emotional hook */}
               <p
                 style={{
-                  fontFamily: "'DM Serif Display', serif",
+                  fontFamily: "var(--font-body)",
                   fontStyle: 'normal',
                   fontSize: '14px',
                   fontWeight: 400,
@@ -1073,7 +1080,7 @@ export default function ProductLibrary() {
                 flexWrap: 'wrap',
               }}>
                 <span style={{
-                  fontFamily: "'Lato', sans-serif",
+                  fontFamily: "var(--font-body)",
                   fontSize: '10px',
                   fontWeight: 600,
                   letterSpacing: '0.04em',
@@ -1085,7 +1092,7 @@ export default function ProductLibrary() {
                   ca 20 min per samtal
                 </span>
                 <span style={{
-                  fontFamily: "'Lato', sans-serif",
+                  fontFamily: "var(--font-body)",
                   fontSize: '10px',
                   fontWeight: 600,
                   letterSpacing: '0.04em',
@@ -1109,7 +1116,8 @@ export default function ProductLibrary() {
               >
                 <span
                   style={{
-                    fontFamily: "'Lato', sans-serif",
+                    fontFamily: "var(--font-display)",
+                    fontVariationSettings: "'opsz' 17",
                     fontSize: '13px',
                     fontWeight: 700,
                     letterSpacing: '0.02em',
@@ -1124,7 +1132,7 @@ export default function ProductLibrary() {
                 </span>
                 {/* Credential — integrated trust signal */}
                 <span style={{
-                  fontFamily: "'Lato', sans-serif",
+                  fontFamily: "var(--font-body)",
                   fontSize: '8px',
                   fontWeight: 500,
                   letterSpacing: '0.06em',
@@ -1157,7 +1165,7 @@ export default function ProductLibrary() {
             }}>
               <div style={{ flex: 1, height: '1px', background: 'linear-gradient(90deg, transparent, hsla(38, 60%, 50%, 0.15))' }} />
               <span style={{
-                fontFamily: "'Lato', sans-serif",
+                fontFamily: "var(--font-body)",
                 fontSize: '8px',
                 fontWeight: 700,
                 letterSpacing: '0.14em',
@@ -1239,7 +1247,8 @@ export default function ProductLibrary() {
               }}>
                 <h3
                   style={{
-                    fontFamily: "'DM Serif Display', serif",
+                    fontFamily: "var(--font-display)",
+                    fontVariationSettings: "'opsz' 24",
                     fontSize: '22px',
                     fontWeight: 700,
                     lineHeight: 1.15,
@@ -1253,7 +1262,7 @@ export default function ProductLibrary() {
                 </h3>
                 <p
                   style={{
-                    fontFamily: "'Lato', sans-serif",
+                    fontFamily: "var(--font-body)",
                     fontSize: '11px',
                     fontWeight: 400,
                     color: 'hsla(327, 15%, 75%, 0.7)',
@@ -1275,7 +1284,7 @@ export default function ProductLibrary() {
                       display: 'inline-flex',
                       alignItems: 'center',
                       gap: '4px',
-                      fontFamily: "'Lato', sans-serif",
+                      fontFamily: "var(--font-body)",
                       fontSize: '10px',
                       fontWeight: 600,
                       letterSpacing: '0.02em',

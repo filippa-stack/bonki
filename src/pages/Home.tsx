@@ -180,7 +180,8 @@ export default function Home() {
             >
               <h1
                 style={{
-                  fontFamily: "'DM Serif Display', var(--font-serif)",
+                  fontFamily: "var(--font-display)",
+                  fontVariationSettings: "'opsz' 28",
                   fontSize: '28px',
                   fontWeight: 600,
                   color: LANTERN_GLOW,
@@ -224,7 +225,7 @@ export default function Home() {
                   textAlign: 'center',
                 }}>
                   <p style={{
-                    fontFamily: "'DM Serif Display', var(--font-serif)",
+                    fontFamily: "var(--font-display)",
                     fontSize: '18px',
                     color: LANTERN_GLOW,
                     marginBottom: '6px',
@@ -273,7 +274,7 @@ export default function Home() {
                     Ert nästa samtal
                   </span>
                   <span style={{
-                    fontFamily: "'DM Serif Display', var(--font-serif)",
+                    fontFamily: "var(--font-display)",
                     fontSize: '20px',
                     fontWeight: 500,
                     color: LANTERN_GLOW,

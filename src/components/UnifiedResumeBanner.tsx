@@ -126,7 +126,7 @@ export default function UnifiedResumeBanner({
 
       {/* Line 2: Card name */}
       <span style={{
-        fontFamily: "'DM Serif Display', var(--font-serif)",
+        fontFamily: "var(--font-display)",
         fontSize: '18px',
         fontWeight: 500,
         color: LANTERN_GLOW,

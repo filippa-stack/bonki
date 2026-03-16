@@ -50,7 +50,7 @@ export default function KidsProductResumeBanner({ product, progress, accentColor
     >
       <span
         style={{
-          fontFamily: "'DM Serif Display', var(--font-serif)",
+          fontFamily: "var(--font-display)",
           fontSize: '17px',
           fontWeight: 500,
           color: accentColor,

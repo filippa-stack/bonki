@@ -22,7 +22,8 @@ export default function StageTransitionChoice({ onContinue, onStop, pronounMode 
     >
       <h2
         style={{
-          fontFamily: "'DM Serif Display', var(--font-serif)",
+          fontFamily: "var(--font-display)",
+          fontVariationSettings: "'opsz' 20",
           fontSize: '20px',
           fontWeight: 400,
           color: 'var(--text-primary)',

@@ -104,7 +104,7 @@ export default function CardPreview() {
           {/* Card title */}
           <h1
             style={{
-              fontFamily: "'DM Serif Display', var(--font-serif)",
+              fontFamily: "var(--font-display)",
               fontSize: 'clamp(26px, 7vw, 34px)',
               fontWeight: 400,
               lineHeight: 1.2,
@@ -264,7 +264,7 @@ export default function CardPreview() {
         {/* Card title */}
         <h1
           style={{
-            fontFamily: "'DM Serif Display', var(--font-serif)",
+            fontFamily: "var(--font-display)",
             fontSize: 'clamp(26px, 7vw, 34px)',
             fontWeight: 400,
             lineHeight: 1.2,

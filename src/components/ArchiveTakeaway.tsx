@@ -95,7 +95,7 @@ export default function ArchiveTakeaway({ sessionId, initialText }: ArchiveTakea
       ) : (
         <p
           style={{
-            fontFamily: 'Inter, sans-serif',
+            fontFamily: 'var(--font-body)',
             fontSize: '12px',
             color: 'var(--text-tertiary)',
             marginBottom: '8px',
@@ -116,7 +116,7 @@ export default function ArchiveTakeaway({ sessionId, initialText }: ArchiveTakea
       {showSaved && (
         <p
           style={{
-            fontFamily: 'Inter, sans-serif',
+            fontFamily: 'var(--font-body)',
             fontSize: '11px',
             color: 'var(--text-tertiary)',
             marginTop: '6px',

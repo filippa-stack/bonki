@@ -310,7 +310,8 @@ function KidsProductCategoryView({
         {/* Category name */}
         <h1
           style={{
-            fontFamily: "'DM Serif Display', var(--font-serif)",
+            fontFamily: "var(--font-display)",
+            fontVariationSettings: "'opsz' 20",
             fontSize: '20px',
             fontWeight: 600,
             color: LANTERN_GLOW,
@@ -492,7 +493,8 @@ function KidsCardTile({ card, index, isCompleted, isNextSuggested, tileColor, on
         >
           <h3
             style={{
-              fontFamily: "'DM Serif Display', var(--font-serif)",
+              fontFamily: "var(--font-display)",
+              fontVariationSettings: "'opsz' 28",
               fontSize: '28px',
               fontWeight: 700,
               color: LANTERN_GLOW,
@@ -577,7 +579,8 @@ function StillUsCategoryView({
         {/* Category name */}
         <h1
           style={{
-            fontFamily: "'DM Serif Display', var(--font-serif)",
+            fontFamily: "var(--font-display)",
+            fontVariationSettings: "'opsz' 24",
             fontSize: '22px',
             fontWeight: 600,
             color: LANTERN_GLOW,
@@ -670,7 +673,8 @@ function StillUsCategoryView({
               <div style={{ flex: 1, minWidth: 0 }}>
                 <span
                   style={{
-                    fontFamily: "'DM Serif Display', var(--font-serif)",
+                    fontFamily: "var(--font-display)",
+                    fontVariationSettings: "'opsz' 20",
                     fontSize: '20px',
                     fontWeight: 400,
                     color: LANTERN_GLOW,

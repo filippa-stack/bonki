@@ -14,8 +14,10 @@ export default {
     },
     extend: {
       fontFamily: {
-        serif: ['Cormorant Garamond', 'Georgia', 'serif'],
-        sans: ['Inter', '-apple-system', 'sans-serif'],
+        display: ['Fraunces', 'Georgia', 'serif'],
+        serif: ['Fraunces', 'Georgia', 'serif'],
+        sans: ['Nunito', 'Segoe UI', 'sans-serif'],
+        body: ['Nunito', 'Segoe UI', 'sans-serif'],
       },
       colors: {
         border: "hsl(var(--border))",

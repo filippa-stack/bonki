@@ -108,7 +108,7 @@ export default function DiaryEntrance({ productId, accentColor, textColor }: Dia
           <div style={{ display: 'flex', flexDirection: 'column', gap: '3px', textAlign: 'left' }}>
             <span
               style={{
-                fontFamily: "'DM Serif Display', var(--font-serif)",
+                fontFamily: "var(--font-display)",
                 fontSize: 'clamp(17px, 4.5vw, 20px)',
                 fontWeight: 400,
                 color: textColor,

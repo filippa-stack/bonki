@@ -118,7 +118,7 @@ export default function Onboarding() {
         <motion.h1
           {...fadeUp(0.5)}
           style={{
-            fontFamily: '"DM Serif Display", var(--font-serif), serif',
+            fontFamily: 'var(--font-display)',
             fontSize: '1.65rem',
             fontWeight: 400,
             color: '#FDF6E3',
@@ -145,7 +145,7 @@ export default function Onboarding() {
         <motion.p
           {...fadeUp(0.75)}
           style={{
-            fontFamily: 'var(--font-sans)',
+            fontFamily: 'var(--font-body)',
             fontSize: '0.92rem',
             fontWeight: 300,
             lineHeight: 1.6,
@@ -199,7 +199,7 @@ export default function Onboarding() {
         >
           <span
             style={{
-              fontFamily: '"DM Serif Display", var(--font-serif), serif',
+              fontFamily: 'var(--font-display)',
               fontSize: '1.05rem',
               fontWeight: 400,
               color: '#FDF6E3',
@@ -210,7 +210,7 @@ export default function Onboarding() {
           </span>
           <span
             style={{
-              fontFamily: 'var(--font-sans)',
+              fontFamily: 'var(--font-body)',
               fontSize: '0.78rem',
               fontWeight: 300,
               color: 'hsla(44, 86%, 94%, 0.45)',
@@ -249,7 +249,7 @@ export default function Onboarding() {
         >
           <span
             style={{
-              fontFamily: '"DM Serif Display", var(--font-serif), serif',
+              fontFamily: 'var(--font-display)',
               fontSize: '1.05rem',
               fontWeight: 400,
               color: '#FDF6E3',

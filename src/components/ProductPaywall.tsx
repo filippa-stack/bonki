@@ -215,7 +215,8 @@ export default function ProductPaywall({ product, onAccessGranted, cardId, curre
             {/* 1. Card name */}
             <h2
               style={{
-                fontFamily: "'DM Serif Display', var(--font-serif)",
+                fontFamily: "var(--font-display)",
+                fontVariationSettings: "'opsz' 24",
                 fontSize: '24px',
                 fontWeight: 600,
                 color: LANTERN_GLOW,
@@ -417,7 +418,8 @@ export default function ProductPaywall({ product, onAccessGranted, cardId, curre
         {/* Card Name + Context */}
         <h2
           style={{
-            fontFamily: "'DM Serif Display', var(--font-serif)",
+            fontFamily: "var(--font-display)",
+            fontVariationSettings: "'opsz' 24",
             fontSize: '24px',
             fontWeight: 700,
             color: LANTERN_GLOW,

@@ -511,7 +511,8 @@ export default function Diary() {
           >
             <h1
               style={{
-                fontFamily: "'DM Serif Display', Georgia, serif",
+                fontFamily: "var(--font-display)",
+                fontVariationSettings: "'opsz' 36",
                 fontSize: 'clamp(32px, 8.5vw, 42px)',
                 fontWeight: 400,
                 color: '#2C2420',
