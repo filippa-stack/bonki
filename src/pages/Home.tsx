@@ -542,7 +542,7 @@ export default function Home() {
                               objectPosition: STILL_US_CREATURES[cat.id].objectPosition,
                               opacity: STILL_US_CREATURES[cat.id].tileOpacity,
                               pointerEvents: 'none',
-                              filter: 'saturate(0.25) brightness(1.15)',
+                              filter: 'saturate(0.2) brightness(1.4)',
                             }}
                           />
                         )}
