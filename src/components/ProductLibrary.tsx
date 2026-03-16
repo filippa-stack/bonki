@@ -87,7 +87,7 @@ const ILLUSTRATION_FIT: Record<string, string> = {
 
 /** Per-product illustration container bounds — {top, left, right, bottom} as % */
 const ILLUSTRATION_BOUNDS: Record<string, { top: string; left: string; right: string; bottom: string }> = {
-  jag_i_mig: { top: '-8%', left: '-2%', right: '-2%', bottom: '18%' },
+  jag_i_mig: { top: '-8%', left: '5%', right: '-2%', bottom: '18%' },
   jag_med_andra: { top: '-8%', left: '-5%', right: '-5%', bottom: '22%' },
   jag_i_varlden: { top: '-20%', left: '-12%', right: '-12%', bottom: '12%' },
   sexualitetskort: { top: '-5%', left: '3%', right: '-2%', bottom: '20%' },
