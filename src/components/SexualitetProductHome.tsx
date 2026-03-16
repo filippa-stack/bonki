@@ -8,6 +8,7 @@ import ProductHomeBackButton from '@/components/ProductHomeBackButton';
 import { useKidsProductProgress } from '@/hooks/useKidsProductProgress';
 import CategoryTileGrid from '@/components/CategoryTileGrid';
 import type { CreatureTileStyle } from '@/components/CategoryTileGrid';
+import { useCardImage } from '@/hooks/useCardImage';
 
 const EASE = [0.4, 0.0, 0.2, 1] as const;
 const BG = '#1A1A2E';
