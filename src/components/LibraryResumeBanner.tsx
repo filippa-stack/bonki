@@ -105,7 +105,7 @@ export default function LibraryResumeBanner() {
       }} />
       <div style={{ flex: 1, minWidth: 0 }}>
         <p style={{
-          fontFamily: "'Lato', sans-serif",
+          fontFamily: "var(--font-body)",
           fontSize: '9px',
           fontWeight: 600,
           letterSpacing: '0.1em',
