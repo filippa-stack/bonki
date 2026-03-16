@@ -21,11 +21,11 @@ const ORDERED_TILES = [
 
 // Owl: enormous eyes dominate. Tile 2 (scale 1.8) = JUST the eyes.
 const CREATURE_TILE_STYLES: CreatureTileStyle[] = [
-  { scale: 1.3, objectPosition: '50% 10%', opacity: 0.95 },
-  { scale: 1.15, objectPosition: '65% 15%', opacity: 0.8 },
-  { scale: 1.8, objectPosition: '50% 5%', opacity: 0.6 },
-  { scale: 0.65, objectPosition: '50% 50%', opacity: 0.35 },
-  { scale: 0.85, objectPosition: '75% 35%', opacity: 0.2 },
+  { scale: 1.3, objectPosition: '50% 10%', opacity: 0.45 },
+  { scale: 1.15, objectPosition: '65% 15%', opacity: 0.35 },
+  { scale: 1.8, objectPosition: '50% 5%', opacity: 0.25 },
+  { scale: 0.65, objectPosition: '50% 50%', opacity: 0.18 },
+  { scale: 0.85, objectPosition: '75% 35%', opacity: 0.12 },
 ];
 
 const containerVariants = { hidden: {}, visible: { transition: { staggerChildren: 0.11, delayChildren: 0.4 } } };
