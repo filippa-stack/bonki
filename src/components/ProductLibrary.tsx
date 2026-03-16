@@ -1092,7 +1092,7 @@ export default function ProductLibrary() {
                   ca 20 min per samtal
                 </span>
                 <span style={{
-                  fontFamily: "'Lato', sans-serif",
+                  fontFamily: "var(--font-body)",
                   fontSize: '10px',
                   fontWeight: 600,
                   letterSpacing: '0.04em',
