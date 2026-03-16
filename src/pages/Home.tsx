@@ -65,6 +65,103 @@ const LAYERS: {
   },
 ];
 
+/** Expandable layer accordion */
+function AccordionLayer({
+  label, completedCount, totalCount, allDone, defaultOpen, delay, children,
+}: {
+  label: string;
+  completedCount: number;
+  totalCount: number;
+  allDone: boolean;
+  defaultOpen: boolean;
+  delay: number;
+  children: React.ReactNode;
+}) {
+  const [open, setOpen] = useState(defaultOpen);
+
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ delay, duration: 0.5, ease: EASE }}
+      style={{ marginTop: '24px', paddingLeft: '16px', paddingRight: '16px' }}
+    >
+      <button
+        onClick={() => setOpen(o => !o)}
+        style={{
+          width: '100%',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          padding: '0 4px 10px',
+          background: 'none',
+          border: 'none',
+          cursor: 'pointer',
+          WebkitTapHighlightColor: 'transparent',
+        }}
+      >
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <span style={{
+            fontFamily: 'var(--font-body)',
+            fontSize: '12px',
+            fontWeight: 600,
+            letterSpacing: '2px',
+            textTransform: 'uppercase',
+            color: DRIFTWOOD,
+          }}>
+            {label}
+          </span>
+          {allDone && (
+            <div style={{
+              width: '16px',
+              height: '16px',
+              borderRadius: '50%',
+              backgroundColor: DEEP_SAFFRON,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}>
+              <Check size={10} color={MIDNIGHT_INK} strokeWidth={3} />
+            </div>
+          )}
+        </div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          {!allDone && (
+            <span style={{
+              fontFamily: 'var(--font-body)',
+              fontSize: '11px',
+              color: DRIFTWOOD,
+              opacity: 0.7,
+            }}>
+              {completedCount} av {totalCount}
+            </span>
+          )}
+          <motion.div
+            animate={{ rotate: open ? 180 : 0 }}
+            transition={{ duration: 0.25 }}
+          >
+            <ChevronDown size={16} color={DRIFTWOOD} />
+          </motion.div>
+        </div>
+      </button>
+
+      <motion.div
+        initial={false}
+        animate={{
+          height: open ? 'auto' : 0,
+          opacity: open ? 1 : 0,
+        }}
+        transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
+        style={{ overflow: 'hidden' }}
+      >
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', paddingBottom: '4px' }}>
+          {children}
+        </div>
+      </motion.div>
+    </motion.div>
+  );
+}
+
 export default function Home() {
   const navigate = useNavigate();
   useThemeVars();
