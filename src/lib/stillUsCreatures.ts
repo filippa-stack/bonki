@@ -29,58 +29,58 @@ export interface StillUsCreature {
  * Opacities are individually calibrated per image density.
  */
 export const STILL_US_CREATURES: Record<string, StillUsCreature> = {
-  'emotional-intimacy': {       // Ni i er → Säl
+  'emotional-intimacy': {       // Ni i er → Säl  (Grunden)
     src: creatureSal,
     objectPosition: '65% 30%',
     tileOpacity: 0.28,
     headerOpacity: 0.30,
   },
-  'communication': {            // Vardagen mellan er → Apa
+  'communication': {            // Vardagen mellan er → Apa  (Grunden)
     src: creatureApa,
     objectPosition: '55% 15%',
-    tileOpacity: 0.22,
-    headerOpacity: 0.25,
+    tileOpacity: 0.24,
+    headerOpacity: 0.28,
   },
-  'category-8': {               // Att hålla kvar varandra → Panda
+  'category-8': {               // Att hålla kvar varandra → Panda  (Grunden)
     src: creaturePanda,
     objectPosition: '55% 10%',
     tileOpacity: 0.28,
     headerOpacity: 0.30,
   },
-  'individual-needs': {         // När ni tycker olika → Sköldpadda
+  'individual-needs': {         // När ni tycker olika → Sköldpadda  (Det som formar er)
     src: creatureTurtle,
     objectPosition: '60% 20%',
-    tileOpacity: 0.25,
-    headerOpacity: 0.28,
+    tileOpacity: 0.35,
+    headerOpacity: 0.35,
   },
-  'parenting-together': {       // Det ni bär med er → Uggla
+  'parenting-together': {       // Det ni bär med er → Uggla  (Det som formar er)
     src: creatureUggla,
     objectPosition: '55% 10%',
-    tileOpacity: 0.25,
-    headerOpacity: 0.28,
+    tileOpacity: 0.35,
+    headerOpacity: 0.35,
   },
-  'category-9': {               // Dit ni är på väg → Lejon
+  'category-9': {               // Dit ni är på väg → Lejon  (Det som formar er)
     src: creatureLejon,
     objectPosition: '55% 15%',
-    tileOpacity: 0.25,
-    headerOpacity: 0.28,
+    tileOpacity: 0.35,
+    headerOpacity: 0.35,
   },
-  'category-6': {               // Trygghet & mod → Elefant
+  'category-6': {               // Trygghet & mod → Elefant  (Djupet)
     src: creatureElefant,
     objectPosition: '55% 20%',
-    tileOpacity: 0.22,
-    headerOpacity: 0.25,
+    tileOpacity: 0.38,
+    headerOpacity: 0.38,
   },
-  'daily-life': {               // Nära varandra → Rådjur
+  'daily-life': {               // Nära varandra → Rådjur  (Djupet)
     src: creatureRadjur,
     objectPosition: '60% 15%',
-    tileOpacity: 0.25,
-    headerOpacity: 0.28,
+    tileOpacity: 0.38,
+    headerOpacity: 0.38,
   },
-  'category-10': {              // Att välja varandra → Örn
+  'category-10': {              // Att välja varandra → Örn  (Djupet)
     src: creatureOrn,
     objectPosition: '55% 10%',
-    tileOpacity: 0.22,
-    headerOpacity: 0.25,
+    tileOpacity: 0.38,
+    headerOpacity: 0.38,
   },
 };
