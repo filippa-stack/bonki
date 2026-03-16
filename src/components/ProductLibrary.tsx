@@ -9,6 +9,8 @@ import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/components/ui/sonner';
 import LibraryResumeBanner from '@/components/LibraryResumeBanner';
 import watermarkMamma from '@/assets/watermark-mamma.png';
+import creaturesTrio from '@/assets/creatures-trio.png';
+import creatureLionGirl from '@/assets/creature-lion-girl.png';
 
 import illustrationStillUs from '@/assets/illustration-still-us-tile.png';
 import illustrationJagIMig from '@/assets/mirror-jag-i-mig.png';
