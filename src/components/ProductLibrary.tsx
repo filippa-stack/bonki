@@ -41,7 +41,7 @@ const TAGLINES: Record<string, string> = {
 const TILE_COLORS: Record<string, string> = {
   jag_i_mig: '#3A4210',       // Lichen deep
   jag_med_andra: '#4A1870',   // Wild Violet deep
-  jag_i_varlden: '#1A4022',   // Deep Canopy deep
+  jag_i_varlden: '#1F4D2A',   // Deep Canopy deep (lifted +10% brightness)
   sexualitetskort: '#6A1F18', // Ember Red deep
   vardagskort: '#0F3D58',     // River Blue deep
   syskonkort: '#144544',      // Twin Teal deep
@@ -236,6 +236,19 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
         ].join(', '),
       }}
     >
+      {/* Inner warmth glow — JIV only */}
+      {productId === 'jag_i_varlden' && (
+        <div
+          aria-hidden="true"
+          style={{
+            position: 'absolute',
+            inset: 0,
+            zIndex: 0,
+            pointerEvents: 'none',
+            background: 'radial-gradient(ellipse 70% 80% at 60% 50%, rgba(58, 133, 72, 0.35) 0%, transparent 70%)',
+          }}
+        />
+      )}
       {/* Illustration — right-aligned, bleeds off edge */}
       {illustration && (
         <div
