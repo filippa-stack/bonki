@@ -1058,7 +1058,7 @@ export default function ProductLibrary() {
               {/* Emotional hook */}
               <p
                 style={{
-                  fontFamily: "'DM Serif Display', serif",
+                  fontFamily: "var(--font-body)",
                   fontStyle: 'normal',
                   fontSize: '14px',
                   fontWeight: 400,
