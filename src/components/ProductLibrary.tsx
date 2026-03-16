@@ -22,7 +22,7 @@ import illustrationJagIVarlden from '@/assets/illustration-jag-i-varlden.png';
 import illustrationSexualitet from '@/assets/illustration-sexualitet.png';
 import illustrationSyskon from '@/assets/illustration-syskon.png';
 import illustrationVardag from '@/assets/illustration-vardag.png';
-import illustrationStillFair from '@/assets/illustration-still-fair.png';
+// illustrationStillFair removed — Still Fair section moved to future release
 
 const ILLUSTRATIONS: Record<string, string> = {
   jag_i_mig: illustrationJagIMig,
@@ -422,45 +422,11 @@ export default function ProductLibrary() {
   const tracked = useRef(false);
   const { purchased } = useAllProductAccess();
   const { user } = useAuth();
+  // Still Fair interest tracking (kept for future use)
   const [notifySignedUp, setNotifySignedUp] = useState(false);
   const [notifyLoading, setNotifyLoading] = useState(false);
-
-  // Check if user already signed up for Still Fair interest
-  useEffect(() => {
-    if (!user?.id) return;
-    supabase
-      .from('product_interest' as any)
-      .select('id')
-      .eq('product_id', 'still_fair')
-      .eq('user_id', user.id)
-      .maybeSingle()
-      .then(({ data }) => {
-        if (data) setNotifySignedUp(true);
-      });
-  }, [user?.id]);
-
-  const handleNotifyMe = async () => {
-    if (!user?.id) {
-      toast('Du behöver vara inloggad för att bli påmind');
-      return;
-    }
-    setNotifyLoading(true);
-    const { error } = await supabase
-      .from('product_interest' as any)
-      .insert({ product_id: 'still_fair', user_id: user.id } as any);
-    setNotifyLoading(false);
-    if (error?.code === '23505') {
-      // Already exists
-      setNotifySignedUp(true);
-      return;
-    }
-    if (error) {
-      toast('Något gick fel, försök igen');
-      return;
-    }
-    setNotifySignedUp(true);
-    toast('Vi meddelar dig när Still Fair lanseras!');
-  };
+  const handleNotifyMe = async () => {};
+  void notifySignedUp; void notifyLoading; void handleNotifyMe;
 
   useEffect(() => {
     if (!tracked.current) {
@@ -814,6 +780,39 @@ export default function ProductLibrary() {
                 }}>
                   22 samtal för er som vill stanna kvar
                 </p>
+                {/* Trust signal badges */}
+                <div style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  marginTop: '8px',
+                  flexWrap: 'wrap',
+                }}>
+                  <span style={{
+                    fontFamily: "var(--font-body)",
+                    fontSize: '10px',
+                    fontWeight: 500,
+                    letterSpacing: '0.04em',
+                    color: 'hsla(38, 40%, 80%, 0.65)',
+                    background: 'hsla(38, 20%, 50%, 0.1)',
+                    borderRadius: '12px',
+                    padding: '3px 10px',
+                  }}>
+                    ca 20 min per samtal
+                  </span>
+                  <span style={{
+                    fontFamily: "var(--font-body)",
+                    fontSize: '10px',
+                    fontWeight: 500,
+                    letterSpacing: '0.04em',
+                    color: 'hsla(38, 40%, 80%, 0.65)',
+                    background: 'hsla(38, 20%, 50%, 0.1)',
+                    borderRadius: '12px',
+                    padding: '3px 10px',
+                  }}>
+                    ✦ 1a gratis
+                  </span>
+                </div>
               </div>
             </motion.div>
           </div>
@@ -955,385 +954,6 @@ export default function ProductLibrary() {
             →
           </span>
         </motion.div>
-
-        <div style={{ position: 'relative' }}>
-
-        {/* Bridge phrase — contextual for parents coming from BARN */}
-        <motion.div
-          initial={{ opacity: 0, y: 6 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1, duration: 0.6 }}
-          style={{
-            textAlign: 'center',
-            padding: '4px 32px 20px',
-            position: 'relative',
-            zIndex: 1,
-          }}
-        >
-          <p
-            style={{
-              fontFamily: "var(--font-display)",
-              fontVariationSettings: "'opsz' 15",
-              fontStyle: 'normal',
-              fontSize: '14px',
-              fontWeight: 400,
-              color: 'hsla(38, 55%, 65%, 0.55)',
-              lineHeight: 1.6,
-            }}
-          >
-            Du tar hand om samtalen med barnen — här tar ni hand om era egna
-          </p>
-        </motion.div>
-        <LibraryResumeCard activeTab="par" />
-        <div style={{ height: '24px' }} />
-
-        {/* ── Still Us — immersive hero card ── */}
-        <motion.div
-          className="px-5"
-          variants={containerVariants}
-          initial="hidden"
-          animate="visible"
-          style={{ position: 'relative', zIndex: 1 }}
-        >
-          <motion.div
-            variants={tileVariants}
-            whileHover={{ scale: 1.015, y: -2 }}
-            whileTap={{ scale: 0.97, y: 2 }}
-            onClick={() => navigate('/product/still-us')}
-            className="cursor-pointer"
-            style={{
-              borderRadius: '22px',
-              backgroundImage: 'linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0) 50%, rgba(0,0,0,0.12) 100%)',
-              backgroundColor: '#2E2233',
-              minHeight: '340px',
-              display: 'flex',
-              flexDirection: 'column',
-              position: 'relative',
-              overflow: 'hidden',
-              border: '1.5px solid rgba(255, 255, 255, 0.30)',
-              boxShadow: [
-                '0 16px 48px rgba(0, 0, 0, 0.35)',
-                '0 6px 16px rgba(0, 0, 0, 0.25)',
-                '0 1px 3px rgba(0, 0, 0, 0.08)',
-                'inset 0 3px 6px rgba(255, 255, 255, 0.45)',
-                'inset 0 -4px 10px rgba(46, 34, 51, 0.24)',
-              ].join(', '),
-            }}
-          >
-            {/* Illustration — large hero */}
-            <div
-              style={{
-                position: 'absolute',
-                top: '-12%',
-                left: '10%',
-                right: '-8%',
-                bottom: '30%',
-                pointerEvents: 'none',
-                zIndex: 0,
-              }}
-            >
-              <img
-                src={illustrationStillUs}
-                alt=""
-                draggable={false}
-                style={{
-                  width: '100%',
-                  height: '100%',
-                  objectFit: 'contain',
-                  objectPosition: 'center 25%',
-                  opacity: 0.9,
-                }}
-              />
-            </div>
-
-            {/* Extended gradient scrim for text legibility */}
-            <div
-              aria-hidden="true"
-              style={{
-                position: 'absolute',
-                bottom: 0, left: 0, right: 0,
-                height: '70%',
-                zIndex: 1,
-                pointerEvents: 'none',
-                background: `linear-gradient(to top, rgba(46, 34, 51, 1) 0%, rgba(46, 34, 51, 0.97) 20%, rgba(46, 34, 51, 0.86) 40%, rgba(46, 34, 51, 0.42) 65%, transparent 100%)`,
-                borderRadius: '0 0 22px 22px',
-              }}
-            />
-
-            {/* Text content — rich bottom section */}
-            <div style={{
-              position: 'absolute',
-              bottom: 0, left: 0, right: 0,
-              zIndex: 2,
-              padding: '0 22px 22px',
-            }}>
-              <h3
-                style={{
-                  fontFamily: "var(--font-display)",
-                  fontVariationSettings: "'opsz' 24",
-                  fontSize: '32px',
-                  fontWeight: 700,
-                  lineHeight: 1.1,
-                  color: '#FDF6E3',
-                  letterSpacing: '-0.02em',
-                  textShadow: '0 2px 8px rgba(30, 90, 104, 1), 0 0 20px rgba(30, 90, 104, 0.9)',
-                }}
-              >
-                Still Us
-              </h3>
-
-              {/* Emotional hook */}
-              <p
-                style={{
-                  fontFamily: "var(--font-body)",
-                  fontStyle: 'normal',
-                  fontSize: '14px',
-                  fontWeight: 400,
-                  color: 'hsla(38, 78%, 60%, 0.85)',
-                  marginTop: '6px',
-                  lineHeight: 1.4,
-                  textShadow: '0 0 12px rgba(30, 90, 104, 1)',
-                }}
-              >
-                22 samtal för er som vill stanna kvar
-              </p>
-
-              {/* Session format + credential — trust signals */}
-              <div style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '8px',
-                marginTop: '12px',
-                flexWrap: 'wrap',
-              }}>
-                <span style={{
-                  fontFamily: "var(--font-body)",
-                  fontSize: '10px',
-                  fontWeight: 600,
-                  letterSpacing: '0.04em',
-                  color: 'hsla(192, 25%, 80%, 0.7)',
-                  background: 'hsla(192, 20%, 50%, 0.12)',
-                  borderRadius: '12px',
-                  padding: '4px 10px',
-                }}>
-                  ca 20 min per samtal
-                </span>
-                <span style={{
-                  fontFamily: "var(--font-body)",
-                  fontSize: '10px',
-                  fontWeight: 600,
-                  letterSpacing: '0.04em',
-                  color: 'hsla(192, 25%, 80%, 0.7)',
-                  background: 'hsla(192, 20%, 50%, 0.12)',
-                  borderRadius: '12px',
-                  padding: '4px 10px',
-                }}>
-                  ✦ 1a gratis
-                </span>
-              </div>
-
-              {/* CTA button */}
-              <div
-                style={{
-                  marginTop: '16px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                }}
-              >
-                <span
-                  style={{
-                    fontFamily: "var(--font-display)",
-                    fontVariationSettings: "'opsz' 17",
-                    fontSize: '13px',
-                    fontWeight: 700,
-                    letterSpacing: '0.02em',
-                    color: '#1A1A2E',
-                    background: 'linear-gradient(135deg, hsla(38, 78%, 58%, 0.95) 0%, hsla(38, 65%, 50%, 0.9) 100%)',
-                    borderRadius: '14px',
-                    padding: '10px 22px',
-                    boxShadow: '0 4px 16px hsla(38, 70%, 40%, 0.3)',
-                  }}
-                >
-                  Öppna Still Us
-                </span>
-                {/* Credential — integrated trust signal */}
-                <span style={{
-                  fontFamily: "var(--font-body)",
-                  fontSize: '8px',
-                  fontWeight: 500,
-                  letterSpacing: '0.06em',
-                  textTransform: 'uppercase' as const,
-                  color: 'hsla(192, 20%, 70%, 0.45)',
-                  textAlign: 'right',
-                  lineHeight: 1.4,
-                  maxWidth: '120px',
-                }}>
-                  Utvecklat av psykolog · 20+ års erfarenhet
-                </span>
-              </div>
-            </div>
-          </motion.div>
-
-          {/* ── Coming soon section ── */}
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5, duration: 0.6 }}
-            style={{ marginTop: '28px' }}
-          >
-            {/* Section label */}
-            <div style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '10px',
-              marginBottom: '14px',
-              padding: '0 4px',
-            }}>
-              <div style={{ flex: 1, height: '1px', background: 'linear-gradient(90deg, transparent, hsla(38, 60%, 50%, 0.15))' }} />
-              <span style={{
-                fontFamily: "var(--font-body)",
-                fontSize: '8px',
-                fontWeight: 700,
-                letterSpacing: '0.14em',
-                textTransform: 'uppercase' as const,
-                color: 'hsla(38, 55%, 60%, 0.4)',
-              }}>
-                Kommer snart
-              </span>
-              <div style={{ flex: 1, height: '1px', background: 'linear-gradient(90deg, hsla(38, 60%, 50%, 0.15), transparent)' }} />
-            </div>
-
-            {/* Still Fair — compact coming-soon card */}
-            <motion.div
-              variants={tileVariants}
-              style={{
-                borderRadius: '18px',
-                backgroundImage: 'linear-gradient(135deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0) 50%, rgba(0,0,0,0.08) 100%)',
-                backgroundColor: 'hsl(327, 24%, 22%)',
-                minHeight: '140px',
-                display: 'flex',
-                flexDirection: 'column',
-                position: 'relative',
-                overflow: 'hidden',
-                border: '1px solid rgba(255, 255, 255, 0.08)',
-                boxShadow: [
-                  '0 8px 24px rgba(60, 30, 50, 0.25)',
-                  '0 2px 8px rgba(60, 30, 50, 0.15)',
-                  'inset 0 2px 4px rgba(255, 255, 255, 0.06)',
-                ].join(', '),
-                filter: 'saturate(0.65)',
-              }}
-            >
-              {/* Illustration */}
-              <div
-                style={{
-                  position: 'absolute',
-                  top: '-5%',
-                  left: '25%',
-                  right: '-5%',
-                  bottom: '18%',
-                  pointerEvents: 'none',
-                  zIndex: 0,
-                }}
-              >
-                <img
-                  src={illustrationStillFair}
-                  alt=""
-                  draggable={false}
-                  style={{
-                    width: '100%',
-                    height: '100%',
-                    objectFit: 'contain',
-                    objectPosition: 'center 30%',
-                    opacity: 0.6,
-                  }}
-                />
-              </div>
-
-              {/* Bottom gradient scrim */}
-              <div
-                aria-hidden="true"
-                style={{
-                  position: 'absolute',
-                  bottom: 0, left: 0, right: 0,
-                  height: '65%',
-                  zIndex: 1,
-                  pointerEvents: 'none',
-                  background: `linear-gradient(to top, hsl(327, 24%, 22%) 0%, hsla(327, 24%, 22%, 0.93) 25%, hsla(327, 24%, 22%, 0.5) 55%, transparent 100%)`,
-                  borderRadius: '0 0 18px 18px',
-                }}
-              />
-
-              {/* Text content */}
-              <div style={{
-                position: 'absolute',
-                bottom: 0, left: 0, right: 0,
-                zIndex: 2,
-                padding: '0 18px 16px',
-              }}>
-                <h3
-                  style={{
-                    fontFamily: "var(--font-display)",
-                    fontVariationSettings: "'opsz' 24",
-                    fontSize: '22px',
-                    fontWeight: 700,
-                    lineHeight: 1.15,
-                    color: '#F5EFE6',
-                    letterSpacing: '-0.01em',
-                    opacity: 0.8,
-                    textShadow: '0 1px 6px hsl(327, 24%, 22%), 0 0 16px hsla(327, 24%, 22%, 0.9)',
-                  }}
-                >
-                  Still Fair
-                </h3>
-                <p
-                  style={{
-                    fontFamily: "var(--font-body)",
-                    fontSize: '11px',
-                    fontWeight: 400,
-                    color: 'hsla(327, 15%, 75%, 0.7)',
-                    marginTop: '3px',
-                    lineHeight: 1.4,
-                    textShadow: '0 0 10px hsl(327, 24%, 22%)',
-                  }}
-                >
-                  Det osynliga arbetet, synligt för båda
-                </p>
-                <div style={{ marginTop: '8px' }}>
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      if (!notifySignedUp && !notifyLoading) handleNotifyMe();
-                    }}
-                    disabled={notifySignedUp || notifyLoading}
-                    style={{
-                      display: 'inline-flex',
-                      alignItems: 'center',
-                      gap: '4px',
-                      fontFamily: "var(--font-body)",
-                      fontSize: '10px',
-                      fontWeight: 600,
-                      letterSpacing: '0.02em',
-                      color: notifySignedUp ? 'hsla(38, 78%, 58%, 0.7)' : '#0A0A1A',
-                      background: notifySignedUp ? 'hsla(38, 70%, 50%, 0.08)' : 'linear-gradient(135deg, hsla(38, 78%, 58%, 0.85) 0%, hsla(38, 65%, 50%, 0.8) 100%)',
-                      border: notifySignedUp ? '1px solid hsla(38, 70%, 50%, 0.12)' : 'none',
-                      borderRadius: '14px',
-                      padding: notifySignedUp ? '4px 12px' : '6px 14px',
-                      cursor: notifySignedUp ? 'default' : 'pointer',
-                      opacity: notifyLoading ? 0.6 : 1,
-                      transition: 'all 200ms ease',
-                      boxShadow: notifySignedUp ? 'none' : '0 2px 10px hsla(38, 70%, 40%, 0.25)',
-                    }}
-                  >
-                    {notifySignedUp ? '✓ Du blir meddelad' : '🔔 Meddela mig'}
-                  </button>
-                </div>
-              </div>
-            </motion.div>
-          </motion.div>
-        </motion.div>
-        </div>
         </div>
 
         {/* Bottom safe-area spacing */}
