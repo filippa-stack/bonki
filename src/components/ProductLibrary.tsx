@@ -527,23 +527,39 @@ export default function ProductLibrary() {
 
       {/* ── Bold creature illustrations — hero-level, full color ── */}
       <div aria-hidden="true" style={{ position: 'absolute', inset: 0, overflow: 'hidden', pointerEvents: 'none', zIndex: 0 }}>
-        {/* Lion + girl — top zone, covering header area */}
+        {/* Girl — top left */}
         <motion.img
-          src={creatureLionGirl}
+          src={creatureGirl}
           alt=""
           draggable={false}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 0.32 }}
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 0.30, x: 0 }}
           transition={{ delay: 0.3, duration: 1.4, ease: [0.22, 1, 0.36, 1] }}
           style={{
             position: 'absolute',
-            top: '-80px',
-            right: '-100px',
-            width: '480px',
+            top: '-10px',
+            left: '10px',
+            width: '140px',
             height: 'auto',
           }}
         />
-        {/* Trio — bottom zone, visible in "FÖR ER SOM PAR" gap */}
+        {/* Lion — top right, next to girl */}
+        <motion.img
+          src={creatureLionSolo}
+          alt=""
+          draggable={false}
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 0.30, x: 0 }}
+          transition={{ delay: 0.5, duration: 1.4, ease: [0.22, 1, 0.36, 1] }}
+          style={{
+            position: 'absolute',
+            top: '20px',
+            left: '130px',
+            width: '220px',
+            height: 'auto',
+          }}
+        />
+        {/* Trio — bottom zone */}
         <motion.img
           src={creaturesTrio}
           alt=""
