@@ -1264,7 +1264,7 @@ export default function ProductLibrary() {
               </div>
             </motion.div>
           </motion.div>
-        </div>
+        </motion.div>
         </div>
 
         {/* Bottom safe-area spacing */}
