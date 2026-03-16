@@ -695,7 +695,8 @@ export default function ProductLibrary() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1, duration: 0.7, ease: [0.4, 0, 0.2, 1] }}
             style={{
-              fontFamily: "'DM Serif Display', serif",
+              fontFamily: "var(--font-display)",
+              fontVariationSettings: "'opsz' 15",
               fontStyle: 'normal',
               fontSize: '15px',
               fontWeight: 400,
