@@ -65,14 +65,14 @@ const ILLUSTRATION_SCALE: Record<string, { width: string; height: string }> = {
   syskonkort: { width: '74%', height: '148%' },
 };
 
-/** Per-product vertical offset — negative pulls character up above tile top */
+/** Per-product vertical offset — characters burst out of tile boundaries */
 const ILLUSTRATION_OFFSET: Record<string, { top: string; right: string; bottom: string }> = {
-  jag_i_mig: { top: '-12%', right: '-10%', bottom: '-10%' },
-  jag_med_andra: { top: '-10%', right: '-8%', bottom: '-8%' },
-  jag_i_varlden: { top: '-8%', right: '-8%', bottom: '-8%' },
-  sexualitetskort: { top: '-10%', right: '-10%', bottom: '-8%' },
-  vardagskort: { top: '-10%', right: '-8%', bottom: '-8%' },
-  syskonkort: { top: '-10%', right: '-8%', bottom: '-8%' },
+  jag_i_mig: { top: '-25%', right: '-18%', bottom: '-20%' },
+  jag_med_andra: { top: '-22%', right: '-15%', bottom: '-18%' },
+  jag_i_varlden: { top: '-20%', right: '-15%', bottom: '-18%' },
+  sexualitetskort: { top: '-22%', right: '-18%', bottom: '-16%' },
+  vardagskort: { top: '-22%', right: '-15%', bottom: '-18%' },
+  syskonkort: { top: '-22%', right: '-15%', bottom: '-18%' },
 };
 
 /** Hero-level illustration opacities — individually calibrated */
