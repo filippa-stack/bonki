@@ -16,21 +16,23 @@ import creatureGirl from '@/assets/creature-girl.png';
 import creatureLionSolo from '@/assets/creature-lion-solo.png';
 
 import illustrationStillUs from '@/assets/illustration-still-us-tile.png';
-import illustrationJagIMig from '@/assets/illustration-jag-i-mig.png';
-import illustrationJagMedAndra from '@/assets/illustration-jag-med-andra.png';
-import illustrationJagIVarlden from '@/assets/illustration-jag-i-varlden.png';
-import illustrationSexualitet from '@/assets/illustration-sexualitet.png';
-import illustrationSyskon from '@/assets/illustration-syskon.png';
-import illustrationVardag from '@/assets/illustration-vardag.png';
 import illustrationStillFair from '@/assets/illustration-still-fair.png';
 
-const ILLUSTRATIONS: Record<string, string> = {
-  jag_i_mig: illustrationJagIMig,
-  jag_med_andra: illustrationJagMedAndra,
-  jag_i_varlden: illustrationJagIVarlden,
-  sexualitetskort: illustrationSexualitet,
-  syskonkort: illustrationSyskon,
-  vardagskort: illustrationVardag,
+// Creature illustrations per product (atmospheric right-side)
+import creatureLejon from '@/assets/creature-lejon.png';
+import creatureUggla from '@/assets/creature-uggla.png';
+import creatureOrn from '@/assets/creature-orn.png';
+import creatureTurtle from '@/assets/creature-turtle.png';
+import creatureSal from '@/assets/creature-sal.png';
+import creatureRadjur from '@/assets/creature-radjur.png';
+
+const CREATURE_ILLUSTRATIONS: Record<string, string> = {
+  jag_i_mig: creatureLejon,
+  jag_med_andra: creatureUggla,
+  jag_i_varlden: creatureOrn,
+  vardagskort: creatureTurtle,
+  syskonkort: creatureSal,
+  sexualitetskort: creatureRadjur,
 };
 
 const TAGLINES: Record<string, string> = {
