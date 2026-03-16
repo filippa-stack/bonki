@@ -512,16 +512,16 @@ export default function Home() {
                             alt=""
                             style={{
                               position: 'absolute',
-                              right: '-5%',
+                              right: '-8%',
                               top: '50%',
                               transform: 'translateY(-50%)',
-                              height: '120%',
+                              height: '140%',
                               width: 'auto',
                               objectFit: 'contain',
                               objectPosition: STILL_US_CREATURES[cat.id].objectPosition,
                               opacity: STILL_US_CREATURES[cat.id].tileOpacity,
                               pointerEvents: 'none',
-                              filter: 'saturate(0.4)',
+                              filter: 'saturate(0.3) brightness(1.1)',
                             }}
                           />
                         )}
