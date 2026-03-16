@@ -672,25 +672,29 @@ function StillUsCategoryView({
               }}
             >
               {/* Creature illustration — dimmed texture */}
-              {STILL_US_CREATURES[category.id] && (
-                <img
-                  src={STILL_US_CREATURES[category.id].src}
-                  alt=""
-                  style={{
-                    position: 'absolute',
-                    right: '-8%',
-                    top: '50%',
-                    transform: 'translateY(-50%)',
-                    height: '200%',
-                    width: 'auto',
-                    objectFit: 'contain',
-                    objectPosition: STILL_US_CREATURES[category.id].objectPosition,
-                    opacity: STILL_US_CREATURES[category.id].headerOpacity,
-                    pointerEvents: 'none',
-                    filter: 'saturate(0.25) brightness(1.15)',
-                  }}
-                />
-              )}
+              {STILL_US_CREATURES[category.id] && (() => {
+                const c = STILL_US_CREATURES[category.id];
+                const scale = c.tileScale ?? 1;
+                return (
+                  <img
+                    src={c.src}
+                    alt=""
+                    style={{
+                      position: 'absolute',
+                      right: '-8%',
+                      top: '50%',
+                      transform: `translateY(-50%) scale(${scale})`,
+                      height: '200%',
+                      width: 'auto',
+                      objectFit: 'contain',
+                      objectPosition: c.objectPosition,
+                      opacity: c.headerOpacity,
+                      pointerEvents: 'none',
+                      filter: 'saturate(0.25) brightness(1.15)',
+                    }}
+                  />
+                );
+              })()}
 
               <div style={{ flex: 1, minWidth: 0 }}>
                 <span
