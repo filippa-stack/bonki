@@ -13,6 +13,9 @@ import {
   BONKI_ORANGE,
 } from '@/lib/palette';
 
+/** Warm neutral for readable secondary text on dark backgrounds (4.7:1 on Midnight Ink) */
+const READABLE_SECONDARY = '#998F82';
+
 const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
 interface ProductPaywallProps {
@@ -230,7 +233,7 @@ export default function ProductPaywall({ product, onAccessGranted, cardId, curre
                 fontFamily: 'var(--font-sans)',
                 fontSize: '13px',
                 fontWeight: 400,
-                color: DRIFTWOOD,
+                color: READABLE_SECONDARY,
                 textAlign: 'center',
                 marginTop: '8px',
               }}
@@ -263,7 +266,7 @@ export default function ProductPaywall({ product, onAccessGranted, cardId, curre
                 fontFamily: 'var(--font-sans)',
                 fontSize: '14px',
                 fontWeight: 400,
-                color: DRIFTWOOD,
+                color: READABLE_SECONDARY,
                 textAlign: 'center',
                 marginTop: '16px',
                 userSelect: 'none',
@@ -326,7 +329,7 @@ export default function ProductPaywall({ product, onAccessGranted, cardId, curre
                 fontFamily: 'var(--font-sans)',
                 fontSize: '12px',
                 fontWeight: 400,
-                color: DRIFTWOOD,
+                color: READABLE_SECONDARY,
                 textAlign: 'center',
                 marginTop: '12px',
               }}
@@ -430,7 +433,7 @@ export default function ProductPaywall({ product, onAccessGranted, cardId, curre
             fontFamily: 'var(--font-sans)',
             fontSize: '13px',
             fontWeight: 400,
-            color: DRIFTWOOD,
+            color: READABLE_SECONDARY,
             textAlign: 'center',
             marginTop: '8px',
           }}
@@ -463,7 +466,7 @@ export default function ProductPaywall({ product, onAccessGranted, cardId, curre
             fontFamily: 'var(--font-sans)',
             fontSize: '14px',
             fontWeight: 400,
-            color: DRIFTWOOD,
+            color: READABLE_SECONDARY,
             textAlign: 'center',
             marginTop: '16px',
             userSelect: 'none',
@@ -525,7 +528,7 @@ export default function ProductPaywall({ product, onAccessGranted, cardId, curre
             fontFamily: 'var(--font-sans)',
             fontSize: '12px',
             fontWeight: 400,
-            color: DRIFTWOOD,
+            color: READABLE_SECONDARY,
             textAlign: 'center',
             marginTop: '12px',
           }}
