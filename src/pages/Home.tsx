@@ -485,20 +485,24 @@ export default function Home() {
                         whileTap={{ scale: 0.97 }}
                         onClick={() => navigate(`/category/${cat.id}`)}
                         style={{
+                          position: 'relative',
                           width: '100%',
                           padding: '14px 16px',
-                          borderRadius: '14px',
-                          backgroundColor: completed ? `${EMBER_MID}80` : EMBER_MID,
+                          borderRadius: '22px',
+                          overflow: 'hidden',
+                          background: `linear-gradient(135deg, rgba(255,255,255,0.12) 0%, transparent 50%, rgba(0,0,0,0.08) 100%), ${completed ? `${EMBER_MID}80` : EMBER_MID}`,
                           border: isRecommended
-                            ? `1.5px solid ${DEEP_SAFFRON}50`
-                            : '1px solid rgba(255,255,255,0.08)',
+                            ? `1.5px solid rgba(212, 160, 58, 0.35)`
+                            : '1.5px solid rgba(255, 255, 255, 0.30)',
                           borderLeft: isRecommended ? `3px solid ${DEEP_SAFFRON}` : undefined,
                           cursor: 'pointer',
                           textAlign: 'left',
                           display: 'flex',
                           alignItems: 'center',
                           gap: '12px',
-                          boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
+                          boxShadow: isRecommended
+                            ? `0 4px 16px rgba(0,0,0,0.25), 0 8px 32px rgba(0,0,0,0.15), inset 0 1px 2px rgba(255,255,255,0.20), inset 0 -1px 2px rgba(0,0,0,0.15), 0 0 20px ${DEEP_SAFFRON}15`
+                            : '0 4px 16px rgba(0,0,0,0.25), 0 8px 32px rgba(0,0,0,0.15), inset 0 1px 2px rgba(255,255,255,0.20), inset 0 -1px 2px rgba(0,0,0,0.15)',
                         }}
                       >
                         {completed ? (
