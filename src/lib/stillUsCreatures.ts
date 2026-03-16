@@ -55,10 +55,10 @@ export const STILL_US_CREATURES: Record<string, StillUsCreature> = {
     objectPosition: '50% 30%',
     tileOpacity: 0.35,
     headerOpacity: 0.35,
-    tileRight: '-50%',
+    tileRight: '-40%',
     tileHeight: '220%',
     tileScale: 1.1,
-    tileTop: '68%',            // Seal: pushed right + down
+    tileTop: '78%',
   },
   'communication': {            // Vardagen mellan er → Apa  (Grunden)
     src: creatureApa,
