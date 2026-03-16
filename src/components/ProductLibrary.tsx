@@ -37,14 +37,14 @@ const TAGLINES: Record<string, string> = {
   sexualitetskort: 'Kropp, gränser och identitet',
 };
 
-/** Creature-color tile backgrounds — Tile Mid values for rich gradient atmosphere */
+/** Creature-color tile backgrounds — dark/mid values from master palette */
 const TILE_COLORS: Record<string, string> = {
-  jag_i_mig: '#4A5A0A',       // Lichen Tile Mid
-  jag_med_andra: '#5A1A80',   // Violet Tile Mid
-  jag_i_varlden: '#1A4A24',   // Canopy Tile Mid
-  sexualitetskort: '#6A2A30', // Ember Tile Mid
-  vardagskort: '#0A4A6A',     // River Tile Mid
-  syskonkort: '#1A5A58',      // Teal Tile Mid
+  jag_i_mig: '#3A4210',       // Lichen deep
+  jag_med_andra: '#4A1870',   // Wild Violet deep
+  jag_i_varlden: '#1F4D2A',   // Deep Canopy deep (lifted +10% brightness)
+  sexualitetskort: '#6A1F18', // Ember Red deep
+  vardagskort: '#0F3D58',     // River Blue deep
+  syskonkort: '#144544',      // Twin Teal deep
 };
 
 /** Helper: hex → rgba */
@@ -55,24 +55,24 @@ function hexToRgba(hex: string, alpha: number): string {
   return `rgba(${r}, ${g}, ${b}, ${alpha})`;
 }
 
-/** Per-product illustration scale — 65-80% height, 55-65% width for cinematic crop */
+/** Per-product illustration scale — controls how much of the tile the character fills */
 const ILLUSTRATION_SCALE: Record<string, { width: string; height: string }> = {
-  jag_i_mig: { width: '65%', height: '140%' },
-  jag_med_andra: { width: '62%', height: '135%' },
-  jag_i_varlden: { width: '60%', height: '135%' },
-  sexualitetskort: { width: '62%', height: '135%' },
-  vardagskort: { width: '62%', height: '135%' },
-  syskonkort: { width: '62%', height: '135%' },
+  jag_i_mig: { width: '65%', height: '130%' },
+  jag_med_andra: { width: '62%', height: '125%' },
+  jag_i_varlden: { width: '60%', height: '125%' },
+  sexualitetskort: { width: '62%', height: '125%' },
+  vardagskort: { width: '62%', height: '125%' },
+  syskonkort: { width: '62%', height: '125%' },
 };
 
-/** Per-product overflow offsets — 10-20% right bleed, 5-10% top/bottom */
+/** Per-product vertical offset — negative pulls character up above tile top */
 const ILLUSTRATION_OFFSET: Record<string, { top: string; right: string; bottom: string }> = {
-  jag_i_mig: { top: '-15%', right: '-18%', bottom: '-12%' },
-  jag_med_andra: { top: '-12%', right: '-15%', bottom: '-10%' },
-  jag_i_varlden: { top: '-10%', right: '-15%', bottom: '-10%' },
-  sexualitetskort: { top: '-12%', right: '-18%', bottom: '-10%' },
-  vardagskort: { top: '-12%', right: '-15%', bottom: '-10%' },
-  syskonkort: { top: '-12%', right: '-15%', bottom: '-10%' },
+  jag_i_mig: { top: '-12%', right: '-10%', bottom: '-10%' },
+  jag_med_andra: { top: '-10%', right: '-8%', bottom: '-8%' },
+  jag_i_varlden: { top: '-8%', right: '-8%', bottom: '-8%' },
+  sexualitetskort: { top: '-10%', right: '-10%', bottom: '-8%' },
+  vardagskort: { top: '-10%', right: '-8%', bottom: '-8%' },
+  syskonkort: { top: '-10%', right: '-8%', bottom: '-8%' },
 };
 
 /** Hero-level illustration opacities — individually calibrated */
@@ -277,15 +277,16 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
         </div>
       )}
 
-      {/* Gradient shield — full-width, 5-stop atmosphere fade */}
+      {/* Horizontal gradient scrim — solid left, fading to transparent right */}
       <div
         aria-hidden="true"
         style={{
           position: 'absolute',
-          inset: 0,
+          top: 0, left: 0, bottom: 0,
+          width: '65%',
           zIndex: 1,
           pointerEvents: 'none',
-          background: `linear-gradient(to right, ${bgRgba(1)} 0%, ${bgRgba(0.95)} 35%, ${bgRgba(0.40)} 55%, ${bgRgba(0.05)} 75%, transparent 100%)`,
+          background: `linear-gradient(to right, ${bgRgba(1)} 0%, ${bgRgba(0.95)} 40%, ${bgRgba(0.6)} 70%, transparent 100%)`,
         }}
       />
 
@@ -348,11 +349,11 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
         </div>
       )}
 
-      {/* Text — left 40%, lower-third emphasis */}
+      {/* Text — left-aligned, lower-third emphasis */}
       <div style={{
         position: 'absolute',
         left: 0, bottom: 0, top: 0,
-        width: '45%',
+        width: '55%',
         zIndex: 2,
         display: 'flex',
         flexDirection: 'column',
@@ -791,13 +792,13 @@ export default function ProductLibrary() {
                 boxShadow: '0 8px 24px rgba(0, 0, 0, 0.3)',
               }}
             >
-              {/* Illustration — right-biased, cinematic overflow */}
+              {/* Illustration */}
               <div style={{
                 position: 'absolute',
-                top: '-12%',
-                right: '-15%',
-                bottom: '-10%',
-                width: '62%',
+                top: '-15%',
+                right: '-8%',
+                width: '55%',
+                height: '130%',
                 pointerEvents: 'none',
                 zIndex: 0,
               }}>
@@ -809,54 +810,47 @@ export default function ProductLibrary() {
                     width: '100%',
                     height: '100%',
                     objectFit: 'contain',
-                    objectPosition: 'right bottom',
-                    opacity: 0.65,
+                    objectPosition: 'center 30%',
+                    opacity: 0.55,
                   }}
                 />
               </div>
 
-              {/* Gradient shield — left-to-right atmosphere */}
+              {/* Bottom gradient scrim */}
               <div
                 aria-hidden="true"
                 style={{
                   position: 'absolute',
-                  inset: 0,
+                  bottom: 0, left: 0, right: 0,
+                  height: '60%',
                   zIndex: 1,
                   pointerEvents: 'none',
-                  background: 'linear-gradient(to right, rgba(46, 34, 51, 1) 0%, rgba(46, 34, 51, 0.95) 35%, rgba(46, 34, 51, 0.40) 55%, rgba(46, 34, 51, 0.05) 75%, transparent 100%)',
+                  background: 'linear-gradient(to top, rgba(46, 34, 51, 1) 0%, rgba(46, 34, 51, 0.7) 50%, transparent 100%)',
+                  borderRadius: '0 0 22px 22px',
                 }}
               />
 
-              {/* Text — left-anchored on solid gradient zone */}
               <div style={{
                 position: 'absolute',
-                left: 0, bottom: 0, top: 0,
-                width: '45%',
+                bottom: 0, left: 0, right: 0,
                 zIndex: 2,
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'flex-end',
-                padding: '20px',
-                paddingBottom: '20px',
+                padding: '0 18px 16px',
               }}>
                 <h3 style={{
                   fontFamily: "'DM Serif Display', serif",
-                  fontSize: '24px',
-                  fontWeight: 600,
+                  fontSize: '22px',
+                  fontWeight: 700,
                   color: '#FDF6E3',
                   lineHeight: 1.15,
-                  textShadow: '0 1px 6px rgba(46, 34, 51, 0.8)',
+                  textShadow: '0 2px 8px rgba(46, 34, 51, 1)',
                 }}>
                   Still Us
                 </h3>
                 <p style={{
                   fontFamily: "'Lato', sans-serif",
-                  fontSize: '13px',
-                  color: '#FDF6E3',
-                  opacity: 0.8,
+                  fontSize: '11px',
+                  color: 'hsla(38, 55%, 65%, 0.7)',
                   marginTop: '4px',
-                  lineHeight: 1.4,
-                  textShadow: '0 0 10px rgba(46, 34, 51, 0.8)',
                 }}>
                   22 samtal för er relation
                 </p>
