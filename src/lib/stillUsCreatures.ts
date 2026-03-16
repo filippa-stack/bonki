@@ -105,7 +105,7 @@ export const STILL_US_CREATURES: Record<string, StillUsCreature> = {
     objectPosition: '50% 20%',
     tileOpacity: 0.36,
     headerOpacity: 0.36,
-    tileRight: '-8%',
+    tileRight: '-3%',
     tileHeight: '220%',
     tileScale: 0.95,
     tileTop: '55%',            // Lion: face visible, slight push
