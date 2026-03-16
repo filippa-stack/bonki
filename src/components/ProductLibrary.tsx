@@ -55,34 +55,34 @@ function hexToRgba(hex: string, alpha: number): string {
   return `rgba(${r}, ${g}, ${b}, ${alpha})`;
 }
 
-/** Per-product illustration scale — controls how much of the tile the character fills */
+/** Per-product illustration scale — oversized for dramatic portal feel */
 const ILLUSTRATION_SCALE: Record<string, { width: string; height: string }> = {
-  jag_i_mig: { width: '65%', height: '130%' },
-  jag_med_andra: { width: '62%', height: '125%' },
-  jag_i_varlden: { width: '60%', height: '125%' },
-  sexualitetskort: { width: '62%', height: '125%' },
-  vardagskort: { width: '62%', height: '125%' },
-  syskonkort: { width: '62%', height: '125%' },
+  jag_i_mig: { width: '78%', height: '155%' },
+  jag_med_andra: { width: '74%', height: '150%' },
+  jag_i_varlden: { width: '72%', height: '148%' },
+  sexualitetskort: { width: '74%', height: '148%' },
+  vardagskort: { width: '74%', height: '150%' },
+  syskonkort: { width: '74%', height: '148%' },
 };
 
-/** Per-product vertical offset — negative pulls character up above tile top */
+/** Per-product vertical offset — characters burst out of tile boundaries */
 const ILLUSTRATION_OFFSET: Record<string, { top: string; right: string; bottom: string }> = {
-  jag_i_mig: { top: '-12%', right: '-10%', bottom: '-10%' },
-  jag_med_andra: { top: '-10%', right: '-8%', bottom: '-8%' },
-  jag_i_varlden: { top: '-8%', right: '-8%', bottom: '-8%' },
-  sexualitetskort: { top: '-10%', right: '-10%', bottom: '-8%' },
-  vardagskort: { top: '-10%', right: '-8%', bottom: '-8%' },
-  syskonkort: { top: '-10%', right: '-8%', bottom: '-8%' },
+  jag_i_mig: { top: '-25%', right: '-18%', bottom: '-20%' },
+  jag_med_andra: { top: '-22%', right: '-15%', bottom: '-18%' },
+  jag_i_varlden: { top: '-20%', right: '-15%', bottom: '-18%' },
+  sexualitetskort: { top: '-22%', right: '-18%', bottom: '-16%' },
+  vardagskort: { top: '-22%', right: '-15%', bottom: '-18%' },
+  syskonkort: { top: '-22%', right: '-15%', bottom: '-18%' },
 };
 
-/** Hero-level illustration opacities — individually calibrated */
+/** Hero-level illustration opacities — near full for maximum impact */
 const ILLUSTRATION_OPACITY: Record<string, number> = {
-  jag_i_mig: 0.92,
-  jag_med_andra: 0.90,
-  jag_i_varlden: 0.90,
-  sexualitetskort: 0.90,
-  vardagskort: 0.88,
-  syskonkort: 0.90,
+  jag_i_mig: 0.97,
+  jag_med_andra: 0.95,
+  jag_i_varlden: 0.95,
+  sexualitetskort: 0.95,
+  vardagskort: 0.93,
+  syskonkort: 0.95,
 };
 
 /** Light title colors for dark creature-color tiles — Lantern Glow variants */
@@ -131,12 +131,12 @@ const containerVariants = {
 };
 
 const tileVariants = {
-  hidden: { opacity: 0, y: 20 * ANIM_SPEED, scale: 0.95 },
+  hidden: { opacity: 0, y: 40 * ANIM_SPEED, scale: 0.88 },
   visible: {
     opacity: 1,
     y: 0,
     scale: 1,
-    transition: { duration: 0.55 * ANIM_SPEED, ease: [0.22, 1, 0.36, 1] as const },
+    transition: { duration: 0.7 * ANIM_SPEED, ease: [0.22, 1, 0.36, 1] as const },
   },
 };
 
@@ -222,7 +222,7 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
       style={{
         borderRadius: '16px',
         backgroundColor: bg,
-        height: '200px',
+        height: '240px',
         display: 'flex',
         position: 'relative',
         overflow: 'hidden',
@@ -286,7 +286,7 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
           width: '65%',
           zIndex: 1,
           pointerEvents: 'none',
-          background: `linear-gradient(to right, ${bgRgba(1)} 0%, ${bgRgba(0.95)} 40%, ${bgRgba(0.6)} 70%, transparent 100%)`,
+          background: `linear-gradient(to right, ${bgRgba(1)} 0%, ${bgRgba(0.85)} 35%, ${bgRgba(0.3)} 60%, transparent 100%)`,
         }}
       />
 
@@ -364,7 +364,7 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
         <h3
           style={{
             fontFamily: "'DM Serif Display', serif",
-            fontSize: '24px',
+            fontSize: '28px',
             fontWeight: 600,
             lineHeight: 1.15,
             color: accentColor || '#FDF6E3',
