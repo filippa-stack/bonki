@@ -40,7 +40,7 @@ export default function BottomNav() {
       className="fixed bottom-0 left-0 right-0 z-40"
       style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}
     >
-      <div style={{ backgroundColor: MIDNIGHT_INK }}>
+      <div style={{ backgroundColor: 'transparent' }}>
         <div className="flex items-stretch justify-around" style={{ height: '56px' }}>
           {items.map((item) => {
             const active = item.match(pathname, search);

@@ -161,6 +161,7 @@ export function useKidsProductProgress(product: ProductManifest | undefined): Ki
     }
 
     const completedSet = new Set(recentlyCompletedCardIds);
+    const activeCardId = activeSession?.cardId;
     const progress: Record<string, { completed: number; total: number; allDone: boolean }> = {};
     let nextCardId: string | null = null;
     let nextCatId: string | null = null;
@@ -172,9 +173,10 @@ export function useKidsProductProgress(product: ProductManifest | undefined): Ki
       progress[cat.id] = { completed: completedCount, total: catCards.length, allDone };
 
       // Find the first "next" card (first uncompleted in first incomplete category)
+      // Also skip cards with an active session (resume banner handles those)
       if (!nextCardId && !allDone) {
         for (const card of catCards) {
-          if (!completedSet.has(card.id)) {
+          if (!completedSet.has(card.id) && card.id !== activeCardId) {
             nextCardId = card.id;
             nextCatId = cat.id;
             break;
@@ -188,7 +190,7 @@ export function useKidsProductProgress(product: ProductManifest | undefined): Ki
       nextSuggestedCategoryId: nextCatId,
       categoryProgress: progress,
     };
-  }, [product, recentlyCompletedCardIds]);
+  }, [product, recentlyCompletedCardIds, activeSession?.cardId]);
 
   return {
     recentlyCompletedCardIds,
