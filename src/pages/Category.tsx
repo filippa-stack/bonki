@@ -548,7 +548,50 @@ function StillUsCategoryView({
   const completedCount = cards.filter(c => completedCardIds.includes(c.id)).length;
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: EMBER_NIGHT }}>
+    <div className="min-h-screen relative overflow-hidden" style={{ backgroundColor: EMBER_NIGHT }}>
+      {/* Page-level creature background — like kids product homescreens */}
+      {STILL_US_CREATURES[category.id] && (() => {
+        const c = STILL_US_CREATURES[category.id];
+        return (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.8 }}
+            style={{
+              position: 'absolute',
+              bottom: 0,
+              left: '-5vw',
+              right: '-5vw',
+              height: '55vh',
+              zIndex: 0,
+              pointerEvents: 'none',
+            }}
+          >
+            <img
+              src={c.src}
+              alt=""
+              style={{
+                width: '100%',
+                height: '100%',
+                objectFit: 'contain',
+                objectPosition: '50% 100%',
+                opacity: 0.22,
+                filter: 'saturate(0.2) brightness(1.3)',
+              }}
+            />
+            {/* Scrim to blend creature into background */}
+            <div style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              right: 0,
+              height: '50%',
+              background: `linear-gradient(to bottom, ${EMBER_NIGHT} 0%, transparent 100%)`,
+              pointerEvents: 'none',
+            }} />
+          </motion.div>
+        );
+      })()}
       {/* Header */}
       <motion.div
         initial={{ opacity: 0, y: -8 }}
