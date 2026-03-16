@@ -149,7 +149,7 @@ function CategoryTile({
           }}
         >
           <img
-            src={creatureImage}
+            src={tileImage || creatureImage}
             alt=""
             aria-hidden="true"
             style={{
