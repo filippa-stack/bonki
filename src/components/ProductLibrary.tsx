@@ -782,7 +782,33 @@ export default function ProductLibrary() {
           </div>
         </div>
 
-        {/* ── Barn — broken grid layout ── */}
+        {/* Bridge sentence — children's products */}
+        <motion.div
+          initial={{ opacity: 0, y: 6 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1, duration: 0.6 }}
+          style={{
+            textAlign: 'center',
+            padding: '4px 32px 20px',
+            position: 'relative',
+            zIndex: 1,
+          }}
+        >
+          <p
+            style={{
+              fontFamily: "var(--font-display)",
+              fontVariationSettings: "'opsz' 15",
+              fontStyle: 'normal',
+              fontSize: '14px',
+              fontWeight: 400,
+              color: 'hsla(38, 55%, 65%, 0.55)',
+              lineHeight: 1.6,
+            }}
+          >
+            Det barnet inte säger själv — börjar här
+          </p>
+        </motion.div>
+
         <div className="px-5" style={{ scrollMarginTop: '8px' }}>
           <motion.p
             initial={{ opacity: 0, y: 8 }}
