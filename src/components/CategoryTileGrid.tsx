@@ -108,12 +108,19 @@ function CategoryTile({
       style={{
         position: 'relative',
         overflow: 'hidden',
-        borderRadius: '16px',
+        borderRadius: '22px',
         cursor: 'pointer',
         textAlign: 'left',
+        backgroundImage: 'linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0) 50%, rgba(0,0,0,0.08) 100%)',
         backgroundColor: tile.bg,
-        border: 'none',
-        borderLeft: isFirst ? `3px solid ${SAFFRON}` : 'none',
+        border: isFirst ? `2px solid ${SAFFRON}` : '1.5px solid rgba(255, 255, 255, 0.30)',
+        boxShadow: [
+          '0 12px 32px rgba(0, 0, 0, 0.30)',
+          '0 4px 12px rgba(0, 0, 0, 0.18)',
+          '0 1px 3px rgba(0, 0, 0, 0.08)',
+          'inset 0 3px 6px rgba(255, 255, 255, 0.45)',
+          'inset 0 -4px 10px rgba(0, 0, 0, 0.14)',
+        ].join(', '),
         padding: 0,
         ...(isOddLast
           ? { gridColumn: '1 / -1', height: '170px' }
