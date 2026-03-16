@@ -48,6 +48,7 @@ interface CategoryTileGridProps {
   progress: KidsProductProgress;
   tiles: TileConfig[];
   creatureImage?: string;
+  creatureTileStyles?: CreatureTileStyle[];
 }
 
 function hexToRgb(hex: string): string {
