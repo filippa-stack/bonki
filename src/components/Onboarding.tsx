@@ -118,7 +118,7 @@ export default function Onboarding() {
         <motion.h1
           {...fadeUp(0.5)}
           style={{
-            fontFamily: '"DM Serif Display", var(--font-serif), serif',
+            fontFamily: 'var(--font-display)',
             fontSize: '1.65rem',
             fontWeight: 400,
             color: '#FDF6E3',
