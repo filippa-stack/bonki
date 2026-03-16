@@ -1,12 +1,12 @@
 import { RECOMMENDED_CATEGORY_ORDER } from '@/lib/recommendedOrder';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { useMemo, useState, useEffect } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 import { useOptimisticCompletions } from '@/contexts/OptimisticCompletionsContext';
 import { useApp } from '@/contexts/AppContext';
 import { useAuth } from '@/contexts/AuthContext';
 import { useCoupleSpaceContext } from '@/contexts/CoupleSpaceContext';
-import { ArrowLeft, Check } from 'lucide-react';
+import { ArrowLeft, Check, ChevronDown } from 'lucide-react';
 import { useThemeVars } from '@/hooks/useThemeVars';
 import { supabase } from '@/integrations/supabase/client';
 import { useDevState } from '@/contexts/DevStateContext';
@@ -64,6 +64,103 @@ const LAYERS: {
     hasBorder: true,
   },
 ];
+
+/** Expandable layer accordion */
+function AccordionLayer({
+  label, completedCount, totalCount, allDone, defaultOpen, delay, children,
+}: {
+  label: string;
+  completedCount: number;
+  totalCount: number;
+  allDone: boolean;
+  defaultOpen: boolean;
+  delay: number;
+  children: React.ReactNode;
+}) {
+  const [open, setOpen] = useState(defaultOpen);
+
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ delay, duration: 0.5, ease: EASE }}
+      style={{ marginTop: '24px', paddingLeft: '16px', paddingRight: '16px' }}
+    >
+      <button
+        onClick={() => setOpen(o => !o)}
+        style={{
+          width: '100%',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          padding: '0 4px 10px',
+          background: 'none',
+          border: 'none',
+          cursor: 'pointer',
+          WebkitTapHighlightColor: 'transparent',
+        }}
+      >
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <span style={{
+            fontFamily: 'var(--font-body)',
+            fontSize: '12px',
+            fontWeight: 600,
+            letterSpacing: '2px',
+            textTransform: 'uppercase',
+            color: DRIFTWOOD,
+          }}>
+            {label}
+          </span>
+          {allDone && (
+            <div style={{
+              width: '16px',
+              height: '16px',
+              borderRadius: '50%',
+              backgroundColor: DEEP_SAFFRON,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}>
+              <Check size={10} color={MIDNIGHT_INK} strokeWidth={3} />
+            </div>
+          )}
+        </div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          {!allDone && (
+            <span style={{
+              fontFamily: 'var(--font-body)',
+              fontSize: '11px',
+              color: DRIFTWOOD,
+              opacity: 0.7,
+            }}>
+              {completedCount} av {totalCount}
+            </span>
+          )}
+          <motion.div
+            animate={{ rotate: open ? 180 : 0 }}
+            transition={{ duration: 0.25 }}
+          >
+            <ChevronDown size={16} color={DRIFTWOOD} />
+          </motion.div>
+        </div>
+      </button>
+
+      <motion.div
+        initial={false}
+        animate={{
+          height: open ? 'auto' : 0,
+          opacity: open ? 1 : 0,
+        }}
+        transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
+        style={{ overflow: 'hidden' }}
+      >
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', paddingBottom: '4px' }}>
+          {children}
+        </div>
+      </motion.div>
+    </motion.div>
+  );
+}
 
 export default function Home() {
   const navigate = useNavigate();
@@ -378,132 +475,108 @@ export default function Home() {
               )}
             </div>
 
-            {/* ── 4. CATEGORY TILE GRID — 3 layers ── */}
+            {/* ── 4. ACCORDION LAYERS ── */}
             {LAYERS.map((layer, layerIndex) => {
               const layerCats = layer.categoryIds
                 .map(id => allCategories.find(c => c.id === id))
                 .filter(Boolean) as typeof allCategories;
 
+              // Summary stats for collapsed state
+              const layerCompleted = layerCats.filter(c => isCategoryCompleted(c.id)).length;
+              const layerTotal = layerCats.length;
+              const allLayerDone = layerCompleted === layerTotal;
+              // Auto-expand the layer that contains the next recommended category
+              const containsNext = layerCats.some(c => c.id === nextCategoryId);
+
               return (
-                <motion.div
+                <AccordionLayer
                   key={layer.label}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.3 + layerIndex * 0.12, duration: 0.6, ease: EASE }}
+                  label={layer.label}
+                  completedCount={layerCompleted}
+                  totalCount={layerTotal}
+                  allDone={allLayerDone}
+                  defaultOpen={containsNext}
+                  delay={0.3 + layerIndex * 0.1}
                 >
-                  {/* Section header */}
-                  <p style={{
-                    fontFamily: 'var(--font-body)',
-                    fontSize: '12px',
-                    fontWeight: 600,
-                    letterSpacing: '2px',
-                    textTransform: 'uppercase',
-                    color: DRIFTWOOD,
-                    paddingLeft: '20px',
-                    marginTop: '32px',
-                    marginBottom: '12px',
-                  }}>
-                    {layer.label}
-                  </p>
+                  {layerCats.map((cat) => {
+                    const progress = categoryProgress[cat.id];
+                    const isRecommended = cat.id === nextCategoryId;
+                    const completed = isCategoryCompleted(cat.id);
 
-                  {/* Horizontal scroll row */}
-                  <div
-                    style={{
-                      display: 'flex',
-                      gap: '10px',
-                      overflowX: 'auto',
-                      paddingLeft: '16px',
-                      paddingRight: '16px',
-                      paddingBottom: '4px',
-                      scrollbarWidth: 'none',
-                      WebkitOverflowScrolling: 'touch',
-                    }}
-                    className="hide-scrollbar"
-                  >
-                    {layerCats.map((cat) => {
-                      const progress = categoryProgress[cat.id];
-                      const isRecommended = cat.id === nextCategoryId;
-                      const isCompleted = isCategoryCompleted(cat.id);
-
-                      return (
-                        <motion.button
-                          key={cat.id}
-                          whileTap={{ scale: 0.95 }}
-                          onClick={() => navigate(`/category/${cat.id}`)}
-                          style={{
-                            flex: '0 0 calc(33vw - 12px)',
-                            minWidth: '110px',
-                            height: '110px',
-                            borderRadius: '12px',
-                            backgroundColor: layer.tileBg,
-                            border: layer.hasBorder
-                              ? `1px solid ${DRIFTWOOD}40`
-                              : isRecommended && !layer.isGold
-                                ? `1px solid rgba(255,255,255,0.15)`
-                                : '1px solid rgba(255,255,255,0.08)',
-                            borderLeft: isRecommended && !layer.isGold
-                              ? `2px solid ${DEEP_SAFFRON}`
-                              : undefined,
-                            cursor: 'pointer',
-                            textAlign: 'left',
-                            padding: '12px',
+                    return (
+                      <motion.button
+                        key={cat.id}
+                        whileTap={{ scale: 0.97 }}
+                        onClick={() => navigate(`/category/${cat.id}`)}
+                        style={{
+                          width: '100%',
+                          padding: '14px 16px',
+                          borderRadius: '12px',
+                          backgroundColor: completed ? `${EMBER_MID}80` : EMBER_MID,
+                          border: isRecommended
+                            ? `1.5px solid ${DEEP_SAFFRON}50`
+                            : '1px solid rgba(255,255,255,0.08)',
+                          borderLeft: isRecommended ? `3px solid ${DEEP_SAFFRON}` : undefined,
+                          cursor: 'pointer',
+                          textAlign: 'left',
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '12px',
+                          boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
+                        }}
+                      >
+                        {/* Completed badge or position indicator */}
+                        {completed ? (
+                          <div style={{
+                            width: '24px',
+                            height: '24px',
+                            borderRadius: '50%',
+                            backgroundColor: DEEP_SAFFRON,
                             display: 'flex',
-                            flexDirection: 'column',
-                            justifyContent: 'flex-end',
-                            position: 'relative',
-                            overflow: 'hidden',
-                            boxShadow: layer.isGold
-                              ? `0 4px 16px rgba(212, 160, 58, 0.2), 0 1px 4px rgba(0,0,0,0.1)`
-                              : '0 4px 12px rgba(0,0,0,0.15)',
-                          }}
-                        >
-                          {/* Completed badge */}
-                          {isCompleted && (
-                            <div style={{
-                              position: 'absolute',
-                              top: '8px',
-                              right: '8px',
-                              width: '20px',
-                              height: '20px',
-                              borderRadius: '50%',
-                              backgroundColor: DEEP_SAFFRON,
-                              display: 'flex',
-                              alignItems: 'center',
-                              justifyContent: 'center',
-                            }}>
-                              <Check size={12} color={MIDNIGHT_INK} strokeWidth={3} />
-                            </div>
-                          )}
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            flexShrink: 0,
+                          }}>
+                            <Check size={14} color={MIDNIGHT_INK} strokeWidth={3} />
+                          </div>
+                        ) : (
+                          <div style={{
+                            width: '24px',
+                            height: '24px',
+                            borderRadius: '50%',
+                            border: `1.5px solid ${isRecommended ? DEEP_SAFFRON : DRIFTWOOD}40`,
+                            flexShrink: 0,
+                          }} />
+                        )}
 
+                        <div style={{ flex: 1, minWidth: 0 }}>
                           <span style={{
                             fontFamily: "var(--font-display)",
-                            fontVariationSettings: "'opsz' 15",
-                            fontSize: '15px',
-                            fontWeight: 600,
-                            color: layer.tileText,
-                            lineHeight: 1.2,
+                            fontVariationSettings: "'opsz' 16",
+                            fontSize: '16px',
+                            fontWeight: 500,
+                            color: completed ? `${LANTERN_GLOW}90` : LANTERN_GLOW,
+                            lineHeight: 1.3,
                             display: 'block',
                           }}>
                             {cat.title}
                           </span>
-
                           {progress && progress.total > 0 && (
                             <span style={{
                               fontFamily: 'var(--font-body)',
                               fontSize: '12px',
-                              color: layer.progressText,
-                              opacity: 0.7,
-                              marginTop: '4px',
+                              color: DRIFTWOOD,
+                              marginTop: '2px',
                               display: 'block',
                             }}>
-                              {progress.completed} av {progress.total}
+                              {progress.completed} av {progress.total} samtal
                             </span>
                           )}
-                        </motion.button>
-                      );
-                    })}
-                  </div>
-                </motion.div>
+                        </div>
+                      </motion.button>
+                    );
+                  })}
+                </AccordionLayer>
               );
             })}
           </div>
