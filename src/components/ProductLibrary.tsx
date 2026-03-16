@@ -806,7 +806,7 @@ export default function ProductLibrary() {
             style={{
               display: 'flex',
               flexDirection: 'column',
-              gap: '16px',
+              gap: '20px',
             }}
           >
             {sortedKidsProducts.map((product) => (
