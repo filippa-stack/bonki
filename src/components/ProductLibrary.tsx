@@ -1132,7 +1132,7 @@ export default function ProductLibrary() {
                 </span>
                 {/* Credential — integrated trust signal */}
                 <span style={{
-                  fontFamily: "'Lato', sans-serif",
+                  fontFamily: "var(--font-body)",
                   fontSize: '8px',
                   fontWeight: 500,
                   letterSpacing: '0.06em',
