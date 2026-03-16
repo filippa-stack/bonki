@@ -85,10 +85,10 @@ export const STILL_US_CREATURES: Record<string, StillUsCreature> = {
     objectPosition: '50% 25%',
     tileOpacity: 0.38,
     headerOpacity: 0.38,
-    tileRight: '-5%',
+    tileRight: '0%',
     tileHeight: '220%',
     tileScale: 1.25,
-    tileTop: '58%',            // Turtle: small head, push down to reveal eyes
+    tileTop: '65%',            // Turtle: push down + left to show eyes
   },
   'parenting-together': {       // Det ni bär med er → Uggla  (Det som formar er)
     src: creatureUggla,
