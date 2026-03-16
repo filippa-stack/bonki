@@ -407,27 +407,6 @@ export default function ProductLibrary() {
   const tracked = useRef(false);
   const { purchased } = useAllProductAccess();
   const { user } = useAuth();
-  const TAB_KEY = 'bonki-library-tab';
-  const [activeTab, setActiveTab] = useState<'barn' | 'par'>(() => {
-    // 1. Check onboarding redirect
-    const initial = localStorage.getItem('bonki-initial-tab');
-    if (initial === 'par' || initial === 'barn') {
-      localStorage.removeItem('bonki-initial-tab');
-      localStorage.setItem(TAB_KEY, initial);
-      return initial;
-    }
-    // 2. Remember last selection
-    const saved = localStorage.getItem(TAB_KEY);
-    if (saved === 'par' || saved === 'barn') return saved;
-    return 'barn';
-  });
-  const [swipeDirection, setSwipeDirection] = useState<1 | -1>(1);
-
-  const switchTab = (tab: 'barn' | 'par') => {
-    setSwipeDirection(tab === 'par' ? 1 : -1);
-    setActiveTab(tab);
-    try { localStorage.setItem(TAB_KEY, tab); } catch {}
-  };
   const [notifySignedUp, setNotifySignedUp] = useState(false);
   const [notifyLoading, setNotifyLoading] = useState(false);
 
