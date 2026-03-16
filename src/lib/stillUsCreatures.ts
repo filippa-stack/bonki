@@ -79,7 +79,7 @@ export const STILL_US_CREATURES: Record<string, StillUsCreature> = {
     headerOpacity: 0.38,
     tileRight: '0%',
     tileHeight: '160%',
-    tileScale: 1.1,            // Turtle is compact — scale up slightly
+    tileScale: 1.18,           // Turtle is compact — scale up more
   },
   'parenting-together': {       // Det ni bär med er → Uggla  (Det som formar er)
     src: creatureUggla,
