@@ -216,21 +216,21 @@ function CategoryTile({
           {tile.sub}
         </span>
 
-        {/* Progress dots */}
+        {/* Progress: text counter */}
         {totalCards > 0 && (
-          <div style={{ display: 'flex', flexDirection: 'row', gap: '4px', marginTop: '8px' }}>
-            {Array.from({ length: totalCards }).map((_, dotIdx) => (
-              <div
-                key={dotIdx}
-                style={{
-                  width: '5px',
-                  height: '5px',
-                  borderRadius: '50%',
-                  backgroundColor: dotIdx < completed ? SAFFRON : `rgba(253, 246, 227, ${dotDimOpacity})`,
-                }}
-              />
-            ))}
-          </div>
+          <span
+            style={{
+              fontSize: '11px',
+              fontWeight: 600,
+              color: completed > 0 ? SAFFRON : LANTERN,
+              opacity: completed > 0 ? 0.85 : 0.3,
+              marginTop: '6px',
+              display: 'block',
+              letterSpacing: '0.02em',
+            }}
+          >
+            {completed} av {totalCards}
+          </span>
         )}
       </div>
     </motion.button>

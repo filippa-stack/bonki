@@ -62,7 +62,7 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
           </motion.div>
         </motion.div>
 
-        <div style={{ flex: 1, minHeight: '16px', maxHeight: 'clamp(40px, 12vh, 120px)' }} />
+        <div style={{ flex: 1, minHeight: '24px', maxHeight: 'clamp(40px, 12vh, 120px)' }} />
 
         <CategoryTileGrid product={product} progress={progress} tiles={ORDERED_TILES} creatureImage={creatureImage} creatureTileStyles={CREATURE_TILE_STYLES} />
       </div>
