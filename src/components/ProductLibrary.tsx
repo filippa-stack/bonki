@@ -908,22 +908,8 @@ export default function ProductLibrary() {
             →
           </span>
         </motion.div>
-          </motion.div>
-        )}
 
-        {activeTab === 'par' && (
-          <motion.div
-            key="par"
-            initial={{ opacity: 0, x: swipeDirection * 30 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: swipeDirection * -30 }}
-            transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-            style={{
-              padding: '0',
-              minHeight: '60vh',
-              position: 'relative',
-            }}
-          >
+        <div style={{ position: 'relative' }}>
 
         {/* Bridge phrase — contextual for parents coming from BARN */}
         <motion.div
