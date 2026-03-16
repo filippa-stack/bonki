@@ -236,7 +236,8 @@ export default function CompletedSessionView({
             />
             <h2
               style={{
-                fontFamily: "'DM Serif Display', var(--font-serif)",
+                fontFamily: "var(--font-display)",
+                fontVariationSettings: "'opsz' 26",
                 fontSize: 'clamp(26px, 7vw, 34px)',
                 fontWeight: 400,
                 lineHeight: 1.2,
