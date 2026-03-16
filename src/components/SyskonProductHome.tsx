@@ -1,14 +1,13 @@
 import { motion } from 'framer-motion';
 import type { ProductManifest } from '@/types/product';
 import heroImage from '@/assets/illustration-syskon.png';
-import creatureSal from '@/assets/creature-sal.png';
-import creatureSal2 from '@/assets/creature-sal2.png';
 import UnifiedResumeBanner from '@/components/UnifiedResumeBanner';
 import NextConversationCard from '@/components/NextConversationCard';
 import ProductHomeBackButton from '@/components/ProductHomeBackButton';
 import { useKidsProductProgress } from '@/hooks/useKidsProductProgress';
 import CategoryTileGrid from '@/components/CategoryTileGrid';
 import type { CreatureTileStyle } from '@/components/CategoryTileGrid';
+import { useCardImage } from '@/hooks/useCardImage';
 
 const EASE = [0.4, 0.0, 0.2, 1] as const;
 const BG = '#0A2826';
@@ -22,12 +21,12 @@ const ORDERED_TILES = [
   { id: 'sk-er-relation', bg: '#0A3432', sub: 'Nära, svårt och allt däremellan' },
 ];
 
-// Alternate between the two seals for tile textures
-const TILE_IMAGES: (string | undefined)[] = [
-  creatureSal,   // Vi blev syskon
-  creatureSal2,  // Vi är olika
-  creatureSal,   // Delat utrymme
-  creatureSal2,  // Er relation
+// First card per category — used as tile illustrations
+const FIRST_CARD_IDS = [
+  'sk-att-fa-ett-syskon',  // Vi blev syskon
+  'sk-unik',               // Vi är olika
+  'sk-dela',               // Delat utrymme
+  'sk-vanskap-relation',   // Er relation
 ];
 
 // Optically calibrated per-tile
@@ -44,6 +43,12 @@ const titleVariants = { hidden: { opacity: 0, y: 16 }, visible: { opacity: 1, y:
 export default function SyskonProductHome({ product }: { product: ProductManifest }) {
   const progress = useKidsProductProgress(product);
 
+  // Load first card image per category dynamically from zip
+  const img0 = useCardImage(FIRST_CARD_IDS[0]);
+  const img1 = useCardImage(FIRST_CARD_IDS[1]);
+  const img2 = useCardImage(FIRST_CARD_IDS[2]);
+  const img3 = useCardImage(FIRST_CARD_IDS[3]);
+  const tileImages = [img0 ?? undefined, img1 ?? undefined, img2 ?? undefined, img3 ?? undefined];
   return (
     <div className="min-h-screen relative overflow-hidden" style={{ backgroundColor: BG }}>
       <ProductHomeBackButton color="#FDF6E3" />
@@ -117,7 +122,7 @@ export default function SyskonProductHome({ product }: { product: ProductManifes
           product={product}
           progress={progress}
           tiles={ORDERED_TILES}
-          tileImages={TILE_IMAGES}
+          tileImages={tileImages}
           creatureTileStyles={CREATURE_TILE_STYLES}
         />
       </div>
