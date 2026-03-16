@@ -58,7 +58,7 @@ export const STILL_US_CREATURES: Record<string, StillUsCreature> = {
     tileRight: '-40%',
     tileHeight: '220%',
     tileScale: 1.1,
-    tileTop: '78%',
+    tileTop: '93%',
   },
   'communication': {            // Vardagen mellan er → Apa  (Grunden)
     src: creatureApa,
