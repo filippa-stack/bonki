@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import type { ProductManifest } from '@/types/product';
 import creatureImage from '@/assets/creature-sal.png';
+import creatureImage2 from '@/assets/creature-sal2.png';
 import UnifiedResumeBanner from '@/components/UnifiedResumeBanner';
 import NextConversationCard from '@/components/NextConversationCard';
 import ProductHomeBackButton from '@/components/ProductHomeBackButton';
@@ -42,7 +43,34 @@ export default function SyskonProductHome({ product }: { product: ProductManifes
         transition={{ duration: 0.6 }}
         style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '45vh', zIndex: 0, pointerEvents: 'none' }}
       >
-        <img src={creatureImage} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: '50% 20%' }} />
+        {/* Primary seal — left-of-center */}
+        <img
+          src={creatureImage}
+          alt=""
+          style={{
+            position: 'absolute',
+            width: '65%',
+            height: '100%',
+            objectFit: 'cover',
+            objectPosition: '60% 15%',
+            left: '-5%',
+            top: 0,
+          }}
+        />
+        {/* Secondary seal — right side, slightly overlapping */}
+        <img
+          src={creatureImage2}
+          alt=""
+          style={{
+            position: 'absolute',
+            width: '60%',
+            height: '95%',
+            objectFit: 'cover',
+            objectPosition: '40% 15%',
+            right: '-8%',
+            top: '3%',
+          }}
+        />
         <div style={{
           position: 'absolute', bottom: 0, left: 0, right: 0, height: '70%',
           background: 'linear-gradient(to top, #1A1A2E 0%, rgba(26,26,46,0.95) 25%, rgba(14,68,66,0.7) 55%, transparent 100%)',
