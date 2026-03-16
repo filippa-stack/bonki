@@ -77,22 +77,12 @@ export default function JagMedAndraProductHome({ product }: { product: ProductMa
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.6 }}
-        style={{
-          position: 'absolute',
-          top: '-4vh',
-          left: '50%',
-          transform: 'translateX(-50%)',
-          width: '80vw',
-          maxWidth: '340px',
-          height: '44vh',
-          zIndex: 0,
-          pointerEvents: 'none',
-        }}
+        style={{ position: 'absolute', top: '-8vh', left: '-5vw', right: '-5vw', height: '65vh', zIndex: 0, pointerEvents: 'none' }}
       >
-        <img src={heroImage} alt="" style={{ width: '100%', height: '100%', objectFit: 'contain', objectPosition: '50% 0%' }} />
+        <img src={heroImage} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: '50% 10%' }} />
         <div style={{
-          position: 'absolute', bottom: '-2px', left: '-20%', right: '-20%', height: '50%',
-          background: `linear-gradient(to top, ${BG} 0%, ${BG}E6 30%, ${BG}80 60%, transparent 100%)`,
+          position: 'absolute', bottom: 0, left: 0, right: 0, height: '85%',
+          background: `linear-gradient(to top, ${BG} 0%, ${BG}F2 18%, rgba(26,26,46,0.85) 35%, rgba(139,47,198,0.4) 60%, rgba(139,47,198,0.1) 80%, transparent 100%)`,
           pointerEvents: 'none',
         }} />
       </motion.div>
