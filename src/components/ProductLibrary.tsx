@@ -762,8 +762,28 @@ export default function ProductLibrary() {
           </div>
         </div>
 
+        {/* ── Barn & Familj section anchor ── */}
+        <div className="px-5" style={{ marginTop: '28px' }}>
+          <div style={{
+            borderTop: '1px solid hsla(38, 50%, 50%, 0.12)',
+            paddingTop: '16px',
+          }}>
+            <p style={{
+              fontFamily: "var(--font-body)",
+              fontSize: '12px',
+              fontWeight: 600,
+              letterSpacing: '1.5px',
+              textTransform: 'uppercase',
+              color: '#6B5E52',
+              marginBottom: '12px',
+            }}>
+              Barn & Familj
+            </p>
+          </div>
+        </div>
+
         {/* ── Barn — broken grid layout ── */}
-        <div className="px-5" style={{ scrollMarginTop: '8px', marginTop: '28px' }}>
+        <div className="px-5" style={{ scrollMarginTop: '8px' }}>
           <motion.p
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
