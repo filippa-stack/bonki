@@ -222,9 +222,10 @@ function CategoryTile({
   );
 }
 
-export default function CategoryTileGrid({ product, progress, tiles, creatureImage }: CategoryTileGridProps) {
+export default function CategoryTileGrid({ product, progress, tiles, creatureImage, creatureTileStyles }: CategoryTileGridProps) {
   const total = tiles.length;
   const isOdd = total % 2 !== 0;
+  const styles = creatureTileStyles || DEFAULT_TILE_CREATURE_STYLES;
 
   return (
     <motion.div
@@ -249,6 +250,7 @@ export default function CategoryTileGrid({ product, progress, tiles, creatureIma
           total={total}
           isOddLast={isOdd && index === total - 1}
           creatureImage={creatureImage}
+          creatureStyle={styles[Math.min(index, styles.length - 1)]}
         />
       ))}
     </motion.div>
