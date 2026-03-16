@@ -1,6 +1,6 @@
 import { useNavigate, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { House, MessageCircle } from 'lucide-react';
+import { House, BookOpen } from 'lucide-react';
 import { MIDNIGHT_INK, LANTERN_GLOW, DRIFTWOOD } from '@/lib/palette';
 
 /** Two small circles leaning toward each other — Still Us icon */
