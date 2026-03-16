@@ -58,9 +58,12 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
 
         <div style={{ flex: 1, minHeight: '16px', maxHeight: 'clamp(40px, 12vh, 120px)' }} />
 
-        {/* Category section label */}
-        <div style={{ textAlign: 'left', marginBottom: '12px', paddingLeft: '4px' }}>
-          <span style={{ fontFamily: 'var(--font-sans)', fontSize: '12px', fontWeight: 600, color: '#6B5E52', textTransform: 'uppercase', letterSpacing: '1.5px' }}>
+        {/* Gradient scrim above label */}
+        <div style={{ height: '40px', background: `linear-gradient(to bottom, transparent, ${product.tileDeep ?? '#3E4A12'})`, marginLeft: '-5vw', marginRight: '-5vw', pointerEvents: 'none' }} />
+
+        {/* Category section label — on solid dark surface */}
+        <div style={{ textAlign: 'left', marginBottom: '12px', paddingLeft: '4px', background: product.tileDeep ?? '#3E4A12', marginLeft: '-5vw', marginRight: '-5vw', paddingTop: '0', paddingBottom: '0', paddingRight: '5vw', paddingBlockStart: '0' }}>
+          <span style={{ fontFamily: 'var(--font-sans)', fontSize: '12px', fontWeight: 600, color: '#998F82', textTransform: 'uppercase', letterSpacing: '2px', paddingLeft: '16px' }}>
             Alla kategorier
           </span>
         </div>
@@ -83,11 +86,11 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
                   backgroundImage: `linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0) 50%, rgba(0,0,0,0.08) 100%)`,
                   backgroundColor: tile.bg,
                   borderRadius: '22px',
-                  padding: '22px 24px',
+                  padding: '14px',
                   textAlign: 'left',
                   cursor: 'pointer',
                   width: '100%',
-                  minHeight: '88px',
+                  minHeight: '130px',
                   border: isNextCategory
                     ? `2.5px solid ${SAFFRON}CC`
                     : '1.5px solid rgba(255, 255, 255, 0.30)',
@@ -100,46 +103,37 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
                     'inset 0 -4px 10px rgba(0, 0, 0, 0.14)',
                   ].filter(Boolean).join(', '),
                   display: 'flex',
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                  gap: '12px',
+                  flexDirection: 'column',
+                  justifyContent: 'flex-end',
+                  gap: '4px',
                   lineHeight: 1.15,
                   position: 'relative',
                 }}
               >
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
-                  <span style={{
-                    fontFamily: "'DM Serif Display', var(--font-serif)",
-                    fontSize: 'clamp(19px, 5vw, 24px)',
-                    fontWeight: 700,
-                    color: tile.text,
-                  }}>
-                    {cat.title}
-                  </span>
-                  <span style={{
-                    fontSize: 'clamp(11px, 3vw, 13px)',
-                    fontWeight: 600,
-                    color: '#FFFDF8',
-                    opacity: 0.9,
-                    letterSpacing: '0.02em',
-                    lineHeight: 1.3,
-                  }}>
-                    {tile.sub}
-                  </span>
-                </div>
+                <span style={{
+                  fontFamily: "'DM Serif Display', var(--font-serif)",
+                  fontSize: '15px',
+                  fontWeight: 600,
+                  color: '#FDF6E3',
+                }}>
+                  {cat.title}
+                </span>
+                <span style={{
+                  fontSize: '12px',
+                  fontWeight: 400,
+                  color: `#FDF6E3B3`, // 70% opacity
+                  letterSpacing: '0.02em',
+                  lineHeight: 1.3,
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  display: '-webkit-box',
+                  WebkitLineClamp: 2,
+                  WebkitBoxOrient: 'vertical',
+                }}>
+                  {tile.sub}
+                </span>
                 {catProgress && (
-                  <span style={{
-                    flexShrink: 0,
-                    fontSize: '10px',
-                    fontWeight: 600,
-                    letterSpacing: '0.04em',
-                    color: catProgress.completed > 0 ? '#E9B44C' : '#FFFDF8',
-                    opacity: catProgress.completed > 0 ? 0.9 : 0.4,
-                    whiteSpace: 'nowrap',
-                  }}>
-                    {catProgress.completed} av {catProgress.total}
-                  </span>
+                  <CategoryProgressRing completed={catProgress.completed} total={catProgress.total} color={tile.text} />
                 )}
               </motion.button>
             );

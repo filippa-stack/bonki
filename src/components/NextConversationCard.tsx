@@ -2,12 +2,19 @@ import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import type { ProductManifest } from '@/types/product';
 import type { KidsProductProgress } from '@/hooks/useKidsProductProgress';
-import {
-  LANTERN_GLOW,
-  DRIFTWOOD,
-} from '@/lib/palette';
+import { LANTERN_GLOW, DRIFTWOOD } from '@/lib/palette';
 
 const EASE = [0.4, 0.0, 0.2, 1] as const;
+
+/**
+ * Converts a hex color to rgba string.
+ */
+function hexToRgba(hex: string, alpha: number): string {
+  const r = parseInt(hex.slice(1, 3), 16);
+  const g = parseInt(hex.slice(3, 5), 16);
+  const b = parseInt(hex.slice(5, 7), 16);
+  return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+}
 
 interface NextConversationCardProps {
   product: ProductManifest;
@@ -16,8 +23,7 @@ interface NextConversationCardProps {
 
 /**
  * "Nästa samtal" card for kids product home screens.
- * Shows the next suggested card in sequence with category context.
- * Uses tileMid background with tileLight left border.
+ * Frosted glass treatment using product creature color.
  */
 export default function NextConversationCard({ product, progress }: NextConversationCardProps) {
   const navigate = useNavigate();
@@ -32,8 +38,8 @@ export default function NextConversationCard({ product, progress }: NextConversa
 
   if (!card) return null;
 
-  const tileMid = product.tileMid ?? '#2A2D3A';
   const tileLight = product.tileLight ?? product.accentColor;
+  const tileMid = product.tileMid ?? '#2A2D3A';
 
   return (
     <motion.button
@@ -44,29 +50,25 @@ export default function NextConversationCard({ product, progress }: NextConversa
       onClick={() => navigate(`/card/${card.id}`)}
       style={{
         width: '100%',
-        backgroundImage: `linear-gradient(160deg, ${tileMid} 0%, ${tileMid} 100%)`,
-        borderRadius: '22px',
-        border: `1.5px solid rgba(255, 255, 255, 0.30)`,
-        borderLeft: `3px solid ${tileLight}`,
+        background: hexToRgba(tileMid, 0.20),
+        backdropFilter: 'blur(12px)',
+        WebkitBackdropFilter: 'blur(12px)',
+        borderRadius: '16px',
+        border: `1px solid ${hexToRgba(tileLight, 0.40)}`,
         padding: '16px',
         textAlign: 'left',
         cursor: 'pointer',
         display: 'flex',
         flexDirection: 'column',
         gap: '4px',
-        marginTop: '24px',
-        boxShadow: `
-          0 12px 32px rgba(0, 0, 0, 0.30),
-          inset 0 3px 6px rgba(255, 255, 255, 0.45),
-          inset 0 -4px 10px rgba(0, 0, 0, 0.14)
-        `,
+        marginTop: '16px',
       }}
     >
       <span style={{
         fontFamily: 'var(--font-sans)',
-        fontSize: '12px',
+        fontSize: '11px',
         fontWeight: 600,
-        color: DRIFTWOOD,
+        color: `${LANTERN_GLOW}B3`, // 70% opacity
         textTransform: 'uppercase',
         letterSpacing: '1.5px',
       }}>
@@ -75,7 +77,7 @@ export default function NextConversationCard({ product, progress }: NextConversa
 
       <span style={{
         fontFamily: "'DM Serif Display', var(--font-serif)",
-        fontSize: '20px',
+        fontSize: '22px',
         fontWeight: 600,
         color: LANTERN_GLOW,
         lineHeight: 1.3,
@@ -86,7 +88,7 @@ export default function NextConversationCard({ product, progress }: NextConversa
       {category && (
         <span style={{
           fontFamily: 'var(--font-sans)',
-          fontSize: '12px',
+          fontSize: '13px',
           fontWeight: 400,
           color: DRIFTWOOD,
         }}>
