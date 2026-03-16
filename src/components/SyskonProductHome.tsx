@@ -1,14 +1,13 @@
 import { motion } from 'framer-motion';
 import type { ProductManifest } from '@/types/product';
 import heroImage from '@/assets/illustration-syskon.png';
-import creatureSal from '@/assets/creature-sal.png';
-import creatureSal2 from '@/assets/creature-sal2.png';
 import UnifiedResumeBanner from '@/components/UnifiedResumeBanner';
 import NextConversationCard from '@/components/NextConversationCard';
 import ProductHomeBackButton from '@/components/ProductHomeBackButton';
 import { useKidsProductProgress } from '@/hooks/useKidsProductProgress';
 import CategoryTileGrid from '@/components/CategoryTileGrid';
 import type { CreatureTileStyle } from '@/components/CategoryTileGrid';
+import { useCardImage } from '@/hooks/useCardImage';
 
 const EASE = [0.4, 0.0, 0.2, 1] as const;
 const BG = '#0A2826';
@@ -22,12 +21,12 @@ const ORDERED_TILES = [
   { id: 'sk-er-relation', bg: '#0A3432', sub: 'Nära, svårt och allt däremellan' },
 ];
 
-// Alternate between the two seals for tile textures
-const TILE_IMAGES: (string | undefined)[] = [
-  creatureSal,   // Vi blev syskon
-  creatureSal2,  // Vi är olika
-  creatureSal,   // Delat utrymme
-  creatureSal2,  // Er relation
+// First card per category — used as tile illustrations
+const FIRST_CARD_IDS = [
+  'sk-att-fa-ett-syskon',  // Vi blev syskon
+  'sk-unik',               // Vi är olika
+  'sk-dela',               // Delat utrymme
+  'sk-vanskap-relation',   // Er relation
 ];
 
 // Optically calibrated per-tile
