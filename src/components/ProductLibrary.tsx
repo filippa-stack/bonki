@@ -642,7 +642,7 @@ export default function ProductLibrary() {
         <div className="px-5" style={{ marginTop: '0px' }}>
           <div style={{
             borderTop: '1px solid hsla(38, 50%, 50%, 0.12)',
-            paddingTop: '16px',
+            paddingTop: '20px',
           }}>
             <p style={{
               fontFamily: "var(--font-body)",
@@ -651,7 +651,7 @@ export default function ProductLibrary() {
               letterSpacing: '1.5px',
               textTransform: 'uppercase',
               color: '#6B5E52',
-              marginBottom: '12px',
+              marginBottom: '16px',
             }}>
               För er som par
             </p>
@@ -664,7 +664,7 @@ export default function ProductLibrary() {
               opacity: 0.7,
               lineHeight: 1.6,
               textAlign: 'center',
-              marginBottom: '16px',
+              marginBottom: '20px',
             }}>
               Du tar hand om samtalen med barnen — nu är det er tur
             </p>
