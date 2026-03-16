@@ -784,7 +784,7 @@ export default function ProductLibrary() {
                   lineHeight: 1.4,
                   textShadow: '0 0 10px rgba(46, 34, 51, 0.8)',
                 }}>
-                  22 samtal för er relation
+                  22 samtal för er som vill stanna kvar
                 </p>
               </div>
             </motion.div>
