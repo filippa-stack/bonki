@@ -186,7 +186,7 @@ export function useStillUsHome(): StillUsHomeState {
       const maintenanceCardIndex = cs.maintenance_card_index ?? 0;
       const maintenanceLastDelivered = cs.maintenance_last_delivered;
       const maintenanceAvailable = !!maintenanceLastDelivered; // simplified
-      const tillbakaCard = TILLBAKA_CARDS[maintenanceCardIndex];
+      const tillbakaCard = tillbakaCards[maintenanceCardIndex];
       const maintenanceTillbakaTitle = tillbakaCard?.title ?? '';
       let maintenanceDaysUntilNext: number | null = null;
       if (maintenanceLastDelivered) {
