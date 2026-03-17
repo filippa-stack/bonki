@@ -89,14 +89,14 @@ const ILLUSTRATION_OFFSET: Record<string, { top: string; right: string; bottom: 
   syskonkort: { top: '-25%', right: '0%', bottom: '-20%' },
 };
 
-/** Illustration opacities — high for dramatic impact, tuned per visual density */
+/** Illustration opacities — pushed high for max POP */
 const ILLUSTRATION_OPACITY: Record<string, number> = {
-  jag_i_mig: 0.88,
-  jag_med_andra: 0.85,
-  jag_i_varlden: 0.88,
-  sexualitetskort: 0.85,
-  vardagskort: 0.85,
-  syskonkort: 0.85,
+  jag_i_mig: 0.92,
+  jag_med_andra: 0.92,
+  jag_i_varlden: 0.92,
+  sexualitetskort: 0.92,
+  vardagskort: 0.92,
+  syskonkort: 0.92,
 };
 
 /** Per-tile radial glow color behind illustration — creates 3D depth */
