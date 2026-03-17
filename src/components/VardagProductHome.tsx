@@ -78,7 +78,7 @@ export default function VardagProductHome({ product }: { product: ProductManifes
         {/* Extended 85% scrim with extra mid-stop for smooth blend */}
         <div style={{
           position: 'absolute', bottom: 0, left: 0, right: 0, height: '85%',
-          background: `linear-gradient(to top, ${BG} 0%, ${BG}F2 18%, rgba(6,32,48,0.85) 35%, rgba(10,74,106,0.5) 60%, rgba(10,74,106,0.15) 80%, transparent 100%)`,
+          background: `linear-gradient(to top, ${BG} 0%, ${BG}F2 18%, rgba(14,34,38,0.85) 35%, rgba(32,72,78,0.5) 60%, rgba(32,72,78,0.15) 80%, transparent 100%)`,
           pointerEvents: 'none',
         }} />
       </motion.div>

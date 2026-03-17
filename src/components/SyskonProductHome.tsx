@@ -79,7 +79,7 @@ export default function SyskonProductHome({ product }: { product: ProductManifes
         {/* Extended scrim with smooth blend */}
         <div style={{
           position: 'absolute', bottom: 0, left: 0, right: 0, height: '85%',
-          background: `linear-gradient(to top, ${BG} 0%, ${BG}F2 18%, rgba(10,40,38,0.85) 35%, rgba(26,90,88,0.5) 60%, rgba(26,90,88,0.15) 80%, transparent 100%)`,
+          background: `linear-gradient(to top, ${BG} 0%, ${BG}F2 18%, rgba(42,26,16,0.85) 35%, rgba(110,62,38,0.5) 60%, rgba(142,82,52,0.15) 80%, transparent 100%)`,
           pointerEvents: 'none',
         }} />
       </motion.div>

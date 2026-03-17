@@ -83,7 +83,7 @@ export default function JagMedAndraProductHome({ product }: { product: ProductMa
         {/* Multi-stop scrim: product color mid-blend, then Midnight Ink */}
         <div style={{
           position: 'absolute', bottom: 0, left: 0, right: 0, height: '88%',
-          background: `linear-gradient(to top, ${BG} 0%, ${BG}F5 15%, rgba(26,26,46,0.88) 30%, rgba(90,26,128,0.45) 55%, rgba(139,47,198,0.15) 75%, transparent 100%)`,
+          background: `linear-gradient(to top, ${BG} 0%, ${BG}F5 15%, rgba(42,30,20,0.88) 30%, rgba(138,96,54,0.45) 55%, rgba(172,122,68,0.15) 75%, transparent 100%)`,
           pointerEvents: 'none',
         }} />
       </motion.div>
