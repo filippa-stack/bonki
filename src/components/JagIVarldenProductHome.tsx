@@ -12,13 +12,13 @@ import { useCardImage } from '@/hooks/useCardImage';
 const EASE = [0.4, 0.0, 0.2, 1] as const;
 const BG = '#121C1E';
 const ACCENT_COLOR = '#6A9A9E';
-const TILE_LIGHT = '#26383A';
+const TILE_LIGHT = '#344452';
 
 const ORDERED_TILES = [
-  { id: 'jiv-min-vardag', bg: '#26383A', sub: 'Det som fyller dina dagar' },
-  { id: 'jiv-vem-jag-ar', bg: '#1E2E30', sub: 'Det som förändras just nu' },
-  { id: 'jiv-jag-och-andra', bg: '#182628', sub: 'Hur vi påverkar varandra' },
-  { id: 'jiv-jag-i-samhallet', bg: '#121E20', sub: 'Normer, rättvisa och din röst' },
+  { id: 'jiv-min-vardag', bg: '#344452', sub: 'Det som fyller dina dagar' },
+  { id: 'jiv-vem-jag-ar', bg: '#2A3844', sub: 'Det som förändras just nu' },
+  { id: 'jiv-jag-och-andra', bg: '#222E38', sub: 'Hur vi påverkar varandra' },
+  { id: 'jiv-jag-i-samhallet', bg: '#1A242E', sub: 'Normer, rättvisa och din röst' },
   { id: 'jiv-det-stora-sammanhanget', bg: '#0C1416', sub: 'Bortom det du ser' },
 ];
 
