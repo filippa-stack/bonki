@@ -21,7 +21,6 @@ import MobileOnlyGate from "@/components/MobileOnlyGate";
 
 import Index from "./pages/Index";
 
-
 import Category from "./pages/Category";
 import CardView from "./pages/CardView";
 import CardPreview from "./pages/CardPreview";
@@ -36,6 +35,22 @@ import NotFound from "./pages/NotFound";
 import ScreenshotExport from "./pages/ScreenshotExport";
 import AnalyticsDashboard from "./pages/AnalyticsDashboard";
 import { useCaptureController } from "@/hooks/useCaptureController";
+
+// Still Us v2.5 route pages
+import {
+  CheckInPage,
+  CheckInHandoffPage,
+  FormatPreviewPage,
+  SharePage,
+  Tier2SetupPage,
+  SessionStartPage,
+  Session1CompletePage,
+  Session2StartPage,
+  Session2LivePage,
+  CardCompletePage,
+  TillbakaPage,
+  CeremonyPage,
+} from "./pages/still-us-routes";
 
 const queryClient = new QueryClient();
 
