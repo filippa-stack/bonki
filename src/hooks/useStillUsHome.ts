@@ -14,6 +14,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { useCoupleSpaceContext } from '@/contexts/CoupleSpaceContext';
 import { TOTAL_PROGRAM_CARDS, CARD_SEQUENCE, LAYERS, DORMANCY_THRESHOLD_DAYS } from '@/data/stillUsSequence';
+import tillbakaCards from '@/data/tillbakaCards';
 import { TILLBAKA_CARDS } from '@/data/tillbakaCards';
 
 // ── Action card state enum ──
