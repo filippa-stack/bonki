@@ -44,13 +44,22 @@ const TAGLINES: Record<string, string> = {
 
 /** Creature-color tile backgrounds — dark/mid values from master palette */
 const TILE_COLORS: Record<string, string> = {
-  jag_i_mig: '#E8C96E',       // The Lantern — richer gold, warm internal light
-  jag_med_andra: '#3E4668',   // The Twilight — deeper, more saturated dusk
+  jag_i_mig: '#D4A03A',       // The Lantern — rich deep gold
+  jag_med_andra: '#3E4668',   // The Twilight — dusty dusk purple
   jag_i_varlden: '#1F4D2A',   // Deep Canopy (unchanged)
-  sexualitetskort: '#924535',  // The Earth — warmer, more alive terracotta
-  vardagskort: '#2A4235',      // The Moss — darker, richer forest
-  syskonkort: '#7A8B52',       // The Leaf — more saturated olive-sage
+  sexualitetskort: '#924535',  // The Earth — warm terracotta
+  vardagskort: '#3D3028',      // Warm Earth — bark/soil, distinct from JIV
+  syskonkort: '#5A7247',       // The Leaf — rich forest sage
 };
+
+/** Luminance helper — determines if a tile needs light or dark treatment */
+function isLightTile(hex: string): boolean {
+  const r = parseInt(hex.slice(1, 3), 16) / 255;
+  const g = parseInt(hex.slice(3, 5), 16) / 255;
+  const b = parseInt(hex.slice(5, 7), 16) / 255;
+  const L = 0.2126 * r + 0.7152 * g + 0.0722 * b;
+  return L > 0.25;
+}
 
 /** Helper: hex → rgba */
 function hexToRgba(hex: string, alpha: number): string {
