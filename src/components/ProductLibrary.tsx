@@ -132,14 +132,14 @@ const ACCENT_COLORS: Record<string, string> = {
   syskonkort: '#FDF6E3',      // Light on sienna
 };
 
-/** Tagline colors — tinted to each tile's family */
+/** Tagline colors — tinted to each tile's family, alpha pre-compensated for ×0.8 opacity layer */
 const TAGLINE_COLORS: Record<string, string> = {
-  jag_i_mig: 'hsla(178, 30%, 82%, 0.80)',     // Soft teal tint
-  jag_med_andra: 'hsla(30, 30%, 28%, 0.65)',   // Warm bark on amber
-  jag_i_varlden: 'hsla(90, 25%, 82%, 0.80)',   // Sage-green tint
-  sexualitetskort: 'hsla(10, 25%, 30%, 0.60)', // Warm dark on rose
-  vardagskort: 'hsla(185, 30%, 78%, 0.75)',     // Teal tint on petrol
-  syskonkort: 'hsla(25, 35%, 82%, 0.80)',       // Warm cream on sienna
+  jag_i_mig: 'hsla(178, 30%, 82%, 0.90)',     // Soft teal tint on dark teal
+  jag_med_andra: 'hsla(30, 30%, 20%, 0.95)',   // Deep warm brown on amber — needs high alpha
+  jag_i_varlden: 'hsla(90, 20%, 82%, 0.90)',   // Sage-green tint on olive
+  sexualitetskort: 'hsla(10, 22%, 22%, 0.92)', // Deep warm on dusty rose — needs high alpha
+  vardagskort: 'hsla(185, 30%, 78%, 0.88)',     // Teal tint on dark petrol
+  syskonkort: 'hsla(25, 35%, 82%, 0.90)',       // Warm cream on sienna
 };
 
 /** Build badge text: "X ämnen" — no pricing on individual tiles */
