@@ -99,44 +99,46 @@ const ILLUSTRATION_OPACITY: Record<string, number> = {
   syskonkort: 0.92,
 };
 
-/** Per-tile radial glow color behind illustration — creates 3D depth */
+/** Per-tile radial glow color behind illustration — creates 3D depth
+ *  Calibrated for mid-tone tile palette (Mar 2026): complementary hue glow */
 const ILLUSTRATION_GLOW: Record<string, string> = {
-  jag_i_mig: 'rgba(255, 220, 120, 0.55)',         // Warm golden halo — bright glow on light tile creates luminous lift
-  jag_med_andra: 'rgba(100, 110, 220, 0.65)',      // Boosted indigo-blue glow for depth on midnight bg
-  jag_i_varlden: 'rgba(60, 200, 100, 0.60)',       // Boosted emerald glow against dark forest bg
-  sexualitetskort: 'rgba(240, 100, 60, 0.70)',     // Very strong warm orange — lifts off near-black bg
-  vardagskort: 'rgba(200, 80, 200, 0.65)',          // Boosted magenta glow — needs punch on #060A0E
-  syskonkort: 'rgba(80, 180, 255, 0.65)',           // Bright cyan-blue — contrasts #001B44 navy
+  jag_i_mig: 'rgba(240, 190, 80, 0.50)',           // Warm gold on deep teal — classic complementary
+  jag_med_andra: 'rgba(160, 130, 220, 0.45)',      // Cool lavender on warm amber — subtle contrast
+  jag_i_varlden: 'rgba(140, 210, 80, 0.50)',       // Bright lime on sage-olive — vivid pop
+  sexualitetskort: 'rgba(240, 120, 100, 0.50)',    // Warm coral on dusty rose — tonal lift
+  vardagskort: 'rgba(220, 100, 180, 0.60)',         // Bright magenta on dark petrol — needs punch
+  syskonkort: 'rgba(80, 200, 220, 0.50)',           // Cool aqua on warm sienna — temperature contrast
 };
 
-/** Per-tile drop-shadow + saturation boost — makes character pop from bg */
+/** Per-tile drop-shadow + saturation boost — makes character pop from bg
+ *  Shadow colors derived from each tile's own bg for natural grounding */
 const ILLUSTRATION_SHADOW: Record<string, string> = {
-  jag_i_mig: 'saturate(1.35) contrast(1.2) drop-shadow(0 6px 18px rgba(180, 130, 20, 0.5)) drop-shadow(0 12px 36px rgba(200, 160, 40, 0.25)) drop-shadow(0 2px 4px rgba(0,0,0,0.2))',
-  jag_med_andra: 'saturate(1.4) brightness(1.3) drop-shadow(0 8px 24px rgba(0, 0, 40, 0.7)) drop-shadow(0 16px 48px rgba(70, 80, 180, 0.4)) drop-shadow(0 2px 4px rgba(0,0,0,0.45))',
-  jag_i_varlden: 'saturate(1.4) brightness(1.3) drop-shadow(0 8px 24px rgba(0, 20, 8, 0.7)) drop-shadow(0 16px 48px rgba(50, 140, 70, 0.35)) drop-shadow(0 2px 4px rgba(0,0,0,0.45))',
-  sexualitetskort: 'saturate(1.45) brightness(1.35) drop-shadow(0 8px 24px rgba(40, 8, 5, 0.75)) drop-shadow(0 16px 48px rgba(200, 70, 40, 0.4)) drop-shadow(0 2px 4px rgba(0,0,0,0.5))',
-  vardagskort: 'saturate(1.4) brightness(1.3) drop-shadow(0 8px 24px rgba(30, 6, 30, 0.75)) drop-shadow(0 16px 48px rgba(160, 60, 160, 0.4)) drop-shadow(0 2px 4px rgba(0,0,0,0.5))',
-  syskonkort: 'saturate(1.4) brightness(1.3) drop-shadow(0 8px 24px rgba(0, 15, 50, 0.75)) drop-shadow(0 16px 48px rgba(50, 120, 240, 0.4)) drop-shadow(0 2px 4px rgba(0,0,0,0.5))',
+  jag_i_mig: 'saturate(1.3) brightness(1.2) drop-shadow(0 6px 20px rgba(30, 50, 48, 0.6)) drop-shadow(0 14px 40px rgba(58, 98, 96, 0.3)) drop-shadow(0 2px 4px rgba(0,0,0,0.25))',
+  jag_med_andra: 'saturate(1.25) contrast(1.1) drop-shadow(0 6px 20px rgba(86, 61, 34, 0.6)) drop-shadow(0 14px 40px rgba(172, 122, 68, 0.3)) drop-shadow(0 2px 4px rgba(0,0,0,0.2))',
+  jag_i_varlden: 'saturate(1.3) brightness(1.15) drop-shadow(0 6px 20px rgba(54, 58, 49, 0.6)) drop-shadow(0 14px 40px rgba(108, 115, 98, 0.3)) drop-shadow(0 2px 4px rgba(0,0,0,0.25))',
+  sexualitetskort: 'saturate(1.3) brightness(1.15) drop-shadow(0 6px 20px rgba(84, 59, 54, 0.6)) drop-shadow(0 14px 40px rgba(168, 118, 108, 0.3)) drop-shadow(0 2px 4px rgba(0,0,0,0.2))',
+  vardagskort: 'saturate(1.4) brightness(1.3) drop-shadow(0 8px 24px rgba(16, 36, 39, 0.7)) drop-shadow(0 16px 48px rgba(32, 72, 78, 0.4)) drop-shadow(0 2px 4px rgba(0,0,0,0.4))',
+  syskonkort: 'saturate(1.3) brightness(1.2) drop-shadow(0 6px 20px rgba(71, 41, 26, 0.6)) drop-shadow(0 14px 40px rgba(142, 82, 52, 0.3)) drop-shadow(0 2px 4px rgba(0,0,0,0.25))',
 };
 
-/** Title colors — dark text on light tiles, light on dark */
+/** Title colors — dark text on lighter tiles, light on darker ones */
 const ACCENT_COLORS: Record<string, string> = {
-  jag_i_mig: '#2C2420',       // Bark on gold
-  jag_med_andra: '#FDF6E3',
-  jag_i_varlden: '#FDF6E3',
-  sexualitetskort: '#FDF6E3',
-  vardagskort: '#FDF6E3',
-  syskonkort: '#FDF6E3',
+  jag_i_mig: '#FDF6E3',       // Light on deep teal
+  jag_med_andra: '#2C2420',   // Bark on warm amber
+  jag_i_varlden: '#FDF6E3',   // Light on sage-olive
+  sexualitetskort: '#2C2420', // Bark on dusty rose
+  vardagskort: '#FDF6E3',     // Light on dark petrol
+  syskonkort: '#FDF6E3',      // Light on sienna
 };
 
-/** Tagline colors for tiles */
+/** Tagline colors — tinted to each tile's family */
 const TAGLINE_COLORS: Record<string, string> = {
-  jag_i_mig: 'hsla(30, 25%, 22%, 0.70)',
-  jag_med_andra: 'hsla(280, 40%, 85%, 0.75)',
-  jag_i_varlden: 'hsla(140, 35%, 80%, 0.75)',
-  sexualitetskort: 'hsla(5, 50%, 82%, 0.75)',
-  vardagskort: 'hsla(25, 30%, 78%, 0.75)',
-  syskonkort: 'hsla(100, 30%, 82%, 0.75)',
+  jag_i_mig: 'hsla(178, 30%, 82%, 0.80)',     // Soft teal tint
+  jag_med_andra: 'hsla(30, 30%, 28%, 0.65)',   // Warm bark on amber
+  jag_i_varlden: 'hsla(90, 25%, 82%, 0.80)',   // Sage-green tint
+  sexualitetskort: 'hsla(10, 25%, 30%, 0.60)', // Warm dark on rose
+  vardagskort: 'hsla(185, 30%, 78%, 0.75)',     // Teal tint on petrol
+  syskonkort: 'hsla(25, 35%, 82%, 0.80)',       // Warm cream on sienna
 };
 
 /** Build badge text: "X ämnen" — no pricing on individual tiles */
