@@ -99,6 +99,26 @@ const ILLUSTRATION_OPACITY: Record<string, number> = {
   syskonkort: 0.85,
 };
 
+/** Per-tile radial glow color behind illustration — creates 3D depth */
+const ILLUSTRATION_GLOW: Record<string, string> = {
+  jag_i_mig: 'rgba(180, 140, 40, 0.35)',
+  jag_med_andra: 'rgba(80, 90, 160, 0.40)',
+  jag_i_varlden: 'rgba(58, 133, 72, 0.38)',
+  sexualitetskort: 'rgba(160, 60, 50, 0.40)',
+  vardagskort: 'rgba(140, 50, 140, 0.38)',
+  syskonkort: 'rgba(40, 100, 180, 0.38)',
+};
+
+/** Per-tile drop-shadow for illustration — makes character pop from bg */
+const ILLUSTRATION_SHADOW: Record<string, string> = {
+  jag_i_mig: 'drop-shadow(0 8px 20px rgba(60, 40, 0, 0.45)) drop-shadow(0 2px 6px rgba(0,0,0,0.25))',
+  jag_med_andra: 'drop-shadow(0 8px 20px rgba(10, 10, 40, 0.55)) drop-shadow(0 2px 6px rgba(0,0,0,0.3))',
+  jag_i_varlden: 'drop-shadow(0 8px 20px rgba(5, 20, 10, 0.55)) drop-shadow(0 2px 6px rgba(0,0,0,0.3))',
+  sexualitetskort: 'drop-shadow(0 8px 20px rgba(20, 5, 5, 0.55)) drop-shadow(0 2px 6px rgba(0,0,0,0.3))',
+  vardagskort: 'drop-shadow(0 8px 20px rgba(30, 8, 30, 0.55)) drop-shadow(0 2px 6px rgba(0,0,0,0.3))',
+  syskonkort: 'drop-shadow(0 8px 20px rgba(0, 15, 40, 0.55)) drop-shadow(0 2px 6px rgba(0,0,0,0.3))',
+};
+
 /** Title colors — dark text on light tiles, light on dark */
 const ACCENT_COLORS: Record<string, string> = {
   jag_i_mig: '#2C2420',       // Bark on gold
@@ -267,8 +287,8 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
             ].join(', '),
       }}
     >
-      {/* Inner warmth glow — JIV only */}
-      {productId === 'jag_i_varlden' && (
+      {/* Radial glow behind illustration — per-product 3D depth */}
+      {illustration && productId && ILLUSTRATION_GLOW[productId] && (
         <div
           aria-hidden="true"
           style={{
@@ -276,11 +296,11 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
             inset: 0,
             zIndex: 0,
             pointerEvents: 'none',
-            background: 'radial-gradient(ellipse 70% 80% at 60% 50%, rgba(58, 133, 72, 0.35) 0%, transparent 70%)',
+            background: `radial-gradient(ellipse 70% 80% at 65% 55%, ${ILLUSTRATION_GLOW[productId]} 0%, transparent 70%)`,
           }}
         />
       )}
-      {/* Illustration — right-aligned, bleeds off edge dramatically */}
+      {/* Illustration — right-aligned, bleeds off edge dramatically, with depth shadow */}
       {illustration && (
         <div
           style={{
@@ -303,6 +323,7 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
               objectFit: 'contain',
               objectPosition: 'center bottom',
               opacity,
+              filter: productId ? (ILLUSTRATION_SHADOW[productId] ?? '') : '',
             }}
           />
         </div>
