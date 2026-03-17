@@ -48,7 +48,7 @@ const TILE_COLORS: Record<string, string> = {
   jag_med_andra: '#AC7A44',   // Warm amber — relational/togetherness theme
   jag_i_varlden: '#26383A',   // Dark teal-green — immersive world tone
   sexualitetskort: '#A8766C',  // Dusty rose — contrast separates figures at thumbnail
-  vardagskort: '#20484E',      // Dark petrol — lets bright pinks/greens/yellows sing
+  vardagskort: '#30483A',      // Dark forest green — grounded everyday tone
   syskonkort: '#8E5234',       // Sienna — warm wool blanket, from illustration palette
 };
 
