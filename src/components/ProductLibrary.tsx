@@ -44,7 +44,7 @@ const TAGLINES: Record<string, string> = {
 
 /** Creature-color tile backgrounds — dark/mid values from master palette */
 const TILE_COLORS: Record<string, string> = {
-  jag_i_mig: '#D4A03A',       // The Lantern — rich deep gold
+  jag_i_mig: '#EEF9D9',       // Soft spring green
   jag_med_andra: '#3E4668',   // The Twilight — dusty dusk purple
   jag_i_varlden: '#1F4D2A',   // Deep Canopy (unchanged)
   sexualitetskort: '#924535',  // The Earth — warm terracotta
