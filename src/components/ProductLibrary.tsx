@@ -35,8 +35,8 @@ const ILLUSTRATIONS: Record<string, string> = {
 
 const TAGLINES: Record<string, string> = {
   jag_i_mig: 'När känslor får ord',
-  jag_med_andra: 'Det svåra och det trygga',
-  jag_i_varlden: 'De stora frågorna',
+  jag_med_andra: 'Det trygga och det svåra',
+  jag_i_varlden: 'Världen vidgas',
   vardagskort: 'Det vanliga, på djupet',
   syskonkort: 'Band för livet',
   sexualitetskort: 'Kropp, gränser och identitet',

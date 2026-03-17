@@ -112,7 +112,7 @@ export default function JagIVarldenProductHome({ product }: { product: ProductMa
               marginTop: '6px',
               textShadow: `0 1px 16px rgba(0,0,0,0.8), 0 0 40px ${BG}, 0 0 80px ${BG}`,
             }}>
-              De stora frågorna
+              Världen vidgas
             </p>
             {/* Spacer — pushes action cards below hero face zone */}
             <div style={{ height: 'clamp(56px, 14vh, 100px)' }} />

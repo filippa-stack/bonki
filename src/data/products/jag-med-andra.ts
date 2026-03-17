@@ -638,7 +638,7 @@ export const jagMedAndraProduct: ProductManifest = {
   id: 'jag_med_andra',
   name: 'Jag med Andra',
   slug: 'jag-med-andra',
-  tagline: 'Det svåra och det trygga.',
+  tagline: 'Det trygga och det svåra.',
   description: 'Utforska relationer och sociala sammanhang',
   headerTitle: 'Tillsammans',
   accentColor: 'hsl(32, 44%, 47%)',
