@@ -46,7 +46,7 @@ const TAGLINES: Record<string, string> = {
 const TILE_COLORS: Record<string, string> = {
   jag_i_mig: '#3A6260',       // Deep teal — from the character's clothing
   jag_med_andra: '#AC7A44',   // Warm amber — relational/togetherness theme
-  jag_i_varlden: '#26383A',   // Dark teal-green — immersive world tone
+  jag_i_varlden: '#344452',   // Slate blue — immersive world tone
   sexualitetskort: '#A8766C',  // Dusty rose — contrast separates figures at thumbnail
   vardagskort: '#3C4A30',      // Warm olive — earthy everyday tone, separates from JIV's cool teal
   syskonkort: '#8E5234',       // Sienna — warm wool blanket, from illustration palette
