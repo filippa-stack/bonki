@@ -78,7 +78,7 @@ export default function BottomNav() {
           {items.map((item) => {
             const active = item.match(pathname, search);
             const Icon = item.icon;
-            const color = active ? LANTERN_GLOW : DRIFTWOOD;
+            const color = active ? BONKI_ORANGE : DRIFTWOOD;
 
             return (
               <motion.button
