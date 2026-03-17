@@ -138,7 +138,7 @@ const TAGLINE_COLORS: Record<string, string> = {
   jag_med_andra: 'hsla(30, 30%, 20%, 0.95)',   // Deep warm brown on amber — needs high alpha
   jag_i_varlden: 'hsla(184, 25%, 78%, 0.90)',   // Cool teal tint on dark teal-green
   sexualitetskort: 'hsla(10, 22%, 22%, 0.92)', // Deep warm on dusty rose — needs high alpha
-  vardagskort: 'hsla(145, 22%, 78%, 0.90)',     // Soft green tint on dark forest
+  vardagskort: 'hsla(90, 20%, 78%, 0.90)',          // Soft olive tint on warm olive
   syskonkort: 'hsla(25, 35%, 82%, 0.90)',       // Warm cream on sienna
 };
 
