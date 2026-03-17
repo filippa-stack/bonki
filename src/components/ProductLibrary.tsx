@@ -42,14 +42,14 @@ const TAGLINES: Record<string, string> = {
   sexualitetskort: 'Kropp, gränser och identitet',
 };
 
-/** Creature-color tile backgrounds — dark/mid values from master palette */
+/** Creature-color tile backgrounds — chosen to complement each illustration */
 const TILE_COLORS: Record<string, string> = {
-  jag_i_mig: '#FFEC91',       // Warm sunshine yellow
-  jag_med_andra: '#121626',   // Deep midnight blue
-  jag_i_varlden: '#0B1A16',   // Deep forest night
-  sexualitetskort: '#1D0D0D',  // Deep dark burgundy
-  vardagskort: '#060A0E',      // Near-black ink
-  syskonkort: '#001B44',       // Deep navy
+  jag_i_mig: '#3A6260',       // Deep teal — from the character's clothing
+  jag_med_andra: '#AC7A44',   // Warm amber — relational/togetherness theme
+  jag_i_varlden: '#6C7362',   // Sage-olive — earthy, lets city scene pop
+  sexualitetskort: '#A8766C',  // Dusty rose — contrast separates figures at thumbnail
+  vardagskort: '#20484E',      // Dark petrol — lets bright pinks/greens/yellows sing
+  syskonkort: '#8E5234',       // Sienna — warm wool blanket, from illustration palette
 };
 
 /** Luminance helper — determines if a tile needs light or dark treatment */
@@ -736,7 +736,7 @@ export default function ProductLibrary() {
               style={{
                 borderRadius: '22px',
                 backgroundImage: 'linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0) 50%, rgba(0,0,0,0.08) 100%)',
-                backgroundColor: '#2E2233',
+                backgroundColor: '#263041',
                 height: '240px',
                 display: 'flex',
                 flexDirection: 'column',
