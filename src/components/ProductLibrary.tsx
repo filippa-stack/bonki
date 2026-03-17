@@ -48,7 +48,7 @@ const TILE_COLORS: Record<string, string> = {
   jag_med_andra: '#3E4668',   // The Twilight — dusty dusk purple
   jag_i_varlden: '#1F4D2A',   // Deep Canopy (unchanged)
   sexualitetskort: '#924535',  // The Earth — warm terracotta
-  vardagskort: '#3D3028',      // Warm Earth — bark/soil, distinct from JIV
+  vardagskort: '#3E103F',      // Deep plum — distinct from JIV
   syskonkort: '#5A7247',       // The Leaf — rich forest sage
 };
 
