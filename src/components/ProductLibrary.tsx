@@ -845,7 +845,7 @@ export default function ProductLibrary() {
           transition={{ delay: 0.1, duration: 0.6 }}
           style={{
             textAlign: 'center',
-            padding: '4px 32px 20px',
+            padding: '4px 32px 4px',
             position: 'relative',
             zIndex: 1,
           }}
