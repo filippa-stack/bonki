@@ -1,263 +1,316 @@
-import { RECOMMENDED_CATEGORY_ORDER } from '@/lib/recommendedOrder';
+/**
+ * Still Us Home — v2.5 linear layout.
+ *
+ * Layout: Hero → Title → JourneyProgress → ActionCard
+ * No accordion layers. No category tiles.
+ * Action card derives from 10 possible states via useStillUsHome.
+ */
+
 import { useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
-import React, { useMemo, useState, useEffect } from 'react';
-import { useOptimisticCompletions } from '@/contexts/OptimisticCompletionsContext';
-import { useApp } from '@/contexts/AppContext';
+import { motion, AnimatePresence } from 'framer-motion';
+import React, { useState } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useCoupleSpaceContext } from '@/contexts/CoupleSpaceContext';
-import { Check, ChevronDown } from 'lucide-react';
-import { useThemeVars } from '@/hooks/useThemeVars';
-import { supabase } from '@/integrations/supabase/client';
-import { useDevState } from '@/contexts/DevStateContext';
-import { useAppMode } from '@/hooks/useAppMode';
-import { useNormalizedSessionContext } from '@/contexts/NormalizedSessionContext';
-import { useSpaceSnapshot } from '@/hooks/useSpaceSnapshot';
-import { useVerdigrisTheme } from '@/components/VerdigrisAtmosphere';
-import UnifiedResumeBanner from '@/components/UnifiedResumeBanner';
+import { useStillUsHome, type ActionCardKind } from '@/hooks/useStillUsHome';
+import { EASE, EMOTION, PRESS, BEAT_1 } from '@/lib/motion';
+import {
+  MIDNIGHT_INK, EMBER_NIGHT, EMBER_MID, EMBER_GLOW,
+  DEEP_SAFFRON, LANTERN_GLOW, DRIFTWOOD,
+} from '@/lib/palette';
+import { TOTAL_PROGRAM_CARDS, CARD_SEQUENCE } from '@/data/stillUsSequence';
+import JourneyProgress from '@/components/still-us/JourneyProgress';
+import MaintenanceActionCard from '@/components/still-us/MaintenanceActionCard';
+import ReturnRitual from '@/components/still-us/ReturnRitual';
 import ProductHomeBackButton from '@/components/ProductHomeBackButton';
-import { categories as allCategories, cards as allCards } from '@/data/content';
 import stillUsIllustration from '@/assets/illustration-still-us-home.png';
-import { STILL_US_CREATURES } from '@/lib/stillUsCreatures';
 
-/* ── Color tokens ── */
-const MIDNIGHT_INK = '#1A1A2E';
-const EMBER_NIGHT = '#2E2233';
-const LANTERN_GLOW = '#FDF6E3';
-const DRIFTWOOD = '#6B5E52';
-const DEEP_SAFFRON = '#D4A03A';
-const EMBER_MID = '#473454';
-const EMBER_DEEP = '#3A2844';
+/* ── Animation presets ── */
+const fadeUp = {
+  hidden: { opacity: 0, y: 16 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.75, ease: [0.4, 0.0, 0.2, 1] as [number, number, number, number] } },
+};
+const containerVariants = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.11, delayChildren: 0.35 } },
+};
 
-const EASE = [0.4, 0.0, 0.2, 1] as const;
-const containerVariants = { hidden: {}, visible: { transition: { staggerChildren: 0.11, delayChildren: 0.35 } } };
-const titleVariants = { hidden: { opacity: 0, y: 16 }, visible: { opacity: 1, y: 0, transition: { duration: 0.75, ease: EASE } } };
-
-/* ── Layer definitions — depth-graded tile colors ── */
-const LAYERS: {
-  label: string;
-  categoryIds: string[];
-  tileBg: string;
-  tileText: string;
-  progressColor: string;
-}[] = [
-  {
-    label: 'Grunden',
-    categoryIds: ['emotional-intimacy', 'communication', 'category-8'],
-    tileBg: '#4F3660',       // Warm purple — lightest layer, toned down for cohesion
-    tileText: LANTERN_GLOW,
-    progressColor: DEEP_SAFFRON,
-  },
-  {
-    label: 'Det som formar er',
-    categoryIds: ['individual-needs', 'parenting-together', 'category-9'],
-    tileBg: EMBER_MID,       // Mid depth
-    tileText: LANTERN_GLOW,
-    progressColor: DEEP_SAFFRON,
-  },
-  {
-    label: 'Djupet',
-    categoryIds: ['category-6', 'daily-life', 'category-10'],
-    tileBg: EMBER_DEEP,      // Deepest
-    tileText: LANTERN_GLOW,
-    progressColor: DEEP_SAFFRON,
-  },
-];
-
-/** Expandable layer accordion — warm editorial style */
-function AccordionLayer({
-  label, completedCount, totalCount, allDone, defaultOpen, delay, children,
+/* ── Action Card rendering ── */
+function ActionCard({
+  kind,
+  cardTitle,
+  partnerName,
+  sessionPaused,
+  onAction,
 }: {
-  label: string;
-  completedCount: number;
-  totalCount: number;
-  allDone: boolean;
-  defaultOpen: boolean;
-  delay: number;
-  children: React.ReactNode;
+  kind: ActionCardKind;
+  cardTitle: string;
+  partnerName: string | null;
+  sessionPaused: boolean;
+  onAction: (action: string) => void;
 }) {
-  const [open, setOpen] = useState(defaultOpen);
+  if (kind === 'loading') {
+    return (
+      <div
+        style={{
+          height: '100px',
+          borderRadius: '22px',
+          background: `${EMBER_MID}60`,
+        }}
+        className="animate-pulse"
+      />
+    );
+  }
+
+  const configs: Record<ActionCardKind, {
+    label: string;
+    title: string;
+    subtitle?: string;
+    cta: string;
+    action: string;
+    accent?: boolean;
+  }> = {
+    loading: { label: '', title: '', cta: '', action: '' },
+    slider_not_started: {
+      label: 'Veckans check-in',
+      title: cardTitle,
+      subtitle: 'Reflektera var för sig — kort och stilla.',
+      cta: 'Starta check-in',
+      action: 'start_slider',
+      accent: true,
+    },
+    slider_waiting: {
+      label: 'Väntar på partner',
+      title: `${partnerName ?? 'Din partner'} har inte reflekterat ännu.`,
+      subtitle: 'Ni fortsätter så snart ni båda är klara.',
+      cta: '',
+      action: '',
+    },
+    slider_ready: {
+      label: 'Redo att prata',
+      title: cardTitle,
+      subtitle: 'Ni har båda reflekterat. Dags att prata.',
+      cta: 'Starta samtal',
+      action: 'start_session1',
+      accent: true,
+    },
+    session1_active: {
+      label: sessionPaused ? 'Pausat samtal' : 'Samtal pågår',
+      title: cardTitle,
+      subtitle: sessionPaused ? 'Fortsätt där ni slutade.' : 'Del 1 av 2.',
+      cta: sessionPaused ? 'Fortsätt' : 'Öppna samtal',
+      action: 'resume_session1',
+    },
+    session1_complete: {
+      label: 'Del 1 klar',
+      title: cardTitle,
+      subtitle: 'Redo för del 2 — ta er tid.',
+      cta: 'Starta del 2',
+      action: 'start_session2',
+      accent: true,
+    },
+    session2_active: {
+      label: sessionPaused ? 'Pausat samtal' : 'Del 2 pågår',
+      title: cardTitle,
+      subtitle: sessionPaused ? 'Fortsätt där ni slutade.' : 'Djupare in.',
+      cta: sessionPaused ? 'Fortsätt' : 'Öppna samtal',
+      action: 'resume_session2',
+    },
+    card_complete: {
+      label: 'Kort klart!',
+      title: cardTitle,
+      subtitle: 'Bra jobbat. Nästa vecka väntar.',
+      cta: 'Se sammanfattning',
+      action: 'view_complete',
+    },
+    tier2_setup: {
+      label: 'Bjud in din partner',
+      title: 'Vad heter din partner?',
+      subtitle: 'Vi behöver ett namn för att personalisera upplevelsen.',
+      cta: 'Fortsätt',
+      action: 'tier2_setup',
+    },
+    ceremony: {
+      label: 'Programmet klart',
+      title: 'Ni har gått hela vägen.',
+      subtitle: '22 veckor av samtal — det är stort.',
+      cta: 'Se er resa',
+      action: 'ceremony',
+      accent: true,
+    },
+    maintenance: {
+      label: 'Tillbaka',
+      title: '',
+      cta: '',
+      action: 'maintenance',
+    },
+    migration_pending: {
+      label: 'Uppdatering pågår',
+      title: 'Vi uppgraderar er resa.',
+      subtitle: 'Det här tar bara en stund.',
+      cta: '',
+      action: '',
+    },
+  };
+
+  const cfg = configs[kind];
+  if (!cfg) return null;
+
+  // Maintenance uses its own card component
+  if (kind === 'maintenance') return null;
+
+  const hasCta = !!cfg.cta;
 
   return (
     <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ delay, duration: 0.5, ease: EASE }}
-      style={{ marginTop: '28px', paddingLeft: '4px', paddingRight: '4px' }}
+      initial={{ opacity: 0, y: 12 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.25, duration: 0.6, ease: [...EASE] }}
+      style={{
+        width: '100%',
+        position: 'relative',
+        padding: '22px',
+        borderRadius: '22px',
+        overflow: 'hidden',
+        background: `linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.04) 35%, transparent 55%, rgba(0,0,0,0.08) 100%), ${EMBER_MID}`,
+        border: cfg.accent
+          ? `1.5px solid ${DEEP_SAFFRON}50`
+          : `1.5px solid rgba(255, 255, 255, 0.20)`,
+        borderLeft: cfg.accent ? `3.5px solid ${DEEP_SAFFRON}` : undefined,
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '6px',
+        boxShadow: cfg.accent
+          ? `0 6px 20px rgba(0,0,0,0.30), inset 0 2px 4px rgba(255,255,255,0.20), 0 0 32px ${DEEP_SAFFRON}22`
+          : '0 6px 20px rgba(0,0,0,0.30), inset 0 2px 4px rgba(255,255,255,0.15)',
+      }}
     >
-      <button
-        onClick={() => setOpen(o => !o)}
-        style={{
-          width: '100%',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          padding: '0 8px 12px',
-          background: 'none',
-          border: 'none',
-          cursor: 'pointer',
-          WebkitTapHighlightColor: 'transparent',
-        }}
-      >
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <span style={{
-            fontFamily: 'var(--font-display)',
-            fontVariationSettings: "'opsz' 14",
-            fontSize: '14px',
-            fontWeight: 500,
-            letterSpacing: '0.5px',
-            color: allDone ? DEEP_SAFFRON : `${LANTERN_GLOW}90`,
-          }}>
-            {label}
-          </span>
-          {allDone && (
-            <div style={{
-              width: '16px',
-              height: '16px',
-              borderRadius: '50%',
-              backgroundColor: DEEP_SAFFRON,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}>
-              <Check size={10} color={MIDNIGHT_INK} strokeWidth={3} />
-            </div>
-          )}
-        </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          {!allDone && (
-            <span style={{
-              fontFamily: 'var(--font-body)',
-              fontSize: '11px',
-              color: `${LANTERN_GLOW}50`,
-            }}>
-              {completedCount} av {totalCount}
-            </span>
-          )}
-          <motion.div
-            animate={{ rotate: open ? 180 : 0 }}
-            transition={{ duration: 0.25 }}
-          >
-            <ChevronDown size={14} color={`${LANTERN_GLOW}60`} />
-          </motion.div>
-        </div>
-      </button>
+      <span style={{
+        fontFamily: 'var(--font-body)',
+        fontSize: '11px',
+        fontWeight: 600,
+        letterSpacing: '1.5px',
+        textTransform: 'uppercase',
+        color: kind === 'slider_waiting' ? DRIFTWOOD : DEEP_SAFFRON,
+        opacity: 0.85,
+      }}>
+        {cfg.label}
+      </span>
 
-      <motion.div
-        initial={false}
-        animate={{
-          height: open ? 'auto' : 0,
-          opacity: open ? 1 : 0,
-        }}
-        transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
-        style={{ overflow: 'hidden' }}
-      >
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', paddingBottom: '4px' }}>
-          {children}
-        </div>
-      </motion.div>
+      <span style={{
+        fontFamily: 'var(--font-display)',
+        fontVariationSettings: "'opsz' 20",
+        fontSize: '20px',
+        fontWeight: 500,
+        color: LANTERN_GLOW,
+        lineHeight: 1.3,
+      }}>
+        {cfg.title}
+      </span>
+
+      {cfg.subtitle && (
+        <span style={{
+          fontFamily: 'var(--font-body)',
+          fontSize: '13px',
+          color: `${LANTERN_GLOW}70`,
+          marginTop: '2px',
+        }}>
+          {cfg.subtitle}
+        </span>
+      )}
+
+      {hasCta && (
+        <motion.button
+          whileTap={{ scale: 0.97 }}
+          transition={{ duration: PRESS, ease: [...EASE] }}
+          onClick={() => onAction(cfg.action)}
+          style={{
+            marginTop: '10px',
+            alignSelf: 'flex-start',
+            padding: '10px 24px',
+            borderRadius: '14px',
+            border: 'none',
+            cursor: 'pointer',
+            fontFamily: 'var(--font-body)',
+            fontSize: '14px',
+            fontWeight: 600,
+            backgroundColor: cfg.accent ? DEEP_SAFFRON : `${LANTERN_GLOW}15`,
+            color: cfg.accent ? MIDNIGHT_INK : LANTERN_GLOW,
+            boxShadow: cfg.accent ? `0 4px 16px ${DEEP_SAFFRON}40` : 'none',
+          }}
+        >
+          {cfg.cta}
+        </motion.button>
+      )}
     </motion.div>
   );
 }
 
+/* ── Main Home component ── */
 export default function Home() {
   const navigate = useNavigate();
-  useThemeVars();
-  // Don't apply verdigris theme — Still Us home uses Ember Night, not teal
-  const { categories, getCardById, cards } = useApp();
   const { user } = useAuth();
   const { space } = useCoupleSpaceContext();
-  const { snapshot } = useSpaceSnapshot(user?.id ?? null, space?.id ?? null);
-  const devState = useDevState();
-  const appModeState = useAppMode();
-  const normalizedSession = useNormalizedSessionContext();
-  const { mode } = appModeState;
+  const homeState = useStillUsHome();
+  const [showReturnRitual, setShowReturnRitual] = useState(false);
 
-  const { optimisticCardIds } = useOptimisticCompletions();
-  const [serverCompletedCardIds, setServerCompletedCardIds] = useState<string[]>([]);
+  // Show return ritual if dormant and not yet shown for this card
+  const shouldShowRitual = homeState.isDormant && !homeState.returnRitualShown && !homeState.loading;
 
-  useEffect(() => {
-    if (!space?.id) return;
-    let cancelled = false;
-    supabase
-      .from('couple_sessions')
-      .select('card_id, ended_at')
-      .eq('couple_space_id', space.id)
-      .eq('status', 'completed')
-      .eq('product_id', 'still_us')
-      .order('ended_at', { ascending: false })
-      .then(({ data }) => {
-        if (!cancelled && data) {
-          setServerCompletedCardIds(data.map(s => s.card_id).filter(Boolean) as string[]);
-        }
-      });
-    return () => { cancelled = true; };
-  }, [space?.id]);
-
-  const completedCardIds = useMemo(() => {
-    if (devState === 'browse') return [];
-    const merged = new Set(serverCompletedCardIds);
-    optimisticCardIds.forEach(id => merged.add(id));
-    return Array.from(merged);
-  }, [serverCompletedCardIds, optimisticCardIds, devState]);
-
-  const sortedCategories = useMemo(() => {
-    const orderMap = new Map<string, number>(RECOMMENDED_CATEGORY_ORDER.map((id, i) => [id, i]));
-    return [...categories].sort((a, b) => {
-      const ai = orderMap.get(a.id) ?? 999;
-      const bi = orderMap.get(b.id) ?? 999;
-      return ai - bi;
-    });
-  }, [categories]);
-
-  const orderedCards = useMemo(() => {
-    const result: typeof allCards = [];
-    for (const cat of sortedCategories) {
-      const catCards = allCards.filter(c => c.categoryId === cat.id);
-      result.push(...catCards);
+  const handleAction = (action: string) => {
+    const cardId = homeState.cardId;
+    switch (action) {
+      case 'start_slider':
+        navigate(`/check-in/${cardId}`);
+        break;
+      case 'start_session1':
+        navigate(`/session/${cardId}/start`);
+        break;
+      case 'resume_session1':
+        navigate(`/session/${cardId}/start`);
+        break;
+      case 'start_session2':
+        navigate(`/session/${cardId}/session2-start`);
+        break;
+      case 'resume_session2':
+        navigate(`/session/${cardId}/live-session2`);
+        break;
+      case 'view_complete':
+        navigate(`/session/${cardId}/complete`);
+        break;
+      case 'tier2_setup':
+        navigate('/tier2-setup');
+        break;
+      case 'ceremony':
+        navigate('/ceremony');
+        break;
+      default:
+        break;
     }
-    return result;
-  }, [sortedCategories]);
+  };
 
-  // Resume
-  const hasResumeSession = devState !== 'browse' && !!normalizedSession.sessionId && !!normalizedSession.cardId;
-  const resumeCard = hasResumeSession ? getCardById(normalizedSession.cardId!) : null;
-  const isStillUsResume = resumeCard ? allCategories.some(c => c.id === resumeCard.categoryId) : false;
-
-  // Next conversation
-  const nextCard = useMemo(() => {
-    return orderedCards.find(c => !completedCardIds.includes(c.id)) ?? null;
-  }, [orderedCards, completedCardIds]);
-
-  const nextCardCategory = useMemo(() => {
-    if (!nextCard) return null;
-    return allCategories.find(c => c.id === nextCard.categoryId) ?? null;
-  }, [nextCard]);
-
-  // Per-category progress
-  const categoryProgress = useMemo(() => {
-    const map: Record<string, { completed: number; total: number }> = {};
-    for (const cat of allCategories) {
-      const catCards = allCards.filter(c => c.categoryId === cat.id);
-      const completed = catCards.filter(c => completedCardIds.includes(c.id)).length;
-      map[cat.id] = { completed, total: catCards.length };
-    }
-    return map;
-  }, [completedCardIds]);
-
-  // Recommended next category
-  const nextCategoryId = nextCard ? nextCard.categoryId : null;
-
-  // Is category fully completed?
-  const isCategoryCompleted = (catId: string) => {
-    const p = categoryProgress[catId];
-    return p && p.total > 0 && p.completed >= p.total;
+  const handleMaintenanceStart = () => {
+    navigate(`/session/tillbaka-${homeState.maintenanceCardIndex}/tillbaka`);
   };
 
   return (
     <div className="min-h-screen relative overflow-hidden" style={{ backgroundColor: EMBER_NIGHT }}>
 
-      {/* ── Atmospheric radial glow behind hero ── */}
+      {/* ── Return ritual overlay ── */}
+      <AnimatePresence>
+        {shouldShowRitual && (
+          <ReturnRitual
+            daysSinceLastActivity={homeState.dormancyDays}
+            cardTitle={homeState.cardTitle}
+            onContinue={() => setShowReturnRitual(false)}
+            onRestart={() => {
+              setShowReturnRitual(false);
+              // TODO: call reset_slider_checkin RPC
+            }}
+          />
+        )}
+      </AnimatePresence>
+
+      {/* ── Atmospheric radial glow ── */}
       <div
         aria-hidden="true"
         style={{
@@ -273,17 +326,17 @@ export default function Home() {
         }}
       />
 
-      {/* ── Hero illustration — bleeding, dramatic ── */}
+      {/* ── Hero illustration (45vh) ── */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.6 }}
         style={{
           position: 'absolute',
-          top: '-8vh',
+          top: '-6vh',
           left: '-5vw',
           right: '-5vw',
-          height: '65vh',
+          height: '45vh',
           zIndex: 0,
           pointerEvents: 'none',
         }}
@@ -298,7 +351,7 @@ export default function Home() {
             objectPosition: '50% 25%',
           }}
         />
-        {/* Extended scrim blending into Ember Night */}
+        {/* Scrim */}
         <div style={{
           position: 'absolute',
           bottom: 0,
@@ -325,11 +378,11 @@ export default function Home() {
         paddingBottom: '120px',
       }}>
 
-        {/* ── Title with staggered reveal ── */}
+        {/* ── Title zone ── */}
         <motion.div variants={containerVariants} initial="hidden" animate="visible" style={{ textAlign: 'center', width: '100%' }}>
-          <motion.div variants={titleVariants}>
+          <motion.div variants={fadeUp}>
             <h1 style={{
-              fontFamily: "var(--font-display)",
+              fontFamily: 'var(--font-display)',
               fontSize: 'clamp(34px, 10vw, 50px)',
               fontWeight: 700,
               color: LANTERN_GLOW,
@@ -348,284 +401,50 @@ export default function Home() {
               marginTop: '6px',
               textShadow: `0 1px 16px rgba(0,0,0,0.8), 0 0 40px ${EMBER_NIGHT}`,
             }}>
-              Följ ordningen — eller börja där det känns rätt.
+              Vecka {homeState.cardIndex + 1} av {TOTAL_PROGRAM_CARDS}
             </p>
           </motion.div>
         </motion.div>
 
-        {/* Spacer between title and action zone */}
-        <div style={{ height: 'clamp(40px, 10vh, 80px)' }} />
+        {/* Spacer */}
+        <div style={{ height: 'clamp(24px, 6vh, 48px)' }} />
 
-        {/* ── Resume / Next card ── */}
-        {mode === 'loading' ? (
-          <div style={{ height: '80px', borderRadius: '22px', background: 'rgba(255,255,255,0.05)' }} className="animate-pulse" />
-        ) : (
-          <>
-            <div style={{ paddingLeft: '3vw', paddingRight: '3vw' }}>
-              {isStillUsResume ? (
-                <UnifiedResumeBanner
-                  accentColor={DEEP_SAFFRON}
-                  isStillUs
-                  getCardById={getCardById}
-                />
-              ) : nextCard ? (
-                <motion.button
-                  initial={{ opacity: 0, y: 12 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.25, duration: 0.6, ease: EASE }}
-                  whileTap={{ scale: 0.96, y: 2 }}
-                  onClick={() => navigate(`/card/${nextCard.id}`)}
-                  style={{
-                    width: '100%',
-                    position: 'relative',
-                    padding: '22px 22px',
-                    borderRadius: '22px',
-                    overflow: 'hidden',
-                    background: `linear-gradient(135deg, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0.06) 35%, transparent 55%, rgba(0,0,0,0.10) 100%), ${EMBER_MID}`,
-                    border: `1.5px solid rgba(255, 255, 255, 0.38)`,
-                    borderLeft: `3.5px solid ${DEEP_SAFFRON}`,
-                    cursor: 'pointer',
-                    textAlign: 'left',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    gap: '5px',
-                    boxShadow: `0 6px 20px rgba(0,0,0,0.30), 0 12px 40px rgba(0,0,0,0.20), inset 0 2px 4px rgba(255,255,255,0.28), inset 0 -1px 3px rgba(0,0,0,0.20), 0 0 32px ${DEEP_SAFFRON}22, 0 2px 60px ${DEEP_SAFFRON}10`,
-                  }}
-                >
-                  {/* Creature for the next card's category */}
-                  {nextCard.categoryId && STILL_US_CREATURES[nextCard.categoryId] && (() => {
-                    const c = STILL_US_CREATURES[nextCard.categoryId];
-                    const scale = c.tileScale ?? 1;
-                    return (
-                      <img
-                        src={c.src}
-                        alt=""
-                        style={{
-                          position: 'absolute',
-                          right: c.tileRight ?? '0%',
-                          top: c.tileTop ?? '50%',
-                          transform: `translateY(-50%) scale(${scale})`,
-                          height: c.tileHeight ?? '160%',
-                          width: 'auto',
-                          objectFit: 'contain',
-                          objectPosition: c.objectPosition,
-                          opacity: 0.15,
-                          pointerEvents: 'none',
-                          filter: 'saturate(0.25) brightness(1.15)',
-                        }}
-                      />
-                    );
-                  })()}
-                  <span style={{
-                    fontFamily: 'var(--font-body)',
-                    fontSize: '11px',
-                    fontWeight: 600,
-                    letterSpacing: '1.5px',
-                    textTransform: 'uppercase',
-                    color: DEEP_SAFFRON,
-                    opacity: 0.85,
-                  }}>
-                    Ert nästa samtal
-                  </span>
-                  <span style={{
-                    fontFamily: "var(--font-display)",
-                    fontVariationSettings: "'opsz' 20",
-                    fontSize: '20px',
-                    fontWeight: 500,
-                    color: LANTERN_GLOW,
-                    lineHeight: 1.3,
-                  }}>
-                    {nextCard.title}
-                  </span>
-                  {nextCardCategory && (
-                    <span style={{
-                      fontFamily: 'var(--font-body)',
-                      fontSize: '13px',
-                      color: `${LANTERN_GLOW}70`,
-                      marginTop: '2px',
-                    }}>
-                      {nextCardCategory.title}
-                    </span>
-                  )}
-                </motion.button>
-              ) : (
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.25, duration: 0.5 }}
-                  style={{
-                    padding: '20px',
-                    background: EMBER_MID,
-                    borderRadius: '22px',
-                    textAlign: 'center',
-                  }}
-                >
-                  <p style={{
-                    fontFamily: "var(--font-display)",
-                    fontSize: '18px',
-                    color: LANTERN_GLOW,
-                    marginBottom: '4px',
-                  }}>
-                    Ni har utforskat alla samtal
-                  </p>
-                  <p style={{ fontFamily: 'var(--font-body)', fontSize: '13px', color: DRIFTWOOD }}>
-                    Fortsätt prata — eller börja om.
-                  </p>
-                </motion.div>
-              )}
-            </div>
+        {/* ── Journey Progress (22 dots) ── */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.4, duration: EMOTION }}
+          style={{ padding: '0 3vw' }}
+        >
+          <JourneyProgress
+            currentCardIndex={homeState.cardIndex}
+            dark
+          />
+        </motion.div>
 
-            {/* Breathing room between action and exploration */}
-            <div style={{ height: '16px' }} />
+        {/* Spacer */}
+        <div style={{ height: 'clamp(20px, 5vh, 40px)' }} />
 
-            {/* ── Accordion layers ── */}
-            {LAYERS.map((layer, layerIndex) => {
-              const layerCats = layer.categoryIds
-                .map(id => allCategories.find(c => c.id === id))
-                .filter(Boolean) as typeof allCategories;
-
-              const layerCompleted = layerCats.filter(c => isCategoryCompleted(c.id)).length;
-              const layerTotal = layerCats.length;
-              const allLayerDone = layerCompleted === layerTotal;
-              const containsNext = layerCats.some(c => c.id === nextCategoryId);
-
-              return (
-                <AccordionLayer
-                  key={layer.label}
-                  label={layer.label}
-                  completedCount={layerCompleted}
-                  totalCount={layerTotal}
-                  allDone={allLayerDone}
-                  defaultOpen={containsNext}
-                  delay={0.3 + layerIndex * 0.1}
-                >
-                  {layerCats.map((cat) => {
-                    const progress = categoryProgress[cat.id];
-                    const isRecommended = cat.id === nextCategoryId;
-                    const completed = isCategoryCompleted(cat.id);
-                    const bg = layer.tileBg;
-
-                    return (
-                      <motion.button
-                        key={cat.id}
-                        whileTap={{ scale: 0.97 }}
-                        onClick={() => navigate(`/category/${cat.id}`)}
-                        style={{
-                          position: 'relative',
-                          width: '100%',
-                          padding: '16px 18px',
-                          borderRadius: '22px',
-                          overflow: 'hidden',
-                          background: `linear-gradient(135deg, rgba(255,255,255,0.12) 0%, transparent 50%, rgba(0,0,0,0.08) 100%), ${completed ? `${bg}90` : bg}`,
-                          border: isRecommended
-                            ? `1.5px solid rgba(212, 160, 58, 0.50)`
-                            : '1.5px solid rgba(255, 255, 255, 0.25)',
-                          cursor: 'pointer',
-                          textAlign: 'left',
-                          display: 'flex',
-                          alignItems: 'center',
-                          gap: '14px',
-                          boxShadow: isRecommended
-                            ? `0 4px 16px rgba(0,0,0,0.25), 0 8px 32px rgba(0,0,0,0.15), inset 0 1px 2px rgba(255,255,255,0.20), inset 0 -1px 2px rgba(0,0,0,0.15), 0 0 36px ${DEEP_SAFFRON}30, 0 0 0 1px ${DEEP_SAFFRON}25, 0 4px 50px ${DEEP_SAFFRON}18`
-                            : '0 4px 16px rgba(0,0,0,0.25), 0 8px 32px rgba(0,0,0,0.15), inset 0 1px 2px rgba(255,255,255,0.20), inset 0 -1px 2px rgba(0,0,0,0.15)',
-                        }}
-                      >
-                        {/* Creature illustration — dimmed atmospheric texture */}
-                        {STILL_US_CREATURES[cat.id] && (() => {
-                          const c = STILL_US_CREATURES[cat.id];
-                          const scale = c.tileScale ?? 1;
-                          return (
-                            <img
-                              src={c.src}
-                              alt=""
-                              style={{
-                                position: 'absolute',
-                                right: c.tileRight ?? '0%',
-                                top: c.tileTop ?? '50%',
-                                transform: `translateY(-50%) scale(${scale})`,
-                                height: c.tileHeight ?? '160%',
-                                width: 'auto',
-                                objectFit: 'contain',
-                                objectPosition: c.objectPosition,
-                                opacity: c.tileOpacity,
-                                pointerEvents: 'none',
-                                filter: 'saturate(0.2) brightness(1.4)',
-                              }}
-                            />
-                          );
-                        })()}
-
-                        {/* Saffron accent bar for recommended */}
-                        {isRecommended && (
-                          <div style={{
-                            position: 'absolute',
-                            left: 0,
-                            top: '15%',
-                            bottom: '15%',
-                            width: '3.5px',
-                            borderRadius: '0 2px 2px 0',
-                            backgroundColor: DEEP_SAFFRON,
-                            boxShadow: `0 0 16px ${DEEP_SAFFRON}80, 0 0 4px ${DEEP_SAFFRON}`,
-                          }} />
-                        )}
-
-                        {completed ? (
-                          <div style={{
-                            width: '26px',
-                            height: '26px',
-                            borderRadius: '50%',
-                            backgroundColor: DEEP_SAFFRON,
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            flexShrink: 0,
-                            boxShadow: `0 0 10px ${DEEP_SAFFRON}40`,
-                          }}>
-                            <Check size={14} color={MIDNIGHT_INK} strokeWidth={3} />
-                          </div>
-                        ) : (
-                          <div style={{
-                            width: '26px',
-                            height: '26px',
-                            borderRadius: '50%',
-                            border: `1.5px solid ${isRecommended ? `${DEEP_SAFFRON}80` : 'rgba(255,255,255,0.20)'}`,
-                            flexShrink: 0,
-                            background: isRecommended ? `${DEEP_SAFFRON}10` : 'transparent',
-                          }} />
-                        )}
-
-                        <div style={{ flex: 1, minWidth: 0 }}>
-                          <span style={{
-                            fontFamily: "var(--font-display)",
-                            fontVariationSettings: "'opsz' 16",
-                            fontSize: '16px',
-                            fontWeight: 500,
-                            color: completed ? `${LANTERN_GLOW}80` : LANTERN_GLOW,
-                            lineHeight: 1.3,
-                            display: 'block',
-                          }}>
-                            {cat.title}
-                          </span>
-                          {progress && progress.total > 0 && (
-                            <span style={{
-                              fontFamily: 'var(--font-body)',
-                              fontSize: '12px',
-                              color: progress.completed > 0 ? `${DEEP_SAFFRON}C0` : `${LANTERN_GLOW}40`,
-                              marginTop: '3px',
-                              display: 'block',
-                            }}>
-                              {progress.completed} av {progress.total} samtal
-                            </span>
-                          )}
-                        </div>
-                      </motion.button>
-                    );
-                  })}
-                </AccordionLayer>
-              );
-            })}
-          </>
-        )}
+        {/* ── Action Card zone ── */}
+        <div style={{ paddingLeft: '3vw', paddingRight: '3vw' }}>
+          {homeState.actionCard === 'maintenance' ? (
+            <MaintenanceActionCard
+              tillbakaIndex={homeState.maintenanceCardIndex}
+              tillbakaTitle={homeState.maintenanceTillbakaTitle}
+              available={homeState.maintenanceAvailable}
+              daysUntilNext={homeState.maintenanceDaysUntilNext ?? undefined}
+              onStart={handleMaintenanceStart}
+            />
+          ) : (
+            <ActionCard
+              kind={homeState.actionCard}
+              cardTitle={homeState.cardTitle}
+              partnerName={homeState.partnerName}
+              sessionPaused={homeState.sessionPaused}
+              onAction={handleAction}
+            />
+          )}
+        </div>
       </div>
     </div>
   );
