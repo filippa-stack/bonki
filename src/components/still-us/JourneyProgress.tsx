@@ -33,7 +33,7 @@ export default function JourneyProgress({ currentCardIndex, dark = false }: Jour
           letterSpacing: '0.05em',
           textTransform: 'uppercase',
         }}>
-          {LAYERS.find((l) => l.cards.includes(currentCardIndex))?.name ?? ''}
+          {LAYERS.find((l) => (l.cards as readonly number[]).includes(currentCardIndex))?.name ?? ''}
         </span>
       </div>
 
