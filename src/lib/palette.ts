@@ -30,34 +30,34 @@ export interface ProductTileColors {
 
 export const productTileColors: Record<string, ProductTileColors> = {
   jag_i_mig: {
-    tileLight: '#657514',
-    tileMid: '#4A5A0A',
-    tileDeep: '#3E4A12',
+    tileLight: '#3A6260',
+    tileMid: '#2A4A48',
+    tileDeep: '#1E3836',
   },
   jag_med_andra: {
-    tileLight: '#8B2FC6',
-    tileMid: '#5A1A80',
-    tileDeep: '#4A1268',
+    tileLight: '#AC7A44',
+    tileMid: '#8A6036',
+    tileDeep: '#6A4828',
   },
   jag_i_varlden: {
-    tileLight: '#2D6E3A',
-    tileMid: '#1A4A24',
-    tileDeep: '#2A3A1E',
+    tileLight: '#6C7362',
+    tileMid: '#545A4C',
+    tileDeep: '#3E4238',
   },
   vardagskort: {
-    tileLight: '#0E6B99',
-    tileMid: '#0A4A6A',
-    tileDeep: '#063450',
+    tileLight: '#20484E',
+    tileMid: '#183A3E',
+    tileDeep: '#102C30',
   },
   syskonkort: {
-    tileLight: '#247A78',
-    tileMid: '#1A5A58',
-    tileDeep: '#0E4442',
+    tileLight: '#8E5234',
+    tileMid: '#6E3E26',
+    tileDeep: '#50301C',
   },
   sexualitetskort: {
-    tileLight: '#A3434B',
-    tileMid: '#6A2A30',
-    tileDeep: '#4A1A20',
+    tileLight: '#A8766C',
+    tileMid: '#886056',
+    tileDeep: '#6A4A42',
   },
   still_us: {
     tileLight: '#D4A03A',
