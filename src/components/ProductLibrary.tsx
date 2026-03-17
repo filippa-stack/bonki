@@ -48,7 +48,7 @@ const TILE_COLORS: Record<string, string> = {
   jag_med_andra: '#AC7A44',   // Warm amber — relational/togetherness theme
   jag_i_varlden: '#26383A',   // Dark teal-green — immersive world tone
   sexualitetskort: '#A8766C',  // Dusty rose — contrast separates figures at thumbnail
-  vardagskort: '#30483A',      // Dark forest green — grounded everyday tone
+  vardagskort: '#3C4A30',      // Warm olive — earthy everyday tone, separates from JIV's cool teal
   syskonkort: '#8E5234',       // Sienna — warm wool blanket, from illustration palette
 };
 
@@ -107,7 +107,7 @@ const ILLUSTRATION_GLOW: Record<string, string> = {
   jag_med_andra: 'rgba(160, 130, 220, 0.45)',      // Cool lavender on warm amber — subtle contrast
   jag_i_varlden: 'rgba(120, 200, 210, 0.50)',       // Cool cyan on dark teal — complementary pop
   sexualitetskort: 'rgba(240, 120, 100, 0.50)',    // Warm coral on dusty rose — tonal lift
-  vardagskort: 'rgba(180, 220, 120, 0.55)',         // Warm lime on dark forest — natural complement
+  vardagskort: 'rgba(200, 180, 100, 0.55)',         // Warm gold on olive — natural complement
   syskonkort: 'rgba(80, 200, 220, 0.50)',           // Cool aqua on warm sienna — temperature contrast
 };
 
@@ -118,7 +118,7 @@ const ILLUSTRATION_SHADOW: Record<string, string> = {
   jag_med_andra: 'saturate(1.25) contrast(1.1) drop-shadow(0 6px 20px rgba(86, 61, 34, 0.6)) drop-shadow(0 14px 40px rgba(172, 122, 68, 0.3)) drop-shadow(0 2px 4px rgba(0,0,0,0.2))',
   jag_i_varlden: 'saturate(1.35) brightness(1.25) drop-shadow(0 6px 20px rgba(19, 28, 29, 0.7)) drop-shadow(0 14px 40px rgba(38, 56, 58, 0.35)) drop-shadow(0 2px 4px rgba(0,0,0,0.3))',
   sexualitetskort: 'saturate(1.3) brightness(1.15) drop-shadow(0 6px 20px rgba(84, 59, 54, 0.6)) drop-shadow(0 14px 40px rgba(168, 118, 108, 0.3)) drop-shadow(0 2px 4px rgba(0,0,0,0.2))',
-  vardagskort: 'saturate(1.35) brightness(1.25) drop-shadow(0 8px 24px rgba(24, 36, 29, 0.7)) drop-shadow(0 16px 48px rgba(48, 72, 58, 0.35)) drop-shadow(0 2px 4px rgba(0,0,0,0.35))',
+  vardagskort: 'saturate(1.35) brightness(1.25) drop-shadow(0 8px 24px rgba(30, 37, 24, 0.7)) drop-shadow(0 16px 48px rgba(60, 74, 48, 0.35)) drop-shadow(0 2px 4px rgba(0,0,0,0.35))',
   syskonkort: 'saturate(1.3) brightness(1.2) drop-shadow(0 6px 20px rgba(71, 41, 26, 0.6)) drop-shadow(0 14px 40px rgba(142, 82, 52, 0.3)) drop-shadow(0 2px 4px rgba(0,0,0,0.25))',
 };
 
@@ -138,7 +138,7 @@ const TAGLINE_COLORS: Record<string, string> = {
   jag_med_andra: 'hsla(30, 30%, 20%, 0.95)',   // Deep warm brown on amber — needs high alpha
   jag_i_varlden: 'hsla(184, 25%, 78%, 0.90)',   // Cool teal tint on dark teal-green
   sexualitetskort: 'hsla(10, 22%, 22%, 0.92)', // Deep warm on dusty rose — needs high alpha
-  vardagskort: 'hsla(145, 22%, 78%, 0.90)',     // Soft green tint on dark forest
+  vardagskort: 'hsla(90, 20%, 78%, 0.90)',          // Soft olive tint on warm olive
   syskonkort: 'hsla(25, 35%, 82%, 0.90)',       // Warm cream on sienna
 };
 
