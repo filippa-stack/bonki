@@ -258,7 +258,6 @@ export function useStillUsHome(): StillUsHomeState {
         dormancyDays,
         returnRitualShown,
         loading: false,
-        refetch: async () => {},
       });
     } catch (err) {
       console.error('[useStillUsHome] fetch error:', err);
