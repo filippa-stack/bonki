@@ -21,9 +21,9 @@ const TILE_LIGHT = '#30483A';
 
 const ORDERED_TILES = [
   { id: 'vk-min-dag', bg: '#30483A', sub: 'Från morgon till kväll' },
-  { id: 'vk-var-rytm', bg: '#263A2E', sub: 'Vanor och rutiner' },
-  { id: 'vk-vi-hemma', bg: '#1E3026', sub: 'Allt som händer innanför dörren' },
-  { id: 'vk-utanfor-hemmet', bg: '#1A2C22', sub: 'Det du möter där ute' },
+  { id: 'vk-var-rytm', bg: '#243830', sub: 'Vanor och rutiner' },
+  { id: 'vk-vi-hemma', bg: '#1C2C26', sub: 'Allt som händer innanför dörren' },
+  { id: 'vk-utanfor-hemmet', bg: '#14221E', sub: 'Det du möter där ute' },
 ];
 
 // Per-tile card images (first card per category)

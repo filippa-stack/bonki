@@ -17,9 +17,9 @@ const TILE_LIGHT = '#26383A';
 const ORDERED_TILES = [
   { id: 'jiv-min-vardag', bg: '#26383A', sub: 'Det som fyller dina dagar' },
   { id: 'jiv-vem-jag-ar', bg: '#1E2C2E', sub: 'Det som förändras just nu' },
-  { id: 'jiv-jag-och-andra', bg: '#1A2828', sub: 'Hur vi påverkar varandra' },
-  { id: 'jiv-jag-i-samhallet', bg: '#182426', sub: 'Normer, rättvisa och din röst' },
-  { id: 'jiv-det-stora-sammanhanget', bg: '#142022', sub: 'Bortom det du ser' },
+  { id: 'jiv-jag-och-andra', bg: '#162224', sub: 'Hur vi påverkar varandra' },
+  { id: 'jiv-jag-i-samhallet', bg: '#101A1C', sub: 'Normer, rättvisa och din röst' },
+  { id: 'jiv-det-stora-sammanhanget', bg: '#0C1416', sub: 'Bortom det du ser' },
 ];
 
 // First card per category — used as tile illustrations
