@@ -287,18 +287,30 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
             ].join(', '),
       }}
     >
-      {/* Radial glow behind illustration — per-product 3D depth */}
+      {/* Dual-layer radial glow behind illustration — wide ambient + tight concentrated */}
       {illustration && productId && ILLUSTRATION_GLOW[productId] && (
-        <div
-          aria-hidden="true"
-          style={{
-            position: 'absolute',
-            inset: 0,
-            zIndex: 0,
-            pointerEvents: 'none',
-            background: `radial-gradient(ellipse 70% 80% at 65% 55%, ${ILLUSTRATION_GLOW[productId]} 0%, transparent 70%)`,
-          }}
-        />
+        <>
+          <div
+            aria-hidden="true"
+            style={{
+              position: 'absolute',
+              inset: 0,
+              zIndex: 0,
+              pointerEvents: 'none',
+              background: `radial-gradient(ellipse 80% 90% at 65% 55%, ${ILLUSTRATION_GLOW[productId]} 0%, transparent 65%)`,
+            }}
+          />
+          <div
+            aria-hidden="true"
+            style={{
+              position: 'absolute',
+              inset: 0,
+              zIndex: 0,
+              pointerEvents: 'none',
+              background: `radial-gradient(ellipse 45% 55% at 70% 50%, ${ILLUSTRATION_GLOW[productId].replace(/[\d.]+\)$/, '0.30)')} 0%, transparent 70%)`,
+            }}
+          />
+        </>
       )}
       {/* Illustration — right-aligned, bleeds off edge dramatically, with depth shadow */}
       {illustration && (
