@@ -3,9 +3,9 @@ import type { Category, Card } from '@/types';
 
 const categories: Category[] = [
   { id: 'sex-min-identitet', title: 'Min identitet', subtitle: 'Kropp, kön och den du är – på ditt sätt.', description: 'Könsidentitet, sexuell läggning, onani och kroppsideal', cardCount: 4 },
-  { id: 'sex-normer-och-paverkan', title: 'Normer & påverkan', subtitle: 'Det som formar våra tankar om sex och relationer.', description: 'Normer, pornografi, tabun och kärlek', cardCount: 4 },
+  { id: 'sex-normer-och-paverkan', title: 'Normer & påverkan', subtitle: 'Det som formar våra tankar om sex och relationer.', description: 'Normer, kärlek, pornografi och tabun', cardCount: 4 },
   { id: 'sex-relation-och-ansvar', title: 'Relation & ansvar', subtitle: 'Samtycke, respekt och hur vi är med varandra.', description: 'Samtycke, ansvar, misstag och konsekvenser', cardCount: 4 },
-  { id: 'sex-skydd-och-makt', title: 'Skydd & makt', subtitle: 'Risker, gränser och att ta hand om sig själv.', description: 'Sexuella övergrepp och sex som hot', cardCount: 2 },
+  { id: 'sex-skydd-och-makt', title: 'Makt & skyddslöshet', subtitle: 'Risker, gränser och att ta hand om sig själv.', description: 'Sex som hot och sexuella övergrepp', cardCount: 2 },
 ];
 
 const cards: Card[] = [
@@ -58,6 +58,16 @@ const cards: Card[] = [
     'Måste en ha sex? Vem bestämmer det?',
     'Vad kan påverka ditt beslut att ha sex?',
   ]}]},
+  { id: 'sex-sex-och-karlek', title: 'Sex & kärlek', subtitle: 'Sambandet mellan sex och kärlek – och alla de former de kan ta', categoryId: 'sex-normer-och-paverkan', sections: [{ id: 'sex-sex-och-karlek-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
+    'Kan en ha en romantisk relation utan att ha sex? Hur då?',
+    'Kan en ha sex med någon utan att vara romantiskt attraherad? Hur då?',
+    'Vad är skillnaden mellan intimitet och sex?',
+    'På vilka sätt kan en uppleva intimitet med någon utan att ha sex?',
+    'Är det skillnad mellan fysisk intimitet och emotionell intimitet? Beskriv med ett exempel!',
+    'Det finns många olika sätt att ha sexuella relationer. Kan du ge några exempel?',
+    'Anser du att en viss sorts sexuell relation är mer värd eller viktigare än en annan? Varför?',
+    'Hur påverkar media våra föreställningar om kärlek och sex?',
+  ]}]},
   { id: 'sex-pornografi', title: 'Pornografi', subtitle: 'Vad pornografi är, hur realistisk den är – och vad den kan göra med ens bild av sex', categoryId: 'sex-normer-och-paverkan', sections: [{ id: 'sex-pornografi-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
     'Vad räknas som pornografi?',
     'Vad tror du kan vara skillnader mellan industriell porr och amatörporr?',
@@ -76,16 +86,6 @@ const cards: Card[] = [
     'När kan det vara okej att dela sina kinks eller fetischer med någon?',
     'Många sexuella sammanhang som involverar kinks brukar ha regler och "säkerhetsspärrar", till exempel safewords, för att minska risken för att någon far illa eller blir obekväm. Ofta diskuteras även utförandet innan en börjar. Kan det finnas fördelar med att göra så även i andra sexuella sammanhang?',
     'Kan en hjälpa vad en tänder på?',
-  ]}]},
-  { id: 'sex-sex-och-karlek', title: 'Sex & kärlek', subtitle: 'Sambandet mellan sex och kärlek – och alla de former de kan ta', categoryId: 'sex-normer-och-paverkan', sections: [{ id: 'sex-sex-och-karlek-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
-    'Kan en ha en romantisk relation utan att ha sex? Hur då?',
-    'Kan en ha sex med någon utan att vara romantiskt attraherad? Hur då?',
-    'Vad är skillnaden mellan intimitet och sex?',
-    'På vilka sätt kan en uppleva intimitet med någon utan att ha sex?',
-    'Är det skillnad mellan fysisk intimitet och emotionell intimitet? Beskriv med ett exempel!',
-    'Det finns många olika sätt att ha sexuella relationer. Kan du ge några exempel?',
-    'Anser du att en viss sorts sexuell relation är mer värd eller viktigare än en annan? Varför?',
-    'Hur påverkar media våra föreställningar om kärlek och sex?',
   ]}]},
   // ── K3: Relation & ansvar ──
   { id: 'sex-samtycke', title: 'Samtycke', subtitle: 'Att sex kräver ett aktivt och frivilligt ja – och vad som gäller när det är oklart', categoryId: 'sex-relation-och-ansvar', sections: [{ id: 'sex-samtycke-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
@@ -126,15 +126,7 @@ const cards: Card[] = [
     'Vilka olika sorters preventivmedel finns det? Var kan en få tag på dem?',
     'Vad kan en göra om en inte har använt preventivmedel och får en könssjukdom eller blir ofrivilligt gravid? Vem kan en vända sig till och var kan en få hjälp?',
   ]}]},
-  // ── K4: Skydd & makt ──
-  { id: 'sex-sexuella-overgrepp', title: 'Sexuella övergrepp', subtitle: 'Vad som räknas som ett övergrepp – och vart en vänder sig om det hänt', categoryId: 'sex-skydd-och-makt', sections: [{ id: 'sex-sexuella-overgrepp-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
-    'Vad räknas som ett sexuellt övergrepp?',
-    'På vilka olika sätt kan sexuella övergrepp ske? Kan det vara annat än fysiskt?',
-    'Hur vet en att en blivit utsatt för ofredande eller övergrepp? Vad är skillnaden mot en dålig upplevelse av sex?',
-    'I vilka situationer kan en bli utsatt?',
-    'Vem bestämmer om det är ett sexuellt övergrepp?',
-    'Vart kan du vända dig och vem kan du prata med om du har blivit utsatt för något som kändes fel?',
-  ]}]},
+  // ── K4: Makt & skyddslöshet ──
   { id: 'sex-sex-som-hot', title: 'Sex som hot', subtitle: 'När sex används som makt, kontroll eller hot – och hur en skyddar sig', categoryId: 'sex-skydd-och-makt', sections: [{ id: 'sex-sex-som-hot-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
     'Kan någon utnyttja sex för att få kontroll eller makt över en annan människa? Förklara!',
     'Vad innebär begreppen "grooming" och "sugar dating"? Hur kan de ta sig uttryck?',
@@ -143,6 +135,14 @@ const cards: Card[] = [
     'Har du eller någon du känner upplevt att bli exponerad för sexuellt material online utan att ha velat det -- till exempel via automatiska meddelanden eller oönskade bilder? Hur kan en hantera det?',
     'På vilka sätt kan en skydda sig från att bli exponerad för sexuellt material online utan att ha gett sitt samtycke?',
     'Vart kan en vända sig om en utsätts för hot eller spridning av falskt eller privat material, som text, film, bilder eller rykten?',
+  ]}]},
+  { id: 'sex-sexuella-overgrepp', title: 'Sexuella övergrepp', subtitle: 'Vad som räknas som ett övergrepp – och vart en vänder sig om det hänt', categoryId: 'sex-skydd-och-makt', sections: [{ id: 'sex-sexuella-overgrepp-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
+    'Vad räknas som ett sexuellt övergrepp?',
+    'På vilka olika sätt kan sexuella övergrepp ske? Kan det vara annat än fysiskt?',
+    'Hur vet en att en blivit utsatt för ofredande eller övergrepp? Vad är skillnaden mot en dålig upplevelse av sex?',
+    'I vilka situationer kan en bli utsatt?',
+    'Vem bestämmer om det är ett sexuellt övergrepp?',
+    'Vart kan du vända dig och vem kan du prata med om du har blivit utsatt för något som kändes fel?',
   ]}]},
 ];
 

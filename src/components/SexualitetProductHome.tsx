@@ -19,7 +19,7 @@ const ORDERED_TILES = [
   { id: 'sex-min-identitet', bg: '#A8766C', sub: 'Vem du är och blir' },
   { id: 'sex-normer-och-paverkan', bg: '#886056', sub: 'Det som formar oss' },
   { id: 'sex-relation-och-ansvar', bg: '#7A524A', sub: 'Att ta hand om sig själv och andra' },
-  { id: 'sex-skydd-och-makt', bg: '#6A4A42', sub: 'Gränser och rättigheter' },
+  { id: 'sex-skydd-och-makt', bg: '#6A4A42', sub: 'Makt och sårbarhet' },
 ];
 
 // Deer: huge dark eyes and ears. Tile 0 = face-dominant. Tile 1 ears extending.
@@ -35,7 +35,7 @@ const FIRST_CARD_IDS = [
   'sex-konsidentitet',     // Min identitet
   'sex-normer',            // Normer & påverkan
   'sex-samtycke',          // Relation & ansvar
-  'sex-sexuella-overgrepp',// Skydd & makt
+  'sex-sex-som-hot',       // Makt & skyddslöshet
 ];
 
 const containerVariants = { hidden: {}, visible: { transition: { staggerChildren: 0.11, delayChildren: 0.4 } } };

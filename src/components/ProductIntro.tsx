@@ -37,8 +37,8 @@ const PRODUCT_ILLUSTRATION: Record<string, string> = {
 /** One-sentence intro per product */
 const SHORT_INTROS: Record<string, string> = {
   jag_i_mig: 'Kort som hjälper ert barn sätta ord på det som känns.',
-  jag_med_andra: 'Frågor om det svåra och det trygga i att vara med andra.',
-  jag_i_varlden: 'De stora frågorna om vem jag är och vart världen är på väg.',
+  jag_med_andra: 'Frågor om det trygga och det svåra i att vara med andra.',
+  jag_i_varlden: 'Världen vidgas — frågor om vem jag är och vart vi är på väg.',
   vardagskort: 'Kort för alla de små sakerna som bygger en familj.',
   syskonkort: 'Frågor som hjälper er prata om det som finns mellan er.',
   sexualitetskort: 'Om kropp, samtycke, normer och identitet — utan att moralisera.',
