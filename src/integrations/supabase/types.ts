@@ -14,6 +14,57 @@ export type Database = {
   }
   public: {
     Tables: {
+      anonymous_slider_submission: {
+        Row: {
+          card_index: number
+          checkin_reflection: string | null
+          couple_space_id: string
+          created_at: string
+          cycle_id: number
+          id: string
+          link_token: string
+          migrated_to_user_id: string | null
+          slider_responses: Json
+        }
+        Insert: {
+          card_index: number
+          checkin_reflection?: string | null
+          couple_space_id: string
+          created_at?: string
+          cycle_id?: number
+          id?: string
+          link_token: string
+          migrated_to_user_id?: string | null
+          slider_responses: Json
+        }
+        Update: {
+          card_index?: number
+          checkin_reflection?: string | null
+          couple_space_id?: string
+          created_at?: string
+          cycle_id?: number
+          id?: string
+          link_token?: string
+          migrated_to_user_id?: string | null
+          slider_responses?: Json
+        }
+        Relationships: [
+          {
+            foreignKeyName: "anonymous_slider_submission_couple_space_id_fkey"
+            columns: ["couple_space_id"]
+            isOneToOne: false
+            referencedRelation: "couple_spaces"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "anonymous_slider_submission_couple_space_id_fkey"
+            columns: ["couple_space_id"]
+            isOneToOne: false
+            referencedRelation: "couple_spaces_safe"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       beta_feedback: {
         Row: {
           couple_space_id: string
@@ -482,6 +533,90 @@ export type Database = {
         }
         Relationships: []
       }
+      couple_state: {
+        Row: {
+          ceremony_reflection: string | null
+          couple_space_id: string
+          created_at: string
+          current_card_index: number
+          current_touch: Database["public"]["Enums"]["touch_type"]
+          cycle_id: number
+          last_activity_at: string
+          maintenance_card_index: number
+          maintenance_last_delivered: string | null
+          migration_pending: boolean
+          partner_link_token: string | null
+          partner_nudge_sent_at: string | null
+          partner_tier: Database["public"]["Enums"]["partner_tier"]
+          phase: Database["public"]["Enums"]["journey_phase"]
+          purchase_status: Database["public"]["Enums"]["purchase_status"]
+          purchased_by: string | null
+          return_ritual_shown_for_card: number | null
+          tier_2_partner_name: string | null
+          tier_2_pseudo_id: string | null
+          updated_at: string
+        }
+        Insert: {
+          ceremony_reflection?: string | null
+          couple_space_id: string
+          created_at?: string
+          current_card_index?: number
+          current_touch?: Database["public"]["Enums"]["touch_type"]
+          cycle_id?: number
+          last_activity_at?: string
+          maintenance_card_index?: number
+          maintenance_last_delivered?: string | null
+          migration_pending?: boolean
+          partner_link_token?: string | null
+          partner_nudge_sent_at?: string | null
+          partner_tier?: Database["public"]["Enums"]["partner_tier"]
+          phase?: Database["public"]["Enums"]["journey_phase"]
+          purchase_status?: Database["public"]["Enums"]["purchase_status"]
+          purchased_by?: string | null
+          return_ritual_shown_for_card?: number | null
+          tier_2_partner_name?: string | null
+          tier_2_pseudo_id?: string | null
+          updated_at?: string
+        }
+        Update: {
+          ceremony_reflection?: string | null
+          couple_space_id?: string
+          created_at?: string
+          current_card_index?: number
+          current_touch?: Database["public"]["Enums"]["touch_type"]
+          cycle_id?: number
+          last_activity_at?: string
+          maintenance_card_index?: number
+          maintenance_last_delivered?: string | null
+          migration_pending?: boolean
+          partner_link_token?: string | null
+          partner_nudge_sent_at?: string | null
+          partner_tier?: Database["public"]["Enums"]["partner_tier"]
+          phase?: Database["public"]["Enums"]["journey_phase"]
+          purchase_status?: Database["public"]["Enums"]["purchase_status"]
+          purchased_by?: string | null
+          return_ritual_shown_for_card?: number | null
+          tier_2_partner_name?: string | null
+          tier_2_pseudo_id?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "couple_state_couple_space_id_fkey"
+            columns: ["couple_space_id"]
+            isOneToOne: true
+            referencedRelation: "couple_spaces"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "couple_state_couple_space_id_fkey"
+            columns: ["couple_space_id"]
+            isOneToOne: true
+            referencedRelation: "couple_spaces_safe"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       couple_takeaways: {
         Row: {
           content: string
@@ -530,6 +665,42 @@ export type Database = {
             columns: ["session_id"]
             isOneToOne: false
             referencedRelation: "couple_sessions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      journey_insights_cache: {
+        Row: {
+          computed_at: string
+          couple_space_id: string
+          cycle_id: number
+          insights: Json
+        }
+        Insert: {
+          computed_at?: string
+          couple_space_id: string
+          cycle_id?: number
+          insights?: Json
+        }
+        Update: {
+          computed_at?: string
+          couple_space_id?: string
+          cycle_id?: number
+          insights?: Json
+        }
+        Relationships: [
+          {
+            foreignKeyName: "journey_insights_cache_couple_space_id_fkey"
+            columns: ["couple_space_id"]
+            isOneToOne: true
+            referencedRelation: "couple_spaces"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "journey_insights_cache_couple_space_id_fkey"
+            columns: ["couple_space_id"]
+            isOneToOne: true
+            referencedRelation: "couple_spaces_safe"
             referencedColumns: ["id"]
           },
         ]
@@ -870,6 +1041,81 @@ export type Database = {
           },
         ]
       }
+      session_state: {
+        Row: {
+          card_index: number
+          couple_space_id: string
+          created_at: string
+          current_prompt_index: number
+          current_session: number
+          current_step: Database["public"]["Enums"]["session_step"]
+          cycle_id: number
+          id: string
+          paused_at: string | null
+          paused_reason: string | null
+          session_1_completed: boolean
+          session_2_completed: boolean
+          session_lock: string | null
+          session_lock_heartbeat: string | null
+          session_type: string | null
+          skip_status: Database["public"]["Enums"]["skip_status"]
+          updated_at: string
+        }
+        Insert: {
+          card_index: number
+          couple_space_id: string
+          created_at?: string
+          current_prompt_index?: number
+          current_session?: number
+          current_step?: Database["public"]["Enums"]["session_step"]
+          cycle_id?: number
+          id?: string
+          paused_at?: string | null
+          paused_reason?: string | null
+          session_1_completed?: boolean
+          session_2_completed?: boolean
+          session_lock?: string | null
+          session_lock_heartbeat?: string | null
+          session_type?: string | null
+          skip_status?: Database["public"]["Enums"]["skip_status"]
+          updated_at?: string
+        }
+        Update: {
+          card_index?: number
+          couple_space_id?: string
+          created_at?: string
+          current_prompt_index?: number
+          current_session?: number
+          current_step?: Database["public"]["Enums"]["session_step"]
+          cycle_id?: number
+          id?: string
+          paused_at?: string | null
+          paused_reason?: string | null
+          session_1_completed?: boolean
+          session_2_completed?: boolean
+          session_lock?: string | null
+          session_lock_heartbeat?: string | null
+          session_type?: string | null
+          skip_status?: Database["public"]["Enums"]["skip_status"]
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "session_state_couple_space_id_fkey"
+            columns: ["couple_space_id"]
+            isOneToOne: false
+            referencedRelation: "couple_spaces"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "session_state_couple_space_id_fkey"
+            columns: ["couple_space_id"]
+            isOneToOne: false
+            referencedRelation: "couple_spaces_safe"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       step_reflections: {
         Row: {
           id: string
@@ -953,6 +1199,51 @@ export type Database = {
           },
           {
             foreignKeyName: "system_events_couple_space_id_fkey"
+            columns: ["couple_space_id"]
+            isOneToOne: false
+            referencedRelation: "couple_spaces_safe"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      threshold_mood: {
+        Row: {
+          card_index: number
+          couple_space_id: string
+          created_at: string
+          cycle_id: number
+          id: string
+          mood: string
+          user_id: string
+        }
+        Insert: {
+          card_index: number
+          couple_space_id: string
+          created_at?: string
+          cycle_id?: number
+          id?: string
+          mood: string
+          user_id: string
+        }
+        Update: {
+          card_index?: number
+          couple_space_id?: string
+          created_at?: string
+          cycle_id?: number
+          id?: string
+          mood?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "threshold_mood_couple_space_id_fkey"
+            columns: ["couple_space_id"]
+            isOneToOne: false
+            referencedRelation: "couple_spaces"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "threshold_mood_couple_space_id_fkey"
             columns: ["couple_space_id"]
             isOneToOne: false
             referencedRelation: "couple_spaces_safe"
@@ -1052,6 +1343,75 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      user_card_state: {
+        Row: {
+          card_index: number
+          checkin_reflection: string | null
+          couple_space_id: string
+          created_at: string
+          cycle_id: number
+          id: string
+          notes: Json
+          reflection_skipped: boolean
+          session_1_takeaway: string | null
+          session_type: string | null
+          slider_completed_at: string | null
+          slider_responses: Json | null
+          takeaway: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          card_index: number
+          checkin_reflection?: string | null
+          couple_space_id: string
+          created_at?: string
+          cycle_id?: number
+          id?: string
+          notes?: Json
+          reflection_skipped?: boolean
+          session_1_takeaway?: string | null
+          session_type?: string | null
+          slider_completed_at?: string | null
+          slider_responses?: Json | null
+          takeaway?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          card_index?: number
+          checkin_reflection?: string | null
+          couple_space_id?: string
+          created_at?: string
+          cycle_id?: number
+          id?: string
+          notes?: Json
+          reflection_skipped?: boolean
+          session_1_takeaway?: string | null
+          session_type?: string | null
+          slider_completed_at?: string | null
+          slider_responses?: Json | null
+          takeaway?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_card_state_couple_space_id_fkey"
+            columns: ["couple_space_id"]
+            isOneToOne: false
+            referencedRelation: "couple_spaces"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "user_card_state_couple_space_id_fkey"
+            columns: ["couple_space_id"]
+            isOneToOne: false
+            referencedRelation: "couple_spaces_safe"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       user_product_access: {
         Row: {
@@ -1153,6 +1513,10 @@ export type Database = {
         Args: { p_session_id: string }
         Returns: undefined
       }
+      acquire_session_lock: {
+        Args: { p_card_index: number; p_couple_space_id: string }
+        Returns: Json
+      }
       activate_couple_session:
         | {
             Args: {
@@ -1173,6 +1537,14 @@ export type Database = {
             }
             Returns: string
           }
+      advance_card: {
+        Args: {
+          p_couple_space_id: string
+          p_session_1_takeaway?: string
+          p_takeaway?: string
+        }
+        Returns: Json
+      }
       assert_one_active_session_per_space: {
         Args: { p_couple_space_id: string }
         Returns: undefined
@@ -1185,6 +1557,15 @@ export type Database = {
           is_waiting: boolean
           partner_left: boolean
         }[]
+      }
+      complete_slider_checkin: {
+        Args: {
+          p_card_index: number
+          p_checkin_reflection?: string
+          p_couple_space_id: string
+          p_slider_responses: Json
+        }
+        Returns: Json
       }
       get_active_session_state: {
         Args: never
@@ -1207,6 +1588,19 @@ export type Database = {
         Args: { _session_id: string; _step_index: number }
         Returns: undefined
       }
+      reset_slider_checkin: {
+        Args: { p_couple_space_id: string }
+        Returns: undefined
+      }
+      session_heartbeat: {
+        Args: {
+          p_card_index: number
+          p_couple_space_id: string
+          p_device_id: string
+        }
+        Returns: Json
+      }
+      skip_card: { Args: { p_couple_space_id: string }; Returns: Json }
       upsert_card_visit: {
         Args: {
           p_card_id: string
@@ -1218,7 +1612,13 @@ export type Database = {
       }
     }
     Enums: {
+      journey_phase: "program" | "ceremony" | "maintenance" | "restart"
+      partner_tier: "tier_1" | "tier_2" | "tier_3"
+      purchase_status: "free_trial" | "purchased"
       reflection_state: "draft" | "ready" | "revealed" | "locked"
+      session_step: "oppna" | "vand" | "tankom" | "gor"
+      skip_status: "none" | "available" | "skipped" | "auto_advanced"
+      touch_type: "slider_checkin" | "session_1" | "session_2" | "complete"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -1346,7 +1746,13 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
+      journey_phase: ["program", "ceremony", "maintenance", "restart"],
+      partner_tier: ["tier_1", "tier_2", "tier_3"],
+      purchase_status: ["free_trial", "purchased"],
       reflection_state: ["draft", "ready", "revealed", "locked"],
+      session_step: ["oppna", "vand", "tankom", "gor"],
+      skip_status: ["none", "available", "skipped", "auto_advanced"],
+      touch_type: ["slider_checkin", "session_1", "session_2", "complete"],
     },
   },
 } as const

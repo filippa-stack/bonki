@@ -1,5 +1,3 @@
-
-
 # Still Us v2.5/v2.7 — Implementation Plan
 
 ## What Changed from the Previous Spec
@@ -25,7 +23,7 @@ The v2.5 spec is a significant evolution from the earlier chat-based spec. Key d
 
 ## Implementation Phases
 
-### Phase 1: Database Schema & RPCs
+### Phase 1: Database Schema & RPCs ← CURRENT
 Create the new data model:
 
 **New tables:**
@@ -155,3 +153,16 @@ Create a standalone lightweight web page (`public/check-in/index.html`):
 
 All can use placeholder content during development.
 
+---
+
+## Progress
+
+- [x] Phase 1: Database Schema & RPCs
+- [ ] Phase 2: Content Data Files
+- [ ] Phase 3: New Screens
+- [ ] Phase 4: Home Screen Rebuild
+- [ ] Phase 5: Routing & Integration
+- [ ] Phase 6: SessionFocusShell + Session Lock
+- [ ] Phase 7: Tier 1 Partner Web Page
+- [ ] Phase 8: Notifications & Cron
+- [ ] Phase 9: Cleanup
