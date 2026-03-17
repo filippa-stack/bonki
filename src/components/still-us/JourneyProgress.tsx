@@ -45,7 +45,7 @@ export default function JourneyProgress({ currentCardIndex, dark = false }: Jour
         flexWrap: 'wrap',
       }}>
         {Array.from({ length: TOTAL_PROGRAM_CARDS }, (_, i) => {
-          const isLayerBoundary = LAYERS.some((l) => l.cards[0] === i && i > 0);
+          const isLayerBoundary = LAYERS.some((l) => (l.cards as readonly number[])[0] === i && i > 0);
           return (
             <div key={i} style={{ display: 'flex', alignItems: 'center' }}>
               {isLayerBoundary && <div style={{ width: '6px' }} />}
