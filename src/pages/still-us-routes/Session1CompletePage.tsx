@@ -10,8 +10,8 @@ export default function Session1CompletePage() {
   return (
     <SessionOneComplete
       cardTitle={card?.title ?? ''}
-      onContinueToSession2={() => navigate(`/session/${cardId}/session2-start`)}
-      onPauseForLater={() => navigate('/')}
+      onContinue={(takeaway) => navigate(`/session/${cardId}/session2-start`)}
+      onSkipTakeaway={() => navigate(`/session/${cardId}/session2-start`)}
     />
   );
 }

@@ -7,13 +7,15 @@ export default function Session2StartPage() {
   const { cardId } = useParams<{ cardId: string }>();
   const navigate = useNavigate();
   const card = CARD_SEQUENCE.find(c => c.cardId === cardId);
-  const summary = getReorientationSummary(card?.index ?? 0);
+  const cardIndex = card?.index ?? 0;
+  const summary = getReorientationSummary(cardIndex);
 
   return (
     <SessionTwoStart
+      cardIndex={cardIndex}
       cardTitle={card?.title ?? ''}
       reorientationText={summary}
-      onContinue={() => navigate(`/session/${cardId}/live-session2`)}
+      onStart={() => navigate(`/session/${cardId}/live-session2`)}
     />
   );
 }

@@ -10,10 +10,8 @@ export default function CheckInHandoffPage() {
   return (
     <SliderHandoff
       partnerName="Partner"
-      onPartnerReady={() => {
-        // TODO: navigate to partner slider
-        navigate(-1);
-      }}
+      cardIndex={card?.index ?? 0}
+      onPartnerReady={() => navigate(-1)}
       onSkip={() => navigate(-1)}
     />
   );
