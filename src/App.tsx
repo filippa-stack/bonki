@@ -21,7 +21,6 @@ import MobileOnlyGate from "@/components/MobileOnlyGate";
 
 import Index from "./pages/Index";
 
-
 import Category from "./pages/Category";
 import CardView from "./pages/CardView";
 import CardPreview from "./pages/CardPreview";
@@ -36,6 +35,22 @@ import NotFound from "./pages/NotFound";
 import ScreenshotExport from "./pages/ScreenshotExport";
 import AnalyticsDashboard from "./pages/AnalyticsDashboard";
 import { useCaptureController } from "@/hooks/useCaptureController";
+
+// Still Us v2.5 route pages
+import {
+  CheckInPage,
+  CheckInHandoffPage,
+  FormatPreviewPage,
+  SharePage,
+  Tier2SetupPage,
+  SessionStartPage,
+  Session1CompletePage,
+  Session2StartPage,
+  Session2LivePage,
+  CardCompletePage,
+  TillbakaPage,
+  CeremonyPage,
+} from "./pages/still-us-routes";
 
 const queryClient = new QueryClient();
 
@@ -87,6 +102,20 @@ function ProtectedRoutes() {
               <Route path="/shared" element={<PageTransition><SharedSummary /></PageTransition>} />
               <Route path="/journal" element={<PageTransition><Journal /></PageTransition>} />
               <Route path="/diary/:productId" element={<PageTransition><Diary /></PageTransition>} />
+
+              {/* Still Us v2.5 routes */}
+              <Route path="/check-in/:cardId" element={<PageTransition><CheckInPage /></PageTransition>} />
+              <Route path="/check-in/:cardId/handoff" element={<PageTransition><CheckInHandoffPage /></PageTransition>} />
+              <Route path="/format-preview" element={<PageTransition><FormatPreviewPage /></PageTransition>} />
+              <Route path="/share" element={<PageTransition><SharePage /></PageTransition>} />
+              <Route path="/tier2-setup" element={<PageTransition><Tier2SetupPage /></PageTransition>} />
+              <Route path="/session/:cardId/start" element={<PageTransition><SessionStartPage /></PageTransition>} />
+              <Route path="/session/:cardId/complete-session1" element={<PageTransition><Session1CompletePage /></PageTransition>} />
+              <Route path="/session/:cardId/session2-start" element={<PageTransition><Session2StartPage /></PageTransition>} />
+              <Route path="/session/:cardId/live-session2" element={<PageTransition><Session2LivePage /></PageTransition>} />
+              <Route path="/session/:cardId/complete" element={<PageTransition><CardCompletePage /></PageTransition>} />
+              <Route path="/session/:cardId/tillbaka" element={<PageTransition><TillbakaPage /></PageTransition>} />
+              <Route path="/ceremony" element={<PageTransition><CeremonyPage /></PageTransition>} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </AnimatePresence>
