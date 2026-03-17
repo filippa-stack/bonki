@@ -180,7 +180,7 @@ export default function CardView() {
   const paywallProductId = product?.id ?? (isStillUsCard ? 'still_us' : '');
   const { hasAccess: hasProductAccess, loading: accessLoading } = useProductAccess(paywallProductId);
   const [demoBypassed, setDemoBypassed] = useState(false);
-  const needsPaywall = !isFreeCard && !hasProductAccess && !accessLoading && (!!product || isStillUsCard) && !devState && !demoBypassed;
+  const needsPaywall = !isFreeCard && !hasProductAccess && !accessLoading && (!!product || isStillUsCard) && !devState && !demoBypassed && !isDemoMode();
 
   // Apply product theme (background + accent colors)
   // For Still Us: use saffron as both primary + accent, Heritage Gold for CTA
