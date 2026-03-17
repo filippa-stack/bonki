@@ -10,16 +10,16 @@ import type { CreatureTileStyle } from '@/components/CategoryTileGrid';
 import { useCardImage } from '@/hooks/useCardImage';
 
 const EASE = [0.4, 0.0, 0.2, 1] as const;
-const BG = '#1A1A2E';
-const ACCENT_COLOR = '#C77AE8';
-const TILE_LIGHT = '#8B2FC6';
+const BG = '#2A1E14';
+const ACCENT_COLOR = '#D4A46C';
+const TILE_LIGHT = '#AC7A44';
 
 const ORDERED_TILES = [
-  { id: 'jma-att-hora-till', bg: '#5A1A80', sub: 'Var hör jag hemma?' },
-  { id: 'jma-nar-vi-jamfor-oss', bg: '#4A1268', sub: 'Vad det gör med oss' },
-  { id: 'jma-nar-det-skaver', bg: '#3A0E58', sub: 'När vi sårar varandra' },
-  { id: 'jma-att-sta-stadig', bg: '#2E0A48', sub: 'Din egen grund' },
-  { id: 'jma-vi-i-varlden', bg: '#241040', sub: 'Utanför oss själva' },
+  { id: 'jma-att-hora-till', bg: '#AC7A44', sub: 'Var hör jag hemma?' },
+  { id: 'jma-nar-vi-jamfor-oss', bg: '#8A6036', sub: 'Vad det gör med oss' },
+  { id: 'jma-nar-det-skaver', bg: '#7A5230', sub: 'När vi sårar varandra' },
+  { id: 'jma-att-sta-stadig', bg: '#6A4828', sub: 'Din egen grund' },
+  { id: 'jma-vi-i-varlden', bg: '#5A3E20', sub: 'Utanför oss själva' },
 ];
 
 // First card per category — used as tile illustrations
@@ -83,7 +83,7 @@ export default function JagMedAndraProductHome({ product }: { product: ProductMa
         {/* Multi-stop scrim: product color mid-blend, then Midnight Ink */}
         <div style={{
           position: 'absolute', bottom: 0, left: 0, right: 0, height: '88%',
-          background: `linear-gradient(to top, ${BG} 0%, ${BG}F5 15%, rgba(26,26,46,0.88) 30%, rgba(90,26,128,0.45) 55%, rgba(139,47,198,0.15) 75%, transparent 100%)`,
+          background: `linear-gradient(to top, ${BG} 0%, ${BG}F5 15%, rgba(42,30,20,0.88) 30%, rgba(138,96,54,0.45) 55%, rgba(172,122,68,0.15) 75%, transparent 100%)`,
           pointerEvents: 'none',
         }} />
       </motion.div>

@@ -10,16 +10,16 @@ import type { CreatureTileStyle } from '@/components/CategoryTileGrid';
 import { useCardImage } from '@/hooks/useCardImage';
 
 const EASE = [0.4, 0.0, 0.2, 1] as const;
-const BG = '#1A1A2E';
-const ACCENT_COLOR = '#6ABF78';
-const TILE_LIGHT = '#2D6E3A';
+const BG = '#252820';
+const ACCENT_COLOR = '#A8B498';
+const TILE_LIGHT = '#6C7362';
 
 const ORDERED_TILES = [
-  { id: 'jiv-min-vardag', bg: '#2D6E3A', sub: 'Det som fyller dina dagar' },
-  { id: 'jiv-vem-jag-ar', bg: '#1A4A24', sub: 'Det som förändras just nu' },
-  { id: 'jiv-jag-och-andra', bg: '#2A3A1E', sub: 'Hur vi påverkar varandra' },
-  { id: 'jiv-jag-i-samhallet', bg: '#1E2E16', sub: 'Normer, rättvisa och din röst' },
-  { id: 'jiv-det-stora-sammanhanget', bg: '#162210', sub: 'Bortom det du ser' },
+  { id: 'jiv-min-vardag', bg: '#6C7362', sub: 'Det som fyller dina dagar' },
+  { id: 'jiv-vem-jag-ar', bg: '#545A4C', sub: 'Det som förändras just nu' },
+  { id: 'jiv-jag-och-andra', bg: '#4A5042', sub: 'Hur vi påverkar varandra' },
+  { id: 'jiv-jag-i-samhallet', bg: '#3E4238', sub: 'Normer, rättvisa och din röst' },
+  { id: 'jiv-det-stora-sammanhanget', bg: '#343830', sub: 'Bortom det du ser' },
 ];
 
 // First card per category — used as tile illustrations
@@ -83,7 +83,7 @@ export default function JagIVarldenProductHome({ product }: { product: ProductMa
         {/* Multi-stop scrim: product color mid-blend, then Midnight Ink */}
         <div style={{
           position: 'absolute', bottom: 0, left: 0, right: 0, height: '88%',
-          background: `linear-gradient(to top, ${BG} 0%, ${BG}F5 15%, rgba(26,26,46,0.88) 30%, rgba(45,110,58,0.45) 55%, rgba(45,110,58,0.15) 75%, transparent 100%)`,
+          background: `linear-gradient(to top, ${BG} 0%, ${BG}F5 15%, rgba(37,40,32,0.88) 30%, rgba(84,90,76,0.45) 55%, rgba(108,115,98,0.15) 75%, transparent 100%)`,
           pointerEvents: 'none',
         }} />
       </motion.div>

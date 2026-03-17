@@ -10,14 +10,14 @@ import type { CreatureTileStyle } from '@/components/CategoryTileGrid';
 import { useCardImage } from '@/hooks/useCardImage';
 
 const EASE = [0.4, 0.0, 0.2, 1] as const;
-const BG = '#1A1A2E';
-const ACCENT_COLOR = '#A8B84C';
-const TILE_LIGHT = '#657514';
+const BG = '#1A2F2E';
+const ACCENT_COLOR = '#8ECAC7';
+const TILE_LIGHT = '#3A6260';
 
 const ORDERED_TILES = [
-  { id: 'jim-mina-kanslor', bg: '#657514', sub: 'Att känna igen dem' },
-  { id: 'jim-starka-kanslor', bg: '#4A5A0A', sub: 'När det blir mycket' },
-  { id: 'jim-stora-kanslor', bg: '#3E4A12', sub: 'Känslor med många lager' },
+  { id: 'jim-mina-kanslor', bg: '#3A6260', sub: 'Att känna igen dem' },
+  { id: 'jim-starka-kanslor', bg: '#2A4A48', sub: 'När det blir mycket' },
+  { id: 'jim-stora-kanslor', bg: '#1E3836', sub: 'Känslor med många lager' },
 ];
 
 // First card per category — used as tile illustrations
@@ -76,7 +76,7 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
         {/* Extended scrim with smooth blend */}
         <div style={{
           position: 'absolute', bottom: 0, left: 0, right: 0, height: '85%',
-          background: `linear-gradient(to top, ${BG} 0%, ${BG}F2 18%, rgba(26,26,46,0.85) 35%, rgba(101,117,20,0.4) 60%, rgba(101,117,20,0.1) 80%, transparent 100%)`,
+          background: `linear-gradient(to top, ${BG} 0%, ${BG}F2 18%, rgba(26,47,46,0.85) 35%, rgba(58,98,96,0.4) 60%, rgba(58,98,96,0.1) 80%, transparent 100%)`,
           pointerEvents: 'none',
         }} />
       </motion.div>

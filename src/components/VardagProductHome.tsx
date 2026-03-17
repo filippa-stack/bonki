@@ -15,15 +15,15 @@ import imgKvall from '/card-images/vk-kvall.png';
 import imgSova from '/card-images/vk-sova.png';
 
 const EASE = [0.4, 0.0, 0.2, 1] as const;
-const BG = '#062030';
-const ACCENT_COLOR = '#4DA8D4';
-const TILE_LIGHT = '#0E6B99';
+const BG = '#0E2226';
+const ACCENT_COLOR = '#5AAAB4';
+const TILE_LIGHT = '#20484E';
 
 const ORDERED_TILES = [
-  { id: 'vk-min-dag', bg: '#0E6B99', sub: 'Från morgon till kväll' },
-  { id: 'vk-var-rytm', bg: '#0A4A6A', sub: 'Vanor och rutiner' },
-  { id: 'vk-vi-hemma', bg: '#063450', sub: 'Allt som händer innanför dörren' },
-  { id: 'vk-utanfor-hemmet', bg: '#042C44', sub: 'Det du möter där ute' },
+  { id: 'vk-min-dag', bg: '#20484E', sub: 'Från morgon till kväll' },
+  { id: 'vk-var-rytm', bg: '#183A3E', sub: 'Vanor och rutiner' },
+  { id: 'vk-vi-hemma', bg: '#122E32', sub: 'Allt som händer innanför dörren' },
+  { id: 'vk-utanfor-hemmet', bg: '#102C30', sub: 'Det du möter där ute' },
 ];
 
 // Per-tile card images (first card per category)
@@ -78,7 +78,7 @@ export default function VardagProductHome({ product }: { product: ProductManifes
         {/* Extended 85% scrim with extra mid-stop for smooth blend */}
         <div style={{
           position: 'absolute', bottom: 0, left: 0, right: 0, height: '85%',
-          background: `linear-gradient(to top, ${BG} 0%, ${BG}F2 18%, rgba(6,32,48,0.85) 35%, rgba(10,74,106,0.5) 60%, rgba(10,74,106,0.15) 80%, transparent 100%)`,
+          background: `linear-gradient(to top, ${BG} 0%, ${BG}F2 18%, rgba(14,34,38,0.85) 35%, rgba(32,72,78,0.5) 60%, rgba(32,72,78,0.15) 80%, transparent 100%)`,
           pointerEvents: 'none',
         }} />
       </motion.div>
