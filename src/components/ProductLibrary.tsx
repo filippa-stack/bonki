@@ -101,22 +101,22 @@ const ILLUSTRATION_OPACITY: Record<string, number> = {
 
 /** Per-tile radial glow color behind illustration — creates 3D depth */
 const ILLUSTRATION_GLOW: Record<string, string> = {
-  jag_i_mig: 'rgba(180, 140, 40, 0.35)',
-  jag_med_andra: 'rgba(80, 90, 160, 0.40)',
-  jag_i_varlden: 'rgba(58, 133, 72, 0.38)',
-  sexualitetskort: 'rgba(160, 60, 50, 0.40)',
-  vardagskort: 'rgba(140, 50, 140, 0.38)',
-  syskonkort: 'rgba(40, 100, 180, 0.38)',
+  jag_i_mig: 'rgba(200, 160, 40, 0.50)',
+  jag_med_andra: 'rgba(90, 100, 200, 0.55)',
+  jag_i_varlden: 'rgba(50, 180, 80, 0.50)',
+  sexualitetskort: 'rgba(200, 70, 50, 0.55)',
+  vardagskort: 'rgba(180, 60, 180, 0.50)',
+  syskonkort: 'rgba(50, 120, 220, 0.50)',
 };
 
-/** Per-tile drop-shadow for illustration — makes character pop from bg */
+/** Per-tile drop-shadow + saturation boost — makes character pop from bg */
 const ILLUSTRATION_SHADOW: Record<string, string> = {
-  jag_i_mig: 'drop-shadow(0 8px 20px rgba(60, 40, 0, 0.45)) drop-shadow(0 2px 6px rgba(0,0,0,0.25))',
-  jag_med_andra: 'drop-shadow(0 8px 20px rgba(10, 10, 40, 0.55)) drop-shadow(0 2px 6px rgba(0,0,0,0.3))',
-  jag_i_varlden: 'drop-shadow(0 8px 20px rgba(5, 20, 10, 0.55)) drop-shadow(0 2px 6px rgba(0,0,0,0.3))',
-  sexualitetskort: 'drop-shadow(0 8px 20px rgba(20, 5, 5, 0.55)) drop-shadow(0 2px 6px rgba(0,0,0,0.3))',
-  vardagskort: 'drop-shadow(0 8px 20px rgba(30, 8, 30, 0.55)) drop-shadow(0 2px 6px rgba(0,0,0,0.3))',
-  syskonkort: 'drop-shadow(0 8px 20px rgba(0, 15, 40, 0.55)) drop-shadow(0 2px 6px rgba(0,0,0,0.3))',
+  jag_i_mig: 'saturate(1.15) brightness(1.05) drop-shadow(0 6px 16px rgba(80, 60, 0, 0.5)) drop-shadow(0 12px 32px rgba(180, 140, 20, 0.3))',
+  jag_med_andra: 'saturate(1.25) brightness(1.15) drop-shadow(0 6px 16px rgba(0, 0, 30, 0.6)) drop-shadow(0 12px 32px rgba(60, 70, 160, 0.35))',
+  jag_i_varlden: 'saturate(1.25) brightness(1.15) drop-shadow(0 6px 16px rgba(0, 15, 5, 0.6)) drop-shadow(0 12px 32px rgba(40, 120, 60, 0.3))',
+  sexualitetskort: 'saturate(1.3) brightness(1.2) drop-shadow(0 6px 16px rgba(15, 3, 3, 0.6)) drop-shadow(0 12px 32px rgba(160, 50, 40, 0.3))',
+  vardagskort: 'saturate(1.25) brightness(1.15) drop-shadow(0 6px 16px rgba(20, 4, 20, 0.6)) drop-shadow(0 12px 32px rgba(140, 50, 140, 0.3))',
+  syskonkort: 'saturate(1.25) brightness(1.15) drop-shadow(0 6px 16px rgba(0, 10, 30, 0.6)) drop-shadow(0 12px 32px rgba(40, 100, 200, 0.3))',
 };
 
 /** Title colors — dark text on light tiles, light on dark */
