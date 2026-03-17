@@ -40,14 +40,14 @@ export const productTileColors: Record<string, ProductTileColors> = {
     tileDeep: '#6A4828',
   },
   jag_i_varlden: {
-    tileLight: '#6C7362',
-    tileMid: '#545A4C',
-    tileDeep: '#3E4238',
+    tileLight: '#26383A',
+    tileMid: '#1E2C2E',
+    tileDeep: '#182426',
   },
   vardagskort: {
-    tileLight: '#20484E',
-    tileMid: '#183A3E',
-    tileDeep: '#102C30',
+    tileLight: '#30483A',
+    tileMid: '#263A2E',
+    tileDeep: '#1E3026',
   },
   syskonkort: {
     tileLight: '#8E5234',

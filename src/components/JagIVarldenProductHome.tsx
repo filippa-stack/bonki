@@ -83,7 +83,7 @@ export default function JagIVarldenProductHome({ product }: { product: ProductMa
         {/* Multi-stop scrim: product color mid-blend, then Midnight Ink */}
         <div style={{
           position: 'absolute', bottom: 0, left: 0, right: 0, height: '88%',
-          background: `linear-gradient(to top, ${BG} 0%, ${BG}F5 15%, rgba(37,40,32,0.88) 30%, rgba(84,90,76,0.45) 55%, rgba(108,115,98,0.15) 75%, transparent 100%)`,
+          background: `linear-gradient(to top, ${BG} 0%, ${BG}F5 15%, rgba(18,28,30,0.88) 30%, rgba(30,44,46,0.45) 55%, rgba(38,56,58,0.15) 75%, transparent 100%)`,
           pointerEvents: 'none',
         }} />
       </motion.div>
