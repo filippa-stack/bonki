@@ -44,12 +44,12 @@ const TAGLINES: Record<string, string> = {
 
 /** Creature-color tile backgrounds — dark/mid values from master palette */
 const TILE_COLORS: Record<string, string> = {
-  jag_i_mig: '#3A4210',       // Lichen deep
-  jag_med_andra: '#4A1870',   // Wild Violet deep
-  jag_i_varlden: '#1F4D2A',   // Deep Canopy deep (lifted +10% brightness)
-  sexualitetskort: '#6A1F18', // Ember Red deep
-  vardagskort: '#0F3D58',     // River Blue deep
-  syskonkort: '#144544',      // Twin Teal deep
+  jag_i_mig: '#F6E4AD',       // The Lantern — internal light
+  jag_med_andra: '#525B76',   // The Twilight — dusty, smoky purple
+  jag_i_varlden: '#1F4D2A',   // Deep Canopy deep (unchanged)
+  sexualitetskort: '#8C4332', // The Earth — muted terracotta
+  vardagskort: '#344E41',     // The Moss — deep earthy green
+  syskonkort: '#A3AD85',      // The Leaf — soft sage
 };
 
 /** Helper: hex → rgba */
