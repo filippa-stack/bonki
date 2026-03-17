@@ -118,7 +118,7 @@ const ILLUSTRATION_SHADOW: Record<string, string> = {
   jag_med_andra: 'saturate(1.25) contrast(1.1) drop-shadow(0 6px 20px rgba(86, 61, 34, 0.6)) drop-shadow(0 14px 40px rgba(172, 122, 68, 0.3)) drop-shadow(0 2px 4px rgba(0,0,0,0.2))',
   jag_i_varlden: 'saturate(1.35) brightness(1.25) drop-shadow(0 6px 20px rgba(19, 28, 29, 0.7)) drop-shadow(0 14px 40px rgba(38, 56, 58, 0.35)) drop-shadow(0 2px 4px rgba(0,0,0,0.3))',
   sexualitetskort: 'saturate(1.3) brightness(1.15) drop-shadow(0 6px 20px rgba(84, 59, 54, 0.6)) drop-shadow(0 14px 40px rgba(168, 118, 108, 0.3)) drop-shadow(0 2px 4px rgba(0,0,0,0.2))',
-  vardagskort: 'saturate(1.35) brightness(1.25) drop-shadow(0 8px 24px rgba(24, 36, 29, 0.7)) drop-shadow(0 16px 48px rgba(48, 72, 58, 0.35)) drop-shadow(0 2px 4px rgba(0,0,0,0.35))',
+  vardagskort: 'saturate(1.35) brightness(1.25) drop-shadow(0 8px 24px rgba(30, 37, 24, 0.7)) drop-shadow(0 16px 48px rgba(60, 74, 48, 0.35)) drop-shadow(0 2px 4px rgba(0,0,0,0.35))',
   syskonkort: 'saturate(1.3) brightness(1.2) drop-shadow(0 6px 20px rgba(71, 41, 26, 0.6)) drop-shadow(0 14px 40px rgba(142, 82, 52, 0.3)) drop-shadow(0 2px 4px rgba(0,0,0,0.25))',
 };
 
