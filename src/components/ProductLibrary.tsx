@@ -52,13 +52,14 @@ const TILE_COLORS: Record<string, string> = {
   syskonkort: '#8E5234',       // Sienna — warm wool blanket, from illustration palette
 };
 
-/** Luminance helper — determines if a tile needs light or dark treatment */
+/** Luminance helper — determines if a tile needs light or dark treatment.
+ *  Threshold 0.38 so only truly light tiles (amber, dusty rose) get dark borders. */
 function isLightTile(hex: string): boolean {
   const r = parseInt(hex.slice(1, 3), 16) / 255;
   const g = parseInt(hex.slice(3, 5), 16) / 255;
   const b = parseInt(hex.slice(5, 7), 16) / 255;
   const L = 0.2126 * r + 0.7152 * g + 0.0722 * b;
-  return L > 0.25;
+  return L > 0.38;
 }
 
 /** Helper: hex → rgba */
