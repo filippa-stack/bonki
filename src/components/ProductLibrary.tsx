@@ -736,7 +736,7 @@ export default function ProductLibrary() {
               style={{
                 borderRadius: '22px',
                 backgroundImage: 'linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0) 50%, rgba(0,0,0,0.08) 100%)',
-                backgroundColor: '#2E2233',
+                backgroundColor: '#263041',
                 height: '240px',
                 display: 'flex',
                 flexDirection: 'column',
