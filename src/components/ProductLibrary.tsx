@@ -287,8 +287,8 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
             ].join(', '),
       }}
     >
-      {/* Inner warmth glow — JIV only */}
-      {productId === 'jag_i_varlden' && (
+      {/* Radial glow behind illustration — per-product 3D depth */}
+      {illustration && productId && ILLUSTRATION_GLOW[productId] && (
         <div
           aria-hidden="true"
           style={{
@@ -296,11 +296,11 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
             inset: 0,
             zIndex: 0,
             pointerEvents: 'none',
-            background: 'radial-gradient(ellipse 70% 80% at 60% 50%, rgba(58, 133, 72, 0.35) 0%, transparent 70%)',
+            background: `radial-gradient(ellipse 70% 80% at 65% 55%, ${ILLUSTRATION_GLOW[productId]} 0%, transparent 70%)`,
           }}
         />
       )}
-      {/* Illustration — right-aligned, bleeds off edge dramatically */}
+      {/* Illustration — right-aligned, bleeds off edge dramatically, with depth shadow */}
       {illustration && (
         <div
           style={{
@@ -323,6 +323,7 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
               objectFit: 'contain',
               objectPosition: 'center bottom',
               opacity,
+              filter: productId ? (ILLUSTRATION_SHADOW[productId] ?? '') : '',
             }}
           />
         </div>
