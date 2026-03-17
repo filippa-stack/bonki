@@ -49,7 +49,7 @@ const TILE_COLORS: Record<string, string> = {
   jag_i_varlden: '#1F4D2A',   // Deep Canopy (unchanged)
   sexualitetskort: '#924535',  // The Earth — warm terracotta
   vardagskort: '#3E103F',      // Deep plum — distinct from JIV
-  syskonkort: '#5A7247',       // The Leaf — rich forest sage
+  syskonkort: '#001B44',       // Deep navy
 };
 
 /** Luminance helper — determines if a tile needs light or dark treatment */
