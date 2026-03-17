@@ -299,10 +299,10 @@ export default function Home() {
       <AnimatePresence>
         {shouldShowRitual && (
           <ReturnRitual
-            weeksAway={homeState.dormancyDays}
+            daysSinceLastActivity={homeState.dormancyDays}
             cardTitle={homeState.cardTitle}
             onContinue={() => setShowReturnRitual(false)}
-            onResetSlider={() => {
+            onRestart={() => {
               setShowReturnRitual(false);
               // TODO: call reset_slider_checkin RPC
             }}
