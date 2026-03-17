@@ -48,7 +48,7 @@ const TILE_COLORS: Record<string, string> = {
   jag_med_andra: '#121626',   // Deep midnight blue
   jag_i_varlden: '#0B1A16',   // Deep forest night
   sexualitetskort: '#1D0D0D',  // Deep dark burgundy
-  vardagskort: '#3E103F',      // Deep plum — distinct from JIV
+  vardagskort: '#060A0E',      // Near-black ink
   syskonkort: '#001B44',       // Deep navy
 };
 
