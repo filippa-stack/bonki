@@ -102,6 +102,20 @@ function ProtectedRoutes() {
               <Route path="/shared" element={<PageTransition><SharedSummary /></PageTransition>} />
               <Route path="/journal" element={<PageTransition><Journal /></PageTransition>} />
               <Route path="/diary/:productId" element={<PageTransition><Diary /></PageTransition>} />
+
+              {/* Still Us v2.5 routes */}
+              <Route path="/check-in/:cardId" element={<PageTransition><CheckInPage /></PageTransition>} />
+              <Route path="/check-in/:cardId/handoff" element={<PageTransition><CheckInHandoffPage /></PageTransition>} />
+              <Route path="/format-preview" element={<PageTransition><FormatPreviewPage /></PageTransition>} />
+              <Route path="/share" element={<PageTransition><SharePage /></PageTransition>} />
+              <Route path="/tier2-setup" element={<PageTransition><Tier2SetupPage /></PageTransition>} />
+              <Route path="/session/:cardId/start" element={<PageTransition><SessionStartPage /></PageTransition>} />
+              <Route path="/session/:cardId/complete-session1" element={<PageTransition><Session1CompletePage /></PageTransition>} />
+              <Route path="/session/:cardId/session2-start" element={<PageTransition><Session2StartPage /></PageTransition>} />
+              <Route path="/session/:cardId/live-session2" element={<PageTransition><Session2LivePage /></PageTransition>} />
+              <Route path="/session/:cardId/complete" element={<PageTransition><CardCompletePage /></PageTransition>} />
+              <Route path="/session/:cardId/tillbaka" element={<PageTransition><TillbakaPage /></PageTransition>} />
+              <Route path="/ceremony" element={<PageTransition><CeremonyPage /></PageTransition>} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </AnimatePresence>
