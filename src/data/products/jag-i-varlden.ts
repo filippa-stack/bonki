@@ -100,7 +100,7 @@ export const jagIVarldenProduct: ProductManifest = {
   ctaButtonColor: '#26383A',
   tileLight: '#26383A',
   tileMid: '#1E2C2E',
-  tileDeep: '#182426',
+  tileDeep: '#162224',
   pronounMode: 'du',
   freeCardId: 'jiv-identitet',
   ageLabel: '12+',

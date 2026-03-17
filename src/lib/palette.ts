@@ -42,12 +42,12 @@ export const productTileColors: Record<string, ProductTileColors> = {
   jag_i_varlden: {
     tileLight: '#26383A',
     tileMid: '#1E2C2E',
-    tileDeep: '#182426',
+    tileDeep: '#162224',
   },
   vardagskort: {
     tileLight: '#30483A',
-    tileMid: '#263A2E',
-    tileDeep: '#1E3026',
+    tileMid: '#243830',
+    tileDeep: '#1C2C26',
   },
   syskonkort: {
     tileLight: '#8E5234',
