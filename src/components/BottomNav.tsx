@@ -1,7 +1,7 @@
 import { useNavigate, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { House, BookOpen } from 'lucide-react';
-import { MIDNIGHT_INK, LANTERN_GLOW, DRIFTWOOD } from '@/lib/palette';
+import { MIDNIGHT_INK, BONKI_ORANGE, DRIFTWOOD } from '@/lib/palette';
 
 /** Two small circles leaning toward each other — Still Us icon */
 function StillUsIcon({ style }: { style?: React.CSSProperties }) {
@@ -78,7 +78,7 @@ export default function BottomNav() {
           {items.map((item) => {
             const active = item.match(pathname, search);
             const Icon = item.icon;
-            const color = active ? LANTERN_GLOW : DRIFTWOOD;
+            const color = active ? BONKI_ORANGE : DRIFTWOOD;
 
             return (
               <motion.button
