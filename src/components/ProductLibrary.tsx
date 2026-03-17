@@ -101,21 +101,21 @@ const ILLUSTRATION_OPACITY: Record<string, number> = {
 
 /** Per-tile radial glow color behind illustration — creates 3D depth */
 const ILLUSTRATION_GLOW: Record<string, string> = {
-  jag_i_mig: 'rgba(120, 70, 0, 0.50)',           // Dark amber glow — creates depth contrast on light yellow
-  jag_med_andra: 'rgba(90, 100, 200, 0.55)',
-  jag_i_varlden: 'rgba(50, 180, 80, 0.50)',
-  sexualitetskort: 'rgba(240, 100, 60, 0.70)',    // Very strong warm orange — lifts off near-black bg
-  vardagskort: 'rgba(180, 60, 180, 0.50)',
-  syskonkort: 'rgba(80, 180, 255, 0.65)',         // Bright cyan-blue — must contrast against #001B44 navy
+  jag_i_mig: 'rgba(255, 220, 120, 0.55)',         // Warm golden halo — bright glow on light tile creates luminous lift
+  jag_med_andra: 'rgba(100, 110, 220, 0.65)',      // Boosted indigo-blue glow for depth on midnight bg
+  jag_i_varlden: 'rgba(60, 200, 100, 0.60)',       // Boosted emerald glow against dark forest bg
+  sexualitetskort: 'rgba(240, 100, 60, 0.70)',     // Very strong warm orange — lifts off near-black bg
+  vardagskort: 'rgba(200, 80, 200, 0.65)',          // Boosted magenta glow — needs punch on #060A0E
+  syskonkort: 'rgba(80, 180, 255, 0.65)',           // Bright cyan-blue — contrasts #001B44 navy
 };
 
 /** Per-tile drop-shadow + saturation boost — makes character pop from bg */
 const ILLUSTRATION_SHADOW: Record<string, string> = {
-  jag_i_mig: 'saturate(1.3) contrast(1.15) drop-shadow(0 8px 24px rgba(80, 50, 0, 0.65)) drop-shadow(0 16px 48px rgba(100, 60, 0, 0.35)) drop-shadow(0 2px 4px rgba(0,0,0,0.35))',
-  jag_med_andra: 'saturate(1.25) brightness(1.15) drop-shadow(0 6px 16px rgba(0, 0, 30, 0.6)) drop-shadow(0 12px 32px rgba(60, 70, 160, 0.35))',
-  jag_i_varlden: 'saturate(1.25) brightness(1.15) drop-shadow(0 6px 16px rgba(0, 15, 5, 0.6)) drop-shadow(0 12px 32px rgba(40, 120, 60, 0.3))',
+  jag_i_mig: 'saturate(1.35) contrast(1.2) drop-shadow(0 6px 18px rgba(180, 130, 20, 0.5)) drop-shadow(0 12px 36px rgba(200, 160, 40, 0.25)) drop-shadow(0 2px 4px rgba(0,0,0,0.2))',
+  jag_med_andra: 'saturate(1.4) brightness(1.3) drop-shadow(0 8px 24px rgba(0, 0, 40, 0.7)) drop-shadow(0 16px 48px rgba(70, 80, 180, 0.4)) drop-shadow(0 2px 4px rgba(0,0,0,0.45))',
+  jag_i_varlden: 'saturate(1.4) brightness(1.3) drop-shadow(0 8px 24px rgba(0, 20, 8, 0.7)) drop-shadow(0 16px 48px rgba(50, 140, 70, 0.35)) drop-shadow(0 2px 4px rgba(0,0,0,0.45))',
   sexualitetskort: 'saturate(1.45) brightness(1.35) drop-shadow(0 8px 24px rgba(40, 8, 5, 0.75)) drop-shadow(0 16px 48px rgba(200, 70, 40, 0.4)) drop-shadow(0 2px 4px rgba(0,0,0,0.5))',
-  vardagskort: 'saturate(1.25) brightness(1.15) drop-shadow(0 6px 16px rgba(20, 4, 20, 0.6)) drop-shadow(0 12px 32px rgba(140, 50, 140, 0.3))',
+  vardagskort: 'saturate(1.4) brightness(1.3) drop-shadow(0 8px 24px rgba(30, 6, 30, 0.75)) drop-shadow(0 16px 48px rgba(160, 60, 160, 0.4)) drop-shadow(0 2px 4px rgba(0,0,0,0.5))',
   syskonkort: 'saturate(1.4) brightness(1.3) drop-shadow(0 8px 24px rgba(0, 15, 50, 0.75)) drop-shadow(0 16px 48px rgba(50, 120, 240, 0.4)) drop-shadow(0 2px 4px rgba(0,0,0,0.5))',
 };
 
