@@ -35,7 +35,7 @@ const FIRST_CARD_IDS = [
   'sex-konsidentitet',     // Min identitet
   'sex-normer',            // Normer & påverkan
   'sex-samtycke',          // Relation & ansvar
-  'sex-sexuella-overgrepp',// Skydd & makt
+  'sex-sex-som-hot',       // Makt & skyddslöshet
 ];
 
 const containerVariants = { hidden: {}, visible: { transition: { staggerChildren: 0.11, delayChildren: 0.4 } } };
