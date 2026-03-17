@@ -76,7 +76,7 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
         {/* Extended scrim with smooth blend */}
         <div style={{
           position: 'absolute', bottom: 0, left: 0, right: 0, height: '85%',
-          background: `linear-gradient(to top, ${BG} 0%, ${BG}F2 18%, rgba(26,26,46,0.85) 35%, rgba(101,117,20,0.4) 60%, rgba(101,117,20,0.1) 80%, transparent 100%)`,
+          background: `linear-gradient(to top, ${BG} 0%, ${BG}F2 18%, rgba(26,47,46,0.85) 35%, rgba(58,98,96,0.4) 60%, rgba(58,98,96,0.1) 80%, transparent 100%)`,
           pointerEvents: 'none',
         }} />
       </motion.div>
