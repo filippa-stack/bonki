@@ -58,8 +58,8 @@ const SAFFRON = '#E9B44C';
 const PRODUCT_TILE_COLOR: Record<string, string> = {
   jag_i_mig: '#657514',
   jag_med_andra: '#8B2FC6',
-  jag_i_varlden: '#2D6E3A',
-  vardagskort: '#0E6B99',
+  jag_i_varlden: '#26383A',
+  vardagskort: '#30483A',
   syskonkort: '#247A78',
   sexualitetskort: '#A3434B',
 };
