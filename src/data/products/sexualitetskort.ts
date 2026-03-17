@@ -126,15 +126,7 @@ const cards: Card[] = [
     'Vilka olika sorters preventivmedel finns det? Var kan en få tag på dem?',
     'Vad kan en göra om en inte har använt preventivmedel och får en könssjukdom eller blir ofrivilligt gravid? Vem kan en vända sig till och var kan en få hjälp?',
   ]}]},
-  // ── K4: Skydd & makt ──
-  { id: 'sex-sexuella-overgrepp', title: 'Sexuella övergrepp', subtitle: 'Vad som räknas som ett övergrepp – och vart en vänder sig om det hänt', categoryId: 'sex-skydd-och-makt', sections: [{ id: 'sex-sexuella-overgrepp-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
-    'Vad räknas som ett sexuellt övergrepp?',
-    'På vilka olika sätt kan sexuella övergrepp ske? Kan det vara annat än fysiskt?',
-    'Hur vet en att en blivit utsatt för ofredande eller övergrepp? Vad är skillnaden mot en dålig upplevelse av sex?',
-    'I vilka situationer kan en bli utsatt?',
-    'Vem bestämmer om det är ett sexuellt övergrepp?',
-    'Vart kan du vända dig och vem kan du prata med om du har blivit utsatt för något som kändes fel?',
-  ]}]},
+  // ── K4: Makt & skyddslöshet ──
   { id: 'sex-sex-som-hot', title: 'Sex som hot', subtitle: 'När sex används som makt, kontroll eller hot – och hur en skyddar sig', categoryId: 'sex-skydd-och-makt', sections: [{ id: 'sex-sex-som-hot-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
     'Kan någon utnyttja sex för att få kontroll eller makt över en annan människa? Förklara!',
     'Vad innebär begreppen "grooming" och "sugar dating"? Hur kan de ta sig uttryck?',
@@ -143,6 +135,14 @@ const cards: Card[] = [
     'Har du eller någon du känner upplevt att bli exponerad för sexuellt material online utan att ha velat det -- till exempel via automatiska meddelanden eller oönskade bilder? Hur kan en hantera det?',
     'På vilka sätt kan en skydda sig från att bli exponerad för sexuellt material online utan att ha gett sitt samtycke?',
     'Vart kan en vända sig om en utsätts för hot eller spridning av falskt eller privat material, som text, film, bilder eller rykten?',
+  ]}]},
+  { id: 'sex-sexuella-overgrepp', title: 'Sexuella övergrepp', subtitle: 'Vad som räknas som ett övergrepp – och vart en vänder sig om det hänt', categoryId: 'sex-skydd-och-makt', sections: [{ id: 'sex-sexuella-overgrepp-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
+    'Vad räknas som ett sexuellt övergrepp?',
+    'På vilka olika sätt kan sexuella övergrepp ske? Kan det vara annat än fysiskt?',
+    'Hur vet en att en blivit utsatt för ofredande eller övergrepp? Vad är skillnaden mot en dålig upplevelse av sex?',
+    'I vilka situationer kan en bli utsatt?',
+    'Vem bestämmer om det är ett sexuellt övergrepp?',
+    'Vart kan du vända dig och vem kan du prata med om du har blivit utsatt för något som kändes fel?',
   ]}]},
 ];
 
