@@ -44,13 +44,22 @@ const TAGLINES: Record<string, string> = {
 
 /** Creature-color tile backgrounds — dark/mid values from master palette */
 const TILE_COLORS: Record<string, string> = {
-  jag_i_mig: '#E8C96E',       // The Lantern — richer gold, warm internal light
-  jag_med_andra: '#3E4668',   // The Twilight — deeper, more saturated dusk
+  jag_i_mig: '#D4A03A',       // The Lantern — rich deep gold
+  jag_med_andra: '#3E4668',   // The Twilight — dusty dusk purple
   jag_i_varlden: '#1F4D2A',   // Deep Canopy (unchanged)
-  sexualitetskort: '#924535',  // The Earth — warmer, more alive terracotta
-  vardagskort: '#2A4235',      // The Moss — darker, richer forest
-  syskonkort: '#7A8B52',       // The Leaf — more saturated olive-sage
+  sexualitetskort: '#924535',  // The Earth — warm terracotta
+  vardagskort: '#3D3028',      // Warm Earth — bark/soil, distinct from JIV
+  syskonkort: '#5A7247',       // The Leaf — rich forest sage
 };
+
+/** Luminance helper — determines if a tile needs light or dark treatment */
+function isLightTile(hex: string): boolean {
+  const r = parseInt(hex.slice(1, 3), 16) / 255;
+  const g = parseInt(hex.slice(3, 5), 16) / 255;
+  const b = parseInt(hex.slice(5, 7), 16) / 255;
+  const L = 0.2126 * r + 0.7152 * g + 0.0722 * b;
+  return L > 0.25;
+}
 
 /** Helper: hex → rgba */
 function hexToRgba(hex: string, alpha: number): string {
@@ -92,22 +101,22 @@ const ILLUSTRATION_OPACITY: Record<string, number> = {
 
 /** Title colors — dark text on light tiles, light on dark */
 const ACCENT_COLORS: Record<string, string> = {
-  jag_i_mig: '#2C2420',       // Bark on Lantern
+  jag_i_mig: '#2C2420',       // Bark on gold
   jag_med_andra: '#FDF6E3',
   jag_i_varlden: '#FDF6E3',
   sexualitetskort: '#FDF6E3',
   vardagskort: '#FDF6E3',
-  syskonkort: '#2C2420',       // Bark on Leaf
+  syskonkort: '#FDF6E3',
 };
 
 /** Tagline colors for tiles */
 const TAGLINE_COLORS: Record<string, string> = {
-  jag_i_mig: 'hsla(30, 20%, 25%, 0.65)',
+  jag_i_mig: 'hsla(30, 25%, 22%, 0.70)',
   jag_med_andra: 'hsla(280, 40%, 85%, 0.75)',
   jag_i_varlden: 'hsla(140, 35%, 80%, 0.75)',
   sexualitetskort: 'hsla(5, 50%, 82%, 0.75)',
-  vardagskort: 'hsla(150, 30%, 80%, 0.75)',
-  syskonkort: 'hsla(80, 15%, 25%, 0.65)',
+  vardagskort: 'hsla(25, 30%, 78%, 0.75)',
+  syskonkort: 'hsla(100, 30%, 82%, 0.75)',
 };
 
 /** Build badge text: "X ämnen" — no pricing on individual tiles */
@@ -217,6 +226,8 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
   const offset = productId ? ILLUSTRATION_OFFSET[productId] : undefined;
   const opacity = productId ? ILLUSTRATION_OPACITY[productId] ?? illustrationOpacity : illustrationOpacity;
 
+  const light = isLightTile(bg);
+
   return (
     <motion.div
       variants={tileVariants}
@@ -231,16 +242,29 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
         display: 'flex',
         position: 'relative',
         overflow: 'hidden',
-        backgroundImage: 'linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0) 50%, rgba(0,0,0,0.08) 100%)',
-        border: '1.5px solid rgba(255, 255, 255, 0.30)',
-        boxShadow: [
-          `0 16px 40px ${toShadowColor(bg, 0.4)}`,
-          `0 6px 16px ${toShadowColor(bg, 0.25)}`,
-          '0 1px 3px rgba(0, 0, 0, 0.10)',
-          `0 0 72px ${toShadowColor(bg, 0.18)}`,
-          'inset 0 3px 6px rgba(255, 255, 255, 0.45)',
-          `inset 0 -4px 10px ${toShadowColor(bg, 0.14)}`,
-        ].join(', '),
+        backgroundImage: light
+          ? 'linear-gradient(135deg, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0) 50%, rgba(0,0,0,0.12) 100%)'
+          : 'linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0) 50%, rgba(0,0,0,0.08) 100%)',
+        border: light
+          ? '1.5px solid rgba(0, 0, 0, 0.10)'
+          : '1.5px solid rgba(255, 255, 255, 0.30)',
+        boxShadow: light
+          ? [
+              `0 16px 40px ${toShadowColor(bg, 0.35)}`,
+              `0 6px 16px ${toShadowColor(bg, 0.2)}`,
+              '0 1px 3px rgba(0, 0, 0, 0.08)',
+              `0 0 60px ${toShadowColor(bg, 0.15)}`,
+              `inset 0 3px 6px rgba(255, 255, 255, 0.25)`,
+              `inset 0 -4px 10px ${toShadowColor(bg, 0.10)}`,
+            ].join(', ')
+          : [
+              `0 16px 40px ${toShadowColor(bg, 0.4)}`,
+              `0 6px 16px ${toShadowColor(bg, 0.25)}`,
+              '0 1px 3px rgba(0, 0, 0, 0.10)',
+              `0 0 72px ${toShadowColor(bg, 0.18)}`,
+              'inset 0 3px 6px rgba(255, 255, 255, 0.45)',
+              `inset 0 -4px 10px ${toShadowColor(bg, 0.14)}`,
+            ].join(', '),
       }}
     >
       {/* Inner warmth glow — JIV only */}
