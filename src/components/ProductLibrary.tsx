@@ -105,9 +105,9 @@ const ILLUSTRATION_OPACITY: Record<string, number> = {
 const ILLUSTRATION_GLOW: Record<string, string> = {
   jag_i_mig: 'rgba(240, 190, 80, 0.50)',           // Warm gold on deep teal — classic complementary
   jag_med_andra: 'rgba(160, 130, 220, 0.45)',      // Cool lavender on warm amber — subtle contrast
-  jag_i_varlden: 'rgba(140, 210, 80, 0.50)',       // Bright lime on sage-olive — vivid pop
+  jag_i_varlden: 'rgba(120, 200, 210, 0.50)',       // Cool cyan on dark teal — complementary pop
   sexualitetskort: 'rgba(240, 120, 100, 0.50)',    // Warm coral on dusty rose — tonal lift
-  vardagskort: 'rgba(220, 100, 180, 0.60)',         // Bright magenta on dark petrol — needs punch
+  vardagskort: 'rgba(180, 220, 120, 0.55)',         // Warm lime on dark forest — natural complement
   syskonkort: 'rgba(80, 200, 220, 0.50)',           // Cool aqua on warm sienna — temperature contrast
 };
 
