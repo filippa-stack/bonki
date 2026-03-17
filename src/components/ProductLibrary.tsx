@@ -44,12 +44,12 @@ const TAGLINES: Record<string, string> = {
 
 /** Creature-color tile backgrounds — dark/mid values from master palette */
 const TILE_COLORS: Record<string, string> = {
-  jag_i_mig: '#3A4210',       // Lichen deep
-  jag_med_andra: '#4A1870',   // Wild Violet deep
-  jag_i_varlden: '#1F4D2A',   // Deep Canopy deep (lifted +10% brightness)
-  sexualitetskort: '#6A1F18', // Ember Red deep
-  vardagskort: '#0F3D58',     // River Blue deep
-  syskonkort: '#144544',      // Twin Teal deep
+  jag_i_mig: '#F6E4AD',       // The Lantern — internal light
+  jag_med_andra: '#525B76',   // The Twilight — dusty, smoky purple
+  jag_i_varlden: '#1F4D2A',   // Deep Canopy deep (unchanged)
+  sexualitetskort: '#8C4332', // The Earth — muted terracotta
+  vardagskort: '#344E41',     // The Moss — deep earthy green
+  syskonkort: '#A3AD85',      // The Leaf — soft sage
 };
 
 /** Helper: hex → rgba */
@@ -90,24 +90,24 @@ const ILLUSTRATION_OPACITY: Record<string, number> = {
   syskonkort: 0.85,
 };
 
-/** Light title colors for dark creature-color tiles — Lantern Glow variants */
+/** Title colors — dark text on light tiles, light on dark */
 const ACCENT_COLORS: Record<string, string> = {
-  jag_i_mig: '#FDF6E3',
+  jag_i_mig: '#2C2420',       // Bark on Lantern
   jag_med_andra: '#FDF6E3',
   jag_i_varlden: '#FDF6E3',
   sexualitetskort: '#FDF6E3',
   vardagskort: '#FDF6E3',
-  syskonkort: '#FDF6E3',
+  syskonkort: '#2C2420',       // Bark on Leaf
 };
 
-/** Light tagline colors for dark tiles */
+/** Tagline colors for tiles */
 const TAGLINE_COLORS: Record<string, string> = {
-  jag_i_mig: 'hsla(46, 60%, 85%, 0.75)',
+  jag_i_mig: 'hsla(30, 20%, 25%, 0.65)',
   jag_med_andra: 'hsla(280, 40%, 85%, 0.75)',
   jag_i_varlden: 'hsla(140, 35%, 80%, 0.75)',
   sexualitetskort: 'hsla(5, 50%, 82%, 0.75)',
-  vardagskort: 'hsla(205, 45%, 82%, 0.75)',
-  syskonkort: 'hsla(178, 40%, 80%, 0.75)',
+  vardagskort: 'hsla(150, 30%, 80%, 0.75)',
+  syskonkort: 'hsla(80, 15%, 25%, 0.65)',
 };
 
 /** Build badge text: "X ämnen" — no pricing on individual tiles */
