@@ -81,7 +81,7 @@ const ILLUSTRATION_SCALE: Record<string, { width: string; height: string }> = {
 
 /** Per-product offset — characters visible and dramatic, bleeding right */
 const ILLUSTRATION_OFFSET: Record<string, { top: string; right: string; bottom: string }> = {
-  jag_i_mig: { top: '-25%', right: '-2%', bottom: '-25%' },
+  jag_i_mig: { top: '-25%', right: '-5%', bottom: '-25%' },
   jag_med_andra: { top: '-25%', right: '0%', bottom: '-25%' },
   jag_i_varlden: { top: '-22%', right: '0%', bottom: '-22%' },
   sexualitetskort: { top: '-25%', right: '0%', bottom: '-20%' },
