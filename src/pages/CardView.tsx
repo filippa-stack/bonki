@@ -2287,7 +2287,7 @@ export default function CardView() {
                       fontWeight: 400,
                       color: DRIFTWOOD,
                     }}>
-                      Skriv något ni vill minnas
+                      Skriv vad ni vill minnas i dagboken
                     </span>
                   )}
                 </button>
