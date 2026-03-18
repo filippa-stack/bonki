@@ -10,12 +10,11 @@ const categories: Category[] = [
   { id: 'jiv-det-stora-sammanhanget', title: 'Det stora sammanhanget', subtitle: 'Tankar om mening, liv och det som är större än oss.', description: 'Existentiella frågor', cardCount: 1 },
 ];
 
-// Helper to create a card with scenario
+// Helper — single section per card (scenario appended as final prompt)
 const qsCard = (id: string, title: string, subtitle: string, catId: string, questions: string[], scenario: string): Card => ({
   id, title, subtitle, categoryId: catId,
   sections: [
-    { id: `${id}-opening`, type: 'opening', title: 'Frågor', content: '', prompts: questions },
-    { id: `${id}-scenario`, type: 'scenario', title: 'I verkligheten', content: '', prompts: [scenario] },
+    { id: `${id}-opening`, type: 'opening', title: 'Frågor', content: '', prompts: [...questions, scenario] },
   ],
 });
 
