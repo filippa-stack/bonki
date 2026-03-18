@@ -215,6 +215,8 @@ export default function KidsCardPortal() {
           padding: `calc(env(safe-area-inset-top, 0px) + 10px) 16px 6px`,
           position: 'relative',
           zIndex: 10,
+          opacity: portalPhase !== 'idle' ? 0 : 1,
+          transition: 'opacity 200ms ease-in',
           flexShrink: 0,
         }}
       >
