@@ -1336,15 +1336,8 @@ export default function CardView() {
     const BONKI_ORANGE = '#E85D2C';
     const SAFFRON = '#E9B44C';
 
-    const PRODUCT_TILE_COLOR: Record<string, string> = {
-      jag_i_mig: '#657514',
-      jag_med_andra: '#8B2FC6',
-      jag_i_varlden: '#2D6E3A',
-      vardagskort: '#0E6B99',
-      syskonkort: '#247A78',
-      sexualitetskort: '#A3434B',
-    };
-    const tileBg = PRODUCT_TILE_COLOR[product.id] ?? '#657514';
+    // Use product tile colors from the palette
+    const tileBg = product.tileLight ?? MIDNIGHT_INK;
 
     const questionHook = card.questionHook ?? QUESTION_HOOKS[card.id];
     const totalPrompts = card.sections.reduce((sum, s) => sum + (s.prompts?.length ?? 1), 0);
