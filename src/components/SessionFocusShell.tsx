@@ -7,9 +7,9 @@ import { sessionHeartbeat } from '@/lib/stillUsRpc';
 
 interface SessionFocusShellProps {
   children: ReactNode;
-  couple_id: string;
-  card_id: string;
-  device_id: string;
+  couple_id?: string;
+  card_id?: string;
+  device_id?: string;
   /** Top chrome slot (nav bar) */
   topSlot?: ReactNode;
   /** CTA at bottom — rendered by parent */
