@@ -42,7 +42,7 @@ import { useSessionReflections } from '@/hooks/useSessionReflections';
 import StageInterstitial from '@/components/StageInterstitial';
 import SessionFocusShell from '@/components/SessionFocusShell';
 
-import { ArrowRight, ArrowLeft, Feather, X, Pencil, ChevronDown } from 'lucide-react';
+import { ArrowRight, ArrowLeft, Feather, X, Pencil, ChevronDown, ChevronLeft } from 'lucide-react';
 
 import CompletedSessionView from '@/components/CompletedSessionView';
 import FeedbackSheet from '@/components/FeedbackSheet';
@@ -899,9 +899,9 @@ export default function CardView() {
     const PARCHMENT = '#F5EDD2';
     const MIDNIGHT_INK = '#1A1A2E';
 
-    const categoryName = category?.title ?? '';
     const hasNextCard = postCompletionNav.type === 'next_card' || postCompletionNav.type === 'next_category';
     const categoryDest = postCompletionNav.homeDest;
+    const productHomeDest = product ? `/product/${product.slug}` : '/';
 
     return (
       <motion.div
@@ -919,6 +919,25 @@ export default function CardView() {
         animate={{ opacity: 1 }}
         transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
       >
+        {/* Back arrow — top left */}
+        <button
+          onClick={() => navigate(productHomeDest)}
+          aria-label="Tillbaka"
+          style={{
+            position: 'absolute',
+            top: 'calc(env(safe-area-inset-top, 0px) + 12px)',
+            left: '12px',
+            zIndex: 20,
+            background: 'none',
+            border: 'none',
+            cursor: 'pointer',
+            padding: '8px',
+            color: BARK,
+            opacity: 0.5,
+          }}
+        >
+          <ChevronLeft size={22} strokeWidth={1.5} />
+        </button>
         {/* Content block — vertically centered */}
         <div style={{
           flex: '1 1 auto',
@@ -1052,14 +1071,14 @@ export default function CardView() {
               {hasNextCard ? (
                 <>Nästa samtal <ArrowRight size={16} style={{ opacity: 0.7 }} /></>
               ) : (
-                `Tillbaka till ${categoryName}`
+                'Tillbaka till översikt'
               )}
             </button>
 
             {/* 5. Secondary link — only when primary = "Nästa samtal" */}
             {hasNextCard && (
               <button
-                onClick={() => navigateWithFeedback(categoryDest)}
+                onClick={() => navigateWithFeedback(productHomeDest)}
                 style={{
                   display: 'block',
                   width: '100%',
@@ -1074,7 +1093,7 @@ export default function CardView() {
                   textAlign: 'center',
                 }}
               >
-                Tillbaka till {categoryName}
+                Tillbaka till översikt
               </button>
             )}
           </motion.div>
@@ -2088,6 +2107,22 @@ export default function CardView() {
       }
     };
 
+    const handleKidsBack = () => {
+      if (localPromptIndex > 0) {
+        setLocalPromptIndex(localPromptIndex - 1);
+      } else if (currentStepIndex > 0) {
+        const prevStageIndex = currentStepIndex - 1;
+        const prevSection = card.sections.find(
+          s => s.type === effectiveSteps[prevStageIndex]
+        );
+        const prevPromptCount = prevSection?.prompts?.length ?? 1;
+        setLocalStepIndex(prevStageIndex);
+        setLocalPromptIndex(prevPromptCount - 1);
+      } else {
+        setShowLeaveConfirm(true);
+      }
+    };
+
     // Note nudge: show full text for first 2 prompts, then just icon unless interacted
     const showFullNudge = localPromptIndex <= 1 || kidsNoteInteractedRef.current;
 
@@ -2110,17 +2145,35 @@ export default function CardView() {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
-            paddingLeft: '16px',
+            paddingLeft: '4px',
             paddingRight: '4px',
           }}>
-            <span style={{
-              fontFamily: 'var(--font-sans)',
-              fontSize: '15px',
-              fontWeight: 400,
-              color: LANTERN_GLOW,
-            }}>
-              {card.title}
-            </span>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+              <button
+                onClick={handleKidsBack}
+                aria-label="Tillbaka"
+                style={{
+                  minHeight: '44px',
+                  minWidth: '44px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  background: 'none',
+                  border: 'none',
+                  cursor: 'pointer',
+                }}
+              >
+                <ChevronLeft size={20} style={{ color: LANTERN_GLOW }} />
+              </button>
+              <span style={{
+                fontFamily: 'var(--font-sans)',
+                fontSize: '15px',
+                fontWeight: 400,
+                color: LANTERN_GLOW,
+              }}>
+                {card.title}
+              </span>
+            </div>
             <button
               onClick={() => setShowLeaveConfirm(true)}
               aria-label="Stäng"
@@ -2268,7 +2321,7 @@ export default function CardView() {
                       fontWeight: 400,
                       color: DRIFTWOOD,
                     }}>
-                      Skriv något ni vill minnas
+                      Skriv vad ni vill minnas i dagboken
                     </span>
                   )}
                 </button>
@@ -2740,7 +2793,7 @@ export default function CardView() {
                       isReflectionStep={isReflectionStep}
                       isExerciseStep={isExerciseStep}
                       hideNoteField={false}
-                      noteFieldLabel={isKidsProduct ? 'Skriv något ni vill minnas' : undefined}
+                      noteFieldLabel={isKidsProduct ? 'Skriv vad ni vill minnas i dagboken' : undefined}
                       onLocked={async () => {
                         if (isLastPromptInStage) {
                           await handleCompleteStep();
@@ -2917,7 +2970,7 @@ function KidsCompletionNote({ sessionId, spaceId, cardId, productId }: {
           fontWeight: 400,
           color: DRIFTWOOD,
         }}>
-          Vill ni skriva något om samtalet?
+          Vill ni spara något i dagboken?
         </span>
       </button>
     );
