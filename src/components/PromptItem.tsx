@@ -287,13 +287,14 @@ export default function PromptItem({ prompt, index, sectionType, preamble, ancho
                   <div
                     style={{
                       position: 'absolute',
-                      top: '50%',
+                      top: '45%',
                       left: '50%',
-                      transform: 'translate(-50%, -48%)',
-                      width: '85%',
-                      height: '110%',
+                      transform: 'translate(-50%, -50%)',
+                      width: '90%',
+                      height: '130%',
                       borderRadius: '50%',
-                      background: 'var(--question-cloud-solid, hsla(200, 20%, 50%, 0.08))',
+                      background: 'var(--question-cloud-solid, hsla(200, 20%, 85%, 0.5))',
+                      filter: 'blur(8px)',
                       pointerEvents: 'none',
                       zIndex: 0,
                     }}
