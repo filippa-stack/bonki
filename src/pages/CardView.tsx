@@ -2145,20 +2145,35 @@ export default function CardView() {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
-            paddingLeft: '16px',
+            paddingLeft: '4px',
             paddingRight: '4px',
           }}>
-            <span style={{
-              fontFamily: 'var(--font-sans)',
-              fontSize: '15px',
-              fontWeight: 400,
-              color: LANTERN_GLOW,
-            }}>
-              {card.title}
-            </span>
-            <button
-              onClick={() => setShowLeaveConfirm(true)}
-              aria-label="Stäng"
+            <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+              <button
+                onClick={handleKidsBack}
+                aria-label="Tillbaka"
+                style={{
+                  minHeight: '44px',
+                  minWidth: '44px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  background: 'none',
+                  border: 'none',
+                  cursor: 'pointer',
+                }}
+              >
+                <ChevronLeft size={20} style={{ color: LANTERN_GLOW }} />
+              </button>
+              <span style={{
+                fontFamily: 'var(--font-sans)',
+                fontSize: '15px',
+                fontWeight: 400,
+                color: LANTERN_GLOW,
+              }}>
+                {card.title}
+              </span>
+            </div>
               style={{
                 minHeight: '44px',
                 minWidth: '44px',
