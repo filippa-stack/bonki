@@ -1,47 +1,40 @@
+// ============================================================
+// Still Us — Shared: CORS Headers
+// ============================================================
+
 const ALLOWED_ORIGINS = [
-  "https://couple-dialogue-space.lovable.app",
-  "https://id-preview--1604837d-627c-4368-a714-aa6b770c1b8c.lovable.app",
-  "https://1604837d-627c-4368-a714-aa6b770c1b8c.lovableproject.com",
-  "http://localhost:5173",
-  "http://localhost:3000",
-  "http://localhost:8080",
+  "https://bonkistudio.com",
+  "https://www.bonkistudio.com",
+  /^https:\/\/[a-z0-9-]+\.lovableproject\.com$/,
 ];
 
-const CORS_HEADERS_BASE = {
+function isAllowedOrigin(origin: string): boolean {
+  return ALLOWED_ORIGINS.some((allowed) =>
+    typeof allowed === "string" ? allowed === origin : allowed.test(origin)
+  );
+}
+
+export const corsHeaders = {
+  "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers":
-    "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
-  "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+    "authorization, x-client-info, apikey, content-type",
+  "Access-Control-Allow-Methods": "POST, GET, OPTIONS",
 };
 
 export function getCorsHeaders(req: Request): Record<string, string> {
-  const origin = req.headers.get("Origin") || "";
-  if (ALLOWED_ORIGINS.includes(origin)) {
-    return { ...CORS_HEADERS_BASE, "Access-Control-Allow-Origin": origin };
-  }
-  // Return headers without Allow-Origin — browser will block the response
-  return { ...CORS_HEADERS_BASE };
-}
-
-export function isOriginAllowed(req: Request): boolean {
-  const origin = req.headers.get("Origin");
-  // Non-browser calls (e.g. server-to-server) may omit Origin — allow those
-  if (!origin) return true;
-  return ALLOWED_ORIGINS.includes(origin);
+  const origin = req.headers.get("origin") ?? "";
+  const allowedOrigin = isAllowedOrigin(origin) ? origin : ALLOWED_ORIGINS[0] as string;
+  return {
+    "Access-Control-Allow-Origin": allowedOrigin,
+    "Access-Control-Allow-Headers":
+      "authorization, x-client-info, apikey, content-type",
+    "Access-Control-Allow-Methods": "POST, GET, OPTIONS",
+  };
 }
 
 export function handleCors(req: Request): Response | null {
-  const headers = getCorsHeaders(req);
-
   if (req.method === "OPTIONS") {
-    return new Response(null, { headers });
+    return new Response("ok", { headers: getCorsHeaders(req) });
   }
-
-  if (!isOriginAllowed(req)) {
-    return new Response(JSON.stringify({ error: "forbidden_origin" }), {
-      status: 403,
-      headers: { ...headers, "Content-Type": "application/json" },
-    });
-  }
-
   return null;
 }
