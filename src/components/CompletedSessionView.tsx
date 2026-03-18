@@ -89,12 +89,12 @@ export default function CompletedSessionView({
     // Check if current category still has unexplored cards
     const sameCatCards = product.cards.filter(c => c.categoryId === categoryId);
     const hasMoreInCategory = sameCatCards.some(c => !done.has(c.id));
-    if (hasMoreInCategory && categoryId) return `/category/${categoryId}`;
+    if (hasMoreInCategory && categoryId) return `/product/${product.slug}/portal/${categoryId}`;
     // Otherwise find next category with unexplored cards
     for (const cat of product.categories) {
       if (cat.id === categoryId) continue;
       const hasCards = product.cards.filter(c => c.categoryId === cat.id).some(c => !done.has(c.id));
-      if (hasCards) return `/category/${cat.id}`;
+      if (hasCards) return `/product/${product.slug}/portal/${cat.id}`;
     }
     return null;
   }, [isChildProduct, product, completedCardIds, cardId, categoryId]);

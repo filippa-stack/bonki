@@ -105,7 +105,7 @@ function CategoryTile({
       variants={tileVariants}
       whileHover={{ scale: 1.03, y: -2 }}
       whileTap={{ scale: 0.96, y: 2 }}
-      onClick={() => navigate(`/category/${cat.id}`)}
+      onClick={() => navigate(`/product/${product.slug}/portal/${cat.id}`)}
       aria-label={ariaLabel}
       style={{
         position: 'relative',
