@@ -28,7 +28,7 @@ export const productIntros: Record<string, ProductIntroData> = {
     slides: [
       {
         heading: 'V\u00e4lkommen till Still Us',
-        body: 'Ni pratar varje dag. Om middagen, om schemat, om barnen. Men har ni ett s\u00e4tt att prata om det som \u00e4r sv\u00e5rt \u2014 innan det blir f\u00f6r sv\u00e5rt?\n\nStill Us bygger det som saknas i de flesta relationer: en gemensam infrastruktur f\u00f6r de samtal som annars aldrig blir av. Inte ett enstaka bra samtal, utan f\u00f6rm\u00e5gan att ha dem \u2014 om och om igen, \u00e4ven n\u00e4r det skaver.\n\nVarje kort \u00e4r sekvenserat. Ni b\u00f6rjar d\u00e4r det \u00e4r tryggt och r\u00f6r er gradvis mot det som betyder mest. Inget kan g\u00f6ras ensam. Allt kr\u00e4ver er b\u00e5da.',
+        body: '22 veckor av samtal som bygger det som saknas i de flesta relationer \u2014 ett s\u00e4tt att prata om det som \u00e4r sv\u00e5rt, innan det blir f\u00f6r sv\u00e5rt.\n\nVarje kort \u00e4r sekvenserat. Ni b\u00f6rjar d\u00e4r det \u00e4r tryggt och r\u00f6r er gradvis mot det som betyder mest. Inget kan g\u00f6ras ensam. Allt kr\u00e4ver er b\u00e5da.',
         signoff: 'Ert f\u00f6rsta samtal v\u00e4ntar. Det \u00e4r gratis.',
       },
     ],

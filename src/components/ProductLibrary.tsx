@@ -838,7 +838,7 @@ export default function ProductLibrary() {
                   lineHeight: 1.4,
                   textShadow: '0 0 10px rgba(46, 34, 51, 0.8)',
                 }}>
-                  22 samtal för er som vill stanna kvar
+                  22 veckor för er som vill stanna kvar
                 </p>
                 {/* Trust signal badges */}
                 <div style={{
@@ -858,7 +858,7 @@ export default function ProductLibrary() {
                     borderRadius: '12px',
                     padding: '3px 10px',
                   }}>
-                    ca 20 min per samtal
+                    5 min om dagen
                   </span>
                   <span style={{
                     fontFamily: "var(--font-body)",
@@ -870,7 +870,7 @@ export default function ProductLibrary() {
                     borderRadius: '12px',
                     padding: '3px 10px',
                   }}>
-                    ✦ 1a gratis
+                    ✦ Vecka 1 gratis
                   </span>
                 </div>
               </div>
