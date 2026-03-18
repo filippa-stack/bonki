@@ -2,18 +2,22 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import SliderCheckIn from '@/components/still-us/SliderCheckIn';
 import { CARD_SEQUENCE } from '@/data/stillUsSequence';
+import { cardIdFromSlug } from '@/lib/stillUsTokens';
 import { useCoupleSpaceContext } from '@/contexts/CoupleSpaceContext';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 
 export default function CheckInPage() {
-  const { cardId } = useParams<{ cardId: string }>();
+  const { cardId: slug } = useParams<{ cardId: string }>();
   const navigate = useNavigate();
   const { space } = useCoupleSpaceContext();
   const { user } = useAuth();
 
-  const card = CARD_SEQUENCE.find(c => c.cardId === cardId);
+  const card = CARD_SEQUENCE.find(c => c.cardId === slug);
   const cardIndex = card?.index ?? 0;
+
+  // Convert slug to backend card_N format for RPC calls
+  const backendCardId = cardIdFromSlug(slug ?? '') ?? `card_${cardIndex + 1}`;
 
   // Derive hasSeenFormatPreview from onboarding_events
   const [hasSeenFormatPreview, setHasSeenFormatPreview] = useState(true); // default true to avoid flash
@@ -45,7 +49,7 @@ export default function CheckInPage() {
       const partnerExists = members.length > 1;
       setHasPartner(partnerExists);
 
-      // Check if partner already completed slider for this card
+      // Check if partner already completed slider for this card (using backend card_N id)
       if (partnerExists) {
         const partnerId = members.find(m => m.user_id !== user.id)?.user_id;
         if (partnerId) {
@@ -54,18 +58,18 @@ export default function CheckInPage() {
             .select('slider_completed_at')
             .eq('couple_id', space.id)
             .eq('user_id', partnerId)
-            .eq('card_id', cardId ?? '')
+            .eq('card_id', backendCardId)
             .maybeSingle();
           setPartnerCompleted(!!cardState?.slider_completed_at);
         }
       }
     })();
-  }, [user?.id, space?.id, cardId]);
+  }, [user?.id, space?.id, slug, backendCardId]);
 
   return (
     <SliderCheckIn
       cardIndex={cardIndex}
-      cardId={cardId}
+      cardId={backendCardId}
       coupleId={space?.id}
       hasSeenFormatPreview={hasSeenFormatPreview}
       hasPartner={hasPartner}

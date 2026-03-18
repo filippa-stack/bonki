@@ -14,6 +14,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { useCoupleSpaceContext } from '@/contexts/CoupleSpaceContext';
 import { TOTAL_PROGRAM_CARDS, CARD_SEQUENCE, LAYERS, DORMANCY_THRESHOLD_DAYS } from '@/data/stillUsSequence';
+import { cardIdFromIndex } from '@/lib/stillUsTokens';
 import tillbakaCards from '@/data/tillbakaCards';
 
 // ── Action card state enum ──
@@ -153,7 +154,8 @@ export function useStillUsHome(): StillUsHomeState {
 
       // Card info
       const cardEntry = CARD_SEQUENCE[cardIndex] ?? CARD_SEQUENCE[0];
-      const cardId = cardEntry.cardId;
+      const cardSlug = cardEntry.cardId; // slug used for routing
+      const backendCardId = cardIdFromIndex(cardIndex); // 'card_N' for DB queries
       const cardTitle = cardEntry.title;
       const layer = LAYERS[cardEntry.layerIndex] ?? LAYERS[0];
       const layerName = layer.name;
@@ -162,17 +164,16 @@ export function useStillUsHome(): StillUsHomeState {
       const dormancyDays = daysSince(lastActivityAt);
       const isDormant = dormancyDays >= DORMANCY_THRESHOLD_DAYS;
 
-      // User card state — check slider completion
+      // User card state — check slider completion (use backend card_N id)
       const allUcs = ucsResult.data ?? [];
-      const currentCardId = cardId;
-      const myUcs = allUcs.find(u => u.user_id === userId && u.card_id === currentCardId && u.cycle_id === cycleId);
-      const partnerUcs = allUcs.find(u => u.user_id !== userId && u.card_id === currentCardId && u.cycle_id === cycleId);
+      const myUcs = allUcs.find(u => u.user_id === userId && u.card_id === backendCardId && u.cycle_id === cycleId);
+      const partnerUcs = allUcs.find(u => u.user_id !== userId && u.card_id === backendCardId && u.cycle_id === cycleId);
       const mySliderDone = !!myUcs?.slider_completed_at;
       const partnerSliderDone = !!partnerUcs?.slider_completed_at;
 
       // Session state
       const ss = ssResult.data;
-      const sessionActive = ss && ss.card_id === currentCardId;
+      const sessionActive = ss && ss.card_id === backendCardId;
       const session1Completed = sessionActive ? ss.session_1_completed : false;
       const session2Completed = sessionActive ? ss.session_2_completed : false;
       const sessionPaused = sessionActive ? !!ss.paused_at : false;
@@ -241,7 +242,7 @@ export function useStillUsHome(): StillUsHomeState {
       setState({
         actionCard,
         cardIndex,
-        cardId,
+        cardId: cardSlug,
         cardTitle,
         layerName,
         phase,
