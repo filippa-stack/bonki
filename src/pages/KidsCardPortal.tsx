@@ -186,49 +186,19 @@ export default function KidsCardPortal() {
         {/* ═══ Portal tile — constrained to leave room for copy ═══ */}
         <div style={{ flex: 1, position: 'relative', minHeight: 0, maxHeight: 'calc(100vh - 200px)' }}>
 
-          {/* ── Glowing frame: light shining from behind ── */}
-          {/* Layer 1: Wide soft glow */}
+          {/* ── Saffron glow frame (matches recommended tiles) ── */}
           <motion.div
-            animate={{ opacity: [0.4, 0.7, 0.4], scale: [1, 1.02, 1] }}
-            transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
+            animate={{ opacity: [0.6, 1, 0.6] }}
+            transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
             style={{
               position: 'absolute',
-              inset: '-18px',
-              borderRadius: '28px',
-              background: `linear-gradient(135deg, rgba(${tileBgRgb}, 0.6) 0%, rgba(${hexToRgb(SAFFRON_FLAME)}, 0.35) 50%, rgba(${tileBgRgb}, 0.6) 100%)`,
-              filter: 'blur(22px)',
-              pointerEvents: 'none',
-              zIndex: 0,
-            }}
-          />
-          {/* Layer 2: Tight bright edge glow */}
-          <motion.div
-            animate={{ opacity: [0.5, 0.85, 0.5] }}
-            transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut', delay: 0.5 }}
-            style={{
-              position: 'absolute',
-              inset: '-6px',
+              inset: '-4px',
               borderRadius: '24px',
-              background: `linear-gradient(160deg, rgba(${hexToRgb(SAFFRON_FLAME)}, 0.5) 0%, rgba(255,255,255,0.15) 30%, rgba(${tileBgRgb}, 0.4) 60%, rgba(${hexToRgb(SAFFRON_FLAME)}, 0.45) 100%)`,
-              filter: 'blur(8px)',
-              pointerEvents: 'none',
-              zIndex: 0,
-            }}
-          />
-          {/* Layer 3: Corner accent flares */}
-          <motion.div
-            animate={{ opacity: [0.3, 0.6, 0.3], rotate: [0, 2, 0] }}
-            transition={{ duration: 7, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
-            style={{
-              position: 'absolute',
-              inset: '-12px',
-              borderRadius: '26px',
-              background: [
-                `radial-gradient(circle at 10% 10%, rgba(${hexToRgb(SAFFRON_FLAME)}, 0.5) 0%, transparent 35%)`,
-                `radial-gradient(circle at 90% 90%, rgba(${hexToRgb(SAFFRON_FLAME)}, 0.4) 0%, transparent 35%)`,
-                `radial-gradient(circle at 90% 10%, rgba(255,255,255,0.2) 0%, transparent 30%)`,
+              boxShadow: [
+                `0 0 16px rgba(233, 180, 76, 0.45)`,
+                `0 0 4px rgba(233, 180, 76, 0.25)`,
               ].join(', '),
-              filter: 'blur(14px)',
+              border: `2px solid ${SAFFRON_FLAME}`,
               pointerEvents: 'none',
               zIndex: 0,
             }}
