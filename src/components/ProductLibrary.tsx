@@ -858,7 +858,7 @@ export default function ProductLibrary() {
                     borderRadius: '12px',
                     padding: '3px 10px',
                   }}>
-                    ca 20 min per samtal
+                    5 min om dagen
                   </span>
                   <span style={{
                     fontFamily: "var(--font-body)",
