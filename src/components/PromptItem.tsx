@@ -270,7 +270,7 @@ export default function PromptItem({ prompt, index, sectionType, preamble, ancho
                 style={{
                   /* Soft accent cushion behind question */
                   background: hasIllustration
-                    ? 'radial-gradient(ellipse 90% 70% at 50% 38%, var(--question-cloud-tint, hsla(200, 20%, 50%, 0.06)) 0%, transparent 100%)'
+                    ? 'none'
                     : 'radial-gradient(ellipse at 50% 40%, var(--question-cloud-tint, transparent) 0%, transparent 75%)',
                   borderRadius: '28px',
                   padding: isLongText ? '28px 20px 20px' : '32px 20px 16px',
@@ -282,6 +282,24 @@ export default function PromptItem({ prompt, index, sectionType, preamble, ancho
                   overflow: 'visible',
                 }}
               >
+                {/* Soft oval shape for kids products */}
+                {hasIllustration && (
+                  <div
+                    style={{
+                      position: 'absolute',
+                      top: '50%',
+                      left: '50%',
+                      transform: 'translate(-50%, -48%)',
+                      width: '85%',
+                      height: '110%',
+                      borderRadius: '50%',
+                      background: 'var(--question-cloud-solid, hsla(200, 20%, 50%, 0.08))',
+                      pointerEvents: 'none',
+                      zIndex: 0,
+                    }}
+                  />
+                )}
+
                 {/* Question text */}
                 {prompt.text.split('\n').filter(p => p.trim() !== '').map((para, i) => (
                   <p

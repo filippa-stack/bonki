@@ -36,8 +36,9 @@ export function useProductTheme(
       // Kids product enhancements
       if (pronounMode === 'du') {
         // D: Soft accent cushion behind question
-        root.style.setProperty('--question-cloud-tint', `hsla(${p}, 0.07)`);
+        root.style.setProperty('--question-cloud-tint', `hsla(${p}, 0.12)`);
         root.style.setProperty('--question-cloud-border', `hsla(${p}, 0.10)`);
+        root.style.setProperty('--question-cloud-solid', `hsla(${p}, 0.10)`);
         // A: Radial accent glow on page background
         root.style.setProperty('--kids-bg-glow', `radial-gradient(ellipse at 50% 35%, hsla(${p}, 0.06) 0%, transparent 70%)`);
         // E: Warmer question text color derived from accent
@@ -66,6 +67,7 @@ export function useProductTheme(
        '--question-cloud-tint', '--question-cloud-border',
        '--kids-bg-glow', '--kids-question-color',
        '--kids-counter-bg', '--kids-counter-color', '--kids-counter-border',
+       '--question-cloud-solid',
        '--tile-light', '--tile-mid', '--tile-deep',
       ].forEach((v) => root.style.removeProperty(v));
     };
