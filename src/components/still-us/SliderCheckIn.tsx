@@ -25,7 +25,7 @@ export default function SliderCheckIn({ cardIndex, onComplete, onBack }: SliderC
   const [step, setStep] = useState<'sliders' | 'reflection'>('sliders');
 
   const allSlidersAnswered = sliderSet
-    ? sliderSet.sliders.every((s) => values[s.id] !== undefined)
+    ? sliderSet.sliders.every((s) => values[s.sliderId] !== undefined)
     : false;
 
   const handleSliderChange = useCallback((id: string, val: number[]) => {
@@ -170,7 +170,7 @@ function SlidersView({
 
       {sliderSet.sliders.map((slider, i) => (
         <motion.div
-          key={slider.id}
+          key={slider.sliderId}
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: i * 0.06, duration: EMOTION, ease: [...EASE] }}
@@ -190,15 +190,15 @@ function SlidersView({
             min={0}
             max={100}
             step={1}
-            value={values[slider.id] !== undefined ? [values[slider.id]] : [50]}
-            onValueChange={(val) => onSliderChange(slider.id, val)}
+            value={values[slider.sliderId] !== undefined ? [values[slider.sliderId]] : [50]}
+            onValueChange={(val) => onSliderChange(slider.sliderId, val)}
             className="w-full [&_[data-orientation=horizontal]]:h-2 [&_[role=slider]]:h-6 [&_[role=slider]]:w-6 [&_[role=slider]]:border-2"
             style={{ '--slider-track': EMBER_GLOW + '30', '--slider-range': DEEP_SAFFRON, '--slider-thumb': EMBER_GLOW } as React.CSSProperties}
           />
 
           <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-            <span style={{ fontFamily: 'var(--font-sans)', fontSize: '12px', color: DRIFTWOOD }}>{slider.labelMin}</span>
-            <span style={{ fontFamily: 'var(--font-sans)', fontSize: '12px', color: DRIFTWOOD }}>{slider.labelMax}</span>
+            <span style={{ fontFamily: 'var(--font-sans)', fontSize: '12px', color: DRIFTWOOD }}>{slider.leftLabel}</span>
+            <span style={{ fontFamily: 'var(--font-sans)', fontSize: '12px', color: DRIFTWOOD }}>{slider.rightLabel}</span>
           </div>
         </motion.div>
       ))}

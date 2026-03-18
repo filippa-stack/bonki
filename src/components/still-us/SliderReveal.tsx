@@ -59,7 +59,7 @@ export default function SliderReveal({
       <div style={{ display: 'flex', flexDirection: 'column', gap: '28px' }}>
         {sliders.map((slider, i) => (
           <motion.div
-            key={slider.id}
+            key={slider.sliderId}
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: i * BEAT_1, duration: EMOTION, ease: [...EASE] }}
@@ -96,7 +96,7 @@ export default function SliderReveal({
                 style={{
                   position: 'absolute',
                   top: '50%',
-                  left: `${userValues[slider.id] ?? 50}%`,
+                  left: `${userValues[slider.sliderId] ?? 50}%`,
                   transform: 'translate(-50%, -50%)',
                   width: '14px',
                   height: '14px',
@@ -114,7 +114,7 @@ export default function SliderReveal({
                 style={{
                   position: 'absolute',
                   top: '50%',
-                  left: `${partnerValues[slider.id] ?? 50}%`,
+                  left: `${partnerValues[slider.sliderId] ?? 50}%`,
                   transform: 'translate(-50%, -50%)',
                   width: '14px',
                   height: '14px',
@@ -126,8 +126,8 @@ export default function SliderReveal({
             </div>
 
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-              <span style={{ fontFamily: 'var(--font-sans)', fontSize: '11px', color: DRIFTWOOD }}>{slider.labelMin}</span>
-              <span style={{ fontFamily: 'var(--font-sans)', fontSize: '11px', color: DRIFTWOOD }}>{slider.labelMax}</span>
+              <span style={{ fontFamily: 'var(--font-sans)', fontSize: '11px', color: DRIFTWOOD }}>{slider.leftLabel}</span>
+              <span style={{ fontFamily: 'var(--font-sans)', fontSize: '11px', color: DRIFTWOOD }}>{slider.rightLabel}</span>
             </div>
           </motion.div>
         ))}
