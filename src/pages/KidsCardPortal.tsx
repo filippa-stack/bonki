@@ -29,10 +29,8 @@ function hexToRgb(hex: string): string {
   return `${parseInt(h.substring(0, 2), 16)},${parseInt(h.substring(2, 4), 16)},${parseInt(h.substring(4, 6), 16)}`;
 }
 
-function estimateMinutes(promptCount: number): string {
-  const lo = promptCount * 3;
-  const hi = promptCount * 4;
-  return `ca ${lo}–${hi} min`;
+function estimateMinutes(_promptCount: number): string {
+  return 'ca 5–10 min';
 }
 
 function getPromptCount(card: { sections?: { prompts?: unknown[] }[] }): number {
