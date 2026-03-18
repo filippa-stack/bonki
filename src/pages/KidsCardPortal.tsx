@@ -294,9 +294,9 @@ export default function KidsCardPortal() {
               animate="center"
               exit="exit"
               transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-              whileTap={{ scale: 0.97, y: 0 }}
+              whileTap={portalPhase === 'idle' ? { scale: 0.97, y: 0 } : undefined}
               onClick={startSession}
-              drag="x"
+              drag={portalPhase === 'idle' ? 'x' : false}
               dragConstraints={{ left: 0, right: 0 }}
               dragElastic={0.15}
               onDragEnd={handleDragEnd}
@@ -309,6 +309,10 @@ export default function KidsCardPortal() {
                 cursor: 'pointer',
                 backgroundColor: tileBg,
                 zIndex: 1,
+                transform: portalPhase === 'phase1' ? 'scale(1.03)' : portalPhase === 'phase2' ? 'scale(1.03)' : undefined,
+                filter: portalPhase === 'phase1' ? 'brightness(1.1)' : undefined,
+                opacity: portalPhase === 'phase2' ? 0 : 1,
+                transition: 'transform 200ms ease-out, filter 200ms ease-out, opacity 300ms ease-in',
               }}
             >
               {/* Card illustration — full bleed */}
