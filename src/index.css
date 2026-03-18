@@ -7,7 +7,7 @@
   50% { opacity: 1; }
 }
 
-@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;0,9..144,800;1,9..144,400;1,9..144,500&family=Nunito:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;0,9..144,800;1,9..144,400;1,9..144,500&family=Nunito:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap');
 
 /* ── Balanced text wrapping for headings ── */
 h1, h2, h3,
@@ -251,6 +251,15 @@ h1, h2, h3,
     letter-spacing: -0.02em;
     line-height: 1.2;
   }
+}
+
+/* ── Accessibility: focus rings ── */
+:focus-visible {
+  outline: 2px solid #E8913A;
+  outline-offset: 2px;
+}
+:focus:not(:focus-visible) {
+  outline: none;
 }
 
 @layer components {
@@ -796,3 +805,11 @@ h1, h2, h3,
 /* ── Hide scrollbar utility ── */
 .hide-scrollbar::-webkit-scrollbar { display: none; }
 .hide-scrollbar { scrollbar-width: none; -ms-overflow-style: none; }
+
+/* ── Accessibility: reduced motion ── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
