@@ -14,7 +14,7 @@ export const COLORS = {
   driftwoodBody: '#B5A898',
   deepSaffron: '#E8913A',
   bonkiOrange: '#E8913A',
-  griden: '#8BA888',
+  grunden: '#8BA888',
   normen: '#5D9B9B',
   konflikten: '#D4836D',
   langtan: '#C4A0A0',
@@ -23,7 +23,7 @@ export const COLORS = {
 
 // ── Layer color mapping (0-indexed card_index ranges) ───────
 export const LAYER_COLORS: Record<string, string> = {
-  griden: '#8BA888',     // cards 0-3  (weeks 1-4)
+  grunden: '#8BA888',    // cards 0-3  (weeks 1-4)
   normen: '#5D9B9B',     // cards 4-8  (weeks 5-9)
   konflikten: '#D4836D', // cards 9-13 (weeks 10-14)
   langtan: '#C4A0A0',    // cards 14-17 (weeks 15-18)
@@ -31,7 +31,7 @@ export const LAYER_COLORS: Record<string, string> = {
 };
 
 export function getLayerForCard(cardIndex: number): { name: string; color: string } {
-  if (cardIndex <= 3) return { name: 'Griden', color: '#8BA888' };
+  if (cardIndex <= 3) return { name: 'Grunden', color: '#8BA888' };
   if (cardIndex <= 8) return { name: 'Normen', color: '#5D9B9B' };
   if (cardIndex <= 13) return { name: 'Konflikten', color: '#D4836D' };
   if (cardIndex <= 17) return { name: 'Längtan', color: '#C4A0A0' };
