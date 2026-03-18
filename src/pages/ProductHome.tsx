@@ -65,7 +65,8 @@ export default function ProductHome() {
             setShowIntro(false);
           }}
           onStartFreeCard={() => {
-            navigate(`/card/${STILL_US_FREE_CARD_ID}`, { replace: true });
+            setShowIntro(false);
+            navigate('/check-in/su-01-smallest-we', { replace: true });
           }}
         />
       );
