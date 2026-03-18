@@ -19,6 +19,8 @@ interface SliderRevealProps {
   partnerName: string;
   initiatorReflection?: string;
   partnerReflection?: string;
+  /** If provided, CTA calls this instead of navigating */
+  onContinue?: () => void;
 }
 
 export default function SliderReveal({
