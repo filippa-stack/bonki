@@ -11,10 +11,10 @@ export default function Tier2SetupPage() {
     <Tier2Setup
       onComplete={async (partnerName) => {
         if (space?.id) {
-          await supabase
+           await supabase
             .from('couple_state')
             .update({ tier_2_partner_name: partnerName })
-            .eq('couple_space_id', space.id);
+            .eq('couple_id', space.id);
         }
         navigate('/');
       }}

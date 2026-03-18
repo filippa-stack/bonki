@@ -112,17 +112,16 @@ export function useStillUsHome(): StillUsHomeState {
         supabase
           .from('couple_state')
           .select('*')
-          .eq('couple_space_id', spaceId)
+          .eq('couple_id', spaceId)
           .maybeSingle(),
         supabase
           .from('user_card_state')
-          .select('user_id, card_index, slider_completed_at, cycle_id')
-          .eq('couple_space_id', spaceId),
+          .select('user_id, card_id, slider_completed_at, cycle_id')
+          .eq('couple_id', spaceId),
         supabase
           .from('session_state')
           .select('*')
-          .eq('couple_space_id', spaceId)
-          .order('created_at', { ascending: false })
+          .eq('couple_id', spaceId)
           .limit(1)
           .maybeSingle(),
         supabase
@@ -148,8 +147,8 @@ export function useStillUsHome(): StillUsHomeState {
       const partnerTier = cs.partner_tier as StillUsHomeState['partnerTier'];
       const cycleId = cs.cycle_id ?? 1;
       const migrationPending = cs.migration_pending ?? false;
-      const lastActivityAt = cs.last_activity_at;
-      const returnRitualShown = cs.return_ritual_shown_for_card === cardIndex;
+      const lastActivityAt = cs.last_activity;
+      const returnRitualShown = cs.return_ritual_shown_for_card === String(cardIndex);
       const tier2Name = cs.tier_2_partner_name ?? null;
 
       // Card info
@@ -165,14 +164,15 @@ export function useStillUsHome(): StillUsHomeState {
 
       // User card state — check slider completion
       const allUcs = ucsResult.data ?? [];
-      const myUcs = allUcs.find(u => u.user_id === userId && u.card_index === cardIndex && u.cycle_id === cycleId);
-      const partnerUcs = allUcs.find(u => u.user_id !== userId && u.card_index === cardIndex && u.cycle_id === cycleId);
+      const currentCardId = cardId;
+      const myUcs = allUcs.find(u => u.user_id === userId && u.card_id === currentCardId && u.cycle_id === cycleId);
+      const partnerUcs = allUcs.find(u => u.user_id !== userId && u.card_id === currentCardId && u.cycle_id === cycleId);
       const mySliderDone = !!myUcs?.slider_completed_at;
       const partnerSliderDone = !!partnerUcs?.slider_completed_at;
 
       // Session state
       const ss = ssResult.data;
-      const sessionActive = ss && ss.card_index === cardIndex;
+      const sessionActive = ss && ss.card_id === currentCardId;
       const session1Completed = sessionActive ? ss.session_1_completed : false;
       const session2Completed = sessionActive ? ss.session_2_completed : false;
       const sessionPaused = sessionActive ? !!ss.paused_at : false;
