@@ -2107,6 +2107,22 @@ export default function CardView() {
       }
     };
 
+    const handleKidsBack = () => {
+      if (localPromptIndex > 0) {
+        setLocalPromptIndex(localPromptIndex - 1);
+      } else if (currentStepIndex > 0) {
+        const prevStageIndex = currentStepIndex - 1;
+        const prevSection = card.sections.find(
+          s => s.type === effectiveSteps[prevStageIndex]
+        );
+        const prevPromptCount = prevSection?.prompts?.length ?? 1;
+        setLocalStepIndex(prevStageIndex);
+        setLocalPromptIndex(prevPromptCount - 1);
+      } else {
+        setShowLeaveConfirm(true);
+      }
+    };
+
     // Note nudge: show full text for first 2 prompts, then just icon unless interacted
     const showFullNudge = localPromptIndex <= 1 || kidsNoteInteractedRef.current;
 
