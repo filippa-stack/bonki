@@ -11,7 +11,7 @@ export interface LayerIntro {
 }
 
 const layerIntros: LayerIntro[] = [
-  { layerIndex: 0, name: 'Griden', intro: 'Ni börjar med det mest grundläggande — vad ni är för varandra.' },
+  { layerIndex: 0, name: 'Grunden', intro: 'Ni börjar med det mest grundläggande — vad ni är för varandra.' },
   { layerIndex: 1, name: 'Normen', intro: 'Nu går ni djupare in i det som pågår under ytan.' },
   { layerIndex: 2, name: 'Konflikten', intro: 'Här möter ni det som kan vara svårt att prata om.' },
   { layerIndex: 3, name: 'Längtan', intro: 'Ni utforskar det som öppnar upp er relation.' },

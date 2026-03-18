@@ -31,7 +31,7 @@ export const LAYER_COLORS: Record<string, string> = {
 };
 
 export function getLayerForCard(cardIndex: number): { name: string; color: string } {
-  if (cardIndex <= 3) return { name: 'Griden', color: '#8BA888' };
+  if (cardIndex <= 3) return { name: 'Grunden', color: '#8BA888' };
   if (cardIndex <= 8) return { name: 'Normen', color: '#5D9B9B' };
   if (cardIndex <= 13) return { name: 'Konflikten', color: '#D4836D' };
   if (cardIndex <= 17) return { name: 'Längtan', color: '#C4A0A0' };
