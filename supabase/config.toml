@@ -20,3 +20,39 @@ verify_jwt = false
 
 [functions.stripe-webhook]
 verify_jwt = false
+
+[functions.acquire-session-lock]
+verify_jwt = false
+
+[functions.advance-card]
+verify_jwt = false
+
+[functions.complete-session]
+verify_jwt = false
+
+[functions.complete-slider-checkin]
+verify_jwt = false
+
+[functions.compute-journey-insights]
+verify_jwt = false
+
+[functions.dissolve-couple]
+verify_jwt = false
+
+[functions.migrate-anonymous-submissions]
+verify_jwt = false
+
+[functions.migrate-tier2-to-tier3]
+verify_jwt = false
+
+[functions.reset-slider-checkin]
+verify_jwt = false
+
+[functions.restart-program]
+verify_jwt = false
+
+[functions.session-heartbeat]
+verify_jwt = false
+
+[functions.skip-card]
+verify_jwt = false
