@@ -134,7 +134,7 @@ export default function SliderReveal({
 
       {/* CTA */}
       <button
-        onClick={() => navigate(`/session/${cardSlug}/live`)}
+        onClick={onContinue ?? (() => navigate(`/session/${cardSlug}/live`))}
         style={{
           width: '100%',
           height: '48px',
