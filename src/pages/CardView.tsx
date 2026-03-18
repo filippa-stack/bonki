@@ -1071,7 +1071,7 @@ export default function CardView() {
               {hasNextCard ? (
                 <>Nästa samtal <ArrowRight size={16} style={{ opacity: 0.7 }} /></>
               ) : (
-                `Tillbaka till ${categoryName}`
+                'Tillbaka till översikt'
               )}
             </button>
 
