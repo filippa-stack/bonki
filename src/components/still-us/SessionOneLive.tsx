@@ -33,12 +33,18 @@ type Step =
   | 'vand_q1'
   | 'complete';
 
+export interface SessionQuestion {
+  text: string;
+  anchor?: string;
+}
+
 interface CoupleStateRow {
   couple_id: string;
   initiator_id: string;
   partner_id: string | null;
   partner_tier: string;
   tier_2_partner_name: string | null;
+  tier_2_pseudo_id: string | null;
   current_card_index: number;
   cycle_id: number;
 }
