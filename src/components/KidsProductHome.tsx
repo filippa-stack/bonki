@@ -8,12 +8,15 @@
  *  1. Identity header (≤20% viewport): cropped hero + name + tagline
  *  2. Resume pill (conditional): Deep Dusk card for active session
  *  3. Category tiles: single-column, full-width, tile-depth colors
+ *     WITH ceramic glow, illustration from first card per category
  */
 
+import { useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import type { ProductManifest } from '@/types/product';
 import { useKidsProductProgress } from '@/hooks/useKidsProductProgress';
+import { useCardImage } from '@/hooks/useCardImage';
 import ProductHomeBackButton from '@/components/ProductHomeBackButton';
 import {
   MIDNIGHT_INK,
@@ -34,169 +37,393 @@ const fadeUp = {
   hidden: { opacity: 0, y: 14 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: EASE } },
 };
+const tileVariants = {
+  hidden: { opacity: 0, y: 20, scale: 0.95 },
+  visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.55, ease: EASE } },
+};
 
 /* ── Helpers ── */
+
 function getTileColor(product: ProductManifest, index: number): string {
   const depths = [product.tileLight, product.tileMid, product.tileDeep].filter(Boolean) as string[];
   if (depths.length === 0) return product.backgroundColor;
   return depths[index % depths.length];
 }
 
-function isLightTile(index: number): boolean {
-  // First tile (Tile Light) gets dark text; rest get light text
-  return index === 0;
+function hexToRgb(hex: string): string {
+  const h = hex.replace('#', '');
+  const r = parseInt(h.substring(0, 2), 16);
+  const g = parseInt(h.substring(2, 4), 16);
+  const b = parseInt(h.substring(4, 6), 16);
+  return `${r},${g},${b}`;
 }
+
+/** Per-tile illustration calibration — opacity decreases with depth */
+const TILE_ILLUSTRATION_STYLES = [
+  { scale: 1.15, objectPosition: '50% 15%', opacity: 0.55 },
+  { scale: 1.15, objectPosition: '50% 20%', opacity: 0.45 },
+  { scale: 1.1,  objectPosition: '50% 18%', opacity: 0.38 },
+  { scale: 1.1,  objectPosition: '50% 22%', opacity: 0.32 },
+  { scale: 1.1,  objectPosition: '50% 20%', opacity: 0.28 },
+];
+
+/* ── First card per category hook ── */
+function useFirstCardImages(product: ProductManifest) {
+  const firstCardIds = useMemo(
+    () => product.categories.map(cat => {
+      const firstCard = product.cards.find(c => c.categoryId === cat.id);
+      return firstCard?.id ?? '';
+    }),
+    [product],
+  );
+
+  // useCardImage must be called at top level, so we use up to 6 slots
+  const img0 = useCardImage(firstCardIds[0] || '');
+  const img1 = useCardImage(firstCardIds[1] || '');
+  const img2 = useCardImage(firstCardIds[2] || '');
+  const img3 = useCardImage(firstCardIds[3] || '');
+  const img4 = useCardImage(firstCardIds[4] || '');
+  const img5 = useCardImage(firstCardIds[5] || '');
+
+  return useMemo(() => {
+    const all = [img0, img1, img2, img3, img4, img5];
+    return firstCardIds.map((_, i) => all[i] ?? undefined);
+  }, [img0, img1, img2, img3, img4, img5, firstCardIds]);
+}
+
+/* ── Category Tile (ceramic treatment) ── */
+function CategoryTile({
+  cat,
+  product,
+  index,
+  tileBg,
+  tileImage,
+  completed,
+  total,
+  isRecommended,
+}: {
+  cat: { id: string; title: string; subtitle?: string };
+  product: ProductManifest;
+  index: number;
+  tileBg: string;
+  tileImage?: string;
+  completed: number;
+  total: number;
+  isRecommended: boolean;
+}) {
+  const navigate = useNavigate();
+  const isFirst = index === 0;
+  const style = TILE_ILLUSTRATION_STYLES[Math.min(index, TILE_ILLUSTRATION_STYLES.length - 1)];
+  const shieldRgb = hexToRgb(tileBg);
+
+  return (
+    <motion.button
+      variants={tileVariants}
+      whileHover={{ scale: 1.02, y: -2 }}
+      whileTap={{ scale: 0.96, y: 2 }}
+      onClick={() => navigate(`/category/${cat.id}`)}
+      aria-label={`${cat.title}: ${completed} av ${total} utforskade`}
+      style={{
+        position: 'relative',
+        overflow: 'hidden',
+        width: '100%',
+        minHeight: '100px',
+        borderRadius: '22px',
+        cursor: 'pointer',
+        textAlign: 'left',
+        backgroundImage: 'linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0) 50%, rgba(0,0,0,0.08) 100%)',
+        backgroundColor: tileBg,
+        border: isFirst
+          ? `2px solid ${SAFFRON_FLAME}`
+          : isRecommended
+            ? `2px solid ${SAFFRON_FLAME}88`
+            : '1.5px solid rgba(255, 255, 255, 0.25)',
+        boxShadow: isFirst
+          ? [
+              '0 0 16px rgba(233, 180, 76, 0.45)',
+              '0 0 4px rgba(233, 180, 76, 0.25)',
+              '0 12px 32px rgba(0, 0, 0, 0.30)',
+              '0 4px 12px rgba(0, 0, 0, 0.18)',
+              'inset 0 3px 6px rgba(255, 255, 255, 0.45)',
+              'inset 0 -4px 10px rgba(0, 0, 0, 0.14)',
+            ].join(', ')
+          : [
+              '0 12px 32px rgba(0, 0, 0, 0.30)',
+              '0 4px 12px rgba(0, 0, 0, 0.18)',
+              '0 1px 3px rgba(0, 0, 0, 0.08)',
+              'inset 0 3px 6px rgba(255, 255, 255, 0.45)',
+              'inset 0 -4px 10px rgba(0, 0, 0, 0.14)',
+            ].join(', '),
+        padding: 0,
+      }}
+    >
+      {/* Tile illustration layer */}
+      {tileImage && (
+        <div
+          style={{
+            position: 'absolute',
+            inset: 0,
+            overflow: 'hidden',
+            transform: `scale(${style.scale})`,
+            transformOrigin: 'center center',
+            zIndex: 1,
+            pointerEvents: 'none',
+          }}
+        >
+          <img
+            src={tileImage}
+            alt=""
+            aria-hidden="true"
+            style={{
+              width: '100%',
+              height: '100%',
+              objectFit: 'cover',
+              objectPosition: style.objectPosition,
+              opacity: style.opacity,
+            }}
+          />
+        </div>
+      )}
+
+      {/* Gradient shield for text readability */}
+      <div
+        style={{
+          position: 'absolute',
+          bottom: 0,
+          left: 0,
+          right: 0,
+          height: '75%',
+          background: `linear-gradient(to top, rgba(${shieldRgb}, 1) 0%, rgba(${shieldRgb}, 0.97) 25%, rgba(${shieldRgb}, 0.85) 45%, rgba(${shieldRgb}, 0.45) 70%, transparent 100%)`,
+          pointerEvents: 'none',
+          zIndex: 2,
+        }}
+      />
+
+      {/* Text overlay */}
+      <div
+        style={{
+          position: 'absolute',
+          bottom: 0,
+          left: 0,
+          right: 0,
+          padding: '14px 16px',
+          zIndex: 3,
+        }}
+      >
+        <span
+          style={{
+            fontFamily: 'var(--font-display)',
+            fontVariationSettings: "'opsz' 17",
+            fontSize: '18px',
+            fontWeight: 600,
+            color: LANTERN_GLOW,
+            lineHeight: 1.2,
+            display: 'block',
+            textShadow: '0 1px 4px rgba(0,0,0,0.5)',
+          }}
+        >
+          {cat.title}
+        </span>
+        <span
+          style={{
+            fontSize: '12px',
+            fontWeight: 500,
+            color: '#C8BFB4',
+            lineHeight: 1.3,
+            marginTop: '3px',
+            display: 'block',
+            textShadow: '0 1px 3px rgba(0,0,0,0.4)',
+          }}
+        >
+          {completed} av {total} kort utforskade
+        </span>
+      </div>
+    </motion.button>
+  );
+}
+
+/* ── Main Component ── */
 
 export default function KidsProductHome({ product }: { product: ProductManifest }) {
   const navigate = useNavigate();
   const progress = useKidsProductProgress(product);
+  const tileImages = useFirstCardImages(product);
 
   const bg = product.backgroundColor;
+  const tileLight = product.tileLight ?? bg;
 
   return (
     <div className="min-h-screen relative overflow-hidden" style={{ backgroundColor: bg }}>
       <ProductHomeBackButton color={LANTERN_GLOW} />
 
-      {/* ═══ Zone 1: Identity Header (≤20vh) ═══ */}
-      <div style={{ position: 'relative', height: '20vh', maxHeight: '180px', overflow: 'hidden' }}>
-        {/* Hero illustration — cropped top ~60% */}
-        {product.heroImage && (
-          <motion.img
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5 }}
+      {/* ── Atmospheric radial glow behind hero ── */}
+      <div
+        style={{
+          position: 'absolute',
+          top: '-8vh',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          width: '160vw',
+          height: '60vh',
+          background: `radial-gradient(ellipse 65% 55% at 50% 40%, ${tileLight}35 0%, ${tileLight}15 45%, transparent 100%)`,
+          pointerEvents: 'none',
+          zIndex: 0,
+        }}
+      />
+
+      {/* ── Hero illustration — large, atmospheric, bleeds off top ── */}
+      {product.heroImage && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.6 }}
+          style={{
+            position: 'absolute',
+            top: '-10vh',
+            left: '-5vw',
+            right: '-5vw',
+            height: '65vh',
+            zIndex: 0,
+            pointerEvents: 'none',
+          }}
+        >
+          <img
             src={product.heroImage}
             alt=""
             aria-hidden="true"
             style={{
-              position: 'absolute',
-              top: '-20%',
-              left: '-5%',
-              width: '110%',
-              height: '140%',
+              width: '100%',
+              height: '100%',
               objectFit: 'cover',
-              objectPosition: '50% 15%',
+              objectPosition: '50% 12%',
+            }}
+          />
+          {/* Multi-stop scrim: product color blend */}
+          <div
+            style={{
+              position: 'absolute',
+              bottom: 0,
+              left: 0,
+              right: 0,
+              height: '88%',
+              background: `linear-gradient(to top, ${bg} 0%, ${bg}F5 15%, ${bg}DD 30%, ${tileLight}70 55%, ${tileLight}26 75%, transparent 100%)`,
               pointerEvents: 'none',
             }}
           />
-        )}
-        {/* Bottom scrim for text readability */}
-        <div
-          style={{
-            position: 'absolute',
-            bottom: 0,
-            left: 0,
-            right: 0,
-            height: '80%',
-            background: `linear-gradient(to top, ${bg} 0%, ${bg}F0 30%, transparent 100%)`,
-            pointerEvents: 'none',
-          }}
-        />
-      </div>
+        </motion.div>
+      )}
 
-      {/* Product name + tagline — directly below header */}
-      <motion.div
-        variants={containerVariants}
-        initial="hidden"
-        animate="visible"
-        style={{ textAlign: 'center', padding: '0 24px', position: 'relative', zIndex: 1, marginTop: '-8px' }}
-      >
-        <motion.h1
-          variants={fadeUp}
-          style={{
-            fontFamily: 'var(--font-display)',
-            fontSize: '24px',
-            fontWeight: 600,
-            color: LANTERN_GLOW,
-            letterSpacing: '-0.01em',
-            margin: 0,
-          }}
-        >
-          {product.name}
-        </motion.h1>
-        <motion.p
-          variants={fadeUp}
-          style={{
-            fontFamily: 'var(--font-serif)',
-            fontSize: '14px',
-            color: DRIFTWOOD,
-            marginTop: '4px',
-            margin: 0,
-          }}
-        >
-          {product.tagline}
-        </motion.p>
-      </motion.div>
-
-      {/* ═══ Zone 2: Resume Pill (conditional) ═══ */}
-      {!progress.loading && progress.activeSession && (() => {
-        const card = product.cards.find(c => c.id === progress.activeSession!.cardId);
-        if (!card) return null;
-        return (
-          <motion.button
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3, duration: 0.5, ease: EASE }}
-            onClick={() => navigate(`/card/${card.id}`, { state: { resumed: true } })}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              width: 'calc(100% - 32px)',
-              margin: '12px 16px 0',
-              padding: '16px',
-              background: DEEP_DUSK,
-              borderRadius: '12px',
-              border: 'none',
-              borderLeft: `3px solid ${product.tileLight ?? DEEP_SAFFRON}`,
-              cursor: 'pointer',
-              textAlign: 'left',
-              position: 'relative',
-              zIndex: 1,
-            }}
-          >
-            <span
-              style={{
-                fontFamily: 'var(--font-display)',
-                fontSize: '15px',
-                fontWeight: 600,
-                color: LANTERN_GLOW,
-                lineHeight: 1.3,
-              }}
-            >
-              {card.title}
-            </span>
-            <span
-              style={{
-                fontFamily: 'var(--font-sans)',
-                fontSize: '14px',
-                color: DEEP_SAFFRON,
-                flexShrink: 0,
-                marginLeft: '12px',
-              }}
-            >
-              Fortsätt
-            </span>
-          </motion.button>
-        );
-      })()}
-
-      {/* ═══ Zone 3: Category Selection ═══ */}
-      <motion.div
-        variants={containerVariants}
-        initial="hidden"
-        animate="visible"
+      {/* ── Content ── */}
+      <div
         style={{
-          padding: '0 16px',
-          marginTop: '24px',
           position: 'relative',
           zIndex: 1,
-          paddingBottom: '100px',
+          minHeight: '100vh',
+          display: 'flex',
+          flexDirection: 'column',
+          paddingTop: 'clamp(32px, 10vh, 90px)',
+          paddingRight: '5vw',
+          paddingBottom: '80px',
+          paddingLeft: '5vw',
         }}
       >
+        {/* Title zone */}
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+          style={{ textAlign: 'center', width: '100%' }}
+        >
+          <motion.div variants={fadeUp}>
+            <h1
+              style={{
+                fontFamily: 'var(--font-display)',
+                fontSize: 'clamp(34px, 9.5vw, 50px)',
+                fontWeight: 700,
+                color: LANTERN_GLOW,
+                letterSpacing: '-0.02em',
+                whiteSpace: 'nowrap',
+                textShadow: `0 2px 20px rgba(0,0,0,0.7), 0 0 60px ${bg}, 0 0 120px ${bg}`,
+                fontVariationSettings: "'opsz' 36",
+                margin: 0,
+              }}
+            >
+              {product.name}
+            </h1>
+            <p
+              className="font-serif"
+              style={{
+                fontSize: 'clamp(16px, 4.5vw, 20px)',
+                fontWeight: 400,
+                color: product.accentColor.startsWith('hsl') ? undefined : DRIFTWOOD,
+                opacity: 0.9,
+                marginTop: '6px',
+                textShadow: `0 1px 16px rgba(0,0,0,0.8), 0 0 40px ${bg}, 0 0 80px ${bg}`,
+              }}
+            >
+              {product.tagline}
+            </p>
+
+            {/* Spacer — pushes content below hero face zone */}
+            <div style={{ height: 'clamp(48px, 12vh, 100px)' }} />
+
+            {/* ═══ Resume Pill (conditional) ═══ */}
+            {!progress.loading && progress.activeSession && (() => {
+              const card = product.cards.find(c => c.id === progress.activeSession!.cardId);
+              if (!card) return null;
+              return (
+                <motion.button
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.3, duration: 0.5, ease: EASE }}
+                  onClick={() => navigate(`/card/${card.id}`, { state: { resumed: true } })}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    width: '100%',
+                    padding: '16px',
+                    background: DEEP_DUSK,
+                    borderRadius: '12px',
+                    border: 'none',
+                    borderLeft: `3px solid ${product.tileLight ?? DEEP_SAFFRON}`,
+                    cursor: 'pointer',
+                    textAlign: 'left',
+                  }}
+                >
+                  <span
+                    style={{
+                      fontFamily: 'var(--font-display)',
+                      fontSize: '15px',
+                      fontWeight: 600,
+                      color: LANTERN_GLOW,
+                      lineHeight: 1.3,
+                    }}
+                  >
+                    {card.title}
+                  </span>
+                  <span
+                    style={{
+                      fontFamily: 'var(--font-sans)',
+                      fontSize: '14px',
+                      color: DEEP_SAFFRON,
+                      flexShrink: 0,
+                      marginLeft: '12px',
+                    }}
+                  >
+                    Fortsätt
+                  </span>
+                </motion.button>
+              );
+            })()}
+          </motion.div>
+        </motion.div>
+
         {/* Section header */}
         <motion.p
-          variants={fadeUp}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.3, duration: 0.5 }}
           style={{
             fontFamily: 'var(--font-sans)',
             fontSize: '13px',
@@ -205,24 +432,27 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
             textTransform: 'uppercase',
             color: DRIFTWOOD,
             textAlign: 'center',
-            marginBottom: '24px',
+            marginTop: '24px',
+            marginBottom: '20px',
           }}
         >
           Välj ett ämne
         </motion.p>
 
-        {/* Category tiles — single column */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+        {/* ═══ Category tiles — single column with ceramic treatment ═══ */}
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+          style={{ display: 'flex', flexDirection: 'column', gap: '12px', width: '100%' }}
+        >
           {product.categories.map((cat, index) => {
             const tileBg = getTileColor(product, index);
-            const isLight = isLightTile(index);
-            const textColor = isLight ? MIDNIGHT_INK : LANTERN_GLOW;
             const catProgress = progress.categoryProgress[cat.id];
             const completed = catProgress?.completed ?? 0;
             const total = catProgress?.total ?? cat.cardCount ?? 0;
             const hasUncompleted = completed < total;
 
-            // First category with uncompleted cards gets saffron left border
             const isRecommended = hasUncompleted && product.categories
               .slice(0, index)
               .every(prev => {
@@ -231,55 +461,21 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
               });
 
             return (
-              <motion.button
+              <CategoryTile
                 key={cat.id}
-                variants={fadeUp}
-                whileTap={{ scale: 0.97 }}
-                onClick={() => navigate(`/category/${cat.id}`)}
-                style={{
-                  width: '100%',
-                  height: '100px',
-                  background: tileBg,
-                  borderRadius: '14px',
-                  border: 'none',
-                  borderLeft: isRecommended ? `2px solid ${SAFFRON_FLAME}` : 'none',
-                  cursor: 'pointer',
-                  textAlign: 'left',
-                  padding: '16px 20px',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  justifyContent: 'center',
-                  gap: '6px',
-                  position: 'relative',
-                  overflow: 'hidden',
-                }}
-              >
-                <span
-                  style={{
-                    fontFamily: 'var(--font-display)',
-                    fontSize: '18px',
-                    fontWeight: 600,
-                    color: textColor,
-                    lineHeight: 1.2,
-                  }}
-                >
-                  {cat.title}
-                </span>
-                <span
-                  style={{
-                    fontFamily: 'var(--font-sans)',
-                    fontSize: '12px',
-                    color: textColor,
-                    opacity: 0.7,
-                  }}
-                >
-                  {completed} av {total} kort utforskade
-                </span>
-              </motion.button>
+                cat={cat}
+                product={product}
+                index={index}
+                tileBg={tileBg}
+                tileImage={tileImages[index]}
+                completed={completed}
+                total={total}
+                isRecommended={isRecommended}
+              />
             );
           })}
-        </div>
-      </motion.div>
+        </motion.div>
+      </div>
     </div>
   );
 }
