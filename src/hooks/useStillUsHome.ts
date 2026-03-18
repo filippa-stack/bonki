@@ -242,7 +242,7 @@ export function useStillUsHome(): StillUsHomeState {
       setState({
         actionCard,
         cardIndex,
-        cardId,
+        cardId: cardSlug,
         cardTitle,
         layerName,
         phase,
