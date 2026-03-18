@@ -158,66 +158,160 @@ export default function KidsCardPortal() {
       {/* ═══ Portal Content ═══ */}
       <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '0 16px' }}>
 
-        {/* Portal tile — the "door" */}
-        <AnimatePresence mode="wait">
+        {/* ═══ Ambient glow behind the portal ═══ */}
+        <div style={{ position: 'relative', width: '100%', maxWidth: '358px' }}>
+          {/* Outer atmospheric glow */}
           <motion.div
-            key={card.id}
-            initial={{ opacity: 0, x: 40 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -40 }}
-            transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-            style={{
-              width: '100%',
-              maxWidth: '358px',
-              aspectRatio: '3 / 4',
-              position: 'relative',
-              borderRadius: '20px',
-              overflow: 'hidden',
-              cursor: 'pointer',
-              backgroundColor: tileBg,
-              backgroundImage: 'linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0) 50%, rgba(0,0,0,0.08) 100%)',
-              boxShadow: [
-                `0 0 40px rgba(${tileBgRgb}, 0.35)`,
-                '0 20px 60px rgba(0, 0, 0, 0.40)',
-                '0 8px 24px rgba(0, 0, 0, 0.25)',
-                'inset 0 2px 8px rgba(255, 255, 255, 0.35)',
-                'inset 0 -4px 12px rgba(0, 0, 0, 0.15)',
-              ].join(', '),
-              border: '1.5px solid rgba(255, 255, 255, 0.20)',
+            animate={{
+              opacity: [0.4, 0.7, 0.4],
+              scale: [1, 1.08, 1],
             }}
-            onClick={startSession}
-          >
-            {/* Card illustration */}
-            <PortalCardImage cardId={card.id}>
-              {(imageSrc) => imageSrc ? (
-                <img
-                  src={imageSrc}
-                  alt={card.title}
-                  style={{
-                    position: 'absolute',
-                    inset: 0,
-                    width: '100%',
-                    height: '100%',
-                    objectFit: 'cover',
-                    objectPosition: '50% 30%',
-                    opacity: 0.88,
-                  }}
-                />
-              ) : null}
-            </PortalCardImage>
+            transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
+            style={{
+              position: 'absolute',
+              inset: '-40px',
+              borderRadius: '50%',
+              background: `radial-gradient(ellipse at center, rgba(${tileBgRgb}, 0.45) 0%, rgba(${tileBgRgb}, 0.15) 40%, transparent 70%)`,
+              filter: 'blur(30px)',
+              pointerEvents: 'none',
+              zIndex: 0,
+            }}
+          />
+          {/* Secondary warm pulse */}
+          <motion.div
+            animate={{
+              opacity: [0.2, 0.5, 0.2],
+              scale: [1.02, 0.95, 1.02],
+            }}
+            transition={{ duration: 5.5, repeat: Infinity, ease: 'easeInOut', delay: 1.2 }}
+            style={{
+              position: 'absolute',
+              inset: '-24px',
+              borderRadius: '50%',
+              background: `radial-gradient(ellipse at 40% 30%, rgba(${hexToRgb(SAFFRON_FLAME)}, 0.2) 0%, transparent 60%)`,
+              filter: 'blur(20px)',
+              pointerEvents: 'none',
+              zIndex: 0,
+            }}
+          />
 
-            {/* Subtle glow ring around tile */}
-            <div
+          {/* Portal tile — the "door" */}
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={card.id}
+              initial={{ opacity: 0, x: 40, scale: 0.92 }}
+              animate={{ opacity: 1, x: 0, scale: 1 }}
+              exit={{ opacity: 0, x: -40, scale: 0.92 }}
+              transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+              whileTap={{ scale: 0.97 }}
               style={{
-                position: 'absolute',
-                inset: 0,
-                borderRadius: '20px',
-                boxShadow: `inset 0 0 20px rgba(${tileBgRgb}, 0.15)`,
-                pointerEvents: 'none',
+                width: '100%',
+                aspectRatio: '3 / 4',
+                position: 'relative',
+                borderRadius: '22px',
+                overflow: 'hidden',
+                cursor: 'pointer',
+                backgroundColor: tileBg,
+                zIndex: 1,
               }}
-            />
-          </motion.div>
-        </AnimatePresence>
+              onClick={startSession}
+            >
+              {/* Ceramic base gradient — glaze effect */}
+              <div
+                style={{
+                  position: 'absolute',
+                  inset: 0,
+                  backgroundImage: [
+                    'linear-gradient(135deg, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0.04) 35%, rgba(0,0,0,0) 50%, rgba(0,0,0,0.06) 100%)',
+                    `linear-gradient(180deg, rgba(255,255,255,0.10) 0%, transparent 30%, rgba(0,0,0,0.12) 100%)`,
+                  ].join(', '),
+                  pointerEvents: 'none',
+                  zIndex: 3,
+                }}
+              />
+
+              {/* Card illustration */}
+              <PortalCardImage cardId={card.id}>
+                {(imageSrc) => imageSrc ? (
+                  <img
+                    src={imageSrc}
+                    alt={card.title}
+                    style={{
+                      position: 'absolute',
+                      inset: 0,
+                      width: '100%',
+                      height: '100%',
+                      objectFit: 'cover',
+                      objectPosition: '50% 30%',
+                      opacity: 0.9,
+                      zIndex: 1,
+                    }}
+                  />
+                ) : null}
+              </PortalCardImage>
+
+              {/* Illustration glow — 3D rise effect */}
+              <div
+                style={{
+                  position: 'absolute',
+                  inset: 0,
+                  background: `radial-gradient(ellipse at 50% 40%, rgba(${tileBgRgb}, 0.35) 0%, transparent 65%)`,
+                  pointerEvents: 'none',
+                  zIndex: 2,
+                  mixBlendMode: 'soft-light',
+                }}
+              />
+
+              {/* Inner ceramic rim — top highlight + bottom shadow */}
+              <div
+                style={{
+                  position: 'absolute',
+                  inset: 0,
+                  borderRadius: '22px',
+                  boxShadow: [
+                    'inset 0 2px 6px rgba(255, 255, 255, 0.40)',
+                    'inset 0 1px 1px rgba(255, 255, 255, 0.60)',
+                    'inset 0 -3px 10px rgba(0, 0, 0, 0.20)',
+                    'inset 0 -1px 2px rgba(0, 0, 0, 0.15)',
+                    `inset 0 0 30px rgba(${tileBgRgb}, 0.12)`,
+                  ].join(', '),
+                  pointerEvents: 'none',
+                  zIndex: 4,
+                }}
+              />
+
+              {/* Outer shadows — elevation + color spill */}
+              <div
+                style={{
+                  position: 'absolute',
+                  inset: 0,
+                  borderRadius: '22px',
+                  boxShadow: [
+                    `0 0 60px rgba(${tileBgRgb}, 0.50)`,
+                    `0 0 120px rgba(${tileBgRgb}, 0.20)`,
+                    '0 24px 64px -8px rgba(0, 0, 0, 0.50)',
+                    '0 10px 28px rgba(0, 0, 0, 0.30)',
+                    '0 4px 12px rgba(0, 0, 0, 0.20)',
+                  ].join(', '),
+                  pointerEvents: 'none',
+                  zIndex: 0,
+                }}
+              />
+
+              {/* Ceramic border — translucent rim */}
+              <div
+                style={{
+                  position: 'absolute',
+                  inset: 0,
+                  borderRadius: '22px',
+                  border: '1.5px solid rgba(255, 255, 255, 0.22)',
+                  pointerEvents: 'none',
+                  zIndex: 5,
+                }}
+              />
+            </motion.div>
+          </AnimatePresence>
+        </div>
 
         {/* ═══ Text Cluster Below Portal ═══ */}
         <AnimatePresence mode="wait">
