@@ -58,6 +58,31 @@ export function cardIndexFromId(cardId: string): number {
   return parseInt(cardId.replace('card_', ''), 10) - 1;
 }
 
+// ── Slug ↔ card_N mapping ───────────────────────────────────
+// Uses sliderPrompts as the single source of truth for the slug→index mapping.
+import sliderPrompts from '@/data/sliderPrompts';
+
+/** Convert a frontend slug (e.g. 'su-01-smallest-we') to a 0-based card index. Returns -1 if not found. */
+export function cardIndexFromSlug(slug: string): number {
+  return sliderPrompts.findIndex(p => p.slug === slug);
+}
+
+/** Convert a frontend slug to a backend card_N id (e.g. 'card_1'). Returns null if not found. */
+export function cardIdFromSlug(slug: string): string | null {
+  const index = cardIndexFromSlug(slug);
+  if (index === -1) {
+    console.warn(`[stillUsTokens] cardIdFromSlug: unknown slug "${slug}"`);
+    return null;
+  }
+  return cardIdFromIndex(index);
+}
+
+/** Convert a 0-based card index to a frontend slug. Returns null if out of range. */
+export function slugFromCardIndex(index: number): string | null {
+  if (index < 0 || index >= sliderPrompts.length) return null;
+  return sliderPrompts[index].slug;
+}
+
 // ── Feedback cards (0-indexed) ──────────────────────────────
 export const FEEDBACK_CARDS = [0, 3, 10, 21];
 

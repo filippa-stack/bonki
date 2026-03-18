@@ -6,6 +6,8 @@
  * Replace with authored clinical content.
  */
 
+import { CARD_SEQUENCE } from '@/data/stillUsSequence';
+
 export interface SliderPrompt {
   sliderId: string;
   /** The question shown above the slider */
@@ -28,11 +30,16 @@ export interface CardSliderSet {
 }
 
 function layerForIndex(i: number): string {
-  if (i <= 3) return 'Griden';
+  if (i <= 3) return 'Grunden';
   if (i <= 8) return 'Normen';
   if (i <= 13) return 'Konflikten';
   if (i <= 17) return 'Längtan';
   return 'Valet';
+}
+
+/** Derive slug from CARD_SEQUENCE by index (positional) */
+function slugFor(idx: number): string {
+  return CARD_SEQUENCE[idx]?.cardId ?? `su-${String(idx + 1).padStart(2, '0')}-unknown`;
 }
 
 const sliderPrompts: CardSliderSet[] = [
@@ -40,8 +47,9 @@ const sliderPrompts: CardSliderSet[] = [
   {
     cardIndex: 0,
     cardId: 'card_1',
+    slug: slugFor(0),
     cardTitle: 'Minsta vi',
-    layerName: 'Griden',
+    layerName: 'Grunden',
     sliders: [
       { sliderId: 's0-1', text: 'Hur nära känns vi just nu?', leftLabel: 'Långt bort', rightLabel: 'Väldigt nära' },
       { sliderId: 's0-2', text: 'Hur mycket tid har ni haft för varandra den här veckan?', leftLabel: 'Nästan ingen', rightLabel: 'Massor' },
@@ -51,8 +59,9 @@ const sliderPrompts: CardSliderSet[] = [
   {
     cardIndex: 1,
     cardId: 'card_2',
+    slug: slugFor(1),
     cardTitle: 'Rytmen',
-    layerName: 'Griden',
+    layerName: 'Grunden',
     sliders: [
       { sliderId: 's1-1', text: 'Hur bra funkar er vardagsrytm just nu?', leftLabel: 'Kaotiskt', rightLabel: 'Flyter fint' },
       { sliderId: 's1-2', text: 'Hur mycket vila får du i relationen?', leftLabel: 'Ingen alls', rightLabel: 'Mycket' },
@@ -62,8 +71,9 @@ const sliderPrompts: CardSliderSet[] = [
   {
     cardIndex: 2,
     cardId: 'card_3',
+    slug: slugFor(2),
     cardTitle: 'Trygga rummet',
-    layerName: 'Griden',
+    layerName: 'Grunden',
     sliders: [
       { sliderId: 's2-1', text: 'Hur tryggt känns det att vara ärlig med din partner?', leftLabel: 'Osäkert', rightLabel: 'Helt tryggt' },
       { sliderId: 's2-2', text: 'Hur väl lyssnar ni på varandra?', leftLabel: 'Sällan', rightLabel: 'Alltid' },
@@ -73,8 +83,9 @@ const sliderPrompts: CardSliderSet[] = [
   {
     cardIndex: 3,
     cardId: 'card_4',
+    slug: slugFor(3),
     cardTitle: 'Att lyssna',
-    layerName: 'Griden',
+    layerName: 'Grunden',
     sliders: [
       { sliderId: 's3-1', text: 'Hur ofta känner du dig hörd?', leftLabel: 'Aldrig', rightLabel: 'Alltid' },
       { sliderId: 's3-2', text: 'Hur lätt är det att be om uppmärksamhet?', leftLabel: 'Svårt', rightLabel: 'Lätt' },
@@ -84,6 +95,7 @@ const sliderPrompts: CardSliderSet[] = [
   {
     cardIndex: 4,
     cardId: 'card_5',
+    slug: slugFor(4),
     cardTitle: 'Behov',
     layerName: 'Normen',
     sliders: [
@@ -98,6 +110,7 @@ const sliderPrompts: CardSliderSet[] = [
     return {
       cardIndex: idx,
       cardId: `card_${idx + 1}`,
+      slug: slugFor(idx),
       cardTitle: `[PLACEHOLDER] Vecka ${idx + 1}`,
       layerName: layerForIndex(idx),
       sliders: [
@@ -112,6 +125,11 @@ const sliderPrompts: CardSliderSet[] = [
 
 export function getSliderSet(cardIndex: number): CardSliderSet | undefined {
   return sliderPrompts.find((s) => s.cardIndex === cardIndex);
+}
+
+/** Look up a CardSliderSet by its frontend slug */
+export function getSliderSetBySlug(slug: string): CardSliderSet | undefined {
+  return sliderPrompts.find((s) => s.slug === slug);
 }
 
 export default sliderPrompts;
