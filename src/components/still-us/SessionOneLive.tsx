@@ -95,7 +95,7 @@ export default function SessionOneLive() {
     (async () => {
       const { data } = await supabase
         .from('couple_state')
-        .select('couple_id, initiator_id, partner_id, partner_tier, tier_2_partner_name, current_card_index, cycle_id')
+        .select('couple_id, initiator_id, partner_id, partner_tier, tier_2_partner_name, tier_2_pseudo_id, current_card_index, cycle_id')
         .eq('couple_id', space.id)
         .maybeSingle();
       if (data) setCoupleState(data as unknown as CoupleStateRow);
