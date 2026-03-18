@@ -67,7 +67,7 @@ export default function ProductPaywall({ product, onAccessGranted, cardId, curre
   const backTo = (() => {
     if (cardId) {
       const card = product.cards.find(c => c.id === cardId);
-      if (card) return `/category/${card.categoryId}`;
+      if (card) return `/product/${product.slug}/portal/${card.categoryId}`;
     }
     return `/product/${product.slug}`;
   })();
