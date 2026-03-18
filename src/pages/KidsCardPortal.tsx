@@ -92,6 +92,7 @@ export default function KidsCardPortal() {
   // Tile background color from product
   const tileBg = product?.tileLight ?? MIDNIGHT_INK;
   const tileBgRgb = hexToRgb(tileBg);
+  const bgDark = product?.tileDeep ?? MIDNIGHT_INK;
 
   if (!product || !category || !card) {
     return (
@@ -101,29 +102,26 @@ export default function KidsCardPortal() {
     );
   }
 
-  // Darken the product color for background atmosphere
-  const bgDark = product?.tileDeep ?? MIDNIGHT_INK;
-
   return (
     <div
       style={{
         height: '100vh',
-        background: `linear-gradient(180deg, ${bgDark} 0%, ${MIDNIGHT_INK} 60%)`,
+        background: `linear-gradient(180deg, ${bgDark} 0%, ${MIDNIGHT_INK} 55%)`,
         display: 'flex',
         flexDirection: 'column',
         position: 'relative',
         overflow: 'hidden',
       }}
     >
-      {/* ═══ Background radial glow — product color atmosphere ═══ */}
+      {/* Background radial glow */}
       <div
         style={{
           position: 'absolute',
-          top: '-10%',
-          left: '-20%',
-          right: '-20%',
-          bottom: '40%',
-          background: `radial-gradient(ellipse at 50% 40%, rgba(${tileBgRgb}, 0.30) 0%, transparent 70%)`,
+          top: '-15%',
+          left: '-25%',
+          right: '-25%',
+          bottom: '30%',
+          background: `radial-gradient(ellipse at 50% 35%, rgba(${tileBgRgb}, 0.35) 0%, transparent 70%)`,
           pointerEvents: 'none',
           zIndex: 0,
         }}
@@ -135,7 +133,7 @@ export default function KidsCardPortal() {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          padding: `calc(env(safe-area-inset-top, 0px) + 12px) 16px 8px`,
+          padding: `calc(env(safe-area-inset-top, 0px) + 10px) 16px 6px`,
           position: 'relative',
           zIndex: 10,
           flexShrink: 0,
@@ -173,103 +171,70 @@ export default function KidsCardPortal() {
         </span>
       </div>
 
-      {/* ═══ Portal Content — fills remaining space ═══ */}
+      {/* ═══ Main area ═══ */}
       <div
         style={{
           flex: 1,
           display: 'flex',
           flexDirection: 'column',
-          alignItems: 'center',
-          padding: '0 20px',
+          padding: '4px 12px 0',
           position: 'relative',
           zIndex: 1,
-          minHeight: 0, // allow flex shrink
+          minHeight: 0,
         }}
       >
-        {/* Portal tile wrapper — takes maximum space, text gets the rest */}
-        <div
-          style={{
-            flex: 1,
-            width: '100%',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            position: 'relative',
-            minHeight: 0,
-          }}
-        >
-          {/* ═══ Ambient glow behind the portal ═══ */}
-          {/* Large color spill */}
+        {/* ═══ Portal tile — massive, near-full ═══ */}
+        <div style={{ flex: 1, position: 'relative', minHeight: 0 }}>
+          {/* Ambient glow */}
           <motion.div
-            animate={{
-              opacity: [0.5, 0.8, 0.5],
-              scale: [1, 1.06, 1],
-            }}
+            animate={{ opacity: [0.5, 0.8, 0.5], scale: [1, 1.05, 1] }}
             transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
             style={{
               position: 'absolute',
-              inset: '-60px',
+              inset: '-50px',
               borderRadius: '50%',
-              background: `radial-gradient(ellipse at center, rgba(${tileBgRgb}, 0.55) 0%, rgba(${tileBgRgb}, 0.18) 45%, transparent 72%)`,
+              background: `radial-gradient(ellipse at center, rgba(${tileBgRgb}, 0.55) 0%, rgba(${tileBgRgb}, 0.15) 50%, transparent 75%)`,
               filter: 'blur(40px)',
               pointerEvents: 'none',
+              zIndex: 0,
             }}
           />
-          {/* Warm saffron pulse */}
+          {/* Saffron accent pulse */}
           <motion.div
-            animate={{
-              opacity: [0.15, 0.35, 0.15],
-              scale: [1.05, 0.95, 1.05],
-            }}
+            animate={{ opacity: [0.12, 0.3, 0.12], scale: [1.04, 0.96, 1.04] }}
             transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut', delay: 1.5 }}
             style={{
               position: 'absolute',
-              inset: '-30px',
+              inset: '-20px',
               borderRadius: '50%',
-              background: `radial-gradient(ellipse at 40% 25%, rgba(${hexToRgb(SAFFRON_FLAME)}, 0.25) 0%, transparent 55%)`,
+              background: `radial-gradient(ellipse at 35% 20%, rgba(${hexToRgb(SAFFRON_FLAME)}, 0.22) 0%, transparent 55%)`,
               filter: 'blur(25px)',
               pointerEvents: 'none',
+              zIndex: 0,
             }}
           />
 
-          {/* ═══ Portal tile — the "door" ═══ */}
           <AnimatePresence mode="wait">
             <motion.div
               key={card.id}
-              initial={{ opacity: 0, x: 40, scale: 0.90 }}
+              initial={{ opacity: 0, x: 50, scale: 0.92 }}
               animate={{ opacity: 1, x: 0, scale: 1 }}
-              exit={{ opacity: 0, x: -40, scale: 0.90 }}
+              exit={{ opacity: 0, x: -50, scale: 0.92 }}
               transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-              whileTap={{ scale: 0.96 }}
+              whileTap={{ scale: 0.97 }}
+              onClick={startSession}
               style={{
                 width: '100%',
-                maxWidth: '350px',
                 height: '100%',
-                maxHeight: 'min(480px, 56vh)',
                 position: 'relative',
-                borderRadius: '22px',
+                borderRadius: '20px',
                 overflow: 'hidden',
                 cursor: 'pointer',
                 backgroundColor: tileBg,
+                zIndex: 1,
               }}
-              onClick={startSession}
             >
-              {/* Ceramic glaze — top-left highlight sweep */}
-              <div
-                style={{
-                  position: 'absolute',
-                  inset: 0,
-                  backgroundImage: [
-                    'linear-gradient(145deg, rgba(255,255,255,0.22) 0%, rgba(255,255,255,0.06) 25%, transparent 50%)',
-                    'linear-gradient(180deg, rgba(255,255,255,0.08) 0%, transparent 40%, rgba(0,0,0,0.15) 100%)',
-                    `radial-gradient(ellipse at 30% 20%, rgba(255,255,255,0.12) 0%, transparent 50%)`,
-                  ].join(', '),
-                  pointerEvents: 'none',
-                  zIndex: 4,
-                }}
-              />
-
-              {/* Card illustration */}
+              {/* Card illustration — full bleed */}
               <PortalCardImage cardId={card.id}>
                 {(imageSrc) => imageSrc ? (
                   <img
@@ -281,58 +246,95 @@ export default function KidsCardPortal() {
                       width: '100%',
                       height: '100%',
                       objectFit: 'cover',
-                      objectPosition: '50% 30%',
+                      objectPosition: '50% 35%',
                       opacity: 0.92,
                       zIndex: 1,
-                      filter: 'saturate(1.05) contrast(1.04)',
+                      filter: 'saturate(1.05) contrast(1.03)',
                     }}
                   />
                 ) : null}
               </PortalCardImage>
 
-              {/* Illustration depth glow — warm radial behind character */}
+              {/* Ceramic glaze — highlight sweep */}
               <div
                 style={{
                   position: 'absolute',
                   inset: 0,
-                  background: `radial-gradient(ellipse at 50% 45%, rgba(${tileBgRgb}, 0.40) 0%, transparent 60%)`,
+                  backgroundImage: [
+                    'linear-gradient(145deg, rgba(255,255,255,0.20) 0%, rgba(255,255,255,0.05) 25%, transparent 50%)',
+                    'linear-gradient(180deg, rgba(255,255,255,0.06) 0%, transparent 35%, rgba(0,0,0,0.18) 100%)',
+                    'radial-gradient(ellipse at 25% 15%, rgba(255,255,255,0.10) 0%, transparent 45%)',
+                  ].join(', '),
                   pointerEvents: 'none',
-                  zIndex: 2,
-                  mixBlendMode: 'soft-light',
+                  zIndex: 3,
                 }}
               />
 
-              {/* Ceramic rim — multi-layer inset shadows for 3D bevel */}
+              {/* Bottom scrim for overlaid card title */}
+              <div
+                style={{
+                  position: 'absolute',
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  height: '35%',
+                  background: 'linear-gradient(to top, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.25) 50%, transparent 100%)',
+                  pointerEvents: 'none',
+                  zIndex: 2,
+                }}
+              />
+
+              {/* Card title overlaid at bottom-left */}
+              <div
+                style={{
+                  position: 'absolute',
+                  left: '20px',
+                  right: '20px',
+                  bottom: '20px',
+                  zIndex: 4,
+                }}
+              >
+                <h2
+                  style={{
+                    fontFamily: 'var(--font-display)',
+                    fontSize: '26px',
+                    fontWeight: 700,
+                    color: LANTERN_GLOW,
+                    margin: 0,
+                    textShadow: '0 2px 12px rgba(0,0,0,0.5), 0 1px 3px rgba(0,0,0,0.4)',
+                  }}
+                >
+                  {card.title}
+                </h2>
+              </div>
+
+              {/* Ceramic rim — multi-layer bevel */}
               <div
                 style={{
                   position: 'absolute',
                   inset: 0,
-                  borderRadius: '22px',
+                  borderRadius: '20px',
                   boxShadow: [
-                    // Top edge highlight — ceramic light catch
-                    'inset 0 2px 4px rgba(255, 255, 255, 0.55)',
-                    'inset 0 1px 0px rgba(255, 255, 255, 0.70)',
-                    // Bottom shadow — depth/weight
-                    'inset 0 -3px 8px rgba(0, 0, 0, 0.25)',
-                    'inset 0 -1px 2px rgba(0, 0, 0, 0.20)',
-                    // Side ambient
-                    'inset 3px 0 8px rgba(255, 255, 255, 0.08)',
-                    'inset -3px 0 8px rgba(0, 0, 0, 0.08)',
-                    // Inner glow
-                    `inset 0 0 40px rgba(${tileBgRgb}, 0.15)`,
+                    'inset 0 2px 4px rgba(255, 255, 255, 0.50)',
+                    'inset 0 1px 0px rgba(255, 255, 255, 0.65)',
+                    'inset 0 -3px 10px rgba(0, 0, 0, 0.25)',
+                    'inset 0 -1px 2px rgba(0, 0, 0, 0.18)',
+                    'inset 3px 0 8px rgba(255, 255, 255, 0.06)',
+                    'inset -3px 0 8px rgba(0, 0, 0, 0.06)',
+                    `inset 0 0 40px rgba(${tileBgRgb}, 0.12)`,
                   ].join(', '),
                   pointerEvents: 'none',
                   zIndex: 5,
                 }}
               />
 
-              {/* Border — translucent ceramic edge */}
+              {/* Ceramic border */}
               <div
                 style={{
                   position: 'absolute',
                   inset: 0,
-                  borderRadius: '22px',
-                  border: '1.5px solid rgba(255, 255, 255, 0.25)',
+                  borderRadius: '20px',
+                  border: '1.5px solid rgba(255, 255, 255, 0.22)',
                   pointerEvents: 'none',
                   zIndex: 6,
                 }}
@@ -340,112 +342,78 @@ export default function KidsCardPortal() {
             </motion.div>
           </AnimatePresence>
 
-          {/* Outer elevation shadows — rendered outside overflow:hidden */}
+          {/* Outer glow + elevation — outside overflow:hidden */}
           <div
             style={{
               position: 'absolute',
-              inset: '0',
-              width: '100%',
-              maxWidth: '350px',
-              height: '100%',
-              maxHeight: 'min(480px, 56vh)',
-              margin: 'auto',
-              borderRadius: '22px',
+              inset: 0,
+              borderRadius: '20px',
               boxShadow: [
-                // Color spill glow
-                `0 0 80px rgba(${tileBgRgb}, 0.55)`,
-                `0 0 160px rgba(${tileBgRgb}, 0.20)`,
-                // Elevation
-                '0 30px 80px -12px rgba(0, 0, 0, 0.55)',
-                '0 12px 32px rgba(0, 0, 0, 0.35)',
-                '0 4px 14px rgba(0, 0, 0, 0.25)',
+                `0 0 80px rgba(${tileBgRgb}, 0.50)`,
+                `0 0 150px rgba(${tileBgRgb}, 0.18)`,
+                '0 28px 70px -10px rgba(0, 0, 0, 0.50)',
+                '0 10px 30px rgba(0, 0, 0, 0.30)',
               ].join(', '),
               pointerEvents: 'none',
+              zIndex: 0,
             }}
           />
         </div>
 
-        {/* ═══ Text Cluster Below Portal — compact ═══ */}
+        {/* ═══ Compact info below tile ═══ */}
         <AnimatePresence mode="wait">
           <motion.div
             key={`text-${card.id}`}
-            initial={{ opacity: 0, y: 8 }}
+            initial={{ opacity: 0, y: 6 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -8 }}
-            transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
+            exit={{ opacity: 0, y: -6 }}
+            transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
             style={{
               textAlign: 'center',
-              marginTop: '14px',
-              width: '100%',
-              maxWidth: '320px',
+              marginTop: '10px',
               flexShrink: 0,
             }}
           >
-            <h2
-              style={{
-                fontFamily: 'var(--font-display)',
-                fontSize: '20px',
-                fontWeight: 600,
-                color: LANTERN_GLOW,
-                margin: 0,
-              }}
-            >
-              {card.title}
-            </h2>
-
             {card.subtitle && (
               <p
                 style={{
                   fontFamily: 'var(--font-serif)',
-                  fontSize: '14px',
+                  fontSize: '13px',
                   color: LANTERN_GLOW,
-                  opacity: 0.75,
-                  marginTop: '6px',
-                  lineHeight: 1.45,
+                  opacity: 0.7,
+                  lineHeight: 1.4,
+                  margin: 0,
                   display: '-webkit-box',
                   WebkitLineClamp: 2,
                   WebkitBoxOrient: 'vertical',
                   overflow: 'hidden',
+                  padding: '0 20px',
                 }}
               >
                 {card.subtitle}
               </p>
             )}
-
             <p
               style={{
                 fontFamily: 'var(--font-sans)',
-                fontSize: '12px',
+                fontSize: '11px',
                 color: DRIFTWOOD,
-                marginTop: '6px',
+                marginTop: '4px',
               }}
             >
               {promptCount} frågor · {estimateMinutes(promptCount)}
             </p>
-
-            <p
-              style={{
-                fontFamily: 'var(--font-serif)',
-                fontSize: '11px',
-                fontStyle: 'italic',
-                color: DRIFTWOOD,
-                marginTop: '8px',
-              }}
-            >
-              Tryck på dörren när ni är redo.
-            </p>
           </motion.div>
         </AnimatePresence>
 
-        {/* ═══ Navigation Links ═══ */}
+        {/* ═══ Navigation ═══ */}
         <div
           style={{
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            gap: '12px',
-            marginTop: '10px',
-            paddingBottom: `calc(env(safe-area-inset-bottom, 0px) + 16px)`,
+            marginTop: '6px',
+            paddingBottom: `calc(env(safe-area-inset-bottom, 0px) + 12px)`,
             flexShrink: 0,
           }}
         >
