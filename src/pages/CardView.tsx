@@ -2936,7 +2936,7 @@ function KidsCompletionNote({ sessionId, spaceId, cardId, productId }: {
           fontWeight: 400,
           color: DRIFTWOOD,
         }}>
-          Vill ni skriva något om samtalet?
+          Vill ni spara något i dagboken?
         </span>
       </button>
     );
