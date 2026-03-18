@@ -1,29 +1,38 @@
-import { ReactNode } from 'react';
+import { ReactNode, useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 import { EASE } from '@/lib/motion';
 import { EMBER_NIGHT, EMBER_GLOW, DEEP_SAFFRON, DRIFTWOOD, BARK, MIDNIGHT_INK } from '@/lib/palette';
+import { sessionHeartbeat } from '@/lib/stillUsRpc';
 
 interface SessionFocusShellProps {
   children: ReactNode;
+  couple_id?: string;
+  card_id?: string;
+  device_id?: string;
   /** Top chrome slot (nav bar) */
   topSlot?: ReactNode;
   /** CTA at bottom — rendered by parent */
   ctaSlot: ReactNode;
   onExit: () => void;
-  /** Pause — navigates home */
   onPause?: () => void;
-  /** Show the exit confirmation dialog */
   showExitDialog?: boolean;
   onExitDialogClose?: () => void;
   onExitConfirm?: () => void;
 }
 
+const HEARTBEAT_INTERVAL_MS = 60_000;
+
 /**
  * Immersive shell for Still Us live sessions.
  * Ember Night bg, no tab bar, exit via dialog.
+ * Sends heartbeat every 60s to maintain session lock.
  */
 export default function SessionFocusShell({
   children,
+  couple_id,
+  card_id,
+  device_id,
   topSlot,
   ctaSlot,
   onExit,
@@ -32,6 +41,38 @@ export default function SessionFocusShell({
   onExitDialogClose,
   onExitConfirm,
 }: SessionFocusShellProps) {
+  const navigate = useNavigate();
+  const [statusMessage, setStatusMessage] = useState<string | null>(null);
+  const pausedRef = useRef(false);
+
+  // ── Heartbeat (only when all IDs provided) ──
+  useEffect(() => {
+    if (!couple_id || !card_id || !device_id) return;
+    let timer: ReturnType<typeof setInterval>;
+
+    const beat = async () => {
+      if (pausedRef.current) return;
+      try {
+        const res = await sessionHeartbeat({ couple_id, card_id, device_id });
+        if (res.status === 'taken_over') {
+          setStatusMessage('Sessionen har flyttats till en annan enhet.');
+          pausedRef.current = true;
+          setTimeout(() => navigate('/'), 2500);
+        } else if (res.status === 'migration_in_progress') {
+          setStatusMessage('Er data uppdateras. Vänta en stund.');
+          pausedRef.current = true;
+        }
+      } catch {
+        // Silent fail — next heartbeat will retry
+      }
+    };
+
+    beat();
+    timer = setInterval(beat, HEARTBEAT_INTERVAL_MS);
+
+    return () => clearInterval(timer);
+  }, [couple_id, card_id, device_id, navigate]);
+
   return (
     <div
       style={{
@@ -42,8 +83,35 @@ export default function SessionFocusShell({
         display: 'flex',
         flexDirection: 'column',
         overflow: 'hidden',
+        height: '100dvh',
       }}
     >
+      {/* Status message overlay */}
+      {statusMessage && (
+        <div
+          style={{
+            position: 'absolute',
+            inset: 0,
+            zIndex: 200,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            backgroundColor: 'rgba(0,0,0,0.7)',
+          }}
+        >
+          <p style={{
+            fontFamily: 'var(--font-sans)',
+            fontSize: '16px',
+            color: EMBER_GLOW,
+            textAlign: 'center',
+            padding: '0 32px',
+            lineHeight: 1.5,
+          }}>
+            {statusMessage}
+          </p>
+        </div>
+      )}
+
       {/* Top chrome — nav bar */}
       {topSlot && (
         <div style={{ flex: '0 0 auto', zIndex: 30 }}>
