@@ -15,6 +15,7 @@ import { ChevronLeft } from 'lucide-react';
 import { allProducts } from '@/data/products';
 import { useKidsProductProgress } from '@/hooks/useKidsProductProgress';
 import { useCardImage } from '@/hooks/useCardImage';
+import { useProductTheme } from '@/hooks/useProductTheme';
 import PortalBrowseSheet from '@/components/PortalBrowseSheet';
 import {
   MIDNIGHT_INK,
@@ -59,6 +60,16 @@ export default function KidsCardPortal() {
   const categoryCards = useMemo(
     () => product?.cards.filter(c => c.categoryId === categoryId) ?? [],
     [product, categoryId],
+  );
+
+  // Apply product theme so CSS variables are set for downstream components
+  useProductTheme(
+    product?.accentColor ?? 'hsl(158, 35%, 18%)',
+    product?.secondaryAccent ?? 'hsl(38, 88%, 46%)',
+    product?.backgroundColor,
+    product?.ctaButtonColor,
+    product?.pronounMode,
+    product,
   );
 
   const progress = useKidsProductProgress(product);
