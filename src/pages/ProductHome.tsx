@@ -7,12 +7,8 @@ import { useProductTheme } from '@/hooks/useProductTheme';
 import { useThemeSwitcher } from '@/hooks/useThemeSwitcher';
 import { preloadZip, PRODUCT_ZIP_MAP } from '@/hooks/useCardImage';
 import ProductIntro, { useProductIntroNeeded } from '@/components/ProductIntro';
-import JagIMigProductHome from '@/components/JagIMigProductHome';
-import JagMedAndraProductHome from '@/components/JagMedAndraProductHome';
-import JagIVarldenProductHome from '@/components/JagIVarldenProductHome';
-import SexualitetProductHome from '@/components/SexualitetProductHome';
-import VardagProductHome from '@/components/VardagProductHome';
-import SyskonProductHome from '@/components/SyskonProductHome';
+import KidsProductHome from '@/components/KidsProductHome';
+import { KIDS_PRODUCT_IDS } from '@/hooks/useKidsProductProgress';
 
 /** Still Us free card ID */
 const STILL_US_FREE_CARD_ID = 'smallest-we';
