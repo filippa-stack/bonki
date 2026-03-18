@@ -331,15 +331,18 @@ export default function KidsCardPortal() {
             </motion.div>
           </AnimatePresence>
 
-          {/* Outer elevation shadow */}
+          {/* Outer elevation — deep multi-layer lift */}
           <div
             style={{
               position: 'absolute',
               inset: 0,
               borderRadius: '20px',
               boxShadow: [
-                '0 12px 32px rgba(0, 0, 0, 0.30)',
-                '0 4px 12px rgba(0, 0, 0, 0.18)',
+                '0 30px 60px -12px rgba(0, 0, 0, 0.55)',
+                '0 18px 36px -8px rgba(0, 0, 0, 0.35)',
+                '0 8px 16px rgba(0, 0, 0, 0.20)',
+                '0 2px 6px rgba(0, 0, 0, 0.15)',
+                `0 0 80px -20px rgba(${tileBgRgb}, 0.30)`,
               ].join(', '),
               pointerEvents: 'none',
               zIndex: 0,
