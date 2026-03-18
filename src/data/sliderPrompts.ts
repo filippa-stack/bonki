@@ -16,7 +16,10 @@ export interface SliderPrompt {
 
 export interface CardSliderSet {
   cardIndex: number;
+  /** Backend card ID: 'card_1' through 'card_22' */
   cardId: string;
+  /** URL-safe slug used in frontend routes */
+  slug: string;
   cardTitle: string;
   layerName: string;
   sliders: SliderPrompt[];
