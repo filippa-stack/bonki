@@ -2759,7 +2759,7 @@ export default function CardView() {
                       isReflectionStep={isReflectionStep}
                       isExerciseStep={isExerciseStep}
                       hideNoteField={false}
-                      noteFieldLabel={isKidsProduct ? 'Skriv något ni vill minnas' : undefined}
+                      noteFieldLabel={isKidsProduct ? 'Skriv vad ni vill minnas i dagboken' : undefined}
                       onLocked={async () => {
                         if (isLastPromptInStage) {
                           await handleCompleteStep();
