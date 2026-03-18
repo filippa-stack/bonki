@@ -254,7 +254,7 @@ function KidsProductCategoryView({
 }: KidsProductCategoryViewProps) {
   const { hasAccess, loading: accessLoading } = useProductAccess(product.id);
   const completedCount = cards.filter(c => completedCardIds.includes(c.id)).length;
-  const tileColor = PRODUCT_TILE_COLOR[product.id] ?? '#657514';
+  const tileColor = product.tileLight ?? product.ctaButtonColor ?? product.backgroundColor ?? MIDNIGHT_INK;
 
   const handleCardTap = (cardId: string) => {
     // Always navigate to card — CardView handles paywall for locked cards
