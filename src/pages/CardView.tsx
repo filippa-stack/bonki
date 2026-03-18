@@ -899,9 +899,9 @@ export default function CardView() {
     const PARCHMENT = '#F5EDD2';
     const MIDNIGHT_INK = '#1A1A2E';
 
-    const categoryName = category?.title ?? '';
     const hasNextCard = postCompletionNav.type === 'next_card' || postCompletionNav.type === 'next_category';
     const categoryDest = postCompletionNav.homeDest;
+    const productHomeDest = product ? `/product/${product.slug}` : '/';
 
     return (
       <motion.div
@@ -919,6 +919,25 @@ export default function CardView() {
         animate={{ opacity: 1 }}
         transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
       >
+        {/* Back arrow — top left */}
+        <button
+          onClick={() => navigate(productHomeDest)}
+          aria-label="Tillbaka"
+          style={{
+            position: 'absolute',
+            top: 'calc(env(safe-area-inset-top, 0px) + 12px)',
+            left: '12px',
+            zIndex: 20,
+            background: 'none',
+            border: 'none',
+            cursor: 'pointer',
+            padding: '8px',
+            color: BARK,
+            opacity: 0.5,
+          }}
+        >
+          <ChevronLeft size={22} strokeWidth={1.5} />
+        </button>
         {/* Content block — vertically centered */}
         <div style={{
           flex: '1 1 auto',
