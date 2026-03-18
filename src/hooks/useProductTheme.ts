@@ -67,6 +67,7 @@ export function useProductTheme(
        '--question-cloud-tint', '--question-cloud-border',
        '--kids-bg-glow', '--kids-question-color',
        '--kids-counter-bg', '--kids-counter-color', '--kids-counter-border',
+       '--question-cloud-solid',
        '--tile-light', '--tile-mid', '--tile-deep',
       ].forEach((v) => root.style.removeProperty(v));
     };
