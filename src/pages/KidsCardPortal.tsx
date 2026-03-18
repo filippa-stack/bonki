@@ -106,7 +106,7 @@ export default function KidsCardPortal() {
     <div
       style={{
         height: '100vh',
-        background: `linear-gradient(180deg, ${bgDark} 0%, ${MIDNIGHT_INK} 55%)`,
+        background: `linear-gradient(180deg, ${MIDNIGHT_INK} 0%, ${MIDNIGHT_INK} 100%)`,
         display: 'flex',
         flexDirection: 'column',
         position: 'relative',
