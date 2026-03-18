@@ -62,6 +62,16 @@ export default function KidsCardPortal() {
     [product, categoryId],
   );
 
+  // Apply product theme so CSS variables are set for downstream components
+  useProductTheme(
+    product?.accentColor ?? 'hsl(158, 35%, 18%)',
+    product?.secondaryAccent ?? 'hsl(38, 88%, 46%)',
+    product?.backgroundColor,
+    product?.ctaButtonColor,
+    product?.pronounMode,
+    product,
+  );
+
   const progress = useKidsProductProgress(product);
   const completedSet = useMemo(
     () => new Set(progress.recentlyCompletedCardIds),
