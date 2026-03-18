@@ -390,6 +390,18 @@ export default function KidsCardPortal() {
             >
               {promptCount} frågor · {estimateMinutes(promptCount)}
             </p>
+            <p
+              style={{
+                fontFamily: 'var(--font-serif)',
+                fontSize: '12px',
+                fontStyle: 'italic',
+                color: SAFFRON_FLAME,
+                opacity: 0.8,
+                marginTop: '8px',
+              }}
+            >
+              Tryck på dörren när ni är redo.
+            </p>
           </motion.div>
         </AnimatePresence>
 
