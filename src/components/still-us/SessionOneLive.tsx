@@ -4,8 +4,8 @@
  * Internal step state machine:
  *   threshold → framing → reveal → oppna_q1 → oppna_q2 → stage_interstitial → vand_q1 → complete
  *
- * This file implements: threshold, framing, reveal.
- * Steps oppna_q1 through complete are placeholder — built in prompt 3.3.
+ * Prompt 3.2: threshold, framing, reveal
+ * Prompt 3.3: oppna_q1, oppna_q2, stage_interstitial, vand_q1, complete
  */
 
 import { useState, useEffect, useCallback, useRef } from 'react';
@@ -31,6 +31,7 @@ type Step =
   | 'oppna_q2'
   | 'stage_interstitial'
   | 'vand_q1'
+  | 'emotional_pause'
   | 'complete';
 
 export interface SessionQuestion {
@@ -48,6 +49,25 @@ interface CoupleStateRow {
   current_card_index: number;
   cycle_id: number;
 }
+
+// ── Placeholder question data (content team will provide finals) ──
+function getSessionQuestions(cardIndex: number): { oppna: SessionQuestion[]; vand: SessionQuestion } {
+  // TODO: Replace with real content data file lookup
+  return {
+    oppna: [
+      { text: 'Vad har ni tänkt på sedan förra veckan?' },
+      { text: 'Finns det något ni vill säga till varandra just nu?' },
+    ],
+    vand: {
+      text: 'Om ni tänker på det ni just pratade om — vad var det viktigaste?',
+    },
+  };
+}
+
+// ── Reduced motion helper ───────────────────────────────────
+const prefersReduced =
+  typeof window !== 'undefined' &&
+  window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 // ── Component ───────────────────────────────────────────────
 
@@ -76,11 +96,14 @@ export default function SessionOneLive() {
   const [initiatorReflection, setInitiatorReflection] = useState<string | undefined>();
   const [partnerReflection, setPartnerReflection] = useState<string | undefined>();
 
-  // Exit dialog
-  const [showExit, setShowExit] = useState(false);
+  // Session prompt state
+  const [notes, setNotes] = useState<Record<string, string>>({});
+  const [showAnchor, setShowAnchor] = useState(false);
+  const [showNoteField, setShowNoteField] = useState(false);
 
   const isCompact = cardIndex >= 5;
   const partnerTier = coupleState?.partner_tier ?? 'tier_1';
+  const isTier1 = partnerTier === 'tier_1';
 
   // Derive display names
   const initiatorName = space?.partner_a_name || 'Du';
@@ -88,6 +111,8 @@ export default function SessionOneLive() {
     partnerTier === 'tier_2'
       ? coupleState?.tier_2_partner_name || 'Partner'
       : space?.partner_b_name || 'Partner';
+
+  const questions = getSessionQuestions(cardIndex);
 
   // ── Fetch couple_state on mount ───────────────────────────
   useEffect(() => {
@@ -106,7 +131,6 @@ export default function SessionOneLive() {
   useEffect(() => {
     if (!coupleState || !backendCardId) return;
     (async () => {
-      // Fetch both partners' user_card_state
       const { data: cardStates } = await supabase
         .from('user_card_state')
         .select('user_id, slider_responses, checkin_reflection')
@@ -125,7 +149,6 @@ export default function SessionOneLive() {
               }
             }
           }
-
           if (row.user_id === coupleState.initiator_id) {
             setInitiatorSliders(valueMap);
             if (row.checkin_reflection) setInitiatorReflection(row.checkin_reflection);
@@ -136,7 +159,6 @@ export default function SessionOneLive() {
         }
       }
 
-      // Also check anonymous submissions for Tier 1
       if (partnerTier === 'tier_1') {
         const { data: anonData } = await supabase
           .from('anonymous_slider_submission')
@@ -184,9 +206,7 @@ export default function SessionOneLive() {
 
   const onBothMoodsSelected = useCallback(
     (iMood: ThresholdMood, pMood: ThresholdMood) => {
-      // Persist moods
       if (coupleState && user?.id) {
-        // Tier 1: only persist initiator
         persistMood(user.id, iMood);
         if (partnerTier === 'tier_2' && coupleState.tier_2_pseudo_id) {
           persistMood(coupleState.tier_2_pseudo_id, pMood);
@@ -195,19 +215,17 @@ export default function SessionOneLive() {
         }
       }
 
-      const framing = getThresholdFraming(iMood, pMood);
+      const framingResult = getThresholdFraming(iMood, pMood);
 
       if (isCompact) {
-        // Compact: no hold, check framing
-        if (framing) {
+        if (framingResult) {
           setStep('framing');
         } else {
           setStep('reveal');
         }
       } else {
-        // Fullscreen: 800ms hold then transition
         holdTimerRef.current = setTimeout(() => {
-          if (framing) {
+          if (framingResult) {
             setStep('framing');
           } else {
             setStep('reveal');
@@ -226,7 +244,6 @@ export default function SessionOneLive() {
   const handleTier2InitiatorSelect = useCallback(
     (mood: ThresholdMood) => {
       setInitiatorMood(mood);
-      // 300ms animation then crossfade
       setTimeout(() => setTier2Step('partner'), 700);
     },
     [],
@@ -235,10 +252,8 @@ export default function SessionOneLive() {
   const handleTier2PartnerSelect = useCallback(
     (mood: ThresholdMood) => {
       setPartnerMood(mood);
-      // Show both side by side
       setTimeout(() => {
         setTier2Step('both');
-        // Then trigger the hold + framing logic
         setTimeout(() => {
           if (initiatorMood) onBothMoodsSelected(initiatorMood, mood);
         }, 100);
@@ -265,11 +280,77 @@ export default function SessionOneLive() {
     }
   }, [step, framing]);
 
-  // ── Pause handler ─────────────────────────────────────────
-  const handlePause = useCallback(async () => {
-    // TODO: save paused_reason='emotional' to session_state
+  // ── Stage interstitial auto-advance ───────────────────────
+  useEffect(() => {
+    if (step === 'stage_interstitial') {
+      const delay = prefersReduced ? 300 : 500;
+      const t = setTimeout(() => setStep('vand_q1'), delay);
+      return () => clearTimeout(t);
+    }
+  }, [step]);
+
+  // ── Save note to user_card_state ──────────────────────────
+  const saveNote = useCallback(
+    async (stepId: string) => {
+      const text = notes[stepId]?.trim();
+      if (!text || !coupleState || !backendCardId || !user?.id) return;
+
+      // Fetch existing notes, merge, upsert
+      const { data: existing } = await supabase
+        .from('user_card_state')
+        .select('notes')
+        .eq('couple_id', coupleState.couple_id)
+        .eq('user_id', user.id)
+        .eq('card_id', backendCardId)
+        .eq('cycle_id', coupleState.cycle_id)
+        .maybeSingle();
+
+      const existingNotes = (existing?.notes as Record<string, string>) ?? {};
+      const merged = { ...existingNotes, [stepId]: text };
+
+      await supabase
+        .from('user_card_state')
+        .upsert(
+          {
+            couple_id: coupleState.couple_id,
+            user_id: user.id,
+            card_id: backendCardId,
+            cycle_id: coupleState.cycle_id,
+            notes: merged as any,
+          },
+          { onConflict: 'couple_id,user_id,card_id,cycle_id' },
+        );
+    },
+    [notes, coupleState, backendCardId, user?.id],
+  );
+
+  // ── Pause handlers ────────────────────────────────────────
+  const handlePauseTime = useCallback(async () => {
+    // TODO: update session_state with paused_reason='time'
     navigate('/');
   }, [navigate]);
+
+  const handlePauseEmotional = useCallback(async () => {
+    // TODO: update session_state with paused_reason='emotional'
+    navigate('/');
+  }, [navigate]);
+
+  // ── Step advance handler ──────────────────────────────────
+  const handleNext = useCallback(async () => {
+    setShowAnchor(false);
+    setShowNoteField(false);
+
+    if (step === 'oppna_q1') {
+      await saveNote('oppna_q1');
+      setStep('oppna_q2');
+    } else if (step === 'oppna_q2') {
+      await saveNote('oppna_q2');
+      setStep('stage_interstitial');
+    } else if (step === 'vand_q1') {
+      await saveNote('vand_q1');
+      navigate(`/session/${slug}/complete-session1`);
+    }
+  }, [step, saveNote, navigate, slug]);
 
   // ── Render helpers ────────────────────────────────────────
 
@@ -293,7 +374,6 @@ export default function SessionOneLive() {
           ctaSlot={null}
         >
           <div style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: '16px' }}>
-            {/* Compact threshold row */}
             <CompactThresholdRow
               initiatorName={initiatorName}
               partnerName={partnerName}
@@ -316,13 +396,11 @@ export default function SessionOneLive() {
             >
               Börja direkt
             </button>
-
-            {/* Compact framing banner */}
             {initiatorMood && partnerMood && framing && (
               <CompactFramingBanner
                 framing={framing}
                 onContinue={() => setStep('reveal')}
-                onPause={handlePause}
+                onPause={handlePauseEmotional}
               />
             )}
           </div>
@@ -330,16 +408,9 @@ export default function SessionOneLive() {
       );
     }
 
-    // Fullscreen threshold
     if (partnerTier === 'tier_2') {
       return (
-        <SessionFocusShell
-          couple_id={coupleState?.couple_id}
-          card_id={backendCardId ?? undefined}
-          device_id={deviceId}
-          onExit={() => navigate('/')}
-          ctaSlot={null}
-        >
+        <SessionFocusShell couple_id={coupleState?.couple_id} card_id={backendCardId ?? undefined} device_id={deviceId} onExit={() => navigate('/')} ctaSlot={null}>
           <Tier2Threshold
             initiatorName={initiatorName}
             partnerName={partnerName}
@@ -353,15 +424,8 @@ export default function SessionOneLive() {
       );
     }
 
-    // Tier 1/3 simultaneous
     return (
-      <SessionFocusShell
-        couple_id={coupleState?.couple_id}
-        card_id={backendCardId ?? undefined}
-        device_id={deviceId}
-        onExit={() => navigate('/')}
-        ctaSlot={null}
-      >
+      <SessionFocusShell couple_id={coupleState?.couple_id} card_id={backendCardId ?? undefined} device_id={deviceId} onExit={() => navigate('/')} ctaSlot={null}>
         <FullscreenThreshold
           initiatorName={initiatorName}
           partnerName={partnerName}
@@ -388,52 +452,22 @@ export default function SessionOneLive() {
               <button
                 onClick={() => setStep('reveal')}
                 style={{
-                  width: '100%',
-                  height: '44px',
-                  borderRadius: '12px',
-                  backgroundColor: COLORS.deepSaffron,
-                  border: 'none',
-                  cursor: 'pointer',
-                  fontFamily: 'var(--font-sans)',
-                  fontSize: '15px',
-                  fontWeight: 600,
-                  color: '#2C2420',
+                  width: '100%', height: '44px', borderRadius: '12px',
+                  backgroundColor: COLORS.deepSaffron, border: 'none', cursor: 'pointer',
+                  fontFamily: 'var(--font-sans)', fontSize: '15px', fontWeight: 600, color: '#2C2420',
                 }}
               >
                 Prata i den här takten
               </button>
-              <button
-                onClick={handlePause}
-                style={{
-                  background: 'none',
-                  border: 'none',
-                  color: COLORS.driftwood,
-                  fontFamily: 'var(--font-sans)',
-                  fontSize: '13px',
-                  cursor: 'pointer',
-                }}
-              >
+              <button onClick={handlePauseEmotional} style={{ background: 'none', border: 'none', color: COLORS.driftwood, fontFamily: 'var(--font-sans)', fontSize: '13px', cursor: 'pointer' }}>
                 Vi vill pausa istället
               </button>
             </div>
           ) : null
         }
       >
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: EMOTION, ease: [...EASE] }}
-          style={{ textAlign: 'center', maxWidth: '300px' }}
-        >
-          <p
-            style={{
-              fontFamily: "'DM Serif Display', serif",
-              fontSize: '20px',
-              fontWeight: 400,
-              color: COLORS.driftwood,
-              lineHeight: 1.5,
-            }}
-          >
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: EMOTION, ease: [...EASE] }} style={{ textAlign: 'center', maxWidth: '300px' }}>
+          <p style={{ fontFamily: "'DM Serif Display', serif", fontSize: '20px', fontWeight: 400, color: COLORS.driftwood, lineHeight: 1.5 }}>
             {framing.body}
           </p>
         </motion.div>
@@ -454,23 +488,93 @@ export default function SessionOneLive() {
         partnerName={partnerName}
         initiatorReflection={initiatorReflection}
         partnerReflection={partnerReflection}
+        onContinue={() => setStep('oppna_q1')}
       />
     );
   }
 
-  // ── STEPS: oppna_q1 through complete (placeholder) ────────
-  // TODO: Prompt 3.3 will implement these steps
-  return (
-    <SessionFocusShell
-      couple_id={coupleState?.couple_id}
-      card_id={backendCardId ?? undefined}
-      device_id={deviceId}
-      onExit={() => navigate('/')}
-      ctaSlot={
+  // ── STEP: STAGE INTERSTITIAL ──────────────────────────────
+  if (step === 'stage_interstitial') {
+    return (
+      <div
+        style={{
+          minHeight: '100dvh',
+          backgroundColor: COLORS.emberNight,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          padding: '0 24px',
+        }}
+      >
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: prefersReduced ? 0 : 0.3, ease: [...EASE] }}
+          style={{ textAlign: 'center' }}
+        >
+          <p style={{
+            fontFamily: "'DM Serif Display', serif",
+            fontSize: '32px',
+            fontWeight: 400,
+            color: COLORS.deepSaffron,
+            margin: '0 0 12px 0',
+          }}>
+            Vänd
+          </p>
+          <p style={{
+            fontFamily: 'var(--font-sans)',
+            fontSize: '16px',
+            color: `${COLORS.lanternGlow}B3`,
+            margin: 0,
+          }}>
+            Nu vänder vi blicken inåt.
+          </p>
+        </motion.div>
+      </div>
+    );
+  }
+
+  // ── STEP: EMOTIONAL PAUSE ─────────────────────────────────
+  if (step === 'emotional_pause') {
+    return (
+      <div
+        style={{
+          minHeight: '100dvh',
+          backgroundColor: COLORS.emberNight,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          padding: '0 24px',
+        }}
+      >
+        <h2 style={{
+          fontFamily: "'DM Serif Display', serif",
+          fontSize: '24px',
+          fontWeight: 400,
+          color: COLORS.lanternGlow,
+          textAlign: 'center',
+          margin: '0 0 16px 0',
+        }}>
+          Det är modigt att stanna upp.
+        </h2>
+        <p style={{
+          fontFamily: 'var(--font-sans)',
+          fontSize: '16px',
+          color: `${COLORS.lanternGlow}B3`,
+          textAlign: 'center',
+          maxWidth: '280px',
+          lineHeight: 1.5,
+          margin: '0 0 32px 0',
+        }}>
+          Ni kan komma tillbaka till det här när ni är redo. Allt ni har pratat om är sparat.
+        </p>
         <button
-          onClick={() => navigate(`/session/${slug}/complete-session1`)}
+          onClick={handlePauseEmotional}
           style={{
             width: '100%',
+            maxWidth: '300px',
             height: '48px',
             borderRadius: '12px',
             backgroundColor: COLORS.deepSaffron,
@@ -482,13 +586,221 @@ export default function SessionOneLive() {
             color: '#2C2420',
           }}
         >
-          Avsluta del 1
+          Tillbaka hem
         </button>
+      </div>
+    );
+  }
+
+  // ── STEPS: OPPNA_Q1, OPPNA_Q2, VAND_Q1 ───────────────────
+  const isOppna = step === 'oppna_q1' || step === 'oppna_q2';
+  const currentQuestion = isOppna
+    ? questions.oppna[step === 'oppna_q1' ? 0 : 1]
+    : questions.vand;
+
+  const activeStage: 'oppna' | 'vand' = isOppna ? 'oppna' : 'vand';
+  const dotCount = isOppna ? 2 : 1;
+  const activeDot = step === 'oppna_q1' ? 0 : step === 'oppna_q2' ? 1 : 0;
+
+  const stepNavBar = (
+    <div style={{
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      padding: '12px 24px',
+      paddingTop: 'calc(12px + env(safe-area-inset-top, 0px))',
+    }}>
+      <div style={{ display: 'flex', gap: '20px' }}>
+        <StepLabel label="1. Öppna" active={activeStage === 'oppna'} />
+        <StepLabel label="2. Vänd" active={activeStage === 'vand'} />
+      </div>
+      <span style={{ fontFamily: 'var(--font-sans)', fontSize: '11px', color: COLORS.driftwood }}>
+        Samtal 1 av 2
+      </span>
+    </div>
+  );
+
+  return (
+    <SessionFocusShell
+      couple_id={coupleState?.couple_id}
+      card_id={backendCardId ?? undefined}
+      device_id={deviceId}
+      topSlot={stepNavBar}
+      onExit={() => navigate('/')}
+      ctaSlot={
+        <div style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px' }}>
+          <button
+            onClick={handleNext}
+            style={{
+              width: '100%',
+              height: '52px',
+              borderRadius: '12px',
+              backgroundColor: COLORS.deepSaffron,
+              border: 'none',
+              cursor: 'pointer',
+              fontFamily: 'var(--font-sans)',
+              fontSize: '16px',
+              fontWeight: 600,
+              color: COLORS.lanternGlow,
+            }}
+          >
+            Nästa
+          </button>
+          <button
+            onClick={handlePauseTime}
+            style={{ background: 'none', border: 'none', color: COLORS.driftwood, fontFamily: 'var(--font-sans)', fontSize: '14px', cursor: 'pointer' }}
+          >
+            Pausa för idag
+          </button>
+          <button
+            onClick={() => setStep('emotional_pause')}
+            style={{ background: 'none', border: 'none', color: COLORS.driftwood, fontFamily: 'var(--font-sans)', fontSize: '13px', cursor: 'pointer', opacity: 0.6 }}
+          >
+            Vi behöver stanna här
+          </button>
+        </div>
       }
     >
-      <p style={{ color: COLORS.lanternGlow, fontFamily: 'var(--font-sans)', fontSize: '16px' }}>
-        [Placeholder: {step}]
-      </p>
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={step}
+          initial={prefersReduced ? false : { opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={prefersReduced ? undefined : { opacity: 0 }}
+          transition={{ duration: 0.3, ease: [...EASE] }}
+          style={{ width: '100%', textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center' }}
+        >
+          {/* Question text */}
+          <p style={{
+            fontFamily: "'DM Serif Display', serif",
+            fontSize: '26px',
+            fontWeight: 400,
+            color: COLORS.lanternGlow,
+            lineHeight: 1.4,
+            margin: '0 0 16px 0',
+            textWrap: 'balance',
+          }}>
+            {currentQuestion?.text}
+          </p>
+
+          {/* Sub-prompt dots */}
+          <div style={{ display: 'flex', gap: '8px', justifyContent: 'center', marginBottom: '16px' }}>
+            {Array.from({ length: dotCount }, (_, i) => (
+              <div
+                key={i}
+                style={{
+                  width: '8px',
+                  height: '8px',
+                  borderRadius: '50%',
+                  backgroundColor: i === activeDot ? COLORS.deepSaffron : 'transparent',
+                  border: i === activeDot ? 'none' : `1.5px solid ${COLORS.driftwood}`,
+                }}
+              />
+            ))}
+          </div>
+
+          {/* Anchor (expandable) */}
+          {currentQuestion?.anchor && (
+            <div style={{ marginBottom: '16px' }}>
+              <button
+                onClick={() => setShowAnchor(!showAnchor)}
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  fontFamily: 'var(--font-sans)',
+                  fontSize: '13px',
+                  color: COLORS.driftwood,
+                  cursor: 'pointer',
+                  fontStyle: 'italic',
+                  textDecoration: 'underline',
+                  textUnderlineOffset: '3px',
+                }}
+              >
+                {showAnchor ? 'Dölj samtalshjälp' : 'Samtalshjälp'}
+              </button>
+              <AnimatePresence>
+                {showAnchor && (
+                  <motion.p
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: 'auto' }}
+                    exit={{ opacity: 0, height: 0 }}
+                    transition={{ duration: 0.2 }}
+                    style={{
+                      fontFamily: 'var(--font-sans)',
+                      fontSize: '14px',
+                      color: COLORS.driftwood,
+                      fontStyle: 'italic',
+                      lineHeight: 1.5,
+                      marginTop: '12px',
+                      overflow: 'hidden',
+                    }}
+                  >
+                    {currentQuestion.anchor}
+                  </motion.p>
+                )}
+              </AnimatePresence>
+            </div>
+          )}
+
+          {/* "Fäst en tanke" — suppressed for Tier 1 */}
+          {!isTier1 && (
+            <div style={{ width: '100%', maxWidth: '340px' }}>
+              {!showNoteField ? (
+                <button
+                  onClick={() => setShowNoteField(true)}
+                  style={{
+                    background: 'none',
+                    border: 'none',
+                    fontFamily: 'var(--font-sans)',
+                    fontSize: '13px',
+                    color: COLORS.driftwood,
+                    fontStyle: 'italic',
+                    cursor: 'pointer',
+                  }}
+                >
+                  Fäst en tanke
+                </button>
+              ) : (
+                <motion.div
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: 'auto' }}
+                  transition={{ duration: 0.2 }}
+                  style={{ overflow: 'hidden' }}
+                >
+                  <textarea
+                    value={notes[step] ?? ''}
+                    onChange={(e) => setNotes((prev) => ({ ...prev, [step]: e.target.value }))}
+                    placeholder="Fäst en tanke..."
+                    rows={3}
+                    style={{
+                      width: '100%',
+                      padding: '16px',
+                      borderRadius: '8px',
+                      backgroundColor: COLORS.emberGlow,
+                      border: 'none',
+                      color: COLORS.lanternGlow,
+                      fontFamily: 'var(--font-sans)',
+                      fontSize: '14px',
+                      outline: 'none',
+                      resize: 'none',
+                      lineHeight: 1.5,
+                    }}
+                  />
+                  <p style={{
+                    fontFamily: 'var(--font-sans)',
+                    fontSize: '11px',
+                    color: COLORS.driftwoodBody,
+                    fontStyle: 'italic',
+                    marginTop: '6px',
+                  }}>
+                    Bara du kan se det här.
+                  </p>
+                </motion.div>
+              )}
+            </div>
+          )}
+        </motion.div>
+      </AnimatePresence>
     </SessionFocusShell>
   );
 }
@@ -496,6 +808,23 @@ export default function SessionOneLive() {
 // ═══════════════════════════════════════════════════════════
 // SUB-COMPONENTS
 // ═══════════════════════════════════════════════════════════
+
+function StepLabel({ label, active }: { label: string; active: boolean }) {
+  return (
+    <span
+      style={{
+        fontFamily: 'var(--font-sans)',
+        fontSize: '13px',
+        fontWeight: 600,
+        color: active ? COLORS.deepSaffron : COLORS.driftwoodBody,
+        paddingBottom: '4px',
+        borderBottom: active ? `2px solid ${COLORS.deepSaffron}` : '2px solid transparent',
+      }}
+    >
+      {label}
+    </span>
+  );
+}
 
 // ── Fullscreen Threshold (Tier 1/3) ─────────────────────────
 
@@ -516,32 +845,12 @@ function FullscreenThreshold({
 }) {
   return (
     <div style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '24px' }}>
-      <h2
-        style={{
-          fontFamily: "'DM Serif Display', serif",
-          fontSize: '24px',
-          fontWeight: 400,
-          color: COLORS.lanternGlow,
-          textAlign: 'center',
-          margin: 0,
-        }}
-      >
+      <h2 style={{ fontFamily: "'DM Serif Display', serif", fontSize: '24px', fontWeight: 400, color: COLORS.lanternGlow, textAlign: 'center', margin: 0 }}>
         Hur mår ni?
       </h2>
-
       <div style={{ display: 'flex', gap: '16px', width: '100%' }}>
-        <MoodColumn
-          name={initiatorName}
-          selected={initiatorMood}
-          onSelect={onInitiatorSelect}
-          fullSize
-        />
-        <MoodColumn
-          name={partnerName}
-          selected={partnerMood}
-          onSelect={onPartnerSelect}
-          fullSize
-        />
+        <MoodColumn name={initiatorName} selected={initiatorMood} onSelect={onInitiatorSelect} fullSize />
+        <MoodColumn name={partnerName} selected={partnerMood} onSelect={onPartnerSelect} fullSize />
       </div>
     </div>
   );
@@ -570,73 +879,27 @@ function Tier2Threshold({
     <div style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '24px' }}>
       <AnimatePresence mode="wait">
         {tier2Step === 'initiator' && (
-          <motion.div
-            key="t2-init"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.4, ease: [...EASE] }}
-            style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '24px' }}
-          >
-            <h2 style={{
-              fontFamily: "'DM Serif Display', serif",
-              fontSize: '24px',
-              fontWeight: 400,
-              color: COLORS.lanternGlow,
-              textAlign: 'center',
-              margin: 0,
-            }}>
-              Hur mår ni?
-            </h2>
+          <motion.div key="t2-init" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.4, ease: [...EASE] }}
+            style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '24px' }}>
+            <h2 style={{ fontFamily: "'DM Serif Display', serif", fontSize: '24px', fontWeight: 400, color: COLORS.lanternGlow, textAlign: 'center', margin: 0 }}>Hur mår ni?</h2>
             <div style={{ maxWidth: '200px', width: '100%' }}>
               <MoodColumn name={initiatorName} selected={initiatorMood} onSelect={onInitiatorSelect} fullSize />
             </div>
           </motion.div>
         )}
-
         {tier2Step === 'partner' && (
-          <motion.div
-            key="t2-partner"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.4, ease: [...EASE] }}
-            style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '24px' }}
-          >
-            <h2 style={{
-              fontFamily: "'DM Serif Display', serif",
-              fontSize: '20px',
-              fontWeight: 400,
-              color: COLORS.lanternGlow,
-              textAlign: 'center',
-              margin: 0,
-            }}>
-              Och du, {partnerName}?
-            </h2>
+          <motion.div key="t2-partner" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.4, ease: [...EASE] }}
+            style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '24px' }}>
+            <h2 style={{ fontFamily: "'DM Serif Display', serif", fontSize: '20px', fontWeight: 400, color: COLORS.lanternGlow, textAlign: 'center', margin: 0 }}>Och du, {partnerName}?</h2>
             <div style={{ maxWidth: '200px', width: '100%' }}>
               <MoodColumn name={partnerName} selected={partnerMood} onSelect={onPartnerSelect} fullSize />
             </div>
           </motion.div>
         )}
-
         {tier2Step === 'both' && (
-          <motion.div
-            key="t2-both"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.3, ease: [...EASE] }}
-            style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '24px' }}
-          >
-            <h2 style={{
-              fontFamily: "'DM Serif Display', serif",
-              fontSize: '24px',
-              fontWeight: 400,
-              color: COLORS.lanternGlow,
-              textAlign: 'center',
-              margin: 0,
-            }}>
-              Hur mår ni?
-            </h2>
+          <motion.div key="t2-both" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.3, ease: [...EASE] }}
+            style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '24px' }}>
+            <h2 style={{ fontFamily: "'DM Serif Display', serif", fontSize: '24px', fontWeight: 400, color: COLORS.lanternGlow, textAlign: 'center', margin: 0 }}>Hur mår ni?</h2>
             <div style={{ display: 'flex', gap: '16px', width: '100%' }}>
               <MoodColumn name={initiatorName} selected={initiatorMood} onSelect={() => {}} fullSize disabled />
               <MoodColumn name={partnerName} selected={partnerMood} onSelect={() => {}} fullSize disabled />
@@ -651,19 +914,11 @@ function Tier2Threshold({
 // ── Compact Threshold Row ───────────────────────────────────
 
 function CompactThresholdRow({
-  initiatorName,
-  partnerName,
-  initiatorMood,
-  partnerMood,
-  onInitiatorSelect,
-  onPartnerSelect,
+  initiatorName, partnerName, initiatorMood, partnerMood, onInitiatorSelect, onPartnerSelect,
 }: {
-  initiatorName: string;
-  partnerName: string;
-  initiatorMood: ThresholdMood | null;
-  partnerMood: ThresholdMood | null;
-  onInitiatorSelect: (m: ThresholdMood) => void;
-  onPartnerSelect: (m: ThresholdMood) => void;
+  initiatorName: string; partnerName: string;
+  initiatorMood: ThresholdMood | null; partnerMood: ThresholdMood | null;
+  onInitiatorSelect: (m: ThresholdMood) => void; onPartnerSelect: (m: ThresholdMood) => void;
 }) {
   return (
     <div style={{ display: 'flex', gap: '12px', width: '100%' }}>
@@ -675,72 +930,15 @@ function CompactThresholdRow({
 
 // ── Compact Framing Banner ──────────────────────────────────
 
-function CompactFramingBanner({
-  framing,
-  onContinue,
-  onPause,
-}: {
-  framing: { body: string; showExitCta?: boolean };
-  onContinue: () => void;
-  onPause: () => void;
-}) {
+function CompactFramingBanner({ framing, onContinue, onPause }: { framing: { body: string; showExitCta?: boolean }; onContinue: () => void; onPause: () => void }) {
   return (
-    <motion.div
-      initial={{ opacity: 0, height: 0 }}
-      animate={{ opacity: 1, height: 'auto' }}
-      transition={{ duration: EMOTION, ease: [...EASE] }}
-      style={{
-        padding: '16px',
-        borderRadius: '12px',
-        backgroundColor: `${COLORS.emberGlow}30`,
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        gap: '12px',
-      }}
-    >
-      <p style={{
-        fontFamily: "'DM Serif Display', serif",
-        fontSize: '16px',
-        color: COLORS.driftwood,
-        textAlign: 'center',
-        lineHeight: 1.5,
-        margin: 0,
-      }}>
-        {framing.body}
-      </p>
+    <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} transition={{ duration: EMOTION, ease: [...EASE] }}
+      style={{ padding: '16px', borderRadius: '12px', backgroundColor: `${COLORS.emberGlow}30`, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '12px' }}>
+      <p style={{ fontFamily: "'DM Serif Display', serif", fontSize: '16px', color: COLORS.driftwood, textAlign: 'center', lineHeight: 1.5, margin: 0 }}>{framing.body}</p>
       {framing.showExitCta && (
         <>
-          <button
-            onClick={onContinue}
-            style={{
-              width: '100%',
-              height: '40px',
-              borderRadius: '10px',
-              backgroundColor: COLORS.deepSaffron,
-              border: 'none',
-              cursor: 'pointer',
-              fontFamily: 'var(--font-sans)',
-              fontSize: '14px',
-              fontWeight: 600,
-              color: '#2C2420',
-            }}
-          >
-            Prata i den här takten
-          </button>
-          <button
-            onClick={onPause}
-            style={{
-              background: 'none',
-              border: 'none',
-              color: COLORS.driftwood,
-              fontFamily: 'var(--font-sans)',
-              fontSize: '13px',
-              cursor: 'pointer',
-            }}
-          >
-            Vi vill pausa istället
-          </button>
+          <button onClick={onContinue} style={{ width: '100%', height: '40px', borderRadius: '10px', backgroundColor: COLORS.deepSaffron, border: 'none', cursor: 'pointer', fontFamily: 'var(--font-sans)', fontSize: '14px', fontWeight: 600, color: '#2C2420' }}>Prata i den här takten</button>
+          <button onClick={onPause} style={{ background: 'none', border: 'none', color: COLORS.driftwood, fontFamily: 'var(--font-sans)', fontSize: '13px', cursor: 'pointer' }}>Vi vill pausa istället</button>
         </>
       )}
     </motion.div>
@@ -749,58 +947,22 @@ function CompactFramingBanner({
 
 // ── Mood Column ─────────────────────────────────────────────
 
-function MoodColumn({
-  name,
-  selected,
-  onSelect,
-  fullSize,
-  disabled = false,
-}: {
-  name: string;
-  selected: ThresholdMood | null;
-  onSelect: (m: ThresholdMood) => void;
-  fullSize: boolean;
-  disabled?: boolean;
+function MoodColumn({ name, selected, onSelect, fullSize, disabled = false }: {
+  name: string; selected: ThresholdMood | null; onSelect: (m: ThresholdMood) => void; fullSize: boolean; disabled?: boolean;
 }) {
-  const pillHeight = fullSize ? '44px' : '32px';
-  const fontSize = fullSize ? '14px' : '12px';
-  const borderRadius = fullSize ? '22px' : '16px';
-  const gap = fullSize ? '8px' : '6px';
+  const h = fullSize ? '44px' : '32px';
+  const fs = fullSize ? '14px' : '12px';
+  const br = fullSize ? '22px' : '16px';
+  const g = fullSize ? '8px' : '6px';
 
   return (
-    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap, alignItems: 'stretch' }}>
-      <span
-        style={{
-          fontFamily: 'var(--font-sans)',
-          fontSize: '13px',
-          color: COLORS.driftwoodBody,
-          textAlign: 'center',
-          marginBottom: '4px',
-        }}
-      >
-        {name}
-      </span>
+    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: g, alignItems: 'stretch' }}>
+      <span style={{ fontFamily: 'var(--font-sans)', fontSize: '13px', color: COLORS.driftwoodBody, textAlign: 'center', marginBottom: '4px' }}>{name}</span>
       {MOOD_OPTIONS.map((mood) => {
-        const isSelected = selected === mood;
+        const sel = selected === mood;
         return (
-          <button
-            key={mood}
-            onClick={() => !disabled && onSelect(mood)}
-            disabled={disabled}
-            style={{
-              height: pillHeight,
-              borderRadius,
-              backgroundColor: COLORS.emberMid,
-              border: isSelected ? `2px solid ${COLORS.deepSaffron}` : '2px solid transparent',
-              color: isSelected ? COLORS.deepSaffron : COLORS.lanternGlow,
-              fontFamily: 'var(--font-sans)',
-              fontSize,
-              fontWeight: 500,
-              cursor: disabled ? 'default' : 'pointer',
-              transition: 'border-color 300ms, color 300ms',
-              width: '100%',
-            }}
-          >
+          <button key={mood} onClick={() => !disabled && onSelect(mood)} disabled={disabled}
+            style={{ height: h, borderRadius: br, backgroundColor: COLORS.emberMid, border: sel ? `2px solid ${COLORS.deepSaffron}` : '2px solid transparent', color: sel ? COLORS.deepSaffron : COLORS.lanternGlow, fontFamily: 'var(--font-sans)', fontSize: fs, fontWeight: 500, cursor: disabled ? 'default' : 'pointer', transition: 'border-color 300ms, color 300ms', width: '100%' }}>
             {mood}
           </button>
         );
