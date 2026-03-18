@@ -35,7 +35,7 @@ function estimateMinutes(promptCount: number): string {
   return `ca ${lo}–${hi} min`;
 }
 
-function getPromptCount(card: { sections?: { prompts?: string[] }[] }): number {
+function getPromptCount(card: { sections?: { prompts?: unknown[] }[] }): number {
   return card.sections?.reduce((sum, s) => sum + (s.prompts?.length ?? 0), 0) ?? 0;
 }
 
