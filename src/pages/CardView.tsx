@@ -435,6 +435,8 @@ export default function CardView() {
   const [showStartScreen, setShowStartScreen] = useState(() => {
     if (isResumed || isFromArchive) return false;
     if (devState === 'completed') return false;
+    // Kids products: portal IS the start screen — skip directly to first question
+    if (isKidsProduct) return false;
     // Always show start screen when entering a card in live mode
     return true;
   });
