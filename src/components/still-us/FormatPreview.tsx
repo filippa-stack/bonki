@@ -1,122 +1,327 @@
 /**
- * FormatPreview — Post-first-slider onboarding (2-3 slides).
+ * FormatPreview — Post-first-slider onboarding (3 swipeable slides).
  * Explains the 3-touch weekly rhythm to new users.
+ * Shown once after the first-ever slider completion.
+ *
+ * Route: /format-preview
+ * Background: Ember Night (#2E2233)
  */
 
-import { useState } from 'react';
+import { useState, useRef, useCallback, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { EASE, EMOTION } from '@/lib/motion';
-import { EMBER_NIGHT, EMBER_GLOW, DEEP_SAFFRON, DRIFTWOOD, BARK } from '@/lib/palette';
+import { useNavigate } from 'react-router-dom';
+import { supabase } from '@/integrations/supabase/client';
+import { COLORS } from '@/lib/stillUsTokens';
+
+const REDUCED = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const SWIPE_THRESHOLD = 40;
 
 interface FormatPreviewProps {
-  onComplete: () => void;
+  /** Whether a partner is already linked */
+  hasPartner?: boolean;
+  onComplete?: () => void;
 }
 
-const SLIDES = [
-  {
-    title: 'Varje vecka — tre steg',
-    body: 'Ni gör en kort check-in var för sig, och sedan två samtal ihop. Det tar ungefär 5 minuter om dagen.',
-    icon: '🔄',
-  },
-  {
-    title: 'Check-in',
-    body: 'Ni svarar var för sig på några sliders om hur veckan har varit. Svaren visas när ni sätter er ner ihop.',
-    icon: '📊',
-  },
-  {
-    title: 'Två samtal',
-    body: 'Första samtalet öppnar upp ämnet. Andra samtalet fördjupar det. Ni bestämmer takten.',
-    icon: '💬',
-  },
-];
-
-export default function FormatPreview({ onComplete }: FormatPreviewProps) {
+export default function FormatPreview({ hasPartner = false, onComplete }: FormatPreviewProps) {
+  const navigate = useNavigate();
   const [slideIndex, setSlideIndex] = useState(0);
-  const isLast = slideIndex === SLIDES.length - 1;
-  const slide = SLIDES[slideIndex];
+  const touchStartX = useRef(0);
+  const touchDeltaX = useRef(0);
+  const isLast = slideIndex === 2;
+
+  // Mark format preview as seen (server-side, fire-and-forget)
+  useEffect(() => {
+    (async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return;
+      await supabase.from('onboarding_events').insert({
+        user_id: user.id,
+        event_type: 'format_preview_seen',
+      });
+    })();
+  }, []);
+
+  const goNext = useCallback(() => {
+    if (slideIndex < 2) setSlideIndex((i) => i + 1);
+  }, [slideIndex]);
+
+  const goPrev = useCallback(() => {
+    if (slideIndex > 0) setSlideIndex((i) => i - 1);
+  }, [slideIndex]);
+
+  const handleComplete = useCallback(() => {
+    if (onComplete) {
+      onComplete();
+    } else if (hasPartner) {
+      navigate('/');
+    } else {
+      navigate('/share');
+    }
+  }, [onComplete, hasPartner, navigate]);
+
+  // Touch handlers for swipe
+  const onTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+    touchDeltaX.current = 0;
+  };
+  const onTouchMove = (e: React.TouchEvent) => {
+    touchDeltaX.current = e.touches[0].clientX - touchStartX.current;
+  };
+  const onTouchEnd = () => {
+    if (touchDeltaX.current < -SWIPE_THRESHOLD) goNext();
+    else if (touchDeltaX.current > SWIPE_THRESHOLD) goPrev();
+    touchDeltaX.current = 0;
+  };
+
+  const animVariants = REDUCED
+    ? { initial: {}, animate: {}, exit: {} }
+    : {
+        initial: { opacity: 0, x: 40 },
+        animate: { opacity: 1, x: 0 },
+        exit: { opacity: 0, x: -40 },
+      };
 
   return (
     <div
+      onTouchStart={onTouchStart}
+      onTouchMove={onTouchMove}
+      onTouchEnd={onTouchEnd}
       style={{
-        minHeight: '100vh',
-        backgroundColor: EMBER_NIGHT,
+        height: '100dvh',
+        backgroundColor: COLORS.emberNight,
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
         padding: '0 32px',
         paddingBottom: 'calc(24px + env(safe-area-inset-bottom, 0px))',
+        overflow: 'hidden',
+        userSelect: 'none',
+        touchAction: 'pan-y',
       }}
     >
-      {/* Dots */}
-      <div style={{ display: 'flex', gap: '8px', marginBottom: '40px' }}>
-        {SLIDES.map((_, i) => (
-          <div
+      {/* Slide content */}
+      <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%' }}>
+        <AnimatePresence mode="wait">
+          {slideIndex === 0 && (
+            <motion.div
+              key="s0"
+              {...animVariants}
+              transition={{ duration: 0.35 }}
+              style={{ textAlign: 'center', maxWidth: '320px' }}
+            >
+              <h2
+                style={{
+                  fontFamily: 'var(--font-serif)',
+                  fontSize: '24px',
+                  fontWeight: 600,
+                  color: COLORS.deepSaffron,
+                  lineHeight: 1.3,
+                  margin: '0 0 16px',
+                }}
+              >
+                Klart! Du har gjort din första check-in.
+              </h2>
+              <p
+                style={{
+                  fontFamily: 'var(--font-sans)',
+                  fontSize: '16px',
+                  color: COLORS.lanternGlow,
+                  lineHeight: 1.6,
+                  margin: 0,
+                }}
+              >
+                Varje vecka börjar så här — med en snabb check-in.
+              </p>
+            </motion.div>
+          )}
+
+          {slideIndex === 1 && (
+            <motion.div
+              key="s1"
+              {...animVariants}
+              transition={{ duration: 0.35 }}
+              style={{ textAlign: 'center', maxWidth: '320px' }}
+            >
+              {/* Session illustration placeholder */}
+              <div
+                style={{
+                  width: '80px',
+                  height: '80px',
+                  borderRadius: '50%',
+                  background: `${COLORS.emberGlow}`,
+                  margin: '0 auto 24px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  fontSize: '32px',
+                }}
+              >
+                💬
+              </div>
+              <p
+                style={{
+                  fontFamily: 'var(--font-sans)',
+                  fontSize: '16px',
+                  color: COLORS.lanternGlow,
+                  lineHeight: 1.6,
+                  margin: 0,
+                }}
+              >
+                Sen pratar ni — två korta samtal.
+              </p>
+            </motion.div>
+          )}
+
+          {slideIndex === 2 && (
+            <motion.div
+              key="s2"
+              {...animVariants}
+              transition={{ duration: 0.35 }}
+              style={{ textAlign: 'center', maxWidth: '340px' }}
+            >
+              <p
+                style={{
+                  fontFamily: 'var(--font-sans)',
+                  fontSize: '14px',
+                  fontWeight: 600,
+                  letterSpacing: '1.2px',
+                  textTransform: 'uppercase',
+                  color: COLORS.deepSaffron,
+                  margin: '0 0 28px',
+                }}
+              >
+                Hur en vecka ser ut:
+              </p>
+
+              {/* Three circles with dotted connectors */}
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '0',
+                  margin: '0 0 12px',
+                }}
+              >
+                <StepCircle label="Check-in" />
+                <DottedLine />
+                <StepCircle label="Samtal 1" />
+                <DottedLine />
+                <StepCircle label="Samtal 2" />
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+
+      {/* Pagination dots */}
+      <div style={{ display: 'flex', gap: '8px', marginBottom: '24px' }}>
+        {[0, 1, 2].map((i) => (
+          <button
             key={i}
+            onClick={() => setSlideIndex(i)}
+            aria-label={`Slide ${i + 1}`}
             style={{
               width: '8px',
               height: '8px',
               borderRadius: '50%',
-              backgroundColor: i === slideIndex ? DEEP_SAFFRON : `${EMBER_GLOW}30`,
+              backgroundColor: i === slideIndex ? COLORS.deepSaffron : `${COLORS.emberGlow}40`,
+              border: 'none',
+              padding: 0,
+              cursor: 'pointer',
               transition: 'background-color 0.2s',
             }}
           />
         ))}
       </div>
 
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={slideIndex}
-          initial={{ opacity: 0, x: 20 }}
-          animate={{ opacity: 1, x: 0 }}
-          exit={{ opacity: 0, x: -20 }}
-          transition={{ duration: EMOTION, ease: [...EASE] }}
-          style={{ textAlign: 'center', maxWidth: '320px' }}
-        >
-          <div style={{ fontSize: '40px', marginBottom: '20px' }}>{slide.icon}</div>
-
-          <h2 style={{
-            fontFamily: 'var(--font-serif)',
-            fontSize: '22px',
-            fontWeight: 500,
-            color: EMBER_GLOW,
-            marginBottom: '12px',
-          }}>
-            {slide.title}
-          </h2>
-
-          <p style={{
+      {/* CTA — only on last slide */}
+      {isLast ? (
+        <button
+          onClick={handleComplete}
+          style={{
+            width: '100%',
+            maxWidth: '320px',
+            height: '48px',
+            borderRadius: '12px',
+            backgroundColor: COLORS.bonkiOrange,
+            border: 'none',
+            cursor: 'pointer',
             fontFamily: 'var(--font-sans)',
-            fontSize: '15px',
-            color: DRIFTWOOD,
-            lineHeight: 1.6,
-          }}>
-            {slide.body}
-          </p>
-        </motion.div>
-      </AnimatePresence>
+            fontSize: '16px',
+            fontWeight: 600,
+            color: COLORS.emberNight,
+            transition: 'transform 140ms ease',
+          }}
+          onMouseDown={(e) => { e.currentTarget.style.transform = 'scale(0.97)'; }}
+          onMouseUp={(e) => { e.currentTarget.style.transform = 'scale(1)'; }}
+          onMouseLeave={(e) => { e.currentTarget.style.transform = 'scale(1)'; }}
+        >
+          Fortsätt
+        </button>
+      ) : (
+        /* Tap-to-advance hint on non-final slides */
+        <button
+          onClick={goNext}
+          style={{
+            background: 'none',
+            border: 'none',
+            fontFamily: 'var(--font-sans)',
+            fontSize: '14px',
+            color: COLORS.driftwood,
+            cursor: 'pointer',
+            padding: '12px 24px',
+          }}
+        >
+          Svep eller tryck →
+        </button>
+      )}
+    </div>
+  );
+}
 
-      <div style={{ flex: 1 }} />
+/* ── Sub-components ── */
 
-      <motion.button
-        whileTap={{ scale: 0.98 }}
-        onClick={() => isLast ? onComplete() : setSlideIndex((i) => i + 1)}
+function StepCircle({ label }: { label: string }) {
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
+      <div
         style={{
-          width: '100%',
-          maxWidth: '320px',
-          height: '52px',
-          borderRadius: '12px',
-          backgroundColor: DEEP_SAFFRON,
-          border: 'none',
-          cursor: 'pointer',
+          width: '56px',
+          height: '56px',
+          borderRadius: '50%',
+          border: `2px solid ${COLORS.deepSaffron}`,
+          backgroundColor: `${COLORS.deepSaffron}15`,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      />
+      <span
+        style={{
           fontFamily: 'var(--font-sans)',
-          fontSize: '16px',
-          fontWeight: 600,
-          color: BARK,
+          fontSize: '12px',
+          fontWeight: 500,
+          color: COLORS.lanternGlow,
+          whiteSpace: 'nowrap',
         }}
       >
-        {isLast ? 'Sätt igång' : 'Nästa'}
-      </motion.button>
+        {label}
+      </span>
     </div>
+  );
+}
+
+function DottedLine() {
+  return (
+    <div
+      style={{
+        width: '32px',
+        height: '2px',
+        borderBottom: `2px dotted ${COLORS.driftwood}50`,
+        marginBottom: '28px',
+      }}
+    />
   );
 }
