@@ -25,6 +25,7 @@ import Category from "./pages/Category";
 import CardView from "./pages/CardView";
 import CardPreview from "./pages/CardPreview";
 import ProductHome from "./pages/ProductHome";
+import KidsCardPortal from "./pages/KidsCardPortal";
 import StillUsExplore from "./pages/StillUsExplore";
 
 import SharedSummary from "./pages/SharedSummary";
@@ -98,6 +99,7 @@ function ProtectedRoutes() {
               <Route path="/card/:cardId" element={<PageTransition><CardView /></PageTransition>} />
               <Route path="/preview/:cardId" element={<PageTransition><CardPreview /></PageTransition>} />
               <Route path="/product/:slug" element={<PageTransition><ProductHome /></PageTransition>} />
+              <Route path="/product/:productSlug/portal/:categoryId" element={<PageTransition><KidsCardPortal /></PageTransition>} />
               <Route path="/saved" element={<Navigate to="/journal" replace />} />
               <Route path="/shared" element={<PageTransition><SharedSummary /></PageTransition>} />
               <Route path="/journal" element={<PageTransition><Journal /></PageTransition>} />
