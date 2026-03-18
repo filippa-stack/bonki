@@ -349,7 +349,7 @@ export default function CompletedSessionView({
                   Nästa <ArrowRight size={16} style={{ opacity: 0.7 }} />
                 </button>
                 <button
-                  onClick={() => navigate(categoryId ? `/category/${categoryId}` : `/product/${product!.slug}`)}
+                  onClick={() => navigate(isChildProduct && product && categoryId ? `/product/${product.slug}/portal/${categoryId}` : categoryId ? `/category/${categoryId}` : `/product/${product!.slug}`)}
                   className="font-sans"
                   style={{ fontSize: '13px', color: 'var(--completion-link)', opacity: 0.55, background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline', textUnderlineOffset: '3px' }}
                 >
