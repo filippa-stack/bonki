@@ -192,18 +192,9 @@ export default function Category() {
   }
 
   // ── Kids product: new snap-scroll card list ──
-  if (isKidsProduct && product) {
-    return (
-      <KidsProductCategoryView
-        category={category}
-        cards={cards}
-        completedCardIds={completedCardIds}
-        allCompleted={allCompleted}
-        product={product}
-        backTo={backTo}
-        navigate={navigate}
-      />
-    );
+  // Kids products: redirect to the new Card Portal
+  if (isKidsProduct && product && categoryId) {
+    return <Navigate to={`/product/${product.slug}/portal/${categoryId}`} replace />;
   }
 
   // ── Fallback product category view ──
