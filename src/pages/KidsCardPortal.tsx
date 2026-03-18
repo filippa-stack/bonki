@@ -8,13 +8,14 @@
  * Route: /product/:productSlug/portal/:categoryId
  */
 
-import { useState, useMemo, useCallback } from 'react';
+import { useState, useMemo, useCallback, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, type PanInfo } from 'framer-motion';
 import { ChevronLeft } from 'lucide-react';
 import { allProducts } from '@/data/products';
 import { useKidsProductProgress } from '@/hooks/useKidsProductProgress';
 import { useCardImage } from '@/hooks/useCardImage';
+import PortalBrowseSheet from '@/components/PortalBrowseSheet';
 import {
   MIDNIGHT_INK,
   LANTERN_GLOW,
@@ -43,6 +44,9 @@ function PortalCardImage({ cardId, children }: { cardId: string; children: (src:
   return <>{children(src)}</>;
 }
 
+/* ── Swipe threshold ── */
+const SWIPE_THRESHOLD = 50;
+
 /* ── Main Component ── */
 
 export default function KidsCardPortal() {
@@ -58,20 +62,29 @@ export default function KidsCardPortal() {
   );
 
   const progress = useKidsProductProgress(product);
+  const completedSet = useMemo(
+    () => new Set(progress.recentlyCompletedCardIds),
+    [progress.recentlyCompletedCardIds],
+  );
 
   // Determine which card to show — first uncompleted, or first if all done
   const initialCardIndex = useMemo(() => {
     if (!categoryCards.length) return 0;
-    const completedSet = new Set(progress.recentlyCompletedCardIds);
     const firstUncompleted = categoryCards.findIndex(c => !completedSet.has(c.id));
     return firstUncompleted >= 0 ? firstUncompleted : 0;
-  }, [categoryCards, progress.recentlyCompletedCardIds]);
+  }, [categoryCards, completedSet]);
 
   const [currentIndex, setCurrentIndex] = useState(initialCardIndex);
+  const [direction, setDirection] = useState<1 | -1>(1);
+  const [browseOpen, setBrowseOpen] = useState(false);
   const card = categoryCards[currentIndex];
 
   const promptCount = card ? getPromptCount(card) : 0;
+  const isFirst = currentIndex <= 0;
   const isLast = currentIndex >= categoryCards.length - 1;
+
+  // Prevent duplicate swipe triggers
+  const swipeLock = useRef(false);
 
   // Navigation
   const goBack = useCallback(() => {
@@ -83,14 +96,54 @@ export default function KidsCardPortal() {
     navigate(`/card/${card.id}`);
   }, [navigate, card]);
 
+  const goToIndex = useCallback((index: number) => {
+    setDirection(index > currentIndex ? 1 : -1);
+    setCurrentIndex(index);
+  }, [currentIndex]);
+
   const goNext = useCallback(() => {
-    if (!isLast) setCurrentIndex(i => i + 1);
+    if (!isLast) {
+      setDirection(1);
+      setCurrentIndex(i => i + 1);
+    }
   }, [isLast]);
+
+  const goPrev = useCallback(() => {
+    if (!isFirst) {
+      setDirection(-1);
+      setCurrentIndex(i => i - 1);
+    }
+  }, [isFirst]);
+
+  // Swipe handler
+  const handleDragEnd = useCallback(
+    (_e: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+      if (swipeLock.current) return;
+      const { offset } = info;
+      if (Math.abs(offset.x) < SWIPE_THRESHOLD) return;
+
+      swipeLock.current = true;
+      setTimeout(() => { swipeLock.current = false; }, 500);
+
+      if (offset.x < -SWIPE_THRESHOLD && !isLast) {
+        goNext();
+      } else if (offset.x > SWIPE_THRESHOLD && !isFirst) {
+        goPrev();
+      }
+    },
+    [isLast, isFirst, goNext, goPrev],
+  );
 
   // Tile background color from product
   const tileBg = product?.tileLight ?? MIDNIGHT_INK;
   const tileBgRgb = hexToRgb(tileBg);
-  const bgDark = product?.tileDeep ?? MIDNIGHT_INK;
+
+  // Slide animation variants (direction-aware)
+  const slideVariants = {
+    enter: (d: number) => ({ x: d > 0 ? 120 : -120, opacity: 0, scale: 0.92, y: 0 }),
+    center: { x: 0, opacity: 1, scale: 1, y: -4 },
+    exit: (d: number) => ({ x: d > 0 ? -120 : 120, opacity: 0, scale: 0.92, y: 0 }),
+  };
 
   if (!product || !category || !card) {
     return (
@@ -104,7 +157,7 @@ export default function KidsCardPortal() {
     <div
       style={{
         height: '100vh',
-        background: `linear-gradient(180deg, ${MIDNIGHT_INK} 0%, ${MIDNIGHT_INK} 100%)`,
+        background: MIDNIGHT_INK,
         display: 'flex',
         flexDirection: 'column',
         position: 'relative',
@@ -202,15 +255,21 @@ export default function KidsCardPortal() {
             }}
           />
 
-          <AnimatePresence mode="wait">
+          <AnimatePresence mode="wait" custom={direction}>
             <motion.div
               key={card.id}
-              initial={{ opacity: 0, x: 50, scale: 0.92, y: 0 }}
-              animate={{ opacity: 1, x: 0, scale: 1, y: -4 }}
-              exit={{ opacity: 0, x: -50, scale: 0.92, y: 0 }}
-              transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+              custom={direction}
+              variants={slideVariants}
+              initial="enter"
+              animate="center"
+              exit="exit"
+              transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
               whileTap={{ scale: 0.97, y: 0 }}
               onClick={startSession}
+              drag="x"
+              dragConstraints={{ left: 0, right: 0 }}
+              dragElastic={0.15}
+              onDragEnd={handleDragEnd}
               style={{
                 width: '100%',
                 height: '100%',
@@ -351,9 +410,10 @@ export default function KidsCardPortal() {
         </div>
 
         {/* ═══ Compact info below tile ═══ */}
-        <AnimatePresence mode="wait">
+        <AnimatePresence mode="wait" custom={direction}>
           <motion.div
             key={`text-${card.id}`}
+            custom={direction}
             initial={{ opacity: 0, y: 6 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -6 }}
@@ -408,12 +468,13 @@ export default function KidsCardPortal() {
           </motion.div>
         </AnimatePresence>
 
-        {/* ═══ Navigation ═══ */}
+        {/* ═══ Navigation links ═══ */}
         <div
           style={{
             display: 'flex',
+            flexDirection: 'column',
             alignItems: 'center',
-            justifyContent: 'center',
+            gap: '8px',
             marginTop: '6px',
             paddingBottom: `calc(env(safe-area-inset-bottom, 0px) + 12px)`,
             flexShrink: 0,
@@ -435,8 +496,34 @@ export default function KidsCardPortal() {
               Nästa kort →
             </button>
           )}
+          <button
+            onClick={() => setBrowseOpen(true)}
+            style={{
+              background: 'none',
+              border: 'none',
+              cursor: 'pointer',
+              fontFamily: 'var(--font-sans)',
+              fontSize: '12px',
+              color: DRIFTWOOD,
+              padding: '4px 16px',
+              opacity: 0.7,
+            }}
+          >
+            Utforska alla kort
+          </button>
         </div>
       </div>
+
+      {/* ═══ Browse Sheet ═══ */}
+      <PortalBrowseSheet
+        open={browseOpen}
+        onClose={() => setBrowseOpen(false)}
+        cards={categoryCards}
+        currentCardId={card.id}
+        completedCardIds={completedSet}
+        tileLight={tileBg}
+        onSelectCard={goToIndex}
+      />
     </div>
   );
 }
