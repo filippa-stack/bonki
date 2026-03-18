@@ -36,6 +36,11 @@ export default function ProductHome() {
   const needsIntro = isStillUs ? needsIntroStillUs : needsIntroProduct;
   const [showIntro, setShowIntro] = useState(needsIntro);
 
+  // Sync showIntro with async needsIntro
+  useEffect(() => {
+    if (needsIntro) setShowIntro(true);
+  }, [needsIntro]);
+
   // Preload ZIP when entering a product home — so card images are fast later
   useEffect(() => {
     if (product?.id && PRODUCT_ZIP_MAP[product.id]) {
