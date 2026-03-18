@@ -164,14 +164,15 @@ export function useStillUsHome(): StillUsHomeState {
 
       // User card state — check slider completion
       const allUcs = ucsResult.data ?? [];
-      const myUcs = allUcs.find(u => u.user_id === userId && u.card_index === cardIndex && u.cycle_id === cycleId);
-      const partnerUcs = allUcs.find(u => u.user_id !== userId && u.card_index === cardIndex && u.cycle_id === cycleId);
+      const currentCardId = cardId;
+      const myUcs = allUcs.find(u => u.user_id === userId && u.card_id === currentCardId && u.cycle_id === cycleId);
+      const partnerUcs = allUcs.find(u => u.user_id !== userId && u.card_id === currentCardId && u.cycle_id === cycleId);
       const mySliderDone = !!myUcs?.slider_completed_at;
       const partnerSliderDone = !!partnerUcs?.slider_completed_at;
 
       // Session state
       const ss = ssResult.data;
-      const sessionActive = ss && ss.card_index === cardIndex;
+      const sessionActive = ss && ss.card_id === currentCardId;
       const session1Completed = sessionActive ? ss.session_1_completed : false;
       const session2Completed = sessionActive ? ss.session_2_completed : false;
       const sessionPaused = sessionActive ? !!ss.paused_at : false;
