@@ -11,10 +11,7 @@ export default function CheckInPage() {
   return (
     <SliderCheckIn
       cardIndex={cardIndex}
-      onComplete={(responses, reflection) => {
-        // TODO: call complete_slider_checkin RPC
-        navigate(-1);
-      }}
+      cardId={cardId}
       onBack={() => navigate(-1)}
     />
   );

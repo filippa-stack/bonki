@@ -14,7 +14,7 @@ import { COLORS, getLayerForCard, getPhase } from '@/lib/stillUsTokens';
 import { getSliderSet, type CardSliderSet } from '@/data/sliderPrompts';
 import { completeSliderCheckin } from '@/lib/stillUsRpc';
 import StillUsSlider from '@/components/still-us/StillUsSlider';
-import { EmberGlowTextarea } from '@/components/still-us/EmberGlowTextarea';
+import EmberGlowTextarea from '@/components/still-us/EmberGlowTextarea';
 
 const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
 const REDUCED = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
