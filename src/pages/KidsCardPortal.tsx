@@ -205,11 +205,11 @@ export default function KidsCardPortal() {
           <AnimatePresence mode="wait">
             <motion.div
               key={card.id}
-              initial={{ opacity: 0, x: 50, scale: 0.92 }}
-              animate={{ opacity: 1, x: 0, scale: 1 }}
-              exit={{ opacity: 0, x: -50, scale: 0.92 }}
+              initial={{ opacity: 0, x: 50, scale: 0.92, y: 0 }}
+              animate={{ opacity: 1, x: 0, scale: 1, y: -4 }}
+              exit={{ opacity: 0, x: -50, scale: 0.92, y: 0 }}
               transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-              whileTap={{ scale: 0.97 }}
+              whileTap={{ scale: 0.97, y: 0 }}
               onClick={startSession}
               style={{
                 width: '100%',
@@ -258,15 +258,15 @@ export default function KidsCardPortal() {
                 }}
               />
 
-              {/* Bottom scrim for overlaid card title */}
+              {/* Subtle bottom scrim — just enough for title legibility */}
               <div
                 style={{
                   position: 'absolute',
                   left: 0,
                   right: 0,
                   bottom: 0,
-                  height: '35%',
-                  background: 'linear-gradient(to top, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.25) 50%, transparent 100%)',
+                  height: '25%',
+                  background: 'linear-gradient(to top, rgba(0,0,0,0.40) 0%, rgba(0,0,0,0.10) 60%, transparent 100%)',
                   pointerEvents: 'none',
                   zIndex: 2,
                 }}
