@@ -54,15 +54,7 @@ const DRIFTWOOD = '#6B5E52';
 /** Saffron Flame — accent for next/completed */
 const SAFFRON = '#E9B44C';
 
-/** Product tile background colors for the new card design */
-const PRODUCT_TILE_COLOR: Record<string, string> = {
-  jag_i_mig: '#657514',
-  jag_med_andra: '#8B2FC6',
-  jag_i_varlden: '#344452',
-  vardagskort: '#3C4A30',
-  syskonkort: '#247A78',
-  sexualitetskort: '#A3434B',
-};
+/** Kids category tiles inherit their color from the active product manifest. */
 
 export default function Category() {
   const { t } = useTranslation();
@@ -262,7 +254,7 @@ function KidsProductCategoryView({
 }: KidsProductCategoryViewProps) {
   const { hasAccess, loading: accessLoading } = useProductAccess(product.id);
   const completedCount = cards.filter(c => completedCardIds.includes(c.id)).length;
-  const tileColor = PRODUCT_TILE_COLOR[product.id] ?? '#657514';
+  const tileColor = allProducts.find((entry) => entry.id === product.id)?.tileLight ?? MIDNIGHT_INK;
 
   const handleCardTap = (cardId: string) => {
     // Always navigate to card — CardView handles paywall for locked cards
