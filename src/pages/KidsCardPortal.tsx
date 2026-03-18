@@ -456,6 +456,8 @@ export default function KidsCardPortal() {
               textAlign: 'center',
               marginTop: '10px',
               flexShrink: 0,
+              opacity: portalPhase !== 'idle' ? 0 : 1,
+              transition: 'opacity 200ms ease-in',
             }}
           >
             {card.subtitle && (
