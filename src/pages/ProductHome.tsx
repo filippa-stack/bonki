@@ -7,12 +7,8 @@ import { useProductTheme } from '@/hooks/useProductTheme';
 import { useThemeSwitcher } from '@/hooks/useThemeSwitcher';
 import { preloadZip, PRODUCT_ZIP_MAP } from '@/hooks/useCardImage';
 import ProductIntro, { useProductIntroNeeded } from '@/components/ProductIntro';
-import JagIMigProductHome from '@/components/JagIMigProductHome';
-import JagMedAndraProductHome from '@/components/JagMedAndraProductHome';
-import JagIVarldenProductHome from '@/components/JagIVarldenProductHome';
-import SexualitetProductHome from '@/components/SexualitetProductHome';
-import VardagProductHome from '@/components/VardagProductHome';
-import SyskonProductHome from '@/components/SyskonProductHome';
+import KidsProductHome from '@/components/KidsProductHome';
+import { KIDS_PRODUCT_IDS } from '@/hooks/useKidsProductProgress';
 
 /** Still Us free card ID */
 const STILL_US_FREE_CARD_ID = 'smallest-we';
@@ -103,34 +99,9 @@ export default function ProductHome() {
     );
   }
 
-  // Custom layout for Jag i Mig
-  if (product.id === 'jag_i_mig') {
-    return <JagIMigProductHome product={product} />;
-  }
-
-  // Custom layout for Jag med Andra
-  if (product.id === 'jag_med_andra') {
-    return <JagMedAndraProductHome product={product} />;
-  }
-
-  // Custom layout for Jag i Världen
-  if (product.id === 'jag_i_varlden') {
-    return <JagIVarldenProductHome product={product} />;
-  }
-
-  // Custom layout for Sexualitet
-  if (product.id === 'sexualitetskort') {
-    return <SexualitetProductHome product={product} />;
-  }
-
-  // Custom layout for Vardag
-  if (product.id === 'vardagskort') {
-    return <VardagProductHome product={product} />;
-  }
-
-  // Custom layout for Syskon
-  if (product.id === 'syskonkort') {
-    return <SyskonProductHome product={product} />;
+  // All kids products use the shared KidsProductHome
+  if (KIDS_PRODUCT_IDS.includes(product.id)) {
+    return <KidsProductHome product={product} />;
   }
 
   return (

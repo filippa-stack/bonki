@@ -20,6 +20,8 @@ export interface ProductManifest {
   tileMid?: string;
   /** Deepest variant for category tiles (hex) */
   tileDeep?: string;
+  /** Hero illustration image import for product home screen */
+  heroImage?: string;
   /** Pronoun mode: 'ni' for couple products, 'du' for solo products */
   pronounMode: 'du' | 'ni';
   /** Card ID that is free to play without purchase */

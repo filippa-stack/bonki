@@ -1,5 +1,6 @@
 import type { ProductManifest } from '@/types/product';
 import type { Category, Card } from '@/types';
+import heroImage from '@/assets/illustration-jag-med-andra.png';
 
 const categories: Category[] = [
   {
@@ -650,6 +651,7 @@ export const jagMedAndraProduct: ProductManifest = {
   tileMid: '#8A6036',
   tileDeep: '#6A4828',
   pronounMode: 'du',
+  heroImage,
   freeCardId: 'jma-vanskap',
   ageLabel: '6+',
   paywallDescription: 'Lås upp alla samtal om vänskap, gränser och att vara tillsammans.',

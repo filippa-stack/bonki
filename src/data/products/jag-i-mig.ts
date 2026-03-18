@@ -1,5 +1,6 @@
 import type { ProductManifest } from '@/types/product';
 import type { Category, Card } from '@/types';
+import heroImage from '@/assets/illustration-jag-i-mig.png';
 
 const categories: Category[] = [
   {
@@ -514,6 +515,7 @@ export const jagIMigProduct: ProductManifest = {
   tileMid: '#2A4A48',
   tileDeep: '#1E3836',
   pronounMode: 'du',
+  heroImage,
   freeCardId: 'jim-glad',
   ageLabel: undefined,
   paywallDescription: 'Lås upp alla samtal om känslor, mod och att förstå sig själv.',

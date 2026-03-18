@@ -1,5 +1,6 @@
 import type { ProductManifest } from '@/types/product';
 import type { Category, Card } from '@/types';
+import heroImage from '@/assets/illustration-vardag.png';
 
 const categories: Category[] = [
   { id: 'vk-min-dag', title: 'Min dag', subtitle: 'En öppen dörr in till barnets dag.', description: 'Hur var din dag?', cardCount: 1 },
@@ -163,6 +164,7 @@ export const vardagskortProduct: ProductManifest = {
   tileMid: '#303C26',
   tileDeep: '#262E1E',
   pronounMode: 'du',
+  heroImage,
   freeCardId: 'vk-hur-var-din-dag',
   ageLabel: '6+',
   paywallDescription: 'Lås upp alla samtal om vardagen, rutiner och det som händer hemma.',

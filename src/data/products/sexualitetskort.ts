@@ -1,5 +1,6 @@
 import type { ProductManifest } from '@/types/product';
 import type { Category, Card } from '@/types';
+import heroImage from '@/assets/illustration-sexualitet.png';
 
 const categories: Category[] = [
   { id: 'sex-min-identitet', title: 'Min identitet', subtitle: 'Kropp, kön och den du är – på ditt sätt.', description: 'Könsidentitet, sexuell läggning, onani och kroppsideal', cardCount: 4 },
@@ -162,6 +163,7 @@ export const sexualitetskortProduct: ProductManifest = {
   tileMid: '#886056',
   tileDeep: '#6A4A42',
   pronounMode: 'du',
+  heroImage,
   freeCardId: 'sex-normer',
   ageLabel: '13+',
   paywallDescription: 'Lås upp alla samtal om kroppen, gränser och relationer.',
