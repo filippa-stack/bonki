@@ -1078,7 +1078,7 @@ export default function CardView() {
             {/* 5. Secondary link — only when primary = "Nästa samtal" */}
             {hasNextCard && (
               <button
-                onClick={() => navigateWithFeedback(categoryDest)}
+                onClick={() => navigateWithFeedback(productHomeDest)}
                 style={{
                   display: 'block',
                   width: '100%',
@@ -1093,7 +1093,7 @@ export default function CardView() {
                   textAlign: 'center',
                 }}
               >
-                Tillbaka till {categoryName}
+                Tillbaka till översikt
               </button>
             )}
           </motion.div>
