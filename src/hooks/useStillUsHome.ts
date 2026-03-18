@@ -147,8 +147,8 @@ export function useStillUsHome(): StillUsHomeState {
       const partnerTier = cs.partner_tier as StillUsHomeState['partnerTier'];
       const cycleId = cs.cycle_id ?? 1;
       const migrationPending = cs.migration_pending ?? false;
-      const lastActivityAt = cs.last_activity_at;
-      const returnRitualShown = cs.return_ritual_shown_for_card === cardIndex;
+      const lastActivityAt = cs.last_activity;
+      const returnRitualShown = cs.return_ritual_shown_for_card === String(cardIndex);
       const tier2Name = cs.tier_2_partner_name ?? null;
 
       // Card info
