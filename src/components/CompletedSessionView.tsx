@@ -359,7 +359,7 @@ export default function CompletedSessionView({
             ) : (
               <button
                 onClick={() => navigate(
-                  isChildProduct ? (categoryId ? `/category/${categoryId}` : `/product/${product!.slug}`) : '/'
+                  isChildProduct ? (categoryId && product ? `/product/${product.slug}/portal/${categoryId}` : `/product/${product!.slug}`) : '/'
                 )}
                 className="cta-primary"
               >
