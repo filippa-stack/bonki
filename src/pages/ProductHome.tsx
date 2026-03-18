@@ -99,34 +99,9 @@ export default function ProductHome() {
     );
   }
 
-  // Custom layout for Jag i Mig
-  if (product.id === 'jag_i_mig') {
-    return <JagIMigProductHome product={product} />;
-  }
-
-  // Custom layout for Jag med Andra
-  if (product.id === 'jag_med_andra') {
-    return <JagMedAndraProductHome product={product} />;
-  }
-
-  // Custom layout for Jag i Världen
-  if (product.id === 'jag_i_varlden') {
-    return <JagIVarldenProductHome product={product} />;
-  }
-
-  // Custom layout for Sexualitet
-  if (product.id === 'sexualitetskort') {
-    return <SexualitetProductHome product={product} />;
-  }
-
-  // Custom layout for Vardag
-  if (product.id === 'vardagskort') {
-    return <VardagProductHome product={product} />;
-  }
-
-  // Custom layout for Syskon
-  if (product.id === 'syskonkort') {
-    return <SyskonProductHome product={product} />;
+  // All kids products use the shared KidsProductHome
+  if (KIDS_PRODUCT_IDS.includes(product.id)) {
+    return <KidsProductHome product={product} />;
   }
 
   return (
