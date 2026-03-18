@@ -29,10 +29,8 @@ function hexToRgb(hex: string): string {
   return `${parseInt(h.substring(0, 2), 16)},${parseInt(h.substring(2, 4), 16)},${parseInt(h.substring(4, 6), 16)}`;
 }
 
-function estimateMinutes(promptCount: number): string {
-  const lo = promptCount * 3;
-  const hi = promptCount * 4;
-  return `ca ${lo}–${hi} min`;
+function estimateMinutes(_promptCount: number): string {
+  return 'ca 5–10 min';
 }
 
 function getPromptCount(card: { sections?: { prompts?: unknown[] }[] }): number {
@@ -274,13 +272,14 @@ export default function KidsCardPortal() {
                 }}
               />
 
-              {/* Card title overlaid at bottom-left */}
+              {/* Card title centered in tile */}
               <div
                 style={{
                   position: 'absolute',
-                  left: '20px',
-                  right: '20px',
-                  bottom: '20px',
+                  inset: 0,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
                   zIndex: 4,
                 }}
               >
@@ -390,6 +389,18 @@ export default function KidsCardPortal() {
               }}
             >
               {promptCount} frågor · {estimateMinutes(promptCount)}
+            </p>
+            <p
+              style={{
+                fontFamily: 'var(--font-serif)',
+                fontSize: '12px',
+                fontStyle: 'italic',
+                color: SAFFRON_FLAME,
+                opacity: 0.8,
+                marginTop: '8px',
+              }}
+            >
+              Tryck på dörren när ni är redo.
             </p>
           </motion.div>
         </AnimatePresence>
