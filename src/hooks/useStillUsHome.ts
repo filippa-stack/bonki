@@ -112,17 +112,16 @@ export function useStillUsHome(): StillUsHomeState {
         supabase
           .from('couple_state')
           .select('*')
-          .eq('couple_space_id', spaceId)
+          .eq('couple_id', spaceId)
           .maybeSingle(),
         supabase
           .from('user_card_state')
-          .select('user_id, card_index, slider_completed_at, cycle_id')
-          .eq('couple_space_id', spaceId),
+          .select('user_id, card_id, slider_completed_at, cycle_id')
+          .eq('couple_id', spaceId),
         supabase
           .from('session_state')
           .select('*')
-          .eq('couple_space_id', spaceId)
-          .order('created_at', { ascending: false })
+          .eq('couple_id', spaceId)
           .limit(1)
           .maybeSingle(),
         supabase
