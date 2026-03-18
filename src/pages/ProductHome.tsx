@@ -179,7 +179,7 @@ export default function ProductHome() {
                 visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] } },
               }}
               onClick={() => {
-                navigate(`/category/${cat.id}`);
+                navigate(`/product/${product.slug}/portal/${cat.id}`);
               }}
               className="rounded-xl px-5 py-4 cursor-pointer active:scale-[0.98] transition-transform"
               style={{

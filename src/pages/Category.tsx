@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, Navigate } from 'react-router-dom';
 import { categories as stillUsCategories } from '@/data/content';
 import { motion } from 'framer-motion';
 import { ChevronLeft, Check } from 'lucide-react';
@@ -192,18 +192,9 @@ export default function Category() {
   }
 
   // ── Kids product: new snap-scroll card list ──
-  if (isKidsProduct && product) {
-    return (
-      <KidsProductCategoryView
-        category={category}
-        cards={cards}
-        completedCardIds={completedCardIds}
-        allCompleted={allCompleted}
-        product={product}
-        backTo={backTo}
-        navigate={navigate}
-      />
-    );
+  // Kids products: redirect to the new Card Portal
+  if (isKidsProduct && product && categoryId) {
+    return <Navigate to={`/product/${product.slug}/portal/${categoryId}`} replace />;
   }
 
   // ── Fallback product category view ──

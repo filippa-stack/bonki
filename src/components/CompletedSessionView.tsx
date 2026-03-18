@@ -89,12 +89,12 @@ export default function CompletedSessionView({
     // Check if current category still has unexplored cards
     const sameCatCards = product.cards.filter(c => c.categoryId === categoryId);
     const hasMoreInCategory = sameCatCards.some(c => !done.has(c.id));
-    if (hasMoreInCategory && categoryId) return `/category/${categoryId}`;
+    if (hasMoreInCategory && categoryId) return `/product/${product.slug}/portal/${categoryId}`;
     // Otherwise find next category with unexplored cards
     for (const cat of product.categories) {
       if (cat.id === categoryId) continue;
       const hasCards = product.cards.filter(c => c.categoryId === cat.id).some(c => !done.has(c.id));
-      if (hasCards) return `/category/${cat.id}`;
+      if (hasCards) return `/product/${product.slug}/portal/${cat.id}`;
     }
     return null;
   }, [isChildProduct, product, completedCardIds, cardId, categoryId]);
@@ -173,7 +173,7 @@ export default function CompletedSessionView({
   if (loading) {
     return (
       <div className="min-h-screen" style={{ backgroundColor: 'var(--surface-base)' }}>
-        <Header title={cardTitle} showBack backTo={categoryId ? `/category/${categoryId}` : '/'} />
+        <Header title={cardTitle} showBack backTo={isChildProduct && product && categoryId ? `/product/${product.slug}/portal/${categoryId}` : categoryId ? `/category/${categoryId}` : '/'} />
         <div className="px-6 pt-title-above pb-8">
           <div className="max-w-md mx-auto space-y-4">
             <div className="h-6 w-48 rounded bg-muted/30 animate-pulse mx-auto" />
@@ -188,7 +188,7 @@ export default function CompletedSessionView({
   if (!session) {
     return (
       <div className="min-h-screen" style={{ backgroundColor: 'var(--surface-base)' }}>
-        <Header title={cardTitle} showBack backTo={categoryId ? `/category/${categoryId}` : '/'} />
+        <Header title={cardTitle} showBack backTo={isChildProduct && product && categoryId ? `/product/${product.slug}/portal/${categoryId}` : categoryId ? `/category/${categoryId}` : '/'} />
         <div className="px-6 pt-title-above pb-8 text-center max-w-md mx-auto space-y-8">
           <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>Ingen tidigare session hittades.</p>
           <button onClick={onExploreAgain} className="cta-primary">Utforska igen</button>
@@ -207,7 +207,7 @@ export default function CompletedSessionView({
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: 'var(--surface-base)' }}>
-      <Header title={cardTitle} showBack backTo={categoryId ? `/category/${categoryId}` : '/'} />
+      <Header title={cardTitle} showBack backTo={isChildProduct && product && categoryId ? `/product/${product.slug}/portal/${categoryId}` : categoryId ? `/category/${categoryId}` : '/'} />
 
       <div className="px-6 pb-8" style={{ paddingTop: '32px' }}>
         <div className="max-w-md mx-auto pb-8" style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
@@ -349,7 +349,7 @@ export default function CompletedSessionView({
                   Nästa <ArrowRight size={16} style={{ opacity: 0.7 }} />
                 </button>
                 <button
-                  onClick={() => navigate(categoryId ? `/category/${categoryId}` : `/product/${product!.slug}`)}
+                  onClick={() => navigate(isChildProduct && product && categoryId ? `/product/${product.slug}/portal/${categoryId}` : categoryId ? `/category/${categoryId}` : `/product/${product!.slug}`)}
                   className="font-sans"
                   style={{ fontSize: '13px', color: 'var(--completion-link)', opacity: 0.55, background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline', textUnderlineOffset: '3px' }}
                 >
@@ -359,7 +359,7 @@ export default function CompletedSessionView({
             ) : (
               <button
                 onClick={() => navigate(
-                  isChildProduct ? (categoryId ? `/category/${categoryId}` : `/product/${product!.slug}`) : '/'
+                  isChildProduct ? (categoryId && product ? `/product/${product.slug}/portal/${categoryId}` : `/product/${product!.slug}`) : '/'
                 )}
                 className="cta-primary"
               >
