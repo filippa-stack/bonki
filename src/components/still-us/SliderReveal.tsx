@@ -1,206 +1,335 @@
 /**
  * SliderReveal — Dual-position reveal shown at start of Session 1.
- * Shows both partners' slider positions side by side.
+ * Shows both partners' slider positions side by side on shared tracks.
+ * v3.0 spec compliant.
  */
 
-import { motion } from 'framer-motion';
-import { EASE, EMOTION, BEAT_1 } from '@/lib/motion';
-import { EMBER_NIGHT, EMBER_GLOW, DEEP_SAFFRON, DRIFTWOOD } from '@/lib/palette';
+import { useRef, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { COLORS, getPhase } from '@/lib/stillUsTokens';
 import type { SliderPrompt } from '@/data/sliderPrompts';
 
 interface SliderRevealProps {
+  cardIndex: number;
+  cardSlug: string;
   sliders: SliderPrompt[];
-  userValues: Record<string, number>;
+  initiatorValues: Record<string, number>;
   partnerValues: Record<string, number>;
-  partnerName?: string;
-  /** Phase B/C: user and partner reflections */
-  userReflection?: string;
+  initiatorName: string;
+  partnerName: string;
+  initiatorReflection?: string;
   partnerReflection?: string;
-  onContinue: () => void;
 }
 
 export default function SliderReveal({
+  cardIndex,
+  cardSlug,
   sliders,
-  userValues,
+  initiatorValues,
   partnerValues,
-  partnerName = 'Din partner',
-  userReflection,
+  initiatorName,
+  partnerName,
+  initiatorReflection,
   partnerReflection,
-  onContinue,
 }: SliderRevealProps) {
+  const navigate = useNavigate();
+  const phase = getPhase(cardIndex);
+  const prefersReduced = useRef(
+    typeof window !== 'undefined' &&
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  );
+  const [animated, setAnimated] = useState(prefersReduced.current);
+
+  useEffect(() => {
+    if (!prefersReduced.current) {
+      const id = requestAnimationFrame(() => setAnimated(true));
+      return () => cancelAnimationFrame(id);
+    }
+  }, []);
+
+  const hasInitiatorReflection = !!initiatorReflection?.trim();
+  const hasPartnerReflection = !!partnerReflection?.trim();
+  const bothReflections = hasInitiatorReflection && hasPartnerReflection;
+
+  const showReflections =
+    (phase === 'B' && (hasInitiatorReflection || hasPartnerReflection)) ||
+    (phase === 'C' && (hasInitiatorReflection || hasPartnerReflection));
+
+  const useBlockStyle = phase === 'C' && bothReflections;
+
   return (
     <div
       style={{
-        minHeight: '100vh',
-        backgroundColor: EMBER_NIGHT,
+        minHeight: '100dvh',
+        backgroundColor: COLORS.emberNight,
         display: 'flex',
         flexDirection: 'column',
         padding: '0 24px',
-        paddingTop: 'calc(32px + env(safe-area-inset-top, 0px))',
-        paddingBottom: 'calc(24px + env(safe-area-inset-bottom, 0px))',
+        paddingTop: 'calc(48px + env(safe-area-inset-top, 0px))',
+        paddingBottom: 'calc(32px + env(safe-area-inset-bottom, 0px))',
       }}
     >
-      <motion.h2
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: EMOTION, ease: [...EASE] }}
+      {/* Title */}
+      <h2
         style={{
-          fontFamily: 'var(--font-serif)',
+          fontFamily: "'DM Serif Display', serif",
           fontSize: '22px',
-          fontWeight: 500,
-          color: EMBER_GLOW,
-          marginBottom: '32px',
-          textWrap: 'balance',
+          fontWeight: 400,
+          color: COLORS.lanternGlow,
+          textAlign: 'center',
+          margin: 0,
+          marginBottom: '16px',
         }}
       >
-        Så svarade ni
-      </motion.h2>
+        Vad ni kände — var för sig
+      </h2>
 
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '28px' }}>
-        {sliders.map((slider, i) => (
-          <motion.div
-            key={slider.sliderId}
-            initial={{ opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: i * BEAT_1, duration: EMOTION, ease: [...EASE] }}
-          >
-            <p style={{
-              fontFamily: 'var(--font-sans)',
-              fontSize: '14px',
-              color: EMBER_GLOW,
-              marginBottom: '12px',
-              fontWeight: 500,
-            }}>
-              {slider.text}
-            </p>
+      {/* Sliders */}
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+        {sliders.map((slider) => {
+          const iVal = initiatorValues[slider.sliderId] ?? 50;
+          const pVal = partnerValues[slider.sliderId] ?? 50;
 
-            {/* Dual track */}
-            <div style={{ position: 'relative', height: '32px', marginBottom: '4px' }}>
-              {/* Track */}
-              <div style={{
-                position: 'absolute',
-                top: '50%',
-                left: 0,
-                right: 0,
-                height: '4px',
-                transform: 'translateY(-50%)',
-                backgroundColor: `${EMBER_GLOW}20`,
-                borderRadius: '2px',
-              }} />
-
-              {/* User dot */}
-              <motion.div
-                initial={{ scale: 0 }}
-                animate={{ scale: 1 }}
-                transition={{ delay: i * BEAT_1 + 0.15, duration: 0.25, ease: [...EASE] }}
-                style={{
-                  position: 'absolute',
-                  top: '50%',
-                  left: `${userValues[slider.sliderId] ?? 50}%`,
-                  transform: 'translate(-50%, -50%)',
-                  width: '14px',
-                  height: '14px',
-                  borderRadius: '50%',
-                  backgroundColor: DEEP_SAFFRON,
-                  border: `2px solid ${EMBER_NIGHT}`,
-                }}
-              />
-
-              {/* Partner dot */}
-              <motion.div
-                initial={{ scale: 0 }}
-                animate={{ scale: 1 }}
-                transition={{ delay: i * BEAT_1 + 0.3, duration: 0.25, ease: [...EASE] }}
-                style={{
-                  position: 'absolute',
-                  top: '50%',
-                  left: `${partnerValues[slider.sliderId] ?? 50}%`,
-                  transform: 'translate(-50%, -50%)',
-                  width: '14px',
-                  height: '14px',
-                  borderRadius: '50%',
-                  backgroundColor: EMBER_GLOW,
-                  border: `2px solid ${EMBER_NIGHT}`,
-                }}
-              />
-            </div>
-
-            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-              <span style={{ fontFamily: 'var(--font-sans)', fontSize: '11px', color: DRIFTWOOD }}>{slider.leftLabel}</span>
-              <span style={{ fontFamily: 'var(--font-sans)', fontSize: '11px', color: DRIFTWOOD }}>{slider.rightLabel}</span>
-            </div>
-          </motion.div>
-        ))}
+          return (
+            <DualSliderTrack
+              key={slider.sliderId}
+              label={slider.text}
+              leftAnchor={slider.leftLabel}
+              rightAnchor={slider.rightLabel}
+              initiatorValue={animated ? iVal : 50}
+              partnerValue={animated ? pVal : 50}
+              initiatorName={initiatorName}
+              partnerName={partnerName}
+              animate={!prefersReduced.current}
+            />
+          );
+        })}
       </div>
 
-      {/* Legend */}
-      <div style={{ display: 'flex', gap: '16px', marginTop: '24px', justifyContent: 'center' }}>
-        <LegendDot color={DEEP_SAFFRON} label="Du" />
-        <LegendDot color={EMBER_GLOW} label={partnerName} />
-      </div>
-
-      {/* Reflections (Phase B/C) */}
-      {(userReflection || partnerReflection) && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.4, duration: EMOTION }}
-          style={{ marginTop: '28px', display: 'flex', flexDirection: 'column', gap: '16px' }}
-        >
-          {userReflection && (
-            <ReflectionBubble label="Du" text={userReflection} />
+      {/* Reflections */}
+      {showReflections && (
+        <div style={{ marginTop: '24px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
+          {useBlockStyle ? (
+            <>
+              <ReflectionBlock name={initiatorName} text={initiatorReflection!} />
+              <ReflectionBlock name={partnerName} text={partnerReflection!} />
+            </>
+          ) : (
+            <>
+              {hasInitiatorReflection && (
+                <ReflectionInline name={initiatorName} text={initiatorReflection!} />
+              )}
+              {hasPartnerReflection && (
+                <ReflectionInline name={partnerName} text={partnerReflection!} />
+              )}
+            </>
           )}
-          {partnerReflection && (
-            <ReflectionBubble label={partnerName} text={partnerReflection} />
-          )}
-        </motion.div>
+        </div>
       )}
 
       <div style={{ flex: 1 }} />
 
-      <motion.button
-        whileTap={{ scale: 0.98 }}
-        onClick={onContinue}
+      {/* CTA */}
+      <button
+        onClick={() => navigate(`/session/${cardSlug}/live`)}
         style={{
           width: '100%',
-          height: '52px',
+          height: '48px',
           borderRadius: '12px',
-          backgroundColor: DEEP_SAFFRON,
-          border: 'none',
+          backgroundColor: 'transparent',
+          border: `1.5px solid ${COLORS.deepSaffron}`,
           cursor: 'pointer',
           fontFamily: 'var(--font-sans)',
           fontSize: '16px',
           fontWeight: 600,
-          color: '#2C2420',
+          color: COLORS.deepSaffron,
+          marginTop: '24px',
         }}
       >
-        Starta samtalet
-      </motion.button>
+        Fortsätt till samtalet
+      </button>
     </div>
   );
 }
 
-function LegendDot({ color, label }: { color: string; label: string }) {
-  return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-      <div style={{ width: '10px', height: '10px', borderRadius: '50%', backgroundColor: color }} />
-      <span style={{ fontFamily: 'var(--font-sans)', fontSize: '12px', color: DRIFTWOOD }}>{label}</span>
-    </div>
-  );
-}
+/* ── Dual track with two markers ─────────────────────────── */
 
-function ReflectionBubble({ label, text }: { label: string; text: string }) {
+function DualSliderTrack({
+  label,
+  leftAnchor,
+  rightAnchor,
+  initiatorValue,
+  partnerValue,
+  initiatorName,
+  partnerName,
+  animate,
+}: {
+  label: string;
+  leftAnchor: string;
+  rightAnchor: string;
+  initiatorValue: number;
+  partnerValue: number;
+  initiatorName: string;
+  partnerName: string;
+  animate: boolean;
+}) {
+  const transition = animate ? 'left 600ms ease-out' : 'none';
+
   return (
-    <div style={{
-      padding: '14px 16px',
-      borderRadius: '12px',
-      backgroundColor: `${EMBER_GLOW}10`,
-      border: `1px solid ${EMBER_GLOW}15`,
-    }}>
-      <p style={{ fontFamily: 'var(--font-sans)', fontSize: '11px', color: DRIFTWOOD, marginBottom: '4px', fontWeight: 600 }}>
+    <div>
+      {/* Slider question */}
+      <p
+        style={{
+          fontFamily: 'var(--font-sans)',
+          fontSize: '13px',
+          color: COLORS.driftwoodBody,
+          textAlign: 'center',
+          margin: '0 0 10px 0',
+        }}
+      >
         {label}
       </p>
-      <p style={{ fontFamily: 'var(--font-sans)', fontSize: '14px', color: EMBER_GLOW, lineHeight: 1.5 }}>
+
+      {/* Track with markers */}
+      <div style={{ position: 'relative', height: '40px' }}>
+        {/* Track bar */}
+        <div
+          style={{
+            position: 'absolute',
+            top: '50%',
+            left: 0,
+            right: 0,
+            height: '4px',
+            transform: 'translateY(-50%)',
+            backgroundColor: COLORS.emberMid,
+            borderRadius: '22px',
+          }}
+        />
+
+        {/* Initiator marker + name */}
+        <Marker
+          value={initiatorValue}
+          color={COLORS.deepSaffron}
+          name={initiatorName}
+          transition={transition}
+        />
+
+        {/* Partner marker + name */}
+        <Marker
+          value={partnerValue}
+          color={COLORS.lanternGlow}
+          name={partnerName}
+          transition={transition}
+        />
+      </div>
+
+      {/* Anchor labels */}
+      <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '2px' }}>
+        <span style={{ fontFamily: 'var(--font-sans)', fontSize: '12px', color: COLORS.driftwoodBody }}>
+          {leftAnchor}
+        </span>
+        <span style={{ fontFamily: 'var(--font-sans)', fontSize: '12px', color: COLORS.driftwoodBody }}>
+          {rightAnchor}
+        </span>
+      </div>
+    </div>
+  );
+}
+
+function Marker({
+  value,
+  color,
+  name,
+  transition,
+}: {
+  value: number;
+  color: string;
+  name: string;
+  transition: string;
+}) {
+  return (
+    <div
+      style={{
+        position: 'absolute',
+        top: '50%',
+        left: `${value}%`,
+        transform: 'translate(-50%, -50%)',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        transition,
+      }}
+    >
+      <span
+        style={{
+          fontFamily: 'var(--font-sans)',
+          fontSize: '11px',
+          color: COLORS.driftwoodBody,
+          whiteSpace: 'nowrap',
+          marginBottom: '4px',
+        }}
+      >
+        {name}
+      </span>
+      <div
+        style={{
+          width: '20px',
+          height: '20px',
+          borderRadius: '50%',
+          backgroundColor: color,
+        }}
+      />
+    </div>
+  );
+}
+
+/* ── Reflection displays ─────────────────────────────────── */
+
+function ReflectionInline({ name, text }: { name: string; text: string }) {
+  return (
+    <p
+      style={{
+        fontFamily: 'var(--font-sans)',
+        fontSize: '14px',
+        color: COLORS.driftwood,
+        fontStyle: 'italic',
+        margin: 0,
+        lineHeight: 1.5,
+      }}
+    >
+      {name}: {text}
+    </p>
+  );
+}
+
+function ReflectionBlock({ name, text }: { name: string; text: string }) {
+  return (
+    <div
+      style={{
+        padding: '12px',
+        borderRadius: '8px',
+        backgroundColor: COLORS.emberGlow,
+      }}
+    >
+      <p
+        style={{
+          fontFamily: 'var(--font-sans)',
+          fontSize: '11px',
+          color: COLORS.driftwoodBody,
+          margin: '0 0 4px 0',
+        }}
+      >
+        {name}
+      </p>
+      <p
+        style={{
+          fontFamily: 'var(--font-sans)',
+          fontSize: '14px',
+          color: COLORS.lanternGlow,
+          margin: 0,
+          lineHeight: 1.5,
+        }}
+      >
         {text}
       </p>
     </div>
