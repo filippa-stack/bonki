@@ -90,6 +90,10 @@ export default function KidsCardPortal() {
   const [browseOpen, setBrowseOpen] = useState(false);
   const card = categoryCards[currentIndex];
 
+  // Portal-open animation state: 'idle' | 'phase1' | 'phase2'
+  const [portalPhase, setPortalPhase] = useState<'idle' | 'phase1' | 'phase2'>('idle');
+  const navigating = useRef(false);
+
   const promptCount = card ? getPromptCount(card) : 0;
   const isFirst = currentIndex <= 0;
   const isLast = currentIndex >= categoryCards.length - 1;
@@ -103,9 +107,22 @@ export default function KidsCardPortal() {
   }, [navigate, productSlug]);
 
   const startSession = useCallback(() => {
-    if (!card) return;
-    navigate(`/card/${card.id}`);
-  }, [navigate, card]);
+    if (!card || navigating.current || portalPhase !== 'idle') return;
+    navigating.current = true;
+
+    // Phase 1: scale + brightness (0–200ms)
+    setPortalPhase('phase1');
+
+    setTimeout(() => {
+      // Phase 2: fade out everything (200–500ms)
+      setPortalPhase('phase2');
+
+      setTimeout(() => {
+        // Phase 3: navigate
+        navigate(`/card/${card.id}`);
+      }, 350);
+    }, 200);
+  }, [navigate, card, portalPhase]);
 
   const goToIndex = useCallback((index: number) => {
     setDirection(index > currentIndex ? 1 : -1);
@@ -198,6 +215,8 @@ export default function KidsCardPortal() {
           padding: `calc(env(safe-area-inset-top, 0px) + 10px) 16px 6px`,
           position: 'relative',
           zIndex: 10,
+          opacity: portalPhase !== 'idle' ? 0 : 1,
+          transition: 'opacity 200ms ease-in',
           flexShrink: 0,
         }}
       >
@@ -275,9 +294,9 @@ export default function KidsCardPortal() {
               animate="center"
               exit="exit"
               transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-              whileTap={{ scale: 0.97, y: 0 }}
+              whileTap={portalPhase === 'idle' ? { scale: 0.97, y: 0 } : undefined}
               onClick={startSession}
-              drag="x"
+              drag={portalPhase === 'idle' ? 'x' : false}
               dragConstraints={{ left: 0, right: 0 }}
               dragElastic={0.15}
               onDragEnd={handleDragEnd}
@@ -290,6 +309,10 @@ export default function KidsCardPortal() {
                 cursor: 'pointer',
                 backgroundColor: tileBg,
                 zIndex: 1,
+                transform: portalPhase === 'phase1' ? 'scale(1.03)' : portalPhase === 'phase2' ? 'scale(1.03)' : undefined,
+                filter: portalPhase === 'phase1' ? 'brightness(1.1)' : undefined,
+                opacity: portalPhase === 'phase2' ? 0 : 1,
+                transition: 'transform 200ms ease-out, filter 200ms ease-out, opacity 300ms ease-in',
               }}
             >
               {/* Card illustration — full bleed */}
@@ -433,6 +456,8 @@ export default function KidsCardPortal() {
               textAlign: 'center',
               marginTop: '10px',
               flexShrink: 0,
+              opacity: portalPhase !== 'idle' ? 0 : 1,
+              transition: 'opacity 200ms ease-in',
             }}
           >
             {card.subtitle && (
@@ -489,6 +514,8 @@ export default function KidsCardPortal() {
             marginTop: '6px',
             paddingBottom: `calc(env(safe-area-inset-bottom, 0px) + 12px)`,
             flexShrink: 0,
+            opacity: portalPhase !== 'idle' ? 0 : 1,
+            transition: 'opacity 200ms ease-in',
           }}
         >
           {!isLast && (
