@@ -253,6 +253,15 @@ h1, h2, h3,
   }
 }
 
+/* ── Accessibility: focus rings ── */
+:focus-visible {
+  outline: 2px solid #E8913A;
+  outline-offset: 2px;
+}
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
 @layer components {
   /* ── Type scale — LOCKED (5 tiers only) ──────────────────── */
   /* H1:   Category titles, completion headlines                */
