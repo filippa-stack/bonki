@@ -41,7 +41,11 @@ export default function ProductHome() {
     if (product?.id && PRODUCT_ZIP_MAP[product.id]) {
       preloadZip(PRODUCT_ZIP_MAP[product.id]);
     }
-  }, [product?.id]);
+    // Remember last active product for skip-to-product launch
+    if (product?.slug) {
+      localStorage.setItem('bonki-last-active-product', product.slug);
+    }
+  }, [product?.id, product?.slug]);
 
   // Still Us: show ProductIntro first, then redirect to legacy Home
   if (isStillUs) {
