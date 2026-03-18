@@ -29,7 +29,7 @@ export const productIntros: Record<string, ProductIntroData> = {
       {
         heading: 'V\u00e4lkommen till Still Us',
         body: '22 veckor av samtal som bygger det som saknas i de flesta relationer \u2014 ett s\u00e4tt att prata om det som \u00e4r sv\u00e5rt, innan det blir f\u00f6r sv\u00e5rt.\n\nVarje kort \u00e4r sekvenserat. Ni b\u00f6rjar d\u00e4r det \u00e4r tryggt och r\u00f6r er gradvis mot det som betyder mest. Inget kan g\u00f6ras ensam. Allt kr\u00e4ver er b\u00e5da.',
-        signoff: 'Ert f\u00f6rsta samtal v\u00e4ntar. Det \u00e4r gratis.',
+        signoff: 'Er första vecka väntar. Den är gratis.',
       },
     ],
     ctaLabel: 'B\u00f6rja utforska',
