@@ -19,6 +19,8 @@ interface SliderRevealProps {
   partnerName: string;
   initiatorReflection?: string;
   partnerReflection?: string;
+  /** If provided, CTA calls this instead of navigating */
+  onContinue?: () => void;
 }
 
 export default function SliderReveal({
@@ -31,6 +33,7 @@ export default function SliderReveal({
   partnerName,
   initiatorReflection,
   partnerReflection,
+  onContinue,
 }: SliderRevealProps) {
   const navigate = useNavigate();
   const phase = getPhase(cardIndex);
@@ -131,7 +134,7 @@ export default function SliderReveal({
 
       {/* CTA */}
       <button
-        onClick={() => navigate(`/session/${cardSlug}/live`)}
+        onClick={onContinue ?? (() => navigate(`/session/${cardSlug}/live`))}
         style={{
           width: '100%',
           height: '48px',
