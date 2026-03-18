@@ -184,7 +184,7 @@ export default function KidsCardPortal() {
         }}
       >
         {/* ═══ Portal tile — constrained to leave room for copy ═══ */}
-        <div style={{ flex: 1, position: 'relative', minHeight: 0, maxHeight: 'calc(100vh - 200px)' }}>
+        <div style={{ flex: 1, position: 'relative', minHeight: 0, maxHeight: 'calc(100vh - 280px)' }}>
 
           {/* ── Saffron glow frame (matches recommended tiles) ── */}
           <motion.div
