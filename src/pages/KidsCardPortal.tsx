@@ -332,19 +332,16 @@ export default function KidsCardPortal() {
             </motion.div>
           </AnimatePresence>
 
-          {/* Outer glow + elevation — outside overflow:hidden */}
+          {/* Outer elevation shadow */}
           <div
             style={{
               position: 'absolute',
-              inset: '-3px',
-              borderRadius: '22px',
+              inset: 0,
+              borderRadius: '20px',
               boxShadow: [
-                `0 0 60px rgba(${tileBgRgb}, 0.55)`,
-                `0 0 120px rgba(${hexToRgb(SAFFRON_FLAME)}, 0.20)`,
-                '0 28px 70px -10px rgba(0, 0, 0, 0.50)',
-                '0 10px 30px rgba(0, 0, 0, 0.30)',
+                '0 12px 32px rgba(0, 0, 0, 0.30)',
+                '0 4px 12px rgba(0, 0, 0, 0.18)',
               ].join(', '),
-              border: `1.5px solid rgba(${hexToRgb(SAFFRON_FLAME)}, 0.15)`,
               pointerEvents: 'none',
               zIndex: 0,
             }}
