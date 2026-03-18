@@ -14,7 +14,7 @@ export const COLORS = {
   driftwoodBody: '#B5A898',
   deepSaffron: '#E8913A',
   bonkiOrange: '#E8913A',
-  griden: '#8BA888',
+  grunden: '#8BA888',
   normen: '#5D9B9B',
   konflikten: '#D4836D',
   langtan: '#C4A0A0',
