@@ -1597,7 +1597,11 @@ export default function CardView() {
       >
         {/* Back arrow — Lantern Glow */}
         <motion.button
-          onClick={() => navigate(category ? `/category/${category.id}` : '/')}
+           onClick={() => navigate(
+             isKidsProduct && product && category
+               ? `/product/${product.slug}/portal/${category.id}`
+               : category ? `/category/${category.id}` : '/'
+           )}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: BEAT_2, duration: EMOTION }}
