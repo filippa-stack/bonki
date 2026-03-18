@@ -366,14 +366,15 @@ export default function KidsCardPortal() {
           <div
             style={{
               position: 'absolute',
-              inset: 0,
-              borderRadius: '20px',
+              inset: '-3px',
+              borderRadius: '22px',
               boxShadow: [
-                `0 0 80px rgba(${tileBgRgb}, 0.50)`,
-                `0 0 150px rgba(${tileBgRgb}, 0.18)`,
+                `0 0 60px rgba(${tileBgRgb}, 0.55)`,
+                `0 0 120px rgba(${hexToRgb(SAFFRON_FLAME)}, 0.20)`,
                 '0 28px 70px -10px rgba(0, 0, 0, 0.50)',
                 '0 10px 30px rgba(0, 0, 0, 0.30)',
               ].join(', '),
+              border: `1.5px solid rgba(${hexToRgb(SAFFRON_FLAME)}, 0.15)`,
               pointerEvents: 'none',
               zIndex: 0,
             }}
