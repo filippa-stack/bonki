@@ -45,8 +45,9 @@ export default function SessionFocusShell({
   const [statusMessage, setStatusMessage] = useState<string | null>(null);
   const pausedRef = useRef(false);
 
-  // ── Heartbeat ──
+  // ── Heartbeat (only when all IDs provided) ──
   useEffect(() => {
+    if (!couple_id || !card_id || !device_id) return;
     let timer: ReturnType<typeof setInterval>;
 
     const beat = async () => {
