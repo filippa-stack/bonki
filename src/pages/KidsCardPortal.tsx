@@ -205,11 +205,11 @@ export default function KidsCardPortal() {
           <AnimatePresence mode="wait">
             <motion.div
               key={card.id}
-              initial={{ opacity: 0, x: 50, scale: 0.92 }}
-              animate={{ opacity: 1, x: 0, scale: 1 }}
-              exit={{ opacity: 0, x: -50, scale: 0.92 }}
+              initial={{ opacity: 0, x: 50, scale: 0.92, y: 0 }}
+              animate={{ opacity: 1, x: 0, scale: 1, y: -4 }}
+              exit={{ opacity: 0, x: -50, scale: 0.92, y: 0 }}
               transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-              whileTap={{ scale: 0.97 }}
+              whileTap={{ scale: 0.97, y: 0 }}
               onClick={startSession}
               style={{
                 width: '100%',
