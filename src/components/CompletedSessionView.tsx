@@ -173,7 +173,7 @@ export default function CompletedSessionView({
   if (loading) {
     return (
       <div className="min-h-screen" style={{ backgroundColor: 'var(--surface-base)' }}>
-        <Header title={cardTitle} showBack backTo={categoryId ? `/category/${categoryId}` : '/'} />
+        <Header title={cardTitle} showBack backTo={isChildProduct && product && categoryId ? `/product/${product.slug}/portal/${categoryId}` : categoryId ? `/category/${categoryId}` : '/'} />
         <div className="px-6 pt-title-above pb-8">
           <div className="max-w-md mx-auto space-y-4">
             <div className="h-6 w-48 rounded bg-muted/30 animate-pulse mx-auto" />
