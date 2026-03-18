@@ -258,15 +258,15 @@ export default function KidsCardPortal() {
                 }}
               />
 
-              {/* Bottom scrim for overlaid card title */}
+              {/* Subtle bottom scrim — just enough for title legibility */}
               <div
                 style={{
                   position: 'absolute',
                   left: 0,
                   right: 0,
                   bottom: 0,
-                  height: '35%',
-                  background: 'linear-gradient(to top, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.25) 50%, transparent 100%)',
+                  height: '25%',
+                  background: 'linear-gradient(to top, rgba(0,0,0,0.40) 0%, rgba(0,0,0,0.10) 60%, transparent 100%)',
                   pointerEvents: 'none',
                   zIndex: 2,
                 }}
