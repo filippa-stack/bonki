@@ -274,13 +274,14 @@ export default function KidsCardPortal() {
                 }}
               />
 
-              {/* Card title overlaid at bottom-left */}
+              {/* Card title centered in tile */}
               <div
                 style={{
                   position: 'absolute',
-                  left: '20px',
-                  right: '20px',
-                  bottom: '20px',
+                  inset: 0,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
                   zIndex: 4,
                 }}
               >
