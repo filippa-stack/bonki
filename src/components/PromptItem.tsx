@@ -299,7 +299,7 @@ export default function PromptItem({ prompt, index, sectionType, preamble, ancho
                     }}
                   />
                 )}
-              >
+
                 {/* Question text */}
                 {prompt.text.split('\n').filter(p => p.trim() !== '').map((para, i) => (
                   <p
