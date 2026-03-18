@@ -516,7 +516,6 @@ export default function KidsCardPortal() {
             flexShrink: 0,
             opacity: portalPhase !== 'idle' ? 0 : 1,
             transition: 'opacity 200ms ease-in',
-            flexShrink: 0,
           }}
         >
           {!isLast && (
