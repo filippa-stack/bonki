@@ -15,6 +15,7 @@ import { ChevronLeft } from 'lucide-react';
 import { allProducts } from '@/data/products';
 import { useKidsProductProgress } from '@/hooks/useKidsProductProgress';
 import { useCardImage } from '@/hooks/useCardImage';
+import { useProductTheme } from '@/hooks/useProductTheme';
 import PortalBrowseSheet from '@/components/PortalBrowseSheet';
 import {
   MIDNIGHT_INK,
