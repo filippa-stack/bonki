@@ -99,6 +99,7 @@ function ProtectedRoutes() {
               <Route path="/card/:cardId" element={<PageTransition><CardView /></PageTransition>} />
               <Route path="/preview/:cardId" element={<PageTransition><CardPreview /></PageTransition>} />
               <Route path="/product/:slug" element={<PageTransition><ProductHome /></PageTransition>} />
+              <Route path="/product/:productSlug/portal/:categoryId" element={<PageTransition><KidsCardPortal /></PageTransition>} />
               <Route path="/saved" element={<Navigate to="/journal" replace />} />
               <Route path="/shared" element={<PageTransition><SharedSummary /></PageTransition>} />
               <Route path="/journal" element={<PageTransition><Journal /></PageTransition>} />
