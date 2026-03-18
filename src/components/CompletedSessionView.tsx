@@ -188,7 +188,7 @@ export default function CompletedSessionView({
   if (!session) {
     return (
       <div className="min-h-screen" style={{ backgroundColor: 'var(--surface-base)' }}>
-        <Header title={cardTitle} showBack backTo={categoryId ? `/category/${categoryId}` : '/'} />
+        <Header title={cardTitle} showBack backTo={isChildProduct && product && categoryId ? `/product/${product.slug}/portal/${categoryId}` : categoryId ? `/category/${categoryId}` : '/'} />
         <div className="px-6 pt-title-above pb-8 text-center max-w-md mx-auto space-y-8">
           <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>Ingen tidigare session hittades.</p>
           <button onClick={onExploreAgain} className="cta-primary">Utforska igen</button>
