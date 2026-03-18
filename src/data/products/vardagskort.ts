@@ -164,6 +164,7 @@ export const vardagskortProduct: ProductManifest = {
   tileMid: '#303C26',
   tileDeep: '#262E1E',
   pronounMode: 'du',
+  heroImage,
   freeCardId: 'vk-hur-var-din-dag',
   ageLabel: '6+',
   paywallDescription: 'Lås upp alla samtal om vardagen, rutiner och det som händer hemma.',

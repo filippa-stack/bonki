@@ -651,6 +651,7 @@ export const jagMedAndraProduct: ProductManifest = {
   tileMid: '#8A6036',
   tileDeep: '#6A4828',
   pronounMode: 'du',
+  heroImage,
   freeCardId: 'jma-vanskap',
   ageLabel: '6+',
   paywallDescription: 'Lås upp alla samtal om vänskap, gränser och att vara tillsammans.',

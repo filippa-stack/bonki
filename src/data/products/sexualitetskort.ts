@@ -163,6 +163,7 @@ export const sexualitetskortProduct: ProductManifest = {
   tileMid: '#886056',
   tileDeep: '#6A4A42',
   pronounMode: 'du',
+  heroImage,
   freeCardId: 'sex-normer',
   ageLabel: '13+',
   paywallDescription: 'Lås upp alla samtal om kroppen, gränser och relationer.',

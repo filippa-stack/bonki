@@ -329,6 +329,7 @@ export const syskonkortProduct: ProductManifest = {
   tileMid: '#6E3E26',
   tileDeep: '#50301C',
   pronounMode: 'du',
+  heroImage,
   freeCardId: 'sk-syskonkunskap',
   ageLabel: '6+',
   paywallDescription: 'Lås upp alla samtal om syskon, rättvisa och att dela.',

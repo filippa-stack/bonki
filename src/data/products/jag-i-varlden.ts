@@ -103,6 +103,7 @@ export const jagIVarldenProduct: ProductManifest = {
   tileMid: '#2A3844',
   tileDeep: '#222E38',
   pronounMode: 'du',
+  heroImage,
   freeCardId: 'jiv-identitet',
   ageLabel: '12+',
   paywallDescription: 'Lås upp alla samtal om världen, rättvisa och att hitta sin plats.',
