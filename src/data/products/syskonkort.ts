@@ -1,5 +1,6 @@
 import type { ProductManifest } from '@/types/product';
 import type { Category, Card } from '@/types';
+import heroImage from '@/assets/illustration-syskon.png';
 
 const categories: Category[] = [
   {

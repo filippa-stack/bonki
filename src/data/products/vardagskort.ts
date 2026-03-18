@@ -1,5 +1,6 @@
 import type { ProductManifest } from '@/types/product';
 import type { Category, Card } from '@/types';
+import heroImage from '@/assets/illustration-vardag.png';
 
 const categories: Category[] = [
   { id: 'vk-min-dag', title: 'Min dag', subtitle: 'En öppen dörr in till barnets dag.', description: 'Hur var din dag?', cardCount: 1 },

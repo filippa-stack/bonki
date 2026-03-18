@@ -1,5 +1,6 @@
 import type { ProductManifest } from '@/types/product';
 import type { Category, Card } from '@/types';
+import heroImage from '@/assets/illustration-jag-i-varlden.png';
 
 const categories: Category[] = [
   { id: 'jiv-min-vardag', title: 'Min vardag', subtitle: 'Det som formar dig varje dag – inifrån och ut.', description: 'Hälsa, prestation, bekräftelse och självkänsla', cardCount: 4 },
