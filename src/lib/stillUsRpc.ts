@@ -7,7 +7,7 @@
 import { supabase } from '@/integrations/supabase/client';
 
 // ── Helper ──────────────────────────────────────────────────
-async function invoke<T>(fnName: string, body: Record<string, unknown>): Promise<T> {
+async function invoke<T>(fnName: string, body: object): Promise<T> {
   const { data, error } = await supabase.functions.invoke(fnName, { body });
   if (error || !data) {
     return { status: 'error', message: error?.message || 'Unknown error' } as T;
