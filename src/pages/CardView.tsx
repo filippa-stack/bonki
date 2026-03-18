@@ -1364,7 +1364,7 @@ export default function CardView() {
       >
         {/* Back arrow */}
         <motion.button
-          onClick={() => navigate(category ? `/category/${category.id}` : `/product/${product.slug}`)}
+          onClick={() => navigate(category ? `/product/${product.slug}/portal/${category.id}` : `/product/${product.slug}`)}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: BEAT_1, duration: EMOTION }}
