@@ -23,7 +23,7 @@ export const COLORS = {
 
 // ── Layer color mapping (0-indexed card_index ranges) ───────
 export const LAYER_COLORS: Record<string, string> = {
-  griden: '#8BA888',     // cards 0-3  (weeks 1-4)
+  grunden: '#8BA888',    // cards 0-3  (weeks 1-4)
   normen: '#5D9B9B',     // cards 4-8  (weeks 5-9)
   konflikten: '#D4836D', // cards 9-13 (weeks 10-14)
   langtan: '#C4A0A0',    // cards 14-17 (weeks 15-18)
