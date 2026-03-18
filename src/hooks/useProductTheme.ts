@@ -38,7 +38,7 @@ export function useProductTheme(
         // D: Soft accent cushion behind question
         root.style.setProperty('--question-cloud-tint', `hsla(${p}, 0.12)`);
         root.style.setProperty('--question-cloud-border', `hsla(${p}, 0.10)`);
-        root.style.setProperty('--question-cloud-solid', `hsla(${p}, 0.10)`);
+        root.style.setProperty('--question-cloud-solid', `hsla(${p}, 0.22)`);
         // A: Radial accent glow on page background
         root.style.setProperty('--kids-bg-glow', `radial-gradient(ellipse at 50% 35%, hsla(${p}, 0.06) 0%, transparent 70%)`);
         // E: Warmer question text color derived from accent

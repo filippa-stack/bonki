@@ -2195,7 +2195,21 @@ export default function CardView() {
               alignItems: 'center',
               justifyContent: 'center',
               padding: '80px 24px 0',
+              position: 'relative',
             }}>
+              {/* Soft oval shape behind question */}
+              <div style={{
+                position: 'absolute',
+                top: '50%',
+                left: '50%',
+                transform: 'translate(-50%, -45%)',
+                width: '85%',
+                height: '65%',
+                borderRadius: '50%',
+                background: 'var(--question-cloud-solid, hsla(32, 40%, 70%, 0.18))',
+                pointerEvents: 'none',
+                zIndex: 0,
+              }} />
               <AnimatePresence mode="wait">
                 <motion.p
                   key={`kids-q-${localPromptIndex}`}
@@ -2212,6 +2226,8 @@ export default function CardView() {
                     lineHeight: 1.35,
                     maxWidth: 'calc(100vw - 48px)',
                     textWrap: 'balance',
+                    position: 'relative',
+                    zIndex: 1,
                   }}
                 >
                   {questionText}
