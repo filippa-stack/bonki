@@ -147,6 +147,13 @@ export default function CardView() {
   const product = cardId ? getProductForCard(cardId) : undefined;
   const isStillUsCard = !product && !!card; // Legacy Still Us cards aren't in allProducts
   const pronounMode: PronounMode = product?.pronounMode ?? 'ni';
+
+  // Remember last active product for skip-to-product launch
+  useEffect(() => {
+    if (product?.slug) {
+      localStorage.setItem('bonki-last-active-product', product.slug);
+    }
+  }, [product?.slug]);
   const uiText = useMemo(() => getUIText(pronounMode), [pronounMode]);
   const effectiveSteps = useMemo(() => {
     // Kids/family products: always 1 step (all prompts flattened into one sequence)

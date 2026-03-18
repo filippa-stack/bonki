@@ -148,6 +148,12 @@ export default function Index() {
     }
   }
 
+  // Skip-to-product: returning users land on their last active product
+  const lastProductSlug = localStorage.getItem('bonki-last-active-product');
+  if (lastProductSlug) {
+    return <Navigate to={`/product/${lastProductSlug}`} replace />;
+  }
+
   // After onboarding → ProductLibrary (the Lobby)
   // Users choose their product from here.
   return <ProductLibrary />;
