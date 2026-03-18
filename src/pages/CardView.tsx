@@ -2174,6 +2174,9 @@ export default function CardView() {
                 {card.title}
               </span>
             </div>
+            <button
+              onClick={() => setShowLeaveConfirm(true)}
+              aria-label="Stäng"
               style={{
                 minHeight: '44px',
                 minWidth: '44px',
