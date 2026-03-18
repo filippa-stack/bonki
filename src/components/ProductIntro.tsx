@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { productIntros } from '@/data/productIntros';
 import { allProducts } from '@/data/products';
 import { useCardImage } from '@/hooks/useCardImage';
+import { supabase } from '@/integrations/supabase/client';
 import { LANTERN_GLOW, DRIFTWOOD, MIDNIGHT_INK, BONKI_ORANGE, DEEP_SAFFRON } from '@/lib/palette';
 
 // ── Illustration imports (same as product homes) ──
@@ -12,17 +13,9 @@ import peacockImage from '@/assets/peacock-jag-i-varlden.png';
 import illustrationVardag from '@/assets/illustration-vardag.png';
 import illustrationSyskon from '@/assets/illustration-syskon.png';
 import illustrationSexualitet from '@/assets/illustration-sexualitet.png';
+import creatureSal from '@/assets/creature-sal-still-us.png';
 
 const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
-const SEEN_KEY_PREFIX = 'bonki-product-intro-seen-';
-
-function hasSeenProductIntro(productId: string): boolean {
-  return localStorage.getItem(`${SEEN_KEY_PREFIX}${productId}`) === 'true';
-}
-
-function markProductIntroSeen(productId: string): void {
-  localStorage.setItem(`${SEEN_KEY_PREFIX}${productId}`, 'true');
-}
 
 /** Per-product creature illustration */
 const PRODUCT_ILLUSTRATION: Record<string, string> = {
@@ -32,6 +25,7 @@ const PRODUCT_ILLUSTRATION: Record<string, string> = {
   vardagskort: illustrationVardag,
   syskonkort: illustrationSyskon,
   sexualitetskort: illustrationSexualitet,
+  still_us: creatureSal,
 };
 
 /** One-sentence intro per product */
@@ -42,7 +36,39 @@ const SHORT_INTROS: Record<string, string> = {
   vardagskort: 'Kort för alla de små sakerna som bygger en familj.',
   syskonkort: 'Frågor som hjälper er prata om det som finns mellan er.',
   sexualitetskort: 'Om kropp, samtycke, normer och identitet — utan att moralisera.',
+  still_us:
+    '22 veckor av samtal som bygger det som saknas i de flesta relationer — ett sätt att prata om det som är svårt, innan det blir för svårt.',
 };
+
+/** Still Us–specific overrides */
+const STILL_US_FREE_CARD_LABEL = 'Vecka 1';
+const STILL_US_CTA = 'Börja vecka 1';
+
+// ── Server-side "seen" helpers ──
+
+async function hasSeenProductIntroServer(productId: string): Promise<boolean> {
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) return false;
+
+  const { data } = await supabase
+    .from('onboarding_events')
+    .select('id')
+    .eq('user_id', user.id)
+    .eq('event_type', `product_intro_seen_${productId}`)
+    .limit(1);
+
+  return (data?.length ?? 0) > 0;
+}
+
+async function markProductIntroSeenServer(productId: string): Promise<void> {
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) return;
+
+  await supabase.from('onboarding_events').insert({
+    user_id: user.id,
+    event_type: `product_intro_seen_${productId}`,
+  });
+}
 
 interface ProductIntroProps {
   productId: string;
@@ -66,6 +92,7 @@ export default function ProductIntro({
   const introData = productIntros[productId];
   const [expanded, setExpanded] = useState(false);
   const freeCardImageUrl = useCardImage(freeCardId);
+  const isStillUs = productId === 'still_us';
 
   const product = useMemo(() => allProducts.find((p) => p.id === productId), [productId]);
 
@@ -102,7 +129,8 @@ export default function ProductIntro({
     : '';
 
   const handleCta = () => {
-    markProductIntroSeen(productId);
+    // Persist seen flag server-side (fire-and-forget)
+    markProductIntroSeenServer(productId);
     if (freeCardId && onStartFreeCard) {
       onStartFreeCard();
     } else {
@@ -114,6 +142,16 @@ export default function ProductIntro({
   const sexSafetyLine = isSexualitet
     ? introData.slides[0]?.signoff
     : null;
+
+  // Labels for free card preview
+  const freeCardLabel = isStillUs ? STILL_US_FREE_CARD_LABEL : 'Ert första samtal';
+
+  // CTA label
+  const ctaLabel = isStillUs
+    ? STILL_US_CTA
+    : resolvedFreeCardTitle
+      ? `Börja med ${resolvedFreeCardTitle}`
+      : introData.ctaLabel;
 
   return (
     <div
@@ -266,7 +304,7 @@ export default function ProductIntro({
               padding: '6px 12px',
             }}
           >
-            {expanded ? 'Visa mindre' : `Läs mer om ${product?.name ?? 'produkten'}`}
+            {expanded ? 'Visa mindre' : 'Läs mer'}
           </button>
 
           <AnimatePresence>
@@ -315,7 +353,26 @@ export default function ProductIntro({
           </AnimatePresence>
         </motion.div>
 
-        {/* 5. First card preview */}
+        {/* 5. Signoff line */}
+        {isStillUs && (
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.55, duration: 0.5, ease: EASE }}
+            style={{
+              fontFamily: 'var(--font-serif)',
+              fontStyle: 'italic',
+              fontSize: '14px',
+              color: `${LANTERN_GLOW}CC`,
+              textAlign: 'center',
+              marginTop: '12px',
+            }}
+          >
+            Er första vecka väntar. Den är gratis.
+          </motion.p>
+        )}
+
+        {/* 6. First card preview */}
         {resolvedFreeCardTitle && (
           <motion.div
             initial={{ opacity: 0, y: 12 }}
@@ -369,7 +426,7 @@ export default function ProductIntro({
                   marginBottom: '3px',
                 }}
               >
-                Ert första samtal
+                {freeCardLabel}
               </p>
               <p
                 style={{
@@ -381,9 +438,9 @@ export default function ProductIntro({
                   lineHeight: 1.2,
                 }}
               >
-                {resolvedFreeCardTitle}
+                {isStillUs ? 'Ert minsta "vi"' : resolvedFreeCardTitle}
               </p>
-              {freeCardCategoryName && (
+              {!isStillUs && freeCardCategoryName && (
                 <p
                   style={{
                     fontFamily: 'var(--font-sans)',
@@ -399,7 +456,7 @@ export default function ProductIntro({
           </motion.div>
         )}
 
-        {/* 6. CTA Button */}
+        {/* 7. CTA Button */}
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
@@ -435,12 +492,10 @@ export default function ProductIntro({
               e.currentTarget.style.transform = 'scale(1)';
             }}
           >
-            {resolvedFreeCardTitle
-              ? `Börja med ${resolvedFreeCardTitle}`
-              : introData.ctaLabel}
+            {ctaLabel}
           </button>
 
-          {/* 7. Sexualitet safety line */}
+          {/* Sexualitet safety line */}
           {sexSafetyLine && (
             <p
               style={{
@@ -462,7 +517,23 @@ export default function ProductIntro({
   );
 }
 
-/** Hook: check if a product intro should be shown */
+/** Hook: check if a product intro should be shown (server-side) */
 export function useProductIntroNeeded(productId: string): boolean {
-  return !hasSeenProductIntro(productId);
+  const [needed, setNeeded] = useState(false);
+  const [checked, setChecked] = useState(false);
+
+  useEffect(() => {
+    let cancelled = false;
+    hasSeenProductIntroServer(productId).then((seen) => {
+      if (!cancelled) {
+        setNeeded(!seen);
+        setChecked(true);
+      }
+    });
+    return () => { cancelled = true; };
+  }, [productId]);
+
+  // Don't show until we've checked server
+  if (!checked) return false;
+  return needed;
 }
