@@ -207,7 +207,7 @@ export default function CompletedSessionView({
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: 'var(--surface-base)' }}>
-      <Header title={cardTitle} showBack backTo={categoryId ? `/category/${categoryId}` : '/'} />
+      <Header title={cardTitle} showBack backTo={isChildProduct && product && categoryId ? `/product/${product.slug}/portal/${categoryId}` : categoryId ? `/category/${categoryId}` : '/'} />
 
       <div className="px-6 pb-8" style={{ paddingTop: '32px' }}>
         <div className="max-w-md mx-auto pb-8" style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
