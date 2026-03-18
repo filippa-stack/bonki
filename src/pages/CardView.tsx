@@ -803,7 +803,7 @@ export default function CardView() {
     }
 
     const homeDest = product && product.id !== 'still_us'
-      ? `/category/${category.id}`
+      ? (category ? `/product/${product.slug}/portal/${category.id}` : `/product/${product.slug}`)
       : '/';
 
     // Kids/family products: find next card, but always offer home as secondary
