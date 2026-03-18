@@ -86,18 +86,17 @@ export default function CompletedSessionView({
     if (!isChildProduct || !product) return null;
     const done = new Set(completedCardIds);
     done.add(cardId);
-    // Check if current category still has unexplored cards
-    const sameCatCards = product.cards.filter(c => c.categoryId === categoryId);
-    const hasMoreInCategory = sameCatCards.some(c => !done.has(c.id));
-    if (hasMoreInCategory && categoryId) return `/product/${product.slug}/portal/${categoryId}`;
-    // Otherwise find next category with unexplored cards
-    for (const cat of product.categories) {
-      if (cat.id === categoryId) continue;
-      const hasCards = product.cards.filter(c => c.categoryId === cat.id).some(c => !done.has(c.id));
-      if (hasCards) return `/product/${product.slug}/portal/${cat.id}`;
+    // Find the next uncompleted card in the product's sequential order
+    const currentIdx = product.cards.findIndex(c => c.id === cardId);
+    // Search from after the current card, then wrap around
+    for (let i = 1; i < product.cards.length; i++) {
+      const nextCard = product.cards[(currentIdx + i) % product.cards.length];
+      if (!done.has(nextCard.id) && nextCard.categoryId) {
+        return `/product/${product.slug}/portal/${nextCard.categoryId}`;
+      }
     }
     return null;
-  }, [isChildProduct, product, completedCardIds, cardId, categoryId]);
+  }, [isChildProduct, product, completedCardIds, cardId]);
 
   // Show feedback sheet 2s after content renders
   useEffect(() => {
