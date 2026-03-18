@@ -1,117 +1,222 @@
 /**
- * Share — Partner link sharing screen with polling.
+ * Share — Partner invite / weekly slider share screen (v3.0).
+ * Dual purpose: first-time partner invite AND recurring weekly nudge.
+ *
+ * Route: /share
+ * Background: Ember Night (#2E2233)
  */
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { EASE, EMOTION } from '@/lib/motion';
-import { EMBER_NIGHT, EMBER_GLOW, DEEP_SAFFRON, DRIFTWOOD, BARK } from '@/lib/palette';
+import { COLORS } from '@/lib/stillUsTokens';
+import { pollCoupleState } from '@/lib/stillUsRpc';
+import EmberGlowTextarea from '@/components/still-us/EmberGlowTextarea';
+
+const REDUCED = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
+
+const DEFAULT_INVITE_MESSAGE = (link: string) =>
+  `Hej. Jag hittade något jag vill prova med dig. Det heter Still Us — 22 veckor av samtal om oss. Börja med en snabb check-in: ${link}`;
 
 interface ShareProps {
-  inviteLink: string;
-  partnerJoined: boolean;
-  onPartnerJoined: () => void;
-  onSkip: () => void;
+  /** Whether partner is already linked */
+  hasPartner?: boolean;
+  /** The couple_id for polling and link generation */
+  coupleId?: string;
+  /** Current card_id */
+  cardId?: string;
+  /** Current card title (for returning layout) */
+  cardTitle?: string;
+  /** Current week number (1-indexed) */
+  weekNumber?: number;
+  /** The signed invite/share link */
+  shareLink?: string;
 }
 
-export default function Share({ inviteLink, partnerJoined, onPartnerJoined, onSkip }: ShareProps) {
+export default function Share({
+  hasPartner = false,
+  coupleId,
+  cardId,
+  cardTitle,
+  weekNumber = 1,
+  shareLink = '',
+}: ShareProps) {
+  const navigate = useNavigate();
+  const [message, setMessage] = useState(() => DEFAULT_INVITE_MESSAGE(shareLink));
   const [copied, setCopied] = useState(false);
 
-  const handleShare = async () => {
+  // Update message when shareLink changes
+  useEffect(() => {
+    if (!hasPartner && shareLink) {
+      setMessage(DEFAULT_INVITE_MESSAGE(shareLink));
+    }
+  }, [shareLink, hasPartner]);
+
+  // ── Polling: watch for partner completing slider ──
+  useEffect(() => {
+    if (!coupleId) return;
+
+    const stop = pollCoupleState(coupleId, 15_000, (state) => {
+      if (!state) return;
+      const touch = state.current_touch as string | undefined;
+      if (touch === 'session_1') {
+        navigate('/');
+      }
+    });
+
+    return stop;
+  }, [coupleId, navigate]);
+
+  const handleShare = useCallback(async () => {
+    const textToShare = hasPartner ? shareLink : message;
+
     if (navigator.share) {
       try {
         await navigator.share({
           title: 'Still Us',
-          text: 'Jag har börjat med Still Us — häng med!',
-          url: inviteLink,
+          text: hasPartner ? undefined : textToShare,
+          url: hasPartner ? shareLink : undefined,
         });
       } catch {
         // User cancelled
       }
     } else {
-      await navigator.clipboard.writeText(inviteLink);
+      await navigator.clipboard.writeText(textToShare);
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     }
-  };
+  }, [hasPartner, message, shareLink]);
 
-  useEffect(() => {
-    if (partnerJoined) onPartnerJoined();
-  }, [partnerJoined, onPartnerJoined]);
+  const handleSkip = () => navigate('/');
 
   return (
     <div
       style={{
-        minHeight: '100vh',
-        backgroundColor: EMBER_NIGHT,
+        height: '100dvh',
+        backgroundColor: COLORS.emberNight,
         display: 'flex',
         flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        padding: '0 32px',
+        padding: '0 28px',
+        paddingTop: 'calc(40px + env(safe-area-inset-top, 0px))',
         paddingBottom: 'calc(24px + env(safe-area-inset-bottom, 0px))',
+        overflow: 'auto',
       }}
     >
-      <motion.div
-        initial={{ opacity: 0, y: 12 }}
+      {/* ── Headline ── */}
+      <motion.h1
+        initial={REDUCED ? false : { opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: EMOTION, ease: [...EASE] }}
-        style={{ textAlign: 'center', maxWidth: '340px', width: '100%' }}
-      >
-        <h2 style={{
+        transition={{ duration: 0.5, ease: EASE }}
+        style={{
           fontFamily: 'var(--font-serif)',
-          fontSize: '24px',
-          fontWeight: 500,
-          color: EMBER_GLOW,
-          marginBottom: '12px',
-        }}>
-          Bjud in din partner
-        </h2>
+          fontSize: '26px',
+          fontWeight: 600,
+          color: COLORS.lanternGlow,
+          lineHeight: 1.25,
+          letterSpacing: '-0.02em',
+          margin: '0 0 12px',
+        }}
+      >
+        {hasPartner ? 'Skicka veckans check-in' : 'Bjud in din partner'}
+      </motion.h1>
 
-        <p style={{
+      {/* ── Body text ── */}
+      <motion.p
+        initial={REDUCED ? false : { opacity: 0, y: 8 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.1, duration: 0.5, ease: EASE }}
+        style={{
           fontFamily: 'var(--font-sans)',
-          fontSize: '15px',
-          color: DRIFTWOOD,
+          fontSize: '16px',
+          color: `${COLORS.lanternGlow}B3`, // 70% opacity
           lineHeight: 1.6,
-          marginBottom: '32px',
-        }}>
-          Dela länken så att din partner kan göra sin check-in. Ni behöver vara två för att starta samtalet.
-        </p>
+          margin: '0 0 24px',
+        }}
+      >
+        {hasPartner
+          ? `Din partner behöver göra sin check-in för Vecka ${weekNumber}: ${cardTitle ?? ''}`
+          : 'Still Us är gjort för er båda. Du har redan gjort din check-in — nu är det din partners tur.'}
+      </motion.p>
 
-        <motion.button
-          whileTap={{ scale: 0.98 }}
+      {/* ── First-time: editable message textarea ── */}
+      {!hasPartner && (
+        <motion.div
+          initial={REDUCED ? false : { opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2, duration: 0.5, ease: EASE }}
+          style={{ marginBottom: '8px' }}
+        >
+          <EmberGlowTextarea
+            value={message}
+            onChange={setMessage}
+            rows={5}
+          />
+          <p
+            style={{
+              fontFamily: 'var(--font-sans)',
+              fontStyle: 'italic',
+              fontSize: '12px',
+              color: COLORS.driftwood,
+              margin: '6px 0 0',
+            }}
+          >
+            Skriv om texten så den låter som du.
+          </p>
+        </motion.div>
+      )}
+
+      {/* ── Spacer ── */}
+      <div style={{ flex: 1, minHeight: '24px' }} />
+
+      {/* ── Share CTA ── */}
+      <motion.div
+        initial={REDUCED ? false : { opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.3, duration: 0.5, ease: EASE }}
+      >
+        <button
           onClick={handleShare}
           style={{
             width: '100%',
-            height: '52px',
+            height: hasPartner ? '48px' : '52px',
             borderRadius: '12px',
-            backgroundColor: DEEP_SAFFRON,
+            backgroundColor: COLORS.bonkiOrange,
             border: 'none',
             cursor: 'pointer',
             fontFamily: 'var(--font-sans)',
             fontSize: '16px',
             fontWeight: 600,
-            color: BARK,
-            marginBottom: '12px',
+            color: COLORS.emberNight,
+            transition: 'transform 140ms ease',
           }}
+          onMouseDown={(e) => { e.currentTarget.style.transform = 'scale(0.97)'; }}
+          onMouseUp={(e) => { e.currentTarget.style.transform = 'scale(1)'; }}
+          onMouseLeave={(e) => { e.currentTarget.style.transform = 'scale(1)'; }}
         >
-          {copied ? 'Kopierad!' : 'Dela länk'}
-        </motion.button>
-
-        <button
-          onClick={onSkip}
-          style={{
-            background: 'none',
-            border: 'none',
-            fontFamily: 'var(--font-sans)',
-            fontSize: '14px',
-            color: DRIFTWOOD,
-            cursor: 'pointer',
-            padding: '8px',
-          }}
-        >
-          Jag vill utforska själv först
+          {copied ? 'Kopierad!' : hasPartner ? 'Skicka länk' : 'Dela med din partner'}
         </button>
+
+        {/* ── Skip (first-time only) ── */}
+        {!hasPartner && (
+          <button
+            onClick={handleSkip}
+            style={{
+              display: 'block',
+              width: '100%',
+              background: 'none',
+              border: 'none',
+              fontFamily: 'var(--font-sans)',
+              fontSize: '14px',
+              color: COLORS.driftwood,
+              cursor: 'pointer',
+              padding: '14px 0',
+              textAlign: 'center',
+            }}
+          >
+            Jag vill utforska själv först
+          </button>
+        )}
       </motion.div>
     </div>
   );
