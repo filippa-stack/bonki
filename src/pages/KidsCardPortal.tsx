@@ -90,6 +90,10 @@ export default function KidsCardPortal() {
   const [browseOpen, setBrowseOpen] = useState(false);
   const card = categoryCards[currentIndex];
 
+  // Portal-open animation state: 'idle' | 'phase1' | 'phase2'
+  const [portalPhase, setPortalPhase] = useState<'idle' | 'phase1' | 'phase2'>('idle');
+  const navigating = useRef(false);
+
   const promptCount = card ? getPromptCount(card) : 0;
   const isFirst = currentIndex <= 0;
   const isLast = currentIndex >= categoryCards.length - 1;
@@ -103,9 +107,22 @@ export default function KidsCardPortal() {
   }, [navigate, productSlug]);
 
   const startSession = useCallback(() => {
-    if (!card) return;
-    navigate(`/card/${card.id}`);
-  }, [navigate, card]);
+    if (!card || navigating.current || portalPhase !== 'idle') return;
+    navigating.current = true;
+
+    // Phase 1: scale + brightness (0–200ms)
+    setPortalPhase('phase1');
+
+    setTimeout(() => {
+      // Phase 2: fade out everything (200–500ms)
+      setPortalPhase('phase2');
+
+      setTimeout(() => {
+        // Phase 3: navigate
+        navigate(`/card/${card.id}`);
+      }, 350);
+    }, 200);
+  }, [navigate, card, portalPhase]);
 
   const goToIndex = useCallback((index: number) => {
     setDirection(index > currentIndex ? 1 : -1);
