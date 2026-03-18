@@ -33,6 +33,7 @@ export default function SliderReveal({
   partnerName,
   initiatorReflection,
   partnerReflection,
+  onContinue,
 }: SliderRevealProps) {
   const navigate = useNavigate();
   const phase = getPhase(cardIndex);
