@@ -173,7 +173,7 @@ export function useStillUsHome(): StillUsHomeState {
 
       // Session state
       const ss = ssResult.data;
-      const sessionActive = ss && ss.card_id === currentCardId;
+      const sessionActive = ss && ss.card_id === backendCardId;
       const session1Completed = sessionActive ? ss.session_1_completed : false;
       const session2Completed = sessionActive ? ss.session_2_completed : false;
       const sessionPaused = sessionActive ? !!ss.paused_at : false;
