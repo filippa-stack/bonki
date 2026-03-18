@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, Navigate } from 'react-router-dom';
 import { categories as stillUsCategories } from '@/data/content';
 import { motion } from 'framer-motion';
 import { ChevronLeft, Check } from 'lucide-react';
