@@ -29,6 +29,7 @@ export default function CompletionCeremony() {
   const [ceremonyReflection, setCeremonyReflection] = useState('');
   const [saveState, setSaveState] = useState<'idle' | 'saving' | 'success' | 'error'>('idle');
   const [screen4Complete, setScreen4Complete] = useState(false);
+  const [transitionState, setTransitionState] = useState<'idle' | 'saving' | 'success' | 'error'>('idle');
   const touchStartX = useRef(0);
   const touchEndX = useRef(0);
   const containerRef = useRef<HTMLDivElement>(null);
