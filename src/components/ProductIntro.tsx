@@ -1,6 +1,7 @@
 import { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
+import { ArrowLeft } from 'lucide-react';
 import { productIntros } from '@/data/productIntros';
 import { allProducts } from '@/data/products';
 import { useCardImage } from '@/hooks/useCardImage';
