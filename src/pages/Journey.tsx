@@ -195,6 +195,29 @@ export default function Journey() {
       minHeight: '100dvh',
       backgroundColor: COLORS.emberNight,
     }}>
+      {/* ── Multi-cycle toggle ── */}
+      {coupleState?.cycle_id > 1 && (
+        <div style={{
+          display: 'flex', gap: '8px', justifyContent: 'center',
+          padding: '16px 24px 0',
+        }}>
+          {Array.from({ length: coupleState.cycle_id }, (_, i) => i + 1).map(cycle => (
+            <button
+              key={cycle}
+              onClick={() => setSelectedCycle(cycle)}
+              style={{
+                padding: '8px 20px', borderRadius: '20px', border: 'none',
+                fontSize: '14px', fontFamily: "'DM Serif Display', serif",
+                cursor: 'pointer',
+                background: selectedCycle === cycle ? COLORS.deepSaffron : 'transparent',
+                color: selectedCycle === cycle ? COLORS.emberNight : COLORS.driftwood,
+              }}
+            >
+              Resa {cycle}
+            </button>
+          ))}
+        </div>
+      )}
       {/* ── Zone 1: Horizontal scrollable timeline ── */}
       <div
         ref={scrollRef}
