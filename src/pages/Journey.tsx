@@ -1,31 +1,126 @@
 /**
  * Journey — "ERA SAMTAL" tab content.
  * Zone 1: Horizontal curved timeline with 22 nodes.
- * Zones 2–3: Placeholders for card entries + insights (Prompts 5.8, 5.9).
+ * Zone 2: Layer-grouped card entries with expandable reflections.
+ * Zone 3: Placeholder for insights (Prompt 5.9).
  */
 
-import { useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { COLORS, getLayerForCard } from '@/lib/stillUsTokens';
 import sliderPrompts from '@/data/sliderPrompts';
+import layerIntros from '@/data/layerIntros';
+import { supabase } from '@/integrations/supabase/client';
 
-type NodeStatus = 'completed' | 'current' | 'future';
+type NodeStatus = 'completed' | 'skipped' | 'current' | 'future';
 
-const timelineNodes = sliderPrompts.map((card, index) => {
-  const layer = getLayerForCard(index);
-  return {
-    weekNumber: index + 1,
-    cardTitle: card.cardTitle,
-    layerName: layer.name,
-    layerColor: layer.color,
-    // Placeholder states — Prompt 5.8 wires real data
-    status: (index < 10 ? 'completed'
-      : index === 10 ? 'current'
-      : 'future') as NodeStatus,
-  };
-});
+interface CardEntry {
+  cardIndex: number;
+  weekNumber: number;
+  cardTitle: string;
+  layerName: string;
+  layerColor: string;
+  isCompleted: boolean;
+  isSkipped: boolean;
+  isCurrent: boolean;
+  completedAt: string | null;
+  session1Takeaway: string | null;
+  takeaway: string | null;
+  checkinReflection: string | null;
+  notes: Record<string, unknown> | null;
+}
+
+const LAYER_KEYS = ['Grunden', 'Normen', 'Konflikten', 'Längtan', 'Valet'];
 
 export default function Journey() {
   const scrollRef = useRef<HTMLDivElement>(null);
+  const [cardEntries, setCardEntries] = useState<CardEntry[]>([]);
+  const [expandedCards, setExpandedCards] = useState<Set<number>>(new Set());
+  const [coupleState, setCoupleState] = useState<any>(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return;
+
+      const { data: couple } = await supabase
+        .from('couple_state')
+        .select('*')
+        .or(`initiator_id.eq.${user.id},partner_id.eq.${user.id}`)
+        .maybeSingle();
+
+      if (!couple) return;
+      setCoupleState(couple);
+
+      const [{ data: cardStates }, { data: sessionStates }] = await Promise.all([
+        supabase
+          .from('user_card_state')
+          .select('card_id, slider_responses, checkin_reflection, session_1_takeaway, takeaway, notes, slider_completed_at')
+          .eq('user_id', user.id)
+          .eq('couple_id', couple.couple_id)
+          .eq('cycle_id', couple.cycle_id),
+        supabase
+          .from('session_state')
+          .select('card_id, completed_at, skip_status, session_type')
+          .eq('couple_id', couple.couple_id)
+          .eq('cycle_id', couple.cycle_id),
+      ]);
+
+      const entries: CardEntry[] = sliderPrompts.map((card, index) => {
+        const cardId = card.cardId;
+        const userState = cardStates?.find(s => s.card_id === cardId);
+        const sessState = sessionStates?.find(s => s.card_id === cardId);
+        const layer = getLayerForCard(index);
+        const isCompleted = !!sessState?.completed_at;
+        const isSkipped = sessState?.skip_status === 'user_skipped' || sessState?.skip_status === 'auto_advanced';
+        const isCurrent = index === couple.current_card_index && !isCompleted;
+
+        return {
+          cardIndex: index,
+          weekNumber: index + 1,
+          cardTitle: card.cardTitle,
+          layerName: layer.name,
+          layerColor: layer.color,
+          isCompleted,
+          isSkipped,
+          isCurrent,
+          completedAt: sessState?.completed_at ?? null,
+          session1Takeaway: userState?.session_1_takeaway ?? null,
+          takeaway: userState?.takeaway ?? null,
+          checkinReflection: userState?.checkin_reflection ?? null,
+          notes: userState?.notes as Record<string, unknown> | null,
+        };
+      });
+
+      setCardEntries(entries);
+    };
+    fetchData();
+  }, []);
+
+  const toggleCard = useCallback((index: number) => {
+    setExpandedCards(prev => {
+      const next = new Set(prev);
+      if (next.has(index)) next.delete(index);
+      else next.add(index);
+      return next;
+    });
+  }, []);
+
+  // Build timeline nodes from real data (falls back to static placeholders if no entries yet)
+  const timelineNodes = sliderPrompts.map((card, index) => {
+    const layer = getLayerForCard(index);
+    const entry = cardEntries.find(e => e.cardIndex === index);
+    return {
+      weekNumber: index + 1,
+      cardTitle: card.cardTitle,
+      layerName: layer.name,
+      layerColor: layer.color,
+      status: (entry?.isCompleted ? 'completed'
+        : entry?.isSkipped ? 'skipped'
+        : entry?.isCurrent ? 'current'
+        : cardEntries.length === 0 ? 'future'
+        : 'future') as NodeStatus,
+    };
+  });
 
   return (
     <div style={{
@@ -63,6 +158,7 @@ export default function Journey() {
             const isLast = i === timelineNodes.length - 1;
             const isCurrent = node.status === 'current';
             const isCompleted = node.status === 'completed';
+            const isSkipped = node.status === 'skipped';
             const nodeSize = isCurrent ? 20 : 14;
 
             return (
@@ -96,8 +192,10 @@ export default function Journey() {
                     borderRadius: '50%',
                     backgroundColor: isCompleted || isCurrent
                       ? node.layerColor
-                      : 'transparent',
-                    border: !isCompleted && !isCurrent
+                      : isSkipped
+                        ? `${node.layerColor}60`
+                        : 'transparent',
+                    border: !isCompleted && !isCurrent && !isSkipped
                       ? `1.5px solid ${COLORS.driftwood}40`
                       : 'none',
                     boxShadow: isCurrent
@@ -112,7 +210,7 @@ export default function Journey() {
                     <div style={{
                       width: '24px',
                       height: '2px',
-                      backgroundColor: isCompleted
+                      backgroundColor: isCompleted || isSkipped
                         ? node.layerColor
                         : `${COLORS.driftwood}30`,
                       flexShrink: 0,
@@ -141,15 +239,130 @@ export default function Journey() {
         </div>
       </div>
 
-      {/* ── Zone 2 + Zone 3: Placeholder ── */}
+      {/* ── Zone 2: Card entries grouped by layer ── */}
+      <div style={{ padding: '0 24px 32px' }}>
+        {LAYER_KEYS.map((layerName, layerIdx) => {
+          const layerCards = cardEntries.filter(e => e.layerName === layerName);
+          if (layerCards.length === 0) return null;
+          const layerColor = layerCards[0].layerColor;
+          const intro = layerIntros[layerIdx];
+
+          return (
+            <div key={layerName} style={{ marginBottom: '32px' }}>
+              {/* Layer header */}
+              <div style={{
+                fontFamily: "'DM Serif Display', serif",
+                fontSize: '22px',
+                color: layerColor,
+                marginBottom: '4px',
+              }}>
+                {layerName}
+              </div>
+              {intro && (
+                <div style={{
+                  fontSize: '14px',
+                  color: COLORS.driftwoodBody,
+                  fontStyle: 'italic',
+                  marginBottom: '16px',
+                }}>
+                  {intro.intro}
+                </div>
+              )}
+
+              {/* Card entries */}
+              {layerCards.map(entry => {
+                const isExpanded = expandedCards.has(entry.cardIndex);
+                const hasTakeaways = entry.session1Takeaway || entry.takeaway || entry.checkinReflection;
+
+                return (
+                  <div
+                    key={entry.cardIndex}
+                    onClick={() => hasTakeaways && toggleCard(entry.cardIndex)}
+                    style={{
+                      padding: '12px 0',
+                      borderBottom: `1px solid ${COLORS.emberMid}`,
+                      opacity: entry.isSkipped ? 0.5 : 1,
+                      cursor: hasTakeaways ? 'pointer' : 'default',
+                    }}
+                  >
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
+                      <div>
+                        <span style={{
+                          fontFamily: "'DM Serif Display', serif",
+                          fontSize: '18px',
+                          color: COLORS.lanternGlow,
+                        }}>
+                          Vecka {entry.weekNumber}
+                        </span>
+                        <span style={{
+                          fontFamily: "'DM Serif Display', serif",
+                          fontSize: '16px',
+                          color: COLORS.lanternGlow,
+                          marginLeft: '8px',
+                          opacity: 0.8,
+                        }}>
+                          {entry.cardTitle}
+                        </span>
+                      </div>
+                      {entry.completedAt && (
+                        <span style={{ fontSize: '12px', color: COLORS.driftwood, flexShrink: 0, marginLeft: '8px' }}>
+                          {new Date(entry.completedAt).toLocaleDateString('sv-SE')}
+                        </span>
+                      )}
+                    </div>
+
+                    {/* Expanded reflections */}
+                    {isExpanded && (
+                      <div style={{ marginTop: '12px', paddingLeft: '8px' }}>
+                        {entry.session1Takeaway && (
+                          <div style={{ marginBottom: '8px' }}>
+                            <div style={{ fontSize: '12px', color: COLORS.driftwood, marginBottom: '4px' }}>
+                              Efter samtal 1
+                            </div>
+                            <div style={{ fontSize: '14px', color: COLORS.driftwoodBody }}>
+                              {entry.session1Takeaway}
+                            </div>
+                          </div>
+                        )}
+                        {entry.takeaway && (
+                          <div style={{ marginBottom: '8px' }}>
+                            <div style={{ fontSize: '12px', color: COLORS.driftwood, marginBottom: '4px' }}>
+                              Efter samtal 2
+                            </div>
+                            <div style={{ fontSize: '14px', color: COLORS.driftwoodBody }}>
+                              {entry.takeaway}
+                            </div>
+                          </div>
+                        )}
+                        {entry.checkinReflection && (
+                          <div style={{ marginBottom: '8px' }}>
+                            <div style={{ fontSize: '12px', color: COLORS.driftwood, marginBottom: '4px' }}>
+                              Check-in
+                            </div>
+                            <div style={{ fontSize: '14px', color: COLORS.driftwoodBody, fontStyle: 'italic' }}>
+                              {entry.checkinReflection}
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          );
+        })}
+      </div>
+
+      {/* ── Zone 3: Placeholder ── */}
       <div style={{
-        padding: '32px 24px',
+        padding: '0 24px 48px',
         textAlign: 'center',
         color: COLORS.driftwood,
         fontSize: '14px',
         opacity: 0.5,
       }}>
-        Zone 2 + Zone 3 — coming in Prompts 5.8 and 5.9
+        Zone 3 — coming in Prompt 5.9
       </div>
     </div>
   );
