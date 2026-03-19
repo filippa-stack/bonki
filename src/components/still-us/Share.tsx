@@ -79,15 +79,20 @@ export default function Share({
           text: hasPartner ? undefined : textToShare,
           url: hasPartner ? shareLink : undefined,
         });
+        // After successful share, go back to Home
+        navigate('/?product=still-us');
       } catch {
-        // User cancelled
+        // User cancelled — stay on page
       }
     } else {
       await navigator.clipboard.writeText(textToShare);
       setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
+      setTimeout(() => {
+        setCopied(false);
+        navigate('/?product=still-us');
+      }, 1500);
     }
-  }, [hasPartner, message, shareLink]);
+  }, [hasPartner, message, shareLink, navigate]);
 
   const handleSkip = () => navigate('/?product=still-us');
 
