@@ -58,6 +58,7 @@ export interface StillUsHomeState {
   isDormant: boolean;
   dormancyDays: number;
   returnRitualShown: boolean;
+  lastActivityAt: string | null;
   // Touch & couple
   currentTouch: string;
   coupleId: string | null;
@@ -92,6 +93,7 @@ const EMPTY_STATE: StillUsHomeState = {
   isDormant: false,
   dormancyDays: 0,
   returnRitualShown: false,
+  lastActivityAt: null,
   currentTouch: 'slider',
   coupleId: null,
   initiatorId: null,
@@ -282,6 +284,7 @@ export function useStillUsHome(): StillUsHomeState {
         isDormant,
         dormancyDays,
         returnRitualShown,
+        lastActivityAt: lastActivityAt ?? null,
         currentTouch,
         coupleId: spaceId,
         initiatorId,
