@@ -35,11 +35,17 @@
       max-width: 360px;
       margin-bottom: 24px;
     }
+    .slider-question {
+      font-size: 15px;
+      color: #F5E6D3;
+      margin-bottom: 10px;
+      line-height: 1.4;
+    }
     .slider-anchors {
       display: flex;
       justify-content: space-between;
-      font-size: 14px;
-      color: #F5E6D3;
+      font-size: 13px;
+      color: #B5A898;
       margin-bottom: 8px;
     }
     .slider-track {
@@ -148,15 +154,24 @@
       font-style: italic;
       margin-bottom: 6px;
     }
+    .loading-spinner {
+      color: #B5A898;
+      font-size: 14px;
+      text-align: center;
+      margin-top: 30vh;
+    }
   </style>
 </head>
 <body>
-  <div id="app"></div>
+  <div id="app">
+    <p class="loading-spinner">Laddar...</p>
+  </div>
 
   <script>
     // ── Configuration ──
     var SUPABASE_URL = 'https://wcienwozdurwhswaarjy.supabase.co';
     var EDGE_FUNCTION_URL = SUPABASE_URL + '/functions/v1/complete-slider-checkin';
+    var CHECKIN_DATA_URL = SUPABASE_URL + '/functions/v1/get-checkin-data';
 
     // ── Extract token from URL ──
     var params = new URLSearchParams(window.location.search);
@@ -164,24 +179,73 @@
 
     var app = document.getElementById('app');
 
+    // ── State ──
+    var sliderPositions = [];
+    var slidersMoved = [];
+    var checkinReflection = '';
+    var sliderData = []; // From server: [{text, leftLabel, rightLabel}]
+    var cardTitle = '';
+    var reflectionPrompt = null;
+
     if (!linkToken) {
-      app.innerHTML = '<p class="error-message">Länken verkar inte fungera. Be din partner skicka en ny.</p>';
+      app.innerHTML = '<p class="error-message">L\u00e4nken verkar inte fungera. Be din partner skicka en ny.</p>';
     } else {
-      renderSliders();
+      fetchCheckinData();
     }
 
-    // ── State ──
-    var sliderPositions = [50, 50];
-    var slidersMoved = [false, false];
-    var checkinReflection = '';
+    function fetchCheckinData() {
+      fetch(CHECKIN_DATA_URL + '?token=' + encodeURIComponent(linkToken))
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+          if (data.error === 'dissolved') {
+            app.innerHTML = '<p class="dissolved-message">Det h\u00e4r utrymmet \u00e4r inte l\u00e4ngre aktivt.</p>';
+            return;
+          }
+          if (data.error) {
+            app.innerHTML = '<p class="error-message">L\u00e4nken \u00e4r ogiltig eller har g\u00e5tt ut. Be din partner skicka en ny.</p>';
+            return;
+          }
+
+          sliderData = data.sliders && data.sliders.length > 0
+            ? data.sliders
+            : [
+                { text: '', leftLabel: '\u2014', rightLabel: '\u2014' },
+                { text: '', leftLabel: '\u2014', rightLabel: '\u2014' },
+              ];
+          cardTitle = data.card_title || '';
+          reflectionPrompt = data.reflection_prompt || null;
+
+          // Init state arrays
+          sliderPositions = sliderData.map(function() { return 50; });
+          slidersMoved = sliderData.map(function() { return false; });
+
+          renderSliders();
+        })
+        .catch(function() {
+          // Fallback: render with 2 generic sliders
+          sliderData = [
+            { text: '', leftLabel: '\u2014', rightLabel: '\u2014' },
+            { text: '', leftLabel: '\u2014', rightLabel: '\u2014' },
+          ];
+          sliderPositions = [50, 50];
+          slidersMoved = [false, false];
+          renderSliders();
+        });
+    }
 
     function renderSliders() {
+      var titleHtml = cardTitle
+        ? '<h1>' + escapeHtml(cardTitle) + '</h1>'
+        : '<h1>Veckans check-in</h1>';
+
       app.innerHTML =
-        '<h1>Veckans check-in</h1>' +
+        titleHtml +
         '<p class="subtitle">Flytta reglagen dit det k\u00e4nns r\u00e4tt f\u00f6r dig.</p>' +
         '<div id="sliders"></div>' +
         '<div class="reflection-area">' +
-          '<p class="reflection-label">Vill du l\u00e4gga till en tanke?</p>' +
+          '<p class="reflection-label">' +
+            (reflectionPrompt ? escapeHtml(reflectionPrompt) : 'Vill du l\u00e4gga till en tanke?') +
+          '</p>' +
           '<textarea id="reflection" placeholder="Valfritt \u2014 skriv n\u00e5got du vill att ni pratar om\u2026"></textarea>' +
         '</div>' +
         '<p class="privacy-note">Bara du kan se det h\u00e4r tills ni s\u00e4tter er ner tillsammans.</p>' +
@@ -190,10 +254,7 @@
 
       var slidersContainer = document.getElementById('sliders');
 
-      // Render 2 sliders
-      // NOTE: Anchor texts are placeholders. Real implementation should embed
-      // card data in the JWT payload or pass anchor texts as URL params.
-      for (var i = 0; i < 2; i++) {
+      for (var i = 0; i < sliderData.length; i++) {
         slidersContainer.appendChild(createSlider(i));
       }
 
@@ -205,12 +266,19 @@
     }
 
     function createSlider(index) {
+      var sd = sliderData[index];
       var container = document.createElement('div');
       container.className = 'slider-container';
+
+      var questionHtml = sd.text
+        ? '<p class="slider-question">' + escapeHtml(sd.text) + '</p>'
+        : '';
+
       container.innerHTML =
+        questionHtml +
         '<div class="slider-anchors">' +
-          '<span id="anchor-left-' + index + '">\u2014</span>' +
-          '<span id="anchor-right-' + index + '">\u2014</span>' +
+          '<span>' + escapeHtml(sd.leftLabel) + '</span>' +
+          '<span>' + escapeHtml(sd.rightLabel) + '</span>' +
         '</div>' +
         '<div class="slider-track" id="track-' + index + '">' +
           '<div class="slider-fill" id="fill-' + index + '" style="width: 50%"></div>' +
@@ -342,6 +410,12 @@
         btn.disabled = false;
         btn.textContent = 'Klar';
       });
+    }
+
+    function escapeHtml(str) {
+      var div = document.createElement('div');
+      div.appendChild(document.createTextNode(str));
+      return div.innerHTML;
     }
   </script>
 </body>
