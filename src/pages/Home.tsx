@@ -497,26 +497,6 @@ export default function Home() {
         )}
       </div>
 
-      {/* ── Zone 5: Bottom Navigation ── */}
-      <div style={{
-        position: 'fixed',
-        bottom: 0,
-        left: 0,
-        right: 0,
-        zIndex: 10,
-        display: 'flex',
-        justifyContent: 'space-around',
-        alignItems: 'center',
-        height: '64px',
-        paddingBottom: 'env(safe-area-inset-bottom, 0px)',
-        backgroundColor: `${COLORS.emberNight}F5`,
-        backdropFilter: 'blur(12px)',
-        borderTop: `1px solid ${COLORS.emberMid}60`,
-      }}>
-        <NavTab label="BIBLIOTEKET" active={false} onClick={() => navigate('/')} />
-        <NavTab label="ERT RUM" active onClick={() => {}} />
-        <NavTab label="ERA SAMTAL" active={false} onClick={() => navigate('/journey')} />
-      </div>
     </div>
   );
 }
