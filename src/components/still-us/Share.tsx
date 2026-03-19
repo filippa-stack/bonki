@@ -10,8 +10,9 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { COLORS } from '@/lib/stillUsTokens';
-import { pollCoupleState } from '@/lib/stillUsRpc';
+import { pollCoupleState, completeSliderCheckin } from '@/lib/stillUsRpc';
 import EmberGlowTextarea from '@/components/still-us/EmberGlowTextarea';
+import { isTestMode } from '@/lib/testMode';
 
 const REDUCED = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
