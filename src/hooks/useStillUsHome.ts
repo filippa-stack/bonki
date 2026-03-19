@@ -48,6 +48,7 @@ export interface StillUsHomeState {
   partnerSliderDone: boolean;
   // Session
   sessionPaused: boolean;
+  pausedReason: string | null;
   // Maintenance
   maintenanceCardIndex: number;
   maintenanceDaysUntilNext: number | null;
