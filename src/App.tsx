@@ -53,6 +53,7 @@ import {
 } from "./pages/still-us-routes";
 import CompletionCeremony from "./pages/CompletionCeremony";
 import TillbakaSessionLive from "./components/TillbakaSessionLive";
+import TillbakaComplete from "./pages/TillbakaComplete";
 
 const queryClient = new QueryClient();
 
@@ -118,6 +119,7 @@ function ProtectedRoutes() {
               <Route path="/session/:cardId/live-session2" element={<PageTransition><Session2LivePage /></PageTransition>} />
               <Route path="/session/:cardId/complete" element={<PageTransition><CardCompletePage /></PageTransition>} />
               <Route path="/session/:cardId/tillbaka" element={<PageTransition><TillbakaSessionLive /></PageTransition>} />
+              <Route path="/session/:cardId/tillbaka-complete" element={<PageTransition><TillbakaComplete /></PageTransition>} />
               <Route path="/ceremony" element={<PageTransition><CompletionCeremony /></PageTransition>} />
               <Route path="*" element={<NotFound />} />
             </Routes>
