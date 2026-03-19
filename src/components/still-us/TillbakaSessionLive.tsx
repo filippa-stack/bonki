@@ -138,7 +138,7 @@ export default function TillbakaSessionLive({
             fontFamily: 'var(--font-sans)',
             fontSize: '16px',
             fontWeight: 600,
-            color: COLORS.bark,
+            color: COLORS.emberNight,
           }}
         >
           {isLast ? 'Avsluta' : 'Nästa'}

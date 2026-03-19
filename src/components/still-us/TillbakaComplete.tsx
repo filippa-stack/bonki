@@ -67,7 +67,7 @@ export default function TillbakaComplete({ tillbakaIndex, totalCompleted, onHome
             fontFamily: 'var(--font-sans)',
             fontSize: '16px',
             fontWeight: 600,
-            color: COLORS.bark,
+            color: COLORS.emberNight,
             marginBottom: '12px',
           }}
         >
