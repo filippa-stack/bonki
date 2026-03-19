@@ -5,7 +5,7 @@ import { productIntros } from '@/data/productIntros';
 import { allProducts } from '@/data/products';
 import { useCardImage } from '@/hooks/useCardImage';
 import { supabase } from '@/integrations/supabase/client';
-import { initCoupleState } from '@/lib/stillUsRpc';
+import { initCoupleState, buildSliderAnchors } from '@/lib/stillUsRpc';
 import { LANTERN_GLOW, DRIFTWOOD, MIDNIGHT_INK, BONKI_ORANGE, DEEP_SAFFRON } from '@/lib/palette';
 
 // ── Illustration imports (same as product homes) ──
