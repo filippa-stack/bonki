@@ -439,7 +439,9 @@ function ActionCard({
   maintenanceAvailable,
   maintenanceDaysUntilNext,
   pausedReason,
+  lastActivityAt,
   onAction,
+  onRefetch,
 }: {
   kind: ActionCardKind;
   cardIndex: number;
@@ -456,9 +458,14 @@ function ActionCard({
   maintenanceAvailable: boolean;
   maintenanceDaysUntilNext: number | null;
   pausedReason: string | null;
+  lastActivityAt: string | null;
   onAction: (action: string) => void;
+  onRefetch: () => Promise<void>;
 }) {
+  const navigate = useNavigate();
   const weekNum = cardIndex + 1;
+  const [staleDismissed, setStaleDismissed] = useState(false);
+  const [skipping, setSkipping] = useState(false);
 
   if (kind === 'loading') {
     return (
