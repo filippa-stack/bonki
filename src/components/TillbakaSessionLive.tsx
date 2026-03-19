@@ -357,30 +357,29 @@ export default function TillbakaSessionLive() {
   }, [coupleState, backendCardId, step, navigate]);
 
   // ── Complete → navigate to tillbaka-complete ───────────────
-  const handleComplete = useCallback(async () => {
-    // Save Q2 note if present
+  const handleComplete = useCallback(() => {
+    // Fire-and-forget note save — never blocks navigation
     if (q2Note.trim() && coupleState) {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (user) {
-        const { data: existing } = await supabase
-          .from('user_card_state')
-          .select('notes')
-          .eq('couple_id', coupleState.couple_id)
-          .eq('user_id', user.id)
-          .eq('card_id', backendCardId)
-          .eq('cycle_id', coupleState.cycle_id)
-          .maybeSingle();
+      supabase.auth.getUser().then(({ data: { user } }) => {
+        if (!user) return;
+        const cacheKey = `${coupleState.couple_id}:${backendCardId}:${user.id}`;
+        const prev = localNotesCache.current[cacheKey] ?? {};
+        const merged = { ...prev, tillbaka_q2: q2Note.trim() };
+        localNotesCache.current[cacheKey] = merged;
 
-        const existingNotes = (existing?.notes as Record<string, string>) ?? {};
-        const merged = { ...existingNotes, tillbaka_q2: q2Note.trim() };
-
-        await supabase
-          .from('user_card_state')
-          .upsert(
-            { couple_id: coupleState.couple_id, user_id: user.id, card_id: backendCardId, cycle_id: coupleState.cycle_id, notes: merged as any },
-            { onConflict: 'couple_id,user_id,card_id,cycle_id' },
-          );
-      }
+        enqueueWrite({
+          table: 'user_card_state',
+          operation: 'upsert',
+          match: {},
+          data: {
+            couple_id: coupleState.couple_id,
+            user_id: user.id,
+            card_id: backendCardId,
+            cycle_id: coupleState.cycle_id,
+            notes: merged,
+          },
+        });
+      });
     }
 
     navigate(`/session/${slug}/tillbaka-complete`);
