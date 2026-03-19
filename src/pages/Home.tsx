@@ -497,54 +497,10 @@ export default function Home() {
         )}
       </div>
 
-      {/* ── Zone 5: Bottom Navigation ── */}
-      <div style={{
-        position: 'fixed',
-        bottom: 0,
-        left: 0,
-        right: 0,
-        zIndex: 10,
-        display: 'flex',
-        justifyContent: 'space-around',
-        alignItems: 'center',
-        height: '64px',
-        paddingBottom: 'env(safe-area-inset-bottom, 0px)',
-        backgroundColor: `${COLORS.emberNight}F5`,
-        backdropFilter: 'blur(12px)',
-        borderTop: `1px solid ${COLORS.emberMid}60`,
-      }}>
-        <NavTab label="BIBLIOTEKET" active={false} onClick={() => navigate('/')} />
-        <NavTab label="ERT RUM" active onClick={() => {}} />
-        <NavTab label="ERA SAMTAL" active={false} onClick={() => navigate('/journey')} />
-      </div>
     </div>
   );
 }
 
-/* ── Bottom nav tab ── */
-function NavTab({ label, active, onClick }: { label: string; active: boolean; onClick: () => void }) {
-  return (
-    <button
-      onClick={onClick}
-      style={{
-        background: 'none',
-        border: 'none',
-        fontFamily: 'var(--font-sans)',
-        fontSize: '10px',
-        fontWeight: 600,
-        letterSpacing: '1px',
-        textTransform: 'uppercase',
-        color: active ? COLORS.deepSaffron : COLORS.driftwood,
-        cursor: active ? 'default' : 'pointer',
-        padding: '8px 16px',
-        opacity: active ? 1 : 0.7,
-        transition: 'color 0.2s, opacity 0.2s',
-      }}
-    >
-      {label}
-    </button>
-  );
-}
 
 /* ── Action Card rendering (States 1-6, 7/7b, 9, 10) ── */
 function ActionCard({

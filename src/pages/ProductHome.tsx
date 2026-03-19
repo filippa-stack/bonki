@@ -85,6 +85,7 @@ export default function ProductHome() {
         onStartFreeCard={() => {
           setShowIntro(false);
           if (product.freeCardId) {
+            localStorage.setItem('bonki-last-active-product', product.slug);
             navigate(`/card/${product.freeCardId}`);
           }
         }}

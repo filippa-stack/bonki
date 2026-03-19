@@ -53,6 +53,7 @@ const items: NavItem[] = [
     match: (p, s) =>
       p === '/product/still-us' ||
       (p === '/' && s.includes('product=still-us')) ||
+      p.startsWith('/still-us') ||
       p.startsWith('/check-in') ||
       p.startsWith('/session/') ||
       p === '/share' ||
