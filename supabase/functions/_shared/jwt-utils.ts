@@ -89,7 +89,7 @@ export async function verifyLinkToken(token: string): Promise<LinkTokenPayload> 
   const valid = await crypto.subtle.verify(
     ALGORITHM.name,
     key,
-    signatureBytes,
+    signatureBytes.buffer as ArrayBuffer,
     enc.encode(signingInput)
   );
 
