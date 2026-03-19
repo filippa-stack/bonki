@@ -347,29 +347,24 @@ export default function Home() {
 
         {/* ── Zone 4: Action Card ── */}
         <div style={{ paddingLeft: '3vw', paddingRight: '3vw' }}>
-          {homeState.actionCard === 'maintenance' ? (
-            <MaintenanceActionCard
-              tillbakaIndex={homeState.maintenanceCardIndex}
-              tillbakaTitle={homeState.maintenanceTillbakaTitle}
-              available={homeState.maintenanceAvailable}
-              daysUntilNext={homeState.maintenanceDaysUntilNext ?? undefined}
-              onStart={handleMaintenanceStart}
-            />
-          ) : (
-            <ActionCard
-              kind={homeState.actionCard}
-              cardIndex={homeState.cardIndex}
-              cardTitle={homeState.cardTitle}
-              layerName={layer.name}
-              partnerName={homeState.partnerName}
-              partnerTier={homeState.partnerTier}
-              sessionPaused={homeState.sessionPaused}
-              initiatorName={homeState.initiatorName}
-              partnerNudgeSentAt={homeState.partnerNudgeSentAt}
-              coupleId={homeState.coupleId}
-              onAction={handleAction}
-            />
-          )}
+          <ActionCard
+            kind={homeState.actionCard}
+            cardIndex={homeState.cardIndex}
+            cardTitle={homeState.cardTitle}
+            layerName={layer.name}
+            partnerName={homeState.partnerName}
+            partnerTier={homeState.partnerTier}
+            sessionPaused={homeState.sessionPaused}
+            initiatorName={homeState.initiatorName}
+            partnerNudgeSentAt={homeState.partnerNudgeSentAt}
+            coupleId={homeState.coupleId}
+            maintenanceCardIndex={homeState.maintenanceCardIndex}
+            maintenanceTillbakaTitle={homeState.maintenanceTillbakaTitle}
+            maintenanceAvailable={homeState.maintenanceAvailable}
+            maintenanceDaysUntilNext={homeState.maintenanceDaysUntilNext}
+            pausedReason={null}
+            onAction={handleAction}
+          />
         </div>
       </div>
 
