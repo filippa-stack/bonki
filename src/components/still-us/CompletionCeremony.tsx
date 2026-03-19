@@ -5,7 +5,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { EASE, EMOTION } from '@/lib/motion';
-import { EMBER_NIGHT, EMBER_GLOW, DEEP_SAFFRON, DRIFTWOOD, BARK } from '@/lib/palette';
+import { COLORS } from '@/lib/stillUsTokens';
 
 interface CompletionCeremonyProps {
   partnerName?: string;
@@ -75,7 +75,7 @@ export default function CompletionCeremony({
     <div
       style={{
         minHeight: '100vh',
-        backgroundColor: EMBER_NIGHT,
+        backgroundColor: COLORS.emberNight,
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
@@ -93,7 +93,7 @@ export default function CompletionCeremony({
               width: '6px',
               height: '6px',
               borderRadius: '50%',
-              backgroundColor: i <= screenIndex ? DEEP_SAFFRON : `${EMBER_GLOW}25`,
+              backgroundColor: i <= screenIndex ? COLORS.deepSaffron : `${COLORS.emberGlow}25`,
             }}
           />
         ))}
@@ -112,7 +112,7 @@ export default function CompletionCeremony({
             fontFamily: 'var(--font-serif)',
             fontSize: '28px',
             fontWeight: 500,
-            color: EMBER_GLOW,
+            color: COLORS.emberGlow,
             marginBottom: '16px',
           }}>
             {screen.title}
@@ -121,7 +121,7 @@ export default function CompletionCeremony({
           <p style={{
             fontFamily: 'var(--font-sans)',
             fontSize: '15px',
-            color: DRIFTWOOD,
+            color: COLORS.driftwood,
             lineHeight: 1.6,
             marginBottom: screen.showReflection ? '24px' : '0',
           }}>
@@ -138,9 +138,9 @@ export default function CompletionCeremony({
                 width: '100%',
                 padding: '14px 16px',
                 borderRadius: '12px',
-                backgroundColor: `${EMBER_GLOW}12`,
-                border: `1px solid ${EMBER_GLOW}20`,
-                color: EMBER_GLOW,
+                backgroundColor: `${COLORS.emberGlow}12`,
+                border: `1px solid ${COLORS.emberGlow}20`,
+                color: COLORS.emberGlow,
                 fontFamily: 'var(--font-sans)',
                 fontSize: '15px',
                 lineHeight: 1.5,
@@ -162,13 +162,13 @@ export default function CompletionCeremony({
           maxWidth: '340px',
           height: '52px',
           borderRadius: '12px',
-          backgroundColor: DEEP_SAFFRON,
+          backgroundColor: COLORS.deepSaffron,
           border: 'none',
           cursor: 'pointer',
           fontFamily: 'var(--font-sans)',
           fontSize: '16px',
           fontWeight: 600,
-          color: BARK,
+          color: COLORS.bark,
         }}
       >
         {isLast ? 'Avsluta' : 'Nästa'}
