@@ -8,6 +8,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { COLORS } from '@/lib/stillUsTokens';
 import { completeSession } from '@/lib/stillUsRpc';
+import { supabase } from '@/integrations/supabase/client';
 import EmberGlowTextarea from './EmberGlowTextarea';
 import LoadingCta from './LoadingCta';
 import BreathingDot from './BreathingDot';
