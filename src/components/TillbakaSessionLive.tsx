@@ -13,6 +13,7 @@ import { COLORS, cardIdFromIndex } from '@/lib/stillUsTokens';
 import { acquireSessionLock } from '@/lib/stillUsRpc';
 import { getTillbakaCard } from '@/data/tillbakaCards';
 import { getThresholdFraming, MOOD_OPTIONS, type ThresholdMood } from '@/data/thresholdFramings';
+import { enqueueWrite, hasPendingWrites, onSyncStatusChange } from '@/lib/offlineQueue';
 import SessionFocusShell from '@/components/SessionFocusShell';
 import SliderReveal from '@/components/still-us/SliderReveal';
 
