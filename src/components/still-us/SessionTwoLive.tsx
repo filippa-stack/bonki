@@ -157,33 +157,36 @@ export default function SessionTwoLive({
 
   // ── Note persistence helper ───────────────────────────────
   const saveNote = useCallback(
-    async (stepId: string, text: string) => {
+    (stepId: string, text: string) => {
       if (!text.trim()) return;
-      const userId = (await supabase.auth.getUser()).data.user?.id;
-      if (!userId) return;
+      const userId = supabase.auth.getSession().then(s => s.data.session?.user?.id);
+      // Fire-and-forget: use cached user id synchronously if available
+      const cachedUser = (supabase as any).auth?.['currentSession']?.user?.id;
 
-      const { data: existing } = await supabase
-        .from('user_card_state')
-        .select('notes')
-        .eq('couple_id', coupleId)
-        .eq('card_id', cardId)
-        .eq('user_id', userId)
-        .maybeSingle();
+      const doSave = (uid: string) => {
+        const cacheKey = `${coupleId}:${cardId}:${uid}`;
+        const prev = localNotesCache.current[cacheKey] ?? {};
+        const merged = { ...prev, [stepId]: text.trim() };
+        localNotesCache.current[cacheKey] = merged;
 
-      const prevNotes = (existing?.notes as Record<string, string>) ?? {};
-      const merged = { ...prevNotes, [stepId]: text.trim() };
-
-      await supabase
-        .from('user_card_state')
-        .upsert(
-          {
+        enqueueWrite({
+          table: 'user_card_state',
+          operation: 'upsert',
+          match: {},
+          data: {
             couple_id: coupleId,
             card_id: cardId,
-            user_id: userId,
+            user_id: uid,
             notes: merged,
           },
-          { onConflict: 'couple_id,user_id,card_id,cycle_id' }
-        );
+        });
+      };
+
+      // Try sync path first, fall back to async
+      supabase.auth.getUser().then(({ data }) => {
+        const uid = data.user?.id;
+        if (uid) doSave(uid);
+      });
     },
     [coupleId, cardId]
   );
