@@ -60,6 +60,11 @@ export interface StillUsHomeState {
   // Touch & couple
   currentTouch: string;
   coupleId: string | null;
+  // Locked state
+  initiatorId: string | null;
+  initiatorName: string | null;
+  partnerNudgeSentAt: string | null;
+  isCurrentUserInitiator: boolean;
   // Loading
   loading: boolean;
   // Actions
