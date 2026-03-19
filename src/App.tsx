@@ -18,6 +18,9 @@ import { NormalizedSessionProvider } from "@/contexts/NormalizedSessionContext";
 import { OptimisticCompletionsProvider } from "@/contexts/OptimisticCompletionsContext";
 import PageTransition from "@/components/PageTransition";
 import MobileOnlyGate from "@/components/MobileOnlyGate";
+import TestModeBanner from "@/components/TestModeBanner";
+import TestModePanel from "@/components/TestModePanel";
+import { detectTestModeParam } from "@/lib/testMode";
 
 import Index from "./pages/Index";
 
@@ -173,6 +176,9 @@ function AppRoutes() {
   );
 }
 
+// Detect ?testmode=true on boot
+detectTestModeParam();
+
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <SiteSettingsProvider>
@@ -182,8 +188,10 @@ const App = () => (
           <BrowserRouter>
             <DevStateProvider>
               <MobileOnlyGate>
+                <TestModeBanner />
                 <DevModeBadge />
                 <AppRoutes />
+                <TestModePanel />
               </MobileOnlyGate>
             </DevStateProvider>
           </BrowserRouter>

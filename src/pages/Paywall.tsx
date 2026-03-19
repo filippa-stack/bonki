@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { supabase } from '@/integrations/supabase/client';
 import { COLORS, slugFromCardIndex } from '@/lib/stillUsTokens';
 import { useAuth } from '@/contexts/AuthContext';
+import { isTestMode } from '@/lib/testMode';
 
 export default function Paywall() {
   const navigate = useNavigate();
@@ -223,6 +224,42 @@ export default function Paywall() {
           }}>
             {error}
           </p>
+        )}
+
+        {/* Test mode bypass — REMOVE BEFORE LAUNCH */}
+        {isTestMode() && (
+          <motion.button
+            whileTap={{ scale: 0.98 }}
+            onClick={async () => {
+              if (!user?.id) return;
+              setProcessing(true);
+              await supabase
+                .from('couple_state')
+                .update({ purchase_status: 'purchased', purchased_by: user.id } as any)
+                .or(`initiator_id.eq.${user.id},partner_id.eq.${user.id}`);
+              if (slug) {
+                navigate(`/session/${slug}/session2-start`, { replace: true });
+              } else {
+                navigate('/?product=still-us', { replace: true });
+              }
+            }}
+            disabled={processing}
+            style={{
+              width: '100%',
+              padding: '12px',
+              borderRadius: '12px',
+              border: '2px dashed #E8913A',
+              backgroundColor: 'transparent',
+              color: '#E8913A',
+              fontSize: '14px',
+              fontFamily: 'monospace',
+              fontWeight: 600,
+              cursor: 'pointer',
+              marginTop: '12px',
+            }}
+          >
+            Test: Hoppa över betalning
+          </motion.button>
         )}
 
         <div
