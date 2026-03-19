@@ -596,8 +596,129 @@ function ActionCard({
       body = 'Er data uppdateras. Vänta en stund.';
       break;
 
-    // TODO: States 7-10 (maintenance, return ritual, partner locked, migration)
-    // These will be implemented in later phases.
+    case 'partner_locked': {
+      const nudgeSentAt = partnerNudgeSentAt ? new Date(partnerNudgeSentAt).getTime() : 0;
+      const cooldownMs = 48 * 60 * 60 * 1000;
+      const isNudgeDisabled = Date.now() - nudgeSentAt < cooldownMs;
+      const hoursRemaining = Math.ceil((cooldownMs - (Date.now() - nudgeSentAt)) / (1000 * 60 * 60));
+      const initName = initiatorName || 'din partner';
+
+      label = 'VECKA 2 · LÅST';
+      title = cardTitle;
+
+      return (
+        <motion.div
+          initial={REDUCED ? false : { opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.25, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+          style={{
+            width: '100%',
+            position: 'relative',
+            padding: '22px',
+            borderRadius: '22px',
+            overflow: 'hidden',
+            backgroundColor: `${COLORS.emberMid}40`,
+            backdropFilter: 'blur(12px)',
+          }}
+        >
+          <p style={{
+            fontFamily: 'var(--font-sans)',
+            fontSize: '11px',
+            textTransform: 'uppercase',
+            letterSpacing: '1.5px',
+            color: COLORS.driftwood,
+            margin: 0,
+          }}>
+            {label}
+          </p>
+
+          <p style={{
+            fontFamily: "'DM Serif Display', serif",
+            fontSize: '20px',
+            color: COLORS.lanternGlow,
+            opacity: 0.5,
+            margin: '8px 0 0',
+          }}>
+            {cardTitle}
+          </p>
+
+          <p style={{
+            fontFamily: 'var(--font-sans)',
+            fontSize: '14px',
+            color: COLORS.lanternGlow,
+            opacity: 0.7,
+            margin: '12px 0 0',
+          }}>
+            {initName} kan låsa upp resten av Still Us.
+          </p>
+
+          <motion.button
+            whileTap={!isNudgeDisabled ? { scale: 0.97 } : undefined}
+            onClick={async () => {
+              if (isNudgeDisabled || !coupleId) return;
+              try {
+                const { supabase } = await import('@/integrations/supabase/client');
+                await supabase.functions.invoke('send-notification-email', {
+                  body: { couple_id: coupleId, notification_type: 'N6', deep_link: '/unlock' },
+                });
+                // Refetch to pick up updated partner_nudge_sent_at
+                onAction('next_week');
+              } catch (err) {
+                console.warn('Nudge send failed:', err);
+              }
+            }}
+            style={{
+              display: 'block',
+              margin: '20px auto 0',
+              width: '100%',
+              maxWidth: '320px',
+              height: '44px',
+              borderRadius: '12px',
+              backgroundColor: COLORS.deepSaffron,
+              border: 'none',
+              cursor: isNudgeDisabled ? 'default' : 'pointer',
+              opacity: isNudgeDisabled ? 0.5 : 1,
+              pointerEvents: isNudgeDisabled ? 'none' : 'auto',
+              fontFamily: 'var(--font-sans)',
+              fontSize: '16px',
+              fontWeight: 600,
+              color: '#FFFFFF',
+            }}
+          >
+            Påminn {initName}
+          </motion.button>
+
+          {isNudgeDisabled && (
+            <p style={{
+              fontFamily: 'var(--font-sans)',
+              fontSize: '12px',
+              color: COLORS.driftwood,
+              textAlign: 'center',
+              margin: '8px 0 0',
+            }}>
+              Påminnelse skickad ✓ (åter om {hoursRemaining}h)
+            </p>
+          )}
+
+          <button
+            onClick={() => onAction('unlock_self')}
+            style={{
+              display: 'block',
+              margin: '16px auto 0',
+              background: 'none',
+              border: 'none',
+              fontFamily: 'var(--font-sans)',
+              fontSize: '14px',
+              color: COLORS.driftwood,
+              cursor: 'pointer',
+              textAlign: 'center',
+            }}
+          >
+            Jag vill låsa upp själv
+          </button>
+        </motion.div>
+      );
+    }
 
     default:
       break;
