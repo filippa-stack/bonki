@@ -623,7 +623,7 @@ function ActionCard({
     if (!confirmed) return;
     try {
       setRestarting(true);
-      await restartProgram({ couple_id: coupleId! });
+      await restartProgram({ couple_id: coupleId!, slider_anchors: buildSliderAnchors(0) });
       window.location.reload();
     } catch (err) {
       console.error('Restart failed:', err);
