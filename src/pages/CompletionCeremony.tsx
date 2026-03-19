@@ -63,6 +63,31 @@ export default function CompletionCeremony() {
         }
       }
 
+      // Check for pending ceremony reflection from a previous crash
+      try {
+        const pending = localStorage.getItem('still_us_pending_ceremony');
+        if (pending) {
+          const parsed = JSON.parse(pending);
+          const savedAt = new Date(parsed.saved_at);
+          const ageHours = (Date.now() - savedAt.getTime()) / (1000 * 60 * 60);
+
+          if (ageHours < 24) {
+            const { error } = await supabase
+              .from('couple_state')
+              .update({ ceremony_reflection: parsed.reflection })
+              .eq('couple_id', couple.couple_id);
+
+            if (!error) {
+              localStorage.removeItem('still_us_pending_ceremony');
+            }
+          } else {
+            setCeremonyReflection(parsed.reflection);
+          }
+        }
+      } catch {
+        // localStorage read failed — continue normally
+      }
+
       setCoupleState(couple);
       setLoading(false);
     };
