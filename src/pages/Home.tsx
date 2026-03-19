@@ -536,6 +536,55 @@ function ActionCard({
   const weekNum = cardIndex + 1;
   const [staleDismissed, setStaleDismissed] = useState(false);
   const [skipping, setSkipping] = useState(false);
+  const [showPacingModal, setShowPacingModal] = useState(false);
+  const [pacingMomentShown, setPacingMomentShown] = useState(false);
+  const [advancing, setAdvancing] = useState(false);
+  const [recentCompletions, setRecentCompletions] = useState(0);
+
+  // Fetch recent completion count for pacing guard
+  useEffect(() => {
+    if (!coupleId || kind !== 'card_complete') return;
+    const sevenDaysAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
+    supabase
+      .from('session_state')
+      .select('card_id', { count: 'exact', head: true })
+      .eq('couple_id', coupleId)
+      .eq('cycle_id', cycleId)
+      .not('completed_at', 'is', null)
+      .gte('completed_at', sevenDaysAgo)
+      .then(({ count }) => setRecentCompletions(count ?? 0));
+  }, [coupleId, cycleId, kind]);
+
+  const shouldShowPacingMoment = recentCompletions >= 3;
+
+  const doAdvance = async () => {
+    if (!coupleId) return;
+    setAdvancing(true);
+    try {
+      const result = await skipCard({
+        couple_id: coupleId,
+        card_id: cardIdFromIndex(cardIndex),
+        skip_type: 'auto_advanced',
+      });
+      if (result.status === 'ceremony') {
+        navigate('/ceremony');
+      } else {
+        await onRefetch();
+      }
+    } catch (err) {
+      console.warn('Advance failed:', err);
+    } finally {
+      setAdvancing(false);
+    }
+  };
+
+  const handleAdvanceNow = () => {
+    if (shouldShowPacingMoment && !pacingMomentShown) {
+      setShowPacingModal(true);
+      return;
+    }
+    doAdvance();
+  };
 
   if (kind === 'loading') {
     return (
