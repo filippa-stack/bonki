@@ -50,8 +50,8 @@ import {
   Session2LivePage,
   CardCompletePage,
   TillbakaPage,
-  CeremonyPage,
 } from "./pages/still-us-routes";
+import CompletionCeremony from "./pages/CompletionCeremony";
 
 const queryClient = new QueryClient();
 
@@ -117,7 +117,7 @@ function ProtectedRoutes() {
               <Route path="/session/:cardId/live-session2" element={<PageTransition><Session2LivePage /></PageTransition>} />
               <Route path="/session/:cardId/complete" element={<PageTransition><CardCompletePage /></PageTransition>} />
               <Route path="/session/:cardId/tillbaka" element={<PageTransition><TillbakaPage /></PageTransition>} />
-              <Route path="/ceremony" element={<PageTransition><CeremonyPage /></PageTransition>} />
+              <Route path="/ceremony" element={<PageTransition><CompletionCeremony /></PageTransition>} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </AnimatePresence>
