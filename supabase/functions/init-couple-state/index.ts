@@ -24,7 +24,10 @@ Deno.serve(async (req: Request) => {
   if (corsResponse) return corsResponse;
   const headers = getCorsHeaders(req);
 
-  try {
+    // ── Parse optional slider_anchors from body ─────────────────
+    const body = await req.json().catch(() => ({}));
+    const sliderAnchors = body?.slider_anchors ?? null;
+
     // ── Auth: verify JWT ───────────────────────────────────────
     const authHeader = req.headers.get("Authorization");
     if (!authHeader?.startsWith("Bearer ")) {
