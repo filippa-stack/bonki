@@ -166,6 +166,9 @@ export function useStillUsHome(): StillUsHomeState {
       const lastActivityAt = cs.last_activity;
       const returnRitualShown = cs.return_ritual_shown_for_card === String(cardIndex);
       const tier2Name = cs.tier_2_partner_name ?? null;
+      const initiatorId = cs.initiator_id ?? null;
+      const isCurrentUserInitiator = initiatorId === userId;
+      const partnerNudgeSentAt = cs.partner_nudge_sent_at ?? null;
 
       // Card info
       const cardEntry = CARD_SEQUENCE[cardIndex] ?? CARD_SEQUENCE[0];
