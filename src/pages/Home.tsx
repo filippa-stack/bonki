@@ -49,12 +49,12 @@ export default function Home() {
   const shouldShowRitual = homeState.isDormant && !homeState.returnRitualShown && !homeState.loading && !showInactivityOverlay;
   const layer = getLayerForCard(homeState.cardIndex);
 
-  // ── Ceremony redirect guard (highest priority) ──
+  // ── Ceremony redirect guard (highest priority, but not if dissolved) ──
   useEffect(() => {
-    if (homeState.phase === 'ceremony') {
+    if (homeState.phase === 'ceremony' && !homeState.dissolvedAt) {
       navigate('/ceremony', { replace: true });
     }
-  }, [homeState.phase, navigate]);
+  }, [homeState.phase, homeState.dissolvedAt, navigate]);
 
   // ── Polling via pollCoupleState every 15s ──
   useEffect(() => {
