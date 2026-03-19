@@ -19,7 +19,7 @@ export const COLORS = {
   konflikten: '#D4836D',
   langtan: '#C4A0A0',
   valet: '#E8913A',
-  bark: '#2C2420',
+  
 } as const;
 
 // ── Layer color mapping (0-indexed card_index ranges) ───────

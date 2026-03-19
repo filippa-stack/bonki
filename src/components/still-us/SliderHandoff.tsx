@@ -73,7 +73,7 @@ export default function SliderHandoff({ partnerName, cardIndex, onPartnerReady, 
                 fontFamily: 'var(--font-sans)',
                 fontSize: '16px',
                 fontWeight: 600,
-                color: COLORS.bark,
+                color: COLORS.emberNight,
               }}
             >
               Jag har lämnat över
@@ -115,7 +115,7 @@ export default function SliderHandoff({ partnerName, cardIndex, onPartnerReady, 
                 fontFamily: 'var(--font-sans)',
                 fontSize: '16px',
                 fontWeight: 600,
-                color: COLORS.bark,
+                color: COLORS.emberNight,
               }}
             >
               Starta check-in

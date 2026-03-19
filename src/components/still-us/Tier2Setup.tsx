@@ -89,7 +89,7 @@ export default function Tier2Setup({ onComplete, onBack }: Tier2SetupProps) {
             fontFamily: 'var(--font-sans)',
             fontSize: '16px',
             fontWeight: 600,
-            color: COLORS.bark,
+            color: COLORS.emberNight,
             opacity: name.trim() ? 1 : 0.5,
           }}
         >

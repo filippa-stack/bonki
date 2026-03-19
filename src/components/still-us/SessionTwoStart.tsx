@@ -114,7 +114,7 @@ export default function SessionTwoStart({
             fontFamily: 'var(--font-sans)',
             fontSize: '16px',
             fontWeight: 600,
-            color: COLORS.bark,
+            color: COLORS.emberNight,
           }}
         >
           Starta del 2

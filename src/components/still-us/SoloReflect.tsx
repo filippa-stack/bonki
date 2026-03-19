@@ -95,7 +95,7 @@ export default function SoloReflect({ cardIndex, onComplete, onSkip }: SoloRefle
             fontFamily: 'var(--font-sans)',
             fontSize: '16px',
             fontWeight: 600,
-            color: COLORS.bark,
+            color: COLORS.emberNight,
             opacity: text.trim() ? 1 : 0.5,
             marginBottom: '8px',
           }}
