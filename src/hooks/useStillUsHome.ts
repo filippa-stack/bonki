@@ -66,6 +66,7 @@ export interface StillUsHomeState {
   currentTouch: string;
   coupleId: string | null;
   coupleCreatedAt: string | null;
+  dissolvedAt: string | null;
   // Locked state
   initiatorId: string | null;
   initiatorName: string | null;
