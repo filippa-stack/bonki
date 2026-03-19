@@ -307,7 +307,7 @@ export function useStillUsHome(): StillUsHomeState {
         returnRitualShown,
         lastActivityAt: lastActivityAt ?? null,
         currentTouch,
-        coupleId: spaceId,
+        coupleId: realCoupleId,
         coupleCreatedAt: cs.created_at ?? null,
         dissolvedAt: cs.dissolved_at ?? null,
         initiatorId,
