@@ -22,7 +22,7 @@ export default function Paywall() {
         .or(`initiator_id.eq.${user.id},partner_id.eq.${user.id}`)
         .maybeSingle();
       if (cs) {
-        setSlug(`kort-${cs.current_card_index + 1}`);
+        setSlug(slugFromCardIndex(cs.current_card_index) ?? `su-01-smallest-we`);
       }
     })();
   }, [user?.id]);
