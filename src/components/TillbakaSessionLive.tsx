@@ -77,6 +77,15 @@ export default function TillbakaSessionLive() {
 
   // Emotional exit
   const [showEmotionalExit, setShowEmotionalExit] = useState(false);
+  const [pendingSync, setPendingSync] = useState(false);
+  const localNotesCache = useRef<Record<string, Record<string, string>>>({});
+
+  useEffect(() => {
+    const cleanup = onSyncStatusChange(() => {
+      setPendingSync(hasPendingWrites());
+    });
+    return cleanup;
+  }, []);
 
   const isTier1 = coupleState?.partner_tier === 'tier_1';
   const showFastEnTanke = !isTier1;
