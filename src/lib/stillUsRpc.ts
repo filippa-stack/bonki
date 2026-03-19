@@ -101,10 +101,12 @@ export interface SkipCardParams {
   couple_id: string;
   card_id: string;
   skip_type: 'user_skipped' | 'auto_advanced';
+  slider_anchors?: ReturnType<typeof buildSliderAnchors>;
 }
 export interface SkipCardResult {
   status: 'skipped' | 'ceremony' | 'dissolved' | 'error';
   new_card_index?: number;
+  partner_link_token?: string;
 }
 
 export interface ResetSliderCheckinParams {
