@@ -2,7 +2,8 @@ import { useEffect, useState, useRef, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { COLORS, getLayerForCard } from '@/lib/stillUsTokens';
-import sliderPrompts from '@/data/sliderPrompts';
+import sliderPrompts, { getSliderSet } from '@/data/sliderPrompts';
+import { computeJourneyInsights } from '@/lib/stillUsRpc';
 
 interface CoupleStateData {
   phase: string;
