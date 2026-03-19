@@ -93,6 +93,7 @@ const EMPTY_STATE: StillUsHomeState = {
   isDormant: false,
   dormancyDays: 0,
   returnRitualShown: false,
+  lastActivityAt: null,
   currentTouch: 'slider',
   coupleId: null,
   initiatorId: null,
