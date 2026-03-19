@@ -56,6 +56,7 @@ import TillbakaSessionLive from "./components/TillbakaSessionLive";
 import TillbakaComplete from "./pages/TillbakaComplete";
 import Journey from "./pages/Journey";
 import Paywall from "./pages/Paywall";
+import SoloReflect from "./pages/SoloReflect";
 
 const queryClient = new QueryClient();
 
@@ -123,6 +124,7 @@ function ProtectedRoutes() {
               <Route path="/session/:cardId/tillbaka" element={<PageTransition><TillbakaSessionLive /></PageTransition>} />
               <Route path="/session/:cardId/tillbaka-complete" element={<PageTransition><TillbakaComplete /></PageTransition>} />
               <Route path="/journey" element={<PageTransition><Journey /></PageTransition>} />
+              <Route path="/solo-reflect/:cardId" element={<PageTransition><SoloReflect /></PageTransition>} />
               <Route path="/unlock" element={<PageTransition><Paywall /></PageTransition>} />
               <Route path="/ceremony" element={<PageTransition><CompletionCeremony /></PageTransition>} />
               <Route path="*" element={<NotFound />} />
