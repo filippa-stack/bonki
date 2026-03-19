@@ -29,7 +29,7 @@ export default function Session1CompletePage() {
         .maybeSingle();
 
       if (!cs) {
-        navigate('/', { replace: true });
+        navigate('/?product=still-us', { replace: true });
         return;
       }
 
