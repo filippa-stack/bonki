@@ -279,6 +279,7 @@ export function useStillUsHome(): StillUsHomeState {
         cardTitle,
         layerName,
         phase,
+        cycleId,
         purchaseStatus,
         partnerTier,
         partnerId: cs.partner_id ?? null,
