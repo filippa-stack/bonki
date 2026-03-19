@@ -290,37 +290,41 @@ export default function SessionOneLive() {
     }
   }, [step]);
 
-  // ── Save note to user_card_state ──────────────────────────
+  // ── Offline sync status indicator ──────────────────────────
+  const [pendingSync, setPendingSync] = useState(false);
+
+  useEffect(() => {
+    const cleanup = onSyncStatusChange(() => {
+      setPendingSync(hasPendingWrites());
+    });
+    return cleanup;
+  }, []);
+
+  // ── Save note to user_card_state (offline-first) ──────────
+  const localNotesCache = useRef<Record<string, Record<string, string>>>({});
+
   const saveNote = useCallback(
-    async (stepId: string) => {
+    (stepId: string) => {
       const text = notes[stepId]?.trim();
       if (!text || !coupleState || !backendCardId || !user?.id) return;
 
-      // Fetch existing notes, merge, upsert
-      const { data: existing } = await supabase
-        .from('user_card_state')
-        .select('notes')
-        .eq('couple_id', coupleState.couple_id)
-        .eq('user_id', user.id)
-        .eq('card_id', backendCardId)
-        .eq('cycle_id', coupleState.cycle_id)
-        .maybeSingle();
-
-      const existingNotes = (existing?.notes as Record<string, string>) ?? {};
+      const cacheKey = `${coupleState.couple_id}_${user.id}_${backendCardId}_${coupleState.cycle_id}`;
+      const existingNotes = localNotesCache.current[cacheKey] ?? {};
       const merged = { ...existingNotes, [stepId]: text };
+      localNotesCache.current[cacheKey] = merged;
 
-      await supabase
-        .from('user_card_state')
-        .upsert(
-          {
-            couple_id: coupleState.couple_id,
-            user_id: user.id,
-            card_id: backendCardId,
-            cycle_id: coupleState.cycle_id,
-            notes: merged as any,
-          },
-          { onConflict: 'couple_id,user_id,card_id,cycle_id' },
-        );
+      enqueueWrite({
+        table: 'user_card_state',
+        operation: 'upsert',
+        match: {},
+        data: {
+          couple_id: coupleState.couple_id,
+          user_id: user.id,
+          card_id: backendCardId,
+          cycle_id: coupleState.cycle_id,
+          notes: merged,
+        },
+      });
     },
     [notes, coupleState, backendCardId, user?.id],
   );
