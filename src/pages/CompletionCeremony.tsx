@@ -153,11 +153,13 @@ export default function CompletionCeremony() {
     const threshold = 50;
 
     if (diff > threshold && currentScreen < 4) {
+      // Block Screen 4 → 5 until save succeeds
+      if (currentScreen === 3 && !screen4Complete) return;
       setCurrentScreen(prev => prev + 1);
     } else if (diff < -threshold && currentScreen > 0) {
       setCurrentScreen(prev => prev - 1);
     }
-  }, [swipeEnabled, currentScreen]);
+  }, [swipeEnabled, currentScreen, screen4Complete]);
 
   // ── Timeline data (placeholder takeaways) ──
   const timelineNodes = sliderPrompts.map((card, index) => {
