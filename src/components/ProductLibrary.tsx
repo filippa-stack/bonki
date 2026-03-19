@@ -870,7 +870,7 @@ export default function ProductLibrary() {
                     borderRadius: '12px',
                     padding: '3px 10px',
                   }}>
-                    ✦ Vecka 1 gratis
+                    ✦ Samtal 1 gratis
                   </span>
                 </div>
               </div>
