@@ -27,6 +27,8 @@ interface ShareProps {
   coupleId?: string;
   /** Current card_id */
   cardId?: string;
+  /** Current card slug for solo-reflect routing */
+  cardSlug?: string;
   /** Current card title (for returning layout) */
   cardTitle?: string;
   /** Current week number (1-indexed) */
