@@ -6,14 +6,15 @@
 import { useState, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
-import { COLORS, cardIndexFromSlug, cardIdFromIndex } from '@/lib/stillUsTokens';
+import { COLORS } from '@/lib/stillUsTokens';
 import { completeSession } from '@/lib/stillUsRpc';
 
 export default function TillbakaComplete() {
   const { cardId: slug } = useParams<{ cardId: string }>();
   const navigate = useNavigate();
-  const cardIndex = cardIndexFromSlug(slug ?? '');
-  const backendCardId = cardIdFromIndex(cardIndex);
+  // slug format: "tillbaka-0", "tillbaka-1", etc.
+  const tillbakaIndex = parseInt(slug?.replace('tillbaka-', '') ?? '0', 10) || 0;
+  const backendCardId = `tillbaka_${tillbakaIndex + 1}`;
 
   const [takeaway, setTakeaway] = useState('');
   const [saving, setSaving] = useState(false);
