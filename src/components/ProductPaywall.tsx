@@ -64,13 +64,7 @@ export default function ProductPaywall({ product, onAccessGranted, cardId, curre
     : (product.paywallDescription ?? `Lås upp alla ${totalCards} samtalsämnen i ${product.name}.`);
 
   // Back navigation
-  const backTo = (() => {
-    if (cardId) {
-      const card = product.cards.find(c => c.id === cardId);
-      if (card) return `/product/${product.slug}/portal/${card.categoryId}`;
-    }
-    return `/product/${product.slug}`;
-  })();
+  const backTo = `/product/${product.slug}`;
 
   const handlePurchase = async () => {
     if (!user) return;
