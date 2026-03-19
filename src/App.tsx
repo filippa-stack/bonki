@@ -53,6 +53,7 @@ import {
 } from "./pages/still-us-routes";
 import CompletionCeremony from "./pages/CompletionCeremony";
 import TillbakaSessionLive from "./components/TillbakaSessionLive";
+import TillbakaComplete from "./pages/TillbakaComplete";
 
 const queryClient = new QueryClient();
 
