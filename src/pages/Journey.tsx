@@ -44,8 +44,9 @@ export default function Journey() {
   const [tillbakaEntries, setTillbakaEntries] = useState<any[]>([]);
   const [ceremonyReflection, setCeremonyReflection] = useState<string | null>(null);
 
+  // Initial load: get couple_state and set maxCycle
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchCouple = async () => {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) return;
 
@@ -57,20 +58,37 @@ export default function Journey() {
 
       if (!couple) return;
       setCoupleState(couple);
+      setMaxCycle(couple.cycle_id);
+      if (selectedCycle === null) setSelectedCycle(couple.cycle_id);
+    };
+    fetchCouple();
+  }, []);
+
+  // Re-fetch data whenever selectedCycle changes
+  useEffect(() => {
+    if (!coupleState || selectedCycle === null) return;
+
+    const fetchCycleData = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return;
+
+      const cycleId = selectedCycle;
 
       const [{ data: cardStates }, { data: sessionStates }] = await Promise.all([
         supabase
           .from('user_card_state')
           .select('card_id, slider_responses, checkin_reflection, session_1_takeaway, takeaway, notes, slider_completed_at')
           .eq('user_id', user.id)
-          .eq('couple_id', couple.couple_id)
-          .eq('cycle_id', couple.cycle_id),
+          .eq('couple_id', coupleState.couple_id)
+          .eq('cycle_id', cycleId),
         supabase
           .from('session_state')
           .select('card_id, completed_at, skip_status, session_type')
-          .eq('couple_id', couple.couple_id)
-          .eq('cycle_id', couple.cycle_id),
+          .eq('couple_id', coupleState.couple_id)
+          .eq('cycle_id', cycleId),
       ]);
+
+      const currentCardIndex = cycleId === coupleState.cycle_id ? coupleState.current_card_index : 22;
 
       const entries: CardEntry[] = sliderPrompts.map((card, index) => {
         const cardId = card.cardId;
@@ -79,7 +97,7 @@ export default function Journey() {
         const layer = getLayerForCard(index);
         const isCompleted = !!sessState?.completed_at;
         const isSkipped = sessState?.skip_status === 'user_skipped' || sessState?.skip_status === 'auto_advanced';
-        const isCurrent = index === couple.current_card_index && !isCompleted;
+        const isCurrent = index === currentCardIndex && !isCompleted && cycleId === coupleState.cycle_id;
 
         return {
           cardIndex: index,
@@ -99,31 +117,34 @@ export default function Journey() {
       });
 
       setCardEntries(entries);
+      setExpandedCards(new Set());
 
       // Journey insights
       try {
         const insightsResult = await computeJourneyInsights({
-          couple_id: couple.couple_id,
-          cycle_id: couple.cycle_id,
+          couple_id: coupleState.couple_id,
+          cycle_id: cycleId,
         });
         setInsights(insightsResult);
-      } catch {}
+      } catch {
+        setInsights(null);
+      }
 
-      // Tillbaka entries (if in maintenance)
-      if (couple.phase === 'maintenance' || couple.phase === 'second_cycle') {
+      // Tillbaka entries
+      if (coupleState.phase === 'maintenance' || coupleState.phase === 'second_cycle') {
         const [{ data: tillbakaStates }, { data: tillbakaTakeaways }] = await Promise.all([
           supabase
             .from('session_state')
             .select('card_id, completed_at, session_type')
-            .eq('couple_id', couple.couple_id)
-            .eq('cycle_id', couple.cycle_id)
+            .eq('couple_id', coupleState.couple_id)
+            .eq('cycle_id', cycleId)
             .eq('session_type', 'tillbaka'),
           supabase
             .from('user_card_state')
             .select('card_id, takeaway')
             .eq('user_id', user.id)
-            .eq('couple_id', couple.couple_id)
-            .eq('cycle_id', couple.cycle_id),
+            .eq('couple_id', coupleState.couple_id)
+            .eq('cycle_id', cycleId),
         ]);
 
         const tbEntries = tillbakaCards.map((card, index) => {
@@ -139,25 +160,25 @@ export default function Journey() {
           };
         });
         setTillbakaEntries(tbEntries);
+      } else {
+        setTillbakaEntries([]);
       }
 
       // Ceremony reflection
-      if (couple.ceremony_reflection) {
-        setCeremonyReflection(couple.ceremony_reflection);
-      } else if (couple.cycle_id > 1) {
+      if (cycleId === coupleState.cycle_id && coupleState.ceremony_reflection) {
+        setCeremonyReflection(coupleState.ceremony_reflection);
+      } else {
         const { data: archive } = await supabase
           .from('ceremony_reflection_archive')
           .select('reflection')
-          .eq('couple_id', couple.couple_id)
-          .eq('cycle_id', couple.cycle_id - 1)
+          .eq('couple_id', coupleState.couple_id)
+          .eq('cycle_id', cycleId)
           .maybeSingle();
-        if (archive) setCeremonyReflection(archive.reflection);
+        setCeremonyReflection(archive?.reflection ?? null);
       }
-
-      setSelectedCycle(couple.cycle_id);
     };
-    fetchData();
-  }, []);
+    fetchCycleData();
+  }, [coupleState, selectedCycle]);
 
   const toggleCard = useCallback((index: number) => {
     setExpandedCards(prev => {
