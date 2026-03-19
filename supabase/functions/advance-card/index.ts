@@ -16,6 +16,7 @@
 import { getCorsHeaders, handleCors } from "../_shared/cors.ts";
 import { createServiceClient } from "../_shared/supabase-client.ts";
 import { createSessionStateForCard } from "../_shared/create-session-state.ts";
+import { signLinkToken } from "../_shared/jwt-utils.ts";
 
 const TERMINAL_CARD_INDEX = 21;
 
@@ -137,10 +138,18 @@ Deno.serve(async (req: Request) => {
     const newCardIndex = current_card_index + 1;
     const newCardId = cardIdFromIndex(newCardIndex);
 
+    // Regenerate partner_link_token for new card
+    const newLinkToken = await signLinkToken({
+      couple_id,
+      card_id: newCardId,
+      card_index: newCardIndex,
+    });
+
     await supabase.from("couple_state").update({
       current_card_index: newCardIndex,
       current_touch: "slider",
       last_activity: now,
+      partner_link_token: newLinkToken,
     }).eq("couple_id", couple_id);
 
     // RULE 4: Create session_state for new card (CRITICAL invariant)
@@ -159,7 +168,7 @@ Deno.serve(async (req: Request) => {
       card_index: newCardIndex,
     });
 
-    return jsonResponse({ status: "advanced", new_card_index: newCardIndex }, 200, headers);
+    return jsonResponse({ status: "advanced", new_card_index: newCardIndex, partner_link_token: newLinkToken }, 200, headers);
   } catch (err) {
     console.error("advance-card error:", err);
     return jsonResponse({ status: "error", message: String(err) }, 500, headers);

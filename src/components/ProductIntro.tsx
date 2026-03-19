@@ -1,9 +1,11 @@
 import { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 import { productIntros } from '@/data/productIntros';
 import { allProducts } from '@/data/products';
 import { useCardImage } from '@/hooks/useCardImage';
 import { supabase } from '@/integrations/supabase/client';
+import { initCoupleState } from '@/lib/stillUsRpc';
 import { LANTERN_GLOW, DRIFTWOOD, MIDNIGHT_INK, BONKI_ORANGE, DEEP_SAFFRON } from '@/lib/palette';
 
 // ── Illustration imports (same as product homes) ──
@@ -89,8 +91,10 @@ export default function ProductIntro({
   onComplete,
   onStartFreeCard,
 }: ProductIntroProps) {
+  const navigate = useNavigate();
   const introData = productIntros[productId];
   const [expanded, setExpanded] = useState(false);
+  const [initiating, setInitiating] = useState(false);
   const freeCardImageUrl = useCardImage(freeCardId);
   const isStillUs = productId === 'still_us';
 
@@ -128,10 +132,27 @@ export default function ProductIntro({
     ? introData.slides.map((s) => s.signoff).filter(Boolean).join('\n\n')
     : '';
 
-  const handleCta = () => {
+  const handleCta = async () => {
     // Persist seen flag server-side (fire-and-forget)
     markProductIntroSeenServer(productId);
-    if (freeCardId && onStartFreeCard) {
+
+    if (isStillUs) {
+      // Still Us: init couple_state, then navigate to first check-in
+      setInitiating(true);
+      try {
+        const result = await initCoupleState();
+        if (result.couple_id) {
+          navigate('/check-in/su-01-smallest-we');
+          return;
+        }
+      } catch (err) {
+        console.error('initCoupleState failed:', err);
+      } finally {
+        setInitiating(false);
+      }
+      // Fallback: complete normally
+      onComplete();
+    } else if (freeCardId && onStartFreeCard) {
       onStartFreeCard();
     } else {
       onComplete();
@@ -468,6 +489,7 @@ export default function ProductIntro({
         >
           <button
             onClick={handleCta}
+            disabled={initiating}
             style={{
               width: '100%',
               height: '56px',
@@ -480,6 +502,7 @@ export default function ProductIntro({
               fontSize: '17px',
               fontWeight: 600,
               color: MIDNIGHT_INK,
+              opacity: initiating ? 0.7 : 1,
               transition: 'opacity 150ms ease, transform 140ms cubic-bezier(0.4, 0, 0.2, 1)',
             }}
             onMouseDown={(e) => {

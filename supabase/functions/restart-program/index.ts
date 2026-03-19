@@ -15,6 +15,7 @@
 import { getCorsHeaders, handleCors } from "../_shared/cors.ts";
 import { createServiceClient } from "../_shared/supabase-client.ts";
 import { createSessionStateForCard } from "../_shared/create-session-state.ts";
+import { signLinkToken } from "../_shared/jwt-utils.ts";
 
 /** 1-indexed card_id convention: card_index 0 → "card_1" */
 function cardIdFromIndex(index: number): string {
@@ -71,6 +72,16 @@ Deno.serve(async (req: Request) => {
       );
     }
 
+    // RULE 4: Create session_state for card 0 of new cycle (CRITICAL)
+    const firstCardId = cardIdFromIndex(0); // "card_1"
+
+    // Regenerate partner_link_token for card 0 of new cycle
+    const newLinkToken = await signLinkToken({
+      couple_id,
+      card_id: firstCardId,
+      card_index: 0,
+    });
+
     // Reset couple_state for new cycle
     await supabase.from("couple_state").update({
       ceremony_reflection: null,
@@ -79,13 +90,12 @@ Deno.serve(async (req: Request) => {
       current_touch: "slider",
       phase: "second_cycle",
       last_activity: now,
+      partner_link_token: newLinkToken,
     }).eq("couple_id", couple_id);
 
-    // RULE 4: Create session_state for card 0 of new cycle (CRITICAL)
-    const firstCardId = cardIdFromIndex(0); // "card_1"
     await createSessionStateForCard(supabase, couple_id, firstCardId, newCycleId, "program");
 
-    return jsonResponse({ status: "restarted", new_cycle_id: newCycleId }, 200, headers);
+    return jsonResponse({ status: "restarted", new_cycle_id: newCycleId, partner_link_token: newLinkToken }, 200, headers);
   } catch (err) {
     console.error("restart-program error:", err);
     return jsonResponse({ status: "error", message: String(err) }, 500, headers);
