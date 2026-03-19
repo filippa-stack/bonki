@@ -236,6 +236,32 @@ export default function ProductIntro({
         </motion.div>
       )}
 
+      {/* ── Back button ── */}
+      <motion.button
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.3, duration: 0.5 }}
+        onClick={() => {
+          localStorage.removeItem('bonki-last-active-product');
+          navigate('/', { replace: true });
+        }}
+        style={{
+          position: 'absolute',
+          top: 'max(12px, env(safe-area-inset-top, 12px))',
+          left: '16px',
+          zIndex: 10,
+          background: 'none',
+          border: 'none',
+          cursor: 'pointer',
+          padding: '8px',
+          color: LANTERN_GLOW,
+          opacity: 0.7,
+        }}
+        aria-label="Tillbaka"
+      >
+        <ArrowLeft size={24} />
+      </motion.button>
+
       {/* ── Content area ── */}
       <div
         style={{
