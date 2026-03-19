@@ -92,6 +92,10 @@ const EMPTY_STATE: StillUsHomeState = {
   returnRitualShown: false,
   currentTouch: 'slider',
   coupleId: null,
+  initiatorId: null,
+  initiatorName: null,
+  partnerNudgeSentAt: null,
+  isCurrentUserInitiator: true,
   loading: true,
   refetch: async () => {},
 };
