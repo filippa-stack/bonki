@@ -501,30 +501,6 @@ export default function Home() {
   );
 }
 
-/* ── Bottom nav tab ── */
-function NavTab({ label, active, onClick }: { label: string; active: boolean; onClick: () => void }) {
-  return (
-    <button
-      onClick={onClick}
-      style={{
-        background: 'none',
-        border: 'none',
-        fontFamily: 'var(--font-sans)',
-        fontSize: '10px',
-        fontWeight: 600,
-        letterSpacing: '1px',
-        textTransform: 'uppercase',
-        color: active ? COLORS.deepSaffron : COLORS.driftwood,
-        cursor: active ? 'default' : 'pointer',
-        padding: '8px 16px',
-        opacity: active ? 1 : 0.7,
-        transition: 'color 0.2s, opacity 0.2s',
-      }}
-    >
-      {label}
-    </button>
-  );
-}
 
 /* ── Action Card rendering (States 1-6, 7/7b, 9, 10) ── */
 function ActionCard({
