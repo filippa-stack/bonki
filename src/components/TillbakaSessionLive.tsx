@@ -374,7 +374,7 @@ export default function TillbakaSessionLive() {
       }
     }
 
-    navigate(`/session/${slug}/complete`);
+    navigate(`/session/${slug}/tillbaka-complete`);
   }, [navigate, slug, q2Note, coupleState, backendCardId]);
 
   // ── Render ────────────────────────────────────────────────
