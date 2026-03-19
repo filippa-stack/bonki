@@ -89,10 +89,12 @@ export interface AdvanceCardParams {
   card_id: string;
   takeaway?: string | null;
   partner_takeaway?: string | null;
+  slider_anchors?: ReturnType<typeof buildSliderAnchors>;
 }
 export interface AdvanceCardResult {
   status: 'advanced' | 'ceremony' | 'dissolved' | 'error';
   new_card_index?: number;
+  partner_link_token?: string;
 }
 
 export interface SkipCardParams {
