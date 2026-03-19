@@ -195,7 +195,7 @@ export function useStillUsHome(): StillUsHomeState {
       // Card info
       const cardEntry = CARD_SEQUENCE[cardIndex] ?? CARD_SEQUENCE[0];
       const cardSlug = cardEntry.cardId; // slug used for routing
-      const backendCardId = cardIdFromIndex(cardIndex); // 'card_N' for DB queries
+      const backendCardId = backendCardIdForQuery; // 'card_N' for DB queries
       const cardTitle = cardEntry.title;
       const layer = LAYERS[cardEntry.layerIndex] ?? LAYERS[0];
       const layerName = layer.name;
