@@ -89,6 +89,24 @@ export default function CompletionCeremony() {
         // localStorage read failed — continue normally
       }
 
+      // Check for pending phase transition
+      try {
+        const pendingPhase = localStorage.getItem('still_us_pending_phase_transition');
+        if (pendingPhase) {
+          const parsed = JSON.parse(pendingPhase);
+          const { error } = await supabase
+            .from('couple_state')
+            .update({ phase: 'maintenance' })
+            .eq('couple_id', parsed.couple_id);
+
+          if (!error) {
+            localStorage.removeItem('still_us_pending_phase_transition');
+            navigate('/');
+            return;
+          }
+        }
+      } catch {}
+
       setCoupleState(couple);
       setLoading(false);
     };
