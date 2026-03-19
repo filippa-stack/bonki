@@ -132,10 +132,12 @@ export interface ComputeJourneyInsightsResult {
 
 export interface RestartProgramParams {
   couple_id: string;
+  slider_anchors?: ReturnType<typeof buildSliderAnchors>;
 }
 export interface RestartProgramResult {
   status: 'restarted' | 'dissolved' | 'error';
   new_cycle_id?: number;
+  partner_link_token?: string;
 }
 
 export interface DissolveCoupleParams {
