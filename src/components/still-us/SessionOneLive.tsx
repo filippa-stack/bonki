@@ -53,7 +53,7 @@ interface CoupleStateRow {
 }
 
 // ── Session question lookup from authored content ──
-function getSessionQuestions(cardIndex: number): { oppna: SessionQuestion[]; vand: SessionQuestion } {
+function getSessionQuestions(cardIndex: number): { oppna: SessionQuestionLocal[]; vand: SessionQuestionLocal } {
   const content = getSessionContent(cardIndex);
   if (!content) {
     return {
