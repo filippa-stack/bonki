@@ -95,7 +95,7 @@ export default function TillbakaSessionLive({
               fontFamily: 'var(--font-serif)',
               fontSize: '22px',
               fontWeight: 500,
-              color: COLORS.emberGlow,
+              color: COLORS.lanternGlow,
               lineHeight: 1.4,
               textWrap: 'balance',
               marginBottom: '20px',
