@@ -15,6 +15,7 @@ import { useStillUsHome, type ActionCardKind } from '@/hooks/useStillUsHome';
 import { TOTAL_PROGRAM_CARDS } from '@/data/stillUsSequence';
 import { COLORS, getLayerForCard } from '@/lib/stillUsTokens';
 import { pollCoupleState, resetSliderCheckin, skipCard } from '@/lib/stillUsRpc';
+import { supabase } from '@/integrations/supabase/client';
 import { cardIdFromIndex } from '@/lib/stillUsTokens';
 import JourneyProgress from '@/components/still-us/JourneyProgress';
 import tillbakaCards from '@/data/tillbakaCards';
@@ -373,6 +374,7 @@ export default function Home() {
             initiatorName={homeState.initiatorName}
             partnerNudgeSentAt={homeState.partnerNudgeSentAt}
             coupleId={homeState.coupleId}
+            cycleId={homeState.cycleId}
             maintenanceCardIndex={homeState.maintenanceCardIndex}
             maintenanceTillbakaTitle={homeState.maintenanceTillbakaTitle}
             maintenanceAvailable={homeState.maintenanceAvailable}
@@ -501,6 +503,7 @@ function ActionCard({
   initiatorName,
   partnerNudgeSentAt,
   coupleId,
+  cycleId,
   maintenanceCardIndex,
   maintenanceTillbakaTitle,
   maintenanceAvailable,
@@ -520,6 +523,7 @@ function ActionCard({
   initiatorName: string | null;
   partnerNudgeSentAt: string | null;
   coupleId: string | null;
+  cycleId: number;
   maintenanceCardIndex: number;
   maintenanceTillbakaTitle: string;
   maintenanceAvailable: boolean;
@@ -533,6 +537,55 @@ function ActionCard({
   const weekNum = cardIndex + 1;
   const [staleDismissed, setStaleDismissed] = useState(false);
   const [skipping, setSkipping] = useState(false);
+  const [showPacingModal, setShowPacingModal] = useState(false);
+  const [pacingMomentShown, setPacingMomentShown] = useState(false);
+  const [advancing, setAdvancing] = useState(false);
+  const [recentCompletions, setRecentCompletions] = useState(0);
+
+  // Fetch recent completion count for pacing guard
+  useEffect(() => {
+    if (!coupleId || kind !== 'card_complete') return;
+    const sevenDaysAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
+    supabase
+      .from('session_state')
+      .select('card_id', { count: 'exact', head: true })
+      .eq('couple_id', coupleId)
+      .eq('cycle_id', cycleId)
+      .not('completed_at', 'is', null)
+      .gte('completed_at', sevenDaysAgo)
+      .then(({ count }) => setRecentCompletions(count ?? 0));
+  }, [coupleId, cycleId, kind]);
+
+  const shouldShowPacingMoment = recentCompletions >= 3;
+
+  const doAdvance = async () => {
+    if (!coupleId) return;
+    setAdvancing(true);
+    try {
+      const result = await skipCard({
+        couple_id: coupleId,
+        card_id: cardIdFromIndex(cardIndex),
+        skip_type: 'auto_advanced',
+      });
+      if (result.status === 'ceremony') {
+        navigate('/ceremony');
+      } else {
+        await onRefetch();
+      }
+    } catch (err) {
+      console.warn('Advance failed:', err);
+    } finally {
+      setAdvancing(false);
+    }
+  };
+
+  const handleAdvanceNow = () => {
+    if (shouldShowPacingMoment && !pacingMomentShown) {
+      setShowPacingModal(true);
+      return;
+    }
+    doAdvance();
+  };
 
   if (kind === 'loading') {
     return (
@@ -715,22 +768,122 @@ function ActionCard({
       body = 'Veckans samtal är klart.';
       if (cardIndex < TOTAL_PROGRAM_CARDS - 1) {
         belowCard = (
-          <button
-            onClick={() => onAction('next_week')}
-            style={{
-              display: 'block',
-              margin: '12px auto 0',
-              background: 'none',
-              border: 'none',
-              fontFamily: 'var(--font-sans)',
-              fontSize: '14px',
-              color: COLORS.driftwood,
-              cursor: 'pointer',
-              padding: '8px 0',
-            }}
-          >
-            Börja nästa vecka nu
-          </button>
+          <>
+            <button
+              disabled={advancing}
+              onClick={handleAdvanceNow}
+              style={{
+                display: 'block',
+                margin: '12px auto 0',
+                background: 'none',
+                border: 'none',
+                fontFamily: 'var(--font-sans)',
+                fontSize: '14px',
+                color: COLORS.driftwood,
+                cursor: advancing ? 'default' : 'pointer',
+                padding: '8px 0',
+                textDecoration: 'underline',
+                opacity: advancing ? 0.5 : 1,
+              }}
+            >
+              {advancing ? 'Laddar...' : 'Börja nästa vecka nu'}
+            </button>
+
+            {/* Pacing modal */}
+            <AnimatePresence>
+              {showPacingModal && (
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  style={{
+                    position: 'fixed',
+                    inset: 0,
+                    zIndex: 100,
+                    backgroundColor: 'rgba(0,0,0,0.7)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    padding: '24px',
+                  }}
+                >
+                  <motion.div
+                    initial={{ scale: 0.95, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    exit={{ scale: 0.95, opacity: 0 }}
+                    style={{
+                      backgroundColor: COLORS.emberNight,
+                      border: `1px solid ${COLORS.emberMid}60`,
+                      borderRadius: '22px',
+                      padding: '28px 24px',
+                      maxWidth: '340px',
+                      width: '100%',
+                      textAlign: 'center',
+                    }}
+                  >
+                    <p style={{
+                      fontFamily: "'DM Serif Display', serif",
+                      fontSize: '22px',
+                      color: COLORS.lanternGlow,
+                      marginBottom: '12px',
+                    }}>
+                      Ni har bra fart
+                    </p>
+                    <p style={{
+                      fontFamily: "'Nunito', sans-serif",
+                      fontSize: '14px',
+                      color: COLORS.driftwoodBody,
+                      marginBottom: '24px',
+                      lineHeight: 1.5,
+                    }}>
+                      Ibland behöver samtalen tid att landa. Men om det känns rätt — kör vidare.
+                    </p>
+                    <button
+                      disabled={advancing}
+                      onClick={() => {
+                        setPacingMomentShown(true);
+                        setShowPacingModal(false);
+                        doAdvance();
+                      }}
+                      style={{
+                        background: COLORS.deepSaffron,
+                        color: COLORS.emberNight,
+                        fontFamily: "'Nunito', sans-serif",
+                        fontWeight: 700,
+                        fontSize: '16px',
+                        border: 'none',
+                        borderRadius: '12px',
+                        padding: '14px 28px',
+                        cursor: 'pointer',
+                        width: '100%',
+                        marginBottom: '12px',
+                      }}
+                    >
+                      Fortsätt ändå
+                    </button>
+                    <button
+                      onClick={() => {
+                        setPacingMomentShown(true);
+                        setShowPacingModal(false);
+                      }}
+                      style={{
+                        background: 'transparent',
+                        border: 'none',
+                        color: COLORS.driftwood,
+                        fontFamily: "'Nunito', sans-serif",
+                        fontSize: '14px',
+                        textDecoration: 'underline',
+                        cursor: 'pointer',
+                        padding: '8px',
+                      }}
+                    >
+                      Vänta till nästa vecka
+                    </button>
+                  </motion.div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </>
         );
       }
       break;

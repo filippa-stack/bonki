@@ -41,6 +41,7 @@ export interface StillUsHomeState {
   cardTitle: string;
   layerName: string;
   phase: 'program' | 'ceremony' | 'maintenance' | 'restart';
+  cycleId: number;
   purchaseStatus: 'free_trial' | 'purchased';
   partnerTier: 'tier_1' | 'tier_2' | 'tier_3';
   // Partner info
@@ -83,6 +84,7 @@ const EMPTY_STATE: StillUsHomeState = {
   cardTitle: 'Minsta vi',
   layerName: 'Grunden',
   phase: 'program',
+  cycleId: 1,
   purchaseStatus: 'free_trial',
   partnerTier: 'tier_3',
   partnerId: null,
@@ -277,6 +279,7 @@ export function useStillUsHome(): StillUsHomeState {
         cardTitle,
         layerName,
         phase,
+        cycleId,
         purchaseStatus,
         partnerTier,
         partnerId: cs.partner_id ?? null,
