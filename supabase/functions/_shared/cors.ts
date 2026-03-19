@@ -6,6 +6,8 @@ const ALLOWED_ORIGINS = [
   "https://bonkistudio.com",
   "https://www.bonkistudio.com",
   /^https:\/\/[a-z0-9-]+\.lovableproject\.com$/,
+  /^https:\/\/[a-z0-9-]+\.lovable\.app$/,
+  /^https:\/\/[a-z0-9-]+--[a-z0-9-]+\.lovable\.app$/,
 ];
 
 function isAllowedOrigin(origin: string): boolean {
