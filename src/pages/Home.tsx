@@ -481,9 +481,9 @@ function ActionCard({
       break;
 
     case 'migration_pending':
-      label = 'UPPDATERING PÅGÅR';
+      label = '';
       title = '';
-      body = 'Vi uppgraderar er resa. Det här tar bara en stund.';
+      body = 'Er data uppdateras. Vänta en stund.';
       break;
 
     // TODO: States 7-10 (maintenance, return ritual, partner locked, migration)
