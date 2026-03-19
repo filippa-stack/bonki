@@ -140,7 +140,7 @@ export default function ProductIntro({
       // Still Us: init couple_state, then navigate to first check-in
       setInitiating(true);
       try {
-        const result = await initCoupleState();
+        const result = await initCoupleState(buildSliderAnchors(0));
         if (result.couple_id) {
           navigate('/check-in/su-01-smallest-we');
           return;
