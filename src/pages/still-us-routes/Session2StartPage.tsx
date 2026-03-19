@@ -54,10 +54,14 @@ export default function Session2StartPage() {
         return;
       }
 
-      // Acquire session lock via RPC
-      const { data: lockResult, error: lockError } = await supabase.rpc('acquire_session_lock', {
-        p_couple_space_id: cs.couple_id,
-        p_card_index: cardIndex,
+      // Acquire session lock via edge function
+      const { data: lockResult, error: lockError } = await supabase.functions.invoke('acquire-session-lock', {
+        body: {
+          couple_id: cs.couple_id,
+          card_id: backendCardId,
+          device_id: did,
+          user_id: user.id,
+        },
       });
 
       const lock = lockResult as { acquired: boolean; device_id: string } | null;

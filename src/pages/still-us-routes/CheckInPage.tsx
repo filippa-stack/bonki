@@ -23,9 +23,10 @@ export default function CheckInPage() {
   const [hasSeenFormatPreview, setHasSeenFormatPreview] = useState(true); // default true to avoid flash
   const [hasPartner, setHasPartner] = useState(false);
   const [partnerCompleted, setPartnerCompleted] = useState(false);
+  const [realCoupleId, setRealCoupleId] = useState<string | undefined>();
 
   useEffect(() => {
-    if (!user?.id || !space?.id) return;
+    if (!user?.id) return;
 
     // Check format preview seen
     (async () => {
@@ -38,40 +39,41 @@ export default function CheckInPage() {
       setHasSeenFormatPreview((data && data.length > 0) ?? false);
     })();
 
-    // Check partner linked
+    // Fetch real couple_id from couple_state (NOT couple_spaces.id)
     (async () => {
-      const { data } = await supabase
-        .from('couple_members')
-        .select('user_id')
-        .eq('couple_space_id', space.id)
-        .is('left_at', null);
-      const members = data ?? [];
-      const partnerExists = members.length > 1;
+      const { data: cs } = await supabase
+        .from('couple_state')
+        .select('couple_id, partner_id, partner_tier')
+        .or(`initiator_id.eq.${user.id},partner_id.eq.${user.id}`)
+        .is('dissolved_at', null)
+        .maybeSingle();
+
+      if (!cs) return;
+
+      setRealCoupleId(cs.couple_id);
+      const partnerExists = !!(cs.partner_id || cs.partner_tier === 'tier_2');
       setHasPartner(partnerExists);
 
-      // Check if partner already completed slider for this card (using backend card_N id)
-      if (partnerExists) {
-        const partnerId = members.find(m => m.user_id !== user.id)?.user_id;
-        if (partnerId) {
-          const { data: cardState } = await supabase
-            .from('user_card_state')
-            .select('slider_completed_at')
-            .eq('couple_id', space.id)
-            .eq('user_id', partnerId)
-            .eq('card_id', backendCardId)
-            .maybeSingle();
-          setPartnerCompleted(!!cardState?.slider_completed_at);
-        }
+      // Check if partner already completed slider for this card
+      if (partnerExists && cs.partner_id) {
+        const { data: cardState } = await supabase
+          .from('user_card_state')
+          .select('slider_completed_at')
+          .eq('couple_id', cs.couple_id)
+          .eq('user_id', cs.partner_id)
+          .eq('card_id', backendCardId)
+          .maybeSingle();
+        setPartnerCompleted(!!cardState?.slider_completed_at);
       }
     })();
-  }, [user?.id, space?.id, slug, backendCardId]);
+  }, [user?.id, slug, backendCardId]);
 
   return (
     <SliderCheckIn
       cardIndex={cardIndex}
       cardId={backendCardId}
       slug={slug ?? ''}
-      coupleId={space?.id}
+      coupleId={realCoupleId}
       hasSeenFormatPreview={hasSeenFormatPreview}
       hasPartner={hasPartner}
       partnerCompleted={partnerCompleted}

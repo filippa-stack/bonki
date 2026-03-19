@@ -3,9 +3,9 @@ import { useEffect, useState } from 'react';
 import SessionTwoLive from '@/components/still-us/SessionTwoLive';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
-import { cardIdFromSlug, cardIndexFromSlug } from '@/lib/stillUsTokens';
+import { cardIdFromSlug, cardIndexFromSlug, COLORS } from '@/lib/stillUsTokens';
 import { getSliderSetBySlug } from '@/data/sliderPrompts';
-import { COLORS } from '@/lib/stillUsTokens';
+import { getSessionContent } from '@/data/sessionQuestions';
 
 export default function Session2LivePage() {
   const { cardId: slug } = useParams<{ cardId: string }>();
@@ -62,8 +62,10 @@ export default function Session2LivePage() {
     );
   }
 
-  // TODO: Replace with real content data lookup for vand_q2
-  const vandQuestion = '[PLACEHOLDER] Vänd fråga 2';
+  // Authored Vänd Q2 from content data
+  const sessionContent = getSessionContent(cardIndex);
+  const vandQuestion = sessionContent?.vand2?.text ?? sessionContent?.vand1?.text ?? 'Vad var det viktigaste ni pratade om?';
+  const vandAnchor = sessionContent?.vand2?.anchor;
 
   return (
     <SessionTwoLive
@@ -75,6 +77,7 @@ export default function Session2LivePage() {
       deviceId={props.deviceId}
       partnerTier={props.partnerTier}
       vandQuestion={vandQuestion}
+      vandAnchor={vandAnchor}
     />
   );
 }
