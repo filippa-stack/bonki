@@ -42,7 +42,13 @@ export default function MobileOnlyGate({ children }: { children: ReactNode }) {
     });
   };
 
-  // Inside the demo iframe — render content directly (no gate)
+  // Inside the demo iframe — auto-enter demo mode and render content directly
+  useEffect(() => {
+    if (insideFrame && isDemoParam() && !isDemoMode()) {
+      enterDemoMode();
+    }
+  }, [insideFrame]);
+
   if (insideFrame) {
     return <>{children}</>;
   }
