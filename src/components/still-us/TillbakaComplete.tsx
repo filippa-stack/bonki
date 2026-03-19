@@ -85,7 +85,7 @@ export default function TillbakaComplete({ tillbakaIndex, totalCompleted, onHome
               height: '48px',
               fontFamily: 'var(--font-sans)',
               fontSize: '15px',
-              color: COLORS.emberGlow,
+              color: COLORS.lanternGlow,
               cursor: 'pointer',
             }}
           >

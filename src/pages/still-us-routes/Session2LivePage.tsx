@@ -77,6 +77,7 @@ export default function Session2LivePage() {
       deviceId={props.deviceId}
       partnerTier={props.partnerTier}
       vandQuestion={vandQuestion}
+      vandAnchor={vandAnchor}
     />
   );
 }

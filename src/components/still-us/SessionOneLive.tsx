@@ -52,17 +52,21 @@ interface CoupleStateRow {
   cycle_id: number;
 }
 
-// ── Placeholder question data (content team will provide finals) ──
+// ── Session question lookup from authored content ──
 function getSessionQuestions(cardIndex: number): { oppna: SessionQuestion[]; vand: SessionQuestion } {
-  // TODO: Replace with real content data file lookup
+  const content = getSessionContent(cardIndex);
+  if (!content) {
+    return {
+      oppna: [
+        { text: 'Vad har ni tänkt på sedan förra veckan?' },
+        { text: 'Finns det något ni vill säga till varandra just nu?' },
+      ],
+      vand: { text: 'Om ni tänker på det ni just pratade om — vad var det viktigaste?' },
+    };
+  }
   return {
-    oppna: [
-      { text: 'Vad har ni tänkt på sedan förra veckan?' },
-      { text: 'Finns det något ni vill säga till varandra just nu?' },
-    ],
-    vand: {
-      text: 'Om ni tänker på det ni just pratade om — vad var det viktigaste?',
-    },
+    oppna: content.oppna.length >= 2 ? content.oppna.slice(0, 2) : content.oppna,
+    vand: content.vand1,
   };
 }
 
