@@ -16,6 +16,7 @@ import { COLORS, cardIndexFromSlug, cardIdFromSlug } from '@/lib/stillUsTokens';
 import { getSliderSetBySlug } from '@/data/sliderPrompts';
 import { getThresholdFraming, MOOD_OPTIONS, type ThresholdMood } from '@/data/thresholdFramings';
 import { supabase } from '@/integrations/supabase/client';
+import { enqueueWrite, hasPendingWrites, onSyncStatusChange } from '@/lib/offlineQueue';
 import { useAuth } from '@/contexts/AuthContext';
 import { useCoupleSpaceContext } from '@/contexts/CoupleSpaceContext';
 import SessionFocusShell from '@/components/SessionFocusShell';
