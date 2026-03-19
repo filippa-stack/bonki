@@ -16,12 +16,12 @@ type Step = 'initiator_takeaway' | 'handoff_prompt' | 'partner_takeaway' | 'subm
 type NavTarget = 'home' | 'session_2';
 
 interface SessionOneCompleteProps {
-  cardIndex?: number;
   slug: string;
   coupleId: string;
   cardId: string; // card_N format
   deviceId: string;
   partnerName: string;
+  cardIndex?: number;
 }
 
 export default function SessionOneComplete({

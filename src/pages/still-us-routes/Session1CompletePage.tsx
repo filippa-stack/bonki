@@ -16,12 +16,12 @@ export default function Session1CompletePage() {
   } | null>(null);
 
   const backendCardId = slug ? cardIdFromSlug(slug) : null;
+  const cardIndex = slug ? cardIndexFromSlug(slug) : -1;
 
   useEffect(() => {
     if (!user?.id || !slug) return;
 
     const load = async () => {
-      // Get couple_state
       const { data: cs } = await supabase
         .from('couple_state')
         .select('couple_id, initiator_id, partner_id, tier_2_partner_name, partner_tier')
@@ -33,26 +33,22 @@ export default function Session1CompletePage() {
         return;
       }
 
-      // Determine partner name
       let partnerName = 'din partner';
       if (cs.partner_tier === 'tier_2' && cs.tier_2_partner_name) {
         partnerName = cs.tier_2_partner_name;
       } else if (cs.partner_id && cs.partner_id !== user.id) {
-        // Try to get partner name from couple_spaces
         const { data: space } = await supabase
           .from('couple_spaces_safe')
           .select('partner_a_name, partner_b_name')
           .limit(1)
           .maybeSingle();
         if (space) {
-          // Current user is initiator → partner is B, else A
           partnerName = (cs.initiator_id === user.id
             ? space.partner_b_name
             : space.partner_a_name) || 'din partner';
         }
       }
 
-      // Get or create device_id
       let deviceId = localStorage.getItem('still_us_device_id');
       if (!deviceId) {
         deviceId = crypto.randomUUID();
@@ -88,6 +84,7 @@ export default function Session1CompletePage() {
       cardId={backendCardId}
       deviceId={coupleData.deviceId}
       partnerName={coupleData.partnerName}
+      cardIndex={cardIndex}
     />
   );
 }
