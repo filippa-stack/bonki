@@ -102,6 +102,13 @@ export default function CompletionCeremony() {
     return () => clearTimeout(timer);
   }, [loading, prefersReducedMotion]);
 
+  // ── Helper: resolve card title from card_id ──
+  const getCardTitleFromId = (cardId: string): string => {
+    const index = parseInt(cardId.replace('card_', ''), 10) - 1;
+    const set = getSliderSet(index);
+    return set?.cardTitle ?? `Vecka ${index + 1}`;
+  };
+
   // ── Swipe handlers ──
   const handleTouchStart = useCallback((e: React.TouchEvent) => {
     touchStartX.current = e.touches[0].clientX;
