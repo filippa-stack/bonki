@@ -88,7 +88,7 @@ export default function Share({
     }
   }, [hasPartner, message, shareLink]);
 
-  const handleSkip = () => navigate('/');
+  const handleSkip = () => navigate('/?product=still-us');
 
   return (
     <div
