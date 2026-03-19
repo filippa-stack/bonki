@@ -768,22 +768,122 @@ function ActionCard({
       body = 'Veckans samtal är klart.';
       if (cardIndex < TOTAL_PROGRAM_CARDS - 1) {
         belowCard = (
-          <button
-            onClick={() => onAction('next_week')}
-            style={{
-              display: 'block',
-              margin: '12px auto 0',
-              background: 'none',
-              border: 'none',
-              fontFamily: 'var(--font-sans)',
-              fontSize: '14px',
-              color: COLORS.driftwood,
-              cursor: 'pointer',
-              padding: '8px 0',
-            }}
-          >
-            Börja nästa vecka nu
-          </button>
+          <>
+            <button
+              disabled={advancing}
+              onClick={handleAdvanceNow}
+              style={{
+                display: 'block',
+                margin: '12px auto 0',
+                background: 'none',
+                border: 'none',
+                fontFamily: 'var(--font-sans)',
+                fontSize: '14px',
+                color: COLORS.driftwood,
+                cursor: advancing ? 'default' : 'pointer',
+                padding: '8px 0',
+                textDecoration: 'underline',
+                opacity: advancing ? 0.5 : 1,
+              }}
+            >
+              {advancing ? 'Laddar...' : 'Börja nästa vecka nu'}
+            </button>
+
+            {/* Pacing modal */}
+            <AnimatePresence>
+              {showPacingModal && (
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  style={{
+                    position: 'fixed',
+                    inset: 0,
+                    zIndex: 100,
+                    backgroundColor: 'rgba(0,0,0,0.7)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    padding: '24px',
+                  }}
+                >
+                  <motion.div
+                    initial={{ scale: 0.95, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    exit={{ scale: 0.95, opacity: 0 }}
+                    style={{
+                      backgroundColor: COLORS.emberNight,
+                      border: `1px solid ${COLORS.emberMid}60`,
+                      borderRadius: '22px',
+                      padding: '28px 24px',
+                      maxWidth: '340px',
+                      width: '100%',
+                      textAlign: 'center',
+                    }}
+                  >
+                    <p style={{
+                      fontFamily: "'DM Serif Display', serif",
+                      fontSize: '22px',
+                      color: COLORS.lanternGlow,
+                      marginBottom: '12px',
+                    }}>
+                      Ni har bra fart
+                    </p>
+                    <p style={{
+                      fontFamily: "'Nunito', sans-serif",
+                      fontSize: '14px',
+                      color: COLORS.driftwoodBody,
+                      marginBottom: '24px',
+                      lineHeight: 1.5,
+                    }}>
+                      Ibland behöver samtalen tid att landa. Men om det känns rätt — kör vidare.
+                    </p>
+                    <button
+                      disabled={advancing}
+                      onClick={() => {
+                        setPacingMomentShown(true);
+                        setShowPacingModal(false);
+                        doAdvance();
+                      }}
+                      style={{
+                        background: COLORS.deepSaffron,
+                        color: COLORS.emberNight,
+                        fontFamily: "'Nunito', sans-serif",
+                        fontWeight: 700,
+                        fontSize: '16px',
+                        border: 'none',
+                        borderRadius: '12px',
+                        padding: '14px 28px',
+                        cursor: 'pointer',
+                        width: '100%',
+                        marginBottom: '12px',
+                      }}
+                    >
+                      Fortsätt ändå
+                    </button>
+                    <button
+                      onClick={() => {
+                        setPacingMomentShown(true);
+                        setShowPacingModal(false);
+                      }}
+                      style={{
+                        background: 'transparent',
+                        border: 'none',
+                        color: COLORS.driftwood,
+                        fontFamily: "'Nunito', sans-serif",
+                        fontSize: '14px',
+                        textDecoration: 'underline',
+                        cursor: 'pointer',
+                        padding: '8px',
+                      }}
+                    >
+                      Vänta till nästa vecka
+                    </button>
+                  </motion.div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </>
         );
       }
       break;
