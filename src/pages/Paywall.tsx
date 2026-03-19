@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { supabase } from '@/integrations/supabase/client';
-import { COLORS } from '@/lib/stillUsTokens';
+import { COLORS, slugFromCardIndex } from '@/lib/stillUsTokens';
 import { useAuth } from '@/contexts/AuthContext';
 
 export default function Paywall() {
