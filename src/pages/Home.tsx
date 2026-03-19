@@ -14,7 +14,7 @@ import { useCoupleSpaceContext } from '@/contexts/CoupleSpaceContext';
 import { useStillUsHome, type ActionCardKind } from '@/hooks/useStillUsHome';
 import { TOTAL_PROGRAM_CARDS } from '@/data/stillUsSequence';
 import { COLORS, getLayerForCard } from '@/lib/stillUsTokens';
-import { pollCoupleState } from '@/lib/stillUsRpc';
+import { pollCoupleState, resetSliderCheckin } from '@/lib/stillUsRpc';
 import JourneyProgress from '@/components/still-us/JourneyProgress';
 import MaintenanceActionCard from '@/components/still-us/MaintenanceActionCard';
 import ReturnRitual from '@/components/still-us/ReturnRitual';
