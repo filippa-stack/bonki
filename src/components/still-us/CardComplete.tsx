@@ -56,6 +56,7 @@ export default function CardComplete({
   const [showFeedback, setShowFeedback] = useState(false);
 
   const weekNumber = cardIndex + 1;
+  const gorExercise = getGorExercise(cardIndex);
 
   // Feedback sheet trigger for specific cards
   useEffect(() => {
