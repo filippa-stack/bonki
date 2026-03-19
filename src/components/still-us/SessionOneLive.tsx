@@ -36,7 +36,7 @@ type Step =
   | 'emotional_pause'
   | 'complete';
 
-export interface SessionQuestion {
+export interface SessionQuestionLocal {
   text: string;
   anchor?: string;
 }
