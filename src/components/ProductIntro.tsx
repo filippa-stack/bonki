@@ -489,6 +489,7 @@ export default function ProductIntro({
         >
           <button
             onClick={handleCta}
+            disabled={initiating}
             style={{
               width: '100%',
               height: '56px',
