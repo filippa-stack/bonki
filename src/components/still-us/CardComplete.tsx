@@ -419,7 +419,62 @@ export default function CardComplete({
           />
         </div>
 
-        <motion.button
+        {/* Gör exercise — collapsible block */}
+        {gorExercise && (
+          <div style={{ marginTop: '24px', width: '100%' }}>
+            <button
+              onClick={() => setGorOpen(!gorOpen)}
+              style={{
+                width: '100%',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                padding: '12px 16px',
+                backgroundColor: COLORS.emberGlow,
+                borderRadius: gorOpen ? '12px 12px 0 0' : '12px',
+                border: 'none',
+                cursor: 'pointer',
+                transition: 'border-radius 0.2s ease',
+              }}
+            >
+              <span style={{
+                fontFamily: "'DM Serif Display', serif",
+                fontSize: '15px',
+                color: COLORS.lanternGlow,
+              }}>
+                Gör: {gorExercise.title}
+              </span>
+              <span style={{
+                color: COLORS.driftwood,
+                fontSize: '18px',
+                transform: gorOpen ? 'rotate(180deg)' : 'rotate(0deg)',
+                transition: 'transform 0.2s ease',
+                lineHeight: 1,
+              }}>
+                ▾
+              </span>
+            </button>
+            {gorOpen && (
+              <div style={{
+                padding: '16px',
+                backgroundColor: COLORS.emberGlow,
+                borderRadius: '0 0 12px 12px',
+                borderTop: `1px solid ${COLORS.emberMid}`,
+              }}>
+                <p style={{
+                  fontFamily: 'var(--font-sans)',
+                  fontSize: '14px',
+                  color: COLORS.driftwoodBody,
+                  lineHeight: 1.6,
+                  whiteSpace: 'pre-line',
+                }}>
+                  {gorExercise.instructionText}
+                </p>
+              </div>
+            )}
+          </div>
+        )}
+
           whileTap={{ scale: 0.98 }}
           onClick={() => setPhase('handoff')}
           style={{
