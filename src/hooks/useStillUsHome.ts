@@ -273,6 +273,7 @@ export function useStillUsHome(): StillUsHomeState {
         partnerName,
         partnerSliderDone,
         sessionPaused,
+        pausedReason,
         maintenanceCardIndex,
         maintenanceDaysUntilNext,
         maintenanceTillbakaTitle,
