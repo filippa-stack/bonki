@@ -210,7 +210,8 @@ export default function SessionTwoLive({
     setSubmitting(true);
     setError(null);
 
-    await saveNote('session2_tank_om', tankOmNote);
+    // Fire-and-forget note save — never blocks navigation
+    saveNote('session2_tank_om', tankOmNote);
 
     const result = await completeSession({
       couple_id: coupleId,
