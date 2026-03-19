@@ -425,6 +425,8 @@ export default function Home() {
             partnerNudgeSentAt={homeState.partnerNudgeSentAt}
             coupleId={homeState.coupleId}
             cycleId={homeState.cycleId}
+            phase={homeState.phase}
+            currentTouch={homeState.currentTouch}
             maintenanceCardIndex={homeState.maintenanceCardIndex}
             maintenanceTillbakaTitle={homeState.maintenanceTillbakaTitle}
             maintenanceAvailable={homeState.maintenanceAvailable}
