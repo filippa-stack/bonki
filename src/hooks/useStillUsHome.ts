@@ -196,6 +196,7 @@ export function useStillUsHome(): StillUsHomeState {
       const session1Completed = sessionActive ? ss.session_1_completed : false;
       const session2Completed = sessionActive ? ss.session_2_completed : false;
       const sessionPaused = sessionActive ? !!ss.paused_at : false;
+      const pausedReason = sessionActive ? (ss.paused_reason as string | null) : null;
 
       // Partner name
       const members = membersResult.data ?? [];
