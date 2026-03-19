@@ -16,6 +16,7 @@ import { COLORS, cardIdFromSlug, cardIndexFromSlug } from '@/lib/stillUsTokens';
 import { getTankOmContent } from '@/data/tankOmContent';
 import { completeSession } from '@/lib/stillUsRpc';
 import { supabase } from '@/integrations/supabase/client';
+import { enqueueWrite, hasPendingWrites, onSyncStatusChange } from '@/lib/offlineQueue';
 import SessionFocusShell from '@/components/SessionFocusShell';
 
 // ── Types ───────────────────────────────────────────────────
