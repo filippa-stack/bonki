@@ -30,6 +30,7 @@ export default function SessionOneComplete({
   cardId,
   deviceId,
   partnerName,
+  cardIndex = -1,
 }: SessionOneCompleteProps) {
   const navigate = useNavigate();
   const [step, setStep] = useState<Step>('initiator_takeaway');
