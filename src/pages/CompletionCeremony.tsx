@@ -29,6 +29,7 @@ export default function CompletionCeremony() {
   const [ceremonyReflection, setCeremonyReflection] = useState('');
   const [saveState, setSaveState] = useState<'idle' | 'saving' | 'success' | 'error'>('idle');
   const [screen4Complete, setScreen4Complete] = useState(false);
+  const [transitionState, setTransitionState] = useState<'idle' | 'saving' | 'success' | 'error'>('idle');
   const touchStartX = useRef(0);
   const touchEndX = useRef(0);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -87,6 +88,24 @@ export default function CompletionCeremony() {
       } catch {
         // localStorage read failed — continue normally
       }
+
+      // Check for pending phase transition
+      try {
+        const pendingPhase = localStorage.getItem('still_us_pending_phase_transition');
+        if (pendingPhase) {
+          const parsed = JSON.parse(pendingPhase);
+          const { error } = await supabase
+            .from('couple_state')
+            .update({ phase: 'maintenance' })
+            .eq('couple_id', parsed.couple_id);
+
+          if (!error) {
+            localStorage.removeItem('still_us_pending_phase_transition');
+            navigate('/');
+            return;
+          }
+        }
+      } catch {}
 
       setCoupleState(couple);
       setLoading(false);
@@ -171,6 +190,48 @@ export default function CompletionCeremony() {
 
     setSaveState('error');
   }, [coupleState, ceremonyReflection, screen3Reflection]);
+
+  // ── Transition to maintenance phase ──
+  const handleTransitionToMaintenance = useCallback(async () => {
+    if (!coupleState) return;
+    setTransitionState('saving');
+
+    try {
+      localStorage.setItem('still_us_pending_phase_transition', JSON.stringify({
+        couple_id: coupleState.couple_id,
+        target_phase: 'maintenance',
+        saved_at: new Date().toISOString(),
+      }));
+    } catch {}
+
+    const delays = [0, 1000, 3000, 9000];
+    for (let attempt = 0; attempt < delays.length; attempt++) {
+      if (attempt > 0) {
+        await new Promise(r => setTimeout(r, delays[attempt]));
+      }
+      try {
+        const { error } = await supabase
+          .from('couple_state')
+          .update({ phase: 'maintenance' })
+          .eq('couple_id', coupleState.couple_id);
+
+        if (!error) {
+          await supabase
+            .from('journey_insights_cache')
+            .delete()
+            .eq('couple_id', coupleState.couple_id)
+            .eq('cycle_id', coupleState.cycle_id);
+
+          try { localStorage.removeItem('still_us_pending_phase_transition'); } catch {}
+          setTransitionState('success');
+          navigate('/');
+          return;
+        }
+      } catch {}
+    }
+
+    setTransitionState('error');
+  }, [coupleState, navigate]);
 
   // ── Screen 1 hold timer ──
   useEffect(() => {
@@ -655,18 +716,92 @@ export default function CompletionCeremony() {
           )}
         </div>
 
-        {/* ── Screen 5: Placeholder ── */}
+        {/* ── Screen 5: Transition to Phase 3 ── */}
         <div style={{
           width: '100vw',
-          height: '100%',
+          height: '100dvh',
+          flexShrink: 0,
+          background: COLORS.emberNight,
           display: 'flex',
+          flexDirection: 'column',
           alignItems: 'center',
           justifyContent: 'center',
-          flexShrink: 0,
+          padding: '48px 24px',
         }}>
-          <p style={{ color: COLORS.driftwood, fontSize: '15px' }}>
-            Screen 5 — coming soon
-          </p>
+          <div style={{ maxWidth: '340px', width: '100%', textAlign: 'center' }}>
+            <div style={{
+              fontFamily: "'DM Serif Display', serif",
+              fontSize: '24px',
+              color: COLORS.lanternGlow,
+              lineHeight: '1.4',
+              marginBottom: '20px',
+            }}>
+              Still Us är inte slut — det är annorlunda nu.
+            </div>
+
+            <div style={{
+              fontSize: '16px',
+              color: COLORS.lanternGlow,
+              opacity: 0.7,
+              lineHeight: '1.5',
+              marginBottom: '48px',
+            }}>
+              Var fjärde vecka skickar vi en ny fråga. Kortare. Enklare.
+              Gjord för er som redan har pratat.
+            </div>
+
+            {transitionState === 'error' ? (
+              <div>
+                <div style={{
+                  color: COLORS.lanternGlow,
+                  fontSize: '14px',
+                  marginBottom: '16px',
+                  opacity: 0.8,
+                }}>
+                  Något gick fel. Försök igen.
+                </div>
+                <button
+                  onClick={handleTransitionToMaintenance}
+                  style={{
+                    background: COLORS.bonkiOrange,
+                    color: COLORS.emberNight,
+                    border: 'none',
+                    borderRadius: '30px',
+                    padding: '18px 40px',
+                    fontSize: '18px',
+                    fontFamily: "'DM Serif Display', serif",
+                    cursor: 'pointer',
+                    width: '100%',
+                    maxWidth: '300px',
+                  }}
+                >
+                  Försök igen
+                </button>
+              </div>
+            ) : (
+              <button
+                onClick={handleTransitionToMaintenance}
+                disabled={transitionState === 'saving'}
+                style={{
+                  background: COLORS.bonkiOrange,
+                  color: COLORS.emberNight,
+                  border: 'none',
+                  borderRadius: '30px',
+                  padding: '18px 40px',
+                  fontSize: '20px',
+                  fontFamily: "'DM Serif Display', serif",
+                  cursor: transitionState === 'saving' ? 'default' : 'pointer',
+                  width: '100%',
+                  maxWidth: '300px',
+                  animation: transitionState === 'saving'
+                    ? 'ceremonyPulse 1.5s ease-in-out infinite'
+                    : 'none',
+                }}
+              >
+                {transitionState === 'saving' ? 'Sparar...' : 'Fortsätt till Ert rum'}
+              </button>
+            )}
+          </div>
         </div>
       </div>
     </div>
