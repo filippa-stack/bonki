@@ -19,7 +19,7 @@ export default function Tier2Setup({ onComplete, onBack }: Tier2SetupProps) {
     <div
       style={{
         minHeight: '100vh',
-        backgroundColor: EMBER_NIGHT,
+        backgroundColor: COLORS.emberNight,
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
@@ -38,7 +38,7 @@ export default function Tier2Setup({ onComplete, onBack }: Tier2SetupProps) {
           fontFamily: 'var(--font-serif)',
           fontSize: '24px',
           fontWeight: 500,
-          color: EMBER_GLOW,
+          color: COLORS.emberGlow,
           marginBottom: '12px',
         }}>
           Vad heter din partner?
@@ -47,7 +47,7 @@ export default function Tier2Setup({ onComplete, onBack }: Tier2SetupProps) {
         <p style={{
           fontFamily: 'var(--font-sans)',
           fontSize: '15px',
-          color: DRIFTWOOD,
+          color: COLORS.driftwood,
           lineHeight: 1.6,
           marginBottom: '28px',
         }}>
@@ -64,9 +64,9 @@ export default function Tier2Setup({ onComplete, onBack }: Tier2SetupProps) {
             width: '100%',
             padding: '14px 16px',
             borderRadius: '12px',
-            backgroundColor: `${EMBER_GLOW}12`,
-            border: `1px solid ${EMBER_GLOW}20`,
-            color: EMBER_GLOW,
+            backgroundColor: `${COLORS.emberGlow}12`,
+            border: `1px solid ${COLORS.emberGlow}20`,
+            color: COLORS.emberGlow,
             fontFamily: 'var(--font-sans)',
             fontSize: '16px',
             outline: 'none',
@@ -83,13 +83,13 @@ export default function Tier2Setup({ onComplete, onBack }: Tier2SetupProps) {
             width: '100%',
             height: '52px',
             borderRadius: '12px',
-            backgroundColor: name.trim() ? DEEP_SAFFRON : `${DEEP_SAFFRON}40`,
+            backgroundColor: name.trim() ? COLORS.deepSaffron : `${COLORS.deepSaffron}40`,
             border: 'none',
             cursor: name.trim() ? 'pointer' : 'default',
             fontFamily: 'var(--font-sans)',
             fontSize: '16px',
             fontWeight: 600,
-            color: BARK,
+            color: COLORS.bark,
             opacity: name.trim() ? 1 : 0.5,
           }}
         >
@@ -104,7 +104,7 @@ export default function Tier2Setup({ onComplete, onBack }: Tier2SetupProps) {
               border: 'none',
               fontFamily: 'var(--font-sans)',
               fontSize: '14px',
-              color: DRIFTWOOD,
+              color: COLORS.driftwood,
               cursor: 'pointer',
               marginTop: '12px',
               padding: '8px',

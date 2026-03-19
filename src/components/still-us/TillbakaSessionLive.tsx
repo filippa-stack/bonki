@@ -42,7 +42,7 @@ export default function TillbakaSessionLive({
   return (
     <div style={{
       minHeight: '100vh',
-      backgroundColor: EMBER_NIGHT,
+      backgroundColor: COLORS.emberNight,
       display: 'flex',
       flexDirection: 'column',
     }}>
@@ -53,10 +53,10 @@ export default function TillbakaSessionLive({
         justifyContent: 'space-between',
         alignItems: 'center',
       }}>
-        <button onClick={onPause} style={{ background: 'none', border: 'none', color: DRIFTWOOD, fontFamily: 'var(--font-sans)', fontSize: '14px', cursor: 'pointer' }}>
+        <button onClick={onPause} style={{ background: 'none', border: 'none', color: COLORS.driftwood, fontFamily: 'var(--font-sans)', fontSize: '14px', cursor: 'pointer' }}>
           Pausa
         </button>
-        <span style={{ fontFamily: 'var(--font-sans)', fontSize: '12px', color: DRIFTWOOD }}>
+        <span style={{ fontFamily: 'var(--font-sans)', fontSize: '12px', color: COLORS.driftwood }}>
           {title}
         </span>
       </div>
@@ -66,7 +66,7 @@ export default function TillbakaSessionLive({
         {questions.map((_, i) => (
           <div key={i} style={{
             flex: 1, height: '3px', borderRadius: '2px',
-            backgroundColor: i <= qIdx ? DEEP_SAFFRON : `${EMBER_GLOW}20`,
+            backgroundColor: i <= qIdx ? COLORS.deepSaffron : `${COLORS.emberGlow}20`,
           }} />
         ))}
       </div>
@@ -95,7 +95,7 @@ export default function TillbakaSessionLive({
               fontFamily: 'var(--font-serif)',
               fontSize: '22px',
               fontWeight: 500,
-              color: EMBER_GLOW,
+              color: COLORS.emberGlow,
               lineHeight: 1.4,
               textWrap: 'balance',
               marginBottom: '20px',
@@ -112,9 +112,9 @@ export default function TillbakaSessionLive({
                 width: '100%',
                 padding: '12px 16px',
                 borderRadius: '10px',
-                backgroundColor: `${EMBER_GLOW}10`,
-                border: `1px solid ${EMBER_GLOW}15`,
-                color: EMBER_GLOW,
+                backgroundColor: `${COLORS.emberGlow}10`,
+                border: `1px solid ${COLORS.emberGlow}15`,
+                color: COLORS.emberGlow,
                 fontFamily: 'var(--font-sans)',
                 fontSize: '14px',
                 outline: 'none',
@@ -132,13 +132,13 @@ export default function TillbakaSessionLive({
             width: '100%',
             height: '52px',
             borderRadius: '12px',
-            backgroundColor: DEEP_SAFFRON,
+            backgroundColor: COLORS.deepSaffron,
             border: 'none',
             cursor: 'pointer',
             fontFamily: 'var(--font-sans)',
             fontSize: '16px',
             fontWeight: 600,
-            color: BARK,
+            color: COLORS.bark,
           }}
         >
           {isLast ? 'Avsluta' : 'Nästa'}

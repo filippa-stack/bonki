@@ -26,7 +26,7 @@ export default function SessionTwoStart({
     <div
       style={{
         minHeight: '100vh',
-        backgroundColor: EMBER_NIGHT,
+        backgroundColor: COLORS.emberNight,
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
@@ -44,7 +44,7 @@ export default function SessionTwoStart({
         <p style={{
           fontFamily: 'var(--font-sans)',
           fontSize: '13px',
-          color: DRIFTWOOD,
+          color: COLORS.driftwood,
           fontWeight: 600,
           textTransform: 'uppercase',
           letterSpacing: '0.05em',
@@ -57,7 +57,7 @@ export default function SessionTwoStart({
           fontFamily: 'var(--font-serif)',
           fontSize: '24px',
           fontWeight: 500,
-          color: EMBER_GLOW,
+          color: COLORS.emberGlow,
           marginBottom: '20px',
         }}>
           {cardTitle}
@@ -66,7 +66,7 @@ export default function SessionTwoStart({
         <p style={{
           fontFamily: 'var(--font-sans)',
           fontSize: '15px',
-          color: `${EMBER_GLOW}90`,
+          color: `${COLORS.emberGlow}90`,
           lineHeight: 1.6,
           marginBottom: '24px',
         }}>
@@ -77,14 +77,14 @@ export default function SessionTwoStart({
           <div style={{
             padding: '14px 16px',
             borderRadius: '12px',
-            backgroundColor: `${EMBER_GLOW}10`,
-            border: `1px solid ${EMBER_GLOW}15`,
+            backgroundColor: `${COLORS.emberGlow}10`,
+            border: `1px solid ${COLORS.emberGlow}15`,
             marginBottom: '32px',
           }}>
             <p style={{
               fontFamily: 'var(--font-sans)',
               fontSize: '11px',
-              color: DRIFTWOOD,
+              color: COLORS.driftwood,
               fontWeight: 600,
               marginBottom: '4px',
             }}>
@@ -93,7 +93,7 @@ export default function SessionTwoStart({
             <p style={{
               fontFamily: 'var(--font-sans)',
               fontSize: '14px',
-              color: EMBER_GLOW,
+              color: COLORS.emberGlow,
               lineHeight: 1.5,
             }}>
               {session1Takeaway}
@@ -108,13 +108,13 @@ export default function SessionTwoStart({
             width: '100%',
             height: '52px',
             borderRadius: '12px',
-            backgroundColor: DEEP_SAFFRON,
+            backgroundColor: COLORS.deepSaffron,
             border: 'none',
             cursor: 'pointer',
             fontFamily: 'var(--font-sans)',
             fontSize: '16px',
             fontWeight: 600,
-            color: BARK,
+            color: COLORS.bark,
           }}
         >
           Starta del 2

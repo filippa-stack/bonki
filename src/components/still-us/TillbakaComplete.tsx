@@ -20,7 +20,7 @@ export default function TillbakaComplete({ tillbakaIndex, totalCompleted, onHome
   return (
     <div style={{
       minHeight: '100vh',
-      backgroundColor: EMBER_NIGHT,
+      backgroundColor: COLORS.emberNight,
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
@@ -38,7 +38,7 @@ export default function TillbakaComplete({ tillbakaIndex, totalCompleted, onHome
           fontFamily: 'var(--font-serif)',
           fontSize: '24px',
           fontWeight: 500,
-          color: EMBER_GLOW,
+          color: COLORS.emberGlow,
           marginBottom: '12px',
         }}>
           Tillbaka-kort klart ✨
@@ -47,7 +47,7 @@ export default function TillbakaComplete({ tillbakaIndex, totalCompleted, onHome
         <p style={{
           fontFamily: 'var(--font-sans)',
           fontSize: '15px',
-          color: DRIFTWOOD,
+          color: COLORS.driftwood,
           lineHeight: 1.6,
           marginBottom: '32px',
         }}>
@@ -61,13 +61,13 @@ export default function TillbakaComplete({ tillbakaIndex, totalCompleted, onHome
             width: '100%',
             height: '52px',
             borderRadius: '12px',
-            backgroundColor: DEEP_SAFFRON,
+            backgroundColor: COLORS.deepSaffron,
             border: 'none',
             cursor: 'pointer',
             fontFamily: 'var(--font-sans)',
             fontSize: '16px',
             fontWeight: 600,
-            color: BARK,
+            color: COLORS.bark,
             marginBottom: '12px',
           }}
         >
@@ -79,13 +79,13 @@ export default function TillbakaComplete({ tillbakaIndex, totalCompleted, onHome
             onClick={onRestart}
             style={{
               background: 'none',
-              border: `1px solid ${EMBER_GLOW}30`,
+              border: `1px solid ${COLORS.emberGlow}30`,
               borderRadius: '12px',
               width: '100%',
               height: '48px',
               fontFamily: 'var(--font-sans)',
               fontSize: '15px',
-              color: EMBER_GLOW,
+              color: COLORS.emberGlow,
               cursor: 'pointer',
             }}
           >

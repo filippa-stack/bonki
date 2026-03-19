@@ -16,9 +16,9 @@ interface JourneyProgressProps {
 
 export default function JourneyProgress({ currentCardIndex, dark = false }: JourneyProgressProps) {
   const dotColor = (index: number) => {
-    if (index < currentCardIndex) return DEEP_SAFFRON;
-    if (index === currentCardIndex) return EMBER_GLOW;
-    return dark ? `${EMBER_GLOW}25` : `${DRIFTWOOD}30`;
+    if (index < currentCardIndex) return COLORS.deepSaffron;
+    if (index === currentCardIndex) return COLORS.emberGlow;
+    return dark ? `${COLORS.emberGlow}25` : `${COLORS.driftwood}30`;
   };
 
   return (
@@ -29,7 +29,7 @@ export default function JourneyProgress({ currentCardIndex, dark = false }: Jour
           fontFamily: 'var(--font-sans)',
           fontSize: '11px',
           fontWeight: 600,
-          color: dark ? DRIFTWOOD : 'var(--text-tertiary)',
+          color: dark ? COLORS.driftwood : 'var(--text-tertiary)',
           letterSpacing: '0.05em',
           textTransform: 'uppercase',
         }}>
@@ -71,7 +71,7 @@ export default function JourneyProgress({ currentCardIndex, dark = false }: Jour
         <span style={{
           fontFamily: 'var(--font-sans)',
           fontSize: '12px',
-          color: dark ? `${EMBER_GLOW}80` : 'var(--text-secondary)',
+          color: dark ? `${COLORS.emberGlow}80` : 'var(--text-secondary)',
         }}>
           Vecka {currentCardIndex + 1} av {TOTAL_PROGRAM_CARDS}
         </span>

@@ -30,8 +30,8 @@ export default function MaintenanceActionCard({
         width: '100%',
         padding: '20px',
         borderRadius: '16px',
-        backgroundColor: available ? `${DEEP_SAFFRON}15` : `${EMBER_GLOW}08`,
-        border: `1px solid ${available ? `${DEEP_SAFFRON}30` : `${EMBER_GLOW}15`}`,
+        backgroundColor: available ? `${COLORS.deepSaffron}15` : `${COLORS.emberGlow}08`,
+        border: `1px solid ${available ? `${COLORS.deepSaffron}30` : `${COLORS.emberGlow}15`}`,
         cursor: available ? 'pointer' : 'default',
         display: 'flex',
         flexDirection: 'column',
@@ -42,7 +42,7 @@ export default function MaintenanceActionCard({
         fontFamily: 'var(--font-sans)',
         fontSize: '12px',
         fontWeight: 600,
-        color: DRIFTWOOD,
+        color: COLORS.driftwood,
         textTransform: 'uppercase',
         letterSpacing: '0.05em',
       }}>
@@ -53,7 +53,7 @@ export default function MaintenanceActionCard({
         fontFamily: 'var(--font-serif)',
         fontSize: '18px',
         fontWeight: 500,
-        color: EMBER_GLOW,
+        color: COLORS.emberGlow,
       }}>
         {available ? tillbakaTitle : `Nästa kort om ${daysUntilNext ?? '?'} dagar`}
       </p>
@@ -62,7 +62,7 @@ export default function MaintenanceActionCard({
         <p style={{
           fontFamily: 'var(--font-sans)',
           fontSize: '14px',
-          color: DEEP_SAFFRON,
+          color: COLORS.deepSaffron,
           fontWeight: 600,
         }}>
           Starta →

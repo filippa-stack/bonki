@@ -24,7 +24,7 @@ export default function ReturnRitual({ cardTitle, daysSinceLastActivity, onResta
         position: 'fixed',
         inset: 0,
         zIndex: 50,
-        backgroundColor: EMBER_NIGHT,
+        backgroundColor: COLORS.emberNight,
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
@@ -38,7 +38,7 @@ export default function ReturnRitual({ cardTitle, daysSinceLastActivity, onResta
           fontFamily: 'var(--font-serif)',
           fontSize: '24px',
           fontWeight: 500,
-          color: EMBER_GLOW,
+          color: COLORS.emberGlow,
           marginBottom: '12px',
         }}>
           Välkomna tillbaka
@@ -47,7 +47,7 @@ export default function ReturnRitual({ cardTitle, daysSinceLastActivity, onResta
         <p style={{
           fontFamily: 'var(--font-sans)',
           fontSize: '15px',
-          color: DRIFTWOOD,
+          color: COLORS.driftwood,
           lineHeight: 1.6,
           marginBottom: '8px',
         }}>
@@ -57,11 +57,11 @@ export default function ReturnRitual({ cardTitle, daysSinceLastActivity, onResta
         <p style={{
           fontFamily: 'var(--font-sans)',
           fontSize: '15px',
-          color: `${EMBER_GLOW}80`,
+          color: `${COLORS.emberGlow}80`,
           lineHeight: 1.6,
           marginBottom: '32px',
         }}>
-          Ni var på <strong style={{ color: EMBER_GLOW }}>{cardTitle}</strong>. Vill ni börja om check-in för den veckan, eller fortsätta där ni var?
+          Ni var på <strong style={{ color: COLORS.emberGlow }}>{cardTitle}</strong>. Vill ni börja om check-in för den veckan, eller fortsätta där ni var?
         </p>
 
         <motion.button
@@ -71,13 +71,13 @@ export default function ReturnRitual({ cardTitle, daysSinceLastActivity, onResta
             width: '100%',
             height: '52px',
             borderRadius: '12px',
-            backgroundColor: DEEP_SAFFRON,
+            backgroundColor: COLORS.deepSaffron,
             border: 'none',
             cursor: 'pointer',
             fontFamily: 'var(--font-sans)',
             fontSize: '16px',
             fontWeight: 600,
-            color: BARK,
+            color: COLORS.bark,
             marginBottom: '12px',
           }}
         >
@@ -91,7 +91,7 @@ export default function ReturnRitual({ cardTitle, daysSinceLastActivity, onResta
             border: 'none',
             fontFamily: 'var(--font-sans)',
             fontSize: '14px',
-            color: DRIFTWOOD,
+            color: COLORS.driftwood,
             cursor: 'pointer',
             padding: '8px',
           }}
