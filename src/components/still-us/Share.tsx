@@ -27,6 +27,8 @@ interface ShareProps {
   coupleId?: string;
   /** Current card_id */
   cardId?: string;
+  /** Current card slug for solo-reflect routing */
+  cardSlug?: string;
   /** Current card title (for returning layout) */
   cardTitle?: string;
   /** Current week number (1-indexed) */
@@ -39,6 +41,7 @@ export default function Share({
   hasPartner = false,
   coupleId,
   cardId,
+  cardSlug,
   cardTitle,
   weekNumber = 1,
   shareLink = '',
@@ -79,17 +82,28 @@ export default function Share({
           text: hasPartner ? undefined : textToShare,
           url: hasPartner ? shareLink : undefined,
         });
+        // After successful share, go back to Home
+        navigate('/?product=still-us');
       } catch {
-        // User cancelled
+        // User cancelled — stay on page
       }
     } else {
       await navigator.clipboard.writeText(textToShare);
       setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
+      setTimeout(() => {
+        setCopied(false);
+        navigate('/?product=still-us');
+      }, 1500);
     }
-  }, [hasPartner, message, shareLink]);
+  }, [hasPartner, message, shareLink, navigate]);
 
-  const handleSkip = () => navigate('/?product=still-us');
+  const handleSkip = () => {
+    if (cardSlug) {
+      navigate(`/solo-reflect/${cardSlug}`);
+    } else {
+      navigate('/?product=still-us');
+    }
+  };
 
   const [simulating, setSimulating] = useState(false);
   const handleSimulatePartner = async () => {
