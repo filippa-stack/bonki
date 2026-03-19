@@ -9,6 +9,7 @@ import { motion } from 'framer-motion';
 import { EASE, EMOTION } from '@/lib/motion';
 import { COLORS, cardIdFromSlug, FEEDBACK_CARDS } from '@/lib/stillUsTokens';
 import { advanceCard, buildSliderAnchors } from '@/lib/stillUsRpc';
+import { getGorExercise } from '@/data/gorExercises';
 import FeedbackSheet from '@/components/FeedbackSheet';
 
 type Phase = 'takeaway' | 'handoff' | 'partner_writing' | 'committing';
@@ -46,6 +47,7 @@ export default function CardComplete({
 
   const [takeaway, setTakeaway] = useState('');
   const [phase, setPhase] = useState<Phase>('takeaway');
+  const [gorOpen, setGorOpen] = useState(false);
   const [partnerTakeaway, setPartnerTakeaway] = useState<string | null>(null);
   const [partnerText, setPartnerText] = useState('');
   const [gorExpanded, setGorExpanded] = useState(false);
@@ -54,6 +56,7 @@ export default function CardComplete({
   const [showFeedback, setShowFeedback] = useState(false);
 
   const weekNumber = cardIndex + 1;
+  const gorExercise = getGorExercise(cardIndex);
 
   // Feedback sheet trigger for specific cards
   useEffect(() => {
@@ -415,6 +418,62 @@ export default function CardComplete({
             }}
           />
         </div>
+
+        {/* Gör exercise — collapsible block */}
+        {gorExercise && (
+          <div style={{ marginTop: '24px', width: '100%' }}>
+            <button
+              onClick={() => setGorOpen(!gorOpen)}
+              style={{
+                width: '100%',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                padding: '12px 16px',
+                backgroundColor: COLORS.emberGlow,
+                borderRadius: gorOpen ? '12px 12px 0 0' : '12px',
+                border: 'none',
+                cursor: 'pointer',
+                transition: 'border-radius 0.2s ease',
+              }}
+            >
+              <span style={{
+                fontFamily: "'DM Serif Display', serif",
+                fontSize: '15px',
+                color: COLORS.lanternGlow,
+              }}>
+                Gör: {gorExercise.title}
+              </span>
+              <span style={{
+                color: COLORS.driftwood,
+                fontSize: '18px',
+                transform: gorOpen ? 'rotate(180deg)' : 'rotate(0deg)',
+                transition: 'transform 0.2s ease',
+                lineHeight: 1,
+              }}>
+                ▾
+              </span>
+            </button>
+            {gorOpen && (
+              <div style={{
+                padding: '16px',
+                backgroundColor: COLORS.emberGlow,
+                borderRadius: '0 0 12px 12px',
+                borderTop: `1px solid ${COLORS.emberMid}`,
+              }}>
+                <p style={{
+                  fontFamily: 'var(--font-sans)',
+                  fontSize: '14px',
+                  color: COLORS.driftwoodBody,
+                  lineHeight: 1.6,
+                  whiteSpace: 'pre-line',
+                }}>
+                  {gorExercise.instructionText}
+                </p>
+              </div>
+            )}
+          </div>
+        )}
 
         <motion.button
           whileTap={{ scale: 0.98 }}

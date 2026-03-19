@@ -471,7 +471,7 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
               textShadow: `0 0 10px ${bgRgba(0.8)}`,
             }}
           >
-            ✦ Första kortet gratis
+            ✦ Samtal 1 gratis
           </p>
         </div>
     </motion.div>
@@ -870,7 +870,7 @@ export default function ProductLibrary() {
                     borderRadius: '12px',
                     padding: '3px 10px',
                   }}>
-                    ✦ Vecka 1 gratis
+                    ✦ Samtal 1 gratis
                   </span>
                 </div>
               </div>

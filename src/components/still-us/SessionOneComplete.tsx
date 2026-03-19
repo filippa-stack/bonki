@@ -8,6 +8,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { COLORS } from '@/lib/stillUsTokens';
 import { completeSession } from '@/lib/stillUsRpc';
+import { supabase } from '@/integrations/supabase/client';
 import EmberGlowTextarea from './EmberGlowTextarea';
 import LoadingCta from './LoadingCta';
 import BreathingDot from './BreathingDot';
@@ -21,6 +22,7 @@ interface SessionOneCompleteProps {
   cardId: string; // card_N format
   deviceId: string;
   partnerName: string;
+  cardIndex?: number;
 }
 
 export default function SessionOneComplete({
@@ -29,6 +31,7 @@ export default function SessionOneComplete({
   cardId,
   deviceId,
   partnerName,
+  cardIndex = -1,
 }: SessionOneCompleteProps) {
   const navigate = useNavigate();
   const [step, setStep] = useState<Step>('initiator_takeaway');
@@ -78,6 +81,21 @@ export default function SessionOneComplete({
       if (res.status === 'error') {
         setError('Något gick fel. Försök igen.');
         return;
+      }
+
+      // Paywall gate: card index 0 + free_trial → /paywall before Session 2
+      if (navTarget === 'session_2' && cardIndex === 0) {
+        // Check purchase_status
+        const { data: cs } = await supabase
+          .from('couple_state')
+          .select('purchase_status')
+          .eq('couple_id', coupleId)
+          .maybeSingle();
+
+        if (cs?.purchase_status === 'free_trial') {
+          navigate('/paywall', { replace: true });
+          return;
+        }
       }
 
       if (navTarget === 'session_2') {
