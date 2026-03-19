@@ -56,6 +56,9 @@ export interface StillUsHomeState {
   isDormant: boolean;
   dormancyDays: number;
   returnRitualShown: boolean;
+  // Touch & couple
+  currentTouch: string;
+  coupleId: string | null;
   // Loading
   loading: boolean;
   // Actions
