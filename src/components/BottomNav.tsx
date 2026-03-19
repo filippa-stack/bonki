@@ -80,6 +80,9 @@ export default function BottomNav() {
   if (pathname === '/tier2-setup') return null;
   if (pathname === '/format-preview') return null;
   if (pathname.startsWith('/solo-reflect/')) return null;
+  if (pathname === '/ceremony') return null;
+  if (pathname === '/unlock') return null;
+  if (pathname.startsWith('/settings/')) return null;
 
   return (
     <nav
