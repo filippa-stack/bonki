@@ -417,7 +417,7 @@ function NavTab({ label, active, onClick }: { label: string; active: boolean; on
   );
 }
 
-/* ── Action Card rendering (States 1-6) ── */
+/* ── Action Card rendering (States 1-6, 7/7b, 9, 10) ── */
 function ActionCard({
   kind,
   cardIndex,
@@ -429,6 +429,11 @@ function ActionCard({
   initiatorName,
   partnerNudgeSentAt,
   coupleId,
+  maintenanceCardIndex,
+  maintenanceTillbakaTitle,
+  maintenanceAvailable,
+  maintenanceDaysUntilNext,
+  pausedReason,
   onAction,
 }: {
   kind: ActionCardKind;
@@ -441,6 +446,11 @@ function ActionCard({
   initiatorName: string | null;
   partnerNudgeSentAt: string | null;
   coupleId: string | null;
+  maintenanceCardIndex: number;
+  maintenanceTillbakaTitle: string;
+  maintenanceAvailable: boolean;
+  maintenanceDaysUntilNext: number | null;
+  pausedReason: string | null;
   onAction: (action: string) => void;
 }) {
   const weekNum = cardIndex + 1;
