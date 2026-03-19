@@ -36,10 +36,10 @@ export default function Home() {
 
   // ── Ceremony redirect guard (highest priority) ──
   useEffect(() => {
-    if (homeState.coupleState?.phase === 'ceremony') {
+    if (homeState.phase === 'ceremony') {
       navigate('/ceremony', { replace: true });
     }
-  }, [homeState.coupleState?.phase, navigate]);
+  }, [homeState.phase, navigate]);
 
   // ── Polling via pollCoupleState every 15s ──
   useEffect(() => {
