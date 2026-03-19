@@ -105,6 +105,7 @@ const EMPTY_STATE: StillUsHomeState = {
   currentTouch: 'slider',
   coupleId: null,
   coupleCreatedAt: null,
+  dissolvedAt: null,
   initiatorId: null,
   initiatorName: null,
   partnerNudgeSentAt: null,
