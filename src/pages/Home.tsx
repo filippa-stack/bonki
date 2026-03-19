@@ -521,6 +521,7 @@ function ActionCard({
   initiatorName: string | null;
   partnerNudgeSentAt: string | null;
   coupleId: string | null;
+  cycleId: number;
   maintenanceCardIndex: number;
   maintenanceTillbakaTitle: string;
   maintenanceAvailable: boolean;
