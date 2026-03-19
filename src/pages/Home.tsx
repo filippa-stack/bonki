@@ -31,6 +31,18 @@ export default function Home() {
   const { space } = useCoupleSpaceContext();
   const homeState = useStillUsHome();
   const [dismissedInactivity, setDismissedInactivity] = useState(false);
+  const [resharePromptDismissed, setResharePromptDismissed] = useState(false);
+
+  const showResharePrompt = useMemo(() => {
+    if (resharePromptDismissed) return false;
+    if (homeState.loading) return false;
+    if (homeState.partnerId) return false;
+    if (!homeState.partnerLinkToken) return false;
+    if (!homeState.coupleCreatedAt) return false;
+    const created = new Date(homeState.coupleCreatedAt);
+    const daysSince = (Date.now() - created.getTime()) / (1000 * 60 * 60 * 24);
+    return daysSince >= 7;
+  }, [homeState.partnerId, homeState.partnerLinkToken, homeState.coupleCreatedAt, homeState.loading, resharePromptDismissed]);
 
   const showInactivityOverlay = homeState.dormancyDays > 7 && !dismissedInactivity && !homeState.loading;
   const shouldShowRitual = homeState.isDormant && !homeState.returnRitualShown && !homeState.loading && !showInactivityOverlay;
