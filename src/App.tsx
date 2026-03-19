@@ -127,6 +127,7 @@ function ProtectedRoutes() {
               <Route path="/solo-reflect/:cardId" element={<PageTransition><SoloReflect /></PageTransition>} />
               <Route path="/unlock" element={<PageTransition><Paywall /></PageTransition>} />
               <Route path="/ceremony" element={<PageTransition><CompletionCeremony /></PageTransition>} />
+              <Route path="/settings/dissolve" element={<PageTransition><DissolutionSettings /></PageTransition>} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </AnimatePresence>
