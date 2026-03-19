@@ -119,6 +119,59 @@ export default function CompletionCeremony() {
     fetchInsights();
   }, [coupleState]);
 
+  // ── Save ceremony reflection with localStorage resilience + exponential retry ──
+  const saveCeremonyReflection = useCallback(async () => {
+    if (!coupleState) return;
+    setSaveState('saving');
+
+    const fullReflection = screen3Reflection
+      ? `${screen3Reflection}\n\n---\n\n${ceremonyReflection}`
+      : ceremonyReflection;
+
+    const payload = {
+      couple_id: coupleState.couple_id,
+      cycle_id: coupleState.cycle_id,
+      reflection: fullReflection,
+      saved_at: new Date().toISOString(),
+    };
+    try {
+      localStorage.setItem('still_us_pending_ceremony', JSON.stringify(payload));
+    } catch {
+      // localStorage may be full — proceed anyway
+    }
+
+    const delays = [0, 1000, 3000, 9000];
+    for (let attempt = 0; attempt < delays.length; attempt++) {
+      if (attempt > 0) {
+        await new Promise(r => setTimeout(r, delays[attempt]));
+      }
+      try {
+        const { error } = await supabase
+          .from('couple_state')
+          .update({ ceremony_reflection: fullReflection })
+          .eq('couple_id', coupleState.couple_id);
+
+        if (!error) {
+          await supabase
+            .from('journey_insights_cache')
+            .delete()
+            .eq('couple_id', coupleState.couple_id)
+            .eq('cycle_id', coupleState.cycle_id);
+
+          try { localStorage.removeItem('still_us_pending_ceremony'); } catch {}
+
+          setSaveState('success');
+          setScreen4Complete(true);
+          return;
+        }
+      } catch {
+        // Continue to next retry
+      }
+    }
+
+    setSaveState('error');
+  }, [coupleState, ceremonyReflection, screen3Reflection]);
+
   // ── Screen 1 hold timer ──
   useEffect(() => {
     if (loading) return;
