@@ -373,6 +373,7 @@ export default function Home() {
             initiatorName={homeState.initiatorName}
             partnerNudgeSentAt={homeState.partnerNudgeSentAt}
             coupleId={homeState.coupleId}
+            cycleId={homeState.cycleId}
             maintenanceCardIndex={homeState.maintenanceCardIndex}
             maintenanceTillbakaTitle={homeState.maintenanceTillbakaTitle}
             maintenanceAvailable={homeState.maintenanceAvailable}
