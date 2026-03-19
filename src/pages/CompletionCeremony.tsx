@@ -26,6 +26,9 @@ export default function CompletionCeremony() {
   } | null>(null);
   const [insightsLoading, setInsightsLoading] = useState(true);
   const [screen3Reflection, setScreen3Reflection] = useState('');
+  const [ceremonyReflection, setCeremonyReflection] = useState('');
+  const [saveState, setSaveState] = useState<'idle' | 'saving' | 'success' | 'error'>('idle');
+  const [screen4Complete, setScreen4Complete] = useState(false);
   const touchStartX = useRef(0);
   const touchEndX = useRef(0);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -60,6 +63,31 @@ export default function CompletionCeremony() {
         }
       }
 
+      // Check for pending ceremony reflection from a previous crash
+      try {
+        const pending = localStorage.getItem('still_us_pending_ceremony');
+        if (pending) {
+          const parsed = JSON.parse(pending);
+          const savedAt = new Date(parsed.saved_at);
+          const ageHours = (Date.now() - savedAt.getTime()) / (1000 * 60 * 60);
+
+          if (ageHours < 24) {
+            const { error } = await supabase
+              .from('couple_state')
+              .update({ ceremony_reflection: parsed.reflection })
+              .eq('couple_id', couple.couple_id);
+
+            if (!error) {
+              localStorage.removeItem('still_us_pending_ceremony');
+            }
+          } else {
+            setCeremonyReflection(parsed.reflection);
+          }
+        }
+      } catch {
+        // localStorage read failed — continue normally
+      }
+
       setCoupleState(couple);
       setLoading(false);
     };
@@ -90,6 +118,59 @@ export default function CompletionCeremony() {
     };
     fetchInsights();
   }, [coupleState]);
+
+  // ── Save ceremony reflection with localStorage resilience + exponential retry ──
+  const saveCeremonyReflection = useCallback(async () => {
+    if (!coupleState) return;
+    setSaveState('saving');
+
+    const fullReflection = screen3Reflection
+      ? `${screen3Reflection}\n\n---\n\n${ceremonyReflection}`
+      : ceremonyReflection;
+
+    const payload = {
+      couple_id: coupleState.couple_id,
+      cycle_id: coupleState.cycle_id,
+      reflection: fullReflection,
+      saved_at: new Date().toISOString(),
+    };
+    try {
+      localStorage.setItem('still_us_pending_ceremony', JSON.stringify(payload));
+    } catch {
+      // localStorage may be full — proceed anyway
+    }
+
+    const delays = [0, 1000, 3000, 9000];
+    for (let attempt = 0; attempt < delays.length; attempt++) {
+      if (attempt > 0) {
+        await new Promise(r => setTimeout(r, delays[attempt]));
+      }
+      try {
+        const { error } = await supabase
+          .from('couple_state')
+          .update({ ceremony_reflection: fullReflection })
+          .eq('couple_id', coupleState.couple_id);
+
+        if (!error) {
+          await supabase
+            .from('journey_insights_cache')
+            .delete()
+            .eq('couple_id', coupleState.couple_id)
+            .eq('cycle_id', coupleState.cycle_id);
+
+          try { localStorage.removeItem('still_us_pending_ceremony'); } catch {}
+
+          setSaveState('success');
+          setScreen4Complete(true);
+          return;
+        }
+      } catch {
+        // Continue to next retry
+      }
+    }
+
+    setSaveState('error');
+  }, [coupleState, ceremonyReflection, screen3Reflection]);
 
   // ── Screen 1 hold timer ──
   useEffect(() => {
@@ -125,11 +206,13 @@ export default function CompletionCeremony() {
     const threshold = 50;
 
     if (diff > threshold && currentScreen < 4) {
+      // Block Screen 4 → 5 until save succeeds
+      if (currentScreen === 3 && !screen4Complete) return;
       setCurrentScreen(prev => prev + 1);
     } else if (diff < -threshold && currentScreen > 0) {
       setCurrentScreen(prev => prev - 1);
     }
-  }, [swipeEnabled, currentScreen]);
+  }, [swipeEnabled, currentScreen, screen4Complete]);
 
   // ── Timeline data (placeholder takeaways) ──
   const timelineNodes = sliderPrompts.map((card, index) => {
@@ -463,18 +546,113 @@ export default function CompletionCeremony() {
           )}
         </div>
 
-        {/* ── Screen 4: Placeholder ── */}
+        {/* ── Screen 4: Final Reflection ── */}
         <div style={{
           width: '100vw',
           height: '100%',
           display: 'flex',
+          flexDirection: 'column',
           alignItems: 'center',
           justifyContent: 'center',
           flexShrink: 0,
+          padding: '48px 32px',
+          overflowY: 'auto',
+          WebkitOverflowScrolling: 'touch',
         }}>
-          <p style={{ color: COLORS.driftwood, fontSize: '15px' }}>
-            Screen 4 — coming soon
+          <style>{`
+            @keyframes ceremonyPulse {
+              0%, 100% { opacity: 0.6; }
+              50% { opacity: 1; }
+            }
+          `}</style>
+
+          <p style={{
+            fontFamily: '"DM Serif Display", serif',
+            fontSize: '20px',
+            fontWeight: 400,
+            color: COLORS.lanternGlow,
+            textAlign: 'center',
+            lineHeight: 1.5,
+            marginBottom: '24px',
+          }}>
+            Ni började med 'Ert minsta vi' och slutade med
+            'Att välja varandra'. Vad tar ni med er?
           </p>
+
+          <textarea
+            value={ceremonyReflection}
+            onChange={(e) => setCeremonyReflection(e.target.value)}
+            placeholder=""
+            style={{
+              width: '100%',
+              maxWidth: '340px',
+              minHeight: '160px',
+              background: COLORS.emberGlow,
+              color: COLORS.lanternGlow,
+              border: 'none',
+              borderRadius: '12px',
+              padding: '16px',
+              fontSize: '16px',
+              fontFamily: 'inherit',
+              resize: 'vertical',
+              outline: 'none',
+              marginBottom: '32px',
+            }}
+          />
+
+          {saveState === 'error' ? (
+            <div style={{ textAlign: 'center' }}>
+              <div style={{
+                color: COLORS.lanternGlow,
+                fontSize: '14px',
+                marginBottom: '16px',
+                opacity: 0.8,
+              }}>
+                Det gick inte att spara just nu. Din text är sparad lokalt.
+              </div>
+              <button
+                onClick={saveCeremonyReflection}
+                style={{
+                  background: COLORS.deepSaffron,
+                  color: COLORS.emberNight,
+                  border: 'none',
+                  borderRadius: '30px',
+                  padding: '14px 40px',
+                  fontSize: '16px',
+                  fontFamily: "'DM Serif Display', serif",
+                  cursor: 'pointer',
+                  width: '100%',
+                  maxWidth: '280px',
+                }}
+              >
+                Försök igen
+              </button>
+            </div>
+          ) : (
+            <button
+              onClick={saveCeremonyReflection}
+              disabled={saveState === 'saving' || saveState === 'success'}
+              style={{
+                background: COLORS.deepSaffron,
+                color: COLORS.emberNight,
+                border: 'none',
+                borderRadius: '30px',
+                padding: '16px 40px',
+                fontSize: '18px',
+                fontFamily: "'DM Serif Display', serif",
+                cursor: saveState === 'saving' ? 'default' : 'pointer',
+                width: '100%',
+                maxWidth: '280px',
+                display: 'block',
+                margin: '0 auto',
+                animation: saveState === 'saving'
+                  ? 'ceremonyPulse 1.5s ease-in-out infinite'
+                  : 'none',
+              }}
+            >
+              {saveState === 'saving' ? 'Sparar...' : 'Fortsätt'}
+            </button>
+          )}
         </div>
 
         {/* ── Screen 5: Placeholder ── */}
