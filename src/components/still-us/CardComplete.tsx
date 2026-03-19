@@ -9,6 +9,7 @@ import { motion } from 'framer-motion';
 import { EASE, EMOTION } from '@/lib/motion';
 import { COLORS, cardIdFromSlug, FEEDBACK_CARDS } from '@/lib/stillUsTokens';
 import { advanceCard, buildSliderAnchors } from '@/lib/stillUsRpc';
+import { getGorExercise } from '@/data/gorExercises';
 import FeedbackSheet from '@/components/FeedbackSheet';
 
 type Phase = 'takeaway' | 'handoff' | 'partner_writing' | 'committing';
