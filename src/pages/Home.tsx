@@ -383,6 +383,61 @@ export default function Home() {
             onRefetch={homeState.refetch}
           />
         </div>
+
+        {/* ── Partner re-share prompt ── */}
+        {showResharePrompt && (
+          <div style={{ padding: '20px 24px', textAlign: 'center' }}>
+            <p style={{
+              fontFamily: "'DM Serif Display', serif",
+              fontSize: '18px',
+              color: COLORS.lanternGlow,
+              marginBottom: '8px',
+            }}>
+              Din partner har inte anslutit sig än
+            </p>
+            <p style={{
+              fontFamily: "'Nunito', sans-serif",
+              fontSize: '14px',
+              color: COLORS.driftwoodBody,
+              marginBottom: '20px',
+            }}>
+              Det kan vara värt att skicka länken igen.
+            </p>
+            <div style={{ display: 'flex', gap: '16px', justifyContent: 'center' }}>
+              <button
+                onClick={() => navigate('/share')}
+                style={{
+                  background: COLORS.deepSaffron,
+                  color: COLORS.emberNight,
+                  fontFamily: "'Nunito', sans-serif",
+                  fontWeight: 700,
+                  fontSize: '16px',
+                  border: 'none',
+                  borderRadius: '12px',
+                  padding: '14px 28px',
+                  cursor: 'pointer',
+                }}
+              >
+                Skicka igen
+              </button>
+              <button
+                onClick={() => setResharePromptDismissed(true)}
+                style={{
+                  background: 'transparent',
+                  border: 'none',
+                  color: COLORS.driftwood,
+                  fontFamily: "'Nunito', sans-serif",
+                  fontSize: '14px',
+                  textDecoration: 'underline',
+                  cursor: 'pointer',
+                  padding: '14px 12px',
+                }}
+              >
+                Vänta lite till
+              </button>
+            </div>
+          </div>
+        )}
       </div>
 
       {/* ── Zone 5: Bottom Navigation ── */}
