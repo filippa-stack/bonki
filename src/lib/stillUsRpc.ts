@@ -117,7 +117,7 @@ export interface RestartProgramResult {
 
 export interface DissolveCoupleParams {
   couple_id: string;
-  user_id: string;
+  departing_user_id: string;
 }
 export interface DissolveCoupleResult {
   status: 'dissolved' | 'already_dissolved' | 'error';

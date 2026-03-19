@@ -16,7 +16,7 @@ export default function DissolutionSettings() {
     if (!space?.id || !user?.id) return;
     try {
       setDissolving(true);
-      await dissolveCouple({ couple_id: space.id, user_id: user.id });
+      await dissolveCouple({ couple_id: space.id, departing_user_id: user.id });
       navigate('/');
     } catch (err) {
       console.error('Dissolution failed:', err);
