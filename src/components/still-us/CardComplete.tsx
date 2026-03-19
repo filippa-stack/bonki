@@ -87,11 +87,13 @@ export default function CardComplete({
       return;
     }
     try {
+      const nextIndex = cardIndex + 1;
       const result = await advanceCard({
         couple_id: coupleId,
         card_id: backendCardId,
         takeaway: myTakeaway || null,
         partner_takeaway: theirTakeaway,
+        ...(nextIndex <= 21 ? { slider_anchors: buildSliderAnchors(nextIndex) } : {}),
       });
       if (result.status === 'ceremony') {
         navigate('/ceremony', { replace: true });

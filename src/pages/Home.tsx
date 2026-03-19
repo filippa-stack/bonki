@@ -857,11 +857,13 @@ function ActionCard({
                 onClick={async () => {
                   if (!coupleId) return;
                   setSkipping(true);
-                  try {
+                   try {
+                    const nextIdx = cardIndex + 1;
                     const result = await skipCard({
                       couple_id: coupleId,
                       card_id: cardIdFromIndex(cardIndex),
                       skip_type: 'user_skipped',
+                      ...(nextIdx <= 21 ? { slider_anchors: buildSliderAnchors(nextIdx) } : {}),
                     });
                     if (result.status === 'ceremony') {
                       navigate('/ceremony');
