@@ -81,7 +81,7 @@ END $$;
 UPDATE couple_state
 SET migration_pending = true
 WHERE migration_pending = false
-  AND created_at < '2026-03-01T00:00:00Z'  -- NOTE: Replace with actual v3.0 deploy date
+  AND created_at < '2026-03-19T00:00:00Z'
   AND dissolved_at IS NULL;
 
 -- NOTE: The client-side migration handler in SessionFocusShell.tsx
