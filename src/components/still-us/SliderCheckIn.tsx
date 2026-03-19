@@ -114,8 +114,8 @@ export default function SliderCheckIn({
     if (!hasSeenFormatPreview) {
       navigate('/format-preview');
     } else if (!hasPartner) {
-      // Solo user who has seen format preview
-      navigate(`/solo-reflect/${cardId ?? `card_${cardIndex + 1}`}`);
+      // Solo user who has seen format preview → solo reflection
+      navigate(`/solo-reflect/${slug ?? cardId ?? `card_${cardIndex + 1}`}`);
     } else if (result.status === 'ready' || partnerCompleted) {
       // Both completed
       navigate('/');
