@@ -2,7 +2,8 @@ import { useEffect, useState, useRef, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { COLORS, getLayerForCard } from '@/lib/stillUsTokens';
-import sliderPrompts from '@/data/sliderPrompts';
+import sliderPrompts, { getSliderSet } from '@/data/sliderPrompts';
+import { computeJourneyInsights } from '@/lib/stillUsRpc';
 
 interface CoupleStateData {
   phase: string;
@@ -17,6 +18,14 @@ export default function CompletionCeremony() {
   const [swipeEnabled, setSwipeEnabled] = useState(false);
   const [loading, setLoading] = useState(true);
   const [coupleState, setCoupleState] = useState<CoupleStateData | null>(null);
+  const [insights, setInsights] = useState<{
+    max_delta_card: { card_id: string; avg_delta: number } | null;
+    min_delta_card: { card_id: string; avg_delta: number } | null;
+    total_reflections: number;
+    has_sufficient_data: boolean;
+  } | null>(null);
+  const [insightsLoading, setInsightsLoading] = useState(true);
+  const [screen3Reflection, setScreen3Reflection] = useState('');
   const touchStartX = useRef(0);
   const touchEndX = useRef(0);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -57,6 +66,31 @@ export default function CompletionCeremony() {
     checkAccess();
   }, [navigate]);
 
+  // ── Fetch journey insights ──
+  useEffect(() => {
+    if (!coupleState) return;
+    const fetchInsights = async () => {
+      try {
+        const result = await computeJourneyInsights({
+          couple_id: coupleState.couple_id,
+          cycle_id: coupleState.cycle_id,
+        });
+        setInsights(result as any);
+      } catch (err) {
+        console.error('Failed to fetch journey insights:', err);
+        setInsights({
+          max_delta_card: null,
+          min_delta_card: null,
+          total_reflections: 0,
+          has_sufficient_data: false,
+        });
+      } finally {
+        setInsightsLoading(false);
+      }
+    };
+    fetchInsights();
+  }, [coupleState]);
+
   // ── Screen 1 hold timer ──
   useEffect(() => {
     if (loading) return;
@@ -67,6 +101,13 @@ export default function CompletionCeremony() {
     const timer = setTimeout(() => setSwipeEnabled(true), 3000);
     return () => clearTimeout(timer);
   }, [loading, prefersReducedMotion]);
+
+  // ── Helper: resolve card title from card_id ──
+  const getCardTitleFromId = (cardId: string): string => {
+    const index = parseInt(cardId.replace('card_', ''), 10) - 1;
+    const set = getSliderSet(index);
+    return set?.cardTitle ?? `Vecka ${index + 1}`;
+  };
 
   // ── Swipe handlers ──
   const handleTouchStart = useCallback((e: React.TouchEvent) => {
@@ -287,18 +328,139 @@ export default function CompletionCeremony() {
           </div>
         </div>
 
-        {/* ── Screen 3: Placeholder ── */}
+        {/* ── Screen 3: Data Mirror ── */}
         <div style={{
           width: '100vw',
           height: '100%',
           display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
+          flexDirection: 'column',
           flexShrink: 0,
+          overflowY: 'auto',
+          WebkitOverflowScrolling: 'touch',
+          padding: '48px 32px',
         }}>
-          <p style={{ color: COLORS.driftwood, fontSize: '15px' }}>
-            Screen 3 — coming soon
-          </p>
+          {insightsLoading ? (
+            <div style={{
+              flex: 1,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}>
+              <p style={{
+                color: COLORS.driftwood,
+                fontSize: '15px',
+                fontStyle: 'italic',
+              }}>
+                Laddar…
+              </p>
+            </div>
+          ) : insights?.has_sufficient_data ? (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
+              {insights.max_delta_card && (
+                <div style={{ textAlign: 'center' }}>
+                  <p style={{
+                    fontSize: '11px',
+                    fontWeight: 600,
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.05em',
+                    color: COLORS.driftwood,
+                    marginBottom: '4px',
+                  }}>
+                    Här var ni längst ifrån varandra
+                  </p>
+                  <p style={{
+                    fontFamily: '"DM Serif Display", serif',
+                    fontSize: '20px',
+                    fontWeight: 400,
+                    color: COLORS.lanternGlow,
+                  }}>
+                    {getCardTitleFromId(insights.max_delta_card.card_id)}
+                  </p>
+                </div>
+              )}
+
+              {insights.min_delta_card && (
+                <div style={{ textAlign: 'center' }}>
+                  <p style={{
+                    fontSize: '11px',
+                    fontWeight: 600,
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.05em',
+                    color: COLORS.driftwood,
+                    marginBottom: '4px',
+                  }}>
+                    Här var ni närmast
+                  </p>
+                  <p style={{
+                    fontFamily: '"DM Serif Display", serif',
+                    fontSize: '20px',
+                    fontWeight: 400,
+                    color: COLORS.lanternGlow,
+                  }}>
+                    {getCardTitleFromId(insights.min_delta_card.card_id)}
+                  </p>
+                </div>
+              )}
+
+              <div style={{ textAlign: 'center' }}>
+                <p style={{
+                  fontSize: '15px',
+                  color: COLORS.driftwoodBody,
+                  lineHeight: 1.6,
+                }}>
+                  Ni skrev {insights.total_reflections} tankar under resan
+                </p>
+              </div>
+            </div>
+          ) : (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+              <p style={{
+                fontSize: '15px',
+                color: COLORS.driftwoodBody,
+                lineHeight: 1.6,
+                textAlign: 'center',
+              }}>
+                Ni gick igenom programmet på ert eget sätt — några veckor
+                hoppades över, några pausades. Det är okej. Det viktiga
+                är att ni är här.
+              </p>
+
+              <p style={{
+                fontSize: '15px',
+                color: COLORS.driftwoodBody,
+                textAlign: 'center',
+              }}>
+                Ni skrev {insights?.total_reflections ?? 0} tankar under resan
+              </p>
+
+              <p style={{
+                fontSize: '13px',
+                color: COLORS.driftwood,
+                textAlign: 'center',
+              }}>
+                Vad minns ni mest?
+              </p>
+
+              <textarea
+                value={screen3Reflection}
+                onChange={(e) => setScreen3Reflection(e.target.value)}
+                placeholder=""
+                style={{
+                  width: '100%',
+                  minHeight: '120px',
+                  background: COLORS.emberGlow,
+                  color: COLORS.lanternGlow,
+                  border: 'none',
+                  borderRadius: '12px',
+                  padding: '16px',
+                  fontSize: '16px',
+                  fontFamily: 'inherit',
+                  resize: 'vertical',
+                  outline: 'none',
+                }}
+              />
+            </div>
+          )}
         </div>
 
         {/* ── Screen 4: Placeholder ── */}
