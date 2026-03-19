@@ -8,43 +8,85 @@ import { useAuth } from '@/contexts/AuthContext';
 export default function Paywall() {
   const navigate = useNavigate();
   const { user } = useAuth();
-  const [coupleId, setCoupleId] = useState<string | null>(null);
   const [slug, setSlug] = useState<string | null>(null);
+  const [processing, setProcessing] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  // Fetch couple_id + current slug for redirect after purchase
+  // Fetch current slug for redirect after purchase
   useEffect(() => {
     if (!user?.id) return;
     (async () => {
       const { data: cs } = await supabase
         .from('couple_state')
-        .select('couple_id, current_card_index')
+        .select('current_card_index')
         .or(`initiator_id.eq.${user.id},partner_id.eq.${user.id}`)
         .maybeSingle();
       if (cs) {
-        setCoupleId(cs.couple_id);
         setSlug(`kort-${cs.current_card_index + 1}`);
       }
     })();
   }, [user?.id]);
 
   const handlePurchase = useCallback(async () => {
-    if (!user?.id || !coupleId) return;
+    if (!user?.id) return;
+    setProcessing(true);
+    setError(null);
 
-    await supabase
-      .from('couple_state')
-      .update({
-        purchase_status: 'purchased',
-        purchased_by: user.id,
-      })
-      .eq('couple_id', coupleId);
+    try {
+      const projectId = import.meta.env.VITE_SUPABASE_PROJECT_ID;
+      const { data: { session } } = await supabase.auth.getSession();
 
-    // Navigate to Session 2 Start — session state preserved
-    if (slug) {
-      navigate(`/session/${slug}/session2-start`, { replace: true });
-    } else {
-      navigate('/', { replace: true });
+      const successUrl = slug
+        ? `${window.location.origin}/session/${slug}/session2-start?purchase=success`
+        : `${window.location.origin}/?purchase=success&product=still_us`;
+
+      const res = await fetch(
+        `https://${projectId}.supabase.co/functions/v1/create-checkout`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${session?.access_token}`,
+          },
+          body: JSON.stringify({
+            productId: 'still_us',
+            successUrl,
+            cancelUrl: `${window.location.origin}/paywall`,
+          }),
+        }
+      );
+
+      const json = await res.json();
+
+      if (json.error === 'already_purchased') {
+        // Already purchased — go straight to Session 2
+        if (slug) {
+          navigate(`/session/${slug}/session2-start`, { replace: true });
+        } else {
+          navigate('/', { replace: true });
+        }
+        return;
+      }
+
+      if (!res.ok) {
+        if (res.status === 503) {
+          setError('Betalning är inte konfigurerad ännu. Kontakta oss!');
+        } else {
+          setError(json.error || 'Något gick fel');
+        }
+        return;
+      }
+
+      if (json.url) {
+        window.location.href = json.url;
+      }
+    } catch (err) {
+      console.error('Purchase error:', err);
+      setError('Kunde inte starta betalningen');
+    } finally {
+      setProcessing(false);
     }
-  }, [navigate, user?.id, coupleId, slug]);
+  }, [navigate, user?.id, slug]);
 
   return (
     <div style={{
@@ -64,7 +106,6 @@ export default function Paywall() {
         transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
         style={{ maxWidth: '360px', width: '100%', textAlign: 'center' }}
       >
-        {/* Emotional framing */}
         <p style={{
           fontSize: '11px',
           textTransform: 'uppercase',
@@ -104,9 +145,8 @@ export default function Paywall() {
           Ni vet nu. Och resten väntar.
         </p>
 
-        {/* What's ahead — outcome-based */}
         <div style={{
-          backgroundColor: `${COLORS.emberGlow}`,
+          backgroundColor: COLORS.emberGlow,
           borderRadius: '16px',
           padding: '20px',
           marginBottom: '32px',
@@ -139,7 +179,6 @@ export default function Paywall() {
           ))}
         </div>
 
-        {/* Pricing */}
         <div style={{
           fontFamily: "'DM Serif Display', serif",
           fontSize: '36px',
@@ -159,21 +198,32 @@ export default function Paywall() {
         <motion.button
           whileTap={{ scale: 0.98 }}
           onClick={handlePurchase}
+          disabled={processing}
           style={{
             width: '100%',
             padding: '16px',
             borderRadius: '12px',
             border: 'none',
-            backgroundColor: COLORS.deepSaffron,
+            backgroundColor: processing ? `${COLORS.deepSaffron}99` : COLORS.deepSaffron,
             color: COLORS.emberNight,
             fontSize: '16px',
             fontFamily: "'DM Serif Display', serif",
             fontWeight: 600,
-            cursor: 'pointer',
+            cursor: processing ? 'default' : 'pointer',
           }}
         >
-          Fortsätt resan
+          {processing ? 'Behandlar...' : 'Fortsätt resan'}
         </motion.button>
+
+        {error && (
+          <p style={{
+            fontSize: '13px',
+            color: '#E87C6A',
+            marginTop: '12px',
+          }}>
+            {error}
+          </p>
+        )}
 
         <div
           onClick={() => navigate('/')}
