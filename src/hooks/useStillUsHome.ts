@@ -84,6 +84,8 @@ const EMPTY_STATE: StillUsHomeState = {
   isDormant: false,
   dormancyDays: 0,
   returnRitualShown: false,
+  currentTouch: 'slider',
+  coupleId: null,
   loading: true,
   refetch: async () => {},
 };
