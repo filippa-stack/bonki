@@ -114,14 +114,14 @@ export default function SliderCheckIn({
     if (!hasSeenFormatPreview) {
       navigate('/format-preview');
     } else if (!hasPartner) {
-      // Solo user who has seen format preview → solo reflection
-      navigate(`/solo-reflect/${slug ?? cardId ?? `card_${cardIndex + 1}`}`);
+      // No partner yet → share/invite screen so they can send the link
+      navigate('/share');
     } else if (result.status === 'ready' || partnerCompleted) {
-      // Both completed
-      navigate('/');
+      // Both completed → home (session ready)
+      navigate('/?product=still-us');
     } else {
-      // Waiting for partner
-      navigate('/');
+      // Waiting for partner → share screen to nudge
+      navigate('/share');
     }
   };
 
