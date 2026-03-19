@@ -72,8 +72,14 @@ export default function BottomNav() {
   const navigate = useNavigate();
   const { pathname, search } = useLocation();
 
-  // Hide during card sessions (threshold → completion)
+  // Hide during active sessions (card sessions, Still Us sessions)
   if (pathname.startsWith('/card/')) return null;
+  if (pathname.startsWith('/check-in/')) return null;
+  if (pathname.startsWith('/session/')) return null;
+  if (pathname === '/share') return null;
+  if (pathname === '/tier2-setup') return null;
+  if (pathname === '/format-preview') return null;
+  if (pathname.startsWith('/solo-reflect/')) return null;
 
   return (
     <nav
