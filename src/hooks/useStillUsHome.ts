@@ -179,7 +179,6 @@ export function useStillUsHome(): StillUsHomeState {
 
       if (!mountedRef.current) return;
 
-      const cardIndex = cs.current_card_index ?? 0;
       const currentTouch = cs.current_touch as string;
       const phase = cs.phase as StillUsHomeState['phase'];
       const purchaseStatus = cs.purchase_status as StillUsHomeState['purchaseStatus'];
