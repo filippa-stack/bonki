@@ -1,0 +1,2 @@
+ALTER FUNCTION public.insert_session_state_idempotent(character varying, character varying, integer, character varying, character varying, boolean) SET search_path = public;
+ALTER PROCEDURE public.advance_tillbaka_cards() SET search_path = public;
