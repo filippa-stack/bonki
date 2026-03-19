@@ -62,8 +62,10 @@ export default function Session2LivePage() {
     );
   }
 
-  // TODO: Replace with real content data lookup for vand_q2
-  const vandQuestion = '[PLACEHOLDER] Vänd fråga 2';
+  // Authored Vänd Q2 from content data
+  const sessionContent = getSessionContent(cardIndex);
+  const vandQuestion = sessionContent?.vand2?.text ?? sessionContent?.vand1?.text ?? 'Vad var det viktigaste ni pratade om?';
+  const vandAnchor = sessionContent?.vand2?.anchor;
 
   return (
     <SessionTwoLive
