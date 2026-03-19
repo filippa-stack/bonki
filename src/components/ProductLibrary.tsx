@@ -967,7 +967,7 @@ export default function ProductLibrary() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.7 * ANIM_SPEED, duration: 0.7 * ANIM_SPEED, ease: [0.22, 1, 0.36, 1] }}
           whileTap={{ scale: 0.97 }}
-          onClick={() => navigate('/diary/jag_i_mig')}
+          onClick={() => navigate('/journal')}
           className="cursor-pointer"
           style={{
             margin: '28px 20px 16px',

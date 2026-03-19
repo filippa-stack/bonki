@@ -101,7 +101,12 @@ export default function BottomNav() {
             return (
               <motion.button
                 key={item.id}
-                onClick={() => navigate(item.path)}
+                onClick={() => {
+                  if (item.id === 'library') {
+                    localStorage.removeItem('bonki-last-active-product');
+                  }
+                  navigate(item.path);
+                }}
                 whileTap={{ scale: 0.92 }}
                 transition={{ duration: 0.1 }}
                 className="relative flex flex-1 flex-col items-center justify-center"

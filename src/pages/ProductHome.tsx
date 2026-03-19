@@ -127,7 +127,10 @@ export default function ProductHome() {
         className="px-5 pt-14 pb-4"
       >
         <button
-          onClick={() => navigate('/?devState=library')}
+          onClick={() => {
+            localStorage.removeItem('bonki-last-active-product');
+            navigate('/');
+          }}
           className="flex items-center gap-1.5 font-serif text-sm mb-6"
           style={{ color: 'var(--color-text-secondary)', opacity: 0.7 }}
         >
