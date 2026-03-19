@@ -52,6 +52,7 @@ import {
   TillbakaPage,
 } from "./pages/still-us-routes";
 import CompletionCeremony from "./pages/CompletionCeremony";
+import TillbakaSessionLive from "./components/TillbakaSessionLive";
 
 const queryClient = new QueryClient();
 
