@@ -75,7 +75,6 @@ export default function BottomNav() {
 
   // Hide during active sessions (card sessions, Still Us sessions)
   if (pathname.startsWith('/card/')) return null;
-  if (pathname.startsWith('/product/')) return null;
   if (pathname.startsWith('/check-in/')) return null;
   if (pathname.startsWith('/session/')) return null;
   if (pathname === '/share') return null;
