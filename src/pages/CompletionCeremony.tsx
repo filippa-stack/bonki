@@ -191,6 +191,48 @@ export default function CompletionCeremony() {
     setSaveState('error');
   }, [coupleState, ceremonyReflection, screen3Reflection]);
 
+  // ── Transition to maintenance phase ──
+  const handleTransitionToMaintenance = useCallback(async () => {
+    if (!coupleState) return;
+    setTransitionState('saving');
+
+    try {
+      localStorage.setItem('still_us_pending_phase_transition', JSON.stringify({
+        couple_id: coupleState.couple_id,
+        target_phase: 'maintenance',
+        saved_at: new Date().toISOString(),
+      }));
+    } catch {}
+
+    const delays = [0, 1000, 3000, 9000];
+    for (let attempt = 0; attempt < delays.length; attempt++) {
+      if (attempt > 0) {
+        await new Promise(r => setTimeout(r, delays[attempt]));
+      }
+      try {
+        const { error } = await supabase
+          .from('couple_state')
+          .update({ phase: 'maintenance' })
+          .eq('couple_id', coupleState.couple_id);
+
+        if (!error) {
+          await supabase
+            .from('journey_insights_cache')
+            .delete()
+            .eq('couple_id', coupleState.couple_id)
+            .eq('cycle_id', coupleState.cycle_id);
+
+          try { localStorage.removeItem('still_us_pending_phase_transition'); } catch {}
+          setTransitionState('success');
+          navigate('/');
+          return;
+        }
+      } catch {}
+    }
+
+    setTransitionState('error');
+  }, [coupleState, navigate]);
+
   // ── Screen 1 hold timer ──
   useEffect(() => {
     if (loading) return;
