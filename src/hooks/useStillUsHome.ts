@@ -154,6 +154,10 @@ export function useStillUsHome(): StillUsHomeState {
       // Use the real couple_id from couple_state for subsequent queries
       const realCoupleId = cs.couple_id as string;
 
+      const cardIndex = cs.current_card_index ?? 0;
+      const backendCardIdForQuery = cardIdFromIndex(cardIndex);
+      const cycleIdVal = cs.cycle_id ?? 1;
+
       const [ucsResult, ssResult, membersResult] = await Promise.all([
         supabase
           .from('user_card_state')
@@ -163,7 +167,8 @@ export function useStillUsHome(): StillUsHomeState {
           .from('session_state')
           .select('*')
           .eq('couple_id', realCoupleId)
-          .limit(1)
+          .eq('card_id', backendCardIdForQuery)
+          .eq('cycle_id', cycleIdVal)
           .maybeSingle(),
         spaceId ? supabase
           .from('couple_members')
