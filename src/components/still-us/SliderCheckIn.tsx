@@ -38,6 +38,7 @@ export default function SliderCheckIn({
   cardIndex,
   coupleId,
   cardId,
+  slug,
   hasSeenFormatPreview = false,
   hasPartner = false,
   partnerCompleted = false,
