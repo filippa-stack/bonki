@@ -66,6 +66,7 @@ export interface StillUsHomeState {
   currentTouch: string;
   coupleId: string | null;
   coupleCreatedAt: string | null;
+  dissolvedAt: string | null;
   // Locked state
   initiatorId: string | null;
   initiatorName: string | null;
@@ -104,6 +105,7 @@ const EMPTY_STATE: StillUsHomeState = {
   currentTouch: 'slider',
   coupleId: null,
   coupleCreatedAt: null,
+  dissolvedAt: null,
   initiatorId: null,
   initiatorName: null,
   partnerNudgeSentAt: null,
@@ -299,6 +301,7 @@ export function useStillUsHome(): StillUsHomeState {
         currentTouch,
         coupleId: spaceId,
         coupleCreatedAt: cs.created_at ?? null,
+        dissolvedAt: cs.dissolved_at ?? null,
         initiatorId,
         initiatorName: isCurrentUserInitiator ? null : (partnerName || 'din partner'),
         partnerNudgeSentAt,
