@@ -176,6 +176,9 @@ function AppRoutes() {
   );
 }
 
+// Detect ?testmode=true on boot
+detectTestModeParam();
+
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <SiteSettingsProvider>
@@ -185,8 +188,10 @@ const App = () => (
           <BrowserRouter>
             <DevStateProvider>
               <MobileOnlyGate>
+                <TestModeBanner />
                 <DevModeBadge />
                 <AppRoutes />
+                <TestModePanel />
               </MobileOnlyGate>
             </DevStateProvider>
           </BrowserRouter>
